@@ -1,25 +1,51 @@
 #include "kernel.h"
 
-static void serial_putc(char c) {
-    __asm__ volatile(
-        "srw_%=:\n"
-        "movw $0x3FD, %%dx\n"
-        "inb %%dx, %%al\n"
-        "testb $0x20, %%al\n"
-        "jz srw_%=\n"
-        "movb %b0, %%al\n"
-        "movw $0x3F8, %%dx\n"
-        "outb %%al, %%dx"
-        : : "r"((unsigned long)c) : "ax", "dx"
-    );
-}
+/* ================================================================
+ *  Port I/O helpers
+ * ================================================================ */
 
-static void serial_puts(const char *s) {
-    while (*s) serial_putc(*s++);
+static inline void outb(unsigned short port, unsigned char val) {
+    __asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));
+}
+static inline unsigned char inb(unsigned short port) {
+    unsigned char r;
+    __asm__ volatile("inb %1, %0" : "=a"(r) : "Nd"(port));
+    return r;
 }
 
 /* ================================================================
- *  VGA driver — text-mode framebuffer at 0xB8000
+ *  Serial console (COM1, 16550 UART) — mirrors VGA, drives input
+ * ================================================================ */
+
+#define COM1 0x3F8
+
+void serial_init(void) {
+    outb(COM1 + 1, 0x00); /* disable interrupts */
+    outb(COM1 + 3, 0x80); /* enable DLAB */
+    outb(COM1 + 0, 0x01); /* divisor lo -> 115200 baud */
+    outb(COM1 + 1, 0x00); /* divisor hi */
+    outb(COM1 + 3, 0x03); /* 8 bits, no parity, one stop */
+    outb(COM1 + 2, 0xC7); /* enable FIFO, clear, 14-byte threshold */
+    outb(COM1 + 4, 0x0B); /* IRQs off, RTS/DSR set */
+}
+
+static int serial_tx_ready(void) { return inb(COM1 + 5) & 0x20; }
+static int serial_rx_ready(void) { return inb(COM1 + 5) & 0x01; }
+
+void serial_putc(char c) {
+    if (c == '\n') { while (!serial_tx_ready()); outb(COM1, '\r'); }
+    while (!serial_tx_ready());
+    outb(COM1, (unsigned char)c);
+}
+void serial_puts(const char *s) { while (*s) serial_putc(*s++); }
+
+int serial_available(void) { return serial_rx_ready(); }
+int serial_getc(void) { return serial_rx_ready() ? (int)inb(COM1) : -1; }
+
+static int console_getc(void); /* defined in the shell section */
+
+/* ================================================================
+ *  VGA driver
  * ================================================================ */
 
 static int vga_x, vga_y;
@@ -81,12 +107,22 @@ void vga_newline(void) {
     if (vga_y >= VGA_ROWS) vga_scroll();
 }
 
+static void vga_raw_space(void) {
+    unsigned off = vga_offset(vga_x, vga_y);
+    VGA_BASE[off]     = ' ';
+    VGA_BASE[off + 1] = vga_color;
+    vga_x++;
+    if (vga_x >= VGA_COLS) vga_newline();
+}
+
 void vga_putc(char c) {
+    serial_putc(c);
     if (c == '\n') { vga_newline(); vga_set_cursor(vga_x, vga_y); return; }
     if (c == '\r') { vga_x = 0; vga_set_cursor(vga_x, vga_y); return; }
     if (c == '\t') {
         int spaces = 8 - (vga_x & 7);
-        while (spaces--) vga_putc(' ');
+        while (spaces--) vga_raw_space();
+        vga_set_cursor(vga_x, vga_y);
         return;
     }
     if (c == '\b') {
@@ -188,10 +224,19 @@ typedef struct Block {
 static Block *free_list;
 static char  *heap_start, *heap_end, *heap_curr;
 
+/* ---- Physical memory map (identity-mapped 0..1GB by the bootloader) ----
+ *   0x00000000 .. 0x00100000   BIOS / kernel image / page tables / stack
+ *   0x00400000 .. 0x02000000   user program region (ELF load addr + brk)
+ *   0x02000000 .. 0x06000000   64 MB kernel heap
+ */
+#define USER_LOAD_BASE  0x00400000UL
+#define USER_LOAD_END   0x02000000UL
+#define HEAP_BASE       0x02000000UL
+#define HEAP_SIZE       (64UL * 1024 * 1024)
+
 void kallocator_init(void) {
-    extern char _kernel_end;
-    heap_start = (char *)ALIGN_UP((unsigned long)&_kernel_end, 0x1000);
-    heap_end   = heap_start + (16UL * 1024 * 1024); /* 16 MB heap */
+    heap_start = (char *)HEAP_BASE;
+    heap_end   = heap_start + HEAP_SIZE;
     heap_curr  = heap_start;
     free_list  = 0;
 }
@@ -207,7 +252,7 @@ void *kmalloc(unsigned long size) {
             else       free_list  = b->next;
             b->magic = ALLOC_MAGIC;
             b->size  = size;
-            return (char *)(b + 1);
+            return (char *)b + BLOCK_HDR_SZ;
         }
         prev = b;
         b = b->next;
@@ -219,12 +264,12 @@ void *kmalloc(unsigned long size) {
     b->magic = ALLOC_MAGIC;
     b->size  = size;
     b->next  = 0;
-    return (char *)(b + 1);
+    return (char *)b + BLOCK_HDR_SZ;
 }
 
 void kfree(void *ptr) {
     if (!ptr) return;
-    Block *b = ((Block *)ptr) - 1;
+    Block *b = (Block *)((char *)ptr - BLOCK_HDR_SZ);
     if (b->magic != ALLOC_MAGIC) return;
     b->next = free_list;
     free_list = b;
@@ -240,7 +285,7 @@ void *kcalloc(unsigned long nmemb, unsigned long size) {
 void *krealloc(void *ptr, unsigned long size) {
     if (!ptr) return kmalloc(size);
     if (size == 0) { kfree(ptr); return 0; }
-    Block *b = ((Block *)ptr) - 1;
+    Block *b = (Block *)((char *)ptr - BLOCK_HDR_SZ);
     if (b->magic != ALLOC_MAGIC) return 0;
     if (b->size >= size) { b->size = size; return ptr; }
     void *newp = kmalloc(size);
@@ -489,7 +534,13 @@ int kfclose(KFILE *f) {
 }
 
 int kfgetc(KFILE *f) {
-    if (!f || !f->rf || f->pos >= f->rf->size) return EOF;
+    if (!f) return EOF;
+    if (f->is_console) {
+        int c = console_getc();
+        if (c == '\r') c = '\n';
+        return c;
+    }
+    if (!f->rf || f->pos >= f->rf->size) return EOF;
     char c;
     ramdisk_read(f->rf, &c, f->pos, 1);
     f->pos++;
@@ -503,7 +554,13 @@ int kfungetc(int c, KFILE *f) {
 }
 
 unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
-    if (!f || !f->rf) return 0;
+    if (!f) return 0;
+    if (f->is_console) {
+        char *b = ptr; unsigned long got = 0, total = size * n;
+        while (got < total) { int c = kfgetc(f); if (c == EOF) break; b[got++] = (char)c; }
+        return size ? got / size : 0;
+    }
+    if (!f->rf) return 0;
     unsigned long total = size * n;
     if (f->pos + total > f->rf->size) total = f->rf->size - f->pos;
     ramdisk_read(f->rf, ptr, f->pos, (unsigned)total);
@@ -512,7 +569,13 @@ unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
 }
 
 unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f) {
-    if (!f || f->mode != 1) return 0;
+    if (!f) return 0;
+    if (f->is_console) {
+        const char *b = ptr; unsigned long bytes = size * n, i;
+        for (i = 0; i < bytes; i++) vga_putc(b[i]);
+        return n;
+    }
+    if (f->mode != 1) return 0;
     unsigned long bytes = size * n;
     if (!f->wbuf) {
         f->wbuf = kmalloc(4096);
@@ -567,8 +630,17 @@ int kfputc(int c, KFILE *f) {
     return (int)kfwrite(&ch, 1, 1, f);
 }
 
-/* Default stdin/stdout/stderr for programs */
-static KFILE *kstdin, *kstdout, *kstderr;
+void krewind(KFILE *f) { if (f) kfseek(f, 0, 0); }
+
+/* Default stdin/stdout/stderr for programs.  A C program references the
+ * symbols `stdin`/`stdout`/`stderr` as FILE* *variables*, so we register the
+ * addresses of these pointer variables, each aimed at a console-backed KFILE. */
+static KFILE  console_in  = { 0, 0, 0, 0, 0, 0, 1 };
+static KFILE  console_out = { 0, 0, 0, 0, 0, 0, 1 };
+static KFILE  console_err = { 0, 0, 0, 0, 0, 0, 1 };
+KFILE *kstdin  = &console_in;
+KFILE *kstdout = &console_out;
+KFILE *kstderr = &console_err;
 
 KFILE *kfile_stdin(void)  { return kstdin; }
 KFILE *kfile_stdout(void) { return kstdout; }
@@ -598,6 +670,26 @@ static void putc_str(char c, void *ctx, int *written) {
     (*written)++;
 }
 
+/* Emit a reverse-ordered digit buffer honouring width, left-justify and
+ * zero-fill flags. buf holds `pos` digits least-significant first. */
+static void emit_num(void (*emit)(char, void *, int *), void *ctx, int *written,
+                     char *buf, int pos, int neg, int pad, int left, int zero) {
+    int total = pos + (neg ? 1 : 0);
+    if (left) {
+        if (neg) emit('-', ctx, written);
+        while (pos > 0) emit(buf[--pos], ctx, written);
+        while (pad > total) { emit(' ', ctx, written); pad--; }
+    } else if (zero) {
+        if (neg) emit('-', ctx, written);
+        while (pad > total) { emit('0', ctx, written); pad--; }
+        while (pos > 0) emit(buf[--pos], ctx, written);
+    } else {
+        while (pad > total) { emit(' ', ctx, written); pad--; }
+        if (neg) emit('-', ctx, written);
+        while (pos > 0) emit(buf[--pos], ctx, written);
+    }
+}
+
 static void kformat(void (*emit)(char, void *, int *), void *ctx,
                     int *written, const char *fmt, __builtin_va_list ap) {
     const char *p;
@@ -607,6 +699,9 @@ static void kformat(void (*emit)(char, void *, int *), void *ctx,
         if (*p == 0) break;
         if (*p == '%') { emit('%', ctx, written); continue; }
 
+        int left = 0, zero = 0;
+        if (*p == '-') { left = 1; p++; }
+        if (*p == '0') { zero = 1; p++; }
         int pad = 0;
         while (*p >= '0' && *p <= '9') { pad = pad * 10 + (*p - '0'); p++; }
 
@@ -614,28 +709,32 @@ static void kformat(void (*emit)(char, void *, int *), void *ctx,
             const char *s = __builtin_va_arg(ap, const char *);
             if (!s) s = "(null)";
             int slen = (int)kstrlen(s);
-            while (pad > slen) { emit(' ', ctx, written); pad--; }
-            while (*s) { emit(*s++, ctx, written); }
+            if (left) {
+                while (*s) { emit(*s++, ctx, written); }
+                while (pad > slen) { emit(' ', ctx, written); pad--; }
+            } else {
+                while (pad > slen) { emit(' ', ctx, written); pad--; }
+                while (*s) { emit(*s++, ctx, written); }
+            }
         } else if (*p == 'c') {
             char c = (char)__builtin_va_arg(ap, int);
             emit(c, ctx, written);
         } else if (*p == 'd' || *p == 'i') {
             long v = __builtin_va_arg(ap, int);
-            if (v < 0) { emit('-', ctx, written); v = -v; }
+            int neg = 0;
+            if (v < 0) { neg = 1; v = -v; }
             char buf[32];
             int pos = 0;
             if (v == 0) buf[pos++] = '0';
             else while (v > 0) { buf[pos++] = '0' + (v % 10); v /= 10; }
-            while (pad > pos) { emit(' ', ctx, written); pad--; }
-            while (pos > 0) emit(buf[--pos], ctx, written);
+            emit_num(emit, ctx, written, buf, pos, neg, pad, left, zero);
         } else if (*p == 'u') {
             unsigned long v = __builtin_va_arg(ap, unsigned int);
             char buf[32];
             int pos = 0;
             if (v == 0) buf[pos++] = '0';
             else while (v > 0) { buf[pos++] = '0' + (v % 10); v /= 10; }
-            while (pad > pos) { emit(' ', ctx, written); pad--; }
-            while (pos > 0) emit(buf[--pos], ctx, written);
+            emit_num(emit, ctx, written, buf, pos, 0, pad, left, zero);
         } else if (*p == 'x' || *p == 'X') {
             unsigned long v = __builtin_va_arg(ap, unsigned int);
             char hex_base = (*p == 'X') ? 'A' : 'a';
@@ -647,8 +746,7 @@ static void kformat(void (*emit)(char, void *, int *), void *ctx,
                 buf[pos++] = (d < 10) ? ('0' + d) : (hex_base + d - 10);
                 v >>= 4;
             }
-            while (pad > pos) { emit(' ', ctx, written); pad--; }
-            while (pos > 0) emit(buf[--pos], ctx, written);
+            emit_num(emit, ctx, written, buf, pos, 0, pad, left, zero);
         } else if (*p == 'p') {
             emit('0', ctx, written);
             emit('x', ctx, written);
@@ -660,21 +758,32 @@ static void kformat(void (*emit)(char, void *, int *), void *ctx,
             }
         } else if (*p == 'l') {
             p++;
+            if (*p == 'l') p++; /* accept %ll* as %l* */
             if (*p == 'd' || *p == 'i') {
                 long v = __builtin_va_arg(ap, long);
-                if (v < 0) { emit('-', ctx, written); v = -v; }
+                int neg = 0;
+                if (v < 0) { neg = 1; v = -v; }
                 char buf[32]; int pos = 0;
                 if (v == 0) buf[pos++] = '0';
                 else while (v) { buf[pos++] = '0' + (v % 10); v /= 10; }
-                while (pad > pos) { emit(' ', ctx, written); pad--; }
-                while (pos > 0) emit(buf[--pos], ctx, written);
+                emit_num(emit, ctx, written, buf, pos, neg, pad, left, zero);
             } else if (*p == 'u') {
                 unsigned long v = __builtin_va_arg(ap, unsigned long);
                 char buf[32]; int pos = 0;
                 if (v == 0) buf[pos++] = '0';
                 else while (v) { buf[pos++] = '0' + (v % 10); v /= 10; }
-                while (pad > pos) { emit(' ', ctx, written); pad--; }
-                while (pos > 0) emit(buf[--pos], ctx, written);
+                emit_num(emit, ctx, written, buf, pos, 0, pad, left, zero);
+            } else if (*p == 'x' || *p == 'X') {
+                unsigned long v = __builtin_va_arg(ap, unsigned long);
+                char hex_base = (*p == 'X') ? 'A' : 'a';
+                char buf[32]; int pos = 0;
+                if (v == 0) buf[pos++] = '0';
+                else while (v) {
+                    int d = v & 0xF;
+                    buf[pos++] = (d < 10) ? ('0' + d) : (hex_base + d - 10);
+                    v >>= 4;
+                }
+                emit_num(emit, ctx, written, buf, pos, 0, pad, left, zero);
             }
         }
     }
@@ -706,6 +815,24 @@ int ksprintf(char *buf, const char *fmt, ...) {
     kformat(putc_str, &p, &written, fmt, ap);
     __builtin_va_end(ap);
     *p = 0;
+    return written;
+}
+
+struct snctx { char *p; unsigned long rem; };
+static void putc_snbuf(char c, void *ctx, int *written) {
+    struct snctx *s = (struct snctx *)ctx;
+    if (s->rem > 1) { *s->p++ = c; s->rem--; }
+    (*written)++;
+}
+
+int ksnprintf(char *buf, unsigned long size, const char *fmt, ...) {
+    int written = 0;
+    struct snctx s = { buf, size };
+    __builtin_va_list ap;
+    __builtin_va_start(ap, fmt);
+    kformat(putc_snbuf, &s, &written, fmt, ap);
+    __builtin_va_end(ap);
+    if (size > 0) *s.p = 0;
     return written;
 }
 
@@ -750,25 +877,41 @@ void *ksym_resolve(const char *name) {
 
 typedef struct {
     const char  *name;
-    prog_entry_t entry;
+    prog_entry_t entry;      /* ET_REL: called directly as a C function */
+    void        *proc_entry; /* ET_EXEC/ET_DYN: Linux _start, run as a process */
+    int          is_proc;
 } KProg;
 
 static KProg  kprog_table[KPROG_MAX];
 static int    kprog_count;
 
+static KProg *kprog_slot(const char *name) {
+    int i;
+    for (i = 0; i < kprog_count; i++)
+        if (kstrcmp(kprog_table[i].name, name) == 0) return &kprog_table[i];
+    if (kprog_count < KPROG_MAX) return &kprog_table[kprog_count++];
+    return 0;
+}
+
 void k_register_program(const char *name, prog_entry_t entry) {
-    if (kprog_count < KPROG_MAX) {
-        kprog_table[kprog_count].name  = name;
-        kprog_table[kprog_count].entry = entry;
-        kprog_count++;
-    }
+    KProg *p = kprog_slot(name);
+    if (!p) return;
+    p->name = name; p->entry = entry; p->proc_entry = 0; p->is_proc = 0;
+}
+
+void k_register_process(const char *name, void *proc_entry) {
+    KProg *p = kprog_slot(name);
+    if (!p) return;
+    p->name = name; p->entry = 0; p->proc_entry = proc_entry; p->is_proc = 1;
 }
 
 int k_spawn(const char *name, int argc, char **argv) {
     int i;
     for (i = 0; i < kprog_count; i++) {
         if (kstrcmp(kprog_table[i].name, name) == 0) {
-            return kprog_table[i].entry(argc, argv);
+            if (kprog_table[i].is_proc)
+                return k_exec_user(kprog_table[i].proc_entry, argc, argv);
+            return k_run_rel(kprog_table[i].entry, argc, argv);
         }
     }
     return -1;
@@ -834,6 +977,17 @@ typedef struct {
     Elf64_Sxword r_addend;
 } Elf64_Rela;
 
+typedef struct {
+    Elf64_Word  p_type;
+    Elf64_Word  p_flags;
+    Elf64_Off   p_offset;
+    Elf64_Addr  p_vaddr;
+    Elf64_Addr  p_paddr;
+    Elf64_Xword p_filesz;
+    Elf64_Xword p_memsz;
+    Elf64_Xword p_align;
+} Elf64_Phdr;
+
 #define ELF64_R_SYM(i)    ((i) >> 32)
 #define ELF64_R_TYPE(i)   ((i) & 0xffffffff)
 #define SHN_UNDEF         0
@@ -847,18 +1001,25 @@ typedef struct {
 #define SHF_EXECINSTR 4
 
 #define ET_REL      1
+#define ET_EXEC     2
+#define ET_DYN      3
 #define EM_X86_64  62
+#define PT_LOAD     1
 
-#define R_X86_64_64    1
-#define R_X86_64_PC32  2
-#define R_X86_64_32   10
-#define R_X86_64_PLT32 4
+#define R_X86_64_64        1
+#define R_X86_64_PC32      2
+#define R_X86_64_PLT32     4
+#define R_X86_64_GLOB_DAT  6
+#define R_X86_64_JUMP_SLOT 7
+#define R_X86_64_RELATIVE  8
+#define R_X86_64_32       10
+#define R_X86_64_32S      11
+#define R_X86_64_IRELATIVE 37
 
 void *elf_load(void *data, unsigned size) {
     (void)size;
     Elf64_Ehdr *ehdr = (Elf64_Ehdr *)data;
 
-    /* validate */
     if (ehdr->e_ident[0] != 0x7F || ehdr->e_ident[1] != 'E' ||
         ehdr->e_ident[2] != 'L'  || ehdr->e_ident[3] != 'F')
         return 0;
@@ -868,7 +1029,6 @@ void *elf_load(void *data, unsigned size) {
     Elf64_Shdr *shdrs = (Elf64_Shdr *)((char *)data + ehdr->e_shoff);
     Elf64_Half  shnum = ehdr->e_shnum;
 
-    /* Section name string table */
     Elf64_Shdr *shstr = &shdrs[ehdr->e_shstrndx];
     const char *shstrtab = (const char *)data + shstr->sh_offset;
 
@@ -892,12 +1052,10 @@ void *elf_load(void *data, unsigned size) {
     }
     if (!symtab || !strtab) return 0;
 
-    /* Allocate one big region, copy allocatable sections */
     char *base = kmalloc(total_alloc);
     if (!base) return 0;
     kmemset(base, 0, total_alloc);
 
-    /* Track section addresses */
     void **sec_addrs = kmalloc(shnum * sizeof(void *));
     if (!sec_addrs) { kfree(base); return 0; }
     for (i = 0; i < shnum; i++) sec_addrs[i] = 0;
@@ -965,6 +1123,9 @@ void *elf_load(void *data, unsigned size) {
             case R_X86_64_32:
                 *(unsigned int *)P = (unsigned int)S;
                 break;
+            case R_X86_64_32S:
+                *(int *)P = (int)(long)S;
+                break;
             }
         }
     }
@@ -991,6 +1152,400 @@ void *elf_load(void *data, unsigned size) {
 
 
 /* ================================================================
+ *  Linux ELF executable loader (ET_EXEC / ET_DYN) + process runtime
+ *
+ *  Loads program headers into the identity-mapped user region, applies
+ *  RELATIVE / IRELATIVE / symbol relocations, sets up a System V initial
+ *  stack (argc/argv/envp/auxv) and jumps to the ELF entry point.  The
+ *  program talks back to the kernel through the x86-64 `syscall`
+ *  instruction (see the syscall dispatcher below).
+ * ================================================================ */
+
+static unsigned long g_brk;        /* current program break         */
+static unsigned long g_brk_limit;  /* upper bound for brk growth    */
+
+static void apply_exec_relocs(void *data, unsigned long base) {
+    Elf64_Ehdr *e = (Elf64_Ehdr *)data;
+    Elf64_Shdr *sh = (Elf64_Shdr *)((char *)data + e->e_shoff);
+    unsigned i;
+    for (i = 0; i < e->e_shnum; i++) {
+        if (sh[i].sh_type != SHT_RELA) continue;
+        Elf64_Rela *rela = (Elf64_Rela *)((char *)data + sh[i].sh_offset);
+        unsigned n = (unsigned)(sh[i].sh_size / sizeof(Elf64_Rela));
+        Elf64_Sym  *syms = 0;
+        const char *str  = 0;
+        if (sh[i].sh_link && sh[i].sh_link < e->e_shnum) {
+            Elf64_Shdr *ss = &sh[sh[i].sh_link];
+            syms = (Elf64_Sym *)((char *)data + ss->sh_offset);
+            if (ss->sh_link && ss->sh_link < e->e_shnum)
+                str = (const char *)data + sh[ss->sh_link].sh_offset;
+        }
+        unsigned j;
+        for (j = 0; j < n; j++) {
+            unsigned    type = ELF64_R_TYPE(rela[j].r_info);
+            unsigned    si   = ELF64_R_SYM(rela[j].r_info);
+            unsigned long *P = (unsigned long *)(base + rela[j].r_offset);
+            unsigned long S  = 0;
+            if (syms && si) {
+                Elf64_Sym *sym = &syms[si];
+                if (sym->st_shndx != SHN_UNDEF) S = base + sym->st_value;
+                else if (str) {
+                    void *a = ksym_resolve(str + sym->st_name);
+                    if (!a && str[sym->st_name] == '_')
+                        a = ksym_resolve(str + sym->st_name + 1);
+                    S = (unsigned long)a;
+                }
+            }
+            switch (type) {
+            case R_X86_64_RELATIVE:
+                *P = base + (unsigned long)rela[j].r_addend;
+                break;
+            case R_X86_64_IRELATIVE: {
+                unsigned long (*fn)(void) =
+                    (unsigned long (*)(void))(base + (unsigned long)rela[j].r_addend);
+                *P = fn();
+                break;
+            }
+            case R_X86_64_64:
+                *P = S + (unsigned long)rela[j].r_addend;
+                break;
+            case R_X86_64_GLOB_DAT:
+            case R_X86_64_JUMP_SLOT:
+                *P = S;
+                break;
+            }
+        }
+    }
+}
+
+void *load_exec_elf(void *data, unsigned size) {
+    (void)size;
+    Elf64_Ehdr *e = (Elf64_Ehdr *)data;
+    if (e->e_ident[0] != 0x7F || e->e_ident[1] != 'E' ||
+        e->e_ident[2] != 'L'  || e->e_ident[3] != 'F') return 0;
+    if (e->e_machine != EM_X86_64) return 0;
+    if (e->e_type != ET_EXEC && e->e_type != ET_DYN) return 0;
+
+    unsigned long base = (e->e_type == ET_DYN) ? USER_LOAD_BASE : 0;
+
+    Elf64_Phdr *ph = (Elf64_Phdr *)((char *)data + e->e_phoff);
+    unsigned long max_end = 0;
+    unsigned i;
+    for (i = 0; i < e->e_phnum; i++) {
+        if (ph[i].p_type != PT_LOAD) continue;
+        unsigned long dst = base + ph[i].p_vaddr;
+        if (dst < USER_LOAD_BASE || dst + ph[i].p_memsz > USER_LOAD_END)
+            return 0; /* segment outside the user region */
+        kmemcpy((void *)dst, (char *)data + ph[i].p_offset,
+                (unsigned long)ph[i].p_filesz);
+        if (ph[i].p_memsz > ph[i].p_filesz)
+            kmemset((void *)(dst + ph[i].p_filesz), 0,
+                    (unsigned long)(ph[i].p_memsz - ph[i].p_filesz));
+        if (dst + ph[i].p_memsz > max_end) max_end = dst + ph[i].p_memsz;
+    }
+    if (max_end == 0) return 0;
+
+    apply_exec_relocs(data, base);
+
+    g_brk       = ALIGN_UP(max_end, 0x1000);
+    g_brk_limit = USER_LOAD_END;
+    return (void *)(base + e->e_entry);
+}
+
+
+/* ---- MSR access + SYSCALL/SYSRET setup ---------------------------------- */
+
+static inline void wrmsr(unsigned msr, unsigned long val) {
+    unsigned lo = (unsigned)val, hi = (unsigned)(val >> 32);
+    __asm__ volatile("wrmsr" :: "c"(msr), "a"(lo), "d"(hi));
+}
+static inline unsigned long rdmsr(unsigned msr) {
+    unsigned lo, hi;
+    __asm__ volatile("rdmsr" : "=a"(lo), "=d"(hi) : "c"(msr));
+    return ((unsigned long)hi << 32) | lo;
+}
+
+#define MSR_EFER   0xC0000080
+#define MSR_STAR   0xC0000081
+#define MSR_LSTAR  0xC0000082
+#define MSR_SFMASK 0xC0000084
+#define MSR_FSBASE 0xC0000100
+#define MSR_GSBASE 0xC0000101
+
+extern void syscall_entry(void);
+
+void syscall_init(void) {
+    /* SYSCALL loads CS=0x08, SS=0x10 from STAR[47:32]; SYSRET field unused. */
+    wrmsr(MSR_STAR,  ((unsigned long)0x08 << 48) | ((unsigned long)0x08 << 32));
+    wrmsr(MSR_LSTAR, (unsigned long)syscall_entry);
+    wrmsr(MSR_SFMASK, 0x600); /* clear DF and IF on entry */
+    wrmsr(MSR_EFER, rdmsr(MSR_EFER) | 1); /* SCE: enable SYSCALL */
+}
+
+
+/* ---- setjmp/longjmp used to unwind back to the shell on exit() ---------- */
+
+typedef struct { unsigned long v[8]; } kjmpbuf; /* rbx rbp r12-r15 rsp rip */
+int  ksetjmp(void *buf) __attribute__((returns_twice));
+void klongjmp(void *buf, int val) __attribute__((noreturn));
+
+__asm__(
+    ".text\n"
+    ".global ksetjmp\n"
+    "ksetjmp:\n"
+    "  movq %rbx,  0(%rdi)\n"
+    "  movq %rbp,  8(%rdi)\n"
+    "  movq %r12, 16(%rdi)\n"
+    "  movq %r13, 24(%rdi)\n"
+    "  movq %r14, 32(%rdi)\n"
+    "  movq %r15, 40(%rdi)\n"
+    "  leaq 8(%rsp), %rax\n"
+    "  movq %rax, 48(%rdi)\n"
+    "  movq (%rsp), %rax\n"
+    "  movq %rax, 56(%rdi)\n"
+    "  xorl %eax, %eax\n"
+    "  ret\n"
+    ".global klongjmp\n"
+    "klongjmp:\n"
+    "  movq  0(%rdi), %rbx\n"
+    "  movq  8(%rdi), %rbp\n"
+    "  movq 16(%rdi), %r12\n"
+    "  movq 24(%rdi), %r13\n"
+    "  movq 32(%rdi), %r14\n"
+    "  movq 40(%rdi), %r15\n"
+    "  movq 48(%rdi), %rsp\n"
+    "  movl %esi, %eax\n"
+    "  testl %eax, %eax\n"
+    "  jnz 1f\n"
+    "  incl %eax\n"
+    "1:\n"
+    "  jmp *56(%rdi)\n"
+);
+
+static kjmpbuf exec_return;
+static int     exec_exit_code;
+
+
+/* ---- File descriptor table for open/read/write/close -------------------- */
+
+#define KFD_MAX 32
+static KFILE *kfd_table[KFD_MAX];
+
+static int console_getc(void); /* defined in the shell section below */
+
+
+/* ---- Linux x86-64 syscall dispatcher ------------------------------------ */
+
+struct kiovec { const char *iov_base; unsigned long iov_len; };
+
+long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);
+
+long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    switch (n) {
+    case 0: { /* read */
+        char *buf = (char *)a2; long cnt = a3, i = 0;
+        if (a1 == 0) {
+            while (i < cnt) {
+                int c = console_getc();
+                if (c < 0) continue;
+                if (c == '\r') c = '\n';
+                vga_putc((char)c);
+                buf[i++] = (char)c;
+                if (c == '\n') break;
+            }
+            return i;
+        }
+        if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1])
+            return (long)kfread(buf, 1, (unsigned long)cnt, kfd_table[a1]);
+        return -9;
+    }
+    case 1: { /* write */
+        const char *buf = (const char *)a2; long cnt = a3, i;
+        if (a1 == 1 || a1 == 2) { for (i = 0; i < cnt; i++) vga_putc(buf[i]); return cnt; }
+        if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1])
+            return (long)kfwrite(buf, 1, (unsigned long)cnt, kfd_table[a1]);
+        return -9;
+    }
+    case 20: { /* writev */
+        struct kiovec *iov = (struct kiovec *)a2; long cnt = a3, total = 0, k;
+        for (k = 0; k < cnt; k++) {
+            unsigned long j;
+            if (a1 == 1 || a1 == 2)
+                for (j = 0; j < iov[k].iov_len; j++) vga_putc(iov[k].iov_base[j]);
+            total += (long)iov[k].iov_len;
+        }
+        return total;
+    }
+    case 2: case 257: { /* open / openat */
+        const char *path = (const char *)(n == 257 ? a2 : a1);
+        long flags = (n == 257 ? a3 : a2);
+        const char *mode = ((flags & 1) || (flags & 0x40)) ? "w" : "r";
+        int fd;
+        for (fd = 3; fd < KFD_MAX; fd++) if (!kfd_table[fd]) break;
+        if (fd >= KFD_MAX) return -24;
+        KFILE *f = kfopen(path, mode);
+        if (!f) return -2;
+        kfd_table[fd] = f;
+        return fd;
+    }
+    case 3: /* close */
+        if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
+            kfclose(kfd_table[a1]); kfd_table[a1] = 0;
+        }
+        return 0;
+    case 8: /* lseek */
+        if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
+            kfseek(kfd_table[a1], a2, (int)a3);
+            return kftell(kfd_table[a1]);
+        }
+        return -9;
+    case 12: { /* brk */
+        unsigned long addr = (unsigned long)a1;
+        if (addr == 0) return (long)g_brk;
+        if (addr >= USER_LOAD_BASE && addr <= g_brk_limit) g_brk = addr;
+        return (long)g_brk;
+    }
+    case 9: { /* mmap (anonymous only) */
+        unsigned long len = (unsigned long)a2;
+        void *p = kmalloc(len ? len : 1);
+        return p ? (long)p : -12;
+    }
+    case 11: return 0; /* munmap */
+    case 158: /* arch_prctl */
+        if (a1 == 0x1002) { wrmsr(MSR_FSBASE, (unsigned long)a2); return 0; }
+        if (a1 == 0x1001) { wrmsr(MSR_GSBASE, (unsigned long)a2); return 0; }
+        return -22;
+    case 218: return 1;  /* set_tid_address */
+    case 228: /* clock_gettime */
+        if (a2) { unsigned long *ts = (unsigned long *)a2; ts[0] = 0; ts[1] = 0; }
+        return 0;
+    case 16: return 0;   /* ioctl */
+    case 39: return 1;   /* getpid */
+    case 60: case 231:   /* exit / exit_group */
+        exec_exit_code = (int)a1;
+        klongjmp(&exec_return, 1);
+        return 0; /* unreachable */
+    default:
+        return -38; /* ENOSYS */
+    }
+}
+
+
+/* ---- syscall trampoline: marshal Linux ABI regs into the C ABI ---------- */
+
+__asm__(
+    ".text\n"
+    ".global syscall_entry\n"
+    "syscall_entry:\n"
+    "  subq $128, %rsp\n"        /* preserve the interrupted red zone */
+    "  pushq %r9\n"              /* 64(%rsp) a6 */
+    "  pushq %r8\n"              /* 56       a5 */
+    "  pushq %r10\n"             /* 48       a4 */
+    "  pushq %rdx\n"             /* 40       a3 */
+    "  pushq %rsi\n"             /* 32       a2 */
+    "  pushq %rdi\n"             /* 24       a1 */
+    "  pushq %rax\n"             /* 16       n / return value slot */
+    "  pushq %rcx\n"             /*  8       user rip */
+    "  pushq %r11\n"             /*  0       user rflags */
+    "  movq 16(%rsp), %rdi\n"    /* C arg1 = n  */
+    "  movq 24(%rsp), %rsi\n"    /* C arg2 = a1 */
+    "  movq 32(%rsp), %rdx\n"    /* C arg3 = a2 */
+    "  movq 40(%rsp), %rcx\n"    /* C arg4 = a3 */
+    "  movq 48(%rsp), %r8\n"     /* C arg5 = a4 */
+    "  movq 56(%rsp), %r9\n"     /* C arg6 = a5 */
+    "  movq 64(%rsp), %rax\n"
+    "  pushq %rax\n"             /* C arg7 = a6 (stack) */
+    "  call ksyscall\n"
+    "  addq $8, %rsp\n"
+    "  movq %rax, 16(%rsp)\n"    /* stash return value in the n slot */
+    "  popq %r11\n"
+    "  popq %rcx\n"
+    "  popq %rax\n"
+    "  popq %rdi\n"
+    "  popq %rsi\n"
+    "  popq %rdx\n"
+    "  popq %r10\n"
+    "  popq %r8\n"
+    "  popq %r9\n"
+    "  addq $128, %rsp\n"
+    "  jmp *%rcx\n"              /* return to user, staying in ring 0 */
+);
+
+
+/* ---- Build the SysV initial stack and jump to the ELF entry ------------- */
+
+#define USTACK_SIZE (256 * 1024)
+
+static unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
+                                       int argc, char **argv) {
+    char *p = sbase + ssize;
+    char *argp[64];
+    int i;
+    if (argc > 64) argc = 64;
+    for (i = 0; i < argc; i++) {
+        unsigned long l = kstrlen(argv[i]) + 1;
+        p -= l;
+        kmemcpy(p, argv[i], l);
+        argp[i] = p;
+    }
+    p -= 16;                       /* 16 random bytes for AT_RANDOM */
+    char *randp = p;
+    for (i = 0; i < 16; i++) randp[i] = (char)(0x37 + i);
+    p = (char *)((unsigned long)p & ~15UL);
+
+    int nwords = 1 + argc + 1 + 1 + 6; /* argc, argv[], NULL, envp NULL, 3 aux pairs */
+    unsigned long sp = ((unsigned long)p - (unsigned long)nwords * 8) & ~15UL;
+    unsigned long *w = (unsigned long *)sp;
+    int idx = 0;
+    w[idx++] = (unsigned long)argc;
+    for (i = 0; i < argc; i++) w[idx++] = (unsigned long)argp[i];
+    w[idx++] = 0;                       /* argv terminator */
+    w[idx++] = 0;                       /* envp terminator */
+    w[idx++] = 6;  w[idx++] = 4096;                     /* AT_PAGESZ */
+    w[idx++] = 25; w[idx++] = (unsigned long)randp;     /* AT_RANDOM */
+    w[idx++] = 0;  w[idx++] = 0;                        /* AT_NULL   */
+    return w;
+}
+
+int k_exec_user(void *entry, int argc, char **argv) {
+    char *stk = kmalloc(USTACK_SIZE);
+    if (!stk) return -1;
+    unsigned long *sp = setup_user_stack(stk, USTACK_SIZE, argc, argv);
+    exec_exit_code = 0;
+
+    if (ksetjmp(&exec_return) == 0) {
+        __asm__ volatile(
+            "movq %0, %%rsp\n\t"
+            "xorq %%rbp, %%rbp\n\t"
+            "jmpq *%1\n\t"
+            :: "r"(sp), "r"(entry) : "memory");
+        __builtin_unreachable();
+    }
+
+    /* exit() longjmp'd back here */
+    wrmsr(MSR_FSBASE, 0);
+    wrmsr(MSR_GSBASE, 0);
+    kfree(stk);
+    return exec_exit_code;
+}
+
+/* Run an ET_REL program as a plain function call, but catch a libc exit(). */
+int k_run_rel(prog_entry_t entry, int argc, char **argv) {
+    exec_exit_code = 0;
+    if (ksetjmp(&exec_return) == 0)
+        return entry(argc, argv);
+    return exec_exit_code;
+}
+
+/* libc exit() for loaded programs: unwind back to the shell. */
+void kexit(int code) {
+    exec_exit_code = code;
+    klongjmp(&exec_return, 1);
+}
+
+
+/* ================================================================
  *  Shell
  * ================================================================ */
 
@@ -1004,12 +1559,27 @@ static void shell_prompt(void) { vga_puts("\nminiOS> "); }
 
 static void shell_exec_builtin(int argc, char **argv);
 
+/* Blocking read from either the PS/2 keyboard or COM1 serial line. */
+static int console_getc(void) {
+    while (1) {
+        if (serial_available()) {
+            int c = serial_getc();
+            if (c >= 0) return c;
+        }
+        if (kbd_available()) {
+            int c = kbd_read();
+            if (c >= 0) return c;
+        }
+        __asm__ volatile("pause");
+    }
+}
+
 static void shell_readline(void) {
     cmd_pos = 0;
     kmemset(cmd_buf, 0, CMD_BUF_SZ);
 
     while (1) {
-        int c = kbd_read();
+        int c = console_getc();
         if (c < 0) continue;
         if (c == '\n' || c == '\r') {
             vga_putc('\n');
@@ -1061,9 +1631,44 @@ void shell_run(void) {
     }
 }
 
+/* Load an ELF file from the ramdisk and register it under its filename stem.
+ * Returns 1 for an ET_REL program, 2 for an ET_EXEC/ET_DYN Linux process,
+ * 0 on failure.  progname_out must hold at least 32 bytes. */
+static int shell_load(const char *fname, char *progname_out, void **entry_out) {
+    RDFile *f = ramdisk_open(fname);
+    if (!f) return 0;
+    unsigned char *data = kmalloc(f->size);
+    if (!data) return 0;
+    ramdisk_read(f, data, 0, f->size);
+
+    const char *dot = kstrchr(fname, '.');
+    int nl = dot ? (int)(dot - fname) : (int)kstrlen(fname);
+    if (nl > 30) nl = 30;
+    kmemcpy(progname_out, fname, nl);
+    progname_out[nl] = 0;
+
+    int kind = 0;
+    void *entry = 0;
+    if (data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F') {
+        Elf64_Half etype = ((Elf64_Ehdr *)data)->e_type;
+        if (etype == ET_REL) {
+            entry = elf_load(data, f->size);
+            if (entry) { k_register_program(progname_out, (prog_entry_t)entry); kind = 1; }
+        } else if (etype == ET_EXEC || etype == ET_DYN) {
+            entry = load_exec_elf(data, f->size);
+            if (entry) { k_register_process(progname_out, entry); kind = 2; }
+        }
+    }
+    if (entry_out) *entry_out = entry;
+    kfree(data);
+    return kind;
+}
+
 static void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
         vga_puts("Commands: help clear ls cat echo load run\n");
+        vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
+        vga_puts("  run  <name|file>   run a loaded program or ELF from disk\n");
     }
     else if (kstrcmp(argv[0], "clear") == 0) {
         vga_clear();
@@ -1098,32 +1703,31 @@ static void shell_exec_builtin(int argc, char **argv) {
         vga_putc('\n');
     }
     else if (kstrcmp(argv[0], "load") == 0) {
-        if (argc < 2) { vga_puts("usage: load <file.o>\n"); return; }
-        RDFile *f = ramdisk_open(argv[1]);
-        if (!f) { kprintf("load: %s: not found\n", argv[1]); return; }
-        unsigned char *data = kmalloc(f->size);
-        if (!data) { vga_puts("load: out of memory\n"); return; }
-        ramdisk_read(f, data, 0, f->size);
-        void *entry = elf_load(data, f->size);
-        kfree(data);
-        if (!entry) {
-            kprintf("load: %s: ELF load failed\n", argv[1]);
-            return;
-        }
-        /* Register with filename stem as program name */
-        char *name = argv[1];
-        char *dot = kstrchr(name, '.');
+        if (argc < 2) { vga_puts("usage: load <file>\n"); return; }
         char progname[32];
-        int nl = dot ? (int)(dot - name) : (int)kstrlen(name);
-        if (nl > 30) nl = 30;
-        kmemcpy(progname, name, nl);
-        progname[nl] = 0;
-        k_register_program(progname, (prog_entry_t)entry);
-        kprintf("Loaded '%s' at %p\n", progname, entry);
+        void *entry = 0;
+        int kind = shell_load(argv[1], progname, &entry);
+        if (kind == 0) { kprintf("load: %s: not an ELF or load failed\n", argv[1]); return; }
+        if (kind == 1) kprintf("Loaded relocatable '%s' at %p\n", progname, entry);
+        else           kprintf("Loaded Linux ELF '%s' entry %p  (run %s)\n",
+                               progname, entry, progname);
     }
     else if (kstrcmp(argv[0], "run") == 0) {
-        if (argc < 2) { vga_puts("usage: run <program> [args...]\n"); return; }
-        int ret = k_spawn(argv[1], argc - 1, argv + 1);
+        if (argc < 2) { vga_puts("usage: run <program|file> [args...]\n"); return; }
+        int i, found = 0;
+        for (i = 0; i < kprog_count; i++)
+            if (kstrcmp(kprog_table[i].name, argv[1]) == 0) { found = 1; break; }
+        const char *target = argv[1];
+        char progname[32];
+        if (!found) {
+            void *entry = 0;
+            if (!shell_load(argv[1], progname, &entry)) {
+                kprintf("run: %s: not found\n", argv[1]);
+                return;
+            }
+            target = progname;
+        }
+        int ret = k_spawn(target, argc - 1, argv + 1);
         kprintf("exit code: %d\n", ret);
     }
     else {
@@ -1175,7 +1779,7 @@ static void register_libc_symbols(void) {
     k_register_symbol("fgetc",    (void *)kfgetc);
     k_register_symbol("ungetc",   (void *)kfungetc);
     k_register_symbol("fflush",   (void *)kfflush);
-    k_register_symbol("rewind",   (void *)0); /* stub */
+    k_register_symbol("rewind",   (void *)krewind);
     k_register_symbol("fprintf",  (void *)kfprintf);
 
     /* Output */
@@ -1184,20 +1788,21 @@ static void register_libc_symbols(void) {
     k_register_symbol("putchar",  (void *)vga_putc);
     k_register_symbol("puts",     (void *)vga_puts);
 
-    /* Stdio */
-    k_register_symbol("stdin",    (void *)kfile_stdin);
-    k_register_symbol("stdout",   (void *)kfile_stdout);
-    k_register_symbol("stderr",   (void *)kfile_stderr);
+    /* Stdio streams are FILE* *variables*: register the address of each. */
+    k_register_symbol("stdin",    (void *)&kstdin);
+    k_register_symbol("stdout",   (void *)&kstdout);
+    k_register_symbol("stderr",   (void *)&kstderr);
 
     /* Exit */
-    k_register_symbol("exit",     (void *)0); /* stub */
+    k_register_symbol("exit",     (void *)kexit);
 
     /* Additional libc */
+    k_register_symbol("snprintf", (void *)ksnprintf);
     k_register_symbol("perror",   (void *)0);
     k_register_symbol("atol",     (void *)katol);
     k_register_symbol("strtol",   (void *)katol);
     k_register_symbol("qsort",    (void *)0);
-    k_register_symbol("abort",    (void *)0);
+    k_register_symbol("abort",    (void *)kexit);
 
     /* Syscalls */
     k_register_symbol("write",    (void *)0);
@@ -1248,23 +1853,33 @@ void kmain(void) {
         ::: "ax"
     );
 
+    /* Enable SSE so loaded programs (and Linux binaries) may use XMM/SSE2.
+     * CR0: clear EM (bit 2), set MP (bit 1); CR4: set OSFXSR|OSXMMEXCPT. */
+    __asm__ volatile(
+        "mov %%cr0, %%rax\n"
+        "and $0xFFFFFFFFFFFFFFFB, %%rax\n"
+        "or  $0x2, %%rax\n"
+        "mov %%rax, %%cr0\n"
+        "mov %%cr4, %%rax\n"
+        "or  $0x600, %%rax\n"
+        "mov %%rax, %%cr4\n"
+        ::: "rax"
+    );
+
+    serial_init();
     vga_clear();
-    vga_puts("MiniOS Kernel v0.2 — 64-bit Long Mode\n");
-    vga_puts("=====================================\n");
+    vga_puts("MiniOS Kernel v0.3\n====================\n");
 
     kallocator_init();
     ramdisk_init();
     register_libc_symbols();
+    syscall_init();
 
     if ((unsigned long)(ramdisk_end - ramdisk_start) > 0) {
         ramdisk_setup_from(ramdisk_start, (unsigned)(ramdisk_end - ramdisk_start));
-        kprintf("Ramdisk: %u files, %lu bytes\n",
-                rd ? rd->count : 0,
-                (unsigned long)(ramdisk_end - ramdisk_start));
     }
 
-    kprintf("Heap: %d MB available\n", 16);
-    kprintf("%d symbols registered\n", ksym_count);
+    kprintf("Heap: 64 MB  Symbols: %d  (Linux ELF: syscall ABI ready)\n", ksym_count);
 
     shell_run();
 }

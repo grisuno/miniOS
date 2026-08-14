@@ -2,12 +2,13 @@ CC       = gcc
 LD       = ld
 OBJCOPY  = objcopy
 
-CFLAGS_BOOT = -m16 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -O1
+CFLAGS_BOOT = -m16 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
               -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector
 
 PROGS_DIR = progs
-PROGS     = $(PROGS_DIR)/hello.o $(PROGS_DIR)/minigcc.o $(PROGS_DIR)/cvm.o \
+PROGS     = $(PROGS_DIR)/hello.o $(PROGS_DIR)/ftest.o $(PROGS_DIR)/minigcc.o \
+            $(PROGS_DIR)/cvm.o $(PROGS_DIR)/lxhello.elf \
             $(PROGS_DIR)/test.c $(PROGS_DIR)/README.txt
 
 all: os.img
@@ -15,6 +16,13 @@ all: os.img
 # ── Programs (.o files) ──────────────────────────────────────────
 $(PROGS_DIR)/hello.o: $(PROGS_DIR)/hello.c
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
+
+$(PROGS_DIR)/ftest.o: $(PROGS_DIR)/ftest.c
+	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
+
+# ── Real Linux ELF executable (ET_EXEC, static, no libc) ─────────
+$(PROGS_DIR)/lxhello.elf: $(PROGS_DIR)/lxhello.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
 
 $(PROGS_DIR)/minigcc.o: /home/grisun0/src_note/c/miniGCC/minigcc.c
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
@@ -66,14 +74,17 @@ os.img: bootloader.bin kernel.bin
 	@ls -lh $@
 
 run: os.img
-	qemu-system-x86_64 -drive format=raw,file=os.img
+	qemu-system-x86_64 -fda os.img -m 256M
 
 debug: os.img
-	qemu-system-x86_64 -drive format=raw,file=os.img -monitor stdio -no-reboot
+	qemu-system-x86_64 -fda os.img -m 256M -monitor stdio -no-reboot
+
+serial: os.img
+	qemu-system-x86_64 -fda os.img -m 256M -display none -serial stdio
 
 clean:
 	rm -f *.o *.elf *.bin *.img ramdisk_data.c ramdisk.bin
-	rm -f $(PROGS_DIR)/*.o
+	rm -f $(PROGS_DIR)/*.o $(PROGS_DIR)/lxhello.elf
 
-.PHONY: all run clean debug
+.PHONY: all run clean debug serial
 

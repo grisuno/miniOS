@@ -13,6 +13,13 @@ void vga_scroll(void);
 void vga_set_cursor(int x, int y);
 void vga_newline(void);
 
+/* ========== Serial console (COM1) ========== */
+void serial_init(void);
+void serial_putc(char c);
+void serial_puts(const char *s);
+int  serial_available(void);
+int  serial_getc(void);
+
 /* ========== Keyboard (PS/2) ========== */
 #define KEY_BACKSPACE 0x0E
 #define KEY_ENTER     0x1C
@@ -57,7 +64,8 @@ typedef struct {
     char    *wbuf;    /* write buffer for created files */
     unsigned wsize;
     unsigned wcap;
-    int      mode;    /* 0=read, 1=write */
+    int      mode;       /* 0=read, 1=write */
+    int      is_console; /* 1 = stdin/stdout/stderr, routed to the console */
 } KFILE;
 
 KFILE *kfopen(const char *path, const char *mode);
@@ -71,6 +79,7 @@ long   kftell(KFILE *f);
 int    kfputs(const char *s, KFILE *f);
 int    kfputc(int c, KFILE *f);
 int    kfflush(KFILE *f);
+void   krewind(KFILE *f);
 
 /* ========== String functions ========== */
 unsigned long kstrlen(const char *s);
@@ -89,6 +98,7 @@ void *kmemmove(void *dst, const void *src, unsigned long n);
 int kprintf(const char *fmt, ...);
 int kfprintf(KFILE *f, const char *fmt, ...);
 int ksprintf(char *buf, const char *fmt, ...);
+int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);
 
 /* ========== Shell ========== */
 void shell_init(void);
@@ -98,10 +108,20 @@ void shell_run(void);
 typedef int (*prog_entry_t)(int argc, char **argv);
 int  k_spawn(const char *name, int argc, char **argv);
 void k_register_program(const char *name, prog_entry_t entry);
+void k_register_process(const char *name, void *proc_entry);
 void k_register_symbol(const char *name, void *addr);
 
+/* ========== Process execution (Linux ELF binaries) ========== */
+int  k_exec_user(void *entry, int argc, char **argv);
+int  k_run_rel(prog_entry_t entry, int argc, char **argv);
+void kexit(int code);
+
 /* ========== ELF loader ========== */
-void *elf_load(void *data, unsigned size);
+void *elf_load(void *data, unsigned size);       /* ET_REL relocatable .o */
+void *load_exec_elf(void *data, unsigned size);  /* ET_EXEC / ET_DYN */
+
+/* ========== Linux syscall interface ========== */
+void syscall_init(void);
 
 /* ========== Syscall table ========== */
 void *ksym_resolve(const char *name);
