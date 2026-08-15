@@ -1,5 +1,29 @@
 MiniOS - minimal 64-bit kernel for x86_64
-Commands: help clear ls cat echo load run
+
+Commands: help clear ls cat echo edit load run poweroff
+Redirection: <cmd> > <file>   stores the command's output in a ramdisk file
+
+Writing a program without leaving the machine:
+
+  edit p.c                        write the source
+  run minigcc.o p.c > p.s         compile to x86-64 AT&T assembly
+  run ld.o -f elf -o p.elf p.s    assemble and link a Linux ELF
+  run p.elf                       execute it
+
+Use -f cvm instead of -f elf to build a CVM module, executed by the cvm2
+interpreter in cvm.o:
+
+  run ld.o -f cvm -o p.cvm p.s
+  run p.cvm
+
+Editor commands:
+  h help          l list           p N print line N
+  a append        i N insert       e N replace line N
+  d N delete      w save           x save and quit
+  q quit (refuses to discard changes)     q! quit discarding changes
+
+A file too large for the buffer is loaded read-only: the editor refuses to
+write it back rather than dropping the part it never read.
 
 Program loading:
   load <file>       Load an ELF from the ramdisk.
@@ -7,6 +31,11 @@ Program loading:
                     ELF executable = real Linux ET_EXEC/ET_DYN binary.
   run <name|file>   Run a loaded program, or auto-load+run a ramdisk file.
 
-Linux ELF binaries run at ring 0 and talk to the kernel through the
-x86-64 `syscall` instruction (write/read/open/close/brk/mmap/exit/...).
+CVM modules (.cvm files, built by the 'ld' assembler from miniGCC output):
+  run fib.cvm       Runs the module on the C virtual machine (cvm.o).
+  run w1.cvm        Prints a string through the CVM write native.
+
+Linux ELF binaries run at ring 0 and talk to the kernel through the x86-64
+syscall instruction (write/read/open/close/brk/mmap/exit/...). A static
+binary built on a Linux host runs by copying it onto the ramdisk.
 See lxhello.c for a self-contained -static -nostdlib example.
