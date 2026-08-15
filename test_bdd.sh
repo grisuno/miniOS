@@ -187,6 +187,12 @@ run q.cvm
 poweroff"
 expect "exit code: 21"
 
+scenario "self-hosted minigcc (compiled by minigcc, linked by ld) compiles inside the OS" "run minigcc.elf test.c > t.s
+run ld.o -f elf -o t.elf t.s
+run t.elf
+poweroff"
+expect "exit code: 12"
+
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="
 [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"

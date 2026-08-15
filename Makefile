@@ -55,7 +55,8 @@ PROGS_DIR = progs
 PROGS     = $(PROGS_DIR)/hello.o $(PROGS_DIR)/ftest.o $(PROGS_DIR)/minigcc.o \
             $(PROGS_DIR)/ld.o $(PROGS_DIR)/cvm.o $(PROGS_DIR)/lxhello.elf \
             $(PROGS_DIR)/ldhello.elf $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf \
-            $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm $(PROGS_DIR)/minigcc.cvm \
+            $(PROGS_DIR)/minigcc.elf $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm \
+            $(PROGS_DIR)/minigcc.cvm \
             $(PROGS_DIR)/test.c $(PROGS_DIR)/fib.c $(PROGS_DIR)/README.txt
 
 all: os.img
@@ -169,8 +170,34 @@ $(PROGS_DIR)/fib.cvm: $(PROGS_DIR)/fib.s $(LD_TOOL)
 $(PROGS_DIR)/w1.cvm: $(PROGS_DIR)/w1.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
-$(PROGS_DIR)/minigcc.cvm: $(MINIGCC_DIR)/minigccg2.s $(LD_TOOL)
+$(PROGS_DIR)/minigcc.cvm: $(TOOLS_DIR)/g2.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
+
+# ── Self-hosted compiler (compiled by minigcc, linked by 'ld') ────
+# Generation 2: gen1 minigcc compiles its own source; 'ld' links it.
+# Generation 3: the ld-linked compiler compiles itself again; the gen3
+# binary is what ships on the ramdisk. `make selfhost` additionally
+# verifies that gen3 reaches the fixed point: its own output of its own
+# source is bit-identical to gen3's assembly.
+$(TOOLS_DIR)/g2.s: $(MINIGCC_DIR)/minigcc.c $(MINIGCC_BIN)
+	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
+
+$(TOOLS_DIR)/g2.elf: $(TOOLS_DIR)/g2.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+	chmod +x $@
+
+$(TOOLS_DIR)/g3.s: $(TOOLS_DIR)/g2.elf $(MINIGCC_DIR)/minigcc.c
+	./$(TOOLS_DIR)/g2.elf $(MINIGCC_DIR)/minigcc.c > $@.tmp && mv $@.tmp $@
+
+$(PROGS_DIR)/minigcc.elf: $(TOOLS_DIR)/g3.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+	chmod +x $@
+
+selfhost: $(PROGS_DIR)/minigcc.elf
+	./$(PROGS_DIR)/minigcc.elf $(MINIGCC_DIR)/minigcc.c > $(TOOLS_DIR)/g4.s
+	@cmp -s $(TOOLS_DIR)/g3.s $(TOOLS_DIR)/g4.s \
+	    && echo "selfhost OK: g3.s == g4.s (fixed point)" \
+	    || { echo "selfhost FAIL: fixed point not reached"; exit 1; }
 
 # ── Ramdisk image ─────────────────────────────────────────────────
 # The Makefile is a prerequisite because it carries the file list: editing
@@ -246,11 +273,11 @@ clean:
 	rm -rf $(TOOLS_DIR)
 	rm -f *.o *.elf *.bin *.img ramdisk_data.c ramdisk.bin
 	rm -f $(PROGS_DIR)/*.o $(PROGS_DIR)/lxhello.elf $(PROGS_DIR)/ldhello.elf \
-	      $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf \
+	      $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf $(PROGS_DIR)/minigcc.elf \
 	      $(PROGS_DIR)/ldhello.s $(PROGS_DIR)/w1.s $(PROGS_DIR)/fib.s \
 	      $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm $(PROGS_DIR)/minigcc.cvm
 
 .SECONDARY:
 
 .PHONY: all run clean debug serial test sources sources-update \
-        sources-status toolchain
+        sources-status toolchain selfhost

@@ -63,6 +63,12 @@ programs (`ldhello`, `w1`, `fib`) are compiled from this repository's own C
 sources in `progs/` through the full miniGCC-to-ld chain. Nothing in the
 image is a binary you have to take on trust.
 
+The compiler on the ramdisk is self-hosted: `minigcc.elf` was compiled by
+minigcc itself (generation 3) and linked by `ld` (no GNU as/ld anywhere after
+generation 1), and `make selfhost` verifies the bootstrap fixed point on the
+host. Inside the OS the self-hosted compiler drives the same edit/compile/
+link/run loop as `minigcc.o`.
+
 ## Build and run
 
 ```bash
@@ -70,6 +76,7 @@ make            # builds os.img
 make run        # boots it in QEMU with a display
 make serial     # boots it headless on the serial console
 make test       # behavioural suite (QEMU + serial console)
+make selfhost   # compile minigcc with minigcc, link with ld, check fixed point
 ```
 
 The image is attached as an IDE disk. The boot path uses INT 13h extended
@@ -146,6 +153,7 @@ MiniOS runs three kinds of program:
 | `sources-update` | pull the latest commit of each one |
 | `sources-status` | show the revision each checkout is on |
 | `toolchain` | build `minigcc`, `ld` and `cvm2` from those sources |
+| `selfhost` | compile minigcc with minigcc, link with `ld`, verify the bootstrap fixed point |
 | `run` / `serial` / `debug` | boot the image in QEMU |
 | `test` | behavioural suite |
 | `clean` | remove every build product |
