@@ -115,7 +115,35 @@ static void vga_raw_space(void) {
     if (vga_x >= VGA_COLS) vga_newline();
 }
 
+/* Console output capture used by shell redirection. While a capture is
+ * active every character produced through vga_putc is accumulated in memory
+ * instead of reaching the screen, and the shell commits the result to a
+ * ramdisk file once the command returns. */
+#define REDIR_INITIAL_CAP (16UL * 1024)
+#define REDIR_MAX_BYTES   (16UL * 1024 * 1024)
+
+static char         *redir_buf;
+static unsigned long  redir_len;
+static unsigned long  redir_cap;
+static int            redir_active;
+static int            redir_overflow;
+
+static int redir_grow(void) {
+    unsigned long want = redir_cap ? redir_cap * 2 : REDIR_INITIAL_CAP;
+    if (want > REDIR_MAX_BYTES) return 0;
+    char *grown = krealloc(redir_buf, want);
+    if (!grown) return 0;
+    redir_buf = grown;
+    redir_cap = want;
+    return 1;
+}
+
 void vga_putc(char c) {
+    if (redir_active) {
+        if (redir_len < redir_cap || redir_grow()) redir_buf[redir_len++] = c;
+        else redir_overflow = 1;
+        return;
+    }
     serial_putc(c);
     if (c == '\n') { vga_newline(); vga_set_cursor(vga_x, vga_y); return; }
     if (c == '\r') { vga_x = 0; vga_set_cursor(vga_x, vga_y); return; }
@@ -319,6 +347,14 @@ char *kstrncpy(char *dst, const char *src, unsigned long n) {
     return dst;
 }
 
+char *kstrncat(char *dst, const char *src, unsigned long n) {
+    char *d = dst;
+    while (*d) d++;
+    while (n-- && *src) *d++ = *src++;
+    *d = 0;
+    return dst;
+}
+
 int kstrcmp(const char *a, const char *b) {
     while (*a && *a == *b) { a++; b++; }
     return (unsigned char)*a - (unsigned char)*b;
@@ -386,8 +422,12 @@ static long katol(const char *s) {
  *  Ramdisk file system
  * ================================================================ */
 
-#define RD_MAGIC     0x4B534452 /* "RDSK" */
-#define RD_DATA_SIZE (512UL * 1024) /* 512 KB data area */
+#define RD_MAGIC       0x4B534452
+#define RD_HEADER_SIZE 8
+#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)
+#define RD_DATA_MIN    (512UL * 1024)
+#define RD_DATA_SPARE  (1024UL * 1024)
+#define RD_DATA_MAX    (64UL * 1024 * 1024)
 
 typedef struct {
     unsigned magic;
@@ -398,56 +438,92 @@ typedef struct {
 static RDSuper *rd;
 static char    *rd_data;
 static unsigned rd_used;
+static unsigned rd_cap;
 
+/* Reserve a data area of `want` bytes, clamped to the configured maximum.
+ * An existing area is kept when it is already large enough, otherwise the
+ * live contents are carried over to the new one. Returns 1 on success. */
+static int ramdisk_reserve(unsigned long want) {
+    if (want > RD_DATA_MAX) return 0;
+    if (want < RD_DATA_MIN) want = RD_DATA_MIN;
+    if (rd_data && rd_cap >= want) return 1;
+    char *area = kmalloc(want);
+    if (!area) return 0;
+    kmemset(area, 0, want);
+    if (rd_data && rd_used > 0) kmemcpy(area, rd_data, rd_used);
+    if (rd_data) kfree(rd_data);
+    rd_data = area;
+    rd_cap  = (unsigned)want;
+    return 1;
+}
+
+/* Populate the ramdisk from a packed image. The image is validated in full
+ * before any entry is published, so a rejected image leaves the directory
+ * untouched instead of advertising files whose data was never copied. */
 void ramdisk_setup_from(void *data, unsigned size) {
-    (void)size;
     char *raw = (char *)data;
-    unsigned magic = *(unsigned *)raw;
-    if (magic != RD_MAGIC) return;
+    unsigned i;
+
+    if (!raw || size < RD_HEADER_SIZE) return;
+    if (*(unsigned *)raw != RD_MAGIC) return;
 
     unsigned count = *(unsigned *)(raw + 4);
     if (count > RAMDISK_MAX_FILES) return;
 
-    if (!rd) ramdisk_init();
-    if (!rd || !rd_data) return;
+    unsigned long table_bytes = (unsigned long)count * RD_ENTRY_SIZE;
+    if (table_bytes > (unsigned long)size - RD_HEADER_SIZE) return;
 
-    char *entry_start = raw + 8;
-    char *data_start  = entry_start + count * sizeof(RDFile);
+    char *entry_start = raw + RD_HEADER_SIZE;
+    char *data_start  = entry_start + table_bytes;
+    unsigned long payload = (unsigned long)size - RD_HEADER_SIZE - table_bytes;
 
-    /* Compute total data size and copy entries */
-    unsigned total = 0;
-    unsigned i;
+    unsigned long total = 0;
     for (i = 0; i < count; i++) {
-        char *esrc = entry_start + i * sizeof(RDFile);
-        unsigned fsize  = *(unsigned *)(esrc + RAMDISK_FNAME_LEN);
+        char *esrc = entry_start + (unsigned long)i * RD_ENTRY_SIZE;
+        unsigned fsize = *(unsigned *)(esrc + RAMDISK_FNAME_LEN);
+        unsigned forig = *(unsigned *)(esrc + RAMDISK_FNAME_LEN + 4);
+        if (forig > payload || fsize > payload - forig) return;
+        if (total > RD_DATA_MAX - fsize) return;
+        total += fsize;
+    }
+
+    if (!rd) ramdisk_init();
+    if (!rd) return;
+    if (!ramdisk_reserve(total + RD_DATA_SPARE)) {
+        kprintf("ramdisk: image needs %u bytes, capacity unavailable\n",
+                (unsigned)total);
+        return;
+    }
+
+    unsigned offset = 0;
+    for (i = 0; i < count; i++) {
+        char *esrc = entry_start + (unsigned long)i * RD_ENTRY_SIZE;
+        unsigned fsize = *(unsigned *)(esrc + RAMDISK_FNAME_LEN);
+        unsigned forig = *(unsigned *)(esrc + RAMDISK_FNAME_LEN + 4);
         RDFile *f = &rd->files[i];
         kmemcpy(f->name, esrc, RAMDISK_FNAME_LEN);
         f->name[RAMDISK_FNAME_LEN - 1] = 0;
         f->size   = fsize;
-        f->offset = total;
-        total    += fsize;
-        rd_used   = total;
+        f->offset = offset;
+        if (fsize) kmemcpy(rd_data + offset, data_start + forig, fsize);
+        offset += fsize;
     }
     rd->count = count;
-
-    /* Ensure rd_data can hold the total data */
-    if (total > RD_DATA_SIZE) return;
-
-    /* Copy file data from embedded binary to rd_data */
-    for (i = 0; i < count; i++) {
-        char *esrc = entry_start + i * sizeof(RDFile);
-        unsigned forig  = *(unsigned *)(esrc + RAMDISK_FNAME_LEN + 4);
-        RDFile *f = &rd->files[i];
-        kmemcpy(rd_data + f->offset, data_start + forig, f->size);
-    }
+    rd_used   = offset;
 }
 
 void ramdisk_init(void) {
     if (!rd) {
-        rd      = kcalloc(1, sizeof(RDSuper));
-        rd_data = kmalloc(RD_DATA_SIZE);
+        rd = kcalloc(1, sizeof(RDSuper));
+        if (!rd) return;
         rd_used = 0;
-        if (!rd || !rd_data) return;
+        rd_cap  = 0;
+        rd_data = 0;
+        if (!ramdisk_reserve(RD_DATA_MIN)) {
+            kfree(rd);
+            rd = 0;
+            return;
+        }
         rd->magic = RD_MAGIC;
         rd->count = 0;
     }
@@ -480,8 +556,9 @@ int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len) {
 }
 
 RDFile *ramdisk_create(const char *name, unsigned size) {
-    if (!rd || rd->count >= RAMDISK_MAX_FILES) return 0;
-    if (rd_used + size > RD_DATA_SIZE) return 0;
+    if (!rd || !name || rd->count >= RAMDISK_MAX_FILES) return 0;
+    if (size > RD_DATA_MAX - rd_used) return 0;
+    if (!ramdisk_reserve((unsigned long)rd_used + size)) return 0;
     RDFile *f = &rd->files[rd->count];
     kstrncpy(f->name, name, RAMDISK_FNAME_LEN - 1);
     f->name[RAMDISK_FNAME_LEN - 1] = 0;
@@ -490,6 +567,46 @@ RDFile *ramdisk_create(const char *name, unsigned size) {
     rd_used  += size;
     rd->count++;
     return f;
+}
+
+/* Grow or shrink an existing file by relocating the data that follows it.
+ * Files are stored back to back in the data area; this moves every file
+ * after `f` by the size delta. Returns 1 on success, 0 on overflow. */
+int ramdisk_resize(RDFile *f, unsigned newsize) {
+    unsigned i;
+    if (!rd || !f || !rd_data) return 0;
+    if (newsize == f->size) return 1;
+
+    unsigned old_end = f->offset + f->size;
+    unsigned new_end = f->offset + newsize;
+    unsigned delta;
+    unsigned move_len;
+
+    if (newsize > f->size) {
+        delta = newsize - f->size;
+        if (delta > RD_DATA_MAX - rd_used) return 0;
+        if (!ramdisk_reserve((unsigned long)rd_used + delta)) return 0;
+        move_len = rd_used - old_end;
+        for (i = 0; i < rd->count; i++)
+            if (&rd->files[i] != f && rd->files[i].offset >= old_end)
+                rd->files[i].offset += delta;
+        kmemmove(rd_data + new_end, rd_data + old_end, move_len);
+        kmemset(rd_data + old_end, 0, delta);
+        f->size  = newsize;
+        rd_used += delta;
+        return 1;
+    }
+
+    delta    = f->size - newsize;
+    move_len = rd_used - old_end;
+    kmemmove(rd_data + new_end, rd_data + old_end, move_len);
+    kmemset(rd_data + rd_used - delta, 0, delta);
+    for (i = 0; i < rd->count; i++)
+        if (&rd->files[i] != f && rd->files[i].offset >= old_end)
+            rd->files[i].offset -= delta;
+    f->size  = newsize;
+    rd_used -= delta;
+    return 1;
 }
 
 int ramdisk_list(RDFile **out, int max) {
@@ -518,19 +635,22 @@ KFILE *kfopen(const char *path, const char *mode) {
     f->pos  = 0;
     f->mode = (mode[0] == 'w') ? 1 : 0;
     if (f->mode) {
+        if (f->rf->size && !ramdisk_resize(f->rf, 0)) { kfree(f); return 0; }
         f->wbuf = kmalloc(4096);
         f->wcap = 4096;
         f->wsize = 0;
+        if (!f->wbuf) { kfree(f); return 0; }
     }
     return f;
 }
 
 int kfclose(KFILE *f) {
+    int rc = 0;
     if (!f) return 0;
-    if (f->mode == 1) kfflush(f);
+    if (f->mode == 1) rc = kfflush(f);
     if (f->wbuf) kfree(f->wbuf);
     kfree(f);
-    return 0;
+    return rc;
 }
 
 int kfgetc(KFILE *f) {
@@ -545,6 +665,22 @@ int kfgetc(KFILE *f) {
     ramdisk_read(f->rf, &c, f->pos, 1);
     f->pos++;
     return (unsigned char)c;
+}
+
+/* Read at most size-1 bytes up to and including the first newline. Returns
+ * buf, or 0 when nothing could be read. */
+char *kfgets(char *buf, int size, KFILE *f) {
+    int i = 0;
+    if (!buf || size <= 0 || !f) return 0;
+    while (i < size - 1) {
+        int c = kfgetc(f);
+        if (c == EOF) break;
+        buf[i++] = (char)c;
+        if (c == '\n') break;
+    }
+    if (i == 0) return 0;
+    buf[i] = 0;
+    return buf;
 }
 
 int kfungetc(int c, KFILE *f) {
@@ -577,14 +713,18 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
     }
     if (f->mode != 1) return 0;
     unsigned long bytes = size * n;
+    if (bytes > RD_DATA_MAX || f->wsize > RD_DATA_MAX - bytes) return 0;
     if (!f->wbuf) {
         f->wbuf = kmalloc(4096);
         f->wcap = 4096;
         f->wsize = 0;
+        if (!f->wbuf) return 0;
     }
     while (f->wsize + bytes > f->wcap) {
+        if (f->wcap > RD_DATA_MAX / 2) return 0;
         f->wcap *= 2;
         f->wbuf = krealloc(f->wbuf, f->wcap);
+        if (!f->wbuf) return 0;
     }
     kmemcpy(f->wbuf + f->wsize, ptr, bytes);
     f->wsize += bytes;
@@ -612,7 +752,7 @@ long kftell(KFILE *f) {
 int kfflush(KFILE *f) {
     if (!f || !f->rf || f->mode != 1) return 0;
     if (f->wbuf && f->wsize > 0) {
-        f->rf->size = f->wsize;
+        if (!ramdisk_resize(f->rf, f->wsize)) return -1;
         ramdisk_write(f->rf, f->wbuf, 0, f->wsize);
         f->wsize = 0;
     }
@@ -1016,6 +1156,14 @@ typedef struct {
 #define R_X86_64_32S      11
 #define R_X86_64_IRELATIVE 37
 
+/* Release a partially built relocatable image and report why it was
+ * rejected. Used on every failure path of elf_load. */
+static void elf_load_fail(void *base, void **sec_addrs, const char *why) {
+    if (why) kprintf("load: %s\n", why);
+    if (sec_addrs) kfree(sec_addrs);
+    if (base) kfree(base);
+}
+
 void *elf_load(void *data, unsigned size) {
     (void)size;
     Elf64_Ehdr *ehdr = (Elf64_Ehdr *)data;
@@ -1050,10 +1198,16 @@ void *elf_load(void *data, unsigned size) {
         if (shdrs[i].sh_flags & SHF_ALLOC)
             total_alloc += (unsigned)shdrs[i].sh_size + 16;
     }
-    if (!symtab || !strtab) return 0;
+    if (!symtab || !strtab) {
+        kprintf("load: object has no symbol table\n");
+        return 0;
+    }
 
     char *base = kmalloc(total_alloc);
-    if (!base) return 0;
+    if (!base) {
+        kprintf("load: cannot allocate %u bytes for the image\n", total_alloc);
+        return 0;
+    }
     kmemset(base, 0, total_alloc);
 
     void **sec_addrs = kmalloc(shnum * sizeof(void *));
@@ -1071,17 +1225,23 @@ void *elf_load(void *data, unsigned size) {
         off = (off + 15) & ~15U;
     }
 
-    /* Apply relocations */
+    /* Apply relocations. Every relocation is bounds checked against the
+     * section it patches, and an unresolved symbol or an unsupported
+     * relocation type aborts the load: leaving a relocation unapplied would
+     * hand the program a wild call target. */
     for (i = 0; i < shnum; i++) {
         if (shdrs[i].sh_type != SHT_RELA) continue;
 
-        /* The section being relocated */
         unsigned target_sec = shdrs[i].sh_info;
+        if (target_sec >= shnum) continue;
         char *target_base = (char *)sec_addrs[target_sec];
         if (!target_base) continue;
+        Elf64_Xword target_size = shdrs[target_sec].sh_size;
 
-        /* The symbol table for this rela section */
-        Elf64_Sym *rela_symtab = (Elf64_Sym *)((char *)data + shdrs[shdrs[i].sh_link].sh_offset);
+        unsigned symsec = shdrs[i].sh_link;
+        if (symsec >= shnum) { elf_load_fail(base, sec_addrs, "bad symtab link"); return 0; }
+        Elf64_Sym *rela_symtab = (Elf64_Sym *)((char *)data + shdrs[symsec].sh_offset);
+        unsigned   rela_symcount = (unsigned)(shdrs[symsec].sh_size / sizeof(Elf64_Sym));
 
         Elf64_Rela *relas = (Elf64_Rela *)((char *)data + shdrs[i].sh_offset);
         unsigned    rcount = (unsigned)(shdrs[i].sh_size / sizeof(Elf64_Rela));
@@ -1090,20 +1250,42 @@ void *elf_load(void *data, unsigned size) {
             Elf64_Word   sym_idx = ELF64_R_SYM(relas[j].r_info);
             unsigned     rtype   = ELF64_R_TYPE(relas[j].r_info);
             Elf64_Addr   S = 0;
-            Elf64_Sym   *sym = &rela_symtab[sym_idx];
+            unsigned     width;
+
+            if (sym_idx >= rela_symcount) {
+                elf_load_fail(base, sec_addrs, "relocation symbol out of range");
+                return 0;
+            }
+            Elf64_Sym *sym = &rela_symtab[sym_idx];
+
+            switch (rtype) {
+            case R_X86_64_64:   width = 8; break;
+            case R_X86_64_PC32:
+            case R_X86_64_PLT32:
+            case R_X86_64_32:
+            case R_X86_64_32S:  width = 4; break;
+            default:
+                kprintf("load: unsupported relocation type %u\n", rtype);
+                elf_load_fail(base, sec_addrs, 0);
+                return 0;
+            }
+            if (relas[j].r_offset > target_size ||
+                width > target_size - relas[j].r_offset) {
+                elf_load_fail(base, sec_addrs, "relocation outside section");
+                return 0;
+            }
 
             if (sym->st_shndx != SHN_UNDEF && sym->st_shndx < shnum) {
-                /* Local: address = section base + symbol value */
                 S = (Elf64_Addr)(unsigned long)sec_addrs[sym->st_shndx] + sym->st_value;
             } else {
-                /* Undefined: resolve via kernel symbol table */
                 const char *sname = strtab + sym->st_name;
                 void *addr = ksym_resolve(sname);
+                if (!addr && sname[0] == '_') addr = ksym_resolve(sname + 1);
                 if (!addr) {
-                    /* Try with leading underscore removed */
-                    if (sname[0] == '_') addr = ksym_resolve(sname + 1);
+                    kprintf("load: undefined symbol '%s'\n", sname);
+                    elf_load_fail(base, sec_addrs, 0);
+                    return 0;
                 }
-                if (!addr) continue; /* unresolved, skip */
                 S = (Elf64_Addr)(unsigned long)addr;
             }
             S += relas[j].r_addend;
@@ -1146,7 +1328,8 @@ void *elf_load(void *data, unsigned size) {
         }
     }
 
-    if (!entry) { kfree(sec_addrs); kfree(base); return 0; }
+    if (!entry) { elf_load_fail(base, sec_addrs, "no entry point"); return 0; }
+    kfree(sec_addrs);
     return entry;
 }
 
@@ -1553,7 +1736,6 @@ void kexit(int code) {
 #define MAX_ARGS   16
 
 static char cmd_buf[CMD_BUF_SZ];
-static int  cmd_pos;
 
 static void shell_prompt(void) { vga_puts("\nminiOS> "); }
 
@@ -1574,30 +1756,35 @@ static int console_getc(void) {
     }
 }
 
-static void shell_readline(void) {
-    cmd_pos = 0;
-    kmemset(cmd_buf, 0, CMD_BUF_SZ);
-
+/* Read one line into buf (at most size-1 chars). Echoes input and
+ * honours backspace. Shared by the shell prompt and the editor. */
+static void shell_readline_buf(char *buf, int size) {
+    int pos = 0;
+    kmemset(buf, 0, (unsigned long)size);
     while (1) {
         int c = console_getc();
         if (c < 0) continue;
         if (c == '\n' || c == '\r') {
             vga_putc('\n');
-            cmd_buf[cmd_pos] = 0;
+            buf[pos] = 0;
             return;
         }
         if (c == '\b' || c == 0x7F) {
-            if (cmd_pos > 0) {
-                cmd_pos--;
+            if (pos > 0) {
+                pos--;
                 vga_putc('\b');
             }
             continue;
         }
-        if (cmd_pos < CMD_BUF_SZ - 1 && c >= 32 && c < 127) {
-            cmd_buf[cmd_pos++] = (char)c;
+        if (pos < size - 1 && c >= 32 && c < 127) {
+            buf[pos++] = (char)c;
             vga_putc((char)c);
         }
     }
+}
+
+static void shell_readline(void) {
+    shell_readline_buf(cmd_buf, CMD_BUF_SZ);
 }
 
 static int shell_parse(char *line, char **argv, int max_args) {
@@ -1614,6 +1801,83 @@ static int shell_parse(char *line, char **argv, int max_args) {
     return argc;
 }
 
+/* Shell status text must never land inside a redirected command's output:
+ * `cmd > file` captures what the command wrote, not what the shell reported
+ * about it. These helpers lift a print out of the active capture. */
+static int redirect_suspend(void) {
+    int was = redir_active;
+    redir_active = 0;
+    return was;
+}
+
+static void redirect_resume(int was) {
+    redir_active = was;
+}
+
+static void shell_report_exit(int code) {
+    int was = redirect_suspend();
+    kprintf("exit code: %d\n", code);
+    redirect_resume(was);
+}
+
+static void shell_report(const char *what, const char *detail) {
+    int was = redirect_suspend();
+    vga_puts(what);
+    if (detail) vga_puts(detail);
+    vga_putc('\n');
+    redirect_resume(was);
+}
+
+/* Start capturing console output for a `> file` redirection. */
+static int redirect_begin(void) {
+    redir_len      = 0;
+    redir_overflow = 0;
+    if (!redir_buf && !redir_grow()) return 0;
+    redir_active = 1;
+    return 1;
+}
+
+/* Stop capturing and store the captured bytes in `path`. Returns 0 on
+ * success. The capture is released on every path so that a failure cannot
+ * leave the console silently detached from the screen. */
+static int redirect_commit(const char *path) {
+    KFILE *f;
+    unsigned long written;
+    int rc;
+
+    redir_active = 0;
+    if (redir_overflow) { redir_len = 0; return -1; }
+
+    f = kfopen(path, "w");
+    if (!f) { redir_len = 0; return -1; }
+    written = redir_len ? kfwrite(redir_buf, 1, redir_len, f) : 0;
+    rc = kfclose(f);
+    if (redir_len && written != redir_len) rc = -1;
+    redir_len = 0;
+    return rc;
+}
+
+/* Split a `> file` redirection off the end of a parsed command line.
+ * Returns 1 when a redirection was found, 0 when there was none and -1 when
+ * the syntax is incomplete. On success argc is trimmed to the command. */
+static int shell_take_redirect(int *argc, char **argv, char **path) {
+    int i;
+    *path = 0;
+    for (i = 0; i < *argc; i++) {
+        if (argv[i][0] != '>') continue;
+        if (argv[i][1]) {
+            *path = argv[i] + 1;
+        } else {
+            if (i + 1 >= *argc) return -1;
+            *path = argv[i + 1];
+        }
+        *argc  = i;
+        argv[i] = 0;
+        return 1;
+    }
+    return 0;
+}
+
 void shell_run(void) {
     while (1) {
         shell_prompt();
@@ -1626,8 +1890,25 @@ void shell_run(void) {
 
         if (argc == 0) continue;
 
-        /* Try built-in */
+        char *redir_path = 0;
+        int redirected = shell_take_redirect(&argc, argv, &redir_path);
+        if (redirected < 0) {
+            vga_puts("syntax: > needs a target file\n");
+            continue;
+        }
+        if (argc == 0) {
+            vga_puts("syntax: > needs a command\n");
+            continue;
+        }
+        if (redirected && !redirect_begin()) {
+            vga_puts("redirect: out of memory\n");
+            continue;
+        }
+
         shell_exec_builtin(argc, argv);
+
+        if (redirected && redirect_commit(redir_path) != 0)
+            kprintf("redirect: cannot write %s\n", redir_path);
     }
 }
 
@@ -1664,14 +1945,274 @@ static int shell_load(const char *fname, char *progname_out, void **entry_out) {
     return kind;
 }
 
+/* ================================================================
+ *  Line editor (edit command)
+ * ================================================================ */
+
+#define EDIT_MAX_LINES 512
+#define EDIT_LINE_MAX  128
+#define EDIT_FILE_MAX  (64UL * 1024)
+
+typedef struct {
+    char text[EDIT_LINE_MAX];
+    int  used;
+} EditLine;
+
+typedef struct {
+    EditLine *lines;
+    int       count;
+    char      fname[RAMDISK_FNAME_LEN];
+    int       dirty;
+    int       truncated;
+} EditBuf;
+
+static EditBuf *edit_alloc(const char *fname) {
+    EditBuf *e = kmalloc(sizeof(EditBuf));
+    if (!e) return 0;
+    e->lines = kcalloc(EDIT_MAX_LINES, sizeof(EditLine));
+    if (!e->lines) {
+        kfree(e);
+        return 0;
+    }
+    e->count     = 0;
+    e->dirty     = 0;
+    e->truncated = 0;
+    kstrncpy(e->fname, fname, RAMDISK_FNAME_LEN - 1);
+    e->fname[RAMDISK_FNAME_LEN - 1] = 0;
+    return e;
+}
+
+static void edit_free(EditBuf *e) {
+    if (!e) return;
+    if (e->lines) kfree(e->lines);
+    kfree(e);
+}
+
+static int edit_load(EditBuf *e) {
+    KFILE *f = kfopen(e->fname, "r");
+    if (!f) return 0;
+    if (f->rf->size > EDIT_FILE_MAX) {
+        kfclose(f);
+        return -1;
+    }
+    int idx = 0;
+    int used = 0;
+    while (1) {
+        int c = kfgetc(f);
+        if (c == EOF) break;
+        if (idx >= EDIT_MAX_LINES) { e->truncated = 1; break; }
+        if (c == '\n') {
+            e->lines[idx].used = used;
+            idx++;
+            used = 0;
+            continue;
+        }
+        if (c == '\r') continue;
+        if (used < EDIT_LINE_MAX - 1) {
+            e->lines[idx].text[used++] = (char)c;
+        } else {
+            e->truncated = 1;
+        }
+    }
+    if (used > 0 && idx < EDIT_MAX_LINES) {
+        e->lines[idx].used = used;
+        idx++;
+    }
+    e->count = idx;
+    kfclose(f);
+    return 1;
+}
+
+static int edit_save(EditBuf *e) {
+    KFILE *f = kfopen(e->fname, "w");
+    if (!f) return -1;
+    int i;
+    for (i = 0; i < e->count; i++) {
+        if (e->lines[i].used > 0)
+            kfwrite(e->lines[i].text, 1, (unsigned long)e->lines[i].used, f);
+        if (i + 1 < e->count) kfputc('\n', f);
+    }
+    if (kfclose(f) != 0) return -1;
+    e->dirty = 0;
+    return 0;
+}
+
+static void edit_print(EditBuf *e, int idx) {
+    if (idx < 0 || idx >= e->count) return;
+    kprintf("%4d: ", idx + 1);
+    int i;
+    for (i = 0; i < e->lines[idx].used; i++) vga_putc(e->lines[idx].text[i]);
+    vga_putc('\n');
+}
+
+static void edit_list(EditBuf *e) {
+    int i;
+    if (e->count == 0) {
+        vga_puts("(empty)\n");
+        return;
+    }
+    for (i = 0; i < e->count; i++) edit_print(e, i);
+}
+
+static int edit_set_line(EditBuf *e, int idx, const char *text) {
+    unsigned long n = kstrlen(text);
+    if (n > EDIT_LINE_MAX - 1) n = EDIT_LINE_MAX - 1;
+    kmemcpy(e->lines[idx].text, text, n);
+    e->lines[idx].used = (int)n;
+    e->dirty = 1;
+    return 0;
+}
+
+static int edit_insert(EditBuf *e, int idx, const char *text) {
+    if (e->count >= EDIT_MAX_LINES) return -1;
+    if (idx < 0) idx = 0;
+    if (idx > e->count) idx = e->count;
+    kmemmove(&e->lines[idx + 1], &e->lines[idx],
+             (unsigned long)(e->count - idx) * sizeof(EditLine));
+    e->count++;
+    return edit_set_line(e, idx, text);
+}
+
+static int edit_delete(EditBuf *e, int idx) {
+    if (idx < 0 || idx >= e->count) return -1;
+    kmemmove(&e->lines[idx], &e->lines[idx + 1],
+             (unsigned long)(e->count - idx - 1) * sizeof(EditLine));
+    e->count--;
+    e->dirty = 1;
+    return 0;
+}
+
+static void edit_usage(void) {
+    vga_puts("editor: h help, l list, p N print, e N edit, a append,\n");
+    vga_puts("        i N insert, d N delete, w save, x save+quit,\n");
+    vga_puts("        q quit, q! quit discarding changes\n");
+}
+
+/* A buffer that did not hold the whole file must never be written back:
+ * saving it would drop the part that was never loaded. */
+static int edit_refuse_save(EditBuf *e) {
+    if (!e->truncated) return 0;
+    vga_puts("refusing to save: file did not fit in the buffer\n");
+    return 1;
+}
+
+static void edit_loop(EditBuf *e) {
+    char buf[CMD_BUF_SZ];
+    vga_puts("edit: 'h' for help\n");
+    while (1) {
+        vga_puts("edit> ");
+        shell_readline_buf(buf, CMD_BUF_SZ);
+        char *argv[MAX_ARGS + 1];
+        int argc = shell_parse(buf, argv, MAX_ARGS);
+        if (argc == 0) continue;
+
+        if (kstrcmp(argv[0], "h") == 0) {
+            edit_usage();
+        } else if (kstrcmp(argv[0], "l") == 0) {
+            edit_list(e);
+        } else if (kstrcmp(argv[0], "p") == 0) {
+            if (argc < 2) { vga_puts("usage: p <line>\n"); continue; }
+            int n = (int)katol(argv[1]);
+            if (n < 1 || n > e->count) { vga_puts("no such line\n"); continue; }
+            edit_print(e, n - 1);
+        } else if (kstrcmp(argv[0], "e") == 0) {
+            if (argc < 2) { vga_puts("usage: e <line>\n"); continue; }
+            int n = (int)katol(argv[1]);
+            if (n < 1 || n > e->count) { vga_puts("no such line\n"); continue; }
+            char line[EDIT_LINE_MAX];
+            shell_readline_buf(line, EDIT_LINE_MAX);
+            edit_set_line(e, n - 1, line);
+        } else if (kstrcmp(argv[0], "a") == 0) {
+            char line[EDIT_LINE_MAX];
+            shell_readline_buf(line, EDIT_LINE_MAX);
+            if (edit_insert(e, e->count, line) != 0) vga_puts("buffer full\n");
+        } else if (kstrcmp(argv[0], "i") == 0) {
+            int n = argc >= 2 ? (int)katol(argv[1]) : e->count + 1;
+            if (n < 1 || n > e->count + 1) { vga_puts("no such line\n"); continue; }
+            char line[EDIT_LINE_MAX];
+            shell_readline_buf(line, EDIT_LINE_MAX);
+            if (edit_insert(e, n - 1, line) != 0) vga_puts("buffer full\n");
+        } else if (kstrcmp(argv[0], "d") == 0) {
+            if (argc < 2) { vga_puts("usage: d <line>\n"); continue; }
+            int n = (int)katol(argv[1]);
+            if (edit_delete(e, n - 1) != 0) vga_puts("no such line\n");
+        } else if (kstrcmp(argv[0], "w") == 0) {
+            if (edit_refuse_save(e)) continue;
+            if (edit_save(e) != 0) vga_puts("save failed\n");
+            else kprintf("wrote %d line(s) to %s\n", e->count, e->fname);
+        } else if (kstrcmp(argv[0], "x") == 0) {
+            if (edit_refuse_save(e)) continue;
+            if (edit_save(e) != 0) { vga_puts("save failed\n"); continue; }
+            kprintf("wrote %d line(s) to %s\n", e->count, e->fname);
+            return;
+        } else if (kstrcmp(argv[0], "q") == 0) {
+            if (e->dirty) {
+                vga_puts("unsaved changes: 'w' to save, 'q!' to discard\n");
+                continue;
+            }
+            return;
+        } else if (kstrcmp(argv[0], "q!") == 0) {
+            return;
+        } else {
+            vga_puts("unknown command\n");
+            edit_usage();
+        }
+    }
+}
+
+static void shell_cmd_edit(int argc, char **argv) {
+    if (argc < 2) {
+        vga_puts("usage: edit <file>\n");
+        return;
+    }
+    EditBuf *e = edit_alloc(argv[1]);
+    if (!e) {
+        vga_puts("edit: out of memory\n");
+        return;
+    }
+    int rc = edit_load(e);
+    if (rc < 0) {
+        vga_puts("edit: file too large\n");
+        edit_free(e);
+        return;
+    }
+    if (rc == 0) {
+        kprintf("edit: new file %s\n", argv[1]);
+    }
+    edit_loop(e);
+    edit_free(e);
+}
+
+static inline void outw_port(unsigned short port, unsigned short val) {
+    __asm__ volatile("outw %0, %1" : : "a"(val), "Nd"(port));
+}
+
+#define QEMU_PM_PORT 0x604
+
+static void shell_cmd_poweroff(void) {
+    vga_puts("powering off\n");
+    outw_port(QEMU_PM_PORT, 0x2000);
+    while (1) __asm__ volatile("hlt");
+}
+
 static void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
-        vga_puts("Commands: help clear ls cat echo load run\n");
+        vga_puts("Commands: help clear ls cat echo edit load run poweroff\n");
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
-        vga_puts("  run  <name|file>   run a loaded program or ELF from disk\n");
+        vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
+        vga_puts("  edit <file>        line editor for ramdisk files\n");
+        vga_puts("  <cmd> > <file>     redirect command output to a file\n");
+        vga_puts("Toolchain: edit p.c; run minigcc p.c > p.s;\n");
+        vga_puts("           run ld -f elf -o p.elf p.s; run p.elf\n");
     }
     else if (kstrcmp(argv[0], "clear") == 0) {
         vga_clear();
+    }
+    else if (kstrcmp(argv[0], "poweroff") == 0) {
+        shell_cmd_poweroff();
+    }
+    else if (kstrcmp(argv[0], "edit") == 0) {
+        shell_cmd_edit(argc, argv);
     }
     else if (kstrcmp(argv[0], "ls") == 0) {
         RDFile *files[RAMDISK_MAX_FILES];
@@ -1714,6 +2255,23 @@ static void shell_exec_builtin(int argc, char **argv) {
     }
     else if (kstrcmp(argv[0], "run") == 0) {
         if (argc < 2) { vga_puts("usage: run <program|file> [args...]\n"); return; }
+        int nl = (int)kstrlen(argv[1]);
+        if (nl > 4 && kstrcmp(argv[1] + nl - 4, ".cvm") == 0) {
+            static prog_entry_t cvm_entry = 0;
+            if (!cvm_entry) {
+                RDFile *rf = ramdisk_open("cvm.o");
+                if (!rf) { shell_report("run: cvm.o not on ramdisk", 0); return; }
+                unsigned char *data = kmalloc(rf->size);
+                if (!data) { kprintf("run: oom\n"); return; }
+                ramdisk_read(rf, data, 0, rf->size);
+                void *e = elf_load(data, rf->size);
+                if (!e) { shell_report("run: cannot load cvm.o", 0); return; }
+                cvm_entry = (prog_entry_t)e;
+            }
+            int ret = cvm_entry(argc - 1, argv + 1);
+            shell_report_exit(ret);
+            return;
+        }
         int i, found = 0;
         for (i = 0; i < kprog_count; i++)
             if (kstrcmp(kprog_table[i].name, argv[1]) == 0) { found = 1; break; }
@@ -1722,21 +2280,21 @@ static void shell_exec_builtin(int argc, char **argv) {
         if (!found) {
             void *entry = 0;
             if (!shell_load(argv[1], progname, &entry)) {
-                kprintf("run: %s: not found\n", argv[1]);
+                shell_report("run: not found: ", argv[1]);
                 return;
             }
             target = progname;
         }
         int ret = k_spawn(target, argc - 1, argv + 1);
-        kprintf("exit code: %d\n", ret);
+        shell_report_exit(ret);
     }
     else {
         /* Try to run as registered program */
         int ret = k_spawn(argv[0], argc, argv);
         if (ret == -1) {
-            kprintf("%s: command not found\n", argv[0]);
+            shell_report("command not found: ", argv[0]);
         } else {
-            kprintf("exit code: %d\n", ret);
+            shell_report_exit(ret);
         }
     }
 }
@@ -1751,6 +2309,7 @@ static void register_libc_symbols(void) {
     k_register_symbol("strlen",   (void *)kstrlen);
     k_register_symbol("strcpy",   (void *)kstrcpy);
     k_register_symbol("strncpy",  (void *)kstrncpy);
+    k_register_symbol("strncat",  (void *)kstrncat);
     k_register_symbol("strcmp",   (void *)kstrcmp);
     k_register_symbol("strncmp",  (void *)kstrncmp);
     k_register_symbol("strchr",   (void *)kstrchr);
@@ -1777,6 +2336,7 @@ static void register_libc_symbols(void) {
     k_register_symbol("fputs",    (void *)kfputs);
     k_register_symbol("fputc",    (void *)kfputc);
     k_register_symbol("fgetc",    (void *)kfgetc);
+    k_register_symbol("fgets",    (void *)kfgets);
     k_register_symbol("ungetc",   (void *)kfungetc);
     k_register_symbol("fflush",   (void *)kfflush);
     k_register_symbol("rewind",   (void *)krewind);
@@ -1798,38 +2358,9 @@ static void register_libc_symbols(void) {
 
     /* Additional libc */
     k_register_symbol("snprintf", (void *)ksnprintf);
-    k_register_symbol("perror",   (void *)0);
     k_register_symbol("atol",     (void *)katol);
     k_register_symbol("strtol",   (void *)katol);
-    k_register_symbol("qsort",    (void *)0);
     k_register_symbol("abort",    (void *)kexit);
-
-    /* Syscalls */
-    k_register_symbol("write",    (void *)0);
-    k_register_symbol("read",     (void *)0);
-    k_register_symbol("open",     (void *)0);
-    k_register_symbol("close",    (void *)0);
-    k_register_symbol("lseek",    (void *)0);
-    k_register_symbol("fdopen",   (void *)0);
-    k_register_symbol("fileno",   (void *)0);
-
-    /* POSIX/file */
-    k_register_symbol("open",     (void *)0);
-    k_register_symbol("read",     (void *)0);
-    k_register_symbol("lseek",    (void *)0);
-    k_register_symbol("close",    (void *)0);
-    k_register_symbol("write",    (void *)0);
-
-    /* mmap/mprotect */
-    k_register_symbol("mmap",     (void *)0);
-    k_register_symbol("mprotect", (void *)0);
-    k_register_symbol("munmap",   (void *)0);
-
-    /* dlfcn */
-    k_register_symbol("dlopen",   (void *)0);
-    k_register_symbol("dlsym",    (void *)0);
-    k_register_symbol("dlclose",  (void *)0);
-    k_register_symbol("dlerror",  (void *)0);
 }
 
 

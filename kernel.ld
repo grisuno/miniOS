@@ -1,7 +1,7 @@
 ENTRY(kmain)
 SECTIONS
 {
-    . = 0x10000;
+    . = 0x100000;
     .text : {
         *(.init.text)
         *(.text*)

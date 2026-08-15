@@ -52,6 +52,7 @@ RDFile  *ramdisk_open(const char *name);
 int      ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len);
 int      ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);
 RDFile  *ramdisk_create(const char *name, unsigned size);
+int      ramdisk_resize(RDFile *f, unsigned newsize);
 int      ramdisk_list(RDFile **out, int max);
 void     ramdisk_setup_from(void *data, unsigned size);
 
@@ -71,6 +72,7 @@ typedef struct {
 KFILE *kfopen(const char *path, const char *mode);
 int    kfclose(KFILE *f);
 int    kfgetc(KFILE *f);
+char  *kfgets(char *buf, int size, KFILE *f);
 int    kfungetc(int c, KFILE *f);
 unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);
 unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);
@@ -85,6 +87,7 @@ void   krewind(KFILE *f);
 unsigned long kstrlen(const char *s);
 char *kstrcpy(char *dst, const char *src);
 char *kstrncpy(char *dst, const char *src, unsigned long n);
+char *kstrncat(char *dst, const char *src, unsigned long n);
 int   kstrcmp(const char *a, const char *b);
 int   kstrncmp(const char *a, const char *b, unsigned long n);
 char *kstrchr(const char *s, int c);
