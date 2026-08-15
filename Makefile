@@ -3,10 +3,36 @@ LD       = ld
 OBJCOPY  = objcopy
 QEMU    ?= qemu-system-x86_64
 
-MINIGCC_DIR ?= ../miniGCC
-CVM_DIR     ?= ../cvm/cvm2
-LD_DIR      ?= ../ld
-LD_TOOL     ?= $(LD_DIR)/ld
+# The toolchain lives in three sibling repositories. Their locations are
+# overridable so the image can be built against a checkout kept anywhere;
+# `make sources` clones the ones that are missing and `make sources-update`
+# pulls them, which is how the image is rebuilt from the latest upstream code
+# instead of the prebuilt objects that ship in progs/.
+GIT ?= git
+
+MINIGCC_URL ?= https://github.com/grisuno/miniGCC
+CVM_URL     ?= https://github.com/grisuno/cvm
+LD_URL      ?= https://github.com/grisuno/ld
+
+MINIGCC_DIR  ?= ../miniGCC
+CVM_REPO_DIR ?= ../cvm
+CVM_DIR      ?= $(CVM_REPO_DIR)/cvm2
+LD_DIR       ?= ../ld
+
+# The toolchain binaries are built into a directory this repository owns.
+# Several of the sibling repositories ship a committed binary next to their
+# sources; using those would mean the image was not built from source at all,
+# and one of them is not even executable in a fresh clone.
+TOOLS_DIR   ?= build
+LD_TOOL     ?= $(TOOLS_DIR)/ld
+MINIGCC_BIN ?= $(TOOLS_DIR)/minigcc
+CVM_BIN     ?= $(TOOLS_DIR)/cvm
+
+SOURCE_REPOS = $(MINIGCC_DIR)=$(MINIGCC_URL) \
+               $(CVM_REPO_DIR)=$(CVM_URL) \
+               $(LD_DIR)=$(LD_URL)
+
+CFLAGS_HOST = -std=c99 -Wall -Wextra -O2
 
 BOOTDEFS = bootdefs.h
 
@@ -30,9 +56,68 @@ PROGS     = $(PROGS_DIR)/hello.o $(PROGS_DIR)/ftest.o $(PROGS_DIR)/minigcc.o \
             $(PROGS_DIR)/ld.o $(PROGS_DIR)/cvm.o $(PROGS_DIR)/lxhello.elf \
             $(PROGS_DIR)/ldhello.elf $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf \
             $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm $(PROGS_DIR)/minigcc.cvm \
-            $(PROGS_DIR)/test.c $(PROGS_DIR)/README.txt
+            $(PROGS_DIR)/test.c $(PROGS_DIR)/fib.c $(PROGS_DIR)/README.txt
 
 all: os.img
+
+# ── Toolchain sources ─────────────────────────────────────────────
+# Clone whatever is missing. An existing directory is never touched, so a
+# checkout with local work is left exactly as it is.
+sources:
+	@for pair in $(SOURCE_REPOS); do \
+	    dir="$${pair%%=*}"; url="$${pair#*=}"; \
+	    if [ -d "$$dir/.git" ]; then \
+	        echo "present  $$dir"; \
+	    elif [ -e "$$dir" ]; then \
+	        echo "skipped  $$dir exists and is not a git clone"; \
+	    else \
+	        echo "cloning  $$url -> $$dir"; \
+	        $(GIT) clone "$$url" "$$dir" || exit 1; \
+	    fi; \
+	done
+
+sources-update: sources
+	@for pair in $(SOURCE_REPOS); do \
+	    dir="$${pair%%=*}"; \
+	    if [ -d "$$dir/.git" ]; then \
+	        echo "updating $$dir"; \
+	        $(GIT) -C "$$dir" pull --ff-only || exit 1; \
+	    fi; \
+	done
+
+sources-status:
+	@for pair in $(SOURCE_REPOS); do \
+	    dir="$${pair%%=*}"; \
+	    if [ -d "$$dir/.git" ]; then \
+	        printf '%-16s %s\n' "$$dir" "$$($(GIT) -C "$$dir" log -1 --format='%h %ad %s' --date=short)"; \
+	    elif [ -e "$$dir" ]; then \
+	        printf '%-16s %s\n' "$$dir" "local directory, not a git clone"; \
+	    else \
+	        printf '%-16s %s\n' "$$dir" "absent (run 'make sources')"; \
+	    fi; \
+	done
+
+# A missing source tree gets a direct instruction instead of make's own
+# "no rule to make target" message.
+$(LD_DIR)/ld.c $(MINIGCC_DIR)/minigcc.c $(CVM_DIR)/cvm.c:
+	@echo "missing $@"
+	@echo "run 'make sources' to clone the toolchain repositories from GitHub"
+	@exit 1
+
+$(TOOLS_DIR):
+	mkdir -p $@
+
+$(LD_TOOL): $(LD_DIR)/ld.c | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -Wpedantic -o $@ $<
+
+$(MINIGCC_BIN): $(MINIGCC_DIR)/minigcc.c | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -o $@ $<
+
+$(CVM_BIN): $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -D_GNU_SOURCE -DCVM_STANDALONE -o $@ $(CVM_DIR)/cvm.c -ldl
+
+toolchain: $(LD_TOOL) $(MINIGCC_BIN) $(CVM_BIN)
+	@echo "toolchain ready: $(MINIGCC_BIN) $(LD_TOOL) $(CVM_BIN)"
 
 # ── Programs (.o files) ──────────────────────────────────────────
 $(PROGS_DIR)/hello.o: $(PROGS_DIR)/hello.c
@@ -45,14 +130,20 @@ $(PROGS_DIR)/ftest.o: $(PROGS_DIR)/ftest.c
 $(PROGS_DIR)/lxhello.elf: $(PROGS_DIR)/lxhello.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
 
-# ── ELF executables produced by ld from miniGCC assembly ─────────
-$(PROGS_DIR)/ldhello.elf: $(LD_DIR)/tests/t1.s
+# ── Demo programs: C -> miniGCC -> ld -> ELF / CVM ───────────────
+# These are this repository's own sources, compiled through the full
+# toolchain at build time. Depending on another project's test fixtures for
+# ramdisk content would break the moment that project reorganizes them.
+$(PROGS_DIR)/%.s: $(PROGS_DIR)/%.c $(MINIGCC_BIN)
+	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
+
+$(PROGS_DIR)/ldhello.elf: $(PROGS_DIR)/ldhello.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
-$(PROGS_DIR)/w1.elf: $(LD_DIR)/tests/w1.s
+$(PROGS_DIR)/w1.elf: $(PROGS_DIR)/w1.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
-$(PROGS_DIR)/fib.elf: $(LD_DIR)/tests/fib.s
+$(PROGS_DIR)/fib.elf: $(PROGS_DIR)/fib.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 $(PROGS_DIR)/minigcc.o: $(MINIGCC_DIR)/minigcc.c
@@ -72,17 +163,19 @@ $(PROGS_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h cvm_host.c kernel.h
 	rm -f $(PROGS_DIR)/cvm_core.o $(PROGS_DIR)/cvm_host.o
 
 # ── CVM modules (assembled from miniGCC output with 'ld') ────────
-$(PROGS_DIR)/fib.cvm: $(LD_DIR)/tests/fib.s
+$(PROGS_DIR)/fib.cvm: $(PROGS_DIR)/fib.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
-$(PROGS_DIR)/w1.cvm: $(LD_DIR)/tests/w1.s
+$(PROGS_DIR)/w1.cvm: $(PROGS_DIR)/w1.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
-$(PROGS_DIR)/minigcc.cvm: $(MINIGCC_DIR)/minigccg2.s
+$(PROGS_DIR)/minigcc.cvm: $(MINIGCC_DIR)/minigccg2.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
 # ── Ramdisk image ─────────────────────────────────────────────────
-ramdisk.bin: $(PROGS) mkramdisk.py
+# The Makefile is a prerequisite because it carries the file list: editing
+# PROGS must invalidate the image even when no individual file changed.
+ramdisk.bin: $(PROGS) mkramdisk.py Makefile
 	python3 mkramdisk.py $@ $(PROGS)
 
 ramdisk_data.c: ramdisk.bin
@@ -150,8 +243,14 @@ test: os.img
 	./test_bdd.sh
 
 clean:
+	rm -rf $(TOOLS_DIR)
 	rm -f *.o *.elf *.bin *.img ramdisk_data.c ramdisk.bin
 	rm -f $(PROGS_DIR)/*.o $(PROGS_DIR)/lxhello.elf $(PROGS_DIR)/ldhello.elf \
-	      $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf
+	      $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf \
+	      $(PROGS_DIR)/ldhello.s $(PROGS_DIR)/w1.s $(PROGS_DIR)/fib.s \
+	      $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm $(PROGS_DIR)/minigcc.cvm
 
-.PHONY: all run clean debug serial test
+.SECONDARY:
+
+.PHONY: all run clean debug serial test sources sources-update \
+        sources-status toolchain

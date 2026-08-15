@@ -15,6 +15,54 @@ miniOS> run p.elf
 exit code: 7
 ```
 
+## The four repositories
+
+MiniOS is one of four projects that together make up the system. This
+repository holds the kernel, the boot path and the ramdisk; the toolchain it
+carries lives next door.
+
+| Repository | Role |
+|------------|------|
+| [miniOS](https://github.com/grisuno/miniOS) | this repository: kernel, two-stage boot path, ramdisk, shell, editor |
+| [miniGCC](https://github.com/grisuno/miniGCC) | C compiler: C to x86-64 AT&T assembly |
+| [ld](https://github.com/grisuno/ld) | assembler and linker: assembly to a Linux ELF or a CVM module |
+| [cvm](https://github.com/grisuno/cvm) | the CVM / cvm2 bytecode interpreter |
+
+The ramdisk ships prebuilt objects in `progs/`, so `make` produces a bootable
+image with nothing else installed. To build the whole system from source
+instead, clone the other three next to this one:
+
+```bash
+make sources          # clone the missing repositories from GitHub
+make toolchain        # build minigcc, ld and cvm2 from those sources
+make                  # rebuild every ramdisk object and os.img
+```
+
+`make sources` never touches a directory that already exists, so a checkout
+with local work is left alone. `make sources-update` pulls the latest commit
+of each before rebuilding, and `make sources-status` shows which revision
+each one is sitting on.
+
+Expected layout — the directory holding this repository can have any name:
+
+```
+src/
+├── miniOS/     (this repository)
+├── miniGCC/
+├── ld/
+└── cvm/            with cvm/cvm2 inside
+```
+
+Point the build somewhere else with `MINIGCC_DIR=`, `LD_DIR=`,
+`CVM_REPO_DIR=` or `CVM_DIR=`; change where `make sources` clones from with
+`MINIGCC_URL=`, `LD_URL=` or `CVM_URL=`.
+
+Everything on the ramdisk is regenerated from source by `make`: `minigcc.o`,
+`ld.o` and `cvm.o` are compiled from the sibling checkouts, and the demo
+programs (`ldhello`, `w1`, `fib`) are compiled from this repository's own C
+sources in `progs/` through the full miniGCC-to-ld chain. Nothing in the
+image is a binary you have to take on trust.
+
 ## Build and run
 
 ```bash
@@ -84,8 +132,22 @@ MiniOS runs three kinds of program:
 | `stage2.S` | loads the kernel above 1 MB, enters long mode |
 | `kernel.c` / `kernel.h` | kernel: console, heap, ramdisk, loaders, shell, editor |
 | `cvm_host.c` | host glue for the CVM interpreter |
+| `progs/*.c` | ramdisk contents: demo programs and the C sources they are built from |
 | `mkramdisk.py` | packs `progs/` into the ramdisk image |
 | `test_bdd.sh` | behavioural suite |
 | `mutate.sh` | mutation testing |
+
+## Make targets
+
+| Target | Purpose |
+|--------|---------|
+| `all` (default) | build `os.img` |
+| `sources` | clone the missing toolchain repositories from GitHub |
+| `sources-update` | pull the latest commit of each one |
+| `sources-status` | show the revision each checkout is on |
+| `toolchain` | build `minigcc`, `ld` and `cvm2` from those sources |
+| `run` / `serial` / `debug` | boot the image in QEMU |
+| `test` | behavioural suite |
+| `clean` | remove every build product |
 
 See `CLAUDE.md` for the full engineering contract.

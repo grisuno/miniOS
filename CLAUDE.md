@@ -26,6 +26,32 @@ that ships as `cvm.o`.
 Linux compatibility is a hard requirement: a static binary built by the host
 toolchain must run by copying it onto the ramdisk, with no translation.
 
+## Source Contract
+The system spans four repositories: this one plus
+[miniGCC](https://github.com/grisuno/miniGCC),
+[ld](https://github.com/grisuno/ld) and
+[cvm](https://github.com/grisuno/cvm). The build must be reproducible from
+those upstreams alone, so:
+
+- `make sources` clones the missing ones and `make sources-update` pulls
+  them. Neither ever modifies a directory that already exists, so a checkout
+  with local work is never clobbered.
+- Every location is overridable (`MINIGCC_DIR`, `LD_DIR`, `CVM_REPO_DIR`,
+  `CVM_DIR`) and so is every origin (`MINIGCC_URL`, `LD_URL`, `CVM_URL`).
+  Nothing in the build assumes an absolute path.
+- Everything on the ramdisk is regenerated from source: `minigcc.o`, `ld.o`
+  and `cvm.o` from the sibling checkouts, and the demo programs from this
+  repository's own C sources in `progs/`, driven through miniGCC and `ld`.
+  The prebuilt objects in `progs/` are a convenience for a first boot, never
+  an input the build depends on.
+- Ramdisk content is owned here. Reaching into another project's test
+  fixtures for files to ship would break the moment that project reorganizes
+  them, which is exactly what happened when the image was built from
+  `ld/tests/*.s`.
+- `ramdisk.bin` lists the `Makefile` among its prerequisites: the file list
+  lives there, so editing it must invalidate the image even when no
+  individual file changed.
+
 ## Boot Path Contract
 Two stages, because a correct single-stage loader does not fit in 512 bytes.
 Every address, BIOS service, descriptor and control-register bit used by the
