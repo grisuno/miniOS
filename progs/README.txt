@@ -3,6 +3,17 @@ MiniOS - minimal 64-bit kernel for x86_64
 Commands: help clear ls cat echo edit load run poweroff
 Redirection: <cmd> > <file>   stores the command's output in a ramdisk file
 
+Any ELF stored as bin/<cmd> runs as a plain command, Linux style:
+
+  cp fib.c x.txt                cp is bin/cp, invoked without run or load
+  cat x.txt                     copies fib.c into x.txt
+
+bin/cp is compiled from bin/cp.c through the miniGCC-to-ld chain; the
+source ships alongside the binary, so the OS can rebuild the utility:
+
+  run minigcc.o bin/cp.c > cp.s
+  run ld.o -f elf -o bin/cp cp.s
+
 Writing a program without leaving the machine:
 
   edit p.c                        write the source
@@ -15,6 +26,12 @@ interpreter in cvm.o:
 
   run ld.o -f cvm -o p.cvm p.s
   run p.cvm
+
+minigcc.elf is the same compiler, but self-hosted: it was compiled by
+minigcc itself (generation 3) and linked by 'ld', then checked to reach
+the bootstrap fixed point:
+
+  run minigcc.elf p.c > p.s
 
 Editor commands:
   h help          l list           p N print line N
