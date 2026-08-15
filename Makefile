@@ -56,7 +56,7 @@ PROGS     = $(PROGS_DIR)/hello.o $(PROGS_DIR)/ftest.o $(PROGS_DIR)/minigcc.o \
             $(PROGS_DIR)/ld.o $(PROGS_DIR)/cvm.o $(PROGS_DIR)/lxhello.elf \
             $(PROGS_DIR)/ldhello.elf $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf \
             $(PROGS_DIR)/minigcc.elf $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm \
-            $(PROGS_DIR)/minigcc.cvm \
+            $(PROGS_DIR)/minigcc.cvm $(PROGS_DIR)/bin/cp $(PROGS_DIR)/bin/cp.c \
             $(PROGS_DIR)/test.c $(PROGS_DIR)/fib.c $(PROGS_DIR)/README.txt
 
 all: os.img
@@ -173,6 +173,15 @@ $(PROGS_DIR)/w1.cvm: $(PROGS_DIR)/w1.s $(LD_TOOL)
 $(PROGS_DIR)/minigcc.cvm: $(TOOLS_DIR)/g2.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
+# ── Command path utilities (bin/<cmd>, compiled by the toolchain) ──
+# bin/cp: the C source ships on the ramdisk as bin/cp.c and the ELF as
+# bin/cp, which the shell resolves for the plain command `cp`.
+$(PROGS_DIR)/bin/cp.s: $(PROGS_DIR)/bin/cp.c $(MINIGCC_BIN)
+	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
+
+$(PROGS_DIR)/bin/cp: $(PROGS_DIR)/bin/cp.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+
 # ── Self-hosted compiler (compiled by minigcc, linked by 'ld') ────
 # Generation 2: gen1 minigcc compiles its own source; 'ld' links it.
 # Generation 3: the ld-linked compiler compiles itself again; the gen3
@@ -274,6 +283,7 @@ clean:
 	rm -f *.o *.elf *.bin *.img ramdisk_data.c ramdisk.bin
 	rm -f $(PROGS_DIR)/*.o $(PROGS_DIR)/lxhello.elf $(PROGS_DIR)/ldhello.elf \
 	      $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf $(PROGS_DIR)/minigcc.elf \
+	      $(PROGS_DIR)/bin/cp $(PROGS_DIR)/bin/cp.s \
 	      $(PROGS_DIR)/ldhello.s $(PROGS_DIR)/w1.s $(PROGS_DIR)/fib.s \
 	      $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm $(PROGS_DIR)/minigcc.cvm
 

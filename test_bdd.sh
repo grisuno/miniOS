@@ -193,6 +193,23 @@ run t.elf
 poweroff"
 expect "exit code: 12"
 
+scenario "bin path runs an ELF as a plain command" "cp fib.c copy1.txt
+cat copy1.txt
+poweroff"
+expect "exit code: 0"
+expect "int fib"
+
+scenario "cp reports failures through its exit code" "cp missing.txt x.txt
+cp fib.c
+poweroff"
+expect "cannot open missing.txt"
+expect "exit code: 1"
+expect "usage: cp <src> <dst>"
+
+scenario "bin path entries are skipped for unknown commands" "nosuchcmd
+poweroff"
+expect "command not found: nosuchcmd"
+
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="
 [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"

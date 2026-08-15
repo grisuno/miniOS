@@ -47,6 +47,8 @@ ramdisk-entry-stride | s/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)/#define 
 redirect-captures-nothing | s/    redir_active = 1;/    redir_active = 0;/ | kernel.c
 status-leaks-into-redirect | s/int was = redirect_suspend();/int was = 0;/ | kernel.c
 editor-drops-unsaved | s/if (e->dirty) {/if (0) {/ | kernel.c
+bin-path-prefix | s/#define SHELL_BIN_PATH     \"bin\/\"/#define SHELL_BIN_PATH     \"bix\/\"/ | kernel.c
+bin-lookup-bypassed | s/ret = shell_run_from_path(argv\\[0\\], argc, argv);/ret = -1;/ | kernel.c
 "
 
 KILLED=0

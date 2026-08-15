@@ -1735,6 +1735,10 @@ void kexit(int code) {
 #define CMD_BUF_SZ 256
 #define MAX_ARGS   16
 
+#define SHELL_BIN_PATH     "bin/"
+#define SHELL_BIN_PATH_LEN 4
+#define SHELL_BIN_MAX_CMD  (RAMDISK_FNAME_LEN - SHELL_BIN_PATH_LEN - 2)
+
 static char cmd_buf[CMD_BUF_SZ];
 
 static void shell_prompt(void) { vga_puts("\nminiOS> "); }
@@ -2195,6 +2199,23 @@ static void shell_cmd_poweroff(void) {
     while (1) __asm__ volatile("hlt");
 }
 
+/* Resolve a command through the bin path: load bin/<cmd> from the ramdisk
+ * as a Linux ELF and run it with the original argv. Returns the exit code
+ * or -1 when the name is not eligible or no ELF exists there. */
+static int shell_run_from_path(const char *cmd, int argc, char **argv) {
+    if (kstrchr(cmd, '/')) return -1;
+    int clen = (int)kstrlen(cmd);
+    if (clen == 0 || clen > SHELL_BIN_MAX_CMD) return -1;
+    char binname[RAMDISK_FNAME_LEN + 1];
+    kmemset(binname, 0, sizeof(binname));
+    kmemcpy(binname, SHELL_BIN_PATH, SHELL_BIN_PATH_LEN);
+    kmemcpy(binname + SHELL_BIN_PATH_LEN, cmd, (unsigned long)clen);
+    char progname[RAMDISK_FNAME_LEN];
+    void *entry = 0;
+    if (!shell_load(binname, progname, &entry)) return -1;
+    return k_spawn(binname, argc, argv);
+}
+
 static void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
         vga_puts("Commands: help clear ls cat echo edit load run poweroff\n");
@@ -2202,6 +2223,7 @@ static void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
         vga_puts("  edit <file>        line editor for ramdisk files\n");
         vga_puts("  <cmd> > <file>     redirect command output to a file\n");
+        vga_puts("  <cmd> [args...]    run an ELF from bin/<cmd> (command path)\n");
         vga_puts("Toolchain: edit p.c; run minigcc p.c > p.s;\n");
         vga_puts("           run ld -f elf -o p.elf p.s; run p.elf\n");
     }
@@ -2289,10 +2311,11 @@ static void shell_exec_builtin(int argc, char **argv) {
         shell_report_exit(ret);
     }
     else {
-        /* Try to run as registered program */
         int ret = k_spawn(argv[0], argc, argv);
         if (ret == -1) {
-            shell_report("command not found: ", argv[0]);
+            ret = shell_run_from_path(argv[0], argc, argv);
+            if (ret < 0) shell_report("command not found: ", argv[0]);
+            else shell_report_exit(ret);
         } else {
             shell_report_exit(ret);
         }

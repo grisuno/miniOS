@@ -91,11 +91,18 @@ The image is attached as an IDE disk. The boot path uses INT 13h extended
 | `edit <file>` | line editor |
 | `load <file>` | load an ELF (`.o` relocatable, or a Linux executable) |
 | `run <name\|file> [args]` | run a program, an ELF or a `.cvm` module |
+| `<cmd> [args]` | run an ELF from `bin/<cmd>`: the Linux-style command path |
 | `<cmd> > <file>` | redirect command output to a ramdisk file |
 | `clear` / `poweroff` | console and power |
 
 Redirection captures what the command writes, not what the shell reports
 about it, so `run minigcc.o p.c > p.s` yields assembly a linker can consume.
+
+`bin/cp` is the first command-path utility: `cp fib.c x.txt` copies a
+ramdisk file without `run` or `load`. It is compiled from this repository's
+own `progs/bin/cp.c` through the miniGCC-to-ld chain, and the source ships
+on the ramdisk as `bin/cp.c`, so the utility can be rebuilt inside the OS
+by the OS.
 
 ## Editor
 
@@ -141,8 +148,34 @@ MiniOS runs three kinds of program:
 | `cvm_host.c` | host glue for the CVM interpreter |
 | `progs/*.c` | ramdisk contents: demo programs and the C sources they are built from |
 | `mkramdisk.py` | packs `progs/` into the ramdisk image |
+| `mcp/minios_mcp.py` | MCP bridge: boots the OS and exposes its console as tools |
+| `mcp/test_minios_mcp.py` | unit + QEMU BDD suite for the bridge |
+| `mcp/mutate_mcp.sh` | mutation testing for the bridge |
+| `skills/minios/SKILL.md` | agent skill: the edit/compile/link/run workflow over the bridge |
 | `test_bdd.sh` | behavioural suite |
 | `mutate.sh` | mutation testing |
+
+## Agent bridge (MCP + skill)
+
+`mcp/minios_mcp.py` exposes a running MiniOS as MCP tools: `minios_boot`,
+`minios_status`, `minios_send`, `minios_expect`, `minios_snapshot`,
+`minios_write`, `minios_cat`, `minios_poweroff`. The server owns the QEMU
+child and a pty-backed serial console; the companion skill
+(`skills/minios/SKILL.md`) teaches the edit/compile/link/run workflow, so an
+agent can write a C program inside the OS, build it with `minigcc.o` and
+`ld.o`, run it and read `exit code: N`, all without leaving the machine.
+
+```bash
+python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD (skips without QEMU)
+mcp/mutate_mcp.sh                                # every bridge mutant must die
+```
+
+The bridge is driven over stdio JSON-RPC, uses only the Python standard
+library, validates every input before a byte reaches the console (path
+whitelist, printable ASCII, editor line and buffer limits), and never leaks
+a QEMU process: the pid file under the system temp dir reaps stale
+instances and every exit path terminates the child. See `CLAUDE.md` for the
+full contract.
 
 ## Make targets
 

@@ -51,6 +51,10 @@ those upstreams alone, so:
 - `ramdisk.bin` lists the `Makefile` among its prerequisites: the file list
   lives there, so editing it must invalidate the image even when no
   individual file changed.
+- `progs/bin/` ships the first command-path utility: `cp`, compiled from
+  this repository's own `progs/bin/cp.c` through the miniGCC-to-ld chain,
+  with the source on the ramdisk too so the OS can rebuild the utility
+  from scratch without leaving the machine.
 
 ## Boot Path Contract
 Two stages, because a correct single-stage loader does not fit in 512 bytes.
@@ -122,6 +126,24 @@ out of the capture: a redirection captures what the command wrote, not what
 the shell reported about it. This is what makes `run minigcc.o p.c > p.s`
 produce assembly a linker can consume.
 
+Command resolution is a fixed order: builtin, registered program, then the
+command path. The path is the ramdisk directory prefix `SHELL_BIN_PATH`
+(`bin/`): a non-builtin name without a `/` is looked up as `bin/<cmd>`,
+loaded as an ELF and run with the original argv, so `cp fib.c x.txt` works
+without `run` or `load`, exactly like Linux `/bin`. Lookup bounds:
+the command must be 1..`SHELL_BIN_MAX_CMD` characters and contain no `/`,
+so a name can never escape the path prefix; the exit code is reported
+exactly as `run` reports it. Files that are not ELF are skipped and the
+name falls through to `command not found`.
+
+### Ramdisk names
+File names are at most `RAMDISK_FNAME_LEN - 1` characters. Names may
+contain `/`, which is how directories are expressed (`bin/cp`): the ramdisk
+is flat, the slash is data. `mkramdisk.py` derives each name from the path
+relative to the shared parent of the packed files, so `progs/bin/cp` ships
+as `bin/cp`. A name longer than the bound or a collision between two files
+is a build error, never a silent truncation that would make a lookup miss.
+
 ### Editor (`edit`)
 A line editor over ramdisk files: `h l p e a i d w x q q!`. Two invariants:
 - A buffer that did not hold the whole file is marked truncated and refuses
@@ -154,7 +176,88 @@ is forbidden; the answer to a survivor is a new scenario.
 make                # zero warnings
 ./test_bdd.sh       # all scenarios green
 ./mutate.sh         # every mutant killed
+python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
+mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
+
+## MCP Bridge Contract
+
+### Purpose
+`mcp/minios_mcp.py` exposes MiniOS as a programmable environment over the
+MCP protocol. It boots `os.img` in QEMU, drives the shell over a pty-backed
+serial console, and gives an agent tools to write, compile, link and run
+software inside the OS. The companion skill `skills/minios/SKILL.md` teaches
+the workflow; this section is the engineering contract.
+
+### Architecture
+One file per contract, Python 3 standard library only, no dependencies.
+
+- Transport: stdio JSON-RPC 2.0 (MCP): `initialize`, `tools/list`,
+  `tools/call`, `ping`; notifications are accepted and not answered.
+- QEMU is a child process owning a pty: serial console on the slave, server
+  on the master. The slave runs raw (no echo, no line discipline): the
+  kernel echoes input itself, so a cooked pty would duplicate every line.
+- A reader thread appends console output to a bounded ring buffer (oldest
+  bytes dropped, total counted). Marker waits search from a consume cursor,
+  so output already seen can never satisfy a later wait.
+- One QEMU child per server, guarded by a pid file under the system temp
+  dir. A stale QEMU process is reaped on boot; the child is terminated on
+  server exit and never left behind.
+
+### Tools
+| Tool | Contract |
+|------|----------|
+| `minios_status` | `{booted, pid, log_bytes, log_cap}`; never fails |
+| `minios_boot` | spawn QEMU, wait for the `miniOS> ` prompt, return boot log; idempotent when already booted |
+| `minios_snapshot` | tail of the log since the consume cursor (peek, does not consume) |
+| `minios_send` | send one shell line, wait for the next prompt, return the output in between (this is how `run p.elf` reports `exit code: N`) |
+| `minios_expect` | wait for a marker after the cursor; cursor advances to the end of the match |
+| `minios_write` | create or replace a ramdisk file through the editor (`edit`, `a` per line, `x`); returns the editor transcript |
+| `minios_cat` | print a ramdisk file |
+| `minios_poweroff` | `poweroff`, wait for `powering off` and QEMU exit, release the pid file |
+
+Every tool carries a `timeout_ms` parameter capped by a config constant; a
+wait that expires is an error, never a silent hang. The host shell is never
+invoked (`shell=False` everywhere); the only shell driven is the one inside
+MiniOS.
+
+### Validation
+- `minios_write` and `minios_cat` accept file names over a strict
+  character whitelist (`[A-Za-z0-9._/-]`, no leading `/`, no `..`, bounded
+  length). Content lines must be printable ASCII (32..126): that is what
+  the kernel readline can carry. Content is also bounded by the editor
+  limits (`EDIT_LINE_MAX` chars per line, `EDIT_MAX_LINES` lines): longer
+  input is rejected up front, because the kernel would truncate it
+  silently. Anything invalid is rejected before a single byte reaches the
+  console.
+- JSON-RPC input is parsed and validated; a malformed message is answered
+  with a JSON-RPC error, never an exception.
+- Buffer sizes and timeouts are bounded by named constants; the reader
+  thread is daemonized and the child is reaped through `atexit` and signal
+  handlers so no error path leaks a QEMU process or a pty.
+
+### Config
+Defaults are named constants; the environment overrides them
+(`MINIOS_IMAGE`, `QEMU`, `MINIOS_MEM`, `MINIOS_LOG_CAP`, the timeout
+family). The default image path is derived from the script's own directory,
+never from a host assumption.
+
+### Tests
+- `mcp/test_minios_mcp.py`: unit tests (protocol dispatch, validation,
+  buffer and cursor semantics, config) plus BDD scenarios that boot the
+  real image in QEMU and exercise the full edit/compile/link/run loop,
+  including the self-hosted `minigcc.elf`. QEMU scenarios skip cleanly
+  when QEMU or `os.img` is absent.
+- `mcp/mutate_mcp.sh`: one-line mutations of `minios_mcp.py`; every mutant
+  must be killed by the suite. A survivor is a test gap.
+
+### Skill
+`skills/minios/SKILL.md` documents the workflow an agent follows: boot once,
+write sources with `minios_write`, compile with `run minigcc.o f.c > f.s`,
+link with `run ld.o -f elf -o f.elf f.s`, run and read `exit code: N`,
+power off when done. Extending miniGCC, `ld` or cvm/cvm2 happens on the host
+against the sibling repositories (clone to a scratch dir, `make`, suites);
+only the result travels into the OS.
 
 ## Code Standards
 - English only, no emojis, no inline commentary; docstrings above the code
