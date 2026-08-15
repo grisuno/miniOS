@@ -159,3 +159,5 @@ MiniOS runs three kinds of program:
 | `clean` | remove every build product |
 
 See `CLAUDE.md` for the full engineering contract.
+
+[https://medium.com/@lazyown.redteam/because-i-can-the-most-dangerous-words-in-a-world-of-subscription-based-obedience-05f38f99cd36](https://medium.com/@lazyown.redteam/because-i-can-the-most-dangerous-words-in-a-world-of-subscription-based-obedience-05f38f99cd36)
