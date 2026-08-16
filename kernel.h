@@ -26,6 +26,13 @@ int  serial_getc(void);
 #define KEY_LSHIFT    0x2A
 #define KEY_RSHIFT    0x36
 #define KEY_CAPS      0x3A
+#define KEY_E0        0xE0
+#define KEY_UP        0x48
+#define KEY_DOWN      0x50
+#define KEY_ESC       0x1B
+#define KEY_CSI       '['
+#define KEY_ARR_UP    'A'
+#define KEY_ARR_DOWN  'B'
 
 int  kbd_read(void);
 int  kbd_available(void);

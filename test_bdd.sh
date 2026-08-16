@@ -265,6 +265,32 @@ scenario "bin path entries are skipped for unknown commands" "nosuchcmd
 poweroff"
 expect "command not found: nosuchcmd"
 
+scenario "shell up arrow recalls the last command" "run fib.cvm
+$(printf '\033[A')
+poweroff"
+expect_count 2 "exit code: 55"
+expect "powering off"
+
+scenario "shell arrows scroll history and restore the live line" "run fib.cvm
+run w1.cvm
+$(printf '\033[A\033[B')
+run fib.cvm
+poweroff"
+expect_count 2 "exit code: 55"
+expect_count 1 "hola cvm"
+expect "powering off"
+
+scenario "repeated cvm runs do not exhaust the kernel heap" "run fib.cvm
+run w1.cvm
+run fib.cvm
+run w1.cvm
+run fib.cvm
+run fib.cvm
+poweroff"
+expect_count 4 "exit code: 55"
+expect_count 2 "hola cvm"
+expect "powering off"
+
 scenario "net reports the slirp configuration" "net
 poweroff"
 expect "rtl8139"

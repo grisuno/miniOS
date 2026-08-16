@@ -127,6 +127,17 @@ captures what the command wrote, not what the shell reported about it.
 This is what makes `run minigcc.o p.c > p.s` produce assembly a linker can
 consume.
 
+The prompt keeps a bounded command history (`SHELL_HIST_MAX` entries).
+Up arrow (ESC `[` `A`, or PS/2 make code `E0 48`) recalls the previous
+command onto the edit line; down arrow (ESC `[` `B`, `E0 50`) moves
+forward again, back to the live line. The recalled text replaces the
+line the user was typing, which is preserved while scrolling. The
+history stores commands on submission (even unknown ones), skips
+consecutive duplicates, and survives only until reboot. A bare ESC or
+an incomplete escape sequence is discarded, never inserted into the
+line, and the editor (`edit`) is unaffected: history is a shell-prompt
+feature, not a readline library.
+
 Command resolution is a fixed order: builtin, registered program, then the
 command path. The path is the ramdisk directory prefix `SHELL_BIN_PATH`
 (`bin/`): a non-builtin name without a `/` is looked up as `bin/<cmd>`,

@@ -208,6 +208,35 @@ static const unsigned char kbd_us_shift[128] = {
 
 static int kbd_shift;
 
+/* PS/2 set 1 arrow keys arrive as E0-prefixed make codes; they are
+ * translated into the same three-byte CSI sequence a serial terminal
+ * sends (ESC [ A / ESC [ B) and buffered here. */
+#define KBD_QUEUE_LEN 4
+static unsigned char kbd_queue[KBD_QUEUE_LEN];
+static int kbd_q_head, kbd_q_tail;
+static int kbd_e0;
+
+static void kbd_q_push(unsigned char c) {
+    int next = (kbd_q_tail + 1) % KBD_QUEUE_LEN;
+    if (next == kbd_q_head) return;
+    kbd_queue[kbd_q_tail] = c;
+    kbd_q_tail = next;
+}
+
+static int kbd_q_empty(void) { return kbd_q_head == kbd_q_tail; }
+
+static int kbd_q_pop(void) {
+    if (kbd_q_empty()) return -1;
+    unsigned char c = kbd_queue[kbd_q_head];
+    kbd_q_head = (kbd_q_head + 1) % KBD_QUEUE_LEN;
+    return (int)c;
+}
+
+static int kbd_q_peek(void) {
+    if (kbd_q_empty()) return -1;
+    return (int)kbd_queue[kbd_q_head];
+}
+
 int kbd_available(void) {
     unsigned char s;
     __asm__ volatile("inb $0x64, %0" : "=a"(s));
@@ -215,6 +244,7 @@ int kbd_available(void) {
 }
 
 int kbd_read(void) {
+    if (!kbd_q_empty()) return kbd_q_pop();
     while (!kbd_available()) __asm__ volatile("pause");
     unsigned char sc;
     __asm__ volatile("inb $0x60, %0" : "=a"(sc));
@@ -222,6 +252,19 @@ int kbd_read(void) {
     if (sc & 0x80) { /* key release */
         sc &= 0x7F;
         if (sc == KEY_LSHIFT || sc == KEY_RSHIFT) kbd_shift = 0;
+        if (sc == KEY_E0) kbd_e0 = 0;
+        return -1;
+    }
+
+    if (sc == KEY_E0) { kbd_e0 = 1; return -1; }
+
+    if (kbd_e0) {
+        kbd_e0 = 0;
+        if (sc == KEY_UP) {
+            kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_UP);
+        } else if (sc == KEY_DOWN) {
+            kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_DOWN);
+        }
         return -1;
     }
 
@@ -239,6 +282,7 @@ int kbd_read(void) {
  * ================================================================ */
 
 #define ALLOC_MAGIC 0xDEADBEEF
+#define FREE_MAGIC  0xFEEDC0DE
 #define ALIGN_UP(x, a) (((x) + (a) - 1) & ~((a) - 1))
 
 typedef struct Block {
@@ -278,6 +322,17 @@ void *kmalloc(unsigned long size) {
         if (b->size >= size) {
             if (prev) prev->next = b->next;
             else       free_list  = b->next;
+            /* Split the remainder back into the free list: reusing a
+             * big block for a small request must never swallow the
+             * space the request did not use. */
+            unsigned long rem = b->size - size;
+            if (rem >= BLOCK_HDR_SZ + 16) {
+                Block *tail = (Block *)((char *)b + BLOCK_HDR_SZ + size);
+                tail->magic = FREE_MAGIC;
+                tail->size  = rem - BLOCK_HDR_SZ;
+                tail->next  = free_list;
+                free_list   = tail;
+            }
             b->magic = ALLOC_MAGIC;
             b->size  = size;
             return (char *)b + BLOCK_HDR_SZ;
@@ -299,6 +354,33 @@ void kfree(void *ptr) {
     if (!ptr) return;
     Block *b = (Block *)((char *)ptr - BLOCK_HDR_SZ);
     if (b->magic != ALLOC_MAGIC) return;
+    b->magic = FREE_MAGIC;
+    /* Coalesce with physically adjacent free blocks so consecutive
+     * frees rebuild one big block instead of a chain of crumbs. */
+    int merged = 1;
+    while (merged) {
+        merged = 0;
+        Block *prev = 0, *fb = free_list;
+        while (fb) {
+            if ((char *)fb + BLOCK_HDR_SZ + fb->size == (char *)b) {
+                fb->size += BLOCK_HDR_SZ + b->size;
+                if (prev) prev->next = fb->next;
+                else       free_list  = fb->next;
+                b = fb;
+                merged = 1;
+                break;
+            }
+            if ((char *)b + BLOCK_HDR_SZ + b->size == (char *)fb) {
+                b->size += BLOCK_HDR_SZ + fb->size;
+                if (prev) prev->next = fb->next;
+                else       free_list  = fb->next;
+                merged = 1;
+                break;
+            }
+            prev = fb;
+            fb = fb->next;
+        }
+    }
     b->next = free_list;
     free_list = b;
 }
@@ -313,9 +395,21 @@ void *kcalloc(unsigned long nmemb, unsigned long size) {
 void *krealloc(void *ptr, unsigned long size) {
     if (!ptr) return kmalloc(size);
     if (size == 0) { kfree(ptr); return 0; }
+    size = ALIGN_UP(size, 16);
     Block *b = (Block *)((char *)ptr - BLOCK_HDR_SZ);
     if (b->magic != ALLOC_MAGIC) return 0;
-    if (b->size >= size) { b->size = size; return ptr; }
+    if (b->size >= size) {
+        unsigned long rem = b->size - size;
+        if (rem >= BLOCK_HDR_SZ + 16) {
+            Block *tail = (Block *)((char *)b + BLOCK_HDR_SZ + size);
+            tail->magic = FREE_MAGIC;
+            tail->size  = rem - BLOCK_HDR_SZ;
+            tail->next  = free_list;
+            free_list   = tail;
+        }
+        b->size = size;
+        return ptr;
+    }
     void *newp = kmalloc(size);
     if (newp) {
         kmemcpy(newp, ptr, b->size);
@@ -1872,13 +1966,28 @@ void kexit(int code) {
 
 static char cmd_buf[CMD_BUF_SZ];
 
+#define SHELL_HIST_MAX 16
+static char shell_hist[SHELL_HIST_MAX][CMD_BUF_SZ];
+static int  shell_hist_count;
+static int  shell_hist_idx = -1;
+static char shell_line_saved[CMD_BUF_SZ];
+static int  shell_line_saved_pos;
+
 static void shell_prompt(void) { vga_puts("\nminiOS> "); }
 
 static void shell_exec_builtin(int argc, char **argv);
 
+static int console_pushback = -1;
+
 /* Blocking read from either the PS/2 keyboard or COM1 serial line. */
 static int console_getc(void) {
+    if (console_pushback >= 0) {
+        int c = console_pushback;
+        console_pushback = -1;
+        return c;
+    }
     while (1) {
+        if (!kbd_q_empty()) return kbd_q_pop();
         if (serial_available()) {
             int c = serial_getc();
             if (c >= 0) return c;
@@ -1889,6 +1998,23 @@ static int console_getc(void) {
         }
         __asm__ volatile("pause");
     }
+}
+
+/* Next buffered byte without consuming it, or -1 when nothing is
+ * available right now. Used to tell an ESC prefix from a complete
+ * escape sequence, which always arrives in one burst. */
+static int console_peek(void) {
+    if (console_pushback >= 0) return console_pushback;
+    if (!kbd_q_empty()) return kbd_q_peek();
+    if (serial_available()) {
+        console_pushback = serial_getc();
+        return console_pushback;
+    }
+    if (kbd_available()) {
+        console_pushback = kbd_read();
+        return console_pushback;
+    }
+    return -1;
 }
 
 /* Read one line into buf (at most size-1 chars). Echoes input and
@@ -1918,8 +2044,109 @@ static void shell_readline_buf(char *buf, int size) {
     }
 }
 
+static void shell_readline_hist(char *buf, int size);
+
 static void shell_readline(void) {
-    shell_readline_buf(cmd_buf, CMD_BUF_SZ);
+    shell_readline_hist(cmd_buf, CMD_BUF_SZ);
+}
+
+/* Redraw the edit line with the recalled text: erase what is shown,
+ * then write the replacement into buf and onto the console. */
+static void shell_hist_show(char *buf, int size, int *pos, const char *text) {
+    int i;
+    for (i = 0; i < *pos; i++) vga_putc(' ');
+    for (i = 0; i < *pos; i++) vga_putc('\b');
+    kmemset(buf, 0, (unsigned long)size);
+    int n = 0;
+    while (text[n] && n < size - 1) {
+        buf[n] = text[n];
+        vga_putc(text[n]);
+        n++;
+    }
+    *pos = n;
+}
+
+/* Move through the history ring: up recalls older entries, down moves
+ * forward again and finally restores the live line. */
+static void shell_hist_nav(char *buf, int size, int *pos, int up) {
+    if (shell_hist_count == 0) return;
+    if (up) {
+        if (shell_hist_idx < 0) {
+            kmemcpy(shell_line_saved, buf, (unsigned long)size);
+            shell_line_saved_pos = *pos;
+            shell_hist_idx = shell_hist_count - 1;
+        } else if (shell_hist_idx > 0) {
+            shell_hist_idx--;
+        } else {
+            return;
+        }
+        shell_hist_show(buf, size, pos, shell_hist[shell_hist_idx]);
+    } else {
+        if (shell_hist_idx < 0) return;
+        if (shell_hist_idx >= shell_hist_count - 1) {
+            shell_hist_idx = -1;
+            shell_hist_show(buf, size, pos, shell_line_saved);
+            *pos = shell_line_saved_pos;
+            return;
+        }
+        shell_hist_idx++;
+        shell_hist_show(buf, size, pos, shell_hist[shell_hist_idx]);
+    }
+}
+
+/* Shell prompt readline: like shell_readline_buf plus command history.
+ * Up arrow (ESC [ A) recalls the previous command, down arrow moves
+ * forward. Any editing key while scrolling returns to the live line. */
+static void shell_readline_hist(char *buf, int size) {
+    int pos = 0;
+    kmemset(buf, 0, (unsigned long)size);
+    while (1) {
+        int c = console_getc();
+        if (c < 0) continue;
+        if (c == '\n' || c == '\r') {
+            vga_putc('\n');
+            buf[pos] = 0;
+            shell_hist_idx = -1;
+            if (buf[0] && (shell_hist_count == 0 ||
+                kstrcmp(shell_hist[shell_hist_count - 1], buf) != 0)) {
+                if (shell_hist_count == SHELL_HIST_MAX) {
+                    for (int i = 1; i < SHELL_HIST_MAX; i++)
+                        kmemcpy(shell_hist[i - 1], shell_hist[i],
+                                (unsigned long)CMD_BUF_SZ);
+                    shell_hist_count--;
+                }
+                kmemcpy(shell_hist[shell_hist_count], buf,
+                        (unsigned long)CMD_BUF_SZ);
+                shell_hist_count++;
+            }
+            return;
+        }
+        if (c == KEY_ESC) {
+            if (console_peek() == KEY_CSI) {
+                console_getc();
+                int b = console_peek();
+                if (b == KEY_ARR_UP || b == KEY_ARR_DOWN) {
+                    console_getc();
+                    shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);
+                }
+            }
+            continue;
+        }
+        if (c == '\b' || c == 0x7F || (c >= 32 && c < 127)) {
+            if (shell_hist_idx >= 0) shell_hist_idx = -1;
+        }
+        if (c == '\b' || c == 0x7F) {
+            if (pos > 0) {
+                pos--;
+                vga_putc('\b');
+            }
+            continue;
+        }
+        if (pos < size - 1 && c >= 32 && c < 127) {
+            buf[pos++] = (char)c;
+            vga_putc((char)c);
+        }
+    }
 }
 
 static int shell_parse(char *line, char **argv, int max_args) {
