@@ -46,6 +46,7 @@ DISK_ALIGN_SECTORS  = 2048
 
 QEMU_DRIVE = -drive file=os.img,format=raw,if=ide
 QEMU_MEM   = -m 256M
+QEMU_NIC   = -nic user,model=rtl8139
 
 CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
@@ -57,7 +58,9 @@ PROGS     = $(PROGS_DIR)/hello.o $(PROGS_DIR)/ftest.o $(PROGS_DIR)/minigcc.o \
             $(PROGS_DIR)/ldhello.elf $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf \
             $(PROGS_DIR)/minigcc.elf $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm \
             $(PROGS_DIR)/minigcc.cvm $(PROGS_DIR)/bin/cp $(PROGS_DIR)/bin/cp.c \
-            $(PROGS_DIR)/test.c $(PROGS_DIR)/fib.c $(PROGS_DIR)/README.txt
+            $(PROGS_DIR)/test.c $(PROGS_DIR)/fib.c $(PROGS_DIR)/README.txt \
+            $(PROGS_DIR)/http.c $(PROGS_DIR)/http.elf \
+            $(PROGS_DIR)/freedom.c $(PROGS_DIR)/bin/freedom
 
 all: os.img
 
@@ -173,6 +176,9 @@ $(PROGS_DIR)/w1.cvm: $(PROGS_DIR)/w1.s $(LD_TOOL)
 $(PROGS_DIR)/minigcc.cvm: $(TOOLS_DIR)/g2.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
+$(PROGS_DIR)/http.elf: $(PROGS_DIR)/http.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+
 # ── Command path utilities (bin/<cmd>, compiled by the toolchain) ──
 # bin/cp: the C source ships on the ramdisk as bin/cp.c and the ELF as
 # bin/cp, which the shell resolves for the plain command `cp`.
@@ -180,6 +186,14 @@ $(PROGS_DIR)/bin/cp.s: $(PROGS_DIR)/bin/cp.c $(MINIGCC_BIN)
 	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
 
 $(PROGS_DIR)/bin/cp: $(PROGS_DIR)/bin/cp.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+
+# ── freedom: the headless text browser (curlfree-style engine,
+#    FreeDom-style omnibox), rebuilt from its C source at build time.
+$(PROGS_DIR)/freedom.s: $(PROGS_DIR)/freedom.c $(MINIGCC_BIN)
+	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
+
+$(PROGS_DIR)/bin/freedom: $(PROGS_DIR)/freedom.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 # ── Self-hosted compiler (compiled by minigcc, linked by 'ld') ────
@@ -242,11 +256,14 @@ stage2.bin: stage2.elf
 kernel.o: kernel.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+net.o: net.c net.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 ramdisk_data.o: ramdisk_data.c
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o ramdisk_data.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o ramdisk_data.o -o $@
+kernel.elf: kernel.o net.o ramdisk_data.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o ramdisk_data.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@
@@ -267,13 +284,18 @@ os.img: stage1.bin stage2.bin kernel.bin
 	 echo "image:   $$img sectors"
 
 run: os.img
-	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM)
+	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC)
 
 debug: os.img
-	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) -monitor stdio -no-reboot
+	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) -monitor stdio -no-reboot
+
+# Boot paused under the gdb stub. Attach with:
+#   gdb -ex 'target remote :1234' -ex 'add-symbol-file kernel.elf 0x100000'
+gdb: os.img
+	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) -display none -serial stdio -s -S
 
 serial: os.img
-	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) -display none -serial stdio
+	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) -display none -serial stdio
 
 test: os.img
 	./test_bdd.sh
@@ -289,5 +311,5 @@ clean:
 
 .SECONDARY:
 
-.PHONY: all run clean debug serial test sources sources-update \
+.PHONY: all run clean debug gdb serial test sources sources-update \
         sources-status toolchain selfhost

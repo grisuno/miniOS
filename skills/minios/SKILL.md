@@ -59,6 +59,42 @@ correct signal that nothing new happened.
 
 `minios_snapshot` shows the unconsumed console tail without consuming it.
 
+## Internet inside the OS
+
+The headless browser ships as `bin/freedom` (curlfree-style engine,
+FreeDom-style omnibox):
+
+```text
+minios_send {line: "freedom example.com"}       omnibox: a query searches
+minios_send {line: "freedom http://10.0.2.2:8899/README.txt"}
+```
+
+No `run` prefix: `bin/freedom` resolves through the command path like
+`cp`. It speaks plain http only; `https://` is refused with a diagnostic
+(exit code 2), dangerous schemes are searched, never executed, and page
+bytes pass a UTF-8 gate before reaching the console. For a fetch target,
+serve files from the host (for example `python3 -m http.server 8899`) and
+address it as `http://10.0.2.2:8899/...`.
+
+## The addon marketplace
+
+Programs travel from git into the OS through `addons/*.yaml` (repo URL,
+files, build and verify shell lines):
+
+```text
+minios_addons                      list addons and their installed state
+minios_install {name: "freedom"}   clone, upload, build inside the OS,
+                                   run the verify lines, record the install
+```
+
+An install splits each source into editor-sized parts, uploads them with
+`minios_write`, reassembles with `cat` redirects (append included), then
+runs the `build` lines and asserts the `verify` exit codes. A failure at
+any step aborts and never records a half-installed package. Dogfooding the
+marketplace end to end is `mcp/mcp_dogfood.py <addons-dir>`: it drives the
+MCP server over stdio, installs `freedom` from a git repo and browses with
+the installed binary.
+
 ## Error recovery
 
 A `minios_send` that times out means the command did not finish (or a

@@ -1,4 +1,5 @@
 #include "kernel.h"
+#include "net.h"
 
 /* ================================================================
  *  Port I/O helpers
@@ -33,7 +34,6 @@ static int serial_tx_ready(void) { return inb(COM1 + 5) & 0x20; }
 static int serial_rx_ready(void) { return inb(COM1 + 5) & 0x01; }
 
 void serial_putc(char c) {
-    if (c == '\n') { while (!serial_tx_ready()); outb(COM1, '\r'); }
     while (!serial_tx_ready());
     outb(COM1, (unsigned char)c);
 }
@@ -617,25 +617,120 @@ int ramdisk_list(RDFile **out, int max) {
     return n;
 }
 
+/* Remove an entry and compact the data area. Files after `f` are shifted
+ * left by f->size and the directory slot is dropped. Returns 1 on success,
+ * 0 when the pointer is not a live entry. */
+int ramdisk_delete(RDFile *f) {
+    unsigned i;
+    int idx = -1;
+    if (!rd || !f) return 0;
+    for (i = 0; i < rd->count; i++) {
+        if (&rd->files[i] == f) { idx = (int)i; break; }
+    }
+    if (idx < 0) return 0;
+
+    unsigned old_end = f->offset + f->size;
+    unsigned move_len = rd_used - old_end;
+    kmemmove(rd_data + f->offset, rd_data + old_end, move_len);
+    for (i = 0; i < rd->count; i++)
+        if (&rd->files[i] != f && rd->files[i].offset >= old_end)
+            rd->files[i].offset -= f->size;
+    for (i = (unsigned)idx; i + 1 < rd->count; i++)
+        rd->files[i] = rd->files[i + 1];
+    rd->count--;
+    rd_used -= f->size;
+    return 1;
+}
+
 
 /* ================================================================
  *  FILE interface (wraps ramdisk)
  * ================================================================ */
 
+/* Working directory. Root is the empty string; every other cwd ends in '/'.
+ * A directory is a ramdisk name ending in '/': it exists when the exact
+ * entry exists or some file name starts with it. */
+static char fs_cwd[RAMDISK_FNAME_LEN];
+
+/* Resolve a path against the cwd into `out` (cap >= RAMDISK_FNAME_LEN).
+ * A leading '/' starts from the root, '..' pops one component, '.' and
+ * empty components are skipped. Returns 1 on success; a name that does
+ * not fit is rejected like a missing file, never truncated. */
+static int fs_resolve(const char *path, char *out, unsigned cap) {
+    unsigned len = 0;
+    const char *p = path;
+    out[0] = 0;
+    if (*p == '/') p++;
+    else {
+        kmemcpy(out, fs_cwd, kstrlen(fs_cwd) + 1);
+        len = (unsigned)kstrlen(out);
+    }
+    while (*p) {
+        const char *start = p;
+        while (*p && *p != '/') p++;
+        unsigned clen = (unsigned)(p - start);
+        if (clen == 0 || (clen == 1 && start[0] == '.')) { if (*p) p++; continue; }
+        if (clen == 2 && start[0] == '.' && start[1] == '.') {
+            if (len > 0) {
+                len--;
+                while (len > 0 && out[len - 1] != '/') len--;
+                out[len] = 0;
+            }
+            if (*p) p++;
+            continue;
+        }
+        if (len + 1 + clen >= cap) return 0;
+        if (len > 0 && out[len - 1] != '/') out[len++] = '/';
+        kmemcpy(out + len, start, clen);
+        len += clen;
+        out[len] = 0;
+        if (*p) p++;
+    }
+    return 1;
+}
+
+/* Does the directory `dir` (ending in '/') exist? The root always does. */
+static int fs_dir_exists(const char *dir) {
+    unsigned i;
+    if (!dir[0]) return 1;
+    for (i = 0; i < rd->count; i++)
+        if (kstrncmp(rd->files[i].name, dir, kstrlen(dir)) == 0) return 1;
+    return 0;
+}
+
+/* Return 1 when the resolved name refers to a directory: a trailing '/'
+ * always does, otherwise the name denotes a directory when no exact file
+ * entry exists and some entry starts with `<name>/`. */
+static int fs_is_dir(const char *resolved) {
+    unsigned len = (unsigned)kstrlen(resolved);
+    if (len == 0) return 0;
+    if (resolved[len - 1] == '/') return 1;
+    if (ramdisk_open(resolved)) return 0;
+    char with_slash[RAMDISK_FNAME_LEN];
+    if (len + 1 >= sizeof(with_slash)) return 0;
+    kmemcpy(with_slash, resolved, len);
+    with_slash[len] = '/';
+    with_slash[len + 1] = 0;
+    return fs_dir_exists(with_slash);
+}
+
 KFILE *kfopen(const char *path, const char *mode) {
+    char resolved[RAMDISK_FNAME_LEN];
+    if (!fs_resolve(path, resolved, sizeof(resolved))) return 0;
+    if (fs_is_dir(resolved)) return 0;      /* never open a directory */
     KFILE *f = kmalloc(sizeof(KFILE));
     if (!f) return 0;
     kmemset(f, 0, sizeof(KFILE));
-    f->rf = ramdisk_open(path);
-    if (!f->rf && mode[0] == 'w') {
-        f->rf = ramdisk_create(path, 0);
+    f->rf = ramdisk_open(resolved);
+    if (!f->rf && (mode[0] == 'w' || mode[0] == 'a')) {
+        f->rf = ramdisk_create(resolved, 0);
         if (!f->rf) { kfree(f); return 0; }
     }
     if (!f->rf) { kfree(f); return 0; }
-    f->pos  = 0;
-    f->mode = (mode[0] == 'w') ? 1 : 0;
-    if (f->mode) {
-        if (f->rf->size && !ramdisk_resize(f->rf, 0)) { kfree(f); return 0; }
+    f->mode = (mode[0] == 'w') ? 1 : ((mode[0] == 'a') ? 2 : 0);
+    f->pos  = (f->mode == 2) ? f->rf->size : 0;
+    if (f->mode != 0) {
+        if (f->mode == 1 && f->rf->size && !ramdisk_resize(f->rf, 0)) { kfree(f); return 0; }
         f->wbuf = kmalloc(4096);
         f->wcap = 4096;
         f->wsize = 0;
@@ -647,7 +742,7 @@ KFILE *kfopen(const char *path, const char *mode) {
 int kfclose(KFILE *f) {
     int rc = 0;
     if (!f) return 0;
-    if (f->mode == 1) rc = kfflush(f);
+    if (f->mode != 0) rc = kfflush(f);
     if (f->wbuf) kfree(f->wbuf);
     kfree(f);
     return rc;
@@ -711,7 +806,7 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
         for (i = 0; i < bytes; i++) vga_putc(b[i]);
         return n;
     }
-    if (f->mode != 1) return 0;
+    if (f->mode != 1 && f->mode != 2) return 0;
     unsigned long bytes = size * n;
     if (bytes > RD_DATA_MAX || f->wsize > RD_DATA_MAX - bytes) return 0;
     if (!f->wbuf) {
@@ -750,10 +845,11 @@ long kftell(KFILE *f) {
 }
 
 int kfflush(KFILE *f) {
-    if (!f || !f->rf || f->mode != 1) return 0;
+    if (!f || !f->rf || f->mode == 0) return 0;
     if (f->wbuf && f->wsize > 0) {
-        if (!ramdisk_resize(f->rf, f->wsize)) return -1;
-        ramdisk_write(f->rf, f->wbuf, 0, f->wsize);
+        unsigned base = (f->mode == 2) ? (unsigned)(f->pos - f->wsize) : 0;
+        if (!ramdisk_resize(f->rf, base + f->wsize)) return -1;
+        ramdisk_write(f->rf, f->wbuf, base, f->wsize);
         f->wsize = 0;
     }
     return 0;
@@ -1521,10 +1617,30 @@ static int console_getc(void); /* defined in the shell section below */
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };
 
+#define SYSCALL_TRACE 0
+
+static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6);
+
 long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);
+long syscall_trace_enabled(void);
+void syscall_trace_set(int on);
+
+static int s_trace_enabled = SYSCALL_TRACE;
+
+long syscall_trace_enabled(void) { return s_trace_enabled; }
+void syscall_trace_set(int on) { s_trace_enabled = on ? 1 : 0; }
 
 long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a4; (void)a5; (void)a6;
+    long ret;
+    if (s_trace_enabled)
+        kprintf("syscall %d(%d, %d, %d, %d, %d, %d)",
+                (int)n, (int)a1, (int)a2, (int)a3, (int)a4, (int)a5, (int)a6);
+    ret = ksyscall_dispatch(n, a1, a2, a3, a4, a5, a6);
+    if (s_trace_enabled) kprintf(" = %d\n", (int)ret);
+    return ret;
+}
+
+static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
     switch (n) {
     case 0: { /* read */
         char *buf = (char *)a2; long cnt = a3, i = 0;
@@ -1573,6 +1689,7 @@ long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
         return fd;
     }
     case 3: /* close */
+        if (a1 >= NET_FD_BASE) return net_sys_close(a1);
         if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
             kfclose(kfd_table[a1]); kfd_table[a1] = 0;
         }
@@ -1609,6 +1726,20 @@ long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
         exec_exit_code = (int)a1;
         klongjmp(&exec_return, 1);
         return 0; /* unreachable */
+    case 41:             /* socket */
+        return net_sys_socket(a1, a2, a3);
+    case 42:             /* connect */
+        return net_sys_connect(a1, a2, a3);
+    case 44:             /* sendto */
+        return net_sys_sendto(a1, a2, a3, a4, a5, a6);
+    case 45:             /* recvfrom */
+        return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);
+    case 48:             /* shutdown */
+        return net_sys_shutdown(a1, a2);
+    case 7:              /* poll */
+        return net_sys_poll(a1, a2, a3);
+    case 200:            /* MiniOS: hostname resolution */
+        return net_sys_dns(a1);
     default:
         return -38; /* ENOSYS */
     }
@@ -1844,7 +1975,7 @@ static int redirect_begin(void) {
 /* Stop capturing and store the captured bytes in `path`. Returns 0 on
  * success. The capture is released on every path so that a failure cannot
  * leave the console silently detached from the screen. */
-static int redirect_commit(const char *path) {
+static int redirect_commit(const char *path, int append_mode) {
     KFILE *f;
     unsigned long written;
     int rc;
@@ -1852,7 +1983,7 @@ static int redirect_commit(const char *path) {
     redir_active = 0;
     if (redir_overflow) { redir_len = 0; return -1; }
 
-    f = kfopen(path, "w");
+    f = kfopen(path, append_mode ? "a" : "w");
     if (!f) { redir_len = 0; return -1; }
     written = redir_len ? kfwrite(redir_buf, 1, redir_len, f) : 0;
     rc = kfclose(f);
@@ -1861,17 +1992,23 @@ static int redirect_commit(const char *path) {
     return rc;
 }
 
-/* Split a `> file` redirection off the end of a parsed command line.
- * Returns 1 when a redirection was found, 0 when there was none and -1 when
- * the syntax is incomplete. On success argc is trimmed to the command. */
-static int shell_take_redirect(int *argc, char **argv, char **path) {
+/* Split a `> file` / `>> file` redirection off the end of a parsed command
+ * line. Returns 1 when a redirection was found, 0 when there was none and
+ * -1 when the syntax is incomplete. On success argc is trimmed to the
+ * command and append_mode is set for `>>`. */
+static int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode) {
     int i;
     *path = 0;
+    *append_mode = 0;
     for (i = 0; i < *argc; i++) {
         if (argv[i][0] != '>') continue;
-        if (argv[i][1]) {
+        if (argv[i][1] == '>') {
+            *append_mode = 1;
+            if (argv[i][2]) *path = argv[i] + 2;
+        } else if (argv[i][1]) {
             *path = argv[i] + 1;
-        } else {
+        }
+        if (!*path) {
             if (i + 1 >= *argc) return -1;
             *path = argv[i + 1];
         }
@@ -1895,7 +2032,8 @@ void shell_run(void) {
         if (argc == 0) continue;
 
         char *redir_path = 0;
-        int redirected = shell_take_redirect(&argc, argv, &redir_path);
+        int redir_append = 0;
+        int redirected = shell_take_redirect(&argc, argv, &redir_path, &redir_append);
         if (redirected < 0) {
             vga_puts("syntax: > needs a target file\n");
             continue;
@@ -1911,7 +2049,7 @@ void shell_run(void) {
 
         shell_exec_builtin(argc, argv);
 
-        if (redirected && redirect_commit(redir_path) != 0)
+        if (redirected && redirect_commit(redir_path, redir_append) != 0)
             kprintf("redirect: cannot write %s\n", redir_path);
     }
 }
@@ -1920,16 +2058,22 @@ void shell_run(void) {
  * Returns 1 for an ET_REL program, 2 for an ET_EXEC/ET_DYN Linux process,
  * 0 on failure.  progname_out must hold at least 32 bytes. */
 static int shell_load(const char *fname, char *progname_out, void **entry_out) {
-    RDFile *f = ramdisk_open(fname);
+    char resolved[RAMDISK_FNAME_LEN];
+    if (!fs_resolve(fname, resolved, sizeof(resolved)) || fs_is_dir(resolved))
+        return 0;
+    RDFile *f = ramdisk_open(resolved);
     if (!f) return 0;
     unsigned char *data = kmalloc(f->size);
     if (!data) return 0;
     ramdisk_read(f, data, 0, f->size);
 
-    const char *dot = kstrchr(fname, '.');
-    int nl = dot ? (int)(dot - fname) : (int)kstrlen(fname);
+    const char *base = resolved;
+    const char *slash = kstrchr(base, '/');
+    while (slash) { base = slash + 1; slash = kstrchr(base, '/'); }
+    const char *dot = kstrchr(base, '.');
+    int nl = dot ? (int)(dot - base) : (int)kstrlen(base);
     if (nl > 30) nl = 30;
-    kmemcpy(progname_out, fname, nl);
+    kmemcpy(progname_out, base, nl);
     progname_out[nl] = 0;
 
     int kind = 0;
@@ -2169,6 +2313,15 @@ static void shell_cmd_edit(int argc, char **argv) {
         vga_puts("usage: edit <file>\n");
         return;
     }
+    char resolved[RAMDISK_FNAME_LEN];
+    if (!fs_resolve(argv[1], resolved, sizeof(resolved))) {
+        kprintf("edit: %s: cannot open\n", argv[1]);
+        return;
+    }
+    if (fs_is_dir(resolved)) {
+        kprintf("edit: %s: is a directory\n", argv[1]);
+        return;
+    }
     EditBuf *e = edit_alloc(argv[1]);
     if (!e) {
         vga_puts("edit: out of memory\n");
@@ -2199,29 +2352,39 @@ static void shell_cmd_poweroff(void) {
     while (1) __asm__ volatile("hlt");
 }
 
-/* Resolve a command through the bin path: load bin/<cmd> from the ramdisk
- * as a Linux ELF and run it with the original argv. Returns the exit code
- * or -1 when the name is not eligible or no ELF exists there. */
+/* Resolve a command through the bin path: load /bin/<cmd> (root-anchored,
+ * like Linux /bin, so the cwd never changes where commands are found) from
+ * the ramdisk as a Linux ELF and run it with the original argv. Returns
+ * the exit code or -1 when the name is not eligible or no ELF exists. */
 static int shell_run_from_path(const char *cmd, int argc, char **argv) {
     if (kstrchr(cmd, '/')) return -1;
     int clen = (int)kstrlen(cmd);
     if (clen == 0 || clen > SHELL_BIN_MAX_CMD) return -1;
     char binname[RAMDISK_FNAME_LEN + 1];
     kmemset(binname, 0, sizeof(binname));
-    kmemcpy(binname, SHELL_BIN_PATH, SHELL_BIN_PATH_LEN);
-    kmemcpy(binname + SHELL_BIN_PATH_LEN, cmd, (unsigned long)clen);
+    binname[0] = '/';
+    kmemcpy(binname + 1, SHELL_BIN_PATH, SHELL_BIN_PATH_LEN);
+    kmemcpy(binname + 1 + SHELL_BIN_PATH_LEN, cmd, (unsigned long)clen);
     char progname[RAMDISK_FNAME_LEN];
     void *entry = 0;
     if (!shell_load(binname, progname, &entry)) return -1;
-    return k_spawn(binname, argc, argv);
+    return k_spawn(progname, argc, argv);
 }
 
 static void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
-        vga_puts("Commands: help clear ls cat echo edit load run poweroff\n");
-        vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
-        vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
+        vga_puts("Commands: help clear ls cat echo edit rm mkdir cd pwd ps load run poweroff\n");
+        vga_puts("  ls [dir]           list files (under the cwd by default)\n");
+        vga_puts("  cd [dir] / pwd     change / print the working directory\n");
+        vga_puts("  mkdir <name>       create a directory entry\n");
+        vga_puts("  rm <file>          delete a ramdisk file\n");
+        vga_puts("  ps                 list registered programs\n");
+        vga_puts("  net                network status (rtl8139, slirp)\n");
+        vga_puts("  net ping <ip>      one ICMP echo\n");
+        vga_puts("  trace [on|off]     report Linux syscalls\n");
         vga_puts("  edit <file>        line editor for ramdisk files\n");
+        vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
+        vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
         vga_puts("  <cmd> > <file>     redirect command output to a file\n");
         vga_puts("  <cmd> [args...]    run an ELF from bin/<cmd> (command path)\n");
         vga_puts("Toolchain: edit p.c; run minigcc p.c > p.s;\n");
@@ -2237,25 +2400,165 @@ static void shell_exec_builtin(int argc, char **argv) {
         shell_cmd_edit(argc, argv);
     }
     else if (kstrcmp(argv[0], "ls") == 0) {
+        char dir[RAMDISK_FNAME_LEN];
+        if (argc > 1) {
+            if (!fs_resolve(argv[1], dir, sizeof(dir))) {
+                shell_report("ls: name too long: ", argv[1]);
+                return;
+            }
+            unsigned dl = (unsigned)kstrlen(dir);
+            if (dl && dir[dl - 1] != '/') {
+                if (dl + 1 >= sizeof(dir)) return;
+                dir[dl] = '/';
+                dir[dl + 1] = 0;
+            }
+            if (!fs_dir_exists(dir)) {
+                shell_report("ls: no such directory: ", dir);
+                return;
+            }
+        } else {
+            kmemcpy(dir, fs_cwd, sizeof(fs_cwd));
+        }
+        unsigned plen = (unsigned)kstrlen(dir);
         RDFile *files[RAMDISK_MAX_FILES];
         int n = ramdisk_list(files, RAMDISK_MAX_FILES);
-        int i;
+        int i, shown = 0;
         for (i = 0; i < n; i++) {
-            kprintf("  %-20s  %u bytes\n", files[i]->name, files[i]->size);
+            if (plen && kstrncmp(files[i]->name, dir, plen) != 0) continue;
+            if ((unsigned)kstrlen(files[i]->name) == plen) continue; /* dir marker */
+            kprintf("  %-20s  %u bytes\n", files[i]->name + plen, files[i]->size);
+            shown = 1;
         }
-        if (n == 0) vga_puts("  (empty)\n");
+        if (!shown) vga_puts("  (empty)\n");
     }
     else if (kstrcmp(argv[0], "cat") == 0) {
-        if (argc < 2) { vga_puts("usage: cat <file>\n"); return; }
-        RDFile *f = ramdisk_open(argv[1]);
-        if (!f) { kprintf("cat: %s: no such file\n", argv[1]); return; }
-        unsigned i;
-        for (i = 0; i < f->size; i++) {
-            char c;
-            ramdisk_read(f, &c, i, 1);
-            vga_putc(c);
+        if (argc < 2) { vga_puts("usage: cat <file> [file...]\n"); return; }
+        int fi;
+        for (fi = 1; fi < argc; fi++) {
+            char resolved[RAMDISK_FNAME_LEN];
+            if (!fs_resolve(argv[fi], resolved, sizeof(resolved)) || fs_is_dir(resolved)) {
+                kprintf("cat: %s: no such file or is a directory\n", argv[fi]);
+                return;
+            }
+            RDFile *f = ramdisk_open(resolved);
+            if (!f) { kprintf("cat: %s: no such file\n", argv[fi]); return; }
+            unsigned i;
+            for (i = 0; i < f->size; i++) {
+                char c;
+                ramdisk_read(f, &c, i, 1);
+                vga_putc(c);
+            }
         }
         vga_putc('\n');
+    }
+    else if (kstrcmp(argv[0], "rm") == 0) {
+        if (argc < 2) { vga_puts("usage: rm <file>\n"); return; }
+        char resolved[RAMDISK_FNAME_LEN];
+        if (!fs_resolve(argv[1], resolved, sizeof(resolved))) {
+            kprintf("rm: %s: no such file\n", argv[1]);
+            return;
+        }
+        if (fs_is_dir(resolved)) {
+            kprintf("rm: %s: is a directory\n", argv[1]);
+            return;
+        }
+        RDFile *f = ramdisk_open(resolved);
+        if (!f) { kprintf("rm: %s: no such file\n", argv[1]); return; }
+        ramdisk_delete(f);
+        kprintf("removed %s\n", resolved);
+    }
+    else if (kstrcmp(argv[0], "mkdir") == 0) {
+        if (argc < 2) { vga_puts("usage: mkdir <name>\n"); return; }
+        char resolved[RAMDISK_FNAME_LEN];
+        if (!fs_resolve(argv[1], resolved, sizeof(resolved))) {
+            kprintf("mkdir: %s: name too long\n", argv[1]);
+            return;
+        }
+        char dirname[RAMDISK_FNAME_LEN];
+        kmemcpy(dirname, resolved, sizeof(dirname));
+        unsigned dl = (unsigned)kstrlen(dirname);
+        if (dl == 0 || dirname[dl - 1] != '/') {
+            if (dl + 1 >= sizeof(dirname)) { kprintf("mkdir: %s: name too long\n", argv[1]); return; }
+            dirname[dl] = '/';
+            dirname[dl + 1] = 0;
+        }
+        if (fs_dir_exists(dirname)) {
+            kprintf("mkdir: %s: already exists\n", dirname);
+            return;
+        }
+        if (dl > 0) {
+            char parent[RAMDISK_FNAME_LEN];
+            unsigned pl = dl - 1;
+            while (pl > 0 && dirname[pl - 1] != '/') pl--;
+            kmemcpy(parent, dirname, pl);
+            parent[pl] = 0;
+            if (!fs_dir_exists(parent)) {
+                kprintf("mkdir: %s: no such directory\n", parent);
+                return;
+            }
+        }
+        if (!ramdisk_create(dirname, 0)) {
+            kprintf("mkdir: %s: cannot create\n", dirname);
+            return;
+        }
+        kprintf("created %s\n", dirname);
+    }
+    else if (kstrcmp(argv[0], "cd") == 0) {
+        if (argc < 2) { fs_cwd[0] = 0; return; }
+        char resolved[RAMDISK_FNAME_LEN];
+        if (!fs_resolve(argv[1], resolved, sizeof(resolved))) {
+            kprintf("cd: %s: no such directory\n", argv[1]);
+            return;
+        }
+        unsigned rl = (unsigned)kstrlen(resolved);
+        if (rl == 0) { fs_cwd[0] = 0; return; }   /* root has no marker */
+        char target[RAMDISK_FNAME_LEN];
+        kmemcpy(target, resolved, rl + 1);
+        if (target[rl - 1] != '/') {
+            if (rl + 1 >= sizeof(target)) { kprintf("cd: %s: no such directory\n", argv[1]); return; }
+            target[rl] = '/';
+            target[rl + 1] = 0;
+        }
+        if (!fs_dir_exists(target)) {
+            kprintf("cd: %s: no such directory\n", argv[1]);
+            return;
+        }
+        kmemcpy(fs_cwd, target, sizeof(target));
+    }
+    else if (kstrcmp(argv[0], "pwd") == 0) {
+        vga_puts(fs_cwd[0] ? fs_cwd : "/");
+        vga_putc('\n');
+    }
+    else if (kstrcmp(argv[0], "trace") == 0) {
+        if (argc > 1) {
+            if (kstrcmp(argv[1], "on") == 0) syscall_trace_set(1);
+            else if (kstrcmp(argv[1], "off") == 0) syscall_trace_set(0);
+            else { vga_puts("usage: trace [on|off]\n"); return; }
+        }
+        kprintf("syscall tracing: %s\n", syscall_trace_enabled() ? "on" : "off");
+    }
+    else if (kstrcmp(argv[0], "net") == 0) {
+        if (argc < 2) {
+            net_cmd_status();
+        } else if (kstrcmp(argv[1], "ping") == 0) {
+            if (argc < 3) { vga_puts("usage: net ping <ip>\n"); return; }
+            net_cmd_ping(argv[2]);
+        } else if (kstrcmp(argv[1], "dns") == 0) {
+            if (argc < 3) { vga_puts("usage: net dns <host>\n"); return; }
+            net_cmd_dns(argv[2]);
+        } else {
+            vga_puts("usage: net [ping <ip> | dns <host>]\n");
+        }
+    }
+    else if (kstrcmp(argv[0], "ps") == 0) {
+        int i;
+        for (i = 0; i < kprog_count; i++) {
+            KProg *p = &kprog_table[i];
+            kprintf("  %-12s  %s  %p\n", p->name,
+                    p->is_proc ? "proc" : "rel",
+                    p->is_proc ? p->proc_entry : (void *)p->entry);
+        }
+        if (kprog_count == 0) vga_puts("  (no programs registered)\n");
     }
     else if (kstrcmp(argv[0], "echo") == 0) {
         int i;
@@ -2428,6 +2731,7 @@ void kmain(void) {
     ramdisk_init();
     register_libc_symbols();
     syscall_init();
+    net_init();
 
     if ((unsigned long)(ramdisk_end - ramdisk_start) > 0) {
         ramdisk_setup_from(ramdisk_start, (unsigned)(ramdisk_end - ramdisk_start));

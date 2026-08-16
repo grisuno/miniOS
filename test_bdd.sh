@@ -43,6 +43,7 @@ scenario() {
         sleep 2
     } | timeout "$TMO" "$QEMU" \
         -drive "file=$IMAGE,format=raw,if=ide" -m "$MEM" \
+        -nic user,model=rtl8139 \
         -display none -serial stdio -no-reboot > "$LOG" 2>&1
     if [ $? -eq 124 ]; then
         echo "    NOTE: timed out (guest did not power off)"
@@ -52,7 +53,7 @@ scenario() {
 # expect <marker>
 expect() {
     local what="$1"
-    if grep -q -- "$what" "$LOG"; then
+    if tr -d '\r' < "$LOG" | grep -q -- "$what"; then
         echo "    PASS  $what"
         PASS=$((PASS + 1))
     else
@@ -65,6 +66,49 @@ expect() {
             [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"
             exit 1
         fi
+    fi
+}
+
+# expect_count <count> <marker>: the marker must appear exactly that many
+# times in the log. Used where a single occurrence would also match the
+# echoed command line, so only the output can prove the behaviour.
+expect_count() {
+    local n="$1"
+    local what="$2"
+    local got
+    got=$(tr -d '\r' < "$LOG" | grep -o -- "$what" | wc -l)
+    if [ "$got" -eq "$n" ]; then
+        echo "    PASS  $what x$n"
+        PASS=$((PASS + 1))
+    else
+        echo "    FAIL  $what (expected x$n, found x$got)"
+        FAIL=$((FAIL + 1))
+        FAILED_NAMES="$FAILED_NAMES [$SCENARIO: $what x$n]"
+        if [ "$FAIL_FAST" = "1" ]; then
+            echo ""
+            echo "=== summary: $PASS passed, $FAIL failed (stopped at first failure) ==="
+            [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"
+            exit 1
+        fi
+    fi
+}
+
+# refute <marker>: the marker must NOT appear (suppressed hostile content).
+refute() {
+    local what="$1"
+    if tr -d '\r' < "$LOG" | grep -q -- "$what"; then
+        echo "    FAIL  (unexpected) $what"
+        FAIL=$((FAIL + 1))
+        FAILED_NAMES="$FAILED_NAMES [$SCENARIO: unexpected $what]"
+        if [ "$FAIL_FAST" = "1" ]; then
+            echo ""
+            echo "=== summary: $PASS passed, $FAIL failed (stopped at first failure) ==="
+            [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"
+            exit 1
+        fi
+    else
+        echo "    PASS  (absent) $what"
+        PASS=$((PASS + 1))
     fi
 }
 
@@ -162,6 +206,17 @@ cat r.txt
 poweroff"
 expect "redirected text"
 
+scenario "append redirect adds instead of truncating" "cp fib.c log.txt
+cat fib.c >> log.txt
+cat log.txt
+poweroff"
+expect_count 2 "int fib"
+
+scenario "append redirect creates a missing file" "cat fib.c >> fresh.txt
+cat fresh.txt
+poweroff"
+expect "int fib"
+
 scenario "redirection captures compiler output" "run minigcc.o test.c > t.s
 cat t.s
 poweroff"
@@ -209,6 +264,214 @@ expect "usage: cp <src> <dst>"
 scenario "bin path entries are skipped for unknown commands" "nosuchcmd
 poweroff"
 expect "command not found: nosuchcmd"
+
+scenario "net reports the slirp configuration" "net
+poweroff"
+expect "rtl8139"
+expect "10.0.2.15"
+
+scenario "net pings the slirp gateway" "net ping 10.0.2.2
+poweroff"
+expect "reply from 10.0.2.2"
+
+http_server_start() {
+    python3 -m http.server "${NET_HTTP_PORT:-8899}" --directory "$HERE/progs" \
+        > /dev/null 2>&1 &
+    BDD_HTTP_PID=$!
+    sleep 1
+}
+
+http_server_stop() {
+    [ -n "${BDD_HTTP_PID:-}" ] && kill "$BDD_HTTP_PID" 2>/dev/null || true
+    BDD_HTTP_PID=""
+}
+
+http_fixture_start() {
+    python3 "$HERE/test_http_server.py" "${NET_HTTP2_PORT:-8900}" \
+        > /dev/null 2>&1 &
+    BDD_HTTP2_PID=$!
+    sleep 1
+}
+
+http_fixture_stop() {
+    [ -n "${BDD_HTTP2_PID:-}" ] && kill "$BDD_HTTP2_PID" 2>/dev/null || true
+    BDD_HTTP2_PID=""
+}
+
+trap 'http_server_stop; http_fixture_stop' EXIT
+
+http_server_start
+scenario "tcp stack fetches a page from the host" "run http.elf 10.0.2.2 8899 /fib.c
+poweroff"
+expect "received"
+expect "exit code: 0"
+
+scenario "freedom fetches a page from the host" "run bin/freedom http://10.0.2.2:8899/README.txt
+poweroff"
+expect "minimal 64-bit kernel"
+expect "freedom: 10.0.2.2 ("
+
+scenario "freedom follows the directory redirect of the host server" "run bin/freedom http://10.0.2.2:8899/bin
+poweroff"
+expect "cp"
+expect "freedom: 10.0.2.2 ("
+
+scenario "freedom filters hostile html" "run bin/freedom http://10.0.2.2:8899/hostile.html
+poweroff"
+expect "first block"
+expect "bold & safe"
+expect "<tag>"
+expect "bad bytes: ?"
+refute "evil"
+refute "this comment must vanish"
+expect "freedom: 10.0.2.2 ("
+http_server_stop
+
+http_fixture_start
+scenario "freedom decodes a chunked response" "run bin/freedom http://10.0.2.2:8900/chunked
+poweroff"
+expect "chunked body works"
+expect "freedom: 10.0.2.2 ("
+
+scenario "freedom follows a 302 and lands on the final page" "run bin/freedom http://10.0.2.2:8900/redirect302
+poweroff"
+expect "FINAL PAGE MARKER"
+expect "freedom: 10.0.2.2 ("
+
+scenario "freedom stops at Content-Length instead of waiting for EOF" "run bin/freedom http://10.0.2.2:8900/final
+poweroff"
+expect "FINAL PAGE MARKER"
+expect "freedom: 10.0.2.2 ("
+http_fixture_stop
+
+scenario "mkdir creates a directory and cd enters it" "mkdir work
+cd work
+pwd
+edit f.txt
+a
+hello cwd
+x
+ls
+cat f.txt
+poweroff"
+expect "created work/"
+expect "hello cwd"
+expect "f.txt"
+
+scenario "cd .. pops one level and bare cd returns to root" "mkdir work
+mkdir work/sub
+cd work
+cd sub
+pwd
+cd ..
+pwd
+cd
+pwd
+poweroff"
+expect "work/sub/"
+expect "^/$"
+
+scenario "mkdir refuses existing directories and missing parents" "mkdir work
+mkdir work
+mkdir nope/child
+poweroff"
+expect "mkdir: work/: already exists"
+expect "no such directory"
+
+scenario "cd into a nonexistent directory is a diagnostic" "cd ghost
+poweroff"
+expect "cd: ghost: no such directory"
+
+scenario "rm deletes files, refuses directories and reports missing" "mkdir work
+edit doomed.txt
+a
+bye
+x
+rm doomed.txt
+cat doomed.txt
+rm doomed.txt
+rm work
+poweroff"
+expect "removed doomed.txt"
+expect "cat: doomed.txt: no such file"
+expect "rm: doomed.txt: no such file"
+expect "rm: work: is a directory"
+
+scenario "ps lists registered programs" "load hello.o
+ps
+poweroff"
+expect "hello"
+
+scenario "cat concatenates files in order through a redirect" "edit a.txt
+a
+first part
+x
+edit b.txt
+a
+second part
+x
+cat a.txt b.txt > c.txt
+cat c.txt
+poweroff"
+expect "first part"
+expect "second part"
+
+scenario "cat refuses directories" "mkdir work
+cat work
+poweroff"
+expect "cat: work: no such file or is a directory"
+
+scenario "edit refuses directories" "mkdir work
+edit work/
+x
+poweroff"
+expect "edit: work/: is a directory"
+
+scenario "redirect into a directory fails cleanly" "mkdir work
+echo x > work/
+poweroff"
+expect "redirect: cannot write work/"
+
+scenario "redirect and .. resolve against the cwd" "mkdir work
+cd work
+echo hello > r.txt
+cd
+cat work/r.txt
+echo hi > work/../x.txt
+cat x.txt
+poweroff"
+expect "hello"
+expect "hi"
+
+scenario "ls lists a named directory relative to the cwd" "mkdir work
+cd work
+edit f.txt
+a
+inner
+x
+cd
+ls work
+poweroff"
+expect "f.txt"
+
+scenario "bin path is root anchored and cp args resolve against the cwd" "mkdir work
+cd work
+cp /fib.c copy1.txt
+cat copy1.txt
+poweroff"
+expect "exit code: 0"
+expect "int fib"
+
+scenario "syscall tracing reports the program dialogue" "trace
+trace on
+cp fib.c copy_t.txt
+trace off
+trace
+poweroff"
+expect "syscall tracing: off"
+expect "syscall tracing: on"
+expect "syscall 2"
+expect "syscall 3"
 
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="

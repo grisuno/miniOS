@@ -1,0 +1,17 @@
+name: freedom
+description: Headless text browser (curlfree engine, FreeDom omnibox), rebuilt from its C source inside the OS.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/grisuno/miniOS.git
+  files:
+    - src: progs/freedom.c
+      dst: build/freedom.c
+  build:
+    - run minigcc.o build/freedom.c > build/freedom.s
+    - run ld.o -f elf -o bin/freedom build/freedom.s
+  verify:
+    - line: freedom
+      exit_code: 1
+    - line: freedom https://example.com
+      exit_code: 2

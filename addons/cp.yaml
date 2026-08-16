@@ -1,0 +1,15 @@
+name: cp
+description: Command-path utility cp, rebuilt from its C source inside the OS.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/grisuno/miniOS.git
+  files:
+    - src: progs/bin/cp.c
+      dst: build/cp.c
+  build:
+    - run minigcc.o build/cp.c > build/cp.s
+    - run ld.o -f elf -o bin/cp build/cp.s
+  verify:
+    - line: cp bin/cp.c build/cp2.c
+      exit_code: 0

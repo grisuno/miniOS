@@ -40,6 +40,8 @@ EXPECTED_TOOLS = [
     "minios_expect",
     "minios_write",
     "minios_cat",
+    "minios_addons",
+    "minios_install",
     "minios_poweroff",
 ]
 
@@ -53,11 +55,13 @@ def have_qemu():
 class MCPServer:
     """Child process running minios_mcp.py, driven over stdio JSON-RPC."""
 
-    def __init__(self):
+    def __init__(self, env_extra=None):
         env = dict(os.environ)
         env["MINIOS_IMAGE"] = IMAGE
         self._tmp = tempfile.mkdtemp(prefix="minios_mcp_test.")
         env["TMPDIR"] = self._tmp
+        if env_extra:
+            env.update(env_extra)
         self.proc = subprocess.Popen(
             [sys.executable, MCP_PATH],
             stdin=subprocess.PIPE,
@@ -267,12 +271,49 @@ class TestLogBuffer(unittest.TestCase):
 
 
 @unittest.skipUnless(have_qemu(), "QEMU or os.img not available")
-class TestMiniOSBDD(unittest.TestCase):
+class _ConsoleBDDBase(unittest.TestCase):
+    """Fail-fast for QEMU-backed classes: once a tool call has hit a
+    console wait timeout the bridge is stuck (a mutated marker, a hung
+    shell) and every remaining test would only burn its own timeout, so
+    they are skipped instead."""
+
+    unhealthy = False
+
+    @classmethod
+    def guard_server(cls):
+        orig = cls.server.tool
+
+        def guarded(name, params=None):
+            try:
+                return orig(name, params)
+            except AssertionError as exc:
+                msg = str(exc)
+                if (
+                    "timed out" in msg
+                    or "(timeout)" in msg
+                    or "did not open" in msg
+                    or "did not return" in msg
+                    or "did not exit" in msg
+                    or "not booted" in msg
+                ):
+                    cls.unhealthy = True
+                raise
+
+        cls.server.tool = guarded
+
+    def setUp(self):
+        if type(self).unhealthy:
+            self.skipTest("bridge unhealthy after a console wait timeout")
+
+
+@unittest.skipUnless(have_qemu(), "QEMU or os.img not available")
+class TestMiniOSBDD(_ConsoleBDDBase):
     @classmethod
     def setUpClass(cls):
         if not os.path.isfile(MCP_PATH):
             raise unittest.SkipTest("minios_mcp.py not found")
         cls.server = MCPServer()
+        cls.guard_server()
 
     @classmethod
     def tearDownClass(cls):
@@ -348,6 +389,397 @@ class TestMiniOSBDD(unittest.TestCase):
         self.assertFalse(s["booted"])
         r = self.server.tool("minios_boot")
         self.assertTrue(r["booted"])
+
+
+VALID_ADDON = """name: cp
+description: Command-path utility cp.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/grisuno/miniOS.git
+  files:
+    - src: progs/bin/cp.c
+      dst: build/cp.c
+  build:
+    - run minigcc.o build/cp.c > build/cp.s
+    - run ld.o -f elf -o bin/cp build/cp.s
+  verify:
+    - line: cp bin/cp.c build/cp2.c
+      exit_code: 0
+"""
+
+
+class TestAddonYaml(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        if not os.path.isfile(MCP_PATH):
+            raise unittest.SkipTest("minios_mcp.py not found")
+        import importlib.util as iu
+
+        path = os.path.join(os.path.dirname(MCP_PATH), "minios_addons.py")
+        spec = iu.spec_from_file_location("minios_addons", path)
+        cls.ma = iu.module_from_spec(spec)
+        spec.loader.exec_module(cls.ma)
+
+    def test_parse_valid(self):
+        addon = self.ma.parse_addon_yaml(VALID_ADDON)
+        self.assertEqual(addon["name"], "cp")
+        self.assertEqual(addon["install"]["repo_url"], "https://github.com/grisuno/miniOS.git")
+        files = addon["install"]["files"]
+        self.assertEqual(files, [{"src": "progs/bin/cp.c", "dst": "build/cp.c"}])
+        self.assertEqual(len(addon["install"]["build"]), 2)
+        verify = addon["install"]["verify"]
+        self.assertEqual(verify, [{"line": "cp bin/cp.c build/cp2.c", "exit_code": "0"}])
+
+    def test_validate_accepts_valid(self):
+        addon = self.ma.validate_addon(self.ma.parse_addon_yaml(VALID_ADDON), "cp.yaml")
+        self.assertEqual(addon["install"]["verify"][0]["exit_code"], 0)
+
+    def test_unknown_key_rejected(self):
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.parse_addon_yaml("name: x\nbogus: 1\ninstall:\n  repo_url: r\n  files:\n    - src: a.c\n      dst: b.c\n")
+
+    def test_bad_indent_rejected(self):
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.parse_addon_yaml("name: x\ninstall:\n   repo_url: r\n  files: []\n")
+
+    def test_validate_rejects_bad_dst(self):
+        bad = VALID_ADDON.replace("dst: build/cp.c", "dst: ../x")
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.validate_addon(self.ma.parse_addon_yaml(bad), "cp.yaml")
+
+    def test_validate_rejects_missing_name(self):
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.validate_addon(self.ma.parse_addon_yaml("description: d\ninstall:\n  repo_url: r\n  files: []\n"), "x.yaml")
+
+    def test_validate_rejects_long_build_line(self):
+        bad = VALID_ADDON.replace(
+            "- run minigcc.o build/cp.c > build/cp.s",
+            "- run " + "x" * 300,
+        )
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.validate_addon(self.ma.parse_addon_yaml(bad), "cp.yaml")
+
+    def test_validate_rejects_control_chars(self):
+        bad = VALID_ADDON.replace("exit_code: 0", "exit_code: 1\texit")
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.validate_addon(self.ma.parse_addon_yaml(bad), "cp.yaml")
+
+    def test_validate_rejects_empty_files(self):
+        bad = VALID_ADDON.replace("  files:\n    - src: progs/bin/cp.c\n      dst: build/cp.c\n", "  files: []\n")
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.validate_addon(self.ma.parse_addon_yaml(bad), "cp.yaml")
+
+
+class TestAddonHelpers(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        if not os.path.isfile(MCP_PATH):
+            raise unittest.SkipTest("minios_mcp.py not found")
+        import importlib.util as iu
+
+        path = os.path.join(os.path.dirname(MCP_PATH), "minios_addons.py")
+        spec = iu.spec_from_file_location("minios_addons", path)
+        cls.ma = iu.module_from_spec(spec)
+        spec.loader.exec_module(cls.ma)
+
+    def test_split_for_editor_chunks(self):
+        text = "".join("line %d\n" % i for i in range(600))
+        chunks = self.ma.split_for_editor(text)
+        self.assertEqual(len(chunks), 2)
+        self.assertLessEqual(len(chunks[0].split("\n")) - 1, self.ma.ADDON_CHUNK_LINES)
+        self.assertEqual("".join(chunks), text)
+
+    def test_split_rejects_long_line(self):
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.split_for_editor("x" * 128 + "\n")
+
+    def test_split_rejects_non_ascii(self):
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.split_for_editor("hola \u00e9\n")
+
+    def test_exit_code_of(self):
+        self.assertEqual(self.ma.exit_code_of("foo\nexit code: 42\n"), 42)
+        self.assertEqual(self.ma.exit_code_of("foo\nexit code: -1\n"), -1)
+        self.assertIsNone(self.ma.exit_code_of("no code here"))
+
+    def test_state_roundtrip(self):
+        path = os.path.join(tempfile.mkdtemp(prefix="minios_state."), "state.json")
+        state = self.ma.AddonState(path)
+        self.assertEqual(state.load(), {})
+        state.save({"cp": {"version": "1.0.0", "installed_at": 1}})
+        self.assertEqual(state.load()["cp"]["version"], "1.0.0")
+
+
+class FakeOS:
+    """In-memory stand-in for the MiniOS session (no QEMU)."""
+
+    def __init__(self, exit_codes=None):
+        self.files = {}
+        self.commands = []
+        self.exit_codes = exit_codes or {}
+        self.booted_flag = True
+        self.removed = []
+
+    def booted(self):
+        return self.booted_flag
+
+    def boot(self, timeout_ms=None):
+        self.booted_flag = True
+        return {"booted": True, "log": ""}
+
+    def write(self, path, content):
+        lines = content.split("\n")
+        if lines and lines[-1] == "":
+            lines.pop()
+        self.files[path] = "\n".join(lines)
+        return {"transcript": "ok"}
+
+    def send(self, line, timeout_ms=None):
+        self.commands.append(line)
+        for sep in (">>", ">"):
+            if (" " + sep + " ") in line:
+                cmd, _, dst = line.partition(" " + sep + " ")
+                if cmd.startswith("cat "):
+                    data = "".join(self.files.get(s, "") for s in cmd[4:].split()) + "\n"
+                elif cmd.startswith("echo"):
+                    data = "\n"
+                else:
+                    data = ""
+                if sep == ">>":
+                    self.files[dst] = self.files.get(dst, "") + data
+                else:
+                    self.files[dst] = data
+                return {"text": "exit code: 0\n"}
+        if line.startswith("rm "):
+            path = line[3:]
+            self.files.pop(path, None)
+            self.removed.append(path)
+            return {"text": "removed %s\n" % path}
+        code = self.exit_codes.get(line, 0)
+        return {"text": "output\nexit code: %d\n" % code}
+
+    def cat_body(self, path, missing_ok=False):
+        if path not in self.files:
+            if missing_ok:
+                return ""
+            raise self._toolerror("no such file")
+        return self.files[path]
+
+    class _toolerror(Exception):
+        pass
+
+    ToolError = _toolerror
+
+    def _cleanup_parts(self, parts):
+        for part in parts:
+            self.files.pop(part, None)
+            self.removed.append(part)
+
+
+class TestAddonInstall(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        if not os.path.isfile(MCP_PATH):
+            raise unittest.SkipTest("minios_mcp.py not found")
+        import importlib.util as iu
+
+        path = os.path.join(os.path.dirname(MCP_PATH), "minios_addons.py")
+        spec = iu.spec_from_file_location("minios_addons", path)
+        cls.ma = iu.module_from_spec(spec)
+        spec.loader.exec_module(cls.ma)
+        cls.repo = tempfile.mkdtemp(prefix="minios_fixrepo.")
+        with open(os.path.join(cls.repo, "src.c"), "w") as f:
+            f.write("int main(void) { return 42; }\n")
+        subprocess.run(["git", "init", "-q", cls.repo], check=True)
+        subprocess.run(["git", "-C", cls.repo, "add", "src.c"], check=True)
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                cls.repo,
+                "-c",
+                "user.email=t@t.t",
+                "-c",
+                "user.name=t",
+                "commit",
+                "-q",
+                "-m",
+                "init",
+            ],
+            check=True,
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        import shutil
+
+        shutil.rmtree(cls.repo, ignore_errors=True)
+
+    def make_addon(self):
+        return self.ma.validate_addon(
+            self.ma.parse_addon_yaml(
+                """name: fixture-addon
+description: test addon
+author: test
+version: "1.0.0"
+install:
+  repo_url: %s
+  files:
+    - src: src.c
+      dst: build/src.c
+  build:
+    - run minigcc.o build/src.c > build/src.s
+  verify:
+    - line: run build/fixture
+      exit_code: 42
+""" % self.repo
+            ),
+            "fixture.yaml",
+        )
+
+    def test_install_success(self):
+        os_session = FakeOS(exit_codes={"run build/fixture": 42})
+        state_file = os.path.join(tempfile.mkdtemp(prefix="minios_astate."), "state.json")
+        result = self.ma.install_addon(os_session, self.make_addon(), {"state_file": state_file})
+        self.assertEqual(result["name"], "fixture-addon")
+        self.assertEqual(os_session.files["build/src.c"].rstrip("\n"), "int main(void) { return 42; }")
+        self.assertIn("run minigcc.o build/src.c > build/src.s", os_session.commands)
+        registry = os_session.files[self.ma.ADDON_REGISTRY_PATH]
+        self.assertIn("fixture-addon 1.0.0", registry)
+        self.assertEqual(os_session.files.keys() & {"build/src.c.part0"}, set())
+        state = self.ma.AddonState(state_file).load()
+        self.assertIn("fixture-addon", state)
+
+    def test_install_mismatch_aborts_and_cleans(self):
+        os_session = FakeOS()
+        os_session.files["build/src.c"] = "corrupted\n"
+
+        def broken_cat(path, missing_ok=False):
+            return "corrupted\n"
+
+        os_session.cat_body = broken_cat
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.install_addon(
+                os_session, self.make_addon(), {"state_file": os.path.join(tempfile.mkdtemp(), "s.json")}
+            )
+        self.assertNotIn("build/src.c.part0", os_session.files)
+
+    def test_install_multi_chunk_reassembly(self):
+        big = "".join("int line_%d(void) { return %d; }\n" % (i, i % 10) for i in range(600))
+        with open(os.path.join(self.repo, "big.c"), "w") as f:
+            f.write(big)
+        subprocess.run(["git", "-C", self.repo, "add", "big.c"], check=True)
+        subprocess.run(
+            ["git", "-C", self.repo, "-c", "user.email=t@t.t", "-c", "user.name=t", "commit", "-q", "-m", "big"],
+            check=True,
+        )
+        addon = self.ma.validate_addon(
+            self.ma.parse_addon_yaml(
+                """name: fixture-addon
+description: test addon
+author: test
+version: "1.0.0"
+install:
+  repo_url: %s
+  files:
+    - src: big.c
+      dst: build/big.c
+  build: []
+  verify: []
+"""
+                % self.repo
+            ),
+            "fixture.yaml",
+        )
+        os_session = FakeOS()
+        self.ma.install_addon(os_session, addon, {"state_file": os.path.join(tempfile.mkdtemp(), "s.json")})
+        self.assertEqual(os_session.files["build/big.c"], big)
+
+    def test_install_verify_failure_aborts(self):
+        os_session = FakeOS(exit_codes={"run build/fixture": 1})
+        state_file = os.path.join(tempfile.mkdtemp(prefix="minios_astate."), "state.json")
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.install_addon(os_session, self.make_addon(), {"state_file": state_file})
+        self.assertEqual(self.ma.AddonState(state_file).load(), {})
+
+    def test_install_build_failure_aborts(self):
+        os_session = FakeOS(exit_codes={"run minigcc.o build/src.c > build/src.s": 5})
+        state_file = os.path.join(tempfile.mkdtemp(prefix="minios_astate."), "state.json")
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.install_addon(os_session, self.make_addon(), {"state_file": state_file})
+        self.assertEqual(self.ma.AddonState(state_file).load(), {})
+
+
+@unittest.skipUnless(have_qemu(), "QEMU or os.img not available")
+class TestAddonBDD(_ConsoleBDDBase):
+    """Install a fixture addon from a local git repo into the real OS."""
+
+    @classmethod
+    def setUpClass(cls):
+        if not os.path.isfile(MCP_PATH):
+            raise unittest.SkipTest("minios_mcp.py not found")
+        cls.repo = tempfile.mkdtemp(prefix="minios_fixrepo.")
+        with open(os.path.join(cls.repo, "src.c"), "w") as f:
+            f.write("int main(void) { return 42; }\n")
+        subprocess.run(["git", "init", "-q", cls.repo], check=True)
+        subprocess.run(["git", "-C", cls.repo, "add", "src.c"], check=True)
+        subprocess.run(
+            ["git", "-C", cls.repo, "-c", "user.email=t@t.t", "-c", "user.name=t", "commit", "-q", "-m", "init"],
+            check=True,
+        )
+        cls.addons_dir = tempfile.mkdtemp(prefix="minios_addons.")
+        with open(os.path.join(cls.addons_dir, "fixture.yaml"), "w") as f:
+            f.write(
+                """name: fixture-addon
+description: bdd fixture addon
+author: test
+version: "1.0.0"
+install:
+  repo_url: %s
+  files:
+    - src: src.c
+      dst: build/src.c
+  build:
+    - run minigcc.o build/src.c > build/src.s
+    - run ld.o -f elf -o build/fixture build/src.s
+  verify:
+    - line: run build/fixture
+      exit_code: 42
+"""
+                % cls.repo
+            )
+        cls.server = MCPServer({"MINIOS_ADDONS_DIR": cls.addons_dir})
+        cls.guard_server()
+
+    @classmethod
+    def tearDownClass(cls):
+        if getattr(cls, "server", None):
+            cls.server.close()
+        import shutil
+
+        shutil.rmtree(cls.repo, ignore_errors=True)
+        shutil.rmtree(cls.addons_dir, ignore_errors=True)
+
+    def test_addons_list(self):
+        r = self.server.tool("minios_addons")
+        names = [a["name"] for a in r["addons"]]
+        self.assertIn("fixture-addon", names)
+        self.assertFalse(r["addons"][0]["installed"])
+
+    def test_install_fixture(self):
+        r = self.server.tool("minios_install", {"name": "fixture-addon", "timeout_ms": 120000})
+        self.assertEqual(r["name"], "fixture-addon")
+        self.assertIn("build/src.c", r["files"])
+        r = self.server.tool("minios_addons")
+        self.assertTrue(r["addons"][0]["installed"])
+        c = self.server.tool("minios_send", {"line": "cat var/lib/addons.txt"})
+        self.assertIn("fixture-addon 1.0.0", c["text"])
+
+    def test_install_unknown_addon_fails(self):
+        r = self.server.request("tools/call", {"name": "minios_install", "arguments": {"name": "no-such"}})
+        self.assertTrue(r["result"]["isError"])
+        self.assertIn("no such addon", r["result"]["content"][0]["text"])
 
 
 if __name__ == "__main__":

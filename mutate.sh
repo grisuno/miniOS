@@ -19,7 +19,7 @@ set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"
 BACKUP="$(mktemp -d "${TMPDIR:-/tmp}/minios_mut.XXXXXX")" || exit 1
 
-SOURCES="kernel.c bootdefs.h"
+SOURCES="kernel.c bootdefs.h net.c"
 
 restore_sources() {
     local f
@@ -49,6 +49,28 @@ status-leaks-into-redirect | s/int was = redirect_suspend();/int was = 0;/ | ker
 editor-drops-unsaved | s/if (e->dirty) {/if (0) {/ | kernel.c
 bin-path-prefix | s/#define SHELL_BIN_PATH     \"bin\/\"/#define SHELL_BIN_PATH     \"bix\/\"/ | kernel.c
 bin-lookup-bypassed | s/ret = shell_run_from_path(argv\\[0\\], argc, argv);/ret = -1;/ | kernel.c
+cwd-never-applied | s/kmemcpy(out, fs_cwd, kstrlen(fs_cwd) + 1);/kmemcpy(out, \"\", 1);/ | kernel.c
+cd-always-fails | s/if (!fs_resolve(argv\\[1\\], resolved, sizeof(resolved))) {/if (1) {/ | kernel.c
+rm-missing-passes | s/if (!f) { kprintf(\\\"rm: %s: no such file\\\\n\\\", argv\\[1\\]); return; }/if (0) {/ | kernel.c
+rm-dir-accepted | s/if (fs_is_dir(resolved)) {/if (0) {/ | kernel.c
+mkdir-dup-passes | s/if (fs_dir_exists(dirname)) {/if (0) {/ | kernel.c
+mkdir-parent-bypassed | s/if (!fs_dir_exists(parent)) {/if (0) {/ | kernel.c
+cd-exists-bypassed | s/if (!fs_dir_exists(target)) {/if (0) {/ | kernel.c
+kfopen-dir-refusal-bypassed | s/if (fs_is_dir(resolved)) return 0;/\\/* dir bypass *\\// | kernel.c
+ps-empty | s/kprintf(\\\"  %-12s  %s  %p\\\\n\\\", p->name,/if (0) kprintf(\\\"  %-12s  %s  %p\\\\n\\\", p->name,/ | kernel.c
+cat-drops-second-file | s/for (fi = 1; fi < argc; fi++)/for (fi = 1; fi < 2; fi++)/ | kernel.c
+append-flag-ignored | s/            \*append_mode = 1;/            \*append_mode = 0;/ | kernel.c
+append-mode-acts-like-write | s/((mode\[0\] == \x27a\x27) ? 2 : 0)/((mode\[0\] == \x27a\x27) ? 1 : 0)/ | kernel.c
+append-resets-pos | s/f->pos  = (f->mode == 2) ? f->rf->size : 0;/f->pos  = 0;/ | kernel.c
+trace-print-gated-off | s/if (s_trace_enabled)/if (0) \&\& (s_trace_enabled)/ | kernel.c
+trace-on-never-enables | s/syscall_trace_set(1)/syscall_trace_set(0)/ | kernel.c
+arp-cache-never-stored | s/net_arp_cache\[free\].valid = 1;/net_arp_cache\[free\].valid = 0;/ | net.c
+arp-reply-ignored | s/net_get16(frame + 20) == NET_ARP_REPLY/net_get16(frame + 20) == 0/ | net.c
+tx-owner-wait-inverted | s/while (!(net_reg32((unsigned short)(NET_REG_TSD0 + slot \* 4)) \& 0x2000)) {/while (net_reg32((unsigned short)(NET_REG_TSD0 + slot \* 4)) \& 0x2000) {/ | net.c
+tcp-seq-never-advances | s/if (fresh \&\& (flags/if (0) { if (fresh \&\& (flags/ | net.c
+tcp-peer-ack-corrupts-ack | s/\/\* ACK: peer acks our data \*\//s->ack = ack; \/\* ACK: peer acks our data \*\// | net.c
+ping-id-mismatched | s/net_put16(req + 4, net_icmp_id)/net_put16(req + 4, net_icmp_id + 1)/ | net.c
+ip-csum-ignored | s/if (net_checksum(ip, 20) != 0) return;/if (0) return;/ | net.c
 "
 
 KILLED=0

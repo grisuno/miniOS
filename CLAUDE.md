@@ -120,11 +120,12 @@ program a wild call target, so it is never skipped. No libc name is ever
 registered with a null address.
 
 ### Shell
-`cmd > file` redirects the command's console output into a ramdisk file.
-Shell status text — exit codes and the shell's own diagnostics — is lifted
-out of the capture: a redirection captures what the command wrote, not what
-the shell reported about it. This is what makes `run minigcc.o p.c > p.s`
-produce assembly a linker can consume.
+`cmd > file` redirects the command's console output into a ramdisk file
+(truncating it); `cmd >> file` appends. Shell status text — exit codes and
+the shell's own diagnostics — is lifted out of the capture: a redirection
+captures what the command wrote, not what the shell reported about it.
+This is what makes `run minigcc.o p.c > p.s` produce assembly a linker can
+consume.
 
 Command resolution is a fixed order: builtin, registered program, then the
 command path. The path is the ramdisk directory prefix `SHELL_BIN_PATH`
@@ -136,6 +137,68 @@ so a name can never escape the path prefix; the exit code is reported
 exactly as `run` reports it. Files that are not ELF are skipped and the
 name falls through to `command not found`.
 
+### Network (rtl8139 + slirp)
+The kernel owns an rtl8139 NIC under QEMU user networking (slirp) with the
+standard fixed configuration: address `10.0.2.15`, netmask `255.255.255.0`,
+gateway `10.0.2.2` (the host), DNS `10.0.2.3`. Every QEMU launch in the
+build, the BDD suite and the MCP attaches `-nic user,model=rtl8139`.
+
+- The driver polls the NIC (no interrupt controller is configured): TX
+  waits for the descriptor owner bit, RX drains the classic ring by
+  comparing CAPR against CBR. The MAC is read from the NIC IDR registers.
+- Stack: Ethernet (ARP cache, broadcast requests, replies to our address),
+  IPv4 (checksum verified; fragmented datagrams are dropped, fail closed),
+  ICMP echo, UDP and a minimal client TCP: SYN/SYN-ACK/ACK handshake,
+  stop-and-wait with retransmission timeouts (PIT-calibrated TSC clock),
+  FIN teardown, fixed 536-byte MSS and a bounded window. A kernel DNS
+  client resolves A records against `10.0.2.3` (UDP, retries, bounded
+  timeout).
+- Programs reach the stack two ways. ET_REL programs get the libc-style
+  symbols `net_open`, `net_connect` (resolves the hostname itself),
+  `net_send`, `net_recv` (0 = EOF) and `net_close`. Linux binaries get
+  the socket syscalls: `socket`, `connect`, `sendto`, `recvfrom`,
+  `shutdown`, `close` and a minimal `poll` (POLLIN when data is ready,
+  bounded timeout otherwise) — enough for a static glibc resolver.
+- The shell gets `net` (status: MAC, IP, counters) and `net ping <ip>`
+  (one ICMP echo, reported as `reply from <ip>` or a timeout diagnostic).
+- All constants are named in `net.h` (`NET_*`); none of the fixed
+  addresses, ports or timeouts appears as a bare literal.
+
+### Headless browser (`freedom`)
+`bin/freedom` is the headless text browser: a curlfree-style engine (the
+host `http.c` + `htmlfilter.c` ideas) with a FreeDom-style omnibox. It is
+built from `progs/freedom.c` through the miniGCC-to-ld chain, like `bin/cp`,
+and talks to the stack through the Linux socket syscalls plus the DNS
+syscall; every timeout, retransmission and EOF (0 = FIN) semantics it leans
+on is already implemented in the network driver, so the program owns only
+HTTP semantics.
+
+- Omnibox (FreeDom): an argument that is not a URL is a DuckDuckGo HTML
+  (no-JS) search; `javascript:`/`data:` (any non-http scheme) is searched,
+  never executed; `https://` is refused with a diagnostic (MiniOS has no
+  TLS); the User-Agent is a fixed anti-fingerprinting identity.
+- Engine (curlfree): a header phase reads the response head into a bounded
+  buffer, then the body is read either to `Content-Length` (never waiting
+  for the FIN past the announced body) or to EOF, decoding
+  `Transfer-Encoding: chunked` in place. Header names match
+  case-insensitively.
+- Redirects (curlfree + FreeDom policy): a 3xx with a `Location` is chased
+  up to `FREEDOM_HOPS_MAX` hops. Absolute `http://` targets are followed;
+  relative targets resolve against the current path; an `https://` target
+  stops the chase with the same diagnostic as direct `https` input; any
+  other explicit scheme in a `Location` is refused, fail closed.
+- HTML filter (htmlfilter.c): comments are skipped, `script`/`style`
+  contents are suppressed, block tags (`p`, `div`, `h1`-`h6`, `li`, `tr`)
+  and `br` become newlines, entities (named and numeric, decimal and hex)
+  are decoded, whitespace collapses. Filter state carries across network
+  chunk boundaries, so a tag or entity split between two segments is still
+  decoded.
+- Remote pages are hostile data (FreeDom): every byte printed to the
+  console passes a UTF-8 gate that replaces bytes outside a valid sequence
+  (overlong, surrogate, out of range) with `?`.
+- Diagnostics are `freedom: ...` lines; the fetch ends with
+  `freedom: <host> (<n> bytes)`.
+
 ### Ramdisk names
 File names are at most `RAMDISK_FNAME_LEN - 1` characters. Names may
 contain `/`, which is how directories are expressed (`bin/cp`): the ramdisk
@@ -143,6 +206,43 @@ is flat, the slash is data. `mkramdisk.py` derives each name from the path
 relative to the shared parent of the packed files, so `progs/bin/cp` ships
 as `bin/cp`. A name longer than the bound or a collision between two files
 is a build error, never a silent truncation that would make a lookup miss.
+
+### Filesystem commands
+A working directory (`cwd`) and directory-aware builtins, over the same flat
+namespace the ramdisk names describe:
+
+- `pwd` prints the cwd (`/` for root). `cd [dir]` changes it: bare `cd` goes
+  to root, `cd ..` pops one level, anything else resolves against the current
+  cwd. A directory is any ramdisk name ending in `/`; it exists when the
+  exact entry exists or some file name starts with it. `cd` into a
+  nonexistent directory is a diagnostic, never a silent no-op.
+- `mkdir <name>` creates a directory entry: an empty file named
+  `<resolved name>/`. The parent directory must already exist. Creating a
+  directory that already exists is a diagnostic.
+- `rm <file>` deletes a ramdisk file; a missing file is a diagnostic and a
+  directory name (trailing `/`) is refused, never silently removed.
+- `ls [dir]` lists the entries under a directory, defaulting to the cwd,
+  names relative to it. Directory entries appear with their trailing `/`.
+- `cat <file> [file...]` prints files in order; with a redirection it
+  concatenates them (`cat a b > c`), which is how the MCP marketplace
+  reassembles sources larger than the editor buffer.
+- Path resolution is one choke point: `kfopen` and the builtins resolve a
+  path against the cwd (leading `/` = root, `..` pops one component) into a
+  buffer of `RAMDISK_FNAME_LEN`; a name that does not fit is rejected like
+  a missing file, never truncated. `kfopen` refuses directory names, so
+  `edit dir/`, `cat dir/` and redirects into a directory fail cleanly.
+- `ps` lists the registered programs (name, kind, entry address).
+- The prompt stays `miniOS> `: the cwd is reported by `pwd`, so the MCP
+  marker wait keeps working unchanged.
+
+### Syscall tracing
+`trace` prints the current state; `trace on` / `trace off` set it (off by
+default). While tracing, every Linux-ABI syscall is reported on the console
+as `syscall <n>(a1, a2, a3, ...) = <result>`, so a program's dialogue with
+the kernel can be watched from outside without a debugger. `make gdb`
+boots QEMU with the gdb stub (`-s -S`) for register-level debugging;
+`gdb -ex 'target remote :1234' -ex 'add-symbol-file kernel.elf 0x100000'`
+attaches to the 64-bit kernel.
 
 ### Editor (`edit`)
 A line editor over ramdisk files: `h l p e a i d w x q q!`. Two invariants:
@@ -200,9 +300,10 @@ One file per contract, Python 3 standard library only, no dependencies.
 - A reader thread appends console output to a bounded ring buffer (oldest
   bytes dropped, total counted). Marker waits search from a consume cursor,
   so output already seen can never satisfy a later wait.
-- One QEMU child per server, guarded by a pid file under the system temp
-  dir. A stale QEMU process is reaped on boot; the child is terminated on
-  server exit and never left behind.
+- One QEMU child per server, guarded by a pid file (system temp dir by
+  default, overridable with `MINIOS_PIDFILE`). A stale QEMU process is
+  reaped on boot; the child is terminated on server exit and never left
+  behind.
 
 ### Tools
 | Tool | Contract |
@@ -217,9 +318,65 @@ One file per contract, Python 3 standard library only, no dependencies.
 | `minios_poweroff` | `poweroff`, wait for `powering off` and QEMU exit, release the pid file |
 
 Every tool carries a `timeout_ms` parameter capped by a config constant; a
-wait that expires is an error, never a silent hang. The host shell is never
-invoked (`shell=False` everywhere); the only shell driven is the one inside
+wait that expires is an error, never a silent hang. A caller's budget is a
+budget for the whole job: boot is bounded on its own, its marker waits are
+capped by the boot timeout, so a stuck prompt can never burn an install's
+full budget before failing. The host shell is never invoked
+(`shell=False` everywhere); the only shell driven is the one inside
 MiniOS.
+
+### Addon marketplace (lazyaddons-style)
+Addons are YAML files in `addons/`, one per package, inspired by LazyOwn's
+lazyaddons: metadata plus an `install` block that says where the code comes
+from and how it is built *inside* the OS. The marketplace is how new
+programs travel from GitHub into a running MiniOS without ever rebuilding
+the image.
+
+```yaml
+name: cp
+description: Command-path utility cp, rebuilt from its C source in the OS.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/grisuno/miniOS.git
+  files:
+    - src: progs/bin/cp.c
+      dst: build/cp.c
+  build:
+    - run minigcc.o build/cp.c > build/cp.s
+    - run ld.o -f elf -o bin/cp build/cp.s
+  verify:
+    - line: cp bin/cp.c build/cp2.c
+      exit_code: 0
+```
+
+- `minios_addons` lists the addons and whether each is installed. The
+  marketplace ships `cp` and `freedom`; the freedom addon is the dogfood
+  of the whole system: its source travels from git into the OS and is
+  rebuilt inside the OS by miniGCC and `ld`.
+- `minios_install <name>` boots the machine if needed, clones `repo_url`
+  (`git clone`, `shell=False`, bounded timeout), uploads each `files` entry
+  into the OS through the editor, builds with the `build` shell lines and
+  asserts the `verify` exit codes. Success records the addon in the in-OS
+  registry `var/lib/addons.txt` and in a host state file under the system
+  temp dir; a failure at any step reports and aborts, never records a
+  half-installed package, and removes its upload parts.
+- Editor limits are the upload contract: a source is split into parts of at
+  most 512 lines with lines shorter than 128 chars, written as
+  `<dst>.partN` and reassembled one `cat` invocation per part
+  (`cat <dst>.part0 > <dst>` then `cat <dst>.partN >> <dst>`), because each
+  invocation contributes exactly one trailing newline, which is what joins
+  the parts; the reassembled file is read back and must equal the source
+  byte for byte (modulo the trailing newline). A source with a line the
+  kernel readline cannot carry is rejected up front.
+- The YAML dialect is a strict subset parsed by stdlib-only code (no
+  PyYAML): keys are whitelisted, names bounded, `dst` paths validated like
+  tool paths, build/verify lines printable ASCII. The host shell is never
+  invoked; the only shell driven is the one inside MiniOS.
+- `mcp/mcp_dogfood.py <addons-dir>` is the end-to-end marketplace check:
+  it drives the MCP server over stdio JSON-RPC, installs `freedom` from a
+  git repo into the booted OS, then browses with the installed binary
+  (plain command path, no `run`).
 
 ### Validation
 - `minios_write` and `minios_cat` accept file names over a strict
@@ -238,26 +395,35 @@ MiniOS.
 
 ### Config
 Defaults are named constants; the environment overrides them
-(`MINIOS_IMAGE`, `QEMU`, `MINIOS_MEM`, `MINIOS_LOG_CAP`, the timeout
-family). The default image path is derived from the script's own directory,
-never from a host assumption.
+(`MINIOS_IMAGE`, `QEMU`, `MINIOS_MEM`, `MINIOS_LOG_CAP`, `MINIOS_PIDFILE`,
+`MINIOS_ADDON_STATE`, the timeout family). The default image path is
+derived from the script's own directory, never from a host assumption.
 
 ### Tests
 - `mcp/test_minios_mcp.py`: unit tests (protocol dispatch, validation,
   buffer and cursor semantics, config) plus BDD scenarios that boot the
   real image in QEMU and exercise the full edit/compile/link/run loop,
   including the self-hosted `minigcc.elf`. QEMU scenarios skip cleanly
-  when QEMU or `os.img` is absent.
+  when QEMU or `os.img` is absent. The QEMU-backed classes fail fast:
+  once a tool call has hit a console wait timeout, the bridge is stuck
+  and the remaining tests are skipped instead of each burning a full
+  timeout.
 - `mcp/mutate_mcp.sh`: one-line mutations of `minios_mcp.py`; every mutant
-  must be killed by the suite. A survivor is a test gap.
+  must be killed by the suite. A survivor is a test gap. Mutant suites run
+  in parallel (`MUTATE_JOBS`, default 4) with a per-mutant pid file and
+  addon state, so the runs stay independent; the shortened timeout family
+  bounds the waits of a mutant that breaks the console.
 
 ### Skill
 `skills/minios/SKILL.md` documents the workflow an agent follows: boot once,
 write sources with `minios_write`, compile with `run minigcc.o f.c > f.s`,
 link with `run ld.o -f elf -o f.elf f.s`, run and read `exit code: N`,
-power off when done. Extending miniGCC, `ld` or cvm/cvm2 happens on the host
-against the sibling repositories (clone to a scratch dir, `make`, suites);
-only the result travels into the OS.
+power off when done. It also documents the headless browser (`freedom`,
+plain command path, http only) and the addon marketplace
+(`minios_addons` / `minios_install`, dogfooded by `mcp/mcp_dogfood.py`).
+Extending miniGCC, `ld` or cvm/cvm2 happens on the host against the
+sibling repositories (clone to a scratch dir, `make`, suites); only the
+result travels into the OS.
 
 ## Code Standards
 - English only, no emojis, no inline commentary; docstrings above the code

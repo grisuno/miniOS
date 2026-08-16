@@ -53,6 +53,7 @@ int      ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len);
 int      ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);
 RDFile  *ramdisk_create(const char *name, unsigned size);
 int      ramdisk_resize(RDFile *f, unsigned newsize);
+int      ramdisk_delete(RDFile *f);
 int      ramdisk_list(RDFile **out, int max);
 void     ramdisk_setup_from(void *data, unsigned size);
 
@@ -65,7 +66,7 @@ typedef struct {
     char    *wbuf;    /* write buffer for created files */
     unsigned wsize;
     unsigned wcap;
-    int      mode;       /* 0=read, 1=write */
+    int      mode;       /* 0=read, 1=write (truncate), 2=append */
     int      is_console; /* 1 = stdin/stdout/stderr, routed to the console */
 } KFILE;
 

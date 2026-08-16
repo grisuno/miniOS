@@ -18,6 +18,9 @@ import threading
 import time
 import tty
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import minios_addons  # noqa: E402
+
 CFG_SERVER_NAME = "minios-mcp"
 CFG_SERVER_VERSION = "1.0.0"
 CFG_PROTOCOL_VERSION = "2024-11-05"
@@ -57,6 +60,9 @@ CFG_JSONRPC_INVALID_PARAMS = -32602
 CFG_JSONRPC_INTERNAL_ERROR = -32603
 
 _IMAGE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "os.img")
+_ADDONS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "addons")
+_ADDON_STATE = os.path.join(tempfile.gettempdir(), "minios_mcp_addons.json")
+_PIDFILE = os.path.join(tempfile.gettempdir(), "minios_mcp_qemu.pid")
 
 
 def env_config():
@@ -70,6 +76,10 @@ def env_config():
         "tmo_prompt_ms": int(os.environ.get("MINIOS_TMO_PROMPT", str(CFG_TMO_PROMPT_MS))),
         "tmo_expect_ms": int(os.environ.get("MINIOS_TMO_EXPECT", str(CFG_TMO_EXPECT_MS))),
         "tmo_poweroff_ms": int(os.environ.get("MINIOS_TMO_POWEROFF", str(CFG_TMO_POWEROFF_MS))),
+        "addons_dir": os.environ.get("MINIOS_ADDONS_DIR", _ADDONS_DIR),
+        "git": os.environ.get("MINIOS_GIT", "git"),
+        "addon_state": os.environ.get("MINIOS_ADDON_STATE", _ADDON_STATE),
+        "pidfile": os.environ.get("MINIOS_PIDFILE", _PIDFILE),
     }
 
 
@@ -198,7 +208,7 @@ class MiniOSSession:
         self.reader = None
         self.cursor = 0
         self.closed = False
-        self.pidfile = os.path.join(tempfile.gettempdir(), "minios_mcp_qemu.pid")
+        self.pidfile = cfg["pidfile"]
 
     def booted(self):
         return self.proc is not None and self.proc.poll() is None and not self.closed
@@ -272,10 +282,18 @@ class MiniOSSession:
         self.reader = threading.Thread(target=self._read_loop, daemon=True)
         self.reader.start()
         start = self.log.total
-        pos = self.log.wait_for(CFG_MARK_BOOT.encode("latin-1"), start, clamp_timeout(timeout_ms or self.cfg["tmo_boot_ms"]))
+        # Boot is a bounded operation on its own: its waits are capped by
+        # the boot timeout, never by a caller's budget for a whole job
+        # (minios_install passes its total budget, which a hung prompt
+        # would otherwise burn in full before failing).
+        budget = min(
+            clamp_timeout(timeout_ms or self.cfg["tmo_boot_ms"]),
+            clamp_timeout(self.cfg["tmo_boot_ms"]),
+        )
+        pos = self.log.wait_for(CFG_MARK_BOOT.encode("latin-1"), start, budget)
         if pos < 0:
             raise ToolError("boot timed out waiting for %r" % CFG_MARK_BOOT)
-        ready = self.log.wait_for(CFG_PROMPT_SHELL.encode("latin-1"), pos, clamp_timeout(timeout_ms or self.cfg["tmo_boot_ms"]))
+        ready = self.log.wait_for(CFG_PROMPT_SHELL.encode("latin-1"), pos, budget)
         if ready < 0:
             raise ToolError("boot timed out waiting for the shell prompt")
         self.cursor = pos + len(CFG_MARK_BOOT.encode("latin-1"))
@@ -306,6 +324,14 @@ class MiniOSSession:
             raise ToolError("line must be a single non-empty string without newlines")
         if not line:
             raise ToolError("line must not be empty")
+        if not self.booted():
+            raise ToolError("MiniOS is not booted")
+        os.write(self.master, (line + "\n").encode("latin-1"))
+
+    def _write_editor_line(self, line):
+        """Editor content lines may be empty (blank lines in the file)."""
+        if not isinstance(line, str) or "\n" in line or "\r" in line:
+            raise ToolError("line must be a single string without newlines")
         if not self.booted():
             raise ToolError("MiniOS is not booted")
         os.write(self.master, (line + "\n").encode("latin-1"))
@@ -351,6 +377,39 @@ class MiniOSSession:
             raise ToolError(problem)
         return self.send("cat " + path, self.cfg["tmo_prompt_ms"])
 
+    def cat_body(self, path, missing_ok=False):
+        """Read a ramdisk file and return exactly its bytes.
+
+        The serial driver emits CRLF; the kernel cat appends one newline
+        after the content, so the body is extracted by stripping the echoed
+        command line, the prompt and that single trailing newline.
+        """
+        problem = validate_path(path)
+        if problem:
+            raise ToolError(problem)
+        text = self.send("cat " + path, self.cfg["tmo_prompt_ms"])["text"]
+        if ("cat: %s: no such file" % path) in text or ("or is a directory" in text):
+            if missing_ok:
+                return ""
+            raise ToolError("no such file: %s" % path)
+        nl = text.find("\n")
+        body = text[nl + 1:] if nl >= 0 else ""
+        marker = "\nminiOS> "
+        if body.endswith(marker):
+            body = body[: -len(marker)]
+        body = body.rstrip("\r")
+        body = body.replace("\r\n", "\n")
+        if body.endswith("\n"):
+            body = body[:-1]
+        return body
+
+    def _cleanup_parts(self, parts):
+        for part in parts:
+            try:
+                self.send("rm " + part, self.cfg["tmo_prompt_ms"])
+            except ToolError:
+                pass
+
     def write(self, path, content):
         problem = validate_path(path)
         if problem:
@@ -376,7 +435,7 @@ class MiniOSSession:
             raise ToolError("editor did not open (no %r prompt)" % CFG_PROMPT_EDITOR)
         for line in lines:
             self._write_line(CFG_EDITOR_APPEND)
-            self._write_line(line)
+            self._write_editor_line(line)
             pos = self.log.wait_for(editor, pos + 1, clamp_timeout(self.cfg["tmo_prompt_ms"]))
             if pos < 0:
                 raise ToolError("editor append did not return")
@@ -441,6 +500,8 @@ def subprocess_launch(cfg, slave_fd):
             "file=%s,format=raw,if=ide" % cfg["image"],
             "-m",
             cfg["mem"],
+            "-nic",
+            "user,model=rtl8139",
             "-display",
             "none",
             "-serial",
@@ -514,6 +575,23 @@ TOOLS = [
             "type": "object",
             "properties": {"path": {"type": "string"}},
             "required": ["path"],
+        },
+    },
+    {
+        "name": "minios_addons",
+        "description": "List the addon marketplace entries and whether each is installed.",
+        "inputSchema": {"type": "object", "properties": {}},
+    },
+    {
+        "name": "minios_install",
+        "description": "Install an addon: clone its repo, upload sources, build and verify inside MiniOS.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "timeout_ms": {"type": "integer"},
+            },
+            "required": ["name"],
         },
     },
     {
@@ -608,9 +686,55 @@ class MCPServer:
             return self.session.write(args.get("path"), args.get("content", ""))
         if name == "minios_cat":
             return self.session.cat(args.get("path"))
+        if name == "minios_addons":
+            return self._addons_list()
+        if name == "minios_install":
+            return self._addon_install(args)
         if name == "minios_poweroff":
             return self.session.poweroff(args.get("timeout_ms"))
         raise ToolError("unknown tool: %s" % name)
+
+    def _addons_list(self):
+        state = minios_addons.AddonState(self.cfg["addon_state"]).load()
+        entries = minios_addons.load_addons_dir(self.cfg["addons_dir"])
+        out = []
+        for addon in entries:
+            if "error" in addon:
+                out.append(
+                    {"name": addon["name"], "error": addon["error"], "installed": False}
+                )
+                continue
+            out.append(
+                {
+                    "name": addon["name"],
+                    "description": addon.get("description", ""),
+                    "version": addon.get("version", ""),
+                    "file": addon.get("file", ""),
+                    "installed": addon["name"] in state,
+                }
+            )
+        return {"addons": out, "state_file": self.cfg["addon_state"]}
+
+    def _addon_install(self, args):
+        name = args.get("name")
+        if not isinstance(name, str) or not name:
+            raise ToolError("name must be a non-empty string")
+        entries = minios_addons.load_addons_dir(self.cfg["addons_dir"])
+        addon = None
+        for entry in entries:
+            if entry.get("name") == name:
+                addon = entry
+                break
+        if addon is None:
+            raise ToolError("no such addon: %s" % name)
+        if "error" in addon:
+            raise ToolError("addon %s is invalid: %s" % (name, addon["error"]))
+        cfg = {
+            "git": self.cfg["git"],
+            "timeout_ms": args.get("timeout_ms"),
+            "state_file": self.cfg["addon_state"],
+        }
+        return minios_addons.install_addon(self.session, addon, cfg)
 
     def _reply(self, msg):
         sys.stdout.write(json.dumps(msg) + "\n")
