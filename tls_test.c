@@ -215,6 +215,22 @@ static void test_rsa_ecdsa_vectors(void) {
                                      digest, bad, sizeof(test_rsa_sig)) == -1;
         CHECK("rsa rejects tampered sig", ok);
     }
+    /* 4096-bit modulus: the Montgomery temporaries reach 128 limbs */
+    ok = rsa_pkcs1_verify_sha256(test_rsa4096_n, sizeof(test_rsa4096_n),
+                                 test_rsa4096_e, sizeof(test_rsa4096_e),
+                                 digest, test_rsa4096_sig,
+                                 sizeof(test_rsa4096_sig)) == 0;
+    CHECK("rsa pkcs1v15 4096 verify", ok);
+    {
+        unsigned char bad[512];
+        memcpy(bad, test_rsa4096_sig, sizeof(test_rsa4096_sig));
+        bad[0] ^= 0x01;
+        ok = rsa_pkcs1_verify_sha256(test_rsa4096_n, sizeof(test_rsa4096_n),
+                                     test_rsa4096_e, sizeof(test_rsa4096_e),
+                                     digest, bad,
+                                     sizeof(test_rsa4096_sig)) == -1;
+        CHECK("rsa 4096 rejects tampered sig", ok);
+    }
     ok = ecdsa_verify(0, test_ec_x, test_ec_y, digest, 32,
                       test_ec_sig, sizeof(test_ec_sig)) == 0;
     CHECK("ecdsa p256 sha256 verify", ok);

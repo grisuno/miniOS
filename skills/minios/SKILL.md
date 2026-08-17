@@ -65,15 +65,20 @@ The headless browser ships as `bin/freedom` (curlfree-style engine,
 FreeDom-style omnibox):
 
 ```text
-minios_send {line: "freedom example.com"}       omnibox: a query searches
+minios_send {line: "freedom example.com"}        omnibox: a query searches
+minios_send {line: "freedom https://duckduckgo.com"}
 minios_send {line: "freedom http://10.0.2.2:8899/README.txt"}
+minios_send {line: "freedom --dump-dom https://example.com"}
 ```
 
 No `run` prefix: `bin/freedom` resolves through the command path like
-`cp`. It speaks plain http only; `https://` is refused with a diagnostic
-(exit code 2), dangerous schemes are searched, never executed, and page
-bytes pass a UTF-8 gate before reaching the console. For a fetch target,
-serve files from the host (for example `python3 -m http.server 8899`) and
+`cp`. It speaks https through the kernel TLS client (bare hosts default
+to `https://`; DuckDuckGo searches run over https); an argument that is
+not a URL becomes a DuckDuckGo HTML search, dangerous schemes are
+searched, never executed, and page bytes pass a UTF-8 gate before
+reaching the console. `--dump-css` and `--dump-dom` print the headless
+dumps instead of the filtered text. For a plain-http fetch target, serve
+files from the host (for example `python3 -m http.server 8899`) and
 address it as `http://10.0.2.2:8899/...`.
 
 ## The addon marketplace

@@ -156,14 +156,22 @@ build, the BDD suite and the MCP attaches `-nic user,model=rtl8139`.
 
 - The driver polls the NIC (no interrupt controller is configured): TX
   waits for the descriptor owner bit, RX drains the classic ring by
-  comparing CAPR against CBR. The MAC is read from the NIC IDR registers.
+  comparing CAPR against CBR. QEMU forces the legacy receive ring to
+  8 KB (it masks the RCR ring-size bits out of writes), so the guest
+  ring is 8 KB too; a frame that straddles the ring end is copied
+  wrap-aware into a scratch buffer before it reaches the stack. The MAC
+  is read from the NIC IDR registers.
 - Stack: Ethernet (ARP cache, broadcast requests, replies to our address),
   IPv4 (checksum verified; fragmented datagrams are dropped, fail closed),
   ICMP echo, UDP and a minimal client TCP: SYN/SYN-ACK/ACK handshake,
   stop-and-wait with retransmission timeouts (PIT-calibrated TSC clock),
-  FIN teardown, fixed 536-byte MSS and a bounded window. A kernel DNS
-  client resolves A records against `10.0.2.3` (UDP, retries, bounded
-  timeout).
+  FIN teardown, fixed 536-byte MSS and a bounded window. Every accepted
+  segment advances the ACK number (a stale ACK stalls real servers that
+  wait for acknowledgement before sending more), an out-of-order FIN is
+  never reported as EOF before the data before it has arrived, and the
+  receive buffer compacts instead of dropping when it is partially
+  consumed. A kernel DNS client resolves A records against `10.0.2.3`
+  (UDP, retries, bounded timeout).
 - Programs reach the stack two ways. ET_REL programs get the libc-style
   symbols `net_open`, `net_connect` (resolves the hostname itself),
   `net_send`, `net_recv` (0 = EOF) and `net_close`. Linux binaries get
@@ -188,21 +196,33 @@ is fixed and fail-closed: no downgrade, no fallback, no session resumption.
   accepted. Application data is AES-128-GCM, one record = one TLS record,
   GCM tag verified before any plaintext byte is released.
 - Crypto (all constant-time where it counts, no table lookups indexed by
-  secret bytes): SHA-256, HMAC-SHA256, the TLS 1.2 PRF, AES-128-GCM with a
-  GHASH that never branches on key bits, P-256 and P-384 field arithmetic
-  for ECDSA verify and P-256 ECDHE, and RSA PKCS#1 v1.5 verify (SHA-256)
-  up to 4096-bit moduli for the chain and the ServerKeyExchange signature.
+  secret bytes): SHA-256/384, HMAC-SHA256, the TLS 1.2 PRF, AES-128-GCM
+  with a GHASH that never branches on key bits, P-256 and P-384 field
+  arithmetic for ECDSA verify and P-256 ECDHE, and RSA PKCS#1 v1.5 verify
+  (SHA-256 and SHA-384) up to 4096-bit moduli for the chain and the
+  ServerKeyExchange signature. The Montgomery multiplier's temporaries
+  are sized for 128 limbs (4096-bit keys exercise the full width; the
+  host suite signs vectors with a 4096-bit key so that path is covered).
   The ECDHE private scalar is rejected unless it is a valid non-zero
   scalar, so invalid-curve attacks have nothing to land on.
-- Certificate chain: X.509 DER parsed from the Certificate message; the
-  leaf is verified against the presented chain down to an embedded root
-  (`ISRG Root X1`, `DigiCert Global Root CA`, `GlobalSign Root CA`), the
-  leaf public key must match the handshake signature, the hostname must
-  match a SAN `dNSName` or the subject CN (exact or `*.`-single-label
-  wildcard), and the validity window is checked against the CMOS RTC.
-  Any parse error, unknown signature algorithm, expired chain, wrong
-  hostname or bad signature aborts with `freedom: tls: <stage>: <reason>`
-  and the session is freed.
+- Certificate chain: X.509 DER parsed from the Certificate message (up to
+  4 certs, each bounded); the leaf is verified against the presented
+  chain down to an embedded root, the leaf public key must match the
+  handshake signature, the hostname must match a SAN `dNSName` or the
+  subject CN (exact or `*.`-single-label wildcard), and the validity
+  window is checked against the CMOS RTC. Any parse error, unknown
+  signature algorithm, expired chain, wrong hostname or bad signature
+  aborts with `freedom: tls: <stage>: <reason>` and the session is freed.
+- Embedded roots (8, DER in `tls_roots_src/`, regenerated into
+  `tls_roots.h` by `mkroots.sh`; the build never trusts anything outside
+  the table): ISRG Root X1/X2, DigiCert Global Root G2, GlobalSign Root
+  CA R3, Google Trust Services Root R1/R4, SSL.com TLS ECC/RSA Root CA
+  2022. Real roots are often presented as cross-signed copies (the
+  SSL.com 2022 roots are signed by Comodo AAA, ISRG X2 by X1, GTS R1 by
+  GlobalSign), so the top cert is anchored by public-key equality with an
+  embedded root, or by the root's key verifying the top's signature when
+  the server truncates the chain at the leaf. Key equality is safe
+  because every link below the top is still signature-verified.
 - Session state is heap-allocated per handshake and freed on `close`; a
   socket without TLS costs nothing. Handshake reads are deadline-bounded
   (`net_recv_timeout`), so a silent peer cannot hang the shell forever.
@@ -213,8 +233,11 @@ is fixed and fail-closed: no downgrade, no fallback, no session resumption.
   `tls_handshake(fd, host)` on an already connected TCP socket, 202
   `tls_send(fd, buf, len)` (all-or-error, no partial TLS record), 203
   `tls_recv(fd, buf, len)` (decrypted application bytes; 0 = clean EOF:
-  close_notify or FIN at a record boundary, truncation is reported). All
-  three validate fd and length and return -1 with a diagnostic on misuse.
+  close_notify or FIN at a record boundary, truncation is reported; alert
+  records are decrypted before their level/description is read, so an
+  encrypted close_notify is a clean EOF and never a bogus diagnostic).
+  All three validate fd and length and return -1 with a diagnostic on
+  misuse.
 
 ### Headless browser (`freedom`)
 `bin/freedom` is the headless text browser: a curlfree-style engine (the
@@ -233,11 +256,11 @@ HTTP semantics.
   BDD fixtures over plain HTTP, so the upgrade FreeDom applies to
   `http://` input is not applied here (documented deviation).
 - Engine (curlfree): a header phase reads the response head into a bounded
-  buffer, then the body is read either to `Content-Length` (never waiting
-  for the FIN past the announced body) or to EOF, decoding
-  `Transfer-Encoding: chunked` in place. Header names match
-  case-insensitively. On `https://` the same dialogue runs over the TLS
-  syscalls after `tls_handshake`.
+  buffer (`FREEDOM_HDR_MAX`, sized for real-world header blocks), then the
+  body is read either to `Content-Length` (never waiting for the FIN past
+  the announced body) or to EOF, decoding `Transfer-Encoding: chunked`
+  in place. Header names match case-insensitively. On `https://` the same
+  dialogue runs over the TLS syscalls after `tls_handshake`.
 - Redirects (curlfree + FreeDom policy): a 3xx with a `Location` is chased
   up to `FREEDOM_HOPS_MAX` hops. Absolute `http://` and `https://` targets
   are followed (https through the TLS syscalls); relative targets resolve
@@ -255,8 +278,9 @@ HTTP semantics.
 - Headless dumps (the FreeDom agent surface MiniOS can carry, no JS):
   `freedom --dump-css <url>` prints `=== freedom css ===` then every
   stylesheet the page carries — `<style>` blocks captured in document
-  order, inline `style="..."` attributes as `tag#id.class { ... }` lines,
-  and `<link rel=stylesheet>` targets fetched (bounded count
+  order, inline `style="..."` attributes as `tag#id.class { ... }` lines
+  (the declaration is normalized with a trailing `;`), and
+  `<link rel=stylesheet>` targets fetched (bounded count
   `FREEDOM_CSS_MAX`, each bounded bytes) and printed with their source.
   `freedom --dump-dom <url>` prints `=== freedom dom ===` then the
   element outline: one depth-indented `tag#id.class` line per element in
@@ -268,7 +292,12 @@ HTTP semantics.
 - Build: the ld stubs grew `tls_handshake`/`tls_send`/`tls_recv` (MiniOS
   syscalls 201-203), so the toolchain in `ld/ld.c` and the ramdisk binary
   must be rebuilt together; the Makefile already derives `bin/freedom`
-  from `progs/freedom.c`.
+  from `progs/freedom.c`. Two toolchain fixes this program leans on,
+  both in the sibling checkouts: ld's `strip_comment` must ignore `#`
+  inside string literals (`.asciz "#"` is the id/class separator in the
+  dumps), and miniGCC must index a chained subscript on a pointer array
+  (`argv[1][0]`, the flag check) with a byte load after the pointer
+  element was loaded.
 
 ### Ramdisk names
 File names are at most `RAMDISK_FNAME_LEN - 1` characters. Names may
@@ -355,13 +384,19 @@ mcp/mutate_mcp.sh                                # every MCP mutant killed
 The TLS engine is host-tested because the BDD gate boots a machine that can
 only see plain-HTTP fixtures: `make test-tls` builds `tls.c`/`tls_crypto.c`/
 `tls_x509.c` against the host libc with a compile-time test root injected,
-runs fixed-vector checks (SHA-256, AES-GCM, P-256 ECDH) and then full TLS
-1.2 handshakes against an OpenSSL-driven server (RSA and ECDSA chains,
-correct hostname), plus the negative set (unknown CA, wrong hostname,
-tampered record, expired certificate). Mutants of the TLS files are killed
-by that host suite; the BDD scenarios cover the in-OS wiring fail-closed
-(https against a plain-HTTP port, https redirect landing on plain HTTP) and
-the dump modes over the host fixture server.
+runs fixed-vector checks (SHA-256/384, AES-GCM, P-256 ECDH, RSA PKCS#1 v1.5
+with 2048- and 4096-bit moduli) and then full TLS 1.2 handshakes against
+OpenSSL-driven servers (RSA and ECDSA chains, a presented leaf+CA chain,
+wildcard hostname matching, correct hostname), plus the negative set
+(unknown CA, wrong hostname, bare-domain and two-label wildcard misses,
+tampered record, expired certificate) and a close_notify clean-EOF
+scenario driven by `openssl s_server` (the Python ssl server does not
+send close_notify). Mutants of the TLS files are killed by that host
+suite; the BDD scenarios cover the in-OS wiring fail-closed (https
+against a plain-HTTP port, https redirect landing on plain HTTP), the
+TCP ack-advancement contract (a fixture that holds its second half until
+the guest ACKs the first) and the dump modes over the host fixture
+server.
 
 ## MCP Bridge Contract
 

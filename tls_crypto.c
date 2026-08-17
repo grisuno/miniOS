@@ -595,7 +595,9 @@ static void bn_dbl_mod(const unsigned *a, const unsigned *n, const unsigned *v,
  * a, b < n. */
 static void bn_mont_mul(const unsigned *a, const unsigned *b, const unsigned *n,
                         unsigned n0inv, int nw, unsigned *r) {
-    unsigned t[TLS_BN_WORDS + 1];
+    /* CIOS needs nw + 2 temporaries: t[nw] holds the propagated carry
+     * and t[nw + 1] its high word. */
+    unsigned t[TLS_BN_WORDS + 2];
     int i, j;
     for (i = 0; i <= nw; i++) t[i] = 0;
     for (i = 0; i < nw; i++) {

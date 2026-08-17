@@ -82,6 +82,34 @@ make selfhost   # compile minigcc with minigcc, link with ld, check fixed point
 The image is attached as an IDE disk. The boot path uses INT 13h extended
 (LBA) reads, which floppy emulation does not provide.
 
+## Network and https
+
+The kernel owns an rtl8139 NIC under QEMU user networking (slirp): Ethernet,
+ARP, IPv4, ICMP echo, UDP, DNS and a client TCP (SYN handshake, stop-and-wait
+with retransmissions, FIN teardown). `net` shows the counters and
+`net ping 10.0.2.2` sends one ICMP echo.
+
+On top of TCP the kernel speaks TLS 1.2 as a client
+(`tls_handshake`/`tls_send`/`tls_recv`, MiniOS syscalls 201-203):
+ECDHE-RSA/ECDSA with AES-128-GCM, certificate chains verified down to 8
+embedded public roots, hostnames checked against SAN or CN with
+single-label wildcards. Real-world browsing works from the shell:
+
+```
+miniOS> run bin/freedom https://duckduckgo.com
+miniOS> run bin/freedom mini os kernel        # DuckDuckGo search over https
+miniOS> run bin/freedom https://en.wikipedia.org/wiki/Mini
+miniOS> run bin/freedom --dump-dom https://example.com
+```
+
+`bin/freedom` is the headless text browser: a curlfree-style HTTP engine
+with a FreeDom-style omnibox (an argument that is not a URL is a DuckDuckGo
+search; bare hosts are fetched as `https://`), redirect chasing, chunked
+decoding, an HTML-to-text filter, and `--dump-css`/`--dump-dom` headless
+dumps. The crypto and the roots are host-tested by `make test-tls` (fixed
+vectors plus full TLS 1.2 handshakes against OpenSSL-driven servers,
+including the negative set).
+
 ## Shell
 
 | Command | Purpose |
@@ -93,6 +121,7 @@ The image is attached as an IDE disk. The boot path uses INT 13h extended
 | `run <name\|file> [args]` | run a program, an ELF or a `.cvm` module |
 | `<cmd> [args]` | run an ELF from `bin/<cmd>`: the Linux-style command path |
 | `<cmd> > <file>` | redirect command output to a ramdisk file |
+| `net` / `net ping <ip>` | network status and one ICMP echo |
 | `clear` / `poweroff` | console and power |
 
 Redirection captures what the command writes, not what the shell reports
@@ -145,14 +174,18 @@ MiniOS runs three kinds of program:
 | `stage1.S` | 512-byte boot sector: loads stage 2 over LBA |
 | `stage2.S` | loads the kernel above 1 MB, enters long mode |
 | `kernel.c` / `kernel.h` | kernel: console, heap, ramdisk, loaders, shell, editor |
+| `net.c` / `net.h` | rtl8139 driver, ARP/IP/ICMP/UDP/DNS/TCP |
+| `tls.c` / `tls_crypto.c` / `tls_x509.c` | kernel TLS 1.2 client, crypto, X.509 |
+| `tls_roots_src/` + `mkroots.sh` | the 8 embedded CA roots and their generator |
+| `tls_test.py` / `tls_test.c` | host TLS suite: vectors + full handshakes |
 | `cvm_host.c` | host glue for the CVM interpreter |
 | `progs/*.c` | ramdisk contents: demo programs and the C sources they are built from |
 | `mkramdisk.py` | packs `progs/` into the ramdisk image |
+| `test_bdd.sh` / `test_http_server.py` | behavioural suite and its HTTP fixture |
 | `mcp/minios_mcp.py` | MCP bridge: boots the OS and exposes its console as tools |
 | `mcp/test_minios_mcp.py` | unit + QEMU BDD suite for the bridge |
 | `mcp/mutate_mcp.sh` | mutation testing for the bridge |
 | `skills/minios/SKILL.md` | agent skill: the edit/compile/link/run workflow over the bridge |
-| `test_bdd.sh` | behavioural suite |
 | `mutate.sh` | mutation testing |
 
 ## Agent bridge (MCP + skill)
@@ -187,6 +220,7 @@ full contract.
 | `sources-status` | show the revision each checkout is on |
 | `toolchain` | build `minigcc`, `ld` and `cvm2` from those sources |
 | `selfhost` | compile minigcc with minigcc, link with `ld`, verify the bootstrap fixed point |
+| `test-tls` | host TLS suite: crypto vectors + full handshakes |
 | `run` / `serial` / `debug` | boot the image in QEMU |
 | `test` | behavioural suite |
 | `clean` | remove every build product |

@@ -141,6 +141,13 @@ def gen_certs():
     ec_sig = os.path.join(WORK, "ec.sig")
     check(["openssl", "dgst", "-sha256", "-sign", p("srv_ec.key"),
            "-out", ec_sig, payload])
+    # A 4096-bit RSA key: the Montgomery multiplier's temporaries only
+    # reach their full width at 128 limbs, so the vectors cover the
+    # 2048-bit and the 4096-bit paths separately.
+    check(["openssl", "genpkey", "-algorithm", "RSA",
+           "-pkeyopt", "rsa_keygen_bits:4096", "-out", p("rsa4096.key")])
+    check(["openssl", "dgst", "-sha256", "-sign", p("rsa4096.key"),
+           "-out", p("rsa4096.sig"), payload])
     return p
 
 
@@ -187,6 +194,8 @@ def gen_header(p):
     n, e = rsa_params(p("srv_rsa.key"))
     rsa_sig = open(p("rsa.sig"), "rb").read()
     rsa384_sig = open(p("rsa384.sig"), "rb").read()
+    n4096, e4096 = rsa_params(p("rsa4096.key"))
+    rsa4096_sig = open(p("rsa4096.sig"), "rb").read()
     ecx, ecy = ec_pub(p("srv_ec.key"))
     ec_sig = open(p("ec.sig"), "rb").read()
     payload = open(p("payload.bin"), "rb").read()
@@ -217,6 +226,9 @@ def gen_header(p):
     out.append(c_bytes(e, "test_rsa_e"))
     out.append(c_bytes(rsa_sig, "test_rsa_sig"))
     out.append(c_bytes(rsa384_sig, "test_rsa384_sig"))
+    out.append(c_bytes(n4096, "test_rsa4096_n"))
+    out.append(c_bytes(e4096, "test_rsa4096_e"))
+    out.append(c_bytes(rsa4096_sig, "test_rsa4096_sig"))
     out.append(c_bytes(ecx, "test_ec_x"))
     out.append(c_bytes(ecy, "test_ec_y"))
     out.append(c_bytes(ec_sig, "test_ec_sig"))
