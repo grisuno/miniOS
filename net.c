@@ -126,6 +126,7 @@ unsigned long net_time_ms(void) {
  * ================================================================ */
 
 static unsigned char *net_rx_ring;      /* NET_RX_BUF_LEN bytes, aligned */
+static unsigned char net_rx_scratch[NET_MAX_FRAME];
 static unsigned char net_our_ip[4] = { NET_IP_ADDR };
 static unsigned short net_rx_capr;
 static unsigned char  net_mac[NET_ETH_ALEN];
@@ -168,7 +169,7 @@ static void net_rtl_init(void) {
     net_mac[5] = net_reg8(0x05);
 
     net_reg16_w(0x3C, 0x0000);                          /* no interrupts */
-    net_reg16_w(0x44, 0x000F);                          /* RCR: accept all */
+    net_reg16_w(0x44, NET_RCR);                         /* RCR: accept all */
     net_reg8_w(NET_REG_CR, 0x0D);                       /* BUFE | TE | RE */
 }
 
@@ -549,7 +550,7 @@ struct net_tcp_sock {
     unsigned int  seq;
     unsigned int  ack;
     unsigned int  rx_next;
-    unsigned char rx[NET_RX_RING_SIZE];
+    unsigned char rx[NET_SOCK_RX_BUF];
     unsigned int  rx_head;
     unsigned int  rx_tail;
     int           rx_eof;
@@ -690,18 +691,33 @@ static void net_tcp_rx(const unsigned char *ip, unsigned len) {
             return;
         }
         if (data_len > 0) {
-            if (seq == s->rx_next && s->rx_head + data_len <= sizeof(s->rx)) {
-                kmemcpy(s->rx + s->rx_head, seg + data_off, data_len);
-                s->rx_head += data_len;
-                s->rx_next += data_len;
-                net_tcp_xmit(s, 0x10, 0, 0, 1);  /* ACK */
+            if (seq == s->rx_next) {
+                if (s->rx_tail > 0 && s->rx_head + data_len > sizeof(s->rx)) {
+                    kmemmove(s->rx, s->rx + s->rx_tail, s->rx_head - s->rx_tail);
+                    s->rx_head -= s->rx_tail;
+                    s->rx_tail = 0;
+                }
+                if (s->rx_head + data_len <= sizeof(s->rx)) {
+                    kmemcpy(s->rx + s->rx_head, seg + data_off, data_len);
+                    s->rx_head += data_len;
+                    s->rx_next += data_len;
+                    s->ack = s->rx_next;
+                    net_tcp_xmit(s, 0x10, 0, 0, 1);  /* ACK */
+                }
             } else if ((int)(seq - s->rx_next) < 0) {
                 net_tcp_xmit(s, 0x10, 0, 0, 1);  /* duplicate: re-ACK */
             }
         }
         if (flags & 0x01) {                   /* FIN */
-            if (seq == s->rx_next) s->rx_next++;
-            s->rx_eof = 1;
+            /* An out-of-order FIN (its sequence is still ahead of the
+             * next expected byte) must not report EOF: unread data is
+             * still in flight, and rx_eof would make recv return 0 in
+             * the middle of a record. The peer retransmits the FIN
+             * after the missing data is re-ACKed. */
+            if (seq == s->rx_next) {
+                s->rx_next++;
+                s->rx_eof = 1;
+            }
             s->ack = s->rx_next;
             net_tcp_xmit(s, 0x10, 0, 0, 1);
         }
@@ -787,6 +803,28 @@ static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len) {
     return -1;
 }
 
+/* Blocking receive with a deadline: -1 when the deadline passes with no
+ * data (the caller decides whether that is fatal). The TLS handshake
+ * uses it so a silent peer cannot hang the shell forever. */
+static int net_tcp_recv_deadline(struct net_tcp_sock *s, char *buf, int len,
+                                 unsigned long timeout_ms) {
+    unsigned long deadline = net_time_ms() + timeout_ms;
+    while (s->state != NET_TCP_DEAD) {
+        net_poll_rx();
+        if (s->rx_tail < s->rx_head) {
+            unsigned avail = s->rx_head - s->rx_tail;
+            unsigned take = avail > (unsigned)len ? (unsigned)len : avail;
+            kmemcpy(buf, s->rx + s->rx_tail, take);
+            s->rx_tail += take;
+            if (s->rx_tail == s->rx_head) { s->rx_tail = 0; s->rx_head = 0; }
+            return (int)take;
+        }
+        if (s->rx_eof && s->rx_tail == s->rx_head) return 0;
+        if (net_time_ms() > deadline) return -1;
+    }
+    return -1;
+}
+
 static void net_tcp_close(struct net_tcp_sock *s) {
     if (s->state == NET_TCP_ESTABLISHED) {
         unsigned long deadline = net_time_ms() + NET_CONNECT_TMO_S * 1000;
@@ -862,25 +900,46 @@ static void net_rx_handle_frame(const unsigned char *frame, unsigned len) {
 }
 
 /* Drain the RX ring once; returns 1 when a frame was handled. */
+/* Copy one received frame out of the ring into the scratch buffer,
+ * wrapping at the ring end, then hand it to the protocol stack.
+ * length is the rtl8139 header length (frame size + 4-byte CRC). */
+static void net_rx_frame_wrapped(unsigned length) {
+    unsigned n = length - 4;
+    unsigned pos = net_rx_capr + 4;
+    unsigned k;
+    for (k = 0; k < n; k++) {
+        net_rx_scratch[k] = net_rx_ring[pos & (NET_RX_BUF_LEN - 1)];
+        pos++;
+    }
+    net_rx_handle_frame(net_rx_scratch, n);
+}
+
 void net_poll_rx(void) {
     unsigned short cbr;
     unsigned i = 0;
     if (!net_iobase) return;
     cbr = net_reg16(NET_REG_CBR);
     while (net_rx_capr != cbr) {
-        unsigned char *hdr = net_rx_ring + net_rx_capr;
-        unsigned short status = (unsigned short)(hdr[0] | (hdr[1] << 8));
-        unsigned short length = (unsigned short)(hdr[2] | (hdr[3] << 8));
+        unsigned char hdr[4];
+        unsigned short status, length;
+        int k;
+        /* QEMU writes frames as they arrive; a frame may straddle the
+         * end of the ring (split write), so the header is read
+         * byte-wise across the wrap. */
+        for (k = 0; k < 4; k++)
+            hdr[k] = net_rx_ring[(net_rx_capr + k) & (NET_RX_BUF_LEN - 1)];
+        status = (unsigned short)(hdr[0] | (hdr[1] << 8));
+        length = (unsigned short)(hdr[2] | (hdr[3] << 8));
         if (status & 0x1) {                   /* ROK */
             if (length >= 14 && length <= NET_MAX_FRAME) {
                 net_rx_packets++;
-                net_rx_handle_frame(net_rx_ring + net_rx_capr + 4, (unsigned)length - 4);
+                net_rx_frame_wrapped((unsigned)length);
             } else {
                 net_rx_dropped++;
             }
         }
-        net_rx_capr = (unsigned short)((net_rx_capr + length + 4 + 3) & ~3u);
-        if (net_rx_capr >= NET_RX_BUF_LEN) net_rx_capr = 0;
+        net_rx_capr = (unsigned short)((net_rx_capr + length + 4 + 3) & ~3u)
+                      & (unsigned short)(NET_RX_BUF_LEN - 1);
         /* QEMU stores CAPR + 16 and gates receive on the free space:
          * CAPR is written 1514 bytes ahead so the ring always advertises
          * room for one frame. */
@@ -918,6 +977,11 @@ int net_send(int fd, const char *buf, int len) {
 int net_recv(int fd, char *buf, int len) {
     if (fd < 0 || fd >= NET_SOCKETS || !net_sockets[fd].in_use) return -1;
     return net_tcp_recv(&net_sockets[fd], buf, len);
+}
+
+int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms) {
+    if (fd < 0 || fd >= NET_SOCKETS || !net_sockets[fd].in_use) return -1;
+    return net_tcp_recv_deadline(&net_sockets[fd], buf, len, timeout_ms);
 }
 
 void net_close(int fd) {
@@ -980,6 +1044,7 @@ long net_sys_shutdown(long fd, long how) {
 
 long net_sys_close(long fd) {
     if (fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    tls_free_fd((int)(fd - NET_FD_BASE));
     net_tcp_close(&net_sockets[fd - NET_FD_BASE]);
     return 0;
 }

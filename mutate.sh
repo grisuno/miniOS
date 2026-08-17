@@ -19,7 +19,7 @@ set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"
 BACKUP="$(mktemp -d "${TMPDIR:-/tmp}/minios_mut.XXXXXX")" || exit 1
 
-SOURCES="kernel.c bootdefs.h net.c"
+SOURCES="kernel.c bootdefs.h net.c tls.c tls_x509.c"
 
 restore_sources() {
     local f
@@ -71,6 +71,13 @@ tcp-seq-never-advances | s/if (fresh \&\& (flags/if (0) { if (fresh \&\& (flags/
 tcp-peer-ack-corrupts-ack | s/\/\* ACK: peer acks our data \*\//s->ack = ack; \/\* ACK: peer acks our data \*\// | net.c
 ping-id-mismatched | s/net_put16(req + 4, net_icmp_id)/net_put16(req + 4, net_icmp_id + 1)/ | net.c
 ip-csum-ignored | s/if (net_checksum(ip, 20) != 0) return;/if (0) return;/ | net.c
+tcp-ack-not-advanced | s/                    s->ack = s->rx_next;/                    s->ack = s->ack;/ | net.c
+rx-frame-truncated | s/    for (k = 0; k < n; k++) {/    for (k = 0; k < n - 128; k++) {/ | net.c
+
+tls-close-notify-unrecognized | s/if (s->rec_len == 2 \&\& s->rec\[1\] == 0) {/if (s->rec_len == 2 \&\& s->rec\[1\] == 1) {/ | tls.c
+tls-chain-stride | s/TLS_MEMCPY(s->chain + stored, m + pos, cl);/TLS_MEMCPY(s->chain + s->n_certs * TLS_CERT_MAX, m + pos, cl);/ | tls.c
+tls-wildcard-overrun | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len; i++) {/ | tls_x509.c
+tls-wildcard-short-tail | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len - 2; i++) {/ | tls_x509.c
 "
 
 KILLED=0
@@ -113,7 +120,14 @@ for entry in $MUTATIONS; do
         continue
     fi
 
-    FAIL_FAST=1 "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+    case "$file" in
+        tls.c|tls_x509.c|tls_crypto.c|tls.h)
+            make -C "$HERE" test-tls > "$BACKUP/suite.log" 2>&1
+            ;;
+        *)
+            FAIL_FAST=1 "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+    esac
     if [ $? -eq 0 ]; then
         echo "MUTANT $name: SURVIVED (test gap!)"
         sed -n 's/^=== summary/    suite: summary/p' "$BACKUP/suite.log"

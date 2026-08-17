@@ -222,6 +222,23 @@ selfhost: $(PROGS_DIR)/minigcc.elf
 	    && echo "selfhost OK: g3.s == g4.s (fixed point)" \
 	    || { echo "selfhost FAIL: fixed point not reached"; exit 1; }
 
+# ── Host-side TLS test suite ──────────────────────────────────────
+# The TLS engine compiles against the host libc with a generated test
+# root injected (tls_test_roots.h); the kernel build never includes it.
+# Fixed vectors plus full TLS 1.2 handshakes against openssl-driven
+# servers (RSA and ECDSA chains, correct hostname), plus the negative
+# set (unknown CA, wrong hostname, expired certificate).
+tls_test_roots.h: tls_test.py
+	python3 tls_test.py --gen-only
+
+tls_test: tls_test.c tls_test_roots.h tls.c tls_crypto.c tls_x509.c \
+          tls.h tls_port.h
+	$(CC) $(CFLAGS_HOST) -DTLS_TEST -I. -o $(TOOLS_DIR)/tls_test \
+	      tls_test.c tls.c tls_crypto.c tls_x509.c
+
+test-tls: tls_test
+	python3 tls_test.py
+
 # ── Ramdisk image ─────────────────────────────────────────────────
 # The Makefile is a prerequisite because it carries the file list: editing
 # PROGS must invalidate the image even when no individual file changed.
@@ -253,17 +270,27 @@ stage2.bin: stage2.elf
 	$(OBJCOPY) -O binary $< $@
 
 # ── Kernel ────────────────────────────────────────────────────────
-kernel.o: kernel.c kernel.h
+kernel.o: kernel.c kernel.h tls.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 net.o: net.c net.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+tls.o: tls.c tls.h tls_port.h tls_roots.h kernel.h net.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+tls_crypto.o: tls_crypto.c tls.h tls_port.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+tls_x509.o: tls_x509.c tls.h tls_port.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 ramdisk_data.o: ramdisk_data.c
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o net.o ramdisk_data.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o ramdisk_data.o -o $@
+kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o tls.o tls_crypto.o \
+	      tls_x509.o ramdisk_data.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@

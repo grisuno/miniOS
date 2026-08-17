@@ -351,7 +351,6 @@ expect "bad bytes: ?"
 refute "evil"
 refute "this comment must vanish"
 expect "freedom: 10.0.2.2 ("
-http_server_stop
 
 http_fixture_start
 scenario "freedom decodes a chunked response" "run bin/freedom http://10.0.2.2:8900/chunked
@@ -368,6 +367,47 @@ scenario "freedom stops at Content-Length instead of waiting for EOF" "run bin/f
 poweroff"
 expect "FINAL PAGE MARKER"
 expect "freedom: 10.0.2.2 ("
+
+scenario "tcp ack advances so a server waiting on the ack continues" "run bin/freedom http://10.0.2.2:8900/acktest
+poweroff"
+expect "freedom: 10.0.2.2 (6000 bytes)"
+
+scenario "freedom fails closed on https against a plain-http port" "run bin/freedom https://10.0.2.2:8899/README.txt
+poweroff"
+expect "freedom: https handshake with 10.0.2.2 failed"
+
+scenario "freedom follows an https redirect and fails closed on plain http" "run bin/freedom http://10.0.2.2:8900/redirecthttps
+poweroff"
+expect "freedom: https handshake with 10.0.2.2 failed"
+
+scenario "freedom upgrades a bare host to https" "run bin/freedom 10.0.2.2
+poweroff"
+expect "freedom: connect to 10.0.2.2 failed"
+
+scenario "freedom dump-css collects styles, inline styles and linked sheets" "run bin/freedom --dump-css http://10.0.2.2:8900/styled
+poweroff"
+expect "=== freedom css ==="
+expect "== style =="
+expect "p { color: red; }"
+expect "p#x.y { font-size: 12px; }"
+expect "== /style.css =="
+expect "body { margin: 0; }"
+
+scenario "freedom dump-dom prints the element outline" "run bin/freedom --dump-dom http://10.0.2.2:8900/styled
+poweroff"
+expect "=== freedom dom ==="
+expect "html"
+expect "body"
+expect "p#x.y"
+refute "hello"
+refute "color: red"
+
+scenario "freedom refuses unknown flags" "run bin/freedom --nosuchflag http://10.0.2.2:8900/styled
+poweroff"
+expect "freedom: unknown flag --nosuchflag"
+expect "usage: freedom"
+
+http_server_stop
 http_fixture_stop
 
 scenario "mkdir creates a directory and cd enters it" "mkdir work

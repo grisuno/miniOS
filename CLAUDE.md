@@ -175,6 +175,47 @@ build, the BDD suite and the MCP attaches `-nic user,model=rtl8139`.
 - All constants are named in `net.h` (`NET_*`); none of the fixed
   addresses, ports or timeouts appears as a bare literal.
 
+### TLS client (tls.c + tls_crypto.c + tls_x509.c)
+The kernel speaks TLS 1.2 as a client over an established TCP socket, so
+`https://` works without the browser ever touching key material. The scope
+is fixed and fail-closed: no downgrade, no fallback, no session resumption.
+
+- Handshake: `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256` (0xC02F) and
+  `TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256` (0xC02B). ClientHello carries
+  SNI (the request host), the secp256r1 (23) group only and both signature
+  algorithms; every message feeds the running handshake hash, and the
+  server's Finished is verified before the first application byte is
+  accepted. Application data is AES-128-GCM, one record = one TLS record,
+  GCM tag verified before any plaintext byte is released.
+- Crypto (all constant-time where it counts, no table lookups indexed by
+  secret bytes): SHA-256, HMAC-SHA256, the TLS 1.2 PRF, AES-128-GCM with a
+  GHASH that never branches on key bits, P-256 and P-384 field arithmetic
+  for ECDSA verify and P-256 ECDHE, and RSA PKCS#1 v1.5 verify (SHA-256)
+  up to 4096-bit moduli for the chain and the ServerKeyExchange signature.
+  The ECDHE private scalar is rejected unless it is a valid non-zero
+  scalar, so invalid-curve attacks have nothing to land on.
+- Certificate chain: X.509 DER parsed from the Certificate message; the
+  leaf is verified against the presented chain down to an embedded root
+  (`ISRG Root X1`, `DigiCert Global Root CA`, `GlobalSign Root CA`), the
+  leaf public key must match the handshake signature, the hostname must
+  match a SAN `dNSName` or the subject CN (exact or `*.`-single-label
+  wildcard), and the validity window is checked against the CMOS RTC.
+  Any parse error, unknown signature algorithm, expired chain, wrong
+  hostname or bad signature aborts with `freedom: tls: <stage>: <reason>`
+  and the session is freed.
+- Session state is heap-allocated per handshake and freed on `close`; a
+  socket without TLS costs nothing. Handshake reads are deadline-bounded
+  (`net_recv_timeout`), so a silent peer cannot hang the shell forever.
+- Client random: the kernel has no CSPRNG; the ClientRandom mixes the TSC,
+  accumulated RX bytes/frames and the retransmit counters. Documented,
+  not hidden.
+- Syscall surface (ld stubs, MiniOS namespace like 200 = dns): 201
+  `tls_handshake(fd, host)` on an already connected TCP socket, 202
+  `tls_send(fd, buf, len)` (all-or-error, no partial TLS record), 203
+  `tls_recv(fd, buf, len)` (decrypted application bytes; 0 = clean EOF:
+  close_notify or FIN at a record boundary, truncation is reported). All
+  three validate fd and length and return -1 with a diagnostic on misuse.
+
 ### Headless browser (`freedom`)
 `bin/freedom` is the headless text browser: a curlfree-style engine (the
 host `http.c` + `htmlfilter.c` ideas) with a FreeDom-style omnibox. It is
@@ -185,19 +226,23 @@ on is already implemented in the network driver, so the program owns only
 HTTP semantics.
 
 - Omnibox (FreeDom): an argument that is not a URL is a DuckDuckGo HTML
-  (no-JS) search; `javascript:`/`data:` (any non-http scheme) is searched,
-  never executed; `https://` is refused with a diagnostic (MiniOS has no
-  TLS); the User-Agent is a fixed anti-fingerprinting identity.
+  (no-JS) search over https; `javascript:`/`data:` (any non-http scheme) is
+  searched, never executed; the User-Agent is a fixed anti-fingerprinting
+  identity. Secure by Default: a bare host (no scheme) is fetched as
+  `https://`. Explicit `http://` stays http: the host dev loop serves the
+  BDD fixtures over plain HTTP, so the upgrade FreeDom applies to
+  `http://` input is not applied here (documented deviation).
 - Engine (curlfree): a header phase reads the response head into a bounded
   buffer, then the body is read either to `Content-Length` (never waiting
   for the FIN past the announced body) or to EOF, decoding
   `Transfer-Encoding: chunked` in place. Header names match
-  case-insensitively.
+  case-insensitively. On `https://` the same dialogue runs over the TLS
+  syscalls after `tls_handshake`.
 - Redirects (curlfree + FreeDom policy): a 3xx with a `Location` is chased
-  up to `FREEDOM_HOPS_MAX` hops. Absolute `http://` targets are followed;
-  relative targets resolve against the current path; an `https://` target
-  stops the chase with the same diagnostic as direct `https` input; any
-  other explicit scheme in a `Location` is refused, fail closed.
+  up to `FREEDOM_HOPS_MAX` hops. Absolute `http://` and `https://` targets
+  are followed (https through the TLS syscalls); relative targets resolve
+  against the current path; any other explicit scheme in a `Location` is
+  refused, fail closed.
 - HTML filter (htmlfilter.c): comments are skipped, `script`/`style`
   contents are suppressed, block tags (`p`, `div`, `h1`-`h6`, `li`, `tr`)
   and `br` become newlines, entities (named and numeric, decimal and hex)
@@ -207,8 +252,23 @@ HTTP semantics.
 - Remote pages are hostile data (FreeDom): every byte printed to the
   console passes a UTF-8 gate that replaces bytes outside a valid sequence
   (overlong, surrogate, out of range) with `?`.
+- Headless dumps (the FreeDom agent surface MiniOS can carry, no JS):
+  `freedom --dump-css <url>` prints `=== freedom css ===` then every
+  stylesheet the page carries — `<style>` blocks captured in document
+  order, inline `style="..."` attributes as `tag#id.class { ... }` lines,
+  and `<link rel=stylesheet>` targets fetched (bounded count
+  `FREEDOM_CSS_MAX`, each bounded bytes) and printed with their source.
+  `freedom --dump-dom <url>` prints `=== freedom dom ===` then the
+  element outline: one depth-indented `tag#id.class` line per element in
+  document order (bounded buffer `FREEDOM_DOM_MAX`). Dump modes suppress
+  the normal filtered text. Both flags validate argv and refuse unknown
+  flags with a usage diagnostic.
 - Diagnostics are `freedom: ...` lines; the fetch ends with
   `freedom: <host> (<n> bytes)`.
+- Build: the ld stubs grew `tls_handshake`/`tls_send`/`tls_recv` (MiniOS
+  syscalls 201-203), so the toolchain in `ld/ld.c` and the ramdisk binary
+  must be rebuilt together; the Makefile already derives `bin/freedom`
+  from `progs/freedom.c`.
 
 ### Ramdisk names
 File names are at most `RAMDISK_FNAME_LEN - 1` characters. Names may
@@ -286,10 +346,22 @@ is forbidden; the answer to a survivor is a new scenario.
 ```bash
 make                # zero warnings
 ./test_bdd.sh       # all scenarios green
-./mutate.sh         # every mutant killed
+./mutate.sh         # every mutant killed (BDD + host TLS suite)
+make test-tls       # host-side crypto + full-handshake suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
+
+The TLS engine is host-tested because the BDD gate boots a machine that can
+only see plain-HTTP fixtures: `make test-tls` builds `tls.c`/`tls_crypto.c`/
+`tls_x509.c` against the host libc with a compile-time test root injected,
+runs fixed-vector checks (SHA-256, AES-GCM, P-256 ECDH) and then full TLS
+1.2 handshakes against an OpenSSL-driven server (RSA and ECDSA chains,
+correct hostname), plus the negative set (unknown CA, wrong hostname,
+tampered record, expired certificate). Mutants of the TLS files are killed
+by that host suite; the BDD scenarios cover the in-OS wiring fail-closed
+(https against a plain-HTTP port, https redirect landing on plain HTTP) and
+the dump modes over the host fixture server.
 
 ## MCP Bridge Contract
 

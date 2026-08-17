@@ -11,8 +11,15 @@
 #define NET_PCI_VENDOR    0x10EC
 #define NET_PCI_DEVICE    0x8139
 
-#define NET_RX_BUF_LEN    0x10000
+/* QEMU masks the RCR ring-size bits (11-12) out of writes, so its
+ * legacy receive ring is always 8 KB. The guest ring must match: with a
+ * larger ring the guest read pointer and QEMU's 8 KB write wrap disagree
+ * and the tail of every frame that crosses 8192 is lost. */
+#define NET_RX_BUF_LEN    0x2000
 #define NET_RX_ALIGN      256
+/* RCR: accept broadcast/multicast/phys (the ring size bits are ignored
+ * by QEMU anyway). */
+#define NET_RCR           (0x000F)
 #define NET_MAX_FRAME     1536
 #define NET_TX_SLOTS      4
 
@@ -33,7 +40,10 @@
 
 /* ========== Protocol bounds ========== */
 #define NET_TCP_MSS       536
-#define NET_TCP_WINDOW    4096
+#define NET_TCP_WINDOW    16384
+/* The receive window and each socket's receive buffer match: the NIC
+ * ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */
+#define NET_SOCK_RX_BUF   16384
 #define NET_RX_RING_SIZE  8192
 #define NET_SOCKETS       16
 #define NET_DNS_PORT      53
@@ -63,6 +73,8 @@ int  net_open(void);
 int  net_connect(const char *host, unsigned short port);
 int  net_send(int fd, const char *buf, int len);
 int  net_recv(int fd, char *buf, int len);
+/* Blocking receive with a deadline: like net_recv, but -1 on timeout. */
+int  net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);
 void net_close(int fd);
 
 /* Linux syscall ABI (sockaddr_in layout matches Linux) */
@@ -77,5 +89,8 @@ long net_sys_dns(long host);
 
 /* Milliseconds since net_init (PIT-calibrated TSC). */
 unsigned long net_time_ms(void);
+
+/* TLS sessions attached to socket fds (tls.c); net_sys_close frees them. */
+void tls_free_fd(int fd);
 
 #endif

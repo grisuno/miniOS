@@ -7,14 +7,25 @@
  * strips tags, skips comments, suppresses script/style, decodes
  * entities and collapses whitespace. The command-line behaviour
  * follows FreeDom: an argument that is not a URL is a DuckDuckGo HTML
- * (no-JS) search, any non-http scheme is searched and never executed,
- * remote page bytes pass a UTF-8 gate before reaching the console,
- * and the User-Agent is a fixed anti-fingerprinting identity.
+ * (no-JS) search over https, any non-http scheme is searched and never
+ * executed, bare hosts are fetched as https:// (Secure by Default),
+ * explicit http:// stays http so the host dev loop keeps working, and
+ * remote page bytes pass a UTF-8 gate before reaching the console.
+ * The User-Agent is a fixed anti-fingerprinting identity.
+ *
+ * https:// runs the same dialogue over the kernel TLS syscalls
+ * (tls_handshake/tls_send/tls_recv, MiniOS 201-203) after the TCP
+ * connect, so freedom never touches key material itself.
+ *
+ * Headless dumps (the FreeDom agent surface MiniOS can carry, no JS):
+ *   freedom --dump-css <url>   collected author CSS + linked sheets
+ *   freedom --dump-dom <url>   element outline (tag#id.class, depth)
+ * Dump modes suppress the normal filtered text.
  *
  * All filter state lives in file-scope variables so a tag or entity
  * split between two network chunks is still decoded.
  *
- * usage: freedom [url-or-query]
+ * usage: freedom [--dump-css|--dump-dom] [url-or-query]
  */
 
 int socket(int domain, int type, int proto);
@@ -23,6 +34,9 @@ int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);
 int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);
 int close(int fd);
 int net_dns_resolve(char *host);
+int tls_handshake(int fd, char *host);
+int tls_send(int fd, char *buf, int len);
+int tls_recv(int fd, char *buf, int len);
 int printf(char *fmt, ...);
 int puts(char *s);
 int strlen(char *s);
@@ -34,13 +48,19 @@ int memset(char *dst, int c, int n);
 int putchar(int c);
 
 #define FREEDOM_HOPS_MAX 3
-#define FREEDOM_HDR_MAX  2048
+#define FREEDOM_HDR_MAX  16384
 #define FREEDOM_BUF      768
 #define FREEDOM_CHUNK_MAX 16777216
+#define FREEDOM_CSS_MAX  8
+#define FREEDOM_CSS_BUF  8192
+#define FREEDOM_DOM_BUF  8192
+#define FREEDOM_ATTR_MAX 96
+#define FREEDOM_LINE_MAX 160
 
 static char f_host[64];
 static char f_path[128];
 static int  f_port;
+static int  f_secure;
 
 static char f_loc[192];
 static int  f_redir;
@@ -51,6 +71,7 @@ static int  f_chunked;
 static char f_hdr[FREEDOM_HDR_MAX];
 static int  f_hlen;
 
+/* filter state */
 static int  f_tag;
 static int  f_suppress;
 static int  f_comment;
@@ -63,6 +84,39 @@ static int  f_ws;
 static char f_utbuf[4];
 static int  f_utlen;
 static int  f_utrem;
+
+/* attribute parsing */
+static int  f_attr_on;
+static int  f_waitq;
+static int  f_inval;
+static int  f_inval2;
+static char f_attr[8];
+static int  f_attrlen;
+static char f_val[FREEDOM_ATTR_MAX];
+static int  f_vallen;
+static char f_id[32];
+static int  f_idlen;
+static char f_cls[32];
+static int  f_clslen;
+static char f_href[128];
+static int  f_hreflen;
+static int  f_rel_ss;
+static char f_styleattr[FREEDOM_ATTR_MAX];
+static int  f_stylelen;
+
+/* dump state */
+static int  f_dump_css;
+static int  f_dump_dom;
+static int  f_mode;      /* 0 text, 1 raw css body, 2 dom only */
+static int  f_rawcap;    /* capturing a <style> block */
+static int  f_depth;
+static char f_dom[FREEDOM_DOM_BUF];
+static int  f_domlen;
+static char f_css[FREEDOM_CSS_BUF];
+static int  f_csslen;
+static char f_linkhost[FREEDOM_CSS_MAX][64];
+static char f_linkpath[FREEDOM_CSS_MAX][128];
+static int  f_linkn;
 
 static int  f_cstage;
 static int  f_csize;
@@ -141,7 +195,7 @@ static int looks_like_url(char *s) {
 
 /* Does s begin with "<scheme>:" per RFC 3986 (ALPHA
  * *(ALPHA/DIGIT/+/-/.) ":")? Any such prefix makes the string a scheme,
- * and the omnibox policy is: only http:// is executed. */
+ * and the omnibox policy is: only http:// and https:// are executed. */
 static int has_scheme(char *s) {
     int i;
     char c;
@@ -178,20 +232,30 @@ static void make_search(char *out, char *query, int cap) {
     }
 }
 
-/* Split an http:// URL into f_host, f_path and f_port. Returns 0 on
- * failure. The input buffer is never modified: the parse is index-only,
- * so it stays valid when the compiler widens dereferenced stores. */
+/* Split an http:// or https:// URL into f_host, f_path, f_port and
+ * f_secure. Returns 0 on failure. The input buffer is never modified:
+ * the parse is index-only, so it stays valid when the compiler widens
+ * dereferenced stores. */
 static int split_url(char *url) {
     char *p;
-    int hl, plen, k, v;
-    if (strncmp(url, "http://", 7) != 0) return 0;
-    p = url + 7;
+    int hl, plen, k, v, defport;
+    if (strncmp(url, "https://", 8) == 0) {
+        f_secure = 1;
+        defport = 443;
+        p = url + 8;
+    } else if (strncmp(url, "http://", 7) == 0) {
+        f_secure = 0;
+        defport = 80;
+        p = url + 7;
+    } else {
+        return 0;
+    }
     hl = 0;
     while (p[hl] && p[hl] != ':' && p[hl] != '/' && hl < 64) hl++;
     if (hl < 1 || hl >= 64) return 0;
     memcpy(f_host, p, hl);
     f_host[hl] = 0;
-    f_port = 80;
+    f_port = defport;
     if (p[hl] == ':') {
         k = hl + 1;
         v = 0;
@@ -216,23 +280,22 @@ static int split_url(char *url) {
     return 1;
 }
 
-/* Recompute f_host/f_path/f_port from the last Location value. Returns
- * 1 when the chase may continue, 0 when it must stop (diagnostic
- * already printed). */
+/* Recompute f_host/f_path/f_port/f_secure from the last Location
+ * value. Returns 1 when the chase may continue, 0 when it must stop
+ * (diagnostic already printed). */
 static int resolve_redirect(void) {
     char tmp[192];
     char *loc;
     int pos;
     loc = f_loc;
     if (strncmp(loc, "https://", 8) == 0) {
-        puts("freedom: https needs TLS, which MiniOS does not speak yet");
-        return 0;
+        return split_url(loc);
     }
     if (strncmp(loc, "http://", 7) == 0) {
         return split_url(loc);
     }
     if (loc[0] == '/' && loc[1] == '/') {
-        pos = append(tmp, 0, "http:", 192);
+        pos = append(tmp, 0, f_secure ? "https:" : "http:", 192);
         pos = append(tmp, pos, loc, 192);
         if (pos < 0) return 0;
         return split_url(tmp);
@@ -274,7 +337,7 @@ static int resolve_redirect(void) {
 /* --- HTML filter -------------------------------------------------- */
 
 static void put_ws(void) {
-    if (!f_ws) {
+    if (!f_ws && f_mode == 0) {
         putchar(' ');
         f_ws = 1;
     }
@@ -333,8 +396,9 @@ static void put_utf(int c) {
 }
 
 /* Print one text byte: whitespace collapses, everything else goes
- * through the UTF-8 gate. */
+ * through the UTF-8 gate. Dump modes suppress the page text. */
 static void put_text(int c) {
+    if (f_mode != 0) return;
     if (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
         put_ws();
         return;
@@ -387,8 +451,71 @@ static void put_entity(char *e) {
     }
 }
 
-/* A tag was fully collected into f_tagn. Decide what it does to the
- * stream. */
+/* --- dump capture helpers ------------------------------------------ */
+
+static void css_append(char *s, int n) {
+    int i;
+    for (i = 0; i < n && f_csslen < FREEDOM_CSS_BUF - 1; i++)
+        f_css[f_csslen++] = s[i];
+}
+
+static void css_line(char *s) {
+    css_append(s, strlen(s));
+    if (f_csslen < FREEDOM_CSS_BUF - 1) f_css[f_csslen++] = '\n';
+}
+
+static void dom_append(char *s, int n) {
+    int i;
+    for (i = 0; i < n && f_domlen < FREEDOM_DOM_BUF - 1; i++)
+        f_dom[f_domlen++] = s[i];
+}
+
+static void dom_space(void) {
+    if (f_domlen < FREEDOM_DOM_BUF - 1) f_dom[f_domlen++] = ' ';
+}
+
+static void dom_nl(void) {
+    if (f_domlen < FREEDOM_DOM_BUF - 1) f_dom[f_domlen++] = '\n';
+}
+
+/* Record the finished attribute in its place. */
+static void record_attr(void) {
+    if (f_attrlen == 0 || f_vallen == 0) return;
+    if (ci_eq(f_attr, "id")) {
+        f_idlen = f_vallen < 31 ? f_vallen : 31;
+        memcpy(f_id, f_val, f_idlen);
+        f_id[f_idlen] = 0;
+    } else if (ci_eq(f_attr, "class")) {
+        f_clslen = f_vallen < 31 ? f_vallen : 31;
+        memcpy(f_cls, f_val, f_clslen);
+        f_cls[f_clslen] = 0;
+    } else if (ci_eq(f_attr, "href")) {
+        f_hreflen = f_vallen < 127 ? f_vallen : 127;
+        memcpy(f_href, f_val, f_hreflen);
+        f_href[f_hreflen] = 0;
+    } else if (ci_eq(f_attr, "style")) {
+        f_stylelen = f_vallen < (FREEDOM_ATTR_MAX - 1) ? f_vallen
+                                                       : (FREEDOM_ATTR_MAX - 1);
+        memcpy(f_styleattr, f_val, f_stylelen);
+        f_styleattr[f_stylelen] = 0;
+    } else if (ci_eq(f_attr, "rel")) {
+        f_rel_ss = ci_index(f_val, "stylesheet") >= 0;
+    }
+}
+
+/* Is tagname a void element (no closing tag, no children)? */
+static int is_void_tag(void) {
+    return ci_eq(f_tagn, "br") || ci_eq(f_tagn, "img") ||
+           ci_eq(f_tagn, "meta") || ci_eq(f_tagn, "link") ||
+           ci_eq(f_tagn, "input") || ci_eq(f_tagn, "hr") ||
+           ci_eq(f_tagn, "area") || ci_eq(f_tagn, "base") ||
+           ci_eq(f_tagn, "col") || ci_eq(f_tagn, "embed") ||
+           ci_eq(f_tagn, "param") || ci_eq(f_tagn, "source") ||
+           ci_eq(f_tagn, "track") || ci_eq(f_tagn, "wbr");
+}
+
+/* A tag was fully collected into f_tagn (+ attributes). Decide what it
+ * does to the stream and the dumps. */
 static void classify_tag(void) {
     f_tagn[f_tagnlen] = 0;
     if (f_tagnlen == 0) return;
@@ -400,19 +527,75 @@ static void classify_tag(void) {
         return;
     }
     if (f_tagn[0] == '/') {
-        if (ci_eq(f_tagn + 1, "script") || ci_eq(f_tagn + 1, "style"))
+        if (ci_eq(f_tagn + 1, "script") || ci_eq(f_tagn + 1, "style")) {
             f_suppress = 0;
+        } else if (f_dump_dom && f_depth > 0) {
+            f_depth--;
+        }
         return;
     }
     if (ci_eq(f_tagn, "script") || ci_eq(f_tagn, "style")) {
         f_suppress = 1;
+        if (f_dump_css && ci_eq(f_tagn, "style")) {
+            css_line("== style ==");
+            f_rawcap = 1;
+        }
         return;
+    }
+    if (f_dump_css) {
+        if (f_stylelen > 0) {
+            char line[FREEDOM_LINE_MAX];
+            int pos;
+            pos = 0;
+            pos = append(line, pos, f_tagn, FREEDOM_LINE_MAX);
+            if (f_idlen > 0) {
+                pos = append(line, pos, "#", FREEDOM_LINE_MAX);
+                pos = append(line, pos, f_id, FREEDOM_LINE_MAX);
+            }
+            if (f_clslen > 0) {
+                pos = append(line, pos, ".", FREEDOM_LINE_MAX);
+                pos = append(line, pos, f_cls, FREEDOM_LINE_MAX);
+            }
+            pos = append(line, pos, " { ", FREEDOM_LINE_MAX);
+            pos = append(line, pos, f_styleattr, FREEDOM_LINE_MAX);
+            if (f_stylelen > 0 && f_styleattr[f_stylelen - 1] != ';')
+                pos = append(line, pos, ";", FREEDOM_LINE_MAX);
+            pos = append(line, pos, " }", FREEDOM_LINE_MAX);
+            if (pos >= 0) css_line(line);
+        }
+        if (ci_eq(f_tagn, "link") && f_rel_ss && f_hreflen > 0 &&
+            !ci_starts(f_href, "http://") && !ci_starts(f_href, "https://") &&
+            f_linkn < FREEDOM_CSS_MAX) {
+            memcpy(f_linkhost[f_linkn], f_host, 63);
+            f_linkhost[f_linkn][63] = 0;
+            memcpy(f_linkpath[f_linkn], f_href, 127);
+            f_linkpath[f_linkn][127] = 0;
+            f_linkn++;
+        }
+    }
+    if (f_dump_dom) {
+        int i;
+        for (i = 0; i < f_depth && i < 12; i++) {
+            dom_space();
+            dom_space();
+        }
+        dom_append(f_tagn, f_tagnlen);
+        if (f_idlen > 0) {
+            dom_append("#", 1);
+            dom_append(f_id, f_idlen);
+        }
+        if (f_clslen > 0) {
+            dom_append(".", 1);
+            dom_append(f_cls, f_clslen);
+        }
+        dom_nl();
+        if (!is_void_tag()) f_depth++;
     }
     if (ci_eq(f_tagn, "br") || ci_eq(f_tagn, "p") || ci_eq(f_tagn, "div") ||
         ci_eq(f_tagn, "h1") || ci_eq(f_tagn, "h2") || ci_eq(f_tagn, "h3") ||
         ci_eq(f_tagn, "h4") || ci_eq(f_tagn, "h5") || ci_eq(f_tagn, "h6") ||
         ci_eq(f_tagn, "li") || ci_eq(f_tagn, "tr")) {
-        putchar('\n');
+        if (f_mode == 0) putchar('\n');
         f_ws = 1;
     }
 }
@@ -432,22 +615,104 @@ static void body_byte(int c) {
         if (c == '<') {
             f_tag = 1;
             f_tagnlen = 0;
-        } else if (c == '>' && f_tag) {
-            f_tag = 0;
-            f_tagn[f_tagnlen] = 0;
-            if (f_tagnlen > 0 && f_tagn[0] == '/' &&
-                (ci_eq(f_tagn + 1, "script") || ci_eq(f_tagn + 1, "style")))
-                f_suppress = 0;
-        } else if (f_tag && c != ' ' && c != '\t' && f_tagnlen < 7) {
-            f_tagn[f_tagnlen++] = c;
+            return;
         }
+        if (f_tag) {
+            if (c == '>') {
+                f_tag = 0;
+                f_tagn[f_tagnlen] = 0;
+                if (f_tagnlen > 0 && f_tagn[0] == '/' &&
+                    (ci_eq(f_tagn + 1, "script") ||
+                     ci_eq(f_tagn + 1, "style"))) {
+                    f_suppress = 0;
+                    if (f_rawcap && ci_eq(f_tagn + 1, "style")) {
+                        if (f_csslen < FREEDOM_CSS_BUF - 1)
+                            f_css[f_csslen++] = '\n';
+                        f_rawcap = 0;
+                    }
+                }
+            } else if (c != ' ' && c != '\t' && f_tagnlen < 7) {
+                f_tagn[f_tagnlen++] = c;
+            }
+            return;
+        }
+        if (f_rawcap && f_csslen < FREEDOM_CSS_BUF - 1)
+            f_css[f_csslen++] = c;
         return;
     }
     if (f_tag) {
+        if (f_inval) {
+            if (c == '"') {
+                f_inval = 0;
+                record_attr();
+            } else if (f_vallen < FREEDOM_ATTR_MAX - 1) {
+                f_val[f_vallen++] = c;
+            }
+            return;
+        }
+        if (f_inval2) {
+            if (c == ' ' || c == '\t') {
+                f_inval2 = 0;
+                record_attr();
+                return;
+            }
+            if (c == '>') {
+                f_inval2 = 0;
+                record_attr();
+                f_tag = 0;
+                classify_tag();
+                return;
+            }
+            if (f_vallen < FREEDOM_ATTR_MAX - 1) f_val[f_vallen++] = c;
+            return;
+        }
+        if (f_waitq) {
+            if (c == '"') {
+                f_waitq = 0;
+                f_inval = 1;
+            } else if (c == '>') {
+                f_waitq = 0;
+                f_tag = 0;
+                record_attr();
+                classify_tag();
+            } else if (c != ' ' && c != '\t') {
+                f_waitq = 0;
+                f_inval2 = 1;
+                f_vallen = 1;
+                f_val[0] = c;
+            }
+            return;
+        }
+        if (f_attr_on) {
+            if (c == '=') {
+                f_attr_on = 0;
+                f_waitq = 1;
+                f_vallen = 0;
+            } else if (c != ' ' && c != '\t' && f_attrlen < 7) {
+                f_attr[f_attrlen++] = c;
+                f_attr[f_attrlen] = 0;
+            }
+            return;
+        }
         if (c == '>') {
             f_tag = 0;
             classify_tag();
-        } else if (c != ' ' && c != '\t' && f_tagnlen < 7) {
+            return;
+        }
+        if (c == ' ' || c == '\t') {
+            if (f_tagnlen > 0) {
+                f_attr_on = 1;
+                f_attrlen = 0;
+            }
+            return;
+        }
+        if (c == '/') {
+            /* a closing tag starts with '/'; self-closing slashes come
+             * after the tag name and are ignored */
+            if (f_tagnlen == 0) f_tagn[f_tagnlen++] = c;
+            return;
+        }
+        if (f_tagnlen < 7) {
             f_tagn[f_tagnlen++] = c;
             if (f_tagnlen == 3 && f_tagn[0] == '!' &&
                 f_tagn[1] == '-' && f_tagn[2] == '-') {
@@ -477,6 +742,17 @@ static void body_byte(int c) {
     if (c == '<') {
         f_tag = 1;
         f_tagnlen = 0;
+        f_attr_on = 0;
+        f_waitq = 0;
+        f_inval = 0;
+        f_inval2 = 0;
+        f_attrlen = 0;
+        f_vallen = 0;
+        f_idlen = 0;
+        f_clslen = 0;
+        f_hreflen = 0;
+        f_stylelen = 0;
+        f_rel_ss = 0;
         return;
     }
     if (c == '&') {
@@ -536,8 +812,23 @@ static void parse_head(void) {
     }
 }
 
-/* Send one HTTP request and print the filtered response body. Returns
- * the status code, or 0 on transport failure. Sets f_redir when a
+/* Receive body bytes: TLS for f_secure, plain TCP otherwise. */
+static int recv_body(int fd, char *buf, int len) {
+    if (f_secure) return tls_recv(fd, buf, len);
+    return recvfrom(fd, buf, len, 0, 0, 0);
+}
+
+/* Send the whole request: TLS for f_secure, plain TCP otherwise. */
+static int send_all(int fd, char *buf, int len) {
+    if (f_secure) {
+        if (tls_send(fd, buf, len) < 0) return -1;
+        return len;
+    }
+    return sendto(fd, buf, len, 0, 0, 0);
+}
+
+/* Send one HTTP request and process the response body. Returns the
+ * status code, or 0 on transport failure. Sets f_redir when a
  * Location header was seen. */
 static int fetch(char *host, char *path, int port) {
     char sa[16];
@@ -568,6 +859,13 @@ static int fetch(char *host, char *path, int port) {
         close(fd);
         return 0;
     }
+    if (f_secure) {
+        if (tls_handshake(fd, host) < 0) {
+            printf("freedom: https handshake with %s failed\n", host);
+            close(fd);
+            return 0;
+        }
+    }
 
     pos = 0;
     pos = append(req, pos, "GET ", 768);
@@ -577,7 +875,11 @@ static int fetch(char *host, char *path, int port) {
     pos = append(req, pos, "\r\nUser-Agent: freedom/1.0 (MiniOS)", 768);
     pos = append(req, pos, "\r\nAccept: text/html", 768);
     pos = append(req, pos, "\r\nConnection: close\r\n\r\n", 768);
-    sendto(fd, req, pos, 0, 0, 0);
+    if (send_all(fd, req, pos) < 0) {
+        printf("freedom: send to %s failed\n", host);
+        close(fd);
+        return 0;
+    }
 
     f_hlen = 0;
     f_status = 0;
@@ -598,13 +900,24 @@ static int fetch(char *host, char *path, int port) {
     f_ws = 0;
     f_utlen = 0;
     f_utrem = 0;
+    f_attr_on = 0;
+    f_waitq = 0;
+    f_inval = 0;
+    f_inval2 = 0;
+    f_rawcap = 0;
+    f_depth = 0;
+    f_idlen = 0;
+    f_clslen = 0;
+    f_hreflen = 0;
+    f_stylelen = 0;
+    f_rel_ss = 0;
 
     stage = 0;         /* 0 = header, 1 = body */
     got = 0;
     for (;;) {
         if (f_bdone) break;
         if (!f_chunked && f_has_clen && got >= f_clen) break;
-        n = recvfrom(fd, buf, FREEDOM_BUF, 0, 0, 0);
+        n = recv_body(fd, buf, FREEDOM_BUF);
         if (n <= 0) break;
         i = 0;
         while (i < n && !f_bdone) {
@@ -670,47 +983,183 @@ static int fetch(char *host, char *path, int port) {
         }
     }
     close(fd);
-    putchar('\n');
+    if (f_mode == 0) putchar('\n');
     printf("freedom: %s (%d bytes)\n", host, got);
     return f_status;
+}
+
+/* Fetch a linked stylesheet and print its raw body (through the UTF-8
+ * gate). No redirect chasing: the bound is one request. */
+static void fetch_css(char *host, char *path) {
+    char sa[16];
+    char buf[FREEDOM_BUF];
+    char req[768];
+    int fd, n, i, ip, pos, stage, got;
+
+    ip = net_dns_resolve(host);
+    if (ip < 0) {
+        printf("freedom: cannot resolve %s\n", host);
+        return;
+    }
+    fd = socket(2, 1, 0);
+    if (fd < 0) return;
+    memset(sa, 0, 16);
+    sa[0] = 2;
+    sa[2] = (f_port >> 8) & 255;
+    sa[3] = f_port & 255;
+    sa[4] = (ip >> 24) & 255;
+    sa[5] = (ip >> 16) & 255;
+    sa[6] = (ip >> 8) & 255;
+    sa[7] = ip & 255;
+    if (connect(fd, sa, 16) < 0) {
+        printf("freedom: connect to %s failed\n", host);
+        close(fd);
+        return;
+    }
+    if (f_secure) {
+        if (tls_handshake(fd, host) < 0) {
+            printf("freedom: https handshake with %s failed\n", host);
+            close(fd);
+            return;
+        }
+    }
+    pos = 0;
+    pos = append(req, pos, "GET ", 768);
+    pos = append(req, pos, path, 768);
+    pos = append(req, pos, " HTTP/1.0\r\nHost: ", 768);
+    pos = append(req, pos, host, 768);
+    pos = append(req, pos, "\r\nUser-Agent: freedom/1.0 (MiniOS)", 768);
+    pos = append(req, pos, "\r\nConnection: close\r\n\r\n", 768);
+    if (send_all(fd, req, pos) < 0) {
+        close(fd);
+        return;
+    }
+    f_hlen = 0;
+    stage = 0;
+    got = 0;
+    for (;;) {
+        n = recv_body(fd, buf, FREEDOM_BUF);
+        if (n <= 0) break;
+        i = 0;
+        while (i < n) {
+            int c;
+            c = buf[i++];
+            if (stage == 0) {
+                f_hdr[f_hlen++] = c;
+                if (f_hlen >= FREEDOM_HDR_MAX) {
+                    close(fd);
+                    return;
+                }
+                if (f_hlen >= 4 &&
+                    f_hdr[f_hlen - 4] == '\r' && f_hdr[f_hlen - 3] == '\n' &&
+                    f_hdr[f_hlen - 2] == '\r' && f_hdr[f_hlen - 1] == '\n') {
+                    stage = 1;
+                }
+                continue;
+            }
+            f_ws = 0;
+            put_utf(c);
+            got++;
+        }
+    }
+    close(fd);
+    putchar('\n');
+    printf("freedom: %s (%d bytes)\n", host, got);
+}
+
+/* Print the collected CSS dump. */
+static void print_css_dump(void) {
+    int i;
+    puts("=== freedom css ===");
+    for (i = 0; i < f_csslen; i++) put_utf(f_css[i]);
+    if (f_csslen == 0) puts("(no css)");
+    if (f_linkn > 0) putchar('\n');
+}
+
+/* Print the collected DOM outline. */
+static void print_dom_dump(void) {
+    int i;
+    puts("=== freedom dom ===");
+    for (i = 0; i < f_domlen; i++) put_utf(f_dom[i]);
+    if (f_domlen == 0) puts("(no dom)");
 }
 
 int main(int argc, char **argv) {
     char url[192];
     int hops;
+    int argidx;
+    int i;
+
+    f_dump_css = 0;
+    f_dump_dom = 0;
+    f_mode = 0;
+    f_csslen = 0;
+    f_domlen = 0;
+    f_linkn = 0;
+    argidx = 1;
     if (argc < 2) {
-        puts("usage: freedom [url-or-query]");
+        puts("usage: freedom [--dump-css|--dump-dom] [url-or-query]");
         return 1;
     }
-    if (has_scheme(argv[1])) {
-        if (strncmp(argv[1], "https://", 8) == 0) {
-            puts("freedom: https needs TLS, which MiniOS does not speak yet");
-            return 2;
+    if (strcmp(argv[1], "--dump-css") == 0) {
+        f_dump_css = 1;
+        f_mode = 1;
+        argidx = 2;
+        if (argc < 3) {
+            puts("usage: freedom --dump-css <url>");
+            return 1;
         }
-        if (strncmp(argv[1], "http://", 7) != 0) {
-            make_search(f_path, argv[1], 128);
+    } else if (strcmp(argv[1], "--dump-dom") == 0) {
+        f_dump_dom = 1;
+        f_mode = 2;
+        argidx = 2;
+        if (argc < 3) {
+            puts("usage: freedom --dump-dom <url>");
+            return 1;
+        }
+    } else if (argv[1][0] == '-' && argv[1][1] == '-') {
+        printf("freedom: unknown flag %s\n", argv[1]);
+        puts("usage: freedom [--dump-css|--dump-dom] [url-or-query]");
+        return 1;
+    }
+
+    if (has_scheme(argv[argidx])) {
+        if (strncmp(argv[argidx], "https://", 8) == 0) {
+            int l;
+            l = strlen(argv[argidx]);
+            if (l >= 192) l = 191;
+            memcpy(url, argv[argidx], l);
+            url[l] = 0;
+        } else if (strncmp(argv[argidx], "http://", 7) == 0) {
+            int l;
+            l = strlen(argv[argidx]);
+            if (l >= 192) l = 191;
+            memcpy(url, argv[argidx], l);
+            url[l] = 0;
+        } else {
+            make_search(f_path, argv[argidx], 128);
             memcpy(f_host, "html.duckduckgo.com", 19);
             f_host[19] = 0;
-            f_port = 80;
+            f_port = 443;
+            f_secure = 1;
             fetch(f_host, f_path, f_port);
+            if (f_dump_css) print_css_dump();
+            if (f_dump_dom) print_dom_dump();
             return 0;
         }
-        {
-            int l;
-            l = strlen(argv[1]);
-            if (l >= 192) l = 191;
-            memcpy(url, argv[1], l);
-            url[l] = 0;
-        }
-    } else if (looks_like_url(argv[1])) {
-        append(url, 0, "http://", 192);
-        append(url, 7, argv[1], 192);
+    } else if (looks_like_url(argv[argidx])) {
+        /* Secure by Default: a bare host is fetched over https */
+        append(url, 0, "https://", 192);
+        append(url, 8, argv[argidx], 192);
     } else {
-        make_search(f_path, argv[1], 128);
+        make_search(f_path, argv[argidx], 128);
         memcpy(f_host, "html.duckduckgo.com", 19);
         f_host[19] = 0;
-        f_port = 80;
+        f_port = 443;
+        f_secure = 1;
         fetch(f_host, f_path, f_port);
+        if (f_dump_css) print_css_dump();
+        if (f_dump_dom) print_dom_dump();
         return 0;
     }
     if (!split_url(url)) {
@@ -731,5 +1180,15 @@ int main(int argc, char **argv) {
         }
         break;
     }
+    if (f_dump_css) {
+        print_css_dump();
+        if (f_linkn > 0) {
+            for (i = 0; i < f_linkn; i++) {
+                printf("\n== %s ==\n", f_linkpath[i]);
+                fetch_css(f_linkhost[i], f_linkpath[i]);
+            }
+        }
+    }
+    if (f_dump_dom) print_dom_dump();
     return 0;
 }

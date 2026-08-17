@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "net.h"
+#include "tls.h"
 
 /* ================================================================
  *  Port I/O helpers
@@ -1834,6 +1835,12 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         return net_sys_poll(a1, a2, a3);
     case 200:            /* MiniOS: hostname resolution */
         return net_sys_dns(a1);
+    case 201:            /* MiniOS: TLS handshake on a connected TCP fd */
+        return tls_sys_handshake(a1, a2);
+    case 202:            /* MiniOS: send one TLS record (all-or-error) */
+        return tls_sys_send(a1, a2, a3);
+    case 203:            /* MiniOS: receive decrypted TLS application data */
+        return tls_sys_recv(a1, a2, a3);
     default:
         return -38; /* ENOSYS */
     }
