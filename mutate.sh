@@ -78,6 +78,9 @@ tls-close-notify-unrecognized | s/if (s->rec_len == 2 \&\& s->rec\[1\] == 0) {/i
 tls-chain-stride | s/TLS_MEMCPY(s->chain + stored, m + pos, cl);/TLS_MEMCPY(s->chain + s->n_certs * TLS_CERT_MAX, m + pos, cl);/ | tls.c
 tls-wildcard-overrun | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len; i++) {/ | tls_x509.c
 tls-wildcard-short-tail | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len - 2; i++) {/ | tls_x509.c
+
+user-pages-supervisor | s/#define PT_FLAGS_USER             0x004/#define PT_FLAGS_USER             0x000/ | bootdefs.h
+write-pointer-check-bypassed | s/static int user_range_ok(unsigned long p, unsigned long len) {/static int user_range_ok(unsigned long p, unsigned long len) { (void)p; (void)len; return 1; \/\* bypass \*\// | kernel.c
 "
 
 KILLED=0

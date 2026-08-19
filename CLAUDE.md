@@ -92,12 +92,14 @@ disagree.
 0x01000-0x04FFF  long-mode page tables (PML4, PDPT, PD)
 0x07C00-0x07DFF  stage 1
 0x07E00-0x07E10  disk address packet and boot drive
-0x08000-0x08017  long-mode GDT handed to the kernel
+0x08000-0x08027  long-mode GDT handed to the kernel (kernel + user segments)
 0x09000-0x0AFFF  stage 2
 0x10000-0x8FFFF  kernel staging buffer
+0x80000-0x87FFF  syscall kernel stack (SYS_KSTK_TOP 0x88000)
 0x90000          protected/long mode stack top
 0x100000         kernel image
 0x400000         user program load base
+0x1FC0000        user stack base (USER_STACK_BASE, 256 KB)
 0x2000000        kernel heap (64 MB)
 ```
 
@@ -118,6 +120,38 @@ unsupported relocation type, or a symbol that the kernel cannot resolve
 aborts the load with a diagnostic. An unapplied relocation would hand the
 program a wild call target, so it is never skipped. No libc name is ever
 registered with a null address.
+
+### User-mode isolation
+ET_EXEC / ET_DYN binaries run at ring 3 under hardware page protection;
+ET_REL objects (the toolchain) remain ring-0 kernel extensions by contract,
+because they are linked against the kernel symbol table. The boot path
+installs user code/data segments (`GDT64_USER_CODE_SEL` 0x20, `GDT64_USER_DATA_SEL`
+0x18, DPL 3) beside the kernel segments and the kernel marks the user window
+`USER_LOAD_BASE`..`USER_LOAD_END` as user-accessible (`PT_FLAGS_USER`). Every
+other page — page tables, kernel image, kernel heap, VGA, MMIO — stays
+supervisor, so a user binary cannot read or write kernel memory: the U/S bit
+stops it in hardware. Identity mapping remains a single address space: per-
+process page tables (CR3 switch) belong to the preemption track, not this one.
+
+A user program is entered with `iretq` to ring 3 (CS `USER_CODE_SEL`, SS
+`USER_DATA_SEL`, RPL 3) on a user stack carved from the top of the user
+window (`USER_STACK_BASE`..`USER_STACK_TOP`). The program break is bounded
+below that stack (`USER_BRK_END`) and anonymous `mmap` allocations are carved
+from the same window, so every address a user program can obtain is a user
+page. Syscalls switch to a dedicated kernel stack (`syscall_kstack`, exchanged
+on entry, `SYS_KSTK_TOP`) and return with `sysretq`, so the kernel never runs
+on a user stack and never touches the user red zone. The exit path
+(`klongjmp` back to the shell) restores the kernel data segments and resets
+the syscall kernel stack for the next program.
+
+The syscall dispatcher is the hardened boundary. Every pointer argument is
+validated to lie inside the user window before it is dereferenced (`write`,
+`read`, `writev` buffers, `open` paths, `poll` fd arrays, socket `sockaddr`s
+and payload buffers, `clock_gettime` timespec, DNS hostnames, TLS buffers);
+string arguments must be NUL-terminated inside the window; a violating call
+returns `-EFAULT`. `arch_prctl` accepts only canonical bases. Faulting user
+code still resets the machine (no IDT): interrupt delivery, fault handlers
+and a scheduler are the preemption track, not part of this contract.
 
 ### Shell
 `cmd > file` redirects the command's console output into a ramdisk file

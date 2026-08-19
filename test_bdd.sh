@@ -121,6 +121,7 @@ echo "=== MiniOS BDD ==="
 
 scenario "boot and power off" "poweroff"
 expect "MiniOS Kernel"
+expect "isolation"
 expect "powering off"
 
 scenario "shell help advertises the editor" "help
@@ -191,6 +192,14 @@ expect "exit code: 55"
 scenario "native Linux static ELF runs unmodified" "run lxhello.elf
 poweroff"
 expect "Hello"
+
+scenario "user-mode isolation drops ET_EXEC binaries to ring 3" "run cpl.elf
+poweroff"
+expect "exit code: 3"
+
+scenario "syscall boundary rejects kernel-space pointers" "run kmem.elf
+poweroff"
+expect "exit code: 0"
 
 scenario "editor guards unsaved changes on quit" "edit guard.txt
 a

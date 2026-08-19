@@ -60,7 +60,8 @@ PROGS     = $(PROGS_DIR)/hello.o $(PROGS_DIR)/ftest.o $(PROGS_DIR)/minigcc.o \
             $(PROGS_DIR)/minigcc.cvm $(PROGS_DIR)/bin/cp $(PROGS_DIR)/bin/cp.c \
             $(PROGS_DIR)/test.c $(PROGS_DIR)/fib.c $(PROGS_DIR)/README.txt \
             $(PROGS_DIR)/http.c $(PROGS_DIR)/http.elf \
-            $(PROGS_DIR)/freedom.c $(PROGS_DIR)/bin/freedom
+            $(PROGS_DIR)/freedom.c $(PROGS_DIR)/bin/freedom \
+            $(PROGS_DIR)/cpl.elf $(PROGS_DIR)/kmem.elf
 
 all: os.img
 
@@ -132,6 +133,14 @@ $(PROGS_DIR)/ftest.o: $(PROGS_DIR)/ftest.c
 
 # ── Real Linux ELF executable (ET_EXEC, static, no libc) ─────────
 $(PROGS_DIR)/lxhello.elf: $(PROGS_DIR)/lxhello.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
+# ── Isolation probes: report the runtime CPL and test that kernel-space
+#    pointers are rejected by the syscall boundary (same build recipe). ──
+$(PROGS_DIR)/cpl.elf: $(PROGS_DIR)/cpl.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
+$(PROGS_DIR)/kmem.elf: $(PROGS_DIR)/kmem.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
 
 # ── Demo programs: C -> miniGCC -> ld -> ELF / CVM ───────────────
@@ -332,6 +341,7 @@ clean:
 	rm -f *.o *.elf *.bin *.img ramdisk_data.c ramdisk.bin
 	rm -f $(PROGS_DIR)/*.o $(PROGS_DIR)/lxhello.elf $(PROGS_DIR)/ldhello.elf \
 	      $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf $(PROGS_DIR)/minigcc.elf \
+	      $(PROGS_DIR)/cpl.elf $(PROGS_DIR)/kmem.elf \
 	      $(PROGS_DIR)/bin/cp $(PROGS_DIR)/bin/cp.s \
 	      $(PROGS_DIR)/ldhello.s $(PROGS_DIR)/w1.s $(PROGS_DIR)/fib.s \
 	      $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm $(PROGS_DIR)/minigcc.cvm

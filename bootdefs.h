@@ -97,12 +97,16 @@
 #define GDT32_DESC_DATA16         0x000092000000FFFF
 
 #define GDT64_ADDR                0x8000
-#define GDT64_BYTES               24
+#define GDT64_BYTES               40
 #define GDT64_CODE_SEL            0x08
 #define GDT64_DATA_SEL            0x10
+#define GDT64_USER_DATA_SEL       0x18
+#define GDT64_USER_CODE_SEL       0x20
 #define GDT64_DESC_NULL           0x0000000000000000
 #define GDT64_DESC_CODE           0x00209A0000000000
 #define GDT64_DESC_DATA           0x0000920000000000
+#define GDT64_DESC_UDATA          0x0000F20000000000
+#define GDT64_DESC_UCODE          0x0020FA0000000000
 
 #define PT_PML4_ADDR              0x1000
 #define PT_PDPT_ADDR              0x2000
@@ -110,8 +114,10 @@
 #define PT_ZERO_DWORDS            4096
 #define PT_FLAGS_PRESENT_RW       0x003
 #define PT_FLAGS_PRESENT_RW_PS    0x083
+#define PT_FLAGS_USER             0x004
 #define PT_PD_ENTRIES             512
 #define PT_PD_ENTRY_BYTES         8
 #define PT_PD_PAGE_BYTES          0x200000
+#define PT_PD_INDEX_SHIFT         21
 
 #endif

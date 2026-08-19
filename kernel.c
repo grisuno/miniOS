@@ -1,6 +1,7 @@
 #include "kernel.h"
 #include "net.h"
 #include "tls.h"
+#include "bootdefs.h"
 
 /* ================================================================
  *  Port I/O helpers
@@ -304,8 +305,45 @@ static char  *heap_start, *heap_end, *heap_curr;
  */
 #define USER_LOAD_BASE  0x00400000UL
 #define USER_LOAD_END   0x02000000UL
+#define USER_STACK_SIZE (256UL * 1024)
+#define USER_STACK_TOP  USER_LOAD_END
+#define USER_STACK_BASE (USER_STACK_TOP - USER_STACK_SIZE)
+#define USER_BRK_END    USER_STACK_BASE
+#define SYS_KSTK_TOP    0x00088000UL
+#define SYS_KSTK_BASE   (SYS_KSTK_TOP - 0x8000)
 #define HEAP_BASE       0x02000000UL
 #define HEAP_SIZE       (64UL * 1024 * 1024)
+
+#define EFAULT  (-14)
+
+/* Asm-safe (no UL suffix) mirror of the user window for the syscall-entry
+ * return discriminator; the trampoline is a raw string literal, so the C
+ * preprocessor cannot paste the UL-suffixed macros into it. */
+#define USER_WIN_LO     0x00400000
+#define USER_WIN_HI     0x02000000
+#define STR_(x) #x
+#define STR(x)  STR_(x)
+
+/* Mark the user window [USER_LOAD_BASE, USER_LOAD_END) as user-accessible
+ * (U/S bit) in the 2 MB page directory built by the boot path. A ring-3
+ * access requires U/S set at every level of the walk, so the PML4 and PDPT
+ * entries that cover the whole identity map are lifted too; the per-2 MB
+ * isolation then lives entirely in the PD leaf bits, and every other page —
+ * page tables, kernel image, heap, VGA, MMIO — stays supervisor, so a
+ * ring-3 program is stopped in hardware from reading or writing kernel
+ * memory. */
+static void mm_setup_protections(void) {
+    volatile unsigned long *pml4 = (volatile unsigned long *)PT_PML4_ADDR;
+    volatile unsigned long *pdpt = (volatile unsigned long *)PT_PDPT_ADDR;
+    volatile unsigned long *pd = (volatile unsigned long *)PT_PD_ADDR;
+    unsigned long lo = USER_LOAD_BASE >> PT_PD_INDEX_SHIFT;
+    unsigned long hi = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
+    unsigned long i;
+    pml4[0] |= (unsigned long)PT_FLAGS_USER;
+    pdpt[0] |= (unsigned long)PT_FLAGS_USER;
+    for (i = lo; i <= hi; i++) pd[i] |= (unsigned long)PT_FLAGS_USER;
+    __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
+}
 
 void kallocator_init(void) {
     heap_start = (char *)HEAP_BASE;
@@ -1537,6 +1575,7 @@ void *elf_load(void *data, unsigned size) {
 
 static unsigned long g_brk;        /* current program break         */
 static unsigned long g_brk_limit;  /* upper bound for brk growth    */
+static unsigned long user_mmap_cur; /* anonymous mmap cursor, grows down */
 
 static void apply_exec_relocs(void *data, unsigned long base) {
     Elf64_Ehdr *e = (Elf64_Ehdr *)data;
@@ -1622,7 +1661,8 @@ void *load_exec_elf(void *data, unsigned size) {
     apply_exec_relocs(data, base);
 
     g_brk       = ALIGN_UP(max_end, 0x1000);
-    g_brk_limit = USER_LOAD_END;
+    g_brk_limit = USER_BRK_END;
+    user_mmap_cur = USER_BRK_END;
     return (void *)(base + e->e_entry);
 }
 
@@ -1647,10 +1687,13 @@ static inline unsigned long rdmsr(unsigned msr) {
 #define MSR_GSBASE 0xC0000101
 
 extern void syscall_entry(void);
+extern unsigned long syscall_kstack;
 
 void syscall_init(void) {
-    /* SYSCALL loads CS=0x08, SS=0x10 from STAR[47:32]; SYSRET field unused. */
-    wrmsr(MSR_STAR,  ((unsigned long)0x08 << 48) | ((unsigned long)0x08 << 32));
+    /* SYSCALL loads CS=0x08, SS=0x10 from STAR[47:32]. SYSRET derives its
+     * selectors from STAR[63:48]: CS = n + 16 = 0x20 (user code), SS =
+     * n + 8 = 0x18 (user data), the Linux layout. */
+    wrmsr(MSR_STAR,  ((unsigned long)GDT64_DATA_SEL << 48) | ((unsigned long)GDT64_CODE_SEL << 32));
     wrmsr(MSR_LSTAR, (unsigned long)syscall_entry);
     wrmsr(MSR_SFMASK, 0x600); /* clear DF and IF on entry */
     wrmsr(MSR_EFER, rdmsr(MSR_EFER) | 1); /* SCE: enable SYSCALL */
@@ -1735,10 +1778,35 @@ long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
     return ret;
 }
 
+static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6);
+
+/* ---- User-pointer validation ---------------------------------------------
+ * The syscall boundary is the hardened edge between ring 3 and ring 0.
+ * Every pointer a Linux ABI program hands the kernel must lie inside the
+ * user window [USER_LOAD_BASE, USER_LOAD_END), because that is the only
+ * memory the page tables marked user-accessible. Anything else — kernel
+ * heap, kernel image, page tables, MMIO — must be rejected before a single
+ * dereference. All arithmetic is overflow checked. */
+
+static int user_range_ok(unsigned long p, unsigned long len) {
+    if (p < USER_LOAD_BASE) return 0;
+    if (len > USER_LOAD_END - p) return 0;
+    return p + len <= USER_LOAD_END;
+}
+
+static int user_str_ok(unsigned long p, unsigned long maxlen) {
+    unsigned long i;
+    if (p < USER_LOAD_BASE || p >= USER_LOAD_END) return 0;
+    for (i = 0; i < maxlen && p + i < USER_LOAD_END; i++)
+        if (((unsigned char *)p)[i] == 0) return 1;
+    return 0;
+}
+
 static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
     switch (n) {
     case 0: { /* read */
         char *buf = (char *)a2; long cnt = a3, i = 0;
+        if (cnt > 0 && !user_range_ok((unsigned long)buf, (unsigned long)cnt)) return EFAULT;
         if (a1 == 0) {
             while (i < cnt) {
                 int c = console_getc();
@@ -1756,6 +1824,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     }
     case 1: { /* write */
         const char *buf = (const char *)a2; long cnt = a3, i;
+        if (cnt > 0 && !user_range_ok((unsigned long)buf, (unsigned long)cnt)) return EFAULT;
         if (a1 == 1 || a1 == 2) { for (i = 0; i < cnt; i++) vga_putc(buf[i]); return cnt; }
         if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1])
             return (long)kfwrite(buf, 1, (unsigned long)cnt, kfd_table[a1]);
@@ -1763,8 +1832,15 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     }
     case 20: { /* writev */
         struct kiovec *iov = (struct kiovec *)a2; long cnt = a3, total = 0, k;
+        if (cnt < 0 || (unsigned long)cnt > (USER_LOAD_END - USER_LOAD_BASE) / sizeof(struct kiovec))
+            return -22;
+        if (cnt > 0 && !user_range_ok((unsigned long)iov, (unsigned long)cnt * sizeof(struct kiovec)))
+            return EFAULT;
         for (k = 0; k < cnt; k++) {
             unsigned long j;
+            if (iov[k].iov_len > 0 &&
+                !user_range_ok((unsigned long)iov[k].iov_base, iov[k].iov_len))
+                return EFAULT;
             if (a1 == 1 || a1 == 2)
                 for (j = 0; j < iov[k].iov_len; j++) vga_putc(iov[k].iov_base[j]);
             total += (long)iov[k].iov_len;
@@ -1776,6 +1852,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         long flags = (n == 257 ? a3 : a2);
         const char *mode = ((flags & 1) || (flags & 0x40)) ? "w" : "r";
         int fd;
+        if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
         for (fd = 3; fd < KFD_MAX; fd++) if (!kfd_table[fd]) break;
         if (fd >= KFD_MAX) return -24;
         KFILE *f = kfopen(path, mode);
@@ -1801,19 +1878,30 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         if (addr >= USER_LOAD_BASE && addr <= g_brk_limit) g_brk = addr;
         return (long)g_brk;
     }
-    case 9: { /* mmap (anonymous only) */
+    case 9: { /* mmap (anonymous only), carved from the top of the user window */
         unsigned long len = (unsigned long)a2;
-        void *p = kmalloc(len ? len : 1);
-        return p ? (long)p : -12;
+        unsigned long n = ALIGN_UP(len ? len : 1, 0x1000);
+        if (n > user_mmap_cur - USER_LOAD_BASE) return -12;
+        user_mmap_cur -= n;
+        return (long)user_mmap_cur;
     }
     case 11: return 0; /* munmap */
-    case 158: /* arch_prctl */
-        if (a1 == 0x1002) { wrmsr(MSR_FSBASE, (unsigned long)a2); return 0; }
-        if (a1 == 0x1001) { wrmsr(MSR_GSBASE, (unsigned long)a2); return 0; }
+    case 158: /* arch_prctl: accept only canonical bases */
+        if (a1 == 0x1002 || a1 == 0x1001) {
+            unsigned long v = (unsigned long)a2;
+            unsigned long sign = (v >> 47) & 1;
+            if (((v >> 48) & 0xFFFF) != (sign ? 0xFFFF : 0)) return -22;
+            wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);
+            return 0;
+        }
         return -22;
     case 218: return 1;  /* set_tid_address */
     case 228: /* clock_gettime */
-        if (a2) { unsigned long *ts = (unsigned long *)a2; ts[0] = 0; ts[1] = 0; }
+        if (a2) {
+            unsigned long *ts = (unsigned long *)a2;
+            if (!user_range_ok((unsigned long)ts, 2 * sizeof(unsigned long))) return EFAULT;
+            ts[0] = 0; ts[1] = 0;
+        }
         return 0;
     case 16: return 0;   /* ioctl */
     case 39: return 1;   /* getpid */
@@ -1824,22 +1912,31 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     case 41:             /* socket */
         return net_sys_socket(a1, a2, a3);
     case 42:             /* connect */
+        if (!user_range_ok((unsigned long)a2, 16)) return EFAULT;
         return net_sys_connect(a1, a2, a3);
     case 44:             /* sendto */
+        if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
         return net_sys_sendto(a1, a2, a3, a4, a5, a6);
     case 45:             /* recvfrom */
+        if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
         return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);
     case 48:             /* shutdown */
         return net_sys_shutdown(a1, a2);
     case 7:              /* poll */
+        if (a2 < 0 || (unsigned long)a2 > (USER_LOAD_END - USER_LOAD_BASE) / 8) return -22;
+        if (a2 > 0 && !user_range_ok((unsigned long)a1, (unsigned long)a2 * 8)) return EFAULT;
         return net_sys_poll(a1, a2, a3);
     case 200:            /* MiniOS: hostname resolution */
+        if (!user_str_ok((unsigned long)a1, 255)) return EFAULT;
         return net_sys_dns(a1);
     case 201:            /* MiniOS: TLS handshake on a connected TCP fd */
+        if (!user_str_ok((unsigned long)a2, 255)) return EFAULT;
         return tls_sys_handshake(a1, a2);
     case 202:            /* MiniOS: send one TLS record (all-or-error) */
+        if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
         return tls_sys_send(a1, a2, a3);
     case 203:            /* MiniOS: receive decrypted TLS application data */
+        if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
         return tls_sys_recv(a1, a2, a3);
     default:
         return -38; /* ENOSYS */
@@ -1847,13 +1944,27 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
 }
 
 
-/* ---- syscall trampoline: marshal Linux ABI regs into the C ABI ---------- */
+/* ---- syscall trampoline: marshal Linux ABI regs into the C ABI ----------
+ * The kernel stack is a fixed region (SYS_KSTK_TOP) exchanged on entry, so
+ * the kernel never runs on a user stack and never touches the user red
+ * zone. `syscall_kstack` holds the kernel stack top while a program runs
+ * and the incoming rsp during a syscall. The return discriminates on the
+ * restored rsp: a syscall that came from ring 3 ran on the user stack in
+ * the user window and returns with sysretq (ring 3); a ring-0 ET_REL
+ * syscall ran on a kernel stack and returns with `jmp *%rcx`, the old
+ * contract, because sysretq always lands on ring 3. */
 
 __asm__(
     ".text\n"
+    ".global syscall_kstack\n"
+    ".data\n"
+    ".align 8\n"
+    "syscall_kstack:\n"
+    "  .quad 0\n"
+    ".text\n"
     ".global syscall_entry\n"
     "syscall_entry:\n"
-    "  subq $128, %rsp\n"        /* preserve the interrupted red zone */
+    "  xchgq %rsp, syscall_kstack(%rip)\n"
     "  pushq %r9\n"              /* 64(%rsp) a6 */
     "  pushq %r8\n"              /* 56       a5 */
     "  pushq %r10\n"             /* 48       a4 */
@@ -1883,14 +1994,18 @@ __asm__(
     "  popq %r10\n"
     "  popq %r8\n"
     "  popq %r9\n"
-    "  addq $128, %rsp\n"
-    "  jmp *%rcx\n"              /* return to user, staying in ring 0 */
+    "  xchgq %rsp, syscall_kstack(%rip)\n"
+    "  cmpq $" STR(USER_WIN_LO) ", %rsp\n"
+    "  jb 1f\n"
+    "  cmpq $" STR(USER_WIN_HI) ", %rsp\n"
+    "  jae 1f\n"
+    "  sysretq\n"
+    "1:\n"
+    "  jmp *%rcx\n"
 );
 
 
 /* ---- Build the SysV initial stack and jump to the ELF entry ------------- */
-
-#define USTACK_SIZE (256 * 1024)
 
 static unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
                                        int argc, char **argv) {
@@ -1924,30 +2039,57 @@ static unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
 }
 
 int k_exec_user(void *entry, int argc, char **argv) {
-    char *stk = kmalloc(USTACK_SIZE);
-    if (!stk) return -1;
-    unsigned long *sp = setup_user_stack(stk, USTACK_SIZE, argc, argv);
+    char *stk = (char *)USER_STACK_BASE;   /* fixed region, no heap churn */
+    unsigned long *sp = setup_user_stack(stk, USER_STACK_SIZE, argc, argv);
+    unsigned long frame[5];
     exec_exit_code = 0;
+    syscall_kstack = SYS_KSTK_TOP;
+    wrmsr(MSR_FSBASE, 0);
+    wrmsr(MSR_GSBASE, 0);
+
+    /* Ring-3 entry frame, popped by iretq: RIP, CS, RFLAGS, RSP, SS. */
+    frame[0] = (unsigned long)entry;
+    frame[1] = (unsigned long)(GDT64_USER_CODE_SEL | 3);
+    frame[2] = 0x002;                       /* IF=0: no IDT, no interrupts */
+    frame[3] = (unsigned long)sp;
+    frame[4] = (unsigned long)(GDT64_USER_DATA_SEL | 3);
 
     if (ksetjmp(&exec_return) == 0) {
         __asm__ volatile(
-            "movq %0, %%rsp\n\t"
-            "xorq %%rbp, %%rbp\n\t"
-            "jmpq *%1\n\t"
-            :: "r"(sp), "r"(entry) : "memory");
+            "mov %[udata], %%ax\n"
+            "mov %%ax, %%ds\n"
+            "mov %%ax, %%es\n"
+            "mov %%ax, %%fs\n"
+            "mov %%ax, %%gs\n"
+            "mov %[frame], %%rsp\n"
+            "xorl %%ebp, %%ebp\n"
+            "iretq\n"
+            :: [frame] "r"(frame), [udata] "i"(GDT64_USER_DATA_SEL | 3)
+            : "rax", "memory");
         __builtin_unreachable();
     }
 
-    /* exit() longjmp'd back here */
+    /* exit() went through the SYSCALL path, which already reloaded CS/SS to
+     * the kernel selectors; restore the data segments and syscall stack. */
+    __asm__ volatile(
+        "mov %[kdata], %%ax\n"
+        "mov %%ax, %%ds\n"
+        "mov %%ax, %%es\n"
+        "mov %%ax, %%fs\n"
+        "mov %%ax, %%gs\n"
+        "mov %%ax, %%ss\n"
+        :: [kdata] "i"(GDT64_DATA_SEL)
+        : "ax", "memory");
     wrmsr(MSR_FSBASE, 0);
     wrmsr(MSR_GSBASE, 0);
-    kfree(stk);
+    syscall_kstack = SYS_KSTK_TOP;
     return exec_exit_code;
 }
 
 /* Run an ET_REL program as a plain function call, but catch a libc exit(). */
 int k_run_rel(prog_entry_t entry, int argc, char **argv) {
     exec_exit_code = 0;
+    syscall_kstack = SYS_KSTK_TOP;
     if (ksetjmp(&exec_return) == 0)
         return entry(argc, argv);
     return exec_exit_code;
@@ -2965,6 +3107,9 @@ void kmain(void) {
     ramdisk_init();
     register_libc_symbols();
     syscall_init();
+    mm_setup_protections();
+    kprintf("isolation: user window %x..%x ring 3, syscall ABI on %x\n",
+            USER_LOAD_BASE, USER_LOAD_END, SYS_KSTK_TOP);
     net_init();
 
     if ((unsigned long)(ramdisk_end - ramdisk_start) > 0) {

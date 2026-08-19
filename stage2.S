@@ -241,6 +241,8 @@ gdt64_image:
     .quad GDT64_DESC_NULL
     .quad GDT64_DESC_CODE
     .quad GDT64_DESC_DATA
+    .quad GDT64_DESC_UDATA
+    .quad GDT64_DESC_UCODE
 gdt64_ptr:
     .word GDT64_BYTES - 1
     .long GDT64_ADDR
