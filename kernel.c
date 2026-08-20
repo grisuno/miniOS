@@ -2765,6 +2765,7 @@ static void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  <cmd> [args...]    run an ELF from bin/<cmd> (command path)\n");
         vga_puts("Toolchain: edit p.c; run minigcc p.c > p.s;\n");
         vga_puts("           run ld -f elf -o p.elf p.s; run p.elf\n");
+        vga_puts("CVM:       run minigcc w1.c > w1.s; run ld -f cvm -o w1.cvm w1.s; run w1.cvm\n");
     }
     else if (kstrcmp(argv[0], "clear") == 0) {
         vga_clear();
