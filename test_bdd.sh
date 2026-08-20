@@ -16,6 +16,7 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 QEMU="${QEMU:-qemu-system-x86_64}"
 TMO="${TMO:-120}"
 MEM="${MEM:-256M}"
+BOOT_WAIT="${BOOT_WAIT:-1}"
 IMAGE="$HERE/os.img"
 LOG="$HERE/test_bdd.log"
 KEEP_LOG="${KEEP_LOG:-0}"
@@ -27,8 +28,13 @@ FAILED_NAMES=""
 SCENARIO=""
 
 cleanup_stale_qemu() {
-    pkill -9 -x "$(basename "$QEMU")" 2>/dev/null || true
-    sleep 1
+    # pkill -x matches against the process name, which the kernel truncates
+    # to 15 chars (qemu-system-x86), so -x never matches a real qemu and a
+    # stale guest would survive holding the image lock. Match the command
+    # line instead; at this point no qemu of ours is running, so the only
+    # matches are stale ones.
+    pkill -9 -f "$QEMU" 2>/dev/null || true
+    sleep 0.5
 }
 
 # scenario <name> <script of shell commands>
@@ -38,9 +44,8 @@ scenario() {
     echo "--- $SCENARIO"
     cleanup_stale_qemu
     {
-        sleep 4
+        sleep "$BOOT_WAIT"
         printf '%s\n' "$cmds"
-        sleep 2
     } | timeout "$TMO" "$QEMU" \
         -drive "file=$IMAGE,format=raw,if=ide" -m "$MEM" \
         -nic user,model=rtl8139 \
@@ -250,6 +255,15 @@ run ld.o -f cvm -o q.cvm q.s
 run q.cvm
 poweroff"
 expect "exit code: 21"
+
+scenario "cvm module run with arguments gets a Linux-style argv and keeps its strings" "run minigcc.cvm test.c > t2.s
+cat t2.s
+run ld.o -f cvm -o t2.cvm t2.s
+run t2.cvm
+poweroff"
+expect ".globl add"
+expect "exit code: 0"
+expect "exit code: 12"
 
 scenario "self-hosted minigcc (compiled by minigcc, linked by ld) compiles inside the OS" "run minigcc.elf test.c > t.s
 run ld.o -f elf -o t.elf t.s

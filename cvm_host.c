@@ -471,7 +471,10 @@ int cvm_main(int argc, char **argv) {
         cvm_destroy(vm);
         return 1;
     }
-    rc = cvm_set_args(vm, argc - 1, argv + 1);
+    /* Linux-style argv: argv[0] is the module path, the rest are the
+     * program arguments. The ld-compiled startup reads them from the
+     * stack cvm_set_args builds, so the full vector is passed here. */
+    rc = cvm_set_args(vm, argc, argv);
     if (rc != CVM_OK) {
         cvm_destroy(vm);
         return 1;
