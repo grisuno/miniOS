@@ -1385,6 +1385,29 @@ typedef struct {
 #define R_X86_64_32S      11
 #define R_X86_64_IRELATIVE 37
 
+#define PF_X               1
+#define ELF_MAX_SEGMENTS   64
+#define ELF_NAME_MAX       64
+
+struct exec_range { unsigned long start, end; };
+
+/* Copy a NUL-terminated name out of a string table without reading past
+ * the table's bounds; an out-of-range or unterminated name yields an
+ * empty string, never a wild pointer into the kernel heap. */
+static void elf_name_copy(char *out, unsigned out_cap, const char *tab,
+                          Elf64_Xword tab_size, Elf64_Word off) {
+    unsigned long i = 0;
+    if (out_cap == 0) return;
+    if (off < tab_size) {
+        while (i < out_cap - 1 && off + i < tab_size) {
+            out[i] = tab[off + i];
+            if (out[i] == '\0') break;
+            i++;
+        }
+    }
+    out[i] = '\0';
+}
+
 /* Release a partially built relocatable image and report why it was
  * rejected. Used on every failure path of elf_load. */
 static void elf_load_fail(void *base, void **sec_addrs, const char *why) {
@@ -1394,38 +1417,61 @@ static void elf_load_fail(void *base, void **sec_addrs, const char *why) {
 }
 
 void *elf_load(void *data, unsigned size) {
-    (void)size;
     Elf64_Ehdr *ehdr = (Elf64_Ehdr *)data;
 
+    if (size < sizeof(Elf64_Ehdr)) return 0;
     if (ehdr->e_ident[0] != 0x7F || ehdr->e_ident[1] != 'E' ||
         ehdr->e_ident[2] != 'L'  || ehdr->e_ident[3] != 'F')
         return 0;
     if (ehdr->e_type != ET_REL)   return 0;
     if (ehdr->e_machine != EM_X86_64) return 0;
 
+    if (ehdr->e_shentsize < sizeof(Elf64_Shdr)) return 0;
+    if (ehdr->e_shoff > size ||
+        (Elf64_Xword)ehdr->e_shnum * ehdr->e_shentsize > size - ehdr->e_shoff)
+        return 0;
+    if (ehdr->e_shstrndx >= ehdr->e_shnum) return 0;
+
     Elf64_Shdr *shdrs = (Elf64_Shdr *)((char *)data + ehdr->e_shoff);
     Elf64_Half  shnum = ehdr->e_shnum;
 
     Elf64_Shdr *shstr = &shdrs[ehdr->e_shstrndx];
+    if (shstr->sh_offset > size || shstr->sh_size > size - shstr->sh_offset)
+        return 0;
     const char *shstrtab = (const char *)data + shstr->sh_offset;
+    char        secname[ELF_NAME_MAX];
 
     /* Find .symtab and .strtab */
     Elf64_Sym  *symtab = 0;
     unsigned    symcount = 0;
     const char *strtab = 0;
+    Elf64_Xword strtab_size = 0;
 
     unsigned total_alloc = 0;
     unsigned i;
     for (i = 0; i < shnum; i++) {
-        const char *sname = shstrtab + shdrs[i].sh_name;
-        if (kstrcmp(sname, ".symtab") == 0) {
+        elf_name_copy(secname, sizeof(secname), shstrtab, shstr->sh_size,
+                      shdrs[i].sh_name);
+        if (kstrcmp(secname, ".symtab") == 0) {
+            if (shdrs[i].sh_offset > size ||
+                shdrs[i].sh_size > size - shdrs[i].sh_offset)
+                return 0;
             symtab = (Elf64_Sym *)((char *)data + shdrs[i].sh_offset);
             symcount = (unsigned)(shdrs[i].sh_size / sizeof(Elf64_Sym));
         }
-        if (kstrcmp(sname, ".strtab") == 0)
+        if (kstrcmp(secname, ".strtab") == 0) {
+            if (shdrs[i].sh_offset > size ||
+                shdrs[i].sh_size > size - shdrs[i].sh_offset)
+                return 0;
             strtab = (const char *)data + shdrs[i].sh_offset;
-        if (shdrs[i].sh_flags & SHF_ALLOC)
-            total_alloc += (unsigned)shdrs[i].sh_size + 16;
+            strtab_size = shdrs[i].sh_size;
+        }
+        if (shdrs[i].sh_flags & SHF_ALLOC) {
+            if (shdrs[i].sh_size >
+                (Elf64_Xword)0xFFFFFFFFu - 32 - (Elf64_Xword)total_alloc)
+                return 0;
+            total_alloc += (unsigned)shdrs[i].sh_size + 32;
+        }
     }
     if (!symtab || !strtab) {
         kprintf("load: object has no symbol table\n");
@@ -1448,8 +1494,14 @@ void *elf_load(void *data, unsigned size) {
         if (!(shdrs[i].sh_flags & SHF_ALLOC)) continue;
         sec_addrs[i] = base + off;
         Elf64_Xword ssize = shdrs[i].sh_size;
-        if (shdrs[i].sh_type == SHT_PROGBITS && ssize > 0)
+        if (shdrs[i].sh_type == SHT_PROGBITS && ssize > 0) {
+            if (shdrs[i].sh_offset > size ||
+                ssize > size - shdrs[i].sh_offset) {
+                elf_load_fail(base, sec_addrs, 0);
+                return 0;
+            }
             kmemcpy(sec_addrs[i], (char *)data + shdrs[i].sh_offset, (unsigned long)ssize);
+        }
         off += (unsigned)ssize + 16;
         off = (off + 15) & ~15U;
     }
@@ -1460,6 +1512,11 @@ void *elf_load(void *data, unsigned size) {
      * hand the program a wild call target. */
     for (i = 0; i < shnum; i++) {
         if (shdrs[i].sh_type != SHT_RELA) continue;
+        if (shdrs[i].sh_offset > size ||
+            shdrs[i].sh_size > size - shdrs[i].sh_offset) {
+            elf_load_fail(base, sec_addrs, 0);
+            return 0;
+        }
 
         unsigned target_sec = shdrs[i].sh_info;
         if (target_sec >= shnum) continue;
@@ -1469,6 +1526,11 @@ void *elf_load(void *data, unsigned size) {
 
         unsigned symsec = shdrs[i].sh_link;
         if (symsec >= shnum) { elf_load_fail(base, sec_addrs, "bad symtab link"); return 0; }
+        if (shdrs[symsec].sh_offset > size ||
+            shdrs[symsec].sh_size > size - shdrs[symsec].sh_offset) {
+            elf_load_fail(base, sec_addrs, 0);
+            return 0;
+        }
         Elf64_Sym *rela_symtab = (Elf64_Sym *)((char *)data + shdrs[symsec].sh_offset);
         unsigned   rela_symcount = (unsigned)(shdrs[symsec].sh_size / sizeof(Elf64_Sym));
 
@@ -1507,11 +1569,13 @@ void *elf_load(void *data, unsigned size) {
             if (sym->st_shndx != SHN_UNDEF && sym->st_shndx < shnum) {
                 S = (Elf64_Addr)(unsigned long)sec_addrs[sym->st_shndx] + sym->st_value;
             } else {
-                const char *sname = strtab + sym->st_name;
-                void *addr = ksym_resolve(sname);
-                if (!addr && sname[0] == '_') addr = ksym_resolve(sname + 1);
+                char symname[ELF_NAME_MAX];
+                elf_name_copy(symname, sizeof(symname), strtab, strtab_size,
+                              sym->st_name);
+                void *addr = ksym_resolve(symname);
+                if (!addr && symname[0] == '_') addr = ksym_resolve(symname + 1);
                 if (!addr) {
-                    kprintf("load: undefined symbol '%s'\n", sname);
+                    kprintf("load: undefined symbol '%s'\n", symname);
                     elf_load_fail(base, sec_addrs, 0);
                     return 0;
                 }
@@ -1549,8 +1613,10 @@ void *elf_load(void *data, unsigned size) {
     for (ei = 0; entry_names[ei] && !entry; ei++) {
         unsigned k;
         for (k = 0; k < symcount; k++) {
-            const char *sn = strtab + symtab[k].st_name;
-            if (kstrcmp(sn, entry_names[ei]) == 0 && symtab[k].st_shndx < shnum && symtab[k].st_shndx != SHN_UNDEF) {
+            char symname[ELF_NAME_MAX];
+            elf_name_copy(symname, sizeof(symname), strtab, strtab_size,
+                          symtab[k].st_name);
+            if (kstrcmp(symname, entry_names[ei]) == 0 && symtab[k].st_shndx < shnum && symtab[k].st_shndx != SHN_UNDEF) {
                 entry = (char *)sec_addrs[symtab[k].st_shndx] + symtab[k].st_value;
                 break;
             }
@@ -1577,54 +1643,83 @@ static unsigned long g_brk;        /* current program break         */
 static unsigned long g_brk_limit;  /* upper bound for brk growth    */
 static unsigned long user_mmap_cur; /* anonymous mmap cursor, grows down */
 
-static void apply_exec_relocs(void *data, unsigned long base) {
+static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
+                              const struct exec_range *xr, unsigned nxr) {
     Elf64_Ehdr *e = (Elf64_Ehdr *)data;
+    if (size < sizeof(Elf64_Ehdr)) return;
+    if (e->e_shentsize < sizeof(Elf64_Shdr)) return;
+    if (e->e_shoff > size) return;
+    if (e->e_shnum > (size - e->e_shoff) / e->e_shentsize) return;
     Elf64_Shdr *sh = (Elf64_Shdr *)((char *)data + e->e_shoff);
     unsigned i;
     for (i = 0; i < e->e_shnum; i++) {
         if (sh[i].sh_type != SHT_RELA) continue;
+        if (sh[i].sh_offset > size || sh[i].sh_size > size - sh[i].sh_offset)
+            continue;
         Elf64_Rela *rela = (Elf64_Rela *)((char *)data + sh[i].sh_offset);
         unsigned n = (unsigned)(sh[i].sh_size / sizeof(Elf64_Rela));
         Elf64_Sym  *syms = 0;
+        unsigned    syms_count = 0;
         const char *str  = 0;
+        Elf64_Xword str_size = 0;
         if (sh[i].sh_link && sh[i].sh_link < e->e_shnum) {
             Elf64_Shdr *ss = &sh[sh[i].sh_link];
-            syms = (Elf64_Sym *)((char *)data + ss->sh_offset);
-            if (ss->sh_link && ss->sh_link < e->e_shnum)
-                str = (const char *)data + sh[ss->sh_link].sh_offset;
+            if (ss->sh_offset <= size && ss->sh_size <= size - ss->sh_offset) {
+                syms = (Elf64_Sym *)((char *)data + ss->sh_offset);
+                syms_count = (unsigned)(ss->sh_size / sizeof(Elf64_Sym));
+                if (ss->sh_link && ss->sh_link < e->e_shnum) {
+                    Elf64_Shdr *ts = &sh[ss->sh_link];
+                    if (ts->sh_offset <= size &&
+                        ts->sh_size <= size - ts->sh_offset) {
+                        str = (const char *)data + ts->sh_offset;
+                        str_size = ts->sh_size;
+                    }
+                }
+            }
         }
         unsigned j;
         for (j = 0; j < n; j++) {
             unsigned    type = ELF64_R_TYPE(rela[j].r_info);
             unsigned    si   = ELF64_R_SYM(rela[j].r_info);
-            unsigned long *P = (unsigned long *)(base + rela[j].r_offset);
+            unsigned long P = base + rela[j].r_offset;
+            if (P < USER_LOAD_BASE || P > USER_LOAD_END - 8)
+                continue; /* relocation outside the user image */
+            unsigned long *PP = (unsigned long *)P;
             unsigned long S  = 0;
-            if (syms && si) {
+            if (syms && si < syms_count) {
                 Elf64_Sym *sym = &syms[si];
                 if (sym->st_shndx != SHN_UNDEF) S = base + sym->st_value;
                 else if (str) {
-                    void *a = ksym_resolve(str + sym->st_name);
-                    if (!a && str[sym->st_name] == '_')
-                        a = ksym_resolve(str + sym->st_name + 1);
+                    char symname[ELF_NAME_MAX];
+                    elf_name_copy(symname, sizeof(symname), str, str_size,
+                                  sym->st_name);
+                    void *a = ksym_resolve(symname);
+                    if (!a && symname[0] == '_')
+                        a = ksym_resolve(symname + 1);
                     S = (unsigned long)a;
                 }
             }
             switch (type) {
             case R_X86_64_RELATIVE:
-                *P = base + (unsigned long)rela[j].r_addend;
+                *PP = base + (unsigned long)rela[j].r_addend;
                 break;
             case R_X86_64_IRELATIVE: {
-                unsigned long (*fn)(void) =
-                    (unsigned long (*)(void))(base + (unsigned long)rela[j].r_addend);
-                *P = fn();
+                unsigned long fn = base + (unsigned long)rela[j].r_addend;
+                unsigned k;
+                int in_exec = 0;
+                for (k = 0; k < nxr; k++) {
+                    if (fn >= xr[k].start && fn < xr[k].end) { in_exec = 1; break; }
+                }
+                if (!in_exec) continue; /* target outside an executable segment */
+                *PP = ((unsigned long (*)(void))fn)();
                 break;
             }
             case R_X86_64_64:
-                *P = S + (unsigned long)rela[j].r_addend;
+                *PP = S + (unsigned long)rela[j].r_addend;
                 break;
             case R_X86_64_GLOB_DAT:
             case R_X86_64_JUMP_SLOT:
-                *P = S;
+                *PP = S;
                 break;
             }
         }
@@ -1632,23 +1727,40 @@ static void apply_exec_relocs(void *data, unsigned long base) {
 }
 
 void *load_exec_elf(void *data, unsigned size) {
-    (void)size;
     Elf64_Ehdr *e = (Elf64_Ehdr *)data;
+    if (size < sizeof(Elf64_Ehdr)) return 0;
     if (e->e_ident[0] != 0x7F || e->e_ident[1] != 'E' ||
         e->e_ident[2] != 'L'  || e->e_ident[3] != 'F') return 0;
     if (e->e_machine != EM_X86_64) return 0;
     if (e->e_type != ET_EXEC && e->e_type != ET_DYN) return 0;
 
+    if (e->e_phentsize < sizeof(Elf64_Phdr)) return 0;
+    if (e->e_phoff > size) return 0;
+    if (e->e_phnum > (size - e->e_phoff) / e->e_phentsize) return 0;
+    if (e->e_phnum > ELF_MAX_SEGMENTS) return 0;
+
     unsigned long base = (e->e_type == ET_DYN) ? USER_LOAD_BASE : 0;
 
     Elf64_Phdr *ph = (Elf64_Phdr *)((char *)data + e->e_phoff);
+    struct exec_range xr[ELF_MAX_SEGMENTS];
+    unsigned nxr = 0;
     unsigned long max_end = 0;
     unsigned i;
     for (i = 0; i < e->e_phnum; i++) {
         if (ph[i].p_type != PT_LOAD) continue;
+        if (ph[i].p_vaddr > USER_LOAD_END - base) return 0;
         unsigned long dst = base + ph[i].p_vaddr;
-        if (dst < USER_LOAD_BASE || dst + ph[i].p_memsz > USER_LOAD_END)
+        if (dst < USER_LOAD_BASE || dst >= USER_LOAD_END)
             return 0; /* segment outside the user region */
+        if (ph[i].p_memsz > USER_LOAD_END - dst) return 0;
+        if (ph[i].p_filesz > USER_LOAD_END - dst) return 0;
+        if (ph[i].p_offset > size || ph[i].p_filesz > size - ph[i].p_offset)
+            return 0; /* segment data beyond the end of the file */
+        if (ph[i].p_filesz > 0 && (ph[i].p_flags & PF_X) && nxr < ELF_MAX_SEGMENTS) {
+            xr[nxr].start = dst;
+            xr[nxr].end   = dst + ph[i].p_filesz;
+            nxr++;
+        }
         kmemcpy((void *)dst, (char *)data + ph[i].p_offset,
                 (unsigned long)ph[i].p_filesz);
         if (ph[i].p_memsz > ph[i].p_filesz)
@@ -1658,7 +1770,7 @@ void *load_exec_elf(void *data, unsigned size) {
     }
     if (max_end == 0) return 0;
 
-    apply_exec_relocs(data, base);
+    apply_exec_relocs(data, size, base, xr, nxr);
 
     g_brk       = ALIGN_UP(max_end, 0x1000);
     g_brk_limit = USER_BRK_END;
