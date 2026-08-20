@@ -3,7 +3,7 @@
     "god_nodes": [
       [
         "kernel.c",
-        30.200000000000003
+        31.0
       ],
       [
         "tls_port.h",
@@ -23,7 +23,7 @@
       ],
       [
         "bootdefs.h",
-        9.600000000000001
+        11.5
       ],
       [
         "mcp/test_minios_mcp.py",
@@ -47,11 +47,11 @@
         "id": 0,
         "label": "root",
         "file_ids": [
-          "net.h",
-          "bootdefs.h",
           "kernel.h",
+          "net.c",
           "kernel.c",
-          "net.c"
+          "net.h",
+          "bootdefs.h"
         ],
         "cohesion": 0.625,
         "size": 5
@@ -60,8 +60,8 @@
         "id": 1,
         "label": "mcp",
         "file_ids": [
-          "mcp/minios_addons.py",
-          "mcp/minios_mcp.py"
+          "mcp/minios_mcp.py",
+          "mcp/minios_addons.py"
         ],
         "cohesion": 1.0,
         "size": 2
@@ -70,14 +70,14 @@
         "id": 2,
         "label": "root",
         "file_ids": [
-          "tls.c",
-          "tls_port.h",
-          "tls.h",
-          "tls_roots.h",
           "tls_test.c",
+          "tls.h",
+          "tls.c",
+          "tls_roots.h",
+          "tls_port.h",
           "tls_test_roots.h",
-          "tls_crypto.c",
-          "tls_x509.c"
+          "tls_x509.c",
+          "tls_crypto.c"
         ],
         "cohesion": 0.7692307692307693,
         "size": 8
@@ -156,6 +156,7 @@
     "progs/ldhello.c": "utility",
     "progs/ldhello.s": "utility",
     "progs/lxhello.c": "utility",
+    "progs/nx.c": "utility",
     "progs/test.c": "testing",
     "progs/w1.c": "utility",
     "progs/w1.s": "utility",
