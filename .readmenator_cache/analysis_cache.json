@@ -1,0 +1,180 @@
+{
+  "analysis_v2": {
+    "god_nodes": [
+      [
+        "kernel.c",
+        29.700000000000003
+      ],
+      [
+        "tls_port.h",
+        14.7
+      ],
+      [
+        "tls.h",
+        14.2
+      ],
+      [
+        "net.c",
+        12.4
+      ],
+      [
+        "tls_crypto.c",
+        11.600000000000001
+      ],
+      [
+        "bootdefs.h",
+        9.600000000000001
+      ],
+      [
+        "mcp/test_minios_mcp.py",
+        9.5
+      ],
+      [
+        "net.h",
+        9.4
+      ],
+      [
+        "progs/freedom.s",
+        9.1
+      ],
+      [
+        "tls.c",
+        8.5
+      ]
+    ],
+    "communities": [
+      {
+        "id": 0,
+        "label": "root",
+        "file_ids": [
+          "bootdefs.h",
+          "kernel.c",
+          "net.c",
+          "kernel.h",
+          "net.h"
+        ],
+        "cohesion": 0.625,
+        "size": 5
+      },
+      {
+        "id": 1,
+        "label": "mcp",
+        "file_ids": [
+          "mcp/minios_mcp.py",
+          "mcp/minios_addons.py"
+        ],
+        "cohesion": 1.0,
+        "size": 2
+      },
+      {
+        "id": 2,
+        "label": "root",
+        "file_ids": [
+          "tls_crypto.c",
+          "tls_roots.h",
+          "tls_test.c",
+          "tls_test_roots.h",
+          "tls_port.h",
+          "tls.h",
+          "tls.c",
+          "tls_x509.c"
+        ],
+        "cohesion": 0.7692307692307693,
+        "size": 8
+      }
+    ],
+    "surprising_connections": [
+      [
+        "bootdefs.h",
+        "tls_roots.h",
+        4,
+        "{0, 2}"
+      ],
+      [
+        "bootdefs.h",
+        "tls_test_roots.h",
+        4,
+        "{0, 2}"
+      ],
+      [
+        "net.c",
+        "tls_roots.h",
+        4,
+        "{0, 2}"
+      ],
+      [
+        "net.c",
+        "tls_test_roots.h",
+        4,
+        "{0, 2}"
+      ],
+      [
+        "bootdefs.h",
+        "tls.c",
+        3,
+        "{0, 2}"
+      ]
+    ],
+    "suggested_questions": [
+      "What does kernel.c depend on, and what depends on it? (4 connections)",
+      "What does tls_port.h depend on, and what depends on it? (6 connections)",
+      "What does tls.h depend on, and what depends on it? (5 connections)",
+      "How are the 5 files in 'root' related to each other?",
+      "Why are bootdefs.h and tls_roots.h connected through 4 hops across 2 communities?"
+    ]
+  },
+  "layers": {
+    "app.py": "utility",
+    "bootdefs.h": "utility",
+    "bootloader.c": "utility",
+    "cvm_host.c": "utility",
+    "install.sh": "utility",
+    "kernel.c": "utility",
+    "kernel.h": "utility",
+    "mcp/__init__.py": "utility",
+    "mcp/mcp_dbg_driver.py": "infrastructure",
+    "mcp/mcp_dogfood.py": "utility",
+    "mcp/minios_addons.py": "utility",
+    "mcp/minios_mcp.py": "utility",
+    "mcp/mutate_mcp.sh": "utility",
+    "mcp/test_minios_mcp.py": "testing",
+    "mkramdisk.py": "infrastructure",
+    "mkroots.sh": "utility",
+    "mutate.sh": "utility",
+    "net.c": "utility",
+    "net.h": "utility",
+    "progs/cpl.c": "utility",
+    "progs/fib.c": "utility",
+    "progs/fib.s": "utility",
+    "progs/freedom.c": "utility",
+    "progs/freedom.s": "utility",
+    "progs/ftest.c": "testing",
+    "progs/hello.c": "utility",
+    "progs/http.c": "presentation",
+    "progs/http.s": "presentation",
+    "progs/kmem.c": "utility",
+    "progs/ldhello.c": "utility",
+    "progs/ldhello.s": "utility",
+    "progs/lxhello.c": "utility",
+    "progs/test.c": "testing",
+    "progs/w1.c": "utility",
+    "progs/w1.s": "utility",
+    "ramdisk_data.c": "data_access",
+    "stage1.S": "utility",
+    "stage2.S": "utility",
+    "test_bdd.sh": "testing",
+    "test_http_server.py": "testing",
+    "tls.c": "utility",
+    "tls.h": "utility",
+    "tls_crypto.c": "utility",
+    "tls_port.h": "utility",
+    "tls_roots.h": "utility",
+    "tls_test.c": "testing",
+    "tls_test.py": "testing",
+    "tls_test_roots.h": "testing",
+    "tls_x509.c": "utility"
+  },
+  "security": {
+    "findings": []
+  }
+}
