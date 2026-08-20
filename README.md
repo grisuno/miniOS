@@ -11,8 +11,12 @@ int main(void) { return 7; }
 edit> x
 miniOS> run minigcc.o p.c > p.s
 miniOS> run ld.o -f elf -o p.elf p.s
+miniOS> run ld.o -f cvm -o p.cvm p.s
 miniOS> run p.elf
 exit code: 7
+miniOS> run p.cvm
+exit code: 7
+miniOS>
 ```
 
 ## The four repositories
