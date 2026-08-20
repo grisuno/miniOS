@@ -52,7 +52,9 @@ CVM modules (.cvm files, built by the 'ld' assembler from miniGCC output):
   run fib.cvm       Runs the module on the C virtual machine (cvm.o).
   run w1.cvm        Prints a string through the CVM write native.
 
-Linux ELF binaries run at ring 0 and talk to the kernel through the x86-64
-syscall instruction (write/read/open/close/brk/mmap/exit/...). A static
-binary built on a Linux host runs by copying it onto the ramdisk.
+Linux ELF binaries run at ring 3 under hardware page protection and talk to
+the kernel through the x86-64 syscall instruction (write/read/open/close/
+brk/mmap/exit/...). User pages are 4 KB with the no-execute bit set except
+on the pages a program's executable segments occupy. A static binary built
+on a Linux host runs by copying it onto the ramdisk.
 See lxhello.c for a self-contained -static -nostdlib example.

@@ -56,7 +56,15 @@ a20_ready:
     sgdtl saved_gdtr
     movw $KERNEL_SECTORS, sectors_left
     movl $BOOT_KERNEL_LBA, next_lba
+#ifdef KASLR
+    call kaslr_pick
+    movl %eax, dest_addr
+    movl %eax, kaslr_dest
+#else
     movl $BOOT_KERNEL_PHYS_ADDR, dest_addr
+#endif
+    movl dest_addr, %eax
+    movl %eax, BOOT_KASLR_ADDR
 
 load_chunk:
     movw sectors_left, %ax
@@ -166,9 +174,66 @@ enter_long_mode:
     movl $(PT_PDPT_ADDR | PT_FLAGS_PRESENT_RW), PT_PML4_ADDR
     movl $(PT_PD_ADDR | PT_FLAGS_PRESENT_RW), PT_PDPT_ADDR
 
+#ifdef KASLR
+    /* PD[0] and PD[1] become 4 KB page tables for the kernel image slide:
+     * virtual 0x100000..0x400000 maps to the randomized physical base.
+     * PT0 keeps [0, 1 MB) identity so the page tables, GDT, staging buffer
+     * and stacks stay where the kernel expects them. */
+    movl $(PT_USER0_ADDR | PT_FLAGS_PRESENT_RW), PT_PD_ADDR
+    movl $(PT_USER1_ADDR | PT_FLAGS_PRESENT_RW), (PT_PD_ADDR + PT_PD_ENTRY_BYTES)
+
+movl $PT_USER0_ADDR, %edi
+    xorl %eax, %eax
+    movl $256, %ecx
+fill_pt0_low:
+    orl $PT_FLAGS_PRESENT_RW, %eax
+    movl %eax, (%edi)
+    addl $PT_PD_ENTRY_BYTES, %edi
+    addl $0x1000, %eax
+    loop fill_pt0_low
+    movl kaslr_dest, %eax
+    movl $256, %ecx
+fill_pt0_kernel:
+    orl $PT_FLAGS_PRESENT_RW, %eax
+    movl %eax, (%edi)
+    addl $PT_PD_ENTRY_BYTES, %edi
+    addl $0x1000, %eax
+    loop fill_pt0_kernel
+
+    /* PT1 continues the kernel image mapping at 4 KB granularity: virtual
+     * [2 MB, 3 MB) maps to the physical base plus 1 MB, which covers the
+     * tail of the kernel image and the embedded ramdisk (the image spans
+     * virtual 0x100000..~0x245000). Virtual [3 MB, 4 MB) stays identity so
+     * the user-window page table zone (PT_USER_TABLES_ADDR 0x300000) is
+     * reachable at the same physical and virtual address in every build. */
+    movl $PT_USER1_ADDR, %edi
+    movl kaslr_dest, %eax
+    addl $0x100000, %eax
+    movl $256, %ecx
+fill_pt1_kernel:
+    orl $PT_FLAGS_PRESENT_RW, %eax
+    movl %eax, (%edi)
+    addl $PT_PD_ENTRY_BYTES, %edi
+    addl $0x1000, %eax
+    loop fill_pt1_kernel
+    movl $(PT_USER_TABLES_ADDR | PT_FLAGS_PRESENT_RW), %eax
+    movl $256, %ecx
+fill_pt1_identity:
+    orl $PT_FLAGS_PRESENT_RW, %eax
+    movl %eax, (%edi)
+    addl $PT_PD_ENTRY_BYTES, %edi
+    addl $0x1000, %eax
+    loop fill_pt1_identity
+
+    movl $PT_PD_ADDR, %edi
+    addl $PT_FILL_START_INDEX * PT_PD_ENTRY_BYTES, %edi
+    movl $(PT_FILL_START_ADDR | PT_FLAGS_PRESENT_RW_PS), %eax
+    movl $PT_FILL_ENTRIES, %ecx
+#else
     movl $PT_PD_ADDR, %edi
     movl $PT_FLAGS_PRESENT_RW_PS, %eax
     movl $PT_PD_ENTRIES, %ecx
+#endif
 fill_page_directory:
     movl %eax, (%edi)
     addl $PT_PD_ENTRY_BYTES, %edi
@@ -224,6 +289,48 @@ puts_done:
 msg_read:
     .asciz "stage2: read error"
 
+#ifdef KASLR
+/* Pick the kernel's physical load base: a 2 MB-aligned address in the
+ * 64-position window above the kernel heap, seeded from the TSC and the RTC
+ * so consecutive boots land at different locations. Returns the base in
+ * eax. The virtual base stays at the link-time 0x100000, which PT0/PT1 map
+ * to the returned physical base. */
+kaslr_pick:
+    pushl %ecx
+    rdtsc
+    xorl %edx, %eax
+    pushl %eax
+    movb $(CMOS_NMI_DISABLE | CMOS_REG_SECONDS), %al
+    outb %al, $CMOS_INDEX_PORT
+    inb  $CMOS_DATA_PORT, %al
+    movzbl %al, %ecx
+    shll $24, %ecx
+    popl %eax
+    xorl %ecx, %eax
+    pushl %eax
+    movb $(CMOS_NMI_DISABLE | CMOS_REG_MINUTES), %al
+    outb %al, $CMOS_INDEX_PORT
+    inb  $CMOS_DATA_PORT, %al
+    movzbl %al, %ecx
+    shll $16, %ecx
+    popl %eax
+    xorl %ecx, %eax
+    pushl %eax
+    movb $(CMOS_NMI_DISABLE | CMOS_REG_HOURS), %al
+    outb %al, $CMOS_INDEX_PORT
+    inb  $CMOS_DATA_PORT, %al
+    movzbl %al, %ecx
+    shll $8, %ecx
+    popl %eax
+    xorl %ecx, %eax
+    shrl $KASLR_ALIGN_SHIFT, %eax
+    andl $KASLR_MAX_UNITS - 1, %eax
+    shll $KASLR_ALIGN_SHIFT, %eax
+    addl $KASLR_MIN_ADDR, %eax
+    popl %ecx
+    ret
+#endif
+
     .p2align 3
 gdt32_start:
     .quad GDT32_DESC_NULL
@@ -257,6 +364,8 @@ chunk_sectors:
 next_lba:
     .long 0
 dest_addr:
+    .long 0
+kaslr_dest:
     .long 0
 
     .org BOOT_STAGE2_SECTORS * SECTOR_BYTES

@@ -48,6 +48,26 @@ QEMU_DRIVE = -drive file=os.img,format=raw,if=ide
 QEMU_MEM   = -m 256M
 QEMU_NIC   = -nic user,model=rtl8139
 
+# KASLR randomizes the kernel image's physical base on every boot. Disable
+# with `make ENABLE_KASLR=0` when a deterministic physical layout is wanted
+# (e.g. register-level debugging of the boot path).
+ENABLE_KASLR ?= 1
+ifeq ($(ENABLE_KASLR),1)
+KASLR_FLAG = -DKASLR
+else
+KASLR_FLAG =
+endif
+
+# The KASLR flag is a variable, not a file, so a flag change would otherwise
+# leave a stale stage2.o behind. A stamp records the value in effect and is
+# rewritten only when the value changes, so stage2.o rebuilds exactly when
+# the flag does.
+KASLR_STAMP = .kaslrflag
+.PHONY: kaslr-flag-force
+$(KASLR_STAMP): kaslr-flag-force
+	@new='$(KASLR_FLAG)'; old="$$(cat $@ 2>/dev/null)"; \
+	 if [ "$$new" != "$$old" ]; then printf '%s\n' "$$new" > $@; fi
+
 CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
               -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector
@@ -61,7 +81,7 @@ PROGS     = $(PROGS_DIR)/hello.o $(PROGS_DIR)/ftest.o $(PROGS_DIR)/minigcc.o \
             $(PROGS_DIR)/test.c $(PROGS_DIR)/fib.c $(PROGS_DIR)/README.txt \
             $(PROGS_DIR)/http.c $(PROGS_DIR)/http.elf \
             $(PROGS_DIR)/freedom.c $(PROGS_DIR)/bin/freedom \
-            $(PROGS_DIR)/cpl.elf $(PROGS_DIR)/kmem.elf
+$(PROGS_DIR)/cpl.elf $(PROGS_DIR)/kmem.elf $(PROGS_DIR)/nx.elf
 
 all: os.img
 
@@ -142,6 +162,12 @@ $(PROGS_DIR)/cpl.elf: $(PROGS_DIR)/cpl.c
 
 $(PROGS_DIR)/kmem.elf: $(PROGS_DIR)/kmem.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
+# NX probe: calls a `ret` written to the stack through a function pointer.
+# Kept at -O0 so the indirect call survives, and volatile so the buffer
+# really lives on the stack instead of being materialized in .data.
+$(PROGS_DIR)/nx.elf: $(PROGS_DIR)/nx.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O0 -o $@ $<
 
 # ── Demo programs: C -> miniGCC -> ld -> ELF / CVM ───────────────
 # These are this repository's own sources, compiled through the full
@@ -267,8 +293,8 @@ stage1.elf: stage1.o stage1.ld
 stage1.bin: stage1.elf
 	$(OBJCOPY) -O binary $< $@
 
-stage2.o: stage2.S $(BOOTDEFS) kernel.bin
-	$(CC) $(CFLAGS_BOOT) \
+stage2.o: stage2.S $(BOOTDEFS) kernel.bin $(KASLR_STAMP)
+	$(CC) $(CFLAGS_BOOT) $(KASLR_FLAG) \
 	      -DKERNEL_SECTORS=$$(( ($$(stat -c%s kernel.bin) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )) \
 	      -c $< -o $@
 
@@ -341,7 +367,7 @@ clean:
 	rm -f *.o *.elf *.bin *.img ramdisk_data.c ramdisk.bin
 	rm -f $(PROGS_DIR)/*.o $(PROGS_DIR)/lxhello.elf $(PROGS_DIR)/ldhello.elf \
 	      $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf $(PROGS_DIR)/minigcc.elf \
-	      $(PROGS_DIR)/cpl.elf $(PROGS_DIR)/kmem.elf \
+	      $(PROGS_DIR)/cpl.elf $(PROGS_DIR)/kmem.elf $(PROGS_DIR)/nx.elf \
 	      $(PROGS_DIR)/bin/cp $(PROGS_DIR)/bin/cp.s \
 	      $(PROGS_DIR)/ldhello.s $(PROGS_DIR)/w1.s $(PROGS_DIR)/fib.s \
 	      $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm $(PROGS_DIR)/minigcc.cvm

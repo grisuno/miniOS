@@ -316,6 +316,15 @@ static char  *heap_start, *heap_end, *heap_curr;
 
 #define EFAULT  (-14)
 
+#define MSR_EFER   0xC0000080
+#define EFER_NXE   0x00000800
+
+#define PT_FLAGS_PS       0x080
+#define PT_FLAGS_NX       0x8000000000000000ULL
+#define PT_ADDR_MASK      0x000FFFFFFFFFF000ULL
+#define PT_USER_ENTRY     (0x003 | PT_FLAGS_USER)  /* present | rw | user */
+#define PT_USER_NX_ENTRY  ((unsigned long)(PT_USER_ENTRY | PT_FLAGS_NX))
+
 /* Asm-safe (no UL suffix) mirror of the user window for the syscall-entry
  * return discriminator; the trampoline is a raw string literal, so the C
  * preprocessor cannot paste the UL-suffixed macros into it. */
@@ -324,13 +333,21 @@ static char  *heap_start, *heap_end, *heap_curr;
 #define STR_(x) #x
 #define STR(x)  STR_(x)
 
-/* Mark the user window [USER_LOAD_BASE, USER_LOAD_END) as user-accessible
- * (U/S bit) in the 2 MB page directory built by the boot path. A ring-3
- * access requires U/S set at every level of the walk, so the PML4 and PDPT
- * entries that cover the whole identity map are lifted too; the per-2 MB
- * isolation then lives entirely in the PD leaf bits, and every other page —
- * page tables, kernel image, heap, VGA, MMIO — stays supervisor, so a
- * ring-3 program is stopped in hardware from reading or writing kernel
+static inline unsigned long rdmsr(unsigned msr);
+static inline void wrmsr(unsigned msr, unsigned long val);
+
+/* Build 4 KB page tables for the whole user window and enable the NX bit
+ * (EFER.NXE). Every user page is present, writable, user-accessible and
+ * non-executable; the ELF loader later clears NX on the pages a program's
+ * executable segments occupy, so a ring-3 program can only execute the text
+ * it actually contains. The page tables live in the dedicated
+ * PT_USER_TABLES_ADDR zone, never in the heap (the ramdisk data area is
+ * heap-backed and its final size is only discovered at boot, so heap-resident
+ * tables could be overwritten by a later reservation); that zone stays
+ * supervisor, so a ring-3 program cannot reach the tables that govern it.
+ * The per-page isolation replaces the coarse 2 MB leaves the boot path
+ * installs, so kernel image, heap, page tables, VGA and MMIO stay supervisor,
+ * and the U/S bit stops a ring-3 program from reading or writing kernel
  * memory. */
 static void mm_setup_protections(void) {
     volatile unsigned long *pml4 = (volatile unsigned long *)PT_PML4_ADDR;
@@ -339,9 +356,50 @@ static void mm_setup_protections(void) {
     unsigned long lo = USER_LOAD_BASE >> PT_PD_INDEX_SHIFT;
     unsigned long hi = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
     unsigned long i;
+    if (hi - lo + 1 > PT_USER_TABLES_BYTES / 0x1000) {
+        kprintf("mm: user window needs more page table space\n");
+        return;
+    }
+    wrmsr(MSR_EFER, rdmsr(MSR_EFER) | EFER_NXE);
     pml4[0] |= (unsigned long)PT_FLAGS_USER;
     pdpt[0] |= (unsigned long)PT_FLAGS_USER;
-    for (i = lo; i <= hi; i++) pd[i] |= (unsigned long)PT_FLAGS_USER;
+    for (i = lo; i <= hi; i++) {
+        unsigned long *pt = (unsigned long *)PT_USER_TABLES_ADDR +
+                            (i - lo) * 0x1000 / sizeof(unsigned long);
+        unsigned long phys = i << PT_PD_INDEX_SHIFT;
+        unsigned long k;
+        for (k = 0; k < PT_PD_ENTRIES; k++)
+            pt[k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
+        pd[i] = ((unsigned long)pt) | PT_USER_ENTRY;
+    }
+    __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
+}
+
+/* Set or clear the NX bit on the single 4 KB page holding vaddr. The page
+ * table for vaddr is the one the user-window PD entry points at; a 2 MB
+ * leaf (should not appear inside the window after mm_setup_protections) is
+ * left untouched. */
+static void mm_user_pte_update(unsigned long vaddr, int exec) {
+    volatile unsigned long *pd = (volatile unsigned long *)PT_PD_ADDR;
+    unsigned long pd_idx = vaddr >> PT_PD_INDEX_SHIFT;
+    unsigned long pde = pd[pd_idx];
+    if (!(pde & PT_FLAGS_PRESENT_RW)) return;
+    if (pde & PT_FLAGS_PS) return;
+    volatile unsigned long *pt =
+        (volatile unsigned long *)(pde & PT_ADDR_MASK);
+    unsigned long pte_idx = (vaddr >> 12) & 0x1FF;
+    if (exec) pt[pte_idx] &= ~(unsigned long)PT_FLAGS_NX;
+    else      pt[pte_idx] |=  (unsigned long)PT_FLAGS_NX;
+}
+
+/* Mark the pages of a loaded executable segment as executable (clear NX)
+ * and flush the TLB so the new permissions take effect before the program
+ * runs. */
+static void mm_user_set_exec(unsigned long start, unsigned long end) {
+    unsigned long p;
+    start &= ~0xFFFUL;
+    end = ALIGN_UP(end, 0x1000);
+    for (p = start; p < end; p += 0x1000) mm_user_pte_update(p, 1);
     __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
 }
 
@@ -1245,9 +1303,9 @@ void *ksym_resolve(const char *name) {
 #define KPROG_MAX 64
 
 typedef struct {
-    const char  *name;
-    prog_entry_t entry;      /* ET_REL: called directly as a C function */
-    void        *proc_entry; /* ET_EXEC/ET_DYN: Linux _start, run as a process */
+    char         name[31];    /* registered stem, copied (never a borrowed ptr) */
+    prog_entry_t entry;       /* ET_REL: called directly as a C function */
+    void        *proc_entry;  /* ET_EXEC/ET_DYN: Linux _start, run as a process */
     int          is_proc;
 } KProg;
 
@@ -1265,13 +1323,17 @@ static KProg *kprog_slot(const char *name) {
 void k_register_program(const char *name, prog_entry_t entry) {
     KProg *p = kprog_slot(name);
     if (!p) return;
-    p->name = name; p->entry = entry; p->proc_entry = 0; p->is_proc = 0;
+    kstrncpy(p->name, name, sizeof(p->name) - 1);
+    p->name[sizeof(p->name) - 1] = 0;
+    p->entry = entry; p->proc_entry = 0; p->is_proc = 0;
 }
 
 void k_register_process(const char *name, void *proc_entry) {
     KProg *p = kprog_slot(name);
     if (!p) return;
-    p->name = name; p->entry = 0; p->proc_entry = proc_entry; p->is_proc = 1;
+    kstrncpy(p->name, name, sizeof(p->name) - 1);
+    p->name[sizeof(p->name) - 1] = 0;
+    p->entry = 0; p->proc_entry = proc_entry; p->is_proc = 1;
 }
 
 int k_spawn(const char *name, int argc, char **argv) {
@@ -1769,6 +1831,11 @@ void *load_exec_elf(void *data, unsigned size) {
         if (dst + ph[i].p_memsz > max_end) max_end = dst + ph[i].p_memsz;
     }
     if (max_end == 0) return 0;
+
+    /* Clear NX on the executable segments before applying relocations, so
+     * IRELATIVE resolvers inside them can run, then reload the TLB. */
+    for (i = 0; i < nxr; i++)
+        mm_user_set_exec(xr[i].start, xr[i].end);
 
     apply_exec_relocs(data, size, base, xr, nxr);
 
@@ -3221,6 +3288,8 @@ void kmain(void) {
     register_libc_symbols();
     syscall_init();
     mm_setup_protections();
+    kprintf("kernel: physical base 0x%x, user pages 4 KB with NX\n",
+            *(unsigned *)BOOT_KASLR_ADDR);
     kprintf("isolation: user window %x..%x ring 3, syscall ABI on %x\n",
             USER_LOAD_BASE, USER_LOAD_END, SYS_KSTK_TOP);
     net_init();

@@ -129,6 +129,10 @@ expect "MiniOS Kernel"
 expect "isolation"
 expect "powering off"
 
+scenario "KASLR slides the kernel physical base per boot" "poweroff"
+expect "kernel: physical base 0x"
+refute "kernel: physical base 0x100000"
+
 scenario "shell help advertises the editor" "help
 poweroff"
 expect "edit <file>"
@@ -205,6 +209,11 @@ expect "exit code: 3"
 scenario "syscall boundary rejects kernel-space pointers" "run kmem.elf
 poweroff"
 expect "exit code: 0"
+
+scenario "user pages are non-executable unless the segment is executable" "run nx.elf
+poweroff"
+expect "nx: jumping to stack"
+refute "powering off"
 
 scenario "editor guards unsaved changes on quit" "edit guard.txt
 a
@@ -321,7 +330,7 @@ expect "10.0.2.15"
 
 scenario "net pings the slirp gateway" "net ping 10.0.2.2
 poweroff"
-expect "reply from 10.0.2.2"
+expect "^reply from 10.0.2.2"
 
 http_server_start() {
     python3 -m http.server "${NET_HTTP_PORT:-8899}" --directory "$HERE/progs" \
@@ -434,6 +443,7 @@ http_server_stop
 http_fixture_stop
 
 scenario "mkdir creates a directory and cd enters it" "mkdir work
+cp fib.c work/copy.c
 cd work
 pwd
 edit f.txt
@@ -441,11 +451,11 @@ a
 hello cwd
 x
 ls
-cat f.txt
+cat copy.c
 poweroff"
-expect "created work/"
 expect "hello cwd"
 expect "f.txt"
+expect "int fib"
 
 scenario "cd .. pops one level and bare cd returns to root" "mkdir work
 mkdir work/sub
@@ -489,7 +499,7 @@ expect "rm: work: is a directory"
 scenario "ps lists registered programs" "load hello.o
 ps
 poweroff"
-expect "hello"
+expect "^  hello"
 
 scenario "cat concatenates files in order through a redirect" "edit a.txt
 a
@@ -503,7 +513,7 @@ cat a.txt b.txt > c.txt
 cat c.txt
 poweroff"
 expect "first part"
-expect "second part"
+expect_count 2 "second part"
 
 scenario "cat refuses directories" "mkdir work
 cat work

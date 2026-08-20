@@ -82,11 +82,13 @@ boot path is named in `bootdefs.h`; neither stage may carry a bare constant.
 - `stage2.S` — the loader. Enables A20 (clearing the fast-reset bit before
   writing port 0x92), streams the kernel in 64 KB chunks through the staging
   buffer at 0x10000, copies each chunk above 1 MB during a short excursion
-  into protected mode, builds identity-mapped 2 MB page tables for the first
-  gigabyte, enables PAE and long mode, installs the 64-bit GDT at 0x8000 and
-  jumps to the kernel at 0x100000. Loop state lives in memory, never in
-  registers, so nothing is assumed about what the firmware preserves across
-  INT 13h. Ends with `.org` to enforce its sector reservation.
+  into protected mode, builds the page tables (identity 2 MB leaves for the
+  first gigabyte, with the low 4 MB split into the `PT0`/`PT1` KASLR scheme
+  described below), enables PAE and long mode, installs the 64-bit GDT at
+  0x8000 and jumps to the kernel at 0x100000. Loop state lives in memory,
+  never in registers, so nothing is assumed about what the firmware
+  preserves across INT 13h. Ends with `.org` to enforce its sector
+  reservation.
 
 The image is attached as an IDE disk: LBA addressing is not available for
 floppies.
@@ -106,17 +108,42 @@ disagree.
 0x00000-0x004FF  IVT and BIOS data area
 0x01000-0x04FFF  long-mode page tables (PML4, PDPT, PD)
 0x07C00-0x07DFF  stage 1
-0x07E00-0x07E10  disk address packet and boot drive
+0x07E00-0x07E14  disk address packet, boot drive and KASLR base scratch
 0x08000-0x08027  long-mode GDT handed to the kernel (kernel + user segments)
 0x09000-0x0AFFF  stage 2
-0x10000-0x8FFFF  kernel staging buffer
+0x10000-0x8FFFF  kernel staging buffer (64 KB chunks, reused)
 0x80000-0x87FFF  syscall kernel stack (SYS_KSTK_TOP 0x88000)
 0x90000          protected/long mode stack top
-0x100000         kernel image
+0x100000         kernel image (virtual; physical base random per boot, see KASLR)
+0x300000         user page table zone (64 KB, PT_USER_TABLES_ADDR)
 0x400000         user program load base
 0x1FC0000        user stack base (USER_STACK_BASE, 256 KB)
 0x2000000        kernel heap (64 MB)
 ```
+
+### KASLR
+The kernel image always executes at virtual `0x100000`, but its physical
+base is randomized at boot when built with KASLR (the default; disable with
+`make ENABLE_KASLR=0`). Stage 2 reads the TSC and the CMOS clock
+(seconds, minutes and hours shifted into distinct bytes) and slides the
+copy destination to `KASLR_MIN_ADDR + (entropy & (KASLR_MAX_UNITS-1)) *
+KASLR_ALIGN` — 64 aligned 2 MB slots in `[0x6000000, 0xE000000)`, inside
+the 256 MB RAM the image targets. The choice is written to `BOOT_KASLR_ADDR`
+so the kernel can report its own physical base.
+
+The low 4 MB stay identity mapped with a twist: `PT0` maps `[0x100000,0x200000)`
+to the kernel base and `PT1` maps `[0x200000,0x300000)` to `base+0x100000`
+(the kernel tail and embedded ramdisk extend past 2 MB; an identity mapping
+there would read physical `0x200000`, which is not where the tail lives) plus
+`[0x300000,0x400000)` identity for the user page table zone. In the
+non-KASLR build the whole low 4 MB are identity mapped as before.
+
+Entropy mixing keeps its strength independent of boot timing: hours,
+minutes and seconds feed separate bytes, so two boots in the same second
+still differ by the RDTSC term. The kernel heap and user window are
+unaffected; KASLR randomizes only the kernel image's physical base. A KASLR
+kernel spans physical `[X, X+image)` and the BDD suite asserts the banner
+never reports base `0x100000`.
 
 ## Kernel Contracts
 
@@ -147,6 +174,21 @@ other page — page tables, kernel image, kernel heap, VGA, MMIO — stays
 supervisor, so a user binary cannot read or write kernel memory: the U/S bit
 stops it in hardware. Identity mapping remains a single address space: per-
 process page tables (CR3 switch) belong to the preemption track, not this one.
+
+The user window runs on eager 4 KB page tables for the whole
+`USER_LOAD_BASE`..`USER_LOAD_END` range (`mm_setup_protections`), not on the
+2 MB kernel pages, so the no-execute bit works: every user page starts
+NX-clear (EFER.NXE is enabled), and `load_exec_elf` clears NX only on the
+pages a program's executable segments occupy. A program cannot execute from
+its stack, heap, `.data` or unmapped space — a jump into a non-executable
+page faults and the machine resets (no IDT), never silently running
+shellcode. The kernel heap keeps its 2 MB executable pages: `.o` toolchain
+programs execute from the heap at ring 0 by contract. The page tables live
+in the dedicated identity-mapped zone `PT_USER_TABLES_ADDR` (`0x300000`),
+never in the kernel heap, so the ramdisk data buffer can never clobber them.
+The BDD suite proves the isolation with `cpl.elf` (reports ring 3),
+`kmem.elf` (kernel pointers rejected) and `nx.elf` (a `ret` written to the
+stack faults on fetch, so `poweroff` is never reached).
 
 A user program is entered with `iretq` to ring 3 (CS `USER_CODE_SEL`, SS
 `USER_DATA_SEL`, RPL 3) on a user stack carved from the top of the user

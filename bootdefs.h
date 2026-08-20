@@ -8,15 +8,18 @@
  *
  * Physical memory map established by the boot path:
  *
- *   0x00000 - 0x004FF  real-mode IVT and BIOS data area
- *   0x01000 - 0x04FFF  long-mode page tables (PML4, PDPT, PD)
+ *   0x00000 - 0x005FF  real-mode IVT and BIOS data area
+ *   0x01000 - 0x05FFF  long-mode page tables (PML4, PDPT, PD, KASLR PT0/PT1)
+ *   0x030000 - 0x031000  user-window page tables (4 KB leaves, NX per page)
  *   0x07C00 - 0x07DFF  stage 1 (boot sector)
- *   0x07E00 - 0x07E10  disk address packet and boot drive scratch
+ *   0x07E00 - 0x07E14  disk address packet, boot drive and KASLR base scratch
  *   0x08000 - 0x08017  long-mode GDT handed to the kernel
  *   0x09000 - 0x0AFFF  stage 2
  *   0x10000 - 0x8FFFF  kernel staging buffer (one chunk at a time)
  *   0x90000            protected/long mode stack top
- *   0x100000           kernel image
+ *   0x100000           kernel link-time virtual base (physical base is
+ *                      randomized by KASLR into [0x0600000, 0x0E000000)
+ *                      when enabled)
  *
  * Disk layout (LBA, 512-byte sectors):
  *
@@ -46,6 +49,7 @@
 #define BOOT_DAP_OFF_LBA_LO       8
 #define BOOT_DAP_OFF_LBA_HI       12
 #define BOOT_DRIVE_ADDR           0x7E10
+#define BOOT_KASLR_ADDR           0x7E14
 
 #define BOOT_STAGE2_LBA           1
 #define BOOT_STAGE2_SECTORS       8
@@ -84,6 +88,7 @@
 
 #define MSR_EFER                  0xC0000080
 #define EFER_LME                  0x00000100
+#define EFER_NXE                  0x00000800
 
 #define GDT32_CODE32_SEL          0x08
 #define GDT32_DATA32_SEL          0x10
@@ -111,13 +116,45 @@
 #define PT_PML4_ADDR              0x1000
 #define PT_PDPT_ADDR              0x2000
 #define PT_PD_ADDR                0x3000
+#define PT_USER0_ADDR             0x4000
+#define PT_USER1_ADDR             0x5000
 #define PT_ZERO_DWORDS            4096
 #define PT_FLAGS_PRESENT_RW       0x003
 #define PT_FLAGS_PRESENT_RW_PS    0x083
+#define PT_FLAGS_PS               0x080
 #define PT_FLAGS_USER             0x004
 #define PT_PD_ENTRIES             512
 #define PT_PD_ENTRY_BYTES         8
 #define PT_PD_PAGE_BYTES          0x200000
 #define PT_PD_INDEX_SHIFT         21
+#define PT_FILL_START_INDEX       2
+#define PT_FILL_START_ADDR        0x400000
+#define PT_FILL_ENTRIES           (PT_PD_ENTRIES - PT_FILL_START_INDEX)
+
+/* Dedicated zone for the kernel-installed 4 KB user-window page tables.
+ * It must never share memory with the heap: the ramdisk data area is
+ * heap-backed and its size is discovered at boot, so page tables there
+ * could be overwritten by a later reservation. This zone sits between the
+ * kernel image and the user window and is identity-mapped (2 MB PD leaf in
+ * the plain build, PT1 in the KASLR build) so the PDEs can carry the same
+ * addresses the kernel writes through. */
+#define PT_USER_TABLES_ADDR       0x00300000
+#define PT_USER_TABLES_BYTES      0x00010000
+
+/* KASLR: the kernel image is loaded at a random 2 MB-aligned physical base
+ * chosen from a 64-position window above the kernel heap, so the kernel's
+ * physical location varies on every boot. The virtual base stays at the
+ * link-time address (0x100000); the loader maps it to the chosen physical
+ * base. */
+#define KASLR_MIN_ADDR            0x06000000
+#define KASLR_ALIGN_SHIFT         21
+#define KASLR_MAX_UNITS           64
+
+#define CMOS_INDEX_PORT           0x70
+#define CMOS_DATA_PORT            0x71
+#define CMOS_NMI_DISABLE          0x80
+#define CMOS_REG_SECONDS          0x00
+#define CMOS_REG_MINUTES          0x02
+#define CMOS_REG_HOURS            0x04
 
 #endif
