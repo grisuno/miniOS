@@ -420,7 +420,7 @@ static int host_match_wildcard(const char *host, const unsigned char *name,
     if (hl == 0) return 0;
     /* the wildcard consumes exactly one label: the tail ".example.com"
      * (name_len - 1 bytes from the dot) must match the host to the end */
-    for (i = 0; i < name_len; i++) {
+    for (i = 0; i < name_len - 1; i++) {
         if (host[hl + i] == 0) return 0;
         if (ascii_lower((unsigned char)host[hl + i]) != ascii_lower(name[i + 1]))
             return 0;

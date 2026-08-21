@@ -53,6 +53,13 @@ static int console_getc(void); /* defined in the shell section */
 static int vga_x, vga_y;
 static char vga_color = 0x07; /* light grey on black */
 
+/* Console scrollback: a ring of lines that scrolled off the top of the VGA
+ * screen. Captured lazily from vga_scroll(); viewed with PageUp/PageDown. */
+static char *sb_ring;
+static int   sb_head, sb_count, sb_inited;
+static void sb_capture_row0(void);
+static void sb_init(void);
+
 static inline unsigned vga_offset(int x, int y) { return (unsigned)(y * VGA_COLS + x) * 2; }
 
 void vga_clear(void) {
@@ -63,6 +70,7 @@ void vga_clear(void) {
     }
     vga_x = vga_y = 0;
     vga_set_cursor(0, 0);
+    if (sb_ring) { sb_head = sb_count = 0; }
 }
 
 void vga_set_cursor(int x, int y) {
@@ -87,6 +95,7 @@ void vga_set_cursor(int x, int y) {
 
 void vga_scroll(void) {
     int y, x;
+    sb_capture_row0();
     for (y = 0; y < VGA_ROWS - 1; y++) {
         for (x = 0; x < VGA_COLS; x++) {
             unsigned src = vga_offset(x, y + 1);
@@ -107,6 +116,43 @@ void vga_newline(void) {
     vga_x = 0;
     vga_y++;
     if (vga_y >= VGA_ROWS) vga_scroll();
+}
+
+/* ---- Console scrollback ring ----
+ *
+ * The ring stores complete text lines that have scrolled off the top of the
+ * 25-row VGA screen. Each line is VGA_COLS bytes (the character cell only;
+ * colour is regenerated as the default attribute on re-display). The ring is
+ * heap-allocated on first use and is a circular buffer of SCROLLBACK_ROWS
+ * slots; `clear` resets the cursor (it does not free the ring, which would
+ * be re-allocated again the next time a line scrolls). */
+#define SCROLLBACK_ROWS 4096
+
+static void sb_init(void) {
+    sb_ring = (char *)kmalloc((unsigned long)SCROLLBACK_ROWS * VGA_COLS);
+    sb_inited = sb_ring ? 1 : -1;
+    sb_head = sb_count = 0;
+}
+
+/* Called from vga_scroll() immediately before row 0 is overwritten: copies
+ * the row that is about to leave the screen into the ring. */
+static void sb_capture_row0(void) {
+    if (sb_inited == 0) sb_init();
+    if (sb_inited != 1) return;
+    int idx = (sb_head + sb_count) % SCROLLBACK_ROWS;
+    for (int x = 0; x < VGA_COLS; x++)
+        sb_ring[(unsigned long)idx * VGA_COLS + x] = VGA_BASE[vga_offset(x, 0)];
+    if (sb_count < SCROLLBACK_ROWS) sb_count++;
+    else sb_head = (sb_head + 1) % SCROLLBACK_ROWS;
+}
+
+/* Toggle the hardware text cursor. bit 5 of VGA index 0x0A disables the
+ * cursor; clearing it brings the cursor back. */
+void vga_cursor_enable(int on) {
+    outb(0x3D4, 0x0A);
+    unsigned char v = inb(0x3D5);
+    if (on) v &= 0xDF; else v |= 0x20;
+    outb(0x3D5, v);
 }
 
 static void vga_raw_space(void) {
@@ -213,7 +259,7 @@ static int kbd_shift;
 /* PS/2 set 1 arrow keys arrive as E0-prefixed make codes; they are
  * translated into the same three-byte CSI sequence a serial terminal
  * sends (ESC [ A / ESC [ B) and buffered here. */
-#define KBD_QUEUE_LEN 4
+#define KBD_QUEUE_LEN 8
 static unsigned char kbd_queue[KBD_QUEUE_LEN];
 static int kbd_q_head, kbd_q_tail;
 static int kbd_e0;
@@ -234,11 +280,6 @@ static int kbd_q_pop(void) {
     return (int)c;
 }
 
-static int kbd_q_peek(void) {
-    if (kbd_q_empty()) return -1;
-    return (int)kbd_queue[kbd_q_head];
-}
-
 int kbd_available(void) {
     unsigned char s;
     __asm__ volatile("inb $0x64, %0" : "=a"(s));
@@ -251,14 +292,17 @@ int kbd_read(void) {
     unsigned char sc;
     __asm__ volatile("inb $0x60, %0" : "=a"(sc));
 
+    /* The E0 prefix must be tested before the release check: 0xE0 has the
+     * high bit set, so testing the release bit first swallows every
+     * extended-key prefix and arrows/PageUp/PageDown never translate. */
+    if (sc == KEY_E0) { kbd_e0 = 1; return -1; }
+
     if (sc & 0x80) { /* key release */
         sc &= 0x7F;
         if (sc == KEY_LSHIFT || sc == KEY_RSHIFT) kbd_shift = 0;
-        if (sc == KEY_E0) kbd_e0 = 0;
+        kbd_e0 = 0;                     /* a release ends any E0 sequence */
         return -1;
     }
-
-    if (sc == KEY_E0) { kbd_e0 = 1; return -1; }
 
     if (kbd_e0) {
         kbd_e0 = 0;
@@ -266,6 +310,12 @@ int kbd_read(void) {
             kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_UP);
         } else if (sc == KEY_DOWN) {
             kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_DOWN);
+        } else if (sc == KEY_PGUP) {
+            kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI);
+            kbd_q_push(KEY_PGUP_SEQ); kbd_q_push(KEY_TILDE);
+        } else if (sc == KEY_PGDN) {
+            kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI);
+            kbd_q_push(KEY_PGDN_SEQ); kbd_q_push(KEY_TILDE);
         }
         return -1;
     }
@@ -1967,7 +2017,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
  * heap, kernel image, page tables, MMIO — must be rejected before a single
  * dereference. All arithmetic is overflow checked. */
 
-static int user_range_ok(unsigned long p, unsigned long len) { (void)p; (void)len; return 1; /* bypass */
+static int user_range_ok(unsigned long p, unsigned long len) {
     if (p < USER_LOAD_BASE) return 0;
     if (len > USER_LOAD_END - p) return 0;
     return p + len <= USER_LOAD_END;
@@ -2309,16 +2359,46 @@ static void shell_prompt(void) { vga_puts("\nminiOS> "); }
 
 static void shell_exec_builtin(int argc, char **argv);
 
-static int console_pushback = -1;
+/* ---- Console input multiplexer (serial + PS/2) ----
+ *
+ * Bytes from either source are funneled through a small FIFO ("pb") so that
+ * escape sequences can be recognised, partially consumed, and re-injected.
+ * The PageUp/PageDown keys — whether they arrive as PS/2 E0-prefixed make
+ * codes (translated by kbd_read into the standard CSI form) or directly over
+ * the serial line as ESC [ 5 ~ / ESC [ 6 ~ — enter a scrollback view of past
+ * output; any other key leaves scrollback and is delivered to the caller. */
 
-/* Blocking read from either the PS/2 keyboard or COM1 serial line. */
-static int console_getc(void) {
-    if (console_pushback >= 0) {
-        int c = console_pushback;
-        console_pushback = -1;
-        return c;
-    }
-    while (1) {
+#define PB_LEN 8
+static unsigned char pb_buf[PB_LEN];
+static int pb_head, pb_tail;
+
+static int pb_empty(void) { return pb_head == pb_tail; }
+static int pb_count(void) { return (pb_tail - pb_head + PB_LEN) % PB_LEN; }
+static void pb_push_back(unsigned char c) {
+    if (pb_count() >= PB_LEN - 1) return;
+    pb_buf[pb_tail] = c;
+    pb_tail = (pb_tail + 1) % PB_LEN;
+}
+static void pb_push_front(unsigned char c) {
+    if (pb_count() >= PB_LEN - 1) return;
+    pb_head = (pb_head - 1 + PB_LEN) % PB_LEN;
+    pb_buf[pb_head] = c;
+}
+static int pb_pop(void) {
+    if (pb_empty()) return -1;
+    int c = pb_buf[pb_head];
+    pb_head = (pb_head + 1) % PB_LEN;
+    return c;
+}
+static int pb_peek(void) {
+    if (pb_empty()) return -1;
+    return pb_buf[pb_head];
+}
+
+/* Next raw byte (kbd queue, then serial, then PS/2) without touching the
+ * pushback FIFO; blocks until one is available. */
+static int raw_blocking_getc(void) {
+    for (;;) {
         if (!kbd_q_empty()) return kbd_q_pop();
         if (serial_available()) {
             int c = serial_getc();
@@ -2332,21 +2412,154 @@ static int console_getc(void) {
     }
 }
 
-/* Next buffered byte without consuming it, or -1 when nothing is
- * available right now. Used to tell an ESC prefix from a complete
- * escape sequence, which always arrives in one burst. */
-static int console_peek(void) {
-    if (console_pushback >= 0) return console_pushback;
-    if (!kbd_q_empty()) return kbd_q_peek();
+/* Non-blocking variant of the above for sequence lookahead. */
+static int raw_try_getc(void) {
+    if (!kbd_q_empty()) return kbd_q_pop();
     if (serial_available()) {
-        console_pushback = serial_getc();
-        return console_pushback;
+        int c = serial_getc();
+        if (c >= 0) return c;
     }
     if (kbd_available()) {
-        console_pushback = kbd_read();
-        return console_pushback;
+        int c = kbd_read();
+        if (c >= 0) return c;
     }
     return -1;
+}
+
+static void scrollback_view(int initial_dir);
+
+/* Called after an ESC byte has been read. Pulls the remainder of the sequence
+ * non-blocking and classifies it. Returns 1 (PageUp), 2 (PageDown), or 0 for
+ * "not a page key" — in which case every byte pulled EXCEPT the leading ESC
+ * is re-injected into the pushback FIFO so the caller can hand them back to
+ * the readline layer exactly as it would a raw escape. */
+static int consume_page_after_esc(void) {
+    int p0 = raw_try_getc();
+    if (p0 < 0) return 0;                 /* bare ESC */
+    if (p0 != KEY_CSI) { pb_push_front((unsigned char)p0); return 0; }
+    int p1 = raw_try_getc();
+    if (p1 < 0) { pb_push_front((unsigned char)KEY_CSI); return 0; }
+    if (p1 == KEY_PGUP_SEQ || p1 == KEY_PGDN_SEQ) {
+        int p2 = raw_try_getc();
+        if (p2 == KEY_TILDE) return (p1 == KEY_PGUP_SEQ) ? 1 : 2;
+        if (p2 >= 0) pb_push_front((unsigned char)p2);
+        pb_push_front((unsigned char)p1);
+        pb_push_front((unsigned char)KEY_CSI);
+        return 0;
+    }
+    pb_push_front((unsigned char)p1);
+    pb_push_front((unsigned char)KEY_CSI);
+    return 0;
+}
+
+/* Blocking read from either the PS/2 keyboard or COM1 serial line. Recognises
+ * the PageUp/PageDown escape sequences and detours into the scrollback view;
+* the view re-injects any terminating key into the pushback FIFO, so once it
+ * returns console_getc() simply serves the FIFO again. */
+static int console_getc(void) {
+    if (!pb_empty()) return pb_pop();
+    int c = raw_blocking_getc();
+    if (c != KEY_ESC) return c;
+    int r = consume_page_after_esc();
+    if (r == 1) { scrollback_view(-1); return console_getc(); }
+    if (r == 2) { scrollback_view(+1); return console_getc(); }
+    return KEY_ESC;
+}
+
+/* Next buffered byte without consuming it, or -1 when nothing is available
+ * right now. Used to tell an ESC prefix from a complete escape sequence,
+ * which always arrives in one burst. */
+static int console_peek(void) {
+    if (!pb_empty()) return pb_peek();
+    int c = raw_try_getc();
+    if (c >= 0) pb_push_back((unsigned char)c);
+    return pb_peek();
+}
+
+/* ---- Scrollback view ----
+ *
+ * Renders a 25-row window over (scrollback ring + live screen) into the VGA
+ * framebuffer and to the serial console, hides the cursor, and lets the user
+ * page up/down through history. PageDown at the bottom, or any other key,
+ * exits; the exit key is re-injected into the pushback FIFO so the readline
+ * that was waiting for input receives it as if scrollback never happened. */
+#define SB_LEN  (VGA_ROWS * VGA_COLS * 2)
+
+static void scrollback_render(int voff, int total, const unsigned char *saved) {
+    for (int r = 0; r < VGA_ROWS; r++) {
+        int li = voff + r;
+        for (int x = 0; x < VGA_COLS; x++) {
+            char ch;
+            if (li < sb_count) {
+                int idx = (sb_head + li) % SCROLLBACK_ROWS;
+                ch = sb_ring[(unsigned long)idx * VGA_COLS + x];
+            } else {
+                int live_row = li - sb_count;
+                ch = (char)saved[(unsigned long)(live_row * VGA_COLS + x) * 2];
+            }
+            VGA_BASE[(unsigned long)(r * VGA_COLS + x) * 2]     = ch;
+            VGA_BASE[(unsigned long)(r * VGA_COLS + x) * 2 + 1] = vga_color;
+            serial_putc(ch);
+        }
+        serial_putc('\n');
+    }
+}
+
+#define SB_PGUP  1
+#define SB_PGDN  2
+#define SB_EXIT  3
+
+/* Reads the next scrollback key event: PageUp/PageDown navigate; any other
+ * key (or a non-page escape sequence) is re-injected and reported as SB_EXIT. */
+static int sb_next(void) {
+    int c = raw_blocking_getc();
+    if (c != KEY_ESC) { pb_push_front((unsigned char)c); return SB_EXIT; }
+    int r = consume_page_after_esc();
+    if (r == 1) return SB_PGUP;
+    if (r == 2) return SB_PGDN;
+    pb_push_front((unsigned char)KEY_ESC);   /* rest already re-injected */
+    return SB_EXIT;
+}
+
+static void scrollback_view(int initial_dir) {
+    if (sb_inited == 0) sb_init();
+    if (sb_inited != 1 || sb_count == 0) return;   /* nothing scrolled yet */
+
+    static unsigned char saved[SB_LEN];
+    for (int i = 0; i < SB_LEN; i++) saved[i] = VGA_BASE[i];
+    int saved_x = vga_x, saved_y = vga_y;
+    vga_cursor_enable(0);
+
+    int total  = sb_count + VGA_ROWS;
+    int bottom = total - VGA_ROWS;          /* voff showing the live screen  */
+    int voff   = (initial_dir < 0) ? bottom - VGA_ROWS : bottom;
+    if (voff < 0) voff = 0;
+    if (voff > bottom) voff = bottom;
+
+    scrollback_render(voff, total, saved);
+
+    for (;;) {
+        int k = sb_next();
+        if (k == SB_PGUP) {
+            int n = voff - VGA_ROWS;
+            if (n < 0) n = 0;
+            if (n != voff) { voff = n; scrollback_render(voff, total, saved); }
+            continue;
+        }
+        if (k == SB_PGDN) {
+            if (voff >= bottom) break;       /* at the live screen: leave */
+            int n = voff + VGA_ROWS;
+            if (n > bottom) n = bottom;
+            if (n != voff) { voff = n; scrollback_render(voff, total, saved); }
+            continue;
+        }
+        break;                               /* SB_EXIT: key re-injected     */
+    }
+
+    for (int i = 0; i < SB_LEN; i++) VGA_BASE[i] = saved[i];
+    vga_x = saved_x; vga_y = saved_y;
+    vga_set_cursor(vga_x, vga_y);
+    vga_cursor_enable(1);
 }
 
 /* Read one line into buf (at most size-1 chars). Echoes input and

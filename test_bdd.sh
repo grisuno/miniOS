@@ -572,6 +572,23 @@ expect "syscall tracing: on"
 expect "syscall 2"
 expect "syscall 3"
 
+# PageUp (ESC [ 5 ~) re-renders a window over the scrollback ring to the serial
+# console. The boot banner was scrolled off while the cat output streamed past,
+# so after a page up it must reappear: once from the real boot, once from the
+# rendered history. The page-up keys must be concatenated on one line so a
+# single trailing newline exits the view (a newline between page-ups would each
+# exit the view and re-enter, rendering the top each time). Page-ups beyond the
+# top of the ring are a no-op, so exactly one render ever reaches the boot
+# banner regardless of ring depth, and the count is exactly two. `echo done`
+# proves the shell resumed, and poweroff leaves QEMU clean for the next boot.
+PGUP=$'\x1b[5~'
+scenario "page up scrolls back to the boot banner" "cat docs/hostile.html docs/hostile.html
+${PGUP}${PGUP}${PGUP}
+echo done
+poweroff"
+expect_count 2 "MiniOS Kernel v0.3"
+expect "done"
+
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="
 [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"

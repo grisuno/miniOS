@@ -29,13 +29,21 @@ int  serial_getc(void);
 #define KEY_E0        0xE0
 #define KEY_UP        0x48
 #define KEY_DOWN      0x50
+#define KEY_PGUP      0x49
+#define KEY_PGDN      0x51
 #define KEY_ESC       0x1B
 #define KEY_CSI       '['
 #define KEY_ARR_UP    'A'
 #define KEY_ARR_DOWN  'B'
+#define KEY_PGUP_SEQ  '5'
+#define KEY_PGDN_SEQ  '6'
+#define KEY_TILDE     '~'
 
 int  kbd_read(void);
 int  kbd_available(void);
+
+/* ========== VGA cursor ========== */
+void vga_cursor_enable(int on);
 
 /* ========== Memory allocator ========== */
 void *kmalloc(unsigned long size);
