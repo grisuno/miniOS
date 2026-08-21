@@ -3,7 +3,7 @@
     "god_nodes": [
       [
         "kernel.c",
-        31.0
+        33.0
       ],
       [
         "tls_port.h",
@@ -34,7 +34,7 @@
         9.4
       ],
       [
-        "progs/freedom.s",
+        "progs/asm/freedom.s",
         9.1
       ],
       [
@@ -70,14 +70,14 @@
         "id": 2,
         "label": "root",
         "file_ids": [
-          "tls_test.c",
-          "tls.h",
-          "tls.c",
-          "tls_roots.h",
-          "tls_port.h",
+          "tls_crypto.c",
           "tls_test_roots.h",
           "tls_x509.c",
-          "tls_crypto.c"
+          "tls.c",
+          "tls_roots.h",
+          "tls.h",
+          "tls_test.c",
+          "tls_port.h"
         ],
         "cohesion": 0.7692307692307693,
         "size": 8
@@ -143,23 +143,25 @@
     "mutate.sh": "utility",
     "net.c": "utility",
     "net.h": "utility",
-    "progs/cpl.c": "utility",
-    "progs/fib.c": "utility",
-    "progs/fib.s": "utility",
-    "progs/freedom.c": "utility",
-    "progs/freedom.s": "utility",
-    "progs/ftest.c": "testing",
-    "progs/hello.c": "utility",
-    "progs/http.c": "presentation",
-    "progs/http.s": "presentation",
-    "progs/kmem.c": "utility",
-    "progs/ldhello.c": "utility",
-    "progs/ldhello.s": "utility",
-    "progs/lxhello.c": "utility",
-    "progs/nx.c": "utility",
-    "progs/test.c": "testing",
-    "progs/w1.c": "utility",
-    "progs/w1.s": "utility",
+    "progs/asm/cp.s": "utility",
+    "progs/asm/fib.s": "utility",
+    "progs/asm/freedom.s": "utility",
+    "progs/asm/http.s": "presentation",
+    "progs/asm/ldhello.s": "utility",
+    "progs/asm/w1.s": "utility",
+    "progs/src/cp.c": "utility",
+    "progs/src/cpl.c": "utility",
+    "progs/src/fib.c": "utility",
+    "progs/src/freedom.c": "utility",
+    "progs/src/ftest.c": "testing",
+    "progs/src/hello.c": "utility",
+    "progs/src/http.c": "presentation",
+    "progs/src/kmem.c": "utility",
+    "progs/src/ldhello.c": "utility",
+    "progs/src/lxhello.c": "utility",
+    "progs/src/nx.c": "utility",
+    "progs/src/test.c": "testing",
+    "progs/src/w1.c": "utility",
     "ramdisk_data.c": "data_access",
     "stage1.S": "utility",
     "stage2.S": "utility",

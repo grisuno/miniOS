@@ -1,18 +1,26 @@
-MiniOS - minimal 64-bit kernel for x86_64
+# MiniOS - minimal 64-bit kernel for x86_64
 
 Commands: help clear ls cat echo edit rm mkdir cd pwd ps load run poweroff
-Redirection: <cmd> > <file>   stores the command's output in a ramdisk file
+Redirection: `<cmd> > <file>` stores the command's output in a ramdisk file
 
-The ramdisk is organized by kind: objects/ (ET_REL toolchain), bin/ (Linux
-ELFs + command path), cvm/ (CVM modules), src/ (C sources), asm/ (miniGCC
-assembly), docs/. Use ls <dir> to list any of them.
+The ramdisk is organized by kind:
 
-Any ELF stored as bin/<cmd> runs as a plain command, Linux style:
+- `objects/` — ET_REL toolchain: `minigcc.o`, `ld.o`, `cvm.o`, demo `.o`
+- `bin/` — Linux ELFs + command-path utilities (`cp`, `freedom`, probes)
+- `cvm/` — CVM modules: `fib.cvm`, `w1.cvm`, `minigcc.cvm`
+- `src/` — C sources for every program on the ramdisk
+- `asm/` — miniGCC assembly (`*.s`) for the toolchain-built programs
+- `docs/` — HTML and other documentation fixtures
+
+The ramdisk is flat — the `/` in a name is data, and `mkramdisk.py` derives
+each name from the path relative to `progs/`.
+
+Any ELF stored as `bin/<cmd>` runs as a plain command, Linux style:
 
   cp src/fib.c x.txt            cp is bin/cp, invoked without run or load
   cat x.txt                     copies src/fib.c into x.txt
 
-bin/cp is compiled from src/cp.c through the miniGCC-to-ld chain; the
+`bin/cp` is compiled from `src/cp.c` through the miniGCC-to-ld chain; the
 source ships alongside the binary, so the OS can rebuild the utility:
 
   run objects/minigcc.o src/cp.c > asm/cp.s
@@ -25,19 +33,20 @@ Writing a program without leaving the machine:
   run objects/ld.o -f elf -o bin/p.elf asm/p.s   assemble and link a Linux ELF
   run bin/p.elf                      execute it
 
-Use -f cvm instead of -f elf to build a CVM module, executed by the cvm2
-interpreter in objects/cvm.o:
+Use `-f cvm` instead of `-f elf` to build a CVM module, executed by the cvm2
+interpreter in `objects/cvm.o`:
 
   run objects/ld.o -f cvm -o cvm/p.cvm asm/p.s
   run cvm/p.cvm
 
-bin/minigcc.elf is the same compiler, but self-hosted: it was compiled by
-minigcc itself (generation 3) and linked by 'ld', then checked to reach
+`bin/minigcc.elf` is the same compiler, but self-hosted: it was compiled by
+minigcc itself (generation 3) and linked by `ld`, then checked to reach
 the bootstrap fixed point:
 
   run bin/minigcc.elf src/p.c > asm/p.s
 
 Editor commands:
+
   h help          l list           p N print line N
   a append        i N insert       e N replace line N
   d N delete      w save           x save and quit
@@ -47,6 +56,7 @@ A file too large for the buffer is loaded read-only: the editor refuses to
 write it back rather than dropping the part it never read.
 
 Program loading:
+
   load <file>       Load an ELF from the ramdisk.
                     .o  = ET_REL relocatable, linked against kernel libc.
                     ELF executable = real Linux ET_EXEC/ET_DYN binary.

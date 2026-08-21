@@ -63,7 +63,7 @@ Point the build somewhere else with `MINIGCC_DIR=`, `LD_DIR=`,
 
 Everything on the ramdisk is regenerated from source by `make`: `objects/minigcc.o`,
 `objects/ld.o` and `objects/cvm.o` are compiled from the sibling checkouts, and
-the demo programs (`ldhello`, `w1`, `fib`) are compiled from this repository's
+the demo programs (`fib`, `w1`, `minigcc`) are compiled from this repository's
 own C sources in `progs/src/` through the full miniGCC-to-ld chain. Nothing in
 the image is a binary you have to take on trust.
 
@@ -107,6 +107,7 @@ miniOS> run bin/freedom https://duckduckgo.com
 miniOS> run bin/freedom mini os kernel        # DuckDuckGo search over https
 miniOS> run bin/freedom https://en.wikipedia.org/wiki/Mini
 miniOS> run bin/freedom --dump-dom https://example.com
+miniOS> run bin/freedom --dump-css https://example.com
 ```
 
 `bin/freedom` is the headless text browser: a curlfree-style HTTP engine
@@ -212,6 +213,25 @@ separate bytes) and slides the kernel into one of 64 aligned 2 MB slots in
 the boot banner reports its randomized physical base. Disable with
 `make ENABLE_KASLR=0` for deterministic physical layout.
 
+## Console scrollback
+
+A ring of 4096 lines that scrolled off the top of the 25-row VGA screen.
+Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
+
+- **PageUp** (`\x1b[5~` serial, or PS/2 E0-49) scrolls upward through history.
+- **PageDown** (`\x1b[6~` serial, or PS/2 E0-51) scrolls downward.
+- The view hides the VGA cursor; any key other than the opposite page key
+  exits and re-injects that key for the readline layer.
+- Internally, `sb_ring` is a kmalloc'd circular buffer of `SCROLLBACK_ROWS *
+  VGA_COLS` bytes, updated every time a full row leaves the screen via
+  `sb_capture_row0()`.  `SCROLLBACK_ROWS` is 4096; the ring never wraps
+  silently — it drops oldest entries when full.
+- Serial PageUp/PageDown work natively.  PS/2 extended keys (E0-prefixed
+  make codes) are translated into the same CSI sequences (`ESC [ 5 ~`
+  / `ESC [ 6 ~`) by `kbd_read()` in `kernel.c:298` — the `KEY_E0` flag
+  is now tested **before** the release‑bit check so that `0xE0` is not
+  swallowed by the high‑bit handler.
+
 ## Layout
 
 | File | Role |
@@ -288,4 +308,3 @@ a zero-token polyglot static analysis tool. A comprehensive knowledge base is av
 AI agents and developers: Read `KNOWLEDGE_BASE.md` for full project context
 without LLM token cost.
 <!-- /readmenator-kb-link -->
-
