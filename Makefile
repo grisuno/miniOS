@@ -73,15 +73,31 @@ CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
               -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector
 
 PROGS_DIR = progs
-PROGS     = $(PROGS_DIR)/hello.o $(PROGS_DIR)/ftest.o $(PROGS_DIR)/minigcc.o \
-            $(PROGS_DIR)/ld.o $(PROGS_DIR)/cvm.o $(PROGS_DIR)/lxhello.elf \
-            $(PROGS_DIR)/ldhello.elf $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf \
-            $(PROGS_DIR)/minigcc.elf $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm \
-            $(PROGS_DIR)/minigcc.cvm $(PROGS_DIR)/bin/cp $(PROGS_DIR)/bin/cp.c \
-            $(PROGS_DIR)/test.c $(PROGS_DIR)/fib.c $(PROGS_DIR)/README.txt \
-            $(PROGS_DIR)/http.c $(PROGS_DIR)/http.elf \
-            $(PROGS_DIR)/freedom.c $(PROGS_DIR)/bin/freedom \
-$(PROGS_DIR)/cpl.elf $(PROGS_DIR)/kmem.elf $(PROGS_DIR)/nx.elf
+OBJ_DIR   = $(PROGS_DIR)/objects
+CVMOD_DIR = $(PROGS_DIR)/cvm
+BIN_DIR   = $(PROGS_DIR)/bin
+SRC_DIR   = $(PROGS_DIR)/src
+ASM_DIR   = $(PROGS_DIR)/asm
+DOC_DIR   = $(PROGS_DIR)/docs
+
+# Everything the ramdisk carries, organized by kind: objects/ (ET_REL
+# toolchain), cvm/ (CVM modules), bin/ (Linux ELFs + command path utilities),
+# src/ (C sources), asm/ (miniGCC assembly), docs/ and README.txt.
+PROGS     = $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o $(OBJ_DIR)/minigcc.o \
+            $(OBJ_DIR)/ld.o $(OBJ_DIR)/cvm.o \
+            $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf $(BIN_DIR)/w1.elf \
+            $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf $(BIN_DIR)/http.elf \
+            $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
+            $(BIN_DIR)/cp $(BIN_DIR)/freedom \
+            $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
+            $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
+            $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
+            $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
+            $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/freedom.c \
+            $(SRC_DIR)/cp.c $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
+            $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
+            $(ASM_DIR)/freedom.s $(DOC_DIR)/hostile.html \
+            $(PROGS_DIR)/README.txt
 
 all: os.img
 
@@ -145,90 +161,90 @@ toolchain: $(LD_TOOL) $(MINIGCC_BIN) $(CVM_BIN)
 	@echo "toolchain ready: $(MINIGCC_BIN) $(LD_TOOL) $(CVM_BIN)"
 
 # ── Programs (.o files) ──────────────────────────────────────────
-$(PROGS_DIR)/hello.o: $(PROGS_DIR)/hello.c
+$(OBJ_DIR)/hello.o: $(SRC_DIR)/hello.c
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
-$(PROGS_DIR)/ftest.o: $(PROGS_DIR)/ftest.c
+$(OBJ_DIR)/ftest.o: $(SRC_DIR)/ftest.c
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
 # ── Real Linux ELF executable (ET_EXEC, static, no libc) ─────────
-$(PROGS_DIR)/lxhello.elf: $(PROGS_DIR)/lxhello.c
+$(BIN_DIR)/lxhello.elf: $(SRC_DIR)/lxhello.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
 
 # ── Isolation probes: report the runtime CPL and test that kernel-space
 #    pointers are rejected by the syscall boundary (same build recipe). ──
-$(PROGS_DIR)/cpl.elf: $(PROGS_DIR)/cpl.c
+$(BIN_DIR)/cpl.elf: $(SRC_DIR)/cpl.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
 
-$(PROGS_DIR)/kmem.elf: $(PROGS_DIR)/kmem.c
+$(BIN_DIR)/kmem.elf: $(SRC_DIR)/kmem.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
 
 # NX probe: calls a `ret` written to the stack through a function pointer.
 # Kept at -O0 so the indirect call survives, and volatile so the buffer
 # really lives on the stack instead of being materialized in .data.
-$(PROGS_DIR)/nx.elf: $(PROGS_DIR)/nx.c
+$(BIN_DIR)/nx.elf: $(SRC_DIR)/nx.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O0 -o $@ $<
 
 # ── Demo programs: C -> miniGCC -> ld -> ELF / CVM ───────────────
 # These are this repository's own sources, compiled through the full
 # toolchain at build time. Depending on another project's test fixtures for
 # ramdisk content would break the moment that project reorganizes them.
-$(PROGS_DIR)/%.s: $(PROGS_DIR)/%.c $(MINIGCC_BIN)
+$(ASM_DIR)/%.s: $(SRC_DIR)/%.c $(MINIGCC_BIN)
 	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
 
-$(PROGS_DIR)/ldhello.elf: $(PROGS_DIR)/ldhello.s $(LD_TOOL)
+$(BIN_DIR)/ldhello.elf: $(ASM_DIR)/ldhello.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
-$(PROGS_DIR)/w1.elf: $(PROGS_DIR)/w1.s $(LD_TOOL)
+$(BIN_DIR)/w1.elf: $(ASM_DIR)/w1.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
-$(PROGS_DIR)/fib.elf: $(PROGS_DIR)/fib.s $(LD_TOOL)
+$(BIN_DIR)/fib.elf: $(ASM_DIR)/fib.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
-$(PROGS_DIR)/minigcc.o: $(MINIGCC_DIR)/minigcc.c
+$(OBJ_DIR)/minigcc.o: $(MINIGCC_DIR)/minigcc.c
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
-$(PROGS_DIR)/ld.o: $(LD_DIR)/ld.c
+$(OBJ_DIR)/ld.o: $(LD_DIR)/ld.c
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
-$(PROGS_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h cvm_host.c kernel.h
+$(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h cvm_host.c kernel.h
 	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -m64 -mno-red-zone \
 	      -fno-pic -O2 -I$(CVM_DIR) \
-	      -o $(PROGS_DIR)/cvm_core.o $(CVM_DIR)/cvm.c
+	      -o $(OBJ_DIR)/cvm_core.o $(CVM_DIR)/cvm.c
 	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -m64 -mno-red-zone \
 	      -fno-pic -O2 -I$(CVM_DIR) \
-	      -o $(PROGS_DIR)/cvm_host.o cvm_host.c
-	$(LD) -m elf_x86_64 -r -o $@ $(PROGS_DIR)/cvm_core.o $(PROGS_DIR)/cvm_host.o
-	rm -f $(PROGS_DIR)/cvm_core.o $(PROGS_DIR)/cvm_host.o
+	      -o $(OBJ_DIR)/cvm_host.o cvm_host.c
+	$(LD) -m elf_x86_64 -r -o $@ $(OBJ_DIR)/cvm_core.o $(OBJ_DIR)/cvm_host.o
+	rm -f $(OBJ_DIR)/cvm_core.o $(OBJ_DIR)/cvm_host.o
 
 # ── CVM modules (assembled from miniGCC output with 'ld') ────────
-$(PROGS_DIR)/fib.cvm: $(PROGS_DIR)/fib.s $(LD_TOOL)
+$(CVMOD_DIR)/fib.cvm: $(ASM_DIR)/fib.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
-$(PROGS_DIR)/w1.cvm: $(PROGS_DIR)/w1.s $(LD_TOOL)
+$(CVMOD_DIR)/w1.cvm: $(ASM_DIR)/w1.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
-$(PROGS_DIR)/minigcc.cvm: $(TOOLS_DIR)/g2.s $(LD_TOOL)
+$(CVMOD_DIR)/minigcc.cvm: $(TOOLS_DIR)/g2.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
-$(PROGS_DIR)/http.elf: $(PROGS_DIR)/http.s $(LD_TOOL)
+$(BIN_DIR)/http.elf: $(ASM_DIR)/http.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 # ── Command path utilities (bin/<cmd>, compiled by the toolchain) ──
-# bin/cp: the C source ships on the ramdisk as bin/cp.c and the ELF as
+# bin/cp: the C source ships on the ramdisk as src/cp.c and the ELF as
 # bin/cp, which the shell resolves for the plain command `cp`.
-$(PROGS_DIR)/bin/cp.s: $(PROGS_DIR)/bin/cp.c $(MINIGCC_BIN)
+$(ASM_DIR)/cp.s: $(SRC_DIR)/cp.c $(MINIGCC_BIN)
 	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
 
-$(PROGS_DIR)/bin/cp: $(PROGS_DIR)/bin/cp.s $(LD_TOOL)
+$(BIN_DIR)/cp: $(ASM_DIR)/cp.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 # ── freedom: the headless text browser (curlfree-style engine,
 #    FreeDom-style omnibox), rebuilt from its C source at build time.
-$(PROGS_DIR)/freedom.s: $(PROGS_DIR)/freedom.c $(MINIGCC_BIN)
+$(ASM_DIR)/freedom.s: $(SRC_DIR)/freedom.c $(MINIGCC_BIN)
 	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
 
-$(PROGS_DIR)/bin/freedom: $(PROGS_DIR)/freedom.s $(LD_TOOL)
+$(BIN_DIR)/freedom: $(ASM_DIR)/freedom.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 # ── Self-hosted compiler (compiled by minigcc, linked by 'ld') ────
@@ -247,12 +263,12 @@ $(TOOLS_DIR)/g2.elf: $(TOOLS_DIR)/g2.s $(LD_TOOL)
 $(TOOLS_DIR)/g3.s: $(TOOLS_DIR)/g2.elf $(MINIGCC_DIR)/minigcc.c
 	./$(TOOLS_DIR)/g2.elf $(MINIGCC_DIR)/minigcc.c > $@.tmp && mv $@.tmp $@
 
-$(PROGS_DIR)/minigcc.elf: $(TOOLS_DIR)/g3.s $(LD_TOOL)
+$(BIN_DIR)/minigcc.elf: $(TOOLS_DIR)/g3.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 	chmod +x $@
 
-selfhost: $(PROGS_DIR)/minigcc.elf
-	./$(PROGS_DIR)/minigcc.elf $(MINIGCC_DIR)/minigcc.c > $(TOOLS_DIR)/g4.s
+selfhost: $(BIN_DIR)/minigcc.elf
+	./$(BIN_DIR)/minigcc.elf $(MINIGCC_DIR)/minigcc.c > $(TOOLS_DIR)/g4.s
 	@cmp -s $(TOOLS_DIR)/g3.s $(TOOLS_DIR)/g4.s \
 	    && echo "selfhost OK: g3.s == g4.s (fixed point)" \
 	    || { echo "selfhost FAIL: fixed point not reached"; exit 1; }
@@ -365,12 +381,14 @@ test: os.img
 clean:
 	rm -rf $(TOOLS_DIR)
 	rm -f *.o *.elf *.bin *.img ramdisk_data.c ramdisk.bin
-	rm -f $(PROGS_DIR)/*.o $(PROGS_DIR)/lxhello.elf $(PROGS_DIR)/ldhello.elf \
-	      $(PROGS_DIR)/w1.elf $(PROGS_DIR)/fib.elf $(PROGS_DIR)/minigcc.elf \
-	      $(PROGS_DIR)/cpl.elf $(PROGS_DIR)/kmem.elf $(PROGS_DIR)/nx.elf \
-	      $(PROGS_DIR)/bin/cp $(PROGS_DIR)/bin/cp.s \
-	      $(PROGS_DIR)/ldhello.s $(PROGS_DIR)/w1.s $(PROGS_DIR)/fib.s \
-	      $(PROGS_DIR)/fib.cvm $(PROGS_DIR)/w1.cvm $(PROGS_DIR)/minigcc.cvm
+	rm -f $(OBJ_DIR)/*.o
+	rm -f $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf \
+	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
+	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
+	      $(BIN_DIR)/cp $(BIN_DIR)/freedom
+	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm
+	rm -f $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s $(ASM_DIR)/w1.s \
+	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/freedom.s
 
 .SECONDARY:
 

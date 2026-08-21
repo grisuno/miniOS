@@ -182,35 +182,35 @@ ls
 poweroff"
 expect "listed.txt"
 
-scenario "cvm module built by ld runs on the interpreter" "run fib.cvm
+scenario "cvm module built by ld runs on the interpreter" "run cvm/fib.cvm
 poweroff"
 expect "exit code: 55"
 
-scenario "cvm module prints through the write native" "run w1.cvm
+scenario "cvm module prints through the write native" "run cvm/w1.cvm
 poweroff"
 expect "hola cvm"
 
-scenario "ELF produced by ld returns its exit code" "run ldhello.elf
+scenario "ELF produced by ld returns its exit code" "run bin/ldhello.elf
 poweroff"
 expect "exit code: 42"
 
-scenario "ELF produced by ld computes fib(10)" "run fib.elf
+scenario "ELF produced by ld computes fib(10)" "run bin/fib.elf
 poweroff"
 expect "exit code: 55"
 
-scenario "native Linux static ELF runs unmodified" "run lxhello.elf
+scenario "native Linux static ELF runs unmodified" "run bin/lxhello.elf
 poweroff"
 expect "Hello"
 
-scenario "user-mode isolation drops ET_EXEC binaries to ring 3" "run cpl.elf
+scenario "user-mode isolation drops ET_EXEC binaries to ring 3" "run bin/cpl.elf
 poweroff"
 expect "exit code: 3"
 
-scenario "syscall boundary rejects kernel-space pointers" "run kmem.elf
+scenario "syscall boundary rejects kernel-space pointers" "run bin/kmem.elf
 poweroff"
 expect "exit code: 0"
 
-scenario "user pages are non-executable unless the segment is executable" "run nx.elf
+scenario "user pages are non-executable unless the segment is executable" "run bin/nx.elf
 poweroff"
 expect "nx: jumping to stack"
 refute "powering off"
@@ -229,65 +229,65 @@ cat r.txt
 poweroff"
 expect "redirected text"
 
-scenario "append redirect adds instead of truncating" "cp fib.c log.txt
-cat fib.c >> log.txt
+scenario "append redirect adds instead of truncating" "cp src/fib.c log.txt
+cat src/fib.c >> log.txt
 cat log.txt
 poweroff"
 expect_count 2 "int fib"
 
-scenario "append redirect creates a missing file" "cat fib.c >> fresh.txt
+scenario "append redirect creates a missing file" "cat src/fib.c >> fresh.txt
 cat fresh.txt
 poweroff"
 expect "int fib"
 
-scenario "redirection captures compiler output" "run minigcc.o test.c > t.s
-cat t.s
+scenario "redirection captures compiler output" "run objects/minigcc.o src/test.c > asm/t.s
+cat asm/t.s
 poweroff"
 expect ".section .text"
 
-scenario "toolchain compiles and links a program written inside the OS" "edit p.c
+scenario "toolchain compiles and links a program written inside the OS" "edit src/p.c
 a
 int main(void) { return 7; }
 x
-run minigcc.o p.c > p.s
-run ld.o -f elf -o p.elf p.s
-run p.elf
+run objects/minigcc.o src/p.c > asm/p.s
+run objects/ld.o -f elf -o bin/p.elf asm/p.s
+run bin/p.elf
 poweroff"
 expect "exit code: 7"
 
-scenario "toolchain also produces a cvm module inside the OS" "edit q.c
+scenario "toolchain also produces a cvm module inside the OS" "edit src/q.c
 a
 int main(void) { return 21; }
 x
-run minigcc.o q.c > q.s
-run ld.o -f cvm -o q.cvm q.s
-run q.cvm
+run objects/minigcc.o src/q.c > asm/q.s
+run objects/ld.o -f cvm -o cvm/q.cvm asm/q.s
+run cvm/q.cvm
 poweroff"
 expect "exit code: 21"
 
-scenario "cvm module run with arguments gets a Linux-style argv and keeps its strings" "run minigcc.cvm test.c > t2.s
-cat t2.s
-run ld.o -f cvm -o t2.cvm t2.s
-run t2.cvm
+scenario "cvm module run with arguments gets a Linux-style argv and keeps its strings" "run cvm/minigcc.cvm src/test.c > asm/t2.s
+cat asm/t2.s
+run objects/ld.o -f cvm -o cvm/t2.cvm asm/t2.s
+run cvm/t2.cvm
 poweroff"
 expect ".globl add"
 expect "exit code: 0"
 expect "exit code: 12"
 
-scenario "self-hosted minigcc (compiled by minigcc, linked by ld) compiles inside the OS" "run minigcc.elf test.c > t.s
-run ld.o -f elf -o t.elf t.s
-run t.elf
+scenario "self-hosted minigcc (compiled by minigcc, linked by ld) compiles inside the OS" "run bin/minigcc.elf src/test.c > asm/t.s
+run objects/ld.o -f elf -o bin/t.elf asm/t.s
+run bin/t.elf
 poweroff"
 expect "exit code: 12"
 
-scenario "bin path runs an ELF as a plain command" "cp fib.c copy1.txt
+scenario "bin path runs an ELF as a plain command" "cp src/fib.c copy1.txt
 cat copy1.txt
 poweroff"
 expect "exit code: 0"
 expect "int fib"
 
 scenario "cp reports failures through its exit code" "cp missing.txt x.txt
-cp fib.c
+cp src/fib.c
 poweroff"
 expect "cannot open missing.txt"
 expect "exit code: 1"
@@ -297,27 +297,27 @@ scenario "bin path entries are skipped for unknown commands" "nosuchcmd
 poweroff"
 expect "command not found: nosuchcmd"
 
-scenario "shell up arrow recalls the last command" "run fib.cvm
+scenario "shell up arrow recalls the last command" "run cvm/fib.cvm
 $(printf '\033[A')
 poweroff"
 expect_count 2 "exit code: 55"
 expect "powering off"
 
-scenario "shell arrows scroll history and restore the live line" "run fib.cvm
-run w1.cvm
+scenario "shell arrows scroll history and restore the live line" "run cvm/fib.cvm
+run cvm/w1.cvm
 $(printf '\033[A\033[B')
-run fib.cvm
+run cvm/fib.cvm
 poweroff"
 expect_count 2 "exit code: 55"
 expect_count 1 "hola cvm"
 expect "powering off"
 
-scenario "repeated cvm runs do not exhaust the kernel heap" "run fib.cvm
-run w1.cvm
-run fib.cvm
-run w1.cvm
-run fib.cvm
-run fib.cvm
+scenario "repeated cvm runs do not exhaust the kernel heap" "run cvm/fib.cvm
+run cvm/w1.cvm
+run cvm/fib.cvm
+run cvm/w1.cvm
+run cvm/fib.cvm
+run cvm/fib.cvm
 poweroff"
 expect_count 4 "exit code: 55"
 expect_count 2 "hola cvm"
@@ -359,7 +359,7 @@ http_fixture_stop() {
 trap 'http_server_stop; http_fixture_stop' EXIT
 
 http_server_start
-scenario "tcp stack fetches a page from the host" "run http.elf 10.0.2.2 8899 /fib.c
+scenario "tcp stack fetches a page from the host" "run bin/http.elf 10.0.2.2 8899 /src/fib.c
 poweroff"
 expect "received"
 expect "exit code: 0"
@@ -374,7 +374,7 @@ poweroff"
 expect "cp"
 expect "freedom: 10.0.2.2 ("
 
-scenario "freedom filters hostile html" "run bin/freedom http://10.0.2.2:8899/hostile.html
+scenario "freedom filters hostile html" "run bin/freedom http://10.0.2.2:8899/docs/hostile.html
 poweroff"
 expect "first block"
 expect "bold & safe"
@@ -443,7 +443,7 @@ http_server_stop
 http_fixture_stop
 
 scenario "mkdir creates a directory and cd enters it" "mkdir work
-cp fib.c work/copy.c
+cp src/fib.c work/copy.c
 cd work
 pwd
 edit f.txt
@@ -496,7 +496,7 @@ expect "cat: doomed.txt: no such file"
 expect "rm: doomed.txt: no such file"
 expect "rm: work: is a directory"
 
-scenario "ps lists registered programs" "load hello.o
+scenario "ps lists registered programs" "load objects/hello.o
 ps
 poweroff"
 expect "^  hello"
@@ -555,7 +555,7 @@ expect "f.txt"
 
 scenario "bin path is root anchored and cp args resolve against the cwd" "mkdir work
 cd work
-cp /fib.c copy1.txt
+cp /src/fib.c copy1.txt
 cat copy1.txt
 poweroff"
 expect "exit code: 0"
@@ -563,7 +563,7 @@ expect "int fib"
 
 scenario "syscall tracing reports the program dialogue" "trace
 trace on
-cp fib.c copy_t.txt
+cp src/fib.c copy_t.txt
 trace off
 trace
 poweroff"

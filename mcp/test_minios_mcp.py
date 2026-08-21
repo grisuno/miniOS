@@ -350,32 +350,32 @@ class TestMiniOSBDD(_ConsoleBDDBase):
     def test_t04_toolchain_elf(self):
         self.server.tool(
             "minios_write",
-            {"path": "p.c", "content": "int main(void) { return 7; }\n"},
+            {"path": "src/p.c", "content": "int main(void) { return 7; }\n"},
         )
-        r = self.server.tool("minios_send", {"line": "run minigcc.o p.c > p.s"})
+        r = self.server.tool("minios_send", {"line": "run objects/minigcc.o src/p.c > asm/p.s"})
         self.assertIn("miniOS> ", r["text"])
-        r = self.server.tool("minios_send", {"line": "run ld.o -f elf -o p.elf p.s"})
-        r = self.server.tool("minios_send", {"line": "run p.elf"})
+        r = self.server.tool("minios_send", {"line": "run objects/ld.o -f elf -o bin/p.elf asm/p.s"})
+        r = self.server.tool("minios_send", {"line": "run bin/p.elf"})
         self.assertIn("exit code: 7", r["text"])
 
     def test_t05_toolchain_cvm(self):
         self.server.tool(
             "minios_write",
-            {"path": "q.c", "content": "int main(void) { return 21; }\n"},
+            {"path": "src/q.c", "content": "int main(void) { return 21; }\n"},
         )
-        self.server.tool("minios_send", {"line": "run minigcc.o q.c > q.s"})
-        self.server.tool("minios_send", {"line": "run ld.o -f cvm -o q.cvm q.s"})
-        r = self.server.tool("minios_send", {"line": "run q.cvm"})
+        self.server.tool("minios_send", {"line": "run objects/minigcc.o src/q.c > asm/q.s"})
+        self.server.tool("minios_send", {"line": "run objects/ld.o -f cvm -o cvm/q.cvm asm/q.s"})
+        r = self.server.tool("minios_send", {"line": "run cvm/q.cvm"})
         self.assertIn("exit code: 21", r["text"])
 
     def test_t06_selfhosted_compiler(self):
-        self.server.tool("minios_send", {"line": "run minigcc.elf test.c > t.s", "timeout_ms": 60000})
-        self.server.tool("minios_send", {"line": "run ld.o -f elf -o t.elf t.s"})
-        r = self.server.tool("minios_send", {"line": "run t.elf"})
+        self.server.tool("minios_send", {"line": "run bin/minigcc.elf src/test.c > asm/t.s", "timeout_ms": 60000})
+        self.server.tool("minios_send", {"line": "run objects/ld.o -f elf -o bin/t.elf asm/t.s"})
+        r = self.server.tool("minios_send", {"line": "run bin/t.elf"})
         self.assertIn("exit code: 12", r["text"])
 
     def test_t07_bin_command_path(self):
-        r = self.server.tool("minios_send", {"line": "cp bin/cp.c bk.c"})
+        r = self.server.tool("minios_send", {"line": "cp src/cp.c bk.c"})
         self.assertIn("exit code: 0", r["text"])
         r = self.server.tool("minios_send", {"line": "cat bk.c"})
         self.assertIn("usage: cp", r["text"])
@@ -398,13 +398,13 @@ version: "1.0.0"
 install:
   repo_url: https://github.com/grisuno/miniOS.git
   files:
-    - src: progs/bin/cp.c
+    - src: progs/src/cp.c
       dst: build/cp.c
   build:
-    - run minigcc.o build/cp.c > build/cp.s
-    - run ld.o -f elf -o bin/cp build/cp.s
+    - run objects/minigcc.o build/cp.c > build/cp.s
+    - run objects/ld.o -f elf -o bin/cp build/cp.s
   verify:
-    - line: cp bin/cp.c build/cp2.c
+    - line: cp src/cp.c build/cp2.c
       exit_code: 0
 """
 
@@ -426,10 +426,10 @@ class TestAddonYaml(unittest.TestCase):
         self.assertEqual(addon["name"], "cp")
         self.assertEqual(addon["install"]["repo_url"], "https://github.com/grisuno/miniOS.git")
         files = addon["install"]["files"]
-        self.assertEqual(files, [{"src": "progs/bin/cp.c", "dst": "build/cp.c"}])
+        self.assertEqual(files, [{"src": "progs/src/cp.c", "dst": "build/cp.c"}])
         self.assertEqual(len(addon["install"]["build"]), 2)
         verify = addon["install"]["verify"]
-        self.assertEqual(verify, [{"line": "cp bin/cp.c build/cp2.c", "exit_code": "0"}])
+        self.assertEqual(verify, [{"line": "cp src/cp.c build/cp2.c", "exit_code": "0"}])
 
     def test_validate_accepts_valid(self):
         addon = self.ma.validate_addon(self.ma.parse_addon_yaml(VALID_ADDON), "cp.yaml")
@@ -454,7 +454,7 @@ class TestAddonYaml(unittest.TestCase):
 
     def test_validate_rejects_long_build_line(self):
         bad = VALID_ADDON.replace(
-            "- run minigcc.o build/cp.c > build/cp.s",
+            "- run objects/minigcc.o build/cp.c > build/cp.s",
             "- run " + "x" * 300,
         )
         with self.assertRaises(self.ma.AddonError):
@@ -466,7 +466,7 @@ class TestAddonYaml(unittest.TestCase):
             self.ma.validate_addon(self.ma.parse_addon_yaml(bad), "cp.yaml")
 
     def test_validate_rejects_empty_files(self):
-        bad = VALID_ADDON.replace("  files:\n    - src: progs/bin/cp.c\n      dst: build/cp.c\n", "  files: []\n")
+        bad = VALID_ADDON.replace("  files:\n    - src: progs/src/cp.c\n      dst: build/cp.c\n", "  files: []\n")
         with self.assertRaises(self.ma.AddonError):
             self.ma.validate_addon(self.ma.parse_addon_yaml(bad), "cp.yaml")
 
@@ -629,7 +629,7 @@ install:
     - src: src.c
       dst: build/src.c
   build:
-    - run minigcc.o build/src.c > build/src.s
+    - run objects/minigcc.o build/src.c > build/src.s
   verify:
     - line: run build/fixture
       exit_code: 42
@@ -644,7 +644,7 @@ install:
         result = self.ma.install_addon(os_session, self.make_addon(), {"state_file": state_file})
         self.assertEqual(result["name"], "fixture-addon")
         self.assertEqual(os_session.files["build/src.c"].rstrip("\n"), "int main(void) { return 42; }")
-        self.assertIn("run minigcc.o build/src.c > build/src.s", os_session.commands)
+        self.assertIn("run objects/minigcc.o build/src.c > build/src.s", os_session.commands)
         registry = os_session.files[self.ma.ADDON_REGISTRY_PATH]
         self.assertIn("fixture-addon 1.0.0", registry)
         self.assertEqual(os_session.files.keys() & {"build/src.c.part0"}, set())
@@ -741,8 +741,8 @@ install:
     - src: src.c
       dst: build/src.c
   build:
-    - run minigcc.o build/src.c > build/src.s
-    - run ld.o -f elf -o build/fixture build/src.s
+    - run objects/minigcc.o build/src.c > build/src.s
+    - run objects/ld.o -f elf -o build/fixture build/src.s
   verify:
     - line: run build/fixture
       exit_code: 42

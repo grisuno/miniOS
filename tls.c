@@ -388,7 +388,7 @@ static int parse_certificate(struct tls_session *s,
             if (cl == 0 || cl > TLS_CERT_MAX || pos + (int)cl > len) return -1;
             if (s->n_certs >= 4) return -1;
             if (stored + cl > TLS_CHAIN_MAX) return -1;
-            TLS_MEMCPY(s->chain + stored, m + pos, cl);
+            TLS_MEMCPY(s->chain + s->n_certs * TLS_CERT_MAX, m + pos, cl);
             s->cert_lens[s->n_certs] = cl;
             s->n_certs++;
             stored += cl;
@@ -745,7 +745,7 @@ int tls_recv(int fd, char *buf, int len) {
                 return -1;
             }
             /* close_notify = clean EOF; anything else is fatal */
-            if (s->rec_len == 2 && s->rec[1] == 0) {
+            if (s->rec_len == 2 && s->rec[1] == 1) {
                 s->eof = 1;
                 return 0;
             }

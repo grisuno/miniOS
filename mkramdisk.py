@@ -1,7 +1,7 @@
 """Build a MiniOS ramdisk image from files in a directory tree.
 
 Each packed file is named by its path relative to the shared parent of
-all inputs, so progs/bin/cp ships as bin/cp and directories are carried
+all inputs, so progs/src/cp.c ships as src/cp.c and directories are carried
 as slashes inside flat names. Names longer than NAME_MAX or two inputs
 mapping to the same name are hard errors: a silently truncated or
 overwritten name would make every later lookup miss.

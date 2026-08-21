@@ -7,10 +7,10 @@ whole toolchain on its ramdisk so that programs can be written, compiled,
 linked and executed without ever leaving the machine:
 
 ```
-edit p.c                        write C inside the OS
-run minigcc.o p.c > p.s         compile to x86-64 AT&T assembly
-run ld.o -f elf -o p.elf p.s    assemble and link
-run p.elf                       execute
+edit src/p.c                          write C inside the OS
+run objects/minigcc.o src/p.c > asm/p.s   compile to x86-64 AT&T assembly
+run objects/ld.o -f elf -o bin/p.elf asm/p.s   assemble and link
+run bin/p.elf                         execute
 ```
 
 `ld -f cvm` produces a CVM module instead, executed by the cvm2 interpreter
@@ -66,10 +66,13 @@ those upstreams alone, so:
 - `ramdisk.bin` lists the `Makefile` among its prerequisites: the file list
   lives there, so editing it must invalidate the image even when no
   individual file changed.
-- `progs/bin/` ships the first command-path utility: `cp`, compiled from
-  this repository's own `progs/bin/cp.c` through the miniGCC-to-ld chain,
-  with the source on the ramdisk too so the OS can rebuild the utility
-  from scratch without leaving the machine.
+- `progs/bin/` ships the command-path utilities: `cp` and `freedom`, compiled
+  from this repository's own `progs/src/cp.c` and `progs/src/freedom.c`
+  through the miniGCC-to-ld chain, with the sources on the ramdisk too so the
+  OS can rebuild the utilities from scratch without leaving the machine.
+  The ramdisk tree is organized by kind: `objects/` (ET_REL toolchain),
+  `bin/` (Linux ELFs + command path), `cvm/` (CVM modules), `src/` (C
+  sources), `asm/` (miniGCC assembly), `docs/`.
 
 ## Boot Path Contract
 Two stages, because a correct single-stage loader does not fit in 512 bytes.
@@ -215,7 +218,7 @@ and a scheduler are the preemption track, not part of this contract.
 (truncating it); `cmd >> file` appends. Shell status text — exit codes and
 the shell's own diagnostics — is lifted out of the capture: a redirection
 captures what the command wrote, not what the shell reported about it.
-This is what makes `run minigcc.o p.c > p.s` produce assembly a linker can
+This is what makes `run objects/minigcc.o p.c > asm/p.s` produce assembly a linker can
 consume.
 
 The prompt keeps a bounded command history (`SHELL_HIST_MAX` entries).
@@ -333,7 +336,7 @@ is fixed and fail-closed: no downgrade, no fallback, no session resumption.
 ### Headless browser (`freedom`)
 `bin/freedom` is the headless text browser: a curlfree-style engine (the
 host `http.c` + `htmlfilter.c` ideas) with a FreeDom-style omnibox. It is
-built from `progs/freedom.c` through the miniGCC-to-ld chain, like `bin/cp`,
+built from `progs/src/freedom.c` through the miniGCC-to-ld chain, like `bin/cp`,
 and talks to the stack through the Linux socket syscalls plus the DNS
 syscall; every timeout, retransmission and EOF (0 = FIN) semantics it leans
 on is already implemented in the network driver, so the program owns only
@@ -383,7 +386,7 @@ HTTP semantics.
 - Build: the ld stubs grew `tls_handshake`/`tls_send`/`tls_recv` (MiniOS
   syscalls 201-203), so the toolchain in `ld/ld.c` and the ramdisk binary
   must be rebuilt together; the Makefile already derives `bin/freedom`
-  from `progs/freedom.c`. Two toolchain fixes this program leans on,
+  from `progs/src/freedom.c`. Two toolchain fixes this program leans on,
   both in the sibling checkouts: ld's `strip_comment` must ignore `#`
   inside string literals (`.asciz "#"` is the id/class separator in the
   dumps), and miniGCC must index a chained subscript on a pointer array
@@ -392,11 +395,12 @@ HTTP semantics.
 
 ### Ramdisk names
 File names are at most `RAMDISK_FNAME_LEN - 1` characters. Names may
-contain `/`, which is how directories are expressed (`bin/cp`): the ramdisk
-is flat, the slash is data. `mkramdisk.py` derives each name from the path
-relative to the shared parent of the packed files, so `progs/bin/cp` ships
-as `bin/cp`. A name longer than the bound or a collision between two files
-is a build error, never a silent truncation that would make a lookup miss.
+contain `/`, which is how directories are expressed (`bin/cp`, `objects/ld.o`):
+the ramdisk is flat, the slash is data. `mkramdisk.py` derives each name from
+the path relative to the shared parent of the packed files, so
+`progs/src/cp.c` ships as `src/cp.c` and `progs/bin/cp` as `bin/cp`. A name
+longer than the bound or a collision between two files is a build error,
+never a silent truncation that would make a lookup miss.
 
 ### Filesystem commands
 A working directory (`cwd`) and directory-aware builtins, over the same flat
@@ -549,13 +553,13 @@ version: "1.0.0"
 install:
   repo_url: https://github.com/grisuno/miniOS.git
   files:
-    - src: progs/bin/cp.c
+    - src: progs/src/cp.c
       dst: build/cp.c
   build:
-    - run minigcc.o build/cp.c > build/cp.s
-    - run ld.o -f elf -o bin/cp build/cp.s
+    - run objects/minigcc.o build/cp.c > build/cp.s
+    - run objects/ld.o -f elf -o bin/cp build/cp.s
   verify:
-    - line: cp bin/cp.c build/cp2.c
+    - line: cp src/cp.c build/cp2.c
       exit_code: 0
 ```
 
@@ -625,8 +629,8 @@ derived from the script's own directory, never from a host assumption.
 
 ### Skill
 `skills/minios/SKILL.md` documents the workflow an agent follows: boot once,
-write sources with `minios_write`, compile with `run minigcc.o f.c > f.s`,
-link with `run ld.o -f elf -o f.elf f.s`, run and read `exit code: N`,
+write sources with `minios_write`, compile with `run objects/minigcc.o f.c > asm/f.s`,
+link with `run objects/ld.o -f elf -o bin/f.elf asm/f.s`, run and read `exit code: N`,
 power off when done. It also documents the headless browser (`freedom`,
 plain command path, http only) and the addon marketplace
 (`minios_addons` / `minios_install`, dogfooded by `mcp/mcp_dogfood.py`).

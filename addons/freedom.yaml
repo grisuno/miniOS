@@ -5,11 +5,11 @@ version: "1.0.0"
 install:
   repo_url: https://github.com/grisuno/miniOS.git
   files:
-    - src: progs/freedom.c
+    - src: progs/src/freedom.c
       dst: build/freedom.c
   build:
-    - run minigcc.o build/freedom.c > build/freedom.s
-    - run ld.o -f elf -o bin/freedom build/freedom.s
+    - run objects/minigcc.o build/freedom.c > build/freedom.s
+    - run objects/ld.o -f elf -o bin/freedom build/freedom.s
   verify:
     - line: freedom
       exit_code: 1

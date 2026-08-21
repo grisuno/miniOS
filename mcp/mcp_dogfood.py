@@ -100,7 +100,7 @@ def main():
         assert "TLS" in r["text"], r
         print("freedom (https): TLS refusal OK")
 
-        r = c.tool("minios_send", {"line": "freedom http://10.0.2.2:8899/hostile.html"})
+        r = c.tool("minios_send", {"line": "freedom http://10.0.2.2:8899/docs/hostile.html"})
         assert "first block" in r["text"], r
         assert "bold & safe" in r["text"], r
         assert "evil" not in r["text"], r

@@ -5,11 +5,11 @@ version: "1.0.0"
 install:
   repo_url: https://github.com/grisuno/miniOS.git
   files:
-    - src: progs/bin/cp.c
+    - src: progs/src/cp.c
       dst: build/cp.c
   build:
-    - run minigcc.o build/cp.c > build/cp.s
-    - run ld.o -f elf -o bin/cp build/cp.s
+    - run objects/minigcc.o build/cp.c > build/cp.s
+    - run objects/ld.o -f elf -o bin/cp build/cp.s
   verify:
-    - line: cp bin/cp.c build/cp2.c
+    - line: cp src/cp.c build/cp2.c
       exit_code: 0

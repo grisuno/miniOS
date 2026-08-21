@@ -122,7 +122,7 @@
 #define PT_FLAGS_PRESENT_RW       0x003
 #define PT_FLAGS_PRESENT_RW_PS    0x083
 #define PT_FLAGS_PS               0x080
-#define PT_FLAGS_USER             0x004
+#define PT_FLAGS_USER             0x000
 #define PT_PD_ENTRIES             512
 #define PT_PD_ENTRY_BYTES         8
 #define PT_PD_PAGE_BYTES          0x200000

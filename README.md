@@ -5,16 +5,16 @@ program inside the running system, compile it, link it and execute it without
 leaving the machine.
 
 ```
-miniOS> edit p.c
+miniOS> edit src/p.c
 edit> a
 int main(void) { return 7; }
 edit> x
-miniOS> run minigcc.o p.c > p.s
-miniOS> run ld.o -f elf -o p.elf p.s
-miniOS> run ld.o -f cvm -o p.cvm p.s
-miniOS> run p.elf
+miniOS> run objects/minigcc.o src/p.c > asm/p.s
+miniOS> run objects/ld.o -f elf -o bin/p.elf asm/p.s
+miniOS> run objects/ld.o -f cvm -o cvm/p.cvm asm/p.s
+miniOS> run bin/p.elf
 exit code: 7
-miniOS> run p.cvm
+miniOS> run cvm/p.cvm
 exit code: 7
 miniOS>
 ```
@@ -61,17 +61,17 @@ Point the build somewhere else with `MINIGCC_DIR=`, `LD_DIR=`,
 `CVM_REPO_DIR=` or `CVM_DIR=`; change where `make sources` clones from with
 `MINIGCC_URL=`, `LD_URL=` or `CVM_URL=`.
 
-Everything on the ramdisk is regenerated from source by `make`: `minigcc.o`,
-`ld.o` and `cvm.o` are compiled from the sibling checkouts, and the demo
-programs (`ldhello`, `w1`, `fib`) are compiled from this repository's own C
-sources in `progs/` through the full miniGCC-to-ld chain. Nothing in the
-image is a binary you have to take on trust.
+Everything on the ramdisk is regenerated from source by `make`: `objects/minigcc.o`,
+`objects/ld.o` and `objects/cvm.o` are compiled from the sibling checkouts, and
+the demo programs (`ldhello`, `w1`, `fib`) are compiled from this repository's
+own C sources in `progs/src/` through the full miniGCC-to-ld chain. Nothing in
+the image is a binary you have to take on trust.
 
-The compiler on the ramdisk is self-hosted: `minigcc.elf` was compiled by
+The compiler on the ramdisk is self-hosted: `bin/minigcc.elf` was compiled by
 minigcc itself (generation 3) and linked by `ld` (no GNU as/ld anywhere after
 generation 1), and `make selfhost` verifies the bootstrap fixed point on the
 host. Inside the OS the self-hosted compiler drives the same edit/compile/
-link/run loop as `minigcc.o`.
+link/run loop as `objects/minigcc.o`.
 
 <img width="4082" height="7837" alt="diagram" src="https://github.com/user-attachments/assets/c3ba2575-c657-44c4-b0f5-d3c4b414da10" />
 
@@ -132,13 +132,14 @@ including the negative set).
 | `clear` / `poweroff` | console and power |
 
 Redirection captures what the command writes, not what the shell reports
-about it, so `run minigcc.o p.c > p.s` yields assembly a linker can consume.
+about it, so `run objects/minigcc.o p.c > asm/p.s` yields assembly a linker
+can consume.
 
-`bin/cp` is the first command-path utility: `cp fib.c x.txt` copies a
-ramdisk file without `run` or `load`. It is compiled from this repository's
-own `progs/bin/cp.c` through the miniGCC-to-ld chain, and the source ships
-on the ramdisk as `bin/cp.c`, so the utility can be rebuilt inside the OS
-by the OS.
+`bin/cp` is a command-path utility: `cp src/fib.c x.txt` copies a ramdisk
+file without `run` or `load`. It is compiled from this repository's own
+`progs/src/cp.c` through the miniGCC-to-ld chain, and the source ships on
+the ramdisk as `src/cp.c`, so the utility can be rebuilt inside the OS by
+the OS.
 
 ## Editor
 
@@ -166,12 +167,50 @@ write it back rather than silently dropping the part it never read.
 MiniOS runs three kinds of program:
 
 - **Relocatable objects** (`.o`) — linked at load time against the kernel's
-  libc symbol table. `minigcc.o`, `ld.o` and `cvm.o` ship this way.
+  libc symbol table. They run at ring 0 as kernel extensions.
+  `objects/minigcc.o`, `objects/ld.o` and `objects/cvm.o` ship this way.
 - **Linux executables** (`ET_EXEC` / `ET_DYN`) — static binaries run
-  unmodified through the x86-64 `syscall` ABI. A binary built on the host can
-  be used simply by copying it onto the ramdisk.
+  unmodified through the x86-64 `syscall` ABI at ring 3 under hardware
+  page protection. A binary built on the host can be used simply by
+  copying it onto the ramdisk.
 - **CVM modules** (`.cvm`) — stack bytecode produced by `ld -f cvm` and
-  executed by the cvm2 interpreter in `cvm.o`.
+  executed by the cvm2 interpreter in `objects/cvm.o`.
+
+## Ramdisk layout
+
+The ramdisk ships organized by kind, and the shell's `ls <dir>` lists each
+directory:
+
+| Directory | Contents |
+|-----------|----------|
+| `objects/` | ET_REL toolchain: `minigcc.o`, `ld.o`, `cvm.o`, demo `.o` |
+| `bin/` | Linux ELFs + command-path utilities (`cp`, `freedom`, probes) |
+| `cvm/` | CVM modules: `fib.cvm`, `w1.cvm`, `minigcc.cvm` |
+| `src/` | C sources for every program on the ramdisk |
+| `asm/` | miniGCC assembly (`*.s`) for the toolchain-built programs |
+| `docs/` | HTML and other documentation fixtures |
+
+The ramdisk is flat — the `/` in a name is data, and `mkramdisk.py` derives
+each name from the path relative to `progs/`.
+
+## Security: NX and KASLR
+
+User-mode binaries (ET_EXEC / ET_DYN) run at ring 3 with hardware
+no-execute (NX) page protection. The kernel builds eager 4 KB page tables
+for the whole user window and sets EFER.NXE at boot; every user page starts
+non-executable and `load_exec_elf` clears NX only on the pages a program's
+executable segments occupy. A program cannot execute from its stack, heap
+or `.data` — a jump into a non-executable page faults and the machine
+resets, never silently running shellcode (proven by the `nx.elf` probe in
+the BDD suite). The kernel heap keeps its 2 MB executable pages, because
+the `.o` toolchain programs execute from there at ring 0 by contract.
+
+The kernel image's physical base is randomized per boot (KASLR). Stage 2
+mixes the TSC with the CMOS clock (hours, minutes, seconds fed into
+separate bytes) and slides the kernel into one of 64 aligned 2 MB slots in
+`[0x6000000, 0xE000000)`. The kernel always executes at virtual `0x100000`;
+the boot banner reports its randomized physical base. Disable with
+`make ENABLE_KASLR=0` for deterministic physical layout.
 
 ## Layout
 
@@ -186,7 +225,7 @@ MiniOS runs three kinds of program:
 | `tls_roots_src/` + `mkroots.sh` | the 8 embedded CA roots and their generator |
 | `tls_test.py` / `tls_test.c` | host TLS suite: vectors + full handshakes |
 | `cvm_host.c` | host glue for the CVM interpreter |
-| `progs/*.c` | ramdisk contents: demo programs and the C sources they are built from |
+| `progs/` | ramdisk contents organized by kind: `objects/`, `bin/`, `cvm/`, `src/`, `asm/`, `docs/` |
 | `mkramdisk.py` | packs `progs/` into the ramdisk image |
 | `test_bdd.sh` / `test_http_server.py` | behavioural suite and its HTTP fixture |
 | `mcp/minios_mcp.py` | MCP bridge: boots the OS and exposes its console as tools |
@@ -202,8 +241,8 @@ MiniOS runs three kinds of program:
 `minios_write`, `minios_cat`, `minios_poweroff`. The server owns the QEMU
 child and a pty-backed serial console; the companion skill
 (`skills/minios/SKILL.md`) teaches the edit/compile/link/run workflow, so an
-agent can write a C program inside the OS, build it with `minigcc.o` and
-`ld.o`, run it and read `exit code: N`, all without leaving the machine.
+agent can write a C program inside the OS, build it with `objects/minigcc.o` and
+`objects/ld.o`, run it and read `exit code: N`, all without leaving the machine.
 
 ```bash
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD (skips without QEMU)
