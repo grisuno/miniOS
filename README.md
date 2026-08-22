@@ -4,6 +4,17 @@ A 64-bit x86 teaching kernel that carries its own toolchain. You can write a C
 program inside the running system, compile it, link it and execute it without
 leaving the machine.
 
+# MiniOS Desktop Environment and Graphical Subsystem
+
+I have implemented a primitive desktop environment within MiniOS that operates independently of the serial console. This subsystem provides a graphical user interface (GUI) with window management, mouse support, and scrollable terminal emulation.
+
+## Key Features
+*   **Shell in VGA:** Handles basic shell and focus in VGA mode to avoid serial mode
+*   **Mouse Integration:** Full PS/2 mouse driver support with hardware cursor rendering.
+*   **Scrollable Terminal:** A virtual terminal emulator capable of handling large buffers and scrollback history via mouse wheel or keyboard shortcuts.
+
+
+
 ```
 miniOS> edit src/p.c
 edit> a
