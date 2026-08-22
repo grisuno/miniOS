@@ -3,7 +3,7 @@
     "god_nodes": [
       [
         "kernel.c",
-        39.3
+        43.3
       ],
       [
         "progs/doomgeneric/d_englsh.h",
@@ -11,7 +11,7 @@
       ],
       [
         "kernel.h",
-        16.9
+        23.4
       ],
       [
         "minifs.c",
@@ -30,12 +30,12 @@
         13.700000000000001
       ],
       [
-        "net.c",
-        12.4
+        "bootdefs.h",
+        13.600000000000001
       ],
       [
-        "bootdefs.h",
-        11.600000000000001
+        "net.c",
+        12.4
       ],
       [
         "tls_crypto.c",
@@ -47,25 +47,46 @@
         "id": 0,
         "label": "root",
         "file_ids": [
-          "minifs.c",
-          "lz4_kernel.h",
-          "net.c",
-          "bootdefs.h",
-          "block.h",
-          "lz4_kernel.c",
-          "kernel.c",
+          "block.c",
           "ide.c",
+          "lz4_kernel.h",
           "ide.h",
-          "minifs.h",
-          "net.h",
+          "minifs.c",
+          "net.c",
           "kernel.h",
-          "block.c"
+          "lz4_kernel.c",
+          "pcspk.c",
+          "block.h"
         ],
-        "cohesion": 0.8695652173913043,
-        "size": 13
+        "cohesion": 0.6190476190476191,
+        "size": 10
       },
       {
         "id": 1,
+        "label": "root",
+        "file_ids": [
+          "tls_test.c",
+          "tls_test_roots.h",
+          "tls.h",
+          "net.h",
+          "tls_crypto.c",
+          "bootdefs.h",
+          "tls_port.h",
+          "vga_fb.h",
+          "tls_roots.h",
+          "minifs.h",
+          "tls_x509.c",
+          "vga_fb.c",
+          "kernel.c",
+          "tls.c",
+          "sched.h",
+          "sched.c"
+        ],
+        "cohesion": 0.7241379310344828,
+        "size": 16
+      },
+      {
+        "id": 2,
         "label": "mcp",
         "file_ids": [
           "mcp/minios_addons.py",
@@ -73,22 +94,6 @@
         ],
         "cohesion": 1.0,
         "size": 2
-      },
-      {
-        "id": 2,
-        "label": "root",
-        "file_ids": [
-          "tls_test.c",
-          "tls_test_roots.h",
-          "tls.h",
-          "tls_x509.c",
-          "tls_crypto.c",
-          "tls.c",
-          "tls_port.h",
-          "tls_roots.h"
-        ],
-        "cohesion": 0.7692307692307693,
-        "size": 8
       }
     ],
     "surprising_connections": [
@@ -96,38 +101,38 @@
         "lz4_kernel.h",
         "tls_roots.h",
         5,
-        "{0, 2}"
+        "{0, 1}"
       ],
       [
         "lz4_kernel.h",
         "tls_test_roots.h",
         5,
-        "{0, 2}"
+        "{0, 1}"
       ],
       [
         "block.c",
         "tls_roots.h",
         4,
-        "{0, 2}"
+        "{0, 1}"
       ],
       [
         "block.c",
         "tls_test_roots.h",
         4,
-        "{0, 2}"
+        "{0, 1}"
       ],
       [
         "block.h",
         "tls_roots.h",
         4,
-        "{0, 2}"
+        "{0, 1}"
       ]
     ],
     "suggested_questions": [
-      "What does kernel.c depend on, and what depends on it? (7 connections)",
+      "What does kernel.c depend on, and what depends on it? (9 connections)",
       "What does d_englsh.h depend on, and what depends on it? (0 connections)",
-      "What does kernel.h depend on, and what depends on it? (7 connections)",
-      "How are the 13 files in 'root' related to each other?",
+      "What does kernel.h depend on, and what depends on it? (10 connections)",
+      "How are the 10 files in 'root' related to each other?",
       "Why are lz4_kernel.h and tls_roots.h connected through 5 hops across 2 communities?"
     ]
   },
@@ -137,11 +142,13 @@
     "block.h": "utility",
     "bootdefs.h": "utility",
     "bootloader.c": "utility",
+    "ctx_sw.S": "utility",
     "cvm_host.c": "utility",
     "gen_minifs.py": "utility",
     "ide.c": "utility",
     "ide.h": "utility",
     "install.sh": "utility",
+    "isr_stubs.S": "testing",
     "kernel.c": "utility",
     "kernel.h": "utility",
     "lz4_kernel.c": "utility",
@@ -163,6 +170,8 @@
     "mutate.sh": "utility",
     "net.c": "utility",
     "net.h": "utility",
+    "pcspk.c": "utility",
+    "pcspk.h": "utility",
     "progs/asm/cp.s": "utility",
     "progs/asm/fib.s": "utility",
     "progs/asm/freedom.s": "utility",
@@ -233,6 +242,7 @@
     "progs/doomgeneric/i_joystick.c": "utility",
     "progs/doomgeneric/i_joystick.h": "utility",
     "progs/doomgeneric/i_main.c": "utility",
+    "progs/doomgeneric/i_minios_sound.c": "utility",
     "progs/doomgeneric/i_scale.c": "utility",
     "progs/doomgeneric/i_scale.h": "utility",
     "progs/doomgeneric/i_sound.c": "utility",
@@ -368,6 +378,8 @@
     "progs/src/test.c": "testing",
     "progs/src/w1.c": "utility",
     "ramdisk_data.c": "data_access",
+    "sched.c": "utility",
+    "sched.h": "utility",
     "stage1.S": "utility",
     "stage2.S": "utility",
     "test_bdd.sh": "testing",
@@ -380,7 +392,9 @@
     "tls_test.c": "testing",
     "tls_test.py": "testing",
     "tls_test_roots.h": "testing",
-    "tls_x509.c": "utility"
+    "tls_x509.c": "utility",
+    "vga_fb.c": "utility",
+    "vga_fb.h": "utility"
   },
   "security": {
     "findings": []
