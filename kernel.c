@@ -5,6 +5,8 @@
 #include "minifs.h"
 #include "ide.h"
 #include "block.h"
+#include "sched.h"
+#include "vga_fb.h"
 
 /* ================================================================
  *  Serial console (COM1, 16550 UART) — mirrors VGA, drives input
@@ -184,6 +186,11 @@ void vga_putc(char c) {
         return;
     }
     serial_putc(c);
+    if (vga_fb_active) {
+        if (c == '\n') serial_putc('\r');
+        vga_fb_putc_term(c);
+        return;
+    }
     if (vga_mode13h) {
         if (c == '\n') serial_putc('\r');
         return;
@@ -250,6 +257,7 @@ static const unsigned char kbd_us_shift[128] = {
 };
 
 static int kbd_shift;
+static int kbd_ctrl;
 
 /* PS/2 set 1 arrow keys arrive as E0-prefixed make codes; they are
  * translated into the same three-byte CSI sequence a serial terminal
@@ -325,12 +333,20 @@ int kbd_read(void) {
     if (sc & 0x80) { /* key release */
         sc &= 0x7F;
         if (sc == KEY_LSHIFT || sc == KEY_RSHIFT) kbd_shift = 0;
+        if (sc == KEY_LCTRL) kbd_ctrl = 0;
         kbd_e0 = 0;                     /* a release ends any E0 sequence */
         return -1;
     }
 
     if (kbd_e0) {
         kbd_e0 = 0;
+        /* Ctrl+arrow keys move the framebuffer terminal window */
+        if (kbd_ctrl && vga_fb_active) {
+            if (sc == KEY_UP)       { vga_fb_move_terminal(0, -1); return -1; }
+            if (sc == KEY_DOWN)     { vga_fb_move_terminal(0,  1); return -1; }
+            if (sc == KEY_LEFT)     { vga_fb_move_terminal(-1, 0); return -1; }
+            if (sc == KEY_RIGHT)    { vga_fb_move_terminal( 1, 0); return -1; }
+        }
         if (sc == KEY_UP) {
             kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_UP);
         } else if (sc == KEY_DOWN) {
@@ -346,6 +362,13 @@ int kbd_read(void) {
     }
 
     if (sc == KEY_LSHIFT || sc == KEY_RSHIFT) { kbd_shift = 1; return -1; }
+    if (sc == KEY_LCTRL) { kbd_ctrl = 1; return -1; }
+
+    /* F11: toggle fullscreen, F5: reset terminal position */
+    if (vga_fb_active) {
+        if (sc == KEY_F11) { vga_fb_toggle_fullscreen(); return -1; }
+        if (sc == KEY_F5)  { vga_fb_move_terminal(0, 0); return -1; }
+    }
 
     if (kbd_shift)
         return kbd_us_shift[sc];
@@ -2236,11 +2259,23 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         }
         return 0;
     case 16: return 0;   /* ioctl */
+    case 24: yield(); return 0;   /* sched_yield */
     case 39: return 1;   /* getpid */
+    case 57: return 0;   /* fork: stub, returns 0 (child) for now */
+    case 58: return 0;   /* vfork: stub */
+    case 59: { /* execve: stub - just run the program if loaded */
+        return 0;
+    }
     case 60: case 231:   /* exit / exit_group */
+        if (proc_count > 1) {
+            do_exit((int)a1);
+            return 0;
+        }
         exec_exit_code = (int)a1;
         klongjmp(&exec_return, 1);
         return 0; /* unreachable */
+    case 61: return do_waitpid((int)a1);   /* wait4 / waitpid */
+    case 62: return do_kill((int)a1);      /* kill */
     case 41:             /* socket */
         return net_sys_socket(a1, a2, a3);
     case 42:             /* connect */
@@ -3885,6 +3920,13 @@ void kmain(void) {
     }
 
     kprintf("Heap: 64 MB  Symbols: %d  (Linux ELF: syscall ABI ready)\n", ksym_count);
+
+    /* Initialize the scheduler: IDT, TSS, PIC, PIT timer.
+     * This enables interrupts and the 100 Hz timer tick. */
+    sched_init();
+    kprintf("Scheduler: IDT 256 entries, TSS loaded, PIT 100 Hz, preemptive\n");
+
+    vga_fb_init();
 
     shell_run();
 }

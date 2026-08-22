@@ -58,6 +58,11 @@ int  serial_getc(void);
 #define KEY_ARR_DOWN  'B'
 #define KEY_PGUP_SEQ  '5'
 #define KEY_PGDN_SEQ  '6'
+#define KEY_LEFT      0x4B
+#define KEY_RIGHT     0x4D
+#define KEY_LCTRL     0x1D
+#define KEY_F5        0x3F
+#define KEY_F11       0x57
 #define KEY_TILDE     '~'
 
 int  kbd_read(void);
