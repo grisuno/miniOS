@@ -32,6 +32,11 @@ static long sys_kbd_raw(int on) {
     __asm__ volatile("syscall" : "=a"(ret) : "a"(207), "D"((long)on) : "rcx","r11","memory");
     return ret;
 }
+static long sys_vga_mode(int on) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(208), "D"((long)on) : "rcx","r11","memory");
+    return ret;
+}
 
 /* ---------- VGA Mode 13h framebuffer ---------- */
 
@@ -217,38 +222,26 @@ static void kbd_poll(void) {
 
 /* ---------- doomgeneric interface ---------- */
 
+extern unsigned char *I_VideoBuffer;
+
 void DG_Init(void) {
-    sys_kbd_raw(1);  /* enable raw keyboard mode for DOOM */
+    sys_vga_mode(1);  /* tell kernel to stop touching VGA text hardware */
+    sys_kbd_raw(1);   /* enable raw keyboard mode for DOOM */
 }
 
 void DG_DrawFrame(void) {
-    if (!DG_ScreenBuffer) return;
+    if (!I_VideoBuffer) return;
 
     if (minios_palette_dirty) {
-        rebuild_palette_ht();
         load_vga_palette();
         minios_palette_dirty = 0;
     }
 
-    uint32_t *src = DG_ScreenBuffer;
-    int x, y;
-
-    for (y = 0; y < FB_HEIGHT; y++) {
-        int sy = y * 2;
-        if (sy >= DOOMGENERIC_RESY) sy = DOOMGENERIC_RESY - 1;
-
-        volatile uint8_t *row = FB_ADDR + (y * FB_WIDTH);
-
-        for (x = 0; x < FB_WIDTH; x++) {
-            int sx = x * 2;
-            if (sx >= DOOMGENERIC_RESX) sx = DOOMGENERIC_RESX - 1;
-
-            uint32_t px = src[sy * DOOMGENERIC_RESX + sx];
-            uint8_t r = (px >> 16) & 0xFF;
-            uint8_t g = (px >> 8)  & 0xFF;
-            uint8_t b = (px)       & 0xFF;
-            row[x] = ht_lookup(r, g, b);
-        }
+    volatile uint8_t *dst = FB_ADDR;
+    uint8_t *src = (uint8_t *)I_VideoBuffer;
+    int i;
+    for (i = 0; i < 64000; i++) {
+        dst[i] = src[i];
     }
     kbd_poll();
 }

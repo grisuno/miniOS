@@ -40,6 +40,7 @@ static int console_getc(void); /* defined in the shell section */
  *  VGA driver
  * ================================================================ */
 
+static int vga_mode13h; /* nonzero when a graphics program owns the display */
 static int vga_x, vga_y;
 static char vga_color = 0x07; /* light grey on black */
 
@@ -183,6 +184,10 @@ void vga_putc(char c) {
         return;
     }
     serial_putc(c);
+    if (vga_mode13h) {
+        if (c == '\n') serial_putc('\r');
+        return;
+    }
     if (c == '\n') { serial_putc('\r'); vga_newline(); vga_set_cursor(vga_x, vga_y); return; }
     if (c == '\r') { vga_x = 0; vga_set_cursor(vga_x, vga_y); return; }
     if (c == '\t') {
@@ -2287,6 +2292,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         kbd_raw_head = kbd_raw_tail = 0;
         return 0;
     }
+    case 208: { /* SYS_VGA_MODE: tell kernel a graphics program owns the display */
+        vga_mode13h = (int)a1;
+        return 0;
+    }
     case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
         unsigned char *pal = (unsigned char *)a1;
         if (!user_range_ok((unsigned long)a1, 768)) return -EFAULT;
@@ -2498,6 +2507,7 @@ int k_exec_user(void *entry, int argc, char **argv) {
     wrmsr(MSR_FSBASE, 0);
     wrmsr(MSR_GSBASE, 0);
     syscall_kstack = SYS_KSTK_TOP;
+    vga_mode13h = 0; /* reclaim the display for the text console */
     return exec_exit_code;
 }
 
@@ -2507,6 +2517,7 @@ int k_run_rel(prog_entry_t entry, int argc, char **argv) {
     syscall_kstack = SYS_KSTK_TOP;
     if (ksetjmp(&exec_return) == 0)
         return entry(argc, argv);
+    vga_mode13h = 0;
     return exec_exit_code;
 }
 
