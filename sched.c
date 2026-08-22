@@ -93,8 +93,8 @@ static void pic_init(void) {
     outb(0x21,0x20); outb(0xA1,0x28);
     outb(0x21,0x04); outb(0xA1,0x02);
     outb(0x21,0x01); outb(0xA1,0x01);
-    /* Master: unmask IRQ0 (timer) + IRQ1 (keyboard). Mask rest. */
-    outb(0x21,0xFC);
+    /* Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade). */
+    outb(0x21,0xF8);
     /* Slave: unmask IRQ12 (mouse) only. 0xEF = ~bit4. */
     outb(0xA1,0xEF);
 }
@@ -202,6 +202,9 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
     if (vector == 44) { /* IRQ12: PS/2 mouse */
         static int mouse_phase;
         static unsigned char mouse_packet[4];
+        unsigned char status;
+        __asm__ volatile("inb $0x64, %0" : "=a"(status));
+        if (!(status & 0x20)) { pic_eoi(12); return; }
         unsigned char data;
         __asm__ volatile("inb $0x60, %0" : "=a"(data));
         if (mouse_phase == 0) {
@@ -372,6 +375,9 @@ static unsigned char mouse_read(void) {
 }
 
 static void mouse_hw_init(void) {
+    /* Drain any stale bytes in the output buffer */
+    while (inb(0x64) & 1) inb(0x60);
+
     /* Enable auxiliary device (mouse) */
     mouse_wait_cmd();
     outb(0x64, 0xA8);
@@ -411,6 +417,9 @@ static void mouse_hw_init(void) {
     mouse_write(0xF4);
     mouse_read();
 }
+
+void mouse_disable(void) { mouse_write(0xF5); mouse_read(); }
+void mouse_enable(void)  { mouse_write(0xF4); mouse_read(); }
 
 void sched_init(void) {
     kmemset(procs, 0, sizeof(procs));

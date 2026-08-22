@@ -67,6 +67,8 @@ int  serial_getc(void);
 
 int  kbd_read(void);
 int  kbd_available(void);
+void mouse_disable(void);
+void mouse_enable(void);
 
 /* ========== VGA cursor ========== */
 void vga_cursor_enable(int on);

@@ -284,7 +284,7 @@ void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg) {
 }
 
 void vga_fb_clear(void) {
-    kmemset(FB_ADDR, 0, FB_WIDTH * FB_HEIGHT);
+    kmemset((void *)FB_ADDR, 0, FB_WIDTH * FB_HEIGHT);
 }
 
 /* ---- Layout ---- */

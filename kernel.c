@@ -2380,7 +2380,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         if (a1) {
             unsigned long *tv = (unsigned long *)a1;
             if (!user_range_ok((unsigned long)a1, 2 * sizeof(unsigned long))) return EFAULT;
-            unsigned long lo, hi;
+            unsigned long lo = 0, hi = 0;
             __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
             unsigned long tsc = ((unsigned long)hi << 32) | lo;
             unsigned long ms = tsc / 1000000UL;
@@ -2396,7 +2396,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         unsigned char *buf = (unsigned char *)a1;
         unsigned long cnt = a2;
         if (cnt > 0 && !user_range_ok((unsigned long)buf, cnt)) return EFAULT;
-        unsigned long lo, hi;
+        unsigned long lo = 0, hi = 0;
         for (unsigned long i = 0; i < cnt; i++) {
             if ((i & 7) == 0) {
                 __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
@@ -2523,6 +2523,7 @@ int k_exec_user(void *entry, int argc, char **argv) {
     frame[3] = (unsigned long)sp;
     frame[4] = (unsigned long)(GDT64_USER_DATA_SEL | 3);
 
+    mouse_disable();
     if (ksetjmp(&exec_return) == 0) {
         __asm__ volatile(
             "mov %[udata], %%ax\n"
@@ -2537,6 +2538,8 @@ int k_exec_user(void *entry, int argc, char **argv) {
             : "rax", "memory");
         __builtin_unreachable();
     }
+
+    mouse_enable();
 
     /* exit() went through the SYSCALL path, which already reloaded CS/SS to
      * the kernel selectors; restore the data segments and syscall stack. */
