@@ -194,6 +194,40 @@ directory:
 The ramdisk is flat — the `/` in a name is data, and `mkramdisk.py` derives
 each name from the path relative to `progs/`.
 
+## Doom
+
+MiniOS ships a doomgeneric port that runs DOOM as a static Linux ELF at
+ring 3. The engine compiles from `progs/doomgeneric/` with the platform
+layer in `doomgeneric_minios.c` (VGA Mode 13h framebuffer at 320x200,
+PS/2 keyboard input). The shareware WAD (`doom1.wad`) is bundled on the
+ramdisk.
+
+```
+miniOS> run doomgeneric.elf
+```
+
+| Key | Action |
+|-----|--------|
+| WASD | move |
+| Ctrl | fire |
+| Space | use / open |
+| Arrow keys | turn / strafe |
+| 1-7 | weapon select |
+| Shift | run |
+| Esc | menu |
+
+The binary is built with the host toolchain (static, no-pie) and placed
+at `bin/doomgeneric.elf` on the minifs. To rebuild from source:
+
+```bash
+make doomgeneric.elf    # or just `make` to rebuild everything
+```
+
+The kernel provides four custom syscalls for the port: `time_ms` (204),
+`kbd` (205), `palette` (206) and `kbd_raw_mode` (207). VGA Mode 13h is
+entered through `sys_vga_mode` (208), which tells the kernel to stop
+touching VGA text hardware while the game runs.
+
 ## Security: NX and KASLR
 
 User-mode binaries (ET_EXEC / ET_DYN) run at ring 3 with hardware
