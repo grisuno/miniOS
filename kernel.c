@@ -2640,6 +2640,7 @@ static int pb_peek(void) {
 /* Next raw byte (kbd queue, then serial, then PS/2) without touching the
  * pushback FIFO; blocks until one is available. */
 static int raw_blocking_getc(void) {
+    static unsigned mouse_tick_cnt;
     for (;;) {
         if (!kbd_q_empty()) return kbd_q_pop();
         if (serial_available()) {
@@ -2650,6 +2651,8 @@ static int raw_blocking_getc(void) {
             int c = kbd_read();
             if (c >= 0) return c;
         }
+        if (vga_fb_active && (++mouse_tick_cnt & 0xFF) == 0)
+            vga_fb_mouse_tick();
         __asm__ volatile("pause");
     }
 }

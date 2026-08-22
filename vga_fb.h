@@ -20,13 +20,43 @@
 #define COL_WHITE       10
 #define COL_SHADOW      11
 #define COL_HIGHLIGHT   12
+#define COL_SCROLLBAR   13
+#define COL_SCROLL_THUMB 14
 
 #define FONT_W  8
 #define FONT_H  8
 
+/* Scrollbar geometry */
+#define SCROLLBAR_W     8
+#define SCROLLBAR_PAD   1
+
 /* Terminal geometry (set by vga_fb layout engine) */
 extern int term_x, term_y, term_cols, term_rows;
 
+/* ---- Mouse state (updated by IRQ12 handler in sched.c) ---- */
+typedef struct {
+    int x, y;
+    int buttons;
+    int dx, dy;
+    int wheel;
+    int present;
+} mouse_state_t;
+
+extern mouse_state_t mouse_state;
+
+/* ---- Scrollback ---- */
+#define SB_MAX_LINES 256
+#define SB_LINE_MAX  48
+
+typedef struct {
+    char lines[SB_MAX_LINES][SB_LINE_MAX];
+    int  head;
+    int  tail;
+    int  count;
+    int  view_offset;
+} sb_ring_t;
+
+/* ---- Public API ---- */
 void     vga_fb_init(void);
 void     vga_fb_clear(void);
 void     vga_fb_pixel(int x, int y, uint8_t color);
@@ -40,6 +70,8 @@ void     vga_fb_scroll_term(void);
 void     vga_fb_handle_key(int scancode);
 void     vga_fb_toggle_fullscreen(void);
 void     vga_fb_move_terminal(int dx, int dy);
+void     vga_fb_mouse_tick(void);
+void     vga_fb_mouse_init(void);
 
 extern int vga_fb_active;
 

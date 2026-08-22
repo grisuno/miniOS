@@ -4,6 +4,7 @@
 #include "kernel.h"
 #include "sched.h"
 #include "bootdefs.h"
+#include "vga_fb.h"
 
 /* Local copies of kernel constants (static in kernel.c) */
 #define MY_SYS_KSTK_TOP   0x00088000UL
@@ -92,7 +93,10 @@ static void pic_init(void) {
     outb(0x21,0x20); outb(0xA1,0x28);
     outb(0x21,0x04); outb(0xA1,0x02);
     outb(0x21,0x01); outb(0xA1,0x01);
-    outb(0x21,0xFC); outb(0xA1,0xFF);
+    /* Master: unmask IRQ0 (timer) + IRQ1 (keyboard). Mask rest. */
+    outb(0x21,0xFC);
+    /* Slave: unmask IRQ12 (mouse) only. 0xEF = ~bit4. */
+    outb(0xA1,0xEF);
 }
 
 /* ---- PIT channel 0: 100 Hz ---- */
@@ -195,6 +199,38 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         return;
     }
     if (vector == 33) { pic_eoi(1); return; }
+    if (vector == 44) { /* IRQ12: PS/2 mouse */
+        static int mouse_phase;
+        static unsigned char mouse_packet[4];
+        unsigned char data;
+        __asm__ volatile("inb $0x60, %0" : "=a"(data));
+        if (mouse_phase == 0) {
+            if (data & 0x08) {
+                mouse_packet[0] = data;
+                mouse_phase = 1;
+            }
+        } else if (mouse_phase == 1) {
+            mouse_packet[1] = data;
+            mouse_phase = 2;
+        } else if (mouse_phase == 2) {
+            mouse_packet[2] = data;
+            mouse_phase = 3;
+        } else {
+            /* Byte 4: Intellimouse wheel data */
+            mouse_packet[3] = data;
+            mouse_phase = 0;
+            mouse_state.buttons = mouse_packet[0] & 0x07;
+            int dx = (int)(signed char)mouse_packet[1];
+            int dy = (int)(signed char)mouse_packet[2];
+            mouse_state.x += dx * 2;
+            mouse_state.y -= dy * 2;
+            int wheel = (int)(signed char)(mouse_packet[3] << 4) >> 4;
+            mouse_state.wheel += wheel;
+            mouse_state.present = 1;
+        }
+        pic_eoi(12);
+        return;
+    }
     if (vector >= 32 && vector < 48) { pic_eoi(vector - 32); return; }
     if (vector < 32) {
         kprintf("EXCEPTION %ld err=%ld rip=%lx\n",
@@ -308,6 +344,74 @@ int do_kill(int pid) {
 
 void timer_tick(void) { sys_ticks++; }
 
+/* ---- PS/2 mouse hardware init ---- */
+static void mouse_wait_cmd(void) {
+    int timeout = 100000;
+    while (timeout--) {
+        if (!(inb(0x64) & 2)) return;
+    }
+}
+
+static void mouse_wait_data(void) {
+    int timeout = 100000;
+    while (timeout--) {
+        if (inb(0x64) & 1) return;
+    }
+}
+
+static void mouse_write(unsigned char data) {
+    mouse_wait_cmd();
+    outb(0x64, 0xD4);
+    mouse_wait_cmd();
+    outb(0x60, data);
+}
+
+static unsigned char mouse_read(void) {
+    mouse_wait_data();
+    return inb(0x60);
+}
+
+static void mouse_hw_init(void) {
+    /* Enable auxiliary device (mouse) */
+    mouse_wait_cmd();
+    outb(0x64, 0xA8);
+
+    /* Enable IRQ12 by setting bit 1 of the PS/2 controller config byte */
+    mouse_wait_cmd();
+    outb(0x64, 0x20);
+    mouse_wait_data();
+    unsigned char config = inb(0x60);
+    mouse_wait_cmd();
+    outb(0x64, 0x60);
+    mouse_wait_cmd();
+    outb(0x60, config | 0x02);
+
+    /* Reset mouse, drain any stale data */
+    mouse_write(0xFF);
+    mouse_read();
+
+    /* Enable Intellimouse extension for scroll wheel:
+     * Set sample rate to 200, 100, 80 in sequence */
+    mouse_write(0xF3); mouse_read();  /* set sample rate */
+    mouse_write(0xC8); mouse_read();  /* 200 */
+    mouse_write(0xF3); mouse_read();  /* set sample rate */
+    mouse_write(0x64); mouse_read();  /* 100 */
+    mouse_write(0xF3); mouse_read();  /* set sample rate */
+    mouse_write(0x50); mouse_read();  /* 80 */
+    /* Read device ID: 0x03 = Intellimouse (wheel) */
+    mouse_write(0xF2); mouse_read();
+    unsigned char id = mouse_read();
+    (void)id;
+
+    /* Set defaults */
+    mouse_write(0xF6);
+    mouse_read();
+
+    /* Enable data reporting */
+    mouse_write(0xF4);
+    mouse_read();
+}
+
 void sched_init(void) {
     kmemset(procs, 0, sizeof(procs));
     proc_count = 1;
@@ -320,6 +424,7 @@ void sched_init(void) {
 
     pic_init();
     pit_init();
+    mouse_hw_init();
     tss_init();
     idt_init();
     __asm__ volatile("sti");
