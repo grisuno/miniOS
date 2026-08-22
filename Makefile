@@ -249,12 +249,6 @@ $(ASM_DIR)/freedom.s: $(SRC_DIR)/freedom.c $(MINIGCC_BIN)
 $(BIN_DIR)/freedom: $(ASM_DIR)/freedom.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
-# ── DOOM HAL: Hardware Abstraction Layer for doomgeneric ──────────────────
-# Compilado en el host con gcc estatico; la entrada _start es el punto de
-# ejecucion que el kernel carga con load_exec_elf y ejecuta en Ring 3.
-$(BIN_DIR)/doom.elf: $(SRC_DIR)/doom_hal.c
-	$(CC) -static -no-pie -nostdlib -ffreestanding -m64 -O2 -e _start -o $@ $<
-
 # ── DOOM (doomgeneric port) ──────────────────────────────────────────────
 # Full doomgeneric engine compiled as a static Linux ELF.  Uses the
 # host libc (static) for malloc/printf/fopen etc; the kernel provides
@@ -298,7 +292,7 @@ $(BIN_DIR)/doom1.wad: Doom1.wad
 	cp $< $@
 
 # DOOM binaries live on minifs, not the ramdisk (kernel must stay < 3 MB)
-MINIFS_DOOM_FILES = $(BIN_DIR)/doom.elf $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
+MINIFS_DOOM_FILES = $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
 # Generation 2: gen1 minigcc compiles its own source; 'ld' links it.
 # Generation 3: the ld-linked compiler compiles itself again; the gen3
 # binary is what ships on the ramdisk. `make selfhost` additionally
@@ -413,9 +407,9 @@ kernel.bin: kernel.elf
 # MiniFS image: 128 MB filesystem appended after the kernel, contains DOOM
 MINIFS_BLOCKS ?= 32768
 
-minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(BIN_DIR)/doom.elf $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
 	python3 mkfs.minifs.py $@ $(MINIFS_BLOCKS) \
-		$(BIN_DIR)/doom.elf $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
+		$(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
 
 os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	@ksec=$$(( ($$(stat -c%s kernel.bin) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )); \
@@ -468,7 +462,7 @@ clean:
 
 minifs-mkfs:
 	python3 mkfs.minifs.py minifs.bin $(MINIFS_BLOCKS) \
-		progs/bin/doom.elf progs/bin/doomgeneric.elf progs/bin/doom1.wad progs/bin/DOOM1.WAD
+		progs/bin/doomgeneric.elf progs/bin/doom1.wad progs/bin/DOOM1.WAD
 
 minifs-dump:
 	python3 minifs_dump.py minifs.bin $(ARGS)

@@ -222,20 +222,27 @@ void DG_Init(void) {
 }
 
 void DG_DrawFrame(void) {
+    if (!DG_ScreenBuffer) return;
+
     if (minios_palette_dirty) {
         rebuild_palette_ht();
         load_vga_palette();
         minios_palette_dirty = 0;
     }
 
-    /* DG_ScreenBuffer: 640x400 uint32_t BGRA. VGA: 320x200 x 1 byte. */
     uint32_t *src = DG_ScreenBuffer;
     int x, y;
+
     for (y = 0; y < FB_HEIGHT; y++) {
         int sy = y * 2;
-        volatile uint8_t *row = FB_ADDR + y * FB_WIDTH;
+        if (sy >= DOOMGENERIC_RESY) sy = DOOMGENERIC_RESY - 1;
+
+        volatile uint8_t *row = FB_ADDR + (y * FB_WIDTH);
+
         for (x = 0; x < FB_WIDTH; x++) {
             int sx = x * 2;
+            if (sx >= DOOMGENERIC_RESX) sx = DOOMGENERIC_RESX - 1;
+
             uint32_t px = src[sy * DOOMGENERIC_RESX + sx];
             uint8_t r = (px >> 16) & 0xFF;
             uint8_t g = (px >> 8)  & 0xFF;

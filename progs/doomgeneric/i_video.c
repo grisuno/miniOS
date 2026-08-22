@@ -315,12 +315,15 @@ void I_ReadScreen (byte* scr)
 void I_SetPalette (byte* palette)
 {
 	int i;
+	int safe_gamma = usegamma;
+	if (safe_gamma < 0) safe_gamma = 0;
+	if (safe_gamma > 4) safe_gamma = 2;
 
     for (i=0; i<256; ++i ) {
         colors[i].a = 0;
-        colors[i].r = gammatable[usegamma][*palette++];
-        colors[i].g = gammatable[usegamma][*palette++];
-        colors[i].b = gammatable[usegamma][*palette++];
+        colors[i].r = gammatable[safe_gamma][*palette++];
+        colors[i].g = gammatable[safe_gamma][*palette++];
+        colors[i].b = gammatable[safe_gamma][*palette++];
     }
     minios_palette_dirty = 1;
 }
