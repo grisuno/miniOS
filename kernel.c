@@ -306,11 +306,10 @@ int kbd_read(void) {
      * Make codes are sent as-is; break codes have bit 7 set.
      * E0 prefix is pushed as 0xE0 so the reader can detect extended keys. */
     if (kbd_raw_mode) {
-        if (sc == KEY_E0) { kbd_e0 = 1; kbd_raw_push(0xE0); return -1; }
+        if (sc == KEY_E0) { kbd_e0 = 1; return -1; }
         if (kbd_e0) {
             kbd_e0 = 0;
-            if (sc & 0x80) { kbd_raw_push(sc); return -1; }  /* E0 break */
-            kbd_raw_push(0xE0); kbd_raw_push(sc);             /* E0 make */
+            kbd_raw_push(0xE0); kbd_raw_push(sc);  /* E0 make or break */
             return -1;
         }
         /* Normal make or break */
@@ -2276,11 +2275,22 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     }
     case 205: { /* SYS_KBD: read PS/2 scancode without blocking */
         if (kbd_raw_mode) {
-            /* Raw mode (DOOM): pop from raw queue */
-            if (kbd_raw_head == kbd_raw_tail) return -1;
-            unsigned char c = kbd_raw[kbd_raw_head];
-            kbd_raw_head = (kbd_raw_head + 1) % KBD_RAW_LEN;
-            return (long)c;
+            /* Raw mode (DOOM): drain queue, then poll PS/2 directly */
+            if (kbd_raw_head != kbd_raw_tail) {
+                unsigned char c = kbd_raw[kbd_raw_head];
+                kbd_raw_head = (kbd_raw_head + 1) % KBD_RAW_LEN;
+                return (long)c;
+            }
+            if (!kbd_available()) return -1;
+            unsigned char sc;
+            __asm__ volatile("inb $0x60, %0" : "=a"(sc));
+            /* E0 prefix: store flag, return 0xE0 so reader sees it */
+            if (sc == KEY_E0) { kbd_e0 = 1; return 0xE0; }
+            if (kbd_e0) {
+                kbd_e0 = 0;
+                return (long)sc;  /* raw scancode with make/break bit */
+            }
+            return (long)sc;
         }
         if (kbd_q_empty()) return -1;
         return kbd_q_pop();

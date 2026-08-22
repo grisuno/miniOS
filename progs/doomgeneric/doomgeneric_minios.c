@@ -7,6 +7,7 @@
  */
 
 #include "doomgeneric.h"
+#include "doomkeys.h"
 #include <stdint.h>
 #include <string.h>
 
@@ -118,18 +119,13 @@ static void load_vga_palette(void) {
 
 static unsigned char scancode_to_doom(unsigned char raw) {
     unsigned char sc = raw & 0x7F;
-    int pressed = !(raw & 0x80);
 
     switch (sc) {
-        case 0x01: return 0x1B; /* Escape */
-        case 0x1C: return 0x0D; /* Enter */
-        case 0x39: return ' ';   /* Space = use */
-        case 0x1D: return 0x1D; /* Ctrl = fire */
-        case 0x2A: case 0x36: return 0x1D; /* Shift = fire */
-        case 0x48: return 0xB0; /* Up arrow */
-        case 0x50: return 0xB1; /* Down arrow */
-        case 0x4B: return 0xB2; /* Left arrow */
-        case 0x4D: return 0xB3; /* Right arrow */
+        case 0x01: return KEY_ESCAPE;
+        case 0x1C: return KEY_ENTER;
+        case 0x39: return KEY_USE;      /* Space = use */
+        case 0x1D: return KEY_FIRE;     /* Ctrl = fire */
+        case 0x2A: case 0x36: return KEY_RSHIFT;
         case 0x02: return '1';
         case 0x03: return '2';
         case 0x04: return '3';
@@ -166,8 +162,10 @@ static unsigned char scancode_to_doom(unsigned char raw) {
         case 0x30: return 'b';
         case 0x31: return 'n';
         case 0x32: return 'm';
-        case 0x0E: return 0x08; /* Backspace */
-        case 0x0F: return 0x09; /* Tab */
+        case 0x0E: return KEY_BACKSPACE;
+        case 0x0F: return KEY_TAB;
+        case 0x3A: return KEY_CAPSLOCK;
+        case 0x38: return KEY_LALT;
         default: return 0;
     }
 }
@@ -197,10 +195,14 @@ static void kbd_poll(void) {
             if (sc2 < 0) break;
             unsigned char raw2 = (unsigned char)sc2;
             unsigned char doom_key = 0;
-            if (raw2 == 0x48) doom_key = 0xB0; /* Up */
-            else if (raw2 == 0x50) doom_key = 0xB1; /* Down */
-            else if (raw2 == 0x4B) doom_key = 0xB2; /* Left */
-            else if (raw2 == 0x4D) doom_key = 0xB3; /* Right */
+            /* Extract the make code (strip break bit for lookup) */
+            unsigned char make = raw2 & 0x7F;
+            if (make == 0x48) doom_key = KEY_UPARROW;
+            else if (make == 0x50) doom_key = KEY_DOWNARROW;
+            else if (make == 0x4B) doom_key = KEY_LEFTARROW;
+            else if (make == 0x4D) doom_key = KEY_RIGHTARROW;
+            else if (make == 0x1D) doom_key = KEY_RCTRL;
+            else if (make == 0x38) doom_key = KEY_RALT;
             if (doom_key) {
                 int pressed = !(raw2 & 0x80);
                 kbd_enqueue(doom_key, pressed);
