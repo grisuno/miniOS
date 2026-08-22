@@ -1,6 +1,27 @@
 #ifndef KERNEL_H
 #define KERNEL_H
 
+/* ========== Port I/O helpers ========== */
+#ifndef PORT_IO_DEFINED
+#define PORT_IO_DEFINED
+static inline void outb(unsigned short port, unsigned char val) {
+    __asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));
+}
+static inline unsigned char inb(unsigned short port) {
+    unsigned char r;
+    __asm__ volatile("inb %1, %0" : "=a"(r) : "Nd"(port));
+    return r;
+}
+static inline void outw(unsigned short port, unsigned short val) {
+    __asm__ volatile("outw %0, %1" : : "a"(val), "Nd"(port));
+}
+static inline unsigned short inw(unsigned short port) {
+    unsigned short r;
+    __asm__ volatile("inw %1, %0" : "=a"(r) : "Nd"(port));
+    return r;
+}
+#endif
+
 /* ========== VGA text mode ========== */
 #define VGA_BASE    ((volatile char *)0xB8000)
 #define VGA_COLS    80
@@ -83,6 +104,8 @@ typedef struct {
     unsigned wcap;
     int      mode;       /* 0=read, 1=write (truncate), 2=append */
     int      is_console; /* 1 = stdin/stdout/stderr, routed to the console */
+    int      minifs_ino; /* >=0 when backed by minifs, -1 = ramdisk */
+    unsigned minifs_size;
 } KFILE;
 
 KFILE *kfopen(const char *path, const char *mode);
@@ -147,5 +170,24 @@ void *ksym_resolve(const char *name);
 
 /* ========== Kernel info ========== */
 extern unsigned long kernel_end;
+extern char ramdisk_start[];
+extern char ramdisk_end[];
+
+/* ========== IDE driver ========== */
+void ide_init(void);
+int  ide_read_sectors(unsigned int lba, unsigned int count, void *buf);
+int  ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);
+int  ide_read_sector(unsigned int lba, void *buf);
+int  ide_write_sector(unsigned int lba, const void *buf);
+unsigned int ide_total_sectors(void);
+int  ide_present(void);
+
+/* ========== Block device layer ========== */
+void block_init(void);
+int  block_read(unsigned int block_num, void *buf);
+int  block_write(unsigned int block_num, const void *buf);
+int  block_read_multi(unsigned int block_num, unsigned int count, void *buf);
+int  block_write_multi(unsigned int block_num, unsigned int count, const void *buf);
+unsigned int block_total(void);
 
 #endif

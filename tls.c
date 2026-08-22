@@ -805,6 +805,8 @@ void tls_random(unsigned char *out, unsigned len) {
 }
 
 /* The port helpers in net.c are static; these live here for the RTC. */
+#ifndef PORT_IO_DEFINED
+#define PORT_IO_DEFINED
 static inline void outb(unsigned short port, unsigned char v) {
     __asm__ volatile("outb %0, %1" : : "a"(v), "Nd"(port));
 }
@@ -813,6 +815,7 @@ static inline unsigned char inb(unsigned short port) {
     __asm__ volatile("inb %1, %0" : "=a"(v) : "Nd"(port));
     return v;
 }
+#endif
 
 /* CMOS RTC -> days since epoch. Registers are BCD. */
 static inline unsigned char cmos_read(unsigned char reg) {

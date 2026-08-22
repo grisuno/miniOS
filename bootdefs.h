@@ -76,6 +76,7 @@
 #define BIOS_VIDEO_INT            0x10
 #define BIOS_VIDEO_TTY_WRITE      0x0E
 #define BIOS_VIDEO_TTY_ATTR       0x0007
+#define BIOS_VIDEO_SET_MODE       0x0013
 
 #define A20_CONTROL_PORT          0x92
 #define A20_ENABLE_BIT            0x02

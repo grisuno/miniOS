@@ -2,19 +2,9 @@
 #include "net.h"
 #include "tls.h"
 #include "bootdefs.h"
-
-/* ================================================================
- *  Port I/O helpers
- * ================================================================ */
-
-static inline void outb(unsigned short port, unsigned char val) {
-    __asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));
-}
-static inline unsigned char inb(unsigned short port) {
-    unsigned char r;
-    __asm__ volatile("inb %1, %0" : "=a"(r) : "Nd"(port));
-    return r;
-}
+#include "minifs.h"
+#include "ide.h"
+#include "block.h"
 
 /* ================================================================
  *  Serial console (COM1, 16550 UART) — mirrors VGA, drives input
@@ -193,7 +183,7 @@ void vga_putc(char c) {
         return;
     }
     serial_putc(c);
-    if (c == '\n') { vga_newline(); vga_set_cursor(vga_x, vga_y); return; }
+    if (c == '\n') { serial_putc('\r'); vga_newline(); vga_set_cursor(vga_x, vga_y); return; }
     if (c == '\r') { vga_x = 0; vga_set_cursor(vga_x, vga_y); return; }
     if (c == '\t') {
         int spaces = 8 - (vga_x & 7);
@@ -264,11 +254,26 @@ static unsigned char kbd_queue[KBD_QUEUE_LEN];
 static int kbd_q_head, kbd_q_tail;
 static int kbd_e0;
 
+/* Raw keyboard mode for DOOM: when enabled, PS/2 make/break codes are
+ * pushed into a separate queue so the caller sees both press and release
+ * events.  The raw queue stores bytes with bit 7 set for break codes. */
+#define KBD_RAW_LEN 64
+static unsigned char kbd_raw[KBD_RAW_LEN];
+static int kbd_raw_head, kbd_raw_tail;
+static int kbd_raw_mode;  /* 1 = raw mode (DOOM), 0 = translated mode (shell) */
+
 static void kbd_q_push(unsigned char c) {
     int next = (kbd_q_tail + 1) % KBD_QUEUE_LEN;
     if (next == kbd_q_head) return;
     kbd_queue[kbd_q_tail] = c;
     kbd_q_tail = next;
+}
+
+static void kbd_raw_push(unsigned char c) {
+    int next = (kbd_raw_tail + 1) % KBD_RAW_LEN;
+    if (next == kbd_raw_head) return;
+    kbd_raw[kbd_raw_tail] = c;
+    kbd_raw_tail = next;
 }
 
 static int kbd_q_empty(void) { return kbd_q_head == kbd_q_tail; }
@@ -291,6 +296,22 @@ int kbd_read(void) {
     while (!kbd_available()) __asm__ volatile("pause");
     unsigned char sc;
     __asm__ volatile("inb $0x60, %0" : "=a"(sc));
+
+    /* Raw mode (DOOM): push make/break codes with E0 prefix preserved.
+     * Make codes are sent as-is; break codes have bit 7 set.
+     * E0 prefix is pushed as 0xE0 so the reader can detect extended keys. */
+    if (kbd_raw_mode) {
+        if (sc == KEY_E0) { kbd_e0 = 1; kbd_raw_push(0xE0); return -1; }
+        if (kbd_e0) {
+            kbd_e0 = 0;
+            if (sc & 0x80) { kbd_raw_push(sc); return -1; }  /* E0 break */
+            kbd_raw_push(0xE0); kbd_raw_push(sc);             /* E0 make */
+            return -1;
+        }
+        /* Normal make or break */
+        kbd_raw_push(sc);
+        return -1;
+    }
 
     /* The E0 prefix must be tested before the release check: 0xE0 has the
      * high bit set, so testing the release bit first swallows every
@@ -423,6 +444,23 @@ static void mm_setup_protections(void) {
         pd[i] = ((unsigned long)pt) | PT_USER_ENTRY;
     }
     __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
+
+    /* Map physical VGA framebuffer 0xA0000 (64 KB) into the user window.
+     * Virtual address 0x1F00000 (31 MB) is inside the user window
+     * [USER_LOAD_BASE, USER_LOAD_END). The framebuffer is mapped RW with NX
+     * set (it is data, not executable). */
+    {
+        unsigned long fb_vaddr   = 0x1F00000UL;
+        unsigned long fb_pd_idx  = fb_vaddr >> PT_PD_INDEX_SHIFT;
+        unsigned long fb_pt_off  = (fb_vaddr & 0x1FFFFF) >> 12;
+        unsigned long *fb_pt_base = (unsigned long *)PT_USER_TABLES_ADDR +
+                                    (fb_pd_idx - lo) * 0x1000 /
+                                    sizeof(unsigned long);
+        unsigned long fb_phys    = 0x000A0000UL;
+        unsigned long k;
+        for (k = 0; k < 16; k++)
+            fb_pt_base[fb_pt_off + k] = (fb_phys + k * 0x1000) | PT_USER_NX_ENTRY;
+    }
 }
 
 /* Set or clear the NX bit on the single 4 KB page holding vaddr. The page
@@ -962,15 +1000,26 @@ KFILE *kfopen(const char *path, const char *mode) {
     KFILE *f = kmalloc(sizeof(KFILE));
     if (!f) return 0;
     kmemset(f, 0, sizeof(KFILE));
+    f->minifs_ino = -1;
     f->rf = ramdisk_open(resolved);
     if (!f->rf && (mode[0] == 'w' || mode[0] == 'a')) {
         f->rf = ramdisk_create(resolved, 0);
         if (!f->rf) { kfree(f); return 0; }
     }
-    if (!f->rf) { kfree(f); return 0; }
+    if (!f->rf && mode[0] == 'r' && minifs_is_mounted()) {
+        int ino = minifs_resolve_path(resolved);
+        if (ino >= 0) {
+            MiniFSInode st;
+            if (minifs_stat(ino, &st) >= 0) {
+                f->minifs_ino = ino;
+                f->minifs_size = st.size;
+            }
+        }
+    }
+    if (!f->rf && f->minifs_ino < 0) { kfree(f); return 0; }
     f->mode = (mode[0] == 'w') ? 1 : ((mode[0] == 'a') ? 2 : 0);
-    f->pos  = (f->mode == 2) ? f->rf->size : 0;
-    if (f->mode != 0) {
+    f->pos  = (f->mode == 2 && f->rf) ? f->rf->size : 0;
+    if (f->mode != 0 && f->rf) {
         if (f->mode == 1 && f->rf->size && !ramdisk_resize(f->rf, 0)) { kfree(f); return 0; }
         f->wbuf = kmalloc(4096);
         f->wcap = 4096;
@@ -995,6 +1044,13 @@ int kfgetc(KFILE *f) {
         int c = console_getc();
         if (c == '\r') c = '\n';
         return c;
+    }
+    if (f->minifs_ino >= 0) {
+        if (f->pos >= f->minifs_size) return EOF;
+        char c;
+        minifs_read(f->minifs_ino, &c, f->pos, 1);
+        f->pos++;
+        return (unsigned char)c;
     }
     if (!f->rf || f->pos >= f->rf->size) return EOF;
     char c;
@@ -1031,6 +1087,13 @@ unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
         char *b = ptr; unsigned long got = 0, total = size * n;
         while (got < total) { int c = kfgetc(f); if (c == EOF) break; b[got++] = (char)c; }
         return size ? got / size : 0;
+    }
+    if (f->minifs_ino >= 0) {
+        unsigned long total = size * n;
+        if (f->pos + total > f->minifs_size) total = f->minifs_size - f->pos;
+        minifs_read(f->minifs_ino, ptr, f->pos, (unsigned)total);
+        f->pos += total;
+        return size ? total / size : 0;
     }
     if (!f->rf) return 0;
     unsigned long total = size * n;
@@ -1069,14 +1132,15 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
 }
 
 int kfseek(KFILE *f, long offset, int whence) {
-    if (!f || !f->rf) return -1;
+    if (!f) return -1;
+    unsigned filesize = f->minifs_ino >= 0 ? f->minifs_size : (f->rf ? f->rf->size : 0);
     unsigned base;
     if (whence == 0) base = 0;
     else if (whence == 1) base = f->pos;
-    else base = f->rf->size;
+    else base = filesize;
     long newp = (long)base + offset;
     if (newp < 0) newp = 0;
-    if ((unsigned long)newp > f->rf->size) newp = (long)f->rf->size;
+    if ((unsigned long)newp > filesize) newp = (long)filesize;
     f->pos = (unsigned)newp;
     return 0;
 }
@@ -1840,16 +1904,16 @@ static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
 
 void *load_exec_elf(void *data, unsigned size) {
     Elf64_Ehdr *e = (Elf64_Ehdr *)data;
-    if (size < sizeof(Elf64_Ehdr)) return 0;
+    if (size < sizeof(Elf64_Ehdr)) { kprintf("exec: too small %u\n", size); return 0; }
     if (e->e_ident[0] != 0x7F || e->e_ident[1] != 'E' ||
-        e->e_ident[2] != 'L'  || e->e_ident[3] != 'F') return 0;
-    if (e->e_machine != EM_X86_64) return 0;
-    if (e->e_type != ET_EXEC && e->e_type != ET_DYN) return 0;
+        e->e_ident[2] != 'L'  || e->e_ident[3] != 'F') { kprintf("exec: bad magic\n"); return 0; }
+    if (e->e_machine != EM_X86_64) { kprintf("exec: bad machine %d\n", e->e_machine); return 0; }
+    if (e->e_type != ET_EXEC && e->e_type != ET_DYN) { kprintf("exec: bad type %d\n", e->e_type); return 0; }
 
-    if (e->e_phentsize < sizeof(Elf64_Phdr)) return 0;
-    if (e->e_phoff > size) return 0;
-    if (e->e_phnum > (size - e->e_phoff) / e->e_phentsize) return 0;
-    if (e->e_phnum > ELF_MAX_SEGMENTS) return 0;
+    if (e->e_phentsize < sizeof(Elf64_Phdr)) { kprintf("exec: phentsize %d\n", e->e_phentsize); return 0; }
+    if (e->e_phoff > size) { kprintf("exec: phoff too big %lu > %u\n", e->e_phoff, size); return 0; }
+    if (e->e_phnum > (size - e->e_phoff) / e->e_phentsize) { kprintf("exec: phnum overflow\n"); return 0; }
+    if (e->e_phnum > ELF_MAX_SEGMENTS) { kprintf("exec: too many segments %d\n", e->e_phnum); return 0; }
 
     unsigned long base = (e->e_type == ET_DYN) ? USER_LOAD_BASE : 0;
 
@@ -1860,14 +1924,16 @@ void *load_exec_elf(void *data, unsigned size) {
     unsigned i;
     for (i = 0; i < e->e_phnum; i++) {
         if (ph[i].p_type != PT_LOAD) continue;
-        if (ph[i].p_vaddr > USER_LOAD_END - base) return 0;
+        if (ph[i].p_vaddr > USER_LOAD_END - base) { kprintf("exec: vaddr %lx too big\n", ph[i].p_vaddr); return 0; }
         unsigned long dst = base + ph[i].p_vaddr;
-        if (dst < USER_LOAD_BASE || dst >= USER_LOAD_END)
-            return 0; /* segment outside the user region */
-        if (ph[i].p_memsz > USER_LOAD_END - dst) return 0;
-        if (ph[i].p_filesz > USER_LOAD_END - dst) return 0;
+        if (dst < USER_LOAD_BASE || dst >= USER_LOAD_END) {
+            kprintf("exec: seg %d dst %lx outside user window\n", i, dst);
+            return 0;
+        }
+        if (ph[i].p_memsz > USER_LOAD_END - dst) { kprintf("exec: memsz overflow\n"); return 0; }
+        if (ph[i].p_filesz > USER_LOAD_END - dst) { kprintf("exec: filesz overflow\n"); return 0; }
         if (ph[i].p_offset > size || ph[i].p_filesz > size - ph[i].p_offset)
-            return 0; /* segment data beyond the end of the file */
+            { kprintf("exec: seg data beyond file\n"); return 0; }
         if (ph[i].p_filesz > 0 && (ph[i].p_flags & PF_X) && nxr < ELF_MAX_SEGMENTS) {
             xr[nxr].start = dst;
             xr[nxr].end   = dst + ph[i].p_filesz;
@@ -1880,7 +1946,7 @@ void *load_exec_elf(void *data, unsigned size) {
                     (unsigned long)(ph[i].p_memsz - ph[i].p_filesz));
         if (dst + ph[i].p_memsz > max_end) max_end = dst + ph[i].p_memsz;
     }
-    if (max_end == 0) return 0;
+    if (max_end == 0) { kprintf("exec: no loadable segments\n"); return 0; }
 
     /* Clear NX on the executable segments before applying relocations, so
      * IRELATIVE resolvers inside them can run, then reload the TLB. */
@@ -1892,6 +1958,7 @@ void *load_exec_elf(void *data, unsigned size) {
     g_brk       = ALIGN_UP(max_end, 0x1000);
     g_brk_limit = USER_BRK_END;
     user_mmap_cur = USER_BRK_END;
+    kprintf("exec: loaded at %lx entry %lx brk %lx\n", base + USER_LOAD_BASE, base + e->e_entry, g_brk);
     return (void *)(base + e->e_entry);
 }
 
@@ -2167,6 +2234,97 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     case 203:            /* MiniOS: receive decrypted TLS application data */
         if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
         return tls_sys_recv(a1, a2, a3);
+    case 204: { /* SYS_TIME: return elapsed milliseconds */
+        unsigned long lo, hi;
+        __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
+        unsigned long tsc = ((unsigned long)hi << 32) | lo;
+        /* QEMU TSC ~1 GHz -> divide by ~1M for approximate milliseconds */
+        return (long)(tsc / 1000000UL);
+    }
+    case 205: { /* SYS_KBD: read PS/2 scancode without blocking */
+        if (kbd_raw_mode) {
+            /* Raw mode (DOOM): pop from raw queue */
+            if (kbd_raw_head == kbd_raw_tail) return -1;
+            unsigned char c = kbd_raw[kbd_raw_head];
+            kbd_raw_head = (kbd_raw_head + 1) % KBD_RAW_LEN;
+            return (long)c;
+        }
+        if (kbd_q_empty()) return -1;
+        return kbd_q_pop();
+    }
+    case 207: { /* SYS_KBD_RAW: enable/disable raw keyboard mode */
+        kbd_raw_mode = (int)a1;
+        /* Flush queues on mode switch */
+        kbd_q_head = kbd_q_tail = 0;
+        kbd_raw_head = kbd_raw_tail = 0;
+        return 0;
+    }
+    case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
+        unsigned char *pal = (unsigned char *)a1;
+        if (!user_range_ok((unsigned long)a1, 768)) return -EFAULT;
+        /* VGA DAC: set index 0 then write 768 bytes (6-bit per color) */
+        outb(0x3C8, 0);
+        for (int i = 0; i < 768; i++) {
+            outb(0x3C9, pal[i] >> 2);
+        }
+        return 0;
+    }
+    case 5: { /* fstat: minimal stub for glibc static */
+        /* struct stat on x86-64 is 144 bytes, zero it out */
+        unsigned long *st = (unsigned long *)a2;
+        if (!user_range_ok((unsigned long)a2, 144)) return EFAULT;
+        for (int i = 0; i < 18; i++) st[i] = 0;
+        /* st_mode at offset 24 (uint32): S_IFCHR|0666 for consoles, S_IFREG|0666 for files */
+        if (a1 == 0 || a1 == 1 || a1 == 2) {
+            ((unsigned int *)(unsigned long)a2)[6] = 0020666; /* S_IFCHR | 0666 */
+        } else {
+            ((unsigned int *)(unsigned long)a2)[6] = 0100666; /* S_IFREG | 0666 */
+            if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1] && kfd_table[a1]->rf)
+                ((unsigned long *)(unsigned long)a2)[6] = (unsigned long)kfd_table[a1]->rf->size;
+        }
+        return 0;
+    }
+    case 10: /* mprotect: no-op (no MMU-based protection per-page for user) */
+        return 0;
+    case 21: { /* access: check if ramdisk file exists */
+        const char *path = (const char *)a1;
+        if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
+        char resolved[RAMDISK_FNAME_LEN];
+        if (!fs_resolve(path, resolved, sizeof(resolved))) return -2; /* ENOENT */
+        RDFile *f = ramdisk_open(resolved);
+        return f ? 0 : -2;
+    }
+    case 96: /* gettimeofday: return approximate time via rdtsc */
+        if (a1) {
+            unsigned long *tv = (unsigned long *)a1;
+            if (!user_range_ok((unsigned long)a1, 2 * sizeof(unsigned long))) return EFAULT;
+            unsigned long lo, hi;
+            __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
+            unsigned long tsc = ((unsigned long)hi << 32) | lo;
+            unsigned long ms = tsc / 1000000UL;
+            tv[0] = ms / 1000;  /* seconds */
+            tv[1] = (ms % 1000) * 1000; /* microseconds */
+        }
+        return 0;
+    case 301: /* set_robust_list: no-op */
+        return 0;
+    case 302: /* prlimit64: no-op */
+        return 0;
+    case 318: { /* getrandom: fill buffer with RDTSC-based pseudo-random */
+        unsigned char *buf = (unsigned char *)a1;
+        unsigned long cnt = a2;
+        if (cnt > 0 && !user_range_ok((unsigned long)buf, cnt)) return EFAULT;
+        unsigned long lo, hi;
+        for (unsigned long i = 0; i < cnt; i++) {
+            if ((i & 7) == 0) {
+                __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
+            }
+            buf[i] = (unsigned char)((lo >> (8 * (i & 7))) ^ (hi & 0xFF) ^ i);
+        }
+        return (long)cnt;
+    }
+    case 334: /* rseq: not supported, libc handles -1 gracefully */
+        return -1;
     default:
         return -38; /* ENOSYS */
     }
@@ -2677,6 +2835,82 @@ static void shell_readline_hist(char *buf, int size) {
             }
             continue;
         }
+        if (c == '\t') {
+            /* Tab: attempt autocompletion */
+            /* Find start of last word (skip spaces/tabs backwards) */
+            char *word_start = buf + pos;
+            while (word_start > buf && (word_start[-1] == ' ' || word_start[-1] == '\t'))
+                word_start--;
+            unsigned long wlen = (unsigned long)pos - (unsigned long)(word_start - buf);
+            if (wlen == 0) { vga_putc('\a'); continue; }
+            /* Collect completions: registered programs first, then ramdisk files */
+            char *comps[32];
+            int ncomps = 0;
+            /* Registered programs */
+            for (int i = 0; i < kprog_count; i++) {
+                if (kstrncmp(kprog_table[i].name, word_start, wlen) == 0) {
+                    comps[ncomps++] = kprog_table[i].name;
+                    if (ncomps >= 32) break;
+                }
+            }
+            /* Ramdisk files if no registered program matches */
+            if (ncomps == 0) {
+                RDFile *files[RAMDISK_MAX_FILES];
+                int n = ramdisk_list(files, RAMDISK_MAX_FILES);
+                for (int i = 0; i < n; i++) {
+                    if (kstrncmp(files[i]->name, word_start, wlen) == 0) {
+                        comps[ncomps++] = files[i]->name;
+                        if (ncomps >= 32) break;
+                    }
+                }
+            }
+            if (ncomps == 0) {
+                vga_putc('\a'); /* no match, beep */
+                continue;
+            }
+            /* Find longest common prefix among completions */
+            int common = (int)kstrlen(comps[0]);
+            for (int i = 1; i < ncomps; i++) {
+                int l = (int)kstrlen(comps[i]);
+                if (l < common) common = l;
+                int j;
+                for (j = 0; j < common; j++) {
+                    if (comps[0][j] != comps[i][j]) break;
+                }
+                common = j;
+            }
+            /* If common prefix extends beyond current word, fill it in uniquely */
+            if (common > (int)wlen) {
+                unsigned long suffix_len = (unsigned long)pos - wlen;
+                kmemmove(buf + common, buf + wlen, suffix_len);
+                kmemcpy(buf + wlen, comps[0] + wlen, (unsigned long)(common - wlen));
+                pos += common - wlen;
+                /* Display the completed line */
+                buf[pos] = 0;
+                vga_puts(buf + (pos - (common - wlen)));
+                vga_putc('\n');
+            } else if (ncomps == 1) {
+                /* Unique completion - fill in the rest of the single match */
+                unsigned long match_len = kstrlen(comps[0]);
+                unsigned long suffix_len = (unsigned long)pos - wlen;
+                kmemmove(buf + match_len, buf + wlen, suffix_len);
+                kmemcpy(buf + wlen, comps[0] + wlen, match_len - wlen);
+                pos = (int)match_len;
+                buf[pos] = 0;
+                vga_puts(comps[0]);
+                vga_putc('\n');
+            } else {
+                /* Multiple completions - show list */
+                vga_puts("Possible completions:");
+                vga_putc('\n');
+                for (int i = 0; i < ncomps; i++) {
+                    vga_puts("  ");
+                    vga_puts(comps[i]);
+                    vga_putc('\n');
+                }
+            }
+            continue;
+        }
         if (c == '\b' || c == 0x7F || (c >= 32 && c < 127)) {
             if (shell_hist_idx >= 0) shell_hist_idx = -1;
         }
@@ -2831,8 +3065,8 @@ void shell_run(void) {
  * 0 on failure.  progname_out must hold at least 32 bytes. */
 static int shell_load(const char *fname, char *progname_out, void **entry_out) {
     char resolved[RAMDISK_FNAME_LEN];
-    if (!fs_resolve(fname, resolved, sizeof(resolved)) || fs_is_dir(resolved))
-        return 0;
+    if (!fs_resolve(fname, resolved, sizeof(resolved))) return 0;
+    if (fs_is_dir(resolved)) return 0;
     RDFile *f = ramdisk_open(resolved);
     if (!f) return 0;
     unsigned char *data = kmalloc(f->size);
@@ -3145,8 +3379,10 @@ static int shell_run_from_path(const char *cmd, int argc, char **argv) {
 
 static void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
-        vga_puts("Commands: help clear ls cat echo edit rm mkdir cd pwd ps load run poweroff\n");
+        vga_puts("Commands: help clear ls cat lsfs catfs echo edit rm mkdir cd pwd ps load run poweroff\n");
         vga_puts("  ls [dir]           list files (under the cwd by default)\n");
+        vga_puts("  lsfs               list files on the MiniFS disk filesystem\n");
+        vga_puts("  catfs <file>       print a file from MiniFS\n");
         vga_puts("  cd [dir] / pwd     change / print the working directory\n");
         vga_puts("  mkdir <name>       create a directory entry\n");
         vga_puts("  rm <file>          delete a ramdisk file\n");
@@ -3223,6 +3459,52 @@ static void shell_exec_builtin(int argc, char **argv) {
             }
         }
         vga_putc('\n');
+    }
+    else if (kstrcmp(argv[0], "lsfs") == 0) {
+        if (!minifs_is_mounted()) { vga_puts("minifs: not mounted\n"); return; }
+        int parent = MINIFS_ROOT_INODE;
+        if (argc > 1) {
+            parent = minifs_resolve_path(argv[1]);
+            if (parent < 0) { kprintf("lsfs: %s: not found\n", argv[1]); return; }
+        }
+        MiniFSInode dir_inode;
+        if (minifs_stat(parent, &dir_inode) < 0) return;
+        if ((dir_inode.mode & 0170000) != 0040000) {
+            kprintf("  %s  %u bytes\n", argv[1], dir_inode.size);
+            return;
+        }
+        MiniFSDirEntry de;
+        char name[RAMDISK_FNAME_LEN];
+        int idx = 0, shown = 0;
+        while (minifs_dir_read(parent, idx, &de, name) == 0) {
+            if (de.inode == 0) { idx++; continue; }
+            MiniFSInode st;
+            minifs_stat(de.inode, &st);
+            if ((st.mode & 0170000) == 0040000)
+                kprintf("  %s/\n", name);
+            else
+                kprintf("  %-20s  %u bytes\n", name, st.size);
+            shown = 1;
+            idx++;
+        }
+        if (!shown) vga_puts("  (empty)\n");
+    }
+    else if (kstrcmp(argv[0], "catfs") == 0) {
+        if (!minifs_is_mounted()) { vga_puts("minifs: not mounted\n"); return; }
+        if (argc < 2) { vga_puts("usage: catfs <file>\n"); return; }
+        int ino = minifs_resolve_path(argv[1]);
+        if (ino < 0) { kprintf("catfs: %s: not found\n", argv[1]); return; }
+        MiniFSInode st;
+        if (minifs_stat(ino, &st) < 0) { kprintf("catfs: %s: stat failed\n", argv[1]); return; }
+        unsigned sz = st.size;
+        if (sz == 0) { vga_putc('\n'); return; }
+        char *catfs_buf = (char *)kmalloc(sz + 1);
+        if (!catfs_buf) { vga_puts("catfs: out of memory\n"); return; }
+        minifs_read(ino, catfs_buf, 0, sz);
+        catfs_buf[sz] = 0;
+        for (unsigned i = 0; i < sz; i++) vga_putc(catfs_buf[i]);
+        vga_putc('\n');
+        kfree(catfs_buf);
     }
     else if (kstrcmp(argv[0], "rm") == 0) {
         if (argc < 2) { vga_puts("usage: rm <file>\n"); return; }
@@ -3378,6 +3660,36 @@ static void shell_exec_builtin(int argc, char **argv) {
         if (!found) {
             void *entry = 0;
             if (!shell_load(argv[1], progname, &entry)) {
+                /* try minifs */
+                if (minifs_is_mounted()) {
+                    int ino = minifs_resolve_path(argv[1]);
+                    if (ino >= 0) {
+                        MiniFSInode st;
+                        if (minifs_stat(ino, &st) >= 0 && st.size > 0) {
+                            unsigned char *buf = (unsigned char *)kmalloc(st.size);
+                            if (buf) {
+                                minifs_read(ino, buf, 0, st.size);
+                                if (buf[0]==0x7F && buf[1]=='E' && buf[2]=='L' && buf[3]=='F') {
+                                    Elf64_Half etype = ((Elf64_Ehdr *)buf)->e_type;
+                                    if (etype == ET_REL) {
+                                        entry = elf_load(buf, st.size);
+                                        if (entry) {
+                                            int ret = k_run_rel((prog_entry_t)entry, argc - 1, argv + 1);
+                                            shell_report_exit(ret); return;
+                                        }
+                                    } else if (etype == ET_EXEC || etype == ET_DYN) {
+                                        entry = load_exec_elf(buf, st.size);
+                                        if (entry) {
+                                            int ret = k_exec_user(entry, argc - 1, argv + 1);
+                                            shell_report_exit(ret); return;
+                                        }
+                                    }
+                                }
+                                kfree(buf);
+                            }
+                        }
+                    }
+                }
                 shell_report("run: not found: ", argv[1]);
                 return;
             }
@@ -3513,6 +3825,14 @@ void kmain(void) {
 
     if ((unsigned long)(ramdisk_end - ramdisk_start) > 0) {
         ramdisk_setup_from(ramdisk_start, (unsigned)(ramdisk_end - ramdisk_start));
+    }
+
+    block_init();
+    minifs_init();
+    if (ide_present()) {
+        if (minifs_mount() < 0) {
+            kprintf("minifs: no filesystem found on disk\n");
+        }
     }
 
     kprintf("Heap: 64 MB  Symbols: %d  (Linux ELF: syscall ABI ready)\n", ksym_count);

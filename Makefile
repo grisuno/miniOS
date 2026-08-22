@@ -33,6 +33,8 @@ SOURCE_REPOS = $(MINIGCC_DIR)=$(MINIGCC_URL) \
                $(LD_DIR)=$(LD_URL)
 
 CFLAGS_HOST = -std=c99 -Wall -Wextra -O2
+CFLAGS_DOOM = -std=gnu99 -Wall -O2 -DNORMALUNIX -DLINUX -DSNDSERV -D_DEFAULT_SOURCE \
+              -Wno-unused-result -Wno-sign-compare -Wno-pointer-sign
 
 BOOTDEFS = bootdefs.h
 
@@ -247,7 +249,56 @@ $(ASM_DIR)/freedom.s: $(SRC_DIR)/freedom.c $(MINIGCC_BIN)
 $(BIN_DIR)/freedom: $(ASM_DIR)/freedom.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
-# ── Self-hosted compiler (compiled by minigcc, linked by 'ld') ────
+# ── DOOM HAL: Hardware Abstraction Layer for doomgeneric ──────────────────
+# Compilado en el host con gcc estatico; la entrada _start es el punto de
+# ejecucion que el kernel carga con load_exec_elf y ejecuta en Ring 3.
+$(BIN_DIR)/doom.elf: $(SRC_DIR)/doom_hal.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -m64 -O2 -e _start -o $@ $<
+
+# ── DOOM (doomgeneric port) ──────────────────────────────────────────────
+# Full doomgeneric engine compiled as a static Linux ELF.  Uses the
+# host libc (static) for malloc/printf/fopen etc; the kernel provides
+# the Linux syscalls these translate to.  Platform layer is
+# doomgeneric_minios.c (VGA Mode 13h framebuffer + PS/2 keyboard).
+DOOM_DIR = $(PROGS_DIR)/doomgeneric
+DOOM_SRCS = am_map.c doomdef.c doomstat.c dstrings.c d_event.c d_items.c \
+            d_iwad.c d_loop.c d_main.c d_mode.c d_net.c f_finale.c \
+            f_wipe.c g_game.c hu_lib.c hu_stuff.c info.c i_cdmus.c \
+            i_endoom.c i_joystick.c i_scale.c i_sound.c i_system.c \
+            i_timer.c memio.c m_argv.c m_bbox.c m_cheat.c m_config.c \
+            m_controls.c m_fixed.c m_menu.c m_misc.c m_random.c \
+            p_ceilng.c p_doors.c p_enemy.c p_floor.c p_inter.c \
+            p_lights.c p_map.c p_maputl.c p_mobj.c p_plats.c \
+            p_pspr.c p_saveg.c p_setup.c p_sight.c p_spec.c \
+            p_switch.c p_telept.c p_tick.c p_user.c r_bsp.c r_data.c \
+            r_draw.c r_main.c r_plane.c r_segs.c r_sky.c r_things.c \
+            sha1.c sounds.c statdump.c st_lib.c st_stuff.c s_sound.c \
+            tables.c v_video.c wi_stuff.c w_checksum.c w_file.c \
+            w_main.c w_wad.c z_zone.c w_file_stdc.c i_input.c \
+            i_video.c i_main.c dummy.c doomgeneric.c doomgeneric_minios.c
+
+DOOM_OBJS = $(patsubst %.c,$(DOOM_DIR)/build/%.o,$(DOOM_SRCS))
+
+$(DOOM_DIR)/build:
+	mkdir -p $@
+
+$(DOOM_DIR)/build/%.o: $(DOOM_DIR)/%.c | $(DOOM_DIR)/build
+	$(CC) $(CFLAGS_DOOM) -I$(DOOM_DIR) -c $< -o $@
+
+$(BIN_DIR)/doomgeneric.elf: $(DOOM_OBJS)
+	$(CC) -static -no-pie -o $@ $^ -lm
+	chmod +x $@
+
+# ── Archivo WAD de DOOM ──────────────────────────────────────────────────
+# Doom1.wad ya está en la raíz del repositorio (4,2 MB). Se empaqueta en
+# la ramdisk bajo el nombre bin/doom1.wad para que los programas dentro
+# del OS puedan acceder a los niveles.  Se añade a PROGS para que la
+# imagen se reconstruya al editarlo.
+$(BIN_DIR)/doom1.wad: Doom1.wad
+	cp $< $@
+
+# DOOM binaries live on minifs, not the ramdisk (kernel must stay < 3 MB)
+MINIFS_DOOM_FILES = $(BIN_DIR)/doom.elf $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
 # Generation 2: gen1 minigcc compiles its own source; 'ld' links it.
 # Generation 3: the ld-linked compiler compiles itself again; the gen3
 # binary is what ships on the ramdisk. `make selfhost` additionally
@@ -321,7 +372,7 @@ stage2.bin: stage2.elf
 	$(OBJCOPY) -O binary $< $@
 
 # ── Kernel ────────────────────────────────────────────────────────
-kernel.o: kernel.c kernel.h tls.h
+kernel.o: kernel.c kernel.h tls.h minifs.h ide.h block.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 net.o: net.c net.h kernel.h
@@ -339,27 +390,50 @@ tls_x509.o: tls_x509.c tls.h tls_port.h
 ramdisk_data.o: ramdisk_data.c
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o kernel.ld
+ide.o: ide.c ide.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+block.o: block.c block.h ide.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+minifs.o: minifs.c minifs.h block.h ide.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+lz4_kernel.o: lz4_kernel.c lz4_kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o tls.o tls_crypto.o \
-	      tls_x509.o ramdisk_data.o -o $@
+	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@
 
 # ── Disk image ────────────────────────────────────────────────────
-os.img: stage1.bin stage2.bin kernel.bin
+# MiniFS image: 128 MB filesystem appended after the kernel, contains DOOM
+MINIFS_BLOCKS ?= 32768
+
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(BIN_DIR)/doom.elf $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
+	python3 mkfs.minifs.py $@ $(MINIFS_BLOCKS) \
+		$(BIN_DIR)/doom.elf $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
+
+os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	@ksec=$$(( ($$(stat -c%s kernel.bin) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )); \
 	 total=$$(( $(KERNEL_LBA) + ksec )); \
 	 img=$$(( (total + $(DISK_ALIGN_SECTORS) - 1) / $(DISK_ALIGN_SECTORS) * $(DISK_ALIGN_SECTORS) )); \
-	 dd if=/dev/zero of=$@ bs=$(SECTOR_BYTES) count=$$img status=none; \
+	 fsec=$$(( ($$(stat -c%s minifs.bin) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )); \
+	 final=$$(( img + fsec )); \
+	 dd if=/dev/zero of=$@ bs=$(SECTOR_BYTES) count=$$final status=none; \
 	 dd if=stage1.bin of=$@ conv=notrunc status=none; \
 	 dd if=stage2.bin of=$@ bs=$(SECTOR_BYTES) seek=$(STAGE2_LBA) conv=notrunc status=none; \
 	 dd if=kernel.bin of=$@ bs=$(SECTOR_BYTES) seek=$(KERNEL_LBA) conv=notrunc status=none; \
+	 dd if=minifs.bin of=$@ bs=$(SECTOR_BYTES) seek=$$img conv=notrunc status=none; \
 	 echo "=== os.img built ==="; \
 	 echo "stage1:  $$(stat -c%s stage1.bin) bytes at LBA 0"; \
 	 echo "stage2:  $$(stat -c%s stage2.bin) bytes at LBA $(STAGE2_LBA)"; \
 	 echo "kernel:  $$(stat -c%s kernel.bin) bytes ($$ksec sectors) at LBA $(KERNEL_LBA)"; \
-	 echo "image:   $$img sectors"
+	 echo "minifs:  $$(stat -c%s minifs.bin) bytes ($$fsec sectors) at LBA $$img"; \
+	 echo "image:   $$final sectors"
 
 run: os.img
 	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC)
@@ -392,5 +466,15 @@ clean:
 
 .SECONDARY:
 
+minifs-mkfs:
+	python3 mkfs.minifs.py minifs.bin $(MINIFS_BLOCKS) \
+		progs/bin/doom.elf progs/bin/doomgeneric.elf progs/bin/doom1.wad progs/bin/DOOM1.WAD
+
+minifs-dump:
+	python3 minifs_dump.py minifs.bin $(ARGS)
+
+minifs-fsck:
+	python3 minifs_fsck.py minifs.bin
+
 .PHONY: all run clean debug gdb serial test sources sources-update \
-        sources-status toolchain selfhost
+        sources-status toolchain selfhost minifs-mkfs minifs-dump minifs-fsck

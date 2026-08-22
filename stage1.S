@@ -5,6 +5,13 @@
  * disk and transfer control to it. All kernel loading, A20 handling and mode
  * switching live in stage 2, which has no 512-byte size ceiling.
  *
+ * Before loading stage 2 the boot sector switches the VGA into Mode 13h
+ * (320x200, 256 colors, linear framebuffer at physical 0xA0000) while we
+ * still have BIOS video services available. The kernel cannot re-enter
+ * real-mode INT 10h once it has entered long mode, so the mode set has to
+ * happen here. The kernel remaps the framebuffer into the user window and
+ * exposes it through dedicated syscalls for graphics programs.
+ *
  * Reads use INT 13h extended (LBA) addressing, so the image must be attached
  * as a hard disk. Extension support is verified before the first read and a
  * diagnostic is printed if the firmware cannot serve the request.
@@ -52,6 +59,18 @@ normalize:
     movb BOOT_DRIVE_ADDR, %dl
     int $BIOS_DISK_INT
     jc read_failed
+
+    /* Switch the VGA into Mode 13h (320x200, 256 colors, linear framebuffer
+     * at physical 0xA0000) while the BIOS video services are still available.
+     * Mode 13h cannot be re-entered from long mode, so the mode set has to
+     * happen here in real mode; the kernel remaps the framebuffer into the
+     * user window and exposes it to ring-3 graphics programs through the
+     * SYS_PALETTE / SYS_FB syscalls. AX = 0x0013 means AH=00 (set video mode)
+     * and AL=0x13 (Mode 13h). The call clears the framebuffer as a side
+     * effect, which is fine: stage 2 and the kernel redraw the text console
+     * on top of the framebuffer when they need to. */
+    movw $BIOS_VIDEO_SET_MODE, %ax
+    int $BIOS_VIDEO_INT
 
     movb BOOT_DRIVE_ADDR, %dl
     ljmp $BOOT_SEG_NULL, $BOOT_STAGE2_ADDR
