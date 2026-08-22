@@ -1626,7 +1626,7 @@ void D_DoomMain (void)
     I_CheckIsScreensaver();
     I_InitTimer();
     I_InitJoystick();
-    // I_InitSound(false);
+    I_InitSound(true);
     I_InitMusic();
 
 #ifdef FEATURE_MULTIPLAYER

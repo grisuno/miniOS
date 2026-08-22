@@ -2341,6 +2341,14 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         vga_mode13h = (int)a1;
         return 0;
     }
+    case 209: { /* SYS_PCSPK_INIT */
+        pcspk_init();
+        return 0;
+    }
+    case 210: { /* SYS_PCSPK_TONE: play PC speaker tone at freq Hz (0=off) */
+        pcspk_tone((unsigned)a1);
+        return 0;
+    }
     case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
         unsigned char *pal = (unsigned char *)a1;
         if (!user_range_ok((unsigned long)a1, 768)) return -EFAULT;

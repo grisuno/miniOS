@@ -445,6 +445,27 @@ A line editor over ramdisk files: `h l p e a i d w x q q!`. Two invariants:
   to be written back, because saving it would drop what was never loaded.
 - `q` refuses to discard unsaved changes; `q!` discards explicitly.
 
+### PC speaker audio (`pcspk.c` + Doom)
+The kernel owns the QEMU PC speaker through two syscalls: 209 `pcspk_init`
+and 210 `pcspk_tone(freq)` (0 = off). The driver programs PIT channel 2
+(ports 0x42/0x43, divisor `1193182/freq`) and gates the speaker on/off via
+bit 1 of port 0x61; frequencies are clamped to the audible 20..20000 Hz
+range and no other sound device is emulated. QEMU does **not** route the
+PC speaker to the host with a bare `-audiodev`: the machine option
+`-machine pc,pcspk-audiodev=<id>` is required in addition. The Makefile's
+`QEMU_AUDIO` carries both (`-audiodev pa,id=snd0 -machine pc,pcspk-audiodev=snd0`).
+
+Doom (a ring-3 Linux ELF) reaches the speaker through `i_minios_sound.c`,
+selected when `snd_sfxdevice == SNDDEVICE_PCSPEAKER` and `I_InitSound(true)`
+runs (it was once commented out in `d_main.c`, which left `sound_module`
+NULL and every `I_StartSound` a silent no-op). Each DP lump is a PC-speaker
+sequence: 2-byte big-endian priority, then pairs of (1-byte index into the
+original Doom frequency table 178..2690 Hz, 1-byte duration in 70 Hz
+ticks); index 0 ends the sequence. `PCSPK_StartSound` loads the lump and
+starts a tone immediately, and `PCSPK_Update` (per game tic) advances
+through the note sequence by elapsed time and programs the highest-priority
+active channel, turning the speaker off when none remain.
+
 ## Development Methodology (SDD + TDD + BDD)
 1. **SDD**: every feature begins with a spec in this file.
 2. **TDD**: add a failing scenario first, then implement.

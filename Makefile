@@ -49,6 +49,7 @@ DISK_ALIGN_SECTORS  = 2048
 QEMU_DRIVE = -drive file=os.img,format=raw,if=ide
 QEMU_MEM   = -m 256M
 QEMU_NIC   = -nic user,model=rtl8139
+QEMU_AUDIO  = -audiodev pa,id=snd0 -machine pc,pcspk-audiodev=snd0
 
 # KASLR randomizes the kernel image's physical base on every boot. Disable
 # with `make ENABLE_KASLR=0` when a deterministic physical layout is wanted
@@ -269,7 +270,8 @@ DOOM_SRCS = am_map.c doomdef.c doomstat.c dstrings.c d_event.c d_items.c \
             sha1.c sounds.c statdump.c st_lib.c st_stuff.c s_sound.c \
             tables.c v_video.c wi_stuff.c w_checksum.c w_file.c \
             w_main.c w_wad.c z_zone.c w_file_stdc.c i_input.c \
-            i_video.c i_main.c dummy.c doomgeneric.c doomgeneric_minios.c
+            i_video.c i_main.c dummy.c doomgeneric.c doomgeneric_minios.c \
+            i_minios_sound.c
 
 DOOM_OBJS = $(patsubst %.c,$(DOOM_DIR)/build/%.o,$(DOOM_SRCS))
 
@@ -402,16 +404,19 @@ sched.o: sched.c sched.h kernel.h bootdefs.h
 vga_fb.o: vga_fb.c vga_fb.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+pcspk.o: pcspk.c pcspk.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 isr_stubs.o: isr_stubs.S
 	$(CC) -c -m64 $< -o $@
 
 ctx_sw.o: ctx_sw.S
 	$(CC) -c -m64 $< -o $@
 
-kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o kernel.ld
+kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
-	      sched.o isr_stubs.o ctx_sw.o vga_fb.o -o $@
+	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@
@@ -443,7 +448,7 @@ os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	 echo "image:   $$final sectors"
 
 run: os.img
-	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC)
+	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) $(QEMU_AUDIO)
 
 debug: os.img
 	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) -monitor stdio -no-reboot

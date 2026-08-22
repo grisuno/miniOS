@@ -180,6 +180,11 @@ extern unsigned long kernel_end;
 extern char ramdisk_start[];
 extern char ramdisk_end[];
 
+/* ========== PC speaker ========== */
+void pcspk_init(void);
+void pcspk_tone(unsigned freq);
+void pcspk_off(void);
+
 /* ========== IDE driver ========== */
 void ide_init(void);
 int  ide_read_sectors(unsigned int lba, unsigned int count, void *buf);

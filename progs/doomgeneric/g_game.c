@@ -2171,18 +2171,13 @@ void G_DoPlayDemo (void)
     }
     else
     {
-        char *message = "Demo is from a different game version!\n"
-                        "(read %i, should be %i)\n"
-                        "\n"
-                        "*** You may need to upgrade your version "
-                            "of Doom to v1.9. ***\n"
-                        "    See: https://www.doomworld.com/classicdoom"
-                                  "/info/patches.php\n"
-                        "    This appears to be %s.";
-
-        //I_Error(message, demoversion, G_VanillaVersionCode(),
-        printf(message, demoversion, G_VanillaVersionCode(),
-                         DemoVersionDescription(demoversion));
+        printf("Demo is from a different game version (read %i, expected %i). Skipping demo.\n",
+               demoversion, G_VanillaVersionCode());
+        Z_ChangeTag(demobuffer, PU_CACHE);
+        demoplayback = false;
+        gameaction = ga_nothing;
+        D_StartTitle();
+        return;
     }
     
     skill = *demo_p++; 

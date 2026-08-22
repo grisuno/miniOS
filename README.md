@@ -227,6 +227,16 @@ miniOS> run doomgeneric.elf
 | Shift | run |
 | Esc | menu |
 
+Sound effects play through the QEMU PC speaker: the kernel drives PIT
+channel 2 (ports 0x42/0x43) plus the gate bit on port 0x61, and the sound
+module in `i_minios_sound.c` maps each DP lump (1-byte frequency index +
+1-byte duration in 70 Hz ticks, after a 2-byte priority) through the
+original Doom PC-speaker frequency table. QEMU must wire the PC speaker
+to the audio backend — `-machine pc,pcspk-audiodev=<id>` in addition to
+`-audiodev <backend>,id=<id>` (the `run` target sets both via
+`QEMU_AUDIO`). A bare `-audiodev` alone routes nothing, so the beeps are
+silent without the machine option.
+
 The binary is built with the host toolchain (static, no-pie) and placed
 at `bin/doomgeneric.elf` on the minifs. To rebuild from source:
 
