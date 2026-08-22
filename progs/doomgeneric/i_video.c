@@ -49,6 +49,8 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 //#define CMAP256
 
+extern volatile int minios_palette_dirty;
+
 struct FB_BitField
 {
 	uint32_t offset;			/* beginning of bitfield	*/
@@ -313,22 +315,6 @@ void I_ReadScreen (byte* scr)
 void I_SetPalette (byte* palette)
 {
 	int i;
-	//col_t* c;
-
-	//for (i = 0; i < 256; i++)
-	//{
-	//	c = (col_t*)palette;
-
-	//	rgb565_palette[i] = GFX_RGB565(gammatable[usegamma][c->r],
-	//								   gammatable[usegamma][c->g],
-	//								   gammatable[usegamma][c->b]);
-
-	//	palette += 3;
-	//}
-    
-
-    /* performance boost:
-     * map to the right pixel format over here! */
 
     for (i=0; i<256; ++i ) {
         colors[i].a = 0;
@@ -336,6 +322,7 @@ void I_SetPalette (byte* palette)
         colors[i].g = gammatable[usegamma][*palette++];
         colors[i].b = gammatable[usegamma][*palette++];
     }
+    minios_palette_dirty = 1;
 }
 
 // Given an RGB value, find the closest matching palette index.

@@ -2055,6 +2055,38 @@ struct kiovec { const char *iov_base; unsigned long iov_len; };
 
 static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6);
 
+/* ---- PIT-calibrated TSC for SYS_TIME (syscall 204) ----
+ * PIT channel 2 one-shot measures real TSC ticks per millisecond
+ * so the timer works regardless of the host CPU frequency. */
+static unsigned long tsc_per_ms;
+static unsigned long tsc_base_ms;
+
+static unsigned long ktime_rdtsc(void) {
+    unsigned int lo, hi;
+    __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
+    return ((unsigned long)hi << 32) | lo;
+}
+
+static void ktime_init(void) {
+    unsigned long t0, t1;
+    /* channel 2, one-shot, lsb+msb, binary */
+    outb(0x61, (unsigned char)((inb(0x61) & 0x0F) | 0x01));
+    outb(0x43, 0xB0);
+    outb(0x42, 0x96);  /* count = 0x0496 = 1174 → ~1 ms at 1.193 MHz */
+    outb(0x42, 0x04);
+    t0 = ktime_rdtsc();
+    while (!(inb(0x61) & 0x20));   /* wait for channel 2 output high */
+    t1 = ktime_rdtsc();
+    outb(0x61, (unsigned char)(inb(0x61) & 0x0F));
+    tsc_per_ms  = t1 - t0;
+    tsc_base_ms = t0;
+}
+
+static unsigned long ktime_ms(void) {
+    if (!tsc_per_ms) ktime_init();
+    return (ktime_rdtsc() - tsc_base_ms) / tsc_per_ms;
+}
+
 long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);
 long syscall_trace_enabled(void);
 void syscall_trace_set(int on);
@@ -2234,12 +2266,8 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     case 203:            /* MiniOS: receive decrypted TLS application data */
         if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
         return tls_sys_recv(a1, a2, a3);
-    case 204: { /* SYS_TIME: return elapsed milliseconds */
-        unsigned long lo, hi;
-        __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
-        unsigned long tsc = ((unsigned long)hi << 32) | lo;
-        /* QEMU TSC ~1 GHz -> divide by ~1M for approximate milliseconds */
-        return (long)(tsc / 1000000UL);
+    case 204: { /* SYS_TIME: PIT-calibrated elapsed milliseconds */
+        return (long)ktime_ms();
     }
     case 205: { /* SYS_KBD: read PS/2 scancode without blocking */
         if (kbd_raw_mode) {

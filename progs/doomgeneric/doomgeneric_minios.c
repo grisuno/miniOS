@@ -45,6 +45,11 @@ static long sys_kbd_raw(int on) {
 struct color { uint32_t b:8; uint32_t g:8; uint32_t r:8; uint32_t a:8; };
 extern struct color colors[256];
 
+/* Dirty flag: set by I_SetPalette(), cleared after we rebuild the VGA state.
+ * Avoids rebuilding the 4096-entry hash table and pushing 768 bytes to the
+ * VGA DAC on every single frame. */
+volatile int minios_palette_dirty = 1;
+
 /* 4-bit hash table for fast RGB -> palette index lookup */
 #define HT_SIZE 4096
 static int16_t ht_idx[HT_SIZE];
@@ -217,8 +222,11 @@ void DG_Init(void) {
 }
 
 void DG_DrawFrame(void) {
-    rebuild_palette_ht();
-    load_vga_palette();
+    if (minios_palette_dirty) {
+        rebuild_palette_ht();
+        load_vga_palette();
+        minios_palette_dirty = 0;
+    }
 
     /* DG_ScreenBuffer: 640x400 uint32_t BGRA. VGA: 320x200 x 1 byte. */
     uint32_t *src = DG_ScreenBuffer;
