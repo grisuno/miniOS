@@ -12,6 +12,7 @@ I have implemented a primitive desktop environment within MiniOS that operates i
 *   **Shell in VGA:** Handles basic shell and focus in VGA mode to avoid serial mode
 *   **Mouse Integration:** Full PS/2 mouse driver support with hardware cursor rendering.
 *   **Scrollable Terminal:** A virtual terminal emulator capable of handling large buffers and scrollback history via mouse wheel or keyboard shortcuts.
+*   **Speaker's Sound:** Sound support to speaker
 
 
 
