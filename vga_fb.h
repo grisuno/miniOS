@@ -96,14 +96,6 @@ extern mouse_state_t mouse_state;
 #define SB_MAX_LINES 256
 #define SB_LINE_MAX  TERM_MAX_COLS
 
-typedef struct {
-    char lines[SB_MAX_LINES][SB_LINE_MAX];
-    int  head;
-    int  tail;
-    int  count;
-    int  view_offset;
-} sb_ring_t;
-
 /* ---- Public API ---- */
 void     vga_fb_init(void);
 void     vga_fb_clear(void);
@@ -114,7 +106,6 @@ void     vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);
 void     vga_fb_putc_term(char c);
 void     vga_fb_puts_term(const char *s);
 void     vga_fb_draw_desktop(void);
-void     vga_fb_scroll_term(void);
 void     vga_fb_handle_key(int scancode);
 void     vga_fb_toggle_fullscreen(void);
 void     vga_fb_move_terminal(int dx, int dy);

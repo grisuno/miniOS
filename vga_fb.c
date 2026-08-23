@@ -43,63 +43,103 @@ void vga_fb_boot_config(void) {
 /* ---- Mouse state (fed by sched.c IRQ12 handler) ---- */
 mouse_state_t mouse_state;
 
-/* ---- Scrollback ring ---- */
-static sb_ring_t sb;
+/* ---- Unified terminal buffer (logical lines, re-flowed at display width) ----
+ *
+ * The whole terminal history lives in ONE place: a ring of logical lines
+ * (`lg`) holding every completed line, plus the in-progress line being typed
+ * or emitted (`act`). The screen is never stored pre-wrapped; on every render
+ * the visible window is reconstructed by wrapping the logical lines at the
+ * current `term_cols`. Because there is a single source of truth, live screen
+ * and scrollback can never disagree, and resizing the window re-wraps the
+ * content instead of clipping it.
+ *
+ * A display row is the slice of a logical line that fits in `term_cols`
+ * columns. A logical line of length L occupies max(1, ceil(L/term_cols))
+ * display rows. The whole history occupies `total_rows` display rows stacked
+ * oldest at top, and the viewport shows `term_rows` of them. `disp_off` is
+ * how many display rows the viewport is scrolled up from the bottom (0 =
+ * live). Scrolling is implicit: completed lines naturally leave the viewport
+ * as new content is added, and remain reachable in the ring.
+ *
+ * There is deliberately no "scroll the screen up" operation. A completed
+ * logical line is pushed to the ring exactly once, when it ends with '\n';
+ * that eliminates the duplicated/partial scrollback entries the old two-buffer
+ * scheme produced, which were the source of the pixel artifacts. */
+static char lg[SB_MAX_LINES][SB_LINE_MAX];   /* completed logical lines */
+static int  lg_head, lg_tail, lg_count;
+static char act[SB_LINE_MAX];                /* in-progress line */
+static int  act_len;
+static int  disp_off;                        /* scrollback rows above the bottom */
 
-static void sb_init(void) {
-    sb.head = sb.tail = sb.count = 0;
-    sb.view_offset = 0;
+/* Ring accessor: logical line at age i (0 = oldest, count-1 = newest). */
+static const char *lg_get(int i) {
+    return lg[(lg_head + i) % SB_MAX_LINES];
 }
 
-static void sb_push_line(const char *line, int len) {
-    int idx = sb.tail;
-    int i;
+/* Append a completed logical line to the ring. The line is stored whole (no
+ * width-dependent wrap), so it can be re-wrapped on any future resize. */
+static void lg_push(const char *line, int len) {
+    int k, idx;
     if (len >= SB_LINE_MAX) len = SB_LINE_MAX - 1;
-    for (i = 0; i < len; i++) sb.lines[idx][i] = line[i];
-    sb.lines[idx][len] = '\0';
-    sb.tail = (sb.tail + 1) % SB_MAX_LINES;
-    if (sb.count < SB_MAX_LINES) sb.count++;
-    else sb.head = (sb.head + 1) % SB_MAX_LINES;
+    idx = lg_tail;
+    for (k = 0; k < len; k++) lg[idx][k] = line[k];
+    lg[idx][len] = '\0';
+    lg_tail = (lg_tail + 1) % SB_MAX_LINES;
+    if (lg_count < SB_MAX_LINES) lg_count++;
+    else lg_head = (lg_head + 1) % SB_MAX_LINES;
 }
 
-static const char *sb_get_line(int offset) {
-    if (offset < 0 || offset >= sb.count) return 0;
-    int idx = (sb.tail - 1 - offset + SB_MAX_LINES * 2) % SB_MAX_LINES;
-    return sb.lines[idx];
+/* Display rows a logical line of `len` characters occupies at term_cols. */
+static int line_nrows(int len) {
+    int w = term_cols > 0 ? term_cols : 1;
+    int n = len / w + (len % w ? 1 : 0);
+    if (n < 1) n = 1;   /* an empty line still shows as one row */
+    return n;
 }
 
-static int sb_total(void) { return sb.count; }
+static int act_nrows(void) { return line_nrows(act_len); }
 
-static void sb_scroll_up(void) {
-    if (sb.view_offset < sb.count - 1) sb.view_offset++;
+/* Total display rows of the whole history (completed lines + active line). */
+static int total_rows(void) {
+    int t = 0, i;
+    for (i = 0; i < lg_count; i++)
+        t += line_nrows((int)kstrlen(lg_get(i)));
+    return t + act_nrows();
 }
 
-static void sb_scroll_down(void) {
-    if (sb.view_offset > 0) sb.view_offset--;
+/* Clamp disp_off to a legal scroll range. */
+static void disp_clamp(void) {
+    int tr = total_rows();
+    int max = tr > term_rows ? tr - term_rows : 0;
+    if (disp_off > max) disp_off = max;
+    if (disp_off < 0)   disp_off = 0;
 }
 
-static void sb_scroll_bottom(void) {
-    sb.view_offset = 0;
+/* Absolute display-row index of the top of the viewport. Negative when the
+ * history is shorter than the window (those rows are rendered blank). */
+static int disp_top(void) {
+    int tr = total_rows();
+    if (tr <= term_rows) return tr - term_rows;
+    return (tr - term_rows) - disp_off;
 }
 
-/* ---- Current line being assembled (for line-level scrollback capture) ---- */
-static char term_line_buf[SB_LINE_MAX];
-static int  term_line_len;
-
-static void term_line_reset(void) {
-    term_line_len = 0;
-}
-
-static void term_line_push(char c) {
-    if (c == '\n') {
-        if (term_line_len > 0)
-            sb_push_line(term_line_buf, term_line_len);
-        term_line_len = 0;
-        return;
+/* Locate the logical line contributing the display row `abs`, and set *off to
+ * the character offset where that display row starts. Returns the line text,
+ * or 0 when abs is beyond the history. */
+static const char *line_at(int abs, int *off) {
+    int acc = 0, i;
+    for (i = 0; i < lg_count; i++) {
+        const char *l = lg_get(i);
+        int n = line_nrows((int)kstrlen(l));
+        if (abs < acc + n) { *off = (abs - acc) * term_cols; return l; }
+        acc += n;
     }
-    if (term_line_len < SB_LINE_MAX - 1)
-        term_line_buf[term_line_len++] = c;
+    if (abs < acc + act_nrows()) { *off = (abs - acc) * term_cols; return act; }
+    return 0;
 }
+
+static void draw_scrollbar(void);
+static void term_render(void);
 
 /* ---- Mouse cursor bitmap (8x8 arrow) ---- */
 static const uint8_t cursor_bmp[8] = {
@@ -278,7 +318,6 @@ static const uint8_t font8x8[96][8] = {
 #define WIN_DEF_Y     3
 
 /* ---- Terminal state ---- */
-static int term_cx, term_cy;
 int term_x = WIN_DEF_X, term_y = WIN_DEF_Y;
 int term_cols, term_rows;
 static int term_sz_cols = WIN_DEF_COLS;   /* persisted size across redraws */
@@ -286,12 +325,9 @@ static int term_sz_rows = WIN_DEF_ROWS;
 static int term_fullscreen;
 static int term_px_x, term_px_y, term_px_w, term_px_h;
 
-/* Live-screen text buffer. The framebuffer terminal is re-rendered from this
- * whenever the desktop redraws (window move/snap/resize/fullscreen), so moving
- * the window never erases the current screen — the prompt and typed command
- * survive. Bounds are enforced when the size is clamped in term_recalc, so the
- * buffer can never be indexed out of range. */
-static char term_screen[TERM_MAX_ROWS][TERM_MAX_COLS];
+/* There is no pre-wrapped screen buffer: the visible window is reconstructed
+ * from the logical line history on every render (see term_render), so a resize
+ * re-wraps the content instead of clipping it. */
 
 #define FB_OFFSET(x,y) ((unsigned)(y) * fb_pitch + (unsigned)(x))
 
@@ -412,7 +448,7 @@ void vga_fb_clear(void) {
 /* ---- Layout ---- */
 static int term_max_cols(void);
 static int term_max_rows(void);
-static void term_redraw_screen(void);
+static void term_render(void);
 
 static void term_recalc(void) {
     int max_cols = term_max_cols();
@@ -546,7 +582,7 @@ static void draw_scrollbar(void) {
     int sx = term_px_x + term_px_w;
     int sy = term_content_y();
     int sh = term_px_h;
-    int total = sb_total();
+    int total = total_rows();
     int visible = term_rows;
     int thumb_h, thumb_y;
 
@@ -558,15 +594,11 @@ static void draw_scrollbar(void) {
         thumb_h = sh;
         thumb_y = sy;
     } else {
-        thumb_h = (visible * sh) / (total + visible);
+        int max_off = total - visible;
+        thumb_h = (visible * sh) / total;
         if (thumb_h < 4) thumb_h = 4;
-        if (sb.view_offset == 0) {
-            thumb_y = sy + sh - thumb_h;
-        } else {
-            int max_off = total;
-            thumb_y = sy + sh - thumb_h
-                      - (sb.view_offset * (sh - thumb_h)) / max_off;
-        }
+        thumb_y = sy + sh - thumb_h
+                  - (disp_off * (sh - thumb_h)) / max_off;
     }
     /* Clamp */
     if (thumb_y < sy) thumb_y = sy;
@@ -578,44 +610,87 @@ static void draw_scrollbar(void) {
                 thumb_h - 2 * SCROLLBAR_PAD, COL_SCROLL_THUMB);
 }
 
-/* Draw a text string into the terminal starting at screen row `row`, wrapping
- * long lines at term_cols exactly as the live screen does, and return the row
- * below the last drawn. Used when replaying scrollback so a line wider than
- * the window is never cut short. */
-static int term_puts_wrap(int row, const char *s, uint8_t fg, uint8_t bg) {
-    int i = 0;
-    while (row < term_rows) {
-        int drawn = 0;
-        while (s[i] && drawn < term_cols) {
-            vga_fb_char(drawn, row, s[i], fg, bg);
-            i++;
-            drawn++;
-        }
-        if (drawn < term_cols) return row + 1;
-        row++;
+/* Render one display row at viewport row `vrow` for the absolute display row
+ * `abs`. Rows outside the history (above the oldest line, or below the active
+ * line) are blanked. */
+static void render_row(int vrow, int abs) {
+    const char *line;
+    int off, len, c, src;
+    if (abs < 0) { vga_fb_str(0, vrow, "", COL_TERM_TXT, COL_TERMINAL); return; }
+    line = line_at(abs, &off);
+    if (!line) { vga_fb_str(0, vrow, "", COL_TERM_TXT, COL_TERMINAL); return; }
+    len = (int)kstrlen(line);
+    for (c = 0; c < term_cols; c++) {
+        src = off + c;
+        vga_fb_char(c, vrow, src < len ? line[src] : ' ',
+                    COL_TERM_TXT, COL_TERMINAL);
     }
-    return row;
 }
 
-/* Repaint the terminal content honouring the current scrollback view: the
- * scrolled-back history when sb.view_offset > 0, otherwise the live screen
- * replayed from the buffer. Scrolled-back lines are shown newest-at-bottom,
- * oldest-at-top, wrapped to the window width. Used after a desktop redraw and
- * by wheel scroll. */
-static void term_redraw_content(void) {
-    int row = 0;
+/* Full repaint of the terminal window from the logical history, honouring the
+ * current scroll position. Used on desktop redraws, resize, wrap, scroll and
+ * any structural change. */
+static void term_render(void) {
+    int top = disp_top();
+    int v;
     vga_fb_rect(term_px_x, term_content_y(), term_px_w, term_px_h, COL_TERMINAL);
-    if (sb.view_offset > 0) {
-        int off = (sb.view_offset - 1) + (term_rows - 1);   /* oldest visible */
-        int end = sb.view_offset - 1;                        /* newest visible */
-        for (; off >= end && row < term_rows; off--) {
-            const char *line = sb_get_line(off);
-            if (line) row = term_puts_wrap(row, line, COL_TERM_TXT, COL_TERMINAL);
-        }
-    } else {
-        term_redraw_screen();
-    }
+    for (v = 0; v < term_rows; v++)
+        render_row(v, top + v);
     draw_scrollbar();
+}
+
+/* Repaint only the bottom region that a live edit touches: from the active
+ * line's first visible display row to the bottom of the window. Used for a
+ * character append/backspace that does not change the number of display rows,
+ * so typing stays cheap while remaining correct. */
+static void term_render_active(void) {
+    int top = disp_top();
+    int abs_active = total_rows() - act_nrows();
+    int v0 = abs_active - top;
+    int v;
+    if (v0 < 0) v0 = 0;
+    if (v0 >= term_rows) v0 = term_rows - 1;
+    for (v = v0; v < term_rows; v++)
+        render_row(v, top + v);
+    draw_scrollbar();
+}
+
+/* Emit one character into the logical terminal. The active line is the only
+ * editable state: '\n' completes it into the ring, printable characters append
+ * to it, '\b' shortens it. The viewport always snaps to the live bottom on
+ * output, so new input/output is always visible. When the edit changes the
+ * number of display rows (wrap or newline), the whole window is repainted;
+ * otherwise only the active line's rows are redrawn. */
+void vga_fb_putc_term(char c) {
+    int rows_before = total_rows();
+
+    if (c == '\n') {
+        lg_push(act, act_len);
+        act_len = 0;
+        disp_off = 0;
+        if (total_rows() != rows_before) term_render();
+        else term_render_active();
+        return;
+    }
+    if (c == '\r') { disp_off = 0; return; }
+    if (c == '\b') {
+        if (act_len > 0) act_len--;
+        disp_off = 0;
+        if (total_rows() != rows_before) term_render();
+        else term_render_active();
+        return;
+    }
+    if (c >= 32 && c <= 126) {
+        if (act_len < SB_LINE_MAX - 1) act[act_len++] = c;
+        disp_off = 0;
+        if (total_rows() != rows_before) term_render();
+        else term_render_active();
+        return;
+    }
+}
+
+void vga_fb_puts_term(const char *s) {
+    while (*s) vga_fb_putc_term(*s++);
 }
 
 void vga_fb_draw_desktop(void) {
@@ -625,118 +700,21 @@ void vga_fb_draw_desktop(void) {
     vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
     taskbar_render();
     draw_title();
-    /* Repaint the terminal content (live screen or scrollback view) so the
-     * prompt and any typed/echoed text survive a window move, snap, resize or
-     * fullscreen toggle. */
-    term_cx = 0; term_cy = 0;
-    term_redraw_content();
+    /* Repaint the terminal content (live or scrolled view) so the prompt and
+     * any typed/echoed text survive a window move, snap, resize or fullscreen
+     * toggle. Re-wrapping from the logical lines makes the content adapt to
+     * the new window size instead of being clipped. */
+    disp_clamp();
+    term_render();
     /* Any redraw changed the pixels under the cursor; force a fresh save so a
      * stale snapshot never leaves pointer trails behind. */
     cursor_visible = 0;
 }
 
-/* ---- Terminal scroll ---- */
-
-/* Draw one character into both the live-screen buffer and the framebuffer,
- * keeping the two in sync so a desktop redraw can replay the screen. */
-static void term_draw_char(int col, int row, char c, uint8_t fg, uint8_t bg) {
-    if (col < 0 || col >= term_cols || row < 0 || row >= term_rows) return;
-    term_screen[row][col] = c;
-    vga_fb_char(col, row, c, fg, bg);
-}
-
-/* Replay the whole visible screen from the buffer. Called after a desktop
- * redraw repainted only the terminal background. */
-static void term_redraw_screen(void) {
-    int r, c;
-    for (r = 0; r < term_rows; r++)
-        for (c = 0; c < term_cols; c++)
-            vga_fb_char(c, r, term_screen[r][c], COL_TERM_TXT, COL_TERMINAL);
-}
-
-void vga_fb_scroll_term(void) {
-    int r, c;
-    /* Push the top visible line to scrollback before scrolling */
-    if (sb.view_offset == 0)
-        sb_push_line(term_line_buf, term_line_len);
-    term_line_len = 0;
-    /* Shift the live-screen buffer up one row and blank the new bottom row. */
-    for (r = 0; r < term_rows - 1; r++)
-        for (c = 0; c < term_cols; c++)
-            term_screen[r][c] = term_screen[r + 1][c];
-    for (c = 0; c < term_cols; c++)
-        term_screen[term_rows - 1][c] = ' ';
-    /* Move pixel data up by FONT_H rows, honoring the framebuffer pitch. */
-    if (term_px_h > FONT_H) {
-        int rows = (term_px_h - FONT_H) / FONT_H;
-        int r2, b;
-        for (r2 = 0; r2 < rows; r2++) {
-            const volatile uint8_t *s =
-                &FB_ADDR[(term_content_y() + (r2 + 1) * FONT_H) * fb_pitch + term_px_x];
-            volatile uint8_t *d =
-                &FB_ADDR[(term_content_y() + r2 * FONT_H) * fb_pitch + term_px_x];
-            for (b = 0; b < term_px_w; b++)
-                d[b] = s[b];
-        }
-    }
-    /* Clear bottom row */
-    vga_fb_rect(term_px_x, term_content_y() + term_px_h - FONT_H, term_px_w, FONT_H, COL_TERMINAL);
-    draw_scrollbar();
-}
-
-/* ---- Terminal output ---- */
-void vga_fb_putc_term(char c) {
-    int scrolled_back = (sb.view_offset > 0);
-
-    if (c == '\n') {
-        term_line_push('\n');
-        term_cx = 0;
-        if (!scrolled_back) {
-            term_cy++;
-            if (term_cy >= term_rows) {
-                vga_fb_scroll_term();
-                term_cy = term_rows - 1;
-            }
-        }
-        return;
-    }
-    if (c == '\r') { term_cx = 0; return; }
-    if (c == '\b') {
-        if (term_cx > 0) {
-            term_cx--;
-            if (term_line_len > 0) term_line_len--;
-            if (!scrolled_back)
-                term_draw_char(term_cx, term_cy, ' ', COL_TERM_TXT, COL_TERMINAL);
-        }
-        return;
-    }
-    if (c >= 32 && c <= 126) {
-        term_line_push(c);
-        if (!scrolled_back) {
-            term_draw_char(term_cx, term_cy, c, COL_TERM_TXT, COL_TERMINAL);
-            term_cx++;
-            if (term_cx >= term_cols) {
-                term_cx = 0;
-                term_cy++;
-                if (term_cy >= term_rows) {
-                    vga_fb_scroll_term();
-                    term_cy = term_rows - 1;
-                }
-            }
-        }
-    }
-}
-
-void vga_fb_puts_term(const char *s) {
-    while (*s) vga_fb_putc_term(*s++);
-}
-
 /* ---- Keyboard shortcuts ---- */
 void vga_fb_toggle_fullscreen(void) {
     term_fullscreen = !term_fullscreen;
-    sb_scroll_bottom();
-    term_cx = 0; term_cy = 0;
-    term_line_reset();
+    disp_off = 0;
     vga_fb_draw_desktop();
 }
 
@@ -745,9 +723,7 @@ void vga_fb_move_terminal(int dx, int dy) {
         /* Reset to default position */
         term_fullscreen = 0;
         term_x = WIN_DEF_X; term_y = WIN_DEF_Y;
-        sb_scroll_bottom();
-        term_cx = 0; term_cy = 0;
-        term_line_reset();
+        disp_off = 0;
         vga_fb_draw_desktop();
         return;
     }
@@ -763,7 +739,6 @@ void vga_fb_move_terminal(int dx, int dy) {
     term_x = nx; term_y = ny;
     term_px_x = term_x * FONT_W;
     term_px_y = term_y * FONT_H;
-    term_cx = 0; term_cy = 0;
     vga_fb_draw_desktop();
 }
 
@@ -782,8 +757,7 @@ static int term_max_rows(void) {
 
 static void term_finish_layout(void) {
     term_recalc();
-    term_cx = 0; term_cy = 0;
-    term_line_reset();
+    disp_off = 0;
     vga_fb_draw_desktop();
 }
 
@@ -851,7 +825,6 @@ static void vga_fb_drag_terminal(int mx, int my, int grab_cx) {
     term_x = nx; term_y = ny;
     term_px_x = term_x * FONT_W;
     term_px_y = term_y * FONT_H;
-    term_cx = 0; term_cy = 0;
     vga_fb_draw_desktop();
 }
 
@@ -859,9 +832,7 @@ void vga_fb_handle_key(int scancode) {
     switch (scancode) {
     case 0x57: vga_fb_toggle_fullscreen(); break;
     case 0x3F: term_x = WIN_DEF_X; term_y = WIN_DEF_Y; term_fullscreen = 0;
-               sb_scroll_bottom();
-               term_cx = 0; term_cy = 0;
-               term_line_reset();
+               disp_off = 0;
                vga_fb_draw_desktop(); break;
     }
 }
@@ -885,18 +856,16 @@ void vga_fb_mouse_tick(void) {
 
     /* Process wheel: scroll back/forward */
     if (mouse_state.wheel != 0) {
-        if (mouse_state.wheel > 0) {
-            sb_scroll_up();
-            sb_scroll_up();
-            sb_scroll_up();
-        } else {
-            sb_scroll_down();
-            sb_scroll_down();
-            sb_scroll_down();
-        }
+        int tr = total_rows();
+        int max_off = tr > term_rows ? tr - term_rows : 0;
+        if (mouse_state.wheel > 0)
+            disp_off += 3;
+        else
+            disp_off -= 3;
+        if (disp_off > max_off) disp_off = max_off;
+        if (disp_off < 0) disp_off = 0;
         mouse_state.wheel = 0;
-        term_redraw_content();
-        draw_scrollbar();
+        term_render();
         if (cursor_over(term_px_x, term_content_y(), term_px_w, term_px_h))
             cursor_visible = 0;
     }
@@ -936,15 +905,15 @@ void vga_fb_mouse_tick(void) {
         my >= term_content_y() && my < term_content_y() + term_px_h) {
         int sy = term_content_y();
         int sh = term_px_h;
-        int total = sb_total();
+        int total = total_rows();
         int visible = term_rows;
         if (total > visible && sh > 0) {
-            int max_off = total;
+            int max_off = total - visible;
             int new_off = ((sy + sh - my) * max_off) / sh;
             if (new_off < 0) new_off = 0;
             if (new_off > max_off) new_off = max_off;
-            sb.view_offset = new_off;
-            term_redraw_content();
+            disp_off = new_off;
+            term_render();
             if (cursor_over(term_px_x, term_content_y(), term_px_w, term_px_h))
                 cursor_visible = 0;
         }
@@ -987,8 +956,9 @@ void vga_fb_mouse_init(void) {
     mouse_state.wheel = 0;
     mouse_state.present = 0;
     cursor_visible = 0;
-    sb_init();
-    term_line_reset();
+    lg_head = lg_tail = lg_count = 0;
+    act_len = 0;
+    disp_off = 0;
 }
 
 void vga_fb_init(void) {
