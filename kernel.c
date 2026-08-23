@@ -169,6 +169,9 @@ static unsigned long  redir_cap;
 static int            redir_active;
 static int            redir_overflow;
 
+static int redirect_suspend(void);
+static void redirect_resume(int was);
+
 static int redir_grow(void) {
     unsigned long want = redir_cap ? redir_cap * 2 : REDIR_INITIAL_CAP;
     if (want > REDIR_MAX_BYTES) return 0;
@@ -1985,7 +1988,13 @@ void *load_exec_elf(void *data, unsigned size) {
     g_brk       = ALIGN_UP(max_end, 0x1000);
     g_brk_limit = USER_BRK_END;
     user_mmap_cur = USER_BRK_END;
-    kprintf("exec: loaded at %lx entry %lx brk %lx\n", base + USER_LOAD_BASE, base + e->e_entry, g_brk);
+    /* Loader status is shell text, never the command's output: it must not
+     * pollute a `> file` capture. */
+    {
+        int was = redirect_suspend();
+        kprintf("exec: loaded at %lx entry %lx brk %lx\n", base + USER_LOAD_BASE, base + e->e_entry, g_brk);
+        redirect_resume(was);
+    }
     return (void *)(base + e->e_entry);
 }
 
