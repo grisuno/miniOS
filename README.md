@@ -14,7 +14,9 @@ I have implemented a primitive desktop environment within MiniOS that operates i
 *   **Scrollable Terminal:** A virtual terminal emulator capable of handling large buffers and scrollback history via mouse wheel or keyboard shortcuts.
 *   **Speaker's Sound:** Sound support to speaker
 
+## Demo
 
+- [https://www.youtube.com/watch?v=4aHe6T0bD1o](https://www.youtube.com/watch?v=4aHe6T0bD1o)
 
 ```
 miniOS> edit src/p.c
