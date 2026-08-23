@@ -3,7 +3,7 @@
     "god_nodes": [
       [
         "kernel.c",
-        43.3
+        47.400000000000006
       ],
       [
         "progs/doomgeneric/d_englsh.h",
@@ -11,7 +11,11 @@
       ],
       [
         "kernel.h",
-        23.4
+        25.8
+      ],
+      [
+        "bootdefs.h",
+        17.5
       ],
       [
         "minifs.c",
@@ -30,10 +34,6 @@
         13.700000000000001
       ],
       [
-        "bootdefs.h",
-        13.600000000000001
-      ],
-      [
         "net.c",
         12.4
       ],
@@ -47,53 +47,64 @@
         "id": 0,
         "label": "root",
         "file_ids": [
-          "block.c",
-          "ide.c",
-          "lz4_kernel.h",
           "ide.h",
-          "minifs.c",
-          "net.c",
-          "kernel.h",
-          "lz4_kernel.c",
+          "sched.h",
+          "minifs.h",
+          "rtc.h",
           "pcspk.c",
-          "block.h"
+          "block.h",
+          "minifs.c",
+          "vga_fb.h",
+          "net.h",
+          "vga_fb.c",
+          "bootdefs.h",
+          "net.c",
+          "ide.c",
+          "rtc.c",
+          "block.c",
+          "kernel.c",
+          "pcspk.h",
+          "kernel.h",
+          "sched.c"
         ],
-        "cohesion": 0.6190476190476191,
-        "size": 10
+        "cohesion": 0.8648648648648649,
+        "size": 19
       },
       {
         "id": 1,
         "label": "root",
         "file_ids": [
-          "tls_test.c",
-          "tls_test_roots.h",
-          "tls.h",
-          "net.h",
-          "tls_crypto.c",
-          "bootdefs.h",
-          "tls_port.h",
-          "vga_fb.h",
-          "tls_roots.h",
-          "minifs.h",
-          "tls_x509.c",
-          "vga_fb.c",
-          "kernel.c",
-          "tls.c",
-          "sched.h",
-          "sched.c"
+          "lz4_kernel.h",
+          "lz4_kernel.c"
         ],
-        "cohesion": 0.7241379310344828,
-        "size": 16
+        "cohesion": 0.3333333333333333,
+        "size": 2
       },
       {
         "id": 2,
         "label": "mcp",
         "file_ids": [
-          "mcp/minios_addons.py",
-          "mcp/minios_mcp.py"
+          "mcp/minios_mcp.py",
+          "mcp/minios_addons.py"
         ],
         "cohesion": 1.0,
         "size": 2
+      },
+      {
+        "id": 3,
+        "label": "root",
+        "file_ids": [
+          "tls_test.c",
+          "tls_port.h",
+          "tls_test_roots.h",
+          "tls.c",
+          "tls.h",
+          "tls_roots.h",
+          "tls_x509.c",
+          "tls_crypto.c"
+        ],
+        "cohesion": 0.7692307692307693,
+        "size": 8
       }
     ],
     "surprising_connections": [
@@ -101,39 +112,39 @@
         "lz4_kernel.h",
         "tls_roots.h",
         5,
-        "{0, 1}"
+        "{0, 1, 3}"
       ],
       [
         "lz4_kernel.h",
         "tls_test_roots.h",
         5,
-        "{0, 1}"
+        "{0, 1, 3}"
       ],
       [
         "block.c",
         "tls_roots.h",
         4,
-        "{0, 1}"
+        "{0, 3}"
       ],
       [
         "block.c",
         "tls_test_roots.h",
         4,
-        "{0, 1}"
+        "{0, 3}"
       ],
       [
         "block.h",
         "tls_roots.h",
         4,
-        "{0, 1}"
+        "{0, 3}"
       ]
     ],
     "suggested_questions": [
-      "What does kernel.c depend on, and what depends on it? (9 connections)",
+      "What does kernel.c depend on, and what depends on it? (11 connections)",
       "What does d_englsh.h depend on, and what depends on it? (0 connections)",
-      "What does kernel.h depend on, and what depends on it? (10 connections)",
-      "How are the 10 files in 'root' related to each other?",
-      "Why are lz4_kernel.h and tls_roots.h connected through 5 hops across 2 communities?"
+      "What does kernel.h depend on, and what depends on it? (11 connections)",
+      "How are the 19 files in 'root' related to each other?",
+      "Why are lz4_kernel.h and tls_roots.h connected through 5 hops across 3 communities?"
     ]
   },
   "layers": {
@@ -378,6 +389,8 @@
     "progs/src/test.c": "testing",
     "progs/src/w1.c": "utility",
     "ramdisk_data.c": "data_access",
+    "rtc.c": "utility",
+    "rtc.h": "utility",
     "sched.c": "utility",
     "sched.h": "utility",
     "stage1.S": "utility",
