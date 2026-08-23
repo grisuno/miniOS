@@ -67,6 +67,7 @@ extern sound_module_t sound_sdl_module;
 extern sound_module_t sound_pcsound_module;
 extern music_module_t music_sdl_module;
 extern music_module_t music_opl_module;
+extern music_module_t music_pcspeaker_module;
 
 // For OPL module:
 
@@ -105,6 +106,7 @@ static music_module_t *music_modules[] =
 #ifdef FEATURE_SOUND
     &music_sdl_module,
     &music_opl_module,
+    &music_pcspeaker_module,
 #endif
     NULL,
 };

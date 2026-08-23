@@ -464,7 +464,25 @@ original Doom frequency table 178..2690 Hz, 1-byte duration in 70 Hz
 ticks); index 0 ends the sequence. `PCSPK_StartSound` loads the lump and
 starts a tone immediately, and `PCSPK_Update` (per game tic) advances
 through the note sequence by elapsed time and programs the highest-priority
-active channel, turning the speaker off when none remain.
+active channel, turning the speaker off when none remain. `S_UpdateSounds`
+in `d_main.c` was re-enabled so `I_UpdateSound` actually runs each frame;
+before that neither the sfx sequencer nor the music decoder was ever polled.
+
+The level music is played as a single voice over the same speaker by a
+`music_pcspeaker_module` in `i_minios_sound.c`, selected when
+`snd_musicdevice == SNDDEVICE_PCSPEAKER`. It decodes each MUS lump (Doom's
+music format, `D_E1M1` etc.) straight from its interleaved event stream at
+the stock 140 ticks/sec: a block of events at one tick ends when a
+descriptor byte's bit 7 is set, then a variable-length delta leads to the
+next block. The speaker is driven with the highest currently-sounding note
+at or above midi 43; bass and percussion (channel 15) are silent, so the
+speaker carries a clean recognizable melody line instead of a chord drone.
+A handle is allocated in `MUS_RegisterSong` (validated against the `MUS\x1a`
+magic and the 12-byte header), `MUS_PlaySong` resets the cursor and active
+notes, `MUS_Poll` advances by elapsed ms (`sys_tone`/`sys_time` syscalls
+204/210) and loops by rewinding to the score start, and `MUS_StopSong`
+silences the speaker. The `music_sdl_module`/`music_opl_module` stubs stay
+all-zero; the PC speaker module is the only music source.
 
 ## Development Methodology (SDD + TDD + BDD)
 1. **SDD**: every feature begins with a spec in this file.

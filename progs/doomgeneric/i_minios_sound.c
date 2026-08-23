@@ -35,6 +35,200 @@ static long sys_time(void) {
     long r; __asm__ volatile("syscall":"=a"(r):"a"(204),"D"(0):"rcx","r11","memory"); return r;
 }
 
+/* MUS (Doom's music format) decoded to a single voice for the PC speaker.
+ * The MUS lump is a single interleaved stream: a block of events at the same
+ * tick (a descriptor byte whose bit 7 is clear means "more events follow at
+ * this tick", bit 7 set means "last event of this block"), then a variable
+ * length delta ticks to the next block.  Default tempo is 140 ticks/sec.
+ * The melody voice is the highest currently-sounding note that sits at or
+ * above the bass register; bass and percussion are silent so the PC speaker
+ * carries a clean tune instead of a drone. */
+
+#define MUS_TICKS_PER_SEC 140
+#define MUS_MELODY_MIN_MIDI 43
+#define MUS_PERCUSSION_CHAN 15
+
+static const unsigned short mus_freq_table[128] = {
+        8,     9,     9,    10,    10,    11,    12,    12,
+       13,    14,    15,    15,    16,    17,    18,    19,
+       21,    22,    23,    24,    26,    28,    29,    31,
+       33,    35,    37,    39,    41,    44,    46,    49,
+       52,    55,    58,    62,    65,    69,    73,    78,
+       82,    87,    92,    98,   104,   110,   117,   123,
+      131,   139,   147,   156,   165,   175,   185,   196,
+      208,   220,   233,   247,   262,   277,   294,   311,
+      330,   349,   370,   392,   415,   440,   466,   494,
+      523,   554,   587,   622,   659,   698,   740,   784,
+      831,   880,   932,   988,  1047,  1109,  1175,  1245,
+     1319,  1397,  1480,  1568,  1661,  1760,  1865,  1976,
+     2093,  2217,  2349,  2489,  2637,  2794,  2960,  3136,
+     3322,  3520,  3729,  3951,  4186,  4435,  4699,  4978,
+     5274,  5588,  5920,  6272,  6645,  7040,  7459,  7902,
+     8372,  8870,  9397,  9956, 10548, 11175, 11840, 12544,
+};
+
+typedef struct {
+    const unsigned char *score;
+    int score_len;
+    int score_start;
+    int pos;
+    int active[16];
+    int playing;
+    int looping;
+    unsigned long last_ms;
+} mus_player_t;
+
+static mus_player_t *mus_cur;
+
+static int mus_read_varlen(mus_player_t *m, unsigned long *out) {
+    unsigned long v = 0;
+    for (;;) {
+        if (m->pos >= m->score_len) return 0;
+        unsigned char b = m->score[m->pos++];
+        v = v * 128 + (b & 0x7F);
+        if (!(b & 0x80)) break;
+    }
+    *out = v;
+    return 1;
+}
+
+/* Process one full block of events at the current tick and advance pos past
+ * its delta.  Returns the delta in *out.  Returns 0 at end of score. */
+static int mus_next_block(mus_player_t *m, unsigned long *out) {
+    if (m->pos >= m->score_len) return 0;
+    for (;;) {
+        unsigned char desc;
+        int ch, ev, key;
+        if (m->pos >= m->score_len) return 0;
+        desc = m->score[m->pos++];
+        ch = desc & 0x0F;
+        ev = desc & 0x70;
+        if (ev == 0x60) {               /* score end */
+            return 0;
+        }
+        if (ev == 0x00) {               /* release note */
+            if (m->pos >= m->score_len) return 0;
+            key = m->score[m->pos++];
+            if (ch != MUS_PERCUSSION_CHAN && m->active[ch] == (key & 0x7F))
+                m->active[ch] = 0;
+        } else if (ev == 0x10) {        /* press note */
+            if (m->pos >= m->score_len) return 0;
+            key = m->score[m->pos++];
+            if (key & 0x80) {           /* velocity byte follows */
+                m->pos++;
+            }
+            if (ch != MUS_PERCUSSION_CHAN)
+                m->active[ch] = key & 0x7F;
+        } else if (ev == 0x20) {        /* pitch wheel */
+            m->pos++;
+        } else if (ev == 0x30) {        /* system event */
+            m->pos++;
+        } else if (ev == 0x40) {        /* change controller */
+            m->pos += 2;
+        } else {
+            return 0;
+        }
+        if (desc & 0x80) break;         /* last event of this block */
+    }
+    return mus_read_varlen(m, out);
+}
+
+static void mus_set_tone(mus_player_t *m) {
+    int top = 0, i;
+    for (i = 0; i < 16; i++) {
+        if (m->active[i] > top) top = m->active[i];
+    }
+    if (top < MUS_MELODY_MIN_MIDI) top = 0;
+    sys_tone(top ? mus_freq_table[top] : 0);
+}
+
+static void mus_advance(mus_player_t *m, unsigned long ms) {
+    unsigned long target = ms * MUS_TICKS_PER_SEC / 1000;
+    unsigned long consumed = 0;
+    unsigned long delta;
+    while (consumed < target) {
+        if (!mus_next_block(m, &delta)) {
+            if (m->looping) {
+                m->pos = m->score_start;
+                memset(m->active, 0, sizeof(m->active));
+                continue;
+            }
+            m->playing = 0;
+            sys_tone(0);
+            return;
+        }
+        consumed += delta;
+    }
+    mus_set_tone(m);
+}
+
+static boolean MUS_Init(void) {
+    mus_cur = NULL;
+    return true;
+}
+
+static void MUS_Shutdown(void) {
+    if (mus_cur) sys_tone(0);
+    mus_cur = NULL;
+}
+
+static void MUS_SetMusicVolume(int volume) { (void)volume; }
+
+static void MUS_Pause(void) { if (mus_cur) sys_tone(0); }
+static void MUS_Resume(void) { }
+
+static void *MUS_RegisterSong(void *data, int len) {
+    mus_player_t *m = Z_Malloc(sizeof(*m), PU_STATIC, 0);
+    unsigned char *p = (unsigned char *)data;
+    if (len < 12 || p[0] != 'M' || p[1] != 'U' || p[2] != 'S' || p[3] != 0x1A) {
+        Z_Free(m);
+        return NULL;
+    }
+    memset(m, 0, sizeof(*m));
+    m->score = (const unsigned char *)data;
+    m->score_len = len;
+    m->score_start = p[6] | (p[7] << 8);
+    m->pos = m->score_start;
+    return m;
+}
+
+static void MUS_UnRegisterSong(void *handle) {
+    mus_player_t *m = (mus_player_t *)handle;
+    if (m == mus_cur) { sys_tone(0); mus_cur = NULL; }
+    if (m) Z_Free(m);
+}
+
+static void MUS_PlaySong(void *handle, boolean looping) {
+    mus_player_t *m = (mus_player_t *)handle;
+    if (!m) return;
+    m->pos = m->score_start;
+    memset(m->active, 0, sizeof(m->active));
+    m->playing = 1;
+    m->looping = looping;
+    m->last_ms = (unsigned long)sys_time();
+    mus_cur = m;
+    mus_set_tone(m);
+}
+
+static void MUS_StopSong(void) {
+    if (mus_cur) { mus_cur->playing = 0; sys_tone(0); }
+    mus_cur = NULL;
+}
+
+static boolean MUS_MusicIsPlaying(void) {
+    return mus_cur != NULL && mus_cur->playing;
+}
+
+static void MUS_Poll(void) {
+    mus_player_t *m = mus_cur;
+    unsigned long now, ms;
+    if (!m || !m->playing) return;
+    now = (unsigned long)sys_time();
+    ms = now - m->last_ms;
+    m->last_ms = now;
+    mus_advance(m, ms);
+}
+
 static const unsigned short dp_freq_table[256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     178, 181, 184, 187, 190, 193, 196, 199, 203, 206, 209, 212, 216, 219, 222, 226,
@@ -204,4 +398,13 @@ music_module_t music_opl_module = {
 
 music_module_t music_sdl_module = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
+static snddevice_t mus_devices[] = { SNDDEVICE_PCSPEAKER };
+
+music_module_t music_pcspeaker_module = {
+    mus_devices, 1,
+    MUS_Init, MUS_Shutdown, MUS_SetMusicVolume,
+    MUS_Pause, MUS_Resume, MUS_RegisterSong, MUS_UnRegisterSong,
+    MUS_PlaySong, MUS_StopSong, MUS_MusicIsPlaying, MUS_Poll
 };
