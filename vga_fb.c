@@ -660,13 +660,20 @@ static void term_render_active(void) {
  * to it, '\b' shortens it. The viewport always snaps to the live bottom on
  * output, so new input/output is always visible. When the edit changes the
  * number of display rows (wrap or newline), the whole window is repainted;
- * otherwise only the active line's rows are redrawn. */
+ * otherwise only the active line's rows are redrawn.
+ *
+ * act is kept NUL-terminated at act[act_len] after every mutation: render_row
+ * reads it with kstrlen, so without that terminator a shorter new line would
+ * display stale bytes left over from a longer previous line (e.g. the prompt
+ * would show the tail of the previous command's last output line stuck after
+ * it). */
 void vga_fb_putc_term(char c) {
     int rows_before = total_rows();
 
     if (c == '\n') {
         lg_push(act, act_len);
         act_len = 0;
+        act[0] = '\0';
         disp_off = 0;
         if (total_rows() != rows_before) term_render();
         else term_render_active();
@@ -675,13 +682,17 @@ void vga_fb_putc_term(char c) {
     if (c == '\r') { disp_off = 0; return; }
     if (c == '\b') {
         if (act_len > 0) act_len--;
+        act[act_len] = '\0';
         disp_off = 0;
         if (total_rows() != rows_before) term_render();
         else term_render_active();
         return;
     }
     if (c >= 32 && c <= 126) {
-        if (act_len < SB_LINE_MAX - 1) act[act_len++] = c;
+        if (act_len < SB_LINE_MAX - 1) {
+            act[act_len++] = c;
+            act[act_len] = '\0';
+        }
         disp_off = 0;
         if (total_rows() != rows_before) term_render();
         else term_render_active();
@@ -958,6 +969,7 @@ void vga_fb_mouse_init(void) {
     cursor_visible = 0;
     lg_head = lg_tail = lg_count = 0;
     act_len = 0;
+    act[0] = '\0';
     disp_off = 0;
 }
 

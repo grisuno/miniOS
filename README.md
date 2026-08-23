@@ -62,6 +62,32 @@ Alt is the WM modifier. From the desktop:
 The window keeps its size across redraws, so a snap or resize persists instead
 of snapping back to the default.
 
+## Shell window and desktop mouse
+
+The shell runs in a **titled, movable window** on the desktop, not on the whole
+screen:
+
+- **Title bar** ("MiniOS Terminal"): drag it with the left mouse button to move
+  the window — it stays under the pointer, and the terminal content and prompt
+  survive the move.
+- **Scrollbar** on the window's right edge: the mouse wheel scrolls through
+  the scrollback history, and a left click on the scrollbar jumps the view to
+  that position.
+- **Adaptive content**: the terminal keeps its whole history as logical lines
+  and re-wraps them at the current window width on every draw, so resizing or
+  snapping re-flows the text instead of clipping it. A long wrapped line is
+  stored whole and re-wraps cleanly at any width, and the live screen and the
+  scrollback view always agree (no artifacts when scrolling over existing
+  output).
+- **Move and resize from the mouse**: Alt+`[`/`]` change the width, Alt+`-`/`=`
+  change both dimensions, and the arrow/Home/End tiling keys above re-position
+  and re-size the window. Alt+0 / F5 reset it to the default geometry.
+- **Fullscreen** with F11 or Alt+Enter.
+
+Moving, snapping and resizing never lose the current screen: the prompt and any
+typed or echoed text are re-rendered from the logical buffer at the new
+position and size.
+
 ## Demo
 
 - [https://www.youtube.com/watch?v=4aHe6T0bD1o](https://www.youtube.com/watch?v=4aHe6T0bD1o)
@@ -177,6 +203,8 @@ including the negative set).
 | `run <name\|file> [args]` | run a program, an ELF or a `.cvm` module |
 | `<cmd> [args]` | run an ELF from `bin/<cmd>`: the Linux-style command path |
 | `<cmd> > <file>` | redirect command output to a ramdisk file |
+| `date` | print the CMOS clock (`HH:MM:SS`), the same clock the taskbar shows |
+| `vol [0-100]` | print the PC-speaker volume; with an argument, set it |
 | `net` / `net ping <ip>` | network status and one ICMP echo |
 | `clear` / `poweroff` | console and power |
 
