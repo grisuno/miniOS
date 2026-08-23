@@ -7,6 +7,8 @@
 #include "block.h"
 #include "sched.h"
 #include "vga_fb.h"
+#include "pcspk.h"
+#include "rtc.h"
 
 /* ================================================================
  *  Serial console (COM1, 16550 UART) — mirrors VGA, drives input
@@ -261,6 +263,7 @@ static const unsigned char kbd_us_shift[128] = {
 
 static int kbd_shift;
 static int kbd_ctrl;
+static int kbd_alt;
 
 /* PS/2 set 1 arrow keys arrive as E0-prefixed make codes; they are
  * translated into the same three-byte CSI sequence a serial terminal
@@ -341,6 +344,7 @@ int kbd_read(void) {
         sc &= 0x7F;
         if (sc == KEY_LSHIFT || sc == KEY_RSHIFT) kbd_shift = 0;
         if (sc == KEY_LCTRL) kbd_ctrl = 0;
+        if (sc == KEY_LALT) kbd_alt = 0;
         kbd_e0 = 0;                     /* a release ends any E0 sequence */
         return -1;
     }
@@ -353,6 +357,15 @@ int kbd_read(void) {
             if (sc == KEY_DOWN)     { vga_fb_move_terminal(0,  1); return -1; }
             if (sc == KEY_LEFT)     { vga_fb_move_terminal(-1, 0); return -1; }
             if (sc == KEY_RIGHT)    { vga_fb_move_terminal( 1, 0); return -1; }
+        }
+        /* Alt+arrow keys snap the window to the matching screen half. */
+        if (kbd_alt && vga_fb_active) {
+            if (sc == KEY_UP)       { vga_fb_snap_window(TILING_TOP); return -1; }
+            if (sc == KEY_DOWN)     { vga_fb_snap_window(TILING_BOTTOM); return -1; }
+            if (sc == KEY_LEFT)     { vga_fb_snap_window(TILING_LEFT); return -1; }
+            if (sc == KEY_RIGHT)    { vga_fb_snap_window(TILING_RIGHT); return -1; }
+            if (sc == KEY_HOME)     { vga_fb_snap_window(TILING_TOP_LEFT); return -1; }
+            if (sc == KEY_END)      { vga_fb_snap_window(TILING_BOTTOM_RIGHT); return -1; }
         }
         if (sc == KEY_UP) {
             kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_UP);
@@ -370,11 +383,25 @@ int kbd_read(void) {
 
     if (sc == KEY_LSHIFT || sc == KEY_RSHIFT) { kbd_shift = 1; return -1; }
     if (sc == KEY_LCTRL) { kbd_ctrl = 1; return -1; }
+    if (sc == KEY_LALT) { kbd_alt = 1; return -1; }
 
     /* F11: toggle fullscreen, F5: reset terminal position */
     if (vga_fb_active) {
         if (sc == KEY_F11) { vga_fb_toggle_fullscreen(); return -1; }
         if (sc == KEY_F5)  { vga_fb_move_terminal(0, 0); return -1; }
+    }
+
+    /* Alt = WM modifier: resize, quadrant snap and reset (non-E0 keys). */
+    if (vga_fb_active && kbd_alt) {
+        char ch = kbd_us[sc];
+        if (sc == KEY_ENTER)      { vga_fb_toggle_fullscreen(); return -1; }
+        if (sc == KEY_HOME)       { vga_fb_snap_window(TILING_TOP_LEFT); return -1; }
+        if (sc == KEY_END)        { vga_fb_snap_window(TILING_BOTTOM_RIGHT); return -1; }
+        if (ch == '[')            { vga_fb_resize(-1, 0); return -1; }
+        if (ch == ']')            { vga_fb_resize(1, 0); return -1; }
+        if (ch == '-')            { vga_fb_resize(-1, -1); return -1; }
+        if (ch == '=')            { vga_fb_resize(1, 1); return -1; }
+        if (ch == '0')            { vga_fb_reset_default(); return -1; }
     }
 
     if (kbd_shift)
@@ -2659,6 +2686,30 @@ static void shell_prompt(void) { vga_puts("\nminiOS> "); }
 
 static void shell_exec_builtin(int argc, char **argv);
 
+/* Strict decimal parse for the `vol` builtin: the whole argument must be an
+ * optional sign followed by at least one digit, and the value is clamped to
+ * the speaker's valid range. Garbage is rejected, never silently zero. */
+static int shell_parse_vol(const char *s, unsigned *out) {
+    long v = 0;
+    int sign = 1;
+    if (!s || !*s) return 0;
+    if (*s == '-') { sign = -1; s++; }
+    else if (*s == '+') s++;
+    if (!*s) return 0;
+    for (; *s; s++) {
+        int d = *s - '0';
+        if (d < 0 || d > 9) return 0;
+        if (v > (PCSPK_VOL_MAX - (unsigned)d) / 10) v = PCSPK_VOL_MAX;
+        else v = v * 10 + d;
+    }
+    v *= sign;
+    if (v < PCSPK_VOL_MIN) v = PCSPK_VOL_MIN;
+    if (v > PCSPK_VOL_MAX) v = PCSPK_VOL_MAX;
+    *out = (unsigned)v;
+    return 1;
+}
+
+
 /* ---- Console input multiplexer (serial + PS/2) ----
  *
  * Bytes from either source are funneled through a small FIFO ("pb") so that
@@ -3535,6 +3586,8 @@ static void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  net                network status (rtl8139, slirp)\n");
         vga_puts("  net ping <ip>      one ICMP echo\n");
         vga_puts("  trace [on|off]     report Linux syscalls\n");
+        vga_puts("  date               print the CMOS clock (HH:MM:SS)\n");
+        vga_puts("  vol [0-100]        print or set the PC-speaker volume\n");
         vga_puts("  edit <file>        line editor for ramdisk files\n");
         vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
@@ -3767,6 +3820,21 @@ static void shell_exec_builtin(int argc, char **argv) {
             vga_puts(argv[i]);
         }
         vga_putc('\n');
+    }
+    else if (kstrcmp(argv[0], "vol") == 0) {
+        if (argc > 1) {
+            unsigned v;
+            if (!shell_parse_vol(argv[1], &v)) { vga_puts("usage: vol [0-100]\n"); return; }
+            pcspk_set_volume(v);
+        }
+        kprintf("volume: %u%%\n", pcspk_get_volume());
+    }
+    else if (kstrcmp(argv[0], "date") == 0) {
+        int h, m, s;
+        if (rtc_read_tod(&h, &m, &s))
+            kprintf("%02d:%02d:%02d\n", h, m, s);
+        else
+            vga_puts("date: clock unavailable\n");
     }
     else if (kstrcmp(argv[0], "load") == 0) {
         if (argc < 2) { vga_puts("usage: load <file>\n"); return; }

@@ -113,31 +113,59 @@ static const uint8_t cursor_bmp[8] = {
     0b00001100,
 };
 
+/* The arrow's visual point is its lower-right tip, not the cell's top-left
+ * corner. Click hit-tests use (mouse + tip) so a click lands where the user
+ * aims the arrow instead of a few pixels up-left of it. */
+#define CURSOR_TIP_X 6
+#define CURSOR_TIP_Y 7
+
 static uint8_t cursor_save[8][8];
 static int cursor_old_x, cursor_old_y;
 static int cursor_visible;
 
+/* The cursor is drawn with its arrow tip at (mx, my), so the sprite spans
+ * up-left of the pointer by CURSOR_TIP offsets. The caller clamps mx/my so
+ * the sprite's top-left corner stays non-negative and the raw FB reads in
+ * cursor_save_bg never go out of bounds. */
 static void cursor_save_bg(int mx, int my) {
     int i, j;
+    int x0 = mx - CURSOR_TIP_X;
+    int y0 = my - CURSOR_TIP_Y;
     for (j = 0; j < 8; j++)
         for (i = 0; i < 8; i++)
-            cursor_save[j][i] = FB_ADDR[(my + j) * fb_pitch + (mx + i)];
+            cursor_save[j][i] = FB_ADDR[(y0 + j) * fb_pitch + (x0 + i)];
 }
 
 static void cursor_draw(int mx, int my) {
     int i, j;
+    int x0 = mx - CURSOR_TIP_X;
+    int y0 = my - CURSOR_TIP_Y;
     for (j = 0; j < 8; j++)
         for (i = 0; i < 8; i++) {
             if (cursor_bmp[j] & (0x80 >> i))
-                vga_fb_pixel(mx + i, my + j, COL_WHITE);
+                vga_fb_pixel(x0 + i, y0 + j, COL_WHITE);
         }
 }
 
 static void cursor_restore(int mx, int my) {
     int i, j;
+    int x0 = mx - CURSOR_TIP_X;
+    int y0 = my - CURSOR_TIP_Y;
     for (j = 0; j < 8; j++)
         for (i = 0; i < 8; i++)
-            vga_fb_pixel(mx + i, my + j, cursor_save[j][i]);
+            vga_fb_pixel(x0 + i, y0 + j, cursor_save[j][i]);
+}
+
+/* True when the cursor sprite overlaps the given screen rectangle. Used to
+ * decide whether a partial repaint (taskbar, terminal content) overwrote the
+ * cursor, in which case its saved background must be refreshed; otherwise the
+ * cursor keeps its saved background and moves without leaving a trail. */
+static int cursor_over(int x0, int y0, int w, int h) {
+    int cxl = mouse_state.x - CURSOR_TIP_X;   /* sprite left edge */
+    int cxt = mouse_state.x + 1;              /* sprite right edge */
+    int cyl = mouse_state.y - CURSOR_TIP_Y;   /* sprite top edge */
+    int cyt = mouse_state.y;                  /* sprite bottom edge */
+    return cxl < x0 + w && cxt > x0 && cyl < y0 + h && cyt > y0;
 }
 
 /* ---- 8x8 CP437 font (ASCII 32-127) ---- */
@@ -244,7 +272,7 @@ static const uint8_t font8x8[96][8] = {
  * movable window: a title bar on top, a scrollbar on its right edge and text
  * below. The defaults are clamped to the framebuffer so the window always
  * fits (a small screen degrades to a near-fullscreen window). */
-#define WIN_DEF_COLS  72
+#define WIN_DEF_COLS  88
 #define WIN_DEF_ROWS  40
 #define WIN_DEF_X     4
 #define WIN_DEF_Y     3
@@ -253,8 +281,17 @@ static const uint8_t font8x8[96][8] = {
 static int term_cx, term_cy;
 int term_x = WIN_DEF_X, term_y = WIN_DEF_Y;
 int term_cols, term_rows;
+static int term_sz_cols = WIN_DEF_COLS;   /* persisted size across redraws */
+static int term_sz_rows = WIN_DEF_ROWS;
 static int term_fullscreen;
 static int term_px_x, term_px_y, term_px_w, term_px_h;
+
+/* Live-screen text buffer. The framebuffer terminal is re-rendered from this
+ * whenever the desktop redraws (window move/snap/resize/fullscreen), so moving
+ * the window never erases the current screen — the prompt and typed command
+ * survive. Bounds are enforced when the size is clamped in term_recalc, so the
+ * buffer can never be indexed out of range. */
+static char term_screen[TERM_MAX_ROWS][TERM_MAX_COLS];
 
 #define FB_OFFSET(x,y) ((unsigned)(y) * fb_pitch + (unsigned)(x))
 
@@ -348,12 +385,13 @@ static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg) {
 
 /* Composite the graphics back-buffer (e.g. DOOM's 320x200 frame) onto the
  * desktop in a titled window at native resolution, leaving the shell window
- * and desktop visible around it. Placed at the bottom-right so it does not
- * cover the default shell window. */
+ * and desktop visible around it. Centered on the screen because the graphics
+ * program owns the display while it runs (no mouse), so the window cannot be
+ * dragged into a better spot. */
 void vga_fb_blit_gfx_window(void) {
     const volatile uint8_t *bb = (const volatile uint8_t *)DOOM_BACKBUF_ADDR;
-    int dst_x = fb_width - DOOM_W - SCROLLBAR_W;
-    int dst_y = fb_height - DOOM_H - FONT_H;
+    int dst_x = (fb_width - DOOM_W) / 2;
+    int dst_y = (fb_height - DOOM_H) / 2;
     int r, b;
     if (dst_x < 0) dst_x = 0;
     if (dst_y < 0) dst_y = 0;
@@ -372,17 +410,21 @@ void vga_fb_clear(void) {
 }
 
 /* ---- Layout ---- */
+static int term_max_cols(void);
+static int term_max_rows(void);
+static void term_redraw_screen(void);
+
 static void term_recalc(void) {
-    int max_cols = (fb_width - SCROLLBAR_W) / FONT_W;
-    int max_rows = (fb_height - FONT_H - FONT_H) / FONT_H;
+    int max_cols = term_max_cols();
+    int max_rows = term_max_rows();
     if (term_fullscreen) {
         term_x = 0; term_y = 0;
         term_cols = max_cols;
-        term_rows = (fb_height - FONT_H) / FONT_H;
+        term_rows = max_rows;
     } else {
-        term_cols = WIN_DEF_COLS;
+        term_cols = term_sz_cols;
         if (term_cols > max_cols) term_cols = max_cols;
-        term_rows = WIN_DEF_ROWS;
+        term_rows = term_sz_rows;
         if (term_rows > max_rows) term_rows = max_rows;
         /* Preserve the current window position, clamping it into range so a
          * drag or Ctrl+arrow move is not undone by the next layout pass. */
@@ -404,10 +446,99 @@ static void draw_title(void) {
     text_px(term_px_x + 4, term_px_y, title, COL_TITLE_TXT, COL_TITLEBAR);
 }
 
-static void draw_status(void) {
-    const char *s1 = "F11:fs F5:reset Drag title:move Wheel:scroll";
-    vga_fb_rect(0, fb_height - FONT_H, fb_width, FONT_H, COL_TASKBAR);
-    text_px(0, fb_height - FONT_H, s1, COL_TASKBAR_TXT, COL_TASKBAR);
+/* ---- Taskbar (clock + speaker volume) ----
+ * The bottom strip is the desktop's status bar: a live CMOS clock on the
+ * right and a speaker icon with -/+ volume buttons. The widgets and the
+ * shell `date`/`vol` builtins share the same rtc_read_tod/pcspk_get_volume
+ * state, so the framebuffer and the serial console can never disagree. */
+static int tb_spk_x, tb_minus_x, tb_plus_x, tb_vol_x, tb_clock_x;
+
+static void taskbar_layout(void) {
+    int x = fb_width;
+    x -= TASKBAR_CLOCK_CH * FONT_W; tb_clock_x = x;
+    x -= TASKBAR_PAD;
+    x -= TASKBAR_VOL_CH * FONT_W;   tb_vol_x = x;
+    x -= TASKBAR_PAD;
+    x -= TASKBAR_BTN_W;             tb_plus_x = x;
+    x -= TASKBAR_PAD;
+    x -= TASKBAR_BTN_W;             tb_minus_x = x;
+    x -= TASKBAR_PAD;
+    x -= TASKBAR_ICON_W;            tb_spk_x = x;
+}
+
+/* 8x8 speaker glyph: body on the left, two sound arcs to the right. */
+static void draw_speaker_icon(int x, int y, uint8_t color) {
+    vga_fb_rect(x, y + 1, 2, 6, color);
+    vga_fb_rect(x + 2, y + 3, 2, 2, color);
+    vga_fb_pixel(x + 4, y + 3, color);
+    vga_fb_pixel(x + 5, y + 2, color);
+    vga_fb_pixel(x + 5, y + 4, color);
+    vga_fb_pixel(x + 6, y + 3, color);
+}
+
+static void taskbar_render(void) {
+    char buf[16];
+    int h, m, s;
+    unsigned vol = pcspk_get_volume();
+    int y = fb_height - FONT_H;
+    vga_fb_rect(0, y, fb_width, FONT_H, COL_TASKBAR);
+    taskbar_layout();
+    text_px(0, y, "Drag title:move Wheel:scroll Alt:snap/resize",
+            COL_TASKBAR_TXT, COL_TASKBAR);
+    draw_speaker_icon(tb_spk_x, y, vol ? COL_TASKBAR_TXT : COL_HIGHLIGHT);
+    text_px(tb_minus_x, y, "-", COL_TASKBAR_TXT, COL_TASKBAR);
+    text_px(tb_plus_x, y, "+", COL_TASKBAR_TXT, COL_TASKBAR);
+    ksprintf(buf, "%u%%", vol);
+    text_px(tb_vol_x, y, buf, COL_TASKBAR_TXT, COL_TASKBAR);
+    if (rtc_read_tod(&h, &m, &s)) {
+        ksprintf(buf, "%02d:%02d:%02d", h, m, s);
+        text_px(tb_clock_x, y, buf, COL_TASKBAR_TXT, COL_TASKBAR);
+    }
+}
+
+/* Redraw the clock only when the wall-clock second changes. Only the taskbar
+ * strip is repainted, so the cursor must be re-saved (cursor_visible = 0) only
+ * when it actually sat over the taskbar; otherwise it keeps its saved
+ * background and moves normally, which is what prevents pointer trails. */
+static void taskbar_tick(void) {
+    int h, m, s;
+    int y = fb_height - FONT_H;
+    static int last_h = -1, last_m = -1, last_s = -1;
+    if (!rtc_read_tod(&h, &m, &s)) return;
+    if (h == last_h && m == last_m && s == last_s) return;
+    last_h = h; last_m = m; last_s = s;
+    taskbar_render();
+    if (cursor_over(0, y, fb_width, FONT_H))
+        cursor_visible = 0;
+}
+
+/* Click handling for the speaker icon and -/+ buttons. */
+static void taskbar_handle_click(int mx, int my) {
+    unsigned v;
+    static int spk_saved_valid;
+    static unsigned spk_saved_vol;
+    int y = fb_height - FONT_H;
+    if (my < y || my >= y + FONT_H) return;
+    if (mx >= tb_spk_x && mx < tb_spk_x + TASKBAR_ICON_W) {
+        v = pcspk_get_volume();
+        if (v == 0) {
+            pcspk_set_volume(spk_saved_valid ? spk_saved_vol : v);
+        } else {
+            spk_saved_vol = v;
+            spk_saved_valid = 1;
+            pcspk_set_volume(0);
+        }
+        return;
+    }
+    if (mx >= tb_minus_x && mx < tb_minus_x + TASKBAR_BTN_W) {
+        v = pcspk_get_volume();
+        pcspk_set_volume(v > TASKBAR_VOL_STEP ? v - TASKBAR_VOL_STEP : 0);
+        return;
+    }
+    if (mx >= tb_plus_x && mx < tb_plus_x + TASKBAR_BTN_W) {
+        pcspk_set_volume(pcspk_get_volume() + TASKBAR_VOL_STEP);
+        return;
+    }
 }
 
 /* ---- Scrollbar (attached to the window's right edge) ---- */
@@ -447,16 +578,42 @@ static void draw_scrollbar(void) {
                 thumb_h - 2 * SCROLLBAR_PAD, COL_SCROLL_THUMB);
 }
 
-/* ---- Full redraw of terminal content (used after scrollback navigation) ---- */
+/* Draw a text string into the terminal starting at screen row `row`, wrapping
+ * long lines at term_cols exactly as the live screen does, and return the row
+ * below the last drawn. Used when replaying scrollback so a line wider than
+ * the window is never cut short. */
+static int term_puts_wrap(int row, const char *s, uint8_t fg, uint8_t bg) {
+    int i = 0;
+    while (row < term_rows) {
+        int drawn = 0;
+        while (s[i] && drawn < term_cols) {
+            vga_fb_char(drawn, row, s[i], fg, bg);
+            i++;
+            drawn++;
+        }
+        if (drawn < term_cols) return row + 1;
+        row++;
+    }
+    return row;
+}
+
+/* Repaint the terminal content honouring the current scrollback view: the
+ * scrolled-back history when sb.view_offset > 0, otherwise the live screen
+ * replayed from the buffer. Scrolled-back lines are shown newest-at-bottom,
+ * oldest-at-top, wrapped to the window width. Used after a desktop redraw and
+ * by wheel scroll. */
 static void term_redraw_content(void) {
-    int row;
+    int row = 0;
     vga_fb_rect(term_px_x, term_content_y(), term_px_w, term_px_h, COL_TERMINAL);
     if (sb.view_offset > 0) {
-        int start = sb.view_offset - 1;
-        for (row = 0; row < term_rows && row < sb_total(); row++) {
-            const char *line = sb_get_line(start - row);
-            if (line) vga_fb_str(0, term_rows - 1 - row, line, COL_TERM_TXT, COL_TERMINAL);
+        int off = (sb.view_offset - 1) + (term_rows - 1);   /* oldest visible */
+        int end = sb.view_offset - 1;                        /* newest visible */
+        for (; off >= end && row < term_rows; off--) {
+            const char *line = sb_get_line(off);
+            if (line) row = term_puts_wrap(row, line, COL_TERM_TXT, COL_TERMINAL);
         }
+    } else {
+        term_redraw_screen();
     }
     draw_scrollbar();
 }
@@ -466,29 +623,58 @@ void vga_fb_draw_desktop(void) {
     vga_fb_clear();
     term_recalc();
     vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
-    draw_status();
+    taskbar_render();
     draw_title();
-    /* Terminal content background */
-    vga_fb_rect(term_px_x, term_content_y(), term_px_w, term_px_h, COL_TERMINAL);
+    /* Repaint the terminal content (live screen or scrollback view) so the
+     * prompt and any typed/echoed text survive a window move, snap, resize or
+     * fullscreen toggle. */
     term_cx = 0; term_cy = 0;
-    draw_scrollbar();
+    term_redraw_content();
+    /* Any redraw changed the pixels under the cursor; force a fresh save so a
+     * stale snapshot never leaves pointer trails behind. */
+    cursor_visible = 0;
 }
 
 /* ---- Terminal scroll ---- */
+
+/* Draw one character into both the live-screen buffer and the framebuffer,
+ * keeping the two in sync so a desktop redraw can replay the screen. */
+static void term_draw_char(int col, int row, char c, uint8_t fg, uint8_t bg) {
+    if (col < 0 || col >= term_cols || row < 0 || row >= term_rows) return;
+    term_screen[row][col] = c;
+    vga_fb_char(col, row, c, fg, bg);
+}
+
+/* Replay the whole visible screen from the buffer. Called after a desktop
+ * redraw repainted only the terminal background. */
+static void term_redraw_screen(void) {
+    int r, c;
+    for (r = 0; r < term_rows; r++)
+        for (c = 0; c < term_cols; c++)
+            vga_fb_char(c, r, term_screen[r][c], COL_TERM_TXT, COL_TERMINAL);
+}
+
 void vga_fb_scroll_term(void) {
+    int r, c;
     /* Push the top visible line to scrollback before scrolling */
     if (sb.view_offset == 0)
         sb_push_line(term_line_buf, term_line_len);
     term_line_len = 0;
+    /* Shift the live-screen buffer up one row and blank the new bottom row. */
+    for (r = 0; r < term_rows - 1; r++)
+        for (c = 0; c < term_cols; c++)
+            term_screen[r][c] = term_screen[r + 1][c];
+    for (c = 0; c < term_cols; c++)
+        term_screen[term_rows - 1][c] = ' ';
     /* Move pixel data up by FONT_H rows, honoring the framebuffer pitch. */
     if (term_px_h > FONT_H) {
         int rows = (term_px_h - FONT_H) / FONT_H;
-        int r, b;
-        for (r = 0; r < rows; r++) {
+        int r2, b;
+        for (r2 = 0; r2 < rows; r2++) {
             const volatile uint8_t *s =
-                &FB_ADDR[(term_content_y() + (r + 1) * FONT_H) * fb_pitch + term_px_x];
+                &FB_ADDR[(term_content_y() + (r2 + 1) * FONT_H) * fb_pitch + term_px_x];
             volatile uint8_t *d =
-                &FB_ADDR[(term_content_y() + r * FONT_H) * fb_pitch + term_px_x];
+                &FB_ADDR[(term_content_y() + r2 * FONT_H) * fb_pitch + term_px_x];
             for (b = 0; b < term_px_w; b++)
                 d[b] = s[b];
         }
@@ -520,14 +706,14 @@ void vga_fb_putc_term(char c) {
             term_cx--;
             if (term_line_len > 0) term_line_len--;
             if (!scrolled_back)
-                vga_fb_char(term_cx, term_cy, ' ', COL_TERM_TXT, COL_TERMINAL);
+                term_draw_char(term_cx, term_cy, ' ', COL_TERM_TXT, COL_TERMINAL);
         }
         return;
     }
     if (c >= 32 && c <= 126) {
         term_line_push(c);
         if (!scrolled_back) {
-            vga_fb_char(term_cx, term_cy, c, COL_TERM_TXT, COL_TERMINAL);
+            term_draw_char(term_cx, term_cy, c, COL_TERM_TXT, COL_TERMINAL);
             term_cx++;
             if (term_cx >= term_cols) {
                 term_cx = 0;
@@ -581,6 +767,74 @@ void vga_fb_move_terminal(int dx, int dy) {
     vga_fb_draw_desktop();
 }
 
+/* ---- Tiling window operations (Alt = WM modifier) ----
+ * Snap places the window in a screen half or quadrant and sizes it to that
+ * region; resize grows/shrinks the persisted size. Both exit fullscreen and
+ * preserve the new size across redraws. */
+static int term_max_cols(void) {
+    int m = (fb_width - SCROLLBAR_W) / FONT_W;
+    return m > TERM_MAX_COLS ? TERM_MAX_COLS : m;
+}
+static int term_max_rows(void) {
+    int m = (fb_height - 2 * FONT_H) / FONT_H;
+    return m > TERM_MAX_ROWS ? TERM_MAX_ROWS : m;
+}
+
+static void term_finish_layout(void) {
+    term_recalc();
+    term_cx = 0; term_cy = 0;
+    term_line_reset();
+    vga_fb_draw_desktop();
+}
+
+void vga_fb_snap_window(int zone) {
+    int mc = term_max_cols();
+    int mr = term_max_rows();
+    int hw = mc / 2;
+    int hh = mr / 2;
+    int ow = mc - hw;   /* right/bottom half (larger when odd) */
+    int oh = mr - hh;
+    term_fullscreen = 0;
+    switch (zone) {
+    case TILING_LEFT:        term_sz_cols = hw; term_sz_rows = mr; term_x = 0; term_y = 0; break;
+    case TILING_RIGHT:       term_sz_cols = ow; term_sz_rows = mr; term_x = hw; term_y = 0; break;
+    case TILING_TOP:         term_sz_cols = mc; term_sz_rows = hh; term_x = 0; term_y = 0; break;
+    case TILING_BOTTOM:      term_sz_cols = mc; term_sz_rows = oh; term_x = 0; term_y = hh; break;
+    case TILING_TOP_LEFT:    term_sz_cols = hw; term_sz_rows = hh; term_x = 0; term_y = 0; break;
+    case TILING_TOP_RIGHT:   term_sz_cols = ow; term_sz_rows = hh; term_x = hw; term_y = 0; break;
+    case TILING_BOTTOM_LEFT: term_sz_cols = hw; term_sz_rows = oh; term_x = 0; term_y = hh; break;
+    case TILING_BOTTOM_RIGHT: term_sz_cols = ow; term_sz_rows = oh; term_x = hw; term_y = hh; break;
+    default: return;
+    }
+    term_finish_layout();
+}
+
+void vga_fb_resize(int dcols, int drows) {
+    int mc = term_max_cols();
+    int mr = term_max_rows();
+    int ncol = term_sz_cols + dcols;
+    int nrow = term_sz_rows + drows;
+    if (ncol < 1) ncol = 1;
+    if (nrow < 1) nrow = 1;
+    if (ncol > mc) ncol = mc;
+    if (nrow > mr) nrow = mr;
+    if (ncol == term_sz_cols && nrow == term_sz_rows && !term_fullscreen) return;
+    term_fullscreen = 0;
+    term_sz_cols = ncol;
+    term_sz_rows = nrow;
+    term_finish_layout();
+}
+
+/* Alt+0: restore the default window position and size (not just position). */
+void vga_fb_reset_default(void) {
+    term_fullscreen = 0;
+    term_sz_cols = WIN_DEF_COLS;
+    term_sz_rows = WIN_DEF_ROWS;
+    term_x = WIN_DEF_X;
+    term_y = WIN_DEF_Y;
+    term_finish_layout();
+}
+
 /* Move the window so its title bar follows the mouse during a drag. grab_cx
  * is the character column (within the title bar) where the grab happened, so
  * the window stays under the pointer instead of jumping to the mouse origin. */
@@ -616,10 +870,18 @@ void vga_fb_handle_key(int scancode) {
 void vga_fb_mouse_tick(void) {
     static int dragging;
     static int grab_cx;
+    static unsigned tb_prev_buttons;
     int mx, my;
     int win_w = term_px_w + SCROLLBAR_W;
 
     if (!mouse_state.present) return;
+
+    /* Refresh the taskbar clock and react to volume clicks on the rising edge
+     * of the left button, before any window drag/scrollbar handling. */
+    taskbar_tick();
+    if ((mouse_state.buttons & 1) && !(tb_prev_buttons & 1))
+        taskbar_handle_click(mouse_state.x, mouse_state.y);
+    tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
 
     /* Process wheel: scroll back/forward */
     if (mouse_state.wheel != 0) {
@@ -635,7 +897,8 @@ void vga_fb_mouse_tick(void) {
         mouse_state.wheel = 0;
         term_redraw_content();
         draw_scrollbar();
-        cursor_visible = 0;   /* content changed under the cursor: re-save */
+        if (cursor_over(term_px_x, term_content_y(), term_px_w, term_px_h))
+            cursor_visible = 0;
     }
 
     mx = mouse_state.x;
@@ -645,7 +908,11 @@ void vga_fb_mouse_tick(void) {
      * move it while the button is held. Redrawing the desktop resets the
      * cursor, so the cursor is re-saved afterwards. */
     if (!term_fullscreen) {
-        int in_title = (my >= term_px_y && my < term_content_y() &&
+        /* The grab zone covers the title bar and a little below, so the drag
+         * triggers whether the user aims the arrow tip or the sprite body at
+         * the title bar (the tip is offset CURSOR_TIP_Y below the sprite's
+         * top-left corner). */
+        int in_title = (my >= term_px_y && my < term_content_y() + CURSOR_TIP_Y &&
                         mx >= term_px_x && mx < term_px_x + win_w);
         if (mouse_state.buttons & 1) {
             if (!dragging && in_title) {
@@ -678,15 +945,17 @@ void vga_fb_mouse_tick(void) {
             if (new_off > max_off) new_off = max_off;
             sb.view_offset = new_off;
             term_redraw_content();
-            cursor_visible = 0;   /* content changed under the cursor: re-save */
+            if (cursor_over(term_px_x, term_content_y(), term_px_w, term_px_h))
+                cursor_visible = 0;
         }
     }
 
-    /* Clamp mouse position */
-    if (mouse_state.x < 0) mouse_state.x = 0;
-    if (mouse_state.x >= fb_width - 8) mouse_state.x = fb_width - 8;
-    if (mouse_state.y < 0) mouse_state.y = 0;
-    if (mouse_state.y >= fb_height - 8) mouse_state.y = fb_height - 8;
+    /* Clamp the mouse so the cursor sprite's top-left corner (offset up-left
+     * of the tip) stays inside the framebuffer and never reads out of bounds. */
+    if (mouse_state.x < CURSOR_TIP_X) mouse_state.x = CURSOR_TIP_X;
+    if (mouse_state.x >= fb_width) mouse_state.x = fb_width - 1;
+    if (mouse_state.y < CURSOR_TIP_Y) mouse_state.y = CURSOR_TIP_Y;
+    if (mouse_state.y >= fb_height) mouse_state.y = fb_height - 1;
 
     mx = mouse_state.x;
     my = mouse_state.y;

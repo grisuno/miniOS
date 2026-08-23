@@ -29,6 +29,39 @@ exit code: 7
 miniOS>
 ```
 
+## Taskbar, clock and volume
+
+The bottom taskbar is a live status strip, not a hint line:
+
+- **Clock:** reads the CMOS RTC (`rtc.c`) and shows `HH:MM:SS`, redrawn when the
+  second changes. A failed RTC read leaves the clock region blank rather than
+  showing a stale time. The shell `date` builtin prints the same clock over the
+  serial console.
+- **Volume:** a master volume `0..100` (`pcspk.c`). The PC speaker has no
+  hardware amplitude and the kernel does not drive a PWM carrier, so the volume
+  is a **mute switch**: the tone opens the speaker only when the volume is
+  above 0 (identical to the pre-volume driver), and at 0 the speaker is silent.
+  A click on the speaker icon toggles mute; the `-`/`+` buttons step the
+  volume. The shell `vol [0-100]` builtin reads and sets the same state, so the
+  desktop and the serial console can never disagree.
+
+## Tiling window shortcuts
+
+Alt is the WM modifier. From the desktop:
+
+| Shortcut | Action |
+|----------|--------|
+| Alt+Enter / F11 | toggle fullscreen |
+| Alt+Arrow keys | snap the window to a screen half |
+| Alt+Home / Alt+End | snap to the top-left / bottom-right quadrant |
+| Alt+`[` / Alt+`]` | shrink / grow width |
+| Alt+`-` / Alt+`=` | shrink / grow both dimensions |
+| Alt+0 / F5 | reset the window to its default position (and size) |
+| Ctrl+Arrow keys | nudge the window by one cell |
+
+The window keeps its size across redraws, so a snap or resize persists instead
+of snapping back to the default.
+
 ## Demo
 
 - [https://www.youtube.com/watch?v=4aHe6T0bD1o](https://www.youtube.com/watch?v=4aHe6T0bD1o)
@@ -217,8 +250,8 @@ layer in `doomgeneric_minios.c`. The desktop runs on a VESA linear
 framebuffer (800x600x8 by default, falling back to 640x480 and Mode 13h);
 DOOM renders its 320x200 frame into a kernel back-buffer and the kernel
 composites it onto the desktop in a titled window (`SYS_DOOM_FRAME`, 211),
-so the shell window stays visible while you play. The shareware WAD
-(`doom1.wad`) is bundled on the minifs.
+centered on the screen, so the shell window stays visible while you play.
+The shareware WAD (`doom1.wad`) is bundled on the minifs.
 
 ```
 miniOS> run doomgeneric.elf

@@ -19,7 +19,7 @@ set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"
 BACKUP="$(mktemp -d "${TMPDIR:-/tmp}/minios_mut.XXXXXX")" || exit 1
 
-SOURCES="kernel.c bootdefs.h net.c tls.c tls_x509.c"
+SOURCES="kernel.c bootdefs.h net.c tls.c tls_x509.c pcspk.c rtc.c"
 
 restore_sources() {
     local f
@@ -81,6 +81,11 @@ tls-wildcard-short-tail | s/    for (i = 0; i < name_len - 1; i++) {/    for (i 
 
 user-pages-supervisor | s/#define PT_FLAGS_USER             0x004/#define PT_FLAGS_USER             0x000/ | bootdefs.h
 write-pointer-check-bypassed | s/static int user_range_ok(unsigned long p, unsigned long len) {/static int user_range_ok(unsigned long p, unsigned long len) { (void)p; (void)len; return 1; \/\* bypass \*\// | kernel.c
+
+vol-default-zero | s/static unsigned pcspk_volume = PCSPK_VOL_DEFAULT;/static unsigned pcspk_volume = 0;/ | pcspk.c
+vol-sign-ignored | s/sign = -1;/sign = 1;/ | kernel.c
+vol-garbage-accepted | s/if (d < 0 || d > 9) return 0;/if (0) return 0;/ | kernel.c
+rtc-always-fails | s/    return 1;/    return 0;/ | rtc.c
 "
 
 KILLED=0

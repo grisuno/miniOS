@@ -398,13 +398,16 @@ minifs.o: minifs.c minifs.h block.h ide.h kernel.h
 lz4_kernel.o: lz4_kernel.c lz4_kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-sched.o: sched.c sched.h kernel.h bootdefs.h
+sched.o: sched.c sched.h kernel.h bootdefs.h vga_fb.h pcspk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-vga_fb.o: vga_fb.c vga_fb.h kernel.h
+vga_fb.o: vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 pcspk.o: pcspk.c pcspk.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+rtc.o: rtc.c rtc.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 isr_stubs.o: isr_stubs.S
@@ -413,10 +416,10 @@ isr_stubs.o: isr_stubs.S
 ctx_sw.o: ctx_sw.S
 	$(CC) -c -m64 $< -o $@
 
-kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o kernel.ld
+kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
-	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o -o $@
+	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@

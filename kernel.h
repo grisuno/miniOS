@@ -64,6 +64,10 @@ int  serial_getc(void);
 #define KEY_F5        0x3F
 #define KEY_F11       0x57
 #define KEY_TILDE     '~'
+#define KEY_LALT      0x38
+#define KEY_RALT      0x38
+#define KEY_HOME      0x47
+#define KEY_END       0x4F
 
 int  kbd_read(void);
 int  kbd_available(void);
@@ -181,9 +185,14 @@ extern char ramdisk_start[];
 extern char ramdisk_end[];
 
 /* ========== PC speaker ========== */
-void pcspk_init(void);
-void pcspk_tone(unsigned freq);
-void pcspk_off(void);
+void     pcspk_init(void);
+void     pcspk_tone(unsigned freq);
+void     pcspk_off(void);
+void     pcspk_set_volume(unsigned volume);
+unsigned pcspk_get_volume(void);
+
+/* ========== RTC time-of-day ========== */
+int rtc_read_tod(int *hour, int *min, int *sec);
 
 /* ========== IDE driver ========== */
 void ide_init(void);

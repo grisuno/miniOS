@@ -178,14 +178,58 @@ native 320x200 instead of stealing the whole display.
   64 KB kernel-heap back-buffer into the user window at `DOOM_BACKBUF_ADDR`
   (0x1FE0000, RW, NX). DOOM renders its 320x200 frame there and calls
   `SYS_DOOM_FRAME`; the kernel composites the buffer 1:1 onto the desktop in a
-  titled window at the bottom-right (`vga_fb_blit_gfx_window`), leaving the
-  shell window and desktop visible. When a graphics program exits the kernel
+  titled window, centered on the screen (`vga_fb_blit_gfx_window`), leaving the
+  shell window and desktop visible. The window is centered because a graphics
+  program owns the display while it runs (no mouse), so it cannot be dragged
+  into a better spot during play. When a graphics program exits the kernel
   redraws the desktop and restores the 15-color desktop palette.
-- **Known limitation:** an 8-bit palette mode has one global 256-color DAC, so
-  while DOOM runs its 256-color palette recolor the desktop behind the window.
-  The window geometry and shell remain correct; only the desktop's colors
-  shift until the next `vga_fb_draw_desktop`. A 16/24-bit VBE mode would fix
-  this but is out of scope.
+ - **Known limitation:** an 8-bit palette mode has one global 256-color DAC, so
+   while DOOM runs its 256-color palette recolor the desktop behind the window.
+   The window geometry and shell remain correct; only the desktop's colors
+   shift until the next `vga_fb_draw_desktop`. A 16/24-bit VBE mode would fix
+   this but is out of scope.
+
+### Taskbar with clock and volume (`vga_fb.c` + `rtc.c` + `pcspk.c`)
+The bottom taskbar is the desktop's status strip, not a hint line. It shows
+the current time and a speaker icon with volume control, both live, and both
+wired to the same kernel state the shell's `date` and `vol` builtins expose
+so the behaviour is serial-observable and BDD-testable even though the
+framebuffer is not.
+
+- **Clock (`rtc.c`):** `rtc_read_tod` reads the CMOS RTC time-of-day through
+  the named ports and registers in `rtc.c`. It waits out the update-in-progress
+  flag, decodes the binary-coded-decimal fields, and **fails closed**: a
+  non-BCD field, an impossible hour/minute/second, or a clock that never stops
+  updating returns failure, never a plausible-but-wrong time. The taskbar
+  redraws the clock when the second changes and treats a failed read as "clock
+  unavailable", never a stale value.
+- **Volume (`pcspk.c`):** a master volume 0..100, `PCSPK_VOL_DEFAULT` at boot,
+  clamped on set. The PC speaker has no hardware amplitude and this kernel does
+  not drive a PWM carrier, so volume is a **mute switch**: `pcspk_tone` opens
+  the speaker (port 0x61 bits 0 and 1, both required for the PIT2 square wave
+  to sound) only when the volume is above `PCSPK_VOL_MIN`, exactly as the
+  pre-volume driver did, so a default boot is byte-for-byte compatible and a
+  tone always sounds. At volume 0 the bits stay low and the speaker is silent.
+  Keeping the tone path identical to the original is deliberate: it is the
+  guarantee that sound never regresses.
+- **Taskbar widgets:** the speaker icon sits in the taskbar with `-`/`+`
+  buttons that call `pcspk_set_volume`; a left click on the icon toggles
+  mute, and the `-`/`+` buttons step the volume by `TASKBAR_VOL_STEP`. Mouse
+  hit-testing lives in `vga_fb_mouse_tick` beside the existing title-bar drag
+  and scrollbar logic; there is no separate input path.
+- **Tiling shortcuts (Alt = WM modifier, `kernel.c` + `vga_fb.c`):** the window
+  is moved, snapped and resized from the keyboard for a tiling-WM feel. Alt is
+  tracked as a modifier beside Shift and Ctrl. Alt+Enter toggles fullscreen,
+  Alt+arrows snap the window to the left/right/top/bottom half of the screen,
+  Alt+Home/End snap to the top-left / bottom-right quadrant, Alt+`[`/`]`
+  shrink/grow width, Alt+`-`/`=` shrink/grow both dimensions, and Alt+0 resets
+  the window to its default position and size. The window keeps its current
+  size across redraws (resize/snap persist instead of snapping back to the
+  default like the old layout engine).
+- **Shell surface:** `date` prints `HH:MM:SS` from `rtc_read_tod` (a failed
+  read prints a diagnostic); `vol [0-100]` prints the volume and, with an
+  argument, sets it after strict decimal parsing and clamping. This is the
+  TDD hook: the BDD suite asserts `date` and `vol` through the serial console.
 
 ## Kernel Contracts
 

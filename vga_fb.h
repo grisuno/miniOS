@@ -46,6 +46,31 @@ void vga_fb_blit_gfx_window(void);
 #define FONT_W  8
 #define FONT_H  8
 
+/* Upper bound on the terminal's size, used to size the live-screen buffer and
+ * the scrollback ring. The framebuffer dimensions are clamped to these before
+ * any buffer is indexed, so a very large display never overruns them. */
+#define TERM_MAX_COLS 256
+#define TERM_MAX_ROWS 128
+
+/* Taskbar geometry (drawn at the bottom, height = one font row). */
+#define TASKBAR_H         FONT_H
+#define TASKBAR_PAD        4
+#define TASKBAR_CLOCK_CH   8      /* "HH:MM:SS" */
+#define TASKBAR_VOL_CH     3      /* "NN%" */
+#define TASKBAR_VOL_STEP   10
+#define TASKBAR_ICON_W     8
+#define TASKBAR_BTN_W      8
+
+/* Tiling snap zones (Alt is the WM modifier). */
+#define TILING_LEFT          0
+#define TILING_RIGHT         1
+#define TILING_TOP           2
+#define TILING_BOTTOM        3
+#define TILING_TOP_LEFT      4
+#define TILING_TOP_RIGHT     5
+#define TILING_BOTTOM_LEFT   6
+#define TILING_BOTTOM_RIGHT  7
+
 /* Scrollbar geometry */
 #define SCROLLBAR_W     8
 #define SCROLLBAR_PAD   1
@@ -65,8 +90,11 @@ typedef struct {
 extern mouse_state_t mouse_state;
 
 /* ---- Scrollback ---- */
+/* A scrollback line can be up to the widest terminal (TERM_MAX_COLS), and a
+ * long logical line that wrapped across several screen rows is stored whole,
+ * so the ring must not truncate it or a re-rendered line would be cut short. */
 #define SB_MAX_LINES 256
-#define SB_LINE_MAX  48
+#define SB_LINE_MAX  TERM_MAX_COLS
 
 typedef struct {
     char lines[SB_MAX_LINES][SB_LINE_MAX];
@@ -90,6 +118,9 @@ void     vga_fb_scroll_term(void);
 void     vga_fb_handle_key(int scancode);
 void     vga_fb_toggle_fullscreen(void);
 void     vga_fb_move_terminal(int dx, int dy);
+void     vga_fb_snap_window(int zone);
+void     vga_fb_resize(int dcols, int drows);
+void     vga_fb_reset_default(void);
 void     vga_fb_mouse_tick(void);
 void     vga_fb_mouse_init(void);
 

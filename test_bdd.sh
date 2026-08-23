@@ -323,6 +323,33 @@ expect_count 4 "exit code: 55"
 expect_count 2 "hola cvm"
 expect "powering off"
 
+scenario "date prints the CMOS wall clock" "date
+poweroff"
+expect "[0-9][0-9]:[0-9][0-9]:[0-9][0-9]"
+
+scenario "vol reports the default volume" "vol
+poweroff"
+expect "volume: 100%"
+
+scenario "vol sets and reports the volume" "vol 40
+vol
+poweroff"
+expect_count 2 "volume: 40%"
+
+scenario "vol clamps above the maximum" "vol 250
+vol
+poweroff"
+expect_count 2 "volume: 100%"
+
+scenario "vol clamps below zero" "vol -5
+vol
+poweroff"
+expect_count 2 "volume: 0%"
+
+scenario "vol rejects non-numeric input" "vol abc
+poweroff"
+expect "usage: vol"
+
 scenario "net reports the slirp configuration" "net
 poweroff"
 expect "rtl8139"
