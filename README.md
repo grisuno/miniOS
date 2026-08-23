@@ -241,17 +241,19 @@ to the audio backend — `-machine pc,pcspk-audiodev=<id>` in addition to
 `QEMU_AUDIO`). A bare `-audiodev` alone routes nothing, so the beeps are
 silent without the machine option.
 
-The level music also plays, as a single voice on the same PC speaker. A
-`music_pcspeaker_module` in `i_minios_sound.c` decodes each MUS lump (the
-Doom music format, `D_E1M1` etc. at the stock 140 ticks/sec) straight
-from its interleaved event stream and drives the speaker with the highest
-currently-sounding note that sits in the melody register (midi 43 and up);
-bass and percussion are silent. This yields a recognizable rendition of
-the Doom tunes over a speaker that can only ever produce one square wave —
-the melody line instead of a chord drone. The module is picked when
-`snd_musicdevice` is the PC speaker, and `S_UpdateSounds` was re-enabled
-in `d_main.c` so both the sfx note sequencer and the music decoder are
-advanced each frame (they were previously never polled).
+The level music also plays on the same PC speaker with NES-style
+pseudo-polyphony. A `music_pcspeaker_module` in `i_minios_sound.c` decodes
+each MUS lump (the Doom music format, `D_E1M1` etc. at the stock 140
+ticks/sec) straight from its interleaved event stream, splits the sounding
+notes the way a NES split its voices: the lowest bass note becomes a
+sustained pedal (the triangle voice) while only the top few melody notes
+are fast-arpeggiated round-robin, holding each for 7 ms. The ear hears a
+strummed chord with a solid bass foundation instead of every voice chopped
+at equal length — the chiptune broke-chord trick, applied so dense
+arrangements stay clear. The module is
+picked when `snd_musicdevice` is the PC speaker, and `S_UpdateSounds` was
+re-enabled in `d_main.c` so both the sfx note sequencer and the music
+decoder are advanced each frame (they were previously never polled).
 
 The binary is built with the host toolchain (static, no-pie) and placed
 at `bin/doomgeneric.elf` on the minifs. To rebuild from source:

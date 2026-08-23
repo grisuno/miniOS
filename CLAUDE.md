@@ -468,20 +468,30 @@ active channel, turning the speaker off when none remain. `S_UpdateSounds`
 in `d_main.c` was re-enabled so `I_UpdateSound` actually runs each frame;
 before that neither the sfx sequencer nor the music decoder was ever polled.
 
-The level music is played as a single voice over the same speaker by a
+The level music is played over the same speaker by a
 `music_pcspeaker_module` in `i_minios_sound.c`, selected when
 `snd_musicdevice == SNDDEVICE_PCSPEAKER`. It decodes each MUS lump (Doom's
 music format, `D_E1M1` etc.) straight from its interleaved event stream at
 the stock 140 ticks/sec: a block of events at one tick ends when a
 descriptor byte's bit 7 is set, then a variable-length delta leads to the
-next block. The speaker is driven with the highest currently-sounding note
-at or above midi 43; bass and percussion (channel 15) are silent, so the
-speaker carries a clean recognizable melody line instead of a chord drone.
-A handle is allocated in `MUS_RegisterSong` (validated against the `MUS\x1a`
-magic and the 12-byte header), `MUS_PlaySong` resets the cursor and active
-notes, `MUS_Poll` advances by elapsed ms (`sys_tone`/`sys_time` syscalls
-204/210) and loops by rewinding to the score start, and `MUS_StopSong`
-silences the speaker. The `music_sdl_module`/`music_opl_module` stubs stay
+next block. The speaker is one square-wave channel, so chords are faked
+with the NES pseudo-polyphony trick: the lowest sounding bass note (below
+`MUS_BASS_LINE_MIDI`, midi 43) becomes a pedal held for `MUS_BASS_HOLD_MS`
+like the NES triangle voice, and only the highest `MUS_ARP_MAX` melody
+notes are fast-arpeggiated round-robin at `MUS_ARP_SLOT_MS` (7 ms) each by
+busy-waiting on `sys_time` (the percussion channel 15 is dropped in the
+decoder).  Capping the arpeggio to the top few melody notes keeps dense
+arrangements from degrading into mud — every active voice is no longer
+chopped at equal length, and the bass keeps its foundation instead of
+getting a fraction of the cycle.  At that cadence the ear integrates the
+rapid cycle into a single strummed chord instead of hearing one voice, the
+classic chiptune broke-chord sound. A handle is allocated in
+`MUS_RegisterSong` (validated against the `MUS\x1a`
+magic and the 12-byte header), `MUS_PlaySong` resets the cursor, active
+notes and chord, `MUS_Poll` advances by elapsed ms (`sys_tone`/`sys_time`
+syscalls 204/210) and loops by rewinding to the score start, and
+`MUS_StopSong` silences the speaker. The
+`music_sdl_module`/`music_opl_module` stubs stay
 all-zero; the PC speaker module is the only music source.
 
 ## Development Methodology (SDD + TDD + BDD)

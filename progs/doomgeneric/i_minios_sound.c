@@ -35,18 +35,31 @@ static long sys_time(void) {
     long r; __asm__ volatile("syscall":"=a"(r):"a"(204),"D"(0):"rcx","r11","memory"); return r;
 }
 
-/* MUS (Doom's music format) decoded to a single voice for the PC speaker.
- * The MUS lump is a single interleaved stream: a block of events at the same
- * tick (a descriptor byte whose bit 7 is clear means "more events follow at
- * this tick", bit 7 set means "last event of this block"), then a variable
- * length delta ticks to the next block.  Default tempo is 140 ticks/sec.
- * The melody voice is the highest currently-sounding note that sits at or
- * above the bass register; bass and percussion are silent so the PC speaker
- * carries a clean tune instead of a drone. */
+/* MUS (Doom's music format) decoded for the PC speaker with NES-style
+ * pseudo-polyphony.  The MUS lump is a single interleaved stream: a block
+ * of events at the same tick (a descriptor byte whose bit 7 is clear means
+ * "more events follow at this tick", bit 7 set means "last event of this
+ * block"), then a variable length delta ticks to the next block.  Default
+ * tempo is 140 ticks/sec.
+ *
+ * The PC speaker is one square-wave channel, so chords are faked the way a
+ * NES channel faked them.  On the NES the bass was a separate sustained
+ * triangle voice while the pulse channels arpeggiated the melody; with one
+ * square wave the same illusion is built from the same two ingredients.
+ * The lowest sounding bass note (below MUS_BASS_LINE_MIDI) becomes a pedal
+ * held for MUS_BASS_HOLD_MS, and only the highest MUS_ARP_MAX melody notes
+ * are fast-arpeggiated in a round-robin at MUS_ARP_SLOT_MS each.  Capping
+ * the arpeggio to the top few notes keeps dense arrangements from
+ * degrading into mud: every active voice is no longer chopped at equal
+ * length, and the bass keeps its foundation instead of getting 1/N of the
+ * time.  The percussion channel is dropped in the decoder. */
 
 #define MUS_TICKS_PER_SEC 140
-#define MUS_MELODY_MIN_MIDI 43
 #define MUS_PERCUSSION_CHAN 15
+#define MUS_ARP_SLOT_MS 7
+#define MUS_BASS_HOLD_MS 28
+#define MUS_BASS_LINE_MIDI 43
+#define MUS_ARP_MAX 4
 
 static const unsigned short mus_freq_table[128] = {
         8,     9,     9,    10,    10,    11,    12,    12,
@@ -76,6 +89,10 @@ typedef struct {
     int playing;
     int looping;
     unsigned long last_ms;
+    unsigned short bass;
+    unsigned short mel[MUS_ARP_MAX];
+    int mel_len;
+    int arp_index;
 } mus_player_t;
 
 static mus_player_t *mus_cur;
@@ -133,13 +150,60 @@ static int mus_next_block(mus_player_t *m, unsigned long *out) {
     return mus_read_varlen(m, out);
 }
 
-static void mus_set_tone(mus_player_t *m) {
-    int top = 0, i;
+static int mus_note_cmp(const void *a, const void *b) {
+    int x = *(const int *)a, y = *(const int *)b;
+    return (x > y) - (x < y);
+}
+
+/* Split the sounding notes into a bass pedal (the lowest note below the
+ * bass line) and the melody arpeggio (the highest MUS_ARP_MAX melody
+ * notes).  Percussion never enters active[], so it is skipped here too. */
+static void mus_build_chord(mus_player_t *m) {
+    int i, n = 0;
+    unsigned short bass = 0;
+    unsigned short all[16];
     for (i = 0; i < 16; i++) {
-        if (m->active[i] > top) top = m->active[i];
+        int note = m->active[i];
+        if (note <= 0) continue;
+        if (note < MUS_BASS_LINE_MIDI) {
+            if (bass == 0 || note < bass) bass = (unsigned short)note;
+        } else {
+            if (n < 16) all[n++] = (unsigned short)note;
+        }
     }
-    if (top < MUS_MELODY_MIN_MIDI) top = 0;
-    sys_tone(top ? mus_freq_table[top] : 0);
+    m->bass = bass;
+    m->mel_len = 0;
+    if (n > 1) qsort(all, n, sizeof(all[0]), mus_note_cmp);
+    int start = n > MUS_ARP_MAX ? n - MUS_ARP_MAX : 0;
+    for (i = start; i < n; i++)
+        m->mel[m->mel_len++] = all[i];
+    m->arp_index = 0;
+}
+
+/* Hold a tone for the given number of milliseconds. */
+static void mus_hold_tone(unsigned freq, unsigned long ms) {
+    sys_tone(freq);
+    unsigned long until = (unsigned long)sys_time() + ms;
+    while ((unsigned long)sys_time() < until)
+        __asm__ volatile("pause");
+}
+
+/* Play one full cycle of the pseudo-polyphony: the bass pedal first, held
+ * long like the NES triangle voice, then the melody notes arpeggiated
+ * rapidly.  The repeated cycle at this cadence is what the ear integrates
+ * into a chord instead of one voice. */
+static void mus_play_chord(mus_player_t *m) {
+    int i;
+    if (m->mel_len == 0 && m->bass == 0) {
+        sys_tone(0);
+        return;
+    }
+    if (m->bass)
+        mus_hold_tone(mus_freq_table[m->bass], MUS_BASS_HOLD_MS);
+    for (i = 0; i < m->mel_len; i++) {
+        mus_hold_tone(mus_freq_table[m->mel[m->arp_index]], MUS_ARP_SLOT_MS);
+        m->arp_index = (m->arp_index + 1) % m->mel_len;
+    }
 }
 
 static void mus_advance(mus_player_t *m, unsigned long ms) {
@@ -159,7 +223,8 @@ static void mus_advance(mus_player_t *m, unsigned long ms) {
         }
         consumed += delta;
     }
-    mus_set_tone(m);
+    mus_build_chord(m);
+    mus_play_chord(m);
 }
 
 static boolean MUS_Init(void) {
@@ -207,7 +272,8 @@ static void MUS_PlaySong(void *handle, boolean looping) {
     m->looping = looping;
     m->last_ms = (unsigned long)sys_time();
     mus_cur = m;
-    mus_set_tone(m);
+    mus_build_chord(m);
+    mus_play_chord(m);
 }
 
 static void MUS_StopSong(void) {
