@@ -149,6 +149,8 @@ chunk_resume:
     cmpw $0, sectors_left
     jne load_chunk
 
+    call vbe_probe
+
     cli
     lgdtl gdt32_ptr
     mov %cr0, %eax
@@ -288,6 +290,90 @@ puts_done:
 
 msg_read:
     .asciz "stage2: read error"
+
+/* Probe VESA BIOS Extensions for a high-resolution 8-bit-palette linear
+ * framebuffer and record it for the kernel in the fixed VBE_INFO_ADDR struct.
+ * Tries 800x600x8, then 640x480x8, then falls back to VGA Mode 13h. Runs in
+ * real mode (the kernel image is already fully loaded, so this scratch is
+ * safe) and must complete before the transition to long mode kills the BIOS
+ * video services. The 8-bit modes keep the 256-entry VGA DAC path the kernel
+ * desktop and DOOM rely on. */
+vbe_probe:
+    movw $VBE_MODE_800x600x8, %bx
+    call vbe_try_mode
+    jnc vbe_ok
+    movw $VBE_MODE_640x480x8, %bx
+    call vbe_try_mode
+    jnc vbe_ok
+    /* Fallback: VGA Mode 13h (320x200x8, linear framebuffer at 0xA0000). */
+    movw $BIOS_VIDEO_SET_MODE, %ax
+    int $BIOS_VIDEO_INT
+    movl $0x000A0000, %eax
+    movl %eax, VBE_INFO_ADDR + VBE_INFO_FBBASE_OFF
+    movw $320, VBE_INFO_ADDR + VBE_INFO_WIDTH_OFF
+    movw $200, VBE_INFO_ADDR + VBE_INFO_HEIGHT_OFF
+    movw $320, VBE_INFO_ADDR + VBE_INFO_PITCH_OFF
+    movb $1, VBE_INFO_ADDR + VBE_INFO_VALID_OFF
+    ret
+
+/* Try one VBE mode held in %bx. On success the mode is set with the linear
+ * framebuffer bit and carry is cleared; on any failure carry is set so the
+ * caller can try the next candidate. */
+vbe_try_mode:
+    pushw %bx
+    pushw %di
+    pushw %es
+    /* Get mode info: AX=4F01, CX=mode, ES:DI -> 0x7000. */
+    movw $0, %ax
+    movw %ax, %es
+    movw $VBE_MODE_INFO_ADDR, %di
+    movw $BIOS_VBE_GET_MODE_INFO, %ax
+    movw %bx, %cx
+    int $BIOS_VIDEO_INT
+    cmpw $0x4F, %ax
+    jne vbe_try_fail
+    /* Attributes word at offset 0 must claim supported and linear FB. */
+    movw $0, %ax
+    movw %ax, %es
+    movw $VBE_MODE_INFO_ADDR, %si
+    movw (%si), %dx
+    andw $VBE_ATTR_SUPPORTED, %dx
+    jz vbe_try_fail
+    movw (%si), %dx
+    andw $VBE_ATTR_LFB, %dx
+    jz vbe_try_fail
+    /* Copy width, height, pitch and physical base into the info struct. */
+    movw VBE_INFO_XRES_OFF(%si), %dx
+    movw %dx, VBE_INFO_ADDR + VBE_INFO_WIDTH_OFF
+    movw VBE_INFO_YRES_OFF(%si), %dx
+    movw %dx, VBE_INFO_ADDR + VBE_INFO_HEIGHT_OFF
+    movw VBE_INFO_BYTES_SCAN_OFF(%si), %dx
+    movw %dx, VBE_INFO_ADDR + VBE_INFO_PITCH_OFF
+    movl VBE_INFO_PHYSBASE_OFF(%si), %edx
+    movl %edx, VBE_INFO_ADDR + VBE_INFO_FBBASE_OFF
+    popw %es
+    popw %di
+    popw %bx
+    /* Set the mode with the linear-framebuffer bit: AX=4F02, BX=mode|LFB. */
+    orw $VBE_MODE_LFB, %bx
+    movw $BIOS_VBE_SET_MODE, %ax
+    int $BIOS_VIDEO_INT
+    cmpw $0x4F, %ax
+    jne vbe_set_fail
+    movb $1, VBE_INFO_ADDR + VBE_INFO_VALID_OFF
+    clc
+    ret
+vbe_set_fail:
+    stc
+    ret
+vbe_try_fail:
+    popw %es
+    popw %di
+    popw %bx
+    stc
+    ret
+vbe_ok:
+    ret
 
 #ifdef KASLR
 /* Pick the kernel's physical load base: a 2 MB-aligned address in the

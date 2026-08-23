@@ -11,8 +11,10 @@
  *   0x00000 - 0x005FF  real-mode IVT and BIOS data area
  *   0x01000 - 0x05FFF  long-mode page tables (PML4, PDPT, PD, KASLR PT0/PT1)
  *   0x030000 - 0x031000  user-window page tables (4 KB leaves, NX per page)
+ *   0x07000 - 0x070FF  VBE mode information block (stage 2 probe)
  *   0x07C00 - 0x07DFF  stage 1 (boot sector)
  *   0x07E00 - 0x07E14  disk address packet, boot drive and KASLR base scratch
+ *   0x07E20 - 0x07E2B  VBE framebuffer info struct handed to the kernel
  *   0x08000 - 0x08017  long-mode GDT handed to the kernel
  *   0x09000 - 0x0AFFF  stage 2
  *   0x10000 - 0x8FFFF  kernel staging buffer (one chunk at a time)
@@ -77,6 +79,41 @@
 #define BIOS_VIDEO_TTY_WRITE      0x0E
 #define BIOS_VIDEO_TTY_ATTR       0x0007
 #define BIOS_VIDEO_SET_MODE       0x0013
+
+/* VESA BIOS Extensions (VBE) linear-framebuffer video setup. Stage 2 probes a
+ * high-resolution 8-bit-palette mode before entering long mode and records
+ * the result for the kernel in a fixed low-memory struct (see VBE_INFO_ADDR).
+ * If no VBE mode is available it falls back to VGA Mode 13h (320x200x8). The
+ * 8-bit modes keep the 256-entry VGA DAC palette path used by the desktop and
+ * DOOM unchanged. */
+#define BIOS_VBE_GET_MODE_INFO    0x4F01
+#define BIOS_VBE_SET_MODE         0x4F02
+#define VBE_MODE_800x600x8        0x0103
+#define VBE_MODE_640x480x8        0x0101
+#define VBE_MODE_LFB              0x4000
+#define VBE_MODE_INFO_ADDR        0x7000
+#define VBE_MODE_ATTR_OFF         0x00
+#define VBE_ATTR_SUPPORTED        0x01
+#define VBE_ATTR_LFB              0x80
+#define VBE_INFO_XRES_OFF         0x12
+#define VBE_INFO_YRES_OFF         0x14
+#define VBE_INFO_BYTES_SCAN_OFF   0x10
+#define VBE_INFO_PHYSBASE_OFF     0x28
+
+/* Framebuffer info handed to the kernel. Stage 2 writes this fixed low-memory
+ * struct; the kernel reads it once at boot to map the linear framebuffer into
+ * the user window. Layout:
+ *   +0  dword  physical base of the linear framebuffer
+ *   +4  word   bytes per scanline (pitch)
+ *   +6  word   width in pixels
+ *   +8  word   height in pixels
+ *   +10 byte   valid (1 when stage 2 programmed a video mode) */
+#define VBE_INFO_ADDR             0x7E20
+#define VBE_INFO_FBBASE_OFF       0
+#define VBE_INFO_PITCH_OFF        4
+#define VBE_INFO_WIDTH_OFF        6
+#define VBE_INFO_HEIGHT_OFF       8
+#define VBE_INFO_VALID_OFF        10
 
 #define A20_CONTROL_PORT          0x92
 #define A20_ENABLE_BIT            0x02

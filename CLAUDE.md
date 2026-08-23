@@ -148,6 +148,45 @@ unaffected; KASLR randomizes only the kernel image's physical base. A KASLR
 kernel spans physical `[X, X+image)` and the BDD suite asserts the banner
 never reports base `0x100000`.
 
+## VESA Hi-Res Desktop and Windowed DOOM
+
+The desktop runs at a VESA linear-framebuffer resolution (800x600x8 by
+default) instead of VGA Mode 13h, and DOOM runs in a titled window at its
+native 320x200 instead of stealing the whole display.
+
+- **Boot path (stage2.S + bootdefs.h):** after the kernel image is loaded and
+  before long mode kills the BIOS video services, stage 2 probes VESA BIOS
+  Extensions for an 8-bit-palette linear-framebuffer mode: 800x600x8
+  (`VBE_MODE_800x600x8`), then 640x480x8, then VGA Mode 13h as a fallback. It
+  writes `{phys_base, pitch, width, height, valid}` to the fixed low-memory
+  struct `VBE_INFO_ADDR` (0x7E20). The 8-bit modes keep the 256-entry VGA DAC
+  path the desktop and DOOM share. No bare VBE constant appears in the
+  assembly; every mode number, offset and attribute lives in `bootdefs.h`.
+- **Kernel mapping (kernel.c `mm_setup_protections`):** `vga_fb_boot_config`
+  loads the VBE struct into `fb_width`/`fb_height`/`fb_pitch`/`fb_phys_base`,
+  and the kernel maps that physical framebuffer into the user window at the
+  fixed virtual `FB_ADDR` (0x1F00000), replacing the old 0xA0000 mapping. All
+  drawing addresses through `FB_ADDR` (desktop and graphics programs) work
+  unchanged; pixel addressing honors `fb_pitch`.
+- **Movable shell window (vga_fb.c):** the shell runs in a window (default
+  72x40 cells, clamped to the framebuffer) with a title bar on top and a
+  scrollbar on the window's right edge, over a desktop background with a
+  bottom taskbar. Click-and-drag on the title bar moves the window with the
+  mouse; F11 toggles fullscreen, F5 resets the position. Window geometry is
+  independent of the framebuffer dimensions.
+- **Windowed DOOM (syscall 211 + doomgeneric_minios.c):** the kernel maps a
+  64 KB kernel-heap back-buffer into the user window at `DOOM_BACKBUF_ADDR`
+  (0x1FE0000, RW, NX). DOOM renders its 320x200 frame there and calls
+  `SYS_DOOM_FRAME`; the kernel composites the buffer 1:1 onto the desktop in a
+  titled window at the bottom-right (`vga_fb_blit_gfx_window`), leaving the
+  shell window and desktop visible. When a graphics program exits the kernel
+  redraws the desktop and restores the 15-color desktop palette.
+- **Known limitation:** an 8-bit palette mode has one global 256-color DAC, so
+  while DOOM runs its 256-color palette recolor the desktop behind the window.
+  The window geometry and shell remain correct; only the desktop's colors
+  shift until the next `vga_fb_draw_desktop`. A 16/24-bit VBE mode would fix
+  this but is out of scope.
+
 ## Kernel Contracts
 
 ### Ramdisk

@@ -304,7 +304,11 @@ static int kbd_q_pop(void) {
 int kbd_available(void) {
     unsigned char s;
     __asm__ volatile("inb $0x64, %0" : "=a"(s));
-    return (s & 1);
+    /* Output-buffer full AND not auxiliary: the PS/2 controller shares one
+     * port for keyboard and mouse, and bit 5 marks mouse data. The keyboard
+     * poll must not consume mouse bytes (the IRQ12 handler owns those), or a
+     * click would be misread as a scancode. */
+    return (s & 1) && !(s & 0x20);
 }
 
 int kbd_read(void) {
@@ -475,21 +479,45 @@ static void mm_setup_protections(void) {
     }
     __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
 
-    /* Map physical VGA framebuffer 0xA0000 (64 KB) into the user window.
-     * Virtual address 0x1F00000 (31 MB) is inside the user window
-     * [USER_LOAD_BASE, USER_LOAD_END). The framebuffer is mapped RW with NX
-     * set (it is data, not executable). */
+    /* Map the linear framebuffer into the user window at virtual 0x1F00000
+     * (31 MB), inside [USER_LOAD_BASE, USER_LOAD_END). The physical base and
+     * stride come from the VBE probe (Mode 13h at 0xA0000 when unavailable).
+     * The mapping is RW with NX set: it is data, not executable. */
     {
         unsigned long fb_vaddr   = 0x1F00000UL;
         unsigned long fb_pd_idx  = fb_vaddr >> PT_PD_INDEX_SHIFT;
         unsigned long fb_pt_off  = (fb_vaddr & 0x1FFFFF) >> 12;
-        unsigned long *fb_pt_base = (unsigned long *)PT_USER_TABLES_ADDR +
-                                    (fb_pd_idx - lo) * 0x1000 /
-                                    sizeof(unsigned long);
-        unsigned long fb_phys    = 0x000A0000UL;
+        unsigned long *fb_pt     = (unsigned long *)PT_USER_TABLES_ADDR +
+                                   (fb_pd_idx - lo) * 0x1000 /
+                                   sizeof(unsigned long);
+        unsigned long fb_bytes  = (unsigned long)fb_pitch * (unsigned long)fb_height;
+        unsigned long fb_pages  = (fb_bytes + 0xFFF) >> 12;
         unsigned long k;
-        for (k = 0; k < 16; k++)
-            fb_pt_base[fb_pt_off + k] = (fb_phys + k * 0x1000) | PT_USER_NX_ENTRY;
+        if (fb_pages == 0) fb_pages = 1;
+        if (fb_pages > PT_PD_ENTRIES - fb_pt_off)
+            fb_pages = PT_PD_ENTRIES - fb_pt_off;
+        for (k = 0; k < fb_pages; k++)
+            fb_pt[fb_pt_off + k] = (fb_phys_base + k * 0x1000) | PT_USER_NX_ENTRY;
+    }
+
+    /* Map a kernel-heap back-buffer into the user window at DOOM_BACKBUF_ADDR
+     * so a ring-3 graphics program (DOOM) can render off-screen; the kernel
+     * composites it onto the desktop on SYS_DOOM_FRAME. The heap is identity
+     * mapped, so the physical frame is the returned virtual address. */
+    {
+        unsigned long bb_vaddr = DOOM_BACKBUF_ADDR;
+        unsigned long bb_pd_idx = bb_vaddr >> PT_PD_INDEX_SHIFT;
+        unsigned long bb_pt_off = (bb_vaddr & 0x1FFFFF) >> 12;
+        unsigned long *bb_pt = (unsigned long *)PT_USER_TABLES_ADDR +
+                               (bb_pd_idx - lo) * 0x1000 /
+                               sizeof(unsigned long);
+        unsigned char *buf = (unsigned char *)kmalloc(DOOM_W * DOOM_H);
+        unsigned long phys;
+        unsigned long k;
+        if (buf == 0) return;
+        phys = (unsigned long)buf;
+        for (k = 0; k < (DOOM_W * DOOM_H + 0xFFF) >> 12; k++)
+            bb_pt[bb_pt_off + k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
     }
 }
 
@@ -2358,6 +2386,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         pcspk_tone((unsigned)a1);
         return 0;
     }
+    case 211: { /* SYS_DOOM_FRAME: composite the graphics back-buffer window */
+        vga_fb_blit_gfx_window();
+        return 0;
+    }
     case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
         unsigned char *pal = (unsigned char *)a1;
         if (!user_range_ok((unsigned long)a1, 768)) return -EFAULT;
@@ -2572,7 +2604,10 @@ int k_exec_user(void *entry, int argc, char **argv) {
     wrmsr(MSR_FSBASE, 0);
     wrmsr(MSR_GSBASE, 0);
     syscall_kstack = SYS_KSTK_TOP;
-    vga_mode13h = 0; /* reclaim the display for the text console */
+    if (vga_mode13h) {
+        vga_mode13h = 0; /* reclaim the display for the text console */
+        vga_fb_draw_desktop(); /* drop the graphics window, restore desktop */
+    }
     return exec_exit_code;
 }
 
@@ -2582,7 +2617,10 @@ int k_run_rel(prog_entry_t entry, int argc, char **argv) {
     syscall_kstack = SYS_KSTK_TOP;
     if (ksetjmp(&exec_return) == 0)
         return entry(argc, argv);
-    vga_mode13h = 0;
+    if (vga_mode13h) {
+        vga_mode13h = 0;
+        vga_fb_draw_desktop();
+    }
     return exec_exit_code;
 }
 
@@ -3923,7 +3961,10 @@ void kmain(void) {
     ramdisk_init();
     register_libc_symbols();
     syscall_init();
+    vga_fb_boot_config();
     mm_setup_protections();
+    kprintf("fb: %dx%d pitch %d base 0x%lx\n",
+            fb_width, fb_height, fb_pitch, fb_phys_base);
     kprintf("kernel: physical base 0x%x, user pages 4 KB with NX\n",
             *(unsigned *)BOOT_KASLR_ADDR);
     kprintf("isolation: user window %x..%x ring 3, syscall ABI on %x\n",

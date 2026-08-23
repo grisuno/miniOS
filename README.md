@@ -213,9 +213,12 @@ each name from the path relative to `progs/`.
 
 MiniOS ships a doomgeneric port that runs DOOM as a static Linux ELF at
 ring 3. The engine compiles from `progs/doomgeneric/` with the platform
-layer in `doomgeneric_minios.c` (VGA Mode 13h framebuffer at 320x200,
-PS/2 keyboard input). The shareware WAD (`doom1.wad`) is bundled on the
-ramdisk.
+layer in `doomgeneric_minios.c`. The desktop runs on a VESA linear
+framebuffer (800x600x8 by default, falling back to 640x480 and Mode 13h);
+DOOM renders its 320x200 frame into a kernel back-buffer and the kernel
+composites it onto the desktop in a titled window (`SYS_DOOM_FRAME`, 211),
+so the shell window stays visible while you play. The shareware WAD
+(`doom1.wad`) is bundled on the minifs.
 
 ```
 miniOS> run doomgeneric.elf

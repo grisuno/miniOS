@@ -8,8 +8,37 @@
  */
 #include "kernel.h"
 #include "vga_fb.h"
+#include "bootdefs.h"
 
 int vga_fb_active;
+
+/* Framebuffer geometry, sized by vga_fb_boot_config from the VBE info the
+ * boot loader recorded (Mode 13h defaults when VBE is unavailable). */
+int fb_width  = 320;
+int fb_height = 200;
+int fb_pitch  = 320;
+unsigned long fb_phys_base = 0x000A0000UL;
+
+void vga_fb_boot_config(void) {
+    volatile uint8_t *p = (volatile uint8_t *)VBE_INFO_ADDR;
+    unsigned long base;
+    unsigned pitch, width, height;
+    int valid = p[VBE_INFO_VALID_OFF];
+    if (!valid) return;
+    base   = p[VBE_INFO_FBBASE_OFF + 0]
+           | ((unsigned long)p[VBE_INFO_FBBASE_OFF + 1] << 8)
+           | ((unsigned long)p[VBE_INFO_FBBASE_OFF + 2] << 16)
+           | ((unsigned long)p[VBE_INFO_FBBASE_OFF + 3] << 24);
+    pitch  = p[VBE_INFO_PITCH_OFF + 0] | (p[VBE_INFO_PITCH_OFF + 1] << 8);
+    width  = p[VBE_INFO_WIDTH_OFF + 0] | (p[VBE_INFO_WIDTH_OFF + 1] << 8);
+    height = p[VBE_INFO_HEIGHT_OFF + 0] | (p[VBE_INFO_HEIGHT_OFF + 1] << 8);
+    if (base == 0 || width == 0 || height == 0 || pitch == 0)
+        return;
+    fb_phys_base = base;
+    fb_pitch     = pitch;
+    fb_width     = width;
+    fb_height    = height;
+}
 
 /* ---- Mouse state (fed by sched.c IRQ12 handler) ---- */
 mouse_state_t mouse_state;
@@ -92,7 +121,7 @@ static void cursor_save_bg(int mx, int my) {
     int i, j;
     for (j = 0; j < 8; j++)
         for (i = 0; i < 8; i++)
-            cursor_save[j][i] = FB_ADDR[(my + j) * FB_WIDTH + (mx + i)];
+            cursor_save[j][i] = FB_ADDR[(my + j) * fb_pitch + (mx + i)];
 }
 
 static void cursor_draw(int mx, int my) {
@@ -211,13 +240,27 @@ static const uint8_t font8x8[96][8] = {
     {0x00,0x10,0x38,0x6C,0xC6,0xC6,0xFE,0x00}
 };
 
+/* Default non-fullscreen terminal window geometry. The shell runs in a
+ * movable window: a title bar on top, a scrollbar on its right edge and text
+ * below. The defaults are clamped to the framebuffer so the window always
+ * fits (a small screen degrades to a near-fullscreen window). */
+#define WIN_DEF_COLS  72
+#define WIN_DEF_ROWS  40
+#define WIN_DEF_X     4
+#define WIN_DEF_Y     3
+
 /* ---- Terminal state ---- */
 static int term_cx, term_cy;
-int term_x, term_y, term_cols, term_rows;
+int term_x = WIN_DEF_X, term_y = WIN_DEF_Y;
+int term_cols, term_rows;
 static int term_fullscreen;
 static int term_px_x, term_px_y, term_px_w, term_px_h;
 
-#define FB_OFFSET(x,y) ((unsigned)(y) * FB_WIDTH + (unsigned)(x))
+#define FB_OFFSET(x,y) ((unsigned)(y) * fb_pitch + (unsigned)(x))
+
+/* The text area starts one FONT_H below the window's top-left corner, which
+ * is occupied by the title bar. */
+static int term_content_y(void) { return term_px_y + FONT_H; }
 
 /* ---- Palette ---- */
 static void vga_fb_set_palette(void) {
@@ -249,8 +292,8 @@ static void vga_fb_set_palette(void) {
 
 /* ---- Drawing primitives ---- */
 void vga_fb_pixel(int x, int y, uint8_t color) {
-    if (x >= 0 && x < FB_WIDTH && y >= 0 && y < FB_HEIGHT)
-        FB_ADDR[y * FB_WIDTH + x] = color;
+    if (x >= 0 && x < fb_width && y >= 0 && y < fb_height)
+        FB_ADDR[y * fb_pitch + x] = color;
 }
 
 void vga_fb_rect(int x, int y, int w, int h, uint8_t color) {
@@ -267,7 +310,7 @@ void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg) {
     if (c < 32 || c > 127) c = 32;
     glyph = font8x8[c - 32];
     px = term_px_x + col * FONT_W;
-    py = term_px_y + row * FONT_H;
+    py = term_content_y() + row * FONT_H;
     for (j = 0; j < FONT_H; j++) {
         bits = glyph[j];
         for (i = 0; i < FONT_W; i++)
@@ -283,20 +326,70 @@ void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg) {
     }
 }
 
+/* Blit a text string at an absolute pixel position. Used for window chrome
+ * (title bar, taskbar) which lives outside the content-relative coordinate
+ * space that vga_fb_char/str operate in. */
+static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg) {
+    int k, i, j;
+    uint8_t bits;
+    const uint8_t *glyph;
+    for (k = 0; s[k]; k++) {
+        char c = s[k];
+        if (c < 32 || c > 127) c = 32;
+        glyph = font8x8[c - 32];
+        for (j = 0; j < FONT_H; j++) {
+            bits = glyph[j];
+            for (i = 0; i < FONT_W; i++)
+                vga_fb_pixel(px + k * FONT_W + i, py + j,
+                             (bits & (0x80 >> i)) ? fg : bg);
+        }
+    }
+}
+
+/* Composite the graphics back-buffer (e.g. DOOM's 320x200 frame) onto the
+ * desktop in a titled window at native resolution, leaving the shell window
+ * and desktop visible around it. Placed at the bottom-right so it does not
+ * cover the default shell window. */
+void vga_fb_blit_gfx_window(void) {
+    const volatile uint8_t *bb = (const volatile uint8_t *)DOOM_BACKBUF_ADDR;
+    int dst_x = fb_width - DOOM_W - SCROLLBAR_W;
+    int dst_y = fb_height - DOOM_H - FONT_H;
+    int r, b;
+    if (dst_x < 0) dst_x = 0;
+    if (dst_y < 0) dst_y = 0;
+    vga_fb_rect(dst_x, dst_y, DOOM_W + SCROLLBAR_W, FONT_H, COL_TITLEBAR);
+    text_px(dst_x + 4, dst_y, "DOOM", COL_TITLE_TXT, COL_TITLEBAR);
+    for (r = 0; r < DOOM_H; r++) {
+        volatile uint8_t *dst = &FB_ADDR[(dst_y + FONT_H + r) * fb_pitch + dst_x];
+        const volatile uint8_t *src = bb + r * DOOM_W;
+        for (b = 0; b < DOOM_W; b++)
+            dst[b] = src[b];
+    }
+}
+
 void vga_fb_clear(void) {
-    kmemset((void *)FB_ADDR, 0, FB_WIDTH * FB_HEIGHT);
+    kmemset((void *)FB_ADDR, 0, fb_width * fb_height);
 }
 
 /* ---- Layout ---- */
 static void term_recalc(void) {
+    int max_cols = (fb_width - SCROLLBAR_W) / FONT_W;
+    int max_rows = (fb_height - FONT_H - FONT_H) / FONT_H;
     if (term_fullscreen) {
         term_x = 0; term_y = 0;
-        term_cols = (FB_WIDTH - SCROLLBAR_W) / FONT_W;
-        term_rows = FB_HEIGHT / FONT_H;
+        term_cols = max_cols;
+        term_rows = (fb_height - FONT_H) / FONT_H;
     } else {
-        term_x = 0; term_y = 0;
-        term_cols = (FB_WIDTH - SCROLLBAR_W) / FONT_W;
-        term_rows = (FB_HEIGHT - 2 * FONT_H) / FONT_H;
+        term_cols = WIN_DEF_COLS;
+        if (term_cols > max_cols) term_cols = max_cols;
+        term_rows = WIN_DEF_ROWS;
+        if (term_rows > max_rows) term_rows = max_rows;
+        /* Preserve the current window position, clamping it into range so a
+         * drag or Ctrl+arrow move is not undone by the next layout pass. */
+        if (term_x < 0) term_x = 0;
+        if (term_y < 0) term_y = 0;
+        if (term_x > max_cols - term_cols) term_x = max_cols - term_cols;
+        if (term_y > max_rows - term_rows) term_y = max_rows - term_rows;
     }
     term_px_x = term_x * FONT_W;
     term_px_y = term_y * FONT_H;
@@ -307,26 +400,20 @@ static void term_recalc(void) {
 /* ---- Desktop ---- */
 static void draw_title(void) {
     const char *title = "MiniOS Terminal";
-    int tx, tw;
-    tw = 0; while (title[tw]) tw++;
-    tx = (term_cols - tw) / 2;
-    if (tx < 0) tx = 0;
-    vga_fb_rect(0, 0, FB_WIDTH, FONT_H, COL_TITLEBAR);
-    vga_fb_str(tx, 0, title, COL_TITLE_TXT, COL_TITLEBAR);
+    vga_fb_rect(term_px_x, term_px_y, term_px_w + SCROLLBAR_W, FONT_H, COL_TITLEBAR);
+    text_px(term_px_x + 4, term_px_y, title, COL_TITLE_TXT, COL_TITLEBAR);
 }
 
 static void draw_status(void) {
-    const char *s1 = "F11:fs F5:reset Ctrl+arrows:move Mouse:scroll";
-    vga_fb_rect(0, FB_HEIGHT - FONT_H, FB_WIDTH, FONT_H, COL_TASKBAR);
-    vga_fb_str(0, FB_HEIGHT - FONT_H, s1, COL_TASKBAR_TXT, COL_TASKBAR);
+    const char *s1 = "F11:fs F5:reset Drag title:move Wheel:scroll";
+    vga_fb_rect(0, fb_height - FONT_H, fb_width, FONT_H, COL_TASKBAR);
+    text_px(0, fb_height - FONT_H, s1, COL_TASKBAR_TXT, COL_TASKBAR);
 }
 
-/* ---- Scrollbar ---- */
-static int scrollbar_x(void) { return FB_WIDTH - SCROLLBAR_W; }
-
+/* ---- Scrollbar (attached to the window's right edge) ---- */
 static void draw_scrollbar(void) {
-    int sx = scrollbar_x();
-    int sy = term_px_y;
+    int sx = term_px_x + term_px_w;
+    int sy = term_content_y();
     int sh = term_px_h;
     int total = sb_total();
     int visible = term_rows;
@@ -363,7 +450,7 @@ static void draw_scrollbar(void) {
 /* ---- Full redraw of terminal content (used after scrollback navigation) ---- */
 static void term_redraw_content(void) {
     int row;
-    vga_fb_rect(term_px_x, term_px_y, term_px_w, term_px_h, COL_TERMINAL);
+    vga_fb_rect(term_px_x, term_content_y(), term_px_w, term_px_h, COL_TERMINAL);
     if (sb.view_offset > 0) {
         int start = sb.view_offset - 1;
         for (row = 0; row < term_rows && row < sb_total(); row++) {
@@ -378,31 +465,36 @@ void vga_fb_draw_desktop(void) {
     vga_fb_set_palette();
     vga_fb_clear();
     term_recalc();
-    draw_title();
+    vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
     draw_status();
-    /* Terminal background */
-    vga_fb_rect(term_px_x, term_px_y, term_px_w, term_px_h, COL_TERMINAL);
+    draw_title();
+    /* Terminal content background */
+    vga_fb_rect(term_px_x, term_content_y(), term_px_w, term_px_h, COL_TERMINAL);
     term_cx = 0; term_cy = 0;
     draw_scrollbar();
 }
 
 /* ---- Terminal scroll ---- */
 void vga_fb_scroll_term(void) {
-    int y;
     /* Push the top visible line to scrollback before scrolling */
     if (sb.view_offset == 0)
         sb_push_line(term_line_buf, term_line_len);
     term_line_len = 0;
-    /* Move pixel data up by FONT_H rows */
+    /* Move pixel data up by FONT_H rows, honoring the framebuffer pitch. */
     if (term_px_h > FONT_H) {
-        volatile uint8_t *dst = &FB_ADDR[term_px_y * FB_WIDTH + term_px_x];
-        volatile uint8_t *src = dst + FONT_H * FB_WIDTH;
-        int bytes = (term_px_h - FONT_H) * FB_WIDTH;
-        for (y = 0; y < bytes; y++)
-            dst[y] = src[y];
+        int rows = (term_px_h - FONT_H) / FONT_H;
+        int r, b;
+        for (r = 0; r < rows; r++) {
+            const volatile uint8_t *s =
+                &FB_ADDR[(term_content_y() + (r + 1) * FONT_H) * fb_pitch + term_px_x];
+            volatile uint8_t *d =
+                &FB_ADDR[(term_content_y() + r * FONT_H) * fb_pitch + term_px_x];
+            for (b = 0; b < term_px_w; b++)
+                d[b] = s[b];
+        }
     }
     /* Clear bottom row */
-    vga_fb_rect(term_px_x, term_px_y + term_px_h - FONT_H, term_px_w, FONT_H, COL_TERMINAL);
+    vga_fb_rect(term_px_x, term_content_y() + term_px_h - FONT_H, term_px_w, FONT_H, COL_TERMINAL);
     draw_scrollbar();
 }
 
@@ -466,17 +558,42 @@ void vga_fb_move_terminal(int dx, int dy) {
     if (dx == 0 && dy == 0) {
         /* Reset to default position */
         term_fullscreen = 0;
+        term_x = WIN_DEF_X; term_y = WIN_DEF_Y;
         sb_scroll_bottom();
         term_cx = 0; term_cy = 0;
         term_line_reset();
         vga_fb_draw_desktop();
         return;
     }
+    int max_x = (fb_width - SCROLLBAR_W) / FONT_W - term_cols;
+    int max_y = (fb_height - 2 * FONT_H) / FONT_H - term_rows;
     int nx = term_x + dx;
     int ny = term_y + dy;
-    if (nx < 0 || ny < 0) return;
-    if (nx + term_cols > (FB_WIDTH - SCROLLBAR_W) / FONT_W) return;
-    if (ny + term_rows > 24) return;
+    if (nx < 0) nx = 0;
+    if (ny < 0) ny = 0;
+    if (nx > max_x) nx = max_x;
+    if (ny > max_y) ny = max_y;
+    if (nx == term_x && ny == term_y) return;
+    term_x = nx; term_y = ny;
+    term_px_x = term_x * FONT_W;
+    term_px_y = term_y * FONT_H;
+    term_cx = 0; term_cy = 0;
+    vga_fb_draw_desktop();
+}
+
+/* Move the window so its title bar follows the mouse during a drag. grab_cx
+ * is the character column (within the title bar) where the grab happened, so
+ * the window stays under the pointer instead of jumping to the mouse origin. */
+static void vga_fb_drag_terminal(int mx, int my, int grab_cx) {
+    int max_x = (fb_width - SCROLLBAR_W) / FONT_W - term_cols;
+    int max_y = (fb_height - 2 * FONT_H) / FONT_H - term_rows;
+    int nx = mx / FONT_W - grab_cx;
+    int ny = my / FONT_H;
+    if (nx < 0) nx = 0;
+    if (ny < 0) ny = 0;
+    if (nx > max_x) nx = max_x;
+    if (ny > max_y) ny = max_y;
+    if (nx == term_x && ny == term_y) return;
     term_x = nx; term_y = ny;
     term_px_x = term_x * FONT_W;
     term_px_y = term_y * FONT_H;
@@ -487,7 +604,7 @@ void vga_fb_move_terminal(int dx, int dy) {
 void vga_fb_handle_key(int scancode) {
     switch (scancode) {
     case 0x57: vga_fb_toggle_fullscreen(); break;
-    case 0x3F: term_x = 0; term_y = 0; term_fullscreen = 0;
+    case 0x3F: term_x = WIN_DEF_X; term_y = WIN_DEF_Y; term_fullscreen = 0;
                sb_scroll_bottom();
                term_cx = 0; term_cy = 0;
                term_line_reset();
@@ -497,7 +614,10 @@ void vga_fb_handle_key(int scancode) {
 
 /* ---- Mouse ---- */
 void vga_fb_mouse_tick(void) {
+    static int dragging;
+    static int grab_cx;
     int mx, my;
+    int win_w = term_px_w + SCROLLBAR_W;
 
     if (!mouse_state.present) return;
 
@@ -515,13 +635,39 @@ void vga_fb_mouse_tick(void) {
         mouse_state.wheel = 0;
         term_redraw_content();
         draw_scrollbar();
+        cursor_visible = 0;   /* content changed under the cursor: re-save */
     }
 
-    /* Process left click on scrollbar */
     mx = mouse_state.x;
     my = mouse_state.y;
-    if ((mouse_state.buttons & 1) && mx >= scrollbar_x()) {
-        int sy = term_px_y;
+
+    /* Title-bar drag: grab the window on a left press over the title bar and
+     * move it while the button is held. Redrawing the desktop resets the
+     * cursor, so the cursor is re-saved afterwards. */
+    if (!term_fullscreen) {
+        int in_title = (my >= term_px_y && my < term_content_y() &&
+                        mx >= term_px_x && mx < term_px_x + win_w);
+        if (mouse_state.buttons & 1) {
+            if (!dragging && in_title) {
+                dragging = 1;
+                grab_cx = (mx - term_px_x) / FONT_W;
+            }
+        } else {
+            dragging = 0;
+        }
+        if (dragging) {
+            vga_fb_drag_terminal(mx, my, grab_cx);
+            cursor_visible = 0;   /* desktop redraw cleared the old cursor */
+            mx = mouse_state.x;
+            my = mouse_state.y;
+        }
+    }
+
+    /* Left click on the window scrollbar jumps the view to that position. */
+    if ((mouse_state.buttons & 1) && !dragging &&
+        mx >= term_px_x + term_px_w && mx < term_px_x + win_w &&
+        my >= term_content_y() && my < term_content_y() + term_px_h) {
+        int sy = term_content_y();
         int sh = term_px_h;
         int total = sb_total();
         int visible = term_rows;
@@ -532,14 +678,15 @@ void vga_fb_mouse_tick(void) {
             if (new_off > max_off) new_off = max_off;
             sb.view_offset = new_off;
             term_redraw_content();
+            cursor_visible = 0;   /* content changed under the cursor: re-save */
         }
     }
 
     /* Clamp mouse position */
     if (mouse_state.x < 0) mouse_state.x = 0;
-    if (mouse_state.x >= FB_WIDTH - 8) mouse_state.x = FB_WIDTH - 8;
+    if (mouse_state.x >= fb_width - 8) mouse_state.x = fb_width - 8;
     if (mouse_state.y < 0) mouse_state.y = 0;
-    if (mouse_state.y >= FB_HEIGHT - 8) mouse_state.y = FB_HEIGHT - 8;
+    if (mouse_state.y >= fb_height - 8) mouse_state.y = fb_height - 8;
 
     mx = mouse_state.x;
     my = mouse_state.y;
@@ -563,8 +710,8 @@ void vga_fb_mouse_tick(void) {
 }
 
 void vga_fb_mouse_init(void) {
-    mouse_state.x = FB_WIDTH / 2;
-    mouse_state.y = FB_HEIGHT / 2;
+    mouse_state.x = fb_width / 2;
+    mouse_state.y = fb_height / 2;
     mouse_state.buttons = 0;
     mouse_state.dx = 0;
     mouse_state.dy = 0;

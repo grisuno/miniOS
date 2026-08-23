@@ -3,9 +3,29 @@
 
 #include <stdint.h>
 
-#define FB_WIDTH   320
-#define FB_HEIGHT  200
+/* Framebuffer geometry. The boot loader probes VESA BIOS Extensions for a
+ * high-resolution 8-bit-palette linear framebuffer and records width, height,
+ * pitch and physical base in the fixed VBE_INFO_ADDR struct; vga_fb_boot_config
+ * loads them into the globals below before the kernel maps the framebuffer.
+ * Without VBE the values are the Mode 13h defaults (320x200x8, phys 0xA0000).
+ * FB_ADDR is the fixed virtual address in the user window that both the kernel
+ * desktop and graphics programs write through. */
 #define FB_ADDR    ((volatile uint8_t *)0x1F00000UL)
+extern int fb_width;
+extern int fb_height;
+extern int fb_pitch;
+extern unsigned long fb_phys_base;
+
+void vga_fb_boot_config(void);
+
+/* Graphics-window compositing. A ring-3 program (DOOM) renders into a
+ * kernel-backed back-buffer mapped into the user window at DOOM_BACKBUF_ADDR
+ * and calls SYS_DOOM_FRAME (211) to have the kernel composite it onto the
+ * desktop at its native resolution, so the shell window stays visible. */
+#define DOOM_W            320
+#define DOOM_H            200
+#define DOOM_BACKBUF_ADDR 0x1FE0000UL
+void vga_fb_blit_gfx_window(void);
 
 /* Palette indices */
 #define COL_BG          1

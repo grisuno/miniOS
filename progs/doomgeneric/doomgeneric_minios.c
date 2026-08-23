@@ -1,9 +1,12 @@
 /* doomgeneric_minios.c - MiniOS platform layer for doomgeneric.
  *
- * VGA Mode 13h (320x200, 256 colors) set by stage1.S.
- * Framebuffer at virtual 0x1F00000 (physical 0xA0000).
+ * DOOM renders into a kernel back-buffer in the user window at virtual
+ * 0x1FE0000; each frame it calls SYS_DOOM_FRAME (211) and the kernel
+ * composites the buffer onto the hi-res desktop as a titled window at
+ * native 320x200, leaving the shell window visible. The VBE linear
+ * framebuffer is set up by the boot loader.
  * Syscalls: 204=time(ms), 205=kbd(scancode), 206=palette(768 bytes),
- *           207=kbd_raw_mode(0/1).
+ *           207=kbd_raw_mode(0/1), 208=vga_mode, 211=doom_frame.
  */
 
 #include "doomgeneric.h"
@@ -38,10 +41,17 @@ static long sys_vga_mode(int on) {
     __asm__ volatile("syscall" : "=a"(ret) : "a"(208), "D"((long)on) : "rcx","r11","memory");
     return ret;
 }
+static long sys_doom_frame(void) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(211), "D"(0) : "rcx","r11","memory");
+    return ret;
+}
 
-/* ---------- VGA Mode 13h framebuffer ---------- */
+/* ---------- Graphics back-buffer ---------- */
 
-#define FB_ADDR    ((volatile uint8_t *)0x1F00000UL)
+/* DOOM renders into a kernel-backed back-buffer in the user window; the
+ * kernel composites it onto the desktop as a window on SYS_DOOM_FRAME. */
+#define FB_ADDR    ((volatile uint8_t *)0x1FE0000UL)
 #define FB_WIDTH   320
 #define FB_HEIGHT  200
 
@@ -51,58 +61,9 @@ static long sys_vga_mode(int on) {
 struct color { uint32_t b:8; uint32_t g:8; uint32_t r:8; uint32_t a:8; };
 extern struct color colors[256];
 
-/* Dirty flag: set by I_SetPalette(), cleared after we rebuild the VGA state.
- * Avoids rebuilding the 4096-entry hash table and pushing 768 bytes to the
- * VGA DAC on every single frame. */
+/* Dirty flag: set by I_SetPalette(), cleared after we push the 768 bytes of
+ * the 256-color VGA DAC on the next frame, instead of on every frame. */
 volatile int minios_palette_dirty = 1;
-
-/* 4-bit hash table for fast RGB -> palette index lookup */
-#define HT_SIZE 4096
-static int16_t ht_idx[HT_SIZE];
-static uint8_t ht_r[HT_SIZE], ht_g[HT_SIZE], ht_b[HT_SIZE];
-
-static unsigned ht_hash(uint8_t r, uint8_t g, uint8_t b) {
-    return (((unsigned)r << 8) | ((unsigned)g << 4) | (unsigned)b) & (HT_SIZE - 1);
-}
-
-static void ht_clear(void) {
-    int i;
-    for (i = 0; i < HT_SIZE; i++) ht_idx[i] = -1;
-}
-
-static void ht_insert(uint8_t r, uint8_t g, uint8_t b, uint8_t idx) {
-    unsigned h = ht_hash(r, g, b);
-    while (ht_idx[h] >= 0) h = (h + 1) & (HT_SIZE - 1);
-    ht_idx[h] = (int16_t)idx;
-    ht_r[h] = r; ht_g[h] = g; ht_b[h] = b;
-}
-
-static uint8_t ht_lookup(uint8_t r, uint8_t g, uint8_t b) {
-    unsigned h = ht_hash(r, g, b);
-    while (ht_idx[h] >= 0) {
-        if (ht_r[h] == r && ht_g[h] == g && ht_b[h] == b)
-            return (uint8_t)ht_idx[h];
-        h = (h + 1) & (HT_SIZE - 1);
-    }
-    /* brute-force fallback */
-    int best = 0, best_d = 0x7fffffff;
-    int i;
-    for (i = 0; i < 256; i++) {
-        int dr = (int)colors[i].r - r;
-        int dg = (int)colors[i].g - g;
-        int db = (int)colors[i].b - b;
-        int d = dr*dr + dg*dg + db*db;
-        if (d < best_d) { best_d = d; best = i; }
-    }
-    return (uint8_t)best;
-}
-
-static void rebuild_palette_ht(void) {
-    ht_clear();
-    int i;
-    for (i = 0; i < 256; i++)
-        ht_insert(colors[i].r, colors[i].g, colors[i].b, (uint8_t)i);
-}
 
 static void load_vga_palette(void) {
     uint8_t dac[768];
@@ -245,6 +206,7 @@ void DG_DrawFrame(void) {
     for (i = 0; i < 64000; i++) {
         dst[i] = src[i];
     }
+    sys_doom_frame();
     kbd_poll();
 }
 
