@@ -2493,6 +2493,46 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     }
     case 334: /* rseq: not supported, libc handles -1 gracefully */
         return -1;
+    case 79: { /* getcwd: return the shell cwd into a user buffer */
+        char *buf = (char *)a1;
+        unsigned long sz = (unsigned long)a2;
+        if (!buf || sz == 0) return -22; /* EINVAL */
+        if (!user_range_ok((unsigned long)buf, sz)) return EFAULT;
+        unsigned long cwd_len = (unsigned long)kstrlen(fs_cwd);
+        if (sz < cwd_len + 1) return -34; /* ERANGE */
+        for (unsigned long i = 0; i <= cwd_len; i++) buf[i] = fs_cwd[i];
+        return (long)(cwd_len + 1);
+    }
+    case 262: { /* newfstatat: stat via the unified filesystem */
+        const char *path = (const char *)a2;
+        unsigned long *st = (unsigned long *)a3;
+        if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
+        if (!user_range_ok((unsigned long)st, 144)) return EFAULT;
+        for (int i = 0; i < 18; i++) st[i] = 0;
+        char resolved[RAMDISK_FNAME_LEN];
+        if (!fs_resolve(path, resolved, sizeof(resolved))) return -2; /* ENOENT */
+        if (fs_is_dir(resolved)) {
+            ((unsigned int *)(unsigned long)st)[5] = 0040755; /* S_IFDIR | 0755 */
+        } else {
+            RDFile *rf = ramdisk_open(resolved);
+            if (!rf) {
+                /* try minifs */
+                if (minifs_is_mounted()) {
+                    int ino = minifs_resolve_path(resolved);
+                    MiniFSInode mi;
+                    if (ino >= 0 && minifs_stat(ino, &mi) >= 0) {
+                        ((unsigned int *)(unsigned long)st)[5] = 0100666; /* S_IFREG | 0666 */
+                        ((unsigned long *)(unsigned long)st)[6] = (unsigned long)mi.size;
+                        return 0;
+                    }
+                }
+                return -2; /* ENOENT */
+            }
+            ((unsigned int *)(unsigned long)st)[5] = 0100666; /* S_IFREG | 0666 */
+            ((unsigned long *)(unsigned long)st)[6] = (unsigned long)rf->size;
+        }
+        return 0;
+    }
     default:
         return -38; /* ENOSYS */
     }

@@ -19,6 +19,10 @@ CVM_REPO_DIR ?= ../cvm
 CVM_DIR      ?= $(CVM_REPO_DIR)/cvm2
 LD_DIR       ?= ../ld
 
+MICROPYTHON_URL ?= https://github.com/micropython/micropython
+MICROPYTHON_DIR ?= ../micropython
+MICROPYTHON_REF ?= v1.28.0
+
 # The toolchain binaries are built into a directory this repository owns.
 # Several of the sibling repositories ship a committed binary next to their
 # sources; using those would mean the image was not built from source at all,
@@ -97,7 +101,8 @@ PROGS     = $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o $(OBJ_DIR)/minigcc.o \
             $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
             $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
             $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/freedom.c \
-            $(SRC_DIR)/cp.c $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
+            $(SRC_DIR)/cp.c $(SRC_DIR)/hello.py \
+            $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
             $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
             $(ASM_DIR)/freedom.s $(DOC_DIR)/hostile.html \
             $(PROGS_DIR)/README.txt
@@ -119,6 +124,14 @@ sources:
 	        $(GIT) clone "$$url" "$$dir" || exit 1; \
 	    fi; \
 	done
+	@if [ -d "$(MICROPYTHON_DIR)/.git" ]; then \
+	    echo "present  $(MICROPYTHON_DIR)"; \
+	elif [ -e "$(MICROPYTHON_DIR)" ]; then \
+	    echo "skipped  $(MICROPYTHON_DIR) exists and is not a git clone"; \
+	else \
+	    echo "cloning  $(MICROPYTHON_URL) -> $(MICROPYTHON_DIR) ($(MICROPYTHON_REF))"; \
+	    $(GIT) clone --depth 1 -b $(MICROPYTHON_REF) "$(MICROPYTHON_URL)" "$(MICROPYTHON_DIR)" || exit 1; \
+	fi
 
 sources-update: sources
 	@for pair in $(SOURCE_REPOS); do \
@@ -295,6 +308,39 @@ $(BIN_DIR)/doom1.wad: Doom1.wad
 
 # DOOM binaries live on minifs, not the ramdisk (kernel must stay < 3 MB)
 MINIFS_DOOM_FILES = $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
+
+# ── MicroPython (microPython unix port, static glibc ELF) ──────────
+# Same contract as DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
+# The build writes into the micropython checkout (ports/unix/build-*),
+# and the ELF is copied into progs/bin/.
+MPY_VARIANT_DIR = $(abspath $(PROGS_DIR)/micropython/variants/minios)
+MPY_BUILD       = $(MICROPYTHON_DIR)/ports/unix/build-minios
+MPY_CROSS       = $(MICROPYTHON_DIR)/mpy-cross/mpy-cross
+
+$(MICROPYTHON_DIR)/ports/unix/main.c:
+	@echo "missing $@"
+	@echo "run 'make sources' to clone the MicroPython repository"
+	@exit 1
+
+$(MPY_CROSS):
+	$(MAKE) -C $(MICROPYTHON_DIR)/mpy-cross -j$(shell nproc 2>/dev/null || echo 4)
+
+$(BIN_DIR)/micropython.elf: $(MICROPYTHON_DIR)/ports/unix/main.c \
+                           $(PROGS_DIR)/micropython/variants/minios/mpconfigvariant.h \
+                           $(PROGS_DIR)/micropython/variants/minios/mpconfigvariant.mk \
+                           | $(MPY_CROSS)
+	$(MAKE) -C $(MICROPYTHON_DIR)/ports/unix \
+	    VARIANT_DIR=$(MPY_VARIANT_DIR) \
+	    LDFLAGS_EXTRA="-static -no-pie" \
+	    -j$(shell nproc 2>/dev/null || echo 4)
+	cp $(MPY_BUILD)/micropython $@
+
+# Bare-name alias so `micropython` works without the .elf suffix.
+$(BIN_DIR)/micropython: $(BIN_DIR)/micropython.elf
+	cp $< $@
+
+MINIFS_FILES = $(MINIFS_DOOM_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython
+
 # Generation 2: gen1 minigcc compiles its own source; 'ld' links it.
 # Generation 3: the ld-linked compiler compiles itself again; the gen3
 # binary is what ships on the ramdisk. `make selfhost` additionally
@@ -428,9 +474,8 @@ kernel.bin: kernel.elf
 # MiniFS image: 128 MB filesystem appended after the kernel, contains DOOM
 MINIFS_BLOCKS ?= 32768
 
-minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
-	python3 mkfs.minifs.py $@ $(MINIFS_BLOCKS) \
-		$(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES)
+	python3 mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES)
 
 os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	@ksec=$$(( ($$(stat -c%s kernel.bin) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )); \
@@ -474,7 +519,8 @@ clean:
 	rm -f $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf \
 	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
 	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
-	      $(BIN_DIR)/cp $(BIN_DIR)/freedom
+	      $(BIN_DIR)/cp $(BIN_DIR)/freedom \
+	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython
 	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm
 	rm -f $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s $(ASM_DIR)/w1.s \
 	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/freedom.s
@@ -482,8 +528,7 @@ clean:
 .SECONDARY:
 
 minifs-mkfs:
-	python3 mkfs.minifs.py minifs.bin $(MINIFS_BLOCKS) \
-		progs/bin/doomgeneric.elf progs/bin/doom1.wad progs/bin/DOOM1.WAD
+	python3 mkfs.minifs.py minifs.bin $(MINIFS_BLOCKS) $(MINIFS_FILES)
 
 minifs-dump:
 	python3 minifs_dump.py minifs.bin $(ARGS)

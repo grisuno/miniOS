@@ -623,6 +623,48 @@ syscalls 204/210) and loops by rewinding to the score start, and
 `music_sdl_module`/`music_opl_module` stubs stay
 all-zero; the PC speaker module is the only music source.
 
+## MicroPython (`micropython.elf`)
+MicroPython runs inside MiniOS exactly like DOOM does: the upstream project
+is cloned as a sibling repository, built on the host with the ordinary gcc
+toolchain against the static glibc, and the resulting `ET_EXEC` binary ships
+on MiniFS, where it runs as a ring-3 process through the Linux syscall ABI.
+No MicroPython source is ever compiled by miniGCC, and nothing reaches into
+the MicroPython checkout for content MiniOS owns: the port lives in this
+repository as an out-of-tree unix-port variant.
+
+- **Source**: `MICROPYTHON_DIR` (default `../micropython`), overridable like
+  every toolchain location; `MICROPYTHON_URL` and the pinned release tag
+  `MICROPYTHON_REF` are overridable too. `make sources` clones it with
+  `--depth 1 -b $MICROPYTHON_REF`; an existing checkout is never touched.
+  The shallow clone is enough: the MiniOS build needs no git submodules
+  (no FFI, no SSL, no berkeley-db).
+- **Variant**: `progs/micropython/variants/minios/{mpconfigvariant.h,
+  mpconfigvariant.mk}` is a variant of `ports/unix` selected at build time
+  through the `VARIANT_DIR` mechanism, so the upstream checkout carries no
+  modifications. The configuration keeps the compiler, floats and the `os`
+  module, and disables readline (the kernel console is a cooked, line-based
+  device with its own echo), sockets, threading, SSL, FFI, termios, VFS
+  layers and native emitters.
+- **Build**: `make` builds `mpy-cross` and then the port with
+  `LDFLAGS_EXTRA="-static -no-pie"`, exactly the linking contract DOOM
+  follows; the ELF is copied to `progs/bin/micropython.elf` and packed into
+  `minifs.bin` at its root together with the `micropython` bare-name alias,
+  so it never inflates the kernel image (`< 3 MB` contract). `run
+  micropython.elf`, bare `micropython.elf` and bare `micropython` all work;
+  `micropython -c "expr"` evaluates, `micropython src/script.py` runs a file
+  (opened through the unified fs: ramdisk first, MiniFS fallback), and bare
+  `micropython` reads the interactive REPL from stdin. The process exits
+  with `exit code: N` like any other program.
+- **Kernel ABI**: the binary leans on the same glibc-static stub set DOOM
+  proved (`open/openat`, `read`, `write`, `brk`, `mmap`, `fstat`, ...). The
+  unix port's `realpath()` of script paths needs the cwd and directory/type
+  information, so the kernel implements `getcwd` (79, returns the shell
+  `fs_cwd`) and `newfstatat` (262, reports `S_IFREG`/`S_IFDIR` with size from
+  the unified filesystem, `ENOENT` when missing) with the same user-pointer
+  validation as every other dispatcher case. Anything else the C library
+  probes (`statx`, signals, ioctls) degrades through `-ENOSYS` or existing
+  stubs, never through kernel crashes.
+
 ## Development Methodology (SDD + TDD + BDD)
 1. **SDD**: every feature begins with a spec in this file.
 2. **TDD**: add a failing scenario first, then implement.

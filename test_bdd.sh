@@ -660,6 +660,32 @@ poweroff"
 expect_count 2 "MiniOS Kernel v0.3"
 expect "done"
 
+# MicroPython: a host-built static glibc ELF on MiniFS running at ring 3
+# through the Linux syscall ABI, exactly like DOOM. Bare name resolves
+# through the MiniFS fallback.
+scenario "micropython evaluates -c with integers and floats" "micropython -c \"print(6 * 7)\"
+micropython -c \"print(1.5 * 2)\"
+poweroff"
+expect "42"
+expect "3.0"
+expect "exit code: 0"
+
+scenario "micropython runs a script from the ramdisk" "micropython src/hello.py
+poweroff"
+expect "hello from python"
+expect "exit code: 0"
+
+scenario "micropython reports a syntax error and returns a failure code" "micropython -c \"def broken(:\"
+poweroff"
+expect "SyntaxError"
+expect "exit code: 1"
+
+scenario "micropython REPL reads lines from the console" "micropython
+print(40 + 2)
+exit()
+poweroff"
+expect "42"
+
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="
 [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"

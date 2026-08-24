@@ -264,7 +264,7 @@ directory:
 | Directory | Contents |
 |-----------|----------|
 | `objects/` | ET_REL toolchain: `minigcc.o`, `ld.o`, `cvm.o`, demo `.o` |
-| `bin/` | Linux ELFs + command-path utilities (`cp`, `freedom`, probes) |
+| `bin/` | Linux ELFs + command-path utilities (`cp`, `freedom`, `micropython`) |
 | `cvm/` | CVM modules: `fib.cvm`, `w1.cvm`, `minigcc.cvm` |
 | `src/` | C sources for every program on the ramdisk |
 | `asm/` | miniGCC assembly (`*.s`) for the toolchain-built programs |
@@ -333,6 +333,50 @@ The kernel provides four custom syscalls for the port: `time_ms` (204),
 `kbd` (205), `palette` (206) and `kbd_raw_mode` (207). VGA Mode 13h is
 entered through `sys_vga_mode` (208), which tells the kernel to stop
 touching VGA text hardware while the game runs.
+
+## MicroPython
+
+MiniOS ships MicroPython as a static Linux ELF at ring 3, built from the
+upstream unix port with a custom MiniOS variant. The variant enables floats,
+the compiler, the `os` module and computed-goto, and disables readline
+(the kernel handles echo and line editing), sockets, threading, SSL, FFI,
+termios and native emitters. The binary is linked with `gcc -static -no-pie`,
+exactly like DOOM.
+
+```
+miniOS> micropython -c "print(6 * 7)"
+42
+miniOS> micropython -c "print(1.5 * 2)"
+3.0
+miniOS> micropython src/hello.py
+hello from python
+miniOS> micropython
+>>> print(40 + 2)
+42
+>>> exit()
+miniOS>
+```
+
+MicroPython resolves through the command path (`bin/micropython`) like `cp`
+and `freedom`, so both `micropython` and `run micropython.elf` work. Scripts
+are opened through the unified filesystem (ramdisk first, MiniFS fallback),
+and the interactive REPL reads from the serial console.
+
+The kernel provides two new syscalls for glibc-static compatibility:
+`getcwd` (79) returns the shell working directory, and `newfstatat` (262)
+reports `S_IFREG`/`S_IFDIR` with file sizes from the unified filesystem.
+A script's `realpath()` and directory traversal work without needing a
+full VFS layer.
+
+Build from source:
+
+```bash
+make sources          # clones micropython if missing
+make                  # builds mpy-cross, the unix port, and packs the ELF
+```
+
+The variant files live in `progs/micropython/variants/minios/`; the build
+runs entirely on the host and copies the resulting ELF into `progs/bin/`.
 
 ## Security: NX and KASLR
 
