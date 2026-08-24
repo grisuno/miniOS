@@ -92,6 +92,9 @@ position and size.
 
 - [https://www.youtube.com/watch?v=4aHe6T0bD1o](https://www.youtube.com/watch?v=4aHe6T0bD1o)
 
+## Wiki
+
+- [https://deepwiki.com/grisuno/miniOS](https://deepwiki.com/grisuno/miniOS)
 
 ## The four repositories
 
