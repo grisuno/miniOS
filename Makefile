@@ -223,15 +223,34 @@ $(OBJ_DIR)/minigcc.o: $(MINIGCC_DIR)/minigcc.c
 $(OBJ_DIR)/ld.o: $(LD_DIR)/ld.c
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
-$(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h cvm_host.c kernel.h
-	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -m64 -mno-red-zone \
+$(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h cvm_host.c kernel.h \
+                  $(CVM_DIR)/cvm_jit.c $(CVM_DIR)/cvm_jit.h \
+                  $(CVM_DIR)/cvm_jit_x86.c $(CVM_DIR)/cvm_jit_x86.h \
+                  $(CVM_DIR)/cvm_jit_help.c $(CVM_DIR)/cvm_jit_help.h
+	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
+	      -DCVM_FREESTANDING -m64 -mno-red-zone \
 	      -fno-pic -O2 -I$(CVM_DIR) \
 	      -o $(OBJ_DIR)/cvm_core.o $(CVM_DIR)/cvm.c
-	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -m64 -mno-red-zone \
+	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
+	      -DCVM_FREESTANDING -m64 -mno-red-zone \
 	      -fno-pic -O2 -I$(CVM_DIR) \
 	      -o $(OBJ_DIR)/cvm_host.o cvm_host.c
-	$(LD) -m elf_x86_64 -r -o $@ $(OBJ_DIR)/cvm_core.o $(OBJ_DIR)/cvm_host.o
-	rm -f $(OBJ_DIR)/cvm_core.o $(OBJ_DIR)/cvm_host.o
+	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
+	      -DCVM_FREESTANDING -m64 -mno-red-zone \
+	      -fno-pic -O2 -I$(CVM_DIR) \
+	      -o $(OBJ_DIR)/cvm_jit.o $(CVM_DIR)/cvm_jit.c
+	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
+	      -DCVM_FREESTANDING -m64 -mno-red-zone \
+	      -fno-pic -O2 -I$(CVM_DIR) \
+	      -o $(OBJ_DIR)/cvm_jit_x86.o $(CVM_DIR)/cvm_jit_x86.c
+	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
+	      -DCVM_FREESTANDING -m64 -mno-red-zone \
+	      -fno-pic -O2 -I$(CVM_DIR) \
+	      -o $(OBJ_DIR)/cvm_jit_help.o $(CVM_DIR)/cvm_jit_help.c
+	$(LD) -m elf_x86_64 -r -o $@ $(OBJ_DIR)/cvm_core.o $(OBJ_DIR)/cvm_host.o \
+	      $(OBJ_DIR)/cvm_jit.o $(OBJ_DIR)/cvm_jit_x86.o $(OBJ_DIR)/cvm_jit_help.o
+	rm -f $(OBJ_DIR)/cvm_core.o $(OBJ_DIR)/cvm_host.o \
+	      $(OBJ_DIR)/cvm_jit.o $(OBJ_DIR)/cvm_jit_x86.o $(OBJ_DIR)/cvm_jit_help.o
 
 # ── CVM modules (assembled from miniGCC output with 'ld') ────────
 $(CVMOD_DIR)/fib.cvm: $(ASM_DIR)/fib.s $(LD_TOOL)

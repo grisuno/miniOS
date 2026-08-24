@@ -254,7 +254,26 @@ MiniOS runs three kinds of program:
   page protection. A binary built on the host can be used simply by
   copying it onto the ramdisk.
 - **CVM modules** (`.cvm`) — stack bytecode produced by `ld -f cvm` and
-  executed by the cvm2 interpreter in `objects/cvm.o`.
+  executed by the cvm2 interpreter in `objects/cvm.o`. An x86-64 JIT
+  compiler compiles each module to native code at load time; the output
+  is identical to the interpreter and the JIT is transparent to the user.
+
+## CVM JIT compiler
+
+Every `.cvm` module is compiled to native x86-64 code at load time by a
+baseline JIT. The JIT is transparent: output is byte-identical to the
+interpreter, and the full miniGCC compiler (`minigcc.cvm`) runs correctly
+under JIT inside the OS.
+
+The JIT compiles each function independently into a native code buffer on
+the kernel heap (executable via 2 MB pages). Cross-function control flow
+(CALL/RET) uses the interpreter's frame stack, so the ABI is unchanged.
+If JIT initialization fails, the interpreter takes over transparently.
+
+On the host the JIT buffer uses `mmap` (RWX); inside MiniOS it uses
+`malloc` (the kernel heap is already executable). Source files:
+`cvm_jit.c` (compiler), `cvm_jit_x86.c` (x86-64 emitter),
+`cvm_jit_help.c` (runtime helpers).
 
 ## Ramdisk layout
 
@@ -428,7 +447,7 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `tls.c` / `tls_crypto.c` / `tls_x509.c` | kernel TLS 1.2 client, crypto, X.509 |
 | `tls_roots_src/` + `mkroots.sh` | the 8 embedded CA roots and their generator |
 | `tls_test.py` / `tls_test.c` | host TLS suite: vectors + full handshakes |
-| `cvm_host.c` | host glue for the CVM interpreter |
+| `cvm_host.c` | CVM interpreter + JIT integration in MiniOS |
 | `progs/` | ramdisk contents organized by kind: `objects/`, `bin/`, `cvm/`, `src/`, `asm/`, `docs/` |
 | `mkramdisk.py` | packs `progs/` into the ramdisk image |
 | `test_bdd.sh` / `test_http_server.py` | behavioural suite and its HTTP fixture |

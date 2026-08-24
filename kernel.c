@@ -3771,7 +3771,13 @@ static int shell_run_cvm(const char *full, int argc, char **argv) {
         cvm_entry = (prog_entry_t)e;
     }
     char *saved0 = argv[0];
-    argv[0] = (char *)full;   /* the interpreter opens argv[0] as the module */
+    /* The interpreter opens argv[0] via fopen -> kfopen -> fs_resolve.
+     * A bare ramdisk path like "cvm/fib.cvm" would be resolved against cwd
+     * again, so build an absolute path to prevent double resolution. */
+    char abspath[RAMDISK_FNAME_LEN];
+    abspath[0] = '/';
+    kmemcpy(abspath + 1, full, kstrlen(full) + 1);
+    argv[0] = abspath;
     int ret = cvm_entry(argc, argv);
     argv[0] = saved0;
     return ret;

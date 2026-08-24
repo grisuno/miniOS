@@ -9,6 +9,9 @@
  */
 
 #include "cvm.h"
+#ifdef CVM_JIT
+#include "cvm_jit.h"
+#endif
 
 static int64_t n_strlen(void *vm, int ac, uint64_t *av) {
     (void)vm;
@@ -479,7 +482,15 @@ int cvm_main(int argc, char **argv) {
         cvm_destroy(vm);
         return 1;
     }
-    rc = cvm_run(vm);
+#ifdef CVM_JIT
+    vm->jit = cvm_jit_create();
+#endif
+    if (vm->jit) {
+        rc = cvm_jit_run(vm);
+    } else
+    {
+        rc = cvm_run(vm);
+    }
     if (rc != CVM_OK) {
         puts("cvm: runtime error");
         cvm_destroy(vm);
