@@ -215,6 +215,50 @@ poweroff"
 expect "nx: jumping to stack"
 refute "powering off"
 
+scenario "run resolves a bare .o name from objects/" "run minigcc.o src/fib.c > asm/bare.s
+run objects/ld.o -f elf -o bin/bare.elf asm/bare.s
+run bin/bare.elf
+poweroff"
+expect "exit code: 0"
+expect "exit code: 55"
+
+scenario "a bare .o name runs directly from objects/ without run" "ld.o -f elf -o bin/bare2.elf asm/fib.s
+poweroff"
+expect "exit code: 0"
+
+scenario "a bare .elf name runs directly from bin/ without run" "fib.elf
+poweroff"
+expect "exit code: 55"
+
+scenario "a bare .cvm name runs directly from cvm/ without run" "w1.cvm
+poweroff"
+expect "hola cvm"
+expect "exit code: 0"
+
+scenario "run resolves a bare .cvm name from cvm/" "run fib.cvm
+poweroff"
+expect "exit code: 55"
+
+scenario "a bare .o toolchain object drives the full compile pipeline" "minigcc.o src/fib.c > asm/direct.s
+ld.o -f elf -o bin/direct.elf asm/direct.s
+direct.elf
+poweroff"
+expect "exit code: 55"
+
+scenario "an unresolvable bare name falls through to command not found" "nosuchfile.o
+poweroff"
+expect "command not found: nosuchfile.o"
+
+scenario "run reports an unresolvable cvm module as not found" "run nosuchmod.cvm
+poweroff"
+expect "run: not found: nosuchmod.cvm"
+
+scenario "TAB completes a runnable path from objects/" $'objects/ld\t\npoweroff'
+expect "usage: ld"
+
+scenario "TAB completes a bare runnable name to its full path" $'ld.\t\npoweroff'
+expect "usage: ld"
+
 scenario "editor guards unsaved changes on quit" "edit guard.txt
 a
 work in progress

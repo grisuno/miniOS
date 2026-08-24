@@ -315,15 +315,61 @@ an incomplete escape sequence is discarded, never inserted into the
 line, and the editor (`edit`) is unaffected: history is a shell-prompt
 feature, not a readline library.
 
-Command resolution is a fixed order: builtin, registered program, then the
-command path. The path is the ramdisk directory prefix `SHELL_BIN_PATH`
-(`bin/`): a non-builtin name without a `/` is looked up as `bin/<cmd>`,
-loaded as an ELF and run with the original argv, so `cp fib.c x.txt` works
-without `run` or `load`, exactly like Linux `/bin`. Lookup bounds:
-the command must be 1..`SHELL_BIN_MAX_CMD` characters and contain no `/`,
-so a name can never escape the path prefix; the exit code is reported
-exactly as `run` reports it. Files that are not ELF are skipped and the
-name falls through to `command not found`.
+Command resolution is a fixed order: builtin, registered program, then a
+single runnable-file resolver. Every non-builtin command — whether typed
+with `run` or bare — funnels through `shell_run_any`, so `run ld.o`,
+bare `ld.o`, `run fib.elf`, bare `fib.elf`, `run fib.cvm` and bare
+`fib.cvm` all behave identically.
+
+The runnable-file resolver (`shell_resolve_run`) maps a bare name to a
+full ramdisk path by suffix, through the toolchain directories `objects/`,
+`bin/` and `cvm/` (`shell_run_dirs`, `SHELL_RUN_DIRS`):
+
+| suffix | directory | example |
+|--------|-----------|---------|
+| `.cvm` | `cvm/` | `w1.cvm` |
+| `.o`   | `objects/` | `ld.o`, `minigcc.o` |
+| `.elf` | `bin/` | `fib.elf` |
+| (none) | `bin/` | `cp`, `freedom` (command path) |
+
+Resolution order is fail-closed and never truncates: a name with a `/` is
+resolved against the cwd; a bare name is tried first against the cwd and
+then through the suffix-picked directory and the remaining directories as
+fallback. Every candidate must exist as a real file (`fs_is_dir` is
+rejected, `ramdisk_open` must succeed) before it is run. A candidate whose
+full path cannot fit `RAMDISK_FNAME_LEN` is skipped like a missing file,
+never truncated.
+
+A resolved file is then classified by content and run by the matching
+loader (`shell_run_elf_buf`): `ET_REL` `.o` objects run at ring 0 through
+`k_run_rel`, `ET_EXEC`/`ET_DYN` binaries run as ring-3 processes through
+`k_exec_user`, and `.cvm` modules run on the `objects/cvm.o` interpreter
+loaded on demand (`shell_run_cvm`). Because the file is reloaded and
+relocated fresh on every invocation, running a toolchain object does not
+grow the registered-program table. The exit code is reported exactly as
+`run` reports it; an unresolvable name falls through to
+`command not found` (bare) or `run: not found` (with `run`). `objects/`
+and `cvm/` are never on the bare command path — only registered programs,
+the current directory, and the suffix-driven `bin/` lookup answer a bare
+name, so the command path stays root-anchored and an attacker can never
+run an arbitrary `.o` as a command by name alone.
+
+TAB completes the current word from registered programs and ramdisk file
+names: one TAB fills the longest unambiguous prefix, a second TAB on a
+unique match fills the whole name, and an ambiguous prefix lists the
+candidates. The completion is bounds-checked and never writes past the
+command buffer.
+
+Known limitation (pre-existing, desktop-only): console scrollback is
+windowed. The text-console PageUp scrollback ring is populated from the
+80x25 `VGA_BASE` layer, so it stays empty while the windowed desktop is
+active (shell output renders to the framebuffer window instead). The
+desktop exposes its own scrollback through the terminal window's
+mouse-wheel/scrollbar (`disp_off`), which redraws the framebuffer only and
+does not re-emit lines to the serial console. The BDD scenario
+`page up scrolls back to the boot banner` therefore asserts the serial
+text-console behaviour and is expected to fail under the windowed desktop;
+this is a pre-existing gap, not a regression.
 
 ### Network (rtl8139 + slirp)
 The kernel owns an rtl8139 NIC under QEMU user networking (slirp) with the

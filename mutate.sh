@@ -47,8 +47,11 @@ ramdisk-entry-stride | s/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)/#define 
 redirect-captures-nothing | s/    redir_active = 1;/    redir_active = 0;/ | kernel.c
 status-leaks-into-redirect | s/int was = redirect_suspend();/int was = 0;/ | kernel.c
 editor-drops-unsaved | s/if (e->dirty) {/if (0) {/ | kernel.c
-bin-path-prefix | s/#define SHELL_BIN_PATH     \"bin\/\"/#define SHELL_BIN_PATH     \"bix\/\"/ | kernel.c
-bin-lookup-bypassed | s/ret = shell_run_from_path(argv\\[0\\], argc, argv);/ret = -1;/ | kernel.c
+bin-path-prefix | s/{ \"\",      \"bin\/\" }/{ \"\",      \"bix\/\" }/ | kernel.c
+bin-lookup-bypassed | s/    return ramdisk_open(resolved) ? 1 : 0;/    return 0;/ | kernel.c
+run-o-dir | s/{ \".o\",    \"objects\/\" }/{ \".o\",    \"objectx\/\" }/ | kernel.c
+run-elf-dir | s/{ \".elf\",  \"bin\/\" }/{ \".elf\",  \"bix\/\" }/ | kernel.c
+run-cvm-dir | s/{ \".cvm\",  \"cvm\/\" }/{ \".cvm\",  \"cvmx\/\" }/ | kernel.c
 cwd-never-applied | s/kmemcpy(out, fs_cwd, kstrlen(fs_cwd) + 1);/kmemcpy(out, \"\", 1);/ | kernel.c
 cd-always-fails | s/if (!fs_resolve(argv\\[1\\], resolved, sizeof(resolved))) {/if (1) {/ | kernel.c
 rm-missing-passes | s/if (!f) { kprintf(\\\"rm: %s: no such file\\\\n\\\", argv\\[1\\]); return; }/if (0) {/ | kernel.c

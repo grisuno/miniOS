@@ -1519,6 +1519,16 @@ static KProg *kprog_slot(const char *name) {
     return 0;
 }
 
+/* Look up a registered program without creating a slot. Returns 0 when the
+ * name is not registered, so the caller can fall through to file resolution
+ * instead of polluting the table. */
+static KProg *kprog_lookup(const char *name) {
+    int i;
+    for (i = 0; i < kprog_count; i++)
+        if (kstrcmp(kprog_table[i].name, name) == 0) return &kprog_table[i];
+    return 0;
+}
+
 void k_register_program(const char *name, prog_entry_t entry) {
     KProg *p = kprog_slot(name);
     if (!p) return;
@@ -2665,13 +2675,28 @@ void kexit(int code) {
 #define CMD_BUF_SZ 256
 #define MAX_ARGS   16
 
-#define SHELL_BIN_PATH     "bin/"
-#define SHELL_BIN_PATH_LEN 4
-#define SHELL_BIN_MAX_CMD  (RAMDISK_FNAME_LEN - SHELL_BIN_PATH_LEN - 2)
-
 /* The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded
  * on demand the first time a .cvm module is run. */
 #define SHELL_CVM_INTERP    "objects/cvm.o"
+
+/* Runnable-file lookup: a bare name is mapped to a toolchain directory by
+ * its suffix, so `ld.o` finds objects/ld.o, `fib.elf` finds bin/fib.elf and
+ * `w1.cvm` finds cvm/w1.cvm. A bare name with no recognised suffix (cp,
+ * freedom, ...) resolves through bin/, the command path. Every candidate is
+ * checked for existence before it is run, so a name can never be truncated
+ * into a path it does not own. */
+typedef struct {
+    const char *suffix;    /* matched against the name tail; "" is the default */
+    const char *dir;       /* ramdisk directory prefix, no leading slash */
+} ShellRunDir;
+
+static const ShellRunDir shell_run_dirs[] = {
+    { ".cvm",  "cvm/" },
+    { ".o",    "objects/" },
+    { ".elf",  "bin/" },
+    { "",      "bin/" },
+};
+#define SHELL_RUN_DIRS (sizeof(shell_run_dirs) / sizeof(shell_run_dirs[0]))
 
 static char cmd_buf[CMD_BUF_SZ];
 
@@ -2945,6 +2970,35 @@ static void shell_readline_buf(char *buf, int size) {
 
 static void shell_readline_hist(char *buf, int size);
 
+/* The component of a ramdisk path after the last '/', or the whole path when
+ * there is no '/'. Used to match a bare command word against a file's name. */
+static const char *shell_name_base(const char *path) {
+    const char *base = path;
+    const char *slash = kstrchr(path, '/');
+    while (slash) { base = slash + 1; slash = kstrchr(base, '/'); }
+    return base;
+}
+
+/* Replace the current word [word_start, word_start+wlen) in `buf` with `text`
+ * and move the cursor to the end of the completed line. Bounds checked: a
+ * completion that would overflow `size` is refused, never truncated. */
+static void shell_complete_replace(char *buf, int size, int *pos,
+                                   char *word_start, unsigned long wlen,
+                                   const char *text) {
+    unsigned long tlen = kstrlen(text);
+    unsigned long head = (unsigned long)(word_start - buf);
+    unsigned long tail = (unsigned long)(buf + *pos) - (unsigned long)(word_start + wlen);
+    if (head + tlen + tail + 1 > (unsigned long)size) return;
+    if (tlen != wlen)
+        kmemmove(word_start + tlen, word_start + wlen, tail);
+    kmemcpy(word_start, text, tlen);
+    *pos = (int)(head + tlen + tail);
+    buf[*pos] = 0;
+    for (unsigned long i = 0; i < wlen; i++) vga_putc('\b');
+    vga_puts(text);
+    vga_putc('\n');
+}
+
 static void shell_readline(void) {
     shell_readline_hist(cmd_buf, CMD_BUF_SZ);
 }
@@ -3032,78 +3086,59 @@ static void shell_readline_hist(char *buf, int size) {
             continue;
         }
         if (c == '\t') {
-            /* Tab: attempt autocompletion */
-            /* Find start of last word (skip spaces/tabs backwards) */
             char *word_start = buf + pos;
-            while (word_start > buf && (word_start[-1] == ' ' || word_start[-1] == '\t'))
+            while (word_start > buf && word_start[-1] != ' ' && word_start[-1] != '\t')
                 word_start--;
             unsigned long wlen = (unsigned long)pos - (unsigned long)(word_start - buf);
             if (wlen == 0) { vga_putc('\a'); continue; }
-            /* Collect completions: registered programs first, then ramdisk files */
             char *comps[32];
             int ncomps = 0;
-            /* Registered programs */
-            for (int i = 0; i < kprog_count; i++) {
-                if (kstrncmp(kprog_table[i].name, word_start, wlen) == 0) {
+            for (int i = 0; i < kprog_count && ncomps < 32; i++) {
+                if (kstrncmp(kprog_table[i].name, word_start, wlen) == 0)
                     comps[ncomps++] = kprog_table[i].name;
-                    if (ncomps >= 32) break;
-                }
             }
-            /* Ramdisk files if no registered program matches */
             if (ncomps == 0) {
                 RDFile *files[RAMDISK_MAX_FILES];
                 int n = ramdisk_list(files, RAMDISK_MAX_FILES);
-                for (int i = 0; i < n; i++) {
-                    if (kstrncmp(files[i]->name, word_start, wlen) == 0) {
+                for (int i = 0; i < n && ncomps < 32; i++) {
+                    const char *base = shell_name_base(files[i]->name);
+                    if (kstrncmp(files[i]->name, word_start, wlen) == 0 ||
+                        kstrncmp(base, word_start, wlen) == 0)
                         comps[ncomps++] = files[i]->name;
-                        if (ncomps >= 32) break;
-                    }
                 }
             }
-            if (ncomps == 0) {
-                vga_putc('\a'); /* no match, beep */
+            if (ncomps == 0) { vga_putc('\a'); continue; }
+            if (ncomps == 1) {
+                if (kstrcmp(comps[0], word_start) != 0)
+                    shell_complete_replace(buf, size, &pos, word_start, wlen, comps[0]);
+                else
+                    vga_putc(' ');
                 continue;
             }
-            /* Find longest common prefix among completions */
-            int common = (int)kstrlen(comps[0]);
+            unsigned long common = kstrlen(comps[0]);
             for (int i = 1; i < ncomps; i++) {
-                int l = (int)kstrlen(comps[i]);
+                unsigned long l = kstrlen(comps[i]);
                 if (l < common) common = l;
-                int j;
-                for (j = 0; j < common; j++) {
+                unsigned long j;
+                for (j = 0; j < common; j++)
                     if (comps[0][j] != comps[i][j]) break;
-                }
                 common = j;
             }
-            /* If common prefix extends beyond current word, fill it in uniquely */
-            if (common > (int)wlen) {
-                unsigned long suffix_len = (unsigned long)pos - wlen;
-                kmemmove(buf + common, buf + wlen, suffix_len);
-                kmemcpy(buf + wlen, comps[0] + wlen, (unsigned long)(common - wlen));
-                pos += common - wlen;
-                /* Display the completed line */
-                buf[pos] = 0;
-                vga_puts(buf + (pos - (common - wlen)));
-                vga_putc('\n');
-            } else if (ncomps == 1) {
-                /* Unique completion - fill in the rest of the single match */
-                unsigned long match_len = kstrlen(comps[0]);
-                unsigned long suffix_len = (unsigned long)pos - wlen;
-                kmemmove(buf + match_len, buf + wlen, suffix_len);
-                kmemcpy(buf + wlen, comps[0] + wlen, match_len - wlen);
-                pos = (int)match_len;
-                buf[pos] = 0;
-                vga_puts(comps[0]);
-                vga_putc('\n');
-            } else {
-                /* Multiple completions - show list */
-                vga_puts("Possible completions:");
-                vga_putc('\n');
-                for (int i = 0; i < ncomps; i++) {
-                    vga_puts("  ");
-                    vga_puts(comps[i]);
-                    vga_putc('\n');
+            if (common > wlen && kstrncmp(comps[0], word_start, wlen) == 0) {
+                char prefix[RAMDISK_FNAME_LEN];
+                if (common < sizeof(prefix)) {
+                    kmemcpy(prefix, comps[0], common);
+                    prefix[common] = 0;
+                    shell_complete_replace(buf, size, &pos, word_start, wlen, prefix);
                 }
+                continue;
+            }
+            vga_puts("Possible completions:");
+            vga_putc('\n');
+            for (int i = 0; i < ncomps; i++) {
+                vga_puts("  ");
+                vga_puts(comps[i]);
+                vga_putc('\n');
             }
             continue;
         }
@@ -3554,23 +3589,182 @@ static void shell_cmd_poweroff(void) {
     while (1) __asm__ volatile("hlt");
 }
 
-/* Resolve a command through the bin path: load /bin/<cmd> (root-anchored,
- * like Linux /bin, so the cwd never changes where commands are found) from
- * the ramdisk as a Linux ELF and run it with the original argv. Returns
- * the exit code or -1 when the name is not eligible or no ELF exists. */
-static int shell_run_from_path(const char *cmd, int argc, char **argv) {
-    if (kstrchr(cmd, '/')) return -1;
-    int clen = (int)kstrlen(cmd);
-    if (clen == 0 || clen > SHELL_BIN_MAX_CMD) return -1;
-    char binname[RAMDISK_FNAME_LEN + 1];
-    kmemset(binname, 0, sizeof(binname));
-    binname[0] = '/';
-    kmemcpy(binname + 1, SHELL_BIN_PATH, SHELL_BIN_PATH_LEN);
-    kmemcpy(binname + 1 + SHELL_BIN_PATH_LEN, cmd, (unsigned long)clen);
-    char progname[RAMDISK_FNAME_LEN];
-    void *entry = 0;
-    if (!shell_load(binname, progname, &entry)) return -1;
-    return k_spawn(progname, argc, argv);
+/* ---- Runnable-file resolution (objects/ bin/ cvm/) ----
+ *
+ * `run <file>` and a bare `<file>` share one resolver and one loader. A bare
+ * name is mapped through shell_run_dirs by its suffix; a path with a '/' is
+ * resolved against the cwd. Every candidate must exist as a real file before
+ * it is considered. The same resolver backs the shell prompt's TAB
+ * completion, so what completes is exactly what can run. */
+
+/* The toolchain directory that owns `name`, chosen by suffix. Bare names with
+ * no recognised suffix fall through to the command path bin/. */
+static const ShellRunDir *shell_run_dir_for(const char *name) {
+    int i;
+    for (i = 0; i < SHELL_RUN_DIRS; i++) {
+        const char *suf = shell_run_dirs[i].suffix;
+        if (suf[0] == 0) continue;
+        int sl = (int)kstrlen(suf);
+        int nl = (int)kstrlen(name);
+        if (nl >= sl && kstrcmp(name + nl - sl, suf) == 0)
+            return &shell_run_dirs[i];
+    }
+    for (i = 0; i < SHELL_RUN_DIRS; i++)
+        if (shell_run_dirs[i].suffix[0] == 0)
+            return &shell_run_dirs[i];
+    return &shell_run_dirs[0];
+}
+
+/* Is `resolved` (already normalised against the cwd) a real ramdisk file? A
+ * directory name or a non-existent path is rejected, never run. */
+static int shell_file_is_real(const char *resolved) {
+    if (!resolved[0]) return 0;
+    if (fs_is_dir(resolved)) return 0;
+    return ramdisk_open(resolved) ? 1 : 0;
+}
+
+/* Resolve `name` to a full ramdisk path suitable for running. A bare name is
+ * tried first against the cwd, then through the suffix-picked toolchain
+ * directory, then through the remaining directories as fallback. Returns 1
+ * and fills `out` (cap bytes) on success, 0 when no candidate is a real file.
+ * A candidate that cannot fit `cap` is skipped like a missing file, never
+ * truncated. */
+static int shell_resolve_run(const char *name, char *out, unsigned cap) {
+    char cand[RAMDISK_FNAME_LEN];
+    if (kstrchr(name, '/')) {
+        if (!fs_resolve(name, cand, sizeof(cand))) return 0;
+        if (!shell_file_is_real(cand)) return 0;
+        kmemcpy(out, cand, kstrlen(cand) + 1);
+        return 1;
+    }
+    if (fs_resolve(name, cand, sizeof(cand)) && shell_file_is_real(cand)) {
+        kmemcpy(out, cand, kstrlen(cand) + 1);
+        return 1;
+    }
+    const ShellRunDir *pref = shell_run_dir_for(name);
+    unsigned long pref_off = (unsigned long)(pref - shell_run_dirs);
+    int i;
+    for (i = 0; i < SHELL_RUN_DIRS; i++) {
+        const ShellRunDir *d =
+            &shell_run_dirs[(pref_off + (unsigned long)i) % SHELL_RUN_DIRS];
+        unsigned dl = (unsigned)kstrlen(d->dir);
+        unsigned nl = (unsigned)kstrlen(name);
+        if (dl + nl + 1 > sizeof(cand)) continue;
+        kmemcpy(cand, d->dir, dl);
+        kmemcpy(cand + dl, name, nl + 1);
+        if (shell_file_is_real(cand)) {
+            if (dl + nl + 1 > cap) return 0;
+            kmemcpy(out, cand, dl + nl + 1);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/* Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`.
+ * argv[0] is the program name the program sees. Returns the exit code, or -1
+ * when the buffer is not a loadable ELF. The image is not registered; it is
+ * relocated and executed fresh, then dropped. */
+static int shell_run_elf_buf(const char *data, unsigned size, int argc,
+                             char **argv) {
+    if (!data || size < EI_NIDENT ||
+        !(data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F'))
+        return -1;
+    Elf64_Half etype = ((const Elf64_Ehdr *)data)->e_type;
+    if (etype == ET_REL) {
+        prog_entry_t entry = elf_load((void *)data, size);
+        if (!entry) return -1;
+        return k_run_rel(entry, argc, argv);
+    }
+    if (etype == ET_EXEC || etype == ET_DYN) {
+        void *entry = load_exec_elf((void *)data, size);
+        if (!entry) return -1;
+        return k_exec_user(entry, argc, argv);
+    }
+    return -1;
+}
+
+/* Load the ramdisk file at `full` and run it as an ELF. Returns the exit
+ * code, or -1 when the file cannot be read or loaded. */
+static int shell_run_elf_file(const char *full, int argc, char **argv) {
+    RDFile *f = ramdisk_open(full);
+    if (!f) return -1;
+    unsigned char *data = kmalloc(f->size ? f->size : 1);
+    if (!data) { kprintf("run: out of memory\n"); return -1; }
+    ramdisk_read(f, data, 0, f->size);
+    int ret = shell_run_elf_buf((const char *)data, f->size, argc, argv);
+    kfree(data);
+    return ret;
+}
+
+/* Load a Linux ELF from the MiniFS disk and run it (preserves the historical
+ * `run` fallback when a name is not on the ramdisk). */
+static int shell_run_elf_minifs(const char *name, int argc, char **argv) {
+    if (!minifs_is_mounted()) return -1;
+    int ino = minifs_resolve_path(name);
+    if (ino < 0) return -1;
+    MiniFSInode st;
+    if (minifs_stat(ino, &st) < 0 || st.size == 0) return -1;
+    unsigned char *buf = (unsigned char *)kmalloc(st.size);
+    if (!buf) return -1;
+    minifs_read(ino, buf, 0, st.size);
+    int ret = shell_run_elf_buf((const char *)buf, st.size, argc, argv);
+    kfree(buf);
+    return ret;
+}
+
+/* Run a `.cvm` module at the resolved path `full`. The interpreter is loaded
+ * from the ramdisk on first use and cached. argv[0] is the module name the
+ * module sees; the interpreter passes it and the remaining words through as
+ * a Linux-style argv. */
+static int shell_run_cvm(const char *full, int argc, char **argv) {
+    static prog_entry_t cvm_entry = 0;
+    if (!cvm_entry) {
+        RDFile *rf = ramdisk_open(SHELL_CVM_INTERP);
+        if (!rf) { shell_report("run: objects/cvm.o not on ramdisk", 0); return -1; }
+        unsigned char *data = kmalloc(rf->size ? rf->size : 1);
+        if (!data) { kprintf("run: out of memory\n"); return -1; }
+        ramdisk_read(rf, data, 0, rf->size);
+        void *e = elf_load(data, rf->size);
+        kfree(data);
+        if (!e) { shell_report("run: cannot load objects/cvm.o", 0); return -1; }
+        cvm_entry = (prog_entry_t)e;
+    }
+    char *saved0 = argv[0];
+    argv[0] = (char *)full;   /* the interpreter opens argv[0] as the module */
+    int ret = cvm_entry(argc, argv);
+    argv[0] = saved0;
+    return ret;
+}
+
+/* Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the
+ * interpreter, ELF files by content through the matching loader. Returns the
+ * exit code, or -1 when the name resolves to nothing runnable. */
+static int shell_run_file(const char *name, int argc, char **argv) {
+    char full[RAMDISK_FNAME_LEN];
+    int nl = (int)kstrlen(name);
+    if (nl >= 4 && kstrcmp(name + nl - 4, ".cvm") == 0) {
+        if (!shell_resolve_run(name, full, sizeof(full))) return -1;
+        return shell_run_cvm(full, argc, argv);
+    }
+    if (shell_resolve_run(name, full, sizeof(full)))
+        return shell_run_elf_file(full, argc, argv);
+    return shell_run_elf_minifs(name, argc, argv);
+}
+
+/* Unified dispatcher used by `run` and by bare commands: a registered program
+ * wins, then the runnable-file resolver. argv[0] is the command/program name
+ * as typed. Returns the exit code, or -1 when the name cannot be run. */
+static int shell_run_any(const char *name, int argc, char **argv) {
+    int nl = (int)kstrlen(name);
+    if (nl >= 4 && kstrcmp(name + nl - 4, ".cvm") == 0)
+        return shell_run_file(name, argc, argv);
+    KProg *p = kprog_lookup(name);
+    if (p) {
+        if (p->is_proc) return k_exec_user(p->proc_entry, argc, argv);
+        return k_run_rel(p->entry, argc, argv);
+    }
+    return shell_run_file(name, argc, argv);
 }
 
 static void shell_exec_builtin(int argc, char **argv) {
@@ -3592,10 +3786,10 @@ static void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
         vga_puts("  <cmd> > <file>     redirect command output to a file\n");
-        vga_puts("  <cmd> [args...]    run an ELF from bin/<cmd> (command path)\n");
-        vga_puts("Toolchain: edit p.c; run minigcc.o p.c > p.s;\n");
-        vga_puts("           run ld.o -f elf -o p.elf p.s; run p.elf\n");
-        vga_puts("CVM:       run minigcc.o w1.c > w1.s; run ld.o -f cvm -o w1.cvm w1.s; run w1.cvm\n");
+        vga_puts("  <cmd> [args...]    run a file or bare name (objects/bin/cvm)\n");
+        vga_puts("Toolchain: edit p.c; minigcc.o p.c > p.s;\n");
+        vga_puts("           ld.o -f elf -o p.elf p.s; p.elf\n");
+        vga_puts("CVM:       minigcc.o w1.c > w1.s; ld.o -f cvm -o w1.cvm w1.s; w1.cvm\n");
     }
     else if (kstrcmp(argv[0], "clear") == 0) {
         vga_clear();
@@ -3848,78 +4042,14 @@ static void shell_exec_builtin(int argc, char **argv) {
     }
     else if (kstrcmp(argv[0], "run") == 0) {
         if (argc < 2) { vga_puts("usage: run <program|file> [args...]\n"); return; }
-        int nl = (int)kstrlen(argv[1]);
-        if (nl > 4 && kstrcmp(argv[1] + nl - 4, ".cvm") == 0) {
-            static prog_entry_t cvm_entry = 0;
-            if (!cvm_entry) {
-                RDFile *rf = ramdisk_open(SHELL_CVM_INTERP);
-                if (!rf) { shell_report("run: objects/cvm.o not on ramdisk", 0); return; }
-                unsigned char *data = kmalloc(rf->size);
-                if (!data) { kprintf("run: oom\n"); return; }
-                ramdisk_read(rf, data, 0, rf->size);
-                void *e = elf_load(data, rf->size);
-                if (!e) { shell_report("run: cannot load objects/cvm.o", 0); return; }
-                cvm_entry = (prog_entry_t)e;
-            }
-            int ret = cvm_entry(argc - 1, argv + 1);
-            shell_report_exit(ret);
-            return;
-        }
-        int i, found = 0;
-        for (i = 0; i < kprog_count; i++)
-            if (kstrcmp(kprog_table[i].name, argv[1]) == 0) { found = 1; break; }
-        const char *target = argv[1];
-        char progname[32];
-        if (!found) {
-            void *entry = 0;
-            if (!shell_load(argv[1], progname, &entry)) {
-                /* try minifs */
-                if (minifs_is_mounted()) {
-                    int ino = minifs_resolve_path(argv[1]);
-                    if (ino >= 0) {
-                        MiniFSInode st;
-                        if (minifs_stat(ino, &st) >= 0 && st.size > 0) {
-                            unsigned char *buf = (unsigned char *)kmalloc(st.size);
-                            if (buf) {
-                                minifs_read(ino, buf, 0, st.size);
-                                if (buf[0]==0x7F && buf[1]=='E' && buf[2]=='L' && buf[3]=='F') {
-                                    Elf64_Half etype = ((Elf64_Ehdr *)buf)->e_type;
-                                    if (etype == ET_REL) {
-                                        entry = elf_load(buf, st.size);
-                                        if (entry) {
-                                            int ret = k_run_rel((prog_entry_t)entry, argc - 1, argv + 1);
-                                            shell_report_exit(ret); return;
-                                        }
-                                    } else if (etype == ET_EXEC || etype == ET_DYN) {
-                                        entry = load_exec_elf(buf, st.size);
-                                        if (entry) {
-                                            int ret = k_exec_user(entry, argc - 1, argv + 1);
-                                            shell_report_exit(ret); return;
-                                        }
-                                    }
-                                }
-                                kfree(buf);
-                            }
-                        }
-                    }
-                }
-                shell_report("run: not found: ", argv[1]);
-                return;
-            }
-            target = progname;
-        }
-        int ret = k_spawn(target, argc - 1, argv + 1);
-        shell_report_exit(ret);
+        int ret = shell_run_any(argv[1], argc - 1, argv + 1);
+        if (ret < 0) shell_report("run: not found: ", argv[1]);
+        else shell_report_exit(ret);
     }
     else {
-        int ret = k_spawn(argv[0], argc, argv);
-        if (ret == -1) {
-            ret = shell_run_from_path(argv[0], argc, argv);
-            if (ret < 0) shell_report("command not found: ", argv[0]);
-            else shell_report_exit(ret);
-        } else {
-            shell_report_exit(ret);
-        }
+        int ret = shell_run_any(argv[0], argc, argv);
+        if (ret < 0) shell_report("command not found: ", argv[0]);
+        else shell_report_exit(ret);
     }
 }
 
