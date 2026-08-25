@@ -1,0 +1,4 @@
+# MiniOS command aliases
+# Format: name=command
+# Use 'alias name=command' in the shell to add/remove aliases
+# Aliases are persistent: saved to this file on every change

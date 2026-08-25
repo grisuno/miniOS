@@ -40,6 +40,8 @@ EXPECTED_TOOLS = [
     "minios_expect",
     "minios_write",
     "minios_cat",
+    "minios_python",
+    "minios_py_eval",
     "minios_addons",
     "minios_install",
     "minios_poweroff",
@@ -382,7 +384,19 @@ class TestMiniOSBDD(_ConsoleBDDBase):
         r = self.server.tool("minios_send", {"line": "cp missing.txt z.txt"})
         self.assertIn("exit code: 1", r["text"])
 
-    def test_t08_poweroff_and_reboot(self):
+    def test_t08_python_script(self):
+        # MicroPython runs thanks to the kernel fix that zeroes the initial
+        # registers at the ELF entry (rdx is rtld_fini for glibc's _start).
+        r = self.server.tool("minios_python", {"script": "src/hello.py"})
+        self.assertIn("hello from python", r["text"])
+        self.assertIn("exit code: 0", r["text"])
+
+    def test_t09_py_eval(self):
+        r = self.server.tool("minios_py_eval", {"code": "print(6 * 7)"})
+        self.assertIn("42", r["text"])
+        self.assertIn("exit code: 0", r["text"])
+
+    def test_t10_poweroff_and_reboot(self):
         r = self.server.tool("minios_poweroff")
         self.assertIn("powering off", r["text"])
         s = self.server.tool("minios_status")

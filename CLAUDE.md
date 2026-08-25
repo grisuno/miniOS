@@ -655,15 +655,31 @@ repository as an out-of-tree unix-port variant.
   (opened through the unified fs: ramdisk first, MiniFS fallback), and bare
   `micropython` reads the interactive REPL from stdin. The process exits
   with `exit code: N` like any other program.
-- **Kernel ABI**: the binary leans on the same glibc-static stub set DOOM
-  proved (`open/openat`, `read`, `write`, `brk`, `mmap`, `fstat`, ...). The
-  unix port's `realpath()` of script paths needs the cwd and directory/type
-  information, so the kernel implements `getcwd` (79, returns the shell
-  `fs_cwd`) and `newfstatat` (262, reports `S_IFREG`/`S_IFDIR` with size from
-  the unified filesystem, `ENOENT` when missing) with the same user-pointer
-  validation as every other dispatcher case. Anything else the C library
-  probes (`statx`, signals, ioctls) degrades through `-ENOSYS` or existing
-  stubs, never through kernel crashes.
+ - **Kernel ABI**: the binary leans on the same glibc-static stub set DOOM
+   proved (`open/openat`, `read`, `write`, `brk`, `mmap`, `fstat`, ...). The
+   unix port's `realpath()` of script paths needs the cwd and directory/type
+   information, so the kernel implements `getcwd` (79, returns the shell
+   `fs_cwd`), `newfstatat` (262, reports `S_IFREG`/`S_IFDIR` with size from
+   the unified filesystem, `ENOENT` when missing) and `readlink` (89, returns
+   `EINVAL` since MiniOS has no symlinks, so glibc's `realpath()` keeps
+   resolving) with the same user-pointer validation as every other dispatcher
+   case. Anything else the C library probes (`statx`, signals, ioctls)
+   degrades through `-ENOSYS` or existing stubs, never through kernel crashes.
+
+ - **ELF entry registers**: `k_exec_user` zeroes `rdi`, `rsi` and `rdx` before
+   the `iretq` to the program entry, exactly as Linux does at `exec`. glibc's
+   `_start` reads `%rdx` as `rtld_fini`; a leftover kernel value would make
+   `__libc_start_main` register that garbage address as an exit handler and
+   `__run_exit_handlers` would demangle and call it on exit — the historical
+   MicroPython crash (`EXCEPTION 14`). This is a hard requirement for any
+   ring-3 glibc binary.
+
+ - **`minios` module + `SYS_SPAWN` (215)**: the variant ships a `minios` C
+   module exposing kernel services and `run()`; `SYS_SPAWN` runs a ramdisk
+   program from the interpreter while preserving it (saving the user window,
+   FS/GS base, fd table and brk/mmap cursors across an ET_EXEC/DYN child).
+   ET_REL children (`minigcc.o`, `ld.o`) run at ring 0 and work; this drives
+   `build.py`, `shell.py` and `test.py` on the ramdisk.
 
 ## Development Methodology (SDD + TDD + BDD)
 1. **SDD**: every feature begins with a spec in this file.

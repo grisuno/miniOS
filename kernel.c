@@ -2155,6 +2155,7 @@ struct kiovec { const char *iov_base; unsigned long iov_len; };
 #define SYSCALL_TRACE 0
 
 static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6);
+static int k_syscall_spawn(const char *path, int child_argc, const char **child_argv);
 
 /* ---- PIT-calibrated TSC for SYS_TIME (syscall 204) ----
  * PIT channel 2 one-shot measures real TSC ticks per millisecond
@@ -2427,6 +2428,11 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         vga_fb_blit_gfx_window();
         return 0;
     }
+    case 215: { /* SYS_SPAWN: run a ramdisk program from inside the OS */
+        const char *path = (const char *)a1;
+        if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
+        return k_syscall_spawn(path, a2, (const char **)a3);
+    }
     case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
         unsigned char *pal = (unsigned char *)a1;
         if (!user_range_ok((unsigned long)a1, 768)) return -EFAULT;
@@ -2461,6 +2467,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         if (!fs_resolve(path, resolved, sizeof(resolved))) return -2; /* ENOENT */
         RDFile *f = ramdisk_open(resolved);
         return f ? 0 : -2;
+    }
+    case 89: { /* readlink: always returns EINVAL (no symlinks in miniOS) */
+        (void)a1; (void)a2; (void)a3;
+        return -22; /* EINVAL */
     }
     case 96: /* gettimeofday: return approximate time via rdtsc */
         if (a1) {
@@ -2633,6 +2643,79 @@ static unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
     return w;
 }
 
+/* SYS_SPAWN (215): run a ramdisk program from inside the OS.
+ * Saves the parent's user window, loads the child, runs it via k_exec_user,
+ * and restores the parent on return. ET_REL children run at ring 0 via
+ * k_run_rel; ET_EXEC/ET_DYN children run at ring 3 via k_exec_user. */
+static int k_syscall_spawn(const char *path, int child_argc,
+                           const char **child_argv) {
+    if (!path || !user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN))
+        return EFAULT;
+
+    /* Resolve the path against the cwd. */
+    char resolved[RAMDISK_FNAME_LEN];
+    if (!fs_resolve(path, resolved, sizeof(resolved))) return EFAULT;
+
+    /* Read the file into a kernel buffer. */
+    RDFile *f = ramdisk_open(resolved);
+    if (!f) return EFAULT;
+    unsigned char *data = (unsigned char *)kmalloc(f->size ? f->size : 1);
+    if (!data) return EFAULT;
+    ramdisk_read(f, data, 0, f->size);
+
+    /* Classify by ELF type. */
+    if (f->size < EI_NIDENT ||
+        !(data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F')) {
+        kfree(data);
+        return EFAULT;
+    }
+    Elf64_Half etype = ((const Elf64_Ehdr *)data)->e_type;
+
+    /* Save parent state. */
+    unsigned long saved_brk      = g_brk;
+    unsigned long saved_brk_lim  = g_brk_limit;
+    unsigned long saved_mmap     = user_mmap_cur;
+    unsigned long saved_fsbase   = rdmsr(MSR_FSBASE);
+    unsigned long saved_gsbase   = rdmsr(MSR_GSBASE);
+
+    /* Snapshot the kernel fd table. */
+    KFILE *saved_kfd[KFD_MAX];
+    for (int i = 0; i < KFD_MAX; i++) saved_kfd[i] = kfd_table[i];
+
+    /* Save the parent's user window (28 MB). */
+    unsigned long window_sz = USER_LOAD_END - USER_LOAD_BASE;
+    unsigned char *parent_win = (unsigned char *)kmalloc(window_sz);
+    if (!parent_win) { kfree(data); return EFAULT; }
+    kmemcpy(parent_win, (void *)USER_LOAD_BASE, window_sz);
+
+    int rc = EFAULT;
+    if (etype == ET_REL) {
+        prog_entry_t entry = elf_load((void *)data, f->size);
+        if (entry)
+            rc = k_run_rel(entry, child_argc, (char **)child_argv);
+    } else if (etype == ET_EXEC || etype == ET_DYN) {
+        void *entry = load_exec_elf((void *)data, f->size);
+        if (entry)
+            rc = k_exec_user(entry, child_argc, (char **)child_argv);
+    }
+
+    /* Restore the parent's user window. */
+    kmemcpy((void *)USER_LOAD_BASE, parent_win, window_sz);
+    kfree(parent_win);
+    kfree(data);
+
+    /* Restore parent kernel state. */
+    g_brk       = saved_brk;
+    g_brk_limit = saved_brk_lim;
+    user_mmap_cur = saved_mmap;
+    wrmsr(MSR_FSBASE, saved_fsbase);
+    wrmsr(MSR_GSBASE, saved_gsbase);
+    for (int i = 0; i < KFD_MAX; i++) kfd_table[i] = saved_kfd[i];
+    syscall_kstack = SYS_KSTK_TOP;
+
+    return rc;
+}
+
 int k_exec_user(void *entry, int argc, char **argv) {
     char *stk = (char *)USER_STACK_BASE;   /* fixed region, no heap churn */
     unsigned long *sp = setup_user_stack(stk, USER_STACK_SIZE, argc, argv);
@@ -2659,6 +2742,9 @@ int k_exec_user(void *entry, int argc, char **argv) {
             "mov %%ax, %%gs\n"
             "mov %[frame], %%rsp\n"
             "xorl %%ebp, %%ebp\n"
+            "xorl %%edi, %%edi\n"
+            "xorl %%esi, %%esi\n"
+            "xorl %%edx, %%edx\n"
             "iretq\n"
             :: [frame] "r"(frame), [udata] "i"(GDT64_USER_DATA_SEL | 3)
             : "rax", "memory");

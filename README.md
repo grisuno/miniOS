@@ -381,11 +381,44 @@ and `freedom`, so both `micropython` and `run micropython.elf` work. Scripts
 are opened through the unified filesystem (ramdisk first, MiniFS fallback),
 and the interactive REPL reads from the serial console.
 
-The kernel provides two new syscalls for glibc-static compatibility:
-`getcwd` (79) returns the shell working directory, and `newfstatat` (262)
-reports `S_IFREG`/`S_IFDIR` with file sizes from the unified filesystem.
-A script's `realpath()` and directory traversal work without needing a
-full VFS layer.
+The kernel provides several syscalls for glibc-static compatibility:
+`getcwd` (79) returns the shell working directory, `newfstatat` (262) reports
+`S_IFREG`/`S_IFDIR` with file sizes from the unified filesystem, and
+`readlink` (89) returns `EINVAL` (MiniOS has no symlinks) so glibc's
+`realpath()` treats every path as a regular file and keeps resolving. A
+script's `realpath()` and directory traversal work without needing a full
+VFS layer.
+
+#### Kernel fix: initial registers at the ELF entry
+
+MicroPython previously crashed on exit (`EXCEPTION 14`). The root cause was
+that `k_exec_user` did `iretq` to the ELF entry without zeroing the initial
+registers, unlike Linux. glibc's `_start` does `mov %rdx,%r9` to obtain
+`rtld_fini`; the leftover kernel value in `rdx` was a base-less function
+pointer, which `__libc_start_main` registered as an exit handler and then
+`__run_exit_handlers` demangled and called on exit — a wild jump. The fix
+zeroes `rdi`, `rsi` and `rdx` before `iretq`, so `rtld_fini` is `NULL` and
+every glibc binary exits cleanly.
+
+#### `minios` module and in-OS toolchain orchestration
+
+MicroPython ships with a `minios` C module (`progs/micropython/variants/minios/minios_module.c`)
+that exposes kernel services: `time_ms()`, `rtc()`, `fb_info()`, `vol()`,
+`pal()`, `pcspeaker()` and `run()`. `run(path, args, redirect)` invokes the
+kernel `SYS_SPAWN` (215) boundary, which runs a ramdisk program from the
+interpreter while preserving it, so scripts can chain toolchain commands.
+Three scripts on the ramdisk use this:
+
+```
+miniOS> micropython src/build.py          # minigcc -> ld -> run, every target
+miniOS> micropython src/shell.py          # pybash: variables, capture, run
+miniOS> micropython src/test.py           # in-OS test suite (kernel + toolchain)
+```
+
+`build.py` orchestrates the self-hosted toolchain (ET_REL `minigcc.o` and
+`ld.o` run at ring 0 via `SYS_SPAWN` and work), `shell.py` is a Python shell
+layer with variables and output capture, and `test.py` verifies the kernel
+bindings and the toolchain from inside the machine.
 
 Build from source:
 
@@ -461,11 +494,14 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 
 `mcp/minios_mcp.py` exposes a running MiniOS as MCP tools: `minios_boot`,
 `minios_status`, `minios_send`, `minios_expect`, `minios_snapshot`,
-`minios_write`, `minios_cat`, `minios_poweroff`. The server owns the QEMU
+`minios_write`, `minios_cat`, `minios_poweroff`. On top of the shell it adds
+`minios_python` (run a ramdisk `.py` script with MicroPython) and
+`minios_py_eval` (evaluate a one-liner). The server owns the QEMU
 child and a pty-backed serial console; the companion skill
 (`skills/minios/SKILL.md`) teaches the edit/compile/link/run workflow, so an
 agent can write a C program inside the OS, build it with `objects/minigcc.o` and
-`objects/ld.o`, run it and read `exit code: N`, all without leaving the machine.
+`objects/ld.o`, run it and read `exit code: N`, or drive the in-OS Python
+toolchain (`build.py`, `shell.py`, `test.py`), all without leaving the machine.
 
 ```bash
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD (skips without QEMU)

@@ -377,6 +377,17 @@ class MiniOSSession:
             raise ToolError(problem)
         return self.send("cat " + path, self.cfg["tmo_prompt_ms"])
 
+    def run_python(self, script, args=None, timeout_ms=None):
+        """Run a MicroPython script (or `-c` code) inside MiniOS and return
+        its output, including the `exit code: N` line. MicroPython now runs
+        reliably thanks to the kernel fix that zeroes the initial registers
+        at the ELF entry (rdx is rtld_fini for glibc's _start)."""
+        argv = [script]
+        if args:
+            argv.extend(str(a) for a in args)
+        line = "micropython " + " ".join(argv)
+        return self.send(line, timeout_ms)
+
     def cat_body(self, path, missing_ok=False):
         """Read a ramdisk file and return exactly its bytes.
 
@@ -578,6 +589,31 @@ TOOLS = [
         },
     },
     {
+        "name": "minios_python",
+        "description": "Run a Python script inside MiniOS with MicroPython (e.g. src/test.py, src/build.py) and return its output.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "script": {"type": "string", "description": "ramdisk path of the .py script to run"},
+                "args": {"type": "array", "items": {"type": "string"}, "description": "optional script arguments"},
+                "timeout_ms": {"type": "integer"},
+            },
+            "required": ["script"],
+        },
+    },
+    {
+        "name": "minios_py_eval",
+        "description": "Evaluate a MicroPython one-liner inside MiniOS and return its output.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "code": {"type": "string"},
+                "timeout_ms": {"type": "integer"},
+            },
+            "required": ["code"],
+        },
+    },
+    {
         "name": "minios_addons",
         "description": "List the addon marketplace entries and whether each is installed.",
         "inputSchema": {"type": "object", "properties": {}},
@@ -686,6 +722,18 @@ class MCPServer:
             return self.session.write(args.get("path"), args.get("content", ""))
         if name == "minios_cat":
             return self.session.cat(args.get("path"))
+        if name == "minios_python":
+            if not isinstance(args.get("script"), str):
+                raise ToolError("script must be a string")
+            return self.session.run_python(args["script"], args.get("args"), args.get("timeout_ms"))
+        if name == "minios_py_eval":
+            if not isinstance(args.get("code"), str):
+                raise ToolError("code must be a string")
+            # The kernel shell splits on spaces, so a one-liner with spaces
+            # cannot travel as a single `-c` argument; write it to a temp
+            # script and run that instead.
+            self.session.write("tmp/_eval.py", args["code"] + "\n")
+            return self.session.run_python("tmp/_eval.py", None, args.get("timeout_ms"))
         if name == "minios_addons":
             return self._addons_list()
         if name == "minios_install":

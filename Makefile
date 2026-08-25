@@ -77,7 +77,8 @@ $(KASLR_STAMP): kaslr-flag-force
 
 CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
-              -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector
+              -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector \
+              -fno-omit-frame-pointer
 
 PROGS_DIR = progs
 OBJ_DIR   = $(PROGS_DIR)/objects
@@ -102,9 +103,11 @@ PROGS     = $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o $(OBJ_DIR)/minigcc.o \
             $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
             $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/freedom.c \
             $(SRC_DIR)/cp.c $(SRC_DIR)/hello.py \
+            $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
             $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
             $(ASM_DIR)/freedom.s $(DOC_DIR)/hostile.html \
+            $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/README.txt
 
 all: os.img
@@ -262,6 +265,12 @@ $(CVMOD_DIR)/w1.cvm: $(ASM_DIR)/w1.s $(LD_TOOL)
 $(CVMOD_DIR)/minigcc.cvm: $(TOOLS_DIR)/g2.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
+$(TOOLS_DIR)/ld.s: $(LD_DIR)/ld.c $(MINIGCC_BIN)
+	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
+
+$(CVMOD_DIR)/ld.cvm: $(TOOLS_DIR)/ld.s $(LD_TOOL)
+	$(LD_TOOL) -f cvm -o $@ $<
+
 $(BIN_DIR)/http.elf: $(ASM_DIR)/http.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
@@ -347,6 +356,10 @@ $(MPY_CROSS):
 $(BIN_DIR)/micropython.elf: $(MICROPYTHON_DIR)/ports/unix/main.c \
                            $(PROGS_DIR)/micropython/variants/minios/mpconfigvariant.h \
                            $(PROGS_DIR)/micropython/variants/minios/mpconfigvariant.mk \
+                           $(PROGS_DIR)/micropython/variants/minios/minios_module.c \
+                           $(PROGS_DIR)/micropython/variants/minios/manifest.py \
+                           $(PROGS_DIR)/micropython/variants/minios/lib/__init__.py \
+                           $(PROGS_DIR)/micropython/variants/minios/lib/hello.py \
                            | $(MPY_CROSS)
 	$(MAKE) -C $(MICROPYTHON_DIR)/ports/unix \
 	    VARIANT_DIR=$(MPY_VARIANT_DIR) \
