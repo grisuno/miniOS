@@ -36,6 +36,7 @@
 #define MICROPY_PY_SYS_PS2 (1)
 #define MICROPY_PY_SYS_ATEXIT (1)
 #define MICROPY_PY_SYS_EXC_INFO (1)
+#define MICROPY_PY_SYS_STDFILES (1)  /* enable sys.stdout/stdin/stderr */
 
 // ── os module: open, stat, import ──────────────────────────────────
 #define MICROPY_PY_OS (1)

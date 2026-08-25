@@ -236,8 +236,24 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
     }
     if (vector >= 32 && vector < 48) { pic_eoi(vector - 32); return; }
     if (vector < 32) {
-        kprintf("EXCEPTION %ld err=%ld rip=%lx\n",
-                (long)frame->vector, (long)frame->errcode, (unsigned long)frame->rip);
+        kprintf("EXCEPTION %ld err=%ld rip=%lx rsp=%lx\n",
+                (long)frame->vector, (long)frame->errcode,
+                (unsigned long)frame->rip, (unsigned long)frame->rsp);
+        kprintf("  rax=%lx rbx=%lx rcx=%lx rdx=%lx\n",
+                (unsigned long)frame->rax, (unsigned long)frame->rbx,
+                (unsigned long)frame->rcx, (unsigned long)frame->rdx);
+        kprintf("  rsi=%lx rdi=%lx rbp=%lx r8=%lx r9=%lx\n",
+                (unsigned long)frame->rsi, (unsigned long)frame->rdi,
+                (unsigned long)frame->rbp, (unsigned long)frame->r8,
+                (unsigned long)frame->r9);
+        kprintf("  r10=%lx r11=%lx r12=%lx r13=%lx r14=%lx r15=%lx\n",
+                (unsigned long)frame->r10, (unsigned long)frame->r11,
+                (unsigned long)frame->r12, (unsigned long)frame->r13,
+                (unsigned long)frame->r14, (unsigned long)frame->r15);
+        unsigned char *code = (unsigned char *)(unsigned long)frame->rip;
+        kprintf("  [%lx]: ", (unsigned long)frame->rip);
+        for (int _i = 0; _i < 16; _i++) kprintf("%02x ", code[_i]);
+        kprintf("\n");
         for(;;) __asm__("hlt");
     }
 }

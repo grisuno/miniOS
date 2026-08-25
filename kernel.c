@@ -172,6 +172,8 @@ static int            redir_active;
 static int            redir_overflow;
 
 static int redirect_suspend(void);
+static int redirect_begin(void);
+static int redirect_commit(const char *path, int append_mode);
 static void redirect_resume(int was);
 
 static int redir_grow(void) {
@@ -1838,7 +1840,14 @@ void *elf_load(void *data, unsigned size) {
             }
 
             if (sym->st_shndx != SHN_UNDEF && sym->st_shndx < shnum) {
-                S = (Elf64_Addr)(unsigned long)sec_addrs[sym->st_shndx] + sym->st_value;
+                if (sec_addrs[sym->st_shndx]) {
+                    S = (Elf64_Addr)(unsigned long)sec_addrs[sym->st_shndx] + sym->st_value;
+                } else {
+                    /* Symbol is in a non-alloc section (debug, etc.).
+                       Fall back to the raw ELF data buffer so the relocation
+                       still produces a plausible address instead of S=small_offset. */
+                    S = (Elf64_Addr)((char *)data + shdrs[sym->st_shndx].sh_offset + sym->st_value);
+                }
             } else {
                 char symname[ELF_NAME_MAX];
                 elf_name_copy(symname, sizeof(symname), strtab, strtab_size,
@@ -1855,6 +1864,15 @@ void *elf_load(void *data, unsigned size) {
             S += relas[j].r_addend;
 
             Elf64_Addr *P = (Elf64_Addr *)(target_base + relas[j].r_offset);
+
+            /* Print only suspicious relocations (S too small to be valid) */
+            if (S < 0x1000) {
+                char rname[ELF_NAME_MAX];
+                elf_name_copy(rname, sizeof(rname), strtab, strtab_size, sym->st_name);
+                kprintf("rel[%u] t=%u '%s' S=%lx P=%lx addend=%ld\n",
+                        j, rtype, rname, (unsigned long)S,
+                        (unsigned long)P, (long)relas[j].r_addend);
+            }
 
             switch (rtype) {
             case R_X86_64_64:
@@ -1877,7 +1895,6 @@ void *elf_load(void *data, unsigned size) {
     }
 
     /* Find the requested symbol as entry point */
-    /* For default, look for "go" or "main" or "kmain" or "minigcc_main" */
     void *entry = 0;
     const char *entry_names[] = {"go", "kmain", "minigcc_main", "cvm_main", "main", 0};
     int ei;
@@ -1887,14 +1904,29 @@ void *elf_load(void *data, unsigned size) {
             char symname[ELF_NAME_MAX];
             elf_name_copy(symname, sizeof(symname), strtab, strtab_size,
                           symtab[k].st_name);
-            if (kstrcmp(symname, entry_names[ei]) == 0 && symtab[k].st_shndx < shnum && symtab[k].st_shndx != SHN_UNDEF) {
-                entry = (char *)sec_addrs[symtab[k].st_shndx] + symtab[k].st_value;
-                break;
+            if (kstrcmp(symname, entry_names[ei]) != 0) continue;
+            if (symtab[k].st_shndx == SHN_UNDEF || symtab[k].st_shndx >= shnum) continue;
+            if (!sec_addrs[symtab[k].st_shndx]) {
+                kprintf("load: skip '%s' in non-alloc sec %d\n", symname, symtab[k].st_shndx);
+                continue;
             }
+            entry = (char *)sec_addrs[symtab[k].st_shndx] + symtab[k].st_value;
+            break;
         }
     }
 
-    if (!entry) { elf_load_fail(base, sec_addrs, "no entry point"); return 0; }
+    if (!entry) {
+        kprintf("load: NO ENTRY. symbols:\n");
+        for (unsigned k = 0; k < symcount && k < 20; k++) {
+            char sn[ELF_NAME_MAX];
+            elf_name_copy(sn, sizeof(sn), strtab, strtab_size, symtab[k].st_name);
+            int alloc = (symtab[k].st_shndx < shnum && sec_addrs[symtab[k].st_shndx]) ? 1 : 0;
+            kprintf("  [%u] '%s' sec=%u val=%lu alloc=%d\n",
+                    k, sn, symtab[k].st_shndx, symtab[k].st_value, alloc);
+        }
+        elf_load_fail(base, sec_addrs, "no valid entry point");
+        return 0;
+    }
     kfree(sec_addrs);
     return entry;
 }
@@ -2155,7 +2187,7 @@ struct kiovec { const char *iov_base; unsigned long iov_len; };
 #define SYSCALL_TRACE 0
 
 static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6);
-static int k_syscall_spawn(const char *path, int child_argc, const char **child_argv);
+static int k_syscall_spawn(const char *path, const char *redirect, int child_argc, const char **child_argv);
 
 /* ---- PIT-calibrated TSC for SYS_TIME (syscall 204) ----
  * PIT channel 2 one-shot measures real TSC ticks per millisecond
@@ -2428,10 +2460,43 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         vga_fb_blit_gfx_window();
         return 0;
     }
-    case 215: { /* SYS_SPAWN: run a ramdisk program from inside the OS */
+    case 212: { /* SYS_RTC: read CMOS RTC time-of-day (hour, minute, second) */
+        int *hp = (int *)(unsigned long)a1;
+        int *mp = (int *)(unsigned long)a2;
+        int *sp = (int *)(unsigned long)a3;
+        if (!user_range_ok((unsigned long)a1, sizeof(int)) ||
+            !user_range_ok((unsigned long)a2, sizeof(int)) ||
+            !user_range_ok((unsigned long)a3, sizeof(int)))
+            return EFAULT;
+        int h, m, s;
+        if (!rtc_read_tod(&h, &m, &s)) return -5; /* EIO */
+        *hp = h; *mp = m; *sp = s;
+        return 0;
+    }
+    case 213: { /* SYS_FB_INFO: return framebuffer geometry (w, h, pitch) */
+        int *wp = (int *)(unsigned long)a1;
+        int *hp = (int *)(unsigned long)a2;
+        int *pp = (int *)(unsigned long)a3;
+        if (!user_range_ok((unsigned long)a1, sizeof(int)) ||
+            !user_range_ok((unsigned long)a2, sizeof(int)) ||
+            !user_range_ok((unsigned long)a3, sizeof(int)))
+            return EFAULT;
+        *wp = fb_width; *hp = fb_height; *pp = fb_pitch;
+        return 0;
+    }
+    case 214: { /* SYS_PCSPK_VOL: get/set speaker volume (0..100, -1=query) */
+        int v = (int)a1;
+        if (v < 0) return (long)pcspk_get_volume();
+        if (v > 100) v = 100;
+        pcspk_set_volume((unsigned)v);
+        return (long)pcspk_get_volume();
+    }
+    case 215: { /* SYS_SPAWN: run a ramdisk program from inside the OS.
+                  * args: path(a1), redirect(a2), argc(a3), argv(a4) */
         const char *path = (const char *)a1;
         if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
-        return k_syscall_spawn(path, a2, (const char **)a3);
+        return k_syscall_spawn(path, (const char *)a2, (int)a3,
+                               (const char **)a4);
     }
     case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
         unsigned char *pal = (unsigned char *)a1;
@@ -2460,6 +2525,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     }
     case 10: /* mprotect: no-op (no MMU-based protection per-page for user) */
         return 0;
+    case 13: /* rt_sigaction: no-op (no signal delivery in miniOS) */
+        return 0;
+    case 74: /* flock: no-op */
+        return 0;
     case 21: { /* access: check if ramdisk file exists */
         const char *path = (const char *)a1;
         if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
@@ -2483,6 +2552,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
             tv[0] = ms / 1000;  /* seconds */
             tv[1] = (ms % 1000) * 1000; /* microseconds */
         }
+        return 0;
+    case 267: /* statx: not implemented, return -ENOENT */
+        return -2;
+    case 273: /* set_mempolicy: no-op */
         return 0;
     case 301: /* set_robust_list: no-op */
         return 0;
@@ -2544,6 +2617,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         return 0;
     }
     default:
+        kprintf("UNIMPL SYSCALL %ld\n", n);
         return -38; /* ENOSYS */
     }
 }
@@ -2647,26 +2721,65 @@ static unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
  * Saves the parent's user window, loads the child, runs it via k_exec_user,
  * and restores the parent on return. ET_REL children run at ring 0 via
  * k_run_rel; ET_EXEC/ET_DYN children run at ring 3 via k_exec_user. */
-static int k_syscall_spawn(const char *path, int child_argc,
-                           const char **child_argv) {
+static int k_syscall_spawn(const char *path, const char *redirect,
+                            int child_argc, const char **child_argv) {
     if (!path || !user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN))
         return EFAULT;
 
+    /* Validate child_argv if provided. */
+    if (child_argc > 0 && child_argv) {
+        if (!user_range_ok((unsigned long)child_argv,
+                           (unsigned long)(child_argc + 1) * sizeof(char *)))
+            return EFAULT;
+        for (int i = 0; i < child_argc; i++) {
+            if (!child_argv[i]) break;
+            if (!user_str_ok((unsigned long)child_argv[i], RAMDISK_FNAME_LEN))
+                return EFAULT;
+        }
+    }
+
+    /* Copy argv from user space to kernel heap BEFORE saving the window,
+     * because the window save/restore would overwrite the originals. */
+    char **kargv = 0;
+    if (child_argc > 0 && child_argv) {
+        kargv = (char **)kmalloc((unsigned)(child_argc + 1) * sizeof(char *));
+        if (!kargv) return EFAULT;
+        for (int i = 0; i <= child_argc; i++) kargv[i] = 0;
+        for (int i = 0; i < child_argc; i++) {
+            if (!child_argv[i]) break;
+            unsigned slen = (unsigned)kstrlen(child_argv[i]) + 1;
+            kargv[i] = (char *)kmalloc(slen);
+            if (!kargv[i]) { for (int j = 0; j < i; j++) kfree(kargv[j]); kfree(kargv); return EFAULT; }
+            kmemcpy(kargv[i], child_argv[i], slen);
+        }
+        kargv[child_argc] = 0;
+    }
+
     /* Resolve the path against the cwd. */
     char resolved[RAMDISK_FNAME_LEN];
-    if (!fs_resolve(path, resolved, sizeof(resolved))) return EFAULT;
+    if (!fs_resolve(path, resolved, sizeof(resolved))) {
+        if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
+        return EFAULT;
+    }
 
     /* Read the file into a kernel buffer. */
     RDFile *f = ramdisk_open(resolved);
-    if (!f) return EFAULT;
+    if (!f) {
+        if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
+        return EFAULT;
+    }
     unsigned char *data = (unsigned char *)kmalloc(f->size ? f->size : 1);
-    if (!data) return EFAULT;
+    if (!data) {
+        if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
+        return EFAULT;
+    }
     ramdisk_read(f, data, 0, f->size);
 
     /* Classify by ELF type. */
     if (f->size < EI_NIDENT ||
         !(data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F')) {
         kfree(data);
+        if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
         return EFAULT;
     }
     Elf64_Half etype = ((const Elf64_Ehdr *)data)->e_type;
@@ -2685,24 +2798,50 @@ static int k_syscall_spawn(const char *path, int child_argc,
     /* Save the parent's user window (28 MB). */
     unsigned long window_sz = USER_LOAD_END - USER_LOAD_BASE;
     unsigned char *parent_win = (unsigned char *)kmalloc(window_sz);
-    if (!parent_win) { kfree(data); return EFAULT; }
+    if (!parent_win) {
+        kfree(data);
+        if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
+        return EFAULT;
+    }
     kmemcpy(parent_win, (void *)USER_LOAD_BASE, window_sz);
 
     int rc = EFAULT;
     if (etype == ET_REL) {
         prog_entry_t entry = elf_load((void *)data, f->size);
+        /* Diagnostics BEFORE redirect so they go to screen, not capture file */
+        kprintf("SPAWN: ET_REL entry=%lx argc=%d\n",
+                (unsigned long)entry, child_argc);
+        if (entry) {
+            unsigned char *code = (unsigned char *)entry;
+            kprintf("  [%lx]: ", (unsigned long)entry);
+            for (int _i = 0; _i < 16; _i++) kprintf("%02x ", code[_i]);
+            kprintf("\n");
+        }
+        /* Start redirect capture after diagnostics */
+        int did_redirect = 0;
+        if (redirect && redirect[0]) did_redirect = redirect_begin();
         if (entry)
-            rc = k_run_rel(entry, child_argc, (char **)child_argv);
+            rc = k_run_rel(entry, child_argc, kargv ? kargv : (char **)child_argv);
+        if (did_redirect) redirect_commit(redirect, 0);
     } else if (etype == ET_EXEC || etype == ET_DYN) {
         void *entry = load_exec_elf((void *)data, f->size);
+        int did_redirect = 0;
+        if (redirect && redirect[0]) did_redirect = redirect_begin();
         if (entry)
             rc = k_exec_user(entry, child_argc, (char **)child_argv);
+        if (did_redirect) redirect_commit(redirect, 0);
     }
 
     /* Restore the parent's user window. */
     kmemcpy((void *)USER_LOAD_BASE, parent_win, window_sz);
     kfree(parent_win);
     kfree(data);
+
+    /* Free kernel argv copy. */
+    if (kargv) {
+        for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]);
+        kfree(kargv);
+    }
 
     /* Restore parent kernel state. */
     g_brk       = saved_brk;
@@ -2711,7 +2850,9 @@ static int k_syscall_spawn(const char *path, int child_argc,
     wrmsr(MSR_FSBASE, saved_fsbase);
     wrmsr(MSR_GSBASE, saved_gsbase);
     for (int i = 0; i < KFD_MAX; i++) kfd_table[i] = saved_kfd[i];
-    syscall_kstack = SYS_KSTK_TOP;
+    /* Do NOT clobber syscall_kstack here: it holds the outer syscall's
+       incoming rsp, and the outer syscall_entry xchg needs that exact value
+       to return to the parent.  k_run_rel/k_exec_user already restored it. */
 
     return rc;
 }
@@ -2721,6 +2862,13 @@ int k_exec_user(void *entry, int argc, char **argv) {
     unsigned long *sp = setup_user_stack(stk, USER_STACK_SIZE, argc, argv);
     unsigned long frame[5];
     exec_exit_code = 0;
+    /* Save the caller's saved stack pointer in syscall_kstack and restore it
+       on the way out: when SYS_SPAWN runs an ET_EXEC child, syscall_kstack
+       currently holds the outer syscall's incoming rsp.  Clobbering it here
+       (as the old code did) would make the outer syscall_entry xchg restore
+       rsp=0x88000 instead of the parent's real stack, and the parent would
+       resume at ring 0 with a broken stack. */
+    unsigned long saved_kstack = syscall_kstack;
     syscall_kstack = SYS_KSTK_TOP;
     wrmsr(MSR_FSBASE, 0);
     wrmsr(MSR_GSBASE, 0);
@@ -2766,7 +2914,7 @@ int k_exec_user(void *entry, int argc, char **argv) {
         : "ax", "memory");
     wrmsr(MSR_FSBASE, 0);
     wrmsr(MSR_GSBASE, 0);
-    syscall_kstack = SYS_KSTK_TOP;
+    syscall_kstack = saved_kstack;
     if (vga_mode13h) {
         vga_mode13h = 0; /* reclaim the display for the text console */
         vga_fb_draw_desktop(); /* drop the graphics window, restore desktop */
@@ -2777,9 +2925,33 @@ int k_exec_user(void *entry, int argc, char **argv) {
 /* Run an ET_REL program as a plain function call, but catch a libc exit(). */
 int k_run_rel(prog_entry_t entry, int argc, char **argv) {
     exec_exit_code = 0;
+    /* Save the caller's stack pointer held in syscall_kstack and restore it
+       on the way out.  When SYS_SPAWN runs an ET_REL child, syscall_kstack
+       holds the outer syscall's incoming rsp; clobbering it to SYS_KSTK_TOP
+       would make the outer syscall_entry xchg restore rsp=0x88000, so the
+       parent resumes at ring 0 with a broken stack (its retq pops 0 -> RIP=0).
+       The child itself needs syscall_kstack = SYS_KSTK_TOP so its own ring-0
+       syscalls swap onto the kernel stack. */
+    unsigned long saved_kstack = syscall_kstack;
     syscall_kstack = SYS_KSTK_TOP;
-    if (ksetjmp(&exec_return) == 0)
-        return entry(argc, argv);
+
+    /* Enable SSE/OSFXSR so ring-0 code can use xmm instructions (miniGCC
+       emits pcmpeqd etc. in prologues).  Clear CR0.TS to解除 any "device
+       not available" trap. */
+    unsigned long cr0, cr4;
+    __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
+    __asm__ volatile("mov %0, %%cr0" :: "r"(cr0 & ~0x8UL) : "memory");
+    __asm__ volatile("mov %%cr4, %0" : "=r"(cr4));
+    __asm__ volatile("mov %0, %%cr4" :: "r"(cr4 | 0x600UL) : "memory");
+
+    if (ksetjmp(&exec_return) == 0) {
+        int rc = entry(argc, argv);
+        syscall_kstack = saved_kstack;
+        return rc;
+    }
+
+    /* klongjmp landed here after kexit() */
+    syscall_kstack = saved_kstack;
     if (vga_mode13h) {
         vga_mode13h = 0;
         vga_fb_draw_desktop();
