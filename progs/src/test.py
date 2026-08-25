@@ -54,9 +54,9 @@ def test_toolchain():
     check('ld links', rc == 0, 'exit=%d' % rc)
     if rc != 0:
         return
-    # Execute the freshly built ELF.
+    # Execute the freshly built ELF.  fib.c's main returns fib(10) = 55.
     rc = minios.run('/bin/_t.elf')
-    check('built elf runs', rc == 0, 'exit=%d' % rc)
+    check('built elf runs', rc == 55, 'exit=%d' % rc)
 
 
 def test_spawn_preserves_interpreter():

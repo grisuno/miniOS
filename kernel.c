@@ -2869,7 +2869,20 @@ int k_exec_user(void *entry, int argc, char **argv) {
        rsp=0x88000 instead of the parent's real stack, and the parent would
        resume at ring 0 with a broken stack. */
     unsigned long saved_kstack = syscall_kstack;
-    syscall_kstack = SYS_KSTK_TOP;
+
+    /* The child is a ring-3 Linux binary whose `syscall` instructions swap
+       onto syscall_kstack.  If it points at SYS_KSTK_TOP (0x88000), every
+       child syscall (including the final exit) pushes its frame there and
+       clobbers THIS handler's frames on the same stack — so when the child
+       exits via klongjmp, k_exec_user's return address on 0x88000 has been
+       overwritten and `ret` lands in the wrong place.  Give the child a
+       dedicated kernel stack so its syscalls never touch 0x88000. */
+    unsigned long child_stack_sz = SYS_KSTK_TOP - SYS_KSTK_BASE;
+    void *child_stack = kmalloc(child_stack_sz);
+    if (child_stack)
+        syscall_kstack = (unsigned long)child_stack + child_stack_sz;
+    else
+        syscall_kstack = SYS_KSTK_TOP;
     wrmsr(MSR_FSBASE, 0);
     wrmsr(MSR_GSBASE, 0);
 
@@ -2881,6 +2894,11 @@ int k_exec_user(void *entry, int argc, char **argv) {
     frame[4] = (unsigned long)(GDT64_USER_DATA_SEL | 3);
 
     mouse_disable();
+    /* exec_return is a shared global: a nested SYS_SPAWN child overwrites it
+       via its own ksetjmp, so save it and restore it after the child exits.
+       Otherwise the parent's later exit() would klongjmp back into the
+       already-returned nested k_exec_user instead of here. */
+    kjmpbuf saved_exec = exec_return;
     if (ksetjmp(&exec_return) == 0) {
         __asm__ volatile(
             "mov %[udata], %%ax\n"
@@ -2914,7 +2932,9 @@ int k_exec_user(void *entry, int argc, char **argv) {
         : "ax", "memory");
     wrmsr(MSR_FSBASE, 0);
     wrmsr(MSR_GSBASE, 0);
+    exec_return = saved_exec;
     syscall_kstack = saved_kstack;
+    if (child_stack) kfree(child_stack);
     if (vga_mode13h) {
         vga_mode13h = 0; /* reclaim the display for the text console */
         vga_fb_draw_desktop(); /* drop the graphics window, restore desktop */
@@ -2944,13 +2964,19 @@ int k_run_rel(prog_entry_t entry, int argc, char **argv) {
     __asm__ volatile("mov %%cr4, %0" : "=r"(cr4));
     __asm__ volatile("mov %0, %%cr4" :: "r"(cr4 | 0x600UL) : "memory");
 
+    /* Save the caller's exec_return too: a nested spawn's ksetjmp would
+       overwrite the shared global and break the parent's later exit(). */
+    kjmpbuf saved_exec = exec_return;
+
     if (ksetjmp(&exec_return) == 0) {
         int rc = entry(argc, argv);
+        exec_return = saved_exec;
         syscall_kstack = saved_kstack;
         return rc;
     }
 
     /* klongjmp landed here after kexit() */
+    exec_return = saved_exec;
     syscall_kstack = saved_kstack;
     if (vga_mode13h) {
         vga_mode13h = 0;
