@@ -14,13 +14,14 @@
 import minios
 
 # target name -> (C source, output format). Output lands in bin/<name>.elf.
+# Sources are absolute so the build works from any working directory.
 TARGETS = {
-    'ldhello': ('src/ldhello.c', 'elf'),
-    'fib':     ('src/fib.c',     'elf'),
-    'w1':      ('src/w1.c',      'elf'),
-    'http':    ('src/http.c',    'elf'),
-    'cp':      ('src/cp.c',      'elf'),
-    'freedom': ('src/freedom.c', 'elf'),
+    'ldhello': ('/src/ldhello.c', 'elf'),
+    'fib':     ('/src/fib.c',     'elf'),
+    'w1':      ('/src/w1.c',      'elf'),
+    'http':    ('/src/http.c',    'elf'),
+    'cp':      ('/src/cp.c',      'elf'),
+    'freedom': ('/src/freedom.c', 'elf'),
 }
 
 

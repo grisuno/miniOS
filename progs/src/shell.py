@@ -72,6 +72,22 @@ def main():
             print(' '.join(args))
         elif cmd == 'pwd':
             print(os.getcwd())
+        elif cmd == 'ls':
+            # pybash builtin: list the current directory via the unified fs.
+            d = args[0] if args else os.getcwd()
+            try:
+                for ent in sorted(os.listdir(d)):
+                    print(ent)
+            except OSError as e:
+                print('pybash: ls: %s' % e)
+        elif cmd == 'cat':
+            # pybash builtin: print file(s) via the unified fs.
+            for a in args:
+                try:
+                    with open(a) as f:
+                        sys.stdout.write(f.read())
+                except OSError as e:
+                    print('pybash: cat: %s: %s' % (a, e))
         elif cmd == 'capture':
             # capture the output of a program into a variable
             if len(args) < 2:
@@ -95,9 +111,15 @@ def main():
                     if subparts:
                         minios.run(subparts[0], subparts[1:])
         else:
-            rc = minios.run(cmd, args)
-            if rc < 0:
-                print('pybash: not found: %s (exit %d)' % (cmd, rc))
+            # A bare name that is neither a builtin nor a runnable file:
+            # minios.run raises OSError (e.g. EFAULT) instead of returning
+            # negative, so catch it here to keep the prompt alive.
+            try:
+                rc = minios.run(cmd, args)
+                if rc < 0:
+                    print('pybash: not found: %s (exit %d)' % (cmd, rc))
+            except OSError as e:
+                print('pybash: not found: %s (%s)' % (cmd, e))
 
     print('pybash: bye')
 
