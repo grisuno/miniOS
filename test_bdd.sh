@@ -373,6 +373,43 @@ poweroff"
 expect "lzss: cannot open missing.txt"
 expect "exit code: 1"
 
+scenario "lz4 roundtrips a repetitive text file" "edit rep4.txt
+a
+lz4 lz4 lz4 lz4 lz4 lz4 lz4 lz4
+x
+lz4 rep4.txt rep4.lz4
+unlz4 rep4.lz4 rep4.out
+cat rep4.out
+poweroff"
+expect "wrote 1 line(s) to rep4.txt"
+expect "lz4: rep4.txt -> rep4.lz4"
+expect "unlz4: rep4.lz4 -> rep4.out"
+expect "lz4 lz4 lz4 lz4 lz4 lz4 lz4 lz4"
+
+scenario "lz4 reports failures through its exit code" "lz4 missing.txt x.lz4
+poweroff"
+expect "lz4: cannot open missing.txt"
+expect "exit code: 1"
+
+scenario "unlz4 rejects a truncated header and an implausible size" "edit t.lz4
+a
+xx
+x
+edit aaaa.lz4
+a
+AAAA
+x
+unlz4 t.lz4 out.bin
+unlz4 aaaa.lz4 out.bin
+poweroff"
+expect "unlz4: t.lz4: truncated header"
+expect "unlz4: aaaa.lz4: implausible size"
+expect "exit code: 1"
+
+scenario "lz4 usage without arguments" "lz4
+poweroff"
+expect "usage: lz4 [-d] <src> <dst>"
+
 scenario "shell up arrow recalls the last command" "run cvm/fib.cvm
 $(printf '\033[A')
 poweroff"

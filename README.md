@@ -230,6 +230,15 @@ can consume.
  derived from the input length, so a hostile header can never drive an
  oversized allocation.
 
+`bin/lz4` and `bin/unlz4` are the LZ4 (de)compression tools, also built from a
+single `progs/src/lz4.c`: `lz4 rep.txt rep.lz4` compresses and `unlz4
+rep.lz4 rep.out` decompresses, with the same `argv[0]`/`-d` dispatch as
+`lzss`. The codec lives in the kernel (`lz4_kernel.c`, the same one MiniFS
+uses), so the tools are thin front-ends over the MiniOS syscalls 216/217 and
+the on-disk block is exactly the MiniFS LZ4 block format: a 4-byte
+little-endian original size followed by the raw LZ4 stream, so `lz4` output
+interops with the filesystem's own blocks.
+
 ## Editor
 
 `edit <file>` opens a line editor over a ramdisk file.

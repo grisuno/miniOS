@@ -98,16 +98,19 @@ PROGS     = $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o $(OBJ_DIR)/minigcc.o \
             $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
             $(BIN_DIR)/cp $(BIN_DIR)/freedom \
             $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \
+            $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 \
             $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
             $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
             $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
             $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
             $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/freedom.c \
-            $(SRC_DIR)/cp.c $(SRC_DIR)/lzss.c $(SRC_DIR)/hello.py \
+            $(SRC_DIR)/cp.c $(SRC_DIR)/lzss.c $(SRC_DIR)/lz4.c \
+            $(SRC_DIR)/hello.py \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
             $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
-            $(ASM_DIR)/lzss.s $(ASM_DIR)/freedom.s $(DOC_DIR)/hostile.html \
+            $(ASM_DIR)/lzss.s $(ASM_DIR)/lz4.s $(ASM_DIR)/freedom.s \
+            $(DOC_DIR)/hostile.html \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/README.txt
 
@@ -294,6 +297,18 @@ $(BIN_DIR)/lzss: $(ASM_DIR)/lzss.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 $(BIN_DIR)/unlzss: $(ASM_DIR)/lzss.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+
+# ── lz4 / unlz4: thin syscall front-ends over the kernel LZ4 (216/217).
+# One source, both binaries, argv[0] dispatch.  See progs/src/lz4.c and the
+# CLAUDE.md spec.
+$(ASM_DIR)/lz4.s: $(SRC_DIR)/lz4.c $(MINIGCC_BIN)
+	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
+
+$(BIN_DIR)/lz4: $(ASM_DIR)/lz4.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+
+$(BIN_DIR)/unlz4: $(ASM_DIR)/lz4.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 # ── freedom: the headless text browser (curlfree-style engine,
@@ -566,11 +581,12 @@ clean:
 	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
 	      $(BIN_DIR)/cp $(BIN_DIR)/freedom \
 	      $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \
+	      $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 \
 	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython
 	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm
 	rm -f $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s $(ASM_DIR)/w1.s \
 	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/lzss.s \
-	      $(ASM_DIR)/freedom.s
+	      $(ASM_DIR)/lz4.s $(ASM_DIR)/freedom.s
 
 .SECONDARY:
 

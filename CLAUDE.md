@@ -97,6 +97,34 @@ program selects its mode from `argv[0]` (any invocation path containing
   shortfall is a diagnostic plus a nonzero exit code, never a partial
   silent write.
 
+### Compression tools (`lz4` / `unlz4`)
+`progs/src/lz4.c` builds `bin/lz4` and `bin/unlz4` from a single source, with
+the same `argv[0]` dispatch as `lzss` (any invocation path containing
+`unlz4` decodes; `-d` forces decode). The codec itself lives in the kernel
+(`lz4_kernel.c`, the same one MiniFS uses), so the tools are thin syscall
+front-ends over two MiniOS syscalls, 216 `lz4_compress` and 217
+`lz4_decompress`, which mirror `minifs_compress`/`minifs_decompress` byte
+for byte. A call passes a user pointer validated to lie inside the user
+window; a violating pointer returns `-EFAULT`.
+
+- The on-disk block is the MiniFS block format, so `lz4` output interops
+  with the filesystem's own LZ4 blocks: a 4-byte little-endian original
+  size, then the raw LZ4 stream. `lz4_compress` refuses to write (returns
+  0) unless the compressed stream is strictly shorter than the input, and
+  `lz4_decompress` refuses a header whose declared size exceeds the output
+  capacity or a stream that fails to decode to exactly that size.
+- The front-ends work whole-file in memory (one `malloc` per side, the
+  output side sized from `LZ4_COMPRESSBOUND` or the declared size), report
+  exact byte counts, and every I/O shortfall or implausible declared size
+  is a diagnostic plus a nonzero exit code, never a partial silent write.
+- The ld stub set grows the `lz4_compress`/`lz4_decompress` entries (216,
+  217) beside the other MiniOS syscalls, so the toolchain and the ramdisk
+  binary rebuild together.
+- The kernel `lz4_kernel.c` decompressor handles the literal-only tail of a
+  stream correctly (a valid LZ4 block may end with a final literal sequence
+  and no trailing match), so its own compressor round-trips and its output
+  interops with a host reference decoder.
+
 ## Boot Path Contract
 Two stages, because a correct single-stage loader does not fit in 512 bytes.
 Every address, BIOS service, descriptor and control-register bit used by the

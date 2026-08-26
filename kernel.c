@@ -9,6 +9,7 @@
 #include "vga_fb.h"
 #include "pcspk.h"
 #include "rtc.h"
+#include "lz4_kernel.h"
 
 /* ================================================================
  *  Serial console (COM1, 16550 UART) — mirrors VGA, drives input
@@ -2497,6 +2498,48 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
         return k_syscall_spawn(path, (const char *)a2, (int)a3,
                                (const char **)a4);
+    }
+    case 216: { /* MiniOS: LZ4 compress into a MiniFS size-prefixed block.
+                 * args: src(a1), src_len(a2), dst(a3), dst_cap(a4).  Mirrors
+                 * minifs_compress: refuses unless the stream is strictly
+                 * shorter than the input, stores the original size little-
+                 * endian at dst[0..3] and returns the block length. */
+        char *src = (char *)a1;
+        char *dst = (char *)a3;
+        int src_len = (int)a2;
+        int dst_cap = (int)a4;
+        int ret;
+        if (src_len <= 0 || dst_cap <= 4) return 0;
+        if (!user_range_ok((unsigned long)src, (unsigned long)src_len)) return EFAULT;
+        if (!user_range_ok((unsigned long)dst, (unsigned long)dst_cap)) return EFAULT;
+        ret = LZ4_compress_default(src, dst + 4, src_len, dst_cap - 4);
+        if (ret <= 0 || ret >= src_len) return 0;
+        dst[0] = (char)(src_len & 255);
+        dst[1] = (char)((src_len >> 8) & 255);
+        dst[2] = (char)((src_len >> 16) & 255);
+        dst[3] = (char)((src_len >> 24) & 255);
+        return ret + 4;
+    }
+    case 217: { /* MiniOS: LZ4 decompress a MiniFS size-prefixed block.
+                 * args: src(a1), src_len(a2), dst(a3), dst_cap(a4).  Mirrors
+                 * minifs_decompress: reads the little-endian original size,
+                 * refuses if it exceeds dst_cap and returns the decoded
+                 * length only when it matches the declared size exactly. */
+        char *src = (char *)a1;
+        char *dst = (char *)a3;
+        int src_len = (int)a2;
+        int dst_cap = (int)a4;
+        unsigned int orig;
+        int ret;
+        if (src_len <= 4) return 0;
+        if (!user_range_ok((unsigned long)src, (unsigned long)src_len)) return EFAULT;
+        orig = (unsigned int)((unsigned char)src[0] | ((unsigned char)src[1] << 8) |
+                              ((unsigned char)src[2] << 16) | ((unsigned char)src[3] << 24));
+        if (orig > (unsigned int)dst_cap) return 0;
+        if (dst_cap > 0 && !user_range_ok((unsigned long)dst, (unsigned long)dst_cap)) return EFAULT;
+        ret = LZ4_decompress_safe(src + 4, dst, src_len - 4, dst_cap);
+        if (ret < 0 || (unsigned int)ret != orig) return 0;
+        return ret;
     }
     case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
         unsigned char *pal = (unsigned char *)a1;

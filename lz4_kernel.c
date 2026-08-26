@@ -198,6 +198,8 @@ int LZ4_decompress_safe(const char *src, char *dst, int compressedSize, int dstC
         op += literal_len;
         ip += literal_len;
 
+        if (ip >= iend)
+            break;          /* final literal-only sequence: clean end */
         if (ip + 2 > iend)
             return -1;
 
