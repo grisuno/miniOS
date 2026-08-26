@@ -125,6 +125,29 @@ window; a violating pointer returns `-EFAULT`.
   and no trailing match), so its own compressor round-trips and its output
   interops with a host reference decoder.
 
+### JSON tool (`json`)
+`bin/json` is a self-contained JSON validator, pretty-printer and query tool
+built from `progs/src/json.c` through the miniGCC-to-ld chain. It is written
+in the miniGCC subset, which has no structs, so the parsed value is a flat
+node table of parallel arrays (`js_type`/`js_num`/`js_str`/`js_key`/
+`js_first`/`js_count`/`js_next`); object members keep their key in `js_key`
+and their value in the node itself.
+
+- Usage: `json <file>` validates and pretty-prints; `json <file> <path>`
+  prints the value at a dotted path (`.a.b`, `.a.3`, bare `.a`). A missing
+  path is `json: <path>: not found` with exit 1, never a crash.
+- The parser is fail-closed: truncated input, a trailing non-whitespace
+  token, an unbalanced `}`/`]` and an unknown escape all report
+  `json: <file>: invalid JSON` with exit 1. String escapes (`\n \t \r \b \f
+  \" \\ \/`, and `\u` mapped to `?`) decode into a bounded string pool, and
+  the pretty-printer re-escapes them so its output is itself valid JSON.
+- The node table, string pool and query segment are all size-bounded by named
+  constants (`JS_MAX_NODES`, `JS_POOL`); an input that would exceed a bound
+  is a diagnostic plus exit 1, never a silent overflow.
+- cJSON (single-file, struct-based) was tried as a portable engine and does
+  not compile under miniGCC (structs, `->`, `double`, `CJSON_PUBLIC`), which
+  is why this hand-rolled flat-table parser exists.
+
 ## Boot Path Contract
 Two stages, because a correct single-stage loader does not fit in 512 bytes.
 Every address, BIOS service, descriptor and control-register bit used by the
@@ -815,6 +838,7 @@ One file per contract, Python 3 standard library only, no dependencies.
 | `minios_expect` | wait for a marker after the cursor; cursor advances to the end of the match |
 | `minios_write` | create or replace a ramdisk file through the editor (`edit`, `a` per line, `x`); returns the editor transcript |
 | `minios_cat` | print a ramdisk file |
+| `minios_test` | generic scenario harness: send a list of shell commands, assert each `expect` marker appears and each `refute` marker does not in the produced output; returns `{pass, failures, transcript}`. This is the reusable in-OS test tool, so a session never hand-rolls a boot-and-assert script. |
 | `minios_poweroff` | `poweroff`, wait for `powering off` and QEMU exit, release the pid file |
 
 Every tool carries a `timeout_ms` parameter capped by a config constant; a
@@ -824,6 +848,12 @@ capped by the boot timeout, so a stuck prompt can never burn an install's
 full budget before failing. The host shell is never invoked
 (`shell=False` everywhere); the only shell driven is the one inside
 MiniOS.
+
+For host-side verification of the miniGCC-built command tools there is a
+reusable harness, `tests/host_codecs.sh <progs_dir>`: it drives the static
+ELF tools on the host (lzss/unlzss roundtrip + fail-closed + bidirectional
+interop against the reference Okumura codec; lz4's fail-closed path; the lz4
+roundtrip needs MiniOS syscalls 216/217 and is covered in-OS instead).
 
 ### Addon marketplace (lazyaddons-style)
 Addons are YAML files in `addons/`, one per package, inspired by LazyOwn's

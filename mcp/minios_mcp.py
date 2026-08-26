@@ -371,6 +371,62 @@ class MiniOSSession:
             raise ToolError("MiniOS is not booted")
         return {"text": self.log.text_from(self.cursor, self.cursor + limit)}
 
+    def run_test(self, commands, expect, refute, timeout_ms):
+        """Run a generic scenario: send a list of shell commands, then assert
+        that each expected marker appears (and each refuted marker does not)
+        in the output those commands produced. Returns a verdict plus the
+        captured transcript. This is the reusable harness behind every in-OS
+        feature test, so a session never has to hand-roll a QEMU boot and
+        marker-assertion script."""
+        if not self.booted():
+            raise ToolError("MiniOS is not booted")
+        if not isinstance(commands, list):
+            raise ToolError("commands must be a list of shell lines")
+        if not isinstance(expect, list):
+            raise ToolError("expect must be a list of marker strings")
+        if not isinstance(refute, list):
+            raise ToolError("refute must be a list of marker strings")
+
+        tmo = clamp_timeout(timeout_ms or self.cfg["tmo_expect_ms"])
+        transcript = []
+        failures = []
+        start = self.cursor
+
+        for cmd in commands:
+            if not isinstance(cmd, str):
+                raise ToolError("each command must be a string")
+            try:
+                out = self.send(cmd, tmo)
+            except ToolError as exc:
+                failures.append("command %r: %s" % (cmd, exc))
+                transcript.append("> " + cmd)
+                transcript.append(str(exc))
+                return {
+                    "pass": False,
+                    "failures": failures,
+                    "transcript": "\n".join(transcript),
+                }
+            transcript.append("> " + cmd)
+            transcript.append(out["text"])
+
+        tail = self.log.text_from(start, self.cursor)
+        for marker in expect:
+            present = isinstance(marker, str) and marker and marker in tail
+            transcript.append("expect %r: %s" % (marker, "ok" if present else "MISSING"))
+            if not present:
+                failures.append("missing marker: %r" % marker)
+        for marker in refute:
+            present = isinstance(marker, str) and marker and marker in tail
+            transcript.append("refute %r: %s" % (marker, "present" if present else "absent"))
+            if present:
+                failures.append("unexpected marker: %r" % marker)
+
+        return {
+            "pass": not failures,
+            "failures": failures,
+            "transcript": "\n".join(transcript),
+        }
+
     def cat(self, path):
         problem = validate_path(path)
         if problem:
@@ -631,6 +687,20 @@ TOOLS = [
         },
     },
     {
+        "name": "minios_test",
+        "description": "Run a generic test scenario inside MiniOS: send a list of shell commands, assert each expected marker appears and each refuted marker does not. Returns pass/fail plus the transcript. Reusable harness for any in-OS feature test.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "commands": {"type": "array", "items": {"type": "string"}, "description": "shell lines to send, in order"},
+                "expect": {"type": "array", "items": {"type": "string"}, "description": "markers that must appear in the produced output"},
+                "refute": {"type": "array", "items": {"type": "string"}, "description": "markers that must NOT appear in the produced output"},
+                "timeout_ms": {"type": "integer"},
+            },
+            "required": ["commands"],
+        },
+    },
+    {
         "name": "minios_poweroff",
         "description": "Power the machine off and terminate QEMU; releases the pid file.",
         "inputSchema": {"type": "object", "properties": {"timeout_ms": {"type": "integer"}}},
@@ -738,6 +808,13 @@ class MCPServer:
             return self._addons_list()
         if name == "minios_install":
             return self._addon_install(args)
+        if name == "minios_test":
+            return self.session.run_test(
+                args.get("commands", []),
+                args.get("expect", []),
+                args.get("refute", []),
+                args.get("timeout_ms"),
+            )
         if name == "minios_poweroff":
             return self.session.poweroff(args.get("timeout_ms"))
         raise ToolError("unknown tool: %s" % name)

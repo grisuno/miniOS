@@ -44,6 +44,7 @@ EXPECTED_TOOLS = [
     "minios_py_eval",
     "minios_addons",
     "minios_install",
+    "minios_test",
     "minios_poweroff",
 ]
 
@@ -190,6 +191,15 @@ class TestProtocol(unittest.TestCase):
         res = r["result"]
         self.assertTrue(res["isError"])
         self.assertIn("line", res["content"][0]["text"])
+
+    def test_test_not_booted(self):
+        r = self.server.request(
+            "tools/call",
+            {"name": "minios_test", "arguments": {"commands": ["echo hi"], "expect": ["hi"]}},
+        )
+        res = r["result"]
+        self.assertTrue(res["isError"])
+        self.assertIn("not booted", res["content"][0]["text"])
 
 
 class TestValidation(unittest.TestCase):
@@ -396,7 +406,28 @@ class TestMiniOSBDD(_ConsoleBDDBase):
         self.assertIn("42", r["text"])
         self.assertIn("exit code: 0", r["text"])
 
-    def test_t10_poweroff_and_reboot(self):
+    def test_t10_minios_test(self):
+        # Generic scenario harness: send commands, assert markers appear and
+        # refuted markers do not. Exercises bin/json (a miniGCC-built tool).
+        r = self.server.tool(
+            "minios_test",
+            {
+                "commands": ["json", "echo hello", "echo world"],
+                "expect": ["usage: json <file>", "hello", "world"],
+                "refute": ["PANIC"],
+            },
+        )
+        self.assertTrue(r["pass"], r["failures"])
+        self.assertIn("usage: json <file>", r["transcript"])
+        # Negative: a marker that the commands never produce must fail closed.
+        r = self.server.tool(
+            "minios_test",
+            {"commands": ["echo hello"], "expect": ["never-seen-marker"], "refute": []},
+        )
+        self.assertFalse(r["pass"])
+        self.assertIn("MISSING", r["transcript"])
+
+    def test_t11_poweroff_and_reboot(self):
         r = self.server.tool("minios_poweroff")
         self.assertIn("powering off", r["text"])
         s = self.server.tool("minios_status")

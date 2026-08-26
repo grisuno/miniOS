@@ -23,6 +23,17 @@ for the next `miniOS> ` prompt and returns everything the kernel printed in
 between, including `exit code: N`. Never send a multi-line command; use one
 `minios_send` per line.
 
+For an assertion-style check, use `minios_test`: it sends a list of shell
+commands and asserts which markers appear (and which do not), returning a
+`{pass, failures, transcript}` verdict. This is the reusable in-OS test
+harness, so prefer it over hand-rolling `minios_send`+`minios_expect`
+sequences:
+
+```text
+minios_test {commands: ["lzss rep.txt rep.lzs", "unlzss rep.lzs rep.out", "cat rep.out"],
+             expect: ["lzss: rep.txt -> rep.lzs", "the quick brown fox"]}
+```
+
 Compile, link and run inside the OS:
 
 ```text

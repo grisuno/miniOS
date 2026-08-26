@@ -410,6 +410,24 @@ scenario "lz4 usage without arguments" "lz4
 poweroff"
 expect "usage: lz4 [-d] <src> <dst>"
 
+scenario "json validates, pretty-prints and queries a file" "edit cfg.json
+a
+{\"name\":\"miniOS\",\"ports\":[80,443],\"live\":true}
+x
+json cfg.json
+json cfg.json name
+json cfg.json ports.1
+json cfg.json nope
+poweroff"
+expect "json: cfg.json"
+expect "\"name\": \"miniOS\""
+expect "\"ports\": ["
+expect "80"
+expect "443"
+expect "live"
+expect "json: nope: not found"
+expect "exit code: 1"
+
 scenario "shell up arrow recalls the last command" "run cvm/fib.cvm
 $(printf '\033[A')
 poweroff"

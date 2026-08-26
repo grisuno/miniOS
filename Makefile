@@ -99,17 +99,19 @@ PROGS     = $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o $(OBJ_DIR)/minigcc.o \
             $(BIN_DIR)/cp $(BIN_DIR)/freedom \
             $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \
             $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 \
+            $(BIN_DIR)/json \
             $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
             $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
             $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
             $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
             $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/freedom.c \
             $(SRC_DIR)/cp.c $(SRC_DIR)/lzss.c $(SRC_DIR)/lz4.c \
-            $(SRC_DIR)/hello.py \
+            $(SRC_DIR)/json.c $(SRC_DIR)/hello.py \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
             $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
-            $(ASM_DIR)/lzss.s $(ASM_DIR)/lz4.s $(ASM_DIR)/freedom.s \
+            $(ASM_DIR)/lzss.s $(ASM_DIR)/lz4.s $(ASM_DIR)/json.s \
+            $(ASM_DIR)/freedom.s \
             $(DOC_DIR)/hostile.html \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/README.txt
@@ -309,6 +311,15 @@ $(BIN_DIR)/lz4: $(ASM_DIR)/lz4.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 $(BIN_DIR)/unlz4: $(ASM_DIR)/lz4.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+
+# ── json: JSON validate / pretty-print / query, a hand-rolled parser in the
+# miniGCC subset (flat node arrays, no structs).  See progs/src/json.c and
+# the CLAUDE.md spec.
+$(ASM_DIR)/json.s: $(SRC_DIR)/json.c $(MINIGCC_BIN)
+	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
+
+$(BIN_DIR)/json: $(ASM_DIR)/json.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 # ── freedom: the headless text browser (curlfree-style engine,
@@ -582,11 +593,12 @@ clean:
 	      $(BIN_DIR)/cp $(BIN_DIR)/freedom \
 	      $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \
 	      $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 \
+	      $(BIN_DIR)/json \
 	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython
 	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm
 	rm -f $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s $(ASM_DIR)/w1.s \
 	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/lzss.s \
-	      $(ASM_DIR)/lz4.s $(ASM_DIR)/freedom.s
+	      $(ASM_DIR)/lz4.s $(ASM_DIR)/json.s $(ASM_DIR)/freedom.s
 
 .SECONDARY:
 
