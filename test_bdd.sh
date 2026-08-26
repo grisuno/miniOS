@@ -341,6 +341,38 @@ scenario "bin path entries are skipped for unknown commands" "nosuchcmd
 poweroff"
 expect "command not found: nosuchcmd"
 
+scenario "lzss roundtrips a repetitive text file" "edit rep.txt
+a
+the quick brown fox jumps over the lazy dog
+a
+the quick brown fox jumps over the lazy dog
+a
+the quick brown fox jumps over the lazy dog
+x
+lzss rep.txt rep.lzs
+unlzss rep.lzs rep.out
+cat rep.out
+poweroff"
+expect "wrote 3 line(s) to rep.txt"
+expect "lzss: rep.txt -> rep.lzs"
+expect "unlzss: rep.lzs -> rep.out"
+expect "the quick brown fox jumps over the lazy dog"
+
+scenario "lzss selection by argv0 decodes with the -d flag too" "lzss rep.txt
+poweroff"
+expect "usage: lzss [-d] <src> <dst>"
+
+scenario "unlzss rejects a file without the LZS1 magic" "cp src/fib.c bad.lzs
+unlzss bad.lzs out.bin
+poweroff"
+expect "unlzss: bad.lzs: bad magic"
+expect "exit code: 1"
+
+scenario "lzss reports failures through its exit code" "lzss missing.txt x.lzs
+poweroff"
+expect "lzss: cannot open missing.txt"
+expect "exit code: 1"
+
 scenario "shell up arrow recalls the last command" "run cvm/fib.cvm
 $(printf '\033[A')
 poweroff"

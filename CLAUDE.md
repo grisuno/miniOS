@@ -66,13 +66,36 @@ those upstreams alone, so:
 - `ramdisk.bin` lists the `Makefile` among its prerequisites: the file list
   lives there, so editing it must invalidate the image even when no
   individual file changed.
-- `progs/bin/` ships the command-path utilities: `cp` and `freedom`, compiled
-  from this repository's own `progs/src/cp.c` and `progs/src/freedom.c`
+- `progs/bin/` ships the command-path utilities: `cp`, `freedom`, `lzss`
+  and `unlzss`, compiled from this repository's own sources in `progs/src/`
   through the miniGCC-to-ld chain, with the sources on the ramdisk too so the
   OS can rebuild the utilities from scratch without leaving the machine.
   The ramdisk tree is organized by kind: `objects/` (ET_REL toolchain),
   `bin/` (Linux ELFs + command path), `cvm/` (CVM modules), `src/` (C
   sources), `asm/` (miniGCC assembly), `docs/`.
+
+### Compression tools (`lzss` / `unlzss`)
+`progs/src/lzss.c` is a single source that builds two command-path binaries:
+the linker emits the same program as `bin/lzss` and `bin/unlzss`, and the
+program selects its mode from `argv[0]` (any invocation path containing
+`unlzss` decodes; `-d` forces decode explicitly).
+
+- The codec is Okumura LZSS (window `LZSS_N` 2048, lookahead `LZSS_F` 17,
+  threshold `LZSS_P` 1, MSB-first bit stream) so in-OS output interops with
+  a host reference implementation; the window is pre-filled with 0x20
+  exactly as the reference.
+- The on-disk format is fail-closed: 4-byte magic `LZS1`, then the original
+  size as a little-endian u32, then the bit stream. `unlzss` rejects a bad
+  magic, a truncated stream and any declared size larger than the expansion
+  bound derived from the input length (`LZSS_EXPAND_NUM`/
+  `LZSS_EXPAND_DEN`), so a hostile header can never drive an oversized
+  allocation, and a stream that would write past the declared size aborts
+  before touching the output file.
+- The codec works whole-file in memory (bounded, one `malloc` per side,
+  sized from the input file and the derived expansion bound), compresses
+  only when the result is reported with exact byte counts, and every I/O
+  shortfall is a diagnostic plus a nonzero exit code, never a partial
+  silent write.
 
 ## Boot Path Contract
 Two stages, because a correct single-stage loader does not fit in 512 bytes.

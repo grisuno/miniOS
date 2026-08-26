@@ -97,16 +97,17 @@ PROGS     = $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o $(OBJ_DIR)/minigcc.o \
             $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf $(BIN_DIR)/http.elf \
             $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
             $(BIN_DIR)/cp $(BIN_DIR)/freedom \
+            $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \
             $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
             $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
             $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
             $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
             $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/freedom.c \
-            $(SRC_DIR)/cp.c $(SRC_DIR)/hello.py \
+            $(SRC_DIR)/cp.c $(SRC_DIR)/lzss.c $(SRC_DIR)/hello.py \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
             $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
-            $(ASM_DIR)/freedom.s $(DOC_DIR)/hostile.html \
+            $(ASM_DIR)/lzss.s $(ASM_DIR)/freedom.s $(DOC_DIR)/hostile.html \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/README.txt
 
@@ -281,6 +282,18 @@ $(ASM_DIR)/cp.s: $(SRC_DIR)/cp.c $(MINIGCC_BIN)
 	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
 
 $(BIN_DIR)/cp: $(ASM_DIR)/cp.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+
+# ── lzss / unlzss: one source, two command-path binaries.  The same asm is
+# linked under both names; the program selects its mode from argv[0] (-d
+# forces decode).  See progs/src/lzss.c and the CLAUDE.md spec.
+$(ASM_DIR)/lzss.s: $(SRC_DIR)/lzss.c $(MINIGCC_BIN)
+	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
+
+$(BIN_DIR)/lzss: $(ASM_DIR)/lzss.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+
+$(BIN_DIR)/unlzss: $(ASM_DIR)/lzss.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 # ── freedom: the headless text browser (curlfree-style engine,
@@ -552,10 +565,12 @@ clean:
 	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
 	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
 	      $(BIN_DIR)/cp $(BIN_DIR)/freedom \
+	      $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \
 	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython
 	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm
 	rm -f $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s $(ASM_DIR)/w1.s \
-	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/freedom.s
+	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/lzss.s \
+	      $(ASM_DIR)/freedom.s
 
 .SECONDARY:
 

@@ -216,10 +216,19 @@ about it, so `run objects/minigcc.o p.c > asm/p.s` yields assembly a linker
 can consume.
 
 `bin/cp` is a command-path utility: `cp src/fib.c x.txt` copies a ramdisk
-file without `run` or `load`. It is compiled from this repository's own
-`progs/src/cp.c` through the miniGCC-to-ld chain, and the source ships on
-the ramdisk as `src/cp.c`, so the utility can be rebuilt inside the OS by
-the OS.
+ file without `run` or `load`. It is compiled from this repository's own
+ `progs/src/cp.c` through the miniGCC-to-ld chain, and the source ships on
+ the ramdisk as `src/cp.c`, so the utility can be rebuilt inside the OS by
+ the OS.
+
+`bin/lzss` and `bin/unlzss` are the Okumura LZSS (de)compression tools, both
+ built from a single `progs/src/lzss.c`: `lzss rep.txt rep.lzs` compresses,
+ `unlzss rep.lzs rep.out` decompresses, and the binary picks its mode from
+ `argv[0]` (`unlzss` decodes; `-d` forces decode). The on-disk format is a
+ fail-closed `LZS1` magic plus the original size; decoding rejects a bad
+ magic, a truncated stream and any declared size beyond the expansion bound
+ derived from the input length, so a hostile header can never drive an
+ oversized allocation.
 
 ## Editor
 
