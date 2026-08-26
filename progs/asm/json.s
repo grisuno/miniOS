@@ -118,7 +118,7 @@ js_read_all:
     movq %r12, %rsp
     popq %r12
     popq %rcx
-    movb %al, (%rcx)
+    movq %rax, (%rcx)
     movq -80(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi

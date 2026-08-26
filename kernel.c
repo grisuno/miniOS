@@ -1096,6 +1096,13 @@ KFILE *kfopen(const char *path, const char *mode) {
     }
     if (!f->rf && mode[0] == 'r' && minifs_is_mounted()) {
         int ino = minifs_resolve_path(resolved);
+        if (ino < 0 && kstrchr(resolved, '/')) {
+            const char *base = resolved;
+            const char *p;
+            for (p = resolved; *p; p++)
+                if (*p == '/') base = p + 1;
+            ino = minifs_resolve_path(base);
+        }
         if (ino >= 0) {
             MiniFSInode st;
             if (minifs_stat(ino, &st) >= 0) {
@@ -2269,7 +2276,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     switch (n) {
     case 0: { /* read */
         char *buf = (char *)a2; long cnt = a3, i = 0;
-        if (cnt > 0 && !user_range_ok((unsigned long)buf, (unsigned long)cnt)) return EFAULT;
+        if (cnt > 0 && !user_range_ok((unsigned long)buf, (unsigned long)cnt)) {
+            kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);
+            return EFAULT;
+        }
         if (a1 == 0) {
             while (i < cnt) {
                 int c = console_getc();
@@ -2281,8 +2291,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
             }
             return i;
         }
-        if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1])
+        if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
             return (long)kfread(buf, 1, (unsigned long)cnt, kfd_table[a1]);
+        }
+        kprintf("READ: bad fd=%ld\n", a1);
         return -9;
     }
     case 1: { /* write */
@@ -2315,11 +2327,15 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         long flags = (n == 257 ? a3 : a2);
         const char *mode = ((flags & 1) || (flags & 0x40)) ? "w" : "r";
         int fd;
-        if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
+        if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) {
+            return EFAULT;
+        }
         for (fd = 3; fd < KFD_MAX; fd++) if (!kfd_table[fd]) break;
         if (fd >= KFD_MAX) return -24;
         KFILE *f = kfopen(path, mode);
-        if (!f) return -2;
+        if (!f) {
+            return -2;
+        }
         kfd_table[fd] = f;
         return fd;
     }
@@ -2329,12 +2345,14 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
             kfclose(kfd_table[a1]); kfd_table[a1] = 0;
         }
         return 0;
-    case 8: /* lseek */
+    case 8: { /* lseek */
         if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
             kfseek(kfd_table[a1], a2, (int)a3);
-            return kftell(kfd_table[a1]);
+            long pos = kftell(kfd_table[a1]);
+            return pos;
         }
         return -9;
+    }
     case 12: { /* brk */
         unsigned long addr = (unsigned long)a1;
         if (addr == 0) return (long)g_brk;
@@ -2805,21 +2823,43 @@ static int k_syscall_spawn(const char *path, const char *redirect,
         return EFAULT;
     }
 
-    /* Read the file into a kernel buffer. */
+    /* Read the file into a kernel buffer.  Try ramdisk first, then MiniFS. */
     RDFile *f = ramdisk_open(resolved);
-    if (!f) {
-        if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
-        return EFAULT;
+    unsigned char *data = 0;
+    unsigned data_size = 0;
+    if (f) {
+        data_size = f->size ? f->size : 1;
+        data = (unsigned char *)kmalloc(data_size);
+        if (!data) {
+            if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
+            return EFAULT;
+        }
+        ramdisk_read(f, data, 0, f->size);
+    } else if (minifs_is_mounted()) {
+        int ino = minifs_resolve_path(resolved);
+        if (ino < 0) {
+            const char *base = resolved;
+            const char *p;
+            for (p = resolved; *p; p++)
+                if (*p == '/') base = p + 1;
+            ino = minifs_resolve_path(base);
+        }
+        if (ino >= 0) {
+            MiniFSInode mi;
+            if (minifs_stat(ino, &mi) >= 0 && mi.size > 0) {
+                data_size = mi.size;
+                data = (unsigned char *)kmalloc(data_size);
+                if (data) minifs_read(ino, data, 0, data_size);
+            }
+        }
     }
-    unsigned char *data = (unsigned char *)kmalloc(f->size ? f->size : 1);
     if (!data) {
         if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
         return EFAULT;
     }
-    ramdisk_read(f, data, 0, f->size);
 
     /* Classify by ELF type. */
-    if (f->size < EI_NIDENT ||
+    if (data_size < EI_NIDENT ||
         !(data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F')) {
         kfree(data);
         if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
@@ -2850,7 +2890,7 @@ static int k_syscall_spawn(const char *path, const char *redirect,
 
     int rc = EFAULT;
     if (etype == ET_REL) {
-        prog_entry_t entry = elf_load((void *)data, f->size);
+        prog_entry_t entry = elf_load((void *)data, data_size);
         /* Diagnostics BEFORE redirect so they go to screen, not capture file */
         kprintf("SPAWN: ET_REL entry=%lx argc=%d\n",
                 (unsigned long)entry, child_argc);
@@ -2867,11 +2907,12 @@ static int k_syscall_spawn(const char *path, const char *redirect,
             rc = k_run_rel(entry, child_argc, kargv ? kargv : (char **)child_argv);
         if (did_redirect) redirect_commit(redirect, 0);
     } else if (etype == ET_EXEC || etype == ET_DYN) {
-        void *entry = load_exec_elf((void *)data, f->size);
+        void *entry = load_exec_elf((void *)data, data_size);
         int did_redirect = 0;
         if (redirect && redirect[0]) did_redirect = redirect_begin();
         if (entry)
-            rc = k_exec_user(entry, child_argc, (char **)child_argv);
+            rc = k_exec_user(entry, child_argc,
+                             kargv ? (char **)kargv : (char **)child_argv);
         if (did_redirect) redirect_commit(redirect, 0);
     }
 
@@ -3532,9 +3573,16 @@ static int shell_parse(char *line, char **argv, int max_args) {
     while (*p && argc < max_args) {
         while (*p == ' ' || *p == '\t') p++;
         if (*p == 0) break;
-        argv[argc++] = p;
-        while (*p && *p != ' ' && *p != '\t') p++;
-        if (*p) { *p = 0; p++; }
+        if (*p == '"') {
+            p++;
+            argv[argc++] = p;
+            while (*p && *p != '"') p++;
+            if (*p) { *p = 0; p++; }
+        } else {
+            argv[argc++] = p;
+            while (*p && *p != ' ' && *p != '\t') p++;
+            if (*p) { *p = 0; p++; }
+        }
     }
     argv[argc] = 0;
     return argc;
@@ -3666,10 +3714,33 @@ static int shell_load(const char *fname, char *progname_out, void **entry_out) {
     if (!fs_resolve(fname, resolved, sizeof(resolved))) return 0;
     if (fs_is_dir(resolved)) return 0;
     RDFile *f = ramdisk_open(resolved);
-    if (!f) return 0;
-    unsigned char *data = kmalloc(f->size);
+    unsigned char *data = 0;
+    unsigned data_size = 0;
+    if (f) {
+        data_size = f->size;
+        data = kmalloc(data_size ? data_size : 1);
+        if (!data) return 0;
+        ramdisk_read(f, data, 0, data_size);
+    } else if (minifs_is_mounted()) {
+        int ino = minifs_resolve_path(resolved);
+        if (ino < 0 && kstrchr(resolved, '/')) {
+            const char *base = resolved;
+            const char *p;
+            for (p = resolved; *p; p++)
+                if (*p == '/') base = p + 1;
+            ino = minifs_resolve_path(base);
+        }
+        if (ino >= 0) {
+            MiniFSInode st;
+            if (minifs_stat(ino, &st) >= 0 && st.size > 0) {
+                data_size = st.size;
+                data = kmalloc(data_size);
+                if (!data) return 0;
+                minifs_read(ino, data, 0, data_size);
+            }
+        }
+    }
     if (!data) return 0;
-    ramdisk_read(f, data, 0, f->size);
 
     const char *base = resolved;
     const char *slash = kstrchr(base, '/');
@@ -3682,13 +3753,13 @@ static int shell_load(const char *fname, char *progname_out, void **entry_out) {
 
     int kind = 0;
     void *entry = 0;
-    if (data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F') {
+    if (data_size >= 4 && data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F') {
         Elf64_Half etype = ((Elf64_Ehdr *)data)->e_type;
         if (etype == ET_REL) {
-            entry = elf_load(data, f->size);
+            entry = elf_load(data, data_size);
             if (entry) { k_register_program(progname_out, (prog_entry_t)entry); kind = 1; }
         } else if (etype == ET_EXEC || etype == ET_DYN) {
-            entry = load_exec_elf(data, f->size);
+            entry = load_exec_elf(data, data_size);
             if (entry) { k_register_process(progname_out, entry); kind = 2; }
         }
     }
@@ -4072,6 +4143,13 @@ static int shell_run_elf_minifs(const char *name, int argc, char **argv) {
     int ino = -1;
     if (kstrchr(name, '/')) {
         ino = minifs_resolve_path(name);
+        if (ino < 0) {
+            const char *base = name;
+            const char *p;
+            for (p = name; *p; p++)
+                if (*p == '/') base = p + 1;
+            ino = minifs_resolve_path(base);
+        }
     } else {
         ino = minifs_resolve_path(name);
         if (ino < 0) {
@@ -4138,8 +4216,22 @@ static int shell_run_file(const char *name, int argc, char **argv) {
     char full[RAMDISK_FNAME_LEN];
     int nl = (int)kstrlen(name);
     if (nl >= 4 && kstrcmp(name + nl - 4, ".cvm") == 0) {
-        if (!shell_resolve_run(name, full, sizeof(full))) return -1;
-        return shell_run_cvm(full, argc, argv);
+        if (shell_resolve_run(name, full, sizeof(full)))
+            return shell_run_cvm(full, argc, argv);
+        if (minifs_is_mounted()) {
+            int ino = minifs_resolve_path(name);
+            if (ino < 0 && kstrchr(name, '/')) {
+                const char *base = name;
+                const char *p;
+                for (p = name; *p; p++)
+                    if (*p == '/') base = p + 1;
+                ino = minifs_resolve_path(base);
+                if (ino >= 0) name = base;
+            }
+            if (ino >= 0)
+                return shell_run_cvm(name, argc, argv);
+        }
+        return -1;
     }
     if (shell_resolve_run(name, full, sizeof(full)))
         return shell_run_elf_file(full, argc, argv);
@@ -4235,14 +4327,12 @@ static void shell_exec_builtin(int argc, char **argv) {
                 kprintf("cat: %s: no such file or is a directory\n", argv[fi]);
                 return;
             }
-            RDFile *f = ramdisk_open(resolved);
-            if (!f) { kprintf("cat: %s: no such file\n", argv[fi]); return; }
-            unsigned i;
-            for (i = 0; i < f->size; i++) {
-                char c;
-                ramdisk_read(f, &c, i, 1);
+            KFILE *kf = kfopen(argv[fi], "r");
+            if (!kf) { kprintf("cat: %s: no such file\n", argv[fi]); return; }
+            char c;
+            while (kfread(&c, 1, 1, kf) == 1)
                 vga_putc(c);
-            }
+            kfclose(kf);
         }
         vga_putc('\n');
     }

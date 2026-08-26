@@ -81,12 +81,126 @@ def test_filesystem():
         check('fs write/read', False, str(e))
 
 
+def test_json():
+    # Write a test JSON file, run json to validate and pretty-print.
+    path = '/tmp/test.json'
+    try:
+        with open(path, 'w') as f:
+            f.write('{"a":1,"b":[2,3],"c":"hello"}\n')
+    except OSError as e:
+        check('json validate', False, 'write: %s' % e)
+        return
+    rc = minios.run('/json', [path], redirect='/tmp/_json_out.txt')
+    check('json validate', rc == 0, 'exit=%d' % rc)
+    # Query a dotted path.
+    rc2 = minios.run('/json', [path, '.a'], redirect='/tmp/_json_q.txt')
+    check('json query', rc2 == 0, 'exit=%d' % rc2)
+
+
+def test_lzss_roundtrip():
+    # Compress then decompress, verify roundtrip.
+    src = '/tmp/_lzss_src.txt'
+    comp = '/tmp/_lzss_c.bin'
+    decomp = '/tmp/_lzss_d.txt'
+    payload = 'lzss roundtrip test data ' + 'x' * 200 + '\n'
+    try:
+        with open(src, 'w') as f:
+            f.write(payload)
+    except OSError as e:
+        check('lzss compress', False, 'write: %s' % e)
+        return
+    rc = minios.run('/lzss', [src, comp])
+    check('lzss compress', rc == 0, 'exit=%d' % rc)
+    if rc != 0:
+        return
+    rc = minios.run('/unlzss', [comp, decomp])
+    check('lzss decompress', rc == 0, 'exit=%d' % rc)
+    if rc != 0:
+        return
+    try:
+        with open(decomp) as f:
+            result = f.read()
+        check('lzss roundtrip', result == payload,
+              'len=%d expected=%d' % (len(result), len(payload)))
+    except OSError as e:
+        check('lzss roundtrip', False, 'read: %s' % e)
+
+
+def test_lz4_roundtrip():
+    src = '/tmp/_lz4_src.txt'
+    comp = '/tmp/_lz4_c.bin'
+    decomp = '/tmp/_lz4_d.txt'
+    payload = 'lz4 roundtrip test data ' + 'y' * 300 + '\n'
+    try:
+        with open(src, 'w') as f:
+            f.write(payload)
+    except OSError as e:
+        check('lz4 compress', False, 'write: %s' % e)
+        return
+    rc = minios.run('/lz4', [src, comp])
+    check('lz4 compress', rc == 0, 'exit=%d' % rc)
+    if rc != 0:
+        return
+    rc = minios.run('/unlz4', [comp, decomp])
+    check('lz4 decompress', rc == 0, 'exit=%d' % rc)
+    if rc != 0:
+        return
+    try:
+        with open(decomp) as f:
+            result = f.read()
+        check('lz4 roundtrip', result == payload,
+              'len=%d expected=%d' % (len(result), len(payload)))
+    except OSError as e:
+        check('lz4 roundtrip', False, 'read: %s' % e)
+
+
+def test_aes_roundtrip():
+    src = '/tmp/_aes_src.txt'
+    enc = '/tmp/_aes_enc.bin'
+    dec = '/tmp/_aes_dec.txt'
+    key = '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff'
+    nonce = '000000000000000000000000deadbeef'
+    payload = 'aes roundtrip test data ' + 'z' * 150 + '\n'
+    try:
+        with open(src, 'w') as f:
+            f.write(payload)
+    except OSError as e:
+        check('aes encrypt', False, 'write: %s' % e)
+        return
+    rc = minios.run('/aes', [key, nonce, src, enc])
+    check('aes encrypt', rc == 0, 'exit=%d' % rc)
+    if rc != 0:
+        return
+    rc = minios.run('/unaes', [key, nonce, enc, dec])
+    check('aes decrypt', rc == 0, 'exit=%d' % rc)
+    if rc != 0:
+        return
+    try:
+        with open(dec) as f:
+            result = f.read()
+        check('aes roundtrip', result == payload,
+              'len=%d expected=%d' % (len(result), len(payload)))
+    except OSError as e:
+        check('aes roundtrip', False, 'read: %s' % e)
+
+
+def test_freedom():
+    # Run freedom without arguments — should print usage and exit 1.
+    rc = minios.run('/freedom', [], redirect='/tmp/_freedom_out.txt')
+    check('freedom runs', rc == 1, 'exit=%d' % rc)
+
+
 def main():
     print('MiniOS in-OS test suite')
     test_module_bindings()
     test_spawn_preserves_interpreter()
     test_toolchain()
     test_filesystem()
+    test_json()
+    test_lzss_roundtrip()
+    test_lz4_roundtrip()
+    test_aes_roundtrip()
+    test_freedom()
     print('TOTAL pass=%d fail=%d' % (PASS, FAIL))
     return 1 if FAIL else 0
 
