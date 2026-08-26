@@ -65,7 +65,7 @@ those upstreams alone, so:
   `ld/tests/*.s`.
 - `ramdisk.bin` lists the `Makefile` among its prerequisites: the file list
   lives there, so editing it must invalidate the image even when no
-  individual file changed.
+  individual file changed.  `minifs.bin` carries the same rule for the same reason.
 - `progs/bin/` ships the command-path utilities: `cp`, `freedom`, `lzss`
   and `unlzss`, compiled from this repository's own sources in `progs/src/`
   through the miniGCC-to-ld chain, with the sources on the ramdisk too so the
@@ -127,7 +127,9 @@ window; a violating pointer returns `-EFAULT`.
 
 ### JSON tool (`json`)
 `bin/json` is a self-contained JSON validator, pretty-printer and query tool
-built from `progs/src/json.c` through the miniGCC-to-ld chain. It is written
+built from `progs/src/json.c` through the miniGCC-to-ld chain; like DOOM and
+MicroPython it ships on MiniFS (bare-name command at the MiniFS root), not on
+the size-budgeted ramdisk. It is written
 in the miniGCC subset, which has no structs, so the parsed value is a flat
 node table of parallel arrays (`js_type`/`js_num`/`js_str`/`js_key`/
 `js_first`/`js_count`/`js_next`); object members keep their key in `js_key`
@@ -147,6 +149,37 @@ and their value in the node itself.
 - cJSON (single-file, struct-based) was tried as a portable engine and does
   not compile under miniGCC (structs, `->`, `double`, `CJSON_PUBLIC`), which
   is why this hand-rolled flat-table parser exists.
+
+### Encryption tool (`aes` / `unaes`)
+`progs/src/aes.c` builds `bin/aes` and `bin/un aes` from a single source with
+the same `argv[0]` dispatch as the other command pairs (a path containing
+`unaes` decrypts; `-d` forces decrypt). Like DOOM, MicroPython and `json` it
+ships on MiniFS (bare-name commands at the MiniFS root) instead of the
+size-budgeted ramdisk.
+
+- The cipher is AES-256 (NIST FIPS-197) written in the miniGCC subset: no
+  structs, flat int arrays masked to bytes at every step, and an S-box
+  generated procedurally from the GF(2^8) multiplicative inverse plus the
+  FIPS-197 affine transform, so the file carries no magic tables.  Round
+  expansion follows FIPS-197 for Nk=8/Nr=14, including the extra SubWord
+  pass every Nk/2 words.
+- The mode is CTR (NIST SP 800-38A): no padding, encrypt and decrypt share
+  one code path, and the big-endian counter increments over the full block.
+  Usage: `aes [-d] <key-hex64> <nonce-hex32> <src> <dst>`; a nonce must
+  never repeat under the same key.  CTR gives confidentiality only, not
+  authentication - a flipped ciphertext byte flips the matching plaintext
+  byte, so integrity needs a MAC layered above this tool.
+- The container is fail-closed: 4-byte magic `AES1`, then the original size
+  as a little-endian u32, then the raw keystream XOR.  Decoding refuses a
+  bad magic, a truncated header, and any body whose length does not equal
+  the declared size exactly; key and nonce hex are length- and alphabet-
+  validated before anything runs.
+- Host verification lives in `tests/host_aes.sh`: the NIST F.5.5 CTR-AES256
+  known answer, byte-for-byte ciphertext equality against OpenSSL across a
+  multi-block stream, reverse-direction interop (OpenSSL ciphertext decoded
+  by `unaes`), dispatch modes, empty input, and the fail-closed set.  Five
+  one-line mutants of the codec (ShiftRows drop, polynomial, affine
+  constant, AES-256 extra SubWord, size-mismatch check) all die against it.
 
 ## Boot Path Contract
 Two stages, because a correct single-stage loader does not fit in 512 bytes.

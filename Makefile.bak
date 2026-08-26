@@ -91,11 +91,29 @@ DOC_DIR   = $(PROGS_DIR)/docs
 # Everything the ramdisk carries, organized by kind: objects/ (ET_REL
 # toolchain), cvm/ (CVM modules), bin/ (Linux ELFs + command path utilities),
 # src/ (C sources), asm/ (miniGCC assembly), docs/ and README.txt.
-PROGS     = $(OBJ_DIR)/minigcc.o \
+PROGS     = $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o $(OBJ_DIR)/minigcc.o \
             $(OBJ_DIR)/ld.o $(OBJ_DIR)/cvm.o \
-            $(BIN_DIR)/minigcc.elf $(BIN_DIR)/cp \
+            $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf $(BIN_DIR)/w1.elf \
+            $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf $(BIN_DIR)/http.elf \
+            $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
+            $(BIN_DIR)/cp $(BIN_DIR)/freedom \
+            $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \
+            $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 \
+            $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
+            $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
+            $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
+            $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
+            $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/freedom.c \
+            $(SRC_DIR)/cp.c $(SRC_DIR)/lzss.c $(SRC_DIR)/lz4.c \
+            $(SRC_DIR)/hello.py \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
-            $(PROGS_DIR)/etc/alias
+            $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
+            $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
+            $(ASM_DIR)/lzss.s $(ASM_DIR)/lz4.s \
+            $(ASM_DIR)/freedom.s \
+            $(DOC_DIR)/hostile.html \
+            $(PROGS_DIR)/etc/alias \
+            $(PROGS_DIR)/README.txt
 
 all: os.img
 
@@ -408,24 +426,7 @@ $(BIN_DIR)/micropython: $(BIN_DIR)/micropython.elf
 # the OS can rebuild them without leaving the machine.
 MINIFS_FILES = $(MINIFS_DOOM_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
-               $(BIN_DIR)/json $(SRC_DIR)/json.c \
-               $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
-               $(BIN_DIR)/lzss $(BIN_DIR)/unlzss $(SRC_DIR)/lzss.c $(ASM_DIR)/lzss.s \
-               $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 $(SRC_DIR)/lz4.c $(ASM_DIR)/lz4.s \
-               $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o \
-               $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf $(BIN_DIR)/w1.elf \
-               $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf \
-               $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
-               $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
-               $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
-               $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
-               $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
-               $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
-               $(SRC_DIR)/hello.py \
-               $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
-               $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
-               $(DOC_DIR)/hostile.html \
-               $(PROGS_DIR)/README.txt
+               $(BIN_DIR)/json $(SRC_DIR)/json.c
 
 # Generation 2: gen1 minigcc compiles its own source; 'ld' links it.
 # Generation 3: the ld-linked compiler compiles itself again; the gen3

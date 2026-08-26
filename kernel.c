@@ -4068,7 +4068,28 @@ static int shell_run_elf_file(const char *full, int argc, char **argv) {
  * `run` fallback when a name is not on the ramdisk). */
 static int shell_run_elf_minifs(const char *name, int argc, char **argv) {
     if (!minifs_is_mounted()) return -1;
-    int ino = minifs_resolve_path(name);
+    char cand[RAMDISK_FNAME_LEN];
+    int ino = -1;
+    if (kstrchr(name, '/')) {
+        ino = minifs_resolve_path(name);
+    } else {
+        ino = minifs_resolve_path(name);
+        if (ino < 0) {
+            const ShellRunDir *pref = shell_run_dir_for(name);
+            unsigned long pref_off = (unsigned long)(pref - shell_run_dirs);
+            for (int i = 0; i < SHELL_RUN_DIRS; i++) {
+                const ShellRunDir *d =
+                    &shell_run_dirs[(pref_off + (unsigned long)i) % SHELL_RUN_DIRS];
+                unsigned dl = (unsigned)kstrlen(d->dir);
+                unsigned nl = (unsigned)kstrlen(name);
+                if (dl + nl + 1 > sizeof(cand)) continue;
+                kmemcpy(cand, d->dir, dl);
+                kmemcpy(cand + dl, name, nl + 1);
+                ino = minifs_resolve_path(cand);
+                if (ino >= 0) break;
+            }
+        }
+    }
     if (ino < 0) return -1;
     MiniFSInode st;
     if (minifs_stat(ino, &st) < 0 || st.size == 0) return -1;

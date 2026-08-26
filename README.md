@@ -231,13 +231,22 @@ can consume.
  oversized allocation.
 
 `bin/lz4` and `bin/unlz4` are the LZ4 (de)compression tools, also built from a
-single `progs/src/lz4.c`: `lz4 rep.txt rep.lz4` compresses and `unlz4
+ single `progs/src/lz4.c`: `lz4 rep.txt rep.lz4` compresses and `unlz4
 rep.lz4 rep.out` decompresses, with the same `argv[0]`/`-d` dispatch as
 `lzss`. The codec lives in the kernel (`lz4_kernel.c`, the same one MiniFS
 uses), so the tools are thin front-ends over the MiniOS syscalls 216/217 and
 the on-disk block is exactly the MiniFS LZ4 block format: a 4-byte
 little-endian original size followed by the raw LZ4 stream, so `lz4` output
 interops with the filesystem's own blocks.
+
+`bin/aes` and `bin/unaes` are AES-256-CTR file encryption tools built from a
+single `progs/src/aes.c`, shipped on MiniFS like DOOM and MicroPython:
+`aes <key-hex64> <nonce-hex32> <src> <dst>` encrypts and the matching
+`unaes ...` decrypts. The S-box is generated procedurally from the GF(2^8)
+inverse plus the FIPS-197 affine transform (no magic tables), the mode is
+CTR with no padding, and the fail-closed `AES1` container detects bad magic,
+truncation and size tampering. CTR gives confidentiality only - pair it
+with a MAC if you need integrity.
 
 ## Editor
 

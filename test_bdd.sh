@@ -428,6 +428,26 @@ expect "live"
 expect "json: nope: not found"
 expect "exit code: 1"
 
+scenario "aes roundtrips a file with a fixed key and nonce" "edit sec.txt
+a
+attack at dawn attack at dawn
+x
+aes 000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff sec.txt sec.aes
+unaes 000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff sec.aes sec.out
+cat sec.out
+poweroff"
+expect "aes: sec.txt -> sec.aes"
+expect "unaes: sec.aes -> sec.out"
+expect "attack at dawn attack at dawn"
+
+scenario "aes rejects a bad key and unaes a bad magic" "aes shortkey f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff README.txt x.aes
+cp src/fib.c bad.aes
+unaes 000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff bad.aes o.bin
+poweroff"
+expect "aes: shortkey: key must be 64 hex digits"
+expect "unaes: bad.aes: bad magic"
+expect "exit code: 1"
+
 scenario "shell up arrow recalls the last command" "run cvm/fib.cvm
 $(printf '\033[A')
 poweroff"

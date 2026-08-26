@@ -147,7 +147,7 @@ class MiniFS:
 
         b = self.alloc_block()
         buf = bytearray(BLOCK_SIZE)
-        struct.pack_into('<IHBB', buf, 0, child_ino, BLOCK_SIZE, len(name_bytes), ftype)
+        struct.pack_into('<IHBB', buf, 0, child_ino, entry_len, len(name_bytes), ftype)
         buf[DIR_ENTRY_HDR_SIZE:DIR_ENTRY_HDR_SIZE + len(name_bytes)] = name_bytes
         self.blocks[b] = buf
 
