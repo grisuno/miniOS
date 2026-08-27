@@ -27,6 +27,21 @@ void vga_fb_boot_config(void);
 #define DOOM_BACKBUF_ADDR 0x1FE0000UL
 void vga_fb_blit_gfx_window(void);
 
+/* Nuklear UI back-buffer. A ring-3 program (the node editor) renders a UI
+ * into a kernel-heap back-buffer mapped into the user window and calls
+ * SYS_NK_FRAME (220); the kernel composites it as a titled window on the
+ * desktop exactly like the DOOM window, so the shell stays visible. The
+ * buffer sits at the middle of the user window, far from both the program's
+ * heap (grows up from the load base) and its mmap zone (grows down from the
+ * stack base), so a normal program's allocations never reach it. */
+#define NK_W            800
+#define NK_H            360
+#define NK_BACKBUF_ADDR 0x1000000UL
+void vga_fb_blit_nk_window(void);
+/* Window origin of the last Nuklear composite, so SYS_NK_FRAME can report
+ * where the UI landed for mouse-coordinate translation. */
+extern int nk_win_x, nk_win_y;
+
 /* Palette indices */
 #define COL_BG          1
 #define COL_TASKBAR     2

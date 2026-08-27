@@ -492,11 +492,20 @@ int cvm_main(int argc, char **argv) {
         rc = cvm_run(vm);
     }
     if (rc != CVM_OK) {
-        puts("cvm: runtime error");
+        printf("cvm: runtime error: %s\n", cvm_strerror(rc));
         cvm_destroy(vm);
         return 1;
     }
-    int ec = (int)cvm_exit_code(vm);
+    /* The JIT encodes runtime faults (division by zero, bad address, ...) as
+     * a negative exit code because cvm_jit_error only stops the machine;
+     * the interpreter would have returned them as rc. Report them the same
+     * way instead of leaking a negative status to the shell. */
+    int64_t ec = cvm_exit_code(vm);
+    if (ec < 0) {
+        printf("cvm: runtime error: %s\n", cvm_strerror((int)ec));
+        cvm_destroy(vm);
+        return 1;
+    }
     cvm_destroy(vm);
-    return ec;
+    return (int)ec;
 }

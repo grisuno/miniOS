@@ -841,12 +841,81 @@ repository as an out-of-tree unix-port variant.
    MicroPython crash (`EXCEPTION 14`). This is a hard requirement for any
    ring-3 glibc binary.
 
- - **`minios` module + `SYS_SPAWN` (215)**: the variant ships a `minios` C
-   module exposing kernel services and `run()`; `SYS_SPAWN` runs a ramdisk
-   program from the interpreter while preserving it (saving the user window,
-   FS/GS base, fd table and brk/mmap cursors across an ET_EXEC/DYN child).
-   ET_REL children (`minigcc.o`, `ld.o`) run at ring 0 and work; this drives
-   `build.py`, `shell.py` and `test.py` on the ramdisk.
+- **`minios` module + `SYS_SPAWN` (215)**: the variant ships a `minios` C
+    module exposing kernel services and `run()`; `SYS_SPAWN` runs a ramdisk
+    program from the interpreter while preserving it (saving the user window,
+    FS/GS base, fd table and brk/mmap cursors across an ET_EXEC/DYN child).
+    ET_REL children (`minigcc.o`, `ld.o`) run at ring 0 and work; this drives
+    `build.py`, `shell.py` and `test.py` on the ramdisk.
+
+## Nuklear node editor (`nuklear`)
+
+Nuklear runs inside MiniOS exactly like DOOM and MicroPython: the upstream
+single-header immediate-mode UI library is cloned as a sibling repository and
+built on the host with the ordinary gcc toolchain against a static libc. The
+resulting ring-3 `ET_EXEC` binary ships on MiniFS and renders through the
+same kernel compositing path the DOOM window uses. The demo app is a visual
+node editor: a "low-code tool for the CVM" that compiles a dataflow graph
+into a `.cvm` module the interpreter runs.
+
+- **Source**: `NUKLEAR_DIR` (default `../nuklear`), overridable like every
+  toolchain location, cloned by `make sources`; `NUKLEAR_URL` is overridable
+  too. The build compiles `progs/nuklear/{nuklear_minios.c,node_editor.c,
+  cvm_emit.c}` with `-I$(NUKLEAR_DIR)` into `progs/bin/nuklear.elf`
+  (`-static -no-pie`, the same linking contract DOOM follows), plus the
+  bare-name alias `progs/bin/nuklear`, both packed into MiniFS. The node
+  editor's compiler lives in this repository (`progs/nuklear/cvm_emit.c`),
+  never in the Nuklear checkout.
+- **Platform layer (`nuklear_minios.c`)**: the app renders Nuklear's abstract
+  draw commands (`nk__begin`/`nk__next`) into an 8-bit palette-indexed
+  back-buffer mapped into the user window at `NK_BACKBUF_ADDR` (0x1000000,
+  `NK_W`x`NK_H` = 800x360) and calls `SYS_NK_FRAME` (220); the kernel
+  composites it as a titled window on the desktop, identical to the DOOM
+  window, leaving the shell visible. A software rasterizer handles the full
+  command set (scissor, line, rect, circle, arc, triangle, polygon, text)
+  with clipping and a built-in 8x8 bitmap font. The hybrid palette keeps
+  indices 0-14 exactly equal to the desktop palette (so the desktop behind
+  the window is never recolored) and uses 15-255 as a UI ramp; colours are
+  mapped by nearest neighbour. Input comes from `SYS_MOUSE` (219, new: x, y,
+  buttons, wheel, wheel consumed on read) and raw PS/2 scancodes translated
+  to Nuklear keys and unicode.
+- **Node editor (`node_editor.c`)**: a canvas with draggable nodes (Number,
+  Add, Sub, Mul, Div, Neg, Print, Exit), pin wiring by drag, and Compile,
+  which writes `cvm/nodes.cvm` to the ramdisk through the ordinary open/write
+  syscalls. Running it (bare `nuklear`, or `nuklear.elf`) opens the GUI; the
+  headless modes are the serial-observable surface:
+  - `nuklear --selftest` renders one UI frame through the whole graphics
+    pipeline and proves it end to end: it writes a marker pixel into the
+    back-buffer, calls SYS_NK_FRAME, reads the desktop framebuffer at the
+    reported window origin and requires the pixel to have landed there; it
+    also checks that SYS_MOUSE accepts a user pointer and rejects a kernel
+    pointer with `-EFAULT`. Only then does it print
+    `nuklear: frame ok (800x360)` — so a mutant that drops the composite,
+    the origin reporting or the mouse bounds check is killed.
+  - `nuklear --demo <out.cvm>` compiles a fixed demo graph `(2+3)*4` and
+    writes the module.
+  - `nuklear --compile <graph.txt> <out.cvm>` parses a simple graph
+    description (`num a 2`, `add b a a`, `print p b`) and compiles it.
+  A compiled module is a self-contained cvm2 file the interpreter runs with
+  `run cvm/demo.cvm` (prints `20`, exit 0). The compiler (`cvm_emit.c`)
+  topologically sorts the graph, detects cycles and feed-an-output-node
+  errors with diagnostics, computes every node value into a local slot,
+  prints through the `printf` native and exits with `OP_HALT`; division by
+  zero fails closed (`cvm: runtime error: division by zero`, exit 1).
+- **Syscall surface**: the kernel adds 219 (`SYS_MOUSE`: read the desktop
+  mouse state into a user int[4], resetting the wheel) and 220
+  (`SYS_NK_FRAME`: composite the Nuklear back-buffer as a titled window,
+  optionally returning the window content origin so the app can translate
+  mouse coordinates). The `NK_W`/`NK_H`/`NK_BACKBUF_ADDR` constants live in
+  `vga_fb.h`; the buffer sits at the middle of the user window, far from both
+  the program heap (grows up from the load base) and its mmap zone (grows
+  down from the stack base). The ld stub set grew `minios_mouse`/`nk_frame`
+  beside the other MiniOS syscalls.
+- **CVM host fix**: the JIT encodes runtime faults (division by zero, bad
+  address) as a *negative* exit code because `cvm_jit_error` only stops the
+  machine, so the interpreter's host must translate `cvm_exit_code < 0` back
+  into `cvm: runtime error: <reason>` with exit 1 instead of leaking a
+  negative status to the shell. This lives in `cvm_host.c` `cvm_main`.
 
 ## Development Methodology (SDD + TDD + BDD)
 1. **SDD**: every feature begins with a spec in this file.

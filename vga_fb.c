@@ -445,6 +445,36 @@ void vga_fb_clear(void) {
     kmemset((void *)FB_ADDR, 0, fb_width * fb_height);
 }
 
+/* Window origin of the last Nuklear composite. SYS_NK_FRAME reports this so a
+ * ring-3 Nuklear app can translate desktop mouse coordinates into the local
+ * coordinates its UI expects (the app renders into the back-buffer, whose
+ * top-left lands at this desktop origin). */
+int nk_win_x, nk_win_y;
+
+/* Composite the Nuklear UI back-buffer onto the desktop as a titled window,
+ * mirroring the DOOM window: the back-buffer is a kernel-heap region mapped
+ * into the user window that the ring-3 app renders into, and the kernel blits
+ * it to the framebuffer on SYS_NK_FRAME. The window is centered and the shell
+ * window stays visible around it. */
+void vga_fb_blit_nk_window(void) {
+    const volatile uint8_t *bb = (const volatile uint8_t *)NK_BACKBUF_ADDR;
+    int dst_x = (fb_width - NK_W) / 2;
+    int dst_y = (fb_height - NK_H) / 2;
+    int r, b;
+    if (dst_x < 0) dst_x = 0;
+    if (dst_y < 0) dst_y = 0;
+    nk_win_x = dst_x;
+    nk_win_y = dst_y;
+    vga_fb_rect(dst_x, dst_y, NK_W + SCROLLBAR_W, FONT_H, COL_TITLEBAR);
+    text_px(dst_x + 4, dst_y, "Nuklear", COL_TITLE_TXT, COL_TITLEBAR);
+    for (r = 0; r < NK_H; r++) {
+        volatile uint8_t *dst = &FB_ADDR[(dst_y + FONT_H + r) * fb_pitch + dst_x];
+        const volatile uint8_t *src = bb + r * NK_W;
+        for (b = 0; b < NK_W; b++)
+            dst[b] = src[b];
+    }
+}
+
 /* ---- Layout ---- */
 static int term_max_cols(void);
 static int term_max_rows(void);

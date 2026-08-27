@@ -23,6 +23,9 @@ MICROPYTHON_URL ?= https://github.com/micropython/micropython
 MICROPYTHON_DIR ?= ../micropython
 MICROPYTHON_REF ?= v1.28.0
 
+NUKLEAR_URL ?= https://github.com/Immediate-Mode-UI/Nuklear
+NUKLEAR_DIR ?= ../nuklear
+
 # The toolchain binaries are built into a directory this repository owns.
 # Several of the sibling repositories ship a committed binary next to their
 # sources; using those would mean the image was not built from source at all,
@@ -121,6 +124,14 @@ sources:
 	else \
 	    echo "cloning  $(MICROPYTHON_URL) -> $(MICROPYTHON_DIR) ($(MICROPYTHON_REF))"; \
 	    $(GIT) clone --depth 1 -b $(MICROPYTHON_REF) "$(MICROPYTHON_URL)" "$(MICROPYTHON_DIR)" || exit 1; \
+	fi
+	@if [ -d "$(NUKLEAR_DIR)/.git" ]; then \
+	    echo "present  $(NUKLEAR_DIR)"; \
+	elif [ -e "$(NUKLEAR_DIR)" ]; then \
+	    echo "skipped  $(NUKLEAR_DIR) exists and is not a git clone"; \
+	else \
+	    echo "cloning  $(NUKLEAR_URL) -> $(NUKLEAR_DIR)"; \
+	    $(GIT) clone --depth 1 "$(NUKLEAR_URL)" "$(NUKLEAR_DIR)" || exit 1; \
 	fi
 
 sources-update: sources
@@ -403,10 +414,35 @@ $(BIN_DIR)/micropython.elf: $(MICROPYTHON_DIR)/ports/unix/main.c \
 $(BIN_DIR)/micropython: $(BIN_DIR)/micropython.elf
 	cp $< $@
 
+# ── Nuklear node editor (nuklear_minios.c + node_editor.c + cvm_emit.c) ──
+# The visual "low-code tool for the CVM": a ring-3 Nuklear app that renders
+# a node graph into the kernel back-buffer (SYS_NK_FRAME 220) and compiles
+# the graph to a .cvm module (cvm_emit.c) the interpreter can run. Built
+# exactly like DOOM: host gcc -static, ring-3 ET_EXEC, ships on MiniFS.
+NUKLEAR_SRCS = $(PROGS_DIR)/nuklear/nuklear_minios.c \
+               $(PROGS_DIR)/nuklear/node_editor.c \
+               $(PROGS_DIR)/nuklear/cvm_emit.c
+
+$(NUKLEAR_DIR)/nuklear.h:
+	@echo "missing $@"
+	@echo "run 'make sources' to clone the Nuklear repository"
+	@exit 1
+
+$(BIN_DIR)/nuklear.elf: $(NUKLEAR_SRCS) $(NUKLEAR_DIR)/nuklear.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
+	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
+	      -o $@ $(NUKLEAR_SRCS) -lm
+	chmod +x $@
+
+# Bare-name alias so `nuklear` works without the .elf suffix.
+$(BIN_DIR)/nuklear: $(BIN_DIR)/nuklear.elf
+	cp $< $@
+
 # aes/unaes live on MiniFS (ramdisk budget): bare-name commands resolved
 # against the MiniFS root by shell_run_elf_minifs; src/aes.c rides along so
 # the OS can rebuild them without leaving the machine.
 MINIFS_FILES = $(MINIFS_DOOM_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
+               $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                $(BIN_DIR)/json $(SRC_DIR)/json.c \
                $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
@@ -612,7 +648,8 @@ clean:
 	      $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 \
 	      $(BIN_DIR)/json \
 	      $(BIN_DIR)/aes $(BIN_DIR)/unaes \
-	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython
+	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
+	      $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear
 	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm
 	rm -f $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s $(ASM_DIR)/w1.s \
 	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/lzss.s \

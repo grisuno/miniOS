@@ -792,6 +792,76 @@ exit()
 poweroff"
 expect "42"
 
+# Nuklear node editor: a ring-3 Nuklear app on MiniFS (like DOOM/MicroPython)
+# that compiles a node graph to CVM bytecode. The GUI renders through the
+# kernel back-buffer; the headless modes are what the serial console can
+# observe, so the BDD scenarios drive the compiler end to end: compile a
+# graph to a .cvm module, then run it with the interpreter and check the
+# computed value. This is the low-code loop: graph -> CVM bytecode -> run.
+scenario "nuklear selftest renders one UI frame" "nuklear --selftest
+poweroff"
+expect "nuklear: frame ok (800x360)"
+
+scenario "nuklear compiles a demo graph to cvm and runs it" "nuklear --demo cvm/demo.cvm
+run cvm/demo.cvm
+poweroff"
+expect "wrote cvm/demo.cvm"
+expect "20"
+expect "exit code: 0"
+
+scenario "nuklear compiles a graph file and runs it" "edit src/nkg.txt
+a
+# (2+3)*4 via node graph
+a
+num a 2
+a
+num b 3
+a
+add c a b
+a
+num d 4
+a
+mul e c d
+a
+print p e
+w
+x
+nuklear --compile src/nkg.txt cvm/nkg.cvm
+run cvm/nkg.cvm
+poweroff"
+expect "wrote cvm/nkg.cvm"
+expect "20"
+expect "exit code: 0"
+
+scenario "nuklear rejects an undefined input" "edit src/nkg_bad.txt
+a
+num a 2
+a
+print p zz
+w
+x
+nuklear --compile src/nkg_bad.txt cvm/bad.cvm
+poweroff"
+expect "nuklear: cannot parse"
+expect "exit code: 1"
+
+scenario "nuklear division by zero fails closed at runtime" "edit src/dz.txt
+a
+num a 100
+a
+num b 0
+a
+div c a b
+a
+print p c
+w
+x
+nuklear --compile src/dz.txt cvm/dz.cvm
+run cvm/dz.cvm
+poweroff"
+expect "wrote cvm/dz.cvm"
+expect "division by zero"
+
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="
 [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"

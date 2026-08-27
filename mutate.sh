@@ -77,6 +77,11 @@ ip-csum-ignored | s/if (net_checksum(ip, 20) != 0) return;/if (0) return;/ | net
 tcp-ack-not-advanced | s/                    s->ack = s->rx_next;/                    s->ack = s->ack;/ | net.c
 rx-frame-truncated | s/    for (k = 0; k < n; k++) {/    for (k = 0; k < n - 128; k++) {/ | net.c
 
+nk-frame-not-composited | s/        vga_fb_blit_nk_window();/        if (0) vga_fb_blit_nk_window();/ | kernel.c
+nk-origin-not-reported | s/            o\[0\] = nk_win_x;/            o\[0\] = 0;/ | kernel.c
+nk-mouse-bounds-unchecked | s/        if (!user_range_ok((unsigned long)a1, 4 \* sizeof(int))) return EFAULT;/        if (0) return EFAULT;/ | kernel.c
+nk-backbuf-not-mapped | s/        unsigned char \*buf = (unsigned char \*)kmalloc(NK_W \* NK_H);/        unsigned char \*buf = 0;/ | kernel.c
+
 tls-close-notify-unrecognized | s/if (s->rec_len == 2 \&\& s->rec\[1\] == 0) {/if (s->rec_len == 2 \&\& s->rec\[1\] == 1) {/ | tls.c
 tls-chain-stride | s/TLS_MEMCPY(s->chain + stored, m + pos, cl);/TLS_MEMCPY(s->chain + s->n_certs * TLS_CERT_MAX, m + pos, cl);/ | tls.c
 tls-wildcard-overrun | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len; i++) {/ | tls_x509.c

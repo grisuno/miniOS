@@ -562,6 +562,25 @@ static void mm_setup_protections(void) {
         for (k = 0; k < (DOOM_W * DOOM_H + 0xFFF) >> 12; k++)
             bb_pt[bb_pt_off + k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
     }
+
+    /* Map a kernel-heap back-buffer for Nuklear UI apps (the node editor) in
+     * the same way, at its own fixed address; the kernel composites it as a
+     * titled window on SYS_NK_FRAME (220). */
+    {
+        unsigned long bb_vaddr = NK_BACKBUF_ADDR;
+        unsigned long bb_pd_idx = bb_vaddr >> PT_PD_INDEX_SHIFT;
+        unsigned long bb_pt_off = (bb_vaddr & 0x1FFFFF) >> 12;
+        unsigned long *bb_pt = (unsigned long *)PT_USER_TABLES_ADDR +
+                               (bb_pd_idx - lo) * 0x1000 /
+                               sizeof(unsigned long);
+        unsigned char *buf = (unsigned char *)kmalloc(NK_W * NK_H);
+        unsigned long phys;
+        unsigned long k;
+        if (buf == 0) return;
+        phys = (unsigned long)buf;
+        for (k = 0; k < (NK_W * NK_H + 0xFFF) >> 12; k++)
+            bb_pt[bb_pt_off + k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
+    }
 }
 
 /* Set or clear the NX bit on the single 4 KB page holding vaddr. The page
@@ -2571,6 +2590,31 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         ret = LZ4_decompress_safe(src + 4, dst, src_len - 4, dst_cap);
         if (ret < 0 || (unsigned int)ret != orig) return 0;
         return ret;
+    }
+    case 219: { /* SYS_MOUSE: return mouse state (x, y, buttons, wheel) into a
+                 * user int[4]. The wheel is a running delta consumed on read,
+                 * exactly like the desktop's vga_fb_mouse_tick resets it. */
+        int *m = (int *)(unsigned long)a1;
+        if (!user_range_ok((unsigned long)a1, 4 * sizeof(int))) return EFAULT;
+        m[0] = mouse_state.x;
+        m[1] = mouse_state.y;
+        m[2] = mouse_state.buttons;
+        m[3] = mouse_state.wheel;
+        mouse_state.wheel = 0;
+        return 0;
+    }
+    case 220: { /* SYS_NK_FRAME: composite the Nuklear UI back-buffer as a
+                 * titled window on the desktop, like SYS_DOOM_FRAME. a1, when
+                 * non-null, receives the window content origin (int[2] =
+                 * desktop x, y) so the app can translate mouse coordinates. */
+        vga_fb_blit_nk_window();
+        if (a1) {
+            int *o = (int *)(unsigned long)a1;
+            if (!user_range_ok((unsigned long)a1, 2 * sizeof(int))) return EFAULT;
+            o[0] = nk_win_x;
+            o[1] = nk_win_y + FONT_H;
+        }
+        return 0;
     }
     case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
         unsigned char *pal = (unsigned char *)a1;
