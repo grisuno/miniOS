@@ -194,10 +194,11 @@ boot path is named in `bootdefs.h`; neither stage may carry a bare constant.
   buffer at 0x10000, copies each chunk above 1 MB during a short excursion
   into protected mode, builds the page tables (identity 2 MB leaves for the
   first gigabyte, with the low 4 MB split into the `PT0`/`PT1` KASLR scheme
-  described below), enables PAE and long mode, installs the 64-bit GDT at
-  0x8000 and jumps to the kernel at 0x100000. Loop state lives in memory,
-  never in registers, so nothing is assumed about what the firmware
-  preserves across INT 13h. Ends with `.org` to enforce its sector
+  described below, which maps the whole kernel image + `.bss` contiguously
+  at `[base, base+KASLR_IMAGE_SPAN)`), enables PAE and long mode, installs
+  the 64-bit GDT at 0x8000 and jumps to the kernel at 0x100000. Loop state
+  lives in memory, never in registers, so nothing is assumed about what the
+  firmware preserves across INT 13h. Ends with `.org` to enforce its sector
   reservation.
 
 The image is attached as an IDE disk: LBA addressing is not available for
@@ -217,19 +218,34 @@ disagree.
 ```
 0x00000-0x004FF  IVT and BIOS data area
 0x01000-0x04FFF  long-mode page tables (PML4, PDPT, PD)
+0x10000-0x1FFFF  user page table zone (64 KB, PT_USER_TABLES_ADDR)
 0x07C00-0x07DFF  stage 1
 0x07E00-0x07E14  disk address packet, boot drive and KASLR base scratch
 0x08000-0x08027  long-mode GDT handed to the kernel (kernel + user segments)
 0x09000-0x0AFFF  stage 2
-0x10000-0x8FFFF  kernel staging buffer (64 KB chunks, reused)
+0x10000-0x8FFFF  kernel staging buffer (64 KB chunks, reused; the first
+                 64 KB are reclaimed by the user page table zone)
 0x80000-0x87FFF  syscall kernel stack (SYS_KSTK_TOP 0x88000)
 0x90000          protected/long mode stack top
-0x100000         kernel image (virtual; physical base random per boot, see KASLR)
-0x300000         user page table zone (64 KB, PT_USER_TABLES_ADDR)
+0x100000         kernel image (virtual; physical base random per boot, see
+                 KASLR). The whole kernel, code + .bss, maps contiguously and
+                 must end below 0x400000; mm_setup_protections asserts it.
 0x400000         user program load base
 0x1FC0000        user stack base (USER_STACK_BASE, 256 KB)
 0x2000000        kernel heap (64 MB)
 ```
+
+The user page table zone at `0x10000` is a hard contract: it sits BELOW the
+kernel link base, so no kernel code, data or `.bss` can ever land on it, in
+the plain build or under KASLR. It is deliberately **not** placed "between
+the kernel image and the user window": the kernel `.bss` is ~1.4 MB and
+grows, so a zone at `0x300000` sits exactly where the `.bss` lands once the
+image outgrows 2 MB. That collision used to corrupt the user page tables
+every time the shell wrote a terminal line (the terminal line buffer lived
+in the `.bss` tail), which is why user programs crashed intermittently at
+"unmapped" addresses. Do not move this zone above `0x100000`; if the kernel
+needs more than 3 MB of image, grow `KASLR_IMAGE_SPAN` and the link layout
+together, never re-home the page tables into the image footprint.
 
 ### KASLR
 The kernel image always executes at virtual `0x100000`, but its physical
@@ -242,18 +258,61 @@ the 256 MB RAM the image targets. The choice is written to `BOOT_KASLR_ADDR`
 so the kernel can report its own physical base.
 
 The low 4 MB stay identity mapped with a twist: `PT0` maps `[0x100000,0x200000)`
-to the kernel base and `PT1` maps `[0x200000,0x300000)` to `base+0x100000`
-(the kernel tail and embedded ramdisk extend past 2 MB; an identity mapping
-there would read physical `0x200000`, which is not where the tail lives) plus
-`[0x300000,0x400000)` identity for the user page table zone. In the
-non-KASLR build the whole low 4 MB are identity mapped as before.
+to the kernel base and `PT1` maps `[0x200000,0x400000)` to `base+0x100000`
+through `base+0x300000` (the tail of the kernel image, the embedded ramdisk
+and the whole `.bss`). The kernel therefore spans ONE contiguous physical
+range `[base, base+KASLR_IMAGE_SPAN)`; a `.bss` that grows past 2 MB can no
+longer spill onto the identity-mapped low-memory reserved zones. This is the
+fix for the historical bug where the `.bss` tail landed on the user page
+table zone and corrupted it on every terminal line. The user page table zone
+itself lives at `0x10000`, below the kernel image, and is reached through
+the `PT0` low identity mapping. In the non-KASLR build the whole low 4 MB
+are identity mapped as before, and the zone still sits at `0x10000`, below
+the image, so it can never collide.
 
 Entropy mixing keeps its strength independent of boot timing: hours,
 minutes and seconds feed separate bytes, so two boots in the same second
 still differ by the RDTSC term. The kernel heap and user window are
 unaffected; KASLR randomizes only the kernel image's physical base. A KASLR
-kernel spans physical `[X, X+image)` and the BDD suite asserts the banner
-never reports base `0x100000`.
+kernel spans physical `[X, X+KASLR_IMAGE_SPAN)` and the BDD suite asserts
+the banner never reports base `0x100000`.
+
+### Memory-layout hazard contract (read before touching the low 4 MB)
+The low 4 MB are a deliberately hand-arranged jigsaw: kernel image + `.bss`,
+user page tables, boot data and the user window all coexist in one identity
+space. Getting it wrong silently corrupts the user page tables and makes
+user programs crash at "unmapped" addresses — that is the historical
+`EXCEPTION 14` that has bitten this codebase more than once. The invariants:
+
+1. The user page table zone is `PT_USER_TABLES_ADDR` (`0x10000`), 64 KB of
+   the boot staging buffer that is dead once the kernel runs. It is BELOW
+   the kernel link base (`0x100000`), so kernel code, data and `.bss` can
+   never reach it — in the plain build or under KASLR. Never move it above
+   `0x100000`, and never size it down: `mm_setup_protections` writes one
+   4 KB table per 2 MB PD slot of the user window.
+2. The kernel image (code + `.bss`) must stay inside
+   `[0x100000, KASLR_IMAGE_SPAN)` — below `0x400000`, the user window. The
+   kernel `.bss` is ~1.4 MB and grows, so `KASLR_IMAGE_SPAN` is 3 MB; a
+   growing `.bss` is what used to spill onto the `0x300000` page table zone.
+   `mm_setup_protections` asserts `_kernel_end <= USER_LOAD_BASE` at boot and
+   prints a diagnostic instead of silently mapping the user window over the
+   kernel. If the kernel outgrows 3 MB, grow `KASLR_IMAGE_SPAN` (bootdefs.h)
+   AND the KASLR PT1 mapping (stage2.S) AND the link layout together — never
+   shrink the gap by re-homing the page tables into the image footprint.
+3. The kernel `.bss` is NOBITS and relies on zeroed RAM: QEMU zeroes memory
+   at boot, so `.bss` needs no loader zero-fill. Do not rely on this for
+   anything except `.bss`; anything with file content must be loaded.
+4. The KASLR `PT0`/`PT1` split exists only to slide the kernel image to a
+   random physical base. `PT0` maps `[0x100000,0x200000)` to `base`,
+   `PT1` maps `[0x200000,0x400000)` to `base+0x100000..base+0x300000`.
+   There is no identity mapping left in `[0x300000,0x400000)` on a KASLR
+   build; if you need low-memory identity beyond the first MB, add it to
+   `PT0`'s low half, never steal it from the kernel image's contiguous span.
+5. The DOOM back-buffer and the VESA framebuffer are mapped into the user
+   window by writing PTEs inside the `PT_USER_TABLES_ADDR` zone (see
+   `mm_setup_protections`); any new "map kernel memory into the user
+   window" feature must write into those tables the same way, never into
+   the PD leaves or the kernel image.
 
 ## VESA Hi-Res Desktop and Windowed DOOM
 
@@ -377,8 +436,9 @@ its stack, heap, `.data` or unmapped space — a jump into a non-executable
 page faults and the machine resets (no IDT), never silently running
 shellcode. The kernel heap keeps its 2 MB executable pages: `.o` toolchain
 programs execute from the heap at ring 0 by contract. The page tables live
-in the dedicated identity-mapped zone `PT_USER_TABLES_ADDR` (`0x300000`),
-never in the kernel heap, so the ramdisk data buffer can never clobber them.
+in the dedicated identity-mapped zone `PT_USER_TABLES_ADDR` (`0x10000`),
+below the kernel image and never in the kernel heap, so neither the ramdisk
+data buffer nor kernel `.bss` growth can ever clobber them.
 The BDD suite proves the isolation with `cpl.elf` (reports ring 3),
 `kmem.elf` (kernel pointers rejected) and `nx.elf` (a `ret` written to the
 stack faults on fetch, so `poweroff` is never reached).

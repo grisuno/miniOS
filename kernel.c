@@ -476,9 +476,12 @@ static inline void wrmsr(unsigned msr, unsigned long val);
  * non-executable; the ELF loader later clears NX on the pages a program's
  * executable segments occupy, so a ring-3 program can only execute the text
  * it actually contains. The page tables live in the dedicated
- * PT_USER_TABLES_ADDR zone, never in the heap (the ramdisk data area is
+ * PT_USER_TABLES_ADDR zone (0x10000, in the boot staging buffer below the
+ * kernel link base), never in the heap (the ramdisk data area is
  * heap-backed and its final size is only discovered at boot, so heap-resident
- * tables could be overwritten by a later reservation); that zone stays
+ * tables could be overwritten by a later reservation) and never inside the
+ * kernel image: the zone is BELOW 0x100000, so kernel code, data and .bss
+ * can never reach it in the plain build or under KASLR. That zone stays
  * supervisor, so a ring-3 program cannot reach the tables that govern it.
  * The per-page isolation replaces the coarse 2 MB leaves the boot path
  * installs, so kernel image, heap, page tables, VGA and MMIO stay supervisor,
@@ -491,6 +494,16 @@ static void mm_setup_protections(void) {
     unsigned long lo = USER_LOAD_BASE >> PT_PD_INDEX_SHIFT;
     unsigned long hi = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
     unsigned long i;
+
+    /* Guard against the kernel image growing into the user window: the whole
+     * kernel (code + .bss) must end below USER_LOAD_BASE or the .bss would
+     * be mapped where user programs load and silently corrupt them. */
+    extern char _kernel_end[];
+    if ((unsigned long)_kernel_end > USER_LOAD_BASE) {
+        kprintf("mm: kernel image reaches 0x%lx, must stay below 0x%lx\n",
+                (unsigned long)_kernel_end, USER_LOAD_BASE);
+        return;
+    }
     if (hi - lo + 1 > PT_USER_TABLES_BYTES / 0x1000) {
         kprintf("mm: user window needs more page table space\n");
         return;

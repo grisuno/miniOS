@@ -203,14 +203,16 @@ fill_pt0_kernel:
     loop fill_pt0_kernel
 
     /* PT1 continues the kernel image mapping at 4 KB granularity: virtual
-     * [2 MB, 3 MB) maps to the physical base plus 1 MB, which covers the
-     * tail of the kernel image and the embedded ramdisk (the image spans
-     * virtual 0x100000..~0x245000). Virtual [3 MB, 4 MB) stays identity so
-     * the user-window page table zone (PT_USER_TABLES_ADDR 0x300000) is
-     * reachable at the same physical and virtual address in every build. */
+     * [2 MB, 4 MB) maps to physical [base+1 MB, base+3 MB), covering the
+     * tail of the kernel image, the embedded ramdisk and the whole kernel
+     * .bss. The kernel therefore occupies ONE contiguous physical range
+     * [base, base + KASLR_IMAGE_SPAN); a .bss that grows past 2 MB can no
+     * longer spill onto the identity-mapped low-memory reserved zones
+     * (user page tables, staging, stacks), which is what used to corrupt
+     * the user page tables on every terminal line. */
     movl $PT_USER1_ADDR, %edi
     movl kaslr_dest, %eax
-    addl $0x100000, %eax
+    addl $KASLR_IMG_OFF_1MB, %eax
     movl $256, %ecx
 fill_pt1_kernel:
     orl $PT_FLAGS_PRESENT_RW, %eax
@@ -218,14 +220,15 @@ fill_pt1_kernel:
     addl $PT_PD_ENTRY_BYTES, %edi
     addl $0x1000, %eax
     loop fill_pt1_kernel
-    movl $(PT_USER_TABLES_ADDR | PT_FLAGS_PRESENT_RW), %eax
+    movl kaslr_dest, %eax
+    addl $KASLR_IMG_OFF_2MB, %eax
     movl $256, %ecx
-fill_pt1_identity:
+fill_pt1_bss:
     orl $PT_FLAGS_PRESENT_RW, %eax
     movl %eax, (%edi)
     addl $PT_PD_ENTRY_BYTES, %edi
     addl $0x1000, %eax
-    loop fill_pt1_identity
+    loop fill_pt1_bss
 
     movl $PT_PD_ADDR, %edi
     addl $PT_FILL_START_INDEX * PT_PD_ENTRY_BYTES, %edi

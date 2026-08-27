@@ -10,18 +10,25 @@
  *
  *   0x00000 - 0x005FF  real-mode IVT and BIOS data area
  *   0x01000 - 0x05FFF  long-mode page tables (PML4, PDPT, PD, KASLR PT0/PT1)
- *   0x030000 - 0x031000  user-window page tables (4 KB leaves, NX per page)
+ *   0x10000 - 0x1FFFF  user-window page tables (4 KB leaves, NX per page).
+ *                      This zone deliberately sits BELOW the kernel image
+ *                      base (0x100000) so no kernel code, data or .bss can
+ *                      ever land on it. It reuses the tail of the boot
+ *                      staging buffer, which is dead once the kernel runs.
  *   0x07000 - 0x070FF  VBE mode information block (stage 2 probe)
  *   0x07C00 - 0x07DFF  stage 1 (boot sector)
  *   0x07E00 - 0x07E14  disk address packet, boot drive and KASLR base scratch
  *   0x07E20 - 0x07E2B  VBE framebuffer info struct handed to the kernel
  *   0x08000 - 0x08017  long-mode GDT handed to the kernel
  *   0x09000 - 0x0AFFF  stage 2
- *   0x10000 - 0x8FFFF  kernel staging buffer (one chunk at a time)
+ *   0x10000 - 0x8FFFF  kernel staging buffer (one chunk at a time; the
+ *                      first 64 KB are reclaimed by the user page tables)
  *   0x90000            protected/long mode stack top
  *   0x100000           kernel link-time virtual base (physical base is
  *                      randomized by KASLR into [0x0600000, 0x0E000000)
- *                      when enabled)
+ *                      when enabled). The kernel image (code + .bss) maps
+ *                      contiguously: KASLR builds put it at [base, base+3 MB),
+ *                      plain builds at [0x100000, 0x400000).
  *
  * Disk layout (LBA, 512-byte sectors):
  *
@@ -172,21 +179,40 @@
 /* Dedicated zone for the kernel-installed 4 KB user-window page tables.
  * It must never share memory with the heap: the ramdisk data area is
  * heap-backed and its size is discovered at boot, so page tables there
- * could be overwritten by a later reservation. This zone sits between the
- * kernel image and the user window and is identity-mapped (2 MB PD leaf in
- * the plain build, PT1 in the KASLR build) so the PDEs can carry the same
- * addresses the kernel writes through. */
-#define PT_USER_TABLES_ADDR       0x00300000
+ * could be overwritten by a later reservation.
+ *
+ * It must ALSO never share memory with the kernel image. The kernel .bss is
+ * ~1.4 MB and grows, so a zone placed "between the kernel image and the
+ * user window" (the historical 0x300000) sits right where the kernel's
+ * own .bss lands once the image outgrows 2 MB. That collision silently
+ * corrupted the page tables every time the shell wrote a terminal line
+ * (the line buffer lived in the .bss tail), which is why user programs
+ * crashed intermittently at "unmapped" addresses. The zone therefore
+ * lives at 0x10000, BELOW the kernel link base (0x100000), inside the
+ * boot staging buffer that is dead once the kernel is running: nothing in
+ * the kernel image can ever reach it, in the plain build or under KASLR.
+ * It is identity-mapped in every build (PT0 low half in KASLR, 2 MB PD
+ * leaf in the plain build), so the PDEs can carry the same addresses the
+ * kernel writes through. */
+#define PT_USER_TABLES_ADDR       0x00010000
 #define PT_USER_TABLES_BYTES      0x00010000
 
 /* KASLR: the kernel image is loaded at a random 2 MB-aligned physical base
  * chosen from a 64-position window above the kernel heap, so the kernel's
  * physical location varies on every boot. The virtual base stays at the
  * link-time address (0x100000); the loader maps it to the chosen physical
- * base. */
+ * base. The image (code + .bss) is mapped CONTIGUOUSLY over the whole
+ * virtual span [0x100000, KASLR_IMAGE_SPAN): PT0 covers the first MB and
+ * PT1 covers [0x200000, KASLR_IMAGE_SPAN) at 4 KB granularity, so a growing
+ * .bss can never spill onto the identity-mapped low-memory reserved zones.
+ * Keep KASLR_IMAGE_SPAN in sync with the kernel link layout: the image
+ * must end below the user window at USER_LOAD_BASE (0x400000). */
 #define KASLR_MIN_ADDR            0x06000000
 #define KASLR_ALIGN_SHIFT         21
 #define KASLR_MAX_UNITS           64
+#define KASLR_IMG_OFF_1MB         0x00100000
+#define KASLR_IMG_OFF_2MB         0x00200000
+#define KASLR_IMAGE_SPAN          0x00300000
 
 #define CMOS_INDEX_PORT           0x70
 #define CMOS_DATA_PORT            0x71
