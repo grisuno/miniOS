@@ -81,7 +81,8 @@ $(KASLR_STAMP): kaslr-flag-force
 CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
               -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector \
-              -fno-omit-frame-pointer
+              -fno-omit-frame-pointer \
+              -I. -Ithird_party -Ithird_party/stb -Ithird_party/xxhash
 
 PROGS_DIR = progs
 OBJ_DIR   = $(PROGS_DIR)/objects
@@ -96,9 +97,11 @@ DOC_DIR   = $(PROGS_DIR)/docs
 # src/ (C sources), asm/ (miniGCC assembly), docs/ and README.txt.
 PROGS     = $(OBJ_DIR)/minigcc.o \
             $(OBJ_DIR)/ld.o $(OBJ_DIR)/cvm.o \
+            $(OBJ_DIR)/stb.o $(OBJ_DIR)/xxhash.o \
             $(BIN_DIR)/minigcc.elf $(BIN_DIR)/cp \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
-            $(PROGS_DIR)/etc/alias
+            $(PROGS_DIR)/etc/alias \
+            $(DOC_DIR)/test.png
 
 all: os.img
 
@@ -252,6 +255,15 @@ $(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h cvm_host.c kernel.h \
 	      $(OBJ_DIR)/cvm_jit.o $(OBJ_DIR)/cvm_jit_x86.o $(OBJ_DIR)/cvm_jit_help.o
 	rm -f $(OBJ_DIR)/cvm_core.o $(OBJ_DIR)/cvm_host.o \
 	      $(OBJ_DIR)/cvm_jit.o $(OBJ_DIR)/cvm_jit_x86.o $(OBJ_DIR)/cvm_jit_help.o
+
+# ── Ring-0 ET_REL test objects (host-compiled, link against kernel symbols) ──
+# stb.o: self-test for the kernel's stb image API (PNG load + pixel check)
+$(OBJ_DIR)/stb.o: third_party/stb/stb_selftest.c
+	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
+
+# xxhash.o: self-test for the kernel's XXH64 symbol (3 known-answer vectors)
+$(OBJ_DIR)/xxhash.o: third_party/xxhash/xxhash_selftest.c
+	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
 # ── CVM modules (assembled from miniGCC output with 'ld') ────────
 $(CVMOD_DIR)/fib.cvm: $(ASM_DIR)/fib.s $(LD_TOOL)
@@ -566,6 +578,23 @@ minifs.o: minifs.c minifs.h block.h ide.h kernel.h
 lz4_kernel.o: lz4_kernel.c lz4_kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+# xxHash XXH64: pure integer, freestanding-safe, compiled straight into the
+# kernel image. Exposed to ET_REL programs through the kernel symbol table
+# ("XXH64") and to the shell through the `hash` builtin.  The full xxhash.c
+# drags in XXH3/XXH128 which reference memcpy/memcmp/free; redirect those
+# to the kernel's own implementations so the link resolves.
+xxhash.o: third_party/xxhash/xxhash.c third_party/xxhash/xxhash.h
+	$(CC) $(CFLAGS_KERN) -Dmemcpy=kmemcpy -Dmemmove=kmemmove -Dmemset=kmemset -Dmemcmp=kmemcmp -Dmalloc=kmalloc -Dfree=kfree -c $< -o $@
+
+# stb image API: the single-header decode library compiled into the kernel
+# with PNG/TGA codecs only and the allocator redirected to the kernel heap.
+# -Wno-unused-function silences the JPEG-only static helpers that stb_image.h
+# carries even when STBI_NO_JPEG is set.  STBI_ASSERT is redirected to a
+# kernel panic so the freestanding build does not need libc assert.
+stb_impl.o: third_party/stb/stb_impl.c third_party/stb/stb_image.h \
+            third_party/stb/stb_api.h kernel.h
+	$(CC) $(CFLAGS_KERN) -Wno-unused-function -c $< -o $@
+
 sched.o: sched.c sched.h kernel.h bootdefs.h vga_fb.h pcspk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -584,10 +613,11 @@ isr_stubs.o: isr_stubs.S
 ctx_sw.o: ctx_sw.S
 	$(CC) -c -m64 $< -o $@
 
-kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o kernel.ld
+kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o xxhash.o stb_impl.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
-	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o -o $@
+	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o xxhash.o \
+	      stb_impl.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@

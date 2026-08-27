@@ -127,8 +127,15 @@ void     vga_fb_move_terminal(int dx, int dy);
 void     vga_fb_snap_window(int zone);
 void     vga_fb_resize(int dcols, int drows);
 void     vga_fb_reset_default(void);
-void     vga_fb_mouse_tick(void);
-void     vga_fb_mouse_init(void);
+void vga_fb_mouse_tick(void);
+void vga_fb_mouse_init(void);
+
+/* Graphics-mode pointer. SYS_VGA_MODE toggles vga_fb_set_gfx_mode; while a
+ * ring-3 graphics program owns the display the kernel idle loop (and with it
+ * vga_fb_mouse_tick) never runs, so the frame-composite functions restore the
+ * previous frame's pointer before the blit and redraw it after, keeping the
+ * desktop pointer visible over the whole display without leaving trails. */
+void vga_fb_set_gfx_mode(int on);
 
 extern int vga_fb_active;
 

@@ -862,6 +862,26 @@ poweroff"
 expect "wrote cvm/dz.cvm"
 expect "division by zero"
 
+scenario "xxhash selftest verifies 3 known-answer vectors" "run objects/xxhash.o
+poweroff"
+expect "xxhash: ok"
+
+scenario "stb image selftest loads test.png and checks pixel" "run objects/stb.o
+poweroff"
+expect "stb: png ok"
+
+scenario "hash command prints XXH64 of a ramdisk file" "hash docs/test.png
+poweroff"
+expect "hash: docs/test.png ="
+
+scenario "hash command rejects missing file" "hash no_such_file
+poweroff"
+expect "hash: no_such_file: no such file"
+
+scenario "nuklear pointer-test verifies cursor compositing" "nuklear --pointer-test
+poweroff"
+expect "pointer ok"
+
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="
 [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"

@@ -208,6 +208,52 @@ static int cursor_over(int x0, int y0, int w, int h) {
     return cxl < x0 + w && cxt > x0 && cyl < y0 + h && cyt > y0;
 }
 
+/* ---- Graphics-mode pointer (compositor contract) ----
+ *
+ * While a ring-3 graphics program owns the display (SYS_VGA_MODE 1) the
+ * kernel never runs the idle loop that drives vga_fb_mouse_tick, so the
+ * desktop pointer would simply vanish as soon as e.g. the Nuklear node
+ * editor composites its first frame. The frame syscalls take its place:
+ * the kernel restores the previous frame's pointer before a composite and
+ * redraws it afterwards, using the same save/restore machinery as the
+ * desktop path, so the pointer stays live over the whole display without
+ * ever leaving a trail. */
+static int vga_fb_gfx_mode;
+
+void vga_fb_set_gfx_mode(int on) {
+    vga_fb_gfx_mode = on;
+    if (!on) cursor_visible = 0;
+}
+
+/* Restore the last composite's pointer before the new frame covers it. Only
+ * meaningful in graphics mode; the desktop path (vga_fb_mouse_tick) manages
+ * its own cursor with the same functions. */
+static void vga_fb_gfx_cursor_erase(void) {
+    if (!vga_fb_gfx_mode || !cursor_visible) return;
+    cursor_restore(cursor_old_x, cursor_old_y);
+    cursor_visible = 0;
+}
+
+/* Clamp the mouse into the framebuffer (the idle loop that normally clamps
+ * never runs in graphics mode) and draw the pointer at the current position. */
+static void vga_fb_gfx_cursor_draw(void) {
+    int mx, my;
+    if (!vga_fb_gfx_mode) return;
+    mx = mouse_state.x;
+    my = mouse_state.y;
+    if (mx < CURSOR_TIP_X) mx = CURSOR_TIP_X;
+    if (mx >= fb_width)    mx = fb_width - 1;
+    if (my < CURSOR_TIP_Y) my = CURSOR_TIP_Y;
+    if (my >= fb_height)   my = fb_height - 1;
+    mouse_state.x = mx;
+    mouse_state.y = my;
+    cursor_save_bg(mx, my);
+    cursor_draw(mx, my);
+    cursor_old_x = mx;
+    cursor_old_y = my;
+    cursor_visible = 1;
+}
+
 /* ---- 8x8 CP437 font (ASCII 32-127) ---- */
 static const uint8_t font8x8[96][8] = {
     {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
@@ -429,6 +475,7 @@ void vga_fb_blit_gfx_window(void) {
     int dst_x = (fb_width - DOOM_W) / 2;
     int dst_y = (fb_height - DOOM_H) / 2;
     int r, b;
+    vga_fb_gfx_cursor_erase();
     if (dst_x < 0) dst_x = 0;
     if (dst_y < 0) dst_y = 0;
     vga_fb_rect(dst_x, dst_y, DOOM_W + SCROLLBAR_W, FONT_H, COL_TITLEBAR);
@@ -439,6 +486,7 @@ void vga_fb_blit_gfx_window(void) {
         for (b = 0; b < DOOM_W; b++)
             dst[b] = src[b];
     }
+    vga_fb_gfx_cursor_draw();
 }
 
 void vga_fb_clear(void) {
@@ -461,6 +509,7 @@ void vga_fb_blit_nk_window(void) {
     int dst_x = (fb_width - NK_W) / 2;
     int dst_y = (fb_height - NK_H) / 2;
     int r, b;
+    vga_fb_gfx_cursor_erase();
     if (dst_x < 0) dst_x = 0;
     if (dst_y < 0) dst_y = 0;
     nk_win_x = dst_x;
@@ -473,6 +522,7 @@ void vga_fb_blit_nk_window(void) {
         for (b = 0; b < NK_W; b++)
             dst[b] = src[b];
     }
+    vga_fb_gfx_cursor_draw();
 }
 
 /* ---- Layout ---- */

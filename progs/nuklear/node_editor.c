@@ -424,6 +424,66 @@ int main(int argc, char **argv) {
         return 0;
     }
 
+    if (argc > 1 && strcmp(argv[1], "--pointer-test") == 0) {
+        /* One composite with the compositor pointer contract exercised: while
+         * a graphics program owns the display the kernel draws the desktop
+         * pointer on the frame syscall path (SYS_NK_FRAME), so the pointer
+         * stays visible instead of vanishing when Nuklear takes over. We
+         * composite a frame, then read the framebuffer at the arrow tip of
+         * the current mouse position and require the cursor colour (desktop
+         * white, index 10). A mutant that drops the cursor draw is killed. */
+        unsigned char pal768[768];
+        int fw, fh, fp;
+        nk_sys_vga_mode(1);
+        nk_sys_kbd_raw(1);
+        nk_build_palette(pal768);
+        nk_sys_palette(pal768);
+        nk_sys_fb_info(&fw, &fh, &fp);
+        int mouse[4] = {0, 0, 0, 0};
+        if (nk_sys_mouse(mouse) != 0) {
+            printf("nuklear: mouse syscall failed\n");
+            nk_sys_kbd_raw(0);
+            nk_sys_vga_mode(0);
+            return 1;
+        }
+        int origin[2] = {0, 0};
+        if (nk_sys_nk_frame(origin) != 0) {
+            printf("nuklear: frame syscall failed\n");
+            nk_sys_kbd_raw(0);
+            nk_sys_vga_mode(0);
+            return 1;
+        }
+        volatile uint8_t *fb = (volatile uint8_t *)0x1F00000UL;
+        int mx = mouse[0], my = mouse[1];
+        if (mx < 0 || my < 0 || mx >= fw || my >= fh) {
+            printf("nuklear: mouse position out of range (%d,%d)\n", mx, my);
+            nk_sys_kbd_raw(0);
+            nk_sys_vga_mode(0);
+            return 1;
+        }
+        /* The arrow sprite's tip row (bitmap row 7) is drawn at the mouse
+         * position; its set bits land at sprite columns 4-5, i.e. pixels
+         * (mx-2, my) and (mx-1, my). The cursor colour is desktop white
+         * (index 10). */
+        int ok = 0;
+        for (int k = 0; k < 8; k++) {
+            int px = mx - 6 + k;
+            int py = my;
+            if (px < 0 || px >= fw || py < 0 || py >= fh) continue;
+            if (fb[py * fp + px] == 10) { ok = 1; break; }
+        }
+        if (!ok) {
+            printf("nuklear: pointer missing near (%d,%d)\n", mx, my);
+            nk_sys_kbd_raw(0);
+            nk_sys_vga_mode(0);
+            return 1;
+        }
+        nk_sys_kbd_raw(0);
+        nk_sys_vga_mode(0);
+        printf("nuklear: pointer ok (%d,%d)\n", mx, my);
+        return 0;
+    }
+
     if (argc > 1 && strcmp(argv[1], "--demo") == 0) {
         if (argc < 3) { printf("usage: nuklear --demo <out.cvm>\n"); return 2; }
         graph_clear();

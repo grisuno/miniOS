@@ -10,6 +10,9 @@
 #include "pcspk.h"
 #include "rtc.h"
 #include "lz4_kernel.h"
+#define XXH_STATIC_LINKING_ONLY
+#include "xxhash.h"
+#include "stb/stb_api.h"
 
 /* ================================================================
  *  Serial console (COM1, 16550 UART) — mirrors VGA, drives input
@@ -2497,6 +2500,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     }
     case 208: { /* SYS_VGA_MODE: tell kernel a graphics program owns the display */
         vga_mode13h = (int)a1;
+        /* While a graphics program owns the display the idle loop never runs,
+         * so the desktop pointer is drawn by the frame composites instead.
+         * Toggle that mode here. */
+        vga_fb_set_gfx_mode((int)a1);
         return 0;
     }
     case 209: { /* SYS_PCSPK_INIT */
@@ -4310,6 +4317,159 @@ static int shell_run_any(const char *name, int argc, char **argv) {
     return shell_run_file(name, argc, argv);
 }
 
+/* ---- Graphics debugging (`gfx` builtin) ----
+ *
+ * The serial console is the observability surface the BDD suite drives, but a
+ * framebuffer program's output never reaches it. `gfx` lifts the graphics
+ * side onto the console: state, single-pixel sampling, region statistics and
+ * a PPM screenshot are all reported as text, so the desktop and the windowed
+ * graphics programs are testable from the shell exactly like `date`/`vol`
+ * are. Every coordinate is clamped to the framebuffer and every parse is
+ * strict, so a malformed invocation is a usage diagnostic, never a crash. */
+static int gfx_parse_int(const char *s, int *out) {
+    long v = 0;
+    int sign = 1;
+    if (!s || !*s) return 0;
+    if (*s == '-') { sign = -1; s++; }
+    else if (*s == '+') s++;
+    if (!*s) return 0;
+    for (; *s; s++) {
+        int d = *s - '0';
+        if (d < 0 || d > 9) return 0;
+        v = v * 10 + d;
+        if (v > 0x7FFFFFFFL) return 0;
+    }
+    *out = (int)(sign * v);
+    return 1;
+}
+
+/* Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit
+ * precision by the kernel's normalisation). Used by `gfx shot` to turn the
+ * indexed framebuffer into an RGB PPM. */
+static void gfx_read_palette(unsigned char pal[768]) {
+    int i;
+    outb(0x3C7, 0);            /* DAC read mode, start at index 0 */
+    for (i = 0; i < 768; i++)
+        pal[i] = inb(0x3C9);
+}
+
+static void shell_cmd_gfx(int argc, char **argv) {
+    if (argc == 1) {
+        kprintf("gfx: fb %dx%d pitch %d base %lx mode %s active %d\n",
+                fb_width, fb_height, fb_pitch, fb_phys_base,
+                vga_mode13h ? "gfx" : "text", vga_fb_active);
+        kprintf("gfx: mouse present %d at (%d,%d) buttons %d wheel %d\n",
+                mouse_state.present, mouse_state.x, mouse_state.y,
+                mouse_state.buttons, mouse_state.wheel);
+        kprintf("gfx: term (%d,%d) %dx%d cells  nkwin (%d,%d)\n",
+                term_x, term_y, term_cols, term_rows, nk_win_x, nk_win_y);
+        return;
+    }
+    if (kstrcmp(argv[1], "pixel") == 0) {
+        int x, y;
+        if (argc < 4 || !gfx_parse_int(argv[2], &x) || !gfx_parse_int(argv[3], &y)) {
+            vga_puts("usage: gfx pixel <x> <y>\n");
+            return;
+        }
+        if (x < 0 || x >= fb_width || y < 0 || y >= fb_height) {
+            kprintf("gfx: pixel (%d,%d) out of range (%dx%d)\n",
+                    x, y, fb_width, fb_height);
+            return;
+        }
+        kprintf("gfx: pixel (%d,%d) = %d\n", x, y, FB_ADDR[y * fb_pitch + x]);
+        return;
+    }
+    if (kstrcmp(argv[1], "rect") == 0) {
+        int x0, y0, x1, y1, i, x, y;
+        if (argc < 6 || !gfx_parse_int(argv[2], &x0) || !gfx_parse_int(argv[3], &y0) ||
+            !gfx_parse_int(argv[4], &x1) || !gfx_parse_int(argv[5], &y1)) {
+            vga_puts("usage: gfx rect <x0> <y0> <x1> <y1>\n");
+            return;
+        }
+        if (x0 < 0) x0 = 0;
+        if (x1 >= fb_width) x1 = fb_width - 1;
+        if (y0 < 0) y0 = 0;
+        if (y1 >= fb_height) y1 = fb_height - 1;
+        if (x1 < x0 || y1 < y0) {
+            vga_puts("gfx: rect inverted or empty\n");
+            return;
+        }
+        {
+            unsigned hist[256];
+            int min = 255, max = 0, distinct = 0, top = 0, top_n = 0;
+            unsigned long total = 0;
+            kmemset(hist, 0, sizeof(hist));
+            for (y = y0; y <= y1; y++)
+                for (x = x0; x <= x1; x++)
+                    hist[FB_ADDR[y * fb_pitch + x]]++;
+            for (i = 0; i < 256; i++) {
+                if (hist[i]) {
+                    distinct++;
+                    if (i < min) min = i;
+                    if (i > max) max = i;
+                    if ((int)hist[i] > top_n) { top_n = (int)hist[i]; top = i; }
+                    total += hist[i];
+                }
+            }
+            kprintf("gfx: rect (%d,%d)-(%d,%d): %lu px distinct %d range [%d..%d] top %d x%lu\n",
+                    x0, y0, x1, y1, total, distinct, min, max, top,
+                    (unsigned long)top_n);
+        }
+        return;
+    }
+    if (kstrcmp(argv[1], "shot") == 0) {
+        const char *path;
+        KFILE *f;
+        unsigned char pal[768];
+        unsigned long written = 0;
+        char hdr[64];
+        int i, y, n;
+        if (argc < 3) { vga_puts("usage: gfx shot <file>\n"); return; }
+        path = argv[2];
+        f = kfopen(path, "w");
+        if (!f) { kprintf("gfx: shot: cannot open %s\n", path); return; }
+        gfx_read_palette(pal);
+        n = ksprintf(hdr, "P6\n%d %d\n255\n", fb_width, fb_height);
+        written += (unsigned long)n;
+        kfwrite(hdr, 1, (unsigned long)n, f);
+        for (y = 0; y < fb_height; y++) {
+            for (i = 0; i < fb_width; i++) {
+                unsigned idx = FB_ADDR[y * fb_pitch + i];
+                unsigned char rgb[3];
+                rgb[0] = pal[idx * 3 + 0];
+                rgb[1] = pal[idx * 3 + 1];
+                rgb[2] = pal[idx * 3 + 2];
+                kfwrite(rgb, 1, 3, f);
+                written += 3;
+            }
+        }
+        kfclose(f);
+        kprintf("gfx: shot %s (%lu bytes)\n", path, written);
+        return;
+    }
+    vga_puts("usage: gfx [pixel <x> <y> | rect <x0> <y0> <x1> <y1> | shot <file>]\n");
+}
+
+/* `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed
+ * in bounded chunks so a large MiniFS file never needs a whole-file buffer.
+ * This is the integrity tool for CVM modules and any ramdisk payload: an
+ * image built from source is compared against a recorded hash, and a module
+ * that drifted is detected before it is trusted. */
+static void shell_cmd_hash(int argc, char **argv) {
+    KFILE *f;
+    unsigned char buf[1024];
+    unsigned long n;
+    XXH64_state_t h;
+    if (argc < 2) { vga_puts("usage: hash <file>\n"); return; }
+    f = kfopen(argv[1], "r");
+    if (!f) { kprintf("hash: %s: no such file\n", argv[1]); return; }
+    XXH64_reset(&h, 0);
+    while ((n = kfread(buf, 1, sizeof(buf), f)) > 0)
+        XXH64_update(&h, buf, n);
+    kfclose(f);
+    kprintf("hash: %s = %016lx\n", argv[1], (unsigned long)XXH64_digest(&h));
+}
+
 static void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
         vga_puts("Commands: help clear ls cat lsfs catfs echo edit rm mkdir cd pwd ps load run poweroff\n");
@@ -4325,6 +4485,8 @@ static void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  trace [on|off]     report Linux syscalls\n");
         vga_puts("  date               print the CMOS clock (HH:MM:SS)\n");
         vga_puts("  vol [0-100]        print or set the PC-speaker volume\n");
+        vga_puts("  gfx [..]           graphics state / pixel / rect / shot\n");
+        vga_puts("  hash <file>        XXH64 checksum of a file\n");
         vga_puts("  edit <file>        line editor for ramdisk files\n");
         vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
@@ -4571,6 +4733,12 @@ static void shell_exec_builtin(int argc, char **argv) {
         else
             vga_puts("date: clock unavailable\n");
     }
+    else if (kstrcmp(argv[0], "gfx") == 0) {
+        shell_cmd_gfx(argc, argv);
+    }
+    else if (kstrcmp(argv[0], "hash") == 0) {
+        shell_cmd_hash(argc, argv);
+    }
     else if (kstrcmp(argv[0], "load") == 0) {
         if (argc < 2) { vga_puts("usage: load <file>\n"); return; }
         char progname[32];
@@ -4620,6 +4788,14 @@ static void register_libc_symbols(void) {
     k_register_symbol("free",     (void *)kfree);
     k_register_symbol("calloc",   (void *)kcalloc);
     k_register_symbol("realloc",  (void *)krealloc);
+
+    /* Hash (xxHash XXH64) */
+    k_register_symbol("XXH64",    (void *)XXH64);
+
+    /* stb image API (third_party/stb, PNG/TGA decode) */
+    k_register_symbol("stbi_load_file", (void *)stbi_load_file);
+    k_register_symbol("stbi_load_from_memory", (void *)stbi_load_from_memory);
+    k_register_symbol("stbi_image_free", (void *)stbi_image_free);
 
     /* File I/O */
     k_register_symbol("fopen",    (void *)kfopen);
