@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -55,7 +56,7 @@ static int graph_add(int kind) {
     memset(n, 0, sizeof(*n));
     n->kind = kind;
     n->in[0] = n->in[1] = -1;
-    n->x = 30.0f + (float)(g_count % 6) * 130.0f;
+    n->x = 30.0f + (float)(g_count % 6) * 160.0f;
     n->y = 60.0f + (float)(g_count / 6) * 120.0f;
     if (kind == G_NUM) n->ival = 1;
     return g_count++;
@@ -81,6 +82,21 @@ static int node_inputs(int k) {
     case G_NEG: case G_PRINT: case G_EXIT: return 1;
     }
     return 0;
+}
+
+/* Node colors: distinct hue per type, low saturation for readability. */
+static struct nk_color kind_color(int k) {
+    switch (k) {
+    case G_NUM:   return nk_rgb(70, 130, 180);   /* steel blue */
+    case G_ADD:   return nk_rgb(60, 179, 113);   /* medium sea green */
+    case G_SUB:   return nk_rgb(210, 105, 105);  /* indian red */
+    case G_MUL:   return nk_rgb(186, 135, 89);   /* peru */
+    case G_DIV:   return nk_rgb(147, 112, 219);  /* medium purple */
+    case G_NEG:   return nk_rgb(255, 165, 0);    /* orange */
+    case G_PRINT: return nk_rgb(100, 149, 237);  /* cornflower blue */
+    case G_EXIT:  return nk_rgb(220, 80, 60);    /* tomato */
+    }
+    return nk_rgb(150, 150, 150);
 }
 
 /* Map the graph into the compiler's node array. Returns node count or <0. */
@@ -199,8 +215,30 @@ static char ui_memory[UI_MEMORY];
 static int ui_quit;
 static int drag_node = -1;
 static float drag_ox, drag_oy;
-static int link_src = -1;
-static int link_src_is_out = 0;
+
+/* Link-drag state: click an output pin, drag to an input pin. */
+static int linking_active;
+static int linking_src_node;
+static int linking_src_slot;
+
+/* Node geometry constants. */
+#define NODE_W       130.0f
+#define TITLE_H      20.0f
+#define PIN_R        5
+#define PIN_DIAM     (PIN_R * 2 + 1)
+#define BEZIER_PAD   50.0f
+#define GRID_SIZE    32.0f
+
+/* Compute the Y positions of input and output pins for a node. */
+static float pin_y(struct gnode *n, int slot, int is_output) {
+    int ni = node_inputs(n->kind);
+    int no = (n->kind == G_NUM) ? 0 : 1;
+    int count = is_output ? no : ni;
+    float body_h = (float)count * 20.0f + 8.0f;
+    float total = TITLE_H + body_h;
+    float space = total / (float)(count + 1);
+    return n->y + space * (float)(slot + 1);
+}
 
 static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
     if (nk_begin_titled(ctx, "nuklear", "Node Editor", nk_rect(0, 0, win_w, win_h),
@@ -233,67 +271,167 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
         /* Canvas with absolute node placement. */
         float canvas_h = win_h - 80.0f;
         if (canvas_h < 100) canvas_h = 100;
-        nk_layout_space_begin(ctx, NK_STATIC, canvas_h, MAX_NODES);
+        nk_layout_space_begin(ctx, NK_STATIC, canvas_h, g_count + 32);
 
+        struct nk_command_buffer *canvas = nk_window_get_canvas(ctx);
+        struct nk_rect canvas_bounds = nk_layout_space_bounds(ctx);
         struct nk_input *in = &ctx->input;
+
+        /* ---- Grid background ---- */
+        {
+            struct nk_color grid_col = nk_rgb(50, 50, 55);
+            float x, y;
+            for (x = fmod(canvas_bounds.x, GRID_SIZE); x < canvas_bounds.w; x += GRID_SIZE)
+                nk_stroke_line(canvas, x + canvas_bounds.x, canvas_bounds.y,
+                               x + canvas_bounds.x, canvas_bounds.y + canvas_bounds.h,
+                               1.0f, grid_col);
+            for (y = fmod(canvas_bounds.y, GRID_SIZE); y < canvas_bounds.h; y += GRID_SIZE)
+                nk_stroke_line(canvas, canvas_bounds.x, y + canvas_bounds.y,
+                               canvas_bounds.x + canvas_bounds.w, y + canvas_bounds.y,
+                               1.0f, grid_col);
+        }
+
+        /* ---- Draw connecting curves (from stored links) ---- */
+        for (int i = 0; i < g_count; i++) {
+            struct gnode *n = &g_nodes[i];
+            for (int k = 0; k < node_inputs(n->kind); k++) {
+                int src = n->in[k];
+                if (src < 0 || src >= g_count) continue;
+                struct gnode *sn = &g_nodes[src];
+                float sx = sn->x + NODE_W;
+                float sy = pin_y(sn, 0, 1);
+                float dx = n->x;
+                float dy = pin_y(n, k, 0);
+                nk_stroke_curve(canvas, sx, sy, sx + BEZIER_PAD, sy,
+                                dx - BEZIER_PAD, dy, dx, dy,
+                                2.0f, nk_rgb(180, 180, 180));
+            }
+        }
+
+        /* ---- Draw temporary curve while linking ---- */
+        if (linking_active) {
+            struct gnode *sn = &g_nodes[linking_src_node];
+            float sx = sn->x + NODE_W;
+            float sy = pin_y(sn, linking_src_slot, 1);
+            float mx = in->mouse.pos.x;
+            float my = in->mouse.pos.y;
+            nk_stroke_curve(canvas, sx, sy, sx + BEZIER_PAD, sy,
+                            mx - BEZIER_PAD, my, mx, my,
+                            2.0f, nk_rgb(255, 255, 0));
+        }
+
+        /* ---- Process input and draw nodes ---- */
         int mx = (int)in->mouse.pos.x;
         int my = (int)in->mouse.pos.y;
+        int mouse_click = nk_input_mouse_clicked(in, NK_BUTTON_LEFT,
+                                                 nk_layout_space_bounds(ctx));
         int mouse_down = nk_input_is_mouse_down(in, NK_BUTTON_LEFT);
-        int mouse_click = nk_input_mouse_clicked(in, NK_BUTTON_LEFT, nk_rect(0,0,win_w,win_h));
 
-        /* Handle node drag and pin connection by manual hit testing. */
         if (mouse_click) {
             drag_node = -1;
-            link_src = -1;
+            /* Check output pin hit (right edge of node). */
             for (int i = 0; i < g_count; i++) {
                 struct gnode *n = &g_nodes[i];
-                float nx = n->x, ny = n->y;
-                /* output pin on the right edge */
-                if (mx >= nx + 120 && mx <= nx + 140 &&
-                    my >= ny + 16 && my <= ny + 32) {
-                    link_src = i;
-                    link_src_is_out = 1;
+                float px = n->x + NODE_W - PIN_R;
+                float py = pin_y(n, 0, 1);
+                float dx = (float)mx - px;
+                float dy = (float)my - py;
+                if (dx * dx + dy * dy <= (float)(PIN_R + 3) * (float)(PIN_R + 3)) {
+                    linking_active = 1;
+                    linking_src_node = i;
+                    linking_src_slot = 0;
                     break;
                 }
-                /* input pins on the left edge */
-                int ni = node_inputs(n->kind);
-                for (int k = 0; k < ni; k++) {
-                    if (mx >= nx - 20 && mx <= nx &&
-                        my >= ny + 16 + k * 24 && my <= ny + 32 + k * 24) {
-                        if (link_src >= 0 && link_src_is_out && i != link_src) {
-                            n->in[k] = link_src;
+            }
+            /* Check input pin hit (left edge of node) — complete a link. */
+            if (!linking_active) {
+                for (int i = 0; i < g_count; i++) {
+                    struct gnode *n = &g_nodes[i];
+                    int ni = node_inputs(n->kind);
+                    for (int k = 0; k < ni; k++) {
+                        float px = n->x + PIN_R;
+                        float py = pin_y(n, k, 0);
+                        float dx = (float)mx - px;
+                        float dy = (float)my - py;
+                        if (dx * dx + dy * dy <= (float)(PIN_R + 3) * (float)(PIN_R + 3)) {
+                            /* Remove existing link on this slot. */
+                            n->in[k] = -1;
+                            drag_node = -2; /* sentinel: we hit a pin, skip body drag */
+                            break;
                         }
-                        link_src = -1;
-                        break;
                     }
+                    if (drag_node == -2) break;
                 }
-                /* body: start dragging */
-                if (mx >= nx && mx <= nx + 120 && my >= ny && my <= ny + 16 + ni * 24) {
-                    if (!(mx >= nx + 120 && mx <= nx + 140)) {
+            }
+            /* Check body hit — start dragging. */
+            if (!linking_active && drag_node != -2) {
+                for (int i = 0; i < g_count; i++) {
+                    struct gnode *n = &g_nodes[i];
+                    int ni = node_inputs(n->kind);
+                    float body_h = TITLE_H + (float)ni * 20.0f + 8.0f;
+                    if ((float)mx >= n->x && (float)mx <= n->x + NODE_W &&
+                        (float)my >= n->y && (float)my <= n->y + body_h) {
                         drag_node = i;
-                        drag_ox = mx - nx;
-                        drag_oy = my - ny;
+                        drag_ox = (float)mx - n->x;
+                        drag_oy = (float)my - n->y;
+                        break;
                     }
                 }
             }
         }
-        if (mouse_down && drag_node >= 0) {
+
+        /* Complete link on mouse release over an input pin. */
+        if (linking_active && nk_input_is_mouse_released(in, NK_BUTTON_LEFT)) {
+            for (int i = 0; i < g_count; i++) {
+                struct gnode *n = &g_nodes[i];
+                int ni = node_inputs(n->kind);
+                for (int k = 0; k < ni; k++) {
+                    float px = n->x + PIN_R;
+                    float py = pin_y(n, k, 0);
+                    float dx = (float)mx - px;
+                    float dy = (float)my - py;
+                    if (dx * dx + dy * dy <= (float)(PIN_R + 4) * (float)(PIN_R + 4)) {
+                        if (i != linking_src_node)
+                            n->in[k] = linking_src_node;
+                    }
+                }
+            }
+            linking_active = 0;
+        }
+
+        /* Cancel linking on release outside any input pin. */
+        if (linking_active && !mouse_down) {
+            linking_active = 0;
+        }
+
+        /* Drag node body. */
+        if (mouse_down && drag_node >= 0 && drag_node < g_count) {
             struct gnode *n = &g_nodes[drag_node];
-            n->x = (float)(mx - drag_ox);
-            n->y = (float)(my - drag_oy);
+            n->x = (float)mx - drag_ox;
+            n->y = (float)my - drag_oy;
         }
         if (!mouse_down) drag_node = -1;
 
-        /* Draw the nodes. */
+        /* ---- Draw nodes (groups + pin circles) ---- */
         for (int i = 0; i < g_count; i++) {
             struct gnode *n = &g_nodes[i];
             int ni = node_inputs(n->kind);
-            float h = 16.0f + (float)ni * 24.0f + 12.0f;
-            nk_layout_space_push(ctx, nk_rect(n->x, n->y, 120, h));
+            int no = (n->kind == G_NUM) ? 0 : 1;
+            float body_h = (float)ni * 20.0f + 8.0f;
+            float h = TITLE_H + body_h;
+
+            nk_layout_space_push(ctx, nk_rect(n->x, n->y, NODE_W, h));
             if (nk_group_begin_titled(ctx, (const char *)&i, kind_name(n->kind),
                                       NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR)) {
-                nk_layout_row_dynamic(ctx, 14, 1);
+                /* Title bar colour strip. */
+                struct nk_color col = kind_color(n->kind);
+                struct nk_rect title_bounds = nk_layout_space_rect_to_screen(
+                    ctx, nk_rect(n->x, n->y, NODE_W, TITLE_H));
+                nk_fill_rect(canvas, title_bounds, 0, col);
+
+                /* Node content. */
                 if (n->kind == G_NUM) {
+                    nk_layout_row_dynamic(ctx, 14, 1);
                     char buf[32];
                     snprintf(buf, sizeof(buf), "%lld", n->ival);
                     nk_label(ctx, buf, NK_TEXT_LEFT);
@@ -302,14 +440,41 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
                                     2147483647, 1, 1);
                 } else {
                     for (int k = 0; k < ni; k++) {
+                        nk_layout_row_dynamic(ctx, 16, 1);
                         char pin[32];
-                        if (n->in[k] >= 0) snprintf(pin, sizeof(pin), "in %d", n->in[k]);
-                        else snprintf(pin, sizeof(pin), "(open)");
+                        if (n->in[k] >= 0)
+                            snprintf(pin, sizeof(pin), "<- node %d", n->in[k]);
+                        else
+                            snprintf(pin, sizeof(pin), "(open)");
                         nk_label(ctx, pin, NK_TEXT_LEFT);
                     }
+                    if (no > 0) {
+                        nk_layout_row_dynamic(ctx, 16, 1);
+                        nk_label(ctx, "-> output", NK_TEXT_LEFT);
+                    }
                 }
+                nk_group_end(ctx);
             }
-            nk_group_end(ctx);
+
+            /* ---- Draw pin circles on canvas ---- */
+            /* Output pin (right edge). */
+            for (int s = 0; s < no; s++) {
+                struct nk_rect circle;
+                circle.x = n->x + NODE_W - PIN_R;
+                circle.y = pin_y(n, s, 1) - PIN_R;
+                circle.w = PIN_DIAM;
+                circle.h = PIN_DIAM;
+                nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));
+            }
+            /* Input pins (left edge). */
+            for (int k = 0; k < ni; k++) {
+                struct nk_rect circle;
+                circle.x = n->x - PIN_R;
+                circle.y = pin_y(n, k, 0) - PIN_R;
+                circle.w = PIN_DIAM;
+                circle.h = PIN_DIAM;
+                nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));
+            }
         }
 
         nk_layout_space_end(ctx);
@@ -351,15 +516,11 @@ static void gui_run(void) {
 
         ui_build(&ctx, (float)NK_W, (float)NK_H);
 
-        if (nk_input_is_key_pressed(&ctx.input, NK_KEY_SCROLL_DOWN))
-            ui_quit = 0; /* placeholder: wheel does not quit */
-
         nk_rasterize(&ctx);
         if (nk_sys_nk_frame(origin) == 0)
             nk_set_window_origin(origin[0], origin[1]);
         nk_clear(&ctx);
 
-        /* Small frame delay (about 60 fps). */
         unsigned t0 = (unsigned)nk_sys_time_ms();
         while ((unsigned)nk_sys_time_ms() - t0 < 8) {
             __asm__ volatile("pause");
@@ -373,11 +534,6 @@ static void gui_run(void) {
 
 int main(int argc, char **argv) {
     if (argc > 1 && strcmp(argv[1], "--selftest") == 0) {
-        /* One frame through the whole graphics pipeline, no interaction.
-         * The kernel composites the back-buffer into the desktop framebuffer
-         * at the window content origin, so writing a marker pixel into the
-         * back-buffer and reading it back from the framebuffer proves the
-         * full chain: rasterize -> SYS_NK_FRAME -> composite -> visible. */
         unsigned char pal768[768];
         int fw, fh, fp;
         nk_sys_vga_mode(1);
@@ -425,13 +581,6 @@ int main(int argc, char **argv) {
     }
 
     if (argc > 1 && strcmp(argv[1], "--pointer-test") == 0) {
-        /* One composite with the compositor pointer contract exercised: while
-         * a graphics program owns the display the kernel draws the desktop
-         * pointer on the frame syscall path (SYS_NK_FRAME), so the pointer
-         * stays visible instead of vanishing when Nuklear takes over. We
-         * composite a frame, then read the framebuffer at the arrow tip of
-         * the current mouse position and require the cursor colour (desktop
-         * white, index 10). A mutant that drops the cursor draw is killed. */
         unsigned char pal768[768];
         int fw, fh, fp;
         nk_sys_vga_mode(1);
@@ -461,10 +610,6 @@ int main(int argc, char **argv) {
             nk_sys_vga_mode(0);
             return 1;
         }
-        /* The arrow sprite's tip row (bitmap row 7) is drawn at the mouse
-         * position; its set bits land at sprite columns 4-5, i.e. pixels
-         * (mx-2, my) and (mx-1, my). The cursor colour is desktop white
-         * (index 10). */
         int ok = 0;
         for (int k = 0; k < 8; k++) {
             int px = mx - 6 + k;
@@ -487,12 +632,12 @@ int main(int argc, char **argv) {
     if (argc > 1 && strcmp(argv[1], "--demo") == 0) {
         if (argc < 3) { printf("usage: nuklear --demo <out.cvm>\n"); return 2; }
         graph_clear();
-        graph_add(G_NUM); g_nodes[0].ival = 2;          /* 0: 2 */
-        graph_add(G_NUM); g_nodes[1].ival = 3;          /* 1: 3 */
-        graph_add(G_ADD); g_nodes[2].in[0] = 0; g_nodes[2].in[1] = 1; /* 2: 2+3 */
-        graph_add(G_NUM); g_nodes[3].ival = 4;          /* 3: 4 */
-        graph_add(G_MUL); g_nodes[4].in[0] = 2; g_nodes[4].in[1] = 3; /* 4: (2+3)*4 */
-        graph_add(G_PRINT); g_nodes[5].in[0] = 4;       /* 5: print */
+        graph_add(G_NUM); g_nodes[0].ival = 2;
+        graph_add(G_NUM); g_nodes[1].ival = 3;
+        graph_add(G_ADD); g_nodes[2].in[0] = 0; g_nodes[2].in[1] = 1;
+        graph_add(G_NUM); g_nodes[3].ival = 4;
+        graph_add(G_MUL); g_nodes[4].in[0] = 2; g_nodes[4].in[1] = 3;
+        graph_add(G_PRINT); g_nodes[5].in[0] = 4;
         int rc = compile_to(argv[2]);
         printf("%s\n", g_status);
         return rc == 0 ? 0 : 1;
