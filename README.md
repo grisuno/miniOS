@@ -14,6 +14,10 @@ I have implemented a primitive desktop environment within MiniOS that operates i
 *   **Scrollable Terminal:** A virtual terminal emulator capable of handling large buffers and scrollback history via mouse wheel or keyboard shortcuts.
 *   **Speaker's Sound:** Sound support to speaker
 
+### Desktop icons, PNG, Nuklear and low-code CVM
+
+The desktop now supports PNG icons (via stb_image) that can be placed and launched from the graphical shell. Immediate-mode UI is powered by Nuklear, giving windows, buttons and widgets without a retained-mode toolkit. A low-code tool lets you author CVM modules in a simplified form that compile straight to bytecode and run natively on the CVM (with the existing JIT). Additional support includes xxHash for fast hashing and experimental TFT display output alongside the VESA framebuffer.
+
 ```
 miniOS> edit src/p.c
 edit> a
