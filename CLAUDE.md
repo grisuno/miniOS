@@ -355,6 +355,109 @@ native 320x200 instead of stealing the whole display.
    shift until the next `vga_fb_draw_desktop`. A 16/24-bit VBE mode would fix
    this but is out of scope.
 
+### ISR-driven desktop event loop (`sched.c` + `vga_fb.c`)
+
+The desktop event loop (`vga_fb_mouse_tick`) must run continuously regardless
+of whether the shell or a user program owns the CPU.  Historically it ran
+only inside `raw_blocking_getc` (the shell's idle poll), so the desktop froze
+whenever `k_exec_user` entered ring 3 for a child process.  The mouse cursor,
+taskbar clock, window drag and scrollbar all stopped responding.
+
+The fix is a timer-ISR-driven tick: the 100 Hz PIT handler (`isr_dispatch`,
+vector 32) calls `vga_fb_mouse_tick` at a configurable interval
+(`DESKTOP_TICK_INTERVAL`, default 4 = 25 Hz) whenever `user_program_active`
+is set.  The flag is set in `k_exec_user` before the `iretq` into ring 3 and
+cleared after `klongjmp` returns, so the desktop ticks for the entire
+duration of any user program.  When no user program is active the flag is
+clear and the ISR skips the tick; the shell drives the desktop from its own
+idle loop as before.
+
+The PS/2 mouse is no longer disabled around `k_exec_user`.  Disabling the
+mouse stopped IRQ12 delivery and froze `mouse_state` for the whole child
+execution, which defeated the ISR tick.  With the mouse always enabled the
+IRQ12 handler updates `mouse_state` continuously, and the ISR tick or the
+shell idle loop consumes it.  There is no reentrancy hazard: the timer ISR
+preempts ring-3 code and the IRQ12 handler runs at a lower priority; both
+access the same `mouse_state` struct, but x86 field-width stores are atomic
+and the consumer (tick or shell) is the sole reader.
+
+The iretq frame now uses `RFLAGS=0x202` (IF=1) instead of the original
+`0x002` (IF=0).  With IF=0 the CPU ignores all maskable hardware interrupts
+while a ring-3 user program runs, so neither the timer ISR nor the PS/2
+mouse IRQ fires and the desktop is completely frozen.  With IF=1 the timer
+fires at 100 Hz from ring 3, driving the desktop tick, and IRQ12 delivers
+mouse packets continuously.  The kernel's IDT (installed by `sched_init`
+before any user program runs) handles all interrupts from ring 3; the user
+program does not need its own IDT.
+
+Configuration constants:
+- `DESKTOP_TICK_INTERVAL` (`sched.h`): ISR ticks between desktop updates
+  when a user program is active.  4 = 25 Hz at 100 Hz PIT.  Lower values
+  produce smoother cursor tracking at the cost of ISR overhead; higher
+  values reduce overhead at the cost of visible cursor lag.
+
+The `user_program_active` flag is `volatile int` declared in `sched.h` and
+defined in `sched.c`.  It is set only in `k_exec_user` and read only in
+`isr_dispatch`, both in ring 0, so no memory barrier is needed beyond the
+`volatile` qualifier.
+
+### Userspace desktop architecture (design spec, future implementation)
+
+The long-term goal is to move the desktop compositor to a ring-3 userspace
+process, achieving proper separation of concerns: the kernel owns scheduling
+and hardware access, the desktop process owns rendering and input routing,
+and user programs run concurrently under preemptive scheduling.
+
+**Desktop process:** a static ELF binary compiled on the host, shipped on
+MiniFS as `bin/desktop`.  It runs at ring 3 through `k_exec_user` and
+renders the desktop background, taskbar, terminal window, and composites
+DOOM/Nuklear back-buffers.  The framebuffer is already mapped user-accessible
+at `FB_ADDR` (0x1F00000), so the desktop process writes pixels directly
+without kernel mediation.
+
+**Input routing:** the desktop process reads mouse events via `SYS_MOUSE`
+(219) and keyboard events via `SYS_KBD` (205).  Keyboard events that belong
+to the shell (typing) are forwarded through a shared ring buffer at a fixed
+address in the user window (`DESKTOP_KBD_BUF`, size `DESKTOP_KBD_BUF_SZ`).
+The shell reads from this buffer instead of polling the PS/2 keyboard
+directly.  The desktop process owns the keyboard and decides what reaches
+the shell.
+
+**Shell output routing:** the shell writes text output to a shared terminal
+ring buffer at `DESKTOP_TERM_BUF` (size `DESKTOP_TERM_BUF_SZ`).  The
+desktop process reads from this buffer and renders it in the terminal window.
+This replaces the current path where `vga_putc` writes directly to the
+framebuffer.  The kernel's `vga_fb_putc_term` writes to the ring buffer
+instead; the desktop process handles line wrapping, scrollback, and
+rendering.
+
+**Window compositing:** DOOM and Nuklear already render to kernel-heap
+back-buffers and call `SYS_DOOM_FRAME`/`SYS_NK_FRAME` to composite.  In the
+userspace model, the desktop process reads these back-buffers (mapped
+read-only in the user window) and composites them itself, removing the
+kernel-side compositing code.
+
+**Preemptive scheduling:** the timer ISR preempts the desktop process,
+giving CPU time to DOOM, Nuklear, or other user programs.  The desktop
+process yields explicitly via `SYS_SCHED_YIELD` (24) when idle.  The
+scheduler's round-robin policy ensures all processes get fair CPU time.
+
+**Security model:** the desktop process runs at ring 3 with user page
+protections.  It cannot access kernel memory, page tables, or hardware
+ports directly.  All hardware access goes through syscalls with validated
+user pointers.  The shared ring buffers live in the user window, so a
+compromised desktop process cannot corrupt kernel state.  The kernel
+validates all buffer addresses against `USER_LOAD_BASE..USER_LOAD_END`.
+
+**Phased implementation:**
+1. Phase 1 (done): ISR-driven desktop tick keeps the desktop responsive
+   during user program execution.
+2. Phase 2: add `SYS_DESKTOP_KBD_READ` and `SYS_DESKTOP_TERM_READ` syscalls
+   that expose the shared ring buffers.
+3. Phase 3: create the desktop binary, route shell I/O through ring buffers.
+4. Phase 4: remove kernel-side compositing, let the desktop process own it.
+5. Phase 5: enable preemptive scheduling for all user processes.
+
 ### Taskbar with clock and volume (`vga_fb.c` + `rtc.c` + `pcspk.c`)
 The bottom taskbar is the desktop's status strip, not a hint line. It shows
 the current time and a speaker icon with volume control, both live, and both

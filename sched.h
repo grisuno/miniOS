@@ -36,11 +36,15 @@ typedef struct {
     char        name[32];
 } proc_t;
 
+/* ---- Limits ---- */
+#define DESKTOP_TICK_INTERVAL 4
+
 /* ---- Global state ---- */
 extern proc_t  procs[MAX_PROCS];
 extern int     proc_count;
 extern int     current_pid;
 extern volatile uint64_t sys_ticks;
+extern volatile int user_program_active;
 
 /* ---- Functions ---- */
 void     sched_init(void);

@@ -3037,16 +3037,16 @@ int k_exec_user(void *entry, int argc, char **argv) {
     /* Ring-3 entry frame, popped by iretq: RIP, CS, RFLAGS, RSP, SS. */
     frame[0] = (unsigned long)entry;
     frame[1] = (unsigned long)(GDT64_USER_CODE_SEL | 3);
-    frame[2] = 0x002;                       /* IF=0: no IDT, no interrupts */
+    frame[2] = 0x202;                       /* IF=1: interrupts enabled for desktop tick */
     frame[3] = (unsigned long)sp;
     frame[4] = (unsigned long)(GDT64_USER_DATA_SEL | 3);
 
-    mouse_disable();
     /* exec_return is a shared global: a nested SYS_SPAWN child overwrites it
        via its own ksetjmp, so save it and restore it after the child exits.
        Otherwise the parent's later exit() would klongjmp back into the
        already-returned nested k_exec_user instead of here. */
     kjmpbuf saved_exec = exec_return;
+    user_program_active = 1;
     if (ksetjmp(&exec_return) == 0) {
         __asm__ volatile(
             "mov %[udata], %%ax\n"
@@ -3064,8 +3064,7 @@ int k_exec_user(void *entry, int argc, char **argv) {
             : "rax", "memory");
         __builtin_unreachable();
     }
-
-    mouse_enable();
+    user_program_active = 0;
 
     /* exit() went through the SYSCALL path, which already reloaded CS/SS to
      * the kernel selectors; restore the data segments and syscall stack. */

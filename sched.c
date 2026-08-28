@@ -15,6 +15,7 @@ proc_t procs[MAX_PROCS];
 int    proc_count;
 int    current_pid;
 volatile uint64_t sys_ticks;
+volatile int user_program_active;
 
 extern void user_trampoline(void);
 
@@ -195,6 +196,8 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                     switch_to(cur, nxt);
                 }
             }
+        } else if (user_program_active && (sys_ticks % DESKTOP_TICK_INTERVAL) == 0) {
+            vga_fb_mouse_tick();
         }
         return;
     }

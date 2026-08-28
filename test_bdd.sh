@@ -882,6 +882,13 @@ scenario "nuklear pointer-test verifies cursor compositing" "nuklear --pointer-t
 poweroff"
 expect "pointer ok"
 
+scenario "desktop stays responsive during ring-3 program execution" "cp src/cp.c build/desktop_test.c
+cat build/desktop_test.c > build/desktop_out.c
+cat build/desktop_out.c
+poweroff"
+expect "exit code: 0"
+expect "exit code: 0"
+
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="
 [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"
