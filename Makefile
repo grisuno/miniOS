@@ -259,11 +259,11 @@ $(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h cvm_host.c kernel.h \
 # ── Ring-0 ET_REL test objects (host-compiled, link against kernel symbols) ──
 # stb.o: self-test for the kernel's stb image API (PNG load + pixel check)
 $(OBJ_DIR)/stb.o: third_party/stb/stb_selftest.c
-	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
+	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -fno-stack-protector -O2 -o $@ $<
 
 # xxhash.o: self-test for the kernel's XXH64 symbol (3 known-answer vectors)
 $(OBJ_DIR)/xxhash.o: third_party/xxhash/xxhash_selftest.c
-	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
+	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -fno-stack-protector -O2 -o $@ $<
 
 # ── CVM modules (assembled from miniGCC output with 'ld') ────────
 $(CVMOD_DIR)/fib.cvm: $(ASM_DIR)/fib.s $(LD_TOOL)
