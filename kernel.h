@@ -169,6 +169,9 @@ int  k_exec_user(void *entry, int argc, char **argv);
 int  k_run_rel(prog_entry_t entry, int argc, char **argv);
 void kexit(int code);
 
+/* ========== Desktop shortcut launch ========== */
+void desktop_launch(const char *cmd);
+
 /* ========== ELF loader ========== */
 void *elf_load(void *data, unsigned size);       /* ET_REL relocatable .o */
 void *load_exec_elf(void *data, unsigned size);  /* ET_EXEC / ET_DYN */

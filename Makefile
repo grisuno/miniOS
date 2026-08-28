@@ -101,6 +101,10 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(BIN_DIR)/minigcc.elf $(BIN_DIR)/cp \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(PROGS_DIR)/etc/alias \
+            $(PROGS_DIR)/etc/shortcuts \
+            $(PROGS_DIR)/icons/terminal.png \
+            $(PROGS_DIR)/icons/doom.png \
+            $(PROGS_DIR)/icons/nuklear.png \
             $(DOC_DIR)/test.png
 
 all: os.img
@@ -595,10 +599,16 @@ stb_impl.o: third_party/stb/stb_impl.c third_party/stb/stb_image.h \
             third_party/stb/stb_api.h kernel.h
 	$(CC) $(CFLAGS_KERN) -Wno-unused-function -c $< -o $@
 
+# Desktop icon PNGs: generated from pixel data by tools/gen_icons.py.
+$(PROGS_DIR)/icons/terminal.png $(PROGS_DIR)/icons/doom.png \
+$(PROGS_DIR)/icons/nuklear.png: tools/gen_icons.py
+	python3 tools/gen_icons.py $(PROGS_DIR)/icons/
+
 sched.o: sched.c sched.h kernel.h bootdefs.h vga_fb.h pcspk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-vga_fb.o: vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h
+vga_fb.o: vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
+           third_party/stb/stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 pcspk.o: pcspk.c pcspk.h kernel.h

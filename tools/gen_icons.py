@@ -1,0 +1,204 @@
+#!/usr/bin/env python3
+"""gen_icons.py -- generate 32x32 RGBA PNG icon files for the MiniOS desktop.
+
+Each icon is defined as a 32-line string of hex characters (0-F), where each
+char maps to a colour in the icon palette.  The script writes minimal valid
+PNG files (no zlib import needed -- raw deflate via the stored method).
+
+Usage:  python3 tools/gen_icons.py progs/icons/
+"""
+
+import os
+import struct
+import sys
+import zlib
+
+# Icon palette: 16 colours indexed 0-F.  Designed for the 8-bit VGA DAC
+# with the desktop palette occupying indices 0-14; icons use their own
+# palette loaded at draw time (indices 240-255 in the VGA DAC).
+PALETTE = [
+    (  0,   0,   0,   0),   # 0  transparent
+    ( 70, 130, 180, 255),   # 1  steel blue  (terminal)
+    (220,  80,  60, 255),   # 2  tomato      (doom)
+    ( 60, 179, 113, 255),   # 3  sea green   (nuklear)
+    (255, 255, 255, 255),   # 4  white
+    ( 40,  40,  50, 255),   # 5  dark bg
+    (100, 100, 110, 255),   # 6  gray
+    (180, 180, 190, 255),   # 7  light gray
+    (255, 215,   0, 255),   # 8  gold
+    (  0, 160,   0, 255),   # 9  green
+    (147, 112, 219, 255),   # A  medium purple
+    (255, 165,   0, 255),   # B  orange
+    (100, 149, 237, 255),   # C  cornflower
+    ( 15,  15,  50, 255),   # D  navy (desktop bg)
+    ( 60,  90, 140, 255),   # E  title blue
+    (  0, 220,   0, 255),   # F  terminal green
+]
+
+# 32x32 icon pixel data.  Each string is one row, 32 hex chars.
+ICONS = {
+    "terminal": [
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00044444444444444444444444444000",
+        "0004EEEEEEEEEEEEEEEEEEEEEEEE4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0F00000000000000000000E4000",
+        "0004E0FF0000000000000000000E4000",
+        "0004E0FFF000000000000000000E4000",
+        "0004E0F00000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0F0000F0000F0000F00000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0F00000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "0004E0000000000000000000000E4000",
+        "00044444444444444444444444444000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+    ],
+    "doom": [
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000022222222222222222200000000",
+        "00000222222222222222222220000000",
+        "00002222442222222222442222000000",
+        "00022222442222222222442222200000",
+        "00022222442222222222442222200000",
+        "00022222442222222222442222200000",
+        "00022222222222222222222222200000",
+        "00022222222222222222222222200000",
+        "00022222222222222222222222200000",
+        "00022222222444444442222222200000",
+        "00022222224444444444222222200000",
+        "00022222244444444444422222200000",
+        "00022222222444444442222222200000",
+        "00022222222222222222222222200000",
+        "00022222222222222222222222200000",
+        "00022222222225555522222222200000",
+        "00022222222255555552222222200000",
+        "00022222222225555522222222200000",
+        "00022222222222222222222222200000",
+        "00022222222222222222222222200000",
+        "00022222222222222222222222200000",
+        "00022222222222222222222222200000",
+        "00002222222222222222222222000000",
+        "00000222222222222222222220000000",
+        "00000022222222222222222200000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+    ],
+    "nuklear": [
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00044444444444444444444444444000",
+        "0004AAAAAAAAAAAAAAAAAAAAAAAAA4000",
+        "0004A0000000000000000000000A4000",
+        "0004A0000000000000000000000A4000",
+        "0004A0333330000000033333000A4000",
+        "0004A0300030000000030003000A4000",
+        "0004A0300030000000030003000A4000",
+        "0004A0333330000000033333000A4000",
+        "0004A0000000000000000000000A4000",
+        "0004A0000000000000000000000A4000",
+        "0004A0000000006660000000000A4000",
+        "0004A0000000060006000000000A4000",
+        "0004A0000000600000600000000A4000",
+        "0004A0000006000000060000000A4000",
+        "0004A0000000600000600000000A4000",
+        "0004A0000000060006000000000A4000",
+        "0004A0000000006660000000000A4000",
+        "0004A0000000000000000000000A4000",
+        "0004A0000000000000000000000A4000",
+        "0004A0000000000000000000000A4000",
+        "0004A0000000000000000000000A4000",
+        "0004A0000000000000000000000A4000",
+        "0004A0000000000000000000000A4000",
+        "0004A0000000000000000000000A4000",
+        "00044444444444444444444444444000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+    ],
+}
+
+
+def make_png(pixels, palette, width=32, height=32):
+    """Create a minimal indexed-colour PNG from pixel indices and a palette."""
+    # PNG signature
+    sig = b'\x89PNG\r\n\x1a\n'
+
+    # IHDR: width, height, bit depth (8), colour type (3 = indexed)
+    ihdr_data = struct.pack('>IIBBBBB', width, height, 8, 3, 0, 0, 0)
+    ihdr = make_chunk(b'IHDR', ihdr_data)
+
+    # PLTE: RGB triplets
+    plte_data = b''
+    for r, g, b, a in palette:
+        plte_data += struct.pack('BBB', r, g, b)
+    plte = make_chunk(b'PLTE', plte_data)
+
+    # IDAT: raw image with filter byte 0 per row
+    raw = b''
+    for y in range(height):
+        raw += b'\x00'  # filter: none
+        for x in range(width):
+            raw += bytes([pixels[y * width + x]])
+    compressed = zlib.compress(raw, 9)
+    idat = make_chunk(b'IDAT', compressed)
+
+    # IEND
+    iend = make_chunk(b'IEND', b'')
+
+    return sig + ihdr + plte + idat + iend
+
+
+def make_chunk(chunk_type, data):
+    chunk = chunk_type + data
+    return struct.pack('>I', len(data)) + chunk + struct.pack('>I', zlib.crc32(chunk) & 0xFFFFFFFF)
+
+
+def main():
+    if len(sys.argv) < 2:
+        outdir = 'progs/icons'
+    else:
+        outdir = sys.argv[1]
+    os.makedirs(outdir, exist_ok=True)
+
+    ICON_SIZE = 32
+    for name, rows in ICONS.items():
+        pixels = []
+        for row in rows:
+            row = row.ljust(ICON_SIZE, '0')
+            for ch in row[:ICON_SIZE]:
+                pixels.append(int(ch, 16))
+        png_data = make_png(pixels, PALETTE, ICON_SIZE, ICON_SIZE)
+        path = os.path.join(outdir, f'{name}.png')
+        with open(path, 'wb') as f:
+            f.write(png_data)
+        print(f'  {path} ({len(png_data)} bytes)')
+
+    print(f'Generated {len(ICONS)} icons in {outdir}/')
+
+
+if __name__ == '__main__':
+    main()

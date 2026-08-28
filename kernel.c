@@ -4316,6 +4316,35 @@ static int shell_run_any(const char *name, int argc, char **argv) {
     return shell_run_file(name, argc, argv);
 }
 
+/* ---- Desktop shortcut launch ----
+ * Called by the desktop click handler (vga_fb.c) when an icon is clicked.
+ * Splits the command line into argv and runs it through the shell resolver.
+ * The ~shell command name is special: it activates the terminal. */
+void desktop_launch(const char *cmd) {
+    if (!cmd || !*cmd) return;
+    if (cmd[0] == '~' && kstrcmp(cmd, "~shell") == 0) {
+        /* ~shell: bring the terminal to focus (already visible). */
+        return;
+    }
+    /* Parse command into argv (space-separated, max 8 args). */
+    char buf[128];
+    char *argv[8];
+    int argc = 0;
+    const char *p = cmd;
+    while (*p && argc < 8) {
+        while (*p == ' ') p++;
+        if (!*p) break;
+        argv[argc] = buf + (p - cmd);
+        int i = 0;
+        while (*p && *p != ' ' && i < (int)sizeof(buf) - 1) {
+            buf[i++] = *p++;
+        }
+        buf[i] = '\0';
+        argc++;
+    }
+    if (argc > 0) shell_run_any(argv[0], argc, argv);
+}
+
 /* ---- Graphics debugging (`gfx` builtin) ----
  *
  * The serial console is the observability surface the BDD suite drives, but a

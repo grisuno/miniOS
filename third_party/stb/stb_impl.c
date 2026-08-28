@@ -19,7 +19,9 @@
 #define STBI_FREE(p)          kfree(p)
 #define STBI_ASSERT(x)        do { if (!(x)) { for(;;); } } while(0)
 #define memcpy(a, b, n)       kmemcpy(a, b, n)
+#define memmove(a, b, n)      kmemmove(a, b, n)
 #define memset(a, c, n)       kmemset(a, c, n)
+#define memcmp(a, b, n)       kmemcmp(a, b, n)
 
 #define STBI_NO_JPEG
 #define STBI_NO_BMP

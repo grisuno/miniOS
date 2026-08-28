@@ -9,6 +9,8 @@
 #include "kernel.h"
 #include "vga_fb.h"
 #include "bootdefs.h"
+#include "desktop_shortcuts.h"
+#include "desktop_icons.h"
 
 int vga_fb_active;
 
@@ -407,6 +409,33 @@ static void vga_fb_set_palette(void) {
         outb(0x3C9, pal[i][1] >> 2);
         outb(0x3C9, pal[i][2] >> 2);
     }
+    /* Icon palette: 16 colours at VGA DAC indices 240-255. */
+    {
+        static const uint8_t icon_pal[][3] = {
+            {  0,  0,  0},   /* 0  transparent/black   */
+            { 70,130,180},   /* 1  steel blue           */
+            {220, 80, 60},   /* 2  tomato               */
+            { 60,179,113},   /* 3  sea green            */
+            {255,255,255},   /* 4  white                */
+            { 40, 40, 50},   /* 5  dark bg              */
+            {100,100,110},   /* 6  gray                 */
+            {180,180,190},   /* 7  light gray           */
+            {255,215,  0},   /* 8  gold                 */
+            {  0,160,  0},   /* 9  green                */
+            {147,112,219},   /* A  medium purple        */
+            {255,165,  0},   /* B  orange               */
+            {100,149,237},   /* C  cornflower           */
+            { 15, 15, 50},   /* D  navy (desktop bg)    */
+            { 60, 90,140},   /* E  title blue           */
+            {  0,220,  0},   /* F  terminal green       */
+        };
+        outb(0x3C8, ICON_PAL_BASE);
+        for (i = 0; i < ICON_PAL_SIZE; i++) {
+            outb(0x3C9, icon_pal[i][0] >> 2);
+            outb(0x3C9, icon_pal[i][1] >> 2);
+            outb(0x3C9, icon_pal[i][2] >> 2);
+        }
+    }
 }
 
 /* ---- Drawing primitives ---- */
@@ -789,6 +818,8 @@ void vga_fb_draw_desktop(void) {
     vga_fb_clear();
     term_recalc();
     vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
+    desktop_shortcuts_load();
+    desktop_shortcuts_draw();
     taskbar_render();
     draw_title();
     /* Repaint the terminal content (live or scrolled view) so the prompt and
@@ -919,6 +950,122 @@ static void vga_fb_drag_terminal(int mx, int my, int grab_cx) {
     vga_fb_draw_desktop();
 }
 
+/* ---- Desktop shortcut icons ----
+ * Shortcuts are defined in etc/shortcuts on the ramdisk, one per line:
+ *   name|icon_path|command
+ * Icons are 32x32 PNG files decoded at boot via stbi_load_file and mapped
+ * to the icon palette (VGA DAC indices 240-255).  The cached palette-indexed
+ * pixels are redrawn on every desktop paint; mouse clicks launch the command. */
+
+static struct desktop_shortcut shortcuts[MAX_SHORTCUTS];
+static int shortcut_count;
+static int shortcuts_loaded;
+
+/* Find a pipe-delimited field by index (0-based). */
+static const char *pipe_field(const char *line, int idx, char *buf, int buflen) {
+    const char *p = line;
+    for (int i = 0; i < idx; i++) {
+        while (*p && *p != '|') p++;
+        if (*p == '|') p++;
+        else return 0;
+    }
+    const char *start = p;
+    while (*p && *p != '\n' && *p != '\r' && *p != '|') p++;
+    int len = (int)(p - start);
+    if (len >= buflen) len = buflen - 1;
+    for (int i = 0; i < len; i++) buf[i] = start[i];
+    buf[len] = '\0';
+    return buf;
+}
+
+void desktop_shortcuts_load(void) {
+    char line[128];
+    char name[SHORTCUT_NAME_LEN];
+    char path[SHORTCUT_PATH_LEN];
+    char cmd[SHORTCUT_CMD_LEN];
+
+    if (shortcuts_loaded) return;
+    shortcuts_loaded = 1;
+    shortcut_count = 0;
+
+    KFILE *f = kfopen("etc/shortcuts", "r");
+    if (!f) return;
+
+    while (kfgets(line, sizeof(line), f) && shortcut_count < MAX_SHORTCUTS) {
+        /* Skip comments and empty lines. */
+        if (line[0] == '#' || line[0] == '\n' || line[0] == '\r' || line[0] == '\0')
+            continue;
+        if (!pipe_field(line, 0, name, sizeof(name))) continue;
+        if (!pipe_field(line, 1, path, sizeof(path))) continue;
+        if (!pipe_field(line, 2, cmd, sizeof(cmd))) continue;
+
+        struct desktop_shortcut *sc = &shortcuts[shortcut_count];
+        kmemset(sc, 0, sizeof(*sc));
+        /* Copy name (truncated). */
+        for (int i = 0; i < SHORTCUT_NAME_LEN - 1 && name[i]; i++)
+            sc->name[i] = name[i];
+        /* Copy command. */
+        for (int i = 0; i < SHORTCUT_CMD_LEN - 1 && cmd[i]; i++)
+            sc->cmd[i] = cmd[i];
+        sc->w = ICON_W;
+        sc->h = ICON_H;
+
+        /* Look up embedded icon by name. */
+        sc->pixels = 0;
+        if (kstrcmp(name, "Terminal") == 0)
+            sc->pixels = icon_terminal;
+        else if (kstrcmp(name, "DOOM") == 0)
+            sc->pixels = icon_doom;
+        else if (kstrcmp(name, "Nuklear") == 0)
+            sc->pixels = icon_nuklear;
+
+        shortcut_count++;
+    }
+    kfclose(f);
+
+    /* Compute icon layout: vertical column on the left edge. */
+    int x = 4;
+    int y = 4;
+    for (int i = 0; i < shortcut_count; i++) {
+        shortcuts[i].x = x;
+        shortcuts[i].y = y;
+        y += ICON_H + ICON_PAD_Y + ICON_LABEL_H;
+    }
+}
+
+void desktop_shortcuts_draw(void) {
+    for (int i = 0; i < shortcut_count; i++) {
+        struct desktop_shortcut *sc = &shortcuts[i];
+        /* Draw icon pixels. */
+        if (sc->pixels) {
+            for (int py = 0; py < ICON_H; py++) {
+                for (int px = 0; px < ICON_W; px++) {
+                    uint8_t c = sc->pixels[py * ICON_W + px];
+                    if (c != 0) /* skip transparent */
+                        vga_fb_pixel(sc->x + px, sc->y + py, ICON_PAL_BASE + c);
+                }
+            }
+        } else {
+            /* No icon: draw a placeholder rectangle. */
+            vga_fb_rect(sc->x, sc->y, ICON_W, ICON_H, COL_SHADOW);
+        }
+        /* Draw label below the icon. */
+        text_px(sc->x, sc->y + ICON_H + 2, sc->name,
+                COL_TASKBAR_TXT, COL_BG);
+    }
+}
+
+const char *desktop_shortcuts_hit_test(int mx, int my) {
+    for (int i = 0; i < shortcut_count; i++) {
+        struct desktop_shortcut *sc = &shortcuts[i];
+        if (mx >= sc->x && mx < sc->x + ICON_W &&
+            my >= sc->y && my < sc->y + ICON_H + ICON_LABEL_H) {
+            return sc->cmd;
+        }
+    }
+    return 0;
+}
+
 void vga_fb_handle_key(int scancode) {
     switch (scancode) {
     case 0x57: vga_fb_toggle_fullscreen(); break;
@@ -941,8 +1088,12 @@ void vga_fb_mouse_tick(void) {
     /* Refresh the taskbar clock and react to volume clicks on the rising edge
      * of the left button, before any window drag/scrollbar handling. */
     taskbar_tick();
-    if ((mouse_state.buttons & 1) && !(tb_prev_buttons & 1))
+    if ((mouse_state.buttons & 1) && !(tb_prev_buttons & 1)) {
         taskbar_handle_click(mouse_state.x, mouse_state.y);
+        /* Check desktop icon clicks. */
+        const char *cmd = desktop_shortcuts_hit_test(mouse_state.x, mouse_state.y);
+        if (cmd) desktop_launch(cmd);
+    }
     tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
 
     /* Process wheel: scroll back/forward */

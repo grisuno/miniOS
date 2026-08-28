@@ -1,0 +1,9 @@
+# MiniOS desktop shortcuts
+# Format: name|icon|command
+# name:   label shown below the icon (max 12 chars)
+# icon:   path to 32x32 PNG on ramdisk/MiniFS
+# command: shell command to run on click
+# Lines starting with # are comments. Max 16 shortcuts.
+Terminal|icons/terminal.png|~shell
+DOOM|icons/doom.png|doomgeneric.elf
+Nuklear|icons/nuklear.png|nuklear
