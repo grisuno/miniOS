@@ -1216,6 +1216,8 @@ void desktop_shortcuts_load(void) {
             sc->pixels = icon_doom;
         else if (kstrcmp(name, "Nuklear") == 0)
             sc->pixels = icon_nuklear;
+        else if (kstrcmp(name, "Piano") == 0)
+            sc->pixels = icon_piano;
 
         shortcut_count++;
     }

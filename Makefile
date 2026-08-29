@@ -26,6 +26,13 @@ MICROPYTHON_REF ?= v1.28.0
 NUKLEAR_URL ?= https://github.com/Immediate-Mode-UI/Nuklear
 NUKLEAR_DIR ?= ../nuklear
 
+# Nuked-OPL3: cycle-accurate YMF262 (OPL3) FM emulator, LGPL-2.1, pure C.
+# Renders OPL3 audio to PCM at ring 3 (progs/src/opl3.c) fed to the kernel's
+# SB16 driver through the MiniOS PCM syscalls.  The source rides on the host
+# checkout; the LGPL relink/source obligations are met by shipping sources.
+NUKED_OPL3_URL ?= https://github.com/nukeykt/Nuked-OPL3
+NUKED_OPL3_DIR ?= ../nuked-opl3
+
 # The toolchain binaries are built into a directory this repository owns.
 # Several of the sibling repositories ship a committed binary next to their
 # sources; using those would mean the image was not built from source at all,
@@ -55,8 +62,12 @@ DISK_ALIGN_SECTORS  = 2048
 
 QEMU_DRIVE = -drive file=os.img,format=raw,if=ide
 QEMU_MEM   = -m 256M
-QEMU_NIC   = -nic user,model=rtl8139
-QEMU_AUDIO  = -audiodev pa,id=snd0 -machine pc,pcspk-audiodev=snd0
+# -smp is present so a second vCPU exists, but the kernel is currently
+# single-core: without an SMP-aware kernel (AP boot, per-CPU APIC timer/stacks,
+# spinlocks) the extra vCPU just idles.  It does not speed anything up yet.
+QEMU_NIC   = -nic user,model=rtl8139 -smp 2
+QEMU_AUDIO  = -audiodev pa,id=snd0 -machine pc,pcspk-audiodev=snd0 \
+              -audiodev pa,id=snd1 -device sb16,iobase=0x220,irq=5,dma=1,audiodev=snd1
 
 # KASLR randomizes the kernel image's physical base on every boot. Disable
 # with `make ENABLE_KASLR=0` when a deterministic physical layout is wanted
@@ -107,6 +118,7 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(PROGS_DIR)/icons/terminal.png \
             $(PROGS_DIR)/icons/doom.png \
             $(PROGS_DIR)/icons/nuklear.png \
+            $(PROGS_DIR)/icons/piano.png \
             $(DOC_DIR)/test.png
 
 all: os.img
@@ -141,6 +153,14 @@ sources:
 	else \
 	    echo "cloning  $(NUKLEAR_URL) -> $(NUKLEAR_DIR)"; \
 	    $(GIT) clone --depth 1 "$(NUKLEAR_URL)" "$(NUKLEAR_DIR)" || exit 1; \
+	fi
+	@if [ -d "$(NUKED_OPL3_DIR)/.git" ]; then \
+	    echo "present  $(NUKED_OPL3_DIR)"; \
+	elif [ -e "$(NUKED_OPL3_DIR)" ]; then \
+	    echo "skipped  $(NUKED_OPL3_DIR) exists and is not a git clone"; \
+	else \
+	    echo "cloning  $(NUKED_OPL3_URL) -> $(NUKED_OPL3_DIR)"; \
+	    $(GIT) clone --depth 1 "$(NUKED_OPL3_URL)" "$(NUKED_OPL3_DIR)" || exit 1; \
 	fi
 
 sources-update: sources
@@ -389,14 +409,13 @@ $(BIN_DIR)/doomgeneric.elf: $(DOOM_OBJS)
 
 # ── Archivo WAD de DOOM ──────────────────────────────────────────────────
 # Doom1.wad ya está en la raíz del repositorio (4,2 MB). Se empaqueta en
-# la ramdisk bajo el nombre bin/doom1.wad para que los programas dentro
-# del OS puedan acceder a los niveles.  Se añade a PROGS para que la
-# imagen se reconstruya al editarlo.
-$(BIN_DIR)/doom1.wad: Doom1.wad
+# minifs bajo el nombre bin/DOOM1.WAD, que es el nombre EXACTO que el buscador
+# de IWAD de doomgeneric intenta abrir (case-sensitive en el FS del kernel).
+$(BIN_DIR)/DOOM1.WAD: Doom1.wad
 	cp $< $@
 
 # DOOM binaries live on minifs, not the ramdisk (kernel must stay < 3 MB)
-MINIFS_DOOM_FILES = $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/doom1.wad $(BIN_DIR)/DOOM1.WAD
+MINIFS_DOOM_FILES = $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/DOOM1.WAD
 
 # ── MicroPython (microPython unix port, static glibc ELF) ──────────
 # Same contract as DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
@@ -456,11 +475,46 @@ $(BIN_DIR)/nuklear.elf: $(NUKLEAR_SRCS) $(NUKLEAR_DIR)/nuklear.h
 $(BIN_DIR)/nuklear: $(BIN_DIR)/nuklear.elf
 	cp $< $@
 
+# ── piano (Nuklear FM piano -> SB16 PCM) ───────────────────────────────
+# A clickable two-octave piano keyboard in Nuklear that plays real FM sound
+# through the kernel's Sound Blaster 16 driver: Nuked-OPL3 synthesizes each
+# note and the app streams 8-bit mono PCM via syscalls 221/222.  Built like
+# the node editor (reuses nuklear_minios.c), static ring-3, ships on MiniFS.
+PIANO_SRCS = $(PROGS_DIR)/piano/piano.c \
+             $(PROGS_DIR)/nuklear/nuklear_minios.c
+
+$(BIN_DIR)/piano.elf: $(PIANO_SRCS) $(NUKLEAR_DIR)/nuklear.h \
+                      $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
+	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear -I$(NUKED_OPL3_DIR) \
+	      -o $@ $(PIANO_SRCS) $(NUKED_OPL3_DIR)/opl3.c -lm
+	chmod +x $@
+
+# Bare-name alias so `piano` works without the .elf suffix.
+$(BIN_DIR)/piano: $(BIN_DIR)/piano.elf
+	cp $< $@
+
+# ── opl3 (ring-3 Nuked-OPL3 FM synth -> SB16 PCM) ───────────────────
+# Static ELF like DOOM. Renders a melody through the Nuked-OPL3 chip emulator
+# and streams 8-bit mono PCM to the kernel SB16 driver (syscalls 221/222).
+$(NUKED_OPL3_DIR)/opl3.h:
+	@echo "missing $@"
+	@echo "run 'make sources' to clone the Nuked-OPL3 repository"
+	@exit 1
+
+$(BIN_DIR)/opl3: $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wall \
+	      -I$(NUKED_OPL3_DIR) -o $@ $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c
+	chmod +x $@
+
 # aes/unaes live on MiniFS (ramdisk budget): bare-name commands resolved
 # against the MiniFS root by shell_run_elf_minifs; src/aes.c rides along so
 # the OS can rebuild them without leaving the machine.
 MINIFS_FILES = $(MINIFS_DOOM_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
                $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear \
+               $(BIN_DIR)/piano.elf $(BIN_DIR)/piano \
+               $(PROGS_DIR)/piano/piano.c \
+               $(BIN_DIR)/opl3 $(SRC_DIR)/opl3.c \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                $(BIN_DIR)/json $(SRC_DIR)/json.c \
                $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
@@ -613,7 +667,7 @@ zip.o: zip.c zip.h kernel.h third_party/miniz/miniz.h
 
 # Desktop icon PNGs: generated from pixel data by tools/gen_icons.py.
 $(PROGS_DIR)/icons/terminal.png $(PROGS_DIR)/icons/doom.png \
-$(PROGS_DIR)/icons/nuklear.png: tools/gen_icons.py
+$(PROGS_DIR)/icons/nuklear.png $(PROGS_DIR)/icons/piano.png: tools/gen_icons.py
 	python3 tools/gen_icons.py $(PROGS_DIR)/icons/
 
 # Zip test fixtures: host-produced archives for the unzip builtin. host.zip
@@ -632,6 +686,9 @@ vga_fb.o: vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
 pcspk.o: pcspk.c pcspk.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+sb16.o: sb16.c sb16.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 rtc.o: rtc.c rtc.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -641,11 +698,31 @@ isr_stubs.o: isr_stubs.S
 ctx_sw.o: ctx_sw.S
 	$(CC) -c -m64 $< -o $@
 
-kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o kernel.ld
+# ── SMP AP bootstrap stub ───────────────────────────────────────────────
+# A flat binary the BSP copies to AP_STUB_ADDR (0x6000) and wakes every AP
+# with.  Placed at its real-mode address by ap_entry.ld, then extracted with
+# objcopy and embedded as a C array plus the runtime patch offset.
+ap_stub.bin: ap_entry.S ap_entry.ld $(BOOTDEFS)
+	$(CC) -c -m64 ap_entry.S -o ap_entry.o
+	$(LD) -m elf_x86_64 -T ap_entry.ld ap_entry.o -o ap_entry.elf
+	$(OBJCOPY) -O binary ap_entry.elf ap_stub.bin
+
+ap_stub.h: ap_stub.bin
+	@echo "/* generated from ap_stub.bin - do not edit */" > $@
+	@echo "static const unsigned char ap_stub_blob[] = {" >> $@
+	@xxd -i ap_stub.bin | awk '/^  0x/{print "    "$$0}' >> $@
+	@echo "};" >> $@
+	@echo "static const unsigned int ap_stub_len = $$(stat -c%s ap_stub.bin);" >> $@
+	@echo "static const unsigned long ap_patch_off = $$(( 0x$$(nm ap_entry.elf | awk '/ap_patch_slot/{print $$1}') - 0x6000 ));" >> $@
+
+smp.o: smp.c smp.h kernel.h bootdefs.h ap_stub.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o smp.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
-	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o xxhash.o \
-	      stb_impl.o miniz_impl.o zip.o -o $@
+	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
+	      stb_impl.o miniz_impl.o zip.o smp.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@
@@ -708,11 +785,15 @@ clean:
 	      $(BIN_DIR)/aes $(BIN_DIR)/unaes \
 	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
 	      $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear
+	rm -f $(BIN_DIR)/opl3
+	rm -f $(BIN_DIR)/piano.elf $(BIN_DIR)/piano
+	rm -f $(PROGS_DIR)/icons/piano.png
 	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm
 	rm -f $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s $(ASM_DIR)/w1.s \
 	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/lzss.s \
 	      $(ASM_DIR)/lz4.s $(ASM_DIR)/json.s $(ASM_DIR)/aes.s \
 	      $(ASM_DIR)/freedom.s
+	rm -f sb16.o smp.o ap_stub.bin ap_stub.h ap_entry.o ap_entry.elf
 
 .SECONDARY:
 

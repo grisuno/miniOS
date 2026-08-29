@@ -8,6 +8,8 @@
 #include "sched.h"
 #include "vga_fb.h"
 #include "pcspk.h"
+#include "sb16.h"
+#include "smp.h"
 #include "rtc.h"
 #include "lz4_kernel.h"
 #define XXH_STATIC_LINKING_ONLY
@@ -2551,7 +2553,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         pcspk_init();
         return 0;
     }
-    case 210: { /* SYS_PCSPK_TONE: play PC speaker tone at freq Hz (0=off) */
+    case 210: { /* SYS_PCSPK_TONE: play PC speaker tone at freq Hz (0=off).
+                 * Kept on the PC speaker so Doom's note player keeps its
+                 * original distinguishable sound.  Real PCM audio (SB16) is
+                 * opt-in through SYS_SB16_PCM_OPEN/SUBMIT (221/222). */
         pcspk_tone((unsigned)a1);
         return 0;
     }
@@ -2663,6 +2668,22 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
             o[1] = nk_win_y + FONT_H;
         }
         return 0;
+    }
+    case 221: { /* SYS_SB16_PCM_OPEN: switch the SB16 sink to PCM streaming
+                 * (a1=1) or back to tone/silence (a1=0).  Returns 1 when an
+                 * SB16 is present so a ring-3 renderer can detect it. */
+        if (a1) sb16_pcm_open();
+        else    sb16_pcm_close();
+        return sb16_present() ? 1 : 0;
+    }
+    case 222: { /* SYS_SB16_PCM_SUBMIT: queue a ring-3 PCM buffer (8-bit
+                 * unsigned mono). a1=user buf, a2=len. Validated against the
+                 * user window; returns -1 on no-SB16/full/oversize. */
+        const unsigned char *pcm = (const unsigned char *)a1;
+        long len = a2;
+        if (len < 0) return -EFAULT;
+        if (!user_range_ok((unsigned long)a1, (unsigned long)len)) return -EFAULT;
+        return sb16_pcm_submit(pcm, (unsigned)len);
     }
     case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
         unsigned char *pal = (unsigned char *)a1;
@@ -5224,6 +5245,16 @@ void kmain(void) {
     kprintf("Scheduler: IDT 256 entries, TSS loaded, PIT 100 Hz, preemptive\n");
 
     vga_fb_init();
+
+    /* Probe the Sound Blaster 16 for real audio; fall back to the PC speaker
+     * when none is present. */
+    if (sb16_init())
+        kprintf("sb16: DSP probed, 8-bit %d Hz DMA channel 1\n", 22050);
+    else
+        kprintf("sb16: not present, PC speaker stays the audio sink\n");
+
+    /* Wake the application processors; fail-safe, APs idle, system unchanged. */
+    smp_init();
 
     shell_run();
 }

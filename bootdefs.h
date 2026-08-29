@@ -23,7 +23,12 @@
  *   0x09000 - 0x0AFFF  stage 2
  *   0x10000 - 0x8FFFF  kernel staging buffer (one chunk at a time; the
  *                      first 64 KB are reclaimed by the user page tables)
- *   0x90000            protected/long mode stack top
+ *   0x90000            protected/long mode stack top; the kernel stack
+ *                      grows DOWN from here.  The region ABOVE it is the
+ *                      reserved SB16 DMA audio ring [0x90000, 0x94000):
+ *                      it is identity mapped (low 1 MB) and below the ISA
+ *                      DMA 16 MB limit, so the 8237 can reach it.  The
+ *                      stack never grows up past 0x90000 to touch it.
  *   0x100000           kernel link-time virtual base (physical base is
  *                      randomized by KASLR into [0x0600000, 0x0E000000)
  *                      when enabled). The kernel image (code + .bss) maps
@@ -148,6 +153,11 @@
 
 #define GDT64_ADDR                0x8000
 #define GDT64_BYTES               40
+
+/* SMP application-processor bootstrap stub: a flat binary copied to this low
+ * address (below 1 MB so a real-mode SIPI can reach it) and executed by every
+ * AP.  It reuses the page tables and 64-bit GDT stage 2 built for the BSP. */
+#define AP_STUB_ADDR              0x6000
 #define GDT64_CODE_SEL            0x08
 #define GDT64_DATA_SEL            0x10
 #define GDT64_USER_DATA_SEL       0x18

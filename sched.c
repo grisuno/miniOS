@@ -5,6 +5,7 @@
 #include "sched.h"
 #include "bootdefs.h"
 #include "vga_fb.h"
+#include "sb16.h"
 
 /* Local copies of kernel constants (static in kernel.c) */
 #define MY_SYS_KSTK_TOP   0x00088000UL
@@ -94,8 +95,9 @@ static void pic_init(void) {
     outb(0x21,0x20); outb(0xA1,0x28);
     outb(0x21,0x04); outb(0xA1,0x02);
     outb(0x21,0x01); outb(0xA1,0x01);
-    /* Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade). */
-    outb(0x21,0xF8);
+    /* Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) +
+     * IRQ5 (Sound Blaster 16 DMA done).  0xD8 = ~bits 2,3,4,5,6,7. */
+    outb(0x21,0xD8);
     /* Slave: unmask IRQ12 (mouse) only. 0xEF = ~bit4. */
     outb(0xA1,0xEF);
 }
@@ -235,6 +237,11 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             mouse_state.present = 1;
         }
         pic_eoi(12);
+        return;
+    }
+    if (vector == 37) { /* IRQ5: Sound Blaster 16 DMA buffer complete */
+        sb16_irq();
+        pic_eoi(5);
         return;
     }
     if (vector >= 32 && vector < 48) { pic_eoi(vector - 32); return; }
