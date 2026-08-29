@@ -3,7 +3,7 @@
     "god_nodes": [
       [
         "kernel.c",
-        48.3
+        53.8
       ],
       [
         "progs/doomgeneric/d_englsh.h",
@@ -11,11 +11,15 @@
       ],
       [
         "kernel.h",
-        25.8
+        28.2
       ],
       [
         "bootdefs.h",
-        17.5
+        17.8
+      ],
+      [
+        "vga_fb.c",
+        17.1
       ],
       [
         "minifs.c",
@@ -36,10 +40,6 @@
       [
         "net.c",
         12.4
-      ],
-      [
-        "tls_crypto.c",
-        11.600000000000001
       ]
     ],
     "communities": [
@@ -47,41 +47,35 @@
         "id": 0,
         "label": "root",
         "file_ids": [
-          "block.h",
-          "rtc.h",
-          "rtc.c",
-          "pcspk.c",
-          "kernel.h",
-          "kernel.c",
-          "pcspk.h",
-          "sched.h",
-          "lz4_kernel.h",
-          "ide.c",
+          "minifs.h",
           "minifs.c",
-          "net.h",
-          "ide.h",
+          "vga_fb.h",
+          "sched.c",
           "net.c",
+          "block.h",
+          "zip.h",
           "lz4_kernel.c",
+          "desktop_icons.h",
+          "ide.h",
+          "bootdefs.h",
+          "zip.c",
+          "lz4_kernel.h",
+          "sched.h",
+          "rtc.h",
+          "vga_fb.c",
           "block.c",
-          "minifs.h"
+          "ide.c",
+          "net.h",
+          "kernel.c",
+          "desktop_shortcuts.h",
+          "kernel.h",
+          "rtc.c"
         ],
-        "cohesion": 0.7647058823529411,
-        "size": 17
+        "cohesion": 0.8809523809523809,
+        "size": 23
       },
       {
         "id": 1,
-        "label": "root",
-        "file_ids": [
-          "vga_fb.c",
-          "sched.c",
-          "vga_fb.h",
-          "bootdefs.h"
-        ],
-        "cohesion": 0.4444444444444444,
-        "size": 4
-      },
-      {
-        "id": 2,
         "label": "mcp",
         "file_ids": [
           "mcp/minios_mcp.py",
@@ -91,17 +85,27 @@
         "size": 2
       },
       {
+        "id": 2,
+        "label": "root",
+        "file_ids": [
+          "pcspk.c",
+          "pcspk.h"
+        ],
+        "cohesion": 0.3333333333333333,
+        "size": 2
+      },
+      {
         "id": 3,
         "label": "root",
         "file_ids": [
-          "tls_test_roots.h",
+          "tls_test.c",
+          "tls.h",
+          "tls.c",
+          "tls_roots.h",
           "tls_x509.c",
           "tls_port.h",
-          "tls.c",
-          "tls.h",
           "tls_crypto.c",
-          "tls_test.c",
-          "tls_roots.h"
+          "tls_test_roots.h"
         ],
         "cohesion": 0.7692307692307693,
         "size": 8
@@ -109,42 +113,42 @@
     ],
     "surprising_connections": [
       [
-        "lz4_kernel.h",
+        "desktop_icons.h",
         "tls_roots.h",
         5,
         "{0, 3}"
       ],
       [
-        "lz4_kernel.h",
+        "desktop_icons.h",
+        "tls_test_roots.h",
+        5,
+        "{0, 3}"
+      ],
+      [
+        "desktop_shortcuts.h",
+        "tls_roots.h",
+        5,
+        "{0, 3}"
+      ],
+      [
+        "desktop_shortcuts.h",
         "tls_test_roots.h",
         5,
         "{0, 3}"
       ],
       [
         "block.c",
-        "tls_roots.h",
-        4,
-        "{0, 3}"
-      ],
-      [
-        "block.c",
-        "tls_test_roots.h",
-        4,
-        "{0, 3}"
-      ],
-      [
-        "block.h",
         "tls_roots.h",
         4,
         "{0, 3}"
       ]
     ],
     "suggested_questions": [
-      "What does kernel.c depend on, and what depends on it? (11 connections)",
+      "What does kernel.c depend on, and what depends on it? (13 connections)",
       "What does d_englsh.h depend on, and what depends on it? (0 connections)",
-      "What does kernel.h depend on, and what depends on it? (11 connections)",
-      "How are the 17 files in 'root' related to each other?",
-      "Why are lz4_kernel.h and tls_roots.h connected through 5 hops across 2 communities?"
+      "What does kernel.h depend on, and what depends on it? (12 connections)",
+      "How are the 23 files in 'root' related to each other?",
+      "Why are desktop_icons.h and tls_roots.h connected through 5 hops across 2 communities?"
     ]
   },
   "layers": {
@@ -155,6 +159,8 @@
     "bootloader.c": "utility",
     "ctx_sw.S": "utility",
     "cvm_host.c": "utility",
+    "desktop_icons.h": "utility",
+    "desktop_shortcuts.h": "utility",
     "gen_minifs.py": "utility",
     "ide.c": "utility",
     "ide.h": "utility",
@@ -183,11 +189,15 @@
     "net.h": "utility",
     "pcspk.c": "utility",
     "pcspk.h": "utility",
+    "progs/asm/aes.s": "utility",
     "progs/asm/cp.s": "utility",
     "progs/asm/fib.s": "utility",
     "progs/asm/freedom.s": "utility",
     "progs/asm/http.s": "presentation",
+    "progs/asm/json.s": "utility",
     "progs/asm/ldhello.s": "utility",
+    "progs/asm/lz4.s": "utility",
+    "progs/asm/lzss.s": "utility",
     "progs/asm/w1.s": "utility",
     "progs/doomgeneric/am_map.c": "utility",
     "progs/doomgeneric/am_map.h": "utility",
@@ -375,6 +385,12 @@
     "progs/doomgeneric/wi_stuff.h": "utility",
     "progs/doomgeneric/z_zone.c": "utility",
     "progs/doomgeneric/z_zone.h": "utility",
+    "progs/nuklear/cvm_emit.c": "utility",
+    "progs/nuklear/cvm_emit.h": "utility",
+    "progs/nuklear/node_editor.c": "infrastructure",
+    "progs/nuklear/nuklear_minios.c": "utility",
+    "progs/nuklear/nuklear_minios.h": "utility",
+    "progs/src/aes.c": "utility",
     "progs/src/cp.c": "utility",
     "progs/src/cpl.c": "utility",
     "progs/src/fib.c": "utility",
@@ -383,11 +399,16 @@
     "progs/src/hello.c": "utility",
     "progs/src/hello.py": "utility",
     "progs/src/http.c": "presentation",
+    "progs/src/json.c": "utility",
     "progs/src/kmem.c": "utility",
     "progs/src/ldhello.c": "utility",
     "progs/src/lxhello.c": "utility",
+    "progs/src/lz4.c": "utility",
+    "progs/src/lzss.c": "utility",
     "progs/src/nx.c": "utility",
+    "progs/src/shell.py": "utility",
     "progs/src/test.c": "testing",
+    "progs/src/test.py": "testing",
     "progs/src/w1.c": "utility",
     "ramdisk_data.c": "data_access",
     "rtc.c": "utility",
@@ -398,6 +419,8 @@
     "stage2.S": "utility",
     "test_bdd.sh": "testing",
     "test_http_server.py": "testing",
+    "tests/host_aes.sh": "testing",
+    "tests/host_codecs.sh": "testing",
     "tls.c": "utility",
     "tls.h": "utility",
     "tls_crypto.c": "utility",
@@ -407,8 +430,13 @@
     "tls_test.py": "testing",
     "tls_test_roots.h": "testing",
     "tls_x509.c": "utility",
+    "tools/gen_icons.py": "utility",
+    "tools/gen_zip_fixtures.py": "data_access",
+    "tools/minios_cli.py": "utility",
     "vga_fb.c": "utility",
-    "vga_fb.h": "utility"
+    "vga_fb.h": "utility",
+    "zip.c": "utility",
+    "zip.h": "utility"
   },
   "security": {
     "findings": []
