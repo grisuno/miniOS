@@ -356,6 +356,15 @@ user programs crash at "unmapped" addresses — that is the historical
 
 ## VESA Hi-Res Desktop and Windowed DOOM
 
+**Testing doctrine: VGA-mode work is driven with `tools/minios_gui.py`, never
+headless.** A headless boot cannot observe or trigger desktop events (mouse
+cursor, window drag, title-bar buttons, the return-to-desktop transition after
+a ring-3 program), so a GUI bug seen by hand or assumed from code is not
+reproduced. `minios_gui.py` boots QEMU with the std VGA device, a QMP socket
+to inject PS/2 mouse motion, clicks and keyboard, and a pty serial console;
+after each action it saves the framebuffer to a PNG via QMP `screendump`.
+`gfx` / `gfx pixel x y` probe the framebuffer over serial as a text backstop.
+
 The desktop runs at a VESA linear-framebuffer resolution (800x600x8 by
 default) instead of VGA Mode 13h, and DOOM runs in a titled window at its
 native 320x200 instead of stealing the whole display.

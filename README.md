@@ -18,6 +18,35 @@ I have implemented a primitive desktop environment within MiniOS that operates i
 
 The desktop now supports PNG icons (via stb_image) that can be placed and launched from the graphical shell. Immediate-mode UI is powered by Nuklear, giving windows, buttons and widgets without a retained-mode toolkit. A low-code tool lets you author CVM modules in a simplified form that compile straight to bytecode and run natively on the CVM (with the existing JIT). Additional support includes xxHash for fast hashing and experimental TFT display output alongside the VESA framebuffer.
 
+## Testing the VGA desktop (doctrine)
+
+VGA-mode behaviour (the mouse cursor, window drag, title-bar buttons, the
+desktop compositor, and the return-to-desktop transition after a ring-3
+program) must be exercised with **`tools/minios_gui.py`, never headless.**
+Headless boots cannot observe or trigger these events, so a GUI bug verified
+by hand or assumed from code is not reproduced.
+
+`tools/minios_gui.py` boots QEMU with the emulated std VGA device (the
+linear framebuffer the desktop renders into), a QMP socket to inject PS/2
+mouse motion, clicks and keyboard, and a pty serial console to drive the
+shell. After each action it saves the current framebuffer to a PNG via QMP
+`screendump`, so a crashed desktop, a vanished cursor or a corrupted window
+is visible:
+
+```
+python3 tools/minios_gui.py send "doomgeneric.elf" sleep 10 \
+    key esc key down key down key down key down key down key ret key y \
+    dump after_doom
+```
+
+Actions: `send LINE`, `mouse DX DY`, `click`, `key QCODE`, `dump NAME`,
+`sleep SECS`. The serial console is on a pty; the kernel's `gfx`/`gfx pixel
+x y` commands probe the framebuffer state over serial (mouse present,
+position, palette index at a pixel), which is the text backstop when an
+image viewer is unavailable.
+
+## Desktop icons, PNG, Nuklear and low-code CVM (continued)
+
 ```
 miniOS> edit src/p.c
 edit> a

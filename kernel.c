@@ -50,6 +50,12 @@ static int console_getc(void); /* defined in the shell section */
  * ================================================================ */
 
 static int vga_mode13h; /* nonzero when a graphics program owns the display */
+/* Set when a graphics program activates SYS_VGA_MODE and cleared when the
+ * desktop is restored on return. A program (nuklear) may clear vga_mode13h
+ * itself before exiting; this flag is what guarantees the desktop is still
+ * redrawn on return, otherwise the framebuffer stays frozen on the program's
+ * last frame and the cursor is never re-established. */
+static int graphics_program_ran;
 static int vga_x, vga_y;
 static char vga_color = 0x07; /* light grey on black */
 
@@ -2522,6 +2528,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     }
     case 208: { /* SYS_VGA_MODE: tell kernel a graphics program owns the display */
         vga_mode13h = (int)a1;
+        if (a1) graphics_program_ran = 1;
         /* While a graphics program owns the display the idle loop never runs,
          * so the desktop pointer is drawn by the frame composites instead.
          * Toggle that mode here. */
@@ -2873,15 +2880,19 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     if (!path || !user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN))
         return EFAULT;
 
-    /* Validate child_argv if provided. */
+    /* Validate child_argv if provided. The strings are arbitrary program
+     * arguments (a key, a path, an option), not filenames: a 64-char aes key
+     * is legitimate, so each is validated as NUL-terminated anywhere within
+     * the user window, never against RAMDISK_FNAME_LEN. */
     if (child_argc > 0 && child_argv) {
         if (!user_range_ok((unsigned long)child_argv,
                            (unsigned long)(child_argc + 1) * sizeof(char *)))
             return EFAULT;
         for (int i = 0; i < child_argc; i++) {
             if (!child_argv[i]) break;
-            if (!user_str_ok((unsigned long)child_argv[i], RAMDISK_FNAME_LEN))
-                return EFAULT;
+            unsigned long s = (unsigned long)child_argv[i];
+            if (s < USER_LOAD_BASE || s >= USER_LOAD_END) return EFAULT;
+            if (!user_str_ok(s, USER_LOAD_END - s)) return EFAULT;
         }
     }
 
@@ -3104,8 +3115,10 @@ int k_exec_user(void *entry, int argc, char **argv) {
     exec_return = saved_exec;
     syscall_kstack = saved_kstack;
     if (child_stack) kfree(child_stack);
-    if (vga_mode13h) {
+    if (vga_mode13h || graphics_program_ran) {
         vga_mode13h = 0; /* reclaim the display for the text console */
+        graphics_program_ran = 0;
+        vga_fb_set_gfx_mode(0); /* drop the graphics pointer state */
         vga_fb_draw_desktop(); /* drop the graphics window, restore desktop */
     }
     return exec_exit_code;
@@ -3147,8 +3160,10 @@ int k_run_rel(prog_entry_t entry, int argc, char **argv) {
     /* klongjmp landed here after kexit() */
     exec_return = saved_exec;
     syscall_kstack = saved_kstack;
-    if (vga_mode13h) {
+    if (vga_mode13h || graphics_program_ran) {
         vga_mode13h = 0;
+        graphics_program_ran = 0;
+        vga_fb_set_gfx_mode(0);
         vga_fb_draw_desktop();
     }
     return exec_exit_code;
