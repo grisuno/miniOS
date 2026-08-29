@@ -827,6 +827,57 @@ os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	 echo "minifs:  $$(stat -c%s minifs.bin) bytes ($$fsec sectors) at LBA $$img"; \
 	 echo "image:   $$final sectors"
 
+# ── USB bootable image (MBR partition table + boot chain) ───────────
+# Adds a partition table to os.img so fdisk/parted see a valid disk.
+# The bootloader (stage1+stage2) reads raw LBAs and ignores the
+# partition table, so booting is unchanged.  Tools like Rufus write
+# this image to USB in DD mode and the BIOS boots it via INT 13h LBA.
+os.usb.img: os.img
+	@python3 -c " \
+	import struct; \
+	img = bytearray(open('$<','rb').read()); \
+	assert img[510]==0x55 and img[511]==0xAA, 'no MBR signature'; \
+	total = len(img)//512; \
+	start = 2048; size = total - start; \
+	e = struct.pack('<BBBBBBBBBBBBBBBB', \
+	  0x00, 0x00,0x01,0x00, 0x83, 0xFE,0xFF,0xFF, \
+	  start&0xFF,(start>>8)&0xFF,(start>>16)&0xFF,(start>>24)&0xFF, \
+	  size&0xFF,(size>>8)&0xFF,(size>>16)&0xFF,(size>>24)&0xFF); \
+	img[0x1BE:0x1CE] = e; \
+	img[0x1CE:0x1FE] = b'\\x00'*(0x1FE-0x1CE); \
+	open('$@','wb').write(img); \
+	print('os.usb.img: %d sectors, partition LBA %d (%d sectors)' % (total,start,size))"
+
+# ── ISO image (distribution + USB bootable via DD) ──────────────────
+# The kernel reads the ramdisk from absolute LBAs (LBA 2048+), which
+# is incompatible with ISO9660 disc layout.  This ISO contains os.img
+# as a raw file: write it to a USB pendrive with dd or Rufus (DD mode)
+# and the BIOS boots it via INT 13h LBA, identical to os.img itself.
+# CD/DVD boot (El Torito) is not supported.
+os.iso: os.img
+	cp $< $@
+	@echo "=== os.iso built (raw disk image for USB) ==="; \
+	 echo "Write to USB:  sudo dd if=$@ of=/dev/sdX bs=4M status=progress conv=fsync"; \
+	 echo "Boot in QEMU:  make run-iso"
+
+# Boot in QEMU (IDE drive, same as real hardware USB boot)
+run-iso: os.img
+	$(QEMU) -drive file=$<,format=raw,if=ide $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) $(QEMU_AUDIO)
+
+# Write os.img directly to a USB drive (INT 13h LBA, same as QEMU IDE)
+usb: os.img
+	@echo "=== USB writer ==="; \
+	 echo "This will DESTROY all data on the target device."; \
+	 echo "Available block devices:"; \
+	 lsblk -d -o NAME,SIZE,MODEL | grep -v loop | grep -v sr0; \
+	 echo ""; \
+	 read -p "Enter USB device (e.g. /dev/sdb): " dev; \
+	 if [ ! -b "/dev/$$dev" ] && [ ! -b "$$dev" ]; then \
+	   echo "Error: not a block device"; exit 1; fi; \
+	 dev=$$(echo "$$dev" | sed 's|^/dev/||'); \
+	 sudo dd if=os.img of=/dev/$$dev bs=4M status=progress conv=fsync; \
+	 echo "=== written to /dev/$$dev ==="
+
 run: os.img
 	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) $(QEMU_AUDIO)
 
