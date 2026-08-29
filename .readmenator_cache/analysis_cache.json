@@ -47,35 +47,47 @@
         "id": 0,
         "label": "root",
         "file_ids": [
-          "minifs.h",
-          "minifs.c",
-          "vga_fb.h",
-          "sched.c",
-          "net.c",
-          "block.h",
-          "zip.h",
-          "lz4_kernel.c",
-          "desktop_icons.h",
           "ide.h",
-          "bootdefs.h",
-          "zip.c",
+          "lz4_kernel.c",
+          "block.h",
           "lz4_kernel.h",
-          "sched.h",
-          "rtc.h",
-          "vga_fb.c",
-          "block.c",
           "ide.c",
-          "net.h",
+          "block.c",
+          "minifs.c",
+          "zip.c",
           "kernel.c",
-          "desktop_shortcuts.h",
-          "kernel.h",
-          "rtc.c"
+          "minifs.h",
+          "zip.h",
+          "kernel.h"
         ],
-        "cohesion": 0.8809523809523809,
-        "size": 23
+        "cohesion": 0.59375,
+        "size": 12
       },
       {
         "id": 1,
+        "label": "root",
+        "file_ids": [
+          "sched.h",
+          "sched.c",
+          "bootdefs.h",
+          "vga_fb.h"
+        ],
+        "cohesion": 0.3333333333333333,
+        "size": 4
+      },
+      {
+        "id": 2,
+        "label": "root",
+        "file_ids": [
+          "desktop_shortcuts.h",
+          "vga_fb.c",
+          "desktop_icons.h"
+        ],
+        "cohesion": 0.4,
+        "size": 3
+      },
+      {
+        "id": 3,
         "label": "mcp",
         "file_ids": [
           "mcp/minios_mcp.py",
@@ -85,30 +97,42 @@
         "size": 2
       },
       {
-        "id": 2,
+        "id": 4,
         "label": "root",
         "file_ids": [
-          "pcspk.c",
-          "pcspk.h"
+          "net.h",
+          "tls.h",
+          "tls_crypto.c",
+          "tls_test_roots.h",
+          "tls_test.c",
+          "tls.c",
+          "net.c",
+          "tls_roots.h",
+          "tls_x509.c",
+          "tls_port.h"
+        ],
+        "cohesion": 0.75,
+        "size": 10
+      },
+      {
+        "id": 5,
+        "label": "root",
+        "file_ids": [
+          "pcspk.h",
+          "pcspk.c"
         ],
         "cohesion": 0.3333333333333333,
         "size": 2
       },
       {
-        "id": 3,
+        "id": 6,
         "label": "root",
         "file_ids": [
-          "tls_test.c",
-          "tls.h",
-          "tls.c",
-          "tls_roots.h",
-          "tls_x509.c",
-          "tls_port.h",
-          "tls_crypto.c",
-          "tls_test_roots.h"
+          "rtc.c",
+          "rtc.h"
         ],
-        "cohesion": 0.7692307692307693,
-        "size": 8
+        "cohesion": 0.3333333333333333,
+        "size": 2
       }
     ],
     "surprising_connections": [
@@ -116,39 +140,39 @@
         "desktop_icons.h",
         "tls_roots.h",
         5,
-        "{0, 3}"
+        "{0, 2, 4}"
       ],
       [
         "desktop_icons.h",
         "tls_test_roots.h",
         5,
-        "{0, 3}"
+        "{0, 2, 4}"
       ],
       [
         "desktop_shortcuts.h",
         "tls_roots.h",
         5,
-        "{0, 3}"
+        "{0, 2, 4}"
       ],
       [
         "desktop_shortcuts.h",
         "tls_test_roots.h",
         5,
-        "{0, 3}"
+        "{0, 2, 4}"
       ],
       [
         "block.c",
         "tls_roots.h",
         4,
-        "{0, 3}"
+        "{0, 4}"
       ]
     ],
     "suggested_questions": [
       "What does kernel.c depend on, and what depends on it? (13 connections)",
       "What does d_englsh.h depend on, and what depends on it? (0 connections)",
       "What does kernel.h depend on, and what depends on it? (12 connections)",
-      "How are the 23 files in 'root' related to each other?",
-      "Why are desktop_icons.h and tls_roots.h connected through 5 hops across 2 communities?"
+      "How are the 12 files in 'root' related to each other?",
+      "Why are desktop_icons.h and tls_roots.h connected through 5 hops across 3 communities?"
     ]
   },
   "layers": {
@@ -433,6 +457,8 @@
     "tools/gen_icons.py": "utility",
     "tools/gen_zip_fixtures.py": "data_access",
     "tools/minios_cli.py": "utility",
+    "tools/minios_gui.py": "presentation",
+    "tools/repro_gui.py": "presentation",
     "vga_fb.c": "utility",
     "vga_fb.h": "utility",
     "zip.c": "utility",
