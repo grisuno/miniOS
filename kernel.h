@@ -83,11 +83,22 @@ void mouse_enable(void);
 void vga_cursor_enable(int on);
 
 /* ========== Memory allocator ========== */
+#define HEAP_BASE 0x02000000UL
+#define HEAP_SIZE (64UL * 1024 * 1024)
+
 void *kmalloc(unsigned long size);
 void  kfree(void *ptr);
 void *kcalloc(unsigned long nmemb, unsigned long size);
 void *krealloc(void *ptr, unsigned long size);
 void  kallocator_init(void);
+
+/* dlmalloc backend (third_party/dlmalloc): an mspace rooted over the fixed
+ * kernel heap. The kernel's allocator delegates to these. */
+void  dlmalloc_init(void);
+void *dlmalloc_malloc(unsigned long size);
+void  dlmalloc_free(void *ptr);
+void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);
+void *dlmalloc_realloc(void *ptr, unsigned long size);
 
 /* ========== Ramdisk file system ========== */
 #define RAMDISK_MAX_FILES 128

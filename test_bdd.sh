@@ -936,6 +936,10 @@ scenario "stb image selftest loads test.png and checks pixel" "run objects/stb.o
 poweroff"
 expect "stb: png ok"
 
+scenario "dlmalloc allocator selftest exercises malloc/calloc/realloc/free" "run objects/dlmalloc.o
+poweroff"
+expect "dlmalloc: ok"
+
 scenario "hash command prints XXH64 of a ramdisk file" "hash docs/test.png
 poweroff"
 expect "hash: docs/test.png ="

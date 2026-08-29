@@ -114,7 +114,7 @@ DOC_DIR   = $(PROGS_DIR)/docs
 # src/ (C sources), asm/ (miniGCC assembly), docs/ and README.txt.
 PROGS     = $(OBJ_DIR)/minigcc.o \
             $(OBJ_DIR)/ld.o $(OBJ_DIR)/cvm.o \
-            $(OBJ_DIR)/stb.o $(OBJ_DIR)/xxhash.o \
+            $(OBJ_DIR)/stb.o $(OBJ_DIR)/xxhash.o $(OBJ_DIR)/dlmalloc.o \
             $(BIN_DIR)/minigcc.elf $(BIN_DIR)/cp \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(PROGS_DIR)/etc/alias \
@@ -303,6 +303,11 @@ $(OBJ_DIR)/stb.o: third_party/stb/stb_selftest.c
 
 # xxhash.o: self-test for the kernel's XXH64 symbol (3 known-answer vectors)
 $(OBJ_DIR)/xxhash.o: third_party/xxhash/xxhash_selftest.c
+	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -fno-stack-protector -O2 -o $@ $<
+
+# dlmalloc.o: self-test for the kernel's dlmalloc-backed allocator
+# (malloc/free/calloc/realloc burst, realloc copy, calloc zero, bounded growth).
+$(OBJ_DIR)/dlmalloc.o: third_party/dlmalloc/dlmalloc_selftest.c
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -fno-stack-protector -O2 -o $@ $<
 
 # ── CVM modules (assembled from miniGCC output with 'ld') ────────
@@ -710,6 +715,13 @@ miniz_impl.o: third_party/miniz/miniz_impl.c third_party/miniz/miniz.h \
 zip.o: zip.c zip.h kernel.h third_party/miniz/miniz.h
 	$(CC) $(CFLAGS_KERN) -Ithird_party/miniz -c $< -o $@
 
+# dlmalloc: Doug Lea's malloc compiled into the kernel as a private mspace
+# over the fixed heap (HAVE_MORECORE/HAVE_MMAP disabled, ONLY_MSPACES so no
+# global malloc/free symbols are emitted). kernel.c delegates kmalloc/kfree/
+# realloc/calloc to it via the dlmalloc_* accessors in dlmalloc_impl.c.
+dlmalloc_impl.o: third_party/dlmalloc/dlmalloc_impl.c third_party/dlmalloc/malloc.c kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 # Desktop icon PNGs: generated from pixel data by tools/gen_icons.py.
 $(PROGS_DIR)/icons/terminal.png $(PROGS_DIR)/icons/doom.png \
 $(PROGS_DIR)/icons/nuklear.png $(PROGS_DIR)/icons/piano.png: tools/gen_icons.py
@@ -763,11 +775,11 @@ ap_stub.h: ap_stub.bin
 smp.o: smp.c smp.h kernel.h bootdefs.h ap_stub.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o smp.o kernel.ld
+kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
 	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
-	      stb_impl.o miniz_impl.o zip.o smp.o -o $@
+	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@

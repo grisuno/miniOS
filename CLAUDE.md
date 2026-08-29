@@ -1126,6 +1126,9 @@ silently forced in.
 - **miniz 3.0.2** (ZIP read/write): accepted, shipped as `unzip`/`zip`
   builtins — see the Zip builtins section. Integer-only, allocator hooks, and
   the whole archive API works whole-file in memory.
+- **dlmalloc 2.8.6** (kernel heap allocator): accepted, shipped as the
+  backend for `kmalloc`/`kfree`/`kcalloc`/`krealloc`. See the Memory
+  allocator contract below.
 - **stb_truetype** (TTF rasterization): vendored, accepted for **build-time
   only**. The header is float-heavy and the kernel compiles
   `-mno-sse -mno-mmx`, so TTF can never run in the kernel; a font swap would
@@ -1143,6 +1146,34 @@ silently forced in.
   the network/TLS stack MiniOS already owns. Git integration, if ever wanted,
   would be a minimal custom wire-protocol client (git://, not the full
   library), not a libgit2 port. Not scheduled.
+
+### Memory allocator contract (dlmalloc)
+`kmalloc`/`kfree`/`kcalloc`/`krealloc` delegate to a private dlmalloc 2.8.6
+mspace (Doug Lea, MIT-0, pristine upstream in `third_party/dlmalloc/`)
+compiled into the kernel through `dlmalloc_impl.c`. The space is rooted at the
+fixed kernel heap via `create_mspace_with_base(HEAP_BASE, HEAP_SIZE, 0)`, so
+the 64 MB reservation is unchanged and the physical memory map is untouched.
+
+- `ONLY_MSPACES` is set: no global `malloc`/`free` symbols are emitted, so the
+  kernel's own libc stubs (`malloc`→`kmalloc`, etc., `register_libc_symbols`)
+  stay the sole names the toolchain resolves against.
+- `HAVE_MORECORE=0` and `HAVE_MMAP=0`: the space can **never grow past the
+  fixed heap**. An exhausted heap returns 0 exactly like the first-fit
+  allocator it replaced — fail closed, never a wild expansion. `time(0)` in
+  the magic-seed path is mapped to a constant and `NO_MALLOC_STATS` strips the
+  stdio dependency; `ABORT` is an infinite loop (internal corruption hangs the
+  machine rather than proceeding); `MALLOC_FAILURE_ACTION` is empty.
+- Replaces the former first-fit free-list allocator, which was O(n) per
+  malloc/free and fragmented; dlmalloc brings segregated bins, coalescing and
+  a lower per-allocation overhead on the same heap.
+- The ring-0 selftest `objects/dlmalloc.o` (from `dlmalloc_selftest.c`, the
+  same ET_REL pattern as `xxhash.o`/`stb.o`) exercises a malloc burst,
+  realloc grow/shrink (verifying data copy), zeroed calloc, live-neighbour
+  integrity across frees and a multi-MB allocation. BDD: `dlmalloc: ok`.
+
+The two kernel allocator entry points that matter for isolation are unchanged:
+`kallocator_init` still builds the heap once at boot, and every kmalloc path
+still fails closed (returns 0) rather than faulting on an exhausted heap.
 
 ## Development Methodology (SDD + TDD + BDD)
 1. **SDD**: every feature begins with a spec in this file.

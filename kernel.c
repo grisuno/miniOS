@@ -450,28 +450,20 @@ void kbd_reset_for_shell(void) {
 
 
 /* ================================================================
- *  Memory allocator — simple free-list
+ *  Memory allocator — dlmalloc backend over the fixed kernel heap.
+ *  kmalloc/free/calloc/realloc delegate to a private mspace rooted at
+ *  [HEAP_BASE, HEAP_BASE+HEAP_SIZE) (see third_party/dlmalloc). The
+ *  mspace is built with HAVE_MORECORE=0 and HAVE_MMAP=0, so it can
+ *  never grow beyond the heap; an exhausted heap returns 0 exactly
+ *  like the first-fit allocator it replaced.
  * ================================================================ */
 
-#define ALLOC_MAGIC 0xDEADBEEF
-#define FREE_MAGIC  0xFEEDC0DE
 #define ALIGN_UP(x, a) (((x) + (a) - 1) & ~((a) - 1))
-
-typedef struct Block {
-    unsigned long  magic;
-    unsigned long  size;    /* user-requested size */
-    struct Block  *next;    /* free list link */
-} Block;
-
-#define BLOCK_HDR_SZ ALIGN_UP(sizeof(Block), 16)
-
-static Block *free_list;
-static char  *heap_start, *heap_end, *heap_curr;
 
 /* ---- Physical memory map (identity-mapped 0..1GB by the bootloader) ----
  *   0x00000000 .. 0x00100000   BIOS / kernel image / page tables / stack
  *   0x00400000 .. 0x02000000   user program region (ELF load addr + brk)
- *   0x02000000 .. 0x06000000   64 MB kernel heap
+ *   0x02000000 .. 0x06000000   64 MB kernel heap (HEAP_BASE/HEAP_SIZE in kernel.h)
  */
 #define USER_LOAD_BASE  0x00400000UL
 #define USER_LOAD_END   0x02000000UL
@@ -481,8 +473,6 @@ static char  *heap_start, *heap_end, *heap_curr;
 #define USER_BRK_END    USER_STACK_BASE
 #define SYS_KSTK_TOP    0x00088000UL
 #define SYS_KSTK_BASE   (SYS_KSTK_TOP - 0x8000)
-#define HEAP_BASE       0x02000000UL
-#define HEAP_SIZE       (64UL * 1024 * 1024)
 
 #define EFAULT  (-14)
 
@@ -647,115 +637,31 @@ static void mm_user_set_exec(unsigned long start, unsigned long end) {
 }
 
 void kallocator_init(void) {
-    heap_start = (char *)HEAP_BASE;
-    heap_end   = heap_start + HEAP_SIZE;
-    heap_curr  = heap_start;
-    free_list  = 0;
+    /* Build the dlmalloc mspace over the fixed kernel heap once. HAVE_MORECORE
+     * and HAVE_MMAP are disabled in the backend, so the space is bounded by
+     * HEAP_SIZE and an exhausted heap returns 0, exactly like the allocator
+     * this replaces. */
+    dlmalloc_init();
 }
 
 void *kmalloc(unsigned long size) {
     if (size == 0) return 0;
-    size = ALIGN_UP(size, 16);
-
-    Block *prev = 0, *b = free_list;
-    while (b) {
-        if (b->size >= size) {
-            if (prev) prev->next = b->next;
-            else       free_list  = b->next;
-            /* Split the remainder back into the free list: reusing a
-             * big block for a small request must never swallow the
-             * space the request did not use. */
-            unsigned long rem = b->size - size;
-            if (rem >= BLOCK_HDR_SZ + 16) {
-                Block *tail = (Block *)((char *)b + BLOCK_HDR_SZ + size);
-                tail->magic = FREE_MAGIC;
-                tail->size  = rem - BLOCK_HDR_SZ;
-                tail->next  = free_list;
-                free_list   = tail;
-            }
-            b->magic = ALLOC_MAGIC;
-            b->size  = size;
-            return (char *)b + BLOCK_HDR_SZ;
-        }
-        prev = b;
-        b = b->next;
-    }
-
-    if (heap_curr + BLOCK_HDR_SZ + size > heap_end) return 0;
-    b = (Block *)heap_curr;
-    heap_curr += BLOCK_HDR_SZ + size;
-    b->magic = ALLOC_MAGIC;
-    b->size  = size;
-    b->next  = 0;
-    return (char *)b + BLOCK_HDR_SZ;
+    return dlmalloc_malloc(size);
 }
 
 void kfree(void *ptr) {
     if (!ptr) return;
-    Block *b = (Block *)((char *)ptr - BLOCK_HDR_SZ);
-    if (b->magic != ALLOC_MAGIC) return;
-    b->magic = FREE_MAGIC;
-    /* Coalesce with physically adjacent free blocks so consecutive
-     * frees rebuild one big block instead of a chain of crumbs. */
-    int merged = 1;
-    while (merged) {
-        merged = 0;
-        Block *prev = 0, *fb = free_list;
-        while (fb) {
-            if ((char *)fb + BLOCK_HDR_SZ + fb->size == (char *)b) {
-                fb->size += BLOCK_HDR_SZ + b->size;
-                if (prev) prev->next = fb->next;
-                else       free_list  = fb->next;
-                b = fb;
-                merged = 1;
-                break;
-            }
-            if ((char *)b + BLOCK_HDR_SZ + b->size == (char *)fb) {
-                b->size += BLOCK_HDR_SZ + fb->size;
-                if (prev) prev->next = fb->next;
-                else       free_list  = fb->next;
-                merged = 1;
-                break;
-            }
-            prev = fb;
-            fb = fb->next;
-        }
-    }
-    b->next = free_list;
-    free_list = b;
+    dlmalloc_free(ptr);
 }
 
 void *kcalloc(unsigned long nmemb, unsigned long size) {
-    unsigned long total = nmemb * size;
-    void *p = kmalloc(total);
-    if (p) kmemset(p, 0, total);
-    return p;
+    return dlmalloc_calloc(nmemb, size);
 }
 
 void *krealloc(void *ptr, unsigned long size) {
     if (!ptr) return kmalloc(size);
     if (size == 0) { kfree(ptr); return 0; }
-    size = ALIGN_UP(size, 16);
-    Block *b = (Block *)((char *)ptr - BLOCK_HDR_SZ);
-    if (b->magic != ALLOC_MAGIC) return 0;
-    if (b->size >= size) {
-        unsigned long rem = b->size - size;
-        if (rem >= BLOCK_HDR_SZ + 16) {
-            Block *tail = (Block *)((char *)b + BLOCK_HDR_SZ + size);
-            tail->magic = FREE_MAGIC;
-            tail->size  = rem - BLOCK_HDR_SZ;
-            tail->next  = free_list;
-            free_list   = tail;
-        }
-        b->size = size;
-        return ptr;
-    }
-    void *newp = kmalloc(size);
-    if (newp) {
-        kmemcpy(newp, ptr, b->size);
-        kfree(ptr);
-    }
-    return newp;
+    return dlmalloc_realloc(ptr, size);
 }
 
 
