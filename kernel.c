@@ -3199,6 +3199,9 @@ static int  shell_hist_count;
 static int  shell_hist_idx = -1;
 static char shell_line_saved[CMD_BUF_SZ];
 static int  shell_line_saved_pos;
+/* On-screen cursor column within the edit line, so a repaint can back up to
+ * the line start exactly. Kept in sync by every echo/repaint path. */
+static int  shell_cur;
 
 static void shell_prompt(void) { vga_puts("\nminiOS> "); }
 
@@ -3516,6 +3519,7 @@ static void shell_complete_replace(char *buf, int size, int *pos,
     for (unsigned long i = 0; i < wlen; i++) vga_putc('\b');
     vga_puts(text);
     vga_putc('\n');
+    shell_cur = 0;
 }
 
 static void shell_readline(void) {
@@ -3527,29 +3531,35 @@ static void shell_readline(void) {
  * on the framebuffer terminal; on the serial console the text is rewritten
  * and the reader's position is implied by the console cursor. */
 static void shell_hist_show(char *buf, int size, int *pos, const char *text) {
-    int i;
-    for (i = 0; i < *pos; i++) vga_putc(' ');
-    for (i = 0; i < *pos; i++) vga_putc('\b');
+    int i, n = 0;
+    /* Erase the whole current line: back up to its start, blank it, return. */
+    for (i = 0; i < shell_cur; i++) vga_putc('\b');
+    for (i = 0; i < shell_cur; i++) vga_putc(' ');
+    for (i = 0; i < shell_cur; i++) vga_putc('\b');
     kmemset(buf, 0, (unsigned long)size);
-    int n = 0;
     while (text[n] && n < size - 1) {
         buf[n] = text[n];
         vga_putc(text[n]);
         n++;
     }
     *pos = n;
+    shell_cur = n;
     vga_fb_text_cursor(n);
 }
 
 /* Repaint the edit line after a cursor move or mid-line edit: erase the whole
  * visible line, rewrite buf, then back the console cursor up to `pos` and
- * redraw the framebuffer text cursor there. */
+ * redraw the framebuffer text cursor there. `shell_cur` holds the on-screen
+ * cursor column, so the erase backs up to the line start before blanking it
+ * (a serial backspace alone does not clear a character). */
 static void shell_line_repaint(char *buf, int size, int pos) {
     int i, len = (int)kstrlen(buf);
+    for (i = 0; i < shell_cur; i++) vga_putc('\b');
     for (i = 0; i < len; i++) vga_putc(' ');
     for (i = 0; i < len; i++) vga_putc('\b');
     for (i = 0; i < len; i++) vga_putc(buf[i]);
     for (i = len; i > pos; i--) vga_putc('\b');
+    shell_cur = pos;
     vga_fb_text_cursor(pos);
 }
 
@@ -3640,6 +3650,7 @@ static void shell_readline_hist(char *buf, int size) {
         if (c == '\n' || c == '\r') {
             vga_putc('\n');
             vga_fb_hide_text_cursor();
+            shell_cur = 0;
             buf[kstrlen(buf)] = 0;
             shell_hist_idx = -1;
             if (buf[0] && (shell_hist_count == 0 ||
@@ -3717,8 +3728,11 @@ static void shell_readline_hist(char *buf, int size) {
             if (ncomps == 1) {
                 if (kstrcmp(comps[0], word_start) != 0)
                     shell_complete_replace(buf, size, &pos, word_start, wlen, comps[0]);
-                else
+                else {
+                    if (pos < size - 1) { buf[pos++] = ' '; buf[pos] = 0; }
                     vga_putc(' ');
+                    shell_cur = pos;
+                }
                 continue;
             }
             unsigned long common = kstrlen(comps[0]);
@@ -3774,14 +3788,26 @@ static void shell_readline_hist(char *buf, int size) {
         }
         if (c == '\b' || c == 0x7F) {
             if (pos > 0) {
+                int at_end = (pos == (int)kstrlen(buf));
                 shell_line_backspace(buf, size, &pos);
-                shell_line_repaint(buf, size, pos);
+                if (at_end) {
+                    vga_putc('\b'); vga_putc(' '); vga_putc('\b');
+                    shell_cur = pos;
+                } else {
+                    shell_line_repaint(buf, size, pos);
+                }
             }
             continue;
         }
         if (pos < size - 1 && c >= 32 && c < 127) {
+            int at_end = (pos == (int)kstrlen(buf));
             shell_line_insert(buf, size, &pos, (char)c);
-            shell_line_repaint(buf, size, pos);
+            if (at_end) {
+                vga_putc(c);
+                shell_cur = pos;
+            } else {
+                shell_line_repaint(buf, size, pos);
+            }
         }
     }
 }
