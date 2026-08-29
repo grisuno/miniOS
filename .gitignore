@@ -170,3 +170,6 @@ DOOM1.WAD
 *.Wad
 minifs.bin
 os.img
+
+# Mutation-test progress (resumable runs)
+.mutate-state

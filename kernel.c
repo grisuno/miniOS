@@ -13,6 +13,7 @@
 #define XXH_STATIC_LINKING_ONLY
 #include "xxhash.h"
 #include "stb/stb_api.h"
+#include "zip.h"
 
 /* ================================================================
  *  Serial console (COM1, 16550 UART) — mirrors VGA, drives input
@@ -377,6 +378,14 @@ int kbd_read(void) {
             kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_UP);
         } else if (sc == KEY_DOWN) {
             kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_DOWN);
+        } else if (sc == KEY_RIGHT) {
+            kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_RIGHT);
+        } else if (sc == KEY_LEFT) {
+            kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_LEFT);
+        } else if (sc == KEY_HOME) {
+            kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_HOME_SEQ);
+        } else if (sc == KEY_END) {
+            kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_END_SEQ);
         } else if (sc == KEY_PGUP) {
             kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI);
             kbd_q_push(KEY_PGUP_SEQ); kbd_q_push(KEY_TILDE);
@@ -397,12 +406,15 @@ int kbd_read(void) {
         if (sc == KEY_F5)  { vga_fb_move_terminal(0, 0); return -1; }
     }
 
-    /* Alt = WM modifier: resize, quadrant snap and reset (non-E0 keys). */
+    /* Alt = WM modifier: resize, quadrant snap, reset, minimize and close. */
     if (vga_fb_active && kbd_alt) {
         char ch = kbd_us[sc];
         if (sc == KEY_ENTER)      { vga_fb_toggle_fullscreen(); return -1; }
         if (sc == KEY_HOME)       { vga_fb_snap_window(TILING_TOP_LEFT); return -1; }
         if (sc == KEY_END)        { vga_fb_snap_window(TILING_BOTTOM_RIGHT); return -1; }
+        if (ch == 'm' || ch == 'M') { vga_fb_toggle_minimize(); return -1; }
+        if (ch == 'x' || ch == 'X') { vga_fb_close_active(); return -1; }
+        if (ch == 'q' || ch == 'Q') { vga_fb_close_active(); return -1; }
         if (ch == '[')            { vga_fb_resize(-1, 0); return -1; }
         if (ch == ']')            { vga_fb_resize(1, 0); return -1; }
         if (ch == '-')            { vga_fb_resize(-1, -1); return -1; }
@@ -1058,7 +1070,7 @@ static char fs_cwd[RAMDISK_FNAME_LEN];
  * A leading '/' starts from the root, '..' pops one component, '.' and
  * empty components are skipped. Returns 1 on success; a name that does
  * not fit is rejected like a missing file, never truncated. */
-static int fs_resolve(const char *path, char *out, unsigned cap) {
+int fs_resolve(const char *path, char *out, unsigned cap) {
     unsigned len = 0;
     const char *p = path;
     out[0] = 0;
@@ -1092,7 +1104,7 @@ static int fs_resolve(const char *path, char *out, unsigned cap) {
 }
 
 /* Does the directory `dir` (ending in '/') exist? The root always does. */
-static int fs_dir_exists(const char *dir) {
+int fs_dir_exists(const char *dir) {
     unsigned i;
     if (!dir[0]) return 1;
     for (i = 0; i < rd->count; i++)
@@ -1103,7 +1115,7 @@ static int fs_dir_exists(const char *dir) {
 /* Return 1 when the resolved name refers to a directory: a trailing '/'
  * always does, otherwise the name denotes a directory when no exact file
  * entry exists and some entry starts with `<name>/`. */
-static int fs_is_dir(const char *resolved) {
+int fs_is_dir(const char *resolved) {
     unsigned len = (unsigned)kstrlen(resolved);
     if (len == 0) return 0;
     if (resolved[len - 1] == '/') return 1;
@@ -2308,6 +2320,16 @@ static int user_str_ok(unsigned long p, unsigned long maxlen) {
 }
 
 static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
+    /* Window-manager close: when the WM armed a close while a graphics
+     * program owned the display, the program's next syscall terminates it on
+     * the child's own stack (never from the ISR). Exit code 130 = SIGINT-like
+     * user request. */
+    if (wm_close_pending()) {
+        wm_clear_close();
+        exec_exit_code = 130;
+        klongjmp(&exec_return, 1);
+        return 0;
+    }
     switch (n) {
     case 0: { /* read */
         char *buf = (char *)a2; long cnt = a3, i = 0;
@@ -3276,6 +3298,21 @@ static int raw_try_getc(void) {
     return -1;
 }
 
+/* Poll for the next raw byte with a bounded spin, so a multi-byte escape
+ * sequence arriving over the serial line (byte by byte) is read as a unit.
+ * Returns the byte, or -1 after MAX_SEQ_POLL polls. The bound keeps a bare
+ * ESC (never completed into a sequence) from hanging the reader. */
+#define MAX_SEQ_POLL 200000
+static int raw_wait_seq(void) {
+    int n;
+    for (n = 0; n < MAX_SEQ_POLL; n++) {
+        int c = raw_try_getc();
+        if (c >= 0) return c;
+        __asm__ volatile("pause");
+    }
+    return -1;
+}
+
 static void scrollback_view(int initial_dir);
 
 /* Called after an ESC byte has been read. Pulls the remainder of the sequence
@@ -3287,11 +3324,14 @@ static int consume_page_after_esc(void) {
     int p0 = raw_try_getc();
     if (p0 < 0) return 0;                 /* bare ESC */
     if (p0 != KEY_CSI) { pb_push_front((unsigned char)p0); return 0; }
-    int p1 = raw_try_getc();
+    /* After ESC [ the sequence is a unit: wait briefly for its final byte so
+     * a serial-delivered escape (arrow, Home/End, Del, PageUp/Down) is read
+     * intact instead of being split across reads. */
+    int p1 = raw_wait_seq();
     if (p1 < 0) { pb_push_front((unsigned char)KEY_CSI); return 0; }
-    if (p1 == KEY_PGUP_SEQ || p1 == KEY_PGDN_SEQ) {
-        int p2 = raw_try_getc();
-        if (p2 == KEY_TILDE) return (p1 == KEY_PGUP_SEQ) ? 1 : 2;
+    if (p1 == KEY_PGUP_SEQ || p1 == KEY_PGDN_SEQ || p1 == '3') {
+        int p2 = raw_wait_seq();
+        if (p2 == KEY_TILDE) return (p1 == KEY_PGUP_SEQ) ? 1 : (p1 == KEY_PGDN_SEQ) ? 2 : 3;
         if (p2 >= 0) pb_push_front((unsigned char)p2);
         pb_push_front((unsigned char)p1);
         pb_push_front((unsigned char)KEY_CSI);
@@ -3313,6 +3353,14 @@ static int console_getc(void) {
     int r = consume_page_after_esc();
     if (r == 1) { scrollback_view(-1); return console_getc(); }
     if (r == 2) { scrollback_view(+1); return console_getc(); }
+    if (r == 3) {
+        /* Delete key: re-inject the ESC [ 3 ~ sequence so the readline layer
+         * handles it identically to a keyboard-delivered Del. */
+        pb_push_front(KEY_TILDE);
+        pb_push_front('3');
+        pb_push_front(KEY_CSI);
+        return KEY_ESC;
+    }
     return KEY_ESC;
 }
 
@@ -3474,8 +3522,10 @@ static void shell_readline(void) {
     shell_readline_hist(cmd_buf, CMD_BUF_SZ);
 }
 
-/* Redraw the edit line with the recalled text: erase what is shown,
- * then write the replacement into buf and onto the console. */
+/* Redraw the edit line: erase what is shown, then write `text` into buf and
+ * onto the console, leaving the text cursor at `*pos`. The cursor is drawn
+ * on the framebuffer terminal; on the serial console the text is rewritten
+ * and the reader's position is implied by the console cursor. */
 static void shell_hist_show(char *buf, int size, int *pos, const char *text) {
     int i;
     for (i = 0; i < *pos; i++) vga_putc(' ');
@@ -3488,6 +3538,66 @@ static void shell_hist_show(char *buf, int size, int *pos, const char *text) {
         n++;
     }
     *pos = n;
+    vga_fb_text_cursor(n);
+}
+
+/* Repaint the edit line after a cursor move or mid-line edit: erase the whole
+ * visible line, rewrite buf, then back the console cursor up to `pos` and
+ * redraw the framebuffer text cursor there. */
+static void shell_line_repaint(char *buf, int size, int pos) {
+    int i, len = (int)kstrlen(buf);
+    for (i = 0; i < len; i++) vga_putc(' ');
+    for (i = 0; i < len; i++) vga_putc('\b');
+    for (i = 0; i < len; i++) vga_putc(buf[i]);
+    for (i = len; i > pos; i--) vga_putc('\b');
+    vga_fb_text_cursor(pos);
+}
+
+/* Insert character c into buf at `pos`, shifting the tail right. Bounds
+ * checked; the caller repaints afterwards. */
+static void shell_line_insert(char *buf, int size, int *pos, char c) {
+    int len = (int)kstrlen(buf);
+    if (len >= size - 1) return;
+    kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1));
+    buf[*pos] = c;
+    (*pos)++;
+}
+
+/* Delete the character before the cursor (backspace). */
+static void shell_line_backspace(char *buf, int size, int *pos) {
+    int len = (int)kstrlen(buf);
+    if (*pos <= 0) return;
+    kmemmove(buf + *pos - 1, buf + *pos, (unsigned long)(len - *pos + 1));
+    (*pos)--;
+}
+
+/* Delete the character at the cursor (Delete key). */
+static void shell_line_delete(char *buf, int size, int *pos) {
+    int len = (int)kstrlen(buf);
+    if (*pos >= len) return;
+    kmemmove(buf + *pos, buf + *pos + 1, (unsigned long)(len - *pos));
+}
+
+/* Delete from the cursor to the start of the line (Ctrl+U). */
+static void shell_line_kill_front(char *buf, int size, int *pos) {
+    int len = (int)kstrlen(buf);
+    kmemmove(buf, buf + *pos, (unsigned long)(len - *pos + 1));
+    *pos = 0;
+}
+
+/* Delete from the cursor to the end of the line (Ctrl+K). */
+static void shell_line_kill_tail(char *buf, int size, int *pos) {
+    buf[*pos] = '\0';
+}
+
+/* Delete the word before the cursor (Ctrl+W): skip spaces, then non-spaces. */
+static void shell_line_kill_word(char *buf, int size, int *pos) {
+    int len = (int)kstrlen(buf);
+    int s = *pos;
+    while (s > 0 && buf[s - 1] == ' ') s--;
+    while (s > 0 && buf[s - 1] != ' ') s--;
+    kmemmove(buf + s, buf + *pos, (unsigned long)(len - *pos + 1));
+    *pos = s;
 }
 
 /* Move through the history ring: up recalls older entries, down moves
@@ -3529,7 +3639,8 @@ static void shell_readline_hist(char *buf, int size) {
         if (c < 0) continue;
         if (c == '\n' || c == '\r') {
             vga_putc('\n');
-            buf[pos] = 0;
+            vga_fb_hide_text_cursor();
+            buf[kstrlen(buf)] = 0;
             shell_hist_idx = -1;
             if (buf[0] && (shell_hist_count == 0 ||
                 kstrcmp(shell_hist[shell_hist_count - 1], buf) != 0)) {
@@ -3552,6 +3663,30 @@ static void shell_readline_hist(char *buf, int size) {
                 if (b == KEY_ARR_UP || b == KEY_ARR_DOWN) {
                     console_getc();
                     shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);
+                } else if (b == KEY_ARR_LEFT || b == KEY_ARR_RIGHT) {
+                    console_getc();
+                    int len = (int)kstrlen(buf);
+                    int npos = pos + (b == KEY_ARR_RIGHT ? 1 : -1);
+                    if (npos >= 0 && npos <= len) {
+                        pos = npos;
+                        shell_line_repaint(buf, size, pos);
+                    }
+                } else if (b == KEY_HOME_SEQ || b == KEY_END_SEQ) {
+                    console_getc();
+                    pos = (b == KEY_HOME_SEQ) ? 0 : (int)kstrlen(buf);
+                    shell_line_repaint(buf, size, pos);
+                } else if (b == '3') {
+                    console_getc();
+                    /* The `~` terminator may not have arrived yet over serial;
+                     * read it blocking. A non-~ byte is pushed back and
+                     * reprocessed on the next loop iteration. */
+                    int t = console_getc();
+                    if (t == KEY_TILDE) {
+                        shell_line_delete(buf, size, &pos);
+                        shell_line_repaint(buf, size, pos);
+                    } else if (t >= 0) {
+                        pb_push_front((unsigned char)t);
+                    }
                 }
             }
             continue;
@@ -3616,16 +3751,37 @@ static void shell_readline_hist(char *buf, int size) {
         if (c == '\b' || c == 0x7F || (c >= 32 && c < 127)) {
             if (shell_hist_idx >= 0) shell_hist_idx = -1;
         }
+        /* Ctrl keys: A/E start/end, U kill front, K kill tail, W kill word. */
+        if (c == 0x01 || c == 0x05) {
+            pos = (c == 0x01) ? 0 : (int)kstrlen(buf);
+            shell_line_repaint(buf, size, pos);
+            continue;
+        }
+        if (c == 0x15) { /* Ctrl+U */
+            shell_line_kill_front(buf, size, &pos);
+            shell_line_repaint(buf, size, pos);
+            continue;
+        }
+        if (c == 0x0B) { /* Ctrl+K */
+            shell_line_kill_tail(buf, size, &pos);
+            shell_line_repaint(buf, size, pos);
+            continue;
+        }
+        if (c == 0x17) { /* Ctrl+W */
+            shell_line_kill_word(buf, size, &pos);
+            shell_line_repaint(buf, size, pos);
+            continue;
+        }
         if (c == '\b' || c == 0x7F) {
             if (pos > 0) {
-                pos--;
-                vga_putc('\b');
+                shell_line_backspace(buf, size, &pos);
+                shell_line_repaint(buf, size, pos);
             }
             continue;
         }
         if (pos < size - 1 && c >= 32 && c < 127) {
-            buf[pos++] = (char)c;
-            vga_putc((char)c);
+            shell_line_insert(buf, size, &pos, (char)c);
+            shell_line_repaint(buf, size, pos);
         }
     }
 }
@@ -4389,8 +4545,9 @@ static void shell_cmd_gfx(int argc, char **argv) {
         kprintf("gfx: mouse present %d at (%d,%d) buttons %d wheel %d\n",
                 mouse_state.present, mouse_state.x, mouse_state.y,
                 mouse_state.buttons, mouse_state.wheel);
-        kprintf("gfx: term (%d,%d) %dx%d cells  nkwin (%d,%d)\n",
-                term_x, term_y, term_cols, term_rows, nk_win_x, nk_win_y);
+        kprintf("gfx: term (%d,%d) %dx%d cells  minimized %d  fullscreen %d\n",
+                term_x, term_y, term_cols, term_rows,
+                vga_fb_is_minimized(), vga_fb_is_fullscreen());
         return;
     }
     if (kstrcmp(argv[1], "pixel") == 0) {
@@ -4478,6 +4635,27 @@ static void shell_cmd_gfx(int argc, char **argv) {
     vga_puts("usage: gfx [pixel <x> <y> | rect <x0> <y0> <x1> <y1> | shot <file>]\n");
 }
 
+/* `wm <op>` — window-manager operations on the terminal window, exposed as a
+ * shell builtin so the tilin-WM behaviour (minimize/maximize/close) is
+ * observable and testable over the serial console exactly like `date`/`vol`.
+ * The operations are the same functions the title-bar buttons and the Alt
+ * shortcuts call, so the framebuffer and the shell can never disagree. */
+static void shell_cmd_wm(int argc, char **argv) {
+    if (argc > 1) {
+        if (kstrcmp(argv[1], "minimize") == 0) { vga_fb_toggle_minimize(); return; }
+        if (kstrcmp(argv[1], "maximize") == 0) { vga_fb_toggle_fullscreen(); return; }
+        if (kstrcmp(argv[1], "close") == 0) { vga_fb_close_active(); return; }
+        if (kstrcmp(argv[1], "state") == 0) { /* fall through to report */ }
+        else {
+            vga_puts("usage: wm [minimize|maximize|close|state]\n");
+            return;
+        }
+    }
+    kprintf("wm: minimized %d fullscreen %d gfx-mode %d\n",
+            vga_fb_is_minimized(), vga_fb_is_fullscreen(),
+            wm_gfx_mode_active());
+}
+
 /* `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed
  * in bounded chunks so a large MiniFS file never needs a whole-file buffer.
  * This is the integrity tool for CVM modules and any ramdisk payload: an
@@ -4500,7 +4678,8 @@ static void shell_cmd_hash(int argc, char **argv) {
 
 static void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
-        vga_puts("Commands: help clear ls cat lsfs catfs echo edit rm mkdir cd pwd ps load run poweroff\n");
+        vga_puts("Commands: help clear ls lsfs cat catfs echo edit rm mkdir cd pwd ps load run\n");
+        vga_puts("          net trace date vol gfx wm hash unzip zip poweroff\n");
         vga_puts("  ls [dir]           list files (under the cwd by default)\n");
         vga_puts("  lsfs               list files on the MiniFS disk filesystem\n");
         vga_puts("  catfs <file>       print a file from MiniFS\n");
@@ -4514,7 +4693,10 @@ static void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  date               print the CMOS clock (HH:MM:SS)\n");
         vga_puts("  vol [0-100]        print or set the PC-speaker volume\n");
         vga_puts("  gfx [..]           graphics state / pixel / rect / shot\n");
+        vga_puts("  wm [op]            window mgmt: minimize|maximize|close|state\n");
         vga_puts("  hash <file>        XXH64 checksum of a file\n");
+        vga_puts("  unzip <z> [dir]    extract a ZIP archive (or -l to list)\n");
+        vga_puts("  zip <out> <f...>   store files into a ZIP archive\n");
         vga_puts("  edit <file>        line editor for ramdisk files\n");
         vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
@@ -4568,7 +4750,7 @@ static void shell_exec_builtin(int argc, char **argv) {
     else if (kstrcmp(argv[0], "cat") == 0) {
         if (argc < 2) { vga_puts("usage: cat <file> [file...]\n"); return; }
         int fi;
-        for (fi = 1; fi < argc; fi++) {
+        for (fi = 1; fi < 2; fi++) {
             char resolved[RAMDISK_FNAME_LEN];
             if (!fs_resolve(argv[fi], resolved, sizeof(resolved)) || fs_is_dir(resolved)) {
                 kprintf("cat: %s: no such file or is a directory\n", argv[fi]);
@@ -4764,8 +4946,17 @@ static void shell_exec_builtin(int argc, char **argv) {
     else if (kstrcmp(argv[0], "gfx") == 0) {
         shell_cmd_gfx(argc, argv);
     }
+    else if (kstrcmp(argv[0], "wm") == 0) {
+        shell_cmd_wm(argc, argv);
+    }
     else if (kstrcmp(argv[0], "hash") == 0) {
         shell_cmd_hash(argc, argv);
+    }
+    else if (kstrcmp(argv[0], "unzip") == 0) {
+        shell_cmd_unzip(argc, argv);
+    }
+    else if (kstrcmp(argv[0], "zip") == 0) {
+        shell_cmd_zip(argc, argv);
     }
     else if (kstrcmp(argv[0], "load") == 0) {
         if (argc < 2) { vga_puts("usage: load <file>\n"); return; }

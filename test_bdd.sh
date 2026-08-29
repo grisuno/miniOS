@@ -410,6 +410,44 @@ scenario "lz4 usage without arguments" "lz4
 poweroff"
 expect "usage: lz4 \[-d\] <src> <dst>"
 
+scenario "zip stores files and unzip extracts them into a fresh directory" "echo ziptest > src/zt.txt
+zip t.zip src/zt.txt src/hello.py
+unzip -l t.zip
+unzip t.zip out
+cat out/src/zt.txt
+poweroff"
+expect "zip: wrote t.zip"
+expect "f 8  src/zt.txt"
+expect "f 27  src/hello.py"
+expect "unzip: 2 entries"
+expect "out/src/zt.txt"
+expect "unzip: 2 entries extracted"
+expect "ziptest"
+
+scenario "unzip extracts a host-produced zip and creates the subdirectories" "unzip etc/host.zip
+cat sub/note.txt
+cat top.txt
+poweroff"
+expect "unzip: 2 entries extracted"
+expect "sub/note.txt"
+expect "hello host"
+expect "top"
+
+scenario "unzip refuses a zip whose entry names escape the extraction root" "unzip etc/hostile.zip
+cat escape.txt
+poweroff"
+expect "unzip: 4 entries extracted"
+expect "  abs.txt"
+expect "cat: escape.txt: no such file"
+refute "evil"
+
+scenario "unzip reports a non-zip file and a missing file" "cp src/fib.c bad.zip
+unzip bad.zip
+unzip nope.zip
+poweroff"
+expect "unzip: bad.zip: not a zip archive"
+expect "unzip: nope.zip: cannot read"
+
 scenario "json validates, pretty-prints and queries a file" "edit cfg.json
 a
 {\"name\":\"miniOS\",\"ports\":[80,443],\"live\":true}
@@ -461,6 +499,34 @@ poweroff"
 expect_count 2 "exit code: 55"
 expect_count 1 "hola cvm"
 expect "powering off"
+
+scenario "shell mid-line insert with left arrow edits the command" "echo abcdef
+echo abcdef$(printf '\033[D\033[D')XY
+poweroff"
+expect "abcdef"
+expect "abcdXYef"
+
+scenario "shell Home jumps the cursor to the start of the line" "echo abcdef$(printf '\033[H')XY
+poweroff"
+expect "command not found: XYecho"
+
+scenario "shell End jumps the cursor to the end of the line" "echo abc$(printf '\033[F')ZZ
+poweroff"
+expect "abcZZ"
+
+scenario "shell Delete removes the character at the cursor" "echo abcdef$(printf '\033[D\033[D')$(printf '\033[3~')
+poweroff"
+expect "abcdf"
+
+scenario "shell Ctrl+U clears the line before submit" "echo abcdef$(printf '\025')echo ok
+poweroff"
+expect "ok"
+refute "abcdefecho"
+
+scenario "shell Ctrl+W deletes the word before the cursor" "echo abc def$(printf '\027')echo ok
+poweroff"
+expect "ok"
+refute "defecho"
 
 scenario "repeated cvm runs do not exhaust the kernel heap" "run cvm/fib.cvm
 run cvm/w1.cvm
@@ -888,6 +954,49 @@ cat build/desktop_out.c
 poweroff"
 expect "exit code: 0"
 expect "exit code: 0"
+
+scenario "wm state reports the terminal window geometry" "wm state
+poweroff"
+expect "wm: minimized 0 fullscreen 0 gfx-mode 0"
+
+scenario "wm minimize hides and restores the terminal window" "wm state
+wm minimize
+wm state
+wm minimize
+wm state
+poweroff"
+expect "wm: minimized 0 fullscreen 0"
+expect "wm: minimized 1 fullscreen 0"
+expect "wm: minimized 0 fullscreen 0"
+
+scenario "wm maximize toggles fullscreen and is exclusive with minimize" "wm state
+wm maximize
+wm state
+wm minimize
+wm state
+wm maximize
+wm state
+poweroff"
+expect "wm: minimized 0 fullscreen 0"
+expect "wm: minimized 0 fullscreen 1"
+expect "wm: minimized 1 fullscreen 0"
+expect "wm: minimized 0 fullscreen 1"
+
+scenario "wm close on the terminal restores the default window" "wm minimize
+wm state
+wm close
+wm state
+poweroff"
+expect "wm: minimized 1 fullscreen 0"
+expect "wm: minimized 0 fullscreen 0"
+
+scenario "gfx reports wm state after minimize and maximize" "wm minimize
+gfx
+wm maximize
+gfx
+poweroff"
+expect "minimized 1  fullscreen 0"
+expect "minimized 0  fullscreen 1"
 
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="

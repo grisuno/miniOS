@@ -90,6 +90,16 @@ extern int nk_win_x, nk_win_y;
 #define SCROLLBAR_W     8
 #define SCROLLBAR_PAD   1
 
+/* Title-bar window controls (minimize, maximize, close). Drawn as a strip of
+ * three FONT_W-wide glyph buttons at the right end of any titled window
+ * (terminal, DOOM, Nuklear); the mouse tick hit-tests them before drag. */
+#define WM_BTN_W       FONT_W
+#define WM_BTN_H       FONT_H
+#define WM_BTN_PAD     2
+#define WM_BTN_MIN     1
+#define WM_BTN_MAX     2
+#define WM_BTN_CLOSE   3
+
 /* Terminal geometry (set by vga_fb layout engine) */
 extern int term_x, term_y, term_cols, term_rows;
 
@@ -120,13 +130,21 @@ void     vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);
 void     vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);
 void     vga_fb_putc_term(char c);
 void     vga_fb_puts_term(const char *s);
+void     vga_fb_text_cursor(int col);
+void     vga_fb_hide_text_cursor(void);
 void     vga_fb_draw_desktop(void);
-void     vga_fb_handle_key(int scancode);
 void     vga_fb_toggle_fullscreen(void);
 void     vga_fb_move_terminal(int dx, int dy);
 void     vga_fb_snap_window(int zone);
 void     vga_fb_resize(int dcols, int drows);
 void     vga_fb_reset_default(void);
+void     vga_fb_toggle_minimize(void);
+int      vga_fb_is_minimized(void);
+int      vga_fb_is_fullscreen(void);
+int      vga_fb_close_active(void);
+int      wm_close_pending(void);
+void     wm_clear_close(void);
+int      wm_gfx_mode_active(void);
 void vga_fb_mouse_tick(void);
 void vga_fb_mouse_init(void);
 

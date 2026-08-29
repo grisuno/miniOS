@@ -56,6 +56,10 @@ int  serial_getc(void);
 #define KEY_CSI       '['
 #define KEY_ARR_UP    'A'
 #define KEY_ARR_DOWN  'B'
+#define KEY_ARR_RIGHT 'C'
+#define KEY_ARR_LEFT  'D'
+#define KEY_HOME_SEQ  'H'
+#define KEY_END_SEQ   'F'
 #define KEY_PGUP_SEQ  '5'
 #define KEY_PGDN_SEQ  '6'
 #define KEY_LEFT      0x4B
@@ -103,6 +107,14 @@ int      ramdisk_resize(RDFile *f, unsigned newsize);
 int      ramdisk_delete(RDFile *f);
 int      ramdisk_list(RDFile **out, int max);
 void     ramdisk_setup_from(void *data, unsigned size);
+
+/* Path resolution choke point shared by the shell builtins and the zip
+ * builtins. fs_resolve resolves a path against the cwd into `out`
+ * (cap >= RAMDISK_FNAME_LEN); a name that does not fit is rejected like a
+ * missing file, never truncated. */
+int fs_resolve(const char *path, char *out, unsigned cap);
+int fs_dir_exists(const char *dir);
+int fs_is_dir(const char *resolved);
 
 /* ========== Simple FILE interface (for libc compat) ========== */
 #define EOF (-1)

@@ -102,6 +102,8 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/etc/shortcuts \
+            $(PROGS_DIR)/etc/host.zip \
+            $(PROGS_DIR)/etc/hostile.zip \
             $(PROGS_DIR)/icons/terminal.png \
             $(PROGS_DIR)/icons/doom.png \
             $(PROGS_DIR)/icons/nuklear.png \
@@ -599,10 +601,26 @@ stb_impl.o: third_party/stb/stb_impl.c third_party/stb/stb_image.h \
             third_party/stb/stb_api.h kernel.h
 	$(CC) $(CFLAGS_KERN) -Wno-unused-function -c $< -o $@
 
+# miniz zip library: the amalgamated 3.0.2 compiled into the kernel with the
+# allocator redirected to the kernel heap and stdio/time stripped (see
+# miniz_impl.c). The unzip/zip builtins in zip.c call its public API.
+miniz_impl.o: third_party/miniz/miniz_impl.c third_party/miniz/miniz.h \
+              third_party/miniz/miniz.c kernel.h
+	$(CC) $(CFLAGS_KERN) -Ithird_party/miniz -c $< -o $@
+
+zip.o: zip.c zip.h kernel.h third_party/miniz/miniz.h
+	$(CC) $(CFLAGS_KERN) -Ithird_party/miniz -c $< -o $@
+
 # Desktop icon PNGs: generated from pixel data by tools/gen_icons.py.
 $(PROGS_DIR)/icons/terminal.png $(PROGS_DIR)/icons/doom.png \
 $(PROGS_DIR)/icons/nuklear.png: tools/gen_icons.py
 	python3 tools/gen_icons.py $(PROGS_DIR)/icons/
+
+# Zip test fixtures: host-produced archives for the unzip builtin. host.zip
+# proves interop with a reference writer; hostile.zip carries escaping entry
+# names and must extract without writing outside the extraction root.
+$(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip: tools/gen_zip_fixtures.py
+	python3 tools/gen_zip_fixtures.py $(PROGS_DIR)/etc/
 
 sched.o: sched.c sched.h kernel.h bootdefs.h vga_fb.h pcspk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
@@ -623,11 +641,11 @@ isr_stubs.o: isr_stubs.S
 ctx_sw.o: ctx_sw.S
 	$(CC) -c -m64 $< -o $@
 
-kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o xxhash.o stb_impl.o kernel.ld
+kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
 	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o rtc.o xxhash.o \
-	      stb_impl.o -o $@
+	      stb_impl.o miniz_impl.o zip.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@

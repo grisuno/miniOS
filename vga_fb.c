@@ -72,6 +72,7 @@ static int  lg_head, lg_tail, lg_count;
 static char act[SB_LINE_MAX];                /* in-progress line */
 static int  act_len;
 static int  disp_off;                        /* scrollback rows above the bottom */
+static int  term_cursor_col = -1;            /* text cursor column (-1 = hidden) */
 
 /* Ring accessor: logical line at age i (0 = oldest, count-1 = newest). */
 static const char *lg_get(int i) {
@@ -222,6 +223,11 @@ static int cursor_over(int x0, int y0, int w, int h) {
  * ever leaving a trail. */
 static int vga_fb_gfx_mode;
 
+/* Geometry of the last composited graphics window (DOOM or Nuklear). The WM
+ * uses it to hit-test the title-bar window controls while a graphics program
+ * owns the display. */
+static int gfx_win_x, gfx_win_y, gfx_win_w;
+
 void vga_fb_set_gfx_mode(int on) {
     vga_fb_gfx_mode = on;
     if (!on) cursor_visible = 0;
@@ -371,7 +377,14 @@ int term_cols, term_rows;
 static int term_sz_cols = WIN_DEF_COLS;   /* persisted size across redraws */
 static int term_sz_rows = WIN_DEF_ROWS;
 static int term_fullscreen;
+static int term_minimized;
 static int term_px_x, term_px_y, term_px_w, term_px_h;
+
+/* Close request for a graphics window. A ring-3 program owns the display and
+ * only the kernel can end it: the WM's close button sets this flag and the
+ * syscall dispatcher acts on it at the program's next syscall, so the exit
+ * runs on the child's own stack, never from the ISR. */
+static volatile int wm_close_request;
 
 /* There is no pre-wrapped screen buffer: the visible window is reconstructed
  * from the logical line history on every render (see term_render), so a resize
@@ -494,6 +507,101 @@ static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg) {
     }
 }
 
+/* ---- Window controls ----
+ * Three glyph buttons at the right end of a window's title bar: minimize (_),
+ * maximize (square) and close (X). They are shared by the terminal window and
+ * the composited graphics windows (DOOM/Nuklear), so hit-testing must work on
+ * any titled window. Each button is FONT_W x FONT_H, separated by WM_BTN_PAD. */
+static int wm_buttons_x0(int win_x, int win_w) {
+    return win_x + win_w - 3 * (WM_BTN_W + WM_BTN_PAD);
+}
+
+/* Draw the three window-control glyphs at (px,py), the title bar's top-left. */
+static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg) {
+    int bx = wm_buttons_x0(px, win_w);
+    int by = py;
+    int i;
+    vga_fb_rect(bx, by, 3 * WM_BTN_W + 2 * WM_BTN_PAD, WM_BTN_H, bg);
+    /* minimize: a short bar across the lower half. */
+    vga_fb_rect(bx + 1, by + WM_BTN_H - 3, WM_BTN_W - 2, 1, fg);
+    bx += WM_BTN_W + WM_BTN_PAD;
+    /* maximize: an open square outline. */
+    for (i = 1; i < WM_BTN_W - 1; i++) {
+        vga_fb_pixel(bx + i, by + 1, fg);
+        vga_fb_pixel(bx + i, by + WM_BTN_H - 2, fg);
+    }
+    for (i = 1; i < WM_BTN_H - 1; i++) {
+        vga_fb_pixel(bx + 1, by + i, fg);
+        vga_fb_pixel(bx + WM_BTN_W - 2, by + i, fg);
+    }
+    bx += WM_BTN_W + WM_BTN_PAD;
+    /* close: two crossing diagonals. */
+    for (i = 1; i < WM_BTN_W - 1; i++) {
+        vga_fb_pixel(bx + i, by + i, fg);
+        vga_fb_pixel(bx + WM_BTN_W - 1 - i, by + i, fg);
+    }
+}
+
+/* Return which window-control button is under (mx,my), or 0 for none. */
+static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w) {
+    int x0 = wm_buttons_x0(win_x, win_w);
+    int rel;
+    if (my < win_y || my >= win_y + WM_BTN_H) return 0;
+    if (mx < x0 || mx >= win_x + win_w) return 0;
+    rel = mx - x0;
+    if (rel < WM_BTN_W) return WM_BTN_MIN;
+    if (rel < WM_BTN_W + WM_BTN_PAD + WM_BTN_W) return WM_BTN_MAX;
+    if (rel < WM_BTN_W + WM_BTN_PAD + WM_BTN_W + WM_BTN_PAD + WM_BTN_W)
+        return WM_BTN_CLOSE;
+    return 0;
+}
+
+/* Close request bridge: the syscall dispatcher polls this so a graphics
+ * program's next syscall exits it on the child's own stack. */
+int wm_close_pending(void) { return wm_close_request; }
+void wm_clear_close(void) { wm_close_request = 0; }
+int wm_gfx_mode_active(void) { return vga_fb_gfx_mode; }
+
+/* Hit-test and dispatch a click on a titled window's controls. The active
+ * window is the graphics window when one is composited, else the terminal.
+ * Returns 1 when the click was consumed by a window control. */
+static int wm_button_click(int mx, int my) {
+    int win_x, win_y, win_w;
+    int btn;
+    if (vga_fb_gfx_mode) {
+        win_x = gfx_win_x;
+        win_y = gfx_win_y;
+        win_w = gfx_win_w;
+    } else {
+        if (term_minimized) return 0;
+        win_x = term_px_x;
+        win_y = term_px_y;
+        win_w = term_px_w + SCROLLBAR_W;
+    }
+    btn = wm_buttons_hit(mx, my, win_x, win_y, win_w);
+    switch (btn) {
+    case WM_BTN_MIN:
+        if (vga_fb_gfx_mode) {
+            wm_close_request = 1;
+        } else {
+            vga_fb_toggle_minimize();
+        }
+        return 1;
+    case WM_BTN_MAX:
+        if (vga_fb_gfx_mode) {
+            /* Graphics windows are already sized to the display; no-op. */
+        } else {
+            vga_fb_toggle_fullscreen();
+        }
+        return 1;
+    case WM_BTN_CLOSE:
+        vga_fb_close_active();
+        return 1;
+    default:
+        return 0;
+    }
+}
+
 /* Composite the graphics back-buffer (e.g. DOOM's 320x200 frame) onto the
  * desktop in a titled window at native resolution, leaving the shell window
  * and desktop visible around it. Centered on the screen because the graphics
@@ -507,8 +615,13 @@ void vga_fb_blit_gfx_window(void) {
     vga_fb_gfx_cursor_erase();
     if (dst_x < 0) dst_x = 0;
     if (dst_y < 0) dst_y = 0;
+    gfx_win_x = dst_x;
+    gfx_win_y = dst_y;
+    gfx_win_w = DOOM_W + SCROLLBAR_W;
     vga_fb_rect(dst_x, dst_y, DOOM_W + SCROLLBAR_W, FONT_H, COL_TITLEBAR);
     text_px(dst_x + 4, dst_y, "DOOM", COL_TITLE_TXT, COL_TITLEBAR);
+    wm_draw_buttons(dst_x, dst_y, DOOM_W + SCROLLBAR_W,
+                    COL_TITLE_TXT, COL_TITLEBAR);
     for (r = 0; r < DOOM_H; r++) {
         volatile uint8_t *dst = &FB_ADDR[(dst_y + FONT_H + r) * fb_pitch + dst_x];
         const volatile uint8_t *src = bb + r * DOOM_W;
@@ -543,8 +656,13 @@ void vga_fb_blit_nk_window(void) {
     if (dst_y < 0) dst_y = 0;
     nk_win_x = dst_x;
     nk_win_y = dst_y;
+    gfx_win_x = dst_x;
+    gfx_win_y = dst_y;
+    gfx_win_w = NK_W + SCROLLBAR_W;
     vga_fb_rect(dst_x, dst_y, NK_W + SCROLLBAR_W, FONT_H, COL_TITLEBAR);
     text_px(dst_x + 4, dst_y, "Nuklear", COL_TITLE_TXT, COL_TITLEBAR);
+    wm_draw_buttons(dst_x, dst_y, NK_W + SCROLLBAR_W,
+                    COL_TITLE_TXT, COL_TITLEBAR);
     for (r = 0; r < NK_H; r++) {
         volatile uint8_t *dst = &FB_ADDR[(dst_y + FONT_H + r) * fb_pitch + dst_x];
         const volatile uint8_t *src = bb + r * NK_W;
@@ -587,8 +705,12 @@ static void term_recalc(void) {
 /* ---- Desktop ---- */
 static void draw_title(void) {
     const char *title = "MiniOS Terminal";
-    vga_fb_rect(term_px_x, term_px_y, term_px_w + SCROLLBAR_W, FONT_H, COL_TITLEBAR);
-    text_px(term_px_x + 4, term_px_y, title, COL_TITLE_TXT, COL_TITLEBAR);
+    int w = term_px_w + SCROLLBAR_W;
+    int tw = 3 * (WM_BTN_W + WM_BTN_PAD) + 8;   /* room for the controls */
+    vga_fb_rect(term_px_x, term_px_y, w, FONT_H, COL_TITLEBAR);
+    if (w > tw)
+        text_px(term_px_x + 4, term_px_y, title, COL_TITLE_TXT, COL_TITLEBAR);
+    wm_draw_buttons(term_px_x, term_px_y, w, COL_TITLE_TXT, COL_TITLEBAR);
 }
 
 /* ---- Taskbar (clock + speaker volume) ----
@@ -597,6 +719,7 @@ static void draw_title(void) {
  * shell `date`/`vol` builtins share the same rtc_read_tod/pcspk_get_volume
  * state, so the framebuffer and the serial console can never disagree. */
 static int tb_spk_x, tb_minus_x, tb_plus_x, tb_vol_x, tb_clock_x;
+static int tb_restore_x, tb_restore_w;
 
 static void taskbar_layout(void) {
     int x = fb_width;
@@ -609,6 +732,9 @@ static void taskbar_layout(void) {
     x -= TASKBAR_BTN_W;             tb_minus_x = x;
     x -= TASKBAR_PAD;
     x -= TASKBAR_ICON_W;            tb_spk_x = x;
+    /* Restore button on the far left: "[]" when a window is minimized. */
+    tb_restore_w = 2 * FONT_W;
+    tb_restore_x = TASKBAR_PAD;
 }
 
 /* 8x8 speaker glyph: body on the left, two sound arcs to the right. */
@@ -630,6 +756,8 @@ static void taskbar_render(void) {
     taskbar_layout();
     text_px(0, y, "Drag title:move Wheel:scroll Alt:snap/resize",
             COL_TASKBAR_TXT, COL_TASKBAR);
+    if (term_minimized)
+        text_px(tb_restore_x, y, "[]", COL_HIGHLIGHT, COL_TASKBAR);
     draw_speaker_icon(tb_spk_x, y, vol ? COL_TASKBAR_TXT : COL_HIGHLIGHT);
     text_px(tb_minus_x, y, "-", COL_TASKBAR_TXT, COL_TASKBAR);
     text_px(tb_plus_x, y, "+", COL_TASKBAR_TXT, COL_TASKBAR);
@@ -657,13 +785,19 @@ static void taskbar_tick(void) {
         cursor_visible = 0;
 }
 
-/* Click handling for the speaker icon and -/+ buttons. */
+/* Click handling for the speaker icon and -/+ buttons, plus the restore
+ * button that reappears while the terminal window is minimized. */
 static void taskbar_handle_click(int mx, int my) {
     unsigned v;
     static int spk_saved_valid;
     static unsigned spk_saved_vol;
     int y = fb_height - FONT_H;
     if (my < y || my >= y + FONT_H) return;
+    if (term_minimized &&
+        mx >= tb_restore_x && mx < tb_restore_x + tb_restore_w) {
+        vga_fb_toggle_minimize();
+        return;
+    }
     if (mx >= tb_spk_x && mx < tb_spk_x + TASKBAR_ICON_W) {
         v = pcspk_get_volume();
         if (v == 0) {
@@ -721,16 +855,28 @@ static void draw_scrollbar(void) {
 
 /* Render one display row at viewport row `vrow` for the absolute display row
  * `abs`. Rows outside the history (above the oldest line, or below the active
- * line) are blanked. */
+ * line) are blanked. When this is a row of the active line and a text cursor
+ * is shown, the cursor cell is drawn inverted (COL_TERM_CUR background). */
 static void render_row(int vrow, int abs) {
     const char *line;
     int off, len, c, src;
+    int active_start = total_rows() - act_nrows();
+    int is_active = (abs >= active_start);
     if (abs < 0) { vga_fb_str(0, vrow, "", COL_TERM_TXT, COL_TERMINAL); return; }
     line = line_at(abs, &off);
     if (!line) { vga_fb_str(0, vrow, "", COL_TERM_TXT, COL_TERMINAL); return; }
     len = (int)kstrlen(line);
     for (c = 0; c < term_cols; c++) {
         src = off + c;
+        if (is_active && term_cursor_col >= 0) {
+            int cl = term_cursor_col % term_cols;
+            int crow = (term_cursor_col / term_cols);
+            if (abs == active_start + crow && c == cl) {
+                vga_fb_char(c, vrow, src < len ? line[src] : ' ',
+                            COL_TERMINAL, COL_TERM_CUR);
+                continue;
+            }
+        }
         vga_fb_char(c, vrow, src < len ? line[src] : ' ',
                     COL_TERM_TXT, COL_TERMINAL);
     }
@@ -813,6 +959,20 @@ void vga_fb_puts_term(const char *s) {
     while (*s) vga_fb_putc_term(*s++);
 }
 
+/* Show the text cursor at character column `col` of the active line, or hide
+ * it with a negative column. The cursor is a block rendered by render_row. */
+void vga_fb_text_cursor(int col) {
+    if (col < 0) { term_cursor_col = -1; }
+    else { term_cursor_col = col; }
+    disp_clamp();
+    term_render();
+}
+
+/* Hide the text cursor (used when a live edit starts or the window redraws). */
+void vga_fb_hide_text_cursor(void) {
+    term_cursor_col = -1;
+}
+
 void vga_fb_draw_desktop(void) {
     vga_fb_set_palette();
     vga_fb_clear();
@@ -821,13 +981,17 @@ void vga_fb_draw_desktop(void) {
     desktop_shortcuts_load();
     desktop_shortcuts_draw();
     taskbar_render();
-    draw_title();
-    /* Repaint the terminal content (live or scrolled view) so the prompt and
-     * any typed/echoed text survive a window move, snap, resize or fullscreen
-     * toggle. Re-wrapping from the logical lines makes the content adapt to
-     * the new window size instead of being clipped. */
-    disp_clamp();
-    term_render();
+    /* A minimized window is not drawn; the content stays in the logical ring,
+     * so restoring repaints it from scratch with nothing lost. */
+    if (!term_minimized) {
+        draw_title();
+        /* Repaint the terminal content (live or scrolled view) so the prompt
+         * and any typed/echoed text survive a window move, snap, resize or
+         * fullscreen toggle. Re-wrapping from the logical lines makes the
+         * content adapt to the new window size instead of being clipped. */
+        disp_clamp();
+        term_render();
+    }
     /* Any redraw changed the pixels under the cursor; force a fresh save so a
      * stale snapshot never leaves pointer trails behind. */
     cursor_visible = 0;
@@ -836,8 +1000,42 @@ void vga_fb_draw_desktop(void) {
 /* ---- Keyboard shortcuts ---- */
 void vga_fb_toggle_fullscreen(void) {
     term_fullscreen = !term_fullscreen;
+    if (term_fullscreen) term_minimized = 0;
     disp_off = 0;
     vga_fb_draw_desktop();
+}
+
+/* Minimize/restore the terminal window. The content is not touched; the
+ * window is merely hidden and repainted on restore. Fullscreen and minimize
+ * are mutually exclusive: entering fullscreen un-minimizes. */
+void vga_fb_toggle_minimize(void) {
+    term_minimized = !term_minimized;
+    if (term_minimized) term_fullscreen = 0;
+    disp_off = 0;
+    vga_fb_draw_desktop();
+}
+
+int vga_fb_is_minimized(void) { return term_minimized; }
+int vga_fb_is_fullscreen(void) { return term_fullscreen; }
+
+/* Close the active window. For a graphics window this arms the close request
+ * that the syscall dispatcher honours on the child's next syscall; for the
+ * terminal window it restores the default position (the shell cannot be
+ * closed). Returns 1 when a close was armed, 0 otherwise. */
+int vga_fb_close_active(void) {
+    if (vga_fb_gfx_mode) {
+        wm_close_request = 1;
+        return 1;
+    }
+    term_minimized = 0;
+    term_fullscreen = 0;
+    term_sz_cols = WIN_DEF_COLS;
+    term_sz_rows = WIN_DEF_ROWS;
+    term_x = WIN_DEF_X;
+    term_y = WIN_DEF_Y;
+    disp_off = 0;
+    vga_fb_draw_desktop();
+    return 0;
 }
 
 void vga_fb_move_terminal(int dx, int dy) {
@@ -1066,15 +1264,6 @@ const char *desktop_shortcuts_hit_test(int mx, int my) {
     return 0;
 }
 
-void vga_fb_handle_key(int scancode) {
-    switch (scancode) {
-    case 0x57: vga_fb_toggle_fullscreen(); break;
-    case 0x3F: term_x = WIN_DEF_X; term_y = WIN_DEF_Y; term_fullscreen = 0;
-               disp_off = 0;
-               vga_fb_draw_desktop(); break;
-    }
-}
-
 /* ---- Mouse ---- */
 void vga_fb_mouse_tick(void) {
     static int dragging;
@@ -1090,14 +1279,21 @@ void vga_fb_mouse_tick(void) {
     taskbar_tick();
     if ((mouse_state.buttons & 1) && !(tb_prev_buttons & 1)) {
         taskbar_handle_click(mouse_state.x, mouse_state.y);
+        /* Window controls (minimize/maximize/close) win over a title-bar drag
+         * on the same click: hit-test the active titled window first. */
+        if (wm_button_click(mouse_state.x, mouse_state.y)) {
+            tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
+            cursor_visible = 0;
+            return;
+        }
         /* Check desktop icon clicks. */
         const char *cmd = desktop_shortcuts_hit_test(mouse_state.x, mouse_state.y);
         if (cmd) desktop_launch(cmd);
     }
     tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
 
-    /* Process wheel: scroll back/forward */
-    if (mouse_state.wheel != 0) {
+    /* Process wheel: scroll back/forward (only when the window is visible). */
+    if (mouse_state.wheel != 0 && !term_minimized) {
         int tr = total_rows();
         int max_off = tr > term_rows ? tr - term_rows : 0;
         if (mouse_state.wheel > 0)
@@ -1118,7 +1314,7 @@ void vga_fb_mouse_tick(void) {
     /* Title-bar drag: grab the window on a left press over the title bar and
      * move it while the button is held. Redrawing the desktop resets the
      * cursor, so the cursor is re-saved afterwards. */
-    if (!term_fullscreen) {
+    if (!term_fullscreen && !term_minimized) {
         /* The grab zone covers the title bar and a little below, so the drag
          * triggers whether the user aims the arrow tip or the sprite body at
          * the title bar (the tip is offset CURSOR_TIP_Y below the sprite's
@@ -1142,7 +1338,7 @@ void vga_fb_mouse_tick(void) {
     }
 
     /* Left click on the window scrollbar jumps the view to that position. */
-    if ((mouse_state.buttons & 1) && !dragging &&
+    if ((mouse_state.buttons & 1) && !dragging && !term_minimized &&
         mx >= term_px_x + term_px_w && mx < term_px_x + win_w &&
         my >= term_content_y() && my < term_content_y() + term_px_h) {
         int sy = term_content_y();
