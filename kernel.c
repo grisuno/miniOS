@@ -2197,7 +2197,7 @@ static void ktime_init(void) {
     tsc_base_ms = t0;
 }
 
-static unsigned long ktime_ms(void) {
+unsigned long ktime_ms(void) {
     if (!tsc_per_ms) ktime_init();
     return (ktime_rdtsc() - tsc_base_ms) / tsc_per_ms;
 }
@@ -2211,13 +2211,26 @@ static int s_trace_enabled = SYSCALL_TRACE;
 long syscall_trace_enabled(void) { return s_trace_enabled; }
 void syscall_trace_set(int on) { s_trace_enabled = on ? 1 : 0; }
 
+/* Syscall numbers that are poll/clock reads: tracing them floods the console
+ * (SYS_TIME is called inside every pacing spin loop), which made `trace on`
+ * turn an interactive program into a 100 ms-per-syscall crawl.  Other syscalls
+ * are traced one-to-one so a short program's full dialogue stays visible. */
+#define SYS_NOISY_TIME   204
+#define SYS_NOISY_KBD    205
+#define SYS_NOISY_MOUSE  219
+
+static int trace_is_noisy(long n) {
+    return n == SYS_NOISY_TIME || n == SYS_NOISY_KBD || n == SYS_NOISY_MOUSE;
+}
+
 long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
     long ret;
-    if (s_trace_enabled)
+    int show = s_trace_enabled && !trace_is_noisy(n);
+    if (show)
         kprintf("syscall %d(%d, %d, %d, %d, %d, %d)",
                 (int)n, (int)a1, (int)a2, (int)a3, (int)a4, (int)a5, (int)a6);
     ret = ksyscall_dispatch(n, a1, a2, a3, a4, a5, a6);
-    if (s_trace_enabled) kprintf(" = %d\n", (int)ret);
+    if (show) kprintf(" = %d\n", (int)ret);
     return ret;
 }
 
@@ -4990,6 +5003,15 @@ static void shell_exec_builtin(int argc, char **argv) {
             kprintf("%02d:%02d:%02d\n", h, m, s);
         else
             vga_puts("date: clock unavailable\n");
+    }
+    else if (kstrcmp(argv[0], "sb16") == 0) {
+        sb16_counters_t c;
+        sb16_counters(&c);
+        kprintf("sb16: present=%d mode=%d ring=%u/%u\n",
+                sb16_present(), sb16_mode_active(), sb16_ring_free(),
+                (unsigned)SB16_RING_CAP);
+        kprintf("sb16: arms irq=%lu poll=%lu submits=%lu drops=%lu\n",
+                c.irq_arms, c.poll_arms, c.submits, c.drops);
     }
     else if (kstrcmp(argv[0], "gfx") == 0) {
         shell_cmd_gfx(argc, argv);

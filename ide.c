@@ -108,22 +108,23 @@ int ide_read_sectors(unsigned int lba, unsigned int count, void *buf) {
     if (!ide_disk_present) return -1;
     if (lba + count > ide_disk_sectors) return -1;
 
+    /* Issue ONE multi-sector read command (SECCOUNT = count) instead of one
+     * command per sector, then pull the data with a DRQ wait before each
+     * sector's worth of words.  Under QEMU every port access is a VM-exit, so
+     * collapsing count command setups into one measurably speeds bulk loads. */
+    if (ide_wait_not_busy(IDE_TIMEOUT) < 0) return -1;
+    ide_select_drive(0);
+    outb(IDE_PRIMARY_BASE + IDE_REG_SECCOUNT, (unsigned char)count);
+    outb(IDE_PRIMARY_BASE + IDE_REG_LBA_LO, (unsigned char)(lba));
+    outb(IDE_PRIMARY_BASE + IDE_REG_LBA_MID, (unsigned char)(lba >> 8));
+    outb(IDE_PRIMARY_BASE + IDE_REG_LBA_HI, (unsigned char)(lba >> 16));
+    outb(IDE_PRIMARY_BASE + IDE_REG_DRIVE,
+         IDE_DRIVE_LBA | IDE_DRIVE_MASTER | (unsigned char)((lba >> 24) & 0x0F));
+    outb(IDE_PRIMARY_BASE + IDE_REG_STATUS, IDE_CMD_READ);
+
     for (i = 0; i < count; i++) {
-        unsigned int sector = lba + i;
         unsigned int j;
-
-        if (ide_wait_not_busy(IDE_TIMEOUT) < 0) return -1;
-        ide_select_drive(0);
-        outb(IDE_PRIMARY_BASE + IDE_REG_SECCOUNT, 1);
-        outb(IDE_PRIMARY_BASE + IDE_REG_LBA_LO, (unsigned char)(sector));
-        outb(IDE_PRIMARY_BASE + IDE_REG_LBA_MID, (unsigned char)(sector >> 8));
-        outb(IDE_PRIMARY_BASE + IDE_REG_LBA_HI, (unsigned char)(sector >> 16));
-        outb(IDE_PRIMARY_BASE + IDE_REG_DRIVE,
-             IDE_DRIVE_LBA | IDE_DRIVE_MASTER | (unsigned char)((sector >> 24) & 0x0F));
-        outb(IDE_PRIMARY_BASE + IDE_REG_STATUS, IDE_CMD_READ);
-
         if (ide_wait_drq(IDE_TIMEOUT) < 0) return -1;
-
         for (j = 0; j < IDE_SECTOR_SIZE / 2; j++)
             ((unsigned short *)p)[j] = inw(IDE_PRIMARY_BASE + IDE_REG_DATA);
         p += IDE_SECTOR_SIZE;
@@ -138,29 +139,26 @@ int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf) {
     if (!ide_disk_present) return -1;
     if (lba + count > ide_disk_sectors) return -1;
 
+    if (ide_wait_not_busy(IDE_TIMEOUT) < 0) return -1;
+    ide_select_drive(0);
+    outb(IDE_PRIMARY_BASE + IDE_REG_SECCOUNT, (unsigned char)count);
+    outb(IDE_PRIMARY_BASE + IDE_REG_LBA_LO, (unsigned char)(lba));
+    outb(IDE_PRIMARY_BASE + IDE_REG_LBA_MID, (unsigned char)(lba >> 8));
+    outb(IDE_PRIMARY_BASE + IDE_REG_LBA_HI, (unsigned char)(lba >> 16));
+    outb(IDE_PRIMARY_BASE + IDE_REG_DRIVE,
+         IDE_DRIVE_LBA | IDE_DRIVE_MASTER | (unsigned char)((lba >> 24) & 0x0F));
+    outb(IDE_PRIMARY_BASE + IDE_REG_STATUS, IDE_CMD_WRITE);
+
     for (i = 0; i < count; i++) {
-        unsigned int sector = lba + i;
         unsigned int j;
-
-        if (ide_wait_not_busy(IDE_TIMEOUT) < 0) return -1;
-        ide_select_drive(0);
-        outb(IDE_PRIMARY_BASE + IDE_REG_SECCOUNT, 1);
-        outb(IDE_PRIMARY_BASE + IDE_REG_LBA_LO, (unsigned char)(sector));
-        outb(IDE_PRIMARY_BASE + IDE_REG_LBA_MID, (unsigned char)(sector >> 8));
-        outb(IDE_PRIMARY_BASE + IDE_REG_LBA_HI, (unsigned char)(sector >> 16));
-        outb(IDE_PRIMARY_BASE + IDE_REG_DRIVE,
-             IDE_DRIVE_LBA | IDE_DRIVE_MASTER | (unsigned char)((sector >> 24) & 0x0F));
-        outb(IDE_PRIMARY_BASE + IDE_REG_STATUS, IDE_CMD_WRITE);
-
         if (ide_wait_drq(IDE_TIMEOUT) < 0) return -1;
-
         for (j = 0; j < IDE_SECTOR_SIZE / 2; j++)
             outw(IDE_PRIMARY_BASE + IDE_REG_DATA, ((const unsigned short *)p)[j]);
         p += IDE_SECTOR_SIZE;
-
-        outb(IDE_PRIMARY_BASE + IDE_REG_STATUS, IDE_CMD_FLUSH);
-        ide_wait_not_busy(IDE_TIMEOUT);
     }
+    if (ide_wait_not_busy(IDE_TIMEOUT) < 0) return -1;
+    outb(IDE_PRIMARY_BASE + IDE_REG_STATUS, IDE_CMD_FLUSH);
+    ide_wait_not_busy(IDE_TIMEOUT);
     return 0;
 }
 

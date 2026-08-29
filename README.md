@@ -237,6 +237,23 @@ The image is attached as an IDE disk. The boot path uses INT 13h extended
   the 8237 DMA controller reads freshly written PCM instead of stale cache.
   The DSP write wait no longer burns a 100 000-iteration port-read spin on
   the wrong status bit.
+- **SB16 timer watchdog** (`sb16.c`, `sched.c`): DMA completion is driven by
+  the SB16 IRQ *and* a timer-ISR watchdog (`sb16_poll`). QEMU raises the
+  completion IRQ only once its audio engine consumes a transfer, so a host
+  backend that never consumes left the 7-slot ring filled forever and every
+  later submit refused (the piano buzzed / fell silent). The watchdog re-arms
+  on elapsed guest time, and `sb16_arm` rate-limits both paths to one re-arm
+  per buffer, so the ring always drains at the declared rate. The `sb16`
+  builtin reports the counters (`irq_arms`, `poll_arms`, `submits`, `drops`).
+- **Syscall trace flood** (`kernel.c`): `trace on` no longer prints
+  `SYS_TIME`/`SYS_KBD`/`SYS_MOUSE` (clock/poll reads a pacing loop hammers
+  thousands of times a second). Tracing those made an interactive program a
+  100 ms-per-syscall crawl under TCG; the rest are traced one-to-one.
+- **Multi-sector IDE PIO** (`ide.c`): `ide_read_sectors`/`ide_write_sectors`
+  issue one command with `SECCOUNT = count` instead of `count` single-sector
+  commands, cutting the per-sector command-setup port traffic of bulk loads.
+  Data is still pulled word-by-word through the PIO data port, so the
+  remaining minifs load time is bounded by QEMU's 16-bit-only IDE port.
 
 ## Network and https
 
@@ -470,15 +487,21 @@ miniOS> piano --bench             # headless render-loop benchmark (~fps)
 ```
 
 `--selftest` exercises the velocity mapping, sustain hold/release, octave
-clamp and every FX stage and prints `piano: selftest ok`. `--bench` runs the
-UI render loop for two seconds and reports frames per second.
+clamp, every FX stage and the audio pacing constants, and prints
+`piano: selftest ok`. `--bench` runs the UI render loop for two seconds and
+reports frames per second. Audio is rendered for the full wall-clock time
+elapsed per frame (clamped to the SB16 ring's ~650 ms backlog) so slow frames
+never under-render and starve the ring into a buzz.
 
 ## Diagnostics
 
 `perf` is a shell builtin that measures raw CPU speed, the `sys_time` clock
 and console output throughput, pinpointing where guest time goes. `sbtone`
 is a headless ring-3 program that streams a clean 440 Hz sine to the SB16
-and reports submit throughput, isolating the audio path from any GUI.
+and reports submit throughput, isolating the audio path from any GUI. `sb16`
+prints the SB16 driver counters (IRQ arms, watchdog poll arms, submits,
+drops) and the ring fill, so ring health is observable over the serial
+console without ears.
 
 ## MicroPython
 

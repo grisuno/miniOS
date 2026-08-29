@@ -212,6 +212,9 @@ extern unsigned long kernel_end;
 extern char ramdisk_start[];
 extern char ramdisk_end[];
 
+/* ========== Kernel clock ========== */
+unsigned long ktime_ms(void);
+
 /* ========== PC speaker ========== */
 void     pcspk_init(void);
 void     pcspk_tone(unsigned freq);

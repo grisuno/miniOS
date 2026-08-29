@@ -161,6 +161,7 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
     if (vector == 32) {
         sys_ticks++;
         pic_eoi(0);
+        sb16_poll();
         if (proc_count > 1) {
             proc_t *cur = proc_get(current_pid);
             if (cur && cur->state == PROC_RUNNING) {

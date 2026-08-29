@@ -507,6 +507,18 @@ validates all buffer addresses against `USER_LOAD_BASE..USER_LOAD_END`.
 4. Phase 4: remove kernel-side compositing, let the desktop process own it.
 5. Phase 5: enable preemptive scheduling for all user processes.
 
+**Preemption blocker (deferred):** the full preemptive track (Phase 5 and a
+non-blocking shell) is NOT implementable on the current single-address-space
+model: `load_exec_elf` loads every ring-3 program at `USER_LOAD_BASE` into one
+shared address space, so two concurrent programs would clobber each other's
+user memory. It requires per-process page tables (a per-process CR3 switch in
+`switch_to`, currently shared) plus per-process brk/mmap cursors and the
+desktop-process phases above. This is the documented Phase 5 plan above; it is
+deferred because it is a large, high-risk rewrite that would destabilise the
+boot/test contract, not a small fix. It does not block the audio/perf work:
+the piano's slowness was the SB16 ring wedge and the trace console flood, not
+an absence of preemption.
+
 ### Taskbar with clock and volume (`vga_fb.c` + `rtc.c` + `pcspk.c`)
 The bottom taskbar is the desktop's status strip, not a hint line. It shows
 the current time and a speaker icon with volume control, both live, and both
@@ -928,7 +940,12 @@ namespace the ramdisk names describe:
 `trace` prints the current state; `trace on` / `trace off` set it (off by
 default). While tracing, every Linux-ABI syscall is reported on the console
 as `syscall <n>(a1, a2, a3, ...) = <result>`, so a program's dialogue with
-the kernel can be watched from outside without a debugger. `make gdb`
+the kernel can be watched from outside without a debugger. Three syscalls are
+never traced — `SYS_TIME` (204), `SYS_KBD` (205), `SYS_MOUSE` (219) — because
+they are poll/clock reads that a pacing spin loop hammers thousands of times
+a second; tracing them flooded the console and made `trace on` turn an
+interactive program into a 100 ms-per-syscall crawl. All other syscalls are
+traced one-to-one so a short program's full dialogue stays visible. `make gdb`
 boots QEMU with the gdb stub (`-s -S`) for register-level debugging;
 `gdb -ex 'target remote :1234' -ex 'add-symbol-file kernel.elf 0x100000'`
 attaches to the 64-bit kernel.
@@ -987,6 +1004,42 @@ syscalls 204/210) and loops by rewinding to the score start, and
 `MUS_StopSong` silences the speaker. The
 `music_sdl_module`/`music_opl_module` stubs stay
 all-zero; the PC speaker module is the only music source.
+
+### Sound Blaster 16 DMA audio (`sb16.c` + piano)
+The kernel owns a real PCM audio device (QEMU `-device sb16`, 8-bit mono at
+`SB16_PCM_RATE` 22050 Hz through the 8237 DMA controller on channel 1) and
+exposes two sinks: `sb16_tone` (square wave, the `sys_tone` sink) and
+`sb16_pcm_open`/`sb16_pcm_submit` (raw 8-bit PCM streamed from a ring-3
+renderer, the piano's FM synth path). The rate is programmed with the DSP 0x41
+command (two frequency bytes, low then high) so the clock matches the declared
+`SB16_PCM_RATE` exactly.
+
+- **DMA completion is driven by an interrupt AND a timer watchdog.** QEMU
+  raises the SB16 completion IRQ (vector 37) only once its audio engine has
+  consumed the transferred block; a host backend that never consumes (a
+  suspended PulseAudio stream, a full buffer, or the `none` backend) therefore
+  never raises it. A driver that re-arms solely from the IRQ wedges: the
+  7-slot ring fills once and every later submit is refused, deadening the
+  audio. `sb16_poll`, called from the 100 Hz timer ISR, re-arms on elapsed
+  guest time as a fallback, and both paths funnel through `sb16_arm`, which
+  gates re-arms to at most one per `SB16_ARM_PERIOD_MS` so the two are
+  idempotent and a fast backend can never drive an interrupt storm.
+- **Ring accounting is guest-side**: `pcm_free` is incremented when a queued
+  slot is armed, independent of whether QEMU actually consumed it, so the
+  guest-side ring always drains at the declared rate.
+- **Observability**: the `sb16` builtin prints presence, mode, ring free
+  count and the driver counters (`irq_arms`, `poll_arms`, `submits`, `drops`),
+  so ring health is testable over the serial console without ears.
+- The DMA buffers live in the reserved identity-mapped low region
+  `[0x90000, 0x94000)` (8 slots of 2 KB, the last is the permanent silence
+  buffer); no kernel-static array is used because under KASLR the kernel
+  image's physical base can land above the 16 MB the 8237 can reach.
+- **Piano pacing**: `progs/piano/piano.c` renders the wall-clock time elapsed
+  per frame clamped to `MAX_AUDIO_MS` (600 ms, just under the ring's ~650 ms
+  capacity) instead of the old 50 ms cap, so a slow frame no longer
+  under-renders and starves the ring into a choppy buzz. A fully-filled buffer
+  whose submit is refused is held and retried next frame (`sb_flush`), and a
+  drop is counted only when a new submit is blocked by a still-pending buffer.
 
 ## MicroPython (`micropython.elf`)
 MicroPython runs inside MiniOS exactly like DOOM does: the upstream project

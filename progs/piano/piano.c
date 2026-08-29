@@ -53,7 +53,13 @@ static char ui_memory[UI_MEMORY];
 
 #define RATE    22050u
 #define PCM_BUF 2048u        /* == SB16 PCM buffer size (bytes) */
-#define MAX_MS  50           /* per-frame audio budget (ms) */
+/* Upper bound on audio rendered per frame, in milliseconds.  The SB16 ring
+ * holds SB16_RING_CAP buffers (~650 ms); a frame must never render more than
+ * the ring can absorb, or the excess would be silently dropped.  Rendering a
+ * slow frame's full elapsed time (clamped here) is what keeps the audio in
+ * sync with wall time: the old 50 ms cap under-rendered on slow frames and
+ * starved the ring, which produced the choppy buzz. */
+#define MAX_AUDIO_MS 600
 
 static long sys_pcm_open(long on) {
     long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_OPEN),"D"(on):"rcx","r11","memory"); return r;
@@ -245,9 +251,22 @@ static float fx_process(float x) {
 static unsigned char obuf[PCM_BUF];
 static int fill;
 static long last_render;
+static unsigned long sb_submit_drops;
+
+/* Flush a fully-filled buffer to the SB16.  When the ring is full the submit
+ * is refused; the buffer is kept in place (fill stays at PCM_BUF) so the next
+ * frame retries it, and a drop is counted only when a new submit is blocked
+ * by a still-pending buffer, never silently. */
+static void sb_flush(void) {
+    if (fill != PCM_BUF) return;
+    if (sys_pcm_submit(obuf, PCM_BUF) == 0) fill = 0;
+    else sb_submit_drops++;
+}
 
 static void render_audio(long ms) {
     static int16_t st[512 * 2];
+    sb_flush();
+    if (fill == PCM_BUF) return;    /* ring full: hold the buffer, wait */
     long nsamples = ms * (long)RATE / 1000;
     long left = nsamples;
     while (left > 0) {
@@ -262,8 +281,8 @@ static void render_audio(long ms) {
             if (out < -32768) out = -32768;
             obuf[fill++] = (unsigned char)((out >> 8) + 128);
             if (fill == PCM_BUF) {
-                sys_pcm_submit(obuf, PCM_BUF);
-                fill = 0;
+                sb_flush();
+                if (fill == PCM_BUF) return;   /* ring full mid-frame */
             }
         }
         left -= n;
@@ -489,7 +508,7 @@ static void ui_run(int bench_ms) {
         long elapsed = now - last_render;
         last_render = now;
         if (elapsed > 0) {
-            if (elapsed > MAX_MS) elapsed = MAX_MS;
+            if (elapsed > MAX_AUDIO_MS) elapsed = MAX_AUDIO_MS;
             if (audio_on) render_audio(elapsed);
         }
 
@@ -570,6 +589,20 @@ static int run_selftest(void) {
     float t1 = fx_process(0.8f);
     float t2 = fx_process(0.8f);
     if (fabsf(t1 - t2) < 1e-6f) { printf("piano: tremolo not modulating\n"); return 1; }
+
+    /* Audio pacing: one PCM buffer must span a full SB16 buffer duration and
+     * a whole ring must be able to absorb a MAX_AUDIO_MS frame, otherwise a
+     * slow frame either under-renders (starving the ring into a buzz) or
+     * over-renders (silently dropping audio). */
+    {
+        long buf_ms = (long)PCM_BUF * 1000 / (long)RATE;
+        long ring_ms = buf_ms * 7;
+        if (MAX_AUDIO_MS <= buf_ms || MAX_AUDIO_MS > ring_ms) {
+            printf("piano: pacing constants fail (max=%d buf=%ld ring=%ld)\n",
+                   MAX_AUDIO_MS, buf_ms, ring_ms);
+            return 1;
+        }
+    }
 
     printf("piano: selftest ok\n");
     return 0;

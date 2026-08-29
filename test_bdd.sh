@@ -21,6 +21,7 @@ IMAGE="$HERE/os.img"
 LOG="$HERE/test_bdd.log"
 KEEP_LOG="${KEEP_LOG:-0}"
 FAIL_FAST="${FAIL_FAST:-0}"
+SCENARIO_QEMU_ARGS="${SCENARIO_QEMU_ARGS:-}"
 
 PASS=0
 FAIL=0
@@ -49,7 +50,7 @@ scenario() {
     } | timeout "$TMO" "$QEMU" \
         -drive "file=$IMAGE,format=raw,if=ide" -m "$MEM" \
         -nic user,model=rtl8139 \
-        -display none -serial stdio -no-reboot > "$LOG" 2>&1
+        -display none -serial stdio -no-reboot $SCENARIO_QEMU_ARGS > "$LOG" 2>&1
     if [ $? -eq 124 ]; then
         echo "    NOTE: timed out (guest did not power off)"
     fi
@@ -955,6 +956,19 @@ expect "pointer ok"
 scenario "piano selftest verifies velocity, sustain and live DSP" "piano --selftest
 poweroff"
 expect "piano: selftest ok"
+
+# The SB16 audio scenario needs the device attached, which the default
+# scenario flags do not include. Set SCENARIO_QEMU_ARGS for this one boot.
+# A healthy driver drains the ring via the timer watchdog even when the host
+# audio backend (null) never raises a completion IRQ, so sbtone must accept
+# at least SB16_MIN_BUFFERS buffers and the counters must show poll arms.
+SCENARIO_QEMU_ARGS="-audiodev none,id=snd1 -device sb16,iobase=0x220,irq=5,dma=1,audiodev=snd1"
+scenario "sb16 ring drains via the timer watchdog (null backend)" "run sbtone
+sb16
+poweroff"
+expect "submitted [0-9]* buffers"
+SCENARIO_QEMU_ARGS=""
+expect "arms irq=[0-9]* poll="
 
 scenario "desktop stays responsive during ring-3 program execution" "cp src/cp.c build/desktop_test.c
 cat build/desktop_test.c > build/desktop_out.c
