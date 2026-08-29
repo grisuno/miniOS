@@ -23,6 +23,12 @@ MICROPYTHON_URL ?= https://github.com/micropython/micropython
 MICROPYTHON_DIR ?= ../micropython
 MICROPYTHON_REF ?= v1.28.0
 
+# Lua 5.4: the reference implementation built as a ring-3 static ELF, exactly
+# like MicroPython (host gcc -static, Linux syscall ABI, ships on MiniFS).
+LUA_URL ?= https://github.com/lua/lua
+LUA_DIR ?= ../lua
+LUA_REF ?= v5.4.7
+
 NUKLEAR_URL ?= https://github.com/Immediate-Mode-UI/Nuklear
 NUKLEAR_DIR ?= ../nuklear
 
@@ -161,6 +167,14 @@ sources:
 	else \
 	    echo "cloning  $(NUKED_OPL3_URL) -> $(NUKED_OPL3_DIR)"; \
 	    $(GIT) clone --depth 1 "$(NUKED_OPL3_URL)" "$(NUKED_OPL3_DIR)" || exit 1; \
+	fi
+	@if [ -d "$(LUA_DIR)/.git" ]; then \
+	    echo "present  $(LUA_DIR)"; \
+	elif [ -e "$(LUA_DIR)" ]; then \
+	    echo "skipped  $(LUA_DIR) exists and is not a git clone"; \
+	else \
+	    echo "cloning  $(LUA_URL) -> $(LUA_DIR) ($(LUA_REF))"; \
+	    $(GIT) clone --depth 1 -b $(LUA_REF) "$(LUA_URL)" "$(LUA_DIR)" || exit 1; \
 	fi
 
 sources-update: sources
@@ -451,6 +465,34 @@ $(BIN_DIR)/micropython.elf: $(MICROPYTHON_DIR)/ports/unix/main.c \
 $(BIN_DIR)/micropython: $(BIN_DIR)/micropython.elf
 	cp $< $@
 
+# ── Lua 5.4 (reference interpreter + minios module, static glibc ELF) ──
+# Same contract as MicroPython/DOOM: host gcc -static, ring-3 ET_EXEC, on
+# MiniFS.  The upstream lua.c main is replaced by progs/lua/lua_main.c, which
+# registers the `minios` kernel-services module (progs/lua/minios.c) as a
+# global table, and supports -e / script / REPL.  os.execute() degrades to a
+# failure inside MiniOS (no fork), but the REPL, io, string, table, math and
+# the minios module all work.
+LUA_LIB_SRCS = lapi.c lauxlib.c lbaselib.c lcode.c lcorolib.c lctype.c \
+           ldblib.c ldebug.c ldo.c ldump.c lfunc.c lgc.c linit.c liolib.c \
+           llex.c lmathlib.c lmem.c loadlib.c lobject.c lopcodes.c loslib.c \
+           lparser.c lstate.c lstring.c lstrlib.c ltable.c ltablib.c ltm.c \
+           lundump.c lutf8lib.c lvm.c lzio.c
+LUA_APP_SRCS = $(PROGS_DIR)/lua/minios.c $(PROGS_DIR)/lua/lua_main.c
+
+$(LUA_DIR)/lua.h:
+	@echo "missing $@"
+	@echo "run 'make sources' to clone the Lua repository"
+	@exit 1
+
+$(BIN_DIR)/lua.elf: $(addprefix $(LUA_DIR)/,$(LUA_LIB_SRCS)) $(LUA_APP_SRCS) $(LUA_DIR)/lua.h
+	$(CC) -static -no-pie -std=gnu99 -O2 -Wall -DLUA_USE_LINUX -I$(LUA_DIR) \
+	      -o $@ $(addprefix $(LUA_DIR)/,$(LUA_LIB_SRCS)) $(LUA_APP_SRCS) -lm -ldl
+	chmod +x $@
+
+# Bare-name alias so `lua` works without the .elf suffix.
+$(BIN_DIR)/lua: $(BIN_DIR)/lua.elf
+	cp $< $@
+
 # ── Nuklear node editor (nuklear_minios.c + node_editor.c + cvm_emit.c) ──
 # The visual "low-code tool for the CVM": a ring-3 Nuklear app that renders
 # a node graph into the kernel back-buffer (SYS_NK_FRAME 220) and compiles
@@ -511,6 +553,8 @@ $(BIN_DIR)/opl3: $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/op
 # against the MiniFS root by shell_run_elf_minifs; src/aes.c rides along so
 # the OS can rebuild them without leaving the machine.
 MINIFS_FILES = $(MINIFS_DOOM_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
+               $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
+               $(PROGS_DIR)/lua/minios.c $(PROGS_DIR)/lua/lua_main.c \
                $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear \
                $(BIN_DIR)/piano.elf $(BIN_DIR)/piano \
                $(PROGS_DIR)/piano/piano.c \
@@ -530,6 +574,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/microp
                $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
                $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
                $(SRC_DIR)/hello.py \
+               $(SRC_DIR)/test.lua \
                $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
                $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
                $(DOC_DIR)/hostile.html \
@@ -784,6 +829,7 @@ clean:
 	      $(BIN_DIR)/json \
 	      $(BIN_DIR)/aes $(BIN_DIR)/unaes \
 	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
+	      $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
 	      $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear
 	rm -f $(BIN_DIR)/opl3
 	rm -f $(BIN_DIR)/piano.elf $(BIN_DIR)/piano

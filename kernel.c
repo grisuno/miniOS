@@ -4825,6 +4825,8 @@ static void shell_exec_builtin(int argc, char **argv) {
         vga_puts("Toolchain: edit p.c; minigcc.o p.c > p.s;\n");
         vga_puts("           ld.o -f elf -o p.elf p.s; p.elf\n");
         vga_puts("CVM:       minigcc.o w1.c > w1.s; ld.o -f cvm -o w1.cvm w1.s; w1.cvm\n");
+        vga_puts("Interpreters: micropython (REPL/script), lua (REPL/script);\n");
+        vga_puts("           lua src/test.lua runs the in-OS test suite (minios module)\n");
     }
     else if (kstrcmp(argv[0], "clear") == 0) {
         vga_clear();
