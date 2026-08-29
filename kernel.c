@@ -4775,6 +4775,26 @@ static void shell_exec_builtin(int argc, char **argv) {
         }
         if (!shown) vga_puts("  (empty)\n");
     }
+    else if (kstrcmp(argv[0], "perf") == 0) {
+        /* Diagnose where guest time goes: raw CPU, ktime_ms overhead, and
+         * console output throughput (serial + terminal render). */
+        unsigned long a, b, i;
+        volatile unsigned long sink = 0;
+        a = ktime_ms();
+        for (i = 0; i < 1000000; i++) __asm__ volatile("nop");
+        b = ktime_ms();
+        kprintf("perf: 1M nop = %ld ms\n", (long)(b - a));
+        a = ktime_ms();
+        for (i = 0; i < 100000; i++) sink += ktime_ms();
+        b = ktime_ms();
+        kprintf("perf: 100k ktime_ms = %ld ms\n", (long)(b - a));
+        a = ktime_ms();
+        for (i = 0; i < 1000; i++)
+            kprintf("0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789\n");
+        b = ktime_ms();
+        kprintf("perf: 1000x100-char kprintf = %ld ms\n", (long)(b - a));
+        kprintf("perf: done (sink %ld)\n", (long)sink);
+    }
     else if (kstrcmp(argv[0], "cat") == 0) {
         if (argc < 2) { vga_puts("usage: cat <file> [file...]\n"); return; }
         int fi;

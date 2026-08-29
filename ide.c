@@ -11,8 +11,12 @@ static unsigned int ide_disk_sectors;
 
 static void ide_delay(void) {
     volatile unsigned i;
-    for (i = 0; i < 1000; i++)
-        inb(IDE_PRIMARY_CTRL);
+    /* A short CPU spin, NOT a port read.  The old loop read the IDE control
+     * register 1000 times as a crude timer, which under KVM turns every one of
+     * those reads into a VM-exit.  ide_select_drive calls this twice per
+     * sector, so reading a 4 MB WAD ran into millions of exits and took
+     * minutes.  A pause loop keeps the small settle delay without any I/O. */
+    for (i = 0; i < 200; i++) __asm__ volatile("pause");
 }
 
 static unsigned char ide_read_status(void) {

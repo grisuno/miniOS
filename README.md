@@ -191,13 +191,52 @@ link/run loop as `objects/minigcc.o`.
 ```bash
 make            # builds os.img
 make run        # boots it in QEMU with a display
+make run-kvm    # boots it with KVM acceleration
+make run-headless # boots it headless on the serial console (no GUI window)
 make serial     # boots it headless on the serial console
 make test       # behavioural suite (QEMU + serial console)
 make selfhost   # compile minigcc with minigcc, link with ld, check fixed point
 ```
 
+### Choosing KVM vs TCG
+
+The default `make run` uses **no acceleration (TCG)**. Use `make run-kvm` for
+KVM. There is a real trade-off, and it is deliberately left to the user:
+
+| Workload | TCG (`make run`) | KVM (`make run-kvm`) |
+|----------|------------------|----------------------|
+| CPU-bound (ring-3 GUI: `piano --bench`) | ~20 fps | ~60 fps |
+| IDE disk I/O (loading DOOM's WAD) | seconds | ~30 s |
+
+KVM makes pure CPU-bound work much faster, but every IDE PIO port access
+becomes a VM-exit, so disk-heavy loads are slower than under TCG, which
+handles port I/O inline. The IDE driver was optimized to reduce those exits
+(see below), which took DOOM's load from ~5 minutes to ~30 s under KVM, but
+the remaining data-transfer reads are inherent to PIO.
+
 The image is attached as an IDE disk. The boot path uses INT 13h extended
 (LBA) reads, which floppy emulation does not provide.
+
+## Performance work
+
+- **IDE PIO driver** (`ide.c`): `ide_delay` used to read the IDE control
+  register 1000 times per call as a crude timer, and `ide_select_drive`
+  called it twice per sector. Under KVM that turned a 4 MB WAD load into
+  millions of VM-exits (~5 minutes). It is now a short CPU pause loop, which
+  cut DOOM's load to ~30 s under KVM while keeping TCG fast.
+- **Block cache** (`block.c`): a direct-mapped write-through cache of
+  recently-read disk blocks. MiniFS's directory iteration re-reads the same
+  directory block for every entry (`lsfs` was O(entries x blocks) in disk
+  reads); the cache turns that into one read per directory block plus one per
+  touched inode.
+- **Console output** (`vga_fb.c`): the windowed terminal redrew the whole
+  active line for every printable character (100 000 chars took ~14 s). It
+  now draws only the changed cell, so `ls` and all console output are fast.
+- **SB16 DMA buffers** (`sb16.c`, `stage2.S`, `bootdefs.h`): the DMA ring
+  `[0x90000, 0x94000)` is marked uncacheable (PCD) in the boot page tables so
+  the 8237 DMA controller reads freshly written PCM instead of stale cache.
+  The DSP write wait no longer burns a 100 000-iteration port-read spin on
+  the wrong status bit.
 
 ## Network and https
 
@@ -413,6 +452,34 @@ The kernel provides four custom syscalls for the port: `time_ms` (204),
 entered through `sys_vga_mode` (208), which tells the kernel to stop
 touching VGA text hardware while the game runs.
 
+## Piano (FM synth -> SB16)
+
+MiniOS ships a ring-3 Nuklear piano that plays through the Sound Blaster 16
+driver. The synth is Nuked-OPL3 (a cycle-accurate Yamaha chip emulator),
+streaming 8-bit mono PCM at 22050 Hz to the kernel's SB16 DMA path via the
+MiniOS PCM syscalls (221 open, 222 submit). On top of the FM engine the
+piano adds expressive control: velocity (the click's vertical position sets
+the carrier output level), a sustain pedal, octave shift, a master volume,
+and live DSP effects on the mix (echo/delay, tremolo and soft clip), all from
+an on-screen control bar.
+
+```
+miniOS> piano                     # GUI: click the keys to play
+miniOS> piano --selftest          # headless regression hook
+miniOS> piano --bench             # headless render-loop benchmark (~fps)
+```
+
+`--selftest` exercises the velocity mapping, sustain hold/release, octave
+clamp and every FX stage and prints `piano: selftest ok`. `--bench` runs the
+UI render loop for two seconds and reports frames per second.
+
+## Diagnostics
+
+`perf` is a shell builtin that measures raw CPU speed, the `sys_time` clock
+and console output throughput, pinpointing where guest time goes. `sbtone`
+is a headless ring-3 program that streams a clean 440 Hz sine to the SB16
+and reports submit throughput, isolating the audio path from any GUI.
+
 ## MicroPython
 
 MiniOS ships MicroPython as a static Linux ELF at ring 3, built from the
@@ -586,7 +653,10 @@ full contract.
 | `toolchain` | build `minigcc`, `ld` and `cvm2` from those sources |
 | `selfhost` | compile minigcc with minigcc, link with `ld`, verify the bootstrap fixed point |
 | `test-tls` | host TLS suite: crypto vectors + full handshakes |
-| `run` / `serial` / `debug` | boot the image in QEMU |
+| `run` | boot the image in QEMU with a display (TCG by default) |
+| `run-kvm` | boot it with KVM acceleration (faster CPU, slower IDE I/O) |
+| `run-headless` | boot it headless on the serial console (no GUI window) |
+| `serial` / `debug` | boot the image in QEMU |
 | `test` | behavioural suite |
 | `clean` | remove every build product |
 

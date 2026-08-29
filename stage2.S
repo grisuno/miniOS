@@ -193,6 +193,24 @@ fill_pt0_low:
     addl $PT_PD_ENTRY_BYTES, %edi
     addl $0x1000, %eax
     loop fill_pt0_low
+
+    /* The SB16 DMA ring [0x90000, 0x94000) must be UNCACHEABLE (PCD): the
+     * 8237 DMA controller reads physical RAM directly, bypassing the CPU
+     * caches, so a write-back mapping would leave freshly written PCM stale
+     * in cache and the DMA would play garbage.  Set PCD on those four PT0
+     * pages (identity-mapped in the low 1 MB above).  %edi currently points
+     * just past the low-mapping entries and fill_pt0_kernel continues from
+     * there, so save/restore it around this block. */
+    movl %edi, %esi
+    movl $PT_USER0_ADDR, %edi
+    addl $SB16_DMA_PT_ENTRY * PT_PD_ENTRY_BYTES, %edi
+    movl $SB16_DMA_PT_PAGES, %ecx
+dma_uncache:
+    orl $PT_FLAGS_PCD, (%edi)
+    addl $PT_PD_ENTRY_BYTES, %edi
+    loop dma_uncache
+    movl %esi, %edi
+
     movl kaslr_dest, %eax
     movl $256, %ecx
 fill_pt0_kernel:

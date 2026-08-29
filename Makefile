@@ -74,6 +74,12 @@ QEMU_MEM   = -m 256M
 QEMU_NIC   = -nic user,model=rtl8139 -smp 2
 QEMU_AUDIO  = -audiodev pa,id=snd0 -machine pc,pcspk-audiodev=snd0 \
               -audiodev pa,id=snd1 -device sb16,iobase=0x220,irq=5,dma=1,audiodev=snd1
+# CPU acceleration.  The default is NO acceleration (TCG).  KVM makes pure
+# CPU-bound work fast, but it turns every IDE PIO port access into a VM-exit,
+# so disk-heavy loads (loading DOOM's WAD, lsfs) get far slower under KVM than
+# under TCG, which handles port I/O inline.  Enable KVM explicitly with
+# `make run QEMU_ACCEL=-accel kvm` when the workload is CPU-bound.
+QEMU_ACCEL  =
 
 # KASLR randomizes the kernel image's physical base on every boot. Disable
 # with `make ENABLE_KASLR=0` when a deterministic physical layout is wanted
@@ -523,10 +529,13 @@ $(BIN_DIR)/nuklear: $(BIN_DIR)/nuklear.elf
 	cp $< $@
 
 # ── piano (Nuklear FM piano -> SB16 PCM) ───────────────────────────────
-# A clickable two-octave piano keyboard in Nuklear that plays real FM sound
-# through the kernel's Sound Blaster 16 driver: Nuked-OPL3 synthesizes each
-# note and the app streams 8-bit mono PCM via syscalls 221/222.  Built like
-# the node editor (reuses nuklear_minios.c), static ring-3, ships on MiniFS.
+# A clickable two-octave piano keyboard in Nuklear that plays FM sound
+# through the kernel's Sound Blaster 16 driver.  The synth is a DIRECT FM
+# engine (modulator + carrier per voice into a sine table) instead of a
+# cycle-accurate Yamaha chip emulator, so real-time rendering stays fast in
+# QEMU and the UI never stutters.  The app streams 8-bit mono PCM via
+# syscalls 221/222.  Built like the node editor (reuses nuklear_minios.c),
+# static ring-3, ships on MiniFS.
 PIANO_SRCS = $(PROGS_DIR)/piano/piano.c \
              $(PROGS_DIR)/nuklear/nuklear_minios.c
 
@@ -554,6 +563,12 @@ $(BIN_DIR)/opl3: $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/op
 	      -I$(NUKED_OPL3_DIR) -o $@ $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c
 	chmod +x $@
 
+# sbtone: headless SB16 diagnostic. Streams a clean 440 Hz sine to the SB16
+# and reports submit throughput, isolating the audio path from any GUI.
+$(BIN_DIR)/sbtone: $(SRC_DIR)/sbtone.c
+	$(CC) -static -no-pie -std=c99 -O2 -Wall -o $@ $(SRC_DIR)/sbtone.c -lm
+	chmod +x $@
+
 # aes/unaes live on MiniFS (ramdisk budget): bare-name commands resolved
 # against the MiniFS root by shell_run_elf_minifs; src/aes.c rides along so
 # the OS can rebuild them without leaving the machine.
@@ -564,6 +579,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/microp
                $(BIN_DIR)/piano.elf $(BIN_DIR)/piano \
                $(PROGS_DIR)/piano/piano.c \
                $(BIN_DIR)/opl3 $(SRC_DIR)/opl3.c \
+               $(BIN_DIR)/sbtone $(SRC_DIR)/sbtone.c \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                $(BIN_DIR)/json $(SRC_DIR)/json.c \
                $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
@@ -812,10 +828,25 @@ os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	 echo "image:   $$final sectors"
 
 run: os.img
-	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) $(QEMU_AUDIO)
+	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) $(QEMU_AUDIO)
+
+# Run with KVM acceleration. (Cannot use QEMU_ACCEL=-accel kvm on the command
+# line: the space splits the value.) Useful to compare KVM vs TCG.
+run-kvm: os.img
+	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) -accel kvm $(QEMU_AUDIO)
+
+# Headless run over the serial console. QEMU's GUI mode renders the VESA
+# framebuffer to the host by software, which is slow even under KVM (a ring-3
+# GUI app that repaints a whole window each frame appears laggy for that
+# reason alone). -display none -serial stdio drops the GUI window and gives a
+# fast, interactive console; the SB16 audio backend is kept so tone/sbtone
+# can still be heard on the host.
+run-headless: os.img
+	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) \
+		-display none -serial stdio $(QEMU_AUDIO)
 
 debug: os.img
-	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) -monitor stdio -no-reboot
+	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) -monitor stdio -no-reboot
 
 # Boot paused under the gdb stub. Attach with:
 #   gdb -ex 'target remote :1234' -ex 'add-symbol-file kernel.elf 0x100000'
@@ -844,6 +875,7 @@ clean:
 	      $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
 	      $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear
 	rm -f $(BIN_DIR)/opl3
+	rm -f $(BIN_DIR)/sbtone
 	rm -f $(BIN_DIR)/piano.elf $(BIN_DIR)/piano
 	rm -f $(PROGS_DIR)/icons/piano.png
 	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm

@@ -178,6 +178,14 @@
 #define PT_FLAGS_PRESENT_RW_PS    0x083
 #define PT_FLAGS_PS               0x080
 #define PT_FLAGS_USER             0x004
+#define PT_FLAGS_PCD              0x010   /* page cache disable (uncacheable) */
+
+/* The SB16 DMA audio ring [0x90000, 0x94000) is read by the 8237 DMA
+ * controller directly from physical RAM, bypassing the CPU caches.  Those
+ * pages must be marked uncacheable (PCD) or the freshly written PCM stays
+ * stale in a write-back cache and the DMA plays garbage. */
+#define SB16_DMA_PT_ENTRY         (0x90000 >> 12)   /* PT0 entry index */
+#define SB16_DMA_PT_PAGES         4                 /* 0x90000..0x94000 */
 #define PT_PD_ENTRIES             512
 #define PT_PD_ENTRY_BYTES         8
 #define PT_PD_PAGE_BYTES          0x200000

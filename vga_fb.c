@@ -910,6 +910,26 @@ static void term_render_active(void) {
     draw_scrollbar();
 }
 
+/* Draw ONE cell of the active (typed) line, honoring the text cursor. This is
+ * the O(1) per-character path: bulk console output appends a char at a time,
+ * and redrawing the whole active row (term_cols glyphs, via term_render_active)
+ * on every char made 100000-char output take ~14 s. A single cell draw is
+ * ~100x cheaper and keeps the accumulating line live. */
+static void term_draw_cell(int col) {
+    int top = disp_top();
+    int active_start = total_rows() - act_nrows();
+    int crow = col / term_cols;
+    int cl = col % term_cols;
+    int abs = active_start + crow;
+    int vrow = abs - top;
+    if (vrow < 0 || vrow >= term_rows) return;
+    char ch = (col < act_len) ? act[col] : ' ';
+    int is_cur = (term_cursor_col == col);
+    vga_fb_char(cl, vrow, ch,
+                is_cur ? COL_TERMINAL : COL_TERM_TXT,
+                is_cur ? COL_TERM_CUR : COL_TERMINAL);
+}
+
 /* Emit one character into the logical terminal. The active line is the only
  * editable state: '\n' completes it into the ring, printable characters append
  * to it, '\b' shortens it. The viewport always snaps to the live bottom on
@@ -944,13 +964,20 @@ void vga_fb_putc_term(char c) {
         return;
     }
     if (c >= 32 && c <= 126) {
+        int old_len = act_len;
         if (act_len < SB_LINE_MAX - 1) {
             act[act_len++] = c;
             act[act_len] = '\0';
         }
         disp_off = 0;
-        if (total_rows() != rows_before) term_render();
-        else term_render_active();
+        if (total_rows() != rows_before) {
+            term_render();          /* wrap changed the row count: full repaint */
+        } else {
+            /* Revert the previous cursor cell, then paint the new char cell. */
+            if (term_cursor_col >= 0 && term_cursor_col < old_len)
+                term_draw_cell(term_cursor_col);
+            term_draw_cell(act_len - 1);
+        }
         return;
     }
 }

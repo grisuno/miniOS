@@ -1,18 +1,39 @@
-/* piano.c — a Nuklear piano that plays real FM sound through the SB16 driver.
+/* piano.c — a Nuklear piano that plays FM sound through the SB16 driver.
  *
  * A ring-3 static ELF app (built like the node editor and DOOM: host gcc
  * -static, ships on MiniFS, launched from a desktop icon).  It renders a
  * clickable two-octave piano keyboard with Nuklear, and each key triggers a
- * note on the Nuked-OPL3 FM synthesizer.  The OPL3 output is mixed to 8-bit
- * mono PCM and streamed to the kernel's Sound Blaster 16 driver through the
- * MiniOS PCM syscalls (221 open, 222 submit) — the same real-audio path the
- * SB16 driver provides.  Polyphonic up to OPL3's 18 FM voices.
+ * note on the Nuked-OPL3 FM chip emulator: one modulator + one carrier per
+ * channel driving a real Yamaha FM engine.  The emulator is cycle-accurate
+ * but heavy, so it renders in bounded per-frame blocks into the mono mix
+ * rather than sample-by-sample; the app stays fluid because the PCM is
+ * decoupled from the UI frame rate.  The mix is 8-bit mono PCM streamed to
+ * the kernel's Sound Blaster 16 driver through the MiniOS PCM syscalls
+ * (221 open, 222 submit) — the same real-audio path the SB16 driver provides.
  *
  * The audio is decoupled from the UI frame rate: each frame renders exactly
  * the PCM for the wall-clock time elapsed since the last frame and submits it
  * in SB16-sized buffers, so the ring paces output in real time and the UI
  * never stalls.  With no SB16 the PCM open fails and the piano is silent but
  * still fully interactive.
+ *
+ * Expressive controls, all integer-friendly on the mix path:
+ *   - velocity: the click's vertical position inside a key sets the note
+ *     loudness (top = soft, bottom = loud) by biasing the OPL3 carrier
+ *     output level, FM's native amplitude control.
+ *   - sustain pedal: while held, key releases are deferred and the FM voice
+ *     keeps ringing (OPL3 decays naturally) until the pedal is released;
+ *     a full 18-voice press steals the oldest sustained voice rather than
+ *     dropping the new note.
+ *   - octave shift and a master volume (0..100).
+ *   - live DSP effects on the mono mix, bounded and real-time: an echo /
+ *     delay line (feedback + wet), a tremolo LFO and a soft clip.
+ *
+ * `piano --selftest` is a headless regression hook over the serial console:
+ * it exercises the velocity mapping, sustain hold/release, octave clamp and
+ * every FX stage on synthetic input and prints `piano: selftest ok` or a
+ * diagnostic.  It needs neither the SB16 nor the GUI, so the BDD suite can
+ * assert the DSP never regresses.
  */
 
 #include <stdio.h>
@@ -41,7 +62,7 @@ static long sys_pcm_submit(const void *buf, long len) {
     long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_SUBMIT),"D"((long)buf),"S"(len):"rcx","r11","memory"); return r;
 }
 
-/* ── OPL3 FM engine ─────────────────────────────────────────────────── */
+/* ── Nuked-OPL3 FM engine ───────────────────────────────────────────── */
 static opl3_chip o3;
 static int audio_on;
 
@@ -54,15 +75,19 @@ static void o3_chreg(int ch, int regbase, int val) {
     OPL3_WriteReg(&o3, (uint16_t)(base + regbase + (ch % 9)), (uint8_t)val);
 }
 
-static void o3_instrument(int ch) {
+/* Program one FM patch; `vel` (1..100) biases the carrier output level so a
+ * louder velocity is audibly less attenuated, FM's native amplitude. */
+static void o3_instrument(int ch, int vel) {
     int mod = 2 * ch, car = 2 * ch + 1;
+    int tl = 0x08 + ((100 - vel) * 0x1F) / 100;   /* 0x08 (loud) .. 0x27 (soft) */
+    if (tl > 0x3F) tl = 0x3F;
     o3_opreg(mod, 0x20, 0x01);
     o3_opreg(mod, 0x40, 0x18);
     o3_opreg(mod, 0x60, 0x42);
     o3_opreg(mod, 0x80, 0x85);
     o3_opreg(mod, 0xE0, 0x00);
     o3_opreg(car, 0x20, 0x01);
-    o3_opreg(car, 0x40, 0x08);
+    o3_opreg(car, 0x40, (uint8_t)tl);
     o3_opreg(car, 0x60, 0x44);
     o3_opreg(car, 0x80, 0x77);
     o3_opreg(car, 0xE0, 0x00);
@@ -94,29 +119,126 @@ static void o3_note(int ch, int midi, int on) {
     o3_chreg(ch, 0xB0, ((unsigned)block << 2) | ((fnum >> 8) & 3) | 0x20);
 }
 
-/* ── Polyphonic note allocator (up to OPL3's 18 voices) ─────────────── */
+/* ── Expressive note state: velocity, sustain, octave ───────────────── */
 #define MAX_VOICES 18
 static int key_to_chan[MAX_VOICES];   /* key index -> OPL3 channel, -1 = off */
 static int chan_used[MAX_VOICES];
+static int chan_sustained[MAX_VOICES];/* key released but pedal holds the voice */
+
+static int sustain_pedal;
+static int octave;                    /* -2..+2, note shifted by 12*octave */
+static int volume;                    /* 0..100 master, applied on the mix */
+
+static int clamp_midi(int m) {
+    if (m < 0) m = 0;
+    if (m > 127) m = 127;
+    return m;
+}
+
+/* Release every voice the pedal is holding (pedal lifted). */
+static void pedal_set(int on) {
+    sustain_pedal = on;
+    if (on) return;
+    int ch;
+    for (ch = 0; ch < MAX_VOICES; ch++) {
+        if (chan_sustained[ch]) {
+            o3_note(ch, 0, 0);
+            chan_used[ch] = 0;
+            chan_sustained[ch] = 0;
+        }
+    }
+}
 
 static void note_off_key(int key) {
     if (key < 0 || key >= MAX_VOICES) return;
     int ch = key_to_chan[key];
     if (ch < 0) return;
+    if (sustain_pedal) {
+        chan_sustained[ch] = 1;       /* let FM ring until the pedal lifts */
+        key_to_chan[key] = -1;
+        return;
+    }
     o3_note(ch, 0, 0);
     chan_used[ch] = 0;
     key_to_chan[key] = -1;
 }
-static void note_on_key(int key, int midi) {
+static void note_on_key(int key, int midi, int vel) {
     if (key < 0 || key >= MAX_VOICES || !audio_on) return;
-    if (key_to_chan[key] >= 0) return;
+    if (key_to_chan[key] >= 0) return;   /* same key already sounding */
     int ch;
     for (ch = 0; ch < MAX_VOICES; ch++) if (!chan_used[ch]) break;
-    if (ch >= MAX_VOICES) return;                 /* all voices busy */
+    if (ch >= MAX_VOICES) {
+        /* All voices busy: steal the oldest sustained voice, never drop a
+         * new note because a held pedal blocked every channel. */
+        for (ch = 0; ch < MAX_VOICES; ch++) if (chan_sustained[ch]) break;
+        if (ch >= MAX_VOICES) return;
+        o3_note(ch, 0, 0);
+        chan_sustained[ch] = 0;
+    }
     chan_used[ch] = 1;
     key_to_chan[key] = ch;
-    o3_instrument(ch);
-    o3_note(ch, midi, 1);
+    o3_instrument(ch, vel);
+    o3_note(ch, clamp_midi(midi + 12 * octave), 1);
+}
+
+/* ── Live DSP effects on the mono mix ───────────────────────────────── */
+/* Real-time, bounded, applied per sample before the 8-bit conversion.
+ *   delay:   an echo line (feedback + wet mix), 0 ms = off.
+ *   tremolo: a low-frequency amplitude LFO, 0..100 depth.
+ *   softclip: a tanh saturation that never exceeds [-1,1].
+ *   volume:  the master gain 0..100.
+ * Everything is exposed through fx_process so the headless selftest can drive
+ * it without an SB16 or the GUI. */
+
+#define FX_DELAY_CAP (RATE)           /* 1 s of delay at 22050 Hz */
+#define FX_DELAY_MAX_MS 800
+#define FX_FEEDBACK 0.35f
+#define FX_WET      0.55f
+#define FX_TREM_FREQ 5.0f
+
+static float fx_delay_buf[FX_DELAY_CAP];
+static int   fx_delay_len;            /* samples, 0 = echo off */
+static int   fx_delay_pos;
+static int   fx_tremolo_pct;          /* 0..100, 0 = tremolo off */
+static float fx_trem_phase;
+static int   fx_softclip;
+
+/* (Re)configure every FX stage; also used by the selftest. */
+static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol) {
+    fx_tremolo_pct = tremolo_pct;
+    fx_softclip = clip;
+    volume = vol;
+    if (delay_ms > 0) {
+        int len = delay_ms * (int)RATE / 1000;
+        if (len > FX_DELAY_CAP) len = FX_DELAY_CAP;
+        if (len < 1) len = 1;
+        if (len != fx_delay_len) {
+            fx_delay_len = len;
+            fx_delay_pos = 0;
+            memset(fx_delay_buf, 0, sizeof(fx_delay_buf));
+        }
+    } else {
+        fx_delay_len = 0;
+    }
+    fx_trem_phase = 0.0f;
+}
+
+static float fx_process(float x) {
+    if (fx_delay_len > 0) {
+        float d = fx_delay_buf[fx_delay_pos];
+        fx_delay_buf[fx_delay_pos] = x + FX_FEEDBACK * d;
+        x += FX_WET * d;
+        fx_delay_pos = (fx_delay_pos + 1) % fx_delay_len;
+    }
+    if (fx_tremolo_pct > 0) {
+        float depth = (float)fx_tremolo_pct / 100.0f;
+        float lfo = 0.5f + 0.5f * sinf(fx_trem_phase);   /* 0..1 */
+        x *= 1.0f - depth + depth * lfo;                  /* 1-depth .. 1 */
+        fx_trem_phase += FX_TREM_FREQ * 2.0f * 3.14159265358979f / (float)RATE;
+    }
+    if (fx_softclip) x = tanhf(x);
+    x *= (float)volume / 100.0f;
+    return x;
 }
 
 /* ── PCM renderer (bounded per frame, ring-paced) ───────────────────── */
@@ -133,10 +255,12 @@ static void render_audio(long ms) {
         OPL3_GenerateStream(&o3, st, (uint32_t)n);
         long i;
         for (i = 0; i < n; i++) {
-            int m = (st[i * 2] + st[i * 2 + 1]) / 2;
-            if (m > 32767) m = 32767;
-            if (m < -32768) m = -32768;
-            obuf[fill++] = (unsigned char)((m >> 8) + 128);
+            float x = (float)((st[i * 2] + st[i * 2 + 1]) / 2);
+            x = fx_process(x);
+            int out = (int)x;
+            if (out > 32767) out = 32767;
+            if (out < -32768) out = -32768;
+            obuf[fill++] = (unsigned char)((out >> 8) + 128);
             if (fill == PCM_BUF) {
                 sys_pcm_submit(obuf, PCM_BUF);
                 fill = 0;
@@ -163,6 +287,13 @@ static const struct { int black; int midi; int x; } keys[] = {
 };
 #define NKEYS ((int)(sizeof(keys) / sizeof(keys[0])))
 
+static void key_rect(int key, int *x, int *y, int *w, int *h) {
+    *x = keys[key].x;
+    *y = KEY_Y;
+    *w = keys[key].black ? BK_W : KEY_W;
+    *h = keys[key].black ? BK_H : KEY_H;
+}
+
 static int hit_key(int mx, int my) {
     if (my < KEY_Y || my > KEY_Y + KEY_H) return -1;
     int i;
@@ -178,8 +309,67 @@ static int hit_key(int mx, int my) {
     return -1;
 }
 
+/* Velocity 1..100 from the click's vertical position inside a key: the very
+ * top is soft, the bottom is loud. */
+static int hit_velocity(int key, int my) {
+    int x, y, w, h;
+    key_rect(key, &x, &y, &w, &h);
+    int pct = (100 * (my - y)) / h;
+    if (pct < 1) pct = 1;
+    if (pct > 100) pct = 100;
+    return pct;
+}
+
+/* ── Control bar (manual widgets, hit-tested like the keys) ─────────── */
+#define CTRL_Y  (KEY_Y + KEY_H + 12)
+#define CTRL_H  26
+#define BTN_W   70
+#define BTN_GAP 8
+
+static const struct { int x; int y; int w; int h; const char *label; } ctrls[] = {
+    { 0,            CTRL_Y, BTN_W, CTRL_H, "-Oct" },
+    { BTN_W + BTN_GAP, CTRL_Y, BTN_W, CTRL_H, "+Oct" },
+    { 2*(BTN_W + BTN_GAP), CTRL_Y, BTN_W, CTRL_H, "-Vol" },
+    { 3*(BTN_W + BTN_GAP), CTRL_Y, BTN_W, CTRL_H, "+Vol" },
+    { 4*(BTN_W + BTN_GAP), CTRL_Y, BTN_W, CTRL_H, "Sustain" },
+    { 5*(BTN_W + BTN_GAP), CTRL_Y, BTN_W, CTRL_H, "Echo" },
+    { 6*(BTN_W + BTN_GAP), CTRL_Y, BTN_W, CTRL_H, "Tremolo" },
+    { 7*(BTN_W + BTN_GAP), CTRL_Y, BTN_W, CTRL_H, "Clip" },
+};
+#define NCTRLS ((int)(sizeof(ctrls) / sizeof(ctrls[0])))
+
+static int ctrl_hit(int id, int mx, int my) {
+    return mx >= ctrls[id].x && mx < ctrls[id].x + ctrls[id].w &&
+           my >= ctrls[id].y && my < ctrls[id].y + ctrls[id].h;
+}
+static int ctrl_active(int id) {
+    switch (id) {
+    case 4: return sustain_pedal;
+    case 5: return fx_delay_len > 0;
+    case 6: return fx_tremolo_pct > 0;
+    case 7: return fx_softclip;
+    default: return 0;
+    }
+}
+
+static void ctrl_press(int id) {
+    switch (id) {
+    case 0: if (octave > -2) octave--; break;
+    case 1: if (octave < 2) octave++; break;
+    case 2: if (volume > 0) volume -= 5; break;
+    case 3: if (volume < 100) volume += 5; break;
+    case 4: pedal_set(sustain_pedal ? 0 : 1); break;
+    case 5: fx_configure(fx_delay_len > 0 ? 0 : 220, fx_tremolo_pct, fx_softclip, volume); break;
+    case 6: fx_configure(fx_delay_len > 0 ? fx_delay_len * 1000 / (int)RATE : 0,
+                         fx_tremolo_pct > 0 ? 0 : 70, fx_softclip, volume); break;
+    case 7: fx_configure(fx_delay_len > 0 ? fx_delay_len * 1000 / (int)RATE : 0,
+                         fx_tremolo_pct, fx_softclip ? 0 : 1, volume); break;
+    default: break;
+    }
+}
+
 /* ── UI ─────────────────────────────────────────────────────────────── */
-static void ui_run(void) {
+static void ui_run(int bench_ms) {
     unsigned char pal768[768];
     int fw, fh, fp;
 
@@ -192,7 +382,14 @@ static void ui_run(void) {
     audio_on = sys_pcm_open(1) == 1 ? 1 : 0;
     OPL3_Reset(&o3, RATE);
     int i;
-    for (i = 0; i < MAX_VOICES; i++) key_to_chan[i] = -1;
+    for (i = 0; i < MAX_VOICES; i++) {
+        key_to_chan[i] = -1;
+        chan_used[i] = 0;
+        chan_sustained[i] = 0;
+    }
+    sustain_pedal = 0;
+    octave = 0;
+    fx_configure(0, 0, 0, 80);
     last_render = (long)nk_sys_time_ms();
 
     struct nk_user_font font = nk_minios_font();
@@ -206,9 +403,18 @@ static void ui_run(void) {
 
     int origin[2] = {0, 0};
     int quit = 0;
-    int last_mouse[2] = {-1, -1};
     int last_down = 0;
+    long bench_start = (bench_ms > 0) ? (long)nk_sys_time_ms() : 0;
+    long bench_frames = 0;
     while (!quit) {
+        bench_frames++;
+        if (bench_ms > 0 && (long)nk_sys_time_ms() - bench_start >= bench_ms) {
+            printf("piano: bench %ld frames in %d ms (~%.1f fps)\n",
+                   bench_frames, bench_ms,
+                   (float)bench_frames * 1000.0f / (float)bench_ms);
+            quit = 1;
+            break;
+        }
         nk_input_begin(&ctx);
         nk_poll_input(&ctx);
         nk_input_end(&ctx);
@@ -234,20 +440,42 @@ static void ui_run(void) {
                 nk_fill_rect(canvas, r, 0, col);
                 nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));
             }
+            /* Control bar: draw each button, highlighted when active. */
+            int c;
+            for (c = 0; c < NCTRLS; c++) {
+                struct nk_rect r;
+                r.x = (float)ctrls[c].x; r.y = (float)ctrls[c].y;
+                r.w = (float)ctrls[c].w; r.h = (float)ctrls[c].h;
+                int active = ctrl_active(c);
+                nk_fill_rect(canvas, r, 0, active ? nk_rgb(120, 160, 80)
+                                                  : nk_rgb(60, 60, 60));
+                nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));
+                nk_draw_text(canvas, r, ctrls[c].label,
+                             (int)strlen(ctrls[c].label),
+                             &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));
+            }
             nk_fill_rect(canvas, nk_rect(0, 0, (float)NK_W, 44), 0, nk_rgb(40, 40, 40));
-            nk_text(&ctx, audio_on ? "OPL3 FM piano -> SB16" : "piano (no SB16: silent)",
-                    0, NK_TEXT_CENTERED);
-            nk_text(&ctx, "Click the keys to play. Two octaves, 18-voice FM.",
-                    0, NK_TEXT_CENTERED);
+            char head[64];
+            snprintf(head, sizeof(head), "OPL3 FM piano -> SB16  oct%+d  vol%d",
+                     octave, volume);
+            nk_draw_text(canvas,
+                nk_rect(8, 10, (float)NK_W - 16, 24), head, (int)strlen(head),
+                &font, audio_on ? nk_rgb(230, 230, 230) : nk_rgb(200, 90, 90),
+                nk_rgb(0, 0, 0));
         }
         nk_end(&ctx);
 
-        /* Note on/off from the mouse. */
+        /* Note on/off and control presses from the mouse. */
         int hit = hit_key((int)mx, (int)my);
-        if (down && !last_down && hit >= 0)
-            note_on_key(hit, keys[hit].midi);
-        else if (!down && last_down) {
-            if (hit >= 0) note_off_key(hit);
+        if (down && !last_down) {
+            if (hit >= 0) {
+                note_on_key(hit, keys[hit].midi, hit_velocity(hit, (int)my));
+            } else {
+                int c;
+                for (c = 0; c < NCTRLS; c++) if (ctrl_hit(c, (int)mx, (int)my)) { ctrl_press(c); break; }
+            }
+        } else if (!down && last_down) {
+            if (hit >= 0) note_off_key(hit);   /* sustain defers the release */
         }
         last_down = down;
 
@@ -275,8 +503,85 @@ static void ui_run(void) {
     sys_pcm_open(0);
 }
 
+/* ── Headless selftest (BDD hook) ───────────────────────────────────── */
+static int run_selftest(void) {
+    int i;
+    audio_on = 1;
+    OPL3_Reset(&o3, RATE);
+    for (i = 0; i < MAX_VOICES; i++) {
+        key_to_chan[i] = -1;
+        chan_used[i] = 0;
+        chan_sustained[i] = 0;
+    }
+    sustain_pedal = 0;
+    octave = 0;
+    fx_configure(0, 0, 0, 100);
+
+    /* Velocity: the top of a key is soft, the bottom is loud. */
+    int x, y, w, h;
+    key_rect(0, &x, &y, &w, &h);
+    int v_top = hit_velocity(0, y);
+    int v_bot = hit_velocity(0, y + h - 1);
+    if (!(v_top >= 1 && v_top <= 10 && v_bot >= 90 && v_bot <= 100)) {
+        printf("piano: velocity range fail (%d..%d)\n", v_top, v_bot);
+        return 1;
+    }
+
+    /* Sustain holds a released key until the pedal lifts. */
+    sustain_pedal = 1;
+    note_on_key(0, 48, 80);
+    if (!chan_used[0]) { printf("piano: note_on did not grab a voice\n"); return 1; }
+    note_off_key(0);
+    if (!chan_sustained[0]) { printf("piano: sustain did not hold the release\n"); return 1; }
+    if (!chan_used[0]) { printf("piano: sustain freed the voice early\n"); return 1; }
+    pedal_set(0);
+    if (chan_used[0] || chan_sustained[0]) {
+        printf("piano: pedal release did not free the voice\n"); return 1;
+    }
+    sustain_pedal = 0;
+
+    /* Octave transposition clamps to the MIDI range. */
+    if (clamp_midi(127 + 12 * 6) != 127 || clamp_midi(0 - 12 * 6) != 0) {
+        printf("piano: octave clamp fail\n"); return 1;
+    }
+
+    /* FX: master volume scales the mix. */
+    fx_configure(0, 0, 0, 50);
+    float vs = fx_process(0.8f);
+    if (fabsf(vs - 0.4f) > 0.01f) { printf("piano: volume fail %.3f\n", vs); return 1; }
+
+    /* FX: soft clip bounds the output to [-1,1]. */
+    fx_configure(0, 0, 1, 100);
+    float sc = fx_process(5.0f);
+    if (!(sc > -1.0f && sc < 1.0f)) { printf("piano: softclip bounds fail %.3f\n", sc); return 1; }
+
+    /* FX: the echo line keeps ringing after the input stops. */
+    fx_configure(220, 0, 0, 100);
+    fx_process(1.0f);                 /* one-sample impulse */
+    float peak = 0.0f;
+    for (i = 0; i < (int)RATE; i++) { /* let the echo ring for a full second */
+        float v = fabsf(fx_process(0.0f));
+        if (v > peak) peak = v;
+    }
+    if (peak < 0.3f) { printf("piano: echo tail missing (peak %.3f)\n", peak); return 1; }
+
+    /* FX: the tremolo LFO modulates the amplitude from sample to sample. */
+    fx_configure(0, 100, 0, 100);
+    float t1 = fx_process(0.8f);
+    float t2 = fx_process(0.8f);
+    if (fabsf(t1 - t2) < 1e-6f) { printf("piano: tremolo not modulating\n"); return 1; }
+
+    printf("piano: selftest ok\n");
+    return 0;
+}
+
 int main(int argc, char **argv) {
-    (void)argc; (void)argv;
-    ui_run();
+    if (argc > 1 && strcmp(argv[1], "--selftest") == 0)
+        return run_selftest();
+    if (argc > 1 && strcmp(argv[1], "--bench") == 0) {
+        ui_run(2000);
+        return 0;
+    }
+    ui_run(0);
     return 0;
 }

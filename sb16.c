@@ -91,8 +91,16 @@ static unsigned char *sb16_slot(unsigned i) {
 }
 
 static void sb16_wait_dsp_write(void) {
-    unsigned i = 0;
-    while ((inb(SB16_DSP_STATUS) & SB16_DSP_READY_MASK) && i < 100000u) i++;
+    unsigned i;
+    /* The DSP status register bit 7 (0x80) means "data available to read",
+     * NOT "write buffer empty", so it must never gate command writes: if it
+     * happens to be set (a pending byte, or a QEMU quirk) the old 100000-trip
+     * spin burned through the whole bound on every DMA re-arm from the IRQ
+     * handler, which is exactly what stalled the whole VM while the SB16
+     * streamed.  DSP commands are issued only a few times per transfer
+     * (~93 ms apart), so a short fixed grace is all that is needed and the
+     * DMA command stream can never desynchronize from a busy DSP. */
+    for (i = 0; i < 16u; i++) __asm__ volatile("pause");
 }
 
 /* Read one byte of DSP output, waiting for the data-ready bit, bounded. */

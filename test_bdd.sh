@@ -952,6 +952,10 @@ scenario "nuklear pointer-test verifies cursor compositing" "nuklear --pointer-t
 poweroff"
 expect "pointer ok"
 
+scenario "piano selftest verifies velocity, sustain and live DSP" "piano --selftest
+poweroff"
+expect "piano: selftest ok"
+
 scenario "desktop stays responsive during ring-3 program execution" "cp src/cp.c build/desktop_test.c
 cat build/desktop_test.c > build/desktop_out.c
 cat build/desktop_out.c
