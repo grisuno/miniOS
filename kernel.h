@@ -75,6 +75,7 @@ int  serial_getc(void);
 
 int  kbd_read(void);
 int  kbd_available(void);
+void kbd_reset_for_shell(void);
 void mouse_disable(void);
 void mouse_enable(void);
 
@@ -183,6 +184,7 @@ void kexit(int code);
 
 /* ========== Desktop shortcut launch ========== */
 void desktop_launch(const char *cmd);
+void shell_queue_launch(const char *cmd);
 
 /* ========== ELF loader ========== */
 void *elf_load(void *data, unsigned size);       /* ET_REL relocatable .o */

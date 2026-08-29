@@ -12,10 +12,6 @@
 #include "desktop_shortcuts.h"
 #include "desktop_icons.h"
 
-/* Set while a ring-3 user program owns the CPU (see sched.h). The desktop
- * tick reads it to avoid re-entering a program from the timer ISR. */
-extern volatile int user_program_active;
-
 int vga_fb_active;
 
 /* Framebuffer geometry, sized by vga_fb_boot_config from the VBE info the
@@ -1290,16 +1286,9 @@ void vga_fb_mouse_tick(void) {
             cursor_visible = 0;
             return;
         }
-        /* Check desktop icon clicks. An icon click runs a program via
-         * shell_run_any -> k_exec_user, so it must only fire while the shell
-         * is idle. When this tick runs from the timer ISR during a user
-         * program (user_program_active), launching a second ring-3 program
-         * from ISR context would corrupt the child's state (FS base, stack);
-         * ignore the click until the program exits. */
-        if (!user_program_active) {
-            const char *cmd = desktop_shortcuts_hit_test(mouse_state.x, mouse_state.y);
-            if (cmd) desktop_launch(cmd);
-        }
+        /* Check desktop icon clicks. */
+        const char *cmd = desktop_shortcuts_hit_test(mouse_state.x, mouse_state.y);
+        if (cmd) desktop_launch(cmd);
     }
     tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
 

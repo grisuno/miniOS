@@ -81,7 +81,7 @@ $(KASLR_STAMP): kaslr-flag-force
 CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
               -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector \
-              -fno-omit-frame-pointer \
+              -fno-omit-frame-pointer -g \
               -I. -Ithird_party -Ithird_party/stb -Ithird_party/xxhash
 
 PROGS_DIR = progs

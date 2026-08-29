@@ -3,7 +3,7 @@
     "god_nodes": [
       [
         "kernel.c",
-        53.8
+        54.0
       ],
       [
         "progs/doomgeneric/d_englsh.h",
@@ -47,44 +47,44 @@
         "id": 0,
         "label": "root",
         "file_ids": [
-          "ide.h",
-          "lz4_kernel.c",
           "block.h",
-          "lz4_kernel.h",
-          "ide.c",
-          "block.c",
           "minifs.c",
-          "zip.c",
-          "kernel.c",
           "minifs.h",
-          "zip.h",
-          "kernel.h"
+          "block.c",
+          "ide.h",
+          "ide.c"
         ],
-        "cohesion": 0.59375,
-        "size": 12
+        "cohesion": 0.46153846153846156,
+        "size": 6
       },
       {
         "id": 1,
         "label": "root",
         "file_ids": [
-          "sched.h",
-          "sched.c",
+          "vga_fb.c",
+          "vga_fb.h",
           "bootdefs.h",
-          "vga_fb.h"
+          "sched.h",
+          "zip.c",
+          "kernel.h",
+          "kernel.c",
+          "zip.h",
+          "sched.c",
+          "desktop_icons.h",
+          "desktop_shortcuts.h"
         ],
-        "cohesion": 0.3333333333333333,
-        "size": 4
+        "cohesion": 0.4838709677419355,
+        "size": 11
       },
       {
         "id": 2,
         "label": "root",
         "file_ids": [
-          "desktop_shortcuts.h",
-          "vga_fb.c",
-          "desktop_icons.h"
+          "lz4_kernel.h",
+          "lz4_kernel.c"
         ],
-        "cohesion": 0.4,
-        "size": 3
+        "cohesion": 0.25,
+        "size": 2
       },
       {
         "id": 3,
@@ -101,15 +101,15 @@
         "label": "root",
         "file_ids": [
           "net.h",
+          "tls.c",
           "tls.h",
-          "tls_crypto.c",
+          "tls_port.h",
+          "tls_x509.c",
+          "tls_roots.h",
+          "net.c",
           "tls_test_roots.h",
           "tls_test.c",
-          "tls.c",
-          "net.c",
-          "tls_roots.h",
-          "tls_x509.c",
-          "tls_port.h"
+          "tls_crypto.c"
         ],
         "cohesion": 0.75,
         "size": 10
@@ -118,8 +118,8 @@
         "id": 5,
         "label": "root",
         "file_ids": [
-          "pcspk.h",
-          "pcspk.c"
+          "pcspk.c",
+          "pcspk.h"
         ],
         "cohesion": 0.3333333333333333,
         "size": 2
@@ -128,8 +128,8 @@
         "id": 6,
         "label": "root",
         "file_ids": [
-          "rtc.c",
-          "rtc.h"
+          "rtc.h",
+          "rtc.c"
         ],
         "cohesion": 0.3333333333333333,
         "size": 2
@@ -140,39 +140,39 @@
         "desktop_icons.h",
         "tls_roots.h",
         5,
-        "{0, 2, 4}"
+        "{1, 4}"
       ],
       [
         "desktop_icons.h",
         "tls_test_roots.h",
         5,
-        "{0, 2, 4}"
+        "{1, 4}"
       ],
       [
         "desktop_shortcuts.h",
         "tls_roots.h",
         5,
-        "{0, 2, 4}"
+        "{1, 4}"
       ],
       [
         "desktop_shortcuts.h",
         "tls_test_roots.h",
         5,
-        "{0, 2, 4}"
+        "{1, 4}"
       ],
       [
         "block.c",
         "tls_roots.h",
         4,
-        "{0, 4}"
+        "{0, 1, 4}"
       ]
     ],
     "suggested_questions": [
       "What does kernel.c depend on, and what depends on it? (13 connections)",
       "What does d_englsh.h depend on, and what depends on it? (0 connections)",
       "What does kernel.h depend on, and what depends on it? (12 connections)",
-      "How are the 12 files in 'root' related to each other?",
-      "Why are desktop_icons.h and tls_roots.h connected through 5 hops across 3 communities?"
+      "How are the 6 files in 'root' related to each other?",
+      "Why are desktop_icons.h and tls_roots.h connected through 5 hops across 2 communities?"
     ]
   },
   "layers": {
@@ -454,6 +454,7 @@
     "tls_test.py": "testing",
     "tls_test_roots.h": "testing",
     "tls_x509.c": "utility",
+    "tools/gdb_repro.py": "utility",
     "tools/gen_icons.py": "utility",
     "tools/gen_zip_fixtures.py": "data_access",
     "tools/minios_cli.py": "utility",

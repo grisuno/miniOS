@@ -434,6 +434,18 @@ int kbd_read(void) {
         return kbd_us[sc];
 }
 
+/* Restore the translated keyboard mode the shell expects after a user
+ * program returns. A graphics program (DOOM) enables raw mode via
+ * SYS_KBD_RAW(1) but does not always disable it on exit; if left set, the
+ * shell's translated readline never sees PS/2 keystrokes and the desktop
+ * appears frozen until a serial byte unblocks it. */
+void kbd_reset_for_shell(void) {
+    kbd_raw_mode = 0;
+    kbd_q_head = kbd_q_tail = 0;
+    kbd_raw_head = kbd_raw_tail = 0;
+    kbd_e0 = 0;
+}
+
 
 /* ================================================================
  *  Memory allocator — simple free-list
@@ -3116,11 +3128,14 @@ int k_exec_user(void *entry, int argc, char **argv) {
     syscall_kstack = saved_kstack;
     if (child_stack) kfree(child_stack);
     if (vga_mode13h || graphics_program_ran) {
+        if (s_trace_enabled)
+            kprintf("[exit-gfx] reset: mode13h=%d ran=%d\n", vga_mode13h, graphics_program_ran);
         vga_mode13h = 0; /* reclaim the display for the text console */
         graphics_program_ran = 0;
         vga_fb_set_gfx_mode(0); /* drop the graphics pointer state */
         vga_fb_draw_desktop(); /* drop the graphics window, restore desktop */
     }
+    kbd_reset_for_shell();
     return exec_exit_code;
 }
 
@@ -3166,6 +3181,7 @@ int k_run_rel(prog_entry_t entry, int argc, char **argv) {
         vga_fb_set_gfx_mode(0);
         vga_fb_draw_desktop();
     }
+    kbd_reset_for_shell();
     return exec_exit_code;
 }
 
@@ -3207,6 +3223,26 @@ static const ShellRunDir shell_run_dirs[] = {
 #define SHELL_RUN_DIRS (sizeof(shell_run_dirs) / sizeof(shell_run_dirs[0]))
 
 static char cmd_buf[CMD_BUF_SZ];
+/* A desktop-icon launch that arrived while a user program owned the CPU.
+ * The ISR-driven desktop tick cannot run shell_run_any (it would re-enter
+ * k_exec_user from ISR context and corrupt the running program), so the
+ * command is queued here and executed as the shell's next command. */
+static char shell_pending_cmd[CMD_BUF_SZ];
+static int  shell_pending_len;
+
+/* Queue a desktop-icon command to run after the current user program exits.
+ * Overwrites any earlier pending launch; safe to call from the ISR (it only
+ * copies into a kernel buffer). */
+void shell_queue_launch(const char *cmd) {
+    unsigned i = 0;
+    if (!cmd) return;
+    while (cmd[i] && i < (unsigned)CMD_BUF_SZ - 1) {
+        shell_pending_cmd[i] = cmd[i];
+        i++;
+    }
+    shell_pending_cmd[i] = 0;
+    shell_pending_len = (int)i;
+}
 
 #define SHELL_HIST_MAX 16
 static char shell_hist[SHELL_HIST_MAX][CMD_BUF_SZ];
@@ -3933,8 +3969,15 @@ static int shell_take_redirect(int *argc, char **argv, char **path, int *append_
 
 void shell_run(void) {
     while (1) {
-        shell_prompt();
-        shell_readline();
+        if (shell_pending_len > 0) {
+            /* A desktop icon was clicked while a program ran; run it now
+             * that the shell has control again, without a fresh prompt. */
+            kmemcpy(cmd_buf, shell_pending_cmd, (unsigned long)shell_pending_len + 1);
+            shell_pending_len = 0;
+        } else {
+            shell_prompt();
+            shell_readline();
+        }
 
         if (cmd_buf[0] == 0) continue;
 
@@ -4519,6 +4562,13 @@ static int shell_run_any(const char *name, int argc, char **argv) {
  * The ~shell command name is special: it activates the terminal. */
 void desktop_launch(const char *cmd) {
     if (!cmd || !*cmd) return;
+    if (user_program_active) {
+        /* The tick runs from the ISR while a program owns the CPU; defer the
+         * launch until the program exits instead of re-entering k_exec_user
+         * from ISR context (which corrupts the running program's state). */
+        shell_queue_launch(cmd);
+        return;
+    }
     if (cmd[0] == '~' && kstrcmp(cmd, "~shell") == 0) {
         /* ~shell: bring the terminal to focus (already visible). */
         return;
@@ -4671,6 +4721,14 @@ static void shell_cmd_gfx(int argc, char **argv) {
         }
         kfclose(f);
         kprintf("gfx: shot %s (%lu bytes)\n", path, written);
+        return;
+    }
+    if (kstrcmp(argv[1], "palette") == 0) {
+        unsigned char pal[768];
+        int i;
+        gfx_read_palette(pal);
+        for (i = 0; i < 15; i++)
+            kprintf("  %2d: %3d %3d %3d\n", i, pal[i * 3], pal[i * 3 + 1], pal[i * 3 + 2]);
         return;
     }
     vga_puts("usage: gfx [pixel <x> <y> | rect <x0> <y0> <x1> <y1> | shot <file>]\n");
