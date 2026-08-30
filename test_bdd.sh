@@ -1020,6 +1020,12 @@ poweroff"
 expect "minimized 1  fullscreen 0"
 expect "minimized 0  fullscreen 1"
 
+# ── Quake 2 (quake2generic) ─────────────────────────────────────────
+
+scenario "quake2generic binary exists on minifs" "ls quake2generic.elf
+poweroff"
+expect "quake2generic.elf"
+
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="
 [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"

@@ -213,7 +213,7 @@
  * leaf in the plain build), so the PDEs can carry the same addresses the
  * kernel writes through. */
 #define PT_USER_TABLES_ADDR       0x00010000
-#define PT_USER_TABLES_BYTES      0x00010000
+#define PT_USER_TABLES_BYTES      0x00038000
 
 /* KASLR: the kernel image is loaded at a random 2 MB-aligned physical base
  * chosen from a 64-position window above the kernel heap, so the kernel's
@@ -225,7 +225,7 @@
  * .bss can never spill onto the identity-mapped low-memory reserved zones.
  * Keep KASLR_IMAGE_SPAN in sync with the kernel link layout: the image
  * must end below the user window at USER_LOAD_BASE (0x400000). */
-#define KASLR_MIN_ADDR            0x06000000
+#define KASLR_MIN_ADDR            0x08000000
 #define KASLR_ALIGN_SHIFT         21
 #define KASLR_MAX_UNITS           64
 #define KASLR_IMG_OFF_1MB         0x00100000

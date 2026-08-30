@@ -39,6 +39,8 @@ NUKLEAR_DIR ?= ../nuklear
 NUKED_OPL3_URL ?= https://github.com/nukeykt/Nuked-OPL3
 NUKED_OPL3_DIR ?= ../nuked-opl3
 
+Q2G_URL  ?= https://github.com/ozkl/quake2generic
+
 # The toolchain binaries are built into a directory this repository owns.
 # Several of the sibling repositories ship a committed binary next to their
 # sources; using those would mean the image was not built from source at all,
@@ -442,6 +444,174 @@ $(BIN_DIR)/DOOM1.WAD: Doom1.wad
 # DOOM binaries live on minifs, not the ramdisk (kernel must stay < 3 MB)
 MINIFS_DOOM_FILES = $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/DOOM1.WAD
 
+# ── Quake 2 (quake2generic port, static glibc ELF) ───────────────────
+# Same contract as DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
+# Software renderer, 320x200 8-bit paletted, reuses the DOOM back-buffer
+# infrastructure (SYS_DOOM_FRAME 211, DOOM_BACKBUF_ADDR 0x1FE0000).
+Q2G_DIR     = $(PROGS_DIR)/quake2generic
+Q2G_UPSTREAM = $(Q2G_DIR)/quake2generic
+
+Q2G_CLIENT_SRCS = cl_cin.c cl_ents.c cl_fx.c cl_newfx.c cl_input.c \
+    cl_inv.c cl_main.c cl_parse.c cl_pred.c cl_tent.c cl_scrn.c \
+    cl_view.c console.c keys.c menu.c qmenu.c \
+    snd_dma.c snd_mem.c snd_mix.c
+
+Q2G_QCOMMON_SRCS = cmd.c cmodel.c common.c crc.c cvar.c files.c \
+    md4.c net_chan.c pmove.c
+
+Q2G_SERVER_SRCS = sv_ccmds.c sv_ents.c sv_game.c sv_init.c sv_main.c \
+    sv_send.c sv_user.c sv_world.c
+
+Q2G_REF_SOFT_SRCS = r_aclip.c r_alias.c r_bsp.c r_draw.c r_edge.c \
+    r_image.c r_light.c r_main.c r_misc.c r_model.c r_part.c r_poly.c \
+    r_polyse.c r_rast.c r_scan.c r_sprite.c r_surf.c
+
+Q2G_GAME_SRCS = g_ai.c p_client.c g_cmds.c g_svcmds.c g_combat.c \
+    g_func.c g_items.c g_main.c g_misc.c g_monster.c g_phys.c \
+    g_save.c g_spawn.c g_target.c g_trigger.c g_turret.c g_utils.c \
+    g_weapon.c m_actor.c m_berserk.c m_boss2.c m_boss3.c m_boss31.c \
+    m_boss32.c m_brain.c m_chick.c m_flipper.c m_float.c m_flyer.c \
+    m_gladiator.c m_gunner.c m_hover.c m_infantry.c m_insane.c \
+    m_medic.c m_move.c m_mutant.c m_parasite.c m_soldier.c \
+    m_supertank.c m_tank.c p_hud.c p_trail.c p_view.c p_weapon.c \
+    q_shared.c g_chase.c m_flash.c
+
+Q2G_OTHER_SRCS  = q_hunk.c vid_menu.c vid_lib.c q_system.c glob.c
+Q2G_NULL_SRCS   = cd_null.c
+Q2G_NET_SRCS    = net_unix.c
+Q2G_SOUND_SRCS  = snddma_null.c
+
+Q2G_MINIOS_SRCS = q2generic_minios.c
+
+Q2G_ALL_SRCS = $(Q2G_CLIENT_SRCS) $(Q2G_QCOMMON_SRCS) $(Q2G_SERVER_SRCS) \
+    $(Q2G_REF_SOFT_SRCS) $(Q2G_GAME_SRCS) $(Q2G_OTHER_SRCS) \
+    $(Q2G_NULL_SRCS) $(Q2G_NET_SRCS) $(Q2G_SOUND_SRCS) \
+    $(Q2G_MINIOS_SRCS)
+
+CFLAGS_Q2G = -std=gnu99 -Wall -O2 -Dstricmp=strcasecmp \
+    -Wno-unused-result -Wno-sign-compare -Wno-pointer-sign \
+    -Wno-unused-but-set-variable -Wno-unused-value \
+    -Wno-format-security -Wno-format-truncation \
+    -Wno-incompatible-pointer-types -Wno-return-type \
+    -Wno-parentheses -Wno-aggressive-loop-optimizations \
+    -Wno-misleading-indentation -Wno-implicit-function-declaration \
+    -Wno-int-conversion -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast
+
+Q2G_OBJS = $(patsubst %.c,$(Q2G_DIR)/build/%.o,$(Q2G_ALL_SRCS))
+
+$(Q2G_DIR)/build:
+	mkdir -p $@
+
+Q2G_CFLAGS_ALL = $(CFLAGS_Q2G) -I$(Q2G_UPSTREAM) -I$(Q2G_UPSTREAM)/game \
+    -I$(Q2G_UPSTREAM)/client -I$(Q2G_UPSTREAM)/qcommon \
+    -I$(Q2G_UPSTREAM)/ref_soft -I$(Q2G_UPSTREAM)/server \
+    -I$(Q2G_UPSTREAM)/null -I$(Q2G_UPSTREAM)/other -I$(Q2G_UPSTREAM)/net
+
+# Upstream sources: client/ qcommon/ server/ ref_soft/ game/ other/ null/ net/ sound/
+$(Q2G_DIR)/build/cl_%.o: $(Q2G_UPSTREAM)/client/cl_%.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/console.o: $(Q2G_UPSTREAM)/client/console.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/keys.o: $(Q2G_UPSTREAM)/client/keys.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/menu.o: $(Q2G_UPSTREAM)/client/menu.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/qmenu.o: $(Q2G_UPSTREAM)/client/qmenu.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/snd_dma.o: $(Q2G_UPSTREAM)/client/snd_dma.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/snd_mem.o: $(Q2G_UPSTREAM)/client/snd_mem.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/snd_mix.o: $(Q2G_UPSTREAM)/client/snd_mix.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/cmd.o: $(Q2G_UPSTREAM)/qcommon/cmd.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/cmodel.o: $(Q2G_UPSTREAM)/qcommon/cmodel.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/common.o: $(Q2G_UPSTREAM)/qcommon/common.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/crc.o: $(Q2G_UPSTREAM)/qcommon/crc.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/cvar.o: $(Q2G_UPSTREAM)/qcommon/cvar.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/files.o: $(Q2G_UPSTREAM)/qcommon/files.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/md4.o: $(Q2G_UPSTREAM)/qcommon/md4.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/net_chan.o: $(Q2G_UPSTREAM)/qcommon/net_chan.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/pmove.o: $(Q2G_UPSTREAM)/qcommon/pmove.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/sv_%.o: $(Q2G_UPSTREAM)/server/sv_%.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/r_%.o: $(Q2G_UPSTREAM)/ref_soft/r_%.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/g_%.o: $(Q2G_UPSTREAM)/game/g_%.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/m_%.o: $(Q2G_UPSTREAM)/game/m_%.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/p_%.o: $(Q2G_UPSTREAM)/game/p_%.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/q_shared.o: $(Q2G_UPSTREAM)/game/q_shared.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/q_hunk.o: $(Q2G_UPSTREAM)/other/q_hunk.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/vid_menu.o: $(Q2G_UPSTREAM)/other/vid_menu.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/vid_lib.o: $(Q2G_UPSTREAM)/other/vid_lib.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/q_system.o: $(Q2G_UPSTREAM)/other/q_system.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/glob.o: $(Q2G_UPSTREAM)/other/glob.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/cd_null.o: $(Q2G_UPSTREAM)/null/cd_null.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/net_unix.o: $(Q2G_UPSTREAM)/net/net_unix.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(Q2G_DIR)/build/snddma_null.o: $(Q2G_UPSTREAM)/sound/snddma_null.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+# MiniOS platform layer (lives beside the upstream clone)
+$(Q2G_DIR)/build/q2generic_minios.o: $(Q2G_DIR)/q2generic_minios.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+$(BIN_DIR)/quake2generic.elf: $(Q2G_OBJS)
+	$(CC) -static -no-pie -o $@ $^ -lm
+	chmod +x $@
+
+MINIFS_Q2G_FILES = $(BIN_DIR)/quake2generic.elf \
+    $(PROGS_DIR)/baseq2/pak0.pak
+
 # ── MicroPython (microPython unix port, static glibc ELF) ──────────
 # Same contract as DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
 # The build writes into the micropython checkout (ports/unix/build-*),
@@ -572,7 +742,7 @@ $(BIN_DIR)/sbtone: $(SRC_DIR)/sbtone.c
 # aes/unaes live on MiniFS (ramdisk budget): bare-name commands resolved
 # against the MiniFS root by shell_run_elf_minifs; src/aes.c rides along so
 # the OS can rebuild them without leaving the machine.
-MINIFS_FILES = $(MINIFS_DOOM_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
+MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
                $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
                $(PROGS_DIR)/lua/minios.c $(PROGS_DIR)/lua/lua_main.c \
                $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear \

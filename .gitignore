@@ -173,5 +173,12 @@ os.img
 os.iso
 os.hybrid.img
 *.img
+
+# Quake 2 — upstream clone, build artifacts and copyrighted PAK data
+progs/quake2generic/quake2generic/
+progs/quake2generic/build/
+progs/bin/quake2generic.elf
+progs/baseq2/
+
 # Mutation-test progress (resumable runs)
 .mutate-state

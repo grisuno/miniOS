@@ -115,6 +115,22 @@ class MiniFS:
                     struct.pack_into('<I', self.inodes[ino], 64, b)
                 indir = struct.unpack_from('<I', self.inodes[ino], 64)[0]
                 struct.pack_into('<I', self.blocks[indir], logblk * 4, phys)
+            else:
+                logblk -= per
+                if struct.unpack_from('<I', self.inodes[ino], 68)[0] == 0:
+                    b = self.alloc_block()
+                    self.blocks[b][:] = bytes(BLOCK_SIZE)
+                    struct.pack_into('<I', self.inodes[ino], 68, b)
+                dindir = struct.unpack_from('<I', self.inodes[ino], 68)[0]
+                l1idx = logblk // per
+                l2idx = logblk % per
+                l1 = struct.unpack_from('<I', self.blocks[dindir], l1idx * 4)[0]
+                if l1 == 0:
+                    b = self.alloc_block()
+                    self.blocks[b][:] = bytes(BLOCK_SIZE)
+                    l1 = b
+                    struct.pack_into('<I', self.blocks[dindir], l1idx * 4, l1)
+                struct.pack_into('<I', self.blocks[l1], l2idx * 4, phys)
         self.inodes[ino][124:128] = struct.pack('<I', crc32(bytes(self.inodes[ino][:124])))
 
     def add_dir_entry(self, dir_ino, name, child_ino, ftype):

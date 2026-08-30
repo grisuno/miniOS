@@ -83,8 +83,8 @@ void mouse_enable(void);
 void vga_cursor_enable(int on);
 
 /* ========== Memory allocator ========== */
-#define HEAP_BASE 0x02000000UL
-#define HEAP_SIZE (64UL * 1024 * 1024)
+#define HEAP_BASE 0x07400000UL
+#define HEAP_SIZE (12UL * 1024 * 1024)
 
 void *kmalloc(unsigned long size);
 void  kfree(void *ptr);

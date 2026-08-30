@@ -26,6 +26,7 @@ void vga_fb_boot_config(void);
 #define DOOM_H            200
 #define DOOM_BACKBUF_ADDR 0x1FE0000UL
 void vga_fb_blit_gfx_window(void);
+extern const char *gfx_win_title;
 
 /* Nuklear UI back-buffer. A ring-3 program (the node editor) renders a UI
  * into a kernel-heap back-buffer mapped into the user window and calls

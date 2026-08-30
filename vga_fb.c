@@ -607,6 +607,8 @@ static int wm_button_click(int mx, int my) {
  * and desktop visible around it. Centered on the screen because the graphics
  * program owns the display while it runs (no mouse), so the window cannot be
  * dragged into a better spot. */
+const char *gfx_win_title = "DOOM";
+
 void vga_fb_blit_gfx_window(void) {
     const volatile uint8_t *bb = (const volatile uint8_t *)DOOM_BACKBUF_ADDR;
     int dst_x = (fb_width - DOOM_W) / 2;
@@ -619,7 +621,7 @@ void vga_fb_blit_gfx_window(void) {
     gfx_win_y = dst_y;
     gfx_win_w = DOOM_W + SCROLLBAR_W;
     vga_fb_rect(dst_x, dst_y, DOOM_W + SCROLLBAR_W, FONT_H, COL_TITLEBAR);
-    text_px(dst_x + 4, dst_y, "DOOM", COL_TITLE_TXT, COL_TITLEBAR);
+    text_px(dst_x + 4, dst_y, gfx_win_title, COL_TITLE_TXT, COL_TITLEBAR);
     wm_draw_buttons(dst_x, dst_y, DOOM_W + SCROLLBAR_W,
                     COL_TITLE_TXT, COL_TITLEBAR);
     for (r = 0; r < DOOM_H; r++) {
@@ -1245,6 +1247,8 @@ void desktop_shortcuts_load(void) {
             sc->pixels = icon_nuklear;
         else if (kstrcmp(name, "Piano") == 0)
             sc->pixels = icon_piano;
+        else if (kstrcmp(name, "Quake 2") == 0)
+            sc->pixels = icon_quake2;
 
         shortcut_count++;
     }

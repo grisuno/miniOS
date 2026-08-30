@@ -462,11 +462,11 @@ void kbd_reset_for_shell(void) {
 
 /* ---- Physical memory map (identity-mapped 0..1GB by the bootloader) ----
  *   0x00000000 .. 0x00100000   BIOS / kernel image / page tables / stack
- *   0x00400000 .. 0x02000000   user program region (ELF load addr + brk)
- *   0x02000000 .. 0x06000000   64 MB kernel heap (HEAP_BASE/HEAP_SIZE in kernel.h)
+ *   0x00400000 .. 0x07400000   user program region (ELF load addr + brk)
+ *   0x07400000 .. 0x08000000   12 MB kernel heap (HEAP_BASE/HEAP_SIZE in kernel.h)
  */
 #define USER_LOAD_BASE  0x00400000UL
-#define USER_LOAD_END   0x02000000UL
+#define USER_LOAD_END   0x07400000UL
 #define USER_STACK_SIZE (256UL * 1024)
 #define USER_STACK_TOP  USER_LOAD_END
 #define USER_STACK_BASE (USER_STACK_TOP - USER_STACK_SIZE)
@@ -489,7 +489,7 @@ void kbd_reset_for_shell(void) {
  * return discriminator; the trampoline is a raw string literal, so the C
  * preprocessor cannot paste the UL-suffixed macros into it. */
 #define USER_WIN_LO     0x00400000
-#define USER_WIN_HI     0x02000000
+#define USER_WIN_HI     0x07400000
 #define STR_(x) #x
 #define STR(x)  STR_(x)
 
@@ -2352,13 +2352,17 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     case 12: { /* brk */
         unsigned long addr = (unsigned long)a1;
         if (addr == 0) return (long)g_brk;
-        if (addr >= USER_LOAD_BASE && addr <= g_brk_limit) g_brk = addr;
+        if (addr >= USER_LOAD_BASE && addr <= g_brk_limit
+            && addr <= user_mmap_cur)     /* don't grow into mmap region */
+            g_brk = addr;
         return (long)g_brk;
     }
-    case 9: { /* mmap (anonymous only), carved from the top of the user window */
+    case 9: { /* mmap (anonymous only), carved downward from the stack area
+                 but never below g_brk to prevent overlap with heap data */
         unsigned long len = (unsigned long)a2;
         unsigned long n = ALIGN_UP(len ? len : 1, 0x1000);
         if (n > user_mmap_cur - USER_LOAD_BASE) return -12;
+        if (user_mmap_cur - n < g_brk) return -12;  /* would overlap brk */
         user_mmap_cur -= n;
         return (long)user_mmap_cur;
     }
@@ -2720,6 +2724,19 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
             ((unsigned int *)(unsigned long)st)[5] = 0100666; /* S_IFREG | 0666 */
             ((unsigned long *)(unsigned long)st)[6] = (unsigned long)rf->size;
         }
+        return 0;
+    }
+    case 223: { /* SYS_Q2G_SET_TITLE: set graphics window title */
+        const char *t = (const char *)(unsigned long)a1;
+        if (!t) return EFAULT;
+        if (!user_range_ok((unsigned long)t, 1)) return EFAULT;
+        extern const char *gfx_win_title;
+        static char title_buf[32];
+        int i;
+        for (i = 0; i < 31 && ((const char *)t)[i]; i++)
+            title_buf[i] = ((const char *)t)[i];
+        title_buf[i] = 0;
+        gfx_win_title = title_buf;
         return 0;
     }
     default:
@@ -5187,7 +5204,8 @@ void kmain(void) {
         }
     }
 
-    kprintf("Heap: 64 MB  Symbols: %d  (Linux ELF: syscall ABI ready)\n", ksym_count);
+    kprintf("Heap: %d MB  Symbols: %d  (Linux ELF: syscall ABI ready)\n",
+            (int)(HEAP_SIZE >> 20), ksym_count);
 
     /* Initialize the scheduler: IDT, TSS, PIC, PIT timer.
      * This enables interrupts and the 100 Hz timer tick. */

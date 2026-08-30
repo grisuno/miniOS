@@ -469,6 +469,38 @@ The kernel provides four custom syscalls for the port: `time_ms` (204),
 entered through `sys_vga_mode` (208), which tells the kernel to stop
 touching VGA text hardware while the game runs.
 
+## Quake 2
+
+MiniOS ships a quake2generic port that runs Quake 2 as a static Linux ELF at
+ring 3. The engine compiles from `progs/quake2generic/` with the platform
+layer in `q2generic_minios.c`. It reuses the DOOM back-buffer infrastructure:
+the software renderer writes 320x200 8-bit paletted pixels into the kernel
+back-buffer at `DOOM_BACKBUF_ADDR` (0x1FE0000), and `SYS_DOOM_FRAME` (211)
+composites it onto the desktop as a titled window.
+
+```
+miniOS> run bin/quake2generic.elf +set basedir .
+```
+
+| Key | Action |
+|-----|--------|
+| WASD | move |
+| Ctrl | fire |
+| Space | use / open |
+| Arrow keys | turn / strafe |
+| Mouse | look |
+| Shift | run |
+| Esc | menu |
+
+The engine requires `baseq2/pak0.pak` on the MiniFS (shareware: ~18 MB).
+The window title is set to "Quake 2" via `SYS_Q2G_SET_TITLE` (223). Sound
+is stubbed (the engine runs silently); the SB16 PCM path could be wired in
+the future. To rebuild from source:
+
+```bash
+make progs/bin/quake2generic.elf
+```
+
 ## Piano (FM synth -> SB16)
 
 MiniOS ships a ring-3 Nuklear piano that plays through the Sound Blaster 16

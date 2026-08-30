@@ -9,7 +9,7 @@
 
 /* Local copies of kernel constants (static in kernel.c) */
 #define MY_SYS_KSTK_TOP   0x00088000UL
-#define MY_USER_STACK_TOP 0x02000000UL
+#define MY_USER_STACK_TOP 0x07400000UL
 #define MY_USER_LOAD_BASE 0x00400000UL
 
 proc_t procs[MAX_PROCS];

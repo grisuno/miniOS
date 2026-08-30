@@ -1168,6 +1168,83 @@ into a `.cvm` module the interpreter runs.
   into `cvm: runtime error: <reason>` with exit 1 instead of leaking a
   negative status to the shell. This lives in `cvm_host.c` `cvm_main`.
 
+## Quake 2 (quake2generic)
+
+Quake 2 runs inside MiniOS exactly like DOOM: the upstream quake2generic
+engine is cloned as a sibling checkout, built on the host with the ordinary
+gcc toolchain against the static glibc, and the resulting `ET_EXEC` binary
+ships on MiniFS, where it runs as a ring-3 process through the Linux syscall
+ABI. The software renderer produces an 8-bit paletted framebuffer that
+reuses the DOOM back-buffer infrastructure unchanged.
+
+### Platform layer (`q2generic_minios.c`)
+
+The platform layer lives at `progs/quake2generic/q2generic_minios.c` and
+implements the quake2generic interface:
+
+- **Video**: `SWimp_SetMode` sets `vid.buffer` to the DOOM back-buffer
+  address (`DOOM_BACKBUF_ADDR`, 0x1FE0000) and `vid.rowbytes` to 320.
+  `SWimp_EndFrame` calls `SYS_DOOM_FRAME` (211) to composite the 320x200
+  buffer onto the desktop as a titled window. The window title is set to
+  "Quake 2" via `SYS_Q2G_SET_TITLE` (223) at startup.
+- **Palette**: `SWimp_SetPalette` converts the engine's 256-entry RGBA
+  quads (1024 bytes) to the 768-byte VGA DAC format and uploads via
+  `SYS_PALETTE` (206) on the next frame.
+- **Input**: PS/2 Set 1 scancodes are translated to Quake 2 keycodes
+  (from `client/keys.h`) and queued through `Quake2_SendKey`. Mouse deltas
+  come from `SYS_MOUSE` (219).
+- **Timing**: `QG_Milliseconds` returns PIT-calibrated milliseconds via
+  `SYS_TIME` (204).
+
+### Audio
+
+Sound is stubbed: `SNDDMA_Init` returns false, all other `SNDDMA_*` are
+no-ops. The engine runs silently. This matches the DOOM PC speaker approach
+before the speaker driver is enabled. The SB16 PCM path (syscalls 221/222)
+could be wired in the future.
+
+### Memory constraints
+
+Quake 2 needs ~16-24 MB at runtime (Zone + Hunk allocations for PAK files,
+BSP, models). The user window provides 28 MB (`0x400000` to `0x2000000`),
+with ~24 MB available via `brk` after the ELF loads. The 320x200 back-buffer
+(64 KB) sits in the DOOM infrastructure at `0x1FE0000`, below the 256 KB
+stack at the top of the user window.
+
+### Data files
+
+The engine requires `baseq2/pak0.pak` (shareware: ~18 MB). MiniFS supports
+subdirectories, so the PAK file is packed at `baseq2/pak0.pak` in the
+filesystem image. The engine searches for `basedir/baseq2/pak0.pak`; with
+`+set basedir .` at launch it finds the file at the MiniFS root.
+
+### Build
+
+```makefile
+make progs/bin/quake2generic.elf
+```
+
+The binary ships on MiniFS (not the ramdisk, same as DOOM) via
+`MINIFS_Q2G_FILES`. Run inside the OS:
+
+```
+miniOS> run bin/quake2generic.elf +set basedir .
+```
+
+### Syscall surface
+
+The kernel adds 223 (`SYS_Q2G_SET_TITLE`: copy a user string into the
+graphics window title buffer so the desktop compositing shows "Quake 2"
+instead of "DOOM"). All other infrastructure is reused: `SYS_DOOM_FRAME`
+(211), `SYS_PALETTE` (206), `SYS_KBD` (205), `SYS_KBD_RAW` (207),
+`SYS_VGA_MODE` (208), `SYS_TIME` (204), `SYS_MOUSE` (219).
+
+### BDD
+
+The BDD scenario `quake2generic binary exists on minifs` verifies the ELF
+ships on MiniFS. A full gameplay test requires the PAK file and is not
+automated in the serial-console BDD suite (same as DOOM).
+
 ## Library integration assessments
 A library lands in MiniOS only when it fits the freestanding kernel's rules
 (integer-only, no POSIX, allocator and libc callbacks redirected through
