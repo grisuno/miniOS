@@ -2693,6 +2693,40 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         return 0;
     case 13: /* rt_sigaction: no-op (no signal delivery in miniOS) */
         return 0;
+    case 14: /* rt_sigprocmask: no-op (signals are not blocked/delivered) */
+        return 0;
+    case 186: /* gettid: single-threaded, so tid == pid */
+        return 1;
+    case 234: { /* tgkill: deliver a signal to a thread.  Only default
+                   disposition is modelled: a signal whose default action is
+                   to terminate (SIGABRT/SIGSEGV/...) exits the process so
+                   glibc's abort() terminates cleanly instead of faulting. */
+        int sig = (int)a3;
+        static const int fatal[] = {1,2,3,4,5,6,7,8,9,11,13,14,15};
+        if (sig <= 0) return -22;
+        for (unsigned _i = 0; _i < sizeof(fatal)/sizeof(fatal[0]); _i++)
+            if (sig == fatal[_i]) {
+                if (proc_count > 1) {
+                    do_exit(128 + sig);
+                    return 0;
+                }
+                exec_exit_code = 128 + sig;
+                klongjmp(&exec_return, 1);
+                return 0; /* unreachable */
+            }
+        return 0; /* ignored/disposition not fatal */
+    }
+    case 87: { /* unlink: delete a ramdisk file */
+        const char *path = (const char *)a1;
+        if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
+        char resolved[RAMDISK_FNAME_LEN];
+        if (!fs_resolve(path, resolved, sizeof(resolved))) return -36;
+        if (fs_is_dir(resolved)) return -21;
+        RDFile *f = ramdisk_open(resolved);
+        if (!f) return -2;   /* ENOENT */
+        ramdisk_delete(f);
+        return 0;
+    }
     case 74: /* flock: no-op */
         return 0;
     case 21: { /* access: check if ramdisk file exists */
