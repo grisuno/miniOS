@@ -216,6 +216,10 @@ poweroff"
 expect "nx: jumping to stack"
 refute "powering off"
 
+scenario "mmap/munmap reclaim lets a free/reallocate working set survive" "mmreuse.elf
+poweroff"
+expect "exit code: 0"
+
 scenario "run resolves a bare .o name from objects/" "run minigcc.o src/fib.c > asm/bare.s
 run objects/ld.o -f elf -o bin/bare.elf asm/bare.s
 run bin/bare.elf

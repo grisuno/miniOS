@@ -253,6 +253,12 @@ $(BIN_DIR)/kmem.elf: $(SRC_DIR)/kmem.c
 $(BIN_DIR)/nx.elf: $(SRC_DIR)/nx.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O0 -o $@ $<
 
+# mmap/munmap reclaim probe: repeatedly maps and unmaps a large region.  A
+# kernel whose munmap never returns address space drains the cursor until a
+# map fails with ENOMEM; exit 1 flags that leak.
+$(BIN_DIR)/mmreuse.elf: $(SRC_DIR)/mmreuse.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
 # ── Demo programs: C -> miniGCC -> ld -> ELF / CVM ───────────────
 # These are this repository's own sources, compiled through the full
 # toolchain at build time. Depending on another project's test fixtures for
@@ -674,6 +680,10 @@ $(BIN_DIR)/lua.elf: $(addprefix $(LUA_DIR)/,$(LUA_LIB_SRCS)) $(LUA_APP_SRCS) $(L
 $(BIN_DIR)/lua: $(BIN_DIR)/lua.elf
 	cp $< $@
 
+# Bare-name alias for the mmap/munmap reclaim probe.
+$(BIN_DIR)/mmreuse: $(BIN_DIR)/mmreuse.elf
+	cp $< $@
+
 # ── Nuklear node editor (nuklear_minios.c + node_editor.c + cvm_emit.c) ──
 # The visual "low-code tool for the CVM": a ring-3 Nuklear app that renders
 # a node graph into the kernel back-buffer (SYS_NK_FRAME 220) and compiles
@@ -759,6 +769,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(BIN_DIR)/micropython.e
                $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf $(BIN_DIR)/w1.elf \
                $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf \
                $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
+               $(BIN_DIR)/mmreuse.elf $(BIN_DIR)/mmreuse \
                $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
                $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
                $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \

@@ -467,7 +467,7 @@ void kbd_reset_for_shell(void) {
  */
 #define USER_LOAD_BASE  0x00400000UL
 #define USER_LOAD_END   0x07400000UL
-#define USER_STACK_SIZE (256UL * 1024)
+#define USER_STACK_SIZE (1024UL * 1024)
 #define USER_STACK_TOP  USER_LOAD_END
 #define USER_STACK_BASE (USER_STACK_TOP - USER_STACK_SIZE)
 #define USER_BRK_END    USER_STACK_BASE
@@ -1927,6 +1927,25 @@ static unsigned long g_brk;        /* current program break         */
 static unsigned long g_brk_limit;  /* upper bound for brk growth    */
 static unsigned long user_mmap_cur; /* anonymous mmap cursor, grows down */
 
+/* Anonymous mmap regions, tracked so munmap can reclaim them for reuse.  The
+   cursor alone only ever moves down, so a program that unmaps and re-allocates
+   a working set (Quake 2 across level changes) would drain the whole user
+   window until mmap fails with ENOMEM.  Two tables: mmap_used holds the live
+   allocations (munmap reclaims only a region present here, so the stack or
+   arbitrary program memory is never handed back), mmap_free holds reclaimed
+   regions that a later mmap reuses.  All entries are page-aligned and lie at
+   or above user_mmap_cur, which itself never drops below g_brk, so neither a
+   live nor a reused chunk can overlap the heap. */
+#define MMAP_MAX 128
+struct mmap_ent {
+    unsigned long base;
+    unsigned long len;
+};
+static struct mmap_ent mmap_used[MMAP_MAX];
+static struct mmap_ent mmap_free[MMAP_MAX];
+static int mmap_used_n;
+static int mmap_free_n;
+
 static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
                               const struct exec_range *xr, unsigned nxr) {
     Elf64_Ehdr *e = (Elf64_Ehdr *)data;
@@ -2066,6 +2085,8 @@ void *load_exec_elf(void *data, unsigned size) {
     g_brk       = ALIGN_UP(max_end, 0x1000);
     g_brk_limit = USER_BRK_END;
     user_mmap_cur = USER_BRK_END;
+    mmap_used_n = 0;
+    mmap_free_n = 0;
     /* Loader status is shell text, never the command's output: it must not
      * pollute a `> file` capture. */
     {
@@ -2357,16 +2378,51 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
             g_brk = addr;
         return (long)g_brk;
     }
-    case 9: { /* mmap (anonymous only), carved downward from the stack area
-                 but never below g_brk to prevent overlap with heap data */
+    case 9: { /* mmap (anonymous only).  Reuse a reclaimed region first so the
+                 cursor is not drained by a free/reallocate working set; only
+                 carve fresh space below the cursor, never below g_brk. */
         unsigned long len = (unsigned long)a2;
         unsigned long n = ALIGN_UP(len ? len : 1, 0x1000);
         if (n > user_mmap_cur - USER_LOAD_BASE) return -12;
+        for (int i = 0; i < mmap_free_n; i++) {
+            if (mmap_free[i].len < n) continue;
+            unsigned long addr = mmap_free[i].base + mmap_free[i].len - n;
+            if (mmap_used_n >= MMAP_MAX) continue;   /* can't track; skip reuse */
+            mmap_used[mmap_used_n].base = addr;
+            mmap_used[mmap_used_n].len  = n;
+            mmap_used_n++;
+            if (mmap_free[i].len == n) {
+                mmap_free[i] = mmap_free[--mmap_free_n];
+            } else {
+                mmap_free[i].len -= n;                /* remainder stays at the bottom */
+            }
+            return (long)addr;
+        }
         if (user_mmap_cur - n < g_brk) return -12;  /* would overlap brk */
         user_mmap_cur -= n;
+        if (mmap_used_n < MMAP_MAX) {
+            mmap_used[mmap_used_n].base = user_mmap_cur;
+            mmap_used[mmap_used_n].len  = n;
+            mmap_used_n++;
+        }
         return (long)user_mmap_cur;
     }
-    case 11: return 0; /* munmap */
+    case 11: { /* munmap: reclaim only a region this kernel allocated */
+        unsigned long base = (unsigned long)a1;
+        unsigned long n = ALIGN_UP((unsigned long)a2, 0x1000);
+        if (n == 0) return 0;
+        for (int i = 0; i < mmap_used_n; i++) {
+            if (mmap_used[i].base != base || n > mmap_used[i].len) continue;
+            if (mmap_free_n < MMAP_MAX) {
+                mmap_free[mmap_free_n].base = mmap_used[i].base;
+                mmap_free[mmap_free_n].len  = mmap_used[i].len;
+                mmap_free_n++;
+            }
+            mmap_used[i] = mmap_used[--mmap_used_n];
+            return 0;
+        }
+        return 0;
+    }
     case 158: /* arch_prctl: accept only canonical bases */
         if (a1 == 0x1002 || a1 == 0x1001) {
             unsigned long v = (unsigned long)a2;
@@ -2940,6 +2996,14 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     unsigned long saved_fsbase   = rdmsr(MSR_FSBASE);
     unsigned long saved_gsbase   = rdmsr(MSR_GSBASE);
 
+    /* Snapshot the mmap tables so the child cannot corrupt them. */
+    int saved_mmap_used_n = mmap_used_n;
+    struct mmap_ent saved_mmap_used[MMAP_MAX];
+    for (int i = 0; i < mmap_used_n; i++) saved_mmap_used[i] = mmap_used[i];
+    int saved_mmap_free_n = mmap_free_n;
+    struct mmap_ent saved_mmap_free[MMAP_MAX];
+    for (int i = 0; i < mmap_free_n; i++) saved_mmap_free[i] = mmap_free[i];
+
     /* Snapshot the kernel fd table. */
     KFILE *saved_kfd[KFD_MAX];
     for (int i = 0; i < KFD_MAX; i++) saved_kfd[i] = kfd_table[i];
@@ -2997,6 +3061,10 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     g_brk       = saved_brk;
     g_brk_limit = saved_brk_lim;
     user_mmap_cur = saved_mmap;
+    mmap_used_n = saved_mmap_used_n;
+    for (int i = 0; i < mmap_used_n; i++) mmap_used[i] = saved_mmap_used[i];
+    mmap_free_n = saved_mmap_free_n;
+    for (int i = 0; i < mmap_free_n; i++) mmap_free[i] = saved_mmap_free[i];
     wrmsr(MSR_FSBASE, saved_fsbase);
     wrmsr(MSR_GSBASE, saved_gsbase);
     for (int i = 0; i < KFD_MAX; i++) kfd_table[i] = saved_kfd[i];
