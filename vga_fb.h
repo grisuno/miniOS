@@ -24,7 +24,7 @@ void vga_fb_boot_config(void);
  * desktop at its native resolution, so the shell window stays visible. */
 #define DOOM_W            320
 #define DOOM_H            200
-#define DOOM_BACKBUF_ADDR 0x1FE0000UL
+#define DOOM_BACKBUF_ADDR 0x7C00000UL
 void vga_fb_blit_gfx_window(void);
 extern const char *gfx_win_title;
 

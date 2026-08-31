@@ -69,7 +69,7 @@ KERNEL_LBA          = $(shell expr $(STAGE2_LBA) + $(STAGE2_SECTORS))
 DISK_ALIGN_SECTORS  = 2048
 
 QEMU_DRIVE = -drive file=os.img,format=raw,if=ide
-QEMU_MEM   = -m 256M
+QEMU_MEM   = -m 512M
 # -smp is present so a second vCPU exists, but the kernel is currently
 # single-core: without an SMP-aware kernel (AP boot, per-CPU APIC timer/stacks,
 # spinlocks) the extra vCPU just idles.  It does not speed anything up yet.

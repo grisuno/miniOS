@@ -51,7 +51,7 @@ static long sys_doom_frame(void) {
 
 /* DOOM renders into a kernel-backed back-buffer in the user window; the
  * kernel composites it onto the desktop as a window on SYS_DOOM_FRAME. */
-#define FB_ADDR    ((volatile uint8_t *)0x1FE0000UL)
+#define FB_ADDR    ((volatile uint8_t *)0x7C00000UL)
 #define FB_WIDTH   320
 #define FB_HEIGHT  200
 

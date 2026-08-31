@@ -462,11 +462,11 @@ void kbd_reset_for_shell(void) {
 
 /* ---- Physical memory map (identity-mapped 0..1GB by the bootloader) ----
  *   0x00000000 .. 0x00100000   BIOS / kernel image / page tables / stack
- *   0x00400000 .. 0x07400000   user program region (ELF load addr + brk)
- *   0x07400000 .. 0x08000000   12 MB kernel heap (HEAP_BASE/HEAP_SIZE in kernel.h)
+ *   0x00400000 .. 0x08000000   user program region (ELF load addr + brk)
+ *   0x08000000 .. 0x14000000   192 MB kernel heap (HEAP_BASE/HEAP_SIZE in kernel.h)
  */
 #define USER_LOAD_BASE  0x00400000UL
-#define USER_LOAD_END   0x07400000UL
+#define USER_LOAD_END   0x08000000UL
 #define USER_STACK_SIZE (1024UL * 1024)
 #define USER_STACK_TOP  USER_LOAD_END
 #define USER_STACK_BASE (USER_STACK_TOP - USER_STACK_SIZE)
@@ -1936,7 +1936,7 @@ static unsigned long user_mmap_cur; /* anonymous mmap cursor, grows down */
    regions that a later mmap reuses.  All entries are page-aligned and lie at
    or above user_mmap_cur, which itself never drops below g_brk, so neither a
    live nor a reused chunk can overlap the heap. */
-#define MMAP_MAX 128
+#define MMAP_MAX 4096
 struct mmap_ent {
     unsigned long base;
     unsigned long len;
@@ -2085,6 +2085,14 @@ void *load_exec_elf(void *data, unsigned size) {
     g_brk       = ALIGN_UP(max_end, 0x1000);
     g_brk_limit = USER_BRK_END;
     user_mmap_cur = USER_BRK_END;
+    /* Reserve the graphics back-buffer span from both allocators so a
+     * memory-hungry program (Quake 2) cannot grow its brk heap or its mmap
+     * region over the pages the kernel maps at DOOM_BACKBUF_ADDR; rendering
+     * into a glibc-allocated chunk there would corrupt the heap.  Both carve
+     * below the cap, so cap each at the buffer's base to keep the buffer
+     * itself (which sits just above) untouched. */
+    if (DOOM_BACKBUF_ADDR < g_brk_limit) g_brk_limit = DOOM_BACKBUF_ADDR;
+    if (DOOM_BACKBUF_ADDR < user_mmap_cur) user_mmap_cur = DOOM_BACKBUF_ADDR;
     mmap_used_n = 0;
     mmap_free_n = 0;
     /* Loader status is shell text, never the command's output: it must not
