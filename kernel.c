@@ -4654,8 +4654,10 @@ static int shell_run_any(const char *name, int argc, char **argv) {
 
 /* ---- Desktop shortcut launch ----
  * Called by the desktop click handler (vga_fb.c) when an icon is clicked.
- * Splits the command line into argv and runs it through the shell resolver.
- * The ~shell command name is special: it activates the terminal. */
+ * Splits the command line into argv and routes through shell_exec_builtin,
+ * which handles builtins (run, cat, ls, ...) and falls through to
+ * shell_run_any for registered programs and files.  The ~shell command name
+ * is special: it activates the terminal. */
 void desktop_launch(const char *cmd) {
     if (!cmd || !*cmd) return;
     if (user_program_active) {
@@ -4669,23 +4671,24 @@ void desktop_launch(const char *cmd) {
         /* ~shell: bring the terminal to focus (already visible). */
         return;
     }
-    /* Parse command into argv (space-separated, max 8 args). */
+    /* Parse command into argv (space-separated, max 8 args).  Each arg is
+     * copied sequentially into buf so argv pointers stay valid for the call. */
     char buf[128];
     char *argv[8];
     int argc = 0;
+    int pos = 0;
     const char *p = cmd;
     while (*p && argc < 8) {
         while (*p == ' ') p++;
         if (!*p) break;
-        argv[argc] = buf + (p - cmd);
-        int i = 0;
-        while (*p && *p != ' ' && i < (int)sizeof(buf) - 1) {
-            buf[i++] = *p++;
+        argv[argc] = buf + pos;
+        while (*p && *p != ' ' && pos < (int)sizeof(buf) - 1) {
+            buf[pos++] = *p++;
         }
-        buf[i] = '\0';
+        buf[pos++] = '\0';
         argc++;
     }
-    if (argc > 0) shell_run_any(argv[0], argc, argv);
+    if (argc > 0) shell_exec_builtin(argc, argv);
 }
 
 /* ---- Graphics debugging (`gfx` builtin) ----
