@@ -12,7 +12,7 @@ import struct
 import sys
 
 MAGIC = 0x4B534452
-FNAME_BYTES = 32
+FNAME_BYTES = 64
 NAME_MAX = FNAME_BYTES - 1
 MAX_FILES = 128
 

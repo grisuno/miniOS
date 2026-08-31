@@ -102,7 +102,7 @@ void *dlmalloc_realloc(void *ptr, unsigned long size);
 
 /* ========== Ramdisk file system ========== */
 #define RAMDISK_MAX_FILES 128
-#define RAMDISK_FNAME_LEN 32
+#define RAMDISK_FNAME_LEN 64
 
 typedef struct {
     char     name[RAMDISK_FNAME_LEN];
