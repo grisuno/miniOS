@@ -1302,6 +1302,7 @@ void vga_fb_mouse_tick(void) {
     static int dragging;
     static int grab_cx;
     static unsigned tb_prev_buttons;
+    static int skip_drag;   /* suppress drag on the tick after a button click */
     int mx, my;
     int win_w = term_px_w + SCROLLBAR_W;
 
@@ -1317,12 +1318,14 @@ void vga_fb_mouse_tick(void) {
         if (wm_button_click(mouse_state.x, mouse_state.y)) {
             tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
             cursor_visible = 0;
+            skip_drag = 1;
             return;
         }
         /* Check desktop icon clicks. */
         const char *cmd = desktop_shortcuts_hit_test(mouse_state.x, mouse_state.y);
         if (cmd) desktop_launch(cmd);
     }
+    if (!(mouse_state.buttons & 1)) skip_drag = 0;
     tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
 
     /* Process wheel: scroll back/forward (only when the window is visible). */
@@ -1345,9 +1348,10 @@ void vga_fb_mouse_tick(void) {
     my = mouse_state.y;
 
     /* Title-bar drag: grab the window on a left press over the title bar and
-     * move it while the button is held. Redrawing the desktop resets the
-     * cursor, so the cursor is re-saved afterwards. */
-    if (!term_fullscreen && !term_minimized) {
+     * move it while the button is held.  skip_drag suppresses the drag on the
+     * tick(s) after a window-control button was clicked, so the button action
+     * (minimize/maximize/close) fires without the window jumping. */
+    if (!term_fullscreen && !term_minimized && !skip_drag) {
         /* The grab zone covers the title bar and a little below, so the drag
          * triggers whether the user aims the arrow tip or the sprite body at
          * the title bar (the tip is offset CURSOR_TIP_Y below the sprite's
