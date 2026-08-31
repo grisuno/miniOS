@@ -68,7 +68,7 @@ static long sys_set_title(const char *t) {
     return ret;
 }
 
-#define Q2G_BACKBUF ((volatile uint8_t *)0x7C00000UL)
+#define Q2G_BACKBUF ((volatile uint8_t *)0x0B000000UL)
 
 static int s_prev_mouse_x;
 static int s_prev_mouse_y;

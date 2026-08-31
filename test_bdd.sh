@@ -15,7 +15,7 @@ set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"
 QEMU="${QEMU:-qemu-system-x86_64}"
 TMO="${TMO:-120}"
-MEM="${MEM:-512M}"
+MEM="${MEM:-1G}"
 BOOT_WAIT="${BOOT_WAIT:-1}"
 IMAGE="$HERE/os.img"
 LOG="$HERE/test_bdd.log"

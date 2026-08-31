@@ -466,7 +466,7 @@ void kbd_reset_for_shell(void) {
  *   0x08000000 .. 0x14000000   192 MB kernel heap (HEAP_BASE/HEAP_SIZE in kernel.h)
  */
 #define USER_LOAD_BASE  0x00400000UL
-#define USER_LOAD_END   0x08000000UL
+#define USER_LOAD_END   0x0C000000UL
 #define USER_STACK_SIZE (1024UL * 1024)
 #define USER_STACK_TOP  USER_LOAD_END
 #define USER_STACK_BASE (USER_STACK_TOP - USER_STACK_SIZE)
@@ -489,7 +489,7 @@ void kbd_reset_for_shell(void) {
  * return discriminator; the trampoline is a raw string literal, so the C
  * preprocessor cannot paste the UL-suffixed macros into it. */
 #define USER_WIN_LO     0x00400000
-#define USER_WIN_HI     0x07400000
+#define USER_WIN_HI     0x0C000000
 #define STR_(x) #x
 #define STR(x)  STR_(x)
 

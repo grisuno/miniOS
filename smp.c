@@ -32,8 +32,12 @@
 #define SIPI_VECTOR       (AP_STUB_ADDR >> 12)
 
 /* LAPIC region mapped as 2 MB uncached (PCD|PWT) pages.  A dedicated PD is
- * parked in the dead boot staging buffer at 0x60000 (identity mapped, fixed). */
-#define LAPIC_PD_ADDR     0x60000u
+ * parked at 0x70000 (identity mapped, fixed), just above the user page-table
+ * zone [0x10000,0x70000) and below the syscall kernel stack (0x88000).  It
+ * must NOT sit at 0x60000: with a 192 MB user window the page-table zone
+ * extends there and the index-82 PT (the ~165 MB window) lives at 0x60000, so
+ * zeroing a LAPIC PD there would unmaps those user pages. */
+#define LAPIC_PD_ADDR     0x70000u
 #define LAPIC_PDPT_SLOT   (LAPIC_BASE / 0x40000000u)          /* = 3 */
 #define LAPIC_PD_IDX      ((LAPIC_BASE / 0x200000u) % 512u)   /* = 503 */
 
