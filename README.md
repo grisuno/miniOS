@@ -475,31 +475,117 @@ MiniOS ships a quake2generic port that runs Quake 2 as a static Linux ELF at
 ring 3. The engine compiles from `progs/quake2generic/` with the platform
 layer in `q2generic_minios.c`. It reuses the DOOM back-buffer infrastructure:
 the software renderer writes 320x200 8-bit paletted pixels into the kernel
-back-buffer at `DOOM_BACKBUF_ADDR` (0x1FE0000), and `SYS_DOOM_FRAME` (211)
-composites it onto the desktop as a titled window.
+back-buffer at `DOOM_BACKBUF_ADDR` (0x0B000000), and `SYS_DOOM_FRAME` (211)
+composites it onto the desktop as a titled window. The window title is set to
+"Quake 2" via `SYS_Q2G_SET_TITLE` (223).
 
 ```
 miniOS> run bin/quake2generic.elf +set basedir .
 ```
 
-| Key | Action |
-|-----|--------|
-| WASD | move |
-| Ctrl | fire |
-| Space | use / open |
-| Arrow keys | turn / strafe |
-| Mouse | look |
-| Shift | run |
-| Esc | menu |
+The engine requires `baseq2/pak0.pak` on the MiniFS. This image ships the
+**full retail pak** (184 MB, 3307 files), so every campaign mission (Outer
+Base, Warehouse, Installation, Command, Boss1/2, Fact, Hangar, Jail, Mine,
+Power) and every weapon, item and monster model is present and playable. The
+retail player model ships separately as `pak1.pak`. A small `pak2.pak` that
+aliased the shareware demo maps as base1/2/3 was removed once the full pak
+made it redundant.
 
-The engine requires `baseq2/pak0.pak` on the MiniFS (shareware: ~18 MB).
-The window title is set to "Quake 2" via `SYS_Q2G_SET_TITLE` (223). Sound
-is stubbed (the engine runs silently); the SB16 PCM path could be wired in
-the future. To rebuild from source:
+Controls: WASD to move, Ctrl to fire, Space to use/open, arrow keys to
+turn/strafe, the mouse to look, Shift to run, Esc for the menu. Sound is
+stubbed (the engine runs silently); the SB16 PCM path could be wired in the
+future. Rebuild from source with `make progs/bin/quake2generic.elf`.
 
-```bash
-make progs/bin/quake2generic.elf
-```
+## The Quake 2 bring-up: memory layout as a story
+
+Getting Quake 2 to run was less about the game and more about the memory
+model the kernel had to grow into. This is the story of those decisions and
+of the two subtle bugs they uncovered, because they are the kind of bug that
+only exists after you move a memory map.
+
+**Why Quake needs so much memory.** The retail Quake 2 loads an entire
+level's worth of data up front: the BSP world, every model and sprite the
+mission references, the collision and drawing caches, plus the game's own
+hunk/zone allocations. With the full 184 MB pak the game reaches for roughly
+150-180 MB of the user window while loading a mission. The original layout
+gave ring-3 programs a 128 MB window and parked the graphics back-buffer
+inside it at 124 MB, which left the game roughly 120 MB to mmap into. That
+was never going to be enough, and it failed in the honest way: the game ran
+out of the window and the loader rejected further allocations.
+
+So the window grew. `USER_LOAD_END` went from 128 MB to **192 MB**, and the
+kernel heap moved up to sit right above it (192 MB to 384 MB). Growing the
+window has a cascade of costs that all had to be paid together:
+
+- **More page tables.** The user window runs on eager 4 KB page tables so the
+  no-execute bit works. A 192 MB window needs 94 page tables (one 4 KB table
+  per 2 MB PD slot). The page-table zone grew from 256 KB to **384 KB**
+  (`PT_USER_TABLES_BYTES`), living at `[0x10000, 0x70000)`, below the kernel
+  image. This zone is the single most dangerous address range in the kernel:
+  it is dedicated, so *nothing else* may claim a page inside it.
+- **Move the back-buffer up.** The DOOM/Quake back-buffer was inside the
+  window at 124 MB, exactly where the game wants to mmap. It moved up to
+  **176 MB** (`DOOM_BACKBUF_ADDR`), and the allocators are capped just below
+  it so the game can never mmap over the pages the kernel maps for rendering.
+- **Move KASLR up.** The kernel image's random physical base must sit above
+  the window and the heap. `KASLR_MIN_ADDR` rose to 0x1A000000 so the kernel
+  can never land inside either.
+- **More RAM.** A 192 MB window, a 192 MB heap and a KASLR range that tops out
+  near 600 MB simply do not fit in the old 512 MB guest. The image boots with
+  **1 GB** (`-m 1G`, mirrored in `test_bdd.sh` and the MCP bridge).
+- **A bigger filesystem.** The full retail pak is 184 MB. MiniFS grew from
+  128 MB to **256 MB** to hold it, the engine, DOOM and MicroPython together.
+
+With the memory in place the game stopped crashing on allocation and started
+loading missions. Two bugs remained, and both were invisible until the map
+grew — which is exactly why they are worth writing down.
+
+**Bug one: the syscall trampoline silently downgraded the game to ring 0.**
+The syscall entry decides how to return by inspecting the restored stack
+pointer: if it lies inside the user window it returns to ring 3 with
+`sysretq`, otherwise it returns to ring 0 with `jmp *%rcx` (the contract for
+the ring-0 `.o` toolchain). The window bounds for that decision,
+`USER_WIN_HI`, were still `0x07400000` (116 MB) after the window grew to
+192 MB. The game's stack sits at the *top* of the window, near 192 MB, so
+every syscall saw `rsp >= USER_WIN_HI` and took the ring-0 return path. The
+game ran in supervisor mode for its whole life. The tell was the crash dump:
+`cs=8` (kernel) with a user stack pointer — a combination that is impossible
+for a real ring-3 fault, and it could only mean the game had been running at
+ring 0. The fix was a one-line correction: `USER_WIN_HI` to `0x0C000000`.
+This matters beyond Quake: any ring-3 program whose stack sits high in a
+grown window would silently lose its protection.
+
+**Bug two: the LAPIC page directory erased the user window's page tables.**
+Every boot, `smp_init` parks a dedicated page directory for the local APIC
+and zeroes it. It was parked at physical `0x60000`, which the comment called
+"the dead boot staging buffer." It had been dead — until the page-table zone
+grew. Index 82's user page table (the slot that maps roughly 165 MB of the
+window) now lives at exactly `0x60000`. So on every boot `smp_init` wrote
+zeros over the very page tables that made the game's 165 MB usable, and the
+game faulted on a "page not present" the moment its mmap reached that region.
+Diagnosis needed three steps: a page-table walk at the fault showed `pte=0`
+while the boot-time dump showed it present; boot-step instrumentation isolated
+the zeroing to `smp_init`; and reading the code found the collision. The fix
+moved `LAPIC_PD_ADDR` to `0x70000`, just above the page-table zone and below
+the syscall kernel stack. The lesson is the one the memory-map hazard contract
+already warned about: the page-table zone is a jigsaw, and a fixed low-memory
+address that was "dead" stays dead only until the map grows into it.
+
+**The regression that taught the rule.** After Quake worked, DOOM showed a
+black window while the game ran fine (you could hear it and drive the menu).
+Quake and DOOM share the back-buffer infrastructure, so the back-buffer
+mapping was not the problem — the *address DOOM wrote to* was. The kernel and
+Quake had moved to `0x0B000000`, but DOOM's platform layer still rendered into
+the old address `0x7C00000`, so the kernel composited an empty buffer. Every
+consumer of a moved address has to move together; the fix was one constant in
+`doomgeneric_minios.c`.
+
+The takeaway is not the constants — it is why they are the way they are. A
+window sized for the biggest ring-3 program, a page-table zone nothing else
+may touch, a back-buffer above the mmap ceiling, a KASLR range above the heap,
+and RAM and a filesystem large enough for the payload are not independent
+tuning knobs. They are one layout, and changing any of them means re-checking
+every fixed low-memory address that assumed it was alone.
 
 ## Piano (FM synth -> SB16)
 

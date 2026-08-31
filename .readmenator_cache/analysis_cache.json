@@ -3,7 +3,7 @@
     "god_nodes": [
       [
         "kernel.c",
-        57.8
+        58.0
       ],
       [
         "kernel.h",
@@ -47,87 +47,54 @@
         "id": 0,
         "label": "root",
         "file_ids": [
-          "bootdefs.h",
+          "sb16.c",
+          "smp.c",
+          "minifs.c",
+          "ide.h",
+          "rtc.h",
+          "vga_fb.h",
+          "qga.h",
+          "pcspk.h",
+          "sb16.h",
+          "zip.h",
+          "minifs.h",
+          "lz4_kernel.c",
           "smp.h",
+          "ide.c",
+          "kernel.h",
+          "net.c",
+          "block.h",
+          "sched.h",
+          "zip.c",
+          "net.h",
+          "bootdefs.h",
+          "desktop_shortcuts.h",
+          "pcspk.c",
+          "kernel.c",
+          "sched.c",
+          "rtc.c",
+          "vga_fb.c",
+          "qga.c",
           "ap_stub.h",
-          "smp.c"
+          "lz4_kernel.h",
+          "desktop_icons.h",
+          "block.c"
         ],
-        "cohesion": 0.375,
-        "size": 4
+        "cohesion": 0.9454545454545454,
+        "size": 32
       },
       {
         "id": 1,
-        "label": "root",
-        "file_ids": [
-          "minifs.c",
-          "lz4_kernel.h",
-          "sched.h",
-          "zip.h",
-          "minifs.h",
-          "ide.h",
-          "block.h",
-          "block.c",
-          "kernel.c"
-        ],
-        "cohesion": 0.46153846153846156,
-        "size": 9
-      },
-      {
-        "id": 2,
-        "label": "root",
-        "file_ids": [
-          "desktop_shortcuts.h",
-          "desktop_icons.h",
-          "vga_fb.h",
-          "vga_fb.c"
-        ],
-        "cohesion": 0.42857142857142855,
-        "size": 4
-      },
-      {
-        "id": 3,
-        "label": "root",
-        "file_ids": [
-          "zip.c",
-          "ide.c",
-          "kernel.h",
-          "lz4_kernel.c"
-        ],
-        "cohesion": 0.17647058823529413,
-        "size": 4
-      },
-      {
-        "id": 4,
         "label": "mcp",
         "file_ids": [
-          "mcp/minios_addons.py",
-          "mcp/minios_mcp.py"
+          "mcp/minios_mcp.py",
+          "mcp/minios_addons.py"
         ],
         "cohesion": 1.0,
         "size": 2
       },
       {
-        "id": 5,
-        "label": "root",
-        "file_ids": [
-          "net.c",
-          "net.h"
-        ],
-        "cohesion": 0.25,
-        "size": 2
-      },
-      {
-        "id": 6,
-        "label": "root",
-        "file_ids": [
-          "pcspk.c",
-          "pcspk.h"
-        ],
-        "cohesion": 0.3333333333333333,
-        "size": 2
-      },
-      {
-        "id": 7,
+        "id": 2,
         "label": "progs/src",
         "file_ids": [
           "progs/src/shell.py",
@@ -138,48 +105,17 @@
         "size": 3
       },
       {
-        "id": 8,
+        "id": 3,
         "label": "root",
         "file_ids": [
-          "qga.h",
-          "qga.c"
-        ],
-        "cohesion": 0.3333333333333333,
-        "size": 2
-      },
-      {
-        "id": 9,
-        "label": "root",
-        "file_ids": [
-          "rtc.h",
-          "rtc.c"
-        ],
-        "cohesion": 0.25,
-        "size": 2
-      },
-      {
-        "id": 10,
-        "label": "root",
-        "file_ids": [
-          "sb16.h",
-          "sb16.c",
-          "sched.c"
-        ],
-        "cohesion": 0.25,
-        "size": 3
-      },
-      {
-        "id": 11,
-        "label": "root",
-        "file_ids": [
+          "tls_test_roots.h",
           "tls.c",
-          "tls.h",
+          "tls_test.c",
           "tls_roots.h",
           "tls_x509.c",
-          "tls_test_roots.h",
           "tls_crypto.c",
-          "tls_port.h",
-          "tls_test.c"
+          "tls.h",
+          "tls_port.h"
         ],
         "cohesion": 0.7692307692307693,
         "size": 8
@@ -190,39 +126,39 @@
         "ap_stub.h",
         "tls_roots.h",
         5,
-        "{0, 11, 3}"
+        "{0, 3}"
       ],
       [
         "ap_stub.h",
         "tls_test_roots.h",
         5,
-        "{0, 11, 3}"
+        "{0, 3}"
       ],
       [
         "desktop_icons.h",
         "tls_roots.h",
         5,
-        "{11, 2, 3}"
+        "{0, 3}"
       ],
       [
         "desktop_icons.h",
         "tls_test_roots.h",
         5,
-        "{11, 2, 3}"
+        "{0, 3}"
       ],
       [
         "desktop_shortcuts.h",
         "tls_roots.h",
         5,
-        "{11, 2, 3}"
+        "{0, 3}"
       ]
     ],
     "suggested_questions": [
       "What does kernel.c depend on, and what depends on it? (15 connections)",
       "What does kernel.h depend on, and what depends on it? (15 connections)",
       "What does d_englsh.h depend on, and what depends on it? (0 connections)",
-      "How are the 4 files in 'root' related to each other?",
-      "Why are ap_stub.h and tls_roots.h connected through 5 hops across 3 communities?"
+      "How are the 32 files in 'root' related to each other?",
+      "Why are ap_stub.h and tls_roots.h connected through 5 hops across 2 communities?"
     ]
   },
   "layers": {
@@ -469,6 +405,7 @@
     "progs/nuklear/nuklear_minios.c": "utility",
     "progs/nuklear/nuklear_minios.h": "utility",
     "progs/piano/piano.c": "utility",
+    "progs/quake2generic/q2generic_minios.c": "utility",
     "progs/src/aes.c": "utility",
     "progs/src/cp.c": "utility",
     "progs/src/cpl.c": "utility",
@@ -484,6 +421,7 @@
     "progs/src/lxhello.c": "utility",
     "progs/src/lz4.c": "utility",
     "progs/src/lzss.c": "utility",
+    "progs/src/mmreuse.c": "utility",
     "progs/src/nx.c": "utility",
     "progs/src/opl3.c": "utility",
     "progs/src/sbtone.c": "utility",
@@ -523,6 +461,7 @@
     "tools/gen_zip_fixtures.py": "data_access",
     "tools/minios_cli.py": "utility",
     "tools/minios_gui.py": "presentation",
+    "tools/mkpak1.py": "utility",
     "tools/qga_client.py": "infrastructure",
     "tools/qga_test.sh": "testing",
     "tools/repro_gui.py": "presentation",

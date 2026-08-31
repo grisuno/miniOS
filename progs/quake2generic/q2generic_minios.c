@@ -1,9 +1,9 @@
 /* q2generic_minios.c - MiniOS platform layer for quake2generic.
  *
  * Quake 2 renders into a kernel back-buffer in the user window at virtual
- * 0x1FE0000; each frame it calls SYS_DOOM_FRAME (211) and the kernel
- * composites the buffer onto the hi-res desktop as a titled window at
- * native 320x200, leaving the shell window visible.
+ * 0x0B000000 (DOOM_BACKBUF_ADDR); each frame it calls SYS_DOOM_FRAME (211)
+ * and the kernel composites the buffer onto the hi-res desktop as a titled
+ * window at native 320x200, leaving the shell window visible.
  * Syscalls: 204=time(ms), 205=kbd(scancode), 206=palette(768 bytes),
  *           207=kbd_raw_mode(0/1), 208=vga_mode, 211=doom_frame,
  *           219=mouse(x,y,buttons,wheel), 223=set_window_title.
