@@ -1064,6 +1064,21 @@ KFILE *kfopen(const char *path, const char *mode) {
     f->minifs_ino = -1;
     f->rf = ramdisk_open(resolved);
     if (!f->rf && (mode[0] == 'w' || mode[0] == 'a')) {
+        /* Creating a new file: the parent directory must already exist (the
+         * ramdisk is flat, so a name like save/current/server.ssv can only be
+         * created under a real directory).  Refusing keeps the game's save
+         * writes failing gracefully instead of corrupting the filesystem. */
+        const char *slash = resolved + kstrlen(resolved);
+        while (slash > resolved && slash[-1] != '/') slash--;
+        if (slash != resolved && slash[-1] == '/') {
+            char parent[RAMDISK_FNAME_LEN];
+            unsigned plen = (unsigned)(slash - resolved);
+            if (plen >= sizeof(parent)) plen = sizeof(parent) - 1;
+            kmemcpy(parent, resolved, plen);
+            parent[plen] = '/';
+            parent[plen + 1] = 0;
+            if (!fs_dir_exists(parent)) { kfree(f); return 0; }
+        }
         f->rf = ramdisk_create(resolved, 0);
         if (!f->rf) { kfree(f); return 0; }
     }
