@@ -626,6 +626,12 @@ Q2G_PLAYER_FILES = $(Q2G_DIR)/players/male/tris.md2 \
 $(PROGS_DIR)/baseq2/pak1.pak: $(Q2G_PLAYER_FILES) tools/mkpak1.py
 	python3 tools/mkpak1.py
 
+# The shareware pak ships the first three campaign missions as demo1/2/3.bsp;
+# alias them as base1/2/3.bsp so the campaign menu starts Outer Base instead
+# of freezing on a missing maps/base1.bsp.
+$(PROGS_DIR)/baseq2/pak2.pak: $(PROGS_DIR)/baseq2/pak0.pak tools/mkpak2.py
+	python3 tools/mkpak2.py
+
 MINIFS_Q2G_FILES = $(BIN_DIR)/quake2generic.elf \
     $(PROGS_DIR)/baseq2
 
@@ -998,7 +1004,7 @@ MINIFS_BLOCKS ?= 32768
 
 # MiniFS content list lives in this Makefile too, so editing it must
 # invalidate the filesystem image exactly like ramdisk.bin.
-minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(PROGS_DIR)/baseq2/pak1.pak mkfs.minifs.py Makefile
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(PROGS_DIR)/baseq2/pak1.pak $(PROGS_DIR)/baseq2/pak2.pak mkfs.minifs.py Makefile
 	python3 mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES)
 
 os.img: stage1.bin stage2.bin kernel.bin minifs.bin
