@@ -83,12 +83,56 @@ static int sb16_inflight;
 static unsigned long sb16_last_arm_ms;
 static sb16_counters_t sb16_stat;
 
+/* DMA ring state (consumer side: ISR/poll drains these into hardware). */
 static unsigned pcm_head;
 static unsigned pcm_tail;
 static unsigned pcm_free;
 
+/* Kernel-side audio ring buffer.  pcm_submit (producer, called from ring 3
+ * via syscall) writes here; sb16_pump (consumer, called from ISR or poll)
+ * drains into the DMA slots.  The extra level of buffering decouples the
+ * renderer's frame rate from the DMA playback cadence: a slow UI frame can
+ * take hundreds of ms without starving the speaker, because the kernel ring
+ * absorbs the gap. */
+static unsigned char kb_ring[SB16_KB_RING_SZ];
+static unsigned kb_head;   /* next write position (bytes) */
+static unsigned kb_tail;   /* next read position (bytes) */
+static unsigned kb_count;  /* bytes available */
+
 static unsigned char *sb16_slot(unsigned i) {
     return (unsigned char *)(unsigned long)(SB16_DMA_BUF0 + i * SB16_BUF);
+}
+
+/* Reset the kernel-side audio ring to empty. */
+static void sb16_kring_reset(void) {
+    kb_head = kb_tail = kb_count = 0;
+}
+
+/* Pump: drain the kernel ring into DMA slots and arm the hardware.
+ * Called from sb16_poll (timer ISR) and sb16_irq (DMA completion IRQ).
+ * Moves as many complete SB16_PCM_BUF-sized chunks as both rings can
+ * hold, then arms the DMA if a new slot was filled. */
+void sb16_pump(void) {
+    if (!sb16_ready || sb16_mode != SB16_MODE_PCM) return;
+
+    /* Transfer complete buffers from kernel ring to DMA ring. */
+    while (kb_count >= SB16_PCM_BUF && pcm_free > 0) {
+        unsigned char *dst = sb16_slot(pcm_head);
+        unsigned i;
+        for (i = 0; i < SB16_PCM_BUF; i++) {
+            dst[i] = kb_ring[kb_tail];
+            kb_tail = (kb_tail + 1) % SB16_KB_RING_SZ;
+        }
+        kb_count -= SB16_PCM_BUF;
+        pcm_head = (pcm_head + 1) % SB16_RING_CAP;
+        pcm_free--;
+        sb16_stat.pump_fills++;
+    }
+
+    /* Detect stalls: kernel ring empty but DMA ring also empty means the
+     * renderer stopped producing and the speaker will go silent. */
+    if (kb_count == 0 && pcm_free == SB16_RING_CAP && sb16_inflight)
+        sb16_stat.stalls++;
 }
 
 static void sb16_wait_dsp_write(void) {
@@ -183,6 +227,7 @@ void sb16_tone(unsigned freq) {
     sb16_freq = freq;
     pcm_head = pcm_tail = 0;
     pcm_free = SB16_RING_CAP;
+    sb16_kring_reset();
     if (!sb16_inflight) {
         sb16_last_arm_ms = ktime_ms();
         sb16_refill(0);
@@ -197,6 +242,7 @@ void sb16_pcm_open(void) {
     sb16_freq = 0;
     pcm_head = pcm_tail = 0;
     pcm_free = SB16_RING_CAP;
+    sb16_kring_reset();
     unsigned i;
     for (i = 0; i < SB16_BUF; i++) sb16_slot(SB16_SILENCE_SLOT)[i] = 0x80;
     if (!sb16_inflight) {
@@ -212,23 +258,40 @@ int sb16_pcm_submit(const unsigned char *pcm, unsigned len) {
     unsigned i;
     if (!sb16_ready || sb16_mode != SB16_MODE_PCM) return -1;
     if (len == 0 || len > SB16_BUF) return -1;
-    if (pcm_free == 0) { sb16_stat.drops++; return -1; }
-    unsigned char *dst = sb16_slot(pcm_head);
-    for (i = 0; i < len; i++) dst[i] = pcm[i];
-    for (; i < SB16_BUF; i++) dst[i] = 0x80;
-    pcm_head = (pcm_head + 1) % SB16_RING_CAP;
-    pcm_free--;
+
+    /* Write to the kernel-side ring buffer instead of directly into a DMA
+     * slot.  This decouples the renderer's submission rate from the DMA
+     * playback rate: sb16_pump drains the kernel ring into DMA slots at
+     * the hardware cadence, so a slow renderer frame never starves the
+     * speaker and a fast renderer never overflows the DMA ring. */
+    if (SB16_KB_RING_SZ - kb_count < len) {
+        sb16_stat.drops++;
+        return -1;
+    }
+    for (i = 0; i < len; i++) {
+        kb_ring[kb_head] = pcm[i];
+        kb_head = (kb_head + 1) % SB16_KB_RING_SZ;
+    }
+    kb_count += len;
     sb16_stat.submits++;
+
+    /* Eagerly pump: if DMA slots are free and the kernel ring has data,
+     * transfer immediately so latency stays low on the fast path. */
+    sb16_pump();
     return 0;
 }
 
 void sb16_irq(void) {
     if (!sb16_ready || !sb16_inflight) return;
     (void)inb(SB16_IRQ_ACK);
+    sb16_pump();
     sb16_arm(1);
 }
 
-void sb16_poll(void) { sb16_arm(0); }
+void sb16_poll(void) {
+    sb16_pump();
+    sb16_arm(0);
+}
 
 unsigned sb16_ring_free(void) { return pcm_free; }
 int sb16_mode_active(void) { return sb16_mode; }

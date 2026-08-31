@@ -50,15 +50,14 @@ static char ui_memory[UI_MEMORY];
 
 #define SYS_SB16_OPEN   221
 #define SYS_SB16_SUBMIT 222
+#define SYS_SB16_PUMP   224
 
 #define RATE    22050u
 #define PCM_BUF 2048u        /* == SB16 PCM buffer size (bytes) */
-/* Upper bound on audio rendered per frame, in milliseconds.  The SB16 ring
- * holds SB16_RING_CAP buffers (~650 ms); a frame must never render more than
- * the ring can absorb, or the excess would be silently dropped.  Rendering a
- * slow frame's full elapsed time (clamped here) is what keeps the audio in
- * sync with wall time: the old 50 ms cap under-rendered on slow frames and
- * starved the ring, which produced the choppy buzz. */
+/* Upper bound on audio rendered per frame, in milliseconds.  The kernel-side
+ * audio ring absorbs up to ~3 seconds of buffered PCM, so a slow frame can
+ * render more without starving the speaker.  The clamp is kept conservative
+ * to avoid unbounded per-frame work. */
 #define MAX_AUDIO_MS 600
 
 static long sys_pcm_open(long on) {
@@ -66,6 +65,9 @@ static long sys_pcm_open(long on) {
 }
 static long sys_pcm_submit(const void *buf, long len) {
     long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_SUBMIT),"D"((long)buf),"S"(len):"rcx","r11","memory"); return r;
+}
+static long sys_pcm_pump(void) {
+    long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_PUMP):"rcx","r11","memory"); return r;
 }
 
 /* ── Nuked-OPL3 FM engine ───────────────────────────────────────────── */
@@ -253,14 +255,20 @@ static int fill;
 static long last_render;
 static unsigned long sb_submit_drops;
 
-/* Flush a fully-filled buffer to the SB16.  When the ring is full the submit
- * is refused; the buffer is kept in place (fill stays at PCM_BUF) so the next
- * frame retries it, and a drop is counted only when a new submit is blocked
- * by a still-pending buffer, never silently. */
+/* Flush a fully-filled buffer to the kernel audio ring.  When the ring is
+ * full the submit is refused; the buffer is kept in place (fill stays at
+ * PCM_BUF) so the next frame retries it, and a drop is counted only when a
+ * new submit is blocked by a still-pending buffer, never silently.  After a
+ * successful submit we call sys_pcm_pump to eagerly drain the kernel ring
+ * into DMA slots, reducing playback latency on the fast path. */
 static void sb_flush(void) {
     if (fill != PCM_BUF) return;
-    if (sys_pcm_submit(obuf, PCM_BUF) == 0) fill = 0;
-    else sb_submit_drops++;
+    if (sys_pcm_submit(obuf, PCM_BUF) == 0) {
+        fill = 0;
+        sys_pcm_pump();
+    } else {
+        sb_submit_drops++;
+    }
 }
 
 static void render_audio(long ms) {

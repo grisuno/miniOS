@@ -767,7 +767,7 @@ static long katol(const char *s) {
 #define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)
 #define RD_DATA_MIN    (512UL * 1024)
 #define RD_DATA_SPARE  (1024UL * 1024)
-#define RD_DATA_MAX    (64UL * 1024 * 1024)
+#define RD_DATA_MAX    (48UL * 1024 * 1024)
 
 typedef struct {
     unsigned magic;
@@ -782,13 +782,20 @@ static unsigned rd_cap;
 
 /* Reserve a data area of `want` bytes, clamped to the configured maximum.
  * An existing area is kept when it is already large enough, otherwise the
- * live contents are carried over to the new one. Returns 1 on success. */
+ * live contents are carried over to the new one.  The cap is deliberately
+ * conservative (48 MB out of the 192 MB heap) to leave room for MiniFS
+ * bitmaps, dlmalloc metadata, and transient compression buffers.  Returns
+ * 1 on success, 0 when the allocation would leave the heap too small. */
 static int ramdisk_reserve(unsigned long want) {
     if (want > RD_DATA_MAX) return 0;
     if (want < RD_DATA_MIN) want = RD_DATA_MIN;
     if (rd_data && rd_cap >= want) return 1;
     char *area = kmalloc(want);
-    if (!area) return 0;
+    if (!area) {
+        kprintf("ramdisk: cannot allocate %lu KB (heap exhausted)\n",
+                want / 1024);
+        return 0;
+    }
     kmemset(area, 0, want);
     if (rd_data && rd_used > 0) kmemcpy(area, rd_data, rd_used);
     if (rd_data) kfree(rd_data);
@@ -2686,6 +2693,13 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         if (len < 0) return -EFAULT;
         if (!user_range_ok((unsigned long)a1, (unsigned long)len)) return -EFAULT;
         return sb16_pcm_submit(pcm, (unsigned)len);
+    }
+    case 224: { /* SYS_SB16_PUMP: drain the kernel audio ring into DMA slots.
+                 * A ring-3 renderer can call this to force an immediate flush
+                 * after a burst of submits, reducing latency on the fast path.
+                 * No arguments; returns 0. */
+        sb16_pump();
+        return 0;
     }
     case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
         unsigned char *pal = (unsigned char *)a1;
@@ -5154,6 +5168,8 @@ static void shell_exec_builtin(int argc, char **argv) {
                 (unsigned)SB16_RING_CAP);
         kprintf("sb16: arms irq=%lu poll=%lu submits=%lu drops=%lu\n",
                 c.irq_arms, c.poll_arms, c.submits, c.drops);
+        kprintf("sb16: stalls=%lu pump_fills=%lu\n",
+                c.stalls, c.pump_fills);
     }
     else if (kstrcmp(argv[0], "gfx") == 0) {
         shell_cmd_gfx(argc, argv);

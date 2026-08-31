@@ -1078,6 +1078,17 @@ int minifs_mount(void) {
     ibm_blocks = div_round_up(fs_sb.total_inodes, MINIFS_BLOCK_SIZE * 8);
     bbm_blocks = div_round_up(fs_sb.total_blocks, MINIFS_BLOCK_SIZE * 8);
 
+    /* Defensive: clamp bbm_blocks so the bitmap does not overflow into the
+     * inode table.  A mismatch between mkfs and the kernel (e.g. mkfs wrote
+     * 1 bitmap block but the kernel calculates 2 for 65536 blocks) would
+     * otherwise let minifs_sync overwrite inode table data. */
+    if (fs_sb.inode_table_start > fs_sb.block_bitmap_start &&
+        bbm_blocks > fs_sb.inode_table_start - fs_sb.block_bitmap_start) {
+        kprintf("minifs: bbm_blocks %u overflows inode table, clamping to %u\n",
+                bbm_blocks, fs_sb.inode_table_start - fs_sb.block_bitmap_start);
+        bbm_blocks = fs_sb.inode_table_start - fs_sb.block_bitmap_start;
+    }
+
     fs_ibitmap = (unsigned char *)kmalloc(ibm_blocks * MINIFS_BLOCK_SIZE);
     fs_bbitmap = (unsigned char *)kmalloc(bbm_blocks * MINIFS_BLOCK_SIZE);
     if (!fs_ibitmap || !fs_bbitmap) return -1;
@@ -1111,7 +1122,7 @@ int minifs_mkfs(unsigned int total_blocks) {
     if (total_blocks < 16) return -1;
 
     ibm_blocks = 1;
-    bbm_blocks = 1;
+    bbm_blocks = div_round_up(total_blocks, MINIFS_BLOCK_SIZE * 8);
     it_blocks = 8;
     data_start = 1 + ibm_blocks + bbm_blocks + it_blocks;
 

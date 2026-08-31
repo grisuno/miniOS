@@ -35,11 +35,20 @@
 #define SB16_ARM_PERIOD_MS \
     ((unsigned)((SB16_PCM_BUF * 1000u + SB16_PCM_RATE - 1u) / SB16_PCM_RATE))
 
+/* Kernel-side audio ring buffer.  pcm_submit writes here; the ISR and
+ * sb16_pump drain it into the DMA ring.  This decouples the ring-3
+ * renderer's frame rate from the DMA playback rate so a slow UI frame
+ * never starves the speaker. */
+#define SB16_KB_SLOTS     32u   /* ~3 seconds at 22050 Hz */
+#define SB16_KB_RING_SZ   (SB16_KB_SLOTS * SB16_PCM_BUF)
+
 typedef struct {
     unsigned long irq_arms;   /* re-arms granted on the IRQ fast path */
     unsigned long poll_arms;  /* re-arms granted by the timer watchdog */
     unsigned long submits;    /* successful pcm_submit calls */
     unsigned long drops;      /* pcm_submit calls refused (ring full / bad) */
+    unsigned long stalls;     /* DMA needed data but kernel ring was empty */
+    unsigned long pump_fills; /* pump calls that moved data to DMA */
 } sb16_counters_t;
 
 int sb16_init(void);
@@ -51,6 +60,7 @@ void sb16_poll(void);
 void sb16_pcm_open(void);
 int  sb16_pcm_submit(const unsigned char *pcm, unsigned len);
 void sb16_pcm_close(void);
+void sb16_pump(void);
 
 unsigned sb16_ring_free(void);
 int      sb16_mode_active(void);

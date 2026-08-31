@@ -45,7 +45,7 @@ class MiniFS:
     def __init__(self, total_blocks):
         self.total_blocks = total_blocks
         self.ibm_blocks = 1
-        self.bbm_blocks = 1
+        self.bbm_blocks = div_round_up(total_blocks, BLOCK_SIZE * 8)
         self.it_blocks = 16
         self.data_start = 1 + self.ibm_blocks + self.bbm_blocks + self.it_blocks
         self.total_inodes = self.it_blocks * (BLOCK_SIZE // 128)
