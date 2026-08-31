@@ -190,7 +190,7 @@ class MiniFS:
 
     def write_dir(self, parent_ino, name):
         ino = self.create_inode(S_IFDIR | 0o755)
-        self.inodes[ino][8:10] = struct.pack('<H', 2)
+        self.inodes[ino][2:4] = struct.pack('<H', 2)
         self.add_dir_entry(parent_ino, name, ino, FT_DIR)
         return ino
 
@@ -268,6 +268,19 @@ def main():
                         fs.write_file(ino, sub, data)
                         print(f"  + {entry}/{sub} ({len(data)} bytes)")
     else:
+        def pack_tree(parent_ino, path, rel):
+            for sub in sorted(os.listdir(path)):
+                sub_path = os.path.join(path, sub)
+                if os.path.isfile(sub_path):
+                    with open(sub_path, 'rb') as f:
+                        data = f.read()
+                    fs.write_file(parent_ino, sub, data)
+                    print(f"  + {rel}/{sub} ({len(data)} bytes)" if rel else f"  + {sub} ({len(data)} bytes)")
+                elif os.path.isdir(sub_path):
+                    ino = fs.write_dir(parent_ino, sub)
+                    print(f"  + {rel}/{sub}/" if rel else f"  + {sub}/")
+                    pack_tree(ino, sub_path, f"{rel}/{sub}" if rel else sub)
+
         for path in sys.argv[3:]:
             name = os.path.basename(path)
             if os.path.isfile(path):
@@ -277,13 +290,8 @@ def main():
                 print(f"  + {name} ({len(data)} bytes)")
             elif os.path.isdir(path):
                 ino = fs.write_dir(ROOT_INODE, name)
-                for sub in sorted(os.listdir(path)):
-                    sub_path = os.path.join(path, sub)
-                    if os.path.isfile(sub_path):
-                        with open(sub_path, 'rb') as f:
-                            data = f.read()
-                        fs.write_file(ino, sub, data)
-                        print(f"  + {name}/{sub} ({len(data)} bytes)")
+                print(f"  + {name}/")
+                pack_tree(ino, path, name)
 
     image = fs.serialize()
     with open(output, 'wb') as f:

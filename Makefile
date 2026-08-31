@@ -987,7 +987,7 @@ MINIFS_BLOCKS ?= 32768
 
 # MiniFS content list lives in this Makefile too, so editing it must
 # invalidate the filesystem image exactly like ramdisk.bin.
-minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) Makefile
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) mkfs.minifs.py Makefile
 	python3 mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES)
 
 os.img: stage1.bin stage2.bin kernel.bin minifs.bin
