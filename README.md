@@ -101,7 +101,7 @@ The shell runs in a **titled, movable window** on the desktop, not on the whole
 screen:
 
 - **Title bar** ("MiniOS Terminal"): drag it with the left mouse button to move
-  the window — it stays under the pointer, and the terminal content and prompt
+  the window, it stays under the pointer, and the terminal content and prompt
   survive the move.
 - **Scrollbar** on the window's right edge: the mouse wheel scrolls through
   the scrollback history, and a left click on the scrollbar jumps the view to
@@ -157,7 +157,7 @@ with local work is left alone. `make sources-update` pulls the latest commit
 of each before rebuilding, and `make sources-status` shows which revision
 each one is sitting on.
 
-Expected layout — the directory holding this repository can have any name:
+Expected layout: the directory holding this repository can have any name:
 
 ```
 src/
@@ -289,15 +289,35 @@ including the negative set).
 | Command | Purpose |
 |---------|---------|
 | `help` | command summary |
-| `ls` / `cat <file>` / `echo <text>` | ramdisk browsing |
+| `ls` | list directory entries |
+| `cat <file>` | print file contents |
+| `echo <text>` | print text to the console |
+| `mkdir <name>` | create a directory entry |
+| `rm <file>` | delete a ramdisk file |
+| `pwd` | print the current working directory |
+| `cd [dir]` | change directory (bare cd goes to root) |
 | `edit <file>` | line editor |
 | `load <file>` | load an ELF (`.o` relocatable, or a Linux executable) |
 | `run <name\|file> [args]` | run a program, an ELF or a `.cvm` module |
 | `<cmd> [args]` | run an ELF from `bin/<cmd>`: the Linux-style command path |
 | `<cmd> > <file>` | redirect command output to a ramdisk file |
+| `<cmd> >> <file>` | append command output to a ramdisk file |
 | `date` | print the CMOS clock (`HH:MM:SS`), the same clock the taskbar shows |
 | `vol [0-100]` | print the PC-speaker volume; with an argument, set it |
-| `net` / `net ping <ip>` | network status and one ICMP echo |
+| `net` | network status (MAC, IP, counters) |
+| `net ping <ip>` | send one ICMP echo |
+| `net dns <host>` | resolve a DNS A record |
+| `catfs <file>` | print a file from the MiniFS filesystem |
+| `lsfs` | list files on the MiniFS filesystem |
+| `hash <file>` | print XXH64 checksum of a file |
+| `ps` | list registered programs (name, kind, entry address) |
+| `sb16` | Sound Blaster 16 diagnostics (presence, mode, ring fill, counters) |
+| `trace` / `trace on` / `trace off` | enable or disable syscall tracing |
+| `wm state` | print window manager state |
+| `wm minimize` | minimize the terminal window |
+| `wm maximize` | toggle fullscreen |
+| `wm close` | close the active window |
+| `piano` | FM piano GUI (`--selftest` for headless, `--bench` for fps) |
 | `clear` / `poweroff` | console and power |
 
 Redirection captures what the command writes, not what the shell reports
@@ -334,8 +354,22 @@ single `progs/src/aes.c`, shipped on MiniFS like DOOM and MicroPython:
 `unaes ...` decrypts. The S-box is generated procedurally from the GF(2^8)
 inverse plus the FIPS-197 affine transform (no magic tables), the mode is
 CTR with no padding, and the fail-closed `AES1` container detects bad magic,
-truncation and size tampering. CTR gives confidentiality only - pair it
+truncation and size tampering. CTR gives confidentiality only, pair it
 with a MAC if you need integrity.
+
+`unzip` and `zip` are shell builtins that read and write ZIP archives through
+the miniz library (vendored as `third_party/miniz/`). `zip <out.zip> <file...>`
+stores files with default compression; `unzip <archive.zip> [dir]` extracts
+into a directory (default cwd); `unzip -l <archive.zip>` lists entries. Entry
+names hostile data: traversal paths, absolute paths and empty components are
+all rejected, so a crafted archive can never write outside the target
+directory.
+
+`json` (`progs/src/json.c`) is a self-contained JSON validator, pretty-printer
+and query tool. `json <file>` validates and pretty-prints; `json <file> <path>`
+prints the value at a dotted path (`.a.b`, `.a.3`). The parser is fail-closed:
+truncated input, unbalanced braces and unknown escapes all produce a diagnostic
+and exit 1.
 
 ## Editor
 
@@ -362,14 +396,14 @@ write it back rather than silently dropping the part it never read.
 
 MiniOS runs three kinds of program:
 
-- **Relocatable objects** (`.o`) — linked at load time against the kernel's
+- **Relocatable objects** (`.o`): linked at load time against the kernel's
   libc symbol table. They run at ring 0 as kernel extensions.
   `objects/minigcc.o`, `objects/ld.o` and `objects/cvm.o` ship this way.
-- **Linux executables** (`ET_EXEC` / `ET_DYN`) — static binaries run
+- **Linux executables** (`ET_EXEC` / `ET_DYN`): static binaries run
   unmodified through the x86-64 `syscall` ABI at ring 3 under hardware
   page protection. A binary built on the host can be used simply by
   copying it onto the ramdisk.
-- **CVM modules** (`.cvm`) — stack bytecode produced by `ld -f cvm` and
+- **CVM modules** (`.cvm`): stack bytecode produced by `ld -f cvm` and
   executed by the cvm2 interpreter in `objects/cvm.o`. An x86-64 JIT
   compiler compiles each module to native code at load time; the output
   is identical to the interpreter and the JIT is transparent to the user.
@@ -405,7 +439,7 @@ directory:
 | `asm/` | miniGCC assembly (`*.s`) for the toolchain-built programs |
 | `docs/` | HTML and other documentation fixtures |
 
-The ramdisk is flat — the `/` in a name is data, and `mkramdisk.py` derives
+The ramdisk is flat, the `/` in a name is data, and `mkramdisk.py` derives
 each name from the path relative to `progs/`.
 
 ## Doom
@@ -438,7 +472,7 @@ channel 2 (ports 0x42/0x43) plus the gate bit on port 0x61, and the sound
 module in `i_minios_sound.c` maps each DP lump (1-byte frequency index +
 1-byte duration in 70 Hz ticks, after a 2-byte priority) through the
 original Doom PC-speaker frequency table. QEMU must wire the PC speaker
-to the audio backend — `-machine pc,pcspk-audiodev=<id>` in addition to
+to the audio backend, `-machine pc,pcspk-audiodev=<id>` in addition to
 `-audiodev <backend>,id=<id>` (the `run` target sets both via
 `QEMU_AUDIO`). A bare `-audiodev` alone routes nothing, so the beeps are
 silent without the machine option.
@@ -451,7 +485,7 @@ notes the way a NES split its voices: the lowest bass note becomes a
 sustained pedal (the triangle voice) while only the top few melody notes
 are fast-arpeggiated round-robin, holding each for 7 ms. The ear hears a
 strummed chord with a solid bass foundation instead of every voice chopped
-at equal length — the chiptune broke-chord trick, applied so dense
+at equal length, the chiptune broke-chord trick, applied so dense
 arrangements stay clear. The module is
 picked when `snd_musicdevice` is the PC speaker, and `S_UpdateSounds` was
 re-enabled in `d_main.c` so both the sfx note sequencer and the music
@@ -538,7 +572,7 @@ window has a cascade of costs that all had to be paid together:
 
 With the memory in place the game stopped crashing on allocation and started
 loading missions. Two bugs remained, and both were invisible until the map
-grew — which is exactly why they are worth writing down.
+grew, which is exactly why they are worth writing down.
 
 **Bug one: the syscall trampoline silently downgraded the game to ring 0.**
 The syscall entry decides how to return by inspecting the restored stack
@@ -549,7 +583,7 @@ the ring-0 `.o` toolchain). The window bounds for that decision,
 192 MB. The game's stack sits at the *top* of the window, near 192 MB, so
 every syscall saw `rsp >= USER_WIN_HI` and took the ring-0 return path. The
 game ran in supervisor mode for its whole life. The tell was the crash dump:
-`cs=8` (kernel) with a user stack pointer — a combination that is impossible
+`cs=8` (kernel) with a user stack pointer, a combination that is impossible
 for a real ring-3 fault, and it could only mean the game had been running at
 ring 0. The fix was a one-line correction: `USER_WIN_HI` to `0x0C000000`.
 This matters beyond Quake: any ring-3 program whose stack sits high in a
@@ -558,7 +592,7 @@ grown window would silently lose its protection.
 **Bug two: the LAPIC page directory erased the user window's page tables.**
 Every boot, `smp_init` parks a dedicated page directory for the local APIC
 and zeroes it. It was parked at physical `0x60000`, which the comment called
-"the dead boot staging buffer." It had been dead — until the page-table zone
+"the dead boot staging buffer." It had been dead, until the page-table zone
 grew. Index 82's user page table (the slot that maps roughly 165 MB of the
 window) now lives at exactly `0x60000`. So on every boot `smp_init` wrote
 zeros over the very page tables that made the game's 165 MB usable, and the
@@ -574,13 +608,13 @@ address that was "dead" stays dead only until the map grows into it.
 **The regression that taught the rule.** After Quake worked, DOOM showed a
 black window while the game ran fine (you could hear it and drive the menu).
 Quake and DOOM share the back-buffer infrastructure, so the back-buffer
-mapping was not the problem — the *address DOOM wrote to* was. The kernel and
+mapping was not the problem, the *address DOOM wrote to* was. The kernel and
 Quake had moved to `0x0B000000`, but DOOM's platform layer still rendered into
 the old address `0x7C00000`, so the kernel composited an empty buffer. Every
 consumer of a moved address has to move together; the fix was one constant in
 `doomgeneric_minios.c`.
 
-The takeaway is not the constants — it is why they are the way they are. A
+The takeaway is not the constants, it is why they are the way they are. A
 window sized for the biggest ring-3 program, a page-table zone nothing else
 may touch, a back-buffer above the mmap ceiling, a KASLR range above the heap,
 and RAM and a filesystem large enough for the payload are not independent
@@ -611,6 +645,34 @@ reports frames per second. Audio is rendered for the full wall-clock time
 elapsed per frame (clamped to the SB16 ring's ~650 ms backlog) so slow frames
 never under-render and starve the ring into a buzz.
 
+## OPL3 FM Synthesizer
+
+MiniOS ships a ring-3 OPL3 FM synthesizer (`opl3`) built from
+`progs/src/opl3.c`. It is a Nuked-OPL3 (cycle-accurate Yamaha chip emulator)
+that streams 8-bit mono PCM at 22050 Hz to the kernel's SB16 DMA path via
+`SYS_SB16_PCM_OPEN` (221) and `SYS_SB16_PCM_SUBMIT` (222). The demo plays a
+scale melody (A3 through C5 and back down) using a 2-operator FM instrument.
+
+```
+miniOS> run bin/opl3
+```
+
+This is a standalone demo of the FM synth engine that powers the piano. It
+runs headless, produces audio through the SB16, and exits when the melody
+completes.
+
+## Memory Leak Detector
+
+`mmreuse` (`progs/src/mmreuse.c`) is a ring-3 stress test for the kernel's
+mmap and munmap implementation. It maps and unmaps 8 MB regions 64 times and
+reports whether the address space leaked. Exit 0 means pass (no leak);
+exit 1 means a map failed (address space exhausted).
+
+```
+miniOS> run bin/mmreuse.elf
+exit code: 0
+```
+
 ## Diagnostics
 
 `perf` is a shell builtin that measures raw CPU speed, the `sys_time` clock
@@ -620,6 +682,67 @@ and reports submit throughput, isolating the audio path from any GUI. `sb16`
 prints the SB16 driver counters (IRQ arms, watchdog poll arms, submits,
 drops) and the ring fill, so ring health is observable over the serial
 console without ears.
+
+## Lua
+
+MiniOS ships Lua 5.4 as a static Linux ELF at ring 3, built from the upstream
+reference interpreter with a custom entry point (`progs/lua/lua_main.c`) and a
+`minios` module (`progs/lua/minios.c`) that exposes kernel services to Lua
+scripts. The binary is linked with `gcc -static -no-pie`, exactly like DOOM
+and MicroPython.
+
+```
+miniOS> lua -e "print(6 * 7)"
+42
+miniOS> lua src/test.lua          # run the in-OS test suite
+miniOS> lua                       # interactive REPL
+> print(minios.time_ms())
+12345
+> print(minios.rtc())
+8	30	15
+> print(minios.fb_info())
+800	600	800
+> exit()
+miniOS>
+```
+
+The `minios` module provides the following functions:
+
+| Function | Purpose |
+|----------|---------|
+| `minios.time_ms()` | milliseconds since boot |
+| `minios.rtc()` | returns hour, minute, second from the CMOS clock |
+| `minios.fb_info()` | returns framebuffer width, height, pitch |
+| `minios.vol([v])` | get or set PC-speaker volume (0..100) |
+| `minios.pal(buf)` | load a 768-byte VGA DAC palette |
+| `minios.pcspeaker(freq, ms)` | play a tone at freq Hz for ms milliseconds |
+| `minios.run(path [,args] [,redirect])` | run a ramdisk program, preserving the interpreter |
+
+`minios.run` invokes `SYS_SPAWN` (215), which runs a child program while
+preserving the Lua interpreter state (user window, file descriptors, brk and
+mmap cursors). This lets Lua scripts orchestrate the toolchain from inside
+the OS:
+
+```
+miniOS> lua -e "minios.run('objects/minigcc.o', 'src/fib.c', nil, '>', 'asm/fib.s')"
+miniOS> lua -e "minios.run('objects/ld.o', '-f', 'elf', '-o', 'bin/fib.elf', 'asm/fib.s')"
+miniOS> lua -e "minios.run('bin/fib.elf')"
+exit code: 0
+```
+
+The interpreter resolves through the command path (`bin/lua`) like `cp` and
+`freedom`, so both `lua` and `run lua.elf` work. Scripts are opened through
+the unified filesystem (ramdisk first, MiniFS fallback), and the interactive
+REPL reads from the serial console. The in-OS test suite (`src/test.lua`)
+exercises every `minios` binding, the filesystem, and the compression and
+encryption tools.
+
+Build from source:
+
+```bash
+make sources          # clones the Lua repository if missing
+make                  # builds lua.elf and packs it into MiniFS
+```
 
 ## MicroPython
 
@@ -664,7 +787,7 @@ that `k_exec_user` did `iretq` to the ELF entry without zeroing the initial
 registers, unlike Linux. glibc's `_start` does `mov %rdx,%r9` to obtain
 `rtld_fini`; the leftover kernel value in `rdx` was a base-less function
 pointer, which `__libc_start_main` registered as an exit handler and then
-`__run_exit_handlers` demangled and called on exit — a wild jump. The fix
+`__run_exit_handlers` demangled and called on exit, a wild jump. The fix
 zeroes `rdi`, `rsi` and `rdx` before `iretq`, so `rtld_fini` is `NULL` and
 every glibc binary exits cleanly.
 
@@ -705,7 +828,7 @@ no-execute (NX) page protection. The kernel builds eager 4 KB page tables
 for the whole user window and sets EFER.NXE at boot; every user page starts
 non-executable and `load_exec_elf` clears NX only on the pages a program's
 executable segments occupy. A program cannot execute from its stack, heap
-or `.data` — a jump into a non-executable page faults and the machine
+or `.data`, a jump into a non-executable page faults and the machine
 resets, never silently running shellcode (proven by the `nx.elf` probe in
 the BDD suite). The kernel heap keeps its 2 MB executable pages, because
 the `.o` toolchain programs execute from there at ring 0 by contract.
@@ -729,10 +852,10 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 - Internally, `sb_ring` is a kmalloc'd circular buffer of `SCROLLBACK_ROWS *
   VGA_COLS` bytes, updated every time a full row leaves the screen via
   `sb_capture_row0()`.  `SCROLLBACK_ROWS` is 4096; the ring never wraps
-  silently — it drops oldest entries when full.
+  silently, it drops oldest entries when full.
 - Serial PageUp/PageDown work natively.  PS/2 extended keys (E0-prefixed
   make codes) are translated into the same CSI sequences (`ESC [ 5 ~`
-  / `ESC [ 6 ~`) by `kbd_read()` in `kernel.c:298` — the `KEY_E0` flag
+  / `ESC [ 6 ~`) by `kbd_read()` in `kernel.c:298`, the `KEY_E0` flag
   is now tested **before** the release‑bit check so that `0xE0` is not
   swallowed by the high‑bit handler.
 
@@ -749,6 +872,8 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `tls_roots_src/` + `mkroots.sh` | the 8 embedded CA roots and their generator |
 | `tls_test.py` / `tls_test.c` | host TLS suite: vectors + full handshakes |
 | `cvm_host.c` | CVM interpreter + JIT integration in MiniOS |
+| `progs/lua/lua_main.c` | Lua 5.4 entry point (REPL, -e, -l, script modes) |
+| `progs/lua/minios.c` | Lua bindings for MiniOS kernel services |
 | `progs/` | ramdisk contents organized by kind: `objects/`, `bin/`, `cvm/`, `src/`, `asm/`, `docs/` |
 | `mkramdisk.py` | packs `progs/` into the ramdisk image |
 | `test_bdd.sh` / `test_http_server.py` | behavioural suite and its HTTP fixture |
@@ -769,7 +894,8 @@ child and a pty-backed serial console; the companion skill
 (`skills/minios/SKILL.md`) teaches the edit/compile/link/run workflow, so an
 agent can write a C program inside the OS, build it with `objects/minigcc.o` and
 `objects/ld.o`, run it and read `exit code: N`, or drive the in-OS Python
-toolchain (`build.py`, `shell.py`, `test.py`), all without leaving the machine.
+toolchain (`build.py`, `shell.py`, `test.py`) or the Lua toolchain
+(`test.lua`), all without leaving the machine.
 
 ```bash
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD (skips without QEMU)
