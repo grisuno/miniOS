@@ -1,18 +1,18 @@
 /* doomgeneric_minios.c - MiniOS platform layer for doomgeneric.
  *
  * DOOM renders into a kernel back-buffer in the user window at virtual
- * 0x0B000000 (DOOM_BACKBUF_ADDR); each frame it calls SYS_DOOM_FRAME (211)
- * and the kernel composites the buffer onto the hi-res desktop as a titled
- * window at native 320x200, leaving the shell window visible. The VBE linear
- * framebuffer is set up by the boot loader.
- * Syscalls: 204=time(ms), 205=kbd(scancode), 206=palette(768 bytes),
- *           207=kbd_raw_mode(0/1), 208=vga_mode, 211=doom_frame.
+ * MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h); each frame it calls
+ * SYS_DOOM_FRAME (211) and the kernel composites the buffer onto the
+ * hi-res desktop as a titled window at native 320x200, leaving the shell
+ * window visible.  All ABI constants come from minios_abi.h so the
+ * addresses never drift from the kernel.
  */
 
 #include "doomgeneric.h"
 #include "doomkeys.h"
 #include <stdint.h>
 #include <string.h>
+#include "minios_abi.h"
 
 /* ---------- MiniOS syscalls ---------- */
 
@@ -51,7 +51,7 @@ static long sys_doom_frame(void) {
 
 /* DOOM renders into a kernel-backed back-buffer in the user window; the
  * kernel composites it onto the desktop as a window on SYS_DOOM_FRAME. */
-#define FB_ADDR    ((volatile uint8_t *)0x0B000000UL)
+#define FB_ADDR    ((volatile uint8_t *)MINIOS_DOOM_BACKBUF_ADDR)
 #define FB_WIDTH   320
 #define FB_HEIGHT  200
 

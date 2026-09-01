@@ -3085,15 +3085,42 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     KFILE *saved_kfd[KFD_MAX];
     for (int i = 0; i < KFD_MAX; i++) saved_kfd[i] = kfd_table[i];
 
-    /* Save the parent's user window (28 MB). */
-    unsigned long window_sz = USER_LOAD_END - USER_LOAD_BASE;
-    unsigned char *parent_win = (unsigned char *)kmalloc(window_sz);
-    if (!parent_win) {
-        kfree(data);
-        if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
-        return EFAULT;
+    /* Save the parent's user window.  For ET_REL children (which run at
+     * ring 0 via k_run_rel and never touch the user window) we skip the
+     * save entirely, avoiding the 188 MB kmalloc that would exhaust the
+     * 192 MB kernel heap.  For ET_EXEC/ET_DYN we save only the portion
+     * the parent actually used: from USER_LOAD_BASE to max(brk, stack
+     * high-water mark).  The stack scan is bounded to 256 pages (1 MB). */
+    unsigned char *parent_win = 0;
+    unsigned long window_sz = 0;
+    if (etype == ET_EXEC || etype == ET_DYN) {
+        unsigned long parent_top = g_brk;
+        /* Scan the stack from top down; the first non-zero page gives the
+         * approximate high-water mark. */
+        volatile unsigned long *sp =
+            (volatile unsigned long *)USER_STACK_TOP;
+        while (sp > (volatile unsigned long *)USER_STACK_BASE) {
+            sp = (volatile unsigned long *)((unsigned long)sp - 0x1000);
+            int all_zero = 1;
+            for (int j = 0; j < 512; j++) {
+                if (sp[j] != 0) { all_zero = 0; break; }
+            }
+            if (!all_zero) {
+                parent_top = (unsigned long)sp + 0x1000;
+                break;
+            }
+        }
+        if (parent_top < USER_STACK_BASE) parent_top = USER_STACK_BASE;
+        window_sz = parent_top - USER_LOAD_BASE;
+        if (window_sz < 0x1000) window_sz = 0x1000;
+        parent_win = (unsigned char *)kmalloc(window_sz);
+        if (!parent_win) {
+            kfree(data);
+            if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
+            return EFAULT;
+        }
+        kmemcpy(parent_win, (void *)USER_LOAD_BASE, window_sz);
     }
-    kmemcpy(parent_win, (void *)USER_LOAD_BASE, window_sz);
 
     int rc = EFAULT;
     if (etype == ET_REL) {
@@ -3123,9 +3150,11 @@ static int k_syscall_spawn(const char *path, const char *redirect,
         if (did_redirect) redirect_commit(redirect, 0);
     }
 
-    /* Restore the parent's user window. */
-    kmemcpy((void *)USER_LOAD_BASE, parent_win, window_sz);
-    kfree(parent_win);
+    /* Restore the parent's user window (only if we saved it). */
+    if (parent_win) {
+        kmemcpy((void *)USER_LOAD_BASE, parent_win, window_sz);
+        kfree(parent_win);
+    }
     kfree(data);
 
     /* Free kernel argv copy. */

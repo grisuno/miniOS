@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "minios_abi.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -566,7 +567,7 @@ int main(int argc, char **argv) {
             printf("nuklear: mouse accepted a kernel pointer\n");
             return 1;
         }
-        volatile uint8_t *fb = (volatile uint8_t *)0x0B200000UL;
+        volatile uint8_t *fb = (volatile uint8_t *)MINIOS_FB_ADDR;
         int ox = origin[0], oy = origin[1];
         if (ox < 0 || oy < 0 || ox >= fw || oy >= fh ||
             fb[oy * fp + ox] != NK_BACKBUF[0]) {
@@ -602,7 +603,7 @@ int main(int argc, char **argv) {
             nk_sys_vga_mode(0);
             return 1;
         }
-        volatile uint8_t *fb = (volatile uint8_t *)0x0B200000UL;
+        volatile uint8_t *fb = (volatile uint8_t *)MINIOS_FB_ADDR;
         int mx = mouse[0], my = mouse[1];
         if (mx < 0 || my < 0 || mx >= fw || my >= fh) {
             printf("nuklear: mouse position out of range (%d,%d)\n", mx, my);

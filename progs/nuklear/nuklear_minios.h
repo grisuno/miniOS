@@ -13,10 +13,11 @@
  */
 
 #include <stdint.h>
+#include "minios_abi.h"
 
-#define NK_W           800
-#define NK_H           360
-#define NK_BACKBUF      ((volatile uint8_t *)0x0B400000UL)
+#define NK_W           MINIOS_NK_W
+#define NK_H           MINIOS_NK_H
+#define NK_BACKBUF      ((volatile uint8_t *)MINIOS_NK_BACKBUF_ADDR)
 
 /* MiniOS syscalls used by the platform. */
 long nk_sys_time_ms(void);

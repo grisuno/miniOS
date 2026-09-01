@@ -434,7 +434,7 @@ $(DOOM_DIR)/build:
 	mkdir -p $@
 
 $(DOOM_DIR)/build/%.o: $(DOOM_DIR)/%.c | $(DOOM_DIR)/build
-	$(CC) $(CFLAGS_DOOM) -I$(DOOM_DIR) -c $< -o $@
+	$(CC) $(CFLAGS_DOOM) -I$(DOOM_DIR) -I$(PROGS_DIR) -c $< -o $@
 
 $(BIN_DIR)/doomgeneric.elf: $(DOOM_OBJS)
 	$(CC) -static -no-pie -o $@ $^ -lm
@@ -453,7 +453,7 @@ MINIFS_DOOM_FILES = $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/DOOM1.WAD
 # ── Quake 2 (quake2generic port, static glibc ELF) ───────────────────
 # Same contract as DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
 # Software renderer, 320x200 8-bit paletted, reuses the DOOM back-buffer
-# infrastructure (SYS_DOOM_FRAME 211, DOOM_BACKBUF_ADDR 0x1FE0000).
+# infrastructure (SYS_DOOM_FRAME 211, DOOM_BACKBUF_ADDR 0x0B000000).
 Q2G_DIR     = $(PROGS_DIR)/quake2generic
 Q2G_UPSTREAM = $(Q2G_DIR)/quake2generic
 
@@ -609,7 +609,7 @@ $(Q2G_DIR)/build/snddma_null.o: $(Q2G_UPSTREAM)/sound/snddma_null.c | $(Q2G_DIR)
 
 # MiniOS platform layer (lives beside the upstream clone)
 $(Q2G_DIR)/build/q2generic_minios.o: $(Q2G_DIR)/q2generic_minios.c | $(Q2G_DIR)/build
-	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+	$(CC) $(Q2G_CFLAGS_ALL) -I$(PROGS_DIR) -c $< -o $@
 
 $(BIN_DIR)/quake2generic.elf: $(Q2G_OBJS)
 	$(CC) -static -no-pie -o $@ $^ -lm
@@ -711,7 +711,7 @@ $(NUKLEAR_DIR)/nuklear.h:
 
 $(BIN_DIR)/nuklear.elf: $(NUKLEAR_SRCS) $(NUKLEAR_DIR)/nuklear.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
-	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
+	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear -I$(PROGS_DIR) \
 	      -o $@ $(NUKLEAR_SRCS) -lm
 	chmod +x $@
 
@@ -734,6 +734,7 @@ $(BIN_DIR)/piano.elf: $(PIANO_SRCS) $(NUKLEAR_DIR)/nuklear.h \
                       $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear -I$(NUKED_OPL3_DIR) \
+	      -I$(PROGS_DIR) \
 	      -o $@ $(PIANO_SRCS) $(NUKED_OPL3_DIR)/opl3.c -lm
 	chmod +x $@
 

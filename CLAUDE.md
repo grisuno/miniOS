@@ -271,8 +271,11 @@ disagree.
                  KASLR). The whole kernel, code + .bss, maps contiguously and
                  must end below 0x400000; mm_setup_protections asserts it.
 0x400000         user program load base
-0x1FC0000        user stack base (USER_STACK_BASE, 256 KB)
-0x2000000        kernel heap (64 MB)
+0x0B000000       DOOM back-buffer (DOOM_BACKBUF_ADDR, brk cap)
+0x0B200000       linear framebuffer (FB_ADDR)
+0x0B400000       Nuklear back-buffer (NK_BACKBUF_ADDR)
+0x0B000000       user stack base (USER_STACK_BASE, 1 MB)
+0x0C000000       kernel heap start (HEAP_BASE, 192 MB)
 ```
 
 The user page table zone at `0x10000` is a hard contract: it sits BELOW the
@@ -380,7 +383,7 @@ native 320x200 instead of stealing the whole display.
 - **Kernel mapping (kernel.c `mm_setup_protections`):** `vga_fb_boot_config`
   loads the VBE struct into `fb_width`/`fb_height`/`fb_pitch`/`fb_phys_base`,
   and the kernel maps that physical framebuffer into the user window at the
-  fixed virtual `FB_ADDR` (0x1F00000), replacing the old 0xA0000 mapping. All
+  fixed virtual `FB_ADDR` (0x0B200000), replacing the old 0xA0000 mapping. All
   drawing addresses through `FB_ADDR` (desktop and graphics programs) work
   unchanged; pixel addressing honors `fb_pitch`.
 - **Movable shell window (vga_fb.c):** the shell runs in a window (default
@@ -391,7 +394,7 @@ native 320x200 instead of stealing the whole display.
   independent of the framebuffer dimensions.
 - **Windowed DOOM (syscall 211 + doomgeneric_minios.c):** the kernel maps a
   64 KB kernel-heap back-buffer into the user window at `DOOM_BACKBUF_ADDR`
-  (0x1FE0000, RW, NX). DOOM renders its 320x200 frame there and calls
+  (0x0B000000, RW, NX). DOOM renders its 320x200 frame there and calls
   `SYS_DOOM_FRAME`; the kernel composites the buffer 1:1 onto the desktop in a
   titled window, centered on the screen (`vga_fb_blit_gfx_window`), leaving the
   shell window and desktop visible. The window is centered because a graphics
@@ -461,7 +464,7 @@ and user programs run concurrently under preemptive scheduling.
 MiniFS as `bin/desktop`.  It runs at ring 3 through `k_exec_user` and
 renders the desktop background, taskbar, terminal window, and composites
 DOOM/Nuklear back-buffers.  The framebuffer is already mapped user-accessible
-at `FB_ADDR` (0x1F00000), so the desktop process writes pixels directly
+at `FB_ADDR` (0x0B200000), so the desktop process writes pixels directly
 without kernel mediation.
 
 **Input routing:** the desktop process reads mouse events via `SYS_MOUSE`
@@ -1119,7 +1122,7 @@ into a `.cvm` module the interpreter runs.
   never in the Nuklear checkout.
 - **Platform layer (`nuklear_minios.c`)**: the app renders Nuklear's abstract
   draw commands (`nk__begin`/`nk__next`) into an 8-bit palette-indexed
-  back-buffer mapped into the user window at `NK_BACKBUF_ADDR` (0x1000000,
+  back-buffer mapped into the user window at `NK_BACKBUF_ADDR` (0x0B400000,
   `NK_W`x`NK_H` = 800x360) and calls `SYS_NK_FRAME` (220); the kernel
   composites it as a titled window on the desktop, identical to the DOOM
   window, leaving the shell visible. A software rasterizer handles the full
@@ -1183,7 +1186,7 @@ The platform layer lives at `progs/quake2generic/q2generic_minios.c` and
 implements the quake2generic interface:
 
 - **Video**: `SWimp_SetMode` sets `vid.buffer` to the DOOM back-buffer
-  address (`DOOM_BACKBUF_ADDR`, 0x1FE0000) and `vid.rowbytes` to 320.
+  address (`DOOM_BACKBUF_ADDR`, 0x0B000000) and `vid.rowbytes` to 320.
   `SWimp_EndFrame` calls `SYS_DOOM_FRAME` (211) to composite the 320x200
   buffer onto the desktop as a titled window. The window title is set to
   "Quake 2" via `SYS_Q2G_SET_TITLE` (223) at startup.
@@ -1206,10 +1209,10 @@ could be wired in the future.
 ### Memory constraints
 
 Quake 2 needs ~16-24 MB at runtime (Zone + Hunk allocations for PAK files,
-BSP, models). The user window provides 28 MB (`0x400000` to `0x2000000`),
-with ~24 MB available via `brk` after the ELF loads. The 320x200 back-buffer
-(64 KB) sits in the DOOM infrastructure at `0x1FE0000`, below the 256 KB
-stack at the top of the user window.
+BSP, models). The user window provides 184 MB (`0x400000` to `0x0C000000`),
+with ~17 MB available via `brk`/`mmap` after the ELF loads. The 320x200
+back-buffer (64 KB) sits in the DOOM infrastructure at `0x0B000000`, below
+the 1 MB stack at the top of the user window.
 
 ### Data files
 

@@ -1,12 +1,11 @@
 /* q2generic_minios.c - MiniOS platform layer for quake2generic.
  *
  * Quake 2 renders into a kernel back-buffer in the user window at virtual
- * 0x0B000000 (DOOM_BACKBUF_ADDR); each frame it calls SYS_DOOM_FRAME (211)
- * and the kernel composites the buffer onto the hi-res desktop as a titled
- * window at native 320x200, leaving the shell window visible.
- * Syscalls: 204=time(ms), 205=kbd(scancode), 206=palette(768 bytes),
- *           207=kbd_raw_mode(0/1), 208=vga_mode, 211=doom_frame,
- *           219=mouse(x,y,buttons,wheel), 223=set_window_title.
+ * MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h); each frame it calls
+ * SYS_DOOM_FRAME (211) and the kernel composites the buffer onto the
+ * hi-res desktop as a titled window at native 320x200, leaving the shell
+ * window visible.  All ABI constants come from minios_abi.h so the
+ * addresses never drift from the kernel.
  */
 
 #include "quake2.h"
@@ -16,6 +15,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+#include "minios_abi.h"
 
 #define Q2G_FB_W 320
 #define Q2G_FB_H 200
@@ -68,7 +68,7 @@ static long sys_set_title(const char *t) {
     return ret;
 }
 
-#define Q2G_BACKBUF ((volatile uint8_t *)0x0B000000UL)
+#define Q2G_BACKBUF ((volatile uint8_t *)MINIOS_DOOM_BACKBUF_ADDR)
 
 static int s_prev_mouse_x;
 static int s_prev_mouse_y;
