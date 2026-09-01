@@ -760,12 +760,29 @@ $(BIN_DIR)/sbtone: $(SRC_DIR)/sbtone.c
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -o $@ $(SRC_DIR)/sbtone.c -lm
 	chmod +x $@
 
+# ── topogpt3 (TopoGPT3 transformer inference, static ring-3 ELF) ──
+# Self-contained single-file C engine.  Loads fp16 weights from MiniFS.
+# Built like Lua/DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
+TOPOGPT3_SRC = $(PROGS_DIR)/topogpt3/topogpt3.c
+TOPOGPT3_WEIGHTS = $(abspath $(PROGS_DIR)/topogpt3/topogpt3.fp16)
+TOPOGPT3_VOCAB   = $(abspath $(PROGS_DIR)/topogpt3/vocab.bin)
+
+$(BIN_DIR)/topogpt3.elf: $(TOPOGPT3_SRC)
+	$(CC) -static -no-pie -O2 -o $@ $< -lm
+	chmod +x $@
+
+# Bare-name alias so `topogpt3` works without the .elf suffix.
+$(BIN_DIR)/topogpt3: $(BIN_DIR)/topogpt3.elf
+	cp $< $@
+
 # aes/unaes live on MiniFS (ramdisk budget): bare-name commands resolved
 # against the MiniFS root by shell_run_elf_minifs; src/aes.c rides along so
 # the OS can rebuild them without leaving the machine.
 MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
                $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
                $(PROGS_DIR)/lua/minios.c $(PROGS_DIR)/lua/lua_main.c \
+               $(BIN_DIR)/topogpt3.elf $(BIN_DIR)/topogpt3 \
+               $(TOPOGPT3_WEIGHTS) $(TOPOGPT3_VOCAB) \
                $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear \
                $(BIN_DIR)/piano.elf $(BIN_DIR)/piano \
                $(PROGS_DIR)/piano/piano.c \
