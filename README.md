@@ -319,6 +319,7 @@ including the negative set).
 | `wm maximize` | toggle fullscreen |
 | `wm close` | close the active window |
 | `piano` | FM piano GUI (`--selftest` for headless, `--bench` for fps) |
+| `topogpt3` | TopoGPT3 transformer inference engine (`-i` for interactive) |
 | `clear` / `poweroff` | console and power |
 
 Redirection captures what the command writes, not what the shell reports
@@ -403,7 +404,8 @@ MiniOS runs three kinds of program:
 - **Linux executables** (`ET_EXEC` / `ET_DYN`): static binaries run
   unmodified through the x86-64 `syscall` ABI at ring 3 under hardware
   page protection. A binary built on the host can be used simply by
-  copying it onto the ramdisk.
+  copying it onto the ramdisk. This is how DOOM, Quake 2, Lua,
+  MicroPython, and TopoGPT3 run.
 - **CVM modules** (`.cvm`): stack bytecode produced by `ld -f cvm` and
   executed by the cvm2 interpreter in `objects/cvm.o`. An x86-64 JIT
   compiler compiles each module to native code at load time; the output
@@ -434,11 +436,12 @@ directory:
 | Directory | Contents |
 |-----------|----------|
 | `objects/` | ET_REL toolchain: `minigcc.o`, `ld.o`, `cvm.o`, demo `.o` |
-| `bin/` | Linux ELFs + command-path utilities (`cp`, `freedom`, `micropython`) |
+| `bin/` | Linux ELFs + command-path utilities (`cp`, `freedom`, `micropython`, `topogpt3`) |
 | `cvm/` | CVM modules: `fib.cvm`, `w1.cvm`, `minigcc.cvm` |
 | `src/` | C sources for every program on the ramdisk |
 | `asm/` | miniGCC assembly (`*.s`) for the toolchain-built programs |
 | `docs/` | HTML and other documentation fixtures |
+| `topogpt3/` | TopoGPT3 model: `topogpt3.c`, `topogpt3.fp16` (47 MB weights), `vocab.bin` |
 
 The ramdisk is flat, the `/` in a name is data, and `mkramdisk.py` derives
 each name from the path relative to `progs/`.
@@ -822,6 +825,107 @@ make                  # builds mpy-cross, the unix port, and packs the ELF
 The variant files live in `progs/micropython/variants/minios/`; the build
 runs entirely on the host and copies the resulting ELF into `progs/bin/`.
 
+## TopoGPT3
+
+MiniOS ships TopoGPT3 as a static Linux ELF at ring 3. TopoGPT3 is a 24.5M
+parameter complex-valued autoregressive language model for code, built with
+quaternion-inspired spectral operators and a Mixture-of-Experts transformer.
+The C inference engine is a self-contained single-file implementation (~2000
+lines) that loads flat binary weight files and runs the full forward pass:
+GQA attention with RoPE, sliding window, RMSNorm, SwiGLU MoE with top-2
+routing, and quaternion torus spectral layers.
+
+```
+miniOS> topogpt3 -w topogpt3.fp16 -v vocab.bin -p "def fibonacci(n):" -n 30
+miniOS> topogpt3 -w topogpt3.fp16 -v vocab.bin -i
+```
+
+The engine supports three operating modes: headless (`-p` for a single
+prompt), interactive (`-i` for a REPL-style session), and file-based (`-f` to
+read a prompt from a file). The interactive mode provides commands for
+adjusting temperature, top-k, repetition penalty, and max tokens at runtime.
+
+Interactive session example:
+
+```
+miniOS> topogpt3 -w topogpt3.fp16 -v vocab.bin -i
+
+TopoGPT3 Inference Engine
+Model: small (d=256, heads=8, layers=6, kv=2)
+Loading weights from: topogpt3.fp16
+Loaded vocab: 50257 tokens (321428 bytes)
+Loading 380 tensors (fp16 v2)...
+  Layer 0 loaded
+  ...
+Weights loaded successfully (fp16).
+Ready.
+
+interactive mode. /help for commands.
+> def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+> /temp 0.1
+Temperature set to 0.10
+
+> /topk 20
+Top-k set to 20
+
+> /status
+Model: small (d=256, heads=8, layers=6, kv=2, experts=4, topk=2)
+Context: 32 tokens
+Parameters: temp=0.10 topk=20 rep=1.10 max=256
+
+> /quit
+```
+
+Interactive mode commands:
+
+| Command | Purpose |
+|---------|---------|
+| `/help` | show available commands |
+| `/quit` | exit interactive mode |
+| `/clear` | clear the prompt buffer |
+| `/temp N` | set temperature |
+| `/topk N` | set top-k |
+| `/rep N` | set repetition penalty |
+| `/newtokens N` | set max new tokens |
+| `/status` | show current settings and model info |
+
+The binary is built with the host toolchain (`gcc -static -no-pie`) and
+placed at `bin/topogpt3.elf` on the MiniFS. The model weights
+(`topogpt3.fp16`, 47 MB) and vocabulary (`vocab.bin`, 422 KB) are also
+shipped on the MiniFS.
+
+Weight loading supports two formats, auto-detected at load time: float32
+(`TG3W`, 94 MB) and float16 (`TG16`, 47 MB). The float16 format is used for
+MiniOS to keep the filesystem footprint small.
+
+Performance depends on the execution environment:
+
+| Platform | Speed |
+|----------|-------|
+| Linux host (KVM) | 17-29 tok/s |
+| MiniOS QEMU (no KVM) | 0.80 tok/s |
+| MiniOS QEMU (with KVM) | 17-29 tok/s |
+
+Build from source:
+
+```bash
+make progs/bin/topogpt3.elf    # compile the C engine
+make minifs.bin                 # rebuild MiniFS with weights + vocab
+make os.img                     # rebuild the full disk image
+```
+
+The source lives in `progs/topogpt3/topogpt3.c` with the weights and
+vocabulary alongside it. The `convert_weights_minios.py` script in the
+TopoGPT3 repository converts safetensors checkpoints to the float16 binary
+format.
+
 ## Security: NX and KASLR
 
 User-mode binaries (ET_EXEC / ET_DYN) run at ring 3 with hardware
@@ -875,6 +979,9 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `cvm_host.c` | CVM interpreter + JIT integration in MiniOS |
 | `progs/lua/lua_main.c` | Lua 5.4 entry point (REPL, -e, -l, script modes) |
 | `progs/lua/minios.c` | Lua bindings for MiniOS kernel services |
+| `progs/topogpt3/topogpt3.c` | TopoGPT3 C inference engine (~2000 lines) |
+| `progs/topogpt3/topogpt3.fp16` | TopoGPT3 float16 model weights (47 MB) |
+| `progs/topogpt3/vocab.bin` | GPT-2 BPE vocabulary (50257 tokens, 422 KB) |
 | `progs/` | ramdisk contents organized by kind: `objects/`, `bin/`, `cvm/`, `src/`, `asm/`, `docs/` |
 | `mkramdisk.py` | packs `progs/` into the ramdisk image |
 | `test_bdd.sh` / `test_http_server.py` | behavioural suite and its HTTP fixture |
@@ -926,6 +1033,8 @@ full contract.
 | `run-headless` | boot it headless on the serial console (no GUI window) |
 | `serial` / `debug` | boot the image in QEMU |
 | `test` | behavioural suite |
+| `progs/bin/topogpt3.elf` | build the TopoGPT3 C inference engine |
+| `minifs.bin` | rebuild MiniFS image (includes TopoGPT3 weights and vocab) |
 | `clean` | remove every build product |
 
 See `CLAUDE.md` for the full engineering contract.
