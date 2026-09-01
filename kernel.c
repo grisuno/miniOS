@@ -547,12 +547,14 @@ static void mm_setup_protections(void) {
     }
     __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
 
-    /* Map the linear framebuffer into the user window at virtual 0x1F00000
-     * (31 MB), inside [USER_LOAD_BASE, USER_LOAD_END). The physical base and
-     * stride come from the VBE probe (Mode 13h at 0xA0000 when unavailable).
-     * The mapping is RW with NX set: it is data, not executable. */
+    /* Map the linear framebuffer into the user window at virtual FB_ADDR, in
+     * the reserved tail above the DOOM back-buffer and the brk cap (so a
+     * memory-hungry program's heap can never grow over it). The physical base
+     * and stride come from the VBE probe (Mode 13h at 0xA0000 when
+     * unavailable). The mapping is RW with NX set: it is data, not
+     * executable. */
     {
-        unsigned long fb_vaddr   = 0x1F00000UL;
+        unsigned long fb_vaddr   = (unsigned long)FB_ADDR;
         unsigned long fb_pd_idx  = fb_vaddr >> PT_PD_INDEX_SHIFT;
         unsigned long fb_pt_off  = (fb_vaddr & 0x1FFFFF) >> 12;
         unsigned long *fb_pt     = (unsigned long *)PT_USER_TABLES_ADDR +
@@ -2115,6 +2117,10 @@ void *load_exec_elf(void *data, unsigned size) {
      * itself (which sits just above) untouched. */
     if (DOOM_BACKBUF_ADDR < g_brk_limit) g_brk_limit = DOOM_BACKBUF_ADDR;
     if (DOOM_BACKBUF_ADDR < user_mmap_cur) user_mmap_cur = DOOM_BACKBUF_ADDR;
+    /* The linear framebuffer (FB_ADDR) and the Nuklear back-buffer
+     * (NK_BACKBUF_ADDR) are pinned in the reserved tail ABOVE the DOOM
+     * back-buffer (see mm_setup_protections), so this single brk cap at
+     * DOOM_BACKBUF_ADDR keeps every pinned mapping out of a program's heap. */
     mmap_used_n = 0;
     mmap_free_n = 0;
     /* Loader status is shell text, never the command's output: it must not

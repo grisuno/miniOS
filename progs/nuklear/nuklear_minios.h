@@ -16,7 +16,7 @@
 
 #define NK_W           800
 #define NK_H           360
-#define NK_BACKBUF      ((volatile uint8_t *)0x1000000UL)
+#define NK_BACKBUF      ((volatile uint8_t *)0x0B400000UL)
 
 /* MiniOS syscalls used by the platform. */
 long nk_sys_time_ms(void);

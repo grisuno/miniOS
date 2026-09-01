@@ -9,8 +9,10 @@
  * loads them into the globals below before the kernel maps the framebuffer.
  * Without VBE the values are the Mode 13h defaults (320x200x8, phys 0xA0000).
  * FB_ADDR is the fixed virtual address in the user window that both the kernel
- * desktop and graphics programs write through. */
-#define FB_ADDR    ((volatile uint8_t *)0x1F00000UL)
+ * desktop and graphics programs write through. It sits in the reserved tail
+ * above DOOM_BACKBUF_ADDR (which is also the brk cap), so a program's heap can
+ * never grow over the framebuffer. */
+#define FB_ADDR    ((volatile uint8_t *)0x0B200000UL)
 extern int fb_width;
 extern int fb_height;
 extern int fb_pitch;
@@ -31,13 +33,12 @@ extern const char *gfx_win_title;
 /* Nuklear UI back-buffer. A ring-3 program (the node editor) renders a UI
  * into a kernel-heap back-buffer mapped into the user window and calls
  * SYS_NK_FRAME (220); the kernel composites it as a titled window on the
- * desktop exactly like the DOOM window, so the shell stays visible. The
- * buffer sits at the middle of the user window, far from both the program's
- * heap (grows up from the load base) and its mmap zone (grows down from the
- * stack base), so a normal program's allocations never reach it. */
+ * desktop exactly like the DOOM window, so the shell stays visible. It sits
+ * in the reserved tail with the framebuffer, above DOOM_BACKBUF_ADDR (the brk
+ * cap), so neither a growing heap nor the mmap zone can ever reach it. */
 #define NK_W            800
 #define NK_H            360
-#define NK_BACKBUF_ADDR 0x1000000UL
+#define NK_BACKBUF_ADDR 0x0B400000UL
 void vga_fb_blit_nk_window(void);
 /* Window origin of the last Nuklear composite, so SYS_NK_FRAME can report
  * where the UI landed for mouse-coordinate translation. */
