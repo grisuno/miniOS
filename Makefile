@@ -1026,7 +1026,8 @@ os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	 total=$$(( $(KERNEL_LBA) + ksec )); \
 	 img=$$(( (total + $(DISK_ALIGN_SECTORS) - 1) / $(DISK_ALIGN_SECTORS) * $(DISK_ALIGN_SECTORS) )); \
 	 fsec=$$(( ($$(stat -c%s minifs.bin) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )); \
-	 final=$$(( img + fsec )); \
+	 swap=131072; \
+	 final=$$(( img + fsec + swap )); \
 	 dd if=/dev/zero of=$@ bs=$(SECTOR_BYTES) count=$$final status=none; \
 	 dd if=stage1.bin of=$@ conv=notrunc status=none; \
 	 dd if=stage2.bin of=$@ bs=$(SECTOR_BYTES) seek=$(STAGE2_LBA) conv=notrunc status=none; \
@@ -1037,6 +1038,7 @@ os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	 echo "stage2:  $$(stat -c%s stage2.bin) bytes at LBA $(STAGE2_LBA)"; \
 	 echo "kernel:  $$(stat -c%s kernel.bin) bytes ($$ksec sectors) at LBA $(KERNEL_LBA)"; \
 	 echo "minifs:  $$(stat -c%s minifs.bin) bytes ($$fsec sectors) at LBA $$img"; \
+	 echo "swap:    $$swap sectors (64 MB) at end of disk"; \
 	 echo "image:   $$final sectors"
 
 # ── USB bootable image (MBR partition table + boot chain) ───────────

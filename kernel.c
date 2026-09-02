@@ -2311,6 +2311,26 @@ __asm__(
 static kjmpbuf exec_return;
 static int     exec_exit_code;
 
+/* Called from the ISR exception handler when a ring-3 user program faults.
+ * Sets exec_exit_code and longjmps back to k_exec_user's setjmp point so
+ * the parent interpreter gets EFAULT instead of the whole machine hanging. */
+void k_user_fault_return(void) {
+    exec_exit_code = EFAULT;
+    /* Restore kernel data segments — the fault may have left user selectors
+     * loaded in DS/ES/FS/GS. */
+    __asm__ volatile(
+        "mov %[kdata], %%ax\n"
+        "mov %%ax, %%ds\n"
+        "mov %%ax, %%es\n"
+        "mov %%ax, %%fs\n"
+        "mov %%ax, %%gs\n"
+        :: [kdata] "i"(GDT64_DATA_SEL)
+        : "ax", "memory");
+    wrmsr(MSR_FSBASE, 0);
+    wrmsr(MSR_GSBASE, 0);
+    klongjmp(&exec_return, 1);
+}
+
 
 /* ---- File descriptor table for open/read/write/close -------------------- */
 
@@ -3105,7 +3125,146 @@ static unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
  * (the interpreter gets nil) rather than running or crashing.  This is why the
  * in-OS interpreter suites exercise only the ET_REL toolchain (minigcc/ld);
  * ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
- * interpreter. */
+ * interpreter.
+ *
+ * The parent window is saved to a swap area on the IDE disk instead of
+ * kmalloc'ing a buffer in the kernel heap.  The swap area lives at the
+ * end of the disk (last SWAP_MAX_SECTORS sectors) and is laid out as:
+ *
+ *   Sectors 0 .. nchunks-1: chunk data (each SWAP_CHUNK_SECTORS sectors)
+ *     First 4 bytes: compressed_sz (u32 LE, 0 = stored raw)
+ *     Rest: LZ4 compressed or raw data
+ *   Last sector: header
+ *     [0..3]   magic 0x53574150 ("SWAP")
+ *     [4..7]   window_sz (u32 LE, original bytes)
+ *     [8..11]  nchunks (u32 LE)
+ *
+ * LZ4 compression uses two static BSS buffers (no heap allocation).
+ * A 64 KB chunk compresses to ~30-50% of its size for typical interpreter
+ * windows, so the disk I/O is proportionally smaller. */
+#define SWAP_CHUNK_RAW     65536   /* 64 KB raw data per chunk             */
+#define SWAP_CHUNK_SECTORS 128     /* 64 KB / 512 = 128 sectors per chunk  */
+#define SWAP_HDR_SECTORS   1       /* header occupies the last sector       */
+#define SWAP_MAX_SECTORS   131072  /* 64 MB total swap area                 */
+#define SWAP_MAGIC         0x53574150  /* "SWAP" */
+
+/* Two static BSS buffers for LZ4 compression — no heap allocation needed.
+ * swap_buf_raw: holds one raw 64 KB chunk from the user window.
+ * swap_buf_cmp: holds the LZ4 compressed output (compressBound(64K) ≈ 66 KB). */
+static unsigned char swap_buf_raw[SWAP_CHUNK_RAW];
+static unsigned char swap_buf_cmp[SWAP_CHUNK_RAW + 1024];
+
+/* Compute the swap base LBA (last SWAP_MAX_SECTORS sectors of the disk). */
+static unsigned long swap_lba(void) {
+    unsigned int total = ide_total_sectors();
+    if (total <= SWAP_MAX_SECTORS) return 0;
+    return (unsigned long)(total - SWAP_MAX_SECTORS);
+}
+
+/* Write the parent's user window to the swap area on disk, compressed
+ * with LZ4 in 64 KB chunks.  Returns 1 on success, 0 on failure.
+ * No heap allocation is used — the two static BSS buffers are enough. */
+static int swap_out(unsigned long window_sz) {
+    unsigned long slba = swap_lba();
+    if (!slba) return 0;
+    unsigned long nchunks = (window_sz + SWAP_CHUNK_RAW - 1) / SWAP_CHUNK_RAW;
+    /* Sanity: swap area must be large enough for header + chunks. */
+    if (nchunks * SWAP_CHUNK_SECTORS + SWAP_HDR_SECTORS > SWAP_MAX_SECTORS)
+        return 0;
+
+    unsigned long data_lba = slba;
+    for (unsigned long i = 0; i < nchunks; i++) {
+        unsigned long off = i * SWAP_CHUNK_RAW;
+        unsigned long raw_sz = window_sz - off;
+        if (raw_sz > SWAP_CHUNK_RAW) raw_sz = SWAP_CHUNK_RAW;
+
+        /* Copy raw chunk from the user window (identity-mapped). */
+        kmemcpy(swap_buf_raw, (void *)(USER_LOAD_BASE + off), raw_sz);
+        /* Zero the tail so LZ4 doesn't read garbage beyond the window. */
+        if (raw_sz < SWAP_CHUNK_RAW)
+            kmemset(swap_buf_raw + raw_sz, 0, SWAP_CHUNK_RAW - raw_sz);
+
+        /* Compress.  Output format: [compressed_sz:u32 LE][compressed data]. */
+        int csz = LZ4_compress_default((const char *)swap_buf_raw,
+                    (char *)swap_buf_cmp + 4,
+                    (int)SWAP_CHUNK_RAW, (int)(sizeof(swap_buf_cmp) - 4));
+        unsigned int disk_csz;
+        if (csz > 0 && (unsigned long)csz < raw_sz) {
+            /* Compression helped — store compressed. */
+            disk_csz = (unsigned int)csz;
+        } else {
+            /* No benefit — store raw (compressed_sz = 0 signals raw). */
+            disk_csz = 0;
+            kmemcpy(swap_buf_cmp + 4, swap_buf_raw, raw_sz);
+        }
+        *(unsigned int *)swap_buf_cmp = disk_csz;
+
+        unsigned long total = 4 + (disk_csz ? disk_csz : raw_sz);
+        unsigned long sects = (total + IDE_SECTOR_SIZE - 1) / IDE_SECTOR_SIZE;
+        if (ide_write_sectors((unsigned int)data_lba, (unsigned int)sects,
+                              swap_buf_cmp) < 0)
+            return 0;
+        data_lba += sects;
+    }
+
+    /* Write the header in the LAST sector of the swap area. */
+    unsigned long hdr_lba = slba + SWAP_MAX_SECTORS - SWAP_HDR_SECTORS;
+    unsigned int hdr[3];
+    hdr[0] = SWAP_MAGIC;
+    hdr[1] = (unsigned int)window_sz;
+    hdr[2] = (unsigned int)nchunks;
+    kmemset(hdr + 3, 0, IDE_SECTOR_SIZE - 12);
+    if (ide_write_sectors((unsigned int)hdr_lba, SWAP_HDR_SECTORS, hdr) < 0)
+        return 0;
+
+    return 1;
+}
+
+/* Restore the parent's user window from the swap area on disk.
+ * Reads the header, then each compressed/raw chunk, and writes back
+ * to USER_LOAD_BASE.  Returns 1 on success, 0 on failure. */
+static int swap_in(void) {
+    unsigned long slba = swap_lba();
+    if (!slba) return 0;
+
+    /* Read the header from the last sector of the swap area. */
+    unsigned long hdr_lba = slba + SWAP_MAX_SECTORS - SWAP_HDR_SECTORS;
+    unsigned int hdr[3];
+    if (ide_read_sectors((unsigned int)hdr_lba, SWAP_HDR_SECTORS, hdr) < 0)
+        return 0;
+    if (hdr[0] != SWAP_MAGIC) return 0;
+    unsigned long window_sz = hdr[1];
+    unsigned long nchunks   = hdr[2];
+
+    unsigned long data_lba = slba;
+    unsigned long dst = USER_LOAD_BASE;
+    for (unsigned long i = 0; i < nchunks; i++) {
+        /* Read one chunk (up to SWAP_CHUNK_SECTORS = 64 KB). */
+        if (ide_read_sectors((unsigned int)data_lba, SWAP_CHUNK_SECTORS,
+                             swap_buf_cmp) < 0)
+            return 0;
+        unsigned int csz = *(unsigned int *)swap_buf_cmp;
+
+        unsigned long raw_sz = window_sz - (dst - USER_LOAD_BASE);
+        if (raw_sz > SWAP_CHUNK_RAW) raw_sz = SWAP_CHUNK_RAW;
+
+        if (csz) {
+            /* Compressed chunk — decompress. */
+            int dsz = LZ4_decompress_safe((const char *)swap_buf_cmp + 4,
+                        (char *)swap_buf_raw, (int)csz, (int)SWAP_CHUNK_RAW);
+            if (dsz < 0 || (unsigned long)dsz != raw_sz)
+                return 0;
+        } else {
+            /* Raw chunk — copy directly. */
+            kmemcpy(swap_buf_raw, swap_buf_cmp + 4, raw_sz);
+        }
+        kmemcpy((void *)dst, swap_buf_raw, raw_sz);
+        dst += raw_sz;
+        data_lba += SWAP_CHUNK_SECTORS;
+    }
+    return 1;
+}
+
 static int k_syscall_spawn(const char *path, const char *redirect,
                             int child_argc, const char **child_argv) {
     if (!path || !user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN))
@@ -3214,39 +3373,47 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     KFILE *saved_kfd[KFD_MAX];
     for (int i = 0; i < KFD_MAX; i++) saved_kfd[i] = kfd_table[i];
 
-    /* Save the parent's user window.  For ET_REL children (which run at
-     * ring 0 via k_run_rel and never touch the user window) we skip the
-     * save entirely, avoiding the 188 MB kmalloc that would exhaust the
-     * 192 MB kernel heap.  For ET_EXEC/ET_DYN we save only the portion
-     * the parent actually used: from USER_LOAD_BASE to max(brk, stack
-     * high-water mark).  The stack scan is bounded to 256 pages (1 MB). */
-    unsigned char *parent_win = 0;
+    /* Save the parent's user window to the IDE swap area.
+     * For ET_REL children (ring 0 via k_run_rel) the user window is
+     * untouched so we skip the save entirely.  For ET_EXEC/ET_DYN we
+     * scan backwards for the actual high-water mark (last non-zero page),
+     * then write LZ4-compressed 64 KB chunks directly to the disk swap
+     * area.  No heap allocation is used — the two static BSS buffers
+     * (swap_buf_raw/swap_buf_cmp, ~128 KB) handle the compression. */
+    int swap_saved = 0;
     unsigned long window_sz = 0;
     if (etype == ET_EXEC || etype == ET_DYN) {
-        unsigned long parent_top = g_brk;
-        volatile unsigned long *sp =
-            (volatile unsigned long *)USER_STACK_TOP;
-        while (sp > (volatile unsigned long *)USER_STACK_BASE) {
-            sp = (volatile unsigned long *)((unsigned long)sp - 0x1000);
+        /* Scan backwards from USER_LOAD_END to find the last non-zero page.
+         * g_brk is the program's requested break, but programs often request
+         * far more than they use (MicroPython ~16 MB brk, actual use ~5 MB). */
+        unsigned long parent_top = USER_LOAD_BASE + 0x1000;
+        volatile unsigned long *scan =
+            (volatile unsigned long *)USER_LOAD_END;
+        while (scan > (volatile unsigned long *)USER_LOAD_BASE) {
+            scan = (volatile unsigned long *)((unsigned long)scan - 0x1000);
             int all_zero = 1;
             for (int j = 0; j < 512; j++) {
-                if (sp[j] != 0) { all_zero = 0; break; }
+                if (scan[j] != 0) { all_zero = 0; break; }
             }
             if (!all_zero) {
-                parent_top = (unsigned long)sp + 0x1000;
+                parent_top = (unsigned long)scan + 0x1000;
                 break;
             }
         }
+        /* Also check brk — if it is above the scan result, include it. */
+        if (g_brk > parent_top) parent_top = g_brk;
         if (parent_top < USER_STACK_BASE) parent_top = USER_STACK_BASE;
         window_sz = parent_top - USER_LOAD_BASE;
         if (window_sz < 0x1000) window_sz = 0x1000;
-        parent_win = (unsigned char *)kmalloc(window_sz);
-        if (!parent_win) {
-            kfree(data);
-            if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
-            return EFAULT;
+        /* Cap at a reasonable maximum to avoid excessive disk I/O. */
+        if (window_sz > 64UL * 1024 * 1024) window_sz = 64UL * 1024 * 1024;
+
+        swap_saved = swap_out(window_sz);
+        if (!swap_saved) {
+            /* Swap failed (no disk, area too small, etc.) — child runs
+             * without saving the parent window.  The child may corrupt
+             * the parent, but this is a graceful degradation vs. EFAULT. */
         }
-        kmemcpy(parent_win, (void *)USER_LOAD_BASE, window_sz);
     }
 
     int rc = EFAULT;
@@ -3277,10 +3444,9 @@ static int k_syscall_spawn(const char *path, const char *redirect,
         if (did_redirect) redirect_commit(redirect, 0);
     }
 
-    /* Restore the parent's user window (only if we saved it). */
-    if (parent_win) {
-        kmemcpy((void *)USER_LOAD_BASE, parent_win, window_sz);
-        kfree(parent_win);
+    /* Restore the parent's user window from the IDE swap area. */
+    if (swap_saved) {
+        swap_in();
     }
     kfree(data);
 

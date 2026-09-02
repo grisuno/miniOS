@@ -3,7 +3,7 @@
     "god_nodes": [
       [
         "kernel.c",
-        57.1
+        58.0
       ],
       [
         "kernel.h",
@@ -39,7 +39,7 @@
       ],
       [
         "sched.c",
-        13.1
+        13.2
       ]
     ],
     "communities": [
@@ -47,126 +47,126 @@
         "id": 0,
         "label": "root",
         "file_ids": [
-          "lz4_kernel.h",
-          "lz4_kernel.c",
+          "smp.h",
+          "minifs.h",
+          "bootdefs.h",
+          "ide.c",
+          "kernel.h",
+          "block.c",
+          "desktop_icons.h",
+          "ide.h",
           "vga_fb.c",
-          "zip.c",
-          "sched.h",
-          "tls_x509.c",
           "kernel.c",
-          "tls_crypto.c",
           "net.h",
           "net.c",
+          "lz4_kernel.c",
+          "minifs.c",
           "pcspk.c",
-          "vga_fb.h",
-          "desktop_shortcuts.h",
-          "tls_test_roots.h",
-          "tls_port.h",
-          "pcspk.h",
           "smp.c",
-          "ide.c",
-          "tls.h",
-          "tls_test.c",
-          "bootdefs.h",
-          "tls_roots.h",
-          "ap_stub.h",
           "zip.h",
+          "sched.h",
+          "zip.c",
+          "sb16.c",
           "sb16.h",
-          "desktop_icons.h",
           "sched.c",
-          "kernel.h",
-          "tls.c",
-          "smp.h",
-          "sb16.c"
+          "ap_stub.h",
+          "vga_fb.h",
+          "lz4_kernel.h",
+          "desktop_shortcuts.h",
+          "block.h",
+          "pcspk.h"
         ],
-        "cohesion": 0.8245614035087719,
-        "size": 31
+        "cohesion": 0.8846153846153846,
+        "size": 28
       },
       {
         "id": 1,
-        "label": "root",
-        "file_ids": [
-          "minifs.c",
-          "block.c",
-          "block.h",
-          "minifs.h",
-          "ide.h"
-        ],
-        "cohesion": 0.4166666666666667,
-        "size": 5
-      },
-      {
-        "id": 2,
         "label": "mcp",
         "file_ids": [
-          "mcp/minios_mcp.py",
-          "mcp/minios_addons.py"
+          "mcp/minios_addons.py",
+          "mcp/minios_mcp.py"
         ],
         "cohesion": 1.0,
         "size": 2
       },
       {
-        "id": 3,
+        "id": 2,
         "label": "progs/src",
         "file_ids": [
-          "progs/src/shell.py",
+          "progs/src/test.py",
           "progs/lua/minios.c",
-          "progs/src/test.py"
+          "progs/src/shell.py"
         ],
         "cohesion": 1.0,
         "size": 3
       },
       {
-        "id": 4,
+        "id": 3,
         "label": "root",
         "file_ids": [
           "rtc.h",
-          "rtc.c",
           "qga.c",
+          "rtc.c",
           "qga.h"
         ],
         "cohesion": 0.5,
         "size": 4
+      },
+      {
+        "id": 4,
+        "label": "root",
+        "file_ids": [
+          "tls.h",
+          "tls_test_roots.h",
+          "tls_crypto.c",
+          "tls_roots.h",
+          "tls_test.c",
+          "tls.c",
+          "tls_port.h",
+          "tls_x509.c"
+        ],
+        "cohesion": 0.7692307692307693,
+        "size": 8
       }
     ],
     "surprising_connections": [
       [
-        "qga.h",
+        "ap_stub.h",
         "tls_roots.h",
         5,
         "{0, 4}"
       ],
       [
-        "qga.h",
+        "ap_stub.h",
         "tls_test_roots.h",
         5,
         "{0, 4}"
       ],
       [
-        "ap_stub.h",
-        "block.h",
-        4,
-        "{0, 1}"
+        "desktop_icons.h",
+        "tls_roots.h",
+        5,
+        "{0, 4}"
       ],
       [
-        "ap_stub.h",
-        "ide.h",
-        4,
-        "{0, 1}"
+        "desktop_icons.h",
+        "tls_test_roots.h",
+        5,
+        "{0, 4}"
       ],
       [
-        "ap_stub.h",
-        "minifs.h",
-        4,
-        "{0, 1}"
+        "desktop_shortcuts.h",
+        "tls_roots.h",
+        5,
+        "{0, 4}"
       ]
     ],
     "suggested_questions": [
       "What does kernel.c depend on, and what depends on it? (15 connections)",
       "What does kernel.h depend on, and what depends on it? (15 connections)",
       "What does d_englsh.h depend on, and what depends on it? (0 connections)",
-      "How are the 31 files in 'root' related to each other?",
-      "Why are qga.h and tls_roots.h connected through 5 hops across 2 communities?"
+      "How are the 28 files in 'root' related to each other?",
+      "Why are ap_stub.h and tls_roots.h connected through 5 hops across 2 communities?"
     ]
   },
   "layers": {

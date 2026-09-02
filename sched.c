@@ -269,6 +269,19 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         kprintf("  [%lx]: ", (unsigned long)frame->rip);
         for (int _i = 0; _i < 16; _i++) kprintf("%02x ", code[_i]);
         kprintf("\n");
+        /* If a ring-3 user fault lands in the user window, recover gracefully
+         * by longjmping to the most recent k_exec_user setjmp point with
+         * EFAULT.  We cannot rely on user_program_active: exit() in a child
+         * clears it via klongjmp before the parent may fault.  Instead check
+         * the hardware ring (CS RPL) and the fault address. */
+        if ((frame->cs & 3) == 3 &&
+            frame->rip >= 0x400000 && frame->rip < 0x0C000000) {
+            kprintf("  [recovering: ring-3 user fault, returning EFAULT]\n");
+            k_user_fault_return();
+            __builtin_unreachable();
+        }
+        kprintf("  [no recovery: cs_ring=%ld rip=%lx]\n",
+                (long)(frame->cs & 3), (unsigned long)frame->rip);
         for(;;) __asm__("hlt");
     }
 }

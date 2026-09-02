@@ -268,4 +268,7 @@ int  block_read_multi(unsigned int block_num, unsigned int count, void *buf);
 int  block_write_multi(unsigned int block_num, unsigned int count, const void *buf);
 unsigned int block_total(void);
 
+/* ========== User-mode fault recovery ========== */
+void k_user_fault_return(void);
+
 #endif
