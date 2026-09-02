@@ -1198,6 +1198,166 @@ int vfs_open(const char *path, int mode, vfs_file_t *f) {
     return -1;
 }
 
+/* ================================================================
+ *  Ramdisk VFS driver
+ * ================================================================ */
+
+typedef struct {
+    RDFile *rf;
+} ramdisk_handle_t;
+
+static int ramdisk_vfs_open(const char *path, int mode, void **handle) {
+    RDFile *rf = ramdisk_open(path);
+    if (!rf && (mode == 1 || mode == 2)) {
+        const char *slash = path + kstrlen(path);
+        while (slash > path && slash[-1] != '/') slash--;
+        int parent_ok = 1;
+        if (slash != path && slash[-1] == '/') {
+            char parent[RAMDISK_FNAME_LEN];
+            unsigned plen = (unsigned)(slash - path);
+            if (plen >= sizeof(parent)) plen = sizeof(parent) - 1;
+            kmemcpy(parent, path, plen);
+            parent[plen] = '/';
+            parent[plen + 1] = 0;
+            if (!fs_dir_exists(parent)) parent_ok = 0;
+        }
+        if (parent_ok) rf = ramdisk_create(path, 0);
+    }
+    if (!rf) return -1;
+    ramdisk_handle_t *h = kmalloc(sizeof(ramdisk_handle_t));
+    if (!h) return -1;
+    h->rf = rf;
+    *handle = h;
+    return 0;
+}
+
+static int ramdisk_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len) {
+    ramdisk_handle_t *h = (ramdisk_handle_t *)handle;
+    if (!h || !h->rf) return -1;
+    if (pos + len > h->rf->size) len = h->rf->size - pos;
+    if (len == 0) return 0;
+    ramdisk_read(h->rf, buf, (unsigned)pos, (unsigned)len);
+    return (int)len;
+}
+
+static int ramdisk_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len) {
+    ramdisk_handle_t *h = (ramdisk_handle_t *)handle;
+    if (!h || !h->rf) return -1;
+    if (!ramdisk_resize(h->rf, (unsigned)(pos + len))) return -1;
+    ramdisk_write(h->rf, buf, (unsigned)pos, (unsigned)len);
+    return (int)len;
+}
+
+static int ramdisk_vfs_close(void *handle) {
+    ramdisk_handle_t *h = (ramdisk_handle_t *)handle;
+    if (h) kfree(h);
+    return 0;
+}
+
+static int ramdisk_vfs_fstat(void *handle, unsigned long *size_out) {
+    ramdisk_handle_t *h = (ramdisk_handle_t *)handle;
+    if (!h || !h->rf || !size_out) return -1;
+    *size_out = h->rf->size;
+    return 0;
+}
+
+static int ramdisk_vfs_truncate(void *handle, unsigned long size) {
+    ramdisk_handle_t *h = (ramdisk_handle_t *)handle;
+    if (!h || !h->rf) return -1;
+    return ramdisk_resize(h->rf, (unsigned)size) ? 0 : -1;
+}
+
+static const vfs_ops_t ramdisk_vfs_ops = {
+    .open    = ramdisk_vfs_open,
+    .read    = ramdisk_vfs_read,
+    .write   = ramdisk_vfs_write,
+    .close   = ramdisk_vfs_close,
+    .fstat   = ramdisk_vfs_fstat,
+    .truncate = ramdisk_vfs_truncate,
+};
+
+/* ================================================================
+ *  MiniFS VFS driver
+ * ================================================================ */
+
+typedef struct {
+    int ino;
+    unsigned size;
+} minifs_handle_t;
+
+static int minifs_vfs_open(const char *path, int mode, void **handle) {
+    if (!minifs_is_mounted()) return -1;
+    int want_write = (mode == 1 || mode == 2);
+    int ino = minifs_resolve_path(path);
+    if (ino < 0 && kstrchr(path, '/')) {
+        const char *base = path;
+        const char *p;
+        for (p = path; *p; p++)
+            if (*p == '/') base = p + 1;
+        ino = minifs_resolve_path(base);
+    }
+    if (want_write && ino < 0) {
+        if (minifs_mkdir_p(path) == 0)
+            ino = minifs_create(path, 0644);
+    }
+    if (ino < 0) return -1;
+    MiniFSInode st;
+    if (minifs_stat(ino, &st) < 0) return -1;
+    if (want_write && mode == 1 && st.size > 0)
+        minifs_truncate(ino, 0);
+    minifs_handle_t *h = kmalloc(sizeof(minifs_handle_t));
+    if (!h) return -1;
+    h->ino = ino;
+    h->size = st.size;
+    *handle = h;
+    return 0;
+}
+
+static int minifs_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len) {
+    minifs_handle_t *h = (minifs_handle_t *)handle;
+    if (!h) return -1;
+    if (pos + len > h->size) len = h->size - pos;
+    if (len == 0) return 0;
+    minifs_read(h->ino, buf, pos, (unsigned)len);
+    return (int)len;
+}
+
+static int minifs_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len) {
+    minifs_handle_t *h = (minifs_handle_t *)handle;
+    if (!h) return -1;
+    if (minifs_write(h->ino, buf, (unsigned)pos, (unsigned)len) < 0) return -1;
+    if (pos + len > h->size) h->size = (unsigned)(pos + len);
+    return (int)len;
+}
+
+static int minifs_vfs_close(void *handle) {
+    minifs_handle_t *h = (minifs_handle_t *)handle;
+    if (h) kfree(h);
+    return 0;
+}
+
+static int minifs_vfs_fstat(void *handle, unsigned long *size_out) {
+    minifs_handle_t *h = (minifs_handle_t *)handle;
+    if (!h || !size_out) return -1;
+    *size_out = h->size;
+    return 0;
+}
+
+static int minifs_vfs_truncate(void *handle, unsigned long size) {
+    minifs_handle_t *h = (minifs_handle_t *)handle;
+    if (!h) return -1;
+    return minifs_truncate(h->ino, size);
+}
+
+static const vfs_ops_t minifs_vfs_ops = {
+    .open    = minifs_vfs_open,
+    .read    = minifs_vfs_read,
+    .write   = minifs_vfs_write,
+    .close   = minifs_vfs_close,
+    .fstat   = minifs_vfs_fstat,
+    .truncate = minifs_vfs_truncate,
+};
+
 KFILE *kfopen(const char *path, const char *mode) {
     char resolved[RAMDISK_FNAME_LEN];
     int want_write;
@@ -2132,24 +2292,242 @@ static unsigned long g_brk;        /* current program break         */
 static unsigned long g_brk_limit;  /* upper bound for brk growth    */
 static unsigned long user_mmap_cur; /* anonymous mmap cursor, grows down */
 
-/* Anonymous mmap regions, tracked so munmap can reclaim them for reuse.  The
-   cursor alone only ever moves down, so a program that unmaps and re-allocates
-   a working set (Quake 2 across level changes) would drain the whole user
-   window until mmap fails with ENOMEM.  Two tables: mmap_used holds the live
-   allocations (munmap reclaims only a region present here, so the stack or
-   arbitrary program memory is never handed back), mmap_free holds reclaimed
-   regions that a later mmap reuses.  All entries are page-aligned and lie at
-   or above user_mmap_cur, which itself never drops below g_brk, so neither a
-   live nor a reused chunk can overlap the heap. */
-#define MMAP_MAX 4096
-struct mmap_ent {
-    unsigned long base;
-    unsigned long len;
-};
-static struct mmap_ent mmap_used[MMAP_MAX];
-static struct mmap_ent mmap_free[MMAP_MAX];
-static int mmap_used_n;
-static int mmap_free_n;
+/* ================================================================
+ *  VMA (Virtual Memory Areas) red-black tree
+ *
+ *  Replaces the flat mmap_used/mmap_free arrays with O(log n) lookup.
+ *  Two trees: vma_live tracks active allocations, vma_free tracks
+ *  reclaimed regions for reuse.  All entries are page-aligned.
+ * ================================================================ */
+
+#define VMA_MAX 4096
+
+typedef struct vma_node {
+    unsigned long    base;
+    unsigned long    len;
+    int              red;
+    struct vma_node *left, *right, *parent;
+} vma_node_t;
+
+static vma_node_t vma_pool[VMA_MAX];
+static int vma_pool_n;
+
+static vma_node_t vma_nil_store;
+static vma_node_t *VMA_NIL;
+
+static vma_node_t *vma_live_root;
+static vma_node_t *vma_free_root;
+
+static void vma_tree_init(void) {
+    VMA_NIL = &vma_nil_store;
+    VMA_NIL->red = 0;
+    VMA_NIL->left = VMA_NIL->right = VMA_NIL->parent = VMA_NIL;
+    VMA_NIL->base = 0;
+    VMA_NIL->len = 0;
+    vma_live_root = VMA_NIL;
+    vma_free_root = VMA_NIL;
+    vma_pool_n = 0;
+}
+
+static vma_node_t *vma_alloc_node(void) {
+    if (vma_pool_n >= VMA_MAX) return VMA_NIL;
+    return &vma_pool[vma_pool_n++];
+}
+
+static void vma_rotate_left(vma_node_t **root, vma_node_t *x) {
+    vma_node_t *y = x->right;
+    x->right = y->left;
+    if (y->left != VMA_NIL) y->left->parent = x;
+    y->parent = x->parent;
+    if (x->parent == VMA_NIL) *root = y;
+    else if (x == x->parent->left) x->parent->left = y;
+    else x->parent->right = y;
+    y->left = x;
+    x->parent = y;
+}
+
+static void vma_rotate_right(vma_node_t **root, vma_node_t *x) {
+    vma_node_t *y = x->left;
+    x->left = y->right;
+    if (y->right != VMA_NIL) y->right->parent = x;
+    y->parent = x->parent;
+    if (x->parent == VMA_NIL) *root = y;
+    else if (x == x->parent->right) x->parent->right = y;
+    else x->parent->left = y;
+    y->right = x;
+    x->parent = y;
+}
+
+static void vma_insert_fixup(vma_node_t **root, vma_node_t *z) {
+    while (z->parent->red) {
+        if (z->parent == z->parent->parent->left) {
+            vma_node_t *y = z->parent->parent->right;
+            if (y->red) {
+                z->parent->red = 0;
+                y->red = 0;
+                z->parent->parent->red = 1;
+                z = z->parent->parent;
+            } else {
+                if (z == z->parent->right) {
+                    z = z->parent;
+                    vma_rotate_left(root, z);
+                }
+                z->parent->red = 0;
+                z->parent->parent->red = 1;
+                vma_rotate_right(root, z->parent->parent);
+            }
+        } else {
+            vma_node_t *y = z->parent->parent->left;
+            if (y->red) {
+                z->parent->red = 0;
+                y->red = 0;
+                z->parent->parent->red = 1;
+                z = z->parent->parent;
+            } else {
+                if (z == z->parent->left) {
+                    z = z->parent;
+                    vma_rotate_right(root, z);
+                }
+                z->parent->red = 0;
+                z->parent->parent->red = 1;
+                vma_rotate_left(root, z->parent->parent);
+            }
+        }
+    }
+    (*root)->red = 0;
+}
+
+static vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len) {
+    vma_node_t *z = vma_alloc_node();
+    if (z == VMA_NIL) return VMA_NIL;
+    z->base = base;
+    z->len = len;
+    z->left = z->right = z->parent = VMA_NIL;
+    z->red = 1;
+
+    vma_node_t *y = VMA_NIL;
+    vma_node_t *x = *root;
+    while (x != VMA_NIL) {
+        y = x;
+        if (z->base < x->base) x = x->left;
+        else x = x->right;
+    }
+    z->parent = y;
+    if (y == VMA_NIL) *root = z;
+    else if (z->base < y->base) y->left = z;
+    else y->right = z;
+    vma_insert_fixup(root, z);
+    return z;
+}
+
+static vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base) {
+    vma_node_t *x = root;
+    while (x != VMA_NIL) {
+        if (base == x->base) return x;
+        else if (base < x->base) x = x->left;
+        else x = x->right;
+    }
+    return VMA_NIL;
+}
+
+static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v) {
+    if (u->parent == VMA_NIL) *root = v;
+    else if (u == u->parent->left) u->parent->left = v;
+    else u->parent->right = v;
+    v->parent = u->parent;
+}
+
+static vma_node_t *vma_tree_minimum(vma_node_t *x) {
+    while (x->left != VMA_NIL) x = x->left;
+    return x;
+}
+
+static void vma_delete_fixup(vma_node_t **root, vma_node_t *x) {
+    while (x != *root && !x->red) {
+        if (x == x->parent->left) {
+            vma_node_t *w = x->parent->right;
+            if (w->red) {
+                w->red = 0;
+                x->parent->red = 1;
+                vma_rotate_left(root, x->parent);
+                w = x->parent->right;
+            }
+            if (!w->left->red && !w->right->red) {
+                w->red = 1;
+                x = x->parent;
+            } else {
+                if (!w->right->red) {
+                    w->left->red = 0;
+                    w->red = 1;
+                    vma_rotate_right(root, w);
+                    w = x->parent->right;
+                }
+                w->red = x->parent->red;
+                x->parent->red = 0;
+                w->right->red = 0;
+                vma_rotate_left(root, x->parent);
+                x = *root;
+            }
+        } else {
+            vma_node_t *w = x->parent->left;
+            if (w->red) {
+                w->red = 0;
+                x->parent->red = 1;
+                vma_rotate_right(root, x->parent);
+                w = x->parent->left;
+            }
+            if (!w->right->red && !w->left->red) {
+                w->red = 1;
+                x = x->parent;
+            } else {
+                if (!w->left->red) {
+                    w->right->red = 0;
+                    w->red = 1;
+                    vma_rotate_left(root, w);
+                    w = x->parent->left;
+                }
+                w->red = x->parent->red;
+                x->parent->red = 0;
+                w->left->red = 0;
+                vma_rotate_right(root, x->parent);
+                x = *root;
+            }
+        }
+    }
+    x->red = 0;
+}
+
+static int vma_tree_delete(vma_node_t **root, unsigned long base) {
+    vma_node_t *z = vma_tree_find(*root, base);
+    if (z == VMA_NIL) return -1;
+    vma_node_t *y = z;
+    vma_node_t *x;
+    int y_orig_red = y->red;
+    if (z->left == VMA_NIL) {
+        x = z->right;
+        vma_transplant(root, z, z->right);
+    } else if (z->right == VMA_NIL) {
+        x = z->left;
+        vma_transplant(root, z, z->left);
+    } else {
+        y = vma_tree_minimum(z->right);
+        y_orig_red = y->red;
+        x = y->right;
+        if (y->parent == z) {
+            x->parent = y;
+        } else {
+            vma_transplant(root, y, y->right);
+            y->right = z->right;
+            y->right->parent = y;
+        }
+        vma_transplant(root, z, y);
+        y->left = z->left;
+        y->left->parent = y;
+        y->red = y_orig_red;
+    }
+    if (!y_orig_red) vma_delete_fixup(root, x);
+    return 0;
+}
 
 static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
                               const struct exec_range *xr, unsigned nxr) {
@@ -2302,8 +2680,7 @@ void *load_exec_elf(void *data, unsigned size) {
      * (NK_BACKBUF_ADDR) are pinned in the reserved tail ABOVE the DOOM
      * back-buffer (see mm_setup_protections), so this single brk cap at
      * DOOM_BACKBUF_ADDR keeps every pinned mapping out of a program's heap. */
-    mmap_used_n = 0;
-    mmap_free_n = 0;
+    vma_tree_init();
     /* Loader status is shell text, never the command's output: it must not
      * pollute a `> file` capture. */
     {
@@ -2620,44 +2997,46 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         unsigned long len = (unsigned long)a2;
         unsigned long n = ALIGN_UP(len ? len : 1, 0x1000);
         if (n > user_mmap_cur - USER_LOAD_BASE) return -12;
-        for (int i = 0; i < mmap_free_n; i++) {
-            if (mmap_free[i].len < n) continue;
-            unsigned long addr = mmap_free[i].base + mmap_free[i].len - n;
-            if (mmap_used_n >= MMAP_MAX) continue;   /* can't track; skip reuse */
-            mmap_used[mmap_used_n].base = addr;
-            mmap_used[mmap_used_n].len  = n;
-            mmap_used_n++;
-            if (mmap_free[i].len == n) {
-                mmap_free[i] = mmap_free[--mmap_free_n];
-            } else {
-                mmap_free[i].len -= n;                /* remainder stays at the bottom */
+        /* Try free tree first: find a reclaimed region that fits */
+        {
+            vma_node_t *best = VMA_NIL;
+            vma_node_t *stack[64];
+            int sp = 0;
+            vma_node_t *x = vma_free_root;
+            while (x != VMA_NIL || sp > 0) {
+                while (x != VMA_NIL) { if (sp < 64) stack[sp++] = x; x = x->left; }
+                x = stack[--sp];
+                if (x->len >= n && (best == VMA_NIL || x->base < best->base))
+                    best = x;
+                x = x->right;
             }
-            return (long)addr;
+            if (best != VMA_NIL) {
+                unsigned long addr = best->base + best->len - n;
+                unsigned long rem_base = best->base;
+                unsigned long rem_len = best->len - n;
+                vma_tree_delete(&vma_free_root, best->base);
+                if (rem_len > 0)
+                    vma_tree_insert(&vma_free_root, rem_base, rem_len);
+                vma_tree_insert(&vma_live_root, addr, n);
+                return (long)addr;
+            }
         }
         if (user_mmap_cur - n < g_brk) return -12;  /* would overlap brk */
         user_mmap_cur -= n;
-        if (mmap_used_n < MMAP_MAX) {
-            mmap_used[mmap_used_n].base = user_mmap_cur;
-            mmap_used[mmap_used_n].len  = n;
-            mmap_used_n++;
-        }
+        vma_tree_insert(&vma_live_root, user_mmap_cur, n);
         return (long)user_mmap_cur;
     }
     case 11: { /* munmap: reclaim only a region this kernel allocated */
         unsigned long base = (unsigned long)a1;
         unsigned long n = ALIGN_UP((unsigned long)a2, 0x1000);
         if (n == 0) return 0;
-        for (int i = 0; i < mmap_used_n; i++) {
-            if (mmap_used[i].base != base || n > mmap_used[i].len) continue;
-            if (mmap_free_n < MMAP_MAX) {
-                mmap_free[mmap_free_n].base = mmap_used[i].base;
-                mmap_free[mmap_free_n].len  = mmap_used[i].len;
-                mmap_free_n++;
-            }
-            mmap_used[i] = mmap_used[--mmap_used_n];
+        vma_node_t *fnd = vma_tree_find(vma_live_root, base);
+        if (fnd != VMA_NIL && n <= fnd->len) {
+            vma_tree_insert(&vma_free_root, fnd->base, fnd->len);
+            vma_tree_delete(&vma_live_root, base);
             return 0;
         }
-        return 0;
+        return -1;
     }
     case 158: /* arch_prctl: accept only canonical bases */
         if (a1 == 0x1002 || a1 == 0x1001) {
@@ -3440,13 +3819,18 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     unsigned long saved_fsbase   = rdmsr(MSR_FSBASE);
     unsigned long saved_gsbase   = rdmsr(MSR_GSBASE);
 
-    /* Snapshot the mmap tables so the child cannot corrupt them. */
-    int saved_mmap_used_n = mmap_used_n;
-    struct mmap_ent saved_mmap_used[MMAP_MAX];
-    for (int i = 0; i < mmap_used_n; i++) saved_mmap_used[i] = mmap_used[i];
-    int saved_mmap_free_n = mmap_free_n;
-    struct mmap_ent saved_mmap_free[MMAP_MAX];
-    for (int i = 0; i < mmap_free_n; i++) saved_mmap_free[i] = mmap_free[i];
+    /* Snapshot the mmap tables so the child cannot corrupt them.
+     * We copy the entire VMA pool into a static buffer and give the child
+     * its own copy; the parent's pool and tree roots are never modified. */
+    static vma_node_t parent_vma_pool_copy[VMA_MAX];
+    static vma_node_t child_vma_pool[VMA_MAX];
+    for (int i = 0; i < vma_pool_n; i++) {
+        parent_vma_pool_copy[i] = vma_pool[i];
+        child_vma_pool[i] = vma_pool[i];
+    }
+    vma_node_t *parent_live_root = vma_live_root;
+    vma_node_t *parent_free_root = vma_free_root;
+    int parent_pool_n = vma_pool_n;
 
     /* Snapshot the kernel fd table. */
     KFILE *saved_kfd[KFD_MAX];
@@ -3539,10 +3923,10 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     g_brk       = saved_brk;
     g_brk_limit = saved_brk_lim;
     user_mmap_cur = saved_mmap;
-    mmap_used_n = saved_mmap_used_n;
-    for (int i = 0; i < mmap_used_n; i++) mmap_used[i] = saved_mmap_used[i];
-    mmap_free_n = saved_mmap_free_n;
-    for (int i = 0; i < mmap_free_n; i++) mmap_free[i] = saved_mmap_free[i];
+    for (int i = 0; i < parent_pool_n; i++) vma_pool[i] = parent_vma_pool_copy[i];
+    vma_pool_n = parent_pool_n;
+    vma_live_root = parent_live_root;
+    vma_free_root = parent_free_root;
     wrmsr(MSR_FSBASE, saved_fsbase);
     wrmsr(MSR_GSBASE, saved_gsbase);
     for (int i = 0; i < KFD_MAX; i++) kfd_table[i] = saved_kfd[i];
@@ -5759,6 +6143,13 @@ void kmain(void) {
             kprintf("minifs: no filesystem found on disk\n");
         }
     }
+
+    /* Register VFS drivers.  Ramdisk is always available; MiniFS is
+     * registered only when the IDE disk was found and mounted. */
+    vfs_init();
+    vfs_register("ramdisk", &ramdisk_vfs_ops);
+    if (minifs_is_mounted())
+        vfs_register("minifs", &minifs_vfs_ops);
 
     kprintf("Heap: %d MB  Symbols: %d  (Linux ELF: syscall ABI ready)\n",
             (int)(HEAP_SIZE >> 20), ksym_count);

@@ -84,6 +84,7 @@
 #define MINIOS_SYS_SB16_OPEN 221
 #define MINIOS_SYS_SB16_SUBMIT 222
 #define MINIOS_SYS_GFX_SET_TITLE 223
+#define MINIOS_SYS_SB16_PUMP  224
 
 /* ---- Framebuffer geometry (queried via SYS_FB_INFO) ---- */
 #define MINIOS_FB_WIDTH_MAX  256

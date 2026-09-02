@@ -1664,26 +1664,32 @@ result travels into the OS.
 ## Architectural Abstractions
 
 ### VFS (Virtual File System)
-A registration-based filesystem dispatch layer (`vma.h` in kernel.h,
-implementation in kernel.c).  Filesystem drivers register a prefix and a
-set of operations (`vfs_ops_t`).  The VFS layer dispatches open/read/write
-to the registered driver based on path prefix matching.  The existing
-dual-backend (ramdisk + MiniFS) remains; the VFS layer provides the
-abstraction for future filesystem additions (FAT32, EXT2) without touching
-the kernel core.
+A registration-based filesystem dispatch layer (implementation in kernel.c).
+Filesystem drivers register a prefix and a set of operations (`vfs_ops_t`).
+The VFS layer dispatches open/read/write to the registered driver based on
+path prefix matching.  Two drivers are registered at boot: ramdisk (always
+available) and MiniFS (registered when the IDE disk is found and mounted).
+The KFILE struct carries a `vfs_file_t *vfs` pointer for future VFS-backed
+dispatch; the existing direct ramdisk/MiniFS paths remain for backward
+compatibility.  New filesystem additions (FAT32, EXT2) register a prefix
+and implement `vfs_ops_t` without touching the kernel core.
 
 ### VMA (Virtual Memory Areas)
-A red-black tree structure for mmap tracking (`vma.h`).  Replaces the flat
-`mmap_used`/`mmap_free` arrays with O(log n) lookup.  The current kernel
-uses flat arrays (MMAP_MAX=4096); the VMA header defines the tree structure
-for future adoption when the single-address-space model gains per-process
-page tables.
+A red-black tree for mmap tracking (implemented in kernel.c, header in
+`vma.h`).  Replaces the former flat `mmap_used`/`mmap_free` arrays with
+O(log n) insert/find/delete.  Two trees: `vma_live_root` for active
+allocations, `vma_free_root` for reclaimed regions.  A static node pool
+(`VMA_MAX` = 4096) backs both trees.  The mmap syscall (9) searches the
+free tree for reusable regions before carving fresh space from the cursor;
+munmap (11) moves the freed region to the free tree.  The SPAWN syscall
+saves and restores the entire VMA pool and tree roots so child mutations
+do not corrupt the parent state.
 
 ### Unified Audio API
-A hardware-agnostic audio interface (`audio.h`) providing tone mode (PC
-speaker square wave) and PCM streaming mode (SB16 DMA).  Ring-3 programs
-use these wrappers instead of raw syscalls.  The kernel dispatches to the
-appropriate hardware backend.
+A hardware-agnostic audio interface (`audio.h`, implementation in
+`progs/src/audio.c`) providing tone mode (PC speaker square wave) and
+PCM streaming mode (SB16 DMA).  Ring-3 programs use these wrappers instead
+of raw syscalls.  The kernel dispatches to the appropriate hardware backend.
 
 ### Quake 2 Decoupling
 The `SYS_Q2G_SET_TITLE` syscall is renamed to `SYS_GFX_SET_TITLE` (generic

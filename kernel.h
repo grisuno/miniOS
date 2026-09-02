@@ -164,7 +164,7 @@ typedef struct vfs_ops {
     int      (*truncate)(void *handle, unsigned long size);
 } vfs_ops_t;
 
-typedef struct {
+typedef struct vfs_file {
     const vfs_ops_t *ops;
     void            *handle;
     unsigned         pos;
@@ -190,6 +190,7 @@ typedef struct {
     int      is_console; /* 1 = stdin/stdout/stderr, routed to the console */
     int      minifs_ino; /* >=0 when backed by minifs, -1 = ramdisk */
     unsigned minifs_size;
+    struct vfs_file *vfs; /* VFS backend (when non-NULL, dispatch via ops) */
 } KFILE;
 
 KFILE *kfopen(const char *path, const char *mode);

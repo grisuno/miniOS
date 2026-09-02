@@ -25,6 +25,7 @@ void audio_tone(unsigned freq);
 /* PCM streaming mode (SB16). */
 int  audio_pcm_open(unsigned rate, unsigned channels, unsigned format);
 int  audio_pcm_submit(const void *buf, unsigned len);
+void audio_pcm_pump(void);
 void audio_pcm_close(void);
 
 /* Volume control (PC speaker mute switch). */
