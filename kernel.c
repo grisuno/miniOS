@@ -618,12 +618,19 @@ static void mm_setup_protections(void) {
     }
 }
 
-/* Set or clear the NX bit on the single 4 KB page holding vaddr. The page
- * table for vaddr is the one the user-window PD entry points at; a 2 MB
- * leaf (should not appear inside the window after mm_setup_protections) is
- * left untouched. */
-static void mm_user_pte_update(unsigned long vaddr, int exec) {
-    volatile unsigned long *pd = (volatile unsigned long *)PT_PD_ADDR;
+/* Set or clear the NX bit on the single 4 KB page holding vaddr.
+ * When `cr3` is 0, operates on the boot page table (PT_PD_ADDR);
+ * otherwise operates on the per-process page table rooted at `cr3`. */
+static void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3) {
+    unsigned long pd_phys;
+    if (cr3 == 0) {
+        pd_phys = PT_PD_ADDR;
+    } else {
+        volatile unsigned long *pml4 = (volatile unsigned long *)(cr3 & PT_ADDR_MASK);
+        volatile unsigned long *pdpt = (volatile unsigned long *)(pml4[0] & PT_ADDR_MASK);
+        pd_phys = pdpt[0] & PT_ADDR_MASK;
+    }
+    volatile unsigned long *pd = (volatile unsigned long *)pd_phys;
     unsigned long pd_idx = vaddr >> PT_PD_INDEX_SHIFT;
     unsigned long pde = pd[pd_idx];
     if (!(pde & PT_FLAGS_PRESENT_RW)) return;
@@ -637,13 +644,198 @@ static void mm_user_pte_update(unsigned long vaddr, int exec) {
 
 /* Mark the pages of a loaded executable segment as executable (clear NX)
  * and flush the TLB so the new permissions take effect before the program
- * runs. */
-static void mm_user_set_exec(unsigned long start, unsigned long end) {
+ * runs.  `cr3` is the process page table root; 0 = boot table. */
+static void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3) {
     unsigned long p;
     start &= ~0xFFFUL;
     end = ALIGN_UP(end, 0x1000);
-    for (p = start; p < end; p += 0x1000) mm_user_pte_update(p, 1);
+    for (p = start; p < end; p += 0x1000) mm_user_pte_update(p, 1, cr3);
     __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
+}
+
+/* ---- Per-process page tables (KPTI) ----
+ *
+ * Every ring-3 process gets its own PML4 with its own user-window page
+ * tables, so a context switch (CR3 change) isolates each process's virtual
+ * address space.  The kernel identity mapping (entries [2..511] in PML4
+ * level 0, the first GB) is shared across all processes — the U/S bit
+ * keeps user code out of it — so kernel code runs unchanged after a CR3
+ * switch.  The user window (first 2MB of PML4[0]) gets fresh 4KB page
+ * tables per process, pointing to the same physical frames as the boot
+ * table so the shared user-window memory (ELF segments, stack, framebuffer
+ * mappings) works identically. */
+
+#define PT_ENTRY_PRESENT  0x003   /* present | rw */
+#define PT_ENTRY_USER     0x007   /* present | rw | user */
+
+/* Page-aligned allocator for page-table pages.
+ * kmalloc does not guarantee page alignment, but CR3 and page-table
+ * entries require it (lower 12 bits are flags).  Over-allocate by one
+ * page, align up, and stash the original kmalloc pointer just before
+ * the aligned address so pt_page_free can recover it. */
+#define PT_ALLOC_HDR  sizeof(void *)
+
+static void *pt_page_alloc(void) {
+    void *raw = kmalloc(0x1000 + PT_ALLOC_HDR + 0xFFF);
+    if (!raw) return 0;
+    unsigned long addr = (unsigned long)raw + PT_ALLOC_HDR;
+    unsigned long aligned = (addr + 0xFFF) & ~0xFFFUL;
+    *((void **)(aligned - PT_ALLOC_HDR)) = raw;
+    kmemset((void *)aligned, 0, 0x1000);
+    return (void *)aligned;
+}
+
+static void pt_page_free(void *ptr) {
+    if (!ptr) return;
+    void *raw = *((void **)((unsigned long)ptr - PT_ALLOC_HDR));
+    kfree(raw);
+}
+
+/* Build a fresh PML4 for a new process.  Copies the boot page table's
+ * kernel entries and creates new user-window page tables.  Returns the
+ * physical address of the new PML4 (suitable for CR3), or 0 on failure. */
+uint64_t pt_clone_user(uint64_t parent_cr3) {
+    (void)parent_cr3;
+    volatile unsigned long *boot_pml4 = (volatile unsigned long *)PT_PML4_ADDR;
+    volatile unsigned long *boot_pd   = (volatile unsigned long *)PT_PD_ADDR;
+
+    /* Allocate a fresh PML4 from identity-mapped memory (page-aligned).
+     * The physical address equals the virtual pointer. */
+    volatile unsigned long *pml4 = (volatile unsigned long *)pt_page_alloc();
+    if (!pml4) return 0;
+
+    /* Copy ALL entries from the boot PML4.  This preserves the kernel
+     * identity mapping (PML4[0] → boot PDPT → boot PD with 2MB leaves
+     * for the first 4MB and 4KB PTs for the user window) and any upper-
+     * half kernel mappings. */
+    unsigned long i;
+    for (i = 0; i < PT_PD_ENTRIES; i++)
+        pml4[i] = boot_pml4[i];
+
+    /* Allocate a fresh PDPT (page-aligned). */
+    volatile unsigned long *pdpt = (volatile unsigned long *)pt_page_alloc();
+    if (!pdpt) { pt_page_free((void *)pml4); return 0; }
+    /* Copy the boot PDPT entries so the kernel identity mapping (PD[0..1])
+     * is preserved exactly. */
+    volatile unsigned long *boot_pdpt = (volatile unsigned long *)(boot_pml4[0] & PT_ADDR_MASK);
+    for (i = 0; i < PT_PD_ENTRIES; i++)
+        pdpt[i] = boot_pdpt[i];
+    pml4[0] = (unsigned long)pdpt | (boot_pml4[0] & 0x7); /* keep flags */
+
+    /* Allocate a fresh PD (page-aligned). */
+    volatile unsigned long *pd = (volatile unsigned long *)pt_page_alloc();
+    if (!pd) { pt_page_free((void *)pdpt); pt_page_free((void *)pml4); return 0; }
+    /* Wire the new PD into the PDPT (replacing the boot PD reference). */
+    pdpt[0] = (unsigned long)pd | (boot_pdpt[0] & 0x7);
+    /* Copy kernel identity PDEs (PD[0..1]: 2MB huge pages, no user flag)
+     * and everything above the user window (PD[96..511]: kernel heap,
+     * MMIO, etc.).  Only PD[2..95] gets fresh user-window page tables. */
+    pd[0] = boot_pd[0];
+    pd[1] = boot_pd[1];
+    {
+        unsigned long hi_pd = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
+        for (i = hi_pd + 1; i < PT_PD_ENTRIES; i++)
+            pd[i] = boot_pd[i];
+    }
+
+    /* Build 4KB page tables for the user window (PD entries [2..95]).
+     * Copy PTE entries from the boot page tables so the NX state set by
+     * mm_user_set_exec (in load_exec_elf) is preserved — the new page
+     * tables inherit the same executable/non-executable layout. */
+    unsigned long lo = USER_LOAD_BASE >> PT_PD_INDEX_SHIFT;
+    unsigned long hi = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
+    volatile unsigned long *boot_user_pt_base =
+        (volatile unsigned long *)PT_USER_TABLES_ADDR;
+    for (i = lo; i <= hi; i++) {
+        volatile unsigned long *pt = (volatile unsigned long *)pt_page_alloc();
+        if (!pt) {
+            unsigned long j;
+            for (j = lo; j < i; j++) {
+                unsigned long pte_addr = pd[j] & PT_ADDR_MASK;
+                if (pte_addr) pt_page_free((void *)pte_addr);
+            }
+            pt_page_free((void *)pd);
+            pt_page_free((void *)pdpt);
+            pt_page_free((void *)pml4);
+            return 0;
+        }
+        volatile unsigned long *boot_pt = boot_user_pt_base + (i - lo) * PT_PD_ENTRIES;
+        unsigned long k;
+        for (k = 0; k < PT_PD_ENTRIES; k++)
+            pt[k] = boot_pt[k];
+        pd[i] = ((unsigned long)pt) | PT_USER_ENTRY;
+    }
+
+    /* Copy framebuffer and back-buffer PDEs from the boot PD.
+     * We allocate FRESH PT pages for these so per-process NX changes
+     * (from the ELF loader) don't corrupt other processes' mappings. */
+    {
+        unsigned long fb_pd_idx = (unsigned long)FB_ADDR >> PT_PD_INDEX_SHIFT;
+        unsigned long bb_pd_idx = (unsigned long)DOOM_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
+        unsigned long nk_pd_idx = (unsigned long)NK_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
+        unsigned long indices[] = { fb_pd_idx, bb_pd_idx, nk_pd_idx };
+        unsigned long nidx = sizeof(indices) / sizeof(indices[0]);
+        unsigned long j;
+        for (j = 0; j < nidx; j++) {
+            unsigned long idx = indices[j];
+            volatile unsigned long *boot_pt =
+                (volatile unsigned long *)(boot_pd[idx] & PT_ADDR_MASK);
+            volatile unsigned long *our_pt =
+                (volatile unsigned long *)pt_page_alloc();
+            if (!our_pt || !boot_pt) continue;
+            unsigned long k;
+            for (k = 0; k < PT_PD_ENTRIES; k++)
+                our_pt[k] = boot_pt[k];
+            pd[idx] = ((unsigned long)our_pt) | (boot_pd[idx] & 0x7);
+        }
+    }
+
+    return (uint64_t)(unsigned long)pml4;
+}
+
+/* Free all page-table pages owned by a process (user window only).
+ * The PML4, PDPT, PD and PT pages are freed; kernel entries are not
+ * touched because they are shared and must survive. */
+void pt_free_user(uint64_t cr3) {
+    if (cr3 == 0) return;
+    volatile unsigned long *pml4 = (volatile unsigned long *)(cr3 & PT_ADDR_MASK);
+    volatile unsigned long *pdpt = (volatile unsigned long *)(pml4[0] & PT_ADDR_MASK);
+    if (!pdpt) return;
+    volatile unsigned long *pd = (volatile unsigned long *)(pdpt[0] & PT_ADDR_MASK);
+
+    /* Free user-window PT pages (PD entries [2..95]) and the framebuffer/
+     * back-buffer PT pages (their PD entries were replaced with fresh
+     * allocations in pt_clone_user). */
+    unsigned long lo = USER_LOAD_BASE >> PT_PD_INDEX_SHIFT;
+    unsigned long hi = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
+    unsigned long i;
+    if (pd) {
+        for (i = lo; i <= hi; i++) {
+            if ((pd[i] & PT_FLAGS_PRESENT_RW) && !(pd[i] & PT_FLAGS_PS)) {
+                unsigned long pt_addr = pd[i] & PT_ADDR_MASK;
+                if (pt_addr) pt_page_free((void *)pt_addr);
+            }
+        }
+        /* Free framebuffer/back-buffer PT pages (indices outside [lo,hi]
+         * that were freshly allocated). */
+        unsigned long fb_idx = (unsigned long)FB_ADDR >> PT_PD_INDEX_SHIFT;
+        unsigned long bb_idx = (unsigned long)DOOM_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
+        unsigned long nk_idx = (unsigned long)NK_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
+        unsigned long extra[] = { fb_idx, bb_idx, nk_idx };
+        unsigned long ne = sizeof(extra) / sizeof(extra[0]);
+        unsigned long j;
+        for (j = 0; j < ne; j++) {
+            unsigned long idx = extra[j];
+            if (idx >= lo && idx <= hi) continue; /* already freed above */
+            if ((pd[idx] & PT_FLAGS_PRESENT_RW) && !(pd[idx] & PT_FLAGS_PS)) {
+                unsigned long pt_addr = pd[idx] & PT_ADDR_MASK;
+                if (pt_addr) pt_page_free((void *)pt_addr);
+            }
+        }
+        pt_page_free((void *)pd);
+    }
+    if (pdpt) pt_page_free((void *)pdpt);
+    pt_page_free((void *)pml4);
 }
 
 void kallocator_init(void) {
@@ -2659,9 +2851,12 @@ void *load_exec_elf(void *data, unsigned size) {
     if (max_end == 0) { kprintf("exec: no loadable segments\n"); return 0; }
 
     /* Clear NX on the executable segments before applying relocations, so
-     * IRELATIVE resolvers inside them can run, then reload the TLB. */
+     * IRELATIVE resolvers inside them can run, then reload the TLB.
+     * Pass the current CR3 so we update the active page tables. */
+    unsigned long cur_cr3;
+    __asm__ volatile("mov %%cr3, %0" : "=r"(cur_cr3));
     for (i = 0; i < nxr; i++)
-        mm_user_set_exec(xr[i].start, xr[i].end);
+        mm_user_set_exec(xr[i].start, xr[i].end, cur_cr3);
 
     apply_exec_relocs(data, size, base, xr, nxr);
 
@@ -3286,6 +3481,28 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         sb16_pump();
         return 0;
     }
+    case 229: { /* SYS_SB16_STREAM_OPEN: allocate a mixer stream.
+                 * Returns stream id (0..3) or -1 on failure. */
+        return sb16_stream_open();
+    }
+    case 230: { /* SYS_SB16_STREAM_CLOSE: close a mixer stream.
+                 * a1=stream id. */
+        sb16_stream_close((int)a1);
+        return 0;
+    }
+    case 232: { /* SYS_SB16_STREAM_SUBMIT: queue PCM data into a stream.
+                 * a1=stream id, a2=user buf, a3=len. */
+        const unsigned char *pcm = (const unsigned char *)a2;
+        long len = a3;
+        if (len < 0) return -EFAULT;
+        if (!user_range_ok((unsigned long)a2, (unsigned long)len)) return -EFAULT;
+        return sb16_stream_submit((int)a1, pcm, (unsigned)len);
+    }
+    case 233: { /* SYS_SB16_STREAM_VOLUME: set stream volume.
+                 * a1=stream id, a2=volume (0..255). */
+        sb16_stream_volume((int)a1, (unsigned char)a2);
+        return 0;
+    }
     case 206: { /* SYS_PALETTE: load 256-color VGA DAC palette (768 bytes) */
         unsigned char *pal = (unsigned char *)a1;
         if (!user_range_ok((unsigned long)a1, 768)) return -EFAULT;
@@ -3820,14 +4037,11 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     unsigned long saved_gsbase   = rdmsr(MSR_GSBASE);
 
     /* Snapshot the mmap tables so the child cannot corrupt them.
-     * We copy the entire VMA pool into a static buffer and give the child
-     * its own copy; the parent's pool and tree roots are never modified. */
+     * We copy the entire VMA pool into a static buffer; the parent's
+     * pool and tree roots are restored after the child exits. */
     static vma_node_t parent_vma_pool_copy[VMA_MAX];
-    static vma_node_t child_vma_pool[VMA_MAX];
-    for (int i = 0; i < vma_pool_n; i++) {
+    for (int i = 0; i < vma_pool_n; i++)
         parent_vma_pool_copy[i] = vma_pool[i];
-        child_vma_pool[i] = vma_pool[i];
-    }
     vma_node_t *parent_live_root = vma_live_root;
     vma_node_t *parent_free_root = vma_free_root;
     int parent_pool_n = vma_pool_n;
@@ -3943,13 +4157,16 @@ int k_exec_user(void *entry, int argc, char **argv) {
     unsigned long frame[5];
     if (!sp) return -1;
     exec_exit_code = 0;
-    /* Save the caller's saved stack pointer in syscall_kstack and restore it
-       on the way out: when SYS_SPAWN runs an ET_EXEC child, syscall_kstack
-       currently holds the outer syscall's incoming rsp.  Clobbering it here
-       (as the old code did) would make the outer syscall_entry xchg restore
-       rsp=0x88000 instead of the parent's real stack, and the parent would
-       resume at ring 0 with a broken stack. */
     unsigned long saved_kstack = syscall_kstack;
+
+    /* Create fresh per-process page tables for the new program so it gets
+     * an isolated address space.  Save the parent's CR3 to restore later. */
+    unsigned long parent_cr3;
+    __asm__ volatile("mov %%cr3, %0" : "=r"(parent_cr3));
+    uint64_t new_cr3 = pt_clone_user(0);
+    if (new_cr3) {
+        __asm__ volatile("mov %0, %%cr3; mov %%cr3, %%rax" :: "r"(new_cr3) : "rax", "memory");
+    }
 
     /* The child is a ring-3 Linux binary whose `syscall` instructions swap
        onto syscall_kstack.  If it points at SYS_KSTK_TOP (0x88000), every
@@ -3998,6 +4215,13 @@ int k_exec_user(void *entry, int argc, char **argv) {
         __builtin_unreachable();
     }
     user_program_active = 0;
+
+    /* Restore the parent's page tables and free the child's. */
+    if (new_cr3) {
+        pt_free_user(new_cr3);
+        __asm__ volatile("mov %0, %%cr3" :: "r"(parent_cr3) : "memory");
+    }
+    (void)parent_cr3;
 
     /* exit() went through the SYSCALL path, which already reloaded CS/SS to
      * the kernel selectors; restore the data segments and syscall stack. */
@@ -5962,13 +6186,13 @@ static void shell_exec_builtin(int argc, char **argv) {
     else if (kstrcmp(argv[0], "sb16") == 0) {
         sb16_counters_t c;
         sb16_counters(&c);
-        kprintf("sb16: present=%d mode=%d ring=%u/%u\n",
+        kprintf("sb16: present=%d mode=%d ring=%u/%u streams=%d\n",
                 sb16_present(), sb16_mode_active(), sb16_ring_free(),
-                (unsigned)SB16_RING_CAP);
+                (unsigned)SB16_RING_CAP, sb16_stream_count());
         kprintf("sb16: arms irq=%lu poll=%lu submits=%lu drops=%lu\n",
                 c.irq_arms, c.poll_arms, c.submits, c.drops);
-        kprintf("sb16: stalls=%lu pump_fills=%lu\n",
-                c.stalls, c.pump_fills);
+        kprintf("sb16: stalls=%lu pump_fills=%lu mixes=%lu\n",
+                c.stalls, c.pump_fills, c.mixes);
     }
     else if (kstrcmp(argv[0], "gfx") == 0) {
         shell_cmd_gfx(argc, argv);

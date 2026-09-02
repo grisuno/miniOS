@@ -4,15 +4,17 @@
 /* Sound Blaster 16 DMA audio driver contract.
  *
  * The kernel owns a real PCM audio device (QEMU `-device sb16`) and exposes
- * two sinks over a continuous IRQ-driven 8-bit DMA stream:
+ * a multicanal mixer over a continuous IRQ-driven 8-bit DMA stream:
  *
  *  - tone mode (default): `sb16_tone` renders a square wave so the existing
  *    `sys_tone` sink (Doom's note players, the shell, any program) gets real
  *    audio instead of the 1-bit PC speaker when an SB16 is present.
  *
- *  - PCM mode: `sb16_pcm_open`/`sb16_pcm_submit` stream raw 8-bit PCM from a
- *    ring-3 renderer through the same DMA path.  This is the hook a synth
- *    renderer feeds, giving full-quality audio.
+ *  - PCM mixer mode: up to SB16_STREAMS concurrent streams, each with its
+ *    own ring buffer and volume.  `sb16_mix_all` sums all active streams
+ *    into a mix buffer that feeds the DMA ring.  The legacy
+ *    `sb16_pcm_open`/`sb16_pcm_submit` API is preserved as stream 0 for
+ *    backward compatibility.
  *
  * DMA completion is signalled by the SB16 interrupt (IRQ5, vector 37) AND by
  * a timer-ISR watchdog (`sb16_poll`).  The interrupt is the precise fast
@@ -20,8 +22,7 @@
  * missed or delayed, and the shared re-arm gate rate-limits both paths so a
  * fast host audio backend can never wedge the ring or trigger an interrupt
  * storm.  Without the watchdog the 7-slot ring fills once and every later
- * submit is refused (observed on QEMU backends that never consume), which
- * deadens the audio path.
+ * submit is refused, deadening the audio path.
  *
  * Fail-closed: when no SB16 is present the probe returns false and the kernel
  * keeps routing `sys_tone` to the PC speaker; a PCM submit with no SB16 is
@@ -35,12 +36,26 @@
 #define SB16_ARM_PERIOD_MS \
     ((unsigned)((SB16_PCM_BUF * 1000u + SB16_PCM_RATE - 1u) / SB16_PCM_RATE))
 
-/* Kernel-side audio ring buffer.  pcm_submit writes here; the ISR and
- * sb16_pump drain it into the DMA ring.  This decouples the ring-3
- * renderer's frame rate from the DMA playback rate so a slow UI frame
- * never starves the speaker. */
+/* Per-stream ring buffer.  Each stream gets SB16_STREAM_BUF bytes of
+ * kernel-side buffering so multiple producers never interfere.  At 22050 Hz
+ * 8-bit mono that is ~366 ms per stream. */
+#define SB16_STREAMS      4u       /* max concurrent mixer streams */
+#define SB16_STREAM_BUF   (SB16_PCM_BUF * 4u)  /* 8192 bytes per stream */
+
+/* Legacy kernel-side audio ring (stream 0).  Kept for backward compatibility
+ * with apps that use the old sb16_pcm_open/submit/pump API directly. */
 #define SB16_KB_SLOTS     32u   /* ~3 seconds at 22050 Hz */
 #define SB16_KB_RING_SZ   (SB16_KB_SLOTS * SB16_PCM_BUF)
+
+/* Mixer stream state. */
+typedef struct {
+    int active;             /* stream is open */
+    unsigned char *ring;    /* per-stream ring buffer (SB16_STREAM_BUF bytes) */
+    unsigned head;          /* write position (bytes) */
+    unsigned tail;          /* read position (bytes) */
+    unsigned count;         /* bytes available */
+    unsigned char volume;   /* 0..255 (255 = full volume, 128 = unity) */
+} sb16_stream_t;
 
 typedef struct {
     unsigned long irq_arms;   /* re-arms granted on the IRQ fast path */
@@ -49,6 +64,7 @@ typedef struct {
     unsigned long drops;      /* pcm_submit calls refused (ring full / bad) */
     unsigned long stalls;     /* DMA needed data but kernel ring was empty */
     unsigned long pump_fills; /* pump calls that moved data to DMA */
+    unsigned long mixes;      /* sb16_mix_all calls */
 } sb16_counters_t;
 
 int sb16_init(void);
@@ -57,10 +73,18 @@ void sb16_tone(unsigned freq);
 void sb16_irq(void);
 void sb16_poll(void);
 
+/* Legacy single-stream API (maps to stream 0). */
 void sb16_pcm_open(void);
 int  sb16_pcm_submit(const unsigned char *pcm, unsigned len);
 void sb16_pcm_close(void);
 void sb16_pump(void);
+
+/* Mixer stream API. */
+int  sb16_stream_open(void);
+void sb16_stream_close(int id);
+int  sb16_stream_submit(int id, const unsigned char *pcm, unsigned len);
+void sb16_stream_volume(int id, unsigned char vol);
+int  sb16_stream_count(void);
 
 unsigned sb16_ring_free(void);
 int      sb16_mode_active(void);

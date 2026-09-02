@@ -6,6 +6,7 @@
  * Provides a single interface over the two hardware sinks:
  *   - PC speaker (square wave, syscalls 209/210/214)
  *   - Sound Blaster 16 (8-bit mono PCM DMA, syscalls 221/222/224)
+ *   - SB16 multicanal mixer (streams, syscalls 225-228)
  *
  * Ring-3 programs use these wrappers instead of calling raw syscalls.
  * The kernel dispatches to the appropriate hardware backend.
@@ -34,5 +35,11 @@ unsigned audio_get_volume(void);
 
 /* Query hardware presence. */
 int audio_sb16_present(void);
+
+/* Mixer stream API (SB16 multicanal). */
+int  audio_stream_open(void);
+void audio_stream_close(int id);
+int  audio_stream_submit(int id, const void *buf, unsigned len);
+void audio_stream_volume(int id, unsigned char vol);
 
 #endif /* AUDIO_H */

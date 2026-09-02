@@ -12,6 +12,12 @@ static long syscall2(long n, long a1, long a2) {
     return r;
 }
 
+static long syscall3(long n, long a1, long a2, long a3) {
+    long r;
+    __asm__ volatile("syscall" : "=a"(r) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx","r11","memory");
+    return r;
+}
+
 static long syscall0(long n) {
     long r;
     __asm__ volatile("syscall" : "=a"(r) : "a"(n) : "rcx","r11","memory");
@@ -53,4 +59,20 @@ unsigned audio_get_volume(void) {
 
 int audio_sb16_present(void) {
     return (int)syscall1(MINIOS_SYS_SB16_OPEN, 0);
+}
+
+int audio_stream_open(void) {
+    return (int)syscall0(MINIOS_SYS_SB16_STREAM_OPEN);
+}
+
+void audio_stream_close(int id) {
+    syscall1(MINIOS_SYS_SB16_STREAM_CLOSE, (long)id);
+}
+
+int audio_stream_submit(int id, const void *buf, unsigned len) {
+    return (int)syscall3(MINIOS_SYS_SB16_STREAM_SUBMIT, (long)id, (long)buf, (long)len);
+}
+
+void audio_stream_volume(int id, unsigned char vol) {
+    syscall2(MINIOS_SYS_SB16_STREAM_VOLUME, (long)id, (long)vol);
 }

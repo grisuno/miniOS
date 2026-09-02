@@ -321,7 +321,11 @@ int proc_create(const char *name, int parent_pid) {
 
     p->ctx.rip = (uint64_t)user_trampoline;
     p->ctx.rsp = (uint64_t)frame;
-    p->ctx.cr3 = read_cr3();
+    /* Give the new process its own page tables so it is isolated from
+     * the parent and from other processes.  pt_clone_user copies the
+     * kernel identity mapping and creates fresh user-window PTEs. */
+    uint64_t new_cr3 = pt_clone_user(read_cr3());
+    p->ctx.cr3 = new_cr3 ? new_cr3 : read_cr3();
     p->ctx.rflags = 0x200;
 
     if (proc_count <= pid) proc_count = pid + 1;
@@ -354,6 +358,11 @@ void do_exit(int code) {
     proc_t *cur = proc_get(current_pid);
     if (!cur) return;
     cur->exit_code = code;
+    /* Free the process's per-process page tables before switching away.
+     * The kernel identity mapping is shared and not freed; only the user-
+     * window PML4, PDPT, PD and PT pages are released. */
+    if (cur->ctx.cr3 && cur->ctx.cr3 != read_cr3())
+        pt_free_user(cur->ctx.cr3);
     cur->state = PROC_ZOMBIE;
     if (cur->parent_pid >= 0) {
         proc_t *parent = proc_get(cur->parent_pid);
@@ -373,6 +382,9 @@ int do_waitpid(int pid) {
                 && procs[i].parent_pid == current_pid
                 && procs[i].state == PROC_ZOMBIE) {
                 int code = procs[i].exit_code;
+                /* Free per-process page tables if not already freed in do_exit. */
+                if (procs[i].ctx.cr3)
+                    pt_free_user(procs[i].ctx.cr3);
                 procs[i].state = PROC_FREE;
                 return code;
             }
