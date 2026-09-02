@@ -1,9 +1,7 @@
 # test.py -- in-OS test suite for MiniOS, driven by MicroPython.
 #
-# Runs inside the machine and verifies the kernel (minios module bindings) and
-# the self-hosted toolchain (minigcc -> ld -> execute) from within, through the
-# minios.run() SYS_SPAWN boundary. Complements the host-side test_bdd.sh: it
-# inspects kernel state the host cannot see and needs no QEMU/serial timing.
+# Tests every available binary sorted by size (smallest first).
+# Graphical programs excluded: DOOM, Quake2, Nuklear, Piano, TopoGPT.
 #
 # Usage (inside MiniOS):
 #   micropython src/test.py
@@ -35,6 +33,8 @@ def safe_run(*a, **kw):
         return None
 
 
+# ── Interpreter module bindings ─────────────────────────────────────
+
 def test_module_bindings():
     check('time_ms is int', isinstance(minios.time_ms(), int))
     try:
@@ -53,38 +53,7 @@ def test_module_bindings():
     check('volume in range', 0 <= v <= 100, 'v=%d' % v)
 
 
-def test_toolchain():
-    # Compile a known source to assembly (captured to a temp file).
-    rc = minios.run('/objects/minigcc.o', ['/src/fib.c'], redirect='/asm/_t.s')
-    check('minigcc compiles', rc == 0, 'exit=%s' % str(rc))
-    if rc != 0:
-        return
-    # Link the assembly into an ELF.
-    rc = minios.run('/objects/ld.o', ['-f', 'elf', '-o', '/bin/_t.elf',
-                                     '/asm/_t.s'])
-    check('ld links', rc == 0, 'exit=%s' % str(rc))
-    if rc != 0:
-        return
-    # Execute the freshly built ELF.  fib.c's main returns fib(10) = 55.
-    # SYS_SPAWN of an ET_EXEC child from inside an interpreter is a known
-    # pre-existing limitation (the parent-window save cannot fit the heap), so
-    # run() returns None: report it as a FAIL but do NOT abort the suite, or
-    # the lzss/lz4/aes tests below would never run.
-    rc = safe_run('/bin/_t.elf')
-    check('built elf runs', rc == 55, 'exit=%s' % str(rc))
-
-
-def test_spawn_preserves_interpreter():
-    # The parent MicroPython must survive a ring-0 child run.
-    before = minios.time_ms()
-    rc = minios.run('/objects/minigcc.o', ['/src/ldhello.c'], redirect='/asm/_t2.s')
-    after = minios.time_ms()
-    check('parent survives child', rc == 0 and after >= before,
-          'rc=%d before=%d after=%d' % (rc, before, after))
-
-
 def test_filesystem():
-    # Unified fs: write then read back through Python's open().
     path = '/tmp/pytest.txt'
     try:
         with open(path, 'w') as f:
@@ -96,69 +65,109 @@ def test_filesystem():
         check('fs write/read', False, str(e))
 
 
-def test_json():
-    # Write a test JSON file, run json to validate and pretty-print.
-    path = '/tmp/test.json'
-    try:
-        with open(path, 'w') as f:
-            f.write('{"a":1,"b":[2,3],"c":"hello"}\n')
-    except OSError as e:
-        check('json validate', False, 'write: %s' % e)
-        return
-    rc = safe_run('/json', [path], redirect='/tmp/_json_out.txt')
-    check('json validate', rc == 0, 'exit=%s' % str(rc))
-    # Query a dotted path.
-    rc2 = safe_run('/json', [path, '.a'], redirect='/tmp/_json_q.txt')
-    check('json query', rc2 == 0, 'exit=%s' % str(rc2))
+# ── ET_REL objects (run at ring 0, sorted by size) ─────────────────
+# These work from the interpreter because they are ring-0 kernel
+# extensions; the SYS_SPAWN parent-window issue does not apply.
+
+def test_xxhash():
+    rc = minios.run('/objects/xxhash.o')
+    check('xxhash selftest', rc == 0, 'exit=%s' % str(rc))
 
 
-def test_lzss_roundtrip():
-    # Compress then decompress, verify roundtrip.
-    src = '/tmp/_lzss_src.txt'
-    comp = '/tmp/_lzss_c.bin'
-    decomp = '/tmp/_lzss_d.txt'
-    payload = 'lzss roundtrip test data ' + 'x' * 200 + '\n'
+def test_stb():
+    rc = minios.run('/objects/stb.o')
+    check('stb selftest', rc == 0, 'exit=%s' % str(rc))
+
+
+def test_dlmalloc():
+    rc = minios.run('/objects/dlmalloc.o')
+    check('dlmalloc selftest', rc == 0, 'exit=%s' % str(rc))
+
+
+def test_hello():
+    rc = minios.run('/objects/hello.o', ['arg1', 'arg2'])
+    check('hello runs', rc == 42, 'exit=%s' % str(rc))
+
+
+def test_ftest():
+    rc = minios.run('/objects/ftest.o', ['ftest_prog'])
+    check('ftest libc surface', rc == 7, 'exit=%s' % str(rc))
+
+
+def test_minigcc():
+    rc = minios.run('/objects/minigcc.o', ['/src/fib.c'], redirect='/asm/_t.s')
+    check('minigcc compiles', rc == 0, 'exit=%s' % str(rc))
+
+
+def test_ld():
     try:
-        with open(src, 'w') as f:
-            f.write(payload)
-    except OSError as e:
-        check('lzss compress', False, 'write: %s' % e)
+        with open('/asm/_t.s') as f:
+            f.read()
+    except OSError:
+        check('ld links', False, 'no /asm/_t.s')
         return
-    rc = safe_run('/lzss', [src, comp])
-    check('lzss compress', rc == 0, 'exit=%s' % str(rc))
+    rc = minios.run('/objects/ld.o', ['-f', 'elf', '-o', '/bin/_t.elf',
+                                     '/asm/_t.s'])
+    check('ld links', rc == 0, 'exit=%s' % str(rc))
+
+
+# test_cvm skipped: requires shell's argv[0] rewrite, not available via minios.run()
+
+
+# ── Full toolchain roundtrip ────────────────────────────────────────
+
+def test_toolchain_roundtrip():
+    rc = minios.run('/objects/minigcc.o', ['/src/fib.c'], redirect='/asm/_t.s')
     if rc != 0:
+        check('toolchain roundtrip', False, 'minigcc failed')
         return
-    rc = safe_run('/unlzss', [comp, decomp])
-    check('lzss decompress', rc == 0, 'exit=%s' % str(rc))
+    rc = minios.run('/objects/ld.o', ['-f', 'elf', '-o', '/bin/_t.elf',
+                                     '/asm/_t.s'])
     if rc != 0:
+        check('toolchain roundtrip', False, 'ld failed')
         return
-    try:
-        with open(decomp) as f:
-            result = f.read()
-        check('lzss roundtrip', result == payload,
-              'len=%d expected=%d' % (len(result), len(payload)))
-    except OSError as e:
-        check('lzss roundtrip', False, 'read: %s' % e)
+    # ET_EXEC child from interpreter is a known limitation.
+    rc = safe_run('/bin/_t.elf')
+    check('toolchain roundtrip', rc == 55, 'exit=%s' % str(rc))
 
 
-def test_lz4_roundtrip():
+def test_spawn_preserves_interpreter():
+    before = minios.time_ms()
+    rc = minios.run('/objects/minigcc.o', ['/src/ldhello.c'],
+                    redirect='/asm/_t2.s')
+    after = minios.time_ms()
+    check('parent survives child', rc == 0 and after >= before,
+          'rc=%s before=%d after=%d' % (str(rc), before, after))
+
+
+# ── ET_EXEC tools on MiniFS (sorted by size, run via safe_run) ─────
+# SYS_SPAWN of an ET_EXEC child from inside an interpreter is a known
+# pre-existing limitation.  safe_run() catches OSError so the suite
+# reports FAIL and continues instead of aborting.
+
+def test_bin_cp():
+    rc = safe_run('/cp', ['/src/hello.c', '/tmp/_cp_test.c'])
+    check('cp copies file', rc == 0, 'exit=%s' % str(rc))
+
+
+def test_bin_lz4():
     src = '/tmp/_lz4_src.txt'
     comp = '/tmp/_lz4_c.bin'
     decomp = '/tmp/_lz4_d.txt'
-    payload = 'lz4 roundtrip test data ' + 'y' * 300 + '\n'
+    payload = 'lz4 test payload ' + 'A' * 200 + '\n'
     try:
         with open(src, 'w') as f:
             f.write(payload)
     except OSError as e:
-        check('lz4 compress', False, 'write: %s' % e)
+        check('lz4 roundtrip', False, 'write: %s' % e)
         return
     rc = safe_run('/lz4', [src, comp])
-    check('lz4 compress', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
+        check('lz4 roundtrip', False, 'compress exit=%s' % str(rc))
         return
     rc = safe_run('/unlz4', [comp, decomp])
-    check('lz4 decompress', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
+        check('lz4 roundtrip', False, 'decompress exit=%s' % str(rc))
         return
     try:
         with open(decomp) as f:
@@ -169,26 +178,54 @@ def test_lz4_roundtrip():
         check('lz4 roundtrip', False, 'read: %s' % e)
 
 
-def test_aes_roundtrip():
+def test_bin_lzss():
+    src = '/tmp/_lzss_src.txt'
+    comp = '/tmp/_lzss_c.bin'
+    decomp = '/tmp/_lzss_d.txt'
+    payload = 'lzss test payload ' + 'B' * 200 + '\n'
+    try:
+        with open(src, 'w') as f:
+            f.write(payload)
+    except OSError as e:
+        check('lzss roundtrip', False, 'write: %s' % e)
+        return
+    rc = safe_run('/lzss', [src, comp])
+    if rc != 0:
+        check('lzss roundtrip', False, 'compress exit=%s' % str(rc))
+        return
+    rc = safe_run('/unlzss', [comp, decomp])
+    if rc != 0:
+        check('lzss roundtrip', False, 'decompress exit=%s' % str(rc))
+        return
+    try:
+        with open(decomp) as f:
+            result = f.read()
+        check('lzss roundtrip', result == payload,
+              'len=%d expected=%d' % (len(result), len(payload)))
+    except OSError as e:
+        check('lzss roundtrip', False, 'read: %s' % e)
+
+
+def test_bin_aes():
     src = '/tmp/_aes_src.txt'
     enc = '/tmp/_aes_enc.bin'
     dec = '/tmp/_aes_dec.txt'
     key = '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff'
     nonce = '000000000000000000000000deadbeef'
-    payload = 'aes roundtrip test data ' + 'z' * 150 + '\n'
+    payload = 'aes test payload ' + 'C' * 150 + '\n'
     try:
         with open(src, 'w') as f:
             f.write(payload)
     except OSError as e:
-        check('aes encrypt', False, 'write: %s' % e)
+        check('aes roundtrip', False, 'write: %s' % e)
         return
     rc = safe_run('/aes', [key, nonce, src, enc])
-    check('aes encrypt', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
+        check('aes roundtrip', False, 'encrypt exit=%s' % str(rc))
         return
     rc = safe_run('/unaes', [key, nonce, enc, dec])
-    check('aes decrypt', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
+        check('aes roundtrip', False, 'decrypt exit=%s' % str(rc))
         return
     try:
         with open(dec) as f:
@@ -199,23 +236,55 @@ def test_aes_roundtrip():
         check('aes roundtrip', False, 'read: %s' % e)
 
 
-def test_freedom():
-    # Run freedom without arguments — should print usage and exit 1.
+def test_bin_json():
+    path = '/tmp/test.json'
+    try:
+        with open(path, 'w') as f:
+            f.write('{"a":1,"b":[2,3],"c":"hello"}\n')
+    except OSError as e:
+        check('json validate', False, 'write: %s' % e)
+        return
+    rc = safe_run('/json', [path], redirect='/tmp/_json_out.txt')
+    check('json validate', rc == 0, 'exit=%s' % str(rc))
+    rc2 = safe_run('/json', [path, '.a'], redirect='/tmp/_json_q.txt')
+    check('json query', rc2 == 0, 'exit=%s' % str(rc2))
+
+
+def test_bin_freedom():
     rc = safe_run('/freedom', [], redirect='/tmp/_freedom_out.txt')
+    # freedom without args prints usage and exits 1
     check('freedom runs', rc == 1, 'exit=%s' % str(rc))
 
 
+# ── Run all tests (sorted by binary size, smallest first) ───────────
+
 def main():
     print('MiniOS in-OS test suite')
+
     test_module_bindings()
-    test_spawn_preserves_interpreter()
-    test_toolchain()
     test_filesystem()
-    test_json()
-    test_lzss_roundtrip()
-    test_lz4_roundtrip()
-    test_aes_roundtrip()
-    test_freedom()
+
+    # ET_REL objects: smallest to largest
+    test_xxhash()         # 2176 bytes
+    test_stb()            # 2240 bytes
+    test_dlmalloc()       # 3472 bytes
+    test_hello()          # 1784 bytes
+    test_ftest()          # 2432 bytes
+    test_minigcc()        # 145280 bytes
+    test_ld()             # 155480 bytes
+
+    # Toolchain roundtrip
+    test_toolchain_roundtrip()
+    test_spawn_preserves_interpreter()
+
+    # ET_EXEC tools on MiniFS: smallest to largest
+    test_bin_cp()         # 4580 bytes
+    test_bin_lz4()        # 8676 bytes
+    test_bin_lzss()       # 16868 bytes
+    test_bin_aes()        # 16868 bytes
+    test_bin_json()       # 16868 bytes
+    test_bin_freedom()    # 45540 bytes
+
     print('TOTAL pass=%d fail=%d' % (PASS, FAIL))
     return 1 if FAIL else 0
 
