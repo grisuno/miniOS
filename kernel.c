@@ -3273,7 +3273,6 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     wrmsr(MSR_FSBASE, saved_fsbase);
     wrmsr(MSR_GSBASE, saved_gsbase);
     for (int i = 0; i < KFD_MAX; i++) kfd_table[i] = saved_kfd[i];
-    kprintf("DBG end k_syscall_spawn rc=%d\n", rc);
     /* Do NOT clobber syscall_kstack here: it holds the outer syscall's
        incoming rsp, and the outer syscall_entry xchg needs that exact value
        to return to the parent.  k_run_rel/k_exec_user already restored it. */

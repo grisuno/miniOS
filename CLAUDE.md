@@ -588,6 +588,24 @@ framebuffer is not.
 
 ## Kernel Contracts
 
+### Single source of truth for the memory layout (`progs/minios_abi.h`)
+The user-window layout — load base, stack, brk cap, the graphics back-buffers,
+the linear framebuffer and the kernel heap — is defined **once** in
+`progs/minios_abi.h`, the header shared by the kernel and every ring-3 program.
+The kernel derives its own constants from it (`kernel.h` -> `kernel.c`
+`USER_LOAD_*`/`USER_STACK_*`/`HEAP_*`, `vga_fb.h` `FB_ADDR`/`DOOM_BACKBUF_ADDR`/
+`NK_BACKBUF_ADDR`, `sched.c`), so growing the window or moving a back-buffer is
+a one-line edit in one file instead of a cross-file address hunt. This is the
+direct fix for the historical bug where moving an address (DOOM's back-buffer
+`0x7C00000 -> 0x0B000000`, the user-window growth) left a consumer writing the
+old value and silently breaking. Belt and suspenders: `_Static_assert`s in
+`kernel.c` prove the kernel's values equal the ABI header, and the asm-safe
+`USER_WIN_LO`/`USER_WIN_HI` syscall-return mirrors are checked too. **Rule: never
+hardcode a layout address in the kernel or a ring-3 program; put it in
+`minios_abi.h`.** The scheduler's old local `MY_USER_STACK_TOP` (`0x07400000`)
+is gone — it went stale when the window grew and would have stacked a scheduled
+process in the middle of the heap.
+
 ### Ramdisk
 The data area is sized from the image that is loaded plus a spare margin, and
 grows on demand up to `RD_DATA_MAX`; it is never a fixed reservation that the
@@ -935,6 +953,26 @@ namespace the ramdisk names describe:
   buffer of `RAMDISK_FNAME_LEN`; a name that does not fit is rejected like
   a missing file, never truncated. `kfopen` refuses directory names, so
   `edit dir/`, `cat dir/` and redirects into a directory fail cleanly.
+- **Write fallback to MiniFS (`kfopen`)**: a write (`w`/`a`) goes to the
+  ramdisk only when the flat namespace can host it (the parent directory entry
+  exists there). When it cannot — e.g. `run objects/minigcc.o p.c > asm/_t.s`
+  or a program writing `tmp/...`, neither of which has a parent on the ramdisk
+  — `kfopen` falls back to MiniFS, the real directory-capable filesystem,
+  auto-creating the parent chain with `minifs_mkdir_p` and creating the file
+  with `minifs_create`. This is what fixed the lua and MicroPython in-OS test
+  suites: before it, the "refuse to create a ramdisk file when its parent is
+  missing" rule silently dropped every redirect into a non-ramdisk directory,
+  so `ld` could not open the freshly compiled `_t.s`. MiniFS-backed writes
+  flush through `minifs_write`, and `kfclose` calls `minifs_sync` so the block/
+  inode bitmaps stay consistent across reboots. `fstat`/`access`/`unlink`
+  report and operate on MiniFS-backed files too.
+  A latent bug in `minifs_write` (minifs.c) surfaced when this path became
+  reachable: after `minifs_inode_alloc_block` mapped a fresh block into the
+  *local* inode struct, an `fs_read_inode` reload wiped that mapping (the inode
+  is only persisted by the `fs_write_inode` at the end of the function), so the
+  data landed in a block the on-disk inode never referenced and the file read
+  back as zeros. The reload was removed; the block pointer now survives to the
+  end-of-function inode write.
 - `ps` lists the registered programs (name, kind, entry address).
 - The prompt stays `miniOS> `: the cwd is reported by `pwd`, so the MCP
   marker wait keeps working unchanged.
@@ -1247,6 +1285,74 @@ instead of "DOOM"). All other infrastructure is reused: `SYS_DOOM_FRAME`
 The BDD scenario `quake2generic binary exists on minifs` verifies the ELF
 ships on MiniFS. A full gameplay test requires the PAK file and is not
 automated in the serial-console BDD suite (same as DOOM).
+
+## Headless "it actually plays" harness (`tools/boot_run.sh`)
+
+A one-off manual check should not hand-roll a QEMU launch. `tools/boot_run.sh`
+boots `os.img`, drives the shell over the serial console with an ordered list
+of commands, and captures the full transcript to a log:
+
+```
+tools/boot_run.sh "cmd1" "cmd2" ... [--timeout N] [--log FILE]
+```
+
+It sends `poweroff` after the commands, so a healthy guest exits on its own and
+the script returns 0; a hang hits the `--timeout` safety net and exits 124.
+A stale guest is reaped first so the image write lock is never held across
+runs. Examples:
+
+```
+tools/boot_run.sh "lua src/test.lua"
+tools/boot_run.sh "gfx frames" "run doomgeneric.elf mini_autoframes 150" "gfx frames"
+tools/boot_run.sh "gfx frames" \
+  "run bin/quake2generic.elf +set basedir . +set minios_autoframes 400" "gfx frames"
+```
+
+### Proving a game renders, not merely launches
+
+A game that just starts (or exists) is not proof it *plays*. The kernel counts
+every frame a ring-3 graphics program composites through `SYS_DOOM_FRAME` /
+`SYS_NK_FRAME` (`gfx_frames_composited`, incremented in
+`vga_fb_blit_gfx_window`/`vga_fb_blit_nk_window`), and the `gfx frames` shell
+builtin reports it over the serial console. So the BDD-style check is: read the
+counter, run the game, read the counter again, assert it climbed.
+
+Both engines expose a headless autoquit so the shell regains control and the
+counter can be read afterwards — a game that never exits cannot be queried from
+the single-threaded shell:
+
+- **DOOM**: `run doomgeneric.elf mini_autoframes 150` renders 150 frames of
+  the attract loop and then `exit(0)`s. The bundled `DOOM1.WAD` demos are an
+  older version (`read 108, expected 109`), so DOOM's `-timedemo`/`-playdemo`
+  skip the demo and the game then faults headless; the autoquit path avoids the
+  demo entirely and still exercises the full render pipeline. `mini_autoframes`
+  is parsed from `myargv` in `DG_Init` (`progs/doomgeneric/doomgeneric_minios.c`).
+- **Quake 2**: `run bin/quake2generic.elf +set basedir . +set minios_autoframes 400`
+  renders 400 frames and calls `Sys_Quit()` (`progs/quake2generic/q2generic_minios.c`,
+  parsed from argv in `main`).
+
+Both default to normal interactive play when the argument is absent. Also, the
+MiniOS build of DOOM's `I_Error` now calls `exit(-1)` instead of
+`while(true){}`, so a fatal error (e.g. a missing WAD) terminates the process
+and returns to the shell instead of hanging the whole machine.
+
+Note that Quake 2's demo (`+map demo1`) needs a `baseq2/pak0.pak` that carries
+`demo1.bsp`; the shareware pak does not, so without it Q2G renders the loading
+screen/console rather than a live map, but the frame count still climbs and the
+autoquit still returns cleanly.
+
+### In-OS test suites (Lua / MicroPython toolchain)
+
+`lua src/test.lua` and `micropython src/test.py` run the self-hosted
+toolchain from inside the machine via `minios.run()` (SYS_SPAWN). The
+minigcc/ld steps now work because file writes fall back to MiniFS (see the
+filesystem section): a redirect or program write into `asm/_t.s` or `tmp/...`
+creates the parent directory on the real filesystem instead of being refused by
+the flat ramdisk. The final step (`run /bin/_t.elf`, an ET_EXEC child from
+inside an interpreter) is a known pre-existing limitation: SYS_SPAWN must save
+the parent's user window, whose 188 MB span cannot fit in the 192 MB heap
+alongside the ramdisk, so the spawn returns `-EFAULT` cleanly rather than
+running. It is not a hang and not a memory-address regression.
 
 ## Library integration assessments
 A library lands in MiniOS only when it fits the freestanding kernel's rules
