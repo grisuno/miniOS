@@ -1046,12 +1046,32 @@ int fs_resolve(const char *path, char *out, unsigned cap) {
     return 1;
 }
 
-/* Does the directory `dir` (ending in '/') exist? The root always does. */
+/* Does the directory `dir` (ending in '/') exist? The root always does.
+ * Checks the ramdisk first; when MiniFS is mounted, also checks the disk
+ * filesystem so that directories created at runtime (asm/, cvm/, tmp/, ...)
+ * are reachable via `cd`. */
 int fs_dir_exists(const char *dir) {
     unsigned i;
     if (!dir[0]) return 1;
     for (i = 0; i < rd->count; i++)
         if (kstrncmp(rd->files[i].name, dir, kstrlen(dir)) == 0) return 1;
+    /* MiniFS fallback: strip the trailing '/' for the resolver. */
+    if (minifs_is_mounted()) {
+        unsigned dl = (unsigned)kstrlen(dir);
+        if (dl > 0 && dl < RAMDISK_FNAME_LEN) {
+            char bare[RAMDISK_FNAME_LEN];
+            kmemcpy(bare, dir, dl);
+            if (bare[dl - 1] == '/') dl--;
+            bare[dl] = 0;
+            int ino = minifs_resolve_path(bare);
+            if (ino >= 0) {
+                MiniFSInode st;
+                if (minifs_stat(ino, &st) == 0 &&
+                    (st.mode & MINIFS_S_IFDIR) == MINIFS_S_IFDIR)
+                    return 1;
+            }
+        }
+    }
     return 0;
 }
 

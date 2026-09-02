@@ -930,13 +930,14 @@ longer than the bound or a collision between two files is a build error,
 never a silent truncation that would make a lookup miss.
 
 ### Filesystem commands
-A working directory (`cwd`) and directory-aware builtins, over the same flat
-namespace the ramdisk names describe:
+A working directory (`cwd`) and directory-aware builtins, over a merged view
+of the ramdisk (flat namespace) and MiniFS (real directory-capable filesystem
+on the IDE disk):
 
 - `pwd` prints the cwd (`/` for root). `cd [dir]` changes it: bare `cd` goes
   to root, `cd ..` pops one level, anything else resolves against the current
-  cwd. A directory is any ramdisk name ending in `/`; it exists when the
-  exact entry exists or some file name starts with it. `cd` into a
+  cwd. A directory is any ramdisk name ending in `/` **or** a MiniFS directory
+  (checked via `minifs_resolve_path` + `MINIFS_S_IFDIR`). `cd` into a
   nonexistent directory is a diagnostic, never a silent no-op.
 - `mkdir <name>` creates a directory entry: an empty file named
   `<resolved name>/`. The parent directory must already exist. Creating a
@@ -944,10 +945,15 @@ namespace the ramdisk names describe:
 - `rm <file>` deletes a ramdisk file; a missing file is a diagnostic and a
   directory name (trailing `/`) is refused, never silently removed.
 - `ls [dir]` lists the entries under a directory, defaulting to the cwd,
-  names relative to it. Directory entries appear with their trailing `/`.
+  names relative to it. At root, both ramdisk and MiniFS entries are shown
+  (merged view). In subdirectories, ramdisk entries take priority; when the
+  ramdisk has none for that path, MiniFS entries are shown. Directory entries
+  appear with their trailing `/`.
 - `cat <file> [file...]` prints files in order; with a redirection it
   concatenates them (`cat a b > c`), which is how the MCP marketplace
-  reassembles sources larger than the editor buffer.
+  reassembles sources larger than the editor buffer. File I/O (`kfopen`)
+  checks the ramdisk first, then falls back to MiniFS, so `cat asm/_t.s`
+  works even though `asm/` lives only on MiniFS.
 - Path resolution is one choke point: `kfopen` and the builtins resolve a
   path against the cwd (leading `/` = root, `..` pops one component) into a
   buffer of `RAMDISK_FNAME_LEN`; a name that does not fit is rejected like
