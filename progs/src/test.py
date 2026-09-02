@@ -24,6 +24,17 @@ def check(name, cond, detail=''):
         print('FAIL %s%s' % (name, (' ' + detail) if detail else ''))
 
 
+def safe_run(*a, **kw):
+    # SYS_SPAWN of an ET_EXEC child from inside an interpreter is a known
+    # pre-existing limitation (the parent-window save cannot fit the heap), so
+    # minios.run() raises OSError instead of returning an exit code.  Turn that
+    # into a None so a test reports a clean FAIL rather than aborting the suite.
+    try:
+        return minios.run(*a, **kw)
+    except OSError:
+        return None
+
+
 def test_module_bindings():
     check('time_ms is int', isinstance(minios.time_ms(), int))
     try:
@@ -45,18 +56,22 @@ def test_module_bindings():
 def test_toolchain():
     # Compile a known source to assembly (captured to a temp file).
     rc = minios.run('/objects/minigcc.o', ['/src/fib.c'], redirect='/asm/_t.s')
-    check('minigcc compiles', rc == 0, 'exit=%d' % rc)
+    check('minigcc compiles', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
         return
     # Link the assembly into an ELF.
     rc = minios.run('/objects/ld.o', ['-f', 'elf', '-o', '/bin/_t.elf',
                                      '/asm/_t.s'])
-    check('ld links', rc == 0, 'exit=%d' % rc)
+    check('ld links', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
         return
     # Execute the freshly built ELF.  fib.c's main returns fib(10) = 55.
-    rc = minios.run('/bin/_t.elf')
-    check('built elf runs', rc == 55, 'exit=%d' % rc)
+    # SYS_SPAWN of an ET_EXEC child from inside an interpreter is a known
+    # pre-existing limitation (the parent-window save cannot fit the heap), so
+    # run() returns None: report it as a FAIL but do NOT abort the suite, or
+    # the lzss/lz4/aes tests below would never run.
+    rc = safe_run('/bin/_t.elf')
+    check('built elf runs', rc == 55, 'exit=%s' % str(rc))
 
 
 def test_spawn_preserves_interpreter():
@@ -90,11 +105,11 @@ def test_json():
     except OSError as e:
         check('json validate', False, 'write: %s' % e)
         return
-    rc = minios.run('/json', [path], redirect='/tmp/_json_out.txt')
-    check('json validate', rc == 0, 'exit=%d' % rc)
+    rc = safe_run('/json', [path], redirect='/tmp/_json_out.txt')
+    check('json validate', rc == 0, 'exit=%s' % str(rc))
     # Query a dotted path.
-    rc2 = minios.run('/json', [path, '.a'], redirect='/tmp/_json_q.txt')
-    check('json query', rc2 == 0, 'exit=%d' % rc2)
+    rc2 = safe_run('/json', [path, '.a'], redirect='/tmp/_json_q.txt')
+    check('json query', rc2 == 0, 'exit=%s' % str(rc2))
 
 
 def test_lzss_roundtrip():
@@ -109,12 +124,12 @@ def test_lzss_roundtrip():
     except OSError as e:
         check('lzss compress', False, 'write: %s' % e)
         return
-    rc = minios.run('/lzss', [src, comp])
-    check('lzss compress', rc == 0, 'exit=%d' % rc)
+    rc = safe_run('/lzss', [src, comp])
+    check('lzss compress', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
         return
-    rc = minios.run('/unlzss', [comp, decomp])
-    check('lzss decompress', rc == 0, 'exit=%d' % rc)
+    rc = safe_run('/unlzss', [comp, decomp])
+    check('lzss decompress', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
         return
     try:
@@ -137,12 +152,12 @@ def test_lz4_roundtrip():
     except OSError as e:
         check('lz4 compress', False, 'write: %s' % e)
         return
-    rc = minios.run('/lz4', [src, comp])
-    check('lz4 compress', rc == 0, 'exit=%d' % rc)
+    rc = safe_run('/lz4', [src, comp])
+    check('lz4 compress', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
         return
-    rc = minios.run('/unlz4', [comp, decomp])
-    check('lz4 decompress', rc == 0, 'exit=%d' % rc)
+    rc = safe_run('/unlz4', [comp, decomp])
+    check('lz4 decompress', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
         return
     try:
@@ -167,12 +182,12 @@ def test_aes_roundtrip():
     except OSError as e:
         check('aes encrypt', False, 'write: %s' % e)
         return
-    rc = minios.run('/aes', [key, nonce, src, enc])
-    check('aes encrypt', rc == 0, 'exit=%d' % rc)
+    rc = safe_run('/aes', [key, nonce, src, enc])
+    check('aes encrypt', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
         return
-    rc = minios.run('/unaes', [key, nonce, enc, dec])
-    check('aes decrypt', rc == 0, 'exit=%d' % rc)
+    rc = safe_run('/unaes', [key, nonce, enc, dec])
+    check('aes decrypt', rc == 0, 'exit=%s' % str(rc))
     if rc != 0:
         return
     try:
@@ -186,8 +201,8 @@ def test_aes_roundtrip():
 
 def test_freedom():
     # Run freedom without arguments — should print usage and exit 1.
-    rc = minios.run('/freedom', [], redirect='/tmp/_freedom_out.txt')
-    check('freedom runs', rc == 1, 'exit=%d' % rc)
+    rc = safe_run('/freedom', [], redirect='/tmp/_freedom_out.txt')
+    check('freedom runs', rc == 1, 'exit=%s' % str(rc))
 
 
 def main():

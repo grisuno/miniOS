@@ -126,6 +126,7 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(OBJ_DIR)/stb.o $(OBJ_DIR)/xxhash.o $(OBJ_DIR)/dlmalloc.o \
             $(BIN_DIR)/minigcc.elf $(BIN_DIR)/cp \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
+            $(SRC_DIR)/test.lua \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/etc/shortcuts \
             $(PROGS_DIR)/etc/host.zip \

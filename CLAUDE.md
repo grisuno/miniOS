@@ -1348,11 +1348,25 @@ toolchain from inside the machine via `minios.run()` (SYS_SPAWN). The
 minigcc/ld steps now work because file writes fall back to MiniFS (see the
 filesystem section): a redirect or program write into `asm/_t.s` or `tmp/...`
 creates the parent directory on the real filesystem instead of being refused by
-the flat ramdisk. The final step (`run /bin/_t.elf`, an ET_EXEC child from
-inside an interpreter) is a known pre-existing limitation: SYS_SPAWN must save
-the parent's user window, whose 188 MB span cannot fit in the 192 MB heap
-alongside the ramdisk, so the spawn returns `-EFAULT` cleanly rather than
-running. It is not a hang and not a memory-address regression.
+the flat ramdisk. Both files ship on the **ramdisk** (`src/test.lua` and
+`src/test.py`), so `ls` shows them next to the other `src/` scripts; test.lua
+is also packed onto MiniFS. The suites are fail-safe, never crashing: every
+`minios.run()` result is formatted through `tostring`/`str`, so a spawn that
+returns `nil` reports a clean FAIL instead of aborting the script.
+
+The ET_EXEC tool tests (`json`, `lzss`, `lz4`, `aes`, `freedom`, and running
+the freshly built `_t.elf`) report FAIL with `exit=nil`: SYS_SPAWN of an
+ET_EXEC child from inside an interpreter is a **pre-existing limitation**. A
+ring-3 interpreter must be preserved across the child, which loads into the
+same shared user window, so SYS_SPAWN has to save the parent window — a span
+that cannot fit in the kernel heap alongside the ramdisk, and whose
+klongjmp/syscall-stack unwind is not robust in a single address space. The
+spawn therefore returns `-EFAULT` cleanly (the interpreter gets `nil`), never
+a crash or a hang. This is why the interpreter suites cover the module
+bindings, the filesystem and the **ET_REL** toolchain (minigcc/ld work); the
+ET_EXEC tools are exercised at the shell level by `tools/test_codecs.sh`, which
+drives the real `lzss`/`unlzss`, `lz4`/`unlz4` and `aes`/`unaes` roundtrips
+through the serial console (pass=3 in the gate).
 
 ## Library integration assessments
 A library lands in MiniOS only when it fits the freestanding kernel's rules
@@ -1439,6 +1453,7 @@ is forbidden; the answer to a survivor is a new scenario.
 ```bash
 make                # zero warnings
 ./test_bdd.sh       # all scenarios green
+./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh         # every mutant killed (BDD + host TLS suite)
 make test-tls       # host-side crypto + full-handshake suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green

@@ -3075,7 +3075,17 @@ static unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
 /* SYS_SPAWN (215): run a ramdisk program from inside the OS.
  * Saves the parent's user window, loads the child, runs it via k_exec_user,
  * and restores the parent on return. ET_REL children run at ring 0 via
- * k_run_rel; ET_EXEC/ET_DYN children run at ring 3 via k_exec_user. */
+ * k_run_rel; ET_EXEC/ET_DYN children run at ring 3 via k_exec_user.
+ *
+ * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from
+ * a ring-3 interpreter (lua/micropython) must save the parent's user window,
+ * whose full span cannot fit in the kernel heap alongside the ramdisk, and the
+ * klongjmp/syscall-stack unwind after the child exits is not robust in the
+ * single shared address space.  Such a spawn therefore returns -EFAULT cleanly
+ * (the interpreter gets nil) rather than running or crashing.  This is why the
+ * in-OS interpreter suites exercise only the ET_REL toolchain (minigcc/ld);
+ * ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
+ * interpreter. */
 static int k_syscall_spawn(const char *path, const char *redirect,
                             int child_argc, const char **child_argv) {
     if (!path || !user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN))
@@ -3194,8 +3204,6 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     unsigned long window_sz = 0;
     if (etype == ET_EXEC || etype == ET_DYN) {
         unsigned long parent_top = g_brk;
-        /* Scan the stack from top down; the first non-zero page gives the
-         * approximate high-water mark. */
         volatile unsigned long *sp =
             (volatile unsigned long *)USER_STACK_TOP;
         while (sp > (volatile unsigned long *)USER_STACK_BASE) {

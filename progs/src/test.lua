@@ -37,16 +37,20 @@ end
 local function test_toolchain()
   -- Compile a known source to assembly (captured to a temp file).
   local rc = minios.run('/objects/minigcc.o', {'/src/fib.c'}, '/asm/_t.s')
-  check('minigcc compiles', rc == 0, string.format('exit=%d', rc))
+  check('minigcc compiles', rc == 0, string.format('exit=%s', tostring(rc)))
   if rc ~= 0 then return end
   -- Link the assembly into an ELF.
   rc = minios.run('/objects/ld.o', {'-f', 'elf', '-o', '/bin/_t.elf',
                                     '/asm/_t.s'})
-  check('ld links', rc == 0, string.format('exit=%d', rc))
+  check('ld links', rc == 0, string.format('exit=%s', tostring(rc)))
   if rc ~= 0 then return end
   -- Execute the freshly built ELF.  fib.c's main returns fib(10) = 55.
+  -- SYS_SPAWN of an ET_EXEC child from inside an interpreter is a known
+  -- pre-existing limitation (the parent-window save cannot fit the heap), so
+  -- run() returns nil: report it as a FAIL but do NOT abort the suite, or the
+  -- lzss/lz4/aes tests below would never run.
   rc = minios.run('/bin/_t.elf')
-  check('built elf runs', rc == 55, string.format('exit=%d', rc))
+  check('built elf runs', rc == 55, string.format('exit=%s', tostring(rc)))
 end
 
 local function test_spawn_preserves_interpreter()
@@ -54,7 +58,7 @@ local function test_spawn_preserves_interpreter()
   local rc = minios.run('/objects/minigcc.o', {'/src/ldhello.c'}, '/asm/_t2.s')
   local after = minios.time_ms()
   check('parent survives child', rc == 0 and after >= before,
-        string.format('rc=%d before=%d after=%d', rc, before, after))
+        string.format('rc=%s before=%d after=%d', tostring(rc), before, after))
 end
 
 local function test_filesystem()
@@ -92,9 +96,9 @@ local function test_json()
     check('json validate', false, 'write failed'); return
   end
   local rc = minios.run('/json', {path}, '/tmp/_json_out.txt')
-  check('json validate', rc == 0, string.format('exit=%d', rc))
+  check('json validate', rc == 0, string.format('exit=%s', tostring(rc)))
   local rc2 = minios.run('/json', {path, '.a'}, '/tmp/_json_q.txt')
-  check('json query', rc2 == 0, string.format('exit=%d', rc2))
+  check('json query', rc2 == 0, string.format('exit=%s', tostring(rc2)))
 end
 
 local function test_lzss_roundtrip()
@@ -103,10 +107,10 @@ local function test_lzss_roundtrip()
     check('lzss compress', false, 'write failed'); return
   end
   local rc = minios.run('/lzss', {'/tmp/_lzss_src.txt', '/tmp/_lzss_c.bin'})
-  check('lzss compress', rc == 0, string.format('exit=%d', rc))
+  check('lzss compress', rc == 0, string.format('exit=%s', tostring(rc)))
   if rc ~= 0 then return end
   rc = minios.run('/unlzss', {'/tmp/_lzss_c.bin', '/tmp/_lzss_d.txt'})
-  check('lzss decompress', rc == 0, string.format('exit=%d', rc))
+  check('lzss decompress', rc == 0, string.format('exit=%s', tostring(rc)))
   if rc ~= 0 then return end
   local result = read_file('/tmp/_lzss_d.txt')
   check('lzss roundtrip', result == payload,
@@ -119,10 +123,10 @@ local function test_lz4_roundtrip()
     check('lz4 compress', false, 'write failed'); return
   end
   local rc = minios.run('/lz4', {'/tmp/_lz4_src.txt', '/tmp/_lz4_c.bin'})
-  check('lz4 compress', rc == 0, string.format('exit=%d', rc))
+  check('lz4 compress', rc == 0, string.format('exit=%s', tostring(rc)))
   if rc ~= 0 then return end
   rc = minios.run('/unlz4', {'/tmp/_lz4_c.bin', '/tmp/_lz4_d.txt'})
-  check('lz4 decompress', rc == 0, string.format('exit=%d', rc))
+  check('lz4 decompress', rc == 0, string.format('exit=%s', tostring(rc)))
   if rc ~= 0 then return end
   local result = read_file('/tmp/_lz4_d.txt')
   check('lz4 roundtrip', result == payload,
@@ -137,10 +141,10 @@ local function test_aes_roundtrip()
     check('aes encrypt', false, 'write failed'); return
   end
   local rc = minios.run('/aes', {key, nonce, '/tmp/_aes_src.txt', '/tmp/_aes_enc.bin'})
-  check('aes encrypt', rc == 0, string.format('exit=%d', rc))
+  check('aes encrypt', rc == 0, string.format('exit=%s', tostring(rc)))
   if rc ~= 0 then return end
   rc = minios.run('/unaes', {key, nonce, '/tmp/_aes_enc.bin', '/tmp/_aes_dec.txt'})
-  check('aes decrypt', rc == 0, string.format('exit=%d', rc))
+  check('aes decrypt', rc == 0, string.format('exit=%s', tostring(rc)))
   if rc ~= 0 then return end
   local result = read_file('/tmp/_aes_dec.txt')
   check('aes roundtrip', result == payload,
@@ -149,7 +153,7 @@ end
 
 local function test_freedom()
   local rc = minios.run('/freedom', {}, '/tmp/_freedom_out.txt')
-  check('freedom runs', rc == 1, string.format('exit=%d', rc))
+  check('freedom runs', rc == 1, string.format('exit=%s', tostring(rc)))
 end
 
 print('MiniOS in-OS test suite (Lua)')
