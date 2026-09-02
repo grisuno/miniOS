@@ -442,10 +442,10 @@ $(BIN_DIR)/doomgeneric.elf: $(DOOM_OBJS)
 	$(CC) -static -no-pie -o $@ $^ -lm
 	chmod +x $@
 
-# ── Archivo WAD de DOOM ──────────────────────────────────────────────────
-# Doom1.wad ya está en la raíz del repositorio (4,2 MB). Se empaqueta en
-# minifs bajo el nombre bin/DOOM1.WAD, que es el nombre EXACTO que el buscador
-# de IWAD de doomgeneric intenta abrir (case-sensitive en el FS del kernel).
+# ── DOOM WAD file ───────────────────────────────────────────────────
+# Doom1.wad is at the repository root (4.2 MB). It is packed into minifs
+# under the name bin/DOOM1.WAD, which is the exact case-sensitive name the
+# doomgeneric IWAD loader opens.
 $(BIN_DIR)/DOOM1.WAD: Doom1.wad
 	cp $< $@
 
@@ -1127,6 +1127,8 @@ test: os.img
 clean:
 	rm -rf $(TOOLS_DIR)
 	rm -f *.o *.elf *.bin *.img ramdisk_data.c ramdisk.bin
+	rm -f .kaslrflag .mutate-state Makefile.bak
+	rm -f *.log qemu.log qemu_trace.log qemu_trace2.log test_bdd.log
 	rm -f $(OBJ_DIR)/*.o
 	rm -f $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf \
 	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
@@ -1161,5 +1163,6 @@ minifs-dump:
 minifs-fsck:
 	python3 minifs_fsck.py minifs.bin
 
-.PHONY: all run clean debug gdb serial test sources sources-update \
-        sources-status toolchain selfhost minifs-mkfs minifs-dump minifs-fsck
+.PHONY: all run run-kvm run-headless clean debug gdb serial test \
+        sources sources-update sources-status toolchain selfhost \
+        minifs-mkfs minifs-dump minifs-fsck os.iso usb os.usb.img
