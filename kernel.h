@@ -154,6 +154,29 @@ int fs_resolve(const char *path, char *out, unsigned cap);
 int fs_dir_exists(const char *dir);
 int fs_is_dir(const char *resolved);
 
+/* ========== VFS (Virtual File System) abstraction ========== */
+typedef struct vfs_ops {
+    int      (*open)(const char *path, int mode, void **handle);
+    int      (*read)(void *handle, void *buf, unsigned long pos, unsigned long len);
+    int      (*write)(void *handle, const void *buf, unsigned long pos, unsigned long len);
+    int      (*close)(void *handle);
+    int      (*fstat)(void *handle, unsigned long *size_out);
+    int      (*truncate)(void *handle, unsigned long size);
+} vfs_ops_t;
+
+typedef struct {
+    const vfs_ops_t *ops;
+    void            *handle;
+    unsigned         pos;
+    int              mode;       /* 0=read, 1=write, 2=append */
+    int              is_console;
+} vfs_file_t;
+
+int  vfs_register(const char *prefix, const vfs_ops_t *ops);
+int  vfs_unregister(const char *prefix);
+int  vfs_open(const char *path, int mode, vfs_file_t *f);
+void vfs_init(void);
+
 /* ========== Simple FILE interface (for libc compat) ========== */
 #define EOF (-1)
 

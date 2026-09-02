@@ -456,8 +456,10 @@ MINIFS_DOOM_FILES = $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/DOOM1.WAD
 # Same contract as DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
 # Software renderer, 320x200 8-bit paletted, reuses the DOOM back-buffer
 # infrastructure (SYS_DOOM_FRAME 211, DOOM_BACKBUF_ADDR 0x0B000000).
+# Build is conditional: skipped when the upstream checkout is absent.
 Q2G_DIR     = $(PROGS_DIR)/quake2generic
 Q2G_UPSTREAM = $(Q2G_DIR)/quake2generic
+Q2G_AVAILABLE := $(if $(wildcard $(Q2G_UPSTREAM)/client/cl_main.c),1,0)
 
 Q2G_CLIENT_SRCS = cl_cin.c cl_ents.c cl_fx.c cl_newfx.c cl_input.c \
     cl_inv.c cl_main.c cl_parse.c cl_pred.c cl_tent.c cl_scrn.c \
@@ -613,9 +615,14 @@ $(Q2G_DIR)/build/snddma_null.o: $(Q2G_UPSTREAM)/sound/snddma_null.c | $(Q2G_DIR)
 $(Q2G_DIR)/build/q2generic_minios.o: $(Q2G_DIR)/q2generic_minios.c | $(Q2G_DIR)/build
 	$(CC) $(Q2G_CFLAGS_ALL) -I$(PROGS_DIR) -c $< -o $@
 
+ifeq ($(Q2G_AVAILABLE),1)
 $(BIN_DIR)/quake2generic.elf: $(Q2G_OBJS)
 	$(CC) -static -no-pie -o $@ $^ -lm
 	chmod +x $@
+else
+$(BIN_DIR)/quake2generic.elf:
+	@echo "SKIP $@ (upstream checkout missing at $(Q2G_UPSTREAM))"
+endif
 
 # The shareware pak0.pak omits the player model; package the loose retail
 # player model (held under progs/quake2generic/players/male) as a second pak
@@ -628,8 +635,7 @@ Q2G_PLAYER_FILES = $(Q2G_DIR)/players/male/tris.md2 \
 $(PROGS_DIR)/baseq2/pak1.pak: $(Q2G_PLAYER_FILES) tools/mkpak1.py
 	python3 tools/mkpak1.py
 
-MINIFS_Q2G_FILES = $(BIN_DIR)/quake2generic.elf \
-    $(PROGS_DIR)/baseq2
+MINIFS_Q2G_FILES = $(if $(Q2G_AVAILABLE),$(BIN_DIR)/quake2generic.elf $(PROGS_DIR)/baseq2,)
 
 # ── MicroPython (microPython unix port, static glibc ELF) ──────────
 # Same contract as DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
@@ -1140,7 +1146,8 @@ clean:
 	      $(BIN_DIR)/aes $(BIN_DIR)/unaes \
 	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
 	      $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
-	      $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear
+	      $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear \
+	      $(BIN_DIR)/quake2generic.elf
 	rm -f $(BIN_DIR)/opl3
 	rm -f $(BIN_DIR)/sbtone
 	rm -f $(BIN_DIR)/piano.elf $(BIN_DIR)/piano

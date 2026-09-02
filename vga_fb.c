@@ -233,7 +233,7 @@ void vga_fb_set_gfx_mode(int on) {
     vga_fb_gfx_mode = on;
     if (!on) cursor_visible = 0;
     /* A new graphics program claims the display: drop any title the previous
-     * one set (Quake 2 via SYS_Q2G_SET_TITLE), so the next DOOM window is not
+     * one set (via SYS_GFX_SET_TITLE), so the next DOOM window is not
      * mis-labelled with the last program's name. */
     if (on) gfx_win_title = "DOOM";
 }

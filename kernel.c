@@ -1120,6 +1120,84 @@ static int minifs_mkdir_p(const char *resolved) {
     return 0;
 }
 
+/* ================================================================
+ *  VFS (Virtual File System) abstraction layer
+ *
+ *  Provides a registration-based filesystem dispatch.  Filesystem
+ *  drivers register a prefix and a set of operations.  The VFS
+ *  layer dispatches open/read/write/close to the registered driver.
+ * ================================================================ */
+
+#define VFS_MAX_MOUNTS 8
+#define VFS_PREFIX_LEN 32
+
+typedef struct {
+    char prefix[VFS_PREFIX_LEN];
+    const vfs_ops_t *ops;
+    int in_use;
+} vfs_mount_t;
+
+static vfs_mount_t vfs_mounts[VFS_MAX_MOUNTS];
+static int vfs_mount_count;
+
+void vfs_init(void) {
+    vfs_mount_count = 0;
+    kmemset(vfs_mounts, 0, sizeof(vfs_mounts));
+}
+
+int vfs_register(const char *prefix, const vfs_ops_t *ops) {
+    if (!prefix || !ops) return -1;
+    if (vfs_mount_count >= VFS_MAX_MOUNTS) return -1;
+    for (int i = 0; i < VFS_MAX_MOUNTS; i++) {
+        if (!vfs_mounts[i].in_use) {
+            kstrncpy(vfs_mounts[i].prefix, prefix, VFS_PREFIX_LEN - 1);
+            vfs_mounts[i].prefix[VFS_PREFIX_LEN - 1] = 0;
+            vfs_mounts[i].ops = ops;
+            vfs_mounts[i].in_use = 1;
+            vfs_mount_count++;
+            return 0;
+        }
+    }
+    return -1;
+}
+
+int vfs_unregister(const char *prefix) {
+    if (!prefix) return -1;
+    for (int i = 0; i < VFS_MAX_MOUNTS; i++) {
+        if (vfs_mounts[i].in_use && kstrcmp(vfs_mounts[i].prefix, prefix) == 0) {
+            vfs_mounts[i].in_use = 0;
+            vfs_mount_count--;
+            return 0;
+        }
+    }
+    return -1;
+}
+
+int vfs_open(const char *path, int mode, vfs_file_t *f) {
+    if (!path || !f) return -1;
+    for (int i = 0; i < VFS_MAX_MOUNTS; i++) {
+        if (!vfs_mounts[i].in_use) continue;
+        unsigned plen = kstrlen(vfs_mounts[i].prefix);
+        if (kstrncmp(path, vfs_mounts[i].prefix, plen) == 0 &&
+            (path[plen] == '/' || path[plen] == 0 || plen == 0)) {
+            const char *subpath = path + plen;
+            if (*subpath == '/') subpath++;
+            void *handle = 0;
+            if (vfs_mounts[i].ops->open) {
+                if (vfs_mounts[i].ops->open(subpath, mode, &handle) < 0)
+                    return -1;
+            }
+            f->ops = vfs_mounts[i].ops;
+            f->handle = handle;
+            f->pos = 0;
+            f->mode = mode;
+            f->is_console = 0;
+            return 0;
+        }
+    }
+    return -1;
+}
+
 KFILE *kfopen(const char *path, const char *mode) {
     char resolved[RAMDISK_FNAME_LEN];
     int want_write;
@@ -2998,7 +3076,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         }
         return 0;
     }
-    case 223: { /* SYS_Q2G_SET_TITLE: set graphics window title */
+    case 223: { /* SYS_GFX_SET_TITLE: set graphics window title */
         const char *t = (const char *)(unsigned long)a1;
         if (!t) return EFAULT;
         if (!user_range_ok((unsigned long)t, 1)) return EFAULT;

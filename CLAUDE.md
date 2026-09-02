@@ -1661,6 +1661,37 @@ result travels into the OS.
   constants at the top of their subsystem.
 - No absolute filesystem paths and no host assumptions in the build.
 
+## Architectural Abstractions
+
+### VFS (Virtual File System)
+A registration-based filesystem dispatch layer (`vma.h` in kernel.h,
+implementation in kernel.c).  Filesystem drivers register a prefix and a
+set of operations (`vfs_ops_t`).  The VFS layer dispatches open/read/write
+to the registered driver based on path prefix matching.  The existing
+dual-backend (ramdisk + MiniFS) remains; the VFS layer provides the
+abstraction for future filesystem additions (FAT32, EXT2) without touching
+the kernel core.
+
+### VMA (Virtual Memory Areas)
+A red-black tree structure for mmap tracking (`vma.h`).  Replaces the flat
+`mmap_used`/`mmap_free` arrays with O(log n) lookup.  The current kernel
+uses flat arrays (MMAP_MAX=4096); the VMA header defines the tree structure
+for future adoption when the single-address-space model gains per-process
+page tables.
+
+### Unified Audio API
+A hardware-agnostic audio interface (`audio.h`) providing tone mode (PC
+speaker square wave) and PCM streaming mode (SB16 DMA).  Ring-3 programs
+use these wrappers instead of raw syscalls.  The kernel dispatches to the
+appropriate hardware backend.
+
+### Quake 2 Decoupling
+The `SYS_Q2G_SET_TITLE` syscall is renamed to `SYS_GFX_SET_TITLE` (generic
+window title).  The Q2G build is conditional: skipped when the upstream
+checkout is absent (`Q2G_AVAILABLE` flag in Makefile).  The kernel contains
+no Quake-2-specific logic; all Q2G coupling lives in the platform layer
+(`progs/quake2generic/q2generic_minios.c`) and the Makefile.
+
 ## Security Requirements (Non-Negotiable)
 - Every loader input is validated before use: ELF headers, section and
   relocation bounds, ramdisk table extents and per-file ranges.

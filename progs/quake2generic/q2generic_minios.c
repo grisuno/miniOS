@@ -64,7 +64,7 @@ static long sys_mouse(int *buf) {
 
 static long sys_set_title(const char *t) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(223), "D"(t) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_SET_TITLE), "D"(t) : "rcx","r11","memory");
     return ret;
 }
 

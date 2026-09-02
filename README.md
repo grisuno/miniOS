@@ -962,6 +962,33 @@ the string fits in the remaining space and returns NULL on overflow.
 `k_exec_user` checks the return value and refuses to enter ring 3 with a
 NULL stack pointer.
 
+## Architectural abstractions
+
+### VFS (Virtual File System)
+A registration-based filesystem dispatch layer.  Filesystem drivers register
+a prefix and a set of operations (`vfs_ops_t`).  The VFS layer dispatches
+open/read/write to the registered driver based on path prefix matching.
+The existing dual-backend (ramdisk + MiniFS) remains; the VFS layer provides
+the abstraction for future filesystem additions (FAT32, EXT2) without
+touching the kernel core.
+
+### VMA (Virtual Memory Areas)
+A red-black tree structure for mmap tracking.  Replaces the flat
+`mmap_used`/`mmap_free` arrays with O(log n) lookup.  The current kernel
+uses flat arrays (MMAP_MAX=4096); the VMA header defines the tree structure
+for future adoption when the single-address-space model gains per-process
+page tables.
+
+### Unified Audio API
+A hardware-agnostic audio interface providing tone mode (PC speaker square
+wave) and PCM streaming mode (SB16 DMA).  Ring-3 programs use these wrappers
+instead of raw syscalls.
+
+### Quake 2 decoupling
+The `SYS_Q2G_SET_TITLE` syscall is renamed to `SYS_GFX_SET_TITLE` (generic
+window title).  The Q2G build is conditional: skipped when the upstream
+checkout is absent.  The kernel contains no Quake-2-specific logic.
+
 ## Console scrollback
 
 A ring of 4096 lines that scrolled off the top of the 25-row VGA screen.
