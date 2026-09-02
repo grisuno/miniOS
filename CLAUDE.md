@@ -620,7 +620,25 @@ section it patches; a relocation symbol index outside the symbol table, an
 unsupported relocation type, or a symbol that the kernel cannot resolve
 aborts the load with a diagnostic. An unapplied relocation would hand the
 program a wild call target, so it is never skipped. No libc name is ever
-registered with a null address.
+registered with a null address. Section header arithmetic uses the
+overflow-safe pattern `sh_offset > size || sh_size > size - sh_offset` to
+prevent unsigned wrap from bypassing the bounds check.
+
+### Integer overflow protection
+`kfread` and `kfwrite` compute `size * n` before accessing the buffer.
+A ring-3 program passing `size=0xFFFFFFFF, n=2` would cause the product
+to wrap to `0xFFFFFFFE`, smaller than the intended allocation, bypassing
+the `bytes > RD_DATA_MAX` check. Both functions now reject the call when
+`n != 0 && size > ULONG_MAX / n`, returning 0 before any buffer access.
+The early-return also covers `size == 0` and `n == 0`, which the old code
+handled implicitly through division-by-zero or zero-length loops.
+
+### Stack setup bounds checking
+`setup_user_stack` writes argv strings downward from the stack top. Without
+a bounds check, a program with many large argv entries could write below
+`sbase` and corrupt kernel memory before the user window. Each iteration now
+checks `l > (p - sbase)` and returns NULL on overflow. `k_exec_user` checks
+the return value and refuses to enter ring 3 with a NULL stack pointer.
 
 ### User-mode isolation
 ET_EXEC / ET_DYN binaries run at ring 3 under hardware page protection;
@@ -1649,3 +1667,5 @@ result travels into the OS.
 - Size arithmetic is overflow checked before allocation.
 - Failure paths report and release; no silent partial state.
 - No function symbol is ever resolved to a null address.
+- `size * n` in file I/O is checked for integer overflow before multiplication.
+- Stack setup for user programs validates that argv writes stay within bounds.

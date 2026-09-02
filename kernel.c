@@ -1261,21 +1261,21 @@ int kfungetc(int c, KFILE *f) {
 }
 
 unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
-    if (!f) return 0;
+    if (!f || !size || !n) return 0;
+    if (n > 0 && size > 0xFFFFFFFFUL / n) return 0;
+    unsigned long total = size * n;
     if (f->is_console) {
-        char *b = ptr; unsigned long got = 0, total = size * n;
+        char *b = ptr; unsigned long got = 0;
         while (got < total) { int c = kfgetc(f); if (c == EOF) break; b[got++] = (char)c; }
-        return size ? got / size : 0;
+        return got / size;
     }
     if (f->minifs_ino >= 0) {
-        unsigned long total = size * n;
         if (f->pos + total > f->minifs_size) total = f->minifs_size - f->pos;
         minifs_read(f->minifs_ino, ptr, f->pos, (unsigned)total);
         f->pos += total;
-        return size ? total / size : 0;
+        return total / size;
     }
     if (!f->rf) return 0;
-    unsigned long total = size * n;
     if (f->pos + total > f->rf->size) total = f->rf->size - f->pos;
     ramdisk_read(f->rf, ptr, f->pos, (unsigned)total);
     f->pos += total;
@@ -1283,14 +1283,15 @@ unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
 }
 
 unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f) {
-    if (!f) return 0;
+    if (!f || !size || !n) return 0;
+    if (n > 0 && size > 0xFFFFFFFFUL / n) return 0;
+    unsigned long bytes = size * n;
     if (f->is_console) {
-        const char *b = ptr; unsigned long bytes = size * n, i;
+        const char *b = ptr; unsigned long i;
         for (i = 0; i < bytes; i++) vga_putc(b[i]);
         return n;
     }
     if (f->mode != 1 && f->mode != 2) return 0;
-    unsigned long bytes = size * n;
     if (bytes > RD_DATA_MAX || f->wsize > RD_DATA_MAX - bytes) return 0;
     if (!f->wbuf) {
         f->wbuf = kmalloc(4096);
@@ -3089,6 +3090,7 @@ static unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
     if (argc > 64) argc = 64;
     for (i = 0; i < argc; i++) {
         unsigned long l = kstrlen(argv[i]) + 1;
+        if (l > (unsigned long)(p - sbase)) return 0;
         p -= l;
         kmemcpy(p, argv[i], l);
         argp[i] = p;
@@ -3478,6 +3480,7 @@ int k_exec_user(void *entry, int argc, char **argv) {
     char *stk = (char *)USER_STACK_BASE;   /* fixed region, no heap churn */
     unsigned long *sp = setup_user_stack(stk, USER_STACK_SIZE, argc, argv);
     unsigned long frame[5];
+    if (!sp) return -1;
     exec_exit_code = 0;
     /* Save the caller's saved stack pointer in syscall_kstack and restore it
        on the way out: when SYS_SPAWN runs an ET_EXEC child, syscall_kstack

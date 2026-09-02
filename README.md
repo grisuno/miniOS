@@ -945,6 +945,23 @@ separate bytes) and slides the kernel into one of 64 aligned 2 MB slots in
 the boot banner reports its randomized physical base. Disable with
 `make ENABLE_KASLR=0` for deterministic physical layout.
 
+## Integer overflow protection
+
+`kfread` and `kfwrite` compute `size * n` before accessing the buffer. A
+ring-3 program passing `size=0xFFFFFFFF, n=2` would cause the product to
+wrap to `0xFFFFFFFE`, smaller than the intended allocation, bypassing the
+`bytes > RD_DATA_MAX` check. Both functions now reject the call when
+`n != 0 && size > ULONG_MAX / n`, returning 0 before any buffer access.
+
+## Stack setup bounds checking
+
+`setup_user_stack` writes argv strings downward from the stack top. Without
+a bounds check, a program with many large argv entries could write below
+the stack base and corrupt kernel memory. Each iteration now checks that
+the string fits in the remaining space and returns NULL on overflow.
+`k_exec_user` checks the return value and refuses to enter ring 3 with a
+NULL stack pointer.
+
 ## Console scrollback
 
 A ring of 4096 lines that scrolled off the top of the 25-row VGA screen.
