@@ -13,6 +13,7 @@
 #include "desktop_icons.h"
 
 int vga_fb_active;
+unsigned long gfx_frames_composited;
 
 /* Framebuffer geometry, sized by vga_fb_boot_config from the VBE info the
  * boot loader recorded (Mode 13h defaults when VBE is unavailable). */
@@ -618,6 +619,7 @@ void vga_fb_blit_gfx_window(void) {
     int dst_x = (fb_width - DOOM_W) / 2;
     int dst_y = (fb_height - DOOM_H) / 2;
     int r, b;
+    gfx_frames_composited++;
     vga_fb_gfx_cursor_erase();
     if (dst_x < 0) dst_x = 0;
     if (dst_y < 0) dst_y = 0;
@@ -657,6 +659,7 @@ void vga_fb_blit_nk_window(void) {
     int dst_x = (fb_width - NK_W) / 2;
     int dst_y = (fb_height - NK_H) / 2;
     int r, b;
+    gfx_frames_composited++;
     vga_fb_gfx_cursor_erase();
     if (dst_x < 0) dst_x = 0;
     if (dst_y < 0) dst_y = 0;

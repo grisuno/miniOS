@@ -70,6 +70,32 @@ static long sys_set_title(const char *t) {
 
 #define Q2G_BACKBUF ((volatile uint8_t *)MINIOS_DOOM_BACKBUF_ADDR)
 
+/* Sys_Quit lives in the engine's system driver (other/q_system.c); not pulled
+ * in through quake2.h, so declare it here for the autoquit hook below. */
+extern void Sys_Quit(void);
+
+/* Headless autoquit: when `minios_autoframes <n>` is passed on the command
+ * line (`+set minios_autoframes 300`), the game counts composited frames in
+ * SWimp_EndFrame and calls Sys_Quit() once the count is reached.  This makes
+ * the whole render pipeline observable over the serial console -- the BDD
+ * suite launches the game against a real map, watches it render, and gets a
+ * clean exit back to the shell instead of a hang.  Default (no argument) is
+ * normal interactive play, unchanged. */
+static int s_autoframes;
+static int s_frames;
+
+static void q2g_parse_autoframes(int argc, char **argv) {
+    int i;
+    s_autoframes = 0;
+    for (i = 1; i + 1 < argc; i++) {
+        if (strcmp(argv[i], "minios_autoframes") == 0) {
+            s_autoframes = atoi(argv[i + 1]);
+            if (s_autoframes < 0) s_autoframes = 0;
+            return;
+        }
+    }
+}
+
 static int s_prev_mouse_x;
 static int s_prev_mouse_y;
 
@@ -273,6 +299,15 @@ void SWimp_EndFrame(void) {
 
     sys_doom_frame();
     kbd_poll();
+
+    if (s_autoframes > 0) {
+        s_frames++;
+        if (s_frames >= s_autoframes) {
+            printf("minios: played %d frames, quitting\n", s_frames);
+            fflush(stdout);
+            Sys_Quit();
+        }
+    }
 }
 
 void SWimp_AppActivate(qboolean active) {
@@ -285,6 +320,8 @@ int QG_Milliseconds(void) {
 
 int main(int argc, char **argv) {
     int time, oldtime, newtime;
+
+    q2g_parse_autoframes(argc, argv);
 
     sys_set_title("Quake 2");
 

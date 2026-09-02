@@ -7,10 +7,14 @@
 #include "vga_fb.h"
 #include "sb16.h"
 
-/* Local copies of kernel constants (static in kernel.c) */
-#define MY_SYS_KSTK_TOP   0x00088000UL
-#define MY_USER_STACK_TOP 0x07400000UL
-#define MY_USER_LOAD_BASE 0x00400000UL
+/* The user-window and syscall-stack constants come from kernel.h, which
+ * derives them from progs/minios_abi.h (the single source of truth for the
+ * kernel-ABI memory layout). Do not copy a bare address here: the historical
+ * MY_USER_STACK_TOP (0x07400000) went stale when the window grew and would
+ * have stacked a scheduled process in the middle of the heap. */
+#define MY_SYS_KSTK_TOP   SYS_KSTK_TOP
+#define MY_USER_STACK_TOP USER_STACK_TOP
+#define MY_USER_LOAD_BASE USER_LOAD_BASE
 
 proc_t procs[MAX_PROCS];
 int    proc_count;

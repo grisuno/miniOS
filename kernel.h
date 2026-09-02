@@ -1,6 +1,15 @@
 #ifndef KERNEL_H
 #define KERNEL_H
 
+/* The user-window memory layout (load base, stack, brk cap, graphics
+ * back-buffers, framebuffer, kernel heap) is defined ONCE in the ABI header
+ * shared with ring-3 programs. The kernel derives its own constants from it,
+ * so growing the window or moving a back-buffer cannot leave the two sides
+ * disagreeing -- that mismatch is what made the lua/MicroPython in-OS tests
+ * and DOOM's window go dark when the layout moved. Do not hardcode a layout
+ * address in the kernel or in a ring-3 program; put it in minios_abi.h. */
+#include "minios_abi.h"
+
 /* ========== Port I/O helpers ========== */
 #ifndef PORT_IO_DEFINED
 #define PORT_IO_DEFINED
@@ -82,9 +91,26 @@ void mouse_enable(void);
 /* ========== VGA cursor ========== */
 void vga_cursor_enable(int on);
 
-/* ========== Memory allocator ========== */
-#define HEAP_BASE 0x0C000000UL
-#define HEAP_SIZE (192UL * 1024 * 1024)
+/* ========== User window and memory allocator ==========
+ * All values derive from progs/minios_abi.h (single source of truth for the
+ * kernel-ABI memory layout). USER_WIN_LO/HI are the asm-safe (no UL suffix)
+ * mirrors the syscall return discriminator string-literal needs; static
+ * asserts in kernel.c prove they cannot drift from the ABI header. */
+#define USER_LOAD_BASE   MINIOS_USER_LOAD_BASE
+#define USER_LOAD_END    MINIOS_USER_LOAD_END
+#define USER_STACK_SIZE  MINIOS_USER_STACK_SIZE
+#define USER_STACK_TOP   MINIOS_USER_STACK_TOP
+#define USER_STACK_BASE  MINIOS_USER_STACK_BASE
+#define USER_BRK_END     MINIOS_USER_BRK_END
+
+/* Syscall kernel stack: a dedicated region below the kernel image, exchanged
+ * on syscall entry so the kernel never runs on a user stack. The 32 KB region
+ * [0x80000, 0x88000) also holds the per-SPAWN-child stack carved by k_exec_user. */
+#define SYS_KSTK_TOP    0x00088000UL
+#define SYS_KSTK_BASE   (SYS_KSTK_TOP - 0x8000)
+
+#define HEAP_BASE  MINIOS_HEAP_BASE
+#define HEAP_SIZE  MINIOS_HEAP_SIZE
 
 void *kmalloc(unsigned long size);
 void  kfree(void *ptr);

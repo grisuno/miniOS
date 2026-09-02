@@ -2,6 +2,7 @@
 #define VGA_FB_H
 
 #include <stdint.h>
+#include "minios_abi.h"
 
 /* Framebuffer geometry. The boot loader probes VESA BIOS Extensions for a
  * high-resolution 8-bit-palette linear framebuffer and records width, height,
@@ -11,8 +12,9 @@
  * FB_ADDR is the fixed virtual address in the user window that both the kernel
  * desktop and graphics programs write through. It sits in the reserved tail
  * above DOOM_BACKBUF_ADDR (which is also the brk cap), so a program's heap can
- * never grow over the framebuffer. */
-#define FB_ADDR    ((volatile uint8_t *)0x0B200000UL)
+ * never grow over the framebuffer. All three pinned addresses derive from
+ * progs/minios_abi.h (single source of truth for the kernel-ABI layout). */
+#define FB_ADDR    ((volatile uint8_t *)MINIOS_FB_ADDR)
 extern int fb_width;
 extern int fb_height;
 extern int fb_pitch;
@@ -24,11 +26,18 @@ void vga_fb_boot_config(void);
  * kernel-backed back-buffer mapped into the user window at DOOM_BACKBUF_ADDR
  * and calls SYS_DOOM_FRAME (211) to have the kernel composite it onto the
  * desktop at its native resolution, so the shell window stays visible. */
-#define DOOM_W            320
-#define DOOM_H            200
-#define DOOM_BACKBUF_ADDR 0x0B000000UL
+#define DOOM_W            MINIOS_DOOM_W
+#define DOOM_H            MINIOS_DOOM_H
+#define DOOM_BACKBUF_ADDR MINIOS_DOOM_BACKBUF_ADDR
 void vga_fb_blit_gfx_window(void);
 extern const char *gfx_win_title;
+
+/* Number of frames a ring-3 graphics program (DOOM, Quake 2, Nuklear) has
+ * composited through SYS_DOOM_FRAME / SYS_NK_FRAME since boot. The shell's
+ * `gfx frames` builtin reports it over the serial console, so the BDD suite
+ * can prove a game actually rendered frames -- not merely launched -- by
+ * running a demo and checking the counter climbed. */
+extern unsigned long gfx_frames_composited;
 
 /* Nuklear UI back-buffer. A ring-3 program (the node editor) renders a UI
  * into a kernel-heap back-buffer mapped into the user window and calls
@@ -36,9 +45,9 @@ extern const char *gfx_win_title;
  * desktop exactly like the DOOM window, so the shell stays visible. It sits
  * in the reserved tail with the framebuffer, above DOOM_BACKBUF_ADDR (the brk
  * cap), so neither a growing heap nor the mmap zone can ever reach it. */
-#define NK_W            800
-#define NK_H            360
-#define NK_BACKBUF_ADDR 0x0B400000UL
+#define NK_W            MINIOS_NK_W
+#define NK_H            MINIOS_NK_H
+#define NK_BACKBUF_ADDR MINIOS_NK_BACKBUF_ADDR
 void vga_fb_blit_nk_window(void);
 /* Window origin of the last Nuklear composite, so SYS_NK_FRAME can report
  * where the UI landed for mouse-coordinate translation. */

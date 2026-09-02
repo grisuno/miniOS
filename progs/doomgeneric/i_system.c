@@ -460,9 +460,12 @@ void I_Error (char *error, ...)
 
     exit(-1);
 #else
-    while (true)
-    {
-    }
+    /* MiniOS: a fatal error must terminate the process and return to the
+     * shell, never spin the whole machine (the previous `while(true){}`
+     * hung the guest forever -- a missing WAD or a finished `-timedemo`
+     * demo could not be recovered from without a reboot).  exit() runs the
+     * libc exit path, which the kernel turns into a return to the shell. */
+    exit(-1);
 #endif
 }
 

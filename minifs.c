@@ -942,7 +942,14 @@ int minifs_write(int inode_num, const void *buf, unsigned int offset,
         if (minifs_inode_get_block(&inode, logblk, &phys) < 0 || phys == 0) {
             if (minifs_inode_alloc_block(&inode, logblk) < 0) return -1;
             if (minifs_inode_get_block(&inode, logblk, &phys) < 0) return -1;
-            if (fs_read_inode((unsigned int)inode_num, &inode) < 0) return -1;
+            /* NOTE: do NOT re-read the inode here.  minifs_inode_alloc_block
+             * records the fresh block only in the LOCAL inode struct; the
+             * inode is persisted by the fs_write_inode at the end of this
+             * function.  Reloading it from disk would reset direct[0] (and
+             * every other freshly mapped block) to 0, so the data would be
+             * written to a block the on-disk inode never references and the
+             * file would read back as zeros -- the failure the MiniOS write
+             * fallback hit on the lua/MicroPython in-OS test files. */
         }
         if (blkoff > 0 || towrite < MINIFS_BLOCK_SIZE) {
             unsigned char blkbuf[MINIFS_BLOCK_SIZE];

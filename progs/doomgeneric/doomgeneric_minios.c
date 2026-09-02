@@ -12,7 +12,24 @@
 #include "doomkeys.h"
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "minios_abi.h"
+
+/* Headless autoquit: see DG_DrawFrame. Parsed from argv at startup. */
+static int mini_autoframes;
+static int mini_frames;
+static void mini_parse_autoframes(int argc, char **argv) {
+    int i;
+    mini_autoframes = 0;
+    for (i = 1; i + 1 < argc; i++) {
+        if (strcmp(argv[i], "mini_autoframes") == 0) {
+            mini_autoframes = atoi(argv[i + 1]);
+            if (mini_autoframes < 0) mini_autoframes = 0;
+            return;
+        }
+    }
+}
 
 /* ---------- MiniOS syscalls ---------- */
 
@@ -188,6 +205,9 @@ static void kbd_poll(void) {
 extern unsigned char *I_VideoBuffer;
 
 void DG_Init(void) {
+    extern int myargc;
+    extern char **myargv;
+    mini_parse_autoframes(myargc, myargv);
     sys_vga_mode(1);  /* tell kernel to stop touching VGA text hardware */
     sys_kbd_raw(1);   /* enable raw keyboard mode for DOOM */
 }
@@ -208,6 +228,18 @@ void DG_DrawFrame(void) {
     }
     sys_doom_frame();
     kbd_poll();
+
+    /* Headless autoquit: when `-mini_autoframes <n>` is given, the game
+     * counts composited frames in DG_DrawFrame and calls exit() once the
+     * count is reached.  This makes the whole render pipeline observable
+     * over the serial console -- the BDD suite launches DOOM, watches it
+     * render the attract loop, and gets a clean exit back to the shell
+     * instead of a hang.  Default (no argument) is normal play, unchanged. */
+    if (mini_autoframes > 0 && ++mini_frames >= mini_autoframes) {
+        printf("minios: played %d frames, quitting\n", mini_frames);
+        fflush(stdout);
+        exit(0);
+    }
 }
 
 void DG_SleepMs(uint32_t ms) {

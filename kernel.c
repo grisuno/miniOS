@@ -461,19 +461,13 @@ void kbd_reset_for_shell(void) {
 #define ALIGN_UP(x, a) (((x) + (a) - 1) & ~((a) - 1))
 
 /* ---- Physical memory map (identity-mapped 0..1GB by the bootloader) ----
+ * The user-window and kernel-heap layout lives in progs/minios_abi.h (single
+ * source of truth) and is surfaced through kernel.h, so a layout change is a
+ * one-line edit in one file instead of a cross-file address hunt.
  *   0x00000000 .. 0x00100000   BIOS / kernel image / page tables / stack
- *   0x00400000 .. 0x08000000   user program region (ELF load addr + brk)
- *   0x08000000 .. 0x14000000   192 MB kernel heap (HEAP_BASE/HEAP_SIZE in kernel.h)
+ *   0x00400000 .. 0x0C000000   user program region (ELF load addr + brk)
+ *   0x0C000000 .. 0x18000000   192 MB kernel heap (HEAP_BASE/HEAP_SIZE)
  */
-#define USER_LOAD_BASE  0x00400000UL
-#define USER_LOAD_END   0x0C000000UL
-#define USER_STACK_SIZE (1024UL * 1024)
-#define USER_STACK_TOP  USER_LOAD_END
-#define USER_STACK_BASE (USER_STACK_TOP - USER_STACK_SIZE)
-#define USER_BRK_END    USER_STACK_BASE
-#define SYS_KSTK_TOP    0x00088000UL
-#define SYS_KSTK_BASE   (SYS_KSTK_TOP - 0x8000)
-
 #define EFAULT  (-14)
 
 #define MSR_EFER   0xC0000080
@@ -487,11 +481,25 @@ void kbd_reset_for_shell(void) {
 
 /* Asm-safe (no UL suffix) mirror of the user window for the syscall-entry
  * return discriminator; the trampoline is a raw string literal, so the C
- * preprocessor cannot paste the UL-suffixed macros into it. */
+ * preprocessor cannot paste the UL-suffixed macros into it. The values must
+ * track minios_abi.h; the _Static_asserts below prove they do. */
 #define USER_WIN_LO     0x00400000
 #define USER_WIN_HI     0x0C000000
 #define STR_(x) #x
 #define STR(x)  STR_(x)
+
+/* The kernel's layout constants are derived from minios_abi.h, and the
+ * asm-safe mirrors above are checked against them at compile time, so a
+ * layout edit in the ABI header can never silently leave the syscall return
+ * discriminator, the page-table zone sizing or a ring-3 program out of step. */
+_Static_assert(USER_WIN_LO == MINIOS_USER_LOAD_BASE, "USER_WIN_LO drift");
+_Static_assert(USER_WIN_HI == MINIOS_USER_LOAD_END, "USER_WIN_HI drift");
+_Static_assert(USER_LOAD_BASE == MINIOS_USER_LOAD_BASE, "USER_LOAD_BASE drift");
+_Static_assert(USER_LOAD_END == MINIOS_USER_LOAD_END, "USER_LOAD_END drift");
+_Static_assert(USER_STACK_TOP == MINIOS_USER_STACK_TOP, "USER_STACK_TOP drift");
+_Static_assert(USER_BRK_END == MINIOS_USER_BRK_END, "USER_BRK_END drift");
+_Static_assert(HEAP_BASE == MINIOS_HEAP_BASE, "HEAP_BASE drift");
+_Static_assert(HEAP_SIZE == MINIOS_HEAP_SIZE, "HEAP_SIZE drift");
 
 static inline unsigned long rdmsr(unsigned msr);
 static inline void wrmsr(unsigned msr, unsigned long val);
@@ -1063,22 +1071,56 @@ int fs_is_dir(const char *resolved) {
     return fs_dir_exists(with_slash);
 }
 
+/* Create the MiniFS parent-directory chain for a file whose parent directory
+ * does not exist on the ramdisk (the flat ramdisk namespace can only host a
+ * name under a directory entry it already carries). Walks every path
+ * component before the final file name and mkdirs each missing directory, so
+ * a redirect or program write like `asm/_t.s` lands on the disk filesystem
+ * instead of failing. Returns 0 on success, -1 on failure. */
+static int minifs_mkdir_p(const char *resolved) {
+    char dir[RAMDISK_FNAME_LEN];
+    unsigned len = 0;
+    const char *p = resolved;
+    while (*p) {
+        const char *start = p;
+        while (*p && *p != '/') p++;
+        if (*p == 0) break;         /* final component is the file name */
+        if (p == start) { p++; continue; }
+        unsigned clen = (unsigned)(p - start);
+        if (len > 0) dir[len++] = '/';
+        if (len + clen + 1 >= sizeof(dir)) return -1;
+        kmemcpy(dir + len, start, clen);
+        len += clen;
+        dir[len] = 0;
+        if (minifs_resolve_path(dir) < 0) {
+            if (minifs_mkdir(dir, 0755) < 0) return -1;
+        }
+        p++;
+    }
+    return 0;
+}
+
 KFILE *kfopen(const char *path, const char *mode) {
     char resolved[RAMDISK_FNAME_LEN];
+    int want_write;
     if (!fs_resolve(path, resolved, sizeof(resolved))) return 0;
     if (fs_is_dir(resolved)) return 0;      /* never open a directory */
     KFILE *f = kmalloc(sizeof(KFILE));
     if (!f) return 0;
     kmemset(f, 0, sizeof(KFILE));
     f->minifs_ino = -1;
+    want_write = (mode[0] == 'w' || mode[0] == 'a');
+
     f->rf = ramdisk_open(resolved);
-    if (!f->rf && (mode[0] == 'w' || mode[0] == 'a')) {
-        /* Creating a new file: the parent directory must already exist (the
-         * ramdisk is flat, so a name like save/current/server.ssv can only be
-         * created under a real directory).  Refusing keeps the game's save
-         * writes failing gracefully instead of corrupting the filesystem. */
+    if (!f->rf && want_write) {
+        /* Creating a new file on the ramdisk: the parent directory must
+         * already exist there (the ramdisk is flat, so a name like
+         * save/current/server.ssv can only be created under a real directory).
+         * When it does not, the write falls through to MiniFS below, which
+         * has real directories. */
         const char *slash = resolved + kstrlen(resolved);
         while (slash > resolved && slash[-1] != '/') slash--;
+        int parent_ok = 1;
         if (slash != resolved && slash[-1] == '/') {
             char parent[RAMDISK_FNAME_LEN];
             unsigned plen = (unsigned)(slash - resolved);
@@ -1086,12 +1128,20 @@ KFILE *kfopen(const char *path, const char *mode) {
             kmemcpy(parent, resolved, plen);
             parent[plen] = '/';
             parent[plen + 1] = 0;
-            if (!fs_dir_exists(parent)) { kfree(f); return 0; }
+            if (!fs_dir_exists(parent)) parent_ok = 0;
         }
-        f->rf = ramdisk_create(resolved, 0);
-        if (!f->rf) { kfree(f); return 0; }
+        if (parent_ok) {
+            f->rf = ramdisk_create(resolved, 0);
+            if (!f->rf) { kfree(f); return 0; }
+        }
     }
-    if (!f->rf && mode[0] == 'r' && minifs_is_mounted()) {
+    /* Fall back to MiniFS for reads, and for writes the flat ramdisk cannot
+     * host (missing parent directory, or the file already lives on MiniFS).
+     * MiniFS is the real directory-capable filesystem: a redirect or program
+     * write into `asm/_t.s` or `tmp/x` creates the parent chain on the disk
+     * instead of being refused, which is what used to break the lua and
+     * MicroPython in-OS test suites when the ramdisk dropped those dirs. */
+    if (!f->rf && minifs_is_mounted()) {
         int ino = minifs_resolve_path(resolved);
         if (ino < 0 && kstrchr(resolved, '/')) {
             const char *base = resolved;
@@ -1100,19 +1150,29 @@ KFILE *kfopen(const char *path, const char *mode) {
                 if (*p == '/') base = p + 1;
             ino = minifs_resolve_path(base);
         }
+        if (want_write && ino < 0) {
+            if (minifs_mkdir_p(resolved) == 0)
+                ino = minifs_create(resolved, 0644);
+        }
         if (ino >= 0) {
             MiniFSInode st;
             if (minifs_stat(ino, &st) >= 0) {
                 f->minifs_ino = ino;
                 f->minifs_size = st.size;
+                if (want_write && mode[0] == 'w' && st.size > 0)
+                    minifs_truncate(ino, 0);
             }
         }
     }
     if (!f->rf && f->minifs_ino < 0) { kfree(f); return 0; }
     f->mode = (mode[0] == 'w') ? 1 : ((mode[0] == 'a') ? 2 : 0);
-    f->pos  = (f->mode == 2 && f->rf) ? f->rf->size : 0;
-    if (f->mode != 0 && f->rf) {
-        if (f->mode == 1 && f->rf->size && !ramdisk_resize(f->rf, 0)) { kfree(f); return 0; }
+    f->pos = 0;
+    if (f->mode == 2) {
+        if (f->rf) f->pos = f->rf->size;
+        else if (f->minifs_ino >= 0) f->pos = f->minifs_size;
+    }
+    if (f->mode != 0 && (f->rf || f->minifs_ino >= 0)) {
+        if (f->mode == 1 && f->rf && f->rf->size && !ramdisk_resize(f->rf, 0)) { kfree(f); return 0; }
         f->wbuf = kmalloc(4096);
         f->wcap = 4096;
         f->wsize = 0;
@@ -1124,7 +1184,14 @@ KFILE *kfopen(const char *path, const char *mode) {
 int kfclose(KFILE *f) {
     int rc = 0;
     if (!f) return 0;
-    if (f->mode != 0) rc = kfflush(f);
+    if (f->mode != 0) {
+        rc = kfflush(f);
+        /* Persist the MiniFS block/inode bitmaps and superblock after a write
+         * so a later boot mounts a consistent filesystem (the in-memory
+         * bitmaps minifs_alloc_block touches are only flushed by minifs_sync). */
+        if (rc == 0 && f->minifs_ino >= 0 && minifs_is_mounted())
+            minifs_sync();
+    }
     if (f->wbuf) kfree(f->wbuf);
     kfree(f);
     return rc;
@@ -1242,7 +1309,22 @@ long kftell(KFILE *f) {
 }
 
 int kfflush(KFILE *f) {
-    if (!f || !f->rf || f->mode == 0) return 0;
+    if (!f || f->mode == 0) return 0;
+    /* MiniFS-backed writes go straight to the disk filesystem: the write is
+     * buffered in f->wbuf and committed on flush exactly like the ramdisk
+     * path, growing the inode as needed (minifs_write updates inode.size). */
+    if (f->minifs_ino >= 0) {
+        if (f->wbuf && f->wsize > 0) {
+            unsigned base = (f->mode == 2) ? (unsigned)(f->pos - f->wsize) : 0;
+            if (minifs_write(f->minifs_ino, f->wbuf, base, f->wsize) < 0)
+                return -1;
+            if (base + f->wsize > f->minifs_size)
+                f->minifs_size = base + f->wsize;
+            f->wsize = 0;
+        }
+        return 0;
+    }
+    if (!f->rf) return 0;
     if (f->wbuf && f->wsize > 0) {
         unsigned base = (f->mode == 2) ? (unsigned)(f->pos - f->wsize) : 0;
         if (!ramdisk_resize(f->rf, base + f->wsize)) return -1;
@@ -2727,8 +2809,13 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
             ((unsigned int *)(unsigned long)a2)[6] = 0020666; /* S_IFCHR | 0666 */
         } else {
             ((unsigned int *)(unsigned long)a2)[6] = 0100666; /* S_IFREG | 0666 */
-            if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1] && kfd_table[a1]->rf)
-                ((unsigned long *)(unsigned long)a2)[6] = (unsigned long)kfd_table[a1]->rf->size;
+            if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
+                KFILE *kf = kfd_table[a1];
+                if (kf->rf)
+                    ((unsigned long *)(unsigned long)a2)[6] = (unsigned long)kf->rf->size;
+                else if (kf->minifs_ino >= 0)
+                    ((unsigned long *)(unsigned long)a2)[6] = (unsigned long)kf->minifs_size;
+            }
         }
         return 0;
     }
@@ -2759,26 +2846,38 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
             }
         return 0; /* ignored/disposition not fatal */
     }
-    case 87: { /* unlink: delete a ramdisk file */
+    case 87: { /* unlink: delete a ramdisk or MiniFS file */
         const char *path = (const char *)a1;
         if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
         char resolved[RAMDISK_FNAME_LEN];
         if (!fs_resolve(path, resolved, sizeof(resolved))) return -36;
         if (fs_is_dir(resolved)) return -21;
         RDFile *f = ramdisk_open(resolved);
-        if (!f) return -2;   /* ENOENT */
-        ramdisk_delete(f);
-        return 0;
+        if (f) { ramdisk_delete(f); return 0; }
+        if (minifs_is_mounted() && minifs_unlink(resolved) == 0) return 0;
+        return -2;   /* ENOENT */
     }
     case 74: /* flock: no-op */
         return 0;
-    case 21: { /* access: check if ramdisk file exists */
+    case 21: { /* access: check if the file exists on the ramdisk or MiniFS */
         const char *path = (const char *)a1;
         if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
         char resolved[RAMDISK_FNAME_LEN];
         if (!fs_resolve(path, resolved, sizeof(resolved))) return -2; /* ENOENT */
         RDFile *f = ramdisk_open(resolved);
-        return f ? 0 : -2;
+        if (f) return 0;
+        if (minifs_is_mounted()) {
+            int ino = minifs_resolve_path(resolved);
+            if (ino < 0 && kstrchr(resolved, '/')) {
+                const char *base = resolved;
+                const char *p;
+                for (p = resolved; *p; p++)
+                    if (*p == '/') base = p + 1;
+                ino = minifs_resolve_path(base);
+            }
+            if (ino >= 0) return 0;
+        }
+        return -2;
     }
     case 89: { /* readlink: always returns EINVAL (no symlinks in miniOS) */
         (void)a1; (void)a2; (void)a3;
@@ -3174,6 +3273,7 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     wrmsr(MSR_FSBASE, saved_fsbase);
     wrmsr(MSR_GSBASE, saved_gsbase);
     for (int i = 0; i < KFD_MAX; i++) kfd_table[i] = saved_kfd[i];
+    kprintf("DBG end k_syscall_spawn rc=%d\n", rc);
     /* Do NOT clobber syscall_kstack here: it holds the outer syscall's
        incoming rsp, and the outer syscall_entry xchg needs that exact value
        to return to the parent.  k_run_rel/k_exec_user already restored it. */
@@ -4857,6 +4957,10 @@ static void shell_cmd_gfx(int argc, char **argv) {
         kprintf("gfx: shot %s (%lu bytes)\n", path, written);
         return;
     }
+    if (kstrcmp(argv[1], "frames") == 0) {
+        kprintf("gfx: frames composited %lu\n", gfx_frames_composited);
+        return;
+    }
     if (kstrcmp(argv[1], "palette") == 0) {
         unsigned char pal[768];
         int i;
@@ -4865,7 +4969,7 @@ static void shell_cmd_gfx(int argc, char **argv) {
             kprintf("  %2d: %3d %3d %3d\n", i, pal[i * 3], pal[i * 3 + 1], pal[i * 3 + 2]);
         return;
     }
-    vga_puts("usage: gfx [pixel <x> <y> | rect <x0> <y0> <x1> <y1> | shot <file>]\n");
+    vga_puts("usage: gfx [pixel <x> <y> | rect <x0> <y0> <x1> <y1> | shot <file> | frames | palette]\n");
 }
 
 /* `wm <op>` — window-manager operations on the terminal window, exposed as a
