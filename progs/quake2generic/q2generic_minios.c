@@ -22,43 +22,43 @@
 
 static long sys_time_ms(void) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(204), "D"(0) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");
     return ret;
 }
 
 static long sys_kbd(void) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(205), "D"(0) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_KBD), "D"(0) : "rcx","r11","memory");
     return ret;
 }
 
 static long sys_palette(const unsigned char *pal) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(206), "D"(pal) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_PALETTE), "D"(pal) : "rcx","r11","memory");
     return ret;
 }
 
 static long sys_kbd_raw(int on) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(207), "D"((long)on) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_KBD_RAW), "D"((long)on) : "rcx","r11","memory");
     return ret;
 }
 
 static long sys_vga_mode(int on) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(208), "D"((long)on) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_VGA_MODE), "D"((long)on) : "rcx","r11","memory");
     return ret;
 }
 
 static long sys_doom_frame(void) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(211), "D"(0) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_DOOM_FRAME), "D"(0) : "rcx","r11","memory");
     return ret;
 }
 
 static long sys_mouse(int *buf) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(219), "D"(buf) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_MOUSE), "D"(buf) : "rcx","r11","memory");
     return ret;
 }
 

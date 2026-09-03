@@ -126,7 +126,28 @@ void  dlmalloc_free(void *ptr);
 void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);
 void *dlmalloc_realloc(void *ptr, unsigned long size);
 
-/* ========== Ramdisk file system ========== */
+/* =========================================================================
+ * Ramdisk file system
+ * =========================================================================
+ * Flat namespace: files are identified by name (including path separators).
+ * The ramdisk is a contiguous region in memory with a header, entry table,
+ * and data area.  File names are at most RAMDISK_FNAME_LEN - 1 characters.
+ *
+ * Contract (RDFile):
+ *   name:   NUL-terminated file name, at most RAMDISK_FNAME_LEN - 1 chars.
+ *   size:   file size in bytes.  0 for empty files.
+ *   offset: byte offset into the ramdisk data area.  Validated at load time
+ *           to lie within [RD_DATA_START, RD_DATA_START + RD_DATA_MAX).
+ *
+ * Invariants:
+ *   1. ramdisk_open returns a valid RDFile on success, NULL on failure.
+ *   2. ramdisk_read/write validate offset + len against size before access.
+ *   3. ramdisk_create allocates from the data area; returns NULL if full.
+ *   4. ramdisk_delete marks the entry as free; the name is zeroed.
+ *   5. ramdisk_setup_from validates the entire image before publishing.
+ *   6. RAMDISK_MAX_FILES (128) limits concurrent entries.
+ *   7. RAMDISK_FNAME_LEN (64) limits name length; truncation is a bug.
+ * ========================================================================= */
 #define RAMDISK_MAX_FILES 128
 #define RAMDISK_FNAME_LEN 64
 
@@ -154,7 +175,50 @@ int fs_resolve(const char *path, char *out, unsigned cap);
 int fs_dir_exists(const char *dir);
 int fs_is_dir(const char *resolved);
 
-/* ========== VFS (Virtual File System) abstraction ========== */
+/* =========================================================================
+ * VFS (Virtual File System) abstraction
+ * =========================================================================
+ * Registration-based filesystem dispatch.  Drivers register a prefix and a
+ * set of operations; vfs_open matches the path prefix and dispatches to the
+ * matching driver.
+ *
+ * Contract (vfs_ops_t):
+ *   open:   path is non-NULL, NUL-terminated, within the user window.
+ *           mode: 0=read, 1=write (truncate), 2=append.
+ *           On success, *handle is set to driver-private state.
+ *           On failure, returns negative errno; *handle is undefined.
+ *   read:   handle is the value returned by open.  pos is the file offset,
+ *           len is the byte count.  Returns bytes read (0 = EOF).
+ *           Must not read past the file's actual size.
+ *   write:  handle is the value returned by open.  pos is the file offset,
+ *           len is the byte count.  Returns bytes written.
+ *           For mode=1 (truncate), pos=0 on first write.
+ *           For mode=2 (append), pos is ignored (appended at end).
+ *   close:  handle is the value returned by open.  Releases all resources.
+ *           Always called exactly once per open, even on error paths.
+ *   fstat:  handle is the value returned by open.
+ *           *size_out receives the file size in bytes.
+ *           Returns 0 on success, negative errno on failure.
+ *   truncate: handle is the value returned by open.  size is the new size.
+ *             Files may grow (zero-filled) or shrink.
+ *             Returns 0 on success, negative errno on failure.
+ *
+ * Contract (vfs_file_t):
+ *   ops:    non-NULL after vfs_open succeeds.  NULL before open or after
+ *           close.  Never modified after open.
+ *   handle: driver-private state, valid between open and close.
+ *   pos:    current file position.  Updated by read/write.  Never exceeds
+ *           the file's size after a read.
+ *   mode:   0=read, 1=write, 2=append.  Set by open, immutable after.
+ *   is_console: 1 for stdin/stdout/stderr (console I/O path).
+ *
+ * Invariants:
+ *   1. vfs_open returns a vfs_file_t with ops != NULL on success.
+ *   2. Every successful open must be paired with exactly one close.
+ *   3. read/write on a closed handle is undefined (debug builds assert).
+ *   4. VFS_MAX_MOUNTS (8) limits concurrent registrations.
+ *   5. Prefix matching is longest-prefix-first.
+ * ========================================================================= */
 typedef struct vfs_ops {
     int      (*open)(const char *path, int mode, void **handle);
     int      (*read)(void *handle, void *buf, unsigned long pos, unsigned long len);
@@ -177,7 +241,32 @@ int  vfs_unregister(const char *prefix);
 int  vfs_open(const char *path, int mode, vfs_file_t *f);
 void vfs_init(void);
 
-/* ========== Simple FILE interface (for libc compat) ========== */
+/* =========================================================================
+ * Simple FILE interface (for libc compat)
+ * =========================================================================
+ * Contract:
+ *   KFILE wraps either a ramdisk file, a MiniFS file, or a VFS-backed file.
+ *   Exactly one of {rf, vfs, minifs_ino} is active per open file.
+ *
+ *   rf:          non-NULL when backed by ramdisk.  NULL otherwise.
+ *   pos:         current file position.  Updated by read/write/seek.
+ *   wbuf/wsize:  write buffer for created files.  Flushed on close.
+ *                NULL when reading or when backed by MiniFS/VFS.
+ *   mode:        0=read, 1=write (truncate), 2=append.
+ *   is_console:  1 for stdin/stdout/stderr.  Routed to console I/O.
+ *   minifs_ino:  >= 0 when backed by MiniFS.  -1 when ramdisk or VFS.
+ *   minifs_size: cached file size for MiniFS files.
+ *   vfs:         non-NULL when backed by VFS driver.  When non-NULL,
+ *                dispatch goes through vfs->ops instead of ramdisk/MiniFS.
+ *
+ * Invariants:
+ *   1. kfopen returns a valid KFILE on success, NULL on failure.
+ *   2. Every successful kfopen must be paired with exactly one kfclose.
+ *   3. After kfclose, the KFILE is invalid and must not be reused.
+ *   4. wbuf is allocated on write-mode open, freed on kfclose.
+ *   5. For VFS-backed files, pos tracks the logical offset, not the
+ *      driver's internal position (driver maintains its own state).
+ * ========================================================================= */
 #define EOF (-1)
 
 typedef struct {

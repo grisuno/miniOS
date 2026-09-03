@@ -47,15 +47,16 @@ static long msys5(long n, long a1, long a2, long a3, long a4, long a5) {
     return ret;
 }
 
-/* ── MiniOS syscall numbers (must match kernel.c) ──────────────────── */
-#define SYS_TIME_MS     204
-#define SYS_PALETTE     206
-#define SYS_PCSPK_INIT  209
-#define SYS_PCSPK_TONE  210
-#define SYS_RTC         212
-#define SYS_FB_INFO     213
-#define SYS_PCSPK_VOL   214
-#define SYS_SPAWN       215
+/* ── MiniOS syscall numbers (canonical table from minios_abi.h) ─────── */
+#include "minios_abi.h"
+#define SYS_TIME_MS     MINIOS_SYS_TIME
+#define SYS_PALETTE     MINIOS_SYS_PALETTE
+#define SYS_PCSPK_INIT  MINIOS_SYS_PCSPK_INIT
+#define SYS_PCSPK_TONE  MINIOS_SYS_PCSPK_TONE
+#define SYS_RTC         MINIOS_SYS_RTC
+#define SYS_FB_INFO     MINIOS_SYS_FB_INFO
+#define SYS_PCSPK_VOL   MINIOS_SYS_PCSPK_VOL
+#define SYS_SPAWN       MINIOS_SYS_SPAWN
 
 /* ── minios.time_ms() ──────────────────────────────────────────────── */
 static int minios_time_ms(lua_State *L) {

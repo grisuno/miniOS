@@ -1,0 +1,26 @@
+# ARCH_POLICY.yaml -- Architectural policy for MiniOS CI gates.
+# This file is the single source of truth for architectural constraints.
+# CI scripts read this file to determine thresholds and approvals.
+
+# Complexity gate: kernel.c maximum symbol count.
+# Bump this value explicitly when a controlled increase is acceptable.
+kernel_symbol_limit: 350
+
+# Cohesion gate: minimum cohesion score for root communities.
+# Communities below this threshold cause CI failure.
+cohesion_threshold: 0.25
+
+# Surprising connections: minimum hop count to flag.
+surprising_min_hops: 5
+
+# ABI version: must match MINIOS_ABI_VERSION in minios_abi.h.
+# CI verifies this value is current.
+abi_version: 1
+
+# Approved deviations from policy.
+# Each entry explains why the deviation exists and when it should be removed.
+approvals:
+  - module: kernel.c
+    metric: symbol_count
+    reason: "God object reduction is Phase 6 of the architectural plan"
+    expires: "Phase 6 complete"

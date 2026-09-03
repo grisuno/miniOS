@@ -1,0 +1,119 @@
+name: Unified Test Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: make
+
+  bdd:
+    name: BDD Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run BDD Suite
+        run: ./test_bdd.sh
+        timeout-minutes: 30
+
+  codecs:
+    name: Codec Roundtrips
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Codec Tests
+        run: ./tools/test_codecs.sh
+
+  tls:
+    name: TLS Crypto + Handshake
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run TLS Tests
+        run: make test-tls
+
+  mcp-unit:
+    name: MCP Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run MCP Unit Tests
+        run: python3 -m unittest -v mcp.test_minios_mcp.MCPServerTestCase
+
+  mcp-bdd:
+    name: MCP BDD Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run MCP BDD Tests
+        run: python3 -m unittest -v mcp.test_minios_mcp.MiniOSBDDTestCase
+
+  smp-matrix:
+    name: SMP (${{ matrix.cores }} cores)
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      matrix:
+        cores: [1, 2, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run BDD with ${{ matrix.cores }} core(s)
+        run: |
+          QEMU_EXTRA="-smp ${{ matrix.cores }}" ./test_bdd.sh
+        timeout-minutes: 30
+
+  runtime-integration:
+    name: Runtime Integration
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test all runtimes
+        run: |
+          # C hello world
+          cat > /tmp/hello.c << 'EOF'
+          #include <stdio.h>
+          int main() { printf("hello from C\n"); return 0; }
+          EOF
+          gcc -static -no-pie -o /tmp/hello.elf /tmp/hello.c
+
+  network-e2e:
+    name: Network E2E
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Network Tests
+        run: |
+          ./test_bdd.sh --match "net.*tcp|net.*dns|net.*tls|freedom"
+
+  mutation:
+    name: Mutation Tests
+    runs-on: ubuntu-latest
+    needs: [bdd, tls, mcp-unit]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Mutation Suite
+        run: ./mutate.sh --limit 10
+        timeout-minutes: 60
+
+  mcp-mutation:
+    name: MCP Mutation Tests
+    runs-on: ubuntu-latest
+    needs: mcp-unit
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run MCP Mutation Suite
+        run: mcp/mutate_mcp.sh --limit 5
+        timeout-minutes: 60

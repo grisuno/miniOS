@@ -16,10 +16,11 @@
 
 #include <stdio.h>
 #include <math.h>
+#include "minios_abi.h"
 
-#define SYS_SB16_OPEN   221
-#define SYS_SB16_SUBMIT 222
-#define SYS_TIME        204
+#define SYS_SB16_OPEN   MINIOS_SYS_SB16_OPEN
+#define SYS_SB16_SUBMIT MINIOS_SYS_SB16_SUBMIT
+#define SYS_TIME        MINIOS_SYS_TIME
 
 #define RATE 22050u
 #define BUF  2048u

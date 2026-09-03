@@ -44,13 +44,14 @@
 #include "nuklear.h"
 #include "nuklear_minios.h"
 #include "opl3.h"
+#include "minios_abi.h"
 
 #define UI_MEMORY (4 * 1024 * 1024)
 static char ui_memory[UI_MEMORY];
 
-#define SYS_SB16_OPEN   221
-#define SYS_SB16_SUBMIT 222
-#define SYS_SB16_PUMP   224
+#define SYS_SB16_OPEN   MINIOS_SYS_SB16_OPEN
+#define SYS_SB16_SUBMIT MINIOS_SYS_SB16_SUBMIT
+#define SYS_SB16_PUMP   MINIOS_SYS_SB16_PUMP
 
 #define RATE    22050u
 #define PCM_BUF 2048u        /* == SB16 PCM buffer size (bytes) */

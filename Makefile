@@ -664,6 +664,7 @@ $(BIN_DIR)/micropython.elf: $(MICROPYTHON_DIR)/ports/unix/main.c \
 	$(MAKE) -C $(MICROPYTHON_DIR)/ports/unix \
 	    VARIANT_DIR=$(MPY_VARIANT_DIR) \
 	    LDFLAGS_EXTRA="-static -no-pie" \
+	    CFLAGS_EXTRA="-I$(shell pwd)/$(PROGS_DIR)" \
 	    -j$(shell nproc 2>/dev/null || echo 4)
 	cp $(MPY_BUILD)/micropython $@
 
@@ -692,6 +693,7 @@ $(LUA_DIR)/lua.h:
 
 $(BIN_DIR)/lua.elf: $(addprefix $(LUA_DIR)/,$(LUA_LIB_SRCS)) $(LUA_APP_SRCS) $(LUA_DIR)/lua.h
 	$(CC) -static -no-pie -std=gnu99 -O2 -Wall -DLUA_USE_LINUX -I$(LUA_DIR) \
+	      -I$(PROGS_DIR) \
 	      -o $@ $(addprefix $(LUA_DIR)/,$(LUA_LIB_SRCS)) $(LUA_APP_SRCS) -lm -ldl
 	chmod +x $@
 
@@ -760,13 +762,13 @@ $(NUKED_OPL3_DIR)/opl3.h:
 
 $(BIN_DIR)/opl3: $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wall \
-	      -I$(NUKED_OPL3_DIR) -o $@ $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c
+	      -I$(NUKED_OPL3_DIR) -I$(PROGS_DIR) -o $@ $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c
 	chmod +x $@
 
 # sbtone: headless SB16 diagnostic. Streams a clean 440 Hz sine to the SB16
 # and reports submit throughput, isolating the audio path from any GUI.
 $(BIN_DIR)/sbtone: $(SRC_DIR)/sbtone.c
-	$(CC) -static -no-pie -std=c99 -O2 -Wall -o $@ $(SRC_DIR)/sbtone.c -lm
+	$(CC) -static -no-pie -std=c99 -O2 -Wall -I$(PROGS_DIR) -o $@ $(SRC_DIR)/sbtone.c -lm
 	chmod +x $@
 
 # ── topogpt3 (TopoGPT3 transformer inference, static ring-3 ELF) ──

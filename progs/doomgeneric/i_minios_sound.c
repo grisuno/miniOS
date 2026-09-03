@@ -7,6 +7,7 @@
 #include "w_wad.h"
 #include "z_zone.h"
 #include "doomgeneric.h"
+#include "minios_abi.h"
 
 #define PCSPK_CHANNELS 4
 #define PCSPK_TICK_MS 14
@@ -29,10 +30,10 @@ static int pcspk_ready;
 static boolean pcspk_sfx_prefix;
 
 static long sys_tone(unsigned f) {
-    long r; __asm__ volatile("syscall":"=a"(r):"a"(210),"D"((long)f):"rcx","r11","memory"); return r;
+    long r; __asm__ volatile("syscall":"=a"(r):"a"(MINIOS_SYS_PCSPK_TONE),"D"((long)f):"rcx","r11","memory"); return r;
 }
 static long sys_time(void) {
-    long r; __asm__ volatile("syscall":"=a"(r):"a"(204),"D"(0):"rcx","r11","memory"); return r;
+    long r; __asm__ volatile("syscall":"=a"(r):"a"(MINIOS_SYS_TIME),"D"(0):"rcx","r11","memory"); return r;
 }
 
 /* MUS (Doom's music format) decoded for the PC speaker with NES-style

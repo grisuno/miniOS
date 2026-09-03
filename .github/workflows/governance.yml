@@ -1,0 +1,113 @@
+name: Architectural Governance
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  kb-sync:
+    name: Knowledge Base Sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regenerate Knowledge Base
+        run: |
+          if [ -f tools/readmenator.py ]; then
+            python3 tools/readmenator.py --output KNOWLEDGE_BASE.md
+            if ! git diff --quiet KNOWLEDGE_BASE.md; then
+              echo "::error::KNOWLEDGE_BASE.md is out of sync with code"
+              git diff KNOWLEDGE_BASE.md
+              exit 1
+            fi
+          else
+            echo "readmenator not found, skipping KB sync check"
+          fi
+
+  cohesion:
+    name: Cohesion Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Cohesion
+        run: |
+          python3 tools/check_cohesion.py \
+            --threshold 0.25 \
+            KNOWLEDGE_BASE.jsonld || true
+
+  complexity:
+    name: Complexity Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Kernel Complexity
+        run: |
+          python3 tools/check_complexity.py \
+            --threshold 350 \
+            --policy ARCH_POLICY.yaml
+
+  surprising:
+    name: Surprising Connections
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Surprising Connections
+        run: |
+          python3 tools/check_surprising.py \
+            --min-hops 5 \
+            KNOWLEDGE_BASE.jsonld || true
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: make
+
+  bdd:
+    name: BDD Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run BDD Suite
+        run: ./test_bdd.sh
+        timeout-minutes: 30
+
+  codecs:
+    name: Codec Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Codec Tests
+        run: ./tools/test_codecs.sh
+
+  tls:
+    name: TLS Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run TLS Tests
+        run: make test-tls
+
+  mcp:
+    name: MCP Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run MCP Tests
+        run: python3 -m unittest -v mcp/test_minios_mcp.py
+
+  mutation:
+    name: Mutation Tests
+    runs-on: ubuntu-latest
+    needs: [bdd, tls]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Mutation Tests
+        run: ./mutate.sh --limit 10
+        timeout-minutes: 60

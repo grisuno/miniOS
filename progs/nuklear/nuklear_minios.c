@@ -22,55 +22,55 @@
 
 #include "nuklear_minios.h"
 
-/* ---- MiniOS syscalls (Linux ABI numbers are MiniOS custom) ---- */
+/* ---- MiniOS syscalls (canonical table from minios_abi.h) ---- */
 long nk_sys_time_ms(void) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(204), "D"(0) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");
     return ret;
 }
 long nk_sys_kbd(void) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(205), "D"(0) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_KBD), "D"(0) : "rcx","r11","memory");
     return ret;
 }
 long nk_sys_palette(const unsigned char *pal) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(206), "D"(pal) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_PALETTE), "D"(pal) : "rcx","r11","memory");
     return ret;
 }
 long nk_sys_kbd_raw(int on) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(207), "D"((long)on) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_KBD_RAW), "D"((long)on) : "rcx","r11","memory");
     return ret;
 }
 long nk_sys_vga_mode(int on) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(208), "D"((long)on) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_VGA_MODE), "D"((long)on) : "rcx","r11","memory");
     return ret;
 }
 long nk_sys_fb_info(int *w, int *h, int *pitch) {
     long ret;
     __asm__ volatile("syscall" : "=a"(ret)
-                     : "a"(213), "D"(w), "S"(h), "d"(pitch)
+                     : "a"(MINIOS_SYS_FB_INFO), "D"(w), "S"(h), "d"(pitch)
                      : "rcx","r11","memory");
     return ret;
 }
 long nk_sys_mouse(int *xybw) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(219), "D"(xybw) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_MOUSE), "D"(xybw) : "rcx","r11","memory");
     return ret;
 }
 long nk_sys_mouse_badptr(void) {
     /* A kernel address (0x100000) is far outside the user window; the kernel
      * user_range_ok check must reject it with -EFAULT. */
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(219), "D"(0x100000L)
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_MOUSE), "D"(0x100000L)
                      : "rcx","r11","memory");
     return ret;
 }
 long nk_sys_nk_frame(int *origin) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(220), "D"(origin) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_NK_FRAME), "D"(origin) : "rcx","r11","memory");
     return ret;
 }
 

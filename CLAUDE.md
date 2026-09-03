@@ -1706,3 +1706,71 @@ no Quake-2-specific logic; all Q2G coupling lives in the platform layer
 - No function symbol is ever resolved to a null address.
 - `size * n` in file I/O is checked for integer overflow before multiplication.
 - Stack setup for user programs validates that argv writes stay within bounds.
+
+## Unified Architectural Improvement Plan
+
+See `ARCHITECTURE_PLAN.md` for the full plan.  This section documents the
+implemented changes and the contracts they establish.
+
+### ABI Versioning (Phase 1.1)
+
+`progs/minios_abi.h` carries `MINIOS_ABI_VERSION` (monotonic integer) and
+`MINIOS_ABI_CHECKSUM` (XOR-fold of all layout constants).  Any backwards-
+incompatible change to layout constants or syscall numbers must bump the
+version.  The checksum is computed at compile time from the constants
+themselves, so it changes automatically when any constant changes.
+
+Build-time drift prevention: `kernel.c` contains `_Static_assert` macros that
+verify the kernel's derived constants equal the ABI header values.  Ring-3
+programs include the same header, so both sides pick up changes on rebuild.
+
+### Canonical Syscall Table (Phase 3.1)
+
+`progs/minios_abi.h` is the single source of truth for all syscall numbers.
+The table is organized as:
+- 0-199: Linux ABI compatible syscalls (read, write, brk, mmap, ...)
+- 200-299: MiniOS custom syscalls (networking, audio, graphics, ...)
+- 300+: Reserved for future use
+
+All runtime bindings (Lua `minios.c`, MicroPython `minios_module.c`, DOOM
+`doomgeneric_minios.c`, Nuklear `nuklear_minios.c`, Quake 2
+`q2generic_minios.c`, OPL3 `opl3.c`, SB16 `sbtone.c`, piano `piano.c`)
+must reference the `MINIOS_SYS_*` constants instead of defining their own.
+Compatibility aliases (`SYS_TIME_MS`, `SYS_PALETTE`, etc.) are provided
+for backward compatibility but new code should use the canonical names.
+
+### VFS Invariant Documentation (Phase 1.4)
+
+`kernel.h` documents explicit contracts for `vfs_ops_t`, `vfs_file_t`,
+`KFILE`, and `RDFile`:
+- Every field has a semantic contract (what it holds, when it is valid)
+- Invariants are stated (what must be true before/after operations)
+- Failure modes are documented (what happens on error)
+
+### Architectural Governance (Phase 2)
+
+CI gates enforce architectural constraints:
+- `tools/check_cohesion.py`: fails if any root community's cohesion drops
+  below 0.25 (configurable in ARCH_POLICY.yaml)
+- `tools/check_complexity.py`: fails if kernel.c exceeds 350 symbols
+  without explicit approval in ARCH_POLICY.yaml
+- `tools/check_surprising.py`: flags new connections of 5+ hops between
+  distinct communities as coupling debt
+- `tools/check_kb_sync.py`: verifies KNOWLEDGE_BASE.md is in sync with code
+
+`.github/workflows/governance.yml` runs these gates on every push.
+`.github/workflows/test.yml` runs the unified test pipeline.
+
+### Validation Gate (updated)
+```bash
+make                        # zero warnings
+./test_bdd.sh               # all scenarios green
+./tools/test_codecs.sh      # lzss/lz4/aes roundtrips (pass=3)
+./mutate.sh                 # every mutant killed
+make test-tls               # host-side crypto + handshake suite
+python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD
+mcp/mutate_mcp.sh           # every MCP mutant killed
+python3 tools/check_cohesion.py KNOWLEDGE_BASE.jsonld
+python3 tools/check_complexity.py --policy ARCH_POLICY.yaml
+python3 tools/check_surprising.py KNOWLEDGE_BASE.jsonld
+```
