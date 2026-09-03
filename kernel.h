@@ -167,6 +167,10 @@ int      ramdisk_resize(RDFile *f, unsigned newsize);
 int      ramdisk_delete(RDFile *f);
 int      ramdisk_list(RDFile **out, int max);
 void     ramdisk_setup_from(void *data, unsigned size);
+int      ramdisk_count(void);
+const char *ramdisk_file_name(int idx);
+
+#define RD_DATA_MAX (48UL * 1024 * 1024)
 
 /* Path resolution choke point shared by the shell builtins and the zip
  * builtins. fs_resolve resolves a path against the cwd into `out`
@@ -241,6 +245,9 @@ int  vfs_register(const char *prefix, const vfs_ops_t *ops);
 int  vfs_unregister(const char *prefix);
 int  vfs_open(const char *path, int mode, vfs_file_t *f);
 void vfs_init(void);
+void vfs_register_builtins(void);
+int  minifs_mkdir_p(const char *resolved);
+extern char fs_cwd[];
 
 /* =========================================================================
  * Simple FILE interface (for libc compat)
@@ -297,6 +304,13 @@ int    kfputc(int c, KFILE *f);
 int    kfflush(KFILE *f);
 void   krewind(KFILE *f);
 
+extern KFILE *kstdin;
+extern KFILE *kstdout;
+extern KFILE *kstderr;
+KFILE *kfile_stdin(void);
+KFILE *kfile_stdout(void);
+KFILE *kfile_stderr(void);
+
 /* ========== String functions ========== */
 unsigned long kstrlen(const char *s);
 char *kstrcpy(char *dst, const char *src);
@@ -326,6 +340,8 @@ int  redirect_suspend(void);
 void redirect_resume(int was);
 int  redirect_begin(void);
 int  redirect_commit(const char *path, int append_mode);
+int  redirect_active(void);
+int  shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);
 int  shell_run_any(const char *name, int argc, char **argv);
 void shell_exec_builtin(int argc, char **argv);
 void shell_report_exit(int code);
