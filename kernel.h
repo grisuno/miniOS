@@ -420,6 +420,18 @@ int  k_exec_user(void *entry, int argc, char **argv);
 int  k_run_rel(prog_entry_t entry, int argc, char **argv);
 void kexit(int code);
 
+/* ========== Execution infrastructure (kernel/exec.c) ========== */
+typedef struct { unsigned long v[8]; } kjmpbuf;
+int  ksetjmp(void *buf) __attribute__((returns_twice));
+void klongjmp(void *buf, int val) __attribute__((noreturn));
+extern kjmpbuf exec_return;
+extern int     exec_exit_code;
+unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
+                                int argc, char **argv);
+void vga_mode_set(int on);
+int  vga_mode_is_active(void);
+void vga_gfx_ran_set(int on);
+
 /* ========== Desktop shortcut launch ========== */
 void desktop_launch(const char *cmd);
 void shell_queue_launch(const char *cmd);

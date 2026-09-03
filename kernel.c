@@ -23,13 +23,7 @@
  *  VGA driver
  * ================================================================ */
 
-static int vga_mode13h; /* nonzero when a graphics program owns the display */
-/* Set when a graphics program activates SYS_VGA_MODE and cleared when the
- * desktop is restored on return. A program (nuklear) may clear vga_mode13h
- * itself before exiting; this flag is what guarantees the desktop is still
- * redrawn on return, otherwise the framebuffer stays frozen on the program's
- * last frame and the cursor is never re-established. */
-static int graphics_program_ran;
+/* vga_mode13h and graphics_program_ran moved to kernel/exec.c */
 static int vga_x, vga_y;
 static char vga_color = 0x07; /* light grey on black */
 
@@ -194,7 +188,7 @@ void vga_putc(char c) {
         vga_fb_putc_term(c);
         return;
     }
-    if (vga_mode13h) {
+    if (vga_mode_is_active()) {
         if (c == '\n') serial_putc('\r');
         return;
     }
@@ -317,69 +311,6 @@ void syscall_init(void) {
     wrmsr(MSR_LSTAR, (unsigned long)syscall_entry);
     wrmsr(MSR_SFMASK, 0x600); /* clear DF and IF on entry */
     wrmsr(MSR_EFER, rdmsr(MSR_EFER) | 1); /* SCE: enable SYSCALL */
-}
-
-
-/* ---- setjmp/longjmp used to unwind back to the shell on exit() ---------- */
-
-typedef struct { unsigned long v[8]; } kjmpbuf; /* rbx rbp r12-r15 rsp rip */
-int  ksetjmp(void *buf) __attribute__((returns_twice));
-void klongjmp(void *buf, int val) __attribute__((noreturn));
-
-__asm__(
-    ".text\n"
-    ".global ksetjmp\n"
-    "ksetjmp:\n"
-    "  movq %rbx,  0(%rdi)\n"
-    "  movq %rbp,  8(%rdi)\n"
-    "  movq %r12, 16(%rdi)\n"
-    "  movq %r13, 24(%rdi)\n"
-    "  movq %r14, 32(%rdi)\n"
-    "  movq %r15, 40(%rdi)\n"
-    "  leaq 8(%rsp), %rax\n"
-    "  movq %rax, 48(%rdi)\n"
-    "  movq (%rsp), %rax\n"
-    "  movq %rax, 56(%rdi)\n"
-    "  xorl %eax, %eax\n"
-    "  ret\n"
-    ".global klongjmp\n"
-    "klongjmp:\n"
-    "  movq  0(%rdi), %rbx\n"
-    "  movq  8(%rdi), %rbp\n"
-    "  movq 16(%rdi), %r12\n"
-    "  movq 24(%rdi), %r13\n"
-    "  movq 32(%rdi), %r14\n"
-    "  movq 40(%rdi), %r15\n"
-    "  movq 48(%rdi), %rsp\n"
-    "  movl %esi, %eax\n"
-    "  testl %eax, %eax\n"
-    "  jnz 1f\n"
-    "  incl %eax\n"
-    "1:\n"
-    "  jmp *56(%rdi)\n"
-);
-
-static kjmpbuf exec_return;
-static int     exec_exit_code;
-
-/* Called from the ISR exception handler when a ring-3 user program faults.
- * Sets exec_exit_code and longjmps back to k_exec_user's setjmp point so
- * the parent interpreter gets EFAULT instead of the whole machine hanging. */
-void k_user_fault_return(void) {
-    exec_exit_code = EFAULT;
-    /* Restore kernel data segments — the fault may have left user selectors
-     * loaded in DS/ES/FS/GS. */
-    __asm__ volatile(
-        "mov %[kdata], %%ax\n"
-        "mov %%ax, %%ds\n"
-        "mov %%ax, %%es\n"
-        "mov %%ax, %%fs\n"
-        "mov %%ax, %%gs\n"
-        :: [kdata] "i"(GDT64_DATA_SEL)
-        : "ax", "memory");
-    wrmsr(MSR_FSBASE, 0);
-    wrmsr(MSR_GSBASE, 0);
-    klongjmp(&exec_return, 1);
 }
 
 
@@ -691,8 +622,8 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         return 0;
     }
     case 208: { /* SYS_VGA_MODE: tell kernel a graphics program owns the display */
-        vga_mode13h = (int)a1;
-        if (a1) graphics_program_ran = 1;
+        vga_mode_set((int)a1);
+        if (a1) vga_gfx_ran_set(1);
         /* While a graphics program owns the display the idle loop never runs,
          * so the desktop pointer is drawn by the frame composites instead.
          * Toggle that mode here. */
@@ -1114,39 +1045,7 @@ __asm__(
 );
 
 
-/* ---- Build the SysV initial stack and jump to the ELF entry ------------- */
-
-static unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
-                                       int argc, char **argv) {
-    char *p = sbase + ssize;
-    char *argp[64];
-    int i;
-    if (argc > 64) argc = 64;
-    for (i = 0; i < argc; i++) {
-        unsigned long l = kstrlen(argv[i]) + 1;
-        if (l > (unsigned long)(p - sbase)) return 0;
-        p -= l;
-        kmemcpy(p, argv[i], l);
-        argp[i] = p;
-    }
-    p -= 16;                       /* 16 random bytes for AT_RANDOM */
-    char *randp = p;
-    for (i = 0; i < 16; i++) randp[i] = (char)(0x37 + i);
-    p = (char *)((unsigned long)p & ~15UL);
-
-    int nwords = 1 + argc + 1 + 1 + 6; /* argc, argv[], NULL, envp NULL, 3 aux pairs */
-    unsigned long sp = ((unsigned long)p - (unsigned long)nwords * 8) & ~15UL;
-    unsigned long *w = (unsigned long *)sp;
-    int idx = 0;
-    w[idx++] = (unsigned long)argc;
-    for (i = 0; i < argc; i++) w[idx++] = (unsigned long)argp[i];
-    w[idx++] = 0;                       /* argv terminator */
-    w[idx++] = 0;                       /* envp terminator */
-    w[idx++] = 6;  w[idx++] = 4096;                     /* AT_PAGESZ */
-    w[idx++] = 25; w[idx++] = (unsigned long)randp;     /* AT_RANDOM */
-    w[idx++] = 0;  w[idx++] = 0;                        /* AT_NULL   */
-    return w;
-}
+/* setup_user_stack moved to kernel/exec.c */
 
 /* SYS_SPAWN (215): run a ramdisk program from inside the OS.
  * Saves the parent's user window, loads the child, runs it via k_exec_user,
@@ -1375,157 +1274,7 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     return rc;
 }
 
-int k_exec_user(void *entry, int argc, char **argv) {
-    char *stk = (char *)USER_STACK_BASE;   /* fixed region, no heap churn */
-    unsigned long *sp = setup_user_stack(stk, USER_STACK_SIZE, argc, argv);
-    unsigned long frame[5];
-    if (!sp) return -1;
-    exec_exit_code = 0;
-    unsigned long saved_kstack = syscall_kstack;
-
-    /* Create fresh per-process page tables for the new program so it gets
-     * an isolated address space.  Save the parent's CR3 to restore later. */
-    unsigned long parent_cr3;
-    __asm__ volatile("mov %%cr3, %0" : "=r"(parent_cr3));
-    uint64_t new_cr3 = pt_clone_user(0);
-    if (new_cr3) {
-        __asm__ volatile("mov %0, %%cr3; mov %%cr3, %%rax" :: "r"(new_cr3) : "rax", "memory");
-    }
-
-    /* The child is a ring-3 Linux binary whose `syscall` instructions swap
-       onto syscall_kstack.  If it points at SYS_KSTK_TOP (0x88000), every
-       child syscall (including the final exit) pushes its frame there and
-       clobbers THIS handler's frames on the same stack — so when the child
-       exits via klongjmp, k_exec_user's return address on 0x88000 has been
-       overwritten and `ret` lands in the wrong place.  Give the child a
-       dedicated kernel stack so its syscalls never touch 0x88000. */
-    unsigned long child_stack_sz = SYS_KSTK_TOP - SYS_KSTK_BASE;
-    void *child_stack = kmalloc(child_stack_sz);
-    if (child_stack)
-        syscall_kstack = (unsigned long)child_stack + child_stack_sz;
-    else
-        syscall_kstack = SYS_KSTK_TOP;
-    wrmsr(MSR_FSBASE, 0);
-    wrmsr(MSR_GSBASE, 0);
-
-    /* Ring-3 entry frame, popped by iretq: RIP, CS, RFLAGS, RSP, SS. */
-    frame[0] = (unsigned long)entry;
-    frame[1] = (unsigned long)(GDT64_USER_CODE_SEL | 3);
-    frame[2] = 0x202;                       /* IF=1: interrupts enabled for desktop tick */
-    frame[3] = (unsigned long)sp;
-    frame[4] = (unsigned long)(GDT64_USER_DATA_SEL | 3);
-
-    /* exec_return is a shared global: a nested SYS_SPAWN child overwrites it
-       via its own ksetjmp, so save it and restore it after the child exits.
-       Otherwise the parent's later exit() would klongjmp back into the
-       already-returned nested k_exec_user instead of here. */
-    kjmpbuf saved_exec = exec_return;
-    user_program_active = 1;
-    if (ksetjmp(&exec_return) == 0) {
-        __asm__ volatile(
-            "mov %[udata], %%ax\n"
-            "mov %%ax, %%ds\n"
-            "mov %%ax, %%es\n"
-            "mov %%ax, %%fs\n"
-            "mov %%ax, %%gs\n"
-            "mov %[frame], %%rsp\n"
-            "xorl %%ebp, %%ebp\n"
-            "xorl %%edi, %%edi\n"
-            "xorl %%esi, %%esi\n"
-            "xorl %%edx, %%edx\n"
-            "iretq\n"
-            :: [frame] "r"(frame), [udata] "i"(GDT64_USER_DATA_SEL | 3)
-            : "rax", "memory");
-        __builtin_unreachable();
-    }
-    user_program_active = 0;
-
-    /* Restore the parent's page tables and free the child's. */
-    if (new_cr3) {
-        pt_free_user(new_cr3);
-        __asm__ volatile("mov %0, %%cr3" :: "r"(parent_cr3) : "memory");
-    }
-    (void)parent_cr3;
-
-    /* exit() went through the SYSCALL path, which already reloaded CS/SS to
-     * the kernel selectors; restore the data segments and syscall stack. */
-    __asm__ volatile(
-        "mov %[kdata], %%ax\n"
-        "mov %%ax, %%ds\n"
-        "mov %%ax, %%es\n"
-        "mov %%ax, %%fs\n"
-        "mov %%ax, %%gs\n"
-        "mov %%ax, %%ss\n"
-        :: [kdata] "i"(GDT64_DATA_SEL)
-        : "ax", "memory");
-    wrmsr(MSR_FSBASE, 0);
-    wrmsr(MSR_GSBASE, 0);
-    exec_return = saved_exec;
-    syscall_kstack = saved_kstack;
-    if (child_stack) kfree(child_stack);
-    if (vga_mode13h || graphics_program_ran) {
-        if (s_trace_enabled)
-            kprintf("[exit-gfx] reset: mode13h=%d ran=%d\n", vga_mode13h, graphics_program_ran);
-        vga_mode13h = 0; /* reclaim the display for the text console */
-        graphics_program_ran = 0;
-        vga_fb_set_gfx_mode(0); /* drop the graphics pointer state */
-        vga_fb_draw_desktop(); /* drop the graphics window, restore desktop */
-    }
-    kbd_reset_for_shell();
-    return exec_exit_code;
-}
-
-/* Run an ET_REL program as a plain function call, but catch a libc exit(). */
-int k_run_rel(prog_entry_t entry, int argc, char **argv) {
-    exec_exit_code = 0;
-    /* Save the caller's stack pointer held in syscall_kstack and restore it
-       on the way out.  When SYS_SPAWN runs an ET_REL child, syscall_kstack
-       holds the outer syscall's incoming rsp; clobbering it to SYS_KSTK_TOP
-       would make the outer syscall_entry xchg restore rsp=0x88000, so the
-       parent resumes at ring 0 with a broken stack (its retq pops 0 -> RIP=0).
-       The child itself needs syscall_kstack = SYS_KSTK_TOP so its own ring-0
-       syscalls swap onto the kernel stack. */
-    unsigned long saved_kstack = syscall_kstack;
-    syscall_kstack = SYS_KSTK_TOP;
-
-    /* Enable SSE/OSFXSR so ring-0 code can use xmm instructions (miniGCC
-       emits pcmpeqd etc. in prologues).  Clear CR0.TS to解除 any "device
-       not available" trap. */
-    unsigned long cr0, cr4;
-    __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
-    __asm__ volatile("mov %0, %%cr0" :: "r"(cr0 & ~0x8UL) : "memory");
-    __asm__ volatile("mov %%cr4, %0" : "=r"(cr4));
-    __asm__ volatile("mov %0, %%cr4" :: "r"(cr4 | 0x600UL) : "memory");
-
-    /* Save the caller's exec_return too: a nested spawn's ksetjmp would
-       overwrite the shared global and break the parent's later exit(). */
-    kjmpbuf saved_exec = exec_return;
-
-    if (ksetjmp(&exec_return) == 0) {
-        int rc = entry(argc, argv);
-        exec_return = saved_exec;
-        syscall_kstack = saved_kstack;
-        return rc;
-    }
-
-    /* klongjmp landed here after kexit() */
-    exec_return = saved_exec;
-    syscall_kstack = saved_kstack;
-    if (vga_mode13h || graphics_program_ran) {
-        vga_mode13h = 0;
-        graphics_program_ran = 0;
-        vga_fb_set_gfx_mode(0);
-        vga_fb_draw_desktop();
-    }
-    kbd_reset_for_shell();
-    return exec_exit_code;
-}
-
-/* libc exit() for loaded programs: unwind back to the shell. */
-void kexit(int code) {
-    exec_exit_code = code;
-    klongjmp(&exec_return, 1);
-}
+/* k_exec_user, k_run_rel, kexit moved to kernel/exec.c */
 
 
 /* ================================================================
@@ -2891,7 +2640,7 @@ static void shell_cmd_gfx(int argc, char **argv) {
     if (argc == 1) {
         kprintf("gfx: fb %dx%d pitch %d base %lx mode %s active %d\n",
                 fb_width, fb_height, fb_pitch, fb_phys_base,
-                vga_mode13h ? "gfx" : "text", vga_fb_active);
+                vga_mode_is_active() ? "gfx" : "text", vga_fb_active);
         kprintf("gfx: mouse present %d at (%d,%d) buttons %d wheel %d\n",
                 mouse_state.present, mouse_state.x, mouse_state.y,
                 mouse_state.buttons, mouse_state.wheel);
