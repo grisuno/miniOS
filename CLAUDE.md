@@ -1739,6 +1739,15 @@ must reference the `MINIOS_SYS_*` constants instead of defining their own.
 Compatibility aliases (`SYS_TIME_MS`, `SYS_PALETTE`, etc.) are provided
 for backward compatibility but new code should use the canonical names.
 
+### SMP Synchronization (Phase 1.3)
+
+`spinlock.h` provides a lightweight xchg-based spinlock with interrupt
+save/restore.  `sched_lock` protects the shared process table (`procs[]`),
+`proc_count`, and scheduler state.  `smp_lock` protects the AP counter
+and LAPIC registers.  Per-CPU data (current PID on each core, per-CPU
+stacks) needs no lock.  The lock primitives are in place for when SMP
+scheduling is enabled; currently APs idle in an hlt loop.
+
 ### VFS Invariant Documentation (Phase 1.4)
 
 `kernel.h` documents explicit contracts for `vfs_ops_t`, `vfs_file_t`,
@@ -1746,6 +1755,31 @@ for backward compatibility but new code should use the canonical names.
 - Every field has a semantic contract (what it holds, when it is valid)
 - Invariants are stated (what must be true before/after operations)
 - Failure modes are documented (what happens on error)
+
+### CVM Hardening (Phase 3.3)
+
+The CVM interpreter already has comprehensive bytecode validation:
+- Module loading: magic, version, size, all section bounds checked
+- Jump targets: bounds-checked against `code_size` (OP_JMP, OP_JZ, OP_JNZ)
+- Function calls: bounds-checked against `num_funcs` (OP_CALL)
+- Native calls: bounds-checked against `num_module_natives` + CVM_MAX_NARGS
+- Memory operations: all use `mem_valid()` for bounds checking
+- Stack operations: overflow/underflow checks via vp()/vo()
+No additional hardening was needed.
+
+### Shell Extraction Plan (Phase 6.1)
+
+`shell.h` defines the public API.  The extraction of 38 shell functions
+(~2070 lines) from kernel.c to shell.c is planned as a future phase.
+See `tools/extract_shell.py` for the full dependency analysis.  The
+extraction requires:
+- Making redirect_begin/commit/suspend/resume non-static (currently kernel.c)
+- Making shell_run_elf_buf, shell_run_elf_file, shell_run_cvm non-static
+- Exposing fs_cwd, fs_resolve, and filesystem helpers
+- Updating the Makefile to compile shell.c
+
+This is deferred because it requires the full test safety net (Phase 5)
+to verify no regressions.
 
 ### Architectural Governance (Phase 2)
 

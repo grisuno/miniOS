@@ -15,7 +15,12 @@
  * The APs do NOT enter the scheduler or the syscall path, so their presence is
  * invisible to the existing single-core system.  Everything here is fail-safe:
  * if the LAPIC cannot be reached or no AP answers, smp_init just reports the
- * BSP and returns, and the kernel boots exactly as before. */
+ * BSP and returns, and the kernel boots exactly as before.
+ *
+ * Per-CPU vs shared (documented in smp.h):
+ *   Per-CPU: LAPIC ID, AP stack, hlt loop
+ *   Shared:  ap_count (protected by __sync_fetch_and_add, lockless atomic),
+ *            LAPIC registers (BSP-only writes, no contention) */
 
 #define LAPIC_BASE      0xFEE00000u
 #define LAPIC_ID_OFF    0x020u
@@ -42,6 +47,7 @@
 #define LAPIC_PD_IDX      ((LAPIC_BASE / 0x200000u) % 512u)   /* = 503 */
 
 static volatile unsigned ap_count;
+spinlock_t smp_lock = SPINLOCK_INIT;
 
 static unsigned lapic_read(unsigned off) {
     return *(volatile unsigned *)(unsigned long)(LAPIC_BASE + off);

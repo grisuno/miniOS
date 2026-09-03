@@ -21,6 +21,7 @@ int    proc_count;
 int    current_pid;
 volatile uint64_t sys_ticks;
 volatile int user_program_active;
+spinlock_t sched_lock = SPINLOCK_INIT;
 
 extern void user_trampoline(void);
 
@@ -295,10 +296,11 @@ proc_t *proc_get(int pid) {
 }
 
 int proc_create(const char *name, int parent_pid) {
+    spin_lock(&sched_lock);
     int pid;
     for (pid = 1; pid < MAX_PROCS; pid++)
         if (procs[pid].state == PROC_FREE) break;
-    if (pid >= MAX_PROCS) return -1;
+    if (pid >= MAX_PROCS) { spin_unlock(&sched_lock); return -1; }
 
     proc_t *p = &procs[pid];
     kmemset(p, 0, sizeof(proc_t));
@@ -308,7 +310,7 @@ int proc_create(const char *name, int parent_pid) {
     kstrncpy(p->name, name, sizeof(p->name) - 1);
 
     uint64_t kstack_top = alloc_kstack();
-    if (!kstack_top) return -1;
+    if (!kstack_top) { spin_unlock(&sched_lock); return -1; }
     p->kstack = kstack_top;
 
     /* Build iretq frame at the top of the kernel stack */
@@ -329,23 +331,26 @@ int proc_create(const char *name, int parent_pid) {
     p->ctx.rflags = 0x200;
 
     if (proc_count <= pid) proc_count = pid + 1;
+    spin_unlock(&sched_lock);
     return pid;
 }
 
 void schedule(void) {
+    spin_lock(&sched_lock);
     int next = current_pid;
     int t;
     for (t = 0; t < MAX_PROCS; t++) {
         next = (next + 1) % MAX_PROCS;
         if (procs[next].state == PROC_READY) break;
     }
-    if (t >= MAX_PROCS) return;
-    if (next == current_pid) return;
+    if (t >= MAX_PROCS) { spin_unlock(&sched_lock); return; }
+    if (next == current_pid) { spin_unlock(&sched_lock); return; }
     proc_t *cur = proc_get(current_pid);
     proc_t *nxt = proc_get(next);
-    if (!cur || !nxt) return;
+    if (!cur || !nxt) { spin_unlock(&sched_lock); return; }
     current_pid = next;
     nxt->state = PROC_RUNNING;
+    spin_unlock(&sched_lock);
     switch_to(cur, nxt);
 }
 
@@ -355,8 +360,9 @@ void yield(void) {
 }
 
 void do_exit(int code) {
+    spin_lock(&sched_lock);
     proc_t *cur = proc_get(current_pid);
-    if (!cur) return;
+    if (!cur) { spin_unlock(&sched_lock); return; }
     cur->exit_code = code;
     /* Free the process's per-process page tables before switching away.
      * The kernel identity mapping is shared and not freed; only the user-
@@ -369,6 +375,7 @@ void do_exit(int code) {
         if (parent && parent->state == PROC_BLOCKED)
             parent->state = PROC_READY;
     }
+    spin_unlock(&sched_lock);
     schedule();
 }
 
@@ -376,6 +383,7 @@ int do_waitpid(int pid) {
     proc_t *cur = proc_get(current_pid);
     if (!cur) return -1;
     for (;;) {
+        spin_lock(&sched_lock);
         int i;
         for (i = 0; i < MAX_PROCS; i++) {
             if (procs[i].state != PROC_FREE
@@ -386,9 +394,11 @@ int do_waitpid(int pid) {
                 if (procs[i].ctx.cr3)
                     pt_free_user(procs[i].ctx.cr3);
                 procs[i].state = PROC_FREE;
+                spin_unlock(&sched_lock);
                 return code;
             }
         }
+        spin_unlock(&sched_lock);
         cur->state = PROC_BLOCKED;
         schedule();
     }

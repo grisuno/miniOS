@@ -2,6 +2,7 @@
 #define SCHED_H
 
 #include <stdint.h>
+#include "spinlock.h"
 
 /* ---- Process states ---- */
 #define PROC_FREE       0
@@ -39,12 +40,28 @@ typedef struct {
 /* ---- Limits ---- */
 #define DESKTOP_TICK_INTERVAL 4
 
-/* ---- Global state ---- */
+/* ---- Shared scheduler data (protected by sched_lock) ----
+ *
+ * Invariant: these structures are accessed by the BSP (boot processor)
+ * and will be accessed by APs (application processors) when SMP
+ * scheduling is enabled.  All modifications must hold sched_lock.
+ *
+ * Per-CPU data (no lock needed):
+ *   - current_pid on each core (when SMP is enabled, each core tracks
+ *     its own running process via a per-CPU variable)
+ *   - per-CPU kernel stacks
+ *
+ * Shared data (protected by sched_lock):
+ *   - procs[]: the process table
+ *   - proc_count: the high-water mark of PIDs
+ *   - scheduler state in schedule(), do_exit(), do_waitpid()
+ */
 extern proc_t  procs[MAX_PROCS];
 extern int     proc_count;
 extern int     current_pid;
 extern volatile uint64_t sys_ticks;
 extern volatile int user_program_active;
+extern spinlock_t sched_lock;
 
 /* ---- Functions ---- */
 void     sched_init(void);
