@@ -309,6 +309,7 @@ void *kmemcpy(void *dst, const void *src, unsigned long n);
 void *kmemset(void *dst, int c, unsigned long n);
 int   kmemcmp(const void *a, const void *b, unsigned long n);
 void *kmemmove(void *dst, const void *src, unsigned long n);
+long   katol(const char *s);
 
 /* ========== printf ========== */
 int kprintf(const char *fmt, ...);
@@ -319,6 +320,15 @@ int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);
 /* ========== Shell ========== */
 void shell_init(void);
 void shell_run(void);
+int  console_getc(void);
+int  redirect_suspend(void);
+void redirect_resume(int was);
+int  redirect_begin(void);
+int  redirect_commit(const char *path, int append_mode);
+int  shell_run_any(const char *name, int argc, char **argv);
+void shell_exec_builtin(int argc, char **argv);
+void shell_report_exit(int code);
+void shell_report(const char *what, const char *detail);
 
 /* ========== Program execution ========== */
 typedef int (*prog_entry_t)(int argc, char **argv);

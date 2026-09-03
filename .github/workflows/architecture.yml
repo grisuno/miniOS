@@ -1,4 +1,4 @@
-name: Architectural Governance
+name: Architecture Governance
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
         run: |
           python3 tools/check_cohesion.py \
             --threshold 0.25 \
-            KNOWLEDGE_BASE.jsonld || true
+            KNOWLEDGE_BASE.jsonld
 
   complexity:
     name: Complexity Gate
@@ -56,58 +56,4 @@ jobs:
         run: |
           python3 tools/check_surprising.py \
             --min-hops 5 \
-            KNOWLEDGE_BASE.jsonld || true
-
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build
-        run: make
-
-  bdd:
-    name: BDD Tests
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run BDD Suite
-        run: ./test_bdd.sh
-        timeout-minutes: 30
-
-  codecs:
-    name: Codec Tests
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run Codec Tests
-        run: ./tools/test_codecs.sh
-
-  tls:
-    name: TLS Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run TLS Tests
-        run: make test-tls
-
-  mcp:
-    name: MCP Tests
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run MCP Tests
-        run: python3 -m unittest -v mcp/test_minios_mcp.py
-
-  mutation:
-    name: Mutation Tests
-    runs-on: ubuntu-latest
-    needs: [bdd, tls]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run Mutation Tests
-        run: ./mutate.sh --limit 10
-        timeout-minutes: 60
+            KNOWLEDGE_BASE.jsonld

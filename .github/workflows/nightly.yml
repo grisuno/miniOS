@@ -1,0 +1,39 @@
+name: Nightly
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  mutation:
+    name: Mutation Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: make
+      - name: Run Mutation Suite
+        run: ./mutate.sh
+        timeout-minutes: 120
+
+  mcp-mutation:
+    name: MCP Mutation Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run MCP Mutation Suite
+        run: mcp/mutate_mcp.sh
+        timeout-minutes: 60
+
+  stress:
+    name: Stress Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: make
+      - name: SMP Stress (8 cores)
+        run: |
+          QEMU_EXTRA="-smp 8" ./test_bdd.sh
+        timeout-minutes: 60

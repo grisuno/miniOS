@@ -58,7 +58,10 @@ CFLAGS_HOST = -std=c99 -Wall -Wextra -O2
 CFLAGS_DOOM = -std=gnu99 -Wall -O2 -DNORMALUNIX -DLINUX -DSNDSERV -D_DEFAULT_SOURCE \
               -Wno-unused-result -Wno-sign-compare -Wno-pointer-sign
 
-BOOTDEFS = bootdefs.h
+BOOTDEFS = arch/x86/boot/bootdefs.h
+
+# Source search path: headers stay in root (-I.), sources live in subdirs.
+VPATH = kernel:drivers:fs:net:arch/x86:arch/x86/boot:third_party/stb:third_party/xxhash:third_party/dlmalloc:third_party/miniz
 
 bootdef = $(shell sed -n 's/^#define[ \t]*$(1)[ \t]*\([0-9][0-9]*\).*/\1/p' $(BOOTDEFS))
 
@@ -107,7 +110,7 @@ CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
               -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector \
               -fno-omit-frame-pointer -g \
-              -I. -Ithird_party -Ithird_party/stb -Ithird_party/xxhash \
+              -I. -Iarch/x86/boot -Ithird_party -Ithird_party/stb -Ithird_party/xxhash \
               -I$(PROGS_DIR)
 
 PROGS_DIR = progs
@@ -283,7 +286,7 @@ $(OBJ_DIR)/minigcc.o: $(MINIGCC_DIR)/minigcc.c
 $(OBJ_DIR)/ld.o: $(LD_DIR)/ld.c
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
-$(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h cvm_host.c kernel.h \
+$(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h kernel/cvm_host.c kernel.h \
                   $(CVM_DIR)/cvm_jit.c $(CVM_DIR)/cvm_jit.h \
                   $(CVM_DIR)/cvm_jit_x86.c $(CVM_DIR)/cvm_jit_x86.h \
                   $(CVM_DIR)/cvm_jit_help.c $(CVM_DIR)/cvm_jit_help.h
@@ -294,7 +297,7 @@ $(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h cvm_host.c kernel.h \
 	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
 	      -DCVM_FREESTANDING -m64 -mno-red-zone \
 	      -fno-pic -O2 -I$(CVM_DIR) \
-	      -o $(OBJ_DIR)/cvm_host.o cvm_host.c
+	      -o $(OBJ_DIR)/cvm_host.o kernel/cvm_host.c
 	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
 	      -DCVM_FREESTANDING -m64 -mno-red-zone \
 	      -fno-pic -O2 -I$(CVM_DIR) \
@@ -873,22 +876,22 @@ ramdisk_data.c: ramdisk.bin
 	xxd -i $< | sed 's/ramdisk_bin/embedded_ramdisk/; s/unsigned char/const unsigned char/; s/\[\] =/[] __attribute__((section(".ramdisk"))) __attribute__((used)) =/' > $@
 
 # ── Boot path ─────────────────────────────────────────────────────
-stage1.o: stage1.S $(BOOTDEFS)
+stage1.o: arch/x86/boot/stage1.S $(BOOTDEFS)
 	$(CC) $(CFLAGS_BOOT) -c $< -o $@
 
-stage1.elf: stage1.o stage1.ld
-	$(LD) -m elf_i386 -T stage1.ld $< -o $@
+stage1.elf: stage1.o arch/x86/boot/stage1.ld
+	$(LD) -m elf_i386 -T arch/x86/boot/stage1.ld $< -o $@
 
 stage1.bin: stage1.elf
 	$(OBJCOPY) -O binary $< $@
 
-stage2.o: stage2.S $(BOOTDEFS) kernel.bin $(KASLR_STAMP)
+stage2.o: arch/x86/boot/stage2.S $(BOOTDEFS) kernel.bin $(KASLR_STAMP)
 	$(CC) $(CFLAGS_BOOT) $(KASLR_FLAG) \
 	      -DKERNEL_SECTORS=$$(( ($$(stat -c%s kernel.bin) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )) \
 	      -c $< -o $@
 
-stage2.elf: stage2.o stage2.ld
-	$(LD) -m elf_i386 -T stage2.ld $< -o $@
+stage2.elf: stage2.o arch/x86/boot/stage2.ld
+	$(LD) -m elf_i386 -T arch/x86/boot/stage2.ld $< -o $@
 
 stage2.bin: stage2.elf
 	$(OBJCOPY) -O binary $< $@
@@ -897,31 +900,37 @@ stage2.bin: stage2.elf
 kernel.o: kernel.c kernel.h tls.h minifs.h ide.h block.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-net.o: net.c net.h kernel.h
+serial.o: kernel/serial.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-tls.o: tls.c tls.h tls_port.h tls_roots.h kernel.h net.h
+string.o: kernel/string.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-tls_crypto.o: tls_crypto.c tls.h tls_port.h
+net.o: net/net.c net.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-tls_x509.o: tls_x509.c tls.h tls_port.h
+tls.o: net/tls.c tls.h tls_port.h tls_roots.h kernel.h net.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+tls_crypto.o: net/tls_crypto.c tls.h tls_port.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+tls_x509.o: net/tls_x509.c tls.h tls_port.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 ramdisk_data.o: ramdisk_data.c
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-ide.o: ide.c ide.h kernel.h
+ide.o: drivers/ide.c ide.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-block.o: block.c block.h ide.h kernel.h
+block.o: drivers/block.c block.h ide.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-minifs.o: minifs.c minifs.h block.h ide.h kernel.h
+minifs.o: fs/minifs.c minifs.h block.h ide.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-lz4_kernel.o: lz4_kernel.c lz4_kernel.h
+lz4_kernel.o: kernel/lz4_kernel.c lz4_kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 # xxHash XXH64: pure integer, freestanding-safe, compiled straight into the
@@ -948,7 +957,7 @@ miniz_impl.o: third_party/miniz/miniz_impl.c third_party/miniz/miniz.h \
               third_party/miniz/miniz.c kernel.h
 	$(CC) $(CFLAGS_KERN) -Ithird_party/miniz -c $< -o $@
 
-zip.o: zip.c zip.h kernel.h third_party/miniz/miniz.h
+zip.o: fs/zip.c zip.h kernel.h third_party/miniz/miniz.h
 	$(CC) $(CFLAGS_KERN) -Ithird_party/miniz -c $< -o $@
 
 # dlmalloc: Doug Lea's malloc compiled into the kernel as a private mspace
@@ -969,35 +978,35 @@ $(PROGS_DIR)/icons/nuklear.png $(PROGS_DIR)/icons/piano.png: tools/gen_icons.py
 $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip: tools/gen_zip_fixtures.py
 	python3 tools/gen_zip_fixtures.py $(PROGS_DIR)/etc/
 
-sched.o: sched.c sched.h kernel.h bootdefs.h vga_fb.h pcspk.h
+sched.o: kernel/sched.c sched.h kernel.h arch/x86/boot/bootdefs.h vga_fb.h pcspk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-vga_fb.o: vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
+vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
            third_party/stb/stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-pcspk.o: pcspk.c pcspk.h kernel.h
+pcspk.o: drivers/pcspk.c pcspk.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-sb16.o: sb16.c sb16.h kernel.h
+sb16.o: drivers/sb16.c sb16.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-rtc.o: rtc.c rtc.h kernel.h
+rtc.o: drivers/rtc.c rtc.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-isr_stubs.o: isr_stubs.S
+isr_stubs.o: arch/x86/isr_stubs.S
 	$(CC) -c -m64 $< -o $@
 
-ctx_sw.o: ctx_sw.S
+ctx_sw.o: arch/x86/ctx_sw.S
 	$(CC) -c -m64 $< -o $@
 
 # ── SMP AP bootstrap stub ───────────────────────────────────────────────
 # A flat binary the BSP copies to AP_STUB_ADDR (0x6000) and wakes every AP
 # with.  Placed at its real-mode address by ap_entry.ld, then extracted with
 # objcopy and embedded as a C array plus the runtime patch offset.
-ap_stub.bin: ap_entry.S ap_entry.ld $(BOOTDEFS)
-	$(CC) -c -m64 ap_entry.S -o ap_entry.o
-	$(LD) -m elf_x86_64 -T ap_entry.ld ap_entry.o -o ap_entry.elf
+ap_stub.bin: arch/x86/ap_entry.S arch/x86/ap_entry.ld $(BOOTDEFS)
+	$(CC) -c -m64 -Iarch/x86/boot arch/x86/ap_entry.S -o ap_entry.o
+	$(LD) -m elf_x86_64 -T arch/x86/ap_entry.ld ap_entry.o -o ap_entry.elf
 	$(OBJCOPY) -O binary ap_entry.elf ap_stub.bin
 
 ap_stub.h: ap_stub.bin
@@ -1008,11 +1017,11 @@ ap_stub.h: ap_stub.bin
 	@echo "static const unsigned int ap_stub_len = $$(stat -c%s ap_stub.bin);" >> $@
 	@echo "static const unsigned long ap_patch_off = $$(( 0x$$(nm ap_entry.elf | awk '/ap_patch_slot/{print $$1}') - 0x6000 ));" >> $@
 
-smp.o: smp.c smp.h kernel.h bootdefs.h ap_stub.h
+smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h ap_stub.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o net.o tls.o tls_crypto.o \
+kernel.elf: kernel.o serial.o string.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o net.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
 	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o -o $@
@@ -1159,7 +1168,7 @@ clean:
 	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/lzss.s \
 	      $(ASM_DIR)/lz4.s $(ASM_DIR)/json.s $(ASM_DIR)/aes.s \
 	      $(ASM_DIR)/freedom.s
-	rm -f sb16.o smp.o ap_stub.bin ap_stub.h ap_entry.o ap_entry.elf
+	rm -f ap_stub.bin ap_stub.h ap_entry.o ap_entry.elf
 
 .SECONDARY:
 

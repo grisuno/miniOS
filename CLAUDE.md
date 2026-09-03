@@ -1741,12 +1741,53 @@ for backward compatibility but new code should use the canonical names.
 
 ### SMP Synchronization (Phase 1.3)
 
-`spinlock.h` provides a lightweight xchg-based spinlock with interrupt
-save/restore.  `sched_lock` protects the shared process table (`procs[]`),
-`proc_count`, and scheduler state.  `smp_lock` protects the AP counter
-and LAPIC registers.  Per-CPU data (current PID on each core, per-CPU
-stacks) needs no lock.  The lock primitives are in place for when SMP
-scheduling is enabled; currently APs idle in an hlt loop.
+`spinlock.h` provides a lightweight xchg-based spinlock with two acquisition
+modes:
+- `spin_lock` / `spin_unlock`: disables interrupts on acquire, re-enables on
+  release. Safe for ISR context or single-level critical sections.
+- `spin_lock_irqsave` / `spin_unlock_irqrestore`: saves RFLAGS.IF before
+  disabling, restores the saved state on release. Safe for nested critical
+  sections where the outer lock has IF=0.
+
+`spin_trylock` attempts acquisition without modifying interrupts.
+
+`sched_lock` protects the shared process table (`procs[]`), `proc_count`,
+and scheduler state. `smp_lock` protects the AP counter and LAPIC registers.
+Per-CPU data (current PID on each core, per-CPU stacks) needs no lock.
+The lock primitives are in place for when SMP scheduling is enabled; currently
+APs idle in an hlt loop.
+
+### Kernel Decomposition (Phase 1.4)
+
+`kernel.c` is being decomposed into standalone compilation units and the
+project is restructured into a Linux/BSD-style directory layout:
+
+```
+arch/x86/boot/    stage1.S, stage2.S, bootdefs.h, linker scripts
+arch/x86/         isr_stubs.S, ctx_sw.S, ap_entry.S
+kernel/            string.c, serial.c, sched.c, vga_fb.c, lz4_kernel.c, cvm_host.c
+drivers/           ide.c, block.c, pcspk.c, sb16.c, rtc.c
+fs/                minifs.c, zip.c
+net/               net.c, tls.c, tls_crypto.c, tls_x509.c
+third_party/       xxhash, stb, dlmalloc, miniz
+```
+
+Headers remain in the project root (accessed via `-I.`); source files live
+in subdirectories. The Makefile uses `VPATH` so make finds sources in
+subdirs while `.o` files stay in the root for the link line.
+
+Extracted so far:
+- `serial.c`: COM1 16550 UART driver (init, putc, getc, available, puts)
+- `string.c`: kernel string/memory functions (kstrlen, kmemcpy, katol, etc.)
+- Drivers: ide, block, pcspk, sb16, rtc moved to `drivers/`
+- Filesystem: minifs, zip moved to `fs/`
+- Network: net, tls, tls_crypto, tls_x509 moved to `net/`
+- Scheduler: sched.c, vga_fb.c, lz4_kernel.c, cvm_host.c moved to `kernel/`
+- Boot: stage1.S, stage2.S, bootdefs.h moved to `arch/x86/boot/`
+- Arch: isr_stubs.S, ctx_sw.S, ap_entry.S moved to `arch/x86/`
+
+Future extractions: shell.c (circular deps with console_getc/redirect),
+loader.c (deps on static mm funcs), mm.c.
 
 ### VFS Invariant Documentation (Phase 1.4)
 
@@ -1773,13 +1814,19 @@ No additional hardening was needed.
 (~2070 lines) from kernel.c to shell.c is planned as a future phase.
 See `tools/extract_shell.py` for the full dependency analysis.  The
 extraction requires:
-- Making redirect_begin/commit/suspend/resume non-static (currently kernel.c)
+- Making redirect_begin/commit/suspend/resume non-static (done)
 - Making shell_run_elf_buf, shell_run_elf_file, shell_run_cvm non-static
+- Making shell_run_any, shell_exec_builtin, shell_report non-static (done)
+- Making console_getc non-static (done)
+- Breaking circular dep: kfgetc (kernel.c) -> console_getc (shell section)
+- Breaking circular dep: load_exec_elf -> redirect_suspend/resume
 - Exposing fs_cwd, fs_resolve, and filesystem helpers
 - Updating the Makefile to compile shell.c
 
-This is deferred because it requires the full test safety net (Phase 5)
-to verify no regressions.
+The circular dependencies between console_getc, kfgetc, redirect functions,
+and the ELF loader make a clean extraction non-trivial.  The cross-boundary
+functions are now non-static with declarations in kernel.h, ready for
+extraction when the circular deps are broken.
 
 ### Architectural Governance (Phase 2)
 

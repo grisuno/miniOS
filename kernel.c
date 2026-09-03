@@ -18,36 +18,6 @@
 #include "zip.h"
 
 /* ================================================================
- *  Serial console (COM1, 16550 UART) — mirrors VGA, drives input
- * ================================================================ */
-
-#define COM1 0x3F8
-
-void serial_init(void) {
-    outb(COM1 + 1, 0x00); /* disable interrupts */
-    outb(COM1 + 3, 0x80); /* enable DLAB */
-    outb(COM1 + 0, 0x01); /* divisor lo -> 115200 baud */
-    outb(COM1 + 1, 0x00); /* divisor hi */
-    outb(COM1 + 3, 0x03); /* 8 bits, no parity, one stop */
-    outb(COM1 + 2, 0xC7); /* enable FIFO, clear, 14-byte threshold */
-    outb(COM1 + 4, 0x0B); /* IRQs off, RTS/DSR set */
-}
-
-static int serial_tx_ready(void) { return inb(COM1 + 5) & 0x20; }
-static int serial_rx_ready(void) { return inb(COM1 + 5) & 0x01; }
-
-void serial_putc(char c) {
-    while (!serial_tx_ready());
-    outb(COM1, (unsigned char)c);
-}
-void serial_puts(const char *s) { while (*s) serial_putc(*s++); }
-
-int serial_available(void) { return serial_rx_ready(); }
-int serial_getc(void) { return serial_rx_ready() ? (int)inb(COM1) : -1; }
-
-static int console_getc(void); /* defined in the shell section */
-
-/* ================================================================
  *  VGA driver
  * ================================================================ */
 
@@ -183,11 +153,6 @@ static unsigned long  redir_len;
 static unsigned long  redir_cap;
 static int            redir_active;
 static int            redir_overflow;
-
-static int redirect_suspend(void);
-static int redirect_begin(void);
-static int redirect_commit(const char *path, int append_mode);
-static void redirect_resume(int was);
 
 static int redir_grow(void) {
     unsigned long want = redir_cap ? redir_cap * 2 : REDIR_INITIAL_CAP;
@@ -867,97 +832,6 @@ void *krealloc(void *ptr, unsigned long size) {
 }
 
 
-/* ================================================================
- *  String functions
- * ================================================================ */
-
-unsigned long kstrlen(const char *s) {
-    const char *p = s;
-    while (*p) p++;
-    return (unsigned long)(p - s);
-}
-
-char *kstrcpy(char *dst, const char *src) {
-    char *d = dst;
-    while ((*d++ = *src++));
-    return dst;
-}
-
-char *kstrncpy(char *dst, const char *src, unsigned long n) {
-    char *d = dst;
-    while (n-- && (*d++ = *src++));
-    return dst;
-}
-
-char *kstrncat(char *dst, const char *src, unsigned long n) {
-    char *d = dst;
-    while (*d) d++;
-    while (n-- && *src) *d++ = *src++;
-    *d = 0;
-    return dst;
-}
-
-int kstrcmp(const char *a, const char *b) {
-    while (*a && *a == *b) { a++; b++; }
-    return (unsigned char)*a - (unsigned char)*b;
-}
-
-int kstrncmp(const char *a, const char *b, unsigned long n) {
-    while (n-- && *a && *a == *b) { a++; b++; }
-    return n == (unsigned long)-1 ? 0 : (unsigned char)*a - (unsigned char)*b;
-}
-
-char *kstrchr(const char *s, int c) {
-    while (*s) { if (*s == (char)c) return (char *)s; s++; }
-    return 0;
-}
-
-char *kstrstr(const char *hay, const char *ndl) {
-    unsigned long nl = kstrlen(ndl);
-    if (nl == 0) return (char *)hay;
-    while (*hay) {
-        if (kstrncmp(hay, ndl, nl) == 0) return (char *)hay;
-        hay++;
-    }
-    return 0;
-}
-
-void *kmemcpy(void *dst, const void *src, unsigned long n) {
-    char *d = dst;
-    const char *s = src;
-    while (n--) *d++ = *s++;
-    return dst;
-}
-
-void *kmemset(void *dst, int c, unsigned long n) {
-    char *d = dst;
-    while (n--) *d++ = (char)c;
-    return dst;
-}
-
-int kmemcmp(const void *a, const void *b, unsigned long n) {
-    const unsigned char *pa = a, *pb = b;
-    while (n--) { if (*pa != *pb) return *pa - *pb; pa++; pb++; }
-    return 0;
-}
-
-void *kmemmove(void *dst, const void *src, unsigned long n) {
-    char *d = dst;
-    const char *s = src;
-    if (d < s) { while (n--) *d++ = *s++; }
-    else       { d += n; s += n; while (n--) *--d = *--s; }
-    return dst;
-}
-
-/* atoi helper */
-static long katol(const char *s) {
-    long v = 0, sign = 1;
-    while (*s == ' ') s++;
-    if (*s == '-') { sign = -1; s++; }
-    else if (*s == '+') s++;
-    while (*s >= '0' && *s <= '9') { v = v * 10 + (*s - '0'); s++; }
-    return v * sign;
-}
 
 
 /* ================================================================
@@ -2987,8 +2861,6 @@ void k_user_fault_return(void) {
 #define KFD_MAX 32
 static KFILE *kfd_table[KFD_MAX];
 
-static int console_getc(void); /* defined in the shell section below */
-
 
 /* ---- Linux x86-64 syscall dispatcher ------------------------------------ */
 
@@ -4368,7 +4240,7 @@ static int  shell_cur;
 
 static void shell_prompt(void) { vga_puts("\nminiOS> "); }
 
-static void shell_exec_builtin(int argc, char **argv);
+void shell_exec_builtin(int argc, char **argv);
 
 /* Strict decimal parse for the `vol` builtin: the whole argument must be an
  * optional sign followed by at least one digit, and the value is clamped to
@@ -4512,7 +4384,7 @@ static int consume_page_after_esc(void) {
  * the PageUp/PageDown escape sequences and detours into the scrollback view;
 * the view re-injects any terminating key into the pushback FIFO, so once it
  * returns console_getc() simply serves the FIFO again. */
-static int console_getc(void) {
+int console_getc(void) {
     if (!pb_empty()) return pb_pop();
     int c = raw_blocking_getc();
     if (c != KEY_ESC) return c;
@@ -4999,23 +4871,23 @@ static int shell_parse(char *line, char **argv, int max_args) {
 /* Shell status text must never land inside a redirected command's output:
  * `cmd > file` captures what the command wrote, not what the shell reported
  * about it. These helpers lift a print out of the active capture. */
-static int redirect_suspend(void) {
+int redirect_suspend(void) {
     int was = redir_active;
     redir_active = 0;
     return was;
 }
 
-static void redirect_resume(int was) {
+void redirect_resume(int was) {
     redir_active = was;
 }
 
-static void shell_report_exit(int code) {
+void shell_report_exit(int code) {
     int was = redirect_suspend();
     kprintf("exit code: %d\n", code);
     redirect_resume(was);
 }
 
-static void shell_report(const char *what, const char *detail) {
+void shell_report(const char *what, const char *detail) {
     int was = redirect_suspend();
     vga_puts(what);
     if (detail) vga_puts(detail);
@@ -5024,7 +4896,7 @@ static void shell_report(const char *what, const char *detail) {
 }
 
 /* Start capturing console output for a `> file` redirection. */
-static int redirect_begin(void) {
+int redirect_begin(void) {
     redir_len      = 0;
     redir_overflow = 0;
     if (!redir_buf && !redir_grow()) return 0;
@@ -5035,7 +4907,7 @@ static int redirect_begin(void) {
 /* Stop capturing and store the captured bytes in `path`. Returns 0 on
  * success. The capture is released on every path so that a failure cannot
  * leave the console silently detached from the screen. */
-static int redirect_commit(const char *path, int append_mode) {
+int redirect_commit(const char *path, int append_mode) {
     KFILE *f;
     unsigned long written;
     int rc;
@@ -5656,7 +5528,7 @@ static int shell_run_file(const char *name, int argc, char **argv) {
 /* Unified dispatcher used by `run` and by bare commands: a registered program
  * wins, then the runnable-file resolver. argv[0] is the command/program name
  * as typed. Returns the exit code, or -1 when the name cannot be run. */
-static int shell_run_any(const char *name, int argc, char **argv) {
+int shell_run_any(const char *name, int argc, char **argv) {
     int nl = (int)kstrlen(name);
     if (nl >= 4 && kstrcmp(name + nl - 4, ".cvm") == 0)
         return shell_run_file(name, argc, argv);
@@ -5894,7 +5766,7 @@ static void shell_cmd_hash(int argc, char **argv) {
     kprintf("hash: %s = %016lx\n", argv[1], (unsigned long)XXH64_digest(&h));
 }
 
-static void shell_exec_builtin(int argc, char **argv) {
+void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
         vga_puts("Commands: help clear ls lsfs cat catfs echo edit rm mkdir cd pwd ps load run\n");
         vga_puts("          net trace date vol gfx wm hash unzip zip poweroff\n");

@@ -24,6 +24,89 @@ each completed phase.
 
 ---
 
+## Completed Work
+
+### Phase 0.1: Spinlock IRQ Safety (DONE)
+
+**What changed:** `spinlock.h` now provides two acquisition modes:
+- `spin_lock` / `spin_unlock`: for ISR context (interrupts already off)
+- `spin_lock_irqsave` / `spin_unlock_irqrestore`: saves RFLAGS.IF before
+  disabling, restores on release. Safe for nested critical sections.
+
+**Why it matters:** The old `spin_lock`/`spin_unlock` pair did unconditional
+`cli`/`sti`, which deadlocks when a spinlock is taken inside another critical
+section that already has IF=0. The irqsave variant preserves the outer
+interrupt state, so the inner restore keeps IF disabled until the outer
+spin_unlock re-enables it exactly once.
+
+**Files:** `spinlock.h`
+
+### Phase 0.2: CI Governance Consolidation (DONE)
+
+**What changed:** Merged `governance.yml` and `test.yml` into three workflows:
+- `ci.yml`: build, BDD, codecs, TLS, MCP, SMP matrix, runtime integration
+- `architecture.yml`: KB sync, cohesion gate, complexity gate, surprising connections
+- `nightly.yml`: mutation tests, MCP mutation, stress tests (8 cores)
+
+Removed `|| true` from cohesion and surprising connections jobs so they
+actually gate merges. Mutation tests moved to nightly (they take 60+ min).
+
+**Files:** `.github/workflows/ci.yml`, `.github/workflows/architecture.yml`,
+`.github/workflows/nightly.yml` (new); `governance.yml`, `test.yml` (deleted)
+
+### Phase 0.3: VFS Invariant Documentation (DONE)
+
+**What changed:** `kernel.h` already contains comprehensive docstrings for
+`vfs_ops_t`, `vfs_file_t`, and `KFILE` (lines 178-283). Every field has a
+semantic contract, invariants are stated, and failure modes are documented.
+
+**Files:** `kernel.h` (no changes needed, already complete)
+
+### Phase 1.4: Serial + String Extraction (DONE)
+
+**What changed:** Extracted from `kernel.c` into standalone compilation units:
+- `serial.c`: COM1 16550 UART driver (init, putc, getc, available, puts)
+- `string.c`: kernel string/memory functions (kstrlen, kstrcpy, kmemcpy, etc.)
+  plus `katol` (now non-static, declared in kernel.h)
+
+**Why it matters:** These are the cleanest extractions -- pure functions with
+zero dependencies on kernel internals. They prove the extraction pattern works
+before tackling more coupled code. `kernel.c` loses ~90 lines.
+
+**Files:** `serial.c`, `string.c` (new); `kernel.c` (functions removed);
+`kernel.h` (`katol` declaration added); `Makefile` (compilation + link rules)
+
+### Directory Reorganization (DONE)
+
+**What changed:** Restructured the project from a flat layout into a
+Linux/BSD-style directory hierarchy. All headers remain in the project root
+(accessed via `-I.`); source files live in subdirectories. The Makefile uses
+`VPATH` so make finds sources in subdirs while `.o` files stay in root.
+
+```
+arch/x86/boot/    stage1.S, stage2.S, bootdefs.h, linker scripts
+arch/x86/         isr_stubs.S, ctx_sw.S, ap_entry.S
+kernel/            string.c, serial.c, sched.c, vga_fb.c, lz4_kernel.c, cvm_host.c
+drivers/           ide.c, block.c, pcspk.c, sb16.c, rtc.c
+fs/                minifs.c, zip.c
+net/               net.c, tls.c, tls_crypto.c, tls_x509.c
+third_party/       xxhash, stb, dlmalloc, miniz
+```
+
+Cross-boundary shell functions (`console_getc`, `redirect_*`,
+`shell_run_any`, `shell_exec_builtin`, `shell_report`) made non-static
+with declarations in `kernel.h`, ready for future extraction to `shell.c`.
+
+**Why it matters:** The flat layout made it impossible to see subsystem
+boundaries. The new layout follows kernel convention (arch/, drivers/,
+fs/, net/) and makes the dependency graph visible at the directory level.
+
+**Files:** All moved `.c`/`.S` files; `Makefile` (VPATH + updated rules);
+`kernel.h` (new declarations); `kernel.c` (forward decls removed,
+functions made non-static); `CLAUDE.md`, `ARCHITECTURE_PLAN.md` (updated)
+
+---
+
 ## Phase 1: Stabilize Existing Abstractions (Weeks 1-3, CRITICAL)
 
 ### 1.1 ABI Versioning
