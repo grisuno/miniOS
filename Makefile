@@ -939,6 +939,9 @@ klog.o: kernel/klog.c kernel.h
 exec.o: kernel/exec.c kernel.h bootdefs.h arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -1065,8 +1068,8 @@ ap_stub.h: ap_stub.bin
 smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h ap_stub.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o serial.o string.o loader.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o \
+kernel.elf: kernel.o serial.o string.o loader.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
 	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o -o $@

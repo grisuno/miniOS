@@ -13,8 +13,6 @@
 #include "sched.h"
 #include "drivers/kbd.h"
 
-#define EFAULT  (-14)
-
 /* kjmpbuf is declared in kernel.h.  ksetjmp/klongjmp are asm trampolines
  * for unwinding back to the shell on exit() or fault. */
 __asm__(

@@ -1,6 +1,8 @@
 #ifndef KERNEL_H
 #define KERNEL_H
 
+#define EFAULT  (-14)
+
 /* The user-window memory layout (load base, stack, brk cap, graphics
  * back-buffers, framebuffer, kernel heap) is defined ONCE in the ABI header
  * shared with ring-3 programs. The kernel derives its own constants from it,
@@ -519,6 +521,11 @@ void syscall_init(void);
 
 /* ========== Syscall table ========== */
 void *ksym_resolve(const char *name);
+long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);
+long syscall_trace_enabled(void);
+void syscall_trace_set(int on);
+#define KFD_MAX 32
+extern KFILE *kfd_table[KFD_MAX];
 
 /* ========== Kernel info ========== */
 extern unsigned long kernel_end;
