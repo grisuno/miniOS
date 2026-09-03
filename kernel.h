@@ -11,6 +11,7 @@
 #include "minios_abi.h"
 
 /* ========== Port I/O helpers ========== */
+#define ALIGN_UP(x, a) (((x) + (a) - 1) & ~((a) - 1))
 #ifndef PORT_IO_DEFINED
 #define PORT_IO_DEFINED
 static inline void outb(unsigned short port, unsigned char val) {
@@ -346,7 +347,72 @@ void kexit(int code);
 void desktop_launch(const char *cmd);
 void shell_queue_launch(const char *cmd);
 
-/* ========== ELF loader ========== */
+/* ========== Page table helpers (kernel.c) ========== */
+void *pt_page_alloc(void);
+void  pt_page_free(void *ptr);
+void  mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);
+void  mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);
+
+/* ========== VMA red-black tree (loader.c) ========== */
+typedef struct vma_node {
+    unsigned long    base;
+    unsigned long    len;
+    int              red;
+    struct vma_node *left, *right, *parent;
+} vma_node_t;
+
+void vma_tree_init(void);
+vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);
+vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);
+int  vma_tree_delete(vma_node_t **root, unsigned long base);
+
+/* VMA tree globals (loader.c) */
+#define VMA_MAX 4096
+extern vma_node_t *VMA_NIL;
+extern vma_node_t *vma_live_root;
+extern vma_node_t *vma_free_root;
+
+/* brk/mmap globals (loader.c) */
+extern unsigned long g_brk;
+extern unsigned long g_brk_limit;
+extern unsigned long user_mmap_cur;
+
+/* ========== ELF loader (loader.c) ========== */
+
+/* Minimal ELF64 definitions (used by shell_load, shell_run_elf_buf, SPAWN) */
+#define EI_NIDENT 16
+typedef unsigned long long Elf64_Addr;
+typedef unsigned long long Elf64_Off;
+typedef unsigned int       Elf64_Word;
+typedef unsigned short     Elf64_Half;
+typedef unsigned long long Elf64_Xword;
+typedef long long          Elf64_Sxword;
+
+typedef struct {
+    unsigned char e_ident[EI_NIDENT];
+    Elf64_Half    e_type;
+    Elf64_Half    e_machine;
+    Elf64_Word    e_version;
+    Elf64_Addr    e_entry;
+    Elf64_Off     e_phoff;
+    Elf64_Off     e_shoff;
+    Elf64_Word    e_flags;
+    Elf64_Half    e_ehsize;
+    Elf64_Half    e_phentsize;
+    Elf64_Half    e_phnum;
+    Elf64_Half    e_shentsize;
+    Elf64_Half    e_shnum;
+    Elf64_Half    e_shstrndx;
+} Elf64_Ehdr;
+
+#define ET_REL      1
+#define ET_EXEC     2
+#define ET_DYN      3
+
+/* VMA pool (used by SPAWN to save/restore across child execution) */
+extern vma_node_t vma_pool[];
+extern int        vma_pool_n;
+
 void *elf_load(void *data, unsigned size);       /* ET_REL relocatable .o */
 void *load_exec_elf(void *data, unsigned size);  /* ET_EXEC / ET_DYN */
 
