@@ -933,6 +933,9 @@ kfile.o: fs/kfile.c kernel.h
 redirect.o: kernel/redirect.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+symtab.o: kernel/symtab.c kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 net.o: net/net.c net.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -1047,8 +1050,8 @@ ap_stub.h: ap_stub.bin
 smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h ap_stub.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o serial.o string.o loader.o mm.o ramdisk.o time.o kbd.o printf.o vfs.o kfile.o redirect.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o mm.o ramdisk.o time.o kbd.o printf.o vfs.o kfile.o redirect.o net.o tls.o tls_crypto.o \
+kernel.elf: kernel.o serial.o string.o loader.o mm.o ramdisk.o time.o kbd.o printf.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o mm.o ramdisk.o time.o kbd.o printf.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
 	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o -o $@

@@ -347,8 +347,32 @@ void shell_exec_builtin(int argc, char **argv);
 void shell_report_exit(int code);
 void shell_report(const char *what, const char *detail);
 
-/* ========== Program execution ========== */
+/* ========== Symbol table and program registry ========== */
 typedef int (*prog_entry_t)(int argc, char **argv);
+
+#define KSYM_MAX 256
+#define KPROG_MAX 64
+
+typedef struct {
+    const char *name;
+    void       *addr;
+} KSym;
+
+typedef struct {
+    char         name[31];
+    prog_entry_t entry;
+    void        *proc_entry;
+    int          is_proc;
+} KProg;
+
+extern KSym  ksym_table[];
+extern int   ksym_count;
+extern KProg kprog_table[];
+extern int   kprog_count;
+
+KProg *kprog_slot(const char *name);
+KProg *kprog_lookup(const char *name);
+void  *ksym_resolve(const char *name);
 int  k_spawn(const char *name, int argc, char **argv);
 void k_register_program(const char *name, prog_entry_t entry);
 void k_register_process(const char *name, void *proc_entry);
