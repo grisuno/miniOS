@@ -61,7 +61,7 @@ CFLAGS_DOOM = -std=gnu99 -Wall -O2 -DNORMALUNIX -DLINUX -DSNDSERV -D_DEFAULT_SOU
 BOOTDEFS = arch/x86/boot/bootdefs.h
 
 # Source search path: headers stay in root (-I.), sources live in subdirs.
-VPATH = kernel:drivers:fs:net:arch/x86:arch/x86/boot:third_party/stb:third_party/xxhash:third_party/dlmalloc:third_party/miniz
+VPATH = kernel:kernel/mm:drivers:fs:net:arch/x86:arch/x86/boot:third_party/stb:third_party/xxhash:third_party/dlmalloc:third_party/miniz
 
 bootdef = $(shell sed -n 's/^#define[ \t]*$(1)[ \t]*\([0-9][0-9]*\).*/\1/p' $(BOOTDEFS))
 
@@ -912,6 +912,15 @@ loader.o: kernel/loader.c kernel.h
 mm.o: kernel/mm.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+scrollback.o: kernel/scrollback.c kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+paging.o: kernel/mm/paging.c kernel.h bootdefs.h vga_fb.h arch/x86/msr.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+swap.o: kernel/mm/swap.c kernel.h ide.h lz4_kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 ramdisk.o: fs/ramdisk.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -922,6 +931,9 @@ kbd.o: drivers/kbd.c kernel.h vga_fb.h drivers/kbd.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 printf.o: kernel/printf.c kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+klog.o: kernel/klog.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c
@@ -1050,8 +1062,8 @@ ap_stub.h: ap_stub.bin
 smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h ap_stub.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o serial.o string.o loader.o mm.o ramdisk.o time.o kbd.o printf.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o mm.o ramdisk.o time.o kbd.o printf.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o \
+kernel.elf: kernel.o serial.o string.o loader.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
 	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o -o $@

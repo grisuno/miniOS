@@ -13,6 +13,7 @@
 #include "rtc.h"
 #include "lz4_kernel.h"
 #include "drivers/kbd.h"
+#include "arch/x86/msr.h"
 #define XXH_STATIC_LINKING_ONLY
 #include "xxhash.h"
 #include "stb/stb_api.h"
@@ -32,12 +33,12 @@ static int graphics_program_ran;
 static int vga_x, vga_y;
 static char vga_color = 0x07; /* light grey on black */
 
-/* Console scrollback: a ring of lines that scrolled off the top of the VGA
- * screen. Captured lazily from vga_scroll(); viewed with PageUp/PageDown. */
-static char *sb_ring;
-static int   sb_head, sb_count, sb_inited;
-static void sb_capture_row0(void);
-static void sb_init(void);
+int vga_get_x(void) { return vga_x; }
+int vga_get_y(void) { return vga_y; }
+void vga_set_xy(int x, int y) { vga_x = x; vga_y = y; }
+char vga_get_color(void) { return vga_color; }
+
+/* Scrollback ring moved to kernel/scrollback.c */
 
 static inline unsigned vga_offset(int x, int y) { return (unsigned)(y * VGA_COLS + x) * 2; }
 
@@ -49,7 +50,7 @@ void vga_clear(void) {
     }
     vga_x = vga_y = 0;
     vga_set_cursor(0, 0);
-    if (sb_ring) { sb_head = sb_count = 0; }
+    sb_reset();
 }
 
 void vga_set_cursor(int x, int y) {
@@ -97,33 +98,7 @@ void vga_newline(void) {
     if (vga_y >= VGA_ROWS) vga_scroll();
 }
 
-/* ---- Console scrollback ring ----
- *
- * The ring stores complete text lines that have scrolled off the top of the
- * 25-row VGA screen. Each line is VGA_COLS bytes (the character cell only;
- * colour is regenerated as the default attribute on re-display). The ring is
- * heap-allocated on first use and is a circular buffer of SCROLLBACK_ROWS
- * slots; `clear` resets the cursor (it does not free the ring, which would
- * be re-allocated again the next time a line scrolls). */
-#define SCROLLBACK_ROWS 4096
-
-static void sb_init(void) {
-    sb_ring = (char *)kmalloc((unsigned long)SCROLLBACK_ROWS * VGA_COLS);
-    sb_inited = sb_ring ? 1 : -1;
-    sb_head = sb_count = 0;
-}
-
-/* Called from vga_scroll() immediately before row 0 is overwritten: copies
- * the row that is about to leave the screen into the ring. */
-static void sb_capture_row0(void) {
-    if (sb_inited == 0) sb_init();
-    if (sb_inited != 1) return;
-    int idx = (sb_head + sb_count) % SCROLLBACK_ROWS;
-    for (int x = 0; x < VGA_COLS; x++)
-        sb_ring[(unsigned long)idx * VGA_COLS + x] = VGA_BASE[vga_offset(x, 0)];
-    if (sb_count < SCROLLBACK_ROWS) sb_count++;
-    else sb_head = (sb_head + 1) % SCROLLBACK_ROWS;
-}
+/* Scrollback ring moved to kernel/scrollback.c */
 
 /* Toggle the hardware text cursor. bit 5 of VGA index 0x0A disables the
  * cursor; clearing it brings the cursor back. */
@@ -278,15 +253,6 @@ void vga_puts(const char *s) {
  */
 #define EFAULT  (-14)
 
-#define MSR_EFER   0xC0000080
-#define EFER_NXE   0x00000800
-
-#define PT_FLAGS_PS       0x080
-#define PT_FLAGS_NX       0x8000000000000000ULL
-#define PT_ADDR_MASK      0x000FFFFFFFFFF000ULL
-#define PT_USER_ENTRY     (0x003 | PT_FLAGS_USER)  /* present | rw | user */
-#define PT_USER_NX_ENTRY  ((unsigned long)(PT_USER_ENTRY | PT_FLAGS_NX))
-
 /* Asm-safe (no UL suffix) mirror of the user window for the syscall-entry
  * return discriminator; the trampoline is a raw string literal, so the C
  * preprocessor cannot paste the UL-suffixed macros into it. The values must
@@ -309,345 +275,15 @@ _Static_assert(USER_BRK_END == MINIOS_USER_BRK_END, "USER_BRK_END drift");
 _Static_assert(HEAP_BASE == MINIOS_HEAP_BASE, "HEAP_BASE drift");
 _Static_assert(HEAP_SIZE == MINIOS_HEAP_SIZE, "HEAP_SIZE drift");
 
-static inline unsigned long rdmsr(unsigned msr);
-static inline void wrmsr(unsigned msr, unsigned long val);
-
-/* Build 4 KB page tables for the whole user window and enable the NX bit
- * (EFER.NXE). Every user page is present, writable, user-accessible and
- * non-executable; the ELF loader later clears NX on the pages a program's
- * executable segments occupy, so a ring-3 program can only execute the text
- * it actually contains. The page tables live in the dedicated
- * PT_USER_TABLES_ADDR zone (0x10000, in the boot staging buffer below the
- * kernel link base), never in the heap (the ramdisk data area is
- * heap-backed and its final size is only discovered at boot, so heap-resident
- * tables could be overwritten by a later reservation) and never inside the
- * kernel image: the zone is BELOW 0x100000, so kernel code, data and .bss
- * can never reach it in the plain build or under KASLR. That zone stays
- * supervisor, so a ring-3 program cannot reach the tables that govern it.
- * The per-page isolation replaces the coarse 2 MB leaves the boot path
- * installs, so kernel image, heap, page tables, VGA and MMIO stay supervisor,
- * and the U/S bit stops a ring-3 program from reading or writing kernel
- * memory. */
-static void mm_setup_protections(void) {
-    volatile unsigned long *pml4 = (volatile unsigned long *)PT_PML4_ADDR;
-    volatile unsigned long *pdpt = (volatile unsigned long *)PT_PDPT_ADDR;
-    volatile unsigned long *pd = (volatile unsigned long *)PT_PD_ADDR;
-    unsigned long lo = USER_LOAD_BASE >> PT_PD_INDEX_SHIFT;
-    unsigned long hi = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
-    unsigned long i;
-
-    /* Guard against the kernel image growing into the user window: the whole
-     * kernel (code + .bss) must end below USER_LOAD_BASE or the .bss would
-     * be mapped where user programs load and silently corrupt them. */
-    extern char _kernel_end[];
-    if ((unsigned long)_kernel_end > USER_LOAD_BASE) {
-        kprintf("mm: kernel image reaches 0x%lx, must stay below 0x%lx\n",
-                (unsigned long)_kernel_end, USER_LOAD_BASE);
-        return;
-    }
-    if (hi - lo + 1 > PT_USER_TABLES_BYTES / 0x1000) {
-        kprintf("mm: user window needs more page table space\n");
-        return;
-    }
-    wrmsr(MSR_EFER, rdmsr(MSR_EFER) | EFER_NXE);
-    pml4[0] |= (unsigned long)PT_FLAGS_USER;
-    pdpt[0] |= (unsigned long)PT_FLAGS_USER;
-    for (i = lo; i <= hi; i++) {
-        unsigned long *pt = (unsigned long *)PT_USER_TABLES_ADDR +
-                            (i - lo) * 0x1000 / sizeof(unsigned long);
-        unsigned long phys = i << PT_PD_INDEX_SHIFT;
-        unsigned long k;
-        for (k = 0; k < PT_PD_ENTRIES; k++)
-            pt[k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
-        pd[i] = ((unsigned long)pt) | PT_USER_ENTRY;
-    }
-    __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
-
-    /* Map the linear framebuffer into the user window at virtual FB_ADDR, in
-     * the reserved tail above the DOOM back-buffer and the brk cap (so a
-     * memory-hungry program's heap can never grow over it). The physical base
-     * and stride come from the VBE probe (Mode 13h at 0xA0000 when
-     * unavailable). The mapping is RW with NX set: it is data, not
-     * executable. */
-    {
-        unsigned long fb_vaddr   = (unsigned long)FB_ADDR;
-        unsigned long fb_pd_idx  = fb_vaddr >> PT_PD_INDEX_SHIFT;
-        unsigned long fb_pt_off  = (fb_vaddr & 0x1FFFFF) >> 12;
-        unsigned long *fb_pt     = (unsigned long *)PT_USER_TABLES_ADDR +
-                                   (fb_pd_idx - lo) * 0x1000 /
-                                   sizeof(unsigned long);
-        unsigned long fb_bytes  = (unsigned long)fb_pitch * (unsigned long)fb_height;
-        unsigned long fb_pages  = (fb_bytes + 0xFFF) >> 12;
-        unsigned long k;
-        if (fb_pages == 0) fb_pages = 1;
-        if (fb_pages > PT_PD_ENTRIES - fb_pt_off)
-            fb_pages = PT_PD_ENTRIES - fb_pt_off;
-        for (k = 0; k < fb_pages; k++)
-            fb_pt[fb_pt_off + k] = (fb_phys_base + k * 0x1000) | PT_USER_NX_ENTRY;
-    }
-
-    /* Map a kernel-heap back-buffer into the user window at DOOM_BACKBUF_ADDR
-     * so a ring-3 graphics program (DOOM) can render off-screen; the kernel
-     * composites it onto the desktop on SYS_DOOM_FRAME. The heap is identity
-     * mapped, so the physical frame is the returned virtual address. */
-    {
-        unsigned long bb_vaddr = DOOM_BACKBUF_ADDR;
-        unsigned long bb_pd_idx = bb_vaddr >> PT_PD_INDEX_SHIFT;
-        unsigned long bb_pt_off = (bb_vaddr & 0x1FFFFF) >> 12;
-        unsigned long *bb_pt = (unsigned long *)PT_USER_TABLES_ADDR +
-                               (bb_pd_idx - lo) * 0x1000 /
-                               sizeof(unsigned long);
-        unsigned char *buf = (unsigned char *)kmalloc(DOOM_W * DOOM_H);
-        unsigned long phys;
-        unsigned long k;
-        if (buf == 0) return;
-        phys = (unsigned long)buf;
-        for (k = 0; k < (DOOM_W * DOOM_H + 0xFFF) >> 12; k++)
-            bb_pt[bb_pt_off + k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
-    }
-
-    /* Map a kernel-heap back-buffer for Nuklear UI apps (the node editor) in
-     * the same way, at its own fixed address; the kernel composites it as a
-     * titled window on SYS_NK_FRAME (220). */
-    {
-        unsigned long bb_vaddr = NK_BACKBUF_ADDR;
-        unsigned long bb_pd_idx = bb_vaddr >> PT_PD_INDEX_SHIFT;
-        unsigned long bb_pt_off = (bb_vaddr & 0x1FFFFF) >> 12;
-        unsigned long *bb_pt = (unsigned long *)PT_USER_TABLES_ADDR +
-                               (bb_pd_idx - lo) * 0x1000 /
-                               sizeof(unsigned long);
-        unsigned char *buf = (unsigned char *)kmalloc(NK_W * NK_H);
-        unsigned long phys;
-        unsigned long k;
-        if (buf == 0) return;
-        phys = (unsigned long)buf;
-        for (k = 0; k < (NK_W * NK_H + 0xFFF) >> 12; k++)
-            bb_pt[bb_pt_off + k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
-    }
-}
-
-/* Set or clear the NX bit on the single 4 KB page holding vaddr.
- * When `cr3` is 0, operates on the boot page table (PT_PD_ADDR);
- * otherwise operates on the per-process page table rooted at `cr3`. */
-void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3) {
-    unsigned long pd_phys;
-    if (cr3 == 0) {
-        pd_phys = PT_PD_ADDR;
-    } else {
-        volatile unsigned long *pml4 = (volatile unsigned long *)(cr3 & PT_ADDR_MASK);
-        volatile unsigned long *pdpt = (volatile unsigned long *)(pml4[0] & PT_ADDR_MASK);
-        pd_phys = pdpt[0] & PT_ADDR_MASK;
-    }
-    volatile unsigned long *pd = (volatile unsigned long *)pd_phys;
-    unsigned long pd_idx = vaddr >> PT_PD_INDEX_SHIFT;
-    unsigned long pde = pd[pd_idx];
-    if (!(pde & PT_FLAGS_PRESENT_RW)) return;
-    if (pde & PT_FLAGS_PS) return;
-    volatile unsigned long *pt =
-        (volatile unsigned long *)(pde & PT_ADDR_MASK);
-    unsigned long pte_idx = (vaddr >> 12) & 0x1FF;
-    if (exec) pt[pte_idx] &= ~(unsigned long)PT_FLAGS_NX;
-    else      pt[pte_idx] |=  (unsigned long)PT_FLAGS_NX;
-}
-
-/* Mark the pages of a loaded executable segment as executable (clear NX)
- * and flush the TLB so the new permissions take effect before the program
- * runs.  `cr3` is the process page table root; 0 = boot table. */
-void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3) {
-    unsigned long p;
-    start &= ~0xFFFUL;
-    end = ALIGN_UP(end, 0x1000);
-    for (p = start; p < end; p += 0x1000) mm_user_pte_update(p, 1, cr3);
-    __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
-}
-
-/* ---- Per-process page tables (KPTI) ----
- *
- * Every ring-3 process gets its own PML4 with its own user-window page
- * tables, so a context switch (CR3 change) isolates each process's virtual
- * address space.  The kernel identity mapping (entries [2..511] in PML4
- * level 0, the first GB) is shared across all processes — the U/S bit
- * keeps user code out of it — so kernel code runs unchanged after a CR3
- * switch.  The user window (first 2MB of PML4[0]) gets fresh 4KB page
- * tables per process, pointing to the same physical frames as the boot
- * table so the shared user-window memory (ELF segments, stack, framebuffer
- * mappings) works identically. */
-
-#define PT_ENTRY_PRESENT  0x003   /* present | rw */
-#define PT_ENTRY_USER     0x007   /* present | rw | user */
-
-/* Page-aligned allocator for page-table pages.
- * kmalloc does not guarantee page alignment, but CR3 and page-table
- * entries require it (lower 12 bits are flags).  Over-allocate by one
- * page, align up, and stash the original kmalloc pointer just before
- * the aligned address so pt_page_free can recover it. */
-#define PT_ALLOC_HDR  sizeof(void *)
-
-void *pt_page_alloc(void) {
-    void *raw = kmalloc(0x1000 + PT_ALLOC_HDR + 0xFFF);
-    if (!raw) return 0;
-    unsigned long addr = (unsigned long)raw + PT_ALLOC_HDR;
-    unsigned long aligned = (addr + 0xFFF) & ~0xFFFUL;
-    *((void **)(aligned - PT_ALLOC_HDR)) = raw;
-    kmemset((void *)aligned, 0, 0x1000);
-    return (void *)aligned;
-}
-
-void pt_page_free(void *ptr) {
-    if (!ptr) return;
-    void *raw = *((void **)((unsigned long)ptr - PT_ALLOC_HDR));
-    kfree(raw);
-}
-
-/* Build a fresh PML4 for a new process.  Copies the boot page table's
- * kernel entries and creates new user-window page tables.  Returns the
- * physical address of the new PML4 (suitable for CR3), or 0 on failure. */
-uint64_t pt_clone_user(uint64_t parent_cr3) {
-    (void)parent_cr3;
-    volatile unsigned long *boot_pml4 = (volatile unsigned long *)PT_PML4_ADDR;
-    volatile unsigned long *boot_pd   = (volatile unsigned long *)PT_PD_ADDR;
-
-    /* Allocate a fresh PML4 from identity-mapped memory (page-aligned).
-     * The physical address equals the virtual pointer. */
-    volatile unsigned long *pml4 = (volatile unsigned long *)pt_page_alloc();
-    if (!pml4) return 0;
-
-    /* Copy ALL entries from the boot PML4.  This preserves the kernel
-     * identity mapping (PML4[0] → boot PDPT → boot PD with 2MB leaves
-     * for the first 4MB and 4KB PTs for the user window) and any upper-
-     * half kernel mappings. */
-    unsigned long i;
-    for (i = 0; i < PT_PD_ENTRIES; i++)
-        pml4[i] = boot_pml4[i];
-
-    /* Allocate a fresh PDPT (page-aligned). */
-    volatile unsigned long *pdpt = (volatile unsigned long *)pt_page_alloc();
-    if (!pdpt) { pt_page_free((void *)pml4); return 0; }
-    /* Copy the boot PDPT entries so the kernel identity mapping (PD[0..1])
-     * is preserved exactly. */
-    volatile unsigned long *boot_pdpt = (volatile unsigned long *)(boot_pml4[0] & PT_ADDR_MASK);
-    for (i = 0; i < PT_PD_ENTRIES; i++)
-        pdpt[i] = boot_pdpt[i];
-    pml4[0] = (unsigned long)pdpt | (boot_pml4[0] & 0x7); /* keep flags */
-
-    /* Allocate a fresh PD (page-aligned). */
-    volatile unsigned long *pd = (volatile unsigned long *)pt_page_alloc();
-    if (!pd) { pt_page_free((void *)pdpt); pt_page_free((void *)pml4); return 0; }
-    /* Wire the new PD into the PDPT (replacing the boot PD reference). */
-    pdpt[0] = (unsigned long)pd | (boot_pdpt[0] & 0x7);
-    /* Copy kernel identity PDEs (PD[0..1]: 2MB huge pages, no user flag)
-     * and everything above the user window (PD[96..511]: kernel heap,
-     * MMIO, etc.).  Only PD[2..95] gets fresh user-window page tables. */
-    pd[0] = boot_pd[0];
-    pd[1] = boot_pd[1];
-    {
-        unsigned long hi_pd = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
-        for (i = hi_pd + 1; i < PT_PD_ENTRIES; i++)
-            pd[i] = boot_pd[i];
-    }
-
-    /* Build 4KB page tables for the user window (PD entries [2..95]).
-     * Copy PTE entries from the boot page tables so the NX state set by
-     * mm_user_set_exec (in load_exec_elf) is preserved — the new page
-     * tables inherit the same executable/non-executable layout. */
-    unsigned long lo = USER_LOAD_BASE >> PT_PD_INDEX_SHIFT;
-    unsigned long hi = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
-    volatile unsigned long *boot_user_pt_base =
-        (volatile unsigned long *)PT_USER_TABLES_ADDR;
-    for (i = lo; i <= hi; i++) {
-        volatile unsigned long *pt = (volatile unsigned long *)pt_page_alloc();
-        if (!pt) {
-            unsigned long j;
-            for (j = lo; j < i; j++) {
-                unsigned long pte_addr = pd[j] & PT_ADDR_MASK;
-                if (pte_addr) pt_page_free((void *)pte_addr);
-            }
-            pt_page_free((void *)pd);
-            pt_page_free((void *)pdpt);
-            pt_page_free((void *)pml4);
-            return 0;
-        }
-        volatile unsigned long *boot_pt = boot_user_pt_base + (i - lo) * PT_PD_ENTRIES;
-        unsigned long k;
-        for (k = 0; k < PT_PD_ENTRIES; k++)
-            pt[k] = boot_pt[k];
-        pd[i] = ((unsigned long)pt) | PT_USER_ENTRY;
-    }
-
-    /* Copy framebuffer and back-buffer PDEs from the boot PD.
-     * We allocate FRESH PT pages for these so per-process NX changes
-     * (from the ELF loader) don't corrupt other processes' mappings. */
-    {
-        unsigned long fb_pd_idx = (unsigned long)FB_ADDR >> PT_PD_INDEX_SHIFT;
-        unsigned long bb_pd_idx = (unsigned long)DOOM_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
-        unsigned long nk_pd_idx = (unsigned long)NK_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
-        unsigned long indices[] = { fb_pd_idx, bb_pd_idx, nk_pd_idx };
-        unsigned long nidx = sizeof(indices) / sizeof(indices[0]);
-        unsigned long j;
-        for (j = 0; j < nidx; j++) {
-            unsigned long idx = indices[j];
-            volatile unsigned long *boot_pt =
-                (volatile unsigned long *)(boot_pd[idx] & PT_ADDR_MASK);
-            volatile unsigned long *our_pt =
-                (volatile unsigned long *)pt_page_alloc();
-            if (!our_pt || !boot_pt) continue;
-            unsigned long k;
-            for (k = 0; k < PT_PD_ENTRIES; k++)
-                our_pt[k] = boot_pt[k];
-            pd[idx] = ((unsigned long)our_pt) | (boot_pd[idx] & 0x7);
-        }
-    }
-
-    return (uint64_t)(unsigned long)pml4;
-}
-
-/* Free all page-table pages owned by a process (user window only).
- * The PML4, PDPT, PD and PT pages are freed; kernel entries are not
- * touched because they are shared and must survive. */
-void pt_free_user(uint64_t cr3) {
-    if (cr3 == 0) return;
-    volatile unsigned long *pml4 = (volatile unsigned long *)(cr3 & PT_ADDR_MASK);
-    volatile unsigned long *pdpt = (volatile unsigned long *)(pml4[0] & PT_ADDR_MASK);
-    if (!pdpt) return;
-    volatile unsigned long *pd = (volatile unsigned long *)(pdpt[0] & PT_ADDR_MASK);
-
-    /* Free user-window PT pages (PD entries [2..95]) and the framebuffer/
-     * back-buffer PT pages (their PD entries were replaced with fresh
-     * allocations in pt_clone_user). */
-    unsigned long lo = USER_LOAD_BASE >> PT_PD_INDEX_SHIFT;
-    unsigned long hi = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
-    unsigned long i;
-    if (pd) {
-        for (i = lo; i <= hi; i++) {
-            if ((pd[i] & PT_FLAGS_PRESENT_RW) && !(pd[i] & PT_FLAGS_PS)) {
-                unsigned long pt_addr = pd[i] & PT_ADDR_MASK;
-                if (pt_addr) pt_page_free((void *)pt_addr);
-            }
-        }
-        /* Free framebuffer/back-buffer PT pages (indices outside [lo,hi]
-         * that were freshly allocated). */
-        unsigned long fb_idx = (unsigned long)FB_ADDR >> PT_PD_INDEX_SHIFT;
-        unsigned long bb_idx = (unsigned long)DOOM_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
-        unsigned long nk_idx = (unsigned long)NK_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
-        unsigned long extra[] = { fb_idx, bb_idx, nk_idx };
-        unsigned long ne = sizeof(extra) / sizeof(extra[0]);
-        unsigned long j;
-        for (j = 0; j < ne; j++) {
-            unsigned long idx = extra[j];
-            if (idx >= lo && idx <= hi) continue; /* already freed above */
-            if ((pd[idx] & PT_FLAGS_PRESENT_RW) && !(pd[idx] & PT_FLAGS_PS)) {
-                unsigned long pt_addr = pd[idx] & PT_ADDR_MASK;
-                if (pt_addr) pt_page_free((void *)pt_addr);
-            }
-        }
-        pt_page_free((void *)pd);
-    }
-    if (pdpt) pt_page_free((void *)pdpt);
-    pt_page_free((void *)pml4);
-}
+/* SYSCALL/SYSRET setup and page table code moved to:
+ *   arch/x86/msr.h          - wrmsr/rdmsr
+ *   kernel/mm/paging.c      - page table management
+ *   kernel/mm/swap.c        - swap-out/swap-in
+ */
 
 
 
+/* Code moved to kernel/mm/paging.c */
 
 
 
@@ -668,23 +304,7 @@ void pt_free_user(uint64_t cr3) {
 
 
 
-/* ---- MSR access + SYSCALL/SYSRET setup ---------------------------------- */
-
-static inline void wrmsr(unsigned msr, unsigned long val) {
-    unsigned lo = (unsigned)val, hi = (unsigned)(val >> 32);
-    __asm__ volatile("wrmsr" :: "c"(msr), "a"(lo), "d"(hi));
-}
-static inline unsigned long rdmsr(unsigned msr) {
-    unsigned lo, hi;
-    __asm__ volatile("rdmsr" : "=a"(lo), "=d"(hi) : "c"(msr));
-    return ((unsigned long)hi << 32) | lo;
-}
-
-#define MSR_STAR   0xC0000081
-#define MSR_LSTAR  0xC0000082
-#define MSR_SFMASK 0xC0000084
-#define MSR_FSBASE 0xC0000100
-#define MSR_GSBASE 0xC0000101
+/* ---- SYSCALL/SYSRET setup ---------------------------------- */
 
 extern void syscall_entry(void);
 extern unsigned long syscall_kstack;
@@ -822,13 +442,13 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
  * heap, kernel image, page tables, MMIO — must be rejected before a single
  * dereference. All arithmetic is overflow checked. */
 
-static int user_range_ok(unsigned long p, unsigned long len) {
+int user_range_ok(unsigned long p, unsigned long len) {
     if (p < USER_LOAD_BASE) return 0;
     if (len > USER_LOAD_END - p) return 0;
     return p + len <= USER_LOAD_END;
 }
 
-static int user_str_ok(unsigned long p, unsigned long maxlen) {
+int user_str_ok(unsigned long p, unsigned long maxlen) {
     unsigned long i;
     if (p < USER_LOAD_BASE || p >= USER_LOAD_END) return 0;
     for (i = 0; i < maxlen && p + i < USER_LOAD_END; i++)
@@ -1542,144 +1162,7 @@ static unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
  * in-OS interpreter suites exercise only the ET_REL toolchain (minigcc/ld);
  * ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
- *
- * The parent window is saved to a swap area on the IDE disk instead of
- * kmalloc'ing a buffer in the kernel heap.  The swap area lives at the
- * end of the disk (last SWAP_MAX_SECTORS sectors) and is laid out as:
- *
- *   Sectors 0 .. nchunks-1: chunk data (each SWAP_CHUNK_SECTORS sectors)
- *     First 4 bytes: compressed_sz (u32 LE, 0 = stored raw)
- *     Rest: LZ4 compressed or raw data
- *   Last sector: header
- *     [0..3]   magic 0x53574150 ("SWAP")
- *     [4..7]   window_sz (u32 LE, original bytes)
- *     [8..11]  nchunks (u32 LE)
- *
- * LZ4 compression uses two static BSS buffers (no heap allocation).
- * A 64 KB chunk compresses to ~30-50% of its size for typical interpreter
- * windows, so the disk I/O is proportionally smaller. */
-#define SWAP_CHUNK_RAW     65536   /* 64 KB raw data per chunk             */
-#define SWAP_CHUNK_SECTORS 128     /* 64 KB / 512 = 128 sectors per chunk  */
-#define SWAP_HDR_SECTORS   1       /* header occupies the last sector       */
-#define SWAP_MAX_SECTORS   131072  /* 64 MB total swap area                 */
-#define SWAP_MAGIC         0x53574150  /* "SWAP" */
-
-/* Two static BSS buffers for LZ4 compression — no heap allocation needed.
- * swap_buf_raw: holds one raw 64 KB chunk from the user window.
- * swap_buf_cmp: holds the LZ4 compressed output (compressBound(64K) ≈ 66 KB). */
-static unsigned char swap_buf_raw[SWAP_CHUNK_RAW];
-static unsigned char swap_buf_cmp[SWAP_CHUNK_RAW + 1024];
-
-/* Compute the swap base LBA (last SWAP_MAX_SECTORS sectors of the disk). */
-static unsigned long swap_lba(void) {
-    unsigned int total = ide_total_sectors();
-    if (total <= SWAP_MAX_SECTORS) return 0;
-    return (unsigned long)(total - SWAP_MAX_SECTORS);
-}
-
-/* Write the parent's user window to the swap area on disk, compressed
- * with LZ4 in 64 KB chunks.  Returns 1 on success, 0 on failure.
- * No heap allocation is used — the two static BSS buffers are enough. */
-static int swap_out(unsigned long window_sz) {
-    unsigned long slba = swap_lba();
-    if (!slba) return 0;
-    unsigned long nchunks = (window_sz + SWAP_CHUNK_RAW - 1) / SWAP_CHUNK_RAW;
-    /* Sanity: swap area must be large enough for header + chunks. */
-    if (nchunks * SWAP_CHUNK_SECTORS + SWAP_HDR_SECTORS > SWAP_MAX_SECTORS)
-        return 0;
-
-    unsigned long data_lba = slba;
-    for (unsigned long i = 0; i < nchunks; i++) {
-        unsigned long off = i * SWAP_CHUNK_RAW;
-        unsigned long raw_sz = window_sz - off;
-        if (raw_sz > SWAP_CHUNK_RAW) raw_sz = SWAP_CHUNK_RAW;
-
-        /* Copy raw chunk from the user window (identity-mapped). */
-        kmemcpy(swap_buf_raw, (void *)(USER_LOAD_BASE + off), raw_sz);
-        /* Zero the tail so LZ4 doesn't read garbage beyond the window. */
-        if (raw_sz < SWAP_CHUNK_RAW)
-            kmemset(swap_buf_raw + raw_sz, 0, SWAP_CHUNK_RAW - raw_sz);
-
-        /* Compress.  Output format: [compressed_sz:u32 LE][compressed data]. */
-        int csz = LZ4_compress_default((const char *)swap_buf_raw,
-                    (char *)swap_buf_cmp + 4,
-                    (int)SWAP_CHUNK_RAW, (int)(sizeof(swap_buf_cmp) - 4));
-        unsigned int disk_csz;
-        if (csz > 0 && (unsigned long)csz < raw_sz) {
-            /* Compression helped — store compressed. */
-            disk_csz = (unsigned int)csz;
-        } else {
-            /* No benefit — store raw (compressed_sz = 0 signals raw). */
-            disk_csz = 0;
-            kmemcpy(swap_buf_cmp + 4, swap_buf_raw, raw_sz);
-        }
-        *(unsigned int *)swap_buf_cmp = disk_csz;
-
-        unsigned long total = 4 + (disk_csz ? disk_csz : raw_sz);
-        unsigned long sects = (total + IDE_SECTOR_SIZE - 1) / IDE_SECTOR_SIZE;
-        if (ide_write_sectors((unsigned int)data_lba, (unsigned int)sects,
-                              swap_buf_cmp) < 0)
-            return 0;
-        data_lba += sects;
-    }
-
-    /* Write the header in the LAST sector of the swap area. */
-    unsigned long hdr_lba = slba + SWAP_MAX_SECTORS - SWAP_HDR_SECTORS;
-    unsigned int hdr[3];
-    hdr[0] = SWAP_MAGIC;
-    hdr[1] = (unsigned int)window_sz;
-    hdr[2] = (unsigned int)nchunks;
-    kmemset(hdr + 3, 0, IDE_SECTOR_SIZE - 12);
-    if (ide_write_sectors((unsigned int)hdr_lba, SWAP_HDR_SECTORS, hdr) < 0)
-        return 0;
-
-    return 1;
-}
-
-/* Restore the parent's user window from the swap area on disk.
- * Reads the header, then each compressed/raw chunk, and writes back
- * to USER_LOAD_BASE.  Returns 1 on success, 0 on failure. */
-static int swap_in(void) {
-    unsigned long slba = swap_lba();
-    if (!slba) return 0;
-
-    /* Read the header from the last sector of the swap area. */
-    unsigned long hdr_lba = slba + SWAP_MAX_SECTORS - SWAP_HDR_SECTORS;
-    unsigned int hdr[3];
-    if (ide_read_sectors((unsigned int)hdr_lba, SWAP_HDR_SECTORS, hdr) < 0)
-        return 0;
-    if (hdr[0] != SWAP_MAGIC) return 0;
-    unsigned long window_sz = hdr[1];
-    unsigned long nchunks   = hdr[2];
-
-    unsigned long data_lba = slba;
-    unsigned long dst = USER_LOAD_BASE;
-    for (unsigned long i = 0; i < nchunks; i++) {
-        /* Read one chunk (up to SWAP_CHUNK_SECTORS = 64 KB). */
-        if (ide_read_sectors((unsigned int)data_lba, SWAP_CHUNK_SECTORS,
-                             swap_buf_cmp) < 0)
-            return 0;
-        unsigned int csz = *(unsigned int *)swap_buf_cmp;
-
-        unsigned long raw_sz = window_sz - (dst - USER_LOAD_BASE);
-        if (raw_sz > SWAP_CHUNK_RAW) raw_sz = SWAP_CHUNK_RAW;
-
-        if (csz) {
-            /* Compressed chunk — decompress. */
-            int dsz = LZ4_decompress_safe((const char *)swap_buf_cmp + 4,
-                        (char *)swap_buf_raw, (int)csz, (int)SWAP_CHUNK_RAW);
-            if (dsz < 0 || (unsigned long)dsz != raw_sz)
-                return 0;
-        } else {
-            /* Raw chunk — copy directly. */
-            kmemcpy(swap_buf_raw, swap_buf_cmp + 4, raw_sz);
-        }
-        kmemcpy((void *)dst, swap_buf_raw, raw_sz);
-        dst += raw_sz;
-        data_lba += SWAP_CHUNK_SECTORS;
-    }
-    return 1;
-}
+ */
 
 static int k_syscall_spawn(const char *path, const char *redirect,
                             int child_argc, const char **child_argv) {
@@ -2291,19 +1774,20 @@ static int console_peek(void) {
 #define SB_LEN  (VGA_ROWS * VGA_COLS * 2)
 
 static void scrollback_render(int voff, int total, const unsigned char *saved) {
+    int sb_cnt = sb_get_count();
+    char color = vga_get_color();
     for (int r = 0; r < VGA_ROWS; r++) {
         int li = voff + r;
         for (int x = 0; x < VGA_COLS; x++) {
             char ch;
-            if (li < sb_count) {
-                int idx = (sb_head + li) % SCROLLBACK_ROWS;
-                ch = sb_ring[(unsigned long)idx * VGA_COLS + x];
+            if (li < sb_cnt) {
+                ch = sb_get_char(li, x);
             } else {
-                int live_row = li - sb_count;
+                int live_row = li - sb_cnt;
                 ch = (char)saved[(unsigned long)(live_row * VGA_COLS + x) * 2];
             }
             VGA_BASE[(unsigned long)(r * VGA_COLS + x) * 2]     = ch;
-            VGA_BASE[(unsigned long)(r * VGA_COLS + x) * 2 + 1] = vga_color;
+            VGA_BASE[(unsigned long)(r * VGA_COLS + x) * 2 + 1] = color;
             serial_putc(ch);
         }
         serial_putc('\n');
@@ -2327,16 +1811,17 @@ static int sb_next(void) {
 }
 
 static void scrollback_view(int initial_dir) {
-    if (sb_inited == 0) sb_init();
-    if (sb_inited != 1 || sb_count == 0) return;   /* nothing scrolled yet */
+    sb_init();
+    int sb_cnt = sb_get_count();
+    if (sb_cnt == 0) return;
 
     static unsigned char saved[SB_LEN];
     for (int i = 0; i < SB_LEN; i++) saved[i] = VGA_BASE[i];
-    int saved_x = vga_x, saved_y = vga_y;
+    int saved_x = vga_get_x(), saved_y = vga_get_y();
     vga_cursor_enable(0);
 
-    int total  = sb_count + VGA_ROWS;
-    int bottom = total - VGA_ROWS;          /* voff showing the live screen  */
+    int total  = sb_cnt + VGA_ROWS;
+    int bottom = total - VGA_ROWS;
     int voff   = (initial_dir < 0) ? bottom - VGA_ROWS : bottom;
     if (voff < 0) voff = 0;
     if (voff > bottom) voff = bottom;
@@ -2362,8 +1847,8 @@ static void scrollback_view(int initial_dir) {
     }
 
     for (int i = 0; i < SB_LEN; i++) VGA_BASE[i] = saved[i];
-    vga_x = saved_x; vga_y = saved_y;
-    vga_set_cursor(vga_x, vga_y);
+    vga_set_xy(saved_x, saved_y);
+    vga_set_cursor(saved_x, saved_y);
     vga_cursor_enable(1);
 }
 

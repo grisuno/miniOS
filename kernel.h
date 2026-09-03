@@ -43,6 +43,21 @@ void vga_puts(const char *s);
 void vga_scroll(void);
 void vga_set_cursor(int x, int y);
 void vga_newline(void);
+void vga_cursor_enable(int on);
+
+/* VGA state getters (kernel.c, for scrollback renderer) */
+int  vga_get_x(void);
+int  vga_get_y(void);
+void vga_set_xy(int x, int y);
+char vga_get_color(void);
+
+/* ========== Scrollback ring (kernel/scrollback.c) ========== */
+void sb_init(void);
+void sb_capture_row0(void);
+void sb_reset(void);
+int  sb_get_count(void);
+int  sb_get_head(void);
+char sb_get_char(int row, int col);
 
 /* ========== Serial console (COM1) ========== */
 void serial_init(void);
@@ -332,6 +347,28 @@ int kfprintf(KFILE *f, const char *fmt, ...);
 int ksprintf(char *buf, const char *fmt, ...);
 int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);
 
+/* ========== Structured logging (kernel/klog.c) ========== */
+typedef enum {
+    LOG_EMERG = 0, LOG_ALERT, LOG_CRIT, LOG_ERR,
+    LOG_WARNING, LOG_NOTICE, LOG_INFO, LOG_DEBUG
+} log_level_t;
+
+typedef enum {
+    LOG_SUBSYS_MM = 0, LOG_SUBSYS_SCHED, LOG_SUBSYS_VFS,
+    LOG_SUBSYS_NET, LOG_SUBSYS_DRIVER, LOG_SUBSYS_SYSCALL,
+    LOG_SUBSYS_SHELL, LOG_SUBSYS_BOOT, LOG_SUBSYS_GENERAL,
+    LOG_SUBSYS_COUNT
+} log_subsystem_t;
+
+void klog(log_level_t level, log_subsystem_t subsys,
+          const char *fmt, ...);
+void klog_hexdump(log_level_t level, log_subsystem_t subsys,
+                  const void *data, unsigned long len, const char *label);
+void klog_set_level(log_level_t level);
+void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);
+void klog_disable(void);
+void klog_enable(void);
+
 /* ========== Shell ========== */
 void shell_init(void);
 void shell_run(void);
@@ -387,11 +424,20 @@ void kexit(int code);
 void desktop_launch(const char *cmd);
 void shell_queue_launch(const char *cmd);
 
-/* ========== Page table helpers (kernel.c) ========== */
+/* ========== User-pointer validation (kernel.c) ========== */
+int user_range_ok(unsigned long p, unsigned long len);
+int user_str_ok(unsigned long p, unsigned long maxlen);
+
+/* ========== Page table helpers (kernel/mm/paging.c) ========== */
+void  mm_setup_protections(void);
 void *pt_page_alloc(void);
 void  pt_page_free(void *ptr);
 void  mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);
 void  mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);
+
+/* ========== Swap (kernel/mm/swap.c) ========== */
+int   swap_out(unsigned long window_sz);
+int   swap_in(void);
 
 /* ========== VMA red-black tree (loader.c) ========== */
 typedef struct vma_node {

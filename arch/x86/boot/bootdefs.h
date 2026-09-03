@@ -179,6 +179,12 @@
 #define PT_FLAGS_PS               0x080
 #define PT_FLAGS_USER             0x004
 #define PT_FLAGS_PCD              0x010   /* page cache disable (uncacheable) */
+#define PT_FLAGS_NX              0x8000000000000000ULL  /* no-execute */
+#define PT_ADDR_MASK             0x000FFFFFFFFFF000ULL  /* physical addr mask */
+#define PT_USER_ENTRY            (0x003 | PT_FLAGS_USER)  /* present | rw | user */
+#define PT_USER_NX_ENTRY         ((unsigned long)(PT_USER_ENTRY | PT_FLAGS_NX))
+#define PT_ENTRY_PRESENT         0x003   /* present | rw */
+#define PT_ENTRY_USER            0x007   /* present | rw | user */
 
 /* The SB16 DMA audio ring [0x90000, 0x94000) is read by the 8237 DMA
  * controller directly from physical RAM, bypassing the CPU caches.  Those
