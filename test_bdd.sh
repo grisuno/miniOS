@@ -175,6 +175,22 @@ poweroff"
 expect "wrote 1 line(s) to hello.txt"
 expect "only line"
 
+scenario "editor status and navigation report the current line" "edit nav.txt
+a
+alpha line
+a
+beta line
+g 1
+n
+b
+=
+/ beta
+x
+poweroff"
+expect "1: alpha line"
+expect "2: beta line"
+expect "nav.txt: 2 lines, current 1, modified"
+
 scenario "new files appear in the directory listing" "edit listed.txt
 a
 content

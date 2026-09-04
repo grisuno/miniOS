@@ -10,6 +10,8 @@
 #define XXH_STATIC_LINKING_ONLY
 #include "xxhash.h"
 #include "zip.h"
+#include "shell.h"
+#include "editor.h"
 
 /* ================================================================
  *  Shell (kernel/shell.c)
@@ -25,9 +27,6 @@
 /* ================================================================
  *  Shell
  * ================================================================ */
-
-#define CMD_BUF_SZ 256
-#define MAX_ARGS   16
 
 /* The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded
  * on demand the first time a .cvm module is run. */
@@ -348,7 +347,7 @@ static void scrollback_view(int initial_dir) {
 
 /* Read one line into buf (at most size-1 chars). Echoes input and
  * honours backspace. Shared by the shell prompt and the editor. */
-static void shell_readline_buf(char *buf, int size) {
+void shell_readline_buf(char *buf, int size) {
     int pos = 0;
     kmemset(buf, 0, (unsigned long)size);
     while (1) {
@@ -695,7 +694,7 @@ static void shell_readline_hist(char *buf, int size) {
     }
 }
 
-static int shell_parse(char *line, char **argv, int max_args) {
+int shell_parse(char *line, char **argv, int max_args) {
     int argc = 0;
     char *p = line;
     while (*p && argc < max_args) {
@@ -819,253 +818,6 @@ static int shell_load(const char *fname, char *progname_out, void **entry_out) {
     if (entry_out) *entry_out = entry;
     kfree(data);
     return kind;
-}
-
-/* ================================================================
- *  Line editor (edit command)
- * ================================================================ */
-
-#define EDIT_MAX_LINES 512
-#define EDIT_LINE_MAX  128
-#define EDIT_FILE_MAX  (64UL * 1024)
-
-typedef struct {
-    char text[EDIT_LINE_MAX];
-    int  used;
-} EditLine;
-
-typedef struct {
-    EditLine *lines;
-    int       count;
-    char      fname[RAMDISK_FNAME_LEN];
-    int       dirty;
-    int       truncated;
-} EditBuf;
-
-static EditBuf *edit_alloc(const char *fname) {
-    EditBuf *e = kmalloc(sizeof(EditBuf));
-    if (!e) return 0;
-    e->lines = kcalloc(EDIT_MAX_LINES, sizeof(EditLine));
-    if (!e->lines) {
-        kfree(e);
-        return 0;
-    }
-    e->count     = 0;
-    e->dirty     = 0;
-    e->truncated = 0;
-    kstrncpy(e->fname, fname, RAMDISK_FNAME_LEN - 1);
-    e->fname[RAMDISK_FNAME_LEN - 1] = 0;
-    return e;
-}
-
-static void edit_free(EditBuf *e) {
-    if (!e) return;
-    if (e->lines) kfree(e->lines);
-    kfree(e);
-}
-
-static int edit_load(EditBuf *e) {
-    KFILE *f = kfopen(e->fname, "r");
-    if (!f) return 0;
-    if (f->rf->size > EDIT_FILE_MAX) {
-        kfclose(f);
-        return -1;
-    }
-    int idx = 0;
-    int used = 0;
-    while (1) {
-        int c = kfgetc(f);
-        if (c == EOF) break;
-        if (idx >= EDIT_MAX_LINES) { e->truncated = 1; break; }
-        if (c == '\n') {
-            e->lines[idx].used = used;
-            idx++;
-            used = 0;
-            continue;
-        }
-        if (c == '\r') continue;
-        if (used < EDIT_LINE_MAX - 1) {
-            e->lines[idx].text[used++] = (char)c;
-        } else {
-            e->truncated = 1;
-        }
-    }
-    if (used > 0 && idx < EDIT_MAX_LINES) {
-        e->lines[idx].used = used;
-        idx++;
-    }
-    e->count = idx;
-    kfclose(f);
-    return 1;
-}
-
-static int edit_save(EditBuf *e) {
-    KFILE *f = kfopen(e->fname, "w");
-    if (!f) return -1;
-    int i;
-    for (i = 0; i < e->count; i++) {
-        if (e->lines[i].used > 0)
-            kfwrite(e->lines[i].text, 1, (unsigned long)e->lines[i].used, f);
-        if (i + 1 < e->count) kfputc('\n', f);
-    }
-    if (kfclose(f) != 0) return -1;
-    e->dirty = 0;
-    return 0;
-}
-
-static void edit_print(EditBuf *e, int idx) {
-    if (idx < 0 || idx >= e->count) return;
-    kprintf("%4d: ", idx + 1);
-    int i;
-    for (i = 0; i < e->lines[idx].used; i++) vga_putc(e->lines[idx].text[i]);
-    vga_putc('\n');
-}
-
-static void edit_list(EditBuf *e) {
-    int i;
-    if (e->count == 0) {
-        vga_puts("(empty)\n");
-        return;
-    }
-    for (i = 0; i < e->count; i++) edit_print(e, i);
-}
-
-static int edit_set_line(EditBuf *e, int idx, const char *text) {
-    unsigned long n = kstrlen(text);
-    if (n > EDIT_LINE_MAX - 1) n = EDIT_LINE_MAX - 1;
-    kmemcpy(e->lines[idx].text, text, n);
-    e->lines[idx].used = (int)n;
-    e->dirty = 1;
-    return 0;
-}
-
-static int edit_insert(EditBuf *e, int idx, const char *text) {
-    if (e->count >= EDIT_MAX_LINES) return -1;
-    if (idx < 0) idx = 0;
-    if (idx > e->count) idx = e->count;
-    kmemmove(&e->lines[idx + 1], &e->lines[idx],
-             (unsigned long)(e->count - idx) * sizeof(EditLine));
-    e->count++;
-    return edit_set_line(e, idx, text);
-}
-
-static int edit_delete(EditBuf *e, int idx) {
-    if (idx < 0 || idx >= e->count) return -1;
-    kmemmove(&e->lines[idx], &e->lines[idx + 1],
-             (unsigned long)(e->count - idx - 1) * sizeof(EditLine));
-    e->count--;
-    e->dirty = 1;
-    return 0;
-}
-
-static void edit_usage(void) {
-    vga_puts("editor: h help, l list, p N print, e N edit, a append,\n");
-    vga_puts("        i N insert, d N delete, w save, x save+quit,\n");
-    vga_puts("        q quit, q! quit discarding changes\n");
-}
-
-/* A buffer that did not hold the whole file must never be written back:
- * saving it would drop the part that was never loaded. */
-static int edit_refuse_save(EditBuf *e) {
-    if (!e->truncated) return 0;
-    vga_puts("refusing to save: file did not fit in the buffer\n");
-    return 1;
-}
-
-static void edit_loop(EditBuf *e) {
-    char buf[CMD_BUF_SZ];
-    vga_puts("edit: 'h' for help\n");
-    while (1) {
-        vga_puts("edit> ");
-        shell_readline_buf(buf, CMD_BUF_SZ);
-        char *argv[MAX_ARGS + 1];
-        int argc = shell_parse(buf, argv, MAX_ARGS);
-        if (argc == 0) continue;
-
-        if (kstrcmp(argv[0], "h") == 0) {
-            edit_usage();
-        } else if (kstrcmp(argv[0], "l") == 0) {
-            edit_list(e);
-        } else if (kstrcmp(argv[0], "p") == 0) {
-            if (argc < 2) { vga_puts("usage: p <line>\n"); continue; }
-            int n = (int)katol(argv[1]);
-            if (n < 1 || n > e->count) { vga_puts("no such line\n"); continue; }
-            edit_print(e, n - 1);
-        } else if (kstrcmp(argv[0], "e") == 0) {
-            if (argc < 2) { vga_puts("usage: e <line>\n"); continue; }
-            int n = (int)katol(argv[1]);
-            if (n < 1 || n > e->count) { vga_puts("no such line\n"); continue; }
-            char line[EDIT_LINE_MAX];
-            shell_readline_buf(line, EDIT_LINE_MAX);
-            edit_set_line(e, n - 1, line);
-        } else if (kstrcmp(argv[0], "a") == 0) {
-            char line[EDIT_LINE_MAX];
-            shell_readline_buf(line, EDIT_LINE_MAX);
-            if (edit_insert(e, e->count, line) != 0) vga_puts("buffer full\n");
-        } else if (kstrcmp(argv[0], "i") == 0) {
-            int n = argc >= 2 ? (int)katol(argv[1]) : e->count + 1;
-            if (n < 1 || n > e->count + 1) { vga_puts("no such line\n"); continue; }
-            char line[EDIT_LINE_MAX];
-            shell_readline_buf(line, EDIT_LINE_MAX);
-            if (edit_insert(e, n - 1, line) != 0) vga_puts("buffer full\n");
-        } else if (kstrcmp(argv[0], "d") == 0) {
-            if (argc < 2) { vga_puts("usage: d <line>\n"); continue; }
-            int n = (int)katol(argv[1]);
-            if (edit_delete(e, n - 1) != 0) vga_puts("no such line\n");
-        } else if (kstrcmp(argv[0], "w") == 0) {
-            if (edit_refuse_save(e)) continue;
-            if (edit_save(e) != 0) vga_puts("save failed\n");
-            else kprintf("wrote %d line(s) to %s\n", e->count, e->fname);
-        } else if (kstrcmp(argv[0], "x") == 0) {
-            if (edit_refuse_save(e)) continue;
-            if (edit_save(e) != 0) { vga_puts("save failed\n"); continue; }
-            kprintf("wrote %d line(s) to %s\n", e->count, e->fname);
-            return;
-        } else if (kstrcmp(argv[0], "q") == 0) {
-            if (e->dirty) {
-                vga_puts("unsaved changes: 'w' to save, 'q!' to discard\n");
-                continue;
-            }
-            return;
-        } else if (kstrcmp(argv[0], "q!") == 0) {
-            return;
-        } else {
-            vga_puts("unknown command\n");
-            edit_usage();
-        }
-    }
-}
-
-static void shell_cmd_edit(int argc, char **argv) {
-    if (argc < 2) {
-        vga_puts("usage: edit <file>\n");
-        return;
-    }
-    char resolved[RAMDISK_FNAME_LEN];
-    if (!fs_resolve(argv[1], resolved, sizeof(resolved))) {
-        kprintf("edit: %s: cannot open\n", argv[1]);
-        return;
-    }
-    if (fs_is_dir(resolved)) {
-        kprintf("edit: %s: is a directory\n", argv[1]);
-        return;
-    }
-    EditBuf *e = edit_alloc(argv[1]);
-    if (!e) {
-        vga_puts("edit: out of memory\n");
-        return;
-    }
-    int rc = edit_load(e);
-    if (rc < 0) {
-        vga_puts("edit: file too large\n");
-        edit_free(e);
-        return;
-    }
-    if (rc == 0) {
-        kprintf("edit: new file %s\n", argv[1]);
-    }
-    edit_loop(e);
-    edit_free(e);
 }
 
 static inline void outw_port(unsigned short port, unsigned short val) {

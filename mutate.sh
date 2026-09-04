@@ -82,7 +82,7 @@ if [ "$RESET" = "1" ]; then
     rm -f "$STATE_FILE"
 fi
 
-SOURCES="kernel.c arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c vma.c"
+SOURCES="kernel.c arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c vma.c kernel/editor.c"
 
 restore_sources() {
     local f
@@ -110,7 +110,7 @@ chunk-copy-length | s/#define SECTOR_DWORD_SHIFT        7/#define SECTOR_DWORD_S
 ramdisk-entry-stride | s/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 4)/ | kernel.c
 redirect-captures-nothing | s/    redir_active = 1;/    redir_active = 0;/ | kernel.c
 status-leaks-into-redirect | s/int was = redirect_suspend();/int was = 0;/ | kernel.c
-editor-drops-unsaved | s/if (e->dirty) {/if (0) {/ | kernel.c
+editor-drops-unsaved | s/if (e->dirty) {/if (0) {/ | kernel/editor.c
 bin-path-prefix | s/{ \"\",      \"bin\/\" }/{ \"\",      \"bix\/\" }/ | kernel.c
 bin-lookup-bypassed | s/    return ramdisk_open(resolved) ? 1 : 0;/    return 0;/ | kernel.c
 run-o-dir | s/{ \".o\",    \"objects\/\" }/{ \".o\",    \"objectx\/\" }/ | kernel.c
