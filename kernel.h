@@ -11,6 +11,7 @@
  * and DOOM's window go dark when the layout moved. Do not hardcode a layout
  * address in the kernel or in a ring-3 program; put it in minios_abi.h. */
 #include "minios_abi.h"
+#include "vma.h"
 
 /* ========== Port I/O helpers ========== */
 #define ALIGN_UP(x, a) (((x) + (a) - 1) & ~((a) - 1))
@@ -453,25 +454,6 @@ void  mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3
 int   swap_out(unsigned long window_sz);
 int   swap_in(void);
 
-/* ========== VMA red-black tree (loader.c) ========== */
-typedef struct vma_node {
-    unsigned long    base;
-    unsigned long    len;
-    int              red;
-    struct vma_node *left, *right, *parent;
-} vma_node_t;
-
-void vma_tree_init(void);
-vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);
-vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);
-int  vma_tree_delete(vma_node_t **root, unsigned long base);
-
-/* VMA tree globals (loader.c) */
-#define VMA_MAX 4096
-extern vma_node_t *VMA_NIL;
-extern vma_node_t *vma_live_root;
-extern vma_node_t *vma_free_root;
-
 /* brk/mmap globals (loader.c) */
 extern unsigned long g_brk;
 extern unsigned long g_brk_limit;
@@ -508,10 +490,6 @@ typedef struct {
 #define ET_REL      1
 #define ET_EXEC     2
 #define ET_DYN      3
-
-/* VMA pool (used by SPAWN to save/restore across child execution) */
-extern vma_node_t vma_pool[];
-extern int        vma_pool_n;
 
 void *elf_load(void *data, unsigned size);       /* ET_REL relocatable .o */
 void *load_exec_elf(void *data, unsigned size);  /* ET_EXEC / ET_DYN */

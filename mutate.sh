@@ -82,12 +82,12 @@ if [ "$RESET" = "1" ]; then
     rm -f "$STATE_FILE"
 fi
 
-SOURCES="kernel.c bootdefs.h net.c tls.c tls_x509.c pcspk.c rtc.c zip.c"
+SOURCES="kernel.c arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c vma.c"
 
 restore_sources() {
     local f
     for f in $SOURCES; do
-        [ -f "$BACKUP/$f" ] && cp "$BACKUP/$f" "$HERE/$f"
+        [ -f "$BACKUP/$f" ] && { mkdir -p "$HERE/$(dirname "$f")"; cp "$BACKUP/$f" "$HERE/$f"; }
     done
 }
 
@@ -98,14 +98,15 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 for f in $SOURCES; do
+    mkdir -p "$BACKUP/$(dirname "$f")"
     cp "$HERE/$f" "$BACKUP/$f" || exit 1
 done
 
 MUTATIONS="
-pd-drop-page-size | s/#define PT_FLAGS_PRESENT_RW_PS    0x083/#define PT_FLAGS_PRESENT_RW_PS    0x003/ | bootdefs.h
-gdt64-code-to-data | s/#define GDT64_DESC_CODE           0x00209A0000000000/#define GDT64_DESC_CODE           0x0000920000000000/ | bootdefs.h
-kernel-buffer-seg | s/#define BOOT_KERNEL_BUF_SEG       0x1000/#define BOOT_KERNEL_BUF_SEG       0x1001/ | bootdefs.h
-chunk-copy-length | s/#define SECTOR_DWORD_SHIFT        7/#define SECTOR_DWORD_SHIFT        6/ | bootdefs.h
+pd-drop-page-size | s/#define PT_FLAGS_PRESENT_RW_PS    0x083/#define PT_FLAGS_PRESENT_RW_PS    0x003/ | arch/x86/boot/bootdefs.h
+gdt64-code-to-data | s/#define GDT64_DESC_CODE           0x00209A0000000000/#define GDT64_DESC_CODE           0x0000920000000000/ | arch/x86/boot/bootdefs.h
+kernel-buffer-seg | s/#define BOOT_KERNEL_BUF_SEG       0x1000/#define BOOT_KERNEL_BUF_SEG       0x1001/ | arch/x86/boot/bootdefs.h
+chunk-copy-length | s/#define SECTOR_DWORD_SHIFT        7/#define SECTOR_DWORD_SHIFT        6/ | arch/x86/boot/bootdefs.h
 ramdisk-entry-stride | s/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 4)/ | kernel.c
 redirect-captures-nothing | s/    redir_active = 1;/    redir_active = 0;/ | kernel.c
 status-leaks-into-redirect | s/int was = redirect_suspend();/int was = 0;/ | kernel.c
@@ -130,37 +131,42 @@ append-mode-acts-like-write | s/((mode\\[0\\] == \\x27a\\x27) ? 2 : 0)/((mode\\[
 append-resets-pos | s/f->pos  = (f->mode == 2) ? f->rf->size : 0;/f->pos  = 0;/ | kernel.c
 trace-print-gated-off | s/if (s_trace_enabled)/if (0) \\&\\& (s_trace_enabled)/ | kernel.c
 trace-on-never-enables | s/syscall_trace_set(1)/syscall_trace_set(0)/ | kernel.c
-arp-cache-never-stored | s/net_arp_cache\\[free\\].valid = 1;/net_arp_cache\\[free\\].valid = 0;/ | net.c
-arp-reply-ignored | s/net_get16(frame + 20) == NET_ARP_REPLY/net_get16(frame + 20) == 0/ | net.c
-tx-owner-wait-inverted | s/while (!(net_reg32((unsigned short)(NET_REG_TSD0 + slot \\* 4)) \\& 0x2000)) {/while (net_reg32((unsigned short)(NET_REG_TSD0 + slot \\* 4)) \\& 0x2000) {/ | net.c
-tcp-seq-never-advances | s/if (fresh \\&\\& (flags/if (0) { if (fresh \\&\\& (flags/ | net.c
-tcp-peer-ack-corrupts-ack | s/\\/\\* ACK: peer acks our data \\*\\//s->ack = ack; \\/\\* ACK: peer acks our data \\*\\// | net.c
-ping-id-mismatched | s/net_put16(req + 4, net_icmp_id)/net_put16(req + 4, net_icmp_id + 1)/ | net.c
-ip-csum-ignored | s/if (net_checksum(ip, 20) != 0) return;/if (0) return;/ | net.c
-tcp-ack-not-advanced | s/                    s->ack = s->rx_next;/                    s->ack = s->ack;/ | net.c
-rx-frame-truncated | s/    for (k = 0; k < n; k++) {/    for (k = 0; k < n - 128; k++) {/ | net.c
+arp-cache-never-stored | s/net_arp_cache\\[free\\].valid = 1;/net_arp_cache\\[free\\].valid = 0;/ | net/net.c
+arp-reply-ignored | s/net_get16(frame + 20) == NET_ARP_REPLY/net_get16(frame + 20) == 0/ | net/net.c
+tx-owner-wait-inverted | s/while (!(rtl_reg32((unsigned short)(RTL_REG_TSD0 + slot \\* 4)) \\& 0x2000)) {/while (rtl_reg32((unsigned short)(RTL_REG_TSD0 + slot \\* 4)) \\& 0x2000) {/ | net/rtl8139.c
+tcp-seq-never-advances | s/if (fresh \\&\\& (flags/if (0) { if (fresh \\&\\& (flags/ | net/net.c
+tcp-peer-ack-corrupts-ack | s/\\/\\* ACK: peer acks our data \\*\\//s->ack = ack; \\/\\* ACK: peer acks our data \\*\\// | net/net.c
+ping-id-mismatched | s/net_put16(req + 4, net_icmp_id)/net_put16(req + 4, net_icmp_id + 1)/ | net/net.c
+ip-csum-ignored | s/if (net_checksum(ip, 20) != 0) return;/if (0) return;/ | net/net.c
+tcp-ack-not-advanced | s/                    s->ack = s->rx_next;/                    s->ack = s->ack;/ | net/net.c
+rx-frame-truncated | s/    for (k = 0; k < n; k++) {/    for (k = 0; k < n - 128; k++) {/ | net/rtl8139.c
 
 nk-frame-not-composited | s/        vga_fb_blit_nk_window();/        if (0) vga_fb_blit_nk_window();/ | kernel.c
 nk-origin-not-reported | s/            o\\[0\\] = nk_win_x;/            o\\[0\\] = 0;/ | kernel.c
 nk-mouse-bounds-unchecked | s/        if (!user_range_ok((unsigned long)a1, 4 \\* sizeof(int))) return EFAULT;/        if (0) return EFAULT;/ | kernel.c
 nk-backbuf-not-mapped | s/        unsigned char \\*buf = (unsigned char \\*)kmalloc(NK_W \\* NK_H);/        unsigned char \\*buf = 0;/ | kernel.c
 
-tls-close-notify-unrecognized | s/if (s->rec_len == 2 \\&\\& s->rec\\[1\\] == 0) {/if (s->rec_len == 2 \\&\\& s->rec\\[1\\] == 1) {/ | tls.c
-tls-chain-stride | s/TLS_MEMCPY(s->chain + stored, m + pos, cl);/TLS_MEMCPY(s->chain + s->n_certs \\* TLS_CERT_MAX, m + pos, cl);/ | tls.c
-tls-wildcard-overrun | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len; i++) {/ | tls_x509.c
-tls-wildcard-short-tail | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len - 2; i++) {/ | tls_x509.c
+tls-close-notify-unrecognized | s/if (s->rec_len == 2 \\&\\& s->rec\\[1\\] == 0) {/if (s->rec_len == 2 \\&\\& s->rec\\[1\\] == 1) {/ | net/tls.c
+tls-chain-stride | s/TLS_MEMCPY(s->chain + stored, m + pos, cl);/TLS_MEMCPY(s->chain + s->n_certs \\* TLS_CERT_MAX, m + pos, cl);/ | net/tls.c
+tls-wildcard-overrun | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len; i++) {/ | net/tls_x509.c
+tls-wildcard-short-tail | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len - 2; i++) {/ | net/tls_x509.c
 
-user-pages-supervisor | s/#define PT_FLAGS_USER             0x004/#define PT_FLAGS_USER             0x000/ | bootdefs.h
+user-pages-supervisor | s/#define PT_FLAGS_USER             0x004/#define PT_FLAGS_USER             0x000/ | arch/x86/boot/bootdefs.h
 write-pointer-check-bypassed | s/static int user_range_ok(unsigned long p, unsigned long len) {/static int user_range_ok(unsigned long p, unsigned long len) { (void)p; (void)len; return 1; \\/\\* bypass \\*\\// | kernel.c
 
-vol-default-zero | s/static unsigned pcspk_volume = PCSPK_VOL_DEFAULT;/static unsigned pcspk_volume = 0;/ | pcspk.c
+vol-default-zero | s/static unsigned pcspk_volume = PCSPK_VOL_DEFAULT;/static unsigned pcspk_volume = 0;/ | drivers/pcspk.c
 vol-sign-ignored | s/sign = -1;/sign = 1;/ | kernel.c
 vol-garbage-accepted | s/if (d < 0 || d > 9) return 0;/if (0) return 0;/ | kernel.c
-rtc-always-fails | s/    return 1;/    return 0;/ | rtc.c
+rtc-always-fails | s/    return 1;/    return 0;/ | drivers/rtc.c
 
-zip-traversal-allowed | s/if (clen == 2 \\&\\& start\\[0\\] == \\x27.\\x27 \\&\\& start\\[1\\] == \\x27.\\x27) return 0;/if (0) return 0;/ | zip.c
-zip-bad-magic-accepted | s/if (!mz_zip_reader_init_mem(\\&zip, abuf, (size_t)asize, 0)) {/if (0) {/ | zip.c
-zip-writer-never-finalizes | s/if (!fail \\&\\& !mz_zip_writer_finalize_archive(\\&zip)) {/if (!fail \\&\\& 0) {/ | zip.c
+zip-traversal-allowed | s/if (clen == 2 \\&\\& start\\[0\\] == \\x27.\\x27 \\&\\& start\\[1\\] == \\x27.\\x27) return 0;/if (0) return 0;/ | fs/zip.c
+zip-bad-magic-accepted | s/if (!mz_zip_reader_init_mem(\\&zip, abuf, (size_t)asize, 0)) {/if (0) {/ | fs/zip.c
+zip-writer-never-finalizes | s/if (!fail \\&\\& !mz_zip_writer_finalize_archive(\\&zip)) {/if (!fail \\&\\& 0) {/ | fs/zip.c
+
+vma-del-color-reversion | s/        y->red = z->red;/        y->red = y_orig_red;/ | vma.c
+vma-pool-init-broken | s/    vma_pool_n = 0;/    vma_pool_n = VMA_MAX;/ | vma.c
+vma-rotate-left-broken | s/    x->right = y->left;/    x->right = y->right;/ | vma.c
+vma-find-comparison-inverted | s/        else if (base < x->base) x = x->left;/        else if (base < x->base) x = x->right;/ | vma.c
 "
 
 # Parse the mutation table into parallel arrays (preserving order).
@@ -269,8 +275,11 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
     fi
 
     case "$file" in
-        tls.c|tls_x509.c|tls_crypto.c|tls.h)
+        net/tls.c|net/tls_x509.c|tls_crypto.c|tls.h)
             make -C "$HERE" test-tls > "$BACKUP/suite.log" 2>&1
+            ;;
+        vma.c)
+            make -C "$HERE" test-vma > "$BACKUP/suite.log" 2>&1
             ;;
         *)
             FAIL_FAST=1 "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1

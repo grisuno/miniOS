@@ -13,197 +13,15 @@
 
 #include "kernel.h"
 #include "net.h"
-
-void net_poll_rx(void);
-
-/* ================================================================
- *  Ports, PCI, time
- * ================================================================ */
-
-static unsigned short net_iobase;
-
-static void outb_port(unsigned short port, unsigned char val) {
-    __asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));
-}
-
-static unsigned char inb_port(unsigned short port) {
-    unsigned char v;
-    __asm__ volatile("inb %1, %0" : "=a"(v) : "Nd"(port));
-    return v;
-}
-
-static void outw_port(unsigned short port, unsigned short val) {
-    __asm__ volatile("outw %0, %1" : : "a"(val), "Nd"(port));
-}
-
-static void outl_port(unsigned short port, unsigned int val) {
-    __asm__ volatile("outl %0, %1" : : "a"(val), "Nd"(port));
-}
-
-static unsigned short inw_port(unsigned short port) {
-    unsigned short v;
-    __asm__ volatile("inw %1, %0" : "=a"(v) : "Nd"(port));
-    return v;
-}
-
-static unsigned int inl_port(unsigned short port) {
-    unsigned int v;
-    __asm__ volatile("inl %1, %0" : "=a"(v) : "Nd"(port));
-    return v;
-}
-
-static unsigned char net_reg8(unsigned short off) { return inb_port((unsigned short)(net_iobase + off)); }
-static void net_reg8_w(unsigned short off, unsigned char v) { outb_port((unsigned short)(net_iobase + off), v); }
-static unsigned short net_reg16(unsigned short off) { return inw_port((unsigned short)(net_iobase + off)); }
-static void net_reg16_w(unsigned short off, unsigned short v) { outw_port((unsigned short)(net_iobase + off), v); }
-static unsigned int net_reg32(unsigned short off) { return inl_port((unsigned short)(net_iobase + off)); }
-static void net_reg32_w(unsigned short off, unsigned int v) { outl_port((unsigned short)(net_iobase + off), v); }
-
-#define NET_REG_CR      0x37
-#define NET_REG_TSD0    0x10
-#define NET_REG_TSAD0   0x20
-#define NET_REG_RBSTART 0x30
-#define NET_REG_CAPR    0x38
-#define NET_REG_CBR     0x3A
-#define NET_REG_9346CR  0x50
-
-static unsigned int pci_read32(unsigned bus, unsigned dev, unsigned func, unsigned reg) {
-    outl_port(0xCF8, 0x80000000u | (bus << 16) | (dev << 11) | (func << 8) | (reg & 0xFC));
-    return inl_port(0xCFC);
-}
-
-static void pci_write32(unsigned bus, unsigned dev, unsigned func, unsigned reg, unsigned int val) {
-    outl_port(0xCF8, 0x80000000u | (bus << 16) | (dev << 11) | (func << 8) | (reg & 0xFC));
-    outl_port(0xCFC, val);
-}
-
-/* Find the rtl8139 and return its I/O base, 0 when absent. */
-static unsigned short net_find_rtl8139(void) {
-    unsigned dev;
-    for (dev = 0; dev < 32; dev++) {
-        unsigned int id = pci_read32(0, dev, 0, 0);
-        if ((id & 0xFFFF) == NET_PCI_VENDOR && ((id >> 16) & 0xFFFF) == NET_PCI_DEVICE) {
-            unsigned int cmd = pci_read32(0, dev, 0, 4);
-            pci_write32(0, dev, 0, 4, cmd | 0x7);
-            unsigned int bar0 = pci_read32(0, dev, 0, 0x10);
-            if (bar0 & 1) return (unsigned short)(bar0 & ~3u);
-            return 0;
-        }
-    }
-    return 0;
-}
-
-/* TSC clock calibrated once against a PIT channel 2 one-shot. */
-static unsigned long net_tsc_base;
-static unsigned long net_tsc_per_ms;
-
-static unsigned long net_rdtsc(void) {
-    unsigned int lo, hi;
-    __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
-    return ((unsigned long)hi << 32) | lo;
-}
-
-static void net_time_init(void) {
-    unsigned long t0, t1;
-    outb_port(0x61, (unsigned char)((inb_port(0x61) & 0x0F) | 0x01));
-    outb_port(0x43, 0xB0);
-    outb_port(0x42, 0x96);
-    outb_port(0x42, 0x04);
-    t0 = net_rdtsc();
-    while (!(inb_port(0x61) & 0x20));
-    t1 = net_rdtsc();
-    outb_port(0x61, (unsigned char)(inb_port(0x61) & 0x0F));
-    net_tsc_per_ms = t1 - t0;
-    net_tsc_base = t1;
-}
-
-unsigned long net_time_ms(void) {
-    return net_tsc_per_ms ? (net_rdtsc() - net_tsc_base) / net_tsc_per_ms : 0;
-}
+#include "rtl8139.h"
 
 /* ================================================================
- *  rtl8139 driver
+ *  Protocol state shared with the driver
  * ================================================================ */
 
-static unsigned char *net_rx_ring;      /* NET_RX_BUF_LEN bytes, aligned */
-static unsigned char net_rx_scratch[NET_MAX_FRAME];
 static unsigned char net_our_ip[4] = { NET_IP_ADDR };
-static unsigned short net_rx_capr;
-static unsigned char  net_mac[NET_ETH_ALEN];
-static unsigned int   net_tx_packets;
-static unsigned int   net_rx_packets;
-static unsigned int   net_rx_dropped;
-
-static void net_rtl_reset(void) {
-    unsigned long deadline;
-    net_reg8_w(NET_REG_CR, 0x10);                       /* reset */
-    deadline = net_time_ms() + 200;
-    while (net_reg8(NET_REG_CR) & 0x10) {
-        if (net_time_ms() > deadline) break;
-    }
-}
-
-static void net_rtl_init(void) {
-    unsigned long ptr;
-    net_iobase = net_find_rtl8139();
-    if (!net_iobase) return;
-
-    net_rtl_reset();
-
-    net_reg8_w(NET_REG_9346CR, 0xC0);                   /* unlock config */
-    net_reg8_w(0x52, 0x00);                             /* CONFIG1: defaults */
-
-    net_rx_ring = kmalloc(NET_RX_BUF_LEN + NET_RX_ALIGN);
-    if (!net_rx_ring) return;
-    ptr = (unsigned long)net_rx_ring;
-    ptr = (ptr + NET_RX_ALIGN - 1) & ~(unsigned long)(NET_RX_ALIGN - 1);
-    net_rx_ring = (unsigned char *)ptr;
-    net_reg32_w(NET_REG_RBSTART, (unsigned int)ptr);
-    net_rx_capr = 0;
-
-    net_mac[0] = net_reg8(0x00);
-    net_mac[1] = net_reg8(0x01);
-    net_mac[2] = net_reg8(0x02);
-    net_mac[3] = net_reg8(0x03);
-    net_mac[4] = net_reg8(0x04);
-    net_mac[5] = net_reg8(0x05);
-
-    net_reg16_w(0x3C, 0x0000);                          /* no interrupts */
-    net_reg16_w(0x44, NET_RCR);                         /* RCR: accept all */
-    net_reg8_w(NET_REG_CR, 0x0D);                       /* BUFE | TE | RE */
-}
-
-static unsigned net_tx_slot;
-
-static int net_tx_frame(const unsigned char *frame, unsigned len) {
-    unsigned long deadline;
-    unsigned attempt;
-    if (!net_iobase) return 0;
-    if (len < 60) len = 60;                             /* min ethernet frame */
-    if (len > NET_TX_MAX) return 0;
-    /* QEMU rotates descriptors: use them in order and wait for the
-     * selected one to come back into host ownership. */
-    for (attempt = 0; attempt < NET_TX_SLOTS; attempt++) {
-        unsigned slot = net_tx_slot;
-        unsigned int tsd = net_reg32((unsigned short)(NET_REG_TSD0 + slot * 4));
-        if (!(tsd & 0x2000)) {
-            deadline = net_time_ms() + 2000;
-            while (!(net_reg32((unsigned short)(NET_REG_TSD0 + slot * 4)) & 0x2000)) {
-                if (net_time_ms() > deadline) return 0;
-            }
-        }
-        net_reg32_w((unsigned short)(NET_REG_TSAD0 + slot * 4), (unsigned int)(unsigned long)frame);
-        net_reg32_w((unsigned short)(NET_REG_TSD0 + slot * 4), len & 0x1FFF);
-        deadline = net_time_ms() + 2000;
-        while (!(net_reg32((unsigned short)(NET_REG_TSD0 + slot * 4)) & 0x2000)) {
-            if (net_time_ms() > deadline) return 0;
-        }
-        net_tx_slot = (slot + 1) % NET_TX_SLOTS;
-        net_tx_packets++;
-        return 1;
-    }
-    return 0;
-}
+static unsigned char net_mac[NET_ETH_ALEN];
+unsigned int net_rx_dropped;
 
 /* ================================================================
  *  Byte helpers
@@ -295,7 +113,7 @@ static void net_arp_request(const unsigned char *ip) {
     kmemcpy(frame + 22, net_mac, NET_ETH_ALEN);
     kmemcpy(frame + 28, net_our_ip, 4);
     kmemcpy(frame + 38, ip, 4);
-    net_tx_frame(frame, 42);
+    rtl_send(frame, 42);
 }
 
 /* Resolve an IP on the 10.0.2.0/24 link. Retries, bounded timeout. */
@@ -306,7 +124,7 @@ static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out) {
         net_arp_request(ip);
         unsigned long wait = net_time_ms() + NET_RETRY_MS;
         while (net_time_ms() < wait) {
-            net_poll_rx();
+            rtl_poll();
             if (net_arp_lookup(ip, mac_out)) return 1;
         }
         if (net_time_ms() > deadline) return 0;
@@ -355,7 +173,7 @@ static int net_ip_send(const unsigned char *dip, unsigned char proto,
     net_put16(ip + 10, 0);                    /* field must be zero for the sum */
     net_put16(ip + 10, net_checksum(ip, 20));
     kmemcpy(ip + 20, payload, len);
-    if (!net_tx_frame(frame, (unsigned)(14 + total))) return 0;
+    if (!rtl_send(frame, (unsigned)(14 + total))) return 0;
     net_tx_bytes += total;
     return 1;
 }
@@ -476,7 +294,7 @@ static int net_dns_resolve(const char *host, unsigned char ip_out[4]) {
         net_dns.done = 0;
         net_udp_send((const unsigned char[]){ NET_DNS }, net_udp_port++, NET_DNS_PORT, q, pos);
         deadline = net_time_ms() + NET_DNS_TMO_MS;
-        while (!net_dns.done && net_time_ms() < deadline) net_poll_rx();
+        while (!net_dns.done && net_time_ms() < deadline) rtl_poll();
         if (net_dns.done) {
             kmemcpy(ip_out, net_dns.ip, 4);
             return 1;
@@ -526,7 +344,7 @@ static int net_ping(const unsigned char ip[4]) {
     kmemcpy(net_ping_ip, ip, 4);
     net_ip_send(ip, NET_PROTO_ICMP, req, sizeof(req));
     deadline = net_time_ms() + NET_CONNECT_TMO_S * 1000;
-    while (!net_ping_got_reply && net_time_ms() < deadline) net_poll_rx();
+    while (!net_ping_got_reply && net_time_ms() < deadline) rtl_poll();
     net_ping_active = 0;
     return net_ping_got_reply;
 }
@@ -749,7 +567,7 @@ static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4
     while (s->state == NET_TCP_SYN_SENT && net_time_ms() < deadline) {
         unsigned long retry = net_time_ms() + NET_RETRY_MS;
         while (net_time_ms() < retry && s->state == NET_TCP_SYN_SENT)
-            net_poll_rx();
+            rtl_poll();
         if (s->state == NET_TCP_SYN_SENT) net_tcp_xmit(s, 0x02, 0, 0, 0);
     }
     if (s->state != NET_TCP_ESTABLISHED) {
@@ -775,7 +593,7 @@ static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len) {
         while (s->tx_pending && s->state == NET_TCP_ESTABLISHED &&
                net_time_ms() < deadline) {
             unsigned long retry = net_time_ms() + NET_RETRY_MS;
-            while (net_time_ms() < retry && s->tx_pending) net_poll_rx();
+            while (net_time_ms() < retry && s->tx_pending) rtl_poll();
             if (s->tx_pending) net_tcp_xmit(s, 0x18, s->tx_buf, chunk, 0);
         }
         if (s->tx_pending || s->state != NET_TCP_ESTABLISHED) return sent ? sent : -1;
@@ -789,7 +607,7 @@ static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len) {
 /* Blocking receive; 0 = EOF (FIN). */
 static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len) {
     while (s->state != NET_TCP_DEAD) {
-        net_poll_rx();
+        rtl_poll();
         if (s->rx_tail < s->rx_head) {
             unsigned avail = s->rx_head - s->rx_tail;
             unsigned take = avail > (unsigned)len ? (unsigned)len : avail;
@@ -810,7 +628,7 @@ static int net_tcp_recv_deadline(struct net_tcp_sock *s, char *buf, int len,
                                  unsigned long timeout_ms) {
     unsigned long deadline = net_time_ms() + timeout_ms;
     while (s->state != NET_TCP_DEAD) {
-        net_poll_rx();
+        rtl_poll();
         if (s->rx_tail < s->rx_head) {
             unsigned avail = s->rx_head - s->rx_tail;
             unsigned take = avail > (unsigned)len ? (unsigned)len : avail;
@@ -833,7 +651,7 @@ static void net_tcp_close(struct net_tcp_sock *s) {
         while (s->state == NET_TCP_FIN_SENT && net_time_ms() < deadline) {
             unsigned long retry = net_time_ms() + NET_RETRY_MS;
             while (net_time_ms() < retry && s->state == NET_TCP_FIN_SENT)
-                net_poll_rx();
+                rtl_poll();
             if (s->state == NET_TCP_FIN_SENT) net_tcp_xmit(s, 0x11, 0, 0, 0);
         }
     }
@@ -845,7 +663,7 @@ static void net_tcp_close(struct net_tcp_sock *s) {
  *  Receive path: NIC -> ethernet -> ARP/IP -> demux
  * ================================================================ */
 
-static void net_rx_handle_frame(const unsigned char *frame, unsigned len) {
+void net_rx_handle_frame(const unsigned char *frame, unsigned len) {
     unsigned short etype;
     if (len < 14) return;
     etype = net_get16(frame + 12);
@@ -866,7 +684,7 @@ static void net_rx_handle_frame(const unsigned char *frame, unsigned len) {
             kmemcpy(reply + 28, net_our_ip, 4);
             kmemcpy(reply + 32, frame + 22, NET_ETH_ALEN);
             kmemcpy(reply + 38, frame + 28, 4);
-            net_tx_frame(reply, 42);
+            rtl_send(reply, 42);
         } else if (net_get16(frame + 20) == NET_ARP_REPLY) {
             net_arp_store(frame + 28, frame + 22);
         }
@@ -897,57 +715,6 @@ static void net_rx_handle_frame(const unsigned char *frame, unsigned len) {
             }
         }
     }
-}
-
-/* Drain the RX ring once; returns 1 when a frame was handled. */
-/* Copy one received frame out of the ring into the scratch buffer,
- * wrapping at the ring end, then hand it to the protocol stack.
- * length is the rtl8139 header length (frame size + 4-byte CRC). */
-static void net_rx_frame_wrapped(unsigned length) {
-    unsigned n = length - 4;
-    unsigned pos = net_rx_capr + 4;
-    unsigned k;
-    for (k = 0; k < n; k++) {
-        net_rx_scratch[k] = net_rx_ring[pos & (NET_RX_BUF_LEN - 1)];
-        pos++;
-    }
-    net_rx_handle_frame(net_rx_scratch, n);
-}
-
-void net_poll_rx(void) {
-    unsigned short cbr;
-    unsigned i = 0;
-    if (!net_iobase) return;
-    cbr = net_reg16(NET_REG_CBR);
-    while (net_rx_capr != cbr) {
-        unsigned char hdr[4];
-        unsigned short status, length;
-        int k;
-        /* QEMU writes frames as they arrive; a frame may straddle the
-         * end of the ring (split write), so the header is read
-         * byte-wise across the wrap. */
-        for (k = 0; k < 4; k++)
-            hdr[k] = net_rx_ring[(net_rx_capr + k) & (NET_RX_BUF_LEN - 1)];
-        status = (unsigned short)(hdr[0] | (hdr[1] << 8));
-        length = (unsigned short)(hdr[2] | (hdr[3] << 8));
-        if (status & 0x1) {                   /* ROK */
-            if (length >= 14 && length <= NET_MAX_FRAME) {
-                net_rx_packets++;
-                net_rx_frame_wrapped((unsigned)length);
-            } else {
-                net_rx_dropped++;
-            }
-        }
-        net_rx_capr = (unsigned short)((net_rx_capr + length + 4 + 3) & ~3u)
-                      & (unsigned short)(NET_RX_BUF_LEN - 1);
-        /* QEMU stores CAPR + 16 and gates receive on the free space:
-         * CAPR is written 1514 bytes ahead so the ring always advertises
-         * room for one frame. */
-        net_reg16_w(NET_REG_CAPR, (unsigned short)(net_rx_capr - 16));
-        cbr = net_reg16(NET_REG_CBR);
-        if (++i > 64) break;
-    }
-    net_reg16_w(NET_REG_CAPR, (unsigned short)(net_rx_capr - 16));
 }
 
 /* ================================================================
@@ -1072,7 +839,7 @@ long net_sys_poll(long fds, long nfds, long timeout_ms) {
         }
         if (ready > 0) return ready;
         if (timeout_ms == 0) return 0;
-        net_poll_rx();
+        rtl_poll();
         if (timeout_ms > 0 && net_time_ms() > deadline) return 0;
     }
 }
@@ -1116,22 +883,24 @@ static int net_parse_ip(const char *text, unsigned char ip[4]) {
 }
 
 void net_cmd_status(void) {
-    if (!net_iobase) {
+    unsigned int tx_frames, rx_frames;
+    if (!rtl_present()) {
         vga_puts("net: no rtl8139 found\n");
         return;
     }
-    kprintf("rtl8139  iobase 0x%x\n", net_iobase);
+    rtl_counters(&tx_frames, &rx_frames);
+    kprintf("rtl8139  iobase 0x%x\n", rtl_iobase());
     kprintf("mac      %02x:%02x:%02x:%02x:%02x:%02x\n",
             net_mac[0], net_mac[1], net_mac[2], net_mac[3], net_mac[4], net_mac[5]);
     kprintf("ip       %u.%u.%u.%u/24\n", net_our_ip[0], net_our_ip[1], net_our_ip[2], net_our_ip[3]);
     vga_puts("gateway  10.0.2.2  dns 10.0.2.3\n");
-    kprintf("tx       %u frames, %u bytes\n", net_tx_packets, net_tx_bytes);
-    kprintf("rx       %u frames, %u bytes, %u dropped\n", net_rx_packets, net_rx_bytes, net_rx_dropped);
+    kprintf("tx       %u frames, %u bytes\n", tx_frames, net_tx_bytes);
+    kprintf("rx       %u frames, %u bytes, %u dropped\n", rx_frames, net_rx_bytes, net_rx_dropped);
 }
 
 void net_cmd_ping(const char *ip_text) {
     unsigned char ip[4];
-    if (!net_iobase) { vga_puts("net: no rtl8139 found\n"); return; }
+    if (!rtl_present()) { vga_puts("net: no rtl8139 found\n"); return; }
     if (!net_parse_ip(ip_text, ip)) {
         vga_puts("usage: net ping <ip>\n");
         return;
@@ -1142,7 +911,7 @@ void net_cmd_ping(const char *ip_text) {
 
 void net_cmd_dns(const char *host) {
     unsigned char ip[4];
-    if (!net_iobase) { vga_puts("net: no rtl8139 found\n"); return; }
+    if (!rtl_present()) { vga_puts("net: no rtl8139 found\n"); return; }
     if (net_dns_resolve(host, ip))
         kprintf("%s = %u.%u.%u.%u\n", host, ip[0], ip[1], ip[2], ip[3]);
     else
@@ -1162,7 +931,7 @@ void net_register_symbols(void) {
 }
 
 void net_init(void) {
-    net_time_init();
-    net_rtl_init();
+    rtl_init();
+    rtl_get_mac(net_mac);
     net_register_symbols();
 }

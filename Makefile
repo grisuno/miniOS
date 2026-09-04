@@ -858,13 +858,20 @@ selfhost: $(BIN_DIR)/minigcc.elf
 tls_test_roots.h: tls_test.py
 	python3 tls_test.py --gen-only
 
-tls_test: tls_test.c tls_test_roots.h tls.c tls_crypto.c tls_x509.c \
+tls_test: tls_test.c tls_test_roots.h net/tls.c net/tls_crypto.c net/tls_x509.c \
           tls.h tls_port.h
 	$(CC) $(CFLAGS_HOST) -DTLS_TEST -I. -o $(TOOLS_DIR)/tls_test \
-	      tls_test.c tls.c tls_crypto.c tls_x509.c
+	      tls_test.c net/tls.c net/tls_crypto.c net/tls_x509.c
 
 test-tls: tls_test
 	python3 tls_test.py
+
+# VMA red-black tree host test (tests/test_vma.c + vma.c)
+vma_test: tests/test_vma.c vma.c vma.h
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/vma_test tests/test_vma.c vma.c
+
+test-vma: vma_test
+	$(TOOLS_DIR)/vma_test
 
 # ── Ramdisk image ─────────────────────────────────────────────────
 # The Makefile is a prerequisite because it carries the file list: editing
@@ -913,6 +920,9 @@ string.o: kernel/string.c kernel.h
 loader.o: kernel/loader.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+vma.o: vma.c vma.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 mm.o: kernel/mm.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -959,6 +969,9 @@ symtab.o: kernel/symtab.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 net.o: net/net.c net.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+rtl8139.o: net/rtl8139.c net.h net/rtl8139.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 tls.o: net/tls.c tls.h tls_port.h tls_roots.h kernel.h net.h
@@ -1072,8 +1085,8 @@ ap_stub.h: ap_stub.bin
 smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h ap_stub.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o serial.o string.o loader.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o vfs.o kfile.o redirect.o symtab.o net.o tls.o tls_crypto.o \
+kernel.elf: kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
 	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o -o $@

@@ -793,6 +793,17 @@ standard fixed configuration: address `10.0.2.15`, netmask `255.255.255.0`,
 gateway `10.0.2.2` (the host), DNS `10.0.2.3`. Every QEMU launch in the
 build, the BDD suite and the MCP attaches `-nic user,model=rtl8139`.
 
+The stack is split into two contracts: the polled NIC driver
+(`net/rtl8139.{c,h}`) and the protocol stack (`net/net.c`).  The driver
+owns the port I/O, PCI probe, TX descriptors, the receive ring, the NIC
+MAC and the PIT-calibrated clock; the stack owns addressing, ARP/IP/
+UDP/DNS/ICMP/TCP, the sockets and the demux (`net_rx_handle_frame`) that
+the driver reaches through `rtl_poll`.  `rtl8139.h` is the boundary:
+`rtl_send`, `rtl_poll`, `rtl_present`, `rtl_get_mac`, `rtl_iobase`,
+`rtl_counters`; the shared aggregate RX drop counter (`net_rx_dropped`,
+declared in `net.h`) is incremented by both sides (bad frames in the
+driver, dropped fragments in the stack).
+
 - The driver polls the NIC (no interrupt controller is configured): TX
   waits for the descriptor owner bit, RX drains the classic ring by
   comparing CAPR against CBR. QEMU forces the legacy receive ring to
@@ -1464,6 +1475,15 @@ still fails closed (returns 0) rather than faulting on an exhausted heap.
 5. **Boy Scout rule**: technical debt and security defects found on the way
    are fixed, never deferred as out of scope.
 
+Known drift (open): `mutate.sh` references each mutant's source by path, and
+the decomposition moved code into subdirectories AND from `kernel.c` into
+`shell.c`/`syscalls.c`/`vga_fb.c`/`redirect.c`. The subdirectory path drift
+(`arch/x86/boot/`, `net/`, `drivers/`, `fs/`) is fixed in this contract; the
+remaining `kernel.c`→`shell.c`/`syscalls.c`/`vga_fb.c`/`redirect.c` mutant
+anchors (rm/mkdir/cd/cat/ps/trace/editor/append/vol/nk/write-pointer-check)
+are stale and report BROKEN until re-anchored — tracked separately, not a
+regression of this release.
+
 A mutant may only leave the set when it is provably *equivalent* — no input
 can distinguish it from the original. That was the case for a mutant that
 stopped `redirect_resume` from restoring the capture: every shell status
@@ -1478,8 +1498,9 @@ is forbidden; the answer to a survivor is a new scenario.
 make                # zero warnings
 ./test_bdd.sh       # all scenarios green
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
-./mutate.sh         # every mutant killed (BDD + host TLS suite)
+./mutate.sh         # every mutant killed (BDD + host TLS + host VMA suites)
 make test-tls       # host-side crypto + full-handshake suite green
+make test-vma       # host-side VMA red-black tree suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
@@ -1675,15 +1696,35 @@ compatibility.  New filesystem additions (FAT32, EXT2) register a prefix
 and implement `vfs_ops_t` without touching the kernel core.
 
 ### VMA (Virtual Memory Areas)
-A red-black tree for mmap tracking (implemented in kernel.c, header in
-`vma.h`).  Replaces the former flat `mmap_used`/`mmap_free` arrays with
-O(log n) insert/find/delete.  Two trees: `vma_live_root` for active
-allocations, `vma_free_root` for reclaimed regions.  A static node pool
-(`VMA_MAX` = 4096) backs both trees.  The mmap syscall (9) searches the
-free tree for reusable regions before carving fresh space from the cursor;
-munmap (11) moves the freed region to the free tree.  The SPAWN syscall
-saves and restores the entire VMA pool and tree roots so child mutations
-do not corrupt the parent state.
+A red-black tree for mmap tracking, implemented in its own contract
+`vma.c` with the single header `vma.h` (previously inlined in `loader.c`
+against an unwired, divergent `vma.h`).  Replaces the former flat
+`mmap_used`/`mmap_free` arrays with O(log n) insert/find/delete.  Two
+trees: `vma_live_root` for active allocations, `vma_free_root` for
+reclaimed regions.  A static node pool (`VMA_MAX` = 4096) backs both
+trees and is reset by `vma_tree_init` on every exec; a pool that is
+exhausted fails closed (returns `VMA_NIL`), never overruns.  The mmap
+syscall (9) searches the free tree for reusable regions before carving
+fresh space from the cursor; munmap (11) moves the freed region to the
+free tree.  The SPAWN syscall saves and restores the entire VMA pool and
+tree roots so child mutations do not corrupt the parent state.
+
+The tree is integer-only and free of kernel dependencies, so it is
+host-tested by `tests/test_vma.c` (`make test-vma`), which asserts the
+red-black invariants (root black, no double-red, equal black height,
+in-order uniqueness) across insert/find/delete, pool exhaustion and full
+drain.  That suite exposed and fixed a latent CLRS-conformance bug: the
+two-child delete case restored the successor's color
+(`y->red = y_orig_red`) instead of the deleted node's color
+(`y->red = z->red`), which unbalanced black height (reproducible with
+eight nodes).  Mutation coverage lives in `mutate.sh` (`vma-*` mutants,
+routed to the host test, no QEMU boot).
+
+Known growth area (pre-existing, documented): a deleted node's slot is
+not recycled into the pool, so a single process is bounded to `VMA_MAX`
+total tree operations before `vma_tree_init` resets the pool on the next
+exec; this matches the single-address-space model and the working-set
+tests the suite drives.
 
 ### Unified Audio API
 A hardware-agnostic audio interface (`audio.h`, implementation in
@@ -1781,8 +1822,12 @@ Extracted so far:
 - `string.c`: kernel string/memory functions (kstrlen, kmemcpy, katol, etc.)
 - Drivers: ide, block, pcspk, sb16, rtc moved to `drivers/`
 - Filesystem: minifs, zip moved to `fs/`
-- Network: net, tls, tls_crypto, tls_x509 moved to `net/`
+- Network: net, tls, tls_crypto, tls_x509 moved to `net/`; the rtl8139
+  driver further split into its own contract `net/rtl8139.c` with the
+  boundary header `net/rtl8139.h`
 - Scheduler: sched.c, vga_fb.c, lz4_kernel.c, cvm_host.c moved to `kernel/`
+- Memory: VMA red-black tree moved to `vma.c` (its own contract, was inline
+  in loader.c against a divergent `vma.h`)
 - Boot: stage1.S, stage2.S, bootdefs.h moved to `arch/x86/boot/`
 - Arch: isr_stubs.S, ctx_sw.S, ap_entry.S moved to `arch/x86/`
 
@@ -1849,6 +1894,7 @@ make                        # zero warnings
 ./tools/test_codecs.sh      # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh                 # every mutant killed
 make test-tls               # host-side crypto + handshake suite
+make test-vma               # host-side VMA red-black tree suite
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD
 mcp/mutate_mcp.sh           # every MCP mutant killed
 python3 tools/check_cohesion.py KNOWLEDGE_BASE.jsonld

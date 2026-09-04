@@ -90,6 +90,14 @@ long net_sys_dns(long host);
 /* Milliseconds since net_init (PIT-calibrated TSC). */
 unsigned long net_time_ms(void);
 
+/* Demux entry point the rtl8139 driver (rtl8139.c) calls for every
+ * frame drained from the RX ring; lives in net.c. */
+void net_rx_handle_frame(const unsigned char *frame, unsigned len);
+
+/* Aggregate RX drop counter shared between the driver (bad frames) and
+ * the stack (dropped fragments); defined in net.c. */
+extern unsigned int net_rx_dropped;
+
 /* TLS sessions attached to socket fds (tls.c); net_sys_close frees them. */
 void tls_free_fd(int fd);
 
