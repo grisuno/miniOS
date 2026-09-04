@@ -375,13 +375,21 @@ and exit 1.
 
 ## Editor
 
-`edit <file>` opens a line editor over a ramdisk file.
+`edit <file>` opens a nano-like line editor over a ramdisk or MiniFS file
+(extracted to `kernel/editor.c`, contract in `editor.h`). The status line
+shows the filename, current line number and a `*` when the buffer is modified.
 
 | Key | Action |
 |-----|--------|
 | `h` | help |
 | `l` | list the buffer |
 | `p N` | print line N |
+| `.` | print the current line (no argument) |
+| `g N` | go to line N |
+| `n` / `b` | next / previous line (advance or rewind the cursor) |
+| `/ text` | search forward for `text` and jump to the match |
+| `=` | show status (current line, total lines, modified flag) |
+| `l a b` | list lines a through b |
 | `e N` | replace line N with the next line typed |
 | `a` | append the next line typed |
 | `i N` | insert before line N |
@@ -973,11 +981,16 @@ the abstraction for future filesystem additions (FAT32, EXT2) without
 touching the kernel core.
 
 ### VMA (Virtual Memory Areas)
-A red-black tree structure for mmap tracking.  Replaces the flat
-`mmap_used`/`mmap_free` arrays with O(log n) lookup.  The current kernel
-uses flat arrays (MMAP_MAX=4096); the VMA header defines the tree structure
-for future adoption when the single-address-space model gains per-process
-page tables.
+A red-black tree (`vma.c`, `vma.h`) for mmap tracking, replacing the flat
+`mmap_used`/`mmap_free` arrays with O(log n) insert/find/delete. Two trees:
+`vma_live_root` for active allocations, `vma_free_root` for reclaimed regions.
+A static node pool (`VMA_MAX` = 4096) backs both trees and is reset on every
+exec; exhaustion fails closed (returns `VMA_NIL`). The mmap syscall searches
+the free tree for reusable regions before carving fresh space; munmap moves the
+freed region to the free tree. Host-tested by `tests/test_vma.c` (`make
+test-vma`), which asserts the red-black invariants (root black, no double-red,
+equal black height, in-order uniqueness) across insert/find/delete, pool
+exhaustion and full drain.
 
 ### Unified Audio API
 A hardware-agnostic audio interface providing tone mode (PC speaker square
@@ -988,6 +1001,15 @@ instead of raw syscalls.
 The `SYS_Q2G_SET_TITLE` syscall is renamed to `SYS_GFX_SET_TITLE` (generic
 window title).  The Q2G build is conditional: skipped when the upstream
 checkout is absent.  The kernel contains no Quake-2-specific logic.
+
+### Network driver/protocol split
+The rtl8139 NIC driver (`net/rtl8139.c`, `net/rtl8139.h`) is separated from
+the protocol stack (`net/net.c`). The driver owns port I/O, PCI probe, TX
+descriptors, the receive ring, the NIC MAC and the PIT-calibrated TSC clock;
+the stack owns addressing, ARP/IP/UDP/DNS/ICMP/TCP, the sockets and the
+demux. The boundary header `rtl8139.h` exposes `rtl_send`, `rtl_poll`,
+`rtl_present`, `rtl_get_mac`, `rtl_iobase`, `rtl_counters`. Both sides
+share the aggregate RX drop counter (`net_rx_dropped`, extern in `net.h`).
 
 ## Console scrollback
 
@@ -1015,9 +1037,26 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `bootdefs.h` | every constant shared by the boot path |
 | `stage1.S` | 512-byte boot sector: loads stage 2 over LBA |
 | `stage2.S` | loads the kernel above 1 MB, enters long mode |
-| `kernel.c` / `kernel.h` | kernel: console, heap, ramdisk, loaders, shell, editor |
-| `net.c` / `net.h` | rtl8139 driver, ARP/IP/ICMP/UDP/DNS/TCP |
-| `tls.c` / `tls_crypto.c` / `tls_x509.c` | kernel TLS 1.2 client, crypto, X.509 |
+| `kernel.c` / `kernel.h` | kernel: console, heap, ramdisk, loaders, shell |
+| `kernel/shell.c` / `shell.h` | shell prompt, command resolution, builtins |
+| `kernel/editor.c` / `editor.h` | line editor (nano-like: status, goto, search, range listing) |
+| `kernel/syscalls.c` | Linux ABI syscall dispatcher, user pointer validation |
+| `kernel/redirect.c` | shell I/O redirection (`>`, `>>`) |
+| `kernel/sched.c` | process management, timer ISR, desktop tick |
+| `kernel/vga_fb.c` | VESA framebuffer desktop, windowed terminal, mouse, WM |
+| `net/rtl8139.c` / `net/rtl8139.h` | rtl8139 NIC driver: port I/O, PCI, TX/RX, TSC clock |
+| `net/net.c` / `net.h` | protocol stack: ARP/IP/ICMP/UDP/DNS/TCP, sockets |
+| `net/tls.c` / `net/tls_crypto.c` / `net/tls_x509.c` | kernel TLS 1.2 client, crypto, X.509 |
+| `vma.c` / `vma.h` | VMA red-black tree for mmap tracking |
+| `fs/ramdisk.c` | ramdisk filesystem driver |
+| `fs/minifs.c` | MiniFS filesystem driver |
+| `fs/kfile.c` | unified file API (ramdisk + MiniFS) |
+| `fs/vfs.c` | VFS dispatch layer |
+| `fs/zip.c` | ZIP archive read/write (miniz) |
+| `drivers/ide.c` | IDE PIO disk driver |
+| `drivers/pcspk.c` | PC speaker driver (tone, volume) |
+| `drivers/sb16.c` | Sound Blaster 16 DMA driver |
+| `drivers/rtc.c` | CMOS RTC clock driver |
 | `tls_roots_src/` + `mkroots.sh` | the 8 embedded CA roots and their generator |
 | `tls_test.py` / `tls_test.c` | host TLS suite: vectors + full handshakes |
 | `cvm_host.c` | CVM interpreter + JIT integration in MiniOS |
@@ -1072,6 +1111,7 @@ full contract.
 | `toolchain` | build `minigcc`, `ld` and `cvm2` from those sources |
 | `selfhost` | compile minigcc with minigcc, link with `ld`, verify the bootstrap fixed point |
 | `test-tls` | host TLS suite: crypto vectors + full handshakes |
+| `test-vma` | host VMA suite: red-black tree invariants, pool exhaustion, full drain |
 | `run` | boot the image in QEMU with a display (TCG by default) |
 | `run-kvm` | boot it with KVM acceleration (faster CPU, slower IDE I/O) |
 | `run-headless` | boot it headless on the serial console (no GUI window) |

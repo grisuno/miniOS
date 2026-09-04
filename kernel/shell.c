@@ -1380,7 +1380,7 @@ void shell_exec_builtin(int argc, char **argv) {
     else if (kstrcmp(argv[0], "cat") == 0) {
         if (argc < 2) { vga_puts("usage: cat <file> [file...]\n"); return; }
         int fi;
-        for (fi = 1; fi < 2; fi++) {
+        for (fi = 1; fi < argc; fi++) {
             char resolved[RAMDISK_FNAME_LEN];
             if (!fs_resolve(argv[fi], resolved, sizeof(resolved)) || fs_is_dir(resolved)) {
                 kprintf("cat: %s: no such file or is a directory\n", argv[fi]);

@@ -82,7 +82,7 @@ if [ "$RESET" = "1" ]; then
     rm -f "$STATE_FILE"
 fi
 
-SOURCES="kernel.c arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c vma.c kernel/editor.c"
+SOURCES="kernel.c arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c"
 
 restore_sources() {
     local f
@@ -107,30 +107,30 @@ pd-drop-page-size | s/#define PT_FLAGS_PRESENT_RW_PS    0x083/#define PT_FLAGS_P
 gdt64-code-to-data | s/#define GDT64_DESC_CODE           0x00209A0000000000/#define GDT64_DESC_CODE           0x0000920000000000/ | arch/x86/boot/bootdefs.h
 kernel-buffer-seg | s/#define BOOT_KERNEL_BUF_SEG       0x1000/#define BOOT_KERNEL_BUF_SEG       0x1001/ | arch/x86/boot/bootdefs.h
 chunk-copy-length | s/#define SECTOR_DWORD_SHIFT        7/#define SECTOR_DWORD_SHIFT        6/ | arch/x86/boot/bootdefs.h
-ramdisk-entry-stride | s/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 4)/ | kernel.c
+ramdisk-entry-stride | s/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 4)/ | fs/ramdisk.c
 redirect-captures-nothing | s/    redir_active = 1;/    redir_active = 0;/ | kernel.c
 status-leaks-into-redirect | s/int was = redirect_suspend();/int was = 0;/ | kernel.c
 editor-drops-unsaved | s/if (e->dirty) {/if (0) {/ | kernel/editor.c
-bin-path-prefix | s/{ \"\",      \"bin\/\" }/{ \"\",      \"bix\/\" }/ | kernel.c
-bin-lookup-bypassed | s/    return ramdisk_open(resolved) ? 1 : 0;/    return 0;/ | kernel.c
-run-o-dir | s/{ \".o\",    \"objects\/\" }/{ \".o\",    \"objectx\/\" }/ | kernel.c
-run-elf-dir | s/{ \".elf\",  \"bin\/\" }/{ \".elf\",  \"bix\/\" }/ | kernel.c
-run-cvm-dir | s/{ \".cvm\",  \"cvm\/\" }/{ \".cvm\",  \"cvmx\/\" }/ | kernel.c
-cwd-never-applied | s/kmemcpy(out, fs_cwd, kstrlen(fs_cwd) + 1);/kmemcpy(out, \"\", 1);/ | kernel.c
-cd-always-fails | s/if (!fs_resolve(argv\\[1\\], resolved, sizeof(resolved))) {/if (1) {/ | kernel.c
-rm-missing-passes | s/if (!f) { kprintf(\\\"rm: %s: no such file\\\\n\\\", argv\\[1\\]); return; }/if (0) {/ | kernel.c
-rm-dir-accepted | s/if (fs_is_dir(resolved)) {/if (0) {/ | kernel.c
-mkdir-dup-passes | s/if (fs_dir_exists(dirname)) {/if (0) {/ | kernel.c
-mkdir-parent-bypassed | s/if (!fs_dir_exists(parent)) {/if (0) {/ | kernel.c
-cd-exists-bypassed | s/if (!fs_dir_exists(target)) {/if (0) {/ | kernel.c
-kfopen-dir-refusal-bypassed | s/if (fs_is_dir(resolved)) return 0;/\\/* dir bypass *\\// | kernel.c
-ps-empty | s/kprintf(\\\"  %-12s  %s  %p\\\\n\\\", p->name,/if (0) kprintf(\\\"  %-12s  %s  %p\\\\n\\\", p->name,/ | kernel.c
-cat-drops-second-file | s/for (fi = 1; fi < argc; fi++)/for (fi = 1; fi < 2; fi++)/ | kernel.c
-append-flag-ignored | s/            \\*append_mode = 1;/            \\*append_mode = 0;/ | kernel.c
-append-mode-acts-like-write | s/((mode\\[0\\] == \\x27a\\x27) ? 2 : 0)/((mode\\[0\\] == \\x27a\\x27) ? 1 : 0)/ | kernel.c
-append-resets-pos | s/f->pos  = (f->mode == 2) ? f->rf->size : 0;/f->pos  = 0;/ | kernel.c
-trace-print-gated-off | s/if (s_trace_enabled)/if (0) \\&\\& (s_trace_enabled)/ | kernel.c
-trace-on-never-enables | s/syscall_trace_set(1)/syscall_trace_set(0)/ | kernel.c
+bin-path-prefix | s/{ \"\",      \"bin\/\" }/{ \"\",      \"bix\/\" }/ | kernel/shell.c
+bin-lookup-bypassed | s/    return ramdisk_open(resolved) ? 1 : 0;/    return 0;/ | kernel/shell.c
+run-o-dir | s/{ \".o\",    \"objects\/\" }/{ \".o\",    \"objectx\/\" }/ | kernel/shell.c
+run-elf-dir | s/{ \".elf\",  \"bin\/\" }/{ \".elf\",  \"bix\/\" }/ | kernel/shell.c
+run-cvm-dir | s/{ \".cvm\",  \"cvm\/\" }/{ \".cvm\",  \"cvmx\/\" }/ | kernel/shell.c
+cwd-never-applied | s/kmemcpy(out, fs_cwd, kstrlen(fs_cwd) + 1);/kmemcpy(out, \"\", 1);/ | fs/vfs.c
+cd-always-fails | s/if (!fs_resolve(argv\\[1\\], resolved, sizeof(resolved))) {/if (1) {/ | kernel/shell.c
+rm-missing-passes | s/if (!f) { kprintf(\\\"rm: %s: no such file\\\\n\\\", argv\\[1\\]); return; }/if (0) {/ | kernel/shell.c
+rm-dir-accepted | s/if (fs_is_dir(resolved)) {/if (0) {/ | kernel/shell.c
+mkdir-dup-passes | s/if (fs_dir_exists(dirname)) {/if (0) {/ | kernel/shell.c
+mkdir-parent-bypassed | s/if (!fs_dir_exists(parent)) {/if (0) {/ | kernel/shell.c
+cd-exists-bypassed | s/if (!fs_dir_exists(target)) {/if (0) {/ | kernel/shell.c
+kfopen-dir-refusal-bypassed | s/if (fs_is_dir(resolved)) return 0;/\\/* dir bypass *\\// | fs/kfile.c
+ps-empty | s/kprintf(\\\"  %-12s  %s  %p\\\\n\\\", p->name,/if (0) kprintf(\\\"  %-12s  %s  %p\\\\n\\\", p->name,/ | kernel/shell.c
+cat-drops-second-file | s/for (fi = 1; fi < argc; fi++)/for (fi = 1; fi < 2; fi++)/ | kernel/shell.c
+append-flag-ignored | s/            \\*append_mode = 1;/            \\*append_mode = 0;/ | kernel/redirect.c
+append-mode-acts-like-write | s/((mode\\[0\\] == \\x27a\\x27) ? 2 : 0)/((mode\\[0\\] == \\x27a\\x27) ? 1 : 0)/ | fs/kfile.c
+append-resets-pos | s/f->pos  = (f->mode == 2) ? f->rf->size : 0;/f->pos  = 0;/ | fs/kfile.c
+trace-print-gated-off | s/if (s_trace_enabled)/if (0) \\&\\& (s_trace_enabled)/ | kernel/syscalls.c
+trace-on-never-enables | s/syscall_trace_set(1)/syscall_trace_set(0)/ | kernel/shell.c
 arp-cache-never-stored | s/net_arp_cache\\[free\\].valid = 1;/net_arp_cache\\[free\\].valid = 0;/ | net/net.c
 arp-reply-ignored | s/net_get16(frame + 20) == NET_ARP_REPLY/net_get16(frame + 20) == 0/ | net/net.c
 tx-owner-wait-inverted | s/while (!(rtl_reg32((unsigned short)(RTL_REG_TSD0 + slot \\* 4)) \\& 0x2000)) {/while (rtl_reg32((unsigned short)(RTL_REG_TSD0 + slot \\* 4)) \\& 0x2000) {/ | net/rtl8139.c
@@ -141,10 +141,10 @@ ip-csum-ignored | s/if (net_checksum(ip, 20) != 0) return;/if (0) return;/ | net
 tcp-ack-not-advanced | s/                    s->ack = s->rx_next;/                    s->ack = s->ack;/ | net/net.c
 rx-frame-truncated | s/    for (k = 0; k < n; k++) {/    for (k = 0; k < n - 128; k++) {/ | net/rtl8139.c
 
-nk-frame-not-composited | s/        vga_fb_blit_nk_window();/        if (0) vga_fb_blit_nk_window();/ | kernel.c
-nk-origin-not-reported | s/            o\\[0\\] = nk_win_x;/            o\\[0\\] = 0;/ | kernel.c
-nk-mouse-bounds-unchecked | s/        if (!user_range_ok((unsigned long)a1, 4 \\* sizeof(int))) return EFAULT;/        if (0) return EFAULT;/ | kernel.c
-nk-backbuf-not-mapped | s/        unsigned char \\*buf = (unsigned char \\*)kmalloc(NK_W \\* NK_H);/        unsigned char \\*buf = 0;/ | kernel.c
+nk-frame-not-composited | s/        vga_fb_blit_nk_window();/        if (0) vga_fb_blit_nk_window();/ | kernel/syscalls.c
+nk-origin-not-reported | s/            o\\[0\\] = nk_win_x;/            o\\[0\\] = 0;/ | kernel/syscalls.c
+nk-mouse-bounds-unchecked | s/        if (!user_range_ok((unsigned long)a1, 4 \\* sizeof(int))) return EFAULT;/        if (0) return EFAULT;/ | kernel/syscalls.c
+nk-backbuf-not-mapped | s/        unsigned char \\*buf = (unsigned char \\*)kmalloc(NK_W \\* NK_H);/        unsigned char \\*buf = 0;/ | kernel/mm/paging.c
 
 tls-close-notify-unrecognized | s/if (s->rec_len == 2 \\&\\& s->rec\\[1\\] == 0) {/if (s->rec_len == 2 \\&\\& s->rec\\[1\\] == 1) {/ | net/tls.c
 tls-chain-stride | s/TLS_MEMCPY(s->chain + stored, m + pos, cl);/TLS_MEMCPY(s->chain + s->n_certs \\* TLS_CERT_MAX, m + pos, cl);/ | net/tls.c
@@ -152,11 +152,11 @@ tls-wildcard-overrun | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0
 tls-wildcard-short-tail | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len - 2; i++) {/ | net/tls_x509.c
 
 user-pages-supervisor | s/#define PT_FLAGS_USER             0x004/#define PT_FLAGS_USER             0x000/ | arch/x86/boot/bootdefs.h
-write-pointer-check-bypassed | s/static int user_range_ok(unsigned long p, unsigned long len) {/static int user_range_ok(unsigned long p, unsigned long len) { (void)p; (void)len; return 1; \\/\\* bypass \\*\\// | kernel.c
+write-pointer-check-bypassed | s/int user_range_ok(unsigned long p, unsigned long len) {/int user_range_ok(unsigned long p, unsigned long len) { (void)p; (void)len; return 1; \\/\\* bypass \\*\\// | kernel/syscalls.c
 
 vol-default-zero | s/static unsigned pcspk_volume = PCSPK_VOL_DEFAULT;/static unsigned pcspk_volume = 0;/ | drivers/pcspk.c
-vol-sign-ignored | s/sign = -1;/sign = 1;/ | kernel.c
-vol-garbage-accepted | s/if (d < 0 || d > 9) return 0;/if (0) return 0;/ | kernel.c
+vol-sign-ignored | s/v \*= sign;/v \*= 1;/ | kernel/shell.c
+vol-garbage-accepted | s/if (!shell_parse_vol(argv\\[1\\], &v)) {/if (0) {/ | kernel/shell.c
 rtc-always-fails | s/    return 1;/    return 0;/ | drivers/rtc.c
 
 zip-traversal-allowed | s/if (clen == 2 \\&\\& start\\[0\\] == \\x27.\\x27 \\&\\& start\\[1\\] == \\x27.\\x27) return 0;/if (0) return 0;/ | fs/zip.c
