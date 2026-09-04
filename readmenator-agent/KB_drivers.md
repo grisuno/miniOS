@@ -1,0 +1,172 @@
+# Subsystem: drivers
+
+## drivers/block.c
+- Layer: infrastructure
+- Doc: Block device layer for MiniFS.
+- Language: c
+- Symbols:
+  - `bc_index` (function, line 27) `static unsigned int bc_index(unsigned int block_num)`
+  - `bc_invalidate` (function, line 31) `static void bc_invalidate(unsigned int block_num)`
+  - `block_init` (function, line 36) `void block_init(void)`
+  - `block_set_base` (function, line 42) `void block_set_base(unsigned int lba_base)`
+  - `block_read` (function, line 46) `int block_read(unsigned int block_num, void *buf)`
+  - `block_write` (function, line 66) `int block_write(unsigned int block_num, const void *buf)`
+  - `block_read_multi` (function, line 72) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
+  - `block_write_multi` (function, line 77) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
+  - `block_flush` (function, line 84) `void block_flush(void)`
+  - `block_total` (function, line 86) `unsigned int block_total(void)`
+  - `BC_WAYS` (macro, line 22)
+  - `BC_MASK` (macro, line 23)
+
+## drivers/ide.c
+- Layer: infrastructure
+- Doc: IDE/ATA PIO driver for MiniOS.
+- Language: c
+- Symbols:
+  - `ide_delay` (function, line 11) `static void ide_delay(void)`
+  - `ide_read_status` (function, line 21) `static unsigned char ide_read_status(void)`
+  - `ide_wait_not_busy` (function, line 25) `static int ide_wait_not_busy(unsigned int timeout)`
+  - `ide_wait_drq` (function, line 33) `static int ide_wait_drq(unsigned int timeout)`
+  - `ide_select_drive` (function, line 44) `static void ide_select_drive(unsigned char drive)`
+  - `ide_soft_reset` (function, line 50) `static void ide_soft_reset(void)`
+  - `ide_identify` (function, line 57) `static int ide_identify(void)`
+  - `ide_init` (function, line 82) `void ide_init(void)`
+  - `ide_present` (function, line 100) `int ide_present(void)`
+  - `ide_total_sectors` (function, line 102) `unsigned int ide_total_sectors(void)`
+  - `ide_read_sectors` (function, line 103) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf)`
+  - `ide_write_sectors` (function, line 134) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf)`
+  - `ide_read_sector` (function, line 164) `int ide_read_sector(unsigned int lba, void *buf)`
+  - `ide_write_sector` (function, line 168) `int ide_write_sector(unsigned int lba, const void *buf)`
+
+## drivers/kbd.c
+- Layer: infrastructure
+- Doc: include "kernel.h" include "vga_fb.h" include "kbd.h"  ================================================================
+- Language: c
+- Symbols:
+  - `kbd_q_push` (function, line 48) `void kbd_q_push(unsigned char c)`
+  - `kbd_raw_push_internal` (function, line 55) `static void kbd_raw_push_internal(unsigned char c)`
+  - `kbd_q_empty` (function, line 62) `int kbd_q_empty(void)`
+  - `kbd_q_pop` (function, line 64) `int kbd_q_pop(void)`
+  - `kbd_available` (function, line 71) `int kbd_available(void)`
+  - `kbd_raw_mode_get` (function, line 77) `int kbd_raw_mode_get(void)`
+  - `kbd_raw_mode_set` (function, line 79) `void kbd_raw_mode_set(int on)`
+  - `kbd_raw_empty` (function, line 80) `int kbd_raw_empty(void)`
+  - `kbd_raw_pop` (function, line 81) `int kbd_raw_pop(void)`
+  - `kbd_raw_push_byte` (function, line 87) `void kbd_raw_push_byte(unsigned char c)`
+  - `kbd_e0_get` (function, line 88) `int kbd_e0_get(void)`
+  - `kbd_e0_set` (function, line 89) `void kbd_e0_set(int v)`
+  - `kbd_flush_all` (function, line 90) `void kbd_flush_all(void)`
+  - `kbd_read` (function, line 94) `int kbd_read(void)`
+  - `kbd_reset_for_shell` (function, line 190) `void kbd_reset_for_shell(void)`
+  - `KBD_QUEUE_LEN` (macro, line 38)
+  - `KBD_RAW_LEN` (macro, line 43)
+
+## drivers/kbd.h
+- Layer: infrastructure
+- Doc: ifndef KBD_H define KBD_H
+- Language: h
+- Symbols:
+  - `KBD_H` (macro, line 2)
+
+## drivers/pcspk.c
+- Layer: infrastructure
+- Doc: include "kernel.h" include "pcspk.h"  PC speaker driver with a software master volume. The speaker has no
+- Language: c
+- Symbols:
+  - `pcspk_init` (function, line 26) `void pcspk_init(void)`
+  - `pcspk_set_volume` (function, line 31) `void pcspk_set_volume(unsigned volume)`
+  - `pcspk_get_volume` (function, line 35) `unsigned pcspk_get_volume(void)`
+  - `pcspk_tone` (function, line 39) `void pcspk_tone(unsigned freq)`
+  - `pcspk_off` (function, line 57) `void pcspk_off(void)`
+  - `PIT_CH2_DATA` (macro, line 12)
+  - `PIT_CH2_CMD` (macro, line 14)
+  - `SPEAKER_PORT` (macro, line 15)
+  - `PIT_FREQ` (macro, line 16)
+  - `PCSPK_MIN_FREQ` (macro, line 17)
+  - `PCSPK_MAX_FREQ` (macro, line 19)
+  - `SPEAKER_DATA_BIT` (macro, line 20)
+  - `SPEAKER_GATE_BIT` (macro, line 22)
+  - `SPEAKER_ENABLE_BITS` (macro, line 23)
+
+## drivers/rtc.c
+- Layer: infrastructure
+- Doc: include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clock and the shell `date` builtin
+- Language: c
+- Symbols:
+  - `rtc_cmos_read` (function, line 31) `static inline unsigned char rtc_cmos_read(unsigned char reg)`
+  - `rtc_from_bcd` (function, line 36) `static int rtc_from_bcd(unsigned char v)`
+  - `rtc_read_tod` (function, line 40) `int rtc_read_tod(int *hour, int *min, int *sec)`
+  - `RTC_CMOS_ADDR` (macro, line 8)
+  - `RTC_CMOS_DATA` (macro, line 10)
+  - `RTC_REG_SEC` (macro, line 11)
+  - `RTC_REG_MIN` (macro, line 13)
+  - `RTC_REG_HOUR` (macro, line 14)
+  - `RTC_REG_STATUS_A` (macro, line 15)
+  - `RTC_REG_STATUS_B` (macro, line 16)
+  - `RTC_UPDATE_IN_PROGRESS` (macro, line 17)
+  - `RTC_BCD_FLAG` (macro, line 19)
+  - `RTC_HOUR_MIN` (macro, line 20)
+  - `RTC_HOUR_MAX` (macro, line 22)
+  - `RTC_MIN_MIN` (macro, line 23)
+  - `RTC_MIN_MAX` (macro, line 24)
+  - `RTC_SEC_MIN` (macro, line 25)
+  - `RTC_SEC_MAX` (macro, line 26)
+  - `RTC_UPDATE_WAIT` (macro, line 30)
+
+## drivers/sb16.c
+- Layer: infrastructure
+- Doc: include "kernel.h" include "sb16.h"  Sound Blaster 16 DMA audio driver.
+- Language: c
+- Symbols:
+  - `sb16_slot` (function, line 109) `static unsigned char *sb16_slot(unsigned i)`
+  - `sb16_kring_reset` (function, line 115) `static void sb16_kring_reset(void)`
+  - `sb16_stream_open` (function, line 122) `int sb16_stream_open(void)`
+  - `sb16_stream_close` (function, line 138) `void sb16_stream_close(int id)`
+  - `sb16_stream_submit` (function, line 146) `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)`
+  - `sb16_stream_volume` (function, line 161) `void sb16_stream_volume(int id, unsigned char vol)`
+  - `sb16_stream_count` (function, line 167) `int sb16_stream_count(void)`
+  - `sb16_mix_all` (function, line 178) `static void sb16_mix_all(void)`
+  - `sb16_pump` (function, line 214) `void sb16_pump(void)`
+  - `sb16_wait_dsp_write` (function, line 237) `static void sb16_wait_dsp_write(void)`
+  - `sb16_read_data` (function, line 242) `static int sb16_read_data(unsigned char *out)`
+  - `sb16_reset_dsp` (function, line 251) `static int sb16_reset_dsp(void)`
+  - `sb16_dma_play` (function, line 265) `static void sb16_dma_play(unsigned addr, unsigned len)`
+  - `sb16_refill` (function, line 281) `static void sb16_refill(int slot_index)`
+  - `sb16_arm` (function, line 297) `static void sb16_arm(int from_irq)`
+  - `sb16_present` (function, line 321) `int sb16_present(void)`
+  - `sb16_tone` (function, line 323) `void sb16_tone(unsigned freq)`
+  - `sb16_pcm_open` (function, line 338) `void sb16_pcm_open(void)`
+  - `sb16_pcm_close` (function, line 354) `void sb16_pcm_close(void)`
+  - `sb16_pcm_submit` (function, line 356) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)`
+  - `sb16_irq` (function, line 379) `void sb16_irq(void)`
+  - `sb16_poll` (function, line 386) `void sb16_poll(void)`
+  - `sb16_ring_free` (function, line 391) `unsigned sb16_ring_free(void)`
+  - `sb16_mode_active` (function, line 393) `int sb16_mode_active(void)`
+  - `sb16_counters` (function, line 394) `void sb16_counters(sb16_counters_t *out)`
+  - `sb16_init` (function, line 398) `int sb16_init(void)`
+  - `SB16_BASE_PORT` (macro, line 42)
+  - `SB16_DSP_RESET` (macro, line 44)
+  - `SB16_DSP_READ_DATA` (macro, line 45)
+  - `SB16_DSP_WRITE_DATA` (macro, line 46)
+  - `SB16_DSP_STATUS` (macro, line 47)
+  - `SB16_IRQ_ACK` (macro, line 48)
+  - `SB16_CMD_READ_VER` (macro, line 49)
+  - `SB16_CMD_SET_FREQ` (macro, line 51)
+  - `SB16_CMD_PLAY8` (macro, line 52)
+  - `SB16_FREQ_LO` (macro, line 53)
+  - `SB16_FREQ_HI` (macro, line 55)
+  - `SB16_DSP_READY_MASK` (macro, line 56)
+  - `DMA_CH1_ADDR` (macro, line 58)
+  - `DMA_CH1_CNT` (macro, line 60)
+  - `DMA_CH1_PAGE` (macro, line 61)
+  - `DMA_MASK` (macro, line 62)
+  - `DMA_FF_CLR` (macro, line 63)
+  - `DMA_CH1_UNMASK` (macro, line 64)
+  - `DMA_CH1_MASK` (macro, line 65)
+  - `SB16_DMA_BUF0` (macro, line 66)
+  - `SB16_SILENCE_SLOT` (macro, line 68)
+  - `SB16_BUF` (macro, line 69)
+  - `SB16_PROBE_WAIT` (macro, line 70)
+  - `SB16_MODE_TONE` (macro, line 72)
+  - `SB16_MODE_PCM` (macro, line 74)
+  - `SB16_SQ_CYCLE` (macro, line 75)

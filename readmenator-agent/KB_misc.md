@@ -1,0 +1,323 @@
+# Subsystem: misc
+
+## progs/minios_abi.h
+- Layer: utility
+- Doc: ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
+- Language: h
+- Symbols:
+  - `MINIOS_ABI_H` (macro, line 2)
+  - `MINIOS_ABI_VERSION` (macro, line 36)
+  - `MINIOS_ABI_CHECKSUM` (macro, line 40)
+  - `MINIOS_USER_LOAD_BASE` (macro, line 83)
+  - `MINIOS_USER_LOAD_END` (macro, line 84)
+  - `MINIOS_USER_STACK_SIZE` (macro, line 85)
+  - `MINIOS_USER_STACK_TOP` (macro, line 86)
+  - `MINIOS_USER_STACK_BASE` (macro, line 87)
+  - `MINIOS_USER_BRK_END` (macro, line 88)
+  - `MINIOS_DOOM_BACKBUF_ADDR` (macro, line 101)
+  - `MINIOS_DOOM_W` (macro, line 102)
+  - `MINIOS_DOOM_H` (macro, line 103)
+  - `MINIOS_FB_ADDR` (macro, line 104)
+  - `MINIOS_NK_BACKBUF_ADDR` (macro, line 105)
+  - `MINIOS_NK_W` (macro, line 106)
+  - `MINIOS_NK_H` (macro, line 107)
+  - `MINIOS_HEAP_BASE` (macro, line 112)
+  - `MINIOS_HEAP_SIZE` (macro, line 113)
+  - `MINIOS_FB_WIDTH_MAX` (macro, line 118)
+  - `MINIOS_FB_HEIGHT_MAX` (macro, line 119)
+  - `MINIOS_SYS_READ` (macro, line 137)
+  - `MINIOS_SYS_WRITE` (macro, line 138)
+  - `MINIOS_SYS_OPEN` (macro, line 139)
+  - `MINIOS_SYS_CLOSE` (macro, line 140)
+  - `MINIOS_SYS_FSTAT` (macro, line 141)
+  - `MINIOS_SYS_POLL` (macro, line 142)
+  - `MINIOS_SYS_LSEEK` (macro, line 143)
+  - `MINIOS_SYS_MMAP` (macro, line 144)
+  - `MINIOS_SYS_MPROTECT` (macro, line 145)
+  - `MINIOS_SYS_MUNMAP` (macro, line 146)
+  - `MINIOS_SYS_BRK` (macro, line 147)
+  - `MINIOS_SYS_RT_SIGACTION` (macro, line 148)
+  - `MINIOS_SYS_RT_SIGPROCMASK` (macro, line 149)
+  - `MINIOS_SYS_IOCTL` (macro, line 150)
+  - `MINIOS_SYS_WRITEV` (macro, line 151)
+  - `MINIOS_SYS_ACCESS` (macro, line 152)
+  - `MINIOS_SYS_SCHED_YIELD` (macro, line 153)
+  - `MINIOS_SYS_GETPID` (macro, line 154)
+  - `MINIOS_SYS_SOCKET` (macro, line 155)
+  - `MINIOS_SYS_CONNECT` (macro, line 156)
+  - `MINIOS_SYS_SENDTO` (macro, line 157)
+  - `MINIOS_SYS_RECVFROM` (macro, line 158)
+  - `MINIOS_SYS_SHUTDOWN` (macro, line 159)
+  - `MINIOS_SYS_FORK` (macro, line 160)
+  - `MINIOS_SYS_VFORK` (macro, line 161)
+  - `MINIOS_SYS_EXECVE` (macro, line 162)
+  - `MINIOS_SYS_EXIT` (macro, line 163)
+  - `MINIOS_SYS_WAIT4` (macro, line 164)
+  - `MINIOS_SYS_KILL` (macro, line 165)
+  - `MINIOS_SYS_UNLINK` (macro, line 166)
+  - `MINIOS_SYS_READLINK` (macro, line 167)
+  - `MINIOS_SYS_GETTID` (macro, line 168)
+  - `MINIOS_SYS_FLOCK` (macro, line 169)
+  - `MINIOS_SYS_GETCWD` (macro, line 170)
+  - `MINIOS_SYS_GETTIMEOFDAY` (macro, line 171)
+  - `MINIOS_SYS_ARCH_PRCTL` (macro, line 172)
+  - `MINIOS_SYS_OPENAT` (macro, line 173)
+  - `MINIOS_SYS_NEWFSTATAT` (macro, line 174)
+  - `MINIOS_SYS_READLINK` (macro, line 175)
+  - `MINIOS_SYS_STATX` (macro, line 176)
+  - `MINIOS_SYS_SET_MEMPOLICY` (macro, line 177)
+  - `MINIOS_SYS_SET_ROBUST_LIST` (macro, line 178)
+  - `MINIOS_SYS_PRLIMIT64` (macro, line 179)
+  - `MINIOS_SYS_GETRANDOM` (macro, line 180)
+  - `MINIOS_SYS_RSEQ` (macro, line 181)
+  - `MINIOS_SYS_EXIT_GROUP` (macro, line 182)
+  - `MINIOS_SYS_SET_TID_ADDRESS` (macro, line 183)
+  - `MINIOS_SYS_CLOCK_GETTIME` (macro, line 184)
+  - `MINIOS_SYS_TGKILL` (macro, line 185)
+  - `MINIOS_SYS_DNS` (macro, line 188)
+  - `MINIOS_SYS_TLS_HANDSHAKE` (macro, line 189)
+  - `MINIOS_SYS_TLS_SEND` (macro, line 190)
+  - `MINIOS_SYS_TLS_RECV` (macro, line 191)
+  - `MINIOS_SYS_TIME` (macro, line 192)
+  - `MINIOS_SYS_KBD` (macro, line 193)
+  - `MINIOS_SYS_PALETTE` (macro, line 194)
+  - `MINIOS_SYS_KBD_RAW` (macro, line 195)
+  - `MINIOS_SYS_VGA_MODE` (macro, line 196)
+  - `MINIOS_SYS_PCSPK_INIT` (macro, line 197)
+  - `MINIOS_SYS_PCSPK_TONE` (macro, line 198)
+  - `MINIOS_SYS_DOOM_FRAME` (macro, line 199)
+  - `MINIOS_SYS_RTC` (macro, line 200)
+  - `MINIOS_SYS_FB_INFO` (macro, line 201)
+  - `MINIOS_SYS_PCSPK_VOL` (macro, line 202)
+  - `MINIOS_SYS_SPAWN` (macro, line 203)
+  - `MINIOS_SYS_LZ4_COMPRESS` (macro, line 204)
+  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 205)
+  - `MINIOS_SYS_MOUSE` (macro, line 206)
+  - `MINIOS_SYS_NK_FRAME` (macro, line 207)
+  - `MINIOS_SYS_SB16_OPEN` (macro, line 208)
+  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 209)
+  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 210)
+  - `MINIOS_SYS_SB16_PUMP` (macro, line 211)
+  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 212)
+  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 213)
+  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 214)
+  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 215)
+  - `SYS_TIME_MS` (macro, line 218)
+  - `SYS_PALETTE` (macro, line 219)
+  - `SYS_PCSPK_INIT` (macro, line 220)
+  - `SYS_PCSPK_TONE` (macro, line 221)
+  - `SYS_RTC` (macro, line 222)
+  - `SYS_FB_INFO` (macro, line 223)
+  - `SYS_PCSPK_VOL` (macro, line 224)
+  - `SYS_SPAWN` (macro, line 225)
+  - `SYS_TIME` (macro, line 226)
+  - `SYS_WRITE` (macro, line 227)
+  - `MINIOS_EABI_MISMATCH` (macro, line 230)
+
+## progs/piano/piano.c
+- Layer: utility
+- Doc: piano.c — a Nuklear piano that plays FM sound through the SB16 driver.
+- Language: c
+- Symbols:
+  - `sys_pcm_open` (function, line 63) `static long sys_pcm_open(long on)`
+  - `sys_pcm_submit` (function, line 67) `static long sys_pcm_submit(const void *buf, long len)`
+  - `sys_pcm_pump` (function, line 70) `static long sys_pcm_pump(void)`
+  - `o3_opreg` (function, line 77) `static void o3_opreg(int op, int regbase, int val)`
+  - `o3_chreg` (function, line 82) `static void o3_chreg(int ch, int regbase, int val)`
+  - `o3_instrument` (function, line 89) `static void o3_instrument(int ch, int vel)`
+  - `o3_note` (function, line 119) `static void o3_note(int ch, int midi, int on)`
+  - `clamp_midi` (function, line 140) `static int clamp_midi(int m)`
+  - `pedal_set` (function, line 148) `static void pedal_set(int on)`
+  - `note_off_key` (function, line 160) `static void note_off_key(int key)`
+  - `note_on_key` (function, line 174) `static void note_on_key(int key, int midi, int vel)`
+  - `fx_configure` (function, line 216) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
+  - `fx_process` (function, line 234) `static float fx_process(float x)`
+  - `sb_flush` (function, line 265) `static void sb_flush(void)`
+  - `render_audio` (function, line 274) `static void render_audio(long ms)`
+  - `key_rect` (function, line 317) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
+  - `hit_key` (function, line 324) `static int hit_key(int mx, int my)`
+  - `hit_velocity` (function, line 342) `static int hit_velocity(int key, int my)`
+  - `ctrl_hit` (function, line 368) `static int ctrl_hit(int id, int mx, int my)`
+  - `ctrl_active` (function, line 373) `static int ctrl_active(int id)`
+  - `ctrl_press` (function, line 382) `static void ctrl_press(int id)`
+  - `ui_run` (function, line 400) `static void ui_run(int bench_ms)`
+  - `run_selftest` (function, line 535) `static int run_selftest(void)`
+  - `main` (function, line 619) `int main(int argc, char **argv)`
+  - `UI_MEMORY` (macro, line 48)
+  - `SYS_SB16_OPEN` (macro, line 51)
+  - `SYS_SB16_SUBMIT` (macro, line 53)
+  - `SYS_SB16_PUMP` (macro, line 54)
+  - `RATE` (macro, line 55)
+  - `PCM_BUF` (macro, line 57)
+  - `MAX_AUDIO_MS` (macro, line 62)
+  - `MAX_VOICES` (macro, line 132)
+  - `FX_DELAY_CAP` (macro, line 201)
+  - `FX_DELAY_MAX_MS` (macro, line 203)
+  - `FX_FEEDBACK` (macro, line 204)
+  - `FX_WET` (macro, line 205)
+  - `FX_TREM_FREQ` (macro, line 206)
+  - `KEY_W` (macro, line 302)
+  - `KEY_H` (macro, line 303)
+  - `BK_W` (macro, line 304)
+  - `BK_H` (macro, line 305)
+  - `KEY_Y` (macro, line 306)
+  - `NKEYS` (macro, line 316)
+  - `CTRL_Y` (macro, line 352)
+  - `CTRL_H` (macro, line 353)
+  - `BTN_W` (macro, line 354)
+  - `BTN_GAP` (macro, line 355)
+  - `NCTRLS` (macro, line 367)
+
+## progs/quake2generic/q2generic_minios.c
+- Layer: utility
+- Doc: q2generic_minios.c - MiniOS platform layer for quake2generic.
+- Language: c
+- Symbols:
+  - `SYS_DOOM_FRAME` (function, line 5) `* SYS_DOOM_FRAME (211) and the kernel composites the buffer onto the
+ * hi-res desktop as a title...`
+  - `sys_kbd` (function, line 28) `static long sys_kbd(void)`
+  - `sys_palette` (function, line 34) `static long sys_palette(const unsigned char *pal)`
+  - `sys_kbd_raw` (function, line 40) `static long sys_kbd_raw(int on)`
+  - `sys_vga_mode` (function, line 46) `static long sys_vga_mode(int on)`
+  - `sys_doom_frame` (function, line 52) `static long sys_doom_frame(void)`
+  - `sys_mouse` (function, line 58) `static long sys_mouse(int *buf)`
+  - `sys_set_title` (function, line 64) `static long sys_set_title(const char *t)`
+  - `q2g_parse_autoframes` (function, line 86) `static void q2g_parse_autoframes(int argc, char **argv)`
+  - `QG_GetMouseDiff` (function, line 101) `void QG_GetMouseDiff(int *dx, int *dy)`
+  - `QG_CaptureMouse` (function, line 112) `void QG_CaptureMouse(void)`
+  - `QG_ReleaseMouse` (function, line 116) `void QG_ReleaseMouse(void)`
+  - `QG_Mkdir` (function, line 119) `void QG_Mkdir(const char *path)`
+  - `scancode_to_q2key` (function, line 123) `static unsigned char scancode_to_q2key(unsigned char raw)`
+  - `extended_to_q2key` (function, line 206) `static unsigned char extended_to_q2key(unsigned char sc)`
+  - `kbd_poll` (function, line 224) `static void kbd_poll(void)`
+  - `SWimp_SetPalette` (function, line 254) `void SWimp_SetPalette(const unsigned char *palette)`
+  - `SWimp_SetMode` (function, line 264) `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)`
+  - `SWimp_Init` (function, line 281) `int SWimp_Init(void *hInstance, void *wndProc)`
+  - `SWimp_Shutdown` (function, line 287) `void SWimp_Shutdown(void)`
+  - `SWimp_BeginFrame` (function, line 290) `void SWimp_BeginFrame(float camera_separation)`
+  - `SWimp_EndFrame` (function, line 293) `void SWimp_EndFrame(void)`
+  - `SWimp_AppActivate` (function, line 312) `void SWimp_AppActivate(qboolean active)`
+  - `QG_Milliseconds` (function, line 316) `int QG_Milliseconds(void)`
+  - `main` (function, line 320) `int main(int argc, char **argv)`
+  - `Q2G_FB_W` (macro, line 19)
+  - `Q2G_FB_H` (macro, line 21)
+  - `Q2G_BACKBUF` (macro, line 70)
+
+## progs/topogpt3/topogpt3.c
+- Layer: utility
+- Language: c
+- Symbols:
+  - `tg_exp` (function, line 113) `static float tg_exp(float x)`
+  - `tg_tanh` (function, line 127) `static float tg_tanh(float x)`
+  - `tg_sin` (function, line 134) `static float tg_sin(float x)`
+  - `tg_cos` (function, line 143) `static float tg_cos(float x)`
+  - `tg_fabs` (function, line 147) `static float tg_fabs(float x)`
+  - `tg_log` (function, line 151) `static float tg_log(float x)`
+  - `tg_fmax` (function, line 163) `static float tg_fmax(float a, float b)`
+  - `tg_fmin` (function, line 167) `static float tg_fmin(float a, float b)`
+  - `load_vocab` (function, line 254) `static void load_vocab(const char *path)`
+  - `build_torus_graph` (function, line 295) `static void build_torus_graph(void)`
+  - `precompute_rope` (function, line 326) `static void precompute_rope(void)`
+  - `matvec` (function, line 358) `static void matvec(const float *W, const float *x, float *y, int rows, int cols)`
+  - `matvec_bias` (function, line 369) `static void matvec_bias(const float *W, const float *b, const float *x, float *y,
+               ...`
+  - `rmsnorm` (function, line 381) `static void rmsnorm(const float *x, const float *w, float *y, int d)`
+  - `softmax` (function, line 390) `static void softmax(float *x, int n)`
+  - `gelu` (function, line 399) `static void gelu(float *x, int n)`
+  - `silu` (function, line 409) `static void silu(float *x, int n)`
+  - `swiglu` (function, line 417) `static void swiglu(const float *gate_w, const float *up_w, const float *down_w,
+                 ...`
+  - `quat_normalize` (function, line 434) `static void quat_normalize(float *q)`
+  - `quat_hamilton` (function, line 439) `static void quat_hamilton(const float *a, const float *b, float *c)`
+  - `quat_linear` (function, line 448) `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,
+     ...`
+  - `ifft_radix2` (function, line 504) `static void ifft_radix2(float *real, float *imag, int n)`
+  - `rfft` (function, line 513) `static void rfft(const float *x, float *Xr, float *Xi, int n)`
+  - `irfft` (function, line 522) `static void irfft(const float *Xr, const float *Xi, float *x, int n)`
+  - `filter1d` (function, line 536) `static void filter1d(const float *x, const float *kr, const float *ki,
+                      floa...`
+  - `ifft2d` (function, line 579) `static void ifft2d(float *data_r, float *data_i, int h, int w)`
+  - `rfft2d_real` (function, line 602) `static void rfft2d_real(const float *data, float *out_r, float *out_i,
+                         i...`
+  - `irfft2d` (function, line 629) `static void irfft2d(const float *in_r, const float *in_i, float *out,
+                     int h,...`
+  - `cmul` (function, line 664) `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)`
+  - `spectral_contract` (function, line 670) `static void spectral_contract(const float *Wr, const float *Wi,
+                               co...`
+  - `quat_spectral_layer_2d` (function, line 694) `static void quat_spectral_layer_2d(
+    const float *x, float *y,
+    const float *kr_w, const fl...`
+  - `spectral_ae_encode` (function, line 784) `static void spectral_ae_encode(const float *x, float *z, const LayerWeights *lw)`
+  - `spectral_ae_decode` (function, line 792) `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)`
+  - `process_torus_grid` (function, line 799) `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)`
+  - `torus_soft_assign` (function, line 820) `static void torus_soft_assign(const float *phi1, const float *phi2,
+                             ...`
+  - `message_passing` (function, line 842) `static void message_passing(const float *node_feat, float *out,
+                             cons...`
+  - `torus_brain_forward` (function, line 887) `static void torus_brain_forward(const float *x, float *out, float *recon_loss,
+                  ...`
+  - `attention_forward` (function, line 977) `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...`
+  - `moe_forward` (function, line 1077) `static void moe_forward(const float *x, float *out, const LayerWeights *lw)`
+  - `forward` (function, line 1127) `static void forward(const int *token_ids, int seq_len, float *logits_out)`
+  - `tokenize_string` (function, line 1194) `static int tokenize_string(const char *text, int *tokens, int max_tokens)`
+  - `apply_temperature` (function, line 1209) `static void apply_temperature(float *logits, int n, float temp)`
+  - `apply_repetition_penalty` (function, line 1215) `static void apply_repetition_penalty(float *logits, int n, const int *tokens,
+                   ...`
+  - `apply_top_k` (function, line 1228) `static void apply_top_k(float *logits, int n, int k)`
+  - `sample` (function, line 1247) `static int sample(const float *logits, int n)`
+  - `load_weights` (function, line 1281) `static int load_weights(const char *path)`
+  - `load_weights_fp16` (function, line 1451) `static int load_weights_fp16(const char *path)`
+  - `load_weights_auto` (function, line 1583) `static int load_weights_auto(const char *path)`
+  - `time_now_ms` (function, line 1600) `static double time_now_ms(void)`
+  - `decode_token` (function, line 1613) `static void decode_token(int tid)`
+  - `load_token_file` (function, line 1629) `static int load_token_file(const char *path, int *out_ids, int max_ids)`
+  - `decode_token_tiktoken` (function, line 1652) `static void decode_token_tiktoken(int tid)`
+  - `generate_tokens` (function, line 1660) `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,
+               ...`
+  - `generate` (function, line 1724) `static void generate(const char *prompt, int max_new_tokens, float temperature,
+                 ...`
+  - `interactive_mode` (function, line 1735) `static void interactive_mode(void)`
+  - `print_help` (function, line 1849) `static void print_help(void)`
+  - `main` (function, line 1884) `int main(int argc, char **argv)`
+  - `NULL` (macro, line 43)
+  - `SEEK_SET` (macro, line 44)
+  - `SEEK_CUR` (macro, line 45)
+  - `SEEK_END` (macro, line 46)
+  - `VOCAB_SIZE` (macro, line 64)
+  - `D_MODEL` (macro, line 66)
+  - `N_HEADS` (macro, line 67)
+  - `N_KV_HEADS` (macro, line 68)
+  - `GQA_GROUPS` (macro, line 69)
+  - `D_HEAD` (macro, line 70)
+  - `D_QUAT` (macro, line 71)
+  - `N_LAYERS` (macro, line 72)
+  - `MAX_SEQ_LEN` (macro, line 73)
+  - `N_EXPERTS` (macro, line 74)
+  - `MOE_TOP_K` (macro, line 75)
+  - `N_NODES` (macro, line 76)
+  - `N_RADIAL` (macro, line 77)
+  - `N_ANGULAR` (macro, line 78)
+  - `N_EDGE_TYPES` (macro, line 79)
+  - `N_EDGES` (macro, line 80)
+  - `SPECTRAL_LATENT_DIM` (macro, line 81)
+  - `D_LAT_Q` (macro, line 82)
+  - `TORUS_GRID_H` (macro, line 83)
+  - `TORUS_GRID_W` (macro, line 84)
+  - `FREQ_W` (macro, line 85)
+  - `N_SPECTRAL_LAYERS` (macro, line 86)
+  - `EXPERT_INNER` (macro, line 87)
+  - `READOUT_INNER` (macro, line 88)
+  - `EOS_TOKEN` (macro, line 89)
+  - `EMBED_INNER` (macro, line 90)
+  - `PI` (macro, line 91)
+  - `EPS_RMS` (macro, line 92)
+  - `TORUS_TEMP` (macro, line 93)
+  - `MAX_TOKENS` (macro, line 94)
+  - `MAX_PROMPT_LEN` (macro, line 95)
+  - `MAX_LINE` (macro, line 96)
+  - `TOK_TAB_SIZE` (macro, line 97)
+  - `TOK_VOCAB_SIZE` (macro, line 98)
+  - `SKIP_TENSOR` (macro, line 1300)
+  - `READ_TENSOR` (macro, line 1310)
+  - `SKIP_TENSOR16` (macro, line 1470)
+  - `READ_TENSOR16` (macro, line 1480)
