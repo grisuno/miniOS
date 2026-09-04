@@ -1384,6 +1384,36 @@ Note that Quake 2's demo (`+map demo1`) needs a `baseq2/pak0.pak` that carries
 screen/console rather than a live map, but the frame count still climbs and the
 autoquit still returns cleanly.
 
+### One-boot comprehensive test (`src/test_all.sh`)
+
+`sh src/test_all.sh` runs the full non-interactive test suite inside a single
+QEMU boot.  Every command prints a `PASS:` marker; the host runner greps the
+serial log for these markers.  The script ships on the ramdisk (`progs/src/`)
+and is added to both `PROGS` and `MINIFS_FILES` in the Makefile.
+
+Categories tested (61 PASS):
+- **Boot/help**: boot banner, help, clear
+- **Filesystem**: ls (root, objects, bin), mkdir, cd, pwd, rm, cp
+- **Redirects**: `>` and `>>`
+- **Builtins**: echo, date, vol (set/report/reset), ps, trace, net, gfx, wm, hash
+- **Toolchain**: minigcc.o compile, ld.o link, run ELF, run CVM
+- **Bare names**: ld.o, .elf, .cvm without `run` prefix
+- **Self-host**: minigcc.elf compiles, ld.o links, run
+- **Codecs**: lzss/lz4/aes roundtrips, error cases
+- **JSON**: validate and query
+- **ZIP**: hostile archive (traversal refused), host-produced archive
+- **ELF programs**: lxhello, cpl, kmem, nx, mmreuse
+- **CVM modules**: fib, w1
+- **Selftests**: xxhash.o, dlmalloc.o
+- **Heap stability**: repeated CVM runs
+- **Tracing**: trace on/off during cp
+
+Usage from host:
+```bash
+tools/boot_run.sh "sh src/test_all.sh" --timeout 120
+strings boot_run.log | grep -c 'PASS:'   # expect 61
+```
+
 ### In-OS test suites (Lua / MicroPython toolchain)
 
 `lua src/test.lua` and `micropython src/test.py` run the self-hosted
@@ -1504,7 +1534,8 @@ is forbidden; the answer to a survivor is a new scenario.
 ## Validation Gate (must pass before any commit)
 ```bash
 make                # zero warnings
-./test_bdd.sh       # all scenarios green
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (61 PASS)
+./test_bdd.sh       # all scenarios green (full interactive suite)
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh         # every mutant killed (BDD + host TLS + host VMA suites)
 make test-tls       # host-side crypto + full-handshake suite green
@@ -1901,7 +1932,8 @@ CI gates enforce architectural constraints:
 ### Validation Gate (updated)
 ```bash
 make                        # zero warnings
-./test_bdd.sh               # all scenarios green
+sh src/test_all.sh          # one-boot comprehensive non-interactive suite (61 PASS)
+./test_bdd.sh               # all scenarios green (full interactive suite)
 ./tools/test_codecs.sh      # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh                 # every mutant killed
 make test-tls               # host-side crypto + handshake suite

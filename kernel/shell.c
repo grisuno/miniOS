@@ -1286,7 +1286,7 @@ static void shell_cmd_hash(int argc, char **argv) {
 
 void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
-        vga_puts("Commands: help clear ls lsfs cat catfs echo edit rm mkdir cd pwd ps load run\n");
+        vga_puts("Commands: help clear ls lsfs cat catfs echo edit rm mkdir cd pwd ps load run sh\n");
         vga_puts("          net trace date vol gfx wm hash unzip zip poweroff\n");
         vga_puts("  ls [dir]           list files (under the cwd by default)\n");
         vga_puts("  lsfs               list files on the MiniFS disk filesystem\n");
@@ -1615,9 +1615,78 @@ void shell_exec_builtin(int argc, char **argv) {
         if (ret < 0) shell_report("run: not found: ", argv[1]);
         else shell_report_exit(ret);
     }
+    else if (kstrcmp(argv[0], "sh") == 0) {
+        if (argc < 2) { vga_puts("usage: sh <script.sh>\n"); return; }
+        shell_cmd_sh(argc, argv);
+    }
     else {
         int ret = shell_run_any(argv[0], argc, argv);
         if (ret < 0) shell_report("command not found: ", argv[0]);
         else shell_report_exit(ret);
     }
+}
+
+/* ---- shell script runner ----
+ *
+ * Reads a .sh file line by line and executes each non-empty, non-comment
+ * line through the normal shell dispatch (builtins, programs, redirects).
+ * Lines starting with '#' are comments.  No variables, no control flow --
+ * just sequential commands, easy for a non-programmer to write. */
+
+int shell_cmd_sh(int argc, char **argv)
+{
+    if (argc < 2) { vga_puts("usage: sh <script.sh>\n"); return 1; }
+    KFILE *f = kfopen(argv[1], "r");
+    if (!f) {
+        kprintf("sh: %s: cannot open\n", argv[1]);
+        return 1;
+    }
+
+    char line[CMD_BUF_SZ];
+    int line_no = 0;
+
+    while (kfgets(line, sizeof(line), f)) {
+        line_no++;
+
+        /* strip trailing newline */
+        int len = kstrlen(line);
+        while (len > 0 && (line[len-1] == '\n' || line[len-1] == '\r'))
+            line[--len] = 0;
+
+        /* skip blank lines and comments */
+        if (len == 0 || line[0] == '#') continue;
+
+        /* copy line because shell_parse is destructive */
+        char buf[CMD_BUF_SZ];
+        kmemcpy(buf, line, len + 1);
+
+        char *parse_argv[MAX_ARGS + 1];
+        int  parse_argc = shell_parse(buf, parse_argv, MAX_ARGS);
+        if (parse_argc == 0) continue;
+
+        /* handle redirects (same as shell_run) */
+        char *redir_path   = 0;
+        int   redir_append = 0;
+        int redir = shell_take_redirect(&parse_argc, parse_argv,
+                                        &redir_path, &redir_append);
+        if (redir < 0) {
+            kprintf("sh: line %d: syntax error near redirect\n", line_no);
+            continue;
+        }
+        if (parse_argc == 0) {
+            kprintf("sh: line %d: syntax error: command expected\n", line_no);
+            continue;
+        }
+
+        if (redir && !redirect_begin()) {
+            kprintf("sh: line %d: redirect out of memory\n", line_no);
+            continue;
+        }
+        shell_exec_builtin(parse_argc, parse_argv);
+        if (redir && redirect_commit(redir_path, redir_append) != 0)
+            kprintf("sh: line %d: cannot write %s\n", line_no, redir_path);
+    }
+
+    kfclose(f);
+    return 0;
 }

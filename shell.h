@@ -19,4 +19,9 @@ void shell_readline_buf(char *buf, int size);
 /* Tokenize `line` into up to `max_args` argv entries; returns argc. */
 int shell_parse(char *line, char **argv, int max_args);
 
+/* Execute a shell script: read `path` line by line, skip blanks and `#`
+ * comments, parse each line and dispatch it through the normal builtin/
+ * program path.  Returns 0 on success, 1 on file error. */
+int shell_cmd_sh(int argc, char **argv);
+
 #endif

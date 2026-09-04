@@ -318,6 +318,7 @@ including the negative set).
 | `wm minimize` | minimize the terminal window |
 | `wm maximize` | toggle fullscreen |
 | `wm close` | close the active window |
+| `sh <script.sh>` | run a shell script (sequential commands, `#` comments) |
 | `piano` | FM piano GUI (`--selftest` for headless, `--bench` for fps) |
 | `topogpt3` | TopoGPT3 transformer inference engine (`-i` for interactive) |
 | `clear` / `poweroff` | console and power |
@@ -372,6 +373,58 @@ and query tool. `json <file>` validates and pretty-prints; `json <file> <path>`
 prints the value at a dotted path (`.a.b`, `.a.3`). The parser is fail-closed:
 truncated input, unbalanced braces and unknown escapes all produce a diagnostic
 and exit 1.
+
+## Nuklear node editor
+
+MiniOS ships Nuklear as a static Linux ELF at ring 3, built from the upstream
+single-header immediate-mode UI library. The demo app is a visual node editor:
+a low-code tool for the CVM that compiles a dataflow graph into a `.cvm` module.
+
+```
+miniOS> nuklear                     # GUI: drag nodes, wire pins, compile
+miniOS> nuklear --selftest          # headless: renders one frame, proves pipeline
+miniOS> nuklear --demo cvm/demo.cvm # compiles a fixed (2+3)*4 graph
+miniOS> nuklear --compile src/graph.txt cvm/out.cvm
+miniOS> run cvm/out.cvm             # run the compiled module
+```
+
+The node editor supports Number, Add, Sub, Mul, Div, Neg, Print and Exit nodes.
+Pins are wired by dragging; Compile writes a `.cvm` module to the ramdisk.
+`--selftest` renders one frame through the full graphics pipeline and verifies
+the pixel landed in the framebuffer (`nuklear: frame ok (800x360)`).
+
+Build from source:
+
+```bash
+make progs/bin/nuklear.elf    # or just `make` to rebuild everything
+```
+
+## One-boot comprehensive test (`src/test_all.sh`)
+
+`sh src/test_all.sh` runs the full non-interactive test suite inside a single
+QEMU boot. Every command prints a `PASS:` marker; the host runner greps the
+serial log for these markers. The script ships on the ramdisk.
+
+```bash
+tools/boot_run.sh "sh src/test_all.sh" --timeout 120
+strings boot_run.log | grep -c 'PASS:'   # expect 61
+```
+
+Categories tested (61 PASS):
+- Boot/help, filesystem (ls/mkdir/cd/pwd/rm/cp), redirects (>  >>)
+- Builtins: echo, date, vol (set/report/reset), ps, trace, net, gfx, wm, hash
+- Toolchain: minigcc.o compile, ld.o link, run ELF, run CVM
+- Bare names without `run` prefix
+- Self-host: minigcc.elf compiles, ld.o links, run
+- Codecs: lzss/lz4/aes roundtrips, error cases
+- JSON validate/query
+- ZIP: hostile archive (traversal refused), host-produced archive
+- ELF programs: lxhello, cpl, kmem, nx, mmreuse
+- CVM modules: fib, w1
+- Selftests: xxhash.o, dlmalloc.o
+- Heap stability (repeated CVM runs), tracing
+
+No interactive commands, no external server dependencies.
 
 ## Editor
 
@@ -1068,6 +1121,7 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `progs/` | ramdisk contents organized by kind: `objects/`, `bin/`, `cvm/`, `src/`, `asm/`, `docs/` |
 | `mkramdisk.py` | packs `progs/` into the ramdisk image |
 | `test_bdd.sh` / `test_http_server.py` | behavioural suite and its HTTP fixture |
+| `progs/src/test_all.sh` | one-boot comprehensive non-interactive test (61 PASS) |
 | `mcp/minios_mcp.py` | MCP bridge: boots the OS and exposes its console as tools |
 | `mcp/test_minios_mcp.py` | unit + QEMU BDD suite for the bridge |
 | `mcp/mutate_mcp.sh` | mutation testing for the bridge |

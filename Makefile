@@ -129,7 +129,7 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(OBJ_DIR)/stb.o $(OBJ_DIR)/xxhash.o $(OBJ_DIR)/dlmalloc.o \
             $(BIN_DIR)/minigcc.elf $(BIN_DIR)/cp \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
-            $(SRC_DIR)/test.lua \
+            $(SRC_DIR)/test.lua $(SRC_DIR)/test_all.sh \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/etc/shortcuts \
             $(PROGS_DIR)/etc/host.zip \
@@ -819,6 +819,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(BIN_DIR)/micropython.e
                $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
                $(SRC_DIR)/hello.py \
                $(SRC_DIR)/test.lua \
+               $(SRC_DIR)/test_all.sh \
                $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
                $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
                $(DOC_DIR)/hostile.html \
