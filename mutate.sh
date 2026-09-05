@@ -167,6 +167,13 @@ vma-del-color-reversion | s/        y->red = z->red;/        y->red = y_orig_red
 vma-pool-init-broken | s/    vma_pool_n = 0;/    vma_pool_n = VMA_MAX;/ | vma.c
 vma-rotate-left-broken | s/    x->right = y->left;/    x->right = y->right;/ | vma.c
 vma-find-comparison-inverted | s/        else if (base < x->base) x = x->left;/        else if (base < x->base) x = x->right;/ | vma.c
+
+smp-icr-shorthand-broken | s/LAPIC_ICR_ALL_EXC 0xC0000u/LAPIC_ICR_ALL_EXC 0x30000u/ | smp.c
+smp-init-missing | s/lapic_write(LAPIC_ICR_LO, LAPIC_ICR_ALL_EXC \\| LAPIC_ICR_INIT);/lapic_write(LAPIC_ICR_LO, 0);/ | smp.c
+smp-sipi-vector-zero | s/SIPI_VECTOR       (AP_STUB_ADDR >> 12)/SIPI_VECTOR       0/ | smp.c
+smp-ap-no-lapic-eoi | s/\\*0xFEE000B0UL = 0;/\\*0xFEE000B0UL = 0; \\/* mutant: no eoi \\*/ | kernel/sched.c
+smp-bsp-ctx-switch-not-guarded | s/if (this_cpu\\(\\)->is_bsp \\&\\& proc_count > 1)/if (proc_count > 1)/ | kernel/sched.c
+smp-gs-base-not-set | s/wrmsr(MSR_GSBASE, (unsigned long)\\&cpus\\[cpu\\]);/\\/* mutant: no gs base \\*/ | smp.c
 "
 
 # Parse the mutation table into parallel arrays (preserving order).

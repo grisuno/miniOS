@@ -56,6 +56,25 @@ scenario() {
     fi
 }
 
+# scenario_smp <name> <script> -- same as scenario but with -smp 2
+scenario_smp() {
+    SCENARIO="$1"
+    local cmds="$2"
+    echo "--- $SCENARIO"
+    cleanup_stale_qemu
+    {
+        sleep "$BOOT_WAIT"
+        printf '%s\n' "$cmds"
+    } | timeout "$TMO" "$QEMU" \
+        -drive "file=$IMAGE,format=raw,if=ide" -m "$MEM" \
+        -nic user,model=rtl8139 \
+        -smp 2 \
+        -display none -serial stdio -no-reboot > "$LOG" 2>&1
+    if [ $? -eq 124 ]; then
+        echo "    NOTE: timed out (guest did not power off)"
+    fi
+}
+
 # expect <marker>
 expect() {
     local what="$1"
@@ -133,6 +152,14 @@ expect "powering off"
 scenario "KASLR slides the kernel physical base per boot" "poweroff"
 expect "kernel: physical base 0x"
 refute "kernel: physical base 0x100000"
+
+scenario_smp "SMP brings up APs with -smp 2" "poweroff"
+expect "SMP: Brought up 2 CPUs"
+expect "powering off"
+
+scenario "SMP single CPU fallback without -smp" "poweroff"
+expect "SMP: 1 CPU"
+expect "powering off"
 
 scenario "shell help advertises the editor" "help
 poweroff"

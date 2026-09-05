@@ -266,6 +266,7 @@ disagree.
 0x10000-0x8FFFF  kernel staging buffer (64 KB chunks, reused; the first
                  64 KB are reclaimed by the user page table zone)
 0x80000-0x87FFF  syscall kernel stack (SYS_KSTK_TOP 0x88000)
+0x78000          AP stub stack (identity-mapped, below LAPIC PD)
 0x90000          protected/long mode stack top
 0x100000         kernel image (virtual; physical base random per boot, see
                  KASLR). The whole kernel, code + .bss, maps contiguously and
@@ -406,6 +407,70 @@ native 320x200 instead of stealing the whole display.
    The window geometry and shell remain correct; only the desktop's colors
    shift until the next `vga_fb_draw_desktop`. A 16/24-bit VBE mode would fix
    this but is out of scope.
+
+### SMP (Symmetric Multiprocessing) Foundation
+
+The kernel brings up application processors (APs) at boot using the
+standard INIT-edge/SIPI/SIPI sequence through the local APIC.  With
+`-smp N` in QEMU, the BSP wakes N-1 APs; without it, the system runs
+single-CPU exactly as before.
+
+**Per-CPU data (`sched.h` + `sched.c`):** `cpu_t` stores the LAPIC ID,
+`cur_pid`, `syscall_kstack`, idle flag, and BSP flag for each CPU.
+`cpus[MAX_CPUS]` (max 8) is the global array; `cpu_count` tracks how many
+ CPUs are online.  `this_cpu()` reads the current `cpu_t` via the GS base;
+`current_pid` is a macro that expands to `this_cpu()->cur_pid`, so all
+scheduler paths (isr_dispatch, schedule, yield, do_exit, do_waitpid)
+automatically operate on the correct CPU's state.
+
+**GS base per-CPU (`sched.c` + `syscall_entry` in `kernel.c`):** the BSP
+sets `MSR_GSBASE` to `&cpus[0]` during `sched_init()`.  `syscall_entry`
+uses `swapgs` to switch to the kernel GS base on entry and back on
+`sysretq`/`klongjmp`, so ring-3 code never sees the kernel's per-CPU
+data.  APs set their own GS base in `smp_ap_entry()`.
+
+**AP bring-up (`smp.c`):** the BSP maps the local APIC at `0xFEE00000`
+(uncached 2 MB in PDPT slot 3), enables the SVR, copies the flat AP
+bootstrap stub (`ap_entry.S`) to `AP_STUB_ADDR` (0x6000, below 1 MB for
+SIPI), patches the C entry point address, and sends INIT (edge-triggered,
+all-excluding-self) followed by two SIPIs.  Each AP runs the stub (real
+mode -> protected mode -> long mode), calls `smp_ap_entry()`, initializes
+its `cpu_t`, sets GS base, loads the BSP's IDTR, configures a LAPIC
+timer at 100 Hz (vector 32, divide-by-16, periodic), and enters an idle
+loop (`sti; hlt; cli`).  The AP does NOT print to the serial console
+during init: `kprintf`'s stack usage plus the LAPIC timer ISR trap frame
+overflows the identity-mapped low-memory stub stack and cascading
+exceptions result.  The BSP prints "SMP: Brought up N CPUs" after
+`ap_count` confirms the APs initialized.
+
+**LAPIC ICR bit layout (xAPIC):** the destination shorthand for
+"all excluding self" is at bits 19:18 (`0xC0000`), NOT bits 17:16
+(`0x30000`, reserved).  The INIT delivery mode is at bits 10:8 (`0x500`).
+Level-assert is bit 14 (`0x4000`), level-trigger is bit 15 (`0x8000`).
+QEMU 11 hangs on level-triggered INIT (delivery status never clears), so
+edge-triggered INIT is used.
+
+**ISR AP-awareness (`sched.c` `isr_dispatch`):** vector 32 (timer) checks
+`this_cpu()->is_bsp` to decide whether to send PIC EOI + run `sb16_poll`
+(BSP) or LAPIC EOI at `0xFEE000B0` (AP).  The context-switch path is
+guarded by `is_bsp` so APs never corrupt the shared `procs[]` table.
+APs do not own the PIC, the PS/2 mouse, or the SB16 DMA ring.
+
+**AP stub stack (`ap_entry.S`):** the AP's temporary stack is at 0x78000
+(identity-mapped low memory, below the LAPIC PD at 0x70000, above the
+syscall kernel stack at 0x88000).  This is only needed until
+`smp_ap_entry()` sets up the per-CPU context; the idle loop runs on this
+same stack.  A stack at 0x80000 overlaps the syscall kernel stack and
+causes exception cascades when the LAPIC timer ISR fires.
+
+**BDD tests (`test_bdd.sh`):** `scenario_smp` boots with `-smp 2` and
+asserts "SMP: Brought up 2 CPUs"; a single-CPU scenario asserts
+"SMP: 1 CPU".  The SMP scenarios run alongside the existing suite.
+
+**Mutation tests (`mutate.sh`):** `smp-icr-shorthand-broken` (wrong bit
+position), `smp-init-missing` (no INIT before SIPI), `smp-sipi-vector-zero`
+(zero vector), `smp-ap-no-lapic-eoi` (missing AP EOI), `smp-bsp-ctx-switch-not-guarded`
+(AP corrupts process table), `smp-gs-base-not-set` (missing GS base).
 
 ### ISR-driven desktop event loop (`sched.c` + `vga_fb.c`)
 

@@ -94,6 +94,13 @@ TF_SIZE = .
         .text
         .globl isr_common
 isr_common:
+        /* If we interrupted ring 3, swapgs to get the kernel GS base.
+         * Without this, this_cpu() reads the user GS and EXCEPTION 13
+         * fires because the timer ISR dereferences garbage per-CPU data. */
+        testl   $3, 24(%rsp)
+        jz      1f
+        swapgs
+1:
         /* Allocate space for the trap frame */
         subq    $TF_SIZE, %rsp
 
@@ -164,6 +171,13 @@ isr_common:
         /* Tear down the trap frame, skip vector + errcode (16 bytes),
          * then iretq with the CPU's interrupt frame. */
         addq    $TF_SIZE, %rsp
+        /* Swap GS back to user mode if returning to ring 3.
+         * At this point the layout is: [vector][errcode][rip][cs][rflags]...
+         * cs is at offset 24 from RSP (same as the entry check). */
+        testl   $3, 24(%rsp)
+        jz      2f
+        swapgs
+2:
         addq    $16, %rsp
         iretq
 

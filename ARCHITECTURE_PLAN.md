@@ -62,6 +62,55 @@ semantic contract, invariants are stated, and failure modes are documented.
 
 **Files:** `kernel.h` (no changes needed, already complete)
 
+### Phase 0.4: SMP Foundation (DONE)
+
+**What changed:** Per-CPU data structures, SMP-aware ISR, AP bring-up,
+syscall table refactoring, and per-CPU allocator API.
+
+1. **Per-CPU data (`sched.h` + `sched.c`):** `cpu_t` struct with LAPIC ID,
+   `cur_pid`, `syscall_kstack`, idle/BSP flags.  `cpus[MAX_CPUS]` array,
+   `current_pid` macro routes through `this_cpu()->cur_pid`.
+
+2. **GS base isolation (`kernel.c`):** `swapgs` at syscall entry/exit.
+   BSP sets `MSR_GSBASE` to `&cpus[0]` in `sched_init()`.  APs set their
+   own GS base in `smp_ap_entry()`.
+
+3. **Context switch (`ctx_sw.S`):** removed global `switch_to_next` variable;
+   register-only rdi/rsi restore using `xchgq`.
+
+4. **AP bring-up (`smp.c` + `ap_entry.S`):** flat binary stub at 0x6000
+   (SIPI vector 6), INIT-edge/SIPI/SIPI through xAPIC ICR, per-CPU init
+   in `smp_ap_entry()` (cpu_t, GS base, IDTR, LAPIC timer at 100 Hz),
+   identity-mapped stub stack at 0x78000.
+
+5. **ISR AP-awareness (`sched.c`):** vector-32 handler checks `is_bsp` to
+   choose PIC EOI + sb16_poll (BSP) or LAPIC EOI (AP).  Context-switch
+   path guarded by `is_bsp` so APs never corrupt `procs[]`.
+
+6. **Syscall table (`syscalls.c`):** extracted MiniOS custom syscalls
+   (200+) into `minios_syscall_table[]` with `sys_minios_*` handlers.
+   Table dispatch before the switch; Linux ABI (0-199) stays in switch.
+
+7. **Per-CPU allocator (`kernel/mm.c`):** `kmalloc_percpu(size, align)`
+   allocates `cpu_count * size` aligned, zeroed; returns NULL on failure.
+
+**LAPIC ICR fix:** destination shorthand "all excluding self" is bits
+19:18 (`0xC0000`), not bits 17:16 (`0x30000`, reserved).  The old value
+caused SIPI ICR writes to be accepted (readback matched) but never
+delivered to the APs.  Level-triggered INIT hangs QEMU 11 (delivery
+status never clears), so edge-triggered INIT is used.
+
+**BDD:** `scenario_smp` boots with `-smp 2` and asserts
+"SMP: Brought up 2 CPUs"; single-CPU scenario asserts "SMP: 1 CPU".
+
+**Mutations:** `smp-icr-shorthand-broken`, `smp-init-missing`,
+`smp-sipi-vector-zero`, `smp-ap-no-lapic-eoi`,
+`smp-bsp-ctx-switch-not-guarded`, `smp-gs-base-not-set`.
+
+**Files:** `sched.h`, `kernel/sched.c`, `kernel.c`, `arch/x86/ctx_sw.S`,
+`smp.c`, `smp.h`, `arch/x86/ap_entry.S`, `kernel/syscalls.c`,
+`kernel/mm.c`, `kernel.h`, `test_bdd.sh`, `mutate.sh`
+
 ### Phase 1.4: Serial + String Extraction (DONE)
 
 **What changed:** Extracted from `kernel.c` into standalone compilation units:

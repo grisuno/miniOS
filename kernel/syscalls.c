@@ -31,7 +31,284 @@
 #define KFD_MAX 32
 KFILE *kfd_table[KFD_MAX];
 
-/* ---- Linux x86-64 syscall dispatcher ------------------------------------ */
+/* ---- MiniOS custom syscall table (200-299) --------------------------------
+ *
+ * Each entry is a handler function for a MiniOS custom syscall.  The table
+ * is indexed by (syscall_number - 200).  New syscalls are added by:
+ *   1. Adding a MINIOS_SYS_* constant to progs/minios_abi.h
+ *   2. Implementing a static long sys_*(long a1, ..., long a6) function here
+ *   3. Adding an entry to minios_syscall_table[]
+ *
+ * The Linux ABI syscalls (0-199) remain in the switch statement for
+ * backward compatibility.  They will be migrated to the table in a
+ * future phase. */
+
+typedef long (*minios_syscall_fn_t)(long a1, long a2, long a3,
+                                    long a4, long a5, long a6);
+
+typedef struct {
+    minios_syscall_fn_t fn;
+    const char         *name;
+} minios_syscall_entry_t;
+
+#define MINIOS_SYSCALL_BASE  200
+#define MINIOS_SYSCALL_COUNT 128
+
+static int k_syscall_spawn(const char *path, const char *redirect,
+                            int child_argc, const char **child_argv);
+
+static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    if (!user_str_ok((unsigned long)a1, 255)) return EFAULT;
+    return net_sys_dns(a1);
+}
+static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    if (!user_str_ok((unsigned long)a2, 255)) return EFAULT;
+    return tls_sys_handshake(a1, a2);
+}
+static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
+    return tls_sys_send(a1, a2, a3);
+}
+static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
+    return tls_sys_recv(a1, a2, a3);
+}
+static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    return (long)ktime_ms();
+}
+static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    (void)a1;
+    if (kbd_raw_mode_get()) {
+        if (!kbd_raw_empty()) return kbd_raw_pop();
+        if (!kbd_available()) return -1;
+        unsigned char sc;
+        __asm__ volatile("inb $0x60, %0" : "=a"(sc));
+        if (sc == KEY_E0) { kbd_e0_set(1); return 0xE0; }
+        if (kbd_e0_get()) { kbd_e0_set(0); return (long)sc; }
+        return (long)sc;
+    }
+    if (kbd_q_empty()) return -1;
+    return kbd_q_pop();
+}
+static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    unsigned char *pal = (unsigned char *)a1;
+    if (!user_range_ok((unsigned long)a1, 768)) return -EFAULT;
+    outb(0x3C8, 0);
+    for (int i = 0; i < 768; i++) outb(0x3C9, pal[i] >> 2);
+    return 0;
+}
+static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    kbd_raw_mode_set((int)a1);
+    kbd_flush_all();
+    return 0;
+}
+static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    vga_mode_set((int)a1);
+    if (a1) vga_gfx_ran_set(1);
+    vga_fb_set_gfx_mode((int)a1);
+    return 0;
+}
+static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    pcspk_init(); return 0;
+}
+static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    pcspk_tone((unsigned)a1); return 0;
+}
+static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    vga_fb_blit_gfx_window(); return 0;
+}
+static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    int *hp = (int *)(unsigned long)a1;
+    int *mp = (int *)(unsigned long)a2;
+    int *sp = (int *)(unsigned long)a3;
+    if (!user_range_ok((unsigned long)a1, sizeof(int)) ||
+        !user_range_ok((unsigned long)a2, sizeof(int)) ||
+        !user_range_ok((unsigned long)a3, sizeof(int)))
+        return EFAULT;
+    int h, m, s;
+    if (!rtc_read_tod(&h, &m, &s)) return -5;
+    *hp = h; *mp = m; *sp = s;
+    return 0;
+}
+static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    int *wp = (int *)(unsigned long)a1;
+    int *hp = (int *)(unsigned long)a2;
+    int *pp = (int *)(unsigned long)a3;
+    if (!user_range_ok((unsigned long)a1, sizeof(int)) ||
+        !user_range_ok((unsigned long)a2, sizeof(int)) ||
+        !user_range_ok((unsigned long)a3, sizeof(int)))
+        return EFAULT;
+    *wp = fb_width; *hp = fb_height; *pp = fb_pitch;
+    return 0;
+}
+static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    int v = (int)a1;
+    if (v < 0) return (long)pcspk_get_volume();
+    if (v > 100) v = 100;
+    pcspk_set_volume((unsigned)v);
+    return (long)pcspk_get_volume();
+}
+static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a5; (void)a6;
+    const char *path = (const char *)a1;
+    if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
+    return k_syscall_spawn(path, (const char *)a2, (int)a3, (const char **)a4);
+}
+static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a5; (void)a6;
+    char *src = (char *)a1; char *dst = (char *)a3;
+    int src_len = (int)a2; int dst_cap = (int)a4;
+    if (src_len <= 0 || dst_cap <= 4) return 0;
+    if (!user_range_ok((unsigned long)src, (unsigned long)src_len)) return EFAULT;
+    if (!user_range_ok((unsigned long)dst, (unsigned long)dst_cap)) return EFAULT;
+    int ret = LZ4_compress_default(src, dst + 4, src_len, dst_cap - 4);
+    if (ret <= 0 || ret >= src_len) return 0;
+    dst[0] = (char)(src_len & 255); dst[1] = (char)((src_len >> 8) & 255);
+    dst[2] = (char)((src_len >> 16) & 255); dst[3] = (char)((src_len >> 24) & 255);
+    return ret + 4;
+}
+static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a5; (void)a6;
+    char *src = (char *)a1; char *dst = (char *)a3;
+    int src_len = (int)a2; int dst_cap = (int)a4;
+    if (src_len <= 4) return 0;
+    if (!user_range_ok((unsigned long)src, (unsigned long)src_len)) return EFAULT;
+    unsigned int orig = (unsigned int)((unsigned char)src[0] | ((unsigned char)src[1] << 8) |
+                                       ((unsigned char)src[2] << 16) | ((unsigned char)src[3] << 24));
+    if (orig > (unsigned int)dst_cap) return 0;
+    if (dst_cap > 0 && !user_range_ok((unsigned long)dst, (unsigned long)dst_cap)) return EFAULT;
+    int ret = LZ4_decompress_safe(src + 4, dst, src_len - 4, dst_cap);
+    if (ret < 0 || (unsigned int)ret != orig) return 0;
+    return ret;
+}
+static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    int *m = (int *)(unsigned long)a1;
+    if (!user_range_ok((unsigned long)a1, 4 * sizeof(int))) return EFAULT;
+    m[0] = mouse_state.x; m[1] = mouse_state.y;
+    m[2] = mouse_state.buttons; m[3] = mouse_state.wheel;
+    mouse_state.wheel = 0;
+    return 0;
+}
+static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    vga_fb_blit_nk_window();
+    if (a1) {
+        int *o = (int *)(unsigned long)a1;
+        if (!user_range_ok((unsigned long)a1, 2 * sizeof(int))) return EFAULT;
+        o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
+    }
+    return 0;
+}
+static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a1) sb16_pcm_open(); else sb16_pcm_close();
+    return sb16_present() ? 1 : 0;
+}
+static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    const unsigned char *pcm = (const unsigned char *)a1;
+    long len = a2;
+    if (len < 0) return -EFAULT;
+    if (!user_range_ok((unsigned long)a1, (unsigned long)len)) return -EFAULT;
+    return sb16_pcm_submit(pcm, (unsigned)len);
+}
+static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    const char *t = (const char *)(unsigned long)a1;
+    if (!t) return EFAULT;
+    if (!user_range_ok((unsigned long)t, 1)) return EFAULT;
+    extern const char *gfx_win_title;
+    static char title_buf[32];
+    int i;
+    for (i = 0; i < 31 && ((const char *)t)[i]; i++)
+        title_buf[i] = ((const char *)t)[i];
+    title_buf[i] = 0;
+    gfx_win_title = title_buf;
+    return 0;
+}
+static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    sb16_pump(); return 0;
+}
+static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    return sb16_stream_open();
+}
+static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    sb16_stream_close((int)a1); return 0;
+}
+static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    const unsigned char *pcm = (const unsigned char *)a2;
+    long len = a3;
+    if (len < 0) return -EFAULT;
+    if (!user_range_ok((unsigned long)a2, (unsigned long)len)) return -EFAULT;
+    return sb16_stream_submit((int)a1, pcm, (unsigned)len);
+}
+static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    sb16_stream_volume((int)a1, (unsigned char)a2); return 0;
+}
+
+/* clone(flags, newsp) - create a thread or process.
+ * CLONE_VM: share address space (same CR3).
+ * CLONE_FILES: share fd table.
+ * Returns child PID to parent, 0 to child. */
+extern long do_clone(long flags, long newsp);
+
+static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6) {
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    return do_clone(flags, newsp);
+}
+
+static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] = {
+    [MINIOS_SYS_DNS - MINIOS_SYSCALL_BASE]         = { sys_minios_dns,         "dns" },
+    [MINIOS_SYS_TLS_HANDSHAKE - MINIOS_SYSCALL_BASE] = { sys_minios_tls_handshake, "tls_handshake" },
+    [MINIOS_SYS_TLS_SEND - MINIOS_SYSCALL_BASE]    = { sys_minios_tls_send,    "tls_send" },
+    [MINIOS_SYS_TLS_RECV - MINIOS_SYSCALL_BASE]    = { sys_minios_tls_recv,    "tls_recv" },
+    [MINIOS_SYS_TIME - MINIOS_SYSCALL_BASE]        = { sys_minios_time,        "time" },
+    [MINIOS_SYS_KBD - MINIOS_SYSCALL_BASE]         = { sys_minios_kbd,         "kbd" },
+    [MINIOS_SYS_PALETTE - MINIOS_SYSCALL_BASE]     = { sys_minios_palette,     "palette" },
+    [MINIOS_SYS_KBD_RAW - MINIOS_SYSCALL_BASE]     = { sys_minios_kbd_raw,     "kbd_raw" },
+    [MINIOS_SYS_VGA_MODE - MINIOS_SYSCALL_BASE]    = { sys_minios_vga_mode,    "vga_mode" },
+    [MINIOS_SYS_PCSPK_INIT - MINIOS_SYSCALL_BASE]  = { sys_minios_pcspk_init,  "pcspk_init" },
+    [MINIOS_SYS_PCSPK_TONE - MINIOS_SYSCALL_BASE]  = { sys_minios_pcspk_tone,  "pcspk_tone" },
+    [MINIOS_SYS_DOOM_FRAME - MINIOS_SYSCALL_BASE]  = { sys_minios_doom_frame,  "doom_frame" },
+    [MINIOS_SYS_RTC - MINIOS_SYSCALL_BASE]         = { sys_minios_rtc,         "rtc" },
+    [MINIOS_SYS_FB_INFO - MINIOS_SYSCALL_BASE]     = { sys_minios_fb_info,     "fb_info" },
+    [MINIOS_SYS_PCSPK_VOL - MINIOS_SYSCALL_BASE]   = { sys_minios_pcspk_vol,   "pcspk_vol" },
+    [MINIOS_SYS_SPAWN - MINIOS_SYSCALL_BASE]       = { sys_minios_spawn,       "spawn" },
+    [MINIOS_SYS_LZ4_COMPRESS - MINIOS_SYSCALL_BASE]   = { sys_minios_lz4_compress, "lz4_compress" },
+    [MINIOS_SYS_LZ4_DECOMPRESS - MINIOS_SYSCALL_BASE] = { sys_minios_lz4_decompress, "lz4_decompress" },
+    [MINIOS_SYS_MOUSE - MINIOS_SYSCALL_BASE]       = { sys_minios_mouse,       "mouse" },
+    [MINIOS_SYS_NK_FRAME - MINIOS_SYSCALL_BASE]    = { sys_minios_nk_frame,    "nk_frame" },
+    [MINIOS_SYS_SB16_OPEN - MINIOS_SYSCALL_BASE]   = { sys_minios_sb16_open,   "sb16_open" },
+    [MINIOS_SYS_SB16_SUBMIT - MINIOS_SYSCALL_BASE] = { sys_minios_sb16_submit, "sb16_submit" },
+    [MINIOS_SYS_GFX_SET_TITLE - MINIOS_SYSCALL_BASE] = { sys_minios_gfx_title,  "gfx_title" },
+    [MINIOS_SYS_SB16_PUMP - MINIOS_SYSCALL_BASE]   = { sys_minios_sb16_pump,   "sb16_pump" },
+    [MINIOS_SYS_SB16_STREAM_OPEN - MINIOS_SYSCALL_BASE]   = { sys_minios_sb16_stream_open,   "sb16_stream_open" },
+    [MINIOS_SYS_SB16_STREAM_CLOSE - MINIOS_SYSCALL_BASE]  = { sys_minios_sb16_stream_close,  "sb16_stream_close" },
+    [MINIOS_SYS_SB16_STREAM_SUBMIT - MINIOS_SYSCALL_BASE] = { sys_minios_sb16_stream_submit, "sb16_stream_submit" },
+    [MINIOS_SYS_SB16_STREAM_VOLUME - MINIOS_SYSCALL_BASE] = { sys_minios_sb16_stream_vol,    "sb16_stream_vol" },
+    [MINIOS_SYS_CLONE - MINIOS_SYSCALL_BASE] = { sys_minios_clone,    "clone" },
+};
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };
 
@@ -50,8 +327,6 @@ void syscall_trace_set(int on) { s_trace_enabled = on ? 1 : 0; }
 #define SYS_NOISY_KBD    205
 #define SYS_NOISY_MOUSE  219
 
-static int k_syscall_spawn(const char *path, const char *redirect,
-                            int child_argc, const char **child_argv);
 static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6);
 
 static int trace_is_noisy(long n) {
@@ -97,6 +372,16 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         exec_exit_code = 130;
         klongjmp(&exec_return, 1);
         return 0;
+    }
+    /* MiniOS custom syscalls (200+): table-driven dispatch.  The numeric
+     * range [MINIOS_SYSCALL_BASE, MINIOS_SYSCALL_BASE + MINIOS_SYSCALL_COUNT)
+     * overlaps real Linux syscalls (openat=257, exit_group=231, newfstatat=262,
+     * ...).  A number in that range with no MiniOS handler registered must fall
+     * through to the Linux switch below, never be swallowed by an ENOSYS, or no
+     * Linux binary could ever open or exit. */
+    if (n >= MINIOS_SYSCALL_BASE && n < MINIOS_SYSCALL_BASE + MINIOS_SYSCALL_COUNT) {
+        const minios_syscall_entry_t *e = &minios_syscall_table[n - MINIOS_SYSCALL_BASE];
+        if (e->fn) return e->fn(a1, a2, a3, a4, a5, a6);
     }
     switch (n) {
     case 0: { /* read */

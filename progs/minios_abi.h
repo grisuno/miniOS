@@ -214,6 +214,8 @@
 #define MINIOS_SYS_SB16_STREAM_SUBMIT 232
 #define MINIOS_SYS_SB16_STREAM_VOLUME 233
 
+#define MINIOS_SYS_CLONE             300
+
 /* --- Compatibility aliases for runtime bindings --- */
 #define SYS_TIME_MS    MINIOS_SYS_TIME
 #define SYS_PALETTE    MINIOS_SYS_PALETTE

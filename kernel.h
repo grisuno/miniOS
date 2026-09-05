@@ -136,6 +136,7 @@ void  kfree(void *ptr);
 void *kcalloc(unsigned long nmemb, unsigned long size);
 void *krealloc(void *ptr, unsigned long size);
 void  kallocator_init(void);
+void *kmalloc_percpu(unsigned long size, unsigned long align);
 
 /* dlmalloc backend (third_party/dlmalloc): an mspace rooted over the fixed
  * kernel heap. The kernel's allocator delegates to these. */

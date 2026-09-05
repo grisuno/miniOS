@@ -73,7 +73,7 @@ void k_user_fault_return(void) {
         :: [kdata] "i"(GDT64_DATA_SEL)
         : "ax", "memory");
     wrmsr(MSR_FSBASE, 0);
-    wrmsr(MSR_GSBASE, 0);
+    wrmsr(MSR_GSBASE, (unsigned long)&cpus[0]);
     klongjmp(&exec_return, 1);
 }
 
@@ -136,6 +136,10 @@ int k_exec_user(void *entry, int argc, char **argv) {
     else
         syscall_kstack = SYS_KSTK_TOP;
     wrmsr(MSR_FSBASE, 0);
+    /* Ensure swap_slot = kernel GS (&cpus[0]) so the timer ISR's swapgs
+     * restores the correct per-CPU base when it fires from ring 3. */
+    wrmsr(MSR_GSBASE, (unsigned long)&cpus[0]);
+    __asm__ volatile("swapgs");
     wrmsr(MSR_GSBASE, 0);
 
     frame[0] = (unsigned long)entry;
@@ -181,7 +185,7 @@ int k_exec_user(void *entry, int argc, char **argv) {
         :: [kdata] "i"(GDT64_DATA_SEL)
         : "ax", "memory");
     wrmsr(MSR_FSBASE, 0);
-    wrmsr(MSR_GSBASE, 0);
+    wrmsr(MSR_GSBASE, (unsigned long)&cpus[0]);
     exec_return = saved_exec;
     syscall_kstack = saved_kstack;
     if (child_stack) kfree(child_stack);

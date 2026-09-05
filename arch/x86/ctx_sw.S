@@ -7,20 +7,15 @@
  * First-time processes have ctx.rip = user_trampoline and ctx.rsp
  * pointing at an iretq frame built by proc_create().
  *
- * Restore order (rdi/rsi problem):
- *   1. rsi loaded from PCB via rdi (rdi still = &next)
- *   2. &next stashed in global
- *   3. rax loaded from global (= &next)
- *   4. rdi loaded from PCB via rax
+ * Restore order (rdi/rsi swap):
+ *   1. rax = &next (freed after saving prev's regs)
+ *   2. rdi loaded from next's PCB via rax
+ *   3. rsi loaded from next's PCB via rax
+ *   4. rdi/rsi swapped via xchg to restore correct values
  *   5. all other regs loaded from PCB via rax
  *   6. rsp switched, rflags restored
  *   7. rip pushed and ret'd into
  */
-        .data
-        .globl  switch_to_next
-switch_to_next:
-        .quad   0
-
         .text
         .globl  switch_to
 switch_to:
@@ -56,17 +51,15 @@ switch_to:
         movq    144(%rsi), %rax
         movq    %rax, %cr3
 
-        /* 2. rsi from PCB via rdi (rdi still = &next) */
-        movq    32(%rsi), %rdi
+        /* 2. rax = &next (rsi is free to use as scratch now) */
+        movq    %rsi, %rax
 
-        /* 3. Stash &next, load into rax */
-        movq    %rsi, switch_to_next(%rip)
-        movq    switch_to_next(%rip), %rax
+        /* 3. rdi/rsi cross-restore: load both, then swap */
+        movq    32(%rax), %rdi      /* rdi = next->ctx.rsi (temp) */
+        movq    40(%rax), %rsi      /* rsi = next->ctx.rdi */
+        xchgq   %rdi, %rsi         /* rdi = next->ctx.rdi, rsi = next->ctx.rsi */
 
-        /* 4. rdi from PCB via rax */
-        movq    40(%rax), %rdi
-
-        /* 5. All other registers from PCB via rax */
+        /* 4. All other registers from PCB via rax */
         movq     8(%rax), %rbx
         movq    16(%rax), %rcx
         movq    24(%rax), %rdx
@@ -80,15 +73,15 @@ switch_to:
         movq   104(%rax), %r14
         movq   112(%rax), %r15
 
-        /* 6. rsp (switch to next's kernel stack) */
+        /* 5. rsp (switch to next's kernel stack) */
         movq   128(%rax), %rsp
 
-        /* 7. rflags (use rcx as scratch, already restored above) */
+        /* 6. rflags (use rcx as scratch, already restored above) */
         movq   136(%rax), %rcx
         pushq  %rcx
         popfq
 
-        /* 8. rip: push target address and ret into it */
+        /* 7. rip: push target address and ret into it */
         movq   120(%rax), %rax
         pushq  %rax
         ret

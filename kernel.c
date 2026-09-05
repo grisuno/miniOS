@@ -342,6 +342,7 @@ __asm__(
     ".text\n"
     ".global syscall_entry\n"
     "syscall_entry:\n"
+    "  swapgs\n"                     /* switch to kernel GS (per-CPU) */
     "  xchgq %rsp, syscall_kstack(%rip)\n"
     "  pushq %r9\n"              /* 64(%rsp) a6 */
     "  pushq %r8\n"              /* 56       a5 */
@@ -373,6 +374,7 @@ __asm__(
     "  popq %r8\n"
     "  popq %r9\n"
     "  xchgq %rsp, syscall_kstack(%rip)\n"
+    "  swapgs\n"                     /* restore user GS */
     "  cmpq $" STR(USER_WIN_LO) ", %rsp\n"
     "  jb 1f\n"
     "  cmpq $" STR(USER_WIN_HI) ", %rsp\n"

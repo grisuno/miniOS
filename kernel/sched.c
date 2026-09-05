@@ -6,6 +6,7 @@
 #include "bootdefs.h"
 #include "vga_fb.h"
 #include "sb16.h"
+#include "arch/x86/msr.h"
 
 /* The user-window and syscall-stack constants come from kernel.h, which
  * derives them from progs/minios_abi.h (the single source of truth for the
@@ -18,7 +19,8 @@
 
 proc_t procs[MAX_PROCS];
 int    proc_count;
-int    current_pid;
+cpu_t  cpus[MAX_CPUS];
+int    cpu_count = 1;
 volatile uint64_t sys_ticks;
 volatile int user_program_active;
 spinlock_t sched_lock = SPINLOCK_INIT;
@@ -49,17 +51,31 @@ typedef struct __attribute__((packed)) {
     uint16_t off_mid; uint32_t off_hi; uint32_t zero;
 } idt_entry_t;
 static idt_entry_t idt[256] __attribute__((aligned(16)));
-typedef struct __attribute__((packed)) { uint16_t limit; uint64_t base; } idtr_t;
+
+/* Exported IDTR for APs to load during SMP bring-up.  Filled by idt_init(). */
+idtr_t bsp_idtr;
 
 extern void *isr_stub_table[];
 
 /* ---- Kernel stack pool ---- */
 static char kstack_pool[MAX_PROCS][16*1024] __attribute__((aligned(16)));
-static int kstack_idx;
+static int kstack_used[MAX_PROCS];  /* 0 = free, 1 = in use */
 
 static uint64_t alloc_kstack(void) {
-    if (kstack_idx >= MAX_PROCS) return 0;
-    return (uint64_t)&kstack_pool[kstack_idx++][16*1024];
+    int i;
+    for (i = 0; i < MAX_PROCS; i++) {
+        if (!kstack_used[i]) {
+            kstack_used[i] = 1;
+            return (uint64_t)&kstack_pool[i][16*1024];
+        }
+    }
+    return 0;
+}
+
+static void free_kstack(uint64_t top) {
+    if (!top) return;
+    int idx = (int)(((char *)top - (char *)kstack_pool) / (16*1024));
+    if (idx >= 0 && idx < MAX_PROCS) kstack_used[idx] = 0;
 }
 
 /* ---- Trap frame (must match isr_stubs.S) ---- */
@@ -88,10 +104,9 @@ static void idt_init(void) {
     for (i = 0; i < 256; i++)
         if (isr_stub_table[i])
             idt_set(i, (void(*)(void))isr_stub_table[i]);
-    static idtr_t idtr;
-    idtr.limit = sizeof(idt) - 1;
-    idtr.base = (uint64_t)&idt;
-    __asm__ volatile("lidt %0" :: "m"(idtr));
+    bsp_idtr.limit = sizeof(idt) - 1;
+    bsp_idtr.base = (uint64_t)&idt;
+    __asm__ volatile("lidt %0" :: "m"(bsp_idtr));
 }
 
 /* ---- PIC ---- */
@@ -165,9 +180,14 @@ static void tss_init(void) {
 void isr_dispatch(int vector, trap_frame_t *frame) {
     if (vector == 32) {
         sys_ticks++;
-        pic_eoi(0);
-        sb16_poll();
-        if (proc_count > 1) {
+        if (this_cpu()->is_bsp) {
+            pic_eoi(0);
+            sb16_poll();
+        } else {
+            /* AP: send LAPIC EOI (offset 0xB0) instead of PIC EOI */
+            *(volatile unsigned *)0xFEE000B0UL = 0;
+        }
+        if (this_cpu()->is_bsp && proc_count > 1) {
             proc_t *cur = proc_get(current_pid);
             if (cur && cur->state == PROC_RUNNING) {
                 cur->ctx.rax = frame->rax;
@@ -199,8 +219,11 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                 }
                 if (t < MAX_PROCS && next != current_pid) {
                     proc_t *nxt = proc_get(next);
+                    /* Save per-process brk/mmap from outgoing, load into incoming */
+                    cur->brk = g_brk; cur->brk_limit = g_brk_limit; cur->mmap_cur = user_mmap_cur;
                     current_pid = next;
                     nxt->state = PROC_RUNNING;
+                    g_brk = nxt->brk; g_brk_limit = nxt->brk_limit; user_mmap_cur = nxt->mmap_cur;
                     switch_to(cur, nxt);
                 }
             }
@@ -307,7 +330,20 @@ int proc_create(const char *name, int parent_pid) {
     p->pid = pid;
     p->state = PROC_READY;
     p->parent_pid = parent_pid;
+    p->clone_flags = 0;
     kstrncpy(p->name, name, sizeof(p->name) - 1);
+
+    /* Inherit brk/mmap defaults from parent */
+    proc_t *parent = proc_get(parent_pid);
+    if (parent) {
+        p->brk = parent->brk;
+        p->brk_limit = parent->brk_limit;
+        p->mmap_cur = parent->mmap_cur;
+    } else {
+        p->brk = 0;
+        p->brk_limit = USER_BRK_END;
+        p->mmap_cur = USER_BRK_END;
+    }
 
     uint64_t kstack_top = alloc_kstack();
     if (!kstack_top) { spin_unlock(&sched_lock); return -1; }
@@ -348,8 +384,12 @@ void schedule(void) {
     proc_t *cur = proc_get(current_pid);
     proc_t *nxt = proc_get(next);
     if (!cur || !nxt) { spin_unlock(&sched_lock); return; }
+    /* Save per-process brk/mmap state from outgoing process */
+    if (cur) { cur->brk = g_brk; cur->brk_limit = g_brk_limit; cur->mmap_cur = user_mmap_cur; }
     current_pid = next;
     nxt->state = PROC_RUNNING;
+    /* Load per-process brk/mmap state into incoming process */
+    g_brk = nxt->brk; g_brk_limit = nxt->brk_limit; user_mmap_cur = nxt->mmap_cur;
     spin_unlock(&sched_lock);
     switch_to(cur, nxt);
 }
@@ -369,6 +409,7 @@ void do_exit(int code) {
      * window PML4, PDPT, PD and PT pages are released. */
     if (cur->ctx.cr3 && cur->ctx.cr3 != read_cr3())
         pt_free_user(cur->ctx.cr3);
+    uint64_t old_kstack = cur->kstack;
     cur->state = PROC_ZOMBIE;
     if (cur->parent_pid >= 0) {
         proc_t *parent = proc_get(cur->parent_pid);
@@ -376,7 +417,63 @@ void do_exit(int code) {
             parent->state = PROC_READY;
     }
     spin_unlock(&sched_lock);
+    free_kstack(old_kstack);
     schedule();
+}
+
+/* do_clone(flags, newsp) - create a thread or process.
+ * CLONE_VM: share address space (same CR3).
+ * CLONE_FILES: share fd table (not yet implemented).
+ * Returns child PID to parent, 0 to child. */
+long do_clone(long flags, long newsp) {
+    int cflags = (int)flags;
+    proc_t *cur = proc_get(current_pid);
+    if (!cur) return -1;
+
+    spin_lock(&sched_lock);
+    int pid;
+    for (pid = 1; pid < MAX_PROCS; pid++)
+        if (procs[pid].state == PROC_FREE) break;
+    if (pid >= MAX_PROCS) { spin_unlock(&sched_lock); return -1; }
+
+    proc_t *child = &procs[pid];
+    kmemset(child, 0, sizeof(proc_t));
+    child->pid = pid;
+    child->state = PROC_READY;
+    child->parent_pid = current_pid;
+    child->clone_flags = cflags;
+    kstrncpy(child->name, cur->name, sizeof(child->name) - 1);
+
+    uint64_t kstack_top = alloc_kstack();
+    if (!kstack_top) { spin_unlock(&sched_lock); return -1; }
+    child->kstack = kstack_top;
+
+    if (cflags & CLONE_VM) {
+        child->ctx.cr3 = cur->ctx.cr3;
+    } else {
+        uint64_t new_cr3 = pt_clone_user(read_cr3());
+        child->ctx.cr3 = new_cr3 ? new_cr3 : read_cr3();
+    }
+
+    child->brk = cur->brk;
+    child->brk_limit = cur->brk_limit;
+    child->mmap_cur = cur->mmap_cur;
+
+    unsigned long *frame = (unsigned long *)(kstack_top - 40);
+    frame[0] = (unsigned long)(newsp ? newsp : cur->ctx.rsp);
+    frame[1] = (unsigned long)(GDT64_USER_CODE_SEL | 3);
+    frame[2] = 0x202;
+    frame[3] = (unsigned long)(newsp ? newsp : cur->ctx.rsp);
+    frame[4] = (unsigned long)(GDT64_USER_DATA_SEL | 3);
+
+    child->ctx.rip = (uint64_t)user_trampoline;
+    child->ctx.rsp = (uint64_t)frame;
+    child->ctx.rflags = 0x200;
+    child->ctx.rax = 0;
+
+    if (proc_count <= pid) proc_count = pid + 1;
+    spin_unlock(&sched_lock);
+    return pid;
 }
 
 int do_waitpid(int pid) {
@@ -388,11 +485,13 @@ int do_waitpid(int pid) {
         for (i = 0; i < MAX_PROCS; i++) {
             if (procs[i].state != PROC_FREE
                 && procs[i].parent_pid == current_pid
-                && procs[i].state == PROC_ZOMBIE) {
+                && procs[i].state == PROC_ZOMBIE
+                && (pid == -1 || pid == procs[i].pid)) {
                 int code = procs[i].exit_code;
                 /* Free per-process page tables if not already freed in do_exit. */
                 if (procs[i].ctx.cr3)
                     pt_free_user(procs[i].ctx.cr3);
+                free_kstack(procs[i].kstack);
                 procs[i].state = PROC_FREE;
                 spin_unlock(&sched_lock);
                 return code;
@@ -489,8 +588,20 @@ void mouse_enable(void)  { mouse_write(0xF4); mouse_read(); }
 
 void sched_init(void) {
     kmemset(procs, 0, sizeof(procs));
+    kmemset(cpus, 0, sizeof(cpus));
     proc_count = 1;
-    current_pid = 0;
+
+    /* Initialize BSP (cpu 0) per-CPU state */
+    cpus[0].self = &cpus[0];
+    cpus[0].cpu_id = BOOT_CPU;
+    cpus[0].cur_pid = 0;
+    cpus[0].is_bsp = 1;
+    cpus[0].lapic_id = 0;
+    cpus[0].syscall_kstack = SYS_KSTK_TOP;
+
+    /* Set GS base so this_cpu() works from the BSP */
+    wrmsr(MSR_GSBASE, (unsigned long)&cpus[0]);
+
     procs[0].pid = 0;
     procs[0].state = PROC_RUNNING;
     procs[0].parent_pid = -1;

@@ -41,7 +41,7 @@ ap_pm:
     movw %ax, %ds
     movw %ax, %es
     movw %ax, %ss
-    movl $(AP_STUB_ADDR + 0x800), %esp
+    movl $0x78000, %esp
     /* PAE + long mode, reusing the BSP's page tables. */
     movl %cr4, %eax
     orl  $CR4_PAE, %eax
@@ -63,7 +63,10 @@ ap_lm:
     /* Progress marker 0x42 at 0x70001. */
     movq $0x70001, %rbx
     movb $0x42, (%rbx)
-    movq $(AP_STUB_ADDR + 0x800), %rsp   /* temp stack inside the stub */
+    /* Temp stack in identity-mapped low memory, below the LAPIC PD.
+     * This is only needed until smp_ap_entry switches to its own context.
+     * Must be above 0x70000 (LAPIC PD) and below 0x80000 (syscall stack). */
+    movq $0x78000, %rsp
     xorw %ax, %ax
     movw $0x10, %ax
     movw %ax, %ds
