@@ -66,3 +66,11 @@ test_bdd.log
 
 # Build outputs
 build/
+
+# Pokemon port: upstream tool clone, user-generated game project
+# (from their own ROM), and local build tree. Only the port sources
+# in progs/pokemon/ (platform_minios.c, Makefile.minios, minios_stubs/,
+# fetch.sh, README.md) are tracked.
+progs/pokemon/upstream/
+progs/pokemon/game/
+progs/pokemon/build/

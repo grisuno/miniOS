@@ -641,29 +641,39 @@ $(PROGS_DIR)/baseq2/pak1.pak: $(Q2G_PLAYER_FILES) tools/mkpak1.py
 
 MINIFS_Q2G_FILES = $(if $(Q2G_AVAILABLE),$(BIN_DIR)/quake2generic.elf $(PROGS_DIR)/baseq2,)
 
-# ── Pokemon Crystal (GB Recompiled port, static glibc ELF) ──────────
+# ── Pokemon (GB Recompiled port, static glibc ELF) ───────────────────
 # Same contract as DOOM: host clang -static, ring-3 ET_EXEC, on MiniFS.
-# The game is a recompiled Game Boy Color ROM (generated C + runtime);
-# platform_minios.c replaces SDL2 with MiniOS syscalls (SYS_TIME 204,
-# SYS_KBD 205, SYS_DOOM_FRAME 211, SYS_PALETTE 206). 160x144 is scaled
-# 2x into the 320x200 DOOM back-buffer. No audio (stub), no saves
-# (statx stub returns ENOENT; ROM is embedded in the binary).
-# Location of the gb-recompiled generated project (platform_minios.c +
-# Makefile.minios live there). Unset by default; point it at your checkout:
-#   make POKEMON_DIR=/path/to/pokecrystal os.img
-# Build is conditional: skipped when the generated project is absent.
-POKEMON_DIR ?=
-POKEMON_AVAILABLE := $(if $(wildcard $(POKEMON_DIR)/Makefile.minios),1,0)
+# A recompiled Game Boy / Color game (generated C + runtime snapshot);
+# progs/pokemon/platform_minios.c replaces SDL2 with MiniOS syscalls
+# (framebuffer, keyboard, PC speaker, timing). Game-agnostic: works
+# with any gb-recompiled generated project, no per-game patches.
+#
+# POKEMON_DIR is a generated project (gbrecomp output from the user's
+# own ROM; upstream ships no ROMs). Default progs/pokemon/game.
+# New users: make pokemon-fetch, generate with their ROM (see
+# progs/pokemon/README.md), then make os.img. Without a project the
+# build is skipped with a hint and everything else works offline.
+POKEMON_PORT_DIR = $(PROGS_DIR)/pokemon
+POKEMON_DIR ?= $(POKEMON_PORT_DIR)/game
+POKEMON_AVAILABLE := $(if $(wildcard $(POKEMON_DIR)/runtime/include/gbrt.h),1,0)
 
 ifeq ($(POKEMON_AVAILABLE),1)
-$(BIN_DIR)/pokemon.elf: $(POKEMON_DIR)/Makefile.minios $(POKEMON_DIR)/platform_minios.c
-	$(MAKE) -C $(POKEMON_DIR) -f Makefile.minios -j$$(nproc 2>/dev/null || echo 4) MINIOS_DIR=$(CURDIR)
-	cp $(POKEMON_DIR)/build_minios/pokemon.elf $@
+$(BIN_DIR)/pokemon.elf: $(POKEMON_PORT_DIR)/platform_minios.c $(POKEMON_PORT_DIR)/Makefile.minios
+	$(MAKE) -C $(POKEMON_PORT_DIR) -f Makefile.minios -j$$(nproc 2>/dev/null || echo 4) GAME_DIR=$(abspath $(POKEMON_DIR)) MINIOS_DIR=$(CURDIR)
+	cp $(POKEMON_PORT_DIR)/build/pokemon.elf $@
 	chmod +x $@
 else
 $(BIN_DIR)/pokemon.elf:
-	@echo "SKIP $@ (set POKEMON_DIR=/path/to/generated-project, see Makefile)"
+	@echo "SKIP $@ (no generated project at $(POKEMON_DIR); see progs/pokemon/README.md or make pokemon-fetch)"
 endif
+
+# Clone the upstream tool (recompiler + runtime, no ROMs). Safe to
+# re-run; never touches an existing checkout.
+pokemon-fetch:
+	sh $(POKEMON_PORT_DIR)/fetch.sh
+
+pokemon-clean:
+	rm -rf $(POKEMON_PORT_DIR)/build
 
 MINIFS_POKEMON_FILES = $(if $(POKEMON_AVAILABLE),$(BIN_DIR)/pokemon.elf,)
 

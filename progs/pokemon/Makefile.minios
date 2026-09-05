@@ -1,0 +1,93 @@
+# Makefile.minios - build any gb-recompiled generated project for MiniOS
+#
+# Same contract as the DOOM/Quake2 ports: host clang, statically-linked
+# Linux ELF, ring-3 on MiniOS. The only MiniOS-specific piece is
+# platform_minios.c (this directory), which replaces platform_sdl.cpp.
+#
+# Game-agnostic: every root *.c of the generated project is compiled
+# (whatever the game is called), plus the runtime snapshot it embeds.
+# No per-game patches: --debug is detected via argv, audio/video/input
+# go through MiniOS syscalls.
+#
+# Usage (from this directory):
+#   make -f Makefile.minios GAME_DIR=/path/to/generated-project MINIOS_DIR=/path/to/miniOS -j$(nproc)
+# The MiniOS top-level Makefile drives this automatically (see the
+# Pokemon section there); GAME_DIR then defaults to progs/pokemon/game.
+#
+# Layout expected under GAME_DIR (as emitted by gbrecomp):
+#   GAME_DIR/*.c                  generated game code + main
+#   GAME_DIR/runtime/include/*.h  runtime headers
+#   GAME_DIR/runtime/src/*.c      runtime sources (pure C)
+
+GAME_DIR   ?= game
+RUNTIME     = $(GAME_DIR)/runtime
+STUBS       = minios_stubs
+
+# Path to the MiniOS checkout (for minios_abi.h, the kernel/user ABI).
+MINIOS_DIR ?=
+ifeq ($(MINIOS_DIR),)
+$(error MINIOS_DIR is not set. Build via the MiniOS Makefile or pass MINIOS_DIR=/path/to/miniOS)
+endif
+
+# The generated project must exist (gbrecomp output from the user's ROM).
+ifeq ($(wildcard $(GAME_DIR)/runtime/include/gbrt.h),)
+$(error GAME_DIR has no runtime (expected $(GAME_DIR)/runtime/include/gbrt.h). Generate it with gbrecomp from your ROM, see README.md)
+endif
+
+CC = clang
+
+FLAGS = -Os -static -no-pie -ffunction-sections -fdata-sections \
+        -I$(STUBS) -I$(RUNTIME)/include -I$(MINIOS_DIR)/progs \
+        -DGB_HAS_SDL2 -DGB_MINIOS -DNDEBUG -w
+LDFLAGS = -static -no-pie -Wl,--gc-sections
+LIBS    = -lm
+
+# All generated game sources (whatever the game is named). A copy of
+# platform_minios.c inside GAME_DIR would shadow this directory's one;
+# exclude it so this file set stays canonical here.
+GAME_SOURCES = $(filter-out platform_minios.c,$(notdir $(wildcard $(GAME_DIR)/*.c)))
+
+# Runtime snapshot, minus the SDL/C++ platform and the helper files the
+# upstream CMake build also leaves out of libgbrt.
+RT_SOURCES = $(filter-out gbrt_gameplay_mutation.c gbrt_native_patch.c, \
+                 $(notdir $(wildcard $(RUNTIME)/src/*.c)))
+
+BUILD  = build
+TARGET = $(BUILD)/pokemon.elf
+
+GAME_OBJS = $(patsubst %.c,$(BUILD)/gen/%.o,$(GAME_SOURCES))
+RT_OBJS   = $(patsubst %.c,$(BUILD)/rt/%.o,$(RT_SOURCES))
+PLAT_OBJS = $(BUILD)/plat/platform_minios.o
+ALL_OBJS  = $(GAME_OBJS) $(RT_OBJS) $(PLAT_OBJS)
+
+.PHONY: all clean
+
+all: $(TARGET)
+	@echo "=== Built: $$(ls -lh $(TARGET) | awk '{print $$5}') ==="
+	@file $(TARGET)
+
+$(TARGET): $(ALL_OBJS)
+	@echo "[Link] $@"
+	$(CC) $(LDFLAGS) $(ALL_OBJS) -o $@ $(LIBS)
+	@ls -lh $@
+
+# Generated game code
+$(BUILD)/gen/%.o: $(GAME_DIR)/%.c | $(BUILD)/gen
+	@echo "[CC] $<"
+	@$(CC) $(FLAGS) -c $< -o $@
+
+# Runtime
+$(BUILD)/rt/%.o: $(RUNTIME)/src/%.c | $(BUILD)/rt
+	@echo "[CC] $<"
+	@$(CC) $(FLAGS) -c $< -o $@
+
+# MiniOS platform layer (lives here, not in the generated project)
+$(BUILD)/plat/%.o: %.c | $(BUILD)/plat
+	@echo "[CC] $<"
+	@$(CC) $(FLAGS) -c $< -o $@
+
+$(BUILD)/gen $(BUILD)/rt $(BUILD)/plat:
+	mkdir -p $@
+
+clean:
+	rm -rf $(BUILD)
