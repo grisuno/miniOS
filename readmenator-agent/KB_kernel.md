@@ -214,25 +214,25 @@
   - `pic_eoi` (function, line 132) `static void pic_eoi(int irq)`
   - `tss_init` (function, line 140) `static void tss_init(void)`
   - `isr_dispatch` (function, line 180) `void isr_dispatch(int vector, trap_frame_t *frame)`
-  - `ring` (function, line 300) `* the hardware ring (CS RPL) and the fault address. */
+  - `ring` (function, line 302) `* the hardware ring (CS RPL) and the fault address. */
         if ((frame->cs & 3) == 3 &&
       ...`
-  - `proc_get` (function, line 314) `proc_t *proc_get(int pid)`
-  - `proc_create` (function, line 320) `int proc_create(const char *name, int parent_pid)`
-  - `schedule` (function, line 373) `void schedule(void)`
-  - `yield` (function, line 396) `void yield(void)`
-  - `do_exit` (function, line 401) `void do_exit(int code)`
-  - `do_waitpid` (function, line 478) `int do_waitpid(int pid)`
-  - `do_kill` (function, line 505) `int do_kill(int pid)`
-  - `timer_tick` (function, line 512) `void timer_tick(void)`
-  - `mouse_wait_cmd` (function, line 516) `static void mouse_wait_cmd(void)`
-  - `mouse_wait_data` (function, line 522) `static void mouse_wait_data(void)`
-  - `mouse_write` (function, line 529) `static void mouse_write(unsigned char data)`
-  - `mouse_read` (function, line 536) `static unsigned char mouse_read(void)`
-  - `mouse_hw_init` (function, line 541) `static void mouse_hw_init(void)`
-  - `mouse_disable` (function, line 585) `void mouse_disable(void)`
-  - `mouse_enable` (function, line 587) `void mouse_enable(void)`
-  - `sched_init` (function, line 588) `void sched_init(void)`
+  - `proc_get` (function, line 316) `proc_t *proc_get(int pid)`
+  - `proc_create` (function, line 322) `int proc_create(const char *name, int parent_pid)`
+  - `schedule` (function, line 375) `void schedule(void)`
+  - `yield` (function, line 398) `void yield(void)`
+  - `do_exit` (function, line 403) `void do_exit(int code)`
+  - `do_waitpid` (function, line 480) `int do_waitpid(int pid)`
+  - `do_kill` (function, line 507) `int do_kill(int pid)`
+  - `timer_tick` (function, line 514) `void timer_tick(void)`
+  - `mouse_wait_cmd` (function, line 518) `static void mouse_wait_cmd(void)`
+  - `mouse_wait_data` (function, line 524) `static void mouse_wait_data(void)`
+  - `mouse_write` (function, line 531) `static void mouse_write(unsigned char data)`
+  - `mouse_read` (function, line 538) `static unsigned char mouse_read(void)`
+  - `mouse_hw_init` (function, line 543) `static void mouse_hw_init(void)`
+  - `mouse_disable` (function, line 587) `void mouse_disable(void)`
+  - `mouse_enable` (function, line 589) `void mouse_enable(void)`
+  - `sched_init` (function, line 590) `void sched_init(void)`
   - `MY_SYS_KSTK_TOP` (macro, line 16)
   - `MY_USER_STACK_TOP` (macro, line 17)
   - `MY_USER_LOAD_BASE` (macro, line 18)
@@ -364,6 +364,31 @@ int console_getc(void)`
   - `k_register_program` (function, line 48) `void k_register_program(const char *name, prog_entry_t entry)`
   - `k_register_process` (function, line 56) `void k_register_process(const char *name, void *proc_entry)`
   - `k_spawn` (function, line 64) `int k_spawn(const char *name, int argc, char **argv)`
+
+## kernel/sync.c
+- Layer: utility
+- Doc: sync.c -- Blocking synchronization primitives (roadmap Phase 3.1).
+- Language: c
+- Symbols:
+  - `wq_init` (function, line 25) `void wq_init(wait_queue_t *q)`
+  - `sleep_on` (function, line 31) `void sleep_on(wait_queue_t *q)`
+  - `wake_up` (function, line 52) `int wake_up(wait_queue_t *q)`
+  - `wake_up_all` (function, line 68) `int wake_up_all(wait_queue_t *q)`
+  - `mutex_init` (function, line 74) `void mutex_init(mutex_t *m)`
+  - `mutex_lock` (function, line 81) `void mutex_lock(mutex_t *m)`
+  - `mutex_unlock` (function, line 96) `void mutex_unlock(mutex_t *m)`
+  - `sem_init` (function, line 105) `void sem_init(sem_t *s, int value)`
+  - `sem_wait` (function, line 111) `void sem_wait(sem_t *s)`
+  - `sem_post` (function, line 125) `void sem_post(sem_t *s)`
+  - `cond_init` (function, line 133) `void cond_init(cond_t *c)`
+  - `cond_wait` (function, line 137) `void cond_wait(cond_t *c, mutex_t *m)`
+  - `cond_signal` (function, line 143) `void cond_signal(cond_t *c)`
+  - `cond_broadcast` (function, line 147) `void cond_broadcast(cond_t *c)`
+  - `rwlock_init` (function, line 151) `void rwlock_init(rwlock_t *rw)`
+  - `rwlock_read_lock` (function, line 158) `void rwlock_read_lock(rwlock_t *rw)`
+  - `rwlock_read_unlock` (function, line 172) `void rwlock_read_unlock(rwlock_t *rw)`
+  - `rwlock_write_lock` (function, line 181) `void rwlock_write_lock(rwlock_t *rw)`
+  - `rwlock_write_unlock` (function, line 195) `void rwlock_write_unlock(rwlock_t *rw)`
 
 ## kernel/syscalls.c
 - Layer: utility

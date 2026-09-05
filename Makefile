@@ -916,6 +916,18 @@ vma_test: tests/test_vma.c vma.c vma.h
 test-vma: vma_test
 	$(TOOLS_DIR)/vma_test
 
+# Sync primitives host test (tests/test_sync.c + kernel/sync.c).
+# sync.c is scheduler-adjacent but keeps no other kernel dependency, so it
+# compiles against host stubs: cli/sti never execute on the host and
+# current_pid/schedule/proc_get come from the test file.
+sync_test: tests/test_sync.c kernel/sync.c sync.h sched.h spinlock.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -DSYNC_HOST_TEST -DSYNC_HOST_CURRENT_PID \
+		-Dcurrent_pid=t_cur_pid \
+		-o $(TOOLS_DIR)/sync_test tests/test_sync.c kernel/sync.c
+
+test-sync: sync_test
+	$(TOOLS_DIR)/sync_test
+
 # ── Ramdisk image ─────────────────────────────────────────────────
 # The Makefile is a prerequisite because it carries the file list: editing
 # PROGS must invalidate the image even when no individual file changed.
@@ -1132,11 +1144,14 @@ ap_stub.h: ap_stub.bin
 smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h ap_stub.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o kernel.ld
+sync.o: kernel/sync.c sync.h sched.h spinlock.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+kernel.elf: kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
 	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
-	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o -o $@
+	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@

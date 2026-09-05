@@ -51,6 +51,7 @@
 | `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 60 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 7 |
+| `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 19 |
 | `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 83 |
 | `kernel/time.c` | include "kernel.h"  ============================================================ | kernel | 3 |
 | `kernel/vga_fb.c` | - | kernel | 71 |
@@ -326,11 +327,13 @@
 | `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 3 |
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 30 |
 | `smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | root | 1 |
-| `spinlock.h` | ifndef SPINLOCK_H define SPINLOCK_H  spinlock.h -- Lightweight spinlock for Mini | root | 8 |
+| `spinlock.h` | ifndef SPINLOCK_H define SPINLOCK_H  spinlock.h -- Lightweight spinlock for Mini | root | 15 |
+| `sync.h` | ifndef SYNC_H define SYNC_H  sync.h -- Blocking synchronization primitives (road | root | 7 |
 | `test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the | root | 10 |
 | `test_http_server.py` | - | root | 3 |
 | `tests/host_aes.sh` | host_aes.sh - host-side verification for the AES-256-CTR command tools.  The min | tests | 3 |
 | `tests/host_codecs.sh` | host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The | tests | 5 |
+| `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 6 |
 | `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 8 |
 | `tls.h` | ifndef TLS_H define TLS_H  ========== TLS 1.2 client (RFC 5246) ========== | root | 42 |
 | `tls_port.h` | ifndef TLS_PORT_H define TLS_PORT_H  Portability shim between the MiniOS kernel  | root | 27 |

@@ -494,8 +494,8 @@ void kmain(void)`
 - Doc: ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Process states ----
 - Language: h
 - Symbols:
-  - `cpu` (struct, line 72)
-  - `__attribute__` (function, line 130) `typedef struct __attribute__((packed))`
+  - `cpu` (struct, line 73)
+  - `__attribute__` (function, line 134) `typedef struct __attribute__((packed))`
   - `SCHED_H` (macro, line 2)
   - `PROC_FREE` (macro, line 8)
   - `PROC_READY` (macro, line 9)
@@ -506,10 +506,10 @@ void kmain(void)`
   - `PROC_KSTACK_SZ` (macro, line 16)
   - `MAX_CPUS` (macro, line 19)
   - `BOOT_CPU` (macro, line 20)
-  - `CLONE_VM` (macro, line 48)
-  - `CLONE_FILES` (macro, line 49)
-  - `current_pid` (macro, line 103)
-  - `DESKTOP_TICK_INTERVAL` (macro, line 106)
+  - `CLONE_VM` (macro, line 49)
+  - `CLONE_FILES` (macro, line 50)
+  - `current_pid` (macro, line 106)
+  - `DESKTOP_TICK_INTERVAL` (macro, line 110)
 
 ## shell.h
 - Layer: utility
@@ -531,7 +531,7 @@ void kmain(void)`
   - `ap_delay` (function, line 90) `static void ap_delay(void)`
   - `ap_lapic_timer_init` (function, line 98) `static void ap_lapic_timer_init(void)`
   - `smp_ap_entry` (function, line 106) `void smp_ap_entry(void)`
-  - `smp_init` (function, line 147) `void smp_init(void)`
+  - `smp_init` (function, line 153) `void smp_init(void)`
   - `LAPIC_BASE` (macro, line 27)
   - `LAPIC_ID_OFF` (macro, line 29)
   - `LAPIC_SVR_OFF` (macro, line 30)
@@ -569,13 +569,33 @@ void kmain(void)`
 - Language: h
 - Symbols:
   - `spin_init` (function, line 44) `static inline void spin_init(spinlock_t *lock)`
-  - `spin_save_irq` (function, line 50) `static inline irqflags_t spin_save_irq(void)`
-  - `spin_restore_irq` (function, line 57) `static inline void spin_restore_irq(irqflags_t flags)`
-  - `spin_lock` (function, line 65) `static inline void spin_lock(spinlock_t *lock)`
-  - `spin_unlock` (function, line 75) `static inline void spin_unlock(spinlock_t *lock)`
-  - `spin_unlock_irqrestore` (function, line 95) `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
+  - `spin_save_irq` (function, line 55) `static inline irqflags_t spin_save_irq(void)`
+  - `spin_restore_irq` (function, line 56) `static inline void spin_restore_irq(irqflags_t flags)`
+  - `spin_lock` (function, line 57) `static inline void spin_lock(spinlock_t *lock)`
+  - `spin_unlock` (function, line 62) `static inline void spin_unlock(spinlock_t *lock)`
+  - `spin_lock_irqsave` (function, line 66) `static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags)`
+  - `spin_unlock_irqrestore` (function, line 72) `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
+  - `spin_trylock` (function, line 77) `static inline int spin_trylock(spinlock_t *lock)`
+  - `spin_save_irq` (function, line 85) `static inline irqflags_t spin_save_irq(void)`
+  - `spin_restore_irq` (function, line 92) `static inline void spin_restore_irq(irqflags_t flags)`
+  - `spin_lock` (function, line 100) `static inline void spin_lock(spinlock_t *lock)`
+  - `spin_unlock` (function, line 110) `static inline void spin_unlock(spinlock_t *lock)`
+  - `spin_unlock_irqrestore` (function, line 130) `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
   - `SPINLOCK_H` (macro, line 2)
   - `SPINLOCK_INIT` (macro, line 42)
+
+## sync.h
+- Layer: utility
+- Doc: ifndef SYNC_H define SYNC_H  sync.h -- Blocking synchronization primitives (roadmap Phase 3.1).
+- Language: h
+- Symbols:
+  - `SYNC_H` (macro, line 2)
+  - `WQ_NONE` (macro, line 38)
+  - `WAIT_QUEUE_INIT` (macro, line 46)
+  - `MUTEX_INIT` (macro, line 61)
+  - `SEM_INIT` (macro, line 74)
+  - `COND_INIT` (macro, line 88)
+  - `RWLOCK_INIT` (macro, line 103)
 
 ## test_bdd.sh
 - Layer: testing

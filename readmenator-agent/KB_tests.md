@@ -20,6 +20,18 @@
   - `roundtrip` (function, line 31)
   - `reject` (function, line 40)
 
+## tests/test_sync.c
+- Layer: testing
+- Doc: Host-side unit test for the blocking sync primitives (kernel/sync.c).
+- Language: c
+- Symbols:
+  - `proc_get` (function, line 23) `proc_t *proc_get(int pid)`
+  - `schedule` (function, line 29) `void schedule(void)`
+  - `fresh_proc` (function, line 43) `static void fresh_proc(int pid)`
+  - `fresh_all` (function, line 51) `static void fresh_all(void)`
+  - `main` (function, line 62) `int main(void)`
+  - `CHECK` (macro, line 36)
+
 ## tests/test_vma.c
 - Layer: testing
 - Doc: Host-side unit test for the VMA red-black tree (vma.c).

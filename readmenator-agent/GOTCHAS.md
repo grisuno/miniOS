@@ -11,7 +11,7 @@ These files have the most connections. Changes here have high blast radius.
 - `progs/doomgeneric/d_englsh.h` (score: 28.60)
 - `kernel/time.c` (score: 24.30)
 - `vga_fb.h` (score: 23.10)
-- `sched.h` (score: 17.60)
+- `sched.h` (score: 19.60)
 - `net.h` (score: 17.40)
 - `tls.h` (score: 16.20)
 

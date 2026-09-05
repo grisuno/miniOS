@@ -1410,57 +1410,57 @@ void kmain(void)`
 ### ring `* the hardware ring (CS RPL) and the fault address. */
         if ((frame->cs & 3) == 3 &&
       ...`
-- Defined: `kernel/sched.c:300`
+- Defined: `kernel/sched.c:302`
 
 ### proc_get `proc_t *proc_get(int pid)`
-- Defined: `kernel/sched.c:314`
+- Defined: `kernel/sched.c:316`
 - Doc: the hardware ring (CS RPL) and the fault address. if ((frame->cs & 3) == 3 && frame->rip >= 0x400000 && frame->rip < 0x0
 
 ### proc_create `int proc_create(const char *name, int parent_pid)`
-- Defined: `kernel/sched.c:320`
+- Defined: `kernel/sched.c:322`
 
 ### schedule `void schedule(void)`
-- Defined: `kernel/sched.c:373`
+- Defined: `kernel/sched.c:375`
 
 ### yield `void yield(void)`
-- Defined: `kernel/sched.c:396`
+- Defined: `kernel/sched.c:398`
 
 ### do_exit `void do_exit(int code)`
-- Defined: `kernel/sched.c:401`
+- Defined: `kernel/sched.c:403`
 
 ### do_waitpid `int do_waitpid(int pid)`
-- Defined: `kernel/sched.c:478`
+- Defined: `kernel/sched.c:480`
 
 ### do_kill `int do_kill(int pid)`
-- Defined: `kernel/sched.c:505`
+- Defined: `kernel/sched.c:507`
 
 ### timer_tick `void timer_tick(void)`
-- Defined: `kernel/sched.c:512`
+- Defined: `kernel/sched.c:514`
 
 ### mouse_wait_cmd `static void mouse_wait_cmd(void)`
-- Defined: `kernel/sched.c:516`
+- Defined: `kernel/sched.c:518`
 - Doc: schedule(); } } int do_kill(int pid) { proc_t *p = proc_get(pid); if (!p) return -1; do_exit(-1); return 0; } void timer
 
 ### mouse_wait_data `static void mouse_wait_data(void)`
-- Defined: `kernel/sched.c:522`
+- Defined: `kernel/sched.c:524`
 
 ### mouse_write `static void mouse_write(unsigned char data)`
-- Defined: `kernel/sched.c:529`
+- Defined: `kernel/sched.c:531`
 
 ### mouse_read `static unsigned char mouse_read(void)`
-- Defined: `kernel/sched.c:536`
+- Defined: `kernel/sched.c:538`
 
 ### mouse_hw_init `static void mouse_hw_init(void)`
-- Defined: `kernel/sched.c:541`
+- Defined: `kernel/sched.c:543`
 
 ### mouse_disable `void mouse_disable(void)`
-- Defined: `kernel/sched.c:585`
-
-### mouse_enable `void mouse_enable(void)`
 - Defined: `kernel/sched.c:587`
 
+### mouse_enable `void mouse_enable(void)`
+- Defined: `kernel/sched.c:589`
+
 ### sched_init `void sched_init(void)`
-- Defined: `kernel/sched.c:588`
+- Defined: `kernel/sched.c:590`
 
 ## kernel/scrollback.c
 
@@ -1756,6 +1756,66 @@ int console_getc(void)`
 
 ### k_spawn `int k_spawn(const char *name, int argc, char **argv)`
 - Defined: `kernel/symtab.c:64`
+
+## kernel/sync.c
+
+### wq_init `void wq_init(wait_queue_t *q)`
+- Defined: `kernel/sync.c:25`
+- Doc: endif
+
+### sleep_on `void sleep_on(wait_queue_t *q)`
+- Defined: `kernel/sync.c:31`
+
+### wake_up `int wake_up(wait_queue_t *q)`
+- Defined: `kernel/sync.c:52`
+
+### wake_up_all `int wake_up_all(wait_queue_t *q)`
+- Defined: `kernel/sync.c:68`
+
+### mutex_init `void mutex_init(mutex_t *m)`
+- Defined: `kernel/sync.c:74`
+
+### mutex_lock `void mutex_lock(mutex_t *m)`
+- Defined: `kernel/sync.c:81`
+
+### mutex_unlock `void mutex_unlock(mutex_t *m)`
+- Defined: `kernel/sync.c:96`
+
+### sem_init `void sem_init(sem_t *s, int value)`
+- Defined: `kernel/sync.c:105`
+
+### sem_wait `void sem_wait(sem_t *s)`
+- Defined: `kernel/sync.c:111`
+
+### sem_post `void sem_post(sem_t *s)`
+- Defined: `kernel/sync.c:125`
+
+### cond_init `void cond_init(cond_t *c)`
+- Defined: `kernel/sync.c:133`
+
+### cond_wait `void cond_wait(cond_t *c, mutex_t *m)`
+- Defined: `kernel/sync.c:137`
+
+### cond_signal `void cond_signal(cond_t *c)`
+- Defined: `kernel/sync.c:143`
+
+### cond_broadcast `void cond_broadcast(cond_t *c)`
+- Defined: `kernel/sync.c:147`
+
+### rwlock_init `void rwlock_init(rwlock_t *rw)`
+- Defined: `kernel/sync.c:151`
+
+### rwlock_read_lock `void rwlock_read_lock(rwlock_t *rw)`
+- Defined: `kernel/sync.c:158`
+
+### rwlock_read_unlock `void rwlock_read_unlock(rwlock_t *rw)`
+- Defined: `kernel/sync.c:172`
+
+### rwlock_write_lock `void rwlock_write_lock(rwlock_t *rw)`
+- Defined: `kernel/sync.c:181`
+
+### rwlock_write_unlock `void rwlock_write_unlock(rwlock_t *rw)`
+- Defined: `kernel/sync.c:195`
 
 ## kernel/syscalls.c
 
@@ -10652,7 +10712,7 @@ Z_DumpHeap
 ## sched.h
 
 ### __attribute__ `typedef struct __attribute__((packed))`
-- Defined: `sched.h:130`
+- Defined: `sched.h:134`
 - Doc: GS base: set to &cpus[cpu_id] for kernel execution  Shared data (protected by sched_lock): - procs[]: the process table 
 
 ## smp.c
@@ -10679,7 +10739,7 @@ Z_DumpHeap
 - Doc: Entry point every AP reaches from ap_entry.S.  Initializes per-CPU state, * GS base, IDTR, LAPIC timer, and enters an id
 
 ### smp_init `void smp_init(void)`
-- Defined: `smp.c:147`
+- Defined: `smp.c:153`
 
 ## spinlock.h
 
@@ -10688,23 +10748,45 @@ Z_DumpHeap
 - Doc: define SPINLOCK_INIT { .locked = 0 }
 
 ### spin_save_irq `static inline irqflags_t spin_save_irq(void)`
-- Defined: `spinlock.h:50`
-- Doc: typedef struct { volatile unsigned int locked; } spinlock_t; typedef unsigned long irqflags_t; #define SPINLOCK_INIT { .
+- Defined: `spinlock.h:55`
+- Doc: Host unit-test variants (tests/test_sync.c, `make test-sync`): cli/sti and pushf/popf are privileged and fault in usersp
 
 ### spin_restore_irq `static inline void spin_restore_irq(irqflags_t flags)`
-- Defined: `spinlock.h:57`
-- Doc: #define SPINLOCK_INIT { .locked = 0 } static inline void spin_init(spinlock_t *lock) { lock->locked = 0; } /* Read RFLAG
+- Defined: `spinlock.h:56`
 
 ### spin_lock `static inline void spin_lock(spinlock_t *lock)`
-- Defined: `spinlock.h:65`
+- Defined: `spinlock.h:57`
+
+### spin_unlock `static inline void spin_unlock(spinlock_t *lock)`
+- Defined: `spinlock.h:62`
+
+### spin_lock_irqsave `static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags)`
+- Defined: `spinlock.h:66`
+
+### spin_unlock_irqrestore `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
+- Defined: `spinlock.h:72`
+
+### spin_trylock `static inline int spin_trylock(spinlock_t *lock)`
+- Defined: `spinlock.h:77`
+
+### spin_save_irq `static inline irqflags_t spin_save_irq(void)`
+- Defined: `spinlock.h:85`
+- Doc: } static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags) { (void)flags; __sync_synchronize(); __s
+
+### spin_restore_irq `static inline void spin_restore_irq(irqflags_t flags)`
+- Defined: `spinlock.h:92`
+- Doc: int was = __sync_lock_test_and_set(&lock->locked, 1); if (!was) __sync_synchronize(); return !was; } #else /* Read RFLAG
+
+### spin_lock `static inline void spin_lock(spinlock_t *lock)`
+- Defined: `spinlock.h:100`
 - Doc: Acquire the lock and disable interrupts. Interrupts are disabled before the CAS loop to prevent ISR re-entry. The memory
 
 ### spin_unlock `static inline void spin_unlock(spinlock_t *lock)`
-- Defined: `spinlock.h:75`
+- Defined: `spinlock.h:110`
 - Doc: Release the lock and re-enable interrupts. The release uses __sync_lock_release which is a store-release with * the corr
 
 ### spin_unlock_irqrestore `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
-- Defined: `spinlock.h:95`
+- Defined: `spinlock.h:130`
 - Doc: Release the lock and restore the saved interrupt state. If the caller's interrupts were enabled before spin_lock_irqsave
 
 ## test_bdd.sh
@@ -10781,6 +10863,23 @@ Z_DumpHeap
 
 ### reject
 - Defined: `tests/host_codecs.sh:40`
+
+## tests/test_sync.c
+
+### proc_get `proc_t *proc_get(int pid)`
+- Defined: `tests/test_sync.c:23`
+
+### schedule `void schedule(void)`
+- Defined: `tests/test_sync.c:29`
+
+### fresh_proc `static void fresh_proc(int pid)`
+- Defined: `tests/test_sync.c:43`
+
+### fresh_all `static void fresh_all(void)`
+- Defined: `tests/test_sync.c:51`
+
+### main `int main(void)`
+- Defined: `tests/test_sync.c:62`
 
 ## tests/test_vma.c
 

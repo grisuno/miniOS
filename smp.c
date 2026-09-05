@@ -128,8 +128,14 @@ void smp_ap_entry(void) {
     /* Configure LAPIC timer at 100 Hz */
     ap_lapic_timer_init();
 
-    /* Update global cpu_count (visible to all CPUs) */
-    cpu_count = cpu + 1;
+    /* Update global cpu_count (visible to all CPUs) under smp_lock:
+     * concurrent APs must not interleave their read-modify-write. */
+    {
+        irqflags_t flags;
+        spin_lock_irqsave(&smp_lock, &flags);
+        cpu_count = cpu + 1;
+        spin_unlock_irqrestore(&smp_lock, flags);
+    }
 
     /* The AP does NOT print here: kprintf's stack usage plus the LAPIC
      * timer ISR trap frame overflows the identity-mapped low-memory

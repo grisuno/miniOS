@@ -46,6 +46,41 @@ static inline void spin_init(spinlock_t *lock) {
     lock->locked = 0;
 }
 
+#ifdef SYNC_HOST_TEST
+/* Host unit-test variants (tests/test_sync.c, `make test-sync`): cli/sti
+ * and pushf/popf are privileged and fault in userspace, so the host build
+ * spins on the GCC atomics only and treats interrupt state as a dummy
+ * value.  Kernel builds never define SYNC_HOST_TEST and always take the
+ * real path in the #else branch below. */
+static inline irqflags_t spin_save_irq(void) { return 0; }
+static inline void spin_restore_irq(irqflags_t flags) { (void)flags; }
+static inline void spin_lock(spinlock_t *lock) {
+    while (__sync_lock_test_and_set(&lock->locked, 1)) {
+    }
+    __sync_synchronize();
+}
+static inline void spin_unlock(spinlock_t *lock) {
+    __sync_synchronize();
+    __sync_lock_release(&lock->locked);
+}
+static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags) {
+    (void)flags;
+    while (__sync_lock_test_and_set(&lock->locked, 1)) {
+    }
+    __sync_synchronize();
+}
+static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags) {
+    (void)flags;
+    __sync_synchronize();
+    __sync_lock_release(&lock->locked);
+}
+static inline int spin_trylock(spinlock_t *lock) {
+    int was = __sync_lock_test_and_set(&lock->locked, 1);
+    if (!was) __sync_synchronize();
+    return !was;
+}
+#else
+
 /* Read RFLAGS and disable interrupts. */
 static inline irqflags_t spin_save_irq(void) {
     irqflags_t flags;
@@ -106,5 +141,7 @@ static inline int spin_trylock(spinlock_t *lock) {
     if (!was) __sync_synchronize();
     return !was;
 }
+
+#endif /* SYNC_HOST_TEST */
 
 #endif

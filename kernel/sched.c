@@ -179,7 +179,9 @@ static void tss_init(void) {
 /* ---- C dispatch from isr_common ---- */
 void isr_dispatch(int vector, trap_frame_t *frame) {
     if (vector == 32) {
-        sys_ticks++;
+        /* Atomic: the BSP's PIT and every AP's LAPIC timer all run this
+         * path, so a plain increment would lose ticks under SMP. */
+        __sync_fetch_and_add(&sys_ticks, 1);
         if (this_cpu()->is_bsp) {
             pic_eoi(0);
             sb16_poll();
@@ -510,7 +512,7 @@ int do_kill(int pid) {
     return 0;
 }
 
-void timer_tick(void) { sys_ticks++; }
+void timer_tick(void) { __sync_fetch_and_add(&sys_ticks, 1); }
 
 /* ---- PS/2 mouse hardware init ---- */
 static void mouse_wait_cmd(void) {

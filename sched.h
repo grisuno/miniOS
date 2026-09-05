@@ -41,6 +41,7 @@ typedef struct {
     uint64_t    brk_limit;
     uint64_t    mmap_cur;
     int         clone_flags;
+    int         wq_next;        /* next pid in a wait queue, WQ_NONE if none */
     char        name[32];
 } proc_t;
 
@@ -99,8 +100,11 @@ static inline cpu_t *this_cpu(void) {
 
 /* current_pid is a macro that resolves to the current CPU's PID.
  * This allows existing code to read/write current_pid without changes
- * while automatically becoming per-CPU when SMP is enabled. */
+ * while automatically becoming per-CPU when SMP is enabled.
+ * Host unit tests (SYNC_HOST_CURRENT_PID) map it to a test global. */
+#ifndef SYNC_HOST_CURRENT_PID
 #define current_pid (this_cpu()->cur_pid)
+#endif
 
 /* ---- Limits ---- */
 #define DESKTOP_TICK_INTERVAL 4
