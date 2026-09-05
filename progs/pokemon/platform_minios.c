@@ -535,6 +535,66 @@ static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
     return minios_save_helper(path, data, size);
 }
 
+/* --- In-game save flushing + emulator savestates ---
+ *
+ * The runtime only persists battery RAM on clean exit
+ * (gb_context_destroy); QEMU poweroff never takes that path, so MiniOS
+ * flushes SRAM itself: every 60 s via gb_context_save_ram(), plus
+ * on-demand full savestates with F5 / Ctrl+S (save) and F8 (load),
+ * matching upstream's convention. All files land on persistent MiniFS
+ * (bin/<save-id>.*). Single-threaded: these run between emulation
+ * slices, never concurrently with the CPU. */
+
+static uint32_t g_last_autosave_ms = 0;
+#define MINIOS_AUTOSAVE_MS 60000u
+
+static void minios_state_path(char *out, size_t n, const GBContext *ctx) {
+    const char *id = (ctx && ctx->save_id[0]) ? (const char *)ctx->save_id : "pokemon";
+    snprintf(out, n, "bin/%.40s.state", id);
+}
+
+static void minios_autosave(uint32_t now) {
+    if (!g_ctx || now - g_last_autosave_ms < MINIOS_AUTOSAVE_MS) {
+        return;
+    }
+    g_last_autosave_ms = now;
+    if (gb_context_save_ram(g_ctx)) {
+        fprintf(stderr, "[MINIOS] Autosaved battery/RTC\n");
+        fflush(stderr);
+    }
+}
+
+/* PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F */
+static void poll_hotkeys(void) {
+    static uint8_t prev[128];
+    bool f5 = g_key_state[0x3F] && !prev[0x3F];
+    bool f8 = g_key_state[0x42] && !prev[0x42];
+    bool ctrls = g_key_state[0x1F] && !prev[0x1F] && g_key_state[0x1D];
+    memcpy(prev, g_key_state, sizeof(prev));
+    if (!g_ctx) {
+        return;
+    }
+    if (f5 || ctrls) {
+        char path[64];
+        minios_state_path(path, sizeof(path), g_ctx);
+        if (gb_context_save_state_file(g_ctx, path)) {
+            fprintf(stderr, "[MINIOS] State saved to %s\n", path);
+        } else {
+            fprintf(stderr, "[MINIOS] State save FAILED\n");
+        }
+        fflush(stderr);
+    } else if (f8) {
+        char path[64];
+        minios_state_path(path, sizeof(path), g_ctx);
+        if (gb_context_load_state_file(g_ctx, path)) {
+            fprintf(stderr, "[MINIOS] State loaded from %s\n", path);
+        } else {
+            fprintf(stderr, "[MINIOS] State load FAILED (no checkpoint yet?)\n");
+        }
+        fflush(stderr);
+    }
+}
+
 void gb_platform_register_context(GBContext *ctx) {
     g_ctx = ctx;
     if (!ctx) {
@@ -561,6 +621,7 @@ void gb_platform_shutdown(void) {
 bool gb_platform_poll_events(GBContext *ctx) {
     (void)ctx;
     poll_keyboard();
+    poll_hotkeys();
     g_dbg_poll++;
     return true; /* never quit via window close on MiniOS */
 }
@@ -570,6 +631,7 @@ void gb_platform_render_frame(const uint32_t *framebuffer) {
 
     upload_frame(framebuffer);
     minios_audio_frame();
+    minios_autosave(now);
 
     memcpy(g_last_guest_framebuffer, framebuffer,
            sizeof(g_last_guest_framebuffer));
