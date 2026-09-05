@@ -34,6 +34,11 @@ Then build the MiniOS image from the repository root:
 make os.img                     # POKEMON_DIR defaults to progs/pokemon/game
 ```
 
+The build auto-applies two tiny additive patches to pristine
+generated trees (`main-minios.patch`: `--debug` flag,
+`runtime-audio-voice.patch`: speaker accessor), marker-gated and
+loud on failure. SDL builds are untouched by both.
+
 With a project elsewhere: `make POKEMON_DIR=/path/to/game os.img`.
 Without any project the pokemon build is skipped with a hint
 (`make` otherwise works normally, offline included).
@@ -53,18 +58,26 @@ serial prints cost frame rate). All other upstream runtime flags
 
 ## Audio
 
-PC speaker, DOOM-style: per-channel note frequencies are read from
-the APU registers once per frame and played as bass pedal + melody
-arpeggio (noise drums are dropped, like DOOM drops percussion). A PCM
-energy gate keeps envelopes, fades and silence honest. Tune
+PC speaker, DOOM-style: per-channel note frequencies come from
+`gb_audio_voice()` (a small additive runtime accessor over live
+channel state) once per frame and play as bass pedal + melody
+arpeggio (noise drums are dropped, like DOOM drops percussion).
+A PCM energy gate keeps envelopes, fades and silence honest. Tune
 `MINIOS_AUDIO_SILENCE_E` / `MINIOS_AUDIO_{MIN,MAX}_HZ` in
 `platform_minios.c` if music sounds wrong on your speaker.
 
+## Saves
+
+Battery saves and RTC data persist on MiniFS (`bin/<save-id>.sav`,
+`bin/<save-id>.rtc`) and survive reboot — unlike ramdisk files.
+Writes are direct (no atomic temp+rename yet: MiniOS has no
+`rename` syscall). If the in-game save says it saved but the file
+is missing after reboot, check `minifs_dump.py minifs.bin`.
+
 ## Known limits
 
-- No battery saves / RTC persistence yet (kernel `statx` stub
-  returns ENOENT; the ROM is embedded in the binary so the game
-  boots and plays regardless).
+- The NK desktop window title says "Nuklear" (kernel-side label,
+  cosmetic).
 - The NK desktop window title says "Nuklear" (kernel-side label,
   cosmetic).
 - Under QEMU-TCG (no KVM) the frame rate is low; use `run-kvm`

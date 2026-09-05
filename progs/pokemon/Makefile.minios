@@ -61,21 +61,29 @@ PLAT_OBJS = $(BUILD)/plat/platform_minios.o
 ALL_OBJS  = $(GAME_OBJS) $(RT_OBJS) $(PLAT_OBJS)
 
 MAIN_SRC = $(firstword $(wildcard $(GAME_DIR)/*_main.c))
-PATCH = $(CURDIR)/main-minios.patch
+MAIN_PATCH = $(CURDIR)/main-minios.patch
+AUDIO_PATCH = $(CURDIR)/runtime-audio-voice.patch
 
 .DEFAULT_GOAL := all
 
 .PHONY: all clean prebuild
 
-# The --debug flag needs 6 lines in generated main.c (see
-# main-minios.patch). Auto-applied once, marker-gated: trees that
-# already carry it (older port setups) are untouched. Fails loudly
-# instead of silently building without --debug support.
+# Two tiny additive patches keep pristine generated trees working with
+# zero manual steps (both marker-gated; trees that already carry them,
+# like older port setups, are untouched; failures are loud):
+#  - main-minios.patch: --debug flag in generated main.c
+#  - runtime-audio-voice.patch: gb_audio_voice() accessor for the
+#    PC speaker player (needs live envelope state SDL never required)
 prebuild:
 	@if [ -n "$(MAIN_SRC)" ] && ! grep -q "GB_MINIOS" "$(MAIN_SRC)"; then \
 	    echo "[Patch] --debug support: $(MAIN_SRC)"; \
 	    command -v patch >/dev/null || { echo "error: 'patch' not found (install patch and retry)"; exit 1; }; \
-	    patch "$(MAIN_SRC)" < "$(PATCH)" || { echo "error: patch failed; see README.md for the manual step"; exit 1; }; \
+	    patch "$(MAIN_SRC)" < "$(MAIN_PATCH)" || { echo "error: patch failed; see README.md for the manual step"; exit 1; }; \
+	fi
+	@if ! grep -q "gb_audio_voice" "$(GAME_DIR)/runtime/src/audio.c"; then \
+	    echo "[Patch] audio voice accessor: $(GAME_DIR)/runtime/src/audio.c"; \
+	    command -v patch >/dev/null || { echo "error: 'patch' not found (install patch and retry)"; exit 1; }; \
+	    patch -p1 -d "$(GAME_DIR)" < "$(AUDIO_PATCH)" || { echo "error: patch failed; see README.md for the manual step"; exit 1; }; \
 	fi
 
 all: prebuild $(TARGET)

@@ -1,0 +1,53 @@
+--- runtime/src/audio.c
++++ runtime/src/audio.c
+@@ -1075,3 +1075,32 @@
+     }
+ }
+ 
++/* Live voice state for 1-bit platform players (MiniOS PC speaker).
++ * channel: 0 = CH1 square, 1 = CH2 square, 2 = CH3 wave.
++ * Reports the sounding frequency in Hz when the channel is truly audible
++ * (enabled, DAC on, live envelope volume > 0, master on). Pure addition
++ * for ports; the SDL path is untouched. */
++bool gb_audio_voice(GBContext* ctx, int channel, unsigned* freq_hz) {
++    if (freq_hz) *freq_hz = 0;
++    if (!ctx) return false;
++    GBAudio* apu = (GBAudio*)ctx->apu;
++    if (!apu || !(apu->nr52 & 0x80)) return false;
++    unsigned n = 0;
++    bool on = false;
++    if (channel == 0) {
++        n = apu->ch1.sweep_enabled ? apu->ch1.shadow_freq
++            : ((unsigned)apu->ch1.nr13 | ((unsigned)(apu->ch1.nr14 & 0x07) << 8));
++        on = apu->ch1.enabled && (apu->ch1.nr12 & 0xF8u) && apu->ch1.volume > 0;
++    } else if (channel == 1) {
++        n = (unsigned)apu->ch2.nr23 | ((unsigned)(apu->ch2.nr24 & 0x07) << 8);
++        on = apu->ch2.enabled && (apu->ch2.nr22 & 0xF8u) && apu->ch2.volume > 0;
++    } else if (channel == 2) {
++        n = (unsigned)apu->ch3.nr33 | ((unsigned)(apu->ch3.nr34 & 0x07) << 8);
++        on = apu->ch3.enabled && (apu->ch3.nr30 & 0x80u) && ((apu->ch3.nr32 & 0x60u) != 0);
++    } else {
++        return false;
++    }
++    if (!on || n >= 2048u) return false;
++    if (freq_hz) *freq_hz = 131072u / (2048u - n);
++    return true;
++}
+--- runtime/include/audio.h
++++ runtime/include/audio.h
+@@ -135,6 +135,15 @@
+  */
+ void gb_audio_set_debug_trace(bool enabled);
+ 
++/**
++ * @brief Live voice state for 1-bit platform players (MiniOS PC speaker)
++ *
++ * channel: 0 = CH1 square, 1 = CH2 square, 2 = CH3 wave. Reports the
++ * sounding frequency in Hz when the channel is truly audible
++ * (enabled, DAC on, live envelope volume > 0, master on).
++ * Pure addition for ports; the SDL path is untouched.
++ */
++bool gb_audio_voice(GBContext* ctx, int channel, unsigned* freq_hz);
+ 
+ #ifdef __cplusplus
+ }

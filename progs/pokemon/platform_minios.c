@@ -39,6 +39,7 @@
 #include "gbrt.h"
 #include "ppu.h"
 #include "platform_sdl.h"
+#include "audio.h"
 
 #include <stdint.h>
 #include <string.h>
@@ -162,7 +163,19 @@ static void dbg_heartbeat(void) {
 }
 
 /* ============================================================================
- * PC speaker audio
+ * PC speaker audio (DOOM-style: sparse syscalls from poll points)
+ *
+ * Per rendered frame, live voice frequencies come from gb_audio_voice()
+ * (runtime accessor over internal channel state: enabled, DAC, LIVE
+ * envelope volume, master switch -- a decayed-but-on channel can never
+ * drone) and play as bass pedal + melody arpeggio with DOOM-like slots.
+ * The 44100 Hz on_audio_sample callback only accumulates zero crossings
+ * + energy (a handful of integer ops, no syscalls); its gate keeps
+ * envelopes, fades and silence honest, and its raw mix estimate covers
+ * passages with no tonal voice (noise SFX, sweep zaps). Noise-channel
+ * drums are dropped, exactly like DOOM drops the percussion channel.
+ * A syscall per sample (44k/sec) would die under emulation; here it is
+ * a handful per frame, max.
  * ========================================================================== */
 
 #define MINIOS_AUDIO_RATE       44100u
@@ -196,28 +209,20 @@ static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right) {
     g_audio_n++;
 }
 
-/* Self-healing registration: main.c touches callbacks after
- * gb_platform_register_context, so (re)install if missing. */
-static void minios_audio_ensure(GBContext *ctx) {
-    if (ctx && !ctx->callbacks.on_audio_sample) {
-        ctx->callbacks.on_audio_sample = minios_audio_sample;
-    }
-}
-
-/* --- Per-channel note frequencies from APU registers --- */
+/* --- Per-channel note frequencies, live from the APU ---
+ *
+ * Uses gb_audio_voice() (runtime accessor over the internal channel
+ * state: enabled flag, DAC, LIVE envelope volume, master switch), NOT
+ * the raw io[] mirror: io[0x26] only holds last-written values, its
+ * channel bits are never set there (the computed NR52 value exists
+ * only on the gb_audio_read path), so register snooping would gate
+ * every voice off and fall back to mush. Envelope volume also means
+ * a decayed-but-on channel can never drone. */
 
 typedef struct {
     unsigned freq;
     bool audible;
 } gb_voice_t;
-
-/* GB square/wave frequency: 131072 / (2048 - N), N = 11-bit register */
-static unsigned gb_voice_freq(unsigned n) {
-    if (n >= 2048u) {
-        return 0;
-    }
-    return 131072u / (2048u - n);
-}
 
 static bool gb_voice_in_range(unsigned f) {
     return f >= MINIOS_AUDIO_MIN_HZ && f <= MINIOS_AUDIO_MAX_HZ;
@@ -226,35 +231,17 @@ static bool gb_voice_in_range(unsigned f) {
 static void sample_apu_voices(gb_voice_t *v) {
     v[0].freq = v[1].freq = v[2].freq = 0;
     v[0].audible = v[1].audible = v[2].audible = false;
-    if (!g_ctx || !g_ctx->io) {
+    if (!g_ctx) {
         return;
     }
-    const uint8_t *io = g_ctx->io;
-    if (!(io[0x26] & 0x80u)) {
-        return; /* APU master off */
-    }
-    /* CH1 square+sweep: NR12 vol/env, NR13/NR14 freq, status bit 0 */
-    {
-        unsigned n = (((unsigned)(io[0x14] & 0x07)) << 8) | io[0x13];
-        v[0].freq = gb_voice_freq(n);
-        v[0].audible = (io[0x26] & 0x01u) && (io[0x12] & 0xF8u) &&
-                       ((io[0x12] >> 4) != 0) && gb_voice_in_range(v[0].freq);
-    }
-    /* CH2 square: NR22, NR23/NR24, status bit 1 */
-    {
-        unsigned n = (((unsigned)(io[0x19] & 0x07)) << 8) | io[0x18];
-        v[1].freq = gb_voice_freq(n);
-        v[1].audible = (io[0x26] & 0x02u) && (io[0x17] & 0xF8u) &&
-                       ((io[0x17] >> 4) != 0) && gb_voice_in_range(v[1].freq);
-    }
-    /* CH3 wave: NR30 DAC, NR32 vol code (0 = mute), NR33/NR34, bit 2 */
-    {
-        unsigned n = (((unsigned)(io[0x1E] & 0x07)) << 8) | io[0x1D];
-        v[2].freq = gb_voice_freq(n);
-        v[2].audible = (io[0x26] & 0x04u) && (io[0x1A] & 0x80u) &&
-                       ((io[0x1C] & 0x60u) != 0) && gb_voice_in_range(v[2].freq);
-    }
     /* CH4 noise: dropped, like DOOM drops the percussion channel */
+    for (int ch = 0; ch < 3; ch++) {
+        unsigned f = 0;
+        if (gb_audio_voice(g_ctx, ch, &f) && gb_voice_in_range(f)) {
+            v[ch].freq = f;
+            v[ch].audible = true;
+        }
+    }
 }
 
 /* --- DOOM-style player: bass pedal + melody arpeggio --- */
@@ -470,8 +457,98 @@ bool gb_platform_init(int scale) {
     return true;
 }
 
+/* --- Battery + RTC persistence (direct write to MiniFS) ---
+ *
+ * Paths use minifs bin/: kfopen checks the ramdisk FIRST, but the
+ * ramdisk has no bin/ directory, so these always land on persistent
+ * MiniFS and survive reboot (ramdisk files do not). Writes are direct
+ * (fopen w + fwrite + fclose); there is no rename() on MiniOS yet, so
+ * no atomic temp+rename transaction like the SDL port does. */
+
+static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
+                                const char *ext) {
+    const char *id = (ctx && ctx->save_id[0]) ? (const char *)ctx->save_id : "pokemon";
+    snprintf(out, n, "bin/%.40s%s", id, ext);
+}
+
+static bool minios_load_helper(const char *path, void *data, size_t size,
+                               GBContext *ctx) {
+    FILE *f = fopen(path, "rb");
+    if (!f) {
+        return false;
+    }
+    size_t got = fread(data, 1, size, f);
+    int trailing = fgetc(f);
+    fclose(f);
+    if (got != size || trailing != EOF) {
+        if (ctx) {
+            ctx->persistence_load_failed = true;
+        }
+        return false;
+    }
+    return true;
+}
+
+static bool minios_save_helper(const char *path, const void *data, size_t size) {
+    FILE *f = fopen(path, "wb");
+    if (!f) {
+        return false;
+    }
+    size_t wrote = fwrite(data, 1, size, f);
+    int ok = (wrote == size) && (fflush(f) == 0);
+    fclose(f);
+    return ok;
+}
+
+static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
+                                    void *data, size_t size) {
+    char path[64];
+    (void)rom_name;
+    minios_persist_path(path, sizeof(path), ctx, ".sav");
+    return minios_load_helper(path, data, size, ctx);
+}
+
+static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
+                                    const void *data, size_t size) {
+    char path[64];
+    (void)ctx;
+    (void)rom_name;
+    /* save_id may be empty before first boot; fall back inside helper */
+    minios_persist_path(path, sizeof(path), ctx, ".sav");
+    return minios_save_helper(path, data, size);
+}
+
+static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
+                                 void *data, size_t size) {
+    char path[64];
+    (void)rom_name;
+    minios_persist_path(path, sizeof(path), ctx, ".rtc");
+    return minios_load_helper(path, data, size, ctx);
+}
+
+static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
+                                 const void *data, size_t size) {
+    char path[64];
+    (void)ctx;
+    (void)rom_name;
+    minios_persist_path(path, sizeof(path), ctx, ".rtc");
+    return minios_save_helper(path, data, size);
+}
+
 void gb_platform_register_context(GBContext *ctx) {
     g_ctx = ctx;
+    if (!ctx) {
+        return;
+    }
+    /* Preserve hooks main.c may already hold (serial stdout); installing
+     * the battery callback also triggers the runtime's first load. */
+    GBPlatformCallbacks cbs = ctx->callbacks;
+    cbs.on_audio_sample = minios_audio_sample;
+    cbs.load_battery_ram = minios_load_battery_ram;
+    cbs.save_battery_ram = minios_save_battery_ram;
+    cbs.load_rtc_data = minios_load_rtc_data;
+    cbs.save_rtc_data = minios_save_rtc_data;
+    gb_set_platform_callbacks(ctx, &cbs);
 }
 
 void gb_platform_shutdown(void) {
@@ -482,8 +559,8 @@ void gb_platform_shutdown(void) {
 }
 
 bool gb_platform_poll_events(GBContext *ctx) {
+    (void)ctx;
     poll_keyboard();
-    minios_audio_ensure(ctx);
     g_dbg_poll++;
     return true; /* never quit via window close on MiniOS */
 }
@@ -492,7 +569,6 @@ void gb_platform_render_frame(const uint32_t *framebuffer) {
     uint32_t now = (uint32_t)sys_time_ms();
 
     upload_frame(framebuffer);
-    minios_audio_ensure(g_ctx);
     minios_audio_frame();
 
     memcpy(g_last_guest_framebuffer, framebuffer,
