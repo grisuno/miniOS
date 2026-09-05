@@ -138,6 +138,7 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(PROGS_DIR)/icons/doom.png \
             $(PROGS_DIR)/icons/nuklear.png \
             $(PROGS_DIR)/icons/piano.png \
+            $(PROGS_DIR)/icons/pokemon.png \
             $(DOC_DIR)/test.png
 
 all: os.img
@@ -640,6 +641,32 @@ $(PROGS_DIR)/baseq2/pak1.pak: $(Q2G_PLAYER_FILES) tools/mkpak1.py
 
 MINIFS_Q2G_FILES = $(if $(Q2G_AVAILABLE),$(BIN_DIR)/quake2generic.elf $(PROGS_DIR)/baseq2,)
 
+# ── Pokemon Crystal (GB Recompiled port, static glibc ELF) ──────────
+# Same contract as DOOM: host clang -static, ring-3 ET_EXEC, on MiniFS.
+# The game is a recompiled Game Boy Color ROM (generated C + runtime);
+# platform_minios.c replaces SDL2 with MiniOS syscalls (SYS_TIME 204,
+# SYS_KBD 205, SYS_DOOM_FRAME 211, SYS_PALETTE 206). 160x144 is scaled
+# 2x into the 320x200 DOOM back-buffer. No audio (stub), no saves
+# (statx stub returns ENOENT; ROM is embedded in the binary).
+# Location of the gb-recompiled generated project (platform_minios.c +
+# Makefile.minios live there). Unset by default; point it at your checkout:
+#   make POKEMON_DIR=/path/to/pokecrystal os.img
+# Build is conditional: skipped when the generated project is absent.
+POKEMON_DIR ?=
+POKEMON_AVAILABLE := $(if $(wildcard $(POKEMON_DIR)/Makefile.minios),1,0)
+
+ifeq ($(POKEMON_AVAILABLE),1)
+$(BIN_DIR)/pokemon.elf: $(POKEMON_DIR)/Makefile.minios $(POKEMON_DIR)/platform_minios.c
+	$(MAKE) -C $(POKEMON_DIR) -f Makefile.minios -j$$(nproc 2>/dev/null || echo 4) MINIOS_DIR=$(CURDIR)
+	cp $(POKEMON_DIR)/build_minios/pokemon.elf $@
+	chmod +x $@
+else
+$(BIN_DIR)/pokemon.elf:
+	@echo "SKIP $@ (set POKEMON_DIR=/path/to/generated-project, see Makefile)"
+endif
+
+MINIFS_POKEMON_FILES = $(if $(POKEMON_AVAILABLE),$(BIN_DIR)/pokemon.elf,)
+
 # ── MicroPython (microPython unix port, static glibc ELF) ──────────
 # Same contract as DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
 # The build writes into the micropython checkout (ports/unix/build-*),
@@ -792,7 +819,7 @@ $(BIN_DIR)/topogpt3: $(BIN_DIR)/topogpt3.elf
 # aes/unaes live on MiniFS (ramdisk budget): bare-name commands resolved
 # against the MiniFS root by shell_run_elf_minifs; src/aes.c rides along so
 # the OS can rebuild them without leaving the machine.
-MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
+MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
                $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
                $(PROGS_DIR)/lua/minios.c $(PROGS_DIR)/lua/lua_main.c \
                $(BIN_DIR)/topogpt3.elf $(BIN_DIR)/topogpt3 \
@@ -1038,7 +1065,8 @@ dlmalloc_impl.o: third_party/dlmalloc/dlmalloc_impl.c third_party/dlmalloc/mallo
 
 # Desktop icon PNGs: generated from pixel data by tools/gen_icons.py.
 $(PROGS_DIR)/icons/terminal.png $(PROGS_DIR)/icons/doom.png \
-$(PROGS_DIR)/icons/nuklear.png $(PROGS_DIR)/icons/piano.png: tools/gen_icons.py
+$(PROGS_DIR)/icons/nuklear.png $(PROGS_DIR)/icons/piano.png \
+$(PROGS_DIR)/icons/pokemon.png: tools/gen_icons.py
 	python3 tools/gen_icons.py $(PROGS_DIR)/icons/
 
 # Zip test fixtures: host-produced archives for the unzip builtin. host.zip
@@ -1099,8 +1127,9 @@ kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@
 
 # ── Disk image ────────────────────────────────────────────────────
-# MiniFS image: 128 MB filesystem appended after the kernel, contains DOOM
-MINIFS_BLOCKS ?= 65536
+# MiniFS image: 512 MB filesystem appended after the kernel, contains DOOM,
+# Quake 2 (pak0 alone is 184 MB) and the Pokemon Crystal port (88 MB ELF).
+MINIFS_BLOCKS ?= 131072
 
 # MiniFS content list lives in this Makefile too, so editing it must
 # invalidate the filesystem image exactly like ramdisk.bin.

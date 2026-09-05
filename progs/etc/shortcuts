@@ -9,3 +9,4 @@ DOOM|icons/doom.png|doomgeneric.elf
 Quake 2|icons/quake2.png|run quake2generic.elf +set basedir .
 Nuklear|icons/nuklear.png|nuklear
 Piano|icons/piano.png|piano
+Pokemon|icons/pokemon.png|pokemon.elf
