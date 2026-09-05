@@ -140,8 +140,8 @@
   - `vga_putc` (function, line 182) `void vga_putc(char c)`
   - `vga_puts` (function, line 220) `void vga_puts(const char *s)`
   - `syscall_init` (function, line 304) `void syscall_init(void)`
-  - `register_libc_symbols` (function, line 396) `static void register_libc_symbols(void)`
-  - `__attribute__` (function, line 471) `__attribute__((section(".init.text")))
+  - `register_libc_symbols` (function, line 398) `static void register_libc_symbols(void)`
+  - `__attribute__` (function, line 473) `__attribute__((section(".init.text")))
 void kmain(void)`
   - `XXH_STATIC_LINKING_ONLY` (macro, line 17)
   - `REDIR_INITIAL_CAP` (macro, line 119)
@@ -157,8 +157,8 @@ void kmain(void)`
 - Doc: ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory layout (load base, stack, brk cap, graphic
 - Language: h
 - Symbols:
-  - `vfs_ops` (struct, line 245)
-  - `vfs_file` (struct, line 254)
+  - `vfs_ops` (struct, line 246)
+  - `vfs_file` (struct, line 255)
   - `outb` (function, line 20) `static inline void outb(unsigned short port, unsigned char val)`
   - `inb` (function, line 23) `static inline unsigned char inb(unsigned short port)`
   - `outw` (function, line 28) `static inline void outw(unsigned short port, unsigned short val)`
@@ -210,17 +210,17 @@ void kmain(void)`
   - `SYS_KSTK_BASE` (macro, line 129)
   - `HEAP_BASE` (macro, line 130)
   - `HEAP_SIZE` (macro, line 132)
-  - `RAMDISK_MAX_FILES` (macro, line 170)
-  - `RAMDISK_FNAME_LEN` (macro, line 171)
-  - `RD_DATA_MAX` (macro, line 190)
-  - `EOF` (macro, line 296)
-  - `KSYM_MAX` (macro, line 392)
-  - `KPROG_MAX` (macro, line 394)
-  - `EI_NIDENT` (macro, line 465)
-  - `ET_REL` (macro, line 489)
-  - `ET_EXEC` (macro, line 491)
-  - `ET_DYN` (macro, line 492)
-  - `KFD_MAX` (macro, line 505)
+  - `RAMDISK_MAX_FILES` (macro, line 171)
+  - `RAMDISK_FNAME_LEN` (macro, line 172)
+  - `RD_DATA_MAX` (macro, line 191)
+  - `EOF` (macro, line 297)
+  - `KSYM_MAX` (macro, line 393)
+  - `KPROG_MAX` (macro, line 395)
+  - `EI_NIDENT` (macro, line 466)
+  - `ET_REL` (macro, line 490)
+  - `ET_EXEC` (macro, line 492)
+  - `ET_DYN` (macro, line 493)
+  - `KFD_MAX` (macro, line 506)
 
 ## lz4_kernel.h
 - Layer: utility
@@ -347,8 +347,8 @@ void kmain(void)`
   - `usage` (function, line 51)
   - `restore_sources` (function, line 87)
   - `cleanup` (function, line 94)
-  - `record` (function, line 194)
-  - `find_index` (function, line 200)
+  - `record` (function, line 201)
+  - `find_index` (function, line 207)
 
 ## net.h
 - Layer: utility
@@ -494,6 +494,8 @@ void kmain(void)`
 - Doc: ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Process states ----
 - Language: h
 - Symbols:
+  - `cpu` (struct, line 72)
+  - `__attribute__` (function, line 130) `typedef struct __attribute__((packed))`
   - `SCHED_H` (macro, line 2)
   - `PROC_FREE` (macro, line 8)
   - `PROC_READY` (macro, line 9)
@@ -502,7 +504,12 @@ void kmain(void)`
   - `PROC_ZOMBIE` (macro, line 12)
   - `MAX_PROCS` (macro, line 15)
   - `PROC_KSTACK_SZ` (macro, line 16)
-  - `DESKTOP_TICK_INTERVAL` (macro, line 41)
+  - `MAX_CPUS` (macro, line 19)
+  - `BOOT_CPU` (macro, line 20)
+  - `CLONE_VM` (macro, line 48)
+  - `CLONE_FILES` (macro, line 49)
+  - `current_pid` (macro, line 103)
+  - `DESKTOP_TICK_INTERVAL` (macro, line 106)
 
 ## shell.h
 - Layer: utility
@@ -515,30 +522,39 @@ void kmain(void)`
 
 ## smp.c
 - Layer: utility
-- Doc: include "kernel.h" include "bootdefs.h" include "smp.h" include "ap_stub.h"  SMP application-processor bring-up.
+- Doc: include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" include "ap_stub.h" include "arch/x86/msr.h"  
 - Language: c
 - Symbols:
-  - `lapic_read` (function, line 51) `static unsigned lapic_read(unsigned off)`
-  - `lapic_write` (function, line 55) `static void lapic_write(unsigned off, unsigned val)`
-  - `map_lapic` (function, line 62) `static int map_lapic(void)`
-  - `lapic_send_ipi` (function, line 74) `static void lapic_send_ipi(unsigned delivery, unsigned vector)`
-  - `ap_delay` (function, line 81) `static void ap_delay(void)`
-  - `smp_ap_entry` (function, line 89) `void smp_ap_entry(void)`
-  - `smp_init` (function, line 95) `void smp_init(void)`
-  - `LAPIC_BASE` (macro, line 24)
-  - `LAPIC_ID_OFF` (macro, line 26)
-  - `LAPIC_SVR_OFF` (macro, line 27)
-  - `LAPIC_ICR_HI` (macro, line 28)
-  - `LAPIC_ICR_LO` (macro, line 29)
-  - `LAPIC_SVR_ENABLE` (macro, line 30)
-  - `LAPIC_ICR_BUSY` (macro, line 32)
-  - `LAPIC_ICR_INIT` (macro, line 33)
-  - `LAPIC_ICR_SIPI` (macro, line 34)
-  - `LAPIC_ICR_ALL_EXC` (macro, line 35)
-  - `SIPI_VECTOR` (macro, line 36)
-  - `LAPIC_PD_ADDR` (macro, line 45)
-  - `LAPIC_PDPT_SLOT` (macro, line 46)
-  - `LAPIC_PD_IDX` (macro, line 47)
+  - `lapic_read` (function, line 67) `static unsigned lapic_read(unsigned off)`
+  - `lapic_write` (function, line 71) `static void lapic_write(unsigned off, unsigned val)`
+  - `map_lapic` (function, line 78) `static int map_lapic(void)`
+  - `ap_delay` (function, line 90) `static void ap_delay(void)`
+  - `ap_lapic_timer_init` (function, line 98) `static void ap_lapic_timer_init(void)`
+  - `smp_ap_entry` (function, line 106) `void smp_ap_entry(void)`
+  - `smp_init` (function, line 147) `void smp_init(void)`
+  - `LAPIC_BASE` (macro, line 27)
+  - `LAPIC_ID_OFF` (macro, line 29)
+  - `LAPIC_SVR_OFF` (macro, line 30)
+  - `LAPIC_ICR_HI` (macro, line 31)
+  - `LAPIC_ICR_LO` (macro, line 32)
+  - `LAPIC_TIMER_DIV` (macro, line 33)
+  - `LAPIC_TIMER_INIT` (macro, line 34)
+  - `LAPIC_TIMER_CUR` (macro, line 35)
+  - `LAPIC_TIMER_VEC` (macro, line 36)
+  - `LAPIC_SVR_ENABLE` (macro, line 37)
+  - `LAPIC_ICR_BUSY` (macro, line 39)
+  - `LAPIC_ICR_INIT` (macro, line 40)
+  - `LAPIC_ICR_SIPI` (macro, line 41)
+  - `LAPIC_ICR_ALL_EXC` (macro, line 42)
+  - `LAPIC_ICR_LEVEL` (macro, line 43)
+  - `LAPIC_ICR_TRIGGER` (macro, line 44)
+  - `SIPI_VECTOR` (macro, line 45)
+  - `PIT_HZ` (macro, line 49)
+  - `LAPIC_TIMER_DIVIDE_16` (macro, line 52)
+  - `LAPIC_TIMER_PERIODIC` (macro, line 53)
+  - `LAPIC_PD_ADDR` (macro, line 61)
+  - `LAPIC_PDPT_SLOT` (macro, line 62)
+  - `LAPIC_PD_IDX` (macro, line 63)
 
 ## smp.h
 - Layer: utility
@@ -568,13 +584,14 @@ void kmain(void)`
 - Symbols:
   - `cleanup_stale_qemu` (function, line 31)
   - `scenario` (function, line 42)
-  - `expect` (function, line 60)
-  - `expect_count` (function, line 81)
-  - `refute` (function, line 103)
-  - `http_server_start` (function, line 599)
-  - `http_server_stop` (function, line 606)
-  - `http_fixture_start` (function, line 611)
-  - `http_fixture_stop` (function, line 618)
+  - `scenario_smp` (function, line 60)
+  - `expect` (function, line 79)
+  - `expect_count` (function, line 100)
+  - `refute` (function, line 122)
+  - `http_server_start` (function, line 626)
+  - `http_server_stop` (function, line 633)
+  - `http_fixture_start` (function, line 638)
+  - `http_fixture_stop` (function, line 645)
 
 ## test_http_server.py
 - Layer: testing

@@ -8,20 +8,19 @@
   - `ap_stub_start` (function, line 21)
   - `ap_pm` (function, line 39)
   - `ap_lm` (function, line 62)
-  - `ap_patch_slot` (function, line 77)
-  - `ap_gdt32` (function, line 81)
-  - `ap_gdt32_ptr` (function, line 85)
-  - `ap_gdt32_end` (function, line 88)
-  - `ap_gdt64_ptr` (function, line 90)
-  - `ap_stub_end` (function, line 95)
+  - `ap_patch_slot` (function, line 80)
+  - `ap_gdt32` (function, line 84)
+  - `ap_gdt32_ptr` (function, line 88)
+  - `ap_gdt32_end` (function, line 91)
+  - `ap_gdt64_ptr` (function, line 93)
+  - `ap_stub_end` (function, line 98)
 
 ## arch/x86/ctx_sw.S
 - Layer: utility
 - Language: S
 - Symbols:
-  - `switch_to_next` (function, line 21)
-  - `switch_to` (function, line 26)
-  - `user_trampoline` (function, line 103)
+  - `switch_to` (function, line 21)
+  - `user_trampoline` (function, line 96)
 
 ## arch/x86/isr_stubs.S
 - Layer: testing
@@ -50,7 +49,7 @@
   - `tf_vector` (function, line 87)
   - `tf_errcode` (function, line 88)
   - `isr_common` (function, line 96)
-  - `isr_stub_table` (function, line 181)
+  - `isr_stub_table` (function, line 195)
 
 ## arch/x86/msr.h
 - Layer: utility

@@ -12,23 +12,23 @@
 - Defined: `arch/x86/ap_entry.S:62`
 
 ### ap_patch_slot
-- Defined: `arch/x86/ap_entry.S:77`
+- Defined: `arch/x86/ap_entry.S:80`
 
 ### ap_gdt32
-- Defined: `arch/x86/ap_entry.S:81`
+- Defined: `arch/x86/ap_entry.S:84`
 
 ### ap_gdt32_ptr
-- Defined: `arch/x86/ap_entry.S:85`
+- Defined: `arch/x86/ap_entry.S:88`
 - Doc: movw %ax, %ss /* Load smp_ap_entry()'s address from the BSP-patched slot and go. mov ap_patch_slot(%rip), %rax jmp *%rax
 
 ### ap_gdt32_end
-- Defined: `arch/x86/ap_entry.S:88`
+- Defined: `arch/x86/ap_entry.S:91`
 
 ### ap_gdt64_ptr
-- Defined: `arch/x86/ap_entry.S:90`
+- Defined: `arch/x86/ap_entry.S:93`
 
 ### ap_stub_end
-- Defined: `arch/x86/ap_entry.S:95`
+- Defined: `arch/x86/ap_entry.S:98`
 
 ## arch/x86/boot/stage1.S
 
@@ -190,14 +190,11 @@
 
 ## arch/x86/ctx_sw.S
 
-### switch_to_next
+### switch_to
 - Defined: `arch/x86/ctx_sw.S:21`
 
-### switch_to
-- Defined: `arch/x86/ctx_sw.S:26`
-
 ### user_trampoline
-- Defined: `arch/x86/ctx_sw.S:103`
+- Defined: `arch/x86/ctx_sw.S:96`
 
 ## arch/x86/isr_stubs.S
 
@@ -271,7 +268,7 @@
 - Defined: `arch/x86/isr_stubs.S:96`
 
 ### isr_stub_table
-- Defined: `arch/x86/isr_stubs.S:181`
+- Defined: `arch/x86/isr_stubs.S:195`
 
 ## arch/x86/msr.h
 
@@ -948,12 +945,12 @@ static int zip_sanitize_name(con...`
 - Defined: `kernel.c:304`
 
 ### register_libc_symbols `static void register_libc_symbols(void)`
-- Defined: `kernel.c:396`
+- Defined: `kernel.c:398`
 - Doc: ================================================================ Libc symbol registration * ============================
 
 ### __attribute__ `__attribute__((section(".init.text")))
 void kmain(void)`
-- Defined: `kernel.c:471`
+- Defined: `kernel.c:473`
 
 ## kernel.h
 
@@ -1187,10 +1184,10 @@ void kmain(void)`
 - Defined: `kernel/exec.c:116`
 
 ### k_run_rel `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
-- Defined: `kernel/exec.c:197`
+- Defined: `kernel/exec.c:201`
 
 ### kexit `void kexit(int code)`
-- Defined: `kernel/exec.c:229`
+- Defined: `kernel/exec.c:233`
 
 ## kernel/klog.c
 
@@ -1263,20 +1260,24 @@ void kmain(void)`
 ## kernel/mm.c
 
 ### kallocator_init `void kallocator_init(void)`
-- Defined: `kernel/mm.c:11`
+- Defined: `kernel/mm.c:12`
 - Doc: ================================================================ Memory allocator  Thin wrappers over dlmalloc 2.8.6 (th
 
 ### kmalloc `void *kmalloc(unsigned long size)`
-- Defined: `kernel/mm.c:15`
+- Defined: `kernel/mm.c:16`
 
 ### kfree `void kfree(void *ptr)`
-- Defined: `kernel/mm.c:20`
+- Defined: `kernel/mm.c:21`
 
 ### kcalloc `void *kcalloc(unsigned long nmemb, unsigned long size)`
-- Defined: `kernel/mm.c:25`
+- Defined: `kernel/mm.c:26`
 
 ### krealloc `void *krealloc(void *ptr, unsigned long size)`
-- Defined: `kernel/mm.c:29`
+- Defined: `kernel/mm.c:30`
+
+### kmalloc_percpu `void *kmalloc_percpu(unsigned long size, unsigned long align)`
+- Defined: `kernel/mm.c:47`
+- Doc: Per-CPU memory allocation.  Allocates cpu_count * size bytes, aligned to `align`, zeroed. Each CPU accesses its own regi
 
 ## kernel/mm/paging.c
 
@@ -1364,101 +1365,102 @@ void kmain(void)`
 ## kernel/sched.c
 
 ### read_cr3 `static inline unsigned long read_cr3(void)`
-- Defined: `kernel/sched.c:27`
+- Defined: `kernel/sched.c:29`
 
 ### __attribute__ `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:35`
-- Doc: int    current_pid; volatile uint64_t sys_ticks; volatile int user_program_active; spinlock_t sched_lock = SPINLOCK_INIT
+- Defined: `kernel/sched.c:37`
+- Doc: int    cpu_count = 1; volatile uint64_t sys_ticks; volatile int user_program_active; spinlock_t sched_lock = SPINLOCK_IN
 
 ### __attribute__ `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:47`
+- Defined: `kernel/sched.c:49`
 - Doc: /* ---- TSS ---- typedef struct __attribute__((packed)) { uint32_t res0; uint64_t rsp0, rsp1, rsp2; uint64_t res1; uint6
 
-### __attribute__ `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:52`
-
 ### alloc_kstack `static uint64_t alloc_kstack(void)`
-- Defined: `kernel/sched.c:59`
+- Defined: `kernel/sched.c:63`
+- Doc: typedef struct __attribute__((packed)) { uint16_t off_lo; uint16_t sel; uint8_t ist; uint8_t type_attr; uint16_t off_mid
+
+### free_kstack `static void free_kstack(uint64_t top)`
+- Defined: `kernel/sched.c:74`
 
 ### idt_set `static void idt_set(int vec, void (*h)(void))`
-- Defined: `kernel/sched.c:74`
-- Doc: static uint64_t alloc_kstack(void) { if (kstack_idx >= MAX_PROCS) return 0; return (uint64_t)&kstack_pool[kstack_idx++][
+- Defined: `kernel/sched.c:90`
+- Doc: if (!top) return; int idx = (int)(((char *)top - (char *)kstack_pool) / (16*1024)); if (idx >= 0 && idx < MAX_PROCS) kst
 
 ### idt_init `static void idt_init(void)`
-- Defined: `kernel/sched.c:84`
+- Defined: `kernel/sched.c:100`
 
 ### pic_init `static void pic_init(void)`
-- Defined: `kernel/sched.c:98`
-- Doc: static void idt_init(void) { kmemset(idt, 0, sizeof(idt)); int i; for (i = 0; i < 256; i++) if (isr_stub_table[i]) idt_s
+- Defined: `kernel/sched.c:113`
+- Doc: } static void idt_init(void) { kmemset(idt, 0, sizeof(idt)); int i; for (i = 0; i < 256; i++) if (isr_stub_table[i]) idt
 
 ### pit_init `static void pit_init(void)`
-- Defined: `kernel/sched.c:111`
+- Defined: `kernel/sched.c:126`
 - Doc: Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + * IRQ5 (Sound Blaster 16 DMA done).  0xD8 = ~bits 2,3,4
 
 ### pic_eoi `static void pic_eoi(int irq)`
-- Defined: `kernel/sched.c:117`
+- Defined: `kernel/sched.c:132`
 
 ### tss_init `static void tss_init(void)`
-- Defined: `kernel/sched.c:125`
+- Defined: `kernel/sched.c:140`
 
 ### isr_dispatch `void isr_dispatch(int vector, trap_frame_t *frame)`
-- Defined: `kernel/sched.c:165`
+- Defined: `kernel/sched.c:180`
 - Doc: tss_gdtr_buf[2] = gdtr_base & 0xFF; tss_gdtr_buf[3] = (gdtr_base >> 8) & 0xFF; tss_gdtr_buf[4] = (gdtr_base >> 16) & 0xF
 
 ### ring `* the hardware ring (CS RPL) and the fault address. */
         if ((frame->cs & 3) == 3 &&
       ...`
-- Defined: `kernel/sched.c:277`
+- Defined: `kernel/sched.c:300`
 
 ### proc_get `proc_t *proc_get(int pid)`
-- Defined: `kernel/sched.c:291`
+- Defined: `kernel/sched.c:314`
 - Doc: the hardware ring (CS RPL) and the fault address. if ((frame->cs & 3) == 3 && frame->rip >= 0x400000 && frame->rip < 0x0
 
 ### proc_create `int proc_create(const char *name, int parent_pid)`
-- Defined: `kernel/sched.c:297`
+- Defined: `kernel/sched.c:320`
 
 ### schedule `void schedule(void)`
-- Defined: `kernel/sched.c:337`
+- Defined: `kernel/sched.c:373`
 
 ### yield `void yield(void)`
-- Defined: `kernel/sched.c:356`
+- Defined: `kernel/sched.c:396`
 
 ### do_exit `void do_exit(int code)`
-- Defined: `kernel/sched.c:361`
+- Defined: `kernel/sched.c:401`
 
 ### do_waitpid `int do_waitpid(int pid)`
-- Defined: `kernel/sched.c:381`
+- Defined: `kernel/sched.c:478`
 
 ### do_kill `int do_kill(int pid)`
-- Defined: `kernel/sched.c:406`
+- Defined: `kernel/sched.c:505`
 
 ### timer_tick `void timer_tick(void)`
-- Defined: `kernel/sched.c:413`
+- Defined: `kernel/sched.c:512`
 
 ### mouse_wait_cmd `static void mouse_wait_cmd(void)`
-- Defined: `kernel/sched.c:417`
+- Defined: `kernel/sched.c:516`
 - Doc: schedule(); } } int do_kill(int pid) { proc_t *p = proc_get(pid); if (!p) return -1; do_exit(-1); return 0; } void timer
 
 ### mouse_wait_data `static void mouse_wait_data(void)`
-- Defined: `kernel/sched.c:423`
+- Defined: `kernel/sched.c:522`
 
 ### mouse_write `static void mouse_write(unsigned char data)`
-- Defined: `kernel/sched.c:430`
+- Defined: `kernel/sched.c:529`
 
 ### mouse_read `static unsigned char mouse_read(void)`
-- Defined: `kernel/sched.c:437`
+- Defined: `kernel/sched.c:536`
 
 ### mouse_hw_init `static void mouse_hw_init(void)`
-- Defined: `kernel/sched.c:442`
+- Defined: `kernel/sched.c:541`
 
 ### mouse_disable `void mouse_disable(void)`
-- Defined: `kernel/sched.c:486`
+- Defined: `kernel/sched.c:585`
 
 ### mouse_enable `void mouse_enable(void)`
-- Defined: `kernel/sched.c:488`
+- Defined: `kernel/sched.c:587`
 
 ### sched_init `void sched_init(void)`
-- Defined: `kernel/sched.c:489`
+- Defined: `kernel/sched.c:588`
 
 ## kernel/scrollback.c
 
@@ -1757,32 +1759,119 @@ int console_getc(void)`
 
 ## kernel/syscalls.c
 
+### sys_minios_dns `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:59`
+
+### sys_minios_tls_handshake `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:65`
+
+### sys_minios_tls_send `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:70`
+
+### sys_minios_tls_recv `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:75`
+
+### sys_minios_time `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:80`
+
+### sys_minios_kbd `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:84`
+
+### sys_minios_palette `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:99`
+
+### sys_minios_kbd_raw `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:107`
+
+### sys_minios_vga_mode `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:113`
+
+### sys_minios_pcspk_init `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:120`
+
+### sys_minios_pcspk_tone `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:124`
+
+### sys_minios_doom_frame `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:128`
+
+### sys_minios_rtc `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:132`
+
+### sys_minios_fb_info `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:146`
+
+### sys_minios_pcspk_vol `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:158`
+
+### sys_minios_spawn `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:166`
+
+### sys_minios_lz4_compress `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:172`
+
+### sys_minios_lz4_decompress `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:185`
+
+### sys_minios_mouse `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:199`
+
+### sys_minios_nk_frame `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:208`
+
+### sys_minios_sb16_open `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:218`
+
+### sys_minios_sb16_submit `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:223`
+
+### sys_minios_gfx_title `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:231`
+
+### sys_minios_sb16_pump `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:245`
+
+### sys_minios_sb16_stream_open `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:249`
+
+### sys_minios_sb16_stream_close `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:253`
+
+### sys_minios_sb16_stream_submit `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:257`
+
+### sys_minios_sb16_stream_vol `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:265`
+
+### sys_minios_clone `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:275`
+
 ### syscall_trace_enabled `long syscall_trace_enabled(void)`
-- Defined: `kernel/syscalls.c:41`
+- Defined: `kernel/syscalls.c:318`
 
 ### syscall_trace_set `void syscall_trace_set(int on)`
-- Defined: `kernel/syscalls.c:43`
+- Defined: `kernel/syscalls.c:320`
 
 ### trace_is_noisy `static int trace_is_noisy(long n)`
-- Defined: `kernel/syscalls.c:56`
+- Defined: `kernel/syscalls.c:331`
 
 ### ksyscall `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:60`
+- Defined: `kernel/syscalls.c:335`
 
 ### user_range_ok `int user_range_ok(unsigned long p, unsigned long len)`
-- Defined: `kernel/syscalls.c:79`
+- Defined: `kernel/syscalls.c:354`
 - Doc: --- User-pointer validation --------------------------------------------- The syscall boundary is the hardened edge betw
 
 ### user_str_ok `int user_str_ok(unsigned long p, unsigned long maxlen)`
-- Defined: `kernel/syscalls.c:85`
+- Defined: `kernel/syscalls.c:360`
 
 ### ksyscall_dispatch `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:93`
+- Defined: `kernel/syscalls.c:368`
 
 ### tools `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
-- Defined: `kernel/syscalls.c:622`
+- Defined: `kernel/syscalls.c:907`
 
 ## kernel/time.c
 
@@ -2765,10 +2854,10 @@ int console_getc(void)`
 - Defined: `mutate.sh:94`
 
 ### record
-- Defined: `mutate.sh:194`
+- Defined: `mutate.sh:201`
 
 ### find_index
-- Defined: `mutate.sh:200`
+- Defined: `mutate.sh:207`
 - Doc: Locate a mutant by name.
 
 ## net/net.c
@@ -10244,30 +10333,37 @@ Z_DumpHeap
 - Defined: `qga.c:446`
 - Doc: Accumulate bytes until a complete line, then parse and answer it. Callers * call it once per idle spin of the shell's ra
 
+## sched.h
+
+### __attribute__ `typedef struct __attribute__((packed))`
+- Defined: `sched.h:130`
+- Doc: GS base: set to &cpus[cpu_id] for kernel execution  Shared data (protected by sched_lock): - procs[]: the process table 
+
 ## smp.c
 
 ### lapic_read `static unsigned lapic_read(unsigned off)`
-- Defined: `smp.c:51`
+- Defined: `smp.c:67`
 
 ### lapic_write `static void lapic_write(unsigned off, unsigned val)`
-- Defined: `smp.c:55`
+- Defined: `smp.c:71`
 
 ### map_lapic `static int map_lapic(void)`
-- Defined: `smp.c:62`
+- Defined: `smp.c:78`
 - Doc: Map the LAPIC so the BSP can program the ICR, and the APs can read their id registers.  Extends stage 2's tables: PDPT s
 
-### lapic_send_ipi `static void lapic_send_ipi(unsigned delivery, unsigned vector)`
-- Defined: `smp.c:74`
-
 ### ap_delay `static void ap_delay(void)`
-- Defined: `smp.c:81`
+- Defined: `smp.c:90`
+
+### ap_lapic_timer_init `static void ap_lapic_timer_init(void)`
+- Defined: `smp.c:98`
+- Doc: Configure this AP's local LAPIC timer to fire at 100 Hz (matching the * BSP's PIT rate).  Uses divide-by-16 and periodic
 
 ### smp_ap_entry `void smp_ap_entry(void)`
-- Defined: `smp.c:89`
-- Doc: static void lapic_send_ipi(unsigned delivery, unsigned vector) { lapic_write(LAPIC_ICR_HI, 0);                 /* unused
+- Defined: `smp.c:106`
+- Doc: Entry point every AP reaches from ap_entry.S.  Initializes per-CPU state, * GS base, IDTR, LAPIC timer, and enters an id
 
 ### smp_init `void smp_init(void)`
-- Defined: `smp.c:95`
+- Defined: `smp.c:147`
 
 ## spinlock.h
 
@@ -10304,29 +10400,33 @@ Z_DumpHeap
 - Defined: `test_bdd.sh:42`
 - Doc: scenario <name> <script of shell commands>
 
-### expect
+### scenario_smp
 - Defined: `test_bdd.sh:60`
+- Doc: scenario_smp <name> <script> -- same as scenario but with -smp 2
+
+### expect
+- Defined: `test_bdd.sh:79`
 - Doc: expect <marker>
 
 ### expect_count
-- Defined: `test_bdd.sh:81`
+- Defined: `test_bdd.sh:100`
 - Doc: expect_count <count> <marker>: the marker must appear exactly that many times in the log. Used where a single occurrence
 
 ### refute
-- Defined: `test_bdd.sh:103`
+- Defined: `test_bdd.sh:122`
 - Doc: refute <marker>: the marker must NOT appear (suppressed hostile content).
 
 ### http_server_start
-- Defined: `test_bdd.sh:599`
+- Defined: `test_bdd.sh:626`
 
 ### http_server_stop
-- Defined: `test_bdd.sh:606`
+- Defined: `test_bdd.sh:633`
 
 ### http_fixture_start
-- Defined: `test_bdd.sh:611`
+- Defined: `test_bdd.sh:638`
 
 ### http_fixture_stop
-- Defined: `test_bdd.sh:618`
+- Defined: `test_bdd.sh:645`
 
 ## test_http_server.py
 

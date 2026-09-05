@@ -88,8 +88,8 @@
   - `setup_user_stack` (function, line 81) `unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
                                ...`
   - `k_exec_user` (function, line 116) `int k_exec_user(void *entry, int argc, char **argv)`
-  - `k_run_rel` (function, line 197) `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
-  - `kexit` (function, line 229) `void kexit(int code)`
+  - `k_run_rel` (function, line 201) `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
+  - `kexit` (function, line 233) `void kexit(int code)`
 
 ## kernel/klog.c
 - Layer: utility
@@ -160,14 +160,15 @@
 
 ## kernel/mm.c
 - Layer: utility
-- Doc: include "kernel.h"  ================================================================
+- Doc: include "kernel.h" include "sched.h"  ================================================================
 - Language: c
 - Symbols:
-  - `kallocator_init` (function, line 11) `void kallocator_init(void)`
-  - `kmalloc` (function, line 15) `void *kmalloc(unsigned long size)`
-  - `kfree` (function, line 20) `void kfree(void *ptr)`
-  - `kcalloc` (function, line 25) `void *kcalloc(unsigned long nmemb, unsigned long size)`
-  - `krealloc` (function, line 29) `void *krealloc(void *ptr, unsigned long size)`
+  - `kallocator_init` (function, line 12) `void kallocator_init(void)`
+  - `kmalloc` (function, line 16) `void *kmalloc(unsigned long size)`
+  - `kfree` (function, line 21) `void kfree(void *ptr)`
+  - `kcalloc` (function, line 26) `void *kcalloc(unsigned long nmemb, unsigned long size)`
+  - `krealloc` (function, line 30) `void *krealloc(void *ptr, unsigned long size)`
+  - `kmalloc_percpu` (function, line 47) `void *kmalloc_percpu(unsigned long size, unsigned long align)`
 
 ## kernel/printf.c
 - Layer: utility
@@ -201,40 +202,40 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `read_cr3` (function, line 27) `static inline unsigned long read_cr3(void)`
-  - `__attribute__` (function, line 35) `typedef struct __attribute__((packed))`
-  - `__attribute__` (function, line 47) `typedef struct __attribute__((packed))`
-  - `__attribute__` (function, line 52) `typedef struct __attribute__((packed))`
-  - `alloc_kstack` (function, line 59) `static uint64_t alloc_kstack(void)`
-  - `idt_set` (function, line 74) `static void idt_set(int vec, void (*h)(void))`
-  - `idt_init` (function, line 84) `static void idt_init(void)`
-  - `pic_init` (function, line 98) `static void pic_init(void)`
-  - `pit_init` (function, line 111) `static void pit_init(void)`
-  - `pic_eoi` (function, line 117) `static void pic_eoi(int irq)`
-  - `tss_init` (function, line 125) `static void tss_init(void)`
-  - `isr_dispatch` (function, line 165) `void isr_dispatch(int vector, trap_frame_t *frame)`
-  - `ring` (function, line 277) `* the hardware ring (CS RPL) and the fault address. */
+  - `read_cr3` (function, line 29) `static inline unsigned long read_cr3(void)`
+  - `__attribute__` (function, line 37) `typedef struct __attribute__((packed))`
+  - `__attribute__` (function, line 49) `typedef struct __attribute__((packed))`
+  - `alloc_kstack` (function, line 63) `static uint64_t alloc_kstack(void)`
+  - `free_kstack` (function, line 74) `static void free_kstack(uint64_t top)`
+  - `idt_set` (function, line 90) `static void idt_set(int vec, void (*h)(void))`
+  - `idt_init` (function, line 100) `static void idt_init(void)`
+  - `pic_init` (function, line 113) `static void pic_init(void)`
+  - `pit_init` (function, line 126) `static void pit_init(void)`
+  - `pic_eoi` (function, line 132) `static void pic_eoi(int irq)`
+  - `tss_init` (function, line 140) `static void tss_init(void)`
+  - `isr_dispatch` (function, line 180) `void isr_dispatch(int vector, trap_frame_t *frame)`
+  - `ring` (function, line 300) `* the hardware ring (CS RPL) and the fault address. */
         if ((frame->cs & 3) == 3 &&
       ...`
-  - `proc_get` (function, line 291) `proc_t *proc_get(int pid)`
-  - `proc_create` (function, line 297) `int proc_create(const char *name, int parent_pid)`
-  - `schedule` (function, line 337) `void schedule(void)`
-  - `yield` (function, line 356) `void yield(void)`
-  - `do_exit` (function, line 361) `void do_exit(int code)`
-  - `do_waitpid` (function, line 381) `int do_waitpid(int pid)`
-  - `do_kill` (function, line 406) `int do_kill(int pid)`
-  - `timer_tick` (function, line 413) `void timer_tick(void)`
-  - `mouse_wait_cmd` (function, line 417) `static void mouse_wait_cmd(void)`
-  - `mouse_wait_data` (function, line 423) `static void mouse_wait_data(void)`
-  - `mouse_write` (function, line 430) `static void mouse_write(unsigned char data)`
-  - `mouse_read` (function, line 437) `static unsigned char mouse_read(void)`
-  - `mouse_hw_init` (function, line 442) `static void mouse_hw_init(void)`
-  - `mouse_disable` (function, line 486) `void mouse_disable(void)`
-  - `mouse_enable` (function, line 488) `void mouse_enable(void)`
-  - `sched_init` (function, line 489) `void sched_init(void)`
-  - `MY_SYS_KSTK_TOP` (macro, line 15)
-  - `MY_USER_STACK_TOP` (macro, line 16)
-  - `MY_USER_LOAD_BASE` (macro, line 17)
+  - `proc_get` (function, line 314) `proc_t *proc_get(int pid)`
+  - `proc_create` (function, line 320) `int proc_create(const char *name, int parent_pid)`
+  - `schedule` (function, line 373) `void schedule(void)`
+  - `yield` (function, line 396) `void yield(void)`
+  - `do_exit` (function, line 401) `void do_exit(int code)`
+  - `do_waitpid` (function, line 478) `int do_waitpid(int pid)`
+  - `do_kill` (function, line 505) `int do_kill(int pid)`
+  - `timer_tick` (function, line 512) `void timer_tick(void)`
+  - `mouse_wait_cmd` (function, line 516) `static void mouse_wait_cmd(void)`
+  - `mouse_wait_data` (function, line 522) `static void mouse_wait_data(void)`
+  - `mouse_write` (function, line 529) `static void mouse_write(unsigned char data)`
+  - `mouse_read` (function, line 536) `static unsigned char mouse_read(void)`
+  - `mouse_hw_init` (function, line 541) `static void mouse_hw_init(void)`
+  - `mouse_disable` (function, line 585) `void mouse_disable(void)`
+  - `mouse_enable` (function, line 587) `void mouse_enable(void)`
+  - `sched_init` (function, line 588) `void sched_init(void)`
+  - `MY_SYS_KSTK_TOP` (macro, line 16)
+  - `MY_USER_STACK_TOP` (macro, line 17)
+  - `MY_USER_LOAD_BASE` (macro, line 18)
 
 ## kernel/scrollback.c
 - Layer: utility
@@ -369,22 +370,53 @@ int console_getc(void)`
 - Doc: syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN.
 - Language: c
 - Symbols:
-  - `kiovec` (struct, line 36)
-  - `syscall_trace_enabled` (function, line 41) `long syscall_trace_enabled(void)`
-  - `syscall_trace_set` (function, line 43) `void syscall_trace_set(int on)`
-  - `trace_is_noisy` (function, line 56) `static int trace_is_noisy(long n)`
-  - `ksyscall` (function, line 60) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `user_range_ok` (function, line 79) `int user_range_ok(unsigned long p, unsigned long len)`
-  - `user_str_ok` (function, line 85) `int user_str_ok(unsigned long p, unsigned long maxlen)`
-  - `ksyscall_dispatch` (function, line 93) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `tools` (function, line 622) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
+  - `kiovec` (struct, line 313)
+  - `sys_minios_dns` (function, line 59) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_handshake` (function, line 65) `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_send` (function, line 70) `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_recv` (function, line 75) `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_time` (function, line 80) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_kbd` (function, line 84) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_palette` (function, line 99) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_kbd_raw` (function, line 107) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_vga_mode` (function, line 113) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_init` (function, line 120) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_tone` (function, line 124) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_doom_frame` (function, line 128) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_rtc` (function, line 132) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_fb_info` (function, line 146) `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_vol` (function, line 158) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_spawn` (function, line 166) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_lz4_compress` (function, line 172) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_lz4_decompress` (function, line 185) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_mouse` (function, line 199) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_nk_frame` (function, line 208) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_open` (function, line 218) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_submit` (function, line 223) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_gfx_title` (function, line 231) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_pump` (function, line 245) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_open` (function, line 249) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_close` (function, line 253) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_submit` (function, line 257) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_vol` (function, line 265) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_clone` (function, line 275) `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
+  - `syscall_trace_enabled` (function, line 318) `long syscall_trace_enabled(void)`
+  - `syscall_trace_set` (function, line 320) `void syscall_trace_set(int on)`
+  - `trace_is_noisy` (function, line 331) `static int trace_is_noisy(long n)`
+  - `ksyscall` (function, line 335) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `user_range_ok` (function, line 354) `int user_range_ok(unsigned long p, unsigned long len)`
+  - `user_str_ok` (function, line 360) `int user_str_ok(unsigned long p, unsigned long maxlen)`
+  - `ksyscall_dispatch` (function, line 368) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `tools` (function, line 907) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
   - `KFD_MAX` (macro, line 30)
-  - `SYSCALL_TRACE` (macro, line 37)
-  - `SYS_NOISY_TIME` (macro, line 49)
-  - `SYS_NOISY_KBD` (macro, line 50)
-  - `SYS_NOISY_MOUSE` (macro, line 51)
+  - `MINIOS_SYSCALL_BASE` (macro, line 53)
+  - `MINIOS_SYSCALL_COUNT` (macro, line 55)
+  - `SYSCALL_TRACE` (macro, line 314)
+  - `SYS_NOISY_TIME` (macro, line 326)
+  - `SYS_NOISY_KBD` (macro, line 327)
+  - `SYS_NOISY_MOUSE` (macro, line 328)
 
 ## kernel/time.c
 - Layer: utility
