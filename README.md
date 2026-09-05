@@ -123,6 +123,7 @@ position and size.
 
 ## Demo
 
+- [https://www.youtube.com/watch?v=M4yVOq6bzMs](https://www.youtube.com/watch?v=M4yVOq6bzMs)
 - [https://www.youtube.com/watch?v=YUYEK7lQt0U](https://www.youtube.com/watch?v=YUYEK7lQt0U)
 - [https://www.youtube.com/watch?v=4aHe6T0bD1o](https://www.youtube.com/watch?v=4aHe6T0bD1o)
 
@@ -686,6 +687,103 @@ and RAM and a filesystem large enough for the payload are not independent
 tuning knobs. They are one layout, and changing any of them means re-checking
 every fixed low-memory address that assumed it was alone.
 
+
+## Pokemon on MiniOS (gb-recompiled port)
+
+MiniOS runs a recompiled Game Boy / Game Boy Color game as a ring-3 static
+Linux ELF, under the same contract as the DOOM and Quake 2 ports: host clang,
+`-static -no-pie`, MiniOS syscalls instead of SDL2. The port is game-agnostic:
+it works with any gb-recompiled generated project, with no per-game patches.
+
+MiniOS-owned files live in `progs/pokemon/`:
+
+| File | Role |
+|------|------|
+| `platform_minios.c` | implements the `gb_platform_*` interface on MiniOS syscalls |
+| `Makefile.minios` | static build of a generated project plus the runtime |
+| `minios_stubs/SDL.h` | minimal `SDL.h` so `GB_HAS_SDL2`-guarded prototypes stay visible without SDL2 |
+| `fetch.sh` | clones the upstream tool (recompiler plus runtime) |
+| `main-minios.patch` | additive patch: `--debug` flag in generated `main.c` |
+| `runtime-audio-voice.patch` | additive patch: `gb_audio_voice()` speaker accessor over live channel state |
+
+Upstream ships no ROMs and no pre-generated game code, so the game project is
+generated locally from a ROM image you legally own:
+
+```sh
+cd progs/pokemon
+./fetch.sh                    # clone https://github.com/arcanite24/gb-recompiled into upstream/
+# build gbrecomp per the upstream README (cmake, ninja, SDL2 dev files), then:
+upstream/build/bin/gbrecomp /path/to/your/game.gbc -o game/
+```
+
+Then build the image from the repository root:
+
+```sh
+make os.img                     # POKEMON_DIR defaults to progs/pokemon/game
+make POKEMON_DIR=/path/to/game os.img   # with a project kept elsewhere
+make pokemon-fetch              # clone the upstream tool only
+make pokemon-clean              # remove progs/pokemon/build/
+```
+
+Without a generated project the pokemon build is skipped with a hint and
+`make` otherwise works normally, including offline. When present, the ELF is
+packed on MiniFS (`MINIFS_POKEMON_FILES`) and a Pokemon desktop icon is
+generated (`progs/icons/pokemon.png` via `tools/gen_icons.py`).
+
+```
+miniOS> run bin/pokemon.elf      # or: click the Pokemon desktop icon
+miniOS> run bin/pokemon.elf --debug
+```
+
+Video: the GB screen (160x144) renders at exact 2x (320x288), centered in the
+800x360 NK back-buffer (`NK_BACKBUF_ADDR`), because the 320x200 DOOM buffer
+cannot fit a 2x GB frame. The palette is a 3-3-2 RGB ramp pushed once at init
+(`SYS_PALETTE`, 206); frames are presented with `SYS_NK_FRAME` (220). The
+window title is set with `SYS_GFX_SET_TITLE` (223).
+
+Controls: arrows are the D-pad, Z is A, X is B, Enter is Start, Backspace is
+Select. The driver consumes raw PS/2 Set 1 scancodes (`SYS_KBD_RAW`, 207).
+
+Audio: PC speaker, DOOM-style. The runtime mixes 44100 Hz stereo PCM, but a
+syscall per sample (44k/sec) would not survive emulation, so the per-sample
+callback only accumulates zero crossings and energy (integer ops, no
+syscalls). Once per rendered frame the live APU voices are sampled through
+`gb_audio_voice()` (enabled flag, DAC, live envelope volume, master switch;
+never the raw `io[]` mirror, whose channel bits are never set on that path)
+for the two square channels plus the wave channel, and played as bass pedal
+plus melody arpeggio with DOOM-like busy-wait slots (6 ms bass, 5 ms melody).
+The noise channel is dropped, exactly like DOOM drops the percussion channel.
+The PCM energy gate (`MINIOS_AUDIO_SILENCE_E`, default 256 mean-abs) keeps
+envelopes, fades and silence honest so a decayed-but-on channel can never
+drone; passages with no tonal voice (noise SFX, sweep zaps) fall back to the
+raw mix estimate. Clamp the tunables `MINIOS_AUDIO_SILENCE_E` /
+`MINIOS_AUDIO_MIN_HZ` (40) / `MINIOS_AUDIO_MAX_HZ` (12000) in
+`platform_minios.c` if music sounds wrong on your speaker.
+
+Saves: battery RAM and RTC data persist on MiniFS as `bin/<save-id>.sav` and
+`bin/<save-id>.rtc` and survive reboot, unlike ramdisk files. Writes are
+direct (`fopen`/`fwrite`/`fclose`); there is no atomic temp-plus-rename
+because MiniOS has no `rename` syscall yet. The runtime only persists on
+clean exit, which QEMU poweroff never takes, so MiniOS flushes SRAM itself
+every 60 seconds (`MINIOS_AUTOSAVE_MS`), plus on-demand full emulator
+savestates: F5 or Ctrl+S saves `bin/<save-id>.state`, F8 loads it. Loads are
+size-checked: a short or overlong file fails closed and flags
+`persistence_load_failed`, never a partial SRAM image.
+
+Flags: `pokemon.elf --debug` enables the serial heartbeat (off by default;
+serial prints cost frame rate). All other upstream runtime flags
+(`--limit-frames`, `--input`, `--dump-frames`) work unchanged. The flag
+arrives through `gb_platform_set_debug()`, wired by `main-minios.patch`
+(marker-gated, SDL builds untouched). Do not reintroduce argv sniffing via
+`_dl_argv` in a constructor: this toolchain's loader internals do not expose
+a usable vector and the old scanner faulted at startup on unrelated storage.
+
+Known limits: the NK desktop window title says "Nuklear" (kernel-side label,
+cosmetic); under QEMU-TCG without KVM the frame rate is low, prefer
+`make run-kvm` when available. The ported ELF is about 88 MB, so a MiniFS
+carrying Quake 2 plus Pokemon approaches the image size budget (see the
+Makefile note near the MiniFS size definition).
+
 ## Piano (FM synth -> SB16)
 
 MiniOS ships a ring-3 Nuklear piano that plays through the Sound Blaster 16
@@ -1153,102 +1251,6 @@ whitelist, printable ASCII, editor line and buffer limits), and never leaks
 a QEMU process: the pid file under the system temp dir reaps stale
 instances and every exit path terminates the child. See `CLAUDE.md` for the
 full contract.
-
-## Pokemon on MiniOS (gb-recompiled port)
-
-MiniOS runs a recompiled Game Boy / Game Boy Color game as a ring-3 static
-Linux ELF, under the same contract as the DOOM and Quake 2 ports: host clang,
-`-static -no-pie`, MiniOS syscalls instead of SDL2. The port is game-agnostic:
-it works with any gb-recompiled generated project, with no per-game patches.
-
-MiniOS-owned files live in `progs/pokemon/`:
-
-| File | Role |
-|------|------|
-| `platform_minios.c` | implements the `gb_platform_*` interface on MiniOS syscalls |
-| `Makefile.minios` | static build of a generated project plus the runtime |
-| `minios_stubs/SDL.h` | minimal `SDL.h` so `GB_HAS_SDL2`-guarded prototypes stay visible without SDL2 |
-| `fetch.sh` | clones the upstream tool (recompiler plus runtime) |
-| `main-minios.patch` | additive patch: `--debug` flag in generated `main.c` |
-| `runtime-audio-voice.patch` | additive patch: `gb_audio_voice()` speaker accessor over live channel state |
-
-Upstream ships no ROMs and no pre-generated game code, so the game project is
-generated locally from a ROM image you legally own:
-
-```sh
-cd progs/pokemon
-./fetch.sh                    # clone https://github.com/arcanite24/gb-recompiled into upstream/
-# build gbrecomp per the upstream README (cmake, ninja, SDL2 dev files), then:
-upstream/build/bin/gbrecomp /path/to/your/game.gbc -o game/
-```
-
-Then build the image from the repository root:
-
-```sh
-make os.img                     # POKEMON_DIR defaults to progs/pokemon/game
-make POKEMON_DIR=/path/to/game os.img   # with a project kept elsewhere
-make pokemon-fetch              # clone the upstream tool only
-make pokemon-clean              # remove progs/pokemon/build/
-```
-
-Without a generated project the pokemon build is skipped with a hint and
-`make` otherwise works normally, including offline. When present, the ELF is
-packed on MiniFS (`MINIFS_POKEMON_FILES`) and a Pokemon desktop icon is
-generated (`progs/icons/pokemon.png` via `tools/gen_icons.py`).
-
-```
-miniOS> run bin/pokemon.elf      # or: click the Pokemon desktop icon
-miniOS> run bin/pokemon.elf --debug
-```
-
-Video: the GB screen (160x144) renders at exact 2x (320x288), centered in the
-800x360 NK back-buffer (`NK_BACKBUF_ADDR`), because the 320x200 DOOM buffer
-cannot fit a 2x GB frame. The palette is a 3-3-2 RGB ramp pushed once at init
-(`SYS_PALETTE`, 206); frames are presented with `SYS_NK_FRAME` (220). The
-window title is set with `SYS_GFX_SET_TITLE` (223).
-
-Controls: arrows are the D-pad, Z is A, X is B, Enter is Start, Backspace is
-Select. The driver consumes raw PS/2 Set 1 scancodes (`SYS_KBD_RAW`, 207).
-
-Audio: PC speaker, DOOM-style. The runtime mixes 44100 Hz stereo PCM, but a
-syscall per sample (44k/sec) would not survive emulation, so the per-sample
-callback only accumulates zero crossings and energy (integer ops, no
-syscalls). Once per rendered frame the live APU voices are sampled through
-`gb_audio_voice()` (enabled flag, DAC, live envelope volume, master switch;
-never the raw `io[]` mirror, whose channel bits are never set on that path)
-for the two square channels plus the wave channel, and played as bass pedal
-plus melody arpeggio with DOOM-like busy-wait slots (6 ms bass, 5 ms melody).
-The noise channel is dropped, exactly like DOOM drops the percussion channel.
-The PCM energy gate (`MINIOS_AUDIO_SILENCE_E`, default 256 mean-abs) keeps
-envelopes, fades and silence honest so a decayed-but-on channel can never
-drone; passages with no tonal voice (noise SFX, sweep zaps) fall back to the
-raw mix estimate. Clamp the tunables `MINIOS_AUDIO_SILENCE_E` /
-`MINIOS_AUDIO_MIN_HZ` (40) / `MINIOS_AUDIO_MAX_HZ` (12000) in
-`platform_minios.c` if music sounds wrong on your speaker.
-
-Saves: battery RAM and RTC data persist on MiniFS as `bin/<save-id>.sav` and
-`bin/<save-id>.rtc` and survive reboot, unlike ramdisk files. Writes are
-direct (`fopen`/`fwrite`/`fclose`); there is no atomic temp-plus-rename
-because MiniOS has no `rename` syscall yet. The runtime only persists on
-clean exit, which QEMU poweroff never takes, so MiniOS flushes SRAM itself
-every 60 seconds (`MINIOS_AUTOSAVE_MS`), plus on-demand full emulator
-savestates: F5 or Ctrl+S saves `bin/<save-id>.state`, F8 loads it. Loads are
-size-checked: a short or overlong file fails closed and flags
-`persistence_load_failed`, never a partial SRAM image.
-
-Flags: `pokemon.elf --debug` enables the serial heartbeat (off by default;
-serial prints cost frame rate). All other upstream runtime flags
-(`--limit-frames`, `--input`, `--dump-frames`) work unchanged. The flag
-arrives through `gb_platform_set_debug()`, wired by `main-minios.patch`
-(marker-gated, SDL builds untouched). Do not reintroduce argv sniffing via
-`_dl_argv` in a constructor: this toolchain's loader internals do not expose
-a usable vector and the old scanner faulted at startup on unrelated storage.
-
-Known limits: the NK desktop window title says "Nuklear" (kernel-side label,
-cosmetic); under QEMU-TCG without KVM the frame rate is low, prefer
-`make run-kvm` when available. The ported ELF is about 88 MB, so a MiniFS
-carrying Quake 2 plus Pokemon approaches the image size budget (see the
-Makefile note near the MiniFS size definition).
 
 ## SMP foundation
 
