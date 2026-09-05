@@ -51,7 +51,7 @@
 | `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 60 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 7 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 45 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 83 |
 | `kernel/time.c` | include "kernel.h"  ============================================================ | kernel | 3 |
 | `kernel/vga_fb.c` | - | kernel | 71 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 1 |
@@ -289,7 +289,7 @@
 | `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 48 |
 | `progs/pokemon/fetch.sh` | fetch.sh - clone the gb-recompiled tool into progs/pokemon/upstream.  The upstre | pokemon | 0 |
 | `progs/pokemon/minios_stubs/SDL.h` | SDL.h stub for MiniOS cross-compilation | misc | 5 |
-| `progs/pokemon/platform_minios.c` | - | pokemon | 61 |
+| `progs/pokemon/platform_minios.c` | - | pokemon | 70 |
 | `progs/quake2generic/q2generic_minios.c` | q2generic_minios.c - MiniOS platform layer for quake2generic. | misc | 28 |
 | `progs/src/aes.c` | aes.c - command path AES-256-CTR encryption tools: aes and unaes. | src | 41 |
 | `progs/src/audio.c` | include "minios_abi.h" | src | 17 |

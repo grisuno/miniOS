@@ -5,8 +5,8 @@
 These files have the most connections. Changes here have high blast radius.
 
 - `kernel.h` (score: 84.40)
+- `kernel/syscalls.c` (score: 38.30)
 - `kernel.c` (score: 35.10)
-- `kernel/syscalls.c` (score: 34.50)
 - `kernel/shell.c` (score: 30.00)
 - `progs/doomgeneric/d_englsh.h` (score: 28.60)
 - `kernel/time.c` (score: 24.30)
@@ -26,4 +26,4 @@ These files have the most connections. Changes here have high blast radius.
 - `progs/doomgeneric/am_map.c` -- complexity: 0.3, centrality: 0.4, combined: 0.4
 - `mcp/test_minios_mcp.py` -- complexity: 0.3, centrality: 0.4, combined: 0.4
 - `progs/doomgeneric/i_input.c` -- complexity: 0.0, centrality: 0.6, combined: 0.3
-- `progs/doomgeneric/i_system.c` -- complexity: 0.1, centrality: 0.5, combined: 0.3
+- `kernel/syscalls.c` -- complexity: 0.3, centrality: 0.4, combined: 0.3

@@ -1154,6 +1154,378 @@ a QEMU process: the pid file under the system temp dir reaps stale
 instances and every exit path terminates the child. See `CLAUDE.md` for the
 full contract.
 
+## Pokemon on MiniOS (gb-recompiled port)
+
+MiniOS runs a recompiled Game Boy / Game Boy Color game as a ring-3 static
+Linux ELF, under the same contract as the DOOM and Quake 2 ports: host clang,
+`-static -no-pie`, MiniOS syscalls instead of SDL2. The port is game-agnostic:
+it works with any gb-recompiled generated project, with no per-game patches.
+
+MiniOS-owned files live in `progs/pokemon/`:
+
+| File | Role |
+|------|------|
+| `platform_minios.c` | implements the `gb_platform_*` interface on MiniOS syscalls |
+| `Makefile.minios` | static build of a generated project plus the runtime |
+| `minios_stubs/SDL.h` | minimal `SDL.h` so `GB_HAS_SDL2`-guarded prototypes stay visible without SDL2 |
+| `fetch.sh` | clones the upstream tool (recompiler plus runtime) |
+| `main-minios.patch` | additive patch: `--debug` flag in generated `main.c` |
+| `runtime-audio-voice.patch` | additive patch: `gb_audio_voice()` speaker accessor over live channel state |
+
+Upstream ships no ROMs and no pre-generated game code, so the game project is
+generated locally from a ROM image you legally own:
+
+```sh
+cd progs/pokemon
+./fetch.sh                    # clone https://github.com/arcanite24/gb-recompiled into upstream/
+# build gbrecomp per the upstream README (cmake, ninja, SDL2 dev files), then:
+upstream/build/bin/gbrecomp /path/to/your/game.gbc -o game/
+```
+
+Then build the image from the repository root:
+
+```sh
+make os.img                     # POKEMON_DIR defaults to progs/pokemon/game
+make POKEMON_DIR=/path/to/game os.img   # with a project kept elsewhere
+make pokemon-fetch              # clone the upstream tool only
+make pokemon-clean              # remove progs/pokemon/build/
+```
+
+Without a generated project the pokemon build is skipped with a hint and
+`make` otherwise works normally, including offline. When present, the ELF is
+packed on MiniFS (`MINIFS_POKEMON_FILES`) and a Pokemon desktop icon is
+generated (`progs/icons/pokemon.png` via `tools/gen_icons.py`).
+
+```
+miniOS> run bin/pokemon.elf      # or: click the Pokemon desktop icon
+miniOS> run bin/pokemon.elf --debug
+```
+
+Video: the GB screen (160x144) renders at exact 2x (320x288), centered in the
+800x360 NK back-buffer (`NK_BACKBUF_ADDR`), because the 320x200 DOOM buffer
+cannot fit a 2x GB frame. The palette is a 3-3-2 RGB ramp pushed once at init
+(`SYS_PALETTE`, 206); frames are presented with `SYS_NK_FRAME` (220). The
+window title is set with `SYS_GFX_SET_TITLE` (223).
+
+Controls: arrows are the D-pad, Z is A, X is B, Enter is Start, Backspace is
+Select. The driver consumes raw PS/2 Set 1 scancodes (`SYS_KBD_RAW`, 207).
+
+Audio: PC speaker, DOOM-style. The runtime mixes 44100 Hz stereo PCM, but a
+syscall per sample (44k/sec) would not survive emulation, so the per-sample
+callback only accumulates zero crossings and energy (integer ops, no
+syscalls). Once per rendered frame the live APU voices are sampled through
+`gb_audio_voice()` (enabled flag, DAC, live envelope volume, master switch;
+never the raw `io[]` mirror, whose channel bits are never set on that path)
+for the two square channels plus the wave channel, and played as bass pedal
+plus melody arpeggio with DOOM-like busy-wait slots (6 ms bass, 5 ms melody).
+The noise channel is dropped, exactly like DOOM drops the percussion channel.
+The PCM energy gate (`MINIOS_AUDIO_SILENCE_E`, default 256 mean-abs) keeps
+envelopes, fades and silence honest so a decayed-but-on channel can never
+drone; passages with no tonal voice (noise SFX, sweep zaps) fall back to the
+raw mix estimate. Clamp the tunables `MINIOS_AUDIO_SILENCE_E` /
+`MINIOS_AUDIO_MIN_HZ` (40) / `MINIOS_AUDIO_MAX_HZ` (12000) in
+`platform_minios.c` if music sounds wrong on your speaker.
+
+Saves: battery RAM and RTC data persist on MiniFS as `bin/<save-id>.sav` and
+`bin/<save-id>.rtc` and survive reboot, unlike ramdisk files. Writes are
+direct (`fopen`/`fwrite`/`fclose`); there is no atomic temp-plus-rename
+because MiniOS has no `rename` syscall yet. The runtime only persists on
+clean exit, which QEMU poweroff never takes, so MiniOS flushes SRAM itself
+every 60 seconds (`MINIOS_AUTOSAVE_MS`), plus on-demand full emulator
+savestates: F5 or Ctrl+S saves `bin/<save-id>.state`, F8 loads it. Loads are
+size-checked: a short or overlong file fails closed and flags
+`persistence_load_failed`, never a partial SRAM image.
+
+Flags: `pokemon.elf --debug` enables the serial heartbeat (off by default;
+serial prints cost frame rate). All other upstream runtime flags
+(`--limit-frames`, `--input`, `--dump-frames`) work unchanged. The flag
+arrives through `gb_platform_set_debug()`, wired by `main-minios.patch`
+(marker-gated, SDL builds untouched). Do not reintroduce argv sniffing via
+`_dl_argv` in a constructor: this toolchain's loader internals do not expose
+a usable vector and the old scanner faulted at startup on unrelated storage.
+
+Known limits: the NK desktop window title says "Nuklear" (kernel-side label,
+cosmetic); under QEMU-TCG without KVM the frame rate is low, prefer
+`make run-kvm` when available. The ported ELF is about 88 MB, so a MiniFS
+carrying Quake 2 plus Pokemon approaches the image size budget (see the
+Makefile note near the MiniFS size definition).
+
+## SMP foundation
+
+With `-smp N` in QEMU the BSP wakes N-1 application processors (max 8) with
+the standard INIT-edge / SIPI / SIPI sequence through the local APIC mapped
+at `0xFEE00000`; without it the system runs single-CPU exactly as before.
+Each AP runs `arch/x86/ap_entry.S` from the stub at `0x6000` (below 1 MB for
+SIPI, patched with the C entry address), sets its GS base to its `cpu_t`
+(`cpus[]`, LAPIC ID, `cur_pid`, syscall stack, idle and BSP flags), loads the
+BSP's IDTR, arms a 100 Hz LAPIC timer (vector 32, divide-by-16, periodic) and
+idles on `sti; hlt; cli` with its temporary stack at `0x78000` (below the
+LAPIC PD at `0x70000`, above the syscall kernel stack; `0x80000` overlaps
+that stack and cascades). APs never print during init: `kprintf` stack use
+plus the timer trap frame overflows the stub stack.
+
+`this_cpu()` reads the current `cpu_t` via GS base (`MSR_GSBASE`,
+`swapgs` on syscall entry/exit so ring 3 never sees it); `current_pid` is a
+macro over it, so scheduler paths operate on the correct CPU. Vector 32
+checks `is_bsp`: the BSP sends PIC EOI and runs `sb16_poll`, APs send LAPIC
+EOI at `0xFEE000B0`, and the context-switch path is BSP-guarded so APs never
+corrupt `procs[]`. APs own no PIC, PS/2 mouse or SB16 ring. The INIT
+destination shorthand "all excluding self" is bits 19:18 (`0xC0000`) with
+delivery mode bits 10:8 (`0x500`); INIT is edge-triggered (`0x4000` level
+assert, never `0x8000` level-trigger, which hangs QEMU 11 with uncleared
+delivery status).
+
+`spinlock.h` provides xchg spinlocks (`spin_lock`/`spin_unlock` with
+interrupt disable, `spin_lock_irqsave`/`spin_unlock_irqrestore` saving
+RFLAGS.IF for nesting, `spin_trylock` without touching interrupts).
+`sched_lock` guards `procs[]`/`proc_count`/scheduler state, `smp_lock`
+guards the AP counter and LAPIC registers; the primitives are in place for
+SMP scheduling while APs still idle.
+
+## ISR-driven desktop tick
+
+The desktop tick (`vga_fb_mouse_tick`) is driven from the 100 Hz PIT handler
+(vector 32) at `DESKTOP_TICK_INTERVAL` (default 4, i.e. 25 Hz) whenever
+`user_program_active` is set, so the cursor, taskbar clock, drag and
+scrollbar stay live while a ring-3 child owns the CPU. The flag is set in
+`k_exec_user` before `iretq` and cleared after `klongjmp`. When clear, the
+shell drives the desktop from its own idle poll as before. The PS/2 mouse
+stays enabled across `k_exec_user` so IRQ12 keeps `mouse_state` fresh (field
+stores are atomic; the tick or the shell is the sole reader). The `iretq`
+frame uses `RFLAGS=0x202` (IF=1): with IF=0 neither the timer nor IRQ12 fires
+from ring 3 and the desktop freezes.
+
+## Window manager: minimize, restore, close
+
+Every titled window (terminal, DOOM, Nuklear) carries minimize (`_`),
+maximize (square) and close (`X`) buttons drawn and hit-tested by shared
+`wm_*` helpers. Minimize hides the terminal window without losing content
+(the logical ring is kept, restore repaints it); maximize toggles
+fullscreen; close resets the terminal to its default geometry because the
+shell cannot be closed. For a graphics window, close arms `wm_close_request`,
+honoured on the child's next syscall as `exec_exit_code = 130` with
+`klongjmp` on the child's own stack (never from the ISR). Fullscreen and
+minimize are mutually exclusive. While minimized the window is not drawn,
+wheel/drag/scrollbar are ignored, and the taskbar shows a `[]` restore
+button on the far left. Shortcuts: Alt+M toggles minimize, Alt+X / Alt+Q
+closes the active window. The `wm` builtin drives the same paths and reports
+state over serial (`wm state`, `wm minimize`, `wm maximize`, `wm close`),
+which is the BDD-observable surface.
+
+## Shell: history, editing, resolution, completion
+
+History: the last `SHELL_HIST_MAX` submitted commands (unknown ones included,
+consecutive duplicates skipped, reboot clears). Up (`ESC [ A`, PS/2 `E0 48`)
+recalls older entries, Down (`ESC [ B`, `E0 50`) moves forward to the live
+line, which is preserved while scrolling. A bare or truncated ESC is
+discarded, never inserted; the editor is unaffected.
+
+Mid-line editing: Left/Right (`ESC [ C`/`D`, `E0 4B`/`4D`), Home/End
+(`ESC [ H`/`F`, `E0 47`/`4F`), Delete (`ESC [ 3 ~`, `E0 53`), Backspace,
+Ctrl+A/E (start/end), Ctrl+U/K (kill to start/end), Ctrl+W (kill word).
+Inserts shift the tail; a framebuffer block cursor tracks the position and
+every operation repaints so display and serial agree. The escape reader polls
+a bounded number of spins for the final byte so a serial-split sequence is
+not mis-parsed, and never hangs.
+
+Resolution order is fixed: builtin, registered program, then one
+runnable-file resolver (`shell_run_any`, `shell_resolve_run`), so `run` and
+bare names behave identically. Suffix picks the directory (`shell_run_dirs`):
+`.cvm` to `cvm/`, `.o` to `objects/`, `.elf` and bare names to `bin/`, with
+cwd first and the remaining directories as fallback. Names containing `/`
+resolve against the cwd. Every candidate must be a real file
+(`ramdisk_open` succeeds, directories rejected); overlong full paths are
+skipped, never truncated. Content classifies the loader: `ET_REL` via
+`k_run_rel` at ring 0, `ET_EXEC`/`ET_DYN` via `k_exec_user` at ring 3, `.cvm`
+via the on-demand `objects/cvm.o` interpreter. Unresolvable names report
+`command not found` (bare) or `run: not found` (with `run`).
+
+TAB completes from registered programs and ramdisk names: first TAB fills the
+longest unambiguous prefix, second TAB on a unique match fills the whole
+name, ambiguous prefixes list candidates. Completion is bounds-checked
+against the command buffer.
+
+`sh <script>` runs sequential lines with `#` comments. `load <file>` loads an
+ELF (`.o` relocatable or Linux executable) without running it.
+
+## Filesystem: names, MiniFS fallback, unified opens
+
+Ramdisk names are at most `RAMDISK_FNAME_LEN - 1` chars; `/` is data (that is
+how `bin/cp` directories are expressed). `mkramdisk.py` derives each name
+from the path relative to the shared parent, so `progs/src/cp.c` ships as
+`src/cp.c`. Overlong names and collisions are build errors, never silent
+truncations. `mkdir` creates a directory as an empty file named `<name>/`
+(parent must exist; existing name is a diagnostic). `rm` refuses trailing-`/`
+directories. `ls [dir]` merges ramdisk and MiniFS at root and prefers
+ramdisk below root. `cat` concatenates (`cat a b > c`). `kfopen` checks the
+ramdisk first, then MiniFS, and refuses directory names. All resolution goes
+through one choke point against the cwd (leading `/` is root, `..` pops);
+unfitting names are rejected like missing files.
+
+Writes fall back to MiniFS: a write goes to the ramdisk only when its parent
+directory entry exists there; otherwise (for example `> asm/_t.s` or
+`tmp/...`) `kfopen` creates the parent chain with `minifs_mkdir_p`,
+creates the file with `minifs_create`, writes with `minifs_write` and
+persists bitmaps with `minifs_sync` on close. `fstat`/`access`/`unlink`
+cover MiniFS-backed files too.
+
+## User isolation and syscall boundary
+
+`ET_EXEC`/`ET_DYN` run at ring 3 (CS `USER_CODE_SEL`, SS `USER_DATA_SEL`)
+entered by `iretq` on a user stack carved from the top of the user window,
+with `rdi`/`rsi`/`rdx` zeroed at entry so glibc `_start` sees `rtld_fini`
+NULL. `ET_REL` stays a ring-0 kernel extension by contract. The user window
+is eager 4 KB pages with EFER.NXE on: every page starts NX-clear and
+`load_exec_elf` clears NX only under executable segments, so stack, heap,
+`.data` and unmapped space never execute (a stray fetch faults and resets,
+proven by `cpl.elf`, `kmem.elf`, `nx.elf`). The kernel heap keeps 2 MB
+executable pages for `.o` execution. Tables live at `PT_USER_TABLES_ADDR`
+(`0x10000`), below the kernel image, never in the heap. Syscalls switch to a
+dedicated kernel stack (`SYS_KSTK_TOP`) and return with `sysretq`. Every
+pointer argument must lie in the user window and strings must be
+NUL-terminated inside it, or the call returns `-EFAULT`; `arch_prctl`
+accepts only canonical bases. `brk` is capped below the user stack and
+`mmap` carves from the same window, so every obtainable address is a user
+page. Faulting user code resets (no IDT); scheduling is separate. The single
+layout source is `progs/minios_abi.h` (`MINIOS_ABI_VERSION`,
+`MINIOS_ABI_CHECKSUM`, canonical `MINIOS_SYS_*` numbers 0-199 Linux, 200-299
+MiniOS, 300+ reserved); `kernel.c` static-asserts its derived constants
+against it. Never hardcode a layout address elsewhere.
+
+## Proving a game renders: `gfx frames`, autoquit, `boot_run.sh`
+
+A game that launches is not proof it plays. The kernel counts every
+`SYS_DOOM_FRAME` / `SYS_NK_FRAME` composite (`gfx_frames_composited`) and
+the `gfx frames` builtin reports it over serial. The check is: read the
+counter, run the game, read it again, assert it climbed.
+
+```sh
+tools/boot_run.sh "cmd1" "cmd2" ... [--timeout N] [--log FILE]
+```
+
+`boot_run.sh` boots `os.img`, drives the shell over the serial console,
+appends `poweroff`, and captures the transcript (exit 0 on clean poweroff,
+124 on timeout; stale guests are reaped first so the image lock is free):
+
+```
+tools/boot_run.sh "lua src/test.lua"
+tools/boot_run.sh "gfx frames" "run doomgeneric.elf mini_autoframes 150" "gfx frames"
+tools/boot_run.sh "gfx frames" \
+  "run bin/quake2generic.elf +set basedir . +set minios_autoframes 400" "gfx frames"
+```
+
+Headless autoquit (default is interactive play): DOOM
+`run doomgeneric.elf mini_autoframes 150` renders 150 attract-loop frames
+then `exit(0)` (parsed in `DG_Init`; avoids the `-timedemo` path whose
+bundled demos mismatch and fault headless); Quake 2
+`run bin/quake2generic.elf +set basedir . +set minios_autoframes 400`
+renders 400 frames then `Sys_Quit()`. Quake without a `demo1.bsp`-carrying
+pak still climbs the counter from the loading screen and quits cleanly.
+DOOM `I_Error` calls `exit(-1)` instead of spinning, so a missing WAD
+returns to the shell instead of hanging.
+
+## MCP marketplace and test tool
+
+Beyond the console tools (`minios_boot`, `status`, `send`, `expect`,
+`snapshot`, `write`, `cat`, `poweroff`, plus `minios_python` for a ramdisk
+script and `minios_py_eval` for a one-liner), the bridge ships a reusable
+harness and a package flow. `minios_test` sends shell commands and asserts
+each `expect` marker appears and each `refute` marker does not, returning
+`{pass, failures, transcript}` so sessions never hand-roll boot-and-assert
+scripts. `minios_addons` lists `addons/*.yaml` with installed state;
+`minios_install <name>` boots if needed, clones `repo_url`, uploads each
+`files` entry through the editor (split to 512-line parts with sub-128-char
+lines, reassembled with one `cat` per part and byte-checked modulo the
+trailing newline; overlong lines rejected up front), runs the `build` lines
+and asserts the `verify` exit codes. Success records the addon in the in-OS
+registry `var/lib/addons.txt` and a host state file; failure aborts without
+recording and removes upload parts. The YAML dialect is a strict stdlib-only
+subset (whitelisted keys, bounded names, validated `dst`, printable-ASCII
+lines); the host shell is never invoked. The marketplace ships `cp` and
+`freedom` (the freedom addon rebuilds the browser inside the OS from git as
+the end-to-end dogfood, driven by `mcp/mcp_dogfood.py` over stdio JSON-RPC).
+
+## QEMU guest agent channel (COM2)
+
+The kernel exposes a QEMU guest agent style channel on COM2 (ISA `0x2F8`,
+IRQ 3, 115200 baud 8N1, FIFO `0xC7`, MCR `0x0B`). `qga.c`/`qga.h` frame one
+JSON request per line; overlong lines past `QGA_LINE_MAX` (512, NUL
+included) are rejected fail-closed and replies are capped at
+`QGA_RESP_MAX` (2048, base64 for file reads). `tools/qga_client.py` speaks
+it from the host (`qga_client.py guest-ping`,
+`qga_client.py guest-exec '{"path":"..."}'`, `--sock` or `MINIOS_GA_SOCK`
+overriding `/tmp/minios-ga.sock`), including the framing QEMU's own
+`guest-agent-command` uses; `tools/qga_test.sh` exercises it. Wire the host
+side with a QEMU chardev/socket mapped to COM2.
+
+## Boot path, memory map, KASLR
+
+Two stages because one correct stage does not fit in 512 bytes; every
+address, BIOS service, descriptor and control bit lives in
+`arch/x86/boot/bootdefs.h` with no bare constants in either stage. `stage1.S`
+verifies INT 13h extended (LBA) support, reads stage 2 and jumps to it
+(`.org`-guarded to the sector). `stage2.S` enables A20 (clearing the
+fast-reset bit before port `0x92`), streams the kernel in 64 KB chunks
+through the staging buffer at `0x10000`, copies each chunk above 1 MB via a
+short protected-mode excursion (loop state in memory, never registers), builds
+page tables (identity 2 MB leaves for the first gigabyte, low 4 MB split
+into the `PT0`/`PT1` KASLR scheme), enables PAE and long mode, installs the
+64-bit GDT at `0x8000` and jumps to `0x100000` (`KERNEL_SECTORS` comes from
+the `kernel.bin` size; LBA constants from `bootdefs.h`). Disk layout: LBA 0
+stage 1, LBA 1-8 stage 2, LBA 9+ kernel image with embedded ramdisk. VESA is
+probed before long mode kills BIOS video (800x600x8, then 640x480x8, then
+Mode 13h fallback) into the struct at `VBE_INFO_ADDR` (`0x7E20`); the kernel
+maps that framebuffer at `FB_ADDR`.
+
+Low memory is a fixed jigsaw: page tables at `0x1000-0x4FFF`, user page-table
+zone `0x10000` (64 KB, below the kernel link base so code, data and `.bss`
+can never reach it), GDT at `0x8000`, stage 2 at `0x9000`, syscall kernel
+stack below `0x88000`, AP stub stack at `0x78000`, kernel image at virtual
+`0x100000` (must end below `0x400000`, asserted at boot), user load base
+`0x400000`, heap from `0x0C000000`. Never move the user-table zone above
+`0x100000`; if the image outgrows `KASLR_IMAGE_SPAN` (3 MB), grow the span,
+the KASLR `PT1` mapping and the link layout together.
+
+KASLR (default on, `make ENABLE_KASLR=0` disables) keeps virtual `0x100000`
+but randomizes the physical base: stage 2 mixes TSC with CMOS hours/minutes/
+seconds in distinct bytes and picks one of 64 aligned 2 MB slots. The banner
+reports the base and the BDD suite asserts it is never `0x100000`. `.bss`
+relies on QEMU-zeroed RAM (NOBITS, no loader fill).
+
+## Validation gate, governance, libraries
+
+Every change must pass, in order: `make` (zero warnings),
+`sh src/test_all.sh` (61 PASS), `./test_bdd.sh` (full serial suite),
+`./tools/test_codecs.sh` (lzss/lz4/aes roundtrips, pass=3), `./mutate.sh`
+(every kernel/boot mutant killed; survivors mean a missing scenario, and only
+provably equivalent mutants may leave the set), `make test-tls` (host crypto
+vectors plus OpenSSL-driven full handshakes and the negative set),
+`make test-vma` (host red-black invariants, exhaustion, drain),
+`python3 -m unittest -v mcp/test_minios_mcp.py`, and `mcp/mutate_mcp.sh`.
+Methodology is SDD (spec in `CLAUDE.md` first), TDD (failing scenario first),
+BDD (`test_bdd.sh` over the serial console), mutation testing, and the Boy
+Scout rule (debt and security defects found en route are fixed, never
+deferred). `mutate.sh` path anchors for the `kernel.c` to
+`shell.c`/`syscalls.c`/`vga_fb.c`/`redirect.c` decomposition are stale
+(BROKEN until re-anchored); the `arch/x86/boot/`, `net/`, `drivers/`, `fs/`
+drift is already fixed.
+
+Governance gates (`ARCH_POLICY.yaml`): `tools/check_cohesion.py` (community
+cohesion floor), `tools/check_complexity.py` (kernel symbol budget),
+`tools/check_surprising.py` (long-hop coupling), `tools/check_kb_sync.py`
+(knowledge-base sync).
+
+Library policy: a library lands only if it fits the freestanding kernel
+(integer-only, no POSIX, allocator/libc redirected through macros) or runs
+at ring 3 as an unmodified static ELF. Accepted: miniz 3.0.2 (ZIP builtins),
+dlmalloc 2.8.6 (kernel heap mspace, `ONLY_MSPACES`, no `MORECORE`/`MMAP`
+growth, `objects/dlmalloc.o` selftest), stb_image (vendored; kernel keeps its
+8x8 bitmap font because the header is float-heavy and the kernel builds
+`-mno-sse -mno-mmx`, so a font swap would rasterize on the host at build
+time). Rejected: linenoise (POSIX line editor; the prompt implements editing
+natively), libgit2 (pthreads/OpenSSL/POSIX surface; a future git client would
+be a minimal wire client, not a port).
+
 ## Make targets
 
 | Target | Purpose |
@@ -1171,7 +1543,12 @@ full contract.
 | `run-headless` | boot it headless on the serial console (no GUI window) |
 | `serial` / `debug` | boot the image in QEMU |
 | `test` | behavioural suite |
+| `test-tls` / `test-vma` | host suites (see Validation gate above) |
 | `progs/bin/topogpt3.elf` | build the TopoGPT3 C inference engine |
+| `progs/bin/nuklear.elf` | build the Nuklear node editor |
+| `progs/bin/quake2generic.elf` | build the Quake 2 engine |
+| `doomgeneric.elf` | build the DOOM engine |
+| `pokemon-fetch` / `pokemon-clean` | fetch the gb-recompiled tool / remove `progs/pokemon/build/` |
 | `minifs.bin` | rebuild MiniFS image (includes TopoGPT3 weights and vocab) |
 | `clean` | remove every build product |
 

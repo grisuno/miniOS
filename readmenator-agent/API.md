@@ -1760,118 +1760,231 @@ int console_getc(void)`
 ## kernel/syscalls.c
 
 ### sys_minios_dns `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:59`
+- Defined: `kernel/syscalls.c:60`
 
 ### sys_minios_tls_handshake `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:65`
+- Defined: `kernel/syscalls.c:66`
 
 ### sys_minios_tls_send `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:70`
+- Defined: `kernel/syscalls.c:71`
 
 ### sys_minios_tls_recv `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:75`
+- Defined: `kernel/syscalls.c:76`
 
 ### sys_minios_time `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:80`
+- Defined: `kernel/syscalls.c:81`
 
 ### sys_minios_kbd `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:84`
+- Defined: `kernel/syscalls.c:85`
 
 ### sys_minios_palette `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:99`
+- Defined: `kernel/syscalls.c:100`
 
 ### sys_minios_kbd_raw `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:107`
+- Defined: `kernel/syscalls.c:108`
 
 ### sys_minios_vga_mode `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:113`
+- Defined: `kernel/syscalls.c:114`
 
 ### sys_minios_pcspk_init `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:120`
+- Defined: `kernel/syscalls.c:121`
 
 ### sys_minios_pcspk_tone `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:124`
+- Defined: `kernel/syscalls.c:125`
 
 ### sys_minios_doom_frame `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:128`
+- Defined: `kernel/syscalls.c:129`
 
 ### sys_minios_rtc `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:132`
+- Defined: `kernel/syscalls.c:133`
 
 ### sys_minios_fb_info `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:146`
+- Defined: `kernel/syscalls.c:147`
 
 ### sys_minios_pcspk_vol `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:158`
+- Defined: `kernel/syscalls.c:159`
 
 ### sys_minios_spawn `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:166`
+- Defined: `kernel/syscalls.c:167`
 
 ### sys_minios_lz4_compress `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:172`
+- Defined: `kernel/syscalls.c:173`
 
 ### sys_minios_lz4_decompress `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:185`
+- Defined: `kernel/syscalls.c:186`
 
 ### sys_minios_mouse `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:199`
+- Defined: `kernel/syscalls.c:200`
 
 ### sys_minios_nk_frame `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:208`
+- Defined: `kernel/syscalls.c:209`
 
 ### sys_minios_sb16_open `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:218`
+- Defined: `kernel/syscalls.c:219`
 
 ### sys_minios_sb16_submit `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:223`
+- Defined: `kernel/syscalls.c:224`
 
 ### sys_minios_gfx_title `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:231`
+- Defined: `kernel/syscalls.c:232`
 
 ### sys_minios_sb16_pump `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:245`
+- Defined: `kernel/syscalls.c:246`
 
 ### sys_minios_sb16_stream_open `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:249`
+- Defined: `kernel/syscalls.c:250`
 
 ### sys_minios_sb16_stream_close `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:253`
+- Defined: `kernel/syscalls.c:254`
 
 ### sys_minios_sb16_stream_submit `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:257`
+- Defined: `kernel/syscalls.c:258`
 
 ### sys_minios_sb16_stream_vol `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:265`
+- Defined: `kernel/syscalls.c:266`
 
 ### sys_minios_clone `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:275`
+- Defined: `kernel/syscalls.c:276`
 
 ### syscall_trace_enabled `long syscall_trace_enabled(void)`
-- Defined: `kernel/syscalls.c:318`
+- Defined: `kernel/syscalls.c:319`
 
 ### syscall_trace_set `void syscall_trace_set(int on)`
-- Defined: `kernel/syscalls.c:320`
+- Defined: `kernel/syscalls.c:321`
+
+### sys_linux_write `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:365`
+
+### sys_linux_writev `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:375`
+
+### do_open_path `static long do_open_path(const char *path, long flags)`
+- Defined: `kernel/syscalls.c:396`
+- Doc: return EFAULT; for (k = 0; k < cnt; k++) { unsigned long j; if (iov[k].iov_len > 0 && !user_range_ok((unsigned long)iov[
+
+### sys_linux_open `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:411`
+
+### sys_linux_close `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:416`
+
+### sys_linux_lseek `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:425`
+
+### sys_linux_brk `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:435`
+
+### sys_linux_mmap `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:445`
+
+### sys_linux_munmap `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:479`
+
+### sys_linux_mprotect `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:493`
+
+### sys_linux_sigaction `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:498`
+
+### sys_linux_sigprocmask `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:503`
+
+### sys_linux_ioctl `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:508`
+
+### sys_linux_access `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:513`
+
+### sys_linux_yield `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:535`
+
+### sys_linux_getpid `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:540`
+
+### sys_linux_socket `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:545`
+
+### sys_linux_connect `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:550`
+
+### sys_linux_sendto `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:556`
+
+### sys_linux_recvfrom `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:561`
+
+### sys_linux_shutdown `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:566`
+
+### sys_linux_poll `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:571`
+
+### sys_linux_fork `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:578`
+
+### sys_linux_vfork `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:583`
+
+### sys_linux_execve `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:588`
+
+### do_proc_exit `static long do_proc_exit(long code)`
+- Defined: `kernel/syscalls.c:595`
+- Doc: return 0; } static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6) { (void)a1; (void)a2; (voi
+
+### sys_linux_exit `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:604`
+
+### sys_linux_wait4 `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:609`
+
+### sys_linux_kill `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:614`
+
+### sys_linux_flock `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:619`
+
+### sys_linux_getcwd `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:624`
+
+### sys_linux_unlink `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:636`
+
+### sys_linux_readlink `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:649`
+
+### sys_linux_fstat `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:654`
+
+### sys_linux_gettimeofday `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:674`
+
+### sys_linux_arch_prctl `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:689`
+
+### sys_linux_gettid `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:701`
 
 ### trace_is_noisy `static int trace_is_noisy(long n)`
-- Defined: `kernel/syscalls.c:331`
+- Defined: `kernel/syscalls.c:749`
 
 ### ksyscall `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:335`
+- Defined: `kernel/syscalls.c:753`
 
 ### user_range_ok `int user_range_ok(unsigned long p, unsigned long len)`
-- Defined: `kernel/syscalls.c:354`
+- Defined: `kernel/syscalls.c:772`
 - Doc: --- User-pointer validation --------------------------------------------- The syscall boundary is the hardened edge betw
 
 ### user_str_ok `int user_str_ok(unsigned long p, unsigned long maxlen)`
-- Defined: `kernel/syscalls.c:360`
+- Defined: `kernel/syscalls.c:778`
 
 ### ksyscall_dispatch `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:368`
+- Defined: `kernel/syscalls.c:786`
 
 ### tools `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
-- Defined: `kernel/syscalls.c:907`
+- Defined: `kernel/syscalls.c:922`
 
 ## kernel/time.c
 
@@ -9273,155 +9386,186 @@ Z_DumpHeap
 - Defined: `progs/pokemon/platform_minios.c:32`
 
 ### sys_kbd `static long sys_kbd(void)`
-- Defined: `progs/pokemon/platform_minios.c:60`
+- Defined: `progs/pokemon/platform_minios.c:61`
 
 ### sys_nk_frame `static long sys_nk_frame(void)`
-- Defined: `progs/pokemon/platform_minios.c:66`
+- Defined: `progs/pokemon/platform_minios.c:67`
 
 ### sys_vga_mode `static long sys_vga_mode(int on)`
-- Defined: `progs/pokemon/platform_minios.c:72`
+- Defined: `progs/pokemon/platform_minios.c:73`
 
 ### sys_kbd_raw `static long sys_kbd_raw(int on)`
-- Defined: `progs/pokemon/platform_minios.c:78`
+- Defined: `progs/pokemon/platform_minios.c:79`
 
 ### sys_palette `static long sys_palette(const unsigned char *pal)`
-- Defined: `progs/pokemon/platform_minios.c:84`
+- Defined: `progs/pokemon/platform_minios.c:85`
 
 ### sys_gfx_title `static long sys_gfx_title(const char *t)`
-- Defined: `progs/pokemon/platform_minios.c:90`
+- Defined: `progs/pokemon/platform_minios.c:91`
 
 ### sys_tone `static long sys_tone(unsigned f)`
-- Defined: `progs/pokemon/platform_minios.c:96`
+- Defined: `progs/pokemon/platform_minios.c:97`
 
 ### gb_platform_set_debug `void gb_platform_set_debug(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:136`
+- Defined: `progs/pokemon/platform_minios.c:137`
 
 ### _dl_argv `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).
  * DO NOT reintroduce argv ...`
-- Defined: `progs/pokemon/platform_minios.c:144`
+- Defined: `progs/pokemon/platform_minios.c:145`
 
 ### minios_audio_sample `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)`
-- Defined: `progs/pokemon/platform_minios.c:182`
-
-### minios_audio_ensure `static void minios_audio_ensure(GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:201`
-- Doc: Self-healing registration: main.c touches callbacks after * gb_platform_register_context, so (re)install if missing.
-
-### gb_voice_freq `static unsigned gb_voice_freq(unsigned n)`
-- Defined: `progs/pokemon/platform_minios.c:215`
-- Doc: static void minios_audio_ensure(GBContext *ctx) { if (ctx && !ctx->callbacks.on_audio_sample) { ctx->callbacks.on_audio_
+- Defined: `progs/pokemon/platform_minios.c:195`
 
 ### gb_voice_in_range `static bool gb_voice_in_range(unsigned f)`
-- Defined: `progs/pokemon/platform_minios.c:221`
+- Defined: `progs/pokemon/platform_minios.c:226`
 
 ### sample_apu_voices `static void sample_apu_voices(gb_voice_t *v)`
-- Defined: `progs/pokemon/platform_minios.c:225`
+- Defined: `progs/pokemon/platform_minios.c:230`
 
 ### hold_tone `static void hold_tone(unsigned freq, unsigned ms)`
-- Defined: `progs/pokemon/platform_minios.c:263`
+- Defined: `progs/pokemon/platform_minios.c:250`
 
 ### minios_audio_play `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
                             ...`
-- Defined: `progs/pokemon/platform_minios.c:271`
+- Defined: `progs/pokemon/platform_minios.c:258`
 
 ### minios_audio_frame `static void minios_audio_frame(void)`
-- Defined: `progs/pokemon/platform_minios.c:307`
+- Defined: `progs/pokemon/platform_minios.c:294`
 - Doc: } if (m2) { mel[nmel++] = v[1].freq; } if (bass) { hold_tone(v[2].freq, MINIOS_ARP_BASS_MS); } if (nmel > 0) { hold_tone
 
 ### rebuild_joypad `static void rebuild_joypad(void)`
-- Defined: `progs/pokemon/platform_minios.c:328`
+- Defined: `progs/pokemon/platform_minios.c:315`
 - Doc: ============================================================================ PS/2 Set 1 scancode -> GB joypad mapping  A
 
 ### poll_keyboard `static void poll_keyboard(void)`
-- Defined: `progs/pokemon/platform_minios.c:341`
+- Defined: `progs/pokemon/platform_minios.c:328`
 
 ### push_332_palette `static void push_332_palette(void)`
-- Defined: `progs/pokemon/platform_minios.c:381`
+- Defined: `progs/pokemon/platform_minios.c:368`
 - Doc: 3-3-2 RGB palette ramp, pushed ONCE at init (not per frame). * Pixel index = (R & 0xE0) | ((G & 0xE0) >> 3) | ((B & 0xC0
 
 ### upload_frame `static void upload_frame(const uint32_t *framebuffer)`
-- Defined: `progs/pokemon/platform_minios.c:395`
+- Defined: `progs/pokemon/platform_minios.c:382`
 - Doc: static void push_332_palette(void) { uint8_t dac[768]; for (int i = 0; i < 256; i++) { uint8_t r = (uint8_t)(i & 0xE0); 
 
 ### gb_platform_init `bool gb_platform_init(int scale)`
-- Defined: `progs/pokemon/platform_minios.c:454`
+- Defined: `progs/pokemon/platform_minios.c:441`
 - Doc: ============================================================================ gb_platform_* interface implementation * ==
 
+### minios_persist_path `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
+                      ...`
+- Defined: `progs/pokemon/platform_minios.c:467`
+- Doc: -- Battery + RTC persistence (direct write to MiniFS) ---  Paths use minifs bin/: kfopen checks the ramdisk FIRST, but t
+
+### minios_load_helper `static bool minios_load_helper(const char *path, void *data, size_t size,
+                       ...`
+- Defined: `progs/pokemon/platform_minios.c:473`
+
+### minios_save_helper `static bool minios_save_helper(const char *path, const void *data, size_t size)`
+- Defined: `progs/pokemon/platform_minios.c:491`
+
+### minios_load_battery_ram `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
+                       ...`
+- Defined: `progs/pokemon/platform_minios.c:502`
+
+### minios_save_battery_ram `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
+                       ...`
+- Defined: `progs/pokemon/platform_minios.c:510`
+
+### minios_load_rtc_data `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
+                          ...`
+- Defined: `progs/pokemon/platform_minios.c:520`
+
+### minios_save_rtc_data `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
+                          ...`
+- Defined: `progs/pokemon/platform_minios.c:528`
+
+### minios_state_path `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
+- Defined: `progs/pokemon/platform_minios.c:550`
+- Doc: define MINIOS_AUTOSAVE_MS 60000u
+
+### minios_autosave `static void minios_autosave(uint32_t now)`
+- Defined: `progs/pokemon/platform_minios.c:555`
+
+### poll_hotkeys `static void poll_hotkeys(void)`
+- Defined: `progs/pokemon/platform_minios.c:568`
+- Doc: } static void minios_autosave(uint32_t now) { if (!g_ctx || now - g_last_autosave_ms < MINIOS_AUTOSAVE_MS) { return; } g
+
 ### gb_platform_register_context `void gb_platform_register_context(GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:472`
+- Defined: `progs/pokemon/platform_minios.c:597`
 
 ### gb_platform_shutdown `void gb_platform_shutdown(void)`
-- Defined: `progs/pokemon/platform_minios.c:476`
+- Defined: `progs/pokemon/platform_minios.c:613`
 
 ### gb_platform_poll_events `bool gb_platform_poll_events(GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:483`
+- Defined: `progs/pokemon/platform_minios.c:620`
 
 ### gb_platform_render_frame `void gb_platform_render_frame(const uint32_t *framebuffer)`
-- Defined: `progs/pokemon/platform_minios.c:490`
+- Defined: `progs/pokemon/platform_minios.c:628`
 
 ### gb_platform_present_framebuffer `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
-- Defined: `progs/pokemon/platform_minios.c:517`
+- Defined: `progs/pokemon/platform_minios.c:655`
 
 ### gb_platform_render_lcd_off_frame `void gb_platform_render_lcd_off_frame(void)`
-- Defined: `progs/pokemon/platform_minios.c:523`
+- Defined: `progs/pokemon/platform_minios.c:661`
 
 ### gb_platform_vsync `void gb_platform_vsync(uint32_t frame_cycles)`
-- Defined: `progs/pokemon/platform_minios.c:533`
+- Defined: `progs/pokemon/platform_minios.c:671`
 
 ### gb_platform_set_benchmark_mode `void gb_platform_set_benchmark_mode(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:549`
+- Defined: `progs/pokemon/platform_minios.c:687`
 
 ### gb_platform_set_input_script `bool gb_platform_set_input_script(const char *script)`
-- Defined: `progs/pokemon/platform_minios.c:553`
+- Defined: `progs/pokemon/platform_minios.c:691`
 
 ### gb_platform_set_input_record_file `void gb_platform_set_input_record_file(const char *path)`
-- Defined: `progs/pokemon/platform_minios.c:559`
+- Defined: `progs/pokemon/platform_minios.c:697`
 
 ### gb_platform_set_persistence_dir `bool gb_platform_set_persistence_dir(const char *path)`
-- Defined: `progs/pokemon/platform_minios.c:564`
+- Defined: `progs/pokemon/platform_minios.c:702`
 
 ### gb_platform_set_dump_frames `void gb_platform_set_dump_frames(const char *frames)`
-- Defined: `progs/pokemon/platform_minios.c:573`
+- Defined: `progs/pokemon/platform_minios.c:711`
 
 ### gb_platform_set_dump_present_frames `void gb_platform_set_dump_present_frames(const char *frames)`
-- Defined: `progs/pokemon/platform_minios.c:595`
+- Defined: `progs/pokemon/platform_minios.c:733`
 
 ### gb_platform_set_screenshot_prefix `void gb_platform_set_screenshot_prefix(const char *prefix)`
-- Defined: `progs/pokemon/platform_minios.c:616`
+- Defined: `progs/pokemon/platform_minios.c:754`
 
 ### gb_platform_get_timing_info `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
-- Defined: `progs/pokemon/platform_minios.c:622`
+- Defined: `progs/pokemon/platform_minios.c:760`
 
 ### gb_platform_get_joypad `uint8_t gb_platform_get_joypad(void)`
-- Defined: `progs/pokemon/platform_minios.c:629`
+- Defined: `progs/pokemon/platform_minios.c:767`
 
 ### gb_platform_set_title `void gb_platform_set_title(const char *title)`
-- Defined: `progs/pokemon/platform_minios.c:633`
+- Defined: `progs/pokemon/platform_minios.c:771`
 
 ### gb_platform_get_smooth_lcd_transitions `bool gb_platform_get_smooth_lcd_transitions(void)`
-- Defined: `progs/pokemon/platform_minios.c:639`
+- Defined: `progs/pokemon/platform_minios.c:777`
 
 ### gb_platform_set_smooth_lcd_transitions `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:643`
+- Defined: `progs/pokemon/platform_minios.c:781`
 
 ### gb_platform_set_launcher_return_enabled `void gb_platform_set_launcher_return_enabled(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:647`
+- Defined: `progs/pokemon/platform_minios.c:785`
 
 ### gb_platform_get_exit_action `GBPlatformExitAction gb_platform_get_exit_action(void)`
-- Defined: `progs/pokemon/platform_minios.c:651`
+- Defined: `progs/pokemon/platform_minios.c:789`
 
 ### gb_platform_submit_port_frame `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
-- Defined: `progs/pokemon/platform_minios.c:655`
+- Defined: `progs/pokemon/platform_minios.c:793`
 
 ### gb_platform_test_audio_concurrency `bool gb_platform_test_audio_concurrency(uint32_t frames,
                                         ...`
-- Defined: `progs/pokemon/platform_minios.c:662`
+- Defined: `progs/pokemon/platform_minios.c:800`
 - Doc: void gb_platform_set_launcher_return_enabled(bool enabled) { (void)enabled; } GBPlatformExitAction gb_platform_get_exit_
 
 ### gb_platform_test_inject_persistence_fault `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...`
-- Defined: `progs/pokemon/platform_minios.c:670`
+- Defined: `progs/pokemon/platform_minios.c:808`
 
 ## progs/quake2generic/q2generic_minios.c
 
