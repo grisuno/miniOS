@@ -9251,6 +9251,178 @@ Z_DumpHeap
 ### main `int main(int argc, char **argv)`
 - Defined: `progs/piano/piano.c:619`
 
+## progs/pokemon/minios_stubs/SDL.h
+
+### SDL_GetPerformanceCounter `static inline Uint64 SDL_GetPerformanceCounter(void)`
+- Defined: `progs/pokemon/minios_stubs/SDL.h:10`
+
+### SDL_GetPerformanceFrequency `static inline Uint64 SDL_GetPerformanceFrequency(void)`
+- Defined: `progs/pokemon/minios_stubs/SDL.h:12`
+
+### SDL_GetTicks `static inline Uint32 SDL_GetTicks(void)`
+- Defined: `progs/pokemon/minios_stubs/SDL.h:13`
+
+### SDL_Delay `static inline void SDL_Delay(Uint32 ms)`
+- Defined: `progs/pokemon/minios_stubs/SDL.h:14`
+
+## progs/pokemon/platform_minios.c
+
+### audible `* audible (noise SFX, sweep zaps), the raw mix estimate is played.
+ *
+ * Debug: heartbeat to stde...`
+- Defined: `progs/pokemon/platform_minios.c:32`
+
+### sys_kbd `static long sys_kbd(void)`
+- Defined: `progs/pokemon/platform_minios.c:60`
+
+### sys_nk_frame `static long sys_nk_frame(void)`
+- Defined: `progs/pokemon/platform_minios.c:66`
+
+### sys_vga_mode `static long sys_vga_mode(int on)`
+- Defined: `progs/pokemon/platform_minios.c:72`
+
+### sys_kbd_raw `static long sys_kbd_raw(int on)`
+- Defined: `progs/pokemon/platform_minios.c:78`
+
+### sys_palette `static long sys_palette(const unsigned char *pal)`
+- Defined: `progs/pokemon/platform_minios.c:84`
+
+### sys_gfx_title `static long sys_gfx_title(const char *t)`
+- Defined: `progs/pokemon/platform_minios.c:90`
+
+### sys_tone `static long sys_tone(unsigned f)`
+- Defined: `progs/pokemon/platform_minios.c:96`
+
+### gb_platform_set_debug `void gb_platform_set_debug(bool enabled)`
+- Defined: `progs/pokemon/platform_minios.c:136`
+
+### _dl_argv `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).
+ * DO NOT reintroduce argv ...`
+- Defined: `progs/pokemon/platform_minios.c:144`
+
+### minios_audio_sample `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)`
+- Defined: `progs/pokemon/platform_minios.c:182`
+
+### minios_audio_ensure `static void minios_audio_ensure(GBContext *ctx)`
+- Defined: `progs/pokemon/platform_minios.c:201`
+- Doc: Self-healing registration: main.c touches callbacks after * gb_platform_register_context, so (re)install if missing.
+
+### gb_voice_freq `static unsigned gb_voice_freq(unsigned n)`
+- Defined: `progs/pokemon/platform_minios.c:215`
+- Doc: static void minios_audio_ensure(GBContext *ctx) { if (ctx && !ctx->callbacks.on_audio_sample) { ctx->callbacks.on_audio_
+
+### gb_voice_in_range `static bool gb_voice_in_range(unsigned f)`
+- Defined: `progs/pokemon/platform_minios.c:221`
+
+### sample_apu_voices `static void sample_apu_voices(gb_voice_t *v)`
+- Defined: `progs/pokemon/platform_minios.c:225`
+
+### hold_tone `static void hold_tone(unsigned freq, unsigned ms)`
+- Defined: `progs/pokemon/platform_minios.c:263`
+
+### minios_audio_play `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
+                            ...`
+- Defined: `progs/pokemon/platform_minios.c:271`
+
+### minios_audio_frame `static void minios_audio_frame(void)`
+- Defined: `progs/pokemon/platform_minios.c:307`
+- Doc: } if (m2) { mel[nmel++] = v[1].freq; } if (bass) { hold_tone(v[2].freq, MINIOS_ARP_BASS_MS); } if (nmel > 0) { hold_tone
+
+### rebuild_joypad `static void rebuild_joypad(void)`
+- Defined: `progs/pokemon/platform_minios.c:328`
+- Doc: ============================================================================ PS/2 Set 1 scancode -> GB joypad mapping  A
+
+### poll_keyboard `static void poll_keyboard(void)`
+- Defined: `progs/pokemon/platform_minios.c:341`
+
+### push_332_palette `static void push_332_palette(void)`
+- Defined: `progs/pokemon/platform_minios.c:381`
+- Doc: 3-3-2 RGB palette ramp, pushed ONCE at init (not per frame). * Pixel index = (R & 0xE0) | ((G & 0xE0) >> 3) | ((B & 0xC0
+
+### upload_frame `static void upload_frame(const uint32_t *framebuffer)`
+- Defined: `progs/pokemon/platform_minios.c:395`
+- Doc: static void push_332_palette(void) { uint8_t dac[768]; for (int i = 0; i < 256; i++) { uint8_t r = (uint8_t)(i & 0xE0); 
+
+### gb_platform_init `bool gb_platform_init(int scale)`
+- Defined: `progs/pokemon/platform_minios.c:454`
+- Doc: ============================================================================ gb_platform_* interface implementation * ==
+
+### gb_platform_register_context `void gb_platform_register_context(GBContext *ctx)`
+- Defined: `progs/pokemon/platform_minios.c:472`
+
+### gb_platform_shutdown `void gb_platform_shutdown(void)`
+- Defined: `progs/pokemon/platform_minios.c:476`
+
+### gb_platform_poll_events `bool gb_platform_poll_events(GBContext *ctx)`
+- Defined: `progs/pokemon/platform_minios.c:483`
+
+### gb_platform_render_frame `void gb_platform_render_frame(const uint32_t *framebuffer)`
+- Defined: `progs/pokemon/platform_minios.c:490`
+
+### gb_platform_present_framebuffer `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
+- Defined: `progs/pokemon/platform_minios.c:517`
+
+### gb_platform_render_lcd_off_frame `void gb_platform_render_lcd_off_frame(void)`
+- Defined: `progs/pokemon/platform_minios.c:523`
+
+### gb_platform_vsync `void gb_platform_vsync(uint32_t frame_cycles)`
+- Defined: `progs/pokemon/platform_minios.c:533`
+
+### gb_platform_set_benchmark_mode `void gb_platform_set_benchmark_mode(bool enabled)`
+- Defined: `progs/pokemon/platform_minios.c:549`
+
+### gb_platform_set_input_script `bool gb_platform_set_input_script(const char *script)`
+- Defined: `progs/pokemon/platform_minios.c:553`
+
+### gb_platform_set_input_record_file `void gb_platform_set_input_record_file(const char *path)`
+- Defined: `progs/pokemon/platform_minios.c:559`
+
+### gb_platform_set_persistence_dir `bool gb_platform_set_persistence_dir(const char *path)`
+- Defined: `progs/pokemon/platform_minios.c:564`
+
+### gb_platform_set_dump_frames `void gb_platform_set_dump_frames(const char *frames)`
+- Defined: `progs/pokemon/platform_minios.c:573`
+
+### gb_platform_set_dump_present_frames `void gb_platform_set_dump_present_frames(const char *frames)`
+- Defined: `progs/pokemon/platform_minios.c:595`
+
+### gb_platform_set_screenshot_prefix `void gb_platform_set_screenshot_prefix(const char *prefix)`
+- Defined: `progs/pokemon/platform_minios.c:616`
+
+### gb_platform_get_timing_info `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
+- Defined: `progs/pokemon/platform_minios.c:622`
+
+### gb_platform_get_joypad `uint8_t gb_platform_get_joypad(void)`
+- Defined: `progs/pokemon/platform_minios.c:629`
+
+### gb_platform_set_title `void gb_platform_set_title(const char *title)`
+- Defined: `progs/pokemon/platform_minios.c:633`
+
+### gb_platform_get_smooth_lcd_transitions `bool gb_platform_get_smooth_lcd_transitions(void)`
+- Defined: `progs/pokemon/platform_minios.c:639`
+
+### gb_platform_set_smooth_lcd_transitions `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
+- Defined: `progs/pokemon/platform_minios.c:643`
+
+### gb_platform_set_launcher_return_enabled `void gb_platform_set_launcher_return_enabled(bool enabled)`
+- Defined: `progs/pokemon/platform_minios.c:647`
+
+### gb_platform_get_exit_action `GBPlatformExitAction gb_platform_get_exit_action(void)`
+- Defined: `progs/pokemon/platform_minios.c:651`
+
+### gb_platform_submit_port_frame `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
+- Defined: `progs/pokemon/platform_minios.c:655`
+
+### gb_platform_test_audio_concurrency `bool gb_platform_test_audio_concurrency(uint32_t frames,
+                                        ...`
+- Defined: `progs/pokemon/platform_minios.c:662`
+- Doc: void gb_platform_set_launcher_return_enabled(bool enabled) { (void)enabled; } GBPlatformExitAction gb_platform_get_exit_
+
+### gb_platform_test_inject_persistence_fault `void gb_platform_test_inject_persistence_fault(
+    GBPersistenceTestTarget target,
+    GBPersist...`
+- Defined: `progs/pokemon/platform_minios.c:670`
+
 ## progs/quake2generic/q2generic_minios.c
 
 ### SYS_DOOM_FRAME `* SYS_DOOM_FRAME (211) and the kernel composites the buffer onto the
@@ -10714,14 +10886,14 @@ Z_DumpHeap
 ## tools/gen_icons.py
 
 ### make_png `def make_png(pixels, palette, width, height)`
-- Defined: `tools/gen_icons.py:179`
+- Defined: `tools/gen_icons.py:213`
 - Doc: Create a minimal indexed-colour PNG from pixel indices and a palette.
 
 ### make_chunk `def make_chunk(chunk_type, data)`
-- Defined: `tools/gen_icons.py:209`
+- Defined: `tools/gen_icons.py:243`
 
 ### main `def main()`
-- Defined: `tools/gen_icons.py:214`
+- Defined: `tools/gen_icons.py:248`
 
 ## tools/gen_zip_fixtures.py
 

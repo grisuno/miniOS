@@ -287,6 +287,9 @@
 | `progs/nuklear/nuklear_minios.c` | nuklear_minios.c — MiniOS platform layer for Nuklear. | nuklear | 30 |
 | `progs/nuklear/nuklear_minios.h` | ifndef NUKLEAR_MINIOS_H define NUKLEAR_MINIOS_H  nuklear_minios.h — MiniOS platf | nuklear | 4 |
 | `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 48 |
+| `progs/pokemon/fetch.sh` | fetch.sh - clone the gb-recompiled tool into progs/pokemon/upstream.  The upstre | pokemon | 0 |
+| `progs/pokemon/minios_stubs/SDL.h` | SDL.h stub for MiniOS cross-compilation | misc | 5 |
+| `progs/pokemon/platform_minios.c` | - | pokemon | 61 |
 | `progs/quake2generic/q2generic_minios.c` | q2generic_minios.c - MiniOS platform layer for quake2generic. | misc | 28 |
 | `progs/src/aes.c` | aes.c - command path AES-256-CTR encryption tools: aes and unaes. | src | 41 |
 | `progs/src/audio.c` | include "minios_abi.h" | src | 17 |

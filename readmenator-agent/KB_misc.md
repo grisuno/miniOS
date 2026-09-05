@@ -169,6 +169,17 @@
   - `BTN_GAP` (macro, line 355)
   - `NCTRLS` (macro, line 367)
 
+## progs/pokemon/minios_stubs/SDL.h
+- Layer: testing
+- Doc: SDL.h stub for MiniOS cross-compilation
+- Language: h
+- Symbols:
+  - `SDL_GetPerformanceCounter` (function, line 10) `static inline Uint64 SDL_GetPerformanceCounter(void)`
+  - `SDL_GetPerformanceFrequency` (function, line 12) `static inline Uint64 SDL_GetPerformanceFrequency(void)`
+  - `SDL_GetTicks` (function, line 13) `static inline Uint32 SDL_GetTicks(void)`
+  - `SDL_Delay` (function, line 14) `static inline void SDL_Delay(Uint32 ms)`
+  - `SDL_H_STUB_MINIOS` (macro, line 3)
+
 ## progs/quake2generic/q2generic_minios.c
 - Layer: utility
 - Doc: q2generic_minios.c - MiniOS platform layer for quake2generic.

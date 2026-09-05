@@ -57,9 +57,9 @@
 - Layer: utility
 - Language: py
 - Symbols:
-  - `make_png` (function, line 179) `def make_png(pixels, palette, width, height)`
-  - `make_chunk` (function, line 209) `def make_chunk(chunk_type, data)`
-  - `main` (function, line 214) `def main()`
+  - `make_png` (function, line 213) `def make_png(pixels, palette, width, height)`
+  - `make_chunk` (function, line 243) `def make_chunk(chunk_type, data)`
+  - `main` (function, line 248) `def main()`
 
 ## tools/gen_zip_fixtures.py
 - Layer: data_access
