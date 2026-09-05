@@ -1,0 +1,37 @@
+--- main.c
++++ main.c
+@@ -206,6 +206,9 @@
+     bool headless_mode = false;
+     bool serial_stdout = false;
+     bool stop_on_serial_verdict = false;
++#ifdef GB_MINIOS
++    bool minios_debug = false;
++#endif
+     bool native_presentation_enabled = false;
+ #ifdef GBRT_ENABLE_PORT_MODULE
+     bool port_ui_open = false;
+@@ -402,6 +405,10 @@
+             serial_stdout = true;
+         } else if (strcmp(argv[i], "--stop-on-serial-verdict") == 0) {
+             stop_on_serial_verdict = true;
++#ifdef GB_MINIOS
++        } else if (strcmp(argv[i], "--debug") == 0) {
++            minios_debug = true;
++#endif
+         }
+     }
+ 
+@@ -412,6 +419,13 @@
+         return 1;
+     }
+ 
++#ifdef GB_MINIOS
++    /* MiniOS platform heartbeat (serial prints cost frame rate, off by
++     * default, enabled with --debug). Prototype lives here instead of
++     * platform_sdl.h so SDL builds are untouched. */
++    void gb_platform_set_debug(bool enabled);
++    gb_platform_set_debug(minios_debug);
++#endif
+ 
+     gbrt_force_scalar_timer = force_scalar_timer;
+ 

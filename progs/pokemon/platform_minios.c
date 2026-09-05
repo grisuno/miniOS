@@ -138,20 +138,14 @@ void gb_platform_set_debug(bool enabled) {
     g_minios_debug = enabled;
 }
 
-/* --debug detection without touching generated main.c: scan our own argv
- * via the static-glibc loader vector. Failure mode is silent-off. */
-extern char **_dl_argv;
-__attribute__((constructor)) static void minios_early_init(void) {
-    if (!_dl_argv) {
-        return;
-    }
-    for (char **p = _dl_argv; *p; ++p) {
-        if (strcmp(*p, "--debug") == 0) {
-            g_minios_debug = true;
-            break;
-        }
-    }
-}
+/* NOTE: --debug used to be auto-detected here by scanning argv through
+ * the static-glibc loader vector (_dl_argv) in a constructor. That
+ * crashed at startup: this toolchain's loader internals don't expose a
+ * usable _dl_argv (it bound to unrelated storage and strcmp faulted).
+ * DO NOT reintroduce argv sniffing here. --debug arrives through
+ * gb_platform_set_debug(), wired by the --debug flag that
+ * main-minios.patch adds to generated main.c files (auto-applied by
+ * Makefile.minios, marker-gated, SDL builds untouched). */
 
 static void dbg_heartbeat(void) {
     unsigned total = g_dbg_render + g_dbg_present + g_dbg_lcd_off;

@@ -74,3 +74,6 @@ build/
 progs/pokemon/upstream/
 progs/pokemon/game/
 progs/pokemon/build/
+
+# Local machine paths (POKEMON_DIR etc.). Never committed.
+config.mk

@@ -3,6 +3,11 @@ LD       = ld
 OBJCOPY  = objcopy
 QEMU    ?= qemu-system-x86_64
 
+# Local machine config (NOT committed, see .gitignore). Copy your
+# personal paths here once so plain `make run` / `make os.img` just work:
+#   POKEMON_DIR = /home/you/tools/gb-recompiled/pokecrystal
+-include config.mk
+
 # The toolchain lives in three sibling repositories. Their locations are
 # overridable so the image can be built against a checkout kept anywhere;
 # `make sources` clones the ones that are missing and `make sources-update`

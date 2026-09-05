@@ -60,9 +60,25 @@ RT_OBJS   = $(patsubst %.c,$(BUILD)/rt/%.o,$(RT_SOURCES))
 PLAT_OBJS = $(BUILD)/plat/platform_minios.o
 ALL_OBJS  = $(GAME_OBJS) $(RT_OBJS) $(PLAT_OBJS)
 
-.PHONY: all clean
+MAIN_SRC = $(firstword $(wildcard $(GAME_DIR)/*_main.c))
+PATCH = $(CURDIR)/main-minios.patch
 
-all: $(TARGET)
+.DEFAULT_GOAL := all
+
+.PHONY: all clean prebuild
+
+# The --debug flag needs 6 lines in generated main.c (see
+# main-minios.patch). Auto-applied once, marker-gated: trees that
+# already carry it (older port setups) are untouched. Fails loudly
+# instead of silently building without --debug support.
+prebuild:
+	@if [ -n "$(MAIN_SRC)" ] && ! grep -q "GB_MINIOS" "$(MAIN_SRC)"; then \
+	    echo "[Patch] --debug support: $(MAIN_SRC)"; \
+	    command -v patch >/dev/null || { echo "error: 'patch' not found (install patch and retry)"; exit 1; }; \
+	    patch "$(MAIN_SRC)" < "$(PATCH)" || { echo "error: patch failed; see README.md for the manual step"; exit 1; }; \
+	fi
+
+all: prebuild $(TARGET)
 	@echo "=== Built: $$(ls -lh $(TARGET) | awk '{print $$5}') ==="
 	@file $(TARGET)
 
