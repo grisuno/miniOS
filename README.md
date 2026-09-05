@@ -129,7 +129,7 @@ position and size.
 
 ## Wiki
 
-- [https://deepwiki.com/grisuno/miniOS](https://deepwiki.com/grisuno/miniOS)
+- [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/grisuno/miniOS)
 
 ## The four repositories
 
