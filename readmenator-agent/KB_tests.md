@@ -20,6 +20,45 @@
   - `roundtrip` (function, line 31)
   - `reject` (function, line 40)
 
+## tests/test_batch.c
+- Layer: testing
+- Doc: Docstring: Host test for kernel/batch.c (make test-batch).
+- Language: c
+- Symbols:
+  - `stub_dispatch` (function, line 23) `static long stub_dispatch(uint32_t opcode)`
+  - `main` (function, line 30) `int main(void)`
+  - `CHECK` (macro, line 16)
+
+## tests/test_futex.c
+- Layer: testing
+- Doc: Docstring: Host test for kernel/futex.c (make test-futex).
+- Language: c
+- Symbols:
+  - `proc_get` (function, line 17) `proc_t *proc_get(int pid)`
+  - `schedule` (function, line 25) `void schedule(void)`
+  - `fresh_proc` (function, line 38) `static void fresh_proc(int pid)`
+  - `fresh_all` (function, line 47) `static void fresh_all(void)`
+  - `main` (function, line 59) `int main(void)`
+  - `CHECK` (macro, line 31)
+
+## tests/test_percpu_rq.c
+- Layer: testing
+- Doc: Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq).
+- Language: c
+- Symbols:
+  - `main` (function, line 23) `int main(void)`
+  - `CHECK` (macro, line 16)
+
+## tests/test_rcu.c
+- Layer: testing
+- Doc: Docstring: Host test for kernel/rcu.c (make test-rcu).
+- Language: c
+- Symbols:
+  - `rcu_host_cpu` (function, line 18) `cpu_t *rcu_host_cpu(void)`
+  - `test_cb` (function, line 22) `static void test_cb(void *arg)`
+  - `main` (function, line 36) `int main(void)`
+  - `CHECK` (macro, line 29)
+
 ## tests/test_sync.c
 - Layer: testing
 - Doc: Host-side unit test for the blocking sync primitives (kernel/sync.c).

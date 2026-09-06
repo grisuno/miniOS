@@ -12,6 +12,7 @@
 | `arch/x86/isr_stubs.S` | - | x86 | 24 |
 | `arch/x86/msr.h` | ifndef ARCH_X86_MSR_H define ARCH_X86_MSR_H  Model-Specific Register access for  | x86 | 9 |
 | `audio.h` | ifndef AUDIO_H define AUDIO_H  Unified audio API for MiniOS. | root | 5 |
+| `batch.h` | ifndef BATCH_H define BATCH_H  Docstring: batch.h -- Batched synchronous syscall | root | 10 |
 | `block.h` | ifndef BLOCK_H define BLOCK_H  Block device abstraction for MiniFS. Maps 4096-by | root | 4 |
 | `bootloader.c` | - | root | 2 |
 | `desktop_icons.h` | desktop_icons.h -- embedded icon pixel data for desktop shortcuts. | root | 3 |
@@ -29,30 +30,35 @@
 | `fs/ramdisk.c` | include "kernel.h"  ============================================================ | fs | 18 |
 | `fs/vfs.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 23 |
 | `fs/zip.c` | zip.c — the unzip/zip shell builtins over the miniz zip library. | fs | 7 |
+| `futex.h` | ifndef FUTEX_H define FUTEX_H  Docstring: futex.h -- Fast userspace mutex sleep/ | root | 7 |
 | `gen_minifs.py` | - | root | 0 |
 | `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 27 |
 | `install.sh` | - | root | 0 |
 | `kernel.c` | include "kernel.h" include "net.h" include "tls.h" include "bootdefs.h" include  | root | 31 |
 | `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 64 |
+| `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
 | `kernel/cvm_host.c` | - | kernel | 45 |
 | `kernel/editor.c` | include "kernel.h" include "shell.h" include "editor.h"  ======================= | kernel | 20 |
 | `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | kernel | 8 |
+| `kernel/futex.c` | Docstring: kernel/futex.c -- Kernel side of the futex contract. | kernel | 4 |
 | `kernel/klog.c` | klog.c - Structured kernel logging with levels and subsystems. | kernel | 6 |
 | `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | kernel | 30 |
 | `kernel/lz4_kernel.c` | include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE  | kernel | 9 |
 | `kernel/mm.c` | include "kernel.h" include "sched.h"  ========================================== | kernel | 6 |
 | `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 8 |
 | `kernel/mm/swap.c` | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | mm | 8 |
+| `kernel/percpu_rq.c` | Docstring: kernel/percpu_rq.c -- Per-CPU runqueue hints and stealing. | kernel | 9 |
 | `kernel/printf.c` | include "kernel.h"  ============================================================ | kernel | 10 |
+| `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | kernel | 11 |
 | `kernel/redirect.c` | include "kernel.h"  ============================================================ | kernel | 3 |
-| `kernel/sched.c` | - | kernel | 43 |
+| `kernel/sched.c` | - | kernel | 44 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 7 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 9 |
 | `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 60 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 7 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 19 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 83 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 87 |
 | `kernel/time.c` | include "kernel.h"  ============================================================ | kernel | 3 |
 | `kernel/vga_fb.c` | - | kernel | 71 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 1 |
@@ -78,6 +84,7 @@
 | `net/tls_crypto.c` | tls_crypto.c - the crypto behind the kernel TLS 1.2 client. | net | 76 |
 | `net/tls_x509.c` | tls_x509.c - minimal X.509 DER parsing and chain verification. | net | 23 |
 | `pcspk.h` | ifndef PCSPK_H define PCSPK_H  define PCSPK_VOL_MIN     0 define PCSPK_VOL_MAX   | root | 4 |
+| `percpu_rq.h` | ifndef PERCPU_RQ_H define PERCPU_RQ_H  Docstring: percpu_rq.h -- Per-CPU runqueu | root | 5 |
 | `progs/asm/aes.s` | - | asm | 28 |
 | `progs/asm/cp.s` | - | asm | 2 |
 | `progs/asm/fib.s` | - | asm | 3 |
@@ -281,7 +288,7 @@
 | `progs/micropython/variants/minios/manifest.py` | manifest.py -- frozen modules for the MiniOS MicroPython variant. Scripts listed | minios | 0 |
 | `progs/micropython/variants/minios/minios_module.c` | - | minios | 15 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 |
-| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 110 |
+| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 113 |
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 30 |
 | `progs/nuklear/cvm_emit.h` | ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (c | nuklear | 2 |
 | `progs/nuklear/node_editor.c` | node_editor.c — visual node editor that compiles to CVM bytecode. | nuklear | 22 |
@@ -309,7 +316,7 @@
 | `progs/src/lz4.c` | lz4.c - command path LZ4 (de)compression tools: lz4 and unlz4. | src | 12 |
 | `progs/src/lzss.c` | lzss.c - command path LZSS (de)compression tools: lzss and unlzss. | src | 36 |
 | `progs/src/mmreuse.c` | mmap/munmap reclaim stress test.  Repeatedly maps and unmaps a large | src | 4 |
-| `progs/src/mthreads.h` | mthreads.h -- Minimal pthread-like threads for MiniOS ELFs (roadmap | src | 11 |
+| `progs/src/mthreads.h` | mthreads.h -- Minimal pthread-like threads for MiniOS ELFs (roadmap | src | 17 |
 | `progs/src/nx.c` | NX probe. Under the isolation contract every user page starts | src | 3 |
 | `progs/src/opl3.c` | - | src | 17 |
 | `progs/src/sbtone.c` | sbtone.c — headless SB16 diagnostic (ring-3, no GUI). | src | 8 |
@@ -323,6 +330,7 @@
 | `progs/topogpt3/topogpt3.c` | - | misc | 99 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 26 |
 | `qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | root | 27 |
+| `rcu.h` | ifndef RCU_H define RCU_H  Docstring: rcu.h -- Read-copy-update, lite epoch edit | root | 6 |
 | `rtc.h` | ifndef RTC_H define RTC_H | root | 1 |
 | `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 8 |
 | `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Pro | root | 18 |
@@ -335,6 +343,10 @@
 | `test_http_server.py` | - | root | 3 |
 | `tests/host_aes.sh` | host_aes.sh - host-side verification for the AES-256-CTR command tools.  The min | tests | 3 |
 | `tests/host_codecs.sh` | host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The | tests | 5 |
+| `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 3 |
+| `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 6 |
+| `tests/test_percpu_rq.c` | Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq). | tests | 2 |
+| `tests/test_rcu.c` | Docstring: Host test for kernel/rcu.c (make test-rcu). | tests | 4 |
 | `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 6 |
 | `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 8 |
 | `tls.h` | ifndef TLS_H define TLS_H  ========== TLS 1.2 client (RFC 5246) ========== | root | 42 |

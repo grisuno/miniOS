@@ -1,5 +1,13 @@
 # Subsystem: kernel
 
+## kernel/batch.c
+- Layer: utility
+- Doc: Docstring: kernel/batch.c -- Ordered batch executor.
+- Language: c
+- Symbols:
+  - `batch_exec` (function, line 19) `long batch_exec(const batch_op_t *ops, long *results, int count,
+                int *completed, ...`
+
 ## kernel/cvm_host.c
 - Layer: utility
 - Language: c
@@ -91,6 +99,16 @@
   - `k_run_rel` (function, line 209) `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
   - `kexit` (function, line 241) `void kexit(int code)`
 
+## kernel/futex.c
+- Layer: utility
+- Doc: Docstring: kernel/futex.c -- Kernel side of the futex contract.
+- Language: c
+- Symbols:
+  - `futex_hash` (function, line 22) `static unsigned long futex_hash(unsigned long uaddr)`
+  - `futex_bucket` (function, line 30) `static futex_bucket_t *futex_bucket(unsigned long uaddr)`
+  - `futex_init` (function, line 36) `void futex_init(void)`
+  - `futex_wake` (function, line 89) `long futex_wake(unsigned long uaddr, int n)`
+
 ## kernel/klog.c
 - Layer: utility
 - Doc: klog.c - Structured kernel logging with levels and subsystems.
@@ -170,6 +188,22 @@
   - `krealloc` (function, line 30) `void *krealloc(void *ptr, unsigned long size)`
   - `kmalloc_percpu` (function, line 47) `void *kmalloc_percpu(unsigned long size, unsigned long align)`
 
+## kernel/percpu_rq.c
+- Layer: utility
+- Doc: Docstring: kernel/percpu_rq.c -- Per-CPU runqueue hints and stealing.
+- Language: c
+- Symbols:
+  - `rq_cpu_valid` (function, line 13) `static int rq_cpu_valid(int cpu)`
+  - `rq_init` (function, line 19) `void rq_init(void)`
+  - `rq_enqueue` (function, line 41) `void rq_enqueue(int cpu, int pid)`
+  - `rq_pop_local` (function, line 61) `int rq_pop_local(int cpu)`
+  - `rq_steal_once` (function, line 87) `int rq_steal_once(int self_cpu, int *from_cpu)`
+  - `rq_empty` (function, line 113) `int rq_empty(int cpu)`
+  - `rq_note_poll` (function, line 125) `void rq_note_poll(int cpu)`
+  - `rq_should_rescan` (function, line 135) `int rq_should_rescan(int cpu)`
+  - `rq_stats` (function, line 150) `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals,
+              unsigned long *d...`
+
 ## kernel/printf.c
 - Layer: utility
 - Doc: include "kernel.h"  ================================================================
@@ -188,6 +222,23 @@
   - `putc_snbuf` (function, line 178) `static void putc_snbuf(char c, void *ctx, int *written)`
   - `ksnprintf` (function, line 183) `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...)`
 
+## kernel/rcu.c
+- Layer: utility
+- Doc: Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks.
+- Language: c
+- Symbols:
+  - `rcu_me` (function, line 13) `static cpu_t *rcu_me(void)`
+  - `rcu_me` (function, line 17) `static cpu_t *rcu_me(void)`
+  - `rcu_cpu_valid` (function, line 39) `static int rcu_cpu_valid(int cpu)`
+  - `rcu_init` (function, line 45) `void rcu_init(void)`
+  - `rcu_read_lock` (function, line 63) `void rcu_read_lock(void)`
+  - `rcu_read_unlock` (function, line 75) `void rcu_read_unlock(void)`
+  - `rcu_deref` (function, line 88) `void *rcu_deref(void *volatile *pp)`
+  - `rcu_publish` (function, line 94) `void rcu_publish(void *volatile *pp, void *v)`
+  - `rcu_note_tick` (function, line 126) `void rcu_note_tick(int cpu)`
+  - `rcu_note_idle` (function, line 137) `void rcu_note_idle(int cpu)`
+  - `rcu_poll` (function, line 152) `void rcu_poll(void)`
+
 ## kernel/redirect.c
 - Layer: infrastructure
 - Doc: include "kernel.h"  ================================================================
@@ -201,53 +252,54 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `read_cr3` (function, line 32) `static inline unsigned long read_cr3(void)`
-  - `__attribute__` (function, line 58) `typedef struct __attribute__((packed))`
-  - `__attribute__` (function, line 79) `typedef struct __attribute__((packed))`
-  - `alloc_kstack` (function, line 93) `static uint64_t alloc_kstack(void)`
-  - `free_kstack` (function, line 104) `static void free_kstack(uint64_t top)`
-  - `idt_set` (function, line 128) `static void idt_set(int vec, void (*h)(void))`
-  - `idt_init` (function, line 138) `static void idt_init(void)`
-  - `pic_init` (function, line 151) `static void pic_init(void)`
-  - `pit_init` (function, line 186) `static void pit_init(void)`
-  - `pic_eoi` (function, line 192) `static void pic_eoi(int irq)`
-  - `tss_write_desc` (function, line 200) `static void tss_write_desc(int cpu)`
-  - `tss_init` (function, line 217) `static void tss_init(void)`
-  - `tss_init_ap` (function, line 249) `void tss_init_ap(int cpu)`
-  - `context` (function, line 267) `* context (anything entered via k_exec_user) is inside a syscall
+  - `read_cr3` (function, line 35) `static inline unsigned long read_cr3(void)`
+  - `__attribute__` (function, line 61) `typedef struct __attribute__((packed))`
+  - `__attribute__` (function, line 82) `typedef struct __attribute__((packed))`
+  - `alloc_kstack` (function, line 96) `static uint64_t alloc_kstack(void)`
+  - `free_kstack` (function, line 107) `static void free_kstack(uint64_t top)`
+  - `idt_set` (function, line 131) `static void idt_set(int vec, void (*h)(void))`
+  - `idt_init` (function, line 141) `static void idt_init(void)`
+  - `pic_init` (function, line 154) `static void pic_init(void)`
+  - `pit_init` (function, line 189) `static void pit_init(void)`
+  - `pic_eoi` (function, line 195) `static void pic_eoi(int irq)`
+  - `tss_write_desc` (function, line 203) `static void tss_write_desc(int cpu)`
+  - `tss_init` (function, line 220) `static void tss_init(void)`
+  - `tss_init_ap` (function, line 252) `void tss_init_ap(int cpu)`
+  - `context` (function, line 270) `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...`
-  - `point` (function, line 280) `* return address as the resume point ("continue the ISR"), which
+  - `point` (function, line 283) `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...`
-  - `sched_next_locked` (function, line 296) `static int sched_next_locked(int start, int vm_only)`
-  - `smp_claim_thread_v` (function, line 312) `static int smp_claim_thread_v(int vm_only)`
-  - `smp_ap_idle_loop` (function, line 332) `void smp_ap_idle_loop(void)`
-  - `sched_ap_preempt` (function, line 366) `static void sched_ap_preempt(trap_frame_t *frame)`
-  - `smp_any_ap_idle` (function, line 392) `static int smp_any_ap_idle(void)`
-  - `isr_dispatch` (function, line 419) `void isr_dispatch(int vector, trap_frame_t *frame)`
-  - `BSP` (function, line 656) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+  - `sched_next_locked` (function, line 299) `static int sched_next_locked(int start, int vm_only)`
+  - `smp_try_claim_hint` (function, line 315) `static int smp_try_claim_hint(int pid, int vm_only)`
+  - `smp_claim_thread_v` (function, line 330) `static int smp_claim_thread_v(int vm_only)`
+  - `smp_ap_idle_loop` (function, line 370) `void smp_ap_idle_loop(void)`
+  - `sched_ap_preempt` (function, line 404) `static void sched_ap_preempt(trap_frame_t *frame)`
+  - `smp_any_ap_idle` (function, line 430) `static int smp_any_ap_idle(void)`
+  - `isr_dispatch` (function, line 457) `void isr_dispatch(int vector, trap_frame_t *frame)`
+  - `BSP` (function, line 697) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
-  - `proc_get` (function, line 676) `proc_t *proc_get(int pid)`
-  - `proc_create` (function, line 682) `int proc_create(const char *name, int parent_pid)`
-  - `sched_park_as_returned` (function, line 748) `static void sched_park_as_returned(proc_t *cur)`
-  - `schedule` (function, line 757) `void schedule(void)`
-  - `yield` (function, line 831) `void yield(void)`
-  - `do_exit` (function, line 846) `void do_exit(int code)`
-  - `do_thread_spawn` (function, line 886) `long do_thread_spawn(unsigned long fn, unsigned long stack,
+  - `proc_get` (function, line 717) `proc_t *proc_get(int pid)`
+  - `proc_create` (function, line 723) `int proc_create(const char *name, int parent_pid)`
+  - `sched_park_as_returned` (function, line 789) `static void sched_park_as_returned(proc_t *cur)`
+  - `schedule` (function, line 798) `void schedule(void)`
+  - `yield` (function, line 872) `void yield(void)`
+  - `do_exit` (function, line 887) `void do_exit(int code)`
+  - `do_thread_spawn` (function, line 927) `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)`
-  - `do_waitpid` (function, line 993) `int do_waitpid(int pid)`
-  - `do_kill` (function, line 1027) `int do_kill(int pid)`
-  - `timer_tick` (function, line 1034) `void timer_tick(void)`
-  - `mouse_wait_cmd` (function, line 1038) `static void mouse_wait_cmd(void)`
-  - `mouse_wait_data` (function, line 1044) `static void mouse_wait_data(void)`
-  - `mouse_write` (function, line 1051) `static void mouse_write(unsigned char data)`
-  - `mouse_read` (function, line 1058) `static unsigned char mouse_read(void)`
-  - `mouse_hw_init` (function, line 1063) `static void mouse_hw_init(void)`
-  - `mouse_disable` (function, line 1114) `void mouse_disable(void)`
-  - `mouse_enable` (function, line 1116) `void mouse_enable(void)`
-  - `sched_init` (function, line 1117) `void sched_init(void)`
-  - `MY_SYS_KSTK_TOP` (macro, line 18)
-  - `MY_USER_STACK_TOP` (macro, line 19)
-  - `MY_USER_LOAD_BASE` (macro, line 20)
+  - `do_waitpid` (function, line 1044) `int do_waitpid(int pid)`
+  - `do_kill` (function, line 1078) `int do_kill(int pid)`
+  - `timer_tick` (function, line 1085) `void timer_tick(void)`
+  - `mouse_wait_cmd` (function, line 1089) `static void mouse_wait_cmd(void)`
+  - `mouse_wait_data` (function, line 1095) `static void mouse_wait_data(void)`
+  - `mouse_write` (function, line 1102) `static void mouse_write(unsigned char data)`
+  - `mouse_read` (function, line 1109) `static unsigned char mouse_read(void)`
+  - `mouse_hw_init` (function, line 1114) `static void mouse_hw_init(void)`
+  - `mouse_disable` (function, line 1165) `void mouse_disable(void)`
+  - `mouse_enable` (function, line 1167) `void mouse_enable(void)`
+  - `sched_init` (function, line 1168) `void sched_init(void)`
+  - `MY_SYS_KSTK_TOP` (macro, line 21)
+  - `MY_USER_STACK_TOP` (macro, line 22)
+  - `MY_USER_LOAD_BASE` (macro, line 23)
 
 ## kernel/scrollback.c
 - Layer: utility
@@ -279,72 +331,72 @@
 
 ## kernel/shell.c
 - Layer: utility
-- Doc: include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include "smp.h" include "vga_fb.h" include "pcsp
+- Doc: include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include "smp.h" include "percpu_rq.h" include "v
 - Language: c
 - Symbols:
-  - `shell_queue_launch` (function, line 66) `void shell_queue_launch(const char *cmd)`
-  - `shell_prompt` (function, line 86) `static void shell_prompt(void)`
-  - `shell_parse_vol` (function, line 94) `static int shell_parse_vol(const char *s, unsigned *out)`
-  - `pb_empty` (function, line 127) `static int pb_empty(void)`
-  - `pb_count` (function, line 129) `static int pb_count(void)`
-  - `pb_push_back` (function, line 130) `static void pb_push_back(unsigned char c)`
-  - `pb_push_front` (function, line 135) `static void pb_push_front(unsigned char c)`
-  - `pb_pop` (function, line 140) `static int pb_pop(void)`
-  - `pb_peek` (function, line 146) `static int pb_peek(void)`
-  - `raw_blocking_getc` (function, line 153) `static int raw_blocking_getc(void)`
-  - `raw_try_getc` (function, line 172) `static int raw_try_getc(void)`
-  - `consume_page_after_esc` (function, line 207) `static int consume_page_after_esc(void)`
-  - `console_getc` (function, line 232) `* returns console_getc() simply serves the FIFO again. */
+  - `shell_queue_launch` (function, line 67) `void shell_queue_launch(const char *cmd)`
+  - `shell_prompt` (function, line 87) `static void shell_prompt(void)`
+  - `shell_parse_vol` (function, line 95) `static int shell_parse_vol(const char *s, unsigned *out)`
+  - `pb_empty` (function, line 128) `static int pb_empty(void)`
+  - `pb_count` (function, line 130) `static int pb_count(void)`
+  - `pb_push_back` (function, line 131) `static void pb_push_back(unsigned char c)`
+  - `pb_push_front` (function, line 136) `static void pb_push_front(unsigned char c)`
+  - `pb_pop` (function, line 141) `static int pb_pop(void)`
+  - `pb_peek` (function, line 147) `static int pb_peek(void)`
+  - `raw_blocking_getc` (function, line 154) `static int raw_blocking_getc(void)`
+  - `raw_try_getc` (function, line 173) `static int raw_try_getc(void)`
+  - `consume_page_after_esc` (function, line 208) `static int consume_page_after_esc(void)`
+  - `console_getc` (function, line 233) `* returns console_getc() simply serves the FIFO again. */
 int console_getc(void)`
-  - `console_peek` (function, line 254) `static int console_peek(void)`
-  - `scrollback_render` (function, line 269) `static void scrollback_render(int voff, int total, const unsigned char *saved)`
-  - `scrollback_view` (function, line 306) `static void scrollback_view(int initial_dir)`
-  - `shell_readline_buf` (function, line 351) `void shell_readline_buf(char *buf, int size)`
-  - `shell_name_base` (function, line 380) `static const char *shell_name_base(const char *path)`
-  - `shell_complete_replace` (function, line 390) `static void shell_complete_replace(char *buf, int size, int *pos,
+  - `console_peek` (function, line 255) `static int console_peek(void)`
+  - `scrollback_render` (function, line 270) `static void scrollback_render(int voff, int total, const unsigned char *saved)`
+  - `scrollback_view` (function, line 307) `static void scrollback_view(int initial_dir)`
+  - `shell_readline_buf` (function, line 352) `void shell_readline_buf(char *buf, int size)`
+  - `shell_name_base` (function, line 381) `static const char *shell_name_base(const char *path)`
+  - `shell_complete_replace` (function, line 391) `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-  - `shell_readline` (function, line 407) `static void shell_readline(void)`
-  - `shell_hist_show` (function, line 416) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
-  - `shell_line_repaint` (function, line 438) `static void shell_line_repaint(char *buf, int size, int pos)`
-  - `shell_line_insert` (function, line 451) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
-  - `shell_line_backspace` (function, line 460) `static void shell_line_backspace(char *buf, int size, int *pos)`
-  - `shell_line_delete` (function, line 468) `static void shell_line_delete(char *buf, int size, int *pos)`
-  - `shell_line_kill_front` (function, line 475) `static void shell_line_kill_front(char *buf, int size, int *pos)`
-  - `shell_line_kill_tail` (function, line 482) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
-  - `shell_line_kill_word` (function, line 487) `static void shell_line_kill_word(char *buf, int size, int *pos)`
-  - `shell_hist_nav` (function, line 498) `static void shell_hist_nav(char *buf, int size, int *pos, int up)`
-  - `shell_parse` (function, line 697) `int shell_parse(char *line, char **argv, int max_args)`
-  - `shell_run` (function, line 718) `void shell_run(void)`
-  - `shell_load` (function, line 765) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-  - `outw_port` (function, line 823) `static inline void outw_port(unsigned short port, unsigned short val)`
-  - `shell_cmd_poweroff` (function, line 829) `static void shell_cmd_poweroff(void)`
-  - `shell_run_dir_for` (function, line 846) `static const ShellRunDir *shell_run_dir_for(const char *name)`
-  - `shell_file_is_real` (function, line 864) `static int shell_file_is_real(const char *resolved)`
-  - `shell_resolve_run` (function, line 876) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-  - `shell_run_elf_buf` (function, line 912) `static int shell_run_elf_buf(const char *data, unsigned size, int argc,
+  - `shell_readline` (function, line 408) `static void shell_readline(void)`
+  - `shell_hist_show` (function, line 417) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
+  - `shell_line_repaint` (function, line 439) `static void shell_line_repaint(char *buf, int size, int pos)`
+  - `shell_line_insert` (function, line 452) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
+  - `shell_line_backspace` (function, line 461) `static void shell_line_backspace(char *buf, int size, int *pos)`
+  - `shell_line_delete` (function, line 469) `static void shell_line_delete(char *buf, int size, int *pos)`
+  - `shell_line_kill_front` (function, line 476) `static void shell_line_kill_front(char *buf, int size, int *pos)`
+  - `shell_line_kill_tail` (function, line 483) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
+  - `shell_line_kill_word` (function, line 488) `static void shell_line_kill_word(char *buf, int size, int *pos)`
+  - `shell_hist_nav` (function, line 499) `static void shell_hist_nav(char *buf, int size, int *pos, int up)`
+  - `shell_parse` (function, line 698) `int shell_parse(char *line, char **argv, int max_args)`
+  - `shell_run` (function, line 719) `void shell_run(void)`
+  - `shell_load` (function, line 766) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
+  - `outw_port` (function, line 824) `static inline void outw_port(unsigned short port, unsigned short val)`
+  - `shell_cmd_poweroff` (function, line 830) `static void shell_cmd_poweroff(void)`
+  - `shell_run_dir_for` (function, line 847) `static const ShellRunDir *shell_run_dir_for(const char *name)`
+  - `shell_file_is_real` (function, line 865) `static int shell_file_is_real(const char *resolved)`
+  - `shell_resolve_run` (function, line 877) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
+  - `shell_run_elf_buf` (function, line 913) `static int shell_run_elf_buf(const char *data, unsigned size, int argc,
                          ...`
-  - `shell_run_elf_file` (function, line 933) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-  - `shell_run_elf_minifs` (function, line 946) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-  - `shell_run_cvm` (function, line 992) `static int shell_run_cvm(const char *full, int argc, char **argv)`
-  - `shell_run_file` (function, line 1021) `static int shell_run_file(const char *name, int argc, char **argv)`
-  - `shell_run_any` (function, line 1050) `int shell_run_any(const char *name, int argc, char **argv)`
-  - `gfx_parse_int` (function, line 1110) `static int gfx_parse_int(const char *s, int *out)`
-  - `gfx_read_palette` (function, line 1130) `static void gfx_read_palette(unsigned char pal[768])`
-  - `shell_cmd_gfx` (function, line 1136) `static void shell_cmd_gfx(int argc, char **argv)`
-  - `shell_cmd_wm` (function, line 1252) `static void shell_cmd_wm(int argc, char **argv)`
-  - `shell_cmd_hash` (function, line 1273) `static void shell_cmd_hash(int argc, char **argv)`
-  - `shell_exec_builtin` (function, line 1287) `void shell_exec_builtin(int argc, char **argv)`
-  - `XXH_STATIC_LINKING_ONLY` (macro, line 11)
-  - `SHELL_CVM_INTERP` (macro, line 34)
-  - `SHELL_RUN_DIRS` (macro, line 53)
-  - `SHELL_HIST_MAX` (macro, line 76)
-  - `PB_LEN` (macro, line 123)
-  - `MAX_SEQ_POLL` (macro, line 189)
-  - `SB_LEN` (macro, line 268)
-  - `SB_PGUP` (macro, line 290)
-  - `SB_PGDN` (macro, line 292)
-  - `SB_EXIT` (macro, line 293)
-  - `QEMU_PM_PORT` (macro, line 827)
+  - `shell_run_elf_file` (function, line 934) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
+  - `shell_run_elf_minifs` (function, line 947) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
+  - `shell_run_cvm` (function, line 993) `static int shell_run_cvm(const char *full, int argc, char **argv)`
+  - `shell_run_file` (function, line 1022) `static int shell_run_file(const char *name, int argc, char **argv)`
+  - `shell_run_any` (function, line 1051) `int shell_run_any(const char *name, int argc, char **argv)`
+  - `gfx_parse_int` (function, line 1111) `static int gfx_parse_int(const char *s, int *out)`
+  - `gfx_read_palette` (function, line 1131) `static void gfx_read_palette(unsigned char pal[768])`
+  - `shell_cmd_gfx` (function, line 1137) `static void shell_cmd_gfx(int argc, char **argv)`
+  - `shell_cmd_wm` (function, line 1253) `static void shell_cmd_wm(int argc, char **argv)`
+  - `shell_cmd_hash` (function, line 1274) `static void shell_cmd_hash(int argc, char **argv)`
+  - `shell_exec_builtin` (function, line 1288) `void shell_exec_builtin(int argc, char **argv)`
+  - `XXH_STATIC_LINKING_ONLY` (macro, line 12)
+  - `SHELL_CVM_INTERP` (macro, line 35)
+  - `SHELL_RUN_DIRS` (macro, line 54)
+  - `SHELL_HIST_MAX` (macro, line 77)
+  - `PB_LEN` (macro, line 124)
+  - `MAX_SEQ_POLL` (macro, line 190)
+  - `SB_LEN` (macro, line 269)
+  - `SB_PGUP` (macro, line 291)
+  - `SB_PGDN` (macro, line 293)
+  - `SB_EXIT` (macro, line 294)
+  - `QEMU_PM_PORT` (macro, line 828)
 
 ## kernel/string.c
 - Layer: utility
@@ -408,91 +460,95 @@ int console_getc(void)`
 - Doc: syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN.
 - Language: c
 - Symbols:
-  - `kiovec` (struct, line 340)
-  - `sys_minios_dns` (function, line 67) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_tls_handshake` (function, line 73) `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_tls_send` (function, line 78) `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_tls_recv` (function, line 83) `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_time` (function, line 88) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_kbd` (function, line 92) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_palette` (function, line 107) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_kbd_raw` (function, line 115) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_vga_mode` (function, line 121) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_init` (function, line 128) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_tone` (function, line 132) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_doom_frame` (function, line 136) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_rtc` (function, line 140) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_fb_info` (function, line 154) `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_vol` (function, line 166) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_spawn` (function, line 174) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_lz4_compress` (function, line 185) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_lz4_decompress` (function, line 198) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_mouse` (function, line 212) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_nk_frame` (function, line 221) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_open` (function, line 231) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_submit` (function, line 236) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_gfx_title` (function, line 244) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_pump` (function, line 258) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_open` (function, line 262) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_close` (function, line 266) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_submit` (function, line 270) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_vol` (function, line 278) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_clone` (function, line 288) `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-  - `sys_minios_thread_spawn` (function, line 296) `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `syscall_trace_enabled` (function, line 345) `long syscall_trace_enabled(void)`
-  - `syscall_trace_set` (function, line 347) `void syscall_trace_set(int on)`
-  - `sys_linux_write` (function, line 391) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_writev` (function, line 401) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `do_open_path` (function, line 422) `static long do_open_path(const char *path, long flags)`
-  - `sys_linux_open` (function, line 437) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_close` (function, line 442) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_lseek` (function, line 451) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_brk` (function, line 461) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_mmap` (function, line 475) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_munmap` (function, line 516) `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_mprotect` (function, line 534) `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sigaction` (function, line 539) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sigprocmask` (function, line 544) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_ioctl` (function, line 549) `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_access` (function, line 554) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_yield` (function, line 576) `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_getpid` (function, line 581) `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_socket` (function, line 586) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_connect` (function, line 591) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sendto` (function, line 597) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_recvfrom` (function, line 602) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_shutdown` (function, line 607) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_poll` (function, line 612) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fork` (function, line 619) `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_vfork` (function, line 624) `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_execve` (function, line 629) `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_exit` (function, line 651) `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_wait4` (function, line 656) `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_kill` (function, line 661) `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_flock` (function, line 666) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_getcwd` (function, line 671) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_unlink` (function, line 683) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_readlink` (function, line 696) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fstat` (function, line 701) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_gettimeofday` (function, line 721) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_arch_prctl` (function, line 736) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_gettid` (function, line 748) `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `trace_is_noisy` (function, line 796) `static int trace_is_noisy(long n)`
-  - `ksyscall` (function, line 800) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `user_range_ok` (function, line 819) `int user_range_ok(unsigned long p, unsigned long len)`
-  - `user_str_ok` (function, line 825) `int user_str_ok(unsigned long p, unsigned long maxlen)`
-  - `ksyscall_dispatch` (function, line 833) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `tools` (function, line 969) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
+  - `kiovec` (struct, line 395)
+  - `sys_minios_dns` (function, line 71) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_handshake` (function, line 77) `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_send` (function, line 82) `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_recv` (function, line 87) `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_time` (function, line 92) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_kbd` (function, line 96) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_palette` (function, line 111) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_kbd_raw` (function, line 119) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_vga_mode` (function, line 125) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_init` (function, line 132) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_tone` (function, line 136) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_doom_frame` (function, line 140) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_rtc` (function, line 144) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_fb_info` (function, line 158) `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_vol` (function, line 170) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_spawn` (function, line 178) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_lz4_compress` (function, line 189) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_lz4_decompress` (function, line 202) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_mouse` (function, line 216) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_nk_frame` (function, line 225) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_open` (function, line 235) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_submit` (function, line 240) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_gfx_title` (function, line 248) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_pump` (function, line 262) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_open` (function, line 266) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_close` (function, line 270) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_submit` (function, line 274) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_vol` (function, line 282) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_clone` (function, line 292) `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
+  - `sys_minios_thread_spawn` (function, line 300) `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_futex_wait` (function, line 310) `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_futex_wake` (function, line 316) `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `batch_kdispatch` (function, line 325) `static long batch_kdispatch(uint32_t opcode)`
+  - `sys_minios_submit_batch` (function, line 336) `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `syscall_trace_enabled` (function, line 400) `long syscall_trace_enabled(void)`
+  - `syscall_trace_set` (function, line 402) `void syscall_trace_set(int on)`
+  - `sys_linux_write` (function, line 446) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_writev` (function, line 456) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `do_open_path` (function, line 477) `static long do_open_path(const char *path, long flags)`
+  - `sys_linux_open` (function, line 492) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_close` (function, line 497) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_lseek` (function, line 506) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_brk` (function, line 516) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_mmap` (function, line 530) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_munmap` (function, line 571) `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_mprotect` (function, line 589) `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sigaction` (function, line 594) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sigprocmask` (function, line 599) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_ioctl` (function, line 604) `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_access` (function, line 609) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_yield` (function, line 631) `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_getpid` (function, line 636) `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_socket` (function, line 641) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_connect` (function, line 646) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sendto` (function, line 652) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_recvfrom` (function, line 657) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_shutdown` (function, line 662) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_poll` (function, line 667) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fork` (function, line 674) `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_vfork` (function, line 679) `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_execve` (function, line 684) `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_exit` (function, line 706) `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_wait4` (function, line 711) `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_kill` (function, line 716) `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_flock` (function, line 721) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_getcwd` (function, line 726) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_unlink` (function, line 738) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_readlink` (function, line 751) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fstat` (function, line 756) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_gettimeofday` (function, line 776) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_arch_prctl` (function, line 791) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_gettid` (function, line 803) `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `trace_is_noisy` (function, line 851) `static int trace_is_noisy(long n)`
+  - `ksyscall` (function, line 855) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `user_range_ok` (function, line 874) `int user_range_ok(unsigned long p, unsigned long len)`
+  - `user_str_ok` (function, line 880) `int user_str_ok(unsigned long p, unsigned long maxlen)`
+  - `ksyscall_dispatch` (function, line 888) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `tools` (function, line 1024) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
-  - `KFD_MAX` (macro, line 30)
-  - `MINIOS_SYSCALL_BASE` (macro, line 61)
-  - `MINIOS_SYSCALL_COUNT` (macro, line 63)
-  - `SYSCALL_TRACE` (macro, line 341)
-  - `SYS_NOISY_TIME` (macro, line 353)
-  - `SYS_NOISY_KBD` (macro, line 354)
-  - `SYS_NOISY_MOUSE` (macro, line 355)
-  - `LINUX_SYSCALL_COUNT` (macro, line 753)
+  - `KFD_MAX` (macro, line 34)
+  - `MINIOS_SYSCALL_BASE` (macro, line 65)
+  - `MINIOS_SYSCALL_COUNT` (macro, line 67)
+  - `SYSCALL_TRACE` (macro, line 396)
+  - `SYS_NOISY_TIME` (macro, line 408)
+  - `SYS_NOISY_KBD` (macro, line 409)
+  - `SYS_NOISY_MOUSE` (macro, line 410)
+  - `LINUX_SYSCALL_COUNT` (macro, line 808)
 
 ## kernel/time.c
 - Layer: utility

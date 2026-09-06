@@ -304,17 +304,23 @@
 - Doc: mthreads.h -- Minimal pthread-like threads for MiniOS ELFs (roadmap
 - Language: h
 - Symbols:
-  - `m_syscall6` (function, line 42) `static inline long m_syscall6(long n, long a, long b, long c)`
-  - `myield` (function, line 51) `static inline void myield(void)`
-  - `mmutex_init` (function, line 55) `static inline void mmutex_init(mmutex_t *m)`
-  - `mmutex_lock` (function, line 59) `static inline void mmutex_lock(mmutex_t *m)`
-  - `mmutex_unlock` (function, line 64) `static inline void mmutex_unlock(mmutex_t *m)`
-  - `mthread_entry` (function, line 71) `static void mthread_entry(void *p)`
-  - `mthread_create` (function, line 85) `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
-  - `mthread_join` (function, line 108) `static int mthread_join(mthread_t t, void **retval)`
-  - `MTHREADS_H` (macro, line 22)
-  - `MTHREAD_STACK_SZ` (macro, line 25)
-  - `MTHREAD_MAX` (macro, line 27)
+  - `m_syscall6` (function, line 49) `static inline long m_syscall6(long n, long a, long b, long c)`
+  - `myield` (function, line 58) `static inline void myield(void)`
+  - `mfutex_wait` (function, line 62) `static inline long mfutex_wait(volatile int *addr, int val)`
+  - `mfutex_wake` (function, line 66) `static inline long mfutex_wake(volatile int *addr, int n)`
+  - `mmutex_init` (function, line 70) `static inline void mmutex_init(mmutex_t *m)`
+  - `mmutex_lock` (function, line 74) `static inline void mmutex_lock(mmutex_t *m)`
+  - `mmutex_unlock` (function, line 89) `static inline void mmutex_unlock(mmutex_t *m)`
+  - `mthread_entry` (function, line 98) `static void mthread_entry(void *p)`
+  - `mthread_create` (function, line 112) `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
+  - `mthread_join` (function, line 135) `static int mthread_join(mthread_t t, void **retval)`
+  - `MTHREADS_H` (macro, line 24)
+  - `MTHREAD_STACK_SZ` (macro, line 27)
+  - `MTHREAD_MAX` (macro, line 29)
+  - `MMUTEX_FREE` (macro, line 30)
+  - `MMUTEX_HELD` (macro, line 32)
+  - `MMUTEX_CONTENDED` (macro, line 33)
+  - `MMUTEX_SPINS` (macro, line 34)
 
 ## progs/src/nx.c
 - Layer: utility

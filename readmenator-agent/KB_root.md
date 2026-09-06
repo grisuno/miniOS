@@ -21,6 +21,22 @@
   - `AUDIO_FORMAT_U8` (macro, line 17)
   - `AUDIO_FORMAT_S16` (macro, line 18)
 
+## batch.h
+- Layer: utility
+- Doc: ifndef BATCH_H define BATCH_H  Docstring: batch.h -- Batched synchronous syscall submission.
+- Language: h
+- Symbols:
+  - `BATCH_H` (macro, line 2)
+  - `BATCH_MAX_OPS` (macro, line 40)
+  - `BATCH_OP_NOP` (macro, line 42)
+  - `BATCH_OP_YIELD` (macro, line 44)
+  - `BATCH_OP_TIME` (macro, line 45)
+  - `BATCH_OP_GETPID` (macro, line 46)
+  - `BATCH_OK` (macro, line 47)
+  - `BATCH_ERR_COUNT` (macro, line 49)
+  - `BATCH_ERR_PTR` (macro, line 50)
+  - `BATCH_ERR_OPCODE` (macro, line 51)
+
 ## block.h
 - Layer: utility
 - Doc: ifndef BLOCK_H define BLOCK_H  Block device abstraction for MiniFS. Maps 4096-byte logical blocks to 512-byte IDE sector
@@ -72,6 +88,19 @@
 - Language: h
 - Symbols:
   - `EDITOR_H` (macro, line 2)
+
+## futex.h
+- Layer: utility
+- Doc: ifndef FUTEX_H define FUTEX_H  Docstring: futex.h -- Fast userspace mutex sleep/wake contract.
+- Language: h
+- Symbols:
+  - `FUTEX_H` (macro, line 2)
+  - `FUTEX_BUCKETS` (macro, line 50)
+  - `FUTEX_BUCKET_MASK` (macro, line 52)
+  - `FUTEX_OK` (macro, line 53)
+  - `FUTEX_NOMATCH` (macro, line 55)
+  - `FUTEX_NOPROC` (macro, line 56)
+  - `FUTEX_WAKE_ALL` (macro, line 57)
 
 ## gen_minifs.py
 - Layer: utility
@@ -347,8 +376,8 @@ void kmain(void)`
   - `usage` (function, line 51)
   - `restore_sources` (function, line 87)
   - `cleanup` (function, line 94)
-  - `record` (function, line 201)
-  - `find_index` (function, line 207)
+  - `record` (function, line 206)
+  - `find_index` (function, line 212)
 
 ## net.h
 - Layer: utility
@@ -399,6 +428,17 @@ void kmain(void)`
   - `PCSPK_VOL_MIN` (macro, line 3)
   - `PCSPK_VOL_MAX` (macro, line 5)
   - `PCSPK_VOL_DEFAULT` (macro, line 6)
+
+## percpu_rq.h
+- Layer: utility
+- Doc: ifndef PERCPU_RQ_H define PERCPU_RQ_H  Docstring: percpu_rq.h -- Per-CPU runqueues with work stealing.
+- Language: h
+- Symbols:
+  - `PERCPU_RQ_H` (macro, line 2)
+  - `RQ_DEPTH` (macro, line 44)
+  - `RQ_RESCAN_PERIOD` (macro, line 46)
+  - `RQ_VALIDATE_ATTEMPTS` (macro, line 47)
+  - `WQ_NONE_HINT` (macro, line 48)
 
 ## qga.c
 - Layer: utility
@@ -465,6 +505,18 @@ void kmain(void)`
   - `QGA_STR_MAX` (macro, line 39)
   - `QGA_MAX_DEPTH` (macro, line 42)
   - `QGA_FILE_MAX` (macro, line 46)
+
+## rcu.h
+- Layer: utility
+- Doc: ifndef RCU_H define RCU_H  Docstring: rcu.h -- Read-copy-update, lite epoch edition.
+- Language: h
+- Symbols:
+  - `RCU_H` (macro, line 2)
+  - `RCU_CB_MAX` (macro, line 41)
+  - `RCU_SYNC_SPINS` (macro, line 43)
+  - `RCU_OK` (macro, line 44)
+  - `RCU_ERR_FULL` (macro, line 46)
+  - `RCU_ERR_TIMEOUT` (macro, line 47)
 
 ## rtc.h
 - Layer: utility
@@ -615,10 +667,10 @@ void kmain(void)`
   - `expect` (function, line 79)
   - `expect_count` (function, line 100)
   - `refute` (function, line 122)
-  - `http_server_start` (function, line 647)
-  - `http_server_stop` (function, line 654)
-  - `http_fixture_start` (function, line 659)
-  - `http_fixture_stop` (function, line 666)
+  - `http_server_start` (function, line 649)
+  - `http_server_stop` (function, line 656)
+  - `http_fixture_start` (function, line 661)
+  - `http_fixture_stop` (function, line 668)
 
 ## test_http_server.py
 - Layer: testing
