@@ -31,6 +31,13 @@
 #define KFD_MAX 32
 KFILE *kfd_table[KFD_MAX];
 
+/* Guards g_brk/g_brk_limit/user_mmap_cur and the VMA trees against
+ * concurrent brk/mmap/munmap syscalls from threads on different CPUs.
+ * Lock order: sched_lock -> mm_lock (the scheduler takes mm_lock
+ * inside sched_lock for the brk/mmap view switch; syscalls take
+ * mm_lock alone).  Declared extern in the scheduler via sched.c. */
+spinlock_t mm_lock = SPINLOCK_INIT;
+
 /* ---- MiniOS custom syscall table (200-299) --------------------------------
  *
  * Each entry is a handler function for a MiniOS custom syscall.  The table
@@ -168,6 +175,11 @@ static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a
     (void)a5; (void)a6;
     const char *path = (const char *)a1;
     if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
+    /* SPAWN saves and replaces the shared user-window view (brk/mmap
+     * cursors, VMA trees, fd table): it is a BSP-only operation.  A
+     * thread running on an AP shares its address space with siblings,
+     * so replacing it would corrupt them; fail closed instead. */
+    if (!this_cpu()->is_bsp) return EFAULT;
     return k_syscall_spawn(path, (const char *)a2, (int)a3, (const char **)a4);
 }
 static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -279,6 +291,19 @@ static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, 
     return do_clone(flags, newsp);
 }
 
+extern long do_thread_spawn(unsigned long fn, unsigned long stack,
+                            unsigned long arg);
+
+static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    unsigned long fn = (unsigned long)a1;
+    unsigned long stack = (unsigned long)a2;
+    if (!fn || !stack) return -1;
+    if (!user_range_ok(fn, 1)) return EFAULT;
+    if (!user_range_ok(stack - 8, 8)) return EFAULT;
+    return do_thread_spawn(fn, stack, (unsigned long)a3);
+}
+
 static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] = {
     [MINIOS_SYS_DNS - MINIOS_SYSCALL_BASE]         = { sys_minios_dns,         "dns" },
     [MINIOS_SYS_TLS_HANDSHAKE - MINIOS_SYSCALL_BASE] = { sys_minios_tls_handshake, "tls_handshake" },
@@ -309,6 +334,7 @@ static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] =
     [MINIOS_SYS_SB16_STREAM_SUBMIT - MINIOS_SYSCALL_BASE] = { sys_minios_sb16_stream_submit, "sb16_stream_submit" },
     [MINIOS_SYS_SB16_STREAM_VOLUME - MINIOS_SYSCALL_BASE] = { sys_minios_sb16_stream_vol,    "sb16_stream_vol" },
     [MINIOS_SYS_CLONE - MINIOS_SYSCALL_BASE] = { sys_minios_clone,    "clone" },
+    [MINIOS_SYS_THREAD_SPAWN - MINIOS_SYSCALL_BASE] = { sys_minios_thread_spawn, "thread_spawn" },
 };
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };
@@ -436,18 +462,25 @@ static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6
 static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     unsigned long addr = (unsigned long)a1;
-    if (addr == 0) return (long)g_brk;
+    irqflags_t flags;
+    spin_lock_irqsave(&mm_lock, &flags);
+    if (addr == 0) { long r = (long)g_brk; spin_unlock_irqrestore(&mm_lock, flags); return r; }
     if (addr >= USER_LOAD_BASE && addr <= g_brk_limit
         && addr <= user_mmap_cur)
         g_brk = addr;
-    return (long)g_brk;
+    long r = (long)g_brk;
+    spin_unlock_irqrestore(&mm_lock, flags);
+    return r;
 }
 
 static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a1; (void)a3; (void)a4; (void)a5; (void)a6;
     unsigned long len = (unsigned long)a2;
     unsigned long n = ALIGN_UP(len ? len : 1, 0x1000);
-    if (n > user_mmap_cur - USER_LOAD_BASE) return -12;
+    irqflags_t flags;
+    spin_lock_irqsave(&mm_lock, &flags);
+    long ret;
+    if (n > user_mmap_cur - USER_LOAD_BASE) { ret = -12; goto mmap_out; }
     {
         vma_node_t *best = VMA_NIL;
         vma_node_t *stack[64];
@@ -468,13 +501,17 @@ static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)
             if (rem_len > 0)
                 vma_tree_insert(&vma_free_root, rem_base, rem_len);
             vma_tree_insert(&vma_live_root, addr, n);
-            return (long)addr;
+            ret = (long)addr;
+            goto mmap_out;
         }
     }
-    if (user_mmap_cur - n < g_brk) return -12;
+    if (user_mmap_cur - n < g_brk) { ret = -12; goto mmap_out; }
     user_mmap_cur -= n;
     vma_tree_insert(&vma_live_root, user_mmap_cur, n);
-    return (long)user_mmap_cur;
+    ret = (long)user_mmap_cur;
+mmap_out:
+    spin_unlock_irqrestore(&mm_lock, flags);
+    return ret;
 }
 
 static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -482,13 +519,17 @@ static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a
     unsigned long base = (unsigned long)a1;
     unsigned long n = ALIGN_UP((unsigned long)a2, 0x1000);
     if (n == 0) return 0;
+    irqflags_t flags;
+    spin_lock_irqsave(&mm_lock, &flags);
     vma_node_t *fnd = vma_tree_find(vma_live_root, base);
+    long ret = -1;
     if (fnd != VMA_NIL && n <= fnd->len) {
         vma_tree_insert(&vma_free_root, fnd->base, fnd->len);
         vma_tree_delete(&vma_live_root, base);
-        return 0;
+        ret = 0;
     }
-    return -1;
+    spin_unlock_irqrestore(&mm_lock, flags);
+    return ret;
 }
 
 static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -591,9 +632,15 @@ static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a
     return 0;
 }
 
-/* Shared by sys_linux_exit (60) and the exit_group fall-through (231). */
+/* Shared by sys_linux_exit (60) and the exit_group fall-through (231).
+ * pid 0 is the k_exec_user context (the shell running an ET_EXEC
+ * program, or a SYS_SPAWN child): its exit must klongjmp back to the
+ * shell.  proc_count is the wrong discriminator there: threads
+ * registered by the program make it > 1 even though this context is
+ * still the exec frame.  Every other pid (forked children, threads)
+ * exits through the scheduler as a ZOMBIE for the parent to reap. */
 static long do_proc_exit(long code) {
-    if (proc_count > 1) {
+    if (current_pid != 0) {
         do_exit((int)code);
         return 0;
     }

@@ -153,6 +153,11 @@
 
 #define GDT64_ADDR                0x8000
 #define GDT64_BYTES               40
+/* Runtime-expanded GDT: the 5 stage-2 entries plus one 16-byte TSS
+ * descriptor (two slots) per CPU for MAX_CPUS 8.  tss_init() writes
+ * them; the AP stub loads this limit so every TR selector is inside
+ * the table.  sched.c asserts this equals (5 + 2*MAX_CPUS)*8. */
+#define GDT64_SMP_BYTES           ((5 + 2 * 8) * 8)
 
 /* SMP application-processor bootstrap stub: a flat binary copied to this low
  * address (below 1 MB so a real-mode SIPI can reach it) and executed by every

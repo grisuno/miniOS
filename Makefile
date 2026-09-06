@@ -816,6 +816,12 @@ $(BIN_DIR)/sbtone: $(SRC_DIR)/sbtone.c
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -I$(PROGS_DIR) -o $@ $(SRC_DIR)/sbtone.c -lm
 	chmod +x $@
 
+# thdemo: producer-consumer over mthreads (10 threads on thread_spawn).
+# Headless M1 proof for roadmap Phase 1; prints PASS with exact counts.
+$(BIN_DIR)/thdemo: $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wall -I$(PROGS_DIR) -o $@ $(SRC_DIR)/thdemo.c
+	chmod +x $@
+
 # ── topogpt3 (TopoGPT3 transformer inference, static ring-3 ELF) ──
 # Self-contained single-file C engine.  Loads fp16 weights from MiniFS.
 # Built like Lua/DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
@@ -844,6 +850,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(PROGS_DIR)/piano/piano.c \
                $(BIN_DIR)/opl3 $(SRC_DIR)/opl3.c \
                $(BIN_DIR)/sbtone $(SRC_DIR)/sbtone.c \
+               $(BIN_DIR)/thdemo $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                $(BIN_DIR)/json $(SRC_DIR)/json.c \
                $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
@@ -1289,6 +1296,7 @@ clean:
 	      $(BIN_DIR)/quake2generic.elf
 	rm -f $(BIN_DIR)/opl3
 	rm -f $(BIN_DIR)/sbtone
+	rm -f $(BIN_DIR)/thdemo
 	rm -f $(BIN_DIR)/piano.elf $(BIN_DIR)/piano
 	rm -f $(PROGS_DIR)/icons/piano.png
 	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm

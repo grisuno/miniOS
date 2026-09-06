@@ -157,6 +157,23 @@ scenario_smp "SMP brings up APs with -smp 2" "poweroff"
 expect "SMP: Brought up 2 CPUs"
 expect "powering off"
 
+scenario_smp "SMP builtin reports both CPUs online" "smp
+poweroff"
+expect "smp: 2 CPU(s)"
+expect "cpu0 lapic=0 BSP"
+expect "cpu1 lapic=1 AP"
+
+scenario_smp "mthreads producer-consumer passes on both CPUs" "run thdemo
+poweroff"
+expect "thdemo: PASS"
+expect "powering off"
+
+scenario_smp "SMP thread dispatch reaches the AP" "run thdemo
+smp
+poweroff"
+expect "thdemo: PASS"
+expect "cpu1 lapic=1 AP  dispatched=[0-9]"
+
 scenario "SMP single CPU fallback without -smp" "poweroff"
 expect "SMP: 1 CPU"
 expect "powering off"
@@ -257,7 +274,8 @@ expect "exit code: 0"
 scenario "user pages are non-executable unless the segment is executable" "run bin/nx.elf
 poweroff"
 expect "nx: jumping to stack"
-refute "powering off"
+expect "EXCEPTION 0000000e err=00000015"
+refute "exit code: 0"
 
 scenario "mmap/munmap reclaim lets a free/reallocate working set survive" "mmreuse.elf
 poweroff"

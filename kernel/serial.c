@@ -1,4 +1,5 @@
 #include "kernel.h"
+#include "sched.h"
 
 /* serial.c -- COM1 16550 UART driver.
  *
@@ -33,6 +34,8 @@ void serial_putc(char c) {
     while (!serial_tx_ready());
     outb(COM1, (unsigned char)c);
 }
+
+unsigned long serial_e_count(void) { return 0; }
 
 void serial_puts(const char *s) { while (*s) serial_putc(*s++); }
 

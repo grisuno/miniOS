@@ -10,6 +10,10 @@
 #define PROC_RUNNING    2
 #define PROC_BLOCKED    3
 #define PROC_ZOMBIE     4
+/* Transient: the owner CPU is between "decided to switch away" and
+ * "context fully saved".  Never claimable: a steal here would resume a
+ * stale context.  schedule() turns it into READY only after the save. */
+#define PROC_SWITCHING  5
 
 /* ---- Limits ---- */
 #define MAX_PROCS       64
@@ -42,6 +46,7 @@ typedef struct {
     uint64_t    mmap_cur;
     int         clone_flags;
     int         wq_next;        /* next pid in a wait queue, WQ_NONE if none */
+    int         exited;         /* do_exit ran: kstack/pt already freed */
     char        name[32];
 } proc_t;
 
@@ -83,6 +88,17 @@ typedef struct cpu {
     int             irq_depth;
     struct proc    *idle_proc;
     void           *run_queue;
+    /* Syscall-entry scratch, one set per CPU (gs:72..gs:112).  The entry
+     * trampoline has no free register and no stack before the swap, so
+     * it parks n/rip/pid here; per-CPU (not global) so two CPUs never
+     * share a slot, and always under cli so one CPU never interleaves
+     * with itself.  See the syscall_entry comment in kernel.c. */
+    uint64_t        sc_n;           /* gs:72 */
+    uint64_t        sc_rip;         /* gs:80 */
+    uint64_t        sc_pid;         /* gs:88 */
+    uint64_t        sc_ret;         /* gs:96 */
+    uint64_t        sc_pcb;         /* gs:104 */
+    uint64_t        sc_tmp;         /* gs:112 */
 } cpu_t;
 
 extern cpu_t cpus[MAX_CPUS];
@@ -129,6 +145,32 @@ extern int     proc_count;
 extern volatile uint64_t sys_ticks;
 extern volatile int user_program_active;
 extern spinlock_t sched_lock;
+extern volatile int sched_ready;
+
+/* ---- SMP thread execution (roadmap Phase 2.2, first increment) ----
+ *
+ * APs (application processors) run CLONE_VM threads: same CR3 as their
+ * parent, so no brk/mmap view switch and no TLB shootdown is needed.
+ * Non-CLONE_VM processes stay on the BSP, which owns the shared
+ * g_brk/user_mmap_cur globals (guarded by mm_lock against concurrent
+ * brk/mmap syscalls from AP threads).
+ *
+ * Per-CPU idle contexts: an AP with no READY thread parks in
+ * ap_idle_proc[cpu] (pid -1, never in procs[], never picked by scans)
+ * instead of borrowing procs[0], which the BSP owns.  current_pid == -1
+ * on a CPU means that CPU is idle.
+ *
+ * smp_dispatches[cpu] counts threads first dispatched on that CPU; the
+ * `smp` shell builtin reports it, so parallel execution is observable
+ * over the serial console without a framebuffer. */
+extern proc_t ap_idle_proc[MAX_CPUS];
+extern volatile unsigned long smp_dispatches[MAX_CPUS];
+extern volatile unsigned long smp_idle_polls[MAX_CPUS];
+
+/* Per-CPU TSS selectors: slot 5 + 2*cpu in the runtime GDT (each TSS
+ * descriptor occupies two 8-byte slots).  CPU 0 keeps selector 0x28,
+ * exactly as before. */
+#define TSS_SEL(cpu) ((uint16_t)((5 + 2 * (cpu)) * 8))
 
 /* Exported IDTR for APs to load during SMP bring-up. */
 typedef struct __attribute__((packed)) { uint16_t limit; uint64_t base; } idtr_t;
@@ -136,13 +178,20 @@ extern idtr_t bsp_idtr;
 
 /* ---- Functions ---- */
 void     sched_init(void);
+void     tss_init_ap(int cpu);
+void     smp_ap_idle_loop(void);
 int      proc_create(const char *name, int parent_pid);
 proc_t  *proc_get(int pid);
 void     schedule(void);
 void     switch_to(proc_t *prev, proc_t *next);
+void     switch_to_notrap(proc_t *prev, proc_t *next);
+void     switch_save_only(proc_t *prev);
+void     resume_iretq(void);
 void     yield(void);
 void     do_exit(int code);
 long     do_clone(long flags, long newsp);
+long     do_thread_spawn(unsigned long fn, unsigned long stack,
+                         unsigned long arg);
 int      do_waitpid(int pid);
 int      do_kill(int pid);
 void     timer_tick(void);

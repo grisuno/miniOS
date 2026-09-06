@@ -140,6 +140,11 @@ static void kformat(void (*emit)(char, void *, int *), void *ctx,
     }
 }
 
+/* Console serialization lives in vga_putc (kernel.c): it is the funnel
+ * every console byte goes through (kprintf, vga_puts, write()) and two
+ * CPUs emitting through the same UART concurrently under SMP merge bytes
+ * in the THR, filling the console with fused characters. */
+
 int kprintf(const char *fmt, ...) {
     int written = 0;
     __builtin_va_list ap;

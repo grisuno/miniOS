@@ -2,6 +2,7 @@
 #include "net.h"
 #include "minifs.h"
 #include "sched.h"
+#include "smp.h"
 #include "vga_fb.h"
 #include "pcspk.h"
 #include "sb16.h"
@@ -1287,7 +1288,7 @@ static void shell_cmd_hash(int argc, char **argv) {
 void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
         vga_puts("Commands: help clear ls lsfs cat catfs echo edit rm mkdir cd pwd ps load run sh\n");
-        vga_puts("          net trace date vol gfx wm hash unzip zip poweroff\n");
+        vga_puts("          net trace date vol gfx wm hash unzip zip smp poweroff\n");
         vga_puts("  ls [dir]           list files (under the cwd by default)\n");
         vga_puts("  lsfs               list files on the MiniFS disk filesystem\n");
         vga_puts("  catfs <file>       print a file from MiniFS\n");
@@ -1295,6 +1296,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  mkdir <name>       create a directory entry\n");
         vga_puts("  rm <file>          delete a ramdisk file\n");
         vga_puts("  ps                 list registered programs\n");
+        vga_puts("  smp                per-CPU state and thread dispatches\n");
         vga_puts("  net                network status (rtl8139, slirp)\n");
         vga_puts("  net ping <ip>      one ICMP echo\n");
         vga_puts("  trace [on|off]     report Linux syscalls\n");
@@ -1549,6 +1551,19 @@ void shell_exec_builtin(int argc, char **argv) {
                     p->is_proc ? p->proc_entry : (void *)p->entry);
         }
         if (kprog_count == 0) vga_puts("  (no programs registered)\n");
+    }
+    else if (kstrcmp(argv[0], "smp") == 0) {
+        /* Per-CPU state: online CPUs, what each one runs (-1 = idle),
+         * and how many threads each AP first dispatched.  This is the
+         * serial-observable proof that threads run on both CPUs. */
+        int c;
+        kprintf("smp: %d CPU(s)\n", cpu_count);
+        for (c = 0; c < cpu_count && c < MAX_CPUS; c++) {
+            kprintf("  cpu%d lapic=%d %s cur=%d dispatched=%lu polls=%lu\n",
+                    cpus[c].cpu_id, cpus[c].lapic_id,
+                    cpus[c].is_bsp ? "BSP" : "AP ",
+                    cpus[c].cur_pid, smp_dispatches[c], smp_idle_polls[c]);
+        }
     }
     else if (kstrcmp(argv[0], "echo") == 0) {
         int i;

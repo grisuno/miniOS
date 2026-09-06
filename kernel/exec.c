@@ -120,7 +120,10 @@ int k_exec_user(void *entry, int argc, char **argv) {
     unsigned long frame[5];
     if (!sp) return -1;
     exec_exit_code = 0;
-    unsigned long saved_kstack = syscall_kstack;
+    /* Ring-3 syscalls swap onto procs[0].kstack (see syscall_entry), so
+     * point it at a freshly allocated stack with the usual 32 KB depth
+     * for the run; the pool slot from sched_init is restored after. */
+    uint64_t saved_p0kstack = procs[0].kstack;
 
     unsigned long parent_cr3;
     __asm__ volatile("mov %%cr3, %0" : "=r"(parent_cr3));
@@ -132,9 +135,9 @@ int k_exec_user(void *entry, int argc, char **argv) {
     unsigned long child_stack_sz = SYS_KSTK_TOP - SYS_KSTK_BASE;
     void *child_stack = kmalloc(child_stack_sz);
     if (child_stack)
-        syscall_kstack = (unsigned long)child_stack + child_stack_sz;
+        procs[0].kstack = (uint64_t)child_stack + child_stack_sz;
     else
-        syscall_kstack = SYS_KSTK_TOP;
+        procs[0].kstack = SYS_KSTK_TOP;
     wrmsr(MSR_FSBASE, 0);
     /* Ensure swap_slot = kernel GS (&cpus[0]) so the timer ISR's swapgs
      * restores the correct per-CPU base when it fires from ring 3. */
@@ -187,7 +190,7 @@ int k_exec_user(void *entry, int argc, char **argv) {
     wrmsr(MSR_FSBASE, 0);
     wrmsr(MSR_GSBASE, (unsigned long)&cpus[0]);
     exec_return = saved_exec;
-    syscall_kstack = saved_kstack;
+    procs[0].kstack = saved_p0kstack;
     if (child_stack) kfree(child_stack);
     if (vga_mode13h || graphics_program_ran) {
         vga_mode13h = 0;
@@ -201,7 +204,9 @@ int k_exec_user(void *entry, int argc, char **argv) {
 
 int k_run_rel(prog_entry_t entry, int argc, char **argv) {
     exec_exit_code = 0;
-    unsigned long saved_kstack = syscall_kstack;
+    /* Ring-0 syscalls still use the shared entry stack: reset it so a
+     * stale user rsp abandoned by an interrupted ring-3 syscall can never
+     * become a kernel stack here. */
     syscall_kstack = SYS_KSTK_TOP;
 
     unsigned long cr0, cr4;
@@ -215,12 +220,10 @@ int k_run_rel(prog_entry_t entry, int argc, char **argv) {
     if (ksetjmp(&exec_return) == 0) {
         int rc = entry(argc, argv);
         exec_return = saved_exec;
-        syscall_kstack = saved_kstack;
         return rc;
     }
 
     exec_return = saved_exec;
-    syscall_kstack = saved_kstack;
     if (vga_mode13h || graphics_program_ran) {
         vga_mode13h = 0;
         graphics_program_ran = 0;

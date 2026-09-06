@@ -74,6 +74,10 @@ static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags) {
     __sync_synchronize();
     __sync_lock_release(&lock->locked);
 }
+static inline void spin_unlock_keep_irq(spinlock_t *lock) {
+    __sync_synchronize();
+    __sync_lock_release(&lock->locked);
+}
 static inline int spin_trylock(spinlock_t *lock) {
     int was = __sync_lock_test_and_set(&lock->locked, 1);
     if (!was) __sync_synchronize();
@@ -111,6 +115,17 @@ static inline void spin_unlock(spinlock_t *lock) {
     __sync_synchronize();
     __sync_lock_release(&lock->locked);
     __asm__ volatile("sti");
+}
+
+/* Release the lock WITHOUT touching interrupts (IF stays as-is).
+ * For context-switch paths: the lock was acquired with interrupts off
+ * and they must stay off across the switch, because a timer tick
+ * landing between the release and switch_to would park the
+ * half-switched state over the incoming thread's ctx.  The incoming
+ * context's own rflags decide IF after the switch. */
+static inline void spin_unlock_keep_irq(spinlock_t *lock) {
+    __sync_synchronize();
+    __sync_lock_release(&lock->locked);
 }
 
 /* Acquire the lock with interrupt state saved.

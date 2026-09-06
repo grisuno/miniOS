@@ -30,10 +30,15 @@
 #define LAPIC_SVR_OFF   0x0F0u
 #define LAPIC_ICR_HI    0x310u
 #define LAPIC_ICR_LO    0x300u
+#define LAPIC_LVT_TIMER 0x320u   /* timer LVT */
+#define LAPIC_LVT_LINT0 0x350u   /* local pin 0 (PIC INTR line in virtual wire) */
+#define LAPIC_LVT_LINT1 0x360u   /* local pin 1 (NMI) */
+#define LAPIC_LVT_MASKED 0x10000u
+#define LAPIC_LVT_EXTINT 0x700u  /* delivery mode 7: passthrough from PIC */
+#define LAPIC_EOI_OFF   0x0B0u
 #define LAPIC_TIMER_DIV 0x3E0u
 #define LAPIC_TIMER_INIT 0x380u
 #define LAPIC_TIMER_CUR 0x390u
-#define LAPIC_TIMER_VEC 0x350u
 
 #define LAPIC_SVR_ENABLE  0x100u
 #define LAPIC_ICR_BUSY    0x1000u
@@ -64,12 +69,37 @@
 
 static volatile unsigned ap_count;
 spinlock_t smp_lock = SPINLOCK_INIT;
+volatile unsigned smp_dbg_svr;
+volatile unsigned smp_dbg_lvt;
+volatile unsigned smp_dbg_ipis;
+volatile unsigned smp_dbg_sent;
+
+/* Per-AP kernel stack for the idle loop entry (the 2 KB stub stack is
+ * too shallow for the loop's C frames plus nested IPI ISRs). */
+static char ap_idle_kstack[MAX_CPUS][8192] __attribute__((aligned(16)));
+
+/* The syscall trampoline lives in kernel.c (declared global there). */
+extern void syscall_entry(void);
 
 static unsigned lapic_read(unsigned off) {
     return *(volatile unsigned *)(unsigned long)(LAPIC_BASE + off);
 }
 static void lapic_write(unsigned off, unsigned val) {
     *(volatile unsigned *)(unsigned long)(LAPIC_BASE + off) = val;
+}
+
+/* Broadcast one fixed-delivery IPI to every other CPU.  The BSP timer
+ * ISR uses this as the SMP tick: QEMU's per-AP LAPIC timers are not a
+ * dependable wakeup for a halted AP (an AP that never wakes cannot
+ * claim work), so the BSP shares its PIT tick over the IPI.  Delivery
+ * mode 0 (fixed), destination shorthand all-excluding-self.  BSP-only:
+ * ICR contention is avoided by construction. */
+void smp_ipi_broadcast(int vector) {
+    lapic_write(LAPIC_ICR_HI, 0);
+    /* Fixed delivery needs the level-assert bit (14); without it the
+     * IPI is a deassert and QEMU drops it. */
+    lapic_write(LAPIC_ICR_LO, LAPIC_ICR_ALL_EXC | LAPIC_ICR_LEVEL
+                              | (unsigned)vector);
 }
 
 /* Map the LAPIC so the BSP can program the ICR, and the APs can read their id
@@ -94,15 +124,32 @@ static void ap_delay(void) {
 }
 
 /* Configure this AP's local LAPIC timer to fire at 100 Hz (matching the
- * BSP's PIT rate).  Uses divide-by-16 and periodic mode. */
+ * BSP's PIT rate).  Uses divide-by-16 and periodic mode.  The SVR must
+ * be enabled FIRST: the INIT/SIPI reset leaves each AP's LAPIC disabled
+ * (the BSP's smp_init enable covers only the BSP's own unit), and with
+ * the SVR off the timer never fires and the idle loop's hlt never
+ * wakes, so the AP never claims a thread. */
 static void ap_lapic_timer_init(void) {
+    lapic_write(LAPIC_SVR_OFF, lapic_read(LAPIC_SVR_OFF) | LAPIC_SVR_ENABLE);
     lapic_write(LAPIC_TIMER_DIV, LAPIC_TIMER_DIVIDE_16);
-    lapic_write(LAPIC_TIMER_VEC, 32);
+    /* LVT timer: vector 32 + PERIODIC bit (0x20000).  Without the
+     * periodic bit the timer is one-shot and the idle loop's hlt
+     * never wakes after the first expiry. */
+    lapic_write(LAPIC_LVT_TIMER, 32 | LAPIC_TIMER_PERIODIC);
+    /* The AP has no PIC passthrough: mask both local pins so stray
+     * line assertions cannot inject a bogus vector. */
+    lapic_write(LAPIC_LVT_LINT0, LAPIC_LVT_MASKED);
+    lapic_write(LAPIC_LVT_LINT1, LAPIC_LVT_MASKED);
     lapic_write(LAPIC_TIMER_INIT, PIT_HZ / 100 / 16);
+    smp_dbg_svr = lapic_read(LAPIC_SVR_OFF);
+    smp_dbg_lvt = lapic_read(LAPIC_LVT_TIMER);
 }
 
 /* Entry point every AP reaches from ap_entry.S.  Initializes per-CPU state,
- * GS base, IDTR, LAPIC timer, and enters an idle loop. */
+ * GS base, IDTR, LAPIC timer and task register, then enters the AP idle
+ * loop (smp_ap_idle_loop), which claims READY CLONE_VM threads and runs
+ * them.  Non-VM processes stay on the BSP by construction (the AP-side
+ * pick and preempt paths only ever consider CLONE_VM). */
 void smp_ap_entry(void) {
     /* Progress marker: 0x42 at 0x80000 proves we reached C */
     *(volatile unsigned char *)0x80000UL = 0x42;
@@ -113,7 +160,7 @@ void smp_ap_entry(void) {
     /* Initialize per-CPU cpu_t */
     cpus[cpu].self = &cpus[cpu];
     cpus[cpu].cpu_id = cpu;
-    cpus[cpu].cur_pid = 0;
+    cpus[cpu].cur_pid = -1;
     cpus[cpu].is_bsp = 0;
     cpus[cpu].lapic_id = id;
     cpus[cpu].idle = 1;
@@ -122,8 +169,47 @@ void smp_ap_entry(void) {
     /* Set GS base so this_cpu() works on this AP */
     wrmsr(MSR_GSBASE, (unsigned long)&cpus[cpu]);
 
+    /* Seed this CPU's SYSCALL swap target: without it the first ring-3
+     * syscall from an AP-dispatched thread swaps in the reset MSR value
+     * and the entry math reads garbage as cur_pid.  MSRs are per-CPU,
+     * so the BSP's k_exec_user setup never reaches here. */
+    wrmsr(MSR_KERNEL_GS_BASE, (unsigned long)&cpus[cpu]);
+
+    /* Per-CPU SYSCALL configuration: STAR, LSTAR, SFMASK and EFER.SCE
+     * were programmed only on the BSP (syscall_init runs in kmain), so
+     * an AP's first sysretq loaded SS from a zeroed STAR (selector 0x08,
+     * kernel code, as SS) and died with #SS.  The values mirror
+     * syscall_init in kernel.c exactly. */
+    wrmsr(0xC0000081u, ((unsigned long)GDT64_DATA_SEL << 48)
+                       | ((unsigned long)GDT64_CODE_SEL << 32));  /* STAR */
+    wrmsr(0xC0000082u, (unsigned long)syscall_entry);              /* LSTAR */
+    wrmsr(0xC0000084u, 0x600);                                     /* SFMASK */
+    wrmsr(0xC0000080u, (unsigned long)(rdmsr(0xC0000080u) | 1));   /* EFER.SCE */
+    /* EFER is per-CPU: ap_entry.S only sets LME, so the AP runs with
+     * EFER.NXE clear.  Every user-window PTE carries the NX bit, and
+     * with NXE clear a set NX bit is RESERVED - any access to an
+     * NX page on the AP faults with a reserved-bit #PF.  Enable NXE
+     * to match the BSP's stage-2 setup. */
+    wrmsr(0xC0000080u, (unsigned long)(rdmsr(0xC0000080u) | EFER_NXE));
+
     /* Load the BSP's IDTR (same IDT, kernel memory, identity-mapped) */
     __asm__ volatile("lidt %0" :: "m"(bsp_idtr));
+
+    /* Private TSS so ring-3 preempts on this AP land on its own stack. */
+    tss_init_ap(cpu);
+
+    /* Mark the idle context; the first switch_to out of the idle loop
+     * saves the loop registers here for later resumes.  cr3 must be the
+     * kernel tables: switch_to loads next->ctx.cr3 unconditionally, so a
+     * zero would wipe the page tables on the first park. */
+    ap_idle_proc[cpu].pid = -1;
+    ap_idle_proc[cpu].state = PROC_BLOCKED;
+    ap_idle_proc[cpu].parent_pid = -1;
+    {
+        unsigned long cr3;
+        __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+        ap_idle_proc[cpu].ctx.cr3 = cr3;
+    }
 
     /* Configure LAPIC timer at 100 Hz */
     ap_lapic_timer_init();
@@ -143,9 +229,15 @@ void smp_ap_entry(void) {
      * "Brought up N CPUs" message after ap_count confirms the AP
      * initialized. */
 
-    /* Idle loop: enable interrupts and halt.  The LAPIC timer ISR fires
-     * at 100 Hz, exercising the same isr_dispatch path as the BSP.  When
-     * Phase 2 enables per-CPU scheduling, work will arrive here. */
+    /* Enter the scheduler idle loop.  The loop is stateless (re-reads
+     * its CPU from GS on every entry), so a fresh stack each park is
+     * fine — schedule() resets the idle ctx before every switch into
+     * it.  Move off the 2 KB stub stack first: the loop and the IPI
+     * ISRs it services need real depth. */
+    cpus[cpu].idle = 1;
+    __asm__ volatile("movq %0, %%rsp" ::
+                        "r"(&ap_idle_kstack[cpu][8192]) :);
+    smp_ap_idle_loop();
     for (;;) {
         __asm__ volatile("sti; hlt; cli");
     }
@@ -154,6 +246,13 @@ void smp_ap_entry(void) {
 void smp_init(void) {
     if (!map_lapic()) return;
     lapic_write(LAPIC_SVR_OFF, lapic_read(LAPIC_SVR_OFF) | LAPIC_SVR_ENABLE);
+    /* Virtual-wire mode via the local APIC: with the LAPIC enabled, the
+     * PIC's INTR line only reaches the CPU through LINT0, so LINT0 must
+     * be programmed as ExtINT delivery.  Without this the PIT (IRQ0)
+     * stops being delivered the moment the LAPIC is enabled and the
+     * whole timer-driven kernel goes dead.  LINT1 stays masked. */
+    lapic_write(LAPIC_LVT_LINT0, LAPIC_LVT_EXTINT);
+    lapic_write(LAPIC_LVT_LINT1, LAPIC_LVT_MASKED);
 
     /* Copy the flat stub and patch in the C entry point's address. */
     kmemcpy((void *)(unsigned long)AP_STUB_ADDR, ap_stub_blob, ap_stub_len);
@@ -188,4 +287,12 @@ void smp_init(void) {
         kprintf("SMP: Brought up %u CPUs\n", (unsigned)ap_count + 1u);
     else
         kprintf("SMP: 1 CPU (APs not woken)\n");
+
+    /* IPI delivery probe: three fixed-mode IPIs (vector 32) from plain
+     * BSP context.  The AP ISR counts them in smp_dbg_ipis; the `smp`
+     * builtin prints it, so delivery is observable on the console. */
+    for (t = 0; t < 3; t++) {
+        smp_ipi_broadcast(32);
+        for (t0 = 0; t0 < 200000u; t0++) __asm__ volatile("pause");
+    }
 }

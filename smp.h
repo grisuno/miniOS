@@ -24,7 +24,16 @@
 
 extern spinlock_t smp_lock;
 
+/* Read-back diagnostics written by the AP after its LAPIC setup; the
+ * `smp` builtin prints them so a dead AP's APIC state is visible over
+ * the serial console. */
+extern volatile unsigned smp_dbg_svr;
+extern volatile unsigned smp_dbg_lvt;
+extern volatile unsigned smp_dbg_ipis;  /* vector-32 ISRs run on APs */
+extern volatile unsigned smp_dbg_sent;   /* IPIs the BSP tick sent */
+
 void smp_init(void);
 void smp_ap_entry(void);   /* entry point each AP jumps to from ap_entry.S */
+void smp_ipi_broadcast(int vector);  /* fixed-delivery IPI, all except self */
 
 #endif

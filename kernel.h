@@ -66,6 +66,8 @@ char sb_get_char(int row, int col);
 void serial_init(void);
 void serial_putc(char c);
 void serial_puts(const char *s);
+unsigned long serial_e_count(void);          /* E-flood tracer (serial.c) */
+extern unsigned long ser_e_ra, ser_e_cpu;    /* first 'E' writer's RA/CPU */
 int  serial_available(void);
 int  serial_getc(void);
 

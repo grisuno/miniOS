@@ -91,7 +91,7 @@ ap_gdt32_ptr:
 ap_gdt32_end:
 
 ap_gdt64_ptr:
-    .word GDT64_BYTES - 1
+    .word GDT64_SMP_BYTES - 1
     .quad GDT64_ADDR
 
     .globl ap_stub_end

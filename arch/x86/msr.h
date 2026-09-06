@@ -21,5 +21,6 @@ static inline unsigned long rdmsr(unsigned msr) {
 #define MSR_SFMASK 0xC0000084
 #define MSR_FSBASE 0xC0000100
 #define MSR_GSBASE 0xC0000101
+#define MSR_KERNEL_GS_BASE 0xC0000102
 
 #endif
