@@ -435,9 +435,16 @@ bootstrap stub (`ap_entry.S`) to `AP_STUB_ADDR` (0x6000, below 1 MB for
 SIPI), patches the C entry point address, and sends INIT (edge-triggered,
 all-excluding-self) followed by two SIPIs.  Each AP runs the stub (real
 mode -> protected mode -> long mode), calls `smp_ap_entry()`, initializes
-its `cpu_t`, sets GS base, loads the BSP's IDTR, configures a LAPIC
-timer at 100 Hz (vector 32, divide-by-16, periodic), and enters an idle
-loop (`sti; hlt; cli`).  The AP does NOT print to the serial console
+its `cpu_t`, sets GS base, loads the BSP's IDTR, enables its LAPIC SVR
+(so it can receive IPIs) with the local timer and both LINT pins masked,
+and enters the AP idle loop (`smp_ap_idle_loop`, which claims READY
+CLONE_VM threads and otherwise halts).  The AP has no periodic timer of
+its own by design: its only tick is the BSP's 100 Hz IPI broadcast, which
+wakes the halted AP and drives its preemption ISR.  A LAPIC timer count
+derived from `PIT_HZ` must never be used: the LAPIC counts bus clocks, so
+that count fires ~84 kHz under QEMU and wedges the machine under an
+interrupt storm (measured 2.6x slowdown + 176% host CPU on an idle guest).
+The AP does NOT print to the serial console
 during init: `kprintf`'s stack usage plus the LAPIC timer ISR trap frame
 overflows the identity-mapped low-memory stub stack and cascading
 exceptions result.  The BSP prints "SMP: Brought up N CPUs" after

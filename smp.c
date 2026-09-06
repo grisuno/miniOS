@@ -123,24 +123,23 @@ static void ap_delay(void) {
     for (i = 0; i < 200000u; i++) __asm__ volatile("pause");
 }
 
-/* Configure this AP's local LAPIC timer to fire at 100 Hz (matching the
- * BSP's PIT rate).  Uses divide-by-16 and periodic mode.  The SVR must
- * be enabled FIRST: the INIT/SIPI reset leaves each AP's LAPIC disabled
- * (the BSP's smp_init enable covers only the BSP's own unit), and with
- * the SVR off the timer never fires and the idle loop's hlt never
- * wakes, so the AP never claims a thread. */
+/* The AP's wakeup is the BSP's IPI tick (smp_ipi_broadcast, 100 Hz),
+ * not its own LAPIC timer: the timer counts local-APIC bus clocks, so a
+ * count derived from PIT_HZ fires ~84 kHz under QEMU (745 ticks at
+ * divide-by-16 ~= 12 us) and wedges the machine under an interrupt
+ * storm.  The local timer therefore stays MASKED; the halted AP wakes
+ * only on the IPI, which also drives its preemption ISR.  The SVR must
+ * still be enabled FIRST: the INIT/SIPI reset leaves each AP's LAPIC
+ * disabled (the BSP's smp_init enable covers only the BSP's own unit),
+ * and with the SVR off the AP cannot receive IPIs at all, so its hlt
+ * never wakes and it never claims a thread. */
 static void ap_lapic_timer_init(void) {
     lapic_write(LAPIC_SVR_OFF, lapic_read(LAPIC_SVR_OFF) | LAPIC_SVR_ENABLE);
-    lapic_write(LAPIC_TIMER_DIV, LAPIC_TIMER_DIVIDE_16);
-    /* LVT timer: vector 32 + PERIODIC bit (0x20000).  Without the
-     * periodic bit the timer is one-shot and the idle loop's hlt
-     * never wakes after the first expiry. */
-    lapic_write(LAPIC_LVT_TIMER, 32 | LAPIC_TIMER_PERIODIC);
+    lapic_write(LAPIC_LVT_TIMER, LAPIC_LVT_MASKED);
     /* The AP has no PIC passthrough: mask both local pins so stray
      * line assertions cannot inject a bogus vector. */
     lapic_write(LAPIC_LVT_LINT0, LAPIC_LVT_MASKED);
     lapic_write(LAPIC_LVT_LINT1, LAPIC_LVT_MASKED);
-    lapic_write(LAPIC_TIMER_INIT, PIT_HZ / 100 / 16);
     smp_dbg_svr = lapic_read(LAPIC_SVR_OFF);
     smp_dbg_lvt = lapic_read(LAPIC_LVT_TIMER);
 }
