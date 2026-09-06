@@ -42,11 +42,6 @@
 #define SB16_STREAMS      4u       /* max concurrent mixer streams */
 #define SB16_STREAM_BUF   (SB16_PCM_BUF * 4u)  /* 8192 bytes per stream */
 
-/* Legacy kernel-side audio ring (stream 0).  Kept for backward compatibility
- * with apps that use the old sb16_pcm_open/submit/pump API directly. */
-#define SB16_KB_SLOTS     32u   /* ~3 seconds at 22050 Hz */
-#define SB16_KB_RING_SZ   (SB16_KB_SLOTS * SB16_PCM_BUF)
-
 /* Mixer stream state. */
 typedef struct {
     int active;             /* stream is open */
@@ -73,7 +68,8 @@ void sb16_tone(unsigned freq);
 void sb16_irq(void);
 void sb16_poll(void);
 
-/* Legacy single-stream API (maps to stream 0). */
+/* Legacy single-stream API (maps to mixer stream 0: pcm_open allocates it,
+ * pcm_submit forwards into it, pcm_close releases it). */
 void sb16_pcm_open(void);
 int  sb16_pcm_submit(const unsigned char *pcm, unsigned len);
 void sb16_pcm_close(void);

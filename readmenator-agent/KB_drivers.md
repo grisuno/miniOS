@@ -115,58 +115,64 @@
 
 ## drivers/sb16.c
 - Layer: infrastructure
-- Doc: include "kernel.h" include "sb16.h"  Sound Blaster 16 DMA audio driver.
+- Doc: include "kernel.h" include "sb16.h" include "sync.h"  Sound Blaster 16 DMA audio driver.
 - Language: c
 - Symbols:
-  - `sb16_slot` (function, line 109) `static unsigned char *sb16_slot(unsigned i)`
-  - `sb16_kring_reset` (function, line 115) `static void sb16_kring_reset(void)`
-  - `sb16_stream_open` (function, line 122) `int sb16_stream_open(void)`
-  - `sb16_stream_close` (function, line 138) `void sb16_stream_close(int id)`
-  - `sb16_stream_submit` (function, line 146) `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)`
-  - `sb16_stream_volume` (function, line 161) `void sb16_stream_volume(int id, unsigned char vol)`
-  - `sb16_stream_count` (function, line 167) `int sb16_stream_count(void)`
-  - `sb16_mix_all` (function, line 178) `static void sb16_mix_all(void)`
-  - `sb16_pump` (function, line 214) `void sb16_pump(void)`
-  - `sb16_wait_dsp_write` (function, line 237) `static void sb16_wait_dsp_write(void)`
-  - `sb16_read_data` (function, line 242) `static int sb16_read_data(unsigned char *out)`
-  - `sb16_reset_dsp` (function, line 251) `static int sb16_reset_dsp(void)`
-  - `sb16_dma_play` (function, line 265) `static void sb16_dma_play(unsigned addr, unsigned len)`
-  - `sb16_refill` (function, line 281) `static void sb16_refill(int slot_index)`
-  - `sb16_arm` (function, line 297) `static void sb16_arm(int from_irq)`
-  - `sb16_present` (function, line 321) `int sb16_present(void)`
-  - `sb16_tone` (function, line 323) `void sb16_tone(unsigned freq)`
-  - `sb16_pcm_open` (function, line 338) `void sb16_pcm_open(void)`
-  - `sb16_pcm_close` (function, line 354) `void sb16_pcm_close(void)`
-  - `sb16_pcm_submit` (function, line 356) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)`
-  - `sb16_irq` (function, line 379) `void sb16_irq(void)`
-  - `sb16_poll` (function, line 386) `void sb16_poll(void)`
-  - `sb16_ring_free` (function, line 391) `unsigned sb16_ring_free(void)`
-  - `sb16_mode_active` (function, line 393) `int sb16_mode_active(void)`
-  - `sb16_counters` (function, line 394) `void sb16_counters(sb16_counters_t *out)`
-  - `sb16_init` (function, line 398) `int sb16_init(void)`
-  - `SB16_BASE_PORT` (macro, line 42)
-  - `SB16_DSP_RESET` (macro, line 44)
-  - `SB16_DSP_READ_DATA` (macro, line 45)
-  - `SB16_DSP_WRITE_DATA` (macro, line 46)
-  - `SB16_DSP_STATUS` (macro, line 47)
-  - `SB16_IRQ_ACK` (macro, line 48)
-  - `SB16_CMD_READ_VER` (macro, line 49)
-  - `SB16_CMD_SET_FREQ` (macro, line 51)
-  - `SB16_CMD_PLAY8` (macro, line 52)
-  - `SB16_FREQ_LO` (macro, line 53)
-  - `SB16_FREQ_HI` (macro, line 55)
-  - `SB16_DSP_READY_MASK` (macro, line 56)
-  - `DMA_CH1_ADDR` (macro, line 58)
-  - `DMA_CH1_CNT` (macro, line 60)
-  - `DMA_CH1_PAGE` (macro, line 61)
-  - `DMA_MASK` (macro, line 62)
-  - `DMA_FF_CLR` (macro, line 63)
-  - `DMA_CH1_UNMASK` (macro, line 64)
-  - `DMA_CH1_MASK` (macro, line 65)
-  - `SB16_DMA_BUF0` (macro, line 66)
-  - `SB16_SILENCE_SLOT` (macro, line 68)
-  - `SB16_BUF` (macro, line 69)
-  - `SB16_PROBE_WAIT` (macro, line 70)
-  - `SB16_MODE_TONE` (macro, line 72)
-  - `SB16_MODE_PCM` (macro, line 74)
-  - `SB16_SQ_CYCLE` (macro, line 75)
+  - `sb16_kring_reset` (function, line 117) `static void sb16_kring_reset(void)`
+  - `sb16_slot` (function, line 128) `static unsigned char *sb16_slot(unsigned i)`
+  - `sb16_stream_open` (function, line 136) `int sb16_stream_open(void)`
+  - `sb16_stream_close` (function, line 152) `void sb16_stream_close(int id)`
+  - `sb16_stream_submit` (function, line 160) `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)`
+  - `sb16_stream_volume` (function, line 175) `void sb16_stream_volume(int id, unsigned char vol)`
+  - `sb16_stream_count` (function, line 181) `int sb16_stream_count(void)`
+  - `sb16_mix_all` (function, line 192) `static void sb16_mix_all(void)`
+  - `sb16_pump` (function, line 228) `void sb16_pump(void)`
+  - `sb16_wait_write` (function, line 260) `static int sb16_wait_write(void)`
+  - `sb16_cmd` (function, line 266) `static void sb16_cmd(unsigned char c)`
+  - `sb16_read_data` (function, line 271) `static int sb16_read_data(unsigned char *out)`
+  - `sb16_reset_dsp` (function, line 283) `static int sb16_reset_dsp(void)`
+  - `sb16_dma_play` (function, line 296) `static void sb16_dma_play(unsigned addr, unsigned len)`
+  - `sb16_refill` (function, line 312) `static void sb16_refill(int slot_index)`
+  - `sb16_arm` (function, line 328) `static void sb16_arm(int from_irq)`
+  - `sb16_present` (function, line 352) `int sb16_present(void)`
+  - `sb16_tone` (function, line 354) `void sb16_tone(unsigned freq)`
+  - `sb16_pcm_open` (function, line 369) `void sb16_pcm_open(void)`
+  - `sb16_pcm_close` (function, line 392) `void sb16_pcm_close(void)`
+  - `sb16_pcm_submit` (function, line 401) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)`
+  - `sb16_irq` (function, line 418) `void sb16_irq(void)`
+  - `sb16_poll` (function, line 425) `void sb16_poll(void)`
+  - `sb16_ring_free` (function, line 430) `unsigned sb16_ring_free(void)`
+  - `sb16_mode_active` (function, line 432) `int sb16_mode_active(void)`
+  - `sb16_counters` (function, line 433) `void sb16_counters(sb16_counters_t *out)`
+  - `sb16_init` (function, line 437) `int sb16_init(void)`
+  - `SB16_BASE_PORT` (macro, line 45)
+  - `SB16_DSP_RESET` (macro, line 47)
+  - `SB16_DSP_READ_DATA` (macro, line 48)
+  - `SB16_DSP_WRITE_DATA` (macro, line 49)
+  - `SB16_DSP_STATUS` (macro, line 50)
+  - `SB16_IRQ_ACK` (macro, line 51)
+  - `SB16_CMD_READ_VER` (macro, line 52)
+  - `SB16_CMD_SET_FREQ` (macro, line 54)
+  - `SB16_CMD_PLAY8` (macro, line 55)
+  - `SB16_CMD_SPK_ON` (macro, line 56)
+  - `SB16_CMD_SPK_OFF` (macro, line 57)
+  - `SB16_DSP_RDSTATUS` (macro, line 58)
+  - `DMA_MODE_PORT` (macro, line 65)
+  - `DMA_CH1_SINGLE_READ` (macro, line 66)
+  - `SB16_FREQ_LO` (macro, line 67)
+  - `SB16_FREQ_HI` (macro, line 69)
+  - `SB16_DSP_READY_MASK` (macro, line 70)
+  - `DMA_CH1_ADDR` (macro, line 72)
+  - `DMA_CH1_CNT` (macro, line 74)
+  - `DMA_CH1_PAGE` (macro, line 75)
+  - `DMA_MASK` (macro, line 76)
+  - `DMA_FF_CLR` (macro, line 77)
+  - `DMA_CH1_UNMASK` (macro, line 78)
+  - `DMA_CH1_MASK` (macro, line 79)
+  - `SB16_DMA_BUF0` (macro, line 80)
+  - `SB16_SILENCE_SLOT` (macro, line 82)
+  - `SB16_BUF` (macro, line 83)
+  - `SB16_PROBE_WAIT` (macro, line 84)
+  - `SB16_MODE_TONE` (macro, line 86)
+  - `SB16_MODE_PCM` (macro, line 88)
+  - `SB16_SQ_CYCLE` (macro, line 89)

@@ -75,31 +75,42 @@ static long sys_pcm_pump(void) {
 static opl3_chip o3;
 static int audio_on;
 
-static void o3_opreg(int op, int regbase, int val) {
-    int base = op < 18 ? 0x00 : 0x100;
-    OPL3_WriteReg(&o3, (uint16_t)(base + regbase + (op % 18)), (uint8_t)val);
+/* OPL operator numbers are NOT contiguous per channel: within a bank the
+ * modulators live at 0,1,2 / 8,9,10 / 16,17,18 and each carrier three
+ * slots later (3,4,5 / 11,12,13 / 19,20,21).  Addressing the carrier as
+ * 2*ch+1 programs channel ch+1's modulator instead and leaves the real
+ * carrier at its reset values (attack rate 0: never opens audibly), so
+ * every note played silence. */
+static int o3_bank(int ch) { return ch < 9 ? 0x00 : 0x100; }
+static int o3_op(int ch, int is_car) {
+    int i = ch % 9;
+    return (i % 3) + 8 * (i / 3) + (is_car ? 3 : 0);
+}
+static void o3_opreg(int ch, int is_car, int regbase, int val) {
+    OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)),
+                  (uint8_t)val);
 }
 static void o3_chreg(int ch, int regbase, int val) {
-    int base = ch < 9 ? 0x00 : 0x100;
-    OPL3_WriteReg(&o3, (uint16_t)(base + regbase + (ch % 9)), (uint8_t)val);
+    OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + (ch % 9)),
+                  (uint8_t)val);
 }
 
 /* Program one FM patch; `vel` (1..100) biases the carrier output level so a
- * louder velocity is audibly less attenuated, FM's native amplitude. */
+ * louder velocity is audibly less attenuated, FM's native amplitude.
+ * Percussive envelope (attack rate 15): a clicked note must open at once. */
 static void o3_instrument(int ch, int vel) {
-    int mod = 2 * ch, car = 2 * ch + 1;
     int tl = 0x08 + ((100 - vel) * 0x1F) / 100;   /* 0x08 (loud) .. 0x27 (soft) */
     if (tl > 0x3F) tl = 0x3F;
-    o3_opreg(mod, 0x20, 0x01);
-    o3_opreg(mod, 0x40, 0x18);
-    o3_opreg(mod, 0x60, 0x42);
-    o3_opreg(mod, 0x80, 0x85);
-    o3_opreg(mod, 0xE0, 0x00);
-    o3_opreg(car, 0x20, 0x01);
-    o3_opreg(car, 0x40, (uint8_t)tl);
-    o3_opreg(car, 0x60, 0x44);
-    o3_opreg(car, 0x80, 0x77);
-    o3_opreg(car, 0xE0, 0x00);
+    o3_opreg(ch, 0, 0x20, 0x01);
+    o3_opreg(ch, 0, 0x40, 0x18);
+    o3_opreg(ch, 0, 0x60, 0xF2);
+    o3_opreg(ch, 0, 0x80, 0x85);
+    o3_opreg(ch, 0, 0xE0, 0x00);
+    o3_opreg(ch, 1, 0x20, 0x01);
+    o3_opreg(ch, 1, 0x40, (uint8_t)tl);
+    o3_opreg(ch, 1, 0x60, 0xF4);
+    o3_opreg(ch, 1, 0x80, 0x77);
+    o3_opreg(ch, 1, 0xE0, 0x00);
     o3_chreg(ch, 0xC0, 0x00);
 }
 
@@ -128,9 +139,32 @@ static void o3_note(int ch, int midi, int on) {
     o3_chreg(ch, 0xB0, ((unsigned)block << 2) | ((fnum >> 8) & 3) | 0x20);
 }
 
-/* ── Expressive note state: velocity, sustain, octave ───────────────── */
+/* ── Keyboard model: two octaves C3..C5 (14 white + 10 black keys) ────
+ * Lives above the voice code because key_to_chan is indexed (and sized)
+ * by key number. */
+#define KEY_W 42
+#define KEY_H 150
+#define BK_W  26
+#define BK_H  100
+#define KEY_Y  60
+
+static const struct { int black; int midi; int x; } keys[] = {
+    {0, 48,   0}, {1, 49,  29}, {0, 50,  42}, {1, 51,  71}, {0, 52,  84},
+    {0, 53, 126}, {1, 54, 155}, {0, 55, 168}, {1, 56, 197}, {0, 57, 210},
+    {1, 58, 239}, {0, 59, 252},
+    {0, 60, 294}, {1, 61, 323}, {0, 62, 336}, {1, 63, 365}, {0, 64, 378},
+    {0, 65, 420}, {1, 66, 449}, {0, 67, 462}, {1, 68, 491}, {0, 69, 504},
+    {1, 70, 533}, {0, 71, 546},
+};
+#define NKEYS ((int)(sizeof(keys) / sizeof(keys[0])))
+
+/* ── Expressive note state: velocity, sustain, octave ─────────────────
+ * Voices (MAX_VOICES, the OPL3 channel count) and keys (NKEYS, the UI
+ * key count) are different things: key_to_chan maps every key to its
+ * sounding channel, so it is sized by NKEYS.  Sizing it by MAX_VOICES
+ * wrote past the end for the top keys and left them mute. */
 #define MAX_VOICES 18
-static int key_to_chan[MAX_VOICES];   /* key index -> OPL3 channel, -1 = off */
+static int key_to_chan[NKEYS];   /* key index -> OPL3 channel, -1 = off */
 static int chan_used[MAX_VOICES];
 static int chan_sustained[MAX_VOICES];/* key released but pedal holds the voice */
 
@@ -159,7 +193,7 @@ static void pedal_set(int on) {
 }
 
 static void note_off_key(int key) {
-    if (key < 0 || key >= MAX_VOICES) return;
+    if (key < 0 || key >= NKEYS) return;
     int ch = key_to_chan[key];
     if (ch < 0) return;
     if (sustain_pedal) {
@@ -172,7 +206,7 @@ static void note_off_key(int key) {
     key_to_chan[key] = -1;
 }
 static void note_on_key(int key, int midi, int vel) {
-    if (key < 0 || key >= MAX_VOICES || !audio_on) return;
+    if (key < 0 || key >= NKEYS || !audio_on) return;
     if (key_to_chan[key] >= 0) return;   /* same key already sounding */
     int ch;
     for (ch = 0; ch < MAX_VOICES; ch++) if (!chan_used[ch]) break;
@@ -298,23 +332,6 @@ static void render_audio(long ms) {
     }
 }
 
-/* ── Keyboard model: two octaves C3..C5 (14 white + 10 black keys) ──── */
-#define KEY_W 42
-#define KEY_H 150
-#define BK_W   26
-#define BK_H   100
-#define KEY_Y  60
-
-static const struct { int black; int midi; int x; } keys[] = {
-    {0, 48,   0}, {1, 49,  29}, {0, 50,  42}, {1, 51,  71}, {0, 52,  84},
-    {0, 53, 126}, {1, 54, 155}, {0, 55, 168}, {1, 56, 197}, {0, 57, 210},
-    {1, 58, 239}, {0, 59, 252},
-    {0, 60, 294}, {1, 61, 323}, {0, 62, 336}, {1, 63, 365}, {0, 64, 378},
-    {0, 65, 420}, {1, 66, 449}, {0, 67, 462}, {1, 68, 491}, {0, 69, 504},
-    {1, 70, 533}, {0, 71, 546},
-};
-#define NKEYS ((int)(sizeof(keys) / sizeof(keys[0])))
-
 static void key_rect(int key, int *x, int *y, int *w, int *h) {
     *x = keys[key].x;
     *y = KEY_Y;
@@ -410,8 +427,8 @@ static void ui_run(int bench_ms) {
     audio_on = sys_pcm_open(1) == 1 ? 1 : 0;
     OPL3_Reset(&o3, RATE);
     int i;
+    for (i = 0; i < NKEYS; i++) key_to_chan[i] = -1;
     for (i = 0; i < MAX_VOICES; i++) {
-        key_to_chan[i] = -1;
         chan_used[i] = 0;
         chan_sustained[i] = 0;
     }
@@ -461,10 +478,14 @@ static void ui_run(int bench_ms) {
                 r.x = (float)keys[k].x; r.y = (float)KEY_Y;
                 r.w = (float)(keys[k].black ? BK_W : KEY_W);
                 r.h = (float)(keys[k].black ? BK_H : KEY_H);
-                struct nk_color col = keys[k].black
+                /* A sounding key lights up red: click feedback and a
+                 * serial-free way to see that the press registered. */
+                struct nk_color col = (key_to_chan[k] >= 0)
+                    ? nk_rgb(200, 60, 60)
+                    : keys[k].black
                     ? nk_rgb(20, 20, 20)
                     : (k % 7 == 0 || k % 7 == 3 ? nk_rgb(235, 235, 235)
-                                                : nk_rgb(245, 245, 245));
+                                                 : nk_rgb(245, 245, 245));
                 nk_fill_rect(canvas, r, 0, col);
                 nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));
             }
@@ -536,8 +557,8 @@ static int run_selftest(void) {
     int i;
     audio_on = 1;
     OPL3_Reset(&o3, RATE);
+    for (i = 0; i < NKEYS; i++) key_to_chan[i] = -1;
     for (i = 0; i < MAX_VOICES; i++) {
-        key_to_chan[i] = -1;
         chan_used[i] = 0;
         chan_sustained[i] = 0;
     }
@@ -609,6 +630,32 @@ static int run_selftest(void) {
         if (MAX_AUDIO_MS <= buf_ms || MAX_AUDIO_MS > ring_ms) {
             printf("piano: pacing constants fail (max=%d buf=%ld ring=%ld)\n",
                    MAX_AUDIO_MS, buf_ms, ring_ms);
+            return 1;
+        }
+    }
+
+    /* FM voice energy: a triggered note must actually render samples.
+     * A misaddressed carrier once made every note silent while all the
+     * plumbing checks above passed, so the synth itself is asserted
+     * (silence reads peak 1; a healthy voice peaks over 1000 here). */
+    {
+        static int16_t probe[512 * 2];
+        long peak = 0;
+        int n;
+        note_on_key(0, 48, 80);
+        for (n = 0; n < 6615; n += 512) {
+            int m = n + 512 > 6615 ? 6615 - n : 512;
+            int k;
+            OPL3_GenerateStream(&o3, probe, (uint32_t)m);
+            for (k = 0; k < m; k++) {
+                long s = (probe[k * 2] + probe[k * 2 + 1]) / 2;
+                if (s < 0) s = -s;
+                if (s > peak) peak = s;
+            }
+        }
+        note_off_key(0);
+        if (peak < 500) {
+            printf("piano: FM voice silent (peak %ld)\n", peak);
             return 1;
         }
     }

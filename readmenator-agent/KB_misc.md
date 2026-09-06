@@ -123,27 +123,27 @@
   - `sys_pcm_open` (function, line 63) `static long sys_pcm_open(long on)`
   - `sys_pcm_submit` (function, line 67) `static long sys_pcm_submit(const void *buf, long len)`
   - `sys_pcm_pump` (function, line 70) `static long sys_pcm_pump(void)`
-  - `o3_opreg` (function, line 77) `static void o3_opreg(int op, int regbase, int val)`
-  - `o3_chreg` (function, line 82) `static void o3_chreg(int ch, int regbase, int val)`
-  - `o3_instrument` (function, line 89) `static void o3_instrument(int ch, int vel)`
-  - `o3_note` (function, line 119) `static void o3_note(int ch, int midi, int on)`
-  - `clamp_midi` (function, line 140) `static int clamp_midi(int m)`
-  - `pedal_set` (function, line 148) `static void pedal_set(int on)`
-  - `note_off_key` (function, line 160) `static void note_off_key(int key)`
-  - `note_on_key` (function, line 174) `static void note_on_key(int key, int midi, int vel)`
-  - `fx_configure` (function, line 216) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
-  - `fx_process` (function, line 234) `static float fx_process(float x)`
-  - `sb_flush` (function, line 265) `static void sb_flush(void)`
-  - `render_audio` (function, line 274) `static void render_audio(long ms)`
-  - `key_rect` (function, line 317) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
-  - `hit_key` (function, line 324) `static int hit_key(int mx, int my)`
-  - `hit_velocity` (function, line 342) `static int hit_velocity(int key, int my)`
-  - `ctrl_hit` (function, line 368) `static int ctrl_hit(int id, int mx, int my)`
-  - `ctrl_active` (function, line 373) `static int ctrl_active(int id)`
-  - `ctrl_press` (function, line 382) `static void ctrl_press(int id)`
-  - `ui_run` (function, line 400) `static void ui_run(int bench_ms)`
-  - `run_selftest` (function, line 535) `static int run_selftest(void)`
-  - `main` (function, line 619) `int main(int argc, char **argv)`
+  - `o3_op` (function, line 85) `static int o3_op(int ch, int is_car)`
+  - `o3_opreg` (function, line 89) `static void o3_opreg(int ch, int is_car, int regbase, int val)`
+  - `o3_chreg` (function, line 93) `static void o3_chreg(int ch, int regbase, int val)`
+  - `o3_note` (function, line 130) `static void o3_note(int ch, int midi, int on)`
+  - `clamp_midi` (function, line 174) `static int clamp_midi(int m)`
+  - `pedal_set` (function, line 182) `static void pedal_set(int on)`
+  - `note_off_key` (function, line 194) `static void note_off_key(int key)`
+  - `note_on_key` (function, line 208) `static void note_on_key(int key, int midi, int vel)`
+  - `fx_configure` (function, line 250) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
+  - `fx_process` (function, line 268) `static float fx_process(float x)`
+  - `sb_flush` (function, line 299) `static void sb_flush(void)`
+  - `render_audio` (function, line 308) `static void render_audio(long ms)`
+  - `key_rect` (function, line 334) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
+  - `hit_key` (function, line 341) `static int hit_key(int mx, int my)`
+  - `hit_velocity` (function, line 359) `static int hit_velocity(int key, int my)`
+  - `ctrl_hit` (function, line 385) `static int ctrl_hit(int id, int mx, int my)`
+  - `ctrl_active` (function, line 390) `static int ctrl_active(int id)`
+  - `ctrl_press` (function, line 399) `static void ctrl_press(int id)`
+  - `ui_run` (function, line 417) `static void ui_run(int bench_ms)`
+  - `run_selftest` (function, line 556) `static int run_selftest(void)`
+  - `main` (function, line 666) `int main(int argc, char **argv)`
   - `UI_MEMORY` (macro, line 48)
   - `SYS_SB16_OPEN` (macro, line 51)
   - `SYS_SB16_SUBMIT` (macro, line 53)
@@ -151,23 +151,23 @@
   - `RATE` (macro, line 55)
   - `PCM_BUF` (macro, line 57)
   - `MAX_AUDIO_MS` (macro, line 62)
-  - `MAX_VOICES` (macro, line 132)
-  - `FX_DELAY_CAP` (macro, line 201)
-  - `FX_DELAY_MAX_MS` (macro, line 203)
-  - `FX_FEEDBACK` (macro, line 204)
-  - `FX_WET` (macro, line 205)
-  - `FX_TREM_FREQ` (macro, line 206)
-  - `KEY_W` (macro, line 302)
-  - `KEY_H` (macro, line 303)
-  - `BK_W` (macro, line 304)
-  - `BK_H` (macro, line 305)
-  - `KEY_Y` (macro, line 306)
-  - `NKEYS` (macro, line 316)
-  - `CTRL_Y` (macro, line 352)
-  - `CTRL_H` (macro, line 353)
-  - `BTN_W` (macro, line 354)
-  - `BTN_GAP` (macro, line 355)
-  - `NCTRLS` (macro, line 367)
+  - `KEY_W` (macro, line 145)
+  - `KEY_H` (macro, line 146)
+  - `BK_W` (macro, line 147)
+  - `BK_H` (macro, line 148)
+  - `KEY_Y` (macro, line 149)
+  - `NKEYS` (macro, line 159)
+  - `MAX_VOICES` (macro, line 166)
+  - `FX_DELAY_CAP` (macro, line 235)
+  - `FX_DELAY_MAX_MS` (macro, line 237)
+  - `FX_FEEDBACK` (macro, line 238)
+  - `FX_WET` (macro, line 239)
+  - `FX_TREM_FREQ` (macro, line 240)
+  - `CTRL_Y` (macro, line 369)
+  - `CTRL_H` (macro, line 370)
+  - `BTN_W` (macro, line 371)
+  - `BTN_GAP` (macro, line 372)
+  - `NCTRLS` (macro, line 384)
 
 ## progs/pokemon/minios_stubs/SDL.h
 - Layer: testing

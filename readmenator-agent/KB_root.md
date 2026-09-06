@@ -486,8 +486,6 @@ void kmain(void)`
   - `SB16_ARM_PERIOD_MS` (macro, line 36)
   - `SB16_STREAMS` (macro, line 42)
   - `SB16_STREAM_BUF` (macro, line 43)
-  - `SB16_KB_SLOTS` (macro, line 47)
-  - `SB16_KB_RING_SZ` (macro, line 48)
 
 ## sched.h
 - Layer: utility

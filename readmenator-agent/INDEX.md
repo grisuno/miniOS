@@ -22,7 +22,7 @@
 | `drivers/kbd.h` | ifndef KBD_H define KBD_H | drivers | 1 |
 | `drivers/pcspk.c` | include "kernel.h" include "pcspk.h"  PC speaker driver with a software master v | drivers | 14 |
 | `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | drivers | 19 |
-| `drivers/sb16.c` | include "kernel.h" include "sb16.h"  Sound Blaster 16 DMA audio driver. | drivers | 52 |
+| `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h"  Sound Blaster 16 DMA audio | drivers | 58 |
 | `editor.h` | ifndef EDITOR_H define EDITOR_H  editor.h -- the built-in line editor contract. | root | 1 |
 | `fs/kfile.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 16 |
 | `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 53 |
@@ -322,7 +322,7 @@
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 26 |
 | `qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | root | 27 |
 | `rtc.h` | ifndef RTC_H define RTC_H | root | 1 |
-| `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 10 |
+| `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 8 |
 | `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Pro | root | 16 |
 | `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 3 |
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 30 |

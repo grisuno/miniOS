@@ -210,29 +210,29 @@
   - `idt_set` (function, line 90) `static void idt_set(int vec, void (*h)(void))`
   - `idt_init` (function, line 100) `static void idt_init(void)`
   - `pic_init` (function, line 113) `static void pic_init(void)`
-  - `pit_init` (function, line 126) `static void pit_init(void)`
-  - `pic_eoi` (function, line 132) `static void pic_eoi(int irq)`
-  - `tss_init` (function, line 140) `static void tss_init(void)`
-  - `isr_dispatch` (function, line 180) `void isr_dispatch(int vector, trap_frame_t *frame)`
-  - `ring` (function, line 302) `* the hardware ring (CS RPL) and the fault address. */
+  - `pit_init` (function, line 148) `static void pit_init(void)`
+  - `pic_eoi` (function, line 154) `static void pic_eoi(int irq)`
+  - `tss_init` (function, line 162) `static void tss_init(void)`
+  - `isr_dispatch` (function, line 202) `void isr_dispatch(int vector, trap_frame_t *frame)`
+  - `ring` (function, line 324) `* the hardware ring (CS RPL) and the fault address. */
         if ((frame->cs & 3) == 3 &&
       ...`
-  - `proc_get` (function, line 316) `proc_t *proc_get(int pid)`
-  - `proc_create` (function, line 322) `int proc_create(const char *name, int parent_pid)`
-  - `schedule` (function, line 375) `void schedule(void)`
-  - `yield` (function, line 398) `void yield(void)`
-  - `do_exit` (function, line 403) `void do_exit(int code)`
-  - `do_waitpid` (function, line 480) `int do_waitpid(int pid)`
-  - `do_kill` (function, line 507) `int do_kill(int pid)`
-  - `timer_tick` (function, line 514) `void timer_tick(void)`
-  - `mouse_wait_cmd` (function, line 518) `static void mouse_wait_cmd(void)`
-  - `mouse_wait_data` (function, line 524) `static void mouse_wait_data(void)`
-  - `mouse_write` (function, line 531) `static void mouse_write(unsigned char data)`
-  - `mouse_read` (function, line 538) `static unsigned char mouse_read(void)`
-  - `mouse_hw_init` (function, line 543) `static void mouse_hw_init(void)`
-  - `mouse_disable` (function, line 587) `void mouse_disable(void)`
-  - `mouse_enable` (function, line 589) `void mouse_enable(void)`
-  - `sched_init` (function, line 590) `void sched_init(void)`
+  - `proc_get` (function, line 338) `proc_t *proc_get(int pid)`
+  - `proc_create` (function, line 344) `int proc_create(const char *name, int parent_pid)`
+  - `schedule` (function, line 397) `void schedule(void)`
+  - `yield` (function, line 420) `void yield(void)`
+  - `do_exit` (function, line 425) `void do_exit(int code)`
+  - `do_waitpid` (function, line 502) `int do_waitpid(int pid)`
+  - `do_kill` (function, line 529) `int do_kill(int pid)`
+  - `timer_tick` (function, line 536) `void timer_tick(void)`
+  - `mouse_wait_cmd` (function, line 540) `static void mouse_wait_cmd(void)`
+  - `mouse_wait_data` (function, line 546) `static void mouse_wait_data(void)`
+  - `mouse_write` (function, line 553) `static void mouse_write(unsigned char data)`
+  - `mouse_read` (function, line 560) `static unsigned char mouse_read(void)`
+  - `mouse_hw_init` (function, line 565) `static void mouse_hw_init(void)`
+  - `mouse_disable` (function, line 616) `void mouse_disable(void)`
+  - `mouse_enable` (function, line 618) `void mouse_enable(void)`
+  - `sched_init` (function, line 619) `void sched_init(void)`
   - `MY_SYS_KSTK_TOP` (macro, line 16)
   - `MY_USER_STACK_TOP` (macro, line 17)
   - `MY_USER_LOAD_BASE` (macro, line 18)

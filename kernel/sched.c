@@ -111,13 +111,35 @@ static void idt_init(void) {
 
 /* ---- PIC ---- */
 static void pic_init(void) {
+    /* Drain the i8042 output buffer before touching the masks.  SeaBIOS
+     * probes the PS/2 mouse before our boot sector runs, and the command
+     * ACKs it left behind (0xFA bytes) would otherwise enter the IRQ12
+     * 4-byte phase machine below: two strays shift every later packet by
+     * two, sticking the buttons (a left press reads back as bit 1) and
+     * warping motion, permanently.  0xFA has bit 3 set, so the phase-0
+     * guard cannot reject it; only a flush at init keeps the framing. */
+    {
+        int i;
+        for (i = 0; i < 256; i++) {
+            unsigned char st;
+            __asm__ volatile("inb $0x64, %0" : "=a"(st));
+            if (!(st & 0x01)) break;
+            unsigned char d;
+            __asm__ volatile("inb $0x60, %0" : "=a"(d));
+            (void)d;
+        }
+    }
     outb(0x20,0x11); outb(0xA0,0x11);
     outb(0x21,0x20); outb(0xA1,0x28);
     outb(0x21,0x04); outb(0xA1,0x02);
     outb(0x21,0x01); outb(0xA1,0x01);
     /* Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) +
-     * IRQ5 (Sound Blaster 16 DMA done).  0xD8 = ~bits 2,3,4,5,6,7. */
-    outb(0x21,0xD8);
+     * IRQ4 (COM1, UART IER stays 0 so it never fires) +
+     * IRQ5 (Sound Blaster 16 DMA done).  In the mask register a bit set
+     * means masked, so 0xC8 masks only IRQ3, IRQ6 and IRQ7.  Masking IRQ5
+     * here starves the SB16 completion interrupt and leaves audio on the
+     * timer watchdog alone (audible as jitter); keep it unmasked. */
+    outb(0x21,0xC8);
     /* Slave: unmask IRQ12 (mouse) only. 0xEF = ~bit4. */
     outb(0xA1,0xEF);
 }
@@ -559,8 +581,15 @@ static void mouse_hw_init(void) {
     mouse_wait_cmd();
     outb(0x60, config | 0x02);
 
-    /* Reset mouse, drain any stale data */
+    /* Reset mouse.  A reset yields THREE reply bytes (0xFA ack, 0xAA
+     * self-test, device ID); reading fewer leaves the rest pending, and
+     * each stray enters the IRQ12 phase machine below: 0xAA has bit 3
+     * set, so the phase-0 guard accepts it as a packet start and every
+     * later packet is framed wrong (a left press reads back as bit 1,
+     * motion warps), permanently. */
     mouse_write(0xFF);
+    mouse_read();
+    mouse_read();
     mouse_read();
 
     /* Enable Intellimouse extension for scroll wheel:

@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "sb16.h"
+#include "sync.h"
 
 /* Sound Blaster 16 DMA audio driver.
  *
@@ -23,11 +24,13 @@
  * which re-arms at most once per buffer duration, so the two paths are
  * idempotent and a fast backend can never drive an interrupt storm.
  *
- * The DSP commands must match what QEMU's hw/audio/sb16.c expects: the 8-bit
- * sample rate is set with the 0x41 command (two frequency bytes, low then
- * high) so the clock matches SB16_PCM_RATE exactly; the 0x14 playback count
- * is (hi then lo) of `length - 1`, which QEMU adds one back to.  Getting the
- * command stream wrong silently produces no output while the ring still
+ * The DSP commands must match what the hardware expects: the 8-bit
+ * sample rate is set with the 0x41 command followed by the HIGH byte then
+ * the LOW byte (Linux sb driver order); swapped bytes silently select a
+ * ~8.8 kHz clock instead of 22050 Hz, so every playback comes out ~2.5x
+ * too slow and low.  The 0x14 playback count is (hi then lo) of
+ * `length - 1`, which the DSP adds one back to.  Getting the command
+ * stream wrong silently produces wrong output while the ring still
  * appears to drain.
  *
  * The DMA buffers MUST live in physical memory below 16 MB that is identity
@@ -50,6 +53,17 @@
 #define SB16_CMD_READ_VER   0xE1
 #define SB16_CMD_SET_FREQ   0x41
 #define SB16_CMD_PLAY8      0x14
+#define SB16_CMD_SPK_ON     0xD1
+#define SB16_CMD_SPK_OFF    0xD3
+
+#define SB16_DSP_RDSTATUS   SB16_IRQ_ACK  /* read: bit7 set = data ready */
+
+/* 8237 DMA mode port and the channel-1 playback mode: single-cycle (01),
+ * address increment (0), DMA read transfer memory->device (10),
+ * channel 1 (01).  Without this the channel keeps whatever mode the
+ * firmware left behind and the transfer length/address misbehave. */
+#define DMA_MODE_PORT       0x0B
+#define DMA_CH1_SINGLE_READ 0x49
 
 #define SB16_FREQ_LO        (unsigned char)(SB16_PCM_RATE & 0xFF)
 #define SB16_FREQ_HI        (unsigned char)((SB16_PCM_RATE >> 8) & 0xFF)
@@ -88,32 +102,32 @@ static unsigned pcm_head;
 static unsigned pcm_tail;
 static unsigned pcm_free;
 
-/* Legacy kernel-side audio ring buffer (stream 0).
- * pcm_submit (producer, called from ring 3 via syscall) writes here;
- * sb16_pump (consumer, called from ISR or poll) drains into the DMA slots.
- * The extra level of buffering decouples the renderer's frame rate from the
- * DMA playback cadence: a slow UI frame can take hundreds of ms without
- * starving the speaker, because the kernel ring absorbs the gap. */
-static unsigned char kb_ring[SB16_KB_RING_SZ];
-static unsigned kb_head;   /* next write position (bytes) */
-static unsigned kb_tail;   /* next read position (bytes) */
-static unsigned kb_count;  /* bytes available */
-
 /* Multicanal mixer streams.  Each stream has its own ring buffer and volume.
  * sb16_mix_all sums all active streams into the mix buffer before copying
- * into DMA slots.  Stream 0 is the legacy stream used by sb16_pcm_submit. */
+ * into DMA slots. */
 static sb16_stream_t streams[SB16_STREAMS];
+
+/* Mixer stream id backing the legacy sb16_pcm_open/submit API (WQ_NONE
+ * when closed).  The legacy path forwards into the mixer so submitted
+ * PCM actually reaches the DMA ring through sb16_mix_all; a dedicated
+ * kernel-side ring here would be a second, never-drained copy. */
+static int legacy_stream = WQ_NONE;
+
+/* Reset the legacy kernel-side audio ring to empty. */
+static void sb16_kring_reset(void) {
+    if (legacy_stream >= 0 && legacy_stream < (int)SB16_STREAMS &&
+        streams[(unsigned)legacy_stream].active) {
+        streams[(unsigned)legacy_stream].head =
+            streams[(unsigned)legacy_stream].tail =
+            streams[(unsigned)legacy_stream].count = 0;
+    }
+}
 
 /* Mix output buffer: one SB16_PCM_BUF chunk of mixed 8-bit unsigned audio. */
 static unsigned char mix_buf[SB16_PCM_BUF];
 
 static unsigned char *sb16_slot(unsigned i) {
     return (unsigned char *)(unsigned long)(SB16_DMA_BUF0 + i * SB16_BUF);
-}
-
-/* Reset the legacy kernel-side audio ring to empty. */
-static void sb16_kring_reset(void) {
-    kb_head = kb_tail = kb_count = 0;
 }
 
 /* ------------------------------------------------------------------ */
@@ -214,12 +228,16 @@ static void sb16_mix_all(void) {
 
 void sb16_pump(void) {
     if (!sb16_ready || sb16_mode != SB16_MODE_PCM) return;
+    /* No free DMA slot: keep the stream data and retry on the next tick.
+     * Mixing here would consume stream bytes that no slot can take, which
+     * silently drops audio under load (audible as gaps). */
+    if (pcm_free == 0) return;
 
     /* Mix all active streams into mix_buf. */
     sb16_mix_all();
 
-    /* Transfer mixed output into a DMA slot if one is free. */
-    if (pcm_free > 0) {
+    /* Transfer mixed output into a DMA slot. */
+    {
         unsigned char *dst = sb16_slot(pcm_head);
         unsigned i;
         for (i = 0; i < SB16_PCM_BUF; i++)
@@ -235,14 +253,28 @@ void sb16_pump(void) {
         sb16_stat.stalls++;
 }
 
-static void sb16_wait_dsp_write(void) {
-    unsigned i;
-    for (i = 0; i < 16u; i++) __asm__ volatile("pause");
+/* DSP write-ready: bit 7 of the status port clear means the DSP accepts
+ * a command or data byte.  Bounded so a dead DSP can never hang the
+ * kernel; the byte is still issued after the timeout (the DSP takes it
+ * once it catches up after a reset). */
+static int sb16_wait_write(void) {
+    unsigned i = 0;
+    while ((inb(SB16_DSP_STATUS) & SB16_DSP_READY_MASK) && i < SB16_PROBE_WAIT)
+        i++;
+    return i < SB16_PROBE_WAIT;
+}
+
+static void sb16_cmd(unsigned char c) {
+    sb16_wait_write();
+    outb(SB16_DSP_WRITE_DATA, c);
 }
 
 static int sb16_read_data(unsigned char *out) {
     unsigned i = 0;
-    while (!(inb(SB16_DSP_READ_DATA) & SB16_DSP_READY_MASK) && i < SB16_PROBE_WAIT)
+    /* Data-ready is bit 7 of the read-status port (0x22E); the byte itself
+     * comes from the read-data port (0x22A).  Polling the data port for
+     * readiness consumes the pending byte and eats the reply. */
+    while (!(inb(SB16_DSP_RDSTATUS) & SB16_DSP_READY_MASK) && i < SB16_PROBE_WAIT)
         i++;
     if (i >= SB16_PROBE_WAIT) return 0;
     *out = inb(SB16_DSP_READ_DATA);
@@ -256,9 +288,8 @@ static int sb16_reset_dsp(void) {
     outb(SB16_DSP_RESET, 0);
     for (i = 0; i < 10000u; i++) __asm__ volatile("pause");
     for (i = 0; i < SB16_PROBE_WAIT; i++) {
-        if ((inb(SB16_DSP_READ_DATA) & SB16_DSP_READY_MASK) &&
-            inb(SB16_DSP_READ_DATA) == 0xAA)
-            return 1;
+        if (!(inb(SB16_DSP_RDSTATUS) & SB16_DSP_READY_MASK)) continue;
+        if (inb(SB16_DSP_READ_DATA) == 0xAA) return 1;
     }
     return 0;
 }
@@ -266,6 +297,7 @@ static int sb16_reset_dsp(void) {
 static void sb16_dma_play(unsigned addr, unsigned len) {
     unsigned n = len - 1;
     outb(DMA_MASK, DMA_CH1_MASK);
+    outb(DMA_MODE_PORT, DMA_CH1_SINGLE_READ);
     outb(DMA_FF_CLR, 0);
     outb(DMA_CH1_ADDR, addr & 0xFF);
     outb(DMA_CH1_ADDR, (addr >> 8) & 0xFF);
@@ -273,10 +305,9 @@ static void sb16_dma_play(unsigned addr, unsigned len) {
     outb(DMA_CH1_CNT, (n >> 8) & 0xFF);
     outb(DMA_CH1_PAGE, (addr >> 16) & 0xFF);
     outb(DMA_MASK, DMA_CH1_UNMASK);
-    sb16_wait_dsp_write();
-    outb(SB16_DSP_WRITE_DATA, SB16_CMD_PLAY8);
-    outb(SB16_DSP_WRITE_DATA, (n >> 8) & 0xFF);
-    outb(SB16_DSP_WRITE_DATA, n & 0xFF);
+    sb16_cmd(SB16_CMD_PLAY8);
+    sb16_cmd((unsigned char)((n >> 8) & 0xFF));
+    sb16_cmd((unsigned char)(n & 0xFF));
 }
 
 static void sb16_refill(int slot_index) {
@@ -343,6 +374,13 @@ void sb16_pcm_open(void) {
     pcm_head = pcm_tail = 0;
     pcm_free = SB16_RING_CAP;
     sb16_kring_reset();
+    if (legacy_stream == WQ_NONE) {
+        int id = sb16_stream_open();
+        if (id >= 0) {
+            legacy_stream = id;
+            sb16_stream_volume(id, 255);
+        }
+    }
     unsigned i;
     for (i = 0; i < SB16_BUF; i++) sb16_slot(SB16_SILENCE_SLOT)[i] = 0x80;
     if (!sb16_inflight) {
@@ -352,24 +390,25 @@ void sb16_pcm_open(void) {
     }
 }
 
-void sb16_pcm_close(void) { if (sb16_ready) sb16_tone(0); }
+void sb16_pcm_close(void) {
+    if (!sb16_ready) return;
+    if (legacy_stream != WQ_NONE) {
+        sb16_stream_close(legacy_stream);
+        legacy_stream = WQ_NONE;
+    }
+    sb16_tone(0);
+}
 
 int sb16_pcm_submit(const unsigned char *pcm, unsigned len) {
-    unsigned i;
     if (!sb16_ready || sb16_mode != SB16_MODE_PCM) return -1;
     if (len == 0 || len > SB16_BUF) return -1;
+    if (legacy_stream == WQ_NONE) return -1;
 
-    /* Write to the legacy kernel-side ring buffer (stream 0 path). */
-    if (SB16_KB_RING_SZ - kb_count < len) {
-        sb16_stat.drops++;
-        return -1;
-    }
-    for (i = 0; i < len; i++) {
-        kb_ring[kb_head] = pcm[i];
-        kb_head = (kb_head + 1) % SB16_KB_RING_SZ;
-    }
-    kb_count += len;
-    sb16_stat.submits++;
+    /* Forward into the mixer stream; sb16_pump (the only consumer feeding
+     * the DMA ring) drains it from there.  submit/drop accounting lives in
+     * sb16_stream_submit so the wrapper does not double-count. */
+    int rc = sb16_stream_submit(legacy_stream, pcm, len);
+    if (rc != 0) return -1;
 
     /* Eagerly pump: if DMA slots are free and data is available,
      * transfer immediately so latency stays low on the fast path. */
@@ -400,14 +439,18 @@ int sb16_init(void) {
     unsigned char major = 0, minor = 0;
     if (sb16_ready) return 1;
     if (!sb16_reset_dsp()) return 0;
+    /* The DSP only reports its version after an explicit 0xE1 request;
+     * reading without it eats whatever byte happens to be pending (or
+     * times out), so the probe used to fail or misread here. */
+    sb16_cmd(SB16_CMD_READ_VER);
     if (!sb16_read_data(&major)) return 0;
     if (!sb16_read_data(&minor)) return 0;
     (void)minor;
     if (major < 4) return 0;
-    sb16_wait_dsp_write();
-    outb(SB16_DSP_WRITE_DATA, SB16_CMD_SET_FREQ);
-    outb(SB16_DSP_WRITE_DATA, SB16_FREQ_LO);
-    outb(SB16_DSP_WRITE_DATA, SB16_FREQ_HI);
+    sb16_cmd(SB16_CMD_SET_FREQ);
+    sb16_cmd(SB16_FREQ_HI);
+    sb16_cmd(SB16_FREQ_LO);
+    sb16_cmd(SB16_CMD_SPK_ON);
     sb16_freq = 0;
     sb16_inflight = 0;
     pcm_head = pcm_tail = 0;

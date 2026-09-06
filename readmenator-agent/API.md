@@ -439,87 +439,91 @@
 
 ## drivers/sb16.c
 
-### sb16_slot `static unsigned char *sb16_slot(unsigned i)`
-- Defined: `drivers/sb16.c:109`
-
 ### sb16_kring_reset `static void sb16_kring_reset(void)`
-- Defined: `drivers/sb16.c:115`
-- Doc: Multicanal mixer streams.  Each stream has its own ring buffer and volume. sb16_mix_all sums all active streams into the
+- Defined: `drivers/sb16.c:117`
+- Doc: Mixer stream id backing the legacy sb16_pcm_open/submit API (WQ_NONE when closed).  The legacy path forwards into the mi
+
+### sb16_slot `static unsigned char *sb16_slot(unsigned i)`
+- Defined: `drivers/sb16.c:128`
 
 ### sb16_stream_open `int sb16_stream_open(void)`
-- Defined: `drivers/sb16.c:122`
-- Doc: static unsigned char mix_buf[SB16_PCM_BUF]; static unsigned char *sb16_slot(unsigned i) { return (unsigned char *)(unsig
+- Defined: `drivers/sb16.c:136`
+- Doc: streams[(unsigned)legacy_stream].count = 0; } } /* Mix output buffer: one SB16_PCM_BUF chunk of mixed 8-bit unsigned aud
 
 ### sb16_stream_close `void sb16_stream_close(int id)`
-- Defined: `drivers/sb16.c:138`
+- Defined: `drivers/sb16.c:152`
 
 ### sb16_stream_submit `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)`
-- Defined: `drivers/sb16.c:146`
+- Defined: `drivers/sb16.c:160`
 
 ### sb16_stream_volume `void sb16_stream_volume(int id, unsigned char vol)`
-- Defined: `drivers/sb16.c:161`
+- Defined: `drivers/sb16.c:175`
 
 ### sb16_stream_count `int sb16_stream_count(void)`
-- Defined: `drivers/sb16.c:167`
+- Defined: `drivers/sb16.c:181`
 
 ### sb16_mix_all `static void sb16_mix_all(void)`
-- Defined: `drivers/sb16.c:178`
+- Defined: `drivers/sb16.c:192`
 - Doc: if (!streams[id].active) return; streams[id].volume = vol; } int sb16_stream_count(void) { int i, n = 0; for (i = 0; i <
 
 ### sb16_pump `void sb16_pump(void)`
-- Defined: `drivers/sb16.c:214`
+- Defined: `drivers/sb16.c:228`
 - Doc: sample += (src * (int)s->volume) >> 8; if (sample > 127) sample = 127; if (sample < -128) sample = -128; mix_buf[k] = (u
 
-### sb16_wait_dsp_write `static void sb16_wait_dsp_write(void)`
-- Defined: `drivers/sb16.c:237`
+### sb16_wait_write `static int sb16_wait_write(void)`
+- Defined: `drivers/sb16.c:260`
+- Doc: DSP write-ready: bit 7 of the status port clear means the DSP accepts a command or data byte.  Bounded so a dead DSP can
+
+### sb16_cmd `static void sb16_cmd(unsigned char c)`
+- Defined: `drivers/sb16.c:266`
 
 ### sb16_read_data `static int sb16_read_data(unsigned char *out)`
-- Defined: `drivers/sb16.c:242`
+- Defined: `drivers/sb16.c:271`
 
 ### sb16_reset_dsp `static int sb16_reset_dsp(void)`
-- Defined: `drivers/sb16.c:251`
+- Defined: `drivers/sb16.c:283`
 
 ### sb16_dma_play `static void sb16_dma_play(unsigned addr, unsigned len)`
-- Defined: `drivers/sb16.c:265`
+- Defined: `drivers/sb16.c:296`
 
 ### sb16_refill `static void sb16_refill(int slot_index)`
-- Defined: `drivers/sb16.c:281`
+- Defined: `drivers/sb16.c:312`
 
 ### sb16_arm `static void sb16_arm(int from_irq)`
-- Defined: `drivers/sb16.c:297`
+- Defined: `drivers/sb16.c:328`
 
 ### sb16_present `int sb16_present(void)`
-- Defined: `drivers/sb16.c:321`
+- Defined: `drivers/sb16.c:352`
 
 ### sb16_tone `void sb16_tone(unsigned freq)`
-- Defined: `drivers/sb16.c:323`
-
-### sb16_pcm_open `void sb16_pcm_open(void)`
-- Defined: `drivers/sb16.c:338`
-
-### sb16_pcm_close `void sb16_pcm_close(void)`
 - Defined: `drivers/sb16.c:354`
 
+### sb16_pcm_open `void sb16_pcm_open(void)`
+- Defined: `drivers/sb16.c:369`
+
+### sb16_pcm_close `void sb16_pcm_close(void)`
+- Defined: `drivers/sb16.c:392`
+
 ### sb16_pcm_submit `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)`
-- Defined: `drivers/sb16.c:356`
+- Defined: `drivers/sb16.c:401`
 
 ### sb16_irq `void sb16_irq(void)`
-- Defined: `drivers/sb16.c:379`
+- Defined: `drivers/sb16.c:418`
 
 ### sb16_poll `void sb16_poll(void)`
-- Defined: `drivers/sb16.c:386`
+- Defined: `drivers/sb16.c:425`
 
 ### sb16_ring_free `unsigned sb16_ring_free(void)`
-- Defined: `drivers/sb16.c:391`
+- Defined: `drivers/sb16.c:430`
 
 ### sb16_mode_active `int sb16_mode_active(void)`
-- Defined: `drivers/sb16.c:393`
+- Defined: `drivers/sb16.c:432`
 
 ### sb16_counters `void sb16_counters(sb16_counters_t *out)`
-- Defined: `drivers/sb16.c:394`
+- Defined: `drivers/sb16.c:433`
 
 ### sb16_init `int sb16_init(void)`
-- Defined: `drivers/sb16.c:398`
+- Defined: `drivers/sb16.c:437`
 
 ## fs/kfile.c
 
@@ -1394,73 +1398,73 @@ void kmain(void)`
 - Doc: } static void idt_init(void) { kmemset(idt, 0, sizeof(idt)); int i; for (i = 0; i < 256; i++) if (isr_stub_table[i]) idt
 
 ### pit_init `static void pit_init(void)`
-- Defined: `kernel/sched.c:126`
-- Doc: Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + * IRQ5 (Sound Blaster 16 DMA done).  0xD8 = ~bits 2,3,4
+- Defined: `kernel/sched.c:148`
+- Doc: Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + IRQ4 (COM1, UART IER stays 0 so it never fires) + IRQ5 
 
 ### pic_eoi `static void pic_eoi(int irq)`
-- Defined: `kernel/sched.c:132`
+- Defined: `kernel/sched.c:154`
 
 ### tss_init `static void tss_init(void)`
-- Defined: `kernel/sched.c:140`
+- Defined: `kernel/sched.c:162`
 
 ### isr_dispatch `void isr_dispatch(int vector, trap_frame_t *frame)`
-- Defined: `kernel/sched.c:180`
+- Defined: `kernel/sched.c:202`
 - Doc: tss_gdtr_buf[2] = gdtr_base & 0xFF; tss_gdtr_buf[3] = (gdtr_base >> 8) & 0xFF; tss_gdtr_buf[4] = (gdtr_base >> 16) & 0xF
 
 ### ring `* the hardware ring (CS RPL) and the fault address. */
         if ((frame->cs & 3) == 3 &&
       ...`
-- Defined: `kernel/sched.c:302`
+- Defined: `kernel/sched.c:324`
 
 ### proc_get `proc_t *proc_get(int pid)`
-- Defined: `kernel/sched.c:316`
+- Defined: `kernel/sched.c:338`
 - Doc: the hardware ring (CS RPL) and the fault address. if ((frame->cs & 3) == 3 && frame->rip >= 0x400000 && frame->rip < 0x0
 
 ### proc_create `int proc_create(const char *name, int parent_pid)`
-- Defined: `kernel/sched.c:322`
+- Defined: `kernel/sched.c:344`
 
 ### schedule `void schedule(void)`
-- Defined: `kernel/sched.c:375`
+- Defined: `kernel/sched.c:397`
 
 ### yield `void yield(void)`
-- Defined: `kernel/sched.c:398`
+- Defined: `kernel/sched.c:420`
 
 ### do_exit `void do_exit(int code)`
-- Defined: `kernel/sched.c:403`
+- Defined: `kernel/sched.c:425`
 
 ### do_waitpid `int do_waitpid(int pid)`
-- Defined: `kernel/sched.c:480`
+- Defined: `kernel/sched.c:502`
 
 ### do_kill `int do_kill(int pid)`
-- Defined: `kernel/sched.c:507`
+- Defined: `kernel/sched.c:529`
 
 ### timer_tick `void timer_tick(void)`
-- Defined: `kernel/sched.c:514`
+- Defined: `kernel/sched.c:536`
 
 ### mouse_wait_cmd `static void mouse_wait_cmd(void)`
-- Defined: `kernel/sched.c:518`
+- Defined: `kernel/sched.c:540`
 - Doc: schedule(); } } int do_kill(int pid) { proc_t *p = proc_get(pid); if (!p) return -1; do_exit(-1); return 0; } void timer
 
 ### mouse_wait_data `static void mouse_wait_data(void)`
-- Defined: `kernel/sched.c:524`
+- Defined: `kernel/sched.c:546`
 
 ### mouse_write `static void mouse_write(unsigned char data)`
-- Defined: `kernel/sched.c:531`
+- Defined: `kernel/sched.c:553`
 
 ### mouse_read `static unsigned char mouse_read(void)`
-- Defined: `kernel/sched.c:538`
+- Defined: `kernel/sched.c:560`
 
 ### mouse_hw_init `static void mouse_hw_init(void)`
-- Defined: `kernel/sched.c:543`
+- Defined: `kernel/sched.c:565`
 
 ### mouse_disable `void mouse_disable(void)`
-- Defined: `kernel/sched.c:587`
+- Defined: `kernel/sched.c:616`
 
 ### mouse_enable `void mouse_enable(void)`
-- Defined: `kernel/sched.c:589`
+- Defined: `kernel/sched.c:618`
 
 ### sched_init `void sched_init(void)`
-- Defined: `kernel/sched.c:590`
+- Defined: `kernel/sched.c:619`
 
 ## kernel/scrollback.c
 
@@ -9351,78 +9355,76 @@ Z_DumpHeap
 ### sys_pcm_pump `static long sys_pcm_pump(void)`
 - Defined: `progs/piano/piano.c:70`
 
-### o3_opreg `static void o3_opreg(int op, int regbase, int val)`
-- Defined: `progs/piano/piano.c:77`
+### o3_op `static int o3_op(int ch, int is_car)`
+- Defined: `progs/piano/piano.c:85`
+
+### o3_opreg `static void o3_opreg(int ch, int is_car, int regbase, int val)`
+- Defined: `progs/piano/piano.c:89`
 
 ### o3_chreg `static void o3_chreg(int ch, int regbase, int val)`
-- Defined: `progs/piano/piano.c:82`
-
-### o3_instrument `static void o3_instrument(int ch, int vel)`
-- Defined: `progs/piano/piano.c:89`
-- Doc: Program one FM patch; `vel` (1..100) biases the carrier output level so a * louder velocity is audibly less attenuated, 
+- Defined: `progs/piano/piano.c:93`
 
 ### o3_note `static void o3_note(int ch, int midi, int on)`
-- Defined: `progs/piano/piano.c:119`
+- Defined: `progs/piano/piano.c:130`
 
 ### clamp_midi `static int clamp_midi(int m)`
-- Defined: `progs/piano/piano.c:140`
-- Doc: unsigned fnum = (unsigned)(t * 65536.0 / 49716.0); o3_chreg(ch, 0xA0, fnum & 0xFF); o3_chreg(ch, 0xB0, ((unsigned)block 
+- Defined: `progs/piano/piano.c:174`
+- Doc: ── Expressive note state: velocity, sustain, octave ───────────────── Voices (MAX_VOICES, the OPL3 channel count) and ke
 
 ### pedal_set `static void pedal_set(int on)`
-- Defined: `progs/piano/piano.c:148`
+- Defined: `progs/piano/piano.c:182`
 - Doc: static int chan_used[MAX_VOICES]; static int chan_sustained[MAX_VOICES];/* key released but pedal holds the voice static
 
 ### note_off_key `static void note_off_key(int key)`
-- Defined: `progs/piano/piano.c:160`
+- Defined: `progs/piano/piano.c:194`
 
 ### note_on_key `static void note_on_key(int key, int midi, int vel)`
-- Defined: `progs/piano/piano.c:174`
+- Defined: `progs/piano/piano.c:208`
 
 ### fx_configure `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
-- Defined: `progs/piano/piano.c:216`
+- Defined: `progs/piano/piano.c:250`
 - Doc: #define FX_DELAY_CAP (RATE)           /* 1 s of delay at 22050 Hz #define FX_DELAY_MAX_MS 800 #define FX_FEEDBACK 0.35f 
 
 ### fx_process `static float fx_process(float x)`
-- Defined: `progs/piano/piano.c:234`
+- Defined: `progs/piano/piano.c:268`
 
 ### sb_flush `static void sb_flush(void)`
-- Defined: `progs/piano/piano.c:265`
+- Defined: `progs/piano/piano.c:299`
 - Doc: Flush a fully-filled buffer to the kernel audio ring.  When the ring is full the submit is refused; the buffer is kept i
 
 ### render_audio `static void render_audio(long ms)`
-- Defined: `progs/piano/piano.c:274`
+- Defined: `progs/piano/piano.c:308`
 
 ### key_rect `static void key_rect(int key, int *x, int *y, int *w, int *h)`
-- Defined: `progs/piano/piano.c:317`
-- Doc: define NKEYS ((int)(sizeof(keys) / sizeof(keys[0])))
+- Defined: `progs/piano/piano.c:334`
 
 ### hit_key `static int hit_key(int mx, int my)`
-- Defined: `progs/piano/piano.c:324`
+- Defined: `progs/piano/piano.c:341`
 
 ### hit_velocity `static int hit_velocity(int key, int my)`
-- Defined: `progs/piano/piano.c:342`
+- Defined: `progs/piano/piano.c:359`
 - Doc: Velocity 1..100 from the click's vertical position inside a key: the very * top is soft, the bottom is loud.
 
 ### ctrl_hit `static int ctrl_hit(int id, int mx, int my)`
-- Defined: `progs/piano/piano.c:368`
+- Defined: `progs/piano/piano.c:385`
 - Doc: define NCTRLS ((int)(sizeof(ctrls) / sizeof(ctrls[0])))
 
 ### ctrl_active `static int ctrl_active(int id)`
-- Defined: `progs/piano/piano.c:373`
+- Defined: `progs/piano/piano.c:390`
 
 ### ctrl_press `static void ctrl_press(int id)`
-- Defined: `progs/piano/piano.c:382`
+- Defined: `progs/piano/piano.c:399`
 
 ### ui_run `static void ui_run(int bench_ms)`
-- Defined: `progs/piano/piano.c:400`
+- Defined: `progs/piano/piano.c:417`
 - Doc: case 1: if (octave < 2) octave++; break; case 2: if (volume > 0) volume -= 5; break; case 3: if (volume < 100) volume +=
 
 ### run_selftest `static int run_selftest(void)`
-- Defined: `progs/piano/piano.c:535`
+- Defined: `progs/piano/piano.c:556`
 - Doc: if (audio_on) render_audio(elapsed); } unsigned t0 = (unsigned)nk_sys_time_ms(); while ((unsigned)nk_sys_time_ms() - t0 
 
 ### main `int main(int argc, char **argv)`
-- Defined: `progs/piano/piano.c:619`
+- Defined: `progs/piano/piano.c:666`
 
 ## progs/pokemon/minios_stubs/SDL.h
 
