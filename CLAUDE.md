@@ -463,6 +463,17 @@ edge-triggered INIT is used.
 guarded by `is_bsp` so APs never corrupt the shared `procs[]` table.
 APs do not own the PIC, the PS/2 mouse, or the SB16 DMA ring.
 
+**GS validation in the timer ISR (`sched.c` `cpu_or_null`):** a ring-0
+context running with a user/stale GS base makes `this_cpu()` read garbage
+(typically the mapped IVT at linear 0), and the first field dereference
+faults with #GP instead of failing safe.  The vector-32 path validates
+the pointer against `cpus[]` first; on failure it EOIs both controllers
+best-effort, counts `smp_dbg_bad_gs` (reported by the `smp` builtin, zero
+in a healthy boot) and takes no scheduling action.  The known producer of
+such a state is the `swapgs` dance in `k_exec_user`, which runs with
+interrupts off from the dance through the `iretq` for exactly this
+reason.
+
 **AP stub stack (`ap_entry.S`):** the AP's temporary stack is at 0x78000
 (identity-mapped low memory, below the LAPIC PD at 0x70000, above the
 syscall kernel stack at 0x88000).  This is only needed until

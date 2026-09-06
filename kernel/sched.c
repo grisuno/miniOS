@@ -396,12 +396,47 @@ static int smp_any_ap_idle(void) {
     return 0;
 }
 
+/* Counts timer ticks that arrived with an unusable GS base (a ring-0
+ * context running with a user/stale GS, so this_cpu() points outside
+ * cpus[]).  Reported by the `smp` builtin; nonzero means a GS-lifecycle
+ * window fired (see cpu_or_null). */
+volatile unsigned smp_dbg_bad_gs;
+
+/* Validate the GS-derived per-CPU pointer before trusting it.  A ring-0
+ * context running with a user (or otherwise stale) GS base makes
+ * this_cpu() read garbage — typically the IVT at linear 0, which is
+ * mapped, so the read itself succeeds and the first field dereference
+ * faults with #GP instead of failing safe.  Returns NULL unless the
+ * pointer falls inside cpus[]. */
+static cpu_t *cpu_or_null(void) {
+    unsigned long v;
+    __asm__ volatile("mov %%gs:0, %0" : "=r"(v));
+    if (v < (unsigned long)&cpus[0] ||
+        v >= (unsigned long)&cpus[MAX_CPUS])
+        return 0;
+    return (cpu_t *)v;
+}
+
 void isr_dispatch(int vector, trap_frame_t *frame) {
     if (vector == 32) {
         /* Atomic: the BSP's PIT and every AP's LAPIC timer all run this
          * path, so a plain increment would lose ticks under SMP. */
         __sync_fetch_and_add(&sys_ticks, 1);
-        if (this_cpu()->is_bsp) {
+        cpu_t *cpu = cpu_or_null();
+        if (!cpu) {
+            /* Fail safe, never fail silent: EOI both controllers
+             * best-effort (a PIC EOI with nothing pending is harmless;
+             * the LAPIC window exists whenever SMP came up, which is
+             * exactly when cpu_count > 1) and take no scheduling
+             * action.  The tick is still counted above, so time does
+             * not stall. */
+            outb(0x20, 0x20);
+            if (cpu_count > 1)
+                *(volatile unsigned *)0xFEE000B0UL = 0;
+            __sync_fetch_and_add(&smp_dbg_bad_gs, 1);
+            return;
+        }
+        if (cpu->is_bsp) {
             pic_eoi(0);
             sb16_poll();
             /* Share the tick with the APs: their per-CPU LAPIC timers
@@ -416,7 +451,7 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             *(volatile unsigned *)0xFEE000B0UL = 0;
             __sync_fetch_and_add(&smp_dbg_ipis, 1);
         }
-        if (this_cpu()->is_bsp && proc_count > 1) {
+        if (cpu->is_bsp && proc_count > 1) {
             proc_t *cur = proc_get(current_pid);
             if (cur && cur->state == PROC_RUNNING) {
                 /* A preempt from ring 3 parks the whole trap frame in the
@@ -473,11 +508,11 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                     spin_unlock_irqrestore(&sched_lock, sflags);
                 }
             }
-        } else if (!this_cpu()->is_bsp && proc_count > 1) {
+        } else if (!cpu->is_bsp && proc_count > 1) {
             /* APs time-slice CLONE_VM threads; the BSP owns everything
              * else (devices, mouse tick, non-VM processes). */
             sched_ap_preempt(frame);
-        } else if (this_cpu()->is_bsp && (sys_ticks % DESKTOP_TICK_INTERVAL) == 0) {
+        } else if (cpu->is_bsp && (sys_ticks % DESKTOP_TICK_INTERVAL) == 0) {
             if (user_program_active) vga_fb_mouse_tick();
         }
         return;

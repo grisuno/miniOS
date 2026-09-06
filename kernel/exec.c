@@ -139,6 +139,11 @@ int k_exec_user(void *entry, int argc, char **argv) {
     else
         procs[0].kstack = SYS_KSTK_TOP;
     wrmsr(MSR_FSBASE, 0);
+    /* cli through the iretq below: the swapgs dance runs ring-0 with a
+     * user GS base for a few instructions, and a timer tick landing
+     * there reads garbage per-CPU state (see cpu_or_null).  The iretq
+     * frame carries RFLAGS=0x202, so ring 3 still starts with IF=1. */
+    __asm__ volatile("cli");
     /* Ensure swap_slot = kernel GS (&cpus[0]) so the timer ISR's swapgs
      * restores the correct per-CPU base when it fires from ring 3. */
     wrmsr(MSR_GSBASE, (unsigned long)&cpus[0]);

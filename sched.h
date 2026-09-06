@@ -166,6 +166,9 @@ extern volatile int sched_ready;
 extern proc_t ap_idle_proc[MAX_CPUS];
 extern volatile unsigned long smp_dispatches[MAX_CPUS];
 extern volatile unsigned long smp_idle_polls[MAX_CPUS];
+/* Timer ticks that arrived with a GS base outside cpus[] (fail-safe
+ * EOI, no scheduling action).  Zero in a healthy boot. */
+extern volatile unsigned smp_dbg_bad_gs;
 
 /* Per-CPU TSS selectors: slot 5 + 2*cpu in the runtime GDT (each TSS
  * descriptor occupies two 8-byte slots).  CPU 0 keeps selector 0x28,

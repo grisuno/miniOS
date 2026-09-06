@@ -162,6 +162,7 @@ poweroff"
 expect "smp: 2 CPU(s)"
 expect "cpu0 lapic=0 BSP"
 expect "cpu1 lapic=1 AP"
+expect "bad_gs=0"
 
 scenario_smp "mthreads producer-consumer passes on both CPUs" "run thdemo
 poweroff"
@@ -172,7 +173,9 @@ scenario_smp "SMP thread dispatch reaches the AP" "run thdemo
 smp
 poweroff"
 expect "thdemo: PASS"
-expect "cpu1 lapic=1 AP  dispatched=[0-9]"
+expect "cpu1 lapic=1 AP"
+expect "dispatched=[1-9]"
+expect "bad_gs=0"
 
 scenario "SMP single CPU fallback without -smp" "poweroff"
 expect "SMP: 1 CPU"

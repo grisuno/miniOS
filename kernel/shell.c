@@ -1564,6 +1564,7 @@ void shell_exec_builtin(int argc, char **argv) {
                     cpus[c].is_bsp ? "BSP" : "AP ",
                     cpus[c].cur_pid, smp_dispatches[c], smp_idle_polls[c]);
         }
+        kprintf("  bad_gs=%u\n", smp_dbg_bad_gs);
     }
     else if (kstrcmp(argv[0], "echo") == 0) {
         int i;
