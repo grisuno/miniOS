@@ -252,10 +252,17 @@ The image is attached as an IDE disk. The boot path uses INT 13h extended
   thousands of times a second). Tracing those made an interactive program a
   100 ms-per-syscall crawl under TCG; the rest are traced one-to-one.
 - **Multi-sector IDE PIO** (`ide.c`): `ide_read_sectors`/`ide_write_sectors`
-  issue one command with `SECCOUNT = count` instead of `count` single-sector
-  commands, cutting the per-sector command-setup port traffic of bulk loads.
-  Data is still pulled word-by-word through the PIO data port, so the
-  remaining minifs load time is bounded by QEMU's 16-bit-only IDE port.
+issue one command with `SECCOUNT = count` instead of `count` single-sector
+commands, cutting the per-sector command-setup port traffic of bulk loads.
+Data is still pulled word-by-word through the PIO data port, so the
+remaining minifs load time is bounded by QEMU's 16-bit-only IDE port.
+- **AP LAPIC timer storm** (`smp.c`): the AP timer was programmed with a
+count derived from `PIT_HZ` (`745` at divide-by-16), but the LAPIC counts
+bus clocks, so under QEMU it fired every ~12 us (~84 kHz) instead of 100 Hz.
+An idle 2-CPU guest burned 176% host CPU and pokemon's 60 frames took
+29 s instead of 11.4 s. The local timer now stays masked; the halted AP
+wakes only on the BSP's 100 Hz IPI broadcast (AP idle CPU 0.1%, 60 frames
+back at 11.4 s, `thdemo: PASS` with AP dispatch confirmed).
 
 ## Network and https
 
@@ -313,6 +320,7 @@ including the negative set).
 | `lsfs` | list files on the MiniFS filesystem |
 | `hash <file>` | print XXH64 checksum of a file |
 | `ps` | list registered programs (name, kind, entry address) |
+| `smp` | per-CPU state (`cur`, `dispatched`, `polls`) and `bad_gs` counter |
 | `sb16` | Sound Blaster 16 diagnostics (presence, mode, ring fill, counters) |
 | `trace` / `trace on` / `trace off` | enable or disable syscall tracing |
 | `wm state` | print window manager state |
@@ -1260,11 +1268,18 @@ at `0xFEE00000`; without it the system runs single-CPU exactly as before.
 Each AP runs `arch/x86/ap_entry.S` from the stub at `0x6000` (below 1 MB for
 SIPI, patched with the C entry address), sets its GS base to its `cpu_t`
 (`cpus[]`, LAPIC ID, `cur_pid`, syscall stack, idle and BSP flags), loads the
-BSP's IDTR, arms a 100 Hz LAPIC timer (vector 32, divide-by-16, periodic) and
-idles on `sti; hlt; cli` with its temporary stack at `0x78000` (below the
-LAPIC PD at `0x70000`, above the syscall kernel stack; `0x80000` overlaps
-that stack and cascades). APs never print during init: `kprintf` stack use
-plus the timer trap frame overflows the stub stack.
+BSP's IDTR, enables its LAPIC SVR (so it can receive IPIs) with the local
+timer and both LINT pins masked, and enters the AP idle loop
+(`smp_ap_idle_loop`, which claims READY CLONE_VM threads and otherwise
+halts on a per-CPU 4 KB idle stack).  The AP has no periodic timer of its
+own: its only tick is the BSP's 100 Hz IPI broadcast, which wakes the halted
+AP and drives its preemption ISR (a LAPIC count derived from `PIT_HZ` fires
+~84 kHz under QEMU and wedges the machine under an interrupt storm; see
+Performance work).  Each CPU also owns a private TSS (`the_tss[cpu]`,
+`rsp0` on a per-CPU 8 KB stack) so ring-3 preempts on different CPUs never
+share an ISR stack; the runtime GDT grows to `5 + 2*MAX_CPUS` entries with
+CPU 0 keeping selector `0x28`.  APs never print during init: `kprintf` stack
+use plus an ISR trap frame overflows the stub stack.
 
 `this_cpu()` reads the current `cpu_t` via GS base (`MSR_GSBASE`,
 `swapgs` on syscall entry/exit so ring 3 never sees it); `current_pid` is a
@@ -1281,8 +1296,51 @@ delivery status).
 interrupt disable, `spin_lock_irqsave`/`spin_unlock_irqrestore` saving
 RFLAGS.IF for nesting, `spin_trylock` without touching interrupts).
 `sched_lock` guards `procs[]`/`proc_count`/scheduler state, `smp_lock`
-guards the AP counter and LAPIC registers; the primitives are in place for
-SMP scheduling while APs still idle.
+guards the AP counter and LAPIC registers; `mm_lock` guards the shared
+brk/mmap view and VMA trees against concurrent syscalls from threads on
+different CPUs (lock order: `sched_lock` -> `mm_lock`). Per-CPU data needs
+no lock.
+
+## Multithreading
+
+Threads are 1:1 kernel entities (`proc_t` with `CLONE_VM`, shared CR3) that
+start at `fn(arg)` on a caller-owned 8 KB stack and are reaped with
+`waitpid`, which returns the exit code without freeing the shared page
+tables. `do_thread_spawn(fn, stack, arg)` (syscall 225
+`MINIOS_SYS_THREAD_SPAWN`, validated to the user window) creates them;
+`do_clone` (syscall 300) and `yield` (syscall 24) complete the surface.
+APs run only `CLONE_VM` threads (same CR3, no brk/mmap switch, no TLB work);
+anything else stays on the BSP. The BSP's 100 Hz tick leaves freshly parked
+VM threads unclaimed while an AP is idle, so threads run on the APs instead
+of losing every claim race to the BSP. `smp` prints per-CPU state
+(`cur`, `dispatched`, `polls`) plus `bad_gs`, which counts timer ticks that
+arrived with a GS base outside `cpus[]` (zero in a healthy boot; the ISR
+EOIs best-effort and skips scheduling instead of faulting with #GP).
+
+Userspace: `progs/src/mthreads.h` is a self-contained pthread-like layer
+over raw syscalls (`mthread_create`/`mthread_join`, spin+`yield` mutexes,
+max 16 threads). Rules of the single address space: allocate stacks and
+slots before creating threads, and after that allocate only under a mutex
+(brk/mmap are process-global; even `printf` may malloc). `bin/thdemo`
+(built from `progs/src/thdemo.c`) is the headless proof: 10 threads,
+1000 produced / 1000 consumed, prints `thdemo: PASS`. The kernel side ships
+`sync.h`/`kernel/sync.c`: wait queues (`sleep_on`/`wake_up`, FIFO of pids,
+never holding the queue lock across `schedule()`), mutexes, counting
+semaphores, Mesa condition variables and a writer-preferring rwlock,
+host-tested by `tests/test_sync.c` (`make test-sync`).
+
+Scheduler internals this enables: `PROC_SWITCHING` (unclaimable while a
+context is half-saved), `schedule()` parking a thread as "returned from
+`schedule()`" so it resumes in its caller instead of replaying the tail on
+a foreign CPU, `switch_to_notrap` (load-only; a parked ring-3 frame resumes
+via `resume_iretq` + `iretq`, never via `ret` at CPL 0), per-pid trap-frame
+slots (`isr_park`), per-proc kernel stacks for syscall entry (no shared
+entry stack), and `ctx.rflags` saved but never restored by the switch (each
+resume path sets its own IF). `k_exec_user` runs its `swapgs` dance with
+interrupts off through the `iretq`. Exit discriminates on context, not on
+`proc_count`: pid 0 `klongjmp`s to the shell, every other pid dies a
+scheduler `ZOMBIE` for its parent; `SPAWN` is BSP-only and fails closed on
+APs.
 
 ## ISR-driven desktop tick
 
@@ -1540,6 +1598,7 @@ be a minimal wire client, not a port).
 | `selfhost` | compile minigcc with minigcc, link with `ld`, verify the bootstrap fixed point |
 | `test-tls` | host TLS suite: crypto vectors + full handshakes |
 | `test-vma` | host VMA suite: red-black tree invariants, pool exhaustion, full drain |
+| `test-sync` | host sync suite: wait queues, mutex/sem/cond/rwlock over the real `kernel/sync.c` |
 | `run` | boot the image in QEMU with a display (TCG by default) |
 | `run-kvm` | boot it with KVM acceleration (faster CPU, slower IDE I/O) |
 | `run-headless` | boot it headless on the serial console (no GUI window) |
