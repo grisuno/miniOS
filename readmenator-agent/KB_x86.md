@@ -19,8 +19,11 @@
 - Layer: utility
 - Language: S
 - Symbols:
-  - `switch_to` (function, line 21)
-  - `user_trampoline` (function, line 96)
+  - `switch_save_only` (function, line 35)
+  - `switch_to` (function, line 44)
+  - `switch_to_notrap` (function, line 76)
+  - `user_trampoline` (function, line 135)
+  - `resume_iretq` (function, line 148)
 
 ## arch/x86/isr_stubs.S
 - Layer: testing
@@ -64,3 +67,4 @@
   - `MSR_SFMASK` (macro, line 21)
   - `MSR_FSBASE` (macro, line 22)
   - `MSR_GSBASE` (macro, line 23)
+  - `MSR_KERNEL_GS_BASE` (macro, line 24)

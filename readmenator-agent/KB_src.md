@@ -204,12 +204,12 @@
 
 ## progs/src/kmem.c
 - Layer: utility
-- Doc: Kernel-pointer rejection probe. Passes a kernel-heap address (0x2000000,
+- Doc: Kernel-pointer rejection probe. Passes a supervisor-only address
 - Language: c
 - Symbols:
-  - `syscall3` (function, line 6) `static long syscall3(long n, long a1, long a2, long a3)`
-  - `exit_now` (function, line 12) `static void exit_now(long code)`
-  - `_start` (function, line 16) `void _start(void)`
+  - `syscall3` (function, line 7) `static long syscall3(long n, long a1, long a2, long a3)`
+  - `exit_now` (function, line 13) `static void exit_now(long code)`
+  - `_start` (function, line 17) `void _start(void)`
 
 ## progs/src/ldhello.c
 - Layer: utility
@@ -298,6 +298,23 @@
   - `munmap` (function, line 20) `static long munmap(long addr, long len)`
   - `exit_now` (function, line 30) `static void exit_now(long code)`
   - `_start` (function, line 34) `void _start(void)`
+
+## progs/src/mthreads.h
+- Layer: utility
+- Doc: mthreads.h -- Minimal pthread-like threads for MiniOS ELFs (roadmap
+- Language: h
+- Symbols:
+  - `m_syscall6` (function, line 42) `static inline long m_syscall6(long n, long a, long b, long c)`
+  - `myield` (function, line 51) `static inline void myield(void)`
+  - `mmutex_init` (function, line 55) `static inline void mmutex_init(mmutex_t *m)`
+  - `mmutex_lock` (function, line 59) `static inline void mmutex_lock(mmutex_t *m)`
+  - `mmutex_unlock` (function, line 64) `static inline void mmutex_unlock(mmutex_t *m)`
+  - `mthread_entry` (function, line 71) `static void mthread_entry(void *p)`
+  - `mthread_create` (function, line 85) `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
+  - `mthread_join` (function, line 108) `static int mthread_join(mthread_t t, void **retval)`
+  - `MTHREADS_H` (macro, line 22)
+  - `MTHREAD_STACK_SZ` (macro, line 25)
+  - `MTHREAD_MAX` (macro, line 27)
 
 ## progs/src/nx.c
 - Layer: utility
@@ -421,6 +438,21 @@
 - Layer: testing
 - Doc: test_all.sh -- comprehensive non-interactive test suite for MiniOS.  Run with:  sh src/test_all.sh  Every test prints a 
 - Language: sh
+
+## progs/src/thdemo.c
+- Layer: utility
+- Doc: thdemo.c -- Producer-consumer over mthreads (roadmap Phase 1, M1).
+- Language: c
+- Symbols:
+  - `producer` (function, line 35) `static void *producer(void *p)`
+  - `consumer` (function, line 56) `static void *consumer(void *p)`
+  - `main` (function, line 81) `int main(void)`
+  - `NPROD` (macro, line 20)
+  - `NCONS` (macro, line 22)
+  - `PER_PROD` (macro, line 23)
+  - `BUFSZ` (macro, line 24)
+  - `EXPECTED_N` (macro, line 25)
+  - `EXPECTED_SUM` (macro, line 27)
 
 ## progs/src/w1.c
 - Layer: utility

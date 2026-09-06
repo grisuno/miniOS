@@ -7,13 +7,13 @@ These files have the most connections. Changes here have high blast radius.
 - `kernel.h` (score: 84.40)
 - `kernel/syscalls.c` (score: 38.30)
 - `kernel.c` (score: 35.10)
-- `kernel/shell.c` (score: 30.00)
+- `kernel/shell.c` (score: 32.00)
 - `progs/doomgeneric/d_englsh.h` (score: 28.60)
 - `kernel/time.c` (score: 24.30)
 - `vga_fb.h` (score: 23.10)
-- `sched.h` (score: 19.60)
+- `sched.h` (score: 21.80)
+- `kernel/sched.c` (score: 18.30)
 - `net.h` (score: 17.40)
-- `tls.h` (score: 16.20)
 
 ## Hotspots (complexity + centrality)
 

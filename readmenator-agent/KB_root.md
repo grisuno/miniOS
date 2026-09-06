@@ -137,28 +137,28 @@
   - `redirect_resume` (function, line 153) `void redirect_resume(int was)`
   - `redirect_begin` (function, line 157) `int redirect_begin(void)`
   - `redirect_commit` (function, line 165) `int redirect_commit(const char *path, int append_mode)`
-  - `vga_putc` (function, line 182) `void vga_putc(char c)`
-  - `vga_puts` (function, line 220) `void vga_puts(const char *s)`
-  - `syscall_init` (function, line 304) `void syscall_init(void)`
-  - `register_libc_symbols` (function, line 398) `static void register_libc_symbols(void)`
-  - `__attribute__` (function, line 473) `__attribute__((section(".init.text")))
+  - `vga_putc` (function, line 189) `void vga_putc(char c)`
+  - `vga_puts` (function, line 233) `void vga_puts(const char *s)`
+  - `syscall_init` (function, line 317) `void syscall_init(void)`
+  - `register_libc_symbols` (function, line 560) `static void register_libc_symbols(void)`
+  - `__attribute__` (function, line 635) `__attribute__((section(".init.text")))
 void kmain(void)`
   - `XXH_STATIC_LINKING_ONLY` (macro, line 17)
   - `REDIR_INITIAL_CAP` (macro, line 119)
   - `REDIR_MAX_BYTES` (macro, line 121)
-  - `USER_WIN_LO` (macro, line 253)
-  - `USER_WIN_HI` (macro, line 254)
-  - `STR_` (macro, line 255)
-  - `STR` (macro, line 256)
-  - `KSYM_MAX` (macro, line 294)
+  - `USER_WIN_LO` (macro, line 266)
+  - `USER_WIN_HI` (macro, line 267)
+  - `STR_` (macro, line 268)
+  - `STR` (macro, line 269)
+  - `KSYM_MAX` (macro, line 307)
 
 ## kernel.h
 - Layer: utility
 - Doc: ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory layout (load base, stack, brk cap, graphic
 - Language: h
 - Symbols:
-  - `vfs_ops` (struct, line 246)
-  - `vfs_file` (struct, line 255)
+  - `vfs_ops` (struct, line 248)
+  - `vfs_file` (struct, line 257)
   - `outb` (function, line 20) `static inline void outb(unsigned short port, unsigned char val)`
   - `inb` (function, line 23) `static inline unsigned char inb(unsigned short port)`
   - `outw` (function, line 28) `static inline void outw(unsigned short port, unsigned short val)`
@@ -170,57 +170,57 @@ void kmain(void)`
   - `VGA_BASE` (macro, line 39)
   - `VGA_COLS` (macro, line 40)
   - `VGA_ROWS` (macro, line 41)
-  - `KEY_BACKSPACE` (macro, line 73)
-  - `KEY_ENTER` (macro, line 74)
-  - `KEY_LSHIFT` (macro, line 75)
-  - `KEY_RSHIFT` (macro, line 76)
-  - `KEY_CAPS` (macro, line 77)
-  - `KEY_E0` (macro, line 78)
-  - `KEY_UP` (macro, line 79)
-  - `KEY_DOWN` (macro, line 80)
-  - `KEY_PGUP` (macro, line 81)
-  - `KEY_PGDN` (macro, line 82)
-  - `KEY_ESC` (macro, line 83)
-  - `KEY_CSI` (macro, line 84)
-  - `KEY_ARR_UP` (macro, line 85)
-  - `KEY_ARR_DOWN` (macro, line 86)
-  - `KEY_ARR_RIGHT` (macro, line 87)
-  - `KEY_ARR_LEFT` (macro, line 88)
-  - `KEY_HOME_SEQ` (macro, line 89)
-  - `KEY_END_SEQ` (macro, line 90)
-  - `KEY_PGUP_SEQ` (macro, line 91)
-  - `KEY_PGDN_SEQ` (macro, line 92)
-  - `KEY_LEFT` (macro, line 93)
-  - `KEY_RIGHT` (macro, line 94)
-  - `KEY_LCTRL` (macro, line 95)
-  - `KEY_F5` (macro, line 96)
-  - `KEY_F11` (macro, line 97)
-  - `KEY_TILDE` (macro, line 98)
-  - `KEY_LALT` (macro, line 99)
-  - `KEY_RALT` (macro, line 100)
-  - `KEY_HOME` (macro, line 101)
-  - `KEY_END` (macro, line 102)
-  - `USER_LOAD_BASE` (macro, line 118)
-  - `USER_LOAD_END` (macro, line 119)
-  - `USER_STACK_SIZE` (macro, line 120)
-  - `USER_STACK_TOP` (macro, line 121)
-  - `USER_STACK_BASE` (macro, line 122)
-  - `USER_BRK_END` (macro, line 123)
-  - `SYS_KSTK_TOP` (macro, line 128)
-  - `SYS_KSTK_BASE` (macro, line 129)
-  - `HEAP_BASE` (macro, line 130)
-  - `HEAP_SIZE` (macro, line 132)
-  - `RAMDISK_MAX_FILES` (macro, line 171)
-  - `RAMDISK_FNAME_LEN` (macro, line 172)
-  - `RD_DATA_MAX` (macro, line 191)
-  - `EOF` (macro, line 297)
-  - `KSYM_MAX` (macro, line 393)
-  - `KPROG_MAX` (macro, line 395)
-  - `EI_NIDENT` (macro, line 466)
-  - `ET_REL` (macro, line 490)
-  - `ET_EXEC` (macro, line 492)
-  - `ET_DYN` (macro, line 493)
-  - `KFD_MAX` (macro, line 506)
+  - `KEY_BACKSPACE` (macro, line 75)
+  - `KEY_ENTER` (macro, line 76)
+  - `KEY_LSHIFT` (macro, line 77)
+  - `KEY_RSHIFT` (macro, line 78)
+  - `KEY_CAPS` (macro, line 79)
+  - `KEY_E0` (macro, line 80)
+  - `KEY_UP` (macro, line 81)
+  - `KEY_DOWN` (macro, line 82)
+  - `KEY_PGUP` (macro, line 83)
+  - `KEY_PGDN` (macro, line 84)
+  - `KEY_ESC` (macro, line 85)
+  - `KEY_CSI` (macro, line 86)
+  - `KEY_ARR_UP` (macro, line 87)
+  - `KEY_ARR_DOWN` (macro, line 88)
+  - `KEY_ARR_RIGHT` (macro, line 89)
+  - `KEY_ARR_LEFT` (macro, line 90)
+  - `KEY_HOME_SEQ` (macro, line 91)
+  - `KEY_END_SEQ` (macro, line 92)
+  - `KEY_PGUP_SEQ` (macro, line 93)
+  - `KEY_PGDN_SEQ` (macro, line 94)
+  - `KEY_LEFT` (macro, line 95)
+  - `KEY_RIGHT` (macro, line 96)
+  - `KEY_LCTRL` (macro, line 97)
+  - `KEY_F5` (macro, line 98)
+  - `KEY_F11` (macro, line 99)
+  - `KEY_TILDE` (macro, line 100)
+  - `KEY_LALT` (macro, line 101)
+  - `KEY_RALT` (macro, line 102)
+  - `KEY_HOME` (macro, line 103)
+  - `KEY_END` (macro, line 104)
+  - `USER_LOAD_BASE` (macro, line 120)
+  - `USER_LOAD_END` (macro, line 121)
+  - `USER_STACK_SIZE` (macro, line 122)
+  - `USER_STACK_TOP` (macro, line 123)
+  - `USER_STACK_BASE` (macro, line 124)
+  - `USER_BRK_END` (macro, line 125)
+  - `SYS_KSTK_TOP` (macro, line 130)
+  - `SYS_KSTK_BASE` (macro, line 131)
+  - `HEAP_BASE` (macro, line 132)
+  - `HEAP_SIZE` (macro, line 134)
+  - `RAMDISK_MAX_FILES` (macro, line 173)
+  - `RAMDISK_FNAME_LEN` (macro, line 174)
+  - `RD_DATA_MAX` (macro, line 193)
+  - `EOF` (macro, line 299)
+  - `KSYM_MAX` (macro, line 395)
+  - `KPROG_MAX` (macro, line 397)
+  - `EI_NIDENT` (macro, line 468)
+  - `ET_REL` (macro, line 492)
+  - `ET_EXEC` (macro, line 494)
+  - `ET_DYN` (macro, line 495)
+  - `KFD_MAX` (macro, line 508)
 
 ## lz4_kernel.h
 - Layer: utility
@@ -492,22 +492,24 @@ void kmain(void)`
 - Doc: ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Process states ----
 - Language: h
 - Symbols:
-  - `cpu` (struct, line 73)
-  - `__attribute__` (function, line 134) `typedef struct __attribute__((packed))`
+  - `cpu` (struct, line 78)
+  - `__attribute__` (function, line 179) `typedef struct __attribute__((packed))`
   - `SCHED_H` (macro, line 2)
   - `PROC_FREE` (macro, line 8)
   - `PROC_READY` (macro, line 9)
   - `PROC_RUNNING` (macro, line 10)
   - `PROC_BLOCKED` (macro, line 11)
   - `PROC_ZOMBIE` (macro, line 12)
-  - `MAX_PROCS` (macro, line 15)
-  - `PROC_KSTACK_SZ` (macro, line 16)
-  - `MAX_CPUS` (macro, line 19)
-  - `BOOT_CPU` (macro, line 20)
-  - `CLONE_VM` (macro, line 49)
-  - `CLONE_FILES` (macro, line 50)
-  - `current_pid` (macro, line 106)
-  - `DESKTOP_TICK_INTERVAL` (macro, line 110)
+  - `PROC_SWITCHING` (macro, line 16)
+  - `MAX_PROCS` (macro, line 19)
+  - `PROC_KSTACK_SZ` (macro, line 20)
+  - `MAX_CPUS` (macro, line 23)
+  - `BOOT_CPU` (macro, line 24)
+  - `CLONE_VM` (macro, line 54)
+  - `CLONE_FILES` (macro, line 55)
+  - `current_pid` (macro, line 122)
+  - `DESKTOP_TICK_INTERVAL` (macro, line 126)
+  - `TSS_SEL` (macro, line 176)
 
 ## shell.h
 - Layer: utility
@@ -523,36 +525,41 @@ void kmain(void)`
 - Doc: include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" include "ap_stub.h" include "arch/x86/msr.h"  
 - Language: c
 - Symbols:
-  - `lapic_read` (function, line 67) `static unsigned lapic_read(unsigned off)`
-  - `lapic_write` (function, line 71) `static void lapic_write(unsigned off, unsigned val)`
-  - `map_lapic` (function, line 78) `static int map_lapic(void)`
-  - `ap_delay` (function, line 90) `static void ap_delay(void)`
-  - `ap_lapic_timer_init` (function, line 98) `static void ap_lapic_timer_init(void)`
-  - `smp_ap_entry` (function, line 106) `void smp_ap_entry(void)`
-  - `smp_init` (function, line 153) `void smp_init(void)`
+  - `lapic_read` (function, line 83) `static unsigned lapic_read(unsigned off)`
+  - `lapic_write` (function, line 87) `static void lapic_write(unsigned off, unsigned val)`
+  - `map_lapic` (function, line 108) `static int map_lapic(void)`
+  - `ap_delay` (function, line 120) `static void ap_delay(void)`
+  - `disabled` (function, line 133) `* disabled (the BSP's smp_init enable covers only the BSP's own unit),
+ * and with the SVR off th...`
+  - `smp_init` (function, line 244) `void smp_init(void)`
   - `LAPIC_BASE` (macro, line 27)
   - `LAPIC_ID_OFF` (macro, line 29)
   - `LAPIC_SVR_OFF` (macro, line 30)
   - `LAPIC_ICR_HI` (macro, line 31)
   - `LAPIC_ICR_LO` (macro, line 32)
-  - `LAPIC_TIMER_DIV` (macro, line 33)
-  - `LAPIC_TIMER_INIT` (macro, line 34)
-  - `LAPIC_TIMER_CUR` (macro, line 35)
-  - `LAPIC_TIMER_VEC` (macro, line 36)
-  - `LAPIC_SVR_ENABLE` (macro, line 37)
-  - `LAPIC_ICR_BUSY` (macro, line 39)
-  - `LAPIC_ICR_INIT` (macro, line 40)
-  - `LAPIC_ICR_SIPI` (macro, line 41)
-  - `LAPIC_ICR_ALL_EXC` (macro, line 42)
-  - `LAPIC_ICR_LEVEL` (macro, line 43)
-  - `LAPIC_ICR_TRIGGER` (macro, line 44)
-  - `SIPI_VECTOR` (macro, line 45)
-  - `PIT_HZ` (macro, line 49)
-  - `LAPIC_TIMER_DIVIDE_16` (macro, line 52)
-  - `LAPIC_TIMER_PERIODIC` (macro, line 53)
-  - `LAPIC_PD_ADDR` (macro, line 61)
-  - `LAPIC_PDPT_SLOT` (macro, line 62)
-  - `LAPIC_PD_IDX` (macro, line 63)
+  - `LAPIC_LVT_TIMER` (macro, line 33)
+  - `LAPIC_LVT_LINT0` (macro, line 34)
+  - `LAPIC_LVT_LINT1` (macro, line 35)
+  - `LAPIC_LVT_MASKED` (macro, line 36)
+  - `LAPIC_LVT_EXTINT` (macro, line 37)
+  - `LAPIC_EOI_OFF` (macro, line 38)
+  - `LAPIC_TIMER_DIV` (macro, line 39)
+  - `LAPIC_TIMER_INIT` (macro, line 40)
+  - `LAPIC_TIMER_CUR` (macro, line 41)
+  - `LAPIC_SVR_ENABLE` (macro, line 42)
+  - `LAPIC_ICR_BUSY` (macro, line 44)
+  - `LAPIC_ICR_INIT` (macro, line 45)
+  - `LAPIC_ICR_SIPI` (macro, line 46)
+  - `LAPIC_ICR_ALL_EXC` (macro, line 47)
+  - `LAPIC_ICR_LEVEL` (macro, line 48)
+  - `LAPIC_ICR_TRIGGER` (macro, line 49)
+  - `SIPI_VECTOR` (macro, line 50)
+  - `PIT_HZ` (macro, line 54)
+  - `LAPIC_TIMER_DIVIDE_16` (macro, line 57)
+  - `LAPIC_TIMER_PERIODIC` (macro, line 58)
+  - `LAPIC_PD_ADDR` (macro, line 66)
+  - `LAPIC_PDPT_SLOT` (macro, line 67)
+  - `LAPIC_PD_IDX` (macro, line 68)
 
 ## smp.h
 - Layer: utility
@@ -573,12 +580,14 @@ void kmain(void)`
   - `spin_unlock` (function, line 62) `static inline void spin_unlock(spinlock_t *lock)`
   - `spin_lock_irqsave` (function, line 66) `static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags)`
   - `spin_unlock_irqrestore` (function, line 72) `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
-  - `spin_trylock` (function, line 77) `static inline int spin_trylock(spinlock_t *lock)`
-  - `spin_save_irq` (function, line 85) `static inline irqflags_t spin_save_irq(void)`
-  - `spin_restore_irq` (function, line 92) `static inline void spin_restore_irq(irqflags_t flags)`
-  - `spin_lock` (function, line 100) `static inline void spin_lock(spinlock_t *lock)`
-  - `spin_unlock` (function, line 110) `static inline void spin_unlock(spinlock_t *lock)`
-  - `spin_unlock_irqrestore` (function, line 130) `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
+  - `spin_unlock_keep_irq` (function, line 77) `static inline void spin_unlock_keep_irq(spinlock_t *lock)`
+  - `spin_trylock` (function, line 81) `static inline int spin_trylock(spinlock_t *lock)`
+  - `spin_save_irq` (function, line 89) `static inline irqflags_t spin_save_irq(void)`
+  - `spin_restore_irq` (function, line 96) `static inline void spin_restore_irq(irqflags_t flags)`
+  - `spin_lock` (function, line 104) `static inline void spin_lock(spinlock_t *lock)`
+  - `spin_unlock` (function, line 114) `static inline void spin_unlock(spinlock_t *lock)`
+  - `spin_unlock_keep_irq` (function, line 126) `static inline void spin_unlock_keep_irq(spinlock_t *lock)`
+  - `spin_unlock_irqrestore` (function, line 145) `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
   - `SPINLOCK_H` (macro, line 2)
   - `SPINLOCK_INIT` (macro, line 42)
 
@@ -606,10 +615,10 @@ void kmain(void)`
   - `expect` (function, line 79)
   - `expect_count` (function, line 100)
   - `refute` (function, line 122)
-  - `http_server_start` (function, line 626)
-  - `http_server_stop` (function, line 633)
-  - `http_fixture_start` (function, line 638)
-  - `http_fixture_stop` (function, line 645)
+  - `http_server_start` (function, line 647)
+  - `http_server_stop` (function, line 654)
+  - `http_fixture_start` (function, line 659)
+  - `http_fixture_stop` (function, line 666)
 
 ## test_http_server.py
 - Layer: testing

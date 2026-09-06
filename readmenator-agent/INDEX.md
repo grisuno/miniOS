@@ -5,12 +5,12 @@
 | `ap_stub.h` | generated from ap_stub.bin - do not edit | root | 0 |
 | `app.py` | _*_ coding: utf8 _*_ | root | 0 |
 | `arch/x86/ap_entry.S` | ap_entry.S - SMP application-processor bootstrap stub. | x86 | 9 |
-| `arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | boot | 128 |
+| `arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | boot | 129 |
 | `arch/x86/boot/stage1.S` | stage1.S - MiniOS boot sector. | boot | 11 |
 | `arch/x86/boot/stage2.S` | stage2.S - MiniOS second-stage loader. | boot | 39 |
-| `arch/x86/ctx_sw.S` | - | x86 | 2 |
+| `arch/x86/ctx_sw.S` | - | x86 | 5 |
 | `arch/x86/isr_stubs.S` | - | x86 | 24 |
-| `arch/x86/msr.h` | ifndef ARCH_X86_MSR_H define ARCH_X86_MSR_H  Model-Specific Register access for  | x86 | 8 |
+| `arch/x86/msr.h` | ifndef ARCH_X86_MSR_H define ARCH_X86_MSR_H  Model-Specific Register access for  | x86 | 9 |
 | `audio.h` | ifndef AUDIO_H define AUDIO_H  Unified audio API for MiniOS. | root | 5 |
 | `block.h` | ifndef BLOCK_H define BLOCK_H  Block device abstraction for MiniFS. Maps 4096-by | root | 4 |
 | `bootloader.c` | - | root | 2 |
@@ -43,11 +43,11 @@
 | `kernel/mm.c` | include "kernel.h" include "sched.h"  ========================================== | kernel | 6 |
 | `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 8 |
 | `kernel/mm/swap.c` | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | mm | 8 |
-| `kernel/printf.c` | include "kernel.h"  ============================================================ | kernel | 11 |
+| `kernel/printf.c` | include "kernel.h"  ============================================================ | kernel | 10 |
 | `kernel/redirect.c` | include "kernel.h"  ============================================================ | kernel | 3 |
-| `kernel/sched.c` | - | kernel | 32 |
+| `kernel/sched.c` | - | kernel | 43 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 7 |
-| `kernel/serial.c` | include "kernel.h"  serial.c -- COM1 16550 UART driver. | kernel | 8 |
+| `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 9 |
 | `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 60 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 7 |
@@ -281,7 +281,7 @@
 | `progs/micropython/variants/minios/manifest.py` | manifest.py -- frozen modules for the MiniOS MicroPython variant. Scripts listed | minios | 0 |
 | `progs/micropython/variants/minios/minios_module.c` | - | minios | 15 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 |
-| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 109 |
+| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 110 |
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 30 |
 | `progs/nuklear/cvm_emit.h` | ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (c | nuklear | 2 |
 | `progs/nuklear/node_editor.c` | node_editor.c — visual node editor that compiles to CVM bytecode. | nuklear | 22 |
@@ -303,12 +303,13 @@
 | `progs/src/hello.py` | - | src | 0 |
 | `progs/src/http.c` | Minimal HTTP/1.0 GET through the Linux socket syscalls. | src | 2 |
 | `progs/src/json.c` | json.c - command path JSON tool: validate, pretty-print and query. | src | 28 |
-| `progs/src/kmem.c` | Kernel-pointer rejection probe. Passes a kernel-heap address (0x2000000, | src | 3 |
+| `progs/src/kmem.c` | Kernel-pointer rejection probe. Passes a supervisor-only address | src | 3 |
 | `progs/src/ldhello.c` | - | src | 1 |
 | `progs/src/lxhello.c` | - | src | 7 |
 | `progs/src/lz4.c` | lz4.c - command path LZ4 (de)compression tools: lz4 and unlz4. | src | 12 |
 | `progs/src/lzss.c` | lzss.c - command path LZSS (de)compression tools: lzss and unlzss. | src | 36 |
 | `progs/src/mmreuse.c` | mmap/munmap reclaim stress test.  Repeatedly maps and unmaps a large | src | 4 |
+| `progs/src/mthreads.h` | mthreads.h -- Minimal pthread-like threads for MiniOS ELFs (roadmap | src | 11 |
 | `progs/src/nx.c` | NX probe. Under the isolation contract every user page starts | src | 3 |
 | `progs/src/opl3.c` | - | src | 17 |
 | `progs/src/sbtone.c` | sbtone.c — headless SB16 diagnostic (ring-3, no GUI). | src | 8 |
@@ -317,17 +318,18 @@
 | `progs/src/test.lua` | - | src | 20 |
 | `progs/src/test.py` | test.py -- in-OS test suite for MiniOS, driven by MicroPython.  Tests every avai | src | 20 |
 | `progs/src/test_all.sh` | test_all.sh -- comprehensive non-interactive test suite for MiniOS.  Run with:   | src | 0 |
+| `progs/src/thdemo.c` | thdemo.c -- Producer-consumer over mthreads (roadmap Phase 1, M1). | src | 9 |
 | `progs/src/w1.c` | - | src | 1 |
 | `progs/topogpt3/topogpt3.c` | - | misc | 99 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 26 |
 | `qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | root | 27 |
 | `rtc.h` | ifndef RTC_H define RTC_H | root | 1 |
 | `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 8 |
-| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Pro | root | 16 |
+| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Pro | root | 18 |
 | `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 3 |
-| `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 30 |
+| `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 34 |
 | `smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | root | 1 |
-| `spinlock.h` | ifndef SPINLOCK_H define SPINLOCK_H  spinlock.h -- Lightweight spinlock for Mini | root | 15 |
+| `spinlock.h` | ifndef SPINLOCK_H define SPINLOCK_H  spinlock.h -- Lightweight spinlock for Mini | root | 17 |
 | `sync.h` | ifndef SYNC_H define SYNC_H  sync.h -- Blocking synchronization primitives (road | root | 7 |
 | `test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the | root | 10 |
 | `test_http_server.py` | - | root | 3 |

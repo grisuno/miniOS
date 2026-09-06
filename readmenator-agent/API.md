@@ -190,11 +190,20 @@
 
 ## arch/x86/ctx_sw.S
 
+### switch_save_only
+- Defined: `arch/x86/ctx_sw.S:35`
+
 ### switch_to
-- Defined: `arch/x86/ctx_sw.S:21`
+- Defined: `arch/x86/ctx_sw.S:44`
+
+### switch_to_notrap
+- Defined: `arch/x86/ctx_sw.S:76`
 
 ### user_trampoline
-- Defined: `arch/x86/ctx_sw.S:96`
+- Defined: `arch/x86/ctx_sw.S:135`
+
+### resume_iretq
+- Defined: `arch/x86/ctx_sw.S:148`
 
 ## arch/x86/isr_stubs.S
 
@@ -940,21 +949,21 @@ static int zip_sanitize_name(con...`
 - Defined: `kernel.c:165`
 
 ### vga_putc `void vga_putc(char c)`
-- Defined: `kernel.c:182`
+- Defined: `kernel.c:189`
 
 ### vga_puts `void vga_puts(const char *s)`
-- Defined: `kernel.c:220`
+- Defined: `kernel.c:233`
 
 ### syscall_init `void syscall_init(void)`
-- Defined: `kernel.c:304`
+- Defined: `kernel.c:317`
 
 ### register_libc_symbols `static void register_libc_symbols(void)`
-- Defined: `kernel.c:398`
+- Defined: `kernel.c:560`
 - Doc: ================================================================ Libc symbol registration * ============================
 
 ### __attribute__ `__attribute__((section(".init.text")))
 void kmain(void)`
-- Defined: `kernel.c:473`
+- Defined: `kernel.c:635`
 
 ## kernel.h
 
@@ -1188,10 +1197,10 @@ void kmain(void)`
 - Defined: `kernel/exec.c:116`
 
 ### k_run_rel `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
-- Defined: `kernel/exec.c:201`
+- Defined: `kernel/exec.c:209`
 
 ### kexit `void kexit(int code)`
-- Defined: `kernel/exec.c:233`
+- Defined: `kernel/exec.c:241`
 
 ## kernel/klog.c
 
@@ -1339,20 +1348,17 @@ void kmain(void)`
                     int *writte...`
 - Defined: `kernel/printf.c:43`
 
-### kprintf `int kprintf(const char *fmt, ...)`
-- Defined: `kernel/printf.c:142`
-
 ### kfprintf `int kfprintf(KFILE *f, const char *fmt, ...)`
-- Defined: `kernel/printf.c:151`
+- Defined: `kernel/printf.c:156`
 
 ### ksprintf `int ksprintf(char *buf, const char *fmt, ...)`
-- Defined: `kernel/printf.c:160`
+- Defined: `kernel/printf.c:165`
 
 ### putc_snbuf `static void putc_snbuf(char c, void *ctx, int *written)`
-- Defined: `kernel/printf.c:173`
+- Defined: `kernel/printf.c:178`
 
 ### ksnprintf `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...)`
-- Defined: `kernel/printf.c:178`
+- Defined: `kernel/printf.c:183`
 
 ## kernel/redirect.c
 
@@ -1369,102 +1375,143 @@ void kmain(void)`
 ## kernel/sched.c
 
 ### read_cr3 `static inline unsigned long read_cr3(void)`
-- Defined: `kernel/sched.c:29`
+- Defined: `kernel/sched.c:32`
 
 ### __attribute__ `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:37`
-- Doc: int    cpu_count = 1; volatile uint64_t sys_ticks; volatile int user_program_active; spinlock_t sched_lock = SPINLOCK_IN
+- Defined: `kernel/sched.c:58`
+- Doc: --- TSS (one per CPU) ----  Every CPU that runs ring-3 code needs a private TSS: a timer tick that preempts ring 3 switc
 
 ### __attribute__ `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:49`
-- Doc: /* ---- TSS ---- typedef struct __attribute__((packed)) { uint32_t res0; uint64_t rsp0, rsp1, rsp2; uint64_t res1; uint6
+- Defined: `kernel/sched.c:79`
+- Doc: Per-CPU idle stacks: a park into the idle context re-enters * smp_ap_idle_loop here (idle_proc ctx.rsp points at the top
 
 ### alloc_kstack `static uint64_t alloc_kstack(void)`
-- Defined: `kernel/sched.c:63`
+- Defined: `kernel/sched.c:93`
 - Doc: typedef struct __attribute__((packed)) { uint16_t off_lo; uint16_t sel; uint8_t ist; uint8_t type_attr; uint16_t off_mid
 
 ### free_kstack `static void free_kstack(uint64_t top)`
-- Defined: `kernel/sched.c:74`
+- Defined: `kernel/sched.c:104`
 
 ### idt_set `static void idt_set(int vec, void (*h)(void))`
-- Defined: `kernel/sched.c:90`
-- Doc: if (!top) return; int idx = (int)(((char *)top - (char *)kstack_pool) / (16*1024)); if (idx >= 0 && idx < MAX_PROCS) kst
+- Defined: `kernel/sched.c:128`
+- Doc: Parked trap frames for preempted ring-3 contexts, one slot per pid. The ISR copies the preempted frame here (never onto 
 
 ### idt_init `static void idt_init(void)`
-- Defined: `kernel/sched.c:100`
+- Defined: `kernel/sched.c:138`
 
 ### pic_init `static void pic_init(void)`
-- Defined: `kernel/sched.c:113`
+- Defined: `kernel/sched.c:151`
 - Doc: } static void idt_init(void) { kmemset(idt, 0, sizeof(idt)); int i; for (i = 0; i < 256; i++) if (isr_stub_table[i]) idt
 
 ### pit_init `static void pit_init(void)`
-- Defined: `kernel/sched.c:148`
+- Defined: `kernel/sched.c:186`
 - Doc: Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + IRQ4 (COM1, UART IER stays 0 so it never fires) + IRQ5 
 
 ### pic_eoi `static void pic_eoi(int irq)`
-- Defined: `kernel/sched.c:154`
+- Defined: `kernel/sched.c:192`
+
+### tss_write_desc `static void tss_write_desc(int cpu)`
+- Defined: `kernel/sched.c:200`
 
 ### tss_init `static void tss_init(void)`
-- Defined: `kernel/sched.c:162`
+- Defined: `kernel/sched.c:217`
+
+### tss_init_ap `void tss_init_ap(int cpu)`
+- Defined: `kernel/sched.c:249`
+- Doc: Load this AP's task register.  The BSP wrote every descriptor in tss_init before the APs were woken, so the AP only poin
+
+### context `* context (anything entered via k_exec_user) is inside a syscall
+ * (entry swapped 0 in), and a c...`
+- Defined: `kernel/sched.c:267`
+
+### point `* return address as the resume point ("continue the ISR"), which
+ * required the stranded ISR fra...`
+- Defined: `kernel/sched.c:280`
+
+### sched_next_locked `static int sched_next_locked(int start, int vm_only)`
+- Defined: `kernel/sched.c:296`
+- Doc: Round-robin scan with sched_lock HELD.  Returns a claimed (PROC_RUNNING) pid or -1.  vm_only restricts the pick to CLONE
+
+### smp_claim_thread_v `static int smp_claim_thread_v(int vm_only)`
+- Defined: `kernel/sched.c:312`
+- Doc: Claim one READY thread for this CPU's idle loop (the AP only claims CLONE_VM threads): marks it RUNNING under lock and i
+
+### smp_ap_idle_loop `void smp_ap_idle_loop(void)`
+- Defined: `kernel/sched.c:332`
+- Doc: AP idle loop: hlt until a CLONE_VM thread is ready, run it, repeat. Entered once from smp_ap_entry on the AP stub stack;
+
+### sched_ap_preempt `static void sched_ap_preempt(trap_frame_t *frame)`
+- Defined: `kernel/sched.c:366`
+- Doc: AP timer preemption: time-slice the AP's current CLONE_VM thread with the next READY one.  An idle AP (cur_pid -1) needs
+
+### smp_any_ap_idle `static int smp_any_ap_idle(void)`
+- Defined: `kernel/sched.c:392`
+- Doc: True when some AP is idle.  The BSP tick uses this to leave freshly parked CLONE_VM threads unclaimed: the idle AP's nex
 
 ### isr_dispatch `void isr_dispatch(int vector, trap_frame_t *frame)`
-- Defined: `kernel/sched.c:202`
-- Doc: tss_gdtr_buf[2] = gdtr_base & 0xFF; tss_gdtr_buf[3] = (gdtr_base >> 8) & 0xFF; tss_gdtr_buf[4] = (gdtr_base >> 16) & 0xF
+- Defined: `kernel/sched.c:419`
 
-### ring `* the hardware ring (CS RPL) and the fault address. */
-        if ((frame->cs & 3) == 3 &&
-      ...`
-- Defined: `kernel/sched.c:324`
+### BSP `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+         * running the shell contex...`
+- Defined: `kernel/sched.c:656`
 
 ### proc_get `proc_t *proc_get(int pid)`
-- Defined: `kernel/sched.c:338`
-- Doc: the hardware ring (CS RPL) and the fault address. if ((frame->cs & 3) == 3 && frame->rip >= 0x400000 && frame->rip < 0x0
+- Defined: `kernel/sched.c:676`
+- Doc: serial_puts("  [recovering: ring-3 user fault, returning EFAULT]\n"); k_user_fault_return(); __builtin_unreachable(); } 
 
 ### proc_create `int proc_create(const char *name, int parent_pid)`
-- Defined: `kernel/sched.c:344`
+- Defined: `kernel/sched.c:682`
+
+### sched_park_as_returned `static void sched_park_as_returned(proc_t *cur)`
+- Defined: `kernel/sched.c:748`
 
 ### schedule `void schedule(void)`
-- Defined: `kernel/sched.c:397`
+- Defined: `kernel/sched.c:757`
 
 ### yield `void yield(void)`
-- Defined: `kernel/sched.c:420`
+- Defined: `kernel/sched.c:831`
 
 ### do_exit `void do_exit(int code)`
-- Defined: `kernel/sched.c:425`
+- Defined: `kernel/sched.c:846`
+
+### do_thread_spawn `long do_thread_spawn(unsigned long fn, unsigned long stack,
+                     unsigned long arg)`
+- Defined: `kernel/sched.c:886`
+- Doc: frame is ambiguous, this one starts cleanly at fn(arg) on the given stack:  child RIP = fn, child RSP = stack, child RDI
 
 ### do_waitpid `int do_waitpid(int pid)`
-- Defined: `kernel/sched.c:502`
+- Defined: `kernel/sched.c:993`
 
 ### do_kill `int do_kill(int pid)`
-- Defined: `kernel/sched.c:529`
+- Defined: `kernel/sched.c:1027`
 
 ### timer_tick `void timer_tick(void)`
-- Defined: `kernel/sched.c:536`
+- Defined: `kernel/sched.c:1034`
 
 ### mouse_wait_cmd `static void mouse_wait_cmd(void)`
-- Defined: `kernel/sched.c:540`
+- Defined: `kernel/sched.c:1038`
 - Doc: schedule(); } } int do_kill(int pid) { proc_t *p = proc_get(pid); if (!p) return -1; do_exit(-1); return 0; } void timer
 
 ### mouse_wait_data `static void mouse_wait_data(void)`
-- Defined: `kernel/sched.c:546`
+- Defined: `kernel/sched.c:1044`
 
 ### mouse_write `static void mouse_write(unsigned char data)`
-- Defined: `kernel/sched.c:553`
+- Defined: `kernel/sched.c:1051`
 
 ### mouse_read `static unsigned char mouse_read(void)`
-- Defined: `kernel/sched.c:560`
+- Defined: `kernel/sched.c:1058`
 
 ### mouse_hw_init `static void mouse_hw_init(void)`
-- Defined: `kernel/sched.c:565`
+- Defined: `kernel/sched.c:1063`
 
 ### mouse_disable `void mouse_disable(void)`
-- Defined: `kernel/sched.c:616`
+- Defined: `kernel/sched.c:1114`
 
 ### mouse_enable `void mouse_enable(void)`
-- Defined: `kernel/sched.c:618`
+- Defined: `kernel/sched.c:1116`
 
 ### sched_init `void sched_init(void)`
-- Defined: `kernel/sched.c:619`
+- Defined: `kernel/sched.c:1117`
 
 ## kernel/scrollback.c
 
@@ -1489,212 +1536,215 @@ void kmain(void)`
 ## kernel/serial.c
 
 ### serial_init `void serial_init(void)`
-- Defined: `kernel/serial.c:18`
+- Defined: `kernel/serial.c:19`
 - Doc: define COM1 0x3F8
 
 ### serial_tx_ready `static int serial_tx_ready(void)`
-- Defined: `kernel/serial.c:28`
+- Defined: `kernel/serial.c:29`
 
 ### serial_rx_ready `static int serial_rx_ready(void)`
-- Defined: `kernel/serial.c:30`
-
-### serial_putc `void serial_putc(char c)`
 - Defined: `kernel/serial.c:31`
 
+### serial_putc `void serial_putc(char c)`
+- Defined: `kernel/serial.c:32`
+
+### serial_e_count `unsigned long serial_e_count(void)`
+- Defined: `kernel/serial.c:37`
+
 ### serial_puts `void serial_puts(const char *s)`
-- Defined: `kernel/serial.c:36`
+- Defined: `kernel/serial.c:39`
 
 ### serial_available `int serial_available(void)`
-- Defined: `kernel/serial.c:38`
+- Defined: `kernel/serial.c:41`
 
 ### serial_getc `int serial_getc(void)`
-- Defined: `kernel/serial.c:40`
+- Defined: `kernel/serial.c:43`
 
 ## kernel/shell.c
 
 ### shell_queue_launch `void shell_queue_launch(const char *cmd)`
-- Defined: `kernel/shell.c:65`
+- Defined: `kernel/shell.c:66`
 - Doc: Queue a desktop-icon command to run after the current user program exits. Overwrites any earlier pending launch; safe to
 
 ### shell_prompt `static void shell_prompt(void)`
-- Defined: `kernel/shell.c:85`
+- Defined: `kernel/shell.c:86`
 
 ### shell_parse_vol `static int shell_parse_vol(const char *s, unsigned *out)`
-- Defined: `kernel/shell.c:93`
+- Defined: `kernel/shell.c:94`
 - Doc: Strict decimal parse for the `vol` builtin: the whole argument must be an optional sign followed by at least one digit, 
 
 ### pb_empty `static int pb_empty(void)`
-- Defined: `kernel/shell.c:126`
+- Defined: `kernel/shell.c:127`
 
 ### pb_count `static int pb_count(void)`
-- Defined: `kernel/shell.c:128`
-
-### pb_push_back `static void pb_push_back(unsigned char c)`
 - Defined: `kernel/shell.c:129`
 
+### pb_push_back `static void pb_push_back(unsigned char c)`
+- Defined: `kernel/shell.c:130`
+
 ### pb_push_front `static void pb_push_front(unsigned char c)`
-- Defined: `kernel/shell.c:134`
+- Defined: `kernel/shell.c:135`
 
 ### pb_pop `static int pb_pop(void)`
-- Defined: `kernel/shell.c:139`
+- Defined: `kernel/shell.c:140`
 
 ### pb_peek `static int pb_peek(void)`
-- Defined: `kernel/shell.c:145`
+- Defined: `kernel/shell.c:146`
 
 ### raw_blocking_getc `static int raw_blocking_getc(void)`
-- Defined: `kernel/shell.c:152`
+- Defined: `kernel/shell.c:153`
 - Doc: Next raw byte (kbd queue, then serial, then PS/2) without touching the * pushback FIFO; blocks until one is available.
 
 ### raw_try_getc `static int raw_try_getc(void)`
-- Defined: `kernel/shell.c:171`
+- Defined: `kernel/shell.c:172`
 - Doc: int c = serial_getc(); if (c >= 0) return c; } if (kbd_available()) { int c = kbd_read(); if (c >= 0) return c; } if (vg
 
 ### consume_page_after_esc `static int consume_page_after_esc(void)`
-- Defined: `kernel/shell.c:206`
+- Defined: `kernel/shell.c:207`
 - Doc: Called after an ESC byte has been read. Pulls the remainder of the sequence non-blocking and classifies it. Returns 1 (P
 
 ### console_getc `* returns console_getc() simply serves the FIFO again. */
 int console_getc(void)`
-- Defined: `kernel/shell.c:231`
+- Defined: `kernel/shell.c:232`
 
 ### console_peek `static int console_peek(void)`
-- Defined: `kernel/shell.c:253`
+- Defined: `kernel/shell.c:254`
 - Doc: Next buffered byte without consuming it, or -1 when nothing is available right now. Used to tell an ESC prefix from a co
 
 ### scrollback_render `static void scrollback_render(int voff, int total, const unsigned char *saved)`
-- Defined: `kernel/shell.c:268`
+- Defined: `kernel/shell.c:269`
 - Doc: --- Scrollback view ----  Renders a 25-row window over (scrollback ring + live screen) into the VGA framebuffer and to t
 
 ### scrollback_view `static void scrollback_view(int initial_dir)`
-- Defined: `kernel/shell.c:305`
+- Defined: `kernel/shell.c:306`
 
 ### shell_readline_buf `void shell_readline_buf(char *buf, int size)`
-- Defined: `kernel/shell.c:350`
+- Defined: `kernel/shell.c:351`
 - Doc: Read one line into buf (at most size-1 chars). Echoes input and * honours backspace. Shared by the shell prompt and the 
 
 ### shell_name_base `static const char *shell_name_base(const char *path)`
-- Defined: `kernel/shell.c:379`
+- Defined: `kernel/shell.c:380`
 - Doc: The component of a ramdisk path after the last '/', or the whole path when * there is no '/'. Used to match a bare comma
 
 ### shell_complete_replace `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-- Defined: `kernel/shell.c:389`
+- Defined: `kernel/shell.c:390`
 - Doc: Replace the current word [word_start, word_start+wlen) in `buf` with `text` and move the cursor to the end of the comple
 
 ### shell_readline `static void shell_readline(void)`
-- Defined: `kernel/shell.c:406`
+- Defined: `kernel/shell.c:407`
 
 ### shell_hist_show `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
-- Defined: `kernel/shell.c:415`
+- Defined: `kernel/shell.c:416`
 - Doc: Redraw the edit line: erase what is shown, then write `text` into buf and onto the console, leaving the text cursor at `
 
 ### shell_line_repaint `static void shell_line_repaint(char *buf, int size, int pos)`
-- Defined: `kernel/shell.c:437`
+- Defined: `kernel/shell.c:438`
 - Doc: Repaint the edit line after a cursor move or mid-line edit: erase the whole visible line, rewrite buf, then back the con
 
 ### shell_line_insert `static void shell_line_insert(char *buf, int size, int *pos, char c)`
-- Defined: `kernel/shell.c:450`
+- Defined: `kernel/shell.c:451`
 - Doc: Insert character c into buf at `pos`, shifting the tail right. Bounds * checked; the caller repaints afterwards.
 
 ### shell_line_backspace `static void shell_line_backspace(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:459`
+- Defined: `kernel/shell.c:460`
 - Doc: Insert character c into buf at `pos`, shifting the tail right. Bounds * checked; the caller repaints afterwards. static 
 
 ### shell_line_delete `static void shell_line_delete(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:467`
+- Defined: `kernel/shell.c:468`
 - Doc: kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1)); buf[*pos] = c; (*pos)++; } /* Delete the characte
 
 ### shell_line_kill_front `static void shell_line_kill_front(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:474`
+- Defined: `kernel/shell.c:475`
 - Doc: int len = (int)kstrlen(buf); if (*pos <= 0) return; kmemmove(buf + *pos - 1, buf + *pos, (unsigned long)(len - *pos + 1)
 
 ### shell_line_kill_tail `static void shell_line_kill_tail(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:481`
+- Defined: `kernel/shell.c:482`
 - Doc: static void shell_line_delete(char *buf, int size, int *pos) { int len = (int)kstrlen(buf); if (*pos >= len) return; kme
 
 ### shell_line_kill_word `static void shell_line_kill_word(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:486`
+- Defined: `kernel/shell.c:487`
 - Doc: /* Delete from the cursor to the start of the line (Ctrl+U). static void shell_line_kill_front(char *buf, int size, int 
 
 ### shell_hist_nav `static void shell_hist_nav(char *buf, int size, int *pos, int up)`
-- Defined: `kernel/shell.c:497`
+- Defined: `kernel/shell.c:498`
 - Doc: Move through the history ring: up recalls older entries, down moves * forward again and finally restores the live line.
 
 ### shell_parse `int shell_parse(char *line, char **argv, int max_args)`
-- Defined: `kernel/shell.c:696`
+- Defined: `kernel/shell.c:697`
 
 ### shell_run `void shell_run(void)`
-- Defined: `kernel/shell.c:717`
+- Defined: `kernel/shell.c:718`
 
 ### shell_load `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-- Defined: `kernel/shell.c:764`
+- Defined: `kernel/shell.c:765`
 - Doc: Load an ELF file from the ramdisk and register it under its filename stem. Returns 1 for an ET_REL program, 2 for an ET_
 
 ### outw_port `static inline void outw_port(unsigned short port, unsigned short val)`
-- Defined: `kernel/shell.c:822`
+- Defined: `kernel/shell.c:823`
 
 ### shell_cmd_poweroff `static void shell_cmd_poweroff(void)`
-- Defined: `kernel/shell.c:828`
+- Defined: `kernel/shell.c:829`
 - Doc: define QEMU_PM_PORT 0x604
 
 ### shell_run_dir_for `static const ShellRunDir *shell_run_dir_for(const char *name)`
-- Defined: `kernel/shell.c:845`
+- Defined: `kernel/shell.c:846`
 - Doc: The toolchain directory that owns `name`, chosen by suffix. Bare names with * no recognised suffix fall through to the c
 
 ### shell_file_is_real `static int shell_file_is_real(const char *resolved)`
-- Defined: `kernel/shell.c:863`
+- Defined: `kernel/shell.c:864`
 - Doc: Is `resolved` (already normalised against the cwd) a real ramdisk file? A * directory name or a non-existent path is rej
 
 ### shell_resolve_run `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-- Defined: `kernel/shell.c:875`
+- Defined: `kernel/shell.c:876`
 - Doc: Resolve `name` to a full ramdisk path suitable for running. A bare name is tried first against the cwd, then through the
 
 ### shell_run_elf_buf `static int shell_run_elf_buf(const char *data, unsigned size, int argc,
                          ...`
-- Defined: `kernel/shell.c:911`
+- Defined: `kernel/shell.c:912`
 - Doc: Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`. argv[0] is the program name the program sees. 
 
 ### shell_run_elf_file `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-- Defined: `kernel/shell.c:932`
+- Defined: `kernel/shell.c:933`
 - Doc: Load the ramdisk file at `full` and run it as an ELF. Returns the exit * code, or -1 when the file cannot be read or loa
 
 ### shell_run_elf_minifs `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:945`
+- Defined: `kernel/shell.c:946`
 - Doc: Load a Linux ELF from the MiniFS disk and run it (preserves the historical * `run` fallback when a name is not on the ra
 
 ### shell_run_cvm `static int shell_run_cvm(const char *full, int argc, char **argv)`
-- Defined: `kernel/shell.c:991`
+- Defined: `kernel/shell.c:992`
 - Doc: Run a `.cvm` module at the resolved path `full`. The interpreter is loaded from the ramdisk on first use and cached. arg
 
 ### shell_run_file `static int shell_run_file(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1020`
+- Defined: `kernel/shell.c:1021`
 - Doc: Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the interpreter, ELF files by content through the matching l
 
 ### shell_run_any `int shell_run_any(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1049`
+- Defined: `kernel/shell.c:1050`
 - Doc: Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver. argv[
 
 ### gfx_parse_int `static int gfx_parse_int(const char *s, int *out)`
-- Defined: `kernel/shell.c:1109`
+- Defined: `kernel/shell.c:1110`
 - Doc: --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives, but a
 
 ### gfx_read_palette `static void gfx_read_palette(unsigned char pal[768])`
-- Defined: `kernel/shell.c:1129`
+- Defined: `kernel/shell.c:1130`
 - Doc: Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation). U
 
 ### shell_cmd_gfx `static void shell_cmd_gfx(int argc, char **argv)`
-- Defined: `kernel/shell.c:1135`
+- Defined: `kernel/shell.c:1136`
 
 ### shell_cmd_wm `static void shell_cmd_wm(int argc, char **argv)`
-- Defined: `kernel/shell.c:1251`
+- Defined: `kernel/shell.c:1252`
 - Doc: `wm <op>` — window-manager operations on the terminal window, exposed as a shell builtin so the tilin-WM behaviour (mini
 
 ### shell_cmd_hash `static void shell_cmd_hash(int argc, char **argv)`
-- Defined: `kernel/shell.c:1272`
+- Defined: `kernel/shell.c:1273`
 - Doc: `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file never
 
 ### shell_exec_builtin `void shell_exec_builtin(int argc, char **argv)`
-- Defined: `kernel/shell.c:1286`
+- Defined: `kernel/shell.c:1287`
 
 ## kernel/string.c
 
@@ -1824,231 +1874,230 @@ int console_getc(void)`
 ## kernel/syscalls.c
 
 ### sys_minios_dns `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:60`
+- Defined: `kernel/syscalls.c:67`
 
 ### sys_minios_tls_handshake `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:66`
+- Defined: `kernel/syscalls.c:73`
 
 ### sys_minios_tls_send `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:71`
+- Defined: `kernel/syscalls.c:78`
 
 ### sys_minios_tls_recv `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:76`
+- Defined: `kernel/syscalls.c:83`
 
 ### sys_minios_time `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:81`
+- Defined: `kernel/syscalls.c:88`
 
 ### sys_minios_kbd `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:85`
+- Defined: `kernel/syscalls.c:92`
 
 ### sys_minios_palette `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:100`
+- Defined: `kernel/syscalls.c:107`
 
 ### sys_minios_kbd_raw `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:108`
+- Defined: `kernel/syscalls.c:115`
 
 ### sys_minios_vga_mode `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:114`
-
-### sys_minios_pcspk_init `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:121`
 
+### sys_minios_pcspk_init `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:128`
+
 ### sys_minios_pcspk_tone `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:125`
+- Defined: `kernel/syscalls.c:132`
 
 ### sys_minios_doom_frame `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:129`
+- Defined: `kernel/syscalls.c:136`
 
 ### sys_minios_rtc `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:133`
+- Defined: `kernel/syscalls.c:140`
 
 ### sys_minios_fb_info `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:147`
+- Defined: `kernel/syscalls.c:154`
 
 ### sys_minios_pcspk_vol `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:159`
+- Defined: `kernel/syscalls.c:166`
 
 ### sys_minios_spawn `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:167`
+- Defined: `kernel/syscalls.c:174`
 
 ### sys_minios_lz4_compress `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:173`
+- Defined: `kernel/syscalls.c:185`
 
 ### sys_minios_lz4_decompress `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:186`
+- Defined: `kernel/syscalls.c:198`
 
 ### sys_minios_mouse `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:200`
+- Defined: `kernel/syscalls.c:212`
 
 ### sys_minios_nk_frame `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:209`
+- Defined: `kernel/syscalls.c:221`
 
 ### sys_minios_sb16_open `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:219`
+- Defined: `kernel/syscalls.c:231`
 
 ### sys_minios_sb16_submit `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:224`
+- Defined: `kernel/syscalls.c:236`
 
 ### sys_minios_gfx_title `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:232`
+- Defined: `kernel/syscalls.c:244`
 
 ### sys_minios_sb16_pump `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:246`
-
-### sys_minios_sb16_stream_open `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:250`
-
-### sys_minios_sb16_stream_close `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:254`
-
-### sys_minios_sb16_stream_submit `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:258`
 
-### sys_minios_sb16_stream_vol `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+### sys_minios_sb16_stream_open `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:262`
+
+### sys_minios_sb16_stream_close `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:266`
 
+### sys_minios_sb16_stream_submit `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:270`
+
+### sys_minios_sb16_stream_vol `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:278`
+
 ### sys_minios_clone `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:276`
+- Defined: `kernel/syscalls.c:288`
+
+### sys_minios_thread_spawn `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:296`
 
 ### syscall_trace_enabled `long syscall_trace_enabled(void)`
-- Defined: `kernel/syscalls.c:319`
+- Defined: `kernel/syscalls.c:345`
 
 ### syscall_trace_set `void syscall_trace_set(int on)`
-- Defined: `kernel/syscalls.c:321`
+- Defined: `kernel/syscalls.c:347`
 
 ### sys_linux_write `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:365`
+- Defined: `kernel/syscalls.c:391`
 
 ### sys_linux_writev `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:375`
+- Defined: `kernel/syscalls.c:401`
 
 ### do_open_path `static long do_open_path(const char *path, long flags)`
-- Defined: `kernel/syscalls.c:396`
+- Defined: `kernel/syscalls.c:422`
 - Doc: return EFAULT; for (k = 0; k < cnt; k++) { unsigned long j; if (iov[k].iov_len > 0 && !user_range_ok((unsigned long)iov[
 
 ### sys_linux_open `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:411`
+- Defined: `kernel/syscalls.c:437`
 
 ### sys_linux_close `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:416`
+- Defined: `kernel/syscalls.c:442`
 
 ### sys_linux_lseek `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:425`
+- Defined: `kernel/syscalls.c:451`
 
 ### sys_linux_brk `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:435`
+- Defined: `kernel/syscalls.c:461`
 
 ### sys_linux_mmap `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:445`
+- Defined: `kernel/syscalls.c:475`
 
 ### sys_linux_munmap `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:479`
+- Defined: `kernel/syscalls.c:516`
 
 ### sys_linux_mprotect `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:493`
+- Defined: `kernel/syscalls.c:534`
 
 ### sys_linux_sigaction `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:498`
+- Defined: `kernel/syscalls.c:539`
 
 ### sys_linux_sigprocmask `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:503`
+- Defined: `kernel/syscalls.c:544`
 
 ### sys_linux_ioctl `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:508`
+- Defined: `kernel/syscalls.c:549`
 
 ### sys_linux_access `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:513`
+- Defined: `kernel/syscalls.c:554`
 
 ### sys_linux_yield `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:535`
+- Defined: `kernel/syscalls.c:576`
 
 ### sys_linux_getpid `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:540`
+- Defined: `kernel/syscalls.c:581`
 
 ### sys_linux_socket `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:545`
+- Defined: `kernel/syscalls.c:586`
 
 ### sys_linux_connect `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:550`
+- Defined: `kernel/syscalls.c:591`
 
 ### sys_linux_sendto `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:556`
+- Defined: `kernel/syscalls.c:597`
 
 ### sys_linux_recvfrom `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:561`
+- Defined: `kernel/syscalls.c:602`
 
 ### sys_linux_shutdown `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:566`
+- Defined: `kernel/syscalls.c:607`
 
 ### sys_linux_poll `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:571`
+- Defined: `kernel/syscalls.c:612`
 
 ### sys_linux_fork `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:578`
-
-### sys_linux_vfork `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:583`
-
-### sys_linux_execve `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:588`
-
-### do_proc_exit `static long do_proc_exit(long code)`
-- Defined: `kernel/syscalls.c:595`
-- Doc: return 0; } static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6) { (void)a1; (void)a2; (voi
-
-### sys_linux_exit `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:604`
-
-### sys_linux_wait4 `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:609`
-
-### sys_linux_kill `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:614`
-
-### sys_linux_flock `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:619`
 
-### sys_linux_getcwd `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
+### sys_linux_vfork `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:624`
 
+### sys_linux_execve `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:629`
+
+### sys_linux_exit `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:651`
+
+### sys_linux_wait4 `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:656`
+
+### sys_linux_kill `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:661`
+
+### sys_linux_flock `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:666`
+
+### sys_linux_getcwd `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:671`
+
 ### sys_linux_unlink `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:636`
+- Defined: `kernel/syscalls.c:683`
 
 ### sys_linux_readlink `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:649`
+- Defined: `kernel/syscalls.c:696`
 
 ### sys_linux_fstat `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:654`
-
-### sys_linux_gettimeofday `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:674`
-
-### sys_linux_arch_prctl `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:689`
-
-### sys_linux_gettid `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:701`
 
+### sys_linux_gettimeofday `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:721`
+
+### sys_linux_arch_prctl `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:736`
+
+### sys_linux_gettid `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:748`
+
 ### trace_is_noisy `static int trace_is_noisy(long n)`
-- Defined: `kernel/syscalls.c:749`
+- Defined: `kernel/syscalls.c:796`
 
 ### ksyscall `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:753`
+- Defined: `kernel/syscalls.c:800`
 
 ### user_range_ok `int user_range_ok(unsigned long p, unsigned long len)`
-- Defined: `kernel/syscalls.c:772`
+- Defined: `kernel/syscalls.c:819`
 - Doc: --- User-pointer validation --------------------------------------------- The syscall boundary is the hardened edge betw
 
 ### user_str_ok `int user_str_ok(unsigned long p, unsigned long maxlen)`
-- Defined: `kernel/syscalls.c:778`
+- Defined: `kernel/syscalls.c:825`
 
 ### ksyscall_dispatch `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:786`
+- Defined: `kernel/syscalls.c:833`
 
 ### tools `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
-- Defined: `kernel/syscalls.c:922`
+- Defined: `kernel/syscalls.c:969`
 
 ## kernel/time.c
 
@@ -10062,14 +10111,14 @@ Z_DumpHeap
 ## progs/src/kmem.c
 
 ### syscall3 `static long syscall3(long n, long a1, long a2, long a3)`
-- Defined: `progs/src/kmem.c:6`
-- Doc: Kernel-pointer rejection probe. Passes a kernel-heap address (0x2000000, a supervisor page) to write(2). The hardened sy
+- Defined: `progs/src/kmem.c:7`
+- Doc: Kernel-pointer rejection probe. Passes a supervisor-only address (0x0C100000, inside the kernel heap at 0x0C000000) to w
 
 ### exit_now `static void exit_now(long code)`
-- Defined: `progs/src/kmem.c:12`
+- Defined: `progs/src/kmem.c:13`
 
 ### _start `void _start(void)`
-- Defined: `progs/src/kmem.c:16`
+- Defined: `progs/src/kmem.c:17`
 
 ## progs/src/ldhello.c
 
@@ -10187,6 +10236,33 @@ Z_DumpHeap
 
 ### _start `void _start(void)`
 - Defined: `progs/src/mmreuse.c:34`
+
+## progs/src/mthreads.h
+
+### m_syscall6 `static inline long m_syscall6(long n, long a, long b, long c)`
+- Defined: `progs/src/mthreads.h:42`
+
+### myield `static inline void myield(void)`
+- Defined: `progs/src/mthreads.h:51`
+
+### mmutex_init `static inline void mmutex_init(mmutex_t *m)`
+- Defined: `progs/src/mthreads.h:55`
+
+### mmutex_lock `static inline void mmutex_lock(mmutex_t *m)`
+- Defined: `progs/src/mthreads.h:59`
+
+### mmutex_unlock `static inline void mmutex_unlock(mmutex_t *m)`
+- Defined: `progs/src/mthreads.h:64`
+
+### mthread_entry `static void mthread_entry(void *p)`
+- Defined: `progs/src/mthreads.h:71`
+- Doc: Thread entry trampoline: runs fn(arg), stores the return, exits 0. * The exit code is always 0; join reads retval from t
+
+### mthread_create `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
+- Defined: `progs/src/mthreads.h:85`
+
+### mthread_join `static int mthread_join(mthread_t t, void **retval)`
+- Defined: `progs/src/mthreads.h:108`
 
 ## progs/src/nx.c
 
@@ -10405,6 +10481,17 @@ Z_DumpHeap
 ### main `def main()`
 - Defined: `progs/src/test.py:261`
 - Depends on: `progs/lua/minios.c`
+
+## progs/src/thdemo.c
+
+### producer `static void *producer(void *p)`
+- Defined: `progs/src/thdemo.c:35`
+
+### consumer `static void *consumer(void *p)`
+- Defined: `progs/src/thdemo.c:56`
+
+### main `int main(void)`
+- Defined: `progs/src/thdemo.c:81`
 
 ## progs/src/w1.c
 
@@ -10714,34 +10801,30 @@ Z_DumpHeap
 ## sched.h
 
 ### __attribute__ `typedef struct __attribute__((packed))`
-- Defined: `sched.h:134`
-- Doc: GS base: set to &cpus[cpu_id] for kernel execution  Shared data (protected by sched_lock): - procs[]: the process table 
+- Defined: `sched.h:179`
+- Doc: Per-CPU TSS selectors: slot 5 + 2*cpu in the runtime GDT (each TSS descriptor occupies two 8-byte slots).  CPU 0 keeps s
 
 ## smp.c
 
 ### lapic_read `static unsigned lapic_read(unsigned off)`
-- Defined: `smp.c:67`
+- Defined: `smp.c:83`
 
 ### lapic_write `static void lapic_write(unsigned off, unsigned val)`
-- Defined: `smp.c:71`
+- Defined: `smp.c:87`
 
 ### map_lapic `static int map_lapic(void)`
-- Defined: `smp.c:78`
+- Defined: `smp.c:108`
 - Doc: Map the LAPIC so the BSP can program the ICR, and the APs can read their id registers.  Extends stage 2's tables: PDPT s
 
 ### ap_delay `static void ap_delay(void)`
-- Defined: `smp.c:90`
+- Defined: `smp.c:120`
 
-### ap_lapic_timer_init `static void ap_lapic_timer_init(void)`
-- Defined: `smp.c:98`
-- Doc: Configure this AP's local LAPIC timer to fire at 100 Hz (matching the * BSP's PIT rate).  Uses divide-by-16 and periodic
-
-### smp_ap_entry `void smp_ap_entry(void)`
-- Defined: `smp.c:106`
-- Doc: Entry point every AP reaches from ap_entry.S.  Initializes per-CPU state, * GS base, IDTR, LAPIC timer, and enters an id
+### disabled `* disabled (the BSP's smp_init enable covers only the BSP's own unit),
+ * and with the SVR off th...`
+- Defined: `smp.c:133`
 
 ### smp_init `void smp_init(void)`
-- Defined: `smp.c:153`
+- Defined: `smp.c:244`
 
 ## spinlock.h
 
@@ -10768,27 +10851,34 @@ Z_DumpHeap
 ### spin_unlock_irqrestore `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
 - Defined: `spinlock.h:72`
 
-### spin_trylock `static inline int spin_trylock(spinlock_t *lock)`
+### spin_unlock_keep_irq `static inline void spin_unlock_keep_irq(spinlock_t *lock)`
 - Defined: `spinlock.h:77`
 
+### spin_trylock `static inline int spin_trylock(spinlock_t *lock)`
+- Defined: `spinlock.h:81`
+
 ### spin_save_irq `static inline irqflags_t spin_save_irq(void)`
-- Defined: `spinlock.h:85`
-- Doc: } static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags) { (void)flags; __sync_synchronize(); __s
+- Defined: `spinlock.h:89`
+- Doc: __sync_lock_release(&lock->locked); } static inline void spin_unlock_keep_irq(spinlock_t *lock) { __sync_synchronize(); 
 
 ### spin_restore_irq `static inline void spin_restore_irq(irqflags_t flags)`
-- Defined: `spinlock.h:92`
+- Defined: `spinlock.h:96`
 - Doc: int was = __sync_lock_test_and_set(&lock->locked, 1); if (!was) __sync_synchronize(); return !was; } #else /* Read RFLAG
 
 ### spin_lock `static inline void spin_lock(spinlock_t *lock)`
-- Defined: `spinlock.h:100`
+- Defined: `spinlock.h:104`
 - Doc: Acquire the lock and disable interrupts. Interrupts are disabled before the CAS loop to prevent ISR re-entry. The memory
 
 ### spin_unlock `static inline void spin_unlock(spinlock_t *lock)`
-- Defined: `spinlock.h:110`
+- Defined: `spinlock.h:114`
 - Doc: Release the lock and re-enable interrupts. The release uses __sync_lock_release which is a store-release with * the corr
 
+### spin_unlock_keep_irq `static inline void spin_unlock_keep_irq(spinlock_t *lock)`
+- Defined: `spinlock.h:126`
+- Doc: Release the lock WITHOUT touching interrupts (IF stays as-is). For context-switch paths: the lock was acquired with inte
+
 ### spin_unlock_irqrestore `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
-- Defined: `spinlock.h:130`
+- Defined: `spinlock.h:145`
 - Doc: Release the lock and restore the saved interrupt state. If the caller's interrupts were enabled before spin_lock_irqsave
 
 ## test_bdd.sh
@@ -10817,16 +10907,16 @@ Z_DumpHeap
 - Doc: refute <marker>: the marker must NOT appear (suppressed hostile content).
 
 ### http_server_start
-- Defined: `test_bdd.sh:626`
+- Defined: `test_bdd.sh:647`
 
 ### http_server_stop
-- Defined: `test_bdd.sh:633`
+- Defined: `test_bdd.sh:654`
 
 ### http_fixture_start
-- Defined: `test_bdd.sh:638`
+- Defined: `test_bdd.sh:659`
 
 ### http_fixture_stop
-- Defined: `test_bdd.sh:645`
+- Defined: `test_bdd.sh:666`
 
 ## test_http_server.py
 
