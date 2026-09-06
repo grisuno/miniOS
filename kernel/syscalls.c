@@ -25,6 +25,10 @@
 #include "drivers/kbd.h"
 #include "arch/x86/msr.h"
 #include "zip.h"
+#include "futex.h"
+#include "batch.h"
+#include "rcu.h"
+#include "percpu_rq.h"
 
 /* ---- File descriptor table for open/read/write/close -------------------- */
 
@@ -304,6 +308,54 @@ static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5,
     return do_thread_spawn(fn, stack, (unsigned long)a3);
 }
 
+static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    if (!user_range_ok((unsigned long)a1, 4)) return EFAULT;
+    return futex_wait((unsigned long)a1, (int)a2);
+}
+
+static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    long n = a2;
+    if (!user_range_ok((unsigned long)a1, 4)) return EFAULT;
+    if (n < 0) n = 0;
+    if (n > FUTEX_WAKE_ALL) n = FUTEX_WAKE_ALL;
+    return futex_wake((unsigned long)a1, (int)n);
+}
+
+static long batch_kdispatch(uint32_t opcode) {
+    if (opcode == BATCH_OP_NOP) return 0;
+    if (opcode == BATCH_OP_YIELD) {
+        yield();
+        return 0;
+    }
+    if (opcode == BATCH_OP_TIME) return (long)ktime_ms();
+    if (opcode == BATCH_OP_GETPID) return (long)current_pid;
+    return BATCH_ERR_OPCODE;
+}
+
+static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6) {
+    batch_op_t kops[BATCH_MAX_OPS];
+    long kresults[BATCH_MAX_OPS];
+    int completed = 0;
+    long r;
+    int i;
+    int count = (int)a3;
+    (void)a4; (void)a5; (void)a6;
+    if (count < 0 || count > BATCH_MAX_OPS) return BATCH_ERR_COUNT;
+    if (count == 0) return BATCH_OK;
+    if (!user_range_ok((unsigned long)a1, (unsigned long)count * sizeof(batch_op_t)))
+        return EFAULT;
+    if (!user_range_ok((unsigned long)a2, (unsigned long)count * sizeof(long)))
+        return EFAULT;
+    kmemcpy(kops, (const void *)a1, (unsigned long)count * sizeof(batch_op_t));
+    r = batch_exec(kops, kresults, count, &completed, batch_kdispatch);
+    for (i = 0; i < completed; i++)
+        ((long *)a2)[i] = kresults[i];
+    if (r < 0) return r;
+    return completed;
+}
+
 static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] = {
     [MINIOS_SYS_DNS - MINIOS_SYSCALL_BASE]         = { sys_minios_dns,         "dns" },
     [MINIOS_SYS_TLS_HANDSHAKE - MINIOS_SYSCALL_BASE] = { sys_minios_tls_handshake, "tls_handshake" },
@@ -335,6 +387,9 @@ static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] =
     [MINIOS_SYS_SB16_STREAM_VOLUME - MINIOS_SYSCALL_BASE] = { sys_minios_sb16_stream_vol,    "sb16_stream_vol" },
     [MINIOS_SYS_CLONE - MINIOS_SYSCALL_BASE] = { sys_minios_clone,    "clone" },
     [MINIOS_SYS_THREAD_SPAWN - MINIOS_SYSCALL_BASE] = { sys_minios_thread_spawn, "thread_spawn" },
+    [MINIOS_SYS_FUTEX_WAIT - MINIOS_SYSCALL_BASE] = { sys_minios_futex_wait, "futex_wait" },
+    [MINIOS_SYS_FUTEX_WAKE - MINIOS_SYSCALL_BASE] = { sys_minios_futex_wake, "futex_wake" },
+    [MINIOS_SYS_SUBMIT_BATCH - MINIOS_SYSCALL_BASE] = { sys_minios_submit_batch, "submit_batch" },
 };
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };

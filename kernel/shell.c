@@ -3,6 +3,7 @@
 #include "minifs.h"
 #include "sched.h"
 #include "smp.h"
+#include "percpu_rq.h"
 #include "vga_fb.h"
 #include "pcspk.h"
 #include "sb16.h"
@@ -1553,16 +1554,18 @@ void shell_exec_builtin(int argc, char **argv) {
         if (kprog_count == 0) vga_puts("  (no programs registered)\n");
     }
     else if (kstrcmp(argv[0], "smp") == 0) {
-        /* Per-CPU state: online CPUs, what each one runs (-1 = idle),
-         * and how many threads each AP first dispatched.  This is the
-         * serial-observable proof that threads run on both CPUs. */
         int c;
         kprintf("smp: %d CPU(s)\n", cpu_count);
         for (c = 0; c < cpu_count && c < MAX_CPUS; c++) {
-            kprintf("  cpu%d lapic=%d %s cur=%d dispatched=%lu polls=%lu\n",
+            unsigned long hits = 0;
+            unsigned long steals = 0;
+            unsigned long drops = 0;
+            rq_stats(c, &hits, &steals, &drops);
+            kprintf("  cpu%d lapic=%d %s cur=%d dispatched=%lu polls=%lu rq_hits=%lu rq_steals=%lu rq_drops=%lu\n",
                     cpus[c].cpu_id, cpus[c].lapic_id,
                     cpus[c].is_bsp ? "BSP" : "AP ",
-                    cpus[c].cur_pid, smp_dispatches[c], smp_idle_polls[c]);
+                    cpus[c].cur_pid, smp_dispatches[c], smp_idle_polls[c],
+                    hits, steals, drops);
         }
         kprintf("  bad_gs=%u\n", smp_dbg_bad_gs);
     }

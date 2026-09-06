@@ -5,6 +5,9 @@
 #include "sched.h"
 #include "smp.h"
 #include "sync.h"
+#include "futex.h"
+#include "percpu_rq.h"
+#include "rcu.h"
 #include "bootdefs.h"
 #include "vga_fb.h"
 #include "sb16.h"
@@ -309,8 +312,43 @@ static int sched_next_locked(int start, int vm_only) {
 /* Claim one READY thread for this CPU's idle loop (the AP only claims
  * CLONE_VM threads): marks it RUNNING under lock and installs it as the
  * CPU's current pid.  Returns the pid, or -1 when nothing is ready. */
-static int smp_claim_thread_v(int vm_only) {
+static int smp_try_claim_hint(int pid, int vm_only) {
     irqflags_t flags;
+    int claimed = -1;
+    if (pid <= 0 || pid >= MAX_PROCS)
+        return -1;
+    spin_lock_irqsave(&sched_lock, &flags);
+    if (procs[pid].state == PROC_READY &&
+        (!vm_only || (procs[pid].clone_flags & CLONE_VM))) {
+        procs[pid].state = PROC_RUNNING;
+        this_cpu()->cur_pid = pid;
+        claimed = pid;
+    }
+    spin_unlock_irqrestore(&sched_lock, flags);
+    return claimed;
+}
+
+static int smp_claim_thread_v(int vm_only) {
+    int me = this_cpu()->cpu_id;
+    int tries;
+    int pid;
+    int from = -1;
+    irqflags_t flags;
+    if (vm_only) {
+        for (tries = 0; tries < RQ_VALIDATE_ATTEMPTS; tries++) {
+            pid = rq_pop_local(me);
+            if (pid == WQ_NONE_HINT)
+                break;
+            if (smp_try_claim_hint(pid, 1) >= 0)
+                return pid;
+        }
+        pid = rq_steal_once(me, &from);
+        if (pid != WQ_NONE_HINT && smp_try_claim_hint(pid, 1) >= 0)
+            return pid;
+        rq_note_poll(me);
+        if (!rq_should_rescan(me))
+            return -1;
+    }
     spin_lock_irqsave(&sched_lock, &flags);
     int next = sched_next_locked(this_cpu()->cur_pid, vm_only);
     if (next >= 0)
@@ -439,6 +477,8 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         if (cpu->is_bsp) {
             pic_eoi(0);
             sb16_poll();
+            rcu_note_tick(cpu->cpu_id);
+            rcu_poll();
             /* Share the tick with the APs: their per-CPU LAPIC timers
              * are not a dependable wakeup for a halted AP in QEMU, so
              * the BSP broadcasts a fixed IPI (vector 32) every tick.
@@ -450,6 +490,7 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
              * instead of PIC EOI; also count it for the `smp` builtin. */
             *(volatile unsigned *)0xFEE000B0UL = 0;
             __sync_fetch_and_add(&smp_dbg_ipis, 1);
+            rcu_note_tick(cpu->cpu_id);
         }
         if (cpu->is_bsp && proc_count > 1) {
             proc_t *cur = proc_get(current_pid);
@@ -932,8 +973,12 @@ long do_thread_spawn(unsigned long fn, unsigned long stack,
     child->ctx.rax = 0;
 
     if (proc_count <= pid) proc_count = pid + 1;
-    spin_unlock(&sched_lock);
-    return pid;
+    {
+        int home = this_cpu()->cpu_id;
+        spin_unlock(&sched_lock);
+        rq_enqueue(home, pid);
+        return pid;
+    }
 }
 
 /* do_clone(flags, newsp) - create a thread or process.
@@ -987,8 +1032,14 @@ long do_clone(long flags, long newsp) {
     child->ctx.rax = 0;
 
     if (proc_count <= pid) proc_count = pid + 1;
-    spin_unlock(&sched_lock);
-    return pid;
+    {
+        int home = this_cpu()->cpu_id;
+        int vm_child = (cflags & CLONE_VM) ? 1 : 0;
+        spin_unlock(&sched_lock);
+        if (vm_child)
+            rq_enqueue(home, pid);
+        return pid;
+    }
 }
 
 int do_waitpid(int pid) {
@@ -1174,6 +1225,9 @@ void sched_init(void) {
      * null gate.  Handlers for 32/33/44 are safe pre-mouse-init. */
     idt_init();
     tss_init();
+    futex_init();
+    rq_init();
+    rcu_init();
     pic_init();
     pit_init();
     mouse_hw_init();

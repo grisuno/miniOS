@@ -12,8 +12,10 @@
  *     process-global, so two concurrent allocators corrupt the heap.
  *     In practice that means: printf (which may malloc) only under the
  *     print mutex, and no malloc/mmap in workers at all.
- *   - Mutexes are spin + yield (no kernel blocking): fine for short
- *     critical sections, the teaching contrast to kernel mutexes.
+ *   - Mutexes are futex-backed (kernel sleep/wake with a userland fast
+ *     path): an uncontended lock/unlock never traps; contention sleeps in
+ *     the kernel instead of spinning on yield.  On a kernel without futex
+ *     support (ENOSYS) the slow path degrades to spin+yield.
  *   - Condition variables are Mesa-style: always wait in a
  *     while (!predicate) loop, because a wake-up can precede the sleep.
  */
@@ -25,6 +27,11 @@
 
 #define MTHREAD_STACK_SZ 8192
 #define MTHREAD_MAX      16
+
+#define MMUTEX_FREE 0
+#define MMUTEX_HELD 1
+#define MMUTEX_CONTENDED 2
+#define MMUTEX_SPINS 100
 
 typedef int mthread_t;   /* slot index; slot holds the kernel pid */
 
@@ -53,17 +60,37 @@ static inline void myield(void) {
     m_syscall6(MINIOS_SYS_SCHED_YIELD, 0, 0, 0);
 }
 
+static inline long mfutex_wait(volatile int *addr, int val) {
+    return m_syscall6(MINIOS_SYS_FUTEX_WAIT, (long)addr, val, 0);
+}
+
+static inline long mfutex_wake(volatile int *addr, int n) {
+    return m_syscall6(MINIOS_SYS_FUTEX_WAKE, (long)addr, n, 0);
+}
+
 static inline void mmutex_init(mmutex_t *m) {
-    m->locked = 0;
+    m->locked = MMUTEX_FREE;
 }
 
 static inline void mmutex_lock(mmutex_t *m) {
-    while (__sync_lock_test_and_set(&m->locked, 1))
-        myield();
+    int spins = 0;
+    while (__sync_lock_test_and_set(&m->locked, MMUTEX_HELD) != MMUTEX_FREE) {
+        if (++spins < MMUTEX_SPINS)
+            continue;
+        if (__sync_lock_test_and_set(&m->locked, MMUTEX_CONTENDED) == MMUTEX_FREE)
+            return;
+        if (mfutex_wait(&m->locked, MMUTEX_CONTENDED) == -38) {
+            while (m->locked != MMUTEX_FREE)
+                myield();
+        }
+        spins = 0;
+    }
 }
 
 static inline void mmutex_unlock(mmutex_t *m) {
-    __sync_lock_release(&m->locked);
+    int old = __sync_lock_test_and_set(&m->locked, MMUTEX_FREE);
+    if (old == MMUTEX_CONTENDED)
+        mfutex_wake(&m->locked, 1);
 }
 
 /* Thread entry trampoline: runs fn(arg), stores the return, exits 0.

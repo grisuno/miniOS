@@ -935,6 +935,38 @@ sync_test: tests/test_sync.c kernel/sync.c sync.h sched.h spinlock.h | $(TOOLS_D
 test-sync: sync_test
 	$(TOOLS_DIR)/sync_test
 
+# Futex host test (tests/test_futex.c + kernel/futex.c).
+futex_test: tests/test_futex.c kernel/futex.c futex.h sync.h sched.h spinlock.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -DSYNC_HOST_TEST -DSYNC_HOST_CURRENT_PID \
+		-Dcurrent_pid=t_cur_pid \
+		-o $(TOOLS_DIR)/futex_test tests/test_futex.c kernel/futex.c
+
+test-futex: futex_test
+	$(TOOLS_DIR)/futex_test
+
+# Per-CPU runqueue host test (tests/test_percpu_rq.c + kernel/percpu_rq.c).
+percpu_rq_test: tests/test_percpu_rq.c kernel/percpu_rq.c percpu_rq.h sched.h spinlock.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -DSYNC_HOST_TEST \
+		-o $(TOOLS_DIR)/percpu_rq_test tests/test_percpu_rq.c kernel/percpu_rq.c
+
+test-percpu-rq: percpu_rq_test
+	$(TOOLS_DIR)/percpu_rq_test
+
+# Batch executor host test (tests/test_batch.c + kernel/batch.c).
+batch_test: tests/test_batch.c kernel/batch.c batch.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/batch_test tests/test_batch.c kernel/batch.c
+
+test-batch: batch_test
+	$(TOOLS_DIR)/batch_test
+
+# RCU-lite host test (tests/test_rcu.c + kernel/rcu.c).
+rcu_test: tests/test_rcu.c kernel/rcu.c rcu.h sched.h spinlock.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -DSYNC_HOST_TEST -DRCU_HOST_TEST \
+		-o $(TOOLS_DIR)/rcu_test tests/test_rcu.c kernel/rcu.c
+
+test-rcu: rcu_test
+	$(TOOLS_DIR)/rcu_test
+
 # ── Ramdisk image ─────────────────────────────────────────────────
 # The Makefile is a prerequisite because it carries the file list: editing
 # PROGS must invalidate the image even when no individual file changed.
@@ -970,7 +1002,7 @@ kernel.o: kernel.c kernel.h tls.h minifs.h ide.h block.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h
+         sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 editor.o: kernel/editor.c kernel.h shell.h editor.h
@@ -1018,7 +1050,7 @@ klog.o: kernel/klog.c kernel.h
 exec.o: kernel/exec.c kernel.h bootdefs.h arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c
@@ -1109,7 +1141,7 @@ $(PROGS_DIR)/icons/pokemon.png: tools/gen_icons.py
 $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip: tools/gen_zip_fixtures.py
 	python3 tools/gen_zip_fixtures.py $(PROGS_DIR)/etc/
 
-sched.o: kernel/sched.c sched.h kernel.h arch/x86/boot/bootdefs.h vga_fb.h pcspk.h
+sched.o: kernel/sched.c sched.h kernel.h arch/x86/boot/bootdefs.h vga_fb.h pcspk.h futex.h percpu_rq.h rcu.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
@@ -1154,11 +1186,23 @@ smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h ap_stub.h
 sync.o: kernel/sync.c sync.h sched.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o kernel.ld
+futex.o: kernel/futex.c futex.h sync.h sched.h spinlock.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+percpu_rq.o: kernel/percpu_rq.c percpu_rq.h sched.h spinlock.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+batch.o: kernel/batch.c batch.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+rcu.o: kernel/rcu.c rcu.h sched.h spinlock.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+kernel.elf: kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
 	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
-	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o -o $@
+	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o -o $@
 
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary $< $@

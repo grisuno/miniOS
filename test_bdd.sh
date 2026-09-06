@@ -175,6 +175,8 @@ poweroff"
 expect "thdemo: PASS"
 expect "cpu1 lapic=1 AP"
 expect "dispatched=[1-9]"
+expect "rq_hits=[0-9]"
+expect "rq_steals=[0-9]"
 expect "bad_gs=0"
 
 scenario "SMP single CPU fallback without -smp" "poweroff"

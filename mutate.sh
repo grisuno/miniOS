@@ -174,6 +174,11 @@ smp-sipi-vector-zero | s/SIPI_VECTOR       (AP_STUB_ADDR >> 12)/SIPI_VECTOR     
 smp-ap-no-lapic-eoi | s/\\*0xFEE000B0UL = 0;/\\*0xFEE000B0UL = 0; \\/* mutant: no eoi \\*/ | kernel/sched.c
 smp-bsp-ctx-switch-not-guarded | s/if (this_cpu\\(\\)->is_bsp \\&\\& proc_count > 1)/if (proc_count > 1)/ | kernel/sched.c
 smp-gs-base-not-set | s/wrmsr(MSR_GSBASE, (unsigned long)\\&cpus\\[cpu\\]);/\\/* mutant: no gs base \\*/ | smp.c
+futex-value-check-inverted | s/if (\\*(volatile int \\*)uaddr != val)/if (*(volatile int *)uaddr == val)/ | kernel/futex.c
+futex-wake-count-unbounded | s/while (pid != WQ_NONE \\&\\& woken < n)/while (pid != WQ_NONE)/ | kernel/futex.c
+percpu-rq-full-drop-lost | s/if (rqueues\\[cpu\\].count >= RQ_DEPTH)/if (rqueues[cpu].count > RQ_DEPTH)/ | kernel/percpu_rq.c
+batch-completion-off-by-one | s/\\*completed = i + 1;/\\*completed = i;/ | kernel/batch.c
+rcu-grace-shortened | s/if (rcu_state.pending\\[i\\].epoch < rcu_state.epoch)/if (rcu_state.pending[i].epoch <= rcu_state.epoch)/ | kernel/rcu.c
 "
 
 # Parse the mutation table into parallel arrays (preserving order).
@@ -287,6 +292,18 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         vma.c)
             make -C "$HERE" test-vma > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/futex.c)
+            make -C "$HERE" test-futex > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/percpu_rq.c)
+            make -C "$HERE" test-percpu-rq > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/batch.c)
+            make -C "$HERE" test-batch > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/rcu.c)
+            make -C "$HERE" test-rcu > "$BACKUP/suite.log" 2>&1
             ;;
         *)
             FAIL_FAST=1 "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1

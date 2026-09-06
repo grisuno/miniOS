@@ -490,6 +490,69 @@ position), `smp-init-missing` (no INIT before SIPI), `smp-sipi-vector-zero`
 (zero vector), `smp-ap-no-lapic-eoi` (missing AP EOI), `smp-bsp-ctx-switch-not-guarded`
 (AP corrupts process table), `smp-gs-base-not-set` (missing GS base).
 
+### SMP Scaling: Per-CPU Runqueues, Futexes, Batch, RCU-Lite
+
+Four additive contracts that remove SMP contention and trap overhead
+without changing the scheduling model (1:1 CLONE_VM threads, shared
+address space, non-preemptible kernel outside explicit points). All four
+are host-tested (`make test-futex test-percpu-rq test-batch test-rcu`),
+mutation-covered in `mutate.sh`, and wired into the ABI as version 2
+(`MINIOS_ABI_VERSION`, checksum extended with the new numbers). Each
+contract lives in exactly one kernel file plus a minimal header carrying
+its config; cross-file layout constants stay in `progs/minios_abi.h`.
+
+- **Futexes (`futex.h`, `kernel/futex.c`, syscalls 226/227).** A 32-bit
+  user word is the key: `FUTEX_WAIT` sleeps while `*addr == val`,
+  `FUTEX_WAKE` wakes up to `n` sleepers on that address. Waiters chain
+  intrusively through `proc_t.wq_next` on one of `FUTEX_BUCKETS` hash
+  buckets; each sleeper records its address in a pid-indexed table so
+  colliding buckets wake by address only. The value check and the enqueue
+  share the bucket lock, which makes lost wakeups impossible; the lock is
+  released before `schedule()`. The syscall layer rejects kernel
+  addresses with `-EFAULT` before entry. Userland (`progs/src/mthreads.h`)
+  runs a 0/1/2-state mutex on top: uncontended acquire/release never
+  trap, contention sleeps in the kernel, and an `-ENOSYS` reply degrades
+  to the old spin+yield loop so old kernels keep working. BDD proof is
+  the existing `thdemo` scenario, which now runs 10 threads over futex
+  mutexes (`produced=1000 consumed=1000`).
+- **Per-CPU runqueues + work stealing (`percpu_rq.h`,
+  `kernel/percpu_rq.c`).** Every CPU owns a ring of `RQ_DEPTH` pid hints.
+  `do_thread_spawn`/`do_clone(CLONE_VM)` record the child on the
+  spawner's ring; the AP idle path pops local hints, attempts one
+  non-blocking steal per remote ring (`spin_trylock`, never waited on),
+  and only then takes `sched_lock` to validate a hint
+  (`procs[pid].state == PROC_READY`, VM-only) or to run the legacy
+  global scan. Hints are advisory: full rings drop (counted), stale hints
+  are discarded, and an idle CPU that finds nothing skips `sched_lock`
+  entirely until every `RQ_RESCAN_PERIOD` polls, which bounds staleness
+  and keeps a hintless READY thread dispatchable. The BSP keeps the
+  global scan (it owns non-VM processes, which are never hinted and never
+  stolen). The `smp` builtin reports `rq_hits`/`rq_steals`/`rq_drops` per
+  CPU; the BDD suite asserts they appear and that the AP steals during
+  `thdemo`.
+- **Batched submission (`batch.h`, `kernel/batch.c`, syscall 235).**
+  `SYS_SUBMIT_BATCH(ops, results, count)` runs up to `BATCH_MAX_OPS`
+  descriptors in one trap, in order, stopping at the first error with
+  `completed` reporting the successes. Only side-effect-light,
+  non-blocking, pointer-free opcodes are batchable (`NOP`, `YIELD`,
+  `TIME`, `GETPID`); anything else is `BATCH_ERR_OPCODE` and stops the
+  batch. The syscall wrapper validates both arrays against the user
+  window, copies the descriptors into kernel memory (no TOCTOU through
+  user-mutable opcodes), and copies results out. Number 235 was chosen
+  because 228 is `clock_gettime` in the Linux switch.
+- **RCU-lite (`rcu.h`, `kernel/rcu.c`).** Epoch grace periods over the
+  existing 100 Hz ticks: readers bracket with `rcu_read_lock/unlock`
+  (nesting, tracked depth per CPU) and never lock; writers publish with
+  `rcu_publish` and retire with `rcu_call`; `rcu_note_tick`/`rcu_note_idle`
+  feed quiescent states from the timer ISR and `rcu_poll` closes the grace
+  and runs due callbacks in tick context. The callback queue is bounded
+  (`RCU_CB_MAX`, full refuses with ownership kept) and `rcu_synchronize`
+  is spin-bounded (`RCU_SYNC_SPINS`, expiry is `RCU_ERR_TIMEOUT`, never a
+  hang). The timer ISR feeds ticks on both BSP and AP paths and polls on
+  the BSP. Deliberately out of scope, as documented in the improvement
+  plan: lock-free everything, kernel preemption, M:N threading and
+  per-CPU allocators.
+
 ### ISR-driven desktop event loop (`sched.c` + `vga_fb.c`)
 
 The desktop event loop (`vga_fb_mouse_tick`) must run continuously regardless
@@ -1623,6 +1686,7 @@ sh src/test_all.sh  # one-boot comprehensive non-interactive suite (61 PASS)
 ./mutate.sh         # every mutant killed (BDD + host TLS + host VMA suites)
 make test-tls       # host-side crypto + full-handshake suite green
 make test-vma       # host-side VMA red-black tree suite green
+make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
@@ -2021,6 +2085,7 @@ sh src/test_all.sh          # one-boot comprehensive non-interactive suite (61 P
 ./mutate.sh                 # every mutant killed
 make test-tls               # host-side crypto + handshake suite
 make test-vma               # host-side VMA red-black tree suite
+make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD
 mcp/mutate_mcp.sh           # every MCP mutant killed
 python3 tools/check_cohesion.py KNOWLEDGE_BASE.jsonld
