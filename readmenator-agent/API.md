@@ -1219,7 +1219,7 @@ void kmain(void)`
 
 ### futex_init `void futex_init(void)`
 - Defined: `kernel/futex.c:36`
-- Doc: static unsigned long futex_hash(unsigned long uaddr) { unsigned long word = uaddr >> 2; word ^= word >> 16; word *= 0x9e
+- Doc: static unsigned long futex_hash(unsigned long uaddr) { unsigned long word = uaddr >> 2; word ^= word >> 16; word *= FUTE
 
 ### futex_wake `long futex_wake(unsigned long uaddr, int n)`
 - Defined: `kernel/futex.c:89`
@@ -1369,24 +1369,24 @@ void kmain(void)`
 - Doc: return; spin_lock_irqsave(&rqueues[cpu].lock, &flags); if (rqueues[cpu].count >= RQ_DEPTH) { rqueues[cpu].drops++; spin_
 
 ### rq_steal_once `int rq_steal_once(int self_cpu, int *from_cpu)`
-- Defined: `kernel/percpu_rq.c:87`
+- Defined: `kernel/percpu_rq.c:89`
 - Doc: Docstring: Non-blocking steal of one hint from another CPU's ring.  Tries every remote ring once with spin_trylock and r
 
 ### rq_empty `int rq_empty(int cpu)`
-- Defined: `kernel/percpu_rq.c:113`
+- Defined: `kernel/percpu_rq.c:115`
 - Doc: pid = rqueues[c].ring[rqueues[c].head]; rqueues[c].ring[rqueues[c].head] = WQ_NONE_HINT; rqueues[c].head = (rqueues[c].h
 
 ### rq_note_poll `void rq_note_poll(int cpu)`
-- Defined: `kernel/percpu_rq.c:125`
+- Defined: `kernel/percpu_rq.c:127`
 - Doc: /** Docstring: True when cpu holds no hint. Lock-protected peek. int rq_empty(int cpu) { irqflags_t flags; int empty; if
 
 ### rq_should_rescan `int rq_should_rescan(int cpu)`
-- Defined: `kernel/percpu_rq.c:135`
+- Defined: `kernel/percpu_rq.c:137`
 - Doc: return empty; } /** Docstring: Count an unsuccessful claim poll for the rescan schedule. void rq_note_poll(int cpu) { ir
 
 ### rq_stats `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals,
               unsigned long *d...`
-- Defined: `kernel/percpu_rq.c:150`
+- Defined: `kernel/percpu_rq.c:152`
 - Doc: irqflags_t flags; int due = 0; if (!rq_cpu_valid(cpu)) return 1; spin_lock_irqsave(&rqueues[cpu].lock, &flags); if (rque
 
 ## kernel/printf.c
@@ -1464,6 +1464,10 @@ void kmain(void)`
 ### rcu_poll `void rcu_poll(void)`
 - Defined: `kernel/rcu.c:152`
 - Doc: Docstring: Advance the epoch and run due callbacks.  A grace period closes when every online CPU reported quiescence at 
+
+### expires `* expires (ticks stalled, never a hang). No completion assert is
+ * possible here by design: a re...`
+- Defined: `kernel/rcu.c:193`
 
 ## kernel/redirect.c
 

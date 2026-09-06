@@ -97,10 +97,11 @@
   - `FUTEX_H` (macro, line 2)
   - `FUTEX_BUCKETS` (macro, line 50)
   - `FUTEX_BUCKET_MASK` (macro, line 52)
-  - `FUTEX_OK` (macro, line 53)
-  - `FUTEX_NOMATCH` (macro, line 55)
-  - `FUTEX_NOPROC` (macro, line 56)
-  - `FUTEX_WAKE_ALL` (macro, line 57)
+  - `FUTEX_HASH_GOLDEN` (macro, line 53)
+  - `FUTEX_OK` (macro, line 54)
+  - `FUTEX_NOMATCH` (macro, line 56)
+  - `FUTEX_NOPROC` (macro, line 57)
+  - `FUTEX_WAKE_ALL` (macro, line 58)
 
 ## gen_minifs.py
 - Layer: utility

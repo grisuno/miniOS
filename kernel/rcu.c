@@ -187,9 +187,12 @@ void rcu_poll(void) {
 
 /** Docstring: Wait until a full grace period elapses.
  *
- * Polls rcu_poll up to RCU_SYNC_SPINS times. Returns RCU_OK once the
- * epoch advanced past the entry value, RCU_ERR_TIMEOUT when the bound
- * expires (ticks stalled, never a hang).
+ * Polls rcu_poll up to RCU_SYNC_SPINS times, which also pumps due
+ * callbacks inline, so every retirement stamped before entry has run by
+ * the time RCU_OK returns. Returns RCU_ERR_TIMEOUT when the bound
+ * expires (ticks stalled, never a hang). No completion assert is
+ * possible here by design: a retirement stamped during the wait owns a
+ * later grace period and is legitimately still queued at return.
  */
 long rcu_synchronize(void) {
     unsigned long start = rcu_state.epoch;

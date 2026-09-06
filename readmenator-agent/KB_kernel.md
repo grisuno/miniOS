@@ -197,11 +197,11 @@
   - `rq_init` (function, line 19) `void rq_init(void)`
   - `rq_enqueue` (function, line 41) `void rq_enqueue(int cpu, int pid)`
   - `rq_pop_local` (function, line 61) `int rq_pop_local(int cpu)`
-  - `rq_steal_once` (function, line 87) `int rq_steal_once(int self_cpu, int *from_cpu)`
-  - `rq_empty` (function, line 113) `int rq_empty(int cpu)`
-  - `rq_note_poll` (function, line 125) `void rq_note_poll(int cpu)`
-  - `rq_should_rescan` (function, line 135) `int rq_should_rescan(int cpu)`
-  - `rq_stats` (function, line 150) `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals,
+  - `rq_steal_once` (function, line 89) `int rq_steal_once(int self_cpu, int *from_cpu)`
+  - `rq_empty` (function, line 115) `int rq_empty(int cpu)`
+  - `rq_note_poll` (function, line 127) `void rq_note_poll(int cpu)`
+  - `rq_should_rescan` (function, line 137) `int rq_should_rescan(int cpu)`
+  - `rq_stats` (function, line 152) `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals,
               unsigned long *d...`
 
 ## kernel/printf.c
@@ -238,6 +238,8 @@
   - `rcu_note_tick` (function, line 126) `void rcu_note_tick(int cpu)`
   - `rcu_note_idle` (function, line 137) `void rcu_note_idle(int cpu)`
   - `rcu_poll` (function, line 152) `void rcu_poll(void)`
+  - `expires` (function, line 193) `* expires (ticks stalled, never a hang). No completion assert is
+ * possible here by design: a re...`
 
 ## kernel/redirect.c
 - Layer: infrastructure

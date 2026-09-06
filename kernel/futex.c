@@ -23,7 +23,7 @@ static futex_table_t futex_table;
 static unsigned long futex_hash(unsigned long uaddr) {
     unsigned long word = uaddr >> 2;
     word ^= word >> 16;
-    word *= 0x9e3779b1UL;
+    word *= FUTEX_HASH_GOLDEN;
     word ^= word >> 13;
     return word & FUTEX_BUCKET_MASK;
 }

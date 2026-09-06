@@ -82,7 +82,9 @@ int rq_pop_local(int cpu) {
  * Tries every remote ring once with spin_trylock and returns the first
  * hint found, reporting the donor through from_cpu. Rings that are busy
  * are skipped, never waited on. Returns WQ_NONE_HINT when nothing could
- * be stolen without blocking.
+ * be stolen without blocking. The thief's steal counter is owner-written
+ * but updated under the donor's lock, so it uses an atomic add (the same
+ * pattern as smp_dispatches) instead of relying on the donor's lock.
  */
 int rq_steal_once(int self_cpu, int *from_cpu) {
     int c;
@@ -100,7 +102,7 @@ int rq_steal_once(int self_cpu, int *from_cpu) {
         rqueues[c].ring[rqueues[c].head] = WQ_NONE_HINT;
         rqueues[c].head = (rqueues[c].head + 1) % RQ_DEPTH;
         rqueues[c].count--;
-        rqueues[self_cpu].steals++;
+        __sync_fetch_and_add(&rqueues[self_cpu].steals, 1);
         spin_unlock(&rqueues[c].lock);
         if (from_cpu)
             *from_cpu = c;

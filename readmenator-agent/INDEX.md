@@ -30,7 +30,7 @@
 | `fs/ramdisk.c` | include "kernel.h"  ============================================================ | fs | 18 |
 | `fs/vfs.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 23 |
 | `fs/zip.c` | zip.c — the unzip/zip shell builtins over the miniz zip library. | fs | 7 |
-| `futex.h` | ifndef FUTEX_H define FUTEX_H  Docstring: futex.h -- Fast userspace mutex sleep/ | root | 7 |
+| `futex.h` | ifndef FUTEX_H define FUTEX_H  Docstring: futex.h -- Fast userspace mutex sleep/ | root | 8 |
 | `gen_minifs.py` | - | root | 0 |
 | `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 27 |
 | `install.sh` | - | root | 0 |
@@ -49,7 +49,7 @@
 | `kernel/mm/swap.c` | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | mm | 8 |
 | `kernel/percpu_rq.c` | Docstring: kernel/percpu_rq.c -- Per-CPU runqueue hints and stealing. | kernel | 9 |
 | `kernel/printf.c` | include "kernel.h"  ============================================================ | kernel | 10 |
-| `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | kernel | 11 |
+| `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | kernel | 12 |
 | `kernel/redirect.c` | include "kernel.h"  ============================================================ | kernel | 3 |
 | `kernel/sched.c` | - | kernel | 44 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 7 |
