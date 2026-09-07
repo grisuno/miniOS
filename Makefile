@@ -972,9 +972,23 @@ sanitize_test: tests/test_sanitize.c sanitize.h | $(TOOLS_DIR)
 test-sanitize: sanitize_test
 	$(TOOLS_DIR)/sanitize_test
 
+# Tick bus host test (tests/test_tick.c + kernel/tick.c).
+tick_test: tests/test_tick.c kernel/tick.c tick.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/tick_test tests/test_tick.c kernel/tick.c
+
+test-tick: tick_test
+	$(TOOLS_DIR)/tick_test
+
+# HAL I/O host test (tests/test_hal_io.c + arch/x86/hal_io.h).
+hal_test: tests/test_hal_io.c arch/x86/hal_io.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/hal_test tests/test_hal_io.c
+
+test-hal: hal_test
+	$(TOOLS_DIR)/hal_test
+
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -982,6 +996,8 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/batch_test
 	$(TOOLS_DIR)/rcu_test
 	$(TOOLS_DIR)/sanitize_test
+	$(TOOLS_DIR)/tick_test
+	$(TOOLS_DIR)/hal_test
 
 # ── Ramdisk image ─────────────────────────────────────────────────
 # The Makefile is a prerequisite because it carries the file list: editing
@@ -1171,7 +1187,10 @@ $(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
 $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip: tools/gen_zip_fixtures.py
 	python3 tools/gen_zip_fixtures.py $(PROGS_DIR)/etc/
 
-sched.o: kernel/sched.c sched.h kernel.h arch/x86/boot/bootdefs.h vga_fb.h pcspk.h futex.h percpu_rq.h rcu.h
+sched.o: kernel/sched.c sched.h kernel.h arch/x86/boot/bootdefs.h arch/x86/hal_io.h tick.h vga_fb.h sb16.h pcspk.h futex.h percpu_rq.h rcu.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+tick.o: kernel/tick.c tick.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
@@ -1228,10 +1247,10 @@ batch.o: kernel/batch.c batch.h
 rcu.o: kernel/rcu.c rcu.h sched.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
+kernel.elf: kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o \
 	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
-	      sched.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
+	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o -o $@
 
 kernel.bin: kernel.elf

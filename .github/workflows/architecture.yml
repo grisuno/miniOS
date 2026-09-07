@@ -14,15 +14,22 @@ jobs:
       - uses: actions/checkout@v4
       - name: Regenerate Knowledge Base
         run: |
-          if [ -f tools/readmenator.py ]; then
+          if command -v readmenator >/dev/null 2>&1; then
+            readmenator .
+          elif [ -f tools/readmenator.py ]; then
             python3 tools/readmenator.py --output KNOWLEDGE_BASE.md
-            if ! git diff --quiet KNOWLEDGE_BASE.md; then
-              echo "::error::KNOWLEDGE_BASE.md is out of sync with code"
-              git diff KNOWLEDGE_BASE.md
-              exit 1
-            fi
           else
             echo "readmenator not found, skipping KB sync check"
+            exit 0
+          fi
+          if ! git diff --quiet KNOWLEDGE_BASE.md; then
+            echo "::error::KNOWLEDGE_BASE.md is out of sync with code"
+            git diff KNOWLEDGE_BASE.md
+            exit 1
+          fi
+          if ! cmp -s KNOWLEDGE_BASE.md docs/KNOWLEDGE_BASE.md; then
+            echo "::error::docs/KNOWLEDGE_BASE.md is out of sync with KNOWLEDGE_BASE.md"
+            exit 1
           fi
 
   cohesion:

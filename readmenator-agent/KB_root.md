@@ -693,6 +693,16 @@ void kmain(void)`
   - `log_message` (method, line 114) `def log_message(self, fmt)`
 - Depends on: `kernel/time.c`
 
+## tick.h
+- Layer: utility
+- Doc: Docstring: Tick listener bus contract.
+- Language: h
+- Symbols:
+  - `TICK_H` (macro, line 18)
+  - `TICK_MAX_AUDIO_LISTENERS` (macro, line 27)
+  - `TICK_MAX_DESKTOP_LISTENERS` (macro, line 29)
+  - `TICK_CONFIG_DEFAULT` (macro, line 32)
+
 ## tls.h
 - Layer: utility
 - Doc: ifndef TLS_H define TLS_H  ========== TLS 1.2 client (RFC 5246) ==========

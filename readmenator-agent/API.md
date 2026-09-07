@@ -205,6 +205,56 @@
 ### resume_iretq
 - Defined: `arch/x86/ctx_sw.S:148`
 
+## arch/x86/hal_io.h
+
+### hal_outb `static inline void hal_outb(unsigned short port, unsigned char val)`
+- Defined: `arch/x86/hal_io.h:68`
+- Doc: #ifdef HAL_IO_HOST_TEST /** Docstring: Stub log for host tests, counts port writes. extern unsigned hal_io_stub_writes; 
+
+### hal_inb `static inline unsigned char hal_inb(unsigned short port)`
+- Defined: `arch/x86/hal_io.h:75`
+- Doc: extern unsigned hal_io_stub_last_val; /** Docstring: Stub log for host tests, counts LAPIC EOI calls. extern unsigned ha
+
+### hal_outw `static inline void hal_outw(unsigned short port, unsigned short val)`
+- Defined: `arch/x86/hal_io.h:81`
+- Doc: /** Docstring: Stub port byte write, records port and value. static inline void hal_outb(unsigned short port, unsigned c
+
+### hal_inw `static inline unsigned short hal_inw(unsigned short port)`
+- Defined: `arch/x86/hal_io.h:88`
+- Doc: /** Docstring: Stub port byte read, returns the canned value. static inline unsigned char hal_inb(unsigned short port) {
+
+### hal_lapic_eoi `static inline void hal_lapic_eoi(void)`
+- Defined: `arch/x86/hal_io.h:94`
+- Doc: /** Docstring: Stub port word write, records port and low byte. static inline void hal_outw(unsigned short port, unsigne
+
+### hal_pic_eoi `static inline void hal_pic_eoi(int irq)`
+- Defined: `arch/x86/hal_io.h:99`
+- Doc: } /** Docstring: Stub port word read, returns the canned value. static inline unsigned short hal_inw(unsigned short port
+
+### hal_outb `static inline void hal_outb(unsigned short port, unsigned char val)`
+- Defined: `arch/x86/hal_io.h:109`
+- Doc: hal_io_stub_lapic_eois++; } /** Docstring: Stub PIC EOI for an IRQ line. static inline void hal_pic_eoi(int irq) { if (i
+
+### hal_inb `static inline unsigned char hal_inb(unsigned short port)`
+- Defined: `arch/x86/hal_io.h:114`
+- Doc: if (irq >= 8) { hal_outb(HAL_PIC2_CMD, HAL_PIC_EOI); } hal_outb(HAL_PIC1_CMD, HAL_PIC_EOI); } #else /** Docstring: Emit 
+
+### hal_outw `static inline void hal_outw(unsigned short port, unsigned short val)`
+- Defined: `arch/x86/hal_io.h:121`
+- Doc: /** Docstring: Emit a port byte write. static inline void hal_outb(unsigned short port, unsigned char val) { __asm__ vol
+
+### hal_inw `static inline unsigned short hal_inw(unsigned short port)`
+- Defined: `arch/x86/hal_io.h:126`
+- Doc: /** Docstring: Emit a port byte read. static inline unsigned char hal_inb(unsigned short port) { unsigned char r; __asm_
+
+### hal_lapic_eoi `static inline void hal_lapic_eoi(void)`
+- Defined: `arch/x86/hal_io.h:133`
+- Doc: /** Docstring: Emit a port word write. static inline void hal_outw(unsigned short port, unsigned short val) { __asm__ vo
+
+### hal_pic_eoi `static inline void hal_pic_eoi(int irq)`
+- Defined: `arch/x86/hal_io.h:138`
+- Doc: /** Docstring: Emit a port word read. static inline unsigned short hal_inw(unsigned short port) { unsigned short r; __as
+
 ## arch/x86/isr_stubs.S
 
 ### tf_rax
@@ -1483,147 +1533,155 @@ void kmain(void)`
 
 ## kernel/sched.c
 
+### sched_tick_audio `static void sched_tick_audio(void *ctx)`
+- Defined: `kernel/sched.c:19`
+- Doc: #include "sched.h" #include "smp.h" #include "sync.h" #include "futex.h" #include "percpu_rq.h" #include "rcu.h" #includ
+
+### sched_tick_desktop `static void sched_tick_desktop(void *ctx)`
+- Defined: `kernel/sched.c:25`
+- Doc: #include "bootdefs.h" #include "vga_fb.h" #include "sb16.h" #include "tick.h" #include "arch/x86/hal_io.h" #include "arc
+
 ### read_cr3 `static inline unsigned long read_cr3(void)`
-- Defined: `kernel/sched.c:35`
+- Defined: `kernel/sched.c:49`
 
 ### __attribute__ `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:61`
+- Defined: `kernel/sched.c:75`
 - Doc: --- TSS (one per CPU) ----  Every CPU that runs ring-3 code needs a private TSS: a timer tick that preempts ring 3 switc
 
 ### __attribute__ `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:82`
+- Defined: `kernel/sched.c:96`
 - Doc: Per-CPU idle stacks: a park into the idle context re-enters * smp_ap_idle_loop here (idle_proc ctx.rsp points at the top
 
 ### alloc_kstack `static uint64_t alloc_kstack(void)`
-- Defined: `kernel/sched.c:96`
+- Defined: `kernel/sched.c:110`
 - Doc: typedef struct __attribute__((packed)) { uint16_t off_lo; uint16_t sel; uint8_t ist; uint8_t type_attr; uint16_t off_mid
 
 ### free_kstack `static void free_kstack(uint64_t top)`
-- Defined: `kernel/sched.c:107`
+- Defined: `kernel/sched.c:121`
 
 ### idt_set `static void idt_set(int vec, void (*h)(void))`
-- Defined: `kernel/sched.c:131`
+- Defined: `kernel/sched.c:145`
 - Doc: Parked trap frames for preempted ring-3 contexts, one slot per pid. The ISR copies the preempted frame here (never onto 
 
 ### idt_init `static void idt_init(void)`
-- Defined: `kernel/sched.c:141`
+- Defined: `kernel/sched.c:155`
 
 ### pic_init `static void pic_init(void)`
-- Defined: `kernel/sched.c:154`
+- Defined: `kernel/sched.c:168`
 - Doc: } static void idt_init(void) { kmemset(idt, 0, sizeof(idt)); int i; for (i = 0; i < 256; i++) if (isr_stub_table[i]) idt
 
 ### pit_init `static void pit_init(void)`
-- Defined: `kernel/sched.c:189`
+- Defined: `kernel/sched.c:203`
 - Doc: Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + IRQ4 (COM1, UART IER stays 0 so it never fires) + IRQ5 
 
 ### pic_eoi `static void pic_eoi(int irq)`
-- Defined: `kernel/sched.c:195`
+- Defined: `kernel/sched.c:209`
 
 ### tss_write_desc `static void tss_write_desc(int cpu)`
-- Defined: `kernel/sched.c:203`
+- Defined: `kernel/sched.c:216`
 
 ### tss_init `static void tss_init(void)`
-- Defined: `kernel/sched.c:220`
+- Defined: `kernel/sched.c:233`
 
 ### tss_init_ap `void tss_init_ap(int cpu)`
-- Defined: `kernel/sched.c:252`
+- Defined: `kernel/sched.c:265`
 - Doc: Load this AP's task register.  The BSP wrote every descriptor in tss_init before the APs were woken, so the AP only poin
 
 ### context `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...`
-- Defined: `kernel/sched.c:270`
+- Defined: `kernel/sched.c:283`
 
 ### point `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...`
-- Defined: `kernel/sched.c:283`
+- Defined: `kernel/sched.c:296`
 
 ### sched_next_locked `static int sched_next_locked(int start, int vm_only)`
-- Defined: `kernel/sched.c:299`
+- Defined: `kernel/sched.c:312`
 - Doc: Round-robin scan with sched_lock HELD.  Returns a claimed (PROC_RUNNING) pid or -1.  vm_only restricts the pick to CLONE
 
 ### smp_try_claim_hint `static int smp_try_claim_hint(int pid, int vm_only)`
-- Defined: `kernel/sched.c:315`
+- Defined: `kernel/sched.c:328`
 - Doc: Claim one READY thread for this CPU's idle loop (the AP only claims CLONE_VM threads): marks it RUNNING under lock and i
 
 ### smp_claim_thread_v `static int smp_claim_thread_v(int vm_only)`
-- Defined: `kernel/sched.c:330`
+- Defined: `kernel/sched.c:343`
 
 ### smp_ap_idle_loop `void smp_ap_idle_loop(void)`
-- Defined: `kernel/sched.c:370`
+- Defined: `kernel/sched.c:383`
 - Doc: AP idle loop: hlt until a CLONE_VM thread is ready, run it, repeat. Entered once from smp_ap_entry on the AP stub stack;
 
 ### sched_ap_preempt `static void sched_ap_preempt(trap_frame_t *frame)`
-- Defined: `kernel/sched.c:404`
+- Defined: `kernel/sched.c:417`
 - Doc: AP timer preemption: time-slice the AP's current CLONE_VM thread with the next READY one.  An idle AP (cur_pid -1) needs
 
 ### smp_any_ap_idle `static int smp_any_ap_idle(void)`
-- Defined: `kernel/sched.c:430`
+- Defined: `kernel/sched.c:443`
 - Doc: True when some AP is idle.  The BSP tick uses this to leave freshly parked CLONE_VM threads unclaimed: the idle AP's nex
 
 ### isr_dispatch `void isr_dispatch(int vector, trap_frame_t *frame)`
-- Defined: `kernel/sched.c:457`
+- Defined: `kernel/sched.c:470`
 
 ### BSP `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
-- Defined: `kernel/sched.c:697`
+- Defined: `kernel/sched.c:710`
 
 ### proc_get `proc_t *proc_get(int pid)`
-- Defined: `kernel/sched.c:717`
+- Defined: `kernel/sched.c:730`
 - Doc: serial_puts("  [recovering: ring-3 user fault, returning EFAULT]\n"); k_user_fault_return(); __builtin_unreachable(); } 
 
 ### proc_create `int proc_create(const char *name, int parent_pid)`
-- Defined: `kernel/sched.c:723`
+- Defined: `kernel/sched.c:736`
 
 ### sched_park_as_returned `static void sched_park_as_returned(proc_t *cur)`
-- Defined: `kernel/sched.c:789`
+- Defined: `kernel/sched.c:802`
 
 ### schedule `void schedule(void)`
-- Defined: `kernel/sched.c:798`
+- Defined: `kernel/sched.c:811`
 
 ### yield `void yield(void)`
-- Defined: `kernel/sched.c:872`
+- Defined: `kernel/sched.c:885`
 
 ### do_exit `void do_exit(int code)`
-- Defined: `kernel/sched.c:887`
+- Defined: `kernel/sched.c:900`
 
 ### do_thread_spawn `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)`
-- Defined: `kernel/sched.c:927`
+- Defined: `kernel/sched.c:940`
 - Doc: frame is ambiguous, this one starts cleanly at fn(arg) on the given stack:  child RIP = fn, child RSP = stack, child RDI
 
 ### do_waitpid `int do_waitpid(int pid)`
-- Defined: `kernel/sched.c:1044`
+- Defined: `kernel/sched.c:1057`
 
 ### do_kill `int do_kill(int pid)`
-- Defined: `kernel/sched.c:1078`
+- Defined: `kernel/sched.c:1091`
 
 ### timer_tick `void timer_tick(void)`
-- Defined: `kernel/sched.c:1085`
+- Defined: `kernel/sched.c:1098`
 
 ### mouse_wait_cmd `static void mouse_wait_cmd(void)`
-- Defined: `kernel/sched.c:1089`
+- Defined: `kernel/sched.c:1102`
 - Doc: schedule(); } } int do_kill(int pid) { proc_t *p = proc_get(pid); if (!p) return -1; do_exit(-1); return 0; } void timer
 
 ### mouse_wait_data `static void mouse_wait_data(void)`
-- Defined: `kernel/sched.c:1095`
+- Defined: `kernel/sched.c:1108`
 
 ### mouse_write `static void mouse_write(unsigned char data)`
-- Defined: `kernel/sched.c:1102`
+- Defined: `kernel/sched.c:1115`
 
 ### mouse_read `static unsigned char mouse_read(void)`
-- Defined: `kernel/sched.c:1109`
+- Defined: `kernel/sched.c:1122`
 
 ### mouse_hw_init `static void mouse_hw_init(void)`
-- Defined: `kernel/sched.c:1114`
+- Defined: `kernel/sched.c:1127`
 
 ### mouse_disable `void mouse_disable(void)`
-- Defined: `kernel/sched.c:1165`
+- Defined: `kernel/sched.c:1178`
 
 ### mouse_enable `void mouse_enable(void)`
-- Defined: `kernel/sched.c:1167`
+- Defined: `kernel/sched.c:1180`
 
 ### sched_init `void sched_init(void)`
-- Defined: `kernel/sched.c:1168`
+- Defined: `kernel/sched.c:1181`
 
 ## kernel/scrollback.c
 
@@ -2234,6 +2292,40 @@ static void shell_hist_na...`
  * interpreter.
  */...`
 - Defined: `kernel/syscalls.c:1022`
+
+## kernel/tick.c
+
+### tick_reset `void tick_reset(void)`
+- Defined: `kernel/tick.c:30`
+- Doc: tick_fn_t fn; void *ctx; } tick_slot_t; /** Docstring: Audio listener table. static tick_slot_t tick_audio_slots[TICK_MA
+
+### tick_register_audio `int tick_register_audio(tick_fn_t fn, void *ctx)`
+- Defined: `kernel/tick.c:49`
+- Doc: Docstring: Register an unconditional BSP audio effect.  Returns 0 on success, -1 when the handler is null or the audio t
+
+### tick_register_desktop `int tick_register_desktop(tick_fn_t fn, void *ctx)`
+- Defined: `kernel/tick.c:67`
+- Doc: Docstring: Register a gated desktop effect.  Returns 0 on success, -1 when the handler is null or the desktop table is f
+
+### tick_run_audio `void tick_run_audio(void)`
+- Defined: `kernel/tick.c:81`
+- Doc: int tick_register_desktop(tick_fn_t fn, void *ctx) { if (fn == NULL) { return -1; } if (tick_desktop_used < 0 || tick_de
+
+### tick_run_desktop `void tick_run_desktop(void)`
+- Defined: `kernel/tick.c:91`
+- Doc: return 0; } /** Docstring: Run audio listeners in registration order. void tick_run_audio(void) { int i; for (i = 0; i <
+
+### tick_audio_count `int tick_audio_count(void)`
+- Defined: `kernel/tick.c:101`
+- Doc: } } /** Docstring: Run desktop listeners in registration order. void tick_run_desktop(void) { int i; for (i = 0; i < tic
+
+### tick_desktop_count `int tick_desktop_count(void)`
+- Defined: `kernel/tick.c:112`
+- Doc: } /** Docstring: Count registered audio listeners. int tick_audio_count(void) { if (tick_audio_used < 0) { return 0; } i
+
+### tick_desktop_due `int tick_desktop_due(unsigned long long ticks, unsigned interval)`
+- Defined: `kernel/tick.c:128`
+- Doc: Docstring: Pure desktop gating predicate.  Returns nonzero when the given tick count falls on a desktop tick for the giv
 
 ## kernel/time.c
 
@@ -11188,6 +11280,11 @@ Z_DumpHeap
 ### main `int main(void)`
 - Defined: `tests/test_futex.c:59`
 
+## tests/test_hal_io.c
+
+### main `int main(void)`
+- Defined: `tests/test_hal_io.c:29`
+
 ## tests/test_percpu_rq.c
 
 ### main `int main(void)`
@@ -11243,6 +11340,23 @@ Z_DumpHeap
 
 ### main `int main(void)`
 - Defined: `tests/test_sync.c:62`
+
+## tests/test_tick.c
+
+### rec_a `static void rec_a(void *ctx)`
+- Defined: `tests/test_tick.c:23`
+
+### rec_b `static void rec_b(void *ctx)`
+- Defined: `tests/test_tick.c:30`
+
+### rec_d `static void rec_d(void *ctx)`
+- Defined: `tests/test_tick.c:37`
+
+### dummy `static void dummy(void *ctx)`
+- Defined: `tests/test_tick.c:46`
+
+### main `int main(void)`
+- Defined: `tests/test_tick.c:51`
 
 ## tests/test_vma.c
 

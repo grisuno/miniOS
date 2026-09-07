@@ -41,6 +41,15 @@
   - `main` (function, line 59) `int main(void)`
   - `CHECK` (macro, line 31)
 
+## tests/test_hal_io.c
+- Layer: testing
+- Doc: Docstring: Host test for arch/x86/hal_io.h (make test-hal).
+- Language: c
+- Symbols:
+  - `main` (function, line 29) `int main(void)`
+  - `HAL_IO_HOST_TEST` (macro, line 10)
+  - `CHECK` (macro, line 22)
+
 ## tests/test_percpu_rq.c
 - Layer: testing
 - Doc: Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq).
@@ -85,6 +94,18 @@
   - `fresh_all` (function, line 51) `static void fresh_all(void)`
   - `main` (function, line 62) `int main(void)`
   - `CHECK` (macro, line 36)
+
+## tests/test_tick.c
+- Layer: testing
+- Doc: Docstring: Host test for kernel/tick.c (make test-tick).
+- Language: c
+- Symbols:
+  - `rec_a` (function, line 23) `static void rec_a(void *ctx)`
+  - `rec_b` (function, line 30) `static void rec_b(void *ctx)`
+  - `rec_d` (function, line 37) `static void rec_d(void *ctx)`
+  - `dummy` (function, line 46) `static void dummy(void *ctx)`
+  - `main` (function, line 51) `int main(void)`
+  - `CHECK` (macro, line 16)
 
 ## tests/test_vma.c
 - Layer: testing

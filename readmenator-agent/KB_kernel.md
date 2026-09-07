@@ -254,54 +254,56 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `read_cr3` (function, line 35) `static inline unsigned long read_cr3(void)`
-  - `__attribute__` (function, line 61) `typedef struct __attribute__((packed))`
-  - `__attribute__` (function, line 82) `typedef struct __attribute__((packed))`
-  - `alloc_kstack` (function, line 96) `static uint64_t alloc_kstack(void)`
-  - `free_kstack` (function, line 107) `static void free_kstack(uint64_t top)`
-  - `idt_set` (function, line 131) `static void idt_set(int vec, void (*h)(void))`
-  - `idt_init` (function, line 141) `static void idt_init(void)`
-  - `pic_init` (function, line 154) `static void pic_init(void)`
-  - `pit_init` (function, line 189) `static void pit_init(void)`
-  - `pic_eoi` (function, line 195) `static void pic_eoi(int irq)`
-  - `tss_write_desc` (function, line 203) `static void tss_write_desc(int cpu)`
-  - `tss_init` (function, line 220) `static void tss_init(void)`
-  - `tss_init_ap` (function, line 252) `void tss_init_ap(int cpu)`
-  - `context` (function, line 270) `* context (anything entered via k_exec_user) is inside a syscall
+  - `sched_tick_audio` (function, line 19) `static void sched_tick_audio(void *ctx)`
+  - `sched_tick_desktop` (function, line 25) `static void sched_tick_desktop(void *ctx)`
+  - `read_cr3` (function, line 49) `static inline unsigned long read_cr3(void)`
+  - `__attribute__` (function, line 75) `typedef struct __attribute__((packed))`
+  - `__attribute__` (function, line 96) `typedef struct __attribute__((packed))`
+  - `alloc_kstack` (function, line 110) `static uint64_t alloc_kstack(void)`
+  - `free_kstack` (function, line 121) `static void free_kstack(uint64_t top)`
+  - `idt_set` (function, line 145) `static void idt_set(int vec, void (*h)(void))`
+  - `idt_init` (function, line 155) `static void idt_init(void)`
+  - `pic_init` (function, line 168) `static void pic_init(void)`
+  - `pit_init` (function, line 203) `static void pit_init(void)`
+  - `pic_eoi` (function, line 209) `static void pic_eoi(int irq)`
+  - `tss_write_desc` (function, line 216) `static void tss_write_desc(int cpu)`
+  - `tss_init` (function, line 233) `static void tss_init(void)`
+  - `tss_init_ap` (function, line 265) `void tss_init_ap(int cpu)`
+  - `context` (function, line 283) `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...`
-  - `point` (function, line 283) `* return address as the resume point ("continue the ISR"), which
+  - `point` (function, line 296) `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...`
-  - `sched_next_locked` (function, line 299) `static int sched_next_locked(int start, int vm_only)`
-  - `smp_try_claim_hint` (function, line 315) `static int smp_try_claim_hint(int pid, int vm_only)`
-  - `smp_claim_thread_v` (function, line 330) `static int smp_claim_thread_v(int vm_only)`
-  - `smp_ap_idle_loop` (function, line 370) `void smp_ap_idle_loop(void)`
-  - `sched_ap_preempt` (function, line 404) `static void sched_ap_preempt(trap_frame_t *frame)`
-  - `smp_any_ap_idle` (function, line 430) `static int smp_any_ap_idle(void)`
-  - `isr_dispatch` (function, line 457) `void isr_dispatch(int vector, trap_frame_t *frame)`
-  - `BSP` (function, line 697) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+  - `sched_next_locked` (function, line 312) `static int sched_next_locked(int start, int vm_only)`
+  - `smp_try_claim_hint` (function, line 328) `static int smp_try_claim_hint(int pid, int vm_only)`
+  - `smp_claim_thread_v` (function, line 343) `static int smp_claim_thread_v(int vm_only)`
+  - `smp_ap_idle_loop` (function, line 383) `void smp_ap_idle_loop(void)`
+  - `sched_ap_preempt` (function, line 417) `static void sched_ap_preempt(trap_frame_t *frame)`
+  - `smp_any_ap_idle` (function, line 443) `static int smp_any_ap_idle(void)`
+  - `isr_dispatch` (function, line 470) `void isr_dispatch(int vector, trap_frame_t *frame)`
+  - `BSP` (function, line 710) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
-  - `proc_get` (function, line 717) `proc_t *proc_get(int pid)`
-  - `proc_create` (function, line 723) `int proc_create(const char *name, int parent_pid)`
-  - `sched_park_as_returned` (function, line 789) `static void sched_park_as_returned(proc_t *cur)`
-  - `schedule` (function, line 798) `void schedule(void)`
-  - `yield` (function, line 872) `void yield(void)`
-  - `do_exit` (function, line 887) `void do_exit(int code)`
-  - `do_thread_spawn` (function, line 927) `long do_thread_spawn(unsigned long fn, unsigned long stack,
+  - `proc_get` (function, line 730) `proc_t *proc_get(int pid)`
+  - `proc_create` (function, line 736) `int proc_create(const char *name, int parent_pid)`
+  - `sched_park_as_returned` (function, line 802) `static void sched_park_as_returned(proc_t *cur)`
+  - `schedule` (function, line 811) `void schedule(void)`
+  - `yield` (function, line 885) `void yield(void)`
+  - `do_exit` (function, line 900) `void do_exit(int code)`
+  - `do_thread_spawn` (function, line 940) `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)`
-  - `do_waitpid` (function, line 1044) `int do_waitpid(int pid)`
-  - `do_kill` (function, line 1078) `int do_kill(int pid)`
-  - `timer_tick` (function, line 1085) `void timer_tick(void)`
-  - `mouse_wait_cmd` (function, line 1089) `static void mouse_wait_cmd(void)`
-  - `mouse_wait_data` (function, line 1095) `static void mouse_wait_data(void)`
-  - `mouse_write` (function, line 1102) `static void mouse_write(unsigned char data)`
-  - `mouse_read` (function, line 1109) `static unsigned char mouse_read(void)`
-  - `mouse_hw_init` (function, line 1114) `static void mouse_hw_init(void)`
-  - `mouse_disable` (function, line 1165) `void mouse_disable(void)`
-  - `mouse_enable` (function, line 1167) `void mouse_enable(void)`
-  - `sched_init` (function, line 1168) `void sched_init(void)`
-  - `MY_SYS_KSTK_TOP` (macro, line 21)
-  - `MY_USER_STACK_TOP` (macro, line 22)
-  - `MY_USER_LOAD_BASE` (macro, line 23)
+  - `do_waitpid` (function, line 1057) `int do_waitpid(int pid)`
+  - `do_kill` (function, line 1091) `int do_kill(int pid)`
+  - `timer_tick` (function, line 1098) `void timer_tick(void)`
+  - `mouse_wait_cmd` (function, line 1102) `static void mouse_wait_cmd(void)`
+  - `mouse_wait_data` (function, line 1108) `static void mouse_wait_data(void)`
+  - `mouse_write` (function, line 1115) `static void mouse_write(unsigned char data)`
+  - `mouse_read` (function, line 1122) `static unsigned char mouse_read(void)`
+  - `mouse_hw_init` (function, line 1127) `static void mouse_hw_init(void)`
+  - `mouse_disable` (function, line 1178) `void mouse_disable(void)`
+  - `mouse_enable` (function, line 1180) `void mouse_enable(void)`
+  - `sched_init` (function, line 1181) `void sched_init(void)`
+  - `MY_SYS_KSTK_TOP` (macro, line 35)
+  - `MY_USER_STACK_TOP` (macro, line 36)
+  - `MY_USER_LOAD_BASE` (macro, line 37)
 
 ## kernel/scrollback.c
 - Layer: utility
@@ -555,6 +557,20 @@ static void shell_hist_na...`
   - `SYS_NOISY_KBD` (macro, line 407)
   - `SYS_NOISY_MOUSE` (macro, line 408)
   - `LINUX_SYSCALL_COUNT` (macro, line 806)
+
+## kernel/tick.c
+- Layer: utility
+- Doc: Docstring: Tick listener bus implementation.
+- Language: c
+- Symbols:
+  - `tick_reset` (function, line 30) `void tick_reset(void)`
+  - `tick_register_audio` (function, line 49) `int tick_register_audio(tick_fn_t fn, void *ctx)`
+  - `tick_register_desktop` (function, line 67) `int tick_register_desktop(tick_fn_t fn, void *ctx)`
+  - `tick_run_audio` (function, line 81) `void tick_run_audio(void)`
+  - `tick_run_desktop` (function, line 91) `void tick_run_desktop(void)`
+  - `tick_audio_count` (function, line 101) `int tick_audio_count(void)`
+  - `tick_desktop_count` (function, line 112) `int tick_desktop_count(void)`
+  - `tick_desktop_due` (function, line 128) `int tick_desktop_due(unsigned long long ticks, unsigned interval)`
 
 ## kernel/time.c
 - Layer: utility

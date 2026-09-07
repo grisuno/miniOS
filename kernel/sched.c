@@ -11,7 +11,21 @@
 #include "bootdefs.h"
 #include "vga_fb.h"
 #include "sb16.h"
+#include "tick.h"
+#include "arch/x86/hal_io.h"
 #include "arch/x86/msr.h"
+
+/** Docstring: Audio tick adapter, forwards the bus dispatch to sb16_poll. */
+static void sched_tick_audio(void *ctx) {
+    (void)ctx;
+    sb16_poll();
+}
+
+/** Docstring: Desktop tick adapter, forwards the bus dispatch to the compositor tick. */
+static void sched_tick_desktop(void *ctx) {
+    (void)ctx;
+    vga_fb_mouse_tick();
+}
 
 /* The user-window and syscall-stack constants come from kernel.h, which
  * derives them from progs/minios_abi.h (the single source of truth for the
@@ -163,39 +177,38 @@ static void pic_init(void) {
         int i;
         for (i = 0; i < 256; i++) {
             unsigned char st;
-            __asm__ volatile("inb $0x64, %0" : "=a"(st));
-            if (!(st & 0x01)) break;
+            st = hal_inb(HAL_PS2_STATUS);
+            if (!(st & HAL_PS2_OBF_FULL)) break;
             unsigned char d;
-            __asm__ volatile("inb $0x60, %0" : "=a"(d));
+            d = hal_inb(HAL_PS2_DATA);
             (void)d;
         }
     }
-    outb(0x20,0x11); outb(0xA0,0x11);
-    outb(0x21,0x20); outb(0xA1,0x28);
-    outb(0x21,0x04); outb(0xA1,0x02);
-    outb(0x21,0x01); outb(0xA1,0x01);
+    hal_outb(HAL_PIC1_CMD, 0x11); hal_outb(HAL_PIC2_CMD, 0x11);
+    hal_outb(HAL_PIC1_DATA, 0x20); hal_outb(HAL_PIC2_DATA, 0x28);
+    hal_outb(HAL_PIC1_DATA, 0x04); hal_outb(HAL_PIC2_DATA, 0x02);
+    hal_outb(HAL_PIC1_DATA, 0x01); hal_outb(HAL_PIC2_DATA, 0x01);
     /* Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) +
      * IRQ4 (COM1, UART IER stays 0 so it never fires) +
      * IRQ5 (Sound Blaster 16 DMA done).  In the mask register a bit set
      * means masked, so 0xC8 masks only IRQ3, IRQ6 and IRQ7.  Masking IRQ5
      * here starves the SB16 completion interrupt and leaves audio on the
      * timer watchdog alone (audible as jitter); keep it unmasked. */
-    outb(0x21,0xC8);
+    hal_outb(HAL_PIC1_DATA, 0xC8);
     /* Slave: unmask IRQ12 (mouse) only. 0xEF = ~bit4. */
-    outb(0xA1,0xEF);
+    hal_outb(HAL_PIC2_DATA, 0xEF);
 }
 
 /* ---- PIT channel 0: 100 Hz ---- */
 static void pit_init(void) {
-    outb(0x43, 0x34);
+    hal_outb(HAL_PIT_CMD, 0x34);
     int d = 1193182 / 100;
-    outb(0x40, d & 0xFF);
-    outb(0x40, (d >> 8) & 0xFF);
+    hal_outb(HAL_PIT_CH0, d & 0xFF);
+    hal_outb(HAL_PIT_CH0, (d >> 8) & 0xFF);
 }
 
 static void pic_eoi(int irq) {
-    if (irq >= 8) outb(0xA0, 0x20);
-    outb(0x20, 0x20);
+    hal_pic_eoi(irq);
 }
 
 /* ---- TSS + GDT expansion (one descriptor per CPU) ---- */
@@ -468,15 +481,15 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
              * exactly when cpu_count > 1) and take no scheduling
              * action.  The tick is still counted above, so time does
              * not stall. */
-            outb(0x20, 0x20);
+            hal_outb(HAL_PIC1_CMD, HAL_PIC_EOI);
             if (cpu_count > 1)
-                *(volatile unsigned *)0xFEE000B0UL = 0;
+                hal_lapic_eoi();
             __sync_fetch_and_add(&smp_dbg_bad_gs, 1);
             return;
         }
         if (cpu->is_bsp) {
             pic_eoi(0);
-            sb16_poll();
+            tick_run_audio();
             rcu_note_tick(cpu->cpu_id);
             rcu_poll();
             /* Share the tick with the APs: their per-CPU LAPIC timers
@@ -488,7 +501,7 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         } else {
             /* AP: LAPIC EOI (LAPIC_EOI_OFF 0x0B0, named in smp.c)
              * instead of PIC EOI; also count it for the `smp` builtin. */
-            *(volatile unsigned *)0xFEE000B0UL = 0;
+            hal_lapic_eoi();
             __sync_fetch_and_add(&smp_dbg_ipis, 1);
             rcu_note_tick(cpu->cpu_id);
         }
@@ -553,22 +566,22 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             /* APs time-slice CLONE_VM threads; the BSP owns everything
              * else (devices, mouse tick, non-VM processes). */
             sched_ap_preempt(frame);
-        } else if (cpu->is_bsp && (sys_ticks % DESKTOP_TICK_INTERVAL) == 0) {
-            if (user_program_active) vga_fb_mouse_tick();
+        } else if (cpu->is_bsp && tick_desktop_due(sys_ticks, DESKTOP_TICK_INTERVAL)) {
+            if (user_program_active) tick_run_desktop();
         }
         return;
     }
     if (vector == 33) { pic_eoi(1); return; }
     if (vector == 44) { /* IRQ12: PS/2 mouse */
         static int mouse_phase;
-        static unsigned char mouse_packet[4];
+        static unsigned char mouse_packet[HAL_MOUSE_PACKET_LEN];
         unsigned char status;
-        __asm__ volatile("inb $0x64, %0" : "=a"(status));
-        if (!(status & 0x20)) { pic_eoi(12); return; }
+        status = hal_inb(HAL_PS2_STATUS);
+        if (!(status & HAL_PS2_MOUSE_OBF)) { pic_eoi(12); return; }
         unsigned char data;
-        __asm__ volatile("inb $0x60, %0" : "=a"(data));
+        data = hal_inb(HAL_PS2_DATA);
         if (mouse_phase == 0) {
-            if (data & 0x08) {
+            if (data & HAL_MOUSE_SYNC_BIT) {
                 mouse_packet[0] = data;
                 mouse_phase = 1;
             }
@@ -582,11 +595,11 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             /* Byte 4: Intellimouse wheel data */
             mouse_packet[3] = data;
             mouse_phase = 0;
-            mouse_state.buttons = mouse_packet[0] & 0x07;
+            mouse_state.buttons = mouse_packet[0] & HAL_MOUSE_BUTTON_MASK;
             int dx = (int)(signed char)mouse_packet[1];
             int dy = (int)(signed char)mouse_packet[2];
-            mouse_state.x += dx * 2;
-            mouse_state.y -= dy * 2;
+            mouse_state.x += dx * HAL_MOUSE_SCALE;
+            mouse_state.y -= dy * HAL_MOUSE_SCALE;
             int wheel = (int)(signed char)(mouse_packet[3] << 4) >> 4;
             mouse_state.wheel += wheel;
             mouse_state.present = 1;
@@ -1228,6 +1241,9 @@ void sched_init(void) {
     futex_init();
     rq_init();
     rcu_init();
+    tick_reset();
+    tick_register_audio(sched_tick_audio, 0);
+    tick_register_desktop(sched_tick_desktop, 0);
     pic_init();
     pit_init();
     mouse_hw_init();

@@ -562,9 +562,10 @@ whenever `k_exec_user` entered ring 3 for a child process.  The mouse cursor,
 taskbar clock, window drag and scrollbar all stopped responding.
 
 The fix is a timer-ISR-driven tick: the 100 Hz PIT handler (`isr_dispatch`,
-vector 32) calls `vga_fb_mouse_tick` at a configurable interval
-(`DESKTOP_TICK_INTERVAL`, default 4 = 25 Hz) whenever `user_program_active`
-is set.  The flag is set in `k_exec_user` before the `iretq` into ring 3 and
+vector 32) runs the registered desktop listeners through the tick bus
+(`tick.h` + `kernel/tick.c`, predicate `tick_desktop_due`) at a configurable
+interval (`DESKTOP_TICK_INTERVAL`, default 4 = 25 Hz) whenever
+`user_program_active` is set.  The flag is set in `k_exec_user` before the `iretq` into ring 3 and
 cleared after `klongjmp` returns, so the desktop ticks for the entire
 duration of any user program.  When no user program is active the flag is
 clear and the ISR skips the tick; the shell drives the desktop from its own
@@ -598,6 +599,41 @@ The `user_program_active` flag is `volatile int` declared in `sched.h` and
 defined in `sched.c`.  It is set only in `k_exec_user` and read only in
 `isr_dispatch`, both in ring 0, so no memory barrier is needed beyond the
 `volatile` qualifier.
+
+### Tick listener bus (`tick.h` + `kernel/tick.c`)
+
+The ISR no longer calls periodic effects directly. `sched_init` registers
+two adapters, `sched_tick_audio` (forwards to `sb16_poll`) and
+`sched_tick_desktop` (forwards to `vga_fb_mouse_tick`), and `isr_dispatch`
+(vector 32) runs `tick_run_audio()` unconditionally on the BSP and
+`tick_run_desktop()` when `tick_desktop_due(sys_ticks,
+DESKTOP_TICK_INTERVAL)` and `user_program_active` hold. Call order,
+gating and branch structure are unchanged; only the call path moved, so a
+new periodic effect registers without editing the ISR. The bus is two
+fixed tables (`TICK_MAX_AUDIO_LISTENERS` / `TICK_MAX_DESKTOP_LISTENERS`,
+no heap, no locks): registration is boot-time only before `sti`,
+dispatch only reads, a null or full registration returns -1 and changes
+nothing, and `tick_reset` empties both lists. Host-tested (`make
+test-tick`, mutation-covered); the live-boot proof is the existing SMP
+(`SMP: Brought up 2 CPUs`) and sb16 scenarios, which exercise both
+dispatch paths.
+
+### Port I/O HAL (`arch/x86/hal_io.h`)
+
+Header-only, single-file contract centralizing every port number,
+controller command and device address the timer ISR path touches
+(`HAL_PIC1_CMD`, `HAL_PIC1_DATA`, `HAL_PIC2_CMD`, `HAL_PIC2_DATA`,
+`HAL_PIC_EOI`, `HAL_PIT_CMD`, `HAL_PIT_CH0`, `HAL_PS2_STATUS`,
+`HAL_PS2_DATA`, `HAL_PS2_MOUSE_OBF`, `HAL_MOUSE_SYNC_BIT`,
+`HAL_MOUSE_BUTTON_MASK`, `HAL_MOUSE_SCALE`, `HAL_MOUSE_PACKET_LEN`,
+`HAL_LAPIC_EOI_ADDR`). The `hal_outb`/`hal_inb`/`hal_outw`/`hal_inw`
+accessors emit the same instructions as the open-coded sites they
+replaced; `hal_pic_eoi`/`hal_lapic_eoi` own the EOI sequences. No bare
+port literal remains on the scheduler ISR path. Under
+`HAL_IO_HOST_TEST` the accessors log to stub counters instead of
+executing privileged instructions, which makes the mapping host-testable
+(`make test-hal`, mutation-covered). First step of the HAL the
+architecture plan calls for; further drivers migrate port by port.
 
 ### Userspace desktop architecture (design spec, future implementation)
 
@@ -1742,6 +1778,7 @@ make test-tls       # host-side crypto + full-handshake suite green
 make test-vma       # host-side VMA red-black tree suite green
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 make test-sanitize  # syscall sanitize-macro suite green
+make test-tick test-hal  # tick bus + HAL port-mapping suites green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
@@ -2142,6 +2179,7 @@ make test-tls               # host-side crypto + handshake suite
 make test-vma               # host-side VMA red-black tree suite
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 make test-sanitize  # syscall sanitize-macro suite green
+make test-tick test-hal  # tick bus + HAL port-mapping suites green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD
 mcp/mutate_mcp.sh           # every MCP mutant killed
 python3 tools/check_cohesion.py KNOWLEDGE_BASE.jsonld

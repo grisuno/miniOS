@@ -6,6 +6,10 @@ A 64-bit x86 teaching kernel that carries its own toolchain. You can write a C
 program inside the running system, compile it, link it and execute it without
 leaving the machine.
 
+New here? Start with **[docs/quickstart.md](./docs/quickstart.md)** (build,
+boot, first program, verify) and keep **[docs/cheatsheet.md](./docs/cheatsheet.md)**
+open for shell, editor and make one-liners.
+
 # MiniOS Desktop Environment and Graphical Subsystem
 
 I have implemented a primitive desktop environment within MiniOS that operates independently of the serial console. This subsystem provides a graphical user interface (GUI) with window management, mouse support, and scrollable terminal emulation.
@@ -1356,7 +1360,10 @@ shell drives the desktop from its own idle poll as before. The PS/2 mouse
 stays enabled across `k_exec_user` so IRQ12 keeps `mouse_state` fresh (field
 stores are atomic; the tick or the shell is the sole reader). The `iretq`
 frame uses `RFLAGS=0x202` (IF=1): with IF=0 neither the timer nor IRQ12 fires
-from ring 3 and the desktop freezes.
+from ring 3 and the desktop freezes. Dispatch goes through the tick listener
+bus (`tick.h` + `kernel/tick.c`): the ISR runs registered audio/desktop
+listeners instead of calling `sb16_poll` / `vga_fb_mouse_tick` directly, and
+port I/O on this path uses the `arch/x86/hal_io.h` names, never bare literals.
 
 ## Window manager: minimize, restore, close
 
@@ -1578,6 +1585,9 @@ Every change must pass, in order: `make` (zero warnings),
 provably equivalent mutants may leave the set), `make test-tls` (host crypto
 vectors plus OpenSSL-driven full handshakes and the negative set),
 `make test-vma` (host red-black invariants, exhaustion, drain),
+`make test-futex test-percpu-rq test-batch test-rcu` (SMP scaling contracts),
+`make test-sanitize` (syscall sanitize macros),
+`make test-tick test-hal` (timer tick bus + HAL port mapping),
 `python3 -m unittest -v mcp/test_minios_mcp.py`, and `mcp/mutate_mcp.sh`.
 Methodology is SDD (spec in `CLAUDE.md` first), TDD (failing scenario first),
 BDD (`test_bdd.sh` over the serial console), mutation testing, and the Boy
@@ -1616,6 +1626,8 @@ be a minimal wire client, not a port).
 | `test-tls` | host TLS suite: crypto vectors + full handshakes |
 | `test-vma` | host VMA suite: red-black tree invariants, pool exhaustion, full drain |
 | `test-sync` | host sync suite: wait queues, mutex/sem/cond/rwlock over the real `kernel/sync.c` |
+| `test-tick` | host tick suite: listener order, separation, gating, bounds over the real `kernel/tick.c` |
+| `test-hal` | host HAL suite: port/device constants and stub routing for `arch/x86/hal_io.h` |
 | `run` | boot the image in QEMU with a display (TCG by default) |
 | `run-kvm` | boot it with KVM acceleration (faster CPU, slower IDE I/O) |
 | `run-headless` | boot it headless on the serial console (no GUI window) |
@@ -1651,5 +1663,10 @@ a zero-token polyglot static analysis tool. Analysis outputs are available:
 
 AI agents: Read `readmenator-agent/INDEX.md` for fast project context.
 Developers: Read `KNOWLEDGE_BASE.md` for full architecture reference.
+
+Start with [docs/quickstart.md](./docs/quickstart.md) and
+[docs/cheatsheet.md](./docs/cheatsheet.md). `docs/KNOWLEDGE_BASE.md` is a
+synced copy of the root knowledge base; after regenerating, keep both
+identical.
 <!-- /readmenator-kb-link -->
 

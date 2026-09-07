@@ -25,6 +25,42 @@
   - `user_trampoline` (function, line 135)
   - `resume_iretq` (function, line 148)
 
+## arch/x86/hal_io.h
+- Layer: utility
+- Doc: Docstring: x86 port I/O hardware abstraction contract.
+- Language: h
+- Symbols:
+  - `hal_outb` (function, line 68) `static inline void hal_outb(unsigned short port, unsigned char val)`
+  - `hal_inb` (function, line 75) `static inline unsigned char hal_inb(unsigned short port)`
+  - `hal_outw` (function, line 81) `static inline void hal_outw(unsigned short port, unsigned short val)`
+  - `hal_inw` (function, line 88) `static inline unsigned short hal_inw(unsigned short port)`
+  - `hal_lapic_eoi` (function, line 94) `static inline void hal_lapic_eoi(void)`
+  - `hal_pic_eoi` (function, line 99) `static inline void hal_pic_eoi(int irq)`
+  - `hal_outb` (function, line 109) `static inline void hal_outb(unsigned short port, unsigned char val)`
+  - `hal_inb` (function, line 114) `static inline unsigned char hal_inb(unsigned short port)`
+  - `hal_outw` (function, line 121) `static inline void hal_outw(unsigned short port, unsigned short val)`
+  - `hal_inw` (function, line 126) `static inline unsigned short hal_inw(unsigned short port)`
+  - `hal_lapic_eoi` (function, line 133) `static inline void hal_lapic_eoi(void)`
+  - `hal_pic_eoi` (function, line 138) `static inline void hal_pic_eoi(int irq)`
+  - `HAL_IO_H` (macro, line 13)
+  - `HAL_PIC1_CMD` (macro, line 16)
+  - `HAL_PIC1_DATA` (macro, line 18)
+  - `HAL_PIC2_CMD` (macro, line 20)
+  - `HAL_PIC2_DATA` (macro, line 22)
+  - `HAL_PIC_EOI` (macro, line 24)
+  - `HAL_PIT_CMD` (macro, line 27)
+  - `HAL_PIT_CH0` (macro, line 29)
+  - `HAL_PS2_STATUS` (macro, line 32)
+  - `HAL_PS2_DATA` (macro, line 34)
+  - `HAL_PS2_MOUSE_OBF` (macro, line 36)
+  - `HAL_PS2_IBF_EMPTY` (macro, line 38)
+  - `HAL_PS2_OBF_FULL` (macro, line 40)
+  - `HAL_MOUSE_SYNC_BIT` (macro, line 43)
+  - `HAL_MOUSE_BUTTON_MASK` (macro, line 45)
+  - `HAL_MOUSE_PACKET_LEN` (macro, line 47)
+  - `HAL_MOUSE_SCALE` (macro, line 49)
+  - `HAL_LAPIC_EOI_ADDR` (macro, line 52)
+
 ## arch/x86/isr_stubs.S
 - Layer: testing
 - Language: S
