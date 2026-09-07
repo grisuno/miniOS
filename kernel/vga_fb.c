@@ -516,12 +516,6 @@ static unsigned long fb_pack_idx(unsigned idx) {
     return (r << 16) | (g << 8) | b;
 }
 
-static unsigned long fb_pack_gfx(unsigned idx) {
-    return ((unsigned long)gfx_pal[idx * 3 + 0] << 16)
-         | ((unsigned long)gfx_pal[idx * 3 + 1] << 8)
-         |  (unsigned long)gfx_pal[idx * 3 + 2];
-}
-
 static void fb_write_packed(int x, int y, unsigned long rgb) {
     volatile uint8_t *p;
     if (x < 0 || x >= fb_width || y < 0 || y >= fb_height) return;
@@ -773,6 +767,52 @@ static int wm_button_click(int mx, int my) {
  * dragged into a better spot. */
 const char *gfx_win_title = "DOOM";
 
+/* Fast true-color blit of an indexed back-buffer row block. Bounds are
+ * clipped once here; the inner loop expands through gfx_pal inline with row
+ * pointers, no per-pixel call or check. px holds 0x00RRGGBB so a 32-bit LE
+ * store lands as B,G,R,0, the VBE byte order. Deliberately no cached u32
+ * table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
+ * fits with ~1 KB to spare, so this file spends zero new .bss. */
+static void blit_indexed_truecolor(const volatile uint8_t *bb, int bb_w,
+                                   int bb_h, int dst_x, int dst_y) {
+    volatile uint8_t *fb = (volatile uint8_t *)FB_ADDR;
+    unsigned pitch = (unsigned)fb_pitch;
+    int width = fb_width, height = fb_height;
+    int is32 = (fb_bpp == 32);
+    int r;
+    for (r = 0; r < bb_h; r++) {
+        int y = dst_y + r;
+        const volatile uint8_t *src;
+        volatile uint8_t *row;
+        int x0, x1, b, w;
+        if (y < 0 || y >= height) continue;
+        x0 = dst_x < 0 ? -dst_x : 0;
+        x1 = dst_x + bb_w > width ? width - dst_x : bb_w;
+        if (x0 >= x1) continue;
+        src = bb + r * bb_w + x0;
+        row = fb + (unsigned)y * pitch + (unsigned)(dst_x + x0) * (is32 ? 4u : 3u);
+        w = x1 - x0;
+        if (is32) {
+            for (b = 0; b < w; b++) {
+                unsigned o = (unsigned)src[b] * 3u;
+                unsigned px = ((unsigned)gfx_pal[o] << 16)
+                            | ((unsigned)gfx_pal[o + 1] << 8)
+                            |  (unsigned)gfx_pal[o + 2];
+                *(volatile unsigned *)row = px;
+                row += 4;
+            }
+        } else {
+            for (b = 0; b < w; b++) {
+                unsigned o = (unsigned)src[b] * 3u;
+                row[0] = gfx_pal[o + 2];
+                row[1] = gfx_pal[o + 1];
+                row[2] = gfx_pal[o];
+                row += 3;
+            }
+        }
+    }
+}
+
 void vga_fb_blit_gfx_window(void) {
     const volatile uint8_t *bb = (const volatile uint8_t *)DOOM_BACKBUF_ADDR;
     int dst_x = (fb_width - DOOM_W) / 2;
@@ -799,12 +839,7 @@ void vga_fb_blit_gfx_window(void) {
                 dst[b] = src[b];
         }
     } else {
-        for (r = 0; r < DOOM_H; r++) {
-            const volatile uint8_t *src = bb + r * DOOM_W;
-            for (b = 0; b < DOOM_W; b++)
-                fb_write_packed(dst_x + b, dst_y + FONT_H + r,
-                                fb_pack_gfx(src[b]));
-        }
+        blit_indexed_truecolor(bb, DOOM_W, DOOM_H, dst_x, dst_y + FONT_H);
     }
     vga_fb_gfx_cursor_draw();
 }
@@ -850,12 +885,7 @@ void vga_fb_blit_nk_window(void) {
                 dst[b] = src[b];
         }
     } else {
-        for (r = 0; r < NK_H; r++) {
-            const volatile uint8_t *src = bb + r * NK_W;
-            for (b = 0; b < NK_W; b++)
-                fb_write_packed(dst_x + b, dst_y + FONT_H + r,
-                                fb_pack_gfx(src[b]));
-        }
+        blit_indexed_truecolor(bb, NK_W, NK_H, dst_x, dst_y + FONT_H);
     }
     vga_fb_gfx_cursor_draw();
 }

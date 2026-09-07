@@ -2698,293 +2698,294 @@ static void shell_hist_na...`
 - Doc: --- True-color pixel layer ---- VBE true-color framebuffers store pixels natively as B,G,R(,X) bytes, so the DAC is bypa
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
-### fb_pack_gfx `static unsigned long fb_pack_gfx(unsigned idx)`
+### fb_write_packed `static void fb_write_packed(int x, int y, unsigned long rgb)`
 - Defined: `kernel/vga_fb.c:518`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
-### fb_write_packed `static void fb_write_packed(int x, int y, unsigned long rgb)`
-- Defined: `kernel/vga_fb.c:524`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
-
 ### fb_read_packed `static unsigned long fb_read_packed(int x, int y)`
-- Defined: `kernel/vga_fb.c:544`
+- Defined: `kernel/vga_fb.c:538`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_read_rgb `unsigned long vga_fb_read_rgb(int x, int y)`
-- Defined: `kernel/vga_fb.c:568`
+- Defined: `kernel/vga_fb.c:562`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wall_level `static int wall_level(int v)`
-- Defined: `kernel/vga_fb.c:572`
+- Defined: `kernel/vga_fb.c:566`
 - Doc: 8-bit: return the raw palette index, not its resolved RGB. The cursor save/restore round-trips through fb_write_packed, 
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_set_palette `static void vga_fb_set_palette(void)`
-- Defined: `kernel/vga_fb.c:580`
+- Defined: `kernel/vga_fb.c:574`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_pixel `void vga_fb_pixel(int x, int y, uint8_t color)`
-- Defined: `kernel/vga_fb.c:615`
+- Defined: `kernel/vga_fb.c:609`
 - Doc: { int r, g, b; outb(0x3C8, WALL_PAL_BASE); for (r = 0; r < 6; r++) for (g = 0; g < 6; g++) for (b = 0; b < 6; b++) { out
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_rect `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
-- Defined: `kernel/vga_fb.c:623`
+- Defined: `kernel/vga_fb.c:617`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_char `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:630`
+- Defined: `kernel/vga_fb.c:624`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_str `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:645`
+- Defined: `kernel/vga_fb.c:639`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### text_px `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:657`
+- Defined: `kernel/vga_fb.c:651`
 - Doc: Blit a text string at an absolute pixel position. Used for window chrome (title bar, taskbar) which lives outside the co
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_draw_buttons `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:684`
+- Defined: `kernel/vga_fb.c:678`
 - Doc: --- Window controls ---- Three glyph buttons at the right end of a window's title bar: minimize (_), maximize (square) a
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_buttons_hit `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
-- Defined: `kernel/vga_fb.c:710`
+- Defined: `kernel/vga_fb.c:704`
 - Doc: } for (i = 1; i < WM_BTN_H - 1; i++) { vga_fb_pixel(bx + 1, by + i, fg); vga_fb_pixel(bx + WM_BTN_W - 2, by + i, fg); } 
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_close_pending `int wm_close_pending(void)`
-- Defined: `kernel/vga_fb.c:725`
+- Defined: `kernel/vga_fb.c:719`
 - Doc: Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the child's o
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_clear_close `void wm_clear_close(void)`
-- Defined: `kernel/vga_fb.c:726`
+- Defined: `kernel/vga_fb.c:720`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_gfx_mode_active `int wm_gfx_mode_active(void)`
-- Defined: `kernel/vga_fb.c:727`
+- Defined: `kernel/vga_fb.c:721`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_button_click `static int wm_button_click(int mx, int my)`
-- Defined: `kernel/vga_fb.c:732`
+- Defined: `kernel/vga_fb.c:726`
 - Doc: Hit-test and dispatch a click on a titled window's controls. The active window is the graphics window when one is compos
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
+### USER_LOAD_BASE `* table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
+ * fits with ~1 KB to s...`
+- Defined: `kernel/vga_fb.c:774`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
 ### vga_fb_blit_gfx_window `void vga_fb_blit_gfx_window(void)`
-- Defined: `kernel/vga_fb.c:775`
+- Defined: `kernel/vga_fb.c:815`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_clear `void vga_fb_clear(void)`
-- Defined: `kernel/vga_fb.c:811`
+- Defined: `kernel/vga_fb.c:846`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_blit_nk_window `void vga_fb_blit_nk_window(void)`
-- Defined: `kernel/vga_fb.c:827`
+- Defined: `kernel/vga_fb.c:862`
 - Doc: Composite the Nuklear UI back-buffer onto the desktop as a titled window, mirroring the DOOM window: the back-buffer is 
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_recalc `static void term_recalc(void)`
-- Defined: `kernel/vga_fb.c:867`
+- Defined: `kernel/vga_fb.c:897`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### draw_title `static void draw_title(void)`
-- Defined: `kernel/vga_fb.c:894`
+- Defined: `kernel/vga_fb.c:924`
 - Doc: Preserve the current window position, clamping it into range so a * drag or Ctrl+arrow move is not undone by the next la
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### taskbar_layout `static void taskbar_layout(void)`
-- Defined: `kernel/vga_fb.c:911`
+- Defined: `kernel/vga_fb.c:941`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### draw_speaker_icon `static void draw_speaker_icon(int x, int y, uint8_t color)`
-- Defined: `kernel/vga_fb.c:929`
+- Defined: `kernel/vga_fb.c:959`
 - Doc: x -= TASKBAR_PAD; x -= TASKBAR_VOL_CH * FONT_W;   tb_vol_x = x; x -= TASKBAR_PAD; x -= TASKBAR_BTN_W;             tb_plu
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### taskbar_render `static void taskbar_render(void)`
-- Defined: `kernel/vga_fb.c:937`
+- Defined: `kernel/vga_fb.c:967`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### taskbar_tick `static void taskbar_tick(void)`
-- Defined: `kernel/vga_fb.c:964`
+- Defined: `kernel/vga_fb.c:994`
 - Doc: Redraw the clock only when the wall-clock second changes. Only the taskbar strip is repainted, so the cursor must be re-
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### taskbar_handle_click `static void taskbar_handle_click(int mx, int my)`
-- Defined: `kernel/vga_fb.c:978`
+- Defined: `kernel/vga_fb.c:1008`
 - Doc: Click handling for the speaker icon and -/+ buttons, plus the restore * button that reappears while the terminal window 
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### draw_scrollbar `static void draw_scrollbar(void)`
-- Defined: `kernel/vga_fb.c:1012`
+- Defined: `kernel/vga_fb.c:1042`
 - Doc: return; } if (mx >= tb_minus_x && mx < tb_minus_x + TASKBAR_BTN_W) { v = pcspk_get_volume(); pcspk_set_volume(v > TASKBA
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### render_blank_row `static void render_blank_row(int vrow)`
-- Defined: `kernel/vga_fb.c:1047`
+- Defined: `kernel/vga_fb.c:1077`
 - Doc: Blank one viewport row: every cell is repainted with the terminal background. vga_fb_str with an empty string would draw
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### render_row `static void render_row(int vrow, int abs)`
-- Defined: `kernel/vga_fb.c:1057`
+- Defined: `kernel/vga_fb.c:1087`
 - Doc: Render one display row at viewport row `vrow` for the absolute display row `abs`. Rows outside the history (above the ol
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_render `static void term_render(void)`
-- Defined: `kernel/vga_fb.c:1085`
+- Defined: `kernel/vga_fb.c:1115`
 - Doc: Full repaint of the terminal window from the logical history, honouring the current scroll position. Used on desktop red
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_render_active `static void term_render_active(void)`
-- Defined: `kernel/vga_fb.c:1098`
+- Defined: `kernel/vga_fb.c:1128`
 - Doc: Repaint only the bottom region that a live edit touches: from the active line's first visible display row to the bottom 
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### line `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...`
-- Defined: `kernel/vga_fb.c:1139`
+- Defined: `kernel/vga_fb.c:1169`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_puts_term `void vga_fb_puts_term(const char *s)`
-- Defined: `kernel/vga_fb.c:1187`
+- Defined: `kernel/vga_fb.c:1217`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_text_cursor `void vga_fb_text_cursor(int col)`
-- Defined: `kernel/vga_fb.c:1194`
+- Defined: `kernel/vga_fb.c:1224`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_hide_text_cursor `void vga_fb_hide_text_cursor(void)`
-- Defined: `kernel/vga_fb.c:1202`
+- Defined: `kernel/vga_fb.c:1232`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_draw_desktop `void vga_fb_draw_desktop(void)`
-- Defined: `kernel/vga_fb.c:1205`
+- Defined: `kernel/vga_fb.c:1235`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_toggle_fullscreen `void vga_fb_toggle_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:1234`
+- Defined: `kernel/vga_fb.c:1264`
 - Doc: Any redraw changed the pixels under the cursor; force a fresh save so a * stale snapshot never leaves pointer trails beh
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_toggle_minimize `void vga_fb_toggle_minimize(void)`
-- Defined: `kernel/vga_fb.c:1244`
+- Defined: `kernel/vga_fb.c:1274`
 - Doc: Minimize/restore the terminal window. The content is not touched; the window is merely hidden and repainted on restore. 
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_is_minimized `int vga_fb_is_minimized(void)`
-- Defined: `kernel/vga_fb.c:1250`
+- Defined: `kernel/vga_fb.c:1280`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_is_fullscreen `int vga_fb_is_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:1252`
+- Defined: `kernel/vga_fb.c:1282`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_move_terminal `void vga_fb_move_terminal(int dx, int dy)`
-- Defined: `kernel/vga_fb.c:1273`
+- Defined: `kernel/vga_fb.c:1303`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_max_cols `static int term_max_cols(void)`
-- Defined: `kernel/vga_fb.c:1302`
+- Defined: `kernel/vga_fb.c:1332`
 - Doc: --- Tiling window operations (Alt = WM modifier) ---- Snap places the window in a screen half or quadrant and sizes it t
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_max_rows `static int term_max_rows(void)`
-- Defined: `kernel/vga_fb.c:1306`
+- Defined: `kernel/vga_fb.c:1336`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_finish_layout `static void term_finish_layout(void)`
-- Defined: `kernel/vga_fb.c:1310`
+- Defined: `kernel/vga_fb.c:1340`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_snap_window `void vga_fb_snap_window(int zone)`
-- Defined: `kernel/vga_fb.c:1316`
+- Defined: `kernel/vga_fb.c:1346`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_resize `void vga_fb_resize(int dcols, int drows)`
-- Defined: `kernel/vga_fb.c:1338`
+- Defined: `kernel/vga_fb.c:1368`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_reset_default `void vga_fb_reset_default(void)`
-- Defined: `kernel/vga_fb.c:1356`
+- Defined: `kernel/vga_fb.c:1386`
 - Doc: int ncol = term_sz_cols + dcols; int nrow = term_sz_rows + drows; if (ncol < 1) ncol = 1; if (nrow < 1) nrow = 1; if (nc
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wallpaper_ensure `static void wallpaper_ensure(void)`
-- Defined: `kernel/vga_fb.c:1394`
+- Defined: `kernel/vga_fb.c:1424`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wallpaper_draw `static void wallpaper_draw(void)`
-- Defined: `kernel/vga_fb.c:1429`
+- Defined: `kernel/vga_fb.c:1459`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### pipe_field `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
-- Defined: `kernel/vga_fb.c:1463`
+- Defined: `kernel/vga_fb.c:1493`
 - Doc: --- Desktop shortcut icons ---- Shortcuts are defined in etc/shortcuts on the ramdisk, one per line: name|icon_path|comm
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### icon_nearest `static int icon_nearest(int r, int g, int b)`
-- Defined: `kernel/vga_fb.c:1481`
+- Defined: `kernel/vga_fb.c:1511`
 - Doc: Nearest entry in the 16-colour icon palette (squared RGB distance, * integer-only: at most 3*255*255 per entry, far from
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### icon_embedded `static const uint8_t *icon_embedded(const char *name)`
-- Defined: `kernel/vga_fb.c:1497`
+- Defined: `kernel/vga_fb.c:1527`
 - Doc: for (i = 0; i < ICON_PAL_SIZE; i++) { int dr = r - icon_pal[i][0]; int dg = g - icon_pal[i][1]; int db = b - icon_pal[i]
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### icon_decode `static const uint8_t *icon_decode(const char *path)`
-- Defined: `kernel/vga_fb.c:1517`
+- Defined: `kernel/vga_fb.c:1547`
 - Doc: Decode a shortcut's PNG to raw 32x32 RGBA pixels. Returns a heap buffer that lives until reboot, or 0 on any failure (mi
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### icon_embedded_rgba `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)`
-- Defined: `kernel/vga_fb.c:1551`
+- Defined: `kernel/vga_fb.c:1581`
 - Doc: Expand an embedded index icon (desktop_icons.h, transparent 0) to RGBA through the icon palette, so fallback art follows
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### dock_label_px `static int dock_label_px(const struct desktop_shortcut *sc)`
-- Defined: `kernel/vga_fb.c:1579`
+- Defined: `kernel/vga_fb.c:1609`
 - Doc: Width of the longest shortcut label in pixels (cached after load). Labels are centred under their icon and a dock column
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### shortcuts_layout `static void shortcuts_layout(void)`
-- Defined: `kernel/vga_fb.c:1588`
+- Defined: `kernel/vga_fb.c:1618`
 - Doc: Dock layout: one centred row just above the taskbar. Every shortcut owns a column `dock_cell_w` wide (enough for its lab
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### shortcut_cell_left `static int shortcut_cell_left(int i)`
-- Defined: `kernel/vga_fb.c:1606`
+- Defined: `kernel/vga_fb.c:1636`
 - Doc: dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y; x0 = (fb_width - dock_w) / 2; if (x0 < 0) x0 = 0; y0 =
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### desktop_shortcuts_load `void desktop_shortcuts_load(void)`
-- Defined: `kernel/vga_fb.c:1612`
+- Defined: `kernel/vga_fb.c:1642`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### desktop_shortcuts_draw `void desktop_shortcuts_draw(void)`
-- Defined: `kernel/vga_fb.c:1665`
+- Defined: `kernel/vga_fb.c:1695`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### desktop_shortcuts_hit_test `const char *desktop_shortcuts_hit_test(int mx, int my)`
-- Defined: `kernel/vga_fb.c:1719`
+- Defined: `kernel/vga_fb.c:1749`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_mouse_tick `void vga_fb_mouse_tick(void)`
-- Defined: `kernel/vga_fb.c:1734`
+- Defined: `kernel/vga_fb.c:1764`
 - Doc: const char *desktop_shortcuts_hit_test(int mx, int my) { shortcuts_layout(); for (int i = 0; i < shortcut_count; i++) { 
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_mouse_init `void vga_fb_mouse_init(void)`
-- Defined: `kernel/vga_fb.c:1857`
+- Defined: `kernel/vga_fb.c:1887`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_init `void vga_fb_init(void)`
-- Defined: `kernel/vga_fb.c:1872`
+- Defined: `kernel/vga_fb.c:1902`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ## mcp/mcp_dbg_driver.py
