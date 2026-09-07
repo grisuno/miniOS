@@ -59,6 +59,21 @@
   - `main` (function, line 36) `int main(void)`
   - `CHECK` (macro, line 29)
 
+## tests/test_sanitize.c
+- Layer: testing
+- Doc: Docstring: Host test for sanitize.h (make test-sanitize).
+- Language: c
+- Symbols:
+  - `user_range_ok` (function, line 19) `int user_range_ok(unsigned long p, unsigned long len)`
+  - `user_str_ok` (function, line 25) `int user_str_ok(unsigned long p, unsigned long maxlen)`
+  - `kmemcpy` (function, line 31) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
+  - `range_probe` (function, line 47) `static long range_probe(unsigned long p, long len)`
+  - `str_probe` (function, line 53) `static long str_probe(unsigned long p)`
+  - `copy_probe` (function, line 60) `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)`
+  - `main` (function, line 66) `int main(void)`
+  - `EFAULT` (macro, line 12)
+  - `CHECK` (macro, line 40)
+
 ## tests/test_sync.c
 - Layer: testing
 - Doc: Host-side unit test for the blocking sync primitives (kernel/sync.c).

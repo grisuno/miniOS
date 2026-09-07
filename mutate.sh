@@ -179,6 +179,8 @@ futex-wake-count-unbounded | s/while (pid != WQ_NONE \\&\\& woken < n)/while (pi
 percpu-rq-full-drop-lost | s/if (rqueues\\[cpu\\].count >= RQ_DEPTH)/if (rqueues[cpu].count > RQ_DEPTH)/ | kernel/percpu_rq.c
 batch-completion-off-by-one | s/\\*completed = i + 1;/\\*completed = i;/ | kernel/batch.c
 rcu-grace-shortened | s/if (rcu_state.pending\\[i\\].epoch < rcu_state.epoch)/if (rcu_state.pending[i].epoch <= rcu_state.epoch)/ | kernel/rcu.c
+sanitize-neg-check-dropped | s/if ((count) < 0) return EFAULT;/if (0) return EFAULT;/ | sanitize.h
+sanitize-wrap-check-dropped | s/if (_sz \\/ _es != _n) return EFAULT;/if (0) return EFAULT;/ | sanitize.h
 "
 
 # Parse the mutation table into parallel arrays (preserving order).
@@ -304,6 +306,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         kernel/rcu.c)
             make -C "$HERE" test-rcu > "$BACKUP/suite.log" 2>&1
+            ;;
+        sanitize.h)
+            make -C "$HERE" test-sanitize > "$BACKUP/suite.log" 2>&1
             ;;
         *)
             FAIL_FAST=1 "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1

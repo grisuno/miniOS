@@ -1986,242 +1986,242 @@ int console_getc(void)`
 ## kernel/syscalls.c
 
 ### sys_minios_dns `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:71`
+- Defined: `kernel/syscalls.c:72`
 
 ### sys_minios_tls_handshake `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:77`
+- Defined: `kernel/syscalls.c:78`
 
 ### sys_minios_tls_send `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:82`
+- Defined: `kernel/syscalls.c:83`
 
 ### sys_minios_tls_recv `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:87`
+- Defined: `kernel/syscalls.c:88`
 
 ### sys_minios_time `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:92`
+- Defined: `kernel/syscalls.c:93`
 
 ### sys_minios_kbd `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:96`
+- Defined: `kernel/syscalls.c:97`
 
 ### sys_minios_palette `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:111`
+- Defined: `kernel/syscalls.c:112`
 
 ### sys_minios_kbd_raw `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:119`
+- Defined: `kernel/syscalls.c:120`
 
 ### sys_minios_vga_mode `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:125`
+- Defined: `kernel/syscalls.c:126`
 
 ### sys_minios_pcspk_init `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:132`
+- Defined: `kernel/syscalls.c:133`
 
 ### sys_minios_pcspk_tone `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:136`
+- Defined: `kernel/syscalls.c:137`
 
 ### sys_minios_doom_frame `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:140`
+- Defined: `kernel/syscalls.c:141`
 
 ### sys_minios_rtc `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:144`
+- Defined: `kernel/syscalls.c:145`
 
 ### sys_minios_fb_info `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:158`
+- Defined: `kernel/syscalls.c:159`
 
 ### sys_minios_pcspk_vol `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:170`
+- Defined: `kernel/syscalls.c:171`
 
 ### sys_minios_spawn `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:178`
+- Defined: `kernel/syscalls.c:179`
 
 ### sys_minios_lz4_compress `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:189`
+- Defined: `kernel/syscalls.c:190`
 
 ### sys_minios_lz4_decompress `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:202`
+- Defined: `kernel/syscalls.c:203`
 
 ### sys_minios_mouse `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:216`
+- Defined: `kernel/syscalls.c:217`
 
 ### sys_minios_nk_frame `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:225`
+- Defined: `kernel/syscalls.c:226`
 
 ### sys_minios_sb16_open `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:235`
+- Defined: `kernel/syscalls.c:236`
 
 ### sys_minios_sb16_submit `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:240`
+- Defined: `kernel/syscalls.c:241`
 
 ### sys_minios_gfx_title `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:248`
+- Defined: `kernel/syscalls.c:249`
 
 ### sys_minios_sb16_pump `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:262`
+- Defined: `kernel/syscalls.c:263`
 
 ### sys_minios_sb16_stream_open `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:266`
+- Defined: `kernel/syscalls.c:267`
 
 ### sys_minios_sb16_stream_close `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:270`
+- Defined: `kernel/syscalls.c:271`
 
 ### sys_minios_sb16_stream_submit `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:274`
+- Defined: `kernel/syscalls.c:275`
 
 ### sys_minios_sb16_stream_vol `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:282`
+- Defined: `kernel/syscalls.c:283`
 
 ### sys_minios_clone `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:292`
+- Defined: `kernel/syscalls.c:293`
 
 ### sys_minios_thread_spawn `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:300`
+- Defined: `kernel/syscalls.c:301`
 
 ### sys_minios_futex_wait `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:310`
+- Defined: `kernel/syscalls.c:311`
 
 ### sys_minios_futex_wake `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:316`
+- Defined: `kernel/syscalls.c:317`
 
 ### batch_kdispatch `static long batch_kdispatch(uint32_t opcode)`
-- Defined: `kernel/syscalls.c:325`
+- Defined: `kernel/syscalls.c:326`
 
 ### sys_minios_submit_batch `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:336`
+- Defined: `kernel/syscalls.c:337`
 
 ### syscall_trace_enabled `long syscall_trace_enabled(void)`
-- Defined: `kernel/syscalls.c:400`
+- Defined: `kernel/syscalls.c:398`
 
 ### syscall_trace_set `void syscall_trace_set(int on)`
-- Defined: `kernel/syscalls.c:402`
+- Defined: `kernel/syscalls.c:400`
 
 ### sys_linux_write `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:446`
+- Defined: `kernel/syscalls.c:444`
 
 ### sys_linux_writev `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:456`
+- Defined: `kernel/syscalls.c:454`
 
 ### do_open_path `static long do_open_path(const char *path, long flags)`
-- Defined: `kernel/syscalls.c:477`
+- Defined: `kernel/syscalls.c:475`
 - Doc: return EFAULT; for (k = 0; k < cnt; k++) { unsigned long j; if (iov[k].iov_len > 0 && !user_range_ok((unsigned long)iov[
 
 ### sys_linux_open `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:492`
+- Defined: `kernel/syscalls.c:490`
 
 ### sys_linux_close `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:497`
+- Defined: `kernel/syscalls.c:495`
 
 ### sys_linux_lseek `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:506`
+- Defined: `kernel/syscalls.c:504`
 
 ### sys_linux_brk `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:516`
+- Defined: `kernel/syscalls.c:514`
 
 ### sys_linux_mmap `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:530`
+- Defined: `kernel/syscalls.c:528`
 
 ### sys_linux_munmap `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:571`
+- Defined: `kernel/syscalls.c:569`
 
 ### sys_linux_mprotect `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:589`
+- Defined: `kernel/syscalls.c:587`
 
 ### sys_linux_sigaction `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:594`
+- Defined: `kernel/syscalls.c:592`
 
 ### sys_linux_sigprocmask `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:599`
+- Defined: `kernel/syscalls.c:597`
 
 ### sys_linux_ioctl `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:604`
+- Defined: `kernel/syscalls.c:602`
 
 ### sys_linux_access `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:609`
+- Defined: `kernel/syscalls.c:607`
 
 ### sys_linux_yield `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:631`
+- Defined: `kernel/syscalls.c:629`
 
 ### sys_linux_getpid `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:636`
+- Defined: `kernel/syscalls.c:634`
 
 ### sys_linux_socket `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:641`
+- Defined: `kernel/syscalls.c:639`
 
 ### sys_linux_connect `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:646`
+- Defined: `kernel/syscalls.c:644`
 
 ### sys_linux_sendto `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:652`
+- Defined: `kernel/syscalls.c:650`
 
 ### sys_linux_recvfrom `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:657`
+- Defined: `kernel/syscalls.c:655`
 
 ### sys_linux_shutdown `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:662`
+- Defined: `kernel/syscalls.c:660`
 
 ### sys_linux_poll `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:667`
+- Defined: `kernel/syscalls.c:665`
 
 ### sys_linux_fork `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:674`
+- Defined: `kernel/syscalls.c:672`
 
 ### sys_linux_vfork `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:679`
+- Defined: `kernel/syscalls.c:677`
 
 ### sys_linux_execve `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:684`
+- Defined: `kernel/syscalls.c:682`
 
 ### sys_linux_exit `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:706`
+- Defined: `kernel/syscalls.c:704`
 
 ### sys_linux_wait4 `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:711`
+- Defined: `kernel/syscalls.c:709`
 
 ### sys_linux_kill `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:716`
+- Defined: `kernel/syscalls.c:714`
 
 ### sys_linux_flock `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:721`
+- Defined: `kernel/syscalls.c:719`
 
 ### sys_linux_getcwd `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:726`
+- Defined: `kernel/syscalls.c:724`
 
 ### sys_linux_unlink `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:738`
+- Defined: `kernel/syscalls.c:736`
 
 ### sys_linux_readlink `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:751`
+- Defined: `kernel/syscalls.c:749`
 
 ### sys_linux_fstat `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:756`
+- Defined: `kernel/syscalls.c:754`
 
 ### sys_linux_gettimeofday `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:776`
+- Defined: `kernel/syscalls.c:774`
 
 ### sys_linux_arch_prctl `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:791`
+- Defined: `kernel/syscalls.c:789`
 
 ### sys_linux_gettid `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:803`
+- Defined: `kernel/syscalls.c:801`
 
 ### trace_is_noisy `static int trace_is_noisy(long n)`
-- Defined: `kernel/syscalls.c:851`
+- Defined: `kernel/syscalls.c:849`
 
 ### ksyscall `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:855`
+- Defined: `kernel/syscalls.c:853`
 
 ### user_range_ok `int user_range_ok(unsigned long p, unsigned long len)`
-- Defined: `kernel/syscalls.c:874`
+- Defined: `kernel/syscalls.c:872`
 - Doc: --- User-pointer validation --------------------------------------------- The syscall boundary is the hardened edge betw
 
 ### user_str_ok `int user_str_ok(unsigned long p, unsigned long maxlen)`
-- Defined: `kernel/syscalls.c:880`
+- Defined: `kernel/syscalls.c:878`
 
 ### ksyscall_dispatch `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:888`
+- Defined: `kernel/syscalls.c:886`
 
 ### tools `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
-- Defined: `kernel/syscalls.c:1024`
+- Defined: `kernel/syscalls.c:1022`
 
 ## kernel/time.c
 
@@ -3204,10 +3204,10 @@ int console_getc(void)`
 - Defined: `mutate.sh:94`
 
 ### record
-- Defined: `mutate.sh:206`
+- Defined: `mutate.sh:208`
 
 ### find_index
-- Defined: `mutate.sh:212`
+- Defined: `mutate.sh:214`
 - Doc: Locate a mutant by name.
 
 ## net/net.c
@@ -11126,6 +11126,29 @@ Z_DumpHeap
 
 ### main `int main(void)`
 - Defined: `tests/test_rcu.c:36`
+
+## tests/test_sanitize.c
+
+### user_range_ok `int user_range_ok(unsigned long p, unsigned long len)`
+- Defined: `tests/test_sanitize.c:19`
+
+### user_str_ok `int user_str_ok(unsigned long p, unsigned long maxlen)`
+- Defined: `tests/test_sanitize.c:25`
+
+### kmemcpy `void *kmemcpy(void *dst, const void *src, unsigned long n)`
+- Defined: `tests/test_sanitize.c:31`
+
+### range_probe `static long range_probe(unsigned long p, long len)`
+- Defined: `tests/test_sanitize.c:47`
+
+### str_probe `static long str_probe(unsigned long p)`
+- Defined: `tests/test_sanitize.c:53`
+
+### copy_probe `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)`
+- Defined: `tests/test_sanitize.c:60`
+
+### main `int main(void)`
+- Defined: `tests/test_sanitize.c:66`
 
 ## tests/test_sync.c
 

@@ -377,8 +377,8 @@ void kmain(void)`
   - `usage` (function, line 51)
   - `restore_sources` (function, line 87)
   - `cleanup` (function, line 94)
-  - `record` (function, line 206)
-  - `find_index` (function, line 212)
+  - `record` (function, line 208)
+  - `find_index` (function, line 214)
 
 ## net.h
 - Layer: utility
@@ -525,6 +525,17 @@ void kmain(void)`
 - Language: h
 - Symbols:
   - `RTC_H` (macro, line 2)
+
+## sanitize.h
+- Layer: utility
+- Doc: ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point for syscall argument checks.
+- Language: h
+- Symbols:
+  - `SANITIZE_H` (macro, line 2)
+  - `SANITIZE_LEN_NEG` (macro, line 31)
+  - `SANITIZE_RANGE` (macro, line 36)
+  - `SANITIZE_STR` (macro, line 42)
+  - `SANITIZE_COPY_IN` (macro, line 48)
 
 ## sb16.h
 - Layer: utility

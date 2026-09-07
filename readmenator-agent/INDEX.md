@@ -332,6 +332,7 @@
 | `qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | root | 27 |
 | `rcu.h` | ifndef RCU_H define RCU_H  Docstring: rcu.h -- Read-copy-update, lite epoch edit | root | 6 |
 | `rtc.h` | ifndef RTC_H define RTC_H | root | 1 |
+| `sanitize.h` | ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point | root | 5 |
 | `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 8 |
 | `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Pro | root | 18 |
 | `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 3 |
@@ -347,6 +348,7 @@
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 6 |
 | `tests/test_percpu_rq.c` | Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq). | tests | 2 |
 | `tests/test_rcu.c` | Docstring: Host test for kernel/rcu.c (make test-rcu). | tests | 4 |
+| `tests/test_sanitize.c` | Docstring: Host test for sanitize.h (make test-sanitize). | tests | 9 |
 | `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 6 |
 | `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 8 |
 | `tls.h` | ifndef TLS_H define TLS_H  ========== TLS 1.2 client (RFC 5246) ========== | root | 42 |

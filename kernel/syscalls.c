@@ -29,6 +29,7 @@
 #include "batch.h"
 #include "rcu.h"
 #include "percpu_rq.h"
+#include "sanitize.h"
 
 /* ---- File descriptor table for open/read/write/close -------------------- */
 
@@ -111,7 +112,7 @@ static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)
 static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     unsigned char *pal = (unsigned char *)a1;
-    if (!user_range_ok((unsigned long)a1, 768)) return -EFAULT;
+    SANITIZE_RANGE(a1, 768);
     outb(0x3C8, 0);
     for (int i = 0; i < 768; i++) outb(0x3C9, pal[i] >> 2);
     return 0;
@@ -241,8 +242,8 @@ static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, 
     (void)a3; (void)a4; (void)a5; (void)a6;
     const unsigned char *pcm = (const unsigned char *)a1;
     long len = a2;
-    if (len < 0) return -EFAULT;
-    if (!user_range_ok((unsigned long)a1, (unsigned long)len)) return -EFAULT;
+    SANITIZE_LEN_NEG(len);
+    SANITIZE_RANGE(a1, len);
     return sb16_pcm_submit(pcm, (unsigned)len);
 }
 static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -275,8 +276,8 @@ static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, lo
     (void)a4; (void)a5; (void)a6;
     const unsigned char *pcm = (const unsigned char *)a2;
     long len = a3;
-    if (len < 0) return -EFAULT;
-    if (!user_range_ok((unsigned long)a2, (unsigned long)len)) return -EFAULT;
+    SANITIZE_LEN_NEG(len);
+    SANITIZE_RANGE(a2, len);
     return sb16_stream_submit((int)a1, pcm, (unsigned)len);
 }
 static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -310,14 +311,14 @@ static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5,
 
 static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
-    if (!user_range_ok((unsigned long)a1, 4)) return EFAULT;
+    SANITIZE_RANGE(a1, 4);
     return futex_wait((unsigned long)a1, (int)a2);
 }
 
 static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     long n = a2;
-    if (!user_range_ok((unsigned long)a1, 4)) return EFAULT;
+    SANITIZE_RANGE(a1, 4);
     if (n < 0) n = 0;
     if (n > FUTEX_WAKE_ALL) n = FUTEX_WAKE_ALL;
     return futex_wake((unsigned long)a1, (int)n);
@@ -344,11 +345,8 @@ static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5,
     (void)a4; (void)a5; (void)a6;
     if (count < 0 || count > BATCH_MAX_OPS) return BATCH_ERR_COUNT;
     if (count == 0) return BATCH_OK;
-    if (!user_range_ok((unsigned long)a1, (unsigned long)count * sizeof(batch_op_t)))
-        return EFAULT;
-    if (!user_range_ok((unsigned long)a2, (unsigned long)count * sizeof(long)))
-        return EFAULT;
-    kmemcpy(kops, (const void *)a1, (unsigned long)count * sizeof(batch_op_t));
+    SANITIZE_COPY_IN(kops, a1, count, sizeof(batch_op_t));
+    SANITIZE_RANGE(a2, (unsigned long)count * sizeof(long));
     r = batch_exec(kops, kresults, count, &completed, batch_kdispatch);
     for (i = 0; i < completed; i++)
         ((long *)a2)[i] = kresults[i];

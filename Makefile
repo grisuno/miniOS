@@ -967,6 +967,24 @@ rcu_test: tests/test_rcu.c kernel/rcu.c rcu.h sched.h spinlock.h | $(TOOLS_DIR)
 test-rcu: rcu_test
 	$(TOOLS_DIR)/rcu_test
 
+# Sanitize-macro host test (tests/test_sanitize.c + sanitize.h).
+sanitize_test: tests/test_sanitize.c sanitize.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/sanitize_test tests/test_sanitize.c
+
+test-sanitize: sanitize_test
+	$(TOOLS_DIR)/sanitize_test
+
+# Fast host unit suites, one command for CI (excludes test-tls, which
+# drives openssl servers, and the QEMU-backed BDD/MCP suites).
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test
+	$(TOOLS_DIR)/sync_test
+	$(TOOLS_DIR)/vma_test
+	$(TOOLS_DIR)/futex_test
+	$(TOOLS_DIR)/percpu_rq_test
+	$(TOOLS_DIR)/batch_test
+	$(TOOLS_DIR)/rcu_test
+	$(TOOLS_DIR)/sanitize_test
+
 # ── Ramdisk image ─────────────────────────────────────────────────
 # The Makefile is a prerequisite because it carries the file list: editing
 # PROGS must invalidate the image even when no individual file changed.
@@ -1050,7 +1068,7 @@ klog.o: kernel/klog.c kernel.h
 exec.o: kernel/exec.c kernel.h bootdefs.h arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c

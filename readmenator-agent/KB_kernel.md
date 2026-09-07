@@ -462,95 +462,95 @@ int console_getc(void)`
 - Doc: syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN.
 - Language: c
 - Symbols:
-  - `kiovec` (struct, line 395)
-  - `sys_minios_dns` (function, line 71) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_tls_handshake` (function, line 77) `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_tls_send` (function, line 82) `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_tls_recv` (function, line 87) `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_time` (function, line 92) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_kbd` (function, line 96) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_palette` (function, line 111) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_kbd_raw` (function, line 119) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_vga_mode` (function, line 125) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_init` (function, line 132) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_tone` (function, line 136) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_doom_frame` (function, line 140) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_rtc` (function, line 144) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_fb_info` (function, line 158) `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_vol` (function, line 170) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_spawn` (function, line 178) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_lz4_compress` (function, line 189) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_lz4_decompress` (function, line 202) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_mouse` (function, line 216) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_nk_frame` (function, line 225) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_open` (function, line 235) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_submit` (function, line 240) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_gfx_title` (function, line 248) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_pump` (function, line 262) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_open` (function, line 266) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_close` (function, line 270) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_submit` (function, line 274) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_vol` (function, line 282) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_clone` (function, line 292) `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-  - `sys_minios_thread_spawn` (function, line 300) `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_futex_wait` (function, line 310) `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_futex_wake` (function, line 316) `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `batch_kdispatch` (function, line 325) `static long batch_kdispatch(uint32_t opcode)`
-  - `sys_minios_submit_batch` (function, line 336) `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `syscall_trace_enabled` (function, line 400) `long syscall_trace_enabled(void)`
-  - `syscall_trace_set` (function, line 402) `void syscall_trace_set(int on)`
-  - `sys_linux_write` (function, line 446) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_writev` (function, line 456) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `do_open_path` (function, line 477) `static long do_open_path(const char *path, long flags)`
-  - `sys_linux_open` (function, line 492) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_close` (function, line 497) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_lseek` (function, line 506) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_brk` (function, line 516) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_mmap` (function, line 530) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_munmap` (function, line 571) `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_mprotect` (function, line 589) `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sigaction` (function, line 594) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sigprocmask` (function, line 599) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_ioctl` (function, line 604) `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_access` (function, line 609) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_yield` (function, line 631) `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_getpid` (function, line 636) `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_socket` (function, line 641) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_connect` (function, line 646) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sendto` (function, line 652) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_recvfrom` (function, line 657) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_shutdown` (function, line 662) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_poll` (function, line 667) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fork` (function, line 674) `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_vfork` (function, line 679) `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_execve` (function, line 684) `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_exit` (function, line 706) `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_wait4` (function, line 711) `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_kill` (function, line 716) `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_flock` (function, line 721) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_getcwd` (function, line 726) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_unlink` (function, line 738) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_readlink` (function, line 751) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fstat` (function, line 756) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_gettimeofday` (function, line 776) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_arch_prctl` (function, line 791) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_gettid` (function, line 803) `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `trace_is_noisy` (function, line 851) `static int trace_is_noisy(long n)`
-  - `ksyscall` (function, line 855) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `user_range_ok` (function, line 874) `int user_range_ok(unsigned long p, unsigned long len)`
-  - `user_str_ok` (function, line 880) `int user_str_ok(unsigned long p, unsigned long maxlen)`
-  - `ksyscall_dispatch` (function, line 888) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `tools` (function, line 1024) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
+  - `kiovec` (struct, line 393)
+  - `sys_minios_dns` (function, line 72) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_handshake` (function, line 78) `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_send` (function, line 83) `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_recv` (function, line 88) `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_time` (function, line 93) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_kbd` (function, line 97) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_palette` (function, line 112) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_kbd_raw` (function, line 120) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_vga_mode` (function, line 126) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_init` (function, line 133) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_tone` (function, line 137) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_doom_frame` (function, line 141) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_rtc` (function, line 145) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_fb_info` (function, line 159) `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_vol` (function, line 171) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_spawn` (function, line 179) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_lz4_compress` (function, line 190) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_lz4_decompress` (function, line 203) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_mouse` (function, line 217) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_nk_frame` (function, line 226) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_open` (function, line 236) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_submit` (function, line 241) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_gfx_title` (function, line 249) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_pump` (function, line 263) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_open` (function, line 267) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_close` (function, line 271) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_submit` (function, line 275) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_vol` (function, line 283) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_clone` (function, line 293) `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
+  - `sys_minios_thread_spawn` (function, line 301) `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_futex_wait` (function, line 311) `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_futex_wake` (function, line 317) `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `batch_kdispatch` (function, line 326) `static long batch_kdispatch(uint32_t opcode)`
+  - `sys_minios_submit_batch` (function, line 337) `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `syscall_trace_enabled` (function, line 398) `long syscall_trace_enabled(void)`
+  - `syscall_trace_set` (function, line 400) `void syscall_trace_set(int on)`
+  - `sys_linux_write` (function, line 444) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_writev` (function, line 454) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `do_open_path` (function, line 475) `static long do_open_path(const char *path, long flags)`
+  - `sys_linux_open` (function, line 490) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_close` (function, line 495) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_lseek` (function, line 504) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_brk` (function, line 514) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_mmap` (function, line 528) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_munmap` (function, line 569) `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_mprotect` (function, line 587) `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sigaction` (function, line 592) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sigprocmask` (function, line 597) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_ioctl` (function, line 602) `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_access` (function, line 607) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_yield` (function, line 629) `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_getpid` (function, line 634) `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_socket` (function, line 639) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_connect` (function, line 644) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sendto` (function, line 650) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_recvfrom` (function, line 655) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_shutdown` (function, line 660) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_poll` (function, line 665) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fork` (function, line 672) `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_vfork` (function, line 677) `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_execve` (function, line 682) `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_exit` (function, line 704) `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_wait4` (function, line 709) `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_kill` (function, line 714) `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_flock` (function, line 719) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_getcwd` (function, line 724) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_unlink` (function, line 736) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_readlink` (function, line 749) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fstat` (function, line 754) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_gettimeofday` (function, line 774) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_arch_prctl` (function, line 789) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_gettid` (function, line 801) `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `trace_is_noisy` (function, line 849) `static int trace_is_noisy(long n)`
+  - `ksyscall` (function, line 853) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `user_range_ok` (function, line 872) `int user_range_ok(unsigned long p, unsigned long len)`
+  - `user_str_ok` (function, line 878) `int user_str_ok(unsigned long p, unsigned long maxlen)`
+  - `ksyscall_dispatch` (function, line 886) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `tools` (function, line 1022) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
-  - `KFD_MAX` (macro, line 34)
-  - `MINIOS_SYSCALL_BASE` (macro, line 65)
-  - `MINIOS_SYSCALL_COUNT` (macro, line 67)
-  - `SYSCALL_TRACE` (macro, line 396)
-  - `SYS_NOISY_TIME` (macro, line 408)
-  - `SYS_NOISY_KBD` (macro, line 409)
-  - `SYS_NOISY_MOUSE` (macro, line 410)
-  - `LINUX_SYSCALL_COUNT` (macro, line 808)
+  - `KFD_MAX` (macro, line 35)
+  - `MINIOS_SYSCALL_BASE` (macro, line 66)
+  - `MINIOS_SYSCALL_COUNT` (macro, line 68)
+  - `SYSCALL_TRACE` (macro, line 394)
+  - `SYS_NOISY_TIME` (macro, line 406)
+  - `SYS_NOISY_KBD` (macro, line 407)
+  - `SYS_NOISY_MOUSE` (macro, line 408)
+  - `LINUX_SYSCALL_COUNT` (macro, line 806)
 
 ## kernel/time.c
 - Layer: utility

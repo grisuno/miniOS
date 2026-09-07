@@ -786,6 +786,24 @@ a bounds check, a program with many large argv entries could write below
 checks `l > (p - sbase)` and returns NULL on overflow. `k_exec_user` checks
 the return value and refuses to enter ring 3 with a NULL stack pointer.
 
+### Syscall argument sanitization (`sanitize.h`)
+Every MiniOS handler takes user pointers only through the `SANITIZE_*`
+macros (range, string, non-negative length, and copy-in with an explicit
+count-by-size wrap check), which all fail closed with `EFAULT` (-14). The
+audit that motivated them found five handlers returning `-EFAULT` (+14,
+which userland reads as success) and open-coded multiplications a hostile
+count could wrap past the range check; both classes are gone where the
+macros apply. `SANITIZE_COPY_IN` copies into kernel memory before use, so
+userland cannot mutate an array between validation and execution (no
+TOCTOU). The macros name only `user_range_ok`/`user_str_ok`/`kmemcpy`/
+`EFAULT` and are host-tested (`make test-sanitize`, mutation-covered);
+`grep SANITIZE_` lists every sanitized entry point. Boundary rule:
+sanitize at the boundary, trust internally. Region-typed validation (heap
+vs stack vs mmap) is deliberately deferred: the VMA tree tracks mmap
+regions only, and futex/batch words legitimately live in any writable
+region, so a single-type check would need a region-mask redesign plus
+tagging at load/brk/stack setup first.
+
 ### User-mode isolation
 ET_EXEC / ET_DYN binaries run at ring 3 under hardware page protection;
 ET_REL objects (the toolchain) remain ring-0 kernel extensions by contract,
@@ -1687,6 +1705,7 @@ sh src/test_all.sh  # one-boot comprehensive non-interactive suite (61 PASS)
 make test-tls       # host-side crypto + full-handshake suite green
 make test-vma       # host-side VMA red-black tree suite green
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
+make test-sanitize  # syscall sanitize-macro suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
@@ -2086,6 +2105,7 @@ sh src/test_all.sh          # one-boot comprehensive non-interactive suite (61 P
 make test-tls               # host-side crypto + handshake suite
 make test-vma               # host-side VMA red-black tree suite
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
+make test-sanitize  # syscall sanitize-macro suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD
 mcp/mutate_mcp.sh           # every MCP mutant killed
 python3 tools/check_cohesion.py KNOWLEDGE_BASE.jsonld
