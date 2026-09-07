@@ -14,6 +14,7 @@
   - `ap_gdt32_end` (function, line 91)
   - `ap_gdt64_ptr` (function, line 93)
   - `ap_stub_end` (function, line 98)
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ## arch/x86/ctx_sw.S
 - Layer: utility
@@ -60,6 +61,7 @@
   - `HAL_MOUSE_PACKET_LEN` (macro, line 47)
   - `HAL_MOUSE_SCALE` (macro, line 49)
   - `HAL_LAPIC_EOI_ADDR` (macro, line 52)
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ## arch/x86/isr_stubs.S
 - Layer: testing
@@ -104,3 +106,4 @@
   - `MSR_FSBASE` (macro, line 22)
   - `MSR_GSBASE` (macro, line 23)
   - `MSR_KERNEL_GS_BASE` (macro, line 24)
+- Imported by: `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `smp.c`

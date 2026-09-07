@@ -70,6 +70,7 @@
   - `audio_stream_close` (function, line 67) `void audio_stream_close(int id)`
   - `audio_stream_submit` (function, line 71) `int audio_stream_submit(int id, const void *buf, unsigned len)`
   - `audio_stream_volume` (function, line 75) `void audio_stream_volume(int id, unsigned char vol)`
+- Depends on: `progs/minios_abi.h`
 
 ## progs/src/cp.c
 - Layer: utility
@@ -321,6 +322,8 @@
   - `MMUTEX_HELD` (macro, line 32)
   - `MMUTEX_CONTENDED` (macro, line 33)
   - `MMUTEX_SPINS` (macro, line 34)
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ## progs/src/nx.c
 - Layer: utility
@@ -352,6 +355,8 @@
   - `MONO_BYTES` (macro, line 30)
   - `BUF_MS` (macro, line 31)
   - `F_NUM_FACTOR` (macro, line 33)
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `progs/piano/piano.c`
 
 ## progs/src/sbtone.c
 - Layer: utility
@@ -370,6 +375,7 @@
   - `RATE` (macro, line 24)
   - `BUF` (macro, line 26)
   - `WINDOW_MS` (macro, line 27)
+- Depends on: `progs/minios_abi.h`
 
 ## progs/src/shell.py
 - Layer: utility
@@ -459,6 +465,7 @@
   - `BUFSZ` (macro, line 24)
   - `EXPECTED_N` (macro, line 25)
   - `EXPECTED_SUM` (macro, line 27)
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
 
 ## progs/src/w1.c
 - Layer: utility

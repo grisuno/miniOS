@@ -5,10 +5,14 @@
 #include "minios_abi.h"
 
 /* Framebuffer geometry. The boot loader probes VESA BIOS Extensions for a
- * high-resolution 8-bit-palette linear framebuffer and records width, height,
- * pitch and physical base in the fixed VBE_INFO_ADDR struct; vga_fb_boot_config
- * loads them into the globals below before the kernel maps the framebuffer.
+ * high-resolution linear framebuffer (32-bit true color first, then the
+ * 8-bit-palette modes) and records width, height, pitch, physical base and
+ * bits per pixel in the fixed VBE_INFO_ADDR struct; vga_fb_boot_config loads
+ * them into the globals below before the kernel maps the framebuffer.
  * Without VBE the values are the Mode 13h defaults (320x200x8, phys 0xA0000).
+ * In a true-color mode the kernel's palette-index drawing is expanded to RGB
+ * on write, so desktop, icons and wallpaper are no longer quantized to the
+ * 256-entry VGA DAC; in 8-bit mode the DAC path is used unchanged.
  * FB_ADDR is the fixed virtual address in the user window that both the kernel
  * desktop and graphics programs write through. It sits in the reserved tail
  * above DOOM_BACKBUF_ADDR (which is also the brk cap), so a program's heap can
@@ -18,7 +22,19 @@
 extern int fb_width;
 extern int fb_height;
 extern int fb_pitch;
+extern int fb_bpp;
 extern unsigned long fb_phys_base;
+/* Bytes per framebuffer pixel derived from fb_bpp (1 for 8-bit, 3 for 24,
+ * 4 for 32). */
+int fb_bytes_per_pixel(void);
+/* Read one desktop pixel as packed 0x00RRGGBB (palette-resolved in 8-bit
+ * mode, native in true color). Backstop for `gfx pixel`/`gfx shot`, which
+ * must report colors instead of DAC indices once the DAC is gone. */
+unsigned long vga_fb_read_rgb(int x, int y);
+/* Store the graphics program's 768-byte palette (SYS_PALETTE). In 8-bit mode
+ * it is also programmed into the DAC; in true color it is only kept so the
+ * DOOM/Nuklear blits can expand their indexed back-buffers to RGB. */
+void vga_fb_set_gfx_palette(const unsigned char *pal);
 
 void vga_fb_boot_config(void);
 

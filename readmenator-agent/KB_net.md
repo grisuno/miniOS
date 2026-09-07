@@ -66,6 +66,7 @@
   - `NET_TCP_ESTABLISHED` (macro, line 358)
   - `NET_TCP_FIN_SENT` (macro, line 359)
   - `NET_TCP_DEAD` (macro, line 360)
+- Depends on: `net/rtl8139.h`
 
 ## net/rtl8139.c
 - Layer: utility
@@ -107,6 +108,7 @@
   - `RTL_REG_CBR` (macro, line 66)
   - `RTL_REG_9346CR` (macro, line 67)
   - `RTL_REG_CONFIG1` (macro, line 68)
+- Depends on: `net/rtl8139.h`
 
 ## net/rtl8139.h
 - Layer: utility
@@ -114,6 +116,7 @@
 - Language: h
 - Symbols:
   - `RTL8139_H` (macro, line 2)
+- Imported by: `net/net.c`, `net/rtl8139.c`
 
 ## net/tls.c
 - Layer: utility
@@ -153,6 +156,7 @@
   - `cmos_read` (function, line 821) `static inline unsigned char cmos_read(unsigned char reg)`
   - `tls_now_days` (function, line 825) `long tls_now_days(void)`
   - `PORT_IO_DEFINED` (macro, line 809)
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ## net/tls_crypto.c
 - Layer: utility
@@ -273,6 +277,7 @@
              unsigned char x[32], unsigned char y[32])`
   - `p256_scalar_valid` (function, line 1538) `int p256_scalar_valid(const unsigned char scalar[32])`
   - `TLS_BN_WORDS` (macro, line 534)
+- Depends on: `tls_port.h`
 
 ## net/tls_x509.c
 - Layer: utility
@@ -314,3 +319,4 @@
   - `tls_x509_verify_chain` (function, line 520) `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,
                        ...`
   - `TLS_SAN_MAX` (macro, line 170)
+- Depends on: `tls_port.h`

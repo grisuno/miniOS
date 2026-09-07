@@ -676,8 +676,8 @@ void kmain(void) {
     syscall_init();
     vga_fb_boot_config();
     mm_setup_protections();
-    kprintf("fb: %dx%d pitch %d base 0x%lx\n",
-            fb_width, fb_height, fb_pitch, fb_phys_base);
+    kprintf("fb: %dx%d pitch %d bpp %d base 0x%lx\n",
+            fb_width, fb_height, fb_pitch, fb_bpp, fb_phys_base);
     kprintf("kernel: physical base 0x%x, user pages 4 KB with NX\n",
             *(unsigned *)BOOT_KASLR_ADDR);
     kprintf("isolation: user window %x..%x ring 3, syscall ABI on %x\n",

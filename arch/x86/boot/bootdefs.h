@@ -93,13 +93,22 @@
 #define BIOS_VIDEO_SET_MODE       0x0013
 
 /* VESA BIOS Extensions (VBE) linear-framebuffer video setup. Stage 2 probes a
- * high-resolution 8-bit-palette mode before entering long mode and records
- * the result for the kernel in a fixed low-memory struct (see VBE_INFO_ADDR).
- * If no VBE mode is available it falls back to VGA Mode 13h (320x200x8). The
- * 8-bit modes keep the 256-entry VGA DAC palette path used by the desktop and
- * DOOM unchanged. */
+ * true-color mode whose framebuffer fits the emulated std-VGA ~2 MB scan-out
+ * window (800x600x32, then 640x480x32), then the 8-bit-palette modes, and
+ * records the result for the kernel in a fixed low-memory struct (see
+ * VBE_INFO_ADDR). If no VBE mode is available it falls back to VGA Mode 13h
+ * (320x200x8). In a true-color mode the kernel expands its palette-index
+ * drawing to RGB and the desktop/icon pixels are no longer quantized; the
+ * 8-bit modes keep the 256-entry VGA DAC palette path unchanged. A true-color
+ * mode taller than 800x600 (1024x768x24 = 2.25 MB) would render its bottom
+ * rows black because QEMU only scans out the first ~2 MB of the framebuffer,
+ * so none is offered. */
 #define BIOS_VBE_GET_MODE_INFO    0x4F01
 #define BIOS_VBE_SET_MODE         0x4F02
+#define VBE_MODE_1024x768x32      0x0118
+#define VBE_MODE_800x600x32       0x0115
+#define VBE_MODE_640x480x32       0x0112
+#define VBE_MODE_1024x768x8       0x0105
 #define VBE_MODE_800x600x8        0x0103
 #define VBE_MODE_640x480x8        0x0101
 #define VBE_MODE_LFB              0x4000
@@ -111,6 +120,10 @@
 #define VBE_INFO_YRES_OFF         0x14
 #define VBE_INFO_BYTES_SCAN_OFF   0x10
 #define VBE_INFO_PHYSBASE_OFF     0x28
+#define VBE_INFO_BPP_SRC_OFF      0x19
+#define VBE_BPP_8                 8
+#define VBE_BPP_24                24
+#define VBE_BPP_32                32
 
 /* Framebuffer info handed to the kernel. Stage 2 writes this fixed low-memory
  * struct; the kernel reads it once at boot to map the linear framebuffer into
@@ -119,13 +132,16 @@
  *   +4  word   bytes per scanline (pitch)
  *   +6  word   width in pixels
  *   +8  word   height in pixels
- *   +10 byte   valid (1 when stage 2 programmed a video mode) */
+ *   +10 byte   valid (1 when stage 2 programmed a video mode)
+ *   +11 byte   bits per pixel (8, 24 or 32; 8 when stage 2 fell back to
+ *              VGA Mode 13h, whose mode info carries no bpp field) */
 #define VBE_INFO_ADDR             0x7E20
 #define VBE_INFO_FBBASE_OFF       0
 #define VBE_INFO_PITCH_OFF        4
 #define VBE_INFO_WIDTH_OFF        6
 #define VBE_INFO_HEIGHT_OFF       8
 #define VBE_INFO_VALID_OFF        10
+#define VBE_INFO_BPP_OFF          11
 
 #define A20_CONTROL_PORT          0x92
 #define A20_ENABLE_BIT            0x02

@@ -1305,7 +1305,13 @@ static void shell_cmd_gfx(int argc, char **argv) {
                     x, y, fb_width, fb_height);
             return;
         }
-        kprintf("gfx: pixel (%d,%d) = %d\n", x, y, FB_ADDR[y * fb_pitch + x]);
+        if (fb_bpp == 8) {
+            kprintf("gfx: pixel (%d,%d) = %d\n", x, y,
+                    FB_ADDR[(unsigned)y * (unsigned)fb_pitch + (unsigned)x]);
+        } else {
+            unsigned long rgb = vga_fb_read_rgb(x, y);
+            kprintf("gfx: pixel (%d,%d) = #%06lx\n", x, y, rgb & 0xFFFFFFUL);
+        }
         return;
     }
     if (kstrcmp(argv[1], "rect") == 0) {
@@ -1323,6 +1329,30 @@ static void shell_cmd_gfx(int argc, char **argv) {
             vga_puts("gfx: rect inverted or empty\n");
             return;
         }
+        if (fb_bpp != 8) {
+            /* True color: per-channel ranges instead of a DAC-index
+             * histogram, which no longer exists. */
+            unsigned rmin = 255, rmax = 0, gmin = 255, gmax = 0;
+            unsigned bmin = 255, bmax = 0;
+            unsigned long total = 0;
+            for (y = y0; y <= y1; y++)
+                for (x = x0; x <= x1; x++) {
+                    unsigned long rgb = vga_fb_read_rgb(x, y);
+                    unsigned r = (unsigned)((rgb >> 16) & 0xFF);
+                    unsigned g = (unsigned)((rgb >> 8) & 0xFF);
+                    unsigned b = (unsigned)(rgb & 0xFF);
+                    if (r < rmin) rmin = r;
+                    if (r > rmax) rmax = r;
+                    if (g < gmin) gmin = g;
+                    if (g > gmax) gmax = g;
+                    if (b < bmin) bmin = b;
+                    if (b > bmax) bmax = b;
+                    total++;
+                }
+            kprintf("gfx: rect (%d,%d)-(%d,%d): %lu px r[%u..%u] g[%u..%u] b[%u..%u]\n",
+                    x0, y0, x1, y1, total, rmin, rmax, gmin, gmax, bmin, bmax);
+            return;
+        }
         {
             unsigned hist[256];
             int min = 255, max = 0, distinct = 0, top = 0, top_n = 0;
@@ -1330,7 +1360,7 @@ static void shell_cmd_gfx(int argc, char **argv) {
             kmemset(hist, 0, sizeof(hist));
             for (y = y0; y <= y1; y++)
                 for (x = x0; x <= x1; x++)
-                    hist[FB_ADDR[y * fb_pitch + x]]++;
+                    hist[FB_ADDR[(unsigned)y * (unsigned)fb_pitch + (unsigned)x]]++;
             for (i = 0; i < 256; i++) {
                 if (hist[i]) {
                     distinct++;
@@ -1363,11 +1393,18 @@ static void shell_cmd_gfx(int argc, char **argv) {
         kfwrite(hdr, 1, (unsigned long)n, f);
         for (y = 0; y < fb_height; y++) {
             for (i = 0; i < fb_width; i++) {
-                unsigned idx = FB_ADDR[y * fb_pitch + i];
                 unsigned char rgb[3];
-                rgb[0] = pal[idx * 3 + 0];
-                rgb[1] = pal[idx * 3 + 1];
-                rgb[2] = pal[idx * 3 + 2];
+                if (fb_bpp == 8) {
+                    unsigned idx = FB_ADDR[(unsigned)y * (unsigned)fb_pitch + (unsigned)i];
+                    rgb[0] = pal[idx * 3 + 0];
+                    rgb[1] = pal[idx * 3 + 1];
+                    rgb[2] = pal[idx * 3 + 2];
+                } else {
+                    unsigned long px = vga_fb_read_rgb(i, y);
+                    rgb[0] = (unsigned char)((px >> 16) & 0xFF);
+                    rgb[1] = (unsigned char)((px >> 8) & 0xFF);
+                    rgb[2] = (unsigned char)(px & 0xFF);
+                }
                 kfwrite(rgb, 1, 3, f);
                 written += 3;
             }

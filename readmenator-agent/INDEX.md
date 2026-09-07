@@ -5,9 +5,9 @@
 | `ap_stub.h` | generated from ap_stub.bin - do not edit | root | 0 |
 | `app.py` | _*_ coding: utf8 _*_ | root | 0 |
 | `arch/x86/ap_entry.S` | ap_entry.S - SMP application-processor bootstrap stub. | x86 | 9 |
-| `arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | boot | 129 |
+| `arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | boot | 138 |
 | `arch/x86/boot/stage1.S` | stage1.S - MiniOS boot sector. | boot | 11 |
-| `arch/x86/boot/stage2.S` | stage2.S - MiniOS second-stage loader. | boot | 39 |
+| `arch/x86/boot/stage2.S` | stage2.S - MiniOS second-stage loader. | boot | 40 |
 | `arch/x86/ctx_sw.S` | - | x86 | 5 |
 | `arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 30 |
 | `arch/x86/isr_stubs.S` | - | x86 | 24 |
@@ -17,7 +17,7 @@
 | `block.h` | ifndef BLOCK_H define BLOCK_H  Block device abstraction for MiniFS. Maps 4096-by | root | 4 |
 | `bootloader.c` | - | root | 2 |
 | `desktop_icons.h` | desktop_icons.h -- embedded icon pixel data for desktop shortcuts. | root | 3 |
-| `desktop_shortcuts.h` | desktop_shortcuts.h -- configurable desktop icon shortcuts. | root | 13 |
+| `desktop_shortcuts.h` | desktop_shortcuts.h -- configurable desktop icon shortcuts. | root | 17 |
 | `drivers/block.c` | Block device layer for MiniFS. | drivers | 12 |
 | `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | drivers | 14 |
 | `drivers/kbd.c` | include "kernel.h" include "vga_fb.h" include "kbd.h"  ========================= | drivers | 17 |
@@ -62,7 +62,7 @@
 | `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 87 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 8 |
 | `kernel/time.c` | include "kernel.h"  ============================================================ | kernel | 3 |
-| `kernel/vga_fb.c` | - | kernel | 78 |
+| `kernel/vga_fb.c` | - | kernel | 89 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 1 |
 | `mcp/__init__.py` | - | mcp | 0 |
 | `mcp/mcp_dbg_driver.py` | - | mcp | 6 |

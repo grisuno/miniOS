@@ -4,6 +4,7 @@
 - Layer: testing
 - Doc: generated from ap_stub.bin - do not edit
 - Language: h
+- Imported by: `smp.c`
 
 ## app.py
 - Layer: utility
@@ -46,6 +47,7 @@
   - `BLOCK_SIZE` (macro, line 6)
   - `BLOCK_SHIFT` (macro, line 8)
   - `SECTORS_PER_BLOCK` (macro, line 9)
+- Imported by: `kernel.c`
 
 ## bootloader.c
 - Layer: utility
@@ -62,25 +64,31 @@
   - `DESKTOP_ICONS_H` (macro, line 8)
   - `ICON_EMBEDDED_W` (macro, line 11)
   - `ICON_EMBEDDED_H` (macro, line 13)
+- Imported by: `kernel/vga_fb.c`
 
 ## desktop_shortcuts.h
 - Layer: utility
 - Doc: desktop_shortcuts.h -- configurable desktop icon shortcuts.
 - Language: h
 - Symbols:
-  - `desktop_shortcut` (struct, line 36)
-  - `DESKTOP_SHORTCUTS_H` (macro, line 12)
-  - `MAX_SHORTCUTS` (macro, line 17)
-  - `SHORTCUT_NAME_LEN` (macro, line 18)
-  - `SHORTCUT_CMD_LEN` (macro, line 19)
-  - `SHORTCUT_PATH_LEN` (macro, line 20)
-  - `ICON_W` (macro, line 23)
-  - `ICON_H` (macro, line 24)
-  - `ICON_PAD_X` (macro, line 25)
-  - `ICON_PAD_Y` (macro, line 26)
-  - `ICON_LABEL_H` (macro, line 27)
-  - `ICON_PAL_BASE` (macro, line 32)
-  - `ICON_PAL_SIZE` (macro, line 33)
+  - `desktop_shortcut` (struct, line 50)
+  - `DESKTOP_SHORTCUTS_H` (macro, line 13)
+  - `MAX_SHORTCUTS` (macro, line 18)
+  - `SHORTCUT_NAME_LEN` (macro, line 19)
+  - `SHORTCUT_CMD_LEN` (macro, line 20)
+  - `SHORTCUT_PATH_LEN` (macro, line 21)
+  - `ICON_W` (macro, line 24)
+  - `ICON_H` (macro, line 25)
+  - `ICON_PAD_X` (macro, line 26)
+  - `ICON_PAD_Y` (macro, line 27)
+  - `ICON_LABEL_H` (macro, line 28)
+  - `DOCK_PAD_X` (macro, line 33)
+  - `DOCK_PAD_Y` (macro, line 34)
+  - `DOCK_GAP` (macro, line 35)
+  - `DOCK_LABEL_GAP` (macro, line 36)
+  - `ICON_PAL_BASE` (macro, line 43)
+  - `ICON_PAL_SIZE` (macro, line 44)
+- Imported by: `kernel/vga_fb.c`
 
 ## editor.h
 - Layer: infrastructure
@@ -88,6 +96,7 @@
 - Language: h
 - Symbols:
   - `EDITOR_H` (macro, line 2)
+- Depends on: `kernel.h`
 
 ## futex.h
 - Layer: utility
@@ -102,6 +111,7 @@
   - `FUTEX_NOMATCH` (macro, line 56)
   - `FUTEX_NOPROC` (macro, line 57)
   - `FUTEX_WAKE_ALL` (macro, line 58)
+- Depends on: `sched.h`, `spinlock.h`, `sync.h`
 
 ## gen_minifs.py
 - Layer: utility
@@ -139,6 +149,7 @@
   - `IDE_DRIVE_SLAVE` (macro, line 40)
   - `IDE_TIMEOUT` (macro, line 43)
   - `IDE_SECTOR_SIZE` (macro, line 46)
+- Imported by: `kernel.c`
 
 ## install.sh
 - Layer: utility
@@ -181,6 +192,7 @@ void kmain(void)`
   - `STR_` (macro, line 268)
   - `STR` (macro, line 269)
   - `KSYM_MAX` (macro, line 307)
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ## kernel.h
 - Layer: utility
@@ -251,6 +263,8 @@ void kmain(void)`
   - `ET_EXEC` (macro, line 494)
   - `ET_DYN` (macro, line 495)
   - `KFD_MAX` (macro, line 508)
+- Depends on: `progs/minios_abi.h`, `vma.h`
+- Imported by: `editor.h`, `kernel.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ## lz4_kernel.h
 - Layer: utility
@@ -258,6 +272,7 @@ void kmain(void)`
 - Language: h
 - Symbols:
   - `LZ4_KERNEL_H` (macro, line 2)
+- Imported by: `kernel.c`
 
 ## minifs.h
 - Layer: utility
@@ -295,6 +310,7 @@ void kmain(void)`
   - `MINIFS_JOP_COMMIT` (macro, line 85)
   - `MINIFS_JSTATE_CLEAN` (macro, line 86)
   - `MINIFS_JSTATE_DIRTY` (macro, line 88)
+- Imported by: `kernel.c`
 
 ## minifs_dump.py
 - Layer: utility
@@ -419,6 +435,7 @@ void kmain(void)`
   - `NET_RETRY_MS` (macro, line 54)
   - `NET_TX_MAX` (macro, line 55)
   - `NET_FD_BASE` (macro, line 58)
+- Imported by: `kernel.c`, `tls_port.h`
 
 ## pcspk.h
 - Layer: utility
@@ -429,6 +446,7 @@ void kmain(void)`
   - `PCSPK_VOL_MIN` (macro, line 3)
   - `PCSPK_VOL_MAX` (macro, line 5)
   - `PCSPK_VOL_DEFAULT` (macro, line 6)
+- Imported by: `kernel.c`
 
 ## percpu_rq.h
 - Layer: utility
@@ -440,6 +458,7 @@ void kmain(void)`
   - `RQ_RESCAN_PERIOD` (macro, line 46)
   - `RQ_VALIDATE_ATTEMPTS` (macro, line 47)
   - `WQ_NONE_HINT` (macro, line 48)
+- Depends on: `sched.h`, `spinlock.h`
 
 ## qga.c
 - Layer: utility
@@ -473,6 +492,7 @@ void kmain(void)`
   - `qga_cmd_file_close` (function, line 383) `static void qga_cmd_file_close(const struct qga_pair *pairs, int n)`
   - `qga_dispatch` (function, line 400) `static void qga_dispatch(struct qga_pair *pairs, int n)`
   - `qga_poll` (function, line 446) `void qga_poll(void)`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ## qga.h
 - Layer: utility
@@ -506,6 +526,7 @@ void kmain(void)`
   - `QGA_STR_MAX` (macro, line 39)
   - `QGA_MAX_DEPTH` (macro, line 42)
   - `QGA_FILE_MAX` (macro, line 46)
+- Imported by: `qga.c`
 
 ## rcu.h
 - Layer: utility
@@ -518,6 +539,7 @@ void kmain(void)`
   - `RCU_OK` (macro, line 44)
   - `RCU_ERR_FULL` (macro, line 46)
   - `RCU_ERR_TIMEOUT` (macro, line 47)
+- Depends on: `sched.h`, `spinlock.h`
 
 ## rtc.h
 - Layer: utility
@@ -525,6 +547,7 @@ void kmain(void)`
 - Language: h
 - Symbols:
   - `RTC_H` (macro, line 2)
+- Imported by: `kernel.c`, `qga.c`
 
 ## sanitize.h
 - Layer: utility
@@ -536,6 +559,7 @@ void kmain(void)`
   - `SANITIZE_RANGE` (macro, line 36)
   - `SANITIZE_STR` (macro, line 42)
   - `SANITIZE_COPY_IN` (macro, line 48)
+- Imported by: `kernel/syscalls.c`, `tests/test_sanitize.c`
 
 ## sb16.h
 - Layer: utility
@@ -550,6 +574,7 @@ void kmain(void)`
   - `SB16_ARM_PERIOD_MS` (macro, line 36)
   - `SB16_STREAMS` (macro, line 42)
   - `SB16_STREAM_BUF` (macro, line 43)
+- Imported by: `kernel.c`
 
 ## sched.h
 - Layer: utility
@@ -574,6 +599,8 @@ void kmain(void)`
   - `current_pid` (macro, line 122)
   - `DESKTOP_TICK_INTERVAL` (macro, line 126)
   - `TSS_SEL` (macro, line 176)
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ## shell.h
 - Layer: utility
@@ -583,6 +610,7 @@ void kmain(void)`
   - `SHELL_H` (macro, line 2)
   - `CMD_BUF_SZ` (macro, line 11)
   - `MAX_ARGS` (macro, line 13)
+- Depends on: `kernel.h`
 
 ## smp.c
 - Layer: utility
@@ -624,6 +652,7 @@ void kmain(void)`
   - `LAPIC_PD_ADDR` (macro, line 66)
   - `LAPIC_PDPT_SLOT` (macro, line 67)
   - `LAPIC_PD_IDX` (macro, line 68)
+- Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ## smp.h
 - Layer: utility
@@ -631,6 +660,8 @@ void kmain(void)`
 - Language: h
 - Symbols:
   - `SMP_H` (macro, line 2)
+- Depends on: `spinlock.h`
+- Imported by: `kernel.c`, `smp.c`
 
 ## spinlock.h
 - Layer: utility
@@ -654,6 +685,7 @@ void kmain(void)`
   - `spin_unlock_irqrestore` (function, line 145) `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
   - `SPINLOCK_H` (macro, line 2)
   - `SPINLOCK_INIT` (macro, line 42)
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ## sync.h
 - Layer: utility
@@ -667,6 +699,8 @@ void kmain(void)`
   - `SEM_INIT` (macro, line 74)
   - `COND_INIT` (macro, line 88)
   - `RWLOCK_INIT` (macro, line 103)
+- Depends on: `sched.h`, `spinlock.h`
+- Imported by: `futex.h`
 
 ## test_bdd.sh
 - Layer: testing
@@ -750,6 +784,7 @@ void kmain(void)`
   - `TLS_BN_4096_WORDS` (macro, line 62)
   - `TLS_BN_384_WORDS` (macro, line 63)
   - `TLS_ROOT_COUNT` (macro, line 68)
+- Imported by: `kernel.c`, `tls_test.c`
 
 ## tls_port.h
 - Layer: utility
@@ -783,11 +818,14 @@ void kmain(void)`
   - `TLS_RECV_TIMEOUT` (macro, line 73)
   - `TLS_CLOSE` (macro, line 74)
   - `TLS_FD_MAX` (macro, line 75)
+- Depends on: `kernel.h`, `kernel/string.c`, `kernel/time.c`, `net.h`
+- Imported by: `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `tls_test.c`
 
 ## tls_roots.h
 - Layer: utility
 - Doc: tls_roots.h - embedded CA roots (DER), generated by mkroots.sh.
 - Language: h
+- Imported by: `net/tls.c`
 
 ## tls_test.c
 - Layer: testing
@@ -817,6 +855,7 @@ void kmain(void)`
   - `scenario_expired` (function, line 338) `static int scenario_expired(int port)`
   - `main` (function, line 348) `int main(int argc, char **argv)`
   - `CHECK` (macro, line 61)
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ## tls_test.py
 - Layer: testing
@@ -844,6 +883,7 @@ void kmain(void)`
 - Layer: testing
 - Doc: tls_test_roots.h - generated by tls_test.py; never built into the kernel. The test root replaces the production table.
 - Language: h
+- Imported by: `tls_test.c`
 
 ## vga_fb.h
 - Layer: utility
@@ -851,59 +891,61 @@ void kmain(void)`
 - Language: h
 - Symbols:
   - `VGA_FB_H` (macro, line 2)
-  - `FB_ADDR` (macro, line 17)
-  - `DOOM_W` (macro, line 29)
-  - `DOOM_H` (macro, line 30)
-  - `DOOM_BACKBUF_ADDR` (macro, line 31)
-  - `NK_W` (macro, line 48)
-  - `NK_H` (macro, line 49)
-  - `NK_BACKBUF_ADDR` (macro, line 50)
-  - `COL_BG` (macro, line 57)
-  - `COL_TASKBAR` (macro, line 58)
-  - `COL_TASKBAR_TXT` (macro, line 59)
-  - `COL_TITLEBAR` (macro, line 60)
-  - `COL_TITLE_TXT` (macro, line 61)
-  - `COL_TERMINAL` (macro, line 62)
-  - `COL_TERM_TXT` (macro, line 63)
-  - `COL_TERM_CUR` (macro, line 64)
-  - `COL_BORDER` (macro, line 65)
-  - `COL_WHITE` (macro, line 66)
-  - `COL_SHADOW` (macro, line 67)
-  - `COL_HIGHLIGHT` (macro, line 68)
-  - `COL_SCROLLBAR` (macro, line 69)
-  - `COL_SCROLL_THUMB` (macro, line 70)
-  - `WALLPAPER_PATH` (macro, line 77)
-  - `WALL_PAL_BASE` (macro, line 78)
-  - `WALL_PAL_SIZE` (macro, line 79)
-  - `FONT_W` (macro, line 80)
-  - `FONT_H` (macro, line 82)
-  - `TERM_MAX_COLS` (macro, line 87)
-  - `TERM_MAX_ROWS` (macro, line 88)
-  - `TASKBAR_H` (macro, line 91)
-  - `TASKBAR_PAD` (macro, line 92)
-  - `TASKBAR_CLOCK_CH` (macro, line 93)
-  - `TASKBAR_VOL_CH` (macro, line 94)
-  - `TASKBAR_VOL_STEP` (macro, line 95)
-  - `TASKBAR_ICON_W` (macro, line 96)
-  - `TASKBAR_BTN_W` (macro, line 97)
-  - `TILING_LEFT` (macro, line 100)
-  - `TILING_RIGHT` (macro, line 101)
-  - `TILING_TOP` (macro, line 102)
-  - `TILING_BOTTOM` (macro, line 103)
-  - `TILING_TOP_LEFT` (macro, line 104)
-  - `TILING_TOP_RIGHT` (macro, line 105)
-  - `TILING_BOTTOM_LEFT` (macro, line 106)
-  - `TILING_BOTTOM_RIGHT` (macro, line 107)
-  - `SCROLLBAR_W` (macro, line 110)
-  - `SCROLLBAR_PAD` (macro, line 111)
-  - `WM_BTN_W` (macro, line 116)
-  - `WM_BTN_H` (macro, line 117)
-  - `WM_BTN_PAD` (macro, line 118)
-  - `WM_BTN_MIN` (macro, line 119)
-  - `WM_BTN_MAX` (macro, line 120)
-  - `WM_BTN_CLOSE` (macro, line 121)
-  - `SB_MAX_LINES` (macro, line 141)
-  - `SB_LINE_MAX` (macro, line 142)
+  - `FB_ADDR` (macro, line 21)
+  - `DOOM_W` (macro, line 45)
+  - `DOOM_H` (macro, line 46)
+  - `DOOM_BACKBUF_ADDR` (macro, line 47)
+  - `NK_W` (macro, line 64)
+  - `NK_H` (macro, line 65)
+  - `NK_BACKBUF_ADDR` (macro, line 66)
+  - `COL_BG` (macro, line 73)
+  - `COL_TASKBAR` (macro, line 74)
+  - `COL_TASKBAR_TXT` (macro, line 75)
+  - `COL_TITLEBAR` (macro, line 76)
+  - `COL_TITLE_TXT` (macro, line 77)
+  - `COL_TERMINAL` (macro, line 78)
+  - `COL_TERM_TXT` (macro, line 79)
+  - `COL_TERM_CUR` (macro, line 80)
+  - `COL_BORDER` (macro, line 81)
+  - `COL_WHITE` (macro, line 82)
+  - `COL_SHADOW` (macro, line 83)
+  - `COL_HIGHLIGHT` (macro, line 84)
+  - `COL_SCROLLBAR` (macro, line 85)
+  - `COL_SCROLL_THUMB` (macro, line 86)
+  - `WALLPAPER_PATH` (macro, line 93)
+  - `WALL_PAL_BASE` (macro, line 94)
+  - `WALL_PAL_SIZE` (macro, line 95)
+  - `FONT_W` (macro, line 96)
+  - `FONT_H` (macro, line 98)
+  - `TERM_MAX_COLS` (macro, line 103)
+  - `TERM_MAX_ROWS` (macro, line 104)
+  - `TASKBAR_H` (macro, line 107)
+  - `TASKBAR_PAD` (macro, line 108)
+  - `TASKBAR_CLOCK_CH` (macro, line 109)
+  - `TASKBAR_VOL_CH` (macro, line 110)
+  - `TASKBAR_VOL_STEP` (macro, line 111)
+  - `TASKBAR_ICON_W` (macro, line 112)
+  - `TASKBAR_BTN_W` (macro, line 113)
+  - `TILING_LEFT` (macro, line 116)
+  - `TILING_RIGHT` (macro, line 117)
+  - `TILING_TOP` (macro, line 118)
+  - `TILING_BOTTOM` (macro, line 119)
+  - `TILING_TOP_LEFT` (macro, line 120)
+  - `TILING_TOP_RIGHT` (macro, line 121)
+  - `TILING_BOTTOM_LEFT` (macro, line 122)
+  - `TILING_BOTTOM_RIGHT` (macro, line 123)
+  - `SCROLLBAR_W` (macro, line 126)
+  - `SCROLLBAR_PAD` (macro, line 127)
+  - `WM_BTN_W` (macro, line 132)
+  - `WM_BTN_H` (macro, line 133)
+  - `WM_BTN_PAD` (macro, line 134)
+  - `WM_BTN_MIN` (macro, line 135)
+  - `WM_BTN_MAX` (macro, line 136)
+  - `WM_BTN_CLOSE` (macro, line 137)
+  - `SB_MAX_LINES` (macro, line 157)
+  - `SB_LINE_MAX` (macro, line 158)
+- Depends on: `progs/minios_abi.h`
+- Imported by: `kernel.c`
 
 ## vma.c
 - Layer: utility
@@ -921,6 +963,7 @@ void kmain(void)`
   - `vma_tree_minimum` (function, line 140) `static vma_node_t *vma_tree_minimum(vma_node_t *x)`
   - `vma_delete_fixup` (function, line 145) `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)`
   - `vma_tree_delete` (function, line 200) `int vma_tree_delete(vma_node_t **root, unsigned long base)`
+- Depends on: `vma.h`
 
 ## vma.h
 - Layer: utility
@@ -930,6 +973,7 @@ void kmain(void)`
   - `vma_node` (struct, line 21)
   - `VMA_H` (macro, line 2)
   - `VMA_MAX` (macro, line 27)
+- Imported by: `kernel.h`, `vma.c`
 
 ## zip.h
 - Layer: utility
@@ -937,3 +981,4 @@ void kmain(void)`
 - Language: h
 - Symbols:
   - `ZIP_H` (macro, line 2)
+- Imported by: `kernel.c`

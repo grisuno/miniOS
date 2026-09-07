@@ -99,13 +99,17 @@
  * syscall; the kernel composites the buffer onto the desktop.
  *
  * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap),
- * so a growing heap or mmap region can never reach them.
+ * so a growing heap or mmap region can never reach them.  NK_BACKBUF sits
+ * HIGHER than the framebuffer's maximum span: at 1024x768x24/32 the
+ * framebuffer needs up to 3 MB, so a back-buffer at 0x0B400000 would overlap
+ * its tail and steal its bottom rows (the mapped back-buffer overwrote the
+ * framebuffer's second page-table slot, rendering the dock/taskbar black).
  * ========================================================================= */
 #define MINIOS_DOOM_BACKBUF_ADDR  0x0B000000UL
 #define MINIOS_DOOM_W             320
 #define MINIOS_DOOM_H             200
 #define MINIOS_FB_ADDR            0x0B200000UL
-#define MINIOS_NK_BACKBUF_ADDR    0x0B400000UL
+#define MINIOS_NK_BACKBUF_ADDR    0x0B600000UL
 #define MINIOS_NK_W               800
 #define MINIOS_NK_H               360
 

@@ -24,6 +24,7 @@
   - `SYS_FB_INFO` (macro, line 46)
   - `SYS_PCSPK_VOL` (macro, line 47)
   - `SYS_SPAWN` (macro, line 48)
+- Depends on: `progs/minios_abi.h`
 
 ## progs/micropython/variants/minios/mpconfigvariant.h
 - Layer: infrastructure

@@ -11,6 +11,7 @@
   - `dofile` (function, line 50) `static int dofile(lua_State *L, const char *name)`
   - `repl` (function, line 60) `static int repl(lua_State *L)`
   - `main` (function, line 104) `int main(int argc, char **argv)`
+- Depends on: `kernel/string.c`
 
 ## progs/lua/minios.c
 - Layer: utility
@@ -33,4 +34,5 @@
   - `SYS_FB_INFO` (macro, line 57)
   - `SYS_PCSPK_VOL` (macro, line 58)
   - `SYS_SPAWN` (macro, line 59)
+- Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`

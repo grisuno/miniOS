@@ -37,6 +37,7 @@
   - `OP_CALL_NATIVE` (macro, line 45)
   - `OP_HALT` (macro, line 46)
   - `CVM_MAX_NODES` (macro, line 47)
+- Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
 
 ## progs/nuklear/cvm_emit.h
 - Layer: utility
@@ -45,6 +46,7 @@
 - Symbols:
   - `cvm_node` (struct, line 29)
   - `CVM_EMIT_H` (macro, line 2)
+- Imported by: `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`
 
 ## progs/nuklear/node_editor.c
 - Layer: infrastructure
@@ -73,6 +75,7 @@
   - `PIN_DIAM` (macro, line 229)
   - `BEZIER_PAD` (macro, line 230)
   - `GRID_SIZE` (macro, line 231)
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ## progs/nuklear/nuklear_minios.c
 - Layer: utility
@@ -111,6 +114,7 @@
   - `nk_poll_input` (function, line 638) `void nk_poll_input(struct nk_context *ctx)`
   - `nk_set_window_origin` (function, line 675) `void nk_set_window_origin(int x, int y)`
   - `NK_IMPLEMENTATION` (macro, line 15)
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ## progs/nuklear/nuklear_minios.h
 - Layer: utility
@@ -121,3 +125,5 @@
   - `NK_W` (macro, line 17)
   - `NK_H` (macro, line 19)
   - `NK_BACKBUF` (macro, line 20)
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`

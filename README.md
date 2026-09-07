@@ -1663,10 +1663,5 @@ a zero-token polyglot static analysis tool. Analysis outputs are available:
 
 AI agents: Read `readmenator-agent/INDEX.md` for fast project context.
 Developers: Read `KNOWLEDGE_BASE.md` for full architecture reference.
-
-Start with [docs/quickstart.md](./docs/quickstart.md) and
-[docs/cheatsheet.md](./docs/cheatsheet.md). `docs/KNOWLEDGE_BASE.md` is a
-synced copy of the root knowledge base; after regenerating, keep both
-identical.
 <!-- /readmenator-kb-link -->
 

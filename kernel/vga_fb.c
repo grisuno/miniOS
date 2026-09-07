@@ -21,12 +21,13 @@ unsigned long gfx_frames_composited;
 int fb_width  = 320;
 int fb_height = 200;
 int fb_pitch  = 320;
+int fb_bpp    = 8;
 unsigned long fb_phys_base = 0x000A0000UL;
 
 void vga_fb_boot_config(void) {
     volatile uint8_t *p = (volatile uint8_t *)VBE_INFO_ADDR;
     unsigned long base;
-    unsigned pitch, width, height;
+    unsigned pitch, width, height, bpp;
     int valid = p[VBE_INFO_VALID_OFF];
     if (!valid) return;
     base   = p[VBE_INFO_FBBASE_OFF + 0]
@@ -36,16 +37,36 @@ void vga_fb_boot_config(void) {
     pitch  = p[VBE_INFO_PITCH_OFF + 0] | (p[VBE_INFO_PITCH_OFF + 1] << 8);
     width  = p[VBE_INFO_WIDTH_OFF + 0] | (p[VBE_INFO_WIDTH_OFF + 1] << 8);
     height = p[VBE_INFO_HEIGHT_OFF + 0] | (p[VBE_INFO_HEIGHT_OFF + 1] << 8);
+    bpp    = p[VBE_INFO_BPP_OFF];
     if (base == 0 || width == 0 || height == 0 || pitch == 0)
         return;
+    /* Only the modes stage 2 probes are accepted; anything else keeps the
+     * 8-bit defaults instead of misinterpreting the framebuffer layout. */
+    if (bpp != 8 && bpp != 24 && bpp != 32)
+        bpp = 8;
     fb_phys_base = base;
     fb_pitch     = pitch;
     fb_width     = width;
     fb_height    = height;
+    fb_bpp       = (int)bpp;
+}
+
+int fb_bytes_per_pixel(void) {
+    if (fb_bpp == 32) return 4;
+    if (fb_bpp == 24) return 3;
+    return 1;
 }
 
 /* ---- Mouse state (fed by sched.c IRQ12 handler) ---- */
 mouse_state_t mouse_state;
+
+/* True-color pixel layer (defined beside the palette tables below). In a
+ * 32/24-bit mode every palette-index write is expanded to RGB here, so all
+ * drawing code above keeps speaking indices; in 8-bit mode the helpers are
+ * plain framebuffer accesses. Packed pixels are 0x00RRGGBB. */
+static unsigned long fb_pack_idx(unsigned idx);
+static void fb_write_packed(int x, int y, unsigned long rgb);
+static unsigned long fb_read_packed(int x, int y);
 
 /* Forward: the wallpaper cache lives with the shortcut-icon code below, but
  * the desktop painter above needs it. */
@@ -168,21 +189,22 @@ static const uint8_t cursor_bmp[8] = {
 #define CURSOR_TIP_X 6
 #define CURSOR_TIP_Y 7
 
-static uint8_t cursor_save[8][8];
+static unsigned long cursor_save[8][8];
 static int cursor_old_x, cursor_old_y;
 static int cursor_visible;
 
 /* The cursor is drawn with its arrow tip at (mx, my), so the sprite spans
  * up-left of the pointer by CURSOR_TIP offsets. The caller clamps mx/my so
  * the sprite's top-left corner stays non-negative and the raw FB reads in
- * cursor_save_bg never go out of bounds. */
+ * cursor_save_bg never go out of bounds. The snapshot holds packed RGB so a
+ * restore is exact in any color depth. */
 static void cursor_save_bg(int mx, int my) {
     int i, j;
     int x0 = mx - CURSOR_TIP_X;
     int y0 = my - CURSOR_TIP_Y;
     for (j = 0; j < 8; j++)
         for (i = 0; i < 8; i++)
-            cursor_save[j][i] = FB_ADDR[(y0 + j) * fb_pitch + (x0 + i)];
+            cursor_save[j][i] = fb_read_packed(x0 + i, y0 + j);
 }
 
 static void cursor_draw(int mx, int my) {
@@ -202,7 +224,7 @@ static void cursor_restore(int mx, int my) {
     int y0 = my - CURSOR_TIP_Y;
     for (j = 0; j < 8; j++)
         for (i = 0; i < 8; i++)
-            vga_fb_pixel(x0 + i, y0 + j, cursor_save[j][i]);
+            fb_write_packed(x0 + i, y0 + j, cursor_save[j][i]);
 }
 
 /* True when the cursor sprite overlaps the given screen rectangle. Used to
@@ -376,8 +398,8 @@ static const uint8_t font8x8[96][8] = {
  * movable window: a title bar on top, a scrollbar on its right edge and text
  * below. The defaults are clamped to the framebuffer so the window always
  * fits (a small screen degrades to a near-fullscreen window). */
-#define WIN_DEF_COLS  88
-#define WIN_DEF_ROWS  40
+#define WIN_DEF_COLS  74
+#define WIN_DEF_ROWS  28
 #define WIN_DEF_X     4
 #define WIN_DEF_Y     3
 
@@ -431,8 +453,120 @@ static const uint8_t icon_pal[][3] = {
 
 /* Wallpaper colour cube: 6 levels per channel (websafe) at DAC 16-231.
  * The desktop UI owns 0-14 and the icons 240-255; the 216 cube slots give
- * a photographic wallpaper without touching either range. */
+ * a photographic wallpaper without touching either range. In true color the
+ * cached wallpaper indices resolve through the same cube levels to full RGB
+ * instead of the quantized DAC entries. */
 static const uint8_t wall_levels[6] = { 0, 51, 102, 153, 204, 255 };
+
+/* Desktop palette (DAC indices 0-14). File scope so the DAC programming, the
+ * true-color packer and the icon mapper share one table. */
+static const uint8_t desk_pal[][3] = {
+    {  0,  0,  0},  /*  0 black        */
+    { 15, 15, 50},  /*  1 bg (dark navy)*/
+    {100,100,110},  /*  2 taskbar       */
+    {255,255,255},  /*  3 taskbar text  */
+    { 60, 90,140},  /*  4 title bar     */
+    {255,255,255},  /*  5 title text    */
+    { 15, 15, 15},  /*  6 terminal bg   */
+    {  0,220,  0},  /*  7 terminal text */
+    {  0,160,  0},  /*  8 cursor        */
+    {180,180,190},  /*  9 border        */
+    {255,255,255},  /* 10 white         */
+    { 30, 30, 40},  /* 11 shadow        */
+    {100,140,220},  /* 12 highlight     */
+    { 60, 60, 70},  /* 13 scrollbar bg  */
+    {140,140,155},  /* 14 scrollbar thumb */
+};
+
+/* Graphics program palette (768 bytes, set through SYS_PALETTE). In 8-bit
+ * mode it owns the whole DAC; in true color it is only the lookup table the
+ * DOOM/Nuklear blits expand their indexed back-buffers through, so a game
+ * can no longer recolor the desktop behind its window. A gray ramp until the
+ * first program sets it, never uninitialized pixels. */
+static unsigned char gfx_pal[768];
+
+void vga_fb_set_gfx_palette(const unsigned char *pal) {
+    int i;
+    for (i = 0; i < 768; i++) gfx_pal[i] = pal[i];
+    if (fb_bpp != 8) return;
+    outb(0x3C8, 0);
+    for (i = 0; i < 768; i++) outb(0x3C9, pal[i] >> 2);
+}
+
+/* ---- True-color pixel layer ----
+ * VBE true-color framebuffers store pixels natively as B,G,R(,X) bytes, so
+ * the DAC is bypassed entirely. Every index the desktop draws with resolves
+ * here: UI 0-14 through desk_pal, wallpaper 16-231 through the websafe cube,
+ * icons 240-255 through icon_pal. Indices with no owner (15, 232-239) are
+ * black. Graphics back-buffers never pass through this table; they expand
+ * through gfx_pal at blit time. */
+static unsigned long fb_pack_idx(unsigned idx) {
+    unsigned r, g, b;
+    if (idx < 15) {
+        r = desk_pal[idx][0]; g = desk_pal[idx][1]; b = desk_pal[idx][2];
+    } else if (idx >= WALL_PAL_BASE && idx < WALL_PAL_BASE + WALL_PAL_SIZE) {
+        unsigned c = idx - WALL_PAL_BASE;
+        r = wall_levels[c / 36]; g = wall_levels[(c / 6) % 6]; b = wall_levels[c % 6];
+    } else if (idx >= ICON_PAL_BASE && idx < ICON_PAL_BASE + ICON_PAL_SIZE) {
+        unsigned c = idx - ICON_PAL_BASE;
+        r = icon_pal[c][0]; g = icon_pal[c][1]; b = icon_pal[c][2];
+    } else {
+        r = 0; g = 0; b = 0;
+    }
+    return (r << 16) | (g << 8) | b;
+}
+
+static unsigned long fb_pack_gfx(unsigned idx) {
+    return ((unsigned long)gfx_pal[idx * 3 + 0] << 16)
+         | ((unsigned long)gfx_pal[idx * 3 + 1] << 8)
+         |  (unsigned long)gfx_pal[idx * 3 + 2];
+}
+
+static void fb_write_packed(int x, int y, unsigned long rgb) {
+    volatile uint8_t *p;
+    if (x < 0 || x >= fb_width || y < 0 || y >= fb_height) return;
+    p = FB_ADDR + (unsigned)y * (unsigned)fb_pitch;
+    if (fb_bpp == 32) {
+        p += (unsigned)x * 4;
+        p[0] = (uint8_t)(rgb & 0xFF);
+        p[1] = (uint8_t)((rgb >> 8) & 0xFF);
+        p[2] = (uint8_t)((rgb >> 16) & 0xFF);
+        p[3] = 0;
+    } else if (fb_bpp == 24) {
+        p += (unsigned)x * 3;
+        p[0] = (uint8_t)(rgb & 0xFF);
+        p[1] = (uint8_t)((rgb >> 8) & 0xFF);
+        p[2] = (uint8_t)((rgb >> 16) & 0xFF);
+    } else {
+        p[x] = (uint8_t)(rgb & 0xFF);
+    }
+}
+
+static unsigned long fb_read_packed(int x, int y) {
+    volatile uint8_t *p;
+    if (x < 0 || x >= fb_width || y < 0 || y >= fb_height) return 0;
+    p = FB_ADDR + (unsigned)y * (unsigned)fb_pitch;
+    if (fb_bpp == 32) {
+        p += (unsigned)x * 4;
+        return (unsigned long)p[0]
+             | ((unsigned long)p[1] << 8)
+             | ((unsigned long)p[2] << 16);
+    }
+    if (fb_bpp == 24) {
+        p += (unsigned)x * 3;
+        return (unsigned long)p[0]
+             | ((unsigned long)p[1] << 8)
+             | ((unsigned long)p[2] << 16);
+    }
+    /* 8-bit: return the raw palette index, not its resolved RGB. The cursor
+     * save/restore round-trips through fb_write_packed, which in 8-bit writes
+     * the low byte straight back into the framebuffer; resolving to RGB here
+     * (and thus restoring only the blue channel as an index) is what smeared
+     * the pointer into a trail. */
+    return p[x];
+}
+
+unsigned long vga_fb_read_rgb(int x, int y) { return fb_read_packed(x, y); }
 
 /* Nearest cube level for one 0-255 channel (boundaries at 25/76/127/178/229). */
 static int wall_level(int v) {
@@ -445,29 +579,13 @@ static int wall_level(int v) {
 }
 
 static void vga_fb_set_palette(void) {
-    static const uint8_t pal[][3] = {
-        {  0,  0,  0},  /*  0 black        */
-        { 15, 15, 50},  /*  1 bg (dark navy)*/
-        {100,100,110},  /*  2 taskbar       */
-        {255,255,255},  /*  3 taskbar text  */
-        { 60, 90,140},  /*  4 title bar     */
-        {255,255,255},  /*  5 title text    */
-        { 15, 15, 15},  /*  6 terminal bg   */
-        {  0,220,  0},  /*  7 terminal text */
-        {  0,160,  0},  /*  8 cursor        */
-        {180,180,190},  /*  9 border        */
-        {255,255,255},  /* 10 white         */
-        { 30, 30, 40},  /* 11 shadow        */
-        {100,140,220},  /* 12 highlight     */
-        { 60, 60, 70},  /* 13 scrollbar bg  */
-        {140,140,155},  /* 14 scrollbar thumb */
-    };
     int i;
+    if (fb_bpp != 8) return;
     outb(0x3C8, 0);
     for (i = 0; i < 15; i++) {
-        outb(0x3C9, pal[i][0] >> 2);
-        outb(0x3C9, pal[i][1] >> 2);
-        outb(0x3C9, pal[i][2] >> 2);
+        outb(0x3C9, desk_pal[i][0] >> 2);
+        outb(0x3C9, desk_pal[i][1] >> 2);
+        outb(0x3C9, desk_pal[i][2] >> 2);
     }
     /* Icon palette: 16 colours at VGA DAC indices 240-255. */
     {
@@ -495,8 +613,12 @@ static void vga_fb_set_palette(void) {
 
 /* ---- Drawing primitives ---- */
 void vga_fb_pixel(int x, int y, uint8_t color) {
-    if (x >= 0 && x < fb_width && y >= 0 && y < fb_height)
-        FB_ADDR[y * fb_pitch + x] = color;
+    if (fb_bpp == 8) {
+        if (x >= 0 && x < fb_width && y >= 0 && y < fb_height)
+            FB_ADDR[(unsigned)y * (unsigned)fb_pitch + (unsigned)x] = color;
+        return;
+    }
+    fb_write_packed(x, y, fb_pack_idx(color));
 }
 
 void vga_fb_rect(int x, int y, int w, int h, uint8_t color) {
@@ -667,17 +789,28 @@ void vga_fb_blit_gfx_window(void) {
     text_px(dst_x + 4, dst_y, gfx_win_title, COL_TITLE_TXT, COL_TITLEBAR);
     wm_draw_buttons(dst_x, dst_y, DOOM_W + SCROLLBAR_W,
                     COL_TITLE_TXT, COL_TITLEBAR);
-    for (r = 0; r < DOOM_H; r++) {
-        volatile uint8_t *dst = &FB_ADDR[(dst_y + FONT_H + r) * fb_pitch + dst_x];
-        const volatile uint8_t *src = bb + r * DOOM_W;
-        for (b = 0; b < DOOM_W; b++)
-            dst[b] = src[b];
+    /* Indexed back-buffer pixels expand through the program's own palette,
+     * so the game keeps its colors without recoloring the desktop. */
+    if (fb_bpp == 8) {
+        for (r = 0; r < DOOM_H; r++) {
+            volatile uint8_t *dst = &FB_ADDR[(unsigned)(dst_y + FONT_H + r) * (unsigned)fb_pitch + (unsigned)dst_x];
+            const volatile uint8_t *src = bb + r * DOOM_W;
+            for (b = 0; b < DOOM_W; b++)
+                dst[b] = src[b];
+        }
+    } else {
+        for (r = 0; r < DOOM_H; r++) {
+            const volatile uint8_t *src = bb + r * DOOM_W;
+            for (b = 0; b < DOOM_W; b++)
+                fb_write_packed(dst_x + b, dst_y + FONT_H + r,
+                                fb_pack_gfx(src[b]));
+        }
     }
     vga_fb_gfx_cursor_draw();
 }
 
 void vga_fb_clear(void) {
-    kmemset((void *)FB_ADDR, 0, fb_width * fb_height);
+    kmemset((void *)FB_ADDR, 0, (unsigned long)fb_pitch * (unsigned long)fb_height);
 }
 
 /* Window origin of the last Nuklear composite. SYS_NK_FRAME reports this so a
@@ -709,11 +842,20 @@ void vga_fb_blit_nk_window(void) {
     text_px(dst_x + 4, dst_y, "Nuklear", COL_TITLE_TXT, COL_TITLEBAR);
     wm_draw_buttons(dst_x, dst_y, NK_W + SCROLLBAR_W,
                     COL_TITLE_TXT, COL_TITLEBAR);
-    for (r = 0; r < NK_H; r++) {
-        volatile uint8_t *dst = &FB_ADDR[(dst_y + FONT_H + r) * fb_pitch + dst_x];
-        const volatile uint8_t *src = bb + r * NK_W;
-        for (b = 0; b < NK_W; b++)
-            dst[b] = src[b];
+    if (fb_bpp == 8) {
+        for (r = 0; r < NK_H; r++) {
+            volatile uint8_t *dst = &FB_ADDR[(unsigned)(dst_y + FONT_H + r) * (unsigned)fb_pitch + (unsigned)dst_x];
+            const volatile uint8_t *src = bb + r * NK_W;
+            for (b = 0; b < NK_W; b++)
+                dst[b] = src[b];
+        }
+    } else {
+        for (r = 0; r < NK_H; r++) {
+            const volatile uint8_t *src = bb + r * NK_W;
+            for (b = 0; b < NK_W; b++)
+                fb_write_packed(dst_x + b, dst_y + FONT_H + r,
+                                fb_pack_gfx(src[b]));
+        }
     }
     vga_fb_gfx_cursor_draw();
 }
@@ -1067,6 +1209,9 @@ void vga_fb_draw_desktop(void) {
     term_recalc();
     wallpaper_draw();
     desktop_shortcuts_load();
+    /* Dock sits on the wallpaper, BELOW the terminal window: drawn before the
+     * terminal so a terminal that is dragged over the dock area covers it
+     * (normal window-on-top-of-dock behaviour), never the reverse. */
     desktop_shortcuts_draw();
     taskbar_render();
     /* A minimized window is not drawn; the content stays in the logical ring,
@@ -1289,9 +1434,18 @@ static void wallpaper_draw(void) {
         vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
         return;
     }
+    if (fb_bpp == 8) {
+        for (y = 0; y < fb_height; y++)
+            for (x = 0; x < fb_width; x++)
+                FB_ADDR[(unsigned)y * (unsigned)fb_pitch + (unsigned)x] =
+                    wall_cache[y * fb_width + x];
+        return;
+    }
+    /* True color: the cached cube indices resolve to full RGB, so the
+     * photographic wallpaper is no longer quantized to 216 DAC entries. */
     for (y = 0; y < fb_height; y++)
         for (x = 0; x < fb_width; x++)
-            FB_ADDR[y * fb_pitch + x] = wall_cache[y * fb_width + x];
+            fb_write_packed(x, y, fb_pack_idx(wall_cache[y * fb_width + x]));
 }
 
 /* ---- Desktop shortcut icons ----
@@ -1354,10 +1508,12 @@ static const uint8_t *icon_embedded(const char *name) {
     return 0;
 }
 
-/* Decode a shortcut's PNG and map it to 32x32 icon-palette indices. Returns
- * a heap buffer that lives until reboot, or 0 on any failure (missing file,
- * undecodable image, exhausted heap); the caller then uses icon_embedded.
- * Alpha below 128 counts as transparent, matching the generator's index 0. */
+/* Decode a shortcut's PNG to raw 32x32 RGBA pixels. Returns a heap buffer
+ * that lives until reboot, or 0 on any failure (missing file, undecodable
+ * image, exhausted heap); the caller then uses icon_embedded. Keeping the
+ * PNG's own colors (instead of mapping to the 16-entry icon palette) is
+ * what makes icons distinguishable on a true-color desktop; the 8-bit mode
+ * quantizes back through icon_nearest at draw time. */
 static const uint8_t *icon_decode(const char *path) {
     int w, h, ch, x, y;
     unsigned char *img;
@@ -1371,7 +1527,7 @@ static const uint8_t *icon_decode(const char *path) {
         stbi_image_free(img);
         return 0;
     }
-    out = kmalloc(ICON_W * ICON_H);
+    out = kmalloc(ICON_W * ICON_H * 4);
     if (!out) {
         stbi_image_free(img);
         return 0;
@@ -1381,15 +1537,77 @@ static const uint8_t *icon_decode(const char *path) {
         for (x = 0; x < ICON_W; x++) {
             int sx = x * w / ICON_W;
             unsigned char *px = img + ((sy * w) + sx) * 4;
-            if (px[3] < 128)
-                out[y * ICON_W + x] = 0;
-            else
-                out[y * ICON_W + x] =
-                    (uint8_t)icon_nearest(px[0], px[1], px[2]);
+            uint8_t *dst = out + ((y * ICON_W) + x) * 4;
+            dst[0] = px[0]; dst[1] = px[1]; dst[2] = px[2]; dst[3] = px[3];
         }
     }
     stbi_image_free(img);
     return out;
+}
+
+/* Expand an embedded index icon (desktop_icons.h, transparent 0) to RGBA
+ * through the icon palette, so fallback art follows the same draw path as
+ * decoded PNGs. Returns a heap buffer or 0 when exhausted. */
+static const uint8_t *icon_embedded_rgba(const uint8_t *idx) {
+    uint8_t *out;
+    int i;
+    if (!idx) return 0;
+    out = kmalloc(ICON_W * ICON_H * 4);
+    if (!out) return 0;
+    for (i = 0; i < ICON_W * ICON_H; i++) {
+        uint8_t c = idx[i];
+        uint8_t *dst = out + i * 4;
+        if (c == 0) {
+            dst[0] = dst[1] = dst[2] = dst[3] = 0;
+        } else {
+            if (c >= ICON_PAL_SIZE) c = ICON_PAL_SIZE - 1;
+            dst[0] = icon_pal[c][0];
+            dst[1] = icon_pal[c][1];
+            dst[2] = icon_pal[c][2];
+            dst[3] = 255;
+        }
+    }
+    return out;
+}
+
+/* Width of the longest shortcut label in pixels (cached after load). Labels
+ * are centred under their icon and a dock column must be wide enough for one,
+ * or neighbouring labels overlap. */
+static int dock_cell_w;
+
+/* Width (px) one label occupies (FONT_W per character). */
+static int dock_label_px(const struct desktop_shortcut *sc) {
+    return (int)kstrlen(sc->name) * FONT_W;
+}
+
+/* Dock layout: one centred row just above the taskbar. Every shortcut owns a
+ * column `dock_cell_w` wide (enough for its label), the icon is centred in the
+ * column and the label centred beneath it, so long names never collide with a
+ * neighbour. Recomputed on every draw/hit-test from fb_width/fb_height so a
+ * resolution change never leaves stale coordinates behind. */
+static void shortcuts_layout(void) {
+    int dock_w, x0, y0, dock_h, cell_left, i;
+    if (shortcut_count <= 0) return;
+    dock_w = shortcut_count * dock_cell_w + 2 * DOCK_PAD_X;
+    dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y;
+    x0 = (fb_width - dock_w) / 2;
+    if (x0 < 0) x0 = 0;
+    y0 = fb_height - TASKBAR_H - DOCK_GAP - dock_h;
+    if (y0 < 0) y0 = 0;
+    cell_left = x0 + DOCK_PAD_X;
+    for (i = 0; i < shortcut_count; i++) {
+        shortcuts[i].x = cell_left + (dock_cell_w - ICON_W) / 2;
+        shortcuts[i].y = y0 + DOCK_PAD_Y;
+        cell_left += dock_cell_w;
+    }
+}
+
+/* Left edge of shortcut i's column (used to centre its label under the icon). */
+static int shortcut_cell_left(int i) {
+    int dock_w = shortcut_count * dock_cell_w + 2 * DOCK_PAD_X;
+    int x0 = (fb_width - dock_w) / 2;
+    if (x0 < 0) x0 = 0;
+    return x0 + DOCK_PAD_X + i * dock_cell_w;
 }
 
 void desktop_shortcuts_load(void) {
@@ -1428,48 +1646,83 @@ void desktop_shortcuts_load(void) {
          * pixel data as fallback when the file is missing or undecodable. */
         sc->pixels = icon_decode(path);
         if (!sc->pixels)
-            sc->pixels = icon_embedded(name);
+            sc->pixels = icon_embedded_rgba(icon_embedded(name));
 
         shortcut_count++;
     }
     kfclose(f);
 
-    /* Compute icon layout: vertical column on the left edge. */
-    int x = 4;
-    int y = 4;
+    /* Cache the widest cell after the names are known, then lay the dock out.
+     * A label is the widest thing in a column, so the column is sized to hold
+     * it (never narrower than the icon) and labels cannot overlap. */
+    dock_cell_w = ICON_W;
     for (int i = 0; i < shortcut_count; i++) {
-        shortcuts[i].x = x;
-        shortcuts[i].y = y;
-        y += ICON_H + ICON_PAD_Y + ICON_LABEL_H;
+        int pw = dock_label_px(&shortcuts[i]) + 6;
+        if (pw > dock_cell_w) dock_cell_w = pw;
     }
+    shortcuts_layout();
 }
 
 void desktop_shortcuts_draw(void) {
+    int dock_w, dock_h, x0, y0;
+    shortcuts_layout();
+    if (shortcut_count <= 0) return;
+    /* Dock bar: dark backing for contrast over the wallpaper, Mac style. */
+    dock_w = shortcut_count * dock_cell_w + 2 * DOCK_PAD_X;
+    dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y;
+    x0 = (fb_width - dock_w) / 2;
+    if (x0 < 0) x0 = 0;
+    y0 = fb_height - TASKBAR_H - DOCK_GAP - dock_h;
+    if (y0 < 0) y0 = 0;
+    vga_fb_rect(x0, y0, dock_w, dock_h, COL_SHADOW);
+    vga_fb_rect(x0, y0, dock_w, 1, COL_BORDER);
+    vga_fb_rect(x0, y0 + dock_h - 1, dock_w, 1, COL_BORDER);
+    vga_fb_rect(x0, y0, 1, dock_h, COL_BORDER);
+    vga_fb_rect(x0 + dock_w - 1, y0, 1, dock_h, COL_BORDER);
     for (int i = 0; i < shortcut_count; i++) {
         struct desktop_shortcut *sc = &shortcuts[i];
-        /* Draw icon pixels. */
+        int cl = shortcut_cell_left(i);
+        /* Draw icon pixels (raw RGBA; alpha below 128 transparent). In
+         * the 8-bit fallback the colors quantize back to the icon
+         * palette, matching the old look exactly. */
         if (sc->pixels) {
             for (int py = 0; py < ICON_H; py++) {
                 for (int px = 0; px < ICON_W; px++) {
-                    uint8_t c = sc->pixels[py * ICON_W + px];
-                    if (c != 0) /* skip transparent */
-                        vga_fb_pixel(sc->x + px, sc->y + py, ICON_PAL_BASE + c);
+                    const uint8_t *sp =
+                        sc->pixels + ((py * ICON_W) + px) * 4;
+                    if (sp[3] < 128) continue;
+                    if (fb_bpp == 8)
+                        vga_fb_pixel(sc->x + px, sc->y + py,
+                                     (uint8_t)(ICON_PAL_BASE +
+                                               icon_nearest(sp[0], sp[1], sp[2])));
+                    else
+                        fb_write_packed(sc->x + px, sc->y + py,
+                                        ((unsigned long)sp[0] << 16) |
+                                        ((unsigned long)sp[1] << 8) |
+                                        (unsigned long)sp[2]);
                 }
             }
         } else {
             /* No icon: draw a placeholder rectangle. */
             vga_fb_rect(sc->x, sc->y, ICON_W, ICON_H, COL_SHADOW);
         }
-        /* Draw label below the icon. */
-        text_px(sc->x, sc->y + ICON_H + 2, sc->name,
-                COL_TASKBAR_TXT, COL_BG);
+        /* Draw label centred in its own column, on the dock backing, so it
+         * never runs into a neighbour's label. */
+        {
+            int label_w = dock_label_px(sc);
+            int lx = cl + (dock_cell_w - label_w) / 2;
+            text_px(lx, sc->y + ICON_H + DOCK_LABEL_GAP, sc->name,
+                    COL_TASKBAR_TXT, COL_SHADOW);
+        }
     }
 }
 
 const char *desktop_shortcuts_hit_test(int mx, int my) {
+    shortcuts_layout();
     for (int i = 0; i < shortcut_count; i++) {
         struct desktop_shortcut *sc = &shortcuts[i];
-        if (mx >= sc->x && mx < sc->x + ICON_W &&
+        int cl = shortcut_cell_left(i);
+        if (mx >= cl && mx < cl + dock_cell_w &&
             my >= sc->y && my < sc->y + ICON_H + ICON_LABEL_H) {
             return sc->cmd;
         }
@@ -1618,6 +1871,13 @@ void vga_fb_mouse_init(void) {
 }
 
 void vga_fb_init(void) {
+    int i;
+    /* Gray ramp until the first graphics program sets its palette. */
+    for (i = 0; i < 256; i++) {
+        gfx_pal[i * 3 + 0] = (unsigned char)i;
+        gfx_pal[i * 3 + 1] = (unsigned char)i;
+        gfx_pal[i * 3 + 2] = (unsigned char)i;
+    }
     vga_fb_active = 1;
     vga_fb_mouse_init();
     vga_fb_draw_desktop();

@@ -569,8 +569,23 @@ int main(int argc, char **argv) {
         }
         volatile uint8_t *fb = (volatile uint8_t *)MINIOS_FB_ADDR;
         int ox = origin[0], oy = origin[1];
-        if (ox < 0 || oy < 0 || ox >= fw || oy >= fh ||
-            fb[oy * fp + ox] != NK_BACKBUF[0]) {
+        /* Bytes per pixel from the pitch heuristic (pitch is bytes per
+         * scanline): 1 in the 8-bit mode, 3/4 in true color. In true color
+         * the composited pixel is the palette RGB, not the index. */
+        int bpx = (fw > 0 && fp % fw == 0) ? fp / fw : 1;
+        int landed = 0;
+        if (ox >= 0 && oy >= 0 && ox < fw && oy < fh) {
+            volatile uint8_t *px = fb + oy * fp + ox * bpx;
+            if (bpx == 1) {
+                landed = (px[0] == NK_BACKBUF[0]);
+            } else {
+                unsigned pi = (unsigned)NK_BACKBUF[0] * 3;
+                landed = (px[0] == pal768[pi + 2] &&
+                          px[1] == pal768[pi + 1] &&
+                          px[2] == pal768[pi + 0]);
+            }
+        }
+        if (!landed) {
             printf("nuklear: composite did not land at the window origin\n");
             return 1;
         }
@@ -612,11 +627,20 @@ int main(int argc, char **argv) {
             return 1;
         }
         int ok = 0;
+        int bpx = (fw > 0 && fp % fw == 0) ? fp / fw : 1;
         for (int k = 0; k < 8; k++) {
             int px = mx - 6 + k;
             int py = my;
+            volatile uint8_t *pp;
             if (px < 0 || px >= fw || py < 0 || py >= fh) continue;
-            if (fb[py * fp + px] == 10) { ok = 1; break; }
+            pp = fb + py * fp + px * bpx;
+            /* Cursor white is index 10 (255,255,255): a bare index match
+             * in 8-bit mode, an RGB-white match in true color. */
+            if (bpx == 1) {
+                if (pp[0] == 10) { ok = 1; break; }
+            } else if (pp[0] == 255 && pp[1] == 255 && pp[2] == 255) {
+                ok = 1; break;
+            }
         }
         if (!ok) {
             printf("nuklear: pointer missing near (%d,%d)\n", mx, my);

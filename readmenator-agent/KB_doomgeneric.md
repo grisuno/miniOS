@@ -113,6 +113,7 @@ AM_drawThings
   - `R` (macro, line 183)
   - `DOOUTCODE` (macro, line 867)
   - `PUTDOT` (macro, line 1009)
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/am_map.h
 - Layer: utility
@@ -123,6 +124,8 @@ AM_drawThings
   - `AM_MSGHEADER` (macro, line 26)
   - `AM_MSGENTERED` (macro, line 27)
   - `AM_MSGEXITED` (macro, line 28)
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/m_cheat.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/st_stuff.c`
 
 ## progs/doomgeneric/config.h
 - Layer: infrastructure
@@ -145,6 +148,7 @@ AM_drawThings
   - `STDC_HEADERS` (macro, line 91)
   - `VERSION` (macro, line 94)
   - `FILES_DIR` (macro, line 100)
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_file.c`, `progs/doomgeneric/w_wad.c`
 
 ## progs/doomgeneric/d_englsh.h
 - Layer: utility
@@ -437,6 +441,7 @@ AM_drawThings
   - `CC_SPIDER` (macro, line 688)
   - `CC_CYBER` (macro, line 689)
   - `CC_HERO` (macro, line 690)
+- Imported by: `progs/doomgeneric/dstrings.h`
 
 ## progs/doomgeneric/d_event.c
 - Layer: infrastructure
@@ -446,6 +451,7 @@ AM_drawThings
   - `D_PostEvent` (function, line 35) `void D_PostEvent (event_t* ev)`
   - `D_PopEvent` (function, line 42) `event_t *D_PopEvent(void)`
   - `MAXEVENTS` (macro, line 24)
+- Depends on: `progs/doomgeneric/d_event.h`
 
 ## progs/doomgeneric/d_event.h
 - Layer: infrastructure
@@ -453,11 +459,14 @@ AM_drawThings
 - Language: h
 - Symbols:
   - `__D_EVENT__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_user.c`, `progs/doomgeneric/st_stuff.h`
 
 ## progs/doomgeneric/d_items.c
 - Layer: utility
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
+- Depends on: `progs/doomgeneric/d_items.h`, `progs/doomgeneric/info.h`
 
 ## progs/doomgeneric/d_items.h
 - Layer: utility
@@ -465,6 +474,8 @@ AM_drawThings
 - Language: h
 - Symbols:
   - `__D_ITEMS__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomdef.h`
+- Imported by: `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_player.h`
 
 ## progs/doomgeneric/d_iwad.c
 - Layer: utility
@@ -497,6 +508,7 @@ AM_drawThings
   - `SOFTWARE_KEY` (macro, line 102)
   - `SOFTWARE_KEY` (macro, line 104)
   - `STEAM_BFG_GUS_PATCHES` (macro, line 188)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/d_iwad.h
 - Layer: utility
@@ -508,6 +520,8 @@ AM_drawThings
   - `IWAD_MASK_HERETIC` (macro, line 30)
   - `IWAD_MASK_HEXEN` (macro, line 31)
   - `IWAD_MASK_STRIFE` (macro, line 32)
+- Depends on: `progs/doomgeneric/d_mode.h`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/w_main.c`, `progs/doomgeneric/w_wad.c`
 
 ## progs/doomgeneric/d_loop.c
 - Layer: utility
@@ -533,6 +547,7 @@ AM_drawThings
   - `SinglePlayerClear` (function, line 688) `static void SinglePlayerClear(ticcmd_set_t *set)`
   - `TryRunTics` (function, line 705) `void TryRunTics (void)`
   - `D_RegisterLoopCallbacks` (function, line 821) `void D_RegisterLoopCallbacks(loop_interface_t *i)`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ## progs/doomgeneric/d_loop.h
 - Layer: utility
@@ -540,6 +555,8 @@ AM_drawThings
 - Language: h
 - Symbols:
   - `__D_LOOP__` (macro, line 20)
+- Depends on: `progs/doomgeneric/net_defs.h`
+- Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/r_main.c`
 
 ## progs/doomgeneric/d_main.c
 - Layer: utility
@@ -567,6 +584,7 @@ AM_drawThings
   - `D_Endoom` (function, line 1081) `static void D_Endoom(void)`
   - `LoadIwadDeh` (function, line 1105) `static void LoadIwadDeh(void)`
   - `D_DoomMain` (function, line 1178) `void D_DoomMain (void)`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/d_main.h
 - Layer: utility
@@ -574,6 +592,8 @@ AM_drawThings
 - Language: h
 - Symbols:
   - `__D_MAIN__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomdef.h`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.c`
 
 ## progs/doomgeneric/d_mode.c
 - Layer: utility
@@ -587,6 +607,7 @@ AM_drawThings
   - `D_ValidGameVersion` (function, line 134) `boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)`
   - `D_IsEpisodeMap` (function, line 160) `boolean D_IsEpisodeMap(GameMission_t mission)`
   - `D_GameMissionString` (function, line 181) `char *D_GameMissionString(GameMission_t mission)`
+- Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`
 
 ## progs/doomgeneric/d_mode.h
 - Layer: utility
@@ -594,6 +615,8 @@ AM_drawThings
 - Language: h
 - Symbols:
   - `__D_MODE__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_mode.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/w_wad.h`
 
 ## progs/doomgeneric/d_net.c
 - Layer: utility
@@ -607,6 +630,7 @@ AM_drawThings
   - `InitConnectData` (function, line 158) `static void InitConnectData(net_connect_data_t *connect_data)`
   - `D_ConnectNetGame` (function, line 214) `void D_ConnectNetGame(void)`
   - `D_CheckNetGame` (function, line 240) `void D_CheckNetGame (void)`
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ## progs/doomgeneric/d_player.h
 - Layer: utility
@@ -615,6 +639,8 @@ AM_drawThings
 - Symbols:
   - `player_s` (struct, line 78)
   - `__D_PLAYER__` (macro, line 21)
+- Depends on: `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/net_defs.h`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/p_pspr.h`
+- Imported by: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/statdump.c`
 
 ## progs/doomgeneric/d_textur.h
 - Layer: utility
@@ -622,6 +648,7 @@ AM_drawThings
 - Language: h
 - Symbols:
   - `__D_TEXTUR__` (macro, line 22)
+- Depends on: `progs/doomgeneric/doomtype.h`
 
 ## progs/doomgeneric/d_think.h
 - Layer: utility
@@ -630,6 +657,7 @@ AM_drawThings
 - Symbols:
   - `thinker_s` (struct, line 58)
   - `__D_THINK__` (macro, line 23)
+- Imported by: `progs/doomgeneric/info.h`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/r_defs.h`
 
 ## progs/doomgeneric/d_ticcmd.h
 - Layer: utility
@@ -637,6 +665,8 @@ AM_drawThings
 - Language: h
 - Symbols:
   - `__D_TICCMD__` (macro, line 22)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_defs.h`
 
 ## progs/doomgeneric/deh_main.h
 - Layer: utility
@@ -646,6 +676,8 @@ AM_drawThings
   - `DEH_MAIN_H` (macro, line 19)
   - `DEH_VANILLA_NUMSTATES` (macro, line 29)
   - `DEH_VANILLA_NUMSFX` (macro, line 31)
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/sha1.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/deh_misc.h
 - Layer: utility
@@ -685,6 +717,8 @@ AM_drawThings
   - `deh_idkfa_armor_class` (macro, line 76)
   - `deh_bfg_cells_per_shot` (macro, line 77)
   - `deh_species_infighting` (macro, line 78)
+- Depends on: `progs/doomgeneric/doomfeatures.h`
+- Imported by: `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/st_stuff.c`
 
 ## progs/doomgeneric/deh_str.h
 - Layer: utility
@@ -697,6 +731,8 @@ AM_drawThings
   - `DEH_fprintf` (macro, line 40)
   - `DEH_snprintf` (macro, line 41)
   - `DEH_AddStringReplacement` (macro, line 42)
+- Depends on: `progs/doomgeneric/doomfeatures.h`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/v_video.c`
 
 ## progs/doomgeneric/doom.h
 - Layer: utility
@@ -720,11 +756,14 @@ AM_drawThings
   - `ML_DONTDRAW` (macro, line 129)
   - `ML_MAPPED` (macro, line 132)
   - `NF_SUBSECTOR` (macro, line 175)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_mobj.h`
 
 ## progs/doomgeneric/doomdef.c
 - Layer: utility
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
+- Depends on: `progs/doomgeneric/doomdef.h`
 
 ## progs/doomgeneric/doomdef.h
 - Layer: utility
@@ -740,6 +779,8 @@ AM_drawThings
   - `MTF_NORMAL` (macro, line 78)
   - `MTF_HARD` (macro, line 79)
   - `MTF_AMBUSH` (macro, line 82)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_timer.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/doomdata.h`, `progs/doomgeneric/doomdef.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_lights.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_maputl.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_sight.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/p_user.c`, `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_main.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_segs.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.h`
 
 ## progs/doomgeneric/doomfeatures.h
 - Layer: utility
@@ -748,6 +789,7 @@ AM_drawThings
 - Symbols:
   - `DOOM_FEATURES_H` (macro, line 20)
   - `FEATURE_SOUND` (macro, line 35)
+- Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/w_main.c`
 
 ## progs/doomgeneric/doomgeneric.c
 - Layer: utility
@@ -755,6 +797,7 @@ AM_drawThings
 - Language: c
 - Symbols:
   - `dg_Create` (function, line 4) `void dg_Create()`
+- Depends on: `progs/doomgeneric/doomgeneric.h`
 
 ## progs/doomgeneric/doomgeneric.h
 - Layer: utility
@@ -764,6 +807,7 @@ AM_drawThings
   - `DOOM_GENERIC` (macro, line 2)
   - `DOOMGENERIC_RESX` (macro, line 6)
   - `DOOMGENERIC_RESY` (macro, line 8)
+- Imported by: `progs/doomgeneric/doomgeneric.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_win.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_timer.c`, `progs/doomgeneric/i_video.c`
 
 ## progs/doomgeneric/doomgeneric_minios.c
 - Layer: utility
@@ -792,6 +836,7 @@ AM_drawThings
   - `FB_WIDTH` (macro, line 72)
   - `FB_HEIGHT` (macro, line 73)
   - `KBD_QUEUE_SIZE` (macro, line 152)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/doomgeneric_sdl.c
 - Layer: utility
@@ -808,6 +853,7 @@ AM_drawThings
   - `DG_GetKey` (function, line 132) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
   - `DG_SetWindowTitle` (function, line 151) `void DG_SetWindowTitle(const char * title)`
   - `KEYQUEUE_SIZE` (macro, line 16)
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ## progs/doomgeneric/doomgeneric_soso.c
 - Layer: utility
@@ -826,6 +872,7 @@ AM_drawThings
   - `DG_GetKey` (function, line 236) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
   - `DG_SetWindowTitle` (function, line 257) `void DG_SetWindowTitle(const char * title)`
   - `KEYQUEUE_SIZE` (macro, line 23)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ## progs/doomgeneric/doomgeneric_sosox.c
 - Layer: utility
@@ -844,6 +891,7 @@ AM_drawThings
   - `DG_GetKey` (function, line 234) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
   - `DG_SetWindowTitle` (function, line 255) `void DG_SetWindowTitle(const char * title)`
   - `KEYQUEUE_SIZE` (macro, line 23)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ## progs/doomgeneric/doomgeneric_win.c
 - Layer: utility
@@ -860,6 +908,7 @@ AM_drawThings
   - `DG_GetKey` (function, line 171) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
   - `DG_SetWindowTitle` (function, line 192) `void DG_SetWindowTitle(const char * title)`
   - `KEYQUEUE_SIZE` (macro, line 12)
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ## progs/doomgeneric/doomgeneric_xlib.c
 - Layer: utility
@@ -875,6 +924,7 @@ AM_drawThings
   - `DG_GetKey` (function, line 186) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
   - `DG_SetWindowTitle` (function, line 207) `void DG_SetWindowTitle(const char * title)`
   - `KEYQUEUE_SIZE` (macro, line 20)
+- Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ## progs/doomgeneric/doomkeys.h
 - Layer: utility
@@ -940,11 +990,13 @@ AM_drawThings
   - `KEYP_PERIOD` (macro, line 92)
   - `KEYP_EQUALS` (macro, line 93)
   - `KEYP_ENTER` (macro, line 94)
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_win.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_controls.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/st_stuff.c`
 
 ## progs/doomgeneric/doomstat.c
 - Layer: utility
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
+- Depends on: `progs/doomgeneric/doomstat.h`
 
 ## progs/doomgeneric/doomstat.h
 - Layer: utility
@@ -954,6 +1006,8 @@ AM_drawThings
   - `__D_STATE__` (macro, line 26)
   - `logical_gamemission` (macro, line 68)
   - `MAX_DM_STARTS` (macro, line 227)
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/doomdata.h`, `progs/doomgeneric/net_defs.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/doomstat.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_maputl.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/p_tick.c`, `progs/doomgeneric/p_user.c`, `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_segs.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/doomtype.h
 - Layer: utility
@@ -972,11 +1026,13 @@ AM_drawThings
   - `DIR_SEPARATOR_S` (macro, line 95)
   - `PATH_SEPARATOR` (macro, line 96)
   - `arrlen` (macro, line 99)
+- Imported by: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_mode.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_textur.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdata.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/dummy.c`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_cdmus.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_scale.h`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/i_timer.c`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.c`, `progs/doomgeneric/m_fixed.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_defs.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/sha1.h`, `progs/doomgeneric/sounds.c`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_file.c`, `progs/doomgeneric/w_file.h`, `progs/doomgeneric/w_wad.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.c`
 
 ## progs/doomgeneric/dstrings.c
 - Layer: utility
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
+- Depends on: `progs/doomgeneric/dstrings.h`
 
 ## progs/doomgeneric/dstrings.h
 - Layer: utility
@@ -986,12 +1042,15 @@ AM_drawThings
   - `__DSTRINGS__` (macro, line 22)
   - `SAVEGAMENAME` (macro, line 30)
   - `NUM_QUITMESSAGES` (macro, line 35)
+- Depends on: `progs/doomgeneric/d_englsh.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/dstrings.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/st_stuff.c`
 
 ## progs/doomgeneric/dummy.c
 - Layer: utility
 - Language: c
 - Symbols:
   - `I_InitTimidityConfig` (function, line 42) `void I_InitTimidityConfig(void)`
+- Depends on: `progs/doomgeneric/doomtype.h`
 
 ## progs/doomgeneric/f_finale.c
 - Layer: utility
@@ -1017,6 +1076,7 @@ F_DrawPatchCol
   - `F_Drawer` (function, line 702) `void F_Drawer (void)`
   - `TEXTSPEED` (macro, line 56)
   - `TEXTWAIT` (macro, line 58)
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/f_finale.h
 - Layer: utility
@@ -1024,6 +1084,8 @@ F_DrawPatchCol
 - Language: h
 - Symbols:
   - `__F_FINALE__` (macro, line 21)
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`
 
 ## progs/doomgeneric/f_wipe.c
 - Layer: utility
@@ -1085,6 +1147,7 @@ wipe_ScreenWipe
   int	width,
   int	height,
   int	ticks )`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/f_wipe.h
 - Layer: utility
@@ -1092,6 +1155,7 @@ wipe_ScreenWipe
 - Language: h
 - Symbols:
   - `__F_WIPE_H__` (macro, line 21)
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_wipe.c`
 
 ## progs/doomgeneric/g_game.c
 - Layer: utility
@@ -1160,6 +1224,7 @@ G_InitNew
   - `BODYQUESIZE` (macro, line 224)
   - `VERSIONSIZE` (macro, line 1544)
   - `DEMOMARKER` (macro, line 1895)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/g_game.h
 - Layer: utility
@@ -1167,6 +1232,8 @@ G_InitNew
 - Language: h
 - Symbols:
   - `__G_GAME__` (macro, line 21)
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomdef.h`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/gusconf.c
 - Layer: utility
@@ -1182,6 +1249,7 @@ G_InitNew
   - `WriteTimidityConfig` (function, line 196) `static boolean WriteTimidityConfig(char *path, gus_config_t *config)`
   - `GUS_WriteConfig` (function, line 243) `boolean GUS_WriteConfig(char *path)`
   - `MAX_INSTRUMENTS` (macro, line 31)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/gusconf.h
 - Layer: utility
@@ -1189,6 +1257,8 @@ G_InitNew
 - Language: h
 - Symbols:
   - `__GUSCONF_H__` (macro, line 19)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/i_sound.c`
 
 ## progs/doomgeneric/hu_lib.c
 - Layer: utility
@@ -1252,6 +1322,7 @@ HUlib_keyInIText
   - `HUlib_drawIText` (function, line 328) `void HUlib_drawIText(hu_itext_t* it)`
   - `HUlib_eraseIText` (function, line 339) `void HUlib_eraseIText(hu_itext_t* it)`
   - `noterased` (macro, line 32)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ## progs/doomgeneric/hu_lib.h
 - Layer: utility
@@ -1262,6 +1333,8 @@ HUlib_keyInIText
   - `HU_CHARERASE` (macro, line 25)
   - `HU_MAXLINES` (macro, line 26)
   - `HU_MAXLINELENGTH` (macro, line 28)
+- Depends on: `progs/doomgeneric/r_defs.h`
+- Imported by: `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/hu_stuff.c`
 
 ## progs/doomgeneric/hu_stuff.c
 - Layer: utility
@@ -1291,6 +1364,7 @@ HUlib_keyInIText
   - `HU_INPUTWIDTH` (macro, line 59)
   - `HU_INPUTHEIGHT` (macro, line 60)
   - `QUEUESIZE` (macro, line 474)
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/hu_stuff.h
 - Layer: utility
@@ -1307,6 +1381,8 @@ HUlib_keyInIText
   - `HU_MSGWIDTH` (macro, line 37)
   - `HU_MSGHEIGHT` (macro, line 38)
   - `HU_MSGTIMEOUT` (macro, line 39)
+- Depends on: `progs/doomgeneric/d_event.h`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_mobj.c`
 
 ## progs/doomgeneric/i_cdmus.c
 - Layer: utility
@@ -1322,6 +1398,7 @@ HUlib_keyInIText
   - `I_CDMusFirstTrack` (function, line 168) `int I_CDMusFirstTrack(void)`
   - `I_CDMusLastTrack` (function, line 201) `int I_CDMusLastTrack(void)`
   - `I_CDMusTrackLength` (function, line 218) `int I_CDMusTrackLength(int track_num)`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ## progs/doomgeneric/i_cdmus.h
 - Layer: utility
@@ -1336,6 +1413,7 @@ HUlib_keyInIText
   - `CDERR_BADTRACK` (macro, line 25)
   - `CDERR_IOCTLBUFFMEM` (macro, line 26)
   - `CDERR_DEVREQBASE` (macro, line 27)
+- Imported by: `progs/doomgeneric/i_cdmus.c`
 
 ## progs/doomgeneric/i_endoom.c
 - Layer: utility
@@ -1345,6 +1423,7 @@ HUlib_keyInIText
   - `I_Endoom` (function, line 35) `void I_Endoom(byte *endoom_data)`
   - `ENDOOM_W` (macro, line 28)
   - `ENDOOM_H` (macro, line 30)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`
 
 ## progs/doomgeneric/i_endoom.h
 - Layer: utility
@@ -1352,6 +1431,7 @@ HUlib_keyInIText
 - Language: h
 - Symbols:
   - `__I_ENDOOM__` (macro, line 21)
+- Imported by: `progs/doomgeneric/d_main.c`
 
 ## progs/doomgeneric/i_input.c
 - Layer: utility
@@ -1363,6 +1443,7 @@ HUlib_keyInIText
   - `UpdateShiftStatus` (function, line 262) `static void UpdateShiftStatus(int pressed, unsigned char key)`
   - `I_GetEvent` (function, line 277) `void I_GetEvent(void)`
   - `I_InitInput` (function, line 337) `void I_InitInput(void)`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_scale.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/i_joystick.c
 - Layer: utility
@@ -1379,6 +1460,7 @@ HUlib_keyInIText
   - `I_UpdateJoystick` (function, line 321) `void I_UpdateJoystick(void)`
   - `I_BindJoystickVariables` (function, line 338) `void I_BindJoystickVariables(void)`
   - `DEAD_ZONE` (macro, line 37)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ## progs/doomgeneric/i_joystick.h
 - Layer: utility
@@ -1399,6 +1481,7 @@ HUlib_keyInIText
   - `CREATE_HAT_AXIS` (macro, line 56)
   - `HAT_AXIS_HORIZONTAL` (macro, line 59)
   - `HAT_AXIS_VERTICAL` (macro, line 61)
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`
 
 ## progs/doomgeneric/i_main.c
 - Layer: utility
@@ -1406,6 +1489,7 @@ HUlib_keyInIText
 - Language: c
 - Symbols:
   - `main` (function, line 38) `int main(int argc, char **argv)`
+- Depends on: `progs/doomgeneric/m_argv.h`
 
 ## progs/doomgeneric/i_minios_sound.c
 - Layer: utility
@@ -1450,6 +1534,7 @@ HUlib_keyInIText
   - `MUS_BASS_HOLD_MS` (macro, line 61)
   - `MUS_BASS_LINE_MIDI` (macro, line 62)
   - `MUS_ARP_MAX` (macro, line 63)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/i_scale.c
 - Layer: utility
@@ -1499,6 +1584,7 @@ HUlib_keyInIText
   - `DRAW_PIXEL3` (macro, line 1192)
   - `DRAW_PIXEL4` (macro, line 1275)
   - `DRAW_PIXEL5` (macro, line 1386)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/i_scale.h
 - Layer: utility
@@ -1506,6 +1592,8 @@ HUlib_keyInIText
 - Language: h
 - Symbols:
   - `__I_SCALE__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/i_input.c`
 
 ## progs/doomgeneric/i_sound.c
 - Layer: utility
@@ -1537,6 +1625,7 @@ HUlib_keyInIText
   - `I_StopSong` (function, line 419) `void I_StopSong(void)`
   - `I_MusicIsPlaying` (function, line 427) `boolean I_MusicIsPlaying(void)`
   - `I_BindSoundVariables` (function, line 439) `void I_BindSoundVariables(void)`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ## progs/doomgeneric/i_sound.h
 - Layer: utility
@@ -1545,6 +1634,8 @@ HUlib_keyInIText
 - Symbols:
   - `sfxinfo_struct` (struct, line 31)
   - `__I_SOUND__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/i_swap.h
 - Layer: utility
@@ -1559,6 +1650,7 @@ HUlib_keyInIText
   - `SHORT` (macro, line 46)
   - `LONG` (macro, line 48)
   - `SYS_LITTLE_ENDIAN` (macro, line 49)
+- Imported by: `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_wad.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/i_system.c
 - Layer: utility
@@ -1585,6 +1677,7 @@ HUlib_keyInIText
   - `MIN_RAM` (macro, line 59)
   - `ZENITY_BINARY` (macro, line 268)
   - `DOS_MEM_DUMP_SIZE` (macro, line 489)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ## progs/doomgeneric/i_system.h
 - Layer: utility
@@ -1592,6 +1685,8 @@ HUlib_keyInIText
 - Language: h
 - Symbols:
   - `__I_SYSTEM__` (macro, line 21)
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_ticcmd.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_fixed.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_sight.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_segs.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_wad.c`, `progs/doomgeneric/wi_stuff.c`, `progs/doomgeneric/z_zone.c`
 
 ## progs/doomgeneric/i_timer.c
 - Layer: utility
@@ -1604,6 +1699,7 @@ HUlib_keyInIText
   - `I_Sleep` (function, line 74) `void I_Sleep(int ms)`
   - `I_WaitVBL` (function, line 82) `void I_WaitVBL(int count)`
   - `I_InitTimer` (function, line 87) `void I_InitTimer(void)`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_timer.h`
 
 ## progs/doomgeneric/i_timer.h
 - Layer: utility
@@ -1612,6 +1708,7 @@ HUlib_keyInIText
 - Symbols:
   - `__I_TIMER__` (macro, line 21)
   - `TICRATE` (macro, line 22)
+- Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/i_timer.c`, `progs/doomgeneric/m_menu.c`
 
 ## progs/doomgeneric/i_video.c
 - Layer: utility
@@ -1645,6 +1742,7 @@ HUlib_keyInIText
   - `GFX_RGB565_R` (macro, line 311)
   - `GFX_RGB565_G` (macro, line 312)
   - `GFX_RGB565_B` (macro, line 313)
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/i_video.h
 - Layer: utility
@@ -1657,6 +1755,8 @@ HUlib_keyInIText
   - `SCREENWIDTH_4_3` (macro, line 31)
   - `SCREENHEIGHT_4_3` (macro, line 35)
   - `MAX_MOUSE_BUTTONS` (macro, line 37)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_wad.c`
 
 ## progs/doomgeneric/icon.c
 - Layer: utility
@@ -1666,6 +1766,7 @@ HUlib_keyInIText
 - Layer: utility
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
+- Depends on: `progs/doomgeneric/info.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/info.h
 - Layer: utility
@@ -1673,6 +1774,8 @@ HUlib_keyInIText
 - Language: h
 - Symbols:
   - `__INFO__` (macro, line 22)
+- Depends on: `progs/doomgeneric/d_think.h`
+- Imported by: `progs/doomgeneric/d_items.c`, `progs/doomgeneric/info.c`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/p_pspr.h`
 
 ## progs/doomgeneric/m_argv.c
 - Layer: utility
@@ -1686,6 +1789,7 @@ HUlib_keyInIText
   - `M_FindResponseFile` (function, line 234) `void M_FindResponseFile(void)`
   - `M_GetExecutableName` (function, line 249) `char *M_GetExecutableName(void)`
   - `MAXARGVS` (macro, line 72)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`
 
 ## progs/doomgeneric/m_argv.h
 - Layer: utility
@@ -1693,6 +1797,8 @@ HUlib_keyInIText
 - Language: h
 - Symbols:
   - `__M_ARGV__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_main.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/w_file.c`, `progs/doomgeneric/w_main.c`
 
 ## progs/doomgeneric/m_bbox.c
 - Layer: utility
@@ -1705,6 +1811,7 @@ M_AddToBox
 ( fixed_t*	box,
   fixed_t	x,
   fixed_t	y )`
+- Depends on: `progs/doomgeneric/m_bbox.h`
 
 ## progs/doomgeneric/m_bbox.h
 - Layer: utility
@@ -1712,6 +1819,8 @@ M_AddToBox
 - Language: h
 - Symbols:
   - `__M_BBOX__` (macro, line 21)
+- Depends on: `progs/doomgeneric/m_fixed.h`
+- Imported by: `progs/doomgeneric/m_bbox.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_maputl.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_main.c`, `progs/doomgeneric/v_video.c`
 
 ## progs/doomgeneric/m_cheat.c
 - Layer: utility
@@ -1726,6 +1835,7 @@ cht_CheckCheat
 cht_GetParam
 ( cheatseq_t*	cht,
   char*		buffer )`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_cheat.h`
 
 ## progs/doomgeneric/m_cheat.h
 - Layer: utility
@@ -1736,6 +1846,7 @@ cht_GetParam
   - `CHEAT` (macro, line 28)
   - `MAX_CHEAT_LEN` (macro, line 31)
   - `MAX_CHEAT_PARAMS` (macro, line 33)
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/st_stuff.h`
 
 ## progs/doomgeneric/m_config.c
 - Layer: infrastructure
@@ -1766,6 +1877,7 @@ cht_GetParam
   - `CONFIG_VARIABLE_INT_HEX` (macro, line 102)
   - `CONFIG_VARIABLE_FLOAT` (macro, line 104)
   - `CONFIG_VARIABLE_STRING` (macro, line 106)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/m_config.h
 - Layer: infrastructure
@@ -1773,6 +1885,8 @@ cht_GetParam
 - Language: h
 - Symbols:
   - `__M_CONFIG__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_controls.c`
 
 ## progs/doomgeneric/m_controls.c
 - Layer: utility
@@ -1788,6 +1902,7 @@ cht_GetParam
   - `M_BindMenuControls` (function, line 343) `void M_BindMenuControls(void)`
   - `M_BindChatControls` (function, line 374) `void M_BindChatControls(unsigned int num_players)`
   - `M_ApplyPlatformDefaults` (function, line 393) `void M_ApplyPlatformDefaults(void)`
+- Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ## progs/doomgeneric/m_controls.h
 - Layer: utility
@@ -1795,6 +1910,7 @@ cht_GetParam
 - Language: h
 - Symbols:
   - `__M_CONTROLS_H__` (macro, line 18)
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`
 
 ## progs/doomgeneric/m_fixed.c
 - Layer: utility
@@ -1806,6 +1922,7 @@ FixedMul
 ( fixed_t	a,
   fixed_t	b )`
   - `FixedDiv` (function, line 46) `fixed_t FixedDiv(fixed_t a, fixed_t b)`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_fixed.h`
 
 ## progs/doomgeneric/m_fixed.h
 - Layer: utility
@@ -1815,6 +1932,7 @@ FixedMul
   - `__M_FIXED__` (macro, line 21)
   - `FRACBITS` (macro, line 29)
   - `FRACUNIT` (macro, line 30)
+- Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/info.c`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_fixed.c`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/r_sky.c`, `progs/doomgeneric/tables.h`
 
 ## progs/doomgeneric/m_menu.c
 - Layer: utility
@@ -1900,6 +2018,7 @@ M_WriteText
   - `M_Init` (function, line 2077) `void M_Init (void)`
   - `SKULLXOFF` (macro, line 119)
   - `LINEHEIGHT` (macro, line 121)
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/m_menu.h
 - Layer: utility
@@ -1907,6 +2026,8 @@ M_WriteText
 - Language: h
 - Symbols:
   - `__M_MENU__` (macro, line 21)
+- Depends on: `progs/doomgeneric/d_event.h`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/r_main.c`
 
 ## progs/doomgeneric/m_misc.c
 - Layer: utility
@@ -1936,6 +2057,7 @@ M_WriteText
   - `M_OEMToUTF8` (function, line 518) `char *M_OEMToUTF8(const char *oem)`
   - `WIN32_LEAN_AND_MEAN` (macro, line 28)
   - `vsnprintf` (macro, line 476)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/m_misc.h
 - Layer: utility
@@ -1943,6 +2065,8 @@ M_WriteText
 - Language: h
 - Symbols:
   - `__M_MISC__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_controls.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_file_stdc.c`, `progs/doomgeneric/w_wad.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/m_random.c
 - Layer: utility
@@ -1959,6 +2083,8 @@ M_WriteText
 - Language: h
 - Symbols:
   - `__M_RANDOM__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_lights.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/memio.c
 - Layer: utility
@@ -1974,6 +2100,7 @@ M_WriteText
   - `mem_fclose` (function, line 148) `void mem_fclose(MEMFILE *stream)`
   - `mem_ftell` (function, line 158) `long mem_ftell(MEMFILE *stream)`
   - `mem_fseek` (function, line 163) `int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/memio.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/memio.h
 - Layer: utility
@@ -1981,6 +2108,7 @@ M_WriteText
 - Language: h
 - Symbols:
   - `MEMIO_H` (macro, line 17)
+- Imported by: `progs/doomgeneric/memio.c`
 
 ## progs/doomgeneric/net_client.h
 - Layer: infrastructure
@@ -1988,6 +2116,8 @@ M_WriteText
 - Language: h
 - Symbols:
   - `NET_CLIENT_H` (macro, line 18)
+- Depends on: `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/net_defs.h`, `progs/doomgeneric/sha1.h`
+- Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`
 
 ## progs/doomgeneric/net_dedicated.h
 - Layer: infrastructure
@@ -1995,6 +2125,7 @@ M_WriteText
 - Language: h
 - Symbols:
   - `NET_DEDICATED_H` (macro, line 19)
+- Imported by: `progs/doomgeneric/d_main.c`
 
 ## progs/doomgeneric/net_defs.h
 - Layer: utility
@@ -2019,6 +2150,8 @@ M_WriteText
   - `NET_TICDIFF_CHATCHAR` (macro, line 198)
   - `NET_TICDIFF_RAVEN` (macro, line 199)
   - `NET_TICDIFF_STRIFE` (macro, line 200)
+- Depends on: `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/sha1.h`
+- Imported by: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_packet.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`
 
 ## progs/doomgeneric/net_gui.h
 - Layer: presentation
@@ -2026,6 +2159,8 @@ M_WriteText
 - Language: h
 - Symbols:
   - `NET_GUI_H` (macro, line 22)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/d_loop.c`
 
 ## progs/doomgeneric/net_io.h
 - Layer: utility
@@ -2033,6 +2168,8 @@ M_WriteText
 - Language: h
 - Symbols:
   - `NET_IO_H` (macro, line 19)
+- Depends on: `progs/doomgeneric/net_defs.h`
+- Imported by: `progs/doomgeneric/d_loop.c`
 
 ## progs/doomgeneric/net_loop.h
 - Layer: utility
@@ -2040,6 +2177,8 @@ M_WriteText
 - Language: h
 - Symbols:
   - `NET_LOOP_H` (macro, line 19)
+- Depends on: `progs/doomgeneric/net_defs.h`
+- Imported by: `progs/doomgeneric/d_loop.c`
 
 ## progs/doomgeneric/net_packet.h
 - Layer: utility
@@ -2047,6 +2186,7 @@ M_WriteText
 - Language: h
 - Symbols:
   - `NET_PACKET_H` (macro, line 19)
+- Depends on: `progs/doomgeneric/net_defs.h`
 
 ## progs/doomgeneric/net_query.h
 - Layer: data_access
@@ -2054,6 +2194,8 @@ M_WriteText
 - Language: h
 - Symbols:
   - `NET_QUERY_H` (macro, line 19)
+- Depends on: `progs/doomgeneric/net_defs.h`
+- Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`
 
 ## progs/doomgeneric/net_sdl.h
 - Layer: utility
@@ -2061,6 +2203,8 @@ M_WriteText
 - Language: h
 - Symbols:
   - `NET_SDL_H` (macro, line 19)
+- Depends on: `progs/doomgeneric/net_defs.h`
+- Imported by: `progs/doomgeneric/d_loop.c`
 
 ## progs/doomgeneric/net_server.h
 - Layer: utility
@@ -2068,6 +2212,7 @@ M_WriteText
 - Language: h
 - Symbols:
   - `NET_SERVER_H` (macro, line 18)
+- Imported by: `progs/doomgeneric/d_loop.c`
 
 ## progs/doomgeneric/p_ceilng.c
 - Layer: utility
@@ -2083,6 +2228,7 @@ EV_DoCeiling
   - `P_RemoveActiveCeiling` (function, line 259) `void P_RemoveActiveCeiling(ceiling_t* c)`
   - `P_ActivateInStasisCeiling` (function, line 280) `void P_ActivateInStasisCeiling(line_t* line)`
   - `EV_CeilingCrushStop` (function, line 303) `int	EV_CeilingCrushStop(line_t	*line)`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_doors.c
 - Layer: utility
@@ -2115,6 +2261,7 @@ P_SpawnDoorRaiseIn5Mins
 EV_SlidingDoor
 ( line_t*	line,
   mobj_t*	thing )`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_enemy.c
 - Layer: utility
@@ -2209,6 +2356,7 @@ A_CloseShotgun2
   - `A_PlayerScream` (function, line 1989) `void A_PlayerScream (mobj_t* mo)`
   - `FATSPREAD` (macro, line 1337)
   - `SKULLSPEED` (macro, line 1413)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_floor.c
 - Layer: utility
@@ -2231,6 +2379,7 @@ EV_DoFloor
 EV_BuildStairs
 ( line_t*	line,
   stair_e	type )`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_inter.c
 - Layer: utility
@@ -2278,6 +2427,7 @@ P_DamageMobj
   mobj_t*	source,
   int 		damage )`
   - `BONUSADD` (macro, line 41)
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_inter.h
 - Layer: utility
@@ -2285,6 +2435,7 @@ P_DamageMobj
 - Language: h
 - Symbols:
   - `__P_INTER__` (macro, line 21)
+- Imported by: `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/st_stuff.c`
 
 ## progs/doomgeneric/p_lights.c
 - Layer: utility
@@ -2309,6 +2460,7 @@ EV_LightTurnOn
   int		bright )`
   - `T_Glow` (function, line 306) `void T_Glow(glow_t*	g)`
   - `P_SpawnGlowingLight` (function, line 332) `void P_SpawnGlowingLight(sector_t*	sector)`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_local.h
 - Layer: utility
@@ -2342,6 +2494,8 @@ EV_LightTurnOn
   - `PT_EARLYOUT` (macro, line 181)
   - `MAXSPECIALCROSS` (macro, line 218)
   - `MAXSPECIALCROSS_ORIGINAL` (macro, line 220)
+- Depends on: `progs/doomgeneric/p_spec.h`, `progs/doomgeneric/r_local.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_lights.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_maputl.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_sight.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/p_tick.c`, `progs/doomgeneric/p_user.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`
 
 ## progs/doomgeneric/p_map.c
 - Layer: utility
@@ -2400,6 +2554,7 @@ P_ChangeSector
   boolean	crunch )`
   - `SpechitOverrun` (function, line 1390) `static void SpechitOverrun(line_t *ld)`
   - `DEFAULT_SPECHIT_MAGIC` (macro, line 49)
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_maputl.c
 - Layer: utility
@@ -2462,6 +2617,7 @@ P_PathTraverse
   fixed_t		x2,
   fixed_t		y2,
   int			flags,...`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ## progs/doomgeneric/p_mobj.c
 - Layer: utility
@@ -2512,6 +2668,7 @@ P_SpawnPlayerMissile
   mobjtype_t	type )`
   - `STOPSPEED` (macro, line 105)
   - `FRICTION` (macro, line 106)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_mobj.h
 - Layer: utility
@@ -2520,6 +2677,8 @@ P_SpawnPlayerMissile
 - Symbols:
   - `mobj_s` (struct, line 201)
   - `__P_MOBJ__` (macro, line 21)
+- Depends on: `progs/doomgeneric/d_think.h`, `progs/doomgeneric/doomdata.h`, `progs/doomgeneric/info.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/tables.h`
+- Imported by: `progs/doomgeneric/d_player.h`, `progs/doomgeneric/info.c`, `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/s_sound.h`
 
 ## progs/doomgeneric/p_plats.c
 - Layer: utility
@@ -2536,6 +2695,7 @@ EV_DoPlat
   - `EV_StopPlat` (function, line 262) `void EV_StopPlat(line_t* line)`
   - `P_AddActivePlat` (function, line 277) `void P_AddActivePlat(plat_t* plat)`
   - `P_RemoveActivePlat` (function, line 290) `void P_RemoveActivePlat(plat_t* plat)`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_pspr.c
 - Layer: utility
@@ -2631,6 +2791,7 @@ A_BFGsound
   - `RAISESPEED` (macro, line 39)
   - `WEAPONBOTTOM` (macro, line 40)
   - `WEAPONTOP` (macro, line 42)
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_pspr.h
 - Layer: utility
@@ -2640,6 +2801,8 @@ A_BFGsound
   - `__P_PSPR__` (macro, line 21)
   - `FF_FULLBRIGHT` (macro, line 44)
   - `FF_FRAMEMASK` (macro, line 45)
+- Depends on: `progs/doomgeneric/info.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/tables.h`
+- Imported by: `progs/doomgeneric/d_player.h`, `progs/doomgeneric/p_pspr.c`
 
 ## progs/doomgeneric/p_saveg.c
 - Layer: utility
@@ -2704,6 +2867,7 @@ A_BFGsound
   - `saveg_write_enum` (macro, line 198)
   - `saveg_read_think_t` (macro, line 265)
   - `saveg_write_think_t` (macro, line 267)
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_saveg.h
 - Layer: utility
@@ -2712,6 +2876,7 @@ A_BFGsound
 - Symbols:
   - `__P_SAVEG__` (macro, line 21)
   - `SAVESTRINGSIZE` (macro, line 26)
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_saveg.c`
 
 ## progs/doomgeneric/p_setup.c
 - Layer: infrastructure
@@ -2739,6 +2904,7 @@ P_SetupLevel
   skill_t	skill)`
   - `P_Init` (function, line 847) `void P_Init (void)`
   - `MAX_DEATHMATCH_STARTS` (macro, line 105)
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_setup.h
 - Layer: infrastructure
@@ -2746,6 +2912,7 @@ P_SetupLevel
 - Language: h
 - Symbols:
   - `__P_SETUP__` (macro, line 21)
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`
 
 ## progs/doomgeneric/p_sight.c
 - Layer: utility
@@ -2767,6 +2934,7 @@ P_InterceptVector2
 P_CheckSight
 ( mobj_t*	t1,
   mobj_t*	t2 )`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ## progs/doomgeneric/p_spec.c
 - Layer: testing
@@ -2829,6 +2997,7 @@ P_ShootSpecialLine
   - `MAX_ADJOINING_SECTORS` (macro, line 327)
   - `DONUT_FLOORHEIGHT_DEFAULT` (macro, line 1174)
   - `DONUT_FLOORPIC_DEFAULT` (macro, line 1176)
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_spec.h
 - Layer: testing
@@ -2857,6 +3026,7 @@ P_ShootSpecialLine
   - `CEILWAIT` (macro, line 514)
   - `MAXCEILINGS` (macro, line 515)
   - `FLOORSPEED` (macro, line 594)
+- Imported by: `progs/doomgeneric/p_local.h`
 
 ## progs/doomgeneric/p_switch.c
 - Layer: utility
@@ -2879,6 +3049,7 @@ P_UseSpecialLine
 ( mobj_t*	thing,
   line_t*	line,
   int		side )`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_telept.c
 - Layer: utility
@@ -2890,6 +3061,7 @@ EV_Teleport
 ( line_t*	line,
   int		side,
   mobj_t*	thing )`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_tick.c
 - Layer: utility
@@ -2902,6 +3074,7 @@ EV_Teleport
   - `P_AllocateThinker` (function, line 85) `void P_AllocateThinker (thinker_t*	thinker)`
   - `P_RunThinkers` (function, line 94) `void P_RunThinkers (void)`
   - `P_Ticker` (function, line 122) `void P_Ticker (void)`
+- Depends on: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_tick.h
 - Layer: utility
@@ -2909,6 +3082,7 @@ EV_Teleport
 - Language: h
 - Symbols:
   - `__P_TICK__` (macro, line 21)
+- Imported by: `progs/doomgeneric/g_game.c`
 
 ## progs/doomgeneric/p_user.c
 - Layer: utility
@@ -2927,6 +3101,7 @@ P_Thrust
   - `INVERSECOLORMAP` (macro, line 34)
   - `MAXBOB` (macro, line 42)
   - `ANG5` (macro, line 173)
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`
 
 ## progs/doomgeneric/r_bsp.c
 - Layer: utility
@@ -2948,6 +3123,7 @@ R_ClipPassWallSegment
   - `R_Subsector` (function, line 490) `void R_Subsector (int num)`
   - `R_RenderBSPNode` (function, line 545) `void R_RenderBSPNode (int bspnum)`
   - `MAXSEGS` (macro, line 79)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
 
 ## progs/doomgeneric/r_bsp.h
 - Layer: utility
@@ -2955,6 +3131,7 @@ R_ClipPassWallSegment
 - Language: h
 - Symbols:
   - `__R_BSP__` (macro, line 21)
+- Imported by: `progs/doomgeneric/r_local.h`
 
 ## progs/doomgeneric/r_data.c
 - Layer: data_access
@@ -2984,6 +3161,7 @@ R_GetColumn
   - `R_CheckTextureNumForName` (function, line 744) `int	R_CheckTextureNumForName (char *name)`
   - `R_TextureNumForName` (function, line 775) `int	R_TextureNumForName (char* name)`
   - `R_PrecacheLevel` (function, line 799) `void R_PrecacheLevel (void)`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/r_data.h
 - Layer: data_access
@@ -2991,6 +3169,8 @@ R_GetColumn
 - Language: h
 - Symbols:
   - `__R_DATA__` (macro, line 22)
+- Depends on: `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/r_state.h`
+- Imported by: `progs/doomgeneric/g_game.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_sky.c`, `progs/doomgeneric/r_state.h`
 
 ## progs/doomgeneric/r_defs.h
 - Layer: utility
@@ -3008,6 +3188,8 @@ R_GetColumn
   - `SIL_TOP` (macro, line 48)
   - `SIL_BOTH` (macro, line 49)
   - `MAXDRAWSEGS` (macro, line 50)
+- Depends on: `progs/doomgeneric/d_think.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/v_patch.h`
+- Imported by: `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/st_lib.h`
 
 ## progs/doomgeneric/r_draw.c
 - Layer: utility
@@ -3040,6 +3222,7 @@ R_VideoErase
   - `SBARHEIGHT` (macro, line 45)
   - `FUZZTABLE` (macro, line 257)
   - `FUZZOFF` (macro, line 258)
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/r_draw.h
 - Layer: utility
@@ -3047,6 +3230,7 @@ R_VideoErase
 - Language: h
 - Symbols:
   - `__R_DRAW__` (macro, line 21)
+- Imported by: `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/r_local.h`
 
 ## progs/doomgeneric/r_local.h
 - Layer: utility
@@ -3054,6 +3238,8 @@ R_VideoErase
 - Language: h
 - Symbols:
   - `__R_LOCAL__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/r_bsp.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_segs.h`, `progs/doomgeneric/r_things.h`, `progs/doomgeneric/tables.h`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_main.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_segs.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`, `progs/quake2generic/q2generic_minios.c`
 
 ## progs/doomgeneric/r_main.c
 - Layer: utility
@@ -3108,6 +3294,7 @@ R_PointInSubsector
   - `R_RenderPlayerView` (function, line 863) `void R_RenderPlayerView (player_t* player)`
   - `FIELDOFVIEW` (macro, line 43)
   - `DISTMAP` (macro, line 608)
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ## progs/doomgeneric/r_main.h
 - Layer: utility
@@ -3122,6 +3309,8 @@ R_PointInSubsector
   - `MAXLIGHTZ` (macro, line 66)
   - `LIGHTZSHIFT` (macro, line 67)
   - `NUMCOLORMAPS` (macro, line 79)
+- Depends on: `progs/doomgeneric/d_player.h`, `progs/doomgeneric/r_data.h`
+- Imported by: `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_local.h`
 
 ## progs/doomgeneric/r_plane.c
 - Layer: utility
@@ -3155,6 +3344,7 @@ R_MakeSpans
   - `R_DrawPlanes` (function, line 360) `void R_DrawPlanes (void)`
   - `MAXVISPLANES` (macro, line 45)
   - `MAXOPENINGS` (macro, line 52)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/r_plane.h
 - Layer: utility
@@ -3162,6 +3352,8 @@ R_MakeSpans
 - Language: h
 - Symbols:
   - `__R_PLANE__` (macro, line 21)
+- Depends on: `progs/doomgeneric/r_data.h`
+- Imported by: `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_local.h`
 
 ## progs/doomgeneric/r_segs.c
 - Layer: utility
@@ -3180,6 +3372,7 @@ R_StoreWallRange
   int	stop )`
   - `HEIGHTBITS` (macro, line 196)
   - `HEIGHTUNIT` (macro, line 197)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ## progs/doomgeneric/r_segs.h
 - Layer: utility
@@ -3187,6 +3380,7 @@ R_StoreWallRange
 - Language: h
 - Symbols:
   - `__R_SEGS__` (macro, line 21)
+- Imported by: `progs/doomgeneric/r_local.h`
 
 ## progs/doomgeneric/r_sky.c
 - Layer: utility
@@ -3194,6 +3388,7 @@ R_StoreWallRange
 - Language: c
 - Symbols:
   - `R_InitSkyMap` (function, line 47) `void R_InitSkyMap (void)`
+- Depends on: `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`
 
 ## progs/doomgeneric/r_sky.h
 - Layer: utility
@@ -3203,6 +3398,7 @@ R_StoreWallRange
   - `__R_SKY__` (macro, line 21)
   - `SKYFLATNAME` (macro, line 26)
   - `ANGLETOSKYSHIFT` (macro, line 29)
+- Imported by: `progs/doomgeneric/g_game.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_main.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_segs.c`, `progs/doomgeneric/r_sky.c`
 
 ## progs/doomgeneric/r_state.h
 - Layer: utility
@@ -3210,6 +3406,8 @@ R_StoreWallRange
 - Language: h
 - Symbols:
   - `__R_STATE__` (macro, line 21)
+- Depends on: `progs/doomgeneric/d_player.h`, `progs/doomgeneric/r_data.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_lights.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_maputl.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_sight.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_data.h`
 
 ## progs/doomgeneric/r_things.c
 - Layer: utility
@@ -3241,6 +3439,7 @@ R_DrawVisSprite
   - `R_DrawMasked` (function, line 951) `void R_DrawMasked (void)`
   - `MINZ` (macro, line 37)
   - `BASEYCENTER` (macro, line 41)
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/r_things.h
 - Layer: utility
@@ -3249,6 +3448,7 @@ R_DrawVisSprite
 - Symbols:
   - `__R_THINGS__` (macro, line 21)
   - `MAXVISSPRITES` (macro, line 22)
+- Imported by: `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_local.h`
 
 ## progs/doomgeneric/s_sound.c
 - Layer: utility
@@ -3280,6 +3480,7 @@ R_DrawVisSprite
   - `NORM_PITCH` (macro, line 61)
   - `NORM_PRIORITY` (macro, line 63)
   - `NORM_SEP` (macro, line 64)
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/s_sound.h
 - Layer: utility
@@ -3287,6 +3488,8 @@ R_DrawVisSprite
 - Language: h
 - Symbols:
   - `__S_SOUND__` (macro, line 21)
+- Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/sha1.c
 - Layer: utility
@@ -3312,6 +3515,7 @@ R_DrawVisSprite
   - `R` (macro, line 98)
   - `X` (macro, line 288)
   - `X` (macro, line 290)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/sha1.h`
 
 ## progs/doomgeneric/sha1.h
 - Layer: utility
@@ -3320,6 +3524,8 @@ R_DrawVisSprite
 - Symbols:
   - `sha1_context_s` (struct, line 26)
   - `__SHA1_H__` (macro, line 19)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_defs.h`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/w_checksum.c`
 
 ## progs/doomgeneric/sounds.c
 - Layer: utility
@@ -3329,6 +3535,7 @@ R_DrawVisSprite
   - `MUSIC` (macro, line 30)
   - `SOUND` (macro, line 110)
   - `SOUND_LINK` (macro, line 113)
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/sounds.h
 - Layer: utility
@@ -3336,6 +3543,8 @@ R_DrawVisSprite
 - Language: h
 - Symbols:
   - `__SOUNDS__` (macro, line 21)
+- Depends on: `progs/doomgeneric/i_sound.h`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/info.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/st_lib.c
 - Layer: utility
@@ -3394,6 +3603,7 @@ STlib_initBinIcon
 STlib_updateBinIcon
 ( st_binicon_t*		bi,
   boolean		refresh )`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/st_lib.h
 - Layer: utility
@@ -3401,6 +3611,8 @@ STlib_updateBinIcon
 - Language: h
 - Symbols:
   - `__STLIB__` (macro, line 20)
+- Depends on: `progs/doomgeneric/r_defs.h`
+- Imported by: `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`
 
 ## progs/doomgeneric/st_stuff.c
 - Layer: utility
@@ -3545,6 +3757,7 @@ ST_Responder (event_t* ev)`
   - `ST_MAPTITLEX` (macro, line 255)
   - `ST_MAPTITLEY` (macro, line 258)
   - `ST_MAPHEIGHT` (macro, line 260)
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/st_stuff.h
 - Layer: utility
@@ -3555,6 +3768,8 @@ ST_Responder (event_t* ev)`
   - `ST_HEIGHT` (macro, line 30)
   - `ST_WIDTH` (macro, line 31)
   - `ST_Y` (macro, line 32)
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_cheat.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`
 
 ## progs/doomgeneric/statdump.c
 - Layer: utility
@@ -3572,12 +3787,14 @@ ST_Responder (event_t* ev)`
   - `StatCopy` (function, line 332) `void StatCopy(wbstartstruct_t *stats)`
   - `StatDump` (function, line 342) `void StatDump(void)`
   - `MAX_CAPTURES` (macro, line 55)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ## progs/doomgeneric/statdump.h
 - Layer: utility
 - Language: h
 - Symbols:
   - `DOOM_STATDUMP_H` (macro, line 18)
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/statdump.c`
 
 ## progs/doomgeneric/tables.c
 - Layer: utility
@@ -3585,6 +3802,7 @@ ST_Responder (event_t* ev)`
 - Language: c
 - Symbols:
   - `SlopeDiv` (function, line 40) `int SlopeDiv(unsigned int num, unsigned int den)`
+- Depends on: `progs/doomgeneric/tables.h`
 
 ## progs/doomgeneric/tables.h
 - Layer: utility
@@ -3606,6 +3824,8 @@ ST_Responder (event_t* ev)`
   - `SLOPERANGE` (macro, line 76)
   - `SLOPEBITS` (macro, line 78)
   - `DBITS` (macro, line 79)
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_fixed.h`
+- Imported by: `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/tables.c`
 
 ## progs/doomgeneric/v_patch.h
 - Layer: utility
@@ -3613,6 +3833,7 @@ ST_Responder (event_t* ev)`
 - Language: h
 - Symbols:
   - `V_PATCH_H` (macro, line 21)
+- Imported by: `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/v_video.h`
 
 ## progs/doomgeneric/v_video.c
 - Layer: utility
@@ -3655,6 +3876,7 @@ ST_Responder (event_t* ev)`
   - `RANGECHECK` (macro, line 46)
   - `MOUSE_SPEED_BOX_WIDTH` (macro, line 842)
   - `MOUSE_SPEED_BOX_HEIGHT` (macro, line 844)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/v_video.h
 - Layer: utility
@@ -3663,6 +3885,8 @@ ST_Responder (event_t* ev)`
 - Symbols:
   - `__V_VIDEO__` (macro, line 23)
   - `CENTERY` (macro, line 33)
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/v_patch.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/w_checksum.c
 - Layer: utility
@@ -3672,6 +3896,7 @@ ST_Responder (event_t* ev)`
   - `GetFileNumber` (function, line 30) `static int GetFileNumber(wad_file_t *handle)`
   - `ChecksumAddLump` (function, line 56) `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)`
   - `W_Checksum` (function, line 67) `void W_Checksum(sha1_digest_t digest)`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/sha1.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ## progs/doomgeneric/w_checksum.h
 - Layer: utility
@@ -3679,6 +3904,8 @@ ST_Responder (event_t* ev)`
 - Language: h
 - Symbols:
   - `W_CHECKSUM_H` (macro, line 20)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/d_net.c`, `progs/doomgeneric/w_checksum.c`
 
 ## progs/doomgeneric/w_file.c
 - Layer: utility
@@ -3689,6 +3916,7 @@ ST_Responder (event_t* ev)`
   - `W_CloseFile` (function, line 84) `void W_CloseFile(wad_file_t *wad)`
   - `W_Read` (function, line 89) `size_t W_Read(wad_file_t *wad, unsigned int offset,
               void *buffer, size_t buffer_len)`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_file.h`
 
 ## progs/doomgeneric/w_file.h
 - Layer: utility
@@ -3697,6 +3925,8 @@ ST_Responder (event_t* ev)`
 - Symbols:
   - `_wad_file_s` (struct, line 46)
   - `__W_FILE__` (macro, line 21)
+- Depends on: `progs/doomgeneric/doomtype.h`
+- Imported by: `progs/doomgeneric/w_file.c`, `progs/doomgeneric/w_file_stdc.c`, `progs/doomgeneric/w_wad.h`
 
 ## progs/doomgeneric/w_file_stdc.c
 - Layer: utility
@@ -3707,6 +3937,7 @@ ST_Responder (event_t* ev)`
   - `W_StdC_CloseFile` (function, line 55) `static void W_StdC_CloseFile(wad_file_t *wad)`
   - `W_StdC_Read` (function, line 68) `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
                    void *buffer, size_t ...`
+- Depends on: `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_file.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/w_main.c
 - Layer: utility
@@ -3714,6 +3945,7 @@ ST_Responder (event_t* ev)`
 - Language: c
 - Symbols:
   - `W_ParseCommandLine` (function, line 29) `boolean W_ParseCommandLine(void)`
+- Depends on: `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_merge.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/w_main.h
 - Layer: utility
@@ -3721,6 +3953,7 @@ ST_Responder (event_t* ev)`
 - Language: h
 - Symbols:
   - `W_MAIN_H` (macro, line 19)
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/w_main.c`
 
 ## progs/doomgeneric/w_merge.h
 - Layer: utility
@@ -3730,6 +3963,7 @@ ST_Responder (event_t* ev)`
   - `W_MERGE_H` (macro, line 22)
   - `W_NWT_MERGE_SPRITES` (macro, line 23)
   - `W_NWT_MERGE_FLATS` (macro, line 25)
+- Imported by: `progs/doomgeneric/w_main.c`
 
 ## progs/doomgeneric/w_wad.c
 - Layer: utility
@@ -3751,6 +3985,7 @@ ST_Responder (event_t* ev)`
   - `W_Profile` (function, line 479) `void W_Profile (void)`
   - `W_GenerateHashTable` (function, line 540) `void W_GenerateHashTable(void)`
   - `W_CheckCorrectIWAD` (function, line 587) `void W_CheckCorrectIWAD(GameMission_t mission)`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/w_wad.h
 - Layer: utility
@@ -3759,6 +3994,8 @@ ST_Responder (event_t* ev)`
 - Symbols:
   - `lumpinfo_s` (struct, line 41)
   - `__W_WAD__` (macro, line 21)
+- Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/w_file.h`
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_main.c`, `progs/doomgeneric/w_wad.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/wi_stuff.c
 - Layer: utility
@@ -3847,6 +4084,7 @@ WI_drawTime
   - `SP_PAR` (macro, line 293)
   - `SP_PAUSE` (macro, line 294)
   - `SHOWNEXTLOCDELAY` (macro, line 298)
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/wi_stuff.h
 - Layer: utility
@@ -3854,6 +4092,8 @@ WI_drawTime
 - Language: h
 - Symbols:
   - `__WI_STUFF__` (macro, line 20)
+- Depends on: `progs/doomgeneric/doomdef.h`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/z_zone.c
 - Layer: utility
@@ -3886,6 +4126,7 @@ Z_DumpHeap
   - `MEM_ALIGN` (macro, line 35)
   - `ZONEID` (macro, line 37)
   - `MINFRAGMENT` (macro, line 181)
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/z_zone.h
 - Layer: utility
@@ -3894,3 +4135,4 @@ Z_DumpHeap
 - Symbols:
   - `__Z_ZONE__` (macro, line 25)
   - `Z_ChangeTag` (macro, line 69)
+- Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_lights.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_tick.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_file_stdc.c`, `progs/doomgeneric/w_main.c`, `progs/doomgeneric/w_wad.c`, `progs/doomgeneric/wi_stuff.c`, `progs/doomgeneric/z_zone.c`

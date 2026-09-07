@@ -118,3 +118,4 @@
   - `MENU_OSD_BG` (macro, line 524)
   - `MINIOS_AUTOSAVE_MS` (macro, line 940)
   - `MINIOS_FF_FRAMESKIP` (macro, line 952)
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`

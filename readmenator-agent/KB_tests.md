@@ -49,6 +49,7 @@
   - `main` (function, line 29) `int main(void)`
   - `HAL_IO_HOST_TEST` (macro, line 10)
   - `CHECK` (macro, line 22)
+- Depends on: `arch/x86/hal_io.h`
 
 ## tests/test_percpu_rq.c
 - Layer: testing
@@ -82,6 +83,7 @@
   - `main` (function, line 66) `int main(void)`
   - `EFAULT` (macro, line 12)
   - `CHECK` (macro, line 40)
+- Depends on: `kernel/string.c`, `sanitize.h`
 
 ## tests/test_sync.c
 - Layer: testing

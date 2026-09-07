@@ -112,9 +112,13 @@ static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)
 static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     unsigned char *pal = (unsigned char *)a1;
+    unsigned char tmp[768];
+    int i;
     SANITIZE_RANGE(a1, 768);
-    outb(0x3C8, 0);
-    for (int i = 0; i < 768; i++) outb(0x3C9, pal[i] >> 2);
+    /* Copy in once: the caller must not mutate the palette between the
+     * range check and the DAC/palette update. */
+    for (i = 0; i < 768; i++) tmp[i] = pal[i];
+    vga_fb_set_gfx_palette(tmp);
     return 0;
 }
 static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6) {

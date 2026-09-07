@@ -60,6 +60,7 @@
   - `kbd_reset_for_shell` (function, line 190) `void kbd_reset_for_shell(void)`
   - `KBD_QUEUE_LEN` (macro, line 38)
   - `KBD_RAW_LEN` (macro, line 43)
+- Depends on: `drivers/kbd.h`
 
 ## drivers/kbd.h
 - Layer: infrastructure
@@ -67,6 +68,7 @@
 - Language: h
 - Symbols:
   - `KBD_H` (macro, line 2)
+- Imported by: `drivers/kbd.c`, `kernel.c`
 
 ## drivers/pcspk.c
 - Layer: infrastructure

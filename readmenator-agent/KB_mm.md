@@ -6,13 +6,14 @@
 - Language: c
 - Symbols:
   - `mm_setup_protections` (function, line 18) `void mm_setup_protections(void)`
-  - `mm_user_pte_update` (function, line 100) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
-  - `mm_user_set_exec` (function, line 121) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
-  - `pt_page_alloc` (function, line 133) `void *pt_page_alloc(void)`
-  - `pt_page_free` (function, line 143) `void pt_page_free(void *ptr)`
-  - `pt_clone_user` (function, line 149) `uint64_t pt_clone_user(uint64_t parent_cr3)`
-  - `pt_free_user` (function, line 227) `void pt_free_user(uint64_t cr3)`
-  - `PT_ALLOC_HDR` (macro, line 131)
+  - `mm_user_pte_update` (function, line 119) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
+  - `mm_user_set_exec` (function, line 140) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
+  - `pt_page_alloc` (function, line 152) `void *pt_page_alloc(void)`
+  - `pt_page_free` (function, line 162) `void pt_page_free(void *ptr)`
+  - `pt_clone_user` (function, line 168) `uint64_t pt_clone_user(uint64_t parent_cr3)`
+  - `pt_free_user` (function, line 266) `void pt_free_user(uint64_t cr3)`
+  - `PT_ALLOC_HDR` (macro, line 150)
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ## kernel/mm/swap.c
 - Layer: utility

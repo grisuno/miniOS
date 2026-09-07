@@ -312,15 +312,37 @@ puts_done:
 msg_read:
     .asciz "stage2: read error"
 
-/* Probe VESA BIOS Extensions for a high-resolution 8-bit-palette linear
- * framebuffer and record it for the kernel in the fixed VBE_INFO_ADDR struct.
- * Tries 800x600x8, then 640x480x8, then falls back to VGA Mode 13h. Runs in
- * real mode (the kernel image is already fully loaded, so this scratch is
- * safe) and must complete before the transition to long mode kills the BIOS
- * video services. The 8-bit modes keep the 256-entry VGA DAC path the kernel
- * desktop and DOOM rely on. */
+/* Probe VESA BIOS Extensions for a high-resolution linear framebuffer and
+ * record it for the kernel in the fixed VBE_INFO_ADDR struct. Tries the
+ * true-color modes that fit the emulated ~2 MB scan-out window (800x600x32,
+ * then 640x480x32), then the 8-bit-palette modes 1024x768x8, 800x600x8 and
+ * 640x480x8, then falls back to VGA Mode 13h. Runs in real mode (the kernel
+ * image is already fully loaded, so this scratch is safe) and must complete
+ * before the transition to long mode kills the BIOS video services. A
+ * true-color mode frees the desktop from the 256-entry VGA DAC palette; the
+ * 8-bit modes keep that path unchanged. A true-color mode whose framebuffer
+ * exceeds the ~2 MB QEMU scans out would render its bottom rows black, so
+ * none taller than 800x600 is offered. */
 vbe_probe:
+    /* 1024x768x8 is the first candidate: the emulated std-VGA scan-out window
+     * is only ~2 MB, so at 1024 wide a true-color framebuffer (1024x768x24 =
+     * 2.25 MB) would spill past it and render its bottom rows (taskbar, dock)
+     * black. The 8-bit 1024x768 framebuffer is 1 MB, fits the whole window
+     * and shows the full desktop including the bottom dock. True color is
+     * therefore only offered at 800x600 or smaller, where it fits. */
+    movw $VBE_MODE_1024x768x32, %bx
+    call vbe_try_mode
+    jnc vbe_ok
+    movw $VBE_MODE_1024x768x8, %bx
+    call vbe_try_mode
+    jnc vbe_ok
+    movw $VBE_MODE_800x600x32, %bx
+    call vbe_try_mode
+    jnc vbe_ok
     movw $VBE_MODE_800x600x8, %bx
+    call vbe_try_mode
+    jnc vbe_ok
+    movw $VBE_MODE_640x480x32, %bx
     call vbe_try_mode
     jnc vbe_ok
     movw $VBE_MODE_640x480x8, %bx
@@ -334,12 +356,15 @@ vbe_probe:
     movw $320, VBE_INFO_ADDR + VBE_INFO_WIDTH_OFF
     movw $200, VBE_INFO_ADDR + VBE_INFO_HEIGHT_OFF
     movw $320, VBE_INFO_ADDR + VBE_INFO_PITCH_OFF
+    movb $VBE_BPP_8, VBE_INFO_ADDR + VBE_INFO_BPP_OFF
     movb $1, VBE_INFO_ADDR + VBE_INFO_VALID_OFF
     ret
 
 /* Try one VBE mode held in %bx. On success the mode is set with the linear
  * framebuffer bit and carry is cleared; on any failure carry is set so the
- * caller can try the next candidate. */
+ * caller can try the next candidate. Only 8/24/32-bit modes are accepted:
+ * a 15/16-bit mode would need an RGB565 packer the kernel does not carry,
+ * so it is skipped like an unsupported mode. */
 vbe_try_mode:
     pushw %bx
     pushw %di
@@ -363,7 +388,16 @@ vbe_try_mode:
     movw (%si), %dx
     andw $VBE_ATTR_LFB, %dx
     jz vbe_try_fail
-    /* Copy width, height, pitch and physical base into the info struct. */
+    /* Bits-per-pixel byte must be 8, 24 or 32. */
+    movb VBE_INFO_BPP_SRC_OFF(%si), %dl
+    cmpb $VBE_BPP_8, %dl
+    je vbe_try_bpp_ok
+    cmpb $VBE_BPP_24, %dl
+    je vbe_try_bpp_ok
+    cmpb $VBE_BPP_32, %dl
+    jne vbe_try_fail
+vbe_try_bpp_ok:
+    /* Copy width, height, pitch, physical base and bpp into the info struct. */
     movw VBE_INFO_XRES_OFF(%si), %dx
     movw %dx, VBE_INFO_ADDR + VBE_INFO_WIDTH_OFF
     movw VBE_INFO_YRES_OFF(%si), %dx
@@ -372,6 +406,9 @@ vbe_try_mode:
     movw %dx, VBE_INFO_ADDR + VBE_INFO_PITCH_OFF
     movl VBE_INFO_PHYSBASE_OFF(%si), %edx
     movl %edx, VBE_INFO_ADDR + VBE_INFO_FBBASE_OFF
+    movw $VBE_MODE_INFO_ADDR, %si
+    movb VBE_INFO_BPP_SRC_OFF(%si), %dl
+    movb %dl, VBE_INFO_ADDR + VBE_INFO_BPP_OFF
     popw %es
     popw %di
     popw %bx

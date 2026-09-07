@@ -4,189 +4,252 @@
 
 ### ap_stub_start
 - Defined: `arch/x86/ap_entry.S:21`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### ap_pm
 - Defined: `arch/x86/ap_entry.S:39`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### ap_lm
 - Defined: `arch/x86/ap_entry.S:62`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### ap_patch_slot
 - Defined: `arch/x86/ap_entry.S:80`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### ap_gdt32
 - Defined: `arch/x86/ap_entry.S:84`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### ap_gdt32_ptr
 - Defined: `arch/x86/ap_entry.S:88`
 - Doc: movw %ax, %ss /* Load smp_ap_entry()'s address from the BSP-patched slot and go. mov ap_patch_slot(%rip), %rax jmp *%rax
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### ap_gdt32_end
 - Defined: `arch/x86/ap_entry.S:91`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### ap_gdt64_ptr
 - Defined: `arch/x86/ap_entry.S:93`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### ap_stub_end
 - Defined: `arch/x86/ap_entry.S:98`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ## arch/x86/boot/stage1.S
 
 ### main
 - Defined: `arch/x86/boot/stage1.S:28`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### normalize
 - Defined: `arch/x86/boot/stage1.S:32`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### no_extensions
 - Defined: `arch/x86/boot/stage1.S:78`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### read_failed
 - Defined: `arch/x86/boot/stage1.S:82`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### fail
 - Defined: `arch/x86/boot/stage1.S:85`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### halt
 - Defined: `arch/x86/boot/stage1.S:88`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### puts
 - Defined: `arch/x86/boot/stage1.S:93`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### puts_next
 - Defined: `arch/x86/boot/stage1.S:97`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### puts_done
 - Defined: `arch/x86/boot/stage1.S:103`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### msg_no_lba
 - Defined: `arch/x86/boot/stage1.S:107`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### msg_read
 - Defined: `arch/x86/boot/stage1.S:109`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ## arch/x86/boot/stage2.S
 
 ### stage2_main
 - Defined: `arch/x86/boot/stage2.S:39`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### a20_ready
 - Defined: `arch/x86/boot/stage2.S:54`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### load_chunk
 - Defined: `arch/x86/boot/stage2.S:69`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### chunk_size_ready
 - Defined: `arch/x86/boot/stage2.S:74`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### read_piece
 - Defined: `arch/x86/boot/stage2.S:81`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### piece_size_ready
 - Defined: `arch/x86/boot/stage2.S:86`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### chunk_copy
 - Defined: `arch/x86/boot/stage2.S:118`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### chunk_leave_pm
 - Defined: `arch/x86/boot/stage2.S:131`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### chunk_resume
 - Defined: `arch/x86/boot/stage2.S:141`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### enter_long_mode
 - Defined: `arch/x86/boot/stage2.S:162`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### fill_pt0_low
 - Defined: `arch/x86/boot/stage2.S:190`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### dma_uncache
 - Defined: `arch/x86/boot/stage2.S:208`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### fill_pt0_kernel
 - Defined: `arch/x86/boot/stage2.S:216`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### fill_pt1_kernel
 - Defined: `arch/x86/boot/stage2.S:235`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### fill_pt1_bss
 - Defined: `arch/x86/boot/stage2.S:244`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### fill_page_directory
 - Defined: `arch/x86/boot/stage2.S:260`
 - Doc: endif
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### read_failed
 - Defined: `arch/x86/boot/stage2.S:289`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### halt
 - Defined: `arch/x86/boot/stage2.S:293`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### puts
 - Defined: `arch/x86/boot/stage2.S:298`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### puts_next
 - Defined: `arch/x86/boot/stage2.S:302`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### puts_done
 - Defined: `arch/x86/boot/stage2.S:308`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### msg_read
 - Defined: `arch/x86/boot/stage2.S:312`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### vbe_probe
-- Defined: `arch/x86/boot/stage2.S:322`
-- Doc: Probe VESA BIOS Extensions for a high-resolution 8-bit-palette linear framebuffer and record it for the kernel in the fi
+- Defined: `arch/x86/boot/stage2.S:326`
+- Doc: Probe VESA BIOS Extensions for a high-resolution linear framebuffer and record it for the kernel in the fixed VBE_INFO_A
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### vbe_try_mode
-- Defined: `arch/x86/boot/stage2.S:343`
+- Defined: `arch/x86/boot/stage2.S:368`
 - Doc: Try one VBE mode held in %bx. On success the mode is set with the linear framebuffer bit and carry is cleared; on any fa
+- Depends on: `arch/x86/boot/bootdefs.h`
+
+### vbe_try_bpp_ok
+- Defined: `arch/x86/boot/stage2.S:399`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### vbe_set_fail
-- Defined: `arch/x86/boot/stage2.S:387`
+- Defined: `arch/x86/boot/stage2.S:424`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### vbe_try_fail
-- Defined: `arch/x86/boot/stage2.S:390`
+- Defined: `arch/x86/boot/stage2.S:427`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### vbe_ok
-- Defined: `arch/x86/boot/stage2.S:396`
+- Defined: `arch/x86/boot/stage2.S:433`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### kaslr_pick
-- Defined: `arch/x86/boot/stage2.S:405`
+- Defined: `arch/x86/boot/stage2.S:442`
 - Doc: Pick the kernel's physical load base: a 2 MB-aligned address in the 64-position window above the kernel heap, seeded fro
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### gdt32_start
-- Defined: `arch/x86/boot/stage2.S:442`
+- Defined: `arch/x86/boot/stage2.S:479`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### gdt32_end
-- Defined: `arch/x86/boot/stage2.S:448`
+- Defined: `arch/x86/boot/stage2.S:485`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### gdt32_ptr
-- Defined: `arch/x86/boot/stage2.S:449`
+- Defined: `arch/x86/boot/stage2.S:486`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### gdt64_image
-- Defined: `arch/x86/boot/stage2.S:454`
+- Defined: `arch/x86/boot/stage2.S:491`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### gdt64_ptr
-- Defined: `arch/x86/boot/stage2.S:460`
+- Defined: `arch/x86/boot/stage2.S:497`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### saved_gdtr
-- Defined: `arch/x86/boot/stage2.S:464`
+- Defined: `arch/x86/boot/stage2.S:501`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### sectors_left
-- Defined: `arch/x86/boot/stage2.S:467`
+- Defined: `arch/x86/boot/stage2.S:504`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### chunk_sectors
-- Defined: `arch/x86/boot/stage2.S:469`
+- Defined: `arch/x86/boot/stage2.S:506`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### next_lba
-- Defined: `arch/x86/boot/stage2.S:471`
+- Defined: `arch/x86/boot/stage2.S:508`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### dest_addr
-- Defined: `arch/x86/boot/stage2.S:473`
+- Defined: `arch/x86/boot/stage2.S:510`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ### kaslr_dest
-- Defined: `arch/x86/boot/stage2.S:475`
+- Defined: `arch/x86/boot/stage2.S:512`
+- Depends on: `arch/x86/boot/bootdefs.h`
 
 ## arch/x86/ctx_sw.S
 
@@ -210,50 +273,62 @@
 ### hal_outb `static inline void hal_outb(unsigned short port, unsigned char val)`
 - Defined: `arch/x86/hal_io.h:68`
 - Doc: #ifdef HAL_IO_HOST_TEST /** Docstring: Stub log for host tests, counts port writes. extern unsigned hal_io_stub_writes; 
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_inb `static inline unsigned char hal_inb(unsigned short port)`
 - Defined: `arch/x86/hal_io.h:75`
 - Doc: extern unsigned hal_io_stub_last_val; /** Docstring: Stub log for host tests, counts LAPIC EOI calls. extern unsigned ha
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_outw `static inline void hal_outw(unsigned short port, unsigned short val)`
 - Defined: `arch/x86/hal_io.h:81`
 - Doc: /** Docstring: Stub port byte write, records port and value. static inline void hal_outb(unsigned short port, unsigned c
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_inw `static inline unsigned short hal_inw(unsigned short port)`
 - Defined: `arch/x86/hal_io.h:88`
 - Doc: /** Docstring: Stub port byte read, returns the canned value. static inline unsigned char hal_inb(unsigned short port) {
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_lapic_eoi `static inline void hal_lapic_eoi(void)`
 - Defined: `arch/x86/hal_io.h:94`
 - Doc: /** Docstring: Stub port word write, records port and low byte. static inline void hal_outw(unsigned short port, unsigne
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_pic_eoi `static inline void hal_pic_eoi(int irq)`
 - Defined: `arch/x86/hal_io.h:99`
 - Doc: } /** Docstring: Stub port word read, returns the canned value. static inline unsigned short hal_inw(unsigned short port
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_outb `static inline void hal_outb(unsigned short port, unsigned char val)`
 - Defined: `arch/x86/hal_io.h:109`
 - Doc: hal_io_stub_lapic_eois++; } /** Docstring: Stub PIC EOI for an IRQ line. static inline void hal_pic_eoi(int irq) { if (i
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_inb `static inline unsigned char hal_inb(unsigned short port)`
 - Defined: `arch/x86/hal_io.h:114`
 - Doc: if (irq >= 8) { hal_outb(HAL_PIC2_CMD, HAL_PIC_EOI); } hal_outb(HAL_PIC1_CMD, HAL_PIC_EOI); } #else /** Docstring: Emit 
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_outw `static inline void hal_outw(unsigned short port, unsigned short val)`
 - Defined: `arch/x86/hal_io.h:121`
 - Doc: /** Docstring: Emit a port byte write. static inline void hal_outb(unsigned short port, unsigned char val) { __asm__ vol
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_inw `static inline unsigned short hal_inw(unsigned short port)`
 - Defined: `arch/x86/hal_io.h:126`
 - Doc: /** Docstring: Emit a port byte read. static inline unsigned char hal_inb(unsigned short port) { unsigned char r; __asm_
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_lapic_eoi `static inline void hal_lapic_eoi(void)`
 - Defined: `arch/x86/hal_io.h:133`
 - Doc: /** Docstring: Emit a port word write. static inline void hal_outw(unsigned short port, unsigned short val) { __asm__ vo
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ### hal_pic_eoi `static inline void hal_pic_eoi(int irq)`
 - Defined: `arch/x86/hal_io.h:138`
 - Doc: /** Docstring: Emit a port word read. static inline unsigned short hal_inw(unsigned short port) { unsigned short r; __as
+- Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ## arch/x86/isr_stubs.S
 
@@ -334,9 +409,11 @@
 ### wrmsr `static inline void wrmsr(unsigned msr, unsigned long val)`
 - Defined: `arch/x86/msr.h:7`
 - Doc: Model-Specific Register access for x86-64. Shared by kernel.c (syscall_init, arch_prctl, k_exec_user), * paging.c (mm_se
+- Imported by: `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `smp.c`
 
 ### rdmsr `static inline unsigned long rdmsr(unsigned msr)`
 - Defined: `arch/x86/msr.h:12`
+- Imported by: `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `smp.c`
 
 ## bootloader.c
 
@@ -424,48 +501,63 @@
 
 ### kbd_q_push `void kbd_q_push(unsigned char c)`
 - Defined: `drivers/kbd.c:48`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_raw_push_internal `static void kbd_raw_push_internal(unsigned char c)`
 - Defined: `drivers/kbd.c:55`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_q_empty `int kbd_q_empty(void)`
 - Defined: `drivers/kbd.c:62`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_q_pop `int kbd_q_pop(void)`
 - Defined: `drivers/kbd.c:64`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_available `int kbd_available(void)`
 - Defined: `drivers/kbd.c:71`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_raw_mode_get `int kbd_raw_mode_get(void)`
 - Defined: `drivers/kbd.c:77`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_raw_mode_set `void kbd_raw_mode_set(int on)`
 - Defined: `drivers/kbd.c:79`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_raw_empty `int kbd_raw_empty(void)`
 - Defined: `drivers/kbd.c:80`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_raw_pop `int kbd_raw_pop(void)`
 - Defined: `drivers/kbd.c:81`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_raw_push_byte `void kbd_raw_push_byte(unsigned char c)`
 - Defined: `drivers/kbd.c:87`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_e0_get `int kbd_e0_get(void)`
 - Defined: `drivers/kbd.c:88`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_e0_set `void kbd_e0_set(int v)`
 - Defined: `drivers/kbd.c:89`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_flush_all `void kbd_flush_all(void)`
 - Defined: `drivers/kbd.c:90`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_read `int kbd_read(void)`
 - Defined: `drivers/kbd.c:94`
+- Depends on: `drivers/kbd.h`
 
 ### kbd_reset_for_shell `void kbd_reset_for_shell(void)`
 - Defined: `drivers/kbd.c:190`
+- Depends on: `drivers/kbd.h`
 
 ## drivers/pcspk.c
 
@@ -944,91 +1036,122 @@ static int zip_sanitize_name(con...`
 ### vga_get_x `int vga_get_x(void)`
 - Defined: `kernel.c:29`
 - Doc: ================================================================ VGA driver * ==========================================
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_get_y `int vga_get_y(void)`
 - Defined: `kernel.c:31`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_set_xy `void vga_set_xy(int x, int y)`
 - Defined: `kernel.c:32`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_get_color `char vga_get_color(void)`
 - Defined: `kernel.c:33`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_offset `static inline unsigned vga_offset(int x, int y)`
 - Defined: `kernel.c:36`
 - Doc: ================================================================ VGA driver * ==========================================
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_clear `void vga_clear(void)`
 - Defined: `kernel.c:38`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_set_cursor `void vga_set_cursor(int x, int y)`
 - Defined: `kernel.c:49`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_scroll `void vga_scroll(void)`
 - Defined: `kernel.c:69`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_newline `void vga_newline(void)`
 - Defined: `kernel.c:88`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_cursor_enable `void vga_cursor_enable(int on)`
 - Defined: `kernel.c:99`
 - Doc: Toggle the hardware text cursor. bit 5 of VGA index 0x0A disables the * cursor; clearing it brings the cursor back.
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_raw_space `static void vga_raw_space(void)`
 - Defined: `kernel.c:105`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### redir_grow `static int redir_grow(void)`
 - Defined: `kernel.c:128`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### redirect_active `int redirect_active(void)`
 - Defined: `kernel.c:138`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### redirect_putc `static int redirect_putc(char c)`
 - Defined: `kernel.c:140`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### redirect_suspend `int redirect_suspend(void)`
 - Defined: `kernel.c:147`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### redirect_resume `void redirect_resume(int was)`
 - Defined: `kernel.c:153`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### redirect_begin `int redirect_begin(void)`
 - Defined: `kernel.c:157`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### redirect_commit `int redirect_commit(const char *path, int append_mode)`
 - Defined: `kernel.c:165`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_putc `void vga_putc(char c)`
 - Defined: `kernel.c:189`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### vga_puts `void vga_puts(const char *s)`
 - Defined: `kernel.c:233`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### syscall_init `void syscall_init(void)`
 - Defined: `kernel.c:317`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### register_libc_symbols `static void register_libc_symbols(void)`
 - Defined: `kernel.c:560`
 - Doc: ================================================================ Libc symbol registration * ============================
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ### __attribute__ `__attribute__((section(".init.text")))
 void kmain(void)`
 - Defined: `kernel.c:635`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `drivers/kbd.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `rtc.h`, `sb16.h`, `sched.h`, `smp.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ## kernel.h
 
 ### outb `static inline void outb(unsigned short port, unsigned char val)`
 - Defined: `kernel.h:20`
 - Doc: The user-window memory layout (load base, stack, brk cap, graphics back-buffers, framebuffer, kernel heap) is defined ON
+- Depends on: `progs/minios_abi.h`, `vma.h`
+- Imported by: `editor.h`, `kernel.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### inb `static inline unsigned char inb(unsigned short port)`
 - Defined: `kernel.h:23`
+- Depends on: `progs/minios_abi.h`, `vma.h`
+- Imported by: `editor.h`, `kernel.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### outw `static inline void outw(unsigned short port, unsigned short val)`
 - Defined: `kernel.h:28`
+- Depends on: `progs/minios_abi.h`, `vma.h`
+- Imported by: `editor.h`, `kernel.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### inw `static inline unsigned short inw(unsigned short port)`
 - Defined: `kernel.h:31`
+- Depends on: `progs/minios_abi.h`, `vma.h`
+- Imported by: `editor.h`, `kernel.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ## kernel/batch.c
 
@@ -1234,30 +1357,38 @@ void kmain(void)`
 
 ### vga_mode_set `void vga_mode_set(int on)`
 - Defined: `kernel/exec.c:59`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### vga_mode_is_active `int  vga_mode_is_active(void)`
 - Defined: `kernel/exec.c:61`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### vga_gfx_ran_set `void vga_gfx_ran_set(int on)`
 - Defined: `kernel/exec.c:62`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### k_user_fault_return `void k_user_fault_return(void)`
 - Defined: `kernel/exec.c:65`
 - Doc: VGA mode tracking: set/cleared by k_exec_user and k_run_rel when a * graphics program owns the display. static int vga_m
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### setup_user_stack `unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
                                ...`
 - Defined: `kernel/exec.c:81`
 - Doc: __asm__ volatile( "mov %[kdata], %%ax\n" "mov %%ax, %%ds\n" "mov %%ax, %%es\n" "mov %%ax, %%fs\n" "mov %%ax, %%gs\n" :: 
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### k_exec_user `int k_exec_user(void *entry, int argc, char **argv)`
 - Defined: `kernel/exec.c:116`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### k_run_rel `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
 - Defined: `kernel/exec.c:209`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### kexit `void kexit(int code)`
 - Defined: `kernel/exec.c:241`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ## kernel/futex.c
 
@@ -1370,25 +1501,32 @@ void kmain(void)`
 ### mm_setup_protections `void mm_setup_protections(void)`
 - Defined: `kernel/mm/paging.c:18`
 - Doc: mm_setup_protections  - boot-time user-window NX + framebuffer/backbuffer mapping mm_user_pte_update    - set/clear NX o
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### mm_user_pte_update `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
-- Defined: `kernel/mm/paging.c:100`
+- Defined: `kernel/mm/paging.c:119`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### mm_user_set_exec `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
-- Defined: `kernel/mm/paging.c:121`
+- Defined: `kernel/mm/paging.c:140`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### pt_page_alloc `void *pt_page_alloc(void)`
-- Defined: `kernel/mm/paging.c:133`
+- Defined: `kernel/mm/paging.c:152`
 - Doc: define PT_ALLOC_HDR  sizeof(void *)
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### pt_page_free `void pt_page_free(void *ptr)`
-- Defined: `kernel/mm/paging.c:143`
+- Defined: `kernel/mm/paging.c:162`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### pt_clone_user `uint64_t pt_clone_user(uint64_t parent_cr3)`
-- Defined: `kernel/mm/paging.c:149`
+- Defined: `kernel/mm/paging.c:168`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ### pt_free_user `void pt_free_user(uint64_t cr3)`
-- Defined: `kernel/mm/paging.c:227`
+- Defined: `kernel/mm/paging.c:266`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
 
 ## kernel/mm/swap.c
 
@@ -1536,152 +1674,195 @@ void kmain(void)`
 ### sched_tick_audio `static void sched_tick_audio(void *ctx)`
 - Defined: `kernel/sched.c:19`
 - Doc: #include "sched.h" #include "smp.h" #include "sync.h" #include "futex.h" #include "percpu_rq.h" #include "rcu.h" #includ
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### sched_tick_desktop `static void sched_tick_desktop(void *ctx)`
 - Defined: `kernel/sched.c:25`
 - Doc: #include "bootdefs.h" #include "vga_fb.h" #include "sb16.h" #include "tick.h" #include "arch/x86/hal_io.h" #include "arc
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### read_cr3 `static inline unsigned long read_cr3(void)`
 - Defined: `kernel/sched.c:49`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### __attribute__ `typedef struct __attribute__((packed))`
 - Defined: `kernel/sched.c:75`
 - Doc: --- TSS (one per CPU) ----  Every CPU that runs ring-3 code needs a private TSS: a timer tick that preempts ring 3 switc
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### __attribute__ `typedef struct __attribute__((packed))`
 - Defined: `kernel/sched.c:96`
 - Doc: Per-CPU idle stacks: a park into the idle context re-enters * smp_ap_idle_loop here (idle_proc ctx.rsp points at the top
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### alloc_kstack `static uint64_t alloc_kstack(void)`
 - Defined: `kernel/sched.c:110`
 - Doc: typedef struct __attribute__((packed)) { uint16_t off_lo; uint16_t sel; uint8_t ist; uint8_t type_attr; uint16_t off_mid
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### free_kstack `static void free_kstack(uint64_t top)`
 - Defined: `kernel/sched.c:121`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### idt_set `static void idt_set(int vec, void (*h)(void))`
 - Defined: `kernel/sched.c:145`
 - Doc: Parked trap frames for preempted ring-3 contexts, one slot per pid. The ISR copies the preempted frame here (never onto 
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### idt_init `static void idt_init(void)`
 - Defined: `kernel/sched.c:155`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### pic_init `static void pic_init(void)`
 - Defined: `kernel/sched.c:168`
 - Doc: } static void idt_init(void) { kmemset(idt, 0, sizeof(idt)); int i; for (i = 0; i < 256; i++) if (isr_stub_table[i]) idt
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### pit_init `static void pit_init(void)`
 - Defined: `kernel/sched.c:203`
 - Doc: Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + IRQ4 (COM1, UART IER stays 0 so it never fires) + IRQ5 
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### pic_eoi `static void pic_eoi(int irq)`
 - Defined: `kernel/sched.c:209`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### tss_write_desc `static void tss_write_desc(int cpu)`
 - Defined: `kernel/sched.c:216`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### tss_init `static void tss_init(void)`
 - Defined: `kernel/sched.c:233`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### tss_init_ap `void tss_init_ap(int cpu)`
 - Defined: `kernel/sched.c:265`
 - Doc: Load this AP's task register.  The BSP wrote every descriptor in tss_init before the APs were woken, so the AP only poin
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### context `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...`
 - Defined: `kernel/sched.c:283`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### point `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...`
 - Defined: `kernel/sched.c:296`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### sched_next_locked `static int sched_next_locked(int start, int vm_only)`
 - Defined: `kernel/sched.c:312`
 - Doc: Round-robin scan with sched_lock HELD.  Returns a claimed (PROC_RUNNING) pid or -1.  vm_only restricts the pick to CLONE
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### smp_try_claim_hint `static int smp_try_claim_hint(int pid, int vm_only)`
 - Defined: `kernel/sched.c:328`
 - Doc: Claim one READY thread for this CPU's idle loop (the AP only claims CLONE_VM threads): marks it RUNNING under lock and i
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### smp_claim_thread_v `static int smp_claim_thread_v(int vm_only)`
 - Defined: `kernel/sched.c:343`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### smp_ap_idle_loop `void smp_ap_idle_loop(void)`
 - Defined: `kernel/sched.c:383`
 - Doc: AP idle loop: hlt until a CLONE_VM thread is ready, run it, repeat. Entered once from smp_ap_entry on the AP stub stack;
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### sched_ap_preempt `static void sched_ap_preempt(trap_frame_t *frame)`
 - Defined: `kernel/sched.c:417`
 - Doc: AP timer preemption: time-slice the AP's current CLONE_VM thread with the next READY one.  An idle AP (cur_pid -1) needs
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### smp_any_ap_idle `static int smp_any_ap_idle(void)`
 - Defined: `kernel/sched.c:443`
 - Doc: True when some AP is idle.  The BSP tick uses this to leave freshly parked CLONE_VM threads unclaimed: the idle AP's nex
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### isr_dispatch `void isr_dispatch(int vector, trap_frame_t *frame)`
 - Defined: `kernel/sched.c:470`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### BSP `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
 - Defined: `kernel/sched.c:710`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### proc_get `proc_t *proc_get(int pid)`
 - Defined: `kernel/sched.c:730`
 - Doc: serial_puts("  [recovering: ring-3 user fault, returning EFAULT]\n"); k_user_fault_return(); __builtin_unreachable(); } 
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### proc_create `int proc_create(const char *name, int parent_pid)`
 - Defined: `kernel/sched.c:736`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### sched_park_as_returned `static void sched_park_as_returned(proc_t *cur)`
 - Defined: `kernel/sched.c:802`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### schedule `void schedule(void)`
 - Defined: `kernel/sched.c:811`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### yield `void yield(void)`
 - Defined: `kernel/sched.c:885`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### do_exit `void do_exit(int code)`
 - Defined: `kernel/sched.c:900`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### do_thread_spawn `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)`
 - Defined: `kernel/sched.c:940`
 - Doc: frame is ambiguous, this one starts cleanly at fn(arg) on the given stack:  child RIP = fn, child RSP = stack, child RDI
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### do_waitpid `int do_waitpid(int pid)`
 - Defined: `kernel/sched.c:1057`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### do_kill `int do_kill(int pid)`
 - Defined: `kernel/sched.c:1091`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### timer_tick `void timer_tick(void)`
 - Defined: `kernel/sched.c:1098`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### mouse_wait_cmd `static void mouse_wait_cmd(void)`
 - Defined: `kernel/sched.c:1102`
 - Doc: schedule(); } } int do_kill(int pid) { proc_t *p = proc_get(pid); if (!p) return -1; do_exit(-1); return 0; } void timer
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### mouse_wait_data `static void mouse_wait_data(void)`
 - Defined: `kernel/sched.c:1108`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### mouse_write `static void mouse_write(unsigned char data)`
 - Defined: `kernel/sched.c:1115`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### mouse_read `static unsigned char mouse_read(void)`
 - Defined: `kernel/sched.c:1122`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### mouse_hw_init `static void mouse_hw_init(void)`
 - Defined: `kernel/sched.c:1127`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### mouse_disable `void mouse_disable(void)`
 - Defined: `kernel/sched.c:1178`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### mouse_enable `void mouse_enable(void)`
 - Defined: `kernel/sched.c:1180`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ### sched_init `void sched_init(void)`
 - Defined: `kernel/sched.c:1181`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
 
 ## kernel/scrollback.c
 
@@ -1918,57 +2099,70 @@ static void shell_hist_na...`
 - Defined: `kernel/shell.c:1283`
 
 ### shell_cmd_wm `static void shell_cmd_wm(int argc, char **argv)`
-- Defined: `kernel/shell.c:1399`
+- Defined: `kernel/shell.c:1436`
 - Doc: `wm <op>` — window-manager operations on the terminal window, exposed as a shell builtin so the tilin-WM behaviour (mini
 
 ### shell_cmd_hash `static void shell_cmd_hash(int argc, char **argv)`
-- Defined: `kernel/shell.c:1420`
+- Defined: `kernel/shell.c:1457`
 - Doc: `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file never
 
 ### shell_exec_builtin `void shell_exec_builtin(int argc, char **argv)`
-- Defined: `kernel/shell.c:1434`
+- Defined: `kernel/shell.c:1471`
 
 ## kernel/string.c
 
 ### kstrlen `unsigned long kstrlen(const char *s)`
 - Defined: `kernel/string.c:16`
 - Doc: string.c -- Kernel string and memory functions.  Pure functions with no dependencies beyond their own prototypes in kern
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrcpy `char *kstrcpy(char *dst, const char *src)`
 - Defined: `kernel/string.c:22`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncpy `char *kstrncpy(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:28`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncat `char *kstrncat(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:34`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrcmp `int kstrcmp(const char *a, const char *b)`
 - Defined: `kernel/string.c:42`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncmp `int kstrncmp(const char *a, const char *b, unsigned long n)`
 - Defined: `kernel/string.c:47`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrchr `char *kstrchr(const char *s, int c)`
 - Defined: `kernel/string.c:52`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrstr `char *kstrstr(const char *hay, const char *ndl)`
 - Defined: `kernel/string.c:57`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemcpy `void *kmemcpy(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:67`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemset `void *kmemset(void *dst, int c, unsigned long n)`
 - Defined: `kernel/string.c:74`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemcmp `int kmemcmp(const void *a, const void *b, unsigned long n)`
 - Defined: `kernel/string.c:80`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemmove `void *kmemmove(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:86`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### katol `long katol(const char *s)`
 - Defined: `kernel/string.c:94`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/topogpt3/topogpt3.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ## kernel/symtab.c
 
@@ -2057,241 +2251,319 @@ static void shell_hist_na...`
 
 ### sys_minios_dns `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:72`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_tls_handshake `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:78`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_tls_send `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:83`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_tls_recv `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:88`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_time `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:93`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_kbd `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:97`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_palette `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
 - Defined: `kernel/syscalls.c:112`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_kbd_raw `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:120`
+- Defined: `kernel/syscalls.c:124`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_vga_mode `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:126`
+- Defined: `kernel/syscalls.c:130`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_pcspk_init `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:133`
+- Defined: `kernel/syscalls.c:137`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_pcspk_tone `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:137`
+- Defined: `kernel/syscalls.c:141`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_doom_frame `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:141`
+- Defined: `kernel/syscalls.c:145`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_rtc `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:145`
+- Defined: `kernel/syscalls.c:149`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_fb_info `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:159`
+- Defined: `kernel/syscalls.c:163`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_pcspk_vol `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:171`
+- Defined: `kernel/syscalls.c:175`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_spawn `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:179`
+- Defined: `kernel/syscalls.c:183`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_lz4_compress `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:190`
+- Defined: `kernel/syscalls.c:194`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_lz4_decompress `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:203`
+- Defined: `kernel/syscalls.c:207`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_mouse `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:217`
+- Defined: `kernel/syscalls.c:221`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_nk_frame `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:226`
+- Defined: `kernel/syscalls.c:230`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_sb16_open `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:236`
+- Defined: `kernel/syscalls.c:240`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_sb16_submit `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:241`
+- Defined: `kernel/syscalls.c:245`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_gfx_title `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:249`
+- Defined: `kernel/syscalls.c:253`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_sb16_pump `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:263`
+- Defined: `kernel/syscalls.c:267`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_sb16_stream_open `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:267`
+- Defined: `kernel/syscalls.c:271`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_sb16_stream_close `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:271`
+- Defined: `kernel/syscalls.c:275`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_sb16_stream_submit `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:275`
+- Defined: `kernel/syscalls.c:279`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_sb16_stream_vol `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:283`
+- Defined: `kernel/syscalls.c:287`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_clone `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:293`
+- Defined: `kernel/syscalls.c:297`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_thread_spawn `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:301`
+- Defined: `kernel/syscalls.c:305`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_futex_wait `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:311`
+- Defined: `kernel/syscalls.c:315`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_futex_wake `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:317`
+- Defined: `kernel/syscalls.c:321`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### batch_kdispatch `static long batch_kdispatch(uint32_t opcode)`
-- Defined: `kernel/syscalls.c:326`
+- Defined: `kernel/syscalls.c:330`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_minios_submit_batch `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:337`
+- Defined: `kernel/syscalls.c:341`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### syscall_trace_enabled `long syscall_trace_enabled(void)`
-- Defined: `kernel/syscalls.c:398`
+- Defined: `kernel/syscalls.c:402`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### syscall_trace_set `void syscall_trace_set(int on)`
-- Defined: `kernel/syscalls.c:400`
+- Defined: `kernel/syscalls.c:404`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_write `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:444`
+- Defined: `kernel/syscalls.c:448`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_writev `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:454`
+- Defined: `kernel/syscalls.c:458`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### do_open_path `static long do_open_path(const char *path, long flags)`
-- Defined: `kernel/syscalls.c:475`
+- Defined: `kernel/syscalls.c:479`
 - Doc: return EFAULT; for (k = 0; k < cnt; k++) { unsigned long j; if (iov[k].iov_len > 0 && !user_range_ok((unsigned long)iov[
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_open `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:490`
+- Defined: `kernel/syscalls.c:494`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_close `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:495`
+- Defined: `kernel/syscalls.c:499`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_lseek `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:504`
+- Defined: `kernel/syscalls.c:508`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_brk `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:514`
+- Defined: `kernel/syscalls.c:518`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_mmap `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:528`
+- Defined: `kernel/syscalls.c:532`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_munmap `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:569`
+- Defined: `kernel/syscalls.c:573`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_mprotect `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:587`
+- Defined: `kernel/syscalls.c:591`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_sigaction `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:592`
+- Defined: `kernel/syscalls.c:596`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_sigprocmask `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:597`
+- Defined: `kernel/syscalls.c:601`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_ioctl `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:602`
+- Defined: `kernel/syscalls.c:606`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_access `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:607`
+- Defined: `kernel/syscalls.c:611`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_yield `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:629`
+- Defined: `kernel/syscalls.c:633`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_getpid `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:634`
+- Defined: `kernel/syscalls.c:638`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_socket `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:639`
+- Defined: `kernel/syscalls.c:643`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_connect `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:644`
+- Defined: `kernel/syscalls.c:648`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_sendto `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:650`
+- Defined: `kernel/syscalls.c:654`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_recvfrom `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:655`
+- Defined: `kernel/syscalls.c:659`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_shutdown `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:660`
+- Defined: `kernel/syscalls.c:664`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_poll `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:665`
+- Defined: `kernel/syscalls.c:669`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_fork `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:672`
+- Defined: `kernel/syscalls.c:676`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_vfork `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:677`
+- Defined: `kernel/syscalls.c:681`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_execve `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:682`
+- Defined: `kernel/syscalls.c:686`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_exit `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:704`
+- Defined: `kernel/syscalls.c:708`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_wait4 `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:709`
+- Defined: `kernel/syscalls.c:713`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_kill `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:714`
+- Defined: `kernel/syscalls.c:718`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_flock `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:719`
+- Defined: `kernel/syscalls.c:723`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_getcwd `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:724`
+- Defined: `kernel/syscalls.c:728`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_unlink `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:736`
+- Defined: `kernel/syscalls.c:740`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_readlink `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:749`
+- Defined: `kernel/syscalls.c:753`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_fstat `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:754`
+- Defined: `kernel/syscalls.c:758`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_gettimeofday `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:774`
+- Defined: `kernel/syscalls.c:778`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_arch_prctl `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:789`
+- Defined: `kernel/syscalls.c:793`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### sys_linux_gettid `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:801`
+- Defined: `kernel/syscalls.c:805`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### trace_is_noisy `static int trace_is_noisy(long n)`
-- Defined: `kernel/syscalls.c:849`
+- Defined: `kernel/syscalls.c:853`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### ksyscall `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:853`
+- Defined: `kernel/syscalls.c:857`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### user_range_ok `int user_range_ok(unsigned long p, unsigned long len)`
-- Defined: `kernel/syscalls.c:872`
+- Defined: `kernel/syscalls.c:876`
 - Doc: --- User-pointer validation --------------------------------------------- The syscall boundary is the hardened edge betw
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### user_str_ok `int user_str_ok(unsigned long p, unsigned long maxlen)`
-- Defined: `kernel/syscalls.c:878`
+- Defined: `kernel/syscalls.c:882`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### ksyscall_dispatch `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:886`
+- Defined: `kernel/syscalls.c:890`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ### tools `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
-- Defined: `kernel/syscalls.c:1022`
+- Defined: `kernel/syscalls.c:1026`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
 
 ## kernel/tick.c
 
@@ -2331,269 +2603,389 @@ static void shell_hist_na...`
 
 ### ktime_rdtsc `static unsigned long ktime_rdtsc(void)`
 - Defined: `kernel/time.c:11`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `test_http_server.py`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `test_http_server.py`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
 
 ### ktime_init `static void ktime_init(void)`
 - Defined: `kernel/time.c:17`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `test_http_server.py`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `test_http_server.py`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
 
 ### ktime_ms `unsigned long ktime_ms(void)`
 - Defined: `kernel/time.c:31`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `test_http_server.py`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `test_http_server.py`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
 
 ## kernel/vga_fb.c
 
 ### vga_fb_boot_config `void vga_fb_boot_config(void)`
-- Defined: `kernel/vga_fb.c:25`
+- Defined: `kernel/vga_fb.c:26`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### fb_bytes_per_pixel `int fb_bytes_per_pixel(void)`
+- Defined: `kernel/vga_fb.c:53`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### lg_get `static const char *lg_get(int i)`
-- Defined: `kernel/vga_fb.c:84`
+- Defined: `kernel/vga_fb.c:105`
 - Doc: as new content is added, and remain reachable in the ring.  There is deliberately no "scroll the screen up" operation. A
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### lg_push `static void lg_push(const char *line, int len)`
-- Defined: `kernel/vga_fb.c:90`
+- Defined: `kernel/vga_fb.c:111`
 - Doc: Append a completed logical line to the ring. The line is stored whole (no * width-dependent wrap), so it can be re-wrapp
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### line_nrows `static int line_nrows(int len)`
-- Defined: `kernel/vga_fb.c:102`
+- Defined: `kernel/vga_fb.c:123`
 - Doc: Append a completed logical line to the ring. The line is stored whole (no * width-dependent wrap), so it can be re-wrapp
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### act_nrows `static int act_nrows(void)`
-- Defined: `kernel/vga_fb.c:108`
+- Defined: `kernel/vga_fb.c:129`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### total_rows `static int total_rows(void)`
-- Defined: `kernel/vga_fb.c:112`
+- Defined: `kernel/vga_fb.c:133`
 - Doc: else lg_head = (lg_head + 1) % SB_MAX_LINES; } /* Display rows a logical line of `len` characters occupies at term_cols.
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### disp_clamp `static void disp_clamp(void)`
-- Defined: `kernel/vga_fb.c:120`
+- Defined: `kernel/vga_fb.c:141`
 - Doc: return n; } static int act_nrows(void) { return line_nrows(act_len); } /* Total display rows of the whole history (compl
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### line_at `static const char *line_at(int abs, int *off)`
-- Defined: `kernel/vga_fb.c:138`
+- Defined: `kernel/vga_fb.c:159`
 - Doc: Locate the logical line contributing the display row `abs`, and set *off to the character offset where that display row 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### cursor_save_bg `static void cursor_save_bg(int mx, int my)`
-- Defined: `kernel/vga_fb.c:179`
+- Defined: `kernel/vga_fb.c:201`
 - Doc: The cursor is drawn with its arrow tip at (mx, my), so the sprite spans up-left of the pointer by CURSOR_TIP offsets. Th
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### cursor_draw `static void cursor_draw(int mx, int my)`
-- Defined: `kernel/vga_fb.c:187`
+- Defined: `kernel/vga_fb.c:209`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### cursor_restore `static void cursor_restore(int mx, int my)`
-- Defined: `kernel/vga_fb.c:198`
+- Defined: `kernel/vga_fb.c:220`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### cursor_over `static int cursor_over(int x0, int y0, int w, int h)`
-- Defined: `kernel/vga_fb.c:212`
+- Defined: `kernel/vga_fb.c:234`
 - Doc: True when the cursor sprite overlaps the given screen rectangle. Used to decide whether a partial repaint (taskbar, term
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_set_gfx_mode `void vga_fb_set_gfx_mode(int on)`
-- Defined: `kernel/vga_fb.c:236`
+- Defined: `kernel/vga_fb.c:258`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_gfx_cursor_erase `static void vga_fb_gfx_cursor_erase(void)`
-- Defined: `kernel/vga_fb.c:249`
+- Defined: `kernel/vga_fb.c:271`
 - Doc: Restore the last composite's pointer before the new frame covers it. Only meaningful in graphics mode; the desktop path 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_gfx_cursor_draw `static void vga_fb_gfx_cursor_draw(void)`
-- Defined: `kernel/vga_fb.c:257`
+- Defined: `kernel/vga_fb.c:279`
 - Doc: Clamp the mouse into the framebuffer (the idle loop that normally clamps * never runs in graphics mode) and draw the poi
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### vga_fb_set_gfx_palette `void vga_fb_set_gfx_palette(const unsigned char *pal)`
+- Defined: `kernel/vga_fb.c:487`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### fb_pack_idx `static unsigned long fb_pack_idx(unsigned idx)`
+- Defined: `kernel/vga_fb.c:503`
+- Doc: --- True-color pixel layer ---- VBE true-color framebuffers store pixels natively as B,G,R(,X) bytes, so the DAC is bypa
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### fb_pack_gfx `static unsigned long fb_pack_gfx(unsigned idx)`
+- Defined: `kernel/vga_fb.c:518`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### fb_write_packed `static void fb_write_packed(int x, int y, unsigned long rgb)`
+- Defined: `kernel/vga_fb.c:524`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### fb_read_packed `static unsigned long fb_read_packed(int x, int y)`
+- Defined: `kernel/vga_fb.c:544`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### vga_fb_read_rgb `unsigned long vga_fb_read_rgb(int x, int y)`
+- Defined: `kernel/vga_fb.c:568`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wall_level `static int wall_level(int v)`
-- Defined: `kernel/vga_fb.c:438`
-- Doc: Wallpaper colour cube: 6 levels per channel (websafe) at DAC 16-231. The desktop UI owns 0-14 and the icons 240-255; the
+- Defined: `kernel/vga_fb.c:572`
+- Doc: 8-bit: return the raw palette index, not its resolved RGB. The cursor save/restore round-trips through fb_write_packed, 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_set_palette `static void vga_fb_set_palette(void)`
-- Defined: `kernel/vga_fb.c:446`
+- Defined: `kernel/vga_fb.c:580`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_pixel `void vga_fb_pixel(int x, int y, uint8_t color)`
-- Defined: `kernel/vga_fb.c:497`
+- Defined: `kernel/vga_fb.c:615`
 - Doc: { int r, g, b; outb(0x3C8, WALL_PAL_BASE); for (r = 0; r < 6; r++) for (g = 0; g < 6; g++) for (b = 0; b < 6; b++) { out
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_rect `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
-- Defined: `kernel/vga_fb.c:501`
+- Defined: `kernel/vga_fb.c:623`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_char `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:508`
+- Defined: `kernel/vga_fb.c:630`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_str `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:523`
+- Defined: `kernel/vga_fb.c:645`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### text_px `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:535`
+- Defined: `kernel/vga_fb.c:657`
 - Doc: Blit a text string at an absolute pixel position. Used for window chrome (title bar, taskbar) which lives outside the co
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_draw_buttons `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:562`
+- Defined: `kernel/vga_fb.c:684`
 - Doc: --- Window controls ---- Three glyph buttons at the right end of a window's title bar: minimize (_), maximize (square) a
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_buttons_hit `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
-- Defined: `kernel/vga_fb.c:588`
+- Defined: `kernel/vga_fb.c:710`
 - Doc: } for (i = 1; i < WM_BTN_H - 1; i++) { vga_fb_pixel(bx + 1, by + i, fg); vga_fb_pixel(bx + WM_BTN_W - 2, by + i, fg); } 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_close_pending `int wm_close_pending(void)`
-- Defined: `kernel/vga_fb.c:603`
+- Defined: `kernel/vga_fb.c:725`
 - Doc: Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the child's o
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_clear_close `void wm_clear_close(void)`
-- Defined: `kernel/vga_fb.c:604`
+- Defined: `kernel/vga_fb.c:726`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_gfx_mode_active `int wm_gfx_mode_active(void)`
-- Defined: `kernel/vga_fb.c:605`
+- Defined: `kernel/vga_fb.c:727`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wm_button_click `static int wm_button_click(int mx, int my)`
-- Defined: `kernel/vga_fb.c:610`
+- Defined: `kernel/vga_fb.c:732`
 - Doc: Hit-test and dispatch a click on a titled window's controls. The active window is the graphics window when one is compos
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_blit_gfx_window `void vga_fb_blit_gfx_window(void)`
-- Defined: `kernel/vga_fb.c:653`
+- Defined: `kernel/vga_fb.c:775`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_clear `void vga_fb_clear(void)`
-- Defined: `kernel/vga_fb.c:678`
+- Defined: `kernel/vga_fb.c:811`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_blit_nk_window `void vga_fb_blit_nk_window(void)`
-- Defined: `kernel/vga_fb.c:694`
+- Defined: `kernel/vga_fb.c:827`
 - Doc: Composite the Nuklear UI back-buffer onto the desktop as a titled window, mirroring the DOOM window: the back-buffer is 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_recalc `static void term_recalc(void)`
-- Defined: `kernel/vga_fb.c:725`
+- Defined: `kernel/vga_fb.c:867`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### draw_title `static void draw_title(void)`
-- Defined: `kernel/vga_fb.c:752`
+- Defined: `kernel/vga_fb.c:894`
 - Doc: Preserve the current window position, clamping it into range so a * drag or Ctrl+arrow move is not undone by the next la
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### taskbar_layout `static void taskbar_layout(void)`
-- Defined: `kernel/vga_fb.c:769`
+- Defined: `kernel/vga_fb.c:911`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### draw_speaker_icon `static void draw_speaker_icon(int x, int y, uint8_t color)`
-- Defined: `kernel/vga_fb.c:787`
+- Defined: `kernel/vga_fb.c:929`
 - Doc: x -= TASKBAR_PAD; x -= TASKBAR_VOL_CH * FONT_W;   tb_vol_x = x; x -= TASKBAR_PAD; x -= TASKBAR_BTN_W;             tb_plu
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### taskbar_render `static void taskbar_render(void)`
-- Defined: `kernel/vga_fb.c:795`
+- Defined: `kernel/vga_fb.c:937`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### taskbar_tick `static void taskbar_tick(void)`
-- Defined: `kernel/vga_fb.c:822`
+- Defined: `kernel/vga_fb.c:964`
 - Doc: Redraw the clock only when the wall-clock second changes. Only the taskbar strip is repainted, so the cursor must be re-
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### taskbar_handle_click `static void taskbar_handle_click(int mx, int my)`
-- Defined: `kernel/vga_fb.c:836`
+- Defined: `kernel/vga_fb.c:978`
 - Doc: Click handling for the speaker icon and -/+ buttons, plus the restore * button that reappears while the terminal window 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### draw_scrollbar `static void draw_scrollbar(void)`
-- Defined: `kernel/vga_fb.c:870`
+- Defined: `kernel/vga_fb.c:1012`
 - Doc: return; } if (mx >= tb_minus_x && mx < tb_minus_x + TASKBAR_BTN_W) { v = pcspk_get_volume(); pcspk_set_volume(v > TASKBA
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### render_blank_row `static void render_blank_row(int vrow)`
-- Defined: `kernel/vga_fb.c:905`
+- Defined: `kernel/vga_fb.c:1047`
 - Doc: Blank one viewport row: every cell is repainted with the terminal background. vga_fb_str with an empty string would draw
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### render_row `static void render_row(int vrow, int abs)`
-- Defined: `kernel/vga_fb.c:915`
+- Defined: `kernel/vga_fb.c:1057`
 - Doc: Render one display row at viewport row `vrow` for the absolute display row `abs`. Rows outside the history (above the ol
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_render `static void term_render(void)`
-- Defined: `kernel/vga_fb.c:943`
+- Defined: `kernel/vga_fb.c:1085`
 - Doc: Full repaint of the terminal window from the logical history, honouring the current scroll position. Used on desktop red
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_render_active `static void term_render_active(void)`
-- Defined: `kernel/vga_fb.c:956`
+- Defined: `kernel/vga_fb.c:1098`
 - Doc: Repaint only the bottom region that a live edit touches: from the active line's first visible display row to the bottom 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### line `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...`
-- Defined: `kernel/vga_fb.c:997`
+- Defined: `kernel/vga_fb.c:1139`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_puts_term `void vga_fb_puts_term(const char *s)`
-- Defined: `kernel/vga_fb.c:1045`
+- Defined: `kernel/vga_fb.c:1187`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_text_cursor `void vga_fb_text_cursor(int col)`
-- Defined: `kernel/vga_fb.c:1052`
+- Defined: `kernel/vga_fb.c:1194`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_hide_text_cursor `void vga_fb_hide_text_cursor(void)`
-- Defined: `kernel/vga_fb.c:1060`
+- Defined: `kernel/vga_fb.c:1202`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_draw_desktop `void vga_fb_draw_desktop(void)`
-- Defined: `kernel/vga_fb.c:1063`
+- Defined: `kernel/vga_fb.c:1205`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_toggle_fullscreen `void vga_fb_toggle_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:1089`
+- Defined: `kernel/vga_fb.c:1234`
 - Doc: Any redraw changed the pixels under the cursor; force a fresh save so a * stale snapshot never leaves pointer trails beh
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_toggle_minimize `void vga_fb_toggle_minimize(void)`
-- Defined: `kernel/vga_fb.c:1099`
+- Defined: `kernel/vga_fb.c:1244`
 - Doc: Minimize/restore the terminal window. The content is not touched; the window is merely hidden and repainted on restore. 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_is_minimized `int vga_fb_is_minimized(void)`
-- Defined: `kernel/vga_fb.c:1105`
+- Defined: `kernel/vga_fb.c:1250`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_is_fullscreen `int vga_fb_is_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:1107`
+- Defined: `kernel/vga_fb.c:1252`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_move_terminal `void vga_fb_move_terminal(int dx, int dy)`
-- Defined: `kernel/vga_fb.c:1128`
+- Defined: `kernel/vga_fb.c:1273`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_max_cols `static int term_max_cols(void)`
-- Defined: `kernel/vga_fb.c:1157`
+- Defined: `kernel/vga_fb.c:1302`
 - Doc: --- Tiling window operations (Alt = WM modifier) ---- Snap places the window in a screen half or quadrant and sizes it t
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_max_rows `static int term_max_rows(void)`
-- Defined: `kernel/vga_fb.c:1161`
+- Defined: `kernel/vga_fb.c:1306`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### term_finish_layout `static void term_finish_layout(void)`
-- Defined: `kernel/vga_fb.c:1165`
+- Defined: `kernel/vga_fb.c:1310`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_snap_window `void vga_fb_snap_window(int zone)`
-- Defined: `kernel/vga_fb.c:1171`
+- Defined: `kernel/vga_fb.c:1316`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_resize `void vga_fb_resize(int dcols, int drows)`
-- Defined: `kernel/vga_fb.c:1193`
+- Defined: `kernel/vga_fb.c:1338`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_reset_default `void vga_fb_reset_default(void)`
-- Defined: `kernel/vga_fb.c:1211`
+- Defined: `kernel/vga_fb.c:1356`
 - Doc: int ncol = term_sz_cols + dcols; int nrow = term_sz_rows + drows; if (ncol < 1) ncol = 1; if (nrow < 1) nrow = 1; if (nc
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wallpaper_ensure `static void wallpaper_ensure(void)`
-- Defined: `kernel/vga_fb.c:1249`
+- Defined: `kernel/vga_fb.c:1394`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### wallpaper_draw `static void wallpaper_draw(void)`
-- Defined: `kernel/vga_fb.c:1284`
+- Defined: `kernel/vga_fb.c:1429`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### pipe_field `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
-- Defined: `kernel/vga_fb.c:1309`
+- Defined: `kernel/vga_fb.c:1463`
 - Doc: --- Desktop shortcut icons ---- Shortcuts are defined in etc/shortcuts on the ramdisk, one per line: name|icon_path|comm
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### icon_nearest `static int icon_nearest(int r, int g, int b)`
-- Defined: `kernel/vga_fb.c:1327`
+- Defined: `kernel/vga_fb.c:1481`
 - Doc: Nearest entry in the 16-colour icon palette (squared RGB distance, * integer-only: at most 3*255*255 per entry, far from
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### icon_embedded `static const uint8_t *icon_embedded(const char *name)`
-- Defined: `kernel/vga_fb.c:1343`
+- Defined: `kernel/vga_fb.c:1497`
 - Doc: for (i = 0; i < ICON_PAL_SIZE; i++) { int dr = r - icon_pal[i][0]; int dg = g - icon_pal[i][1]; int db = b - icon_pal[i]
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### icon_decode `static const uint8_t *icon_decode(const char *path)`
-- Defined: `kernel/vga_fb.c:1361`
-- Doc: Decode a shortcut's PNG and map it to 32x32 icon-palette indices. Returns a heap buffer that lives until reboot, or 0 on
+- Defined: `kernel/vga_fb.c:1517`
+- Doc: Decode a shortcut's PNG to raw 32x32 RGBA pixels. Returns a heap buffer that lives until reboot, or 0 on any failure (mi
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### icon_embedded_rgba `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)`
+- Defined: `kernel/vga_fb.c:1551`
+- Doc: Expand an embedded index icon (desktop_icons.h, transparent 0) to RGBA through the icon palette, so fallback art follows
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### dock_label_px `static int dock_label_px(const struct desktop_shortcut *sc)`
+- Defined: `kernel/vga_fb.c:1579`
+- Doc: Width of the longest shortcut label in pixels (cached after load). Labels are centred under their icon and a dock column
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### shortcuts_layout `static void shortcuts_layout(void)`
+- Defined: `kernel/vga_fb.c:1588`
+- Doc: Dock layout: one centred row just above the taskbar. Every shortcut owns a column `dock_cell_w` wide (enough for its lab
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+
+### shortcut_cell_left `static int shortcut_cell_left(int i)`
+- Defined: `kernel/vga_fb.c:1606`
+- Doc: dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y; x0 = (fb_width - dock_w) / 2; if (x0 < 0) x0 = 0; y0 =
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### desktop_shortcuts_load `void desktop_shortcuts_load(void)`
-- Defined: `kernel/vga_fb.c:1394`
+- Defined: `kernel/vga_fb.c:1612`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### desktop_shortcuts_draw `void desktop_shortcuts_draw(void)`
-- Defined: `kernel/vga_fb.c:1446`
+- Defined: `kernel/vga_fb.c:1665`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### desktop_shortcuts_hit_test `const char *desktop_shortcuts_hit_test(int mx, int my)`
-- Defined: `kernel/vga_fb.c:1468`
+- Defined: `kernel/vga_fb.c:1719`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_mouse_tick `void vga_fb_mouse_tick(void)`
-- Defined: `kernel/vga_fb.c:1481`
-- Doc: } const char *desktop_shortcuts_hit_test(int mx, int my) { for (int i = 0; i < shortcut_count; i++) { struct desktop_sho
+- Defined: `kernel/vga_fb.c:1734`
+- Doc: const char *desktop_shortcuts_hit_test(int mx, int my) { shortcuts_layout(); for (int i = 0; i < shortcut_count; i++) { 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_mouse_init `void vga_fb_mouse_init(void)`
-- Defined: `kernel/vga_fb.c:1604`
+- Defined: `kernel/vga_fb.c:1857`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ### vga_fb_init `void vga_fb_init(void)`
-- Defined: `kernel/vga_fb.c:1619`
+- Defined: `kernel/vga_fb.c:1872`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
 
 ## mcp/mcp_dbg_driver.py
 
@@ -3344,710 +3736,899 @@ static void shell_hist_na...`
 ### net_put16 `static void net_put16(unsigned char *p, unsigned short v)`
 - Defined: `net/net.c:29`
 - Doc: ================================================================ Byte helpers * ========================================
+- Depends on: `net/rtl8139.h`
 
 ### net_put32 `static void net_put32(unsigned char *p, unsigned int v)`
 - Defined: `net/net.c:34`
+- Depends on: `net/rtl8139.h`
 
 ### net_get16 `static unsigned short net_get16(const unsigned char *p)`
 - Defined: `net/net.c:41`
+- Depends on: `net/rtl8139.h`
 
 ### net_get32 `static unsigned int net_get32(const unsigned char *p)`
 - Defined: `net/net.c:45`
+- Depends on: `net/rtl8139.h`
 
 ### net_checksum `static unsigned short net_checksum(const void *data, unsigned len)`
 - Defined: `net/net.c:50`
+- Depends on: `net/rtl8139.h`
 
 ### net_arp_store `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)`
 - Defined: `net/net.c:75`
+- Depends on: `net/rtl8139.h`
 
 ### net_arp_lookup `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)`
 - Defined: `net/net.c:90`
+- Depends on: `net/rtl8139.h`
 
 ### net_arp_request `static void net_arp_request(const unsigned char *ip)`
 - Defined: `net/net.c:101`
+- Depends on: `net/rtl8139.h`
 
 ### net_arp_resolve `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)`
 - Defined: `net/net.c:120`
 - Doc: kmemcpy(frame + 6, net_mac, NET_ETH_ALEN); net_put16(frame + 12, NET_ETHERTYPE_ARP); net_put16(frame + 14, 1);          
+- Depends on: `net/rtl8139.h`
 
 ### net_ip_send `static int net_ip_send(const unsigned char *dip, unsigned char proto,
                        cons...`
 - Defined: `net/net.c:145`
 - Doc: ================================================================ IPv4 / ICMP / UDP / DNS * =============================
+- Depends on: `net/rtl8139.h`
 
 ### net_udp_send `static int net_udp_send(const unsigned char *dip, unsigned short sport,
                         u...`
 - Defined: `net/net.c:180`
+- Depends on: `net/rtl8139.h`
 
 ### net_dns_parse `static void net_dns_parse(const unsigned char *data, unsigned len)`
 - Defined: `net/net.c:203`
 - Doc: net_put16(pkt + 6, 0);                    /* checksum optional for UDP kmemcpy(pkt + 8, data, len); return net_ip_send(d
+- Depends on: `net/rtl8139.h`
 
 ### net_dns_resolve `static int net_dns_resolve(const char *host, unsigned char ip_out[4])`
 - Defined: `net/net.c:239`
 - Doc: rtype = net_get16(data + pos); rdlen = net_get16(data + pos + 8); pos += 10; if (pos + rdlen > len) return; if (rtype ==
+- Depends on: `net/rtl8139.h`
 
 ### net_udp_send `net_udp_send((const unsigned char[])`
 - Defined: `net/net.c:295`
+- Depends on: `net/rtl8139.h`
 
 ### net_icmp_rx `static void net_icmp_rx(const unsigned char *ip, unsigned len)`
 - Defined: `net/net.c:309`
+- Depends on: `net/rtl8139.h`
 
 ### net_ping `static int net_ping(const unsigned char ip[4])`
 - Defined: `net/net.c:332`
+- Depends on: `net/rtl8139.h`
 
 ### net_sock_alloc `static struct net_tcp_sock *net_sock_alloc(void)`
 - Defined: `net/net.c:384`
+- Depends on: `net/rtl8139.h`
 
 ### net_sock_index `static int net_sock_index(const struct net_tcp_sock *s)`
 - Defined: `net/net.c:397`
+- Depends on: `net/rtl8139.h`
 
 ### net_tcp_checksum `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
       ...`
 - Defined: `net/net.c:406`
 - Doc: return &net_sockets[i]; } } return 0; } static int net_sock_index(const struct net_tcp_sock *s) { int i; for (i = 0; i <
+- Depends on: `net/rtl8139.h`
 
 ### net_udp_checksum_ok `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
               ...`
 - Defined: `net/net.c:422`
 - Doc: const unsigned char *seg, unsigned len) { unsigned char buf[NET_TX_MAX + 12]; unsigned total = 12 + len; kmemcpy(buf, sr
+- Depends on: `net/rtl8139.h`
 
 ### net_tcp_xmit `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
                         const uns...`
 - Defined: `net/net.c:437`
+- Depends on: `net/rtl8139.h`
 
 ### net_tcp_rx `static void net_tcp_rx(const unsigned char *ip, unsigned len)`
 - Defined: `net/net.c:469`
 - Doc: seg[21] = 0x04;                       /* len 4 net_put16(seg + 22, NET_TCP_MSS); } else { seg[12] = 0x50; } kmemcpy(seg 
+- Depends on: `net/rtl8139.h`
 
 ### net_tcp_connect_into `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
               ...`
 - Defined: `net/net.c:555`
 - Doc: } if (flags & 0x10) {                   /* ACK: peer acks our data if (s->tx_pending && (int)(ack - (s->tx_seq + s->tx_l
+- Depends on: `net/rtl8139.h`
 
 ### net_tcp_send `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)`
 - Defined: `net/net.c:582`
 - Doc: unsigned long retry = net_time_ms() + NET_RETRY_MS; while (net_time_ms() < retry && s->state == NET_TCP_SYN_SENT) rtl_po
+- Depends on: `net/rtl8139.h`
 
 ### net_tcp_recv `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)`
 - Defined: `net/net.c:608`
 - Doc: net_time_ms() < deadline) { unsigned long retry = net_time_ms() + NET_RETRY_MS; while (net_time_ms() < retry && s->tx_pe
+- Depends on: `net/rtl8139.h`
 
 ### net_tcp_close `static void net_tcp_close(struct net_tcp_sock *s)`
 - Defined: `net/net.c:645`
+- Depends on: `net/rtl8139.h`
 
 ### net_rx_handle_frame `void net_rx_handle_frame(const unsigned char *frame, unsigned len)`
 - Defined: `net/net.c:665`
 - Doc: ================================================================ Receive path: NIC -> ethernet -> ARP/IP -> demux * ====
+- Depends on: `net/rtl8139.h`
 
 ### net_open `int net_open(void)`
 - Defined: `net/net.c:723`
 - Doc: ================================================================ Public libc-style API * ===============================
+- Depends on: `net/rtl8139.h`
 
 ### net_connect `int net_connect(const char *host, unsigned short port)`
 - Defined: `net/net.c:729`
+- Depends on: `net/rtl8139.h`
 
 ### net_send `int net_send(int fd, const char *buf, int len)`
 - Defined: `net/net.c:738`
+- Depends on: `net/rtl8139.h`
 
 ### net_recv `int net_recv(int fd, char *buf, int len)`
 - Defined: `net/net.c:743`
+- Depends on: `net/rtl8139.h`
 
 ### net_recv_timeout `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)`
 - Defined: `net/net.c:748`
+- Depends on: `net/rtl8139.h`
 
 ### net_close `void net_close(int fd)`
 - Defined: `net/net.c:753`
+- Depends on: `net/rtl8139.h`
 
 ### net_sys_socket `long net_sys_socket(long a1, long a2, long a3)`
 - Defined: `net/net.c:762`
 - Doc: ================================================================ Linux syscall ABI * ===================================
+- Depends on: `net/rtl8139.h`
 
 ### net_sys_connect `long net_sys_connect(long fd, long sockaddr, long addrlen)`
 - Defined: `net/net.c:771`
+- Depends on: `net/rtl8139.h`
 
 ### net_sys_sendto `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)`
 - Defined: `net/net.c:784`
+- Depends on: `net/rtl8139.h`
 
 ### net_sys_recvfrom `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)`
 - Defined: `net/net.c:794`
+- Depends on: `net/rtl8139.h`
 
 ### net_sys_shutdown `long net_sys_shutdown(long fd, long how)`
 - Defined: `net/net.c:804`
+- Depends on: `net/rtl8139.h`
 
 ### net_sys_close `long net_sys_close(long fd)`
 - Defined: `net/net.c:811`
+- Depends on: `net/rtl8139.h`
 
 ### net_sys_poll `long net_sys_poll(long fds, long nfds, long timeout_ms)`
 - Defined: `net/net.c:818`
+- Depends on: `net/rtl8139.h`
 
 ### net_sys_dns `long net_sys_dns(long host)`
 - Defined: `net/net.c:849`
 - Doc: MiniOS syscall 200: resolve a hostname, returned as a network-order * 32-bit address (like inet_addr), or -1 on failure.
+- Depends on: `net/rtl8139.h`
 
 ### net_parse_ip `static int net_parse_ip(const char *text, unsigned char ip[4])`
 - Defined: `net/net.c:859`
 - Doc: ================================================================ Shell commands * ======================================
+- Depends on: `net/rtl8139.h`
 
 ### net_cmd_status `void net_cmd_status(void)`
 - Defined: `net/net.c:884`
+- Depends on: `net/rtl8139.h`
 
 ### net_cmd_ping `void net_cmd_ping(const char *ip_text)`
 - Defined: `net/net.c:900`
+- Depends on: `net/rtl8139.h`
 
 ### net_cmd_dns `void net_cmd_dns(const char *host)`
 - Defined: `net/net.c:911`
+- Depends on: `net/rtl8139.h`
 
 ### net_register_symbols `void net_register_symbols(void)`
 - Defined: `net/net.c:924`
 - Doc: ================================================================ Init and symbol registration * ========================
+- Depends on: `net/rtl8139.h`
 
 ### net_init `void net_init(void)`
 - Defined: `net/net.c:932`
+- Depends on: `net/rtl8139.h`
 
 ## net/rtl8139.c
 
 ### outb_port `static void outb_port(unsigned short port, unsigned char val)`
 - Defined: `net/rtl8139.c:23`
+- Depends on: `net/rtl8139.h`
 
 ### inb_port `static unsigned char inb_port(unsigned short port)`
 - Defined: `net/rtl8139.c:27`
+- Depends on: `net/rtl8139.h`
 
 ### outw_port `static void outw_port(unsigned short port, unsigned short val)`
 - Defined: `net/rtl8139.c:33`
+- Depends on: `net/rtl8139.h`
 
 ### outl_port `static void outl_port(unsigned short port, unsigned int val)`
 - Defined: `net/rtl8139.c:37`
+- Depends on: `net/rtl8139.h`
 
 ### inw_port `static unsigned short inw_port(unsigned short port)`
 - Defined: `net/rtl8139.c:41`
+- Depends on: `net/rtl8139.h`
 
 ### inl_port `static unsigned int inl_port(unsigned short port)`
 - Defined: `net/rtl8139.c:47`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_reg8 `static unsigned char rtl_reg8(unsigned short off)`
 - Defined: `net/rtl8139.c:53`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_reg8_w `static void rtl_reg8_w(unsigned short off, unsigned char v)`
 - Defined: `net/rtl8139.c:55`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_reg16 `static unsigned short rtl_reg16(unsigned short off)`
 - Defined: `net/rtl8139.c:56`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_reg16_w `static void rtl_reg16_w(unsigned short off, unsigned short v)`
 - Defined: `net/rtl8139.c:57`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_reg32 `static unsigned int rtl_reg32(unsigned short off)`
 - Defined: `net/rtl8139.c:58`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_reg32_w `static void rtl_reg32_w(unsigned short off, unsigned int v)`
 - Defined: `net/rtl8139.c:59`
+- Depends on: `net/rtl8139.h`
 
 ### pci_read32 `static unsigned int pci_read32(unsigned bus, unsigned dev, unsigned func, unsigned reg)`
 - Defined: `net/rtl8139.c:69`
 - Doc: define RTL_REG_CR      0x37 define RTL_REG_TSD0    0x10 define RTL_REG_TSAD0   0x20 define RTL_REG_RBSTART 0x30 define R
+- Depends on: `net/rtl8139.h`
 
 ### pci_write32 `static void pci_write32(unsigned bus, unsigned dev, unsigned func, unsigned reg, unsigned int val)`
 - Defined: `net/rtl8139.c:74`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_find `static unsigned short rtl_find(void)`
 - Defined: `net/rtl8139.c:79`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_rdtsc `static unsigned long rtl_rdtsc(void)`
 - Defined: `net/rtl8139.c:101`
+- Depends on: `net/rtl8139.h`
 
 ### net_time_init `static void net_time_init(void)`
 - Defined: `net/rtl8139.c:107`
+- Depends on: `net/rtl8139.h`
 
 ### net_time_ms `unsigned long net_time_ms(void)`
 - Defined: `net/rtl8139.c:121`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_present `int rtl_present(void)`
 - Defined: `net/rtl8139.c:137`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_reset `static void rtl_reset(void)`
 - Defined: `net/rtl8139.c:141`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_init `void rtl_init(void)`
 - Defined: `net/rtl8139.c:150`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_send `int rtl_send(const unsigned char *frame, unsigned len)`
 - Defined: `net/rtl8139.c:181`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_get_mac `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
 - Defined: `net/rtl8139.c:209`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_iobase `unsigned short rtl_iobase(void)`
 - Defined: `net/rtl8139.c:214`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_counters `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
 - Defined: `net/rtl8139.c:218`
+- Depends on: `net/rtl8139.h`
 
 ### rtl_rx_frame_wrapped `static void rtl_rx_frame_wrapped(unsigned length)`
 - Defined: `net/rtl8139.c:226`
 - Doc: Copy one received frame out of the ring into the scratch buffer, * wrapping at the ring end, then hand it to the protoco
+- Depends on: `net/rtl8139.h`
 
 ### rtl_poll `void rtl_poll(void)`
 - Defined: `net/rtl8139.c:236`
+- Depends on: `net/rtl8139.h`
 
 ## net/tls.c
 
 ### tls_fail `static void tls_fail(struct tls_session *s, const char *stage, const char *reason)`
 - Defined: `net/tls.c:24`
 - Doc: Diagnostics are `freedom: tls: <stage>: <reason>` lines (freedom is the only consumer of the TLS syscalls).  #include "t
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_fd_of `static int tls_fd_of(const struct tls_session *s)`
 - Defined: `net/tls.c:32`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_free_fd `void tls_free_fd(int fd)`
 - Defined: `net/tls.c:39`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_aad `static void tls_aad(unsigned char aad[13], int type, unsigned long long seq,
                     ...`
 - Defined: `net/tls.c:52`
 - Doc: Build the TLS 1.2 AEAD additional data: seq(8) || type || 0303 || * TLSCompressed.length (the plaintext length, RFC 5288
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_send_record `static int tls_send_record(struct tls_session *s, int type,
                            const unsi...`
 - Defined: `net/tls.c:66`
 - Doc: Send one record: header || nonce_explicit(8) || ciphertext || tag. The nonce_explicit is the sequence number (RFC 5288 a
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_send_raw_record `static int tls_send_raw_record(struct tls_session *s, int type,
                                co...`
 - Defined: `net/tls.c:95`
 - Doc: for (i = 0; i < 8; i++) buf[5 + i] = (unsigned char)(s->cli_seq >> (56 - i * 8)); TLS_MEMCPY(nonce, s->cli_salt, 4); TLS
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_read_record `static int tls_read_record(struct tls_session *s, int fd, int deadline_ms)`
 - Defined: `net/tls.c:114`
 - Doc: Read one record: header into s->rec_hdr, payload into s->rec. Returns: 1 = record ready, 0 = clean TCP EOF, -1 = torn re
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### exchange `* key exchange (ClientHello, ClientKeyExchange) go out in plaintext
  * records, as TLS 1.2 requir...`
 - Defined: `net/tls.c:173`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### build_client_hello `static int build_client_hello(struct tls_session *s, unsigned char *out)`
 - Defined: `net/tls.c:190`
 - Doc: const unsigned char *body, int len) { if (len < 0 || len > 1024) return -1; s->pt[0] = (unsigned char)type; s->pt[1] = (
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### client_finish_flight `static int client_finish_flight(struct tls_session *s)`
 - Defined: `net/tls.c:244`
 - Doc: out[pos++] = 0x00; out[pos++] = 0x06; out[pos++] = 0x04; out[pos++] = 0x01;   /* rsa_pkcs1_sha256 out[pos++] = 0x04; out
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### parse_server_hello `static int parse_server_hello(struct tls_session *s,
                               const unsigned...`
 - Defined: `net/tls.c:339`
 - Doc: sha256_final(&hcopy, hash); } tls_prf(s->master, 48, "client finished", hash, 32, verify, 12); TLS_MEMCPY(finished + 4, 
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### parse_certificate `static int parse_certificate(struct tls_session *s,
                              const unsigned c...`
 - Defined: `net/tls.c:369`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### parse_server_key_exchange `static int parse_server_key_exchange(struct tls_session *s,
                                      ...`
 - Defined: `net/tls.c:400`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_handshake `int tls_handshake(int fd, const char *host)`
 - Defined: `net/tls.c:465`
 - Doc: sha256(data, 64 + params_len, digest); return ecdsa_verify(0, s->leaf_pk.qx, s->leaf_pk.qy, digest, 32, m + pos, sig_len
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_send `int tls_send(int fd, const char *buf, int len)`
 - Defined: `net/tls.c:686`
 - Doc: pre-Finished is refused tls_fail(s, "handshake", "unexpected message"); tls_sessions[fd] = 0; return -1; } } s->hs_msg_l
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_recv `int tls_recv(int fd, char *buf, int len)`
 - Defined: `net/tls.c:695`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_sys_handshake `long tls_sys_handshake(long fd, long host)`
 - Defined: `net/tls.c:772`
 - Doc: ifndef TLS_TEST
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_sys_send `long tls_sys_send(long fd, long buf, long len)`
 - Defined: `net/tls.c:776`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_sys_recv `long tls_sys_recv(long fd, long buf, long len)`
 - Defined: `net/tls.c:781`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_rdtsc `static inline unsigned long long tls_rdtsc(void)`
 - Defined: `net/tls.c:788`
 - Doc: return tls_handshake((int)(fd - NET_FD_BASE), (const char *)host); } long tls_sys_send(long fd, long buf, long len) { if
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_random `void tls_random(unsigned char *out, unsigned len)`
 - Defined: `net/tls.c:794`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### outb `static inline void outb(unsigned short port, unsigned char v)`
 - Defined: `net/tls.c:810`
 - Doc: unsigned long long seed = tls_rdtsc() ^ ((unsigned long long)net_time_ms() << 33); unsigned i; static unsigned long long
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### inb `static inline unsigned char inb(unsigned short port)`
 - Defined: `net/tls.c:813`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### cmos_read `static inline unsigned char cmos_read(unsigned char reg)`
 - Defined: `net/tls.c:821`
 - Doc: /* The port helpers in net.c are static; these live here for the RTC. #ifndef PORT_IO_DEFINED #define PORT_IO_DEFINED st
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ### tls_now_days `long tls_now_days(void)`
 - Defined: `net/tls.c:825`
+- Depends on: `tls_port.h`, `tls_roots.h`
 
 ## net/tls_crypto.c
 
 ### sha256_rotr `static unsigned sha256_rotr(unsigned x, unsigned n)`
 - Defined: `net/tls_crypto.c:32`
+- Depends on: `tls_port.h`
 
 ### sha256_init `void sha256_init(struct sha256_ctx *c)`
 - Defined: `net/tls_crypto.c:36`
+- Depends on: `tls_port.h`
 
 ### sha256_block `static void sha256_block(struct sha256_ctx *c, const unsigned char *p)`
 - Defined: `net/tls_crypto.c:49`
+- Depends on: `tls_port.h`
 
 ### sha256_update `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len)`
 - Defined: `net/tls_crypto.c:79`
+- Depends on: `tls_port.h`
 
 ### sha256_final `void sha256_final(struct sha256_ctx *c, unsigned char out[32])`
 - Defined: `net/tls_crypto.c:104`
+- Depends on: `tls_port.h`
 
 ### sha256 `void sha256(const unsigned char *data, unsigned len, unsigned char out[32])`
 - Defined: `net/tls_crypto.c:125`
+- Depends on: `tls_port.h`
 
 ### hmac_sha256 `void hmac_sha256(const unsigned char *key, unsigned klen,
                  const unsigned char *d...`
 - Defined: `net/tls_crypto.c:134`
 - Doc: out[i * 4 + 1] = (unsigned char)(c->state[i] >> 16); out[i * 4 + 2] = (unsigned char)(c->state[i] >> 8); out[i * 4 + 3] 
+- Depends on: `tls_port.h`
 
 ### p_hash `static void p_hash(const unsigned char *secret, unsigned secret_len,
                    const uns...`
 - Defined: `net/tls_crypto.c:164`
 - Doc: opad[i] = k[i] ^ 0x5c; } sha256_init(&c); sha256_update(&c, ipad, 64); sha256_update(&c, data, dlen); sha256_final(&c, i
+- Depends on: `tls_port.h`
 
 ### tls_prf `void tls_prf(const unsigned char *secret, unsigned secret_len,
              const char *label, co...`
 - Defined: `net/tls_crypto.c:187`
+- Depends on: `tls_port.h`
 
 ### aes_xtime `static unsigned aes_xtime(unsigned x)`
 - Defined: `net/tls_crypto.c:229`
+- Depends on: `tls_port.h`
 
 ### aes_key_expand `static void aes_key_expand(const unsigned char key[16], unsigned rk[44])`
 - Defined: `net/tls_crypto.c:234`
+- Depends on: `tls_port.h`
 
 ### aes_mixcol `static void aes_mixcol(unsigned a0, unsigned a1, unsigned a2, unsigned a3,
                       ...`
 - Defined: `net/tls_crypto.c:252`
+- Depends on: `tls_port.h`
 
 ### aes128_encrypt_block `void aes128_encrypt_block(const unsigned char key[16],
                           const unsigned c...`
 - Defined: `net/tls_crypto.c:262`
+- Depends on: `tls_port.h`
 
 ### gf_shift_right `static gf128 gf_shift_right(gf128 v)`
 - Defined: `net/tls_crypto.c:320`
+- Depends on: `tls_port.h`
 
 ### gf_mul `static gf128 gf_mul(gf128 z, gf128 h)`
 - Defined: `net/tls_crypto.c:334`
 - Doc: z = z * h, in GF(2^128), MSB-first. Branches on z bits (public: * AAD/ciphertext), never on h bits (secret).
+- Depends on: `tls_port.h`
 
 ### gf_put `static gf128 gf_put(const unsigned char *p)`
 - Defined: `net/tls_crypto.c:350`
+- Depends on: `tls_port.h`
 
 ### ghash_blocks `static gf128 ghash_blocks(gf128 z, gf128 h, const unsigned char *data, unsigned len)`
 - Defined: `net/tls_crypto.c:360`
+- Depends on: `tls_port.h`
 
 ### gcm_tag_core `static void gcm_tag_core(const unsigned char key[16],
                          const unsigned cha...`
 - Defined: `net/tls_crypto.c:384`
 - Doc: if (len > 0) { unsigned char pad[16]; gf128 b; TLS_MEMSET(pad, 0, 16); TLS_MEMCPY(pad, data, len); b = gf_put(pad); z.lo
+- Depends on: `tls_port.h`
 
 ### gcm_ctr_core `static void gcm_ctr_core(const unsigned char key[16],
                          const unsigned cha...`
 - Defined: `net/tls_crypto.c:426`
+- Depends on: `tls_port.h`
 
 ### tls_nonce `static void tls_nonce(const unsigned char salt[4], unsigned long long seq,
                       ...`
 - Defined: `net/tls_crypto.c:450`
 - Doc: TLS_MEMCPY(blk, nonce, 12); blk[12] = (unsigned char)(ctr >> 24); blk[13] = (unsigned char)(ctr >> 16); blk[14] = (unsig
+- Depends on: `tls_port.h`
 
 ### gcm_tag `static void gcm_tag(const unsigned char key[16], const unsigned char salt[4],
                    ...`
 - Defined: `net/tls_crypto.c:456`
+- Depends on: `tls_port.h`
 
 ### gcm_ctr `static void gcm_ctr(const unsigned char key[16], const unsigned char salt[4],
                    ...`
 - Defined: `net/tls_crypto.c:466`
+- Depends on: `tls_port.h`
 
 ### aes128_gcm_seal `int aes128_gcm_seal(const unsigned char key[16],
                     const unsigned char salt[4],...`
 - Defined: `net/tls_crypto.c:474`
+- Depends on: `tls_port.h`
 
 ### aes128_gcm_open `int aes128_gcm_open(const unsigned char key[16],
                     const unsigned char salt[4],...`
 - Defined: `net/tls_crypto.c:486`
+- Depends on: `tls_port.h`
 
 ### aes128_gcm_seal_core `int aes128_gcm_seal_core(const unsigned char key[16],
                          const unsigned cha...`
 - Defined: `net/tls_crypto.c:504`
+- Depends on: `tls_port.h`
 
 ### aes128_gcm_open_core `int aes128_gcm_open_core(const unsigned char key[16],
                          const unsigned cha...`
 - Defined: `net/tls_crypto.c:515`
+- Depends on: `tls_port.h`
 
 ### bn_zero `static void bn_zero(unsigned *a, int nw)`
 - Defined: `net/tls_crypto.c:536`
 - Doc: unsigned char want[16]; unsigned char diff = 0; int i; if (ct_len > TLS_REC_MAX) return -1; gcm_tag_core(key, nonce, aad
+- Depends on: `tls_port.h`
 
 ### bn_is_zero `static int bn_is_zero(const unsigned *a, int nw)`
 - Defined: `net/tls_crypto.c:541`
+- Depends on: `tls_port.h`
 
 ### bn_cmp `static int bn_cmp(const unsigned *a, const unsigned *b, int nw)`
 - Defined: `net/tls_crypto.c:548`
+- Depends on: `tls_port.h`
 
 ### bn_add `static unsigned bn_add(const unsigned *a, const unsigned *b, unsigned *r, int nw)`
 - Defined: `net/tls_crypto.c:559`
 - Doc: for (i = 0; i < nw; i++) v |= a[i]; return v == 0; } static int bn_cmp(const unsigned *a, const unsigned *b, int nw) { i
+- Depends on: `tls_port.h`
 
 ### bn_sub `static unsigned bn_sub(const unsigned *a, const unsigned *b, unsigned *r, int nw)`
 - Defined: `net/tls_crypto.c:571`
 - Doc: /* r = a + b; returns carry out. static unsigned bn_add(const unsigned *a, const unsigned *b, unsigned *r, int nw) { uns
+- Depends on: `tls_port.h`
 
 ### bn_dbl_mod `static void bn_dbl_mod(const unsigned *a, const unsigned *n, const unsigned *v,
                  ...`
 - Defined: `net/tls_crypto.c:584`
 - Doc: r = 2a mod n, for a < n. v = 2^(32nw) mod n = 2^(32nw) - n (the * Montgomery "one"): 2a + carry means 2a - 2^(32nw) + v 
+- Depends on: `tls_port.h`
 
 ### bn_mont_mul `static void bn_mont_mul(const unsigned *a, const unsigned *b, const unsigned *n,
                 ...`
 - Defined: `net/tls_crypto.c:596`
 - Doc: Montgomery multiplication. n is odd, n0inv = -n^(-1) mod 2^32. r = a*b*R^-1 mod n, R = 2^(32nw). * a, b < n.
+- Depends on: `tls_port.h`
 
 ### bn_mont_n0inv `static unsigned bn_mont_n0inv(unsigned n0)`
 - Defined: `net/tls_crypto.c:635`
 - Doc: carry = v >> 32; } s = (unsigned long long)t[nw] + carry; t[nw - 1] = (unsigned)s; t[nw] = t[nw + 1] + (unsigned)(s >> 3
+- Depends on: `tls_port.h`
 
 ### bn_mont_r2 `static void bn_mont_r2(const unsigned *n, const unsigned *v, int nw,
                        unsig...`
 - Defined: `net/tls_crypto.c:643`
 - Doc: } else { for (i = 0; i < nw; i++) r[i] = t[i]; } } /* -n^(-1) mod 2^32 via Newton iteration (n0 must be odd). static uns
+- Depends on: `tls_port.h`
 
 ### bn_from_be `static void bn_from_be(const unsigned char *bytes, unsigned len,
                        unsigned ...`
 - Defined: `net/tls_crypto.c:662`
+- Depends on: `tls_port.h`
 
 ### bn_to_be `static void bn_to_be(const unsigned *a, unsigned char *out, unsigned len)`
 - Defined: `net/tls_crypto.c:670`
+- Depends on: `tls_port.h`
 
 ### mont_init `static void mont_init(struct mont_ctx *m, const unsigned char *p_bytes,
                       uns...`
 - Defined: `net/tls_crypto.c:676`
+- Depends on: `tls_port.h`
 
 ### mont_to `static void mont_to(struct mont_ctx *m, const unsigned *a, unsigned *r)`
 - Defined: `net/tls_crypto.c:688`
+- Depends on: `tls_port.h`
 
 ### mont_from `static void mont_from(struct mont_ctx *m, const unsigned *a, unsigned *r)`
 - Defined: `net/tls_crypto.c:692`
+- Depends on: `tls_port.h`
 
 ### mont_mul `static void mont_mul(struct mont_ctx *m, const unsigned *a, const unsigned *b,
                   ...`
 - Defined: `net/tls_crypto.c:699`
+- Depends on: `tls_port.h`
 
 ### mont_sqr `static void mont_sqr(struct mont_ctx *m, const unsigned *a, unsigned *r)`
 - Defined: `net/tls_crypto.c:704`
+- Depends on: `tls_port.h`
 
 ### mont_add `static void mont_add(struct mont_ctx *m, const unsigned *a, const unsigned *b,
                   ...`
 - Defined: `net/tls_crypto.c:712`
 - Doc: Field add/sub over the mont modulus (in Montgomery domain). The carry of a+b is corrected with one = 2^(32nw) - n, and a
+- Depends on: `tls_port.h`
 
 ### mont_sub `static void mont_sub(struct mont_ctx *m, const unsigned *a, const unsigned *b,
                   ...`
 - Defined: `net/tls_crypto.c:720`
+- Depends on: `tls_port.h`
 
 ### mont_inv `static void mont_inv(struct mont_ctx *m, const unsigned *a, unsigned *r)`
 - Defined: `net/tls_crypto.c:736`
 - Doc: Field inverse via Fermat: a^(p-2) mod p (a in Montgomery domain; * the result stays in Montgomery domain).
+- Depends on: `tls_port.h`
 
 ### ec_init `static void ec_init(struct ec_curve *c, const unsigned char *p,
                     const unsigne...`
 - Defined: `net/tls_crypto.c:847`
+- Depends on: `tls_port.h`
 
 ### jpt_is_inf `static int jpt_is_inf(const struct jpt *p, int nw)`
 - Defined: `net/tls_crypto.c:864`
+- Depends on: `tls_port.h`
 
 ### jpt_set_inf `static void jpt_set_inf(struct jpt *p, int nw)`
 - Defined: `net/tls_crypto.c:868`
+- Depends on: `tls_port.h`
 
 ### jpt_copy `static void jpt_copy(struct jpt *d, const struct jpt *s, int nw)`
 - Defined: `net/tls_crypto.c:874`
+- Depends on: `tls_port.h`
 
 ### jpt_cswap `static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned mask, int nw)`
 - Defined: `net/tls_crypto.c:885`
 - Doc: bn_zero(p->y, nw); bn_zero(p->z, nw); } static void jpt_copy(struct jpt *d, const struct jpt *s, int nw) { int i; for (i
+- Depends on: `tls_port.h`
 
 ### jpt_dbl `static void jpt_dbl(struct ec_curve *c, const struct jpt *p1, struct jpt *p3)`
 - Defined: `net/tls_crypto.c:896`
 - Doc: } /* Constant-time swap of two points on a 0/~0 mask. static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned mask,
+- Depends on: `tls_port.h`
 
 ### jpt_add `static void jpt_add(struct ec_curve *c, const struct jpt *p1, const struct jpt *p2,
              ...`
 - Defined: `net/tls_crypto.c:936`
 - Doc: mont_sqr(m, E, F); mont_add(m, D, D, t);          /* 2D mont_sub(m, F, t, p3->x);      /* X3 = F - 2D mont_sub(m, D, p3-
+- Depends on: `tls_port.h`
 
 ### jpt_scalar_mult `static void jpt_scalar_mult(struct ec_curve *c, const struct jpt *base,
                          ...`
 - Defined: `net/tls_crypto.c:980`
 - Doc: Constant-iteration scalar multiplication: the classic ladder. * Fixed iteration count, no table lookups indexed by secre
+- Depends on: `tls_port.h`
 
 ### jpt_to_affine `static void jpt_to_affine(struct ec_curve *c, const struct jpt *p,
                           unsi...`
 - Defined: `net/tls_crypto.c:1007`
 - Doc: Affine from Jacobian: x = X/Z^2, y = Y/Z^3. Bytes out are big-endian. * y_out may be NULL when only the x coordinate is 
+- Depends on: `tls_port.h`
 
 ### jpt_from_affine `static int jpt_from_affine(struct ec_curve *c, const unsigned char *x_bytes,
                     ...`
 - Defined: `net/tls_crypto.c:1032`
 - Doc: Affine from bytes with on-curve validation. Returns 0 when the point * is valid and not the point at infinity.
+- Depends on: `tls_port.h`
 
 ### ec_curve_by_id `static struct ec_curve *ec_curve_by_id(int curve)`
 - Defined: `net/tls_crypto.c:1075`
+- Depends on: `tls_port.h`
 
 ### ec_boot `static void ec_boot(void)`
 - Defined: `net/tls_crypto.c:1079`
+- Depends on: `tls_port.h`
 
 ### p256_scalar_mult `int p256_scalar_mult(const unsigned char scalar[32],
                      const unsigned char qx[...`
 - Defined: `net/tls_crypto.c:1087`
+- Depends on: `tls_port.h`
 
 ### p384_scalar_mult `int p384_scalar_mult(const unsigned char scalar[48],
                      const unsigned char qx[...`
 - Defined: `net/tls_crypto.c:1100`
+- Depends on: `tls_port.h`
 
 ### p256_ecdh `int p256_ecdh(const unsigned char priv[32],
               const unsigned char peer_x[32], const u...`
 - Defined: `net/tls_crypto.c:1113`
+- Depends on: `tls_port.h`
 
 ### der_parse_sig `static int der_parse_sig(const unsigned char *sig, unsigned sig_len,
                          con...`
 - Defined: `net/tls_crypto.c:1128`
 - Doc: int p256_ecdh(const unsigned char priv[32], const unsigned char peer_x[32], const unsigned char peer_y[32], unsigned cha
+- Depends on: `tls_port.h`
 
 ### ecdsa_verify `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[],
            ...`
 - Defined: `net/tls_crypto.c:1162`
+- Depends on: `tls_port.h`
 
 ### rsa_verify_digestinfo `static int rsa_verify_digestinfo(const unsigned char *em, unsigned em_len,
                       ...`
 - Defined: `net/tls_crypto.c:1261`
 - Doc: EMSA-PKCS1-v1_5 DigestInfo check for an arbitrary hash: the encoding is 00 01 FF.. 00 <prefix><digest>. Constant-time: e
+- Depends on: `tls_port.h`
 
 ### rsa_pkcs1_verify_raw `static int rsa_pkcs1_verify_raw(const unsigned char *n, unsigned n_len,
                          ...`
 - Defined: `net/tls_crypto.c:1285`
 - Doc: diff |= em[i] ^ 0xff; } if (i >= em_len) return -1;         /* no separator if (i < 10) return -1;              /* paddi
+- Depends on: `tls_port.h`
 
 ### rsa_pkcs1_verify_sha256 `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len,
                             c...`
 - Defined: `net/tls_crypto.c:1325`
+- Depends on: `tls_port.h`
 
 ### rsa_pkcs1_verify_sha384 `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len,
                             c...`
 - Defined: `net/tls_crypto.c:1339`
+- Depends on: `tls_port.h`
 
 ### sha384_rotr `static unsigned long long sha384_rotr(unsigned long long x, unsigned n)`
 - Defined: `net/tls_crypto.c:1385`
+- Depends on: `tls_port.h`
 
 ### sha384_raw `static void sha384_raw(const unsigned char *data, unsigned len,
                        unsigned c...`
 - Defined: `net/tls_crypto.c:1389`
+- Depends on: `tls_port.h`
 
 ### sha384 `void sha384(const unsigned char *data, unsigned len, unsigned char out[48])`
 - Defined: `net/tls_crypto.c:1505`
+- Depends on: `tls_port.h`
 
 ### p256_point_valid `int p256_point_valid(const unsigned char x[32], const unsigned char y[32])`
 - Defined: `net/tls_crypto.c:1511`
 - Doc: out[i * 8 + 2] = (unsigned char)(state[i] >> 40); out[i * 8 + 3] = (unsigned char)(state[i] >> 32); out[i * 8 + 4] = (un
+- Depends on: `tls_port.h`
 
 ### p256_pub `int p256_pub(const unsigned char priv[32],
              unsigned char x[32], unsigned char y[32])`
 - Defined: `net/tls_crypto.c:1519`
+- Depends on: `tls_port.h`
 
 ### p256_scalar_valid `int p256_scalar_valid(const unsigned char scalar[32])`
 - Defined: `net/tls_crypto.c:1538`
+- Depends on: `tls_port.h`
 
 ## net/tls_x509.c
 
 ### oid_eq `static int oid_eq(const unsigned char *bytes, unsigned len,
                   const unsigned char...`
 - Defined: `net/tls_x509.c:35`
+- Depends on: `tls_port.h`
 
 ### der_next `static int der_next(const unsigned char *p, unsigned limit, unsigned *pos,
                     st...`
 - Defined: `net/tls_x509.c:51`
 - Doc: Parse the TLV at p[pos]; advances pos to the first byte after it. * Returns 0 on success, -1 on any bound violation.
+- Depends on: `tls_port.h`
 
 ### der_container `static int der_container(const unsigned char *p, unsigned limit, unsigned *pos,
                  ...`
 - Defined: `net/tls_x509.c:82`
 - Doc: len = (len << 8) | p[(*pos)++]; } } else { len = p[(*pos)++]; } if (len > limit - *pos) return -1; out->val = p + *pos; 
+- Depends on: `tls_port.h`
 
 ### days_from_civil `static long days_from_civil(int y, int m, int d)`
 - Defined: `net/tls_x509.c:93`
 - Doc: } /* A constructed SEQUENCE/SET whose content must parse as children. static int der_container(const unsigned char *p, u
+- Depends on: `tls_port.h`
 
 ### der_time_to_days `static long der_time_to_days(const struct der_tlv *t)`
 - Defined: `net/tls_x509.c:106`
 - Doc: /* ---- Time ---- static long days_from_civil(int y, int m, int d) { long era, doe, yoe; int doy; y -= m <= 2 ? 1 : 0; e
+- Depends on: `tls_port.h`
 
 ### name_find_cn `static int name_find_cn(const unsigned char *p, unsigned limit,
                         struct x5...`
 - Defined: `net/tls_x509.c:135`
 - Doc: } if (mon < 1 || mon > 12 || day < 1 || day > 31 || year < 1970 || year > 2100) return -1; return days_from_civil(year, 
+- Depends on: `tls_port.h`
 
 ### san_add `static void san_add(struct x509_sans *out, const unsigned char *v, unsigned len)`
 - Defined: `net/tls_x509.c:177`
+- Depends on: `tls_port.h`
 
 ### san_parse `static void san_parse(const unsigned char *p, unsigned limit,
                       struct x509_s...`
 - Defined: `net/tls_x509.c:186`
 - Doc: struct x509_sans { unsigned char dns[TLS_SAN_MAX][64]; unsigned      len[TLS_SAN_MAX]; int           count; }; static vo
+- Depends on: `tls_port.h`
 
 ### spki_parse `static int spki_parse(const unsigned char *p, unsigned limit,
                       struct tls_pu...`
 - Defined: `net/tls_x509.c:203`
 - Doc: unsigned seq_len, pos = 0; out->count = 0; if (der_container(p, limit, &pos, &seq, &seq_len) != 0) return; pos = 0; whil
+- Depends on: `tls_port.h`
 
 ### cert_parse `static int cert_parse(const unsigned char *der, unsigned len,
                       struct x509_c...`
 - Defined: `net/tls_x509.c:278`
+- Depends on: `tls_port.h`
 
 ### ascii_lower `static int ascii_lower(int c)`
 - Defined: `net/tls_x509.c:391`
 - Doc: unsigned bpos = e2pos; if (der_next(ext, ext_len, &bpos, &body) != 0) break; if (oid_eq(eoid, eoid_len, oid_san, sizeof(
+- Depends on: `tls_port.h`
 
 ### host_match_exact `static int host_match_exact(const char *host, const unsigned char *name,
                         ...`
 - Defined: `net/tls_x509.c:397`
 - Doc: } } } } return 0; } /* ---- Hostname matching ---- static int ascii_lower(int c) { return (c >= 'A' && c <= 'Z') ? c + (
+- Depends on: `tls_port.h`
 
 ### host_match_wildcard `static int host_match_wildcard(const char *host, const unsigned char *name,
                      ...`
 - Defined: `net/tls_x509.c:410`
 - Doc: Wildcard: "*.example.com" matches exactly one label ("a.example.com", * never "a.b.example.com" nor "example.com").
+- Depends on: `tls_port.h`
 
 ### host_matches `static int host_matches(const char *host, const struct x509_cert *leaf)`
 - Defined: `net/tls_x509.c:430`
+- Depends on: `tls_port.h`
 
 ### tls_x509_parse_pubkey `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len,
                           struc...`
 - Defined: `net/tls_x509.c:451`
 - Doc: return 1; } return 0;   /* SAN present and nothing matched: fail closed } if (leaf->subject.cn_len) { return host_match_
+- Depends on: `tls_port.h`
 
 ### pubkey_equal `static int pubkey_equal(const struct tls_pubkey *a, const struct tls_pubkey *b)`
 - Defined: `net/tls_x509.c:468`
 - Doc: Trust anchors are matched by public key, not by self-signature: a presented root is often a cross-signed copy (signed by
+- Depends on: `tls_port.h`
 
 ### cert_verify_signature `static int cert_verify_signature(const struct x509_cert *cert,
                                  c...`
 - Defined: `net/tls_x509.c:479`
 - Doc: signature-verified: an attacker cannot present a top cert carrying an embedded root's public key unless the chain below 
+- Depends on: `tls_port.h`
 
 ### tls_x509_verify_chain `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,
                        ...`
 - Defined: `net/tls_x509.c:520`
+- Depends on: `tls_port.h`
 
 ## progs/asm/aes.s
 
@@ -4674,80 +5255,102 @@ AM_getIslope
   islope_t*	is )`
 - Defined: `progs/doomgeneric/am_map.c:273`
 - Doc: Calculates the slope and slope according to the x-axis of a line segment in map coordinates (with the upright y-axis n' 
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_activateNewScale `void AM_activateNewScale(void)`
 - Defined: `progs/doomgeneric/am_map.c:293`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_saveScaleAndLoc `void AM_saveScaleAndLoc(void)`
 - Defined: `progs/doomgeneric/am_map.c:308`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_restoreScaleAndLoc `void AM_restoreScaleAndLoc(void)`
 - Defined: `progs/doomgeneric/am_map.c:319`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_addMark `void AM_addMark(void)`
 - Defined: `progs/doomgeneric/am_map.c:343`
 - Doc: adds a marker at the current location
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_findMinMaxBoundaries `void AM_findMinMaxBoundaries(void)`
 - Defined: `progs/doomgeneric/am_map.c:355`
 - Doc: Determines bounding box of all vertices, sets global variables controlling zoom range.
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_changeWindowLoc `void AM_changeWindowLoc(void)`
 - Defined: `progs/doomgeneric/am_map.c:395`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_initVariables `void AM_initVariables(void)`
 - Defined: `progs/doomgeneric/am_map.c:424`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_loadPics `void AM_loadPics(void)`
 - Defined: `progs/doomgeneric/am_map.c:480`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_unloadPics `void AM_unloadPics(void)`
 - Defined: `progs/doomgeneric/am_map.c:492`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_clearMarks `void AM_clearMarks(void)`
 - Defined: `progs/doomgeneric/am_map.c:504`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_LevelInit `void AM_LevelInit(void)`
 - Defined: `progs/doomgeneric/am_map.c:518`
 - Doc: should be called at the start of every level right now, i figure it out myself
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_Stop `void AM_Stop (void)`
 - Defined: `progs/doomgeneric/am_map.c:541`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_Start `void AM_Start (void)`
 - Defined: `progs/doomgeneric/am_map.c:554`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_minOutWindowScale `void AM_minOutWindowScale(void)`
 - Defined: `progs/doomgeneric/am_map.c:573`
 - Doc: set the window scale to the maximum size
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_maxOutWindowScale `void AM_maxOutWindowScale(void)`
 - Defined: `progs/doomgeneric/am_map.c:583`
 - Doc: set the window scale to the minimum size
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_Responder `boolean
 AM_Responder
 ( event_t*	ev )`
 - Defined: `progs/doomgeneric/am_map.c:594`
 - Doc: Handle events (user inputs) in automap mode
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_changeWindowScale `void AM_changeWindowScale(void)`
 - Defined: `progs/doomgeneric/am_map.c:742`
 - Doc: Zooming
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_doFollowPlayer `void AM_doFollowPlayer(void)`
 - Defined: `progs/doomgeneric/am_map.c:761`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_updateLightLev `void AM_updateLightLev(void)`
 - Defined: `progs/doomgeneric/am_map.c:785`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_Ticker `void AM_Ticker (void)`
 - Defined: `progs/doomgeneric/am_map.c:806`
 - Doc: Updates on Game Tick
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_clearFB `void AM_clearFB(int color)`
 - Defined: `progs/doomgeneric/am_map.c:834`
 - Doc: Clear automap frame buffer.
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_clipMline `boolean
 AM_clipMline
@@ -4755,6 +5358,7 @@ AM_clipMline
   fline_t*	fl )`
 - Defined: `progs/doomgeneric/am_map.c:847`
 - Doc: Automap clipping of lines.  Based on Cohen-Sutherland clipping algorithm but with a slightly faster reject and precalcul
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_drawFline `void
 AM_drawFline
@@ -4762,6 +5366,7 @@ AM_drawFline
   int		color )`
 - Defined: `progs/doomgeneric/am_map.c:983`
 - Doc: Classic Bresenham w/ whatever optimizations needed for speed
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_drawMline `void
 AM_drawMline
@@ -4769,14 +5374,17 @@ AM_drawMline
   int		color )`
 - Defined: `progs/doomgeneric/am_map.c:1061`
 - Doc: Clip lines, draw visible part sof lines.
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_drawGrid `void AM_drawGrid(int color)`
 - Defined: `progs/doomgeneric/am_map.c:1077`
 - Doc: Draws flat (floor/ceiling tile) aligned grid lines.
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_drawWalls `void AM_drawWalls(void)`
 - Defined: `progs/doomgeneric/am_map.c:1123`
 - Doc: Determines visible lines, draws them. This is LineDef based, not LineSeg based.
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_rotate `void
 AM_rotate
@@ -4785,6 +5393,7 @@ AM_rotate
   angle_t	a )`
 - Defined: `progs/doomgeneric/am_map.c:1178`
 - Doc: Rotation in 2D. Used to rotate player arrow line character.
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_drawLineCharacter `void
 AM_drawLineCharacter
@@ -4793,565 +5402,720 @@ AM_drawLineCharacter
   fixed_t	scale,
   angle_t	ang...`
 - Defined: `progs/doomgeneric/am_map.c:1196`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_drawPlayers `void AM_drawPlayers(void)`
 - Defined: `progs/doomgeneric/am_map.c:1245`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_drawThings `void
 AM_drawThings
 ( int	colors,
   int 	colorrange)`
 - Defined: `progs/doomgeneric/am_map.c:1289`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_drawMarks `void AM_drawMarks(void)`
 - Defined: `progs/doomgeneric/am_map.c:1310`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_drawCrosshair `void AM_drawCrosshair(int color)`
 - Defined: `progs/doomgeneric/am_map.c:1331`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AM_Drawer `void AM_Drawer (void)`
 - Defined: `progs/doomgeneric/am_map.c:1337`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/d_event.c
 
 ### D_PostEvent `void D_PostEvent (event_t* ev)`
 - Defined: `progs/doomgeneric/d_event.c:35`
 - Doc: D_PostEvent Called by the I/O functions when input is detected
+- Depends on: `progs/doomgeneric/d_event.h`
 
 ### D_PopEvent `event_t *D_PopEvent(void)`
 - Defined: `progs/doomgeneric/d_event.c:42`
 - Doc: Read an event from the queue.
+- Depends on: `progs/doomgeneric/d_event.h`
 
 ## progs/doomgeneric/d_iwad.c
 
 ### AddIWADDir `static void AddIWADDir(char *dir)`
 - Defined: `progs/doomgeneric/d_iwad.c:63`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### GetRegistryString `static char *GetRegistryString(registry_value_t *reg_val)`
 - Defined: `progs/doomgeneric/d_iwad.c:191`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### CheckUninstallStrings `static void CheckUninstallStrings(void)`
 - Defined: `progs/doomgeneric/d_iwad.c:235`
 - Doc: Check for the uninstall strings from the CD versions
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### CheckCollectorsEdition `static void CheckCollectorsEdition(void)`
 - Defined: `progs/doomgeneric/d_iwad.c:269`
 - Doc: Check for Doom: Collector's Edition
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### CheckSteamEdition `static void CheckSteamEdition(void)`
 - Defined: `progs/doomgeneric/d_iwad.c:296`
 - Doc: Check for Doom downloaded via Steam
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### CheckSteamGUSPatches `static void CheckSteamGUSPatches(void)`
 - Defined: `progs/doomgeneric/d_iwad.c:323`
 - Doc: The BFG edition ships with a full set of GUS patches. If we find them, we can autoconfigure to use them.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### CheckDOSDefaults `static void CheckDOSDefaults(void)`
 - Defined: `progs/doomgeneric/d_iwad.c:363`
 - Doc: Default install directories for DOS Doom
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### DirIsFile `static boolean DirIsFile(char *path, char *filename)`
 - Defined: `progs/doomgeneric/d_iwad.c:390`
 - Doc: Returns true if the specified path is a path to a file of the specified name.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### CheckDirectoryHasIWAD `static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)`
 - Defined: `progs/doomgeneric/d_iwad.c:407`
 - Doc: Check if the specified directory contains the specified IWAD file, returning the full path to the IWAD if found, or NULL
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### SearchDirectoryForIWAD `static char *SearchDirectoryForIWAD(char *dir, int mask, GameMission_t *mission)`
 - Defined: `progs/doomgeneric/d_iwad.c:448`
 - Doc: Search a directory to try to find an IWAD Returns the location of the IWAD if found, otherwise NULL.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### IdentifyIWADByName `static GameMission_t IdentifyIWADByName(char *name, int mask)`
 - Defined: `progs/doomgeneric/d_iwad.c:476`
 - Doc: When given an IWAD with the '-iwad' parameter, attempt to identify it by its name.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### AddDoomWadPath `static void AddDoomWadPath(void)`
 - Defined: `progs/doomgeneric/d_iwad.c:517`
 - Doc: if ORIGCODE  Add directories from the list in the DOOMWADPATH environment variable.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### BuildIWADDirList `static void BuildIWADDirList(void)`
 - Defined: `progs/doomgeneric/d_iwad.c:568`
 - Doc: Build a list of IWAD files
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_FindWADByName `char *D_FindWADByName(char *name)`
 - Defined: `progs/doomgeneric/d_iwad.c:629`
 - Doc: Searches WAD search paths for an WAD with a specific filename.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_TryFindWADByName `char *D_TryFindWADByName(char *filename)`
 - Defined: `progs/doomgeneric/d_iwad.c:680`
 - Doc: D_TryWADByName  Searches for a WAD by its filename, or passes through the filename if not found.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_FindIWAD `char *D_FindIWAD(int mask, GameMission_t *mission)`
 - Defined: `progs/doomgeneric/d_iwad.c:703`
 - Doc: FindIWAD Checks availability of IWAD files by name, to determine whether registered/commercial features should be execut
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_FindAllIWADs `const iwad_t **D_FindAllIWADs(int mask)`
 - Defined: `progs/doomgeneric/d_iwad.c:756`
 - Doc: Find all IWADs in the IWAD search path matching the given mask.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_SaveGameIWADName `char *D_SaveGameIWADName(GameMission_t gamemission)`
 - Defined: `progs/doomgeneric/d_iwad.c:795`
 - Doc: Get the IWAD name used for savegames.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_SuggestIWADName `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)`
 - Defined: `progs/doomgeneric/d_iwad.c:819`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_SuggestGameName `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)`
 - Defined: `progs/doomgeneric/d_iwad.c:834`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/d_loop.c
 
 ### GetAdjustedTime `static int GetAdjustedTime(void)`
 - Defined: `progs/doomgeneric/d_loop.c:118`
 - Doc: 35 fps clock adjusted by offsetms milliseconds
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### BuildNewTic `static boolean BuildNewTic(void)`
 - Defined: `progs/doomgeneric/d_loop.c:135`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### NetUpdate `void NetUpdate (void)`
 - Defined: `progs/doomgeneric/d_loop.c:202`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### D_Disconnected `static void D_Disconnected(void)`
 - Defined: `progs/doomgeneric/d_loop.c:251`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### D_ReceiveTic `void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)`
 - Defined: `progs/doomgeneric/d_loop.c:270`
 - Doc: Invoked by the network engine when a complete set of ticcmds is available.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### D_StartGameLoop `void D_StartGameLoop(void)`
 - Defined: `progs/doomgeneric/d_loop.c:304`
 - Doc: Start game loop  Called after the screen is set but before the game starts running.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### BlockUntilStart `static void BlockUntilStart(net_gamesettings_t *settings,
                             netgame_sta...`
 - Defined: `progs/doomgeneric/d_loop.c:314`
 - Doc: if ORIGCODE  Block until the game start message is received from the server.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### D_StartNetGame `void D_StartNetGame(net_gamesettings_t *settings,
                     netgame_startup_callback_t ...`
 - Defined: `progs/doomgeneric/d_loop.c:339`
 - Doc: endif
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### D_InitNetGame `boolean D_InitNetGame(net_connect_data_t *connect_data)`
 - Defined: `progs/doomgeneric/d_loop.c:451`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### D_QuitNetGame `void D_QuitNetGame (void)`
 - Defined: `progs/doomgeneric/d_loop.c:560`
 - Doc: D_QuitNetGame Called before quitting to leave a net game without hanging the other players
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### GetLowTic `static int GetLowTic(void)`
 - Defined: `progs/doomgeneric/d_loop.c:567`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### OldNetSync `static void OldNetSync(void)`
 - Defined: `progs/doomgeneric/d_loop.c:590`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### PlayersInGame `static boolean PlayersInGame(void)`
 - Defined: `progs/doomgeneric/d_loop.c:641`
 - Doc: Returns true if there are players in the game:
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### TicdupSquash `static void TicdupSquash(ticcmd_set_t *set)`
 - Defined: `progs/doomgeneric/d_loop.c:671`
 - Doc: When using ticdup, certain values must be cleared out when running the duplicate ticcmds.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### SinglePlayerClear `static void SinglePlayerClear(ticcmd_set_t *set)`
 - Defined: `progs/doomgeneric/d_loop.c:688`
 - Doc: When running in single player mode, clear all the ingame[] array except the local player.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### TryRunTics `void TryRunTics (void)`
 - Defined: `progs/doomgeneric/d_loop.c:705`
 - Doc: TryRunTics
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ### D_RegisterLoopCallbacks `void D_RegisterLoopCallbacks(loop_interface_t *i)`
 - Defined: `progs/doomgeneric/d_loop.c:821`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ## progs/doomgeneric/d_main.c
 
 ### D_ProcessEvents `void D_ProcessEvents (void)`
 - Defined: `progs/doomgeneric/d_main.c:139`
 - Doc: D_ProcessEvents Send all the events of the given timestamp down the responder chain
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_Display `void D_Display (void)`
 - Defined: `progs/doomgeneric/d_main.c:168`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_BindVariables `void D_BindVariables(void)`
 - Defined: `progs/doomgeneric/d_main.c:334`
 - Doc: Add configuration file variable bindings.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_GrabMouseCallback `boolean D_GrabMouseCallback(void)`
 - Defined: `progs/doomgeneric/d_main.c:387`
 - Doc: D_GrabMouseCallback  Called to determine whether to grab the mouse pointer
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_DoomLoop `void D_DoomLoop (void)`
 - Defined: `progs/doomgeneric/d_main.c:408`
 - Doc: D_DoomLoop
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_PageTicker `void D_PageTicker (void)`
 - Defined: `progs/doomgeneric/d_main.c:490`
 - Doc: D_PageTicker Handles timing for warped projection
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_PageDrawer `void D_PageDrawer (void)`
 - Defined: `progs/doomgeneric/d_main.c:501`
 - Doc: D_PageDrawer
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_AdvanceDemo `void D_AdvanceDemo (void)`
 - Defined: `progs/doomgeneric/d_main.c:511`
 - Doc: D_AdvanceDemo Called after each demo or intro demosequence finishes
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_DoAdvanceDemo `void D_DoAdvanceDemo (void)`
 - Defined: `progs/doomgeneric/d_main.c:521`
 - Doc: This cycles through the demo sequences. FIXME - version dependend demo numbers?
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_StartTitle `void D_StartTitle (void)`
 - Defined: `progs/doomgeneric/d_main.c:609`
 - Doc: D_StartTitle
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### GetGameName `static char *GetGameName(char *gamename)`
 - Defined: `progs/doomgeneric/d_main.c:657`
 - Doc: Get game name: if the startup banner has been replaced, use that. Otherwise, use the name given
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### SetMissionForPackName `static void SetMissionForPackName(char *pack_name)`
 - Defined: `progs/doomgeneric/d_main.c:700`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_IdentifyVersion `void D_IdentifyVersion(void)`
 - Defined: `progs/doomgeneric/d_main.c:736`
 - Doc: Find out what version of Doom is playing.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_SetGameDescription `void D_SetGameDescription(void)`
 - Defined: `progs/doomgeneric/d_main.c:819`
 - Doc: Set the gamedescription string
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_AddFile `static boolean D_AddFile(char *filename)`
 - Defined: `progs/doomgeneric/d_main.c:882`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### PrintDehackedBanners `void PrintDehackedBanners(void)`
 - Defined: `progs/doomgeneric/d_main.c:917`
 - Doc: Prints a message only if it has been modified by dehacked.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### InitGameVersion `static void InitGameVersion(void)`
 - Defined: `progs/doomgeneric/d_main.c:962`
 - Doc: Initialize the game version
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### PrintGameVersion `void PrintGameVersion(void)`
 - Defined: `progs/doomgeneric/d_main.c:1064`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_Endoom `static void D_Endoom(void)`
 - Defined: `progs/doomgeneric/d_main.c:1081`
 - Doc: Function called at exit to display the ENDOOM screen
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### LoadIwadDeh `static void LoadIwadDeh(void)`
 - Defined: `progs/doomgeneric/d_main.c:1105`
 - Doc: if ORIGCODE Load dehacked patches needed for certain IWADs.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### D_DoomMain `void D_DoomMain (void)`
 - Defined: `progs/doomgeneric/d_main.c:1178`
 - Doc: D_DoomMain
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/d_mode.c
 
 ### D_ValidGameMode `boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode)`
 - Defined: `progs/doomgeneric/d_mode.c:49`
 - Doc: Check that a gamemode+gamemission received over the network is valid.
+- Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`
 
 ### D_ValidEpisodeMap `boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
                           int e...`
 - Defined: `progs/doomgeneric/d_mode.c:64`
+- Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`
 
 ### D_GetNumEpisodes `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)`
 - Defined: `progs/doomgeneric/d_mode.c:102`
 - Doc: Get the number of valid episodes for the specified mission/mode.
+- Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`
 
 ### D_ValidGameVersion `boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)`
 - Defined: `progs/doomgeneric/d_mode.c:134`
+- Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`
 
 ### D_IsEpisodeMap `boolean D_IsEpisodeMap(GameMission_t mission)`
 - Defined: `progs/doomgeneric/d_mode.c:160`
 - Doc: Does this mission type use ExMy form, rather than MAPxy form?
+- Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`
 
 ### D_GameMissionString `char *D_GameMissionString(GameMission_t mission)`
 - Defined: `progs/doomgeneric/d_mode.c:181`
+- Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`
 
 ## progs/doomgeneric/d_net.c
 
 ### PlayerQuitGame `static void PlayerQuitGame(player_t *player)`
 - Defined: `progs/doomgeneric/d_net.c:44`
 - Doc: Called when a player leaves the game
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ### RunTic `static void RunTic(ticcmd_t *cmds, boolean *ingame)`
 - Defined: `progs/doomgeneric/d_net.c:70`
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ### LoadGameSettings `static void LoadGameSettings(net_gamesettings_t *settings)`
 - Defined: `progs/doomgeneric/d_net.c:107`
 - Doc: Load game settings from the specified structure and set global variables.
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ### SaveGameSettings `static void SaveGameSettings(net_gamesettings_t *settings)`
 - Defined: `progs/doomgeneric/d_net.c:138`
 - Doc: Save the game settings from global variables to the specified game settings structure.
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ### InitConnectData `static void InitConnectData(net_connect_data_t *connect_data)`
 - Defined: `progs/doomgeneric/d_net.c:158`
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ### D_ConnectNetGame `void D_ConnectNetGame(void)`
 - Defined: `progs/doomgeneric/d_net.c:214`
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ### D_CheckNetGame `void D_CheckNetGame (void)`
 - Defined: `progs/doomgeneric/d_net.c:240`
 - Doc: D_CheckNetGame Works out player numbers among the net participants
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ## progs/doomgeneric/doomgeneric.c
 
 ### dg_Create `void dg_Create()`
 - Defined: `progs/doomgeneric/doomgeneric.c:4`
+- Depends on: `progs/doomgeneric/doomgeneric.h`
 
 ## progs/doomgeneric/doomgeneric_minios.c
 
 ### mini_parse_autoframes `static void mini_parse_autoframes(int argc, char **argv)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:22`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_time_ms `static long sys_time_ms(void)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:35`
 - Doc: static int mini_frames; static void mini_parse_autoframes(int argc, char **argv) { int i; mini_autoframes = 0; for (i = 
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_kbd `static long sys_kbd(void)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:41`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_palette `static long sys_palette(const unsigned char *pal)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:46`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_kbd_raw `static long sys_kbd_raw(int on)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:51`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_vga_mode `static long sys_vga_mode(int on)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:56`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_doom_frame `static long sys_doom_frame(void)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:61`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### load_vga_palette `static void load_vga_palette(void)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:84`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### scancode_to_doom `static unsigned char scancode_to_doom(unsigned char raw)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:97`
 - Doc: volatile int minios_palette_dirty = 1; static void load_vga_palette(void) { uint8_t dac[768]; int i; for (i = 0; i < 256
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### kbd_enqueue `static void kbd_enqueue(unsigned char doom_key, int pressed)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:156`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### kbd_poll `static void kbd_poll(void)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:163`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_Init `void DG_Init(void)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:206`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_DrawFrame `void DG_DrawFrame(void)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:214`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_SleepMs `void DG_SleepMs(uint32_t ms)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:244`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_GetTicksMs `uint32_t DG_GetTicksMs(void)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:250`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_GetKey `int DG_GetKey(int *pressed, unsigned char *key)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:254`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_SetWindowTitle `void DG_SetWindowTitle(const char *title)`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:265`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/doomgeneric_sdl.c
 
 ### convertToDoomKey `static unsigned char convertToDoomKey(unsigned int key)`
 - Defined: `progs/doomgeneric/doomgeneric_sdl.c:22`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### addKeyToQueue `static void addKeyToQueue(int pressed, unsigned int keyCode)`
 - Defined: `progs/doomgeneric/doomgeneric_sdl.c:62`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### handleKeyInput `static void handleKeyInput()`
 - Defined: `progs/doomgeneric/doomgeneric_sdl.c:72`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### DG_Init `void DG_Init()`
 - Defined: `progs/doomgeneric/doomgeneric_sdl.c:91`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### DG_DrawFrame `void DG_DrawFrame()`
 - Defined: `progs/doomgeneric/doomgeneric_sdl.c:111`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### DG_SleepMs `void DG_SleepMs(uint32_t ms)`
 - Defined: `progs/doomgeneric/doomgeneric_sdl.c:122`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### DG_GetTicksMs `uint32_t DG_GetTicksMs()`
 - Defined: `progs/doomgeneric/doomgeneric_sdl.c:127`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### DG_GetKey `int DG_GetKey(int* pressed, unsigned char* doomKey)`
 - Defined: `progs/doomgeneric/doomgeneric_sdl.c:132`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### DG_SetWindowTitle `void DG_SetWindowTitle(const char * title)`
 - Defined: `progs/doomgeneric/doomgeneric_sdl.c:151`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ## progs/doomgeneric/doomgeneric_soso.c
 
 ### convertToDoomKey `static unsigned char convertToDoomKey(unsigned char scancode)`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:42`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### addKeyToQueue `static void addKeyToQueue(int pressed, unsigned char keyCode)`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:91`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### disableRawMode `void disableRawMode()`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:107`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### enableRawMode `void enableRawMode()`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:113`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_Init `void DG_Init()`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:123`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### handleKeyInput `static void handleKeyInput()`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:185`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_DrawFrame `void DG_DrawFrame()`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:213`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_SleepMs `void DG_SleepMs(uint32_t ms)`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:226`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_GetTicksMs `uint32_t DG_GetTicksMs()`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:231`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_GetKey `int DG_GetKey(int* pressed, unsigned char* doomKey)`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:236`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_SetWindowTitle `void DG_SetWindowTitle(const char * title)`
 - Defined: `progs/doomgeneric/doomgeneric_soso.c:257`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ## progs/doomgeneric/doomgeneric_sosox.c
 
 ### convert_to_doom_key `static unsigned char convert_to_doom_key(unsigned char scancode)`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:37`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### add_key_to_queue `static void add_key_to_queue(int pressed, unsigned char key_code)`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:87`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### disable_raw_mode `void disable_raw_mode()`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:101`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### enable_raw_mode `void enable_raw_mode()`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:106`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_Init `void DG_Init()`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:116`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### handle_key_input `static void handle_key_input()`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:158`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_DrawFrame `void DG_DrawFrame()`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:186`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_SleepMs `void DG_SleepMs(uint32_t ms)`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:224`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_GetTicksMs `uint32_t DG_GetTicksMs()`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:229`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_GetKey `int DG_GetKey(int* pressed, unsigned char* doomKey)`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:234`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ### DG_SetWindowTitle `void DG_SetWindowTitle(const char * title)`
 - Defined: `progs/doomgeneric/doomgeneric_sosox.c:255`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ## progs/doomgeneric/doomgeneric_win.c
 
 ### convertToDoomKey `static unsigned char convertToDoomKey(unsigned char key)`
 - Defined: `progs/doomgeneric/doomgeneric_win.c:19`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### addKeyToQueue `static void addKeyToQueue(int pressed, unsigned char keyCode)`
 - Defined: `progs/doomgeneric/doomgeneric_win.c:58`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### wndProc `static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)`
 - Defined: `progs/doomgeneric/doomgeneric_win.c:69`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_Init `void DG_Init()`
 - Defined: `progs/doomgeneric/doomgeneric_win.c:94`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_DrawFrame `void DG_DrawFrame()`
 - Defined: `progs/doomgeneric/doomgeneric_win.c:145`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_SleepMs `void DG_SleepMs(uint32_t ms)`
 - Defined: `progs/doomgeneric/doomgeneric_win.c:161`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_GetTicksMs `uint32_t DG_GetTicksMs()`
 - Defined: `progs/doomgeneric/doomgeneric_win.c:166`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_GetKey `int DG_GetKey(int* pressed, unsigned char* doomKey)`
 - Defined: `progs/doomgeneric/doomgeneric_win.c:171`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_SetWindowTitle `void DG_SetWindowTitle(const char * title)`
 - Defined: `progs/doomgeneric/doomgeneric_win.c:192`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ## progs/doomgeneric/doomgeneric_xlib.c
 
 ### convertToDoomKey `static unsigned char convertToDoomKey(unsigned int key)`
 - Defined: `progs/doomgeneric/doomgeneric_xlib.c:26`
+- Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### addKeyToQueue `static void addKeyToQueue(int pressed, unsigned int keyCode)`
 - Defined: `progs/doomgeneric/doomgeneric_xlib.c:67`
+- Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_Init `void DG_Init()`
 - Defined: `progs/doomgeneric/doomgeneric_xlib.c:78`
+- Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_DrawFrame `void DG_DrawFrame()`
 - Defined: `progs/doomgeneric/doomgeneric_xlib.c:125`
+- Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_SleepMs `void DG_SleepMs(uint32_t ms)`
 - Defined: `progs/doomgeneric/doomgeneric_xlib.c:171`
+- Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_GetTicksMs `uint32_t DG_GetTicksMs()`
 - Defined: `progs/doomgeneric/doomgeneric_xlib.c:176`
+- Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_GetKey `int DG_GetKey(int* pressed, unsigned char* doomKey)`
 - Defined: `progs/doomgeneric/doomgeneric_xlib.c:186`
+- Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ### DG_SetWindowTitle `void DG_SetWindowTitle(const char * title)`
 - Defined: `progs/doomgeneric/doomgeneric_xlib.c:207`
+- Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ## progs/doomgeneric/dummy.c
 
 ### I_InitTimidityConfig `void I_InitTimidityConfig(void)`
 - Defined: `progs/doomgeneric/dummy.c:42`
 - Doc: --------------------------------------------------------------------* public functions                                  
+- Depends on: `progs/doomgeneric/doomtype.h`
 
 ## progs/doomgeneric/f_finale.c
 
 ### F_StartFinale `void F_StartFinale (void)`
 - Defined: `progs/doomgeneric/f_finale.c:108`
 - Doc: F_StartFinale
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_Responder `boolean F_Responder (event_t *event)`
 - Defined: `progs/doomgeneric/f_finale.c:157`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_Ticker `void F_Ticker (void)`
 - Defined: `progs/doomgeneric/f_finale.c:172`
 - Doc: F_Ticker
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_TextWrite `void F_TextWrite (void)`
 - Defined: `progs/doomgeneric/f_finale.c:225`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_StartCast `void F_StartCast (void)`
 - Defined: `progs/doomgeneric/f_finale.c:340`
 - Doc: F_StartCast
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_CastTicker `void F_CastTicker (void)`
 - Defined: `progs/doomgeneric/f_finale.c:358`
 - Doc: F_CastTicker
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_CastResponder `boolean F_CastResponder (event_t* ev)`
 - Defined: `progs/doomgeneric/f_finale.c:464`
 - Doc: F_CastResponder
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_CastPrint `void F_CastPrint (char* text)`
 - Defined: `progs/doomgeneric/f_finale.c:484`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_CastDrawer `void F_CastDrawer (void)`
 - Defined: `progs/doomgeneric/f_finale.c:540`
 - Doc: F_CastDrawer
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_DrawPatchCol `void
 F_DrawPatchCol
@@ -5360,17 +6124,21 @@ F_DrawPatchCol
   int		col )`
 - Defined: `progs/doomgeneric/f_finale.c:571`
 - Doc: F_DrawPatchCol
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_BunnyScroll `void F_BunnyScroll (void)`
 - Defined: `progs/doomgeneric/f_finale.c:606`
 - Doc: F_BunnyScroll
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_ArtScreenDrawer `static void F_ArtScreenDrawer(void)`
 - Defined: `progs/doomgeneric/f_finale.c:660`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### F_Drawer `void F_Drawer (void)`
 - Defined: `progs/doomgeneric/f_finale.c:702`
 - Doc: F_Drawer
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/f_wipe.c
 
@@ -5380,6 +6148,7 @@ wipe_shittyColMajorXform
   int		width,
   int		height )`
 - Defined: `progs/doomgeneric/f_wipe.c:40`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### wipe_initColorXForm `int
 wipe_initColorXForm
@@ -5387,6 +6156,7 @@ wipe_initColorXForm
   int	height,
   int	ticks )`
 - Defined: `progs/doomgeneric/f_wipe.c:63`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### wipe_doColorXForm `int
 wipe_doColorXForm
@@ -5394,6 +6164,7 @@ wipe_doColorXForm
   int	height,
   int	ticks )`
 - Defined: `progs/doomgeneric/f_wipe.c:73`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### wipe_exitColorXForm `int
 wipe_exitColorXForm
@@ -5401,6 +6172,7 @@ wipe_exitColorXForm
   int	height,
   int	ticks )`
 - Defined: `progs/doomgeneric/f_wipe.c:119`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### wipe_initMelt `int
 wipe_initMelt
@@ -5408,6 +6180,7 @@ wipe_initMelt
   int	height,
   int	ticks )`
 - Defined: `progs/doomgeneric/f_wipe.c:131`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### wipe_doMelt `int
 wipe_doMelt
@@ -5415,6 +6188,7 @@ wipe_doMelt
   int	height,
   int	ticks )`
 - Defined: `progs/doomgeneric/f_wipe.c:162`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### wipe_exitMelt `int
 wipe_exitMelt
@@ -5422,6 +6196,7 @@ wipe_exitMelt
   int	height,
   int	ticks )`
 - Defined: `progs/doomgeneric/f_wipe.c:217`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### wipe_StartScreen `int
 wipe_StartScreen
@@ -5430,6 +6205,7 @@ wipe_StartScreen
   int	width,
   int	height )`
 - Defined: `progs/doomgeneric/f_wipe.c:229`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### wipe_EndScreen `int
 wipe_EndScreen
@@ -5438,6 +6214,7 @@ wipe_EndScreen
   int	width,
   int	height )`
 - Defined: `progs/doomgeneric/f_wipe.c:241`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### wipe_ScreenWipe `int
 wipe_ScreenWipe
@@ -5448,92 +6225,116 @@ wipe_ScreenWipe
   int	height,
   int	ticks )`
 - Defined: `progs/doomgeneric/f_wipe.c:254`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/g_game.c
 
 ### G_CmdChecksum `int G_CmdChecksum (ticcmd_t* cmd)`
 - Defined: `progs/doomgeneric/g_game.c:232`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WeaponSelectable `static boolean WeaponSelectable(weapontype_t weapon)`
 - Defined: `progs/doomgeneric/g_game.c:243`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_NextWeapon `static int G_NextWeapon(int direction)`
 - Defined: `progs/doomgeneric/g_game.c:280`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_BuildTiccmd `void G_BuildTiccmd (ticcmd_t* cmd, int maketic)`
 - Defined: `progs/doomgeneric/g_game.c:322`
 - Doc: G_BuildTiccmd Builds a ticcmd from all of the available inputs or reads it from the demo buffer. If recording a demo, wr
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DoLoadLevel `void G_DoLoadLevel (void)`
 - Defined: `progs/doomgeneric/g_game.c:603`
 - Doc: G_DoLoadLevel
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### SetJoyButtons `static void SetJoyButtons(unsigned int buttons_mask)`
 - Defined: `progs/doomgeneric/g_game.c:674`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### SetMouseButtons `static void SetMouseButtons(unsigned int buttons_mask)`
 - Defined: `progs/doomgeneric/g_game.c:702`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_Responder `boolean G_Responder (event_t* ev)`
 - Defined: `progs/doomgeneric/g_game.c:733`
 - Doc: G_Responder Get info needed to make ticcmd_ts for the players.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_Ticker `void G_Ticker (void)`
 - Defined: `progs/doomgeneric/g_game.c:854`
 - Doc: G_Ticker Make ticcmd_ts for the players.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_InitPlayer `void G_InitPlayer (int player)`
 - Defined: `progs/doomgeneric/g_game.c:1039`
 - Doc: G_InitPlayer Called at the start. Called by the game initialization functions.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_PlayerFinishLevel `void G_PlayerFinishLevel (int player)`
 - Defined: `progs/doomgeneric/g_game.c:1051`
 - Doc: G_PlayerFinishLevel Can when a player completes a level.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_PlayerReborn `void G_PlayerReborn (int player)`
 - Defined: `progs/doomgeneric/g_game.c:1072`
 - Doc: G_PlayerReborn Called after a player dies almost everything is cleared and initialized
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_CheckSpot `boolean
 G_CheckSpot
 ( int		playernum,
   mapthing_t*	mthing )`
 - Defined: `progs/doomgeneric/g_game.c:1114`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DeathMatchSpawnPlayer `void G_DeathMatchSpawnPlayer (int playernum)`
 - Defined: `progs/doomgeneric/g_game.c:1223`
 - Doc: G_DeathMatchSpawnPlayer Spawns a player at one of the random death match spots called at level load and each death
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DoReborn `void G_DoReborn (int playernum)`
 - Defined: `progs/doomgeneric/g_game.c:1250`
 - Doc: G_DoReborn
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_ScreenShot `void G_ScreenShot (void)`
 - Defined: `progs/doomgeneric/g_game.c:1294`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_ExitLevel `void G_ExitLevel (void)`
 - Defined: `progs/doomgeneric/g_game.c:1327`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_SecretExitLevel `void G_SecretExitLevel (void)`
 - Defined: `progs/doomgeneric/g_game.c:1335`
 - Doc: Here's for the german edition.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DoCompleted `void G_DoCompleted (void)`
 - Defined: `progs/doomgeneric/g_game.c:1345`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_WorldDone `void G_WorldDone (void)`
 - Defined: `progs/doomgeneric/g_game.c:1494`
 - Doc: G_WorldDone
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DoWorldDone `void G_DoWorldDone (void)`
 - Defined: `progs/doomgeneric/g_game.c:1518`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_LoadGame `void G_LoadGame (char* name)`
 - Defined: `progs/doomgeneric/g_game.c:1538`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DoLoadGame `void G_DoLoadGame (void)`
 - Defined: `progs/doomgeneric/g_game.c:1546`
 - Doc: define VERSIONSIZE		16
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_SaveGame `void
 G_SaveGame
@@ -5541,9 +6342,11 @@ G_SaveGame
   char*	description )`
 - Defined: `progs/doomgeneric/g_game.c:1600`
 - Doc: G_SaveGame Called by the menu task. Description is a 24 byte text string
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DoSaveGame `void G_DoSaveGame (void)`
 - Defined: `progs/doomgeneric/g_game.c:1609`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DeferedInitNew `void
 G_DeferedInitNew
@@ -5551,9 +6354,11 @@ G_DeferedInitNew
   int		episode,
   int		map)`
 - Defined: `progs/doomgeneric/g_game.c:1696`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DoNewGame `void G_DoNewGame (void)`
 - Defined: `progs/doomgeneric/g_game.c:1708`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_InitNew `void
 G_InitNew
@@ -5561,80 +6366,102 @@ G_InitNew
   int		episode,
   int		map )`
 - Defined: `progs/doomgeneric/g_game.c:1724`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_ReadDemoTiccmd `void G_ReadDemoTiccmd (ticcmd_t* cmd)`
 - Defined: `progs/doomgeneric/g_game.c:1896`
 - Doc: DEMO RECORDING  define DEMOMARKER		0x80
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### IncreaseDemoBuffer `static void IncreaseDemoBuffer(void)`
 - Defined: `progs/doomgeneric/g_game.c:1925`
 - Doc: Increase the size of the demo buffer to allow unlimited demos
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_WriteDemoTiccmd `void G_WriteDemoTiccmd (ticcmd_t* cmd)`
 - Defined: `progs/doomgeneric/g_game.c:1955`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_RecordDemo `void G_RecordDemo (char *name)`
 - Defined: `progs/doomgeneric/g_game.c:2010`
 - Doc: G_RecordDemo
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_VanillaVersionCode `int G_VanillaVersionCode(void)`
 - Defined: `progs/doomgeneric/g_game.c:2040`
 - Doc: Get the demo version code appropriate for the version set in gameversion.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_BeginRecording `void G_BeginRecording (void)`
 - Defined: `progs/doomgeneric/g_game.c:2057`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DeferedPlayDemo `void G_DeferedPlayDemo (char* name)`
 - Defined: `progs/doomgeneric/g_game.c:2106`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### DemoVersionDescription `static char *DemoVersionDescription(int version)`
 - Defined: `progs/doomgeneric/g_game.c:2114`
 - Doc: Generate a string describing a demo version
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_DoPlayDemo `void G_DoPlayDemo (void)`
 - Defined: `progs/doomgeneric/g_game.c:2151`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_TimeDemo `void G_TimeDemo (char* name)`
 - Defined: `progs/doomgeneric/g_game.c:2215`
 - Doc: G_TimeDemo
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### G_CheckDemoStatus `boolean G_CheckDemoStatus (void)`
 - Defined: `progs/doomgeneric/g_game.c:2242`
 - Doc: =================== = = G_CheckDemoStatus = = Called after a death or level completion to allow demos to be cleaned up =
+- Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/gusconf.c
 
 ### MappingIndex `static unsigned int MappingIndex(void)`
 - Defined: `progs/doomgeneric/gusconf.c:42`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### SplitLine `static int SplitLine(char *line, char **fields, unsigned int max_fields)`
 - Defined: `progs/doomgeneric/gusconf.c:60`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ParseLine `static void ParseLine(gus_config_t *config, char *line)`
 - Defined: `progs/doomgeneric/gusconf.c:107`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ParseDMXConfig `static void ParseDMXConfig(char *dmxconf, gus_config_t *config)`
 - Defined: `progs/doomgeneric/gusconf.c:128`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### FreeDMXConfig `static void FreeDMXConfig(gus_config_t *config)`
 - Defined: `progs/doomgeneric/gusconf.c:164`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ReadDMXConfig `static char *ReadDMXConfig(void)`
 - Defined: `progs/doomgeneric/gusconf.c:174`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteTimidityConfig `static boolean WriteTimidityConfig(char *path, gus_config_t *config)`
 - Defined: `progs/doomgeneric/gusconf.c:196`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### GUS_WriteConfig `boolean GUS_WriteConfig(char *path)`
 - Defined: `progs/doomgeneric/gusconf.c:243`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/hu_lib.c
 
 ### HUlib_init `void HUlib_init(void)`
 - Defined: `progs/doomgeneric/hu_lib.c:35`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_clearTextLine `void HUlib_clearTextLine(hu_textline_t* t)`
 - Defined: `progs/doomgeneric/hu_lib.c:39`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_initTextLine `void
 HUlib_initTextLine
@@ -5644,25 +6471,30 @@ HUlib_initTextLine
   patch_t**		f,
   int			sc )`
 - Defined: `progs/doomgeneric/hu_lib.c:46`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_addCharToTextLine `boolean
 HUlib_addCharToTextLine
 ( hu_textline_t*	t,
   char			ch )`
 - Defined: `progs/doomgeneric/hu_lib.c:61`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_delCharFromTextLine `boolean HUlib_delCharFromTextLine(hu_textline_t* t)`
 - Defined: `progs/doomgeneric/hu_lib.c:79`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_drawTextLine `void
 HUlib_drawTextLine
 ( hu_textline_t*	l,
   boolean		drawcursor )`
 - Defined: `progs/doomgeneric/hu_lib.c:92`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_eraseTextLine `void HUlib_eraseTextLine(hu_textline_t* l)`
 - Defined: `progs/doomgeneric/hu_lib.c:137`
 - Doc: sorta called by HU_Erase and just better darn get things straight
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_initSText `void
 HUlib_initSText
@@ -5673,9 +6505,11 @@ HUlib_initSText
   patch_t**	font,
   int		star...`
 - Defined: `progs/doomgeneric/hu_lib.c:167`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_addLineToSText `void HUlib_addLineToSText(hu_stext_t* s)`
 - Defined: `progs/doomgeneric/hu_lib.c:191`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_addMessageToSText `void
 HUlib_addMessageToSText
@@ -5683,12 +6517,15 @@ HUlib_addMessageToSText
   char*		prefix,
   char*		msg )`
 - Defined: `progs/doomgeneric/hu_lib.c:207`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_drawSText `void HUlib_drawSText(hu_stext_t* s)`
 - Defined: `progs/doomgeneric/hu_lib.c:222`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_eraseSText `void HUlib_eraseSText(hu_stext_t* s)`
 - Defined: `progs/doomgeneric/hu_lib.c:245`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_initIText `void
 HUlib_initIText
@@ -5699,23 +6536,28 @@ HUlib_initIText
   int		startchar,
   ...`
 - Defined: `progs/doomgeneric/hu_lib.c:260`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_delCharFromIText `void HUlib_delCharFromIText(hu_itext_t* it)`
 - Defined: `progs/doomgeneric/hu_lib.c:278`
 - Doc: The following deletion routines adhere to the left margin restriction
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_eraseLineFromIText `void HUlib_eraseLineFromIText(hu_itext_t* it)`
 - Defined: `progs/doomgeneric/hu_lib.c:283`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_resetIText `void HUlib_resetIText(hu_itext_t* it)`
 - Defined: `progs/doomgeneric/hu_lib.c:291`
 - Doc: Resets left margin as well
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_addPrefixToIText `void
 HUlib_addPrefixToIText
 ( hu_itext_t*	it,
   char*		str )`
 - Defined: `progs/doomgeneric/hu_lib.c:296`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_keyInIText `boolean
 HUlib_keyInIText
@@ -5723,363 +6565,464 @@ HUlib_keyInIText
   unsigned char ch )`
 - Defined: `progs/doomgeneric/hu_lib.c:309`
 - Doc: wrapper function for handling general keyed input. returns true if it ate the key
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_drawIText `void HUlib_drawIText(hu_itext_t* it)`
 - Defined: `progs/doomgeneric/hu_lib.c:328`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ### HUlib_eraseIText `void HUlib_eraseIText(hu_itext_t* it)`
 - Defined: `progs/doomgeneric/hu_lib.c:339`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
 
 ## progs/doomgeneric/hu_stuff.c
 
 ### HU_Init `void HU_Init(void)`
 - Defined: `progs/doomgeneric/hu_stuff.c:285`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### HU_Stop `void HU_Stop(void)`
 - Defined: `progs/doomgeneric/hu_stuff.c:302`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### HU_Start `void HU_Start(void)`
 - Defined: `progs/doomgeneric/hu_stuff.c:307`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### HU_Drawer `void HU_Drawer(void)`
 - Defined: `progs/doomgeneric/hu_stuff.c:382`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### HU_Erase `void HU_Erase(void)`
 - Defined: `progs/doomgeneric/hu_stuff.c:392`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### HU_Ticker `void HU_Ticker(void)`
 - Defined: `progs/doomgeneric/hu_stuff.c:401`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### HU_queueChatChar `void HU_queueChatChar(char c)`
 - Defined: `progs/doomgeneric/hu_stuff.c:480`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### HU_dequeueChatChar `char HU_dequeueChatChar(void)`
 - Defined: `progs/doomgeneric/hu_stuff.c:494`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### HU_Responder `boolean HU_Responder(event_t *ev)`
 - Defined: `progs/doomgeneric/hu_stuff.c:511`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/i_cdmus.c
 
 ### I_CDMusInit `int I_CDMusInit(void)`
 - Defined: `progs/doomgeneric/i_cdmus.c:37`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_CDMusPrintStartup `void I_CDMusPrintStartup(void)`
 - Defined: `progs/doomgeneric/i_cdmus.c:91`
 - Doc: We cannot print status messages inline during startup, they must be deferred until after I_CDMusInit has returned.
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_CDMusPlay `int I_CDMusPlay(int track)`
 - Defined: `progs/doomgeneric/i_cdmus.c:106`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_CDMusStop `int I_CDMusStop(void)`
 - Defined: `progs/doomgeneric/i_cdmus.c:129`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_CDMusResume `int I_CDMusResume(void)`
 - Defined: `progs/doomgeneric/i_cdmus.c:144`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_CDMusSetVolume `int I_CDMusSetVolume(int volume)`
 - Defined: `progs/doomgeneric/i_cdmus.c:159`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_CDMusFirstTrack `int I_CDMusFirstTrack(void)`
 - Defined: `progs/doomgeneric/i_cdmus.c:168`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_CDMusLastTrack `int I_CDMusLastTrack(void)`
 - Defined: `progs/doomgeneric/i_cdmus.c:201`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_CDMusTrackLength `int I_CDMusTrackLength(int track_num)`
 - Defined: `progs/doomgeneric/i_cdmus.c:218`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ## progs/doomgeneric/i_endoom.c
 
 ### I_Endoom `void I_Endoom(byte *endoom_data)`
 - Defined: `progs/doomgeneric/i_endoom.c:35`
 - Doc: Displays the text mode ending screen after the game quits
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`
 
 ## progs/doomgeneric/i_input.c
 
 ### TranslateKey `static unsigned char TranslateKey(unsigned char key)`
 - Defined: `progs/doomgeneric/i_input.c:223`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_scale.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### GetTypedChar `static unsigned char GetTypedChar(unsigned char key)`
 - Defined: `progs/doomgeneric/i_input.c:241`
 - Doc: Get the equivalent ASCII (Unicode?) character for a keypress.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_scale.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### UpdateShiftStatus `static void UpdateShiftStatus(int pressed, unsigned char key)`
 - Defined: `progs/doomgeneric/i_input.c:262`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_scale.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_GetEvent `void I_GetEvent(void)`
 - Defined: `progs/doomgeneric/i_input.c:277`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_scale.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_InitInput `void I_InitInput(void)`
 - Defined: `progs/doomgeneric/i_input.c:337`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_scale.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/i_joystick.c
 
 ### I_ShutdownJoystick `void I_ShutdownJoystick(void)`
 - Defined: `progs/doomgeneric/i_joystick.c:76`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### IsValidAxis `static boolean IsValidAxis(int axis)`
 - Defined: `progs/doomgeneric/i_joystick.c:90`
 - Doc: ifdef ORIGCODE
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_InitJoystick `void I_InitJoystick(void)`
 - Defined: `progs/doomgeneric/i_joystick.c:114`
 - Doc: endif
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### IsAxisButton `static boolean IsAxisButton(int physbutton)`
 - Defined: `progs/doomgeneric/i_joystick.c:171`
 - Doc: ifdef ORIGCODE
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### ReadButtonState `static int ReadButtonState(int vbutton)`
 - Defined: `progs/doomgeneric/i_joystick.c:202`
 - Doc: Get the state of the given virtual button.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### GetButtonsState `static int GetButtonsState(void)`
 - Defined: `progs/doomgeneric/i_joystick.c:227`
 - Doc: Get a bitmask of all currently-pressed buttons
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### GetAxisState `static int GetAxisState(int axis, int invert)`
 - Defined: `progs/doomgeneric/i_joystick.c:247`
 - Doc: Read the state of an axis, inverting if necessary.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_UpdateJoystick `void I_UpdateJoystick(void)`
 - Defined: `progs/doomgeneric/i_joystick.c:321`
 - Doc: endif
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_BindJoystickVariables `void I_BindJoystickVariables(void)`
 - Defined: `progs/doomgeneric/i_joystick.c:338`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ## progs/doomgeneric/i_main.c
 
 ### main `int main(int argc, char **argv)`
 - Defined: `progs/doomgeneric/i_main.c:38`
+- Depends on: `progs/doomgeneric/m_argv.h`
 
 ## progs/doomgeneric/i_minios_sound.c
 
 ### sys_tone `static long sys_tone(unsigned f)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:31`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### sys_time `static long sys_time(void)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:35`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_read_varlen `static int mus_read_varlen(mus_player_t *m, unsigned long *out)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:100`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_next_block `static int mus_next_block(mus_player_t *m, unsigned long *out)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:115`
 - Doc: Process one full block of events at the current tick and advance pos past * its delta.  Returns the delta in *out.  Retu
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_note_cmp `static int mus_note_cmp(const void *a, const void *b)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:153`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_build_chord `static void mus_build_chord(mus_player_t *m)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:162`
 - Doc: Split the sounding notes into a bass pedal (the lowest note below the bass line) and the melody arpeggio (the highest MU
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_hold_tone `static void mus_hold_tone(unsigned freq, unsigned long ms)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:185`
 - Doc: } else { if (n < 16) all[n++] = (unsigned short)note; } } m->bass = bass; m->mel_len = 0; if (n > 1) qsort(all, n, sizeo
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_play_chord `static void mus_play_chord(mus_player_t *m)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:196`
 - Doc: Play one full cycle of the pseudo-polyphony: the bass pedal first, held long like the NES triangle voice, then the melod
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_advance `static void mus_advance(mus_player_t *m, unsigned long ms)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:209`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_Init `static boolean MUS_Init(void)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:230`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_Shutdown `static void MUS_Shutdown(void)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:235`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_SetMusicVolume `static void MUS_SetMusicVolume(int volume)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:240`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_Pause `static void MUS_Pause(void)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:242`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_Resume `static void MUS_Resume(void)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:244`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_RegisterSong `static void *MUS_RegisterSong(void *data, int len)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:245`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_UnRegisterSong `static void MUS_UnRegisterSong(void *handle)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:260`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_PlaySong `static void MUS_PlaySong(void *handle, boolean looping)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:266`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_StopSong `static void MUS_StopSong(void)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:279`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_MusicIsPlaying `static boolean MUS_MusicIsPlaying(void)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:284`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_Poll `static void MUS_Poll(void)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:288`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### PCSPK_Init `static boolean PCSPK_Init(boolean use_sfx_prefix)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:317`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### PCSPK_Shutdown `static void PCSPK_Shutdown(void)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:324`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### PCSPK_GetSfxLumpNum `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:329`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### free_channel `static void free_channel(int i)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:340`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### PCSPK_Update `static void PCSPK_Update(void)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:349`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### PCSPK_UpdateSoundParams `static void PCSPK_UpdateSoundParams(int ch, int v, int s)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:381`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### PCSPK_StartSound `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:385`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### PCSPK_StopSound `static void PCSPK_StopSound(int channel)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:435`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### PCSPK_SoundIsPlaying `static boolean PCSPK_SoundIsPlaying(int channel)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:441`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### PCSPK_CacheSounds `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:447`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/i_scale.c
 
 ### I_InitScale `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch)`
 - Defined: `progs/doomgeneric/i_scale.c:60`
 - Doc: Called to set the source and destination buffers before doing the scale.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Scale1x `static boolean I_Scale1x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:74`
 - Doc: 1x scale doesn't really do any scaling: it just copies the buffer a line at a time for when pitch != SCREENWIDTH (!nativ
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Scale2x `static boolean I_Scale2x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:104`
 - Doc: 2x scale (640x400)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Scale3x `static boolean I_Scale3x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:145`
 - Doc: 3x scale (960x600)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Scale4x `static boolean I_Scale4x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:190`
 - Doc: 4x scale (1280x800)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Scale5x `static boolean I_Scale5x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:239`
 - Doc: 5x scale (1600x1000)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### FindNearestColor `static int FindNearestColor(byte *palette, int r, int g, int b)`
 - Defined: `progs/doomgeneric/i_scale.c:294`
 - Doc: Search through the given palette, finding the nearest color that matches the given color.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### GenerateStretchTable `static byte *GenerateStretchTable(byte *palette, int pct)`
 - Defined: `progs/doomgeneric/i_scale.c:331`
 - Doc: Create a stretch table.  This is a lookup table for blending colors. pct specifies the bias between the two colors: 0 = 
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_InitStretchTables `static void I_InitStretchTables(byte *palette)`
 - Defined: `progs/doomgeneric/i_scale.c:360`
 - Doc: Called at startup to generate the lookup tables for aspect ratio correcting scale up.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_InitSquashTable `static void I_InitSquashTable(byte *palette)`
 - Defined: `progs/doomgeneric/i_scale.c:386`
 - Doc: Create 50%/50% table for 800x600 squash mode
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_ResetScaleTables `void I_ResetScaleTables(byte *palette)`
 - Defined: `progs/doomgeneric/i_scale.c:403`
 - Doc: Destroy the scaling lookup tables. This should only ever be called if switching to a completely different palette from t
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteBlendedLine1x `static inline void WriteBlendedLine1x(byte *dest, byte *src1, byte *src2, 
                       ...`
 - Defined: `progs/doomgeneric/i_scale.c:433`
 - Doc: Aspect ratio correcting scale up functions.  These double up pixels to stretch the screen when using a 4:3 screen mode.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Stretch1x `static boolean I_Stretch1x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:449`
 - Doc: 1x stretch (320x240)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteLine2x `static inline void WriteLine2x(byte *dest, byte *src)`
 - Defined: `progs/doomgeneric/i_scale.c:506`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteBlendedLine2x `static inline void WriteBlendedLine2x(byte *dest, byte *src1, byte *src2, 
                       ...`
 - Defined: `progs/doomgeneric/i_scale.c:519`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Stretch2x `static boolean I_Stretch2x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:538`
 - Doc: 2x stretch (640x480)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteLine3x `static inline void WriteLine3x(byte *dest, byte *src)`
 - Defined: `progs/doomgeneric/i_scale.c:619`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteBlendedLine3x `static inline void WriteBlendedLine3x(byte *dest, byte *src1, byte *src2, 
                       ...`
 - Defined: `progs/doomgeneric/i_scale.c:633`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Stretch3x `static boolean I_Stretch3x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:653`
 - Doc: 3x stretch (960x720)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteLine4x `static inline void WriteLine4x(byte *dest, byte *src)`
 - Defined: `progs/doomgeneric/i_scale.c:758`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteBlendedLine4x `static inline void WriteBlendedLine4x(byte *dest, byte *src1, byte *src2, 
                       ...`
 - Defined: `progs/doomgeneric/i_scale.c:773`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Stretch4x `static boolean I_Stretch4x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:794`
 - Doc: 4x stretch (1280x960)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteLine5x `static inline void WriteLine5x(byte *dest, byte *src)`
 - Defined: `progs/doomgeneric/i_scale.c:923`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Stretch5x `static boolean I_Stretch5x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:941`
 - Doc: 5x stretch (1600x1200)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteSquashedLine1x `static inline void WriteSquashedLine1x(byte *dest, byte *src)`
 - Defined: `progs/doomgeneric/i_scale.c:1029`
 - Doc: 1x squashed scale (256x200)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Squash1x `static boolean I_Squash1x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:1060`
 - Doc: 1x squashed (256x200)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteSquashedLine2x `static inline void WriteSquashedLine2x(byte *dest, byte *src)`
 - Defined: `progs/doomgeneric/i_scale.c:1101`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Squash2x `static boolean I_Squash2x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:1159`
 - Doc: 2x squash (512x400)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteSquashedLine3x `static inline void WriteSquashedLine3x(byte *dest, byte *src)`
 - Defined: `progs/doomgeneric/i_scale.c:1196`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Squash3x `static boolean I_Squash3x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:1242`
 - Doc: 3x scale squashed (800x600)  This is a special case that uses the half_stretch_table (50%) rather than the normal stretc
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteSquashedLine4x `static inline void WriteSquashedLine4x(byte *dest, byte *src)`
 - Defined: `progs/doomgeneric/i_scale.c:1278`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Squash4x `static boolean I_Squash4x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:1353`
 - Doc: 4x squashed (1024x800)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### WriteSquashedLine5x `static inline void WriteSquashedLine5x(byte *dest, byte *src)`
 - Defined: `progs/doomgeneric/i_scale.c:1389`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_Squash5x `static boolean I_Squash5x(int x1, int y1, int x2, int y2)`
 - Defined: `progs/doomgeneric/i_scale.c:1418`
 - Doc: 5x squashed (1280x1000)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/i_sound.c
 
@@ -6087,248 +7030,319 @@ HUlib_keyInIText
                            ...`
 - Defined: `progs/doomgeneric/i_sound.c:115`
 - Doc: Check if a sound device is in the given list of devices
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### InitSfxModule `static void InitSfxModule(boolean use_sfx_prefix)`
 - Defined: `progs/doomgeneric/i_sound.c:134`
 - Doc: Find and initialize a sound_module_t appropriate for the setting in snd_sfxdevice.
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### InitMusicModule `static void InitMusicModule(void)`
 - Defined: `progs/doomgeneric/i_sound.c:162`
 - Doc: Initialize music according to snd_musicdevice.
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_InitSound `void I_InitSound(boolean use_sfx_prefix)`
 - Defined: `progs/doomgeneric/i_sound.c:194`
 - Doc: Initializes sound stuff, including volume Sets channels, SFX and music volume, allocates channel buffer, sets S_sfx look
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_ShutdownSound `void I_ShutdownSound(void)`
 - Defined: `progs/doomgeneric/i_sound.c:249`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_GetSfxLumpNum `int I_GetSfxLumpNum(sfxinfo_t *sfxinfo)`
 - Defined: `progs/doomgeneric/i_sound.c:262`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_UpdateSound `void I_UpdateSound(void)`
 - Defined: `progs/doomgeneric/i_sound.c:274`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### CheckVolumeSeparation `static void CheckVolumeSeparation(int *vol, int *sep)`
 - Defined: `progs/doomgeneric/i_sound.c:287`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_UpdateSoundParams `void I_UpdateSoundParams(int channel, int vol, int sep)`
 - Defined: `progs/doomgeneric/i_sound.c:308`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_StartSound `int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep)`
 - Defined: `progs/doomgeneric/i_sound.c:317`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_StopSound `void I_StopSound(int channel)`
 - Defined: `progs/doomgeneric/i_sound.c:330`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_SoundIsPlaying `boolean I_SoundIsPlaying(int channel)`
 - Defined: `progs/doomgeneric/i_sound.c:338`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_PrecacheSounds `void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)`
 - Defined: `progs/doomgeneric/i_sound.c:350`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_InitMusic `void I_InitMusic(void)`
 - Defined: `progs/doomgeneric/i_sound.c:358`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_ShutdownMusic `void I_ShutdownMusic(void)`
 - Defined: `progs/doomgeneric/i_sound.c:362`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_SetMusicVolume `void I_SetMusicVolume(int volume)`
 - Defined: `progs/doomgeneric/i_sound.c:367`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_PauseSong `void I_PauseSong(void)`
 - Defined: `progs/doomgeneric/i_sound.c:375`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_ResumeSong `void I_ResumeSong(void)`
 - Defined: `progs/doomgeneric/i_sound.c:383`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_RegisterSong `void *I_RegisterSong(void *data, int len)`
 - Defined: `progs/doomgeneric/i_sound.c:391`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_UnRegisterSong `void I_UnRegisterSong(void *handle)`
 - Defined: `progs/doomgeneric/i_sound.c:403`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_PlaySong `void I_PlaySong(void *handle, boolean looping)`
 - Defined: `progs/doomgeneric/i_sound.c:411`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_StopSong `void I_StopSong(void)`
 - Defined: `progs/doomgeneric/i_sound.c:419`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_MusicIsPlaying `boolean I_MusicIsPlaying(void)`
 - Defined: `progs/doomgeneric/i_sound.c:427`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ### I_BindSoundVariables `void I_BindSoundVariables(void)`
 - Defined: `progs/doomgeneric/i_sound.c:439`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
 
 ## progs/doomgeneric/i_system.c
 
 ### I_AtExit `void I_AtExit(atexit_func_t func, boolean run_on_error)`
 - Defined: `progs/doomgeneric/i_system.c:72`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_Tactile `void I_Tactile(int on, int off, int total)`
 - Defined: `progs/doomgeneric/i_system.c:86`
 - Doc: Tactile feedback function, probably used for the Logitech Cyberman
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### AutoAllocMemory `static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)`
 - Defined: `progs/doomgeneric/i_system.c:94`
 - Doc: Zone memory auto-allocation function that allocates the zone size by trying progressively smaller zone sizes until one i
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_ZoneBase `byte *I_ZoneBase (int *size)`
 - Defined: `progs/doomgeneric/i_system.c:132`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_PrintBanner `void I_PrintBanner(char *msg)`
 - Defined: `progs/doomgeneric/i_system.c:165`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_PrintDivider `void I_PrintDivider(void)`
 - Defined: `progs/doomgeneric/i_system.c:176`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_PrintStartupBanner `void I_PrintStartupBanner(char *gamedescription)`
 - Defined: `progs/doomgeneric/i_system.c:188`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_ConsoleStdout `boolean I_ConsoleStdout(void)`
 - Defined: `progs/doomgeneric/i_system.c:209`
 - Doc: I_ConsoleStdout  Returns true if stdout is a real console, false if it is a file
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_Quit `void I_Quit (void)`
 - Defined: `progs/doomgeneric/i_system.c:245`
 - Doc: I_Quit
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### ZenityAvailable `static int ZenityAvailable(void)`
 - Defined: `progs/doomgeneric/i_system.c:271`
 - Doc: returns non-zero if zenity is available
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### EscapeShellString `static char *EscapeShellString(char *string)`
 - Defined: `progs/doomgeneric/i_system.c:279`
 - Doc: Escape special characters in the given string so that they can be safely enclosed in shell quotes.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### ZenityErrorBox `static int ZenityErrorBox(char *message)`
 - Defined: `progs/doomgeneric/i_system.c:322`
 - Doc: Open a native error box with a message using zenity
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_Error `void I_Error (char *error, ...)`
 - Defined: `progs/doomgeneric/i_system.c:358`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ### I_GetMemoryValue `boolean I_GetMemoryValue(unsigned int offset, void *value, int size)`
 - Defined: `progs/doomgeneric/i_system.c:501`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ## progs/doomgeneric/i_timer.c
 
 ### I_GetTicks `int I_GetTicks(void)`
 - Defined: `progs/doomgeneric/i_timer.c:35`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_timer.h`
 
 ### I_GetTime `int  I_GetTime (void)`
 - Defined: `progs/doomgeneric/i_timer.c:41`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_timer.h`
 
 ### I_GetTimeMS `int I_GetTimeMS(void)`
 - Defined: `progs/doomgeneric/i_timer.c:60`
 - Doc: Same as I_GetTime, but returns time in milliseconds
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_timer.h`
 
 ### I_Sleep `void I_Sleep(int ms)`
 - Defined: `progs/doomgeneric/i_timer.c:74`
 - Doc: Sleep for a specified number of ms
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_timer.h`
 
 ### I_WaitVBL `void I_WaitVBL(int count)`
 - Defined: `progs/doomgeneric/i_timer.c:82`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_timer.h`
 
 ### I_InitTimer `void I_InitTimer(void)`
 - Defined: `progs/doomgeneric/i_timer.c:87`
+- Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_timer.h`
 
 ## progs/doomgeneric/i_video.c
 
 ### cmap_to_rgb565 `void cmap_to_rgb565(uint16_t * out, uint8_t * in, int in_pixels)`
 - Defined: `progs/doomgeneric/i_video.c:130`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### cmap_to_fb `void cmap_to_fb(uint8_t * out, uint8_t * in, int in_pixels)`
 - Defined: `progs/doomgeneric/i_video.c:151`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_InitGraphics `void I_InitGraphics (void)`
 - Defined: `progs/doomgeneric/i_video.c:178`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_ShutdownGraphics `void I_ShutdownGraphics (void)`
 - Defined: `progs/doomgeneric/i_video.c:231`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_StartFrame `void I_StartFrame (void)`
 - Defined: `progs/doomgeneric/i_video.c:236`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_StartTic `void I_StartTic (void)`
 - Defined: `progs/doomgeneric/i_video.c:241`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_UpdateNoBlit `void I_UpdateNoBlit (void)`
 - Defined: `progs/doomgeneric/i_video.c:246`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_FinishUpdate `void I_FinishUpdate (void)`
 - Defined: `progs/doomgeneric/i_video.c:254`
 - Doc: I_FinishUpdate
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_ReadScreen `void I_ReadScreen (byte* scr)`
 - Defined: `progs/doomgeneric/i_video.c:302`
 - Doc: I_ReadScreen
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_SetPalette `void I_SetPalette (byte* palette)`
 - Defined: `progs/doomgeneric/i_video.c:314`
 - Doc: I_SetPalette  define GFX_RGB565(r, g, b)			((((r & 0xF8) >> 3) << 11) | (((g & 0xFC) >> 2) << 5) | ((b & 0xF8) >> 3)) de
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_GetPaletteIndex `int I_GetPaletteIndex (int r, int g, int b)`
 - Defined: `progs/doomgeneric/i_video.c:332`
 - Doc: Given an RGB value, find the closest matching palette index.
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_BeginRead `void I_BeginRead (void)`
 - Defined: `progs/doomgeneric/i_video.c:368`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_EndRead `void I_EndRead (void)`
 - Defined: `progs/doomgeneric/i_video.c:372`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_SetWindowTitle `void I_SetWindowTitle (char *title)`
 - Defined: `progs/doomgeneric/i_video.c:376`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_GraphicsCheckCommandLine `void I_GraphicsCheckCommandLine (void)`
 - Defined: `progs/doomgeneric/i_video.c:381`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_SetGrabMouseCallback `void I_SetGrabMouseCallback (grabmouse_callback_t func)`
 - Defined: `progs/doomgeneric/i_video.c:385`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_EnableLoadingDisk `void I_EnableLoadingDisk(void)`
 - Defined: `progs/doomgeneric/i_video.c:389`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_BindVideoVariables `void I_BindVideoVariables (void)`
 - Defined: `progs/doomgeneric/i_video.c:393`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_DisplayFPSDots `void I_DisplayFPSDots (boolean dots_on)`
 - Defined: `progs/doomgeneric/i_video.c:397`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ### I_CheckIsScreensaver `void I_CheckIsScreensaver (void)`
 - Defined: `progs/doomgeneric/i_video.c:401`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/m_argv.c
 
 ### M_CheckParmWithArgs `int M_CheckParmWithArgs(char *check, int num_args)`
 - Defined: `progs/doomgeneric/m_argv.c:42`
 - Doc: M_CheckParm Checks for the given parameter in the program's command line arguments. Returns the argument number (1 to ar
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_ParmExists `boolean M_ParmExists(char *check)`
 - Defined: `progs/doomgeneric/m_argv.c:62`
 - Doc: M_ParmExists  Returns true if the given parameter exists in the program's command line arguments, false if not.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_CheckParm `int M_CheckParm(char *check)`
 - Defined: `progs/doomgeneric/m_argv.c:67`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`
 
 ### LoadResponseFile `static void LoadResponseFile(int argv_index)`
 - Defined: `progs/doomgeneric/m_argv.c:74`
 - Doc: define MAXARGVS        100
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_FindResponseFile `void M_FindResponseFile(void)`
 - Defined: `progs/doomgeneric/m_argv.c:234`
 - Doc: Find a Response File
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_GetExecutableName `char *M_GetExecutableName(void)`
 - Defined: `progs/doomgeneric/m_argv.c:249`
 - Doc: Return the name of the executable used to start the program:
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`
 
 ## progs/doomgeneric/m_bbox.c
 
 ### M_ClearBox `void M_ClearBox (fixed_t *box)`
 - Defined: `progs/doomgeneric/m_bbox.c:25`
 - Doc: include "m_bbox.h"
+- Depends on: `progs/doomgeneric/m_bbox.h`
 
 ### M_AddToBox `void
 M_AddToBox
@@ -6336,6 +7350,7 @@ M_AddToBox
   fixed_t	x,
   fixed_t	y )`
 - Defined: `progs/doomgeneric/m_bbox.c:34`
+- Depends on: `progs/doomgeneric/m_bbox.h`
 
 ## progs/doomgeneric/m_cheat.c
 
@@ -6345,112 +7360,141 @@ cht_CheckCheat
   char		key )`
 - Defined: `progs/doomgeneric/m_cheat.c:34`
 - Doc: Called in st_stuff module, which handles the input. Returns a 1 if the cheat was successful, 0 if failed.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_cheat.h`
 
 ### cht_GetParam `void
 cht_GetParam
 ( cheatseq_t*	cht,
   char*		buffer )`
 - Defined: `progs/doomgeneric/m_cheat.c:80`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_cheat.h`
 
 ## progs/doomgeneric/m_config.c
 
 ### SearchCollection `static default_t *SearchCollection(default_collection_t *collection, char *name)`
 - Defined: `progs/doomgeneric/m_config.c:1562`
 - Doc: Search a collection for a variable
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### SaveDefaultCollection `static void SaveDefaultCollection(default_collection_t *collection)`
 - Defined: `progs/doomgeneric/m_config.c:1607`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### ParseIntParameter `static int ParseIntParameter(char *strparm)`
 - Defined: `progs/doomgeneric/m_config.c:1715`
 - Doc: Parses integer values in the configuration file
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### SetVariable `static void SetVariable(default_t *def, char *value)`
 - Defined: `progs/doomgeneric/m_config.c:1727`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### LoadDefaultCollection `static void LoadDefaultCollection(default_collection_t *collection)`
 - Defined: `progs/doomgeneric/m_config.c:1770`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SetConfigFilenames `void M_SetConfigFilenames(char *main_config, char *extra_config)`
 - Defined: `progs/doomgeneric/m_config.c:1835`
 - Doc: Set the default filenames to use for configuration files.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SaveDefaults `void M_SaveDefaults (void)`
 - Defined: `progs/doomgeneric/m_config.c:1845`
 - Doc: M_SaveDefaults
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SaveDefaultsAlternate `void M_SaveDefaultsAlternate(char *main, char *extra)`
 - Defined: `progs/doomgeneric/m_config.c:1855`
 - Doc: Save defaults to alternate filenames
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_LoadDefaults `void M_LoadDefaults (void)`
 - Defined: `progs/doomgeneric/m_config.c:1880`
 - Doc: M_LoadDefaults
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### GetDefaultForName `static default_t *GetDefaultForName(char *name)`
 - Defined: `progs/doomgeneric/m_config.c:1936`
 - Doc: Get a configuration file variable by its name
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_BindVariable `void M_BindVariable(char *name, void *location)`
 - Defined: `progs/doomgeneric/m_config.c:1963`
 - Doc: Bind a variable to a given configuration file variable, by name.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SetVariable `boolean M_SetVariable(char *name, char *value)`
 - Defined: `progs/doomgeneric/m_config.c:1976`
 - Doc: Set the value of a particular variable; an API function for other parts of the program to assign values to config variab
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_GetIntVariable `int M_GetIntVariable(char *name)`
 - Defined: `progs/doomgeneric/m_config.c:1994`
 - Doc: Get the value of a variable.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_GetStrVariable `const char *M_GetStrVariable(char *name)`
 - Defined: `progs/doomgeneric/m_config.c:2009`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_GetFloatVariable `float M_GetFloatVariable(char *name)`
 - Defined: `progs/doomgeneric/m_config.c:2024`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### GetDefaultConfigDir `static char *GetDefaultConfigDir(void)`
 - Defined: `progs/doomgeneric/m_config.c:2042`
 - Doc: Get the path to the default configuration dir to use, if NULL is passed to M_SetConfigDir.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SetConfigDir `void M_SetConfigDir(char *dir)`
 - Defined: `progs/doomgeneric/m_config.c:2058`
 - Doc: SetConfigDir:  Sets the location of the configuration directory, where configuration files are stored - default.cfg, cho
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_GetSaveGameDir `char *M_GetSaveGameDir(char *iwadname)`
 - Defined: `progs/doomgeneric/m_config.c:2086`
 - Doc: Calculate the path to the directory to use to store save games. Creates the directory as necessary.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/m_controls.c
 
 ### M_BindBaseControls `void M_BindBaseControls(void)`
 - Defined: `progs/doomgeneric/m_controls.c:203`
 - Doc: Bind all of the common controls used by Doom and all other games.
+- Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_BindHereticControls `void M_BindHereticControls(void)`
 - Defined: `progs/doomgeneric/m_controls.c:240`
+- Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_BindHexenControls `void M_BindHexenControls(void)`
 - Defined: `progs/doomgeneric/m_controls.c:255`
+- Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_BindStrifeControls `void M_BindStrifeControls(void)`
 - Defined: `progs/doomgeneric/m_controls.c:271`
+- Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_BindWeaponControls `void M_BindWeaponControls(void)`
 - Defined: `progs/doomgeneric/m_controls.c:306`
+- Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_BindMapControls `void M_BindMapControls(void)`
 - Defined: `progs/doomgeneric/m_controls.c:327`
+- Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_BindMenuControls `void M_BindMenuControls(void)`
 - Defined: `progs/doomgeneric/m_controls.c:343`
+- Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_BindChatControls `void M_BindChatControls(unsigned int num_players)`
 - Defined: `progs/doomgeneric/m_controls.c:374`
+- Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ### M_ApplyPlatformDefaults `void M_ApplyPlatformDefaults(void)`
 - Defined: `progs/doomgeneric/m_controls.c:393`
 - Doc: Apply custom patches to the default values depending on the platform we are running on.
+- Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ## progs/doomgeneric/m_fixed.c
 
@@ -6460,150 +7504,192 @@ FixedMul
   fixed_t	b )`
 - Defined: `progs/doomgeneric/m_fixed.c:32`
 - Doc: Fixme. __USE_C_FIXED__ or something.
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_fixed.h`
 
 ### FixedDiv `fixed_t FixedDiv(fixed_t a, fixed_t b)`
 - Defined: `progs/doomgeneric/m_fixed.c:46`
 - Doc: FixedDiv, C version.
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_fixed.h`
 
 ## progs/doomgeneric/m_menu.c
 
 ### M_ReadSaveStrings `void M_ReadSaveStrings(void)`
 - Defined: `progs/doomgeneric/m_menu.c:503`
 - Doc: M_ReadSaveStrings read the strings from the savegame files
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawLoad `void M_DrawLoad(void)`
 - Defined: `progs/doomgeneric/m_menu.c:530`
 - Doc: M_LoadGame & Cie.
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawSaveLoadBorder `void M_DrawSaveLoadBorder(int x,int y)`
 - Defined: `progs/doomgeneric/m_menu.c:549`
 - Doc: Draw border for the savegame description
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_LoadSelect `void M_LoadSelect(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:572`
 - Doc: User wants to load this game
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_LoadGame `void M_LoadGame (int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:585`
 - Doc: Selected from DOOM menu
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawSave `void M_DrawSave(void)`
 - Defined: `progs/doomgeneric/m_menu.c:601`
 - Doc: M_SaveGame & Cie.
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DoSave `void M_DoSave(int slot)`
 - Defined: `progs/doomgeneric/m_menu.c:622`
 - Doc: M_Responder calls this when user is finished
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SaveSelect `void M_SaveSelect(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:635`
 - Doc: User wants to save. Start string input for M_Responder
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SaveGame `void M_SaveGame (int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:650`
 - Doc: Selected from DOOM menu
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_QuickSaveResponse `void M_QuickSaveResponse(int key)`
 - Defined: `progs/doomgeneric/m_menu.c:671`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_QuickSave `void M_QuickSave(void)`
 - Defined: `progs/doomgeneric/m_menu.c:680`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_QuickLoadResponse `void M_QuickLoadResponse(int key)`
 - Defined: `progs/doomgeneric/m_menu.c:709`
 - Doc: M_QuickLoad
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_QuickLoad `void M_QuickLoad(void)`
 - Defined: `progs/doomgeneric/m_menu.c:717`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawReadThis1 `void M_DrawReadThis1(void)`
 - Defined: `progs/doomgeneric/m_menu.c:743`
 - Doc: Read This Menus Had a "quick hack to fix romero bug"
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawReadThis2 `void M_DrawReadThis2(void)`
 - Defined: `progs/doomgeneric/m_menu.c:820`
 - Doc: Read This Menus - optional second page.
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawSound `void M_DrawSound(void)`
 - Defined: `progs/doomgeneric/m_menu.c:834`
 - Doc: Change Sfx & Music volumes
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_Sound `void M_Sound(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:844`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SfxVol `void M_SfxVol(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:849`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_MusicVol `void M_MusicVol(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:866`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawMainMenu `void M_DrawMainMenu(void)`
 - Defined: `progs/doomgeneric/m_menu.c:890`
 - Doc: M_DrawMainMenu
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawNewGame `void M_DrawNewGame(void)`
 - Defined: `progs/doomgeneric/m_menu.c:902`
 - Doc: M_NewGame
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_NewGame `void M_NewGame(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:907`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawEpisode `void M_DrawEpisode(void)`
 - Defined: `progs/doomgeneric/m_menu.c:929`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_VerifyNightmare `void M_VerifyNightmare(int key)`
 - Defined: `progs/doomgeneric/m_menu.c:934`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_ChooseSkill `void M_ChooseSkill(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:943`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_Episode `void M_Episode(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:955`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawOptions `void M_DrawOptions(void)`
 - Defined: `progs/doomgeneric/m_menu.c:986`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_Options `void M_Options(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:1006`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_ChangeMessages `void M_ChangeMessages(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:1017`
 - Doc: Toggle messages on/off
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_EndGameResponse `void M_EndGameResponse(int key)`
 - Defined: `progs/doomgeneric/m_menu.c:1035`
 - Doc: M_EndGame
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_EndGame `void M_EndGame(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:1044`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_ReadThis `void M_ReadThis(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:1069`
 - Doc: M_ReadThis
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_ReadThis2 `void M_ReadThis2(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:1074`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_FinishReadThis `void M_FinishReadThis(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:1092`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_QuitResponse `void M_QuitResponse(int key)`
 - Defined: `progs/doomgeneric/m_menu.c:1128`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SelectEndMessage `static char *M_SelectEndMessage(void)`
 - Defined: `progs/doomgeneric/m_menu.c:1145`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_QuitDOOM `void M_QuitDOOM(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:1166`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_ChangeSensitivity `void M_ChangeSensitivity(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:1175`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_ChangeDetail `void M_ChangeDetail(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:1193`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SizeDisplay `void M_SizeDisplay(int choice)`
 - Defined: `progs/doomgeneric/m_menu.c:1209`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawThermo `void
 M_DrawThermo
@@ -6613,18 +7699,21 @@ M_DrawThermo
   int	thermDot )`
 - Defined: `progs/doomgeneric/m_menu.c:1243`
 - Doc: Menu Functions
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawEmptyCell `void
 M_DrawEmptyCell
 ( menu_t*	menu,
   int		item )`
 - Defined: `progs/doomgeneric/m_menu.c:1266`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawSelCell `void
 M_DrawSelCell
 ( menu_t*	menu,
   int		item )`
 - Defined: `progs/doomgeneric/m_menu.c:1277`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StartMessage `void
 M_StartMessage
@@ -6632,17 +7721,21 @@ M_StartMessage
   void*		routine,
   boolean	input )`
 - Defined: `progs/doomgeneric/m_menu.c:1286`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StopMessage `void M_StopMessage(void)`
 - Defined: `progs/doomgeneric/m_menu.c:1302`
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StringWidth `int M_StringWidth(char* string)`
 - Defined: `progs/doomgeneric/m_menu.c:1315`
 - Doc: Find string width from hu_font chars
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StringHeight `int M_StringHeight(char* string)`
 - Defined: `progs/doomgeneric/m_menu.c:1338`
 - Doc: Find string height from hu_font chars
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_WriteText `void
 M_WriteText
@@ -6651,123 +7744,153 @@ M_WriteText
   char*		string)`
 - Defined: `progs/doomgeneric/m_menu.c:1356`
 - Doc: Write a string using the hu_font
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### IsNullKey `static boolean IsNullKey(int key)`
 - Defined: `progs/doomgeneric/m_menu.c:1402`
 - Doc: These keys evaluate to a "null" key in Vanilla Doom that allows weird jumping in the menus. Preserve this behavior for a
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_Responder `boolean M_Responder (event_t* ev)`
 - Defined: `progs/doomgeneric/m_menu.c:1416`
 - Doc: M_Responder
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StartControlPanel `void M_StartControlPanel (void)`
 - Defined: `progs/doomgeneric/m_menu.c:1899`
 - Doc: M_StartControlPanel
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_DrawOPLDev `static void M_DrawOPLDev(void)`
 - Defined: `progs/doomgeneric/m_menu.c:1913`
 - Doc: if 0
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_Drawer `void M_Drawer (void)`
 - Defined: `progs/doomgeneric/m_menu.c:1951`
 - Doc: M_Drawer Called after the view has been rendered, but before it has been blitted.
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_ClearMenus `void M_ClearMenus (void)`
 - Defined: `progs/doomgeneric/m_menu.c:2041`
 - Doc: M_ClearMenus
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_SetupNextMenu `void M_SetupNextMenu(menu_t *menudef)`
 - Defined: `progs/doomgeneric/m_menu.c:2054`
 - Doc: M_SetupNextMenu
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_Ticker `void M_Ticker (void)`
 - Defined: `progs/doomgeneric/m_menu.c:2064`
 - Doc: M_Ticker
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_Init `void M_Init (void)`
 - Defined: `progs/doomgeneric/m_menu.c:2077`
 - Doc: M_Init
+- Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/m_misc.c
 
 ### M_MakeDirectory `void M_MakeDirectory(char *path)`
 - Defined: `progs/doomgeneric/m_misc.c:54`
 - Doc: Create a directory
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_FileExists `boolean M_FileExists(char *filename)`
 - Defined: `progs/doomgeneric/m_misc.c:65`
 - Doc: Check if a file exists
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_FileLength `long M_FileLength(FILE *handle)`
 - Defined: `progs/doomgeneric/m_misc.c:88`
 - Doc: Determine the length of an open file.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_WriteFile `boolean M_WriteFile(char *name, void *source, int length)`
 - Defined: `progs/doomgeneric/m_misc.c:110`
 - Doc: M_WriteFile
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_ReadFile `int M_ReadFile(char *name, byte **buffer)`
 - Defined: `progs/doomgeneric/m_misc.c:134`
 - Doc: M_ReadFile
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_TempFile `char *M_TempFile(char *s)`
 - Defined: `progs/doomgeneric/m_misc.c:165`
 - Doc: Returns the path to a temporary file of the given name, stored inside the system temporary directory.  The returned valu
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StrToInt `boolean M_StrToInt(const char *str, int *result)`
 - Defined: `progs/doomgeneric/m_misc.c:188`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_ExtractFileBase `void M_ExtractFileBase(char *path, char *dest)`
 - Defined: `progs/doomgeneric/m_misc.c:196`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_ForceUppercase `void M_ForceUppercase(char *text)`
 - Defined: `progs/doomgeneric/m_misc.c:241`
 - Doc: --------------------------------------------------------------------------  PROC M_ForceUppercase  Change string to uppe
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StrCaseStr `char *M_StrCaseStr(char *haystack, char *needle)`
 - Defined: `progs/doomgeneric/m_misc.c:257`
 - Doc: M_StrCaseStr  Case-insensitive version of strstr()
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StringDuplicate `char *M_StringDuplicate(const char *orig)`
 - Defined: `progs/doomgeneric/m_misc.c:290`
 - Doc: Safe version of strdup() that checks the string was successfully allocated.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StringReplace `char *M_StringReplace(const char *haystack, const char *needle,
                       const char ...`
 - Defined: `progs/doomgeneric/m_misc.c:309`
 - Doc: String replace function.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StringCopy `boolean M_StringCopy(char *dest, const char *src, size_t dest_size)`
 - Defined: `progs/doomgeneric/m_misc.c:371`
 - Doc: Safe string copy function that works like OpenBSD's strlcpy(). Returns true if the string was not truncated.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StringConcat `boolean M_StringConcat(char *dest, const char *src, size_t dest_size)`
 - Defined: `progs/doomgeneric/m_misc.c:392`
 - Doc: Safe string concat function that works like OpenBSD's strlcat(). Returns true if string not truncated.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StringStartsWith `boolean M_StringStartsWith(const char *s, const char *prefix)`
 - Defined: `progs/doomgeneric/m_misc.c:407`
 - Doc: Returns true if 's' begins with the specified prefix.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StringEndsWith `boolean M_StringEndsWith(const char *s, const char *suffix)`
 - Defined: `progs/doomgeneric/m_misc.c:415`
 - Doc: Returns true if 's' ends with the specified suffix.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_StringJoin `char *M_StringJoin(const char *s, ...)`
 - Defined: `progs/doomgeneric/m_misc.c:424`
 - Doc: Return a newly-malloced string with all the strings given as arguments concatenated together.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_vsnprintf `int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)`
 - Defined: `progs/doomgeneric/m_misc.c:481`
 - Doc: Safe, portable vsnprintf().
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_snprintf `int M_snprintf(char *buf, size_t buf_len, const char *s, ...)`
 - Defined: `progs/doomgeneric/m_misc.c:507`
 - Doc: Safe, portable snprintf().
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### M_OEMToUTF8 `char *M_OEMToUTF8(const char *oem)`
 - Defined: `progs/doomgeneric/m_misc.c:518`
 - Doc: ifdef _WIN32
+- Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/m_random.c
 
@@ -6786,36 +7909,45 @@ M_WriteText
 ### mem_fopen_read `MEMFILE *mem_fopen_read(void *buf, size_t buflen)`
 - Defined: `progs/doomgeneric/memio.c:41`
 - Doc: Open a memory area for reading
+- Depends on: `kernel/string.c`, `progs/doomgeneric/memio.h`, `progs/doomgeneric/z_zone.h`
 
 ### mem_fread `size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream)`
 - Defined: `progs/doomgeneric/memio.c:57`
 - Doc: Read bytes
+- Depends on: `kernel/string.c`, `progs/doomgeneric/memio.h`, `progs/doomgeneric/z_zone.h`
 
 ### mem_fopen_write `MEMFILE *mem_fopen_write(void)`
 - Defined: `progs/doomgeneric/memio.c:89`
 - Doc: Open a memory area for writing
+- Depends on: `kernel/string.c`, `progs/doomgeneric/memio.h`, `progs/doomgeneric/z_zone.h`
 
 ### mem_fwrite `size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)`
 - Defined: `progs/doomgeneric/memio.c:106`
 - Doc: Write bytes to stream
+- Depends on: `kernel/string.c`, `progs/doomgeneric/memio.h`, `progs/doomgeneric/z_zone.h`
 
 ### mem_get_buf `void mem_get_buf(MEMFILE *stream, void **buf, size_t *buflen)`
 - Defined: `progs/doomgeneric/memio.c:142`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/memio.h`, `progs/doomgeneric/z_zone.h`
 
 ### mem_fclose `void mem_fclose(MEMFILE *stream)`
 - Defined: `progs/doomgeneric/memio.c:148`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/memio.h`, `progs/doomgeneric/z_zone.h`
 
 ### mem_ftell `long mem_ftell(MEMFILE *stream)`
 - Defined: `progs/doomgeneric/memio.c:158`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/memio.h`, `progs/doomgeneric/z_zone.h`
 
 ### mem_fseek `int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)`
 - Defined: `progs/doomgeneric/memio.c:163`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/memio.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_ceilng.c
 
 ### T_MoveCeiling `void T_MoveCeiling (ceiling_t* ceiling)`
 - Defined: `progs/doomgeneric/p_ceilng.c:44`
 - Doc: T_MoveCeiling
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_DoCeiling `int
 EV_DoCeiling
@@ -6823,28 +7955,34 @@ EV_DoCeiling
   ceiling_e	type )`
 - Defined: `progs/doomgeneric/p_ceilng.c:160`
 - Doc: EV_DoCeiling Move a ceiling up/down and all around!
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_AddActiveCeiling `void P_AddActiveCeiling(ceiling_t* c)`
 - Defined: `progs/doomgeneric/p_ceilng.c:240`
 - Doc: Add an active ceiling
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_RemoveActiveCeiling `void P_RemoveActiveCeiling(ceiling_t* c)`
 - Defined: `progs/doomgeneric/p_ceilng.c:259`
 - Doc: Remove a ceiling's thinker
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ActivateInStasisCeiling `void P_ActivateInStasisCeiling(line_t* line)`
 - Defined: `progs/doomgeneric/p_ceilng.c:280`
 - Doc: Restart a ceiling that's in-stasis
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_CeilingCrushStop `int	EV_CeilingCrushStop(line_t	*line)`
 - Defined: `progs/doomgeneric/p_ceilng.c:303`
 - Doc: EV_CeilingCrushStop Stop a ceiling from crushing!
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_doors.c
 
 ### T_VerticalDoor `void T_VerticalDoor (vldoor_t* door)`
 - Defined: `progs/doomgeneric/p_doors.c:57`
 - Doc: T_VerticalDoor
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_DoLockedDoor `int
 EV_DoLockedDoor
@@ -6853,12 +7991,14 @@ EV_DoLockedDoor
   mobj_t*	thing )`
 - Defined: `progs/doomgeneric/p_doors.c:193`
 - Doc: EV_DoLockedDoor Move a locked door up/down
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_DoDoor `int
 EV_DoDoor
 ( line_t*	line,
   vldoor_e	type )`
 - Defined: `progs/doomgeneric/p_doors.c:249`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_VerticalDoor `void
 EV_VerticalDoor
@@ -6866,10 +8006,12 @@ EV_VerticalDoor
   mobj_t*	thing )`
 - Defined: `progs/doomgeneric/p_doors.c:336`
 - Doc: EV_VerticalDoor : open a door manually, no tag value
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnDoorCloseIn30 `void P_SpawnDoorCloseIn30 (sector_t* sec)`
 - Defined: `progs/doomgeneric/p_doors.c:519`
 - Doc: Spawn a door that closes after 30 seconds
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnDoorRaiseIn5Mins `void
 P_SpawnDoorRaiseIn5Mins
@@ -6877,22 +8019,27 @@ P_SpawnDoorRaiseIn5Mins
   int		secnum )`
 - Defined: `progs/doomgeneric/p_doors.c:541`
 - Doc: Spawn a door that opens after 5 minutes
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_InitSlidingDoorFrames `void P_InitSlidingDoorFrames(void)`
 - Defined: `progs/doomgeneric/p_doors.c:579`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_FindSlidingDoorType `int P_FindSlidingDoorType(line_t*	line)`
 - Defined: `progs/doomgeneric/p_doors.c:624`
 - Doc: Return index into "slideFrames" array for which door type to use
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### T_SlidingDoor `void T_SlidingDoor (slidedoor_t*	door)`
 - Defined: `progs/doomgeneric/p_doors.c:638`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_SlidingDoor `void
 EV_SlidingDoor
 ( line_t*	line,
   mobj_t*	thing )`
 - Defined: `progs/doomgeneric/p_doors.c:723`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_enemy.c
 
@@ -6901,6 +8048,7 @@ P_RecursiveSound
 ( sector_t*	sec,
   int		soundblocks )`
 - Defined: `progs/doomgeneric/p_enemy.c:97`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_NoiseAlert `void
 P_NoiseAlert
@@ -6908,24 +8056,30 @@ P_NoiseAlert
   mobj_t*	emmiter )`
 - Defined: `progs/doomgeneric/p_enemy.c:151`
 - Doc: P_NoiseAlert If a monster yells at a player, it will alert other monsters to the player.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_CheckMeleeRange `boolean P_CheckMeleeRange (mobj_t*	actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:167`
 - Doc: P_CheckMeleeRange
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_CheckMissileRange `boolean P_CheckMissileRange (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:190`
 - Doc: P_CheckMissileRange
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_Move `boolean P_Move (mobj_t*	actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:259`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_TryWalk `boolean P_TryWalk (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:337`
 - Doc: TryWalk Attempts to move actor on in its current (ob->moveangle) direction. If blocked by either a wall or an actor retu
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_NewChaseDir `void P_NewChaseDir (mobj_t*	actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:347`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_LookForPlayers `boolean
 P_LookForPlayers
@@ -6933,115 +8087,148 @@ P_LookForPlayers
   boolean	allaround )`
 - Defined: `progs/doomgeneric/p_enemy.c:486`
 - Doc: P_LookForPlayers If allaround is false, only look 180 degrees in front. Returns true if a player is targeted.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_KeenDie `void A_KeenDie (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:551`
 - Doc: A_KeenDie DOOM II special, map 32. Uses special tag 666.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Look `void A_Look (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:589`
 - Doc: A_Look Stay in state until a player is sighted.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Chase `void A_Chase (mobj_t*	actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:657`
 - Doc: A_Chase Actor has a melee attack, so it tries to close as fast as possible
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FaceTarget `void A_FaceTarget (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:767`
 - Doc: A_FaceTarget
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_PosAttack `void A_PosAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:787`
 - Doc: A_PosAttack
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_SPosAttack `void A_SPosAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:805`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_CPosAttack `void A_CPosAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:829`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_CPosRefire `void A_CPosRefire (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:849`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_SpidRefire `void A_SpidRefire (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:865`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BspiAttack `void A_BspiAttack (mobj_t *actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:882`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_TroopAttack `void A_TroopAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:898`
 - Doc: A_TroopAttack
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_SargAttack `void A_SargAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:918`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_HeadAttack `void A_HeadAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:934`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_CyberAttack `void A_CyberAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:953`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BruisAttack `void A_BruisAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:962`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_SkelMissile `void A_SkelMissile (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:987`
 - Doc: A_SkelMissile
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Tracer `void A_Tracer (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1005`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_SkelWhoosh `void A_SkelWhoosh (mobj_t*	actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1076`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_SkelFist `void A_SkelFist (mobj_t*	actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1085`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### PIT_VileCheck `boolean PIT_VileCheck (mobj_t*	thing)`
 - Defined: `progs/doomgeneric/p_enemy.c:1113`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_VileChase `void A_VileChase (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1152`
 - Doc: A_VileChase Check for ressurecting a body
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_VileStart `void A_VileStart (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1218`
 - Doc: A_VileStart
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_StartFire `void A_StartFire (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1229`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FireCrackle `void A_FireCrackle (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1235`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Fire `void A_Fire (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1241`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_VileTarget `void A_VileTarget (mobj_t*	actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1273`
 - Doc: A_VileTarget Spawn the hellfire
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_VileAttack `void A_VileAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1298`
 - Doc: A_VileAttack
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FatRaise `void A_FatRaise (mobj_t *actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1338`
 - Doc: Mancubus attack, firing three missiles (bruisers) in three different directions? Doesn't look like it.  define	FATSPREAD
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FatAttack1 `void A_FatAttack1 (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1344`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FatAttack2 `void A_FatAttack2 (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1365`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FatAttack3 `void A_FatAttack3 (mobj_t*	actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1384`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_SkullAttack `void A_SkullAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1414`
 - Doc: SkullAttack Fly at the player like a missile.  define	SKULLSPEED		(20*FRACUNIT)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_PainShootSkull `void
 A_PainShootSkull
@@ -7049,92 +8236,117 @@ A_PainShootSkull
   angle_t	angle )`
 - Defined: `progs/doomgeneric/p_enemy.c:1445`
 - Doc: A_PainShootSkull Spawn a lost soul and launch it at the target
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_PainAttack `void A_PainAttack (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1508`
 - Doc: A_PainAttack Spawn a lost soul and launch it at the target
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_PainDie `void A_PainDie (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1516`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Scream `void A_Scream (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1525`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_XScream `void A_XScream (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1566`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Pain `void A_Pain (mobj_t* actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1572`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Fall `void A_Fall (mobj_t *actor)`
 - Defined: `progs/doomgeneric/p_enemy.c:1578`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Explode `void A_Explode (mobj_t* thingy)`
 - Defined: `progs/doomgeneric/p_enemy.c:1594`
 - Doc: A_Explode
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### CheckBossEnd `static boolean CheckBossEnd(mobjtype_t motype)`
 - Defined: `progs/doomgeneric/p_enemy.c:1604`
 - Doc: Check whether the death of the specified monster type is allowed to trigger the end of episode special action.  This beh
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BossDeath `void A_BossDeath (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1656`
 - Doc: A_BossDeath Possibly trigger special effects if on first boss level
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Hoof `void A_Hoof (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1755`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Metal `void A_Metal (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1762`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BabyMetal `void A_BabyMetal (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1768`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_OpenShotgun2 `void
 A_OpenShotgun2
 ( player_t*	player,
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_enemy.c:1774`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_LoadShotgun2 `void
 A_LoadShotgun2
 ( player_t*	player,
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_enemy.c:1782`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_CloseShotgun2 `void
 A_CloseShotgun2
 ( player_t*	player,
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_enemy.c:1795`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BrainAwake `void A_BrainAwake (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1810`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BrainPain `void A_BrainPain (mobj_t*	mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1839`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BrainScream `void A_BrainScream (mobj_t*	mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1845`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BrainExplode `void A_BrainExplode (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1870`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BrainDie `void A_BrainDie (mobj_t*	mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1892`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BrainSpit `void A_BrainSpit (mobj_t*	mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1898`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_SpawnSound `void A_SpawnSound (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1928`
 - Doc: travelling cube sound
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_SpawnFly `void A_SpawnFly (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1933`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_PlayerScream `void A_PlayerScream (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_enemy.c:1989`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_floor.c
 
@@ -7147,10 +8359,12 @@ T_MovePlane
   int	...`
 - Defined: `progs/doomgeneric/p_floor.c:41`
 - Doc: Move a plane (floor or ceiling) and check for crushing
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### T_MoveFloor `void T_MoveFloor(floormove_t* floor)`
 - Defined: `progs/doomgeneric/p_floor.c:202`
 - Doc: MOVE A FLOOR TO IT'S DESTINATION (UP OR DOWN)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_DoFloor `int
 EV_DoFloor
@@ -7158,6 +8372,7 @@ EV_DoFloor
   floor_e	floortype )`
 - Defined: `progs/doomgeneric/p_floor.c:250`
 - Doc: HANDLE FLOOR TYPES
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_BuildStairs `int
 EV_BuildStairs
@@ -7165,6 +8380,7 @@ EV_BuildStairs
   stair_e	type )`
 - Defined: `progs/doomgeneric/p_floor.c:443`
 - Doc: BUILD A STAIRCASE!
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_inter.c
 
@@ -7175,6 +8391,7 @@ P_GiveAmmo
   int		num )`
 - Defined: `progs/doomgeneric/p_inter.c:64`
 - Doc: P_GiveAmmo Num is the number of clip loads, not the individual count (0= 1/2 clip). Returns false if the ammo can't be p
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_GiveWeapon `boolean
 P_GiveWeapon
@@ -7183,6 +8400,7 @@ P_GiveWeapon
   boolean	dropped )`
 - Defined: `progs/doomgeneric/p_inter.c:159`
 - Doc: P_GiveWeapon The weapon name may have a MF_DROPPED flag ored in.
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_GiveBody `boolean
 P_GiveBody
@@ -7190,6 +8408,7 @@ P_GiveBody
   int		num )`
 - Defined: `progs/doomgeneric/p_inter.c:222`
 - Doc: P_GiveBody Returns false if the body isn't needed at all
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_GiveArmor `boolean
 P_GiveArmor
@@ -7197,6 +8416,7 @@ P_GiveArmor
   int		armortype )`
 - Defined: `progs/doomgeneric/p_inter.c:245`
 - Doc: P_GiveArmor Returns false if the armor is worse than the current armor.
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_GiveCard `void
 P_GiveCard
@@ -7204,6 +8424,7 @@ P_GiveCard
   card_t	card )`
 - Defined: `progs/doomgeneric/p_inter.c:267`
 - Doc: P_GiveCard
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_GivePower `boolean
 P_GivePower
@@ -7211,6 +8432,7 @@ P_GivePower
   int /*powertype_t*/	power )`
 - Defined: `progs/doomgeneric/p_inter.c:283`
 - Doc: P_GivePower
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_TouchSpecialThing `void
 P_TouchSpecialThing
@@ -7218,6 +8440,7 @@ P_TouchSpecialThing
   mobj_t*	toucher )`
 - Defined: `progs/doomgeneric/p_inter.c:332`
 - Doc: P_TouchSpecialThing
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_KillMobj `void
 P_KillMobj
@@ -7225,6 +8448,7 @@ P_KillMobj
   mobj_t*	target )`
 - Defined: `progs/doomgeneric/p_inter.c:665`
 - Doc: KillMobj
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_DamageMobj `void
 P_DamageMobj
@@ -7234,28 +8458,34 @@ P_DamageMobj
   int 		damage )`
 - Defined: `progs/doomgeneric/p_inter.c:778`
 - Doc: P_DamageMobj Damages both enemies and players "inflictor" is the thing that caused the damage creature or missile, can b
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_lights.c
 
 ### T_FireFlicker `void T_FireFlicker (fireflicker_t* flick)`
 - Defined: `progs/doomgeneric/p_lights.c:39`
 - Doc: T_FireFlicker
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnFireFlicker `void P_SpawnFireFlicker (sector_t*	sector)`
 - Defined: `progs/doomgeneric/p_lights.c:61`
 - Doc: P_SpawnFireFlicker
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### T_LightFlash `void T_LightFlash (lightflash_t* flash)`
 - Defined: `progs/doomgeneric/p_lights.c:91`
 - Doc: T_LightFlash Do flashing lights.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnLightFlash `void P_SpawnLightFlash (sector_t*	sector)`
 - Defined: `progs/doomgeneric/p_lights.c:117`
 - Doc: P_SpawnLightFlash After the map has been loaded, scan each sector for specials that spawn thinkers
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### T_StrobeFlash `void T_StrobeFlash (strobe_t*		flash)`
 - Defined: `progs/doomgeneric/p_lights.c:148`
 - Doc: T_StrobeFlash
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnStrobeFlash `void
 P_SpawnStrobeFlash
@@ -7264,14 +8494,17 @@ P_SpawnStrobeFlash
   int		inSync )`
 - Defined: `progs/doomgeneric/p_lights.c:173`
 - Doc: P_SpawnStrobeFlash After the map has been loaded, scan each sector for specials that spawn thinkers
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_StartLightStrobing `void EV_StartLightStrobing(line_t*	line)`
 - Defined: `progs/doomgeneric/p_lights.c:208`
 - Doc: Start strobing lights (usually from a trigger)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_TurnTagLightsOff `void EV_TurnTagLightsOff(line_t* line)`
 - Defined: `progs/doomgeneric/p_lights.c:229`
 - Doc: TURN LINE'S TAG LIGHTS OFF
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_LightTurnOn `void
 EV_LightTurnOn
@@ -7279,19 +8512,23 @@ EV_LightTurnOn
   int		bright )`
 - Defined: `progs/doomgeneric/p_lights.c:263`
 - Doc: TURN LINE'S TAG LIGHTS ON
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### T_Glow `void T_Glow(glow_t*	g)`
 - Defined: `progs/doomgeneric/p_lights.c:306`
 - Doc: Spawn glowing light
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnGlowingLight `void P_SpawnGlowingLight(sector_t*	sector)`
 - Defined: `progs/doomgeneric/p_lights.c:332`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_map.c
 
 ### PIT_StompThing `boolean PIT_StompThing (mobj_t* thing)`
 - Defined: `progs/doomgeneric/p_map.c:97`
 - Doc: PIT_StompThing
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_TeleportMove `boolean
 P_TeleportMove
@@ -7300,14 +8537,17 @@ P_TeleportMove
   fixed_t	y )`
 - Defined: `progs/doomgeneric/p_map.c:130`
 - Doc: P_TeleportMove
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### PIT_CheckLine `boolean PIT_CheckLine (line_t* ld)`
 - Defined: `progs/doomgeneric/p_map.c:206`
 - Doc: PIT_CheckLine Adjusts tmfloorz and tmceilingz as lines are contacted
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### PIT_CheckThing `boolean PIT_CheckThing (mobj_t* thing)`
 - Defined: `progs/doomgeneric/p_map.c:275`
 - Doc: PIT_CheckThing
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_CheckPosition `boolean
 P_CheckPosition
@@ -7316,6 +8556,7 @@ P_CheckPosition
   fixed_t	y )`
 - Defined: `progs/doomgeneric/p_map.c:401`
 - Doc: during: special things are touched if MF_PICKUP early out on solid lines?  out: newsubsec floorz ceilingz tmdropoffz the
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_TryMove `boolean
 P_TryMove
@@ -7324,31 +8565,38 @@ P_TryMove
   fixed_t	y )`
 - Defined: `progs/doomgeneric/p_map.c:477`
 - Doc: P_TryMove Attempt to move to a new position, crossing special lines unless MF_TELEPORT is set.
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_ThingHeightClip `boolean P_ThingHeightClip (mobj_t* thing)`
 - Defined: `progs/doomgeneric/p_map.c:557`
 - Doc: P_ThingHeightClip Takes a valid thing and adjusts the thing->floorz, thing->ceilingz, and possibly thing->z. This is cal
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_HitSlideLine `void P_HitSlideLine (line_t* ld)`
 - Defined: `progs/doomgeneric/p_map.c:611`
 - Doc: P_HitSlideLine Adjusts the xmove / ymove so that the next move will slide along the wall.
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### PTR_SlideTraverse `boolean PTR_SlideTraverse (intercept_t* in)`
 - Defined: `progs/doomgeneric/p_map.c:663`
 - Doc: PTR_SlideTraverse
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_SlideMove `void P_SlideMove (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_map.c:722`
 - Doc: P_SlideMove The momx / momy move is bad, so try to slide along a wall. Find the first line hit, move flush to it, and sl
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### PTR_AimTraverse `boolean
 PTR_AimTraverse (intercept_t* in)`
 - Defined: `progs/doomgeneric/p_map.c:842`
 - Doc: PTR_AimTraverse Sets linetaget and aimslope when a target is aimed at.
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### PTR_ShootTraverse `boolean PTR_ShootTraverse (intercept_t* in)`
 - Defined: `progs/doomgeneric/p_map.c:928`
 - Doc: PTR_ShootTraverse
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_AimLineAttack `fixed_t
 P_AimLineAttack
@@ -7357,6 +8605,7 @@ P_AimLineAttack
   fixed_t	distance )`
 - Defined: `progs/doomgeneric/p_map.c:1067`
 - Doc: P_AimLineAttack
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_LineAttack `void
 P_LineAttack
@@ -7367,17 +8616,21 @@ P_LineAttack
   int		dama...`
 - Defined: `progs/doomgeneric/p_map.c:1109`
 - Doc: P_LineAttack If damage == 0, it is just a test trace that will leave linetarget set.
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### PTR_UseTraverse `boolean	PTR_UseTraverse (intercept_t* in)`
 - Defined: `progs/doomgeneric/p_map.c:1141`
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_UseLines `void P_UseLines (player_t*	player)`
 - Defined: `progs/doomgeneric/p_map.c:1177`
 - Doc: P_UseLines Looks for special lines in front of the player to activate.
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### PIT_RadiusAttack `boolean PIT_RadiusAttack (mobj_t* thing)`
 - Defined: `progs/doomgeneric/p_map.c:1211`
 - Doc: PIT_RadiusAttack "bombsource" is the creature that caused the explosion at "bombspot".
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_RadiusAttack `void
 P_RadiusAttack
@@ -7386,10 +8639,12 @@ P_RadiusAttack
   int		damage )`
 - Defined: `progs/doomgeneric/p_map.c:1252`
 - Doc: P_RadiusAttack Source is the creature that caused the explosion at spot.
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### PIT_ChangeSector `boolean PIT_ChangeSector (mobj_t*	thing)`
 - Defined: `progs/doomgeneric/p_map.c:1304`
 - Doc: PIT_ChangeSector
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_ChangeSector `boolean
 P_ChangeSector
@@ -7397,10 +8652,12 @@ P_ChangeSector
   boolean	crunch )`
 - Defined: `progs/doomgeneric/p_map.c:1367`
 - Doc: P_ChangeSector
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### SpechitOverrun `static void SpechitOverrun(line_t *ld)`
 - Defined: `progs/doomgeneric/p_map.c:1390`
 - Doc: Code to emulate the behavior of Vanilla Doom when encountering an overrun of the spechit array.  This is by Andrey Budko
+- Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_maputl.c
 
@@ -7410,6 +8667,7 @@ P_AproxDistance
   fixed_t	dy )`
 - Defined: `progs/doomgeneric/p_maputl.c:42`
 - Doc: P_AproxDistance Gives an estimation of distance (not exact)
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_PointOnLineSide `int
 P_PointOnLineSide
@@ -7418,6 +8676,7 @@ P_PointOnLineSide
   line_t*	line )`
 - Defined: `progs/doomgeneric/p_maputl.c:60`
 - Doc: P_PointOnLineSide Returns 0 or 1
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_BoxOnLineSide `int
 P_BoxOnLineSide
@@ -7425,6 +8684,7 @@ P_BoxOnLineSide
   line_t*	ld )`
 - Defined: `progs/doomgeneric/p_maputl.c:104`
 - Doc: P_BoxOnLineSide Considers the line to be infinite Returns side 0 or 1, -1 if box crosses the line.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_PointOnDivlineSide `int
 P_PointOnDivlineSide
@@ -7433,6 +8693,7 @@ P_PointOnDivlineSide
   divline_t*	line )`
 - Defined: `progs/doomgeneric/p_maputl.c:155`
 - Doc: P_PointOnDivlineSide Returns 0 or 1.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_MakeDivline `void
 P_MakeDivline
@@ -7440,6 +8701,7 @@ P_MakeDivline
   divline_t*	dl )`
 - Defined: `progs/doomgeneric/p_maputl.c:205`
 - Doc: P_MakeDivline
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_InterceptVector `fixed_t
 P_InterceptVector
@@ -7447,18 +8709,22 @@ P_InterceptVector
   divline_t*	v1 )`
 - Defined: `progs/doomgeneric/p_maputl.c:225`
 - Doc: P_InterceptVector Returns the fractional intercept point along the first divline. This is only called by the addthings a
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_LineOpening `void P_LineOpening (line_t* linedef)`
 - Defined: `progs/doomgeneric/p_maputl.c:293`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_UnsetThingPosition `void P_UnsetThingPosition (mobj_t* thing)`
 - Defined: `progs/doomgeneric/p_maputl.c:342`
 - Doc: P_UnsetThingPosition Unlinks a thing from block map and sectors. On each position change, BLOCKMAP and other lookups mai
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_SetThingPosition `void
 P_SetThingPosition (mobj_t* thing)`
 - Defined: `progs/doomgeneric/p_maputl.c:390`
 - Doc: P_SetThingPosition Links a thing into both a block and a subsector based on it's x y. Sets thing->subsector properly
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_BlockLinesIterator `boolean
 P_BlockLinesIterator
@@ -7467,6 +8733,7 @@ P_BlockLinesIterator
   boolean(*func)(line_t*) )`
 - Defined: `progs/doomgeneric/p_maputl.c:466`
 - Doc: P_BlockLinesIterator The validcount flags are used to avoid checking lines that are marked in multiple mapblocks, so inc
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_BlockThingsIterator `boolean
 P_BlockThingsIterator
@@ -7475,15 +8742,18 @@ P_BlockThingsIterator
   boolean(*func)(mobj_t*) )`
 - Defined: `progs/doomgeneric/p_maputl.c:507`
 - Doc: P_BlockThingsIterator
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### PIT_AddLineIntercepts `boolean
 PIT_AddLineIntercepts (line_t* ld)`
 - Defined: `progs/doomgeneric/p_maputl.c:558`
 - Doc: PIT_AddLineIntercepts. Looks for lines in the given block that intercept the given trace to add to the intercepts list. 
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### PIT_AddThingIntercepts `boolean PIT_AddThingIntercepts (mobj_t* thing)`
 - Defined: `progs/doomgeneric/p_maputl.c:614`
 - Doc: PIT_AddThingIntercepts
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_TraverseIntercepts `boolean
 P_TraverseIntercepts
@@ -7491,14 +8761,17 @@ P_TraverseIntercepts
   fixed_t	maxfrac )`
 - Defined: `progs/doomgeneric/p_maputl.c:681`
 - Doc: P_TraverseIntercepts Returns true if the traverser function returns true for all lines.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### InterceptsMemoryOverrun `static void InterceptsMemoryOverrun(int location, int value)`
 - Defined: `progs/doomgeneric/p_maputl.c:781`
 - Doc: Overwrite a specific memory location with a value.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### InterceptsOverrun `static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)`
 - Defined: `progs/doomgeneric/p_maputl.c:826`
 - Doc: Emulate overruns of the intercepts[] array.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_PathTraverse `boolean
 P_PathTraverse
@@ -7509,6 +8782,7 @@ P_PathTraverse
   int			flags,...`
 - Defined: `progs/doomgeneric/p_maputl.c:860`
 - Doc: P_PathTraverse Traces a line from x1,y1 to x2,y2, calling the traverser function for each. Returns true if the traverser
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ## progs/doomgeneric/p_mobj.c
 
@@ -7517,27 +8791,33 @@ P_SetMobjState
 ( mobj_t*	mobj,
   statenum_t	state )`
 - Defined: `progs/doomgeneric/p_mobj.c:46`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ExplodeMissile `void P_ExplodeMissile (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_mobj.c:84`
 - Doc: P_ExplodeMissile
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_XYMovement `void P_XYMovement (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_mobj.c:107`
 - Doc: P_XYMovement  define STOPSPEED		0x1000 define FRICTION		0xe800
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ZMovement `void P_ZMovement (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_mobj.c:240`
 - Doc: P_ZMovement
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_NightmareRespawn `void
 P_NightmareRespawn (mobj_t* mobj)`
 - Defined: `progs/doomgeneric/p_mobj.c:382`
 - Doc: P_NightmareRespawn
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_MobjThinker `void P_MobjThinker (mobj_t* mobj)`
 - Defined: `progs/doomgeneric/p_mobj.c:441`
 - Doc: P_MobjThinker
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnMobj `mobj_t*
 P_SpawnMobj
@@ -7547,21 +8827,26 @@ P_SpawnMobj
   mobjtype_t	type )`
 - Defined: `progs/doomgeneric/p_mobj.c:505`
 - Doc: P_SpawnMobj
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_RemoveMobj `void P_RemoveMobj (mobj_t* mobj)`
 - Defined: `progs/doomgeneric/p_mobj.c:570`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_RespawnSpecials `void P_RespawnSpecials (void)`
 - Defined: `progs/doomgeneric/p_mobj.c:604`
 - Doc: P_RespawnSpecials
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnPlayer `void P_SpawnPlayer (mapthing_t* mthing)`
 - Defined: `progs/doomgeneric/p_mobj.c:668`
 - Doc: P_SpawnPlayer Called when a player is spawned on the level. Most of the player structure stays unchanged between levels.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnMapThing `void P_SpawnMapThing (mapthing_t* mthing)`
 - Defined: `progs/doomgeneric/p_mobj.c:739`
 - Doc: P_SpawnMapThing The fields of the mapthing should already be in host byte order.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnPuff `void
 P_SpawnPuff
@@ -7569,6 +8854,7 @@ P_SpawnPuff
   fixed_t	y,
   fixed_t	z )`
 - Defined: `progs/doomgeneric/p_mobj.c:849`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnBlood `void
 P_SpawnBlood
@@ -7578,14 +8864,17 @@ P_SpawnBlood
   int		damage )`
 - Defined: `progs/doomgeneric/p_mobj.c:877`
 - Doc: P_SpawnBlood
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_CheckMissileSpawn `void P_CheckMissileSpawn (mobj_t* th)`
 - Defined: `progs/doomgeneric/p_mobj.c:907`
 - Doc: P_CheckMissileSpawn Moves the missile forward a bit and possibly explodes it right there.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SubstNullMobj `mobj_t *P_SubstNullMobj(mobj_t *mobj)`
 - Defined: `progs/doomgeneric/p_mobj.c:928`
 - Doc: Certain functions assume that a mobj_t pointer is non-NULL, causing a crash in some situations where it is NULL.  Vanill
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnMissile `mobj_t*
 P_SpawnMissile
@@ -7594,6 +8883,7 @@ P_SpawnMissile
   mobjtype_t	type )`
 - Defined: `progs/doomgeneric/p_mobj.c:949`
 - Doc: P_SpawnMissile
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnPlayerMissile `void
 P_SpawnPlayerMissile
@@ -7601,12 +8891,14 @@ P_SpawnPlayerMissile
   mobjtype_t	type )`
 - Defined: `progs/doomgeneric/p_mobj.c:995`
 - Doc: P_SpawnPlayerMissile Tries to aim at a nearby monster
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_plats.c
 
 ### T_PlatRaise `void T_PlatRaise(plat_t* plat)`
 - Defined: `progs/doomgeneric/p_plats.c:45`
 - Doc: Move a plat up and down
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_DoPlat `int
 EV_DoPlat
@@ -7615,18 +8907,23 @@ EV_DoPlat
   int		amount )`
 - Defined: `progs/doomgeneric/p_plats.c:128`
 - Doc: Do Platforms "amount" is only used for SOME platforms.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ActivateInStasis `void P_ActivateInStasis(int tag)`
 - Defined: `progs/doomgeneric/p_plats.c:245`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_StopPlat `void EV_StopPlat(line_t* line)`
 - Defined: `progs/doomgeneric/p_plats.c:262`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_AddActivePlat `void P_AddActivePlat(plat_t* plat)`
 - Defined: `progs/doomgeneric/p_plats.c:277`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_RemoveActivePlat `void P_RemoveActivePlat(plat_t* plat)`
 - Defined: `progs/doomgeneric/p_plats.c:290`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_pspr.c
 
@@ -7637,25 +8934,31 @@ P_SetPsprite
   statenum_t	stnum )`
 - Defined: `progs/doomgeneric/p_pspr.c:49`
 - Doc: P_SetPsprite
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_CalcSwing `void P_CalcSwing (player_t*	player)`
 - Defined: `progs/doomgeneric/p_pspr.c:102`
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_BringUpWeapon `void P_BringUpWeapon (player_t* player)`
 - Defined: `progs/doomgeneric/p_pspr.c:129`
 - Doc: P_BringUpWeapon Starts bringing the pending weapon up from the bottom of the screen. Uses player
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_CheckAmmo `boolean P_CheckAmmo (player_t* player)`
 - Defined: `progs/doomgeneric/p_pspr.c:152`
 - Doc: P_CheckAmmo Returns true if there is enough ammo to shoot. If not, selects the next weapon to use.
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_FireWeapon `void P_FireWeapon (player_t* player)`
 - Defined: `progs/doomgeneric/p_pspr.c:237`
 - Doc: P_FireWeapon.
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_DropWeapon `void P_DropWeapon (player_t* player)`
 - Defined: `progs/doomgeneric/p_pspr.c:256`
 - Doc: P_DropWeapon Player died, so put the weapon away.
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_WeaponReady `void
 A_WeaponReady
@@ -7663,18 +8966,21 @@ A_WeaponReady
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:272`
 - Doc: A_WeaponReady The player can fire the weapon or change to another weapon at this time. Follows after getting weapon up, 
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_ReFire `void A_ReFire
 ( player_t*	player,
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:334`
 - Doc: A_ReFire The player can re-fire the weapon without lowering it entirely.
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_CheckReload `void
 A_CheckReload
 ( player_t*	player,
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:354`
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Lower `void
 A_Lower
@@ -7682,6 +8988,7 @@ A_Lower
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:375`
 - Doc: A_Lower Lowers current weapon, and changes weapon at bottom.
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Raise `void
 A_Raise
@@ -7689,6 +8996,7 @@ A_Raise
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:413`
 - Doc: A_Raise
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_GunFlash `void
 A_GunFlash
@@ -7696,6 +9004,7 @@ A_GunFlash
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:439`
 - Doc: A_GunFlash
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Punch `void
 A_Punch
@@ -7703,6 +9012,7 @@ A_Punch
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:458`
 - Doc: A_Punch
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Saw `void
 A_Saw
@@ -7710,10 +9020,12 @@ A_Saw
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:492`
 - Doc: A_Saw
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### DecreaseAmmo `static void DecreaseAmmo(player_t *player, int ammonum, int amount)`
 - Defined: `progs/doomgeneric/p_pspr.c:541`
 - Doc: Doom does not check the bounds of the ammo array.  As a result, it is possible to use an ammo type > 4 that overflows in
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FireMissile `void
 A_FireMissile
@@ -7721,6 +9033,7 @@ A_FireMissile
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:558`
 - Doc: A_FireMissile
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FireBFG `void
 A_FireBFG
@@ -7728,6 +9041,7 @@ A_FireBFG
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:571`
 - Doc: A_FireBFG
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FirePlasma `void
 A_FirePlasma
@@ -7735,9 +9049,11 @@ A_FirePlasma
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:586`
 - Doc: A_FirePlasma
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_BulletSlope `void P_BulletSlope (mobj_t*	mo)`
 - Defined: `progs/doomgeneric/p_pspr.c:608`
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_GunShot `void
 P_GunShot
@@ -7745,6 +9061,7 @@ P_GunShot
   boolean	accurate )`
 - Defined: `progs/doomgeneric/p_pspr.c:634`
 - Doc: P_GunShot
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FirePistol `void
 A_FirePistol
@@ -7752,6 +9069,7 @@ A_FirePistol
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:655`
 - Doc: A_FirePistol
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FireShotgun `void
 A_FireShotgun
@@ -7759,6 +9077,7 @@ A_FireShotgun
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:677`
 - Doc: A_FireShotgun
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FireShotgun2 `void
 A_FireShotgun2
@@ -7766,6 +9085,7 @@ A_FireShotgun2
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:704`
 - Doc: A_FireShotgun2
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_FireCGun `void
 A_FireCGun
@@ -7773,20 +9093,25 @@ A_FireCGun
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:741`
 - Doc: A_FireCGun
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Light0 `void A_Light0 (player_t *player, pspdef_t *psp)`
 - Defined: `progs/doomgeneric/p_pspr.c:770`
 - Doc: ?
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Light1 `void A_Light1 (player_t *player, pspdef_t *psp)`
 - Defined: `progs/doomgeneric/p_pspr.c:774`
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_Light2 `void A_Light2 (player_t *player, pspdef_t *psp)`
 - Defined: `progs/doomgeneric/p_pspr.c:779`
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BFGSpray `void A_BFGSpray (mobj_t* mo)`
 - Defined: `progs/doomgeneric/p_pspr.c:790`
 - Doc: A_BFGSpray Spawn a BFG explosion on every monster in view
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### A_BFGsound `void
 A_BFGsound
@@ -7794,256 +9119,324 @@ A_BFGsound
   pspdef_t*	psp )`
 - Defined: `progs/doomgeneric/p_pspr.c:826`
 - Doc: A_BFGsound
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_SetupPsprites `void P_SetupPsprites (player_t* player)`
 - Defined: `progs/doomgeneric/p_pspr.c:840`
 - Doc: P_SetupPsprites Called at start of level for each player.
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_MovePsprites `void P_MovePsprites (player_t* player)`
 - Defined: `progs/doomgeneric/p_pspr.c:860`
 - Doc: P_MovePsprites Called every tic by player thinking routine.
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_saveg.c
 
 ### P_TempSaveGameFile `char *P_TempSaveGameFile(void)`
 - Defined: `progs/doomgeneric/p_saveg.c:46`
 - Doc: Get the filename of a temporary file to write the savegame to.  After the file has been successfully saved, it will be r
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SaveGameFile `char *P_SaveGameFile(int slot)`
 - Defined: `progs/doomgeneric/p_saveg.c:60`
 - Doc: Get the filename of the save game file to use for the specified slot.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read8 `static byte saveg_read8(void)`
 - Defined: `progs/doomgeneric/p_saveg.c:80`
 - Doc: Endian-safe integer read/write functions
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write8 `static void saveg_write8(byte value)`
 - Defined: `progs/doomgeneric/p_saveg.c:98`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read16 `static short saveg_read16(void)`
 - Defined: `progs/doomgeneric/p_saveg.c:111`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write16 `static void saveg_write16(short value)`
 - Defined: `progs/doomgeneric/p_saveg.c:121`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read32 `static int saveg_read32(void)`
 - Defined: `progs/doomgeneric/p_saveg.c:127`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write32 `static void saveg_write32(int value)`
 - Defined: `progs/doomgeneric/p_saveg.c:139`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_pad `static void saveg_read_pad(void)`
 - Defined: `progs/doomgeneric/p_saveg.c:149`
 - Doc: Pad to 4-byte boundaries
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_pad `static void saveg_write_pad(void)`
 - Defined: `progs/doomgeneric/p_saveg.c:165`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_readp `static void *saveg_readp(void)`
 - Defined: `progs/doomgeneric/p_saveg.c:184`
 - Doc: Pointers
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_writep `static void saveg_writep(void *p)`
 - Defined: `progs/doomgeneric/p_saveg.c:189`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_mapthing_t `static void saveg_read_mapthing_t(mapthing_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:207`
 - Doc: mapthing_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_mapthing_t `static void saveg_write_mapthing_t(mapthing_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:225`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_actionf_t `static void saveg_read_actionf_t(actionf_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:247`
 - Doc: actionf_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_actionf_t `static void saveg_write_actionf_t(actionf_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:253`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_thinker_t `static void saveg_read_thinker_t(thinker_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:272`
 - Doc: thinker_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_thinker_t `static void saveg_write_thinker_t(thinker_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:284`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_mobj_t `static void saveg_read_mobj_t(mobj_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:300`
 - Doc: mobj_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_mobj_t `static void saveg_write_mobj_t(mobj_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:420`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_ticcmd_t `static void saveg_read_ticcmd_t(ticcmd_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:540`
 - Doc: ticcmd_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_ticcmd_t `static void saveg_write_ticcmd_t(ticcmd_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:562`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_pspdef_t `static void saveg_read_pspdef_t(pspdef_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:588`
 - Doc: pspdef_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_pspdef_t `static void saveg_write_pspdef_t(pspdef_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:614`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_player_t `static void saveg_read_player_t(player_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:640`
 - Doc: player_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_player_t `static void saveg_write_player_t(player_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:771`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_ceiling_t `static void saveg_read_ceiling_t(ceiling_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:907`
 - Doc: ceiling_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_ceiling_t `static void saveg_write_ceiling_t(ceiling_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:943`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_vldoor_t `static void saveg_read_vldoor_t(vldoor_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:980`
 - Doc: vldoor_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_vldoor_t `static void saveg_write_vldoor_t(vldoor_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1010`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_floormove_t `static void saveg_read_floormove_t(floormove_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1041`
 - Doc: floormove_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_floormove_t `static void saveg_write_floormove_t(floormove_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1074`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_plat_t `static void saveg_read_plat_t(plat_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1108`
 - Doc: plat_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_plat_t `static void saveg_write_plat_t(plat_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1150`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_lightflash_t `static void saveg_read_lightflash_t(lightflash_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1193`
 - Doc: lightflash_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_lightflash_t `static void saveg_write_lightflash_t(lightflash_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1220`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_strobe_t `static void saveg_read_strobe_t(strobe_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1248`
 - Doc: strobe_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_strobe_t `static void saveg_write_strobe_t(strobe_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1275`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_read_glow_t `static void saveg_read_glow_t(glow_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1303`
 - Doc: glow_t
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### saveg_write_glow_t `static void saveg_write_glow_t(glow_t *str)`
 - Defined: `progs/doomgeneric/p_saveg.c:1324`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_WriteSaveGameHeader `void P_WriteSaveGameHeader(char *description)`
 - Defined: `progs/doomgeneric/p_saveg.c:1346`
 - Doc: Write the header for a savegame
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ReadSaveGameHeader `boolean P_ReadSaveGameHeader(void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1378`
 - Doc: Read the header for a savegame
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ReadSaveGameEOF `boolean P_ReadSaveGameEOF(void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1418`
 - Doc: Read the end of file marker.  Returns true if read successfully.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_WriteSaveGameEOF `void P_WriteSaveGameEOF(void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1431`
 - Doc: Write the end of file marker
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ArchivePlayers `void P_ArchivePlayers (void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1440`
 - Doc: P_ArchivePlayers
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_UnArchivePlayers `void P_UnArchivePlayers (void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1460`
 - Doc: P_UnArchivePlayers
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ArchiveWorld `void P_ArchiveWorld (void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1484`
 - Doc: P_ArchiveWorld
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_UnArchiveWorld `void P_UnArchiveWorld (void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1532`
 - Doc: P_UnArchiveWorld
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ArchiveThinkers `void P_ArchiveThinkers (void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1592`
 - Doc: P_ArchiveThinkers
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_UnArchiveThinkers `void P_UnArchiveThinkers (void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1620`
 - Doc: P_UnArchiveThinkers
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ArchiveSpecials `void P_ArchiveSpecials (void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1704`
 - Doc: Things to handle:  T_MoveCeiling, (ceiling_t: sector_t * swizzle), - active list T_VerticalDoor, (vldoor_t: sector_t * s
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_UnArchiveSpecials `void P_UnArchiveSpecials (void)`
 - Defined: `progs/doomgeneric/p_saveg.c:1793`
 - Doc: P_UnArchiveSpecials
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_setup.c
 
 ### P_LoadVertexes `void P_LoadVertexes (int lump)`
 - Defined: `progs/doomgeneric/p_setup.c:118`
 - Doc: P_LoadVertexes
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### GetSectorAtNullAddress `sector_t* GetSectorAtNullAddress(void)`
 - Defined: `progs/doomgeneric/p_setup.c:153`
 - Doc: GetSectorAtNullAddress
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_LoadSegs `void P_LoadSegs (int lump)`
 - Defined: `progs/doomgeneric/p_setup.c:172`
 - Doc: P_LoadSegs
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_LoadSubsectors `void P_LoadSubsectors (int lump)`
 - Defined: `progs/doomgeneric/p_setup.c:236`
 - Doc: P_LoadSubsectors
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_LoadSectors `void P_LoadSectors (int lump)`
 - Defined: `progs/doomgeneric/p_setup.c:265`
 - Doc: P_LoadSectors
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_LoadNodes `void P_LoadNodes (int lump)`
 - Defined: `progs/doomgeneric/p_setup.c:298`
 - Doc: P_LoadNodes
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_LoadThings `void P_LoadThings (int lump)`
 - Defined: `progs/doomgeneric/p_setup.c:335`
 - Doc: P_LoadThings
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_LoadLineDefs `void P_LoadLineDefs (int lump)`
 - Defined: `progs/doomgeneric/p_setup.c:392`
 - Doc: P_LoadLineDefs Also counts secret lines for intermissions.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_LoadSideDefs `void P_LoadSideDefs (int lump)`
 - Defined: `progs/doomgeneric/p_setup.c:473`
 - Doc: P_LoadSideDefs
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_LoadBlockMap `void P_LoadBlockMap (int lump)`
 - Defined: `progs/doomgeneric/p_setup.c:504`
 - Doc: P_LoadBlockMap
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_GroupLines `void P_GroupLines (void)`
 - Defined: `progs/doomgeneric/p_setup.c:545`
 - Doc: P_GroupLines Builds sector line lists and subsector sector numbers. Finds block bounding boxes for sectors.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### PadRejectArray `static void PadRejectArray(byte *array, unsigned int len)`
 - Defined: `progs/doomgeneric/p_setup.c:660`
 - Doc: Pad the REJECT lump with extra data when the lump is too small, to simulate a REJECT buffer overflow in Vanilla Doom.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_LoadReject `static void P_LoadReject(int lumpnum)`
 - Defined: `progs/doomgeneric/p_setup.c:711`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SetupLevel `void
 P_SetupLevel
@@ -8053,10 +9446,12 @@ P_SetupLevel
   skill_t	skill)`
 - Defined: `progs/doomgeneric/p_setup.c:743`
 - Doc: P_SetupLevel
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_Init `void P_Init (void)`
 - Defined: `progs/doomgeneric/p_setup.c:847`
 - Doc: P_Init
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_sight.c
 
@@ -8067,6 +9462,7 @@ P_DivlineSide
   divline_t*	node )`
 - Defined: `progs/doomgeneric/p_sight.c:47`
 - Doc: P_DivlineSide Returns side 0 (front), 1 (back), or 2 (on).
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_InterceptVector2 `fixed_t
 P_InterceptVector2
@@ -8074,14 +9470,17 @@ P_InterceptVector2
   divline_t*	v1 )`
 - Defined: `progs/doomgeneric/p_sight.c:101`
 - Doc: P_InterceptVector2 Returns the fractional intercept point along the first divline. This is only called by the addthings 
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_CrossSubsector `boolean P_CrossSubsector (int num)`
 - Defined: `progs/doomgeneric/p_sight.c:128`
 - Doc: P_CrossSubsector Returns true if strace crosses the given subsector successfully.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_CrossBSPNode `boolean P_CrossBSPNode (int bspnum)`
 - Defined: `progs/doomgeneric/p_sight.c:258`
 - Doc: P_CrossBSPNode Returns true if strace crosses the given node successfully.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ### P_CheckSight `boolean
 P_CheckSight
@@ -8089,11 +9488,13 @@ P_CheckSight
   mobj_t*	t2 )`
 - Defined: `progs/doomgeneric/p_sight.c:300`
 - Doc: P_CheckSight Returns true if a straight line between t1 and t2 is unobstructed. Uses REJECT.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ## progs/doomgeneric/p_spec.c
 
 ### P_InitPicAnims `void P_InitPicAnims (void)`
 - Defined: `progs/doomgeneric/p_spec.c:140`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### getSide `side_t*
 getSide
@@ -8102,6 +9503,7 @@ getSide
   int		side )`
 - Defined: `progs/doomgeneric/p_spec.c:202`
 - Doc: getSide() Will return a side_t* given the number of the current sector, the line number, and the side (0/1) that you wan
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### getSector `sector_t*
 getSector
@@ -8110,6 +9512,7 @@ getSector
   int		side )`
 - Defined: `progs/doomgeneric/p_spec.c:218`
 - Doc: getSector() Will return a sector_t* given the number of the current sector, the line number and the side (0/1) that you 
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### twoSided `int
 twoSided
@@ -8117,6 +9520,7 @@ twoSided
   int	line )`
 - Defined: `progs/doomgeneric/p_spec.c:233`
 - Doc: twoSided() Given the sector number and the line number, it will tell you whether the line is two-sided or not.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### getNextSector `sector_t*
 getNextSector
@@ -8124,14 +9528,17 @@ getNextSector
   sector_t*	sec )`
 - Defined: `progs/doomgeneric/p_spec.c:249`
 - Doc: getNextSector() Return sector_t * of sector next to current. NULL if not two-sided line
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_FindLowestFloorSurrounding `fixed_t	P_FindLowestFloorSurrounding(sector_t* sec)`
 - Defined: `progs/doomgeneric/p_spec.c:269`
 - Doc: P_FindLowestFloorSurrounding() FIND LOWEST FLOOR HEIGHT IN SURROUNDING SECTORS
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_FindHighestFloorSurrounding `fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)`
 - Defined: `progs/doomgeneric/p_spec.c:296`
 - Doc: P_FindHighestFloorSurrounding() FIND HIGHEST FLOOR HEIGHT IN SURROUNDING SECTORS
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_FindNextHighestFloor `fixed_t
 P_FindNextHighestFloor
@@ -8139,15 +9546,18 @@ P_FindNextHighestFloor
   int       currentheight )`
 - Defined: `progs/doomgeneric/p_spec.c:328`
 - Doc: 20 adjoining sectors max! define MAX_ADJOINING_SECTORS     20
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_FindLowestCeilingSurrounding `fixed_t
 P_FindLowestCeilingSurrounding(sector_t* sec)`
 - Defined: `progs/doomgeneric/p_spec.c:391`
 - Doc: FIND LOWEST CEILING IN THE SURROUNDING SECTORS
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_FindHighestCeilingSurrounding `fixed_t	P_FindHighestCeilingSurrounding(sector_t* sec)`
 - Defined: `progs/doomgeneric/p_spec.c:417`
 - Doc: FIND HIGHEST CEILING IN THE SURROUNDING SECTORS
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_FindSectorFromLineTag `int
 P_FindSectorFromLineTag
@@ -8155,6 +9565,7 @@ P_FindSectorFromLineTag
   int		start )`
 - Defined: `progs/doomgeneric/p_spec.c:443`
 - Doc: RETURN NEXT SECTOR # THAT LINE TAG REFERS TO
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_FindMinSurroundingLight `int
 P_FindMinSurroundingLight
@@ -8162,6 +9573,7 @@ P_FindMinSurroundingLight
   int		max )`
 - Defined: `progs/doomgeneric/p_spec.c:463`
 - Doc: Find minimum light from an adjacent sector
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_CrossSpecialLine `void
 P_CrossSpecialLine
@@ -8170,6 +9582,7 @@ P_CrossSpecialLine
   mobj_t*	thing )`
 - Defined: `progs/doomgeneric/p_spec.c:501`
 - Doc: P_CrossSpecialLine - TRIGGER Called every time a thing origin is about to cross a line with a non 0 special.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_ShootSpecialLine `void
 P_ShootSpecialLine
@@ -8177,32 +9590,39 @@ P_ShootSpecialLine
   line_t*	line )`
 - Defined: `progs/doomgeneric/p_spec.c:968`
 - Doc: P_ShootSpecialLine - IMPACT SPECIALS Called when a thing shoots a special line.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_PlayerInSpecialSector `void P_PlayerInSpecialSector (player_t* player)`
 - Defined: `progs/doomgeneric/p_spec.c:1019`
 - Doc: P_PlayerInSpecialSector Called every tic frame that the player origin is in a special sector
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_UpdateSpecials `void P_UpdateSpecials (void)`
 - Defined: `progs/doomgeneric/p_spec.c:1092`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### DonutOverrun `static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic,
                          li...`
 - Defined: `progs/doomgeneric/p_spec.c:1177`
 - Doc: define DONUT_FLOORHEIGHT_DEFAULT 0x00000000 define DONUT_FLOORPIC_DEFAULT 0x16
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### EV_DoDonut `int EV_DoDonut(line_t*	line)`
 - Defined: `progs/doomgeneric/p_spec.c:1257`
 - Doc: Special Stuff that can not be categorized
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_SpawnSpecials `void P_SpawnSpecials (void)`
 - Defined: `progs/doomgeneric/p_spec.c:1374`
 - Doc: Parses command line parameters.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_switch.c
 
 ### P_InitSwitchList `void P_InitSwitchList(void)`
 - Defined: `progs/doomgeneric/p_switch.c:101`
 - Doc: P_InitSwitchList Only called at game initialization.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_StartButton `void
 P_StartButton
@@ -8212,6 +9632,7 @@ P_StartButton
   int		time )`
 - Defined: `progs/doomgeneric/p_switch.c:148`
 - Doc: Start a button counting down till it turns off.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_ChangeSwitchTexture `void
 P_ChangeSwitchTexture
@@ -8219,6 +9640,7 @@ P_ChangeSwitchTexture
   int 		useAgain )`
 - Defined: `progs/doomgeneric/p_switch.c:194`
 - Doc: Function that changes wall texture. Tell it if switch is ok to use again (1=yes, it's a button).
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ### P_UseSpecialLine `boolean
 P_UseSpecialLine
@@ -8227,6 +9649,7 @@ P_UseSpecialLine
   int		side )`
 - Defined: `progs/doomgeneric/p_switch.c:269`
 - Doc: P_UseSpecialLine Called when a thing uses a special line. Only the front sides of lines are usable.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_telept.c
 
@@ -8237,32 +9660,39 @@ EV_Teleport
   mobj_t*	thing )`
 - Defined: `progs/doomgeneric/p_telept.c:41`
 - Doc: TELEPORTATION
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_tick.c
 
 ### P_InitThinkers `void P_InitThinkers (void)`
 - Defined: `progs/doomgeneric/p_tick.c:46`
 - Doc: P_InitThinkers
+- Depends on: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_AddThinker `void P_AddThinker (thinker_t* thinker)`
 - Defined: `progs/doomgeneric/p_tick.c:58`
 - Doc: P_AddThinker Adds a new thinker at the end of the list.
+- Depends on: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_RemoveThinker `void P_RemoveThinker (thinker_t* thinker)`
 - Defined: `progs/doomgeneric/p_tick.c:73`
 - Doc: P_RemoveThinker Deallocation is lazy -- it will not actually be freed until its thinking turn comes up.
+- Depends on: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_AllocateThinker `void P_AllocateThinker (thinker_t*	thinker)`
 - Defined: `progs/doomgeneric/p_tick.c:85`
 - Doc: P_AllocateThinker Allocates memory and adds a new thinker at the end of the list.
+- Depends on: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_RunThinkers `void P_RunThinkers (void)`
 - Defined: `progs/doomgeneric/p_tick.c:94`
 - Doc: P_RunThinkers
+- Depends on: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/z_zone.h`
 
 ### P_Ticker `void P_Ticker (void)`
 - Defined: `progs/doomgeneric/p_tick.c:122`
 - Doc: P_Ticker
+- Depends on: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_user.c
 
@@ -8273,28 +9703,34 @@ P_Thrust
   fixed_t	move )`
 - Defined: `progs/doomgeneric/p_user.c:51`
 - Doc: P_Thrust Moves the given origin along a given angle.
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`
 
 ### P_CalcHeight `void P_CalcHeight (player_t* player)`
 - Defined: `progs/doomgeneric/p_user.c:70`
 - Doc: P_CalcHeight Calculate the walking / running height adjustment
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`
 
 ### P_MovePlayer `void P_MovePlayer (player_t* player)`
 - Defined: `progs/doomgeneric/p_user.c:141`
 - Doc: P_MovePlayer
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`
 
 ### P_DeathThink `void P_DeathThink (player_t* player)`
 - Defined: `progs/doomgeneric/p_user.c:174`
 - Doc: P_DeathThink Fall on your face when dying. Decrease POV height to floor height.  define ANG5   	(ANG90/18)
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`
 
 ### P_PlayerThink `void P_PlayerThink (player_t* player)`
 - Defined: `progs/doomgeneric/p_user.c:229`
 - Doc: P_PlayerThink
+- Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`
 
 ## progs/doomgeneric/r_bsp.c
 
 ### R_ClearDrawSegs `void R_ClearDrawSegs (void)`
 - Defined: `progs/doomgeneric/r_bsp.c:61`
 - Doc: R_ClearDrawSegs
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
 
 ### R_ClipSolidWallSegment `void
 R_ClipSolidWallSegment
@@ -8302,6 +9738,7 @@ R_ClipSolidWallSegment
   int			last )`
 - Defined: `progs/doomgeneric/r_bsp.c:96`
 - Doc: R_ClipSolidWallSegment Does handle solid walls, e.g. single sided LineDefs (middle texture) that entirely block the view
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
 
 ### R_ClipPassWallSegment `void
 R_ClipPassWallSegment
@@ -8309,25 +9746,31 @@ R_ClipPassWallSegment
   int	last )`
 - Defined: `progs/doomgeneric/r_bsp.c:189`
 - Doc: R_ClipPassWallSegment Clips the given range of columns, but does not includes it in the clip list. Does handle windows, 
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
 
 ### R_ClearClipSegs `void R_ClearClipSegs (void)`
 - Defined: `progs/doomgeneric/r_bsp.c:238`
 - Doc: R_ClearClipSegs
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
 
 ### R_AddLine `void R_AddLine (seg_t*	line)`
 - Defined: `progs/doomgeneric/r_bsp.c:252`
 - Doc: R_AddLine Clips the given segment and adds any visible pieces to the line list.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
 
 ### R_CheckBBox `boolean R_CheckBBox (fixed_t*	bspcoord)`
 - Defined: `progs/doomgeneric/r_bsp.c:372`
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
 
 ### R_Subsector `void R_Subsector (int num)`
 - Defined: `progs/doomgeneric/r_bsp.c:490`
 - Doc: R_Subsector Determine floor/ceiling planes. Add sprites of things in sector. Draw one or more line segments.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
 
 ### R_RenderBSPNode `void R_RenderBSPNode (int bspnum)`
 - Defined: `progs/doomgeneric/r_bsp.c:545`
 - Doc: RenderBSPNode Renders all subsectors below a given node, traversing subtree recursively. Just call with BSP root.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
 
 ## progs/doomgeneric/r_data.c
 
@@ -8339,14 +9782,17 @@ R_DrawColumnInCache
   int		cacheheight )`
 - Defined: `progs/doomgeneric/r_data.c:185`
 - Doc: R_DrawColumnInCache Clip and draw a column from a patch into a cached post.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_GenerateComposite `void R_GenerateComposite (int texnum)`
 - Defined: `progs/doomgeneric/r_data.c:226`
 - Doc: R_GenerateComposite Using the texture definition, the composite texture is created from the patches, and each column is 
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_GenerateLookup `void R_GenerateLookup (int texnum)`
 - Defined: `progs/doomgeneric/r_data.c:294`
 - Doc: R_GenerateLookup
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_GetColumn `byte*
 R_GetColumn
@@ -8354,88 +9800,110 @@ R_GetColumn
   int		col )`
 - Defined: `progs/doomgeneric/r_data.c:382`
 - Doc: R_GetColumn
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### GenerateTextureHashTable `static void GenerateTextureHashTable(void)`
 - Defined: `progs/doomgeneric/r_data.c:402`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_InitTextures `void R_InitTextures (void)`
 - Defined: `progs/doomgeneric/r_data.c:451`
 - Doc: R_InitTextures Initializes the texture list with the textures from the world map.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_InitFlats `void R_InitFlats (void)`
 - Defined: `progs/doomgeneric/r_data.c:633`
 - Doc: R_InitFlats
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_InitSpriteLumps `void R_InitSpriteLumps (void)`
 - Defined: `progs/doomgeneric/r_data.c:655`
 - Doc: R_InitSpriteLumps Finds the width and hoffset of all sprites in the wad, so the sprite does not need to be cached comple
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_InitColormaps `void R_InitColormaps (void)`
 - Defined: `progs/doomgeneric/r_data.c:685`
 - Doc: R_InitColormaps
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_InitData `void R_InitData (void)`
 - Defined: `progs/doomgeneric/r_data.c:703`
 - Doc: R_InitData Locates all the lumps that will be used by all views Must be called after W_Init.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_FlatNumForName `int R_FlatNumForName (char* name)`
 - Defined: `progs/doomgeneric/r_data.c:720`
 - Doc: R_FlatNumForName Retrieval, get a flat number for a flat name.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_CheckTextureNumForName `int	R_CheckTextureNumForName (char *name)`
 - Defined: `progs/doomgeneric/r_data.c:744`
 - Doc: R_CheckTextureNumForName Check whether texture is available. Filter out NoTexture indicator.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_TextureNumForName `int	R_TextureNumForName (char* name)`
 - Defined: `progs/doomgeneric/r_data.c:775`
 - Doc: R_TextureNumForName Calls R_CheckTextureNumForName, aborts with error message.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_PrecacheLevel `void R_PrecacheLevel (void)`
 - Defined: `progs/doomgeneric/r_data.c:799`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/r_draw.c
 
 ### R_DrawColumn `void R_DrawColumn (void)`
 - Defined: `progs/doomgeneric/r_draw.c:102`
 - Doc: A column is a vertical slice/span from a wall texture that, given the DOOM style restrictions on the view orientation, w
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawColumn `void R_DrawColumn (void)`
 - Defined: `progs/doomgeneric/r_draw.c:152`
 - Doc: UNUSED. Loop unrolled. if 0
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawColumnLow `void R_DrawColumnLow (void)`
 - Defined: `progs/doomgeneric/r_draw.c:206`
 - Doc: endif
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawFuzzColumn `void R_DrawFuzzColumn (void)`
 - Defined: `progs/doomgeneric/r_draw.c:283`
 - Doc: Framebuffer postprocessing. Creates a fuzzy image by copying pixels from adjacent ones to left and right. Used with an a
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawFuzzColumnLow `void R_DrawFuzzColumnLow (void)`
 - Defined: `progs/doomgeneric/r_draw.c:341`
 - Doc: low detail mode version
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawTranslatedColumn `void R_DrawTranslatedColumn (void)`
 - Defined: `progs/doomgeneric/r_draw.c:423`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawTranslatedColumnLow `void R_DrawTranslatedColumnLow (void)`
 - Defined: `progs/doomgeneric/r_draw.c:467`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_InitTranslationTables `void R_InitTranslationTables (void)`
 - Defined: `progs/doomgeneric/r_draw.c:530`
 - Doc: R_InitTranslationTables Creates the translation tables to map the green color ramp to gray, brown, red. Assumes a given 
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawSpan `void R_DrawSpan (void)`
 - Defined: `progs/doomgeneric/r_draw.c:590`
 - Doc: Draws the actual span.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawSpan `void R_DrawSpan (void)`
 - Defined: `progs/doomgeneric/r_draw.c:646`
 - Doc: UNUSED. Loop unrolled by 4. if 0
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawSpanLow `void R_DrawSpanLow (void)`
 - Defined: `progs/doomgeneric/r_draw.c:719`
 - Doc: Again..
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_InitBuffer `void
 R_InitBuffer
@@ -8443,10 +9911,12 @@ R_InitBuffer
   int		height )`
 - Defined: `progs/doomgeneric/r_draw.c:776`
 - Doc: R_InitBuffer Creats lookup tables that avoid multiplies and other hazzles for getting the framebuffer address of a pixel
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_FillBackScreen `void R_FillBackScreen (void)`
 - Defined: `progs/doomgeneric/r_draw.c:812`
 - Doc: R_FillBackScreen Fills the back screen with a pattern for variable screen sizes Also draws a beveled edge.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_VideoErase `void
 R_VideoErase
@@ -8454,10 +9924,12 @@ R_VideoErase
   int		count )`
 - Defined: `progs/doomgeneric/r_draw.c:918`
 - Doc: Copy a screen buffer.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawViewBorder `void R_DrawViewBorder (void)`
 - Defined: `progs/doomgeneric/r_draw.c:941`
 - Doc: R_DrawViewBorder Draws the border around the view for different size windows?
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/r_main.c
 
@@ -8468,6 +9940,7 @@ R_AddPointToBox
   fixed_t*	box )`
 - Defined: `progs/doomgeneric/r_main.c:122`
 - Doc: R_AddPointToBox Expand a given bbox so that it encloses a given point.
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_PointOnSide `int
 R_PointOnSide
@@ -8476,6 +9949,7 @@ R_PointOnSide
   node_t*	node )`
 - Defined: `progs/doomgeneric/r_main.c:145`
 - Doc: R_PointOnSide Traverse BSP (sub) tree, check point against partition plane. Returns side 0 (front) or 1 (back).
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_PointOnSegSide `int
 R_PointOnSegSide
@@ -8483,12 +9957,14 @@ R_PointOnSegSide
   fixed_t	y,
   seg_t*	line )`
 - Defined: `progs/doomgeneric/r_main.c:196`
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_PointToAngle `angle_t
 R_PointToAngle
 ( fixed_t	x,
   fixed_t	y )`
 - Defined: `progs/doomgeneric/r_main.c:271`
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_PointToAngle2 `angle_t
 R_PointToAngle2
@@ -8497,46 +9973,56 @@ R_PointToAngle2
   fixed_t	x2,
   fixed_t	y2 )`
 - Defined: `progs/doomgeneric/r_main.c:359`
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_PointToDist `fixed_t
 R_PointToDist
 ( fixed_t	x,
   fixed_t	y )`
 - Defined: `progs/doomgeneric/r_main.c:373`
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_InitPointToAngle `void R_InitPointToAngle (void)`
 - Defined: `progs/doomgeneric/r_main.c:422`
 - Doc: R_InitPointToAngle
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_ScaleFromGlobalAngle `fixed_t R_ScaleFromGlobalAngle (angle_t visangle)`
 - Defined: `progs/doomgeneric/r_main.c:449`
 - Doc: R_ScaleFromGlobalAngle Returns the texture mapping scale for the current line (horizontal span) at the given angle. rw_d
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_InitTables `void R_InitTables (void)`
 - Defined: `progs/doomgeneric/r_main.c:505`
 - Doc: R_InitTables
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_InitTextureMapping `void R_InitTextureMapping (void)`
 - Defined: `progs/doomgeneric/r_main.c:540`
 - Doc: R_InitTextureMapping
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_InitLightTables `void R_InitLightTables (void)`
 - Defined: `progs/doomgeneric/r_main.c:609`
 - Doc: R_InitLightTables Only inits the zlight table, because the scalelight table changes with view size.  define DISTMAP		2
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_SetViewSize `void
 R_SetViewSize
 ( int		blocks,
   int		detail )`
 - Defined: `progs/doomgeneric/r_main.c:651`
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_ExecuteSetViewSize `void R_ExecuteSetViewSize (void)`
 - Defined: `progs/doomgeneric/r_main.c:667`
 - Doc: R_ExecuteSetViewSize
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_Init `void R_Init (void)`
 - Defined: `progs/doomgeneric/r_main.c:764`
 - Doc: R_Init
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_PointInSubsector `subsector_t*
 R_PointInSubsector
@@ -8544,20 +10030,24 @@ R_PointInSubsector
   fixed_t	y )`
 - Defined: `progs/doomgeneric/r_main.c:793`
 - Doc: R_PointInSubsector
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_SetupFrame `void R_SetupFrame (player_t* player)`
 - Defined: `progs/doomgeneric/r_main.c:823`
 - Doc: R_SetupFrame
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_RenderPlayerView `void R_RenderPlayerView (player_t* player)`
 - Defined: `progs/doomgeneric/r_main.c:863`
 - Doc: R_RenderView
+- Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ## progs/doomgeneric/r_plane.c
 
 ### R_InitPlanes `void R_InitPlanes (void)`
 - Defined: `progs/doomgeneric/r_plane.c:94`
 - Doc: R_InitPlanes Only at game startup.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_MapPlane `void
 R_MapPlane
@@ -8566,10 +10056,12 @@ R_MapPlane
   int		x2 )`
 - Defined: `progs/doomgeneric/r_plane.c:113`
 - Doc: R_MapPlane  Uses global vars: planeheight ds_source basexscale baseyscale viewx viewy  BASIC PRIMITIVE
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_ClearPlanes `void R_ClearPlanes (void)`
 - Defined: `progs/doomgeneric/r_plane.c:178`
 - Doc: R_ClearPlanes At begining of frame.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_FindPlane `visplane_t*
 R_FindPlane
@@ -8578,6 +10070,7 @@ R_FindPlane
   int		lightlevel )`
 - Defined: `progs/doomgeneric/r_plane.c:210`
 - Doc: R_FindPlane
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_CheckPlane `visplane_t*
 R_CheckPlane
@@ -8586,6 +10079,7 @@ R_CheckPlane
   int		stop )`
 - Defined: `progs/doomgeneric/r_plane.c:258`
 - Doc: R_CheckPlane
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_MakeSpans `void
 R_MakeSpans
@@ -8596,10 +10090,12 @@ R_MakeSpans
   int		b2 )`
 - Defined: `progs/doomgeneric/r_plane.c:323`
 - Doc: R_MakeSpans
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawPlanes `void R_DrawPlanes (void)`
 - Defined: `progs/doomgeneric/r_plane.c:360`
 - Doc: R_DrawPlanes At the end of each frame.
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/r_segs.c
 
@@ -8610,10 +10106,12 @@ R_RenderMaskedSegRange
   int		x2 )`
 - Defined: `progs/doomgeneric/r_segs.c:95`
 - Doc: R_RenderMaskedSegRange
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_RenderSegLoop `void R_RenderSegLoop (void)`
 - Defined: `progs/doomgeneric/r_segs.c:198`
 - Doc: R_RenderSegLoop Draws zero, one, or two textures (and possibly a masked texture) for walls. Can draw or mark the startin
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ### R_StoreWallRange `void
 R_StoreWallRange
@@ -8621,12 +10119,14 @@ R_StoreWallRange
   int	stop )`
 - Defined: `progs/doomgeneric/r_segs.c:371`
 - Doc: R_StoreWallRange A wall segment will be drawn between start and stop pixels (inclusive).
+- Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
 
 ## progs/doomgeneric/r_sky.c
 
 ### R_InitSkyMap `void R_InitSkyMap (void)`
 - Defined: `progs/doomgeneric/r_sky.c:47`
 - Doc: R_InitSkyMap Called whenever the view size changes.
+- Depends on: `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`
 
 ## progs/doomgeneric/r_things.c
 
@@ -8638,24 +10138,30 @@ R_InstallSpriteLump
   boolean	flipped )`
 - Defined: `progs/doomgeneric/r_things.c:99`
 - Doc: R_InstallSpriteLump Local function for R_InitSprites.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_InitSpriteDefs `void R_InitSpriteDefs (char** namelist)`
 - Defined: `progs/doomgeneric/r_things.c:171`
 - Doc: R_InitSpriteDefs Pass a null terminated list of sprite names (4 chars exactly) to be used. Builds the sprite rotation ma
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_InitSprites `void R_InitSprites (char** namelist)`
 - Defined: `progs/doomgeneric/r_things.c:291`
 - Doc: R_InitSprites Called at program start.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_ClearSprites `void R_ClearSprites (void)`
 - Defined: `progs/doomgeneric/r_things.c:309`
 - Doc: R_ClearSprites Called at frame start.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_NewVisSprite `vissprite_t* R_NewVisSprite (void)`
 - Defined: `progs/doomgeneric/r_things.c:319`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawMaskedColumn `void R_DrawMaskedColumn (column_t* column)`
 - Defined: `progs/doomgeneric/r_things.c:342`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawVisSprite `void
 R_DrawVisSprite
@@ -8664,122 +10170,154 @@ R_DrawVisSprite
   int			x2 )`
 - Defined: `progs/doomgeneric/r_things.c:388`
 - Doc: R_DrawVisSprite mfloorclip and mceilingclip should also be set.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_ProjectSprite `void R_ProjectSprite (mobj_t* thing)`
 - Defined: `progs/doomgeneric/r_things.c:444`
 - Doc: R_ProjectSprite Generates a vissprite for a thing if it might be visible.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_AddSprites `void R_AddSprites (sector_t* sec)`
 - Defined: `progs/doomgeneric/r_things.c:605`
 - Doc: R_AddSprites During BSP traversal, this adds sprites by sector.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawPSprite `void R_DrawPSprite (pspdef_t* psp)`
 - Defined: `progs/doomgeneric/r_things.c:638`
 - Doc: R_DrawPSprite
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawPlayerSprites `void R_DrawPlayerSprites (void)`
 - Defined: `progs/doomgeneric/r_things.c:738`
 - Doc: R_DrawPlayerSprites
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_SortVisSprites `void R_SortVisSprites (void)`
 - Defined: `progs/doomgeneric/r_things.c:777`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawSprite `void R_DrawSprite (vissprite_t* spr)`
 - Defined: `progs/doomgeneric/r_things.c:837`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### R_DrawMasked `void R_DrawMasked (void)`
 - Defined: `progs/doomgeneric/r_things.c:951`
 - Doc: R_DrawMasked
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/s_sound.c
 
 ### S_Init `void S_Init(int sfxVolume, int musicVolume)`
 - Defined: `progs/doomgeneric/s_sound.c:113`
 - Doc: Initializes sound stuff, including volume Sets channels, SFX and music volume, allocates channel buffer, sets S_sfx look
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_Shutdown `void S_Shutdown(void)`
 - Defined: `progs/doomgeneric/s_sound.c:145`
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_StopChannel `static void S_StopChannel(int cnum)`
 - Defined: `progs/doomgeneric/s_sound.c:151`
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_Start `void S_Start(void)`
 - Defined: `progs/doomgeneric/s_sound.c:190`
 - Doc: Per level startup code. Kills playing sounds at start of level, determines music if any, changes music.
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_StopSound `void S_StopSound(mobj_t *origin)`
 - Defined: `progs/doomgeneric/s_sound.c:242`
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_GetChannel `static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)`
 - Defined: `progs/doomgeneric/s_sound.c:261`
 - Doc: S_GetChannel : If none available, return -1.  Otherwise channel #.
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_AdjustSoundParams `static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
                                i...`
 - Defined: `progs/doomgeneric/s_sound.c:322`
 - Doc: Changes volume and stereo-separation variables from the norm of a sound effect to be played. If the sound is not audible
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_StartSound `void S_StartSound(void *origin_p, int sfx_id)`
 - Defined: `progs/doomgeneric/s_sound.c:390`
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_PauseSound `void S_PauseSound(void)`
 - Defined: `progs/doomgeneric/s_sound.c:481`
 - Doc: Stop and resume music, during game PAUSE.
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_ResumeSound `void S_ResumeSound(void)`
 - Defined: `progs/doomgeneric/s_sound.c:490`
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_UpdateSounds `void S_UpdateSounds(mobj_t *listener)`
 - Defined: `progs/doomgeneric/s_sound.c:503`
 - Doc: Updates music & sounds
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_SetMusicVolume `void S_SetMusicVolume(int volume)`
 - Defined: `progs/doomgeneric/s_sound.c:570`
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_SetSfxVolume `void S_SetSfxVolume(int volume)`
 - Defined: `progs/doomgeneric/s_sound.c:581`
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_StartMusic `void S_StartMusic(int m_id)`
 - Defined: `progs/doomgeneric/s_sound.c:595`
 - Doc: Starts some music with the music id found in sounds.h.
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_ChangeMusic `void S_ChangeMusic(int musicnum, int looping)`
 - Defined: `progs/doomgeneric/s_sound.c:600`
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_MusicPlaying `boolean S_MusicPlaying(void)`
 - Defined: `progs/doomgeneric/s_sound.c:648`
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### S_StopMusic `void S_StopMusic(void)`
 - Defined: `progs/doomgeneric/s_sound.c:653`
+- Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/sha1.c
 
 ### SHA1_Init `void SHA1_Init(sha1_context_t *hd)`
 - Defined: `progs/doomgeneric/sha1.c:39`
 - Doc: include "i_swap.h" include "sha1.h"
+- Depends on: `kernel/string.c`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/sha1.h`
 
 ### Transform `static void Transform(sha1_context_t *hd, byte *data)`
 - Defined: `progs/doomgeneric/sha1.c:55`
 - Doc: Transform the message X which consists of 16 32-bit-words
+- Depends on: `kernel/string.c`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/sha1.h`
 
 ### SHA1_Update `void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)`
 - Defined: `progs/doomgeneric/sha1.c:198`
 - Doc: Update the message digest with the contents of INBUF with length INLEN.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/sha1.h`
 
 ### SHA1_Final `void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)`
 - Defined: `progs/doomgeneric/sha1.c:237`
 - Doc: The routine final terminates the computation and returns the digest. The handle is prepared for a new cycle, but adding 
+- Depends on: `kernel/string.c`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/sha1.h`
 
 ### SHA1_UpdateInt32 `void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)`
 - Defined: `progs/doomgeneric/sha1.c:302`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/sha1.h`
 
 ### SHA1_UpdateString `void SHA1_UpdateString(sha1_context_t *context, char *str)`
 - Defined: `progs/doomgeneric/sha1.c:314`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/sha1.h`
 
 ## progs/doomgeneric/st_lib.c
 
 ### STlib_init `void STlib_init(void)`
 - Defined: `progs/doomgeneric/st_lib.c:50`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### STlib_initNum `void
 STlib_initNum
@@ -8791,6 +10329,7 @@ STlib_initNum
   bool...`
 - Defined: `progs/doomgeneric/st_lib.c:58`
 - Doc: ?
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### STlib_drawNum `void
 STlib_drawNum
@@ -8798,12 +10337,14 @@ STlib_drawNum
   boolean	refresh )`
 - Defined: `progs/doomgeneric/st_lib.c:83`
 - Doc: A fairly efficient way to draw a number based on differences from the old number. Note: worth the trouble?
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### STlib_updateNum `void
 STlib_updateNum
 ( st_number_t*		n,
   boolean		refresh )`
 - Defined: `progs/doomgeneric/st_lib.c:145`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### STlib_initPercent `void
 STlib_initPercent
@@ -8814,12 +10355,14 @@ STlib_initPercent
   int*			num,
  ...`
 - Defined: `progs/doomgeneric/st_lib.c:155`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### STlib_updatePercent `void
 STlib_updatePercent
 ( st_percent_t*		per,
   int			refresh )`
 - Defined: `progs/doomgeneric/st_lib.c:168`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### STlib_initMultIcon `void
 STlib_initMultIcon
@@ -8829,12 +10372,14 @@ STlib_initMultIcon
   patch_t**		il,
   int*			inum,...`
 - Defined: `progs/doomgeneric/st_lib.c:182`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### STlib_updateMultIcon `void
 STlib_updateMultIcon
 ( st_multicon_t*	mi,
   boolean		refresh )`
 - Defined: `progs/doomgeneric/st_lib.c:201`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### STlib_initBinIcon `void
 STlib_initBinIcon
@@ -8845,378 +10390,474 @@ STlib_initBinIcon
   boolean*		val,
 ...`
 - Defined: `progs/doomgeneric/st_lib.c:232`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### STlib_updateBinIcon `void
 STlib_updateBinIcon
 ( st_binicon_t*		bi,
   boolean		refresh )`
 - Defined: `progs/doomgeneric/st_lib.c:251`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/st_stuff.c
 
 ### ST_refreshBackground `void ST_refreshBackground(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:415`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_Responder `boolean
 ST_Responder (event_t* ev)`
 - Defined: `progs/doomgeneric/st_stuff.c:438`
 - Doc: Respond to keyboard input events, intercept cheats.
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_calcPainOffset `int ST_calcPainOffset(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:662`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_updateFaceWidget `void ST_updateFaceWidget(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:688`
 - Doc: This is a not-very-pretty routine which handles the face states and their timing. the precedence of expressions is: dead
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_updateWidgets `void ST_updateWidgets(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:859`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_Ticker `void ST_Ticker (void)`
 - Defined: `progs/doomgeneric/st_stuff.c:923`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_doPaletteStuff `void ST_doPaletteStuff(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:935`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_drawWidgets `void ST_drawWidgets(boolean refresh)`
 - Defined: `progs/doomgeneric/st_stuff.c:1000`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_doRefresh `void ST_doRefresh(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1035`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_diffDraw `void ST_diffDraw(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1048`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_Drawer `void ST_Drawer (boolean fullscreen, boolean refresh)`
 - Defined: `progs/doomgeneric/st_stuff.c:1054`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_loadUnloadGraphics `static void ST_loadUnloadGraphics(load_callback_t callback)`
 - Defined: `progs/doomgeneric/st_stuff.c:1075`
 - Doc: Iterates through all graphics to be loaded or unloaded, along with the variable they use, invoking the specified callbac
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_loadCallback `static void ST_loadCallback(char *lumpname, patch_t **variable)`
 - Defined: `progs/doomgeneric/st_stuff.c:1161`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_loadGraphics `void ST_loadGraphics(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1166`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_loadData `void ST_loadData(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1171`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_unloadCallback `static void ST_unloadCallback(char *lumpname, patch_t **variable)`
 - Defined: `progs/doomgeneric/st_stuff.c:1177`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_unloadGraphics `void ST_unloadGraphics(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1183`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_unloadData `void ST_unloadData(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1188`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_initData `void ST_initData(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1193`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_createWidgets `void ST_createWidgets(void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1224`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_Start `void ST_Start (void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1387`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_Stop `void ST_Stop (void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1400`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ST_Init `void ST_Init (void)`
 - Defined: `progs/doomgeneric/st_stuff.c:1410`
+- Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/statdump.c
 
 ### DiscoverGamemode `static void DiscoverGamemode(wbstartstruct_t *stats, int num_stats)`
 - Defined: `progs/doomgeneric/statdump.c:70`
 - Doc: Try to work out whether this is a Doom 1 or Doom 2 game, by looking at the episode and map, and the par times.  This is 
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ### GetNumPlayers `static int GetNumPlayers(wbstartstruct_t *stats)`
 - Defined: `progs/doomgeneric/statdump.c:129`
 - Doc: if (partime != doom1_par_times[level] * TICRATE && partime == doom2_par_times[level] * TICRATE) { discovered_gamemission
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ### PrintBanner `static void PrintBanner(FILE *stream)`
 - Defined: `progs/doomgeneric/statdump.c:149`
 - Doc: if ORIGCODE
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ### PrintPercentage `static void PrintPercentage(FILE *stream, int amount, int total)`
 - Defined: `progs/doomgeneric/statdump.c:154`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ### PrintPlayerStats `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,
         int player_num)`
 - Defined: `progs/doomgeneric/statdump.c:179`
 - Doc: statdump.exe is a 16-bit program, so very occasionally an integer overflow can occur when doing this calculation with a 
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ### PrintFragsTable `static void PrintFragsTable(FILE *stream, wbstartstruct_t *stats)`
 - Defined: `progs/doomgeneric/statdump.c:212`
 - Doc: fprintf(stream, "\n"); /* Secrets percentage fprintf(stream, "\tSecrets: "); PrintPercentage(stream, player->ssecret, st
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ### PrintLevelName `static void PrintLevelName(FILE *stream, int episode, int level)`
 - Defined: `progs/doomgeneric/statdump.c:271`
 - Doc: } fprintf(stream, "\n"); } fprintf(stream, "\t\t|\n"); fprintf(stream, "\t     KILLERS\n"); } #endif #if ORIGCODE /* Dis
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ### PrintStats `static void PrintStats(FILE *stream, wbstartstruct_t *stats)`
 - Defined: `progs/doomgeneric/statdump.c:300`
 - Doc: case none: fprintf(stream, "E%iM%i / MAP%02i\n", episode + 1, level + 1, level + 1); break; } PrintBanner(stream); } #en
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ### StatCopy `void StatCopy(wbstartstruct_t *stats)`
 - Defined: `progs/doomgeneric/statdump.c:332`
 - Doc: endif
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ### StatDump `void StatDump(void)`
 - Defined: `progs/doomgeneric/statdump.c:342`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
 ## progs/doomgeneric/tables.c
 
 ### SlopeDiv `int SlopeDiv(unsigned int num, unsigned int den)`
 - Defined: `progs/doomgeneric/tables.c:40`
 - Doc: to get a global angle from cartesian coordinates, the coordinates are flipped until they are in the first octant of the 
+- Depends on: `progs/doomgeneric/tables.h`
 
 ## progs/doomgeneric/v_video.c
 
 ### V_MarkRect `void V_MarkRect(int x, int y, int width, int height)`
 - Defined: `progs/doomgeneric/v_video.c:69`
 - Doc: V_MarkRect
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_CopyRect `void V_CopyRect(int srcx, int srcy, byte *source,
                 int width, int height,
         ...`
 - Defined: `progs/doomgeneric/v_video.c:85`
 - Doc: V_CopyRect
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_SetPatchClipCallback `void V_SetPatchClipCallback(vpatchclipfunc_t func)`
 - Defined: `progs/doomgeneric/v_video.c:129`
 - Doc: V_SetPatchClipCallback  haleyjd 08/28/10: Added for Strife support. By calling this function, you can setup runtime erro
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawPatch `void V_DrawPatch(int x, int y, patch_t *patch)`
 - Defined: `progs/doomgeneric/v_video.c:138`
 - Doc: V_DrawPatch Masks a column based masked pic to the screen.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawPatchFlipped `void V_DrawPatchFlipped(int x, int y, patch_t *patch)`
 - Defined: `progs/doomgeneric/v_video.c:202`
 - Doc: V_DrawPatchFlipped Masks a column based masked pic to the screen. Flips horizontally, e.g. to mirror face.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawPatchDirect `void V_DrawPatchDirect(int x, int y, patch_t *patch)`
 - Defined: `progs/doomgeneric/v_video.c:267`
 - Doc: V_DrawPatchDirect Draws directly to the screen on the pc.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawTLPatch `void V_DrawTLPatch(int x, int y, patch_t * patch)`
 - Defined: `progs/doomgeneric/v_video.c:278`
 - Doc: V_DrawTLPatch  Masks a column based translucent masked pic to the screen.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawXlaPatch `void V_DrawXlaPatch(int x, int y, patch_t * patch)`
 - Defined: `progs/doomgeneric/v_video.c:328`
 - Doc: V_DrawXlaPatch  villsa [STRIFE] Masks a column based translucent masked pic to the screen.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawAltTLPatch `void V_DrawAltTLPatch(int x, int y, patch_t * patch)`
 - Defined: `progs/doomgeneric/v_video.c:377`
 - Doc: V_DrawAltTLPatch  Masks a column based translucent masked pic to the screen.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawShadowedPatch `void V_DrawShadowedPatch(int x, int y, patch_t *patch)`
 - Defined: `progs/doomgeneric/v_video.c:427`
 - Doc: V_DrawShadowedPatch  Masks a column based masked pic to the screen.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_LoadTintTable `void V_LoadTintTable(void)`
 - Defined: `progs/doomgeneric/v_video.c:481`
 - Doc: Load tint table from TINTTAB lump.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_LoadXlaTable `void V_LoadXlaTable(void)`
 - Defined: `progs/doomgeneric/v_video.c:492`
 - Doc: V_LoadXlaTable  villsa [STRIFE] Load xla table from XLATAB lump.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawBlock `void V_DrawBlock(int x, int y, int width, int height, byte *src)`
 - Defined: `progs/doomgeneric/v_video.c:502`
 - Doc: V_DrawBlock Draw a linear block of pixels into the view buffer.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawFilledBox `void V_DrawFilledBox(int x, int y, int w, int h, int c)`
 - Defined: `progs/doomgeneric/v_video.c:528`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawHorizLine `void V_DrawHorizLine(int x, int y, int w, int c)`
 - Defined: `progs/doomgeneric/v_video.c:548`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawVertLine `void V_DrawVertLine(int x, int y, int h, int c)`
 - Defined: `progs/doomgeneric/v_video.c:561`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawBox `void V_DrawBox(int x, int y, int w, int h, int c)`
 - Defined: `progs/doomgeneric/v_video.c:575`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawRawScreen `void V_DrawRawScreen(byte *raw)`
 - Defined: `progs/doomgeneric/v_video.c:588`
 - Doc: Draw a "raw" screen (lump containing raw data to blit directly to the screen)
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_Init `void V_Init (void)`
 - Defined: `progs/doomgeneric/v_video.c:597`
 - Doc: V_Init
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_UseBuffer `void V_UseBuffer(byte *buffer)`
 - Defined: `progs/doomgeneric/v_video.c:605`
 - Doc: Set the buffer that the code draws to.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_RestoreBuffer `void V_RestoreBuffer(void)`
 - Defined: `progs/doomgeneric/v_video.c:612`
 - Doc: Restore screen buffer to the i_video screen buffer.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### WritePCXfile `void WritePCXfile(char *filename, byte *data,
                   int width, int height,
           ...`
 - Defined: `progs/doomgeneric/v_video.c:652`
 - Doc: WritePCXfile
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### error_fn `static void error_fn(png_structp p, png_const_charp s)`
 - Defined: `progs/doomgeneric/v_video.c:710`
 - Doc: ifdef HAVE_LIBPNG  WritePNGfile
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### warning_fn `static void warning_fn(png_structp p, png_const_charp s)`
 - Defined: `progs/doomgeneric/v_video.c:715`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### WritePNGfile `void WritePNGfile(char *filename, byte *data,
                   int width, int height,
           ...`
 - Defined: `progs/doomgeneric/v_video.c:720`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_ScreenShot `void V_ScreenShot(char *format)`
 - Defined: `progs/doomgeneric/v_video.c:790`
 - Doc: V_ScreenShot
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### V_DrawMouseSpeedBox `void V_DrawMouseSpeedBox(int speed)`
 - Defined: `progs/doomgeneric/v_video.c:845`
 - Doc: define MOUSE_SPEED_BOX_WIDTH  120 define MOUSE_SPEED_BOX_HEIGHT 9
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/w_checksum.c
 
 ### GetFileNumber `static int GetFileNumber(wad_file_t *handle)`
 - Defined: `progs/doomgeneric/w_checksum.c:30`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/sha1.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ### ChecksumAddLump `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)`
 - Defined: `progs/doomgeneric/w_checksum.c:56`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/sha1.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ### W_Checksum `void W_Checksum(sha1_digest_t digest)`
 - Defined: `progs/doomgeneric/w_checksum.c:67`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/sha1.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ## progs/doomgeneric/w_file.c
 
 ### W_OpenFile `wad_file_t *W_OpenFile(char *path)`
 - Defined: `progs/doomgeneric/w_file.c:52`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_file.h`
 
 ### W_CloseFile `void W_CloseFile(wad_file_t *wad)`
 - Defined: `progs/doomgeneric/w_file.c:84`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_file.h`
 
 ### W_Read `size_t W_Read(wad_file_t *wad, unsigned int offset,
               void *buffer, size_t buffer_len)`
 - Defined: `progs/doomgeneric/w_file.c:89`
+- Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_file.h`
 
 ## progs/doomgeneric/w_file_stdc.c
 
 ### W_StdC_OpenFile `static wad_file_t *W_StdC_OpenFile(char *path)`
 - Defined: `progs/doomgeneric/w_file_stdc.c:32`
+- Depends on: `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_file.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_StdC_CloseFile `static void W_StdC_CloseFile(wad_file_t *wad)`
 - Defined: `progs/doomgeneric/w_file_stdc.c:55`
+- Depends on: `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_file.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_StdC_Read `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
                    void *buffer, size_t ...`
 - Defined: `progs/doomgeneric/w_file_stdc.c:68`
 - Doc: Read data from the specified position in the file into the provided buffer.  Returns the number of bytes read.
+- Depends on: `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_file.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/w_main.c
 
 ### W_ParseCommandLine `boolean W_ParseCommandLine(void)`
 - Defined: `progs/doomgeneric/w_main.c:29`
 - Doc: Parse the command line, merging WAD files that are sppecified. Returns true if at least one file was added.
+- Depends on: `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_merge.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/w_wad.c
 
 ### W_LumpNameHash `unsigned int W_LumpNameHash(const char *s)`
 - Defined: `progs/doomgeneric/w_wad.c:71`
 - Doc: Hash function used for lump names.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### ExtendLumpInfo `static void ExtendLumpInfo(int newnumlumps)`
 - Defined: `progs/doomgeneric/w_wad.c:89`
 - Doc: Increase the size of the lumpinfo[] array to the specified size.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_AddFile `wad_file_t *W_AddFile (char *filename)`
 - Defined: `progs/doomgeneric/w_wad.c:140`
 - Doc: W_AddFile All files are optional, but at least one file must be found (PWAD, if all required lumps are present). Files w
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_NumLumps `int W_NumLumps (void)`
 - Defined: `progs/doomgeneric/w_wad.c:246`
 - Doc: W_NumLumps
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_CheckNumForName `int W_CheckNumForName (char* name)`
 - Defined: `progs/doomgeneric/w_wad.c:257`
 - Doc: W_CheckNumForName Returns -1 if name not found.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_GetNumForName `int W_GetNumForName (char* name)`
 - Defined: `progs/doomgeneric/w_wad.c:308`
 - Doc: W_GetNumForName Calls W_CheckNumForName, but bombs out if not found.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_LumpLength `int W_LumpLength (unsigned int lump)`
 - Defined: `progs/doomgeneric/w_wad.c:327`
 - Doc: W_LumpLength Returns the buffer size needed to load the given lump.
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_ReadLump `void W_ReadLump(unsigned int lump, void *dest)`
 - Defined: `progs/doomgeneric/w_wad.c:344`
 - Doc: W_ReadLump Loads the lump into the given buffer, which must be >= W_LumpLength().
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_CacheLumpNum `void *W_CacheLumpNum(int lumpnum, int tag)`
 - Defined: `progs/doomgeneric/w_wad.c:383`
 - Doc: W_CacheLumpNum  Load a lump into memory and return a pointer to a buffer containing the lump data.  'tag' is the type of
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_CacheLumpName `void *W_CacheLumpName(char *name, int tag)`
 - Defined: `progs/doomgeneric/w_wad.c:431`
 - Doc: W_CacheLumpName
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_ReleaseLumpNum `void W_ReleaseLumpNum(int lumpnum)`
 - Defined: `progs/doomgeneric/w_wad.c:445`
 - Doc: Release a lump back to the cache, so that it can be reused later without having to read from disk again, or alternativel
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_ReleaseLumpName `void W_ReleaseLumpName(char *name)`
 - Defined: `progs/doomgeneric/w_wad.c:466`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_Profile `void W_Profile (void)`
 - Defined: `progs/doomgeneric/w_wad.c:479`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_GenerateHashTable `void W_GenerateHashTable(void)`
 - Defined: `progs/doomgeneric/w_wad.c:540`
 - Doc: Generate a hash table for fast lookups
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ### W_CheckCorrectIWAD `void W_CheckCorrectIWAD(GameMission_t mission)`
 - Defined: `progs/doomgeneric/w_wad.c:587`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/wi_stuff.c
 
 ### WI_slamBackground `void WI_slamBackground(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:402`
 - Doc: slam background
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_Responder `boolean WI_Responder(event_t* ev)`
 - Defined: `progs/doomgeneric/wi_stuff.c:409`
 - Doc: The ticker is used to detect keys because of timing issues in netgames.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawLF `void WI_drawLF(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:416`
 - Doc: Draws "<Levelname> Finished!"
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawEL `void WI_drawEL(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:452`
 - Doc: Draws "Entering <LevelName>"
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawOnLnode `void
 WI_drawOnLnode
 ( int		n,
   patch_t*	c[] )`
 - Defined: `progs/doomgeneric/wi_stuff.c:469`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_initAnimatedBack `void WI_initAnimatedBack(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:516`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_updateAnimatedBack `void WI_updateAnimatedBack(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:547`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawAnimatedBack `void WI_drawAnimatedBack(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:598`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawNum `int
 WI_drawNum
@@ -9226,6 +10867,7 @@ WI_drawNum
   int		digits )`
 - Defined: `progs/doomgeneric/wi_stuff.c:626`
 - Doc: Draws a number. If digits > 0, then use that many digits minimum, otherwise only use as many as necessary. Returns new x
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawPercent `void
 WI_drawPercent
@@ -9233,6 +10875,7 @@ WI_drawPercent
   int		y,
   int		p )`
 - Defined: `progs/doomgeneric/wi_stuff.c:683`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawTime `void
 WI_drawTime
@@ -9241,103 +10884,134 @@ WI_drawTime
   int		t )`
 - Defined: `progs/doomgeneric/wi_stuff.c:703`
 - Doc: Display level completion time and par, or "sucks" message if overflow.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_End `void WI_End(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:738`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_initNoState `void WI_initNoState(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:745`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_updateNoState `void WI_updateNoState(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:752`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_initShowNextLoc `void WI_initShowNextLoc(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:770`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_updateShowNextLoc `void WI_updateShowNextLoc(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:780`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawShowNextLoc `void WI_drawShowNextLoc(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:790`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawNoState `void WI_drawNoState(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:831`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_fragSum `int WI_fragSum(int playernum)`
 - Defined: `progs/doomgeneric/wi_stuff.c:837`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_initDeathmatchStats `void WI_initDeathmatchStats(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:866`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_updateDeathmatchStats `void WI_updateDeathmatchStats(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:895`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawDeathmatchStats `void WI_drawDeathmatchStats(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:998`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_initNetgameStats `void WI_initNetgameStats(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1088`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_updateNetgameStats `void WI_updateNetgameStats(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1114`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawNetgameStats `void WI_drawNetgameStats(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1269`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_initStats `void WI_initStats(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1328`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_updateStats `void WI_updateStats(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1340`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_drawStats `void WI_drawStats(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1446`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_checkForAccelerate `void WI_checkForAccelerate(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1480`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_Ticker `void WI_Ticker(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1514`
 - Doc: Updates stuff each tick
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_loadUnloadData `static void WI_loadUnloadData(load_callback_t callback)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1553`
 - Doc: Common load/unload function.  Iterates over all the graphics lumps to be loaded/unloaded into memory.
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_loadCallback `static void WI_loadCallback(char *name, patch_t **variable)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1703`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_loadData `void WI_loadData(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1708`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_unloadCallback `static void WI_unloadCallback(char *name, patch_t **variable)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1734`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_unloadData `void WI_unloadData(void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1740`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_Drawer `void WI_Drawer (void)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1751`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_initVariables `void WI_initVariables(wbstartstruct_t* wbstartstruct)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1774`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ### WI_Start `void WI_Start(wbstartstruct_t* wbstartstruct)`
 - Defined: `progs/doomgeneric/wi_stuff.c:1817`
+- Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/z_zone.c
 
 ### Z_ClearZone `void Z_ClearZone (memzone_t* zone)`
 - Defined: `progs/doomgeneric/z_zone.c:71`
 - Doc: Z_ClearZone
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_Init `void Z_Init (void)`
 - Defined: `progs/doomgeneric/z_zone.c:97`
 - Doc: Z_Init
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_Free `void Z_Free (void* ptr)`
 - Defined: `progs/doomgeneric/z_zone.c:126`
 - Doc: Z_Free
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_Malloc `void*
 Z_Malloc
@@ -9346,6 +11020,7 @@ Z_Malloc
   void*		user )`
 - Defined: `progs/doomgeneric/z_zone.c:182`
 - Doc: Z_Malloc You can pass a NULL user if the tag is < PU_PURGELEVEL.  define MINFRAGMENT		64
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_FreeTags `void
 Z_FreeTags
@@ -9353,6 +11028,7 @@ Z_FreeTags
   int		hightag )`
 - Defined: `progs/doomgeneric/z_zone.c:297`
 - Doc: Z_FreeTags
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_DumpHeap `void
 Z_DumpHeap
@@ -9360,94 +11036,116 @@ Z_DumpHeap
   int		hightag )`
 - Defined: `progs/doomgeneric/z_zone.c:327`
 - Doc: Z_DumpHeap Note: TFileDumpHeap( stdout ) ?
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_FileDumpHeap `void Z_FileDumpHeap (FILE* f)`
 - Defined: `progs/doomgeneric/z_zone.c:367`
 - Doc: Z_FileDumpHeap
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_CheckHeap `void Z_CheckHeap (void)`
 - Defined: `progs/doomgeneric/z_zone.c:400`
 - Doc: Z_CheckHeap
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_ChangeTag2 `void Z_ChangeTag2(void *ptr, int tag, char *file, int line)`
 - Defined: `progs/doomgeneric/z_zone.c:429`
 - Doc: Z_ChangeTag
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_ChangeUser `void Z_ChangeUser(void *ptr, void **user)`
 - Defined: `progs/doomgeneric/z_zone.c:445`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_FreeMemory `int Z_FreeMemory (void)`
 - Defined: `progs/doomgeneric/z_zone.c:466`
 - Doc: Z_FreeMemory
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ### Z_ZoneSize `unsigned int Z_ZoneSize(void)`
 - Defined: `progs/doomgeneric/z_zone.c:483`
+- Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/lua/lua_main.c
 
 ### luaL_require_global `static void luaL_require_global(lua_State *L, const char *name,
                                 l...`
 - Defined: `progs/lua/lua_main.c:21`
+- Depends on: `kernel/string.c`
 
 ### set_arg_table `static void set_arg_table(lua_State *L, int argc, char **argv, int first)`
 - Defined: `progs/lua/lua_main.c:27`
+- Depends on: `kernel/string.c`
 
 ### docode `static int docode(lua_State *L, const char *code)`
 - Defined: `progs/lua/lua_main.c:40`
+- Depends on: `kernel/string.c`
 
 ### dofile `static int dofile(lua_State *L, const char *name)`
 - Defined: `progs/lua/lua_main.c:50`
+- Depends on: `kernel/string.c`
 
 ### repl `static int repl(lua_State *L)`
 - Defined: `progs/lua/lua_main.c:60`
+- Depends on: `kernel/string.c`
 
 ### main `int main(int argc, char **argv)`
 - Defined: `progs/lua/lua_main.c:104`
+- Depends on: `kernel/string.c`
 
 ## progs/lua/minios.c
 
 ### msys5 `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)`
 - Defined: `progs/lua/minios.c:37`
 - Doc: /* ── raw syscall helpers (x86-64 Linux ABI) ─────────────────────────── static long msys(long n, long a1, long a2, long
+- Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
 
 ### minios_time_ms `static int minios_time_ms(lua_State *L)`
 - Defined: `progs/lua/minios.c:62`
 - Doc: } /* ── MiniOS syscall numbers (canonical table from minios_abi.h) ─────── #include "minios_abi.h" #define SYS_TIME_MS  
+- Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
 
 ### minios_rtc `static int minios_rtc(lua_State *L)`
 - Defined: `progs/lua/minios.c:68`
 - Doc: #define SYS_PCSPK_INIT  MINIOS_SYS_PCSPK_INIT #define SYS_PCSPK_TONE  MINIOS_SYS_PCSPK_TONE #define SYS_RTC         MINI
+- Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
 
 ### minios_fb_info `static int minios_fb_info(lua_State *L)`
 - Defined: `progs/lua/minios.c:82`
 - Doc: static int minios_rtc(lua_State *L) { int h, m, s; if (msys(SYS_RTC, (long)&h, (long)&m, (long)&s) < 0) { lua_pushnil(L)
+- Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
 
 ### minios_vol `static int minios_vol(lua_State *L)`
 - Defined: `progs/lua/minios.c:96`
 - Doc: static int minios_fb_info(lua_State *L) { int w, h, p; if (msys(SYS_FB_INFO, (long)&w, (long)&h, (long)&p) < 0) { lua_pu
+- Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
 
 ### minios_pal `static int minios_pal(lua_State *L)`
 - Defined: `progs/lua/minios.c:109`
 - Doc: /* ── minios.vol([v]) -> current volume ─────────────────────────────── static int minios_vol(lua_State *L) { if (lua_ge
+- Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
 
 ### minios_pcspeaker `static int minios_pcspeaker(lua_State *L)`
 - Defined: `progs/lua/minios.c:119`
 - Doc: return 1; } /* ── minios.pal(buf) -- load a 768-byte VGA DAC palette ────────────── static int minios_pal(lua_State *L) 
+- Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
 
 ### minios_run `static int minios_run(lua_State *L)`
 - Defined: `progs/lua/minios.c:136`
 - Doc: ── minios.run(path[, args][, redirect]) -> exit code ─────────────── Runs a program through SYS_SPAWN (215), preserving 
+- Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
 
 ### luaopen_minios `int luaopen_minios(lua_State *L)`
 - Defined: `progs/lua/minios.c:191`
+- Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
 
 ## progs/micropython/variants/minios/minios_module.c
@@ -9455,292 +11153,375 @@ Z_DumpHeap
 ### msys5 `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)`
 - Defined: `progs/micropython/variants/minios/minios_module.c:26`
 - Doc: /* ── raw syscall helper (x86-64 Linux ABI) ─────────────────────────── static long msys(long n, long a1, long a2, long 
+- Depends on: `progs/minios_abi.h`
 
 ### minios_time_ms `static mp_obj_t minios_time_ms(void)`
 - Defined: `progs/micropython/variants/minios/minios_module.c:51`
 - Doc: } /* ── MiniOS syscall numbers (canonical table from minios_abi.h) ─────── #include "minios_abi.h" #define SYS_TIME_MS  
+- Depends on: `progs/minios_abi.h`
 
 ### minios_rtc `static mp_obj_t minios_rtc(void)`
 - Defined: `progs/micropython/variants/minios/minios_module.c:58`
 - Doc: #define SYS_PCSPK_TONE  MINIOS_SYS_PCSPK_TONE #define SYS_RTC         MINIOS_SYS_RTC #define SYS_FB_INFO     MINIOS_SYS_
+- Depends on: `progs/minios_abi.h`
 
 ### minios_fb_info `static mp_obj_t minios_fb_info(void)`
 - Defined: `progs/micropython/variants/minios/minios_module.c:75`
 - Doc: long ret = msys(SYS_RTC, (long)&h, (long)&m, (long)&s); if (ret < 0) { mp_raise_OSError(-ret); } mp_obj_t tuple[3] = { m
+- Depends on: `progs/minios_abi.h`
 
 ### minios_pal `static mp_obj_t minios_pal(mp_obj_t buf_in)`
 - Defined: `progs/micropython/variants/minios/minios_module.c:110`
 - Doc: static mp_obj_t minios_vol(size_t n_args, const mp_obj_t *args) { if (n_args == 0) { /* get volume: pass -1 to signal "r
+- Depends on: `progs/minios_abi.h`
 
 ### minios_pcspeaker `static mp_obj_t minios_pcspeaker(mp_obj_t freq_in, mp_obj_t ms_in)`
 - Defined: `progs/micropython/variants/minios/minios_module.c:126`
 - Doc: mp_buffer_info_t bufinfo; mp_get_buffer_raise(buf_in, &bufinfo, MP_BUFFER_READ); if (bufinfo.len < 768) { mp_raise_Value
+- Depends on: `progs/minios_abi.h`
 
 ### minios_run `static mp_obj_t minios_run(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)`
 - Defined: `progs/micropython/variants/minios/minios_module.c:148`
 - Doc: ── minios.run(path, args=None, redirect=None) -> exit code ───────── Runs a program through the kernel SYS_SPAWN (215) b
+- Depends on: `progs/minios_abi.h`
 
 ## progs/nuklear/cvm_emit.c
 
 ### cb_push `static int cb_push(struct codebuf *cb, unsigned char c)`
 - Defined: `progs/nuklear/cvm_emit.c:55`
+- Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
 
 ### cb_u32 `static int cb_u32(struct codebuf *cb, unsigned long v)`
 - Defined: `progs/nuklear/cvm_emit.c:67`
+- Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
 
 ### cb_i64 `static int cb_i64(struct codebuf *cb, long long v)`
 - Defined: `progs/nuklear/cvm_emit.c:73`
+- Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
 
 ### topo_sort `static int topo_sort(const struct cvm_node *nodes, int n,
                      int *order, char *...`
 - Defined: `progs/nuklear/cvm_emit.c:81`
 - Doc: static int cb_u32(struct codebuf *cb, unsigned long v) { for (int i = 0; i < 4; i++) if (cb_push(cb, (unsigned char)(v >
+- Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
 
 ### cvm_compile `int cvm_compile(const struct cvm_node *nodes, int n,
                 unsigned char **out, size_t ...`
 - Defined: `progs/nuklear/cvm_emit.c:122`
+- Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
 
 ### w32 `void w32(void *p, unsigned v)`
 - Defined: `progs/nuklear/cvm_emit.c:257`
 - Doc: size_t ft = (size_t)nf * CVM_FUNC_ENTRY_SIZE; size_t gt = (size_t)ng * CVM_GLOBAL_ENTRY_SIZE; size_t nt = (size_t)nn * C
+- Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
 
 ## progs/nuklear/node_editor.c
 
 ### graph_clear `static void graph_clear(void)`
 - Defined: `progs/nuklear/node_editor.c:48`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### graph_add `static int graph_add(int kind)`
 - Defined: `progs/nuklear/node_editor.c:53`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### kind_name `static const char *kind_name(int k)`
 - Defined: `progs/nuklear/node_editor.c:65`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### node_inputs `static int node_inputs(int k)`
 - Defined: `progs/nuklear/node_editor.c:79`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### kind_color `static struct nk_color kind_color(int k)`
 - Defined: `progs/nuklear/node_editor.c:89`
 - Doc: case G_EXIT:  return "Exit"; } return "?"; } static int node_inputs(int k) { switch (k) { case G_ADD: case G_SUB: case G
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### graph_to_compiler `static int graph_to_compiler(struct cvm_node *out, int cap)`
 - Defined: `progs/nuklear/node_editor.c:104`
 - Doc: switch (k) { case G_NUM:   return nk_rgb(70, 130, 180);   /* steel blue case G_ADD:   return nk_rgb(60, 179, 113);   /* 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### compile_to `static int compile_to(const char *path)`
 - Defined: `progs/nuklear/node_editor.c:122`
 - Doc: (g_nodes[i].kind == G_SUB) ? NODE_SUB : (g_nodes[i].kind == G_MUL) ? NODE_MUL : (g_nodes[i].kind == G_DIV) ? NODE_DIV : 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### parse_graph_file `static int parse_graph_file(const char *path)`
 - Defined: `progs/nuklear/node_editor.c:159`
 - Doc: --- Headless graph text format ---- num a 5          add b a c        print b        exit b Each line: <type> <name> [va
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### resolve `int resolve(const char *nme, int upto)`
 - Defined: `progs/nuklear/node_editor.c:166`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### pin_y `static float pin_y(struct gnode *n, int slot, int is_output)`
 - Defined: `progs/nuklear/node_editor.c:234`
 - Doc: /* Link-drag state: click an output pin, drag to an input pin. static int linking_active; static int linking_src_node; s
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### ui_build `static void ui_build(struct nk_context *ctx, float win_w, float win_h)`
 - Defined: `progs/nuklear/node_editor.c:243`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### gui_run `static void gui_run(void)`
 - Defined: `progs/nuklear/node_editor.c:487`
 - Doc: circle.x = n->x - PIN_R; circle.y = pin_y(n, k, 0) - PIN_R; circle.w = PIN_DIAM; circle.h = PIN_DIAM; nk_fill_circle(can
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ### main `int main(int argc, char **argv)`
 - Defined: `progs/nuklear/node_editor.c:535`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ## progs/nuklear/nuklear_minios.c
 
 ### nk_sys_time_ms `long nk_sys_time_ms(void)`
 - Defined: `progs/nuklear/nuklear_minios.c:26`
 - Doc: wheel. All MiniOS-specific syscalls go through the Linux syscall ABI, so this compiles into a normal static ring-3 ELF. 
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_kbd `long nk_sys_kbd(void)`
 - Defined: `progs/nuklear/nuklear_minios.c:31`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_palette `long nk_sys_palette(const unsigned char *pal)`
 - Defined: `progs/nuklear/nuklear_minios.c:36`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_kbd_raw `long nk_sys_kbd_raw(int on)`
 - Defined: `progs/nuklear/nuklear_minios.c:41`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_vga_mode `long nk_sys_vga_mode(int on)`
 - Defined: `progs/nuklear/nuklear_minios.c:46`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_fb_info `long nk_sys_fb_info(int *w, int *h, int *pitch)`
 - Defined: `progs/nuklear/nuklear_minios.c:51`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_mouse `long nk_sys_mouse(int *xybw)`
 - Defined: `progs/nuklear/nuklear_minios.c:58`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_mouse_badptr `long nk_sys_mouse_badptr(void)`
 - Defined: `progs/nuklear/nuklear_minios.c:63`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_nk_frame `long nk_sys_nk_frame(int *origin)`
 - Defined: `progs/nuklear/nuklear_minios.c:71`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### pal_prepare `static void pal_prepare(void)`
 - Defined: `progs/nuklear/nuklear_minios.c:143`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### col_to_idx `static int col_to_idx(struct nk_color c)`
 - Defined: `progs/nuklear/nuklear_minios.c:154`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### set_clip `static void set_clip(int x, int y, int w, int h)`
 - Defined: `progs/nuklear/nuklear_minios.c:272`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### px `static void px(int x, int y, int c)`
 - Defined: `progs/nuklear/nuklear_minios.c:282`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### fill_rect `static void fill_rect(int x, int y, int w, int h, int c)`
 - Defined: `progs/nuklear/nuklear_minios.c:289`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### draw_line `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)`
 - Defined: `progs/nuklear/nuklear_minios.c:296`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### fill_circle `static void fill_circle(int cx, int cy, int r, int c)`
 - Defined: `progs/nuklear/nuklear_minios.c:314`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### stroke_circle `static void stroke_circle(int cx, int cy, int r, int th, int c)`
 - Defined: `progs/nuklear/nuklear_minios.c:320`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### fill_poly `static void fill_poly(int *xs, int *ys, int n, int c)`
 - Defined: `progs/nuklear/nuklear_minios.c:339`
 - Doc: draw_line(cx + x, cy - y, cx - x, cy - y, th, c); draw_line(cx - x, cy + y, cx - x, cy - y, th, c); draw_line(cx + x, cy
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### stroke_poly `static void stroke_poly(int *xs, int *ys, int n, int th, int c)`
 - Defined: `progs/nuklear/nuklear_minios.c:361`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### draw_text `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)`
 - Defined: `progs/nuklear/nuklear_minios.c:368`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### draw_arc `static void draw_arc(int cx, int cy, int r, float a0, float a1,
                      int filled, ...`
 - Defined: `progs/nuklear/nuklear_minios.c:382`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_rasterize `void nk_rasterize(struct nk_context *ctx)`
 - Defined: `progs/nuklear/nuklear_minios.c:403`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_foreach `nk_foreach(cmd, ctx)`
 - Defined: `progs/nuklear/nuklear_minios.c:408`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_minios_font_width `static float nk_minios_font_width(nk_handle handle, float height,
                                ...`
 - Defined: `progs/nuklear/nuklear_minios.c:554`
 - Doc: if (c->background.a > 0) bg = col_to_idx(c->background); draw_text(c->x, c->y, c->string, c->length, fg, bg); break; } c
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_minios_font `struct nk_user_font nk_minios_font(void)`
 - Defined: `progs/nuklear/nuklear_minios.c:559`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### feed_key `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
 - Defined: `progs/nuklear/nuklear_minios.c:593`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### handle_scancode `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
 - Defined: `progs/nuklear/nuklear_minios.c:597`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_poll_input `void nk_poll_input(struct nk_context *ctx)`
 - Defined: `progs/nuklear/nuklear_minios.c:638`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_set_window_origin `void nk_set_window_origin(int x, int y)`
 - Defined: `progs/nuklear/nuklear_minios.c:675`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ## progs/piano/piano.c
 
 ### sys_pcm_open `static long sys_pcm_open(long on)`
 - Defined: `progs/piano/piano.c:63`
 - Doc: Upper bound on audio rendered per frame, in milliseconds.  The kernel-side audio ring absorbs up to ~3 seconds of buffer
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### sys_pcm_submit `static long sys_pcm_submit(const void *buf, long len)`
 - Defined: `progs/piano/piano.c:67`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### sys_pcm_pump `static long sys_pcm_pump(void)`
 - Defined: `progs/piano/piano.c:70`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### o3_op `static int o3_op(int ch, int is_car)`
 - Defined: `progs/piano/piano.c:85`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### o3_opreg `static void o3_opreg(int ch, int is_car, int regbase, int val)`
 - Defined: `progs/piano/piano.c:89`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### o3_chreg `static void o3_chreg(int ch, int regbase, int val)`
 - Defined: `progs/piano/piano.c:93`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### o3_note `static void o3_note(int ch, int midi, int on)`
 - Defined: `progs/piano/piano.c:130`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### clamp_midi `static int clamp_midi(int m)`
 - Defined: `progs/piano/piano.c:174`
 - Doc: ── Expressive note state: velocity, sustain, octave ───────────────── Voices (MAX_VOICES, the OPL3 channel count) and ke
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### pedal_set `static void pedal_set(int on)`
 - Defined: `progs/piano/piano.c:182`
 - Doc: static int chan_used[MAX_VOICES]; static int chan_sustained[MAX_VOICES];/* key released but pedal holds the voice static
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### note_off_key `static void note_off_key(int key)`
 - Defined: `progs/piano/piano.c:194`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### note_on_key `static void note_on_key(int key, int midi, int vel)`
 - Defined: `progs/piano/piano.c:208`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### fx_configure `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
 - Defined: `progs/piano/piano.c:250`
 - Doc: #define FX_DELAY_CAP (RATE)           /* 1 s of delay at 22050 Hz #define FX_DELAY_MAX_MS 800 #define FX_FEEDBACK 0.35f 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### fx_process `static float fx_process(float x)`
 - Defined: `progs/piano/piano.c:268`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### sb_flush `static void sb_flush(void)`
 - Defined: `progs/piano/piano.c:299`
 - Doc: Flush a fully-filled buffer to the kernel audio ring.  When the ring is full the submit is refused; the buffer is kept i
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### render_audio `static void render_audio(long ms)`
 - Defined: `progs/piano/piano.c:308`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### key_rect `static void key_rect(int key, int *x, int *y, int *w, int *h)`
 - Defined: `progs/piano/piano.c:334`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### hit_key `static int hit_key(int mx, int my)`
 - Defined: `progs/piano/piano.c:341`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### hit_velocity `static int hit_velocity(int key, int my)`
 - Defined: `progs/piano/piano.c:359`
 - Doc: Velocity 1..100 from the click's vertical position inside a key: the very * top is soft, the bottom is loud.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### ctrl_hit `static int ctrl_hit(int id, int mx, int my)`
 - Defined: `progs/piano/piano.c:385`
 - Doc: define NCTRLS ((int)(sizeof(ctrls) / sizeof(ctrls[0])))
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### ctrl_active `static int ctrl_active(int id)`
 - Defined: `progs/piano/piano.c:390`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### ctrl_press `static void ctrl_press(int id)`
 - Defined: `progs/piano/piano.c:399`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### ui_run `static void ui_run(int bench_ms)`
 - Defined: `progs/piano/piano.c:417`
 - Doc: case 1: if (octave < 2) octave++; break; case 2: if (volume > 0) volume -= 5; break; case 3: if (volume < 100) volume +=
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### run_selftest `static int run_selftest(void)`
 - Defined: `progs/piano/piano.c:556`
 - Doc: if (audio_on) render_audio(elapsed); } unsigned t0 = (unsigned)nk_sys_time_ms(); while ((unsigned)nk_sys_time_ms() - t0 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ### main `int main(int argc, char **argv)`
 - Defined: `progs/piano/piano.c:666`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
 
 ## progs/pokemon/minios_stubs/SDL.h
 
 ### SDL_GetPerformanceCounter `static inline Uint64 SDL_GetPerformanceCounter(void)`
 - Defined: `progs/pokemon/minios_stubs/SDL.h:10`
+- Imported by: `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/i_cdmus.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`
 
 ### SDL_GetPerformanceFrequency `static inline Uint64 SDL_GetPerformanceFrequency(void)`
 - Defined: `progs/pokemon/minios_stubs/SDL.h:12`
+- Imported by: `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/i_cdmus.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`
 
 ### SDL_GetTicks `static inline Uint32 SDL_GetTicks(void)`
 - Defined: `progs/pokemon/minios_stubs/SDL.h:13`
+- Imported by: `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/i_cdmus.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`
 
 ### SDL_Delay `static inline void SDL_Delay(Uint32 ms)`
 - Defined: `progs/pokemon/minios_stubs/SDL.h:14`
+- Imported by: `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/i_cdmus.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`
 
 ## progs/pokemon/platform_minios.c
 
@@ -9748,306 +11529,399 @@ Z_DumpHeap
  *
  * Debug: heartbeat to stde...`
 - Defined: `progs/pokemon/platform_minios.c:32`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sys_kbd `static long sys_kbd(void)`
 - Defined: `progs/pokemon/platform_minios.c:61`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sys_nk_frame `static long sys_nk_frame(int *origin)`
 - Defined: `progs/pokemon/platform_minios.c:67`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sys_mouse `static long sys_mouse(int *xybw)`
 - Defined: `progs/pokemon/platform_minios.c:73`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sys_vga_mode `static long sys_vga_mode(int on)`
 - Defined: `progs/pokemon/platform_minios.c:79`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sys_kbd_raw `static long sys_kbd_raw(int on)`
 - Defined: `progs/pokemon/platform_minios.c:85`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sys_palette `static long sys_palette(const unsigned char *pal)`
 - Defined: `progs/pokemon/platform_minios.c:91`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sys_gfx_title `static long sys_gfx_title(const char *t)`
 - Defined: `progs/pokemon/platform_minios.c:97`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sys_tone `static long sys_tone(unsigned f)`
 - Defined: `progs/pokemon/platform_minios.c:103`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_debug `void gb_platform_set_debug(bool enabled)`
 - Defined: `progs/pokemon/platform_minios.c:143`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### _dl_argv `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).
  * DO NOT reintroduce argv ...`
 - Defined: `progs/pokemon/platform_minios.c:151`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_audio_sample `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)`
 - Defined: `progs/pokemon/platform_minios.c:201`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_voice_in_range `static bool gb_voice_in_range(unsigned f)`
 - Defined: `progs/pokemon/platform_minios.c:232`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sample_apu_voices `static void sample_apu_voices(gb_voice_t *v)`
 - Defined: `progs/pokemon/platform_minios.c:236`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### hold_tone `static void hold_tone(unsigned freq, unsigned ms)`
 - Defined: `progs/pokemon/platform_minios.c:256`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_audio_play `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
                             ...`
 - Defined: `progs/pokemon/platform_minios.c:264`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_audio_frame `static void minios_audio_frame(void)`
 - Defined: `progs/pokemon/platform_minios.c:300`
 - Doc: } if (m2) { mel[nmel++] = v[1].freq; } if (bass) { hold_tone(v[2].freq, MINIOS_ARP_BASS_MS); } if (nmel > 0) { hold_tone
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### rebuild_joypad `static void rebuild_joypad(void)`
 - Defined: `progs/pokemon/platform_minios.c:327`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### poll_keyboard `static void poll_keyboard(void)`
 - Defined: `progs/pokemon/platform_minios.c:341`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### push_332_palette `static void push_332_palette(void)`
 - Defined: `progs/pokemon/platform_minios.c:381`
 - Doc: 3-3-2 RGB palette ramp, pushed ONCE at init (not per frame). * Pixel index = (R & 0xE0) | ((G & 0xE0) >> 3) | ((B & 0xC0
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### menu_fill `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)`
 - Defined: `progs/pokemon/platform_minios.c:536`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### menu_text `static void menu_text(int x, int y, const char *s, uint8_t fg)`
 - Defined: `progs/pokemon/platform_minios.c:549`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### menu_osd `static void menu_osd(const char *s)`
 - Defined: `progs/pokemon/platform_minios.c:568`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### menu_draw `static void menu_draw(void)`
 - Defined: `progs/pokemon/platform_minios.c:574`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### menu_item_at `static int menu_item_at(int lx, int ly)`
 - Defined: `progs/pokemon/platform_minios.c:604`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### menu_do_save `static void menu_do_save(void)`
 - Defined: `progs/pokemon/platform_minios.c:611`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### menu_do_load `static void menu_do_load(void)`
 - Defined: `progs/pokemon/platform_minios.c:627`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### menu_activate `static void menu_activate(int it)`
 - Defined: `progs/pokemon/platform_minios.c:646`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### poll_menu `static void poll_menu(void)`
 - Defined: `progs/pokemon/platform_minios.c:681`
 - Doc: Esc toggles, Up/Down move, Enter activates; the mouse is a bonus. * PS/2 Set 1: Esc = 0x01, Up = 0x48, Down = 0x50, Ente
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### upload_frame `static void upload_frame(const uint32_t *framebuffer)`
 - Defined: `progs/pokemon/platform_minios.c:738`
 - Doc: if (lbtn && !g_prev_lbtn) { if (lx >= MENU_FILE_X0 && lx < MENU_FILE_X1 && ly >= 0 && ly < MENU_BAR_H) { g_menu_open = !
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_init `bool gb_platform_init(int scale)`
 - Defined: `progs/pokemon/platform_minios.c:805`
 - Doc: ============================================================================ gb_platform_* interface implementation * ==
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_persist_path `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
                       ...`
 - Defined: `progs/pokemon/platform_minios.c:834`
 - Doc: -- Battery + RTC persistence (direct write to MiniFS) ---  Paths use saves/: kfopen tries the ramdisk FIRST and creates 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_legacy_path `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
                        ...`
 - Defined: `progs/pokemon/platform_minios.c:844`
 - Doc: Legacy ramdisk path (pre-MiniFS fix wrote bin/<id>.* onto volatile ramdisk). Loads still probe it as a fallback so a che
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_load_helper `static bool minios_load_helper(const char *path, void *data, size_t size,
                        ...`
 - Defined: `progs/pokemon/platform_minios.c:849`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_save_helper `static bool minios_save_helper(const char *path, const void *data, size_t size)`
 - Defined: `progs/pokemon/platform_minios.c:867`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_load_battery_ram `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
 - Defined: `progs/pokemon/platform_minios.c:878`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_save_battery_ram `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
 - Defined: `progs/pokemon/platform_minios.c:893`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_load_rtc_data `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
 - Defined: `progs/pokemon/platform_minios.c:903`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_save_rtc_data `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
 - Defined: `progs/pokemon/platform_minios.c:916`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_fast_forward `static inline bool minios_fast_forward(void)`
 - Defined: `progs/pokemon/platform_minios.c:955`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_state_path `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
 - Defined: `progs/pokemon/platform_minios.c:958`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_legacy_state_path `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)`
 - Defined: `progs/pokemon/platform_minios.c:963`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### minios_autosave `static void minios_autosave(uint32_t now)`
 - Defined: `progs/pokemon/platform_minios.c:968`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### poll_hotkeys `static void poll_hotkeys(void)`
 - Defined: `progs/pokemon/platform_minios.c:983`
 - Doc: PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26, SPACE = 0x39, Shift = 0x2A/0x36. SPACE held is moment
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_register_context `void gb_platform_register_context(GBContext *ctx)`
 - Defined: `progs/pokemon/platform_minios.c:1034`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_shutdown `void gb_platform_shutdown(void)`
 - Defined: `progs/pokemon/platform_minios.c:1050`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_poll_events `bool gb_platform_poll_events(GBContext *ctx)`
 - Defined: `progs/pokemon/platform_minios.c:1057`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_render_frame `void gb_platform_render_frame(const uint32_t *framebuffer)`
 - Defined: `progs/pokemon/platform_minios.c:1066`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_present_framebuffer `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
 - Defined: `progs/pokemon/platform_minios.c:1124`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_render_lcd_off_frame `void gb_platform_render_lcd_off_frame(void)`
 - Defined: `progs/pokemon/platform_minios.c:1130`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_vsync `void gb_platform_vsync(uint32_t frame_cycles)`
 - Defined: `progs/pokemon/platform_minios.c:1146`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_benchmark_mode `void gb_platform_set_benchmark_mode(bool enabled)`
 - Defined: `progs/pokemon/platform_minios.c:1167`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_input_script `bool gb_platform_set_input_script(const char *script)`
 - Defined: `progs/pokemon/platform_minios.c:1171`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_input_record_file `void gb_platform_set_input_record_file(const char *path)`
 - Defined: `progs/pokemon/platform_minios.c:1177`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_persistence_dir `bool gb_platform_set_persistence_dir(const char *path)`
 - Defined: `progs/pokemon/platform_minios.c:1182`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_dump_frames `void gb_platform_set_dump_frames(const char *frames)`
 - Defined: `progs/pokemon/platform_minios.c:1191`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_dump_present_frames `void gb_platform_set_dump_present_frames(const char *frames)`
 - Defined: `progs/pokemon/platform_minios.c:1213`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_screenshot_prefix `void gb_platform_set_screenshot_prefix(const char *prefix)`
 - Defined: `progs/pokemon/platform_minios.c:1234`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_get_timing_info `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
 - Defined: `progs/pokemon/platform_minios.c:1240`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_get_joypad `uint8_t gb_platform_get_joypad(void)`
 - Defined: `progs/pokemon/platform_minios.c:1247`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_title `void gb_platform_set_title(const char *title)`
 - Defined: `progs/pokemon/platform_minios.c:1251`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_get_smooth_lcd_transitions `bool gb_platform_get_smooth_lcd_transitions(void)`
 - Defined: `progs/pokemon/platform_minios.c:1257`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_smooth_lcd_transitions `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
 - Defined: `progs/pokemon/platform_minios.c:1261`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_set_launcher_return_enabled `void gb_platform_set_launcher_return_enabled(bool enabled)`
 - Defined: `progs/pokemon/platform_minios.c:1265`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_get_exit_action `GBPlatformExitAction gb_platform_get_exit_action(void)`
 - Defined: `progs/pokemon/platform_minios.c:1269`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_submit_port_frame `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
 - Defined: `progs/pokemon/platform_minios.c:1273`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_test_audio_concurrency `bool gb_platform_test_audio_concurrency(uint32_t frames,
                                         ...`
 - Defined: `progs/pokemon/platform_minios.c:1280`
 - Doc: void gb_platform_set_launcher_return_enabled(bool enabled) { (void)enabled; } GBPlatformExitAction gb_platform_get_exit_
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gb_platform_test_inject_persistence_fault `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...`
 - Defined: `progs/pokemon/platform_minios.c:1288`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ## progs/quake2generic/q2generic_minios.c
 
 ### SYS_DOOM_FRAME `* SYS_DOOM_FRAME (211) and the kernel composites the buffer onto the
  * hi-res desktop as a title...`
 - Defined: `progs/quake2generic/q2generic_minios.c:5`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_kbd `static long sys_kbd(void)`
 - Defined: `progs/quake2generic/q2generic_minios.c:28`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_palette `static long sys_palette(const unsigned char *pal)`
 - Defined: `progs/quake2generic/q2generic_minios.c:34`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_kbd_raw `static long sys_kbd_raw(int on)`
 - Defined: `progs/quake2generic/q2generic_minios.c:40`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_vga_mode `static long sys_vga_mode(int on)`
 - Defined: `progs/quake2generic/q2generic_minios.c:46`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_doom_frame `static long sys_doom_frame(void)`
 - Defined: `progs/quake2generic/q2generic_minios.c:52`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_mouse `static long sys_mouse(int *buf)`
 - Defined: `progs/quake2generic/q2generic_minios.c:58`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_set_title `static long sys_set_title(const char *t)`
 - Defined: `progs/quake2generic/q2generic_minios.c:64`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### q2g_parse_autoframes `static void q2g_parse_autoframes(int argc, char **argv)`
 - Defined: `progs/quake2generic/q2generic_minios.c:86`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_GetMouseDiff `void QG_GetMouseDiff(int *dx, int *dy)`
 - Defined: `progs/quake2generic/q2generic_minios.c:101`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_CaptureMouse `void QG_CaptureMouse(void)`
 - Defined: `progs/quake2generic/q2generic_minios.c:112`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_ReleaseMouse `void QG_ReleaseMouse(void)`
 - Defined: `progs/quake2generic/q2generic_minios.c:116`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_Mkdir `void QG_Mkdir(const char *path)`
 - Defined: `progs/quake2generic/q2generic_minios.c:119`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### scancode_to_q2key `static unsigned char scancode_to_q2key(unsigned char raw)`
 - Defined: `progs/quake2generic/q2generic_minios.c:123`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### extended_to_q2key `static unsigned char extended_to_q2key(unsigned char sc)`
 - Defined: `progs/quake2generic/q2generic_minios.c:206`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### kbd_poll `static void kbd_poll(void)`
 - Defined: `progs/quake2generic/q2generic_minios.c:224`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_SetPalette `void SWimp_SetPalette(const unsigned char *palette)`
 - Defined: `progs/quake2generic/q2generic_minios.c:254`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_SetMode `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)`
 - Defined: `progs/quake2generic/q2generic_minios.c:264`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_Init `int SWimp_Init(void *hInstance, void *wndProc)`
 - Defined: `progs/quake2generic/q2generic_minios.c:281`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_Shutdown `void SWimp_Shutdown(void)`
 - Defined: `progs/quake2generic/q2generic_minios.c:287`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_BeginFrame `void SWimp_BeginFrame(float camera_separation)`
 - Defined: `progs/quake2generic/q2generic_minios.c:290`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_EndFrame `void SWimp_EndFrame(void)`
 - Defined: `progs/quake2generic/q2generic_minios.c:293`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_AppActivate `void SWimp_AppActivate(qboolean active)`
 - Defined: `progs/quake2generic/q2generic_minios.c:312`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_Milliseconds `int QG_Milliseconds(void)`
 - Defined: `progs/quake2generic/q2generic_minios.c:316`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### main `int main(int argc, char **argv)`
 - Defined: `progs/quake2generic/q2generic_minios.c:320`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ## progs/src/aes.c
 
@@ -10128,54 +12002,71 @@ Z_DumpHeap
 ### syscall1 `static long syscall1(long n, long a1)`
 - Defined: `progs/src/audio.c:2`
 - Doc: include "minios_abi.h"
+- Depends on: `progs/minios_abi.h`
 
 ### syscall2 `static long syscall2(long n, long a1, long a2)`
 - Defined: `progs/src/audio.c:8`
+- Depends on: `progs/minios_abi.h`
 
 ### syscall3 `static long syscall3(long n, long a1, long a2, long a3)`
 - Defined: `progs/src/audio.c:14`
+- Depends on: `progs/minios_abi.h`
 
 ### syscall0 `static long syscall0(long n)`
 - Defined: `progs/src/audio.c:20`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_init `int audio_init(void)`
 - Defined: `progs/src/audio.c:26`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_tone `void audio_tone(unsigned freq)`
 - Defined: `progs/src/audio.c:30`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_pcm_open `int audio_pcm_open(unsigned rate, unsigned channels, unsigned format)`
 - Defined: `progs/src/audio.c:34`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_pcm_submit `int audio_pcm_submit(const void *buf, unsigned len)`
 - Defined: `progs/src/audio.c:39`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_pcm_pump `void audio_pcm_pump(void)`
 - Defined: `progs/src/audio.c:43`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_pcm_close `void audio_pcm_close(void)`
 - Defined: `progs/src/audio.c:47`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_set_volume `void audio_set_volume(unsigned volume)`
 - Defined: `progs/src/audio.c:51`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_get_volume `unsigned audio_get_volume(void)`
 - Defined: `progs/src/audio.c:55`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_sb16_present `int audio_sb16_present(void)`
 - Defined: `progs/src/audio.c:59`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_stream_open `int audio_stream_open(void)`
 - Defined: `progs/src/audio.c:63`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_stream_close `void audio_stream_close(int id)`
 - Defined: `progs/src/audio.c:67`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_stream_submit `int audio_stream_submit(int id, const void *buf, unsigned len)`
 - Defined: `progs/src/audio.c:71`
+- Depends on: `progs/minios_abi.h`
 
 ### audio_stream_volume `void audio_stream_volume(int id, unsigned char vol)`
 - Defined: `progs/src/audio.c:75`
+- Depends on: `progs/minios_abi.h`
 
 ## progs/src/cp.c
 
@@ -10534,34 +12425,54 @@ Z_DumpHeap
 
 ### m_syscall6 `static inline long m_syscall6(long n, long a, long b, long c)`
 - Defined: `progs/src/mthreads.h:49`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ### myield `static inline void myield(void)`
 - Defined: `progs/src/mthreads.h:58`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ### mfutex_wait `static inline long mfutex_wait(volatile int *addr, int val)`
 - Defined: `progs/src/mthreads.h:62`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ### mfutex_wake `static inline long mfutex_wake(volatile int *addr, int n)`
 - Defined: `progs/src/mthreads.h:66`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ### mmutex_init `static inline void mmutex_init(mmutex_t *m)`
 - Defined: `progs/src/mthreads.h:70`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ### mmutex_lock `static inline void mmutex_lock(mmutex_t *m)`
 - Defined: `progs/src/mthreads.h:74`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ### mmutex_unlock `static inline void mmutex_unlock(mmutex_t *m)`
 - Defined: `progs/src/mthreads.h:89`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ### mthread_entry `static void mthread_entry(void *p)`
 - Defined: `progs/src/mthreads.h:98`
 - Doc: Thread entry trampoline: runs fn(arg), stores the return, exits 0. * The exit code is always 0; join reads retval from t
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ### mthread_create `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
 - Defined: `progs/src/mthreads.h:112`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ### mthread_join `static int mthread_join(mthread_t t, void **retval)`
 - Defined: `progs/src/mthreads.h:135`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/src/thdemo.c`
 
 ## progs/src/nx.c
 
@@ -10579,29 +12490,45 @@ Z_DumpHeap
 ### sys_time `static long sys_time(void)`
 - Defined: `progs/src/opl3.c:35`
 - Doc: define F_NUM_FACTOR 65536.0 / 49716.0
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `progs/piano/piano.c`
 
 ### sys_open `static long sys_open(long on)`
 - Defined: `progs/src/opl3.c:39`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `progs/piano/piano.c`
 
 ### sys_submit `static long sys_submit(const void *buf, long len)`
 - Defined: `progs/src/opl3.c:42`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `progs/piano/piano.c`
 
 ### busy_ms `static void busy_ms(long ms)`
 - Defined: `progs/src/opl3.c:45`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `progs/piano/piano.c`
 
 ### opl3_set_instrument `static void opl3_set_instrument(opl3_chip *chip)`
 - Defined: `progs/src/opl3.c:52`
 - Doc: } static long sys_open(long on) { long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_OPEN),"D"(on):"rcx","r11","mem
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `progs/piano/piano.c`
 
 ### opl3_note `static void opl3_note(opl3_chip *chip, unsigned block, unsigned fnum, int on)`
 - Defined: `progs/src/opl3.c:68`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `progs/piano/piano.c`
 
 ### render `static void render(opl3_chip *chip, long ms, long *fail)`
 - Defined: `progs/src/opl3.c:77`
 - Doc: Render `ms` of the current note and stream it to the SB16.  Each submit is one DMA buffer of MONO_BYTES; submissions are
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `progs/piano/piano.c`
 
 ### main `int main(void)`
 - Defined: `progs/src/opl3.c:106`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `progs/piano/piano.c`
 
 ## progs/src/sbtone.c
 
@@ -10611,9 +12538,11 @@ Z_DumpHeap
 
 #include <stdio.h>...`
 - Defined: `progs/src/sbtone.c:13`
+- Depends on: `progs/minios_abi.h`
 
 ### main `int main(void)`
 - Defined: `progs/src/sbtone.c:35`
+- Depends on: `progs/minios_abi.h`
 
 ## progs/src/shell.py
 
@@ -10785,12 +12714,15 @@ Z_DumpHeap
 
 ### producer `static void *producer(void *p)`
 - Defined: `progs/src/thdemo.c:35`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
 
 ### consumer `static void *consumer(void *p)`
 - Defined: `progs/src/thdemo.c:56`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
 
 ### main `int main(void)`
 - Defined: `progs/src/thdemo.c:81`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
 
 ## progs/src/w1.c
 
@@ -10801,384 +12733,489 @@ Z_DumpHeap
 
 ### tg_exp `static float tg_exp(float x)`
 - Defined: `progs/topogpt3/topogpt3.c:113`
+- Depends on: `kernel/string.c`
 
 ### tg_tanh `static float tg_tanh(float x)`
 - Defined: `progs/topogpt3/topogpt3.c:127`
+- Depends on: `kernel/string.c`
 
 ### tg_sin `static float tg_sin(float x)`
 - Defined: `progs/topogpt3/topogpt3.c:134`
+- Depends on: `kernel/string.c`
 
 ### tg_cos `static float tg_cos(float x)`
 - Defined: `progs/topogpt3/topogpt3.c:143`
+- Depends on: `kernel/string.c`
 
 ### tg_fabs `static float tg_fabs(float x)`
 - Defined: `progs/topogpt3/topogpt3.c:147`
+- Depends on: `kernel/string.c`
 
 ### tg_log `static float tg_log(float x)`
 - Defined: `progs/topogpt3/topogpt3.c:151`
+- Depends on: `kernel/string.c`
 
 ### tg_fmax `static float tg_fmax(float a, float b)`
 - Defined: `progs/topogpt3/topogpt3.c:163`
+- Depends on: `kernel/string.c`
 
 ### tg_fmin `static float tg_fmin(float a, float b)`
 - Defined: `progs/topogpt3/topogpt3.c:167`
+- Depends on: `kernel/string.c`
 
 ### load_vocab `static void load_vocab(const char *path)`
 - Defined: `progs/topogpt3/topogpt3.c:254`
+- Depends on: `kernel/string.c`
 
 ### build_torus_graph `static void build_torus_graph(void)`
 - Defined: `progs/topogpt3/topogpt3.c:295`
 - Doc: ====================================================================== SECTION 4: TORUS GRAPH BUILDER * ================
+- Depends on: `kernel/string.c`
 
 ### precompute_rope `static void precompute_rope(void)`
 - Defined: `progs/topogpt3/topogpt3.c:326`
 - Doc: ====================================================================== SECTION 5: ROPE PRECOMPUTATION * ================
+- Depends on: `kernel/string.c`
 
 ### matvec `static void matvec(const float *W, const float *x, float *y, int rows, int cols)`
 - Defined: `progs/topogpt3/topogpt3.c:358`
 - Doc: ====================================================================== SECTION 6: MATRIX OPERATIONS * ==================
+- Depends on: `kernel/string.c`
 
 ### matvec_bias `static void matvec_bias(const float *W, const float *b, const float *x, float *y,
                ...`
 - Defined: `progs/topogpt3/topogpt3.c:369`
+- Depends on: `kernel/string.c`
 
 ### rmsnorm `static void rmsnorm(const float *x, const float *w, float *y, int d)`
 - Defined: `progs/topogpt3/topogpt3.c:381`
+- Depends on: `kernel/string.c`
 
 ### softmax `static void softmax(float *x, int n)`
 - Defined: `progs/topogpt3/topogpt3.c:390`
+- Depends on: `kernel/string.c`
 
 ### gelu `static void gelu(float *x, int n)`
 - Defined: `progs/topogpt3/topogpt3.c:399`
+- Depends on: `kernel/string.c`
 
 ### silu `static void silu(float *x, int n)`
 - Defined: `progs/topogpt3/topogpt3.c:409`
+- Depends on: `kernel/string.c`
 
 ### swiglu `static void swiglu(const float *gate_w, const float *up_w, const float *down_w,
                  ...`
 - Defined: `progs/topogpt3/topogpt3.c:417`
+- Depends on: `kernel/string.c`
 
 ### quat_normalize `static void quat_normalize(float *q)`
 - Defined: `progs/topogpt3/topogpt3.c:434`
 - Doc: ====================================================================== SECTION 7: QUATERNION OPERATIONS * ==============
+- Depends on: `kernel/string.c`
 
 ### quat_hamilton `static void quat_hamilton(const float *a, const float *b, float *c)`
 - Defined: `progs/topogpt3/topogpt3.c:439`
+- Depends on: `kernel/string.c`
 
 ### quat_linear `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,
      ...`
 - Defined: `progs/topogpt3/topogpt3.c:448`
 - Doc: static void quat_normalize(float *q) { float n = tg_sqrt(q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3]); if (n > 1e-8f) 
+- Depends on: `kernel/string.c`
 
 ### ifft_radix2 `static void ifft_radix2(float *real, float *imag, int n)`
 - Defined: `progs/topogpt3/topogpt3.c:504`
+- Depends on: `kernel/string.c`
 
 ### rfft `static void rfft(const float *x, float *Xr, float *Xi, int n)`
 - Defined: `progs/topogpt3/topogpt3.c:513`
 - Doc: cur_r = nr; } } } } static void ifft_radix2(float *real, float *imag, int n) { int i; for (i = 0; i < n; i++) imag[i] = 
+- Depends on: `kernel/string.c`
 
 ### irfft `static void irfft(const float *Xr, const float *Xi, float *x, int n)`
 - Defined: `progs/topogpt3/topogpt3.c:522`
 - Doc: fft_radix2(real, imag, n); for (i = 0; i < n; i++) { real[i] /= (float)n; imag[i] = -imag[i] / (float)n; } } /* Real FFT
+- Depends on: `kernel/string.c`
 
 ### filter1d `static void filter1d(const float *x, const float *kr, const float *ki,
                       floa...`
 - Defined: `progs/topogpt3/topogpt3.c:536`
 - Doc: ====================================================================== SECTION 9: SPECTRAL 1D FILTER * =================
+- Depends on: `kernel/string.c`
 
 ### ifft2d `static void ifft2d(float *data_r, float *data_i, int h, int w)`
 - Defined: `progs/topogpt3/topogpt3.c:579`
+- Depends on: `kernel/string.c`
 
 ### rfft2d_real `static void rfft2d_real(const float *data, float *out_r, float *out_i,
                          i...`
 - Defined: `progs/topogpt3/topogpt3.c:602`
 - Doc: ifft_radix2(row_re, row_im, w); for (c = 0; c < w; c++) { re[r*w+c] = row_re[c]; im[r*w+c] = row_im[c]; } } /* IFFT colu
+- Depends on: `kernel/string.c`
 
 ### irfft2d `static void irfft2d(const float *in_r, const float *in_i, float *out,
                      int h,...`
 - Defined: `progs/topogpt3/topogpt3.c:629`
 - Doc: for (r = 0; r < h; r++) { col_re[r] = re[r*w+c]; col_im[r] = im[r*w+c]; } fft_radix2(col_re, col_im, h); for (r = 0; r <
+- Depends on: `kernel/string.c`
 
 ### cmul `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)`
 - Defined: `progs/topogpt3/topogpt3.c:664`
 - Doc: ====================================================================== SECTION 11: QUATERNION SPECTRAL LAYER 2D * ======
+- Depends on: `kernel/string.c`
 
 ### spectral_contract `static void spectral_contract(const float *Wr, const float *Wi,
                                co...`
 - Defined: `progs/topogpt3/topogpt3.c:670`
 - Doc: ====================================================================== SECTION 11: QUATERNION SPECTRAL LAYER 2D * ======
+- Depends on: `kernel/string.c`
 
 ### quat_spectral_layer_2d `static void quat_spectral_layer_2d(
     const float *x, float *y,
     const float *kr_w, const fl...`
 - Defined: `progs/topogpt3/topogpt3.c:694`
+- Depends on: `kernel/string.c`
 
 ### spectral_ae_encode `static void spectral_ae_encode(const float *x, float *z, const LayerWeights *lw)`
 - Defined: `progs/topogpt3/topogpt3.c:784`
 - Doc: ====================================================================== SECTION 12: SPECTRAL AUTOENCODER FORWARD * ======
+- Depends on: `kernel/string.c`
 
 ### spectral_ae_decode `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)`
 - Defined: `progs/topogpt3/topogpt3.c:792`
+- Depends on: `kernel/string.c`
 
 ### process_torus_grid `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)`
 - Defined: `progs/topogpt3/topogpt3.c:799`
+- Depends on: `kernel/string.c`
 
 ### torus_soft_assign `static void torus_soft_assign(const float *phi1, const float *phi2,
                              ...`
 - Defined: `progs/topogpt3/topogpt3.c:820`
 - Doc: ====================================================================== SECTION 13: TORUS BRAIN FORWARD * ===============
+- Depends on: `kernel/string.c`
 
 ### message_passing `static void message_passing(const float *node_feat, float *out,
                              cons...`
 - Defined: `progs/topogpt3/topogpt3.c:842`
+- Depends on: `kernel/string.c`
 
 ### torus_brain_forward `static void torus_brain_forward(const float *x, float *out, float *recon_loss,
                   ...`
 - Defined: `progs/topogpt3/topogpt3.c:887`
+- Depends on: `kernel/string.c`
 
 ### attention_forward `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...`
 - Defined: `progs/topogpt3/topogpt3.c:977`
 - Doc: ====================================================================== SECTION 14: ATTENTION FORWARD * =================
+- Depends on: `kernel/string.c`
 
 ### moe_forward `static void moe_forward(const float *x, float *out, const LayerWeights *lw)`
 - Defined: `progs/topogpt3/topogpt3.c:1077`
 - Doc: ====================================================================== SECTION 15: MoE ROUTING * =======================
+- Depends on: `kernel/string.c`
 
 ### forward `static void forward(const int *token_ids, int seq_len, float *logits_out)`
 - Defined: `progs/topogpt3/topogpt3.c:1127`
 - Doc: ====================================================================== SECTION 16: FULL MODEL FORWARD  Processes tokens 
+- Depends on: `kernel/string.c`
 
 ### tokenize_string `static int tokenize_string(const char *text, int *tokens, int max_tokens)`
 - Defined: `progs/topogpt3/topogpt3.c:1194`
+- Depends on: `kernel/string.c`
 
 ### apply_temperature `static void apply_temperature(float *logits, int n, float temp)`
 - Defined: `progs/topogpt3/topogpt3.c:1209`
 - Doc: ====================================================================== SECTION 18: SAMPLING * ==========================
+- Depends on: `kernel/string.c`
 
 ### apply_repetition_penalty `static void apply_repetition_penalty(float *logits, int n, const int *tokens,
                    ...`
 - Defined: `progs/topogpt3/topogpt3.c:1215`
+- Depends on: `kernel/string.c`
 
 ### apply_top_k `static void apply_top_k(float *logits, int n, int k)`
 - Defined: `progs/topogpt3/topogpt3.c:1228`
+- Depends on: `kernel/string.c`
 
 ### sample `static int sample(const float *logits, int n)`
 - Defined: `progs/topogpt3/topogpt3.c:1247`
+- Depends on: `kernel/string.c`
 
 ### load_weights `static int load_weights(const char *path)`
 - Defined: `progs/topogpt3/topogpt3.c:1281`
 - Doc: ====================================================================== SECTION 19: WEIGHT LOADER  Reads the binary file 
+- Depends on: `kernel/string.c`
 
 ### load_weights_fp16 `static int load_weights_fp16(const char *path)`
 - Defined: `progs/topogpt3/topogpt3.c:1451`
+- Depends on: `kernel/string.c`
 
 ### load_weights_auto `static int load_weights_auto(const char *path)`
 - Defined: `progs/topogpt3/topogpt3.c:1583`
 - Doc: printf("  Layer %d loaded\n", i); } READ_TENSOR16(W.final_norm, D_MODEL); #undef SKIP_TENSOR16 #undef READ_TENSOR16 fclo
+- Depends on: `kernel/string.c`
 
 ### time_now_ms `static double time_now_ms(void)`
 - Defined: `progs/topogpt3/topogpt3.c:1600`
 - Doc: ====================================================================== SECTION 20: TIMING * ============================
+- Depends on: `kernel/string.c`
 
 ### decode_token `static void decode_token(int tid)`
 - Defined: `progs/topogpt3/topogpt3.c:1613`
 - Doc: ====================================================================== SECTION 21: GENERATION * ========================
+- Depends on: `kernel/string.c`
 
 ### load_token_file `static int load_token_file(const char *path, int *out_ids, int max_ids)`
 - Defined: `progs/topogpt3/topogpt3.c:1629`
 - Doc: if (tid < 256) { /* Map GPT-2 byte-level encoding back to original byte int n = tid; if (n < 94) n += 33; else if (n < 1
+- Depends on: `kernel/string.c`
 
 ### decode_token_tiktoken `static void decode_token_tiktoken(int tid)`
 - Defined: `progs/topogpt3/topogpt3.c:1652`
 - Doc: if (fread(&n, 4, 1, f) != 1) { fclose(f); return 0; } if (n > (unsigned)max_ids) n = max_ids; int count = (int)n; int i;
+- Depends on: `kernel/string.c`
 
 ### generate_tokens `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,
                ...`
 - Defined: `progs/topogpt3/topogpt3.c:1660`
+- Depends on: `kernel/string.c`
 
 ### generate `static void generate(const char *prompt, int max_new_tokens, float temperature,
                  ...`
 - Defined: `progs/topogpt3/topogpt3.c:1724`
+- Depends on: `kernel/string.c`
 
 ### interactive_mode `static void interactive_mode(void)`
 - Defined: `progs/topogpt3/topogpt3.c:1735`
 - Doc: ====================================================================== SECTION 22: INTERACTIVE MODE * ==================
+- Depends on: `kernel/string.c`
 
 ### print_help `static void print_help(void)`
 - Defined: `progs/topogpt3/topogpt3.c:1849`
 - Doc: ====================================================================== SECTION 23: HELP AND MAIN * =====================
+- Depends on: `kernel/string.c`
 
 ### main `int main(int argc, char **argv)`
 - Defined: `progs/topogpt3/topogpt3.c:1884`
+- Depends on: `kernel/string.c`
 
 ## qga.c
 
 ### qga_tx_ready `static int qga_tx_ready(void)`
 - Defined: `qga.c:26`
 - Doc: ================================================================ COM2 UART * ===========================================
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_rx_ready `static int qga_rx_ready(void)`
 - Defined: `qga.c:28`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_putc `static void qga_putc(char c)`
 - Defined: `qga.c:29`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_init `void qga_init(void)`
 - Defined: `qga.c:34`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_ws `static int qga_ws(char c)`
 - Defined: `qga.c:55`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_parse_object `static int qga_parse_object(const char **pp, struct qga_pair *out, int max,
                      ...`
 - Defined: `qga.c:65`
 - Doc: Parse a JSON object whose members are stored flat into out[*count..]: a nested object's members keep the parent key as a
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_parse_flat `static int qga_parse_flat(const char *s, struct qga_pair *out, int max)`
 - Defined: `qga.c:147`
 - Doc: Parse a request line into the flat pair table. Returns the number of pairs, * or -1 on malformed/overflowing input.
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_get_str `static const char *qga_get_str(const struct qga_pair *pairs, int n, const char *key)`
 - Defined: `qga.c:157`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_get_int `static int qga_get_int(const struct qga_pair *pairs, int n, const char *key, long *out)`
 - Defined: `qga.c:165`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_resp_reset `static void qga_resp_reset(void)`
 - Defined: `qga.c:183`
 - Doc: ================================================================ Response writer * =====================================
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_resp_puts `static void qga_resp_puts(const char *s)`
 - Defined: `qga.c:185`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_resp_putc_enc `static void qga_resp_putc_enc(char c)`
 - Defined: `qga.c:193`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_resp_put_long `static void qga_resp_put_long(long v)`
 - Defined: `qga.c:201`
 - Doc: Append the decimal form of v (a separate helper so no varargs forwarding is * needed; the kernel formatter is not re-ent
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_err `static void qga_err(const char *klass, const char *desc)`
 - Defined: `qga.c:209`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_puts_resp `static void qga_puts_resp(void)`
 - Defined: `qga.c:217`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_b64_encode `static void qga_b64_encode(const unsigned char *in, int n)`
 - Defined: `qga.c:230`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_cmd_get_time `static void qga_cmd_get_time(void)`
 - Defined: `qga.c:280`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_cmd_exec `static void qga_cmd_exec(const struct qga_pair *pairs, int n)`
 - Defined: `qga.c:306`
 - Doc: guest-exec runs a shell command line; output goes to the console (the `>` redirect still captures it). Queued so the she
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_cmd_shutdown `static void qga_cmd_shutdown(const struct qga_pair *pairs, int n)`
 - Defined: `qga.c:315`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_file_size `static int qga_file_size(const KFILE *f)`
 - Defined: `qga.c:328`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_cmd_file_open `static void qga_cmd_file_open(const struct qga_pair *pairs, int n)`
 - Defined: `qga.c:333`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_cmd_file_read `static void qga_cmd_file_read(const struct qga_pair *pairs, int n)`
 - Defined: `qga.c:359`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_cmd_file_close `static void qga_cmd_file_close(const struct qga_pair *pairs, int n)`
 - Defined: `qga.c:383`
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_dispatch `static void qga_dispatch(struct qga_pair *pairs, int n)`
 - Defined: `qga.c:400`
 - Doc: ================================================================ Dispatch + poll * =====================================
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ### qga_poll `void qga_poll(void)`
 - Defined: `qga.c:446`
 - Doc: Accumulate bytes until a complete line, then parse and answer it. Callers * call it once per idle spin of the shell's ra
+- Depends on: `kernel.h`, `qga.h`, `rtc.h`
 
 ## sched.h
 
 ### __attribute__ `typedef struct __attribute__((packed))`
 - Defined: `sched.h:179`
 - Doc: Per-CPU TSS selectors: slot 5 + 2*cpu in the runtime GDT (each TSS descriptor occupies two 8-byte slots).  CPU 0 keeps s
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ## smp.c
 
 ### lapic_read `static unsigned lapic_read(unsigned off)`
 - Defined: `smp.c:83`
+- Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### lapic_write `static void lapic_write(unsigned off, unsigned val)`
 - Defined: `smp.c:87`
+- Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### map_lapic `static int map_lapic(void)`
 - Defined: `smp.c:108`
 - Doc: Map the LAPIC so the BSP can program the ICR, and the APs can read their id registers.  Extends stage 2's tables: PDPT s
+- Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### ap_delay `static void ap_delay(void)`
 - Defined: `smp.c:120`
+- Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### disabled `* disabled (the BSP's smp_init enable covers only the BSP's own unit),
  * and with the SVR off th...`
 - Defined: `smp.c:133`
+- Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### smp_init `void smp_init(void)`
 - Defined: `smp.c:244`
+- Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ## spinlock.h
 
 ### spin_init `static inline void spin_init(spinlock_t *lock)`
 - Defined: `spinlock.h:44`
 - Doc: define SPINLOCK_INIT { .locked = 0 }
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_save_irq `static inline irqflags_t spin_save_irq(void)`
 - Defined: `spinlock.h:55`
 - Doc: Host unit-test variants (tests/test_sync.c, `make test-sync`): cli/sti and pushf/popf are privileged and fault in usersp
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_restore_irq `static inline void spin_restore_irq(irqflags_t flags)`
 - Defined: `spinlock.h:56`
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_lock `static inline void spin_lock(spinlock_t *lock)`
 - Defined: `spinlock.h:57`
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_unlock `static inline void spin_unlock(spinlock_t *lock)`
 - Defined: `spinlock.h:62`
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_lock_irqsave `static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags)`
 - Defined: `spinlock.h:66`
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_unlock_irqrestore `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
 - Defined: `spinlock.h:72`
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_unlock_keep_irq `static inline void spin_unlock_keep_irq(spinlock_t *lock)`
 - Defined: `spinlock.h:77`
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_trylock `static inline int spin_trylock(spinlock_t *lock)`
 - Defined: `spinlock.h:81`
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_save_irq `static inline irqflags_t spin_save_irq(void)`
 - Defined: `spinlock.h:89`
 - Doc: __sync_lock_release(&lock->locked); } static inline void spin_unlock_keep_irq(spinlock_t *lock) { __sync_synchronize(); 
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_restore_irq `static inline void spin_restore_irq(irqflags_t flags)`
 - Defined: `spinlock.h:96`
 - Doc: int was = __sync_lock_test_and_set(&lock->locked, 1); if (!was) __sync_synchronize(); return !was; } #else /* Read RFLAG
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_lock `static inline void spin_lock(spinlock_t *lock)`
 - Defined: `spinlock.h:104`
 - Doc: Acquire the lock and disable interrupts. Interrupts are disabled before the CAS loop to prevent ISR re-entry. The memory
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_unlock `static inline void spin_unlock(spinlock_t *lock)`
 - Defined: `spinlock.h:114`
 - Doc: Release the lock and re-enable interrupts. The release uses __sync_lock_release which is a store-release with * the corr
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_unlock_keep_irq `static inline void spin_unlock_keep_irq(spinlock_t *lock)`
 - Defined: `spinlock.h:126`
 - Doc: Release the lock WITHOUT touching interrupts (IF stays as-is). For context-switch paths: the lock was acquired with inte
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ### spin_unlock_irqrestore `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
 - Defined: `spinlock.h:145`
 - Doc: Release the lock and restore the saved interrupt state. If the caller's interrupts were enabled before spin_lock_irqsave
+- Imported by: `futex.h`, `percpu_rq.h`, `rcu.h`, `sched.h`, `smp.h`, `sync.h`
 
 ## test_bdd.sh
 
@@ -11284,6 +13321,7 @@ Z_DumpHeap
 
 ### main `int main(void)`
 - Defined: `tests/test_hal_io.c:29`
+- Depends on: `arch/x86/hal_io.h`
 
 ## tests/test_percpu_rq.c
 
@@ -11305,24 +13343,31 @@ Z_DumpHeap
 
 ### user_range_ok `int user_range_ok(unsigned long p, unsigned long len)`
 - Defined: `tests/test_sanitize.c:19`
+- Depends on: `kernel/string.c`, `sanitize.h`
 
 ### user_str_ok `int user_str_ok(unsigned long p, unsigned long maxlen)`
 - Defined: `tests/test_sanitize.c:25`
+- Depends on: `kernel/string.c`, `sanitize.h`
 
 ### kmemcpy `void *kmemcpy(void *dst, const void *src, unsigned long n)`
 - Defined: `tests/test_sanitize.c:31`
+- Depends on: `kernel/string.c`, `sanitize.h`
 
 ### range_probe `static long range_probe(unsigned long p, long len)`
 - Defined: `tests/test_sanitize.c:47`
+- Depends on: `kernel/string.c`, `sanitize.h`
 
 ### str_probe `static long str_probe(unsigned long p)`
 - Defined: `tests/test_sanitize.c:53`
+- Depends on: `kernel/string.c`, `sanitize.h`
 
 ### copy_probe `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)`
 - Defined: `tests/test_sanitize.c:60`
+- Depends on: `kernel/string.c`, `sanitize.h`
 
 ### main `int main(void)`
 - Defined: `tests/test_sanitize.c:66`
+- Depends on: `kernel/string.c`, `sanitize.h`
 
 ## tests/test_sync.c
 
@@ -11386,82 +13431,108 @@ Z_DumpHeap
 ### tls_now_days `static inline long tls_now_days(void)`
 - Defined: `tls_port.h:39`
 - Doc: define TLS_SEND           tls_test_send define TLS_RECV           tls_test_recv define TLS_RECV_TIMEOUT   tls_test_recv_
+- Depends on: `kernel.h`, `kernel/string.c`, `kernel/time.c`, `net.h`
+- Imported by: `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `tls_test.c`
 
 ### tls_random `static inline void tls_random(unsigned char *out, unsigned len)`
 - Defined: `tls_port.h:43`
+- Depends on: `kernel.h`, `kernel/string.c`, `kernel/time.c`, `net.h`
+- Imported by: `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `tls_test.c`
 
 ## tls_test.c
 
 ### tls_test_send `int tls_test_send(int fd, const char *buf, int len)`
 - Defined: `tls_test.c:25`
 - Doc: #include <stdio.h> #include <stdlib.h> #include <string.h> #include <unistd.h> #include <sys/socket.h> #include <sys/sel
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### tls_test_recv `int tls_test_recv(int fd, char *buf, int len)`
 - Defined: `tls_test.c:35`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### tls_test_recv_timeout `int tls_test_recv_timeout(int fd, char *buf, int len, unsigned long ms)`
 - Defined: `tls_test.c:40`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### tls_test_close `void tls_test_close(int fd)`
 - Defined: `tls_test.c:53`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### hexdigit `static int hexdigit(int c)`
 - Defined: `tls_test.c:66`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### unhex `static void unhex(const char *hex, unsigned char *out, int n)`
 - Defined: `tls_test.c:73`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### bytes_eq `static int bytes_eq(const unsigned char *a, const unsigned char *b, int n)`
 - Defined: `tls_test.c:79`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### test_sha256 `static void test_sha256(void)`
 - Defined: `tls_test.c:87`
 - Doc: static void unhex(const char *hex, unsigned char *out, int n) { int i; for (i = 0; i < n; i++) out[i] = (unsigned char)(
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### test_sha384 `static void test_sha384(void)`
 - Defined: `tls_test.c:102`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### test_gcm `static void test_gcm(void)`
 - Defined: `tls_test.c:113`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### test_p256 `static void test_p256(void)`
 - Defined: `tls_test.c:153`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### test_rsa_ecdsa_vectors `static void test_rsa_ecdsa_vectors(void)`
 - Defined: `tls_test.c:199`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### tcp_connect `static int tcp_connect(int port)`
 - Defined: `tls_test.c:248`
 - Doc: ok = ecdsa_verify(0, test_ec_x, test_ec_y, digest, 32, test_ec_sig, sizeof(test_ec_sig)) == 0; CHECK("ecdsa p256 sha256 
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### http_over_tls `static int http_over_tls(int port, const char *host)`
 - Defined: `tls_test.c:265`
 - Doc: int fd = socket(AF_INET, SOCK_STREAM, 0); if (fd < 0) return -1; memset(&sa, 0, sizeof(sa)); sa.sin_family = AF_INET; sa
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### scenario_good `static int scenario_good(int port)`
 - Defined: `tls_test.c:289`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### scenario_wild_good `static int scenario_wild_good(int port)`
 - Defined: `tls_test.c:295`
 - Doc: total += n; printed = 1; } tls_free_fd(fd); close(fd); if (!printed) return -1; return 0; } static int scenario_good(int
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### scenario_wild_root `static int scenario_wild_root(int port)`
 - Defined: `tls_test.c:298`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### scenario_wild_deep `static int scenario_wild_deep(int port)`
 - Defined: `tls_test.c:308`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### scenario_bad_host `static int scenario_bad_host(int port)`
 - Defined: `tls_test.c:318`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### scenario_bad_ca `static int scenario_bad_ca(int port)`
 - Defined: `tls_test.c:328`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### scenario_expired `static int scenario_expired(int port)`
 - Defined: `tls_test.c:338`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ### main `int main(int argc, char **argv)`
 - Defined: `tls_test.c:348`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`, `tls_test_roots.h`
 
 ## tls_test.py
 
@@ -11827,33 +13898,44 @@ Z_DumpHeap
 
 ### vma_tree_init `void vma_tree_init(void)`
 - Defined: `vma.c:21`
+- Depends on: `vma.h`
 
 ### vma_alloc_node `static vma_node_t *vma_alloc_node(void)`
 - Defined: `vma.c:32`
+- Depends on: `vma.h`
 
 ### vma_rotate_left `static void vma_rotate_left(vma_node_t **root, vma_node_t *x)`
 - Defined: `vma.c:37`
+- Depends on: `vma.h`
 
 ### vma_rotate_right `static void vma_rotate_right(vma_node_t **root, vma_node_t *x)`
 - Defined: `vma.c:49`
+- Depends on: `vma.h`
 
 ### vma_insert_fixup `static void vma_insert_fixup(vma_node_t **root, vma_node_t *z)`
 - Defined: `vma.c:61`
+- Depends on: `vma.h`
 
 ### vma_tree_insert `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len)`
 - Defined: `vma.c:100`
+- Depends on: `vma.h`
 
 ### vma_tree_find `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base)`
 - Defined: `vma.c:123`
+- Depends on: `vma.h`
 
 ### vma_transplant `static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v)`
 - Defined: `vma.c:133`
+- Depends on: `vma.h`
 
 ### vma_tree_minimum `static vma_node_t *vma_tree_minimum(vma_node_t *x)`
 - Defined: `vma.c:140`
+- Depends on: `vma.h`
 
 ### vma_delete_fixup `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)`
 - Defined: `vma.c:145`
+- Depends on: `vma.h`
 
 ### vma_tree_delete `int vma_tree_delete(vma_node_t **root, unsigned long base)`
 - Defined: `vma.c:200`
+- Depends on: `vma.h`

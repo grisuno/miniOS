@@ -48,21 +48,40 @@ void mm_setup_protections(void) {
     }
     __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
 
+    /* The framebuffer can span two 2 MB PD slots (1024x768x32 needs 3 MB),
+     * so pages are mapped slot by slot instead of being capped at the end
+     * of the first slot's page table; a cap would leave the bottom of a
+     * tall screen unmapped. Every slot stays inside the user window (the
+     * framebuffer lives in its reserved tail), whose tables are allocated
+     * above. */
     {
         unsigned long fb_vaddr   = (unsigned long)FB_ADDR;
-        unsigned long fb_pd_idx  = fb_vaddr >> PT_PD_INDEX_SHIFT;
-        unsigned long fb_pt_off  = (fb_vaddr & 0x1FFFFF) >> 12;
-        unsigned long *fb_pt     = (unsigned long *)PT_USER_TABLES_ADDR +
-                                   (fb_pd_idx - lo) * 0x1000 /
-                                   sizeof(unsigned long);
         unsigned long fb_bytes  = (unsigned long)fb_pitch * (unsigned long)fb_height;
         unsigned long fb_pages  = (fb_bytes + 0xFFF) >> 12;
-        unsigned long k;
+        unsigned long p;
         if (fb_pages == 0) fb_pages = 1;
-        if (fb_pages > PT_PD_ENTRIES - fb_pt_off)
-            fb_pages = PT_PD_ENTRIES - fb_pt_off;
-        for (k = 0; k < fb_pages; k++)
-            fb_pt[fb_pt_off + k] = (fb_phys_base + k * 0x1000) | PT_USER_NX_ENTRY;
+        for (p = 0; p < fb_pages; p++) {
+            unsigned long va     = fb_vaddr + p * 0x1000;
+            unsigned long pd_idx = va >> PT_PD_INDEX_SHIFT;
+            unsigned long pt_off = (va & 0x1FFFFF) >> 12;
+            unsigned long *pt;
+            if (pd_idx < lo || pd_idx > hi) break;
+            pt = (unsigned long *)PT_USER_TABLES_ADDR +
+                 (pd_idx - lo) * 0x1000 / sizeof(unsigned long);
+            pt[pt_off] = (fb_phys_base + p * 0x1000) | PT_USER_NX_ENTRY;
+        }
+        /* TEMP-DEBUG: ground truth for the page just past 2 MB into the FB. */
+        {
+            unsigned long pv = fb_vaddr + 0x200000;
+            unsigned long pd_idx = pv >> PT_PD_INDEX_SHIFT;
+            unsigned long pt_off = (pv & 0x1FFFFF) >> 12;
+            unsigned long *pt = (unsigned long *)PT_USER_TABLES_ADDR +
+                                (pd_idx - lo) * 0x1000 / sizeof(unsigned long);
+            kprintf("fbmap: pages %lu fb v %lx phys %lx pd[89] %lx pd[90] %lx pte+2MB %lx lo %lu hi %lu\n",
+                    fb_pages, fb_vaddr, fb_phys_base,
+                    (unsigned long)pd[89], (unsigned long)pd[90],
+                    pt[pt_off], lo, hi);
+        }
     }
 
     {
@@ -202,23 +221,43 @@ uint64_t pt_clone_user(uint64_t parent_cr3) {
     }
 
     {
+        /* The framebuffer can span two PD slots (see mm_setup_protections),
+         * so every slot it touches is copied, not just its first page. */
+        unsigned long fb_bytes =
+            (unsigned long)fb_pitch * (unsigned long)fb_height;
+        unsigned long fb_last =
+            ((unsigned long)FB_ADDR + fb_bytes - 1) >> PT_PD_INDEX_SHIFT;
         unsigned long fb_pd_idx = (unsigned long)FB_ADDR >> PT_PD_INDEX_SHIFT;
         unsigned long bb_pd_idx = (unsigned long)DOOM_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
         unsigned long nk_pd_idx = (unsigned long)NK_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
-        unsigned long indices[] = { fb_pd_idx, bb_pd_idx, nk_pd_idx };
-        unsigned long nidx = sizeof(indices) / sizeof(indices[0]);
-        unsigned long j;
-        for (j = 0; j < nidx; j++) {
-            unsigned long idx = indices[j];
+        unsigned long idx;
+        for (idx = fb_pd_idx; idx <= fb_last; idx++) {
             volatile unsigned long *boot_pt =
                 (volatile unsigned long *)(boot_pd[idx] & PT_ADDR_MASK);
             volatile unsigned long *our_pt =
                 (volatile unsigned long *)pt_page_alloc();
-            if (!our_pt || !boot_pt) continue;
             unsigned long k;
+            if (!our_pt || !boot_pt) continue;
             for (k = 0; k < PT_PD_ENTRIES; k++)
                 our_pt[k] = boot_pt[k];
             pd[idx] = ((unsigned long)our_pt) | (boot_pd[idx] & 0x7);
+        }
+        {
+            unsigned long indices[] = { bb_pd_idx, nk_pd_idx };
+            unsigned long nidx = sizeof(indices) / sizeof(indices[0]);
+            unsigned long j;
+            for (j = 0; j < nidx; j++) {
+                unsigned long bidx = indices[j];
+                volatile unsigned long *boot_pt =
+                    (volatile unsigned long *)(boot_pd[bidx] & PT_ADDR_MASK);
+                volatile unsigned long *our_pt =
+                    (volatile unsigned long *)pt_page_alloc();
+                unsigned long k;
+                if (!our_pt || !boot_pt) continue;
+                for (k = 0; k < PT_PD_ENTRIES; k++)
+                    our_pt[k] = boot_pt[k];
+                pd[bidx] = ((unsigned long)our_pt) | (boot_pd[bidx] & 0x7);
+            }
         }
     }
 
@@ -243,13 +282,25 @@ void pt_free_user(uint64_t cr3) {
             }
         }
         unsigned long fb_idx = (unsigned long)FB_ADDR >> PT_PD_INDEX_SHIFT;
+        unsigned long fb_bytes =
+            (unsigned long)fb_pitch * (unsigned long)fb_height;
+        unsigned long fb_last =
+            ((unsigned long)FB_ADDR + fb_bytes - 1) >> PT_PD_INDEX_SHIFT;
         unsigned long bb_idx = (unsigned long)DOOM_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
         unsigned long nk_idx = (unsigned long)NK_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
-        unsigned long extra[] = { fb_idx, bb_idx, nk_idx };
+        unsigned long extra[] = { bb_idx, nk_idx };
         unsigned long ne = sizeof(extra) / sizeof(extra[0]);
         unsigned long j;
+        unsigned long idx;
+        for (idx = fb_idx; idx <= fb_last; idx++) {
+            if (idx >= lo && idx <= hi) continue;
+            if ((pd[idx] & PT_FLAGS_PRESENT_RW) && !(pd[idx] & PT_FLAGS_PS)) {
+                unsigned long pt_addr = pd[idx] & PT_ADDR_MASK;
+                if (pt_addr) pt_page_free((void *)pt_addr);
+            }
+        }
         for (j = 0; j < ne; j++) {
-            unsigned long idx = extra[j];
+            idx = extra[j];
             if (idx >= lo && idx <= hi) continue;
             if ((pd[idx] & PT_FLAGS_PRESENT_RW) && !(pd[idx] & PT_FLAGS_PS)) {
                 unsigned long pt_addr = pd[idx] & PT_ADDR_MASK;
