@@ -54,13 +54,13 @@
 | `kernel/sched.c` | - | kernel | 44 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 7 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 9 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 60 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 63 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 7 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 19 |
 | `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 87 |
 | `kernel/time.c` | include "kernel.h"  ============================================================ | kernel | 3 |
-| `kernel/vga_fb.c` | - | kernel | 77 |
+| `kernel/vga_fb.c` | - | kernel | 78 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 1 |
 | `mcp/__init__.py` | - | mcp | 0 |
 | `mcp/mcp_dbg_driver.py` | - | mcp | 6 |

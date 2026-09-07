@@ -899,6 +899,15 @@ static void draw_scrollbar(void) {
                 thumb_h - 2 * SCROLLBAR_PAD, COL_SCROLL_THUMB);
 }
 
+/* Blank one viewport row: every cell is repainted with the terminal
+ * background. vga_fb_str with an empty string would draw nothing and leave
+ * whatever pixels the previous content left behind, so blanking is explicit. */
+static void render_blank_row(int vrow) {
+    int c;
+    for (c = 0; c < term_cols; c++)
+        vga_fb_char(c, vrow, ' ', COL_TERM_TXT, COL_TERMINAL);
+}
+
 /* Render one display row at viewport row `vrow` for the absolute display row
  * `abs`. Rows outside the history (above the oldest line, or below the active
  * line) are blanked. When this is a row of the active line and a text cursor
@@ -908,9 +917,9 @@ static void render_row(int vrow, int abs) {
     int off, len, c, src;
     int active_start = total_rows() - act_nrows();
     int is_active = (abs >= active_start);
-    if (abs < 0) { vga_fb_str(0, vrow, "", COL_TERM_TXT, COL_TERMINAL); return; }
+    if (abs < 0) { render_blank_row(vrow); return; }
     line = line_at(abs, &off);
-    if (!line) { vga_fb_str(0, vrow, "", COL_TERM_TXT, COL_TERMINAL); return; }
+    if (!line) { render_blank_row(vrow); return; }
     len = (int)kstrlen(line);
     for (c = 0; c < term_cols; c++) {
         src = off + c;
@@ -992,11 +1001,17 @@ void vga_fb_putc_term(char c) {
     int rows_before = total_rows();
 
     if (c == '\n') {
+        /* Once the ring is full every push evicts the oldest line, so the
+         * total row count can stay identical while the whole viewport moved
+         * up one line. Comparing row counts alone would then take the
+         * active-line-only fast path and freeze the screen (only the bottom
+         * line ever repainted), so an evicting push always fully renders. */
+        int evicted = (lg_count == SB_MAX_LINES);
         lg_push(act, act_len);
         act_len = 0;
         act[0] = '\0';
         disp_off = 0;
-        if (total_rows() != rows_before) term_render();
+        if (evicted || total_rows() != rows_before) term_render();
         else term_render_active();
         return;
     }

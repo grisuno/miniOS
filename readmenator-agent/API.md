@@ -1738,125 +1738,137 @@ int console_getc(void)`
 - Defined: `kernel/shell.c:381`
 - Doc: The component of a ramdisk path after the last '/', or the whole path when * there is no '/'. Used to match a bare comma
 
+### shell_complete_tier `static int shell_complete_tier(const char *nm)`
+- Defined: `kernel/shell.c:392`
+- Doc: Runnable tier of a file name for first-word TAB completion: 0=.elf, 1=.cvm, 2=.o, 3=anything else. A bare command word c
+
 ### shell_complete_replace `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-- Defined: `kernel/shell.c:391`
+- Defined: `kernel/shell.c:403`
 - Doc: Replace the current word [word_start, word_start+wlen) in `buf` with `text` and move the cursor to the end of the comple
 
 ### shell_readline `static void shell_readline(void)`
-- Defined: `kernel/shell.c:408`
+- Defined: `kernel/shell.c:420`
 
 ### shell_hist_show `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
-- Defined: `kernel/shell.c:417`
+- Defined: `kernel/shell.c:429`
 - Doc: Redraw the edit line: erase what is shown, then write `text` into buf and onto the console, leaving the text cursor at `
 
 ### shell_line_repaint `static void shell_line_repaint(char *buf, int size, int pos)`
-- Defined: `kernel/shell.c:439`
+- Defined: `kernel/shell.c:451`
 - Doc: Repaint the edit line after a cursor move or mid-line edit: erase the whole visible line, rewrite buf, then back the con
 
 ### shell_line_insert `static void shell_line_insert(char *buf, int size, int *pos, char c)`
-- Defined: `kernel/shell.c:452`
+- Defined: `kernel/shell.c:464`
 - Doc: Insert character c into buf at `pos`, shifting the tail right. Bounds * checked; the caller repaints afterwards.
 
 ### shell_line_backspace `static void shell_line_backspace(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:461`
+- Defined: `kernel/shell.c:473`
 - Doc: Insert character c into buf at `pos`, shifting the tail right. Bounds * checked; the caller repaints afterwards. static 
 
 ### shell_line_delete `static void shell_line_delete(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:469`
+- Defined: `kernel/shell.c:481`
 - Doc: kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1)); buf[*pos] = c; (*pos)++; } /* Delete the characte
 
 ### shell_line_kill_front `static void shell_line_kill_front(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:476`
+- Defined: `kernel/shell.c:488`
 - Doc: int len = (int)kstrlen(buf); if (*pos <= 0) return; kmemmove(buf + *pos - 1, buf + *pos, (unsigned long)(len - *pos + 1)
 
 ### shell_line_kill_tail `static void shell_line_kill_tail(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:483`
+- Defined: `kernel/shell.c:495`
 - Doc: static void shell_line_delete(char *buf, int size, int *pos) { int len = (int)kstrlen(buf); if (*pos >= len) return; kme
 
 ### shell_line_kill_word `static void shell_line_kill_word(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:488`
+- Defined: `kernel/shell.c:500`
 - Doc: /* Delete from the cursor to the start of the line (Ctrl+U). static void shell_line_kill_front(char *buf, int size, int 
 
-### shell_hist_nav `static void shell_hist_nav(char *buf, int size, int *pos, int up)`
-- Defined: `kernel/shell.c:499`
-- Doc: Move through the history ring: up recalls older entries, down moves * forward again and finally restores the live line.
+### shell_hist_newest_match `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
+- Defined: `kernel/shell.c:512`
+- Doc: Most recent history entry starting with `prefix` (of length plen) that is strictly longer than the prefix, or -1 when th
+
+### line `* to the live line (handled by the caller resetting shell_hist_idx). */
+static void shell_hist_na...`
+- Defined: `kernel/shell.c:529`
+
+### shell_readline_hist `static void shell_readline_hist(char *buf, int size)`
+- Defined: `kernel/shell.c:574`
+- Doc: Shell prompt readline: like shell_readline_buf plus command history. Up arrow (ESC [ A) recalls the previous command sta
 
 ### shell_parse `int shell_parse(char *line, char **argv, int max_args)`
-- Defined: `kernel/shell.c:698`
+- Defined: `kernel/shell.c:844`
 
 ### shell_run `void shell_run(void)`
-- Defined: `kernel/shell.c:719`
+- Defined: `kernel/shell.c:865`
 
 ### shell_load `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-- Defined: `kernel/shell.c:766`
+- Defined: `kernel/shell.c:912`
 - Doc: Load an ELF file from the ramdisk and register it under its filename stem. Returns 1 for an ET_REL program, 2 for an ET_
 
 ### outw_port `static inline void outw_port(unsigned short port, unsigned short val)`
-- Defined: `kernel/shell.c:824`
+- Defined: `kernel/shell.c:970`
 
 ### shell_cmd_poweroff `static void shell_cmd_poweroff(void)`
-- Defined: `kernel/shell.c:830`
+- Defined: `kernel/shell.c:976`
 - Doc: define QEMU_PM_PORT 0x604
 
 ### shell_run_dir_for `static const ShellRunDir *shell_run_dir_for(const char *name)`
-- Defined: `kernel/shell.c:847`
+- Defined: `kernel/shell.c:993`
 - Doc: The toolchain directory that owns `name`, chosen by suffix. Bare names with * no recognised suffix fall through to the c
 
 ### shell_file_is_real `static int shell_file_is_real(const char *resolved)`
-- Defined: `kernel/shell.c:865`
+- Defined: `kernel/shell.c:1011`
 - Doc: Is `resolved` (already normalised against the cwd) a real ramdisk file? A * directory name or a non-existent path is rej
 
 ### shell_resolve_run `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-- Defined: `kernel/shell.c:877`
+- Defined: `kernel/shell.c:1023`
 - Doc: Resolve `name` to a full ramdisk path suitable for running. A bare name is tried first against the cwd, then through the
 
 ### shell_run_elf_buf `static int shell_run_elf_buf(const char *data, unsigned size, int argc,
                          ...`
-- Defined: `kernel/shell.c:913`
+- Defined: `kernel/shell.c:1059`
 - Doc: Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`. argv[0] is the program name the program sees. 
 
 ### shell_run_elf_file `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-- Defined: `kernel/shell.c:934`
+- Defined: `kernel/shell.c:1080`
 - Doc: Load the ramdisk file at `full` and run it as an ELF. Returns the exit * code, or -1 when the file cannot be read or loa
 
 ### shell_run_elf_minifs `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:947`
+- Defined: `kernel/shell.c:1093`
 - Doc: Load a Linux ELF from the MiniFS disk and run it (preserves the historical * `run` fallback when a name is not on the ra
 
 ### shell_run_cvm `static int shell_run_cvm(const char *full, int argc, char **argv)`
-- Defined: `kernel/shell.c:993`
+- Defined: `kernel/shell.c:1139`
 - Doc: Run a `.cvm` module at the resolved path `full`. The interpreter is loaded from the ramdisk on first use and cached. arg
 
 ### shell_run_file `static int shell_run_file(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1022`
+- Defined: `kernel/shell.c:1168`
 - Doc: Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the interpreter, ELF files by content through the matching l
 
 ### shell_run_any `int shell_run_any(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1051`
+- Defined: `kernel/shell.c:1197`
 - Doc: Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver. argv[
 
 ### gfx_parse_int `static int gfx_parse_int(const char *s, int *out)`
-- Defined: `kernel/shell.c:1111`
+- Defined: `kernel/shell.c:1257`
 - Doc: --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives, but a
 
 ### gfx_read_palette `static void gfx_read_palette(unsigned char pal[768])`
-- Defined: `kernel/shell.c:1131`
+- Defined: `kernel/shell.c:1277`
 - Doc: Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation). U
 
 ### shell_cmd_gfx `static void shell_cmd_gfx(int argc, char **argv)`
-- Defined: `kernel/shell.c:1137`
+- Defined: `kernel/shell.c:1283`
 
 ### shell_cmd_wm `static void shell_cmd_wm(int argc, char **argv)`
-- Defined: `kernel/shell.c:1253`
+- Defined: `kernel/shell.c:1399`
 - Doc: `wm <op>` — window-manager operations on the terminal window, exposed as a shell builtin so the tilin-WM behaviour (mini
 
 ### shell_cmd_hash `static void shell_cmd_hash(int argc, char **argv)`
-- Defined: `kernel/shell.c:1274`
+- Defined: `kernel/shell.c:1420`
 - Doc: `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file never
 
 ### shell_exec_builtin `void shell_exec_builtin(int argc, char **argv)`
-- Defined: `kernel/shell.c:1288`
+- Defined: `kernel/shell.c:1434`
 
 ## kernel/string.c
 
@@ -2379,113 +2391,117 @@ int console_getc(void)`
 - Defined: `kernel/vga_fb.c:870`
 - Doc: return; } if (mx >= tb_minus_x && mx < tb_minus_x + TASKBAR_BTN_W) { v = pcspk_get_volume(); pcspk_set_volume(v > TASKBA
 
+### render_blank_row `static void render_blank_row(int vrow)`
+- Defined: `kernel/vga_fb.c:905`
+- Doc: Blank one viewport row: every cell is repainted with the terminal background. vga_fb_str with an empty string would draw
+
 ### render_row `static void render_row(int vrow, int abs)`
-- Defined: `kernel/vga_fb.c:906`
+- Defined: `kernel/vga_fb.c:915`
 - Doc: Render one display row at viewport row `vrow` for the absolute display row `abs`. Rows outside the history (above the ol
 
 ### term_render `static void term_render(void)`
-- Defined: `kernel/vga_fb.c:934`
+- Defined: `kernel/vga_fb.c:943`
 - Doc: Full repaint of the terminal window from the logical history, honouring the current scroll position. Used on desktop red
 
 ### term_render_active `static void term_render_active(void)`
-- Defined: `kernel/vga_fb.c:947`
+- Defined: `kernel/vga_fb.c:956`
 - Doc: Repaint only the bottom region that a live edit touches: from the active line's first visible display row to the bottom 
 
 ### line `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...`
-- Defined: `kernel/vga_fb.c:988`
+- Defined: `kernel/vga_fb.c:997`
 
 ### vga_fb_puts_term `void vga_fb_puts_term(const char *s)`
-- Defined: `kernel/vga_fb.c:1030`
+- Defined: `kernel/vga_fb.c:1045`
 
 ### vga_fb_text_cursor `void vga_fb_text_cursor(int col)`
-- Defined: `kernel/vga_fb.c:1037`
+- Defined: `kernel/vga_fb.c:1052`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
 
 ### vga_fb_hide_text_cursor `void vga_fb_hide_text_cursor(void)`
-- Defined: `kernel/vga_fb.c:1045`
+- Defined: `kernel/vga_fb.c:1060`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
 
 ### vga_fb_draw_desktop `void vga_fb_draw_desktop(void)`
-- Defined: `kernel/vga_fb.c:1048`
+- Defined: `kernel/vga_fb.c:1063`
 
 ### vga_fb_toggle_fullscreen `void vga_fb_toggle_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:1074`
+- Defined: `kernel/vga_fb.c:1089`
 - Doc: Any redraw changed the pixels under the cursor; force a fresh save so a * stale snapshot never leaves pointer trails beh
 
 ### vga_fb_toggle_minimize `void vga_fb_toggle_minimize(void)`
-- Defined: `kernel/vga_fb.c:1084`
+- Defined: `kernel/vga_fb.c:1099`
 - Doc: Minimize/restore the terminal window. The content is not touched; the window is merely hidden and repainted on restore. 
 
 ### vga_fb_is_minimized `int vga_fb_is_minimized(void)`
-- Defined: `kernel/vga_fb.c:1090`
+- Defined: `kernel/vga_fb.c:1105`
 
 ### vga_fb_is_fullscreen `int vga_fb_is_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:1092`
+- Defined: `kernel/vga_fb.c:1107`
 
 ### vga_fb_move_terminal `void vga_fb_move_terminal(int dx, int dy)`
-- Defined: `kernel/vga_fb.c:1113`
+- Defined: `kernel/vga_fb.c:1128`
 
 ### term_max_cols `static int term_max_cols(void)`
-- Defined: `kernel/vga_fb.c:1142`
+- Defined: `kernel/vga_fb.c:1157`
 - Doc: --- Tiling window operations (Alt = WM modifier) ---- Snap places the window in a screen half or quadrant and sizes it t
 
 ### term_max_rows `static int term_max_rows(void)`
-- Defined: `kernel/vga_fb.c:1146`
+- Defined: `kernel/vga_fb.c:1161`
 
 ### term_finish_layout `static void term_finish_layout(void)`
-- Defined: `kernel/vga_fb.c:1150`
+- Defined: `kernel/vga_fb.c:1165`
 
 ### vga_fb_snap_window `void vga_fb_snap_window(int zone)`
-- Defined: `kernel/vga_fb.c:1156`
+- Defined: `kernel/vga_fb.c:1171`
 
 ### vga_fb_resize `void vga_fb_resize(int dcols, int drows)`
-- Defined: `kernel/vga_fb.c:1178`
+- Defined: `kernel/vga_fb.c:1193`
 
 ### vga_fb_reset_default `void vga_fb_reset_default(void)`
-- Defined: `kernel/vga_fb.c:1196`
+- Defined: `kernel/vga_fb.c:1211`
 - Doc: int ncol = term_sz_cols + dcols; int nrow = term_sz_rows + drows; if (ncol < 1) ncol = 1; if (nrow < 1) nrow = 1; if (nc
 
 ### wallpaper_ensure `static void wallpaper_ensure(void)`
-- Defined: `kernel/vga_fb.c:1234`
+- Defined: `kernel/vga_fb.c:1249`
 
 ### wallpaper_draw `static void wallpaper_draw(void)`
-- Defined: `kernel/vga_fb.c:1269`
+- Defined: `kernel/vga_fb.c:1284`
 
 ### pipe_field `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
-- Defined: `kernel/vga_fb.c:1294`
+- Defined: `kernel/vga_fb.c:1309`
 - Doc: --- Desktop shortcut icons ---- Shortcuts are defined in etc/shortcuts on the ramdisk, one per line: name|icon_path|comm
 
 ### icon_nearest `static int icon_nearest(int r, int g, int b)`
-- Defined: `kernel/vga_fb.c:1312`
+- Defined: `kernel/vga_fb.c:1327`
 - Doc: Nearest entry in the 16-colour icon palette (squared RGB distance, * integer-only: at most 3*255*255 per entry, far from
 
 ### icon_embedded `static const uint8_t *icon_embedded(const char *name)`
-- Defined: `kernel/vga_fb.c:1328`
+- Defined: `kernel/vga_fb.c:1343`
 - Doc: for (i = 0; i < ICON_PAL_SIZE; i++) { int dr = r - icon_pal[i][0]; int dg = g - icon_pal[i][1]; int db = b - icon_pal[i]
 
 ### icon_decode `static const uint8_t *icon_decode(const char *path)`
-- Defined: `kernel/vga_fb.c:1346`
+- Defined: `kernel/vga_fb.c:1361`
 - Doc: Decode a shortcut's PNG and map it to 32x32 icon-palette indices. Returns a heap buffer that lives until reboot, or 0 on
 
 ### desktop_shortcuts_load `void desktop_shortcuts_load(void)`
-- Defined: `kernel/vga_fb.c:1379`
+- Defined: `kernel/vga_fb.c:1394`
 
 ### desktop_shortcuts_draw `void desktop_shortcuts_draw(void)`
-- Defined: `kernel/vga_fb.c:1431`
+- Defined: `kernel/vga_fb.c:1446`
 
 ### desktop_shortcuts_hit_test `const char *desktop_shortcuts_hit_test(int mx, int my)`
-- Defined: `kernel/vga_fb.c:1453`
+- Defined: `kernel/vga_fb.c:1468`
 
 ### vga_fb_mouse_tick `void vga_fb_mouse_tick(void)`
-- Defined: `kernel/vga_fb.c:1466`
+- Defined: `kernel/vga_fb.c:1481`
 - Doc: } const char *desktop_shortcuts_hit_test(int mx, int my) { for (int i = 0; i < shortcut_count; i++) { struct desktop_sho
 
 ### vga_fb_mouse_init `void vga_fb_mouse_init(void)`
-- Defined: `kernel/vga_fb.c:1589`
+- Defined: `kernel/vga_fb.c:1604`
 
 ### vga_fb_init `void vga_fb_init(void)`
-- Defined: `kernel/vga_fb.c:1604`
+- Defined: `kernel/vga_fb.c:1619`
 
 ## mcp/mcp_dbg_driver.py
 
@@ -11098,16 +11114,16 @@ Z_DumpHeap
 - Doc: refute <marker>: the marker must NOT appear (suppressed hostile content).
 
 ### http_server_start
-- Defined: `test_bdd.sh:649`
+- Defined: `test_bdd.sh:663`
 
 ### http_server_stop
-- Defined: `test_bdd.sh:656`
+- Defined: `test_bdd.sh:670`
 
 ### http_fixture_start
-- Defined: `test_bdd.sh:661`
+- Defined: `test_bdd.sh:675`
 
 ### http_fixture_stop
-- Defined: `test_bdd.sh:668`
+- Defined: `test_bdd.sh:682`
 
 ## test_http_server.py
 

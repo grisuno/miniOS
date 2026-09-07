@@ -861,11 +861,15 @@ This is what makes `run objects/minigcc.o p.c > asm/p.s` produce assembly a link
 consume.
 
 The prompt keeps a bounded command history (`SHELL_HIST_MAX` entries).
-Up arrow (ESC `[` `A`, or PS/2 make code `E0 48`) recalls the previous
-command onto the edit line; down arrow (ESC `[` `B`, `E0 50`) moves
-forward again, back to the live line. The recalled text replaces the
-line the user was typing, which is preserved while scrolling. The
-history stores commands on submission (even unknown ones), skips
+Up arrow (ESC `[` `A`, or PS/2 make code `E0 48`) recalls the newest older
+command starting with the typed prefix (zsh `history-beginning-search`);
+down arrow (ESC `[` `B`, `E0 50`) moves forward again, back to the live
+line. An empty line matches every entry, i.e. plain chronological recall.
+Right arrow at end of line accepts the suggestion outright: it completes
+the line to the newest history entry starting with the prefix (a plain
+cursor move there would be a no-op, so nothing is lost). The recalled text
+replaces the line the user was typing, which is preserved while scrolling.
+The history stores commands on submission (even unknown ones), skips
 consecutive duplicates, and survives only until reboot. A bare ESC or
 an incomplete escape sequence is discarded, never inserted into the
 line, and the editor (`edit`) is unaffected: history is a shell-prompt
@@ -930,8 +934,24 @@ run an arbitrary `.o` as a command by name alone.
 TAB completes the current word from registered programs and ramdisk file
 names: one TAB fills the longest unambiguous prefix, a second TAB on a
 unique match fills the whole name, and an ambiguous prefix lists the
-candidates. The completion is bounds-checked and never writes past the
-command buffer.
+candidates. On the first word the newest history commands complete too
+(deduplicated first tokens, most recent first), so TAB after `minigcc`
+offers the most recent matching command. A bare first word (no `/`)
+completes runnable-first across the ramdisk and the MiniFS root (where the
+big ELFs live under bare names): the `.elf` tier, then `.cvm`, then `.o`,
+and only the highest-priority non-empty tier is kept, so `poke` offers
+`pokemon.elf` instead of its icon PNG. An explicit path or an argument word
+keeps every match, so navigating to data files still works. The completion
+is bounds-checked and never writes past the command buffer.
+
+Terminal scrollback is a 256-line logical ring (`SB_MAX_LINES` in
+`vga_fb.h`): a completed line is pushed whole on `\n` and the viewport is
+repainted from the ring, so old lines scroll off the top and stay reachable
+through the scrollbar/mouse-wheel (`disp_off`). A push that evicts the
+oldest line always fully renders: comparing row counts alone would take the
+active-line-only fast path (the count is unchanged by an eviction) and
+freeze the screen with only the bottom line repainting. Blank viewport rows
+are explicitly cleared, never left with stale pixels.
 
 Known limitation (pre-existing, desktop-only): console scrollback is
 windowed. The text-console PageUp scrollback ring is populated from the

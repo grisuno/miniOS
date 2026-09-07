@@ -330,6 +330,20 @@ expect "usage: ld"
 scenario "TAB completes a bare runnable name to its full path" $'ld.\t\npoweroff'
 expect "usage: ld"
 
+scenario "Up with a typed prefix recalls the newest matching command" $'echo alpha_hist_1\necho beta_hist_2\necho alpha\x1b[A\npoweroff'
+expect_count 4 "alpha_hist_1"
+expect_count 2 "beta_hist_2"
+
+scenario "Right at end of line accepts the newest history match" $'echo alpha_hist_1\necho beta_hist_2\necho alpha\x1b[C\npoweroff'
+expect_count 4 "alpha_hist_1"
+expect_count 2 "beta_hist_2"
+
+scenario "TAB on the first word offers the newest history command" $'vol\nvo\t\npoweroff'
+expect_count 2 "volume:"
+
+scenario "TAB prefers the .elf binary over data files" $'lxhello\t\npoweroff'
+expect "Hello"
+
 scenario "editor guards unsaved changes on quit" "edit guard.txt
 a
 work in progress

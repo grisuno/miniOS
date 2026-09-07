@@ -385,6 +385,18 @@ static const char *shell_name_base(const char *path) {
     return base;
 }
 
+/* Runnable tier of a file name for first-word TAB completion: 0=.elf,
+ * 1=.cvm, 2=.o, 3=anything else. A bare command word completes toward the
+ * highest-priority non-empty tier, so `poke` offers the game binary instead
+ * of its icon PNG. */
+static int shell_complete_tier(const char *nm) {
+    int nl = (int)kstrlen(nm);
+    if (nl >= 4 && kstrcmp(nm + nl - 4, ".elf") == 0) return 0;
+    if (nl >= 4 && kstrcmp(nm + nl - 4, ".cvm") == 0) return 1;
+    if (nl >= 2 && kstrcmp(nm + nl - 2, ".o") == 0) return 2;
+    return 3;
+}
+
 /* Replace the current word [word_start, word_start+wlen) in `buf` with `text`
  * and move the cursor to the end of the completed line. Bounds checked: a
  * completion that would overflow `size` is refused, never truncated. */
@@ -494,37 +506,71 @@ static void shell_line_kill_word(char *buf, int size, int *pos) {
     *pos = s;
 }
 
-/* Move through the history ring: up recalls older entries, down moves
- * forward again and finally restores the live line. */
+/* Most recent history entry starting with `prefix` (of length plen) that is
+ * strictly longer than the prefix, or -1 when there is none. The suggestion
+ * for a typed prefix is always the newest match, zsh-style. */
+static int shell_hist_newest_match(const char *prefix, unsigned long plen) {
+    int i;
+    if (!prefix || plen == 0) return -1;
+    for (i = shell_hist_count - 1; i >= 0; i--) {
+        if (kstrncmp(shell_hist[i], prefix, plen) == 0 &&
+            kstrlen(shell_hist[i]) > plen)
+            return i;
+    }
+    return -1;
+}
+
+/* Move through the history ring with a zsh-style prefix filter: Up recalls
+ * the most recent older entry starting with what was typed, Down moves
+ * forward again and finally restores the live line. The prefix is the live
+ * line saved on the first Up, so typing "minigcc" then Up/Up walks only the
+ * commands starting with "minigcc". An empty line matches every entry, i.e.
+ * plain chronological recall. Any printable edit while scrolling drops back
+ * to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_nav(char *buf, int size, int *pos, int up) {
+    unsigned long plen;
+    int i;
     if (shell_hist_count == 0) return;
     if (up) {
+        const char *prefix;
         if (shell_hist_idx < 0) {
             kmemcpy(shell_line_saved, buf, (unsigned long)size);
             shell_line_saved_pos = *pos;
-            shell_hist_idx = shell_hist_count - 1;
-        } else if (shell_hist_idx > 0) {
-            shell_hist_idx--;
+            prefix = shell_line_saved;
+            i = shell_hist_count - 1;
         } else {
-            return;
+            prefix = shell_line_saved;
+            i = shell_hist_idx - 1;
         }
+        plen = kstrlen(prefix);
+        while (i >= 0 && kstrncmp(shell_hist[i], prefix, plen) != 0) i--;
+        if (i < 0) return;
+        shell_hist_idx = i;
         shell_hist_show(buf, size, pos, shell_hist[shell_hist_idx]);
     } else {
         if (shell_hist_idx < 0) return;
-        if (shell_hist_idx >= shell_hist_count - 1) {
+        plen = kstrlen(shell_line_saved);
+        i = shell_hist_idx + 1;
+        while (i < shell_hist_count &&
+               kstrncmp(shell_hist[i], shell_line_saved, plen) != 0) i++;
+        if (i >= shell_hist_count) {
             shell_hist_idx = -1;
             shell_hist_show(buf, size, pos, shell_line_saved);
             *pos = shell_line_saved_pos;
+            shell_line_repaint(buf, size, *pos);
             return;
         }
-        shell_hist_idx++;
+        shell_hist_idx = i;
         shell_hist_show(buf, size, pos, shell_hist[shell_hist_idx]);
     }
 }
 
 /* Shell prompt readline: like shell_readline_buf plus command history.
- * Up arrow (ESC [ A) recalls the previous command, down arrow moves
- * forward. Any editing key while scrolling returns to the live line. */
+ * Up arrow (ESC [ A) recalls the previous command starting with the typed
+ * prefix (empty prefix recalls everything), down arrow moves forward.
+ * Right arrow at end of line accepts the newest history match for the
+ * prefix; TAB completes programs, files and recent history words. Any
+ * editing key while scrolling returns to the live line. */
 static void shell_readline_hist(char *buf, int size) {
     int pos = 0;
     kmemset(buf, 0, (unsigned long)size);
@@ -561,6 +607,23 @@ static void shell_readline_hist(char *buf, int size) {
                 } else if (b == KEY_ARR_LEFT || b == KEY_ARR_RIGHT) {
                     console_getc();
                     int len = (int)kstrlen(buf);
+                    if (b == KEY_ARR_RIGHT && pos >= len && len > 0) {
+                        /* At end of line: accept the autosuggestion, i.e.
+                         * complete to the most recent history entry starting
+                         * with the typed prefix. The prefix is kept for
+                         * further Up/Down navigation. A plain cursor move
+                         * would be a no-op here, so nothing is lost. */
+                        int m = shell_hist_newest_match(buf, (unsigned long)len);
+                        if (m >= 0) {
+                            if (shell_hist_idx < 0) {
+                                kmemcpy(shell_line_saved, buf, (unsigned long)size);
+                                shell_line_saved_pos = pos;
+                            }
+                            shell_hist_idx = m;
+                            shell_hist_show(buf, size, &pos, shell_hist[m]);
+                            continue;
+                        }
+                    }
                     int npos = pos + (b == KEY_ARR_RIGHT ? 1 : -1);
                     if (npos >= 0 && npos <= len) {
                         pos = npos;
@@ -594,18 +657,101 @@ static void shell_readline_hist(char *buf, int size) {
             if (wlen == 0) { vga_putc('\a'); continue; }
             char *comps[32];
             int ncomps = 0;
+            if (word_start == buf) {
+                /* First word: newest history commands complete too, so TAB
+                 * after "minigcc" offers the most recent matching command
+                 * first. Only the command word (up to the first space) is
+                 * a candidate; full lines are recalled with Up/Right. */
+                static char tab_hist_tok[8][32];
+                int ntok = 0;
+                for (int hi = shell_hist_count - 1; hi >= 0 && ntok < 8; hi--) {
+                    const char *e = shell_hist[hi];
+                    unsigned long tl = 0;
+                    while (e[tl] && e[tl] != ' ' && e[tl] != '\t') tl++;
+                    if (tl <= wlen || tl >= sizeof(tab_hist_tok[0])) continue;
+                    if (kstrncmp(e, word_start, wlen) != 0) continue;
+                    int dup = 0;
+                    for (int k = 0; k < ntok; k++) {
+                        if (kstrncmp(tab_hist_tok[k], e, tl) == 0 &&
+                            tab_hist_tok[k][tl] == 0) { dup = 1; break; }
+                    }
+                    if (dup) continue;
+                    kmemcpy(tab_hist_tok[ntok], e, tl);
+                    tab_hist_tok[ntok][tl] = 0;
+                    comps[ncomps++] = tab_hist_tok[ntok];
+                    ntok++;
+                }
+            }
             for (int i = 0; i < kprog_count && ncomps < 32; i++) {
                 if (kstrncmp(kprog_table[i].name, word_start, wlen) == 0)
                     comps[ncomps++] = kprog_table[i].name;
             }
             if (ncomps == 0) {
-                RDFile *files[RAMDISK_MAX_FILES];
-                int n = ramdisk_list(files, RAMDISK_MAX_FILES);
-                for (int i = 0; i < n && ncomps < 32; i++) {
-                    const char *base = shell_name_base(files[i]->name);
-                    if (kstrncmp(files[i]->name, word_start, wlen) == 0 ||
-                        kstrncmp(base, word_start, wlen) == 0)
-                        comps[ncomps++] = files[i]->name;
+                /* A bare first word (no '/') completes runnable-first: the
+                 * .elf tier, then .cvm, then .o, across the ramdisk and the
+                 * MiniFS root (where the big ELFs live under bare names),
+                 * and only the highest-priority non-empty tier is kept. An
+                 * explicit path or an argument word keeps every match, so
+                 * navigating to data files still works. */
+                int first_bare = (word_start == buf);
+                if (first_bare) {
+                    for (unsigned long k = 0; k < wlen; k++) {
+                        if (word_start[k] == '/') { first_bare = 0; break; }
+                    }
+                }
+                if (first_bare) {
+                    static char tab_mini[8][RAMDISK_FNAME_LEN];
+                    int nmini = 0;
+                    if (minifs_is_mounted()) {
+                        MiniFSDirEntry de;
+                        char mname[RAMDISK_FNAME_LEN];
+                        int idx = 0;
+                        while (nmini < 8 &&
+                               minifs_dir_read(MINIFS_ROOT_INODE, idx, &de, mname) == 0) {
+                            idx++;
+                            if (de.inode == 0) continue;
+                            if (kstrncmp(mname, word_start, wlen) != 0) continue;
+                            MiniFSInode st;
+                            int isdir = (minifs_stat(de.inode, &st) == 0 &&
+                                         (st.mode & 0170000) == 0040000);
+                            unsigned long ml = kstrlen(mname);
+                            if (ml + (unsigned long)(isdir ? 1 : 0) + 1 >
+                                sizeof(tab_mini[0])) continue;
+                            kmemcpy(tab_mini[nmini], mname, ml + 1);
+                            if (isdir) {
+                                tab_mini[nmini][ml] = '/';
+                                tab_mini[nmini][ml + 1] = 0;
+                            }
+                            nmini++;
+                        }
+                    }
+                    RDFile *files[RAMDISK_MAX_FILES];
+                    int n = ramdisk_list(files, RAMDISK_MAX_FILES);
+                    for (int t = 0; t < 4 && ncomps < 32; t++) {
+                        int before = ncomps;
+                        for (int i = 0; i < n && ncomps < 32; i++) {
+                            const char *nm = files[i]->name;
+                            if (kstrncmp(nm, word_start, wlen) != 0 &&
+                                kstrncmp(shell_name_base(nm), word_start, wlen) != 0)
+                                continue;
+                            if (shell_complete_tier(nm) != t) continue;
+                            comps[ncomps++] = (char *)nm;
+                        }
+                        for (int i = 0; i < nmini && ncomps < 32; i++) {
+                            if (shell_complete_tier(tab_mini[i]) != t) continue;
+                            comps[ncomps++] = tab_mini[i];
+                        }
+                        if (ncomps > before) break;
+                    }
+                } else {
+                    RDFile *files[RAMDISK_MAX_FILES];
+                    int n = ramdisk_list(files, RAMDISK_MAX_FILES);
+                    for (int i = 0; i < n && ncomps < 32; i++) {
+                        const char *base = shell_name_base(files[i]->name);
+                        if (kstrncmp(files[i]->name, word_start, wlen) == 0 ||
+                            kstrncmp(base, word_start, wlen) == 0)
+                            comps[ncomps++] = files[i]->name;
+                    }
                 }
             }
             if (ncomps == 0) { vga_putc('\a'); continue; }
@@ -1313,6 +1459,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
         vga_puts("  <cmd> > <file>     redirect command output to a file\n");
         vga_puts("  <cmd> [args...]    run a file or bare name (objects/bin/cvm)\n");
+        vga_puts("Keys: TAB complete, Up/Dn prefix history, Right accept suggestion\n");
         vga_puts("Toolchain: edit p.c; minigcc.o p.c > p.s;\n");
         vga_puts("           ld.o -f elf -o p.elf p.s; p.elf\n");
         vga_puts("CVM:       minigcc.o w1.c > w1.s; ld.o -f cvm -o w1.cvm w1.s; w1.cvm\n");

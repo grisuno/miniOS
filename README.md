@@ -1379,9 +1379,12 @@ which is the BDD-observable surface.
 
 History: the last `SHELL_HIST_MAX` submitted commands (unknown ones included,
 consecutive duplicates skipped, reboot clears). Up (`ESC [ A`, PS/2 `E0 48`)
-recalls older entries, Down (`ESC [ B`, `E0 50`) moves forward to the live
-line, which is preserved while scrolling. A bare or truncated ESC is
-discarded, never inserted; the editor is unaffected.
+recalls the newest older entry starting with the typed prefix (zsh
+`history-beginning-search`; empty prefix recalls everything), Down
+(`ESC [ B`, `E0 50`) moves forward to the live line, which is preserved
+while scrolling. Right at end of line accepts the suggestion (newest match
+for the prefix). A bare or truncated ESC is discarded, never inserted; the
+editor is unaffected.
 
 Mid-line editing: Left/Right (`ESC [ C`/`D`, `E0 4B`/`4D`), Home/End
 (`ESC [ H`/`F`, `E0 47`/`4F`), Delete (`ESC [ 3 ~`, `E0 53`), Backspace,
@@ -1405,8 +1408,19 @@ via the on-demand `objects/cvm.o` interpreter. Unresolvable names report
 
 TAB completes from registered programs and ramdisk names: first TAB fills the
 longest unambiguous prefix, second TAB on a unique match fills the whole
-name, ambiguous prefixes list candidates. Completion is bounds-checked
-against the command buffer.
+name, ambiguous prefixes list candidates. On the first word the newest
+history commands complete too, so TAB after `minigcc` offers the most recent
+matching command. A bare first word completes runnable-first across ramdisk
+and MiniFS root (`.elf`, then `.cvm`, then `.o`; highest-priority non-empty
+tier wins), so `poke` offers `pokemon.elf` instead of its icon PNG; paths
+and argument words keep every match. Completion is bounds-checked against
+the command buffer.
+
+Terminal scrollback is a 256-line logical ring (`SB_MAX_LINES`): completed
+lines are pushed whole on `\n` and the viewport repaints from the ring. A
+push that evicts the oldest line always fully renders (row-count comparison
+alone would take the active-line fast path and freeze the screen); blank
+rows are explicitly cleared.
 
 `sh <script>` runs sequential lines with `#` comments. `load <file>` loads an
 ELF (`.o` relocatable or Linux executable) without running it.

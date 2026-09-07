@@ -355,39 +355,43 @@ int console_getc(void)`
   - `scrollback_view` (function, line 307) `static void scrollback_view(int initial_dir)`
   - `shell_readline_buf` (function, line 352) `void shell_readline_buf(char *buf, int size)`
   - `shell_name_base` (function, line 381) `static const char *shell_name_base(const char *path)`
-  - `shell_complete_replace` (function, line 391) `static void shell_complete_replace(char *buf, int size, int *pos,
+  - `shell_complete_tier` (function, line 392) `static int shell_complete_tier(const char *nm)`
+  - `shell_complete_replace` (function, line 403) `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-  - `shell_readline` (function, line 408) `static void shell_readline(void)`
-  - `shell_hist_show` (function, line 417) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
-  - `shell_line_repaint` (function, line 439) `static void shell_line_repaint(char *buf, int size, int pos)`
-  - `shell_line_insert` (function, line 452) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
-  - `shell_line_backspace` (function, line 461) `static void shell_line_backspace(char *buf, int size, int *pos)`
-  - `shell_line_delete` (function, line 469) `static void shell_line_delete(char *buf, int size, int *pos)`
-  - `shell_line_kill_front` (function, line 476) `static void shell_line_kill_front(char *buf, int size, int *pos)`
-  - `shell_line_kill_tail` (function, line 483) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
-  - `shell_line_kill_word` (function, line 488) `static void shell_line_kill_word(char *buf, int size, int *pos)`
-  - `shell_hist_nav` (function, line 499) `static void shell_hist_nav(char *buf, int size, int *pos, int up)`
-  - `shell_parse` (function, line 698) `int shell_parse(char *line, char **argv, int max_args)`
-  - `shell_run` (function, line 719) `void shell_run(void)`
-  - `shell_load` (function, line 766) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-  - `outw_port` (function, line 824) `static inline void outw_port(unsigned short port, unsigned short val)`
-  - `shell_cmd_poweroff` (function, line 830) `static void shell_cmd_poweroff(void)`
-  - `shell_run_dir_for` (function, line 847) `static const ShellRunDir *shell_run_dir_for(const char *name)`
-  - `shell_file_is_real` (function, line 865) `static int shell_file_is_real(const char *resolved)`
-  - `shell_resolve_run` (function, line 877) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-  - `shell_run_elf_buf` (function, line 913) `static int shell_run_elf_buf(const char *data, unsigned size, int argc,
+  - `shell_readline` (function, line 420) `static void shell_readline(void)`
+  - `shell_hist_show` (function, line 429) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
+  - `shell_line_repaint` (function, line 451) `static void shell_line_repaint(char *buf, int size, int pos)`
+  - `shell_line_insert` (function, line 464) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
+  - `shell_line_backspace` (function, line 473) `static void shell_line_backspace(char *buf, int size, int *pos)`
+  - `shell_line_delete` (function, line 481) `static void shell_line_delete(char *buf, int size, int *pos)`
+  - `shell_line_kill_front` (function, line 488) `static void shell_line_kill_front(char *buf, int size, int *pos)`
+  - `shell_line_kill_tail` (function, line 495) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
+  - `shell_line_kill_word` (function, line 500) `static void shell_line_kill_word(char *buf, int size, int *pos)`
+  - `shell_hist_newest_match` (function, line 512) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
+  - `line` (function, line 529) `* to the live line (handled by the caller resetting shell_hist_idx). */
+static void shell_hist_na...`
+  - `shell_readline_hist` (function, line 574) `static void shell_readline_hist(char *buf, int size)`
+  - `shell_parse` (function, line 844) `int shell_parse(char *line, char **argv, int max_args)`
+  - `shell_run` (function, line 865) `void shell_run(void)`
+  - `shell_load` (function, line 912) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
+  - `outw_port` (function, line 970) `static inline void outw_port(unsigned short port, unsigned short val)`
+  - `shell_cmd_poweroff` (function, line 976) `static void shell_cmd_poweroff(void)`
+  - `shell_run_dir_for` (function, line 993) `static const ShellRunDir *shell_run_dir_for(const char *name)`
+  - `shell_file_is_real` (function, line 1011) `static int shell_file_is_real(const char *resolved)`
+  - `shell_resolve_run` (function, line 1023) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
+  - `shell_run_elf_buf` (function, line 1059) `static int shell_run_elf_buf(const char *data, unsigned size, int argc,
                          ...`
-  - `shell_run_elf_file` (function, line 934) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-  - `shell_run_elf_minifs` (function, line 947) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-  - `shell_run_cvm` (function, line 993) `static int shell_run_cvm(const char *full, int argc, char **argv)`
-  - `shell_run_file` (function, line 1022) `static int shell_run_file(const char *name, int argc, char **argv)`
-  - `shell_run_any` (function, line 1051) `int shell_run_any(const char *name, int argc, char **argv)`
-  - `gfx_parse_int` (function, line 1111) `static int gfx_parse_int(const char *s, int *out)`
-  - `gfx_read_palette` (function, line 1131) `static void gfx_read_palette(unsigned char pal[768])`
-  - `shell_cmd_gfx` (function, line 1137) `static void shell_cmd_gfx(int argc, char **argv)`
-  - `shell_cmd_wm` (function, line 1253) `static void shell_cmd_wm(int argc, char **argv)`
-  - `shell_cmd_hash` (function, line 1274) `static void shell_cmd_hash(int argc, char **argv)`
-  - `shell_exec_builtin` (function, line 1288) `void shell_exec_builtin(int argc, char **argv)`
+  - `shell_run_elf_file` (function, line 1080) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
+  - `shell_run_elf_minifs` (function, line 1093) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
+  - `shell_run_cvm` (function, line 1139) `static int shell_run_cvm(const char *full, int argc, char **argv)`
+  - `shell_run_file` (function, line 1168) `static int shell_run_file(const char *name, int argc, char **argv)`
+  - `shell_run_any` (function, line 1197) `int shell_run_any(const char *name, int argc, char **argv)`
+  - `gfx_parse_int` (function, line 1257) `static int gfx_parse_int(const char *s, int *out)`
+  - `gfx_read_palette` (function, line 1277) `static void gfx_read_palette(unsigned char pal[768])`
+  - `shell_cmd_gfx` (function, line 1283) `static void shell_cmd_gfx(int argc, char **argv)`
+  - `shell_cmd_wm` (function, line 1399) `static void shell_cmd_wm(int argc, char **argv)`
+  - `shell_cmd_hash` (function, line 1420) `static void shell_cmd_hash(int argc, char **argv)`
+  - `shell_exec_builtin` (function, line 1434) `void shell_exec_builtin(int argc, char **argv)`
   - `XXH_STATIC_LINKING_ONLY` (macro, line 12)
   - `SHELL_CVM_INTERP` (macro, line 35)
   - `SHELL_RUN_DIRS` (macro, line 54)
@@ -398,7 +402,7 @@ int console_getc(void)`
   - `SB_PGUP` (macro, line 291)
   - `SB_PGDN` (macro, line 293)
   - `SB_EXIT` (macro, line 294)
-  - `QEMU_PM_PORT` (macro, line 828)
+  - `QEMU_PM_PORT` (macro, line 974)
 
 ## kernel/string.c
 - Layer: utility
@@ -605,38 +609,39 @@ int console_getc(void)`
   - `taskbar_tick` (function, line 822) `static void taskbar_tick(void)`
   - `taskbar_handle_click` (function, line 836) `static void taskbar_handle_click(int mx, int my)`
   - `draw_scrollbar` (function, line 870) `static void draw_scrollbar(void)`
-  - `render_row` (function, line 906) `static void render_row(int vrow, int abs)`
-  - `term_render` (function, line 934) `static void term_render(void)`
-  - `term_render_active` (function, line 947) `static void term_render_active(void)`
-  - `line` (function, line 988) `* display stale bytes left over from a longer previous line (e.g. the prompt
+  - `render_blank_row` (function, line 905) `static void render_blank_row(int vrow)`
+  - `render_row` (function, line 915) `static void render_row(int vrow, int abs)`
+  - `term_render` (function, line 943) `static void term_render(void)`
+  - `term_render_active` (function, line 956) `static void term_render_active(void)`
+  - `line` (function, line 997) `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...`
-  - `vga_fb_puts_term` (function, line 1030) `void vga_fb_puts_term(const char *s)`
-  - `vga_fb_text_cursor` (function, line 1037) `void vga_fb_text_cursor(int col)`
-  - `vga_fb_hide_text_cursor` (function, line 1045) `void vga_fb_hide_text_cursor(void)`
-  - `vga_fb_draw_desktop` (function, line 1048) `void vga_fb_draw_desktop(void)`
-  - `vga_fb_toggle_fullscreen` (function, line 1074) `void vga_fb_toggle_fullscreen(void)`
-  - `vga_fb_toggle_minimize` (function, line 1084) `void vga_fb_toggle_minimize(void)`
-  - `vga_fb_is_minimized` (function, line 1090) `int vga_fb_is_minimized(void)`
-  - `vga_fb_is_fullscreen` (function, line 1092) `int vga_fb_is_fullscreen(void)`
-  - `vga_fb_move_terminal` (function, line 1113) `void vga_fb_move_terminal(int dx, int dy)`
-  - `term_max_cols` (function, line 1142) `static int term_max_cols(void)`
-  - `term_max_rows` (function, line 1146) `static int term_max_rows(void)`
-  - `term_finish_layout` (function, line 1150) `static void term_finish_layout(void)`
-  - `vga_fb_snap_window` (function, line 1156) `void vga_fb_snap_window(int zone)`
-  - `vga_fb_resize` (function, line 1178) `void vga_fb_resize(int dcols, int drows)`
-  - `vga_fb_reset_default` (function, line 1196) `void vga_fb_reset_default(void)`
-  - `wallpaper_ensure` (function, line 1234) `static void wallpaper_ensure(void)`
-  - `wallpaper_draw` (function, line 1269) `static void wallpaper_draw(void)`
-  - `pipe_field` (function, line 1294) `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
-  - `icon_nearest` (function, line 1312) `static int icon_nearest(int r, int g, int b)`
-  - `icon_embedded` (function, line 1328) `static const uint8_t *icon_embedded(const char *name)`
-  - `icon_decode` (function, line 1346) `static const uint8_t *icon_decode(const char *path)`
-  - `desktop_shortcuts_load` (function, line 1379) `void desktop_shortcuts_load(void)`
-  - `desktop_shortcuts_draw` (function, line 1431) `void desktop_shortcuts_draw(void)`
-  - `desktop_shortcuts_hit_test` (function, line 1453) `const char *desktop_shortcuts_hit_test(int mx, int my)`
-  - `vga_fb_mouse_tick` (function, line 1466) `void vga_fb_mouse_tick(void)`
-  - `vga_fb_mouse_init` (function, line 1589) `void vga_fb_mouse_init(void)`
-  - `vga_fb_init` (function, line 1604) `void vga_fb_init(void)`
+  - `vga_fb_puts_term` (function, line 1045) `void vga_fb_puts_term(const char *s)`
+  - `vga_fb_text_cursor` (function, line 1052) `void vga_fb_text_cursor(int col)`
+  - `vga_fb_hide_text_cursor` (function, line 1060) `void vga_fb_hide_text_cursor(void)`
+  - `vga_fb_draw_desktop` (function, line 1063) `void vga_fb_draw_desktop(void)`
+  - `vga_fb_toggle_fullscreen` (function, line 1089) `void vga_fb_toggle_fullscreen(void)`
+  - `vga_fb_toggle_minimize` (function, line 1099) `void vga_fb_toggle_minimize(void)`
+  - `vga_fb_is_minimized` (function, line 1105) `int vga_fb_is_minimized(void)`
+  - `vga_fb_is_fullscreen` (function, line 1107) `int vga_fb_is_fullscreen(void)`
+  - `vga_fb_move_terminal` (function, line 1128) `void vga_fb_move_terminal(int dx, int dy)`
+  - `term_max_cols` (function, line 1157) `static int term_max_cols(void)`
+  - `term_max_rows` (function, line 1161) `static int term_max_rows(void)`
+  - `term_finish_layout` (function, line 1165) `static void term_finish_layout(void)`
+  - `vga_fb_snap_window` (function, line 1171) `void vga_fb_snap_window(int zone)`
+  - `vga_fb_resize` (function, line 1193) `void vga_fb_resize(int dcols, int drows)`
+  - `vga_fb_reset_default` (function, line 1211) `void vga_fb_reset_default(void)`
+  - `wallpaper_ensure` (function, line 1249) `static void wallpaper_ensure(void)`
+  - `wallpaper_draw` (function, line 1284) `static void wallpaper_draw(void)`
+  - `pipe_field` (function, line 1309) `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
+  - `icon_nearest` (function, line 1327) `static int icon_nearest(int r, int g, int b)`
+  - `icon_embedded` (function, line 1343) `static const uint8_t *icon_embedded(const char *name)`
+  - `icon_decode` (function, line 1361) `static const uint8_t *icon_decode(const char *path)`
+  - `desktop_shortcuts_load` (function, line 1394) `void desktop_shortcuts_load(void)`
+  - `desktop_shortcuts_draw` (function, line 1446) `void desktop_shortcuts_draw(void)`
+  - `desktop_shortcuts_hit_test` (function, line 1468) `const char *desktop_shortcuts_hit_test(int mx, int my)`
+  - `vga_fb_mouse_tick` (function, line 1481) `void vga_fb_mouse_tick(void)`
+  - `vga_fb_mouse_init` (function, line 1604) `void vga_fb_mouse_init(void)`
+  - `vga_fb_init` (function, line 1619) `void vga_fb_init(void)`
   - `CURSOR_TIP_X` (macro, line 168)
   - `CURSOR_TIP_Y` (macro, line 169)
   - `WIN_DEF_COLS` (macro, line 379)

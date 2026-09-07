@@ -7,7 +7,7 @@ These files have the most connections. Changes here have high blast radius.
 - `kernel.h` (score: 84.40)
 - `kernel/syscalls.c` (score: 48.70)
 - `kernel.c` (score: 35.10)
-- `kernel/shell.c` (score: 34.00)
+- `kernel/shell.c` (score: 34.30)
 - `progs/doomgeneric/d_englsh.h` (score: 28.60)
 - `sched.h` (score: 27.80)
 - `kernel/sched.c` (score: 24.40)
