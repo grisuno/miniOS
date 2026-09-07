@@ -459,14 +459,26 @@ bool gb_platform_init(int scale) {
 
 /* --- Battery + RTC persistence (direct write to MiniFS) ---
  *
- * Paths use minifs bin/: kfopen checks the ramdisk FIRST, but the
- * ramdisk has no bin/ directory, so these always land on persistent
- * MiniFS and survive reboot (ramdisk files do not). Writes are direct
- * (fopen w + fwrite + fclose); there is no rename() on MiniOS yet, so
- * no atomic temp+rename transaction like the SDL port does. */
+ * Paths use saves/: kfopen tries the ramdisk FIRST and creates there
+ * when the parent directory exists on the ramdisk, so bin/ (which the
+ * ramdisk ships as bin/minigcc.elf, bin/cp) would land on volatile
+ * ramdisk and vanish on reboot. saves/ exists on neither the ramdisk
+ * nor a fresh MiniFS, so the write falls through to MiniFS (mkdir_p +
+ * create) and survives reboot/poweroff. Writes are direct (fopen w +
+ * fwrite + fclose); there is no rename() on MiniOS yet, so no atomic
+ * temp+rename transaction like the SDL port does. */
 
 static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
                                 const char *ext) {
+    const char *id = (ctx && ctx->save_id[0]) ? (const char *)ctx->save_id : "pokemon";
+    snprintf(out, n, "saves/%.40s%s", id, ext);
+}
+
+/* Legacy ramdisk path (pre-MiniFS fix wrote bin/<id>.* onto volatile
+ * ramdisk). Loads still probe it as a fallback so a checkpoint saved
+ * in the same session before an upgrade is not invisible. */
+static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
+                               const char *ext) {
     const char *id = (ctx && ctx->save_id[0]) ? (const char *)ctx->save_id : "pokemon";
     snprintf(out, n, "bin/%.40s%s", id, ext);
 }
@@ -501,10 +513,17 @@ static bool minios_save_helper(const char *path, const void *data, size_t size) 
 }
 
 static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
-                                    void *data, size_t size) {
+                                     void *data, size_t size) {
     char path[64];
     (void)rom_name;
     minios_persist_path(path, sizeof(path), ctx, ".sav");
+    if (minios_load_helper(path, data, size, ctx)) {
+        return true;
+    }
+    /* Fallback: checkpoint written to volatile ramdisk by the old
+     * bin/ path before the MiniFS fix (same session only). */
+    ctx->persistence_load_failed = false;
+    minios_legacy_path(path, sizeof(path), ctx, ".sav");
     return minios_load_helper(path, data, size, ctx);
 }
 
@@ -519,10 +538,15 @@ static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
 }
 
 static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
-                                 void *data, size_t size) {
+                                  void *data, size_t size) {
     char path[64];
     (void)rom_name;
     minios_persist_path(path, sizeof(path), ctx, ".rtc");
+    if (minios_load_helper(path, data, size, ctx)) {
+        return true;
+    }
+    ctx->persistence_load_failed = false;
+    minios_legacy_path(path, sizeof(path), ctx, ".rtc");
     return minios_load_helper(path, data, size, ctx);
 }
 
@@ -540,15 +564,38 @@ static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
  * The runtime only persists battery RAM on clean exit
  * (gb_context_destroy); QEMU poweroff never takes that path, so MiniOS
  * flushes SRAM itself: every 60 s via gb_context_save_ram(), plus
- * on-demand full savestates with F5 / Ctrl+S (save) and F8 (load),
- * matching upstream's convention. All files land on persistent MiniFS
- * (bin/<save-id>.*). Single-threaded: these run between emulation
- * slices, never concurrently with the CPU. */
+ * on-demand full savestates with F5 / Ctrl+S (save) and F8 / Ctrl+L
+ * (load), matching upstream's convention (F5/F8) plus the Ctrl pair.
+ * All files land on persistent MiniFS (saves/<save-id>.*: .sav/.rtc
+ * for battery, .state for the full savestate), so they survive reboot
+ * and poweroff; the battery files auto-load on next boot, the .state
+ * file resumes with F8 / Ctrl+L. Single-threaded: these run between
+ * emulation slices, never concurrently with the CPU. */
 
 static uint32_t g_last_autosave_ms = 0;
 #define MINIOS_AUTOSAVE_MS 60000u
 
+/* --- Fast-forward with SPACE (frameskip at max) ---
+ *
+ * While SPACE (PS/2 Set 1 0x39) is held the emulator runs as fast as
+ * possible: vsync waits nothing, PC-speaker audio is silenced (its
+ * DOOM-style busy-wait slots would cap the speed), and only 1 of every
+ * MINIOS_FF_FRAMESKIP+1 frames is uploaded (classic frameskip 9, the
+ * highest usual value). SPACE is never a joypad key, so holding it
+ * cannot leak into the game. */
+#define MINIOS_FF_FRAMESKIP 9u
+static unsigned g_ff_counter = 0;
+static bool g_ff_muted = false;
+static inline bool minios_fast_forward(void) {
+    return g_key_state[0x39] != 0;
+}
+
 static void minios_state_path(char *out, size_t n, const GBContext *ctx) {
+    const char *id = (ctx && ctx->save_id[0]) ? (const char *)ctx->save_id : "pokemon";
+    snprintf(out, n, "saves/%.40s.state", id);
+}
+
+static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx) {
     const char *id = (ctx && ctx->save_id[0]) ? (const char *)ctx->save_id : "pokemon";
     snprintf(out, n, "bin/%.40s.state", id);
 }
@@ -564,30 +611,39 @@ static void minios_autosave(uint32_t now) {
     }
 }
 
-/* PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F */
+/* PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26,
+ * SPACE = 0x39 (fast-forward, handled in vsync/render, not here). */
 static void poll_hotkeys(void) {
     static uint8_t prev[128];
-    bool f5 = g_key_state[0x3F] && !prev[0x3F];
-    bool f8 = g_key_state[0x42] && !prev[0x42];
-    bool ctrls = g_key_state[0x1F] && !prev[0x1F] && g_key_state[0x1D];
+    bool ctrl = g_key_state[0x1D] != 0;
+    bool save_edge = (g_key_state[0x3F] && !prev[0x3F]) ||
+                     (g_key_state[0x1F] && !prev[0x1F] && ctrl);
+    bool load_edge = (g_key_state[0x42] && !prev[0x42]) ||
+                     (g_key_state[0x26] && !prev[0x26] && ctrl);
     memcpy(prev, g_key_state, sizeof(prev));
     if (!g_ctx) {
         return;
     }
-    if (f5 || ctrls) {
+    if (save_edge) {
         char path[64];
         minios_state_path(path, sizeof(path), g_ctx);
+        /* Flush battery/RTC first so .sav/.rtc agree with the .state. */
+        gb_context_save_ram(g_ctx);
         if (gb_context_save_state_file(g_ctx, path)) {
-            fprintf(stderr, "[MINIOS] State saved to %s\n", path);
+            fprintf(stderr, "[MINIOS] State saved to %s (persists on MiniFS)\n", path);
         } else {
             fprintf(stderr, "[MINIOS] State save FAILED\n");
         }
         fflush(stderr);
-    } else if (f8) {
+    } else if (load_edge) {
         char path[64];
+        char legacy[64];
         minios_state_path(path, sizeof(path), g_ctx);
+        minios_legacy_state_path(legacy, sizeof(legacy), g_ctx);
         if (gb_context_load_state_file(g_ctx, path)) {
             fprintf(stderr, "[MINIOS] State loaded from %s\n", path);
+        } else if (gb_context_load_state_file(g_ctx, legacy)) {
+            fprintf(stderr, "[MINIOS] State loaded from %s (legacy ramdisk path)\n", legacy);
         } else {
             fprintf(stderr, "[MINIOS] State load FAILED (no checkpoint yet?)\n");
         }
@@ -629,9 +685,40 @@ bool gb_platform_poll_events(GBContext *ctx) {
 void gb_platform_render_frame(const uint32_t *framebuffer) {
     uint32_t now = (uint32_t)sys_time_ms();
 
-    upload_frame(framebuffer);
-    minios_audio_frame();
-    minios_autosave(now);
+    if (minios_fast_forward()) {
+        /* Max-speed path: silence the speaker once, skip audio (its
+         * busy-wait slots would cap the speed) and upload only 1 of
+         * every MINIOS_FF_FRAMESKIP+1 frames. Counters and autosave
+         * still advance so timing/quit behaviour stays sane. */
+        if (!g_ff_muted) {
+            sys_tone(0);
+            g_ff_muted = true;
+        }
+        g_ff_counter++;
+        if ((g_ff_counter % (MINIOS_FF_FRAMESKIP + 1u)) != 0) {
+            memcpy(g_last_guest_framebuffer, framebuffer,
+                   sizeof(g_last_guest_framebuffer));
+            g_timing_frame_count++;
+            g_present_count++;
+            g_dbg_render++;
+            dbg_heartbeat();
+            if (g_autoquit_frames > 0 && ++g_autoquit_count >= g_autoquit_frames) {
+                fprintf(stderr, "[MINIOS] Autoquit: played %d frames\n", g_autoquit_count);
+                exit(0);
+            }
+            g_last_frame_time = now;
+            minios_autosave(now);
+            return;
+        }
+        upload_frame(framebuffer);
+        minios_autosave(now);
+    } else {
+        g_ff_counter = 0;
+        g_ff_muted = false;
+        upload_frame(framebuffer);
+        minios_audio_frame();
+        minios_autosave(now);
+    }
 
     memcpy(g_last_guest_framebuffer, framebuffer,
            sizeof(g_last_guest_framebuffer));
@@ -670,8 +757,13 @@ void gb_platform_render_lcd_off_frame(void) {
 }
 
 void gb_platform_vsync(uint32_t frame_cycles) {
-    /* Pace at ~59.7 FPS (4194304 / 70224 cycles per frame) */
+    /* Pace at ~59.7 FPS (4194304 / 70224 cycles per frame).
+     * While SPACE is held there is no wait at all: max speed. */
     g_dbg_vsync++;
+    if (minios_fast_forward()) {
+        g_last_frame_time = (uint32_t)sys_time_ms();
+        return;
+    }
     (void)frame_cycles;
     uint32_t now = (uint32_t)sys_time_ms();
     uint32_t target_ms = 1000 * g_speed_percent / 5970;

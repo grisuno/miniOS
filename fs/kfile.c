@@ -16,6 +16,21 @@ KFILE *kfile_stdin(void)  { return kstdin; }
 KFILE *kfile_stdout(void) { return kstdout; }
 KFILE *kfile_stderr(void) { return kstderr; }
 
+/* A write lands on the ramdisk only when the parent directory entry
+ * lives THERE (some ramdisk name carries that prefix). fs_dir_exists is
+ * true when the directory lives on either filesystem, which misroutes
+ * the second and later files under a MiniFS-only directory (e.g.
+ * saves/): the first file falls through to MiniFS and creates the
+ * directory there, and every later file then sees "parent exists" and
+ * is captured by the volatile ramdisk, vanishing on reboot. */
+static int ramdisk_dir_exists(const char *dir) {
+    int i, n = ramdisk_count();
+    unsigned long dl = kstrlen(dir);
+    for (i = 0; i < n; i++)
+        if (kstrncmp(ramdisk_file_name(i), dir, dl) == 0) return 1;
+    return 0;
+}
+
 KFILE *kfopen(const char *path, const char *mode) {
     char resolved[RAMDISK_FNAME_LEN];
     int want_write;
@@ -37,9 +52,11 @@ KFILE *kfopen(const char *path, const char *mode) {
             unsigned plen = (unsigned)(slash - resolved);
             if (plen >= sizeof(parent)) plen = sizeof(parent) - 1;
             kmemcpy(parent, resolved, plen);
-            parent[plen] = '/';
-            parent[plen + 1] = 0;
-            if (!fs_dir_exists(parent)) parent_ok = 0;
+            /* plen already includes the trailing '/', so NUL-terminate
+             * here: appending another '/' ("src//") would never match a
+             * ramdisk prefix and silently reroute every pathed write. */
+            parent[plen] = 0;
+            if (!ramdisk_dir_exists(parent)) parent_ok = 0;
         }
         if (parent_ok) {
             f->rf = ramdisk_create(resolved, 0);

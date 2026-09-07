@@ -83,6 +83,18 @@ typedef struct {
     RDFile *rf;
 } ramdisk_handle_t;
 
+/* Same contract as kfopen: a write lands on the ramdisk only when the
+ * parent directory entry lives there, never merely because fs_dir_exists
+ * sees it on MiniFS (that misroute loses every post-first file under a
+ * MiniFS-only directory on reboot). */
+static int ramdisk_vfs_dir_exists(const char *dir) {
+    int i, n = ramdisk_count();
+    unsigned long dl = kstrlen(dir);
+    for (i = 0; i < n; i++)
+        if (kstrncmp(ramdisk_file_name(i), dir, dl) == 0) return 1;
+    return 0;
+}
+
 static int ramdisk_vfs_open(const char *path, int mode, void **handle) {
     RDFile *rf = ramdisk_open(path);
     if (!rf && (mode == 1 || mode == 2)) {
@@ -94,9 +106,10 @@ static int ramdisk_vfs_open(const char *path, int mode, void **handle) {
             unsigned plen = (unsigned)(slash - path);
             if (plen >= sizeof(parent)) plen = sizeof(parent) - 1;
             kmemcpy(parent, path, plen);
-            parent[plen] = '/';
-            parent[plen + 1] = 0;
-            if (!fs_dir_exists(parent)) parent_ok = 0;
+            /* plen already includes the trailing '/'; appending another
+             * one ("src//") would never match a ramdisk prefix. */
+            parent[plen] = 0;
+            if (!ramdisk_vfs_dir_exists(parent)) parent_ok = 0;
         }
         if (parent_ok) rf = ramdisk_create(path, 0);
     }

@@ -50,6 +50,10 @@ Without any project the pokemon build is skipped with a hint
 
 Arrows = D-pad, Z = A, X = B, Enter = Start, Backspace = Select.
 
+Savestates: F5 or Ctrl+S = save, F8 or Ctrl+L = load.
+SPACE (hold) = fast-forward at max speed: no vsync wait, audio muted,
+frameskip 9 (1 of every 10 frames uploaded).
+
 ## Game flags
 
 `pokemon.elf --debug` enables the serial heartbeat (off by default;
@@ -68,11 +72,21 @@ A PCM energy gate keeps envelopes, fades and silence honest. Tune
 
 ## Saves
 
-Battery saves and RTC data persist on MiniFS (`bin/<save-id>.sav`,
-`bin/<save-id>.rtc`) and survive reboot — unlike ramdisk files.
+Battery saves and RTC data persist on MiniFS (`saves/<save-id>.sav`,
+`saves/<save-id>.rtc`) and survive reboot — unlike ramdisk files.
+The full-emulator savestate (`saves/<save-id>.state`, F5/Ctrl+S to
+save, F8/Ctrl+L to load) lives on MiniFS too, so it survives reboot
+and poweroff: save, `poweroff`, boot again, load, and the game
+resumes where it was. Saving a savestate also flushes battery/RTC
+first so both agree. The battery files auto-load on next boot; the
+`.state` file is manual (load key). `saves/` is used deliberately:
+`bin/` exists on the ramdisk (`bin/cp`, `bin/minigcc.elf`), so a
+`bin/` save would land on volatile ramdisk and vanish on reboot.
 Writes are direct (no atomic temp+rename yet: MiniOS has no
 `rename` syscall). If the in-game save says it saved but the file
-is missing after reboot, check `minifs_dump.py minifs.bin`.
+is missing after reboot, check `minifs_dump.py minifs.bin`. Note:
+rebuilding `os.img` regenerates `minifs.bin` from scratch and wipes
+saves — back up `os.img` (or the file via `cat`) before rebuilding.
 
 ## Known limits
 
