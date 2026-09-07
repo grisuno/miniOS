@@ -8,19 +8,19 @@
   - `kfile_stdin` (function, line 14) `KFILE *kfile_stdin(void)`
   - `kfile_stdout` (function, line 16) `KFILE *kfile_stdout(void)`
   - `kfile_stderr` (function, line 17) `KFILE *kfile_stderr(void)`
-  - `kfopen` (function, line 18) `KFILE *kfopen(const char *path, const char *mode)`
-  - `kfclose` (function, line 88) `int kfclose(KFILE *f)`
-  - `kfgetc` (function, line 101) `int kfgetc(KFILE *f)`
-  - `kfgets` (function, line 122) `char *kfgets(char *buf, int size, KFILE *f)`
-  - `kfungetc` (function, line 136) `int kfungetc(int c, KFILE *f)`
-  - `kfread` (function, line 142) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfwrite` (function, line 164) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfseek` (function, line 193) `int kfseek(KFILE *f, long offset, int whence)`
-  - `kftell` (function, line 207) `long kftell(KFILE *f)`
-  - `kfflush` (function, line 211) `int kfflush(KFILE *f)`
-  - `kfputs` (function, line 234) `int kfputs(const char *s, KFILE *f)`
-  - `kfputc` (function, line 240) `int kfputc(int c, KFILE *f)`
-  - `krewind` (function, line 245) `void krewind(KFILE *f)`
+  - `kfopen` (function, line 33) `KFILE *kfopen(const char *path, const char *mode)`
+  - `kfclose` (function, line 105) `int kfclose(KFILE *f)`
+  - `kfgetc` (function, line 118) `int kfgetc(KFILE *f)`
+  - `kfgets` (function, line 139) `char *kfgets(char *buf, int size, KFILE *f)`
+  - `kfungetc` (function, line 153) `int kfungetc(int c, KFILE *f)`
+  - `kfread` (function, line 159) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfwrite` (function, line 181) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfseek` (function, line 210) `int kfseek(KFILE *f, long offset, int whence)`
+  - `kftell` (function, line 224) `long kftell(KFILE *f)`
+  - `kfflush` (function, line 228) `int kfflush(KFILE *f)`
+  - `kfputs` (function, line 251) `int kfputs(const char *s, KFILE *f)`
+  - `kfputc` (function, line 257) `int kfputc(int c, KFILE *f)`
+  - `krewind` (function, line 262) `void krewind(KFILE *f)`
 
 ## fs/minifs.c
 - Layer: utility
@@ -120,23 +120,23 @@
   - `vfs_register` (function, line 24) `int vfs_register(const char *prefix, const vfs_ops_t *ops)`
   - `vfs_unregister` (function, line 40) `int vfs_unregister(const char *prefix)`
   - `vfs_open` (function, line 52) `int vfs_open(const char *path, int mode, vfs_file_t *f)`
-  - `ramdisk_vfs_open` (function, line 85) `static int ramdisk_vfs_open(const char *path, int mode, void **handle)`
-  - `ramdisk_vfs_read` (function, line 110) `static int ramdisk_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
-  - `ramdisk_vfs_write` (function, line 119) `static int ramdisk_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
-  - `ramdisk_vfs_close` (function, line 127) `static int ramdisk_vfs_close(void *handle)`
-  - `ramdisk_vfs_fstat` (function, line 133) `static int ramdisk_vfs_fstat(void *handle, unsigned long *size_out)`
-  - `ramdisk_vfs_truncate` (function, line 140) `static int ramdisk_vfs_truncate(void *handle, unsigned long size)`
-  - `minifs_vfs_open` (function, line 164) `static int minifs_vfs_open(const char *path, int mode, void **handle)`
-  - `minifs_vfs_read` (function, line 192) `static int minifs_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
-  - `minifs_vfs_write` (function, line 201) `static int minifs_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
-  - `minifs_vfs_close` (function, line 209) `static int minifs_vfs_close(void *handle)`
-  - `minifs_vfs_fstat` (function, line 215) `static int minifs_vfs_fstat(void *handle, unsigned long *size_out)`
-  - `minifs_vfs_truncate` (function, line 222) `static int minifs_vfs_truncate(void *handle, unsigned long size)`
-  - `fs_resolve` (function, line 243) `int fs_resolve(const char *path, char *out, unsigned cap)`
-  - `fs_dir_exists` (function, line 276) `int fs_dir_exists(const char *dir)`
-  - `fs_is_dir` (function, line 301) `int fs_is_dir(const char *resolved)`
-  - `minifs_mkdir_p` (function, line 314) `int minifs_mkdir_p(const char *resolved)`
-  - `vfs_register_builtins` (function, line 337) `void vfs_register_builtins(void)`
+  - `ramdisk_vfs_open` (function, line 97) `static int ramdisk_vfs_open(const char *path, int mode, void **handle)`
+  - `ramdisk_vfs_read` (function, line 123) `static int ramdisk_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
+  - `ramdisk_vfs_write` (function, line 132) `static int ramdisk_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
+  - `ramdisk_vfs_close` (function, line 140) `static int ramdisk_vfs_close(void *handle)`
+  - `ramdisk_vfs_fstat` (function, line 146) `static int ramdisk_vfs_fstat(void *handle, unsigned long *size_out)`
+  - `ramdisk_vfs_truncate` (function, line 153) `static int ramdisk_vfs_truncate(void *handle, unsigned long size)`
+  - `minifs_vfs_open` (function, line 177) `static int minifs_vfs_open(const char *path, int mode, void **handle)`
+  - `minifs_vfs_read` (function, line 205) `static int minifs_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
+  - `minifs_vfs_write` (function, line 214) `static int minifs_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
+  - `minifs_vfs_close` (function, line 222) `static int minifs_vfs_close(void *handle)`
+  - `minifs_vfs_fstat` (function, line 228) `static int minifs_vfs_fstat(void *handle, unsigned long *size_out)`
+  - `minifs_vfs_truncate` (function, line 235) `static int minifs_vfs_truncate(void *handle, unsigned long size)`
+  - `fs_resolve` (function, line 256) `int fs_resolve(const char *path, char *out, unsigned cap)`
+  - `fs_dir_exists` (function, line 289) `int fs_dir_exists(const char *dir)`
+  - `fs_is_dir` (function, line 314) `int fs_is_dir(const char *resolved)`
+  - `minifs_mkdir_p` (function, line 327) `int minifs_mkdir_p(const char *resolved)`
+  - `vfs_register_builtins` (function, line 350) `void vfs_register_builtins(void)`
   - `VFS_MAX_MOUNTS` (macro, line 7)
   - `VFS_PREFIX_LEN` (macro, line 9)
 

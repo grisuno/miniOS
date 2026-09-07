@@ -34,47 +34,51 @@
   - `push_332_palette` (function, line 368) `static void push_332_palette(void)`
   - `upload_frame` (function, line 382) `static void upload_frame(const uint32_t *framebuffer)`
   - `gb_platform_init` (function, line 441) `bool gb_platform_init(int scale)`
-  - `minios_persist_path` (function, line 467) `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
+  - `minios_persist_path` (function, line 470) `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
                       ...`
-  - `minios_load_helper` (function, line 473) `static bool minios_load_helper(const char *path, void *data, size_t size,
+  - `minios_legacy_path` (function, line 480) `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
                        ...`
-  - `minios_save_helper` (function, line 491) `static bool minios_save_helper(const char *path, const void *data, size_t size)`
-  - `minios_load_battery_ram` (function, line 502) `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
+  - `minios_load_helper` (function, line 485) `static bool minios_load_helper(const char *path, void *data, size_t size,
                        ...`
-  - `minios_save_battery_ram` (function, line 510) `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
+  - `minios_save_helper` (function, line 503) `static bool minios_save_helper(const char *path, const void *data, size_t size)`
+  - `minios_load_battery_ram` (function, line 514) `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
-  - `minios_load_rtc_data` (function, line 520) `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
+  - `minios_save_battery_ram` (function, line 529) `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
+                       ...`
+  - `minios_load_rtc_data` (function, line 539) `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
-  - `minios_save_rtc_data` (function, line 528) `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
+  - `minios_save_rtc_data` (function, line 552) `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
-  - `minios_state_path` (function, line 550) `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
-  - `minios_autosave` (function, line 555) `static void minios_autosave(uint32_t now)`
-  - `poll_hotkeys` (function, line 568) `static void poll_hotkeys(void)`
-  - `gb_platform_register_context` (function, line 597) `void gb_platform_register_context(GBContext *ctx)`
-  - `gb_platform_shutdown` (function, line 613) `void gb_platform_shutdown(void)`
-  - `gb_platform_poll_events` (function, line 620) `bool gb_platform_poll_events(GBContext *ctx)`
-  - `gb_platform_render_frame` (function, line 628) `void gb_platform_render_frame(const uint32_t *framebuffer)`
-  - `gb_platform_present_framebuffer` (function, line 655) `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
-  - `gb_platform_render_lcd_off_frame` (function, line 661) `void gb_platform_render_lcd_off_frame(void)`
-  - `gb_platform_vsync` (function, line 671) `void gb_platform_vsync(uint32_t frame_cycles)`
-  - `gb_platform_set_benchmark_mode` (function, line 687) `void gb_platform_set_benchmark_mode(bool enabled)`
-  - `gb_platform_set_input_script` (function, line 691) `bool gb_platform_set_input_script(const char *script)`
-  - `gb_platform_set_input_record_file` (function, line 697) `void gb_platform_set_input_record_file(const char *path)`
-  - `gb_platform_set_persistence_dir` (function, line 702) `bool gb_platform_set_persistence_dir(const char *path)`
-  - `gb_platform_set_dump_frames` (function, line 711) `void gb_platform_set_dump_frames(const char *frames)`
-  - `gb_platform_set_dump_present_frames` (function, line 733) `void gb_platform_set_dump_present_frames(const char *frames)`
-  - `gb_platform_set_screenshot_prefix` (function, line 754) `void gb_platform_set_screenshot_prefix(const char *prefix)`
-  - `gb_platform_get_timing_info` (function, line 760) `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
-  - `gb_platform_get_joypad` (function, line 767) `uint8_t gb_platform_get_joypad(void)`
-  - `gb_platform_set_title` (function, line 771) `void gb_platform_set_title(const char *title)`
-  - `gb_platform_get_smooth_lcd_transitions` (function, line 777) `bool gb_platform_get_smooth_lcd_transitions(void)`
-  - `gb_platform_set_smooth_lcd_transitions` (function, line 781) `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
-  - `gb_platform_set_launcher_return_enabled` (function, line 785) `void gb_platform_set_launcher_return_enabled(bool enabled)`
-  - `gb_platform_get_exit_action` (function, line 789) `GBPlatformExitAction gb_platform_get_exit_action(void)`
-  - `gb_platform_submit_port_frame` (function, line 793) `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
-  - `gb_platform_test_audio_concurrency` (function, line 800) `bool gb_platform_test_audio_concurrency(uint32_t frames,
+  - `minios_fast_forward` (function, line 589) `static inline bool minios_fast_forward(void)`
+  - `minios_state_path` (function, line 592) `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
+  - `minios_legacy_state_path` (function, line 597) `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)`
+  - `minios_autosave` (function, line 602) `static void minios_autosave(uint32_t now)`
+  - `poll_hotkeys` (function, line 616) `static void poll_hotkeys(void)`
+  - `gb_platform_register_context` (function, line 653) `void gb_platform_register_context(GBContext *ctx)`
+  - `gb_platform_shutdown` (function, line 669) `void gb_platform_shutdown(void)`
+  - `gb_platform_poll_events` (function, line 676) `bool gb_platform_poll_events(GBContext *ctx)`
+  - `gb_platform_render_frame` (function, line 684) `void gb_platform_render_frame(const uint32_t *framebuffer)`
+  - `gb_platform_present_framebuffer` (function, line 742) `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
+  - `gb_platform_render_lcd_off_frame` (function, line 748) `void gb_platform_render_lcd_off_frame(void)`
+  - `gb_platform_vsync` (function, line 758) `void gb_platform_vsync(uint32_t frame_cycles)`
+  - `gb_platform_set_benchmark_mode` (function, line 779) `void gb_platform_set_benchmark_mode(bool enabled)`
+  - `gb_platform_set_input_script` (function, line 783) `bool gb_platform_set_input_script(const char *script)`
+  - `gb_platform_set_input_record_file` (function, line 789) `void gb_platform_set_input_record_file(const char *path)`
+  - `gb_platform_set_persistence_dir` (function, line 794) `bool gb_platform_set_persistence_dir(const char *path)`
+  - `gb_platform_set_dump_frames` (function, line 803) `void gb_platform_set_dump_frames(const char *frames)`
+  - `gb_platform_set_dump_present_frames` (function, line 825) `void gb_platform_set_dump_present_frames(const char *frames)`
+  - `gb_platform_set_screenshot_prefix` (function, line 846) `void gb_platform_set_screenshot_prefix(const char *prefix)`
+  - `gb_platform_get_timing_info` (function, line 852) `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
+  - `gb_platform_get_joypad` (function, line 859) `uint8_t gb_platform_get_joypad(void)`
+  - `gb_platform_set_title` (function, line 863) `void gb_platform_set_title(const char *title)`
+  - `gb_platform_get_smooth_lcd_transitions` (function, line 869) `bool gb_platform_get_smooth_lcd_transitions(void)`
+  - `gb_platform_set_smooth_lcd_transitions` (function, line 873) `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
+  - `gb_platform_set_launcher_return_enabled` (function, line 877) `void gb_platform_set_launcher_return_enabled(bool enabled)`
+  - `gb_platform_get_exit_action` (function, line 881) `GBPlatformExitAction gb_platform_get_exit_action(void)`
+  - `gb_platform_submit_port_frame` (function, line 885) `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
+  - `gb_platform_test_audio_concurrency` (function, line 892) `bool gb_platform_test_audio_concurrency(uint32_t frames,
                                         ...`
-  - `gb_platform_test_inject_persistence_fault` (function, line 808) `void gb_platform_test_inject_persistence_fault(
+  - `gb_platform_test_inject_persistence_fault` (function, line 900) `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...`
   - `FB_ADDR` (macro, line 107)
@@ -91,4 +95,5 @@
   - `MINIOS_AUDIO_MAX_HZ` (macro, line 184)
   - `MINIOS_ARP_BASS_MS` (macro, line 185)
   - `MINIOS_ARP_MEL_MS` (macro, line 186)
-  - `MINIOS_AUTOSAVE_MS` (macro, line 549)
+  - `MINIOS_AUTOSAVE_MS` (macro, line 576)
+  - `MINIOS_FF_FRAMESKIP` (macro, line 586)

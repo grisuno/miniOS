@@ -546,43 +546,43 @@
 - Defined: `fs/kfile.c:17`
 
 ### kfopen `KFILE *kfopen(const char *path, const char *mode)`
-- Defined: `fs/kfile.c:18`
+- Defined: `fs/kfile.c:33`
 
 ### kfclose `int kfclose(KFILE *f)`
-- Defined: `fs/kfile.c:88`
+- Defined: `fs/kfile.c:105`
 
 ### kfgetc `int kfgetc(KFILE *f)`
-- Defined: `fs/kfile.c:101`
+- Defined: `fs/kfile.c:118`
 
 ### kfgets `char *kfgets(char *buf, int size, KFILE *f)`
-- Defined: `fs/kfile.c:122`
+- Defined: `fs/kfile.c:139`
 
 ### kfungetc `int kfungetc(int c, KFILE *f)`
-- Defined: `fs/kfile.c:136`
+- Defined: `fs/kfile.c:153`
 
 ### kfread `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-- Defined: `fs/kfile.c:142`
+- Defined: `fs/kfile.c:159`
 
 ### kfwrite `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-- Defined: `fs/kfile.c:164`
+- Defined: `fs/kfile.c:181`
 
 ### kfseek `int kfseek(KFILE *f, long offset, int whence)`
-- Defined: `fs/kfile.c:193`
+- Defined: `fs/kfile.c:210`
 
 ### kftell `long kftell(KFILE *f)`
-- Defined: `fs/kfile.c:207`
+- Defined: `fs/kfile.c:224`
 
 ### kfflush `int kfflush(KFILE *f)`
-- Defined: `fs/kfile.c:211`
+- Defined: `fs/kfile.c:228`
 
 ### kfputs `int kfputs(const char *s, KFILE *f)`
-- Defined: `fs/kfile.c:234`
+- Defined: `fs/kfile.c:251`
 
 ### kfputc `int kfputc(int c, KFILE *f)`
-- Defined: `fs/kfile.c:240`
+- Defined: `fs/kfile.c:257`
 
 ### krewind `void krewind(KFILE *f)`
-- Defined: `fs/kfile.c:245`
+- Defined: `fs/kfile.c:262`
 
 ## fs/minifs.c
 
@@ -809,55 +809,55 @@
 - Defined: `fs/vfs.c:52`
 
 ### ramdisk_vfs_open `static int ramdisk_vfs_open(const char *path, int mode, void **handle)`
-- Defined: `fs/vfs.c:85`
+- Defined: `fs/vfs.c:97`
 
 ### ramdisk_vfs_read `static int ramdisk_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
-- Defined: `fs/vfs.c:110`
+- Defined: `fs/vfs.c:123`
 
 ### ramdisk_vfs_write `static int ramdisk_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
-- Defined: `fs/vfs.c:119`
+- Defined: `fs/vfs.c:132`
 
 ### ramdisk_vfs_close `static int ramdisk_vfs_close(void *handle)`
-- Defined: `fs/vfs.c:127`
-
-### ramdisk_vfs_fstat `static int ramdisk_vfs_fstat(void *handle, unsigned long *size_out)`
-- Defined: `fs/vfs.c:133`
-
-### ramdisk_vfs_truncate `static int ramdisk_vfs_truncate(void *handle, unsigned long size)`
 - Defined: `fs/vfs.c:140`
 
+### ramdisk_vfs_fstat `static int ramdisk_vfs_fstat(void *handle, unsigned long *size_out)`
+- Defined: `fs/vfs.c:146`
+
+### ramdisk_vfs_truncate `static int ramdisk_vfs_truncate(void *handle, unsigned long size)`
+- Defined: `fs/vfs.c:153`
+
 ### minifs_vfs_open `static int minifs_vfs_open(const char *path, int mode, void **handle)`
-- Defined: `fs/vfs.c:164`
+- Defined: `fs/vfs.c:177`
 
 ### minifs_vfs_read `static int minifs_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
-- Defined: `fs/vfs.c:192`
+- Defined: `fs/vfs.c:205`
 
 ### minifs_vfs_write `static int minifs_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
-- Defined: `fs/vfs.c:201`
+- Defined: `fs/vfs.c:214`
 
 ### minifs_vfs_close `static int minifs_vfs_close(void *handle)`
-- Defined: `fs/vfs.c:209`
-
-### minifs_vfs_fstat `static int minifs_vfs_fstat(void *handle, unsigned long *size_out)`
-- Defined: `fs/vfs.c:215`
-
-### minifs_vfs_truncate `static int minifs_vfs_truncate(void *handle, unsigned long size)`
 - Defined: `fs/vfs.c:222`
 
+### minifs_vfs_fstat `static int minifs_vfs_fstat(void *handle, unsigned long *size_out)`
+- Defined: `fs/vfs.c:228`
+
+### minifs_vfs_truncate `static int minifs_vfs_truncate(void *handle, unsigned long size)`
+- Defined: `fs/vfs.c:235`
+
 ### fs_resolve `int fs_resolve(const char *path, char *out, unsigned cap)`
-- Defined: `fs/vfs.c:243`
+- Defined: `fs/vfs.c:256`
 
 ### fs_dir_exists `int fs_dir_exists(const char *dir)`
-- Defined: `fs/vfs.c:276`
+- Defined: `fs/vfs.c:289`
 
 ### fs_is_dir `int fs_is_dir(const char *resolved)`
-- Defined: `fs/vfs.c:301`
-
-### minifs_mkdir_p `int minifs_mkdir_p(const char *resolved)`
 - Defined: `fs/vfs.c:314`
 
+### minifs_mkdir_p `int minifs_mkdir_p(const char *resolved)`
+- Defined: `fs/vfs.c:327`
+
 ### vfs_register_builtins `void vfs_register_builtins(void)`
-- Defined: `fs/vfs.c:337`
+- Defined: `fs/vfs.c:350`
 
 ## fs/zip.c
 
@@ -9689,118 +9689,128 @@ Z_DumpHeap
 
 ### minios_persist_path `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
                       ...`
-- Defined: `progs/pokemon/platform_minios.c:467`
-- Doc: -- Battery + RTC persistence (direct write to MiniFS) ---  Paths use minifs bin/: kfopen checks the ramdisk FIRST, but t
+- Defined: `progs/pokemon/platform_minios.c:470`
+- Doc: -- Battery + RTC persistence (direct write to MiniFS) ---  Paths use saves/: kfopen tries the ramdisk FIRST and creates 
+
+### minios_legacy_path `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
+                       ...`
+- Defined: `progs/pokemon/platform_minios.c:480`
+- Doc: Legacy ramdisk path (pre-MiniFS fix wrote bin/<id>.* onto volatile ramdisk). Loads still probe it as a fallback so a che
 
 ### minios_load_helper `static bool minios_load_helper(const char *path, void *data, size_t size,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:473`
+- Defined: `progs/pokemon/platform_minios.c:485`
 
 ### minios_save_helper `static bool minios_save_helper(const char *path, const void *data, size_t size)`
-- Defined: `progs/pokemon/platform_minios.c:491`
+- Defined: `progs/pokemon/platform_minios.c:503`
 
 ### minios_load_battery_ram `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:502`
+- Defined: `progs/pokemon/platform_minios.c:514`
 
 ### minios_save_battery_ram `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:510`
+- Defined: `progs/pokemon/platform_minios.c:529`
 
 ### minios_load_rtc_data `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
-- Defined: `progs/pokemon/platform_minios.c:520`
+- Defined: `progs/pokemon/platform_minios.c:539`
 
 ### minios_save_rtc_data `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
-- Defined: `progs/pokemon/platform_minios.c:528`
+- Defined: `progs/pokemon/platform_minios.c:552`
+
+### minios_fast_forward `static inline bool minios_fast_forward(void)`
+- Defined: `progs/pokemon/platform_minios.c:589`
 
 ### minios_state_path `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:550`
-- Doc: define MINIOS_AUTOSAVE_MS 60000u
+- Defined: `progs/pokemon/platform_minios.c:592`
 
-### minios_autosave `static void minios_autosave(uint32_t now)`
-- Defined: `progs/pokemon/platform_minios.c:555`
-
-### poll_hotkeys `static void poll_hotkeys(void)`
-- Defined: `progs/pokemon/platform_minios.c:568`
-- Doc: } static void minios_autosave(uint32_t now) { if (!g_ctx || now - g_last_autosave_ms < MINIOS_AUTOSAVE_MS) { return; } g
-
-### gb_platform_register_context `void gb_platform_register_context(GBContext *ctx)`
+### minios_legacy_state_path `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)`
 - Defined: `progs/pokemon/platform_minios.c:597`
 
+### minios_autosave `static void minios_autosave(uint32_t now)`
+- Defined: `progs/pokemon/platform_minios.c:602`
+
+### poll_hotkeys `static void poll_hotkeys(void)`
+- Defined: `progs/pokemon/platform_minios.c:616`
+- Doc: PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26, * SPACE = 0x39 (fast-forward, handled in vsync/render
+
+### gb_platform_register_context `void gb_platform_register_context(GBContext *ctx)`
+- Defined: `progs/pokemon/platform_minios.c:653`
+
 ### gb_platform_shutdown `void gb_platform_shutdown(void)`
-- Defined: `progs/pokemon/platform_minios.c:613`
+- Defined: `progs/pokemon/platform_minios.c:669`
 
 ### gb_platform_poll_events `bool gb_platform_poll_events(GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:620`
+- Defined: `progs/pokemon/platform_minios.c:676`
 
 ### gb_platform_render_frame `void gb_platform_render_frame(const uint32_t *framebuffer)`
-- Defined: `progs/pokemon/platform_minios.c:628`
+- Defined: `progs/pokemon/platform_minios.c:684`
 
 ### gb_platform_present_framebuffer `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
-- Defined: `progs/pokemon/platform_minios.c:655`
+- Defined: `progs/pokemon/platform_minios.c:742`
 
 ### gb_platform_render_lcd_off_frame `void gb_platform_render_lcd_off_frame(void)`
-- Defined: `progs/pokemon/platform_minios.c:661`
+- Defined: `progs/pokemon/platform_minios.c:748`
 
 ### gb_platform_vsync `void gb_platform_vsync(uint32_t frame_cycles)`
-- Defined: `progs/pokemon/platform_minios.c:671`
+- Defined: `progs/pokemon/platform_minios.c:758`
 
 ### gb_platform_set_benchmark_mode `void gb_platform_set_benchmark_mode(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:687`
+- Defined: `progs/pokemon/platform_minios.c:779`
 
 ### gb_platform_set_input_script `bool gb_platform_set_input_script(const char *script)`
-- Defined: `progs/pokemon/platform_minios.c:691`
+- Defined: `progs/pokemon/platform_minios.c:783`
 
 ### gb_platform_set_input_record_file `void gb_platform_set_input_record_file(const char *path)`
-- Defined: `progs/pokemon/platform_minios.c:697`
-
-### gb_platform_set_persistence_dir `bool gb_platform_set_persistence_dir(const char *path)`
-- Defined: `progs/pokemon/platform_minios.c:702`
-
-### gb_platform_set_dump_frames `void gb_platform_set_dump_frames(const char *frames)`
-- Defined: `progs/pokemon/platform_minios.c:711`
-
-### gb_platform_set_dump_present_frames `void gb_platform_set_dump_present_frames(const char *frames)`
-- Defined: `progs/pokemon/platform_minios.c:733`
-
-### gb_platform_set_screenshot_prefix `void gb_platform_set_screenshot_prefix(const char *prefix)`
-- Defined: `progs/pokemon/platform_minios.c:754`
-
-### gb_platform_get_timing_info `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
-- Defined: `progs/pokemon/platform_minios.c:760`
-
-### gb_platform_get_joypad `uint8_t gb_platform_get_joypad(void)`
-- Defined: `progs/pokemon/platform_minios.c:767`
-
-### gb_platform_set_title `void gb_platform_set_title(const char *title)`
-- Defined: `progs/pokemon/platform_minios.c:771`
-
-### gb_platform_get_smooth_lcd_transitions `bool gb_platform_get_smooth_lcd_transitions(void)`
-- Defined: `progs/pokemon/platform_minios.c:777`
-
-### gb_platform_set_smooth_lcd_transitions `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:781`
-
-### gb_platform_set_launcher_return_enabled `void gb_platform_set_launcher_return_enabled(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:785`
-
-### gb_platform_get_exit_action `GBPlatformExitAction gb_platform_get_exit_action(void)`
 - Defined: `progs/pokemon/platform_minios.c:789`
 
+### gb_platform_set_persistence_dir `bool gb_platform_set_persistence_dir(const char *path)`
+- Defined: `progs/pokemon/platform_minios.c:794`
+
+### gb_platform_set_dump_frames `void gb_platform_set_dump_frames(const char *frames)`
+- Defined: `progs/pokemon/platform_minios.c:803`
+
+### gb_platform_set_dump_present_frames `void gb_platform_set_dump_present_frames(const char *frames)`
+- Defined: `progs/pokemon/platform_minios.c:825`
+
+### gb_platform_set_screenshot_prefix `void gb_platform_set_screenshot_prefix(const char *prefix)`
+- Defined: `progs/pokemon/platform_minios.c:846`
+
+### gb_platform_get_timing_info `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
+- Defined: `progs/pokemon/platform_minios.c:852`
+
+### gb_platform_get_joypad `uint8_t gb_platform_get_joypad(void)`
+- Defined: `progs/pokemon/platform_minios.c:859`
+
+### gb_platform_set_title `void gb_platform_set_title(const char *title)`
+- Defined: `progs/pokemon/platform_minios.c:863`
+
+### gb_platform_get_smooth_lcd_transitions `bool gb_platform_get_smooth_lcd_transitions(void)`
+- Defined: `progs/pokemon/platform_minios.c:869`
+
+### gb_platform_set_smooth_lcd_transitions `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
+- Defined: `progs/pokemon/platform_minios.c:873`
+
+### gb_platform_set_launcher_return_enabled `void gb_platform_set_launcher_return_enabled(bool enabled)`
+- Defined: `progs/pokemon/platform_minios.c:877`
+
+### gb_platform_get_exit_action `GBPlatformExitAction gb_platform_get_exit_action(void)`
+- Defined: `progs/pokemon/platform_minios.c:881`
+
 ### gb_platform_submit_port_frame `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
-- Defined: `progs/pokemon/platform_minios.c:793`
+- Defined: `progs/pokemon/platform_minios.c:885`
 
 ### gb_platform_test_audio_concurrency `bool gb_platform_test_audio_concurrency(uint32_t frames,
                                         ...`
-- Defined: `progs/pokemon/platform_minios.c:800`
+- Defined: `progs/pokemon/platform_minios.c:892`
 - Doc: void gb_platform_set_launcher_return_enabled(bool enabled) { (void)enabled; } GBPlatformExitAction gb_platform_get_exit_
 
 ### gb_platform_test_inject_persistence_fault `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...`
-- Defined: `progs/pokemon/platform_minios.c:808`
+- Defined: `progs/pokemon/platform_minios.c:900`
 
 ## progs/quake2generic/q2generic_minios.c
 
