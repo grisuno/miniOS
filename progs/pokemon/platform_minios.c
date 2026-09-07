@@ -319,9 +319,16 @@ static void minios_audio_frame(void) {
 
 static uint8_t g_key_state[128]; /* pressed/released per scancode */
 
+/* Modal menu owns the keyboard while open (defined with the menu below,
+ * declared here so game input can be masked during menu navigation). */
+static bool g_menu_open = false;
+/* Sticky fast-forward: Ctrl+Space latches turbo on, Ctrl+Shift+Space off. */
+static bool g_ff_sticky = false;
+
 static void rebuild_joypad(void) {
     g_joypad_dpad = 0xFF;
     g_joypad_buttons = 0xFF;
+    if (g_menu_open) return; /* arrows/Enter drive the menu, not the game */
     if (g_key_state[0x48]) g_joypad_dpad &= ~0x04;  /* Up */
     if (g_key_state[0x50]) g_joypad_dpad &= ~0x08;  /* Down */
     if (g_key_state[0x4B]) g_joypad_dpad &= ~0x02;  /* Left */
@@ -491,22 +498,24 @@ static const uint8_t menu_font8x8[96][8] = {
  *
  * A 16 px menu bar lives in the top margin the 2x GB image never touches
  * (it starts at GB_DST_Y0 = 36). Clicking FILE (or pressing Esc) drops a
- * 3-item menu: Save State, Load State, Quit. Drawing is a few filled rects
- * plus 8x8 glyphs straight into the backbuffer: no widget library, no atlas
- * upload, no measurable frame cost. Nuklear would drag its whole
- * immediate-mode renderer into this binary for three buttons while the game
- * is already CPU-bound under QEMU-TCG. The game keeps running behind the
- * open menu; save/load run at poll points between emulation slices, so they
- * can never race the CPU.
+ * 5-item menu: Save State, Load State, Enable/Disable frameskip, Quit.
+ * Up/Down + Enter drive it fully from the keyboard (game input is masked
+ * while open); the mouse is a bonus, not a requirement. Drawing is a few
+ * filled rects plus 8x8 glyphs straight into the backbuffer: no widget
+ * library, no atlas upload, no measurable frame cost. Nuklear would drag
+ * its whole immediate-mode renderer into this binary for five buttons
+ * while the game is already CPU-bound under QEMU-TCG. The game keeps
+ * running behind the open menu; save/load run at poll points between
+ * emulation slices, so they can never race the CPU.
  * ========================================================================== */
 
 #define MENU_BAR_H   16
 #define MENU_FILE_X0 4
-#define MENU_FILE_X1 56
+#define MENU_FILE_X1 64
 #define MENU_DROP_X0 4
-#define MENU_DROP_W  176
+#define MENU_DROP_W  208
 #define MENU_ITEM_H  14
-#define MENU_NITEMS  3
+#define MENU_NITEMS  5
 
 /* 3-3-2 palette indices (the pushed 332 ramp is live while we draw). */
 #define MENU_BG      0x09
@@ -517,12 +526,11 @@ static const uint8_t menu_font8x8[96][8] = {
 /* Forward declarations for helpers defined further down. */
 static void minios_state_path(char *out, size_t n, const GBContext *ctx);
 static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx);
+void gb_platform_shutdown(void);
 
-static bool g_menu_open = false;
 static int g_menu_hover = -1;
 static int g_win_ox = 0, g_win_oy = 0;
 static int g_prev_lbtn = 0;
-static bool g_want_quit = false;
 static unsigned g_osd_until = 0;
 static char g_osd[56] = {0};
 
@@ -570,7 +578,8 @@ static void menu_draw(void) {
     menu_text(MENU_FILE_X0 + 4, 4, "FILE", MENU_FG);
     if (g_menu_open) {
         static const char *items[MENU_NITEMS] = {
-            "Save State", "Load State", "Quit"
+            "Save State", "Load State", "Enable frameskip",
+            "Disable frameskip", "Quit"
         };
         for (int i = 0; i < MENU_NITEMS; i++) {
             int iy = MENU_BAR_H + i * MENU_ITEM_H;
@@ -635,26 +644,90 @@ static void menu_do_load(void) {
     fflush(stderr);
 }
 
-/* PS/2 Set 1 Esc = 0x01 toggles the menu; the mouse drives it otherwise. */
+static void menu_activate(int it) {
+    if (it == 0) menu_do_save();
+    else if (it == 1) menu_do_load();
+    else if (it == 2) {
+        g_menu_open = false;
+        g_ff_sticky = true;
+        menu_osd("Fast-forward ON");
+        fprintf(stderr, "[MINIOS] Sticky fast-forward ON\n");
+        fflush(stderr);
+    } else if (it == 3) {
+        g_menu_open = false;
+        g_ff_sticky = false;
+        menu_osd("Fast-forward OFF");
+        fprintf(stderr, "[MINIOS] Sticky fast-forward OFF\n");
+        fflush(stderr);
+    } else if (it == 4) {
+        /* Graceful quit: flush battery, restore text mode and exit
+         * directly, the same proven path the headless autoquit takes.
+         * main's destroy would save battery a second time, harmlessly,
+         * but returning false mid-slice leaves the unwind untested, so
+         * exit here instead. */
+        g_menu_open = false;
+        if (g_ctx) {
+            gb_context_save_ram(g_ctx);
+            fprintf(stderr, "[MINIOS] Quit from menu, battery flushed\n");
+            fflush(stderr);
+        }
+        gb_platform_shutdown();
+        exit(0);
+    }
+}
+
+/* Esc toggles, Up/Down move, Enter activates; the mouse is a bonus.
+ * PS/2 Set 1: Esc = 0x01, Up = 0x48, Down = 0x50, Enter = 0x1C. */
 static void poll_menu(void) {
-    static uint8_t prev_esc = 0;
+    static uint8_t prev_esc = 0, prev_up = 0, prev_down = 0, prev_enter = 0;
     uint8_t esc = g_key_state[0x01];
-    if (esc && !prev_esc) g_menu_open = !g_menu_open;
+    if (esc && !prev_esc) {
+        g_menu_open = !g_menu_open;
+        if (g_menu_open && g_menu_hover < 0) g_menu_hover = 0;
+    }
     prev_esc = esc;
+    if (g_menu_open) {
+        uint8_t up = g_key_state[0x48], down = g_key_state[0x50];
+        uint8_t enter = g_key_state[0x1C];
+        if (up && !prev_up) {
+            g_menu_hover = (g_menu_hover + MENU_NITEMS - 1) % MENU_NITEMS;
+        }
+        if (down && !prev_down) {
+            g_menu_hover = (g_menu_hover + 1) % MENU_NITEMS;
+        }
+        if (enter && !prev_enter && g_menu_hover >= 0) {
+            int it = g_menu_hover;
+            g_menu_hover = -1;
+            menu_activate(it);
+        }
+        prev_up = up;
+        prev_down = down;
+        prev_enter = enter;
+    } else {
+        prev_up = g_key_state[0x48];
+        prev_down = g_key_state[0x50];
+        prev_enter = g_key_state[0x1C];
+    }
     int m[4];
     if (sys_mouse(m) != 0) return;
     int lx = m[0] - g_win_ox;
     int ly = m[1] - g_win_oy;
     int lbtn = m[2] & 1;
-    g_menu_hover = menu_item_at(lx, ly);
+    /* The mouse only takes the highlight while it moves; a parked mouse
+     * must not steal it back from keyboard navigation every poll. */
+    static int prev_mx = -1, prev_my = -1;
+    if (lx != prev_mx || ly != prev_my) {
+        g_menu_hover = menu_item_at(lx, ly);
+        prev_mx = lx;
+        prev_my = ly;
+    }
     if (lbtn && !g_prev_lbtn) {
         if (lx >= MENU_FILE_X0 && lx < MENU_FILE_X1 && ly >= 0 && ly < MENU_BAR_H) {
             g_menu_open = !g_menu_open;
+            if (g_menu_open && g_menu_hover < 0) g_menu_hover = 0;
         } else if (g_menu_open) {
             int it = menu_item_at(lx, ly);
-            if (it == 0) menu_do_save();
-            else if (it == 1) menu_do_load();
-            else if (it == 2) { g_menu_open = false; g_want_quit = true; }
+            if (it >= 0) menu_activate(it);
             else g_menu_open = false;
         }
     }
@@ -868,17 +941,19 @@ static uint32_t g_last_autosave_ms = 0;
 
 /* --- Fast-forward with SPACE (frameskip at max) ---
  *
- * While SPACE (PS/2 Set 1 0x39) is held the emulator runs as fast as
- * possible: vsync waits nothing, PC-speaker audio is silenced (its
- * DOOM-style busy-wait slots would cap the speed), and only 1 of every
- * MINIOS_FF_FRAMESKIP+1 frames is uploaded (classic frameskip 9, the
- * highest usual value). SPACE is never a joypad key, so holding it
- * cannot leak into the game. */
-#define MINIOS_FF_FRAMESKIP 9u
+ * While SPACE (PS/2 Set 1 0x39) is held, or the sticky latch is set
+ * (Ctrl+Space on, Ctrl+Shift+Space off, or the FILE menu items), the
+ * emulator runs as fast as possible: vsync waits nothing, PC-speaker
+ * audio is silenced (its DOOM-style busy-wait slots would cap the
+ * speed), and only 1 of every MINIOS_FF_FRAMESKIP+1 frames is uploaded
+ * (frameskip 29: past that the screen is a slideshow and the emulation
+ * core itself, not the compositing, is the floor). SPACE is never a
+ * joypad key, so holding it cannot leak into the game. */
+#define MINIOS_FF_FRAMESKIP 29u
 static unsigned g_ff_counter = 0;
 static bool g_ff_muted = false;
 static inline bool minios_fast_forward(void) {
-    return g_key_state[0x39] != 0;
+    return g_key_state[0x39] != 0 || g_ff_sticky;
 }
 
 static void minios_state_path(char *out, size_t n, const GBContext *ctx) {
@@ -903,14 +978,18 @@ static void minios_autosave(uint32_t now) {
 }
 
 /* PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26,
- * SPACE = 0x39 (fast-forward, handled in vsync/render, not here). */
+ * SPACE = 0x39, Shift = 0x2A/0x36. SPACE held is momentary turbo;
+ * Ctrl+Space latches it (sticky), Ctrl+Shift+Space releases it. */
 static void poll_hotkeys(void) {
     static uint8_t prev[128];
     bool ctrl = g_key_state[0x1D] != 0;
+    bool shift = g_key_state[0x2A] || g_key_state[0x36];
     bool save_edge = (g_key_state[0x3F] && !prev[0x3F]) ||
                      (g_key_state[0x1F] && !prev[0x1F] && ctrl);
     bool load_edge = (g_key_state[0x42] && !prev[0x42]) ||
                      (g_key_state[0x26] && !prev[0x26] && ctrl);
+    bool ff_on_edge = g_key_state[0x39] && !prev[0x39] && ctrl && !shift;
+    bool ff_off_edge = g_key_state[0x39] && !prev[0x39] && ctrl && shift;
     memcpy(prev, g_key_state, sizeof(prev));
     if (!g_ctx) {
         return;
@@ -938,6 +1017,17 @@ static void poll_hotkeys(void) {
         } else {
             fprintf(stderr, "[MINIOS] State load FAILED (no checkpoint yet?)\n");
         }
+        fflush(stderr);
+    }
+    if (ff_on_edge) {
+        g_ff_sticky = true;
+        menu_osd("Fast-forward ON");
+        fprintf(stderr, "[MINIOS] Sticky fast-forward ON\n");
+        fflush(stderr);
+    } else if (ff_off_edge) {
+        g_ff_sticky = false;
+        menu_osd("Fast-forward OFF");
+        fprintf(stderr, "[MINIOS] Sticky fast-forward OFF\n");
         fflush(stderr);
     }
 }
@@ -970,21 +1060,8 @@ bool gb_platform_poll_events(GBContext *ctx) {
     poll_keyboard();
     poll_hotkeys();
     poll_menu();
-    if (g_want_quit) {
-        /* Graceful quit from the FILE menu: flush battery, restore text
-         * mode and return false; main then destroys the context (which
-         * saves battery again, harmlessly) and exits to the shell. */
-        g_want_quit = false;
-        if (g_ctx) {
-            gb_context_save_ram(g_ctx);
-            fprintf(stderr, "[MINIOS] Quit from menu, battery flushed\n");
-            fflush(stderr);
-        }
-        gb_platform_shutdown();
-        return false;
-    }
     g_dbg_poll++;
-    return true; /* never quit via window close on MiniOS */
+    return true; /* menu Quit exits directly; never quit via window close */
 }
 
 void gb_platform_render_frame(const uint32_t *framebuffer) {

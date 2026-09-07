@@ -9623,194 +9623,224 @@ Z_DumpHeap
 ### sys_kbd `static long sys_kbd(void)`
 - Defined: `progs/pokemon/platform_minios.c:61`
 
-### sys_nk_frame `static long sys_nk_frame(void)`
+### sys_nk_frame `static long sys_nk_frame(int *origin)`
 - Defined: `progs/pokemon/platform_minios.c:67`
 
-### sys_vga_mode `static long sys_vga_mode(int on)`
+### sys_mouse `static long sys_mouse(int *xybw)`
 - Defined: `progs/pokemon/platform_minios.c:73`
 
-### sys_kbd_raw `static long sys_kbd_raw(int on)`
+### sys_vga_mode `static long sys_vga_mode(int on)`
 - Defined: `progs/pokemon/platform_minios.c:79`
 
-### sys_palette `static long sys_palette(const unsigned char *pal)`
+### sys_kbd_raw `static long sys_kbd_raw(int on)`
 - Defined: `progs/pokemon/platform_minios.c:85`
 
-### sys_gfx_title `static long sys_gfx_title(const char *t)`
+### sys_palette `static long sys_palette(const unsigned char *pal)`
 - Defined: `progs/pokemon/platform_minios.c:91`
 
-### sys_tone `static long sys_tone(unsigned f)`
+### sys_gfx_title `static long sys_gfx_title(const char *t)`
 - Defined: `progs/pokemon/platform_minios.c:97`
 
+### sys_tone `static long sys_tone(unsigned f)`
+- Defined: `progs/pokemon/platform_minios.c:103`
+
 ### gb_platform_set_debug `void gb_platform_set_debug(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:137`
+- Defined: `progs/pokemon/platform_minios.c:143`
 
 ### _dl_argv `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).
  * DO NOT reintroduce argv ...`
-- Defined: `progs/pokemon/platform_minios.c:145`
+- Defined: `progs/pokemon/platform_minios.c:151`
 
 ### minios_audio_sample `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)`
-- Defined: `progs/pokemon/platform_minios.c:195`
+- Defined: `progs/pokemon/platform_minios.c:201`
 
 ### gb_voice_in_range `static bool gb_voice_in_range(unsigned f)`
-- Defined: `progs/pokemon/platform_minios.c:226`
+- Defined: `progs/pokemon/platform_minios.c:232`
 
 ### sample_apu_voices `static void sample_apu_voices(gb_voice_t *v)`
-- Defined: `progs/pokemon/platform_minios.c:230`
+- Defined: `progs/pokemon/platform_minios.c:236`
 
 ### hold_tone `static void hold_tone(unsigned freq, unsigned ms)`
-- Defined: `progs/pokemon/platform_minios.c:250`
+- Defined: `progs/pokemon/platform_minios.c:256`
 
 ### minios_audio_play `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
                             ...`
-- Defined: `progs/pokemon/platform_minios.c:258`
+- Defined: `progs/pokemon/platform_minios.c:264`
 
 ### minios_audio_frame `static void minios_audio_frame(void)`
-- Defined: `progs/pokemon/platform_minios.c:294`
+- Defined: `progs/pokemon/platform_minios.c:300`
 - Doc: } if (m2) { mel[nmel++] = v[1].freq; } if (bass) { hold_tone(v[2].freq, MINIOS_ARP_BASS_MS); } if (nmel > 0) { hold_tone
 
 ### rebuild_joypad `static void rebuild_joypad(void)`
-- Defined: `progs/pokemon/platform_minios.c:315`
-- Doc: ============================================================================ PS/2 Set 1 scancode -> GB joypad mapping  A
+- Defined: `progs/pokemon/platform_minios.c:327`
 
 ### poll_keyboard `static void poll_keyboard(void)`
-- Defined: `progs/pokemon/platform_minios.c:328`
+- Defined: `progs/pokemon/platform_minios.c:341`
 
 ### push_332_palette `static void push_332_palette(void)`
-- Defined: `progs/pokemon/platform_minios.c:368`
+- Defined: `progs/pokemon/platform_minios.c:381`
 - Doc: 3-3-2 RGB palette ramp, pushed ONCE at init (not per frame). * Pixel index = (R & 0xE0) | ((G & 0xE0) >> 3) | ((B & 0xC0
 
+### menu_fill `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)`
+- Defined: `progs/pokemon/platform_minios.c:536`
+
+### menu_text `static void menu_text(int x, int y, const char *s, uint8_t fg)`
+- Defined: `progs/pokemon/platform_minios.c:549`
+
+### menu_osd `static void menu_osd(const char *s)`
+- Defined: `progs/pokemon/platform_minios.c:568`
+
+### menu_draw `static void menu_draw(void)`
+- Defined: `progs/pokemon/platform_minios.c:574`
+
+### menu_item_at `static int menu_item_at(int lx, int ly)`
+- Defined: `progs/pokemon/platform_minios.c:604`
+
+### menu_do_save `static void menu_do_save(void)`
+- Defined: `progs/pokemon/platform_minios.c:611`
+
+### menu_do_load `static void menu_do_load(void)`
+- Defined: `progs/pokemon/platform_minios.c:627`
+
+### menu_activate `static void menu_activate(int it)`
+- Defined: `progs/pokemon/platform_minios.c:646`
+
+### poll_menu `static void poll_menu(void)`
+- Defined: `progs/pokemon/platform_minios.c:681`
+- Doc: Esc toggles, Up/Down move, Enter activates; the mouse is a bonus. * PS/2 Set 1: Esc = 0x01, Up = 0x48, Down = 0x50, Ente
+
 ### upload_frame `static void upload_frame(const uint32_t *framebuffer)`
-- Defined: `progs/pokemon/platform_minios.c:382`
-- Doc: static void push_332_palette(void) { uint8_t dac[768]; for (int i = 0; i < 256; i++) { uint8_t r = (uint8_t)(i & 0xE0); 
+- Defined: `progs/pokemon/platform_minios.c:738`
+- Doc: if (lbtn && !g_prev_lbtn) { if (lx >= MENU_FILE_X0 && lx < MENU_FILE_X1 && ly >= 0 && ly < MENU_BAR_H) { g_menu_open = !
 
 ### gb_platform_init `bool gb_platform_init(int scale)`
-- Defined: `progs/pokemon/platform_minios.c:441`
+- Defined: `progs/pokemon/platform_minios.c:805`
 - Doc: ============================================================================ gb_platform_* interface implementation * ==
 
 ### minios_persist_path `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
                       ...`
-- Defined: `progs/pokemon/platform_minios.c:470`
+- Defined: `progs/pokemon/platform_minios.c:834`
 - Doc: -- Battery + RTC persistence (direct write to MiniFS) ---  Paths use saves/: kfopen tries the ramdisk FIRST and creates 
 
 ### minios_legacy_path `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:480`
+- Defined: `progs/pokemon/platform_minios.c:844`
 - Doc: Legacy ramdisk path (pre-MiniFS fix wrote bin/<id>.* onto volatile ramdisk). Loads still probe it as a fallback so a che
 
 ### minios_load_helper `static bool minios_load_helper(const char *path, void *data, size_t size,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:485`
+- Defined: `progs/pokemon/platform_minios.c:849`
 
 ### minios_save_helper `static bool minios_save_helper(const char *path, const void *data, size_t size)`
-- Defined: `progs/pokemon/platform_minios.c:503`
+- Defined: `progs/pokemon/platform_minios.c:867`
 
 ### minios_load_battery_ram `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:514`
+- Defined: `progs/pokemon/platform_minios.c:878`
 
 ### minios_save_battery_ram `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:529`
+- Defined: `progs/pokemon/platform_minios.c:893`
 
 ### minios_load_rtc_data `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
-- Defined: `progs/pokemon/platform_minios.c:539`
+- Defined: `progs/pokemon/platform_minios.c:903`
 
 ### minios_save_rtc_data `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
-- Defined: `progs/pokemon/platform_minios.c:552`
+- Defined: `progs/pokemon/platform_minios.c:916`
 
 ### minios_fast_forward `static inline bool minios_fast_forward(void)`
-- Defined: `progs/pokemon/platform_minios.c:589`
+- Defined: `progs/pokemon/platform_minios.c:955`
 
 ### minios_state_path `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:592`
+- Defined: `progs/pokemon/platform_minios.c:958`
 
 ### minios_legacy_state_path `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:597`
+- Defined: `progs/pokemon/platform_minios.c:963`
 
 ### minios_autosave `static void minios_autosave(uint32_t now)`
-- Defined: `progs/pokemon/platform_minios.c:602`
+- Defined: `progs/pokemon/platform_minios.c:968`
 
 ### poll_hotkeys `static void poll_hotkeys(void)`
-- Defined: `progs/pokemon/platform_minios.c:616`
-- Doc: PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26, * SPACE = 0x39 (fast-forward, handled in vsync/render
+- Defined: `progs/pokemon/platform_minios.c:983`
+- Doc: PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26, SPACE = 0x39, Shift = 0x2A/0x36. SPACE held is moment
 
 ### gb_platform_register_context `void gb_platform_register_context(GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:653`
+- Defined: `progs/pokemon/platform_minios.c:1034`
 
 ### gb_platform_shutdown `void gb_platform_shutdown(void)`
-- Defined: `progs/pokemon/platform_minios.c:669`
+- Defined: `progs/pokemon/platform_minios.c:1050`
 
 ### gb_platform_poll_events `bool gb_platform_poll_events(GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:676`
+- Defined: `progs/pokemon/platform_minios.c:1057`
 
 ### gb_platform_render_frame `void gb_platform_render_frame(const uint32_t *framebuffer)`
-- Defined: `progs/pokemon/platform_minios.c:684`
+- Defined: `progs/pokemon/platform_minios.c:1066`
 
 ### gb_platform_present_framebuffer `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
-- Defined: `progs/pokemon/platform_minios.c:742`
+- Defined: `progs/pokemon/platform_minios.c:1124`
 
 ### gb_platform_render_lcd_off_frame `void gb_platform_render_lcd_off_frame(void)`
-- Defined: `progs/pokemon/platform_minios.c:748`
+- Defined: `progs/pokemon/platform_minios.c:1130`
 
 ### gb_platform_vsync `void gb_platform_vsync(uint32_t frame_cycles)`
-- Defined: `progs/pokemon/platform_minios.c:758`
+- Defined: `progs/pokemon/platform_minios.c:1146`
 
 ### gb_platform_set_benchmark_mode `void gb_platform_set_benchmark_mode(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:779`
+- Defined: `progs/pokemon/platform_minios.c:1167`
 
 ### gb_platform_set_input_script `bool gb_platform_set_input_script(const char *script)`
-- Defined: `progs/pokemon/platform_minios.c:783`
+- Defined: `progs/pokemon/platform_minios.c:1171`
 
 ### gb_platform_set_input_record_file `void gb_platform_set_input_record_file(const char *path)`
-- Defined: `progs/pokemon/platform_minios.c:789`
+- Defined: `progs/pokemon/platform_minios.c:1177`
 
 ### gb_platform_set_persistence_dir `bool gb_platform_set_persistence_dir(const char *path)`
-- Defined: `progs/pokemon/platform_minios.c:794`
+- Defined: `progs/pokemon/platform_minios.c:1182`
 
 ### gb_platform_set_dump_frames `void gb_platform_set_dump_frames(const char *frames)`
-- Defined: `progs/pokemon/platform_minios.c:803`
+- Defined: `progs/pokemon/platform_minios.c:1191`
 
 ### gb_platform_set_dump_present_frames `void gb_platform_set_dump_present_frames(const char *frames)`
-- Defined: `progs/pokemon/platform_minios.c:825`
+- Defined: `progs/pokemon/platform_minios.c:1213`
 
 ### gb_platform_set_screenshot_prefix `void gb_platform_set_screenshot_prefix(const char *prefix)`
-- Defined: `progs/pokemon/platform_minios.c:846`
+- Defined: `progs/pokemon/platform_minios.c:1234`
 
 ### gb_platform_get_timing_info `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
-- Defined: `progs/pokemon/platform_minios.c:852`
+- Defined: `progs/pokemon/platform_minios.c:1240`
 
 ### gb_platform_get_joypad `uint8_t gb_platform_get_joypad(void)`
-- Defined: `progs/pokemon/platform_minios.c:859`
+- Defined: `progs/pokemon/platform_minios.c:1247`
 
 ### gb_platform_set_title `void gb_platform_set_title(const char *title)`
-- Defined: `progs/pokemon/platform_minios.c:863`
+- Defined: `progs/pokemon/platform_minios.c:1251`
 
 ### gb_platform_get_smooth_lcd_transitions `bool gb_platform_get_smooth_lcd_transitions(void)`
-- Defined: `progs/pokemon/platform_minios.c:869`
+- Defined: `progs/pokemon/platform_minios.c:1257`
 
 ### gb_platform_set_smooth_lcd_transitions `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:873`
+- Defined: `progs/pokemon/platform_minios.c:1261`
 
 ### gb_platform_set_launcher_return_enabled `void gb_platform_set_launcher_return_enabled(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:877`
+- Defined: `progs/pokemon/platform_minios.c:1265`
 
 ### gb_platform_get_exit_action `GBPlatformExitAction gb_platform_get_exit_action(void)`
-- Defined: `progs/pokemon/platform_minios.c:881`
+- Defined: `progs/pokemon/platform_minios.c:1269`
 
 ### gb_platform_submit_port_frame `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
-- Defined: `progs/pokemon/platform_minios.c:885`
+- Defined: `progs/pokemon/platform_minios.c:1273`
 
 ### gb_platform_test_audio_concurrency `bool gb_platform_test_audio_concurrency(uint32_t frames,
                                         ...`
-- Defined: `progs/pokemon/platform_minios.c:892`
+- Defined: `progs/pokemon/platform_minios.c:1280`
 - Doc: void gb_platform_set_launcher_return_enabled(bool enabled) { (void)enabled; } GBPlatformExitAction gb_platform_get_exit_
 
 ### gb_platform_test_inject_persistence_fault `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...`
-- Defined: `progs/pokemon/platform_minios.c:900`
+- Defined: `progs/pokemon/platform_minios.c:1288`
 
 ## progs/quake2generic/q2generic_minios.c
 

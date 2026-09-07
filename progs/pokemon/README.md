@@ -51,8 +51,15 @@ Without any project the pokemon build is skipped with a hint
 Arrows = D-pad, Z = A, X = B, Enter = Start, Backspace = Select.
 
 Savestates: F5 or Ctrl+S = save, F8 or Ctrl+L = load.
-SPACE (hold) = fast-forward at max speed: no vsync wait, audio muted,
-frameskip 9 (1 of every 10 frames uploaded).
+SPACE (hold) = momentary fast-forward; Ctrl+Space latches it on,
+Ctrl+Shift+Space releases it. Turbo means no vsync wait, muted audio
+and frameskip 29 (1 of every 30 frames uploaded).
+
+FILE menu (top bar, no game pixels hidden): click FILE or press Esc,
+then click or use Up/Down + Enter. Items: Save State, Load State,
+Enable/Disable frameskip (same sticky turbo as Ctrl+Space), Quit
+(flushes battery and exits to the shell). OSD confirmations appear
+bottom-left for 3 s. The menu never pauses the game.
 
 ## Game flags
 
