@@ -366,6 +366,7 @@
 | `tools/gdb_repro.py` | - | tools | 4 |
 | `tools/gen_icons.py` | - | tools | 3 |
 | `tools/gen_zip_fixtures.py` | - | tools | 2 |
+| `tools/minifs_saves.py` | - | tools | 20 |
 | `tools/minios_cli.py` | - | tools | 6 |
 | `tools/minios_gui.py` | - | tools | 9 |
 | `tools/mkpak1.py` | - | tools | 1 |

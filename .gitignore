@@ -11,6 +11,7 @@ ramdisk_data.c
 Makefile.bak
 .readmenator_cache/
 .mutate-state
+.minifs-saves-stage/
 
 # Python
 __pycache__/

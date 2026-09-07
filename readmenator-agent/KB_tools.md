@@ -68,6 +68,31 @@
   - `write_zip` (function, line 28) `def write_zip(path, entries)`
   - `main` (function, line 42) `def main()`
 
+## tools/minifs_saves.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `u16` (function, line 40) `def u16(d, o)`
+  - `u32` (function, line 44) `def u32(d, o)`
+  - `Image` (class, line 48) `class Image`
+  - `FS` (class, line 72) `class FS`
+  - `valid_name` (method, line 199) `def valid_name(nm)`
+  - `find_partition_base` (method, line 207) `def find_partition_base(fn)`
+  - `cmd_backup` (method, line 245) `def cmd_backup(img_path, stage)`
+  - `main` (method, line 304) `def main(argv)`
+  - `__init__` (method, line 51) `def __init__(self, fn, base)`
+  - `close` (method, line 59) `def close(self)`
+  - `blk` (method, line 62) `def blk(self, n)`
+  - `__init__` (method, line 73) `def __init__(self, img)`
+  - `inode` (method, line 82) `def inode(self, i)`
+  - `is_dir` (method, line 97) `def is_dir(self, st)`
+  - `read_file` (method, line 100) `def read_file(self, ino)`
+  - `listdir` (method, line 133) `def listdir(self, ino)`
+  - `read_file_dir` (method, line 148) `def read_file_dir(self, ino)`
+  - `read_file_raw` (method, line 156) `def read_file_raw(self, st)`
+  - `resolve` (method, line 180) `def resolve(self, path)`
+  - `walk` (method, line 267) `def walk(dir_ino, rel)`
+
 ## tools/minios_cli.py
 - Layer: utility
 - Language: py

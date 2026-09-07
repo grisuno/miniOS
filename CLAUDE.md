@@ -1172,6 +1172,22 @@ on the IDE disk):
   data landed in a block the on-disk inode never referenced and the file read
   back as zeros. The reload was removed; the block pointer now survives to the
   end-of-function inode write.
+  The ramdisk half of the parent check is ramdisk-only on purpose: the old
+  code asked `fs_dir_exists` (either filesystem) but always created on the
+  ramdisk, so the second and later files under a MiniFS-only directory were
+  captured by volatile ramdisk and vanished on reboot (the parent test also
+  appended a second `/`, which could never match a ramdisk prefix at all).
+  `saves/` is the persistent user-data directory by convention (Pokemon
+  battery + savestates); rebuilding the images preserves it (see below).
+- **Image rebuilds preserve `saves/`**: `make minifs.bin` and `make os.img`
+  extract the live `saves/` tree out of the previous `os.img`
+  (`tools/minifs_saves.py`, byte-exact, fail-closed on compressed or
+  double-indirect files, which the guest write path never produces) and pack
+  it back into the fresh image via `mkfs.minifs.py`, so a rebuild never wipes
+  runtime saves. The `os.img` rule refreshes `minifs.bin` the same way because
+  a kernel-only rebuild re-embeds it and would otherwise clobber the live
+  partition with the stale artifact. Only `make clean` (which deletes the
+  images) loses saves.
 - `ps` lists the registered programs (name, kind, entry address).
 - The prompt stays `miniOS> `: the cwd is reported by `pwd`, so the MCP
   marker wait keeps working unchanged.

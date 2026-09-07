@@ -11443,6 +11443,63 @@ Z_DumpHeap
 ### main `def main()`
 - Defined: `tools/gen_zip_fixtures.py:42`
 
+## tools/minifs_saves.py
+
+### u16 `def u16(d, o)`
+- Defined: `tools/minifs_saves.py:40`
+
+### u32 `def u32(d, o)`
+- Defined: `tools/minifs_saves.py:44`
+
+### valid_name `def valid_name(nm)`
+- Defined: `tools/minifs_saves.py:199`
+
+### find_partition_base `def find_partition_base(fn)`
+- Defined: `tools/minifs_saves.py:207`
+- Doc: Locate the MiniFS partition inside a host image file.
+
+### cmd_backup `def cmd_backup(img_path, stage)`
+- Defined: `tools/minifs_saves.py:245`
+
+### main `def main(argv)`
+- Defined: `tools/minifs_saves.py:304`
+
+### __init__ `def __init__(self, fn, base)`
+- Defined: `tools/minifs_saves.py:51`
+
+### close `def close(self)`
+- Defined: `tools/minifs_saves.py:59`
+
+### blk `def blk(self, n)`
+- Defined: `tools/minifs_saves.py:62`
+
+### __init__ `def __init__(self, img)`
+- Defined: `tools/minifs_saves.py:73`
+
+### inode `def inode(self, i)`
+- Defined: `tools/minifs_saves.py:82`
+
+### is_dir `def is_dir(self, st)`
+- Defined: `tools/minifs_saves.py:97`
+
+### read_file `def read_file(self, ino)`
+- Defined: `tools/minifs_saves.py:100`
+
+### listdir `def listdir(self, ino)`
+- Defined: `tools/minifs_saves.py:133`
+
+### read_file_dir `def read_file_dir(self, ino)`
+- Defined: `tools/minifs_saves.py:148`
+
+### read_file_raw `def read_file_raw(self, st)`
+- Defined: `tools/minifs_saves.py:156`
+
+### resolve `def resolve(self, path)`
+- Defined: `tools/minifs_saves.py:180`
+
+### walk `def walk(dir_ino, rel)`
+- Defined: `tools/minifs_saves.py:267`
+
 ## tools/minios_cli.py
 
 ### main `def main()`

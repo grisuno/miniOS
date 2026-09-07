@@ -84,9 +84,11 @@ first so both agree. The battery files auto-load on next boot; the
 `bin/` save would land on volatile ramdisk and vanish on reboot.
 Writes are direct (no atomic temp+rename yet: MiniOS has no
 `rename` syscall). If the in-game save says it saved but the file
-is missing after reboot, check `minifs_dump.py minifs.bin`. Note:
-rebuilding `os.img` regenerates `minifs.bin` from scratch and wipes
-saves — back up `os.img` (or the file via `cat`) before rebuilding.
+is missing after reboot, check `minifs_dump.py minifs.bin`.
+Rebuilding is safe: `make minifs.bin` / `make os.img` extract the
+live `saves/` out of the previous `os.img` (`tools/minifs_saves.py`)
+and pack it back into the fresh image, so saves survive rebuilds
+too. Only `make clean` (which deletes the images) loses them.
 
 ## Known limits
 

@@ -1230,12 +1230,34 @@ kernel.bin: kernel.elf
 # Quake 2 (pak0 alone is 184 MB) and the Pokemon Crystal port (88 MB ELF).
 MINIFS_BLOCKS ?= 131072
 
+# Persistent guest data: everything the user saves at runtime lives under
+# saves/ on MiniFS (Pokemon battery .sav/.rtc and .state savestates).
+# Regenerating the images must not wipe it: minifs_saves.py extracts the
+# live saves/ out of the previous os.img into a staging dir that mkfs
+# packs back in. Both rules below preserve saves the same way, because a
+# kernel-only rebuild re-embeds minifs.bin and would otherwise clobber the
+# live partition with the stale build artifact.
+SAVES_STAGE = .minifs-saves-stage
+
 # MiniFS content list lives in this Makefile too, so editing it must
 # invalidate the filesystem image exactly like ramdisk.bin.
-minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(PROGS_DIR)/baseq2/pak1.pak mkfs.minifs.py Makefile
-	python3 mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES)
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(PROGS_DIR)/baseq2/pak1.pak mkfs.minifs.py Makefile tools/minifs_saves.py
+	@STAGE="$(SAVES_STAGE)"; \
+	rm -rf "$$STAGE"; \
+	python3 tools/minifs_saves.py backup os.img "$$STAGE"; \
+	EXTRA=""; \
+	if [ -d "$$STAGE/saves" ]; then EXTRA="$$STAGE/saves"; fi; \
+	python3 mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES) $$EXTRA; \
+	rm -rf "$$STAGE"
 
 os.img: stage1.bin stage2.bin kernel.bin minifs.bin
+	@STAGE="$(SAVES_STAGE)"; \
+	rm -rf "$$STAGE"; \
+	if [ -f os.img ]; then python3 tools/minifs_saves.py backup os.img "$$STAGE"; fi; \
+	if [ -d "$$STAGE/saves" ]; then \
+	  python3 mkfs.minifs.py minifs.bin $(MINIFS_BLOCKS) $(MINIFS_FILES) "$$STAGE/saves"; \
+	fi; \
+	rm -rf "$$STAGE"
 	@ksec=$$(( ($$(stat -c%s kernel.bin) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )); \
 	 total=$$(( $(KERNEL_LBA) + ksec )); \
 	 img=$$(( (total + $(DISK_ALIGN_SECTORS) - 1) / $(DISK_ALIGN_SECTORS) * $(DISK_ALIGN_SECTORS) )); \
