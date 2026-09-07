@@ -12,7 +12,7 @@ These files have the most connections. Changes here have high blast radius.
 - `sched.h` (score: 27.80)
 - `kernel/sched.c` (score: 24.40)
 - `kernel/time.c` (score: 24.30)
-- `vga_fb.h` (score: 23.10)
+- `vga_fb.h` (score: 23.40)
 - `net.h` (score: 17.40)
 
 ## Hotspots (complexity + centrality)

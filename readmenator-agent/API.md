@@ -2240,231 +2240,252 @@ int console_getc(void)`
 ## kernel/vga_fb.c
 
 ### vga_fb_boot_config `void vga_fb_boot_config(void)`
-- Defined: `kernel/vga_fb.c:24`
+- Defined: `kernel/vga_fb.c:25`
 
 ### lg_get `static const char *lg_get(int i)`
-- Defined: `kernel/vga_fb.c:79`
+- Defined: `kernel/vga_fb.c:84`
 - Doc: as new content is added, and remain reachable in the ring.  There is deliberately no "scroll the screen up" operation. A
 
 ### lg_push `static void lg_push(const char *line, int len)`
-- Defined: `kernel/vga_fb.c:85`
+- Defined: `kernel/vga_fb.c:90`
 - Doc: Append a completed logical line to the ring. The line is stored whole (no * width-dependent wrap), so it can be re-wrapp
 
 ### line_nrows `static int line_nrows(int len)`
-- Defined: `kernel/vga_fb.c:97`
+- Defined: `kernel/vga_fb.c:102`
 - Doc: Append a completed logical line to the ring. The line is stored whole (no * width-dependent wrap), so it can be re-wrapp
 
 ### act_nrows `static int act_nrows(void)`
-- Defined: `kernel/vga_fb.c:103`
+- Defined: `kernel/vga_fb.c:108`
 
 ### total_rows `static int total_rows(void)`
-- Defined: `kernel/vga_fb.c:107`
+- Defined: `kernel/vga_fb.c:112`
 - Doc: else lg_head = (lg_head + 1) % SB_MAX_LINES; } /* Display rows a logical line of `len` characters occupies at term_cols.
 
 ### disp_clamp `static void disp_clamp(void)`
-- Defined: `kernel/vga_fb.c:115`
+- Defined: `kernel/vga_fb.c:120`
 - Doc: return n; } static int act_nrows(void) { return line_nrows(act_len); } /* Total display rows of the whole history (compl
 
 ### line_at `static const char *line_at(int abs, int *off)`
-- Defined: `kernel/vga_fb.c:133`
+- Defined: `kernel/vga_fb.c:138`
 - Doc: Locate the logical line contributing the display row `abs`, and set *off to the character offset where that display row 
 
 ### cursor_save_bg `static void cursor_save_bg(int mx, int my)`
-- Defined: `kernel/vga_fb.c:174`
+- Defined: `kernel/vga_fb.c:179`
 - Doc: The cursor is drawn with its arrow tip at (mx, my), so the sprite spans up-left of the pointer by CURSOR_TIP offsets. Th
 
 ### cursor_draw `static void cursor_draw(int mx, int my)`
-- Defined: `kernel/vga_fb.c:182`
+- Defined: `kernel/vga_fb.c:187`
 
 ### cursor_restore `static void cursor_restore(int mx, int my)`
-- Defined: `kernel/vga_fb.c:193`
+- Defined: `kernel/vga_fb.c:198`
 
 ### cursor_over `static int cursor_over(int x0, int y0, int w, int h)`
-- Defined: `kernel/vga_fb.c:207`
+- Defined: `kernel/vga_fb.c:212`
 - Doc: True when the cursor sprite overlaps the given screen rectangle. Used to decide whether a partial repaint (taskbar, term
 
 ### vga_fb_set_gfx_mode `void vga_fb_set_gfx_mode(int on)`
-- Defined: `kernel/vga_fb.c:231`
+- Defined: `kernel/vga_fb.c:236`
 
 ### vga_fb_gfx_cursor_erase `static void vga_fb_gfx_cursor_erase(void)`
-- Defined: `kernel/vga_fb.c:244`
+- Defined: `kernel/vga_fb.c:249`
 - Doc: Restore the last composite's pointer before the new frame covers it. Only meaningful in graphics mode; the desktop path 
 
 ### vga_fb_gfx_cursor_draw `static void vga_fb_gfx_cursor_draw(void)`
-- Defined: `kernel/vga_fb.c:252`
+- Defined: `kernel/vga_fb.c:257`
 - Doc: Clamp the mouse into the framebuffer (the idle loop that normally clamps * never runs in graphics mode) and draw the poi
 
+### wall_level `static int wall_level(int v)`
+- Defined: `kernel/vga_fb.c:438`
+- Doc: Wallpaper colour cube: 6 levels per channel (websafe) at DAC 16-231. The desktop UI owns 0-14 and the icons 240-255; the
+
 ### vga_fb_set_palette `static void vga_fb_set_palette(void)`
-- Defined: `kernel/vga_fb.c:405`
-- Doc: The text area starts one FONT_H below the window's top-left corner, which * is occupied by the title bar. static int ter
+- Defined: `kernel/vga_fb.c:446`
 
 ### vga_fb_pixel `void vga_fb_pixel(int x, int y, uint8_t color)`
-- Defined: `kernel/vga_fb.c:460`
-- Doc: { 15, 15, 50},   /* D  navy (desktop bg) { 60, 90,140},   /* E  title blue {  0,220,  0},   /* F  terminal green }; outb
+- Defined: `kernel/vga_fb.c:497`
+- Doc: { int r, g, b; outb(0x3C8, WALL_PAL_BASE); for (r = 0; r < 6; r++) for (g = 0; g < 6; g++) for (b = 0; b < 6; b++) { out
 
 ### vga_fb_rect `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
-- Defined: `kernel/vga_fb.c:464`
+- Defined: `kernel/vga_fb.c:501`
 
 ### vga_fb_char `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:471`
+- Defined: `kernel/vga_fb.c:508`
 
 ### vga_fb_str `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:486`
+- Defined: `kernel/vga_fb.c:523`
 
 ### text_px `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:498`
+- Defined: `kernel/vga_fb.c:535`
 - Doc: Blit a text string at an absolute pixel position. Used for window chrome (title bar, taskbar) which lives outside the co
 
 ### wm_draw_buttons `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:525`
+- Defined: `kernel/vga_fb.c:562`
 - Doc: --- Window controls ---- Three glyph buttons at the right end of a window's title bar: minimize (_), maximize (square) a
 
 ### wm_buttons_hit `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
-- Defined: `kernel/vga_fb.c:551`
+- Defined: `kernel/vga_fb.c:588`
 - Doc: } for (i = 1; i < WM_BTN_H - 1; i++) { vga_fb_pixel(bx + 1, by + i, fg); vga_fb_pixel(bx + WM_BTN_W - 2, by + i, fg); } 
 
 ### wm_close_pending `int wm_close_pending(void)`
-- Defined: `kernel/vga_fb.c:566`
+- Defined: `kernel/vga_fb.c:603`
 - Doc: Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the child's o
 
 ### wm_clear_close `void wm_clear_close(void)`
-- Defined: `kernel/vga_fb.c:567`
+- Defined: `kernel/vga_fb.c:604`
 
 ### wm_gfx_mode_active `int wm_gfx_mode_active(void)`
-- Defined: `kernel/vga_fb.c:568`
+- Defined: `kernel/vga_fb.c:605`
 
 ### wm_button_click `static int wm_button_click(int mx, int my)`
-- Defined: `kernel/vga_fb.c:573`
+- Defined: `kernel/vga_fb.c:610`
 - Doc: Hit-test and dispatch a click on a titled window's controls. The active window is the graphics window when one is compos
 
 ### vga_fb_blit_gfx_window `void vga_fb_blit_gfx_window(void)`
-- Defined: `kernel/vga_fb.c:616`
+- Defined: `kernel/vga_fb.c:653`
 
 ### vga_fb_clear `void vga_fb_clear(void)`
-- Defined: `kernel/vga_fb.c:641`
+- Defined: `kernel/vga_fb.c:678`
 
 ### vga_fb_blit_nk_window `void vga_fb_blit_nk_window(void)`
-- Defined: `kernel/vga_fb.c:657`
+- Defined: `kernel/vga_fb.c:694`
 - Doc: Composite the Nuklear UI back-buffer onto the desktop as a titled window, mirroring the DOOM window: the back-buffer is 
 
 ### term_recalc `static void term_recalc(void)`
-- Defined: `kernel/vga_fb.c:688`
+- Defined: `kernel/vga_fb.c:725`
 
 ### draw_title `static void draw_title(void)`
-- Defined: `kernel/vga_fb.c:715`
+- Defined: `kernel/vga_fb.c:752`
 - Doc: Preserve the current window position, clamping it into range so a * drag or Ctrl+arrow move is not undone by the next la
 
 ### taskbar_layout `static void taskbar_layout(void)`
-- Defined: `kernel/vga_fb.c:732`
+- Defined: `kernel/vga_fb.c:769`
 
 ### draw_speaker_icon `static void draw_speaker_icon(int x, int y, uint8_t color)`
-- Defined: `kernel/vga_fb.c:750`
+- Defined: `kernel/vga_fb.c:787`
 - Doc: x -= TASKBAR_PAD; x -= TASKBAR_VOL_CH * FONT_W;   tb_vol_x = x; x -= TASKBAR_PAD; x -= TASKBAR_BTN_W;             tb_plu
 
 ### taskbar_render `static void taskbar_render(void)`
-- Defined: `kernel/vga_fb.c:758`
+- Defined: `kernel/vga_fb.c:795`
 
 ### taskbar_tick `static void taskbar_tick(void)`
-- Defined: `kernel/vga_fb.c:785`
+- Defined: `kernel/vga_fb.c:822`
 - Doc: Redraw the clock only when the wall-clock second changes. Only the taskbar strip is repainted, so the cursor must be re-
 
 ### taskbar_handle_click `static void taskbar_handle_click(int mx, int my)`
-- Defined: `kernel/vga_fb.c:799`
+- Defined: `kernel/vga_fb.c:836`
 - Doc: Click handling for the speaker icon and -/+ buttons, plus the restore * button that reappears while the terminal window 
 
 ### draw_scrollbar `static void draw_scrollbar(void)`
-- Defined: `kernel/vga_fb.c:833`
+- Defined: `kernel/vga_fb.c:870`
 - Doc: return; } if (mx >= tb_minus_x && mx < tb_minus_x + TASKBAR_BTN_W) { v = pcspk_get_volume(); pcspk_set_volume(v > TASKBA
 
 ### render_row `static void render_row(int vrow, int abs)`
-- Defined: `kernel/vga_fb.c:869`
+- Defined: `kernel/vga_fb.c:906`
 - Doc: Render one display row at viewport row `vrow` for the absolute display row `abs`. Rows outside the history (above the ol
 
 ### term_render `static void term_render(void)`
-- Defined: `kernel/vga_fb.c:897`
+- Defined: `kernel/vga_fb.c:934`
 - Doc: Full repaint of the terminal window from the logical history, honouring the current scroll position. Used on desktop red
 
 ### term_render_active `static void term_render_active(void)`
-- Defined: `kernel/vga_fb.c:910`
+- Defined: `kernel/vga_fb.c:947`
 - Doc: Repaint only the bottom region that a live edit touches: from the active line's first visible display row to the bottom 
 
 ### line `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...`
-- Defined: `kernel/vga_fb.c:951`
+- Defined: `kernel/vga_fb.c:988`
 
 ### vga_fb_puts_term `void vga_fb_puts_term(const char *s)`
-- Defined: `kernel/vga_fb.c:993`
+- Defined: `kernel/vga_fb.c:1030`
 
 ### vga_fb_text_cursor `void vga_fb_text_cursor(int col)`
-- Defined: `kernel/vga_fb.c:1000`
+- Defined: `kernel/vga_fb.c:1037`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
 
 ### vga_fb_hide_text_cursor `void vga_fb_hide_text_cursor(void)`
-- Defined: `kernel/vga_fb.c:1008`
+- Defined: `kernel/vga_fb.c:1045`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
 
 ### vga_fb_draw_desktop `void vga_fb_draw_desktop(void)`
-- Defined: `kernel/vga_fb.c:1011`
+- Defined: `kernel/vga_fb.c:1048`
 
 ### vga_fb_toggle_fullscreen `void vga_fb_toggle_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:1037`
+- Defined: `kernel/vga_fb.c:1074`
 - Doc: Any redraw changed the pixels under the cursor; force a fresh save so a * stale snapshot never leaves pointer trails beh
 
 ### vga_fb_toggle_minimize `void vga_fb_toggle_minimize(void)`
-- Defined: `kernel/vga_fb.c:1047`
+- Defined: `kernel/vga_fb.c:1084`
 - Doc: Minimize/restore the terminal window. The content is not touched; the window is merely hidden and repainted on restore. 
 
 ### vga_fb_is_minimized `int vga_fb_is_minimized(void)`
-- Defined: `kernel/vga_fb.c:1053`
+- Defined: `kernel/vga_fb.c:1090`
 
 ### vga_fb_is_fullscreen `int vga_fb_is_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:1055`
+- Defined: `kernel/vga_fb.c:1092`
 
 ### vga_fb_move_terminal `void vga_fb_move_terminal(int dx, int dy)`
-- Defined: `kernel/vga_fb.c:1076`
+- Defined: `kernel/vga_fb.c:1113`
 
 ### term_max_cols `static int term_max_cols(void)`
-- Defined: `kernel/vga_fb.c:1105`
+- Defined: `kernel/vga_fb.c:1142`
 - Doc: --- Tiling window operations (Alt = WM modifier) ---- Snap places the window in a screen half or quadrant and sizes it t
 
 ### term_max_rows `static int term_max_rows(void)`
-- Defined: `kernel/vga_fb.c:1109`
+- Defined: `kernel/vga_fb.c:1146`
 
 ### term_finish_layout `static void term_finish_layout(void)`
-- Defined: `kernel/vga_fb.c:1113`
+- Defined: `kernel/vga_fb.c:1150`
 
 ### vga_fb_snap_window `void vga_fb_snap_window(int zone)`
-- Defined: `kernel/vga_fb.c:1119`
+- Defined: `kernel/vga_fb.c:1156`
 
 ### vga_fb_resize `void vga_fb_resize(int dcols, int drows)`
-- Defined: `kernel/vga_fb.c:1141`
+- Defined: `kernel/vga_fb.c:1178`
 
 ### vga_fb_reset_default `void vga_fb_reset_default(void)`
-- Defined: `kernel/vga_fb.c:1159`
+- Defined: `kernel/vga_fb.c:1196`
 - Doc: int ncol = term_sz_cols + dcols; int nrow = term_sz_rows + drows; if (ncol < 1) ncol = 1; if (nrow < 1) nrow = 1; if (nc
 
+### wallpaper_ensure `static void wallpaper_ensure(void)`
+- Defined: `kernel/vga_fb.c:1234`
+
+### wallpaper_draw `static void wallpaper_draw(void)`
+- Defined: `kernel/vga_fb.c:1269`
+
 ### pipe_field `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
-- Defined: `kernel/vga_fb.c:1199`
+- Defined: `kernel/vga_fb.c:1294`
 - Doc: --- Desktop shortcut icons ---- Shortcuts are defined in etc/shortcuts on the ramdisk, one per line: name|icon_path|comm
 
+### icon_nearest `static int icon_nearest(int r, int g, int b)`
+- Defined: `kernel/vga_fb.c:1312`
+- Doc: Nearest entry in the 16-colour icon palette (squared RGB distance, * integer-only: at most 3*255*255 per entry, far from
+
+### icon_embedded `static const uint8_t *icon_embedded(const char *name)`
+- Defined: `kernel/vga_fb.c:1328`
+- Doc: for (i = 0; i < ICON_PAL_SIZE; i++) { int dr = r - icon_pal[i][0]; int dg = g - icon_pal[i][1]; int db = b - icon_pal[i]
+
+### icon_decode `static const uint8_t *icon_decode(const char *path)`
+- Defined: `kernel/vga_fb.c:1346`
+- Doc: Decode a shortcut's PNG and map it to 32x32 icon-palette indices. Returns a heap buffer that lives until reboot, or 0 on
+
 ### desktop_shortcuts_load `void desktop_shortcuts_load(void)`
-- Defined: `kernel/vga_fb.c:1214`
+- Defined: `kernel/vga_fb.c:1379`
 
 ### desktop_shortcuts_draw `void desktop_shortcuts_draw(void)`
-- Defined: `kernel/vga_fb.c:1273`
+- Defined: `kernel/vga_fb.c:1431`
 
 ### desktop_shortcuts_hit_test `const char *desktop_shortcuts_hit_test(int mx, int my)`
-- Defined: `kernel/vga_fb.c:1295`
+- Defined: `kernel/vga_fb.c:1453`
 
 ### vga_fb_mouse_tick `void vga_fb_mouse_tick(void)`
-- Defined: `kernel/vga_fb.c:1308`
+- Defined: `kernel/vga_fb.c:1466`
 - Doc: } const char *desktop_shortcuts_hit_test(int mx, int my) { for (int i = 0; i < shortcut_count; i++) { struct desktop_sho
 
 ### vga_fb_mouse_init `void vga_fb_mouse_init(void)`
-- Defined: `kernel/vga_fb.c:1431`
+- Defined: `kernel/vga_fb.c:1589`
 
 ### vga_fb_init `void vga_fb_init(void)`
-- Defined: `kernel/vga_fb.c:1446`
+- Defined: `kernel/vga_fb.c:1604`
 
 ## mcp/mcp_dbg_driver.py
 
@@ -11451,6 +11472,14 @@ Z_DumpHeap
 ### quit_doom `def quit_doom()`
 - Defined: `tools/gdb_repro.py:70`
 - Depends on: `kernel/time.c`
+
+## tools/gen_desktop_pngs.py
+
+### write_atomic `def write_atomic(img, path)`
+- Defined: `tools/gen_desktop_pngs.py:51`
+
+### main `def main()`
+- Defined: `tools/gen_desktop_pngs.py:57`
 
 ## tools/gen_icons.py
 

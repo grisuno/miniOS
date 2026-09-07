@@ -248,12 +248,16 @@ def make_chunk(chunk_type, data):
 def main():
     if len(sys.argv) < 2:
         outdir = 'progs/icons'
+        wanted = None
     else:
         outdir = sys.argv[1]
+        wanted = sys.argv[2:] or None
     os.makedirs(outdir, exist_ok=True)
 
     ICON_SIZE = 32
     for name, rows in ICONS.items():
+        if wanted is not None and name not in wanted:
+            continue
         pixels = []
         for row in rows:
             row = row.ljust(ICON_SIZE, '0')

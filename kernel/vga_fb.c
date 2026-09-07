@@ -11,6 +11,7 @@
 #include "bootdefs.h"
 #include "desktop_shortcuts.h"
 #include "desktop_icons.h"
+#include "stb_api.h"
 
 int vga_fb_active;
 unsigned long gfx_frames_composited;
@@ -45,6 +46,10 @@ void vga_fb_boot_config(void) {
 
 /* ---- Mouse state (fed by sched.c IRQ12 handler) ---- */
 mouse_state_t mouse_state;
+
+/* Forward: the wallpaper cache lives with the shortcut-icon code below, but
+ * the desktop painter above needs it. */
+static void wallpaper_draw(void);
 
 /* ---- Unified terminal buffer (logical lines, re-flowed at display width) ----
  *
@@ -402,6 +407,43 @@ static volatile int wm_close_request;
 static int term_content_y(void) { return term_px_y + FONT_H; }
 
 /* ---- Palette ---- */
+/* Icon palette (16 colours at VGA DAC indices 240-255). File scope so the
+ * DAC programming below and the runtime PNG-to-palette mapper share one
+ * table instead of drifting apart. */
+static const uint8_t icon_pal[][3] = {
+    {  0,  0,  0},   /* 0  transparent/black   */
+    { 70,130,180},   /* 1  steel blue           */
+    {220, 80, 60},   /* 2  tomato               */
+    { 60,179,113},   /* 3  sea green            */
+    {255,255,255},   /* 4  white                */
+    { 40, 40, 50},   /* 5  dark bg              */
+    {100,100,110},   /* 6  gray                 */
+    {180,180,190},   /* 7  light gray           */
+    {255,215,  0},   /* 8  gold                 */
+    {  0,160,  0},   /* 9  green                */
+    {147,112,219},   /* A  medium purple        */
+    {255,165,  0},   /* B  orange               */
+    {100,149,237},   /* C  cornflower           */
+    { 15, 15, 50},   /* D  navy (desktop bg)    */
+    { 60, 90,140},   /* E  title blue           */
+    {  0,220,  0},   /* F  terminal green       */
+};
+
+/* Wallpaper colour cube: 6 levels per channel (websafe) at DAC 16-231.
+ * The desktop UI owns 0-14 and the icons 240-255; the 216 cube slots give
+ * a photographic wallpaper without touching either range. */
+static const uint8_t wall_levels[6] = { 0, 51, 102, 153, 204, 255 };
+
+/* Nearest cube level for one 0-255 channel (boundaries at 25/76/127/178/229). */
+static int wall_level(int v) {
+    if (v <= 25) return 0;
+    if (v <= 76) return 1;
+    if (v <= 127) return 2;
+    if (v <= 178) return 3;
+    if (v <= 229) return 4;
+    return 5;
+}
+
 static void vga_fb_set_palette(void) {
     static const uint8_t pal[][3] = {
         {  0,  0,  0},  /*  0 black        */
@@ -429,30 +471,25 @@ static void vga_fb_set_palette(void) {
     }
     /* Icon palette: 16 colours at VGA DAC indices 240-255. */
     {
-        static const uint8_t icon_pal[][3] = {
-            {  0,  0,  0},   /* 0  transparent/black   */
-            { 70,130,180},   /* 1  steel blue           */
-            {220, 80, 60},   /* 2  tomato               */
-            { 60,179,113},   /* 3  sea green            */
-            {255,255,255},   /* 4  white                */
-            { 40, 40, 50},   /* 5  dark bg              */
-            {100,100,110},   /* 6  gray                 */
-            {180,180,190},   /* 7  light gray           */
-            {255,215,  0},   /* 8  gold                 */
-            {  0,160,  0},   /* 9  green                */
-            {147,112,219},   /* A  medium purple        */
-            {255,165,  0},   /* B  orange               */
-            {100,149,237},   /* C  cornflower           */
-            { 15, 15, 50},   /* D  navy (desktop bg)    */
-            { 60, 90,140},   /* E  title blue           */
-            {  0,220,  0},   /* F  terminal green       */
-        };
+        int i;
         outb(0x3C8, ICON_PAL_BASE);
         for (i = 0; i < ICON_PAL_SIZE; i++) {
             outb(0x3C9, icon_pal[i][0] >> 2);
             outb(0x3C9, icon_pal[i][1] >> 2);
             outb(0x3C9, icon_pal[i][2] >> 2);
         }
+    }
+    /* Wallpaper cube: 216 websafe colours at DAC 16-231. */
+    {
+        int r, g, b;
+        outb(0x3C8, WALL_PAL_BASE);
+        for (r = 0; r < 6; r++)
+            for (g = 0; g < 6; g++)
+                for (b = 0; b < 6; b++) {
+                    outb(0x3C9, wall_levels[r] >> 2);
+                    outb(0x3C9, wall_levels[g] >> 2);
+                    outb(0x3C9, wall_levels[b] >> 2);
+                }
     }
 }
 
@@ -1013,7 +1050,7 @@ void vga_fb_draw_desktop(void) {
     vga_fb_set_palette();
     vga_fb_clear();
     term_recalc();
-    vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
+    wallpaper_draw();
     desktop_shortcuts_load();
     desktop_shortcuts_draw();
     taskbar_render();
@@ -1184,6 +1221,64 @@ static void vga_fb_drag_terminal(int mx, int my, int grab_cx) {
     vga_fb_draw_desktop();
 }
 
+/* ---- Wallpaper ----
+ * The background is a photographic PNG (wall/wallpaper.png on the ramdisk),
+ * not a solid fill. It is decoded ONCE per boot via stbi_load_file and cached
+ * as cube-mapped indices in the kernel heap: draw_desktop runs on every window
+ * move/resize/drag tick, and re-decoding a ~650 KB PNG there would stall the
+ * pointer. A failed or missing image falls back to the solid COL_BG fill, and
+ * a failed cache allocation does the same, never a partial background. */
+static uint8_t *wall_cache;
+static int wall_cw, wall_ch;
+static int wall_tried;
+
+static void wallpaper_ensure(void) {
+    int w, h, ch, x, y;
+    unsigned char *img;
+    uint8_t *cache;
+    if (wall_tried || fb_width <= 0 || fb_height <= 0)
+        return;
+    wall_tried = 1;
+    img = stbi_load_file(WALLPAPER_PATH, &w, &h, &ch, 4);
+    if (!img)
+        return;
+    if (w <= 0 || h <= 0) {
+        stbi_image_free(img);
+        return;
+    }
+    cache = kmalloc((unsigned long)fb_width * (unsigned long)fb_height);
+    if (!cache) {
+        stbi_image_free(img);
+        return;
+    }
+    for (y = 0; y < fb_height; y++) {
+        int sy = y * h / fb_height;
+        for (x = 0; x < fb_width; x++) {
+            int sx = x * w / fb_width;
+            unsigned char *px = img + ((sy * w) + sx) * 4;
+            int idx = (wall_level(px[0]) * 6 + wall_level(px[1])) * 6
+                      + wall_level(px[2]);
+            cache[y * fb_width + x] = (uint8_t)(WALL_PAL_BASE + idx);
+        }
+    }
+    stbi_image_free(img);
+    wall_cache = cache;
+    wall_cw = fb_width;
+    wall_ch = fb_height;
+}
+
+static void wallpaper_draw(void) {
+    int x, y;
+    wallpaper_ensure();
+    if (!wall_cache || wall_cw != fb_width || wall_ch != fb_height) {
+        vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
+        return;
+    }
+    for (y = 0; y < fb_height; y++)
+        for (x = 0; x < fb_width; x++)
+            FB_ADDR[y * fb_pitch + x] = wall_cache[y * fb_width + x];
+}
+
 /* ---- Desktop shortcut icons ----
  * Shortcuts are defined in etc/shortcuts on the ramdisk, one per line:
  *   name|icon_path|command
@@ -1210,6 +1305,76 @@ static const char *pipe_field(const char *line, int idx, char *buf, int buflen) 
     for (int i = 0; i < len; i++) buf[i] = start[i];
     buf[len] = '\0';
     return buf;
+}
+
+/* Nearest entry in the 16-colour icon palette (squared RGB distance,
+ * integer-only: at most 3*255*255 per entry, far from overflow). */
+static int icon_nearest(int r, int g, int b) {
+    int best = 0, best_d = 0x7fffffff, i;
+    for (i = 0; i < ICON_PAL_SIZE; i++) {
+        int dr = r - icon_pal[i][0];
+        int dg = g - icon_pal[i][1];
+        int db = b - icon_pal[i][2];
+        int d = dr * dr + dg * dg + db * db;
+        if (d < best_d) {
+            best_d = d;
+            best = i;
+        }
+    }
+    return best;
+}
+
+/* Embedded fallback when the shortcut's PNG is missing or undecodable. */
+static const uint8_t *icon_embedded(const char *name) {
+    if (kstrcmp(name, "Terminal") == 0)
+        return icon_terminal;
+    if (kstrcmp(name, "DOOM") == 0)
+        return icon_doom;
+    if (kstrcmp(name, "Nuklear") == 0)
+        return icon_nuklear;
+    if (kstrcmp(name, "Piano") == 0)
+        return icon_piano;
+    if (kstrcmp(name, "Quake 2") == 0)
+        return icon_quake2;
+    return 0;
+}
+
+/* Decode a shortcut's PNG and map it to 32x32 icon-palette indices. Returns
+ * a heap buffer that lives until reboot, or 0 on any failure (missing file,
+ * undecodable image, exhausted heap); the caller then uses icon_embedded.
+ * Alpha below 128 counts as transparent, matching the generator's index 0. */
+static const uint8_t *icon_decode(const char *path) {
+    int w, h, ch, x, y;
+    unsigned char *img;
+    uint8_t *out;
+    if (!path || !path[0])
+        return 0;
+    img = stbi_load_file(path, &w, &h, &ch, 4);
+    if (!img)
+        return 0;
+    if (w <= 0 || h <= 0) {
+        stbi_image_free(img);
+        return 0;
+    }
+    out = kmalloc(ICON_W * ICON_H);
+    if (!out) {
+        stbi_image_free(img);
+        return 0;
+    }
+    for (y = 0; y < ICON_H; y++) {
+        int sy = y * h / ICON_H;
+        for (x = 0; x < ICON_W; x++) {
+            int sx = x * w / ICON_W;
+            unsigned char *px = img + ((sy * w) + sx) * 4;
+            if (px[3] < 128)
+                out[y * ICON_W + x] = 0;
+            else
+                out[y * ICON_W + x] =
+                    (uint8_t)icon_nearest(px[0], px[1], px[2]);
+        }
+    }
+    stbi_image_free(img);
+    return out;
 }
 
 void desktop_shortcuts_load(void) {
@@ -1244,18 +1409,11 @@ void desktop_shortcuts_load(void) {
         sc->w = ICON_W;
         sc->h = ICON_H;
 
-        /* Look up embedded icon by name. */
-        sc->pixels = 0;
-        if (kstrcmp(name, "Terminal") == 0)
-            sc->pixels = icon_terminal;
-        else if (kstrcmp(name, "DOOM") == 0)
-            sc->pixels = icon_doom;
-        else if (kstrcmp(name, "Nuklear") == 0)
-            sc->pixels = icon_nuklear;
-        else if (kstrcmp(name, "Piano") == 0)
-            sc->pixels = icon_piano;
-        else if (kstrcmp(name, "Quake 2") == 0)
-            sc->pixels = icon_quake2;
+        /* PNG first (custom art from tools/gen_desktop_pngs.py), embedded
+         * pixel data as fallback when the file is missing or undecodable. */
+        sc->pixels = icon_decode(path);
+        if (!sc->pixels)
+            sc->pixels = icon_embedded(name);
 
         shortcut_count++;
     }

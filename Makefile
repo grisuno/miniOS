@@ -140,9 +140,6 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(PROGS_DIR)/etc/host.zip \
             $(PROGS_DIR)/etc/hostile.zip \
             $(PROGS_DIR)/icons/terminal.png \
-            $(PROGS_DIR)/icons/doom.png \
-            $(PROGS_DIR)/icons/nuklear.png \
-            $(PROGS_DIR)/icons/piano.png \
             $(PROGS_DIR)/icons/pokemon.png \
             $(DOC_DIR)/test.png
 
@@ -871,8 +868,9 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(SRC_DIR)/test_all.sh \
                $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
                $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
-               $(DOC_DIR)/hostile.html \
-               $(PROGS_DIR)/README.txt
+                $(DOC_DIR)/hostile.html \
+                $(PROGS_DIR)/README.txt \
+                $(PROGS_DIR)/icons $(PROGS_DIR)/wall
 
 # Generation 2: gen1 minigcc compiles its own source; 'ld' links it.
 # Generation 3: the ld-linked compiler compiles itself again; the gen3
@@ -1147,11 +1145,25 @@ zip.o: fs/zip.c zip.h kernel.h third_party/miniz/miniz.h
 dlmalloc_impl.o: third_party/dlmalloc/dlmalloc_impl.c third_party/dlmalloc/malloc.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-# Desktop icon PNGs: generated from pixel data by tools/gen_icons.py.
-$(PROGS_DIR)/icons/terminal.png $(PROGS_DIR)/icons/doom.png \
-$(PROGS_DIR)/icons/nuklear.png $(PROGS_DIR)/icons/piano.png \
-$(PROGS_DIR)/icons/pokemon.png: tools/gen_icons.py
-	python3 tools/gen_icons.py $(PROGS_DIR)/icons/
+# Desktop icon PNGs: terminal/pokemon are pixel art generated from
+# tools/gen_icons.py; doom/quake2/nuklear/piano are custom art converted
+# from user-supplied sources (cgoblin.png wallpaper + icon PNGs in
+# DESKTOP_SRC_DIR) by tools/gen_desktop_pngs.py. The two generators own
+# disjoint target sets so neither ever clobbers the other's output.
+$(PROGS_DIR)/icons/terminal.png $(PROGS_DIR)/icons/pokemon.png: tools/gen_icons.py
+	python3 tools/gen_icons.py $(PROGS_DIR)/icons/ terminal pokemon
+
+# Custom desktop art: location of the user sources is overridable and
+# defaults to the repo root; nothing assumes an absolute path.
+DESKTOP_SRC_DIR = .
+DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
+               $(DESKTOP_SRC_DIR)/quake2.png $(DESKTOP_SRC_DIR)/piano.png \
+               $(DESKTOP_SRC_DIR)/nuklear.png
+DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/quake2.png \
+              $(PROGS_DIR)/icons/piano.png $(PROGS_DIR)/icons/nuklear.png \
+              $(PROGS_DIR)/wall/wallpaper.png
+$(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
+	python3 tools/gen_desktop_pngs.py --src-dir $(DESKTOP_SRC_DIR) --repo .
 
 # Zip test fixtures: host-produced archives for the unzip builtin. host.zip
 # proves interop with a reference writer; hostile.zip carries escaping entry
@@ -1241,7 +1253,7 @@ SAVES_STAGE = .minifs-saves-stage
 
 # MiniFS content list lives in this Makefile too, so editing it must
 # invalidate the filesystem image exactly like ramdisk.bin.
-minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(PROGS_DIR)/baseq2/pak1.pak mkfs.minifs.py Makefile tools/minifs_saves.py
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(PROGS_DIR)/baseq2/pak1.pak mkfs.minifs.py Makefile tools/minifs_saves.py
 	@STAGE="$(SAVES_STAGE)"; \
 	rm -rf "$$STAGE"; \
 	python3 tools/minifs_saves.py backup os.img "$$STAGE"; \

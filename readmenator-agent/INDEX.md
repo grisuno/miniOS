@@ -60,7 +60,7 @@
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 19 |
 | `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 87 |
 | `kernel/time.c` | include "kernel.h"  ============================================================ | kernel | 3 |
-| `kernel/vga_fb.c` | - | kernel | 71 |
+| `kernel/vga_fb.c` | - | kernel | 77 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 1 |
 | `mcp/__init__.py` | - | mcp | 0 |
 | `mcp/mcp_dbg_driver.py` | - | mcp | 6 |
@@ -364,6 +364,7 @@
 | `tools/check_surprising.py` | - | tools | 5 |
 | `tools/extract_shell.py` | - | tools | 0 |
 | `tools/gdb_repro.py` | - | tools | 4 |
+| `tools/gen_desktop_pngs.py` | - | tools | 2 |
 | `tools/gen_icons.py` | - | tools | 3 |
 | `tools/gen_zip_fixtures.py` | - | tools | 2 |
 | `tools/minifs_saves.py` | - | tools | 20 |
@@ -375,7 +376,7 @@
 | `tools/repro_gui.py` | - | tools | 10 |
 | `tools/test_codecs.sh` | test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  T | tools | 0 |
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
-| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Fram | root | 51 |
+| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Fram | root | 54 |
 | `vma.c` | include "vma.h" | root | 11 |
 | `vma.h` | ifndef VMA_H define VMA_H | root | 3 |
 | `zip.h` | ifndef ZIP_H define ZIP_H  zip.h — MiniOS integration API for the miniz zip libr | root | 1 |

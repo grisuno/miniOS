@@ -69,6 +69,15 @@ extern int nk_win_x, nk_win_y;
 #define COL_SCROLLBAR   13
 #define COL_SCROLL_THUMB 14
 
+/* Wallpaper: a photographic background on the 8-bit desktop. The image
+ * file below (800x600 RGB PNG on the ramdisk, produced by
+ * tools/gen_desktop_pngs.py) is decoded once per boot via stbi_load_file,
+ * stretched to the framebuffer and mapped to a fixed 6x6x6 websafe cube
+ * at DAC 16-231, clear of the desktop (0-14) and icon (240-255) ranges. */
+#define WALLPAPER_PATH "wall/wallpaper.png"
+#define WALL_PAL_BASE  16
+#define WALL_PAL_SIZE  216
+
 #define FONT_W  8
 #define FONT_H  8
 

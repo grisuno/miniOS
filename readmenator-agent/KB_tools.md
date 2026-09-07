@@ -53,6 +53,13 @@
   - `quit_doom` (function, line 70) `def quit_doom()`
 - Depends on: `kernel/time.c`
 
+## tools/gen_desktop_pngs.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `write_atomic` (function, line 51) `def write_atomic(img, path)`
+  - `main` (function, line 57) `def main()`
+
 ## tools/gen_icons.py
 - Layer: utility
 - Language: py

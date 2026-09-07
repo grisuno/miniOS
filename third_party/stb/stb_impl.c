@@ -32,6 +32,13 @@
 #define STBI_NO_PNM
 #define STBI_NO_LINEAR
 #define STBI_NO_STDIO
+/* The kernel has no thread-local storage (no TLS segments, %fs is 0), so a
+ * __thread global faults on first access. Disable stb's thread-locals: the
+ * failure-reason and flip flag become plain globals, safe because the
+ * kernel never decodes on two CPUs at once (APs idle, BSP decodes at boot;
+ * ring-0 callers run to completion). This also fixes the historical hang of
+ * the ring-0 stb selftest, which faulted on the same access. */
+#define STBI_NO_THREAD_LOCALS
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
