@@ -1196,9 +1196,10 @@ $(PROGS_DIR)/icons/terminal.png $(PROGS_DIR)/icons/pokemon.png: tools/gen_icons.
 DESKTOP_SRC_DIR = .
 DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
                $(DESKTOP_SRC_DIR)/quake2.png $(DESKTOP_SRC_DIR)/piano.png \
-               $(DESKTOP_SRC_DIR)/nuklear.png
+               $(DESKTOP_SRC_DIR)/nuklear.png $(DESKTOP_SRC_DIR)/vedit.png
 DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/quake2.png \
               $(PROGS_DIR)/icons/piano.png $(PROGS_DIR)/icons/nuklear.png \
+              $(PROGS_DIR)/icons/vedit.png \
               $(PROGS_DIR)/wall/wallpaper.png
 $(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
 	python3 tools/gen_desktop_pngs.py --src-dir $(DESKTOP_SRC_DIR) --repo .
