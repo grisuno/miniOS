@@ -79,7 +79,7 @@
   - `NET_TCP_ESTABLISHED` (macro, line 358) `#define NET_TCP_ESTABLISHED`
   - `NET_TCP_FIN_SENT` (macro, line 359) `#define NET_TCP_FIN_SENT`
   - `NET_TCP_DEAD` (macro, line 360) `#define NET_TCP_DEAD`
-- Depends on: `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
 
 ## net/rtl8139.c
 - Layer: utility
@@ -123,7 +123,7 @@
   - `RTL_REG_CBR` (macro, line 66) `#define RTL_REG_CBR`
   - `RTL_REG_9346CR` (macro, line 67) `#define RTL_REG_9346CR`
   - `RTL_REG_CONFIG1` (macro, line 68) `#define RTL_REG_CONFIG1`
-- Depends on: `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
 
 ## net/rtl8139.h
 - Layer: utility
@@ -138,6 +138,7 @@
   - `rtl_iobase` (function, line 35) `unsigned short rtl_iobase(void);`
   - `rtl_counters` (function, line 38) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
   - `RTL8139_H` (macro, line 2) `#define RTL8139_H`
+- Depends on: `net.h`
 - Imported by: `net/net.c`, `net/rtl8139.c`
 
 ## net/tls.c
@@ -194,7 +195,7 @@
   - `sha256_init` (function, line 494) `sha256_init(&s->hs_hash);`
   - `volatile` (function, line 791) `__asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));`
   - `PORT_IO_DEFINED` (macro, line 809) `#define PORT_IO_DEFINED`
-- Depends on: `tls_port.h`, `tls_roots.h`
+- Depends on: `tls.h`, `tls_port.h`, `tls_roots.h`
 
 ## net/tls_crypto.c
 - Layer: utility
@@ -319,7 +320,7 @@
   - `TLS_MEMSET` (function, line 111) `TLS_MEMSET(pad, 0, sizeof(pad));`
   - `word` (function, line 326) `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */ r.hi = (v.hi >> 1) ^ (0xE100000000000000ULL & mask);`
   - `TLS_BN_WORDS` (macro, line 534) `#define TLS_BN_WORDS`
-- Depends on: `tls_port.h`
+- Depends on: `tls.h`, `tls_port.h`
 
 ## net/tls_x509.c
 - Layer: utility
@@ -368,4 +369,4 @@
   - `ecdsa_verify` (function, line 515) `return ecdsa_verify(1, issuer_key->qx, issuer_key->qy, d384, 48, cert->sig, cert->sig_len);`
   - `TLS_FREE` (function, line 577) `done: TLS_FREE(certs);`
   - `TLS_SAN_MAX` (macro, line 170) `#define TLS_SAN_MAX`
-- Depends on: `tls_port.h`
+- Depends on: `tls.h`, `tls_port.h`

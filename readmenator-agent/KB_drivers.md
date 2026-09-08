@@ -20,6 +20,7 @@
   - `ide_read_sectors` (function, line 75) `return ide_read_sectors(lba, count * SECTORS_PER_BLOCK, buf);`
   - `BC_WAYS` (macro, line 22) `#define BC_WAYS`
   - `BC_MASK` (macro, line 23) `#define BC_MASK`
+- Depends on: `block.h`, `ide.h`, `kernel.h`
 
 ## drivers/ide.c
 - Layer: infrastructure
@@ -44,6 +45,7 @@
   - `outb` (function, line 46) `outb(IDE_PRIMARY_BASE + IDE_REG_DRIVE, IDE_DRIVE_LBA | (drive ? IDE_DRIVE_SLAVE : IDE_DRIVE_MASTER));`
   - `kprintf` (function, line 94) `kprintf("IDE: disk detected, %u sectors (%u MB)\n", ide_disk_sectors, ide_disk_sectors / 2048);`
   - `outw` (function, line 156) `outw(IDE_PRIMARY_BASE + IDE_REG_DATA, ((const unsigned short *)p)[j]);`
+- Depends on: `ide.h`, `kernel.h`
 
 ## drivers/kbd.c
 - Layer: infrastructure
@@ -69,7 +71,7 @@
   - `KBD_QUEUE_LEN` (macro, line 38) `#define KBD_QUEUE_LEN`
   - `KBD_SCAN_DEL` (macro, line 40) `#define KBD_SCAN_DEL`
   - `KBD_RAW_LEN` (macro, line 44) `#define KBD_RAW_LEN`
-- Depends on: `drivers/kbd.h`
+- Depends on: `drivers/kbd.h`, `kernel.h`, `vga_fb.h`
 
 ## drivers/kbd.h
 - Layer: infrastructure
@@ -91,7 +93,7 @@
   - `kbd_e0_set` (function, line 20) `void kbd_e0_set(int v);`
   - `kbd_flush_all` (function, line 21) `void kbd_flush_all(void);`
   - `KBD_H` (macro, line 2) `#define KBD_H`
-- Imported by: `drivers/kbd.c`, `kernel.c`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/exec.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 ## drivers/pcspk.c
 - Layer: infrastructure
@@ -113,6 +115,7 @@
   - `SPEAKER_DATA_BIT` (macro, line 20) `#define SPEAKER_DATA_BIT`
   - `SPEAKER_GATE_BIT` (macro, line 22) `#define SPEAKER_GATE_BIT`
   - `SPEAKER_ENABLE_BITS` (macro, line 23) `#define SPEAKER_ENABLE_BITS`
+- Depends on: `kernel.h`, `pcspk.h`
 
 ## drivers/rtc.c
 - Layer: infrastructure
@@ -140,6 +143,7 @@
   - `RTC_SEC_MIN` (macro, line 25) `#define RTC_SEC_MIN`
   - `RTC_SEC_MAX` (macro, line 26) `#define RTC_SEC_MAX`
   - `RTC_UPDATE_WAIT` (macro, line 30) `#define RTC_UPDATE_WAIT`
+- Depends on: `kernel.h`, `rtc.h`
 
 ## drivers/sb16.c
 - Layer: infrastructure
@@ -208,3 +212,4 @@
   - `SB16_MODE_TONE` (macro, line 86) `#define SB16_MODE_TONE`
   - `SB16_MODE_PCM` (macro, line 88) `#define SB16_MODE_PCM`
   - `SB16_SQ_CYCLE` (macro, line 89) `#define SB16_SQ_CYCLE`
+- Depends on: `kernel.h`, `sb16.h`, `sync.h`

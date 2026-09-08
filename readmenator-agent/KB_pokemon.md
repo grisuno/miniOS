@@ -133,4 +133,4 @@
   - `MENU_OSD_BG` (macro, line 524) `#define MENU_OSD_BG`
   - `MINIOS_AUTOSAVE_MS` (macro, line 940) `#define MINIOS_AUTOSAVE_MS`
   - `MINIOS_FF_FRAMESKIP` (macro, line 952) `#define MINIOS_FF_FRAMESKIP`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Depends on: `audio.h`, `kernel/string.c`, `progs/minios_abi.h`

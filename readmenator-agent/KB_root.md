@@ -34,6 +34,7 @@
   - `AUDIO_CHANNELS_MONO` (macro, line 16) `#define AUDIO_CHANNELS_MONO`
   - `AUDIO_FORMAT_U8` (macro, line 17) `#define AUDIO_FORMAT_U8`
   - `AUDIO_FORMAT_S16` (macro, line 18) `#define AUDIO_FORMAT_S16`
+- Imported by: `progs/pokemon/platform_minios.c`
 
 ## batch.h
 - Layer: utility
@@ -53,6 +54,7 @@
   - `BATCH_ERR_COUNT` (macro, line 49) `#define BATCH_ERR_COUNT`
   - `BATCH_ERR_PTR` (macro, line 50) `#define BATCH_ERR_PTR`
   - `BATCH_ERR_OPCODE` (macro, line 51) `#define BATCH_ERR_OPCODE`
+- Imported by: `kernel/batch.c`, `kernel/syscalls.c`, `tests/test_batch.c`
 
 ## block.h
 - Layer: utility
@@ -71,7 +73,7 @@
   - `BLOCK_SIZE` (macro, line 6) `#define BLOCK_SIZE`
   - `BLOCK_SHIFT` (macro, line 8) `#define BLOCK_SHIFT`
   - `SECTORS_PER_BLOCK` (macro, line 9) `#define SECTORS_PER_BLOCK`
-- Imported by: `kernel.c`
+- Imported by: `drivers/block.c`, `fs/minifs.c`, `kernel.c`, `kernel/syscalls.c`
 
 ## bootloader.c
 - Layer: utility
@@ -127,6 +129,7 @@
   - `shell_cmd_edit` (function, line 14) `void shell_cmd_edit(int argc, char **argv);`
   - `EDITOR_H` (macro, line 2) `#define EDITOR_H`
 - Depends on: `kernel.h`
+- Imported by: `kernel/editor.c`, `kernel/shell.c`
 
 ## futex.h
 - Layer: utility
@@ -146,6 +149,7 @@
   - `FUTEX_NOPROC` (macro, line 57) `#define FUTEX_NOPROC`
   - `FUTEX_WAKE_ALL` (macro, line 58) `#define FUTEX_WAKE_ALL`
 - Depends on: `sched.h`, `spinlock.h`, `sync.h`
+- Imported by: `kernel/futex.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_futex.c`
 
 ## gen_minifs.py
 - Layer: utility
@@ -190,7 +194,7 @@
   - `IDE_DRIVE_SLAVE` (macro, line 40) `#define IDE_DRIVE_SLAVE`
   - `IDE_TIMEOUT` (macro, line 43) `#define IDE_TIMEOUT`
   - `IDE_SECTOR_SIZE` (macro, line 46) `#define IDE_SECTOR_SIZE`
-- Imported by: `kernel.c`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `fs/minifs.c`, `kernel.c`, `kernel/mm/swap.c`, `kernel/syscalls.c`
 
 ## install.sh
 - Layer: utility
@@ -533,7 +537,7 @@ void kmain(void)`
   - `ET_DYN` (macro, line 495) `#define ET_DYN`
   - `KFD_MAX` (macro, line 508) `#define KFD_MAX`
 - Depends on: `progs/minios_abi.h`, `vma.h`
-- Imported by: `editor.h`, `kernel.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ## lz4_kernel.h
 - Layer: utility
@@ -544,7 +548,7 @@ void kmain(void)`
   - `LZ4_compressBound` (function, line 5) `int LZ4_compressBound(int inputSize);`
   - `LZ4_decompress_safe` (function, line 6) `int LZ4_decompress_safe(const char *src, char *dst, int compressedSize, int dstCapacity);`
   - `LZ4_KERNEL_H` (macro, line 2) `#define LZ4_KERNEL_H`
-- Imported by: `kernel.c`
+- Imported by: `fs/minifs.c`, `kernel.c`, `kernel/lz4_kernel.c`, `kernel/mm/swap.c`, `kernel/syscalls.c`
 
 ## minifs.h
 - Layer: utility
@@ -623,7 +627,7 @@ void kmain(void)`
   - `MINIFS_JOP_COMMIT` (macro, line 85) `#define MINIFS_JOP_COMMIT`
   - `MINIFS_JSTATE_CLEAN` (macro, line 86) `#define MINIFS_JSTATE_CLEAN`
   - `MINIFS_JSTATE_DIRTY` (macro, line 88) `#define MINIFS_JSTATE_DIRTY`
-- Imported by: `kernel.c`
+- Imported by: `fs/kfile.c`, `fs/minifs.c`, `fs/vfs.c`, `kernel.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 ## minifs_dump.py
 - Layer: utility
@@ -772,7 +776,7 @@ void kmain(void)`
   - `NET_RETRY_MS` (macro, line 54) `#define NET_RETRY_MS`
   - `NET_TX_MAX` (macro, line 55) `#define NET_TX_MAX`
   - `NET_FD_BASE` (macro, line 58) `#define NET_FD_BASE`
-- Imported by: `kernel.c`, `tls_port.h`
+- Imported by: `kernel.c`, `kernel/shell.c`, `kernel/syscalls.c`, `net/net.c`, `net/rtl8139.c`, `net/rtl8139.h`, `tls_port.h`
 
 ## pcspk.h
 - Layer: utility
@@ -788,7 +792,7 @@ void kmain(void)`
   - `PCSPK_VOL_MIN` (macro, line 3) `#define PCSPK_VOL_MIN`
   - `PCSPK_VOL_MAX` (macro, line 5) `#define PCSPK_VOL_MAX`
   - `PCSPK_VOL_DEFAULT` (macro, line 6) `#define PCSPK_VOL_DEFAULT`
-- Imported by: `kernel.c`
+- Imported by: `drivers/pcspk.c`, `kernel.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 ## percpu_rq.h
 - Layer: utility
@@ -810,6 +814,7 @@ void kmain(void)`
   - `RQ_VALIDATE_ATTEMPTS` (macro, line 47) `#define RQ_VALIDATE_ATTEMPTS`
   - `WQ_NONE_HINT` (macro, line 48) `#define WQ_NONE_HINT`
 - Depends on: `sched.h`, `spinlock.h`
+- Imported by: `kernel/percpu_rq.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `tests/test_percpu_rq.c`
 
 ## qga.c
 - Layer: utility
@@ -910,6 +915,7 @@ void kmain(void)`
   - `RCU_ERR_FULL` (macro, line 46) `#define RCU_ERR_FULL`
   - `RCU_ERR_TIMEOUT` (macro, line 47) `#define RCU_ERR_TIMEOUT`
 - Depends on: `sched.h`, `spinlock.h`
+- Imported by: `kernel/rcu.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_rcu.c`
 
 ## rtc.h
 - Layer: utility
@@ -918,7 +924,7 @@ void kmain(void)`
 - Symbols:
   - `rtc_read_tod` (function, line 3) `int rtc_read_tod(int *hour, int *min, int *sec);`
   - `RTC_H` (macro, line 2) `#define RTC_H`
-- Imported by: `kernel.c`, `qga.c`
+- Imported by: `drivers/rtc.c`, `kernel.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`
 
 ## sanitize.h
 - Layer: utility
@@ -964,7 +970,7 @@ void kmain(void)`
   - `SB16_ARM_PERIOD_MS` (macro, line 36) `#define SB16_ARM_PERIOD_MS`
   - `SB16_STREAMS` (macro, line 42) `#define SB16_STREAMS`
   - `SB16_STREAM_BUF` (macro, line 43) `#define SB16_STREAM_BUF`
-- Imported by: `kernel.c`
+- Imported by: `drivers/sb16.c`, `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 ## sched.h
 - Layer: utility
@@ -1026,7 +1032,7 @@ void kmain(void)`
   - `DESKTOP_TICK_INTERVAL` (macro, line 126) `#define DESKTOP_TICK_INTERVAL`
   - `TSS_SEL` (macro, line 176) `#define TSS_SEL(cpu)`
 - Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ## shell.h
 - Layer: utility
@@ -1042,6 +1048,7 @@ void kmain(void)`
   - `CMD_BUF_SZ` (macro, line 11) `#define CMD_BUF_SZ`
   - `MAX_ARGS` (macro, line 13) `#define MAX_ARGS`
 - Depends on: `kernel.h`
+- Imported by: `kernel/editor.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 ## smp.c
 - Layer: utility
@@ -1113,7 +1120,7 @@ void kmain(void)`
   - `smp_dbg_sent` (variable, line 33) `extern volatile unsigned smp_dbg_sent;`
   - `SMP_H` (macro, line 2) `#define SMP_H`
 - Depends on: `spinlock.h`
-- Imported by: `kernel.c`, `smp.c`
+- Imported by: `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `smp.c`
 
 ## spinlock.h
 - Layer: utility
@@ -1181,7 +1188,7 @@ void kmain(void)`
   - `COND_INIT` (macro, line 88) `#define COND_INIT`
   - `RWLOCK_INIT` (macro, line 103) `#define RWLOCK_INIT`
 - Depends on: `sched.h`, `spinlock.h`
-- Imported by: `futex.h`
+- Imported by: `drivers/sb16.c`, `futex.h`, `kernel/futex.c`, `kernel/sched.c`, `kernel/sync.c`, `tests/test_sync.c`
 
 ## test_bdd.sh
 - Layer: testing
@@ -1227,6 +1234,7 @@ void kmain(void)`
   - `TICK_MAX_AUDIO_LISTENERS` (macro, line 27) `#define TICK_MAX_AUDIO_LISTENERS`
   - `TICK_MAX_DESKTOP_LISTENERS` (macro, line 29) `#define TICK_MAX_DESKTOP_LISTENERS`
   - `TICK_CONFIG_DEFAULT` (macro, line 32) `#define TICK_CONFIG_DEFAULT`
+- Imported by: `kernel/sched.c`, `kernel/tick.c`, `tests/test_tick.c`
 
 ## tls.h
 - Layer: utility
@@ -1306,7 +1314,7 @@ void kmain(void)`
   - `TLS_BN_4096_WORDS` (macro, line 62) `#define TLS_BN_4096_WORDS`
   - `TLS_BN_384_WORDS` (macro, line 63) `#define TLS_BN_384_WORDS`
   - `TLS_ROOT_COUNT` (macro, line 68) `#define TLS_ROOT_COUNT`
-- Imported by: `kernel.c`, `tls_test.c`
+- Imported by: `kernel.c`, `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `tls_test.c`
 
 ## tls_port.h
 - Layer: utility
@@ -1529,7 +1537,7 @@ void kmain(void)`
   - `SB_MAX_LINES` (macro, line 157) `#define SB_MAX_LINES`
   - `SB_LINE_MAX` (macro, line 158) `#define SB_LINE_MAX`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `kernel.c`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`
 
 ## vma.c
 - Layer: utility
@@ -1567,7 +1575,7 @@ void kmain(void)`
   - `vma_pool_n` (variable, line 34) `extern int vma_pool_n;`
   - `VMA_H` (macro, line 2) `#define VMA_H`
   - `VMA_MAX` (macro, line 27) `#define VMA_MAX`
-- Imported by: `kernel.h`, `vma.c`
+- Imported by: `kernel.h`, `tests/test_vma.c`, `vma.c`
 
 ## zip.h
 - Layer: utility
@@ -1577,4 +1585,4 @@ void kmain(void)`
   - `miniz` (function, line 5) `* * The shell builtins over miniz (see zip.c) are declared here so kernel.c's * shell dispatcher can route the unzip/zip commands. Both builtins work * whole-file in memory over the unified file API (`
   - `shell_cmd_zip` (function, line 15) `void shell_cmd_zip(int argc, char **argv);`
   - `ZIP_H` (macro, line 2) `#define ZIP_H`
-- Imported by: `kernel.c`
+- Imported by: `kernel.c`, `kernel/shell.c`, `kernel/syscalls.c`

@@ -31,6 +31,7 @@
   - `CHECK` (function, line 45) `CHECK(r == BATCH_OK, "clean batch returns OK");`
   - `printf` (function, line 100) `else printf("batch: %d failures\n", failures);`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+- Depends on: `batch.h`
 
 ## tests/test_futex.c
 - Layer: testing
@@ -48,6 +49,7 @@
   - `futex_wait` (function, line 95) `futex_wait((unsigned long)&word_a, 1);`
   - `printf` (function, line 141) `else printf("futex: %d failures\n", failures);`
   - `CHECK` (macro, line 31) `#define CHECK(cond, msg)`
+- Depends on: `futex.h`
 
 ## tests/test_hal_io.c
 - Layer: testing
@@ -80,6 +82,7 @@
   - `rq_note_poll` (function, line 66) `rq_note_poll(0);`
   - `printf` (function, line 84) `else printf("percpu_rq: %d failures\n", failures);`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+- Depends on: `percpu_rq.h`
 
 ## tests/test_rcu.c
 - Layer: testing
@@ -99,6 +102,7 @@
   - `rcu_read_unlock` (function, line 88) `rcu_read_unlock();`
   - `printf` (function, line 95) `else printf("rcu: %d failures\n", failures);`
   - `CHECK` (macro, line 29) `#define CHECK(cond, msg)`
+- Depends on: `rcu.h`
 
 ## tests/test_sanitize.c
 - Layer: testing
@@ -146,6 +150,7 @@
   - `rwlock_write_unlock` (function, line 194) `rwlock_write_unlock(&rw);`
   - `printf` (function, line 209) `else printf("sync: %d failures\n", failures);`
   - `CHECK` (macro, line 36) `#define CHECK(cond, msg)`
+- Depends on: `sync.h`
 
 ## tests/test_tick.c
 - Layer: testing
@@ -164,6 +169,7 @@
   - `tick_run_desktop` (function, line 63) `tick_run_desktop();`
   - `printf` (function, line 113) `printf("tick: ok\n");`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+- Depends on: `tick.h`
 
 ## tests/test_vma.c
 - Layer: testing
@@ -183,3 +189,4 @@
   - `vma_tree_insert` (function, line 157) `vma_tree_insert(&vma_live_root, (unsigned long)i * 0x1000, 0x1000);`
   - `printf` (function, line 176) `printf("vma: ok\n");`
   - `CHECK` (macro, line 19) `#define CHECK(cond, msg)`
+- Depends on: `vma.h`

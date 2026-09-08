@@ -198,7 +198,7 @@
   - `BTN_W` (macro, line 376) `#define BTN_W`
   - `BTN_GAP` (macro, line 377) `#define BTN_GAP`
   - `NCTRLS` (macro, line 389) `#define NCTRLS`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ## progs/pokemon/minios_stubs/SDL.h
 - Layer: testing
@@ -536,4 +536,4 @@
   - `VEDIT_PROMPT_FIND` (macro, line 961) `#define VEDIT_PROMPT_FIND`
   - `VEDIT_PROMPT_GOTO` (macro, line 962) `#define VEDIT_PROMPT_GOTO`
   - `VEDIT_PROMPT_NAME` (macro, line 963) `#define VEDIT_PROMPT_NAME`
-- Depends on: `kernel/string.c`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`

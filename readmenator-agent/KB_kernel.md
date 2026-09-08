@@ -7,6 +7,7 @@
 - Symbols:
   - `batch_exec` (function, line 19) `long batch_exec(const batch_op_t *ops, long *results, int count,
                 int *completed, ...`
+- Depends on: `batch.h`
 
 ## kernel/cvm_host.c
 - Layer: utility
@@ -104,6 +105,7 @@
   - `EDIT_MAX_LINES` (macro, line 19) `#define EDIT_MAX_LINES`
   - `EDIT_LINE_MAX` (macro, line 21) `#define EDIT_LINE_MAX`
   - `EDIT_FILE_MAX` (macro, line 22) `#define EDIT_FILE_MAX`
+- Depends on: `editor.h`, `kernel.h`, `shell.h`
 
 ## kernel/exec.c
 - Layer: utility
@@ -129,7 +131,7 @@
   - `vga_fb_draw_desktop` (function, line 204) `vga_fb_draw_desktop();`
   - `kbd_reset_for_shell` (function, line 206) `kbd_reset_for_shell();`
   - `syscall_kstack` (variable, line 115) `extern unsigned long syscall_kstack;`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`
 
 ## kernel/futex.c
 - Layer: utility
@@ -146,6 +148,7 @@
   - `spin_unlock_irqrestore` (function, line 61) `spin_unlock_irqrestore(&b->lock, flags);`
   - `schedule` (function, line 79) `schedule();`
   - `t_cur_pid` (variable, line 13) `extern int t_cur_pid;`
+- Depends on: `futex.h`, `sync.h`
 
 ## kernel/klog.c
 - Layer: utility
@@ -163,6 +166,7 @@
   - `kprintf` (function, line 52) `kprintf("[%s %s] ", lname, sname);`
   - `__builtin_va_start` (function, line 56) `__builtin_va_start(ap, fmt);`
   - `__builtin_va_end` (function, line 114) `__builtin_va_end(ap);`
+- Depends on: `kernel.h`
 
 ## kernel/loader.c
 - Layer: utility
@@ -213,6 +217,7 @@
   - `PF_X` (macro, line 78) `#define PF_X`
   - `ELF_MAX_SEGMENTS` (macro, line 80) `#define ELF_MAX_SEGMENTS`
   - `ELF_NAME_MAX` (macro, line 81) `#define ELF_NAME_MAX`
+- Depends on: `kernel.h`, `vga_fb.h`
 
 ## kernel/lz4_kernel.c
 - Layer: utility
@@ -230,6 +235,7 @@
   - `kmemset` (function, line 54) `kmemset(hash_table, 0, sizeof(hash_table));`
   - `HASH_BITS` (macro, line 3) `#define HASH_BITS`
   - `HASH_SIZE` (macro, line 5) `#define HASH_SIZE`
+- Depends on: `kernel.h`, `lz4_kernel.h`
 
 ## kernel/mm.c
 - Layer: utility
@@ -248,6 +254,7 @@
   - `dlmalloc_calloc` (function, line 28) `return dlmalloc_calloc(nmemb, size);`
   - `dlmalloc_realloc` (function, line 34) `return dlmalloc_realloc(ptr, size);`
   - `kmemset` (function, line 55) `kmemset(base, 0, total);`
+- Depends on: `kernel.h`, `sched.h`
 
 ## kernel/percpu_rq.c
 - Layer: utility
@@ -269,6 +276,7 @@
   - `spin_unlock_irqrestore` (function, line 51) `spin_unlock_irqrestore(&rqueues[cpu].lock, flags);`
   - `spin_unlock` (function, line 98) `spin_unlock(&rqueues[c].lock);`
   - `__sync_fetch_and_add` (function, line 105) `__sync_fetch_and_add(&rqueues[self_cpu].steals, 1);`
+- Depends on: `percpu_rq.h`
 
 ## kernel/printf.c
 - Layer: utility
@@ -292,6 +300,7 @@
   - `emit` (function, line 72) `emit(c, ctx, written);`
   - `__builtin_va_start` (function, line 151) `__builtin_va_start(ap, fmt);`
   - `__builtin_va_end` (function, line 153) `__builtin_va_end(ap);`
+- Depends on: `kernel.h`
 
 ## kernel/rcu.c
 - Layer: utility
@@ -320,6 +329,7 @@
   - `spin_unlock_irqrestore` (function, line 71) `spin_unlock_irqrestore(&rcu_state.lock, flags);`
   - `__sync_synchronize` (function, line 89) `__sync_synchronize();`
   - `fn` (function, line 178) `fn(arg);`
+- Depends on: `rcu.h`
 
 ## kernel/redirect.c
 - Layer: infrastructure
@@ -333,6 +343,7 @@
   - `redirect_resume` (function, line 14) `redirect_resume(was);`
   - `vga_puts` (function, line 19) `vga_puts(what);`
   - `vga_putc` (function, line 21) `vga_putc('\n');`
+- Depends on: `kernel.h`
 
 ## kernel/sched.c
 - Layer: utility
@@ -441,7 +452,7 @@
   - `MY_SYS_KSTK_TOP` (macro, line 35) `#define MY_SYS_KSTK_TOP`
   - `MY_USER_STACK_TOP` (macro, line 36) `#define MY_USER_STACK_TOP`
   - `MY_USER_LOAD_BASE` (macro, line 37) `#define MY_USER_LOAD_BASE`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ## kernel/scrollback.c
 - Layer: utility
@@ -456,6 +467,7 @@
   - `sb_get_char` (function, line 40) `char sb_get_char(int row, int col)`
   - `vga_scroll` (function, line 4) `* Captured lazily from vga_scroll();`
   - `SCROLLBACK_ROWS` (macro, line 11) `#define SCROLLBACK_ROWS`
+- Depends on: `kernel.h`
 
 ## kernel/serial.c
 - Layer: utility
@@ -472,6 +484,7 @@
   - `serial_getc` (function, line 43) `int serial_getc(void)`
   - `outb` (function, line 21) `outb(COM1 + 1, 0x00);`
   - `COM1` (macro, line 17) `#define COM1`
+- Depends on: `kernel.h`, `sched.h`
 
 ## kernel/shell.c
 - Layer: utility
@@ -589,6 +602,7 @@ static void shell_hist_na...`
   - `SB_PGDN` (macro, line 307) `#define SB_PGDN`
   - `SB_EXIT` (macro, line 308) `#define SB_EXIT`
   - `QEMU_PM_PORT` (macro, line 988) `#define QEMU_PM_PORT`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ## kernel/string.c
 - Layer: utility
@@ -608,6 +622,7 @@ static void shell_hist_na...`
   - `kmemcmp` (function, line 80) `int kmemcmp(const void *a, const void *b, unsigned long n)`
   - `kmemmove` (function, line 86) `void *kmemmove(void *dst, const void *src, unsigned long n)`
   - `katol` (function, line 94) `long katol(const char *s)`
+- Depends on: `kernel.h`
 - Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ## kernel/symtab.c
@@ -624,6 +639,7 @@ static void shell_hist_na...`
   - `k_spawn` (function, line 64) `int k_spawn(const char *name, int argc, char **argv)`
   - `kstrncpy` (function, line 52) `kstrncpy(p->name, name, sizeof(p->name) - 1);`
   - `k_run_rel` (function, line 71) `return k_run_rel(kprog_table[i].entry, argc, argv);`
+- Depends on: `kernel.h`
 
 ## kernel/sync.c
 - Layer: utility
@@ -654,6 +670,7 @@ static void shell_hist_na...`
   - `spin_unlock_irqrestore` (function, line 37) `spin_unlock_irqrestore(&q->lock, flags);`
   - `schedule` (function, line 50) `schedule();`
   - `t_cur_pid` (variable, line 23) `extern int t_cur_pid;`
+- Depends on: `sync.h`
 
 ## kernel/syscalls.c
 - Layer: utility
@@ -812,7 +829,7 @@ static void shell_hist_na...`
   - `SYS_NOISY_MOUSE` (macro, line 424) `#define SYS_NOISY_MOUSE`
   - `SYS_NOISY_GETC_RAW` (macro, line 425) `#define SYS_NOISY_GETC_RAW`
   - `LINUX_SYSCALL_COUNT` (macro, line 823) `#define LINUX_SYSCALL_COUNT`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `sanitize.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
 
 ## kernel/tick.c
 - Layer: utility
@@ -828,6 +845,7 @@ static void shell_hist_na...`
   - `tick_audio_count` (function, line 101) `int tick_audio_count(void)`
   - `tick_desktop_count` (function, line 112) `int tick_desktop_count(void)`
   - `tick_desktop_due` (function, line 128) `int tick_desktop_due(unsigned long long ticks, unsigned interval)`
+- Depends on: `tick.h`
 
 ## kernel/time.c
 - Layer: utility
@@ -839,6 +857,7 @@ static void shell_hist_na...`
   - `ktime_ms` (function, line 31) `unsigned long ktime_ms(void)`
   - `volatile` (function, line 14) `__asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));`
   - `outb` (function, line 20) `outb(0x61, (unsigned char)((inb(0x61) & 0x0F) | 0x01));`
+- Depends on: `kernel.h`
 - Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `test_http_server.py`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
 
 ## kernel/vga_fb.c
@@ -949,4 +968,4 @@ static void shell_hist_na...`
   - `WIN_DEF_X` (macro, line 404) `#define WIN_DEF_X`
   - `WIN_DEF_Y` (macro, line 405) `#define WIN_DEF_Y`
   - `FB_OFFSET` (macro, line 425) `#define FB_OFFSET(x,y)`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `kernel.h`, `vga_fb.h`
