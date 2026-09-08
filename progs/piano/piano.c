@@ -60,6 +60,11 @@ static char ui_memory[UI_MEMORY];
  * render more without starving the speaker.  The clamp is kept conservative
  * to avoid unbounded per-frame work. */
 #define MAX_AUDIO_MS 600
+/* Per-frame render bite: after a stall the backlog is paced over several
+ * frames instead of one giant catch-up render, bounding the worst-case CPU
+ * spike (Nuked OPL3 is heavy) while the debt below is preserved, so not a
+ * single millisecond of audio is lost. */
+#define PIANO_FRAME_MS 30
 
 static long sys_pcm_open(long on) {
     long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_OPEN),"D"(on):"rcx","r11","memory"); return r;
@@ -533,13 +538,19 @@ static void ui_run(int bench_ms) {
             nk_set_window_origin(origin[0], origin[1]);
         nk_clear(&ctx);
 
-        /* Render the PCM for the wall-clock time since the last frame. */
+        /* Render the PCM for the wall-clock time since the last frame,
+         * paced: each frame renders at most PIANO_FRAME_MS and the rest
+         * stays as debt for the frames after, so a stall never turns
+         * into one giant catch-up spike. */
         long now = (long)nk_sys_time_ms();
         long elapsed = now - last_render;
-        last_render = now;
-        if (elapsed > 0) {
-            if (elapsed > MAX_AUDIO_MS) elapsed = MAX_AUDIO_MS;
-            if (audio_on) render_audio(elapsed);
+        if (elapsed > MAX_AUDIO_MS) elapsed = MAX_AUDIO_MS;
+        if (elapsed > PIANO_FRAME_MS) elapsed = PIANO_FRAME_MS;
+        if (elapsed > 0 && audio_on) {
+            render_audio(elapsed);
+            last_render += elapsed;
+        } else {
+            last_render = now;
         }
 
         unsigned t0 = (unsigned)nk_sys_time_ms();

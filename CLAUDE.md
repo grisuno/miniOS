@@ -567,9 +567,13 @@ vector 32) runs the registered desktop listeners through the tick bus
 interval (`DESKTOP_TICK_INTERVAL`, default 4 = 25 Hz) whenever
 `user_program_active` is set.  The flag is set in `k_exec_user` before the `iretq` into ring 3 and
 cleared after `klongjmp` returns, so the desktop ticks for the entire
-duration of any user program.  When no user program is active the flag is
-clear and the ISR skips the tick; the shell drives the desktop from its own
-idle loop as before.
+ duration of any user program.  When no user program is active the flag is
+ clear and the ISR skips the tick; the shell drives the desktop from its own
+ idle loop as before. The tick stands apart from the preemption branch in
+ the ISR: chained as an else-if it never ran while threads existed
+ (`proc_count > 1` always took the preempt arm), freezing the cursor for
+ whole threaded workloads, so it is an independent `if` behind the same
+ predicate and flag.
 
 The PS/2 mouse is no longer disabled around `k_exec_user`.  Disabling the
 mouse stopped IRQ12 delivery and froze `mouse_state` for the whole child
@@ -1276,6 +1280,46 @@ same mid-line cursor behaviour as the prompt.  Two invariants:
   to be written back, because saving it would drop what was never loaded.
 - `q` refuses to discard unsaved changes; `q!` discards explicitly.
 
+### Mini IDE (`vedit`, ring 3, Nuklear)
+`bin/vedit` is the fullscreen visual editor, deliberately a user-space
+program, never kernel code: the kernel image ends ~1 KB below
+`USER_LOAD_BASE`, so a 14 KB in-kernel visual editor overflowed the user
+window and killed the boot (measured `_kernel_end 0x403220`). The editor
+lives in `progs/vedit/vedit.c`, is built on the host like the piano and
+the node editor (static ELF, shared `nuklear_minios.c` platform layer),
+and ships on MiniFS (`vedit.elf` plus the bare-name alias, source
+beside it).
+
+- Interaction: arrow-key navigation with in-place typing (no line
+  numbers to name), Enter splits with auto-indent, Tab inserts a stop,
+  Backspace/Delete erase and join, Home/End/PgUp/PgDn jump, `^O`/`^S`
+  save, `^W` find (wraps once), `^G` goto line, `^X` save+quit, Esc
+  quit without saving, `^L` dumps the buffer with ANSI highlight to
+  the console (serial fallback and BDD hook). Save/Find/Done are also
+  clickable buttons; the wheel scrolls. A 512-line / 127-char buffer
+  with the same fail-closed rules as `edit`: full lines, overflowing
+  joins and full buffers refuse whole, and a truncated load refuses
+  to save.
+- Highlighting: C (`.c`/`.h`/`.s`, with `//` and `/* */` plus `#`
+  directives), MicroPython (`.py`, with `#` and triple-quoted strings)
+  and Lua (`.lua`, with `--`, `--[[ ]]` blocks and `[[ ]]` strings);
+  keywords, strings, comments, numbers and directives each get an ink,
+  drawn as per-token runs on the canvas with a block cursor.
+- Plumbing: every platform fact comes from `minios_abi.h` or a
+  syscall, never a literal. Keystrokes arrive through syscall 236
+  `GETC_RAW` (0 polls with `-1` when idle for the bounded ESC-sequence
+  wait, nonzero blocks), the same serial+PS/2 multiplexer the console
+  reads but with no line buffering, echo or scrollback detour, so
+  PgUp/PgDn reach the editor; the PS/2 driver reports Ctrl+letter as
+  control codes and Delete as `ESC [ 3 ~`, so both consoles drive every
+  key. The app owns the display through `SYS_VGA_MODE` exactly like the
+  piano, the window title carries the dirty `*`, and the kernel redraws
+  the desktop on exit. `vedit --selftest` renders one frame and proves
+  the composite landed, mirroring the Nuklear selftest.
+- The kernel `edit` stays: scripted flows (the MCP `minios_write`
+  editor upload, the marketplace, the BDD suite) drive it
+  non-interactively, which a fullscreen program cannot serve.
+
 ### PC speaker audio (`pcspk.c` + Doom)
 The kernel owns the QEMU PC speaker through two syscalls: 209 `pcspk_init`
 and 210 `pcspk_tone(freq)` (0 = off). The driver programs PIT channel 2
@@ -1347,6 +1391,11 @@ command (two frequency bytes, low then high) so the clock matches the declared
 - **Ring accounting is guest-side**: `pcm_free` is incremented when a queued
   slot is armed, independent of whether QEMU actually consumed it, so the
   guest-side ring always drains at the declared rate.
+- **Idle ticks never mix**: `sb16_pump` returns before `sb16_mix_all` when
+  no stream holds data (the arm path already plays the permanent silence
+  slot on underrun), so a silent machine pays no 100 Hz mixing tax; and the
+  mixer walks each stream with a wrapping index instead of a per-sample
+  modulo, the same sample sequence with no division in the hot loop.
 - **Observability**: the `sb16` builtin prints presence, mode, ring free
   count and the driver counters (`irq_arms`, `poll_arms`, `submits`, `drops`),
   so ring health is testable over the serial console without ears.
@@ -1357,7 +1406,11 @@ command (two frequency bytes, low then high) so the clock matches the declared
 - **Piano pacing**: `progs/piano/piano.c` renders the wall-clock time elapsed
   per frame clamped to `MAX_AUDIO_MS` (600 ms, just under the ring's ~650 ms
   capacity) instead of the old 50 ms cap, so a slow frame no longer
-  under-renders and starves the ring into a choppy buzz. A fully-filled buffer
+  under-renders and starves the ring into a choppy buzz. The backlog is
+  paced at `PIANO_FRAME_MS` (30 ms) per frame with the remainder kept as
+  debt for the frames after, so a stall drains over several frames instead
+  of one giant catch-up render spiking the CPU — identical total audio,
+  bounded worst-case frame cost. A fully-filled buffer
   whose submit is refused is held and retried next frame (`sb_flush`), and a
   drop is counted only when a new submit is blocked by a still-pending buffer.
 

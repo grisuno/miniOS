@@ -206,17 +206,23 @@ static void sb16_mix_all(void) {
      * back to unsigned. */
     for (i = 0; i < (int)SB16_STREAMS; i++) {
         sb16_stream_t *s = &streams[i];
+        unsigned idx;
         if (!s->active || s->count == 0) continue;
         len = s->count < SB16_PCM_BUF ? s->count : SB16_PCM_BUF;
+        /* Running index with a wrap check instead of a per-sample modulo:
+         * identical sample sequence, no division in the hot loop. */
+        idx = s->tail;
         for (k = 0; k < len; k++) {
             int sample = (int)mix_buf[k] - 128;
-            int src = (int)s->ring[(s->tail + k) % SB16_STREAM_BUF] - 128;
+            int src = (int)s->ring[idx] - 128;
             sample += (src * (int)s->volume) >> 8;
             if (sample > 127) sample = 127;
             if (sample < -128) sample = -128;
             mix_buf[k] = (unsigned char)(sample + 128);
+            idx++;
+            if (idx >= SB16_STREAM_BUF) idx = 0;
         }
-        s->tail = (s->tail + len) % SB16_STREAM_BUF;
+        s->tail = idx;
         s->count -= len;
     }
     sb16_stat.mixes++;
@@ -227,11 +233,21 @@ static void sb16_mix_all(void) {
 /* ------------------------------------------------------------------ */
 
 void sb16_pump(void) {
+    int i;
+    int busy = 0;
     if (!sb16_ready || sb16_mode != SB16_MODE_PCM) return;
     /* No free DMA slot: keep the stream data and retry on the next tick.
      * Mixing here would consume stream bytes that no slot can take, which
      * silently drops audio under load (audible as gaps). */
     if (pcm_free == 0) return;
+
+    /* Idle ticks must not pay a full mix: with no stream holding data the
+     * output would be silence, which the arm path already plays from the
+     * permanent silence slot on underrun. */
+    for (i = 0; i < (int)SB16_STREAMS; i++) {
+        if (streams[i].active && streams[i].count > 0) { busy = 1; break; }
+    }
+    if (!busy) return;
 
     /* Mix all active streams into mix_buf. */
     sb16_mix_all();

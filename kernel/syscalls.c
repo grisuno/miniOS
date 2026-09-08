@@ -30,6 +30,7 @@
 #include "rcu.h"
 #include "percpu_rq.h"
 #include "sanitize.h"
+#include "shell.h"
 
 /* ---- File descriptor table for open/read/write/close -------------------- */
 
@@ -339,8 +340,18 @@ static long batch_kdispatch(uint32_t opcode) {
     return BATCH_ERR_OPCODE;
 }
 
-static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6) {
-    batch_op_t kops[BATCH_MAX_OPS];
+/* Raw keystroke read for fullscreen ring-3 programs (vedit): one byte
+ * from the serial + PS/2 multiplexer with no line buffering, no echo and
+ * no scrollback detour. a1 == 0 polls (-1 when idle, so user space can
+ * bound its own escape-sequence timeout); otherwise blocks until a byte.
+ * Bytes are the same CSI form both consoles carry, PS/2 included. */
+static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a1 == 0) return (long)console_raw_try();
+    return (long)console_raw_get();
+}
+
+static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6) {    batch_op_t kops[BATCH_MAX_OPS];
     long kresults[BATCH_MAX_OPS];
     int completed = 0;
     long r;
@@ -392,6 +403,7 @@ static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] =
     [MINIOS_SYS_FUTEX_WAIT - MINIOS_SYSCALL_BASE] = { sys_minios_futex_wait, "futex_wait" },
     [MINIOS_SYS_FUTEX_WAKE - MINIOS_SYSCALL_BASE] = { sys_minios_futex_wake, "futex_wake" },
     [MINIOS_SYS_SUBMIT_BATCH - MINIOS_SYSCALL_BASE] = { sys_minios_submit_batch, "submit_batch" },
+    [MINIOS_SYS_GETC_RAW - MINIOS_SYSCALL_BASE] = { sys_minios_getc_raw, "getc_raw" },
 };
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };
@@ -410,6 +422,7 @@ void syscall_trace_set(int on) { s_trace_enabled = on ? 1 : 0; }
 #define SYS_NOISY_TIME   204
 #define SYS_NOISY_KBD    205
 #define SYS_NOISY_MOUSE  219
+#define SYS_NOISY_GETC_RAW 236
 
 /* =====================================================================
  * Linux ABI handlers (0-199), table-driven.
@@ -852,7 +865,8 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
 static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6);
 
 static int trace_is_noisy(long n) {
-    return n == SYS_NOISY_TIME || n == SYS_NOISY_KBD || n == SYS_NOISY_MOUSE;
+    return n == SYS_NOISY_TIME || n == SYS_NOISY_KBD || n == SYS_NOISY_MOUSE ||
+           n == SYS_NOISY_GETC_RAW;
 }
 
 long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {

@@ -37,6 +37,7 @@ static int kbd_ctrl;
 static int kbd_alt;
 
 #define KBD_QUEUE_LEN 8
+#define KBD_SCAN_DEL 0x53
 static unsigned char kbd_queue[KBD_QUEUE_LEN];
 static int kbd_q_head, kbd_q_tail;
 static int kbd_e0;
@@ -154,6 +155,9 @@ int kbd_read(void) {
         } else if (sc == KEY_PGDN) {
             kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI);
             kbd_q_push(KEY_PGDN_SEQ); kbd_q_push(KEY_TILDE);
+        } else if (sc == KBD_SCAN_DEL) {
+            kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI);
+            kbd_q_push('3'); kbd_q_push(KEY_TILDE);
         }
         return -1;
     }
@@ -182,10 +186,14 @@ int kbd_read(void) {
         if (ch == '0')            { vga_fb_reset_default(); return -1; }
     }
 
-    if (kbd_shift)
-        return kbd_us_shift[sc];
-    else
-        return kbd_us[sc];
+    {
+        int ch = kbd_shift ? kbd_us_shift[sc] : kbd_us[sc];
+        if (kbd_ctrl && ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'))) {
+            int lower = (ch >= 'A' && ch <= 'Z') ? ch - 'A' + 'a' : ch;
+            return lower - 'a' + 1;
+        }
+        return ch;
+    }
 }
 
 void kbd_reset_for_shell(void) {

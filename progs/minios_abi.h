@@ -33,7 +33,7 @@
  * The kernel ELF loader recomputes it and compares against the binary's
  * embedded copy.  A mismatch rejects the binary before execution.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 2
+#define MINIOS_ABI_VERSION 3
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -57,7 +57,8 @@
     MINIOS_FB_HEIGHT_MAX       ^ \
     MINIOS_SYS_FUTEX_WAIT      ^ \
     MINIOS_SYS_FUTEX_WAKE      ^ \
-    MINIOS_SYS_SUBMIT_BATCH      \
+    MINIOS_SYS_SUBMIT_BATCH    ^ \
+    MINIOS_SYS_GETC_RAW          \
 )
 
 /* =========================================================================
@@ -224,6 +225,7 @@
 #define MINIOS_SYS_FUTEX_WAIT    226
 #define MINIOS_SYS_FUTEX_WAKE    227
 #define MINIOS_SYS_SUBMIT_BATCH  235
+#define MINIOS_SYS_GETC_RAW      236
 
 #define MINIOS_SYS_CLONE             300
 

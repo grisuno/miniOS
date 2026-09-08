@@ -566,7 +566,13 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             /* APs time-slice CLONE_VM threads; the BSP owns everything
              * else (devices, mouse tick, non-VM processes). */
             sched_ap_preempt(frame);
-        } else if (cpu->is_bsp && tick_desktop_due(sys_ticks, DESKTOP_TICK_INTERVAL)) {
+        }
+        /* The desktop tick is independent of preemption: chained as an
+         * else-if it never ran while threads existed (proc_count > 1
+         * always took the preempt branch), freezing the cursor for whole
+         * threaded workloads. Preemption keeps priority; the 25 Hz tick
+         * follows behind it. APs never reach it (BSP-only above). */
+        if (cpu->is_bsp && tick_desktop_due(sys_ticks, DESKTOP_TICK_INTERVAL)) {
             if (user_program_active) tick_run_desktop();
         }
         return;

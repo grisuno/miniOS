@@ -100,6 +100,7 @@ static char act[SB_LINE_MAX];                /* in-progress line */
 static int  act_len;
 static int  disp_off;                        /* scrollback rows above the bottom */
 static int  term_cursor_col = -1;            /* text cursor column (-1 = hidden) */
+static int  csi_state;                       /* ANSI CSI drop: 1 after ESC, 2 in params */
 
 /* Ring accessor: logical line at age i (0 = oldest, count-1 = newest). */
 static const char *lg_get(int i) {
@@ -1171,6 +1172,23 @@ static void term_draw_cell(int col) {
  * it). */
 void vga_fb_putc_term(char c) {
     int rows_before = total_rows();
+
+    /* ANSI CSI drop: ring-3 fullscreen programs (vedit) address the serial
+     * console with ESC [ ... final sequences. The logical terminal is a
+     * scrolling line device with no 2D cursor, so it cannot honour them;
+     * swallowing them here keeps the escapes (which the serial side needs)
+     * from printing as literal "[2J[H" garbage on the desktop. A bare ESC
+     * outside a sequence is ignored as before. */
+    if (csi_state == 1) {
+        if (c == '[') { csi_state = 2; return; }
+        csi_state = 0;
+        if (c == '\x1b') { csi_state = 1; return; }
+    } else if (csi_state == 2) {
+        if ((c >= '0' && c <= '9') || c == ';' || c == '?') return;
+        csi_state = 0;
+        return;
+    }
+    if (c == '\x1b') { csi_state = 1; return; }
 
     if (c == '\n') {
         /* Once the ring is full every push evicts the oldest line, so the

@@ -353,6 +353,23 @@ ls
 poweroff"
 expect "unsaved changes"
 
+scenario "vedit types and saves without line commands" $'vedit vis.txt\nhello visual\x18\ncat vis.txt\npoweroff'
+expect "vedit: new file vis.txt"
+expect "wrote 1 line(s) to vis.txt"
+expect "hello visual"
+expect "exit code: 0"
+
+scenario "vedit console dump highlights C keywords with ANSI" $'vedit hl.c\nint main(void) { return 0; }\x0c\x1b\npoweroff'
+expect "main"
+expect "return"
+expect $'\x1b[1;34m'
+refute "wrote"
+expect "exit code: 0"
+
+scenario "vedit selftest renders one UI frame" "vedit --selftest
+poweroff"
+expect "vedit: frame ok (800x360)"
+
 scenario "shell redirects command output to a file" "echo redirected text > r.txt
 cat r.txt
 poweroff"

@@ -794,6 +794,26 @@ $(BIN_DIR)/piano.elf: $(PIANO_SRCS) $(NUKLEAR_DIR)/nuklear.h \
 $(BIN_DIR)/piano: $(BIN_DIR)/piano.elf
 	cp $< $@
 
+# ── vedit (Nuklear mini IDE: C/Python/Lua highlight, ring 3) ──────
+# A fullscreen visual editor hosted on the Nuklear immediate-mode UI,
+# like the node editor and the piano: it renders into the kernel-heap
+# back-buffer and the kernel composites it as a titled desktop window.
+# Keys arrive through GETC_RAW (236, serial + PS/2 with no line
+# buffering or echo); files load/save through the unified filesystem.
+# Static ELF on MiniFS with a bare-name alias. See progs/vedit/vedit.c.
+VEDIT_SRCS = $(PROGS_DIR)/vedit/vedit.c \
+             $(PROGS_DIR)/nuklear/nuklear_minios.c
+
+$(BIN_DIR)/vedit.elf: $(VEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
+	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
+	      -I$(PROGS_DIR) \
+	      -o $@ $(VEDIT_SRCS) -lm
+	chmod +x $@
+
+$(BIN_DIR)/vedit: $(BIN_DIR)/vedit.elf
+	cp $< $@
+
 # ── opl3 (ring-3 Nuked-OPL3 FM synth -> SB16 PCM) ───────────────────
 # Static ELF like DOOM. Renders a melody through the Nuked-OPL3 chip emulator
 # and streams 8-bit mono PCM to the kernel SB16 driver (syscalls 221/222).
@@ -851,6 +871,8 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                $(BIN_DIR)/json $(SRC_DIR)/json.c \
                $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
+               $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
+               $(PROGS_DIR)/vedit/vedit.c \
                $(BIN_DIR)/lzss $(BIN_DIR)/unlzss $(SRC_DIR)/lzss.c $(ASM_DIR)/lzss.s \
                $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 $(SRC_DIR)/lz4.c $(ASM_DIR)/lz4.s \
                $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o \
@@ -1037,7 +1059,7 @@ shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
          sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-editor.o: kernel/editor.c kernel.h shell.h editor.h
+editor.o: kernel/editor.c kernel.h shell.h editor.h vga_fb.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 serial.o: kernel/serial.c kernel.h
@@ -1082,7 +1104,7 @@ klog.o: kernel/klog.c kernel.h
 exec.o: kernel/exec.c kernel.h bootdefs.h arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h shell.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c
@@ -1401,6 +1423,7 @@ clean:
 	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
 	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
 	      $(BIN_DIR)/cp $(BIN_DIR)/freedom \
+	      $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
 	      $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \
 	      $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 \
 	      $(BIN_DIR)/json \

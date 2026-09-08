@@ -55,6 +55,12 @@ minios_write {path, content}   editor flow: edit, a per line, x; returns the
 minios_cat {path}              prints a ramdisk file
 ```
 
+For interactive editing (a human at the console, not the agent upload
+path above): `vedit <file>` is the fullscreen mini IDE with C/Python/Lua
+highlighting, in-place typing and `^O`/`^X` save/quit. Keep using
+`minios_write` for uploads: it drives the scriptable kernel `edit`, which
+a fullscreen program cannot serve.
+
 `minios_write` rejects lines of 128+ chars, more than 512 lines, non-ASCII
 and control characters: those are kernel editor limits, and the kernel would
 truncate silently. Break long content into files that fit; a real C file

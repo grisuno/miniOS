@@ -259,6 +259,20 @@ static int console_peek(void) {
     return pb_peek();
 }
 
+/* Raw console multiplexer for the GETC_RAW syscall (declared in shell.h).
+ * The same serial + PS/2 sources console_getc funnels, but without the
+ * line buffering, echo or scrollback detour: a ring-3 fullscreen program
+ * reads keystrokes byte by byte. Blocking spins with a pause (and the
+ * desktop tick, as the shell idle loop does); the try variant returns -1
+ * when nothing is available so user space can implement its own timeout. */
+int console_raw_try(void) {
+    return raw_try_getc();
+}
+
+int console_raw_get(void) {
+    return raw_blocking_getc();
+}
+
 /* ---- Scrollback view ----
  *
  * Renders a 25-row window over (scrollback ring + live screen) into the VGA
@@ -1492,6 +1506,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  unzip <z> [dir]    extract a ZIP archive (or -l to list)\n");
         vga_puts("  zip <out> <f...>   store files into a ZIP archive\n");
         vga_puts("  edit <file>        line editor for ramdisk files\n");
+        vga_puts("  vedit <file>       fullscreen editor (C/Python/Lua)\n");
         vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
         vga_puts("  <cmd> > <file>     redirect command output to a file\n");
