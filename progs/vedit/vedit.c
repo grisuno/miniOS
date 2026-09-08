@@ -16,10 +16,12 @@
  *
  * Interaction: arrows move, typing inserts, Enter splits with
  * auto-indent, Tab indents, Backspace/Delete erase and join lines,
- * Home/End/PgUp/PgDn jump, ^O/^S save, ^W find (wraps once), ^G goto,
- * ^X save+quit, Esc quit without saving, ^L dumps the buffer with ANSI
- * highlight to the console (serial fallback, BDD hook). The on-screen
- * Save/Find/Quit buttons are clickable too. Bounds are the kernel
+ * Home/End/PgUp/PgDn jump, ^O/^S save, ^N save-as (rename + save),
+ * ^W find (wraps once), ^G goto, ^X save+quit, Esc quit without saving,
+ * ^L dumps the buffer with ANSI highlight to the console
+ * (serial fallback, BDD hook). With no file argument the buffer opens
+ * as "untitled". The on-screen Save/Find/Name/Done buttons are clickable
+ * too. Bounds are the kernel
  * editor's (512 lines, 127 chars); full lines, overflowing joins and
  * full buffers refuse whole, and a truncated load refuses to save.
  */
@@ -54,6 +56,7 @@ static long vedit_set_title(const char *t) {
 #define VEDIT_LINE_USED (VEDIT_LINE_MAX - 1)
 #define VEDIT_FILE_MAX (64 * 1024)
 #define VEDIT_FNAME_MAX 64
+#define VEDIT_DEFAULT_FILE "untitled"
 #define VEDIT_MSG_MAX 128
 #define VEDIT_WORD_MAX 32
 #define VEDIT_TAB_W 4
@@ -950,26 +953,39 @@ static void vedit_console_dump(void) {
 
 /* ---- Nuklear UI ---- */
 
-/* Prompt state for find/goto, answered on the status row. */
+/* Prompt state for find/goto/save-as, answered on the status row. */
 static int vedit_prompt_on;
 static char vedit_prompt_label[16];
 static char vedit_prompt_buf[VEDIT_LINE_MAX];
 static int vedit_prompt_pos;
-static int vedit_prompt_goto;
+#define VEDIT_PROMPT_FIND 0
+#define VEDIT_PROMPT_GOTO 1
+#define VEDIT_PROMPT_NAME 2
+static int vedit_prompt_mode;
 
-static void vedit_prompt_open(const char *label, int is_goto) {
+static void vedit_prompt_open(const char *label, int mode) {
     size_t n = strlen(label);
     if (n > sizeof(vedit_prompt_label) - 1) n = sizeof(vedit_prompt_label) - 1;
     memcpy(vedit_prompt_label, label, n);
     vedit_prompt_label[n] = 0;
     vedit_prompt_pos = 0;
     vedit_prompt_buf[0] = 0;
-    vedit_prompt_goto = is_goto;
+    vedit_prompt_mode = mode;
     vedit_prompt_on = 1;
 }
 
 static void vedit_prompt_find(void) {
-    vedit_prompt_open("find: ", 0);
+    vedit_prompt_open("find: ", VEDIT_PROMPT_FIND);
+}
+
+static void vedit_prompt_saveas(void) {
+    size_t n;
+    vedit_prompt_open("name: ", VEDIT_PROMPT_NAME);
+    n = strlen(vedit_fname);
+    if (n > sizeof(vedit_prompt_buf) - 1) n = sizeof(vedit_prompt_buf) - 1;
+    memcpy(vedit_prompt_buf, vedit_fname, n);
+    vedit_prompt_buf[n] = 0;
+    vedit_prompt_pos = (int)n;
 }
 
 static void vedit_draw_row(struct nk_command_buffer *canvas,
@@ -1057,7 +1073,7 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
     int li;
     char status[256];
     static const char *help =
-        "arrows move  type  Enter split  Tab indent  ^O save  ^X done  "
+        "arrows move  type  Enter split  Tab indent  ^O save  ^N name  ^X done  "
         "^W find  ^G goto  ^L console  Esc exit";
     static int prev_buttons = 0;
     int mouse[4] = {0, 0, 0, 0};
@@ -1067,7 +1083,8 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
     int btn_h = vedit_ch + 6;
     int bx = vedit_cw;
     int by = 2;
-    static const char *labels[3] = {"^O Save", "^W Find", "^X Done"};
+    static const char *labels[4] = {"^O Save", "^W Find", "^N Name",
+                                        "^X Done"};
 
     vedit_clamp();
     vedit_follow();
@@ -1096,7 +1113,7 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
 
     nk_fill_rect(canvas, nk_rect(0, 0, (float)NK_W, (float)vedit_menu_h), 0,
                  vedit_c_header());
-    for (r = 0; r < 3; r++) {
+    for (r = 0; r < 4; r++) {
         int x = bx + r * (btn_w + vedit_cw);
         int hover = mdown && mouse[0] >= x && mouse[0] < x + btn_w &&
             mouse[1] >= by && mouse[1] < by + btn_h;
@@ -1117,6 +1134,8 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                            vedit_count, vedit_fname);
             } else if (r == 1) {
                 vedit_prompt_find();
+            } else if (r == 2) {
+                vedit_prompt_saveas();
             } else {
                 *save_and_quit = 1;
                 *quit = 1;
@@ -1172,7 +1191,7 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
 static void vedit_prompt_key(int key) {
     if (key == '\n' || key == '\r') {
         vedit_prompt_on = 0;
-        if (vedit_prompt_goto) {
+        if (vedit_prompt_mode == VEDIT_PROMPT_GOTO) {
             int n = 0;
             int i = 0;
             while (vedit_prompt_buf[i] >= '0' &&
@@ -1187,6 +1206,20 @@ static void vedit_prompt_key(int key) {
                 vedit_cy = n - 1;
                 vedit_cx = 0;
                 vedit_msg[0] = 0;
+            }
+        } else if (vedit_prompt_mode == VEDIT_PROMPT_NAME) {
+            size_t n = strlen(vedit_prompt_buf);
+            if (n == 0) {
+                vedit_set_msg("empty name, keeping old one");
+            } else if (n >= VEDIT_FNAME_MAX) {
+                vedit_set_msg("name too long");
+            } else {
+                memcpy(vedit_fname, vedit_prompt_buf, n);
+                vedit_fname[n] = 0;
+                vedit_lang = vedit_lang_of(vedit_fname);
+                if (vedit_save() == 0)
+                    printf("vedit: wrote %d line(s) to %s\n",
+                           vedit_count, vedit_fname);
             }
         } else {
             vedit_find(vedit_prompt_buf);
@@ -1264,8 +1297,10 @@ static void vedit_key(int key, int *quit, int *save_and_quit) {
                    vedit_count, vedit_fname);
     } else if (key == 23) {
         vedit_prompt_find();
+    } else if (key == 14) {
+        vedit_prompt_saveas();
     } else if (key == 7) {
-        vedit_prompt_open("goto: ", 1);
+        vedit_prompt_open("goto: ", VEDIT_PROMPT_GOTO);
     } else if (key == 12) {
         vedit_console_dump();
     } else if (key == 24) {
@@ -1437,18 +1472,23 @@ static int vedit_selftest(void) {
 int main(int argc, char **argv) {
     int rc;
     size_t n;
+    const char *fname;
     if (argc > 1 && strcmp(argv[1], "--selftest") == 0)
         return vedit_selftest();
-    if (argc != 2) {
-        printf("usage: vedit <file>\n");
+    if (argc == 1) {
+        fname = VEDIT_DEFAULT_FILE;
+    } else if (argc == 2) {
+        fname = argv[1];
+    } else {
+        printf("usage: vedit [file]\n");
         return 1;
     }
-    if (strlen(argv[1]) >= VEDIT_FNAME_MAX) {
-        printf("vedit: %s: name too long\n", argv[1]);
+    if (strlen(fname) >= VEDIT_FNAME_MAX) {
+        printf("vedit: %s: name too long\n", fname);
         return 1;
     }
-    n = strlen(argv[1]);
-    memcpy(vedit_fname, argv[1], n);
+    n = strlen(fname);
+    memcpy(vedit_fname, fname, n);
     vedit_fname[n] = 0;
     vedit_pool = malloc(VEDIT_MAX_LINES * VEDIT_LINE_MAX);
     if (!vedit_pool) {
