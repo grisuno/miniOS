@@ -772,13 +772,15 @@ $(BIN_DIR)/nuklear: $(BIN_DIR)/nuklear.elf
 	cp $< $@
 
 # ── piano (Nuklear FM piano -> SB16 PCM) ───────────────────────────────
-# A clickable two-octave piano keyboard in Nuklear that plays FM sound
-# through the kernel's Sound Blaster 16 driver.  The synth is a DIRECT FM
-# engine (modulator + carrier per voice into a sine table) instead of a
-# cycle-accurate Yamaha chip emulator, so real-time rendering stays fast in
-# QEMU and the UI never stutters.  The app streams 8-bit mono PCM via
-# syscalls 221/222.  Built like the node editor (reuses nuklear_minios.c),
-# static ring-3, ships on MiniFS.
+# A clickable three-octave (C4..B6) piano keyboard in Nuklear that plays FM
+# sound through the kernel's Sound Blaster 16 driver, plus a PC-keyboard
+# MIDI layer (A-row whites, Q-row blacks, Z-row bass, ,/. octave) fed by
+# the nk_set_scancode_hook in nuklear_minios.c.  The synth is the Nuked-OPL3
+# FM engine rendering bounded 15 ms bites per frame with the backlog kept
+# as debt, and the frame loop yields instead of busy-spinning, so the mouse
+# stays responsive.  The app streams 8-bit mono PCM via syscalls 221/222.
+# Built like the node editor (reuses nuklear_minios.c), static ring-3,
+# ships on MiniFS.
 PIANO_SRCS = $(PROGS_DIR)/piano/piano.c \
              $(PROGS_DIR)/nuklear/nuklear_minios.c
 

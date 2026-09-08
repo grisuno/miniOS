@@ -1407,12 +1407,23 @@ command (two frequency bytes, low then high) so the clock matches the declared
   per frame clamped to `MAX_AUDIO_MS` (600 ms, just under the ring's ~650 ms
   capacity) instead of the old 50 ms cap, so a slow frame no longer
   under-renders and starves the ring into a choppy buzz. The backlog is
-  paced at `PIANO_FRAME_MS` (30 ms) per frame with the remainder kept as
-  debt for the frames after, so a stall drains over several frames instead
-  of one giant catch-up render spiking the CPU — identical total audio,
-  bounded worst-case frame cost. A fully-filled buffer
+  paced at `PIANO_FRAME_MS` (15 ms, under one ~93 ms DMA buffer) per frame
+  with the remainder kept as debt for the frames after, so a stall drains
+  over several frames instead of one giant catch-up render spiking the CPU
+  and halving the mouse poll rate — identical total audio, bounded
+  worst-case frame cost. A fully-filled buffer
   whose submit is refused is held and retried next frame (`sb_flush`), and a
   drop is counted only when a new submit is blocked by a still-pending buffer.
+  The frame loop yields (`SYS_SCHED_YIELD`) instead of busy-spinning 8 ms,
+  so input polling stays fresh while audio renders.
+- **Piano keyboard**: three octaves C4..B6 (middle-C base, 21 white + 15
+  black keys fitting the 800 px window) clickable with velocity, plus a
+  PC-keyboard MIDI layer Fruity Loops style fed by a raw-scancode hook in
+  `nuklear_minios` (`nk_set_scancode_hook`): A-row whites, Q-row blacks,
+  Z-row bass whites, digits aliasing the upper blacks, comma/period for
+  octave shift. Each scancode owns its voice (`sc_chan`) so chords and
+  melodies are playable; the pressed mouse key is latched so releasing
+  off-key cannot stick a voice.
 
 ## MicroPython (`micropython.elf`)
 MicroPython runs inside MiniOS exactly like DOOM does: the upstream project

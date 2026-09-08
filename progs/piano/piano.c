@@ -2,38 +2,43 @@
  *
  * A ring-3 static ELF app (built like the node editor and DOOM: host gcc
  * -static, ships on MiniFS, launched from a desktop icon).  It renders a
- * clickable two-octave piano keyboard with Nuklear, and each key triggers a
- * note on the Nuked-OPL3 FM chip emulator: one modulator + one carrier per
- * channel driving a real Yamaha FM engine.  The emulator is cycle-accurate
- * but heavy, so it renders in bounded per-frame blocks into the mono mix
- * rather than sample-by-sample; the app stays fluid because the PCM is
- * decoupled from the UI frame rate.  The mix is 8-bit mono PCM streamed to
- * the kernel's Sound Blaster 16 driver through the MiniOS PCM syscalls
- * (221 open, 222 submit) — the same real-audio path the SB16 driver provides.
+ * clickable three-octave piano keyboard (C4..B6, middle C base so the
+ * default octave already sings instead of rumbling) with Nuklear, and each
+ * key triggers a note on the Nuked-OPL3 FM chip emulator: one modulator +
+ * one carrier per channel driving a real Yamaha FM engine.  The emulator
+ * is cycle-accurate but heavy, so it renders in small bounded per-frame
+ * bites (PIANO_FRAME_MS) into the mono mix; the backlog stays as debt for
+ * later frames, so the ring never starves and the UI never blocks on one
+ * giant catch-up render.  The mix is 8-bit mono PCM streamed to the
+ * kernel's Sound Blaster 16 driver through the MiniOS PCM syscalls
+ * (221 open, 222 submit, 224 pump) — the same real-audio path the SB16
+ * driver provides.  The frame loop yields instead of busy-spinning, so the
+ * mouse keeps its poll rate while audio renders.
  *
- * The audio is decoupled from the UI frame rate: each frame renders exactly
- * the PCM for the wall-clock time elapsed since the last frame and submits it
- * in SB16-sized buffers, so the ring paces output in real time and the UI
- * never stalls.  With no SB16 the PCM open fails and the piano is silent but
- * still fully interactive.
+ * The PC keyboard is a MIDI keyboard (Fruity Loops style): the A row
+ * (A S D F G H J K L ;) plays white keys, the Q row (W E T Y U O P)
+ * plays the black keys between them, the Z row (Z X C V B N M) plays a
+ * bass octave of whites, and 2 3 5 6 7 alias the upper black keys.
+ * Comma/period shift the octave; every key press/release is tracked per
+ * scancode so melodies and chords are playable without the mouse.
  *
  * Expressive controls, all integer-friendly on the mix path:
  *   - velocity: the click's vertical position inside a key sets the note
  *     loudness (top = soft, bottom = loud) by biasing the OPL3 carrier
- *     output level, FM's native amplitude control.
+ *     output level, FM's native amplitude control (keyboard notes use 80).
  *   - sustain pedal: while held, key releases are deferred and the FM voice
  *     keeps ringing (OPL3 decays naturally) until the pedal is released;
  *     a full 18-voice press steals the oldest sustained voice rather than
  *     dropping the new note.
- *   - octave shift and a master volume (0..100).
+ *   - octave shift (-2..+2) and a master volume (0..100).
  *   - live DSP effects on the mono mix, bounded and real-time: an echo /
  *     delay line (feedback + wet), a tremolo LFO and a soft clip.
  *
  * `piano --selftest` is a headless regression hook over the serial console:
- * it exercises the velocity mapping, sustain hold/release, octave clamp and
- * every FX stage on synthetic input and prints `piano: selftest ok` or a
- * diagnostic.  It needs neither the SB16 nor the GUI, so the BDD suite can
- * assert the DSP never regresses.
+ * it exercises the velocity mapping, sustain hold/release, octave clamp,
+ * the keyboard map and every FX stage on synthetic input and prints
+ * `piano: selftest ok` or a diagnostic.  It needs neither the SB16 nor the
+ * GUI, so the BDD suite can assert the DSP never regresses.
  */
 
 #include <stdio.h>
@@ -63,8 +68,11 @@ static char ui_memory[UI_MEMORY];
 /* Per-frame render bite: after a stall the backlog is paced over several
  * frames instead of one giant catch-up render, bounding the worst-case CPU
  * spike (Nuked OPL3 is heavy) while the debt below is preserved, so not a
- * single millisecond of audio is lost. */
-#define PIANO_FRAME_MS 30
+ * single millisecond of audio is lost.  Kept small (15 ms) on purpose: a
+ * 30 ms bite costs a full extra frame of OPL3 time and halves the mouse
+ * poll rate while the backlog drains; 15 ms still outruns the ~93 ms DMA
+ * buffer so the ring never starves. */
+#define PIANO_FRAME_MS 15
 
 static long sys_pcm_open(long on) {
     long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_OPEN),"D"(on):"rcx","r11","memory"); return r;
@@ -74,6 +82,9 @@ static long sys_pcm_submit(const void *buf, long len) {
 }
 static long sys_pcm_pump(void) {
     long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_PUMP):"rcx","r11","memory"); return r;
+}
+static void sys_yield(void) {
+    __asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");
 }
 
 /* ── Nuked-OPL3 FM engine ───────────────────────────────────────────── */
@@ -144,24 +155,37 @@ static void o3_note(int ch, int midi, int on) {
     o3_chreg(ch, 0xB0, ((unsigned)block << 2) | ((fnum >> 8) & 3) | 0x20);
 }
 
-/* ── Keyboard model: two octaves C3..C5 (14 white + 10 black keys) ────
- * Lives above the voice code because key_to_chan is indexed (and sized)
- * by key number. */
-#define KEY_W 42
-#define KEY_H 150
-#define BK_W  26
-#define BK_H  100
-#define KEY_Y  60
+/* ── Keyboard model: three octaves C4..B6 (21 white + 15 black keys) ──
+ * Base is middle C (MIDI 60 = 261 Hz) so the default octave sings; the old
+ * C3 base (130 Hz) rumbled even two octaves up.  21 whites at 36 px span
+ * 756 px and fit the 800 px Nuklear window.  The table is chromatic
+ * (midi 60..95) so midi_to_key is just midi - PIANO_BASE_MIDI.  Lives above
+ * the voice code because key_to_chan is indexed (and sized) by key number. */
+#define KEY_W 36
+#define KEY_H 138
+#define BK_W  22
+#define BK_H  88
+#define KEY_Y  72
+#define PIANO_BASE_MIDI 60
+#define PIANO_OCTAVES 3
 
 static const struct { int black; int midi; int x; } keys[] = {
-    {0, 48,   0}, {1, 49,  29}, {0, 50,  42}, {1, 51,  71}, {0, 52,  84},
-    {0, 53, 126}, {1, 54, 155}, {0, 55, 168}, {1, 56, 197}, {0, 57, 210},
-    {1, 58, 239}, {0, 59, 252},
-    {0, 60, 294}, {1, 61, 323}, {0, 62, 336}, {1, 63, 365}, {0, 64, 378},
-    {0, 65, 420}, {1, 66, 449}, {0, 67, 462}, {1, 68, 491}, {0, 69, 504},
-    {1, 70, 533}, {0, 71, 546},
+    {0, 60,   0}, {1, 61,  25}, {0, 62,  36}, {1, 63,  61}, {0, 64,  72},
+    {0, 65, 108}, {1, 66, 133}, {0, 67, 144}, {1, 68, 169}, {0, 69, 180},
+    {1, 70, 205}, {0, 71, 216},
+    {0, 72, 252}, {1, 73, 277}, {0, 74, 288}, {1, 75, 313}, {0, 76, 324},
+    {0, 77, 360}, {1, 78, 385}, {0, 79, 396}, {1, 80, 421}, {0, 81, 432},
+    {1, 82, 457}, {0, 83, 468},
+    {0, 84, 504}, {1, 85, 529}, {0, 86, 540}, {1, 87, 565}, {0, 88, 576},
+    {0, 89, 612}, {1, 90, 637}, {0, 91, 648}, {1, 92, 673}, {0, 93, 684},
+    {1, 94, 709}, {0, 95, 720},
 };
 #define NKEYS ((int)(sizeof(keys) / sizeof(keys[0])))
+
+static int midi_to_key(int midi) {
+    if (midi < PIANO_BASE_MIDI || midi >= PIANO_BASE_MIDI + NKEYS) return -1;
+    return midi - PIANO_BASE_MIDI;
+}
 
 /* ── Expressive note state: velocity, sustain, octave ─────────────────
  * Voices (MAX_VOICES, the OPL3 channel count) and keys (NKEYS, the UI
@@ -172,6 +196,10 @@ static const struct { int black; int midi; int x; } keys[] = {
 static int key_to_chan[NKEYS];   /* key index -> OPL3 channel, -1 = off */
 static int chan_used[MAX_VOICES];
 static int chan_sustained[MAX_VOICES];/* key released but pedal holds the voice */
+static int chan_midi[MAX_VOICES];/* midi sounding per channel, for kbd paint */
+/* Per-scancode voice tracking so chords and fast melodies work: each
+ * pressed scancode owns its channel until release.  Indexed by 7-bit code. */
+static int sc_chan[128];
 
 static int sustain_pedal;
 static int octave;                    /* -2..+2, note shifted by 12*octave */
@@ -193,8 +221,22 @@ static void pedal_set(int on) {
             o3_note(ch, 0, 0);
             chan_used[ch] = 0;
             chan_sustained[ch] = 0;
+            chan_midi[ch] = -1;
         }
     }
+}
+
+static int voice_alloc(void) {
+    int ch;
+    for (ch = 0; ch < MAX_VOICES; ch++) if (!chan_used[ch]) return ch;
+    /* All voices busy: steal the oldest sustained voice, never drop a
+     * new note because a held pedal blocked every channel. */
+    for (ch = 0; ch < MAX_VOICES; ch++) if (chan_sustained[ch]) break;
+    if (ch >= MAX_VOICES) return -1;
+    o3_note(ch, 0, 0);
+    chan_sustained[ch] = 0;
+    chan_midi[ch] = -1;
+    return ch;
 }
 
 static void note_off_key(int key) {
@@ -213,20 +255,118 @@ static void note_off_key(int key) {
 static void note_on_key(int key, int midi, int vel) {
     if (key < 0 || key >= NKEYS || !audio_on) return;
     if (key_to_chan[key] >= 0) return;   /* same key already sounding */
-    int ch;
-    for (ch = 0; ch < MAX_VOICES; ch++) if (!chan_used[ch]) break;
-    if (ch >= MAX_VOICES) {
-        /* All voices busy: steal the oldest sustained voice, never drop a
-         * new note because a held pedal blocked every channel. */
-        for (ch = 0; ch < MAX_VOICES; ch++) if (chan_sustained[ch]) break;
-        if (ch >= MAX_VOICES) return;
-        o3_note(ch, 0, 0);
-        chan_sustained[ch] = 0;
-    }
+    int ch = voice_alloc();
+    if (ch < 0) return;
     chan_used[ch] = 1;
     key_to_chan[key] = ch;
     o3_instrument(ch, vel);
     o3_note(ch, clamp_midi(midi + 12 * octave), 1);
+}
+
+/* ── PC-keyboard MIDI map (Fruity Loops style) ─────────────────────────
+ * PS/2 set-1 scancodes (7-bit code, E0 clear) to semitone offsets from the
+ * UI base: A-row whites, Q-row blacks between them, Z-row bass whites,
+ * digits aliasing the upper blacks.  Comma/period are octave down/up and
+ * are handled in the hook, not here.  Returns -100 for "not a note". */
+#define KBD_NO_NOTE (-100)
+static int kbd_semitone(int code) {
+    switch (code) {
+    case 0x1E: return 0;    /* A C     */
+    case 0x11: return 1;    /* W C#    */
+    case 0x1F: return 2;    /* S D     */
+    case 0x12: return 3;    /* E D#    */
+    case 0x20: return 4;    /* D E     */
+    case 0x21: return 5;    /* F F     */
+    case 0x14: return 6;    /* T F#    */
+    case 0x22: return 7;    /* G G     */
+    case 0x15: return 8;    /* Y G#    */
+    case 0x23: return 9;    /* H A     */
+    case 0x16: return 10;   /* U A#    */
+    case 0x24: return 11;   /* J B     */
+    case 0x25: return 12;   /* K C+1   */
+    case 0x18: return 13;   /* O C#+1  */
+    case 0x26: return 14;   /* L D+1   */
+    case 0x19: return 15;   /* P D#+1  */
+    case 0x27: return 16;   /* ; E+1   */
+    case 0x2C: return -12;  /* Z bass C */
+    case 0x2D: return -10;  /* X bass D */
+    case 0x2E: return -8;   /* C bass E */
+    case 0x2F: return -7;   /* V bass F */
+    case 0x30: return -5;   /* B bass G */
+    case 0x31: return -3;   /* N bass A */
+    case 0x32: return -1;   /* M bass B */
+    case 0x03: return 1;    /* 2 alias C# */
+    case 0x04: return 3;    /* 3 alias D# */
+    case 0x06: return 6;    /* 5 alias F# */
+    case 0x07: return 8;    /* 6 alias G# */
+    case 0x08: return 10;   /* 7 alias A# */
+    default: return KBD_NO_NOTE;
+    }
+}
+
+static void kbd_all_off(void) {
+    int i;
+    for (i = 0; i < 128; i++) sc_chan[i] = -1;
+    for (i = 0; i < MAX_VOICES; i++) chan_midi[i] = -1;
+}
+
+static void note_on_sc(int code, int vel) {
+    int off = kbd_semitone(code);
+    if (off == KBD_NO_NOTE || !audio_on) return;
+    if (code < 0 || code >= 128 || sc_chan[code] >= 0) return;
+    int ch = voice_alloc();
+    if (ch < 0) return;
+    int midi = clamp_midi(PIANO_BASE_MIDI + off + 12 * octave);
+    chan_used[ch] = 1;
+    chan_midi[ch] = midi;
+    sc_chan[code] = ch;
+    o3_instrument(ch, vel);
+    o3_note(ch, midi, 1);
+}
+
+static void note_off_sc(int code) {
+    if (code < 0 || code >= 128) return;
+    int ch = sc_chan[code];
+    if (ch < 0) return;
+    sc_chan[code] = -1;
+    if (sustain_pedal) {
+        chan_sustained[ch] = 1;
+        return;
+    }
+    o3_note(ch, 0, 0);
+    chan_used[ch] = 0;
+    chan_midi[ch] = -1;
+}
+
+/* Raw scancode hook (registered with nk_set_scancode_hook): note on/off
+ * plus comma/period octave shift.  Extended (E0) keys are ignored. */
+static void piano_scancode(int code, int make, int e0, void *ud) {
+    (void)ud;
+    if (e0) return;
+    if (code == 0x33) {             /* , octave down */
+        if (make && octave > -2) octave--;
+        return;
+    }
+    if (code == 0x34) {             /* . octave up */
+        if (make && octave < 2) octave++;
+        return;
+    }
+    if (make) note_on_sc(code, 80);
+    else note_off_sc(code);
+}
+
+/* A UI key lights up when the mouse holds it or any keyboard voice sounds
+ * its (octave-shifted) midi. */
+static int key_sounding(int key) {
+    if (key < 0 || key >= NKEYS) return 0;
+    if (key_to_chan[key] >= 0) return 1;
+    int want = clamp_midi(keys[key].midi + 12 * octave);
+    int c;
+    for (c = 0; c < 128; c++) {
+        int ch = sc_chan[c];
+        if (ch >= 0 && ch < MAX_VOICES && chan_midi[ch] == want) return 1;
+    }
+    return 0;
 }
 
 /* ── Live DSP effects on the mono mix ───────────────────────────────── */
@@ -437,6 +577,8 @@ static void ui_run(int bench_ms) {
         chan_used[i] = 0;
         chan_sustained[i] = 0;
     }
+    kbd_all_off();
+    nk_set_scancode_hook(piano_scancode, 0);
     sustain_pedal = 0;
     octave = 0;
     fx_configure(0, 0, 0, 80);
@@ -454,6 +596,7 @@ static void ui_run(int bench_ms) {
     int origin[2] = {0, 0};
     int quit = 0;
     int last_down = 0;
+    int pressed_key = -1;
     long bench_start = (bench_ms > 0) ? (long)nk_sys_time_ms() : 0;
     long bench_frames = 0;
     while (!quit) {
@@ -483,14 +626,13 @@ static void ui_run(int bench_ms) {
                 r.x = (float)keys[k].x; r.y = (float)KEY_Y;
                 r.w = (float)(keys[k].black ? BK_W : KEY_W);
                 r.h = (float)(keys[k].black ? BK_H : KEY_H);
-                /* A sounding key lights up red: click feedback and a
-                 * serial-free way to see that the press registered. */
-                struct nk_color col = (key_to_chan[k] >= 0)
+                /* A sounding key lights up red: click/keyboard feedback
+                 * and a serial-free way to see that the press registered. */
+                struct nk_color col = key_sounding(k)
                     ? nk_rgb(200, 60, 60)
                     : keys[k].black
                     ? nk_rgb(20, 20, 20)
-                    : (k % 7 == 0 || k % 7 == 3 ? nk_rgb(235, 235, 235)
-                                                 : nk_rgb(245, 245, 245));
+                    : nk_rgb(240, 240, 240);
                 nk_fill_rect(canvas, r, 0, col);
                 nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));
             }
@@ -509,9 +651,17 @@ static void ui_run(int bench_ms) {
                              &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));
             }
             nk_fill_rect(canvas, nk_rect(0, 0, (float)NK_W, 44), 0, nk_rgb(40, 40, 40));
-            char head[64];
-            snprintf(head, sizeof(head), "OPL3 FM piano -> SB16  oct%+d  vol%d",
+            char head[96];
+            snprintf(head, sizeof(head), "OPL3 FM piano -> SB16  C4 base  oct%+d  vol%d",
                      octave, volume);
+            /* Keyboard help line under the control bar. */
+            {
+                const char *help = "A-row whites  Q-row blacks  Z-row bass  ,/. octave";
+                nk_draw_text(canvas,
+                    nk_rect(8, (float)(CTRL_Y + CTRL_H + 8), (float)NK_W - 16, 16),
+                    help, (int)strlen(help),
+                    &font, nk_rgb(200, 200, 200), nk_rgb(0, 0, 0));
+            }
             nk_draw_text(canvas,
                 nk_rect(8, 10, (float)NK_W - 16, 24), head, (int)strlen(head),
                 &font, audio_on ? nk_rgb(230, 230, 230) : nk_rgb(200, 90, 90),
@@ -519,17 +669,24 @@ static void ui_run(int bench_ms) {
         }
         nk_end(&ctx);
 
-        /* Note on/off and control presses from the mouse. */
+        /* Note on/off and control presses from the mouse.  The pressed
+         * key is latched on button-down so releasing off-key (or sliding
+         * off while dragging) still releases the right voice instead of
+         * leaving it stuck.  Keyboard notes arrive via piano_scancode. */
         int hit = hit_key((int)mx, (int)my);
         if (down && !last_down) {
             if (hit >= 0) {
+                pressed_key = hit;
                 note_on_key(hit, keys[hit].midi, hit_velocity(hit, (int)my));
             } else {
                 int c;
                 for (c = 0; c < NCTRLS; c++) if (ctrl_hit(c, (int)mx, (int)my)) { ctrl_press(c); break; }
             }
         } else if (!down && last_down) {
-            if (hit >= 0) note_off_key(hit);   /* sustain defers the release */
+            if (pressed_key >= 0) {
+                note_off_key(pressed_key);   /* sustain defers the release */
+                pressed_key = -1;
+            }
         }
         last_down = down;
 
@@ -541,7 +698,9 @@ static void ui_run(int bench_ms) {
         /* Render the PCM for the wall-clock time since the last frame,
          * paced: each frame renders at most PIANO_FRAME_MS and the rest
          * stays as debt for the frames after, so a stall never turns
-         * into one giant catch-up spike. */
+         * into one giant catch-up spike.  The small bite keeps the frame
+         * short so the mouse poll rate stays up while the backlog drains
+         * over several frames. */
         long now = (long)nk_sys_time_ms();
         long elapsed = now - last_render;
         if (elapsed > MAX_AUDIO_MS) elapsed = MAX_AUDIO_MS;
@@ -553,10 +712,13 @@ static void ui_run(int bench_ms) {
             last_render = now;
         }
 
-        unsigned t0 = (unsigned)nk_sys_time_ms();
-        while ((unsigned)nk_sys_time_ms() - t0 < 8) __asm__ volatile("pause");
+        /* Yield instead of busy-spinning: the old 8 ms pause loop burned
+         * CPU every frame and delayed input polling; a yield hands the
+         * machine back so the mouse/ISR state stays fresh. */
+        sys_yield();
     }
 
+    nk_set_scancode_hook(0, 0);
     nk_free(&ctx);
     nk_sys_kbd_raw(0);
     nk_sys_vga_mode(0);
@@ -573,6 +735,7 @@ static int run_selftest(void) {
         chan_used[i] = 0;
         chan_sustained[i] = 0;
     }
+    kbd_all_off();
     sustain_pedal = 0;
     octave = 0;
     fx_configure(0, 0, 0, 100);
@@ -589,7 +752,7 @@ static int run_selftest(void) {
 
     /* Sustain holds a released key until the pedal lifts. */
     sustain_pedal = 1;
-    note_on_key(0, 48, 80);
+    note_on_key(0, 60, 80);
     if (!chan_used[0]) { printf("piano: note_on did not grab a voice\n"); return 1; }
     note_off_key(0);
     if (!chan_sustained[0]) { printf("piano: sustain did not hold the release\n"); return 1; }
@@ -603,6 +766,54 @@ static int run_selftest(void) {
     /* Octave transposition clamps to the MIDI range. */
     if (clamp_midi(127 + 12 * 6) != 127 || clamp_midi(0 - 12 * 6) != 0) {
         printf("piano: octave clamp fail\n"); return 1;
+    }
+
+    /* Keyboard map: A-row whites, Q-row blacks, Z-row bass, digits alias.
+     * E-F and B-C gaps have no black key, so R and I are not notes. */
+    kbd_all_off();
+    if (kbd_semitone(0x1E) != 0 || kbd_semitone(0x11) != 1 ||
+        kbd_semitone(0x1F) != 2 || kbd_semitone(0x12) != 3 ||
+        kbd_semitone(0x20) != 4 || kbd_semitone(0x21) != 5 ||
+        kbd_semitone(0x14) != 6 || kbd_semitone(0x22) != 7 ||
+        kbd_semitone(0x15) != 8 || kbd_semitone(0x23) != 9 ||
+        kbd_semitone(0x16) != 10 || kbd_semitone(0x24) != 11 ||
+        kbd_semitone(0x2C) != -12 || kbd_semitone(0x03) != 1 ||
+        kbd_semitone(0x01) != KBD_NO_NOTE) {
+        printf("piano: kbd map fail\n"); return 1;
+    }
+    if (midi_to_key(PIANO_BASE_MIDI) != 0 ||
+        midi_to_key(PIANO_BASE_MIDI + NKEYS - 1) != NKEYS - 1 ||
+        midi_to_key(PIANO_BASE_MIDI - 1) != -1) {
+        printf("piano: midi_to_key fail\n"); return 1;
+    }
+
+    /* Keyboard voices: press/release per scancode, chords overlap. */
+    note_on_sc(0x1E, 80);
+    note_on_sc(0x22, 80);
+    if (sc_chan[0x1E] < 0 || sc_chan[0x22] < 0 ||
+        sc_chan[0x1E] == sc_chan[0x22]) {
+        printf("piano: kbd chord fail\n"); return 1;
+    }
+    if (!key_sounding(midi_to_key(60)) || !key_sounding(midi_to_key(67))) {
+        printf("piano: kbd highlight fail\n"); return 1;
+    }
+    note_off_sc(0x1E);
+    if (sc_chan[0x1E] >= 0 || !key_sounding(midi_to_key(67))) {
+        printf("piano: kbd release fail\n"); return 1;
+    }
+    note_off_sc(0x22);
+    /* Sustain holds a keyboard release too. */
+    sustain_pedal = 1;
+    note_on_sc(0x1E, 80);
+    note_off_sc(0x1E);
+    if (sc_chan[0x1E] >= 0) { printf("piano: kbd sustain track fail\n"); return 1; }
+    pedal_set(0);
+    sustain_pedal = 0;
+    kbd_all_off();
+    for (i = 0; i < NKEYS; i++) key_to_chan[i] = -1;
+    for (i = 0; i < MAX_VOICES; i++) {
+        chan_used[i] = 0;
+        chan_sustained[i] = 0;
     }
 
     /* FX: master volume scales the mix. */
@@ -631,16 +842,23 @@ static int run_selftest(void) {
     float t2 = fx_process(0.8f);
     if (fabsf(t1 - t2) < 1e-6f) { printf("piano: tremolo not modulating\n"); return 1; }
 
-    /* Audio pacing: one PCM buffer must span a full SB16 buffer duration and
-     * a whole ring must be able to absorb a MAX_AUDIO_MS frame, otherwise a
-     * slow frame either under-renders (starving the ring into a buzz) or
-     * over-renders (silently dropping audio). */
+    /* Audio pacing: one PCM buffer must span a full SB16 buffer duration
+     * and a whole ring must be able to absorb a MAX_AUDIO_MS frame,
+     * otherwise a slow frame either under-renders (starving the ring into
+     * a buzz) or over-renders (silently dropping audio).  The per-frame
+     * bite must stay below one DMA buffer so frames stay short and the
+     * mouse poll rate never collapses while the backlog drains. */
     {
         long buf_ms = (long)PCM_BUF * 1000 / (long)RATE;
         long ring_ms = buf_ms * 7;
         if (MAX_AUDIO_MS <= buf_ms || MAX_AUDIO_MS > ring_ms) {
             printf("piano: pacing constants fail (max=%d buf=%ld ring=%ld)\n",
                    MAX_AUDIO_MS, buf_ms, ring_ms);
+            return 1;
+        }
+        if (PIANO_FRAME_MS > buf_ms) {
+            printf("piano: frame bite too big (%d > buf %ld)\n",
+                   PIANO_FRAME_MS, buf_ms);
             return 1;
         }
     }
@@ -653,7 +871,7 @@ static int run_selftest(void) {
         static int16_t probe[512 * 2];
         long peak = 0;
         int n;
-        note_on_key(0, 48, 80);
+        note_on_key(0, 60, 80);
         for (n = 0; n < 6615; n += 512) {
             int m = n + 512 > 6615 ? 6615 - n : 512;
             int k;

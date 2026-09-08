@@ -595,10 +595,20 @@ static void feed_key(struct nk_context *ctx, enum nk_keys key, int down) {
     nk_input_key(ctx, key, down ? nk_true : nk_false);
 }
 
+static nk_scancode_cb sc_hook;
+static void *sc_hook_ud;
+
+void nk_set_scancode_hook(nk_scancode_cb cb, void *ud) {
+    sc_hook = cb;
+    sc_hook_ud = ud;
+}
+
 static void handle_scancode(struct nk_context *ctx, unsigned char sc) {
     if (sc == 0xE0) { pending_e0 = 1; return; }
     int make = !(sc & 0x80);
     unsigned char code = sc & 0x7F;
+    int e0 = pending_e0 ? 1 : 0;
+    if (sc_hook) sc_hook((int)code, make, e0, sc_hook_ud);
 
     if (pending_e0) {
         pending_e0 = 0;

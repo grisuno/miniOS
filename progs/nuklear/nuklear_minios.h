@@ -54,4 +54,13 @@ void nk_rasterize(struct nk_context *ctx);
 void nk_set_window_origin(int x, int y);
 void nk_poll_input(struct nk_context *ctx);
 
+/* Raw scancode hook: piano-style apps need note on/off with break events,
+ * which the Nuklear key/unicode translation discards. When set, the hook
+ * fires for every PS/2 set-1 scancode drained by nk_poll_input, after E0
+ * decoding: code is the 7-bit code, make is 1 on press and 0 on release,
+ * e0 is 1 for extended keys. The hook must never block; it runs in the
+ * app's input poll. */
+typedef void (*nk_scancode_cb)(int code, int make, int e0, void *ud);
+void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);
+
 #endif
