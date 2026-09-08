@@ -57,8 +57,8 @@
 - Layer: utility
 - Language: py
 - Symbols:
-  - `write_atomic` (function, line 51) `def write_atomic(img, path)`
-  - `main` (function, line 57) `def main()`
+  - `write_atomic` (function, line 53) `def write_atomic(img, path)`
+  - `main` (function, line 59) `def main()`
 
 ## tools/gen_icons.py
 - Layer: utility

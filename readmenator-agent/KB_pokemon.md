@@ -9,6 +9,7 @@
 - Layer: data_access
 - Language: c
 - Symbols:
+  - `gb_voice_t` (struct, line 228)
   - `audible` (function, line 32) `* audible (noise SFX, sweep zaps), the raw mix estimate is played.
  *
  * Debug: heartbeat to stde...`
@@ -91,31 +92,45 @@
   - `gb_platform_test_inject_persistence_fault` (function, line 1288) `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...`
-  - `FB_ADDR` (macro, line 113)
-  - `FB_W` (macro, line 115)
-  - `FB_H` (macro, line 116)
-  - `GB_SCALE` (macro, line 117)
-  - `GB_DST_W` (macro, line 119)
-  - `GB_DST_H` (macro, line 120)
-  - `GB_DST_X0` (macro, line 121)
-  - `GB_DST_Y0` (macro, line 122)
-  - `MINIOS_AUDIO_RATE` (macro, line 186)
-  - `MINIOS_AUDIO_SILENCE_E` (macro, line 188)
-  - `MINIOS_AUDIO_MIN_HZ` (macro, line 189)
-  - `MINIOS_AUDIO_MAX_HZ` (macro, line 190)
-  - `MINIOS_ARP_BASS_MS` (macro, line 191)
-  - `MINIOS_ARP_MEL_MS` (macro, line 192)
-  - `MENU_BAR_H` (macro, line 511)
-  - `MENU_FILE_X0` (macro, line 513)
-  - `MENU_FILE_X1` (macro, line 514)
-  - `MENU_DROP_X0` (macro, line 515)
-  - `MENU_DROP_W` (macro, line 516)
-  - `MENU_ITEM_H` (macro, line 517)
-  - `MENU_NITEMS` (macro, line 518)
-  - `MENU_BG` (macro, line 521)
-  - `MENU_FG` (macro, line 522)
-  - `MENU_HOVER` (macro, line 523)
-  - `MENU_OSD_BG` (macro, line 524)
-  - `MINIOS_AUTOSAVE_MS` (macro, line 940)
-  - `MINIOS_FF_FRAMESKIP` (macro, line 952)
+  - `volatile` (function, line 58) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
+  - `fprintf` (function, line 162) `fprintf(stderr, "[MINIOS-DBG] render=%u present=%u lcd_off=%u poll=%u vsync=%u " "joypad dpad=%02x buttons=%02x\n", g_dbg_render, g_dbg_present, g_dbg_lcd_off, g_dbg_poll, g_dbg_vsync, g_joypad_dpad, `
+  - `fflush` (function, line 168) `fflush(stderr);`
+  - `audio` (function, line 172) `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies come from gb_audio_voice() * (runtime accessor over internal channel state: enabled, DA`
+  - `menu` (function, line 497) `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it starts at GB_DST_Y0 = 36). Clicking FILE (or pressing Esc) drops a * 5-item menu: S`
+  - `strncpy` (function, line 570) `strncpy(g_osd, s, sizeof(g_osd) - 1);`
+  - `gb_context_save_ram` (function, line 617) `gb_context_save_ram(g_ctx);`
+  - `exit` (function, line 675) `exit(0);`
+  - `memset` (function, line 813) `memset(g_last_guest_framebuffer, 0, sizeof(g_last_guest_framebuffer));`
+  - `snprintf` (function, line 838) `snprintf(out, n, "saves/%.40s%s", id, ext);`
+  - `fclose` (function, line 858) `fclose(f);`
+  - `memcpy` (function, line 993) `memcpy(prev, g_key_state, sizeof(prev));`
+  - `gb_set_platform_callbacks` (function, line 1048) `gb_set_platform_callbacks(ctx, &cbs);`
+  - `dbg_heartbeat` (function, line 1086) `dbg_heartbeat();`
+  - `FB_ADDR` (macro, line 113) `#define FB_ADDR`
+  - `FB_W` (macro, line 115) `#define FB_W`
+  - `FB_H` (macro, line 116) `#define FB_H`
+  - `GB_SCALE` (macro, line 117) `#define GB_SCALE`
+  - `GB_DST_W` (macro, line 119) `#define GB_DST_W`
+  - `GB_DST_H` (macro, line 120) `#define GB_DST_H`
+  - `GB_DST_X0` (macro, line 121) `#define GB_DST_X0`
+  - `GB_DST_Y0` (macro, line 122) `#define GB_DST_Y0`
+  - `MINIOS_AUDIO_RATE` (macro, line 186) `#define MINIOS_AUDIO_RATE`
+  - `MINIOS_AUDIO_SILENCE_E` (macro, line 188) `#define MINIOS_AUDIO_SILENCE_E`
+  - `MINIOS_AUDIO_MIN_HZ` (macro, line 189) `#define MINIOS_AUDIO_MIN_HZ`
+  - `MINIOS_AUDIO_MAX_HZ` (macro, line 190) `#define MINIOS_AUDIO_MAX_HZ`
+  - `MINIOS_ARP_BASS_MS` (macro, line 191) `#define MINIOS_ARP_BASS_MS`
+  - `MINIOS_ARP_MEL_MS` (macro, line 192) `#define MINIOS_ARP_MEL_MS`
+  - `MENU_BAR_H` (macro, line 511) `#define MENU_BAR_H`
+  - `MENU_FILE_X0` (macro, line 513) `#define MENU_FILE_X0`
+  - `MENU_FILE_X1` (macro, line 514) `#define MENU_FILE_X1`
+  - `MENU_DROP_X0` (macro, line 515) `#define MENU_DROP_X0`
+  - `MENU_DROP_W` (macro, line 516) `#define MENU_DROP_W`
+  - `MENU_ITEM_H` (macro, line 517) `#define MENU_ITEM_H`
+  - `MENU_NITEMS` (macro, line 518) `#define MENU_NITEMS`
+  - `MENU_BG` (macro, line 521) `#define MENU_BG`
+  - `MENU_FG` (macro, line 522) `#define MENU_FG`
+  - `MENU_HOVER` (macro, line 523) `#define MENU_HOVER`
+  - `MENU_OSD_BG` (macro, line 524) `#define MENU_OSD_BG`
+  - `MINIOS_AUTOSAVE_MS` (macro, line 940) `#define MINIOS_AUTOSAVE_MS`
+  - `MINIOS_FF_FRAMESKIP` (macro, line 952) `#define MINIOS_FF_FRAMESKIP`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`

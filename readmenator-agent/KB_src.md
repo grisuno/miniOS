@@ -28,25 +28,39 @@
   - `aes_run` (function, line 311) `static int aes_run(int decode, const char *keyhex, const char *noncehex,
                    const...`
   - `main` (function, line 383) `int main(int argc, char **argv)`
-  - `AES_MAGIC0` (macro, line 37)
-  - `AES_MAGIC1` (macro, line 39)
-  - `AES_MAGIC2` (macro, line 40)
-  - `AES_MAGIC3` (macro, line 41)
-  - `AES_HDR_SIZE` (macro, line 42)
-  - `AES_BLOCK` (macro, line 43)
-  - `AES_KEY_BYTES` (macro, line 45)
-  - `AES_NONCE_BYTES` (macro, line 46)
-  - `AES_ROUNDS` (macro, line 47)
-  - `AES_RK_LEN` (macro, line 48)
-  - `AES_SBOX_SIZE` (macro, line 49)
-  - `AES_RCON_SIZE` (macro, line 50)
-  - `AES_POLY` (macro, line 51)
-  - `AES_AFFINE_C` (macro, line 53)
-  - `AES_RCON_PAD` (macro, line 54)
-  - `HEX_KEY_LEN` (macro, line 55)
-  - `HEX_NONCE_LEN` (macro, line 57)
-  - `AES_SEEK_END` (macro, line 58)
-  - `AES_EXIT_FAIL` (macro, line 60)
+  - `GF` (function, line 8) `* generated procedurally from the GF(2^8) multiplicative inverse plus the * FIPS-197 affine transform, so the file carries no magic tables. The mode * is CTR (NIST SP 800-38A): no padding, encrypt and`
+  - `putchar` (function, line 25) `int putchar();`
+  - `strcmp` (function, line 26) `int strcmp();`
+  - `strlen` (function, line 27) `int strlen();`
+  - `fopen` (function, line 28) `void *fopen();`
+  - `fclose` (function, line 29) `int fclose();`
+  - `fread` (function, line 30) `int fread();`
+  - `fwrite` (function, line 31) `int fwrite();`
+  - `fseek` (function, line 32) `int fseek();`
+  - `ftell` (function, line 33) `int ftell();`
+  - `rewind` (function, line 34) `void rewind();`
+  - `malloc` (function, line 35) `void *malloc();`
+  - `free` (function, line 36) `void free();`
+  - `printf` (function, line 320) `printf("%s: %s: key must be %d hex digits\n", aes_tool_name(decode), keyhex, HEX_KEY_LEN);`
+  - `AES_MAGIC0` (macro, line 37) `#define AES_MAGIC0`
+  - `AES_MAGIC1` (macro, line 39) `#define AES_MAGIC1`
+  - `AES_MAGIC2` (macro, line 40) `#define AES_MAGIC2`
+  - `AES_MAGIC3` (macro, line 41) `#define AES_MAGIC3`
+  - `AES_HDR_SIZE` (macro, line 42) `#define AES_HDR_SIZE`
+  - `AES_BLOCK` (macro, line 43) `#define AES_BLOCK`
+  - `AES_KEY_BYTES` (macro, line 45) `#define AES_KEY_BYTES`
+  - `AES_NONCE_BYTES` (macro, line 46) `#define AES_NONCE_BYTES`
+  - `AES_ROUNDS` (macro, line 47) `#define AES_ROUNDS`
+  - `AES_RK_LEN` (macro, line 48) `#define AES_RK_LEN`
+  - `AES_SBOX_SIZE` (macro, line 49) `#define AES_SBOX_SIZE`
+  - `AES_RCON_SIZE` (macro, line 50) `#define AES_RCON_SIZE`
+  - `AES_POLY` (macro, line 51) `#define AES_POLY`
+  - `AES_AFFINE_C` (macro, line 53) `#define AES_AFFINE_C`
+  - `AES_RCON_PAD` (macro, line 54) `#define AES_RCON_PAD`
+  - `HEX_KEY_LEN` (macro, line 55) `#define HEX_KEY_LEN`
+  - `HEX_NONCE_LEN` (macro, line 57) `#define HEX_NONCE_LEN`
+  - `AES_SEEK_END` (macro, line 58) `#define AES_SEEK_END`
+  - `AES_EXIT_FAIL` (macro, line 60) `#define AES_EXIT_FAIL`
 
 ## progs/src/audio.c
 - Layer: infrastructure
@@ -70,6 +84,7 @@
   - `audio_stream_close` (function, line 67) `void audio_stream_close(int id)`
   - `audio_stream_submit` (function, line 71) `int audio_stream_submit(int id, const void *buf, unsigned len)`
   - `audio_stream_volume` (function, line 75) `void audio_stream_volume(int id, unsigned char vol)`
+  - `volatile` (function, line 5) `__asm__ volatile("syscall" : "=a"(r) : "a"(n), "D"(a1) : "rcx","r11","memory");`
 - Depends on: `progs/minios_abi.h`
 
 ## progs/src/cp.c
@@ -77,8 +92,13 @@
 - Language: c
 - Symbols:
   - `main` (function, line 9) `int main(int argc, char **argv)`
-  - `CP_BUF_SIZE` (macro, line 6)
-  - `CP_EXIT_FAIL` (macro, line 8)
+  - `printf` (function, line 1) `int printf();`
+  - `fopen` (function, line 2) `void *fopen();`
+  - `fclose` (function, line 3) `int fclose();`
+  - `fread` (function, line 4) `int fread();`
+  - `fwrite` (function, line 5) `int fwrite();`
+  - `CP_BUF_SIZE` (macro, line 6) `#define CP_BUF_SIZE`
+  - `CP_EXIT_FAIL` (macro, line 8) `#define CP_EXIT_FAIL`
 
 ## progs/src/cpl.c
 - Layer: utility
@@ -88,6 +108,7 @@
   - `read_cpl` (function, line 6) `static long read_cpl(void)`
   - `exit_now` (function, line 11) `static void exit_now(long code)`
   - `_start` (function, line 15) `void _start(void)`
+  - `volatile` (function, line 8) `__asm__ volatile("mov %%cs, %0" : "=r"(cs));`
 
 ## progs/src/fib.c
 - Layer: utility
@@ -133,15 +154,34 @@
   - `print_css_dump` (function, line 1071) `static void print_css_dump(void)`
   - `print_dom_dump` (function, line 1080) `static void print_dom_dump(void)`
   - `main` (function, line 1086) `int main(int argc, char **argv)`
-  - `FREEDOM_HOPS_MAX` (macro, line 49)
-  - `FREEDOM_HDR_MAX` (macro, line 51)
-  - `FREEDOM_BUF` (macro, line 52)
-  - `FREEDOM_CHUNK_MAX` (macro, line 53)
-  - `FREEDOM_CSS_MAX` (macro, line 54)
-  - `FREEDOM_CSS_BUF` (macro, line 55)
-  - `FREEDOM_DOM_BUF` (macro, line 56)
-  - `FREEDOM_ATTR_MAX` (macro, line 57)
-  - `FREEDOM_LINE_MAX` (macro, line 58)
+  - `curlfree` (function, line 4) `* spirit of curlfree (http.c + htmlfilter.c): a bounded header phase, * Content-Length or EOF body reading, Transfer-Encoding: chunked * decoding, redirect chasing with a hop bound, and a filter that `
+  - `connect` (function, line 32) `int connect(int fd, void *addr, int addrlen);`
+  - `sendto` (function, line 33) `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);`
+  - `recvfrom` (function, line 34) `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);`
+  - `close` (function, line 35) `int close(int fd);`
+  - `net_dns_resolve` (function, line 36) `int net_dns_resolve(char *host);`
+  - `tls_handshake` (function, line 37) `int tls_handshake(int fd, char *host);`
+  - `tls_send` (function, line 38) `int tls_send(int fd, char *buf, int len);`
+  - `tls_recv` (function, line 39) `int tls_recv(int fd, char *buf, int len);`
+  - `printf` (function, line 40) `int printf(char *fmt, ...);`
+  - `puts` (function, line 41) `int puts(char *s);`
+  - `strlen` (function, line 42) `int strlen(char *s);`
+  - `strchr` (function, line 43) `char *strchr(char *s, int c);`
+  - `strcmp` (function, line 44) `int strcmp(char *a, char *b);`
+  - `strncmp` (function, line 45) `int strncmp(char *a, char *b, int n);`
+  - `memcpy` (function, line 46) `int memcpy(char *dst, char *src, int n);`
+  - `memset` (function, line 47) `int memset(char *dst, int c, int n);`
+  - `putchar` (function, line 48) `int putchar(int c);`
+  - `put_entity` (function, line 730) `put_entity(f_ent);`
+  - `FREEDOM_HOPS_MAX` (macro, line 49) `#define FREEDOM_HOPS_MAX`
+  - `FREEDOM_HDR_MAX` (macro, line 51) `#define FREEDOM_HDR_MAX`
+  - `FREEDOM_BUF` (macro, line 52) `#define FREEDOM_BUF`
+  - `FREEDOM_CHUNK_MAX` (macro, line 53) `#define FREEDOM_CHUNK_MAX`
+  - `FREEDOM_CSS_MAX` (macro, line 54) `#define FREEDOM_CSS_MAX`
+  - `FREEDOM_CSS_BUF` (macro, line 55) `#define FREEDOM_CSS_BUF`
+  - `FREEDOM_DOM_BUF` (macro, line 56) `#define FREEDOM_DOM_BUF`
+  - `FREEDOM_ATTR_MAX` (macro, line 57) `#define FREEDOM_ATTR_MAX`
+  - `FREEDOM_LINE_MAX` (macro, line 58) `#define FREEDOM_LINE_MAX`
 
 ## progs/src/ftest.c
 - Layer: testing
@@ -149,6 +189,12 @@
 - Language: c
 - Symbols:
   - `main` (function, line 9) `int main(int argc, char **argv)`
+  - `fprintf` (function, line 3) `extern int fprintf(void *stream, const char *fmt, ...);`
+  - `snprintf` (function, line 4) `extern int snprintf(char *buf, unsigned long size, const char *fmt, ...);`
+  - `printf` (function, line 5) `extern int printf(const char *fmt, ...);`
+  - `exit` (function, line 6) `extern void exit(int code);`
+  - `stdout` (variable, line 7) `extern void *stdout;`
+  - `stderr` (variable, line 8) `extern void *stderr;`
 
 ## progs/src/hello.c
 - Layer: utility
@@ -156,6 +202,7 @@
 - Language: c
 - Symbols:
   - `main` (function, line 3) `int main(int argc, char **argv)`
+  - `printf` (function, line 2) `extern int printf(const char *fmt, ...);`
 
 ## progs/src/hello.py
 - Layer: utility
@@ -168,6 +215,17 @@
 - Symbols:
   - `atoi` (function, line 18) `int atoi(char *s)`
   - `main` (function, line 28) `int main(int argc, char **argv)`
+  - `kernel` (function, line 3) `* Hostnames are resolved by the kernel (net_dns_resolve syscall). */ int socket(int domain, int type, int proto);`
+  - `connect` (function, line 6) `int connect(int fd, void *addr, int addrlen);`
+  - `sendto` (function, line 7) `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);`
+  - `recvfrom` (function, line 8) `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);`
+  - `shutdown` (function, line 9) `int shutdown(int fd, int how);`
+  - `close` (function, line 10) `int close(int fd);`
+  - `net_dns_resolve` (function, line 11) `int net_dns_resolve(char *host);`
+  - `puts` (function, line 12) `int puts(char *s);`
+  - `printf` (function, line 13) `int printf(char *fmt, ...);`
+  - `strlen` (function, line 14) `int strlen(char *s);`
+  - `putchar` (function, line 15) `int putchar(int c);`
 
 ## progs/src/json.c
 - Layer: utility
@@ -191,17 +249,30 @@
   - `js_array_at` (function, line 356) `static int js_array_at(int arr, int idx)`
   - `js_query` (function, line 368) `static int js_query(int root, const char *path)`
   - `main` (function, line 400) `int main(int argc, char **argv)`
-  - `JS_MAX_NODES` (macro, line 26)
-  - `JS_POOL` (macro, line 28)
-  - `JS_NULL` (macro, line 29)
-  - `JS_BOOL` (macro, line 31)
-  - `JS_NUM` (macro, line 32)
-  - `JS_STR` (macro, line 33)
-  - `JS_OBJ` (macro, line 34)
-  - `JS_ARR` (macro, line 35)
-  - `JS_SEEK_END` (macro, line 36)
-  - `JS_EXIT_OK` (macro, line 38)
-  - `JS_EXIT_FAIL` (macro, line 39)
+  - `js_str` (function, line 5) `* members keep their key in js_str (the member value node) and their value * in the node itself, and object members / array elements are chained with * js_next. * * Usage: json <file> validate and pre`
+  - `free` (function, line 14) `void free();`
+  - `printf` (function, line 15) `int printf();`
+  - `putchar` (function, line 16) `int putchar();`
+  - `puts` (function, line 17) `int puts();`
+  - `strlen` (function, line 18) `int strlen();`
+  - `strcmp` (function, line 19) `int strcmp();`
+  - `fopen` (function, line 20) `void *fopen();`
+  - `fclose` (function, line 21) `int fclose();`
+  - `fread` (function, line 22) `int fread();`
+  - `fseek` (function, line 23) `int fseek();`
+  - `ftell` (function, line 24) `int ftell();`
+  - `rewind` (function, line 25) `void rewind();`
+  - `JS_MAX_NODES` (macro, line 26) `#define JS_MAX_NODES`
+  - `JS_POOL` (macro, line 28) `#define JS_POOL`
+  - `JS_NULL` (macro, line 29) `#define JS_NULL`
+  - `JS_BOOL` (macro, line 31) `#define JS_BOOL`
+  - `JS_NUM` (macro, line 32) `#define JS_NUM`
+  - `JS_STR` (macro, line 33) `#define JS_STR`
+  - `JS_OBJ` (macro, line 34) `#define JS_OBJ`
+  - `JS_ARR` (macro, line 35) `#define JS_ARR`
+  - `JS_SEEK_END` (macro, line 36) `#define JS_SEEK_END`
+  - `JS_EXIT_OK` (macro, line 38) `#define JS_EXIT_OK`
+  - `JS_EXIT_FAIL` (macro, line 39) `#define JS_EXIT_FAIL`
 
 ## progs/src/kmem.c
 - Layer: utility
@@ -211,6 +282,7 @@
   - `syscall3` (function, line 7) `static long syscall3(long n, long a1, long a2, long a3)`
   - `exit_now` (function, line 13) `static void exit_now(long code)`
   - `_start` (function, line 17) `void _start(void)`
+  - `volatile` (function, line 9) `__asm__ volatile("syscall" : "=a"(r) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
 
 ## progs/src/ldhello.c
 - Layer: utility
@@ -227,8 +299,10 @@
   - `lx_write` (function, line 28) `static void lx_write(const char *s)`
   - `lx_write_int` (function, line 32) `static void lx_write_int(long v)`
   - `lmain` (function, line 46) `int lmain(long argc, char **argv)`
-  - `SYS_write` (macro, line 19)
-  - `SYS_exit` (macro, line 21)
+  - `volatile` (function, line 13) `__asm__ volatile("syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
+  - `__asm__` (function, line 61) `__asm__( ".global _start\n" "_start:\n" " movq (%rsp), %rdi\n" /* argc */ " leaq 8(%rsp), %rsi\n" /* argv */ " call lmain\n" " movl %eax, %edi\n" /* exit code = lmain() return */ " movl $60, %eax\n" /`
+  - `SYS_write` (macro, line 19) `#define SYS_write`
+  - `SYS_exit` (macro, line 21) `#define SYS_exit`
 
 ## progs/src/lz4.c
 - Layer: utility
@@ -241,12 +315,26 @@
   - `lz4_compress_file` (function, line 79) `static int lz4_compress_file(const char *src, const char *dst)`
   - `lz4_decompress_file` (function, line 116) `static int lz4_decompress_file(const char *src, const char *dst)`
   - `main` (function, line 163) `int main(int argc, char **argv)`
-  - `LZ4_HDR_SIZE` (macro, line 29)
-  - `LZ4_BOUND_DEN` (macro, line 31)
-  - `LZ4_BOUND_SLACK` (macro, line 32)
-  - `LZ4_MAX_BLOCK` (macro, line 33)
-  - `LZ4_SEEK_END` (macro, line 34)
-  - `LZ4_EXIT_FAIL` (macro, line 36)
+  - `kernel` (function, line 5) `* * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so * these tools are thin front-ends over the two MiniOS syscalls 216 * (lz4_compress) and 217 (lz4_decompress), which mirro`
+  - `free` (function, line 15) `void free();`
+  - `printf` (function, line 16) `int printf();`
+  - `strcmp` (function, line 17) `int strcmp();`
+  - `strlen` (function, line 18) `int strlen();`
+  - `fopen` (function, line 19) `void *fopen();`
+  - `fclose` (function, line 20) `int fclose();`
+  - `fread` (function, line 21) `int fread();`
+  - `fwrite` (function, line 22) `int fwrite();`
+  - `fseek` (function, line 23) `int fseek();`
+  - `ftell` (function, line 24) `int ftell();`
+  - `rewind` (function, line 25) `void rewind();`
+  - `lz4_compress` (function, line 26) `int lz4_compress(char *src, int srclen, char *dst, int dstcap);`
+  - `lz4_decompress` (function, line 28) `int lz4_decompress(char *src, int srclen, char *dst, int dstcap);`
+  - `LZ4_HDR_SIZE` (macro, line 29) `#define LZ4_HDR_SIZE`
+  - `LZ4_BOUND_DEN` (macro, line 31) `#define LZ4_BOUND_DEN`
+  - `LZ4_BOUND_SLACK` (macro, line 32) `#define LZ4_BOUND_SLACK`
+  - `LZ4_MAX_BLOCK` (macro, line 33) `#define LZ4_MAX_BLOCK`
+  - `LZ4_SEEK_END` (macro, line 34) `#define LZ4_SEEK_END`
+  - `LZ4_EXIT_FAIL` (macro, line 36) `#define LZ4_EXIT_FAIL`
 
 ## progs/src/lzss.c
 - Layer: utility
@@ -271,24 +359,36 @@
   - `lz_compress` (function, line 265) `static int lz_compress(const char *src, const char *dst)`
   - `lz_decompress` (function, line 312) `static int lz_decompress(const char *src, const char *dst)`
   - `main` (function, line 384) `int main(int argc, char **argv)`
-  - `LZSS_EI` (macro, line 25)
-  - `LZSS_EJ` (macro, line 27)
-  - `LZSS_P` (macro, line 28)
-  - `LZSS_N` (macro, line 29)
-  - `LZSS_F` (macro, line 30)
-  - `LZSS_WIN` (macro, line 31)
-  - `LZSS_MAGIC0` (macro, line 32)
-  - `LZSS_MAGIC1` (macro, line 34)
-  - `LZSS_MAGIC2` (macro, line 35)
-  - `LZSS_MAGIC3` (macro, line 36)
-  - `LZSS_HDR_SIZE` (macro, line 37)
-  - `LZSS_ENC_SLACK` (macro, line 38)
-  - `LZSS_EXPAND_NUM` (macro, line 40)
-  - `LZSS_EXPAND_DEN` (macro, line 41)
-  - `LZSS_SEEK_END` (macro, line 42)
-  - `LZSS_ERR_NONE` (macro, line 44)
-  - `LZSS_ERR_OVERFLOW` (macro, line 46)
-  - `LZSS_EXIT_FAIL` (macro, line 47)
+  - `malloc` (function, line 12) `void *malloc();`
+  - `free` (function, line 14) `void free();`
+  - `printf` (function, line 15) `int printf();`
+  - `strcmp` (function, line 16) `int strcmp();`
+  - `strlen` (function, line 17) `int strlen();`
+  - `fopen` (function, line 18) `void *fopen();`
+  - `fclose` (function, line 19) `int fclose();`
+  - `fread` (function, line 20) `int fread();`
+  - `fwrite` (function, line 21) `int fwrite();`
+  - `fseek` (function, line 22) `int fseek();`
+  - `ftell` (function, line 23) `int ftell();`
+  - `rewind` (function, line 24) `void rewind();`
+  - `LZSS_EI` (macro, line 25) `#define LZSS_EI`
+  - `LZSS_EJ` (macro, line 27) `#define LZSS_EJ`
+  - `LZSS_P` (macro, line 28) `#define LZSS_P`
+  - `LZSS_N` (macro, line 29) `#define LZSS_N`
+  - `LZSS_F` (macro, line 30) `#define LZSS_F`
+  - `LZSS_WIN` (macro, line 31) `#define LZSS_WIN`
+  - `LZSS_MAGIC0` (macro, line 32) `#define LZSS_MAGIC0`
+  - `LZSS_MAGIC1` (macro, line 34) `#define LZSS_MAGIC1`
+  - `LZSS_MAGIC2` (macro, line 35) `#define LZSS_MAGIC2`
+  - `LZSS_MAGIC3` (macro, line 36) `#define LZSS_MAGIC3`
+  - `LZSS_HDR_SIZE` (macro, line 37) `#define LZSS_HDR_SIZE`
+  - `LZSS_ENC_SLACK` (macro, line 38) `#define LZSS_ENC_SLACK`
+  - `LZSS_EXPAND_NUM` (macro, line 40) `#define LZSS_EXPAND_NUM`
+  - `LZSS_EXPAND_DEN` (macro, line 41) `#define LZSS_EXPAND_DEN`
+  - `LZSS_SEEK_END` (macro, line 42) `#define LZSS_SEEK_END`
+  - `LZSS_ERR_NONE` (macro, line 44) `#define LZSS_ERR_NONE`
+  - `LZSS_ERR_OVERFLOW` (macro, line 46) `#define LZSS_ERR_OVERFLOW`
+  - `LZSS_EXIT_FAIL` (macro, line 47) `#define LZSS_EXIT_FAIL`
 
 ## progs/src/mmreuse.c
 - Layer: utility
@@ -299,12 +399,17 @@
   - `munmap` (function, line 20) `static long munmap(long addr, long len)`
   - `exit_now` (function, line 30) `static void exit_now(long code)`
   - `_start` (function, line 34) `void _start(void)`
+  - `ENOMEM` (function, line 3) `* downward mmap cursor drains until a map fails with ENOMEM (-12);`
+  - `volatile` (function, line 14) `__asm__ volatile("syscall" : "=a"(r) : "0"(9), "D"(0), "r"(a2), "r"(a3), "r"(a4), "r"(a5), "r"(a6) : "rcx", "r11", "memory");`
 
 ## progs/src/mthreads.h
 - Layer: utility
 - Doc: mthreads.h -- Minimal pthread-like threads for MiniOS ELFs (roadmap
 - Language: h
 - Symbols:
+  - `mmutex_t` (struct, line 38)
+  - `mthread_slot_t` (struct, line 42)
+  - `mthread_t` (type_alias, line 35) `typedef int mthread_t;`
   - `m_syscall6` (function, line 49) `static inline long m_syscall6(long n, long a, long b, long c)`
   - `myield` (function, line 58) `static inline void myield(void)`
   - `mfutex_wait` (function, line 62) `static inline long mfutex_wait(volatile int *addr, int val)`
@@ -315,13 +420,16 @@
   - `mthread_entry` (function, line 98) `static void mthread_entry(void *p)`
   - `mthread_create` (function, line 112) `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
   - `mthread_join` (function, line 135) `static int mthread_join(mthread_t t, void **retval)`
-  - `MTHREADS_H` (macro, line 24)
-  - `MTHREAD_STACK_SZ` (macro, line 27)
-  - `MTHREAD_MAX` (macro, line 29)
-  - `MMUTEX_FREE` (macro, line 30)
-  - `MMUTEX_HELD` (macro, line 32)
-  - `MMUTEX_CONTENDED` (macro, line 33)
-  - `MMUTEX_SPINS` (macro, line 34)
+  - `volatile` (function, line 52) `__asm__ volatile("syscall" : "=a"(r) : "a"(n), "D"(a), "S"(b), "d"(c) : "rcx", "r11", "memory");`
+  - `__attribute__` (function, line 111) `__attribute__((aligned(16)));`
+  - `__sync_synchronize` (function, line 140) `__sync_synchronize();`
+  - `MTHREADS_H` (macro, line 24) `#define MTHREADS_H`
+  - `MTHREAD_STACK_SZ` (macro, line 27) `#define MTHREAD_STACK_SZ`
+  - `MTHREAD_MAX` (macro, line 29) `#define MTHREAD_MAX`
+  - `MMUTEX_FREE` (macro, line 30) `#define MMUTEX_FREE`
+  - `MMUTEX_HELD` (macro, line 32) `#define MMUTEX_HELD`
+  - `MMUTEX_CONTENDED` (macro, line 33) `#define MMUTEX_CONTENDED`
+  - `MMUTEX_SPINS` (macro, line 34) `#define MMUTEX_SPINS`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/src/thdemo.c`
 
@@ -333,11 +441,15 @@
   - `write_str` (function, line 10) `static long write_str(const char *s, long n)`
   - `exit_now` (function, line 18) `static void exit_now(long code)`
   - `_start` (function, line 22) `void _start(void)`
+  - `void` (function, line 9) `typedef void (*fn_t)(void);`
+  - `volatile` (function, line 13) `__asm__ volatile("syscall" : "=a"(r) : "a"(1), "D"(1), "S"(s), "d"(n) : "rcx", "r11", "memory");`
+  - `fn` (function, line 29) `fn();`
 
 ## progs/src/opl3.c
 - Layer: utility
 - Language: c
 - Symbols:
+  - `note_t` (struct, line 102)
   - `sys_time` (function, line 35) `static long sys_time(void)`
   - `sys_open` (function, line 39) `static long sys_open(long on)`
   - `sys_submit` (function, line 42) `static long sys_submit(const void *buf, long len)`
@@ -346,15 +458,19 @@
   - `opl3_note` (function, line 68) `static void opl3_note(opl3_chip *chip, unsigned block, unsigned fnum, int on)`
   - `render` (function, line 77) `static void render(opl3_chip *chip, long ms, long *fail)`
   - `main` (function, line 106) `int main(void)`
-  - `SYS_TIME` (macro, line 20)
-  - `SYS_SB16_OPEN` (macro, line 22)
-  - `SYS_SB16_SUBMIT` (macro, line 23)
-  - `SYS_WRITE` (macro, line 24)
-  - `SAMPLE_RATE` (macro, line 27)
-  - `STEREO_FRAMES` (macro, line 29)
-  - `MONO_BYTES` (macro, line 30)
-  - `BUF_MS` (macro, line 31)
-  - `F_NUM_FACTOR` (macro, line 33)
+  - `OPL3_WriteReg` (function, line 54) `OPL3_WriteReg(chip, 0x20, 0x01);`
+  - `OPL3_GenerateStream` (function, line 85) `OPL3_GenerateStream(chip, stereo, STEREO_FRAMES);`
+  - `OPL3_Reset` (function, line 110) `OPL3_Reset(&chip, SAMPLE_RATE);`
+  - `volatile` (function, line 137) `__asm__ volatile("syscall"::"a"(SYS_WRITE),"D"(1),"S"(msg),"d"((long)n) :"rcx","r11","memory");`
+  - `SYS_TIME` (macro, line 20) `#define SYS_TIME`
+  - `SYS_SB16_OPEN` (macro, line 22) `#define SYS_SB16_OPEN`
+  - `SYS_SB16_SUBMIT` (macro, line 23) `#define SYS_SB16_SUBMIT`
+  - `SYS_WRITE` (macro, line 24) `#define SYS_WRITE`
+  - `SAMPLE_RATE` (macro, line 27) `#define SAMPLE_RATE`
+  - `STEREO_FRAMES` (macro, line 29) `#define STEREO_FRAMES`
+  - `MONO_BYTES` (macro, line 30) `#define MONO_BYTES`
+  - `BUF_MS` (macro, line 31) `#define BUF_MS`
+  - `F_NUM_FACTOR` (macro, line 33) `#define F_NUM_FACTOR`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 - Imported by: `progs/piano/piano.c`
 
@@ -369,12 +485,15 @@
 
 #include <stdio.h>...`
   - `main` (function, line 35) `int main(void)`
-  - `SYS_SB16_OPEN` (macro, line 20)
-  - `SYS_SB16_SUBMIT` (macro, line 22)
-  - `SYS_TIME` (macro, line 23)
-  - `RATE` (macro, line 24)
-  - `BUF` (macro, line 26)
-  - `WINDOW_MS` (macro, line 27)
+  - `volatile` (function, line 31) `__asm__ volatile("syscall":"=a"(r):"a"(n),"D"(a),"S"(b),"d"(d) :"rcx","r11","memory");`
+  - `printf` (function, line 63) `printf("sbtone: submitted %ld buffers (%ld ms audio) in %ld ms guest\n", ok, audio_ms, now - start);`
+  - `call` (function, line 65) `call(SYS_SB16_OPEN, 0, 0, 0);`
+  - `SYS_SB16_OPEN` (macro, line 20) `#define SYS_SB16_OPEN`
+  - `SYS_SB16_SUBMIT` (macro, line 22) `#define SYS_SB16_SUBMIT`
+  - `SYS_TIME` (macro, line 23) `#define SYS_TIME`
+  - `RATE` (macro, line 24) `#define RATE`
+  - `BUF` (macro, line 26) `#define BUF`
+  - `WINDOW_MS` (macro, line 27) `#define WINDOW_MS`
 - Depends on: `progs/minios_abi.h`
 
 ## progs/src/shell.py
@@ -459,12 +578,19 @@
   - `producer` (function, line 35) `static void *producer(void *p)`
   - `consumer` (function, line 56) `static void *consumer(void *p)`
   - `main` (function, line 81) `int main(void)`
-  - `NPROD` (macro, line 20)
-  - `NCONS` (macro, line 22)
-  - `PER_PROD` (macro, line 23)
-  - `BUFSZ` (macro, line 24)
-  - `EXPECTED_N` (macro, line 25)
-  - `EXPECTED_SUM` (macro, line 27)
+  - `threads` (function, line 2) `* * Ten threads (1 main + 5 producers + 4 consumers) share one address * space through thread_spawn (MiniOS syscall 225): a bounded buffer, * a spin mutex and Mesa-style spin-waits. Workers never touc`
+  - `mmutex_lock` (function, line 41) `mmutex_lock(&m);`
+  - `mmutex_unlock` (function, line 43) `mmutex_unlock(&m);`
+  - `myield` (function, line 44) `myield();`
+  - `mmutex_init` (function, line 85) `mmutex_init(&m);`
+  - `printf` (function, line 88) `printf("thdemo: producer create failed\n");`
+  - `mthread_join` (function, line 101) `mthread_join(prod[i], 0);`
+  - `NPROD` (macro, line 20) `#define NPROD`
+  - `NCONS` (macro, line 22) `#define NCONS`
+  - `PER_PROD` (macro, line 23) `#define PER_PROD`
+  - `BUFSZ` (macro, line 24) `#define BUFSZ`
+  - `EXPECTED_N` (macro, line 25) `#define EXPECTED_N`
+  - `EXPECTED_SUM` (macro, line 27) `#define EXPECTED_SUM`
 - Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
 
 ## progs/src/w1.c
@@ -472,3 +598,4 @@
 - Language: c
 - Symbols:
   - `main` (function, line 2) `int main(void)`
+  - `write` (function, line 1) `int write(int fd, char *buf, int n);`

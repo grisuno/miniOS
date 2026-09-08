@@ -5,38 +5,69 @@
 - Doc: cvm_emit.c — node-graph to CVM bytecode compiler.
 - Language: c
 - Symbols:
-  - `codebuf` (struct, line 50)
-  - `cb_push` (function, line 55) `static int cb_push(struct codebuf *cb, unsigned char c)`
-  - `cb_u32` (function, line 67) `static int cb_u32(struct codebuf *cb, unsigned long v)`
-  - `cb_i64` (function, line 73) `static int cb_i64(struct codebuf *cb, long long v)`
-  - `topo_sort` (function, line 81) `static int topo_sort(const struct cvm_node *nodes, int n,
+  - `codebuf` (struct, line 73)
+  - `code` (function, line 8) `* exit code (OP_HALT leaves the operand-stack top as the exit status, which
+ * the shell reports ...`
+  - `cb_push` (function, line 78) `static int cb_push(struct codebuf *cb, unsigned char c)`
+  - `cb_u32` (function, line 90) `static int cb_u32(struct codebuf *cb, unsigned long v)`
+  - `cb_i64` (function, line 96) `static int cb_i64(struct codebuf *cb, long long v)`
+  - `cb_patch_u32` (function, line 102) `static void cb_patch_u32(struct codebuf *cb, size_t pos, unsigned long v)`
+  - `cb_imm` (function, line 111) `static int cb_imm(struct codebuf *cb, long long v)`
+  - `req_inputs` (function, line 126) `static int req_inputs(enum cvm_node_type t)`
+  - `is_sink` (function, line 144) `static int is_sink(enum cvm_node_type t)`
+  - `topo_sort` (function, line 150) `static int topo_sort(const struct cvm_node *nodes, int n,
                      int *order, char *...`
-  - `cvm_compile` (function, line 122) `int cvm_compile(const struct cvm_node *nodes, int n,
+  - `emit_operand` (function, line 213) `static int emit_operand(struct codebuf *code, const struct cvm_node *nodes,
+                     ...`
+  - `emit_jz` (function, line 223) `static int emit_jz(struct codebuf *code, size_t *rel_pos)`
+  - `emit_jmp` (function, line 229) `static int emit_jmp(struct codebuf *code, size_t *rel_pos)`
+  - `cvm_compile` (function, line 235) `int cvm_compile(const struct cvm_node *nodes, int n,
                 unsigned char **out, size_t ...`
-  - `w32` (function, line 257) `void w32(void *p, unsigned v)`
-  - `CVM_MAGIC_0` (macro, line 23)
-  - `CVM_MAGIC_1` (macro, line 24)
-  - `CVM_MAGIC_2` (macro, line 25)
-  - `CVM_MAGIC_3` (macro, line 26)
-  - `CVM_VERSION_MAJOR` (macro, line 27)
-  - `CVM_MODULE_HEADER_SIZE` (macro, line 28)
-  - `CVM_FUNC_ENTRY_SIZE` (macro, line 29)
-  - `CVM_GLOBAL_ENTRY_SIZE` (macro, line 30)
-  - `CVM_NATIVE_ENTRY_SIZE` (macro, line 31)
-  - `OP_PUSH_IMM64` (macro, line 34)
-  - `OP_PUSH_IMM32` (macro, line 35)
-  - `OP_PUSH_IMM8` (macro, line 36)
-  - `OP_PUSH_LOCAL` (macro, line 37)
-  - `OP_STORE_LOCAL` (macro, line 38)
-  - `OP_ADD` (macro, line 39)
-  - `OP_SUB` (macro, line 40)
-  - `OP_MUL` (macro, line 41)
-  - `OP_DIV` (macro, line 42)
-  - `OP_NEG` (macro, line 43)
-  - `OP_LEA_DATA` (macro, line 44)
-  - `OP_CALL_NATIVE` (macro, line 45)
-  - `OP_HALT` (macro, line 46)
-  - `CVM_MAX_NODES` (macro, line 47)
+  - `w32` (function, line 491) `void w32(void *p, unsigned v)`
+  - `module` (function, line 2) `* * Emits a cvm2 module (format v2) from a dataflow graph. Nodes are * topologically sorted (a true DAG order, so the editor can connect nodes in * any sequence);`
+  - `memset` (function, line 154) `memset(indeg, 0, (size_t)n);`
+  - `memcpy` (function, line 440) `memcpy(blob + str_off[i], nodes[i].sval, L);`
+  - `free` (function, line 461) `free(blob);`
+  - `CVM_MAGIC_0` (macro, line 29) `#define CVM_MAGIC_0`
+  - `CVM_MAGIC_1` (macro, line 30) `#define CVM_MAGIC_1`
+  - `CVM_MAGIC_2` (macro, line 31) `#define CVM_MAGIC_2`
+  - `CVM_MAGIC_3` (macro, line 32) `#define CVM_MAGIC_3`
+  - `CVM_VERSION_MAJOR` (macro, line 33) `#define CVM_VERSION_MAJOR`
+  - `CVM_MODULE_HEADER_SIZE` (macro, line 34) `#define CVM_MODULE_HEADER_SIZE`
+  - `CVM_FUNC_ENTRY_SIZE` (macro, line 35) `#define CVM_FUNC_ENTRY_SIZE`
+  - `CVM_GLOBAL_ENTRY_SIZE` (macro, line 36) `#define CVM_GLOBAL_ENTRY_SIZE`
+  - `CVM_NATIVE_ENTRY_SIZE` (macro, line 37) `#define CVM_NATIVE_ENTRY_SIZE`
+  - `OP_PUSH_IMM64` (macro, line 40) `#define OP_PUSH_IMM64`
+  - `OP_PUSH_IMM32` (macro, line 41) `#define OP_PUSH_IMM32`
+  - `OP_PUSH_IMM8` (macro, line 42) `#define OP_PUSH_IMM8`
+  - `OP_PUSH_ZERO` (macro, line 43) `#define OP_PUSH_ZERO`
+  - `OP_PUSH_LOCAL` (macro, line 44) `#define OP_PUSH_LOCAL`
+  - `OP_STORE_LOCAL` (macro, line 45) `#define OP_STORE_LOCAL`
+  - `OP_ADD` (macro, line 46) `#define OP_ADD`
+  - `OP_SUB` (macro, line 47) `#define OP_SUB`
+  - `OP_MUL` (macro, line 48) `#define OP_MUL`
+  - `OP_DIV` (macro, line 49) `#define OP_DIV`
+  - `OP_MOD` (macro, line 50) `#define OP_MOD`
+  - `OP_NEG` (macro, line 51) `#define OP_NEG`
+  - `OP_AND` (macro, line 52) `#define OP_AND`
+  - `OP_OR` (macro, line 53) `#define OP_OR`
+  - `OP_XOR` (macro, line 54) `#define OP_XOR`
+  - `OP_NOT` (macro, line 55) `#define OP_NOT`
+  - `OP_SHL` (macro, line 56) `#define OP_SHL`
+  - `OP_SHR` (macro, line 57) `#define OP_SHR`
+  - `OP_CMP_EQ` (macro, line 58) `#define OP_CMP_EQ`
+  - `OP_CMP_NE` (macro, line 59) `#define OP_CMP_NE`
+  - `OP_CMP_LT` (macro, line 60) `#define OP_CMP_LT`
+  - `OP_CMP_LE` (macro, line 61) `#define OP_CMP_LE`
+  - `OP_CMP_GT` (macro, line 62) `#define OP_CMP_GT`
+  - `OP_CMP_GE` (macro, line 63) `#define OP_CMP_GE`
+  - `OP_LNOT` (macro, line 64) `#define OP_LNOT`
+  - `OP_JMP` (macro, line 65) `#define OP_JMP`
+  - `OP_JZ` (macro, line 66) `#define OP_JZ`
+  - `OP_CALL_NATIVE` (macro, line 67) `#define OP_CALL_NATIVE`
+  - `OP_LEA_DATA` (macro, line 68) `#define OP_LEA_DATA`
+  - `OP_HALT` (macro, line 69) `#define OP_HALT`
+  - `CVM_MAX_NODES` (macro, line 70) `#define CVM_MAX_NODES`
 - Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
 
 ## progs/nuklear/cvm_emit.h
@@ -44,37 +75,96 @@
 - Doc: ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (cvm2 module format v2).
 - Language: h
 - Symbols:
-  - `cvm_node` (struct, line 29)
-  - `CVM_EMIT_H` (macro, line 2)
+  - `cvm_node` (struct, line 56)
+  - `cvm_node_type` (enum, line 22)
+  - `graph` (function, line 5) `* * A node graph (constants, arithmetic, bitwise, comparisons, a conditional * select, and string constants feeding PRINT/PRINTS/EXIT sinks) is compiled * into a self-contained .cvm module: a single e`
+  - `err` (function, line 67) `* err (err_cap bytes). The module is heap-allocated and owned by the caller * (free it). */ int cvm_compile(const struct cvm_node *nodes, int n, unsigned char **out, size_t *out_size, char *err, size_`
+  - `CVM_EMIT_H` (macro, line 2) `#define CVM_EMIT_H`
+  - `CVM_NODE_STR_MAX` (macro, line 19) `#define CVM_NODE_STR_MAX`
 - Imported by: `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`
 
 ## progs/nuklear/node_editor.c
 - Layer: infrastructure
-- Doc: node_editor.c — visual node editor that compiles to CVM bytecode.
+- Doc: node_editor.c — visual low-code editor that compiles to CVM bytecode.
 - Language: c
 - Symbols:
-  - `gnode` (struct, line 38)
-  - `graph_clear` (function, line 48) `static void graph_clear(void)`
-  - `graph_add` (function, line 53) `static int graph_add(int kind)`
-  - `kind_name` (function, line 65) `static const char *kind_name(int k)`
-  - `node_inputs` (function, line 79) `static int node_inputs(int k)`
-  - `kind_color` (function, line 89) `static struct nk_color kind_color(int k)`
-  - `graph_to_compiler` (function, line 104) `static int graph_to_compiler(struct cvm_node *out, int cap)`
-  - `compile_to` (function, line 122) `static int compile_to(const char *path)`
-  - `parse_graph_file` (function, line 159) `static int parse_graph_file(const char *path)`
-  - `resolve` (function, line 166) `int resolve(const char *nme, int upto)`
-  - `pin_y` (function, line 234) `static float pin_y(struct gnode *n, int slot, int is_output)`
-  - `ui_build` (function, line 243) `static void ui_build(struct nk_context *ctx, float win_w, float win_h)`
-  - `gui_run` (function, line 487) `static void gui_run(void)`
-  - `main` (function, line 535) `int main(int argc, char **argv)`
-  - `MAX_NODES` (macro, line 32)
-  - `UI_MEMORY` (macro, line 213)
-  - `NODE_W` (macro, line 226)
-  - `TITLE_H` (macro, line 227)
-  - `PIN_R` (macro, line 228)
-  - `PIN_DIAM` (macro, line 229)
-  - `BEZIER_PAD` (macro, line 230)
-  - `GRID_SIZE` (macro, line 231)
+  - `gnode` (struct, line 43)
+  - `nodedef` (struct, line 54)
+  - `node_inputs` (function, line 94) `static int node_inputs(int k)`
+  - `node_outputs` (function, line 99) `static int node_outputs(int k)`
+  - `kind_name` (function, line 104) `static const char *kind_name(int k)`
+  - `kind_color` (function, line 109) `static struct nk_color kind_color(int k)`
+  - `graph_clear` (function, line 114) `static void graph_clear(void)`
+  - `graph_add` (function, line 120) `static int graph_add(int kind)`
+  - `graph_del` (function, line 134) `static void graph_del(int idx)`
+  - `graph_to_compiler` (function, line 153) `static int graph_to_compiler(struct cvm_node *out, int cap)`
+  - `repair_graph` (function, line 175) `static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,
+                   ...`
+  - `addrep` (function, line 182) `void addrep(const char *s)`
+  - `adderr` (function, line 192) `void adderr(const char *s)`
+  - `compile_to` (function, line 282) `static int compile_to(const char *path)`
+  - `write_quoted` (function, line 338) `static void write_quoted(FILE *f, const char *s)`
+  - `save_graph_file` (function, line 390) `static int save_graph_file(const char *path)`
+  - `parse_graph_file` (function, line 428) `static int parse_graph_file(const char *path)`
+  - `resolve` (function, line 436) `int resolve(const char *nme, int upto)`
+  - `parse_input` (function, line 442) `int parse_input(const char *tok, int idx, int k)`
+  - `pin_y` (function, line 521) `static float pin_y(struct gnode *n, int slot, int is_output)`
+  - `node_h` (function, line 532) `static float node_h(struct gnode *n)`
+  - `ui_inspector` (function, line 540) `static void ui_inspector(struct nk_context *ctx)`
+  - `ui_build` (function, line 620) `static void ui_build(struct nk_context *ctx, float win_w, float win_h)`
+  - `gui_run` (function, line 930) `static void gui_run(void)`
+  - `main` (function, line 978) `int main(int argc, char **argv)`
+  - `memset` (function, line 125) `memset(n, 0, sizeof(*n));`
+  - `memmove` (function, line 137) `memmove(&g_nodes[idx], &g_nodes[idx + 1], (size_t)(g_count - idx - 1) * sizeof(g_nodes[0]));`
+  - `memcpy` (function, line 159) `memcpy(out[i].sval, g->sval, sizeof(out[i].sval));`
+  - `snprintf` (function, line 206) `snprintf(m, sizeof(m), "node %d: bad type", i);`
+  - `free` (function, line 306) `free(mod);`
+  - `close` (function, line 315) `close(fd);`
+  - `fputc` (function, line 339) `fputc('"', f);`
+  - `fprintf` (function, line 401) `fprintf(f, "num %s %lld\n", names[i], g->ival);`
+  - `fclose` (function, line 424) `fclose(f);`
+  - `nk_layout_row_dynamic` (function, line 542) `nk_layout_row_dynamic(ctx, 16, 1);`
+  - `nk_label` (function, line 544) `nk_label(ctx, "select a node to edit its parameters", NK_TEXT_LEFT);`
+  - `nk_property_int` (function, line 555) `nk_property_int(ctx, "value:", -2147483647, &v, 2147483647, 1, 10);`
+  - `nk_edit_string_zero_terminated` (function, line 561) `nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, n->sval, (int)sizeof(n->sval), 0);`
+  - `nk_layout_row_begin` (function, line 572) `nk_layout_row_begin(ctx, NK_STATIC, 20, 3);`
+  - `nk_layout_row_push` (function, line 573) `nk_layout_row_push(ctx, 110);`
+  - `nk_layout_row_end` (function, line 591) `nk_layout_row_end(ctx);`
+  - `nk_layout_row_static` (function, line 609) `nk_layout_row_static(ctx, 22, 90, 3);`
+  - `nk_combobox` (function, line 634) `nk_combobox(ctx, items, G_COUNT, &add_sel, 20, nk_vec2(150, 300));`
+  - `nk_label_colored_wrap` (function, line 668) `nk_label_colored_wrap(ctx, g_status, nk_rgb(255, 120, 120));`
+  - `nk_layout_space_begin` (function, line 683) `nk_layout_space_begin(ctx, NK_STATIC, canvas_h, g_count + 32);`
+  - `nk_stroke_line` (function, line 702) `nk_stroke_line(canvas, x + canvas_bounds.x, canvas_bounds.y, x + canvas_bounds.x, canvas_bounds.y + canvas_bounds.h, 1.0f, grid_col);`
+  - `nk_stroke_curve` (function, line 722) `nk_stroke_curve(canvas, sx, sy, sx + BEZIER_PAD, sy, dx - BEZIER_PAD, dy, dx, dy, 2.0f, nk_rgb(180, 180, 180));`
+  - `nk_layout_space_bounds` (function, line 744) `nk_layout_space_bounds(ctx));`
+  - `nk_layout_space_push` (function, line 841) `nk_layout_space_push(ctx, nk_rect(n->x, n->y, NODE_W, h));`
+  - `nk_fill_rect` (function, line 849) `nk_fill_rect(canvas, title_bounds, 0, col);`
+  - `nk_group_end` (function, line 901) `nk_group_end(ctx);`
+  - `nk_fill_circle` (function, line 911) `nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));`
+  - `nk_layout_space_end` (function, line 923) `nk_layout_space_end(ctx);`
+  - `nk_end` (function, line 925) `nk_end(ctx);`
+  - `nk_sys_vga_mode` (function, line 933) `nk_sys_vga_mode(1);`
+  - `nk_sys_kbd_raw` (function, line 935) `nk_sys_kbd_raw(1);`
+  - `nk_build_palette` (function, line 936) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 937) `nk_sys_palette(pal768);`
+  - `nk_sys_fb_info` (function, line 938) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `printf` (function, line 943) `printf("nuklear: init failed\n");`
+  - `nk_input_begin` (function, line 957) `nk_input_begin(&ctx);`
+  - `nk_poll_input` (function, line 958) `nk_poll_input(&ctx);`
+  - `nk_input_end` (function, line 959) `nk_input_end(&ctx);`
+  - `nk_rasterize` (function, line 962) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 966) `nk_clear(&ctx);`
+  - `volatile` (function, line 970) `__asm__ volatile("pause");`
+  - `nk_free` (function, line 973) `nk_free(&ctx);`
+  - `MAX_NODES` (macro, line 32) `#define MAX_NODES`
+  - `STR_MAX` (macro, line 33) `#define STR_MAX`
+  - `UI_MEMORY` (macro, line 499) `#define UI_MEMORY`
+  - `NODE_W` (macro, line 513) `#define NODE_W`
+  - `TITLE_H` (macro, line 514) `#define TITLE_H`
+  - `PIN_R` (macro, line 515) `#define PIN_R`
+  - `PIN_DIAM` (macro, line 516) `#define PIN_DIAM`
+  - `BEZIER_PAD` (macro, line 517) `#define BEZIER_PAD`
+  - `GRID_SIZE` (macro, line 518) `#define GRID_SIZE`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
 
 ## progs/nuklear/nuklear_minios.c
@@ -113,7 +203,14 @@
   - `handle_scancode` (function, line 597) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
   - `nk_poll_input` (function, line 638) `void nk_poll_input(struct nk_context *ctx)`
   - `nk_set_window_origin` (function, line 675) `void nk_set_window_origin(int x, int y)`
-  - `NK_IMPLEMENTATION` (macro, line 15)
+  - `list` (function, line 4) `* abstract draw command list (nk__begin/nk__next);`
+  - `volatile` (function, line 28) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
+  - `nk_build_palette` (function, line 146) `nk_build_palette(pal768);`
+  - `nk_input_key` (function, line 595) `nk_input_key(ctx, key, down ? nk_true : nk_false);`
+  - `nk_input_unicode` (function, line 634) `nk_input_unicode(ctx, (nk_rune)ch);`
+  - `nk_input_motion` (function, line 655) `nk_input_motion(ctx, lx, ly);`
+  - `nk_input_scroll` (function, line 671) `nk_input_scroll(ctx, scroll);`
+  - `NK_IMPLEMENTATION` (macro, line 15) `#define NK_IMPLEMENTATION`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ## progs/nuklear/nuklear_minios.h
@@ -121,9 +218,22 @@
 - Doc: ifndef NUKLEAR_MINIOS_H define NUKLEAR_MINIOS_H  nuklear_minios.h — MiniOS platform layer for Nuklear.
 - Language: h
 - Symbols:
-  - `NUKLEAR_MINIOS_H` (macro, line 2)
-  - `NK_W` (macro, line 17)
-  - `NK_H` (macro, line 19)
-  - `NK_BACKBUF` (macro, line 20)
+  - `SYS_NK_FRAME` (function, line 8) `* calls SYS_NK_FRAME (220) so the kernel composites it as a titled window on * the desktop, exactly like the DOOM window. The layer owns the hybrid * palette (indices 0-14 keep the desktop colors, 15-`
+  - `nk_sys_kbd` (function, line 24) `long nk_sys_kbd(void);`
+  - `nk_sys_palette` (function, line 25) `long nk_sys_palette(const unsigned char *pal768);`
+  - `nk_sys_kbd_raw` (function, line 26) `long nk_sys_kbd_raw(int on);`
+  - `nk_sys_vga_mode` (function, line 27) `long nk_sys_vga_mode(int on);`
+  - `nk_sys_fb_info` (function, line 28) `long nk_sys_fb_info(int *w, int *h, int *pitch);`
+  - `nk_sys_mouse` (function, line 29) `long nk_sys_mouse(int *xybw);`
+  - `nk_sys_mouse_badptr` (function, line 33) `long nk_sys_mouse_badptr(void);`
+  - `nk_sys_nk_frame` (function, line 34) `long nk_sys_nk_frame(int *origin);`
+  - `nk_build_palette` (function, line 38) `void nk_build_palette(unsigned char *pal768);`
+  - `nk_minios_font` (function, line 44) `struct nk_user_font nk_minios_font(void);`
+  - `nk_rasterize` (function, line 47) `void nk_rasterize(struct nk_context *ctx);`
+  - `nk_poll_input` (function, line 55) `void nk_poll_input(struct nk_context *ctx);`
+  - `NUKLEAR_MINIOS_H` (macro, line 2) `#define NUKLEAR_MINIOS_H`
+  - `NK_W` (macro, line 17) `#define NK_W`
+  - `NK_H` (macro, line 19) `#define NK_H`
+  - `NK_BACKBUF` (macro, line 20) `#define NK_BACKBUF`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`

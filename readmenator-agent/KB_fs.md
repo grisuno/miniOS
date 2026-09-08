@@ -21,6 +21,12 @@
   - `kfputs` (function, line 251) `int kfputs(const char *s, KFILE *f)`
   - `kfputc` (function, line 257) `int kfputc(int c, KFILE *f)`
   - `krewind` (function, line 262) `void krewind(KFILE *f)`
+  - `kmemset` (function, line 41) `kmemset(f, 0, sizeof(KFILE));`
+  - `kmemcpy` (function, line 54) `kmemcpy(parent, resolved, plen);`
+  - `kfree` (function, line 115) `kfree(f);`
+  - `minifs_read` (function, line 129) `minifs_read(f->minifs_ino, &c, f->pos, 1);`
+  - `ramdisk_read` (function, line 135) `ramdisk_read(f->rf, &c, f->pos, 1);`
+  - `ramdisk_write` (function, line 246) `ramdisk_write(f->rf, f->wbuf, base, f->wsize);`
 
 ## fs/minifs.c
 - Layer: utility
@@ -84,14 +90,23 @@
   - `minifs_file_open` (function, line 1209) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
   - `minifs_file_close` (function, line 1223) `int minifs_file_close(MiniFSFile *f)`
   - `minifs_get_total_blocks` (function, line 1230) `unsigned int minifs_get_total_blocks(void)`
-  - `DE_NAME` (macro, line 12)
-  - `DE_NAME_W` (macro, line 13)
+  - `kmemset` (function, line 80) `kmemset(buf, 0, MINIFS_BLOCK_SIZE);`
+  - `kmemcpy` (function, line 82) `kmemcpy(buf, &fs_sb, sizeof(MiniFSSuper));`
+  - `block_write` (function, line 83) `return block_write(0, buf);`
+  - `block_read` (function, line 322) `block_read(journal_start, buf);`
+  - `kprintf` (function, line 421) `kprintf("minifs: recovering journal (txn %u, %u entries)\n", js->next_txn - 1, js->count);`
+  - `kstrncpy` (function, line 696) `kstrncpy(parent_buf, path, RAMDISK_FNAME_LEN - 1);`
+  - `kfree` (function, line 899) `kfree(cbuf);`
+  - `block_set_base` (function, line 1078) `block_set_base(fs_lba_start);`
+  - `DE_NAME` (macro, line 12) `#define DE_NAME(de)`
+  - `DE_NAME_W` (macro, line 13) `#define DE_NAME_W(de)`
 
 ## fs/ramdisk.c
 - Layer: infrastructure
 - Doc: include "kernel.h"  ================================================================
 - Language: c
 - Symbols:
+  - `RDSuper` (struct, line 14)
   - `ramdisk_reserve` (function, line 24) `static int ramdisk_reserve(unsigned long want)`
   - `ramdisk_setup_from` (function, line 42) `void ramdisk_setup_from(void *data, unsigned size)`
   - `ramdisk_init` (function, line 94) `void ramdisk_init(void)`
@@ -104,18 +119,27 @@
   - `ramdisk_count` (function, line 196) `int ramdisk_count(void)`
   - `ramdisk_file_name` (function, line 201) `const char *ramdisk_file_name(int idx)`
   - `ramdisk_delete` (function, line 206) `int ramdisk_delete(RDFile *f)`
-  - `RD_MAGIC` (macro, line 6)
-  - `RD_HEADER_SIZE` (macro, line 8)
-  - `RD_ENTRY_SIZE` (macro, line 9)
-  - `RD_DATA_MIN` (macro, line 10)
-  - `RD_DATA_SPARE` (macro, line 11)
-  - `RD_DATA_MAX` (macro, line 12)
+  - `kprintf` (function, line 31) `kprintf("ramdisk: cannot allocate %lu KB (heap exhausted)\n", want / 1024);`
+  - `kmemset` (function, line 35) `kmemset(area, 0, want);`
+  - `kmemcpy` (function, line 84) `kmemcpy(f->name, esrc, RAMDISK_FNAME_LEN);`
+  - `kfree` (function, line 103) `kfree(rd);`
+  - `kstrncpy` (function, line 143) `kstrncpy(f->name, name, RAMDISK_FNAME_LEN - 1);`
+  - `kmemmove` (function, line 170) `kmemmove(rd_data + new_end, rd_data + old_end, move_len);`
+  - `RD_MAGIC` (macro, line 6) `#define RD_MAGIC`
+  - `RD_HEADER_SIZE` (macro, line 8) `#define RD_HEADER_SIZE`
+  - `RD_ENTRY_SIZE` (macro, line 9) `#define RD_ENTRY_SIZE`
+  - `RD_DATA_MIN` (macro, line 10) `#define RD_DATA_MIN`
+  - `RD_DATA_SPARE` (macro, line 11) `#define RD_DATA_SPARE`
+  - `RD_DATA_MAX` (macro, line 12) `#define RD_DATA_MAX`
 
 ## fs/vfs.c
 - Layer: utility
 - Doc: include "kernel.h" include "minifs.h"  ================================================================
 - Language: c
 - Symbols:
+  - `vfs_mount_t` (struct, line 11)
+  - `ramdisk_handle_t` (struct, line 82)
+  - `minifs_handle_t` (struct, line 173)
   - `vfs_init` (function, line 19) `void vfs_init(void)`
   - `vfs_register` (function, line 24) `int vfs_register(const char *prefix, const vfs_ops_t *ops)`
   - `vfs_unregister` (function, line 40) `int vfs_unregister(const char *prefix)`
@@ -137,8 +161,15 @@
   - `fs_is_dir` (function, line 314) `int fs_is_dir(const char *resolved)`
   - `minifs_mkdir_p` (function, line 327) `int minifs_mkdir_p(const char *resolved)`
   - `vfs_register_builtins` (function, line 350) `void vfs_register_builtins(void)`
-  - `VFS_MAX_MOUNTS` (macro, line 7)
-  - `VFS_PREFIX_LEN` (macro, line 9)
+  - `kmemset` (function, line 22) `kmemset(vfs_mounts, 0, sizeof(vfs_mounts));`
+  - `kstrncpy` (function, line 30) `kstrncpy(vfs_mounts[i].prefix, prefix, VFS_PREFIX_LEN - 1);`
+  - `kmemcpy` (function, line 108) `kmemcpy(parent, path, plen);`
+  - `ramdisk_read` (function, line 129) `ramdisk_read(h->rf, buf, (unsigned)pos, (unsigned)len);`
+  - `ramdisk_write` (function, line 137) `ramdisk_write(h->rf, buf, (unsigned)pos, (unsigned)len);`
+  - `minifs_read` (function, line 211) `minifs_read(h->ino, buf, pos, (unsigned)len);`
+  - `minifs_truncate` (function, line 239) `return minifs_truncate(h->ino, size);`
+  - `VFS_MAX_MOUNTS` (macro, line 7) `#define VFS_MAX_MOUNTS`
+  - `VFS_PREFIX_LEN` (macro, line 9) `#define VFS_PREFIX_LEN`
 
 ## fs/zip.c
 - Layer: utility
@@ -153,3 +184,15 @@ static int zip_sanitize_name(con...`
   - `zip_do_entry` (function, line 117) `static int zip_do_entry(mz_zip_archive *zip, mz_uint idx, const char *destdir)`
   - `shell_cmd_unzip` (function, line 176) `void shell_cmd_unzip(int argc, char **argv)`
   - `shell_cmd_zip` (function, line 254) `void shell_cmd_zip(int argc, char **argv)`
+  - `root` (function, line 7) `* names are hostile data: each is normalized to forward slashes and rejected * when it escapes the extraction root (absolute paths, '.'/'..' components, * empty names), so a crafted archive can never `
+  - `mz_zip_writer_mem_ptr` (function, line 17) `void *mz_zip_writer_mem_ptr(mz_zip_archive *pZip);`
+  - `mz_zip_writer_mem_size` (function, line 19) `size_t mz_zip_writer_mem_size(mz_zip_archive *pZip);`
+  - `kfclose` (function, line 41) `kfclose(f);`
+  - `kmemcpy` (function, line 68) `kmemcpy(dst + len, start, clen);`
+  - `mz_free` (function, line 168) `mz_free(data);`
+  - `kprintf` (function, line 170) `kprintf(" %-24s %lu bytes\n", resolved, usize);`
+  - `kmemset` (function, line 219) `kmemset(&zip, 0, sizeof(zip));`
+  - `kfree` (function, line 222) `kfree(abuf);`
+  - `mz_zip_reader_end` (function, line 248) `mz_zip_reader_end(&zip);`
+  - `vga_puts` (function, line 264) `vga_puts("zip: cannot initialise archive\n");`
+  - `mz_zip_writer_end` (function, line 310) `mz_zip_writer_end(&zip);`

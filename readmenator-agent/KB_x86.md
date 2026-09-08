@@ -43,24 +43,30 @@
   - `hal_inw` (function, line 126) `static inline unsigned short hal_inw(unsigned short port)`
   - `hal_lapic_eoi` (function, line 133) `static inline void hal_lapic_eoi(void)`
   - `hal_pic_eoi` (function, line 138) `static inline void hal_pic_eoi(int irq)`
-  - `HAL_IO_H` (macro, line 13)
-  - `HAL_PIC1_CMD` (macro, line 16)
-  - `HAL_PIC1_DATA` (macro, line 18)
-  - `HAL_PIC2_CMD` (macro, line 20)
-  - `HAL_PIC2_DATA` (macro, line 22)
-  - `HAL_PIC_EOI` (macro, line 24)
-  - `HAL_PIT_CMD` (macro, line 27)
-  - `HAL_PIT_CH0` (macro, line 29)
-  - `HAL_PS2_STATUS` (macro, line 32)
-  - `HAL_PS2_DATA` (macro, line 34)
-  - `HAL_PS2_MOUSE_OBF` (macro, line 36)
-  - `HAL_PS2_IBF_EMPTY` (macro, line 38)
-  - `HAL_PS2_OBF_FULL` (macro, line 40)
-  - `HAL_MOUSE_SYNC_BIT` (macro, line 43)
-  - `HAL_MOUSE_BUTTON_MASK` (macro, line 45)
-  - `HAL_MOUSE_PACKET_LEN` (macro, line 47)
-  - `HAL_MOUSE_SCALE` (macro, line 49)
-  - `HAL_LAPIC_EOI_ADDR` (macro, line 52)
+  - `volatile` (function, line 110) `__asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));`
+  - `hal_io_stub_writes` (variable, line 57) `extern unsigned hal_io_stub_writes;`
+  - `hal_io_stub_last_port` (variable, line 59) `extern unsigned hal_io_stub_last_port;`
+  - `hal_io_stub_last_val` (variable, line 61) `extern unsigned hal_io_stub_last_val;`
+  - `hal_io_stub_lapic_eois` (variable, line 63) `extern unsigned hal_io_stub_lapic_eois;`
+  - `hal_io_stub_read_val` (variable, line 65) `extern unsigned char hal_io_stub_read_val;`
+  - `HAL_IO_H` (macro, line 13) `#define HAL_IO_H`
+  - `HAL_PIC1_CMD` (macro, line 16) `#define HAL_PIC1_CMD`
+  - `HAL_PIC1_DATA` (macro, line 18) `#define HAL_PIC1_DATA`
+  - `HAL_PIC2_CMD` (macro, line 20) `#define HAL_PIC2_CMD`
+  - `HAL_PIC2_DATA` (macro, line 22) `#define HAL_PIC2_DATA`
+  - `HAL_PIC_EOI` (macro, line 24) `#define HAL_PIC_EOI`
+  - `HAL_PIT_CMD` (macro, line 27) `#define HAL_PIT_CMD`
+  - `HAL_PIT_CH0` (macro, line 29) `#define HAL_PIT_CH0`
+  - `HAL_PS2_STATUS` (macro, line 32) `#define HAL_PS2_STATUS`
+  - `HAL_PS2_DATA` (macro, line 34) `#define HAL_PS2_DATA`
+  - `HAL_PS2_MOUSE_OBF` (macro, line 36) `#define HAL_PS2_MOUSE_OBF`
+  - `HAL_PS2_IBF_EMPTY` (macro, line 38) `#define HAL_PS2_IBF_EMPTY`
+  - `HAL_PS2_OBF_FULL` (macro, line 40) `#define HAL_PS2_OBF_FULL`
+  - `HAL_MOUSE_SYNC_BIT` (macro, line 43) `#define HAL_MOUSE_SYNC_BIT`
+  - `HAL_MOUSE_BUTTON_MASK` (macro, line 45) `#define HAL_MOUSE_BUTTON_MASK`
+  - `HAL_MOUSE_PACKET_LEN` (macro, line 47) `#define HAL_MOUSE_PACKET_LEN`
+  - `HAL_MOUSE_SCALE` (macro, line 49) `#define HAL_MOUSE_SCALE`
+  - `HAL_LAPIC_EOI_ADDR` (macro, line 52) `#define HAL_LAPIC_EOI_ADDR`
 - Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ## arch/x86/isr_stubs.S
@@ -99,11 +105,12 @@
 - Symbols:
   - `wrmsr` (function, line 7) `static inline void wrmsr(unsigned msr, unsigned long val)`
   - `rdmsr` (function, line 12) `static inline unsigned long rdmsr(unsigned msr)`
-  - `ARCH_X86_MSR_H` (macro, line 2)
-  - `MSR_STAR` (macro, line 18)
-  - `MSR_LSTAR` (macro, line 20)
-  - `MSR_SFMASK` (macro, line 21)
-  - `MSR_FSBASE` (macro, line 22)
-  - `MSR_GSBASE` (macro, line 23)
-  - `MSR_KERNEL_GS_BASE` (macro, line 24)
+  - `volatile` (function, line 10) `__asm__ volatile("wrmsr" :: "c"(msr), "a"(lo), "d"(hi));`
+  - `ARCH_X86_MSR_H` (macro, line 2) `#define ARCH_X86_MSR_H`
+  - `MSR_STAR` (macro, line 18) `#define MSR_STAR`
+  - `MSR_LSTAR` (macro, line 20) `#define MSR_LSTAR`
+  - `MSR_SFMASK` (macro, line 21) `#define MSR_SFMASK`
+  - `MSR_FSBASE` (macro, line 22) `#define MSR_FSBASE`
+  - `MSR_GSBASE` (macro, line 23) `#define MSR_GSBASE`
+  - `MSR_KERNEL_GS_BASE` (macro, line 24) `#define MSR_KERNEL_GS_BASE`
 - Imported by: `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `smp.c`

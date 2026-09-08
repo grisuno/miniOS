@@ -11,6 +11,25 @@
   - `dofile` (function, line 50) `static int dofile(lua_State *L, const char *name)`
   - `repl` (function, line 60) `static int repl(lua_State *L)`
   - `main` (function, line 104) `int main(int argc, char **argv)`
+  - `module` (function, line 5) `* C module (minios.c) can be registered globally before any script runs: * `minios.run(...)`, `minios.time_ms()`, etc. are available as a plain global * table, exactly like `import minios` in MicroPyt`
+  - `luaL_requiref` (function, line 24) `luaL_requiref(L, name, openf, 1);`
+  - `lua_pop` (function, line 25) `lua_pop(L, 1);`
+  - `lua_createtable` (function, line 30) `lua_createtable(L, argc - first, 1);`
+  - `lua_pushinteger` (function, line 31) `lua_pushinteger(L, argc - first);`
+  - `lua_setfield` (function, line 32) `lua_setfield(L, -2, "n");`
+  - `lua_pushstring` (function, line 35) `lua_pushstring(L, argv[first + i]);`
+  - `lua_rawseti` (function, line 36) `lua_rawseti(L, -2, i);`
+  - `lua_setglobal` (function, line 38) `lua_setglobal(L, "arg");`
+  - `fprintf` (function, line 45) `fprintf(stderr, "lua: %s\n", msg ? msg : "unknown error");`
+  - `printf` (function, line 63) `printf("Lua %s (MiniOS) type 'os.exit()' to quit\n", LUA_VERSION);`
+  - `fflush` (function, line 66) `fflush(stdout);`
+  - `snprintf` (function, line 74) `snprintf(buf, sizeof(buf), "return %s", line + 1);`
+  - `lua_getglobal` (function, line 92) `lua_getglobal(L, "print");`
+  - `lua_pushvalue` (function, line 93) `lua_pushvalue(L, i);`
+  - `lua_call` (function, line 94) `lua_call(L, 1, 0);`
+  - `lua_settop` (function, line 100) `lua_settop(L, 0);`
+  - `luaL_openlibs` (function, line 108) `luaL_openlibs(L);`
+  - `lua_close` (function, line 146) `lua_close(L);`
 - Depends on: `kernel/string.c`
 
 ## progs/lua/minios.c
@@ -26,13 +45,23 @@
   - `minios_pcspeaker` (function, line 119) `static int minios_pcspeaker(lua_State *L)`
   - `minios_run` (function, line 136) `static int minios_run(lua_State *L)`
   - `luaopen_minios` (function, line 191) `int luaopen_minios(lua_State *L)`
-  - `SYS_TIME_MS` (macro, line 52)
-  - `SYS_PALETTE` (macro, line 53)
-  - `SYS_PCSPK_INIT` (macro, line 54)
-  - `SYS_PCSPK_TONE` (macro, line 55)
-  - `SYS_RTC` (macro, line 56)
-  - `SYS_FB_INFO` (macro, line 57)
-  - `SYS_PCSPK_VOL` (macro, line 58)
-  - `SYS_SPAWN` (macro, line 59)
+  - `volatile` (function, line 27) `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory" );`
+  - `lua_pushinteger` (function, line 63) `lua_pushinteger(L, (lua_Integer)msys(SYS_TIME_MS, 0, 0, 0));`
+  - `lua_pushnil` (function, line 71) `lua_pushnil(L);`
+  - `lua_pushstring` (function, line 72) `lua_pushstring(L, "rtc read failed");`
+  - `msys` (function, line 114) `msys(SYS_PALETTE, (long)buf, 0, 0);`
+  - `lua_pushvalue` (function, line 146) `lua_pushvalue(L, -1);`
+  - `lua_pop` (function, line 149) `lua_pop(L, 2);`
+  - `luaL_error` (function, line 150) `return luaL_error(L, "args must be strings");`
+  - `lua_newtable` (function, line 193) `lua_newtable(L);`
+  - `luaL_setfuncs` (function, line 194) `luaL_setfuncs(L, minios_funcs, 0);`
+  - `SYS_TIME_MS` (macro, line 52) `#define SYS_TIME_MS`
+  - `SYS_PALETTE` (macro, line 53) `#define SYS_PALETTE`
+  - `SYS_PCSPK_INIT` (macro, line 54) `#define SYS_PCSPK_INIT`
+  - `SYS_PCSPK_TONE` (macro, line 55) `#define SYS_PCSPK_TONE`
+  - `SYS_RTC` (macro, line 56) `#define SYS_RTC`
+  - `SYS_FB_INFO` (macro, line 57) `#define SYS_FB_INFO`
+  - `SYS_PCSPK_VOL` (macro, line 58) `#define SYS_PCSPK_VOL`
+  - `SYS_SPAWN` (macro, line 59) `#define SYS_SPAWN`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`

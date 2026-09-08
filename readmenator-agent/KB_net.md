@@ -61,11 +61,24 @@
   - `net_cmd_dns` (function, line 911) `void net_cmd_dns(const char *host)`
   - `net_register_symbols` (function, line 924) `void net_register_symbols(void)`
   - `net_init` (function, line 932) `void net_init(void)`
-  - `NET_TCP_CLOSED` (macro, line 355)
-  - `NET_TCP_SYN_SENT` (macro, line 357)
-  - `NET_TCP_ESTABLISHED` (macro, line 358)
-  - `NET_TCP_FIN_SENT` (macro, line 359)
-  - `NET_TCP_DEAD` (macro, line 360)
+  - `kmemcpy` (function, line 80) `kmemcpy(net_arp_cache[i].mac, mac, NET_ETH_ALEN);`
+  - `kmemset` (function, line 104) `kmemset(frame, 0, sizeof(frame));`
+  - `rtl_send` (function, line 116) `rtl_send(frame, 42);`
+  - `rtl_poll` (function, line 127) `rtl_poll();`
+  - `kmemmove` (function, line 514) `kmemmove(s->rx, s->rx + s->rx_tail, s->rx_head - s->rx_tail);`
+  - `net_tcp_recv_deadline` (function, line 751) `return net_tcp_recv_deadline(&net_sockets[fd], buf, len, timeout_ms);`
+  - `tls_free_fd` (function, line 814) `tls_free_fd((int)(fd - NET_FD_BASE));`
+  - `vga_puts` (function, line 888) `vga_puts("net: no rtl8139 found\n");`
+  - `rtl_counters` (function, line 891) `rtl_counters(&tx_frames, &rx_frames);`
+  - `kprintf` (function, line 892) `kprintf("rtl8139 iobase 0x%x\n", rtl_iobase());`
+  - `k_register_symbol` (function, line 926) `k_register_symbol("net_open", (void *)net_open);`
+  - `rtl_init` (function, line 934) `rtl_init();`
+  - `rtl_get_mac` (function, line 935) `rtl_get_mac(net_mac);`
+  - `NET_TCP_CLOSED` (macro, line 355) `#define NET_TCP_CLOSED`
+  - `NET_TCP_SYN_SENT` (macro, line 357) `#define NET_TCP_SYN_SENT`
+  - `NET_TCP_ESTABLISHED` (macro, line 358) `#define NET_TCP_ESTABLISHED`
+  - `NET_TCP_FIN_SENT` (macro, line 359) `#define NET_TCP_FIN_SENT`
+  - `NET_TCP_DEAD` (macro, line 360) `#define NET_TCP_DEAD`
 - Depends on: `net/rtl8139.h`
 
 ## net/rtl8139.c
@@ -100,14 +113,16 @@
   - `rtl_counters` (function, line 218) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
   - `rtl_rx_frame_wrapped` (function, line 226) `static void rtl_rx_frame_wrapped(unsigned length)`
   - `rtl_poll` (function, line 236) `void rtl_poll(void)`
-  - `RTL_REG_CR` (macro, line 60)
-  - `RTL_REG_TSD0` (macro, line 62)
-  - `RTL_REG_TSAD0` (macro, line 63)
-  - `RTL_REG_RBSTART` (macro, line 64)
-  - `RTL_REG_CAPR` (macro, line 65)
-  - `RTL_REG_CBR` (macro, line 66)
-  - `RTL_REG_9346CR` (macro, line 67)
-  - `RTL_REG_CONFIG1` (macro, line 68)
+  - `volatile` (function, line 25) `__asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));`
+  - `net_rx_handle_frame` (function, line 234) `net_rx_handle_frame(rtl_rx_scratch, n);`
+  - `RTL_REG_CR` (macro, line 60) `#define RTL_REG_CR`
+  - `RTL_REG_TSD0` (macro, line 62) `#define RTL_REG_TSD0`
+  - `RTL_REG_TSAD0` (macro, line 63) `#define RTL_REG_TSAD0`
+  - `RTL_REG_RBSTART` (macro, line 64) `#define RTL_REG_RBSTART`
+  - `RTL_REG_CAPR` (macro, line 65) `#define RTL_REG_CAPR`
+  - `RTL_REG_CBR` (macro, line 66) `#define RTL_REG_CBR`
+  - `RTL_REG_9346CR` (macro, line 67) `#define RTL_REG_9346CR`
+  - `RTL_REG_CONFIG1` (macro, line 68) `#define RTL_REG_CONFIG1`
 - Depends on: `net/rtl8139.h`
 
 ## net/rtl8139.h
@@ -115,7 +130,14 @@
 - Doc: ifndef RTL8139_H define RTL8139_H
 - Language: h
 - Symbols:
-  - `RTL8139_H` (macro, line 2)
+  - `rtl_present` (function, line 18) `int rtl_present(void);`
+  - `rtl_init` (function, line 21) `void rtl_init(void);`
+  - `rtl_send` (function, line 25) `int rtl_send(const unsigned char *frame, unsigned len);`
+  - `net_rx_handle_frame` (function, line 28) `* net_rx_handle_frame (the protocol demux in net.c). */ void rtl_poll(void);`
+  - `rtl_get_mac` (function, line 32) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN]);`
+  - `rtl_iobase` (function, line 35) `unsigned short rtl_iobase(void);`
+  - `rtl_counters` (function, line 38) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
+  - `RTL8139_H` (macro, line 2) `#define RTL8139_H`
 - Imported by: `net/net.c`, `net/rtl8139.c`
 
 ## net/tls.c
@@ -155,7 +177,23 @@
   - `inb` (function, line 813) `static inline unsigned char inb(unsigned short port)`
   - `cmos_read` (function, line 821) `static inline unsigned char cmos_read(unsigned char reg)`
   - `tls_now_days` (function, line 825) `long tls_now_days(void)`
-  - `PORT_IO_DEFINED` (macro, line 809)
+  - `TLS_PRINTF` (function, line 26) `TLS_PRINTF("freedom: tls: %s: %s\n", stage, reason);`
+  - `TLS_FREE` (function, line 28) `TLS_FREE(s);`
+  - `number` (function, line 64) `* The nonce_explicit is the sequence number (RFC 5288 allows it and * OpenSSL uses it);`
+  - `TLS_MEMCPY` (function, line 83) `TLS_MEMCPY(nonce, s->cli_salt, 4);`
+  - `TLS_RECV` (function, line 122) `: TLS_RECV(fd, (char *)hdr + got, 5 - got);`
+  - `sha256_update` (function, line 183) `sha256_update(&s->hs_hash, s->pt, (unsigned)(len + 4));`
+  - `p256_pub` (function, line 263) `p256_pub(s->cli_priv, s->cli_pub_x, s->cli_pub_y);`
+  - `tls_prf` (function, line 281) `tls_prf(pre_master, 32, "master secret", seed, 64, s->master, 48);`
+  - `sha256_final` (function, line 325) `sha256_final(&hcopy, hash);`
+  - `sha256` (function, line 444) `sha256(data, 64 + params_len, digest);`
+  - `rsa_pkcs1_verify_sha256` (function, line 445) `return rsa_pkcs1_verify_sha256(s->leaf_pk.n, s->leaf_pk.n_len, s->leaf_pk.e, s->leaf_pk.e_len, digest, m + pos, sig_len);`
+  - `ecdsa_verify` (function, line 452) `return ecdsa_verify(0, s->leaf_pk.qx, s->leaf_pk.qy, digest, 32, m + pos, sig_len);`
+  - `sha384` (function, line 457) `sha384(data, 64 + params_len, digest);`
+  - `TLS_MEMSET` (function, line 485) `TLS_MEMSET(s, 0, sizeof(*s));`
+  - `sha256_init` (function, line 494) `sha256_init(&s->hs_hash);`
+  - `volatile` (function, line 791) `__asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));`
+  - `PORT_IO_DEFINED` (macro, line 809) `#define PORT_IO_DEFINED`
 - Depends on: `tls_port.h`, `tls_roots.h`
 
 ## net/tls_crypto.c
@@ -166,6 +204,7 @@
   - `mont_ctx` (struct, line 655)
   - `ec_curve` (struct, line 838)
   - `jpt` (struct, line 859)
+  - `gf128` (struct, line 316)
   - `sha256_rotr` (function, line 32) `static unsigned sha256_rotr(unsigned x, unsigned n)`
   - `sha256_init` (function, line 36) `void sha256_init(struct sha256_ctx *c)`
   - `sha256_block` (function, line 49) `static void sha256_block(struct sha256_ctx *c, const unsigned char *p)`
@@ -276,7 +315,10 @@
   - `p256_pub` (function, line 1519) `int p256_pub(const unsigned char priv[32],
              unsigned char x[32], unsigned char y[32])`
   - `p256_scalar_valid` (function, line 1538) `int p256_scalar_valid(const unsigned char scalar[32])`
-  - `TLS_BN_WORDS` (macro, line 534)
+  - `TLS_MEMCPY` (function, line 89) `TLS_MEMCPY(c->buf + idx, data, len);`
+  - `TLS_MEMSET` (function, line 111) `TLS_MEMSET(pad, 0, sizeof(pad));`
+  - `word` (function, line 326) `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */ r.hi = (v.hi >> 1) ^ (0xE100000000000000ULL & mask);`
+  - `TLS_BN_WORDS` (macro, line 534) `#define TLS_BN_WORDS`
 - Depends on: `tls_port.h`
 
 ## net/tls_x509.c
@@ -318,5 +360,12 @@
                                  c...`
   - `tls_x509_verify_chain` (function, line 520) `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,
                        ...`
-  - `TLS_SAN_MAX` (macro, line 170)
+  - `TLS_MEMCPY` (function, line 156) `TLS_MEMCPY(out->cn, val, val_len);`
+  - `sha256` (function, line 484) `sha256(cert->tbs, cert->tbs_len, digest);`
+  - `rsa_pkcs1_verify_sha256` (function, line 485) `return rsa_pkcs1_verify_sha256(issuer_key->n, issuer_key->n_len, issuer_key->e, issuer_key->e_len, digest, cert->sig, cert->sig_len);`
+  - `sha384` (function, line 493) `sha384(cert->tbs, cert->tbs_len, d48);`
+  - `rsa_pkcs1_verify_sha384` (function, line 494) `return rsa_pkcs1_verify_sha384(issuer_key->n, issuer_key->n_len, issuer_key->e, issuer_key->e_len, d48, cert->sig, cert->sig_len);`
+  - `ecdsa_verify` (function, line 515) `return ecdsa_verify(1, issuer_key->qx, issuer_key->qy, d384, 48, cert->sig, cert->sig_len);`
+  - `TLS_FREE` (function, line 577) `done: TLS_FREE(certs);`
+  - `TLS_SAN_MAX` (macro, line 170) `#define TLS_SAN_MAX`
 - Depends on: `tls_port.h`

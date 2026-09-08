@@ -5,144 +5,145 @@
 - Doc: bootdefs.h - centralized configuration for the MiniOS two-stage boot path.
 - Language: h
 - Symbols:
-  - `BOOTDEFS_H` (macro, line 46)
-  - `SECTOR_BYTES` (macro, line 47)
-  - `SECTOR_PARAGRAPH_SHIFT` (macro, line 49)
-  - `SECTOR_DWORD_SHIFT` (macro, line 50)
-  - `BOOT_SIGNATURE` (macro, line 51)
-  - `BOOT_SIGNATURE_BYTES` (macro, line 53)
-  - `BOOT_SEG_NULL` (macro, line 54)
-  - `BOOT_STACK_TOP` (macro, line 56)
-  - `BOOT_DAP_ADDR` (macro, line 57)
-  - `BOOT_DAP_SIZE` (macro, line 59)
-  - `BOOT_DAP_OFF_COUNT` (macro, line 60)
-  - `BOOT_DAP_OFF_OFFSET` (macro, line 61)
-  - `BOOT_DAP_OFF_SEGMENT` (macro, line 62)
-  - `BOOT_DAP_OFF_LBA_LO` (macro, line 63)
-  - `BOOT_DAP_OFF_LBA_HI` (macro, line 64)
-  - `BOOT_DRIVE_ADDR` (macro, line 65)
-  - `BOOT_KASLR_ADDR` (macro, line 66)
-  - `BOOT_STAGE2_LBA` (macro, line 67)
-  - `BOOT_STAGE2_SECTORS` (macro, line 69)
-  - `BOOT_STAGE2_ADDR` (macro, line 70)
-  - `BOOT_STAGE2_SEG` (macro, line 71)
-  - `BOOT_KERNEL_LBA` (macro, line 72)
-  - `BOOT_KERNEL_BUF_ADDR` (macro, line 74)
-  - `BOOT_KERNEL_BUF_SEG` (macro, line 75)
-  - `BOOT_KERNEL_PHYS_ADDR` (macro, line 76)
-  - `BOOT_CHUNK_SECTORS` (macro, line 77)
-  - `BOOT_BIOS_MAX_SECTORS` (macro, line 79)
-  - `BOOT_PM_STACK_TOP` (macro, line 80)
-  - `BIOS_DISK_INT` (macro, line 82)
-  - `BIOS_DISK_EXT_CHECK` (macro, line 84)
-  - `BIOS_DISK_EXT_REQ_MAGIC` (macro, line 85)
-  - `BIOS_DISK_EXT_ACK_MAGIC` (macro, line 86)
-  - `BIOS_DISK_EXT_PACKET_BIT` (macro, line 87)
-  - `BIOS_DISK_READ_EXT` (macro, line 88)
-  - `BIOS_VIDEO_INT` (macro, line 89)
-  - `BIOS_VIDEO_TTY_WRITE` (macro, line 91)
-  - `BIOS_VIDEO_TTY_ATTR` (macro, line 92)
-  - `BIOS_VIDEO_SET_MODE` (macro, line 93)
-  - `BIOS_VBE_GET_MODE_INFO` (macro, line 106)
-  - `BIOS_VBE_SET_MODE` (macro, line 107)
-  - `VBE_MODE_1024x768x32` (macro, line 108)
-  - `VBE_MODE_800x600x32` (macro, line 109)
-  - `VBE_MODE_640x480x32` (macro, line 110)
-  - `VBE_MODE_1024x768x8` (macro, line 111)
-  - `VBE_MODE_800x600x8` (macro, line 112)
-  - `VBE_MODE_640x480x8` (macro, line 113)
-  - `VBE_MODE_LFB` (macro, line 114)
-  - `VBE_MODE_INFO_ADDR` (macro, line 115)
-  - `VBE_MODE_ATTR_OFF` (macro, line 116)
-  - `VBE_ATTR_SUPPORTED` (macro, line 117)
-  - `VBE_ATTR_LFB` (macro, line 118)
-  - `VBE_INFO_XRES_OFF` (macro, line 119)
-  - `VBE_INFO_YRES_OFF` (macro, line 120)
-  - `VBE_INFO_BYTES_SCAN_OFF` (macro, line 121)
-  - `VBE_INFO_PHYSBASE_OFF` (macro, line 122)
-  - `VBE_INFO_BPP_SRC_OFF` (macro, line 123)
-  - `VBE_BPP_8` (macro, line 124)
-  - `VBE_BPP_24` (macro, line 125)
-  - `VBE_BPP_32` (macro, line 126)
-  - `VBE_INFO_ADDR` (macro, line 138)
-  - `VBE_INFO_FBBASE_OFF` (macro, line 139)
-  - `VBE_INFO_PITCH_OFF` (macro, line 140)
-  - `VBE_INFO_WIDTH_OFF` (macro, line 141)
-  - `VBE_INFO_HEIGHT_OFF` (macro, line 142)
-  - `VBE_INFO_VALID_OFF` (macro, line 143)
-  - `VBE_INFO_BPP_OFF` (macro, line 144)
-  - `A20_CONTROL_PORT` (macro, line 145)
-  - `A20_ENABLE_BIT` (macro, line 147)
-  - `A20_RESET_CLEAR_MASK` (macro, line 148)
-  - `CR0_PE` (macro, line 149)
-  - `CR0_PE_CLEAR_MASK` (macro, line 151)
-  - `CR0_PG` (macro, line 152)
-  - `CR4_PAE` (macro, line 153)
-  - `MSR_EFER` (macro, line 154)
-  - `EFER_LME` (macro, line 156)
-  - `EFER_NXE` (macro, line 157)
-  - `GDT32_CODE32_SEL` (macro, line 158)
-  - `GDT32_DATA32_SEL` (macro, line 160)
-  - `GDT32_CODE16_SEL` (macro, line 161)
-  - `GDT32_DATA16_SEL` (macro, line 162)
-  - `GDT32_DESC_NULL` (macro, line 163)
-  - `GDT32_DESC_CODE32` (macro, line 165)
-  - `GDT32_DESC_DATA32` (macro, line 166)
-  - `GDT32_DESC_CODE16` (macro, line 167)
-  - `GDT32_DESC_DATA16` (macro, line 168)
-  - `GDT64_ADDR` (macro, line 169)
-  - `GDT64_BYTES` (macro, line 171)
-  - `GDT64_SMP_BYTES` (macro, line 176)
-  - `AP_STUB_ADDR` (macro, line 181)
-  - `GDT64_CODE_SEL` (macro, line 182)
-  - `GDT64_DATA_SEL` (macro, line 183)
-  - `GDT64_USER_DATA_SEL` (macro, line 184)
-  - `GDT64_USER_CODE_SEL` (macro, line 185)
-  - `GDT64_DESC_NULL` (macro, line 186)
-  - `GDT64_DESC_CODE` (macro, line 187)
-  - `GDT64_DESC_DATA` (macro, line 188)
-  - `GDT64_DESC_UDATA` (macro, line 189)
-  - `GDT64_DESC_UCODE` (macro, line 190)
-  - `PT_PML4_ADDR` (macro, line 191)
-  - `PT_PDPT_ADDR` (macro, line 193)
-  - `PT_PD_ADDR` (macro, line 194)
-  - `PT_USER0_ADDR` (macro, line 195)
-  - `PT_USER1_ADDR` (macro, line 196)
-  - `PT_ZERO_DWORDS` (macro, line 197)
-  - `PT_FLAGS_PRESENT_RW` (macro, line 198)
-  - `PT_FLAGS_PRESENT_RW_PS` (macro, line 199)
-  - `PT_FLAGS_PS` (macro, line 200)
-  - `PT_FLAGS_USER` (macro, line 201)
-  - `PT_FLAGS_PCD` (macro, line 202)
-  - `PT_FLAGS_NX` (macro, line 203)
-  - `PT_ADDR_MASK` (macro, line 204)
-  - `PT_USER_ENTRY` (macro, line 205)
-  - `PT_USER_NX_ENTRY` (macro, line 206)
-  - `PT_ENTRY_PRESENT` (macro, line 207)
-  - `PT_ENTRY_USER` (macro, line 208)
-  - `SB16_DMA_PT_ENTRY` (macro, line 214)
-  - `SB16_DMA_PT_PAGES` (macro, line 215)
-  - `PT_PD_ENTRIES` (macro, line 216)
-  - `PT_PD_ENTRY_BYTES` (macro, line 217)
-  - `PT_PD_PAGE_BYTES` (macro, line 218)
-  - `PT_PD_INDEX_SHIFT` (macro, line 219)
-  - `PT_FILL_START_INDEX` (macro, line 220)
-  - `PT_FILL_START_ADDR` (macro, line 221)
-  - `PT_FILL_ENTRIES` (macro, line 222)
-  - `PT_USER_TABLES_ADDR` (macro, line 242)
-  - `PT_USER_TABLES_BYTES` (macro, line 243)
-  - `KASLR_MIN_ADDR` (macro, line 255)
-  - `KASLR_ALIGN_SHIFT` (macro, line 256)
-  - `KASLR_MAX_UNITS` (macro, line 257)
-  - `KASLR_IMG_OFF_1MB` (macro, line 258)
-  - `KASLR_IMG_OFF_2MB` (macro, line 259)
-  - `KASLR_IMAGE_SPAN` (macro, line 260)
-  - `CMOS_INDEX_PORT` (macro, line 261)
-  - `CMOS_DATA_PORT` (macro, line 263)
-  - `CMOS_NMI_DISABLE` (macro, line 264)
-  - `CMOS_REG_SECONDS` (macro, line 265)
-  - `CMOS_REG_MINUTES` (macro, line 266)
-  - `CMOS_REG_HOURS` (macro, line 267)
+  - `address` (function, line 179) `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and 64-bit GDT stage 2 built for the BSP. */ #define AP_STUB_ADDR 0x6000 #define GDT64_COD`
+  - `BOOTDEFS_H` (macro, line 46) `#define BOOTDEFS_H`
+  - `SECTOR_BYTES` (macro, line 47) `#define SECTOR_BYTES`
+  - `SECTOR_PARAGRAPH_SHIFT` (macro, line 49) `#define SECTOR_PARAGRAPH_SHIFT`
+  - `SECTOR_DWORD_SHIFT` (macro, line 50) `#define SECTOR_DWORD_SHIFT`
+  - `BOOT_SIGNATURE` (macro, line 51) `#define BOOT_SIGNATURE`
+  - `BOOT_SIGNATURE_BYTES` (macro, line 53) `#define BOOT_SIGNATURE_BYTES`
+  - `BOOT_SEG_NULL` (macro, line 54) `#define BOOT_SEG_NULL`
+  - `BOOT_STACK_TOP` (macro, line 56) `#define BOOT_STACK_TOP`
+  - `BOOT_DAP_ADDR` (macro, line 57) `#define BOOT_DAP_ADDR`
+  - `BOOT_DAP_SIZE` (macro, line 59) `#define BOOT_DAP_SIZE`
+  - `BOOT_DAP_OFF_COUNT` (macro, line 60) `#define BOOT_DAP_OFF_COUNT`
+  - `BOOT_DAP_OFF_OFFSET` (macro, line 61) `#define BOOT_DAP_OFF_OFFSET`
+  - `BOOT_DAP_OFF_SEGMENT` (macro, line 62) `#define BOOT_DAP_OFF_SEGMENT`
+  - `BOOT_DAP_OFF_LBA_LO` (macro, line 63) `#define BOOT_DAP_OFF_LBA_LO`
+  - `BOOT_DAP_OFF_LBA_HI` (macro, line 64) `#define BOOT_DAP_OFF_LBA_HI`
+  - `BOOT_DRIVE_ADDR` (macro, line 65) `#define BOOT_DRIVE_ADDR`
+  - `BOOT_KASLR_ADDR` (macro, line 66) `#define BOOT_KASLR_ADDR`
+  - `BOOT_STAGE2_LBA` (macro, line 67) `#define BOOT_STAGE2_LBA`
+  - `BOOT_STAGE2_SECTORS` (macro, line 69) `#define BOOT_STAGE2_SECTORS`
+  - `BOOT_STAGE2_ADDR` (macro, line 70) `#define BOOT_STAGE2_ADDR`
+  - `BOOT_STAGE2_SEG` (macro, line 71) `#define BOOT_STAGE2_SEG`
+  - `BOOT_KERNEL_LBA` (macro, line 72) `#define BOOT_KERNEL_LBA`
+  - `BOOT_KERNEL_BUF_ADDR` (macro, line 74) `#define BOOT_KERNEL_BUF_ADDR`
+  - `BOOT_KERNEL_BUF_SEG` (macro, line 75) `#define BOOT_KERNEL_BUF_SEG`
+  - `BOOT_KERNEL_PHYS_ADDR` (macro, line 76) `#define BOOT_KERNEL_PHYS_ADDR`
+  - `BOOT_CHUNK_SECTORS` (macro, line 77) `#define BOOT_CHUNK_SECTORS`
+  - `BOOT_BIOS_MAX_SECTORS` (macro, line 79) `#define BOOT_BIOS_MAX_SECTORS`
+  - `BOOT_PM_STACK_TOP` (macro, line 80) `#define BOOT_PM_STACK_TOP`
+  - `BIOS_DISK_INT` (macro, line 82) `#define BIOS_DISK_INT`
+  - `BIOS_DISK_EXT_CHECK` (macro, line 84) `#define BIOS_DISK_EXT_CHECK`
+  - `BIOS_DISK_EXT_REQ_MAGIC` (macro, line 85) `#define BIOS_DISK_EXT_REQ_MAGIC`
+  - `BIOS_DISK_EXT_ACK_MAGIC` (macro, line 86) `#define BIOS_DISK_EXT_ACK_MAGIC`
+  - `BIOS_DISK_EXT_PACKET_BIT` (macro, line 87) `#define BIOS_DISK_EXT_PACKET_BIT`
+  - `BIOS_DISK_READ_EXT` (macro, line 88) `#define BIOS_DISK_READ_EXT`
+  - `BIOS_VIDEO_INT` (macro, line 89) `#define BIOS_VIDEO_INT`
+  - `BIOS_VIDEO_TTY_WRITE` (macro, line 91) `#define BIOS_VIDEO_TTY_WRITE`
+  - `BIOS_VIDEO_TTY_ATTR` (macro, line 92) `#define BIOS_VIDEO_TTY_ATTR`
+  - `BIOS_VIDEO_SET_MODE` (macro, line 93) `#define BIOS_VIDEO_SET_MODE`
+  - `BIOS_VBE_GET_MODE_INFO` (macro, line 106) `#define BIOS_VBE_GET_MODE_INFO`
+  - `BIOS_VBE_SET_MODE` (macro, line 107) `#define BIOS_VBE_SET_MODE`
+  - `VBE_MODE_1024x768x32` (macro, line 108) `#define VBE_MODE_1024x768x32`
+  - `VBE_MODE_800x600x32` (macro, line 109) `#define VBE_MODE_800x600x32`
+  - `VBE_MODE_640x480x32` (macro, line 110) `#define VBE_MODE_640x480x32`
+  - `VBE_MODE_1024x768x8` (macro, line 111) `#define VBE_MODE_1024x768x8`
+  - `VBE_MODE_800x600x8` (macro, line 112) `#define VBE_MODE_800x600x8`
+  - `VBE_MODE_640x480x8` (macro, line 113) `#define VBE_MODE_640x480x8`
+  - `VBE_MODE_LFB` (macro, line 114) `#define VBE_MODE_LFB`
+  - `VBE_MODE_INFO_ADDR` (macro, line 115) `#define VBE_MODE_INFO_ADDR`
+  - `VBE_MODE_ATTR_OFF` (macro, line 116) `#define VBE_MODE_ATTR_OFF`
+  - `VBE_ATTR_SUPPORTED` (macro, line 117) `#define VBE_ATTR_SUPPORTED`
+  - `VBE_ATTR_LFB` (macro, line 118) `#define VBE_ATTR_LFB`
+  - `VBE_INFO_XRES_OFF` (macro, line 119) `#define VBE_INFO_XRES_OFF`
+  - `VBE_INFO_YRES_OFF` (macro, line 120) `#define VBE_INFO_YRES_OFF`
+  - `VBE_INFO_BYTES_SCAN_OFF` (macro, line 121) `#define VBE_INFO_BYTES_SCAN_OFF`
+  - `VBE_INFO_PHYSBASE_OFF` (macro, line 122) `#define VBE_INFO_PHYSBASE_OFF`
+  - `VBE_INFO_BPP_SRC_OFF` (macro, line 123) `#define VBE_INFO_BPP_SRC_OFF`
+  - `VBE_BPP_8` (macro, line 124) `#define VBE_BPP_8`
+  - `VBE_BPP_24` (macro, line 125) `#define VBE_BPP_24`
+  - `VBE_BPP_32` (macro, line 126) `#define VBE_BPP_32`
+  - `VBE_INFO_ADDR` (macro, line 138) `#define VBE_INFO_ADDR`
+  - `VBE_INFO_FBBASE_OFF` (macro, line 139) `#define VBE_INFO_FBBASE_OFF`
+  - `VBE_INFO_PITCH_OFF` (macro, line 140) `#define VBE_INFO_PITCH_OFF`
+  - `VBE_INFO_WIDTH_OFF` (macro, line 141) `#define VBE_INFO_WIDTH_OFF`
+  - `VBE_INFO_HEIGHT_OFF` (macro, line 142) `#define VBE_INFO_HEIGHT_OFF`
+  - `VBE_INFO_VALID_OFF` (macro, line 143) `#define VBE_INFO_VALID_OFF`
+  - `VBE_INFO_BPP_OFF` (macro, line 144) `#define VBE_INFO_BPP_OFF`
+  - `A20_CONTROL_PORT` (macro, line 145) `#define A20_CONTROL_PORT`
+  - `A20_ENABLE_BIT` (macro, line 147) `#define A20_ENABLE_BIT`
+  - `A20_RESET_CLEAR_MASK` (macro, line 148) `#define A20_RESET_CLEAR_MASK`
+  - `CR0_PE` (macro, line 149) `#define CR0_PE`
+  - `CR0_PE_CLEAR_MASK` (macro, line 151) `#define CR0_PE_CLEAR_MASK`
+  - `CR0_PG` (macro, line 152) `#define CR0_PG`
+  - `CR4_PAE` (macro, line 153) `#define CR4_PAE`
+  - `MSR_EFER` (macro, line 154) `#define MSR_EFER`
+  - `EFER_LME` (macro, line 156) `#define EFER_LME`
+  - `EFER_NXE` (macro, line 157) `#define EFER_NXE`
+  - `GDT32_CODE32_SEL` (macro, line 158) `#define GDT32_CODE32_SEL`
+  - `GDT32_DATA32_SEL` (macro, line 160) `#define GDT32_DATA32_SEL`
+  - `GDT32_CODE16_SEL` (macro, line 161) `#define GDT32_CODE16_SEL`
+  - `GDT32_DATA16_SEL` (macro, line 162) `#define GDT32_DATA16_SEL`
+  - `GDT32_DESC_NULL` (macro, line 163) `#define GDT32_DESC_NULL`
+  - `GDT32_DESC_CODE32` (macro, line 165) `#define GDT32_DESC_CODE32`
+  - `GDT32_DESC_DATA32` (macro, line 166) `#define GDT32_DESC_DATA32`
+  - `GDT32_DESC_CODE16` (macro, line 167) `#define GDT32_DESC_CODE16`
+  - `GDT32_DESC_DATA16` (macro, line 168) `#define GDT32_DESC_DATA16`
+  - `GDT64_ADDR` (macro, line 169) `#define GDT64_ADDR`
+  - `GDT64_BYTES` (macro, line 171) `#define GDT64_BYTES`
+  - `GDT64_SMP_BYTES` (macro, line 176) `#define GDT64_SMP_BYTES`
+  - `AP_STUB_ADDR` (macro, line 181) `#define AP_STUB_ADDR`
+  - `GDT64_CODE_SEL` (macro, line 182) `#define GDT64_CODE_SEL`
+  - `GDT64_DATA_SEL` (macro, line 183) `#define GDT64_DATA_SEL`
+  - `GDT64_USER_DATA_SEL` (macro, line 184) `#define GDT64_USER_DATA_SEL`
+  - `GDT64_USER_CODE_SEL` (macro, line 185) `#define GDT64_USER_CODE_SEL`
+  - `GDT64_DESC_NULL` (macro, line 186) `#define GDT64_DESC_NULL`
+  - `GDT64_DESC_CODE` (macro, line 187) `#define GDT64_DESC_CODE`
+  - `GDT64_DESC_DATA` (macro, line 188) `#define GDT64_DESC_DATA`
+  - `GDT64_DESC_UDATA` (macro, line 189) `#define GDT64_DESC_UDATA`
+  - `GDT64_DESC_UCODE` (macro, line 190) `#define GDT64_DESC_UCODE`
+  - `PT_PML4_ADDR` (macro, line 191) `#define PT_PML4_ADDR`
+  - `PT_PDPT_ADDR` (macro, line 193) `#define PT_PDPT_ADDR`
+  - `PT_PD_ADDR` (macro, line 194) `#define PT_PD_ADDR`
+  - `PT_USER0_ADDR` (macro, line 195) `#define PT_USER0_ADDR`
+  - `PT_USER1_ADDR` (macro, line 196) `#define PT_USER1_ADDR`
+  - `PT_ZERO_DWORDS` (macro, line 197) `#define PT_ZERO_DWORDS`
+  - `PT_FLAGS_PRESENT_RW` (macro, line 198) `#define PT_FLAGS_PRESENT_RW`
+  - `PT_FLAGS_PRESENT_RW_PS` (macro, line 199) `#define PT_FLAGS_PRESENT_RW_PS`
+  - `PT_FLAGS_PS` (macro, line 200) `#define PT_FLAGS_PS`
+  - `PT_FLAGS_USER` (macro, line 201) `#define PT_FLAGS_USER`
+  - `PT_FLAGS_PCD` (macro, line 202) `#define PT_FLAGS_PCD`
+  - `PT_FLAGS_NX` (macro, line 203) `#define PT_FLAGS_NX`
+  - `PT_ADDR_MASK` (macro, line 204) `#define PT_ADDR_MASK`
+  - `PT_USER_ENTRY` (macro, line 205) `#define PT_USER_ENTRY`
+  - `PT_USER_NX_ENTRY` (macro, line 206) `#define PT_USER_NX_ENTRY`
+  - `PT_ENTRY_PRESENT` (macro, line 207) `#define PT_ENTRY_PRESENT`
+  - `PT_ENTRY_USER` (macro, line 208) `#define PT_ENTRY_USER`
+  - `SB16_DMA_PT_ENTRY` (macro, line 214) `#define SB16_DMA_PT_ENTRY`
+  - `SB16_DMA_PT_PAGES` (macro, line 215) `#define SB16_DMA_PT_PAGES`
+  - `PT_PD_ENTRIES` (macro, line 216) `#define PT_PD_ENTRIES`
+  - `PT_PD_ENTRY_BYTES` (macro, line 217) `#define PT_PD_ENTRY_BYTES`
+  - `PT_PD_PAGE_BYTES` (macro, line 218) `#define PT_PD_PAGE_BYTES`
+  - `PT_PD_INDEX_SHIFT` (macro, line 219) `#define PT_PD_INDEX_SHIFT`
+  - `PT_FILL_START_INDEX` (macro, line 220) `#define PT_FILL_START_INDEX`
+  - `PT_FILL_START_ADDR` (macro, line 221) `#define PT_FILL_START_ADDR`
+  - `PT_FILL_ENTRIES` (macro, line 222) `#define PT_FILL_ENTRIES`
+  - `PT_USER_TABLES_ADDR` (macro, line 242) `#define PT_USER_TABLES_ADDR`
+  - `PT_USER_TABLES_BYTES` (macro, line 243) `#define PT_USER_TABLES_BYTES`
+  - `KASLR_MIN_ADDR` (macro, line 255) `#define KASLR_MIN_ADDR`
+  - `KASLR_ALIGN_SHIFT` (macro, line 256) `#define KASLR_ALIGN_SHIFT`
+  - `KASLR_MAX_UNITS` (macro, line 257) `#define KASLR_MAX_UNITS`
+  - `KASLR_IMG_OFF_1MB` (macro, line 258) `#define KASLR_IMG_OFF_1MB`
+  - `KASLR_IMG_OFF_2MB` (macro, line 259) `#define KASLR_IMG_OFF_2MB`
+  - `KASLR_IMAGE_SPAN` (macro, line 260) `#define KASLR_IMAGE_SPAN`
+  - `CMOS_INDEX_PORT` (macro, line 261) `#define CMOS_INDEX_PORT`
+  - `CMOS_DATA_PORT` (macro, line 263) `#define CMOS_DATA_PORT`
+  - `CMOS_NMI_DISABLE` (macro, line 264) `#define CMOS_NMI_DISABLE`
+  - `CMOS_REG_SECONDS` (macro, line 265) `#define CMOS_REG_SECONDS`
+  - `CMOS_REG_MINUTES` (macro, line 266) `#define CMOS_REG_MINUTES`
+  - `CMOS_REG_HOURS` (macro, line 267) `#define CMOS_REG_HOURS`
 - Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
 
 ## arch/x86/boot/stage1.S

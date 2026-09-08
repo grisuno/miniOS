@@ -16,55 +16,73 @@
   - `minios_pal` (function, line 110) `static mp_obj_t minios_pal(mp_obj_t buf_in)`
   - `minios_pcspeaker` (function, line 126) `static mp_obj_t minios_pcspeaker(mp_obj_t freq_in, mp_obj_t ms_in)`
   - `minios_run` (function, line 148) `static mp_obj_t minios_run(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)`
-  - `SYS_TIME_MS` (macro, line 41)
-  - `SYS_PALETTE` (macro, line 42)
-  - `SYS_PCSPK_INIT` (macro, line 43)
-  - `SYS_PCSPK_TONE` (macro, line 44)
-  - `SYS_RTC` (macro, line 45)
-  - `SYS_FB_INFO` (macro, line 46)
-  - `SYS_PCSPK_VOL` (macro, line 47)
-  - `SYS_SPAWN` (macro, line 48)
+  - `volatile` (function, line 16) `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory" );`
+  - `mp_obj_new_int_from_uint` (function, line 53) `return mp_obj_new_int_from_uint((uint32_t)msys(SYS_TIME_MS, 0, 0, 0));`
+  - `MP_DEFINE_CONST_FUN_OBJ_0` (function, line 55) `static MP_DEFINE_CONST_FUN_OBJ_0(minios_time_ms_obj, minios_time_ms);`
+  - `mp_raise_OSError` (function, line 63) `mp_raise_OSError(-ret);`
+  - `mp_obj_new_tuple` (function, line 70) `return mp_obj_new_tuple(3, tuple);`
+  - `mp_obj_new_int` (function, line 99) `return mp_obj_new_int((int)msys(SYS_PCSPK_VOL, -1, 0, 0));`
+  - `mp_raise_ValueError` (function, line 103) `mp_raise_ValueError(MP_ERROR_TEXT("volume must be 0..100"));`
+  - `MP_DEFINE_CONST_FUN_OBJ_VAR` (function, line 107) `static MP_DEFINE_CONST_FUN_OBJ_VAR(minios_vol_obj, 0, minios_vol);`
+  - `mp_get_buffer_raise` (function, line 113) `mp_get_buffer_raise(buf_in, &bufinfo, MP_BUFFER_READ);`
+  - `MP_DEFINE_CONST_FUN_OBJ_1` (function, line 123) `static MP_DEFINE_CONST_FUN_OBJ_1(minios_pal_obj, minios_pal);`
+  - `msys` (function, line 130) `msys(SYS_PCSPK_INIT, 0, 0, 0);`
+  - `MP_DEFINE_CONST_FUN_OBJ_2` (function, line 140) `static MP_DEFINE_CONST_FUN_OBJ_2(minios_pcspeaker_obj, minios_pcspeaker);`
+  - `mp_arg_parse_all` (function, line 156) `mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);`
+  - `mp_raise_TypeError` (function, line 168) `mp_raise_TypeError(MP_ERROR_TEXT("args must be a list or tuple"));`
+  - `mp_obj_get_array` (function, line 170) `mp_obj_get_array(args_in, &n, &items);`
+  - `MP_DEFINE_CONST_FUN_OBJ_KW` (function, line 193) `static MP_DEFINE_CONST_FUN_OBJ_KW(minios_run_obj, 1, minios_run);`
+  - `MP_DEFINE_CONST_DICT` (function, line 207) `static MP_DEFINE_CONST_DICT(minios_module_globals, minios_module_globals_table);`
+  - `MP_REGISTER_MODULE` (function, line 213) `MP_REGISTER_MODULE(MP_QSTR_minios, minios_module);`
+  - `SYS_TIME_MS` (macro, line 41) `#define SYS_TIME_MS`
+  - `SYS_PALETTE` (macro, line 42) `#define SYS_PALETTE`
+  - `SYS_PCSPK_INIT` (macro, line 43) `#define SYS_PCSPK_INIT`
+  - `SYS_PCSPK_TONE` (macro, line 44) `#define SYS_PCSPK_TONE`
+  - `SYS_RTC` (macro, line 45) `#define SYS_RTC`
+  - `SYS_FB_INFO` (macro, line 46) `#define SYS_FB_INFO`
+  - `SYS_PCSPK_VOL` (macro, line 47) `#define SYS_PCSPK_VOL`
+  - `SYS_SPAWN` (macro, line 48) `#define SYS_SPAWN`
 - Depends on: `progs/minios_abi.h`
 
 ## progs/micropython/variants/minios/mpconfigvariant.h
 - Layer: infrastructure
 - Language: h
 - Symbols:
-  - `MICROPY_CONFIG_ROM_LEVEL` (macro, line 11)
-  - `MICROPY_FLOAT_IMPL` (macro, line 14)
-  - `MICROPY_LONGINT_IMPL` (macro, line 15)
-  - `MICROPY_ERROR_REPORTING` (macro, line 18)
-  - `MICROPY_WARNINGS` (macro, line 19)
-  - `MICROPY_DEBUG_PRINTERS` (macro, line 20)
-  - `MICROPY_USE_READLINE` (macro, line 23)
-  - `MICROPY_KBD_EXCEPTION` (macro, line 30)
-  - `MICROPY_ASYNC_KBD_INTR` (macro, line 31)
-  - `MICROPY_HELPER_REPL` (macro, line 34)
-  - `MICROPY_PY_SYS_PS1` (macro, line 35)
-  - `MICROPY_PY_SYS_PS2` (macro, line 36)
-  - `MICROPY_PY_SYS_ATEXIT` (macro, line 37)
-  - `MICROPY_PY_SYS_EXC_INFO` (macro, line 38)
-  - `MICROPY_PY_SYS_STDFILES` (macro, line 39)
-  - `MICROPY_PY_OS` (macro, line 42)
-  - `MICROPY_PY_OS_INCLUDEFILE` (macro, line 43)
-  - `MICROPY_PY_OS_ERRNO` (macro, line 44)
-  - `MICROPY_PY_OS_GETENV_PUTENV_UNSETENV` (macro, line 45)
-  - `MICROPY_PY_OS_SYSTEM` (macro, line 46)
-  - `MICROPY_PY_OS_URANDOM` (macro, line 47)
-  - `MICROPY_PY_TIME` (macro, line 50)
-  - `MICROPY_PY_SOCKET` (macro, line 53)
-  - `MICROPY_PY_SSL` (macro, line 54)
-  - `MICROPY_PY_FFI` (macro, line 55)
-  - `MICROPY_PY_THREAD` (macro, line 56)
-  - `MICROPY_PY_MACHINE` (macro, line 57)
-  - `MICROPY_PY_WEBSOCKET` (macro, line 58)
-  - `MICROPY_PERSISTENT_CODE_LOAD` (macro, line 61)
-  - `MICROPY_REPL_EMACS_WORDS_MOVE` (macro, line 64)
-  - `MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE` (macro, line 65)
-  - `MICROPY_USE_READLINE_HISTORY` (macro, line 66)
-  - `MICROPY_OPT_COMPUTED_GOTO` (macro, line 71)
-  - `MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF` (macro, line 74)
-  - `MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE` (macro, line 75)
-  - `MICROPY_PY_GC_COLLECT_RETVAL` (macro, line 78)
-  - `MICROPY_VFS_ROM` (macro, line 81)
-  - `MICROPY_VFS_ROM_IOCTL` (macro, line 82)
+  - `MICROPY_CONFIG_ROM_LEVEL` (macro, line 11) `#define MICROPY_CONFIG_ROM_LEVEL`
+  - `MICROPY_FLOAT_IMPL` (macro, line 14) `#define MICROPY_FLOAT_IMPL`
+  - `MICROPY_LONGINT_IMPL` (macro, line 15) `#define MICROPY_LONGINT_IMPL`
+  - `MICROPY_ERROR_REPORTING` (macro, line 18) `#define MICROPY_ERROR_REPORTING`
+  - `MICROPY_WARNINGS` (macro, line 19) `#define MICROPY_WARNINGS`
+  - `MICROPY_DEBUG_PRINTERS` (macro, line 20) `#define MICROPY_DEBUG_PRINTERS`
+  - `MICROPY_USE_READLINE` (macro, line 23) `#define MICROPY_USE_READLINE`
+  - `MICROPY_KBD_EXCEPTION` (macro, line 30) `#define MICROPY_KBD_EXCEPTION`
+  - `MICROPY_ASYNC_KBD_INTR` (macro, line 31) `#define MICROPY_ASYNC_KBD_INTR`
+  - `MICROPY_HELPER_REPL` (macro, line 34) `#define MICROPY_HELPER_REPL`
+  - `MICROPY_PY_SYS_PS1` (macro, line 35) `#define MICROPY_PY_SYS_PS1`
+  - `MICROPY_PY_SYS_PS2` (macro, line 36) `#define MICROPY_PY_SYS_PS2`
+  - `MICROPY_PY_SYS_ATEXIT` (macro, line 37) `#define MICROPY_PY_SYS_ATEXIT`
+  - `MICROPY_PY_SYS_EXC_INFO` (macro, line 38) `#define MICROPY_PY_SYS_EXC_INFO`
+  - `MICROPY_PY_SYS_STDFILES` (macro, line 39) `#define MICROPY_PY_SYS_STDFILES`
+  - `MICROPY_PY_OS` (macro, line 42) `#define MICROPY_PY_OS`
+  - `MICROPY_PY_OS_INCLUDEFILE` (macro, line 43) `#define MICROPY_PY_OS_INCLUDEFILE`
+  - `MICROPY_PY_OS_ERRNO` (macro, line 44) `#define MICROPY_PY_OS_ERRNO`
+  - `MICROPY_PY_OS_GETENV_PUTENV_UNSETENV` (macro, line 45) `#define MICROPY_PY_OS_GETENV_PUTENV_UNSETENV`
+  - `MICROPY_PY_OS_SYSTEM` (macro, line 46) `#define MICROPY_PY_OS_SYSTEM`
+  - `MICROPY_PY_OS_URANDOM` (macro, line 47) `#define MICROPY_PY_OS_URANDOM`
+  - `MICROPY_PY_TIME` (macro, line 50) `#define MICROPY_PY_TIME`
+  - `MICROPY_PY_SOCKET` (macro, line 53) `#define MICROPY_PY_SOCKET`
+  - `MICROPY_PY_SSL` (macro, line 54) `#define MICROPY_PY_SSL`
+  - `MICROPY_PY_FFI` (macro, line 55) `#define MICROPY_PY_FFI`
+  - `MICROPY_PY_THREAD` (macro, line 56) `#define MICROPY_PY_THREAD`
+  - `MICROPY_PY_MACHINE` (macro, line 57) `#define MICROPY_PY_MACHINE`
+  - `MICROPY_PY_WEBSOCKET` (macro, line 58) `#define MICROPY_PY_WEBSOCKET`
+  - `MICROPY_PERSISTENT_CODE_LOAD` (macro, line 61) `#define MICROPY_PERSISTENT_CODE_LOAD`
+  - `MICROPY_REPL_EMACS_WORDS_MOVE` (macro, line 64) `#define MICROPY_REPL_EMACS_WORDS_MOVE`
+  - `MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE` (macro, line 65) `#define MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE`
+  - `MICROPY_USE_READLINE_HISTORY` (macro, line 66) `#define MICROPY_USE_READLINE_HISTORY`
+  - `MICROPY_OPT_COMPUTED_GOTO` (macro, line 71) `#define MICROPY_OPT_COMPUTED_GOTO`
+  - `MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF` (macro, line 74) `#define MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF`
+  - `MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE` (macro, line 75) `#define MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE`
+  - `MICROPY_PY_GC_COLLECT_RETVAL` (macro, line 78) `#define MICROPY_PY_GC_COLLECT_RETVAL`
+  - `MICROPY_VFS_ROM` (macro, line 81) `#define MICROPY_VFS_ROM`
+  - `MICROPY_VFS_ROM_IOCTL` (macro, line 82) `#define MICROPY_VFS_ROM_IOCTL`

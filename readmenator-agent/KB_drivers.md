@@ -15,8 +15,11 @@
   - `block_write_multi` (function, line 77) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
   - `block_flush` (function, line 84) `void block_flush(void)`
   - `block_total` (function, line 86) `unsigned int block_total(void)`
-  - `BC_WAYS` (macro, line 22)
-  - `BC_MASK` (macro, line 23)
+  - `ide_init` (function, line 38) `ide_init();`
+  - `ide_write_sectors` (function, line 70) `return ide_write_sectors(lba, SECTORS_PER_BLOCK, buf);`
+  - `ide_read_sectors` (function, line 75) `return ide_read_sectors(lba, count * SECTORS_PER_BLOCK, buf);`
+  - `BC_WAYS` (macro, line 22) `#define BC_WAYS`
+  - `BC_MASK` (macro, line 23) `#define BC_MASK`
 
 ## drivers/ide.c
 - Layer: infrastructure
@@ -37,29 +40,35 @@
   - `ide_write_sectors` (function, line 134) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf)`
   - `ide_read_sector` (function, line 164) `int ide_read_sector(unsigned int lba, void *buf)`
   - `ide_write_sector` (function, line 168) `int ide_write_sector(unsigned int lba, const void *buf)`
+  - `inb` (function, line 23) `return inb(IDE_PRIMARY_BASE + IDE_REG_STATUS);`
+  - `outb` (function, line 46) `outb(IDE_PRIMARY_BASE + IDE_REG_DRIVE, IDE_DRIVE_LBA | (drive ? IDE_DRIVE_SLAVE : IDE_DRIVE_MASTER));`
+  - `kprintf` (function, line 94) `kprintf("IDE: disk detected, %u sectors (%u MB)\n", ide_disk_sectors, ide_disk_sectors / 2048);`
+  - `outw` (function, line 156) `outw(IDE_PRIMARY_BASE + IDE_REG_DATA, ((const unsigned short *)p)[j]);`
 
 ## drivers/kbd.c
 - Layer: infrastructure
 - Doc: include "kernel.h" include "vga_fb.h" include "kbd.h"  ================================================================
 - Language: c
 - Symbols:
-  - `kbd_q_push` (function, line 48) `void kbd_q_push(unsigned char c)`
-  - `kbd_raw_push_internal` (function, line 55) `static void kbd_raw_push_internal(unsigned char c)`
-  - `kbd_q_empty` (function, line 62) `int kbd_q_empty(void)`
-  - `kbd_q_pop` (function, line 64) `int kbd_q_pop(void)`
-  - `kbd_available` (function, line 71) `int kbd_available(void)`
-  - `kbd_raw_mode_get` (function, line 77) `int kbd_raw_mode_get(void)`
-  - `kbd_raw_mode_set` (function, line 79) `void kbd_raw_mode_set(int on)`
-  - `kbd_raw_empty` (function, line 80) `int kbd_raw_empty(void)`
-  - `kbd_raw_pop` (function, line 81) `int kbd_raw_pop(void)`
-  - `kbd_raw_push_byte` (function, line 87) `void kbd_raw_push_byte(unsigned char c)`
-  - `kbd_e0_get` (function, line 88) `int kbd_e0_get(void)`
-  - `kbd_e0_set` (function, line 89) `void kbd_e0_set(int v)`
-  - `kbd_flush_all` (function, line 90) `void kbd_flush_all(void)`
-  - `kbd_read` (function, line 94) `int kbd_read(void)`
-  - `kbd_reset_for_shell` (function, line 190) `void kbd_reset_for_shell(void)`
-  - `KBD_QUEUE_LEN` (macro, line 38)
-  - `KBD_RAW_LEN` (macro, line 43)
+  - `kbd_q_push` (function, line 49) `void kbd_q_push(unsigned char c)`
+  - `kbd_raw_push_internal` (function, line 56) `static void kbd_raw_push_internal(unsigned char c)`
+  - `kbd_q_empty` (function, line 63) `int kbd_q_empty(void)`
+  - `kbd_q_pop` (function, line 65) `int kbd_q_pop(void)`
+  - `kbd_available` (function, line 72) `int kbd_available(void)`
+  - `kbd_raw_mode_get` (function, line 78) `int kbd_raw_mode_get(void)`
+  - `kbd_raw_mode_set` (function, line 80) `void kbd_raw_mode_set(int on)`
+  - `kbd_raw_empty` (function, line 81) `int kbd_raw_empty(void)`
+  - `kbd_raw_pop` (function, line 82) `int kbd_raw_pop(void)`
+  - `kbd_raw_push_byte` (function, line 88) `void kbd_raw_push_byte(unsigned char c)`
+  - `kbd_e0_get` (function, line 89) `int kbd_e0_get(void)`
+  - `kbd_e0_set` (function, line 90) `void kbd_e0_set(int v)`
+  - `kbd_flush_all` (function, line 91) `void kbd_flush_all(void)`
+  - `kbd_read` (function, line 95) `int kbd_read(void)`
+  - `kbd_reset_for_shell` (function, line 198) `void kbd_reset_for_shell(void)`
+  - `volatile` (function, line 75) `__asm__ volatile("inb $0x64, %0" : "=a"(s));`
+  - `KBD_QUEUE_LEN` (macro, line 38) `#define KBD_QUEUE_LEN`
+  - `KBD_SCAN_DEL` (macro, line 40) `#define KBD_SCAN_DEL`
+  - `KBD_RAW_LEN` (macro, line 44) `#define KBD_RAW_LEN`
 - Depends on: `drivers/kbd.h`
 
 ## drivers/kbd.h
@@ -67,7 +76,21 @@
 - Doc: ifndef KBD_H define KBD_H
 - Language: h
 - Symbols:
-  - `KBD_H` (macro, line 2)
+  - `kbd_available` (function, line 3) `int kbd_available(void);`
+  - `kbd_read` (function, line 5) `int kbd_read(void);`
+  - `kbd_reset_for_shell` (function, line 6) `void kbd_reset_for_shell(void);`
+  - `kbd_q_empty` (function, line 9) `int kbd_q_empty(void);`
+  - `kbd_q_pop` (function, line 10) `int kbd_q_pop(void);`
+  - `kbd_q_push` (function, line 11) `void kbd_q_push(unsigned char c);`
+  - `kbd_raw_mode_get` (function, line 14) `int kbd_raw_mode_get(void);`
+  - `kbd_raw_mode_set` (function, line 15) `void kbd_raw_mode_set(int on);`
+  - `kbd_raw_empty` (function, line 16) `int kbd_raw_empty(void);`
+  - `kbd_raw_pop` (function, line 17) `int kbd_raw_pop(void);`
+  - `kbd_raw_push_byte` (function, line 18) `void kbd_raw_push_byte(unsigned char c);`
+  - `kbd_e0_get` (function, line 19) `int kbd_e0_get(void);`
+  - `kbd_e0_set` (function, line 20) `void kbd_e0_set(int v);`
+  - `kbd_flush_all` (function, line 21) `void kbd_flush_all(void);`
+  - `KBD_H` (macro, line 2) `#define KBD_H`
 - Imported by: `drivers/kbd.c`, `kernel.c`
 
 ## drivers/pcspk.c
@@ -80,15 +103,16 @@
   - `pcspk_get_volume` (function, line 35) `unsigned pcspk_get_volume(void)`
   - `pcspk_tone` (function, line 39) `void pcspk_tone(unsigned freq)`
   - `pcspk_off` (function, line 57) `void pcspk_off(void)`
-  - `PIT_CH2_DATA` (macro, line 12)
-  - `PIT_CH2_CMD` (macro, line 14)
-  - `SPEAKER_PORT` (macro, line 15)
-  - `PIT_FREQ` (macro, line 16)
-  - `PCSPK_MIN_FREQ` (macro, line 17)
-  - `PCSPK_MAX_FREQ` (macro, line 19)
-  - `SPEAKER_DATA_BIT` (macro, line 20)
-  - `SPEAKER_GATE_BIT` (macro, line 22)
-  - `SPEAKER_ENABLE_BITS` (macro, line 23)
+  - `outb` (function, line 29) `outb(SPEAKER_PORT, inb(SPEAKER_PORT) & 0xFC);`
+  - `PIT_CH2_DATA` (macro, line 12) `#define PIT_CH2_DATA`
+  - `PIT_CH2_CMD` (macro, line 14) `#define PIT_CH2_CMD`
+  - `SPEAKER_PORT` (macro, line 15) `#define SPEAKER_PORT`
+  - `PIT_FREQ` (macro, line 16) `#define PIT_FREQ`
+  - `PCSPK_MIN_FREQ` (macro, line 17) `#define PCSPK_MIN_FREQ`
+  - `PCSPK_MAX_FREQ` (macro, line 19) `#define PCSPK_MAX_FREQ`
+  - `SPEAKER_DATA_BIT` (macro, line 20) `#define SPEAKER_DATA_BIT`
+  - `SPEAKER_GATE_BIT` (macro, line 22) `#define SPEAKER_GATE_BIT`
+  - `SPEAKER_ENABLE_BITS` (macro, line 23) `#define SPEAKER_ENABLE_BITS`
 
 ## drivers/rtc.c
 - Layer: infrastructure
@@ -98,22 +122,24 @@
   - `rtc_cmos_read` (function, line 31) `static inline unsigned char rtc_cmos_read(unsigned char reg)`
   - `rtc_from_bcd` (function, line 36) `static int rtc_from_bcd(unsigned char v)`
   - `rtc_read_tod` (function, line 40) `int rtc_read_tod(int *hour, int *min, int *sec)`
-  - `RTC_CMOS_ADDR` (macro, line 8)
-  - `RTC_CMOS_DATA` (macro, line 10)
-  - `RTC_REG_SEC` (macro, line 11)
-  - `RTC_REG_MIN` (macro, line 13)
-  - `RTC_REG_HOUR` (macro, line 14)
-  - `RTC_REG_STATUS_A` (macro, line 15)
-  - `RTC_REG_STATUS_B` (macro, line 16)
-  - `RTC_UPDATE_IN_PROGRESS` (macro, line 17)
-  - `RTC_BCD_FLAG` (macro, line 19)
-  - `RTC_HOUR_MIN` (macro, line 20)
-  - `RTC_HOUR_MAX` (macro, line 22)
-  - `RTC_MIN_MIN` (macro, line 23)
-  - `RTC_MIN_MAX` (macro, line 24)
-  - `RTC_SEC_MIN` (macro, line 25)
-  - `RTC_SEC_MAX` (macro, line 26)
-  - `RTC_UPDATE_WAIT` (macro, line 30)
+  - `outb` (function, line 33) `outb(RTC_CMOS_ADDR, reg);`
+  - `inb` (function, line 34) `return inb(RTC_CMOS_DATA);`
+  - `RTC_CMOS_ADDR` (macro, line 8) `#define RTC_CMOS_ADDR`
+  - `RTC_CMOS_DATA` (macro, line 10) `#define RTC_CMOS_DATA`
+  - `RTC_REG_SEC` (macro, line 11) `#define RTC_REG_SEC`
+  - `RTC_REG_MIN` (macro, line 13) `#define RTC_REG_MIN`
+  - `RTC_REG_HOUR` (macro, line 14) `#define RTC_REG_HOUR`
+  - `RTC_REG_STATUS_A` (macro, line 15) `#define RTC_REG_STATUS_A`
+  - `RTC_REG_STATUS_B` (macro, line 16) `#define RTC_REG_STATUS_B`
+  - `RTC_UPDATE_IN_PROGRESS` (macro, line 17) `#define RTC_UPDATE_IN_PROGRESS`
+  - `RTC_BCD_FLAG` (macro, line 19) `#define RTC_BCD_FLAG`
+  - `RTC_HOUR_MIN` (macro, line 20) `#define RTC_HOUR_MIN`
+  - `RTC_HOUR_MAX` (macro, line 22) `#define RTC_HOUR_MAX`
+  - `RTC_MIN_MIN` (macro, line 23) `#define RTC_MIN_MIN`
+  - `RTC_MIN_MAX` (macro, line 24) `#define RTC_MIN_MAX`
+  - `RTC_SEC_MIN` (macro, line 25) `#define RTC_SEC_MIN`
+  - `RTC_SEC_MAX` (macro, line 26) `#define RTC_SEC_MAX`
+  - `RTC_UPDATE_WAIT` (macro, line 30) `#define RTC_UPDATE_WAIT`
 
 ## drivers/sb16.c
 - Layer: infrastructure
@@ -128,53 +154,57 @@
   - `sb16_stream_volume` (function, line 175) `void sb16_stream_volume(int id, unsigned char vol)`
   - `sb16_stream_count` (function, line 181) `int sb16_stream_count(void)`
   - `sb16_mix_all` (function, line 192) `static void sb16_mix_all(void)`
-  - `sb16_pump` (function, line 228) `void sb16_pump(void)`
-  - `sb16_wait_write` (function, line 260) `static int sb16_wait_write(void)`
-  - `sb16_cmd` (function, line 266) `static void sb16_cmd(unsigned char c)`
-  - `sb16_read_data` (function, line 271) `static int sb16_read_data(unsigned char *out)`
-  - `sb16_reset_dsp` (function, line 283) `static int sb16_reset_dsp(void)`
-  - `sb16_dma_play` (function, line 296) `static void sb16_dma_play(unsigned addr, unsigned len)`
-  - `sb16_refill` (function, line 312) `static void sb16_refill(int slot_index)`
-  - `sb16_arm` (function, line 328) `static void sb16_arm(int from_irq)`
-  - `sb16_present` (function, line 352) `int sb16_present(void)`
-  - `sb16_tone` (function, line 354) `void sb16_tone(unsigned freq)`
-  - `sb16_pcm_open` (function, line 369) `void sb16_pcm_open(void)`
-  - `sb16_pcm_close` (function, line 392) `void sb16_pcm_close(void)`
-  - `sb16_pcm_submit` (function, line 401) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)`
-  - `sb16_irq` (function, line 418) `void sb16_irq(void)`
-  - `sb16_poll` (function, line 425) `void sb16_poll(void)`
-  - `sb16_ring_free` (function, line 430) `unsigned sb16_ring_free(void)`
-  - `sb16_mode_active` (function, line 432) `int sb16_mode_active(void)`
-  - `sb16_counters` (function, line 433) `void sb16_counters(sb16_counters_t *out)`
-  - `sb16_init` (function, line 437) `int sb16_init(void)`
-  - `SB16_BASE_PORT` (macro, line 45)
-  - `SB16_DSP_RESET` (macro, line 47)
-  - `SB16_DSP_READ_DATA` (macro, line 48)
-  - `SB16_DSP_WRITE_DATA` (macro, line 49)
-  - `SB16_DSP_STATUS` (macro, line 50)
-  - `SB16_IRQ_ACK` (macro, line 51)
-  - `SB16_CMD_READ_VER` (macro, line 52)
-  - `SB16_CMD_SET_FREQ` (macro, line 54)
-  - `SB16_CMD_PLAY8` (macro, line 55)
-  - `SB16_CMD_SPK_ON` (macro, line 56)
-  - `SB16_CMD_SPK_OFF` (macro, line 57)
-  - `SB16_DSP_RDSTATUS` (macro, line 58)
-  - `DMA_MODE_PORT` (macro, line 65)
-  - `DMA_CH1_SINGLE_READ` (macro, line 66)
-  - `SB16_FREQ_LO` (macro, line 67)
-  - `SB16_FREQ_HI` (macro, line 69)
-  - `SB16_DSP_READY_MASK` (macro, line 70)
-  - `DMA_CH1_ADDR` (macro, line 72)
-  - `DMA_CH1_CNT` (macro, line 74)
-  - `DMA_CH1_PAGE` (macro, line 75)
-  - `DMA_MASK` (macro, line 76)
-  - `DMA_FF_CLR` (macro, line 77)
-  - `DMA_CH1_UNMASK` (macro, line 78)
-  - `DMA_CH1_MASK` (macro, line 79)
-  - `SB16_DMA_BUF0` (macro, line 80)
-  - `SB16_SILENCE_SLOT` (macro, line 82)
-  - `SB16_BUF` (macro, line 83)
-  - `SB16_PROBE_WAIT` (macro, line 84)
-  - `SB16_MODE_TONE` (macro, line 86)
-  - `SB16_MODE_PCM` (macro, line 88)
-  - `SB16_SQ_CYCLE` (macro, line 89)
+  - `sb16_pump` (function, line 234) `void sb16_pump(void)`
+  - `sb16_wait_write` (function, line 276) `static int sb16_wait_write(void)`
+  - `sb16_cmd` (function, line 282) `static void sb16_cmd(unsigned char c)`
+  - `sb16_read_data` (function, line 287) `static int sb16_read_data(unsigned char *out)`
+  - `sb16_reset_dsp` (function, line 299) `static int sb16_reset_dsp(void)`
+  - `sb16_dma_play` (function, line 312) `static void sb16_dma_play(unsigned addr, unsigned len)`
+  - `sb16_refill` (function, line 328) `static void sb16_refill(int slot_index)`
+  - `sb16_arm` (function, line 344) `static void sb16_arm(int from_irq)`
+  - `sb16_present` (function, line 368) `int sb16_present(void)`
+  - `sb16_tone` (function, line 370) `void sb16_tone(unsigned freq)`
+  - `sb16_pcm_open` (function, line 385) `void sb16_pcm_open(void)`
+  - `sb16_pcm_close` (function, line 408) `void sb16_pcm_close(void)`
+  - `sb16_pcm_submit` (function, line 417) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)`
+  - `sb16_irq` (function, line 434) `void sb16_irq(void)`
+  - `sb16_poll` (function, line 441) `void sb16_poll(void)`
+  - `sb16_ring_free` (function, line 446) `unsigned sb16_ring_free(void)`
+  - `sb16_mode_active` (function, line 448) `int sb16_mode_active(void)`
+  - `sb16_counters` (function, line 449) `void sb16_counters(sb16_counters_t *out)`
+  - `sb16_init` (function, line 453) `int sb16_init(void)`
+  - `IRQ` (function, line 20) `* QEMU audio backends never raise the completion IRQ (they only consume once * their engine buffer drains, which a stalled host backend never does), and * without a fallback the 7-slot ring fills once`
+  - `kfree` (function, line 156) `kfree(streams[id].ring);`
+  - `outb` (function, line 285) `outb(SB16_DSP_WRITE_DATA, c);`
+  - `pending` (function, line 459) `* reading without it eats whatever byte happens to be pending (or * times out), so the probe used to fail or misread here. */ sb16_cmd(SB16_CMD_READ_VER);`
+  - `SB16_BASE_PORT` (macro, line 45) `#define SB16_BASE_PORT`
+  - `SB16_DSP_RESET` (macro, line 47) `#define SB16_DSP_RESET`
+  - `SB16_DSP_READ_DATA` (macro, line 48) `#define SB16_DSP_READ_DATA`
+  - `SB16_DSP_WRITE_DATA` (macro, line 49) `#define SB16_DSP_WRITE_DATA`
+  - `SB16_DSP_STATUS` (macro, line 50) `#define SB16_DSP_STATUS`
+  - `SB16_IRQ_ACK` (macro, line 51) `#define SB16_IRQ_ACK`
+  - `SB16_CMD_READ_VER` (macro, line 52) `#define SB16_CMD_READ_VER`
+  - `SB16_CMD_SET_FREQ` (macro, line 54) `#define SB16_CMD_SET_FREQ`
+  - `SB16_CMD_PLAY8` (macro, line 55) `#define SB16_CMD_PLAY8`
+  - `SB16_CMD_SPK_ON` (macro, line 56) `#define SB16_CMD_SPK_ON`
+  - `SB16_CMD_SPK_OFF` (macro, line 57) `#define SB16_CMD_SPK_OFF`
+  - `SB16_DSP_RDSTATUS` (macro, line 58) `#define SB16_DSP_RDSTATUS`
+  - `DMA_MODE_PORT` (macro, line 65) `#define DMA_MODE_PORT`
+  - `DMA_CH1_SINGLE_READ` (macro, line 66) `#define DMA_CH1_SINGLE_READ`
+  - `SB16_FREQ_LO` (macro, line 67) `#define SB16_FREQ_LO`
+  - `SB16_FREQ_HI` (macro, line 69) `#define SB16_FREQ_HI`
+  - `SB16_DSP_READY_MASK` (macro, line 70) `#define SB16_DSP_READY_MASK`
+  - `DMA_CH1_ADDR` (macro, line 72) `#define DMA_CH1_ADDR`
+  - `DMA_CH1_CNT` (macro, line 74) `#define DMA_CH1_CNT`
+  - `DMA_CH1_PAGE` (macro, line 75) `#define DMA_CH1_PAGE`
+  - `DMA_MASK` (macro, line 76) `#define DMA_MASK`
+  - `DMA_FF_CLR` (macro, line 77) `#define DMA_FF_CLR`
+  - `DMA_CH1_UNMASK` (macro, line 78) `#define DMA_CH1_UNMASK`
+  - `DMA_CH1_MASK` (macro, line 79) `#define DMA_CH1_MASK`
+  - `SB16_DMA_BUF0` (macro, line 80) `#define SB16_DMA_BUF0`
+  - `SB16_SILENCE_SLOT` (macro, line 82) `#define SB16_SILENCE_SLOT`
+  - `SB16_BUF` (macro, line 83) `#define SB16_BUF`
+  - `SB16_PROBE_WAIT` (macro, line 84) `#define SB16_PROBE_WAIT`
+  - `SB16_MODE_TONE` (macro, line 86) `#define SB16_MODE_TONE`
+  - `SB16_MODE_PCM` (macro, line 88) `#define SB16_MODE_PCM`
+  - `SB16_SQ_CYCLE` (macro, line 89) `#define SB16_SQ_CYCLE`
