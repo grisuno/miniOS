@@ -1107,8 +1107,11 @@ static int shell_run_elf_file(const char *full, int argc, char **argv) {
 static int shell_run_elf_minifs(const char *name, int argc, char **argv) {
     if (!minifs_is_mounted()) return -1;
     char cand[RAMDISK_FNAME_LEN];
+    char resolved[RAMDISK_FNAME_LEN];
     int ino = -1;
-    if (kstrchr(name, '/')) {
+    if (fs_resolve(name, resolved, sizeof(resolved)))
+        ino = minifs_resolve_path(resolved);
+    if (ino < 0 && kstrchr(name, '/')) {
         ino = minifs_resolve_path(name);
         if (ino < 0) {
             const char *base = name;
@@ -1117,7 +1120,8 @@ static int shell_run_elf_minifs(const char *name, int argc, char **argv) {
                 if (*p == '/') base = p + 1;
             ino = minifs_resolve_path(base);
         }
-    } else {
+    }
+    if (ino < 0 && !kstrchr(name, '/')) {
         ino = minifs_resolve_path(name);
         if (ino < 0) {
             const ShellRunDir *pref = shell_run_dir_for(name);
@@ -1186,17 +1190,25 @@ static int shell_run_file(const char *name, int argc, char **argv) {
         if (shell_resolve_run(name, full, sizeof(full)))
             return shell_run_cvm(full, argc, argv);
         if (minifs_is_mounted()) {
-            int ino = minifs_resolve_path(name);
-            if (ino < 0 && kstrchr(name, '/')) {
-                const char *base = name;
-                const char *p;
-                for (p = name; *p; p++)
-                    if (*p == '/') base = p + 1;
-                ino = minifs_resolve_path(base);
-                if (ino >= 0) name = base;
+            char resolved[RAMDISK_FNAME_LEN];
+            int ino = -1;
+            const char *use = name;
+            if (fs_resolve(name, resolved, sizeof(resolved)))
+                ino = minifs_resolve_path(resolved);
+            if (ino >= 0) use = resolved;
+            else {
+                ino = minifs_resolve_path(name);
+                if (ino < 0 && kstrchr(name, '/')) {
+                    const char *base = name;
+                    const char *p;
+                    for (p = name; *p; p++)
+                        if (*p == '/') base = p + 1;
+                    ino = minifs_resolve_path(base);
+                    if (ino >= 0) use = base;
+                }
             }
             if (ino >= 0)
-                return shell_run_cvm(name, argc, argv);
+                return shell_run_cvm(use, argc, argv);
         }
         return -1;
     }
@@ -1556,6 +1568,31 @@ void shell_exec_builtin(int argc, char **argv) {
             if ((unsigned)kstrlen(files[i]->name) == plen) continue; /* dir marker */
             kprintf("  %-20s  %u bytes\n", files[i]->name + plen, files[i]->size);
             shown = 1;
+        }
+        if (!shown && minifs_is_mounted()) {
+            char bare[RAMDISK_FNAME_LEN];
+            kmemcpy(bare, dir, plen + 1);
+            unsigned bl = plen;
+            while (bl > 0 && bare[bl - 1] == '/') bare[--bl] = 0;
+            int ino = (bl == 0) ? MINIFS_ROOT_INODE : minifs_resolve_path(bare);
+            MiniFSInode dst;
+            if (ino >= 0 && minifs_stat(ino, &dst) == 0 &&
+                (dst.mode & 0170000) == 0040000) {
+                MiniFSDirEntry de;
+                char mname[RAMDISK_FNAME_LEN];
+                int idx = 0;
+                while (minifs_dir_read(ino, idx, &de, mname) == 0) {
+                    idx++;
+                    if (de.inode == 0) continue;
+                    MiniFSInode st;
+                    if (minifs_stat(de.inode, &st) < 0) continue;
+                    if ((st.mode & 0170000) == 0040000)
+                        kprintf("  %s/\n", mname);
+                    else
+                        kprintf("  %-20s  %u bytes\n", mname, st.size);
+                    shown = 1;
+                }
+            }
         }
         if (!shown) vga_puts("  (empty)\n");
     }

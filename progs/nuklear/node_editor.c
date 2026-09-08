@@ -1,9 +1,9 @@
-/* node_editor.c — visual node editor that compiles to CVM bytecode.
+/* node_editor.c — visual low-code editor that compiles to CVM bytecode.
  *
  * A ring-3 Nuklear application (built exactly like DOOM: host gcc -static,
  * ships on MiniFS) that lets you place dataflow nodes on a canvas, wire
- * outputs to inputs, and compile the graph into a .cvm module that the CVM
- * interpreter runs in the OS. It is the "low-code tool for the CVM":
+ * outputs to inputs, edit every parameter in an inspector, and compile the
+ * graph into a .cvm module that the CVM interpreter runs in the OS.
  *
  *     nuklear                      -> GUI node editor
  *     nuklear --demo cvm/demo.cvm  -> compile a fixed demo graph, write it
@@ -28,111 +28,281 @@
 #include "nuklear_minios.h"
 #include "cvm_emit.h"
 
-/* ---- Graph model ---- */
+/* ---- Graph model (mirrors cvm_node, plus canvas position) ---- */
 #define MAX_NODES 64
+#define STR_MAX CVM_NODE_STR_MAX
 
 enum {
-    G_NUM, G_ADD, G_SUB, G_MUL, G_DIV, G_NEG, G_PRINT, G_EXIT
+    G_NUM, G_STR, G_ADD, G_SUB, G_MUL, G_DIV, G_MOD, G_NEG,
+    G_AND, G_OR, G_XOR, G_NOT, G_SHL, G_SHR,
+    G_EQ, G_NE, G_LT, G_LE, G_GT, G_GE, G_LNOT, G_IF,
+    G_PRINT, G_PRINTS, G_EXIT,
+    G_COUNT
 };
 
 struct gnode {
     int kind;
     long long ival;
-    int in[2];
+    char sval[STR_MAX];
+    int in[3];
+    long long lit[3];
+    int use_lit[3];
     float x, y;
+};
+
+/* Single registry: name, text-format word, inputs, outputs, color. */
+struct nodedef {
+    const char *name;
+    const char *pname;
+    int ni;
+    int no;
+    struct nk_color col;
+};
+
+static const struct nodedef node_defs[G_COUNT] = {
+    [G_NUM]    = { "Number", "num",    0, 1, { 70,130,180,255 } },
+    [G_STR]    = { "String", "str",    0, 1, { 90,160,120,255 } },
+    [G_ADD]    = { "Add",    "add",    2, 1, { 60,179,113,255 } },
+    [G_SUB]    = { "Sub",    "sub",    2, 1, { 210,105,105,255 } },
+    [G_MUL]    = { "Mul",    "mul",    2, 1, { 186,135, 89,255 } },
+    [G_DIV]    = { "Div",    "div",    2, 1, { 147,112,219,255 } },
+    [G_MOD]    = { "Mod",    "mod",    2, 1, { 160,120,200,255 } },
+    [G_NEG]    = { "Neg",    "neg",    1, 1, { 255,165,  0,255 } },
+    [G_AND]    = { "And",    "and",    2, 1, { 60,140,140,255 } },
+    [G_OR]     = { "Or",     "or",     2, 1, { 60,160,180,255 } },
+    [G_XOR]    = { "Xor",    "xor",    2, 1, { 120,140,200,255 } },
+    [G_NOT]    = { "Not",    "not",    1, 1, { 200,150, 60,255 } },
+    [G_SHL]    = { "Shl",    "shl",    2, 1, { 110,170,110,255 } },
+    [G_SHR]    = { "Shr",    "shr",    2, 1, { 170,170,110,255 } },
+    [G_EQ]     = { "Eq",     "eq",     2, 1, { 100,180,220,255 } },
+    [G_NE]     = { "Ne",     "ne",     2, 1, { 220,180,100,255 } },
+    [G_LT]     = { "Lt",     "lt",     2, 1, { 140,200,140,255 } },
+    [G_LE]     = { "Le",     "le",     2, 1, { 140,180,200,255 } },
+    [G_GT]     = { "Gt",     "gt",     2, 1, { 200,140,180,255 } },
+    [G_GE]     = { "Ge",     "ge",     2, 1, { 180,200,140,255 } },
+    [G_LNOT]   = { "LNot",   "lnot",   1, 1, { 220,160, 80,255 } },
+    [G_IF]     = { "If",     "if",     3, 1, { 240,200, 80,255 } },
+    [G_PRINT]  = { "Print",  "print",  1, 0, { 100,149,237,255 } },
+    [G_PRINTS] = { "PrStr",  "prints", 1, 0, { 130,170,240,255 } },
+    [G_EXIT]   = { "Exit",   "exit",   1, 0, { 220, 80, 60,255 } },
 };
 
 static struct gnode g_nodes[MAX_NODES];
 static int g_count;
-static char g_status[128];
+static char g_status[192];
+static int g_selected = -1;
+
+static int node_inputs(int k) {
+    if (k < 0 || k >= G_COUNT) return 0;
+    return node_defs[k].ni;
+}
+
+static int node_outputs(int k) {
+    if (k < 0 || k >= G_COUNT) return 0;
+    return node_defs[k].no;
+}
+
+static const char *kind_name(int k) {
+    if (k < 0 || k >= G_COUNT) return "?";
+    return node_defs[k].name;
+}
+
+static struct nk_color kind_color(int k) {
+    if (k < 0 || k >= G_COUNT) return nk_rgb(150, 150, 150);
+    return node_defs[k].col;
+}
 
 static void graph_clear(void) {
     g_count = 0;
+    g_selected = -1;
     g_status[0] = '\0';
 }
 
 static int graph_add(int kind) {
+    if (kind < 0 || kind >= G_COUNT) return -1;
     if (g_count >= MAX_NODES) return -1;
     struct gnode *n = &g_nodes[g_count];
     memset(n, 0, sizeof(*n));
     n->kind = kind;
-    n->in[0] = n->in[1] = -1;
+    n->in[0] = n->in[1] = n->in[2] = -1;
     n->x = 30.0f + (float)(g_count % 6) * 160.0f;
     n->y = 60.0f + (float)(g_count / 6) * 120.0f;
     if (kind == G_NUM) n->ival = 1;
+    if (kind == G_STR) snprintf(n->sval, sizeof(n->sval), "hi");
     return g_count++;
 }
 
-static const char *kind_name(int k) {
-    switch (k) {
-    case G_NUM:   return "Number";
-    case G_ADD:   return "Add";
-    case G_SUB:   return "Sub";
-    case G_MUL:   return "Mul";
-    case G_DIV:   return "Div";
-    case G_NEG:   return "Neg";
-    case G_PRINT: return "Print";
-    case G_EXIT:  return "Exit";
-    }
-    return "?";
-}
-
-static int node_inputs(int k) {
-    switch (k) {
-    case G_ADD: case G_SUB: case G_MUL: case G_DIV: return 2;
-    case G_NEG: case G_PRINT: case G_EXIT: return 1;
-    }
-    return 0;
-}
-
-/* Node colors: distinct hue per type, low saturation for readability. */
-static struct nk_color kind_color(int k) {
-    switch (k) {
-    case G_NUM:   return nk_rgb(70, 130, 180);   /* steel blue */
-    case G_ADD:   return nk_rgb(60, 179, 113);   /* medium sea green */
-    case G_SUB:   return nk_rgb(210, 105, 105);  /* indian red */
-    case G_MUL:   return nk_rgb(186, 135, 89);   /* peru */
-    case G_DIV:   return nk_rgb(147, 112, 219);  /* medium purple */
-    case G_NEG:   return nk_rgb(255, 165, 0);    /* orange */
-    case G_PRINT: return nk_rgb(100, 149, 237);  /* cornflower blue */
-    case G_EXIT:  return nk_rgb(220, 80, 60);    /* tomato */
-    }
-    return nk_rgb(150, 150, 150);
+static void graph_del(int idx) {
+    if (idx < 0 || idx >= g_count) return;
+    memmove(&g_nodes[idx], &g_nodes[idx + 1],
+            (size_t)(g_count - idx - 1) * sizeof(g_nodes[0]));
+    g_count--;
+    for (int i = 0; i < g_count; i++)
+        for (int k = 0; k < 3; k++) {
+            if (g_nodes[i].in[k] == idx) {
+                g_nodes[i].in[k] = -1;
+            } else if (g_nodes[i].in[k] > idx) {
+                g_nodes[i].in[k]--;
+            }
+        }
+    if (g_selected == idx) g_selected = -1;
+    else if (g_selected > idx) g_selected--;
 }
 
 /* Map the graph into the compiler's node array. Returns node count or <0. */
 static int graph_to_compiler(struct cvm_node *out, int cap) {
     if (g_count > cap) return -1;
     for (int i = 0; i < g_count; i++) {
-        out[i].type = (g_nodes[i].kind == G_ADD) ? NODE_ADD :
-                      (g_nodes[i].kind == G_SUB) ? NODE_SUB :
-                      (g_nodes[i].kind == G_MUL) ? NODE_MUL :
-                      (g_nodes[i].kind == G_DIV) ? NODE_DIV :
-                      (g_nodes[i].kind == G_NEG) ? NODE_NEG :
-                      (g_nodes[i].kind == G_PRINT) ? NODE_PRINT :
-                      (g_nodes[i].kind == G_EXIT) ? NODE_EXIT : NODE_NUM;
-        out[i].ival = g_nodes[i].ival;
-        out[i].in[0] = g_nodes[i].in[0];
-        out[i].in[1] = g_nodes[i].in[1];
+        struct gnode *g = &g_nodes[i];
+        out[i].type = (enum cvm_node_type)g->kind;
+        out[i].ival = g->ival;
+        memcpy(out[i].sval, g->sval, sizeof(out[i].sval));
+        out[i].sval[sizeof(out[i].sval) - 1] = '\0';
+        for (int k = 0; k < 3; k++) {
+            out[i].in[k] = g->in[k];
+            out[i].lit[k] = g->lit[k];
+            out[i].use_lit[k] = g->use_lit[k];
+        }
     }
     return g_count;
 }
 
-/* Compile the current graph to a file. Returns 0 on success. */
+/* Pre-compile pass: repair every open data input with a const 0 fallback
+ * (an open PrStr prints an empty line), so Compile always writes a module
+ * instead of refusing. Repairs are loud (rep), and *bad selects the first
+ * touched node. Only unrepairable problems (herr: bad type, dangling wire,
+ * sink used as a source, PrStr wired to a non-string) still refuse. */
+static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,
+                        int *bad) {
+    int nhard = 0;
+    int first_bad = -1;
+    size_t rl = 0, hl = 0;
+    rep[0] = '\0';
+    herr[0] = '\0';
+    void addrep(const char *s) {
+        size_t sl = strlen(s);
+        int room = (int)repcap - (int)rl - 12;
+        if (room <= 0) return;
+        if (rl > 0 && room > 3) { memcpy(rep + rl, " | ", 3); rl += 3; room -= 3; }
+        if ((int)sl > room) sl = (size_t)room;
+        memcpy(rep + rl, s, sl);
+        rl += sl;
+        rep[rl] = '\0';
+    }
+    void adderr(const char *s) {
+        size_t sl = strlen(s);
+        int room = (int)herrcap - (int)hl - 12;
+        if (room <= 0) return;
+        if (hl > 0 && room > 3) { memcpy(herr + hl, " | ", 3); hl += 3; room -= 3; }
+        if ((int)sl > room) sl = (size_t)room;
+        memcpy(herr + hl, s, sl);
+        hl += sl;
+        herr[hl] = '\0';
+    }
+    for (int i = 0; i < g_count; i++) {
+        struct gnode *g = &g_nodes[i];
+        if (g->kind < 0 || g->kind >= G_COUNT) {
+            char m[64];
+            snprintf(m, sizeof(m), "node %d: bad type", i);
+            adderr(m);
+            if (first_bad < 0) first_bad = i;
+            nhard++;
+            continue;
+        }
+        int ni = node_inputs(g->kind);
+        for (int k = 0; k < ni; k++) {
+            if (g->in[k] >= 0) {
+                if (g->in[k] >= g_count) {
+                    char m[96];
+                    snprintf(m, sizeof(m), "node %d (%s): in%d out of range",
+                             i, kind_name(g->kind), k);
+                    adderr(m);
+                    if (first_bad < 0) first_bad = i;
+                    nhard++;
+                } else if (node_outputs(g_nodes[g->in[k]].kind) == 0 &&
+                           g_nodes[g->in[k]].kind != G_NUM &&
+                           g_nodes[g->in[k]].kind != G_STR) {
+                    /* A sink (Print/PrStr/Exit) has no output pin. */
+                    char m[96];
+                    snprintf(m, sizeof(m),
+                             "node %d (%s): in%d fed by %s (no output pin)",
+                             i, kind_name(g->kind), k,
+                             kind_name(g_nodes[g->in[k]].kind));
+                    adderr(m);
+                    if (first_bad < 0) first_bad = i;
+                    nhard++;
+                }
+            } else if (!g->use_lit[k]) {
+                const char *inname = "in";
+                char nm[16];
+                if (g->kind == G_IF)
+                    inname = k == 0 ? "cond" : k == 1 ? "then" : "else";
+                else {
+                    snprintf(nm, sizeof(nm), "in%d", k);
+                    inname = nm;
+                }
+                if (g->kind == G_PRINTS) {
+                    char m[96];
+                    snprintf(m, sizeof(m),
+                             "node %d (PrStr): no input -> prints empty line",
+                             i);
+                    addrep(m);
+                } else {
+                    char m[128];
+                    snprintf(m, sizeof(m),
+                             "node %d (%s): %s was open -> using 0",
+                             i, kind_name(g->kind), inname);
+                    addrep(m);
+                    g->use_lit[k] = 1;
+                    g->lit[k] = 0;
+                }
+                if (first_bad < 0) first_bad = i;
+            }
+        }
+        if (g->kind == G_PRINTS && g->in[0] >= 0 && g->in[0] < g_count) {
+            int sk = g_nodes[g->in[0]].kind;
+            if (sk != G_STR && sk != G_IF) {
+                char m[96];
+                snprintf(m, sizeof(m),
+                         "node %d (PrStr): needs a String, not %s",
+                         i, kind_name(sk));
+                adderr(m);
+                if (first_bad < 0) first_bad = i;
+                nhard++;
+            }
+        }
+    }
+    if (bad) *bad = first_bad;
+    return nhard;
+}
+
+/* Compile the current graph to a file. Returns 0 on success. Open inputs
+ * are auto-repaired (const 0 / empty line) and reported, so this refuses
+ * only on unrepairable problems. */
 static int compile_to(const char *path) {
+    char rep[192], herr[192];
+    int bad = -1;
+    int nhard = repair_graph(rep, sizeof(rep), herr, sizeof(herr), &bad);
+    if (bad >= 0) g_selected = bad;
+    if (nhard > 0) {
+        snprintf(g_status, sizeof(g_status), "!! NOT COMPILED (%d): %.140s",
+                 nhard, herr);
+        return -1;
+    }
     struct cvm_node cvm[MAX_NODES];
     int n = graph_to_compiler(cvm, MAX_NODES);
-    if (n < 0) { snprintf(g_status, sizeof(g_status), "graph too large"); return -1; }
+    if (n < 0) { snprintf(g_status, sizeof(g_status), "!! graph too large"); return -1; }
     unsigned char *mod;
     size_t sz;
     char err[128];
     if (cvm_compile(cvm, n, &mod, &sz, err, sizeof(err)) < 0) {
-        snprintf(g_status, sizeof(g_status), "compile: %.100s", err);
+        snprintf(g_status, sizeof(g_status), "!! NOT COMPILED: %.100s", err);
         return -1;
     }
     int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (fd < 0) {
-        snprintf(g_status, sizeof(g_status), "cannot open %s", path);
+        snprintf(g_status, sizeof(g_status),
+                 "!! NOT SAVED: cannot create %s (check the directory)", path);
         free(mod);
         return -1;
     }
@@ -145,67 +315,183 @@ static int compile_to(const char *path) {
     close(fd);
     free(mod);
     if (off != sz) {
-        snprintf(g_status, sizeof(g_status), "write error");
+        snprintf(g_status, sizeof(g_status), "!! NOT SAVED: write error on %s", path);
         return -1;
     }
-    snprintf(g_status, sizeof(g_status), "wrote %s (%zu bytes)", path, sz);
+    snprintf(g_status, sizeof(g_status), "OK: wrote %s (%zu bytes)", path, sz);
+    if (rep[0]) {
+        /* Repairs happened: keep the file, but say what was auto-filled. */
+        char ok[192];
+        snprintf(ok, sizeof(ok), "%s", g_status);
+        snprintf(g_status, sizeof(g_status), "%s | REPAIRED: %.90s", ok, rep);
+    }
     return 0;
 }
 
-/* ---- Headless graph text format ----
- *   num a 5          add b a c        print b        exit b
- * Each line: <type> <name> [value|in1 [in2]]. Inputs are earlier-defined
- * node names; forward references are rejected. */
+/* ---- Headless graph text format (v2, backward compatible) ----
+ *   num a 5          str s "hi"       add b a c      add c a #5
+ *   neg n a          if r c t e       print p e      print p e "%d ms\n"
+ *   prints s2 s      exit x e
+ * Inputs are earlier-defined node names or #integer literals (wire or
+ * const). Forward references are rejected. A quoted "..." token carries
+ * C-like escapes (\\ \" \n \t). The print format is an optional 4th token. */
+static void write_quoted(FILE *f, const char *s) {
+    fputc('"', f);
+    for (; *s; s++) {
+        if (*s == '\\' || *s == '"') { fputc('\\', f); fputc(*s, f); }
+        else if (*s == '\n') { fputc('\\', f); fputc('n', f); }
+        else if (*s == '\t') { fputc('\\', f); fputc('t', f); }
+        else fputc(*s, f);
+    }
+    fputc('"', f);
+}
+
+/* Tokenize a line into tokens; quoted tokens honour backslash escapes.
+ * Returns token count (0..maxtok). */
+static int tokenize(char *line, char *toks[], int maxtok, char *buf, size_t bufsz) {
+    int nt = 0;
+    char *p = line;
+    char *w = buf;
+    char *wend = buf + bufsz - 1;
+    while (*p && nt < maxtok) {
+        while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n') p++;
+        if (!*p) break;
+        /* A '#' starts a comment, unless it opens a literal (#5, #-). */
+        if (*p == '#' && !(p[1] == '-' || (p[1] >= '0' && p[1] <= '9')))
+            break;
+        if (*p == '"') {
+            p++;
+            toks[nt++] = w;
+            while (*p && *p != '"' && w < wend) {
+                if (*p == '\\' && p[1]) {
+                    p++;
+                    if (*p == 'n') *w++ = '\n';
+                    else if (*p == 't') *w++ = '\t';
+                    else *w++ = *p;
+                    p++;
+                } else {
+                    *w++ = *p++;
+                }
+            }
+            if (*p == '"') p++;
+            if (w < wend) *w++ = '\0';
+            else *buf = '\0';
+        } else {
+            toks[nt++] = w;
+            while (*p && *p != ' ' && *p != '\t' && *p != '\r' && *p != '\n'
+                   && w < wend)
+                *w++ = *p++;
+            if (w < wend) *w++ = '\0';
+            else *buf = '\0';
+        }
+    }
+    return nt;
+}
+
+static int save_graph_file(const char *path) {
+    FILE *f = fopen(path, "w");
+    if (!f) { snprintf(g_status, sizeof(g_status), "cannot open %s", path); return -1; }
+    static char names[MAX_NODES][16];
+    for (int i = 0; i < g_count; i++)
+        snprintf(names[i], sizeof(names[i]), "n%d", i);
+    for (int i = 0; i < g_count; i++) {
+        struct gnode *g = &g_nodes[i];
+        const char *pn = node_defs[g->kind].pname;
+        if (g->kind == G_NUM) {
+            fprintf(f, "num %s %lld\n", names[i], g->ival);
+        } else if (g->kind == G_STR) {
+            fprintf(f, "str %s ", names[i]);
+            write_quoted(f, g->sval);
+            fputc('\n', f);
+        } else {
+            fprintf(f, "%s %s", pn, names[i]);
+            int ni = node_inputs(g->kind);
+            for (int k = 0; k < ni; k++) {
+                if (g->in[k] >= 0 && g->in[k] < g_count)
+                    fprintf(f, " %s", names[g->in[k]]);
+                else if (g->use_lit[k])
+                    fprintf(f, " #%lld", g->lit[k]);
+                else
+                    fprintf(f, " #-");
+            }
+            if (g->kind == G_PRINT && g->sval[0]) {
+                fputc(' ', f);
+                write_quoted(f, g->sval);
+            }
+            fputc('\n', f);
+        }
+    }
+    fclose(f);
+    snprintf(g_status, sizeof(g_status), "saved %s (%d nodes)", path, g_count);
+    return 0;
+}
+
 static int parse_graph_file(const char *path) {
     FILE *f = fopen(path, "r");
     if (!f) return -1;
     graph_clear();
     static char names[MAX_NODES][16];
-    char line[128];
+    char line[512];
     int rc = 0;
     int resolve(const char *nme, int upto) {
         for (int k = 0; k < upto; k++)
             if (strcmp(names[k], nme) == 0) return k;
         return -2;
     }
+    /* Parse one input token: name, #literal, or #- (open, no literal). */
+    int parse_input(const char *tok, int idx, int k) {
+        if (tok[0] == '#') {
+            if (!strcmp(tok, "#-")) {
+                g_nodes[idx].in[k] = -1;
+                g_nodes[idx].use_lit[k] = 0;
+                return 0;
+            }
+            g_nodes[idx].in[k] = -1;
+            g_nodes[idx].lit[k] = atoll(tok + 1);
+            g_nodes[idx].use_lit[k] = 1;
+            return 0;
+        }
+        int r = resolve(tok, idx);
+        if (r < 0) return -1;
+        g_nodes[idx].in[k] = r;
+        return 0;
+    }
     while (fgets(line, sizeof(line), f)) {
-        char *p = line;
-        while (*p == ' ' || *p == '\t') p++;
-        if (*p == '#' || *p == '\n' || *p == '\r' || *p == 0) continue;
-        char type[16], name[16], a[16], b[16];
-        int consumed = sscanf(p, "%15s %15s %15s %15s", type, name, a, b);
-        if (consumed < 2) { rc = -1; break; }
-        int kind;
-        if      (!strcmp(type, "num"))   kind = G_NUM;
-        else if (!strcmp(type, "add"))   kind = G_ADD;
-        else if (!strcmp(type, "sub"))   kind = G_SUB;
-        else if (!strcmp(type, "mul"))   kind = G_MUL;
-        else if (!strcmp(type, "div"))   kind = G_DIV;
-        else if (!strcmp(type, "neg"))   kind = G_NEG;
-        else if (!strcmp(type, "print")) kind = G_PRINT;
-        else if (!strcmp(type, "exit"))  kind = G_EXIT;
-        else { rc = -1; break; }
+        char *toks[8];
+        char buf[512];
+        int nt = tokenize(line, toks, 8, buf, sizeof(buf));
+        if (nt == 0) continue;
+        int kind = -1;
+        for (int k = 0; k < G_COUNT; k++)
+            if (!strcmp(toks[0], node_defs[k].pname)) { kind = k; break; }
+        if (kind < 0 || nt < 2) { rc = -1; break; }
         if (g_count >= MAX_NODES) { rc = -1; break; }
         int idx = g_count;
-        snprintf(names[idx], sizeof(names[idx]), "%s", name);
+        snprintf(names[idx], sizeof(names[idx]), "%s", toks[1]);
         graph_add(kind);
         if (kind == G_NUM) {
-            if (consumed < 3) { rc = -1; break; }
-            g_nodes[idx].ival = atoll(a);
+            if (nt < 3) { rc = -1; break; }
+            g_nodes[idx].ival = atoll(toks[2]);
+        } else if (kind == G_STR) {
+            if (nt < 3) { rc = -1; break; }
+            snprintf(g_nodes[idx].sval, sizeof(g_nodes[idx].sval), "%s", toks[2]);
         } else {
-            if (node_inputs(kind) == 2) {
-                if (consumed < 4) { rc = -1; break; }
-                g_nodes[idx].in[0] = resolve(a, idx);
-                g_nodes[idx].in[1] = resolve(b, idx);
-                if (g_nodes[idx].in[0] < 0 || g_nodes[idx].in[1] < 0) { rc = -1; break; }
-            } else {
-                if (consumed < 3) { rc = -1; break; }
-                g_nodes[idx].in[0] = resolve(a, idx);
-                if (g_nodes[idx].in[0] < 0) { rc = -1; break; }
+            int ni = node_inputs(kind);
+            if (nt < 2) { rc = -1; break; }
+            for (int k = 0; k < ni; k++) {
+                /* A missing trailing token is an open input (auto-repair
+                 * fills const 0 at compile time); a bad name still fails. */
+                const char *tok = (2 + k < nt) ? toks[2 + k] : "#-";
+                if (parse_input(tok, idx, k) < 0) { rc = -1; break; }
             }
+            if (rc) break;
+            if (kind == G_PRINT && nt > 2 + ni)
+                snprintf(g_nodes[idx].sval, sizeof(g_nodes[idx].sval), "%s",
+                         toks[2 + ni]);
         }
     }
     fclose(f);
+    if (rc) graph_clear();
     return rc;
 }
 
@@ -216,6 +502,7 @@ static char ui_memory[UI_MEMORY];
 static int ui_quit;
 static int drag_node = -1;
 static float drag_ox, drag_oy;
+static int add_sel;
 
 /* Link-drag state: click an output pin, drag to an input pin. */
 static int linking_active;
@@ -233,50 +520,179 @@ static int linking_src_slot;
 /* Compute the Y positions of input and output pins for a node. */
 static float pin_y(struct gnode *n, int slot, int is_output) {
     int ni = node_inputs(n->kind);
-    int no = (n->kind == G_NUM) ? 0 : 1;
+    int no = node_outputs(n->kind);
     int count = is_output ? no : ni;
-    float body_h = (float)count * 20.0f + 8.0f;
+    if (is_output && n->kind == G_IF) count = 1;
+    if (count <= 0) count = 1;
+    float body_h = (float)(ni > 3 ? ni : 3) * 18.0f + 8.0f;
     float total = TITLE_H + body_h;
     float space = total / (float)(count + 1);
     return n->y + space * (float)(slot + 1);
+}
+
+static float node_h(struct gnode *n) {
+    int ni = node_inputs(n->kind);
+    if (ni < 1 && n->kind != G_NUM && n->kind != G_STR) ni = 1;
+    int rows = ni > 3 ? ni : 3;
+    if (n->kind == G_NUM || n->kind == G_STR) rows = 3;
+    return TITLE_H + (float)rows * 18.0f + 8.0f;
+}
+
+static void ui_inspector(struct nk_context *ctx) {
+    nk_layout_row_dynamic(ctx, 16, 1);
+    if (g_selected < 0 || g_selected >= g_count) {
+        nk_label(ctx, "select a node to edit its parameters",
+                 NK_TEXT_LEFT);
+        return;
+    }
+    struct gnode *n = &g_nodes[g_selected];
+    char head[64];
+    snprintf(head, sizeof(head), "node %d: %s", g_selected, kind_name(n->kind));
+    nk_label(ctx, head, NK_TEXT_LEFT);
+    if (n->kind == G_NUM) {
+        nk_layout_row_dynamic(ctx, 20, 1);
+        int v = (int)n->ival;
+        nk_property_int(ctx, "value:", -2147483647, &v, 2147483647, 1, 10);
+        n->ival = v;
+    } else if (n->kind == G_STR) {
+        nk_layout_row_dynamic(ctx, 20, 1);
+        nk_label(ctx, "text:", NK_TEXT_LEFT);
+        nk_layout_row_dynamic(ctx, 24, 1);
+        nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, n->sval,
+                                       (int)sizeof(n->sval), 0);
+    } else if (n->kind == G_PRINT) {
+        nk_layout_row_dynamic(ctx, 20, 1);
+        nk_label(ctx, "format (empty = %d):", NK_TEXT_LEFT);
+        nk_layout_row_dynamic(ctx, 24, 1);
+        nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, n->sval,
+                                       (int)sizeof(n->sval), 0);
+    }
+    int ni = node_inputs(n->kind);
+    for (int k = 0; k < ni; k++) {
+        nk_layout_row_begin(ctx, NK_STATIC, 20, 3);
+        nk_layout_row_push(ctx, 110);
+        char lab[48];
+        if (n->kind == G_IF)
+            snprintf(lab, sizeof(lab), "%s:",
+                     k == 0 ? "cond" : k == 1 ? "then" : "else");
+        else
+            snprintf(lab, sizeof(lab), "in%d:", k);
+        nk_label(ctx, lab, NK_TEXT_LEFT);
+        nk_layout_row_push(ctx, 110);
+        char src[48];
+        if (n->in[k] >= 0) snprintf(src, sizeof(src), "<- node %d", n->in[k]);
+        else if (n->use_lit[k]) snprintf(src, sizeof(src), "const %lld", n->lit[k]);
+        else snprintf(src, sizeof(src), "(open)");
+        nk_label(ctx, src, NK_TEXT_LEFT);
+        nk_layout_row_push(ctx, 70);
+        char xb[8];
+        snprintf(xb, sizeof(xb), "x%d", k);
+        if (nk_button_label(ctx, xb)) n->in[k] = -1;
+        nk_layout_row_end(ctx);
+        if (n->kind == G_PRINTS) continue;
+        nk_layout_row_dynamic(ctx, 20, 2);
+        int ul = n->use_lit[k];
+        char clab[16];
+        snprintf(clab, sizeof(clab), "const%d", k);
+        int nul = nk_check_label(ctx, clab, ul);
+        n->use_lit[k] = nul;
+        if (nul) {
+            int v = (int)n->lit[k];
+            char plab[16];
+            snprintf(plab, sizeof(plab), "#%d:", k);
+            nk_property_int(ctx, plab, -2147483647, &v, 2147483647, 1, 10);
+            n->lit[k] = v;
+        } else {
+            nk_label(ctx, "", NK_TEXT_LEFT);
+        }
+    }
+    nk_layout_row_static(ctx, 22, 90, 3);
+    if (nk_button_label(ctx, "Unlink")) {
+        n->in[0] = n->in[1] = n->in[2] = -1;
+    }
+    if (nk_button_label(ctx, "Delete")) {
+        graph_del(g_selected);
+    }
+    if (nk_button_label(ctx, "Deselect")) {
+        g_selected = -1;
+    }
 }
 
 static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
     if (nk_begin_titled(ctx, "nuklear", "Node Editor", nk_rect(0, 0, win_w, win_h),
                         NK_WINDOW_NO_SCROLLBAR)) {
 
-        nk_menubar_begin(ctx);
-        nk_layout_row_static(ctx, 24, 70, 8);
-        if (nk_button_label(ctx, "Number")) graph_add(G_NUM);
-        if (nk_button_label(ctx, "Add"))    graph_add(G_ADD);
-        if (nk_button_label(ctx, "Sub"))    graph_add(G_SUB);
-        if (nk_button_label(ctx, "Mul"))    graph_add(G_MUL);
-        if (nk_button_label(ctx, "Div"))    graph_add(G_DIV);
-        if (nk_button_label(ctx, "Neg"))    graph_add(G_NEG);
-        if (nk_button_label(ctx, "Print"))  graph_add(G_PRINT);
-        if (nk_button_label(ctx, "Exit"))   graph_add(G_EXIT);
-        nk_menubar_end(ctx);
+        /* Processor palette: combo + Add, then actions. */
+        static const char *items[G_COUNT];
+        static int items_init;
+        if (!items_init) {
+            for (int k = 0; k < G_COUNT; k++) items[k] = node_defs[k].name;
+            items_init = 1;
+        }
+        nk_layout_row_begin(ctx, NK_STATIC, 24, 5);
+        nk_layout_row_push(ctx, 150);
+        nk_combobox(ctx, items, G_COUNT, &add_sel, 20, nk_vec2(150, 300));
+        nk_layout_row_push(ctx, 60);
+        if (nk_button_label(ctx, "Add")) {
+            int id = graph_add(add_sel);
+            if (id >= 0) g_selected = id;
+            else snprintf(g_status, sizeof(g_status), "graph full (%d nodes)", MAX_NODES);
+        }
+        nk_layout_row_push(ctx, 80);
+        if (nk_button_label(ctx, "Compile")) compile_to("/cvm/nodes.cvm");
+        nk_layout_row_push(ctx, 60);
+        if (nk_button_label(ctx, "Save")) save_graph_file("/cvm/graph.txt");
+        nk_layout_row_push(ctx, 60);
+        if (nk_button_label(ctx, "Load")) {
+            if (parse_graph_file("/cvm/graph.txt") < 0)
+                snprintf(g_status, sizeof(g_status), "cannot parse cvm/graph.txt");
+            else
+                snprintf(g_status, sizeof(g_status), "loaded cvm/graph.txt (%d nodes)",
+                         g_count);
+        }
+        nk_layout_row_end(ctx);
 
         nk_layout_row_static(ctx, 24, 80, 4);
-        if (nk_button_label(ctx, "Compile")) compile_to("cvm/nodes.cvm");
         if (nk_button_label(ctx, "Run")) {
-            compile_to("cvm/nodes.cvm");
+            compile_to("/cvm/nodes.cvm");
         }
         if (nk_button_label(ctx, "Clear"))  graph_clear();
+        if (nk_button_label(ctx, "Delete")) graph_del(g_selected);
         if (nk_button_label(ctx, "Quit"))   ui_quit = 1;
 
-        nk_layout_row_dynamic(ctx, 16, 1);
-        nk_label(ctx, g_status[0] ? g_status : "connect nodes, then Compile",
-                 NK_TEXT_LEFT);
+        /* Status line: errors (!!) shout in red and wrap, repair notes in
+         * orange, otherwise the plain hint. A refusal or repair always
+         * says what to do. */
+        if (g_status[0] == '!' && g_status[1] == '!') {
+            nk_layout_row_dynamic(ctx, 32, 1);
+            nk_label_colored_wrap(ctx, g_status, nk_rgb(255, 120, 120));
+        } else if (strstr(g_status, "REPAIRED:") != NULL) {
+            nk_layout_row_dynamic(ctx, 32, 1);
+            nk_label_colored_wrap(ctx, g_status, nk_rgb(255, 200, 100));
+        } else {
+            nk_layout_row_dynamic(ctx, 16, 1);
+            nk_label(ctx, g_status[0] ? g_status : "pick a processor, Add, wire pins, edit below",
+                     NK_TEXT_LEFT);
+        }
+
+        ui_inspector(ctx);
 
         /* Canvas with absolute node placement. */
-        float canvas_h = win_h - 80.0f;
-        if (canvas_h < 100) canvas_h = 100;
+        float canvas_h = win_h - 250.0f;
+        if (canvas_h < 80) canvas_h = 80;
         nk_layout_space_begin(ctx, NK_STATIC, canvas_h, g_count + 32);
 
         struct nk_command_buffer *canvas = nk_window_get_canvas(ctx);
         struct nk_rect canvas_bounds = nk_layout_space_bounds(ctx);
         struct nk_input *in = &ctx->input;
+
+        /* Manual canvas drawing and hit-testing live in window coordinates
+         * while node positions are layout-space local: shift every local
+         * point by the space origin. Without it pins, curves and clicks
+         * land canvas_bounds away from the visible nodes and the mouse
+         * never hits anything. */
+        float ox = canvas_bounds.x;
+        float oy = canvas_bounds.y;
 
         /* ---- Grid background ---- */
         {
@@ -299,10 +715,10 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
                 int src = n->in[k];
                 if (src < 0 || src >= g_count) continue;
                 struct gnode *sn = &g_nodes[src];
-                float sx = sn->x + NODE_W;
-                float sy = pin_y(sn, 0, 1);
-                float dx = n->x;
-                float dy = pin_y(n, k, 0);
+                float sx = sn->x + NODE_W + ox;
+                float sy = pin_y(sn, 0, 1) + oy;
+                float dx = n->x + ox;
+                float dy = pin_y(n, k, 0) + oy;
                 nk_stroke_curve(canvas, sx, sy, sx + BEZIER_PAD, sy,
                                 dx - BEZIER_PAD, dy, dx, dy,
                                 2.0f, nk_rgb(180, 180, 180));
@@ -312,8 +728,8 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
         /* ---- Draw temporary curve while linking ---- */
         if (linking_active) {
             struct gnode *sn = &g_nodes[linking_src_node];
-            float sx = sn->x + NODE_W;
-            float sy = pin_y(sn, linking_src_slot, 1);
+            float sx = sn->x + NODE_W + ox;
+            float sy = pin_y(sn, linking_src_slot, 1) + oy;
             float mx = in->mouse.pos.x;
             float my = in->mouse.pos.y;
             nk_stroke_curve(canvas, sx, sy, sx + BEZIER_PAD, sy,
@@ -333,8 +749,9 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
             /* Check output pin hit (right edge of node). */
             for (int i = 0; i < g_count; i++) {
                 struct gnode *n = &g_nodes[i];
-                float px = n->x + NODE_W - PIN_R;
-                float py = pin_y(n, 0, 1);
+                if (node_outputs(n->kind) == 0) continue;
+                float px = n->x + NODE_W - PIN_R + ox;
+                float py = pin_y(n, 0, 1) + oy;
                 float dx = (float)mx - px;
                 float dy = (float)my - py;
                 if (dx * dx + dy * dy <= (float)(PIN_R + 3) * (float)(PIN_R + 3)) {
@@ -344,37 +761,38 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
                     break;
                 }
             }
-            /* Check input pin hit (left edge of node) — complete a link. */
+            /* Check input pin hit (left edge of node) — clear the link. */
             if (!linking_active) {
                 for (int i = 0; i < g_count; i++) {
                     struct gnode *n = &g_nodes[i];
                     int ni = node_inputs(n->kind);
                     for (int k = 0; k < ni; k++) {
-                        float px = n->x + PIN_R;
-                        float py = pin_y(n, k, 0);
+                        float px = n->x + PIN_R + ox;
+                        float py = pin_y(n, k, 0) + oy;
                         float dx = (float)mx - px;
                         float dy = (float)my - py;
                         if (dx * dx + dy * dy <= (float)(PIN_R + 3) * (float)(PIN_R + 3)) {
-                            /* Remove existing link on this slot. */
                             n->in[k] = -1;
-                            drag_node = -2; /* sentinel: we hit a pin, skip body drag */
+                            g_selected = i;
+                            drag_node = -2; /* sentinel: hit a pin, skip body drag */
                             break;
                         }
                     }
                     if (drag_node == -2) break;
                 }
             }
-            /* Check body hit — start dragging. */
+            /* Check body hit — select and start dragging. */
             if (!linking_active && drag_node != -2) {
                 for (int i = 0; i < g_count; i++) {
                     struct gnode *n = &g_nodes[i];
-                    int ni = node_inputs(n->kind);
-                    float body_h = TITLE_H + (float)ni * 20.0f + 8.0f;
-                    if ((float)mx >= n->x && (float)mx <= n->x + NODE_W &&
-                        (float)my >= n->y && (float)my <= n->y + body_h) {
+                    float h = node_h(n);
+                    float bx = n->x + ox, by = n->y + oy;
+                    if ((float)mx >= bx && (float)mx <= bx + NODE_W &&
+                        (float)my >= by && (float)my <= by + h) {
                         drag_node = i;
-                        drag_ox = (float)mx - n->x;
-                        drag_oy = (float)my - n->y;
+                        g_selected = i;
+                        drag_ox = (float)mx - bx;
+                        drag_oy = (float)my - by;
                         break;
                     }
                 }
@@ -387,13 +805,14 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
                 struct gnode *n = &g_nodes[i];
                 int ni = node_inputs(n->kind);
                 for (int k = 0; k < ni; k++) {
-                    float px = n->x + PIN_R;
-                    float py = pin_y(n, k, 0);
+                    float px = n->x + PIN_R + ox;
+                    float py = pin_y(n, k, 0) + oy;
                     float dx = (float)mx - px;
                     float dy = (float)my - py;
                     if (dx * dx + dy * dy <= (float)(PIN_R + 4) * (float)(PIN_R + 4)) {
                         if (i != linking_src_node)
                             n->in[k] = linking_src_node;
+                        g_selected = i;
                     }
                 }
             }
@@ -408,8 +827,8 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
         /* Drag node body. */
         if (mouse_down && drag_node >= 0 && drag_node < g_count) {
             struct gnode *n = &g_nodes[drag_node];
-            n->x = (float)mx - drag_ox;
-            n->y = (float)my - drag_oy;
+            n->x = (float)mx - drag_ox - ox;
+            n->y = (float)my - drag_oy - oy;
         }
         if (!mouse_down) drag_node = -1;
 
@@ -417,18 +836,21 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
         for (int i = 0; i < g_count; i++) {
             struct gnode *n = &g_nodes[i];
             int ni = node_inputs(n->kind);
-            int no = (n->kind == G_NUM) ? 0 : 1;
-            float body_h = (float)ni * 20.0f + 8.0f;
-            float h = TITLE_H + body_h;
+            int no = node_outputs(n->kind);
+            float h = node_h(n);
 
             nk_layout_space_push(ctx, nk_rect(n->x, n->y, NODE_W, h));
             if (nk_group_begin_titled(ctx, (const char *)&i, kind_name(n->kind),
                                       NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR)) {
-                /* Title bar colour strip. */
+                /* Title bar colour strip + selection outline. */
                 struct nk_color col = kind_color(n->kind);
                 struct nk_rect title_bounds = nk_layout_space_rect_to_screen(
                     ctx, nk_rect(n->x, n->y, NODE_W, TITLE_H));
                 nk_fill_rect(canvas, title_bounds, 0, col);
+                if (i == g_selected)
+                    nk_stroke_rect(canvas, nk_layout_space_rect_to_screen(
+                        ctx, nk_rect(n->x, n->y, NODE_W, h)), 0, 2.0f,
+                        nk_rgb(255, 255, 0));
 
                 /* Node content. */
                 if (n->kind == G_NUM) {
@@ -436,21 +858,43 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
                     char buf[32];
                     snprintf(buf, sizeof(buf), "%lld", n->ival);
                     nk_label(ctx, buf, NK_TEXT_LEFT);
-                    nk_layout_row_dynamic(ctx, 18, 1);
-                    nk_property_int(ctx, "#", -2147483647, (int *)&n->ival,
-                                    2147483647, 1, 1);
+                    if (no > 0) {
+                        nk_layout_row_dynamic(ctx, 14, 1);
+                        nk_label(ctx, "-> output", NK_TEXT_LEFT);
+                    }
+                } else if (n->kind == G_STR) {
+                    nk_layout_row_dynamic(ctx, 14, 1);
+                    char buf[40];
+                    snprintf(buf, sizeof(buf), "\"%.20s\"", n->sval);
+                    nk_label(ctx, buf, NK_TEXT_LEFT);
+                    if (no > 0) {
+                        nk_layout_row_dynamic(ctx, 14, 1);
+                        nk_label(ctx, "-> output", NK_TEXT_LEFT);
+                    }
                 } else {
-                    for (int k = 0; k < ni; k++) {
-                        nk_layout_row_dynamic(ctx, 16, 1);
-                        char pin[32];
-                        if (n->in[k] >= 0)
-                            snprintf(pin, sizeof(pin), "<- node %d", n->in[k]);
-                        else
-                            snprintf(pin, sizeof(pin), "(open)");
+                    int rows = ni > 3 ? ni : 3;
+                    for (int k = 0; k < rows && k < 3; k++) {
+                        nk_layout_row_dynamic(ctx, 14, 1);
+                        char pin[40];
+                        if (k < ni) {
+                            if (n->in[k] >= 0)
+                                snprintf(pin, sizeof(pin), "<- node %d", n->in[k]);
+                            else if (n->use_lit[k])
+                                snprintf(pin, sizeof(pin), "=%lld", n->lit[k]);
+                            else
+                                snprintf(pin, sizeof(pin), "(open)");
+                        } else {
+                            snprintf(pin, sizeof(pin), " ");
+                        }
                         nk_label(ctx, pin, NK_TEXT_LEFT);
                     }
-                    if (no > 0) {
-                        nk_layout_row_dynamic(ctx, 16, 1);
+                    if (n->kind == G_PRINT && n->sval[0]) {
+                        nk_layout_row_dynamic(ctx, 14, 1);
+                        char fb[40];
+                        snprintf(fb, sizeof(fb), "fmt %.20s", n->sval);
+                        nk_label(ctx, fb, NK_TEXT_LEFT);
+                    } else if (no > 0) {
+                        nk_layout_row_dynamic(ctx, 14, 1);
                         nk_label(ctx, "-> output", NK_TEXT_LEFT);
                     }
                 }
@@ -458,23 +902,22 @@ static void ui_build(struct nk_context *ctx, float win_w, float win_h) {
             }
 
             /* ---- Draw pin circles on canvas ---- */
-            /* Output pin (right edge). */
             for (int s = 0; s < no; s++) {
                 struct nk_rect circle;
-                circle.x = n->x + NODE_W - PIN_R;
-                circle.y = pin_y(n, s, 1) - PIN_R;
+                circle.x = n->x + NODE_W - PIN_R + ox;
+                circle.y = pin_y(n, s, 1) - PIN_R + oy;
                 circle.w = PIN_DIAM;
                 circle.h = PIN_DIAM;
                 nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));
             }
-            /* Input pins (left edge). */
             for (int k = 0; k < ni; k++) {
                 struct nk_rect circle;
-                circle.x = n->x - PIN_R;
-                circle.y = pin_y(n, k, 0) - PIN_R;
+                circle.x = n->x - PIN_R + ox;
+                circle.y = pin_y(n, k, 0) - PIN_R + oy;
                 circle.w = PIN_DIAM;
                 circle.h = PIN_DIAM;
-                nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));
+                nk_fill_circle(canvas, circle,
+                    n->in[k] >= 0 ? nk_rgb(80, 200, 80) : nk_rgb(100, 100, 100));
             }
         }
 
