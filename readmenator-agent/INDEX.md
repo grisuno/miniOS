@@ -18,26 +18,29 @@
 | `bootloader.c` | - | root | 4 |
 | `desktop_icons.h` | desktop_icons.h -- embedded icon pixel data for desktop shortcuts. | root | 3 |
 | `desktop_shortcuts.h` | desktop_shortcuts.h -- configurable desktop icon shortcuts. | root | 20 |
-| `drivers/block.c` | Block device layer for MiniFS. | drivers | 15 |
-| `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | drivers | 18 |
+| `driver.h` | ifndef DRIVER_H define DRIVER_H  driver.h -- Strategy pattern for hardware drive | root | 19 |
+| `drivers/block.c` | Block device layer for MiniFS. | drivers | 17 |
+| `drivers/driver.c` | include "driver.h"  driver.c -- Device registry for the Strategy-pattern driver  | drivers | 8 |
+| `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | drivers | 24 |
 | `drivers/kbd.c` | include "kernel.h" include "vga_fb.h" include "kbd.h"  ========================= | drivers | 19 |
 | `drivers/kbd.h` | ifndef KBD_H define KBD_H | drivers | 15 |
-| `drivers/pcspk.c` | include "kernel.h" include "pcspk.h"  PC speaker driver with a software master v | drivers | 15 |
+| `drivers/pcspk.c` | include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with  | drivers | 20 |
 | `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | drivers | 21 |
 | `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h"  Sound Blaster 16 DMA audio | drivers | 62 |
 | `editor.h` | ifndef EDITOR_H define EDITOR_H  editor.h -- the built-in line editor contract. | root | 2 |
 | `fs/kfile.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 22 |
 | `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 61 |
 | `fs/ramdisk.c` | include "kernel.h"  ============================================================ | fs | 25 |
-| `fs/vfs.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 33 |
+| `fs/vfs.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 37 |
 | `fs/zip.c` | zip.c — the unzip/zip shell builtins over the miniz zip library. | fs | 19 |
 | `futex.h` | ifndef FUTEX_H define FUTEX_H  Docstring: futex.h -- Fast userspace mutex sleep/ | root | 12 |
 | `gen_minifs.py` | - | root | 0 |
-| `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 34 |
+| `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 35 |
 | `install.sh` | - | root | 0 |
-| `kernel.c` | include "kernel.h" include "net.h" include "tls.h" include "bootdefs.h" include  | root | 62 |
-| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 261 |
+| `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 36 |
+| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 269 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
+| `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | kernel | 31 |
 | `kernel/cvm_host.c` | - | kernel | 55 |
 | `kernel/editor.c` | include "kernel.h" include "shell.h" include "editor.h"  ======================= | kernel | 31 |
 | `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | kernel | 18 |
@@ -58,7 +61,7 @@
 | `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 107 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
-| `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 24 |
+| `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
 | `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 150 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
 | `kernel/time.c` | include "kernel.h"  ============================================================ | kernel | 5 |
@@ -342,18 +345,19 @@
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 47 |
 | `smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | root | 9 |
 | `spinlock.h` | ifndef SPINLOCK_H define SPINLOCK_H  spinlock.h -- Lightweight spinlock for Mini | root | 22 |
-| `sync.h` | ifndef SYNC_H define SYNC_H  sync.h -- Blocking synchronization primitives (road | root | 31 |
+| `sync.h` | ifndef SYNC_H define SYNC_H  sync.h -- Blocking synchronization primitives (road | root | 36 |
 | `test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the | root | 10 |
 | `test_http_server.py` | - | root | 3 |
 | `tests/host_aes.sh` | host_aes.sh - host-side verification for the AES-256-CTR command tools.  The min | tests | 3 |
 | `tests/host_codecs.sh` | host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The | tests | 5 |
 | `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 6 |
+| `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 8 |
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 11 |
 | `tests/test_hal_io.c` | Docstring: Host test for arch/x86/hal_io.h (make test-hal). | tests | 9 |
 | `tests/test_percpu_rq.c` | Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq). | tests | 10 |
 | `tests/test_rcu.c` | Docstring: Host test for kernel/rcu.c (make test-rcu). | tests | 13 |
 | `tests/test_sanitize.c` | Docstring: Host test for sanitize.h (make test-sanitize). | tests | 17 |
-| `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 17 |
+| `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 19 |
 | `tests/test_tick.c` | Docstring: Host test for kernel/tick.c (make test-tick). | tests | 12 |
 | `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 13 |
 | `tick.h` | Docstring: Tick listener bus contract. | root | 14 |

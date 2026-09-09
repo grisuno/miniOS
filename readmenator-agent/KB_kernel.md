@@ -9,6 +9,44 @@
                 int *completed, ...`
 - Depends on: `batch.h`
 
+## kernel/console.c
+- Layer: utility
+- Doc: include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKING_ONLY include "xxhash.h" include "stb/s
+- Language: c
+- Symbols:
+  - `vga_get_x` (function, line 17) `int vga_get_x(void)`
+  - `vga_get_y` (function, line 19) `int vga_get_y(void)`
+  - `vga_set_xy` (function, line 20) `void vga_set_xy(int x, int y)`
+  - `vga_get_color` (function, line 21) `char vga_get_color(void)`
+  - `vga_offset` (function, line 22) `static inline unsigned vga_offset(int x, int y)`
+  - `vga_clear` (function, line 24) `void vga_clear(void)`
+  - `vga_set_cursor` (function, line 35) `void vga_set_cursor(int x, int y)`
+  - `vga_scroll` (function, line 55) `void vga_scroll(void)`
+  - `vga_newline` (function, line 74) `void vga_newline(void)`
+  - `vga_cursor_enable` (function, line 80) `void vga_cursor_enable(int on)`
+  - `vga_raw_space` (function, line 87) `static void vga_raw_space(void)`
+  - `redir_grow` (function, line 104) `static int redir_grow(void)`
+  - `redirect_active` (function, line 114) `int redirect_active(void)`
+  - `redirect_putc` (function, line 116) `static int redirect_putc(char c)`
+  - `redirect_suspend` (function, line 123) `int redirect_suspend(void)`
+  - `redirect_resume` (function, line 129) `void redirect_resume(int was)`
+  - `redirect_begin` (function, line 133) `int redirect_begin(void)`
+  - `redirect_commit` (function, line 141) `int redirect_commit(const char *path, int append_mode)`
+  - `vga_putc` (function, line 160) `void vga_putc(char c)`
+  - `vga_puts` (function, line 204) `void vga_puts(const char *s)`
+  - `register_libc_symbols` (function, line 208) `void register_libc_symbols(void)`
+  - `sb_reset` (function, line 33) `sb_reset();`
+  - `volatile` (function, line 40) `__asm__ volatile( "movw $0x3D4, %%dx\n\t" "movb $0x0F, %%al\n\t" "outb %%al, %%dx\n" "movb %b0, %%al\n\t" "outb %%al, %%dx\n" "movb $0x0E, %%al\n\t" "outb %%al, %%dx\n" "movb %b1, %%al\n\t" "outb %%al`
+  - `sb_capture_row0` (function, line 58) `sb_capture_row0();`
+  - `outb` (function, line 82) `outb(0x3D4, 0x0A);`
+  - `serial_putc` (function, line 164) `serial_putc(c);`
+  - `vga_fb_putc_term` (function, line 167) `vga_fb_putc_term(c);`
+  - `k_register_symbol` (function, line 210) `k_register_symbol("strlen", (void *)kstrlen);`
+  - `XXH_STATIC_LINKING_ONLY` (macro, line 4) `#define XXH_STATIC_LINKING_ONLY`
+  - `REDIR_INITIAL_CAP` (macro, line 95) `#define REDIR_INITIAL_CAP`
+  - `REDIR_MAX_BYTES` (macro, line 97) `#define REDIR_MAX_BYTES`
+- Depends on: `kernel.h`, `sched.h`, `vga_fb.h`
+
 ## kernel/cvm_host.c
 - Layer: utility
 - Language: c
@@ -623,7 +661,7 @@ static void shell_hist_na...`
   - `kmemmove` (function, line 86) `void *kmemmove(void *dst, const void *src, unsigned long n)`
   - `katol` (function, line 94) `long katol(const char *s)`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ## kernel/symtab.c
 - Layer: utility
@@ -646,30 +684,37 @@ static void shell_hist_na...`
 - Doc: sync.c -- Blocking synchronization primitives (roadmap Phase 3.1).
 - Language: c
 - Symbols:
-  - `wq_init` (function, line 25) `void wq_init(wait_queue_t *q)`
-  - `sleep_on` (function, line 31) `void sleep_on(wait_queue_t *q)`
-  - `wake_up` (function, line 52) `int wake_up(wait_queue_t *q)`
-  - `wake_up_all` (function, line 68) `int wake_up_all(wait_queue_t *q)`
-  - `mutex_init` (function, line 74) `void mutex_init(mutex_t *m)`
-  - `mutex_lock` (function, line 81) `void mutex_lock(mutex_t *m)`
-  - `mutex_unlock` (function, line 96) `void mutex_unlock(mutex_t *m)`
-  - `sem_init` (function, line 105) `void sem_init(sem_t *s, int value)`
-  - `sem_wait` (function, line 111) `void sem_wait(sem_t *s)`
-  - `sem_post` (function, line 125) `void sem_post(sem_t *s)`
-  - `cond_init` (function, line 133) `void cond_init(cond_t *c)`
-  - `cond_wait` (function, line 137) `void cond_wait(cond_t *c, mutex_t *m)`
-  - `cond_signal` (function, line 143) `void cond_signal(cond_t *c)`
-  - `cond_broadcast` (function, line 147) `void cond_broadcast(cond_t *c)`
-  - `rwlock_init` (function, line 151) `void rwlock_init(rwlock_t *rw)`
-  - `rwlock_read_lock` (function, line 158) `void rwlock_read_lock(rwlock_t *rw)`
-  - `rwlock_read_unlock` (function, line 172) `void rwlock_read_unlock(rwlock_t *rw)`
-  - `rwlock_write_lock` (function, line 181) `void rwlock_write_lock(rwlock_t *rw)`
-  - `rwlock_write_unlock` (function, line 195) `void rwlock_write_unlock(rwlock_t *rw)`
-  - `spin_init` (function, line 27) `spin_init(&q->lock);`
-  - `spin_lock_irqsave` (function, line 34) `spin_lock_irqsave(&q->lock, &flags);`
-  - `spin_unlock_irqrestore` (function, line 37) `spin_unlock_irqrestore(&q->lock, flags);`
-  - `schedule` (function, line 50) `schedule();`
-  - `t_cur_pid` (variable, line 23) `extern int t_cur_pid;`
+  - `wq_init` (function, line 26) `void wq_init(wait_queue_t *q)`
+  - `sleep_on` (function, line 32) `void sleep_on(wait_queue_t *q)`
+  - `wake_up` (function, line 53) `int wake_up(wait_queue_t *q)`
+  - `wake_up_all` (function, line 69) `int wake_up_all(wait_queue_t *q)`
+  - `mutex_init` (function, line 75) `void mutex_init(mutex_t *m)`
+  - `pi_valid` (function, line 92) `static int pi_valid(int pid)`
+  - `pi_set_base` (function, line 98) `void pi_set_base(int pid, int prio)`
+  - `pi_get_eff` (function, line 107) `int pi_get_eff(int pid)`
+  - `pi_recompute` (function, line 112) `static void pi_recompute(int pid)`
+  - `pi_boost` (function, line 123) `static void pi_boost(int waiter, int owner)`
+  - `mutex_lock` (function, line 149) `void mutex_lock(mutex_t *m)`
+  - `mutex_trylock` (function, line 169) `int mutex_trylock(mutex_t *m)`
+  - `mutex_unlock` (function, line 185) `void mutex_unlock(mutex_t *m)`
+  - `sem_init` (function, line 206) `void sem_init(sem_t *s, int value)`
+  - `sem_wait` (function, line 212) `void sem_wait(sem_t *s)`
+  - `sem_post` (function, line 226) `void sem_post(sem_t *s)`
+  - `cond_init` (function, line 234) `void cond_init(cond_t *c)`
+  - `cond_wait` (function, line 238) `void cond_wait(cond_t *c, mutex_t *m)`
+  - `cond_signal` (function, line 244) `void cond_signal(cond_t *c)`
+  - `cond_broadcast` (function, line 248) `void cond_broadcast(cond_t *c)`
+  - `rwlock_init` (function, line 252) `void rwlock_init(rwlock_t *rw)`
+  - `rwlock_read_lock` (function, line 259) `void rwlock_read_lock(rwlock_t *rw)`
+  - `rwlock_read_unlock` (function, line 273) `void rwlock_read_unlock(rwlock_t *rw)`
+  - `rwlock_write_lock` (function, line 282) `void rwlock_write_lock(rwlock_t *rw)`
+  - `rwlock_write_unlock` (function, line 296) `void rwlock_write_unlock(rwlock_t *rw)`
+  - `spin_init` (function, line 28) `spin_init(&q->lock);`
+  - `spin_lock_irqsave` (function, line 35) `spin_lock_irqsave(&q->lock, &flags);`
+  - `spin_unlock_irqrestore` (function, line 38) `spin_unlock_irqrestore(&q->lock, flags);`
+  - `schedule` (function, line 51) `schedule();`
+  - `mutex_note_waiter` (function, line 164) `mutex_note_waiter(m, me);`
+  - `t_cur_pid` (variable, line 24) `extern int t_cur_pid;`
 - Depends on: `sync.h`
 
 ## kernel/syscalls.c

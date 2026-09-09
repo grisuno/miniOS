@@ -164,6 +164,10 @@
   - `fs_is_dir` (function, line 314) `int fs_is_dir(const char *resolved)`
   - `minifs_mkdir_p` (function, line 327) `int minifs_mkdir_p(const char *resolved)`
   - `vfs_register_builtins` (function, line 350) `void vfs_register_builtins(void)`
+  - `vfs_read` (function, line 363) `int vfs_read(vfs_file_t *f, void *buf, unsigned long len)`
+  - `vfs_write` (function, line 372) `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len)`
+  - `vfs_close` (function, line 381) `int vfs_close(vfs_file_t *f)`
+  - `vfs_fstat` (function, line 390) `int vfs_fstat(vfs_file_t *f, unsigned long *size_out)`
   - `kmemset` (function, line 22) `kmemset(vfs_mounts, 0, sizeof(vfs_mounts));`
   - `kstrncpy` (function, line 30) `kstrncpy(vfs_mounts[i].prefix, prefix, VFS_PREFIX_LEN - 1);`
   - `kmemcpy` (function, line 108) `kmemcpy(parent, path, plen);`

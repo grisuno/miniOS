@@ -5,47 +5,70 @@
 - Doc: Block device layer for MiniFS.
 - Language: c
 - Symbols:
-  - `bc_index` (function, line 27) `static unsigned int bc_index(unsigned int block_num)`
-  - `bc_invalidate` (function, line 31) `static void bc_invalidate(unsigned int block_num)`
-  - `block_init` (function, line 36) `void block_init(void)`
-  - `block_set_base` (function, line 42) `void block_set_base(unsigned int lba_base)`
-  - `block_read` (function, line 46) `int block_read(unsigned int block_num, void *buf)`
-  - `block_write` (function, line 66) `int block_write(unsigned int block_num, const void *buf)`
-  - `block_read_multi` (function, line 72) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
-  - `block_write_multi` (function, line 77) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
-  - `block_flush` (function, line 84) `void block_flush(void)`
-  - `block_total` (function, line 86) `unsigned int block_total(void)`
-  - `ide_init` (function, line 38) `ide_init();`
-  - `ide_write_sectors` (function, line 70) `return ide_write_sectors(lba, SECTORS_PER_BLOCK, buf);`
-  - `ide_read_sectors` (function, line 75) `return ide_read_sectors(lba, count * SECTORS_PER_BLOCK, buf);`
-  - `BC_WAYS` (macro, line 22) `#define BC_WAYS`
-  - `BC_MASK` (macro, line 23) `#define BC_MASK`
-- Depends on: `block.h`, `ide.h`, `kernel.h`
+  - `bc_index` (function, line 28) `static unsigned int bc_index(unsigned int block_num)`
+  - `bc_invalidate` (function, line 32) `static void bc_invalidate(unsigned int block_num)`
+  - `block_init` (function, line 37) `void block_init(void)`
+  - `block_set_base` (function, line 43) `void block_set_base(unsigned int lba_base)`
+  - `block_dev_write` (function, line 59) `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
+  - `block_read` (function, line 66) `int block_read(unsigned int block_num, void *buf)`
+  - `block_write` (function, line 86) `int block_write(unsigned int block_num, const void *buf)`
+  - `block_read_multi` (function, line 92) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
+  - `block_write_multi` (function, line 97) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
+  - `block_flush` (function, line 104) `void block_flush(void)`
+  - `block_total` (function, line 106) `unsigned int block_total(void)`
+  - `ide_init` (function, line 39) `ide_init();`
+  - `ide_read_sectors` (function, line 57) `return ide_read_sectors(lba, count, buf);`
+  - `ide_write_sectors` (function, line 64) `return ide_write_sectors(lba, count, buf);`
+  - `block_dev_read` (function, line 95) `return block_dev_read(lba, count * SECTORS_PER_BLOCK, buf);`
+  - `BC_WAYS` (macro, line 23) `#define BC_WAYS`
+  - `BC_MASK` (macro, line 24) `#define BC_MASK`
+- Depends on: `block.h`, `driver.h`, `ide.h`, `kernel.h`
+
+## drivers/driver.c
+- Layer: infrastructure
+- Doc: include "driver.h"  driver.c -- Device registry for the Strategy-pattern driver layer.
+- Language: c
+- Symbols:
+  - `dev_len` (function, line 13) `static unsigned dev_len(const char *s)`
+  - `dev_copy` (function, line 19) `static void dev_copy(char *dst, const char *src, unsigned cap)`
+  - `dev_eq` (function, line 26) `static int dev_eq(const char *a, const char *b)`
+  - `device_reset` (function, line 31) `void device_reset(void)`
+  - `device_register` (function, line 43) `int device_register(device_t *dev)`
+  - `device_find` (function, line 65) `device_t *device_find(const char *name)`
+  - `device_find_by_type` (function, line 75) `device_t *device_find_by_type(int type)`
+  - `device_count` (function, line 84) `int device_count(void)`
+- Depends on: `driver.h`
 
 ## drivers/ide.c
 - Layer: infrastructure
 - Doc: IDE/ATA PIO driver for MiniOS.
 - Language: c
 - Symbols:
-  - `ide_delay` (function, line 11) `static void ide_delay(void)`
-  - `ide_read_status` (function, line 21) `static unsigned char ide_read_status(void)`
-  - `ide_wait_not_busy` (function, line 25) `static int ide_wait_not_busy(unsigned int timeout)`
-  - `ide_wait_drq` (function, line 33) `static int ide_wait_drq(unsigned int timeout)`
-  - `ide_select_drive` (function, line 44) `static void ide_select_drive(unsigned char drive)`
-  - `ide_soft_reset` (function, line 50) `static void ide_soft_reset(void)`
-  - `ide_identify` (function, line 57) `static int ide_identify(void)`
-  - `ide_init` (function, line 82) `void ide_init(void)`
-  - `ide_present` (function, line 100) `int ide_present(void)`
-  - `ide_total_sectors` (function, line 102) `unsigned int ide_total_sectors(void)`
-  - `ide_read_sectors` (function, line 103) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf)`
-  - `ide_write_sectors` (function, line 134) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf)`
-  - `ide_read_sector` (function, line 164) `int ide_read_sector(unsigned int lba, void *buf)`
-  - `ide_write_sector` (function, line 168) `int ide_write_sector(unsigned int lba, const void *buf)`
-  - `inb` (function, line 23) `return inb(IDE_PRIMARY_BASE + IDE_REG_STATUS);`
-  - `outb` (function, line 46) `outb(IDE_PRIMARY_BASE + IDE_REG_DRIVE, IDE_DRIVE_LBA | (drive ? IDE_DRIVE_SLAVE : IDE_DRIVE_MASTER));`
-  - `kprintf` (function, line 94) `kprintf("IDE: disk detected, %u sectors (%u MB)\n", ide_disk_sectors, ide_disk_sectors / 2048);`
-  - `outw` (function, line 156) `outw(IDE_PRIMARY_BASE + IDE_REG_DATA, ((const unsigned short *)p)[j]);`
-- Depends on: `ide.h`, `kernel.h`
+  - `ide_delay` (function, line 12) `static void ide_delay(void)`
+  - `ide_read_status` (function, line 22) `static unsigned char ide_read_status(void)`
+  - `ide_wait_not_busy` (function, line 26) `static int ide_wait_not_busy(unsigned int timeout)`
+  - `ide_wait_drq` (function, line 34) `static int ide_wait_drq(unsigned int timeout)`
+  - `ide_select_drive` (function, line 45) `static void ide_select_drive(unsigned char drive)`
+  - `ide_soft_reset` (function, line 51) `static void ide_soft_reset(void)`
+  - `ide_identify` (function, line 58) `static int ide_identify(void)`
+  - `ide_init` (function, line 83) `void ide_init(void)`
+  - `ide_present` (function, line 102) `int ide_present(void)`
+  - `ide_total_sectors` (function, line 104) `unsigned int ide_total_sectors(void)`
+  - `ide_ops_read` (function, line 105) `static int ide_ops_read(device_t *dev, unsigned lba, unsigned count, void *buf)`
+  - `ide_ops_write` (function, line 110) `static int ide_ops_write(device_t *dev, unsigned lba, unsigned count, const void *buf)`
+  - `ide_ops_total` (function, line 115) `static unsigned ide_ops_total(device_t *dev)`
+  - `ide_ops_present` (function, line 120) `static int ide_ops_present(device_t *dev)`
+  - `ide_register_device` (function, line 140) `void ide_register_device(void)`
+  - `ide_read_sectors` (function, line 144) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf)`
+  - `ide_write_sectors` (function, line 175) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf)`
+  - `ide_read_sector` (function, line 205) `int ide_read_sector(unsigned int lba, void *buf)`
+  - `ide_write_sector` (function, line 209) `int ide_write_sector(unsigned int lba, const void *buf)`
+  - `inb` (function, line 24) `return inb(IDE_PRIMARY_BASE + IDE_REG_STATUS);`
+  - `outb` (function, line 47) `outb(IDE_PRIMARY_BASE + IDE_REG_DRIVE, IDE_DRIVE_LBA | (drive ? IDE_DRIVE_SLAVE : IDE_DRIVE_MASTER));`
+  - `kprintf` (function, line 95) `kprintf("IDE: disk detected, %u sectors (%u MB)\n", ide_disk_sectors, ide_disk_sectors / 2048);`
+  - `device_register` (function, line 142) `device_register(&ide_device);`
+  - `outw` (function, line 197) `outw(IDE_PRIMARY_BASE + IDE_REG_DATA, ((const unsigned short *)p)[j]);`
+- Depends on: `driver.h`, `ide.h`, `kernel.h`
 
 ## drivers/kbd.c
 - Layer: infrastructure
@@ -93,29 +116,34 @@
   - `kbd_e0_set` (function, line 20) `void kbd_e0_set(int v);`
   - `kbd_flush_all` (function, line 21) `void kbd_flush_all(void);`
   - `KBD_H` (macro, line 2) `#define KBD_H`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/exec.c`, `kernel/shell.c`, `kernel/syscalls.c`
+- Imported by: `drivers/kbd.c`, `kernel/exec.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 ## drivers/pcspk.c
 - Layer: infrastructure
-- Doc: include "kernel.h" include "pcspk.h"  PC speaker driver with a software master volume. The speaker has no
+- Doc: include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with a software master volume. The speaker ha
 - Language: c
 - Symbols:
-  - `pcspk_init` (function, line 26) `void pcspk_init(void)`
-  - `pcspk_set_volume` (function, line 31) `void pcspk_set_volume(unsigned volume)`
-  - `pcspk_get_volume` (function, line 35) `unsigned pcspk_get_volume(void)`
-  - `pcspk_tone` (function, line 39) `void pcspk_tone(unsigned freq)`
-  - `pcspk_off` (function, line 57) `void pcspk_off(void)`
-  - `outb` (function, line 29) `outb(SPEAKER_PORT, inb(SPEAKER_PORT) & 0xFC);`
-  - `PIT_CH2_DATA` (macro, line 12) `#define PIT_CH2_DATA`
-  - `PIT_CH2_CMD` (macro, line 14) `#define PIT_CH2_CMD`
-  - `SPEAKER_PORT` (macro, line 15) `#define SPEAKER_PORT`
-  - `PIT_FREQ` (macro, line 16) `#define PIT_FREQ`
-  - `PCSPK_MIN_FREQ` (macro, line 17) `#define PCSPK_MIN_FREQ`
-  - `PCSPK_MAX_FREQ` (macro, line 19) `#define PCSPK_MAX_FREQ`
-  - `SPEAKER_DATA_BIT` (macro, line 20) `#define SPEAKER_DATA_BIT`
-  - `SPEAKER_GATE_BIT` (macro, line 22) `#define SPEAKER_GATE_BIT`
-  - `SPEAKER_ENABLE_BITS` (macro, line 23) `#define SPEAKER_ENABLE_BITS`
-- Depends on: `kernel.h`, `pcspk.h`
+  - `pcspk_ops_tone` (function, line 32) `static void pcspk_ops_tone(device_t *dev, unsigned freq)`
+  - `pcspk_ops_off` (function, line 37) `static void pcspk_ops_off(device_t *dev)`
+  - `pcspk_ops_set_volume` (function, line 42) `static void pcspk_ops_set_volume(device_t *dev, unsigned vol)`
+  - `pcspk_ops_get_volume` (function, line 47) `static unsigned pcspk_ops_get_volume(device_t *dev)`
+  - `pcspk_init` (function, line 67) `void pcspk_init(void)`
+  - `pcspk_set_volume` (function, line 73) `void pcspk_set_volume(unsigned volume)`
+  - `pcspk_get_volume` (function, line 77) `unsigned pcspk_get_volume(void)`
+  - `pcspk_tone` (function, line 81) `void pcspk_tone(unsigned freq)`
+  - `pcspk_off` (function, line 99) `void pcspk_off(void)`
+  - `outb` (function, line 70) `outb(SPEAKER_PORT, inb(SPEAKER_PORT) & 0xFC);`
+  - `device_register` (function, line 71) `device_register(&pcspk_device);`
+  - `PIT_CH2_DATA` (macro, line 13) `#define PIT_CH2_DATA`
+  - `PIT_CH2_CMD` (macro, line 15) `#define PIT_CH2_CMD`
+  - `SPEAKER_PORT` (macro, line 16) `#define SPEAKER_PORT`
+  - `PIT_FREQ` (macro, line 17) `#define PIT_FREQ`
+  - `PCSPK_MIN_FREQ` (macro, line 18) `#define PCSPK_MIN_FREQ`
+  - `PCSPK_MAX_FREQ` (macro, line 20) `#define PCSPK_MAX_FREQ`
+  - `SPEAKER_DATA_BIT` (macro, line 21) `#define SPEAKER_DATA_BIT`
+  - `SPEAKER_GATE_BIT` (macro, line 23) `#define SPEAKER_GATE_BIT`
+  - `SPEAKER_ENABLE_BITS` (macro, line 24) `#define SPEAKER_ENABLE_BITS`
+- Depends on: `driver.h`, `kernel.h`, `pcspk.h`
 
 ## drivers/rtc.c
 - Layer: infrastructure

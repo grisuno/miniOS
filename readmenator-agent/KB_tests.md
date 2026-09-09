@@ -33,6 +33,21 @@
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `batch.h`
 
+## tests/test_driver.c
+- Layer: testing
+- Doc: test_driver.c -- Host test for the Strategy-pattern device registry.
+- Language: c
+- Symbols:
+  - `test_read` (function, line 15) `static int test_read(device_t *d, unsigned lba, unsigned count, void *buf)`
+  - `main` (function, line 24) `int main(void)`
+  - `memset` (function, line 27) `memset(&a, 0, sizeof(a));`
+  - `strcpy` (function, line 28) `strcpy(a.name, "ide0");`
+  - `device_reset` (function, line 31) `device_reset();`
+  - `assert` (function, line 33) `assert(device_count() == 0);`
+  - `snprintf` (function, line 66) `snprintf(d.name, sizeof(d.name), "dev%d", i);`
+  - `printf` (function, line 82) `printf("driver: ok\n");`
+- Depends on: `driver.h`, `kernel/string.c`
+
 ## tests/test_futex.c
 - Layer: testing
 - Doc: Docstring: Host test for kernel/futex.c (make test-futex).
@@ -148,7 +163,9 @@
   - `cond_signal` (function, line 165) `cond_signal(&c);`
   - `cond_broadcast` (function, line 172) `cond_broadcast(&c);`
   - `rwlock_write_unlock` (function, line 194) `rwlock_write_unlock(&rw);`
-  - `printf` (function, line 209) `else printf("sync: %d failures\n", failures);`
+  - `pi_set_base` (function, line 214) `pi_set_base(1, 1);`
+  - `mutex_note_waiter` (function, line 225) `mutex_note_waiter(&m, 2);`
+  - `printf` (function, line 267) `else printf("sync: %d failures\n", failures);`
   - `CHECK` (macro, line 36) `#define CHECK(cond, msg)`
 - Depends on: `sync.h`
 
