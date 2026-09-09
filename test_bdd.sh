@@ -164,6 +164,11 @@ expect "cpu0 lapic=0 BSP"
 expect "cpu1 lapic=1 AP"
 expect "bad_gs=0"
 
+scenario_smp "LAPIC timer is PIT-calibrated per boot" "smp
+poweroff"
+expect "lapic_cal="
+expect "measured"
+
 scenario_smp "mthreads producer-consumer passes on both CPUs" "run thdemo
 poweroff"
 expect "thdemo: PASS"
@@ -714,6 +719,19 @@ scenario "tcp stack fetches a page from the host" "run bin/http.elf 10.0.2.2 889
 poweroff"
 expect "received"
 expect "exit code: 0"
+
+scenario "poll reports a connected socket readable" "run bin/pollready.elf 10.0.2.2 8899
+poweroff"
+expect "POLL-READY"
+expect "exit code: 0"
+
+scenario "rlimit reports caps and enforces RLIMIT_AS" "rlimit
+rlimit as 1048576
+mmreuse.elf
+poweroff"
+expect "rlimit: as=0"
+expect "rlimit: as=1048576"
+expect "exit code: 1"
 
 scenario "freedom fetches a page from the host" "run bin/freedom http://10.0.2.2:8899/README.txt
 poweroff"

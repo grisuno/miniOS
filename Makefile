@@ -769,6 +769,14 @@ $(BIN_DIR)/lua: $(BIN_DIR)/lua.elf
 $(BIN_DIR)/mmreuse: $(BIN_DIR)/mmreuse.elf
 	cp $< $@
 
+# pollready: ring-3 regression test for poll(7) byte order (nostdlib,
+# raw syscalls like lxhello). Connects, sends GET, polls for POLLIN.
+$(BIN_DIR)/pollready.elf: $(SRC_DIR)/pollready.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
+$(BIN_DIR)/pollready: $(BIN_DIR)/pollready.elf
+	cp $< $@
+
 # ── Nuklear node editor (nuklear_minios.c + node_editor.c + cvm_emit.c) ──
 # The visual "low-code tool for the CVM": a ring-3 Nuklear app that renders
 # a node graph into the kernel back-buffer (SYS_NK_FRAME 220) and compiles
@@ -857,6 +865,26 @@ $(BIN_DIR)/sbtone: $(SRC_DIR)/sbtone.c
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -I$(PROGS_DIR) -o $@ $(SRC_DIR)/sbtone.c -lm
 	chmod +x $@
 
+# tlsget: ring-3 HTTPS GET over the shared TLS stack (phase 1 of
+# docs/TLS_MIGRATION.md). The kernel net/tls*.c sources compile unchanged
+# with -DTLS_RING3 (POSIX transport in progs/tls_u/tls_u_port.c); host
+# gcc -static like DOOM/MicroPython, ET_EXEC, ships on MiniFS.
+TLSU_SRCS = $(PROGS_DIR)/tls_u/tls_u_main.c \
+            $(PROGS_DIR)/tls_u/tls_u_port.c \
+            net/tls.c net/tls_crypto.c net/tls_x509.c
+
+$(BIN_DIR)/tlsget: $(TLSU_SRCS) tls_port.h tls.h tls_roots.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wall -DTLS_RING3 -I. -I$(PROGS_DIR) \
+	      -o $@ $(TLSU_SRCS)
+	chmod +x $@
+
+# Host-test twin of the same binary (runs on the build machine against a
+# local openssl s_server; see docs/TLS_MIGRATION.md). Same sources, same
+# -DTLS_RING3, dynamic link for the test sandbox.
+tlsget-host: $(TLSU_SRCS) tls_port.h tls.h tls_roots.h | $(TOOLS_DIR)
+	$(CC) -std=c99 -O2 -Wall -DTLS_RING3 -I. -I$(PROGS_DIR) \
+	      -o $(TOOLS_DIR)/tlsget $(TLSU_SRCS)
+
 # thdemo: producer-consumer over mthreads (10 threads on thread_spawn).
 # Headless M1 proof for roadmap Phase 1; prints PASS with exact counts.
 $(BIN_DIR)/thdemo: $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h
@@ -891,6 +919,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(PROGS_DIR)/piano/piano.c \
                $(BIN_DIR)/opl3 $(SRC_DIR)/opl3.c \
                $(BIN_DIR)/sbtone $(SRC_DIR)/sbtone.c \
+               $(BIN_DIR)/tlsget $(PROGS_DIR)/tls_u/tls_u_main.c $(PROGS_DIR)/tls_u/tls_u_port.c \
                $(BIN_DIR)/thdemo $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                $(BIN_DIR)/json $(SRC_DIR)/json.c \
@@ -904,6 +933,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf \
                $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
                $(BIN_DIR)/mmreuse.elf $(BIN_DIR)/mmreuse \
+               $(BIN_DIR)/pollready.elf $(BIN_DIR)/pollready \
                $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
                $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
                $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \

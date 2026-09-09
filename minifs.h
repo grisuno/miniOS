@@ -145,7 +145,10 @@ int  minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logical_block);
 
 void minifs_journal_begin(unsigned int txn_id);
 void minifs_journal_add_block(unsigned int block);
+void minifs_journal_touch(unsigned int phys);
 int  minifs_journal_commit(unsigned int txn_id);
+void minifs_journal_clear(void);
+void minifs_journal_abort(void);
 void minifs_journal_recover(void);
 
 MiniFSFile *minifs_file_open(int inode_num, int flags);

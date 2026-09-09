@@ -12,6 +12,10 @@
 #define DE_NAME(de) ((const char *)((de) + 1))
 #define DE_NAME_W(de) ((char *)((de) + 1))
 
+void minifs_journal_touch(unsigned int phys);
+void minifs_journal_clear(void);
+void minifs_journal_abort(void);
+
 static MiniFSSuper fs_sb;
 static unsigned char *fs_ibitmap;
 static unsigned char *fs_bbitmap;
@@ -96,6 +100,7 @@ static int fs_read_inode(unsigned int num, MiniFSInode *out) {
 
 static int fs_write_inode(unsigned int num, const MiniFSInode *in) {
     unsigned int block = fs_sb.inode_table_start + (num / MINIFS_INODES_PER_BLOCK);
+    minifs_journal_touch(block);
     unsigned int offset = (num % MINIFS_INODES_PER_BLOCK) * sizeof(MiniFSInode);
     unsigned char buf[MINIFS_BLOCK_SIZE];
     if (block_read(block, buf) < 0) return -1;
@@ -298,14 +303,21 @@ static void fs_inode_free_all_blocks(MiniFSInode *inode) {
  *   Blocks 1..N: MiniFSJournalEntry array (one per dirty metadata block)
  *   Last block: scratch buffer for block copy during commit
  *
- * Protocol:
+ * Protocol (write-ahead undo log):
  *   1. minifs_journal_begin(txn) — start a new transaction
- *   2. minifs_journal_add_block(phys) — snapshot the old content of a
- *      metadata block before modifying it
- *   3. minifs_journal_commit(txn) — mark the journal dirty, then the
- *      caller writes the actual modified blocks, then clear the journal
- *   4. minifs_journal_recover() — on mount, if the journal is dirty,
- *      overwrite each affected block with its saved old content (undo)
+ *   2. minifs_journal_commit(txn) — persist entries, mark DIRTY
+ *      (pre-write barrier: a crash after this replays the undo log)
+ *   3. protected writes run; each first touch of a physical block
+ *      snapshots the old content via minifs_journal_touch (called
+ *      directly or automatically by the fs_write_inode hook and the
+ *      directory entry paths). Freshly allocated blocks need no undo.
+ *   4. minifs_journal_clear() — mark CLEAN (post-write barrier).
+ *      minifs_journal_abort() restores snapshots and clears on error.
+ *   5. minifs_journal_recover() — on mount, if the journal is dirty,
+ *      overwrite each affected block with its saved old content (undo).
+ *      File content blocks are NOT journaled (metadata-only log);
+ *      bitmaps are RAM-resident until sync, so a crash can leak but
+ *      never corrupt reachable structures.
  */
 
 static unsigned int journal_start;    /* first data block of journal area */
@@ -366,85 +378,168 @@ void minifs_journal_begin(unsigned int txn_id) {
     kmemset(journal_entries, 0, sizeof(journal_entries));
 }
 
+/* Deprecated alias: historically took an inode number (wrong layer).
+ * Takes a physical block now; prefer minifs_journal_touch. */
 void minifs_journal_add_block(unsigned int block) {
-    if (!journal_active || journal_entry_count >= MINIFS_JOURNAL_MAX_ENTRIES) return;
-
-    MiniFSJournalEntry *e = &journal_entries[journal_entry_count];
-    e->txn_id = journal_current_txn;
-    e->committed = 0;
-    e->num_blocks = 1;
-    e->affected_blocks[0] = block;
-
-    /* Save original block content into the journal data area.
-     * The data area starts at journal_start + 1 + ceil(MINIFS_JOURNAL_MAX_ENTRIES / slots_per_block).
-     * For simplicity, we use one data slot per entry. */
-    unsigned int slots_per_block = MINIFS_BLOCK_SIZE / sizeof(MiniFSJournalEntry);
-    unsigned int hdr_blocks = (MINIFS_JOURNAL_MAX_ENTRIES + slots_per_block - 1) / slots_per_block;
-    unsigned int data_base = journal_start + 1 + hdr_blocks;
-    unsigned int data_slot = journal_entry_count;
-
-    unsigned char orig[MINIFS_BLOCK_SIZE];
-    block_read(block, orig);
-    block_write(data_base + data_slot, orig);
-
-    e->checksum = minifs_crc32((unsigned char *)e, sizeof(MiniFSJournalEntry) - 4);
-    journal_entry_count++;
+    minifs_journal_touch(block);
 }
 
+/* Pre-write barrier: persist the entry array and mark the journal
+ * DIRTY before any protected data block is modified. A crash after this
+ * point replays the undo log in minifs_journal_recover. */
 int minifs_journal_commit(unsigned int txn_id) {
     (void)txn_id;
-    if (!journal_active || journal_entry_count == 0) {
-        journal_active = 0;
-        return 0;
-    }
-
+    if (!journal_active) return 0;
     journal_save_entries();
     journal_save_super(MINIFS_JSTATE_DIRTY);
-
-    /* Now the caller writes the actual modified blocks to disk.
-     * After all writes complete, we clear the journal. */
-    journal_save_super(MINIFS_JSTATE_CLEAN);
-    journal_entry_count = 0;
-    journal_active = 0;
     return 0;
 }
 
-void minifs_journal_recover(void) {
-    unsigned char buf[MINIFS_BLOCK_SIZE];
-    block_read(journal_start, buf);
-    MiniFSJournalSuper *js = (MiniFSJournalSuper *)buf;
+/* Post-write barrier: the protected writes are all on disk, so the undo
+ * log is no longer needed. */
+void minifs_journal_clear(void) {
+    if (!journal_active) return;
+    journal_save_super(MINIFS_JSTATE_CLEAN);
+    journal_entry_count = 0;
+    journal_active = 0;
+}
 
-    if (js->magic != 0x4A4F5552 || js->state != MINIFS_JSTATE_DIRTY) {
-        journal_load_super();
-        return;
-    }
-
-    kprintf("minifs: recovering journal (txn %u, %u entries)\n",
-            js->next_txn - 1, js->count);
-
+/* Error path after the DIRTY barrier: restore every snapshotted block
+ * from the journal data area, then clear. Only undoes blocks recorded
+ * in the live in-RAM entry array. */
+void minifs_journal_abort(void) {
     unsigned int slots_per_block = MINIFS_BLOCK_SIZE / sizeof(MiniFSJournalEntry);
     unsigned int hdr_blocks = (MINIFS_JOURNAL_MAX_ENTRIES + slots_per_block - 1) / slots_per_block;
     unsigned int data_base = journal_start + 1 + hdr_blocks;
-    unsigned int count = js->count;
     unsigned int i;
+    if (!journal_active) return;
+    for (i = 0; i < journal_entry_count; i++) {
+        unsigned int phys = journal_entries[i].affected_blocks[0];
+        unsigned char orig[MINIFS_BLOCK_SIZE];
+        if (phys >= fs_sb.total_blocks) continue;
+        block_read(data_base + i, orig);
+        block_write(phys, orig);
+    }
+    minifs_journal_clear();
+}
+
+/* Snapshot-on-first-touch for a physical block: records the entry,
+ * persists the entry array, then copies the original content into the
+ * journal data area. The caller writes the new content only after this
+ * returns, so the on-disk undo log always precedes the data it protects.
+ * No-op when no transaction is active; never snapshots journal-area
+ * blocks (self-protection); duplicate touches of one block in a txn
+ * keep the first (oldest) snapshot. */
+void minifs_journal_touch(unsigned int phys) {
+    unsigned int slots_per_block;
+    unsigned int hdr_blocks;
+    unsigned int data_base;
+    unsigned int data_slot;
+    unsigned int i;
+    unsigned char orig[MINIFS_BLOCK_SIZE];
+    MiniFSJournalEntry *e;
+    if (!journal_active) return;
+    if (phys >= fs_sb.total_blocks) return;
+    if (phys >= journal_start && phys < journal_start + journal_blocks) return;
+    for (i = 0; i < journal_entry_count; i++)
+        if (journal_entries[i].affected_blocks[0] == phys) return;
+    if (journal_entry_count >= MINIFS_JOURNAL_MAX_ENTRIES) return;
+    slots_per_block = MINIFS_BLOCK_SIZE / sizeof(MiniFSJournalEntry);
+    hdr_blocks = (MINIFS_JOURNAL_MAX_ENTRIES + slots_per_block - 1) / slots_per_block;
+    if (1 + hdr_blocks + journal_entry_count >= journal_blocks) return;
+    data_base = journal_start + 1 + hdr_blocks;
+    data_slot = journal_entry_count;
+    e = &journal_entries[journal_entry_count];
+    e->txn_id = journal_current_txn;
+    e->committed = 0;
+    e->num_blocks = 1;
+    e->affected_blocks[0] = phys;
+    block_read(phys, orig);
+    e->checksum = minifs_crc32((unsigned char *)e, sizeof(MiniFSJournalEntry) - 4);
+    journal_entry_count++;
+    journal_save_entries();
+    block_write(data_base + data_slot, orig);
+}
+
+/* Mount-time recovery: replays the undo log left by a crash between
+ * the DIRTY barrier and the CLEAN mark. Every on-disk field is hostile
+ * data (a crafted image must not cause arbitrary block overwrites):
+ * super checksum, entry count bound, per-entry checksum and the target
+ * block range are all validated; invalid entries are skipped and
+ * counted, never applied. */
+void minifs_journal_recover(void) {
+    unsigned char buf[MINIFS_BLOCK_SIZE];
+    unsigned int slots_per_block = MINIFS_BLOCK_SIZE / sizeof(MiniFSJournalEntry);
+    unsigned int hdr_blocks = (MINIFS_JOURNAL_MAX_ENTRIES + slots_per_block - 1) / slots_per_block;
+    unsigned int data_base = journal_start + 1 + hdr_blocks;
+    unsigned int count;
+    unsigned int skipped = 0;
+    unsigned int applied = 0;
+    unsigned int i;
+    block_read(journal_start, buf);
+    {
+        MiniFSJournalSuper *js = (MiniFSJournalSuper *)buf;
+        unsigned int want;
+        if (js->magic != 0x4A4F5552 || js->state != MINIFS_JSTATE_DIRTY) {
+            journal_load_super();
+            return;
+        }
+        want = minifs_crc32(buf, MINIFS_BLOCK_SIZE - 4);
+        if (want != js->checksum) {
+            kprintf("minifs: journal super checksum bad, discarding log\n");
+            journal_save_super(MINIFS_JSTATE_CLEAN);
+            journal_load_super();
+            return;
+        }
+        if (js->count > MINIFS_JOURNAL_MAX_ENTRIES) {
+            kprintf("minifs: journal count %u out of range, discarding log\n",
+                    js->count);
+            journal_save_super(MINIFS_JSTATE_CLEAN);
+            journal_load_super();
+            return;
+        }
+        count = js->count;
+        kprintf("minifs: recovering journal (%u entries)\n", count);
+    }
 
     for (i = 0; i < count; i++) {
         unsigned int slot = i % slots_per_block;
         unsigned int blk = 1 + (i / slots_per_block);
         unsigned char ebuf[MINIFS_BLOCK_SIZE];
-        block_read(journal_start + blk, ebuf);
         MiniFSJournalEntry e;
+        unsigned int want;
+        unsigned char orig[MINIFS_BLOCK_SIZE];
+        if (blk >= journal_blocks || data_base + i >= journal_start + journal_blocks) {
+            skipped++;
+            continue;
+        }
+        block_read(journal_start + blk, ebuf);
         kmemcpy(&e, ebuf + slot * sizeof(MiniFSJournalEntry), sizeof(MiniFSJournalEntry));
+        want = minifs_crc32((unsigned char *)&e, sizeof(MiniFSJournalEntry) - 4);
+        if (want != e.checksum) {
+            skipped++;
+            continue;
+        }
+        if (e.num_blocks != 1 || e.affected_blocks[0] >= fs_sb.total_blocks) {
+            skipped++;
+            continue;
+        }
+        if (e.affected_blocks[0] >= journal_start &&
+            e.affected_blocks[0] < journal_start + journal_blocks) {
+            skipped++;
+            continue;
+        }
 
         /* Restore the original block content */
-        unsigned char orig[MINIFS_BLOCK_SIZE];
         block_read(data_base + i, orig);
         block_write(e.affected_blocks[0], orig);
+        applied++;
     }
 
     journal_save_super(MINIFS_JSTATE_CLEAN);
     journal_load_super();
-    kprintf("minifs: journal recovery complete\n");
+    kprintf("minifs: journal recovery complete (%u applied, %u skipped)\n",
+            applied, skipped);
 }
 
 /* ---- Path resolution ---- */
@@ -515,6 +610,7 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
                     next->rec_len = (unsigned short)extra;
                     next->name_len = 0;
                 }
+                minifs_journal_touch(phys);
                 return block_write(phys, buf);
             }
             off += de->rec_len;
@@ -568,6 +664,7 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
                 ne->rec_len = (unsigned short)(saved + last_de->name_len +
                     sizeof(MiniFSDirEntry) - tail);
                 kmemcpy(DE_NAME_W(ne), name, namelen);
+                minifs_journal_touch(last_phys);
                 return block_write(last_phys, buf);
             }
         } else {
@@ -576,6 +673,7 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
                 last_de->name_len = (unsigned char)namelen;
                 last_de->file_type = type;
                 kmemcpy(DE_NAME_W(last_de), name, namelen);
+                minifs_journal_touch(last_phys);
                 return block_write(last_phys, buf);
             }
         }
@@ -613,6 +711,7 @@ int minifs_dir_remove_entry(int dir_ino, const char *name) {
             if (de->rec_len == 0) break;
             if (de->inode != 0 && fs_namecmp(DE_NAME(de), de->name_len, name) == 0) {
                 de->inode = 0;
+                minifs_journal_touch(phys);
                 return block_write(phys, buf);
             }
             off += de->rec_len;
@@ -723,20 +822,22 @@ int minifs_create(const char *path, unsigned short mode) {
     inode.size = 0;
     inode.checksum = minifs_crc32(&inode, sizeof(MiniFSInode) - 4);
 
+    /* Transaction: DIRTY barrier first, then mutations (each auto-touch
+     * snapshots its old block), then CLEAN; errors undo via abort. */
     minifs_journal_begin(0);
-    minifs_journal_add_block((unsigned int)parent_ino);
+    minifs_journal_commit(0);
 
     if (fs_write_inode((unsigned int)child_ino, &inode) < 0) {
-        minifs_journal_commit(journal_current_txn);
+        minifs_journal_abort();
         minifs_free_inode(child_ino);
         return -1;
     }
     if (minifs_dir_add_entry(parent_ino, child_name, child_ino, MINIFS_FT_FILE) < 0) {
-        minifs_journal_commit(journal_current_txn);
+        minifs_journal_abort();
         minifs_free_inode(child_ino);
         return -1;
     }
-    minifs_journal_commit(journal_current_txn);
+    minifs_journal_clear();
     return child_ino;
 }
 
@@ -775,18 +876,18 @@ int minifs_mkdir(const char *path, unsigned short mode) {
     inode.size = 0;
     inode.checksum = minifs_crc32(&inode, sizeof(MiniFSInode) - 4);
     minifs_journal_begin(0);
-    minifs_journal_add_block((unsigned int)parent_ino);
+    minifs_journal_commit(0);
     if (fs_write_inode((unsigned int)child_ino, &inode) < 0) {
-        minifs_journal_commit(journal_current_txn);
+        minifs_journal_abort();
         minifs_free_inode(child_ino);
         return -1;
     }
     if (minifs_dir_add_entry(parent_ino, child_name, child_ino, MINIFS_FT_DIR) < 0) {
-        minifs_journal_commit(journal_current_txn);
+        minifs_journal_abort();
         minifs_free_inode(child_ino);
         return -1;
     }
-    minifs_journal_commit(journal_current_txn);
+    minifs_journal_clear();
     return child_ino;
 }
 
@@ -796,6 +897,8 @@ int minifs_unlink(const char *path) {
     if (ino < 0) return -1;
     if (fs_read_inode((unsigned int)ino, &inode) < 0) return -1;
     if (inode.mode & MINIFS_S_IFDIR) return -1;
+    minifs_journal_begin(0);
+    minifs_journal_commit(0);
     fs_inode_free_all_blocks(&inode);
     inode.mode = 0;
     inode.size = 0;
@@ -823,6 +926,7 @@ int minifs_unlink(const char *path) {
     }
     if (parent_ino >= 0)
         minifs_dir_remove_entry(parent_ino, child_name);
+    minifs_journal_clear();
     return 0;
 }
 
@@ -834,6 +938,8 @@ int minifs_rmdir(const char *path) {
     if (fs_read_inode((unsigned int)ino, &inode) < 0) return -1;
     if (!(inode.mode & MINIFS_S_IFDIR)) return -1;
     if (inode.size > 0) return -1;
+    minifs_journal_begin(0);
+    minifs_journal_commit(0);
     inode.mode = 0;
     inode.size = 0;
     inode.link_count = 0;
@@ -860,6 +966,7 @@ int minifs_rmdir(const char *path) {
     }
     if (parent_ino >= 0)
         minifs_dir_remove_entry(parent_ino, child_name);
+    minifs_journal_clear();
     return 0;
 }
 
@@ -1127,7 +1234,14 @@ int minifs_mount(void) {
 
     fs_mounted = 1;
 
-    /* Set up journal area at the end of the filesystem */
+    /* Set up journal area at the end of the filesystem. The data area
+     * must precede it and the area must fit: a short filesystem refuses
+     * the mount instead of letting the journal overlap live data. */
+    if (fs_sb.total_blocks < MINIFS_JOURNAL_BLOCKS + 16 ||
+        fs_sb.data_start + 1 >= fs_sb.total_blocks - MINIFS_JOURNAL_BLOCKS) {
+        kprintf("minifs: filesystem too small for journal area, refusing mount\n");
+        return -1;
+    }
     journal_start = fs_sb.total_blocks - MINIFS_JOURNAL_BLOCKS;
     journal_blocks = MINIFS_JOURNAL_BLOCKS;
     journal_load_super();

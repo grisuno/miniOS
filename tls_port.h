@@ -55,6 +55,42 @@ static inline void tls_random(unsigned char *out, unsigned len) {
     while (got < len) out[got++] = (unsigned char)(rand() & 255);
 }
 
+#elif defined(TLS_RING3)
+
+/* Ring-3 userspace client (progs/tls_u): the same TLS sources compiled
+ * with the host toolchain into a static ET_EXEC. Transport is POSIX
+ * sockets (glibc maps socket/connect/send/recv/poll onto the MiniOS
+ * Linux ABI numbers the kernel implements); time comes from
+ * gettimeofday(96) and entropy from /dev/urandom with a time/pid
+ * fallback. Session slots are indexed by raw OS fd, so TLS_FD_MAX
+ * covers both the MiniOS socket range (100+) and host small fds. */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TLS_FD_MAX        160
+
+#define TLS_PRINTF        printf
+#define TLS_MALLOC(n)     malloc((size_t)(n))
+#define TLS_FREE(p)       free(p)
+#define TLS_MEMCPY        memcpy
+#define TLS_MEMSET        memset
+#define TLS_MEMCMP        memcmp
+#define TLS_STRLEN        strlen
+
+int  tls_u_send(int fd, const char *buf, int len);
+int  tls_u_recv(int fd, char *buf, int len);
+int  tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms);
+void tls_u_close(int fd);
+
+#define TLS_SEND           tls_u_send
+#define TLS_RECV           tls_u_recv
+#define TLS_RECV_TIMEOUT   tls_u_recv_timeout
+#define TLS_CLOSE          tls_u_close
+
+long tls_now_days(void);
+void tls_random(unsigned char *out, unsigned len);
+
 #else /* MiniOS kernel */
 
 #include "kernel.h"

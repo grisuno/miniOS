@@ -58,7 +58,7 @@ static inline unsigned long read_cr3(void) {
  * (it cannot use C here).  If either assert fires, update the immediates
  * in that trampoline to match. */
 _Static_assert(__builtin_offsetof(proc_t, kstack) == 168, "proc kstack off");
-_Static_assert(sizeof(proc_t) == 264, "proc size");
+_Static_assert(sizeof(proc_t) == 304, "proc size");
 /* The AP stub loads the GDT with the SMP limit; it must cover one TSS
  * descriptor (two slots) per CPU past the 5 stage-2 entries. */
 _Static_assert((5 + 2 * MAX_CPUS) * 8 == GDT64_SMP_BYTES, "GDT SMP size");
@@ -457,12 +457,39 @@ static void sched_ap_preempt(trap_frame_t *frame) {
     proc_t *cur = proc_get(current_pid);
     if (!cur || cur->state != PROC_RUNNING) return;
     if (!(cur->clone_flags & CLONE_VM)) return;
+    rlimit_cpu_tick(current_pid);
     sched_save_preempt(cur, frame, 0);
     irqflags_t flags;
     spin_lock_irqsave(&sched_lock, &flags);
     cur->state = PROC_READY;
+    /* RLIMIT_CPU: AP threads are always pid > 0, so the kill lands here
+     * directly (same zombie discipline as the BSP path). */
+    if (rlimit_cpu_exceeded(current_pid)) {
+        proc_t *par;
+        cur->exit_code = RLIM_EXIT_CPU;
+        cur->state = PROC_ZOMBIE;
+        cur->exited = 1;
+        cur->cpu_kill_pending = 0;
+        if (cur->parent_pid >= 0) {
+            par = proc_get(cur->parent_pid);
+            if (par && par->state == PROC_BLOCKED)
+                par->state = PROC_READY;
+        }
+    }
     int next = sched_next_locked(current_pid, 1);
     if (next < 0 || next == current_pid) {
+        if (cur->state == PROC_ZOMBIE) {
+            int me = this_cpu()->cpu_id;
+            current_pid = -1;
+            spin_unlock_irqrestore(&sched_lock, flags);
+            sched_rearm_kgs();
+            ap_idle_proc[me].ctx.rip = (uint64_t)smp_ap_idle_loop;
+            ap_idle_proc[me].ctx.rsp =
+                (uint64_t)&ap_idle_stack[me][sizeof(ap_idle_stack[0])];
+            ap_idle_proc[me].ctx.cr3 = read_cr3();
+            switch_to_notrap(cur, &ap_idle_proc[me]);
+            return;
+        }
         cur->state = PROC_RUNNING;
         spin_unlock_irqrestore(&sched_lock, flags);
         return;
@@ -491,6 +518,26 @@ static int smp_any_ap_idle(void) {
  * cpus[]).  Reported by the `smp` builtin; nonzero means a GS-lifecycle
  * window fired (see cpu_or_null). */
 volatile unsigned smp_dbg_bad_gs;
+
+/* RLIMIT_CPU accounting: called once per timer tick for the running
+ * proc on each CPU. Sets cpu_kill_pending when the cap is reached; the
+ * actual kill happens at the next scheduling edge (preempt path for
+ * pid > 0, syscall-dispatch check for pid 0), never mid-ISR. */
+void rlimit_cpu_tick(int pid) {
+    proc_t *p;
+    if (pid < 0 || pid >= MAX_PROCS) return;
+    p = &procs[pid];
+    if (p->state != PROC_RUNNING && p->state != PROC_READY) return;
+    p->cpu_ticks++;
+    if (p->rl_cpu_max && p->cpu_ticks >= p->rl_cpu_max)
+        p->cpu_kill_pending = 1;
+}
+
+int rlimit_cpu_exceeded(int pid) {
+    if (pid < 0 || pid >= MAX_PROCS) return 0;
+    if (procs[pid].state == PROC_FREE) return 0;
+    return procs[pid].cpu_kill_pending;
+}
 
 /* Validate the GS-derived per-CPU pointer before trusting it.  A ring-0
  * context running with a user (or otherwise stale) GS base makes
@@ -547,6 +594,7 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         if (cpu->is_bsp && proc_count > 1) {
             proc_t *cur = proc_get(current_pid);
             if (cur && cur->state == PROC_RUNNING) {
+                rlimit_cpu_tick(current_pid);
                 /* A preempt from ring 3 parks the whole trap frame in the
                  * pid's dedicated slot and resumes it later through
                  * resume_iretq + iretq: returning through switch_to's ret
@@ -561,6 +609,23 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                 irqflags_t sflags, mflags;
                 spin_lock_irqsave(&sched_lock, &sflags);
                 cur->state = PROC_READY;
+                /* RLIMIT_CPU: a capped thread past its ticks dies here
+                 * (pid 0 is the exec frame and can only die at a syscall
+                 * edge, so it keeps its pending flag for the dispatcher).
+                 * ZOMBIEs are never requeued: sched_next_locked only
+                 * claims READY. */
+                if (current_pid > 0 && rlimit_cpu_exceeded(current_pid)) {
+                    proc_t *par;
+                    cur->exit_code = RLIM_EXIT_CPU;
+                    cur->state = PROC_ZOMBIE;
+                    cur->exited = 1;
+                    cur->cpu_kill_pending = 0;
+                    if (cur->parent_pid >= 0) {
+                        par = proc_get(cur->parent_pid);
+                        if (par && par->state == PROC_BLOCKED)
+                            par->state = PROC_READY;
+                    }
+                }
                 /* VM threads: when an AP is idle, leave them unclaimed
                  * so the AP's poll picks them up (threads run on the
                  * APs; the claim race otherwise always goes to the
@@ -596,6 +661,19 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                      * complete from the park; the save phase would let
                      * a stealing CPU resume it into the dead ISR tail. */
                     switch_to_notrap(cur, nxt);
+                } else if (cur->state == PROC_ZOMBIE) {
+                    /* Killed with nobody else to run: park this CPU in
+                     * its idle context instead of resuming the corpse
+                     * (mirrors the schedule() idle path). */
+                    int me = cpu->cpu_id;
+                    current_pid = -1;
+                    spin_unlock_irqrestore(&sched_lock, sflags);
+                    sched_rearm_kgs();
+                    ap_idle_proc[me].ctx.rip = (uint64_t)smp_ap_idle_loop;
+                    ap_idle_proc[me].ctx.rsp =
+                        (uint64_t)&ap_idle_stack[me][sizeof(ap_idle_stack[0])];
+                    ap_idle_proc[me].ctx.cr3 = read_cr3();
+                    switch_to_notrap(cur, &ap_idle_proc[me]);
                 } else {
                     cur->state = PROC_RUNNING;
                     spin_unlock_irqrestore(&sched_lock, sflags);
@@ -791,6 +869,12 @@ int proc_create(const char *name, int parent_pid) {
     p->nice = 0;
     p->vruntime = 0;
     p->seccomp_deny = 0;
+    p->rl_as_max = 0;
+    p->rl_cpu_max = 0;
+    p->rl_nofile_max = 0;
+    p->cpu_ticks = 0;
+    p->open_files = 0;
+    p->cpu_kill_pending = 0;
     p->pid = pid;
     p->state = PROC_READY;
     p->parent_pid = parent_pid;
@@ -1004,6 +1088,12 @@ long do_thread_spawn(unsigned long fn, unsigned long stack,
     child->parent_pid = current_pid;
     child->clone_flags = CLONE_VM;
     child->wq_next = WQ_NONE;
+    child->rl_as_max = cur->rl_as_max;
+    child->rl_cpu_max = cur->rl_cpu_max;
+    child->rl_nofile_max = cur->rl_nofile_max;
+    child->cpu_ticks = 0;
+    child->open_files = 0;
+    child->cpu_kill_pending = 0;
     kstrncpy(child->name, cur->name, sizeof(child->name) - 1);
 
     uint64_t kstack_top = alloc_kstack();
@@ -1063,6 +1153,12 @@ long do_clone(long flags, long newsp) {
     child->state = PROC_READY;
     child->parent_pid = current_pid;
     child->clone_flags = cflags;
+    child->rl_as_max = cur->rl_as_max;
+    child->rl_cpu_max = cur->rl_cpu_max;
+    child->rl_nofile_max = cur->rl_nofile_max;
+    child->cpu_ticks = 0;
+    child->open_files = 0;
+    child->cpu_kill_pending = 0;
     kstrncpy(child->name, cur->name, sizeof(child->name) - 1);
 
     uint64_t kstack_top = alloc_kstack();

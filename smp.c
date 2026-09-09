@@ -139,12 +139,52 @@ static void ap_delay(void) {
  * on the BSP IPI broadcast; the IPI stays as a fallback wakeup. The count
  * assumes a ~1 GHz APIC bus (625000 ticks at div-16 ~= 10 ms); a future
  * step calibrates per-CPU against the TSC at boot. Default off: masked. */
+/* PIT-anchored LAPIC calibration: measures LAPIC bus ticks per 10 ms
+ * PIT tick so each AP can program a real 100 Hz periodic timer instead of
+ * the fixed QEMU-typical guess. Runs once on the BSP before the APs boot;
+ * the bus clock is shared, so one sample serves all CPUs. Fail safe: a
+ * dead PIT or a wild sample keeps the fixed default. */
+unsigned lapic_cal_10ms = 625000u;
+int lapic_cal_valid = 0;
+
+static void lapic_calibrate(void) {
+    unsigned long t;
+    uint64_t tick0;
+    lapic_write(LAPIC_TIMER_DIV, LAPIC_TIMER_DIVIDE_16);
+    lapic_write(LAPIC_LVT_TIMER, LAPIC_LVT_MASKED);
+    lapic_write(LAPIC_TIMER_INIT, 0xFFFFFFFFu);
+    tick0 = sys_ticks;
+    for (t = 0; t < 2000000u; t++) {
+        if (sys_ticks != tick0) break;
+        __asm__ volatile("pause");
+    }
+    if (sys_ticks == tick0) goto cal_done;
+    {
+        unsigned start = lapic_read(LAPIC_TIMER_CUR);
+        uint64_t base = sys_ticks;
+        for (t = 0; t < 20000000u; t++) {
+            if (sys_ticks >= base + 5) break;
+            __asm__ volatile("pause");
+        }
+        if (sys_ticks < base + 5) goto cal_done;
+        {
+            unsigned end = lapic_read(LAPIC_TIMER_CUR);
+            unsigned elapsed = start - end;
+            if (elapsed > 1000u && elapsed < 100000000u) {
+                lapic_cal_10ms = elapsed / 5u;
+                lapic_cal_valid = 1;
+            }
+        }
+    }
+cal_done:
+    lapic_write(LAPIC_TIMER_INIT, 0);
+}
+
 #ifdef MINIOS_AP_TIMER
-#define LAPIC_TIMER_100HZ 625000u
 static void ap_lapic_timer_start(void) {
     lapic_write(LAPIC_TIMER_DIV, LAPIC_TIMER_DIVIDE_16);
     lapic_write(LAPIC_LVT_TIMER, LAPIC_TIMER_PERIODIC | 32);
-    lapic_write(LAPIC_TIMER_INIT, LAPIC_TIMER_100HZ);
+    lapic_write(LAPIC_TIMER_INIT, lapic_cal_10ms);
 }
 #endif
 static void ap_lapic_timer_init(void) {
@@ -263,6 +303,7 @@ void smp_ap_entry(void) {
 void smp_init(void) {
     if (!map_lapic()) return;
     lapic_write(LAPIC_SVR_OFF, lapic_read(LAPIC_SVR_OFF) | LAPIC_SVR_ENABLE);
+    lapic_calibrate();
     /* Virtual-wire mode via the local APIC: with the LAPIC enabled, the
      * PIC's INTR line only reaches the CPU through LINT0, so LINT0 must
      * be programmed as ExtINT delivery.  Without this the PIT (IRQ0)

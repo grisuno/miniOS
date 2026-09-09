@@ -823,9 +823,15 @@ long net_sys_poll(long fds, long nfds, long timeout_ms) {
     for (;;) {
         for (n = 0; n < nfds; n++) {
             const char *entry = (const char *)fds + n * 8;
-            int fd = (int)net_get32((const unsigned char *)entry);
-            unsigned short events = net_get16((const unsigned char *)entry + 4);
+            /* Host order: pollfd is a CPU struct, not a wire format.
+             * (net_get16/32 are big-endian wire readers; using them
+             * here byte-swapped every fd and mask, so poll never
+             * reported readiness. Found by the ring-3 TLS client.) */
+            int fd;
+            unsigned short events;
             unsigned short revents = 0;
+            kmemcpy(&fd, entry, 4);
+            kmemcpy(&events, entry + 4, 2);
             if (fd >= NET_FD_BASE && fd < NET_FD_BASE + NET_SOCKETS) {
                 struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
                 if (s->in_use) {
@@ -833,7 +839,7 @@ long net_sys_poll(long fds, long nfds, long timeout_ms) {
                 }
             }
             if (events & revents) {
-                net_put16((unsigned char *)entry + 6, revents);
+                kmemcpy((char *)entry + 6, &revents, 2);
                 ready++;
             }
         }

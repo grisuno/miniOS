@@ -83,6 +83,7 @@ if [ "$RESET" = "1" ]; then
 fi
 
 SOURCES="kernel.c arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c"
+SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c"
 
 restore_sources() {
     local f
@@ -174,6 +175,9 @@ smp-sipi-vector-zero | s/SIPI_VECTOR       (AP_STUB_ADDR >> 12)/SIPI_VECTOR     
 smp-ap-no-lapic-eoi | s/\\*0xFEE000B0UL = 0;/\\*0xFEE000B0UL = 0; \\/* mutant: no eoi \\*/ | kernel/sched.c
 smp-bsp-ctx-switch-not-guarded | s/if (this_cpu\\(\\)->is_bsp \\&\\& proc_count > 1)/if (proc_count > 1)/ | kernel/sched.c
 smp-gs-base-not-set | s/wrmsr(MSR_GSBASE, (unsigned long)\\&cpus\\[cpu\\]);/\\/* mutant: no gs base \\*/ | smp.c
+poll-host-order | s/kmemcpy(\&events, entry + 4, 2);/events = net_get16((const unsigned char *)entry + 4);/ | net/net.c
+rlimit-as-shell-ignored | s/if (kstrcmp(argv\[1\], "as") == 0) rp->rl_as_max = v;/if (kstrcmp(argv[1], "as") == 0) rp->rl_as_max = 0;/ | kernel/shell.c
+lapic-cal-fallback | s/lapic_cal_valid = 1;/lapic_cal_valid = 0;/ | smp.c
 futex-value-check-inverted | s/if (\\*(volatile int \\*)uaddr != val)/if (*(volatile int *)uaddr == val)/ | kernel/futex.c
 futex-wake-count-unbounded | s/while (pid != WQ_NONE \\&\\& woken < n)/while (pid != WQ_NONE)/ | kernel/futex.c
 percpu-rq-full-drop-lost | s/if (rqueues\\[cpu\\].count >= RQ_DEPTH)/if (rqueues[cpu].count > RQ_DEPTH)/ | kernel/percpu_rq.c

@@ -1825,6 +1825,8 @@ void shell_exec_builtin(int argc, char **argv) {
                     hits, steals, drops);
         }
         kprintf("  bad_gs=%u\n", smp_dbg_bad_gs);
+        kprintf("  lapic_cal=%u %s\n", lapic_cal_10ms,
+                lapic_cal_valid ? "measured" : "fallback");
     }
     else if (kstrcmp(argv[0], "nice") == 0) {
         if (argc > 1) {
@@ -1846,6 +1848,26 @@ void shell_exec_builtin(int argc, char **argv) {
         } else {
             kprintf("seccomp: mask=%lx", (unsigned long)procs[pid].seccomp_deny);
         }
+    }
+    else if (kstrcmp(argv[0], "rlimit") == 0) {
+        int pid = current_pid < 0 ? 0 : current_pid;
+        proc_t *rp = &procs[pid];
+        if (argc > 2) {
+            unsigned long v = (unsigned long)katol(argv[2]);
+            if (kstrcmp(argv[1], "as") == 0) rp->rl_as_max = v;
+            else if (kstrcmp(argv[1], "cpu") == 0) {
+                rp->rl_cpu_max = v;
+                rp->cpu_ticks = 0;
+                rp->cpu_kill_pending = 0;
+            }
+            else if (kstrcmp(argv[1], "nofile") == 0) {
+                if (v <= (unsigned long)KFD_MAX) rp->rl_nofile_max = v;
+            }
+            else { vga_puts("usage: rlimit [as|cpu|nofile] [value]\n"); return; }
+        }
+        kprintf("rlimit: as=%lu cpu=%lu ticks=%lu nofile=%lu open=%d\n",
+                rp->rl_as_max, rp->rl_cpu_max, rp->cpu_ticks,
+                rp->rl_nofile_max, rp->open_files);
     }
     else if (kstrcmp(argv[0], "echo") == 0) {
         int i;

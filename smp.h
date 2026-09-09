@@ -31,6 +31,12 @@ extern volatile unsigned smp_dbg_svr;
 extern volatile unsigned smp_dbg_lvt;
 extern volatile unsigned smp_dbg_ipis;  /* vector-32 ISRs run on APs */
 extern volatile unsigned smp_dbg_sent;   /* IPIs the BSP tick sent */
+/* PIT-anchored LAPIC calibration (ticks per 10 ms at divide-by-16).
+ * Measured once by the BSP in smp_init; the AP periodic timer uses it
+ * when MINIOS_AP_TIMER is set. lapic_cal_valid is 0 on the fixed
+ * 625000-tick fallback. */
+extern unsigned lapic_cal_10ms;
+extern int lapic_cal_valid;
 
 void smp_init(void);
 void smp_ap_entry(void);   /* entry point each AP jumps to from ap_entry.S */

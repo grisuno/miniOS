@@ -50,6 +50,12 @@ typedef struct {
     int         nice;           /* -20 (high prio) .. +19 (low prio), default 0 */
     unsigned long vruntime;     /* fair-share virtual runtime for sched_next */
     unsigned int seccomp_deny;  /* bit (n-200) denies MiniOS syscall n 200..231 */
+    unsigned long rl_as_max;
+    unsigned long rl_cpu_max;
+    unsigned long rl_nofile_max;
+    unsigned long cpu_ticks;
+    int open_files;
+    int cpu_kill_pending;
     char        name[32];
 } proc_t;
 /* Seccomp-basic: bit for MiniOS syscall n in proc_t.seccomp_deny. Only the
@@ -63,6 +69,18 @@ typedef struct {
 #define SECCOMP_OP_DENY_ONE  1
 #define SECCOMP_OP_ALLOW_ONE 2
 #define SECCOMP_OP_DENY_ALL  3
+/* Rlimit/cgroups-lite (SYS_RLIMIT, 240): per-process resource caps, all
+ * 0 = unlimited (the default). Inherited across proc_create/clone/spawn.
+ *   RLIM_AS    total user bytes (brk growth + mmap) beyond the load base
+ *   RLIM_CPU   timer ticks of CPU time, then SIGKILL-equivalent (137)
+ *   RLIM_NOFILE open-file count attributed to the pid (best-effort: the
+ *     fd table is global/shared, so close() attributes to the closer) */
+#define RLIM_OP_SET   1
+#define RLIM_OP_GET   2
+#define RLIM_AS       1
+#define RLIM_CPU      2
+#define RLIM_NOFILE   3
+#define RLIM_EXIT_CPU 137
 
 /* clone() flags */
 #define CLONE_VM    0x00000100  /* share address space (same CR3) */
@@ -204,6 +222,8 @@ int      sched_set_nice(int pid, int nice);
 int      seccomp_deny_one(int pid, int n);
 int      seccomp_allow_one(int pid, int n);
 int      seccomp_denied(int pid, int n);
+int      rlimit_cpu_exceeded(int pid);
+void     rlimit_cpu_tick(int pid);
 void     switch_to(proc_t *prev, proc_t *next);
 void     switch_to_notrap(proc_t *prev, proc_t *next);
 void     switch_save_only(proc_t *prev);

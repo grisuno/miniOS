@@ -433,6 +433,42 @@ static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5,
     return completed;
 }
 
+/* RLIMIT/cgroups-lite (240): a1 = op (SET/GET), a2 = resource
+ * (AS/CPU/NOFILE), a3 = value for SET. Values are bytes, ticks, count;
+ * 0 clears (unlimited). Only lowers... no: any non-negative value sets
+ * (raising allowed; the threat model is cooperative containment, not
+ * privilege). Returns the old value on SET, current on GET. */
+static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    int pid = current_pid;
+    proc_t *p;
+    unsigned long v = (unsigned long)a3;
+    if (pid < 0 || pid >= MAX_PROCS) return -3;
+    p = &procs[pid];
+    if (p->state == PROC_FREE) return -3;
+    if (a2 == RLIM_AS) {
+        long old = (long)p->rl_as_max;
+        if (a1 == RLIM_OP_SET) p->rl_as_max = v;
+        else if (a1 != RLIM_OP_GET) return -22;
+        return old;
+    }
+    if (a2 == RLIM_CPU) {
+        long old = (long)p->rl_cpu_max;
+        if (a1 == RLIM_OP_SET) { p->rl_cpu_max = v; p->cpu_ticks = 0; p->cpu_kill_pending = 0; }
+        else if (a1 != RLIM_OP_GET) return -22;
+        return old;
+    }
+    if (a2 == RLIM_NOFILE) {
+        long old = (long)p->rl_nofile_max;
+        if (a1 == RLIM_OP_SET) {
+            if (v > (unsigned long)KFD_MAX) return -22;
+            p->rl_nofile_max = v;
+        } else if (a1 != RLIM_OP_GET) return -22;
+        return old;
+    }
+    return -22;
+}
+
 static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] = {
     [MINIOS_SYS_DNS - MINIOS_SYSCALL_BASE]         = { sys_minios_dns,         "dns" },
     [MINIOS_SYS_TLS_HANDSHAKE - MINIOS_SYSCALL_BASE] = { sys_minios_tls_handshake, "tls_handshake" },
@@ -468,6 +504,7 @@ static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] =
     [MINIOS_SYS_FUTEX_WAKE - MINIOS_SYSCALL_BASE] = { sys_minios_futex_wake, "futex_wake" },
     [MINIOS_SYS_SUBMIT_BATCH - MINIOS_SYSCALL_BASE] = { sys_minios_submit_batch, "submit_batch" },
     [MINIOS_SYS_GETC_RAW - MINIOS_SYSCALL_BASE] = { sys_minios_getc_raw, "getc_raw" },
+    [MINIOS_SYS_RLIMIT - MINIOS_SYSCALL_BASE] = { sys_minios_rlimit, "rlimit" },
     [MINIOS_SYS_GFX_PRESENT - MINIOS_SYSCALL_BASE] = { sys_minios_gfx_present, "gfx_present" },
     [MINIOS_SYS_SECCOMP - MINIOS_SYSCALL_BASE] = { sys_minios_seccomp, "seccomp" },
     [MINIOS_SYS_NICE - MINIOS_SYSCALL_BASE] = { sys_minios_nice, "nice" },
@@ -564,11 +601,20 @@ static long do_open_path(const char *path, long flags) {
     }
     for (fd = 3; fd < KFD_MAX; fd++) if (!kfd_table[fd]) break;
     if (fd >= KFD_MAX) return -24;
+    {
+        proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
+        if (op && op->rl_nofile_max && (unsigned long)op->open_files >= op->rl_nofile_max)
+            return -24;
+    }
     KFILE *f = kfopen(path, mode);
     if (!f) {
         return -2;
     }
     kfd_table[fd] = f;
+    {
+        proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
+        if (op && op->open_files < KFD_MAX) op->open_files++;
+    }
     return fd;
 }
 
@@ -581,7 +627,9 @@ static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     if (a1 >= NET_FD_BASE) return net_sys_close(a1);
     if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
+        proc_t *cp = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
         kfclose(kfd_table[a1]); kfd_table[a1] = 0;
+        if (cp && cp->open_files > 0) cp->open_files--;
     }
     return 0;
 }
@@ -600,8 +648,16 @@ static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6) 
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     unsigned long addr = (unsigned long)a1;
     irqflags_t flags;
+    proc_t *bp;
     spin_lock_irqsave(&mm_lock, &flags);
     if (addr == 0) { long r = (long)g_brk; spin_unlock_irqrestore(&mm_lock, flags); return r; }
+    bp = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
+    if (bp && bp->rl_as_max && addr > USER_LOAD_BASE &&
+        addr - USER_LOAD_BASE > bp->rl_as_max) {
+        long r = (long)g_brk;
+        spin_unlock_irqrestore(&mm_lock, flags);
+        return r;
+    }
     if (addr >= USER_LOAD_BASE && addr <= g_brk_limit
         && addr <= user_mmap_cur)
         g_brk = addr;
@@ -618,6 +674,15 @@ static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)
     spin_lock_irqsave(&mm_lock, &flags);
     long ret;
     if (n > user_mmap_cur - USER_LOAD_BASE) { ret = -12; goto mmap_out; }
+    {
+        proc_t *mp = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
+        if (mp && mp->rl_as_max) {
+            unsigned long used = 0;
+            if (g_brk > USER_LOAD_BASE) used += g_brk - USER_LOAD_BASE;
+            if (USER_BRK_END > user_mmap_cur) used += USER_BRK_END - user_mmap_cur;
+            if (used + n > mp->rl_as_max) { ret = -12; goto mmap_out; }
+        }
+    }
     {
         vma_node_t *best = VMA_NIL;
         vma_node_t *stack[64];
@@ -973,6 +1038,20 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     if (wm_close_pending()) {
         wm_clear_close();
         exec_exit_code = 130;
+        klongjmp(&exec_return, 1);
+        return 0;
+    }
+    /* RLIMIT_CPU edge for the exec frame (pid 0 has no scheduler slot to
+     * zombify in the ISR, so the pending flag lands here, exactly like a
+     * window-close request). Threads die synchronously in the ISR paths. */
+    if (n != MINIOS_SYS_RLIMIT && rlimit_cpu_exceeded(current_pid)) {
+        proc_t *kp = &procs[current_pid < 0 ? 0 : current_pid];
+        kp->cpu_kill_pending = 0;
+        if (current_pid != 0) {
+            do_exit(RLIM_EXIT_CPU);
+            return 0;
+        }
+        exec_exit_code = RLIM_EXIT_CPU;
         klongjmp(&exec_return, 1);
         return 0;
     }

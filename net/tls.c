@@ -768,7 +768,7 @@ int tls_recv(int fd, char *buf, int len) {
 
 /* ========== Syscalls ========== */
 
-#ifndef TLS_TEST
+#if !defined(TLS_TEST) && !defined(TLS_RING3)
 long tls_sys_handshake(long fd, long host) {
     if (fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS || !host) return -1;
     return tls_handshake((int)(fd - NET_FD_BASE), (const char *)host);

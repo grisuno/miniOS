@@ -30,6 +30,7 @@ Linux 0-199 passthrough; MiniOS 200-299 custom. New in v4:
 | 237 | `GFX_PRESENT` | `id, int *origin?` | generic: 0=game, 1=NK |
 | 238 | `SECCOMP` | `op, n` | 1=deny-one, 2=allow-one, 3=deny-all(keep TIME); window 200-231 |
 | 239 | `NICE` | `value, set?` | `-20..19`, default 0; fair-share weight |
+| 240 | `RLIMIT` | `op, res, val` | cgroups-lite: 1=AS bytes, 2=CPU ticks, 3=NOFILE; op 1=SET 2=GET; 0=unlimited; CPU overrun kills with 137 |
 
 Example (generic present):
 
@@ -46,7 +47,7 @@ syscall(239, 10, 1, 0, 0, 0, 0);
 
 ## Versioning
 
-`MINIOS_ABI_VERSION` bumps on incompatible change (now 4).
+`MINIOS_ABI_VERSION` bumps on incompatible change (now 5).
 `MINIOS_ABI_CHECKSUM` XOR-folds layout + new numbers; loader rejects mismatch
 with `-EABI_MISMATCH`.
 

@@ -126,7 +126,7 @@ extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a
 
 /* ---- syscall trampoline: marshal Linux ABI regs into the C ABI ----------
  * Every syscall swaps onto the calling proc's own kernel stack
- * (procs[pid].kstack, located as procs + pid * 264 + 168; the C side
+ * (procs[pid].kstack, located as procs + pid * 304 + 168; the C side
  * asserts both numbers), so concurrent thread syscalls never share one:
  * sharing a single entry stack corrupts both frames when a timer tick
  * interleaves two syscalls.  Ring-0 ET_REL syscalls use the same
@@ -205,7 +205,7 @@ __asm__(
     "  movq %rcx, %gs:80\n"         /* sc_rip = user rip */
     "  movl %gs:12, %eax\n"         /* cur_pid (gs:8 is cpu_id) */
     "  movq %rax, %gs:88\n"         /* sc_pid = pid */
-    "  imulq $264, %rax\n"          /* sizeof(proc_t), asserted in sched.c */
+    "  imulq $304, %rax\n"          /* sizeof(proc_t), asserted in sched.c */
     "  addq kstack_base(%rip), %rax\n"  /* rax = &PCB.kstack */
     "  jmp 13f\n"
     /* --- ring 0: per-proc kernel stack; swapgs puts the per-CPU base
@@ -216,7 +216,7 @@ __asm__(
     "  movq %rcx, %gs:80\n"
     "  movl %gs:12, %eax\n"
     "  movq %rax, %gs:88\n"
-    "  imulq $264, %rax\n"
+    "  imulq $304, %rax\n"
     "  addq kstack_base(%rip), %rax\n"
     /* --- shared swap + top save (IF=0, rax = &PCB.kstack) --- */
     "13:\n"
@@ -261,7 +261,7 @@ __asm__(
     "  movq %rax, %gs:96\n"      /* sc_ret = return value */
     "  movl %gs:12, %eax\n"
     "  movq %rax, %gs:88\n"      /* sc_pid = pid */
-    "  imulq $264, %rax\n"
+    "  imulq $304, %rax\n"
     "  addq kstack_base(%rip), %rax\n"  /* rax = &PCB.kstack */
     "  cmpq $" STR(USER_WIN_LO) ", (%rax)\n"  /* origin = saved user rsp */
     "  jb 20f\n"

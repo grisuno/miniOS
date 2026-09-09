@@ -33,7 +33,7 @@
  * The kernel ELF loader recomputes it and compares against the binary's
  * embedded copy.  A mismatch rejects the binary before execution.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 4
+#define MINIOS_ABI_VERSION 5
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -61,7 +61,8 @@
     MINIOS_SYS_GETC_RAW      ^ \
     MINIOS_SYS_GFX_PRESENT     ^ \
     MINIOS_SYS_SECCOMP         ^ \
-    MINIOS_SYS_NICE              \
+    MINIOS_SYS_NICE            ^ \
+    MINIOS_SYS_RLIMIT            \
 )
 
 /* =========================================================================
@@ -232,6 +233,7 @@
 #define MINIOS_SYS_GFX_PRESENT   237
 #define MINIOS_SYS_SECCOMP       238
 #define MINIOS_SYS_NICE          239
+#define MINIOS_SYS_RLIMIT        240
 
 #define MINIOS_SYS_CLONE             300
 
