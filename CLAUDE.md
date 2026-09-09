@@ -1839,6 +1839,7 @@ is forbidden; the answer to a survivor is a new scenario.
 ## Validation Gate (must pass before any commit)
 ```bash
 make                # zero warnings
+make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n, all green
 sh src/test_all.sh  # one-boot comprehensive non-interactive suite (61 PASS)
 ./test_bdd.sh       # all scenarios green (full interactive suite)
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
@@ -2248,6 +2249,7 @@ CI gates enforce architectural constraints:
 ### Validation Gate (updated)
 ```bash
 make                        # zero warnings
+make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n, all green
 sh src/test_all.sh          # one-boot comprehensive non-interactive suite (61 PASS)
 ./test_bdd.sh               # all scenarios green (full interactive suite)
 ./tools/test_codecs.sh      # lzss/lz4/aes roundtrips (pass=3)

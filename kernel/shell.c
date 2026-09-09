@@ -1191,13 +1191,20 @@ static int shell_run_cvm(const char *full, int argc, char **argv) {
     char *saved0 = argv[0];
     /* The interpreter opens argv[0] via fopen -> kfopen -> fs_resolve.
      * A bare ramdisk path like "cvm/fib.cvm" would be resolved against cwd
-     * again, so build an absolute path to prevent double resolution. */
-    char abspath[RAMDISK_FNAME_LEN];
+     * again, so build an absolute path to prevent double resolution.
+     * Heap buffer, not a stack local: handing a local's address to the
+     * callee through argv is an escaped-stack bug (cppcheck
+     * autoVariables), and malloc is recursion-safe where a static would
+     * break nested cvm runs. */
+    char *abspath = kmalloc(RAMDISK_FNAME_LEN);
+    int ret;
+    if (!abspath) return -1;
     abspath[0] = '/';
     kmemcpy(abspath + 1, full, kstrlen(full) + 1);
     argv[0] = abspath;
-    int ret = cvm_entry(argc, argv);
+    ret = cvm_entry(argc, argv);
     argv[0] = saved0;
+    kfree(abspath);
     return ret;
 }
 
@@ -1519,13 +1526,17 @@ static void shell_cmd_hash(int argc, char **argv) {
 void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
         vga_puts("Commands: help clear ls lsfs cat catfs echo edit rm mkdir cd pwd ps load run sh\n");
-        vga_puts("          net trace date vol gfx wm hash unzip zip smp poweroff\n");
+        vga_puts("          net trace date vol gfx wm hash unzip zip smp rmdir rlimit nice seccomp poweroff\n");
         vga_puts("  ls [dir]           list files (under the cwd by default)\n");
         vga_puts("  lsfs               list files on the MiniFS disk filesystem\n");
         vga_puts("  catfs <file>       print a file from MiniFS\n");
         vga_puts("  cd [dir] / pwd     change / print the working directory\n");
         vga_puts("  mkdir <name>       create a directory entry\n");
+        vga_puts("  rmdir <dir>        remove an empty directory\n");
         vga_puts("  rm <file>          delete a ramdisk file\n");
+        vga_puts("  rlimit [k] [v]     caps: as bytes, cpu ticks, nofile count\n");
+        vga_puts("  nice [n]           scheduler niceness -20..19\n");
+        vga_puts("  seccomp <op> [n]   deny/allow MiniOS syscalls 200..231\n");
         vga_puts("  ps                 list registered programs\n");
         vga_puts("  smp                per-CPU state and thread dispatches\n");
         vga_puts("  net                network status (rtl8139, slirp)\n");
@@ -1752,6 +1763,52 @@ void shell_exec_builtin(int argc, char **argv) {
             return;
         }
         kprintf("created %s\n", dirname);
+    }
+    else if (kstrcmp(argv[0], "rmdir") == 0) {
+        if (argc < 2) { vga_puts("usage: rmdir <dir>\n"); return; }
+        char resolved[RAMDISK_FNAME_LEN];
+        if (!fs_resolve(argv[1], resolved, sizeof(resolved))) {
+            kprintf("rmdir: %s: no such directory\n", argv[1]);
+            return;
+        }
+        char dirname[RAMDISK_FNAME_LEN];
+        kmemcpy(dirname, resolved, sizeof(dirname));
+        unsigned dl = (unsigned)kstrlen(dirname);
+        if (dl == 0 || dirname[dl - 1] != '/') {
+            if (dl + 1 >= sizeof(dirname)) { kprintf("rmdir: %s: no such directory\n", argv[1]); return; }
+            dirname[dl] = '/';
+            dirname[dl + 1] = 0;
+            dl++;
+        }
+        if (!fs_is_dir(dirname)) {
+            kprintf("rmdir: %s: no such directory\n", argv[1]);
+            return;
+        }
+        /* Refuse non-empty ramdisk dirs: any other entry with this prefix
+         * means children exist (the flat namespace has no real nesting). */
+        {
+            RDFile *listed[RAMDISK_MAX_FILES];
+            int n = ramdisk_list(listed, RAMDISK_MAX_FILES);
+            int i;
+            for (i = 0; i < n; i++) {
+                if (kstrcmp(listed[i]->name, dirname) != 0 &&
+                    kstrncmp(listed[i]->name, dirname, dl) == 0) {
+                    kprintf("rmdir: %s: directory not empty\n", argv[1]);
+                    return;
+                }
+            }
+        }
+        RDFile *f = ramdisk_open(dirname);
+        if (f) {
+            ramdisk_delete(f);
+            kprintf("removed %s\n", dirname);
+            return;
+        }
+        if (minifs_is_mounted() && minifs_rmdir(dirname) == 0) {
+            kprintf("removed %s\n", dirname);
+            return;
+        }
+        kprintf("rmdir: %s: cannot remove\n", argv[1]);
     }
     else if (kstrcmp(argv[0], "cd") == 0) {
         if (argc < 2) { fs_cwd[0] = 0; return; }

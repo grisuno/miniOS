@@ -91,6 +91,10 @@ void tls_u_close(int fd);
 long tls_now_days(void);
 void tls_random(unsigned char *out, unsigned len);
 
+/* Shared resolver: dotted quad, then getaddrinfo (host dev loop), then
+ * the MiniOS DNS syscall (200, invoked sig-0-safe). 0 on success. */
+int tls_u_resolve(const char *host, unsigned *ip_out);
+
 #else /* MiniOS kernel */
 
 #include "kernel.h"

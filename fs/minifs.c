@@ -1166,6 +1166,14 @@ int minifs_mount(void) {
     fs_lba_raw = 9 + KERNEL_SECTORS;
 #else
     fs_lba_raw = 9;
+    /* Linker-symbol size idiom: kernel.ld places ramdisk_end immediately
+     * after ramdisk_start in one section, so the subtraction is the
+     * image size by construction (the analyzer cannot see the link
+     * layout; justification for the inline suppression below).
+     * Production always defines KERNEL_SECTORS; this is the fallback
+     * path only. */
+// cppcheck-suppress subtractPointers
+// cppcheck-suppress subtractPointers
     {   unsigned int ksize = (unsigned int)(&ramdisk_end[0] - &ramdisk_start[0]);
         if (ksize == 0) ksize = 1;
         fs_lba_raw += (ksize + IDE_SECTOR_SIZE - 1) / IDE_SECTOR_SIZE;

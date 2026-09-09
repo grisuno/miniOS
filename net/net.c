@@ -214,7 +214,9 @@ static void net_dns_parse(const unsigned char *data, unsigned len) {
     }
     for (i = 0; i < an && pos < len; i++) {
         unsigned short rtype, rdlen;
-        if (pos >= len) return;
+        /* No pos>=len guard here: the for-condition already guarantees
+         * pos<len at the top of every iteration (cppcheck
+         * oppositeInnerCondition: the old check was dead code). */
         if ((data[pos] & 0xC0) == 0xC0) {     /* compressed name pointer */
             pos += 2;
         } else {

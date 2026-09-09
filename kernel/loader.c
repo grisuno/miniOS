@@ -143,9 +143,11 @@ void *elf_load(void *data, unsigned size) {
     Elf64_Xword strtab_size = 0;
 
     /* Boyscout cap: a hostile .o must not drive an unbounded kmalloc.
-     * The toolchain objects are < 1 MB; 4 MB fails closed with a diagnostic
-     * instead of draining the 192 MB kernel heap. */
-    #define ETREL_IMAGE_MAX (4u * 1024u * 1024u)
+     * Measured need (2026-09, host gcc -O2): ld.o carries a 12.6 MB .bss
+     * and loads at ~12.7 MB total; minigcc.o ~0.8 MB, cvm.o ~36 KB.
+     * 16 MB fails closed with a diagnostic instead of draining the
+     * 192 MB kernel heap. Do not tighten below ld.o without remeasuring. */
+    #define ETREL_IMAGE_MAX (16u * 1024u * 1024u)
     unsigned total_alloc = 0;
     unsigned i;
     for (i = 0; i < shnum; i++) {
@@ -171,7 +173,7 @@ void *elf_load(void *data, unsigned size) {
                 return 0;
             total_alloc += (unsigned)shdrs[i].sh_size + 32;
             if (total_alloc > ETREL_IMAGE_MAX) {
-                kprintf("load: ET_REL image exceeds %u bytes, refusing",
+                kprintf("load: ET_REL image exceeds %u bytes, refusing\n",
                         ETREL_IMAGE_MAX);
                 return 0;
             }

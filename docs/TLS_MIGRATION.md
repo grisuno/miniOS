@@ -31,8 +31,14 @@ MiniOS socket range 100+ and host small fds).
   on MiniFS): `tlsget <host> [path] [port]` does TCP + `tls_handshake`
   + HTTP GET over the shared stack. Verified on the host against
   `openssl s_server` (`make tlsget-host`, same sources, same flag).
-- [ ] **2. Relink freedom.** `freedom` links the ring-3 objects instead
-  of trapping 201-203. No behaviour change; BDD dump scenarios cover it.
+- [x] **2. Relink freedom.** `progs/bin/freedom3` builds the same
+  `progs/src/freedom.c` with host gcc + glibc (`FREEDOM_RING3_LIBC`
+  shim: casts miniGCC cannot parse stay behind `#ifdef`) and links the
+  shared ring-3 TLS objects, so no handshake byte crosses ring 0.
+  Plain-HTTP output is byte-identical to `freedom` in-guest (7822 =
+  7822); a throwaway CA fails closed with the same UX. BDD scenario
+  "freedom3 fetches the same page without kernel TLS" pins it.
+  `freedom` (miniGCC, syscalls 201-203) keeps working unchanged.
 - [ ] **3. Kernel engine becomes opt-in legacy.** 201-203 stay behind
   `ENABLE_TLS=1` (already the default-off path via `MINIOS_NO_TLS`
   returning `-ENOSYS`), then are removed with the ABI bump.

@@ -885,6 +885,24 @@ tlsget-host: $(TLSU_SRCS) tls_port.h tls.h tls_roots.h | $(TOOLS_DIR)
 	$(CC) -std=c99 -O2 -Wall -DTLS_RING3 -I. -I$(PROGS_DIR) \
 	      -o $(TOOLS_DIR)/tlsget $(TLSU_SRCS)
 
+# freedom3: phase 2 of docs/TLS_MIGRATION.md. The miniGCC-built freedom
+# traps kernel TLS syscalls 201-203; this twin builds the same
+# progs/src/freedom.c with host gcc + glibc and links the shared ring-3
+# TLS objects, so no handshake byte crosses ring 0. Ships alongside
+# freedom (which keeps working unchanged) for output-equivalence runs.
+FREEDOM3_SRCS = $(SRC_DIR)/freedom.c \
+                $(PROGS_DIR)/tls_u/tls_u_port.c \
+                net/tls.c net/tls_crypto.c net/tls_x509.c
+
+$(BIN_DIR)/freedom3: $(FREEDOM3_SRCS) tls_port.h tls.h tls_roots.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 \
+	      -I. -I$(PROGS_DIR) -o $@ $(FREEDOM3_SRCS)
+	chmod +x $@
+
+freedom3-host: $(FREEDOM3_SRCS) tls_port.h tls.h tls_roots.h | $(TOOLS_DIR)
+	$(CC) -std=c99 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 -I. -I$(PROGS_DIR) \
+	      -o $(TOOLS_DIR)/freedom3 $(FREEDOM3_SRCS)
+
 # thdemo: producer-consumer over mthreads (10 threads on thread_spawn).
 # Headless M1 proof for roadmap Phase 1; prints PASS with exact counts.
 $(BIN_DIR)/thdemo: $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h
@@ -924,6 +942,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                $(BIN_DIR)/json $(SRC_DIR)/json.c \
                $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
+               $(BIN_DIR)/freedom3 \
                $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
                $(PROGS_DIR)/vedit/vedit.c \
                $(BIN_DIR)/lzss $(BIN_DIR)/unlzss $(SRC_DIR)/lzss.c $(ASM_DIR)/lzss.s \
@@ -1009,6 +1028,27 @@ fault_test: tests/test_fault.c vma.c vma.h | $(TOOLS_DIR)
 
 test-fault: fault_test
 	$(TOOLS_DIR)/fault_test
+
+# ── Lint doctrine (docs/LINT_TRIAGE.md) ─────────────────────────────
+# Hard gate (fails the build): cppcheck clean on kernel + ring-3 sources,
+# gcc -Wextra clean on new ring-3 files, clang-tidy curated checks clean.
+# Advisory: flawfinder (triaged in LINT_TRIAGE.md), -Wextra on pre-existing
+# kernel files (15 grandfathered, none in added lines).
+LINT_KERN_SRCS = kernel/loader.c kernel/shell.c kernel/syscalls.c \
+                 kernel/sched.c kernel/mm.c smp.c fs/minifs.c net/net.c
+LINT_HOST_SRCS = progs/tls_u/tls_u_port.c progs/tls_u/tls_u_main.c \
+                 tests/test_fault.c tests/test_vma_bench.c
+LINT_TIDY_CHECKS = bugprone-*,-bugprone-reserved-identifier,-bugprone-easily-swappable-parameters,clang-analyzer-security*,cert-err34-c,misc-definitions-in-headers
+
+lint: | $(TOOLS_DIR)
+	cppcheck --error-exitcode=1 --inline-suppr --enable=warning,performance,portability \
+	    --suppress=missingIncludeSystem --suppress=missingInclude \
+	    -I. -Iprogs -Iarch/x86/boot $(LINT_KERN_SRCS) $(LINT_HOST_SRCS)
+	$(CC) -std=c99 -Wall -Wextra -DTLS_RING3 -I. -I$(PROGS_DIR) \
+	    -fsyntax-only $(PROGS_DIR)/tls_u/tls_u_main.c $(PROGS_DIR)/tls_u/tls_u_port.c
+	clang-tidy $(LINT_HOST_SRCS) --warnings-as-errors='*' \
+	    --checks='$(LINT_TIDY_CHECKS)' -- -std=c99 -DTLS_RING3 -I. -I$(PROGS_DIR)
+	bash -n mutate.sh && bash -n test_bdd.sh && echo "lint: ok"
 
 # Sync primitives host test (tests/test_sync.c + kernel/sync.c).
 # sync.c is scheduler-adjacent but keeps no other kernel dependency, so it

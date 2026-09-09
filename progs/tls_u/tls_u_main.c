@@ -27,47 +27,21 @@
 #include "tls_port.h"
 #include "tls.h"
 
-static long raw_syscall3(long n, long a1, long a2, long a3) {
-    long ret;
-    __asm__ volatile("syscall"
-                     : "=a"(ret)
-                     : "a"(n), "D"(a1), "S"(a2), "d"(a3)
-                     : "rcx", "r11", "memory");
-    return ret;
-}
-
-/* MiniOS DNS syscall 200 with sig-style safety: only ever invoked as
- * syscall(200, host, 0, 0), so on a host kernel (where 200 is tkill)
- * the signal argument is 0, which sends nothing and returns an error. */
-static int minios_dns(const char *host, unsigned *ip_out) {
-    long r = raw_syscall3(200, (long)host, 0, 0);
-    if (r <= 0 || r == (long)0xFFFFFFFFFFFFFFF2L) return -1;
-    *ip_out = (unsigned)r;
-    return 0;
-}
-
-static int resolve(const char *host, unsigned *ip_out) {
-    unsigned a, b, c, d;
-    char tail;
-    struct addrinfo hints;
-    struct addrinfo *res = 0;
-    struct sockaddr_in *sin;
-    if (sscanf(host, "%u.%u.%u.%u%c", &a, &b, &c, &d, &tail) == 4 &&
-        a < 256 && b < 256 && c < 256 && d < 256) {
-        *ip_out = (a << 24) | (b << 16) | (c << 8) | d;
-        return 0;
+/* Strict port parser (clang-tidy cert-err34-c: atoi reports no
+ * errors, so "abc" and overflow both become 0 and fail open into the
+ * default 443). All digits, at least one, value 1..65535, else -1. */
+static int parse_port(const char *s) {
+    long v = 0;
+    int digits = 0;
+    if (!s || !*s) return -1;
+    while (*s >= '0' && *s <= '9') {
+        v = v * 10 + (*s - '0');
+        if (v > 65535) return -1;
+        digits++;
+        s++;
     }
-    memset(&hints, 0, sizeof(hints));
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    if (getaddrinfo(host, 0, &hints, &res) == 0 && res) {
-        sin = (struct sockaddr_in *)res->ai_addr;
-        *ip_out = ntohl(sin->sin_addr.s_addr);
-        freeaddrinfo(res);
-        return 0;
-    }
-    if (res) freeaddrinfo(res);
-    return minios_dns(host, ip_out);
+    if (*s || !digits || v <= 0) return -1;
+    return (int)v;
 }
 
 int main(int argc, char **argv) {
@@ -89,12 +63,15 @@ int main(int argc, char **argv) {
     }
     host = argv[1];
     if (argc > 2) path = argv[2];
-    if (argc > 3) port = atoi(argv[3]);
-    if (port <= 0 || port > 65535) {
-        fprintf(stderr, "tlsget: bad port\n");
-        return 2;
+    if (argc > 3) {
+        int p = parse_port(argv[3]);
+        if (p < 0) {
+            fprintf(stderr, "tlsget: bad port\n");
+            return 2;
+        }
+        port = p;
     }
-    if (resolve(host, &ip) != 0) {
+    if (tls_u_resolve(host, &ip) != 0) {
         fprintf(stderr, "tlsget: cannot resolve %s\n", host);
         return 1;
     }

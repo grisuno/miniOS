@@ -83,7 +83,7 @@ if [ "$RESET" = "1" ]; then
 fi
 
 SOURCES="kernel.c arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c"
-SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c"
+SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c"
 
 restore_sources() {
     local f
@@ -109,8 +109,8 @@ gdt64-code-to-data | s/#define GDT64_DESC_CODE           0x00209A0000000000/#def
 kernel-buffer-seg | s/#define BOOT_KERNEL_BUF_SEG       0x1000/#define BOOT_KERNEL_BUF_SEG       0x1001/ | arch/x86/boot/bootdefs.h
 chunk-copy-length | s/#define SECTOR_DWORD_SHIFT        7/#define SECTOR_DWORD_SHIFT        6/ | arch/x86/boot/bootdefs.h
 ramdisk-entry-stride | s/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 4)/ | fs/ramdisk.c
-redirect-captures-nothing | s/    redir_active = 1;/    redir_active = 0;/ | kernel.c
-status-leaks-into-redirect | s/int was = redirect_suspend();/int was = 0;/ | kernel.c
+redirect-captures-nothing | s/    redir_active = 1;/    redir_active = 0;/ | kernel/console.c
+status-leaks-into-redirect | s/int was = redirect_suspend();/int was = 0;/ | kernel/redirect.c
 editor-drops-unsaved | s/if (e->dirty) {/if (0) {/ | kernel/editor.c
 bin-path-prefix | s/{ \"\",      \"bin\/\" }/{ \"\",      \"bix\/\" }/ | kernel/shell.c
 bin-lookup-bypassed | s/    return ramdisk_open(resolved) ? 1 : 0;/    return 0;/ | kernel/shell.c
@@ -129,8 +129,8 @@ ps-empty | s/kprintf(\\\"  %-12s  %s  %p\\\\n\\\", p->name,/if (0) kprintf(\\\" 
 cat-drops-second-file | s/for (fi = 1; fi < argc; fi++)/for (fi = 1; fi < 2; fi++)/ | kernel/shell.c
 append-flag-ignored | s/            \\*append_mode = 1;/            \\*append_mode = 0;/ | kernel/redirect.c
 append-mode-acts-like-write | s/((mode\\[0\\] == \\x27a\\x27) ? 2 : 0)/((mode\\[0\\] == \\x27a\\x27) ? 1 : 0)/ | fs/kfile.c
-append-resets-pos | s/f->pos  = (f->mode == 2) ? f->rf->size : 0;/f->pos  = 0;/ | fs/kfile.c
-trace-print-gated-off | s/if (s_trace_enabled)/if (0) \\&\\& (s_trace_enabled)/ | kernel/syscalls.c
+append-resets-pos | s/if (f->mode == 2) {/if (0) {/ | fs/kfile.c
+trace-print-gated-off | s/int show = s_trace_enabled \&\& !trace_is_noisy(n);/int show = 0;/ | kernel/syscalls.c
 trace-on-never-enables | s/syscall_trace_set(1)/syscall_trace_set(0)/ | kernel/shell.c
 arp-cache-never-stored | s/net_arp_cache\\[free\\].valid = 1;/net_arp_cache\\[free\\].valid = 0;/ | net/net.c
 arp-reply-ignored | s/net_get16(frame + 20) == NET_ARP_REPLY/net_get16(frame + 20) == 0/ | net/net.c
@@ -144,7 +144,7 @@ rx-frame-truncated | s/    for (k = 0; k < n; k++) {/    for (k = 0; k < n - 128
 
 nk-frame-not-composited | s/        vga_fb_blit_nk_window();/        if (0) vga_fb_blit_nk_window();/ | kernel/syscalls.c
 nk-origin-not-reported | s/            o\\[0\\] = nk_win_x;/            o\\[0\\] = 0;/ | kernel/syscalls.c
-nk-mouse-bounds-unchecked | s/        if (!user_range_ok((unsigned long)a1, 4 \\* sizeof(int))) return EFAULT;/        if (0) return EFAULT;/ | kernel/syscalls.c
+nk-mouse-bounds-unchecked | s/    if (!user_range_ok((unsigned long)a1, 4 \* sizeof(int))) return EFAULT;/    if (0) return EFAULT;/ | kernel/syscalls.c
 nk-backbuf-not-mapped | s/        unsigned char \\*buf = (unsigned char \\*)kmalloc(NK_W \\* NK_H);/        unsigned char \\*buf = 0;/ | kernel/mm/paging.c
 
 tls-close-notify-unrecognized | s/if (s->rec_len == 2 \\&\\& s->rec\\[1\\] == 0) {/if (s->rec_len == 2 \\&\\& s->rec\\[1\\] == 1) {/ | net/tls.c
@@ -170,10 +170,10 @@ vma-rotate-left-broken | s/    x->right = y->left;/    x->right = y->right;/ | v
 vma-find-comparison-inverted | s/        else if (base < x->base) x = x->left;/        else if (base < x->base) x = x->right;/ | vma.c
 
 smp-icr-shorthand-broken | s/LAPIC_ICR_ALL_EXC 0xC0000u/LAPIC_ICR_ALL_EXC 0x30000u/ | smp.c
-smp-init-missing | s/lapic_write(LAPIC_ICR_LO, LAPIC_ICR_ALL_EXC \\| LAPIC_ICR_INIT);/lapic_write(LAPIC_ICR_LO, 0);/ | smp.c
+smp-init-missing | s/LAPIC_ICR_INIT);/0);/ | smp.c
 smp-sipi-vector-zero | s/SIPI_VECTOR       (AP_STUB_ADDR >> 12)/SIPI_VECTOR       0/ | smp.c
-smp-ap-no-lapic-eoi | s/\\*0xFEE000B0UL = 0;/\\*0xFEE000B0UL = 0; \\/* mutant: no eoi \\*/ | kernel/sched.c
-smp-bsp-ctx-switch-not-guarded | s/if (this_cpu\\(\\)->is_bsp \\&\\& proc_count > 1)/if (proc_count > 1)/ | kernel/sched.c
+smp-ap-no-lapic-eoi | s/            hal_lapic_eoi();/            \/* mutant: no eoi *\// | kernel/sched.c
+smp-bsp-ctx-switch-not-guarded | s/if (cpu->is_bsp \&\& proc_count > 1)/if (proc_count > 1)/ | kernel/sched.c
 smp-gs-base-not-set | s/wrmsr(MSR_GSBASE, (unsigned long)\\&cpus\\[cpu\\]);/\\/* mutant: no gs base \\*/ | smp.c
 poll-host-order | s/kmemcpy(\&events, entry + 4, 2);/events = net_get16((const unsigned char *)entry + 4);/ | net/net.c
 rlimit-as-shell-ignored | s/if (kstrcmp(argv\[1\], "as") == 0) rp->rl_as_max = v;/if (kstrcmp(argv[1], "as") == 0) rp->rl_as_max = 0;/ | kernel/shell.c
@@ -196,8 +196,12 @@ for line in "${LINES[@]}"; do
     [ -z "$line" ] && continue
     name="${line%%|*}"; name="${name// /}"
     rest="${line#*|}"
-    expr="${rest%%|*}"
-    file="${rest#*|}"; file="${file// /}"
+    # Split at the LAST pipe: the sed expression itself may contain a
+    # literal | (e.g. an escaped BRE alternation), while the filename
+    # never does. %%/# (longest match) on the old code truncated such
+    # expressions and produced garbage filenames (smp-init-missing).
+    expr="${rest%|*}"
+    file="${rest##*|}"; file="${file// /}"
     NAMES+=("$name"); EXPRS+=("$expr"); FILES+=("$file")
 done
 

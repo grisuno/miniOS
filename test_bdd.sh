@@ -22,11 +22,23 @@ LOG="$HERE/test_bdd.log"
 KEEP_LOG="${KEEP_LOG:-0}"
 FAIL_FAST="${FAIL_FAST:-0}"
 SCENARIO_QEMU_ARGS="${SCENARIO_QEMU_ARGS:-}"
+MATCH="${MATCH:-}"
 
 PASS=0
 FAIL=0
 FAILED_NAMES=""
 SCENARIO=""
+SKIP=0
+
+# MATCH filter: skip scenarios whose name lacks the substring (and make
+# the following expects no-ops so a skipped boot can't fail on a stale log).
+should_run() {
+    if [ -z "$MATCH" ]; then return 0; fi
+    case "$SCENARIO" in
+        *"$MATCH"*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
 
 cleanup_stale_qemu() {
     # pkill -x matches against the process name, which the kernel truncates
@@ -42,6 +54,8 @@ cleanup_stale_qemu() {
 scenario() {
     SCENARIO="$1"
     local cmds="$2"
+    if ! should_run; then echo "--- $SCENARIO (SKIP)"; SKIP=1; return 0; fi
+    SKIP=0
     echo "--- $SCENARIO"
     cleanup_stale_qemu
     {
@@ -60,6 +74,8 @@ scenario() {
 scenario_smp() {
     SCENARIO="$1"
     local cmds="$2"
+    if ! should_run; then echo "--- $SCENARIO (SKIP)"; SKIP=1; return 0; fi
+    SKIP=0
     echo "--- $SCENARIO"
     cleanup_stale_qemu
     {
@@ -77,6 +93,7 @@ scenario_smp() {
 
 # expect <marker>
 expect() {
+    if [ "$SKIP" = "1" ]; then return 0; fi
     local what="$1"
     if tr -d '\r' < "$LOG" | grep -q -- "$what"; then
         echo "    PASS  $what"
@@ -98,6 +115,7 @@ expect() {
 # times in the log. Used where a single occurrence would also match the
 # echoed command line, so only the output can prove the behaviour.
 expect_count() {
+    if [ "$SKIP" = "1" ]; then return 0; fi
     local n="$1"
     local what="$2"
     local got
@@ -120,6 +138,7 @@ expect_count() {
 
 # refute <marker>: the marker must NOT appear (suppressed hostile content).
 refute() {
+    if [ "$SKIP" = "1" ]; then return 0; fi
     local what="$1"
     if tr -d '\r' < "$LOG" | grep -q -- "$what"; then
         echo "    FAIL  (unexpected) $what"
@@ -733,7 +752,33 @@ expect "rlimit: as=0"
 expect "rlimit: as=1048576"
 expect "exit code: 1"
 
+scenario_smp "RLIMIT_CPU kills threads past their tick cap" "rlimit cpu 30
+run thdemo
+poweroff"
+expect "thdemo: FAIL"
+expect "exit code: 1"
+
+scenario "rmdir refuses a non-empty directory" "mkdir t
+edit t/f.txt
+a
+payload
+w
+x
+rmdir t
+rm t/f.txt
+rmdir t
+poweroff"
+expect "created t/"
+expect "rmdir: t: directory not empty"
+expect "removed t/f.txt"
+expect "removed t/"
+
 scenario "freedom fetches a page from the host" "run bin/freedom http://10.0.2.2:8899/README.txt
+poweroff"
+expect "minimal 64-bit kernel"
+expect "freedom: 10.0.2.2 ("
+
+scenario "freedom3 fetches the same page without kernel TLS" "run bin/freedom3 http://10.0.2.2:8899/README.txt
 poweroff"
 expect "minimal 64-bit kernel"
 expect "freedom: 10.0.2.2 ("
@@ -980,7 +1025,8 @@ expect "exit code: 1"
 
 scenario "micropython REPL reads lines from the console" "micropython
 print(40 + 2)
-exit()
+import sys
+sys.exit()
 poweroff"
 expect "42"
 

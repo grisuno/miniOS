@@ -28,6 +28,21 @@
  * usage: freedom [--dump-css|--dump-dom] [url-or-query]
  */
 
+#ifdef FREEDOM_RING3_LIBC
+/* Ring-3 TLS build (phase 2 of docs/TLS_MIGRATION.md): host libc for
+ * sockets/stdio/strings (identical ABI numbers inside the guest);
+ * net_dns_resolve and tls_* link from the shared ring-3 TLS objects
+ * (progs/tls_u) instead of trapping kernel syscalls 200-203. stdlib.h
+ * is deliberately absent: this file defines its own static atoi. */
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/socket.h>
+int net_dns_resolve(char *host);
+int tls_handshake(int fd, char *host);
+int tls_send(int fd, char *buf, int len);
+int tls_recv(int fd, char *buf, int len);
+#else
 int socket(int domain, int type, int proto);
 int connect(int fd, void *addr, int addrlen);
 int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);
@@ -46,6 +61,7 @@ int strncmp(char *a, char *b, int n);
 int memcpy(char *dst, char *src, int n);
 int memset(char *dst, int c, int n);
 int putchar(int c);
+#endif
 
 #define FREEDOM_HOPS_MAX 3
 #define FREEDOM_HDR_MAX  16384
@@ -854,7 +870,11 @@ static int fetch(char *host, char *path, int port) {
     sa[5] = (ip >> 16) & 255;
     sa[6] = (ip >> 8) & 255;
     sa[7] = ip & 255;
+    #ifdef FREEDOM_RING3_LIBC
+    if (connect(fd, (void *)sa, 16) < 0) {
+#else
     if (connect(fd, sa, 16) < 0) {
+#endif
         printf("freedom: connect to %s failed\n", host);
         close(fd);
         return 0;
@@ -1011,7 +1031,11 @@ static void fetch_css(char *host, char *path) {
     sa[5] = (ip >> 16) & 255;
     sa[6] = (ip >> 8) & 255;
     sa[7] = ip & 255;
+    #ifdef FREEDOM_RING3_LIBC
+    if (connect(fd, (void *)sa, 16) < 0) {
+#else
     if (connect(fd, sa, 16) < 0) {
+#endif
         printf("freedom: connect to %s failed\n", host);
         close(fd);
         return;
