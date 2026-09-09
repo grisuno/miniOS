@@ -6,18 +6,18 @@
 - Language: c
 - Symbols:
   - `mm_setup_protections` (function, line 18) `void mm_setup_protections(void)`
-  - `mm_user_pte_update` (function, line 119) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
-  - `mm_user_set_exec` (function, line 140) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
-  - `pt_page_alloc` (function, line 152) `void *pt_page_alloc(void)`
-  - `pt_page_free` (function, line 162) `void pt_page_free(void *ptr)`
-  - `pt_clone_user` (function, line 168) `uint64_t pt_clone_user(uint64_t parent_cr3)`
-  - `pt_free_user` (function, line 266) `void pt_free_user(uint64_t cr3)`
+  - `mm_user_pte_update` (function, line 107) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
+  - `mm_user_set_exec` (function, line 128) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
+  - `pt_page_alloc` (function, line 140) `void *pt_page_alloc(void)`
+  - `pt_page_free` (function, line 150) `void pt_page_free(void *ptr)`
+  - `pt_clone_user` (function, line 156) `uint64_t pt_clone_user(uint64_t parent_cr3)`
+  - `pt_free_user` (function, line 254) `void pt_free_user(uint64_t cr3)`
   - `kprintf` (function, line 29) `kprintf("mm: kernel image reaches 0x%lx, must stay below 0x%lx\n", (unsigned long)_kernel_end, USER_LOAD_BASE);`
   - `wrmsr` (function, line 37) `wrmsr(MSR_EFER, rdmsr(MSR_EFER) | EFER_NXE);`
-  - `kmemset` (function, line 159) `kmemset((void *)aligned, 0, 0x1000);`
-  - `kfree` (function, line 166) `kfree(raw);`
+  - `kmemset` (function, line 147) `kmemset((void *)aligned, 0, 0x1000);`
+  - `kfree` (function, line 154) `kfree(raw);`
   - `_kernel_end` (variable, line 26) `extern char _kernel_end[];`
-  - `PT_ALLOC_HDR` (macro, line 150) `#define PT_ALLOC_HDR`
+  - `PT_ALLOC_HDR` (macro, line 138) `#define PT_ALLOC_HDR`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ## kernel/mm/swap.c

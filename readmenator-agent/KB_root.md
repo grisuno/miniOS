@@ -1201,10 +1201,10 @@ void kmain(void)`
   - `expect` (function, line 79)
   - `expect_count` (function, line 100)
   - `refute` (function, line 122)
-  - `http_server_start` (function, line 680)
-  - `http_server_stop` (function, line 687)
-  - `http_fixture_start` (function, line 692)
-  - `http_fixture_stop` (function, line 699)
+  - `http_server_start` (function, line 686)
+  - `http_server_stop` (function, line 693)
+  - `http_fixture_start` (function, line 698)
+  - `http_fixture_stop` (function, line 705)
 
 ## test_http_server.py
 - Layer: testing

@@ -126,78 +126,91 @@
 - Doc: piano.c — a Nuklear piano that plays FM sound through the SB16 driver.
 - Language: c
 - Symbols:
-  - `sys_pcm_submit` (function, line 72) `static long sys_pcm_submit(const void *buf, long len)`
-  - `sys_pcm_pump` (function, line 75) `static long sys_pcm_pump(void)`
-  - `o3_op` (function, line 90) `static int o3_op(int ch, int is_car)`
-  - `o3_opreg` (function, line 94) `static void o3_opreg(int ch, int is_car, int regbase, int val)`
-  - `o3_chreg` (function, line 98) `static void o3_chreg(int ch, int regbase, int val)`
-  - `o3_note` (function, line 135) `static void o3_note(int ch, int midi, int on)`
-  - `clamp_midi` (function, line 179) `static int clamp_midi(int m)`
-  - `pedal_set` (function, line 187) `static void pedal_set(int on)`
-  - `note_off_key` (function, line 199) `static void note_off_key(int key)`
-  - `note_on_key` (function, line 213) `static void note_on_key(int key, int midi, int vel)`
-  - `fx_configure` (function, line 255) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
-  - `fx_process` (function, line 273) `static float fx_process(float x)`
-  - `sb_flush` (function, line 304) `static void sb_flush(void)`
-  - `render_audio` (function, line 313) `static void render_audio(long ms)`
-  - `key_rect` (function, line 339) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
-  - `hit_key` (function, line 346) `static int hit_key(int mx, int my)`
-  - `hit_velocity` (function, line 364) `static int hit_velocity(int key, int my)`
-  - `ctrl_hit` (function, line 390) `static int ctrl_hit(int id, int mx, int my)`
-  - `ctrl_active` (function, line 395) `static int ctrl_active(int id)`
-  - `ctrl_press` (function, line 404) `static void ctrl_press(int id)`
-  - `ui_run` (function, line 422) `static void ui_run(int bench_ms)`
-  - `run_selftest` (function, line 567) `static int run_selftest(void)`
-  - `main` (function, line 677) `int main(int argc, char **argv)`
-  - `OPL3_WriteReg` (function, line 95) `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);`
-  - `o3_instrument` (function, line 228) `o3_instrument(ch, vel);`
-  - `memset` (function, line 266) `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));`
-  - `OPL3_GenerateStream` (function, line 322) `OPL3_GenerateStream(&o3, st, (uint32_t)n);`
-  - `nk_sys_vga_mode` (function, line 425) `nk_sys_vga_mode(1);`
-  - `nk_sys_kbd_raw` (function, line 427) `nk_sys_kbd_raw(1);`
-  - `nk_build_palette` (function, line 428) `nk_build_palette(pal768);`
-  - `nk_sys_palette` (function, line 429) `nk_sys_palette(pal768);`
-  - `nk_sys_fb_info` (function, line 430) `nk_sys_fb_info(&fw, &fh, &fp);`
-  - `OPL3_Reset` (function, line 433) `OPL3_Reset(&o3, RATE);`
-  - `printf` (function, line 448) `printf("piano: init failed\n");`
-  - `nk_input_begin` (function, line 468) `nk_input_begin(&ctx);`
-  - `nk_poll_input` (function, line 469) `nk_poll_input(&ctx);`
-  - `nk_input_end` (function, line 470) `nk_input_end(&ctx);`
-  - `nk_rgb` (function, line 493) `: nk_rgb(245, 245, 245));`
-  - `nk_fill_rect` (function, line 494) `nk_fill_rect(canvas, r, 0, col);`
-  - `nk_stroke_rect` (function, line 495) `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));`
-  - `nk_draw_text` (function, line 507) `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));`
-  - `snprintf` (function, line 513) `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 oct%+d vol%d", octave, volume);`
-  - `nk_end` (function, line 520) `nk_end(&ctx);`
-  - `nk_rasterize` (function, line 535) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 539) `nk_clear(&ctx);`
-  - `nk_free` (function, line 559) `nk_free(&ctx);`
-  - `sys_pcm_open` (function, line 563) `sys_pcm_open(0);`
-  - `UI_MEMORY` (macro, line 48) `#define UI_MEMORY`
-  - `SYS_SB16_OPEN` (macro, line 51) `#define SYS_SB16_OPEN`
-  - `SYS_SB16_SUBMIT` (macro, line 53) `#define SYS_SB16_SUBMIT`
-  - `SYS_SB16_PUMP` (macro, line 54) `#define SYS_SB16_PUMP`
-  - `RATE` (macro, line 55) `#define RATE`
-  - `PCM_BUF` (macro, line 57) `#define PCM_BUF`
-  - `MAX_AUDIO_MS` (macro, line 62) `#define MAX_AUDIO_MS`
-  - `PIANO_FRAME_MS` (macro, line 67) `#define PIANO_FRAME_MS`
-  - `KEY_W` (macro, line 150) `#define KEY_W`
-  - `KEY_H` (macro, line 151) `#define KEY_H`
-  - `BK_W` (macro, line 152) `#define BK_W`
-  - `BK_H` (macro, line 153) `#define BK_H`
-  - `KEY_Y` (macro, line 154) `#define KEY_Y`
-  - `NKEYS` (macro, line 164) `#define NKEYS`
-  - `MAX_VOICES` (macro, line 171) `#define MAX_VOICES`
-  - `FX_DELAY_CAP` (macro, line 240) `#define FX_DELAY_CAP`
-  - `FX_DELAY_MAX_MS` (macro, line 242) `#define FX_DELAY_MAX_MS`
-  - `FX_FEEDBACK` (macro, line 243) `#define FX_FEEDBACK`
-  - `FX_WET` (macro, line 244) `#define FX_WET`
-  - `FX_TREM_FREQ` (macro, line 245) `#define FX_TREM_FREQ`
-  - `CTRL_Y` (macro, line 374) `#define CTRL_Y`
-  - `CTRL_H` (macro, line 375) `#define CTRL_H`
-  - `BTN_W` (macro, line 376) `#define BTN_W`
-  - `BTN_GAP` (macro, line 377) `#define BTN_GAP`
-  - `NCTRLS` (macro, line 389) `#define NCTRLS`
+  - `sys_pcm_open` (function, line 76) `static long sys_pcm_open(long on)`
+  - `sys_pcm_submit` (function, line 80) `static long sys_pcm_submit(const void *buf, long len)`
+  - `sys_pcm_pump` (function, line 83) `static long sys_pcm_pump(void)`
+  - `sys_yield` (function, line 86) `static void sys_yield(void)`
+  - `o3_op` (function, line 101) `static int o3_op(int ch, int is_car)`
+  - `o3_opreg` (function, line 105) `static void o3_opreg(int ch, int is_car, int regbase, int val)`
+  - `o3_chreg` (function, line 109) `static void o3_chreg(int ch, int regbase, int val)`
+  - `o3_note` (function, line 146) `static void o3_note(int ch, int midi, int on)`
+  - `midi_to_key` (function, line 184) `static int midi_to_key(int midi)`
+  - `clamp_midi` (function, line 207) `static int clamp_midi(int m)`
+  - `pedal_set` (function, line 215) `static void pedal_set(int on)`
+  - `voice_alloc` (function, line 228) `static int voice_alloc(void)`
+  - `note_off_key` (function, line 241) `static void note_off_key(int key)`
+  - `note_on_key` (function, line 255) `static void note_on_key(int key, int midi, int vel)`
+  - `kbd_semitone` (function, line 272) `static int kbd_semitone(int code)`
+  - `kbd_all_off` (function, line 306) `static void kbd_all_off(void)`
+  - `note_on_sc` (function, line 312) `static void note_on_sc(int code, int vel)`
+  - `note_off_sc` (function, line 326) `static void note_off_sc(int code)`
+  - `piano_scancode` (function, line 343) `static void piano_scancode(int code, int make, int e0, void *ud)`
+  - `fx_configure` (function, line 395) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
+  - `fx_process` (function, line 413) `static float fx_process(float x)`
+  - `sb_flush` (function, line 444) `static void sb_flush(void)`
+  - `render_audio` (function, line 453) `static void render_audio(long ms)`
+  - `key_rect` (function, line 479) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
+  - `hit_key` (function, line 486) `static int hit_key(int mx, int my)`
+  - `hit_velocity` (function, line 504) `static int hit_velocity(int key, int my)`
+  - `ctrl_hit` (function, line 530) `static int ctrl_hit(int id, int mx, int my)`
+  - `ctrl_active` (function, line 535) `static int ctrl_active(int id)`
+  - `ctrl_press` (function, line 544) `static void ctrl_press(int id)`
+  - `ui_run` (function, line 562) `static void ui_run(int bench_ms)`
+  - `run_selftest` (function, line 729) `static int run_selftest(void)`
+  - `main` (function, line 895) `int main(int argc, char **argv)`
+  - `volatile` (function, line 87) `__asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");`
+  - `OPL3_WriteReg` (function, line 106) `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);`
+  - `o3_instrument` (function, line 262) `o3_instrument(ch, vel);`
+  - `memset` (function, line 406) `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));`
+  - `OPL3_GenerateStream` (function, line 462) `OPL3_GenerateStream(&o3, st, (uint32_t)n);`
+  - `nk_sys_vga_mode` (function, line 565) `nk_sys_vga_mode(1);`
+  - `nk_sys_kbd_raw` (function, line 567) `nk_sys_kbd_raw(1);`
+  - `nk_build_palette` (function, line 568) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 569) `nk_sys_palette(pal768);`
+  - `nk_sys_fb_info` (function, line 570) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `OPL3_Reset` (function, line 573) `OPL3_Reset(&o3, RATE);`
+  - `nk_set_scancode_hook` (function, line 581) `nk_set_scancode_hook(piano_scancode, 0);`
+  - `printf` (function, line 590) `printf("piano: init failed\n");`
+  - `nk_input_begin` (function, line 611) `nk_input_begin(&ctx);`
+  - `nk_poll_input` (function, line 612) `nk_poll_input(&ctx);`
+  - `nk_input_end` (function, line 613) `nk_input_end(&ctx);`
+  - `nk_rgb` (function, line 635) `: nk_rgb(240, 240, 240);`
+  - `nk_fill_rect` (function, line 636) `nk_fill_rect(canvas, r, 0, col);`
+  - `nk_stroke_rect` (function, line 637) `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));`
+  - `nk_draw_text` (function, line 649) `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));`
+  - `snprintf` (function, line 655) `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 C4 base oct%+d vol%d", octave, volume);`
+  - `nk_end` (function, line 670) `nk_end(&ctx);`
+  - `nk_rasterize` (function, line 692) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 696) `nk_clear(&ctx);`
+  - `nk_free` (function, line 722) `nk_free(&ctx);`
+  - `UI_MEMORY` (macro, line 53) `#define UI_MEMORY`
+  - `SYS_SB16_OPEN` (macro, line 56) `#define SYS_SB16_OPEN`
+  - `SYS_SB16_SUBMIT` (macro, line 58) `#define SYS_SB16_SUBMIT`
+  - `SYS_SB16_PUMP` (macro, line 59) `#define SYS_SB16_PUMP`
+  - `RATE` (macro, line 60) `#define RATE`
+  - `PCM_BUF` (macro, line 62) `#define PCM_BUF`
+  - `MAX_AUDIO_MS` (macro, line 67) `#define MAX_AUDIO_MS`
+  - `PIANO_FRAME_MS` (macro, line 75) `#define PIANO_FRAME_MS`
+  - `KEY_W` (macro, line 164) `#define KEY_W`
+  - `KEY_H` (macro, line 165) `#define KEY_H`
+  - `BK_W` (macro, line 166) `#define BK_W`
+  - `BK_H` (macro, line 167) `#define BK_H`
+  - `KEY_Y` (macro, line 168) `#define KEY_Y`
+  - `PIANO_BASE_MIDI` (macro, line 169) `#define PIANO_BASE_MIDI`
+  - `PIANO_OCTAVES` (macro, line 170) `#define PIANO_OCTAVES`
+  - `NKEYS` (macro, line 183) `#define NKEYS`
+  - `MAX_VOICES` (macro, line 195) `#define MAX_VOICES`
+  - `KBD_NO_NOTE` (macro, line 271) `#define KBD_NO_NOTE`
+  - `FX_DELAY_CAP` (macro, line 380) `#define FX_DELAY_CAP`
+  - `FX_DELAY_MAX_MS` (macro, line 382) `#define FX_DELAY_MAX_MS`
+  - `FX_FEEDBACK` (macro, line 383) `#define FX_FEEDBACK`
+  - `FX_WET` (macro, line 384) `#define FX_WET`
+  - `FX_TREM_FREQ` (macro, line 385) `#define FX_TREM_FREQ`
+  - `CTRL_Y` (macro, line 514) `#define CTRL_Y`
+  - `CTRL_H` (macro, line 515) `#define CTRL_H`
+  - `BTN_W` (macro, line 516) `#define BTN_W`
+  - `BTN_GAP` (macro, line 517) `#define BTN_GAP`
+  - `NCTRLS` (macro, line 529) `#define NCTRLS`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ## progs/pokemon/minios_stubs/SDL.h

@@ -294,9 +294,9 @@
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 59 |
 | `progs/nuklear/cvm_emit.h` | ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (c | nuklear | 6 |
 | `progs/nuklear/node_editor.c` | node_editor.c — visual low-code editor that compiles to CVM bytecode. | nuklear | 76 |
-| `progs/nuklear/nuklear_minios.c` | nuklear_minios.c — MiniOS platform layer for Nuklear. | nuklear | 37 |
-| `progs/nuklear/nuklear_minios.h` | ifndef NUKLEAR_MINIOS_H define NUKLEAR_MINIOS_H  nuklear_minios.h — MiniOS platf | nuklear | 17 |
-| `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 72 |
+| `progs/nuklear/nuklear_minios.c` | nuklear_minios.c — MiniOS platform layer for Nuklear. | nuklear | 38 |
+| `progs/nuklear/nuklear_minios.h` | ifndef NUKLEAR_MINIOS_H define NUKLEAR_MINIOS_H  nuklear_minios.h — MiniOS platf | nuklear | 19 |
+| `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 85 |
 | `progs/pokemon/fetch.sh` | fetch.sh - clone the gb-recompiled tool into progs/pokemon/upstream.  The upstre | pokemon | 0 |
 | `progs/pokemon/minios_stubs/SDL.h` | SDL.h stub for MiniOS cross-compilation | misc | 10 |
 | `progs/pokemon/platform_minios.c` | - | pokemon | 110 |

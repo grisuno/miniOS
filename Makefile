@@ -1282,8 +1282,29 @@ kernel.elf: kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o
 	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o -o $@
 
-kernel.bin: kernel.elf
+kernel.bin: kernel.elf | check-size
 	$(OBJCOPY) -O binary $< $@
+
+# ── Image budget gate (fail closed at build time, not as a black
+# screen at boot) ─────────────────────────────────────────────────
+# The kernel image (code + data + embedded ramdisk + .bss) must end
+# below USER_LOAD_BASE: mm_setup_protections refuses the whole user
+# window setup otherwise (no framebuffer mapping, no user page
+# tables). The limit comes from progs/minios_abi.h, the same header
+# the kernel derives its layout from, so the two cannot disagree.
+KERNEL_END_MAX = $(shell sed -n 's/^#define[ \t]*MINIOS_USER_LOAD_BASE[ \t]*0[xX]\([0-9a-fA-F]*\).*/0x\1/p' $(PROGS_DIR)/minios_abi.h)
+
+.PHONY: check-size
+check-size: kernel.elf
+	@end=0x$$(nm kernel.elf | awk '$$3 == "_kernel_end" {print $$1}'); \
+	max=$$(($(KERNEL_END_MAX))); \
+	end=$$((end)); \
+	if [ $$end -gt $$max ]; then \
+	    printf 'error: kernel image ends at 0x%x, over budget 0x%x (USER_LOAD_BASE)\n' $$end $$max >&2; \
+	    printf 'see the memory-layout hazard contract: shrink the image or grow the layout\n' >&2; \
+	    exit 1; \
+	fi; \
+	printf 'image budget ok: end 0x%x < 0x%x (%d bytes spare)\n' $$end $$max $$((max - end))
 
 # ── Disk image ────────────────────────────────────────────────────
 # MiniFS image: 512 MB filesystem appended after the kernel, contains DOOM,

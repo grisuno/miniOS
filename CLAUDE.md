@@ -340,7 +340,12 @@ user programs crash at "unmapped" addresses — that is the historical
    growing `.bss` is what used to spill onto the `0x300000` page table zone.
    `mm_setup_protections` asserts `_kernel_end <= USER_LOAD_BASE` at boot and
    prints a diagnostic instead of silently mapping the user window over the
-   kernel. If the kernel outgrows 3 MB, grow `KASLR_IMAGE_SPAN` (bootdefs.h)
+   kernel. The same bound is enforced fail-closed at build time: `make
+   check-size` (a prerequisite of `kernel.bin`, so every `make os.img` runs
+   it) compares `_kernel_end` from `kernel.elf` against `USER_LOAD_BASE`
+   from `progs/minios_abi.h` and fails the build on overflow — a few
+   kilobytes over kills the framebuffer mapping (black screen) and every
+   ring-3 ELF, so this must never be discovered in QEMU. If the kernel outgrows 3 MB, grow `KASLR_IMAGE_SPAN` (bootdefs.h)
    AND the KASLR PT1 mapping (stage2.S) AND the link layout together — never
    shrink the gap by re-homing the page tables into the image footprint.
 3. The kernel `.bss` is NOBITS and relies on zeroed RAM: QEMU zeroes memory

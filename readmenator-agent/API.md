@@ -3374,28 +3374,28 @@ void kmain(void)`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ### mm_user_pte_update (function) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
-- Defined: `kernel/mm/paging.c:119`
+- Defined: `kernel/mm/paging.c:107`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ### mm_user_set_exec (function) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
-- Defined: `kernel/mm/paging.c:140`
+- Defined: `kernel/mm/paging.c:128`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ### pt_page_alloc (function) `void *pt_page_alloc(void)`
-- Defined: `kernel/mm/paging.c:152`
+- Defined: `kernel/mm/paging.c:140`
 - Doc: define PT_ALLOC_HDR  sizeof(void *)
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ### pt_page_free (function) `void pt_page_free(void *ptr)`
-- Defined: `kernel/mm/paging.c:162`
+- Defined: `kernel/mm/paging.c:150`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ### pt_clone_user (function) `uint64_t pt_clone_user(uint64_t parent_cr3)`
-- Defined: `kernel/mm/paging.c:168`
+- Defined: `kernel/mm/paging.c:156`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ### pt_free_user (function) `void pt_free_user(uint64_t cr3)`
-- Defined: `kernel/mm/paging.c:266`
+- Defined: `kernel/mm/paging.c:254`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ### kprintf (function) `kprintf("mm: kernel image reaches 0x%lx, must stay below 0x%lx\n", (unsigned long)_kernel_end, USER_LOAD_BASE);`
@@ -3407,11 +3407,11 @@ void kmain(void)`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ### kmemset (function) `kmemset((void *)aligned, 0, 0x1000);`
-- Defined: `kernel/mm/paging.c:159`
+- Defined: `kernel/mm/paging.c:147`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ### kfree (function) `kfree(raw);`
-- Defined: `kernel/mm/paging.c:166`
+- Defined: `kernel/mm/paging.c:154`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
 
 ## kernel/mm/swap.c
@@ -21539,16 +21539,20 @@ Z_DumpHeap
 - Defined: `progs/nuklear/nuklear_minios.c:593`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
+### nk_set_scancode_hook (function) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
+- Defined: `progs/nuklear/nuklear_minios.c:600`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+
 ### handle_scancode (function) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
-- Defined: `progs/nuklear/nuklear_minios.c:597`
+- Defined: `progs/nuklear/nuklear_minios.c:605`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_poll_input (function) `void nk_poll_input(struct nk_context *ctx)`
-- Defined: `progs/nuklear/nuklear_minios.c:638`
+- Defined: `progs/nuklear/nuklear_minios.c:648`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_set_window_origin (function) `void nk_set_window_origin(int x, int y)`
-- Defined: `progs/nuklear/nuklear_minios.c:675`
+- Defined: `progs/nuklear/nuklear_minios.c:685`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### list (function) `* abstract draw command list (nk__begin/nk__next);`
@@ -21568,15 +21572,15 @@ Z_DumpHeap
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_unicode (function) `nk_input_unicode(ctx, (nk_rune)ch);`
-- Defined: `progs/nuklear/nuklear_minios.c:634`
+- Defined: `progs/nuklear/nuklear_minios.c:644`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_motion (function) `nk_input_motion(ctx, lx, ly);`
-- Defined: `progs/nuklear/nuklear_minios.c:655`
+- Defined: `progs/nuklear/nuklear_minios.c:665`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_scroll (function) `nk_input_scroll(ctx, scroll);`
-- Defined: `progs/nuklear/nuklear_minios.c:671`
+- Defined: `progs/nuklear/nuklear_minios.c:681`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ## progs/nuklear/nuklear_minios.h
@@ -21650,202 +21654,257 @@ Z_DumpHeap
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
+### void (function) `typedef void (*nk_scancode_cb)(int code, int make, int e0, void *ud);`
+- Defined: `progs/nuklear/nuklear_minios.h:63`
+- Doc: Raw scancode hook: piano-style apps need note on/off with break events, which the Nuklear key/unicode translation discar
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+
+### nk_set_scancode_hook (function) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
+- Defined: `progs/nuklear/nuklear_minios.h:64`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+
 ## progs/piano/piano.c
 
+### sys_pcm_open (function) `static long sys_pcm_open(long on)`
+- Defined: `progs/piano/piano.c:76`
+- Doc: Per-frame render bite: after a stall the backlog is paced over several frames instead of one giant catch-up render, boun
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
 ### sys_pcm_submit (function) `static long sys_pcm_submit(const void *buf, long len)`
-- Defined: `progs/piano/piano.c:72`
+- Defined: `progs/piano/piano.c:80`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### sys_pcm_pump (function) `static long sys_pcm_pump(void)`
-- Defined: `progs/piano/piano.c:75`
+- Defined: `progs/piano/piano.c:83`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
+### sys_yield (function) `static void sys_yield(void)`
+- Defined: `progs/piano/piano.c:86`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### o3_op (function) `static int o3_op(int ch, int is_car)`
-- Defined: `progs/piano/piano.c:90`
+- Defined: `progs/piano/piano.c:101`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### o3_opreg (function) `static void o3_opreg(int ch, int is_car, int regbase, int val)`
-- Defined: `progs/piano/piano.c:94`
+- Defined: `progs/piano/piano.c:105`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### o3_chreg (function) `static void o3_chreg(int ch, int regbase, int val)`
-- Defined: `progs/piano/piano.c:98`
+- Defined: `progs/piano/piano.c:109`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### o3_note (function) `static void o3_note(int ch, int midi, int on)`
-- Defined: `progs/piano/piano.c:135`
+- Defined: `progs/piano/piano.c:146`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
+### midi_to_key (function) `static int midi_to_key(int midi)`
+- Defined: `progs/piano/piano.c:184`
+- Doc: define NKEYS ((int)(sizeof(keys) / sizeof(keys[0])))
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### clamp_midi (function) `static int clamp_midi(int m)`
-- Defined: `progs/piano/piano.c:179`
-- Doc: ── Expressive note state: velocity, sustain, octave ───────────────── Voices (MAX_VOICES, the OPL3 channel count) and ke
+- Defined: `progs/piano/piano.c:207`
+- Doc: Per-scancode voice tracking so chords and fast melodies work: each * pressed scancode owns its channel until release.  I
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### pedal_set (function) `static void pedal_set(int on)`
-- Defined: `progs/piano/piano.c:187`
-- Doc: static int chan_used[MAX_VOICES]; static int chan_sustained[MAX_VOICES];/* key released but pedal holds the voice static
+- Defined: `progs/piano/piano.c:215`
+- Doc: pressed scancode owns its channel until release.  Indexed by 7-bit code. static int sc_chan[128]; static int sustain_ped
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
+### voice_alloc (function) `static int voice_alloc(void)`
+- Defined: `progs/piano/piano.c:228`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### note_off_key (function) `static void note_off_key(int key)`
-- Defined: `progs/piano/piano.c:199`
+- Defined: `progs/piano/piano.c:241`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### note_on_key (function) `static void note_on_key(int key, int midi, int vel)`
-- Defined: `progs/piano/piano.c:213`
+- Defined: `progs/piano/piano.c:255`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
+### kbd_semitone (function) `static int kbd_semitone(int code)`
+- Defined: `progs/piano/piano.c:272`
+- Doc: ── PC-keyboard MIDI map (Fruity Loops style) ───────────────────────── PS/2 set-1 scancodes (7-bit code, E0 clear) to se
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
+### kbd_all_off (function) `static void kbd_all_off(void)`
+- Defined: `progs/piano/piano.c:306`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
+### note_on_sc (function) `static void note_on_sc(int code, int vel)`
+- Defined: `progs/piano/piano.c:312`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
+### note_off_sc (function) `static void note_off_sc(int code)`
+- Defined: `progs/piano/piano.c:326`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
+### piano_scancode (function) `static void piano_scancode(int code, int make, int e0, void *ud)`
+- Defined: `progs/piano/piano.c:343`
+- Doc: Raw scancode hook (registered with nk_set_scancode_hook): note on/off * plus comma/period octave shift.  Extended (E0) k
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### fx_configure (function) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
-- Defined: `progs/piano/piano.c:255`
+- Defined: `progs/piano/piano.c:395`
 - Doc: #define FX_DELAY_CAP (RATE)           /* 1 s of delay at 22050 Hz #define FX_DELAY_MAX_MS 800 #define FX_FEEDBACK 0.35f 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### fx_process (function) `static float fx_process(float x)`
-- Defined: `progs/piano/piano.c:273`
+- Defined: `progs/piano/piano.c:413`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### sb_flush (function) `static void sb_flush(void)`
-- Defined: `progs/piano/piano.c:304`
+- Defined: `progs/piano/piano.c:444`
 - Doc: Flush a fully-filled buffer to the kernel audio ring.  When the ring is full the submit is refused; the buffer is kept i
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### render_audio (function) `static void render_audio(long ms)`
-- Defined: `progs/piano/piano.c:313`
+- Defined: `progs/piano/piano.c:453`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### key_rect (function) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
-- Defined: `progs/piano/piano.c:339`
+- Defined: `progs/piano/piano.c:479`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### hit_key (function) `static int hit_key(int mx, int my)`
-- Defined: `progs/piano/piano.c:346`
+- Defined: `progs/piano/piano.c:486`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### hit_velocity (function) `static int hit_velocity(int key, int my)`
-- Defined: `progs/piano/piano.c:364`
+- Defined: `progs/piano/piano.c:504`
 - Doc: Velocity 1..100 from the click's vertical position inside a key: the very * top is soft, the bottom is loud.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### ctrl_hit (function) `static int ctrl_hit(int id, int mx, int my)`
-- Defined: `progs/piano/piano.c:390`
+- Defined: `progs/piano/piano.c:530`
 - Doc: define NCTRLS ((int)(sizeof(ctrls) / sizeof(ctrls[0])))
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### ctrl_active (function) `static int ctrl_active(int id)`
-- Defined: `progs/piano/piano.c:395`
+- Defined: `progs/piano/piano.c:535`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### ctrl_press (function) `static void ctrl_press(int id)`
-- Defined: `progs/piano/piano.c:404`
+- Defined: `progs/piano/piano.c:544`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### ui_run (function) `static void ui_run(int bench_ms)`
-- Defined: `progs/piano/piano.c:422`
+- Defined: `progs/piano/piano.c:562`
 - Doc: case 1: if (octave < 2) octave++; break; case 2: if (volume > 0) volume -= 5; break; case 3: if (volume < 100) volume +=
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### run_selftest (function) `static int run_selftest(void)`
-- Defined: `progs/piano/piano.c:567`
-- Doc: last_render = now; } unsigned t0 = (unsigned)nk_sys_time_ms(); while ((unsigned)nk_sys_time_ms() - t0 < 8) __asm__ volat
+- Defined: `progs/piano/piano.c:729`
+- Doc: Yield instead of busy-spinning: the old 8 ms pause loop burned CPU every frame and delayed input polling; a yield hands 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/piano/piano.c:677`
+- Defined: `progs/piano/piano.c:895`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
+### volatile (function) `__asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");`
+- Defined: `progs/piano/piano.c:87`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### OPL3_WriteReg (function) `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);`
-- Defined: `progs/piano/piano.c:95`
+- Defined: `progs/piano/piano.c:106`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### o3_instrument (function) `o3_instrument(ch, vel);`
-- Defined: `progs/piano/piano.c:228`
+- Defined: `progs/piano/piano.c:262`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### memset (function) `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));`
-- Defined: `progs/piano/piano.c:266`
+- Defined: `progs/piano/piano.c:406`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### OPL3_GenerateStream (function) `OPL3_GenerateStream(&o3, st, (uint32_t)n);`
-- Defined: `progs/piano/piano.c:322`
+- Defined: `progs/piano/piano.c:462`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_sys_vga_mode (function) `nk_sys_vga_mode(1);`
-- Defined: `progs/piano/piano.c:425`
+- Defined: `progs/piano/piano.c:565`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_sys_kbd_raw (function) `nk_sys_kbd_raw(1);`
-- Defined: `progs/piano/piano.c:427`
+- Defined: `progs/piano/piano.c:567`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_build_palette (function) `nk_build_palette(pal768);`
-- Defined: `progs/piano/piano.c:428`
+- Defined: `progs/piano/piano.c:568`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_sys_palette (function) `nk_sys_palette(pal768);`
-- Defined: `progs/piano/piano.c:429`
+- Defined: `progs/piano/piano.c:569`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_sys_fb_info (function) `nk_sys_fb_info(&fw, &fh, &fp);`
-- Defined: `progs/piano/piano.c:430`
+- Defined: `progs/piano/piano.c:570`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### OPL3_Reset (function) `OPL3_Reset(&o3, RATE);`
-- Defined: `progs/piano/piano.c:433`
+- Defined: `progs/piano/piano.c:573`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+
+### nk_set_scancode_hook (function) `nk_set_scancode_hook(piano_scancode, 0);`
+- Defined: `progs/piano/piano.c:581`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### printf (function) `printf("piano: init failed\n");`
-- Defined: `progs/piano/piano.c:448`
+- Defined: `progs/piano/piano.c:590`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_input_begin (function) `nk_input_begin(&ctx);`
-- Defined: `progs/piano/piano.c:468`
+- Defined: `progs/piano/piano.c:611`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_poll_input (function) `nk_poll_input(&ctx);`
-- Defined: `progs/piano/piano.c:469`
+- Defined: `progs/piano/piano.c:612`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_input_end (function) `nk_input_end(&ctx);`
-- Defined: `progs/piano/piano.c:470`
+- Defined: `progs/piano/piano.c:613`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
-### nk_rgb (function) `: nk_rgb(245, 245, 245));`
-- Defined: `progs/piano/piano.c:493`
+### nk_rgb (function) `: nk_rgb(240, 240, 240);`
+- Defined: `progs/piano/piano.c:635`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_fill_rect (function) `nk_fill_rect(canvas, r, 0, col);`
-- Defined: `progs/piano/piano.c:494`
+- Defined: `progs/piano/piano.c:636`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_stroke_rect (function) `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));`
-- Defined: `progs/piano/piano.c:495`
+- Defined: `progs/piano/piano.c:637`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_draw_text (function) `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));`
-- Defined: `progs/piano/piano.c:507`
+- Defined: `progs/piano/piano.c:649`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
-### snprintf (function) `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 oct%+d vol%d", octave, volume);`
-- Defined: `progs/piano/piano.c:513`
+### snprintf (function) `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 C4 base oct%+d vol%d", octave, volume);`
+- Defined: `progs/piano/piano.c:655`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_end (function) `nk_end(&ctx);`
-- Defined: `progs/piano/piano.c:520`
+- Defined: `progs/piano/piano.c:670`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_rasterize (function) `nk_rasterize(&ctx);`
-- Defined: `progs/piano/piano.c:535`
+- Defined: `progs/piano/piano.c:692`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_clear (function) `nk_clear(&ctx);`
-- Defined: `progs/piano/piano.c:539`
+- Defined: `progs/piano/piano.c:696`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ### nk_free (function) `nk_free(&ctx);`
-- Defined: `progs/piano/piano.c:559`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
-
-### sys_pcm_open (function) `sys_pcm_open(0);`
-- Defined: `progs/piano/piano.c:563`
+- Defined: `progs/piano/piano.c:722`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
 
 ## progs/pokemon/minios_stubs/SDL.h
@@ -24993,16 +25052,16 @@ Z_DumpHeap
 - Doc: refute <marker>: the marker must NOT appear (suppressed hostile content).
 
 ### http_server_start (function)
-- Defined: `test_bdd.sh:680`
+- Defined: `test_bdd.sh:686`
 
 ### http_server_stop (function)
-- Defined: `test_bdd.sh:687`
+- Defined: `test_bdd.sh:693`
 
 ### http_fixture_start (function)
-- Defined: `test_bdd.sh:692`
+- Defined: `test_bdd.sh:698`
 
 ### http_fixture_stop (function)
-- Defined: `test_bdd.sh:699`
+- Defined: `test_bdd.sh:705`
 
 ## test_http_server.py
 

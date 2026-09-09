@@ -200,16 +200,17 @@
                                ...`
   - `nk_minios_font` (function, line 559) `struct nk_user_font nk_minios_font(void)`
   - `feed_key` (function, line 593) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
-  - `handle_scancode` (function, line 597) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
-  - `nk_poll_input` (function, line 638) `void nk_poll_input(struct nk_context *ctx)`
-  - `nk_set_window_origin` (function, line 675) `void nk_set_window_origin(int x, int y)`
+  - `nk_set_scancode_hook` (function, line 600) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
+  - `handle_scancode` (function, line 605) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
+  - `nk_poll_input` (function, line 648) `void nk_poll_input(struct nk_context *ctx)`
+  - `nk_set_window_origin` (function, line 685) `void nk_set_window_origin(int x, int y)`
   - `list` (function, line 4) `* abstract draw command list (nk__begin/nk__next);`
   - `volatile` (function, line 28) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
   - `nk_build_palette` (function, line 146) `nk_build_palette(pal768);`
   - `nk_input_key` (function, line 595) `nk_input_key(ctx, key, down ? nk_true : nk_false);`
-  - `nk_input_unicode` (function, line 634) `nk_input_unicode(ctx, (nk_rune)ch);`
-  - `nk_input_motion` (function, line 655) `nk_input_motion(ctx, lx, ly);`
-  - `nk_input_scroll` (function, line 671) `nk_input_scroll(ctx, scroll);`
+  - `nk_input_unicode` (function, line 644) `nk_input_unicode(ctx, (nk_rune)ch);`
+  - `nk_input_motion` (function, line 665) `nk_input_motion(ctx, lx, ly);`
+  - `nk_input_scroll` (function, line 681) `nk_input_scroll(ctx, scroll);`
   - `NK_IMPLEMENTATION` (macro, line 15) `#define NK_IMPLEMENTATION`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
@@ -231,6 +232,8 @@
   - `nk_minios_font` (function, line 44) `struct nk_user_font nk_minios_font(void);`
   - `nk_rasterize` (function, line 47) `void nk_rasterize(struct nk_context *ctx);`
   - `nk_poll_input` (function, line 55) `void nk_poll_input(struct nk_context *ctx);`
+  - `void` (function, line 63) `typedef void (*nk_scancode_cb)(int code, int make, int e0, void *ud);`
+  - `nk_set_scancode_hook` (function, line 64) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
   - `NUKLEAR_MINIOS_H` (macro, line 2) `#define NUKLEAR_MINIOS_H`
   - `NK_W` (macro, line 17) `#define NK_W`
   - `NK_H` (macro, line 19) `#define NK_H`

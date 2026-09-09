@@ -1245,18 +1245,18 @@ void kmain(void)` |
 | `kmalloc_percpu` | function | `kernel/mm.c:47` | `void *kmalloc_percpu(unsigned long size, unsigned long align)` |
 | `kmemset` | function | `kernel/mm.c:55` | `kmemset(base, 0, total);` |
 | `krealloc` | function | `kernel/mm.c:30` | `void *krealloc(void *ptr, unsigned long size)` |
-| `PT_ALLOC_HDR` | macro | `kernel/mm/paging.c:150` | `#define PT_ALLOC_HDR` |
+| `PT_ALLOC_HDR` | macro | `kernel/mm/paging.c:138` | `#define PT_ALLOC_HDR` |
 | `_kernel_end` | variable | `kernel/mm/paging.c:26` | `extern char _kernel_end[];` |
-| `kfree` | function | `kernel/mm/paging.c:166` | `kfree(raw);` |
-| `kmemset` | function | `kernel/mm/paging.c:159` | `kmemset((void *)aligned, 0, 0x1000);` |
+| `kfree` | function | `kernel/mm/paging.c:154` | `kfree(raw);` |
+| `kmemset` | function | `kernel/mm/paging.c:147` | `kmemset((void *)aligned, 0, 0x1000);` |
 | `kprintf` | function | `kernel/mm/paging.c:29` | `kprintf("mm: kernel image reaches 0x%lx, must stay below 0x%lx\n", (unsigned long)_kernel_end, USER_LOAD_BASE);` |
 | `mm_setup_protections` | function | `kernel/mm/paging.c:18` | `void mm_setup_protections(void)` |
-| `mm_user_pte_update` | function | `kernel/mm/paging.c:119` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)` |
-| `mm_user_set_exec` | function | `kernel/mm/paging.c:140` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)` |
-| `pt_clone_user` | function | `kernel/mm/paging.c:168` | `uint64_t pt_clone_user(uint64_t parent_cr3)` |
-| `pt_free_user` | function | `kernel/mm/paging.c:266` | `void pt_free_user(uint64_t cr3)` |
-| `pt_page_alloc` | function | `kernel/mm/paging.c:152` | `void *pt_page_alloc(void)` |
-| `pt_page_free` | function | `kernel/mm/paging.c:162` | `void pt_page_free(void *ptr)` |
+| `mm_user_pte_update` | function | `kernel/mm/paging.c:107` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)` |
+| `mm_user_set_exec` | function | `kernel/mm/paging.c:128` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)` |
+| `pt_clone_user` | function | `kernel/mm/paging.c:156` | `uint64_t pt_clone_user(uint64_t parent_cr3)` |
+| `pt_free_user` | function | `kernel/mm/paging.c:254` | `void pt_free_user(uint64_t cr3)` |
+| `pt_page_alloc` | function | `kernel/mm/paging.c:140` | `void *pt_page_alloc(void)` |
+| `pt_page_free` | function | `kernel/mm/paging.c:150` | `void pt_page_free(void *ptr)` |
 | `wrmsr` | function | `kernel/mm/paging.c:37` | `wrmsr(MSR_EFER, rdmsr(MSR_EFER) \| EFER_NXE);` |
 | `SWAP_CHUNK_RAW` | macro | `kernel/mm/swap.c:14` | `#define SWAP_CHUNK_RAW` |
 | `SWAP_CHUNK_SECTORS` | macro | `kernel/mm/swap.c:16` | `#define SWAP_CHUNK_SECTORS` |
@@ -7938,20 +7938,21 @@ Z_Malloc
 | `fill_circle` | function | `progs/nuklear/nuklear_minios.c:314` | `static void fill_circle(int cx, int cy, int r, int c)` |
 | `fill_poly` | function | `progs/nuklear/nuklear_minios.c:339` | `static void fill_poly(int *xs, int *ys, int n, int c)` |
 | `fill_rect` | function | `progs/nuklear/nuklear_minios.c:289` | `static void fill_rect(int x, int y, int w, int h, int c)` |
-| `handle_scancode` | function | `progs/nuklear/nuklear_minios.c:597` | `static void handle_scancode(struct nk_context *ctx, unsigned char sc)` |
+| `handle_scancode` | function | `progs/nuklear/nuklear_minios.c:605` | `static void handle_scancode(struct nk_context *ctx, unsigned char sc)` |
 | `list` | function | `progs/nuklear/nuklear_minios.c:4` | `* abstract draw command list (nk__begin/nk__next);` |
 | `nk_build_palette` | function | `progs/nuklear/nuklear_minios.c:146` | `nk_build_palette(pal768);` |
 | `nk_foreach` | function | `progs/nuklear/nuklear_minios.c:408` | `nk_foreach(cmd, ctx)` |
 | `nk_input_key` | function | `progs/nuklear/nuklear_minios.c:595` | `nk_input_key(ctx, key, down ? nk_true : nk_false);` |
-| `nk_input_motion` | function | `progs/nuklear/nuklear_minios.c:655` | `nk_input_motion(ctx, lx, ly);` |
-| `nk_input_scroll` | function | `progs/nuklear/nuklear_minios.c:671` | `nk_input_scroll(ctx, scroll);` |
-| `nk_input_unicode` | function | `progs/nuklear/nuklear_minios.c:634` | `nk_input_unicode(ctx, (nk_rune)ch);` |
+| `nk_input_motion` | function | `progs/nuklear/nuklear_minios.c:665` | `nk_input_motion(ctx, lx, ly);` |
+| `nk_input_scroll` | function | `progs/nuklear/nuklear_minios.c:681` | `nk_input_scroll(ctx, scroll);` |
+| `nk_input_unicode` | function | `progs/nuklear/nuklear_minios.c:644` | `nk_input_unicode(ctx, (nk_rune)ch);` |
 | `nk_minios_font` | function | `progs/nuklear/nuklear_minios.c:559` | `struct nk_user_font nk_minios_font(void)` |
 | `nk_minios_font_width` | function | `progs/nuklear/nuklear_minios.c:554` | `static float nk_minios_font_width(nk_handle handle, float height,
                                ...` |
-| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.c:638` | `void nk_poll_input(struct nk_context *ctx)` |
+| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.c:648` | `void nk_poll_input(struct nk_context *ctx)` |
 | `nk_rasterize` | function | `progs/nuklear/nuklear_minios.c:403` | `void nk_rasterize(struct nk_context *ctx)` |
-| `nk_set_window_origin` | function | `progs/nuklear/nuklear_minios.c:675` | `void nk_set_window_origin(int x, int y)` |
+| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.c:600` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)` |
+| `nk_set_window_origin` | function | `progs/nuklear/nuklear_minios.c:685` | `void nk_set_window_origin(int x, int y)` |
 | `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.c:51` | `long nk_sys_fb_info(int *w, int *h, int *pitch)` |
 | `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.c:31` | `long nk_sys_kbd(void)` |
 | `nk_sys_kbd_raw` | function | `progs/nuklear/nuklear_minios.c:41` | `long nk_sys_kbd_raw(int on)` |
@@ -7976,6 +7977,7 @@ Z_Malloc
 | `nk_minios_font` | function | `progs/nuklear/nuklear_minios.h:44` | `struct nk_user_font nk_minios_font(void);` |
 | `nk_poll_input` | function | `progs/nuklear/nuklear_minios.h:55` | `void nk_poll_input(struct nk_context *ctx);` |
 | `nk_rasterize` | function | `progs/nuklear/nuklear_minios.h:47` | `void nk_rasterize(struct nk_context *ctx);` |
+| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.h:64` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);` |
 | `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.h:28` | `long nk_sys_fb_info(int *w, int *h, int *pitch);` |
 | `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.h:24` | `long nk_sys_kbd(void);` |
 | `nk_sys_kbd_raw` | function | `progs/nuklear/nuklear_minios.h:26` | `long nk_sys_kbd_raw(int on);` |
@@ -7984,78 +7986,92 @@ Z_Malloc
 | `nk_sys_nk_frame` | function | `progs/nuklear/nuklear_minios.h:34` | `long nk_sys_nk_frame(int *origin);` |
 | `nk_sys_palette` | function | `progs/nuklear/nuklear_minios.h:25` | `long nk_sys_palette(const unsigned char *pal768);` |
 | `nk_sys_vga_mode` | function | `progs/nuklear/nuklear_minios.h:27` | `long nk_sys_vga_mode(int on);` |
-| `BK_H` | macro | `progs/piano/piano.c:153` | `#define BK_H` |
-| `BK_W` | macro | `progs/piano/piano.c:152` | `#define BK_W` |
-| `BTN_GAP` | macro | `progs/piano/piano.c:377` | `#define BTN_GAP` |
-| `BTN_W` | macro | `progs/piano/piano.c:376` | `#define BTN_W` |
-| `CTRL_H` | macro | `progs/piano/piano.c:375` | `#define CTRL_H` |
-| `CTRL_Y` | macro | `progs/piano/piano.c:374` | `#define CTRL_Y` |
-| `FX_DELAY_CAP` | macro | `progs/piano/piano.c:240` | `#define FX_DELAY_CAP` |
-| `FX_DELAY_MAX_MS` | macro | `progs/piano/piano.c:242` | `#define FX_DELAY_MAX_MS` |
-| `FX_FEEDBACK` | macro | `progs/piano/piano.c:243` | `#define FX_FEEDBACK` |
-| `FX_TREM_FREQ` | macro | `progs/piano/piano.c:245` | `#define FX_TREM_FREQ` |
-| `FX_WET` | macro | `progs/piano/piano.c:244` | `#define FX_WET` |
-| `KEY_H` | macro | `progs/piano/piano.c:151` | `#define KEY_H` |
-| `KEY_W` | macro | `progs/piano/piano.c:150` | `#define KEY_W` |
-| `KEY_Y` | macro | `progs/piano/piano.c:154` | `#define KEY_Y` |
-| `MAX_AUDIO_MS` | macro | `progs/piano/piano.c:62` | `#define MAX_AUDIO_MS` |
-| `MAX_VOICES` | macro | `progs/piano/piano.c:171` | `#define MAX_VOICES` |
-| `NCTRLS` | macro | `progs/piano/piano.c:389` | `#define NCTRLS` |
-| `NKEYS` | macro | `progs/piano/piano.c:164` | `#define NKEYS` |
-| `OPL3_GenerateStream` | function | `progs/piano/piano.c:322` | `OPL3_GenerateStream(&o3, st, (uint32_t)n);` |
-| `OPL3_Reset` | function | `progs/piano/piano.c:433` | `OPL3_Reset(&o3, RATE);` |
-| `OPL3_WriteReg` | function | `progs/piano/piano.c:95` | `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);` |
-| `PCM_BUF` | macro | `progs/piano/piano.c:57` | `#define PCM_BUF` |
-| `PIANO_FRAME_MS` | macro | `progs/piano/piano.c:67` | `#define PIANO_FRAME_MS` |
-| `RATE` | macro | `progs/piano/piano.c:55` | `#define RATE` |
-| `SYS_SB16_OPEN` | macro | `progs/piano/piano.c:51` | `#define SYS_SB16_OPEN` |
-| `SYS_SB16_PUMP` | macro | `progs/piano/piano.c:54` | `#define SYS_SB16_PUMP` |
-| `SYS_SB16_SUBMIT` | macro | `progs/piano/piano.c:53` | `#define SYS_SB16_SUBMIT` |
-| `UI_MEMORY` | macro | `progs/piano/piano.c:48` | `#define UI_MEMORY` |
-| `clamp_midi` | function | `progs/piano/piano.c:179` | `static int clamp_midi(int m)` |
-| `ctrl_active` | function | `progs/piano/piano.c:395` | `static int ctrl_active(int id)` |
-| `ctrl_hit` | function | `progs/piano/piano.c:390` | `static int ctrl_hit(int id, int mx, int my)` |
-| `ctrl_press` | function | `progs/piano/piano.c:404` | `static void ctrl_press(int id)` |
-| `fx_configure` | function | `progs/piano/piano.c:255` | `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)` |
-| `fx_process` | function | `progs/piano/piano.c:273` | `static float fx_process(float x)` |
-| `hit_key` | function | `progs/piano/piano.c:346` | `static int hit_key(int mx, int my)` |
-| `hit_velocity` | function | `progs/piano/piano.c:364` | `static int hit_velocity(int key, int my)` |
-| `key_rect` | function | `progs/piano/piano.c:339` | `static void key_rect(int key, int *x, int *y, int *w, int *h)` |
-| `main` | function | `progs/piano/piano.c:677` | `int main(int argc, char **argv)` |
-| `memset` | function | `progs/piano/piano.c:266` | `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));` |
-| `nk_build_palette` | function | `progs/piano/piano.c:428` | `nk_build_palette(pal768);` |
-| `nk_clear` | function | `progs/piano/piano.c:539` | `nk_clear(&ctx);` |
-| `nk_draw_text` | function | `progs/piano/piano.c:507` | `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));` |
-| `nk_end` | function | `progs/piano/piano.c:520` | `nk_end(&ctx);` |
-| `nk_fill_rect` | function | `progs/piano/piano.c:494` | `nk_fill_rect(canvas, r, 0, col);` |
-| `nk_free` | function | `progs/piano/piano.c:559` | `nk_free(&ctx);` |
-| `nk_input_begin` | function | `progs/piano/piano.c:468` | `nk_input_begin(&ctx);` |
-| `nk_input_end` | function | `progs/piano/piano.c:470` | `nk_input_end(&ctx);` |
-| `nk_poll_input` | function | `progs/piano/piano.c:469` | `nk_poll_input(&ctx);` |
-| `nk_rasterize` | function | `progs/piano/piano.c:535` | `nk_rasterize(&ctx);` |
-| `nk_rgb` | function | `progs/piano/piano.c:493` | `: nk_rgb(245, 245, 245));` |
-| `nk_stroke_rect` | function | `progs/piano/piano.c:495` | `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));` |
-| `nk_sys_fb_info` | function | `progs/piano/piano.c:430` | `nk_sys_fb_info(&fw, &fh, &fp);` |
-| `nk_sys_kbd_raw` | function | `progs/piano/piano.c:427` | `nk_sys_kbd_raw(1);` |
-| `nk_sys_palette` | function | `progs/piano/piano.c:429` | `nk_sys_palette(pal768);` |
-| `nk_sys_vga_mode` | function | `progs/piano/piano.c:425` | `nk_sys_vga_mode(1);` |
-| `note_off_key` | function | `progs/piano/piano.c:199` | `static void note_off_key(int key)` |
-| `note_on_key` | function | `progs/piano/piano.c:213` | `static void note_on_key(int key, int midi, int vel)` |
-| `o3_chreg` | function | `progs/piano/piano.c:98` | `static void o3_chreg(int ch, int regbase, int val)` |
-| `o3_instrument` | function | `progs/piano/piano.c:228` | `o3_instrument(ch, vel);` |
-| `o3_note` | function | `progs/piano/piano.c:135` | `static void o3_note(int ch, int midi, int on)` |
-| `o3_op` | function | `progs/piano/piano.c:90` | `static int o3_op(int ch, int is_car)` |
-| `o3_opreg` | function | `progs/piano/piano.c:94` | `static void o3_opreg(int ch, int is_car, int regbase, int val)` |
-| `pedal_set` | function | `progs/piano/piano.c:187` | `static void pedal_set(int on)` |
-| `printf` | function | `progs/piano/piano.c:448` | `printf("piano: init failed\n");` |
-| `render_audio` | function | `progs/piano/piano.c:313` | `static void render_audio(long ms)` |
-| `run_selftest` | function | `progs/piano/piano.c:567` | `static int run_selftest(void)` |
-| `sb_flush` | function | `progs/piano/piano.c:304` | `static void sb_flush(void)` |
-| `snprintf` | function | `progs/piano/piano.c:513` | `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 oct%+d vol%d", octave, volume);` |
-| `sys_pcm_open` | function | `progs/piano/piano.c:563` | `sys_pcm_open(0);` |
-| `sys_pcm_pump` | function | `progs/piano/piano.c:75` | `static long sys_pcm_pump(void)` |
-| `sys_pcm_submit` | function | `progs/piano/piano.c:72` | `static long sys_pcm_submit(const void *buf, long len)` |
-| `ui_run` | function | `progs/piano/piano.c:422` | `static void ui_run(int bench_ms)` |
+| `void` | function | `progs/nuklear/nuklear_minios.h:63` | `typedef void (*nk_scancode_cb)(int code, int make, int e0, void *ud);` |
+| `BK_H` | macro | `progs/piano/piano.c:167` | `#define BK_H` |
+| `BK_W` | macro | `progs/piano/piano.c:166` | `#define BK_W` |
+| `BTN_GAP` | macro | `progs/piano/piano.c:517` | `#define BTN_GAP` |
+| `BTN_W` | macro | `progs/piano/piano.c:516` | `#define BTN_W` |
+| `CTRL_H` | macro | `progs/piano/piano.c:515` | `#define CTRL_H` |
+| `CTRL_Y` | macro | `progs/piano/piano.c:514` | `#define CTRL_Y` |
+| `FX_DELAY_CAP` | macro | `progs/piano/piano.c:380` | `#define FX_DELAY_CAP` |
+| `FX_DELAY_MAX_MS` | macro | `progs/piano/piano.c:382` | `#define FX_DELAY_MAX_MS` |
+| `FX_FEEDBACK` | macro | `progs/piano/piano.c:383` | `#define FX_FEEDBACK` |
+| `FX_TREM_FREQ` | macro | `progs/piano/piano.c:385` | `#define FX_TREM_FREQ` |
+| `FX_WET` | macro | `progs/piano/piano.c:384` | `#define FX_WET` |
+| `KBD_NO_NOTE` | macro | `progs/piano/piano.c:271` | `#define KBD_NO_NOTE` |
+| `KEY_H` | macro | `progs/piano/piano.c:165` | `#define KEY_H` |
+| `KEY_W` | macro | `progs/piano/piano.c:164` | `#define KEY_W` |
+| `KEY_Y` | macro | `progs/piano/piano.c:168` | `#define KEY_Y` |
+| `MAX_AUDIO_MS` | macro | `progs/piano/piano.c:67` | `#define MAX_AUDIO_MS` |
+| `MAX_VOICES` | macro | `progs/piano/piano.c:195` | `#define MAX_VOICES` |
+| `NCTRLS` | macro | `progs/piano/piano.c:529` | `#define NCTRLS` |
+| `NKEYS` | macro | `progs/piano/piano.c:183` | `#define NKEYS` |
+| `OPL3_GenerateStream` | function | `progs/piano/piano.c:462` | `OPL3_GenerateStream(&o3, st, (uint32_t)n);` |
+| `OPL3_Reset` | function | `progs/piano/piano.c:573` | `OPL3_Reset(&o3, RATE);` |
+| `OPL3_WriteReg` | function | `progs/piano/piano.c:106` | `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);` |
+| `PCM_BUF` | macro | `progs/piano/piano.c:62` | `#define PCM_BUF` |
+| `PIANO_BASE_MIDI` | macro | `progs/piano/piano.c:169` | `#define PIANO_BASE_MIDI` |
+| `PIANO_FRAME_MS` | macro | `progs/piano/piano.c:75` | `#define PIANO_FRAME_MS` |
+| `PIANO_OCTAVES` | macro | `progs/piano/piano.c:170` | `#define PIANO_OCTAVES` |
+| `RATE` | macro | `progs/piano/piano.c:60` | `#define RATE` |
+| `SYS_SB16_OPEN` | macro | `progs/piano/piano.c:56` | `#define SYS_SB16_OPEN` |
+| `SYS_SB16_PUMP` | macro | `progs/piano/piano.c:59` | `#define SYS_SB16_PUMP` |
+| `SYS_SB16_SUBMIT` | macro | `progs/piano/piano.c:58` | `#define SYS_SB16_SUBMIT` |
+| `UI_MEMORY` | macro | `progs/piano/piano.c:53` | `#define UI_MEMORY` |
+| `clamp_midi` | function | `progs/piano/piano.c:207` | `static int clamp_midi(int m)` |
+| `ctrl_active` | function | `progs/piano/piano.c:535` | `static int ctrl_active(int id)` |
+| `ctrl_hit` | function | `progs/piano/piano.c:530` | `static int ctrl_hit(int id, int mx, int my)` |
+| `ctrl_press` | function | `progs/piano/piano.c:544` | `static void ctrl_press(int id)` |
+| `fx_configure` | function | `progs/piano/piano.c:395` | `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)` |
+| `fx_process` | function | `progs/piano/piano.c:413` | `static float fx_process(float x)` |
+| `hit_key` | function | `progs/piano/piano.c:486` | `static int hit_key(int mx, int my)` |
+| `hit_velocity` | function | `progs/piano/piano.c:504` | `static int hit_velocity(int key, int my)` |
+| `kbd_all_off` | function | `progs/piano/piano.c:306` | `static void kbd_all_off(void)` |
+| `kbd_semitone` | function | `progs/piano/piano.c:272` | `static int kbd_semitone(int code)` |
+| `key_rect` | function | `progs/piano/piano.c:479` | `static void key_rect(int key, int *x, int *y, int *w, int *h)` |
+| `main` | function | `progs/piano/piano.c:895` | `int main(int argc, char **argv)` |
+| `memset` | function | `progs/piano/piano.c:406` | `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));` |
+| `midi_to_key` | function | `progs/piano/piano.c:184` | `static int midi_to_key(int midi)` |
+| `nk_build_palette` | function | `progs/piano/piano.c:568` | `nk_build_palette(pal768);` |
+| `nk_clear` | function | `progs/piano/piano.c:696` | `nk_clear(&ctx);` |
+| `nk_draw_text` | function | `progs/piano/piano.c:649` | `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));` |
+| `nk_end` | function | `progs/piano/piano.c:670` | `nk_end(&ctx);` |
+| `nk_fill_rect` | function | `progs/piano/piano.c:636` | `nk_fill_rect(canvas, r, 0, col);` |
+| `nk_free` | function | `progs/piano/piano.c:722` | `nk_free(&ctx);` |
+| `nk_input_begin` | function | `progs/piano/piano.c:611` | `nk_input_begin(&ctx);` |
+| `nk_input_end` | function | `progs/piano/piano.c:613` | `nk_input_end(&ctx);` |
+| `nk_poll_input` | function | `progs/piano/piano.c:612` | `nk_poll_input(&ctx);` |
+| `nk_rasterize` | function | `progs/piano/piano.c:692` | `nk_rasterize(&ctx);` |
+| `nk_rgb` | function | `progs/piano/piano.c:635` | `: nk_rgb(240, 240, 240);` |
+| `nk_set_scancode_hook` | function | `progs/piano/piano.c:581` | `nk_set_scancode_hook(piano_scancode, 0);` |
+| `nk_stroke_rect` | function | `progs/piano/piano.c:637` | `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));` |
+| `nk_sys_fb_info` | function | `progs/piano/piano.c:570` | `nk_sys_fb_info(&fw, &fh, &fp);` |
+| `nk_sys_kbd_raw` | function | `progs/piano/piano.c:567` | `nk_sys_kbd_raw(1);` |
+| `nk_sys_palette` | function | `progs/piano/piano.c:569` | `nk_sys_palette(pal768);` |
+| `nk_sys_vga_mode` | function | `progs/piano/piano.c:565` | `nk_sys_vga_mode(1);` |
+| `note_off_key` | function | `progs/piano/piano.c:241` | `static void note_off_key(int key)` |
+| `note_off_sc` | function | `progs/piano/piano.c:326` | `static void note_off_sc(int code)` |
+| `note_on_key` | function | `progs/piano/piano.c:255` | `static void note_on_key(int key, int midi, int vel)` |
+| `note_on_sc` | function | `progs/piano/piano.c:312` | `static void note_on_sc(int code, int vel)` |
+| `o3_chreg` | function | `progs/piano/piano.c:109` | `static void o3_chreg(int ch, int regbase, int val)` |
+| `o3_instrument` | function | `progs/piano/piano.c:262` | `o3_instrument(ch, vel);` |
+| `o3_note` | function | `progs/piano/piano.c:146` | `static void o3_note(int ch, int midi, int on)` |
+| `o3_op` | function | `progs/piano/piano.c:101` | `static int o3_op(int ch, int is_car)` |
+| `o3_opreg` | function | `progs/piano/piano.c:105` | `static void o3_opreg(int ch, int is_car, int regbase, int val)` |
+| `pedal_set` | function | `progs/piano/piano.c:215` | `static void pedal_set(int on)` |
+| `piano_scancode` | function | `progs/piano/piano.c:343` | `static void piano_scancode(int code, int make, int e0, void *ud)` |
+| `printf` | function | `progs/piano/piano.c:590` | `printf("piano: init failed\n");` |
+| `render_audio` | function | `progs/piano/piano.c:453` | `static void render_audio(long ms)` |
+| `run_selftest` | function | `progs/piano/piano.c:729` | `static int run_selftest(void)` |
+| `sb_flush` | function | `progs/piano/piano.c:444` | `static void sb_flush(void)` |
+| `snprintf` | function | `progs/piano/piano.c:655` | `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 C4 base oct%+d vol%d", octave, volume);` |
+| `sys_pcm_open` | function | `progs/piano/piano.c:76` | `static long sys_pcm_open(long on)` |
+| `sys_pcm_pump` | function | `progs/piano/piano.c:83` | `static long sys_pcm_pump(void)` |
+| `sys_pcm_submit` | function | `progs/piano/piano.c:80` | `static long sys_pcm_submit(const void *buf, long len)` |
+| `sys_yield` | function | `progs/piano/piano.c:86` | `static void sys_yield(void)` |
+| `ui_run` | function | `progs/piano/piano.c:562` | `static void ui_run(int bench_ms)` |
+| `voice_alloc` | function | `progs/piano/piano.c:228` | `static int voice_alloc(void)` |
+| `volatile` | function | `progs/piano/piano.c:87` | `__asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");` |
 | `SDL_Delay` | function | `progs/pokemon/minios_stubs/SDL.h:14` | `static inline void SDL_Delay(Uint32 ms)` |
 | `SDL_GetPerformanceCounter` | function | `progs/pokemon/minios_stubs/SDL.h:10` | `static inline Uint64 SDL_GetPerformanceCounter(void)` |
 | `SDL_GetPerformanceFrequency` | function | `progs/pokemon/minios_stubs/SDL.h:12` | `static inline Uint64 SDL_GetPerformanceFrequency(void)` |
@@ -9213,10 +9229,10 @@ Z_Malloc
 | `cleanup_stale_qemu` | function | `test_bdd.sh:31` | `` |
 | `expect` | function | `test_bdd.sh:79` | `` |
 | `expect_count` | function | `test_bdd.sh:100` | `` |
-| `http_fixture_start` | function | `test_bdd.sh:692` | `` |
-| `http_fixture_stop` | function | `test_bdd.sh:699` | `` |
-| `http_server_start` | function | `test_bdd.sh:680` | `` |
-| `http_server_stop` | function | `test_bdd.sh:687` | `` |
+| `http_fixture_start` | function | `test_bdd.sh:698` | `` |
+| `http_fixture_stop` | function | `test_bdd.sh:705` | `` |
+| `http_server_start` | function | `test_bdd.sh:686` | `` |
+| `http_server_stop` | function | `test_bdd.sh:693` | `` |
 | `refute` | function | `test_bdd.sh:122` | `` |
 | `scenario` | function | `test_bdd.sh:42` | `` |
 | `scenario_smp` | function | `test_bdd.sh:60` | `` |
