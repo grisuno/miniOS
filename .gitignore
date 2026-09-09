@@ -78,3 +78,8 @@ progs/pokemon/build/
 
 # Local machine paths (POKEMON_DIR etc.). Never committed.
 config.mk
+
+# Local shel readmenator
+doc.sh
+
+
