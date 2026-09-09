@@ -353,3 +353,42 @@ void vfs_register_builtins(void) {
     vfs_register("", &ramdisk_vfs_ops);
     vfs_register("minifs:", &minifs_vfs_ops);
 }
+
+/* ================================================================
+ *  Facade dispatch: pure ops-table calls, no filesystem branches.
+ *  A caller holding a vnode never asks which driver backs it; that is
+ *  the Open/Closed guarantee. All paths fail closed (-1) on a null
+ *  vnode, a null ops table or a missing operation.
+ * ================================================================ */
+
+int vfs_read(vfs_file_t *f, void *buf, unsigned long len) {
+    int n;
+    if (!f || !f->ops || !f->ops->read || !buf) return -1;
+    if (len == 0) return 0;
+    n = f->ops->read(f->handle, buf, f->pos, len);
+    if (n > 0) f->pos += (unsigned)n;
+    return n;
+}
+
+int vfs_write(vfs_file_t *f, const void *buf, unsigned long len) {
+    int n;
+    if (!f || !f->ops || !f->ops->write || !buf) return -1;
+    if (len == 0) return 0;
+    n = f->ops->write(f->handle, buf, f->pos, len);
+    if (n > 0) f->pos += (unsigned)n;
+    return n;
+}
+
+int vfs_close(vfs_file_t *f) {
+    int rc;
+    if (!f || !f->ops || !f->ops->close) return -1;
+    rc = f->ops->close(f->handle);
+    f->ops = 0;
+    f->handle = 0;
+    return rc;
+}
+
+int vfs_fstat(vfs_file_t *f, unsigned long *size_out) {
+    if (!f || !f->ops || !f->ops->fstat || !size_out) return -1;
+    return f->ops->fstat(f->handle, size_out);
+}

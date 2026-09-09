@@ -63,4 +63,8 @@ unsigned int ide_total_sectors(void);
 /* Returns 1 if a disk was successfully detected. */
 int ide_present(void);
 
+/* Publish the Strategy ops table to the device registry (driver.h).
+ * Called from ide_init; re-registration is a no-op (duplicate refused). */
+void ide_register_device(void);
+
 #endif

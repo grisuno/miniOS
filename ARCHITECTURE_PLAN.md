@@ -1,5 +1,18 @@
 # MiniOS Unified Architectural Improvement Plan
 
+> Source-of-truth note: completed decisions live in `docs/adr/` as
+> Architectural Decision Records (ADR-0001..0013) with the formal VMA
+> analysis in `docs/vma-complexity.md`. This document tracks future work
+> only; its "Completed Work" section below is retained as history and
+> must not grow. New decisions add an ADR, never a retrospective here.
+> ADR index: Phase 0.1 spinlocks (code comment, no ADR) · 0.2 CI
+> governance (workflows, no ADR) · 0.3 VFS invariants (kernel.h, no ADR)
+> · 0.4 SMP → ADR-0003 · 1.4 extraction/dirs → ADR-0011 · 1.1 ABI →
+> code (`minios_abi.h`) · 3.1 syscall table → code · 3.2 CVM hardening
+> → code · 4.x testing → workflows/tests · 5.x resiliency → BDD/mutants
+> · 6.x god-object → ADR-0011 · Strategy/Facade → ADR-0012 · priority
+> inheritance → ADR-0013 · VMA → ADR-0005 + proof.
+
 ## Methodology
 
 Every task follows SDD + TDD + BDD:

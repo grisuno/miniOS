@@ -14,6 +14,7 @@
 #include "kernel.h"
 #include "ide.h"
 #include "block.h"
+#include "driver.h"
 
 static unsigned int block_total_sectors;
 static unsigned int block_lba_base;
@@ -44,6 +45,25 @@ void block_set_base(unsigned int lba_base) {
     block_lba_base = lba_base;
 }
 
+/* Strategy consumer: sector I/O goes through the registered block device's
+ * ops table (dev->ops->read/write), never straight at the hardware. The
+ * direct ide_* call is a fail-closed fallback for the window between
+ * block_init's probe and the registry publish, and for images whose IDE
+ * probe found no disk (registry still publishes, present() says 0). */
+static int block_dev_read(unsigned lba, unsigned count, void *buf) {
+    device_t *d = device_find("ide0");
+    if (d && d->block && d->block->read_sectors)
+        return d->block->read_sectors(d, lba, count, buf);
+    return ide_read_sectors(lba, count, buf);
+}
+
+static int block_dev_write(unsigned lba, unsigned count, const void *buf) {
+    device_t *d = device_find("ide0");
+    if (d && d->block && d->block->write_sectors)
+        return d->block->write_sectors(d, lba, count, buf);
+    return ide_write_sectors(lba, count, buf);
+}
+
 int block_read(unsigned int block_num, void *buf) {
     unsigned int idx = bc_index(block_num);
     if (bc_valid[idx] && bc_block[idx] == block_num) {
@@ -53,7 +73,7 @@ int block_read(unsigned int block_num, void *buf) {
         return 0;
     }
     unsigned int lba = block_lba_base + block_num * SECTORS_PER_BLOCK;
-    if (ide_read_sectors(lba, SECTORS_PER_BLOCK, bc_data[idx]) < 0) return -1;
+    if (block_dev_read(lba, SECTORS_PER_BLOCK, bc_data[idx]) < 0) return -1;
     bc_block[idx] = block_num;
     bc_valid[idx] = 1;
     {
@@ -67,19 +87,19 @@ int block_read(unsigned int block_num, void *buf) {
 int block_write(unsigned int block_num, const void *buf) {
     bc_invalidate(block_num);
     unsigned int lba = block_lba_base + block_num * SECTORS_PER_BLOCK;
-    return ide_write_sectors(lba, SECTORS_PER_BLOCK, buf);
+    return block_dev_write(lba, SECTORS_PER_BLOCK, buf);
 }
 
 int block_read_multi(unsigned int block_num, unsigned int count, void *buf) {
     unsigned int lba = block_lba_base + block_num * SECTORS_PER_BLOCK;
-    return ide_read_sectors(lba, count * SECTORS_PER_BLOCK, buf);
+    return block_dev_read(lba, count * SECTORS_PER_BLOCK, buf);
 }
 
 int block_write_multi(unsigned int block_num, unsigned int count, const void *buf) {
     unsigned int i;
     for (i = 0; i < count; i++) bc_invalidate(block_num + i);
     unsigned int lba = block_lba_base + block_num * SECTORS_PER_BLOCK;
-    return ide_write_sectors(lba, count * SECTORS_PER_BLOCK, buf);
+    return block_dev_write(lba, count * SECTORS_PER_BLOCK, buf);
 }
 
 void block_flush(void) { }

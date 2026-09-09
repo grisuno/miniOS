@@ -18,9 +18,8 @@ surprising_min_hops: 5
 abi_version: 1
 
 # Approved deviations from policy.
-# Each entry explains why the deviation exists and when it should be removed.
-approvals:
-  - module: kernel.c
-    metric: symbol_count
-    reason: "God object reduction is Phase 6 of the architectural plan"
-    expires: "Phase 6 complete"
+# None: the kernel.c God-object exemption (Phase 6) was retired by
+# ADR-0011. kernel.c counts 2 symbols against the 350 limit, so no
+# approval entry is needed. Any future growth past the gate fails CI
+# unless an explicit, expiring entry is added here.
+approvals: []

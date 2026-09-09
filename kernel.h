@@ -12,6 +12,7 @@
  * address in the kernel or in a ring-3 program; put it in minios_abi.h. */
 #include "minios_abi.h"
 #include "vma.h"
+#include "spinlock.h"
 
 /* ========== Port I/O helpers ========== */
 #define ALIGN_UP(x, a) (((x) + (a) - 1) & ~((a) - 1))
@@ -48,7 +49,12 @@ void vga_set_cursor(int x, int y);
 void vga_newline(void);
 void vga_cursor_enable(int on);
 
-/* VGA state getters (kernel.c, for scrollback renderer) */
+/* Console output lock (kernel/console.c): serializes SMP console output
+ * across CPUs. Held across the whole vga_putc body; try-or-race so an ISR
+ * dump prints rather than deadlocks on a lock held by interrupted context. */
+extern spinlock_t console_lock;
+
+/* VGA state getters (kernel/console.c, for scrollback renderer) */
 int  vga_get_x(void);
 int  vga_get_y(void);
 void vga_set_xy(int x, int y);
@@ -262,9 +268,23 @@ typedef struct vfs_file {
     int              is_console;
 } vfs_file_t;
 
+/* Facade aliases (thesis correction 2B, 4.4BSD/Linux vnode model): vfs_ops_t
+ * IS the file_operations table, and vnode is the object it operates on. New
+ * code uses these names; vfs_ops_t/vfs_file_t remain as compat aliases.
+ * Open/Closed Principle: adding a filesystem means registering a new ops
+ * table, never editing a dispatch cascade. No caller branches on which
+ * filesystem backs a handle; vfs_read/write/close/fstat dispatch purely
+ * through ops. */
+typedef vfs_ops_t file_operations;
+typedef vfs_file_t vnode_t;
+
 int  vfs_register(const char *prefix, const vfs_ops_t *ops);
 int  vfs_unregister(const char *prefix);
 int  vfs_open(const char *path, int mode, vfs_file_t *f);
+int  vfs_read(vfs_file_t *f, void *buf, unsigned long len);
+int  vfs_write(vfs_file_t *f, const void *buf, unsigned long len);
+int  vfs_close(vfs_file_t *f);
+int  vfs_fstat(vfs_file_t *f, unsigned long *size_out);
 void vfs_init(void);
 void vfs_register_builtins(void);
 int  minifs_mkdir_p(const char *resolved);
@@ -420,6 +440,10 @@ int  k_spawn(const char *name, int argc, char **argv);
 void k_register_program(const char *name, prog_entry_t entry);
 void k_register_process(const char *name, void *proc_entry);
 void k_register_symbol(const char *name, void *addr);
+
+/* Libc name table for ET_REL programs (kernel/console.c). Called once
+ * from kmain; the table itself lives in kernel/symtab.c. */
+void register_libc_symbols(void);
 
 /* ========== Process execution (Linux ELF binaries) ========== */
 int  k_exec_user(void *entry, int argc, char **argv);

@@ -21,9 +21,10 @@
  *   - A sleep with no matching wake-up blocks forever; drivers must
  *     pair every sleep_on site with a wake_up site on all exit paths.
  *
- * There is no priority inheritance and no deadlock detection: a thread
+ * There is no deadlock detection: a thread
  * that locks the same mutex twice without unlocking deadlocks, exactly
- * like a double spin_lock.  Futexes (fast userspace mutexes) are a
+ * like a double spin_lock. Prefer mutex_trylock on paths that may
+ * re-enter. Futexes (fast userspace mutexes) are a
  * later step and will reuse wait_queue_t for their sleepers.
  */
 
@@ -51,7 +52,14 @@ void sleep_on(wait_queue_t *q);
 int  wake_up(wait_queue_t *q);
 int  wake_up_all(wait_queue_t *q);
 
-/* ---- Mutex (blocking, non-recursive) ---- */
+/* ---- Mutex (blocking, non-recursive) ----
+ * Priority inheritance (thesis correction 3): a low-priority holder that
+ * blocks a high-priority waiter is boosted to the waiter's effective
+ * priority, transitively along the blocked-on chain, until it releases.
+ * pi_set_base assigns a thread's base priority (default 0); pi_get_eff
+ * reports the boosted value the scheduler must honor. State lives in
+ * sync.c parallel arrays: proc_t is 248 bytes by asm contract (sched.c
+ * asserts it, syscall_entry hardcodes it), so no field can be added. */
 typedef struct {
     spinlock_t   guard;
     int          locked;   /* 0 = free, 1 = held */
@@ -64,6 +72,10 @@ typedef struct {
 void mutex_init(mutex_t *m);
 void mutex_lock(mutex_t *m);
 void mutex_unlock(mutex_t *m);
+int  mutex_trylock(mutex_t *m);
+void mutex_note_waiter(mutex_t *m, int waiter);
+void pi_set_base(int pid, int prio);
+int  pi_get_eff(int pid);
 
 /* ---- Counting semaphore ---- */
 typedef struct {

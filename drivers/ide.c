@@ -5,6 +5,7 @@
 
 #include "kernel.h"
 #include "ide.h"
+#include "driver.h"
 
 static int          ide_disk_present;
 static unsigned int ide_disk_sectors;
@@ -96,10 +97,50 @@ void ide_init(void) {
     } else {
         kprintf("IDE: no disk on primary master\n");
     }
+    ide_register_device();
 }
 
 int ide_present(void) { return ide_disk_present; }
 unsigned int ide_total_sectors(void) { return ide_disk_sectors; }
+
+static int ide_ops_read(device_t *dev, unsigned lba, unsigned count, void *buf) {
+    (void)dev;
+    return ide_read_sectors(lba, count, buf);
+}
+
+static int ide_ops_write(device_t *dev, unsigned lba, unsigned count, const void *buf) {
+    (void)dev;
+    return ide_write_sectors(lba, count, buf);
+}
+
+static unsigned ide_ops_total(device_t *dev) {
+    (void)dev;
+    return ide_total_sectors();
+}
+
+static int ide_ops_present(device_t *dev) {
+    (void)dev;
+    return ide_present();
+}
+
+static const block_ops_t ide_block_ops = {
+    ide_ops_read,
+    ide_ops_write,
+    ide_ops_total,
+    ide_ops_present,
+};
+
+static device_t ide_device = {
+    "ide0",
+    DEV_TYPE_BLOCK,
+    &ide_block_ops,
+    0,
+    0,
+};
+
+void ide_register_device(void) {
+    device_register(&ide_device);
+}
 
 int ide_read_sectors(unsigned int lba, unsigned int count, void *buf) {
     unsigned char *p = (unsigned char *)buf;

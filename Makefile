@@ -1014,9 +1014,16 @@ hal_test: tests/test_hal_io.c arch/x86/hal_io.h | $(TOOLS_DIR)
 test-hal: hal_test
 	$(TOOLS_DIR)/hal_test
 
+# Device-registry host test (tests/test_driver.c + drivers/driver.c).
+driver_test: tests/test_driver.c drivers/driver.c driver.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/driver_test tests/test_driver.c drivers/driver.c
+
+test-driver: driver_test
+	$(TOOLS_DIR)/driver_test
+
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1026,6 +1033,7 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/sanitize_test
 	$(TOOLS_DIR)/tick_test
 	$(TOOLS_DIR)/hal_test
+	$(TOOLS_DIR)/driver_test
 
 # ── Ramdisk image ─────────────────────────────────────────────────
 # The Makefile is a prerequisite because it carries the file list: editing
@@ -1058,7 +1066,10 @@ stage2.bin: stage2.elf
 	$(OBJCOPY) -O binary $< $@
 
 # ── Kernel ────────────────────────────────────────────────────────
-kernel.o: kernel.c kernel.h tls.h minifs.h ide.h block.h
+kernel.o: kernel.c kernel.h minifs.h ide.h block.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
@@ -1143,10 +1154,13 @@ tls_x509.o: net/tls_x509.c tls.h tls_port.h
 ramdisk_data.o: ramdisk_data.c
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-ide.o: drivers/ide.c ide.h kernel.h
+ide.o: drivers/ide.c ide.h driver.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-block.o: drivers/block.c block.h ide.h kernel.h
+block.o: drivers/block.c block.h ide.h driver.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+driver.o: drivers/driver.c driver.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 minifs.o: fs/minifs.c minifs.h block.h ide.h kernel.h
@@ -1226,7 +1240,7 @@ vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
            third_party/stb/stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-pcspk.o: drivers/pcspk.c pcspk.h kernel.h
+pcspk.o: drivers/pcspk.c pcspk.h driver.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 sb16.o: drivers/sb16.c sb16.h kernel.h
@@ -1276,9 +1290,9 @@ batch.o: kernel/batch.c batch.h
 rcu.o: kernel/rcu.c rcu.h sched.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o \
-	      tls_x509.o ramdisk_data.o ide.o block.o minifs.o lz4_kernel.o \
+kernel.elf: kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o \
+	      tls_x509.o ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o -o $@
 

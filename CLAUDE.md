@@ -1848,6 +1848,7 @@ make test-vma       # host-side VMA red-black tree suite green
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
+make test-driver test-sync  # device registry + sync/PI suites green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
@@ -2097,7 +2098,9 @@ no Quake-2-specific logic; all Q2G coupling lives in the platform layer
 
 ## Unified Architectural Improvement Plan
 
-See `ARCHITECTURE_PLAN.md` for the full plan.  This section documents the
+See `ARCHITECTURE_PLAN.md` for the future-work plan and `docs/adr/` for
+the decided record (ADR-0001..0013, the source of truth for *why*;
+`docs/vma-complexity.md` proves the VMA bound).  This section documents the
 implemented changes and the contracts they establish.
 
 ### ABI Versioning (Phase 1.1)
@@ -2167,6 +2170,11 @@ subdirs while `.o` files stay in the root for the link line.
 Extracted so far:
 - `serial.c`: COM1 16550 UART driver (init, putc, getc, available, puts)
 - `string.c`: kernel string/memory functions (kstrlen, kmemcpy, katol, etc.)
+- `console.c`: text console, output capture and libc name table (ADR-0011;
+  `kernel.c` is now only the Mediator orchestrator + syscall trampoline)
+- `driver.c`: Strategy-pattern device registry (`ide0` block, `pcspk0`
+  audio, consumed by `block.c` through ops); VFS exposes the
+  `file_operations`/`vnode_t` facade (ADR-0012)
 - Drivers: ide, block, pcspk, sb16, rtc moved to `drivers/`
 - Filesystem: minifs, zip moved to `fs/`
 - Network: net, tls, tls_crypto, tls_x509 moved to `net/`; the rtl8139
@@ -2249,6 +2257,7 @@ make test-vma               # host-side VMA red-black tree suite
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
+make test-driver test-sync  # device registry + sync/PI suites green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD
 mcp/mutate_mcp.sh           # every MCP mutant killed
 python3 tools/check_cohesion.py KNOWLEDGE_BASE.jsonld

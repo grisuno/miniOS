@@ -205,6 +205,64 @@ int main(void) {
         CHECK(q.head == WQ_NONE, "no proc means no enqueue");
     }
 
+    /* 9. Priority inheritance: a high-prio waiter boosts the holder;
+     * release drops the holder back to base. trylock never blocks. */
+    {
+        mutex_t m = MUTEX_INIT;
+        fresh_all();
+        fresh_proc(1); fresh_proc(2);
+        pi_set_base(1, 1);
+        pi_set_base(2, 10);
+        CHECK(pi_get_eff(1) == 1, "base priority sticks");
+        CHECK(pi_get_eff(99) == -1, "bad pid reads -1");
+        t_cur_pid = 1;
+        mutex_lock(&m);
+        CHECK(mutex_trylock(&m) == -1, "trylock on held mutex fails");
+        /* Contention as the lock loop records it: waiter queues, then
+         * the donation runs under the guard. */
+        t_cur_pid = 2;
+        sleep_on(&m.waiters);
+        mutex_note_waiter(&m, 2);
+        CHECK(pi_get_eff(1) == 10, "holder boosted to waiter level");
+        t_cur_pid = 1;
+        mutex_unlock(&m);
+        CHECK(!m.locked, "holder releases under inheritance");
+        CHECK(pi_get_eff(1) == 1, "release restores base");
+        CHECK(procs[2].state == PROC_READY, "waiter wakes");
+        t_cur_pid = 2;
+        CHECK(mutex_trylock(&m) == 0, "trylock acquires free mutex");
+        CHECK(m.owner == 2, "trylock records owner");
+        mutex_unlock(&m);
+    }
+
+    /* 10. Inheritance is transitive: a waiter-of-waiter lifts the whole
+     * chain, and each release restores its own base. */
+    {
+        mutex_t m1 = MUTEX_INIT, m2 = MUTEX_INIT;
+        fresh_all();
+        fresh_proc(1); fresh_proc(2); fresh_proc(3);
+        pi_set_base(1, 1);
+        pi_set_base(2, 5);
+        pi_set_base(3, 10);
+        t_cur_pid = 1; mutex_lock(&m1);
+        t_cur_pid = 2; mutex_lock(&m2);
+        t_cur_pid = 2;
+        sleep_on(&m1.waiters);
+        mutex_note_waiter(&m1, 2);
+        CHECK(pi_get_eff(1) == 5, "first hop boosts holder");
+        t_cur_pid = 3;
+        sleep_on(&m2.waiters);
+        mutex_note_waiter(&m2, 3);
+        CHECK(pi_get_eff(2) == 10, "second hop boosts middle");
+        CHECK(pi_get_eff(1) == 10, "boost propagates transitively");
+        t_cur_pid = 2;
+        mutex_unlock(&m2);
+        CHECK(pi_get_eff(2) == 5, "middle falls back to base");
+        t_cur_pid = 1;
+        mutex_unlock(&m1);
+        CHECK(pi_get_eff(1) == 1, "holder falls back to base");
+    }
+
     if (failures == 0) printf("sync: ok\n");
     else printf("sync: %d failures\n", failures);
     return failures != 0;

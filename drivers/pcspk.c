@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "pcspk.h"
+#include "driver.h"
 
 /* PC speaker driver with a software master volume. The speaker has no
  * hardware amplitude, so the volume control is a mute at PCSPK_VOL_MIN and
@@ -24,9 +25,50 @@
 
 static unsigned pcspk_volume = PCSPK_VOL_DEFAULT;
 
+void pcspk_tone(unsigned freq);
+void pcspk_off(void);
+void pcspk_set_volume(unsigned volume);
+unsigned pcspk_get_volume(void);
+
+static void pcspk_ops_tone(device_t *dev, unsigned freq) {
+    (void)dev;
+    pcspk_tone(freq);
+}
+
+static void pcspk_ops_off(device_t *dev) {
+    (void)dev;
+    pcspk_off();
+}
+
+static void pcspk_ops_set_volume(device_t *dev, unsigned vol) {
+    (void)dev;
+    pcspk_set_volume(vol);
+}
+
+static unsigned pcspk_ops_get_volume(device_t *dev) {
+    (void)dev;
+    return pcspk_get_volume();
+}
+
+static const audio_ops_t pcspk_audio_ops = {
+    pcspk_ops_tone,
+    pcspk_ops_off,
+    pcspk_ops_set_volume,
+    pcspk_ops_get_volume,
+};
+
+static device_t pcspk_device = {
+    "pcspk0",
+    DEV_TYPE_AUDIO,
+    0,
+    &pcspk_audio_ops,
+    0,
+};
+
 void pcspk_init(void) {
     pcspk_volume = PCSPK_VOL_DEFAULT;
     outb(SPEAKER_PORT, inb(SPEAKER_PORT) & 0xFC);
+    device_register(&pcspk_device);
 }
 
 void pcspk_set_volume(unsigned volume) {
