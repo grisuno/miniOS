@@ -1,17 +1,17 @@
 {
   "tool": "readmenator",
-  "generated_at": "2026-09-09T17:48:03Z",
+  "generated_at": "2026-09-09T20:03:20Z",
   "project_root": "/home/grisun0/src_note/c/boot/repo/miniOS",
-  "files": 390,
-  "symbols": 9074,
-  "imports": 4058,
-  "resolved_imports": 1054,
+  "files": 393,
+  "symbols": 9142,
+  "imports": 4079,
+  "resolved_imports": 1060,
   "security_findings": 0,
   "languages": {
     "h": 141,
     "py": 35,
     "S": 5,
-    "c": 185,
+    "c": 188,
     "sh": 13,
     "s": 10,
     "lua": 1

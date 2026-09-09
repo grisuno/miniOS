@@ -54,13 +54,13 @@
   - `net_sys_shutdown` (function, line 804) `long net_sys_shutdown(long fd, long how)`
   - `net_sys_close` (function, line 811) `long net_sys_close(long fd)`
   - `net_sys_poll` (function, line 818) `long net_sys_poll(long fds, long nfds, long timeout_ms)`
-  - `net_sys_dns` (function, line 849) `long net_sys_dns(long host)`
-  - `net_parse_ip` (function, line 859) `static int net_parse_ip(const char *text, unsigned char ip[4])`
-  - `net_cmd_status` (function, line 884) `void net_cmd_status(void)`
-  - `net_cmd_ping` (function, line 900) `void net_cmd_ping(const char *ip_text)`
-  - `net_cmd_dns` (function, line 911) `void net_cmd_dns(const char *host)`
-  - `net_register_symbols` (function, line 924) `void net_register_symbols(void)`
-  - `net_init` (function, line 932) `void net_init(void)`
+  - `net_sys_dns` (function, line 855) `long net_sys_dns(long host)`
+  - `net_parse_ip` (function, line 865) `static int net_parse_ip(const char *text, unsigned char ip[4])`
+  - `net_cmd_status` (function, line 890) `void net_cmd_status(void)`
+  - `net_cmd_ping` (function, line 906) `void net_cmd_ping(const char *ip_text)`
+  - `net_cmd_dns` (function, line 917) `void net_cmd_dns(const char *host)`
+  - `net_register_symbols` (function, line 930) `void net_register_symbols(void)`
+  - `net_init` (function, line 938) `void net_init(void)`
   - `kmemcpy` (function, line 80) `kmemcpy(net_arp_cache[i].mac, mac, NET_ETH_ALEN);`
   - `kmemset` (function, line 104) `kmemset(frame, 0, sizeof(frame));`
   - `rtl_send` (function, line 116) `rtl_send(frame, 42);`
@@ -68,12 +68,12 @@
   - `kmemmove` (function, line 514) `kmemmove(s->rx, s->rx + s->rx_tail, s->rx_head - s->rx_tail);`
   - `net_tcp_recv_deadline` (function, line 751) `return net_tcp_recv_deadline(&net_sockets[fd], buf, len, timeout_ms);`
   - `tls_free_fd` (function, line 814) `tls_free_fd((int)(fd - NET_FD_BASE));`
-  - `vga_puts` (function, line 888) `vga_puts("net: no rtl8139 found\n");`
-  - `rtl_counters` (function, line 891) `rtl_counters(&tx_frames, &rx_frames);`
-  - `kprintf` (function, line 892) `kprintf("rtl8139 iobase 0x%x\n", rtl_iobase());`
-  - `k_register_symbol` (function, line 926) `k_register_symbol("net_open", (void *)net_open);`
-  - `rtl_init` (function, line 934) `rtl_init();`
-  - `rtl_get_mac` (function, line 935) `rtl_get_mac(net_mac);`
+  - `vga_puts` (function, line 894) `vga_puts("net: no rtl8139 found\n");`
+  - `rtl_counters` (function, line 897) `rtl_counters(&tx_frames, &rx_frames);`
+  - `kprintf` (function, line 898) `kprintf("rtl8139 iobase 0x%x\n", rtl_iobase());`
+  - `k_register_symbol` (function, line 932) `k_register_symbol("net_open", (void *)net_open);`
+  - `rtl_init` (function, line 940) `rtl_init();`
+  - `rtl_get_mac` (function, line 941) `rtl_get_mac(net_mac);`
   - `NET_TCP_CLOSED` (macro, line 355) `#define NET_TCP_CLOSED`
   - `NET_TCP_SYN_SENT` (macro, line 357) `#define NET_TCP_SYN_SENT`
   - `NET_TCP_ESTABLISHED` (macro, line 358) `#define NET_TCP_ESTABLISHED`

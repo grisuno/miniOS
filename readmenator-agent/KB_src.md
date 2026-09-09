@@ -474,6 +474,20 @@
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 - Imported by: `progs/piano/piano.c`
 
+## progs/src/pollready.c
+- Layer: utility
+- Language: c
+- Symbols:
+  - `p_write` (function, line 25) `static long p_write(long fd, const char *s, long n)`
+  - `p_strlen` (function, line 29) `static unsigned long p_strlen(const char *s)`
+  - `p_puts` (function, line 35) `static void p_puts(long fd, const char *s)`
+  - `p_atoi` (function, line 39) `static int p_atoi(const char *s)`
+  - `p_parse_ip` (function, line 45) `static int p_parse_ip(const char *s, unsigned char out[4])`
+  - `lmain` (function, line 63) `int lmain(long argc, char **argv)`
+  - `volatile` (function, line 19) `__asm__ volatile("syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3), "r"(r10), "r"(r8) : "rcx", "r11", "memory");`
+  - `p_syscall6` (function, line 27) `return p_syscall6(1, fd, (long)s, n, 0, 0);`
+  - `__asm__` (function, line 119) `__asm__( ".global _start\n" "_start:\n" " movq (%rsp), %rdi\n" " leaq 8(%rsp), %rsi\n" " call lmain\n" " movl %eax, %edi\n" " movl $60, %eax\n" " syscall\n" " hlt\n" );`
+
 ## progs/src/sbtone.c
 - Layer: utility
 - Doc: sbtone.c — headless SB16 diagnostic (ring-3, no GUI).
