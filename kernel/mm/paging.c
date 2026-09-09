@@ -70,18 +70,6 @@ void mm_setup_protections(void) {
                  (pd_idx - lo) * 0x1000 / sizeof(unsigned long);
             pt[pt_off] = (fb_phys_base + p * 0x1000) | PT_USER_NX_ENTRY;
         }
-        /* TEMP-DEBUG: ground truth for the page just past 2 MB into the FB. */
-        {
-            unsigned long pv = fb_vaddr + 0x200000;
-            unsigned long pd_idx = pv >> PT_PD_INDEX_SHIFT;
-            unsigned long pt_off = (pv & 0x1FFFFF) >> 12;
-            unsigned long *pt = (unsigned long *)PT_USER_TABLES_ADDR +
-                                (pd_idx - lo) * 0x1000 / sizeof(unsigned long);
-            kprintf("fbmap: pages %lu fb v %lx phys %lx pd[89] %lx pd[90] %lx pte+2MB %lx lo %lu hi %lu\n",
-                    fb_pages, fb_vaddr, fb_phys_base,
-                    (unsigned long)pd[89], (unsigned long)pd[90],
-                    pt[pt_off], lo, hi);
-        }
     }
 
     {

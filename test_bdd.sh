@@ -420,6 +420,12 @@ expect ".globl add"
 expect "exit code: 0"
 expect "exit code: 12"
 
+scenario_smp "cvm minigcc compiles under SMP without crashing (128 KB JIT patches off-stack)" "run cvm/minigcc.cvm src/test.c > asm/tsmp.s
+cat asm/tsmp.s
+poweroff"
+expect ".globl add"
+expect "exit code: 0"
+
 scenario "self-hosted minigcc (compiled by minigcc, linked by ld) compiles inside the OS" "run bin/minigcc.elf src/test.c > asm/t.s
 run objects/ld.o -f elf -o bin/t.elf asm/t.s
 run bin/t.elf

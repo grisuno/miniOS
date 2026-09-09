@@ -293,25 +293,29 @@ $(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h kernel/cvm_host.c kernel.h \
                   $(CVM_DIR)/cvm_jit.c $(CVM_DIR)/cvm_jit.h \
                   $(CVM_DIR)/cvm_jit_x86.c $(CVM_DIR)/cvm_jit_x86.h \
                   $(CVM_DIR)/cvm_jit_help.c $(CVM_DIR)/cvm_jit_help.h
+# NOTE: -Os, not -O2. These five objects are ~100 KB of the ramdisk and
+# the kernel image ends just below USER_LOAD_BASE, so bytes matter more
+# than compiler speed here (it only shapes the JIT compiler itself, not
+# the code it generates, which runs once per loaded module).
 	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
 	      -DCVM_FREESTANDING -m64 -mno-red-zone \
-	      -fno-pic -O2 -I$(CVM_DIR) \
+	      -fno-pic -Os -I$(CVM_DIR) \
 	      -o $(OBJ_DIR)/cvm_core.o $(CVM_DIR)/cvm.c
 	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
 	      -DCVM_FREESTANDING -m64 -mno-red-zone \
-	      -fno-pic -O2 -I$(CVM_DIR) \
+	      -fno-pic -Os -I$(CVM_DIR) \
 	      -o $(OBJ_DIR)/cvm_host.o kernel/cvm_host.c
 	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
 	      -DCVM_FREESTANDING -m64 -mno-red-zone \
-	      -fno-pic -O2 -I$(CVM_DIR) \
+	      -fno-pic -Os -I$(CVM_DIR) \
 	      -o $(OBJ_DIR)/cvm_jit.o $(CVM_DIR)/cvm_jit.c
 	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
 	      -DCVM_FREESTANDING -m64 -mno-red-zone \
-	      -fno-pic -O2 -I$(CVM_DIR) \
+	      -fno-pic -Os -I$(CVM_DIR) \
 	      -o $(OBJ_DIR)/cvm_jit_x86.o $(CVM_DIR)/cvm_jit_x86.c
 	$(CC) -c -ffreestanding -nostdlib -D_GNU_SOURCE -DCVM_NO_MAIN -DCVM_JIT \
 	      -DCVM_FREESTANDING -m64 -mno-red-zone \
-	      -fno-pic -O2 -I$(CVM_DIR) \
+	      -fno-pic -Os -I$(CVM_DIR) \
 	      -o $(OBJ_DIR)/cvm_jit_help.o $(CVM_DIR)/cvm_jit_help.c
 	$(LD) -m elf_x86_64 -r -o $@ $(OBJ_DIR)/cvm_core.o $(OBJ_DIR)/cvm_host.o \
 	      $(OBJ_DIR)/cvm_jit.o $(OBJ_DIR)/cvm_jit_x86.o $(OBJ_DIR)/cvm_jit_help.o
