@@ -133,9 +133,27 @@ static void ap_delay(void) {
  * disabled (the BSP's smp_init enable covers only the BSP's own unit),
  * and with the SVR off the AP cannot receive IPIs at all, so its hlt
  * never wakes and it never claims a thread. */
+/* Per-AP LAPIC timer (boyscout fix for shared-timer SMP): when
+ * MINIOS_AP_TIMER is set, each AP programs its own periodic 100 Hz LAPIC
+ * timer (divide-by-16, vector 32) so scheduling no longer depends solely
+ * on the BSP IPI broadcast; the IPI stays as a fallback wakeup. The count
+ * assumes a ~1 GHz APIC bus (625000 ticks at div-16 ~= 10 ms); a future
+ * step calibrates per-CPU against the TSC at boot. Default off: masked. */
+#ifdef MINIOS_AP_TIMER
+#define LAPIC_TIMER_100HZ 625000u
+static void ap_lapic_timer_start(void) {
+    lapic_write(LAPIC_TIMER_DIV, LAPIC_TIMER_DIVIDE_16);
+    lapic_write(LAPIC_LVT_TIMER, LAPIC_TIMER_PERIODIC | 32);
+    lapic_write(LAPIC_TIMER_INIT, LAPIC_TIMER_100HZ);
+}
+#endif
 static void ap_lapic_timer_init(void) {
     lapic_write(LAPIC_SVR_OFF, lapic_read(LAPIC_SVR_OFF) | LAPIC_SVR_ENABLE);
+#ifdef MINIOS_AP_TIMER
+    ap_lapic_timer_start();
+#else
     lapic_write(LAPIC_LVT_TIMER, LAPIC_LVT_MASKED);
+#endif
     /* The AP has no PIC passthrough: mask both local pins so stray
      * line assertions cannot inject a bogus vector. */
     lapic_write(LAPIC_LVT_LINT0, LAPIC_LVT_MASKED);

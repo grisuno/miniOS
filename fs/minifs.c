@@ -1081,6 +1081,24 @@ int minifs_mount(void) {
         kprintf("minifs: no valid filesystem, run mkfs first\n");
         return -1;
     }
+    /* Boot-time fsck-lite (boyscout fix for no-journaling corruption):
+     * fail closed on an impossible superblock instead of mounting garbage
+     * and corrupting further. The full checker stays host-side
+     * (minifs_fsck.py); this is the in-guest gate. */
+    if (fs_sb.version != MINIFS_VERSION ||
+        fs_sb.block_size != MINIFS_BLOCK_SIZE ||
+        fs_sb.total_blocks < 16 || fs_sb.total_blocks > (1u << 20) ||
+        fs_sb.total_inodes == 0 || fs_sb.total_inodes > fs_sb.total_blocks * 64 ||
+        fs_sb.free_blocks > fs_sb.total_blocks ||
+        fs_sb.free_inodes > fs_sb.total_inodes ||
+        fs_sb.root_inode != MINIFS_ROOT_INODE ||
+        !(fs_sb.inode_bitmap_start < fs_sb.block_bitmap_start &&
+          fs_sb.block_bitmap_start < fs_sb.inode_table_start &&
+          fs_sb.inode_table_start < fs_sb.data_start &&
+          fs_sb.data_start < fs_sb.total_blocks)) {
+        kprintf("minifs: superblock failed self-check, refusing mount (run fsck on host)");
+        return -1;
+    }
 
     ibm_blocks = div_round_up(fs_sb.total_inodes, MINIFS_BLOCK_SIZE * 8);
     bbm_blocks = div_round_up(fs_sb.total_blocks, MINIFS_BLOCK_SIZE * 8);

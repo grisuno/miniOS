@@ -4,7 +4,7 @@
 
 These files have the most connections. Changes here have high blast radius.
 
-- `kernel.h` (score: 110.90)
+- `kernel.h` (score: 111.00)
 - `progs/doomgeneric/doomtype.h` (score: 101.40)
 - `progs/doomgeneric/doomdef.h` (score: 90.90)
 - `progs/doomgeneric/d_main.c` (score: 89.30)

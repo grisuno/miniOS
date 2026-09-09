@@ -48,6 +48,17 @@
   - `printf` (function, line 82) `printf("driver: ok\n");`
 - Depends on: `driver.h`, `kernel/string.c`
 
+## tests/test_fault.c
+- Layer: testing
+- Doc: test_fault.c -- fault-injection suite (boyscout gap #10).
+- Language: c
+- Symbols:
+  - `main` (function, line 14) `int main(void)`
+  - `vma_tree_init` (function, line 17) `vma_tree_init();`
+  - `CHECK` (function, line 23) `CHECK(i == VMA_MAX, "pool holds VMA_MAX nodes");`
+  - `CHECK` (macro, line 13) `#define CHECK(c, m)`
+- Depends on: `vma.h`
+
 ## tests/test_futex.c
 - Layer: testing
 - Doc: Docstring: Host test for kernel/futex.c (make test-futex).
@@ -207,3 +218,21 @@
   - `printf` (function, line 176) `printf("vma: ok\n");`
   - `CHECK` (macro, line 19) `#define CHECK(cond, msg)`
 - Depends on: `vma.h`
+
+## tests/test_vma_bench.c
+- Layer: testing
+- Doc: test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9).
+- Language: c
+- Symbols:
+  - `now_us` (function, line 12) `static long now_us(void)`
+  - `l_insert` (function, line 23) `static void l_insert(unsigned long b)`
+  - `l_find` (function, line 28) `static int l_find(unsigned long b)`
+  - `bench` (function, line 33) `static void bench(int n)`
+  - `main` (function, line 52) `int main(void)`
+  - `gettimeofday` (function, line 15) `gettimeofday(&tv, 0);`
+  - `vma_tree_init` (function, line 37) `vma_tree_init();`
+  - `vma_tree_insert` (function, line 40) `vma_tree_insert(&vma_live_root, 0x500000ul + (unsigned long)i * 0x1000, 0x1000);`
+  - `vma_tree_find` (function, line 43) `vma_tree_find(vma_live_root, 0x500000ul + (unsigned long)i * 0x1000);`
+  - `printf` (function, line 49) `printf("n=%d tree_insert=%.2fus/op tree_find=%.2fus/op list=%.2fus/op\n", n, (double)(t1-t0)/n, (double)(t2-t1)/n, (double)(t3-t2)/n);`
+  - `LIST_MAX` (macro, line 20) `#define LIST_MAX`
+- Depends on: `kernel/time.c`, `vma.h`

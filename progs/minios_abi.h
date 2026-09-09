@@ -33,7 +33,7 @@
  * The kernel ELF loader recomputes it and compares against the binary's
  * embedded copy.  A mismatch rejects the binary before execution.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 3
+#define MINIOS_ABI_VERSION 4
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -58,7 +58,10 @@
     MINIOS_SYS_FUTEX_WAIT      ^ \
     MINIOS_SYS_FUTEX_WAKE      ^ \
     MINIOS_SYS_SUBMIT_BATCH    ^ \
-    MINIOS_SYS_GETC_RAW          \
+    MINIOS_SYS_GETC_RAW      ^ \
+    MINIOS_SYS_GFX_PRESENT     ^ \
+    MINIOS_SYS_SECCOMP         ^ \
+    MINIOS_SYS_NICE              \
 )
 
 /* =========================================================================
@@ -226,8 +229,23 @@
 #define MINIOS_SYS_FUTEX_WAKE    227
 #define MINIOS_SYS_SUBMIT_BATCH  235
 #define MINIOS_SYS_GETC_RAW      236
+#define MINIOS_SYS_GFX_PRESENT   237
+#define MINIOS_SYS_SECCOMP       238
+#define MINIOS_SYS_NICE          239
 
 #define MINIOS_SYS_CLONE             300
+
+/* Generic framebuffer/window present ABI (boyscout fix for app-specific
+ * syscalls). DOOM_FRAME/NK_FRAME remain as compat numbers that route
+ * through the same compositor; new code uses GFX_PRESENT with a buffer id:
+ *   0 = 320x200 paletted game buffer (DOOM/Q2G path)
+ *   1 = 800x360 Nuklear buffer (NK path)
+ * GFX_SET_TITLE is already generic (renamed from Q2G_SET_TITLE). */
+#define MINIOS_GFX_BUF_GAME 0
+#define MINIOS_GFX_BUF_NK   1
+#define MINIOS_SYS_FRAMEBUFFER_COMMIT MINIOS_SYS_DOOM_FRAME
+#define MINIOS_SYS_WINDOW_PRESENT     MINIOS_SYS_NK_FRAME
+#define MINIOS_SYS_WINDOW_TITLE       MINIOS_SYS_GFX_SET_TITLE
 
 /* --- Compatibility aliases for runtime bindings --- */
 #define SYS_TIME_MS    MINIOS_SYS_TIME

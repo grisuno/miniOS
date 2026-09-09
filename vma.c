@@ -17,9 +17,19 @@ static vma_node_t vma_nil_store;
 vma_node_t *VMA_NIL;
 
 vma_node_t *vma_live_root;
+
+/* MRU cache (boyscout answer to the RB-vs-list critique): most workloads
+ * hit < 50 live VMAs with strong temporal locality (re-find after insert,
+ * munmap of a recent map). A one-entry cache serves those in O(1) while the
+ * tree keeps the O(log n) worst case that a sorted list cannot give.
+ * Invalidated on init and on delete of the cached base. */
+static vma_node_t *vma_mru = 0;
+static unsigned long vma_mru_base = 0;
 vma_node_t *vma_free_root;
 
 void vma_tree_init(void) {
+    vma_mru = 0;
+    vma_mru_base = 0;
     VMA_NIL = &vma_nil_store;
     VMA_NIL->red = 0;
     VMA_NIL->left = VMA_NIL->right = VMA_NIL->parent = VMA_NIL;
@@ -122,9 +132,11 @@ vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long
 }
 
 vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base) {
-    vma_node_t *x = root;
+    vma_node_t *x;
+    if (vma_mru && vma_mru_base == base && vma_mru != VMA_NIL) return vma_mru;
+    x = root;
     while (x != VMA_NIL) {
-        if (base == x->base) return x;
+        if (base == x->base) { vma_mru = x; vma_mru_base = base; return x; }
         else if (base < x->base) x = x->left;
         else x = x->right;
     }
@@ -200,6 +212,7 @@ static void vma_delete_fixup(vma_node_t **root, vma_node_t *x) {
 
 int vma_tree_delete(vma_node_t **root, unsigned long base) {
     vma_node_t *z = vma_tree_find(*root, base);
+    if (vma_mru_base == base) { vma_mru = 0; vma_mru_base = 0; }
     if (z == VMA_NIL) return -1;
     vma_node_t *y = z;
     vma_node_t *x;

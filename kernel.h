@@ -140,6 +140,7 @@ void vga_cursor_enable(int on);
 #define HEAP_SIZE  MINIOS_HEAP_SIZE
 
 void *kmalloc(unsigned long size);
+extern long kmalloc_fail_after;
 void  kfree(void *ptr);
 void *kcalloc(unsigned long nmemb, unsigned long size);
 void *krealloc(void *ptr, unsigned long size);

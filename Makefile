@@ -94,6 +94,24 @@ QEMU_ACCEL  =
 # KASLR randomizes the kernel image's physical base on every boot. Disable
 # with `make ENABLE_KASLR=0` when a deterministic physical layout is wanted
 # (e.g. register-level debugging of the boot path).
+# Boyscout hardening flags (see CLAUDE.md critique response):
+#   ENABLE_TLS=0 builds without the in-kernel TLS engine (syscalls 201-203
+#     return -ENOSYS), shrinking ring-0 attack surface; userspace TLS over
+#     plain sockets is the long-term direction.
+#   ENABLE_AP_TIMER=1 gives each AP its own periodic LAPIC timer instead of
+#     relying solely on the BSP IPI broadcast (default 0 = IPI mode).
+ENABLE_TLS ?= 1
+ENABLE_AP_TIMER ?= 0
+ifeq ($(ENABLE_TLS),0)
+TLS_FLAG = -DMINIOS_NO_TLS
+else
+TLS_FLAG =
+endif
+ifeq ($(ENABLE_AP_TIMER),1)
+AP_TIMER_FLAG = -DMINIOS_AP_TIMER
+else
+AP_TIMER_FLAG =
+endif
 ENABLE_KASLR ?= 1
 ifeq ($(ENABLE_KASLR),1)
 KASLR_FLAG = -DKASLR
@@ -114,7 +132,7 @@ $(KASLR_STAMP): kaslr-flag-force
 CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
               -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector \
-              -fno-omit-frame-pointer -g \
+              -fno-omit-frame-pointer -g $(TLS_FLAG) $(AP_TIMER_FLAG) \
               -I. -Iarch/x86/boot -Ithird_party -Ithird_party/stb -Ithird_party/xxhash \
               -I$(PROGS_DIR)
 
@@ -948,6 +966,19 @@ vma_test: tests/test_vma.c vma.c vma.h
 
 test-vma: vma_test
 	$(TOOLS_DIR)/vma_test
+
+# VMA benchmark (informational) + fault-injection suite (boyscout gaps 9-10).
+vma_bench: tests/test_vma_bench.c vma.c vma.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/vma_bench tests/test_vma_bench.c vma.c
+
+test-vma-bench: vma_bench
+	$(TOOLS_DIR)/vma_bench
+
+fault_test: tests/test_fault.c vma.c vma.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/fault_test tests/test_fault.c vma.c
+
+test-fault: fault_test
+	$(TOOLS_DIR)/fault_test
 
 # Sync primitives host test (tests/test_sync.c + kernel/sync.c).
 # sync.c is scheduler-adjacent but keeps no other kernel dependency, so it

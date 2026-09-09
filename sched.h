@@ -47,8 +47,22 @@ typedef struct {
     int         clone_flags;
     int         wq_next;        /* next pid in a wait queue, WQ_NONE if none */
     int         exited;         /* do_exit ran: kstack/pt already freed */
+    int         nice;           /* -20 (high prio) .. +19 (low prio), default 0 */
+    unsigned long vruntime;     /* fair-share virtual runtime for sched_next */
+    unsigned int seccomp_deny;  /* bit (n-200) denies MiniOS syscall n 200..231 */
     char        name[32];
 } proc_t;
+/* Seccomp-basic: bit for MiniOS syscall n in proc_t.seccomp_deny. Only the
+ * 200..231 window is filterable (the framebuffer/audio/spawn/TLS surface);
+ * Linux-ABI numbers are never filtered so a filter cannot break exit. */
+#define SECCOMP_MIN 200
+#define SECCOMP_MAX 231
+#define SECCOMP_BIT(n) (1u << ((unsigned)(n) - SECCOMP_MIN))
+/* Seccomp modes for SYS_SECCOMP (238): deny one syscall, allow one back,
+ * or deny the whole filterable window except an explicit keep mask. */
+#define SECCOMP_OP_DENY_ONE  1
+#define SECCOMP_OP_ALLOW_ONE 2
+#define SECCOMP_OP_DENY_ALL  3
 
 /* clone() flags */
 #define CLONE_VM    0x00000100  /* share address space (same CR3) */
@@ -186,6 +200,10 @@ void     smp_ap_idle_loop(void);
 int      proc_create(const char *name, int parent_pid);
 proc_t  *proc_get(int pid);
 void     schedule(void);
+int      sched_set_nice(int pid, int nice);
+int      seccomp_deny_one(int pid, int n);
+int      seccomp_allow_one(int pid, int n);
+int      seccomp_denied(int pid, int n);
 void     switch_to(proc_t *prev, proc_t *next);
 void     switch_to_notrap(proc_t *prev, proc_t *next);
 void     switch_save_only(proc_t *prev);

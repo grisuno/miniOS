@@ -58,7 +58,7 @@ static inline unsigned long read_cr3(void) {
  * (it cannot use C here).  If either assert fires, update the immediates
  * in that trampoline to match. */
 _Static_assert(__builtin_offsetof(proc_t, kstack) == 168, "proc kstack off");
-_Static_assert(sizeof(proc_t) == 248, "proc size");
+_Static_assert(sizeof(proc_t) == 264, "proc size");
 /* The AP stub loads the GDT with the SMP limit; it must cover one TSS
  * descriptor (two slots) per CPU past the 5 stage-2 entries. */
 _Static_assert((5 + 2 * MAX_CPUS) * 8 == GDT64_SMP_BYTES, "GDT SMP size");
@@ -306,20 +306,59 @@ static void sched_save_preempt(proc_t *cur, trap_frame_t *frame,
     cur->ctx.rsp = (uint64_t)dst;
 }
 
-/* Round-robin scan with sched_lock HELD.  Returns a claimed (PROC_RUNNING)
+/* Fair-share scan with sched_lock HELD.  Returns a claimed (PROC_RUNNING)
  * pid or -1.  vm_only restricts the pick to CLONE_VM threads, which is
- * what APs run: same CR3, no brk/mmap view switch, no TLB work. */
+ * what APs run: same CR3, no brk/mmap view switch, no TLB work.
+ * Boyscout fix for static round-robin starvation: every READY candidate is
+ * compared by vruntime (plus nice bias), the minimum wins, and the winner
+ * is charged one quantum weighted by its nice. A CPU-bound nice-0 task can
+ * no longer starve an interactive nice--10 task; equal nice degrades to
+ * round-robin order via the rotating start. */
 static int sched_next_locked(int start, int vm_only) {
-    int next = start;
+    int best = -1;
+    unsigned long best_key = 0;
     int t;
     for (t = 0; t < MAX_PROCS; t++) {
-        next = (next + 1) % MAX_PROCS;
-        if (procs[next].state != PROC_READY) continue;
-        if (vm_only && !(procs[next].clone_flags & CLONE_VM)) continue;
-        procs[next].state = PROC_RUNNING;
-        return next;
+        int cand = (start + 1 + t) % MAX_PROCS;
+        unsigned long key;
+        if (procs[cand].state != PROC_READY) continue;
+        if (vm_only && !(procs[cand].clone_flags & CLONE_VM)) continue;
+        key = procs[cand].vruntime + (unsigned long)(procs[cand].nice + 20) * 8u;
+        if (best < 0 || key < best_key) { best = cand; best_key = key; }
     }
-    return -1;
+    if (best < 0) return -1;
+    procs[best].state = PROC_RUNNING;
+    procs[best].vruntime += 64u + (unsigned long)(procs[best].nice + 20) * 4u;
+    return best;
+}
+/* Set scheduling niceness for pid (-20..19, clamped). Returns 0 or -1. */
+int sched_set_nice(int pid, int nice) {
+    if (pid < 0 || pid >= MAX_PROCS) return -1;
+    if (procs[pid].state == PROC_FREE) return -1;
+    if (nice < -20) nice = -20;
+    if (nice > 19) nice = 19;
+    procs[pid].nice = nice;
+    return 0;
+}
+/* Seccomp-basic helpers: deny/allow one MiniOS syscall for pid. */
+int seccomp_deny_one(int pid, int n) {
+    if (pid < 0 || pid >= MAX_PROCS) return -1;
+    if (procs[pid].state == PROC_FREE) return -1;
+    if (n < SECCOMP_MIN || n > SECCOMP_MAX) return -1;
+    procs[pid].seccomp_deny |= SECCOMP_BIT(n);
+    return 0;
+}
+int seccomp_allow_one(int pid, int n) {
+    if (pid < 0 || pid >= MAX_PROCS) return -1;
+    if (procs[pid].state == PROC_FREE) return -1;
+    if (n < SECCOMP_MIN || n > SECCOMP_MAX) return -1;
+    procs[pid].seccomp_deny &= ~SECCOMP_BIT(n);
+    return 0;
+}
+int seccomp_denied(int pid, int n) {
+    if (pid < 0 || pid >= MAX_PROCS) return 0;
+    if (n < SECCOMP_MIN || n > SECCOMP_MAX) return 0;
+    return (procs[pid].seccomp_deny & SECCOMP_BIT(n)) != 0;
 }
 
 /* Claim one READY thread for this CPU's idle loop (the AP only claims
@@ -749,6 +788,9 @@ int proc_create(const char *name, int parent_pid) {
 
     proc_t *p = &procs[pid];
     kmemset(p, 0, sizeof(proc_t));
+    p->nice = 0;
+    p->vruntime = 0;
+    p->seccomp_deny = 0;
     p->pid = pid;
     p->state = PROC_READY;
     p->parent_pid = parent_pid;

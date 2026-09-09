@@ -86,11 +86,11 @@
   - `minifs_get_lba_start` (function, line 1046) `unsigned int minifs_get_lba_start(void)`
   - `minifs_is_mounted` (function, line 1048) `int minifs_is_mounted(void)`
   - `minifs_mount` (function, line 1049) `int minifs_mount(void)`
-  - `minifs_mkfs` (function, line 1123) `int minifs_mkfs(unsigned int total_blocks)`
-  - `minifs_sync` (function, line 1194) `int minifs_sync(void)`
-  - `minifs_file_open` (function, line 1209) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
-  - `minifs_file_close` (function, line 1223) `int minifs_file_close(MiniFSFile *f)`
-  - `minifs_get_total_blocks` (function, line 1230) `unsigned int minifs_get_total_blocks(void)`
+  - `minifs_mkfs` (function, line 1141) `int minifs_mkfs(unsigned int total_blocks)`
+  - `minifs_sync` (function, line 1212) `int minifs_sync(void)`
+  - `minifs_file_open` (function, line 1227) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
+  - `minifs_file_close` (function, line 1241) `int minifs_file_close(MiniFSFile *f)`
+  - `minifs_get_total_blocks` (function, line 1248) `unsigned int minifs_get_total_blocks(void)`
   - `kmemset` (function, line 80) `kmemset(buf, 0, MINIFS_BLOCK_SIZE);`
   - `kmemcpy` (function, line 82) `kmemcpy(buf, &fs_sb, sizeof(MiniFSSuper));`
   - `block_write` (function, line 83) `return block_write(0, buf);`

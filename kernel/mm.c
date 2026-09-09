@@ -14,8 +14,14 @@ void kallocator_init(void) {
     dlmalloc_init();
 }
 
+/* Fault-injection hook for stress testing (boyscout gap #10): when
+ * kmalloc_fail_after >= 0, the next allocations fail deterministically.
+ * Host and BDD suites drive OOM paths through it; production leaves it at -1. */
+long kmalloc_fail_after = -1;
 void *kmalloc(unsigned long size) {
     if (size == 0) return 0;
+    if (kmalloc_fail_after == 0) return 0;
+    if (kmalloc_fail_after > 0) kmalloc_fail_after--;
     return dlmalloc_malloc(size);
 }
 

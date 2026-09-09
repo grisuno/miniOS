@@ -142,6 +142,10 @@ void *elf_load(void *data, unsigned size) {
     const char *strtab = 0;
     Elf64_Xword strtab_size = 0;
 
+    /* Boyscout cap: a hostile .o must not drive an unbounded kmalloc.
+     * The toolchain objects are < 1 MB; 4 MB fails closed with a diagnostic
+     * instead of draining the 192 MB kernel heap. */
+    #define ETREL_IMAGE_MAX (4u * 1024u * 1024u)
     unsigned total_alloc = 0;
     unsigned i;
     for (i = 0; i < shnum; i++) {
@@ -166,6 +170,11 @@ void *elf_load(void *data, unsigned size) {
                 (Elf64_Xword)0xFFFFFFFFu - 32 - (Elf64_Xword)total_alloc)
                 return 0;
             total_alloc += (unsigned)shdrs[i].sh_size + 32;
+            if (total_alloc > ETREL_IMAGE_MAX) {
+                kprintf("load: ET_REL image exceeds %u bytes, refusing",
+                        ETREL_IMAGE_MAX);
+                return 0;
+            }
         }
     }
     if (!symtab || !strtab) {

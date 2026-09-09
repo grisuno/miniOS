@@ -78,18 +78,33 @@ static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)
 }
 static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
+#ifdef MINIOS_NO_TLS
+    (void)a1; (void)a2;
+    return -38;
+#else
     if (!user_str_ok((unsigned long)a2, 255)) return EFAULT;
     return tls_sys_handshake(a1, a2);
+#endif
 }
 static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
+#ifdef MINIOS_NO_TLS
+    (void)a1; (void)a2; (void)a3;
+    return -38;
+#else
     if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
     return tls_sys_send(a1, a2, a3);
+#endif
 }
 static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
+#ifdef MINIOS_NO_TLS
+    (void)a1; (void)a2; (void)a3;
+    return -38;
+#else
     if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
     return tls_sys_recv(a1, a2, a3);
+#endif
 }
 static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
@@ -255,7 +270,7 @@ static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, lo
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     const char *t = (const char *)(unsigned long)a1;
     if (!t) return EFAULT;
-    if (!user_range_ok((unsigned long)t, 1)) return EFAULT;
+    if (!user_str_ok((unsigned long)t, 31)) return EFAULT;
     extern const char *gfx_win_title;
     static char title_buf[32];
     int i;
@@ -340,6 +355,55 @@ static long batch_kdispatch(uint32_t opcode) {
     return BATCH_ERR_OPCODE;
 }
 
+/* Generic window present (boyscout fix for app-specific syscalls):
+ * a1 = buffer id (0 = 320x200 game buffer, 1 = 800x360 NK buffer),
+ * a2 = optional user int[2] for the content origin (NK path only).
+ * DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
+static long sys_minios_gfx_present(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a1 == 1) {
+        vga_fb_blit_nk_window();
+        if (a2) {
+            int *o = (int *)(unsigned long)a2;
+            if (!user_range_ok((unsigned long)a2, 2 * sizeof(int))) return EFAULT;
+            o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
+        }
+        return 0;
+    }
+    vga_fb_blit_gfx_window();
+    return 0;
+}
+/* Seccomp-basic (238): a1 = op (1 deny-one, 2 allow-one, 3 deny-all),
+ * a2 = syscall number (ops 1-2). Applies to current_pid only; the
+ * 200..231 window is filterable, Linux numbers never are. */
+static long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    int pid = current_pid;
+    if (a1 == SECCOMP_OP_DENY_ONE) return seccomp_deny_one(pid, (int)a2);
+    if (a1 == SECCOMP_OP_ALLOW_ONE) return seccomp_allow_one(pid, (int)a2);
+    if (a1 == SECCOMP_OP_DENY_ALL) {
+        int n;
+        if (pid < 0 || pid >= MAX_PROCS) return -1;
+        if (procs[pid].state == PROC_FREE) return -1;
+        for (n = SECCOMP_MIN; n <= SECCOMP_MAX; n++) procs[pid].seccomp_deny |= SECCOMP_BIT(n);
+        procs[pid].seccomp_deny &= ~SECCOMP_BIT(MINIOS_SYS_TIME);
+        return 0;
+    }
+    return -22;
+}
+/* Nice (239): a1 = new nice when a2 != 0, else query. Clamped -20..19. */
+static long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    int pid = current_pid;
+    if (pid < 0 || pid >= MAX_PROCS || procs[pid].state == PROC_FREE) return -3;
+    if (a2) {
+        int n = (int)a1;
+        if (n < -20) n = -20;
+        if (n > 19) n = 19;
+        procs[pid].nice = n;
+    }
+    return procs[pid].nice;
+}
 /* Raw keystroke read for fullscreen ring-3 programs (vedit): one byte
  * from the serial + PS/2 multiplexer with no line buffering, no echo and
  * no scrollback detour. a1 == 0 polls (-1 when idle, so user space can
@@ -404,6 +468,9 @@ static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] =
     [MINIOS_SYS_FUTEX_WAKE - MINIOS_SYSCALL_BASE] = { sys_minios_futex_wake, "futex_wake" },
     [MINIOS_SYS_SUBMIT_BATCH - MINIOS_SYSCALL_BASE] = { sys_minios_submit_batch, "submit_batch" },
     [MINIOS_SYS_GETC_RAW - MINIOS_SYSCALL_BASE] = { sys_minios_getc_raw, "getc_raw" },
+    [MINIOS_SYS_GFX_PRESENT - MINIOS_SYSCALL_BASE] = { sys_minios_gfx_present, "gfx_present" },
+    [MINIOS_SYS_SECCOMP - MINIOS_SYSCALL_BASE] = { sys_minios_seccomp, "seccomp" },
+    [MINIOS_SYS_NICE - MINIOS_SYSCALL_BASE] = { sys_minios_nice, "nice" },
 };
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };
@@ -924,7 +991,13 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
      * Linux binary could ever open or exit. */
     if (n >= MINIOS_SYSCALL_BASE && n < MINIOS_SYSCALL_BASE + MINIOS_SYSCALL_COUNT) {
         const minios_syscall_entry_t *e = &minios_syscall_table[n - MINIOS_SYSCALL_BASE];
-        if (e->fn) return e->fn(a1, a2, a3, a4, a5, a6);
+        if (e->fn) {
+            if (n != MINIOS_SYS_SECCOMP && n != MINIOS_SYS_NICE &&
+                n >= SECCOMP_MIN && n <= SECCOMP_MAX &&
+                seccomp_denied(current_pid, (int)n))
+                return -1;
+            return e->fn(a1, a2, a3, a4, a5, a6);
+        }
     }
     switch (n) {
     /* 0, 1, 20, 2 now live in linux_syscall_table; 257 shares
@@ -1165,6 +1238,14 @@ static int k_syscall_spawn(const char *path, const char *redirect,
 
     int rc = EFAULT;
     if (etype == ET_REL) {
+        const char *rp = resolved;
+        if (rp[0] == '/') rp++;
+        if (!(rp[0]=='o'&&rp[1]=='b'&&rp[2]=='j'&&rp[3]=='e'&&rp[4]=='c'&&rp[5]=='t'&&rp[6]=='s'&&rp[7]=='/')) {
+            kprintf("SPAWN: refusing untrusted ET_REL");
+            kfree(data);
+            if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
+            return EFAULT;
+        }
         prog_entry_t entry = elf_load((void *)data, data_size);
         kprintf("SPAWN: ET_REL entry=%lx argc=%d\n",
                 (unsigned long)entry, child_argc);

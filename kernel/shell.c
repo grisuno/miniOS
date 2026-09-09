@@ -88,6 +88,7 @@ static int  shell_cur;
 static void shell_prompt(void) { vga_puts("\nminiOS> "); }
 
 void shell_exec_builtin(int argc, char **argv);
+static int etrel_path_trusted(const char *full);
 
 /* Strict decimal parse for the `vol` builtin: the whole argument must be an
  * optional sign followed by at least one digit, and the value is clamped to
@@ -970,8 +971,12 @@ static int shell_load(const char *fname, char *progname_out, void **entry_out) {
     if (data_size >= 4 && data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F') {
         Elf64_Half etype = ((Elf64_Ehdr *)data)->e_type;
         if (etype == ET_REL) {
-            entry = elf_load(data, data_size);
-            if (entry) { k_register_program(progname_out, (prog_entry_t)entry); kind = 1; }
+            if (!etrel_path_trusted(resolved)) {
+                kprintf("load: refusing untrusted ET_REL '%s'", resolved);
+            } else {
+                entry = elf_load(data, data_size);
+                if (entry) { k_register_program(progname_out, (prog_entry_t)entry); kind = 1; }
+            }
         } else if (etype == ET_EXEC || etype == ET_DYN) {
             entry = load_exec_elf(data, data_size);
             if (entry) { k_register_process(progname_out, entry); kind = 2; }
@@ -1066,17 +1071,33 @@ static int shell_resolve_run(const char *name, char *out, unsigned cap) {
     return 0;
 }
 
+/* ET_REL trust gate (boyscout fix for ring-0 .o without validation):
+ * relocatables execute as kernel extensions, so only the toolchain
+ * directory owns them. objects/ prefix (or the bare cvm interpreter
+ * bootstrap) is trusted; any other ET_REL path is refused with a
+ * diagnostic pointing at 'ld -f elf'. ET_EXEC/ET_DYN/CVM are unaffected. */
+static int etrel_path_trusted(const char *full) {
+    const char *p = full;
+    if (p[0] == '/') p++;
+    if (kstrncmp(p, "objects/", 8) == 0) return 1;
+    if (kstrcmp(p, "objects/cvm.o") == 0) return 1;
+    return 0;
+}
 /* Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`.
  * argv[0] is the program name the program sees. Returns the exit code, or -1
  * when the buffer is not a loadable ELF. The image is not registered; it is
  * relocated and executed fresh, then dropped. */
-static int shell_run_elf_buf(const char *data, unsigned size, int argc,
-                             char **argv) {
+static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+                                  char **argv, const char *srcpath) {
     if (!data || size < EI_NIDENT ||
         !(data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F'))
         return -1;
     Elf64_Half etype = ((const Elf64_Ehdr *)data)->e_type;
     if (etype == ET_REL) {
+        if (srcpath && !etrel_path_trusted(srcpath)) {
+            kprintf("run: refusing untrusted ET_REL '%s': link to ELF with 'ld -f elf'", srcpath);
+            return -1;
+        }
         prog_entry_t entry = elf_load((void *)data, size);
         if (!entry) return -1;
         return k_run_rel(entry, argc, argv);
@@ -1097,7 +1118,7 @@ static int shell_run_elf_file(const char *full, int argc, char **argv) {
     unsigned char *data = kmalloc(f->size ? f->size : 1);
     if (!data) { kprintf("run: out of memory\n"); return -1; }
     ramdisk_read(f, data, 0, f->size);
-    int ret = shell_run_elf_buf((const char *)data, f->size, argc, argv);
+    int ret = shell_run_elf_buf_path((const char *)data, f->size, argc, argv, full);
     kfree(data);
     return ret;
 }
@@ -1145,7 +1166,7 @@ static int shell_run_elf_minifs(const char *name, int argc, char **argv) {
     unsigned char *buf = (unsigned char *)kmalloc(st.size);
     if (!buf) return -1;
     minifs_read(ino, buf, 0, st.size);
-    int ret = shell_run_elf_buf((const char *)buf, st.size, argc, argv);
+    int ret = shell_run_elf_buf_path((const char *)buf, st.size, argc, argv, name);
     kfree(buf);
     return ret;
 }
@@ -1804,6 +1825,27 @@ void shell_exec_builtin(int argc, char **argv) {
                     hits, steals, drops);
         }
         kprintf("  bad_gs=%u\n", smp_dbg_bad_gs);
+    }
+    else if (kstrcmp(argv[0], "nice") == 0) {
+        if (argc > 1) {
+            int n = (int)katol(argv[1]);
+            if (n < -20) n = -20;
+            if (n > 19) n = 19;
+            procs[current_pid < 0 ? 0 : current_pid].nice = n;
+        }
+        kprintf("nice: %d", procs[current_pid < 0 ? 0 : current_pid].nice);
+    }
+    else if (kstrcmp(argv[0], "seccomp") == 0) {
+        int pid = current_pid < 0 ? 0 : current_pid;
+        if (argc > 2 && kstrcmp(argv[1], "deny") == 0) {
+            int n = (int)katol(argv[2]);
+            kprintf("seccomp: deny %d -> %d", n, seccomp_deny_one(pid, n));
+        } else if (argc > 2 && kstrcmp(argv[1], "allow") == 0) {
+            int n = (int)katol(argv[2]);
+            kprintf("seccomp: allow %d -> %d", n, seccomp_allow_one(pid, n));
+        } else {
+            kprintf("seccomp: mask=%lx", (unsigned long)procs[pid].seccomp_deny);
+        }
     }
     else if (kstrcmp(argv[0], "echo") == 0) {
         int i;
