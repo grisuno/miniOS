@@ -269,4 +269,13 @@ void     timer_tick(void);
 uint64_t pt_clone_user(uint64_t parent_cr3);
 void     pt_free_user(uint64_t cr3);
 
+/* ---- Multitask spawn (isolated ET_EXEC, preemptive on BSP) ----
+ * Builds a non-CLONE_VM process with a fresh user window, loads the
+ * ELF image into it and leaves it READY for the next tick. The
+ * caller (shell mrun) reaps it with do_waitpid. Returns pid or -1.
+ * Programs using mmap/VMA or expecting a shared fd table beyond
+ * O_RDONLY stdin-style use are best-effort in this revision. */
+int      proc_spawn_elf(const char *name, void *data, unsigned size,
+                       int argc, char **argv);
+
 #endif

@@ -531,6 +531,12 @@ typedef struct {
 
 void *elf_load(void *data, unsigned size);       /* ET_REL relocatable .o */
 void *load_exec_elf(void *data, unsigned size);  /* ET_EXEC / ET_DYN */
+void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
+                         unsigned long *brk_out);
+unsigned long pt_clone_user_empty(void);
+int mm_user_ensure_page(unsigned long cr3, unsigned long va);
+int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3,
+                      unsigned long va);
 
 /* ========== Linux syscall interface ========== */
 void syscall_init(void);

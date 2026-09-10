@@ -507,3 +507,84 @@ void *load_exec_elf(void *data, unsigned size) {
     }
     return (void *)(base + e->e_entry);
 }
+
+/* ---- Isolated loader (multitask foundation) ----
+ *
+ * Same validation as load_exec_elf, but the segments land in the user
+ * window of `cr3` (built by pt_clone_user_empty) instead of the live
+ * one. Pages are allocated with mm_user_ensure_page and filled under
+ * a short CR3 switch with interrupts off; the caller's address space
+ * is restored before return. Globals (g_brk, VMA) stay untouched: the
+ * caller owns the per-process brk, reported via brk_out. Shared
+ * graphics slots are never written. Returns the entry VA, or 0 with
+ * a diagnostic. No relocation fixups: static ET_EXEC binaries load
+ * identity-clean; ET_DYN without RELA still runs when linked
+ * non-PIE by the MiniOS toolchain path. */
+void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
+                         unsigned long *brk_out) {
+    Elf64_Ehdr *e = (Elf64_Ehdr *)data;
+    unsigned long base;
+    Elf64_Phdr *ph;
+    struct exec_range xr[ELF_MAX_SEGMENTS];
+    unsigned nxr = 0;
+    unsigned long max_end = 0;
+    unsigned long saved_cr3;
+    unsigned i;
+    if (!data || !brk_out) return 0;
+    if (cr3 == 0) { kprintf("exec_into: null cr3\n"); return 0; }
+    if (size < sizeof(Elf64_Ehdr)) { kprintf("exec_into: too small\n"); return 0; }
+    if (e->e_ident[0] != 0x7F || e->e_ident[1] != 'E' ||
+        e->e_ident[2] != 'L'  || e->e_ident[3] != 'F') { kprintf("exec_into: bad magic\n"); return 0; }
+    if (e->e_machine != EM_X86_64) { kprintf("exec_into: bad machine\n"); return 0; }
+    if (e->e_type != ET_EXEC && e->e_type != ET_DYN) { kprintf("exec_into: bad type\n"); return 0; }
+    if (e->e_phentsize < sizeof(Elf64_Phdr)) { kprintf("exec_into: phentsize\n"); return 0; }
+    if (e->e_phoff > size) { kprintf("exec_into: phoff\n"); return 0; }
+    if (e->e_phnum > (size - e->e_phoff) / e->e_phentsize) { kprintf("exec_into: phnum\n"); return 0; }
+    if (e->e_phnum > ELF_MAX_SEGMENTS) { kprintf("exec_into: too many segs\n"); return 0; }
+    base = (e->e_type == ET_DYN) ? USER_LOAD_BASE : 0;
+    ph = (Elf64_Phdr *)((char *)data + e->e_phoff);
+    __asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));
+    for (i = 0; i < e->e_phnum; i++) {
+        unsigned long dst;
+        unsigned long p;
+        if (ph[i].p_type != PT_LOAD) continue;
+        if (ph[i].p_vaddr > USER_LOAD_END - base) { kprintf("exec_into: vaddr big\n"); goto fail; }
+        dst = base + ph[i].p_vaddr;
+        if (dst < USER_LOAD_BASE || dst >= USER_LOAD_END) { kprintf("exec_into: outside window\n"); goto fail; }
+        if (ph[i].p_memsz > USER_LOAD_END - dst) { kprintf("exec_into: memsz\n"); goto fail; }
+        if (ph[i].p_filesz > USER_LOAD_END - dst) { kprintf("exec_into: filesz\n"); goto fail; }
+        if (ph[i].p_offset > size || ph[i].p_filesz > size - ph[i].p_offset) { kprintf("exec_into: beyond file\n"); goto fail; }
+        for (p = dst & ~0xFFFUL; p < dst + ph[i].p_memsz; p += 0x1000)
+            if (mm_user_ensure_page(cr3, p)) { kprintf("exec_into: OOM at %lx\n", p); goto fail; }
+        __asm__ volatile("cli");
+        __asm__ volatile("mov %0, %%cr3" :: "r"((unsigned long)cr3) : "memory");
+        kmemcpy((void *)dst, (char *)data + ph[i].p_offset,
+                (unsigned long)ph[i].p_filesz);
+        if (ph[i].p_memsz > ph[i].p_filesz)
+            kmemset((void *)(dst + ph[i].p_filesz), 0,
+                    (unsigned long)(ph[i].p_memsz - ph[i].p_filesz));
+        __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
+        __asm__ volatile("sti");
+        if (ph[i].p_filesz > 0 && (ph[i].p_flags & PF_X) && nxr < ELF_MAX_SEGMENTS) {
+            xr[nxr].start = dst;
+            xr[nxr].end   = dst + ph[i].p_filesz;
+            nxr++;
+        }
+        if (dst + ph[i].p_memsz > max_end) max_end = dst + ph[i].p_memsz;
+    }
+    if (max_end == 0) { kprintf("exec_into: no segments\n"); goto fail; }
+    for (i = 0; i < nxr; i++)
+        mm_user_set_exec(xr[i].start, xr[i].end, cr3);
+    {
+        unsigned long b = ALIGN_UP(max_end, 0x1000);
+        unsigned long lim = USER_BRK_END;
+        if (DOOM_BACKBUF_ADDR < lim) lim = DOOM_BACKBUF_ADDR;
+        if (b > lim) { kprintf("exec_into: brk over cap\n"); goto fail; }
+        *brk_out = b;
+    }
+    return (void *)(base + e->e_entry);
+fail:
+    __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
+    __asm__ volatile("sti");
+    return 0;
+}

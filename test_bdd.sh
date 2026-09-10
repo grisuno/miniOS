@@ -337,6 +337,13 @@ scenario "a bare .elf name runs directly from bin/ without run" "fib.elf
 poweroff"
 expect "exit code: 55"
 
+scenario "mrun runs isolated ELFs concurrently" "mrun bin/fib.elf bin/lxhello.elf
+poweroff"
+expect "started as pid"
+expect "mrun: pid 1 exit code: 55"
+expect "Hello"
+expect "powering off"
+
 scenario "a bare .cvm name runs directly from cvm/ without run" "w1.cvm
 poweroff"
 expect "hola cvm"

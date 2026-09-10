@@ -1253,6 +1253,120 @@ static int shell_run_file(const char *name, int argc, char **argv) {
     return shell_run_elf_minifs(name, argc, argv);
 }
 
+/* ---- Multitask run (mrun): concurrent isolated ELFs ----
+ *
+ * `mrun a.elf b.elf ...` loads each ET_EXEC/ET_DYN into its own user
+ * window (proc_spawn_elf) and waits for all of them. The 100 Hz timer
+ * preempts the BSP across the READY set, so small programs overlap in
+ * time instead of running one after another. ET_REL is refused (ring-0
+ * extensions are not multitask-safe); `.cvm` keeps the `run` path.
+ * Best-effort limits of this revision: no mmap/VMA isolation between
+ * the children (programs that mmap concurrently share the global VMA
+ * tree) and one shared fd table; exit codes print per program. */
+static int shell_read_elf_bytes(const char *name, unsigned char **out,
+                                unsigned *out_size) {
+    char full[RAMDISK_FNAME_LEN];
+    RDFile *f;
+    if (shell_resolve_run(name, full, sizeof(full))) {
+        f = ramdisk_open(full);
+        if (f) {
+            unsigned char *data = kmalloc(f->size ? f->size : 1);
+            if (!data) return -1;
+            ramdisk_read(f, data, 0, f->size);
+            *out = data;
+            *out_size = f->size;
+            return 0;
+        }
+    }
+    if (minifs_is_mounted()) {
+        char resolved[RAMDISK_FNAME_LEN];
+        char cand[RAMDISK_FNAME_LEN];
+        int ino = -1;
+        if (fs_resolve(name, resolved, sizeof(resolved)))
+            ino = minifs_resolve_path(resolved);
+        if (ino < 0) ino = minifs_resolve_path(name);
+        if (ino < 0) {
+            const char *base = name;
+            const char *p;
+            for (p = name; *p; p++)
+                if (*p == '/') base = p + 1;
+            ino = minifs_resolve_path(base);
+        }
+        if (ino < 0 && !kstrchr(name, '/')) {
+            ino = minifs_resolve_path(name);
+            if (ino < 0) {
+                const ShellRunDir *pref = shell_run_dir_for(name);
+                unsigned long pref_off = (unsigned long)(pref - shell_run_dirs);
+                for (int i = 0; i < SHELL_RUN_DIRS; i++) {
+                    const ShellRunDir *d =
+                        &shell_run_dirs[(pref_off + (unsigned long)i) % SHELL_RUN_DIRS];
+                    unsigned dl = (unsigned)kstrlen(d->dir);
+                    unsigned nl = (unsigned)kstrlen(name);
+                    if (dl + nl + 1 > sizeof(cand)) continue;
+                    kmemcpy(cand, d->dir, dl);
+                    kmemcpy(cand + dl, name, nl + 1);
+                    ino = minifs_resolve_path(cand);
+                    if (ino >= 0) break;
+                }
+            }
+        }
+        if (ino >= 0) {
+            MiniFSInode st;
+            unsigned char *buf;
+            if (minifs_stat(ino, &st) < 0 || st.size == 0) return -1;
+            buf = (unsigned char *)kmalloc(st.size);
+            if (!buf) return -1;
+            minifs_read(ino, buf, 0, st.size);
+            *out = buf;
+            *out_size = st.size;
+            return 0;
+        }
+    }
+    return -1;
+}
+
+static void shell_cmd_mrun(int argc, char **argv) {
+    int pids[8];
+    int npids = 0;
+    int i;
+    if (argc < 2) { vga_puts("usage: mrun <a.elf> [b.elf ...]\n"); return; }
+    if (argc - 1 > 8) { vga_puts("mrun: at most 8 programs\n"); return; }
+    for (i = 1; i < argc; i++) {
+        unsigned char *data = 0;
+        unsigned size = 0;
+        int pid;
+        char *pargv[1];
+        if (shell_read_elf_bytes(argv[i], &data, &size)) {
+            kprintf("mrun: %s: not found\n", argv[i]);
+            continue;
+        }
+        if (size < 4 || !(data[0] == 0x7F && data[1] == 'E' &&
+                          data[2] == 'L' && data[3] == 'F')) {
+            kprintf("mrun: %s: not an ELF\n", argv[i]);
+            kfree(data);
+            continue;
+        }
+        if (((const Elf64_Ehdr *)data)->e_type == ET_REL) {
+            kprintf("mrun: %s: ET_REL refused (use run)\n", argv[i]);
+            kfree(data);
+            continue;
+        }
+        pargv[0] = argv[i];
+        pid = proc_spawn_elf(argv[i], data, size, 1, pargv);
+        kfree(data);
+        if (pid < 0) {
+            kprintf("mrun: %s: spawn failed\n", argv[i]);
+            continue;
+        }
+        kprintf("mrun: %s started as pid %d\n", argv[i], pid);
+        pids[npids++] = pid;
+    }
+    for (i = 0; i < npids; i++) {
+        int code = do_waitpid(pids[i]);
+        kprintf("mrun: pid %d exit code: %d\n", pids[i], code);
+    }
+}
+
 /* Unified dispatcher used by `run` and by bare commands: a registered program
  * wins, then the runnable-file resolver. argv[0] is the command/program name
  * as typed. Returns the exit code, or -1 when the name cannot be run. */
@@ -1562,6 +1676,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  edit <file>        line editor for ramdisk files\n");
         vga_puts("  vedit <file>       fullscreen editor (C/Python/Lua)\n");
         vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
+        vga_puts("  mrun <a.elf> [...] run isolated ELFs concurrently (multitask)\n");
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
         vga_puts("  <cmd> > <file>     redirect command output to a file\n");
         vga_puts("  <cmd> [args...]    run a file or bare name (objects/bin/cvm)\n");
@@ -2028,6 +2143,9 @@ void shell_exec_builtin(int argc, char **argv) {
         int ret = shell_run_any(argv[1], argc - 1, argv + 1);
         if (ret < 0) shell_report("run: not found: ", argv[1]);
         else shell_report_exit(ret);
+    }
+    else if (kstrcmp(argv[0], "mrun") == 0) {
+        shell_cmd_mrun(argc, argv);
     }
     else if (kstrcmp(argv[0], "sh") == 0) {
         if (argc < 2) { vga_puts("usage: sh <script.sh>\n"); return; }

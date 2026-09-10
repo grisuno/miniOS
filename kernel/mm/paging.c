@@ -252,8 +252,198 @@ uint64_t pt_clone_user(uint64_t parent_cr3) {
     return (uint64_t)(unsigned long)pml4;
 }
 
+/* ---- Multitask foundations (isolated user pages) ----
+ *
+ * The legacy path identity-maps the user window (VA == PA), so every
+ * CR3 built by pt_clone_user aliases the same physical pages. That is
+ * why only one ET_EXEC can run at a time today. The helpers below
+ * build an EMPTY user window instead: fresh page tables with no user
+ * data pages mapped, except the kernel-owned graphics slots (FB,
+ * DOOM/NK back-buffers) which stay shared on purpose. Data pages come
+ * from the kernel heap via pt_page_alloc, so each process owns its
+ * bytes and switch_to's CR3 swap already isolates them. Pages are
+ * freed by the extended pt_free_user below, which releases heap-owned
+ * data pages in private slots and never touches identity pages or
+ * the shared graphics slots. */
+
+/* 1 when this PD slot holds kernel-shared graphics mappings. */
+static int mt_shared_slot(unsigned long pd_idx) {
+    unsigned long fb_bytes =
+        (unsigned long)fb_pitch * (unsigned long)fb_height;
+    unsigned long fb_first = (unsigned long)FB_ADDR >> PT_PD_INDEX_SHIFT;
+    unsigned long fb_last =
+        ((unsigned long)FB_ADDR + fb_bytes - 1) >> PT_PD_INDEX_SHIFT;
+    unsigned long bb = (unsigned long)DOOM_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
+    unsigned long nk = (unsigned long)NK_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
+    if (pd_idx >= fb_first && pd_idx <= fb_last) return 1;
+    if (pd_idx == bb) return 1;
+    if (pd_idx == nk) return 1;
+    return 0;
+}
+
+/* Fresh user window: kernel mappings copied, every user PT zeroed,
+ * graphics slots re-shared from the boot tables. Returns PML4 phys
+ * (usable as CR3), or 0 on OOM. No user data page is mapped. */
+unsigned long pt_clone_user_empty(void) {
+    volatile unsigned long *boot_pml4 = (volatile unsigned long *)PT_PML4_ADDR;
+    volatile unsigned long *boot_pd   = (volatile unsigned long *)PT_PD_ADDR;
+    volatile unsigned long *pml4 = (volatile unsigned long *)pt_page_alloc();
+    unsigned long i;
+    if (!pml4) return 0;
+    for (i = 0; i < PT_PD_ENTRIES; i++)
+        pml4[i] = boot_pml4[i];
+    volatile unsigned long *pdpt = (volatile unsigned long *)pt_page_alloc();
+    if (!pdpt) { pt_page_free((void *)pml4); return 0; }
+    volatile unsigned long *boot_pdpt = (volatile unsigned long *)(boot_pml4[0] & PT_ADDR_MASK);
+    for (i = 0; i < PT_PD_ENTRIES; i++)
+        pdpt[i] = boot_pdpt[i];
+    pml4[0] = (unsigned long)pdpt | (boot_pml4[0] & 0x7);
+    volatile unsigned long *pd = (volatile unsigned long *)pt_page_alloc();
+    if (!pd) { pt_page_free((void *)pdpt); pt_page_free((void *)pml4); return 0; }
+    pdpt[0] = (unsigned long)pd | (boot_pdpt[0] & 0x7);
+    pd[0] = boot_pd[0];
+    pd[1] = boot_pd[1];
+    {
+        unsigned long hi_pd = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
+        for (i = hi_pd + 1; i < PT_PD_ENTRIES; i++)
+            pd[i] = boot_pd[i];
+    }
+    unsigned long lo = USER_LOAD_BASE >> PT_PD_INDEX_SHIFT;
+    unsigned long hi = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
+    for (i = lo; i <= hi; i++) {
+        volatile unsigned long *pt = (volatile unsigned long *)pt_page_alloc();
+        unsigned long j;
+        if (!pt) {
+            unsigned long k;
+            for (k = lo; k < i; k++) {
+                unsigned long a = pd[k] & PT_ADDR_MASK;
+                if (a && !mt_shared_slot(k)) pt_page_free((void *)a);
+            }
+            pt_page_free((void *)pd);
+            pt_page_free((void *)pdpt);
+            pt_page_free((void *)pml4);
+            return 0;
+        }
+        if (mt_shared_slot(i)) {
+            volatile unsigned long *boot_pt =
+                (volatile unsigned long *)(boot_pd[i] & PT_ADDR_MASK);
+            if (boot_pt)
+                for (j = 0; j < PT_PD_ENTRIES; j++) pt[j] = boot_pt[j];
+            else
+                for (j = 0; j < PT_PD_ENTRIES; j++) pt[j] = 0;
+        } else {
+            for (j = 0; j < PT_PD_ENTRIES; j++) pt[j] = 0;
+        }
+        pd[i] = ((unsigned long)pt) | PT_USER_ENTRY;
+    }
+    return (uint64_t)(unsigned long)pml4;
+}
+
+/* Ensure one 4 KB user page at va inside cr3 exists (heap-owned).
+ * Returns 0 on success, -1 on OOM or when va leaves the user window. */
+int mm_user_ensure_page(unsigned long cr3, unsigned long va) {
+    volatile unsigned long *pml4;
+    volatile unsigned long *pdpt;
+    volatile unsigned long *pd;
+    volatile unsigned long *pt;
+    unsigned long pd_idx;
+    unsigned long pte_idx;
+    void *pg;
+    if (cr3 == 0) return -1;
+    if (va < USER_LOAD_BASE || va >= USER_LOAD_END) return -1;
+    if (mt_shared_slot(va >> PT_PD_INDEX_SHIFT)) return -1;
+    pml4 = (volatile unsigned long *)(cr3 & PT_ADDR_MASK);
+    pdpt = (volatile unsigned long *)(pml4[0] & PT_ADDR_MASK);
+    pd = (volatile unsigned long *)(pdpt[0] & PT_ADDR_MASK);
+    pd_idx = va >> PT_PD_INDEX_SHIFT;
+    if (!(pd[pd_idx] & PT_FLAGS_PRESENT_RW)) return -1;
+    if (pd[pd_idx] & PT_FLAGS_PS) return -1;
+    pt = (volatile unsigned long *)(pd[pd_idx] & PT_ADDR_MASK);
+    pte_idx = (va >> 12) & 0x1FF;
+    if (pt[pte_idx] & PT_FLAGS_PRESENT_RW) return 0;
+    pg = pt_page_alloc();
+    if (!pg) return -1;
+    pt[pte_idx] = ((unsigned long)pg) | PT_USER_NX_ENTRY;
+    return 0;
+}
+
+/* Copy one present user page from src_cr3 to the same VA in dst_cr3,
+ * allocating the destination page. Used by fork-style clones. */
+int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va) {
+    volatile unsigned long *spml4;
+    volatile unsigned long *spdpt;
+    volatile unsigned long *spd;
+    volatile unsigned long *spt;
+    unsigned long src_phys;
+    unsigned long dst_phys;
+    volatile unsigned long *dpml4;
+    volatile unsigned long *dpdpt;
+    volatile unsigned long *dpd;
+    volatile unsigned long *dpt;
+    unsigned long saved_cr3;
+    if (mm_user_ensure_page(dst_cr3, va)) return -1;
+    spml4 = (volatile unsigned long *)(src_cr3 & PT_ADDR_MASK);
+    spdpt = (volatile unsigned long *)(spml4[0] & PT_ADDR_MASK);
+    spd = (volatile unsigned long *)(spdpt[0] & PT_ADDR_MASK);
+    spt = (volatile unsigned long *)((spd[va >> PT_PD_INDEX_SHIFT]) & PT_ADDR_MASK);
+    src_phys = spt[(va >> 12) & 0x1FF] & PT_ADDR_MASK;
+    if (!src_phys) return -1;
+    dpml4 = (volatile unsigned long *)(dst_cr3 & PT_ADDR_MASK);
+    dpdpt = (volatile unsigned long *)(dpml4[0] & PT_ADDR_MASK);
+    dpd = (volatile unsigned long *)(dpdpt[0] & PT_ADDR_MASK);
+    dpt = (volatile unsigned long *)((dpd[va >> PT_PD_INDEX_SHIFT]) & PT_ADDR_MASK);
+    dst_phys = dpt[(va >> 12) & 0x1FF] & PT_ADDR_MASK;
+    if (!dst_phys) return -1;
+    __asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));
+    __asm__ volatile("cli");
+    kmemcpy((void *)dst_phys, (void *)src_phys, 0x1000);
+    __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
+    __asm__ volatile("sti");
+    return 0;
+}
+
+/* Release heap-owned user data pages of an isolated CR3. Identity
+ * pages (phys below HEAP_BASE) and shared graphics slots are left
+ * alone, so legacy shared CR3s free nothing here. */
+static void pt_free_data_pages(uint64_t cr3) {
+    volatile unsigned long *pml4 = (volatile unsigned long *)(cr3 & PT_ADDR_MASK);
+    volatile unsigned long *pdpt;
+    volatile unsigned long *pd;
+    unsigned long lo = USER_LOAD_BASE >> PT_PD_INDEX_SHIFT;
+    unsigned long hi = (USER_LOAD_END - 1) >> PT_PD_INDEX_SHIFT;
+    unsigned long i;
+    if (!pml4) return;
+    if (!(pml4[0] & PT_FLAGS_PRESENT_RW)) return;
+    pdpt = (volatile unsigned long *)(pml4[0] & PT_ADDR_MASK);
+    if (!(pdpt[0] & PT_FLAGS_PRESENT_RW)) return;
+    if (pdpt[0] & PT_FLAGS_PS) return;
+    pd = (volatile unsigned long *)(pdpt[0] & PT_ADDR_MASK);
+    for (i = lo; i <= hi; i++) {
+        volatile unsigned long *pt;
+        unsigned long k;
+        if (mt_shared_slot(i)) continue;
+        if (!(pd[i] & PT_FLAGS_PRESENT_RW)) continue;
+        if (pd[i] & PT_FLAGS_PS) continue;
+        pt = (volatile unsigned long *)(pd[i] & PT_ADDR_MASK);
+        if (!pt) continue;
+        for (k = 0; k < PT_PD_ENTRIES; k++) {
+            unsigned long pte = pt[k];
+            unsigned long phys;
+            void *raw;
+            if (!(pte & PT_FLAGS_PRESENT_RW)) continue;
+            phys = pte & PT_ADDR_MASK;
+            if (phys < HEAP_BASE || phys >= HEAP_BASE + HEAP_SIZE) continue;
+            raw = *((void **)(phys - PT_ALLOC_HDR));
+            if ((unsigned long)raw < HEAP_BASE ||
+                (unsigned long)raw >= HEAP_BASE + HEAP_SIZE) continue;
+            kfree(raw);
+        }
+    }
+}
+
 void pt_free_user(uint64_t cr3) {
     if (cr3 == 0) return;
+    pt_free_data_pages(cr3);
     volatile unsigned long *pml4 = (volatile unsigned long *)(cr3 & PT_ADDR_MASK);
     volatile unsigned long *pdpt = (volatile unsigned long *)(pml4[0] & PT_ADDR_MASK);
     if (!pdpt) return;

@@ -701,17 +701,24 @@ validates all buffer addresses against `USER_LOAD_BASE..USER_LOAD_END`.
 4. Phase 4: remove kernel-side compositing, let the desktop process own it.
 5. Phase 5: enable preemptive scheduling for all user processes.
 
-**Preemption blocker (deferred):** the full preemptive track (Phase 5 and a
-non-blocking shell) is NOT implementable on the current single-address-space
-model: `load_exec_elf` loads every ring-3 program at `USER_LOAD_BASE` into one
-shared address space, so two concurrent programs would clobber each other's
-user memory. It requires per-process page tables (a per-process CR3 switch in
-`switch_to`, currently shared) plus per-process brk/mmap cursors and the
-desktop-process phases above. This is the documented Phase 5 plan above; it is
-deferred because it is a large, high-risk rewrite that would destabilise the
-boot/test contract, not a small fix. It does not block the audio/perf work:
-the piano's slowness was the SB16 ring wedge and the trace console flood, not
-an absence of preemption.
+**Preemption blocker (lifted, revision 1):** the single-address-space limit
+that deferred Phase 5 is gone for the `mrun` path. `pt_clone_user_empty`
+builds a fresh user window per process (heap-owned data pages, graphics
+slots re-shared), `load_exec_elf_into` loads segments into that window
+without touching the live one, and `proc_spawn_elf` starts the result as a
+non-`CLONE_VM` process through `user_trampoline` + `iretq`. The existing
+machinery already did the rest: `switch_to` swaps CR3, the BSP timer
+preempt swaps the per-process brk/mmap view, and `do_waitpid` reaps through
+the extended `pt_free_user` (heap pages freed, identity pages and shared
+graphics slots untouched). `mrun a.elf b.elf ...` runs isolated ELFs
+concurrently; the BDD suite pins `mrun: pid 1 exit code: 55` beside `Hello`.
+The legacy `run`/`k_exec_user` path is byte-for-byte unchanged.
+Best-effort limits of this revision: no per-process VMA isolation (programs
+that `mmap` concurrently share the global tree), one shared fd table, no
+`fork`/`execve` yet (`sys_linux_fork/vfork/execve` still answer 0), and APs
+still claim `CLONE_VM` threads only. `fork` with `mm_copy_user_page`,
+per-process VMA pools and the desktop-process phases above are the
+follow-ups, in that order.
 
 ### Taskbar with clock and volume (`vga_fb.c` + `rtc.c` + `pcspk.c`)
 The bottom taskbar is the desktop's status strip, not a hint line. It shows

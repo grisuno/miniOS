@@ -1057,6 +1057,104 @@ int proc_create(const char *name, int parent_pid) {
     return pid;
 }
 
+/* proc_spawn_elf(name, data, size, argc, argv) - multitask spawn.
+ *
+ * A non-CLONE_VM process with a FRESH user window (pt_clone_user_empty):
+ * its pages are heap-owned, so two spawned ELFs never alias each other
+ * the way the legacy shared-window loader does. The image loads via
+ * load_exec_elf_into, the stack is built under the child's CR3, and
+ * the process starts at the ELF entry through user_trampoline + iretq
+ * with IF=1. The BSP time-slices it with the existing preempt path
+ * (brk view save/restore included); APs never claim it (vm_only).
+ * Exit flows through do_proc_exit -> do_exit -> ZOMBIE, reaped by
+ * do_waitpid which frees the isolated tables. Fail closed (-1) with
+ * nothing published: OOM at any step releases what was claimed. */
+int proc_spawn_elf(const char *name, void *data, unsigned size,
+                   int argc, char **argv) {
+    unsigned long saved_cr3;
+    unsigned long va;
+    uint64_t new_cr3;
+    unsigned long *sp = 0;
+    void *entry;
+    unsigned long brk = 0;
+    int pid;
+    proc_t *child;
+    uint64_t kstack_top;
+    if (!name || !data || size < 4) return -1;
+    if (argc < 0 || argc > 64) return -1;
+    new_cr3 = pt_clone_user_empty();
+    if (!new_cr3) { kprintf("mrun: no page tables\n"); return -1; }
+    entry = load_exec_elf_into(data, size, new_cr3, &brk);
+    if (!entry) { pt_free_user(new_cr3); return -1; }
+    for (va = USER_STACK_BASE; va < USER_STACK_TOP; va += 0x1000)
+        if (mm_user_ensure_page(new_cr3, va)) {
+            kprintf("mrun: no stack page\n");
+            pt_free_user(new_cr3);
+            return -1;
+        }
+    __asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));
+    __asm__ volatile("cli");
+    __asm__ volatile("mov %0, %%cr3" :: "r"((unsigned long)new_cr3) : "memory");
+    sp = setup_user_stack((char *)USER_STACK_BASE, USER_STACK_SIZE,
+                          argc, argv);
+    __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
+    __asm__ volatile("sti");
+    if (!sp) { kprintf("mrun: bad stack\n"); pt_free_user(new_cr3); return -1; }
+    spin_lock(&sched_lock);
+    for (pid = 1; pid < MAX_PROCS; pid++)
+        if (procs[pid].state == PROC_FREE) break;
+    if (pid >= MAX_PROCS) {
+        spin_unlock(&sched_lock);
+        pt_free_user(new_cr3);
+        return -1;
+    }
+    child = &procs[pid];
+    kmemset(child, 0, sizeof(proc_t));
+    child->pid = pid;
+    child->state = PROC_READY;
+    child->parent_pid = 0;
+    child->clone_flags = 0;
+    child->brk = brk;
+    child->brk_limit = USER_BRK_END;
+    if (DOOM_BACKBUF_ADDR < child->brk_limit)
+        child->brk_limit = DOOM_BACKBUF_ADDR;
+    child->mmap_cur = USER_BRK_END;
+    if (DOOM_BACKBUF_ADDR < child->mmap_cur)
+        child->mmap_cur = DOOM_BACKBUF_ADDR;
+    kstrncpy(child->name, name, sizeof(child->name) - 1);
+    kstack_top = alloc_kstack();
+    if (!kstack_top) {
+        spin_unlock(&sched_lock);
+        pt_free_user(new_cr3);
+        return -1;
+    }
+    child->kstack = kstack_top;
+    child->fpu_save = fpu_alloc_clean();
+    if (!child->fpu_save) {
+        free_kstack(kstack_top);
+        child->kstack = 0;
+        child->state = PROC_FREE;
+        spin_unlock(&sched_lock);
+        pt_free_user(new_cr3);
+        return -1;
+    }
+    {
+        unsigned long *frame = (unsigned long *)(kstack_top - 40);
+        frame[0] = (unsigned long)entry;
+        frame[1] = (unsigned long)(GDT64_USER_CODE_SEL | 3);
+        frame[2] = 0x202;
+        frame[3] = (unsigned long)sp;
+        frame[4] = (unsigned long)(GDT64_USER_DATA_SEL | 3);
+    }
+    child->ctx.rip = (uint64_t)user_trampoline;
+    child->ctx.rsp = child->kstack - 40;
+    child->ctx.cr3 = new_cr3;
+    child->ctx.rflags = 0x202;
+    if (proc_count <= pid) proc_count = pid + 1;
+    spin_unlock(&sched_lock);
+    return pid;
+}
+
 /* Capture "schedule() has returned" as the resume context: rip = the
  * CALLER's return address, rsp = the CALLER's stack, IF = 1.  On the
  * next claim the thread RETURNS from schedule() into its own caller
