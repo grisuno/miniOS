@@ -90,11 +90,11 @@ void minifs_journal_touch(unsigned int phys)`
   - `minifs_get_lba_start` (function, line 1153) `unsigned int minifs_get_lba_start(void)`
   - `minifs_is_mounted` (function, line 1155) `int minifs_is_mounted(void)`
   - `minifs_mount` (function, line 1156) `int minifs_mount(void)`
-  - `minifs_mkfs` (function, line 1255) `int minifs_mkfs(unsigned int total_blocks)`
-  - `minifs_sync` (function, line 1326) `int minifs_sync(void)`
-  - `minifs_file_open` (function, line 1341) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
-  - `minifs_file_close` (function, line 1355) `int minifs_file_close(MiniFSFile *f)`
-  - `minifs_get_total_blocks` (function, line 1362) `unsigned int minifs_get_total_blocks(void)`
+  - `minifs_mkfs` (function, line 1262) `int minifs_mkfs(unsigned int total_blocks)`
+  - `minifs_sync` (function, line 1333) `int minifs_sync(void)`
+  - `minifs_file_open` (function, line 1348) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
+  - `minifs_file_close` (function, line 1362) `int minifs_file_close(MiniFSFile *f)`
+  - `minifs_get_total_blocks` (function, line 1369) `unsigned int minifs_get_total_blocks(void)`
   - `minifs_journal_touch` (function, line 14) `void minifs_journal_touch(unsigned int phys);`
   - `kmemset` (function, line 84) `kmemset(buf, 0, MINIFS_BLOCK_SIZE);`
   - `kmemcpy` (function, line 86) `kmemcpy(buf, &fs_sb, sizeof(MiniFSSuper));`
@@ -104,7 +104,7 @@ void minifs_journal_touch(unsigned int phys)`
   - `kprintf` (function, line 489) `kprintf("minifs: journal super checksum bad, discarding log\n");`
   - `kstrncpy` (function, line 795) `kstrncpy(parent_buf, path, RAMDISK_FNAME_LEN - 1);`
   - `kfree` (function, line 1006) `kfree(cbuf);`
-  - `block_set_base` (function, line 1185) `block_set_base(fs_lba_start);`
+  - `block_set_base` (function, line 1192) `block_set_base(fs_lba_start);`
   - `DE_NAME` (macro, line 12) `#define DE_NAME(de)`
   - `DE_NAME_W` (macro, line 13) `#define DE_NAME_W(de)`
 - Depends on: `block.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`

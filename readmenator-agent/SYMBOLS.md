@@ -468,27 +468,33 @@
 | `pcspk_ops_tone` | function | `drivers/pcspk.c:32` | `static void pcspk_ops_tone(device_t *dev, unsigned freq)` |
 | `pcspk_set_volume` | function | `drivers/pcspk.c:73` | `void pcspk_set_volume(unsigned volume)` |
 | `pcspk_tone` | function | `drivers/pcspk.c:81` | `void pcspk_tone(unsigned freq)` |
-| `RTC_BCD_FLAG` | macro | `drivers/rtc.c:19` | `#define RTC_BCD_FLAG` |
+| `RTC_BCD_FLAG` | macro | `drivers/rtc.c:22` | `#define RTC_BCD_FLAG` |
 | `RTC_CMOS_ADDR` | macro | `drivers/rtc.c:8` | `#define RTC_CMOS_ADDR` |
 | `RTC_CMOS_DATA` | macro | `drivers/rtc.c:10` | `#define RTC_CMOS_DATA` |
-| `RTC_HOUR_MAX` | macro | `drivers/rtc.c:22` | `#define RTC_HOUR_MAX` |
-| `RTC_HOUR_MIN` | macro | `drivers/rtc.c:20` | `#define RTC_HOUR_MIN` |
-| `RTC_MIN_MAX` | macro | `drivers/rtc.c:24` | `#define RTC_MIN_MAX` |
-| `RTC_MIN_MIN` | macro | `drivers/rtc.c:23` | `#define RTC_MIN_MIN` |
+| `RTC_HOUR_MAX` | macro | `drivers/rtc.c:25` | `#define RTC_HOUR_MAX` |
+| `RTC_HOUR_MIN` | macro | `drivers/rtc.c:23` | `#define RTC_HOUR_MIN` |
+| `RTC_MIN_MAX` | macro | `drivers/rtc.c:27` | `#define RTC_MIN_MAX` |
+| `RTC_MIN_MIN` | macro | `drivers/rtc.c:26` | `#define RTC_MIN_MIN` |
+| `RTC_REG_DAY` | macro | `drivers/rtc.c:15` | `#define RTC_REG_DAY` |
 | `RTC_REG_HOUR` | macro | `drivers/rtc.c:14` | `#define RTC_REG_HOUR` |
 | `RTC_REG_MIN` | macro | `drivers/rtc.c:13` | `#define RTC_REG_MIN` |
+| `RTC_REG_MON` | macro | `drivers/rtc.c:16` | `#define RTC_REG_MON` |
 | `RTC_REG_SEC` | macro | `drivers/rtc.c:11` | `#define RTC_REG_SEC` |
-| `RTC_REG_STATUS_A` | macro | `drivers/rtc.c:15` | `#define RTC_REG_STATUS_A` |
-| `RTC_REG_STATUS_B` | macro | `drivers/rtc.c:16` | `#define RTC_REG_STATUS_B` |
-| `RTC_SEC_MAX` | macro | `drivers/rtc.c:26` | `#define RTC_SEC_MAX` |
-| `RTC_SEC_MIN` | macro | `drivers/rtc.c:25` | `#define RTC_SEC_MIN` |
-| `RTC_UPDATE_IN_PROGRESS` | macro | `drivers/rtc.c:17` | `#define RTC_UPDATE_IN_PROGRESS` |
-| `RTC_UPDATE_WAIT` | macro | `drivers/rtc.c:30` | `#define RTC_UPDATE_WAIT` |
-| `inb` | function | `drivers/rtc.c:34` | `return inb(RTC_CMOS_DATA);` |
-| `outb` | function | `drivers/rtc.c:33` | `outb(RTC_CMOS_ADDR, reg);` |
-| `rtc_cmos_read` | function | `drivers/rtc.c:31` | `static inline unsigned char rtc_cmos_read(unsigned char reg)` |
-| `rtc_from_bcd` | function | `drivers/rtc.c:36` | `static int rtc_from_bcd(unsigned char v)` |
-| `rtc_read_tod` | function | `drivers/rtc.c:40` | `int rtc_read_tod(int *hour, int *min, int *sec)` |
+| `RTC_REG_STATUS_A` | macro | `drivers/rtc.c:18` | `#define RTC_REG_STATUS_A` |
+| `RTC_REG_STATUS_B` | macro | `drivers/rtc.c:19` | `#define RTC_REG_STATUS_B` |
+| `RTC_REG_YEAR` | macro | `drivers/rtc.c:17` | `#define RTC_REG_YEAR` |
+| `RTC_SEC_MAX` | macro | `drivers/rtc.c:29` | `#define RTC_SEC_MAX` |
+| `RTC_SEC_MIN` | macro | `drivers/rtc.c:28` | `#define RTC_SEC_MIN` |
+| `RTC_UPDATE_IN_PROGRESS` | macro | `drivers/rtc.c:20` | `#define RTC_UPDATE_IN_PROGRESS` |
+| `RTC_UPDATE_WAIT` | macro | `drivers/rtc.c:33` | `#define RTC_UPDATE_WAIT` |
+| `inb` | function | `drivers/rtc.c:37` | `return inb(RTC_CMOS_DATA);` |
+| `outb` | function | `drivers/rtc.c:36` | `outb(RTC_CMOS_ADDR, reg);` |
+| `rtc_cmos_read` | function | `drivers/rtc.c:34` | `static inline unsigned char rtc_cmos_read(unsigned char reg)` |
+| `rtc_from_bcd` | function | `drivers/rtc.c:39` | `static int rtc_from_bcd(unsigned char v)` |
+| `rtc_month_len` | function | `drivers/rtc.c:67` | `static int rtc_month_len(long full_year, long mon)` |
+| `rtc_read_date` | function | `drivers/rtc.c:77` | `int rtc_read_date(int *year, int *mon, int *day)` |
+| `rtc_read_tod` | function | `drivers/rtc.c:43` | `int rtc_read_tod(int *hour, int *min, int *sec)` |
+| `rtc_wall_seconds` | function | `drivers/rtc.c:101` | `int rtc_wall_seconds(unsigned long *out)` |
 | `DMA_CH1_ADDR` | macro | `drivers/sb16.c:72` | `#define DMA_CH1_ADDR` |
 | `DMA_CH1_CNT` | macro | `drivers/sb16.c:74` | `#define DMA_CH1_CNT` |
 | `DMA_CH1_MASK` | macro | `drivers/sb16.c:79` | `#define DMA_CH1_MASK` |
@@ -578,7 +584,7 @@
 | `DE_NAME` | macro | `fs/minifs.c:12` | `#define DE_NAME(de)` |
 | `DE_NAME_W` | macro | `fs/minifs.c:13` | `#define DE_NAME_W(de)` |
 | `block_read` | function | `fs/minifs.c:334` | `block_read(journal_start, buf);` |
-| `block_set_base` | function | `fs/minifs.c:1185` | `block_set_base(fs_lba_start);` |
+| `block_set_base` | function | `fs/minifs.c:1192` | `block_set_base(fs_lba_start);` |
 | `block_write` | function | `fs/minifs.c:87` | `return block_write(0, buf);` |
 | `blocks` | function | `fs/minifs.c:431` | `* blocks (self-protection);` |
 | `bm_clear` | function | `fs/minifs.c:120` | `static void bm_clear(unsigned char *bm, unsigned int bit)` |
@@ -617,12 +623,12 @@ void minifs_journal_touch(unsigned int phys)` |
 | `minifs_dir_lookup` | function | `fs/minifs.c:555` | `int minifs_dir_lookup(int dir_ino, const char *name)` |
 | `minifs_dir_read` | function | `fs/minifs.c:722` | `int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)` |
 | `minifs_dir_remove_entry` | function | `fs/minifs.c:696` | `int minifs_dir_remove_entry(int dir_ino, const char *name)` |
-| `minifs_file_close` | function | `fs/minifs.c:1355` | `int minifs_file_close(MiniFSFile *f)` |
-| `minifs_file_open` | function | `fs/minifs.c:1341` | `MiniFSFile *minifs_file_open(int inode_num, int flags)` |
+| `minifs_file_close` | function | `fs/minifs.c:1362` | `int minifs_file_close(MiniFSFile *f)` |
+| `minifs_file_open` | function | `fs/minifs.c:1348` | `MiniFSFile *minifs_file_open(int inode_num, int flags)` |
 | `minifs_free_block` | function | `fs/minifs.c:143` | `void minifs_free_block(unsigned int block)` |
 | `minifs_free_inode` | function | `fs/minifs.c:163` | `void minifs_free_inode(int num)` |
 | `minifs_get_lba_start` | function | `fs/minifs.c:1153` | `unsigned int minifs_get_lba_start(void)` |
-| `minifs_get_total_blocks` | function | `fs/minifs.c:1362` | `unsigned int minifs_get_total_blocks(void)` |
+| `minifs_get_total_blocks` | function | `fs/minifs.c:1369` | `unsigned int minifs_get_total_blocks(void)` |
 | `minifs_init` | function | `fs/minifs.c:1145` | `void minifs_init(void)` |
 | `minifs_inode_alloc_block` | function | `fs/minifs.c:240` | `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logblk)` |
 | `minifs_inode_get_block` | function | `fs/minifs.c:171` | `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logblk,
@@ -636,13 +642,13 @@ void minifs_journal_touch(unsigned int phys)` |
 | `minifs_journal_recover` | function | `fs/minifs.c:470` | `void minifs_journal_recover(void)` |
 | `minifs_journal_touch` | function | `fs/minifs.c:14` | `void minifs_journal_touch(unsigned int phys);` |
 | `minifs_mkdir` | function | `fs/minifs.c:843` | `int minifs_mkdir(const char *path, unsigned short mode)` |
-| `minifs_mkfs` | function | `fs/minifs.c:1255` | `int minifs_mkfs(unsigned int total_blocks)` |
+| `minifs_mkfs` | function | `fs/minifs.c:1262` | `int minifs_mkfs(unsigned int total_blocks)` |
 | `minifs_mount` | function | `fs/minifs.c:1156` | `int minifs_mount(void)` |
 | `minifs_read` | function | `fs/minifs.c:972` | `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)` |
 | `minifs_resolve_path` | function | `fs/minifs.c:756` | `int minifs_resolve_path(const char *path)` |
 | `minifs_rmdir` | function | `fs/minifs.c:932` | `int minifs_rmdir(const char *path)` |
 | `minifs_stat` | function | `fs/minifs.c:1135` | `int minifs_stat(int inode_num, MiniFSInode *out)` |
-| `minifs_sync` | function | `fs/minifs.c:1326` | `int minifs_sync(void)` |
+| `minifs_sync` | function | `fs/minifs.c:1333` | `int minifs_sync(void)` |
 | `minifs_truncate` | function | `fs/minifs.c:1119` | `int minifs_truncate(int inode_num, unsigned int new_size)` |
 | `minifs_unlink` | function | `fs/minifs.c:893` | `int minifs_unlink(const char *path)` |
 | `minifs_write` | function | `fs/minifs.c:1036` | `int minifs_write(int inode_num, const void *buf, unsigned int offset,
@@ -737,11 +743,16 @@ static int zip_sanitize_name(con...` |
 | `FUTEX_NOMATCH` | macro | `futex.h:56` | `#define FUTEX_NOMATCH` |
 | `FUTEX_NOPROC` | macro | `futex.h:57` | `#define FUTEX_NOPROC` |
 | `FUTEX_OK` | macro | `futex.h:54` | `#define FUTEX_OK` |
+| `FUTEX_PRIVATE_FLAG` | function | `futex.h:79` | `* FUTEX_PRIVATE_FLAG (process-private is served on the same global * buckets: same semantics, no isolation shortcut). Re` |
 | `FUTEX_WAKE_ALL` | macro | `futex.h:58` | `#define FUTEX_WAKE_ALL` |
-| `futex_bucket_t` | struct | `futex.h:60` | `` |
-| `futex_init` | function | `futex.h:65` | `void futex_init(void);` |
-| `futex_wait` | function | `futex.h:67` | `long futex_wait(unsigned long uaddr, int val);` |
-| `futex_wake` | function | `futex.h:68` | `long futex_wake(unsigned long uaddr, int n);` |
+| `LINUX_FUTEX_PRIVATE_FLAG` | macro | `futex.h:66` | `#define LINUX_FUTEX_PRIVATE_FLAG` |
+| `LINUX_FUTEX_WAIT` | macro | `futex.h:64` | `#define LINUX_FUTEX_WAIT` |
+| `LINUX_FUTEX_WAKE` | macro | `futex.h:65` | `#define LINUX_FUTEX_WAKE` |
+| `futex_bucket_t` | struct | `futex.h:68` | `` |
+| `futex_init` | function | `futex.h:73` | `void futex_init(void);` |
+| `futex_linux_cmd` | function | `futex.h:84` | `int futex_linux_cmd(long op);` |
+| `futex_wait` | function | `futex.h:75` | `long futex_wait(unsigned long uaddr, int val);` |
+| `futex_wake` | function | `futex.h:76` | `long futex_wake(unsigned long uaddr, int n);` |
 | `IDE_CMD_FLUSH` | macro | `ide.h:35` | `#define IDE_CMD_FLUSH` |
 | `IDE_CMD_IDENTIFY` | macro | `ide.h:34` | `#define IDE_CMD_IDENTIFY` |
 | `IDE_CMD_READ` | macro | `ide.h:32` | `#define IDE_CMD_READ` |
@@ -777,57 +788,61 @@ static int zip_sanitize_name(con...` |
 | `ide_total_sectors` | function | `ide.h:61` | `unsigned int ide_total_sectors(void);` |
 | `ide_write_sector` | function | `ide.h:58` | `int ide_write_sector(unsigned int lba, const void *buf);` |
 | `ide_write_sectors` | function | `ide.h:54` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
-| `EM` | function | `kernel.c:370` | `* CR0: clear EM (bit 2), set MP (bit 1);` |
+| `EM` | function | `kernel.c:371` | `* CR0: clear EM (bit 2), set MP (bit 1);` |
 | `KSYM_MAX` | macro | `kernel.c:96` | `#define KSYM_MAX` |
 | `STR` | macro | `kernel.c:58` | `#define STR(x)` |
 | `STR_` | macro | `kernel.c:57` | `#define STR_(x)` |
 | `USER_WIN_HI` | macro | `kernel.c:56` | `#define USER_WIN_HI` |
 | `USER_WIN_LO` | macro | `kernel.c:55` | `#define USER_WIN_LO` |
-| `__attribute__` | function | `kernel.c:355` | `__attribute__((section(".init.text")))
+| `__attribute__` | function | `kernel.c:356` | `__attribute__((section(".init.text")))
 void kmain(void)` |
-| `block_init` | function | `kernel.c:410` | `block_init();` |
+| `block_init` | function | `kernel.c:413` | `block_init();` |
 | `global` | function | `kernel.c:141` | `* The kstack top likewise cannot live in a global (a thread preempted * mid-syscall would have its top overwritten by th` |
-| `kallocator_init` | function | `kernel.c:392` | `kallocator_init();` |
-| `kprintf` | function | `kernel.c:399` | `kprintf("fb: %dx%d pitch %d bpp %d base 0x%lx\n", fb_width, fb_height, fb_pitch, fb_bpp, fb_phys_base);` |
+| `kallocator_init` | function | `kernel.c:393` | `kallocator_init();` |
+| `kprintf` | function | `kernel.c:400` | `kprintf("fb: %dx%d pitch %d bpp %d base 0x%lx\n", fb_width, fb_height, fb_pitch, fb_bpp, fb_phys_base);` |
 | `kstack` | function | `kernel.c:156` | `* kstack (0 on the BSP, 1 on APs): harmless while a single process * runs, fatal as soon as two threads syscall concurre` |
 | `ksyscall` | function | `kernel.c:119` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `minifs_init` | function | `kernel.c:412` | `minifs_init();` |
-| `mm_setup_protections` | function | `kernel.c:398` | `mm_setup_protections();` |
-| `net_init` | function | `kernel.c:405` | `net_init();` |
-| `outb` | function | `kernel.c:389` | `outb(0x21, 0xFF);` |
+| `minifs_init` | function | `kernel.c:415` | `minifs_init();` |
+| `mm_setup_protections` | function | `kernel.c:399` | `mm_setup_protections();` |
+| `net_init` | function | `kernel.c:406` | `net_init();` |
+| `outb` | function | `kernel.c:390` | `outb(0x21, 0xFF);` |
 | `ramdisk_end` | variable | `kernel.c:354` | `extern char ramdisk_end[];` |
-| `ramdisk_init` | function | `kernel.c:394` | `ramdisk_init();` |
-| `ramdisk_setup_from` | function | `kernel.c:408` | `ramdisk_setup_from(ramdisk_start, (unsigned)(ramdisk_end - ramdisk_start));` |
+| `ramdisk_init` | function | `kernel.c:395` | `ramdisk_init();` |
+| `ramdisk_setup_from` | function | `kernel.c:411` | `ramdisk_setup_from(ramdisk_start, (unsigned)(unsigned long)ramdisk_size);` |
+| `ramdisk_size` | variable | `kernel.c:355` | `extern char ramdisk_size[];` |
 | `ramdisk_start` | variable | `kernel.c:352` | `extern char ramdisk_start[];` |
-| `register_libc_symbols` | function | `kernel.c:395` | `register_libc_symbols();` |
-| `sched_init` | function | `kernel.c:428` | `sched_init();` |
-| `serial_init` | function | `kernel.c:381` | `serial_init();` |
-| `shell_run` | function | `kernel.c:442` | `shell_run();` |
-| `smp_init` | function | `kernel.c:441` | `smp_init();` |
+| `register_libc_symbols` | function | `kernel.c:396` | `register_libc_symbols();` |
+| `sched_init` | function | `kernel.c:431` | `sched_init();` |
+| `serial_init` | function | `kernel.c:382` | `serial_init();` |
+| `shell_run` | function | `kernel.c:445` | `shell_run();` |
+| `size` | function | `kernel.c:409` | `* image size (see kernel.ld);` |
+| `smp_init` | function | `kernel.c:444` | `smp_init();` |
 | `syscall_init` | function | `kernel.c:106` | `void syscall_init(void)` |
 | `syscall_kstack` | variable | `kernel.c:105` | `extern unsigned long syscall_kstack;` |
 | `table` | function | `kernel.c:94` | `* Symbol table (for resolving program references) * ================================================================ */ ` |
-| `vfs_register_builtins` | function | `kernel.c:421` | `vfs_register_builtins();` |
-| `vga_clear` | function | `kernel.c:383` | `vga_clear();` |
-| `vga_fb_boot_config` | function | `kernel.c:397` | `vga_fb_boot_config();` |
-| `vga_fb_init` | function | `kernel.c:430` | `vga_fb_init();` |
-| `vga_puts` | function | `kernel.c:391` | `vga_puts("MiniOS Kernel v0.3\n====================\n");` |
-| `volatile` | function | `kernel.c:358` | `__asm__ volatile( "mov $0x10, %%ax\n" "mov %%ax, %%ds\n" "mov %%ax, %%es\n" "mov %%ax, %%fs\n" "mov %%ax, %%gs\n" "mov %` |
+| `vfs_register_builtins` | function | `kernel.c:424` | `vfs_register_builtins();` |
+| `vga_clear` | function | `kernel.c:384` | `vga_clear();` |
+| `vga_fb_boot_config` | function | `kernel.c:398` | `vga_fb_boot_config();` |
+| `vga_fb_init` | function | `kernel.c:433` | `vga_fb_init();` |
+| `vga_puts` | function | `kernel.c:392` | `vga_puts("MiniOS Kernel v0.3\n====================\n");` |
+| `volatile` | function | `kernel.c:359` | `__asm__ volatile( "mov $0x10, %%ax\n" "mov %%ax, %%ds\n" "mov %%ax, %%es\n" "mov %%ax, %%fs\n" "mov %%ax, %%gs\n" "mov %` |
 | `wrmsr` | function | `kernel.c:111` | `wrmsr(MSR_STAR, ((unsigned long)GDT64_DATA_SEL << 48) \| ((unsigned long)GDT64_CODE_SEL << 32));` |
 | `ALIGN_UP` | macro | `kernel.h:18` | `#define ALIGN_UP(x, a)` |
 | `EFAULT` | macro | `kernel.h:3` | `#define EFAULT` |
-| `EI_NIDENT` | macro | `kernel.h:493` | `#define EI_NIDENT` |
-| `EOF` | macro | `kernel.h:320` | `#define EOF` |
-| `ET_DYN` | macro | `kernel.h:520` | `#define ET_DYN` |
-| `ET_EXEC` | macro | `kernel.h:519` | `#define ET_EXEC` |
-| `ET_REL` | macro | `kernel.h:517` | `#define ET_REL` |
-| `Elf64_Addr` | type_alias | `kernel.h:494` | `typedef unsigned long long Elf64_Addr;` |
-| `Elf64_Ehdr` | struct | `kernel.h:501` | `` |
-| `Elf64_Half` | type_alias | `kernel.h:497` | `typedef unsigned short Elf64_Half;` |
-| `Elf64_Off` | type_alias | `kernel.h:495` | `typedef unsigned long long Elf64_Off;` |
-| `Elf64_Sxword` | type_alias | `kernel.h:499` | `typedef long long Elf64_Sxword;` |
-| `Elf64_Word` | type_alias | `kernel.h:496` | `typedef unsigned int Elf64_Word;` |
-| `Elf64_Xword` | type_alias | `kernel.h:498` | `typedef unsigned long long Elf64_Xword;` |
+| `EI_NIDENT` | macro | `kernel.h:503` | `#define EI_NIDENT` |
+| `EOF` | macro | `kernel.h:330` | `#define EOF` |
+| `ETREL_TRUSTED_DIR` | macro | `kernel.h:218` | `#define ETREL_TRUSTED_DIR` |
+| `ETREL_TRUSTED_LEN` | macro | `kernel.h:219` | `#define ETREL_TRUSTED_LEN` |
+| `ET_DYN` | macro | `kernel.h:530` | `#define ET_DYN` |
+| `ET_EXEC` | macro | `kernel.h:529` | `#define ET_EXEC` |
+| `ET_REL` | macro | `kernel.h:527` | `#define ET_REL` |
+| `Elf64_Addr` | type_alias | `kernel.h:504` | `typedef unsigned long long Elf64_Addr;` |
+| `Elf64_Ehdr` | struct | `kernel.h:511` | `` |
+| `Elf64_Half` | type_alias | `kernel.h:507` | `typedef unsigned short Elf64_Half;` |
+| `Elf64_Off` | type_alias | `kernel.h:505` | `typedef unsigned long long Elf64_Off;` |
+| `Elf64_Sxword` | type_alias | `kernel.h:509` | `typedef long long Elf64_Sxword;` |
+| `Elf64_Word` | type_alias | `kernel.h:506` | `typedef unsigned int Elf64_Word;` |
+| `Elf64_Xword` | type_alias | `kernel.h:508` | `typedef unsigned long long Elf64_Xword;` |
 | `HEAP_BASE` | macro | `kernel.h:138` | `#define HEAP_BASE` |
 | `HEAP_SIZE` | macro | `kernel.h:140` | `#define HEAP_SIZE` |
 | `KERNEL_H` | macro | `kernel.h:2` | `#define KERNEL_H` |
@@ -861,12 +876,12 @@ void kmain(void)` |
 | `KEY_RSHIFT` | macro | `kernel.h:84` | `#define KEY_RSHIFT` |
 | `KEY_TILDE` | macro | `kernel.h:106` | `#define KEY_TILDE` |
 | `KEY_UP` | macro | `kernel.h:87` | `#define KEY_UP` |
-| `KFD_MAX` | macro | `kernel.h:533` | `#define KFD_MAX` |
-| `KFILE` | struct | `kernel.h:322` | `` |
-| `KPROG_MAX` | macro | `kernel.h:418` | `#define KPROG_MAX` |
-| `KProg` | struct | `kernel.h:425` | `` |
-| `KSYM_MAX` | macro | `kernel.h:416` | `#define KSYM_MAX` |
-| `KSym` | struct | `kernel.h:420` | `` |
+| `KFD_MAX` | macro | `kernel.h:543` | `#define KFD_MAX` |
+| `KFILE` | struct | `kernel.h:332` | `` |
+| `KPROG_MAX` | macro | `kernel.h:428` | `#define KPROG_MAX` |
+| `KProg` | struct | `kernel.h:435` | `` |
+| `KSYM_MAX` | macro | `kernel.h:426` | `#define KSYM_MAX` |
+| `KSym` | struct | `kernel.h:430` | `` |
 | `PORT_IO_DEFINED` | macro | `kernel.h:20` | `#define PORT_IO_DEFINED` |
 | `RAMDISK_FNAME_LEN` | macro | `kernel.h:181` | `#define RAMDISK_FNAME_LEN` |
 | `RAMDISK_MAX_FILES` | macro | `kernel.h:180` | `#define RAMDISK_MAX_FILES` |
@@ -883,134 +898,134 @@ void kmain(void)` |
 | `VGA_BASE` | macro | `kernel.h:40` | `#define VGA_BASE` |
 | `VGA_COLS` | macro | `kernel.h:41` | `#define VGA_COLS` |
 | `VGA_ROWS` | macro | `kernel.h:42` | `#define VGA_ROWS` |
-| `block_init` | function | `kernel.h:564` | `void block_init(void);` |
-| `block_read` | function | `kernel.h:565` | `int block_read(unsigned int block_num, void *buf);` |
-| `block_read_multi` | function | `kernel.h:567` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
-| `block_total` | function | `kernel.h:569` | `unsigned int block_total(void);` |
-| `block_write` | function | `kernel.h:566` | `int block_write(unsigned int block_num, const void *buf);` |
-| `block_write_multi` | function | `kernel.h:568` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
-| `console_getc` | function | `kernel.h:402` | `int console_getc(void);` |
+| `block_init` | function | `kernel.h:575` | `void block_init(void);` |
+| `block_read` | function | `kernel.h:576` | `int block_read(unsigned int block_num, void *buf);` |
+| `block_read_multi` | function | `kernel.h:578` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
+| `block_total` | function | `kernel.h:580` | `unsigned int block_total(void);` |
+| `block_write` | function | `kernel.h:577` | `int block_write(unsigned int block_num, const void *buf);` |
+| `block_write_multi` | function | `kernel.h:579` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
+| `console_getc` | function | `kernel.h:412` | `int console_getc(void);` |
 | `console_lock` | variable | `kernel.h:55` | `extern spinlock_t console_lock;` |
-| `desktop_launch` | function | `kernel.h:467` | `void desktop_launch(const char *cmd);` |
+| `desktop_launch` | function | `kernel.h:477` | `void desktop_launch(const char *cmd);` |
 | `dlmalloc_calloc` | function | `kernel.h:155` | `void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);` |
 | `dlmalloc_free` | function | `kernel.h:154` | `void dlmalloc_free(void *ptr);` |
 | `dlmalloc_init` | function | `kernel.h:152` | `void dlmalloc_init(void);` |
 | `dlmalloc_malloc` | function | `kernel.h:153` | `void *dlmalloc_malloc(unsigned long size);` |
 | `dlmalloc_realloc` | function | `kernel.h:156` | `void *dlmalloc_realloc(void *ptr, unsigned long size);` |
-| `elf_load` | function | `kernel.h:521` | `void *elf_load(void *data, unsigned size);` |
-| `exec_exit_code` | variable | `kernel.h:459` | `extern int exec_exit_code;` |
-| `exec_return` | variable | `kernel.h:458` | `extern kjmpbuf exec_return;` |
-| `file_operations` | type_alias | `kernel.h:279` | `typedef vfs_ops_t file_operations;` |
-| `fs_cwd` | variable | `kernel.h:292` | `extern char fs_cwd[];` |
+| `elf_load` | function | `kernel.h:531` | `void *elf_load(void *data, unsigned size);` |
+| `exec_exit_code` | variable | `kernel.h:469` | `extern int exec_exit_code;` |
+| `exec_return` | variable | `kernel.h:468` | `extern kjmpbuf exec_return;` |
+| `file_operations` | type_alias | `kernel.h:289` | `typedef vfs_ops_t file_operations;` |
+| `fs_cwd` | variable | `kernel.h:302` | `extern char fs_cwd[];` |
 | `fs_dir_exists` | function | `kernel.h:208` | `int fs_dir_exists(const char *dir);` |
 | `fs_is_dir` | function | `kernel.h:209` | `int fs_is_dir(const char *resolved);` |
 | `fs_resolve` | function | `kernel.h:207` | `int fs_resolve(const char *path, char *out, unsigned cap);` |
-| `g_brk` | variable | `kernel.h:486` | `extern unsigned long g_brk;` |
-| `g_brk_limit` | variable | `kernel.h:487` | `extern unsigned long g_brk_limit;` |
-| `ide_init` | function | `kernel.h:555` | `void ide_init(void);` |
-| `ide_present` | function | `kernel.h:561` | `int ide_present(void);` |
-| `ide_read_sector` | function | `kernel.h:558` | `int ide_read_sector(unsigned int lba, void *buf);` |
-| `ide_read_sectors` | function | `kernel.h:556` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
-| `ide_total_sectors` | function | `kernel.h:560` | `unsigned int ide_total_sectors(void);` |
-| `ide_write_sector` | function | `kernel.h:559` | `int ide_write_sector(unsigned int lba, const void *buf);` |
-| `ide_write_sectors` | function | `kernel.h:557` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
+| `g_brk` | variable | `kernel.h:496` | `extern unsigned long g_brk;` |
+| `g_brk_limit` | variable | `kernel.h:497` | `extern unsigned long g_brk_limit;` |
+| `ide_init` | function | `kernel.h:566` | `void ide_init(void);` |
+| `ide_present` | function | `kernel.h:572` | `int ide_present(void);` |
+| `ide_read_sector` | function | `kernel.h:569` | `int ide_read_sector(unsigned int lba, void *buf);` |
+| `ide_read_sectors` | function | `kernel.h:567` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
+| `ide_total_sectors` | function | `kernel.h:571` | `unsigned int ide_total_sectors(void);` |
+| `ide_write_sector` | function | `kernel.h:570` | `int ide_write_sector(unsigned int lba, const void *buf);` |
+| `ide_write_sectors` | function | `kernel.h:568` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
 | `inb` | function | `kernel.h:24` | `static inline unsigned char inb(unsigned short port)` |
-| `int` | function | `kernel.h:256` | `int (*open)(const char *path, int mode, void **handle);` |
+| `int` | function | `kernel.h:266` | `int (*open)(const char *path, int mode, void **handle);` |
 | `inw` | function | `kernel.h:32` | `static inline unsigned short inw(unsigned short port)` |
-| `k_exec_user` | function | `kernel.h:450` | `int k_exec_user(void *entry, int argc, char **argv);` |
-| `k_register_process` | function | `kernel.h:442` | `void k_register_process(const char *name, void *proc_entry);` |
-| `k_register_program` | function | `kernel.h:441` | `void k_register_program(const char *name, prog_entry_t entry);` |
-| `k_register_symbol` | function | `kernel.h:443` | `void k_register_symbol(const char *name, void *addr);` |
-| `k_run_rel` | function | `kernel.h:451` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
-| `k_spawn` | function | `kernel.h:440` | `int k_spawn(const char *name, int argc, char **argv);` |
-| `k_user_fault_return` | function | `kernel.h:572` | `void k_user_fault_return(void);` |
+| `k_exec_user` | function | `kernel.h:460` | `int k_exec_user(void *entry, int argc, char **argv);` |
+| `k_register_process` | function | `kernel.h:452` | `void k_register_process(const char *name, void *proc_entry);` |
+| `k_register_program` | function | `kernel.h:451` | `void k_register_program(const char *name, prog_entry_t entry);` |
+| `k_register_symbol` | function | `kernel.h:453` | `void k_register_symbol(const char *name, void *addr);` |
+| `k_run_rel` | function | `kernel.h:461` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
+| `k_spawn` | function | `kernel.h:450` | `int k_spawn(const char *name, int argc, char **argv);` |
+| `k_user_fault_return` | function | `kernel.h:583` | `void k_user_fault_return(void);` |
 | `kallocator_init` | function | `kernel.h:147` | `void kallocator_init(void);` |
-| `katol` | function | `kernel.h:369` | `long katol(const char *s);` |
+| `katol` | function | `kernel.h:379` | `long katol(const char *s);` |
 | `kbd_available` | function | `kernel.h:113` | `int kbd_available(void);` |
 | `kbd_read` | function | `kernel.h:111` | `int kbd_read(void);` |
 | `kbd_reset_for_shell` | function | `kernel.h:114` | `void kbd_reset_for_shell(void);` |
 | `kcalloc` | function | `kernel.h:145` | `void *kcalloc(unsigned long nmemb, unsigned long size);` |
-| `kernel_end` | variable | `kernel.h:537` | `extern unsigned long kernel_end;` |
-| `kexit` | function | `kernel.h:452` | `void kexit(int code);` |
-| `kfclose` | function | `kernel.h:336` | `int kfclose(KFILE *f);` |
-| `kfd_table` | variable | `kernel.h:534` | `extern KFILE *kfd_table[KFD_MAX];` |
-| `kfflush` | function | `kernel.h:346` | `int kfflush(KFILE *f);` |
-| `kfgetc` | function | `kernel.h:337` | `int kfgetc(KFILE *f);` |
-| `kfgets` | function | `kernel.h:338` | `char *kfgets(char *buf, int size, KFILE *f);` |
-| `kfile_stderr` | function | `kernel.h:354` | `KFILE *kfile_stderr(void);` |
-| `kfile_stdin` | function | `kernel.h:352` | `KFILE *kfile_stdin(void);` |
-| `kfile_stdout` | function | `kernel.h:353` | `KFILE *kfile_stdout(void);` |
-| `kfopen` | function | `kernel.h:334` | `KFILE *kfopen(const char *path, const char *mode);` |
-| `kfprintf` | function | `kernel.h:373` | `int kfprintf(KFILE *f, const char *fmt, ...);` |
-| `kfputc` | function | `kernel.h:345` | `int kfputc(int c, KFILE *f);` |
-| `kfputs` | function | `kernel.h:344` | `int kfputs(const char *s, KFILE *f);` |
-| `kfread` | function | `kernel.h:340` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
+| `kernel_end` | variable | `kernel.h:547` | `extern unsigned long kernel_end;` |
+| `kexit` | function | `kernel.h:462` | `void kexit(int code);` |
+| `kfclose` | function | `kernel.h:346` | `int kfclose(KFILE *f);` |
+| `kfd_table` | variable | `kernel.h:544` | `extern KFILE *kfd_table[KFD_MAX];` |
+| `kfflush` | function | `kernel.h:356` | `int kfflush(KFILE *f);` |
+| `kfgetc` | function | `kernel.h:347` | `int kfgetc(KFILE *f);` |
+| `kfgets` | function | `kernel.h:348` | `char *kfgets(char *buf, int size, KFILE *f);` |
+| `kfile_stderr` | function | `kernel.h:364` | `KFILE *kfile_stderr(void);` |
+| `kfile_stdin` | function | `kernel.h:362` | `KFILE *kfile_stdin(void);` |
+| `kfile_stdout` | function | `kernel.h:363` | `KFILE *kfile_stdout(void);` |
+| `kfopen` | function | `kernel.h:344` | `KFILE *kfopen(const char *path, const char *mode);` |
+| `kfprintf` | function | `kernel.h:383` | `int kfprintf(KFILE *f, const char *fmt, ...);` |
+| `kfputc` | function | `kernel.h:355` | `int kfputc(int c, KFILE *f);` |
+| `kfputs` | function | `kernel.h:354` | `int kfputs(const char *s, KFILE *f);` |
+| `kfread` | function | `kernel.h:350` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
 | `kfree` | function | `kernel.h:144` | `void kfree(void *ptr);` |
-| `kfseek` | function | `kernel.h:342` | `int kfseek(KFILE *f, long offset, int whence);` |
-| `kftell` | function | `kernel.h:343` | `long kftell(KFILE *f);` |
-| `kfungetc` | function | `kernel.h:339` | `int kfungetc(int c, KFILE *f);` |
-| `kfwrite` | function | `kernel.h:341` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
-| `kjmpbuf` | struct | `kernel.h:455` | `` |
-| `klog` | function | `kernel.h:389` | `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);` |
-| `klog_disable` | function | `kernel.h:396` | `void klog_disable(void);` |
-| `klog_enable` | function | `kernel.h:397` | `void klog_enable(void);` |
-| `klog_hexdump` | function | `kernel.h:392` | `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);` |
-| `klog_set_level` | function | `kernel.h:394` | `void klog_set_level(log_level_t level);` |
-| `klog_set_subsys_level` | function | `kernel.h:395` | `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);` |
-| `klongjmp` | function | `kernel.h:457` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
+| `kfseek` | function | `kernel.h:352` | `int kfseek(KFILE *f, long offset, int whence);` |
+| `kftell` | function | `kernel.h:353` | `long kftell(KFILE *f);` |
+| `kfungetc` | function | `kernel.h:349` | `int kfungetc(int c, KFILE *f);` |
+| `kfwrite` | function | `kernel.h:351` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
+| `kjmpbuf` | struct | `kernel.h:465` | `` |
+| `klog` | function | `kernel.h:399` | `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);` |
+| `klog_disable` | function | `kernel.h:406` | `void klog_disable(void);` |
+| `klog_enable` | function | `kernel.h:407` | `void klog_enable(void);` |
+| `klog_hexdump` | function | `kernel.h:402` | `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);` |
+| `klog_set_level` | function | `kernel.h:404` | `void klog_set_level(log_level_t level);` |
+| `klog_set_subsys_level` | function | `kernel.h:405` | `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);` |
+| `klongjmp` | function | `kernel.h:467` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
 | `kmalloc` | function | `kernel.h:141` | `void *kmalloc(unsigned long size);` |
 | `kmalloc_fail_after` | variable | `kernel.h:143` | `extern long kmalloc_fail_after;` |
 | `kmalloc_percpu` | function | `kernel.h:148` | `void *kmalloc_percpu(unsigned long size, unsigned long align);` |
-| `kmemcmp` | function | `kernel.h:367` | `int kmemcmp(const void *a, const void *b, unsigned long n);` |
-| `kmemcpy` | function | `kernel.h:365` | `void *kmemcpy(void *dst, const void *src, unsigned long n);` |
-| `kmemmove` | function | `kernel.h:368` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
-| `kmemset` | function | `kernel.h:366` | `void *kmemset(void *dst, int c, unsigned long n);` |
-| `kprintf` | function | `kernel.h:372` | `int kprintf(const char *fmt, ...);` |
-| `kprog_count` | variable | `kernel.h:435` | `extern int kprog_count;` |
-| `kprog_lookup` | function | `kernel.h:438` | `KProg *kprog_lookup(const char *name);` |
-| `kprog_slot` | function | `kernel.h:436` | `KProg *kprog_slot(const char *name);` |
-| `kprog_table` | variable | `kernel.h:434` | `extern KProg kprog_table[];` |
+| `kmemcmp` | function | `kernel.h:377` | `int kmemcmp(const void *a, const void *b, unsigned long n);` |
+| `kmemcpy` | function | `kernel.h:375` | `void *kmemcpy(void *dst, const void *src, unsigned long n);` |
+| `kmemmove` | function | `kernel.h:378` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
+| `kmemset` | function | `kernel.h:376` | `void *kmemset(void *dst, int c, unsigned long n);` |
+| `kprintf` | function | `kernel.h:382` | `int kprintf(const char *fmt, ...);` |
+| `kprog_count` | variable | `kernel.h:445` | `extern int kprog_count;` |
+| `kprog_lookup` | function | `kernel.h:448` | `KProg *kprog_lookup(const char *name);` |
+| `kprog_slot` | function | `kernel.h:446` | `KProg *kprog_slot(const char *name);` |
+| `kprog_table` | variable | `kernel.h:444` | `extern KProg kprog_table[];` |
 | `krealloc` | function | `kernel.h:146` | `void *krealloc(void *ptr, unsigned long size);` |
-| `krewind` | function | `kernel.h:347` | `void krewind(KFILE *f);` |
-| `ksetjmp` | function | `kernel.h:456` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
-| `ksnprintf` | function | `kernel.h:375` | `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);` |
-| `ksprintf` | function | `kernel.h:374` | `int ksprintf(char *buf, const char *fmt, ...);` |
-| `kstderr` | variable | `kernel.h:351` | `extern KFILE *kstderr;` |
-| `kstdin` | variable | `kernel.h:348` | `extern KFILE *kstdin;` |
-| `kstdout` | variable | `kernel.h:350` | `extern KFILE *kstdout;` |
-| `kstrchr` | function | `kernel.h:363` | `char *kstrchr(const char *s, int c);` |
-| `kstrcmp` | function | `kernel.h:361` | `int kstrcmp(const char *a, const char *b);` |
-| `kstrcpy` | function | `kernel.h:358` | `char *kstrcpy(char *dst, const char *src);` |
-| `kstrlen` | function | `kernel.h:357` | `unsigned long kstrlen(const char *s);` |
-| `kstrncat` | function | `kernel.h:360` | `char *kstrncat(char *dst, const char *src, unsigned long n);` |
-| `kstrncmp` | function | `kernel.h:362` | `int kstrncmp(const char *a, const char *b, unsigned long n);` |
-| `kstrncpy` | function | `kernel.h:359` | `char *kstrncpy(char *dst, const char *src, unsigned long n);` |
-| `kstrstr` | function | `kernel.h:364` | `char *kstrstr(const char *hay, const char *ndl);` |
-| `ksym_count` | variable | `kernel.h:433` | `extern int ksym_count;` |
-| `ksym_resolve` | function | `kernel.h:439` | `void *ksym_resolve(const char *name);` |
-| `ksym_table` | variable | `kernel.h:431` | `extern KSym ksym_table[];` |
-| `ksyscall` | function | `kernel.h:530` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `ktime_ms` | function | `kernel.h:542` | `unsigned long ktime_ms(void);` |
-| `load_exec_elf` | function | `kernel.h:523` | `void *load_exec_elf(void *data, unsigned size);` |
-| `minifs_mkdir_p` | function | `kernel.h:291` | `int minifs_mkdir_p(const char *resolved);` |
-| `mm_setup_protections` | function | `kernel.h:475` | `void mm_setup_protections(void);` |
-| `mm_user_pte_update` | function | `kernel.h:478` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
-| `mm_user_set_exec` | function | `kernel.h:479` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
+| `krewind` | function | `kernel.h:357` | `void krewind(KFILE *f);` |
+| `ksetjmp` | function | `kernel.h:466` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
+| `ksnprintf` | function | `kernel.h:385` | `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);` |
+| `ksprintf` | function | `kernel.h:384` | `int ksprintf(char *buf, const char *fmt, ...);` |
+| `kstderr` | variable | `kernel.h:361` | `extern KFILE *kstderr;` |
+| `kstdin` | variable | `kernel.h:358` | `extern KFILE *kstdin;` |
+| `kstdout` | variable | `kernel.h:360` | `extern KFILE *kstdout;` |
+| `kstrchr` | function | `kernel.h:373` | `char *kstrchr(const char *s, int c);` |
+| `kstrcmp` | function | `kernel.h:371` | `int kstrcmp(const char *a, const char *b);` |
+| `kstrcpy` | function | `kernel.h:368` | `char *kstrcpy(char *dst, const char *src);` |
+| `kstrlen` | function | `kernel.h:367` | `unsigned long kstrlen(const char *s);` |
+| `kstrncat` | function | `kernel.h:370` | `char *kstrncat(char *dst, const char *src, unsigned long n);` |
+| `kstrncmp` | function | `kernel.h:372` | `int kstrncmp(const char *a, const char *b, unsigned long n);` |
+| `kstrncpy` | function | `kernel.h:369` | `char *kstrncpy(char *dst, const char *src, unsigned long n);` |
+| `kstrstr` | function | `kernel.h:374` | `char *kstrstr(const char *hay, const char *ndl);` |
+| `ksym_count` | variable | `kernel.h:443` | `extern int ksym_count;` |
+| `ksym_resolve` | function | `kernel.h:449` | `void *ksym_resolve(const char *name);` |
+| `ksym_table` | variable | `kernel.h:441` | `extern KSym ksym_table[];` |
+| `ksyscall` | function | `kernel.h:540` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `ktime_ms` | function | `kernel.h:553` | `unsigned long ktime_ms(void);` |
+| `load_exec_elf` | function | `kernel.h:533` | `void *load_exec_elf(void *data, unsigned size);` |
+| `minifs_mkdir_p` | function | `kernel.h:301` | `int minifs_mkdir_p(const char *resolved);` |
+| `mm_setup_protections` | function | `kernel.h:485` | `void mm_setup_protections(void);` |
+| `mm_user_pte_update` | function | `kernel.h:488` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
+| `mm_user_set_exec` | function | `kernel.h:489` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
 | `mouse_disable` | function | `kernel.h:115` | `void mouse_disable(void);` |
 | `mouse_enable` | function | `kernel.h:116` | `void mouse_enable(void);` |
 | `outb` | function | `kernel.h:21` | `static inline void outb(unsigned short port, unsigned char val)` |
 | `outw` | function | `kernel.h:29` | `static inline void outw(unsigned short port, unsigned short val)` |
-| `pcspk_get_volume` | function | `kernel.h:549` | `unsigned pcspk_get_volume(void);` |
-| `pcspk_init` | function | `kernel.h:545` | `void pcspk_init(void);` |
-| `pcspk_off` | function | `kernel.h:547` | `void pcspk_off(void);` |
-| `pcspk_set_volume` | function | `kernel.h:548` | `void pcspk_set_volume(unsigned volume);` |
-| `pcspk_tone` | function | `kernel.h:546` | `void pcspk_tone(unsigned freq);` |
-| `pt_page_alloc` | function | `kernel.h:476` | `void *pt_page_alloc(void);` |
-| `pt_page_free` | function | `kernel.h:477` | `void pt_page_free(void *ptr);` |
+| `pcspk_get_volume` | function | `kernel.h:560` | `unsigned pcspk_get_volume(void);` |
+| `pcspk_init` | function | `kernel.h:556` | `void pcspk_init(void);` |
+| `pcspk_off` | function | `kernel.h:558` | `void pcspk_off(void);` |
+| `pcspk_set_volume` | function | `kernel.h:559` | `void pcspk_set_volume(unsigned volume);` |
+| `pcspk_tone` | function | `kernel.h:557` | `void pcspk_tone(unsigned freq);` |
+| `pt_page_alloc` | function | `kernel.h:486` | `void *pt_page_alloc(void);` |
+| `pt_page_free` | function | `kernel.h:487` | `void pt_page_free(void *ptr);` |
 | `ramdisk_count` | function | `kernel.h:198` | `int ramdisk_count(void);` |
 | `ramdisk_create` | function | `kernel.h:193` | `RDFile *ramdisk_create(const char *name, unsigned size);` |
 | `ramdisk_delete` | function | `kernel.h:195` | `int ramdisk_delete(RDFile *f);` |
-| `ramdisk_end` | variable | `kernel.h:539` | `extern char ramdisk_end[];` |
+| `ramdisk_end` | variable | `kernel.h:549` | `extern char ramdisk_end[];` |
 | `ramdisk_file_name` | function | `kernel.h:199` | `const char *ramdisk_file_name(int idx);` |
 | `ramdisk_init` | function | `kernel.h:188` | `void ramdisk_init(void);` |
 | `ramdisk_list` | function | `kernel.h:196` | `int ramdisk_list(RDFile **out, int max);` |
@@ -1018,15 +1033,16 @@ void kmain(void)` |
 | `ramdisk_read` | function | `kernel.h:191` | `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len);` |
 | `ramdisk_resize` | function | `kernel.h:194` | `int ramdisk_resize(RDFile *f, unsigned newsize);` |
 | `ramdisk_setup_from` | function | `kernel.h:197` | `void ramdisk_setup_from(void *data, unsigned size);` |
-| `ramdisk_start` | variable | `kernel.h:538` | `extern char ramdisk_start[];` |
+| `ramdisk_size` | variable | `kernel.h:550` | `extern char ramdisk_size[];` |
+| `ramdisk_start` | variable | `kernel.h:548` | `extern char ramdisk_start[];` |
 | `ramdisk_write` | function | `kernel.h:192` | `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);` |
-| `redirect_active` | function | `kernel.h:407` | `int redirect_active(void);` |
-| `redirect_begin` | function | `kernel.h:405` | `int redirect_begin(void);` |
-| `redirect_commit` | function | `kernel.h:406` | `int redirect_commit(const char *path, int append_mode);` |
-| `redirect_resume` | function | `kernel.h:404` | `void redirect_resume(int was);` |
-| `redirect_suspend` | function | `kernel.h:403` | `int redirect_suspend(void);` |
-| `register_libc_symbols` | function | `kernel.h:447` | `void register_libc_symbols(void);` |
-| `rtc_read_tod` | function | `kernel.h:552` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
+| `redirect_active` | function | `kernel.h:417` | `int redirect_active(void);` |
+| `redirect_begin` | function | `kernel.h:415` | `int redirect_begin(void);` |
+| `redirect_commit` | function | `kernel.h:416` | `int redirect_commit(const char *path, int append_mode);` |
+| `redirect_resume` | function | `kernel.h:414` | `void redirect_resume(int was);` |
+| `redirect_suspend` | function | `kernel.h:413` | `int redirect_suspend(void);` |
+| `register_libc_symbols` | function | `kernel.h:457` | `void register_libc_symbols(void);` |
+| `rtc_read_tod` | function | `kernel.h:563` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
 | `sb_capture_row0` | function | `kernel.h:65` | `void sb_capture_row0(void);` |
 | `sb_get_char` | function | `kernel.h:69` | `char sb_get_char(int row, int col);` |
 | `sb_get_count` | function | `kernel.h:67` | `int sb_get_count(void);` |
@@ -1040,49 +1056,49 @@ void kmain(void)` |
 | `serial_init` | function | `kernel.h:72` | `void serial_init(void);` |
 | `serial_putc` | function | `kernel.h:73` | `void serial_putc(char c);` |
 | `serial_puts` | function | `kernel.h:74` | `void serial_puts(const char *s);` |
-| `setup_user_stack` | function | `kernel.h:460` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
-| `shell_exec_builtin` | function | `kernel.h:410` | `void shell_exec_builtin(int argc, char **argv);` |
-| `shell_init` | function | `kernel.h:400` | `void shell_init(void);` |
-| `shell_queue_launch` | function | `kernel.h:468` | `void shell_queue_launch(const char *cmd);` |
-| `shell_report` | function | `kernel.h:412` | `void shell_report(const char *what, const char *detail);` |
-| `shell_report_exit` | function | `kernel.h:411` | `void shell_report_exit(int code);` |
-| `shell_run` | function | `kernel.h:401` | `void shell_run(void);` |
-| `shell_run_any` | function | `kernel.h:409` | `int shell_run_any(const char *name, int argc, char **argv);` |
-| `shell_take_redirect` | function | `kernel.h:408` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
-| `swap_in` | function | `kernel.h:483` | `int swap_in(void);` |
-| `swap_out` | function | `kernel.h:482` | `int swap_out(unsigned long window_sz);` |
-| `syscall_init` | function | `kernel.h:526` | `void syscall_init(void);` |
-| `syscall_trace_enabled` | function | `kernel.h:531` | `long syscall_trace_enabled(void);` |
-| `syscall_trace_set` | function | `kernel.h:532` | `void syscall_trace_set(int on);` |
-| `user_mmap_cur` | variable | `kernel.h:488` | `extern unsigned long user_mmap_cur;` |
-| `user_range_ok` | function | `kernel.h:471` | `int user_range_ok(unsigned long p, unsigned long len);` |
-| `user_str_ok` | function | `kernel.h:472` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
-| `vfs_close` | function | `kernel.h:287` | `int vfs_close(vfs_file_t *f);` |
-| `vfs_file` | struct | `kernel.h:264` | `` |
-| `vfs_fstat` | function | `kernel.h:288` | `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);` |
-| `vfs_init` | function | `kernel.h:289` | `void vfs_init(void);` |
-| `vfs_open` | function | `kernel.h:284` | `int vfs_open(const char *path, int mode, vfs_file_t *f);` |
-| `vfs_ops` | struct | `kernel.h:255` | `` |
-| `vfs_read` | function | `kernel.h:285` | `int vfs_read(vfs_file_t *f, void *buf, unsigned long len);` |
-| `vfs_register` | function | `kernel.h:281` | `int vfs_register(const char *prefix, const vfs_ops_t *ops);` |
-| `vfs_register_builtins` | function | `kernel.h:290` | `void vfs_register_builtins(void);` |
-| `vfs_unregister` | function | `kernel.h:283` | `int vfs_unregister(const char *prefix);` |
-| `vfs_write` | function | `kernel.h:286` | `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);` |
+| `setup_user_stack` | function | `kernel.h:470` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
+| `shell_exec_builtin` | function | `kernel.h:420` | `void shell_exec_builtin(int argc, char **argv);` |
+| `shell_init` | function | `kernel.h:410` | `void shell_init(void);` |
+| `shell_queue_launch` | function | `kernel.h:478` | `void shell_queue_launch(const char *cmd);` |
+| `shell_report` | function | `kernel.h:422` | `void shell_report(const char *what, const char *detail);` |
+| `shell_report_exit` | function | `kernel.h:421` | `void shell_report_exit(int code);` |
+| `shell_run` | function | `kernel.h:411` | `void shell_run(void);` |
+| `shell_run_any` | function | `kernel.h:419` | `int shell_run_any(const char *name, int argc, char **argv);` |
+| `shell_take_redirect` | function | `kernel.h:418` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
+| `swap_in` | function | `kernel.h:493` | `int swap_in(void);` |
+| `swap_out` | function | `kernel.h:492` | `int swap_out(unsigned long window_sz);` |
+| `syscall_init` | function | `kernel.h:536` | `void syscall_init(void);` |
+| `syscall_trace_enabled` | function | `kernel.h:541` | `long syscall_trace_enabled(void);` |
+| `syscall_trace_set` | function | `kernel.h:542` | `void syscall_trace_set(int on);` |
+| `user_mmap_cur` | variable | `kernel.h:498` | `extern unsigned long user_mmap_cur;` |
+| `user_range_ok` | function | `kernel.h:481` | `int user_range_ok(unsigned long p, unsigned long len);` |
+| `user_str_ok` | function | `kernel.h:482` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
+| `vfs_close` | function | `kernel.h:297` | `int vfs_close(vfs_file_t *f);` |
+| `vfs_file` | struct | `kernel.h:274` | `` |
+| `vfs_fstat` | function | `kernel.h:298` | `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);` |
+| `vfs_init` | function | `kernel.h:299` | `void vfs_init(void);` |
+| `vfs_open` | function | `kernel.h:294` | `int vfs_open(const char *path, int mode, vfs_file_t *f);` |
+| `vfs_ops` | struct | `kernel.h:265` | `` |
+| `vfs_read` | function | `kernel.h:295` | `int vfs_read(vfs_file_t *f, void *buf, unsigned long len);` |
+| `vfs_register` | function | `kernel.h:291` | `int vfs_register(const char *prefix, const vfs_ops_t *ops);` |
+| `vfs_register_builtins` | function | `kernel.h:300` | `void vfs_register_builtins(void);` |
+| `vfs_unregister` | function | `kernel.h:293` | `int vfs_unregister(const char *prefix);` |
+| `vfs_write` | function | `kernel.h:296` | `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);` |
 | `vga_clear` | function | `kernel.h:43` | `void vga_clear(void);` |
 | `vga_cursor_enable` | function | `kernel.h:50` | `void vga_cursor_enable(int on);` |
 | `vga_get_color` | function | `kernel.h:61` | `char vga_get_color(void);` |
 | `vga_get_x` | function | `kernel.h:58` | `int vga_get_x(void);` |
 | `vga_get_y` | function | `kernel.h:59` | `int vga_get_y(void);` |
-| `vga_gfx_ran_set` | function | `kernel.h:464` | `void vga_gfx_ran_set(int on);` |
-| `vga_mode_is_active` | function | `kernel.h:463` | `int vga_mode_is_active(void);` |
-| `vga_mode_set` | function | `kernel.h:462` | `void vga_mode_set(int on);` |
+| `vga_gfx_ran_set` | function | `kernel.h:474` | `void vga_gfx_ran_set(int on);` |
+| `vga_mode_is_active` | function | `kernel.h:473` | `int vga_mode_is_active(void);` |
+| `vga_mode_set` | function | `kernel.h:472` | `void vga_mode_set(int on);` |
 | `vga_newline` | function | `kernel.h:49` | `void vga_newline(void);` |
 | `vga_putc` | function | `kernel.h:45` | `void vga_putc(char c);` |
 | `vga_puts` | function | `kernel.h:46` | `void vga_puts(const char *s);` |
 | `vga_scroll` | function | `kernel.h:47` | `void vga_scroll(void);` |
 | `vga_set_cursor` | function | `kernel.h:48` | `void vga_set_cursor(int x, int y);` |
 | `vga_set_xy` | function | `kernel.h:60` | `void vga_set_xy(int x, int y);` |
-| `vnode_t` | type_alias | `kernel.h:280` | `typedef vfs_file_t vnode_t;` |
+| `vnode_t` | type_alias | `kernel.h:290` | `typedef vfs_file_t vnode_t;` |
 | `volatile` | function | `kernel.h:22` | `__asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));` |
 | `batch_exec` | function | `kernel/batch.c:19` | `long batch_exec(const batch_op_t *ops, long *results, int count,
                 int *completed, ...` |
@@ -1225,8 +1241,9 @@ void kmain(void)` |
 | `futex_bucket` | function | `kernel/futex.c:30` | `static futex_bucket_t *futex_bucket(unsigned long uaddr)` |
 | `futex_hash` | function | `kernel/futex.c:22` | `static unsigned long futex_hash(unsigned long uaddr)` |
 | `futex_init` | function | `kernel/futex.c:36` | `void futex_init(void)` |
+| `futex_linux_cmd` | function | `kernel/futex.c:84` | `int futex_linux_cmd(long op)` |
 | `futex_table_t` | struct | `kernel/futex.c:16` | `` |
-| `futex_wake` | function | `kernel/futex.c:89` | `long futex_wake(unsigned long uaddr, int n)` |
+| `futex_wake` | function | `kernel/futex.c:97` | `long futex_wake(unsigned long uaddr, int n)` |
 | `schedule` | function | `kernel/futex.c:79` | `schedule();` |
 | `spin_init` | function | `kernel/futex.c:39` | `spin_init(&futex_table.buckets[i].lock);` |
 | `spin_lock_irqsave` | function | `kernel/futex.c:58` | `spin_lock_irqsave(&b->lock, &flags);` |
@@ -1245,49 +1262,49 @@ void kmain(void)` |
 | `kprintf` | function | `kernel/klog.c:52` | `kprintf("[%s %s] ", lname, sname);` |
 | `ELF64_R_SYM` | macro | `kernel/loader.c:53` | `#define ELF64_R_SYM(i)` |
 | `ELF64_R_TYPE` | macro | `kernel/loader.c:55` | `#define ELF64_R_TYPE(i)` |
-| `ELF_MAX_SEGMENTS` | macro | `kernel/loader.c:80` | `#define ELF_MAX_SEGMENTS` |
-| `ELF_NAME_MAX` | macro | `kernel/loader.c:81` | `#define ELF_NAME_MAX` |
-| `EM_X86_64` | macro | `kernel/loader.c:65` | `#define EM_X86_64` |
-| `ETREL_IMAGE_MAX` | macro | `kernel/loader.c:148` | `#define ETREL_IMAGE_MAX` |
+| `ELF_MAX_SEGMENTS` | macro | `kernel/loader.c:87` | `#define ELF_MAX_SEGMENTS` |
+| `ELF_NAME_MAX` | macro | `kernel/loader.c:88` | `#define ELF_NAME_MAX` |
+| `EM_X86_64` | macro | `kernel/loader.c:72` | `#define EM_X86_64` |
+| `ETREL_IMAGE_MAX` | macro | `kernel/loader.c:63` | `#define ETREL_IMAGE_MAX` |
 | `Elf64_Phdr` | struct | `kernel/loader.c:43` | `` |
 | `Elf64_Rela` | struct | `kernel/loader.c:37` | `` |
 | `Elf64_Shdr` | struct | `kernel/loader.c:15` | `` |
 | `Elf64_Sym` | struct | `kernel/loader.c:28` | `` |
-| `PF_X` | macro | `kernel/loader.c:78` | `#define PF_X` |
-| `PT_LOAD` | macro | `kernel/loader.c:67` | `#define PT_LOAD` |
-| `R_X86_64_32` | macro | `kernel/loader.c:75` | `#define R_X86_64_32` |
-| `R_X86_64_32S` | macro | `kernel/loader.c:76` | `#define R_X86_64_32S` |
-| `R_X86_64_64` | macro | `kernel/loader.c:68` | `#define R_X86_64_64` |
-| `R_X86_64_GLOB_DAT` | macro | `kernel/loader.c:72` | `#define R_X86_64_GLOB_DAT` |
-| `R_X86_64_IRELATIVE` | macro | `kernel/loader.c:77` | `#define R_X86_64_IRELATIVE` |
-| `R_X86_64_JUMP_SLOT` | macro | `kernel/loader.c:73` | `#define R_X86_64_JUMP_SLOT` |
-| `R_X86_64_PC32` | macro | `kernel/loader.c:70` | `#define R_X86_64_PC32` |
-| `R_X86_64_PLT32` | macro | `kernel/loader.c:71` | `#define R_X86_64_PLT32` |
-| `R_X86_64_RELATIVE` | macro | `kernel/loader.c:74` | `#define R_X86_64_RELATIVE` |
-| `SHF_ALLOC` | macro | `kernel/loader.c:63` | `#define SHF_ALLOC` |
-| `SHF_EXECINSTR` | macro | `kernel/loader.c:64` | `#define SHF_EXECINSTR` |
+| `PF_X` | macro | `kernel/loader.c:85` | `#define PF_X` |
+| `PT_LOAD` | macro | `kernel/loader.c:74` | `#define PT_LOAD` |
+| `R_X86_64_32` | macro | `kernel/loader.c:82` | `#define R_X86_64_32` |
+| `R_X86_64_32S` | macro | `kernel/loader.c:83` | `#define R_X86_64_32S` |
+| `R_X86_64_64` | macro | `kernel/loader.c:75` | `#define R_X86_64_64` |
+| `R_X86_64_GLOB_DAT` | macro | `kernel/loader.c:79` | `#define R_X86_64_GLOB_DAT` |
+| `R_X86_64_IRELATIVE` | macro | `kernel/loader.c:84` | `#define R_X86_64_IRELATIVE` |
+| `R_X86_64_JUMP_SLOT` | macro | `kernel/loader.c:80` | `#define R_X86_64_JUMP_SLOT` |
+| `R_X86_64_PC32` | macro | `kernel/loader.c:77` | `#define R_X86_64_PC32` |
+| `R_X86_64_PLT32` | macro | `kernel/loader.c:78` | `#define R_X86_64_PLT32` |
+| `R_X86_64_RELATIVE` | macro | `kernel/loader.c:81` | `#define R_X86_64_RELATIVE` |
+| `SHF_ALLOC` | macro | `kernel/loader.c:70` | `#define SHF_ALLOC` |
+| `SHF_EXECINSTR` | macro | `kernel/loader.c:71` | `#define SHF_EXECINSTR` |
 | `SHN_UNDEF` | macro | `kernel/loader.c:56` | `#define SHN_UNDEF` |
-| `SHT_NOBITS` | macro | `kernel/loader.c:62` | `#define SHT_NOBITS` |
-| `SHT_PROGBITS` | macro | `kernel/loader.c:61` | `#define SHT_PROGBITS` |
-| `SHT_RELA` | macro | `kernel/loader.c:60` | `#define SHT_RELA` |
-| `SHT_STRTAB` | macro | `kernel/loader.c:59` | `#define SHT_STRTAB` |
-| `SHT_SYMTAB` | macro | `kernel/loader.c:57` | `#define SHT_SYMTAB` |
-| `apply_exec_relocs` | function | `kernel/loader.c:357` | `static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
+| `SHT_NOBITS` | macro | `kernel/loader.c:69` | `#define SHT_NOBITS` |
+| `SHT_PROGBITS` | macro | `kernel/loader.c:68` | `#define SHT_PROGBITS` |
+| `SHT_RELA` | macro | `kernel/loader.c:67` | `#define SHT_RELA` |
+| `SHT_STRTAB` | macro | `kernel/loader.c:66` | `#define SHT_STRTAB` |
+| `SHT_SYMTAB` | macro | `kernel/loader.c:64` | `#define SHT_SYMTAB` |
+| `apply_exec_relocs` | function | `kernel/loader.c:360` | `static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
                     ...` |
-| `elf_load` | function | `kernel/loader.c:114` | `void *elf_load(void *data, unsigned size)` |
-| `elf_load_fail` | function | `kernel/loader.c:106` | `static void elf_load_fail(void *base, void **sec_addrs, const char *why)` |
-| `elf_name_copy` | function | `kernel/loader.c:92` | `static void elf_name_copy(char *out, unsigned out_cap, const char *tab,
+| `elf_load` | function | `kernel/loader.c:121` | `void *elf_load(void *data, unsigned size)` |
+| `elf_load_fail` | function | `kernel/loader.c:113` | `static void elf_load_fail(void *base, void **sec_addrs, const char *why)` |
+| `elf_name_copy` | function | `kernel/loader.c:99` | `static void elf_name_copy(char *out, unsigned out_cap, const char *tab,
                          ...` |
-| `exec_range` | struct | `kernel/loader.c:83` | `` |
-| `kfree` | function | `kernel/loader.c:352` | `kfree(sec_addrs);` |
-| `kmemcpy` | function | `kernel/loader.c:207` | `kmemcpy(sec_addrs[i], (char *)data + shdrs[i].sh_offset, (unsigned long)ssize);` |
-| `kmemset` | function | `kernel/loader.c:190` | `kmemset(base, 0, total_alloc);` |
-| `kprintf` | function | `kernel/loader.c:174` | `kprintf("load: ET_REL image exceeds %u bytes, refusing", ETREL_IMAGE_MAX);` |
-| `load_exec_elf` | function | `kernel/loader.c:440` | `void *load_exec_elf(void *data, unsigned size)` |
-| `mm_user_set_exec` | function | `kernel/loader.c:490` | `mm_user_set_exec(xr[i].start, xr[i].end, cur_cr3);` |
-| `redirect_resume` | function | `kernel/loader.c:503` | `redirect_resume(was);` |
-| `vma_tree_init` | function | `kernel/loader.c:499` | `vma_tree_init();` |
-| `volatile` | function | `kernel/loader.c:488` | `__asm__ volatile("mov %%cr3, %0" : "=r"(cur_cr3));` |
+| `exec_range` | struct | `kernel/loader.c:90` | `` |
+| `kfree` | function | `kernel/loader.c:355` | `kfree(sec_addrs);` |
+| `kmemcpy` | function | `kernel/loader.c:210` | `kmemcpy(sec_addrs[i], (char *)data + shdrs[i].sh_offset, (unsigned long)ssize);` |
+| `kmemset` | function | `kernel/loader.c:193` | `kmemset(base, 0, total_alloc);` |
+| `kprintf` | function | `kernel/loader.c:177` | `kprintf("load: ET_REL image exceeds %u bytes, refusing\n", ETREL_IMAGE_MAX);` |
+| `load_exec_elf` | function | `kernel/loader.c:443` | `void *load_exec_elf(void *data, unsigned size)` |
+| `mm_user_set_exec` | function | `kernel/loader.c:493` | `mm_user_set_exec(xr[i].start, xr[i].end, cur_cr3);` |
+| `redirect_resume` | function | `kernel/loader.c:506` | `redirect_resume(was);` |
+| `vma_tree_init` | function | `kernel/loader.c:502` | `vma_tree_init();` |
+| `volatile` | function | `kernel/loader.c:491` | `__asm__ volatile("mov %%cr3, %0" : "=r"(cur_cr3));` |
 | `HASH_BITS` | macro | `kernel/lz4_kernel.c:3` | `#define HASH_BITS` |
 | `HASH_SIZE` | macro | `kernel/lz4_kernel.c:5` | `#define HASH_SIZE` |
 | `LZ4_compressBound` | function | `kernel/lz4_kernel.c:32` | `int LZ4_compressBound(int inputSize)` |
@@ -1395,115 +1412,125 @@ void kmain(void)` |
 | `shell_take_redirect` | function | `kernel/redirect.c:24` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode)` |
 | `vga_putc` | function | `kernel/redirect.c:21` | `vga_putc('\n');` |
 | `vga_puts` | function | `kernel/redirect.c:19` | `vga_puts(what);` |
-| `BSP` | function | `kernel/sched.c:833` | `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+| `BSP` | function | `kernel/sched.c:911` | `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...` |
-| `IRQ4` | function | `kernel/sched.c:192` | `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit set *` |
+| `IRQ4` | function | `kernel/sched.c:270` | `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit set *` |
+| `KSTACK_CANARY` | macro | `kernel/sched.c:124` | `#define KSTACK_CANARY` |
+| `KSTACK_PAINT` | macro | `kernel/sched.c:123` | `#define KSTACK_PAINT` |
+| `KSTACK_SZ` | macro | `kernel/sched.c:110` | `#define KSTACK_SZ` |
 | `MY_SYS_KSTK_TOP` | macro | `kernel/sched.c:35` | `#define MY_SYS_KSTK_TOP` |
 | `MY_USER_LOAD_BASE` | macro | `kernel/sched.c:37` | `#define MY_USER_LOAD_BASE` |
 | `MY_USER_STACK_TOP` | macro | `kernel/sched.c:36` | `#define MY_USER_STACK_TOP` |
-| `PROC_SWITCHING` | function | `kernel/sched.c:962` | `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A BLOCKED/ZOMBIE ` |
-| `__attribute__` | function | `kernel/sched.c:75` | `typedef struct __attribute__((packed))` |
-| `__attribute__` | function | `kernel/sched.c:96` | `typedef struct __attribute__((packed))` |
-| `__builtin_unreachable` | function | `kernel/sched.c:841` | `__builtin_unreachable();` |
-| `__sync_fetch_and_add` | function | `kernel/sched.c:431` | `__sync_fetch_and_add(&smp_idle_polls[cpu], 1);` |
-| `alloc_kstack` | function | `kernel/sched.c:110` | `static uint64_t alloc_kstack(void)` |
-| `context` | function | `kernel/sched.c:283` | `* context (anything entered via k_exec_user) is inside a syscall
+| `PROC_KSTACK_OFF` | function | `kernel/sched.c:58` | `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both immediates * from the sched.h macros via STR(), so this a` |
+| `PROC_SWITCHING` | function | `kernel/sched.c:1040` | `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A BLOCKED/ZOMBIE ` |
+| `__attribute__` | function | `kernel/sched.c:77` | `typedef struct __attribute__((packed))` |
+| `__attribute__` | function | `kernel/sched.c:98` | `typedef struct __attribute__((packed))` |
+| `__builtin_unreachable` | function | `kernel/sched.c:919` | `__builtin_unreachable();` |
+| `__sync_fetch_and_add` | function | `kernel/sched.c:509` | `__sync_fetch_and_add(&smp_idle_polls[cpu], 1);` |
+| `alloc_kstack` | function | `kernel/sched.c:149` | `static uint64_t alloc_kstack(void)` |
+| `context` | function | `kernel/sched.c:361` | `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...` |
-| `descriptor` | function | `kernel/sched.c:63` | `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 == GDT64_SMP_BYTES` |
-| `do_exit` | function | `kernel/sched.c:1032` | `void do_exit(int code)` |
-| `do_kill` | function | `kernel/sched.c:1235` | `int do_kill(int pid)` |
-| `do_thread_spawn` | function | `kernel/sched.c:1072` | `long do_thread_spawn(unsigned long fn, unsigned long stack,
+| `descriptor` | function | `kernel/sched.c:65` | `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 == GDT64_SMP_BYTES` |
+| `do_exit` | function | `kernel/sched.c:1110` | `void do_exit(int code)` |
+| `do_kill` | function | `kernel/sched.c:1313` | `int do_kill(int pid)` |
+| `do_thread_spawn` | function | `kernel/sched.c:1150` | `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)` |
-| `do_waitpid` | function | `kernel/sched.c:1201` | `int do_waitpid(int pid)` |
-| `free_kstack` | function | `kernel/sched.c:121` | `static void free_kstack(uint64_t top)` |
-| `futex_init` | function | `kernel/sched.c:1385` | `futex_init();` |
-| `hal_lapic_eoi` | function | `kernel/sched.c:590` | `hal_lapic_eoi();` |
-| `hal_outb` | function | `kernel/sched.c:187` | `hal_outb(HAL_PIC1_CMD, 0x11);` |
-| `hal_pic_eoi` | function | `kernel/sched.c:211` | `hal_pic_eoi(irq);` |
-| `here` | function | `kernel/sched.c:88` | `* smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */ static char ap_idle_stack[MAX_CPUS][4096] __attribute_` |
-| `idt_init` | function | `kernel/sched.c:155` | `static void idt_init(void)` |
-| `idt_set` | function | `kernel/sched.c:145` | `static void idt_set(int vec, void (*h)(void))` |
-| `inb` | function | `kernel/sched.c:1269` | `return inb(0x60);` |
-| `isr_dispatch` | function | `kernel/sched.c:556` | `void isr_dispatch(int vector, trap_frame_t *frame)` |
-| `isr_stub_table` | variable | `kernel/sched.c:104` | `extern void *isr_stub_table[];` |
-| `k_user_fault_return` | function | `kernel/sched.c:840` | `k_user_fault_return();` |
-| `kmemcpy` | function | `kernel/sched.c:304` | `kmemcpy(dst, frame, sizeof(trap_frame_t));` |
-| `kmemset` | function | `kernel/sched.c:157` | `kmemset(idt, 0, sizeof(idt));` |
-| `kstrcpy` | function | `kernel/sched.c:1372` | `kstrcpy(procs[0].name, "kernel");` |
-| `kstrncpy` | function | `kernel/sched.c:882` | `kstrncpy(p->name, name, sizeof(p->name) - 1);` |
-| `mm_lock` | variable | `kernel/sched.c:277` | `extern spinlock_t mm_lock;` |
-| `mouse_disable` | function | `kernel/sched.c:1322` | `void mouse_disable(void)` |
-| `mouse_enable` | function | `kernel/sched.c:1324` | `void mouse_enable(void)` |
-| `mouse_hw_init` | function | `kernel/sched.c:1271` | `static void mouse_hw_init(void)` |
-| `mouse_read` | function | `kernel/sched.c:1266` | `static unsigned char mouse_read(void)` |
-| `mouse_wait_cmd` | function | `kernel/sched.c:1246` | `static void mouse_wait_cmd(void)` |
-| `mouse_wait_data` | function | `kernel/sched.c:1252` | `static void mouse_wait_data(void)` |
-| `mouse_write` | function | `kernel/sched.c:1259` | `static void mouse_write(unsigned char data)` |
-| `off_lo` | type_alias | `kernel/sched.c:96` | `typedef struct __attribute__((packed)) { uint16_t off_lo;` |
-| `outb` | function | `kernel/sched.c:1262` | `outb(0x64, 0xD4);` |
-| `pic_eoi` | function | `kernel/sched.c:209` | `static void pic_eoi(int irq)` |
-| `pic_init` | function | `kernel/sched.c:168` | `static void pic_init(void)` |
-| `pit_init` | function | `kernel/sched.c:203` | `static void pit_init(void)` |
-| `point` | function | `kernel/sched.c:296` | `* return address as the resume point ("continue the ISR"), which
+| `do_waitpid` | function | `kernel/sched.c:1279` | `int do_waitpid(int pid)` |
+| `free_kstack` | function | `kernel/sched.c:161` | `static void free_kstack(uint64_t top)` |
+| `futex_init` | function | `kernel/sched.c:1468` | `futex_init();` |
+| `hal_lapic_eoi` | function | `kernel/sched.c:668` | `hal_lapic_eoi();` |
+| `hal_outb` | function | `kernel/sched.c:265` | `hal_outb(HAL_PIC1_CMD, 0x11);` |
+| `hal_pic_eoi` | function | `kernel/sched.c:289` | `hal_pic_eoi(irq);` |
+| `here` | function | `kernel/sched.c:90` | `* smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */ static char ap_idle_stack[MAX_CPUS][4096] __attribute_` |
+| `idt_init` | function | `kernel/sched.c:233` | `static void idt_init(void)` |
+| `idt_set` | function | `kernel/sched.c:223` | `static void idt_set(int vec, void (*h)(void))` |
+| `inb` | function | `kernel/sched.c:1347` | `return inb(0x60);` |
+| `isr_dispatch` | function | `kernel/sched.c:634` | `void isr_dispatch(int vector, trap_frame_t *frame)` |
+| `isr_stub_table` | variable | `kernel/sched.c:106` | `extern void *isr_stub_table[];` |
+| `it` | function | `kernel/sched.c:1412` | `* it (SPAWN/exec point proc 0 here transiently);` |
+| `k_user_fault_return` | function | `kernel/sched.c:918` | `k_user_fault_return();` |
+| `kmemcpy` | function | `kernel/sched.c:382` | `kmemcpy(dst, frame, sizeof(trap_frame_t));` |
+| `kmemset` | function | `kernel/sched.c:235` | `kmemset(idt, 0, sizeof(idt));` |
+| `kprintf` | function | `kernel/sched.c:187` | `kprintf(" pid=%d (%s) stack foreign top=0x%lx\n", i, procs[i].name, (unsigned long)top);` |
+| `kstack_paint` | function | `kernel/sched.c:125` | `static void kstack_paint(uint64_t top, unsigned long size)` |
+| `kstack_report` | function | `kernel/sched.c:171` | `void kstack_report(void)` |
+| `kstack_usage` | function | `kernel/sched.c:135` | `static int kstack_usage(uint64_t top, unsigned long size,
+                        unsigned long *...` |
+| `kstrcpy` | function | `kernel/sched.c:1455` | `kstrcpy(procs[0].name, "kernel");` |
+| `kstrncpy` | function | `kernel/sched.c:960` | `kstrncpy(p->name, name, sizeof(p->name) - 1);` |
+| `mm_lock` | variable | `kernel/sched.c:355` | `extern spinlock_t mm_lock;` |
+| `mouse_disable` | function | `kernel/sched.c:1400` | `void mouse_disable(void)` |
+| `mouse_enable` | function | `kernel/sched.c:1402` | `void mouse_enable(void)` |
+| `mouse_hw_init` | function | `kernel/sched.c:1349` | `static void mouse_hw_init(void)` |
+| `mouse_read` | function | `kernel/sched.c:1344` | `static unsigned char mouse_read(void)` |
+| `mouse_wait_cmd` | function | `kernel/sched.c:1324` | `static void mouse_wait_cmd(void)` |
+| `mouse_wait_data` | function | `kernel/sched.c:1330` | `static void mouse_wait_data(void)` |
+| `mouse_write` | function | `kernel/sched.c:1337` | `static void mouse_write(unsigned char data)` |
+| `off_lo` | type_alias | `kernel/sched.c:98` | `typedef struct __attribute__((packed)) { uint16_t off_lo;` |
+| `outb` | function | `kernel/sched.c:1340` | `outb(0x64, 0xD4);` |
+| `pic_eoi` | function | `kernel/sched.c:287` | `static void pic_eoi(int irq)` |
+| `pic_init` | function | `kernel/sched.c:246` | `static void pic_init(void)` |
+| `pit_init` | function | `kernel/sched.c:281` | `static void pit_init(void)` |
+| `point` | function | `kernel/sched.c:374` | `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...` |
-| `proc_create` | function | `kernel/sched.c:859` | `int proc_create(const char *name, int parent_pid)` |
-| `proc_get` | function | `kernel/sched.c:853` | `proc_t *proc_get(int pid)` |
-| `rcu_init` | function | `kernel/sched.c:1387` | `rcu_init();` |
-| `rcu_note_tick` | function | `kernel/sched.c:579` | `rcu_note_tick(cpu->cpu_id);` |
-| `rcu_poll` | function | `kernel/sched.c:580` | `rcu_poll();` |
+| `proc_create` | function | `kernel/sched.c:937` | `int proc_create(const char *name, int parent_pid)` |
+| `proc_get` | function | `kernel/sched.c:931` | `proc_t *proc_get(int pid)` |
+| `rcu_init` | function | `kernel/sched.c:1470` | `rcu_init();` |
+| `rcu_note_tick` | function | `kernel/sched.c:657` | `rcu_note_tick(cpu->cpu_id);` |
+| `rcu_poll` | function | `kernel/sched.c:658` | `rcu_poll();` |
 | `read_cr3` | function | `kernel/sched.c:49` | `static inline unsigned long read_cr3(void)` |
-| `res0` | type_alias | `kernel/sched.c:75` | `typedef struct __attribute__((packed)) { uint32_t res0;` |
-| `returns` | function | `kernel/sched.c:1026` | `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");` |
-| `rlimit_cpu_exceeded` | function | `kernel/sched.c:535` | `int rlimit_cpu_exceeded(int pid)` |
-| `rlimit_cpu_tick` | function | `kernel/sched.c:460` | `rlimit_cpu_tick(current_pid);` |
-| `rq_enqueue` | function | `kernel/sched.c:1130` | `rq_enqueue(home, pid);` |
-| `rq_init` | function | `kernel/sched.c:1386` | `rq_init();` |
-| `rq_note_poll` | function | `kernel/sched.c:400` | `rq_note_poll(me);` |
-| `sb16_irq` | function | `kernel/sched.c:734` | `sb16_irq();` |
+| `res0` | type_alias | `kernel/sched.c:77` | `typedef struct __attribute__((packed)) { uint32_t res0;` |
+| `returns` | function | `kernel/sched.c:1104` | `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");` |
+| `rlimit_cpu_exceeded` | function | `kernel/sched.c:613` | `int rlimit_cpu_exceeded(int pid)` |
+| `rlimit_cpu_tick` | function | `kernel/sched.c:538` | `rlimit_cpu_tick(current_pid);` |
+| `rq_enqueue` | function | `kernel/sched.c:1208` | `rq_enqueue(home, pid);` |
+| `rq_init` | function | `kernel/sched.c:1469` | `rq_init();` |
+| `rq_note_poll` | function | `kernel/sched.c:478` | `rq_note_poll(me);` |
+| `sb16_irq` | function | `kernel/sched.c:812` | `sb16_irq();` |
 | `sb16_poll` | function | `kernel/sched.c:21` | `sb16_poll();` |
-| `sched_ap_preempt` | function | `kernel/sched.c:456` | `static void sched_ap_preempt(trap_frame_t *frame)` |
-| `sched_init` | function | `kernel/sched.c:1325` | `void sched_init(void)` |
-| `sched_next_locked` | function | `kernel/sched.c:317` | `static int sched_next_locked(int start, int vm_only)` |
-| `sched_park_as_returned` | function | `kernel/sched.c:934` | `static void sched_park_as_returned(proc_t *cur)` |
-| `sched_rearm_kgs` | function | `kernel/sched.c:443` | `sched_rearm_kgs();` |
-| `sched_save_preempt` | function | `kernel/sched.c:461` | `sched_save_preempt(cur, frame, 0);` |
-| `sched_set_nice` | function | `kernel/sched.c:335` | `int sched_set_nice(int pid, int nice)` |
+| `sched_ap_preempt` | function | `kernel/sched.c:534` | `static void sched_ap_preempt(trap_frame_t *frame)` |
+| `sched_init` | function | `kernel/sched.c:1403` | `void sched_init(void)` |
+| `sched_next_locked` | function | `kernel/sched.c:395` | `static int sched_next_locked(int start, int vm_only)` |
+| `sched_park_as_returned` | function | `kernel/sched.c:1012` | `static void sched_park_as_returned(proc_t *cur)` |
+| `sched_rearm_kgs` | function | `kernel/sched.c:521` | `sched_rearm_kgs();` |
+| `sched_save_preempt` | function | `kernel/sched.c:539` | `sched_save_preempt(cur, frame, 0);` |
+| `sched_set_nice` | function | `kernel/sched.c:413` | `int sched_set_nice(int pid, int nice)` |
 | `sched_tick_audio` | function | `kernel/sched.c:19` | `static void sched_tick_audio(void *ctx)` |
 | `sched_tick_desktop` | function | `kernel/sched.c:25` | `static void sched_tick_desktop(void *ctx)` |
-| `schedule` | function | `kernel/sched.c:943` | `void schedule(void)` |
-| `seccomp_allow_one` | function | `kernel/sched.c:351` | `int seccomp_allow_one(int pid, int n)` |
-| `seccomp_denied` | function | `kernel/sched.c:358` | `int seccomp_denied(int pid, int n)` |
-| `seccomp_deny_one` | function | `kernel/sched.c:344` | `int seccomp_deny_one(int pid, int n)` |
-| `serial_puts` | function | `kernel/sched.c:750` | `serial_puts("EXCEPTION ");` |
-| `smp_any_ap_idle` | function | `kernel/sched.c:509` | `static int smp_any_ap_idle(void)` |
-| `smp_ap_idle_loop` | function | `kernel/sched.c:422` | `void smp_ap_idle_loop(void)` |
-| `smp_claim_thread_v` | function | `kernel/sched.c:382` | `static int smp_claim_thread_v(int vm_only)` |
-| `smp_try_claim_hint` | function | `kernel/sched.c:367` | `static int smp_try_claim_hint(int pid, int vm_only)` |
-| `spin_lock` | function | `kernel/sched.c:861` | `spin_lock(&sched_lock);` |
-| `spin_lock_irqsave` | function | `kernel/sched.c:372` | `spin_lock_irqsave(&sched_lock, &flags);` |
-| `spin_unlock` | function | `kernel/sched.c:918` | `spin_unlock(&sched_lock);` |
-| `spin_unlock_irqrestore` | function | `kernel/sched.c:379` | `spin_unlock_irqrestore(&sched_lock, flags);` |
-| `spin_unlock_keep_irq` | function | `kernel/sched.c:969` | `spin_unlock_keep_irq(&sched_lock);` |
-| `switch_save_only` | function | `kernel/sched.c:1010` | `switch_save_only(cur);` |
-| `switch_to` | function | `kernel/sched.c:444` | `switch_to(&ap_idle_proc[cpu], next);` |
-| `switch_to_notrap` | function | `kernel/sched.c:490` | `switch_to_notrap(cur, &ap_idle_proc[me]);` |
-| `syscall` | function | `kernel/sched.c:656` | `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid math ` |
-| `tick_register_audio` | function | `kernel/sched.c:1389` | `tick_register_audio(sched_tick_audio, 0);` |
-| `tick_register_desktop` | function | `kernel/sched.c:1390` | `tick_register_desktop(sched_tick_desktop, 0);` |
-| `tick_reset` | function | `kernel/sched.c:1388` | `tick_reset();` |
-| `tick_run_audio` | function | `kernel/sched.c:578` | `tick_run_audio();` |
-| `timer_tick` | function | `kernel/sched.c:1242` | `void timer_tick(void)` |
-| `trap_frame_t` | struct | `kernel/sched.c:129` | `` |
-| `tss_init` | function | `kernel/sched.c:233` | `static void tss_init(void)` |
-| `tss_init_ap` | function | `kernel/sched.c:265` | `void tss_init_ap(int cpu)` |
-| `tss_write_desc` | function | `kernel/sched.c:216` | `static void tss_write_desc(int cpu)` |
+| `schedule` | function | `kernel/sched.c:1021` | `void schedule(void)` |
+| `seccomp_allow_one` | function | `kernel/sched.c:429` | `int seccomp_allow_one(int pid, int n)` |
+| `seccomp_denied` | function | `kernel/sched.c:436` | `int seccomp_denied(int pid, int n)` |
+| `seccomp_deny_one` | function | `kernel/sched.c:422` | `int seccomp_deny_one(int pid, int n)` |
+| `serial_puts` | function | `kernel/sched.c:828` | `serial_puts("EXCEPTION ");` |
+| `smp_any_ap_idle` | function | `kernel/sched.c:587` | `static int smp_any_ap_idle(void)` |
+| `smp_ap_idle_loop` | function | `kernel/sched.c:500` | `void smp_ap_idle_loop(void)` |
+| `smp_claim_thread_v` | function | `kernel/sched.c:460` | `static int smp_claim_thread_v(int vm_only)` |
+| `smp_try_claim_hint` | function | `kernel/sched.c:445` | `static int smp_try_claim_hint(int pid, int vm_only)` |
+| `spin_lock` | function | `kernel/sched.c:939` | `spin_lock(&sched_lock);` |
+| `spin_lock_irqsave` | function | `kernel/sched.c:450` | `spin_lock_irqsave(&sched_lock, &flags);` |
+| `spin_unlock` | function | `kernel/sched.c:996` | `spin_unlock(&sched_lock);` |
+| `spin_unlock_irqrestore` | function | `kernel/sched.c:457` | `spin_unlock_irqrestore(&sched_lock, flags);` |
+| `spin_unlock_keep_irq` | function | `kernel/sched.c:1047` | `spin_unlock_keep_irq(&sched_lock);` |
+| `switch_save_only` | function | `kernel/sched.c:1088` | `switch_save_only(cur);` |
+| `switch_to` | function | `kernel/sched.c:522` | `switch_to(&ap_idle_proc[cpu], next);` |
+| `switch_to_notrap` | function | `kernel/sched.c:568` | `switch_to_notrap(cur, &ap_idle_proc[me]);` |
+| `syscall` | function | `kernel/sched.c:734` | `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid math ` |
+| `tick_register_audio` | function | `kernel/sched.c:1472` | `tick_register_audio(sched_tick_audio, 0);` |
+| `tick_register_desktop` | function | `kernel/sched.c:1473` | `tick_register_desktop(sched_tick_desktop, 0);` |
+| `tick_reset` | function | `kernel/sched.c:1471` | `tick_reset();` |
+| `tick_run_audio` | function | `kernel/sched.c:656` | `tick_run_audio();` |
+| `timer_tick` | function | `kernel/sched.c:1320` | `void timer_tick(void)` |
+| `trap_frame_t` | struct | `kernel/sched.c:207` | `` |
+| `tss_init` | function | `kernel/sched.c:311` | `static void tss_init(void)` |
+| `tss_init_ap` | function | `kernel/sched.c:343` | `void tss_init_ap(int cpu)` |
+| `tss_write_desc` | function | `kernel/sched.c:294` | `static void tss_write_desc(int cpu)` |
 | `user_trampoline` | function | `kernel/sched.c:47` | `extern void user_trampoline(void);` |
 | `vga_fb_mouse_tick` | function | `kernel/sched.c:27` | `vga_fb_mouse_tick();` |
 | `volatile` | function | `kernel/sched.c:52` | `__asm__ volatile("mov %%cr3, %0" : "=r"(v));` |
-| `wrmsr` | function | `kernel/sched.c:287` | `wrmsr(MSR_KERNEL_GS_BASE, (unsigned long)this_cpu());` |
-| `wrong` | function | `kernel/sched.c:1294` | `* later packet is framed wrong (a left press reads back as bit 1, * motion warps), permanently. */ mouse_write(0xFF);` |
-| `yield` | function | `kernel/sched.c:1017` | `void yield(void)` |
-| `zeroed` | function | `kernel/sched.c:1381` | `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe pre-mouse-` |
+| `wrmsr` | function | `kernel/sched.c:365` | `wrmsr(MSR_KERNEL_GS_BASE, (unsigned long)this_cpu());` |
+| `wrong` | function | `kernel/sched.c:1372` | `* later packet is framed wrong (a left press reads back as bit 1, * motion warps), permanently. */ mouse_write(0xFF);` |
+| `yield` | function | `kernel/sched.c:1095` | `void yield(void)` |
+| `zeroed` | function | `kernel/sched.c:1464` | `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe pre-mouse-` |
 | `SCROLLBACK_ROWS` | macro | `kernel/scrollback.c:11` | `#define SCROLLBACK_ROWS` |
 | `sb_capture_row0` | function | `kernel/scrollback.c:22` | `void sb_capture_row0(void)` |
 | `sb_get_char` | function | `kernel/scrollback.c:40` | `char sb_get_char(int row, int col)` |
@@ -1533,7 +1560,7 @@ void kmain(void)` |
 | `SHELL_HIST_MAX` | macro | `kernel/shell.c:77` | `#define SHELL_HIST_MAX` |
 | `SHELL_RUN_DIRS` | macro | `kernel/shell.c:54` | `#define SHELL_RUN_DIRS` |
 | `ShellRunDir` | struct | `kernel/shell.c:43` | `` |
-| `XXH64_reset` | function | `kernel/shell.c:1512` | `XXH64_reset(&h, 0);` |
+| `XXH64_reset` | function | `kernel/shell.c:1527` | `XXH64_reset(&h, 0);` |
 | `XXH_STATIC_LINKING_ONLY` | macro | `kernel/shell.c:12` | `#define XXH_STATIC_LINKING_ONLY` |
 | `console_getc` | function | `kernel/shell.c:234` | `* returns console_getc() simply serves the FIFO again. */
 int console_getc(void)` |
@@ -1541,27 +1568,28 @@ int console_getc(void)` |
 | `console_raw_get` | function | `kernel/shell.c:272` | `int console_raw_get(void)` |
 | `console_raw_try` | function | `kernel/shell.c:269` | `int console_raw_try(void)` |
 | `consume_page_after_esc` | function | `kernel/shell.c:209` | `static int consume_page_after_esc(void)` |
-| `context` | function | `kernel/shell.c:1267` | `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);` |
-| `etrel_path_trusted` | function | `kernel/shell.c:1079` | `static int etrel_path_trusted(const char *full)` |
-| `gfx_parse_int` | function | `kernel/shell.c:1304` | `static int gfx_parse_int(const char *s, int *out)` |
-| `gfx_read_palette` | function | `kernel/shell.c:1324` | `static void gfx_read_palette(unsigned char pal[768])` |
-| `k_exec_user` | function | `kernel/shell.c:1108` | `return k_exec_user(entry, argc, argv);` |
-| `k_run_rel` | function | `kernel/shell.c:1103` | `return k_run_rel(entry, argc, argv);` |
-| `kfclose` | function | `kernel/shell.c:1459` | `kfclose(f);` |
+| `context` | function | `kernel/shell.c:1282` | `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);` |
+| `etrel_path_trusted` | function | `kernel/shell.c:1084` | `static int etrel_path_trusted(const char *full)` |
+| `gfx_parse_int` | function | `kernel/shell.c:1319` | `static int gfx_parse_int(const char *s, int *out)` |
+| `gfx_read_palette` | function | `kernel/shell.c:1339` | `static void gfx_read_palette(unsigned char pal[768])` |
+| `k_exec_user` | function | `kernel/shell.c:1116` | `return k_exec_user(entry, argc, argv);` |
+| `k_run_rel` | function | `kernel/shell.c:1111` | `return k_run_rel(entry, argc, argv);` |
+| `kfclose` | function | `kernel/shell.c:1474` | `kfclose(f);` |
 | `kfree` | function | `kernel/shell.c:986` | `kfree(data);` |
-| `kfwrite` | function | `kernel/shell.c:1440` | `kfwrite(hdr, 1, (unsigned long)n, f);` |
+| `kfwrite` | function | `kernel/shell.c:1455` | `kfwrite(hdr, 1, (unsigned long)n, f);` |
 | `kmemcpy` | function | `kernel/shell.c:427` | `kmemcpy(word_start, text, tlen);` |
 | `kmemmove` | function | `kernel/shell.c:482` | `kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1));` |
 | `kmemset` | function | `kernel/shell.c:369` | `kmemset(buf, 0, (unsigned long)size);` |
 | `kprintf` | function | `kernel/shell.c:975` | `kprintf("load: refusing untrusted ET_REL '%s'", resolved);` |
+| `kstack_report` | function | `kernel/shell.c:1962` | `kstack_report();` |
 | `line` | function | `kernel/shell.c:544` | `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...` |
 | `minifs_read` | function | `kernel/shell.c:954` | `minifs_read(ino, data, 0, data_size);` |
-| `minifs_stat` | function | `kernel/shell.c:1677` | `minifs_stat(de.inode, &st);` |
-| `net_cmd_dns` | function | `kernel/shell.c:1798` | `net_cmd_dns(argv[2]);` |
-| `net_cmd_ping` | function | `kernel/shell.c:1795` | `net_cmd_ping(argv[2]);` |
-| `net_cmd_status` | function | `kernel/shell.c:1792` | `net_cmd_status();` |
-| `outb` | function | `kernel/shell.c:1326` | `outb(0x3C7, 0);` |
+| `minifs_stat` | function | `kernel/shell.c:1697` | `minifs_stat(de.inode, &st);` |
+| `net_cmd_dns` | function | `kernel/shell.c:1864` | `net_cmd_dns(argv[2]);` |
+| `net_cmd_ping` | function | `kernel/shell.c:1861` | `net_cmd_ping(argv[2]);` |
+| `net_cmd_status` | function | `kernel/shell.c:1858` | `net_cmd_status();` |
+| `outb` | function | `kernel/shell.c:1341` | `outb(0x3C7, 0);` |
 | `outw_port` | function | `kernel/shell.c:989` | `static inline void outw_port(unsigned short port, unsigned short val)` |
 | `pb_count` | function | `kernel/shell.c:131` | `static int pb_count(void)` |
 | `pb_empty` | function | `kernel/shell.c:129` | `static int pb_empty(void)` |
@@ -1569,30 +1597,30 @@ static void shell_hist_na...` |
 | `pb_pop` | function | `kernel/shell.c:142` | `static int pb_pop(void)` |
 | `pb_push_back` | function | `kernel/shell.c:132` | `static void pb_push_back(unsigned char c)` |
 | `pb_push_front` | function | `kernel/shell.c:137` | `static void pb_push_front(unsigned char c)` |
-| `pcspk_set_volume` | function | `kernel/shell.c:1884` | `pcspk_set_volume(v);` |
-| `ramdisk_delete` | function | `kernel/shell.c:1717` | `ramdisk_delete(f);` |
+| `pcspk_set_volume` | function | `kernel/shell.c:1950` | `pcspk_set_volume(v);` |
+| `ramdisk_delete` | function | `kernel/shell.c:1737` | `ramdisk_delete(f);` |
 | `ramdisk_read` | function | `kernel/shell.c:938` | `ramdisk_read(f, data, 0, data_size);` |
 | `raw_blocking_getc` | function | `kernel/shell.c:155` | `static int raw_blocking_getc(void)` |
 | `raw_try_getc` | function | `kernel/shell.c:174` | `static int raw_try_getc(void)` |
 | `root` | function | `kernel/shell.c:707` | `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * e` |
-| `rq_stats` | function | `kernel/shell.c:1820` | `rq_stats(c, &hits, &steals, &drops);` |
-| `sb16_counters` | function | `kernel/shell.c:1897` | `sb16_counters(&c);` |
+| `rq_stats` | function | `kernel/shell.c:1886` | `rq_stats(c, &hits, &steals, &drops);` |
+| `sb16_counters` | function | `kernel/shell.c:1966` | `sb16_counters(&c);` |
 | `sb_init` | function | `kernel/shell.c:324` | `sb_init();` |
 | `scrollback_render` | function | `kernel/shell.c:285` | `static void scrollback_render(int voff, int total, const unsigned char *saved)` |
 | `scrollback_view` | function | `kernel/shell.c:322` | `static void scrollback_view(int initial_dir)` |
 | `serial_putc` | function | `kernel/shell.c:301` | `serial_putc(ch);` |
-| `shell_cmd_edit` | function | `kernel/shell.c:1561` | `shell_cmd_edit(argc, argv);` |
-| `shell_cmd_gfx` | function | `kernel/shell.c:1330` | `static void shell_cmd_gfx(int argc, char **argv)` |
-| `shell_cmd_hash` | function | `kernel/shell.c:1504` | `static void shell_cmd_hash(int argc, char **argv)` |
+| `shell_cmd_edit` | function | `kernel/shell.c:1581` | `shell_cmd_edit(argc, argv);` |
+| `shell_cmd_gfx` | function | `kernel/shell.c:1345` | `static void shell_cmd_gfx(int argc, char **argv)` |
+| `shell_cmd_hash` | function | `kernel/shell.c:1519` | `static void shell_cmd_hash(int argc, char **argv)` |
 | `shell_cmd_poweroff` | function | `kernel/shell.c:995` | `static void shell_cmd_poweroff(void)` |
-| `shell_cmd_sh` | function | `kernel/shell.c:1939` | `shell_cmd_sh(argc, argv);` |
-| `shell_cmd_unzip` | function | `kernel/shell.c:1916` | `shell_cmd_unzip(argc, argv);` |
-| `shell_cmd_wm` | function | `kernel/shell.c:1483` | `static void shell_cmd_wm(int argc, char **argv)` |
-| `shell_cmd_zip` | function | `kernel/shell.c:1919` | `shell_cmd_zip(argc, argv);` |
+| `shell_cmd_sh` | function | `kernel/shell.c:2008` | `shell_cmd_sh(argc, argv);` |
+| `shell_cmd_unzip` | function | `kernel/shell.c:1985` | `shell_cmd_unzip(argc, argv);` |
+| `shell_cmd_wm` | function | `kernel/shell.c:1498` | `static void shell_cmd_wm(int argc, char **argv)` |
+| `shell_cmd_zip` | function | `kernel/shell.c:1988` | `shell_cmd_zip(argc, argv);` |
 | `shell_complete_replace` | function | `kernel/shell.c:418` | `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...` |
 | `shell_complete_tier` | function | `kernel/shell.c:407` | `static int shell_complete_tier(const char *nm)` |
-| `shell_exec_builtin` | function | `kernel/shell.c:1518` | `void shell_exec_builtin(int argc, char **argv)` |
+| `shell_exec_builtin` | function | `kernel/shell.c:1533` | `void shell_exec_builtin(int argc, char **argv)` |
 | `shell_file_is_real` | function | `kernel/shell.c:1030` | `static int shell_file_is_real(const char *resolved)` |
 | `shell_hist_nav` | function | `kernel/shell.c:621` | `shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);` |
 | `shell_hist_newest_match` | function | `kernel/shell.c:527` | `static int shell_hist_newest_match(const char *prefix, unsigned long plen)` |
@@ -1613,19 +1641,19 @@ static void shell_hist_na...` |
 | `shell_readline` | function | `kernel/shell.c:435` | `static void shell_readline(void)` |
 | `shell_readline_buf` | function | `kernel/shell.c:367` | `void shell_readline_buf(char *buf, int size)` |
 | `shell_readline_hist` | function | `kernel/shell.c:589` | `static void shell_readline_hist(char *buf, int size)` |
-| `shell_report` | function | `kernel/shell.c:1567` | `shell_report("ls: name too long: ", argv[1]);` |
-| `shell_report_exit` | function | `kernel/shell.c:1935` | `else shell_report_exit(ret);` |
+| `shell_report` | function | `kernel/shell.c:1587` | `shell_report("ls: name too long: ", argv[1]);` |
+| `shell_report_exit` | function | `kernel/shell.c:2004` | `else shell_report_exit(ret);` |
 | `shell_resolve_run` | function | `kernel/shell.c:1042` | `static int shell_resolve_run(const char *name, char *out, unsigned cap)` |
 | `shell_run` | function | `kernel/shell.c:880` | `void shell_run(void)` |
-| `shell_run_any` | function | `kernel/shell.c:1244` | `int shell_run_any(const char *name, int argc, char **argv)` |
-| `shell_run_cvm` | function | `kernel/shell.c:1178` | `static int shell_run_cvm(const char *full, int argc, char **argv)` |
+| `shell_run_any` | function | `kernel/shell.c:1259` | `int shell_run_any(const char *name, int argc, char **argv)` |
+| `shell_run_cvm` | function | `kernel/shell.c:1186` | `static int shell_run_cvm(const char *full, int argc, char **argv)` |
 | `shell_run_dir_for` | function | `kernel/shell.c:1012` | `static const ShellRunDir *shell_run_dir_for(const char *name)` |
-| `shell_run_elf_buf_path` | function | `kernel/shell.c:1090` | `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+| `shell_run_elf_buf_path` | function | `kernel/shell.c:1098` | `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...` |
-| `shell_run_elf_file` | function | `kernel/shell.c:1115` | `static int shell_run_elf_file(const char *full, int argc, char **argv)` |
-| `shell_run_elf_minifs` | function | `kernel/shell.c:1128` | `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` |
-| `shell_run_file` | function | `kernel/shell.c:1207` | `static int shell_run_file(const char *name, int argc, char **argv)` |
-| `vga_clear` | function | `kernel/shell.c:1555` | `vga_clear();` |
+| `shell_run_elf_file` | function | `kernel/shell.c:1123` | `static int shell_run_elf_file(const char *full, int argc, char **argv)` |
+| `shell_run_elf_minifs` | function | `kernel/shell.c:1136` | `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` |
+| `shell_run_file` | function | `kernel/shell.c:1222` | `static int shell_run_file(const char *name, int argc, char **argv)` |
+| `vga_clear` | function | `kernel/shell.c:1575` | `vga_clear();` |
 | `vga_cursor_enable` | function | `kernel/shell.c:331` | `vga_cursor_enable(0);` |
 | `vga_fb_hide_text_cursor` | function | `kernel/shell.c:597` | `vga_fb_hide_text_cursor();` |
 | `vga_fb_text_cursor` | function | `kernel/shell.c:458` | `vga_fb_text_cursor(n);` |
@@ -1687,163 +1715,162 @@ static void shell_hist_na...` |
 | `wake_up` | function | `kernel/sync.c:53` | `int wake_up(wait_queue_t *q)` |
 | `wake_up_all` | function | `kernel/sync.c:69` | `int wake_up_all(wait_queue_t *q)` |
 | `wq_init` | function | `kernel/sync.c:26` | `void wq_init(wait_queue_t *q)` |
-| `DOOM_FRAME` | function | `kernel/syscalls.c:361` | `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
+| `DOOM_FRAME` | function | `kernel/syscalls.c:366` | `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
 static long sys_minios_gfx_prese...` |
-| `KFD_MAX` | macro | `kernel/syscalls.c:36` | `#define KFD_MAX` |
-| `LIMITATION` | function | `kernel/syscalls.c:1184` | `* * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from * a ring-3 interpreter (lua/micropython) ` |
-| `LINUX_SYSCALL_COUNT` | macro | `kernel/syscalls.c:955` | `#define LINUX_SYSCALL_COUNT` |
-| `MINIOS_SYSCALL_BASE` | macro | `kernel/syscalls.c:67` | `#define MINIOS_SYSCALL_BASE` |
-| `MINIOS_SYSCALL_COUNT` | macro | `kernel/syscalls.c:69` | `#define MINIOS_SYSCALL_COUNT` |
-| `SANITIZE_COPY_IN` | function | `kernel/syscalls.c:427` | `SANITIZE_COPY_IN(kops, a1, count, sizeof(batch_op_t));` |
-| `SANITIZE_LEN_NEG` | function | `kernel/syscalls.c:265` | `SANITIZE_LEN_NEG(len);` |
-| `SANITIZE_RANGE` | function | `kernel/syscalls.c:133` | `SANITIZE_RANGE(a1, 768);` |
-| `SYSCALL_TRACE` | macro | `kernel/syscalls.c:514` | `#define SYSCALL_TRACE` |
-| `SYS_NOISY_GETC_RAW` | macro | `kernel/syscalls.c:529` | `#define SYS_NOISY_GETC_RAW` |
-| `SYS_NOISY_KBD` | macro | `kernel/syscalls.c:527` | `#define SYS_NOISY_KBD` |
-| `SYS_NOISY_MOUSE` | macro | `kernel/syscalls.c:528` | `#define SYS_NOISY_MOUSE` |
-| `SYS_NOISY_TIME` | macro | `kernel/syscalls.c:526` | `#define SYS_NOISY_TIME` |
-| `batch_kdispatch` | function | `kernel/syscalls.c:346` | `static long batch_kdispatch(uint32_t opcode)` |
-| `by` | function | `kernel/syscalls.c:50` | `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to progs/minios_a` |
-| `do_clone` | function | `kernel/syscalls.c:316` | `return do_clone(flags, newsp);` |
-| `do_exit` | function | `kernel/syscalls.c:846` | `do_exit((int)code);` |
-| `do_kill` | function | `kernel/syscalls.c:866` | `return do_kill((int)a1);` |
-| `do_open_path` | function | `kernel/syscalls.c:596` | `static long do_open_path(const char *path, long flags)` |
-| `do_proc_exit` | function | `kernel/syscalls.c:856` | `return do_proc_exit(a1);` |
-| `do_thread_spawn` | function | `kernel/syscalls.c:318` | `extern long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);` |
-| `do_waitpid` | function | `kernel/syscalls.c:861` | `return do_waitpid((int)a1);` |
-| `futex_wait` | function | `kernel/syscalls.c:335` | `return futex_wait((unsigned long)a1, (int)a2);` |
-| `futex_wake` | function | `kernel/syscalls.c:344` | `return futex_wake((unsigned long)a1, (int)n);` |
-| `gfx_win_title` | variable | `kernel/syscalls.c:274` | `extern const char *gfx_win_title;` |
-| `k_syscall_spawn` | function | `kernel/syscalls.c:70` | `static int k_syscall_spawn(const char *path, const char *redirect, int child_argc, const char **child_argv);` |
-| `kbd_flush_all` | function | `kernel/syscalls.c:143` | `kbd_flush_all();` |
-| `kbd_q_pop` | function | `kernel/syscalls.c:126` | `return kbd_q_pop();` |
-| `kbd_raw_mode_set` | function | `kernel/syscalls.c:142` | `kbd_raw_mode_set((int)a1);` |
-| `kfclose` | function | `kernel/syscalls.c:631` | `kfclose(kfd_table[a1]);` |
-| `kfree` | function | `kernel/syscalls.c:1270` | `kfree(data);` |
-| `kfseek` | function | `kernel/syscalls.c:640` | `kfseek(kfd_table[a1], a2, (int)a3);` |
-| `kiovec` | struct | `kernel/syscalls.c:513` | `` |
-| `klongjmp` | function | `kernel/syscalls.c:850` | `klongjmp(&exec_return, 1);` |
-| `kmemcpy` | function | `kernel/syscalls.c:1223` | `kmemcpy(kargv[i], child_argv[i], slen);` |
-| `kprintf` | function | `kernel/syscalls.c:545` | `kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);` |
-| `ksyscall` | function | `kernel/syscalls.c:1003` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `ksyscall_dispatch` | function | `kernel/syscalls.c:1036` | `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `minios_syscall_entry_t` | struct | `kernel/syscalls.c:63` | `` |
-| `net_sys_connect` | function | `kernel/syscalls.c:797` | `return net_sys_connect(a1, a2, a3);` |
-| `net_sys_dns` | function | `kernel/syscalls.c:77` | `return net_sys_dns(a1);` |
-| `net_sys_poll` | function | `kernel/syscalls.c:819` | `return net_sys_poll(a1, a2, a3);` |
-| `net_sys_recvfrom` | function | `kernel/syscalls.c:807` | `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);` |
-| `net_sys_sendto` | function | `kernel/syscalls.c:802` | `return net_sys_sendto(a1, a2, a3, a4, a5, a6);` |
-| `net_sys_shutdown` | function | `kernel/syscalls.c:812` | `return net_sys_shutdown(a1, a2);` |
-| `net_sys_socket` | function | `kernel/syscalls.c:791` | `return net_sys_socket(a1, a2, a3);` |
-| `pcspk_init` | function | `kernel/syscalls.c:155` | `pcspk_init();` |
-| `pcspk_set_volume` | function | `kernel/syscalls.c:196` | `pcspk_set_volume((unsigned)v);` |
-| `pcspk_tone` | function | `kernel/syscalls.c:159` | `pcspk_tone((unsigned)a1);` |
-| `ramdisk_read` | function | `kernel/syscalls.c:1244` | `ramdisk_read(f, data, 0, f->size);` |
-| `sb16_pcm_submit` | function | `kernel/syscalls.c:267` | `return sb16_pcm_submit(pcm, (unsigned)len);` |
-| `sb16_pump` | function | `kernel/syscalls.c:285` | `sb16_pump();` |
-| `sb16_stream_close` | function | `kernel/syscalls.c:293` | `sb16_stream_close((int)a1);` |
-| `sb16_stream_open` | function | `kernel/syscalls.c:289` | `return sb16_stream_open();` |
-| `sb16_stream_submit` | function | `kernel/syscalls.c:301` | `return sb16_stream_submit((int)a1, pcm, (unsigned)len);` |
-| `sb16_stream_volume` | function | `kernel/syscalls.c:305` | `sb16_stream_volume((int)a1, (unsigned char)a2);` |
-| `space` | function | `kernel/syscalls.c:309` | `* CLONE_VM: share address space (same CR3). * CLONE_FILES: share fd table. * Returns child PID to parent, 0 to child. */` |
-| `spin_lock_irqsave` | function | `kernel/syscalls.c:652` | `spin_lock_irqsave(&mm_lock, &flags);` |
-| `spin_unlock_irqrestore` | function | `kernel/syscalls.c:658` | `spin_unlock_irqrestore(&mm_lock, flags);` |
-| `swap_in` | function | `kernel/syscalls.c:1353` | `swap_in();` |
-| `sys_linux_access` | function | `kernel/syscalls.c:756` | `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_arch_prctl` | function | `kernel/syscalls.c:938` | `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_brk` | function | `kernel/syscalls.c:646` | `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_close` | function | `kernel/syscalls.c:625` | `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_connect` | function | `kernel/syscalls.c:793` | `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_execve` | function | `kernel/syscalls.c:831` | `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_exit` | function | `kernel/syscalls.c:853` | `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_flock` | function | `kernel/syscalls.c:868` | `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_fork` | function | `kernel/syscalls.c:821` | `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_fstat` | function | `kernel/syscalls.c:903` | `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getcwd` | function | `kernel/syscalls.c:873` | `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getpid` | function | `kernel/syscalls.c:783` | `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_gettid` | function | `kernel/syscalls.c:950` | `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_gettimeofday` | function | `kernel/syscalls.c:923` | `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_ioctl` | function | `kernel/syscalls.c:751` | `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_kill` | function | `kernel/syscalls.c:863` | `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_lseek` | function | `kernel/syscalls.c:636` | `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_mmap` | function | `kernel/syscalls.c:668` | `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_mprotect` | function | `kernel/syscalls.c:736` | `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_munmap` | function | `kernel/syscalls.c:718` | `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_open` | function | `kernel/syscalls.c:620` | `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_poll` | function | `kernel/syscalls.c:814` | `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_readlink` | function | `kernel/syscalls.c:898` | `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_recvfrom` | function | `kernel/syscalls.c:804` | `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_sendto` | function | `kernel/syscalls.c:799` | `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_shutdown` | function | `kernel/syscalls.c:809` | `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_sigaction` | function | `kernel/syscalls.c:741` | `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_sigprocmask` | function | `kernel/syscalls.c:746` | `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_socket` | function | `kernel/syscalls.c:788` | `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_unlink` | function | `kernel/syscalls.c:885` | `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_vfork` | function | `kernel/syscalls.c:826` | `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_wait4` | function | `kernel/syscalls.c:858` | `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_write` | function | `kernel/syscalls.c:565` | `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_writev` | function | `kernel/syscalls.c:575` | `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_yield` | function | `kernel/syscalls.c:778` | `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_clone` | function | `kernel/syscalls.c:313` | `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)` |
-| `sys_minios_dns` | function | `kernel/syscalls.c:73` | `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_doom_frame` | function | `kernel/syscalls.c:161` | `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_fb_info` | function | `kernel/syscalls.c:179` | `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_futex_wait` | function | `kernel/syscalls.c:331` | `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_futex_wake` | function | `kernel/syscalls.c:337` | `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_getc_raw` | function | `kernel/syscalls.c:412` | `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_gfx_title` | function | `kernel/syscalls.c:269` | `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_kbd` | function | `kernel/syscalls.c:113` | `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_kbd_raw` | function | `kernel/syscalls.c:140` | `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_lz4_compress` | function | `kernel/syscalls.c:210` | `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_lz4_decompress` | function | `kernel/syscalls.c:223` | `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_mouse` | function | `kernel/syscalls.c:237` | `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_nice` | function | `kernel/syscalls.c:395` | `static long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_nk_frame` | function | `kernel/syscalls.c:246` | `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_palette` | function | `kernel/syscalls.c:128` | `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_pcspk_init` | function | `kernel/syscalls.c:153` | `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_pcspk_tone` | function | `kernel/syscalls.c:157` | `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_pcspk_vol` | function | `kernel/syscalls.c:191` | `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_rlimit` | function | `kernel/syscalls.c:441` | `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_rtc` | function | `kernel/syscalls.c:165` | `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_open` | function | `kernel/syscalls.c:256` | `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_pump` | function | `kernel/syscalls.c:283` | `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_stream_close` | function | `kernel/syscalls.c:291` | `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_stream_open` | function | `kernel/syscalls.c:287` | `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_stream_submit` | function | `kernel/syscalls.c:295` | `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_stream_vol` | function | `kernel/syscalls.c:303` | `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_submit` | function | `kernel/syscalls.c:261` | `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_seccomp` | function | `kernel/syscalls.c:379` | `static long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_spawn` | function | `kernel/syscalls.c:199` | `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_submit_batch` | function | `kernel/syscalls.c:417` | `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_thread_spawn` | function | `kernel/syscalls.c:321` | `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_time` | function | `kernel/syscalls.c:109` | `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_tls_handshake` | function | `kernel/syscalls.c:79` | `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_tls_recv` | function | `kernel/syscalls.c:99` | `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_tls_send` | function | `kernel/syscalls.c:89` | `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_vga_mode` | function | `kernel/syscalls.c:146` | `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `syscall_trace_enabled` | function | `kernel/syscalls.c:518` | `long syscall_trace_enabled(void)` |
-| `syscall_trace_set` | function | `kernel/syscalls.c:520` | `void syscall_trace_set(int on)` |
-| `tls_sys_handshake` | function | `kernel/syscalls.c:86` | `return tls_sys_handshake(a1, a2);` |
-| `tls_sys_recv` | function | `kernel/syscalls.c:106` | `return tls_sys_recv(a1, a2, a3);` |
-| `tls_sys_send` | function | `kernel/syscalls.c:96` | `return tls_sys_send(a1, a2, a3);` |
-| `tools` | function | `kernel/syscalls.c:1192` | `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
+| `Discipline` | function | `kernel/syscalls.c:1049` | `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok is O` |
+| `KFD_MAX` | macro | `kernel/syscalls.c:35` | `#define KFD_MAX` |
+| `LIMITATION` | function | `kernel/syscalls.c:1219` | `* * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from * a ring-3 interpreter (lua/micropython) ` |
+| `LINUX_SYSCALL_COUNT` | macro | `kernel/syscalls.c:966` | `#define LINUX_SYSCALL_COUNT` |
+| `MINIOS_SYSCALL_BASE` | macro | `kernel/syscalls.c:66` | `#define MINIOS_SYSCALL_BASE` |
+| `MINIOS_SYSCALL_COUNT` | macro | `kernel/syscalls.c:68` | `#define MINIOS_SYSCALL_COUNT` |
+| `SANITIZE_COPY_IN` | function | `kernel/syscalls.c:432` | `SANITIZE_COPY_IN(kops, a1, count, sizeof(batch_op_t));` |
+| `SANITIZE_LEN_NEG` | function | `kernel/syscalls.c:270` | `SANITIZE_LEN_NEG(len);` |
+| `SANITIZE_RANGE` | function | `kernel/syscalls.c:138` | `SANITIZE_RANGE(a1, 768);` |
+| `SYSCALL_TRACE` | macro | `kernel/syscalls.c:519` | `#define SYSCALL_TRACE` |
+| `SYS_NOISY_GETC_RAW` | macro | `kernel/syscalls.c:534` | `#define SYS_NOISY_GETC_RAW` |
+| `SYS_NOISY_KBD` | macro | `kernel/syscalls.c:532` | `#define SYS_NOISY_KBD` |
+| `SYS_NOISY_MOUSE` | macro | `kernel/syscalls.c:533` | `#define SYS_NOISY_MOUSE` |
+| `SYS_NOISY_TIME` | macro | `kernel/syscalls.c:531` | `#define SYS_NOISY_TIME` |
+| `batch_kdispatch` | function | `kernel/syscalls.c:351` | `static long batch_kdispatch(uint32_t opcode)` |
+| `by` | function | `kernel/syscalls.c:49` | `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to progs/minios_a` |
+| `do_clone` | function | `kernel/syscalls.c:321` | `return do_clone(flags, newsp);` |
+| `do_exit` | function | `kernel/syscalls.c:851` | `do_exit((int)code);` |
+| `do_kill` | function | `kernel/syscalls.c:871` | `return do_kill((int)a1);` |
+| `do_open_path` | function | `kernel/syscalls.c:601` | `static long do_open_path(const char *path, long flags)` |
+| `do_proc_exit` | function | `kernel/syscalls.c:861` | `return do_proc_exit(a1);` |
+| `do_thread_spawn` | function | `kernel/syscalls.c:323` | `extern long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);` |
+| `do_waitpid` | function | `kernel/syscalls.c:866` | `return do_waitpid((int)a1);` |
+| `futex_wait` | function | `kernel/syscalls.c:340` | `return futex_wait((unsigned long)a1, (int)a2);` |
+| `futex_wake` | function | `kernel/syscalls.c:107` | `return futex_wake(uaddr, (int)n);` |
+| `gfx_win_title` | variable | `kernel/syscalls.c:279` | `extern const char *gfx_win_title;` |
+| `k_syscall_spawn` | function | `kernel/syscalls.c:69` | `static int k_syscall_spawn(const char *path, const char *redirect, int child_argc, const char **child_argv);` |
+| `kbd_flush_all` | function | `kernel/syscalls.c:148` | `kbd_flush_all();` |
+| `kbd_q_pop` | function | `kernel/syscalls.c:131` | `return kbd_q_pop();` |
+| `kbd_raw_mode_set` | function | `kernel/syscalls.c:147` | `kbd_raw_mode_set((int)a1);` |
+| `kfclose` | function | `kernel/syscalls.c:636` | `kfclose(kfd_table[a1]);` |
+| `kfree` | function | `kernel/syscalls.c:1305` | `kfree(data);` |
+| `kfseek` | function | `kernel/syscalls.c:645` | `kfseek(kfd_table[a1], a2, (int)a3);` |
+| `kiovec` | struct | `kernel/syscalls.c:518` | `` |
+| `klongjmp` | function | `kernel/syscalls.c:855` | `klongjmp(&exec_return, 1);` |
+| `kmemcpy` | function | `kernel/syscalls.c:1258` | `kmemcpy(kargv[i], child_argv[i], slen);` |
+| `kprintf` | function | `kernel/syscalls.c:550` | `kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);` |
+| `ksyscall` | function | `kernel/syscalls.c:1014` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `ksyscall_dispatch` | function | `kernel/syscalls.c:1066` | `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `minios_syscall_entry_t` | struct | `kernel/syscalls.c:62` | `` |
+| `net_sys_connect` | function | `kernel/syscalls.c:802` | `return net_sys_connect(a1, a2, a3);` |
+| `net_sys_dns` | function | `kernel/syscalls.c:76` | `return net_sys_dns(a1);` |
+| `net_sys_poll` | function | `kernel/syscalls.c:824` | `return net_sys_poll(a1, a2, a3);` |
+| `net_sys_recvfrom` | function | `kernel/syscalls.c:812` | `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);` |
+| `net_sys_sendto` | function | `kernel/syscalls.c:807` | `return net_sys_sendto(a1, a2, a3, a4, a5, a6);` |
+| `net_sys_shutdown` | function | `kernel/syscalls.c:817` | `return net_sys_shutdown(a1, a2);` |
+| `net_sys_socket` | function | `kernel/syscalls.c:796` | `return net_sys_socket(a1, a2, a3);` |
+| `pcspk_init` | function | `kernel/syscalls.c:160` | `pcspk_init();` |
+| `pcspk_set_volume` | function | `kernel/syscalls.c:201` | `pcspk_set_volume((unsigned)v);` |
+| `pcspk_tone` | function | `kernel/syscalls.c:164` | `pcspk_tone((unsigned)a1);` |
+| `products` | function | `kernel/syscalls.c:1054` | `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
+ * pre-bounded against (END-...` |
+| `ramdisk_read` | function | `kernel/syscalls.c:1279` | `ramdisk_read(f, data, 0, f->size);` |
+| `rtc_wall_seconds` | function | `kernel/syscalls.c:943` | `rtc_wall_seconds(&sec);` |
+| `sb16_pcm_submit` | function | `kernel/syscalls.c:272` | `return sb16_pcm_submit(pcm, (unsigned)len);` |
+| `sb16_pump` | function | `kernel/syscalls.c:290` | `sb16_pump();` |
+| `sb16_stream_close` | function | `kernel/syscalls.c:298` | `sb16_stream_close((int)a1);` |
+| `sb16_stream_open` | function | `kernel/syscalls.c:294` | `return sb16_stream_open();` |
+| `sb16_stream_submit` | function | `kernel/syscalls.c:306` | `return sb16_stream_submit((int)a1, pcm, (unsigned)len);` |
+| `sb16_stream_volume` | function | `kernel/syscalls.c:310` | `sb16_stream_volume((int)a1, (unsigned char)a2);` |
+| `space` | function | `kernel/syscalls.c:314` | `* CLONE_VM: share address space (same CR3). * CLONE_FILES: share fd table. * Returns child PID to parent, 0 to child. */` |
+| `spin_lock_irqsave` | function | `kernel/syscalls.c:657` | `spin_lock_irqsave(&mm_lock, &flags);` |
+| `spin_unlock_irqrestore` | function | `kernel/syscalls.c:663` | `spin_unlock_irqrestore(&mm_lock, flags);` |
+| `swap_in` | function | `kernel/syscalls.c:1393` | `swap_in();` |
+| `sys_linux_access` | function | `kernel/syscalls.c:761` | `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_arch_prctl` | function | `kernel/syscalls.c:949` | `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_brk` | function | `kernel/syscalls.c:651` | `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_close` | function | `kernel/syscalls.c:630` | `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_connect` | function | `kernel/syscalls.c:798` | `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_execve` | function | `kernel/syscalls.c:836` | `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_exit` | function | `kernel/syscalls.c:858` | `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_flock` | function | `kernel/syscalls.c:873` | `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fork` | function | `kernel/syscalls.c:826` | `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fstat` | function | `kernel/syscalls.c:908` | `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_futex` | function | `kernel/syscalls.c:85` | `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getcwd` | function | `kernel/syscalls.c:878` | `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getpid` | function | `kernel/syscalls.c:788` | `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_gettid` | function | `kernel/syscalls.c:961` | `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_gettimeofday` | function | `kernel/syscalls.c:928` | `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_ioctl` | function | `kernel/syscalls.c:756` | `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_kill` | function | `kernel/syscalls.c:868` | `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_lseek` | function | `kernel/syscalls.c:641` | `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_mmap` | function | `kernel/syscalls.c:673` | `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_mprotect` | function | `kernel/syscalls.c:741` | `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_munmap` | function | `kernel/syscalls.c:723` | `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_open` | function | `kernel/syscalls.c:625` | `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_poll` | function | `kernel/syscalls.c:819` | `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_readlink` | function | `kernel/syscalls.c:903` | `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_recvfrom` | function | `kernel/syscalls.c:809` | `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sendto` | function | `kernel/syscalls.c:804` | `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_shutdown` | function | `kernel/syscalls.c:814` | `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sigaction` | function | `kernel/syscalls.c:746` | `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sigprocmask` | function | `kernel/syscalls.c:751` | `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_socket` | function | `kernel/syscalls.c:793` | `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_unlink` | function | `kernel/syscalls.c:890` | `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_vfork` | function | `kernel/syscalls.c:831` | `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_wait4` | function | `kernel/syscalls.c:863` | `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_write` | function | `kernel/syscalls.c:570` | `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_writev` | function | `kernel/syscalls.c:580` | `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_yield` | function | `kernel/syscalls.c:783` | `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_clone` | function | `kernel/syscalls.c:318` | `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)` |
+| `sys_minios_dns` | function | `kernel/syscalls.c:72` | `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_doom_frame` | function | `kernel/syscalls.c:166` | `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_fb_info` | function | `kernel/syscalls.c:184` | `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_futex_wait` | function | `kernel/syscalls.c:336` | `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_futex_wake` | function | `kernel/syscalls.c:342` | `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_getc_raw` | function | `kernel/syscalls.c:417` | `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_gfx_title` | function | `kernel/syscalls.c:274` | `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_kbd` | function | `kernel/syscalls.c:118` | `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_kbd_raw` | function | `kernel/syscalls.c:145` | `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_lz4_compress` | function | `kernel/syscalls.c:215` | `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_lz4_decompress` | function | `kernel/syscalls.c:228` | `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_mouse` | function | `kernel/syscalls.c:242` | `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_nice` | function | `kernel/syscalls.c:400` | `static long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_nk_frame` | function | `kernel/syscalls.c:251` | `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_palette` | function | `kernel/syscalls.c:133` | `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcspk_init` | function | `kernel/syscalls.c:158` | `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcspk_tone` | function | `kernel/syscalls.c:162` | `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcspk_vol` | function | `kernel/syscalls.c:196` | `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_rlimit` | function | `kernel/syscalls.c:446` | `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_rtc` | function | `kernel/syscalls.c:170` | `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_open` | function | `kernel/syscalls.c:261` | `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_pump` | function | `kernel/syscalls.c:288` | `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_close` | function | `kernel/syscalls.c:296` | `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_open` | function | `kernel/syscalls.c:292` | `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_submit` | function | `kernel/syscalls.c:300` | `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_vol` | function | `kernel/syscalls.c:308` | `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_submit` | function | `kernel/syscalls.c:266` | `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_seccomp` | function | `kernel/syscalls.c:384` | `static long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_spawn` | function | `kernel/syscalls.c:204` | `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_submit_batch` | function | `kernel/syscalls.c:422` | `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_thread_spawn` | function | `kernel/syscalls.c:326` | `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_time` | function | `kernel/syscalls.c:114` | `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_tls_retired` | function | `kernel/syscalls.c:78` | `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_vga_mode` | function | `kernel/syscalls.c:151` | `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `syscall_trace_enabled` | function | `kernel/syscalls.c:523` | `long syscall_trace_enabled(void)` |
+| `syscall_trace_set` | function | `kernel/syscalls.c:525` | `void syscall_trace_set(int on)` |
+| `tools` | function | `kernel/syscalls.c:1227` | `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...` |
-| `trace_is_noisy` | function | `kernel/syscalls.c:998` | `static int trace_is_noisy(long n)` |
-| `user_range_ok` | function | `kernel/syscalls.c:1022` | `int user_range_ok(unsigned long p, unsigned long len)` |
-| `user_str_ok` | function | `kernel/syscalls.c:1028` | `int user_str_ok(unsigned long p, unsigned long maxlen)` |
-| `vga_fb_blit_gfx_window` | function | `kernel/syscalls.c:163` | `vga_fb_blit_gfx_window();` |
-| `vga_fb_blit_nk_window` | function | `kernel/syscalls.c:248` | `vga_fb_blit_nk_window();` |
-| `vga_fb_set_gfx_mode` | function | `kernel/syscalls.c:150` | `vga_fb_set_gfx_mode((int)a1);` |
-| `vga_fb_set_gfx_palette` | function | `kernel/syscalls.c:137` | `vga_fb_set_gfx_palette(tmp);` |
-| `vga_mode_set` | function | `kernel/syscalls.c:148` | `vga_mode_set((int)a1);` |
-| `vga_putc` | function | `kernel/syscalls.c:553` | `vga_putc((char)c);` |
-| `vma_tree_delete` | function | `kernel/syscalls.c:702` | `vma_tree_delete(&vma_free_root, best->base);` |
-| `vma_tree_insert` | function | `kernel/syscalls.c:705` | `vma_tree_insert(&vma_live_root, addr, n);` |
-| `volatile` | function | `kernel/syscalls.c:120` | `__asm__ volatile("inb $0x60, %0" : "=a"(sc));` |
-| `wm_clear_close` | function | `kernel/syscalls.c:1039` | `wm_clear_close();` |
-| `wrmsr` | function | `kernel/syscalls.c:945` | `wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);` |
-| `yield` | function | `kernel/syscalls.c:350` | `yield();` |
+| `trace_is_noisy` | function | `kernel/syscalls.c:1009` | `static int trace_is_noisy(long n)` |
+| `user_range_ok` | function | `kernel/syscalls.c:1036` | `int user_range_ok(unsigned long p, unsigned long len)` |
+| `vga_fb_blit_gfx_window` | function | `kernel/syscalls.c:168` | `vga_fb_blit_gfx_window();` |
+| `vga_fb_blit_nk_window` | function | `kernel/syscalls.c:258` | `vga_fb_blit_nk_window();` |
+| `vga_fb_set_gfx_mode` | function | `kernel/syscalls.c:155` | `vga_fb_set_gfx_mode((int)a1);` |
+| `vga_fb_set_gfx_palette` | function | `kernel/syscalls.c:142` | `vga_fb_set_gfx_palette(tmp);` |
+| `vga_mode_set` | function | `kernel/syscalls.c:153` | `vga_mode_set((int)a1);` |
+| `vga_putc` | function | `kernel/syscalls.c:558` | `vga_putc((char)c);` |
+| `vma_tree_delete` | function | `kernel/syscalls.c:707` | `vma_tree_delete(&vma_free_root, best->base);` |
+| `vma_tree_insert` | function | `kernel/syscalls.c:710` | `vma_tree_insert(&vma_live_root, addr, n);` |
+| `volatile` | function | `kernel/syscalls.c:125` | `__asm__ volatile("inb $0x60, %0" : "=a"(sc));` |
+| `wm_clear_close` | function | `kernel/syscalls.c:1069` | `wm_clear_close();` |
+| `wrmsr` | function | `kernel/syscalls.c:956` | `wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);` |
+| `yield` | function | `kernel/syscalls.c:355` | `yield();` |
 | `tick_audio_count` | function | `kernel/tick.c:101` | `int tick_audio_count(void)` |
 | `tick_desktop_count` | function | `kernel/tick.c:112` | `int tick_desktop_count(void)` |
 | `tick_desktop_due` | function | `kernel/tick.c:128` | `int tick_desktop_due(unsigned long long ticks, unsigned interval)` |
@@ -2268,8 +2295,8 @@ static long sys_minios_gfx_prese...` |
 | `main` | function | `mkramdisk.py:30` | `def main()` |
 | `pack_name` | function | `mkramdisk.py:20` | `def pack_name(path, common)` |
 | `cleanup` | function | `mutate.sh:95` | `` |
-| `find_index` | function | `mutate.sh:218` | `` |
-| `record` | function | `mutate.sh:212` | `` |
+| `find_index` | function | `mutate.sh:225` | `` |
+| `record` | function | `mutate.sh:219` | `` |
 | `restore_sources` | function | `mutate.sh:88` | `` |
 | `usage` | function | `mutate.sh:51` | `` |
 | `NET_ARP_CACHE` | macro | `net.h:37` | `#define NET_ARP_CACHE` |
@@ -2329,81 +2356,81 @@ static long sys_minios_gfx_prese...` |
 | `net_time_ms` | function | `net.h:91` | `unsigned long net_time_ms(void);` |
 | `ring` | function | `net.h:45` | `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define NET_RX_RING_SIZE` |
 | `stack` | function | `net.h:98` | `* the stack (dropped fragments);` |
-| `tls_free_fd` | function | `net.h:102` | `void tls_free_fd(int fd);` |
-| `NET_TCP_CLOSED` | macro | `net/net.c:355` | `#define NET_TCP_CLOSED` |
-| `NET_TCP_DEAD` | macro | `net/net.c:360` | `#define NET_TCP_DEAD` |
-| `NET_TCP_ESTABLISHED` | macro | `net/net.c:358` | `#define NET_TCP_ESTABLISHED` |
-| `NET_TCP_FIN_SENT` | macro | `net/net.c:359` | `#define NET_TCP_FIN_SENT` |
-| `NET_TCP_SYN_SENT` | macro | `net/net.c:357` | `#define NET_TCP_SYN_SENT` |
-| `k_register_symbol` | function | `net/net.c:932` | `k_register_symbol("net_open", (void *)net_open);` |
-| `kmemcpy` | function | `net/net.c:80` | `kmemcpy(net_arp_cache[i].mac, mac, NET_ETH_ALEN);` |
-| `kmemmove` | function | `net/net.c:514` | `kmemmove(s->rx, s->rx + s->rx_tail, s->rx_head - s->rx_tail);` |
-| `kmemset` | function | `net/net.c:104` | `kmemset(frame, 0, sizeof(frame));` |
-| `kprintf` | function | `net/net.c:898` | `kprintf("rtl8139 iobase 0x%x\n", rtl_iobase());` |
-| `net_arp_entry` | struct | `net/net.c:68` | `` |
-| `net_arp_lookup` | function | `net/net.c:90` | `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)` |
-| `net_arp_request` | function | `net/net.c:101` | `static void net_arp_request(const unsigned char *ip)` |
-| `net_arp_resolve` | function | `net/net.c:120` | `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)` |
-| `net_arp_store` | function | `net/net.c:75` | `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)` |
-| `net_checksum` | function | `net/net.c:50` | `static unsigned short net_checksum(const void *data, unsigned len)` |
-| `net_close` | function | `net/net.c:753` | `void net_close(int fd)` |
-| `net_cmd_dns` | function | `net/net.c:917` | `void net_cmd_dns(const char *host)` |
-| `net_cmd_ping` | function | `net/net.c:906` | `void net_cmd_ping(const char *ip_text)` |
-| `net_cmd_status` | function | `net/net.c:890` | `void net_cmd_status(void)` |
-| `net_connect` | function | `net/net.c:729` | `int net_connect(const char *host, unsigned short port)` |
-| `net_dns_parse` | function | `net/net.c:203` | `static void net_dns_parse(const unsigned char *data, unsigned len)` |
-| `net_dns_resolve` | function | `net/net.c:239` | `static int net_dns_resolve(const char *host, unsigned char ip_out[4])` |
-| `net_dns_state` | struct | `net/net.c:194` | `` |
-| `net_get16` | function | `net/net.c:41` | `static unsigned short net_get16(const unsigned char *p)` |
-| `net_get32` | function | `net/net.c:45` | `static unsigned int net_get32(const unsigned char *p)` |
-| `net_icmp_rx` | function | `net/net.c:309` | `static void net_icmp_rx(const unsigned char *ip, unsigned len)` |
-| `net_init` | function | `net/net.c:938` | `void net_init(void)` |
-| `net_ip_send` | function | `net/net.c:145` | `static int net_ip_send(const unsigned char *dip, unsigned char proto,
+| `tls_free_fd` | function | `net.h:105` | `void tls_free_fd(int fd);` |
+| `NET_TCP_CLOSED` | macro | `net/net.c:358` | `#define NET_TCP_CLOSED` |
+| `NET_TCP_DEAD` | macro | `net/net.c:363` | `#define NET_TCP_DEAD` |
+| `NET_TCP_ESTABLISHED` | macro | `net/net.c:361` | `#define NET_TCP_ESTABLISHED` |
+| `NET_TCP_FIN_SENT` | macro | `net/net.c:362` | `#define NET_TCP_FIN_SENT` |
+| `NET_TCP_SYN_SENT` | macro | `net/net.c:360` | `#define NET_TCP_SYN_SENT` |
+| `k_register_symbol` | function | `net/net.c:935` | `k_register_symbol("net_open", (void *)net_open);` |
+| `kmemcpy` | function | `net/net.c:81` | `kmemcpy(net_arp_cache[i].mac, mac, NET_ETH_ALEN);` |
+| `kmemmove` | function | `net/net.c:517` | `kmemmove(s->rx, s->rx + s->rx_tail, s->rx_head - s->rx_tail);` |
+| `kmemset` | function | `net/net.c:105` | `kmemset(frame, 0, sizeof(frame));` |
+| `kprintf` | function | `net/net.c:901` | `kprintf("rtl8139 iobase 0x%x\n", rtl_iobase());` |
+| `net_arp_entry` | struct | `net/net.c:69` | `` |
+| `net_arp_lookup` | function | `net/net.c:91` | `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)` |
+| `net_arp_request` | function | `net/net.c:102` | `static void net_arp_request(const unsigned char *ip)` |
+| `net_arp_resolve` | function | `net/net.c:121` | `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)` |
+| `net_arp_store` | function | `net/net.c:76` | `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)` |
+| `net_checksum` | function | `net/net.c:51` | `static unsigned short net_checksum(const void *data, unsigned len)` |
+| `net_close` | function | `net/net.c:756` | `void net_close(int fd)` |
+| `net_cmd_dns` | function | `net/net.c:920` | `void net_cmd_dns(const char *host)` |
+| `net_cmd_ping` | function | `net/net.c:909` | `void net_cmd_ping(const char *ip_text)` |
+| `net_cmd_status` | function | `net/net.c:893` | `void net_cmd_status(void)` |
+| `net_connect` | function | `net/net.c:732` | `int net_connect(const char *host, unsigned short port)` |
+| `net_dns_parse` | function | `net/net.c:204` | `static void net_dns_parse(const unsigned char *data, unsigned len)` |
+| `net_dns_resolve` | function | `net/net.c:242` | `static int net_dns_resolve(const char *host, unsigned char ip_out[4])` |
+| `net_dns_state` | struct | `net/net.c:195` | `` |
+| `net_get16` | function | `net/net.c:42` | `static unsigned short net_get16(const unsigned char *p)` |
+| `net_get32` | function | `net/net.c:46` | `static unsigned int net_get32(const unsigned char *p)` |
+| `net_icmp_rx` | function | `net/net.c:312` | `static void net_icmp_rx(const unsigned char *ip, unsigned len)` |
+| `net_init` | function | `net/net.c:941` | `void net_init(void)` |
+| `net_ip_send` | function | `net/net.c:146` | `static int net_ip_send(const unsigned char *dip, unsigned char proto,
                        cons...` |
-| `net_open` | function | `net/net.c:723` | `int net_open(void)` |
-| `net_parse_ip` | function | `net/net.c:865` | `static int net_parse_ip(const char *text, unsigned char ip[4])` |
-| `net_ping` | function | `net/net.c:332` | `static int net_ping(const unsigned char ip[4])` |
-| `net_put16` | function | `net/net.c:29` | `static void net_put16(unsigned char *p, unsigned short v)` |
-| `net_put32` | function | `net/net.c:34` | `static void net_put32(unsigned char *p, unsigned int v)` |
-| `net_recv` | function | `net/net.c:743` | `int net_recv(int fd, char *buf, int len)` |
-| `net_recv_timeout` | function | `net/net.c:748` | `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)` |
-| `net_register_symbols` | function | `net/net.c:930` | `void net_register_symbols(void)` |
-| `net_rx_handle_frame` | function | `net/net.c:665` | `void net_rx_handle_frame(const unsigned char *frame, unsigned len)` |
-| `net_send` | function | `net/net.c:738` | `int net_send(int fd, const char *buf, int len)` |
-| `net_sock_alloc` | function | `net/net.c:384` | `static struct net_tcp_sock *net_sock_alloc(void)` |
-| `net_sock_index` | function | `net/net.c:397` | `static int net_sock_index(const struct net_tcp_sock *s)` |
-| `net_sys_close` | function | `net/net.c:811` | `long net_sys_close(long fd)` |
-| `net_sys_connect` | function | `net/net.c:771` | `long net_sys_connect(long fd, long sockaddr, long addrlen)` |
-| `net_sys_dns` | function | `net/net.c:855` | `long net_sys_dns(long host)` |
-| `net_sys_poll` | function | `net/net.c:818` | `long net_sys_poll(long fds, long nfds, long timeout_ms)` |
-| `net_sys_recvfrom` | function | `net/net.c:794` | `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)` |
-| `net_sys_sendto` | function | `net/net.c:784` | `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)` |
-| `net_sys_shutdown` | function | `net/net.c:804` | `long net_sys_shutdown(long fd, long how)` |
-| `net_sys_socket` | function | `net/net.c:762` | `long net_sys_socket(long a1, long a2, long a3)` |
-| `net_tcp_checksum` | function | `net/net.c:406` | `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
+| `net_open` | function | `net/net.c:726` | `int net_open(void)` |
+| `net_parse_ip` | function | `net/net.c:868` | `static int net_parse_ip(const char *text, unsigned char ip[4])` |
+| `net_ping` | function | `net/net.c:335` | `static int net_ping(const unsigned char ip[4])` |
+| `net_put16` | function | `net/net.c:30` | `static void net_put16(unsigned char *p, unsigned short v)` |
+| `net_put32` | function | `net/net.c:35` | `static void net_put32(unsigned char *p, unsigned int v)` |
+| `net_recv` | function | `net/net.c:746` | `int net_recv(int fd, char *buf, int len)` |
+| `net_recv_timeout` | function | `net/net.c:751` | `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)` |
+| `net_register_symbols` | function | `net/net.c:933` | `void net_register_symbols(void)` |
+| `net_rx_handle_frame` | function | `net/net.c:668` | `void net_rx_handle_frame(const unsigned char *frame, unsigned len)` |
+| `net_send` | function | `net/net.c:741` | `int net_send(int fd, const char *buf, int len)` |
+| `net_sock_alloc` | function | `net/net.c:387` | `static struct net_tcp_sock *net_sock_alloc(void)` |
+| `net_sock_index` | function | `net/net.c:400` | `static int net_sock_index(const struct net_tcp_sock *s)` |
+| `net_sys_close` | function | `net/net.c:814` | `long net_sys_close(long fd)` |
+| `net_sys_connect` | function | `net/net.c:774` | `long net_sys_connect(long fd, long sockaddr, long addrlen)` |
+| `net_sys_dns` | function | `net/net.c:858` | `long net_sys_dns(long host)` |
+| `net_sys_poll` | function | `net/net.c:821` | `long net_sys_poll(long fds, long nfds, long timeout_ms)` |
+| `net_sys_recvfrom` | function | `net/net.c:797` | `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)` |
+| `net_sys_sendto` | function | `net/net.c:787` | `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)` |
+| `net_sys_shutdown` | function | `net/net.c:807` | `long net_sys_shutdown(long fd, long how)` |
+| `net_sys_socket` | function | `net/net.c:765` | `long net_sys_socket(long a1, long a2, long a3)` |
+| `net_tcp_checksum` | function | `net/net.c:409` | `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
       ...` |
-| `net_tcp_close` | function | `net/net.c:645` | `static void net_tcp_close(struct net_tcp_sock *s)` |
-| `net_tcp_connect_into` | function | `net/net.c:555` | `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
+| `net_tcp_close` | function | `net/net.c:648` | `static void net_tcp_close(struct net_tcp_sock *s)` |
+| `net_tcp_connect_into` | function | `net/net.c:558` | `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
               ...` |
-| `net_tcp_recv` | function | `net/net.c:608` | `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)` |
-| `net_tcp_recv_deadline` | function | `net/net.c:751` | `return net_tcp_recv_deadline(&net_sockets[fd], buf, len, timeout_ms);` |
-| `net_tcp_rx` | function | `net/net.c:469` | `static void net_tcp_rx(const unsigned char *ip, unsigned len)` |
-| `net_tcp_send` | function | `net/net.c:582` | `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)` |
-| `net_tcp_sock` | struct | `net/net.c:362` | `` |
-| `net_tcp_xmit` | function | `net/net.c:437` | `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
+| `net_tcp_recv` | function | `net/net.c:611` | `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)` |
+| `net_tcp_recv_deadline` | function | `net/net.c:754` | `return net_tcp_recv_deadline(&net_sockets[fd], buf, len, timeout_ms);` |
+| `net_tcp_rx` | function | `net/net.c:472` | `static void net_tcp_rx(const unsigned char *ip, unsigned len)` |
+| `net_tcp_send` | function | `net/net.c:585` | `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)` |
+| `net_tcp_sock` | struct | `net/net.c:365` | `` |
+| `net_tcp_xmit` | function | `net/net.c:440` | `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
                         const uns...` |
-| `net_udp_checksum_ok` | function | `net/net.c:422` | `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
+| `net_udp_checksum_ok` | function | `net/net.c:425` | `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
               ...` |
-| `net_udp_send` | function | `net/net.c:180` | `static int net_udp_send(const unsigned char *dip, unsigned short sport,
+| `net_udp_send` | function | `net/net.c:181` | `static int net_udp_send(const unsigned char *dip, unsigned short sport,
                         u...` |
-| `net_udp_send` | function | `net/net.c:295` | `net_udp_send((const unsigned char[])` |
-| `rtl_counters` | function | `net/net.c:897` | `rtl_counters(&tx_frames, &rx_frames);` |
-| `rtl_get_mac` | function | `net/net.c:941` | `rtl_get_mac(net_mac);` |
-| `rtl_init` | function | `net/net.c:940` | `rtl_init();` |
-| `rtl_poll` | function | `net/net.c:127` | `rtl_poll();` |
-| `rtl_send` | function | `net/net.c:116` | `rtl_send(frame, 42);` |
-| `tls_free_fd` | function | `net/net.c:814` | `tls_free_fd((int)(fd - NET_FD_BASE));` |
-| `vga_puts` | function | `net/net.c:894` | `vga_puts("net: no rtl8139 found\n");` |
+| `net_udp_send` | function | `net/net.c:298` | `net_udp_send((const unsigned char[])` |
+| `rtl_counters` | function | `net/net.c:900` | `rtl_counters(&tx_frames, &rx_frames);` |
+| `rtl_get_mac` | function | `net/net.c:944` | `rtl_get_mac(net_mac);` |
+| `rtl_init` | function | `net/net.c:943` | `rtl_init();` |
+| `rtl_poll` | function | `net/net.c:128` | `rtl_poll();` |
+| `rtl_send` | function | `net/net.c:117` | `rtl_send(frame, 42);` |
+| `tls_free_fd` | function | `net/net.c:817` | `tls_free_fd((int)(fd - NET_FD_BASE));` |
+| `vga_puts` | function | `net/net.c:897` | `vga_puts("net: no rtl8139 found\n");` |
 | `RTL_REG_9346CR` | macro | `net/rtl8139.c:67` | `#define RTL_REG_9346CR` |
 | `RTL_REG_CAPR` | macro | `net/rtl8139.c:65` | `#define RTL_REG_CAPR` |
 | `RTL_REG_CBR` | macro | `net/rtl8139.c:66` | `#define RTL_REG_CBR` |
@@ -2714,98 +2741,99 @@ static long sys_minios_gfx_prese...` |
 | `_start` | function | `progs/asm/fib.s:82` | `` |
 | `fib` | function | `progs/asm/fib.s:3` | `` |
 | `main` | function | `progs/asm/fib.s:61` | `` |
-| `_start` | function | `progs/asm/freedom.s:11800` | `` |
-| `append` | function | `progs/asm/freedom.s:317` | `` |
-| `atoi` | function | `progs/asm/freedom.s:231` | `` |
-| `body_byte` | function | `progs/asm/freedom.s:5994` | `` |
-| `ci_eq` | function | `progs/asm/freedom.s:524` | `` |
-| `ci_index` | function | `progs/asm/freedom.s:621` | `` |
-| `ci_lower` | function | `progs/asm/freedom.s:402` | `` |
-| `ci_starts` | function | `progs/asm/freedom.s:451` | `` |
-| `classify_tag` | function | `progs/asm/freedom.s:4757` | `` |
-| `css_append` | function | `progs/asm/freedom.s:3828` | `` |
-| `css_line` | function | `progs/asm/freedom.s:3899` | `` |
-| `dom_append` | function | `progs/asm/freedom.s:3958` | `` |
-| `dom_nl` | function | `progs/asm/freedom.s:4063` | `` |
-| `dom_space` | function | `progs/asm/freedom.s:4029` | `` |
-| `f_attr` | function | `progs/asm/freedom.s:115` | `` |
-| `f_attr_on` | function | `progs/asm/freedom.s:99` | `` |
-| `f_attrlen` | function | `progs/asm/freedom.s:119` | `` |
-| `f_bdone` | function | `progs/asm/freedom.s:227` | `` |
-| `f_chunked` | function | `progs/asm/freedom.s:39` | `` |
-| `f_clen` | function | `progs/asm/freedom.s:31` | `` |
-| `f_cls` | function | `progs/asm/freedom.s:139` | `` |
-| `f_clslen` | function | `progs/asm/freedom.s:143` | `` |
-| `f_cmdash` | function | `progs/asm/freedom.s:63` | `` |
-| `f_comment` | function | `progs/asm/freedom.s:59` | `` |
-| `f_crem` | function | `progs/asm/freedom.s:223` | `` |
-| `f_csize` | function | `progs/asm/freedom.s:219` | `` |
-| `f_css` | function | `progs/asm/freedom.s:195` | `` |
-| `f_csslen` | function | `progs/asm/freedom.s:199` | `` |
-| `f_cstage` | function | `progs/asm/freedom.s:215` | `` |
-| `f_depth` | function | `progs/asm/freedom.s:183` | `` |
-| `f_dom` | function | `progs/asm/freedom.s:187` | `` |
-| `f_domlen` | function | `progs/asm/freedom.s:191` | `` |
-| `f_dump_css` | function | `progs/asm/freedom.s:167` | `` |
-| `f_dump_dom` | function | `progs/asm/freedom.s:171` | `` |
-| `f_ent` | function | `progs/asm/freedom.s:75` | `` |
-| `f_entlen` | function | `progs/asm/freedom.s:79` | `` |
-| `f_has_clen` | function | `progs/asm/freedom.s:35` | `` |
-| `f_hdr` | function | `progs/asm/freedom.s:43` | `` |
-| `f_hlen` | function | `progs/asm/freedom.s:47` | `` |
-| `f_host` | function | `progs/asm/freedom.s:3` | `` |
-| `f_href` | function | `progs/asm/freedom.s:147` | `` |
-| `f_hreflen` | function | `progs/asm/freedom.s:151` | `` |
-| `f_id` | function | `progs/asm/freedom.s:131` | `` |
-| `f_idlen` | function | `progs/asm/freedom.s:135` | `` |
-| `f_inval` | function | `progs/asm/freedom.s:107` | `` |
-| `f_inval2` | function | `progs/asm/freedom.s:111` | `` |
-| `f_linkhost` | function | `progs/asm/freedom.s:203` | `` |
-| `f_linkn` | function | `progs/asm/freedom.s:211` | `` |
-| `f_linkpath` | function | `progs/asm/freedom.s:207` | `` |
-| `f_loc` | function | `progs/asm/freedom.s:19` | `` |
-| `f_mode` | function | `progs/asm/freedom.s:175` | `` |
-| `f_path` | function | `progs/asm/freedom.s:7` | `` |
-| `f_port` | function | `progs/asm/freedom.s:11` | `` |
-| `f_rawcap` | function | `progs/asm/freedom.s:179` | `` |
-| `f_redir` | function | `progs/asm/freedom.s:23` | `` |
-| `f_rel_ss` | function | `progs/asm/freedom.s:155` | `` |
-| `f_secure` | function | `progs/asm/freedom.s:15` | `` |
-| `f_status` | function | `progs/asm/freedom.s:27` | `` |
-| `f_styleattr` | function | `progs/asm/freedom.s:159` | `` |
-| `f_stylelen` | function | `progs/asm/freedom.s:163` | `` |
-| `f_suppress` | function | `progs/asm/freedom.s:55` | `` |
-| `f_tag` | function | `progs/asm/freedom.s:51` | `` |
-| `f_tagn` | function | `progs/asm/freedom.s:67` | `` |
-| `f_tagnlen` | function | `progs/asm/freedom.s:71` | `` |
-| `f_utbuf` | function | `progs/asm/freedom.s:87` | `` |
-| `f_utlen` | function | `progs/asm/freedom.s:91` | `` |
-| `f_utrem` | function | `progs/asm/freedom.s:95` | `` |
-| `f_val` | function | `progs/asm/freedom.s:123` | `` |
-| `f_vallen` | function | `progs/asm/freedom.s:127` | `` |
-| `f_waitq` | function | `progs/asm/freedom.s:103` | `` |
-| `f_ws` | function | `progs/asm/freedom.s:83` | `` |
-| `fetch` | function | `progs/asm/freedom.s:7853` | `` |
-| `fetch_css` | function | `progs/asm/freedom.s:9331` | `` |
-| `has_scheme` | function | `progs/asm/freedom.s:755` | `` |
-| `head_line` | function | `progs/asm/freedom.s:7239` | `` |
-| `is_void_tag` | function | `progs/asm/freedom.s:4435` | `` |
-| `looks_like_url` | function | `progs/asm/freedom.s:681` | `` |
-| `main` | function | `progs/asm/freedom.s:10322` | `` |
-| `make_search` | function | `progs/asm/freedom.s:1030` | `` |
-| `parse_head` | function | `progs/asm/freedom.s:7500` | `` |
-| `print_css_dump` | function | `progs/asm/freedom.s:10143` | `` |
-| `print_dom_dump` | function | `progs/asm/freedom.s:10243` | `` |
-| `put_entity` | function | `progs/asm/freedom.s:2991` | `` |
-| `put_text` | function | `progs/asm/freedom.s:2888` | `` |
-| `put_utf` | function | `progs/asm/freedom.s:2352` | `` |
-| `put_ws` | function | `progs/asm/freedom.s:2306` | `` |
-| `record_attr` | function | `progs/asm/freedom.s:4097` | `` |
-| `recv_body` | function | `progs/asm/freedom.s:7717` | `` |
-| `resolve_redirect` | function | `progs/asm/freedom.s:1781` | `` |
-| `send_all` | function | `progs/asm/freedom.s:7778` | `` |
-| `split_url` | function | `progs/asm/freedom.s:1266` | `` |
-| `_start` | function | `progs/asm/http.s:698` | `` |
+| `_start` | function | `progs/asm/freedom.s:11869` | `` |
+| `append` | function | `progs/asm/freedom.s:338` | `` |
+| `atoi` | function | `progs/asm/freedom.s:252` | `` |
+| `body_byte` | function | `progs/asm/freedom.s:6029` | `` |
+| `ci_eq` | function | `progs/asm/freedom.s:559` | `` |
+| `ci_index` | function | `progs/asm/freedom.s:656` | `` |
+| `ci_lower` | function | `progs/asm/freedom.s:437` | `` |
+| `ci_starts` | function | `progs/asm/freedom.s:486` | `` |
+| `classify_tag` | function | `progs/asm/freedom.s:4792` | `` |
+| `css_append` | function | `progs/asm/freedom.s:3863` | `` |
+| `css_line` | function | `progs/asm/freedom.s:3934` | `` |
+| `dom_append` | function | `progs/asm/freedom.s:3993` | `` |
+| `dom_nl` | function | `progs/asm/freedom.s:4098` | `` |
+| `dom_space` | function | `progs/asm/freedom.s:4064` | `` |
+| `f_attr` | function | `progs/asm/freedom.s:136` | `` |
+| `f_attr_on` | function | `progs/asm/freedom.s:120` | `` |
+| `f_attrlen` | function | `progs/asm/freedom.s:140` | `` |
+| `f_bdone` | function | `progs/asm/freedom.s:248` | `` |
+| `f_chunked` | function | `progs/asm/freedom.s:60` | `` |
+| `f_clen` | function | `progs/asm/freedom.s:52` | `` |
+| `f_cls` | function | `progs/asm/freedom.s:160` | `` |
+| `f_clslen` | function | `progs/asm/freedom.s:164` | `` |
+| `f_cmdash` | function | `progs/asm/freedom.s:84` | `` |
+| `f_comment` | function | `progs/asm/freedom.s:80` | `` |
+| `f_crem` | function | `progs/asm/freedom.s:244` | `` |
+| `f_csize` | function | `progs/asm/freedom.s:240` | `` |
+| `f_css` | function | `progs/asm/freedom.s:216` | `` |
+| `f_csslen` | function | `progs/asm/freedom.s:220` | `` |
+| `f_cstage` | function | `progs/asm/freedom.s:236` | `` |
+| `f_depth` | function | `progs/asm/freedom.s:204` | `` |
+| `f_dom` | function | `progs/asm/freedom.s:208` | `` |
+| `f_domlen` | function | `progs/asm/freedom.s:212` | `` |
+| `f_dump_css` | function | `progs/asm/freedom.s:188` | `` |
+| `f_dump_dom` | function | `progs/asm/freedom.s:192` | `` |
+| `f_ent` | function | `progs/asm/freedom.s:96` | `` |
+| `f_entlen` | function | `progs/asm/freedom.s:100` | `` |
+| `f_has_clen` | function | `progs/asm/freedom.s:56` | `` |
+| `f_hdr` | function | `progs/asm/freedom.s:64` | `` |
+| `f_hlen` | function | `progs/asm/freedom.s:68` | `` |
+| `f_host` | function | `progs/asm/freedom.s:24` | `` |
+| `f_href` | function | `progs/asm/freedom.s:168` | `` |
+| `f_hreflen` | function | `progs/asm/freedom.s:172` | `` |
+| `f_id` | function | `progs/asm/freedom.s:152` | `` |
+| `f_idlen` | function | `progs/asm/freedom.s:156` | `` |
+| `f_inval` | function | `progs/asm/freedom.s:128` | `` |
+| `f_inval2` | function | `progs/asm/freedom.s:132` | `` |
+| `f_linkhost` | function | `progs/asm/freedom.s:224` | `` |
+| `f_linkn` | function | `progs/asm/freedom.s:232` | `` |
+| `f_linkpath` | function | `progs/asm/freedom.s:228` | `` |
+| `f_loc` | function | `progs/asm/freedom.s:40` | `` |
+| `f_mode` | function | `progs/asm/freedom.s:196` | `` |
+| `f_path` | function | `progs/asm/freedom.s:28` | `` |
+| `f_port` | function | `progs/asm/freedom.s:32` | `` |
+| `f_rawcap` | function | `progs/asm/freedom.s:200` | `` |
+| `f_redir` | function | `progs/asm/freedom.s:44` | `` |
+| `f_rel_ss` | function | `progs/asm/freedom.s:176` | `` |
+| `f_secure` | function | `progs/asm/freedom.s:36` | `` |
+| `f_status` | function | `progs/asm/freedom.s:48` | `` |
+| `f_styleattr` | function | `progs/asm/freedom.s:180` | `` |
+| `f_stylelen` | function | `progs/asm/freedom.s:184` | `` |
+| `f_suppress` | function | `progs/asm/freedom.s:76` | `` |
+| `f_tag` | function | `progs/asm/freedom.s:72` | `` |
+| `f_tagn` | function | `progs/asm/freedom.s:88` | `` |
+| `f_tagnlen` | function | `progs/asm/freedom.s:92` | `` |
+| `f_utbuf` | function | `progs/asm/freedom.s:108` | `` |
+| `f_utlen` | function | `progs/asm/freedom.s:112` | `` |
+| `f_utrem` | function | `progs/asm/freedom.s:116` | `` |
+| `f_val` | function | `progs/asm/freedom.s:144` | `` |
+| `f_vallen` | function | `progs/asm/freedom.s:148` | `` |
+| `f_waitq` | function | `progs/asm/freedom.s:124` | `` |
+| `f_ws` | function | `progs/asm/freedom.s:104` | `` |
+| `fetch` | function | `progs/asm/freedom.s:7888` | `` |
+| `fetch_css` | function | `progs/asm/freedom.s:9383` | `` |
+| `has_scheme` | function | `progs/asm/freedom.s:790` | `` |
+| `head_line` | function | `progs/asm/freedom.s:7274` | `` |
+| `is_void_tag` | function | `progs/asm/freedom.s:4470` | `` |
+| `looks_like_url` | function | `progs/asm/freedom.s:716` | `` |
+| `main` | function | `progs/asm/freedom.s:10391` | `` |
+| `make_search` | function | `progs/asm/freedom.s:1065` | `` |
+| `parse_head` | function | `progs/asm/freedom.s:7535` | `` |
+| `print_css_dump` | function | `progs/asm/freedom.s:10212` | `` |
+| `print_dom_dump` | function | `progs/asm/freedom.s:10312` | `` |
+| `put_entity` | function | `progs/asm/freedom.s:3026` | `` |
+| `put_text` | function | `progs/asm/freedom.s:2923` | `` |
+| `put_utf` | function | `progs/asm/freedom.s:2387` | `` |
+| `put_ws` | function | `progs/asm/freedom.s:2341` | `` |
+| `record_attr` | function | `progs/asm/freedom.s:4132` | `` |
+| `recv_body` | function | `progs/asm/freedom.s:7752` | `` |
+| `resolve_redirect` | function | `progs/asm/freedom.s:1816` | `` |
+| `send_all` | function | `progs/asm/freedom.s:7813` | `` |
+| `split_url` | function | `progs/asm/freedom.s:1301` | `` |
+| `tls_close` | function | `progs/asm/freedom.s:3` | `` |
+| `_start` | function | `progs/asm/http.s:715` | `` |
 | `atoi` | function | `progs/asm/http.s:3` | `` |
 | `main` | function | `progs/asm/http.s:89` | `` |
 | `_start` | function | `progs/asm/json.s:4185` | `` |
@@ -3699,37 +3727,37 @@ AM_rotate
 | `DOOMGENERIC_RESX` | macro | `progs/doomgeneric/doomgeneric.h:6` | `#define DOOMGENERIC_RESX` |
 | `DOOMGENERIC_RESY` | macro | `progs/doomgeneric/doomgeneric.h:8` | `#define DOOMGENERIC_RESY` |
 | `DOOM_GENERIC` | macro | `progs/doomgeneric/doomgeneric.h:2` | `#define DOOM_GENERIC` |
-| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_minios.c:214` | `void DG_DrawFrame(void)` |
-| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_minios.c:254` | `int DG_GetKey(int *pressed, unsigned char *key)` |
-| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_minios.c:250` | `uint32_t DG_GetTicksMs(void)` |
-| `DG_Init` | function | `progs/doomgeneric/doomgeneric_minios.c:206` | `void DG_Init(void)` |
-| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_minios.c:265` | `void DG_SetWindowTitle(const char *title)` |
-| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_minios.c:244` | `void DG_SleepMs(uint32_t ms)` |
-| `FB_ADDR` | macro | `progs/doomgeneric/doomgeneric_minios.c:71` | `#define FB_ADDR` |
-| `FB_HEIGHT` | macro | `progs/doomgeneric/doomgeneric_minios.c:73` | `#define FB_HEIGHT` |
-| `FB_WIDTH` | macro | `progs/doomgeneric/doomgeneric_minios.c:72` | `#define FB_WIDTH` |
-| `I_VideoBuffer` | variable | `progs/doomgeneric/doomgeneric_minios.c:204` | `extern unsigned char *I_VideoBuffer;` |
-| `KBD_QUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_minios.c:152` | `#define KBD_QUEUE_SIZE` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_minios.c:215` | `void DG_DrawFrame(void)` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_minios.c:255` | `int DG_GetKey(int *pressed, unsigned char *key)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_minios.c:251` | `uint32_t DG_GetTicksMs(void)` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_minios.c:207` | `void DG_Init(void)` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_minios.c:266` | `void DG_SetWindowTitle(const char *title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_minios.c:245` | `void DG_SleepMs(uint32_t ms)` |
+| `FB_ADDR` | macro | `progs/doomgeneric/doomgeneric_minios.c:72` | `#define FB_ADDR` |
+| `FB_HEIGHT` | macro | `progs/doomgeneric/doomgeneric_minios.c:74` | `#define FB_HEIGHT` |
+| `FB_WIDTH` | macro | `progs/doomgeneric/doomgeneric_minios.c:73` | `#define FB_WIDTH` |
+| `I_VideoBuffer` | variable | `progs/doomgeneric/doomgeneric_minios.c:205` | `extern unsigned char *I_VideoBuffer;` |
+| `KBD_QUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_minios.c:153` | `#define KBD_QUEUE_SIZE` |
 | `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/doomgeneric/doomgeneric_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
-| `color` | struct | `progs/doomgeneric/doomgeneric_minios.c:78` | `` |
-| `colors` | variable | `progs/doomgeneric/doomgeneric_minios.c:79` | `extern struct color colors[256];` |
-| `exit` | function | `progs/doomgeneric/doomgeneric_minios.c:241` | `exit(0);` |
-| `fflush` | function | `progs/doomgeneric/doomgeneric_minios.c:240` | `fflush(stdout);` |
-| `kbd_enqueue` | function | `progs/doomgeneric/doomgeneric_minios.c:156` | `static void kbd_enqueue(unsigned char doom_key, int pressed)` |
-| `kbd_poll` | function | `progs/doomgeneric/doomgeneric_minios.c:163` | `static void kbd_poll(void)` |
-| `load_vga_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:84` | `static void load_vga_palette(void)` |
-| `mini_parse_autoframes` | function | `progs/doomgeneric/doomgeneric_minios.c:22` | `static void mini_parse_autoframes(int argc, char **argv)` |
-| `myargc` | variable | `progs/doomgeneric/doomgeneric_minios.c:208` | `extern int myargc;` |
-| `myargv` | variable | `progs/doomgeneric/doomgeneric_minios.c:209` | `extern char **myargv;` |
-| `printf` | function | `progs/doomgeneric/doomgeneric_minios.c:239` | `printf("minios: played %d frames, quitting\n", mini_frames);` |
-| `scancode_to_doom` | function | `progs/doomgeneric/doomgeneric_minios.c:97` | `static unsigned char scancode_to_doom(unsigned char raw)` |
-| `sys_doom_frame` | function | `progs/doomgeneric/doomgeneric_minios.c:61` | `static long sys_doom_frame(void)` |
-| `sys_kbd` | function | `progs/doomgeneric/doomgeneric_minios.c:41` | `static long sys_kbd(void)` |
-| `sys_kbd_raw` | function | `progs/doomgeneric/doomgeneric_minios.c:51` | `static long sys_kbd_raw(int on)` |
-| `sys_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:46` | `static long sys_palette(const unsigned char *pal)` |
-| `sys_time_ms` | function | `progs/doomgeneric/doomgeneric_minios.c:35` | `static long sys_time_ms(void)` |
-| `sys_vga_mode` | function | `progs/doomgeneric/doomgeneric_minios.c:56` | `static long sys_vga_mode(int on)` |
-| `volatile` | function | `progs/doomgeneric/doomgeneric_minios.c:38` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");` |
+| `color` | struct | `progs/doomgeneric/doomgeneric_minios.c:79` | `` |
+| `colors` | variable | `progs/doomgeneric/doomgeneric_minios.c:80` | `extern struct color colors[256];` |
+| `exit` | function | `progs/doomgeneric/doomgeneric_minios.c:242` | `exit(0);` |
+| `fflush` | function | `progs/doomgeneric/doomgeneric_minios.c:241` | `fflush(stdout);` |
+| `kbd_enqueue` | function | `progs/doomgeneric/doomgeneric_minios.c:157` | `static void kbd_enqueue(unsigned char doom_key, int pressed)` |
+| `kbd_poll` | function | `progs/doomgeneric/doomgeneric_minios.c:164` | `static void kbd_poll(void)` |
+| `load_vga_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:85` | `static void load_vga_palette(void)` |
+| `mini_parse_autoframes` | function | `progs/doomgeneric/doomgeneric_minios.c:23` | `static void mini_parse_autoframes(int argc, char **argv)` |
+| `myargc` | variable | `progs/doomgeneric/doomgeneric_minios.c:209` | `extern int myargc;` |
+| `myargv` | variable | `progs/doomgeneric/doomgeneric_minios.c:210` | `extern char **myargv;` |
+| `printf` | function | `progs/doomgeneric/doomgeneric_minios.c:240` | `printf("minios: played %d frames, quitting\n", mini_frames);` |
+| `scancode_to_doom` | function | `progs/doomgeneric/doomgeneric_minios.c:98` | `static unsigned char scancode_to_doom(unsigned char raw)` |
+| `sys_doom_frame` | function | `progs/doomgeneric/doomgeneric_minios.c:62` | `static long sys_doom_frame(void)` |
+| `sys_kbd` | function | `progs/doomgeneric/doomgeneric_minios.c:42` | `static long sys_kbd(void)` |
+| `sys_kbd_raw` | function | `progs/doomgeneric/doomgeneric_minios.c:52` | `static long sys_kbd_raw(int on)` |
+| `sys_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:47` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_time_ms` | function | `progs/doomgeneric/doomgeneric_minios.c:36` | `static long sys_time_ms(void)` |
+| `sys_vga_mode` | function | `progs/doomgeneric/doomgeneric_minios.c:57` | `static long sys_vga_mode(int on)` |
+| `volatile` | function | `progs/doomgeneric/doomgeneric_minios.c:39` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");` |
 | `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_sdl.c:111` | `void DG_DrawFrame()` |
 | `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_sdl.c:132` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
 | `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_sdl.c:127` | `uint32_t DG_GetTicksMs()` |
@@ -7762,12 +7790,12 @@ Z_Malloc
 | `MINIOS_DOOM_BACKBUF_ADDR` | macro | `progs/minios_abi.h:113` | `#define MINIOS_DOOM_BACKBUF_ADDR` |
 | `MINIOS_DOOM_H` | macro | `progs/minios_abi.h:115` | `#define MINIOS_DOOM_H` |
 | `MINIOS_DOOM_W` | macro | `progs/minios_abi.h:114` | `#define MINIOS_DOOM_W` |
-| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:265` | `#define MINIOS_EABI_MISMATCH` |
+| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:270` | `#define MINIOS_EABI_MISMATCH` |
 | `MINIOS_FB_ADDR` | macro | `progs/minios_abi.h:116` | `#define MINIOS_FB_ADDR` |
 | `MINIOS_FB_HEIGHT_MAX` | macro | `progs/minios_abi.h:131` | `#define MINIOS_FB_HEIGHT_MAX` |
 | `MINIOS_FB_WIDTH_MAX` | macro | `progs/minios_abi.h:130` | `#define MINIOS_FB_WIDTH_MAX` |
-| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:246` | `#define MINIOS_GFX_BUF_GAME` |
-| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:247` | `#define MINIOS_GFX_BUF_NK` |
+| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:251` | `#define MINIOS_GFX_BUF_GAME` |
+| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:252` | `#define MINIOS_GFX_BUF_NK` |
 | `MINIOS_HEAP_BASE` | macro | `progs/minios_abi.h:124` | `#define MINIOS_HEAP_BASE` |
 | `MINIOS_HEAP_SIZE` | macro | `progs/minios_abi.h:125` | `#define MINIOS_HEAP_SIZE` |
 | `MINIOS_NK_BACKBUF_ADDR` | macro | `progs/minios_abi.h:117` | `#define MINIOS_NK_BACKBUF_ADDR` |
@@ -7777,90 +7805,90 @@ Z_Malloc
 | `MINIOS_SYS_ARCH_PRCTL` | macro | `progs/minios_abi.h:184` | `#define MINIOS_SYS_ARCH_PRCTL` |
 | `MINIOS_SYS_BRK` | macro | `progs/minios_abi.h:159` | `#define MINIOS_SYS_BRK` |
 | `MINIOS_SYS_CLOCK_GETTIME` | macro | `progs/minios_abi.h:196` | `#define MINIOS_SYS_CLOCK_GETTIME` |
-| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:237` | `#define MINIOS_SYS_CLONE` |
+| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:242` | `#define MINIOS_SYS_CLONE` |
 | `MINIOS_SYS_CLOSE` | macro | `progs/minios_abi.h:152` | `#define MINIOS_SYS_CLOSE` |
 | `MINIOS_SYS_CONNECT` | macro | `progs/minios_abi.h:168` | `#define MINIOS_SYS_CONNECT` |
 | `MINIOS_SYS_DNS` | macro | `progs/minios_abi.h:200` | `#define MINIOS_SYS_DNS` |
-| `MINIOS_SYS_DOOM_FRAME` | macro | `progs/minios_abi.h:211` | `#define MINIOS_SYS_DOOM_FRAME` |
+| `MINIOS_SYS_DOOM_FRAME` | macro | `progs/minios_abi.h:216` | `#define MINIOS_SYS_DOOM_FRAME` |
 | `MINIOS_SYS_EXECVE` | macro | `progs/minios_abi.h:174` | `#define MINIOS_SYS_EXECVE` |
 | `MINIOS_SYS_EXIT` | macro | `progs/minios_abi.h:175` | `#define MINIOS_SYS_EXIT` |
 | `MINIOS_SYS_EXIT_GROUP` | macro | `progs/minios_abi.h:194` | `#define MINIOS_SYS_EXIT_GROUP` |
-| `MINIOS_SYS_FB_INFO` | macro | `progs/minios_abi.h:213` | `#define MINIOS_SYS_FB_INFO` |
+| `MINIOS_SYS_FB_INFO` | macro | `progs/minios_abi.h:218` | `#define MINIOS_SYS_FB_INFO` |
 | `MINIOS_SYS_FLOCK` | macro | `progs/minios_abi.h:181` | `#define MINIOS_SYS_FLOCK` |
 | `MINIOS_SYS_FORK` | macro | `progs/minios_abi.h:172` | `#define MINIOS_SYS_FORK` |
-| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:248` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
+| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:253` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
 | `MINIOS_SYS_FSTAT` | macro | `progs/minios_abi.h:153` | `#define MINIOS_SYS_FSTAT` |
-| `MINIOS_SYS_FUTEX_WAIT` | macro | `progs/minios_abi.h:229` | `#define MINIOS_SYS_FUTEX_WAIT` |
-| `MINIOS_SYS_FUTEX_WAKE` | macro | `progs/minios_abi.h:230` | `#define MINIOS_SYS_FUTEX_WAKE` |
+| `MINIOS_SYS_FUTEX_WAIT` | macro | `progs/minios_abi.h:234` | `#define MINIOS_SYS_FUTEX_WAIT` |
+| `MINIOS_SYS_FUTEX_WAKE` | macro | `progs/minios_abi.h:235` | `#define MINIOS_SYS_FUTEX_WAKE` |
 | `MINIOS_SYS_GETCWD` | macro | `progs/minios_abi.h:182` | `#define MINIOS_SYS_GETCWD` |
-| `MINIOS_SYS_GETC_RAW` | macro | `progs/minios_abi.h:232` | `#define MINIOS_SYS_GETC_RAW` |
+| `MINIOS_SYS_GETC_RAW` | macro | `progs/minios_abi.h:237` | `#define MINIOS_SYS_GETC_RAW` |
 | `MINIOS_SYS_GETPID` | macro | `progs/minios_abi.h:166` | `#define MINIOS_SYS_GETPID` |
 | `MINIOS_SYS_GETRANDOM` | macro | `progs/minios_abi.h:192` | `#define MINIOS_SYS_GETRANDOM` |
 | `MINIOS_SYS_GETTID` | macro | `progs/minios_abi.h:180` | `#define MINIOS_SYS_GETTID` |
 | `MINIOS_SYS_GETTIMEOFDAY` | macro | `progs/minios_abi.h:183` | `#define MINIOS_SYS_GETTIMEOFDAY` |
-| `MINIOS_SYS_GFX_PRESENT` | macro | `progs/minios_abi.h:233` | `#define MINIOS_SYS_GFX_PRESENT` |
-| `MINIOS_SYS_GFX_SET_TITLE` | macro | `progs/minios_abi.h:222` | `#define MINIOS_SYS_GFX_SET_TITLE` |
+| `MINIOS_SYS_GFX_PRESENT` | macro | `progs/minios_abi.h:238` | `#define MINIOS_SYS_GFX_PRESENT` |
+| `MINIOS_SYS_GFX_SET_TITLE` | macro | `progs/minios_abi.h:227` | `#define MINIOS_SYS_GFX_SET_TITLE` |
 | `MINIOS_SYS_IOCTL` | macro | `progs/minios_abi.h:162` | `#define MINIOS_SYS_IOCTL` |
-| `MINIOS_SYS_KBD` | macro | `progs/minios_abi.h:205` | `#define MINIOS_SYS_KBD` |
-| `MINIOS_SYS_KBD_RAW` | macro | `progs/minios_abi.h:207` | `#define MINIOS_SYS_KBD_RAW` |
+| `MINIOS_SYS_KBD` | macro | `progs/minios_abi.h:210` | `#define MINIOS_SYS_KBD` |
+| `MINIOS_SYS_KBD_RAW` | macro | `progs/minios_abi.h:212` | `#define MINIOS_SYS_KBD_RAW` |
 | `MINIOS_SYS_KILL` | macro | `progs/minios_abi.h:177` | `#define MINIOS_SYS_KILL` |
 | `MINIOS_SYS_LSEEK` | macro | `progs/minios_abi.h:155` | `#define MINIOS_SYS_LSEEK` |
-| `MINIOS_SYS_LZ4_COMPRESS` | macro | `progs/minios_abi.h:216` | `#define MINIOS_SYS_LZ4_COMPRESS` |
-| `MINIOS_SYS_LZ4_DECOMPRESS` | macro | `progs/minios_abi.h:217` | `#define MINIOS_SYS_LZ4_DECOMPRESS` |
+| `MINIOS_SYS_LZ4_COMPRESS` | macro | `progs/minios_abi.h:221` | `#define MINIOS_SYS_LZ4_COMPRESS` |
+| `MINIOS_SYS_LZ4_DECOMPRESS` | macro | `progs/minios_abi.h:222` | `#define MINIOS_SYS_LZ4_DECOMPRESS` |
 | `MINIOS_SYS_MMAP` | macro | `progs/minios_abi.h:156` | `#define MINIOS_SYS_MMAP` |
-| `MINIOS_SYS_MOUSE` | macro | `progs/minios_abi.h:218` | `#define MINIOS_SYS_MOUSE` |
+| `MINIOS_SYS_MOUSE` | macro | `progs/minios_abi.h:223` | `#define MINIOS_SYS_MOUSE` |
 | `MINIOS_SYS_MPROTECT` | macro | `progs/minios_abi.h:157` | `#define MINIOS_SYS_MPROTECT` |
 | `MINIOS_SYS_MUNMAP` | macro | `progs/minios_abi.h:158` | `#define MINIOS_SYS_MUNMAP` |
 | `MINIOS_SYS_NEWFSTATAT` | macro | `progs/minios_abi.h:186` | `#define MINIOS_SYS_NEWFSTATAT` |
-| `MINIOS_SYS_NICE` | macro | `progs/minios_abi.h:235` | `#define MINIOS_SYS_NICE` |
-| `MINIOS_SYS_NK_FRAME` | macro | `progs/minios_abi.h:219` | `#define MINIOS_SYS_NK_FRAME` |
+| `MINIOS_SYS_NICE` | macro | `progs/minios_abi.h:240` | `#define MINIOS_SYS_NICE` |
+| `MINIOS_SYS_NK_FRAME` | macro | `progs/minios_abi.h:224` | `#define MINIOS_SYS_NK_FRAME` |
 | `MINIOS_SYS_OPEN` | macro | `progs/minios_abi.h:151` | `#define MINIOS_SYS_OPEN` |
 | `MINIOS_SYS_OPENAT` | macro | `progs/minios_abi.h:185` | `#define MINIOS_SYS_OPENAT` |
-| `MINIOS_SYS_PALETTE` | macro | `progs/minios_abi.h:206` | `#define MINIOS_SYS_PALETTE` |
-| `MINIOS_SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:209` | `#define MINIOS_SYS_PCSPK_INIT` |
-| `MINIOS_SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:210` | `#define MINIOS_SYS_PCSPK_TONE` |
-| `MINIOS_SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:214` | `#define MINIOS_SYS_PCSPK_VOL` |
+| `MINIOS_SYS_PALETTE` | macro | `progs/minios_abi.h:211` | `#define MINIOS_SYS_PALETTE` |
+| `MINIOS_SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:214` | `#define MINIOS_SYS_PCSPK_INIT` |
+| `MINIOS_SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:215` | `#define MINIOS_SYS_PCSPK_TONE` |
+| `MINIOS_SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:219` | `#define MINIOS_SYS_PCSPK_VOL` |
 | `MINIOS_SYS_POLL` | macro | `progs/minios_abi.h:154` | `#define MINIOS_SYS_POLL` |
 | `MINIOS_SYS_PRLIMIT64` | macro | `progs/minios_abi.h:191` | `#define MINIOS_SYS_PRLIMIT64` |
 | `MINIOS_SYS_READ` | macro | `progs/minios_abi.h:149` | `#define MINIOS_SYS_READ` |
 | `MINIOS_SYS_READLINK` | macro | `progs/minios_abi.h:179` | `#define MINIOS_SYS_READLINK` |
 | `MINIOS_SYS_READLINK` | macro | `progs/minios_abi.h:187` | `#define MINIOS_SYS_READLINK` |
 | `MINIOS_SYS_RECVFROM` | macro | `progs/minios_abi.h:170` | `#define MINIOS_SYS_RECVFROM` |
-| `MINIOS_SYS_RLIMIT` | macro | `progs/minios_abi.h:236` | `#define MINIOS_SYS_RLIMIT` |
+| `MINIOS_SYS_RLIMIT` | macro | `progs/minios_abi.h:241` | `#define MINIOS_SYS_RLIMIT` |
 | `MINIOS_SYS_RSEQ` | macro | `progs/minios_abi.h:193` | `#define MINIOS_SYS_RSEQ` |
-| `MINIOS_SYS_RTC` | macro | `progs/minios_abi.h:212` | `#define MINIOS_SYS_RTC` |
+| `MINIOS_SYS_RTC` | macro | `progs/minios_abi.h:217` | `#define MINIOS_SYS_RTC` |
 | `MINIOS_SYS_RT_SIGACTION` | macro | `progs/minios_abi.h:160` | `#define MINIOS_SYS_RT_SIGACTION` |
 | `MINIOS_SYS_RT_SIGPROCMASK` | macro | `progs/minios_abi.h:161` | `#define MINIOS_SYS_RT_SIGPROCMASK` |
-| `MINIOS_SYS_SB16_OPEN` | macro | `progs/minios_abi.h:220` | `#define MINIOS_SYS_SB16_OPEN` |
-| `MINIOS_SYS_SB16_PUMP` | macro | `progs/minios_abi.h:223` | `#define MINIOS_SYS_SB16_PUMP` |
-| `MINIOS_SYS_SB16_STREAM_CLOSE` | macro | `progs/minios_abi.h:225` | `#define MINIOS_SYS_SB16_STREAM_CLOSE` |
-| `MINIOS_SYS_SB16_STREAM_OPEN` | macro | `progs/minios_abi.h:224` | `#define MINIOS_SYS_SB16_STREAM_OPEN` |
-| `MINIOS_SYS_SB16_STREAM_SUBMIT` | macro | `progs/minios_abi.h:226` | `#define MINIOS_SYS_SB16_STREAM_SUBMIT` |
-| `MINIOS_SYS_SB16_STREAM_VOLUME` | macro | `progs/minios_abi.h:227` | `#define MINIOS_SYS_SB16_STREAM_VOLUME` |
-| `MINIOS_SYS_SB16_SUBMIT` | macro | `progs/minios_abi.h:221` | `#define MINIOS_SYS_SB16_SUBMIT` |
+| `MINIOS_SYS_SB16_OPEN` | macro | `progs/minios_abi.h:225` | `#define MINIOS_SYS_SB16_OPEN` |
+| `MINIOS_SYS_SB16_PUMP` | macro | `progs/minios_abi.h:228` | `#define MINIOS_SYS_SB16_PUMP` |
+| `MINIOS_SYS_SB16_STREAM_CLOSE` | macro | `progs/minios_abi.h:230` | `#define MINIOS_SYS_SB16_STREAM_CLOSE` |
+| `MINIOS_SYS_SB16_STREAM_OPEN` | macro | `progs/minios_abi.h:229` | `#define MINIOS_SYS_SB16_STREAM_OPEN` |
+| `MINIOS_SYS_SB16_STREAM_SUBMIT` | macro | `progs/minios_abi.h:231` | `#define MINIOS_SYS_SB16_STREAM_SUBMIT` |
+| `MINIOS_SYS_SB16_STREAM_VOLUME` | macro | `progs/minios_abi.h:232` | `#define MINIOS_SYS_SB16_STREAM_VOLUME` |
+| `MINIOS_SYS_SB16_SUBMIT` | macro | `progs/minios_abi.h:226` | `#define MINIOS_SYS_SB16_SUBMIT` |
 | `MINIOS_SYS_SCHED_YIELD` | macro | `progs/minios_abi.h:165` | `#define MINIOS_SYS_SCHED_YIELD` |
-| `MINIOS_SYS_SECCOMP` | macro | `progs/minios_abi.h:234` | `#define MINIOS_SYS_SECCOMP` |
+| `MINIOS_SYS_SECCOMP` | macro | `progs/minios_abi.h:239` | `#define MINIOS_SYS_SECCOMP` |
 | `MINIOS_SYS_SENDTO` | macro | `progs/minios_abi.h:169` | `#define MINIOS_SYS_SENDTO` |
 | `MINIOS_SYS_SET_MEMPOLICY` | macro | `progs/minios_abi.h:189` | `#define MINIOS_SYS_SET_MEMPOLICY` |
 | `MINIOS_SYS_SET_ROBUST_LIST` | macro | `progs/minios_abi.h:190` | `#define MINIOS_SYS_SET_ROBUST_LIST` |
 | `MINIOS_SYS_SET_TID_ADDRESS` | macro | `progs/minios_abi.h:195` | `#define MINIOS_SYS_SET_TID_ADDRESS` |
 | `MINIOS_SYS_SHUTDOWN` | macro | `progs/minios_abi.h:171` | `#define MINIOS_SYS_SHUTDOWN` |
 | `MINIOS_SYS_SOCKET` | macro | `progs/minios_abi.h:167` | `#define MINIOS_SYS_SOCKET` |
-| `MINIOS_SYS_SPAWN` | macro | `progs/minios_abi.h:215` | `#define MINIOS_SYS_SPAWN` |
+| `MINIOS_SYS_SPAWN` | macro | `progs/minios_abi.h:220` | `#define MINIOS_SYS_SPAWN` |
 | `MINIOS_SYS_STATX` | macro | `progs/minios_abi.h:188` | `#define MINIOS_SYS_STATX` |
-| `MINIOS_SYS_SUBMIT_BATCH` | macro | `progs/minios_abi.h:231` | `#define MINIOS_SYS_SUBMIT_BATCH` |
+| `MINIOS_SYS_SUBMIT_BATCH` | macro | `progs/minios_abi.h:236` | `#define MINIOS_SYS_SUBMIT_BATCH` |
 | `MINIOS_SYS_TGKILL` | macro | `progs/minios_abi.h:197` | `#define MINIOS_SYS_TGKILL` |
-| `MINIOS_SYS_THREAD_SPAWN` | macro | `progs/minios_abi.h:228` | `#define MINIOS_SYS_THREAD_SPAWN` |
-| `MINIOS_SYS_TIME` | macro | `progs/minios_abi.h:204` | `#define MINIOS_SYS_TIME` |
-| `MINIOS_SYS_TLS_HANDSHAKE` | macro | `progs/minios_abi.h:201` | `#define MINIOS_SYS_TLS_HANDSHAKE` |
-| `MINIOS_SYS_TLS_RECV` | macro | `progs/minios_abi.h:203` | `#define MINIOS_SYS_TLS_RECV` |
-| `MINIOS_SYS_TLS_SEND` | macro | `progs/minios_abi.h:202` | `#define MINIOS_SYS_TLS_SEND` |
+| `MINIOS_SYS_THREAD_SPAWN` | macro | `progs/minios_abi.h:233` | `#define MINIOS_SYS_THREAD_SPAWN` |
+| `MINIOS_SYS_TIME` | macro | `progs/minios_abi.h:209` | `#define MINIOS_SYS_TIME` |
+| `MINIOS_SYS_TLS_HANDSHAKE` | macro | `progs/minios_abi.h:206` | `#define MINIOS_SYS_TLS_HANDSHAKE` |
+| `MINIOS_SYS_TLS_RECV` | macro | `progs/minios_abi.h:208` | `#define MINIOS_SYS_TLS_RECV` |
+| `MINIOS_SYS_TLS_SEND` | macro | `progs/minios_abi.h:207` | `#define MINIOS_SYS_TLS_SEND` |
 | `MINIOS_SYS_UNLINK` | macro | `progs/minios_abi.h:178` | `#define MINIOS_SYS_UNLINK` |
 | `MINIOS_SYS_VFORK` | macro | `progs/minios_abi.h:173` | `#define MINIOS_SYS_VFORK` |
-| `MINIOS_SYS_VGA_MODE` | macro | `progs/minios_abi.h:208` | `#define MINIOS_SYS_VGA_MODE` |
+| `MINIOS_SYS_VGA_MODE` | macro | `progs/minios_abi.h:213` | `#define MINIOS_SYS_VGA_MODE` |
 | `MINIOS_SYS_WAIT4` | macro | `progs/minios_abi.h:176` | `#define MINIOS_SYS_WAIT4` |
-| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:249` | `#define MINIOS_SYS_WINDOW_PRESENT` |
-| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:250` | `#define MINIOS_SYS_WINDOW_TITLE` |
+| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:254` | `#define MINIOS_SYS_WINDOW_PRESENT` |
+| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:255` | `#define MINIOS_SYS_WINDOW_TITLE` |
 | `MINIOS_SYS_WRITE` | macro | `progs/minios_abi.h:150` | `#define MINIOS_SYS_WRITE` |
 | `MINIOS_SYS_WRITEV` | macro | `progs/minios_abi.h:163` | `#define MINIOS_SYS_WRITEV` |
 | `MINIOS_USER_BRK_END` | macro | `progs/minios_abi.h:96` | `#define MINIOS_USER_BRK_END` |
@@ -7869,16 +7897,16 @@ Z_Malloc
 | `MINIOS_USER_STACK_BASE` | macro | `progs/minios_abi.h:95` | `#define MINIOS_USER_STACK_BASE` |
 | `MINIOS_USER_STACK_SIZE` | macro | `progs/minios_abi.h:93` | `#define MINIOS_USER_STACK_SIZE` |
 | `MINIOS_USER_STACK_TOP` | macro | `progs/minios_abi.h:94` | `#define MINIOS_USER_STACK_TOP` |
-| `SYS_FB_INFO` | macro | `progs/minios_abi.h:258` | `#define SYS_FB_INFO` |
-| `SYS_PALETTE` | macro | `progs/minios_abi.h:254` | `#define SYS_PALETTE` |
-| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:255` | `#define SYS_PCSPK_INIT` |
-| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:256` | `#define SYS_PCSPK_TONE` |
-| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:259` | `#define SYS_PCSPK_VOL` |
-| `SYS_RTC` | macro | `progs/minios_abi.h:257` | `#define SYS_RTC` |
-| `SYS_SPAWN` | macro | `progs/minios_abi.h:260` | `#define SYS_SPAWN` |
-| `SYS_TIME` | macro | `progs/minios_abi.h:261` | `#define SYS_TIME` |
-| `SYS_TIME_MS` | macro | `progs/minios_abi.h:253` | `#define SYS_TIME_MS` |
-| `SYS_WRITE` | macro | `progs/minios_abi.h:262` | `#define SYS_WRITE` |
+| `SYS_FB_INFO` | macro | `progs/minios_abi.h:263` | `#define SYS_FB_INFO` |
+| `SYS_PALETTE` | macro | `progs/minios_abi.h:259` | `#define SYS_PALETTE` |
+| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:260` | `#define SYS_PCSPK_INIT` |
+| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:261` | `#define SYS_PCSPK_TONE` |
+| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:264` | `#define SYS_PCSPK_VOL` |
+| `SYS_RTC` | macro | `progs/minios_abi.h:262` | `#define SYS_RTC` |
+| `SYS_SPAWN` | macro | `progs/minios_abi.h:265` | `#define SYS_SPAWN` |
+| `SYS_TIME` | macro | `progs/minios_abi.h:266` | `#define SYS_TIME` |
+| `SYS_TIME_MS` | macro | `progs/minios_abi.h:258` | `#define SYS_TIME_MS` |
+| `SYS_WRITE` | macro | `progs/minios_abi.h:267` | `#define SYS_WRITE` |
 | `CVM_FUNC_ENTRY_SIZE` | macro | `progs/nuklear/cvm_emit.c:35` | `#define CVM_FUNC_ENTRY_SIZE` |
 | `CVM_GLOBAL_ENTRY_SIZE` | macro | `progs/nuklear/cvm_emit.c:36` | `#define CVM_GLOBAL_ENTRY_SIZE` |
 | `CVM_MAGIC_0` | macro | `progs/nuklear/cvm_emit.c:29` | `#define CVM_MAGIC_0` |
@@ -8025,46 +8053,46 @@ Z_Malloc
 | `ui_inspector` | function | `progs/nuklear/node_editor.c:540` | `static void ui_inspector(struct nk_context *ctx)` |
 | `volatile` | function | `progs/nuklear/node_editor.c:970` | `__asm__ volatile("pause");` |
 | `write_quoted` | function | `progs/nuklear/node_editor.c:338` | `static void write_quoted(FILE *f, const char *s)` |
-| `NK_IMPLEMENTATION` | macro | `progs/nuklear/nuklear_minios.c:15` | `#define NK_IMPLEMENTATION` |
-| `col_to_idx` | function | `progs/nuklear/nuklear_minios.c:154` | `static int col_to_idx(struct nk_color c)` |
-| `draw_arc` | function | `progs/nuklear/nuklear_minios.c:382` | `static void draw_arc(int cx, int cy, int r, float a0, float a1,
+| `NK_IMPLEMENTATION` | macro | `progs/nuklear/nuklear_minios.c:16` | `#define NK_IMPLEMENTATION` |
+| `col_to_idx` | function | `progs/nuklear/nuklear_minios.c:155` | `static int col_to_idx(struct nk_color c)` |
+| `draw_arc` | function | `progs/nuklear/nuklear_minios.c:383` | `static void draw_arc(int cx, int cy, int r, float a0, float a1,
                      int filled, ...` |
-| `draw_line` | function | `progs/nuklear/nuklear_minios.c:296` | `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)` |
-| `draw_text` | function | `progs/nuklear/nuklear_minios.c:368` | `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)` |
-| `feed_key` | function | `progs/nuklear/nuklear_minios.c:593` | `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)` |
-| `fill_circle` | function | `progs/nuklear/nuklear_minios.c:314` | `static void fill_circle(int cx, int cy, int r, int c)` |
-| `fill_poly` | function | `progs/nuklear/nuklear_minios.c:339` | `static void fill_poly(int *xs, int *ys, int n, int c)` |
-| `fill_rect` | function | `progs/nuklear/nuklear_minios.c:289` | `static void fill_rect(int x, int y, int w, int h, int c)` |
-| `handle_scancode` | function | `progs/nuklear/nuklear_minios.c:605` | `static void handle_scancode(struct nk_context *ctx, unsigned char sc)` |
+| `draw_line` | function | `progs/nuklear/nuklear_minios.c:297` | `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)` |
+| `draw_text` | function | `progs/nuklear/nuklear_minios.c:369` | `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)` |
+| `feed_key` | function | `progs/nuklear/nuklear_minios.c:594` | `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)` |
+| `fill_circle` | function | `progs/nuklear/nuklear_minios.c:315` | `static void fill_circle(int cx, int cy, int r, int c)` |
+| `fill_poly` | function | `progs/nuklear/nuklear_minios.c:340` | `static void fill_poly(int *xs, int *ys, int n, int c)` |
+| `fill_rect` | function | `progs/nuklear/nuklear_minios.c:290` | `static void fill_rect(int x, int y, int w, int h, int c)` |
+| `handle_scancode` | function | `progs/nuklear/nuklear_minios.c:606` | `static void handle_scancode(struct nk_context *ctx, unsigned char sc)` |
 | `list` | function | `progs/nuklear/nuklear_minios.c:4` | `* abstract draw command list (nk__begin/nk__next);` |
-| `nk_build_palette` | function | `progs/nuklear/nuklear_minios.c:146` | `nk_build_palette(pal768);` |
-| `nk_foreach` | function | `progs/nuklear/nuklear_minios.c:408` | `nk_foreach(cmd, ctx)` |
-| `nk_input_key` | function | `progs/nuklear/nuklear_minios.c:595` | `nk_input_key(ctx, key, down ? nk_true : nk_false);` |
-| `nk_input_motion` | function | `progs/nuklear/nuklear_minios.c:665` | `nk_input_motion(ctx, lx, ly);` |
-| `nk_input_scroll` | function | `progs/nuklear/nuklear_minios.c:681` | `nk_input_scroll(ctx, scroll);` |
-| `nk_input_unicode` | function | `progs/nuklear/nuklear_minios.c:644` | `nk_input_unicode(ctx, (nk_rune)ch);` |
-| `nk_minios_font` | function | `progs/nuklear/nuklear_minios.c:559` | `struct nk_user_font nk_minios_font(void)` |
-| `nk_minios_font_width` | function | `progs/nuklear/nuklear_minios.c:554` | `static float nk_minios_font_width(nk_handle handle, float height,
+| `nk_build_palette` | function | `progs/nuklear/nuklear_minios.c:147` | `nk_build_palette(pal768);` |
+| `nk_foreach` | function | `progs/nuklear/nuklear_minios.c:409` | `nk_foreach(cmd, ctx)` |
+| `nk_input_key` | function | `progs/nuklear/nuklear_minios.c:596` | `nk_input_key(ctx, key, down ? nk_true : nk_false);` |
+| `nk_input_motion` | function | `progs/nuklear/nuklear_minios.c:666` | `nk_input_motion(ctx, lx, ly);` |
+| `nk_input_scroll` | function | `progs/nuklear/nuklear_minios.c:682` | `nk_input_scroll(ctx, scroll);` |
+| `nk_input_unicode` | function | `progs/nuklear/nuklear_minios.c:645` | `nk_input_unicode(ctx, (nk_rune)ch);` |
+| `nk_minios_font` | function | `progs/nuklear/nuklear_minios.c:560` | `struct nk_user_font nk_minios_font(void)` |
+| `nk_minios_font_width` | function | `progs/nuklear/nuklear_minios.c:555` | `static float nk_minios_font_width(nk_handle handle, float height,
                                ...` |
-| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.c:648` | `void nk_poll_input(struct nk_context *ctx)` |
-| `nk_rasterize` | function | `progs/nuklear/nuklear_minios.c:403` | `void nk_rasterize(struct nk_context *ctx)` |
-| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.c:600` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)` |
-| `nk_set_window_origin` | function | `progs/nuklear/nuklear_minios.c:685` | `void nk_set_window_origin(int x, int y)` |
-| `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.c:51` | `long nk_sys_fb_info(int *w, int *h, int *pitch)` |
-| `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.c:31` | `long nk_sys_kbd(void)` |
-| `nk_sys_kbd_raw` | function | `progs/nuklear/nuklear_minios.c:41` | `long nk_sys_kbd_raw(int on)` |
-| `nk_sys_mouse` | function | `progs/nuklear/nuklear_minios.c:58` | `long nk_sys_mouse(int *xybw)` |
-| `nk_sys_mouse_badptr` | function | `progs/nuklear/nuklear_minios.c:63` | `long nk_sys_mouse_badptr(void)` |
-| `nk_sys_nk_frame` | function | `progs/nuklear/nuklear_minios.c:71` | `long nk_sys_nk_frame(int *origin)` |
-| `nk_sys_palette` | function | `progs/nuklear/nuklear_minios.c:36` | `long nk_sys_palette(const unsigned char *pal)` |
-| `nk_sys_time_ms` | function | `progs/nuklear/nuklear_minios.c:26` | `long nk_sys_time_ms(void)` |
-| `nk_sys_vga_mode` | function | `progs/nuklear/nuklear_minios.c:46` | `long nk_sys_vga_mode(int on)` |
-| `pal_prepare` | function | `progs/nuklear/nuklear_minios.c:143` | `static void pal_prepare(void)` |
-| `px` | function | `progs/nuklear/nuklear_minios.c:282` | `static void px(int x, int y, int c)` |
-| `set_clip` | function | `progs/nuklear/nuklear_minios.c:272` | `static void set_clip(int x, int y, int w, int h)` |
-| `stroke_circle` | function | `progs/nuklear/nuklear_minios.c:320` | `static void stroke_circle(int cx, int cy, int r, int th, int c)` |
-| `stroke_poly` | function | `progs/nuklear/nuklear_minios.c:361` | `static void stroke_poly(int *xs, int *ys, int n, int th, int c)` |
-| `volatile` | function | `progs/nuklear/nuklear_minios.c:28` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");` |
+| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.c:649` | `void nk_poll_input(struct nk_context *ctx)` |
+| `nk_rasterize` | function | `progs/nuklear/nuklear_minios.c:404` | `void nk_rasterize(struct nk_context *ctx)` |
+| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.c:601` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)` |
+| `nk_set_window_origin` | function | `progs/nuklear/nuklear_minios.c:686` | `void nk_set_window_origin(int x, int y)` |
+| `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.c:52` | `long nk_sys_fb_info(int *w, int *h, int *pitch)` |
+| `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.c:32` | `long nk_sys_kbd(void)` |
+| `nk_sys_kbd_raw` | function | `progs/nuklear/nuklear_minios.c:42` | `long nk_sys_kbd_raw(int on)` |
+| `nk_sys_mouse` | function | `progs/nuklear/nuklear_minios.c:59` | `long nk_sys_mouse(int *xybw)` |
+| `nk_sys_mouse_badptr` | function | `progs/nuklear/nuklear_minios.c:64` | `long nk_sys_mouse_badptr(void)` |
+| `nk_sys_nk_frame` | function | `progs/nuklear/nuklear_minios.c:72` | `long nk_sys_nk_frame(int *origin)` |
+| `nk_sys_palette` | function | `progs/nuklear/nuklear_minios.c:37` | `long nk_sys_palette(const unsigned char *pal)` |
+| `nk_sys_time_ms` | function | `progs/nuklear/nuklear_minios.c:27` | `long nk_sys_time_ms(void)` |
+| `nk_sys_vga_mode` | function | `progs/nuklear/nuklear_minios.c:47` | `long nk_sys_vga_mode(int on)` |
+| `pal_prepare` | function | `progs/nuklear/nuklear_minios.c:144` | `static void pal_prepare(void)` |
+| `px` | function | `progs/nuklear/nuklear_minios.c:283` | `static void px(int x, int y, int c)` |
+| `set_clip` | function | `progs/nuklear/nuklear_minios.c:273` | `static void set_clip(int x, int y, int w, int h)` |
+| `stroke_circle` | function | `progs/nuklear/nuklear_minios.c:321` | `static void stroke_circle(int cx, int cy, int r, int th, int c)` |
+| `stroke_poly` | function | `progs/nuklear/nuklear_minios.c:362` | `static void stroke_poly(int *xs, int *ys, int n, int th, int c)` |
+| `volatile` | function | `progs/nuklear/nuklear_minios.c:29` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");` |
 | `NK_BACKBUF` | macro | `progs/nuklear/nuklear_minios.h:20` | `#define NK_BACKBUF` |
 | `NK_H` | macro | `progs/nuklear/nuklear_minios.h:19` | `#define NK_H` |
 | `NK_W` | macro | `progs/nuklear/nuklear_minios.h:17` | `#define NK_W` |
@@ -8304,42 +8332,42 @@ Z_Malloc
 | `upload_frame` | function | `progs/pokemon/platform_minios.c:738` | `static void upload_frame(const uint32_t *framebuffer)` |
 | `volatile` | function | `progs/pokemon/platform_minios.c:58` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");` |
 | `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/quake2generic/q2generic_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
-| `Q2G_BACKBUF` | macro | `progs/quake2generic/q2generic_minios.c:70` | `#define Q2G_BACKBUF` |
-| `Q2G_FB_H` | macro | `progs/quake2generic/q2generic_minios.c:21` | `#define Q2G_FB_H` |
-| `Q2G_FB_W` | macro | `progs/quake2generic/q2generic_minios.c:19` | `#define Q2G_FB_W` |
-| `QG_CaptureMouse` | function | `progs/quake2generic/q2generic_minios.c:112` | `void QG_CaptureMouse(void)` |
-| `QG_GetMouseDiff` | function | `progs/quake2generic/q2generic_minios.c:101` | `void QG_GetMouseDiff(int *dx, int *dy)` |
-| `QG_Milliseconds` | function | `progs/quake2generic/q2generic_minios.c:316` | `int QG_Milliseconds(void)` |
-| `QG_Mkdir` | function | `progs/quake2generic/q2generic_minios.c:119` | `void QG_Mkdir(const char *path)` |
-| `QG_ReleaseMouse` | function | `progs/quake2generic/q2generic_minios.c:116` | `void QG_ReleaseMouse(void)` |
-| `Quake2_Frame` | function | `progs/quake2generic/q2generic_minios.c:341` | `Quake2_Frame(time);` |
-| `Quake2_Init` | function | `progs/quake2generic/q2generic_minios.c:327` | `Quake2_Init(argc, argv);` |
-| `Quake2_SendKey` | function | `progs/quake2generic/q2generic_minios.c:237` | `Quake2_SendKey(qkey, !(raw2 & 0x80));` |
-| `SWimp_AppActivate` | function | `progs/quake2generic/q2generic_minios.c:312` | `void SWimp_AppActivate(qboolean active)` |
-| `SWimp_BeginFrame` | function | `progs/quake2generic/q2generic_minios.c:290` | `void SWimp_BeginFrame(float camera_separation)` |
-| `SWimp_EndFrame` | function | `progs/quake2generic/q2generic_minios.c:293` | `void SWimp_EndFrame(void)` |
-| `SWimp_Init` | function | `progs/quake2generic/q2generic_minios.c:281` | `int SWimp_Init(void *hInstance, void *wndProc)` |
-| `SWimp_SetMode` | function | `progs/quake2generic/q2generic_minios.c:264` | `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)` |
-| `SWimp_SetPalette` | function | `progs/quake2generic/q2generic_minios.c:254` | `void SWimp_SetPalette(const unsigned char *palette)` |
-| `SWimp_Shutdown` | function | `progs/quake2generic/q2generic_minios.c:287` | `void SWimp_Shutdown(void)` |
-| `SYS_DOOM_FRAME` | function | `progs/quake2generic/q2generic_minios.c:5` | `* SYS_DOOM_FRAME (211) and the kernel composites the buffer onto the
- * hi-res desktop as a title...` |
-| `Sys_Quit` | function | `progs/quake2generic/q2generic_minios.c:75` | `extern void Sys_Quit(void);` |
-| `extended_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:206` | `static unsigned char extended_to_q2key(unsigned char sc)` |
-| `fflush` | function | `progs/quake2generic/q2generic_minios.c:307` | `fflush(stdout);` |
-| `kbd_poll` | function | `progs/quake2generic/q2generic_minios.c:224` | `static void kbd_poll(void)` |
-| `main` | function | `progs/quake2generic/q2generic_minios.c:320` | `int main(int argc, char **argv)` |
-| `printf` | function | `progs/quake2generic/q2generic_minios.c:306` | `printf("minios: played %d frames, quitting\n", s_frames);` |
-| `q2g_parse_autoframes` | function | `progs/quake2generic/q2generic_minios.c:86` | `static void q2g_parse_autoframes(int argc, char **argv)` |
-| `scancode_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:123` | `static unsigned char scancode_to_q2key(unsigned char raw)` |
-| `sys_doom_frame` | function | `progs/quake2generic/q2generic_minios.c:52` | `static long sys_doom_frame(void)` |
-| `sys_kbd` | function | `progs/quake2generic/q2generic_minios.c:28` | `static long sys_kbd(void)` |
-| `sys_kbd_raw` | function | `progs/quake2generic/q2generic_minios.c:40` | `static long sys_kbd_raw(int on)` |
-| `sys_mouse` | function | `progs/quake2generic/q2generic_minios.c:58` | `static long sys_mouse(int *buf)` |
-| `sys_palette` | function | `progs/quake2generic/q2generic_minios.c:34` | `static long sys_palette(const unsigned char *pal)` |
-| `sys_set_title` | function | `progs/quake2generic/q2generic_minios.c:64` | `static long sys_set_title(const char *t)` |
-| `sys_vga_mode` | function | `progs/quake2generic/q2generic_minios.c:46` | `static long sys_vga_mode(int on)` |
-| `volatile` | function | `progs/quake2generic/q2generic_minios.c:25` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");` |
+| `MINIOS_GFX_BUF_GAME` | function | `progs/quake2generic/q2generic_minios.c:5` | `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel
+ * compat alias) and the...` |
+| `Q2G_BACKBUF` | macro | `progs/quake2generic/q2generic_minios.c:71` | `#define Q2G_BACKBUF` |
+| `Q2G_FB_H` | macro | `progs/quake2generic/q2generic_minios.c:22` | `#define Q2G_FB_H` |
+| `Q2G_FB_W` | macro | `progs/quake2generic/q2generic_minios.c:20` | `#define Q2G_FB_W` |
+| `QG_CaptureMouse` | function | `progs/quake2generic/q2generic_minios.c:113` | `void QG_CaptureMouse(void)` |
+| `QG_GetMouseDiff` | function | `progs/quake2generic/q2generic_minios.c:102` | `void QG_GetMouseDiff(int *dx, int *dy)` |
+| `QG_Milliseconds` | function | `progs/quake2generic/q2generic_minios.c:317` | `int QG_Milliseconds(void)` |
+| `QG_Mkdir` | function | `progs/quake2generic/q2generic_minios.c:120` | `void QG_Mkdir(const char *path)` |
+| `QG_ReleaseMouse` | function | `progs/quake2generic/q2generic_minios.c:117` | `void QG_ReleaseMouse(void)` |
+| `Quake2_Frame` | function | `progs/quake2generic/q2generic_minios.c:342` | `Quake2_Frame(time);` |
+| `Quake2_Init` | function | `progs/quake2generic/q2generic_minios.c:328` | `Quake2_Init(argc, argv);` |
+| `Quake2_SendKey` | function | `progs/quake2generic/q2generic_minios.c:238` | `Quake2_SendKey(qkey, !(raw2 & 0x80));` |
+| `SWimp_AppActivate` | function | `progs/quake2generic/q2generic_minios.c:313` | `void SWimp_AppActivate(qboolean active)` |
+| `SWimp_BeginFrame` | function | `progs/quake2generic/q2generic_minios.c:291` | `void SWimp_BeginFrame(float camera_separation)` |
+| `SWimp_EndFrame` | function | `progs/quake2generic/q2generic_minios.c:294` | `void SWimp_EndFrame(void)` |
+| `SWimp_Init` | function | `progs/quake2generic/q2generic_minios.c:282` | `int SWimp_Init(void *hInstance, void *wndProc)` |
+| `SWimp_SetMode` | function | `progs/quake2generic/q2generic_minios.c:265` | `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)` |
+| `SWimp_SetPalette` | function | `progs/quake2generic/q2generic_minios.c:255` | `void SWimp_SetPalette(const unsigned char *palette)` |
+| `SWimp_Shutdown` | function | `progs/quake2generic/q2generic_minios.c:288` | `void SWimp_Shutdown(void)` |
+| `Sys_Quit` | function | `progs/quake2generic/q2generic_minios.c:76` | `extern void Sys_Quit(void);` |
+| `extended_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:207` | `static unsigned char extended_to_q2key(unsigned char sc)` |
+| `fflush` | function | `progs/quake2generic/q2generic_minios.c:308` | `fflush(stdout);` |
+| `kbd_poll` | function | `progs/quake2generic/q2generic_minios.c:225` | `static void kbd_poll(void)` |
+| `main` | function | `progs/quake2generic/q2generic_minios.c:321` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/quake2generic/q2generic_minios.c:307` | `printf("minios: played %d frames, quitting\n", s_frames);` |
+| `q2g_parse_autoframes` | function | `progs/quake2generic/q2generic_minios.c:87` | `static void q2g_parse_autoframes(int argc, char **argv)` |
+| `scancode_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:124` | `static unsigned char scancode_to_q2key(unsigned char raw)` |
+| `sys_doom_frame` | function | `progs/quake2generic/q2generic_minios.c:53` | `static long sys_doom_frame(void)` |
+| `sys_kbd` | function | `progs/quake2generic/q2generic_minios.c:29` | `static long sys_kbd(void)` |
+| `sys_kbd_raw` | function | `progs/quake2generic/q2generic_minios.c:41` | `static long sys_kbd_raw(int on)` |
+| `sys_mouse` | function | `progs/quake2generic/q2generic_minios.c:59` | `static long sys_mouse(int *buf)` |
+| `sys_palette` | function | `progs/quake2generic/q2generic_minios.c:35` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_set_title` | function | `progs/quake2generic/q2generic_minios.c:65` | `static long sys_set_title(const char *t)` |
+| `sys_vga_mode` | function | `progs/quake2generic/q2generic_minios.c:47` | `static long sys_vga_mode(int on)` |
+| `volatile` | function | `progs/quake2generic/q2generic_minios.c:26` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");` |
 | `AES_AFFINE_C` | macro | `progs/src/aes.c:53` | `#define AES_AFFINE_C` |
 | `AES_BLOCK` | macro | `progs/src/aes.c:43` | `#define AES_BLOCK` |
 | `AES_EXIT_FAIL` | macro | `progs/src/aes.c:60` | `#define AES_EXIT_FAIL` |
@@ -8428,66 +8456,68 @@ Z_Malloc
 | `volatile` | function | `progs/src/cpl.c:8` | `__asm__ volatile("mov %%cs, %0" : "=r"(cs));` |
 | `fib` | function | `progs/src/fib.c:1` | `int fib(int n)` |
 | `main` | function | `progs/src/fib.c:5` | `int main(void)` |
-| `FREEDOM_ATTR_MAX` | macro | `progs/src/freedom.c:57` | `#define FREEDOM_ATTR_MAX` |
-| `FREEDOM_BUF` | macro | `progs/src/freedom.c:52` | `#define FREEDOM_BUF` |
-| `FREEDOM_CHUNK_MAX` | macro | `progs/src/freedom.c:53` | `#define FREEDOM_CHUNK_MAX` |
-| `FREEDOM_CSS_BUF` | macro | `progs/src/freedom.c:55` | `#define FREEDOM_CSS_BUF` |
-| `FREEDOM_CSS_MAX` | macro | `progs/src/freedom.c:54` | `#define FREEDOM_CSS_MAX` |
-| `FREEDOM_DOM_BUF` | macro | `progs/src/freedom.c:56` | `#define FREEDOM_DOM_BUF` |
-| `FREEDOM_HDR_MAX` | macro | `progs/src/freedom.c:51` | `#define FREEDOM_HDR_MAX` |
-| `FREEDOM_HOPS_MAX` | macro | `progs/src/freedom.c:49` | `#define FREEDOM_HOPS_MAX` |
-| `FREEDOM_LINE_MAX` | macro | `progs/src/freedom.c:58` | `#define FREEDOM_LINE_MAX` |
-| `append` | function | `progs/src/freedom.c:140` | `static int append(char *dst, int pos, char *src, int cap)` |
-| `atoi` | function | `progs/src/freedom.c:127` | `static int atoi(char *s)` |
-| `body_byte` | function | `progs/src/freedom.c:604` | `static void body_byte(int c)` |
-| `ci_eq` | function | `progs/src/freedom.c:166` | `static int ci_eq(char *a, char *b)` |
-| `ci_index` | function | `progs/src/freedom.c:176` | `static int ci_index(char *s, char *needle)` |
-| `ci_lower` | function | `progs/src/freedom.c:148` | `static int ci_lower(int c)` |
-| `ci_starts` | function | `progs/src/freedom.c:155` | `static int ci_starts(char *s, char *pre)` |
-| `classify_tag` | function | `progs/src/freedom.c:519` | `static void classify_tag(void)` |
-| `close` | function | `progs/src/freedom.c:35` | `int close(int fd);` |
-| `connect` | function | `progs/src/freedom.c:32` | `int connect(int fd, void *addr, int addrlen);` |
-| `css_append` | function | `progs/src/freedom.c:455` | `static void css_append(char *s, int n)` |
-| `css_line` | function | `progs/src/freedom.c:461` | `static void css_line(char *s)` |
+| `FREEDOM_ATTR_MAX` | macro | `progs/src/freedom.c:81` | `#define FREEDOM_ATTR_MAX` |
+| `FREEDOM_BUF` | macro | `progs/src/freedom.c:76` | `#define FREEDOM_BUF` |
+| `FREEDOM_CHUNK_MAX` | macro | `progs/src/freedom.c:77` | `#define FREEDOM_CHUNK_MAX` |
+| `FREEDOM_CSS_BUF` | macro | `progs/src/freedom.c:79` | `#define FREEDOM_CSS_BUF` |
+| `FREEDOM_CSS_MAX` | macro | `progs/src/freedom.c:78` | `#define FREEDOM_CSS_MAX` |
+| `FREEDOM_DOM_BUF` | macro | `progs/src/freedom.c:80` | `#define FREEDOM_DOM_BUF` |
+| `FREEDOM_HDR_MAX` | macro | `progs/src/freedom.c:75` | `#define FREEDOM_HDR_MAX` |
+| `FREEDOM_HOPS_MAX` | macro | `progs/src/freedom.c:73` | `#define FREEDOM_HOPS_MAX` |
+| `FREEDOM_LINE_MAX` | macro | `progs/src/freedom.c:82` | `#define FREEDOM_LINE_MAX` |
+| `append` | function | `progs/src/freedom.c:166` | `static int append(char *dst, int pos, char *src, int cap)` |
+| `atoi` | function | `progs/src/freedom.c:151` | `static int atoi(char *s)` |
+| `body_byte` | function | `progs/src/freedom.c:631` | `static void body_byte(int c)` |
+| `ci_eq` | function | `progs/src/freedom.c:193` | `static int ci_eq(char *a, char *b)` |
+| `ci_index` | function | `progs/src/freedom.c:203` | `static int ci_index(char *s, char *needle)` |
+| `ci_lower` | function | `progs/src/freedom.c:175` | `static int ci_lower(int c)` |
+| `ci_starts` | function | `progs/src/freedom.c:182` | `static int ci_starts(char *s, char *pre)` |
+| `classify_tag` | function | `progs/src/freedom.c:546` | `static void classify_tag(void)` |
+| `close` | function | `progs/src/freedom.c:56` | `int close(int fd);` |
+| `connect` | function | `progs/src/freedom.c:53` | `int connect(int fd, void *addr, int addrlen);` |
+| `css_append` | function | `progs/src/freedom.c:482` | `static void css_append(char *s, int n)` |
+| `css_line` | function | `progs/src/freedom.c:488` | `static void css_line(char *s)` |
 | `curlfree` | function | `progs/src/freedom.c:4` | `* spirit of curlfree (http.c + htmlfilter.c): a bounded header phase, * Content-Length or EOF body reading, Transfer-Enc` |
-| `dom_append` | function | `progs/src/freedom.c:466` | `static void dom_append(char *s, int n)` |
-| `dom_nl` | function | `progs/src/freedom.c:476` | `static void dom_nl(void)` |
-| `dom_space` | function | `progs/src/freedom.c:472` | `static void dom_space(void)` |
-| `fetch` | function | `progs/src/freedom.c:833` | `static int fetch(char *host, char *path, int port)` |
-| `fetch_css` | function | `progs/src/freedom.c:993` | `static void fetch_css(char *host, char *path)` |
-| `has_scheme` | function | `progs/src/freedom.c:199` | `static int has_scheme(char *s)` |
-| `head_line` | function | `progs/src/freedom.c:769` | `static void head_line(char *line)` |
-| `is_void_tag` | function | `progs/src/freedom.c:507` | `static int is_void_tag(void)` |
-| `looks_like_url` | function | `progs/src/freedom.c:185` | `static int looks_like_url(char *s)` |
-| `main` | function | `progs/src/freedom.c:1086` | `int main(int argc, char **argv)` |
-| `make_search` | function | `progs/src/freedom.c:215` | `static void make_search(char *out, char *query, int cap)` |
-| `memcpy` | function | `progs/src/freedom.c:46` | `int memcpy(char *dst, char *src, int n);` |
-| `memset` | function | `progs/src/freedom.c:47` | `int memset(char *dst, int c, int n);` |
-| `net_dns_resolve` | function | `progs/src/freedom.c:36` | `int net_dns_resolve(char *host);` |
-| `parse_head` | function | `progs/src/freedom.c:794` | `static void parse_head(void)` |
-| `print_css_dump` | function | `progs/src/freedom.c:1071` | `static void print_css_dump(void)` |
-| `print_dom_dump` | function | `progs/src/freedom.c:1080` | `static void print_dom_dump(void)` |
-| `printf` | function | `progs/src/freedom.c:40` | `int printf(char *fmt, ...);` |
-| `put_entity` | function | `progs/src/freedom.c:730` | `put_entity(f_ent);` |
-| `put_text` | function | `progs/src/freedom.c:400` | `static void put_text(int c)` |
-| `put_utf` | function | `progs/src/freedom.c:350` | `static void put_utf(int c)` |
-| `put_ws` | function | `progs/src/freedom.c:338` | `static void put_ws(void)` |
-| `putchar` | function | `progs/src/freedom.c:48` | `int putchar(int c);` |
-| `puts` | function | `progs/src/freedom.c:41` | `int puts(char *s);` |
-| `record_attr` | function | `progs/src/freedom.c:482` | `static void record_attr(void)` |
-| `recv_body` | function | `progs/src/freedom.c:816` | `static int recv_body(int fd, char *buf, int len)` |
-| `recvfrom` | function | `progs/src/freedom.c:34` | `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);` |
-| `resolve_redirect` | function | `progs/src/freedom.c:286` | `static int resolve_redirect(void)` |
-| `send_all` | function | `progs/src/freedom.c:822` | `static int send_all(int fd, char *buf, int len)` |
-| `sendto` | function | `progs/src/freedom.c:33` | `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);` |
-| `split_url` | function | `progs/src/freedom.c:239` | `static int split_url(char *url)` |
-| `strchr` | function | `progs/src/freedom.c:43` | `char *strchr(char *s, int c);` |
-| `strcmp` | function | `progs/src/freedom.c:44` | `int strcmp(char *a, char *b);` |
-| `strlen` | function | `progs/src/freedom.c:42` | `int strlen(char *s);` |
-| `strncmp` | function | `progs/src/freedom.c:45` | `int strncmp(char *a, char *b, int n);` |
-| `tls_handshake` | function | `progs/src/freedom.c:37` | `int tls_handshake(int fd, char *host);` |
-| `tls_recv` | function | `progs/src/freedom.c:39` | `int tls_recv(int fd, char *buf, int len);` |
-| `tls_send` | function | `progs/src/freedom.c:38` | `int tls_send(int fd, char *buf, int len);` |
+| `dom_append` | function | `progs/src/freedom.c:493` | `static void dom_append(char *s, int n)` |
+| `dom_nl` | function | `progs/src/freedom.c:503` | `static void dom_nl(void)` |
+| `dom_space` | function | `progs/src/freedom.c:499` | `static void dom_space(void)` |
+| `fetch` | function | `progs/src/freedom.c:860` | `static int fetch(char *host, char *path, int port)` |
+| `fetch_css` | function | `progs/src/freedom.c:1031` | `static void fetch_css(char *host, char *path)` |
+| `has_scheme` | function | `progs/src/freedom.c:226` | `static int has_scheme(char *s)` |
+| `head_line` | function | `progs/src/freedom.c:796` | `static void head_line(char *line)` |
+| `is_void_tag` | function | `progs/src/freedom.c:534` | `static int is_void_tag(void)` |
+| `looks_like_url` | function | `progs/src/freedom.c:212` | `static int looks_like_url(char *s)` |
+| `main` | function | `progs/src/freedom.c:1128` | `int main(int argc, char **argv)` |
+| `make_search` | function | `progs/src/freedom.c:242` | `static void make_search(char *out, char *query, int cap)` |
+| `memcpy` | function | `progs/src/freedom.c:69` | `int memcpy(char *dst, char *src, int n);` |
+| `memset` | function | `progs/src/freedom.c:70` | `int memset(char *dst, int c, int n);` |
+| `net_dns_resolve` | function | `progs/src/freedom.c:41` | `int net_dns_resolve(const char *host);` |
+| `parse_head` | function | `progs/src/freedom.c:821` | `static void parse_head(void)` |
+| `print_css_dump` | function | `progs/src/freedom.c:1113` | `static void print_css_dump(void)` |
+| `print_dom_dump` | function | `progs/src/freedom.c:1122` | `static void print_dom_dump(void)` |
+| `printf` | function | `progs/src/freedom.c:63` | `int printf(char *fmt, ...);` |
+| `put_entity` | function | `progs/src/freedom.c:757` | `put_entity(f_ent);` |
+| `put_text` | function | `progs/src/freedom.c:427` | `static void put_text(int c)` |
+| `put_utf` | function | `progs/src/freedom.c:377` | `static void put_utf(int c)` |
+| `put_ws` | function | `progs/src/freedom.c:365` | `static void put_ws(void)` |
+| `putchar` | function | `progs/src/freedom.c:71` | `int putchar(int c);` |
+| `puts` | function | `progs/src/freedom.c:64` | `int puts(char *s);` |
+| `record_attr` | function | `progs/src/freedom.c:509` | `static void record_attr(void)` |
+| `recv_body` | function | `progs/src/freedom.c:843` | `static int recv_body(int fd, char *buf, int len)` |
+| `recvfrom` | function | `progs/src/freedom.c:55` | `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);` |
+| `resolve_redirect` | function | `progs/src/freedom.c:313` | `static int resolve_redirect(void)` |
+| `send_all` | function | `progs/src/freedom.c:849` | `static int send_all(int fd, char *buf, int len)` |
+| `sendto` | function | `progs/src/freedom.c:54` | `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);` |
+| `socket` | function | `progs/src/freedom.c:52` | `int socket(int domain, int type, int proto);` |
+| `split_url` | function | `progs/src/freedom.c:266` | `static int split_url(char *url)` |
+| `strchr` | function | `progs/src/freedom.c:66` | `char *strchr(char *s, int c);` |
+| `strcmp` | function | `progs/src/freedom.c:67` | `int strcmp(char *a, char *b);` |
+| `strlen` | function | `progs/src/freedom.c:65` | `int strlen(char *s);` |
+| `strncmp` | function | `progs/src/freedom.c:68` | `int strncmp(char *a, char *b, int n);` |
+| `tls_close` | function | `progs/src/freedom.c:58` | `static int tls_close(int fd)` |
+| `tls_handshake` | function | `progs/src/freedom.c:42` | `int tls_handshake(int fd, char *host);` |
+| `tls_recv` | function | `progs/src/freedom.c:44` | `int tls_recv(int fd, char *buf, int len);` |
+| `tls_send` | function | `progs/src/freedom.c:43` | `int tls_send(int fd, char *buf, int len);` |
 | `exit` | function | `progs/src/ftest.c:6` | `extern void exit(int code);` |
 | `fprintf` | function | `progs/src/ftest.c:3` | `extern int fprintf(void *stream, const char *fmt, ...);` |
 | `main` | function | `progs/src/ftest.c:9` | `int main(int argc, char **argv)` |
@@ -8502,7 +8532,7 @@ Z_Malloc
 | `connect` | function | `progs/src/http.c:6` | `int connect(int fd, void *addr, int addrlen);` |
 | `kernel` | function | `progs/src/http.c:3` | `* Hostnames are resolved by the kernel (net_dns_resolve syscall). */ int socket(int domain, int type, int proto);` |
 | `main` | function | `progs/src/http.c:28` | `int main(int argc, char **argv)` |
-| `net_dns_resolve` | function | `progs/src/http.c:11` | `int net_dns_resolve(char *host);` |
+| `net_dns_resolve` | function | `progs/src/http.c:11` | `int net_dns_resolve(const char *host);` |
 | `printf` | function | `progs/src/http.c:13` | `int printf(char *fmt, ...);` |
 | `putchar` | function | `progs/src/http.c:15` | `int putchar(int c);` |
 | `puts` | function | `progs/src/http.c:12` | `int puts(char *s);` |
@@ -8785,26 +8815,34 @@ Z_Malloc
 | `write` | function | `progs/src/w1.c:1` | `int write(int fd, char *buf, int n);` |
 | `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_main.c:15` | `#define _DEFAULT_SOURCE` |
 | `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_main.c:13` | `#define _POSIX_C_SOURCE` |
-| `close` | function | `progs/tls_u/tls_u_main.c:112` | `close(fd);` |
-| `fprintf` | function | `progs/tls_u/tls_u_main.c:87` | `fprintf(stderr, "usage: tlsget <host-or-ip> [path] [port]\n");` |
-| `freeaddrinfo` | function | `progs/tls_u/tls_u_main.c:66` | `freeaddrinfo(res);` |
-| `main` | function | `progs/tls_u/tls_u_main.c:72` | `int main(int argc, char **argv)` |
-| `memset` | function | `progs/tls_u/tls_u_main.c:60` | `memset(&hints, 0, sizeof(hints));` |
-| `minios_dns` | function | `progs/tls_u/tls_u_main.c:70` | `return minios_dns(host, ip_out);` |
-| `perror` | function | `progs/tls_u/tls_u_main.c:103` | `perror("tlsget: socket");` |
-| `resolve` | function | `progs/tls_u/tls_u_main.c:48` | `static int resolve(const char *host, unsigned *ip_out)` |
+| `close` | function | `progs/tls_u/tls_u_main.c:89` | `close(fd);` |
+| `fprintf` | function | `progs/tls_u/tls_u_main.c:61` | `fprintf(stderr, "usage: tlsget <host-or-ip> [path] [port]\n");` |
+| `main` | function | `progs/tls_u/tls_u_main.c:46` | `int main(int argc, char **argv)` |
+| `memset` | function | `progs/tls_u/tls_u_main.c:83` | `memset(&sa, 0, sizeof(sa));` |
+| `perror` | function | `progs/tls_u/tls_u_main.c:80` | `perror("tlsget: socket");` |
 | `syscall` | function | `progs/tls_u/tls_u_main.c:10` | `* the MiniOS DNS syscall (200, sig 0: error-check only, sends nothing).
  * The kernel keeps servi...` |
-| `volatile` | function | `progs/tls_u/tls_u_main.c:32` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");` |
+| `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_port.c:13` | `#define _DEFAULT_SOURCE` |
 | `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_port.c:11` | `#define _POSIX_C_SOURCE` |
-| `close` | function | `progs/tls_u/tls_u_port.c:52` | `close(fd);` |
+| `answer` | function | `progs/tls_u/tls_u_port.c:163` | `* answer (some resolvers go IPv6-only on the first query). */ memset(&hints, 0, sizeof(hints));` |
+| `close` | function | `progs/tls_u/tls_u_port.c:56` | `close(fd);` |
+| `freeaddrinfo` | function | `progs/tls_u/tls_u_port.c:158` | `freeaddrinfo(res);` |
+| `memset` | function | `progs/tls_u/tls_u_port.c:152` | `memset(&hints, 0, sizeof(hints));` |
+| `net_dns_resolve` | function | `progs/tls_u/tls_u_port.c:183` | `int net_dns_resolve(const char *host)` |
+| `parse_quad` | function | `progs/tls_u/tls_u_port.c:122` | `static int parse_quad(const char *s, unsigned *ip_out)` |
 | `sockets` | function | `progs/tls_u/tls_u_port.c:5` | `* sockets: on the host they are host sockets (used by the
  * openssl-s_server interop test), insi...` |
-| `tls_now_days` | function | `progs/tls_u/tls_u_port.c:54` | `long tls_now_days(void)` |
-| `tls_random` | function | `progs/tls_u/tls_u_port.c:60` | `void tls_random(unsigned char *out, unsigned len)` |
-| `tls_u_close` | function | `progs/tls_u/tls_u_port.c:50` | `void tls_u_close(int fd)` |
-| `tls_u_recv` | function | `progs/tls_u/tls_u_port.c:34` | `int tls_u_recv(int fd, char *buf, int len)` |
-| `tls_u_recv_timeout` | function | `progs/tls_u/tls_u_port.c:39` | `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms)` |
+| `tls_close` | function | `progs/tls_u/tls_u_port.c:67` | `void tls_close(int fd)` |
+| `tls_free_fd` | function | `progs/tls_u/tls_u_port.c:66` | `void tls_free_fd(int fd);` |
+| `tls_now_days` | function | `progs/tls_u/tls_u_port.c:71` | `long tls_now_days(void)` |
+| `tls_random` | function | `progs/tls_u/tls_u_port.c:77` | `void tls_random(unsigned char *out, unsigned len)` |
+| `tls_u_close` | function | `progs/tls_u/tls_u_port.c:54` | `void tls_u_close(int fd)` |
+| `tls_u_recv` | function | `progs/tls_u/tls_u_port.c:38` | `int tls_u_recv(int fd, char *buf, int len)` |
+| `tls_u_recv_timeout` | function | `progs/tls_u/tls_u_port.c:43` | `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms)` |
+| `tls_u_resolve` | function | `progs/tls_u/tls_u_port.c:146` | `int tls_u_resolve(const char *host, unsigned *ip_out)` |
+| `u_minios_dns` | function | `progs/tls_u/tls_u_port.c:178` | `return u_minios_dns(host, ip_out);` |
+| `u_raw_syscall3` | function | `progs/tls_u/tls_u_port.c:98` | `static long u_raw_syscall3(long n, long a1, long a2, long a3)` |
+| `volatile` | function | `progs/tls_u/tls_u_port.c:101` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");` |
 | `D_HEAD` | macro | `progs/topogpt3/topogpt3.c:70` | `#define D_HEAD` |
 | `D_LAT_Q` | macro | `progs/topogpt3/topogpt3.c:82` | `#define D_LAT_Q` |
 | `D_MODEL` | macro | `progs/topogpt3/topogpt3.c:66` | `#define D_MODEL` |
@@ -9149,7 +9187,11 @@ Z_Malloc
 | `retirement` | function | `rcu.h:30` | `* retirement (the writer keeps ownership) instead of dropping the free. * Callbacks run in tick context with interrupts ` |
 | `void` | function | `rcu.h:48` | `typedef void (*rcu_cb_t)(void *arg);` |
 | `RTC_H` | macro | `rtc.h:2` | `#define RTC_H` |
+| `rtc_days_from_civil` | function | `rtc.h:18` | `static inline long rtc_days_from_civil(long y, long m, long d)` |
+| `rtc_read_date` | function | `rtc.h:11` | `int rtc_read_date(int *year, int *mon, int *day);` |
 | `rtc_read_tod` | function | `rtc.h:3` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
+| `rtc_wall_seconds` | function | `rtc.h:33` | `int rtc_wall_seconds(unsigned long *out);` |
+| `suite` | function | `rtc.h:15` | `* host suite (tests/test_rtc.c);` |
 | `SANITIZE_COPY_IN` | macro | `sanitize.h:48` | `#define SANITIZE_COPY_IN(kbuf, uptr, count, elemsz)` |
 | `SANITIZE_H` | macro | `sanitize.h:2` | `#define SANITIZE_H` |
 | `SANITIZE_LEN_NEG` | macro | `sanitize.h:31` | `#define SANITIZE_LEN_NEG(var)` |
@@ -9183,77 +9225,81 @@ Z_Malloc
 | `sb16_stream_volume` | function | `sb16.h:82` | `void sb16_stream_volume(int id, unsigned char vol);` |
 | `sb16_tone` | function | `sb16.h:67` | `void sb16_tone(unsigned freq);` |
 | `BOOT_CPU` | macro | `sched.h:24` | `#define BOOT_CPU` |
-| `CLONE_FILES` | macro | `sched.h:87` | `#define CLONE_FILES` |
-| `CLONE_VM` | macro | `sched.h:86` | `#define CLONE_VM` |
-| `DESKTOP_TICK_INTERVAL` | macro | `sched.h:158` | `#define DESKTOP_TICK_INTERVAL` |
+| `CLONE_FILES` | macro | `sched.h:97` | `#define CLONE_FILES` |
+| `CLONE_VM` | macro | `sched.h:96` | `#define CLONE_VM` |
+| `DESKTOP_TICK_INTERVAL` | macro | `sched.h:168` | `#define DESKTOP_TICK_INTERVAL` |
 | `MAX_CPUS` | macro | `sched.h:23` | `#define MAX_CPUS` |
 | `MAX_PROCS` | macro | `sched.h:19` | `#define MAX_PROCS` |
 | `PROC_BLOCKED` | macro | `sched.h:11` | `#define PROC_BLOCKED` |
 | `PROC_FREE` | macro | `sched.h:8` | `#define PROC_FREE` |
+| `PROC_KSTACK_OFF` | macro | `sched.h:70` | `#define PROC_KSTACK_OFF` |
 | `PROC_KSTACK_SZ` | macro | `sched.h:20` | `#define PROC_KSTACK_SZ` |
 | `PROC_READY` | macro | `sched.h:9` | `#define PROC_READY` |
 | `PROC_RUNNING` | macro | `sched.h:10` | `#define PROC_RUNNING` |
 | `PROC_SWITCHING` | macro | `sched.h:16` | `#define PROC_SWITCHING` |
+| `PROC_T_SIZE` | macro | `sched.h:69` | `#define PROC_T_SIZE` |
 | `PROC_ZOMBIE` | macro | `sched.h:12` | `#define PROC_ZOMBIE` |
-| `RLIM_AS` | macro | `sched.h:80` | `#define RLIM_AS` |
-| `RLIM_CPU` | macro | `sched.h:81` | `#define RLIM_CPU` |
-| `RLIM_EXIT_CPU` | macro | `sched.h:83` | `#define RLIM_EXIT_CPU` |
-| `RLIM_NOFILE` | macro | `sched.h:82` | `#define RLIM_NOFILE` |
-| `RLIM_OP_GET` | macro | `sched.h:79` | `#define RLIM_OP_GET` |
-| `RLIM_OP_SET` | macro | `sched.h:78` | `#define RLIM_OP_SET` |
+| `RLIM_AS` | macro | `sched.h:90` | `#define RLIM_AS` |
+| `RLIM_CPU` | macro | `sched.h:91` | `#define RLIM_CPU` |
+| `RLIM_EXIT_CPU` | macro | `sched.h:93` | `#define RLIM_EXIT_CPU` |
+| `RLIM_NOFILE` | macro | `sched.h:92` | `#define RLIM_NOFILE` |
+| `RLIM_OP_GET` | macro | `sched.h:89` | `#define RLIM_OP_GET` |
+| `RLIM_OP_SET` | macro | `sched.h:88` | `#define RLIM_OP_SET` |
 | `SCHED_H` | macro | `sched.h:2` | `#define SCHED_H` |
-| `SECCOMP_BIT` | macro | `sched.h:66` | `#define SECCOMP_BIT(n)` |
-| `SECCOMP_MAX` | macro | `sched.h:65` | `#define SECCOMP_MAX` |
-| `SECCOMP_MIN` | macro | `sched.h:64` | `#define SECCOMP_MIN` |
-| `SECCOMP_OP_ALLOW_ONE` | macro | `sched.h:70` | `#define SECCOMP_OP_ALLOW_ONE` |
-| `SECCOMP_OP_DENY_ALL` | macro | `sched.h:71` | `#define SECCOMP_OP_DENY_ALL` |
-| `SECCOMP_OP_DENY_ONE` | macro | `sched.h:69` | `#define SECCOMP_OP_DENY_ONE` |
-| `TSS_SEL` | macro | `sched.h:208` | `#define TSS_SEL(cpu)` |
-| `__attribute__` | function | `sched.h:211` | `typedef struct __attribute__((packed))` |
-| `ap_idle_proc` | variable | `sched.h:198` | `extern proc_t ap_idle_proc[MAX_CPUS];` |
-| `bsp_idtr` | variable | `sched.h:212` | `extern idtr_t bsp_idtr;` |
-| `cpu` | struct | `sched.h:110` | `` |
-| `cpu_count` | variable | `sched.h:137` | `extern int cpu_count;` |
-| `cpus` | variable | `sched.h:135` | `extern cpu_t cpus[MAX_CPUS];` |
+| `SECCOMP_BIT` | macro | `sched.h:76` | `#define SECCOMP_BIT(n)` |
+| `SECCOMP_MAX` | macro | `sched.h:75` | `#define SECCOMP_MAX` |
+| `SECCOMP_MIN` | macro | `sched.h:74` | `#define SECCOMP_MIN` |
+| `SECCOMP_OP_ALLOW_ONE` | macro | `sched.h:80` | `#define SECCOMP_OP_ALLOW_ONE` |
+| `SECCOMP_OP_DENY_ALL` | macro | `sched.h:81` | `#define SECCOMP_OP_DENY_ALL` |
+| `SECCOMP_OP_DENY_ONE` | macro | `sched.h:79` | `#define SECCOMP_OP_DENY_ONE` |
+| `STR` | function | `sched.h:64` | `* Both immediates derive from these macros via STR();` |
+| `TSS_SEL` | macro | `sched.h:218` | `#define TSS_SEL(cpu)` |
+| `__attribute__` | function | `sched.h:221` | `typedef struct __attribute__((packed))` |
+| `ap_idle_proc` | variable | `sched.h:208` | `extern proc_t ap_idle_proc[MAX_CPUS];` |
+| `bsp_idtr` | variable | `sched.h:222` | `extern idtr_t bsp_idtr;` |
+| `cpu` | struct | `sched.h:120` | `` |
+| `cpu_count` | variable | `sched.h:147` | `extern int cpu_count;` |
+| `cpus` | variable | `sched.h:145` | `extern cpu_t cpus[MAX_CPUS];` |
 | `ctx_regs_t` | struct | `sched.h:27` | `` |
-| `current_pid` | macro | `sched.h:154` | `#define current_pid` |
-| `do_clone` | function | `sched.h:233` | `long do_clone(long flags, long newsp);` |
-| `do_exit` | function | `sched.h:232` | `void do_exit(int code);` |
-| `do_kill` | function | `sched.h:237` | `int do_kill(int pid);` |
-| `do_thread_spawn` | function | `sched.h:234` | `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);` |
-| `do_waitpid` | function | `sched.h:236` | `int do_waitpid(int pid);` |
-| `limit` | type_alias | `sched.h:211` | `typedef struct __attribute__((packed)) { uint16_t limit;` |
-| `proc_count` | variable | `sched.h:176` | `extern int proc_count;` |
-| `proc_create` | function | `sched.h:218` | `int proc_create(const char *name, int parent_pid);` |
-| `proc_get` | function | `sched.h:219` | `proc_t *proc_get(int pid);` |
+| `current_pid` | macro | `sched.h:164` | `#define current_pid` |
+| `do_clone` | function | `sched.h:244` | `long do_clone(long flags, long newsp);` |
+| `do_exit` | function | `sched.h:243` | `void do_exit(int code);` |
+| `do_kill` | function | `sched.h:248` | `int do_kill(int pid);` |
+| `do_thread_spawn` | function | `sched.h:245` | `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);` |
+| `do_waitpid` | function | `sched.h:247` | `int do_waitpid(int pid);` |
+| `kstack_report` | function | `sched.h:226` | `void kstack_report(void);` |
+| `limit` | type_alias | `sched.h:221` | `typedef struct __attribute__((packed)) { uint16_t limit;` |
+| `proc_count` | variable | `sched.h:186` | `extern int proc_count;` |
+| `proc_create` | function | `sched.h:229` | `int proc_create(const char *name, int parent_pid);` |
+| `proc_get` | function | `sched.h:230` | `proc_t *proc_get(int pid);` |
 | `proc_t` | struct | `sched.h:37` | `` |
-| `procs` | variable | `sched.h:175` | `extern proc_t procs[MAX_PROCS];` |
-| `pt_clone_user` | function | `sched.h:241` | `uint64_t pt_clone_user(uint64_t parent_cr3);` |
-| `pt_free_user` | function | `sched.h:242` | `void pt_free_user(uint64_t cr3);` |
-| `resume_iretq` | function | `sched.h:230` | `void resume_iretq(void);` |
-| `rlimit_cpu_exceeded` | function | `sched.h:225` | `int rlimit_cpu_exceeded(int pid);` |
-| `rlimit_cpu_tick` | function | `sched.h:226` | `void rlimit_cpu_tick(int pid);` |
-| `sched_init` | function | `sched.h:215` | `void sched_init(void);` |
-| `sched_lock` | variable | `sched.h:179` | `extern spinlock_t sched_lock;` |
-| `sched_ready` | variable | `sched.h:180` | `extern volatile int sched_ready;` |
-| `sched_set_nice` | function | `sched.h:221` | `int sched_set_nice(int pid, int nice);` |
-| `schedule` | function | `sched.h:220` | `void schedule(void);` |
-| `seccomp_allow_one` | function | `sched.h:223` | `int seccomp_allow_one(int pid, int n);` |
-| `seccomp_denied` | function | `sched.h:224` | `int seccomp_denied(int pid, int n);` |
-| `seccomp_deny_one` | function | `sched.h:222` | `int seccomp_deny_one(int pid, int n);` |
-| `smp_ap_idle_loop` | function | `sched.h:217` | `void smp_ap_idle_loop(void);` |
-| `smp_dbg_bad_gs` | variable | `sched.h:203` | `extern volatile unsigned smp_dbg_bad_gs;` |
-| `smp_dispatches` | variable | `sched.h:199` | `extern volatile unsigned long smp_dispatches[MAX_CPUS];` |
-| `smp_idle_polls` | variable | `sched.h:200` | `extern volatile unsigned long smp_idle_polls[MAX_CPUS];` |
-| `switch_save_only` | function | `sched.h:229` | `void switch_save_only(proc_t *prev);` |
-| `switch_to` | function | `sched.h:227` | `void switch_to(proc_t *prev, proc_t *next);` |
-| `switch_to_notrap` | function | `sched.h:228` | `void switch_to_notrap(proc_t *prev, proc_t *next);` |
-| `sys_ticks` | variable | `sched.h:177` | `extern volatile uint64_t sys_ticks;` |
-| `timer_tick` | function | `sched.h:238` | `void timer_tick(void);` |
-| `tss_init_ap` | function | `sched.h:216` | `void tss_init_ap(int cpu);` |
-| `user_program_active` | variable | `sched.h:178` | `extern volatile int user_program_active;` |
-| `volatile` | function | `sched.h:145` | `__asm__ volatile("mov %%gs:0, %0" : "=r"(val));` |
-| `yield` | function | `sched.h:231` | `void yield(void);` |
+| `procs` | variable | `sched.h:185` | `extern proc_t procs[MAX_PROCS];` |
+| `pt_clone_user` | function | `sched.h:252` | `uint64_t pt_clone_user(uint64_t parent_cr3);` |
+| `pt_free_user` | function | `sched.h:253` | `void pt_free_user(uint64_t cr3);` |
+| `resume_iretq` | function | `sched.h:241` | `void resume_iretq(void);` |
+| `rlimit_cpu_exceeded` | function | `sched.h:236` | `int rlimit_cpu_exceeded(int pid);` |
+| `rlimit_cpu_tick` | function | `sched.h:237` | `void rlimit_cpu_tick(int pid);` |
+| `sched_init` | function | `sched.h:225` | `void sched_init(void);` |
+| `sched_lock` | variable | `sched.h:189` | `extern spinlock_t sched_lock;` |
+| `sched_ready` | variable | `sched.h:190` | `extern volatile int sched_ready;` |
+| `sched_set_nice` | function | `sched.h:232` | `int sched_set_nice(int pid, int nice);` |
+| `schedule` | function | `sched.h:231` | `void schedule(void);` |
+| `seccomp_allow_one` | function | `sched.h:234` | `int seccomp_allow_one(int pid, int n);` |
+| `seccomp_denied` | function | `sched.h:235` | `int seccomp_denied(int pid, int n);` |
+| `seccomp_deny_one` | function | `sched.h:233` | `int seccomp_deny_one(int pid, int n);` |
+| `smp_ap_idle_loop` | function | `sched.h:228` | `void smp_ap_idle_loop(void);` |
+| `smp_dbg_bad_gs` | variable | `sched.h:213` | `extern volatile unsigned smp_dbg_bad_gs;` |
+| `smp_dispatches` | variable | `sched.h:209` | `extern volatile unsigned long smp_dispatches[MAX_CPUS];` |
+| `smp_idle_polls` | variable | `sched.h:210` | `extern volatile unsigned long smp_idle_polls[MAX_CPUS];` |
+| `switch_save_only` | function | `sched.h:240` | `void switch_save_only(proc_t *prev);` |
+| `switch_to` | function | `sched.h:238` | `void switch_to(proc_t *prev, proc_t *next);` |
+| `switch_to_notrap` | function | `sched.h:239` | `void switch_to_notrap(proc_t *prev, proc_t *next);` |
+| `sys_ticks` | variable | `sched.h:187` | `extern volatile uint64_t sys_ticks;` |
+| `timer_tick` | function | `sched.h:249` | `void timer_tick(void);` |
+| `tss_init_ap` | function | `sched.h:227` | `void tss_init_ap(int cpu);` |
+| `user_program_active` | variable | `sched.h:188` | `extern volatile int user_program_active;` |
+| `volatile` | function | `sched.h:155` | `__asm__ volatile("mov %%gs:0, %0" : "=r"(val));` |
+| `yield` | function | `sched.h:242` | `void yield(void);` |
 | `CMD_BUF_SZ` | macro | `shell.h:11` | `#define CMD_BUF_SZ` |
 | `MAX_ARGS` | macro | `shell.h:13` | `#define MAX_ARGS` |
 | `SHELL_H` | macro | `shell.h:2` | `#define SHELL_H` |
@@ -9262,8 +9308,8 @@ Z_Malloc
 | `shell_cmd_sh` | function | `shell.h:31` | `int shell_cmd_sh(int argc, char **argv);` |
 | `shell_parse` | function | `shell.h:20` | `int shell_parse(char *line, char **argv, int max_args);` |
 | `shell_readline_buf` | function | `shell.h:17` | `void shell_readline_buf(char *buf, int size);` |
-| `BSP` | function | `smp.c:236` | `* were programmed only on the BSP (syscall_init runs in kmain), so * an AP's first sysretq loaded SS from a zeroed STAR ` |
-| `INIT` | function | `smp.c:321` | `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status never ` |
+| `BSP` | function | `smp.c:238` | `* were programmed only on the BSP (syscall_init runs in kmain), so * an AP's first sysretq loaded SS from a zeroed STAR ` |
+| `INIT` | function | `smp.c:323` | `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status never ` |
 | `LAPIC_BASE` | macro | `smp.c:27` | `#define LAPIC_BASE` |
 | `LAPIC_EOI_OFF` | macro | `smp.c:38` | `#define LAPIC_EOI_OFF` |
 | `LAPIC_ICR_ALL_EXC` | macro | `smp.c:47` | `#define LAPIC_ICR_ALL_EXC` |
@@ -9295,21 +9341,21 @@ Z_Malloc
 | `ap_delay` | function | `smp.c:120` | `static void ap_delay(void)` |
 | `ap_lapic_timer_init` | function | `smp.c:190` | `static void ap_lapic_timer_init(void)` |
 | `ap_lapic_timer_start` | function | `smp.c:184` | `static void ap_lapic_timer_start(void)` |
-| `kmemcpy` | function | `smp.c:316` | `kmemcpy((void *)(unsigned long)AP_STUB_ADDR, ap_stub_blob, ap_stub_len);` |
-| `kprintf` | function | `smp.c:346` | `else kprintf("SMP: 1 CPU (APs not woken)\n");` |
+| `kmemcpy` | function | `smp.c:318` | `kmemcpy((void *)(unsigned long)AP_STUB_ADDR, ap_stub_blob, ap_stub_len);` |
+| `kprintf` | function | `smp.c:348` | `else kprintf("SMP: 1 CPU (APs not woken)\n");` |
 | `lapic_calibrate` | function | `smp.c:149` | `static void lapic_calibrate(void)` |
 | `lapic_read` | function | `smp.c:83` | `static unsigned lapic_read(unsigned off)` |
 | `lapic_write` | function | `smp.c:87` | `static void lapic_write(unsigned off, unsigned val)` |
 | `map_lapic` | function | `smp.c:108` | `static int map_lapic(void)` |
-| `smp_ap_idle_loop` | function | `smp.c:297` | `smp_ap_idle_loop();` |
-| `smp_init` | function | `smp.c:302` | `void smp_init(void)` |
-| `smp_ipi_broadcast` | function | `smp.c:353` | `smp_ipi_broadcast(32);` |
-| `spin_lock_irqsave` | function | `smp.c:278` | `spin_lock_irqsave(&smp_lock, &flags);` |
-| `spin_unlock_irqrestore` | function | `smp.c:280` | `spin_unlock_irqrestore(&smp_lock, flags);` |
+| `smp_ap_idle_loop` | function | `smp.c:299` | `smp_ap_idle_loop();` |
+| `smp_init` | function | `smp.c:304` | `void smp_init(void)` |
+| `smp_ipi_broadcast` | function | `smp.c:355` | `smp_ipi_broadcast(32);` |
+| `spin_lock_irqsave` | function | `smp.c:280` | `spin_lock_irqsave(&smp_lock, &flags);` |
+| `spin_unlock_irqrestore` | function | `smp.c:282` | `spin_unlock_irqrestore(&smp_lock, flags);` |
 | `syscall_entry` | function | `smp.c:82` | `extern void syscall_entry(void);` |
-| `tss_init_ap` | function | `smp.c:256` | `tss_init_ap(cpu);` |
+| `tss_init_ap` | function | `smp.c:258` | `tss_init_ap(cpu);` |
 | `volatile` | function | `smp.c:117` | `__asm__ volatile("invlpg (%0)" : : "r"(LAPIC_BASE) : "memory");` |
-| `wrmsr` | function | `smp.c:227` | `wrmsr(MSR_GSBASE, (unsigned long)&cpus[cpu]);` |
+| `wrmsr` | function | `smp.c:229` | `wrmsr(MSR_GSBASE, (unsigned long)&cpus[cpu]);` |
 | `SMP_H` | macro | `smp.h:2` | `#define SMP_H` |
 | `lapic_cal_10ms` | variable | `smp.h:38` | `extern unsigned lapic_cal_10ms;` |
 | `lapic_cal_valid` | variable | `smp.h:39` | `extern int lapic_cal_valid;` |
@@ -9379,16 +9425,17 @@ Z_Malloc
 | `wake_up` | function | `sync.h:52` | `int wake_up(wait_queue_t *q);` |
 | `wake_up_all` | function | `sync.h:53` | `int wake_up_all(wait_queue_t *q);` |
 | `wq_init` | function | `sync.h:49` | `void wq_init(wait_queue_t *q);` |
-| `cleanup_stale_qemu` | function | `test_bdd.sh:31` | `` |
-| `expect` | function | `test_bdd.sh:79` | `` |
-| `expect_count` | function | `test_bdd.sh:100` | `` |
-| `http_fixture_start` | function | `test_bdd.sh:703` | `` |
-| `http_fixture_stop` | function | `test_bdd.sh:710` | `` |
-| `http_server_start` | function | `test_bdd.sh:691` | `` |
-| `http_server_stop` | function | `test_bdd.sh:698` | `` |
-| `refute` | function | `test_bdd.sh:122` | `` |
-| `scenario` | function | `test_bdd.sh:42` | `` |
-| `scenario_smp` | function | `test_bdd.sh:60` | `` |
+| `cleanup_stale_qemu` | function | `test_bdd.sh:43` | `` |
+| `expect` | function | `test_bdd.sh:95` | `` |
+| `expect_count` | function | `test_bdd.sh:117` | `` |
+| `http_fixture_start` | function | `test_bdd.sh:734` | `` |
+| `http_fixture_stop` | function | `test_bdd.sh:741` | `` |
+| `http_server_start` | function | `test_bdd.sh:722` | `` |
+| `http_server_stop` | function | `test_bdd.sh:729` | `` |
+| `refute` | function | `test_bdd.sh:140` | `` |
+| `scenario` | function | `test_bdd.sh:54` | `` |
+| `scenario_smp` | function | `test_bdd.sh:74` | `` |
+| `should_run` | function | `test_bdd.sh:35` | `` |
 | `Handler` | class | `test_http_server.py:21` | `class Handler(BaseHTTPRequestHandler)` |
 | `do_GET` | method | `test_http_server.py:24` | `def do_GET(self)` |
 | `log_message` | method | `test_http_server.py:114` | `def log_message(self, fmt)` |
@@ -9414,10 +9461,22 @@ Z_Malloc
 | `snprintf` | function | `tests/test_driver.c:66` | `snprintf(d.name, sizeof(d.name), "dev%d", i);` |
 | `strcpy` | function | `tests/test_driver.c:28` | `strcpy(a.name, "ide0");` |
 | `test_read` | function | `tests/test_driver.c:15` | `static int test_read(device_t *d, unsigned lba, unsigned count, void *buf)` |
-| `CHECK` | macro | `tests/test_fault.c:13` | `#define CHECK(c, m)` |
-| `CHECK` | function | `tests/test_fault.c:23` | `CHECK(i == VMA_MAX, "pool holds VMA_MAX nodes");` |
-| `main` | function | `tests/test_fault.c:14` | `int main(void)` |
-| `vma_tree_init` | function | `tests/test_fault.c:17` | `vma_tree_init();` |
+| `CHECK` | macro | `tests/test_fault.c:26` | `#define CHECK(c, m)` |
+| `CHECK` | function | `tests/test_fault.c:100` | `CHECK(i == VMA_MAX, "pool holds VMA_MAX nodes");` |
+| `TRUSTED_DIR` | macro | `tests/test_fault.c:79` | `#define TRUSTED_DIR` |
+| `TRUSTED_LEN` | macro | `tests/test_fault.c:80` | `#define TRUSTED_LEN` |
+| `U_BASE` | macro | `tests/test_fault.c:29` | `#define U_BASE` |
+| `U_END` | macro | `tests/test_fault.c:30` | `#define U_END` |
+| `against` | function | `tests/test_fault.c:10` | `* after bounding against (END-BASE)/elemsz, so the product cannot * wrap past the range check);` |
+| `main` | function | `tests/test_fault.c:91` | `int main(void)` |
+| `memcpy` | function | `tests/test_fault.c:72` | `memcpy(out + len, start, clen);` |
+| `memset` | function | `tests/test_fault.c:122` | `memset(umem, 'A', sizeof(umem));` |
+| `normalize` | function | `tests/test_fault.c:50` | `static void normalize(const char *path, char *out, unsigned cap)` |
+| `path_trusted` | function | `tests/test_fault.c:81` | `static int path_trusted(const char *full)` |
+| `range_ok` | function | `tests/test_fault.c:33` | `static int range_ok(unsigned long p, unsigned long len)` |
+| `str_ok` | function | `tests/test_fault.c:39` | `static int str_ok(const unsigned char *mem, unsigned long p,
+                  unsigned long maxlen)` |
+| `vma_tree_init` | function | `tests/test_fault.c:94` | `vma_tree_init();` |
 | `CHECK` | macro | `tests/test_futex.c:31` | `#define CHECK(cond, msg)` |
 | `CHECK` | function | `tests/test_futex.c:68` | `CHECK(futex_wait((unsigned long)&word_a, 6) == FUTEX_NOMATCH, "mismatch returns NOMATCH");` |
 | `fprintf` | function | `tests/test_futex.c:35` | `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);` |
@@ -9426,7 +9485,7 @@ Z_Malloc
 | `futex_init` | function | `tests/test_futex.c:57` | `futex_init();` |
 | `futex_wait` | function | `tests/test_futex.c:95` | `futex_wait((unsigned long)&word_a, 1);` |
 | `main` | function | `tests/test_futex.c:59` | `int main(void)` |
-| `printf` | function | `tests/test_futex.c:141` | `else printf("futex: %d failures\n", failures);` |
+| `printf` | function | `tests/test_futex.c:156` | `else printf("futex: %d failures\n", failures);` |
 | `proc_get` | function | `tests/test_futex.c:17` | `proc_t *proc_get(int pid)` |
 | `schedule` | function | `tests/test_futex.c:25` | `void schedule(void)` |
 | `CHECK` | macro | `tests/test_hal_io.c:22` | `#define CHECK(cond, msg)` |
@@ -9461,6 +9520,9 @@ Z_Malloc
 | `rcu_read_lock` | function | `tests/test_rcu.c:84` | `rcu_read_lock();` |
 | `rcu_read_unlock` | function | `tests/test_rcu.c:88` | `rcu_read_unlock();` |
 | `test_cb` | function | `tests/test_rcu.c:22` | `static void test_cb(void *arg)` |
+| `CHECK` | macro | `tests/test_rtc.c:16` | `#define CHECK(c, m)` |
+| `CHECK` | function | `tests/test_rtc.c:19` | `CHECK(rtc_days_from_civil(1970, 1, 1) == 0, "epoch is day zero");` |
+| `main` | function | `tests/test_rtc.c:17` | `int main(void)` |
 | `CHECK` | macro | `tests/test_sanitize.c:40` | `#define CHECK(cond, msg)` |
 | `CHECK` | function | `tests/test_sanitize.c:70` | `CHECK(range_probe(0x400000UL, 8) == 0, "valid range passes");` |
 | `EFAULT` | macro | `tests/test_sanitize.c:12` | `#define EFAULT` |
@@ -9607,7 +9669,7 @@ Z_Malloc
 | `sha256_init` | function | `tls.h:167` | `void sha256_init(struct sha256_ctx *c);` |
 | `sha256_update` | function | `tls.h:169` | `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len);` |
 | `sha384` | function | `tls.h:172` | `void sha384(const unsigned char *data, unsigned len, unsigned char out[48]);` |
-| `tls_free_fd` | function | `tls.h:287` | `void tls_free_fd(int fd);` |
+| `tls_free_fd` | function | `tls.h:293` | `static inline void tls_free_fd(int fd)` |
 | `tls_handshake` | function | `tls.h:277` | `int tls_handshake(int fd, const char *host);` |
 | `tls_prf` | function | `tls.h:179` | `void tls_prf(const unsigned char *secret, unsigned secret_len, const char *label, const unsigned char *seed, unsigned se` |
 | `tls_pubkey` | struct | `tls.h:85` | `` |
@@ -9616,50 +9678,51 @@ Z_Malloc
 | `tls_roots` | variable | `tls.h:74` | `extern const struct tls_root tls_roots[TLS_ROOT_COUNT];` |
 | `tls_send` | function | `tls.h:280` | `int tls_send(int fd, const char *buf, int len);` |
 | `tls_session` | struct | `tls.h:95` | `` |
-| `tls_sys_handshake` | function | `tls.h:290` | `long tls_sys_handshake(long fd, long host);` |
-| `tls_sys_recv` | function | `tls.h:292` | `long tls_sys_recv(long fd, long buf, long len);` |
-| `tls_sys_send` | function | `tls.h:291` | `long tls_sys_send(long fd, long buf, long len);` |
+| `tls_sys_handshake` | function | `tls.h:297` | `long tls_sys_handshake(long fd, long host);` |
+| `tls_sys_recv` | function | `tls.h:299` | `long tls_sys_recv(long fd, long buf, long len);` |
+| `tls_sys_send` | function | `tls.h:298` | `long tls_sys_send(long fd, long buf, long len);` |
 | `tls_x509_parse_pubkey` | function | `tls.h:261` | `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len, struct tls_pubkey *pk);` |
 | `TLS_CLOSE` | macro | `tls_port.h:38` | `#define TLS_CLOSE` |
 | `TLS_CLOSE` | macro | `tls_port.h:89` | `#define TLS_CLOSE` |
-| `TLS_CLOSE` | macro | `tls_port.h:110` | `#define TLS_CLOSE` |
+| `TLS_CLOSE` | macro | `tls_port.h:114` | `#define TLS_CLOSE` |
 | `TLS_FD_MAX` | macro | `tls_port.h:17` | `#define TLS_FD_MAX` |
 | `TLS_FD_MAX` | macro | `tls_port.h:70` | `#define TLS_FD_MAX` |
-| `TLS_FD_MAX` | macro | `tls_port.h:111` | `#define TLS_FD_MAX` |
+| `TLS_FD_MAX` | macro | `tls_port.h:115` | `#define TLS_FD_MAX` |
 | `TLS_FREE` | macro | `tls_port.h:22` | `#define TLS_FREE(p)` |
 | `TLS_FREE` | macro | `tls_port.h:75` | `#define TLS_FREE(p)` |
-| `TLS_FREE` | macro | `tls_port.h:101` | `#define TLS_FREE(p)` |
+| `TLS_FREE` | macro | `tls_port.h:105` | `#define TLS_FREE(p)` |
 | `TLS_MALLOC` | macro | `tls_port.h:21` | `#define TLS_MALLOC(n)` |
 | `TLS_MALLOC` | macro | `tls_port.h:74` | `#define TLS_MALLOC(n)` |
-| `TLS_MALLOC` | macro | `tls_port.h:100` | `#define TLS_MALLOC(n)` |
+| `TLS_MALLOC` | macro | `tls_port.h:104` | `#define TLS_MALLOC(n)` |
 | `TLS_MEMCMP` | macro | `tls_port.h:25` | `#define TLS_MEMCMP` |
 | `TLS_MEMCMP` | macro | `tls_port.h:78` | `#define TLS_MEMCMP` |
-| `TLS_MEMCMP` | macro | `tls_port.h:104` | `#define TLS_MEMCMP` |
+| `TLS_MEMCMP` | macro | `tls_port.h:108` | `#define TLS_MEMCMP` |
 | `TLS_MEMCPY` | macro | `tls_port.h:23` | `#define TLS_MEMCPY` |
 | `TLS_MEMCPY` | macro | `tls_port.h:76` | `#define TLS_MEMCPY` |
-| `TLS_MEMCPY` | macro | `tls_port.h:102` | `#define TLS_MEMCPY` |
+| `TLS_MEMCPY` | macro | `tls_port.h:106` | `#define TLS_MEMCPY` |
 | `TLS_MEMSET` | macro | `tls_port.h:24` | `#define TLS_MEMSET` |
 | `TLS_MEMSET` | macro | `tls_port.h:77` | `#define TLS_MEMSET` |
-| `TLS_MEMSET` | macro | `tls_port.h:103` | `#define TLS_MEMSET` |
+| `TLS_MEMSET` | macro | `tls_port.h:107` | `#define TLS_MEMSET` |
 | `TLS_PORT_H` | macro | `tls_port.h:2` | `#define TLS_PORT_H` |
 | `TLS_PRINTF` | macro | `tls_port.h:19` | `#define TLS_PRINTF` |
 | `TLS_PRINTF` | macro | `tls_port.h:72` | `#define TLS_PRINTF` |
-| `TLS_PRINTF` | macro | `tls_port.h:98` | `#define TLS_PRINTF` |
+| `TLS_PRINTF` | macro | `tls_port.h:102` | `#define TLS_PRINTF` |
 | `TLS_RECV` | macro | `tls_port.h:36` | `#define TLS_RECV` |
 | `TLS_RECV` | macro | `tls_port.h:87` | `#define TLS_RECV` |
-| `TLS_RECV` | macro | `tls_port.h:108` | `#define TLS_RECV` |
+| `TLS_RECV` | macro | `tls_port.h:112` | `#define TLS_RECV` |
 | `TLS_RECV_TIMEOUT` | macro | `tls_port.h:37` | `#define TLS_RECV_TIMEOUT` |
 | `TLS_RECV_TIMEOUT` | macro | `tls_port.h:88` | `#define TLS_RECV_TIMEOUT` |
-| `TLS_RECV_TIMEOUT` | macro | `tls_port.h:109` | `#define TLS_RECV_TIMEOUT` |
+| `TLS_RECV_TIMEOUT` | macro | `tls_port.h:113` | `#define TLS_RECV_TIMEOUT` |
 | `TLS_SEND` | macro | `tls_port.h:34` | `#define TLS_SEND` |
 | `TLS_SEND` | macro | `tls_port.h:85` | `#define TLS_SEND` |
-| `TLS_SEND` | macro | `tls_port.h:106` | `#define TLS_SEND` |
+| `TLS_SEND` | macro | `tls_port.h:110` | `#define TLS_SEND` |
 | `TLS_STRLEN` | macro | `tls_port.h:26` | `#define TLS_STRLEN` |
 | `TLS_STRLEN` | macro | `tls_port.h:79` | `#define TLS_STRLEN` |
-| `TLS_STRLEN` | macro | `tls_port.h:105` | `#define TLS_STRLEN` |
+| `TLS_STRLEN` | macro | `tls_port.h:109` | `#define TLS_STRLEN` |
 | `close` | function | `tls_port.h:53` | `close(fd);` |
 | `gettimeofday` | function | `tls_port.h:64` | `* gettimeofday(96) and entropy from /dev/urandom with a time/pid * fallback. Session slots are indexed by raw OS fd, so ` |
 | `sockets` | function | `tls_port.h:62` | `* sockets (glibc maps socket/connect/send/recv/poll onto the MiniOS * Linux ABI numbers the kernel implements);` |
+| `syscall` | function | `tls_port.h:95` | `* the MiniOS DNS syscall (200, invoked sig-0-safe). 0 on success. */ int tls_u_resolve(const char *host, unsigned *ip_ou` |
 | `these` | function | `tls_port.h:29` | `* of these (tls_test.c). */ extern int tls_test_send(int fd, const char *buf, int len);` |
 | `tls_now_days` | function | `tls_port.h:39` | `static inline long tls_now_days(void)` |
 | `tls_random` | function | `tls_port.h:43` | `static inline void tls_random(unsigned char *out, unsigned len)` |

@@ -122,66 +122,69 @@
 - Doc: freedom - a headless text browser for MiniOS.
 - Language: c
 - Symbols:
-  - `atoi` (function, line 127) `static int atoi(char *s)`
-  - `append` (function, line 140) `static int append(char *dst, int pos, char *src, int cap)`
-  - `ci_lower` (function, line 148) `static int ci_lower(int c)`
-  - `ci_starts` (function, line 155) `static int ci_starts(char *s, char *pre)`
-  - `ci_eq` (function, line 166) `static int ci_eq(char *a, char *b)`
-  - `ci_index` (function, line 176) `static int ci_index(char *s, char *needle)`
-  - `looks_like_url` (function, line 185) `static int looks_like_url(char *s)`
-  - `has_scheme` (function, line 199) `static int has_scheme(char *s)`
-  - `make_search` (function, line 215) `static void make_search(char *out, char *query, int cap)`
-  - `split_url` (function, line 239) `static int split_url(char *url)`
-  - `resolve_redirect` (function, line 286) `static int resolve_redirect(void)`
-  - `put_ws` (function, line 338) `static void put_ws(void)`
-  - `put_utf` (function, line 350) `static void put_utf(int c)`
-  - `put_text` (function, line 400) `static void put_text(int c)`
-  - `css_append` (function, line 455) `static void css_append(char *s, int n)`
-  - `css_line` (function, line 461) `static void css_line(char *s)`
-  - `dom_append` (function, line 466) `static void dom_append(char *s, int n)`
-  - `dom_space` (function, line 472) `static void dom_space(void)`
-  - `dom_nl` (function, line 476) `static void dom_nl(void)`
-  - `record_attr` (function, line 482) `static void record_attr(void)`
-  - `is_void_tag` (function, line 507) `static int is_void_tag(void)`
-  - `classify_tag` (function, line 519) `static void classify_tag(void)`
-  - `body_byte` (function, line 604) `static void body_byte(int c)`
-  - `head_line` (function, line 769) `static void head_line(char *line)`
-  - `parse_head` (function, line 794) `static void parse_head(void)`
-  - `recv_body` (function, line 816) `static int recv_body(int fd, char *buf, int len)`
-  - `send_all` (function, line 822) `static int send_all(int fd, char *buf, int len)`
-  - `fetch` (function, line 833) `static int fetch(char *host, char *path, int port)`
-  - `fetch_css` (function, line 993) `static void fetch_css(char *host, char *path)`
-  - `print_css_dump` (function, line 1071) `static void print_css_dump(void)`
-  - `print_dom_dump` (function, line 1080) `static void print_dom_dump(void)`
-  - `main` (function, line 1086) `int main(int argc, char **argv)`
+  - `tls_close` (function, line 58) `static int tls_close(int fd)`
+  - `atoi` (function, line 151) `static int atoi(char *s)`
+  - `append` (function, line 166) `static int append(char *dst, int pos, char *src, int cap)`
+  - `ci_lower` (function, line 175) `static int ci_lower(int c)`
+  - `ci_starts` (function, line 182) `static int ci_starts(char *s, char *pre)`
+  - `ci_eq` (function, line 193) `static int ci_eq(char *a, char *b)`
+  - `ci_index` (function, line 203) `static int ci_index(char *s, char *needle)`
+  - `looks_like_url` (function, line 212) `static int looks_like_url(char *s)`
+  - `has_scheme` (function, line 226) `static int has_scheme(char *s)`
+  - `make_search` (function, line 242) `static void make_search(char *out, char *query, int cap)`
+  - `split_url` (function, line 266) `static int split_url(char *url)`
+  - `resolve_redirect` (function, line 313) `static int resolve_redirect(void)`
+  - `put_ws` (function, line 365) `static void put_ws(void)`
+  - `put_utf` (function, line 377) `static void put_utf(int c)`
+  - `put_text` (function, line 427) `static void put_text(int c)`
+  - `css_append` (function, line 482) `static void css_append(char *s, int n)`
+  - `css_line` (function, line 488) `static void css_line(char *s)`
+  - `dom_append` (function, line 493) `static void dom_append(char *s, int n)`
+  - `dom_space` (function, line 499) `static void dom_space(void)`
+  - `dom_nl` (function, line 503) `static void dom_nl(void)`
+  - `record_attr` (function, line 509) `static void record_attr(void)`
+  - `is_void_tag` (function, line 534) `static int is_void_tag(void)`
+  - `classify_tag` (function, line 546) `static void classify_tag(void)`
+  - `body_byte` (function, line 631) `static void body_byte(int c)`
+  - `head_line` (function, line 796) `static void head_line(char *line)`
+  - `parse_head` (function, line 821) `static void parse_head(void)`
+  - `recv_body` (function, line 843) `static int recv_body(int fd, char *buf, int len)`
+  - `send_all` (function, line 849) `static int send_all(int fd, char *buf, int len)`
+  - `fetch` (function, line 860) `static int fetch(char *host, char *path, int port)`
+  - `fetch_css` (function, line 1031) `static void fetch_css(char *host, char *path)`
+  - `print_css_dump` (function, line 1113) `static void print_css_dump(void)`
+  - `print_dom_dump` (function, line 1122) `static void print_dom_dump(void)`
+  - `main` (function, line 1128) `int main(int argc, char **argv)`
   - `curlfree` (function, line 4) `* spirit of curlfree (http.c + htmlfilter.c): a bounded header phase, * Content-Length or EOF body reading, Transfer-Encoding: chunked * decoding, redirect chasing with a hop bound, and a filter that `
-  - `connect` (function, line 32) `int connect(int fd, void *addr, int addrlen);`
-  - `sendto` (function, line 33) `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);`
-  - `recvfrom` (function, line 34) `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);`
-  - `close` (function, line 35) `int close(int fd);`
-  - `net_dns_resolve` (function, line 36) `int net_dns_resolve(char *host);`
-  - `tls_handshake` (function, line 37) `int tls_handshake(int fd, char *host);`
-  - `tls_send` (function, line 38) `int tls_send(int fd, char *buf, int len);`
-  - `tls_recv` (function, line 39) `int tls_recv(int fd, char *buf, int len);`
-  - `printf` (function, line 40) `int printf(char *fmt, ...);`
-  - `puts` (function, line 41) `int puts(char *s);`
-  - `strlen` (function, line 42) `int strlen(char *s);`
-  - `strchr` (function, line 43) `char *strchr(char *s, int c);`
-  - `strcmp` (function, line 44) `int strcmp(char *a, char *b);`
-  - `strncmp` (function, line 45) `int strncmp(char *a, char *b, int n);`
-  - `memcpy` (function, line 46) `int memcpy(char *dst, char *src, int n);`
-  - `memset` (function, line 47) `int memset(char *dst, int c, int n);`
-  - `putchar` (function, line 48) `int putchar(int c);`
-  - `put_entity` (function, line 730) `put_entity(f_ent);`
-  - `FREEDOM_HOPS_MAX` (macro, line 49) `#define FREEDOM_HOPS_MAX`
-  - `FREEDOM_HDR_MAX` (macro, line 51) `#define FREEDOM_HDR_MAX`
-  - `FREEDOM_BUF` (macro, line 52) `#define FREEDOM_BUF`
-  - `FREEDOM_CHUNK_MAX` (macro, line 53) `#define FREEDOM_CHUNK_MAX`
-  - `FREEDOM_CSS_MAX` (macro, line 54) `#define FREEDOM_CSS_MAX`
-  - `FREEDOM_CSS_BUF` (macro, line 55) `#define FREEDOM_CSS_BUF`
-  - `FREEDOM_DOM_BUF` (macro, line 56) `#define FREEDOM_DOM_BUF`
-  - `FREEDOM_ATTR_MAX` (macro, line 57) `#define FREEDOM_ATTR_MAX`
-  - `FREEDOM_LINE_MAX` (macro, line 58) `#define FREEDOM_LINE_MAX`
+  - `net_dns_resolve` (function, line 41) `int net_dns_resolve(const char *host);`
+  - `tls_handshake` (function, line 42) `int tls_handshake(int fd, char *host);`
+  - `tls_send` (function, line 43) `int tls_send(int fd, char *buf, int len);`
+  - `tls_recv` (function, line 44) `int tls_recv(int fd, char *buf, int len);`
+  - `socket` (function, line 52) `int socket(int domain, int type, int proto);`
+  - `connect` (function, line 53) `int connect(int fd, void *addr, int addrlen);`
+  - `sendto` (function, line 54) `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);`
+  - `recvfrom` (function, line 55) `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);`
+  - `close` (function, line 56) `int close(int fd);`
+  - `printf` (function, line 63) `int printf(char *fmt, ...);`
+  - `puts` (function, line 64) `int puts(char *s);`
+  - `strlen` (function, line 65) `int strlen(char *s);`
+  - `strchr` (function, line 66) `char *strchr(char *s, int c);`
+  - `strcmp` (function, line 67) `int strcmp(char *a, char *b);`
+  - `strncmp` (function, line 68) `int strncmp(char *a, char *b, int n);`
+  - `memcpy` (function, line 69) `int memcpy(char *dst, char *src, int n);`
+  - `memset` (function, line 70) `int memset(char *dst, int c, int n);`
+  - `putchar` (function, line 71) `int putchar(int c);`
+  - `put_entity` (function, line 757) `put_entity(f_ent);`
+  - `FREEDOM_HOPS_MAX` (macro, line 73) `#define FREEDOM_HOPS_MAX`
+  - `FREEDOM_HDR_MAX` (macro, line 75) `#define FREEDOM_HDR_MAX`
+  - `FREEDOM_BUF` (macro, line 76) `#define FREEDOM_BUF`
+  - `FREEDOM_CHUNK_MAX` (macro, line 77) `#define FREEDOM_CHUNK_MAX`
+  - `FREEDOM_CSS_MAX` (macro, line 78) `#define FREEDOM_CSS_MAX`
+  - `FREEDOM_CSS_BUF` (macro, line 79) `#define FREEDOM_CSS_BUF`
+  - `FREEDOM_DOM_BUF` (macro, line 80) `#define FREEDOM_DOM_BUF`
+  - `FREEDOM_ATTR_MAX` (macro, line 81) `#define FREEDOM_ATTR_MAX`
+  - `FREEDOM_LINE_MAX` (macro, line 82) `#define FREEDOM_LINE_MAX`
+- Depends on: `kernel/string.c`
 
 ## progs/src/ftest.c
 - Layer: testing
@@ -221,7 +224,7 @@
   - `recvfrom` (function, line 8) `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);`
   - `shutdown` (function, line 9) `int shutdown(int fd, int how);`
   - `close` (function, line 10) `int close(int fd);`
-  - `net_dns_resolve` (function, line 11) `int net_dns_resolve(char *host);`
+  - `net_dns_resolve` (function, line 11) `int net_dns_resolve(const char *host);`
   - `puts` (function, line 12) `int puts(char *s);`
   - `printf` (function, line 13) `int printf(char *fmt, ...);`
   - `strlen` (function, line 14) `int strlen(char *s);`

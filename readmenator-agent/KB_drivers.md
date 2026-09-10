@@ -150,27 +150,33 @@
 - Doc: include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clock and the shell `date` builtin
 - Language: c
 - Symbols:
-  - `rtc_cmos_read` (function, line 31) `static inline unsigned char rtc_cmos_read(unsigned char reg)`
-  - `rtc_from_bcd` (function, line 36) `static int rtc_from_bcd(unsigned char v)`
-  - `rtc_read_tod` (function, line 40) `int rtc_read_tod(int *hour, int *min, int *sec)`
-  - `outb` (function, line 33) `outb(RTC_CMOS_ADDR, reg);`
-  - `inb` (function, line 34) `return inb(RTC_CMOS_DATA);`
+  - `rtc_cmos_read` (function, line 34) `static inline unsigned char rtc_cmos_read(unsigned char reg)`
+  - `rtc_from_bcd` (function, line 39) `static int rtc_from_bcd(unsigned char v)`
+  - `rtc_read_tod` (function, line 43) `int rtc_read_tod(int *hour, int *min, int *sec)`
+  - `rtc_month_len` (function, line 67) `static int rtc_month_len(long full_year, long mon)`
+  - `rtc_read_date` (function, line 77) `int rtc_read_date(int *year, int *mon, int *day)`
+  - `rtc_wall_seconds` (function, line 101) `int rtc_wall_seconds(unsigned long *out)`
+  - `outb` (function, line 36) `outb(RTC_CMOS_ADDR, reg);`
+  - `inb` (function, line 37) `return inb(RTC_CMOS_DATA);`
   - `RTC_CMOS_ADDR` (macro, line 8) `#define RTC_CMOS_ADDR`
   - `RTC_CMOS_DATA` (macro, line 10) `#define RTC_CMOS_DATA`
   - `RTC_REG_SEC` (macro, line 11) `#define RTC_REG_SEC`
   - `RTC_REG_MIN` (macro, line 13) `#define RTC_REG_MIN`
   - `RTC_REG_HOUR` (macro, line 14) `#define RTC_REG_HOUR`
-  - `RTC_REG_STATUS_A` (macro, line 15) `#define RTC_REG_STATUS_A`
-  - `RTC_REG_STATUS_B` (macro, line 16) `#define RTC_REG_STATUS_B`
-  - `RTC_UPDATE_IN_PROGRESS` (macro, line 17) `#define RTC_UPDATE_IN_PROGRESS`
-  - `RTC_BCD_FLAG` (macro, line 19) `#define RTC_BCD_FLAG`
-  - `RTC_HOUR_MIN` (macro, line 20) `#define RTC_HOUR_MIN`
-  - `RTC_HOUR_MAX` (macro, line 22) `#define RTC_HOUR_MAX`
-  - `RTC_MIN_MIN` (macro, line 23) `#define RTC_MIN_MIN`
-  - `RTC_MIN_MAX` (macro, line 24) `#define RTC_MIN_MAX`
-  - `RTC_SEC_MIN` (macro, line 25) `#define RTC_SEC_MIN`
-  - `RTC_SEC_MAX` (macro, line 26) `#define RTC_SEC_MAX`
-  - `RTC_UPDATE_WAIT` (macro, line 30) `#define RTC_UPDATE_WAIT`
+  - `RTC_REG_DAY` (macro, line 15) `#define RTC_REG_DAY`
+  - `RTC_REG_MON` (macro, line 16) `#define RTC_REG_MON`
+  - `RTC_REG_YEAR` (macro, line 17) `#define RTC_REG_YEAR`
+  - `RTC_REG_STATUS_A` (macro, line 18) `#define RTC_REG_STATUS_A`
+  - `RTC_REG_STATUS_B` (macro, line 19) `#define RTC_REG_STATUS_B`
+  - `RTC_UPDATE_IN_PROGRESS` (macro, line 20) `#define RTC_UPDATE_IN_PROGRESS`
+  - `RTC_BCD_FLAG` (macro, line 22) `#define RTC_BCD_FLAG`
+  - `RTC_HOUR_MIN` (macro, line 23) `#define RTC_HOUR_MIN`
+  - `RTC_HOUR_MAX` (macro, line 25) `#define RTC_HOUR_MAX`
+  - `RTC_MIN_MIN` (macro, line 26) `#define RTC_MIN_MIN`
+  - `RTC_MIN_MAX` (macro, line 27) `#define RTC_MIN_MAX`
+  - `RTC_SEC_MIN` (macro, line 28) `#define RTC_SEC_MIN`
+  - `RTC_SEC_MAX` (macro, line 29) `#define RTC_SEC_MAX`
+  - `RTC_UPDATE_WAIT` (macro, line 33) `#define RTC_UPDATE_WAIT`
 - Depends on: `kernel.h`, `rtc.h`
 
 ## drivers/sb16.c

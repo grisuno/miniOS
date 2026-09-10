@@ -972,24 +972,36 @@
 ## drivers/rtc.c
 
 ### rtc_cmos_read (function) `static inline unsigned char rtc_cmos_read(unsigned char reg)`
-- Defined: `drivers/rtc.c:31`
+- Defined: `drivers/rtc.c:34`
 - Doc: The RTC reports a time-of-day that is mid-update; waiting out this flag * before reading the three fields makes the snap
 - Depends on: `kernel.h`, `rtc.h`
 
 ### rtc_from_bcd (function) `static int rtc_from_bcd(unsigned char v)`
-- Defined: `drivers/rtc.c:36`
+- Defined: `drivers/rtc.c:39`
 - Depends on: `kernel.h`, `rtc.h`
 
 ### rtc_read_tod (function) `int rtc_read_tod(int *hour, int *min, int *sec)`
-- Defined: `drivers/rtc.c:40`
+- Defined: `drivers/rtc.c:43`
+- Depends on: `kernel.h`, `rtc.h`
+
+### rtc_month_len (function) `static int rtc_month_len(long full_year, long mon)`
+- Defined: `drivers/rtc.c:67`
+- Depends on: `kernel.h`, `rtc.h`
+
+### rtc_read_date (function) `int rtc_read_date(int *year, int *mon, int *day)`
+- Defined: `drivers/rtc.c:77`
+- Depends on: `kernel.h`, `rtc.h`
+
+### rtc_wall_seconds (function) `int rtc_wall_seconds(unsigned long *out)`
+- Defined: `drivers/rtc.c:101`
 - Depends on: `kernel.h`, `rtc.h`
 
 ### outb (function) `outb(RTC_CMOS_ADDR, reg);`
-- Defined: `drivers/rtc.c:33`
+- Defined: `drivers/rtc.c:36`
 - Depends on: `kernel.h`, `rtc.h`
 
 ### inb (function) `return inb(RTC_CMOS_DATA);`
-- Defined: `drivers/rtc.c:34`
+- Defined: `drivers/rtc.c:37`
 - Depends on: `kernel.h`, `rtc.h`
 
 ## drivers/sb16.c
@@ -1443,23 +1455,23 @@ void minifs_journal_touch(unsigned int phys)`
 - Depends on: `block.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`
 
 ### minifs_mkfs (function) `int minifs_mkfs(unsigned int total_blocks)`
-- Defined: `fs/minifs.c:1255`
+- Defined: `fs/minifs.c:1262`
 - Depends on: `block.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`
 
 ### minifs_sync (function) `int minifs_sync(void)`
-- Defined: `fs/minifs.c:1326`
+- Defined: `fs/minifs.c:1333`
 - Depends on: `block.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`
 
 ### minifs_file_open (function) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
-- Defined: `fs/minifs.c:1341`
+- Defined: `fs/minifs.c:1348`
 - Depends on: `block.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`
 
 ### minifs_file_close (function) `int minifs_file_close(MiniFSFile *f)`
-- Defined: `fs/minifs.c:1355`
+- Defined: `fs/minifs.c:1362`
 - Depends on: `block.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`
 
 ### minifs_get_total_blocks (function) `unsigned int minifs_get_total_blocks(void)`
-- Defined: `fs/minifs.c:1362`
+- Defined: `fs/minifs.c:1369`
 - Depends on: `block.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`
 
 ### minifs_journal_touch (function) `void minifs_journal_touch(unsigned int phys);`
@@ -1500,7 +1512,7 @@ void minifs_journal_touch(unsigned int phys)`
 - Depends on: `block.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`
 
 ### block_set_base (function) `block_set_base(fs_lba_start);`
-- Defined: `fs/minifs.c:1185`
+- Defined: `fs/minifs.c:1192`
 - Depends on: `block.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`
 
 ## fs/ramdisk.c
@@ -1797,17 +1809,28 @@ static int zip_sanitize_name(con...`
 ## futex.h
 
 ### futex_init (function) `void futex_init(void);`
-- Defined: `futex.h:65`
+- Defined: `futex.h:73`
 - Depends on: `sched.h`, `spinlock.h`, `sync.h`
 - Imported by: `kernel/futex.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_futex.c`
 
 ### futex_wait (function) `long futex_wait(unsigned long uaddr, int val);`
-- Defined: `futex.h:67`
+- Defined: `futex.h:75`
 - Depends on: `sched.h`, `spinlock.h`, `sync.h`
 - Imported by: `kernel/futex.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_futex.c`
 
 ### futex_wake (function) `long futex_wake(unsigned long uaddr, int n);`
-- Defined: `futex.h:68`
+- Defined: `futex.h:76`
+- Depends on: `sched.h`, `spinlock.h`, `sync.h`
+- Imported by: `kernel/futex.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_futex.c`
+
+### FUTEX_PRIVATE_FLAG (function) `* FUTEX_PRIVATE_FLAG (process-private is served on the same global * buckets: same semantics, no isolation shortcut). Returns -1 for * anything unserved (REQUEUE, CMP_REQUEUE, WAKE_OP, WAIT_BITSET, * `
+- Defined: `futex.h:79`
+- Depends on: `sched.h`, `spinlock.h`, `sync.h`
+- Imported by: `kernel/futex.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_futex.c`
+
+### futex_linux_cmd (function) `int futex_linux_cmd(long op);`
+- Defined: `futex.h:84`
+- Doc: Decode a Linux futex(2) op to LINUX_FUTEX_WAIT/WAKE, masking FUTEX_PRIVATE_FLAG (process-private is served on the same g
 - Depends on: `sched.h`, `spinlock.h`, `sync.h`
 - Imported by: `kernel/futex.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_futex.c`
 
@@ -1859,7 +1882,7 @@ static int zip_sanitize_name(con...`
 
 ### __attribute__ (function) `__attribute__((section(".init.text")))
 void kmain(void)`
-- Defined: `kernel.c:355`
+- Defined: `kernel.c:356`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### table (function) `* Symbol table (for resolving program references) * ================================================================ */ #define KSYM_MAX 256 /* ---- SYSCALL/SYSRET setup ------------------------------`
@@ -1885,91 +1908,95 @@ void kmain(void)`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### volatile (function) `__asm__ volatile( "mov $0x10, %%ax\n" "mov %%ax, %%ds\n" "mov %%ax, %%es\n" "mov %%ax, %%fs\n" "mov %%ax, %%gs\n" "mov %%ax, %%ss\n" "mov $0x90000, %%rsp\n" ::: "ax" );`
-- Defined: `kernel.c:358`
+- Defined: `kernel.c:359`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### EM (function) `* CR0: clear EM (bit 2), set MP (bit 1);`
-- Defined: `kernel.c:370`
+- Defined: `kernel.c:371`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### serial_init (function) `serial_init();`
-- Defined: `kernel.c:381`
+- Defined: `kernel.c:382`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### vga_clear (function) `vga_clear();`
-- Defined: `kernel.c:383`
+- Defined: `kernel.c:384`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### outb (function) `outb(0x21, 0xFF);`
-- Defined: `kernel.c:389`
+- Defined: `kernel.c:390`
 - Doc: Mask every PIC line immediately: until sched_init's pic_init remaps the 8259s and installs the IDT, the power-on vector 
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### vga_puts (function) `vga_puts("MiniOS Kernel v0.3\n====================\n");`
-- Defined: `kernel.c:391`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
-
-### kallocator_init (function) `kallocator_init();`
 - Defined: `kernel.c:392`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### ramdisk_init (function) `ramdisk_init();`
-- Defined: `kernel.c:394`
+### kallocator_init (function) `kallocator_init();`
+- Defined: `kernel.c:393`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### register_libc_symbols (function) `register_libc_symbols();`
+### ramdisk_init (function) `ramdisk_init();`
 - Defined: `kernel.c:395`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### vga_fb_boot_config (function) `vga_fb_boot_config();`
-- Defined: `kernel.c:397`
+### register_libc_symbols (function) `register_libc_symbols();`
+- Defined: `kernel.c:396`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### mm_setup_protections (function) `mm_setup_protections();`
+### vga_fb_boot_config (function) `vga_fb_boot_config();`
 - Defined: `kernel.c:398`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### kprintf (function) `kprintf("fb: %dx%d pitch %d bpp %d base 0x%lx\n", fb_width, fb_height, fb_pitch, fb_bpp, fb_phys_base);`
+### mm_setup_protections (function) `mm_setup_protections();`
 - Defined: `kernel.c:399`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### net_init (function) `net_init();`
-- Defined: `kernel.c:405`
+### kprintf (function) `kprintf("fb: %dx%d pitch %d bpp %d base 0x%lx\n", fb_width, fb_height, fb_pitch, fb_bpp, fb_phys_base);`
+- Defined: `kernel.c:400`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### ramdisk_setup_from (function) `ramdisk_setup_from(ramdisk_start, (unsigned)(ramdisk_end - ramdisk_start));`
-- Defined: `kernel.c:408`
+### net_init (function) `net_init();`
+- Defined: `kernel.c:406`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
+
+### size (function) `* image size (see kernel.ld);`
+- Defined: `kernel.c:409`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
+
+### ramdisk_setup_from (function) `ramdisk_setup_from(ramdisk_start, (unsigned)(unsigned long)ramdisk_size);`
+- Defined: `kernel.c:411`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### block_init (function) `block_init();`
-- Defined: `kernel.c:410`
+- Defined: `kernel.c:413`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### minifs_init (function) `minifs_init();`
-- Defined: `kernel.c:412`
+- Defined: `kernel.c:415`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### vfs_register_builtins (function) `vfs_register_builtins();`
-- Defined: `kernel.c:421`
+- Defined: `kernel.c:424`
 - Doc: Register VFS drivers.  Ramdisk is always available; MiniFS is * registered only when the IDE disk was found and mounted.
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### sched_init (function) `sched_init();`
-- Defined: `kernel.c:428`
+- Defined: `kernel.c:431`
 - Doc: Initialize the scheduler: IDT, TSS, PIC, PIT timer. * This enables interrupts and the 100 Hz timer tick.
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### vga_fb_init (function) `vga_fb_init();`
-- Defined: `kernel.c:430`
+- Defined: `kernel.c:433`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### smp_init (function) `smp_init();`
-- Defined: `kernel.c:441`
+- Defined: `kernel.c:444`
 - Doc: Probe the Sound Blaster 16 for real audio; fall back to the PC speaker * when none is present. if (sb16_init()) kprintf(
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### shell_run (function) `shell_run();`
-- Defined: `kernel.c:442`
+- Defined: `kernel.c:445`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ## kernel.h
@@ -2275,609 +2302,609 @@ void kmain(void)`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### int (function) `int (*open)(const char *path, int mode, void **handle);`
-- Defined: `kernel.h:256`
+- Defined: `kernel.h:266`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### vfs_register (function) `int vfs_register(const char *prefix, const vfs_ops_t *ops);`
-- Defined: `kernel.h:281`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### vfs_unregister (function) `int vfs_unregister(const char *prefix);`
-- Defined: `kernel.h:283`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### vfs_open (function) `int vfs_open(const char *path, int mode, vfs_file_t *f);`
-- Defined: `kernel.h:284`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### vfs_read (function) `int vfs_read(vfs_file_t *f, void *buf, unsigned long len);`
-- Defined: `kernel.h:285`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### vfs_write (function) `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);`
-- Defined: `kernel.h:286`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### vfs_close (function) `int vfs_close(vfs_file_t *f);`
-- Defined: `kernel.h:287`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### vfs_fstat (function) `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);`
-- Defined: `kernel.h:288`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### vfs_init (function) `void vfs_init(void);`
-- Defined: `kernel.h:289`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### vfs_register_builtins (function) `void vfs_register_builtins(void);`
-- Defined: `kernel.h:290`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### minifs_mkdir_p (function) `int minifs_mkdir_p(const char *resolved);`
 - Defined: `kernel.h:291`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
+### vfs_unregister (function) `int vfs_unregister(const char *prefix);`
+- Defined: `kernel.h:293`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### vfs_open (function) `int vfs_open(const char *path, int mode, vfs_file_t *f);`
+- Defined: `kernel.h:294`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### vfs_read (function) `int vfs_read(vfs_file_t *f, void *buf, unsigned long len);`
+- Defined: `kernel.h:295`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### vfs_write (function) `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);`
+- Defined: `kernel.h:296`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### vfs_close (function) `int vfs_close(vfs_file_t *f);`
+- Defined: `kernel.h:297`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### vfs_fstat (function) `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);`
+- Defined: `kernel.h:298`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### vfs_init (function) `void vfs_init(void);`
+- Defined: `kernel.h:299`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### vfs_register_builtins (function) `void vfs_register_builtins(void);`
+- Defined: `kernel.h:300`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### minifs_mkdir_p (function) `int minifs_mkdir_p(const char *resolved);`
+- Defined: `kernel.h:301`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
 ### kfopen (function) `KFILE *kfopen(const char *path, const char *mode);`
-- Defined: `kernel.h:334`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kfclose (function) `int kfclose(KFILE *f);`
-- Defined: `kernel.h:336`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kfgetc (function) `int kfgetc(KFILE *f);`
-- Defined: `kernel.h:337`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kfgets (function) `char *kfgets(char *buf, int size, KFILE *f);`
-- Defined: `kernel.h:338`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kfungetc (function) `int kfungetc(int c, KFILE *f);`
-- Defined: `kernel.h:339`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kfread (function) `unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);`
-- Defined: `kernel.h:340`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kfwrite (function) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);`
-- Defined: `kernel.h:341`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kfseek (function) `int kfseek(KFILE *f, long offset, int whence);`
-- Defined: `kernel.h:342`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kftell (function) `long kftell(KFILE *f);`
-- Defined: `kernel.h:343`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kfputs (function) `int kfputs(const char *s, KFILE *f);`
 - Defined: `kernel.h:344`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### kfputc (function) `int kfputc(int c, KFILE *f);`
-- Defined: `kernel.h:345`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kfflush (function) `int kfflush(KFILE *f);`
+### kfclose (function) `int kfclose(KFILE *f);`
 - Defined: `kernel.h:346`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### krewind (function) `void krewind(KFILE *f);`
+### kfgetc (function) `int kfgetc(KFILE *f);`
 - Defined: `kernel.h:347`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### kfile_stdin (function) `KFILE *kfile_stdin(void);`
+### kfgets (function) `char *kfgets(char *buf, int size, KFILE *f);`
+- Defined: `kernel.h:348`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kfungetc (function) `int kfungetc(int c, KFILE *f);`
+- Defined: `kernel.h:349`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kfread (function) `unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);`
+- Defined: `kernel.h:350`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kfwrite (function) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);`
+- Defined: `kernel.h:351`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kfseek (function) `int kfseek(KFILE *f, long offset, int whence);`
 - Defined: `kernel.h:352`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### kfile_stdout (function) `KFILE *kfile_stdout(void);`
+### kftell (function) `long kftell(KFILE *f);`
 - Defined: `kernel.h:353`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### kfile_stderr (function) `KFILE *kfile_stderr(void);`
+### kfputs (function) `int kfputs(const char *s, KFILE *f);`
 - Defined: `kernel.h:354`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### kstrlen (function) `unsigned long kstrlen(const char *s);`
+### kfputc (function) `int kfputc(int c, KFILE *f);`
+- Defined: `kernel.h:355`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kfflush (function) `int kfflush(KFILE *f);`
+- Defined: `kernel.h:356`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### krewind (function) `void krewind(KFILE *f);`
 - Defined: `kernel.h:357`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kfile_stdin (function) `KFILE *kfile_stdin(void);`
+- Defined: `kernel.h:362`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kfile_stdout (function) `KFILE *kfile_stdout(void);`
+- Defined: `kernel.h:363`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kfile_stderr (function) `KFILE *kfile_stderr(void);`
+- Defined: `kernel.h:364`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kstrlen (function) `unsigned long kstrlen(const char *s);`
+- Defined: `kernel.h:367`
 - Doc: long   kftell(KFILE *f); int    kfputs(const char *s, KFILE *f); int    kfputc(int c, KFILE *f); int    kfflush(KFILE *f
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### kstrcpy (function) `char *kstrcpy(char *dst, const char *src);`
-- Defined: `kernel.h:358`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kstrncpy (function) `char *kstrncpy(char *dst, const char *src, unsigned long n);`
-- Defined: `kernel.h:359`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kstrncat (function) `char *kstrncat(char *dst, const char *src, unsigned long n);`
-- Defined: `kernel.h:360`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kstrcmp (function) `int kstrcmp(const char *a, const char *b);`
-- Defined: `kernel.h:361`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kstrncmp (function) `int kstrncmp(const char *a, const char *b, unsigned long n);`
-- Defined: `kernel.h:362`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kstrchr (function) `char *kstrchr(const char *s, int c);`
-- Defined: `kernel.h:363`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kstrstr (function) `char *kstrstr(const char *hay, const char *ndl);`
-- Defined: `kernel.h:364`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kmemcpy (function) `void *kmemcpy(void *dst, const void *src, unsigned long n);`
-- Defined: `kernel.h:365`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kmemset (function) `void *kmemset(void *dst, int c, unsigned long n);`
-- Defined: `kernel.h:366`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kmemcmp (function) `int kmemcmp(const void *a, const void *b, unsigned long n);`
-- Defined: `kernel.h:367`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### kmemmove (function) `void *kmemmove(void *dst, const void *src, unsigned long n);`
 - Defined: `kernel.h:368`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### katol (function) `long katol(const char *s);`
+### kstrncpy (function) `char *kstrncpy(char *dst, const char *src, unsigned long n);`
 - Defined: `kernel.h:369`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### kprintf (function) `int kprintf(const char *fmt, ...);`
+### kstrncat (function) `char *kstrncat(char *dst, const char *src, unsigned long n);`
+- Defined: `kernel.h:370`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kstrcmp (function) `int kstrcmp(const char *a, const char *b);`
+- Defined: `kernel.h:371`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kstrncmp (function) `int kstrncmp(const char *a, const char *b, unsigned long n);`
 - Defined: `kernel.h:372`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kstrchr (function) `char *kstrchr(const char *s, int c);`
+- Defined: `kernel.h:373`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kstrstr (function) `char *kstrstr(const char *hay, const char *ndl);`
+- Defined: `kernel.h:374`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kmemcpy (function) `void *kmemcpy(void *dst, const void *src, unsigned long n);`
+- Defined: `kernel.h:375`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kmemset (function) `void *kmemset(void *dst, int c, unsigned long n);`
+- Defined: `kernel.h:376`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kmemcmp (function) `int kmemcmp(const void *a, const void *b, unsigned long n);`
+- Defined: `kernel.h:377`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kmemmove (function) `void *kmemmove(void *dst, const void *src, unsigned long n);`
+- Defined: `kernel.h:378`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### katol (function) `long katol(const char *s);`
+- Defined: `kernel.h:379`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### kprintf (function) `int kprintf(const char *fmt, ...);`
+- Defined: `kernel.h:382`
 - Doc: char *kstrcpy(char *dst, const char *src); char *kstrncpy(char *dst, const char *src, unsigned long n); char *kstrncat(c
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### kfprintf (function) `int kfprintf(KFILE *f, const char *fmt, ...);`
-- Defined: `kernel.h:373`
+- Defined: `kernel.h:383`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ksprintf (function) `int ksprintf(char *buf, const char *fmt, ...);`
-- Defined: `kernel.h:374`
+- Defined: `kernel.h:384`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ksnprintf (function) `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);`
-- Defined: `kernel.h:375`
+- Defined: `kernel.h:385`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### klog (function) `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);`
-- Defined: `kernel.h:389`
+- Defined: `kernel.h:399`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### klog_hexdump (function) `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);`
-- Defined: `kernel.h:392`
+- Defined: `kernel.h:402`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### klog_set_level (function) `void klog_set_level(log_level_t level);`
-- Defined: `kernel.h:394`
+- Defined: `kernel.h:404`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### klog_set_subsys_level (function) `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);`
-- Defined: `kernel.h:395`
+- Defined: `kernel.h:405`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### klog_disable (function) `void klog_disable(void);`
-- Defined: `kernel.h:396`
+- Defined: `kernel.h:406`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### klog_enable (function) `void klog_enable(void);`
-- Defined: `kernel.h:397`
+- Defined: `kernel.h:407`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### shell_init (function) `void shell_init(void);`
-- Defined: `kernel.h:400`
+- Defined: `kernel.h:410`
 - Doc: LOG_SUBSYS_SHELL, LOG_SUBSYS_BOOT, LOG_SUBSYS_GENERAL, LOG_SUBSYS_COUNT } log_subsystem_t; void klog(log_level_t level, 
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### shell_run (function) `void shell_run(void);`
-- Defined: `kernel.h:401`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### console_getc (function) `int console_getc(void);`
-- Defined: `kernel.h:402`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### redirect_suspend (function) `int redirect_suspend(void);`
-- Defined: `kernel.h:403`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### redirect_resume (function) `void redirect_resume(int was);`
-- Defined: `kernel.h:404`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### redirect_begin (function) `int redirect_begin(void);`
-- Defined: `kernel.h:405`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### redirect_commit (function) `int redirect_commit(const char *path, int append_mode);`
-- Defined: `kernel.h:406`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### redirect_active (function) `int redirect_active(void);`
-- Defined: `kernel.h:407`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### shell_take_redirect (function) `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);`
-- Defined: `kernel.h:408`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### shell_run_any (function) `int shell_run_any(const char *name, int argc, char **argv);`
-- Defined: `kernel.h:409`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### shell_exec_builtin (function) `void shell_exec_builtin(int argc, char **argv);`
-- Defined: `kernel.h:410`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### shell_report_exit (function) `void shell_report_exit(int code);`
 - Defined: `kernel.h:411`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### shell_report (function) `void shell_report(const char *what, const char *detail);`
+### console_getc (function) `int console_getc(void);`
 - Defined: `kernel.h:412`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
+### redirect_suspend (function) `int redirect_suspend(void);`
+- Defined: `kernel.h:413`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### redirect_resume (function) `void redirect_resume(int was);`
+- Defined: `kernel.h:414`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### redirect_begin (function) `int redirect_begin(void);`
+- Defined: `kernel.h:415`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### redirect_commit (function) `int redirect_commit(const char *path, int append_mode);`
+- Defined: `kernel.h:416`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### redirect_active (function) `int redirect_active(void);`
+- Defined: `kernel.h:417`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### shell_take_redirect (function) `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);`
+- Defined: `kernel.h:418`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### shell_run_any (function) `int shell_run_any(const char *name, int argc, char **argv);`
+- Defined: `kernel.h:419`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### shell_exec_builtin (function) `void shell_exec_builtin(int argc, char **argv);`
+- Defined: `kernel.h:420`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### shell_report_exit (function) `void shell_report_exit(int code);`
+- Defined: `kernel.h:421`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### shell_report (function) `void shell_report(const char *what, const char *detail);`
+- Defined: `kernel.h:422`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
 ### kprog_slot (function) `KProg *kprog_slot(const char *name);`
-- Defined: `kernel.h:436`
+- Defined: `kernel.h:446`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### kprog_lookup (function) `KProg *kprog_lookup(const char *name);`
-- Defined: `kernel.h:438`
+- Defined: `kernel.h:448`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ksym_resolve (function) `void *ksym_resolve(const char *name);`
-- Defined: `kernel.h:439`
+- Defined: `kernel.h:449`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### k_spawn (function) `int k_spawn(const char *name, int argc, char **argv);`
-- Defined: `kernel.h:440`
+- Defined: `kernel.h:450`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### k_register_program (function) `void k_register_program(const char *name, prog_entry_t entry);`
-- Defined: `kernel.h:441`
+- Defined: `kernel.h:451`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### k_register_process (function) `void k_register_process(const char *name, void *proc_entry);`
-- Defined: `kernel.h:442`
+- Defined: `kernel.h:452`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### k_register_symbol (function) `void k_register_symbol(const char *name, void *addr);`
-- Defined: `kernel.h:443`
+- Defined: `kernel.h:453`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### register_libc_symbols (function) `void register_libc_symbols(void);`
-- Defined: `kernel.h:447`
+- Defined: `kernel.h:457`
 - Doc: Libc name table for ET_REL programs (kernel/console.c). Called once * from kmain; the table itself lives in kernel/symta
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### k_exec_user (function) `int k_exec_user(void *entry, int argc, char **argv);`
-- Defined: `kernel.h:450`
+- Defined: `kernel.h:460`
 - Doc: Libc name table for ET_REL programs (kernel/console.c). Called once * from kmain; the table itself lives in kernel/symta
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### k_run_rel (function) `int k_run_rel(prog_entry_t entry, int argc, char **argv);`
-- Defined: `kernel.h:451`
+- Defined: `kernel.h:461`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### kexit (function) `void kexit(int code);`
-- Defined: `kernel.h:452`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### ksetjmp (function) `int ksetjmp(void *buf) __attribute__((returns_twice));`
-- Defined: `kernel.h:456`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### klongjmp (function) `void klongjmp(void *buf, int val) __attribute__((noreturn));`
-- Defined: `kernel.h:457`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### setup_user_stack (function) `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);`
-- Defined: `kernel.h:460`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### vga_mode_set (function) `void vga_mode_set(int on);`
 - Defined: `kernel.h:462`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
+### ksetjmp (function) `int ksetjmp(void *buf) __attribute__((returns_twice));`
+- Defined: `kernel.h:466`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### klongjmp (function) `void klongjmp(void *buf, int val) __attribute__((noreturn));`
+- Defined: `kernel.h:467`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### setup_user_stack (function) `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);`
+- Defined: `kernel.h:470`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### vga_mode_set (function) `void vga_mode_set(int on);`
+- Defined: `kernel.h:472`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
 ### vga_mode_is_active (function) `int vga_mode_is_active(void);`
-- Defined: `kernel.h:463`
+- Defined: `kernel.h:473`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### vga_gfx_ran_set (function) `void vga_gfx_ran_set(int on);`
-- Defined: `kernel.h:464`
+- Defined: `kernel.h:474`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### desktop_launch (function) `void desktop_launch(const char *cmd);`
-- Defined: `kernel.h:467`
+- Defined: `kernel.h:477`
 - Doc: /* ========== Execution infrastructure (kernel/exec.c) ========== typedef struct { unsigned long v[8]; } kjmpbuf; int  k
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### shell_queue_launch (function) `void shell_queue_launch(const char *cmd);`
-- Defined: `kernel.h:468`
+- Defined: `kernel.h:478`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### user_range_ok (function) `int user_range_ok(unsigned long p, unsigned long len);`
-- Defined: `kernel.h:471`
+- Defined: `kernel.h:481`
 - Doc: void klongjmp(void *buf, int val) __attribute__((noreturn)); extern kjmpbuf exec_return; extern int     exec_exit_code; 
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### user_str_ok (function) `int user_str_ok(unsigned long p, unsigned long maxlen);`
-- Defined: `kernel.h:472`
+- Defined: `kernel.h:482`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### mm_setup_protections (function) `void mm_setup_protections(void);`
-- Defined: `kernel.h:475`
+- Defined: `kernel.h:485`
 - Doc: int argc, char **argv); void vga_mode_set(int on); int  vga_mode_is_active(void); void vga_gfx_ran_set(int on); /* =====
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### pt_page_alloc (function) `void *pt_page_alloc(void);`
-- Defined: `kernel.h:476`
+- Defined: `kernel.h:486`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### pt_page_free (function) `void pt_page_free(void *ptr);`
-- Defined: `kernel.h:477`
+- Defined: `kernel.h:487`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### mm_user_pte_update (function) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);`
-- Defined: `kernel.h:478`
+- Defined: `kernel.h:488`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### mm_user_set_exec (function) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);`
-- Defined: `kernel.h:479`
+- Defined: `kernel.h:489`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### swap_out (function) `int swap_out(unsigned long window_sz);`
-- Defined: `kernel.h:482`
+- Defined: `kernel.h:492`
 - Doc: void shell_queue_launch(const char *cmd); /* ========== User-pointer validation (kernel.c) ========== int user_range_ok(
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### swap_in (function) `int swap_in(void);`
-- Defined: `kernel.h:483`
+- Defined: `kernel.h:493`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### elf_load (function) `void *elf_load(void *data, unsigned size);`
-- Defined: `kernel.h:521`
+- Defined: `kernel.h:531`
 - Doc: define ET_REL      1 define ET_EXEC     2 define ET_DYN      3
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### load_exec_elf (function) `void *load_exec_elf(void *data, unsigned size);`
-- Defined: `kernel.h:523`
+- Defined: `kernel.h:533`
 - Doc: Elf64_Word    e_flags; Elf64_Half    e_ehsize; Elf64_Half    e_phentsize; Elf64_Half    e_phnum; Elf64_Half    e_shentsi
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### syscall_init (function) `void syscall_init(void);`
-- Defined: `kernel.h:526`
+- Defined: `kernel.h:536`
 - Doc: Elf64_Half    e_phnum; Elf64_Half    e_shentsize; Elf64_Half    e_shnum; Elf64_Half    e_shstrndx; } Elf64_Ehdr; #define
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ksyscall (function) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-- Defined: `kernel.h:530`
+- Defined: `kernel.h:540`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### syscall_trace_enabled (function) `long syscall_trace_enabled(void);`
-- Defined: `kernel.h:531`
+- Defined: `kernel.h:541`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### syscall_trace_set (function) `void syscall_trace_set(int on);`
-- Defined: `kernel.h:532`
+- Defined: `kernel.h:542`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ktime_ms (function) `unsigned long ktime_ms(void);`
-- Defined: `kernel.h:542`
-- Doc: /* ========== Syscall table ========== void *ksym_resolve(const char *name); long ksyscall(long n, long a1, long a2, lon
+- Defined: `kernel.h:553`
+- Doc: void *ksym_resolve(const char *name); long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6); long 
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### pcspk_init (function) `void pcspk_init(void);`
-- Defined: `kernel.h:545`
-- Doc: long syscall_trace_enabled(void); void syscall_trace_set(int on); #define KFD_MAX 32 extern KFILE *kfd_table[KFD_MAX]; /
+- Defined: `kernel.h:556`
+- Doc: void syscall_trace_set(int on); #define KFD_MAX 32 extern KFILE *kfd_table[KFD_MAX]; /* ========== Kernel info =========
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### pcspk_tone (function) `void pcspk_tone(unsigned freq);`
-- Defined: `kernel.h:546`
+- Defined: `kernel.h:557`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### pcspk_off (function) `void pcspk_off(void);`
-- Defined: `kernel.h:547`
+- Defined: `kernel.h:558`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### pcspk_set_volume (function) `void pcspk_set_volume(unsigned volume);`
-- Defined: `kernel.h:548`
+- Defined: `kernel.h:559`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### pcspk_get_volume (function) `unsigned pcspk_get_volume(void);`
-- Defined: `kernel.h:549`
+- Defined: `kernel.h:560`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### rtc_read_tod (function) `int rtc_read_tod(int *hour, int *min, int *sec);`
-- Defined: `kernel.h:552`
-- Doc: extern char ramdisk_start[]; extern char ramdisk_end[]; /* ========== Kernel clock ========== unsigned long ktime_ms(voi
+- Defined: `kernel.h:563`
+- Doc: extern char ramdisk_end[]; extern char ramdisk_size[]; /* ========== Kernel clock ========== unsigned long ktime_ms(void
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ide_init (function) `void ide_init(void);`
-- Defined: `kernel.h:555`
+- Defined: `kernel.h:566`
 - Doc: /* ========== Kernel clock ========== unsigned long ktime_ms(void); /* ========== PC speaker ========== void     pcspk_i
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ide_read_sectors (function) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);`
-- Defined: `kernel.h:556`
+- Defined: `kernel.h:567`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ide_write_sectors (function) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);`
-- Defined: `kernel.h:557`
+- Defined: `kernel.h:568`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ide_read_sector (function) `int ide_read_sector(unsigned int lba, void *buf);`
-- Defined: `kernel.h:558`
+- Defined: `kernel.h:569`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ide_write_sector (function) `int ide_write_sector(unsigned int lba, const void *buf);`
-- Defined: `kernel.h:559`
+- Defined: `kernel.h:570`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ide_total_sectors (function) `unsigned int ide_total_sectors(void);`
-- Defined: `kernel.h:560`
+- Defined: `kernel.h:571`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ide_present (function) `int ide_present(void);`
-- Defined: `kernel.h:561`
+- Defined: `kernel.h:572`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### block_init (function) `void block_init(void);`
-- Defined: `kernel.h:564`
+- Defined: `kernel.h:575`
 - Doc: /* ========== RTC time-of-day ========== int rtc_read_tod(int *hour, int *min, int *sec); /* ========== IDE driver =====
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### block_read (function) `int block_read(unsigned int block_num, void *buf);`
-- Defined: `kernel.h:565`
+- Defined: `kernel.h:576`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### block_write (function) `int block_write(unsigned int block_num, const void *buf);`
-- Defined: `kernel.h:566`
+- Defined: `kernel.h:577`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### block_read_multi (function) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);`
-- Defined: `kernel.h:567`
+- Defined: `kernel.h:578`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### block_write_multi (function) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);`
-- Defined: `kernel.h:568`
+- Defined: `kernel.h:579`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### block_total (function) `unsigned int block_total(void);`
-- Defined: `kernel.h:569`
+- Defined: `kernel.h:580`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### k_user_fault_return (function) `void k_user_fault_return(void);`
-- Defined: `kernel.h:572`
+- Defined: `kernel.h:583`
 - Doc: int  ide_read_sector(unsigned int lba, void *buf); int  ide_write_sector(unsigned int lba, const void *buf); unsigned in
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
@@ -3368,8 +3395,13 @@ void kmain(void)`
 - Doc: static unsigned long futex_hash(unsigned long uaddr) { unsigned long word = uaddr >> 2; word ^= word >> 16; word *= FUTE
 - Depends on: `futex.h`, `sync.h`
 
+### futex_linux_cmd (function) `int futex_linux_cmd(long op)`
+- Defined: `kernel/futex.c:84`
+- Doc: futex_table.awaited[cur->pid] = uaddr; if (b->head == WQ_NONE) { b->head = cur->pid; b->tail = cur->pid; } else { procs[
+- Depends on: `futex.h`, `sync.h`
+
 ### futex_wake (function) `long futex_wake(unsigned long uaddr, int n)`
-- Defined: `kernel/futex.c:89`
+- Defined: `kernel/futex.c:97`
 - Doc: Docstring: Wake up to n sleepers waiting on uaddr.  Only entries whose recorded address equals uaddr change state; hash 
 - Depends on: `futex.h`, `sync.h`
 
@@ -3433,59 +3465,59 @@ void kmain(void)`
 
 ### elf_name_copy (function) `static void elf_name_copy(char *out, unsigned out_cap, const char *tab,
                          ...`
-- Defined: `kernel/loader.c:92`
+- Defined: `kernel/loader.c:99`
 - Doc: #define PF_X               1 #define ELF_MAX_SEGMENTS   64 #define ELF_NAME_MAX       64 struct exec_range { unsigned lo
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### elf_load_fail (function) `static void elf_load_fail(void *base, void **sec_addrs, const char *why)`
-- Defined: `kernel/loader.c:106`
+- Defined: `kernel/loader.c:113`
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### elf_load (function) `void *elf_load(void *data, unsigned size)`
-- Defined: `kernel/loader.c:114`
+- Defined: `kernel/loader.c:121`
 - Doc: if (out[i] == '\0') break; i++; } } out[i] = '\0'; } static void elf_load_fail(void *base, void **sec_addrs, const char 
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### apply_exec_relocs (function) `static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
                     ...`
-- Defined: `kernel/loader.c:357`
+- Defined: `kernel/loader.c:360`
 - Doc: char sn[ELF_NAME_MAX]; elf_name_copy(sn, sizeof(sn), strtab, strtab_size, symtab[k].st_name); int alloc = (symtab[k].st_
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### load_exec_elf (function) `void *load_exec_elf(void *data, unsigned size)`
-- Defined: `kernel/loader.c:440`
+- Defined: `kernel/loader.c:443`
 - Depends on: `kernel.h`, `vga_fb.h`
 
-### kprintf (function) `kprintf("load: ET_REL image exceeds %u bytes, refusing", ETREL_IMAGE_MAX);`
-- Defined: `kernel/loader.c:174`
+### kprintf (function) `kprintf("load: ET_REL image exceeds %u bytes, refusing\n", ETREL_IMAGE_MAX);`
+- Defined: `kernel/loader.c:177`
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### kmemset (function) `kmemset(base, 0, total_alloc);`
-- Defined: `kernel/loader.c:190`
+- Defined: `kernel/loader.c:193`
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### kmemcpy (function) `kmemcpy(sec_addrs[i], (char *)data + shdrs[i].sh_offset, (unsigned long)ssize);`
-- Defined: `kernel/loader.c:207`
+- Defined: `kernel/loader.c:210`
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### kfree (function) `kfree(sec_addrs);`
-- Defined: `kernel/loader.c:352`
+- Defined: `kernel/loader.c:355`
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### volatile (function) `__asm__ volatile("mov %%cr3, %0" : "=r"(cur_cr3));`
-- Defined: `kernel/loader.c:488`
+- Defined: `kernel/loader.c:491`
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### mm_user_set_exec (function) `mm_user_set_exec(xr[i].start, xr[i].end, cur_cr3);`
-- Defined: `kernel/loader.c:490`
+- Defined: `kernel/loader.c:493`
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### vma_tree_init (function) `vma_tree_init();`
-- Defined: `kernel/loader.c:499`
+- Defined: `kernel/loader.c:502`
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ### redirect_resume (function) `redirect_resume(was);`
-- Defined: `kernel/loader.c:503`
+- Defined: `kernel/loader.c:506`
 - Depends on: `kernel.h`, `vga_fb.h`
 
 ## kernel/lz4_kernel.c
@@ -3913,204 +3945,219 @@ void kmain(void)`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### __attribute__ (function) `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:75`
+- Defined: `kernel/sched.c:77`
 - Doc: --- TSS (one per CPU) ----  Every CPU that runs ring-3 code needs a private TSS: a timer tick that preempts ring 3 switc
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### __attribute__ (function) `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:96`
+- Defined: `kernel/sched.c:98`
 - Doc: Per-CPU idle stacks: a park into the idle context re-enters * smp_ap_idle_loop here (idle_proc ctx.rsp points at the top
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
+### kstack_paint (function) `static void kstack_paint(uint64_t top, unsigned long size)`
+- Defined: `kernel/sched.c:125`
+- Doc: --- Kernel-stack canary + high-water diagnostic ---- A slot is painted with KSTACK_PAINT at claim time with a KSTACK_CAN
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### kstack_usage (function) `static int kstack_usage(uint64_t top, unsigned long size,
+                        unsigned long *...`
+- Defined: `kernel/sched.c:135`
+- Doc: allocation rate only, never in the ISR path; the report is fail-closed * (a dead canary prints OVERFLOW, never a forged 
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
 ### alloc_kstack (function) `static uint64_t alloc_kstack(void)`
-- Defined: `kernel/sched.c:110`
-- Doc: typedef struct __attribute__((packed)) { uint16_t off_lo; uint16_t sel; uint8_t ist; uint8_t type_attr; uint16_t off_mid
+- Defined: `kernel/sched.c:149`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### free_kstack (function) `static void free_kstack(uint64_t top)`
-- Defined: `kernel/sched.c:121`
+- Defined: `kernel/sched.c:161`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### kstack_report (function) `void kstack_report(void)`
+- Defined: `kernel/sched.c:171`
+- Doc: Serial-observable stack health: per-proc high-water marks plus the legacy 32 KB syscall stack, ending in `kstack: ok` or
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### idt_set (function) `static void idt_set(int vec, void (*h)(void))`
-- Defined: `kernel/sched.c:145`
+- Defined: `kernel/sched.c:223`
 - Doc: Parked trap frames for preempted ring-3 contexts, one slot per pid. The ISR copies the preempted frame here (never onto 
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### idt_init (function) `static void idt_init(void)`
-- Defined: `kernel/sched.c:155`
+- Defined: `kernel/sched.c:233`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### pic_init (function) `static void pic_init(void)`
-- Defined: `kernel/sched.c:168`
+- Defined: `kernel/sched.c:246`
 - Doc: } static void idt_init(void) { kmemset(idt, 0, sizeof(idt)); int i; for (i = 0; i < 256; i++) if (isr_stub_table[i]) idt
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### pit_init (function) `static void pit_init(void)`
-- Defined: `kernel/sched.c:203`
+- Defined: `kernel/sched.c:281`
 - Doc: Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + IRQ4 (COM1, UART IER stays 0 so it never fires) + IRQ5 
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### pic_eoi (function) `static void pic_eoi(int irq)`
-- Defined: `kernel/sched.c:209`
+- Defined: `kernel/sched.c:287`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tss_write_desc (function) `static void tss_write_desc(int cpu)`
-- Defined: `kernel/sched.c:216`
+- Defined: `kernel/sched.c:294`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tss_init (function) `static void tss_init(void)`
-- Defined: `kernel/sched.c:233`
+- Defined: `kernel/sched.c:311`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tss_init_ap (function) `void tss_init_ap(int cpu)`
-- Defined: `kernel/sched.c:265`
+- Defined: `kernel/sched.c:343`
 - Doc: Load this AP's task register.  The BSP wrote every descriptor in tss_init before the APs were woken, so the AP only poin
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### context (function) `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...`
-- Defined: `kernel/sched.c:283`
+- Defined: `kernel/sched.c:361`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### point (function) `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...`
-- Defined: `kernel/sched.c:296`
+- Defined: `kernel/sched.c:374`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_next_locked (function) `static int sched_next_locked(int start, int vm_only)`
-- Defined: `kernel/sched.c:317`
+- Defined: `kernel/sched.c:395`
 - Doc: Fair-share scan with sched_lock HELD.  Returns a claimed (PROC_RUNNING) pid or -1.  vm_only restricts the pick to CLONE_
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_set_nice (function) `int sched_set_nice(int pid, int nice)`
-- Defined: `kernel/sched.c:335`
+- Defined: `kernel/sched.c:413`
 - Doc: for (t = 0; t < MAX_PROCS; t++) { int cand = (start + 1 + t) % MAX_PROCS; unsigned long key; if (procs[cand].state != PR
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### seccomp_deny_one (function) `int seccomp_deny_one(int pid, int n)`
-- Defined: `kernel/sched.c:344`
+- Defined: `kernel/sched.c:422`
 - Doc: procs[best].state = PROC_RUNNING; procs[best].vruntime += 64u + (unsigned long)(procs[best].nice + 20) * 4u; return best
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### seccomp_allow_one (function) `int seccomp_allow_one(int pid, int n)`
-- Defined: `kernel/sched.c:351`
+- Defined: `kernel/sched.c:429`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### seccomp_denied (function) `int seccomp_denied(int pid, int n)`
-- Defined: `kernel/sched.c:358`
+- Defined: `kernel/sched.c:436`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### smp_try_claim_hint (function) `static int smp_try_claim_hint(int pid, int vm_only)`
-- Defined: `kernel/sched.c:367`
+- Defined: `kernel/sched.c:445`
 - Doc: Claim one READY thread for this CPU's idle loop (the AP only claims CLONE_VM threads): marks it RUNNING under lock and i
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### smp_claim_thread_v (function) `static int smp_claim_thread_v(int vm_only)`
-- Defined: `kernel/sched.c:382`
+- Defined: `kernel/sched.c:460`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### smp_ap_idle_loop (function) `void smp_ap_idle_loop(void)`
-- Defined: `kernel/sched.c:422`
+- Defined: `kernel/sched.c:500`
 - Doc: AP idle loop: hlt until a CLONE_VM thread is ready, run it, repeat. Entered once from smp_ap_entry on the AP stub stack;
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_ap_preempt (function) `static void sched_ap_preempt(trap_frame_t *frame)`
-- Defined: `kernel/sched.c:456`
+- Defined: `kernel/sched.c:534`
 - Doc: AP timer preemption: time-slice the AP's current CLONE_VM thread with the next READY one.  An idle AP (cur_pid -1) needs
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### smp_any_ap_idle (function) `static int smp_any_ap_idle(void)`
-- Defined: `kernel/sched.c:509`
+- Defined: `kernel/sched.c:587`
 - Doc: True when some AP is idle.  The BSP tick uses this to leave freshly parked CLONE_VM threads unclaimed: the idle AP's nex
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rlimit_cpu_exceeded (function) `int rlimit_cpu_exceeded(int pid)`
-- Defined: `kernel/sched.c:535`
+- Defined: `kernel/sched.c:613`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### isr_dispatch (function) `void isr_dispatch(int vector, trap_frame_t *frame)`
-- Defined: `kernel/sched.c:556`
+- Defined: `kernel/sched.c:634`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### BSP (function) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
-- Defined: `kernel/sched.c:833`
+- Defined: `kernel/sched.c:911`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### proc_get (function) `proc_t *proc_get(int pid)`
-- Defined: `kernel/sched.c:853`
+- Defined: `kernel/sched.c:931`
 - Doc: serial_puts("  [recovering: ring-3 user fault, returning EFAULT]\n"); k_user_fault_return(); __builtin_unreachable(); } 
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### proc_create (function) `int proc_create(const char *name, int parent_pid)`
-- Defined: `kernel/sched.c:859`
+- Defined: `kernel/sched.c:937`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_park_as_returned (function) `static void sched_park_as_returned(proc_t *cur)`
-- Defined: `kernel/sched.c:934`
+- Defined: `kernel/sched.c:1012`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### schedule (function) `void schedule(void)`
-- Defined: `kernel/sched.c:943`
+- Defined: `kernel/sched.c:1021`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### yield (function) `void yield(void)`
-- Defined: `kernel/sched.c:1017`
+- Defined: `kernel/sched.c:1095`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### do_exit (function) `void do_exit(int code)`
-- Defined: `kernel/sched.c:1032`
+- Defined: `kernel/sched.c:1110`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### do_thread_spawn (function) `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)`
-- Defined: `kernel/sched.c:1072`
+- Defined: `kernel/sched.c:1150`
 - Doc: frame is ambiguous, this one starts cleanly at fn(arg) on the given stack:  child RIP = fn, child RSP = stack, child RDI
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### do_waitpid (function) `int do_waitpid(int pid)`
-- Defined: `kernel/sched.c:1201`
+- Defined: `kernel/sched.c:1279`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### do_kill (function) `int do_kill(int pid)`
-- Defined: `kernel/sched.c:1235`
+- Defined: `kernel/sched.c:1313`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### timer_tick (function) `void timer_tick(void)`
-- Defined: `kernel/sched.c:1242`
+- Defined: `kernel/sched.c:1320`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_wait_cmd (function) `static void mouse_wait_cmd(void)`
-- Defined: `kernel/sched.c:1246`
+- Defined: `kernel/sched.c:1324`
 - Doc: schedule(); } } int do_kill(int pid) { proc_t *p = proc_get(pid); if (!p) return -1; do_exit(-1); return 0; } void timer
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_wait_data (function) `static void mouse_wait_data(void)`
-- Defined: `kernel/sched.c:1252`
+- Defined: `kernel/sched.c:1330`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_write (function) `static void mouse_write(unsigned char data)`
-- Defined: `kernel/sched.c:1259`
+- Defined: `kernel/sched.c:1337`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_read (function) `static unsigned char mouse_read(void)`
-- Defined: `kernel/sched.c:1266`
+- Defined: `kernel/sched.c:1344`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_hw_init (function) `static void mouse_hw_init(void)`
-- Defined: `kernel/sched.c:1271`
+- Defined: `kernel/sched.c:1349`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_disable (function) `void mouse_disable(void)`
-- Defined: `kernel/sched.c:1322`
+- Defined: `kernel/sched.c:1400`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_enable (function) `void mouse_enable(void)`
-- Defined: `kernel/sched.c:1324`
+- Defined: `kernel/sched.c:1402`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_init (function) `void sched_init(void)`
-- Defined: `kernel/sched.c:1325`
+- Defined: `kernel/sched.c:1403`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sb16_poll (function) `sb16_poll();`
@@ -4129,187 +4176,199 @@ void kmain(void)`
 - Defined: `kernel/sched.c:52`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
+### PROC_KSTACK_OFF (function) `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both immediates * from the sched.h macros via STR(), so this assert is the single check: * if it fires, the struct changed and the macros in s`
+- Defined: `kernel/sched.c:58`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
 ### descriptor (function) `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 == GDT64_SMP_BYTES, "GDT SMP size");`
-- Defined: `kernel/sched.c:63`
+- Defined: `kernel/sched.c:65`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### here (function) `* smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */ static char ap_idle_stack[MAX_CPUS][4096] __attribute__((aligned(16)));`
-- Defined: `kernel/sched.c:88`
+- Defined: `kernel/sched.c:90`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
-### kmemset (function) `kmemset(idt, 0, sizeof(idt));`
-- Defined: `kernel/sched.c:157`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
-
-### hal_outb (function) `hal_outb(HAL_PIC1_CMD, 0x11);`
+### kprintf (function) `kprintf(" pid=%d (%s) stack foreign top=0x%lx\n", i, procs[i].name, (unsigned long)top);`
 - Defined: `kernel/sched.c:187`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
+### kmemset (function) `kmemset(idt, 0, sizeof(idt));`
+- Defined: `kernel/sched.c:235`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### hal_outb (function) `hal_outb(HAL_PIC1_CMD, 0x11);`
+- Defined: `kernel/sched.c:265`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
 ### IRQ4 (function) `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit set * means masked, so 0xC8 masks only IRQ3, IRQ6 and IRQ7. Masking IRQ5 * here starv`
-- Defined: `kernel/sched.c:192`
+- Defined: `kernel/sched.c:270`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### hal_pic_eoi (function) `hal_pic_eoi(irq);`
-- Defined: `kernel/sched.c:211`
+- Defined: `kernel/sched.c:289`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### wrmsr (function) `wrmsr(MSR_KERNEL_GS_BASE, (unsigned long)this_cpu());`
-- Defined: `kernel/sched.c:287`
+- Defined: `kernel/sched.c:365`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### kmemcpy (function) `kmemcpy(dst, frame, sizeof(trap_frame_t));`
-- Defined: `kernel/sched.c:304`
+- Defined: `kernel/sched.c:382`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### spin_lock_irqsave (function) `spin_lock_irqsave(&sched_lock, &flags);`
-- Defined: `kernel/sched.c:372`
+- Defined: `kernel/sched.c:450`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### spin_unlock_irqrestore (function) `spin_unlock_irqrestore(&sched_lock, flags);`
-- Defined: `kernel/sched.c:379`
+- Defined: `kernel/sched.c:457`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rq_note_poll (function) `rq_note_poll(me);`
-- Defined: `kernel/sched.c:400`
+- Defined: `kernel/sched.c:478`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### __sync_fetch_and_add (function) `__sync_fetch_and_add(&smp_idle_polls[cpu], 1);`
-- Defined: `kernel/sched.c:431`
+- Defined: `kernel/sched.c:509`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_rearm_kgs (function) `sched_rearm_kgs();`
-- Defined: `kernel/sched.c:443`
+- Defined: `kernel/sched.c:521`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### switch_to (function) `switch_to(&ap_idle_proc[cpu], next);`
-- Defined: `kernel/sched.c:444`
+- Defined: `kernel/sched.c:522`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rlimit_cpu_tick (function) `rlimit_cpu_tick(current_pid);`
-- Defined: `kernel/sched.c:460`
+- Defined: `kernel/sched.c:538`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_save_preempt (function) `sched_save_preempt(cur, frame, 0);`
-- Defined: `kernel/sched.c:461`
+- Defined: `kernel/sched.c:539`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### switch_to_notrap (function) `switch_to_notrap(cur, &ap_idle_proc[me]);`
-- Defined: `kernel/sched.c:490`
+- Defined: `kernel/sched.c:568`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tick_run_audio (function) `tick_run_audio();`
-- Defined: `kernel/sched.c:578`
+- Defined: `kernel/sched.c:656`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rcu_note_tick (function) `rcu_note_tick(cpu->cpu_id);`
-- Defined: `kernel/sched.c:579`
+- Defined: `kernel/sched.c:657`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rcu_poll (function) `rcu_poll();`
-- Defined: `kernel/sched.c:580`
+- Defined: `kernel/sched.c:658`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### hal_lapic_eoi (function) `hal_lapic_eoi();`
-- Defined: `kernel/sched.c:590`
+- Defined: `kernel/sched.c:668`
 - Doc: AP: LAPIC EOI (LAPIC_EOI_OFF 0x0B0, named in smp.c) * instead of PIC EOI; also count it for the `smp` builtin.
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### syscall (function) `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid math faults. */ sched_rearm_kgs();`
-- Defined: `kernel/sched.c:656`
+- Defined: `kernel/sched.c:734`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sb16_irq (function) `sb16_irq();`
-- Defined: `kernel/sched.c:734`
+- Defined: `kernel/sched.c:812`
 - Doc: mouse_phase = 0; mouse_state.buttons = mouse_packet[0] & HAL_MOUSE_BUTTON_MASK; int dx = (int)(signed char)mouse_packet[
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### serial_puts (function) `serial_puts("EXCEPTION ");`
-- Defined: `kernel/sched.c:750`
+- Defined: `kernel/sched.c:828`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### k_user_fault_return (function) `k_user_fault_return();`
-- Defined: `kernel/sched.c:840`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
-
-### __builtin_unreachable (function) `__builtin_unreachable();`
-- Defined: `kernel/sched.c:841`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
-
-### spin_lock (function) `spin_lock(&sched_lock);`
-- Defined: `kernel/sched.c:861`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
-
-### kstrncpy (function) `kstrncpy(p->name, name, sizeof(p->name) - 1);`
-- Defined: `kernel/sched.c:882`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
-
-### spin_unlock (function) `spin_unlock(&sched_lock);`
 - Defined: `kernel/sched.c:918`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
+### __builtin_unreachable (function) `__builtin_unreachable();`
+- Defined: `kernel/sched.c:919`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### spin_lock (function) `spin_lock(&sched_lock);`
+- Defined: `kernel/sched.c:939`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### kstrncpy (function) `kstrncpy(p->name, name, sizeof(p->name) - 1);`
+- Defined: `kernel/sched.c:960`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### spin_unlock (function) `spin_unlock(&sched_lock);`
+- Defined: `kernel/sched.c:996`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
 ### PROC_SWITCHING (function) `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A BLOCKED/ZOMBIE * thread keeps its state (no one claims it until a wake). */ switch_save_only(cu`
-- Defined: `kernel/sched.c:962`
+- Defined: `kernel/sched.c:1040`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### spin_unlock_keep_irq (function) `spin_unlock_keep_irq(&sched_lock);`
-- Defined: `kernel/sched.c:969`
+- Defined: `kernel/sched.c:1047`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### switch_save_only (function) `switch_save_only(cur);`
-- Defined: `kernel/sched.c:1010`
+- Defined: `kernel/sched.c:1088`
 - Doc: Capture the continuation while the thread is still PROC_SWITCHING (never claimable), publish it as READY only once the c
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### returns (function) `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
-- Defined: `kernel/sched.c:1026`
+- Defined: `kernel/sched.c:1104`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rq_enqueue (function) `rq_enqueue(home, pid);`
-- Defined: `kernel/sched.c:1130`
+- Defined: `kernel/sched.c:1208`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### outb (function) `outb(0x64, 0xD4);`
-- Defined: `kernel/sched.c:1262`
+- Defined: `kernel/sched.c:1340`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### inb (function) `return inb(0x60);`
-- Defined: `kernel/sched.c:1269`
+- Defined: `kernel/sched.c:1347`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### wrong (function) `* later packet is framed wrong (a left press reads back as bit 1, * motion warps), permanently. */ mouse_write(0xFF);`
-- Defined: `kernel/sched.c:1294`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
-
-### kstrcpy (function) `kstrcpy(procs[0].name, "kernel");`
 - Defined: `kernel/sched.c:1372`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
+### it (function) `* it (SPAWN/exec point proc 0 here transiently);`
+- Defined: `kernel/sched.c:1412`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### kstrcpy (function) `kstrcpy(procs[0].name, "kernel");`
+- Defined: `kernel/sched.c:1455`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
 ### zeroed (function) `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe pre-mouse-init. */ idt_init();`
-- Defined: `kernel/sched.c:1381`
+- Defined: `kernel/sched.c:1464`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### futex_init (function) `futex_init();`
-- Defined: `kernel/sched.c:1385`
+- Defined: `kernel/sched.c:1468`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rq_init (function) `rq_init();`
-- Defined: `kernel/sched.c:1386`
+- Defined: `kernel/sched.c:1469`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rcu_init (function) `rcu_init();`
-- Defined: `kernel/sched.c:1387`
+- Defined: `kernel/sched.c:1470`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tick_reset (function) `tick_reset();`
-- Defined: `kernel/sched.c:1388`
+- Defined: `kernel/sched.c:1471`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tick_register_audio (function) `tick_register_audio(sched_tick_audio, 0);`
-- Defined: `kernel/sched.c:1389`
+- Defined: `kernel/sched.c:1472`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tick_register_desktop (function) `tick_register_desktop(sched_tick_desktop, 0);`
-- Defined: `kernel/sched.c:1390`
+- Defined: `kernel/sched.c:1473`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ## kernel/scrollback.c
@@ -4582,67 +4641,67 @@ static void shell_hist_na...`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### etrel_path_trusted (function) `static int etrel_path_trusted(const char *full)`
-- Defined: `kernel/shell.c:1079`
+- Defined: `kernel/shell.c:1084`
 - Doc: ET_REL trust gate (boyscout fix for ring-0 .o without validation): relocatables execute as kernel extensions, so only th
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_run_elf_buf_path (function) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...`
-- Defined: `kernel/shell.c:1090`
+- Defined: `kernel/shell.c:1098`
 - Doc: Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`. argv[0] is the program name the program sees. 
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_run_elf_file (function) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-- Defined: `kernel/shell.c:1115`
+- Defined: `kernel/shell.c:1123`
 - Doc: Load the ramdisk file at `full` and run it as an ELF. Returns the exit * code, or -1 when the file cannot be read or loa
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_run_elf_minifs (function) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1128`
+- Defined: `kernel/shell.c:1136`
 - Doc: Load a Linux ELF from the MiniFS disk and run it (preserves the historical * `run` fallback when a name is not on the ra
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_run_cvm (function) `static int shell_run_cvm(const char *full, int argc, char **argv)`
-- Defined: `kernel/shell.c:1178`
+- Defined: `kernel/shell.c:1186`
 - Doc: Run a `.cvm` module at the resolved path `full`. The interpreter is loaded from the ramdisk on first use and cached. arg
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_run_file (function) `static int shell_run_file(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1207`
+- Defined: `kernel/shell.c:1222`
 - Doc: Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the interpreter, ELF files by content through the matching l
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_run_any (function) `int shell_run_any(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1244`
+- Defined: `kernel/shell.c:1259`
 - Doc: Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver. argv[
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### gfx_parse_int (function) `static int gfx_parse_int(const char *s, int *out)`
-- Defined: `kernel/shell.c:1304`
+- Defined: `kernel/shell.c:1319`
 - Doc: --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives, but a
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### gfx_read_palette (function) `static void gfx_read_palette(unsigned char pal[768])`
-- Defined: `kernel/shell.c:1324`
+- Defined: `kernel/shell.c:1339`
 - Doc: Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation). U
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_cmd_gfx (function) `static void shell_cmd_gfx(int argc, char **argv)`
-- Defined: `kernel/shell.c:1330`
+- Defined: `kernel/shell.c:1345`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_cmd_wm (function) `static void shell_cmd_wm(int argc, char **argv)`
-- Defined: `kernel/shell.c:1483`
+- Defined: `kernel/shell.c:1498`
 - Doc: `wm <op>` — window-manager operations on the terminal window, exposed as a shell builtin so the tilin-WM behaviour (mini
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_cmd_hash (function) `static void shell_cmd_hash(int argc, char **argv)`
-- Defined: `kernel/shell.c:1504`
+- Defined: `kernel/shell.c:1519`
 - Doc: `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file never
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_exec_builtin (function) `void shell_exec_builtin(int argc, char **argv)`
-- Defined: `kernel/shell.c:1518`
+- Defined: `kernel/shell.c:1533`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### volatile (function) `__asm__ volatile("pause");`
@@ -4722,91 +4781,95 @@ static void shell_hist_na...`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### k_run_rel (function) `return k_run_rel(entry, argc, argv);`
-- Defined: `kernel/shell.c:1103`
+- Defined: `kernel/shell.c:1111`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### k_exec_user (function) `return k_exec_user(entry, argc, argv);`
-- Defined: `kernel/shell.c:1108`
+- Defined: `kernel/shell.c:1116`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### context (function) `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);`
-- Defined: `kernel/shell.c:1267`
+- Defined: `kernel/shell.c:1282`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### outb (function) `outb(0x3C7, 0);`
-- Defined: `kernel/shell.c:1326`
+- Defined: `kernel/shell.c:1341`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### kfwrite (function) `kfwrite(hdr, 1, (unsigned long)n, f);`
-- Defined: `kernel/shell.c:1440`
+- Defined: `kernel/shell.c:1455`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### kfclose (function) `kfclose(f);`
-- Defined: `kernel/shell.c:1459`
+- Defined: `kernel/shell.c:1474`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### XXH64_reset (function) `XXH64_reset(&h, 0);`
-- Defined: `kernel/shell.c:1512`
+- Defined: `kernel/shell.c:1527`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### vga_clear (function) `vga_clear();`
-- Defined: `kernel/shell.c:1555`
+- Defined: `kernel/shell.c:1575`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_cmd_edit (function) `shell_cmd_edit(argc, argv);`
-- Defined: `kernel/shell.c:1561`
+- Defined: `kernel/shell.c:1581`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_report (function) `shell_report("ls: name too long: ", argv[1]);`
-- Defined: `kernel/shell.c:1567`
+- Defined: `kernel/shell.c:1587`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### minifs_stat (function) `minifs_stat(de.inode, &st);`
-- Defined: `kernel/shell.c:1677`
+- Defined: `kernel/shell.c:1697`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### ramdisk_delete (function) `ramdisk_delete(f);`
-- Defined: `kernel/shell.c:1717`
+- Defined: `kernel/shell.c:1737`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### net_cmd_status (function) `net_cmd_status();`
-- Defined: `kernel/shell.c:1792`
+- Defined: `kernel/shell.c:1858`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### net_cmd_ping (function) `net_cmd_ping(argv[2]);`
-- Defined: `kernel/shell.c:1795`
+- Defined: `kernel/shell.c:1861`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### net_cmd_dns (function) `net_cmd_dns(argv[2]);`
-- Defined: `kernel/shell.c:1798`
+- Defined: `kernel/shell.c:1864`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### rq_stats (function) `rq_stats(c, &hits, &steals, &drops);`
-- Defined: `kernel/shell.c:1820`
+- Defined: `kernel/shell.c:1886`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### pcspk_set_volume (function) `pcspk_set_volume(v);`
-- Defined: `kernel/shell.c:1884`
+- Defined: `kernel/shell.c:1950`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+
+### kstack_report (function) `kstack_report();`
+- Defined: `kernel/shell.c:1962`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### sb16_counters (function) `sb16_counters(&c);`
-- Defined: `kernel/shell.c:1897`
+- Defined: `kernel/shell.c:1966`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_cmd_unzip (function) `shell_cmd_unzip(argc, argv);`
-- Defined: `kernel/shell.c:1916`
+- Defined: `kernel/shell.c:1985`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_cmd_zip (function) `shell_cmd_zip(argc, argv);`
-- Defined: `kernel/shell.c:1919`
+- Defined: `kernel/shell.c:1988`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_report_exit (function) `else shell_report_exit(ret);`
-- Defined: `kernel/shell.c:1935`
+- Defined: `kernel/shell.c:2004`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_cmd_sh (function) `shell_cmd_sh(argc, argv);`
-- Defined: `kernel/shell.c:1939`
+- Defined: `kernel/shell.c:2008`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ## kernel/string.c
@@ -4815,67 +4878,67 @@ static void shell_hist_na...`
 - Defined: `kernel/string.c:16`
 - Doc: string.c -- Kernel string and memory functions.  Pure functions with no dependencies beyond their own prototypes in kern
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrcpy (function) `char *kstrcpy(char *dst, const char *src)`
 - Defined: `kernel/string.c:22`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncpy (function) `char *kstrncpy(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:28`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncat (function) `char *kstrncat(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:34`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrcmp (function) `int kstrcmp(const char *a, const char *b)`
 - Defined: `kernel/string.c:42`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncmp (function) `int kstrncmp(const char *a, const char *b, unsigned long n)`
 - Defined: `kernel/string.c:47`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrchr (function) `char *kstrchr(const char *s, int c)`
 - Defined: `kernel/string.c:52`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrstr (function) `char *kstrstr(const char *hay, const char *ndl)`
 - Defined: `kernel/string.c:57`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemcpy (function) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:67`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemset (function) `void *kmemset(void *dst, int c, unsigned long n)`
 - Defined: `kernel/string.c:74`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemcmp (function) `int kmemcmp(const void *a, const void *b, unsigned long n)`
 - Defined: `kernel/string.c:80`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemmove (function) `void *kmemmove(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:86`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ### katol (function) `long katol(const char *s)`
 - Defined: `kernel/string.c:94`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tls_port.h`, `tls_test.c`
 
 ## kernel/symtab.c
 
@@ -5041,582 +5104,575 @@ static void shell_hist_na...`
 ## kernel/syscalls.c
 
 ### sys_minios_dns (function) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:73`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:72`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
-### sys_minios_tls_handshake (function) `static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:79`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+### sys_minios_tls_retired (function) `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:78`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
-### sys_minios_tls_send (function) `static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:89`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
-
-### sys_minios_tls_recv (function) `static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:99`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+### sys_linux_futex (function) `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:85`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_time (function) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:109`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:114`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_kbd (function) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:113`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:118`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_palette (function) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:128`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:133`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_kbd_raw (function) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:140`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:145`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_vga_mode (function) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:146`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:151`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_pcspk_init (function) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:153`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:158`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_pcspk_tone (function) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:157`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:162`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_doom_frame (function) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:161`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:166`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_rtc (function) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:165`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:170`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_fb_info (function) `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:179`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:184`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_pcspk_vol (function) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:191`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:196`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_spawn (function) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:199`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:204`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_lz4_compress (function) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:210`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:215`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_lz4_decompress (function) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:223`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:228`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_mouse (function) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:237`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:242`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_nk_frame (function) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:246`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:251`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_open (function) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:256`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:261`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_submit (function) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:261`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:266`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_gfx_title (function) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:269`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:274`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_pump (function) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:283`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:288`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_stream_open (function) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:287`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:292`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_stream_close (function) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:291`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:296`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_stream_submit (function) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:295`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:300`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_stream_vol (function) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:303`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:308`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_clone (function) `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:313`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:318`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_thread_spawn (function) `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:321`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:326`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_futex_wait (function) `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:331`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:336`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_futex_wake (function) `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:337`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:342`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### batch_kdispatch (function) `static long batch_kdispatch(uint32_t opcode)`
-- Defined: `kernel/syscalls.c:346`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:351`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### DOOM_FRAME (function) `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
 static long sys_minios_gfx_prese...`
-- Defined: `kernel/syscalls.c:361`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:366`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_seccomp (function) `static long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:379`
+- Defined: `kernel/syscalls.c:384`
 - Doc: Seccomp-basic (238): a1 = op (1 deny-one, 2 allow-one, 3 deny-all), a2 = syscall number (ops 1-2). Applies to current_pi
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_nice (function) `static long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:395`
+- Defined: `kernel/syscalls.c:400`
 - Doc: int pid = current_pid; if (a1 == SECCOMP_OP_DENY_ONE) return seccomp_deny_one(pid, (int)a2); if (a1 == SECCOMP_OP_ALLOW_
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_getc_raw (function) `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:412`
+- Defined: `kernel/syscalls.c:417`
 - Doc: Raw keystroke read for fullscreen ring-3 programs (vedit): one byte from the serial + PS/2 multiplexer with no line buff
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_submit_batch (function) `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:417`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:422`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_rlimit (function) `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:441`
+- Defined: `kernel/syscalls.c:446`
 - Doc: RLIMIT/cgroups-lite (240): a1 = op (SET/GET), a2 = resource (AS/CPU/NOFILE), a3 = value for SET. Values are bytes, ticks
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### syscall_trace_enabled (function) `long syscall_trace_enabled(void)`
-- Defined: `kernel/syscalls.c:518`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:523`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### syscall_trace_set (function) `void syscall_trace_set(int on)`
-- Defined: `kernel/syscalls.c:520`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:525`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_write (function) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:565`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:570`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_writev (function) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:575`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:580`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### do_open_path (function) `static long do_open_path(const char *path, long flags)`
-- Defined: `kernel/syscalls.c:596`
+- Defined: `kernel/syscalls.c:601`
 - Doc: return EFAULT; for (k = 0; k < cnt; k++) { unsigned long j; if (iov[k].iov_len > 0 && !user_range_ok((unsigned long)iov[
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_open (function) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:620`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:625`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_close (function) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:625`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:630`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_lseek (function) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:636`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:641`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_brk (function) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:646`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:651`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_mmap (function) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:668`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:673`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_munmap (function) `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:718`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:723`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_mprotect (function) `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:736`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:741`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_sigaction (function) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:741`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:746`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_sigprocmask (function) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:746`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:751`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_ioctl (function) `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:751`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:756`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_access (function) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:756`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:761`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_yield (function) `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:778`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:783`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_getpid (function) `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:783`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:788`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_socket (function) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:788`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:793`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_connect (function) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:793`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:798`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_sendto (function) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:799`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:804`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_recvfrom (function) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:804`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:809`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_shutdown (function) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:809`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:814`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_poll (function) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:814`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:819`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_fork (function) `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:821`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:826`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_vfork (function) `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:826`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:831`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_execve (function) `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:831`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:836`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_exit (function) `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:853`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:858`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_wait4 (function) `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:858`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:863`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_kill (function) `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:863`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:868`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_flock (function) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:868`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:873`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_getcwd (function) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:873`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:878`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_unlink (function) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:885`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:890`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_readlink (function) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:898`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:903`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_fstat (function) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:903`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:908`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_gettimeofday (function) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:923`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:928`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_arch_prctl (function) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:938`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:949`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_gettid (function) `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:950`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:961`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### trace_is_noisy (function) `static int trace_is_noisy(long n)`
-- Defined: `kernel/syscalls.c:998`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1009`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### ksyscall (function) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:1003`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1014`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### user_range_ok (function) `int user_range_ok(unsigned long p, unsigned long len)`
-- Defined: `kernel/syscalls.c:1022`
+- Defined: `kernel/syscalls.c:1036`
 - Doc: --- User-pointer validation --------------------------------------------- The syscall boundary is the hardened edge betw
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
-### user_str_ok (function) `int user_str_ok(unsigned long p, unsigned long maxlen)`
-- Defined: `kernel/syscalls.c:1028`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+### products (function) `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
+ * pre-bounded against (END-...`
+- Defined: `kernel/syscalls.c:1054`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### ksyscall_dispatch (function) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:1036`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1066`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### tools (function) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
-- Defined: `kernel/syscalls.c:1192`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1227`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### by (function) `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to progs/minios_abi.h * 2. Implementing a static long sys_*(long a1, ..., long a6) function here `
-- Defined: `kernel/syscalls.c:50`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:49`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### k_syscall_spawn (function) `static int k_syscall_spawn(const char *path, const char *redirect, int child_argc, const char **child_argv);`
-- Defined: `kernel/syscalls.c:70`
+- Defined: `kernel/syscalls.c:69`
 - Doc: define MINIOS_SYSCALL_BASE  200 define MINIOS_SYSCALL_COUNT 128
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### net_sys_dns (function) `return net_sys_dns(a1);`
-- Defined: `kernel/syscalls.c:77`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:76`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
-### tls_sys_handshake (function) `return tls_sys_handshake(a1, a2);`
-- Defined: `kernel/syscalls.c:86`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
-
-### tls_sys_send (function) `return tls_sys_send(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:96`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
-
-### tls_sys_recv (function) `return tls_sys_recv(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:106`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+### futex_wake (function) `return futex_wake(uaddr, (int)n);`
+- Defined: `kernel/syscalls.c:107`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### volatile (function) `__asm__ volatile("inb $0x60, %0" : "=a"(sc));`
-- Defined: `kernel/syscalls.c:120`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:125`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### kbd_q_pop (function) `return kbd_q_pop();`
-- Defined: `kernel/syscalls.c:126`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:131`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### SANITIZE_RANGE (function) `SANITIZE_RANGE(a1, 768);`
-- Defined: `kernel/syscalls.c:133`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:138`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### vga_fb_set_gfx_palette (function) `vga_fb_set_gfx_palette(tmp);`
-- Defined: `kernel/syscalls.c:137`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:142`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### kbd_raw_mode_set (function) `kbd_raw_mode_set((int)a1);`
-- Defined: `kernel/syscalls.c:142`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:147`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### kbd_flush_all (function) `kbd_flush_all();`
-- Defined: `kernel/syscalls.c:143`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:148`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### vga_mode_set (function) `vga_mode_set((int)a1);`
-- Defined: `kernel/syscalls.c:148`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:153`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### vga_fb_set_gfx_mode (function) `vga_fb_set_gfx_mode((int)a1);`
-- Defined: `kernel/syscalls.c:150`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:155`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### pcspk_init (function) `pcspk_init();`
-- Defined: `kernel/syscalls.c:155`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:160`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### pcspk_tone (function) `pcspk_tone((unsigned)a1);`
-- Defined: `kernel/syscalls.c:159`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:164`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### vga_fb_blit_gfx_window (function) `vga_fb_blit_gfx_window();`
-- Defined: `kernel/syscalls.c:163`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:168`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### pcspk_set_volume (function) `pcspk_set_volume((unsigned)v);`
-- Defined: `kernel/syscalls.c:196`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:201`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### vga_fb_blit_nk_window (function) `vga_fb_blit_nk_window();`
-- Defined: `kernel/syscalls.c:248`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:258`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### SANITIZE_LEN_NEG (function) `SANITIZE_LEN_NEG(len);`
-- Defined: `kernel/syscalls.c:265`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:270`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sb16_pcm_submit (function) `return sb16_pcm_submit(pcm, (unsigned)len);`
-- Defined: `kernel/syscalls.c:267`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:272`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sb16_pump (function) `sb16_pump();`
-- Defined: `kernel/syscalls.c:285`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:290`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sb16_stream_open (function) `return sb16_stream_open();`
-- Defined: `kernel/syscalls.c:289`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:294`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sb16_stream_close (function) `sb16_stream_close((int)a1);`
-- Defined: `kernel/syscalls.c:293`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:298`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sb16_stream_submit (function) `return sb16_stream_submit((int)a1, pcm, (unsigned)len);`
-- Defined: `kernel/syscalls.c:301`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:306`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sb16_stream_volume (function) `sb16_stream_volume((int)a1, (unsigned char)a2);`
-- Defined: `kernel/syscalls.c:305`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:310`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### space (function) `* CLONE_VM: share address space (same CR3). * CLONE_FILES: share fd table. * Returns child PID to parent, 0 to child. */ extern long do_clone(long flags, long newsp);`
-- Defined: `kernel/syscalls.c:309`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:314`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### do_clone (function) `return do_clone(flags, newsp);`
-- Defined: `kernel/syscalls.c:316`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:321`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### do_thread_spawn (function) `extern long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
-- Defined: `kernel/syscalls.c:318`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:323`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### futex_wait (function) `return futex_wait((unsigned long)a1, (int)a2);`
-- Defined: `kernel/syscalls.c:335`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
-
-### futex_wake (function) `return futex_wake((unsigned long)a1, (int)n);`
-- Defined: `kernel/syscalls.c:344`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:340`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### yield (function) `yield();`
-- Defined: `kernel/syscalls.c:350`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:355`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### SANITIZE_COPY_IN (function) `SANITIZE_COPY_IN(kops, a1, count, sizeof(batch_op_t));`
-- Defined: `kernel/syscalls.c:427`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:432`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### kprintf (function) `kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);`
-- Defined: `kernel/syscalls.c:545`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:550`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### vga_putc (function) `vga_putc((char)c);`
-- Defined: `kernel/syscalls.c:553`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:558`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### kfclose (function) `kfclose(kfd_table[a1]);`
-- Defined: `kernel/syscalls.c:631`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:636`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### kfseek (function) `kfseek(kfd_table[a1], a2, (int)a3);`
-- Defined: `kernel/syscalls.c:640`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:645`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### spin_lock_irqsave (function) `spin_lock_irqsave(&mm_lock, &flags);`
-- Defined: `kernel/syscalls.c:652`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:657`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### spin_unlock_irqrestore (function) `spin_unlock_irqrestore(&mm_lock, flags);`
-- Defined: `kernel/syscalls.c:658`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:663`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### vma_tree_delete (function) `vma_tree_delete(&vma_free_root, best->base);`
-- Defined: `kernel/syscalls.c:702`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:707`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### vma_tree_insert (function) `vma_tree_insert(&vma_live_root, addr, n);`
-- Defined: `kernel/syscalls.c:705`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:710`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### net_sys_socket (function) `return net_sys_socket(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:791`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:796`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### net_sys_connect (function) `return net_sys_connect(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:797`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:802`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### net_sys_sendto (function) `return net_sys_sendto(a1, a2, a3, a4, a5, a6);`
-- Defined: `kernel/syscalls.c:802`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:807`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### net_sys_recvfrom (function) `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);`
-- Defined: `kernel/syscalls.c:807`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:812`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### net_sys_shutdown (function) `return net_sys_shutdown(a1, a2);`
-- Defined: `kernel/syscalls.c:812`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:817`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### net_sys_poll (function) `return net_sys_poll(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:819`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:824`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### do_exit (function) `do_exit((int)code);`
-- Defined: `kernel/syscalls.c:846`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:851`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### klongjmp (function) `klongjmp(&exec_return, 1);`
-- Defined: `kernel/syscalls.c:850`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:855`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### do_proc_exit (function) `return do_proc_exit(a1);`
-- Defined: `kernel/syscalls.c:856`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:861`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### do_waitpid (function) `return do_waitpid((int)a1);`
-- Defined: `kernel/syscalls.c:861`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:866`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### do_kill (function) `return do_kill((int)a1);`
-- Defined: `kernel/syscalls.c:866`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:871`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### rtc_wall_seconds (function) `rtc_wall_seconds(&sec);`
+- Defined: `kernel/syscalls.c:943`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### wrmsr (function) `wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);`
-- Defined: `kernel/syscalls.c:945`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:956`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### Discipline (function) `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok is ONLY for exact-size * buffers (sizeof(int), 144-byte stat, fixed PCM length);`
+- Defined: `kernel/syscalls.c:1049`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### wm_clear_close (function) `wm_clear_close();`
-- Defined: `kernel/syscalls.c:1039`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1069`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### LIMITATION (function) `* * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from * a ring-3 interpreter (lua/micropython) must save the parent's user window, * whose full span cannot fit in the kernel h`
-- Defined: `kernel/syscalls.c:1184`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1219`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### kmemcpy (function) `kmemcpy(kargv[i], child_argv[i], slen);`
-- Defined: `kernel/syscalls.c:1223`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1258`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### ramdisk_read (function) `ramdisk_read(f, data, 0, f->size);`
-- Defined: `kernel/syscalls.c:1244`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1279`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### kfree (function) `kfree(data);`
-- Defined: `kernel/syscalls.c:1270`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1305`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### swap_in (function) `swap_in();`
-- Defined: `kernel/syscalls.c:1353`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `tls.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1393`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ## kernel/tick.c
 
@@ -7019,10 +7075,10 @@ static long sys_minios_gfx_prese...`
 - Defined: `mutate.sh:95`
 
 ### record (function)
-- Defined: `mutate.sh:212`
+- Defined: `mutate.sh:219`
 
 ### find_index (function)
-- Defined: `mutate.sh:218`
+- Defined: `mutate.sh:225`
 - Doc: Locate a mutant by name.
 
 ## net.h
@@ -7122,274 +7178,274 @@ static long sys_minios_gfx_prese...`
 - Imported by: `kernel.c`, `kernel/shell.c`, `kernel/syscalls.c`, `net/net.c`, `net/rtl8139.c`, `net/rtl8139.h`, `tls_port.h`
 
 ### tls_free_fd (function) `void tls_free_fd(int fd);`
-- Defined: `net.h:102`
-- Doc: Aggregate RX drop counter shared between the driver (bad frames) and * the stack (dropped fragments); defined in net.c. 
+- Defined: `net.h:105`
+- Doc: TLS sessions attached to socket fds (tls.c); net_sys_close frees them. With MINIOS_NO_TLS the engine is unlinked and tls
 - Imported by: `kernel.c`, `kernel/shell.c`, `kernel/syscalls.c`, `net/net.c`, `net/rtl8139.c`, `net/rtl8139.h`, `tls_port.h`
 
 ## net/net.c
 
 ### net_put16 (function) `static void net_put16(unsigned char *p, unsigned short v)`
-- Defined: `net/net.c:29`
+- Defined: `net/net.c:30`
 - Doc: ================================================================ Byte helpers * ========================================
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_put32 (function) `static void net_put32(unsigned char *p, unsigned int v)`
-- Defined: `net/net.c:34`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:35`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_get16 (function) `static unsigned short net_get16(const unsigned char *p)`
-- Defined: `net/net.c:41`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:42`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_get32 (function) `static unsigned int net_get32(const unsigned char *p)`
-- Defined: `net/net.c:45`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:46`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_checksum (function) `static unsigned short net_checksum(const void *data, unsigned len)`
-- Defined: `net/net.c:50`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:51`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_arp_store (function) `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)`
-- Defined: `net/net.c:75`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:76`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_arp_lookup (function) `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)`
-- Defined: `net/net.c:90`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:91`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_arp_request (function) `static void net_arp_request(const unsigned char *ip)`
-- Defined: `net/net.c:101`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:102`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_arp_resolve (function) `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)`
-- Defined: `net/net.c:120`
+- Defined: `net/net.c:121`
 - Doc: kmemcpy(frame + 6, net_mac, NET_ETH_ALEN); net_put16(frame + 12, NET_ETHERTYPE_ARP); net_put16(frame + 14, 1);          
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_ip_send (function) `static int net_ip_send(const unsigned char *dip, unsigned char proto,
                        cons...`
-- Defined: `net/net.c:145`
+- Defined: `net/net.c:146`
 - Doc: ================================================================ IPv4 / ICMP / UDP / DNS * =============================
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_udp_send (function) `static int net_udp_send(const unsigned char *dip, unsigned short sport,
                         u...`
-- Defined: `net/net.c:180`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:181`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_dns_parse (function) `static void net_dns_parse(const unsigned char *data, unsigned len)`
-- Defined: `net/net.c:203`
+- Defined: `net/net.c:204`
 - Doc: net_put16(pkt + 6, 0);                    /* checksum optional for UDP kmemcpy(pkt + 8, data, len); return net_ip_send(d
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_dns_resolve (function) `static int net_dns_resolve(const char *host, unsigned char ip_out[4])`
-- Defined: `net/net.c:239`
+- Defined: `net/net.c:242`
 - Doc: rtype = net_get16(data + pos); rdlen = net_get16(data + pos + 8); pos += 10; if (pos + rdlen > len) return; if (rtype ==
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_udp_send (function) `net_udp_send((const unsigned char[])`
-- Defined: `net/net.c:295`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:298`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_icmp_rx (function) `static void net_icmp_rx(const unsigned char *ip, unsigned len)`
-- Defined: `net/net.c:309`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:312`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_ping (function) `static int net_ping(const unsigned char ip[4])`
-- Defined: `net/net.c:332`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:335`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_sock_alloc (function) `static struct net_tcp_sock *net_sock_alloc(void)`
-- Defined: `net/net.c:384`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:387`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_sock_index (function) `static int net_sock_index(const struct net_tcp_sock *s)`
-- Defined: `net/net.c:397`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:400`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_tcp_checksum (function) `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
       ...`
-- Defined: `net/net.c:406`
+- Defined: `net/net.c:409`
 - Doc: return &net_sockets[i]; } } return 0; } static int net_sock_index(const struct net_tcp_sock *s) { int i; for (i = 0; i <
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_udp_checksum_ok (function) `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
               ...`
-- Defined: `net/net.c:422`
+- Defined: `net/net.c:425`
 - Doc: const unsigned char *seg, unsigned len) { unsigned char buf[NET_TX_MAX + 12]; unsigned total = 12 + len; kmemcpy(buf, sr
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_tcp_xmit (function) `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
                         const uns...`
-- Defined: `net/net.c:437`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:440`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_tcp_rx (function) `static void net_tcp_rx(const unsigned char *ip, unsigned len)`
-- Defined: `net/net.c:469`
+- Defined: `net/net.c:472`
 - Doc: seg[21] = 0x04;                       /* len 4 net_put16(seg + 22, NET_TCP_MSS); } else { seg[12] = 0x50; } kmemcpy(seg 
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_tcp_connect_into (function) `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
               ...`
-- Defined: `net/net.c:555`
+- Defined: `net/net.c:558`
 - Doc: } if (flags & 0x10) {                   /* ACK: peer acks our data if (s->tx_pending && (int)(ack - (s->tx_seq + s->tx_l
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_tcp_send (function) `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)`
-- Defined: `net/net.c:582`
+- Defined: `net/net.c:585`
 - Doc: unsigned long retry = net_time_ms() + NET_RETRY_MS; while (net_time_ms() < retry && s->state == NET_TCP_SYN_SENT) rtl_po
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_tcp_recv (function) `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)`
-- Defined: `net/net.c:608`
+- Defined: `net/net.c:611`
 - Doc: net_time_ms() < deadline) { unsigned long retry = net_time_ms() + NET_RETRY_MS; while (net_time_ms() < retry && s->tx_pe
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_tcp_close (function) `static void net_tcp_close(struct net_tcp_sock *s)`
-- Defined: `net/net.c:645`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:648`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_rx_handle_frame (function) `void net_rx_handle_frame(const unsigned char *frame, unsigned len)`
-- Defined: `net/net.c:665`
+- Defined: `net/net.c:668`
 - Doc: ================================================================ Receive path: NIC -> ethernet -> ARP/IP -> demux * ====
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_open (function) `int net_open(void)`
-- Defined: `net/net.c:723`
+- Defined: `net/net.c:726`
 - Doc: ================================================================ Public libc-style API * ===============================
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_connect (function) `int net_connect(const char *host, unsigned short port)`
-- Defined: `net/net.c:729`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:732`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_send (function) `int net_send(int fd, const char *buf, int len)`
-- Defined: `net/net.c:738`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:741`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_recv (function) `int net_recv(int fd, char *buf, int len)`
-- Defined: `net/net.c:743`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:746`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_recv_timeout (function) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)`
-- Defined: `net/net.c:748`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:751`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_close (function) `void net_close(int fd)`
-- Defined: `net/net.c:753`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:756`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_sys_socket (function) `long net_sys_socket(long a1, long a2, long a3)`
-- Defined: `net/net.c:762`
+- Defined: `net/net.c:765`
 - Doc: ================================================================ Linux syscall ABI * ===================================
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_sys_connect (function) `long net_sys_connect(long fd, long sockaddr, long addrlen)`
-- Defined: `net/net.c:771`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:774`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_sys_sendto (function) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)`
-- Defined: `net/net.c:784`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:787`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_sys_recvfrom (function) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)`
-- Defined: `net/net.c:794`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:797`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_sys_shutdown (function) `long net_sys_shutdown(long fd, long how)`
-- Defined: `net/net.c:804`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:807`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_sys_close (function) `long net_sys_close(long fd)`
-- Defined: `net/net.c:811`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:814`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_sys_poll (function) `long net_sys_poll(long fds, long nfds, long timeout_ms)`
-- Defined: `net/net.c:818`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:821`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_sys_dns (function) `long net_sys_dns(long host)`
-- Defined: `net/net.c:855`
+- Defined: `net/net.c:858`
 - Doc: MiniOS syscall 200: resolve a hostname, returned as a network-order * 32-bit address (like inet_addr), or -1 on failure.
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_parse_ip (function) `static int net_parse_ip(const char *text, unsigned char ip[4])`
-- Defined: `net/net.c:865`
+- Defined: `net/net.c:868`
 - Doc: ================================================================ Shell commands * ======================================
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_cmd_status (function) `void net_cmd_status(void)`
-- Defined: `net/net.c:890`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:893`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_cmd_ping (function) `void net_cmd_ping(const char *ip_text)`
-- Defined: `net/net.c:906`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:909`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_cmd_dns (function) `void net_cmd_dns(const char *host)`
-- Defined: `net/net.c:917`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:920`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_register_symbols (function) `void net_register_symbols(void)`
-- Defined: `net/net.c:930`
+- Defined: `net/net.c:933`
 - Doc: ================================================================ Init and symbol registration * ========================
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_init (function) `void net_init(void)`
-- Defined: `net/net.c:938`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:941`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### kmemcpy (function) `kmemcpy(net_arp_cache[i].mac, mac, NET_ETH_ALEN);`
-- Defined: `net/net.c:80`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:81`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### kmemset (function) `kmemset(frame, 0, sizeof(frame));`
-- Defined: `net/net.c:104`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:105`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### rtl_send (function) `rtl_send(frame, 42);`
-- Defined: `net/net.c:116`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:117`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### rtl_poll (function) `rtl_poll();`
-- Defined: `net/net.c:127`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:128`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### kmemmove (function) `kmemmove(s->rx, s->rx + s->rx_tail, s->rx_head - s->rx_tail);`
-- Defined: `net/net.c:514`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:517`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### net_tcp_recv_deadline (function) `return net_tcp_recv_deadline(&net_sockets[fd], buf, len, timeout_ms);`
-- Defined: `net/net.c:751`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:754`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### tls_free_fd (function) `tls_free_fd((int)(fd - NET_FD_BASE));`
-- Defined: `net/net.c:814`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:817`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### vga_puts (function) `vga_puts("net: no rtl8139 found\n");`
-- Defined: `net/net.c:894`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:897`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### rtl_counters (function) `rtl_counters(&tx_frames, &rx_frames);`
-- Defined: `net/net.c:897`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:900`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### kprintf (function) `kprintf("rtl8139 iobase 0x%x\n", rtl_iobase());`
-- Defined: `net/net.c:898`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:901`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### k_register_symbol (function) `k_register_symbol("net_open", (void *)net_open);`
-- Defined: `net/net.c:932`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:935`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### rtl_init (function) `rtl_init();`
-- Defined: `net/net.c:940`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:943`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ### rtl_get_mac (function) `rtl_get_mac(net_mac);`
-- Defined: `net/net.c:941`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
+- Defined: `net/net.c:944`
+- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
 
 ## net/rtl8139.c
 
@@ -8404,278 +8460,281 @@ static long sys_minios_gfx_prese...`
 
 ## progs/asm/freedom.s
 
-### f_host (function)
+### tls_close (function)
 - Defined: `progs/asm/freedom.s:3`
 
+### f_host (function)
+- Defined: `progs/asm/freedom.s:24`
+
 ### f_path (function)
-- Defined: `progs/asm/freedom.s:7`
+- Defined: `progs/asm/freedom.s:28`
 
 ### f_port (function)
-- Defined: `progs/asm/freedom.s:11`
+- Defined: `progs/asm/freedom.s:32`
 
 ### f_secure (function)
-- Defined: `progs/asm/freedom.s:15`
+- Defined: `progs/asm/freedom.s:36`
 
 ### f_loc (function)
-- Defined: `progs/asm/freedom.s:19`
+- Defined: `progs/asm/freedom.s:40`
 
 ### f_redir (function)
-- Defined: `progs/asm/freedom.s:23`
+- Defined: `progs/asm/freedom.s:44`
 
 ### f_status (function)
-- Defined: `progs/asm/freedom.s:27`
+- Defined: `progs/asm/freedom.s:48`
 
 ### f_clen (function)
-- Defined: `progs/asm/freedom.s:31`
+- Defined: `progs/asm/freedom.s:52`
 
 ### f_has_clen (function)
-- Defined: `progs/asm/freedom.s:35`
+- Defined: `progs/asm/freedom.s:56`
 
 ### f_chunked (function)
-- Defined: `progs/asm/freedom.s:39`
+- Defined: `progs/asm/freedom.s:60`
 
 ### f_hdr (function)
-- Defined: `progs/asm/freedom.s:43`
+- Defined: `progs/asm/freedom.s:64`
 
 ### f_hlen (function)
-- Defined: `progs/asm/freedom.s:47`
+- Defined: `progs/asm/freedom.s:68`
 
 ### f_tag (function)
-- Defined: `progs/asm/freedom.s:51`
+- Defined: `progs/asm/freedom.s:72`
 
 ### f_suppress (function)
-- Defined: `progs/asm/freedom.s:55`
+- Defined: `progs/asm/freedom.s:76`
 
 ### f_comment (function)
-- Defined: `progs/asm/freedom.s:59`
+- Defined: `progs/asm/freedom.s:80`
 
 ### f_cmdash (function)
-- Defined: `progs/asm/freedom.s:63`
+- Defined: `progs/asm/freedom.s:84`
 
 ### f_tagn (function)
-- Defined: `progs/asm/freedom.s:67`
+- Defined: `progs/asm/freedom.s:88`
 
 ### f_tagnlen (function)
-- Defined: `progs/asm/freedom.s:71`
+- Defined: `progs/asm/freedom.s:92`
 
 ### f_ent (function)
-- Defined: `progs/asm/freedom.s:75`
+- Defined: `progs/asm/freedom.s:96`
 
 ### f_entlen (function)
-- Defined: `progs/asm/freedom.s:79`
+- Defined: `progs/asm/freedom.s:100`
 
 ### f_ws (function)
-- Defined: `progs/asm/freedom.s:83`
+- Defined: `progs/asm/freedom.s:104`
 
 ### f_utbuf (function)
-- Defined: `progs/asm/freedom.s:87`
+- Defined: `progs/asm/freedom.s:108`
 
 ### f_utlen (function)
-- Defined: `progs/asm/freedom.s:91`
+- Defined: `progs/asm/freedom.s:112`
 
 ### f_utrem (function)
-- Defined: `progs/asm/freedom.s:95`
+- Defined: `progs/asm/freedom.s:116`
 
 ### f_attr_on (function)
-- Defined: `progs/asm/freedom.s:99`
+- Defined: `progs/asm/freedom.s:120`
 
 ### f_waitq (function)
-- Defined: `progs/asm/freedom.s:103`
+- Defined: `progs/asm/freedom.s:124`
 
 ### f_inval (function)
-- Defined: `progs/asm/freedom.s:107`
+- Defined: `progs/asm/freedom.s:128`
 
 ### f_inval2 (function)
-- Defined: `progs/asm/freedom.s:111`
+- Defined: `progs/asm/freedom.s:132`
 
 ### f_attr (function)
-- Defined: `progs/asm/freedom.s:115`
+- Defined: `progs/asm/freedom.s:136`
 
 ### f_attrlen (function)
-- Defined: `progs/asm/freedom.s:119`
+- Defined: `progs/asm/freedom.s:140`
 
 ### f_val (function)
-- Defined: `progs/asm/freedom.s:123`
+- Defined: `progs/asm/freedom.s:144`
 
 ### f_vallen (function)
-- Defined: `progs/asm/freedom.s:127`
+- Defined: `progs/asm/freedom.s:148`
 
 ### f_id (function)
-- Defined: `progs/asm/freedom.s:131`
+- Defined: `progs/asm/freedom.s:152`
 
 ### f_idlen (function)
-- Defined: `progs/asm/freedom.s:135`
+- Defined: `progs/asm/freedom.s:156`
 
 ### f_cls (function)
-- Defined: `progs/asm/freedom.s:139`
+- Defined: `progs/asm/freedom.s:160`
 
 ### f_clslen (function)
-- Defined: `progs/asm/freedom.s:143`
+- Defined: `progs/asm/freedom.s:164`
 
 ### f_href (function)
-- Defined: `progs/asm/freedom.s:147`
+- Defined: `progs/asm/freedom.s:168`
 
 ### f_hreflen (function)
-- Defined: `progs/asm/freedom.s:151`
+- Defined: `progs/asm/freedom.s:172`
 
 ### f_rel_ss (function)
-- Defined: `progs/asm/freedom.s:155`
+- Defined: `progs/asm/freedom.s:176`
 
 ### f_styleattr (function)
-- Defined: `progs/asm/freedom.s:159`
+- Defined: `progs/asm/freedom.s:180`
 
 ### f_stylelen (function)
-- Defined: `progs/asm/freedom.s:163`
+- Defined: `progs/asm/freedom.s:184`
 
 ### f_dump_css (function)
-- Defined: `progs/asm/freedom.s:167`
+- Defined: `progs/asm/freedom.s:188`
 
 ### f_dump_dom (function)
-- Defined: `progs/asm/freedom.s:171`
+- Defined: `progs/asm/freedom.s:192`
 
 ### f_mode (function)
-- Defined: `progs/asm/freedom.s:175`
+- Defined: `progs/asm/freedom.s:196`
 
 ### f_rawcap (function)
-- Defined: `progs/asm/freedom.s:179`
+- Defined: `progs/asm/freedom.s:200`
 
 ### f_depth (function)
-- Defined: `progs/asm/freedom.s:183`
+- Defined: `progs/asm/freedom.s:204`
 
 ### f_dom (function)
-- Defined: `progs/asm/freedom.s:187`
+- Defined: `progs/asm/freedom.s:208`
 
 ### f_domlen (function)
-- Defined: `progs/asm/freedom.s:191`
+- Defined: `progs/asm/freedom.s:212`
 
 ### f_css (function)
-- Defined: `progs/asm/freedom.s:195`
+- Defined: `progs/asm/freedom.s:216`
 
 ### f_csslen (function)
-- Defined: `progs/asm/freedom.s:199`
+- Defined: `progs/asm/freedom.s:220`
 
 ### f_linkhost (function)
-- Defined: `progs/asm/freedom.s:203`
+- Defined: `progs/asm/freedom.s:224`
 
 ### f_linkpath (function)
-- Defined: `progs/asm/freedom.s:207`
+- Defined: `progs/asm/freedom.s:228`
 
 ### f_linkn (function)
-- Defined: `progs/asm/freedom.s:211`
+- Defined: `progs/asm/freedom.s:232`
 
 ### f_cstage (function)
-- Defined: `progs/asm/freedom.s:215`
+- Defined: `progs/asm/freedom.s:236`
 
 ### f_csize (function)
-- Defined: `progs/asm/freedom.s:219`
+- Defined: `progs/asm/freedom.s:240`
 
 ### f_crem (function)
-- Defined: `progs/asm/freedom.s:223`
+- Defined: `progs/asm/freedom.s:244`
 
 ### f_bdone (function)
-- Defined: `progs/asm/freedom.s:227`
+- Defined: `progs/asm/freedom.s:248`
 
 ### atoi (function)
-- Defined: `progs/asm/freedom.s:231`
+- Defined: `progs/asm/freedom.s:252`
 
 ### append (function)
-- Defined: `progs/asm/freedom.s:317`
+- Defined: `progs/asm/freedom.s:338`
 
 ### ci_lower (function)
-- Defined: `progs/asm/freedom.s:402`
+- Defined: `progs/asm/freedom.s:437`
 
 ### ci_starts (function)
-- Defined: `progs/asm/freedom.s:451`
+- Defined: `progs/asm/freedom.s:486`
 
 ### ci_eq (function)
-- Defined: `progs/asm/freedom.s:524`
+- Defined: `progs/asm/freedom.s:559`
 
 ### ci_index (function)
-- Defined: `progs/asm/freedom.s:621`
+- Defined: `progs/asm/freedom.s:656`
 
 ### looks_like_url (function)
-- Defined: `progs/asm/freedom.s:681`
+- Defined: `progs/asm/freedom.s:716`
 
 ### has_scheme (function)
-- Defined: `progs/asm/freedom.s:755`
+- Defined: `progs/asm/freedom.s:790`
 
 ### make_search (function)
-- Defined: `progs/asm/freedom.s:1030`
+- Defined: `progs/asm/freedom.s:1065`
 
 ### split_url (function)
-- Defined: `progs/asm/freedom.s:1266`
+- Defined: `progs/asm/freedom.s:1301`
 
 ### resolve_redirect (function)
-- Defined: `progs/asm/freedom.s:1781`
+- Defined: `progs/asm/freedom.s:1816`
 
 ### put_ws (function)
-- Defined: `progs/asm/freedom.s:2306`
+- Defined: `progs/asm/freedom.s:2341`
 
 ### put_utf (function)
-- Defined: `progs/asm/freedom.s:2352`
+- Defined: `progs/asm/freedom.s:2387`
 
 ### put_text (function)
-- Defined: `progs/asm/freedom.s:2888`
+- Defined: `progs/asm/freedom.s:2923`
 
 ### put_entity (function)
-- Defined: `progs/asm/freedom.s:2991`
+- Defined: `progs/asm/freedom.s:3026`
 
 ### css_append (function)
-- Defined: `progs/asm/freedom.s:3828`
+- Defined: `progs/asm/freedom.s:3863`
 
 ### css_line (function)
-- Defined: `progs/asm/freedom.s:3899`
+- Defined: `progs/asm/freedom.s:3934`
 
 ### dom_append (function)
-- Defined: `progs/asm/freedom.s:3958`
+- Defined: `progs/asm/freedom.s:3993`
 
 ### dom_space (function)
-- Defined: `progs/asm/freedom.s:4029`
+- Defined: `progs/asm/freedom.s:4064`
 
 ### dom_nl (function)
-- Defined: `progs/asm/freedom.s:4063`
+- Defined: `progs/asm/freedom.s:4098`
 
 ### record_attr (function)
-- Defined: `progs/asm/freedom.s:4097`
+- Defined: `progs/asm/freedom.s:4132`
 
 ### is_void_tag (function)
-- Defined: `progs/asm/freedom.s:4435`
+- Defined: `progs/asm/freedom.s:4470`
 
 ### classify_tag (function)
-- Defined: `progs/asm/freedom.s:4757`
+- Defined: `progs/asm/freedom.s:4792`
 
 ### body_byte (function)
-- Defined: `progs/asm/freedom.s:5994`
+- Defined: `progs/asm/freedom.s:6029`
 
 ### head_line (function)
-- Defined: `progs/asm/freedom.s:7239`
+- Defined: `progs/asm/freedom.s:7274`
 
 ### parse_head (function)
-- Defined: `progs/asm/freedom.s:7500`
+- Defined: `progs/asm/freedom.s:7535`
 
 ### recv_body (function)
-- Defined: `progs/asm/freedom.s:7717`
+- Defined: `progs/asm/freedom.s:7752`
 
 ### send_all (function)
-- Defined: `progs/asm/freedom.s:7778`
+- Defined: `progs/asm/freedom.s:7813`
 
 ### fetch (function)
-- Defined: `progs/asm/freedom.s:7853`
+- Defined: `progs/asm/freedom.s:7888`
 
 ### fetch_css (function)
-- Defined: `progs/asm/freedom.s:9331`
+- Defined: `progs/asm/freedom.s:9383`
 
 ### print_css_dump (function)
-- Defined: `progs/asm/freedom.s:10143`
+- Defined: `progs/asm/freedom.s:10212`
 
 ### print_dom_dump (function)
-- Defined: `progs/asm/freedom.s:10243`
+- Defined: `progs/asm/freedom.s:10312`
 
 ### main (function)
-- Defined: `progs/asm/freedom.s:10322`
+- Defined: `progs/asm/freedom.s:10391`
 
 ### _start (function)
-- Defined: `progs/asm/freedom.s:11800`
+- Defined: `progs/asm/freedom.s:11869`
 
 ## progs/asm/http.s
 
@@ -8686,7 +8745,7 @@ static long sys_minios_gfx_prese...`
 - Defined: `progs/asm/http.s:89`
 
 ### _start (function)
-- Defined: `progs/asm/http.s:698`
+- Defined: `progs/asm/http.s:715`
 
 ## progs/asm/json.s
 
@@ -10327,73 +10386,73 @@ AM_drawThings
 ## progs/doomgeneric/doomgeneric_minios.c
 
 ### mini_parse_autoframes (function) `static void mini_parse_autoframes(int argc, char **argv)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:22`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:23`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_time_ms (function) `static long sys_time_ms(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:35`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:36`
 - Doc: static int mini_frames; static void mini_parse_autoframes(int argc, char **argv) { int i; mini_autoframes = 0; for (i = 
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_kbd (function) `static long sys_kbd(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:41`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:42`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_palette (function) `static long sys_palette(const unsigned char *pal)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:46`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:47`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_kbd_raw (function) `static long sys_kbd_raw(int on)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:51`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:52`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_vga_mode (function) `static long sys_vga_mode(int on)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:56`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:57`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### sys_doom_frame (function) `static long sys_doom_frame(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:61`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:62`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### load_vga_palette (function) `static void load_vga_palette(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:84`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:85`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### scancode_to_doom (function) `static unsigned char scancode_to_doom(unsigned char raw)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:97`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:98`
 - Doc: volatile int minios_palette_dirty = 1; static void load_vga_palette(void) { uint8_t dac[768]; int i; for (i = 0; i < 256
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### kbd_enqueue (function) `static void kbd_enqueue(unsigned char doom_key, int pressed)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:156`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:157`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### kbd_poll (function) `static void kbd_poll(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:163`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:164`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_Init (function) `void DG_Init(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:206`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:207`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_DrawFrame (function) `void DG_DrawFrame(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:214`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:215`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_SleepMs (function) `void DG_SleepMs(uint32_t ms)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:244`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:245`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_GetTicksMs (function) `uint32_t DG_GetTicksMs(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:250`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:251`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_GetKey (function) `int DG_GetKey(int *pressed, unsigned char *key)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:254`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:255`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### DG_SetWindowTitle (function) `void DG_SetWindowTitle(const char *title)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:265`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:266`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### MINIOS_DOOM_BACKBUF_ADDR (function) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
@@ -10401,19 +10460,19 @@ AM_drawThings
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:38`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:39`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ### printf (function) `printf("minios: played %d frames, quitting\n", mini_frames);`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:239`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
-
-### fflush (function) `fflush(stdout);`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:240`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
-### exit (function) `exit(0);`
+### fflush (function) `fflush(stdout);`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:241`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+
+### exit (function) `exit(0);`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:242`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/doomgeneric_sdl.c
@@ -21735,128 +21794,128 @@ Z_DumpHeap
 ## progs/nuklear/nuklear_minios.c
 
 ### nk_sys_time_ms (function) `long nk_sys_time_ms(void)`
-- Defined: `progs/nuklear/nuklear_minios.c:26`
+- Defined: `progs/nuklear/nuklear_minios.c:27`
 - Doc: wheel. All MiniOS-specific syscalls go through the Linux syscall ABI, so this compiles into a normal static ring-3 ELF. 
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_kbd (function) `long nk_sys_kbd(void)`
-- Defined: `progs/nuklear/nuklear_minios.c:31`
+- Defined: `progs/nuklear/nuklear_minios.c:32`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_palette (function) `long nk_sys_palette(const unsigned char *pal)`
-- Defined: `progs/nuklear/nuklear_minios.c:36`
+- Defined: `progs/nuklear/nuklear_minios.c:37`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_kbd_raw (function) `long nk_sys_kbd_raw(int on)`
-- Defined: `progs/nuklear/nuklear_minios.c:41`
+- Defined: `progs/nuklear/nuklear_minios.c:42`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_vga_mode (function) `long nk_sys_vga_mode(int on)`
-- Defined: `progs/nuklear/nuklear_minios.c:46`
+- Defined: `progs/nuklear/nuklear_minios.c:47`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_fb_info (function) `long nk_sys_fb_info(int *w, int *h, int *pitch)`
-- Defined: `progs/nuklear/nuklear_minios.c:51`
+- Defined: `progs/nuklear/nuklear_minios.c:52`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_mouse (function) `long nk_sys_mouse(int *xybw)`
-- Defined: `progs/nuklear/nuklear_minios.c:58`
+- Defined: `progs/nuklear/nuklear_minios.c:59`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_mouse_badptr (function) `long nk_sys_mouse_badptr(void)`
-- Defined: `progs/nuklear/nuklear_minios.c:63`
+- Defined: `progs/nuklear/nuklear_minios.c:64`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_sys_nk_frame (function) `long nk_sys_nk_frame(int *origin)`
-- Defined: `progs/nuklear/nuklear_minios.c:71`
+- Defined: `progs/nuklear/nuklear_minios.c:72`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### pal_prepare (function) `static void pal_prepare(void)`
-- Defined: `progs/nuklear/nuklear_minios.c:143`
+- Defined: `progs/nuklear/nuklear_minios.c:144`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### col_to_idx (function) `static int col_to_idx(struct nk_color c)`
-- Defined: `progs/nuklear/nuklear_minios.c:154`
+- Defined: `progs/nuklear/nuklear_minios.c:155`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### set_clip (function) `static void set_clip(int x, int y, int w, int h)`
-- Defined: `progs/nuklear/nuklear_minios.c:272`
+- Defined: `progs/nuklear/nuklear_minios.c:273`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### px (function) `static void px(int x, int y, int c)`
-- Defined: `progs/nuklear/nuklear_minios.c:282`
+- Defined: `progs/nuklear/nuklear_minios.c:283`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### fill_rect (function) `static void fill_rect(int x, int y, int w, int h, int c)`
-- Defined: `progs/nuklear/nuklear_minios.c:289`
+- Defined: `progs/nuklear/nuklear_minios.c:290`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### draw_line (function) `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)`
-- Defined: `progs/nuklear/nuklear_minios.c:296`
+- Defined: `progs/nuklear/nuklear_minios.c:297`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### fill_circle (function) `static void fill_circle(int cx, int cy, int r, int c)`
-- Defined: `progs/nuklear/nuklear_minios.c:314`
+- Defined: `progs/nuklear/nuklear_minios.c:315`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### stroke_circle (function) `static void stroke_circle(int cx, int cy, int r, int th, int c)`
-- Defined: `progs/nuklear/nuklear_minios.c:320`
+- Defined: `progs/nuklear/nuklear_minios.c:321`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### fill_poly (function) `static void fill_poly(int *xs, int *ys, int n, int c)`
-- Defined: `progs/nuklear/nuklear_minios.c:339`
+- Defined: `progs/nuklear/nuklear_minios.c:340`
 - Doc: draw_line(cx + x, cy - y, cx - x, cy - y, th, c); draw_line(cx - x, cy + y, cx - x, cy - y, th, c); draw_line(cx + x, cy
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### stroke_poly (function) `static void stroke_poly(int *xs, int *ys, int n, int th, int c)`
-- Defined: `progs/nuklear/nuklear_minios.c:361`
+- Defined: `progs/nuklear/nuklear_minios.c:362`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### draw_text (function) `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)`
-- Defined: `progs/nuklear/nuklear_minios.c:368`
+- Defined: `progs/nuklear/nuklear_minios.c:369`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### draw_arc (function) `static void draw_arc(int cx, int cy, int r, float a0, float a1,
                      int filled, ...`
-- Defined: `progs/nuklear/nuklear_minios.c:382`
+- Defined: `progs/nuklear/nuklear_minios.c:383`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_rasterize (function) `void nk_rasterize(struct nk_context *ctx)`
-- Defined: `progs/nuklear/nuklear_minios.c:403`
+- Defined: `progs/nuklear/nuklear_minios.c:404`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_foreach (function) `nk_foreach(cmd, ctx)`
-- Defined: `progs/nuklear/nuklear_minios.c:408`
+- Defined: `progs/nuklear/nuklear_minios.c:409`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_minios_font_width (function) `static float nk_minios_font_width(nk_handle handle, float height,
                                ...`
-- Defined: `progs/nuklear/nuklear_minios.c:554`
+- Defined: `progs/nuklear/nuklear_minios.c:555`
 - Doc: if (c->background.a > 0) bg = col_to_idx(c->background); draw_text(c->x, c->y, c->string, c->length, fg, bg); break; } c
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_minios_font (function) `struct nk_user_font nk_minios_font(void)`
-- Defined: `progs/nuklear/nuklear_minios.c:559`
+- Defined: `progs/nuklear/nuklear_minios.c:560`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### feed_key (function) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
-- Defined: `progs/nuklear/nuklear_minios.c:593`
+- Defined: `progs/nuklear/nuklear_minios.c:594`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_set_scancode_hook (function) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
-- Defined: `progs/nuklear/nuklear_minios.c:600`
+- Defined: `progs/nuklear/nuklear_minios.c:601`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### handle_scancode (function) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
-- Defined: `progs/nuklear/nuklear_minios.c:605`
+- Defined: `progs/nuklear/nuklear_minios.c:606`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_poll_input (function) `void nk_poll_input(struct nk_context *ctx)`
-- Defined: `progs/nuklear/nuklear_minios.c:648`
+- Defined: `progs/nuklear/nuklear_minios.c:649`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_set_window_origin (function) `void nk_set_window_origin(int x, int y)`
-- Defined: `progs/nuklear/nuklear_minios.c:685`
+- Defined: `progs/nuklear/nuklear_minios.c:686`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### list (function) `* abstract draw command list (nk__begin/nk__next);`
@@ -21864,27 +21923,27 @@ Z_DumpHeap
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
-- Defined: `progs/nuklear/nuklear_minios.c:28`
+- Defined: `progs/nuklear/nuklear_minios.c:29`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_build_palette (function) `nk_build_palette(pal768);`
-- Defined: `progs/nuklear/nuklear_minios.c:146`
+- Defined: `progs/nuklear/nuklear_minios.c:147`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_key (function) `nk_input_key(ctx, key, down ? nk_true : nk_false);`
-- Defined: `progs/nuklear/nuklear_minios.c:595`
+- Defined: `progs/nuklear/nuklear_minios.c:596`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_unicode (function) `nk_input_unicode(ctx, (nk_rune)ch);`
-- Defined: `progs/nuklear/nuklear_minios.c:644`
+- Defined: `progs/nuklear/nuklear_minios.c:645`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_motion (function) `nk_input_motion(ctx, lx, ly);`
-- Defined: `progs/nuklear/nuklear_minios.c:665`
+- Defined: `progs/nuklear/nuklear_minios.c:666`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_scroll (function) `nk_input_scroll(ctx, scroll);`
-- Defined: `progs/nuklear/nuklear_minios.c:681`
+- Defined: `progs/nuklear/nuklear_minios.c:682`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ## progs/nuklear/nuklear_minios.h
@@ -22584,105 +22643,105 @@ Z_DumpHeap
 
 ## progs/quake2generic/q2generic_minios.c
 
-### SYS_DOOM_FRAME (function) `* SYS_DOOM_FRAME (211) and the kernel composites the buffer onto the
- * hi-res desktop as a title...`
+### MINIOS_GFX_BUF_GAME (function) `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel
+ * compat alias) and the...`
 - Defined: `progs/quake2generic/q2generic_minios.c:5`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_kbd (function) `static long sys_kbd(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:28`
+- Defined: `progs/quake2generic/q2generic_minios.c:29`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_palette (function) `static long sys_palette(const unsigned char *pal)`
-- Defined: `progs/quake2generic/q2generic_minios.c:34`
+- Defined: `progs/quake2generic/q2generic_minios.c:35`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_kbd_raw (function) `static long sys_kbd_raw(int on)`
-- Defined: `progs/quake2generic/q2generic_minios.c:40`
+- Defined: `progs/quake2generic/q2generic_minios.c:41`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_vga_mode (function) `static long sys_vga_mode(int on)`
-- Defined: `progs/quake2generic/q2generic_minios.c:46`
+- Defined: `progs/quake2generic/q2generic_minios.c:47`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_doom_frame (function) `static long sys_doom_frame(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:52`
+- Defined: `progs/quake2generic/q2generic_minios.c:53`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_mouse (function) `static long sys_mouse(int *buf)`
-- Defined: `progs/quake2generic/q2generic_minios.c:58`
+- Defined: `progs/quake2generic/q2generic_minios.c:59`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### sys_set_title (function) `static long sys_set_title(const char *t)`
-- Defined: `progs/quake2generic/q2generic_minios.c:64`
+- Defined: `progs/quake2generic/q2generic_minios.c:65`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### q2g_parse_autoframes (function) `static void q2g_parse_autoframes(int argc, char **argv)`
-- Defined: `progs/quake2generic/q2generic_minios.c:86`
+- Defined: `progs/quake2generic/q2generic_minios.c:87`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_GetMouseDiff (function) `void QG_GetMouseDiff(int *dx, int *dy)`
-- Defined: `progs/quake2generic/q2generic_minios.c:101`
+- Defined: `progs/quake2generic/q2generic_minios.c:102`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_CaptureMouse (function) `void QG_CaptureMouse(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:112`
+- Defined: `progs/quake2generic/q2generic_minios.c:113`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_ReleaseMouse (function) `void QG_ReleaseMouse(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:116`
+- Defined: `progs/quake2generic/q2generic_minios.c:117`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_Mkdir (function) `void QG_Mkdir(const char *path)`
-- Defined: `progs/quake2generic/q2generic_minios.c:119`
+- Defined: `progs/quake2generic/q2generic_minios.c:120`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### scancode_to_q2key (function) `static unsigned char scancode_to_q2key(unsigned char raw)`
-- Defined: `progs/quake2generic/q2generic_minios.c:123`
+- Defined: `progs/quake2generic/q2generic_minios.c:124`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### extended_to_q2key (function) `static unsigned char extended_to_q2key(unsigned char sc)`
-- Defined: `progs/quake2generic/q2generic_minios.c:206`
+- Defined: `progs/quake2generic/q2generic_minios.c:207`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### kbd_poll (function) `static void kbd_poll(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:224`
+- Defined: `progs/quake2generic/q2generic_minios.c:225`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_SetPalette (function) `void SWimp_SetPalette(const unsigned char *palette)`
-- Defined: `progs/quake2generic/q2generic_minios.c:254`
+- Defined: `progs/quake2generic/q2generic_minios.c:255`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_SetMode (function) `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)`
-- Defined: `progs/quake2generic/q2generic_minios.c:264`
+- Defined: `progs/quake2generic/q2generic_minios.c:265`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_Init (function) `int SWimp_Init(void *hInstance, void *wndProc)`
-- Defined: `progs/quake2generic/q2generic_minios.c:281`
+- Defined: `progs/quake2generic/q2generic_minios.c:282`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_Shutdown (function) `void SWimp_Shutdown(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:287`
+- Defined: `progs/quake2generic/q2generic_minios.c:288`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_BeginFrame (function) `void SWimp_BeginFrame(float camera_separation)`
-- Defined: `progs/quake2generic/q2generic_minios.c:290`
+- Defined: `progs/quake2generic/q2generic_minios.c:291`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_EndFrame (function) `void SWimp_EndFrame(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:293`
+- Defined: `progs/quake2generic/q2generic_minios.c:294`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_AppActivate (function) `void SWimp_AppActivate(qboolean active)`
-- Defined: `progs/quake2generic/q2generic_minios.c:312`
+- Defined: `progs/quake2generic/q2generic_minios.c:313`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_Milliseconds (function) `int QG_Milliseconds(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:316`
+- Defined: `progs/quake2generic/q2generic_minios.c:317`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/quake2generic/q2generic_minios.c:320`
+- Defined: `progs/quake2generic/q2generic_minios.c:321`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### MINIOS_DOOM_BACKBUF_ADDR (function) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
@@ -22690,32 +22749,32 @@ Z_DumpHeap
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
-- Defined: `progs/quake2generic/q2generic_minios.c:25`
+- Defined: `progs/quake2generic/q2generic_minios.c:26`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### Sys_Quit (function) `extern void Sys_Quit(void);`
-- Defined: `progs/quake2generic/q2generic_minios.c:75`
+- Defined: `progs/quake2generic/q2generic_minios.c:76`
 - Doc: Sys_Quit lives in the engine's system driver (other/q_system.c); not pulled * in through quake2.h, so declare it here fo
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### Quake2_SendKey (function) `Quake2_SendKey(qkey, !(raw2 & 0x80));`
-- Defined: `progs/quake2generic/q2generic_minios.c:237`
+- Defined: `progs/quake2generic/q2generic_minios.c:238`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### printf (function) `printf("minios: played %d frames, quitting\n", s_frames);`
-- Defined: `progs/quake2generic/q2generic_minios.c:306`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
-
-### fflush (function) `fflush(stdout);`
 - Defined: `progs/quake2generic/q2generic_minios.c:307`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
+### fflush (function) `fflush(stdout);`
+- Defined: `progs/quake2generic/q2generic_minios.c:308`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
+
 ### Quake2_Init (function) `Quake2_Init(argc, argv);`
-- Defined: `progs/quake2generic/q2generic_minios.c:327`
+- Defined: `progs/quake2generic/q2generic_minios.c:328`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### Quake2_Frame (function) `Quake2_Frame(time);`
-- Defined: `progs/quake2generic/q2generic_minios.c:341`
+- Defined: `progs/quake2generic/q2generic_minios.c:342`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ## progs/src/aes.c
@@ -22955,184 +23014,246 @@ Z_DumpHeap
 
 ## progs/src/freedom.c
 
+### tls_close (function) `static int tls_close(int fd)`
+- Defined: `progs/src/freedom.c:58`
+- Doc: Session-aware close (frees the TLS session for fd, no-op when none): every fetch path must use this, never raw close(), 
+- Depends on: `kernel/string.c`
+
 ### atoi (function) `static int atoi(char *s)`
-- Defined: `progs/src/freedom.c:127`
+- Defined: `progs/src/freedom.c:151`
 - Doc: static char f_dom[FREEDOM_DOM_BUF]; static int  f_domlen; static char f_css[FREEDOM_CSS_BUF]; static int  f_csslen; stat
+- Depends on: `kernel/string.c`
 
 ### append (function) `static int append(char *dst, int pos, char *src, int cap)`
-- Defined: `progs/src/freedom.c:140`
-- Doc: Append src to dst at pos; returns the new length or -1 when it does * not fit.
+- Defined: `progs/src/freedom.c:166`
+- Doc: Append src to dst at pos; returns the new length or -1 when it does not fit. A negative pos (a previous append in the ch
+- Depends on: `kernel/string.c`
 
 ### ci_lower (function) `static int ci_lower(int c)`
-- Defined: `progs/src/freedom.c:148`
+- Defined: `progs/src/freedom.c:175`
+- Depends on: `kernel/string.c`
 
 ### ci_starts (function) `static int ci_starts(char *s, char *pre)`
-- Defined: `progs/src/freedom.c:155`
-- Doc: int n; n = strlen(src); if (pos + n >= cap) return -1; memcpy(dst + pos, src, n); dst[pos + n] = 0; return pos + n; } st
+- Defined: `progs/src/freedom.c:182`
+- Doc: if (pos < 0) return -1; n = strlen(src); if (pos + n >= cap) return -1; memcpy(dst + pos, src, n); dst[pos + n] = 0; ret
+- Depends on: `kernel/string.c`
 
 ### ci_eq (function) `static int ci_eq(char *a, char *b)`
-- Defined: `progs/src/freedom.c:166`
+- Defined: `progs/src/freedom.c:193`
 - Doc: } /* Case-insensitive starts-with. static int ci_starts(char *s, char *pre) { while (*pre) { if (!*s) return 0; if (ci_l
+- Depends on: `kernel/string.c`
 
 ### ci_index (function) `static int ci_index(char *s, char *needle)`
-- Defined: `progs/src/freedom.c:176`
+- Defined: `progs/src/freedom.c:203`
 - Doc: return 1; } /* Case-insensitive equality. static int ci_eq(char *a, char *b) { while (*a && *b) { if (ci_lower(*a) != ci
+- Depends on: `kernel/string.c`
 
 ### looks_like_url (function) `static int looks_like_url(char *s)`
-- Defined: `progs/src/freedom.c:185`
+- Defined: `progs/src/freedom.c:212`
 - Doc: } return *a == 0 && *b == 0; } /* Case-insensitive index of needle in haystack, or -1. static int ci_index(char *s, char
+- Depends on: `kernel/string.c`
 
 ### has_scheme (function) `static int has_scheme(char *s)`
-- Defined: `progs/src/freedom.c:199`
+- Defined: `progs/src/freedom.c:226`
 - Doc: Does s begin with "<scheme>:" per RFC 3986 (ALPHA *(ALPHA/DIGIT/+/-/.) ":")? Any such prefix makes the string a scheme, 
+- Depends on: `kernel/string.c`
 
 ### make_search (function) `static void make_search(char *out, char *query, int cap)`
-- Defined: `progs/src/freedom.c:215`
+- Defined: `progs/src/freedom.c:242`
 - Doc: char c; c = s[0]; if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) return 0; for (i = 1; s[i]; i++) { c = s[i]; 
+- Depends on: `kernel/string.c`
 
 ### split_url (function) `static int split_url(char *url)`
-- Defined: `progs/src/freedom.c:239`
+- Defined: `progs/src/freedom.c:266`
 - Doc: Split an http:// or https:// URL into f_host, f_path, f_port and f_secure. Returns 0 on failure. The input buffer is nev
+- Depends on: `kernel/string.c`
 
 ### resolve_redirect (function) `static int resolve_redirect(void)`
-- Defined: `progs/src/freedom.c:286`
+- Defined: `progs/src/freedom.c:313`
 - Doc: Recompute f_host/f_path/f_port/f_secure from the last Location value. Returns 1 when the chase may continue, 0 when it m
+- Depends on: `kernel/string.c`
 
 ### put_ws (function) `static void put_ws(void)`
-- Defined: `progs/src/freedom.c:338`
+- Defined: `progs/src/freedom.c:365`
 - Doc: if (l + 1 >= 128) return 0; f_path[0] = '/'; memcpy(f_path + 1, loc, l); f_path[l + 1] = 0; } else { if (last + 1 + l >=
+- Depends on: `kernel/string.c`
 
 ### put_utf (function) `static void put_utf(int c)`
-- Defined: `progs/src/freedom.c:350`
+- Defined: `progs/src/freedom.c:377`
 - Doc: Print one text byte through the UTF-8 gate. Remote pages are hostile data: bytes outside a valid UTF-8 sequence (overlon
+- Depends on: `kernel/string.c`
 
 ### put_text (function) `static void put_text(int c)`
-- Defined: `progs/src/freedom.c:400`
+- Defined: `progs/src/freedom.c:427`
 - Doc: Print one text byte: whitespace collapses, everything else goes * through the UTF-8 gate. Dump modes suppress the page t
+- Depends on: `kernel/string.c`
 
 ### css_append (function) `static void css_append(char *s, int n)`
-- Defined: `progs/src/freedom.c:455`
+- Defined: `progs/src/freedom.c:482`
 - Doc: } else if (v >= 2048 && v < 65536) { put_text(224 | (v >> 12)); put_text(128 | ((v >> 6) & 63)); put_text(128 | (v & 63)
+- Depends on: `kernel/string.c`
 
 ### css_line (function) `static void css_line(char *s)`
-- Defined: `progs/src/freedom.c:461`
+- Defined: `progs/src/freedom.c:488`
+- Depends on: `kernel/string.c`
 
 ### dom_append (function) `static void dom_append(char *s, int n)`
-- Defined: `progs/src/freedom.c:466`
+- Defined: `progs/src/freedom.c:493`
+- Depends on: `kernel/string.c`
 
 ### dom_space (function) `static void dom_space(void)`
-- Defined: `progs/src/freedom.c:472`
+- Defined: `progs/src/freedom.c:499`
+- Depends on: `kernel/string.c`
 
 ### dom_nl (function) `static void dom_nl(void)`
-- Defined: `progs/src/freedom.c:476`
+- Defined: `progs/src/freedom.c:503`
+- Depends on: `kernel/string.c`
 
 ### record_attr (function) `static void record_attr(void)`
-- Defined: `progs/src/freedom.c:482`
+- Defined: `progs/src/freedom.c:509`
 - Doc: int i; for (i = 0; i < n && f_domlen < FREEDOM_DOM_BUF - 1; i++) f_dom[f_domlen++] = s[i]; } static void dom_space(void)
+- Depends on: `kernel/string.c`
 
 ### is_void_tag (function) `static int is_void_tag(void)`
-- Defined: `progs/src/freedom.c:507`
+- Defined: `progs/src/freedom.c:534`
 - Doc: f_hreflen = f_vallen < 127 ? f_vallen : 127; memcpy(f_href, f_val, f_hreflen); f_href[f_hreflen] = 0; } else if (ci_eq(f
+- Depends on: `kernel/string.c`
 
 ### classify_tag (function) `static void classify_tag(void)`
-- Defined: `progs/src/freedom.c:519`
+- Defined: `progs/src/freedom.c:546`
 - Doc: A tag was fully collected into f_tagn (+ attributes). Decide what it * does to the stream and the dumps.
+- Depends on: `kernel/string.c`
 
 ### body_byte (function) `static void body_byte(int c)`
-- Defined: `progs/src/freedom.c:604`
+- Defined: `progs/src/freedom.c:631`
 - Doc: } dom_nl(); if (!is_void_tag()) f_depth++; } if (ci_eq(f_tagn, "br") || ci_eq(f_tagn, "p") || ci_eq(f_tagn, "div") || ci
+- Depends on: `kernel/string.c`
 
 ### head_line (function) `static void head_line(char *line)`
-- Defined: `progs/src/freedom.c:769`
+- Defined: `progs/src/freedom.c:796`
 - Doc: f_rel_ss = 0; return; } if (c == '&') { f_entlen = 1; f_ent[0] = 0; return; } put_text(c); } /* --- HTTP ---------------
+- Depends on: `kernel/string.c`
 
 ### parse_head (function) `static void parse_head(void)`
-- Defined: `progs/src/freedom.c:794`
+- Defined: `progs/src/freedom.c:821`
 - Doc: Parse the collected header block f_hdr[0..f_hlen-1] (the last four * bytes are the terminating CRLF CRLF).
+- Depends on: `kernel/string.c`
 
 ### recv_body (function) `static int recv_body(int fd, char *buf, int len)`
-- Defined: `progs/src/freedom.c:816`
+- Defined: `progs/src/freedom.c:843`
 - Doc: f_hdr[lend] = 0; if (i == 0) { char *sp; sp = strchr(f_hdr, ' '); if (sp) f_status = atoi(sp + 1); } else if (lend > i) 
+- Depends on: `kernel/string.c`
 
 ### send_all (function) `static int send_all(int fd, char *buf, int len)`
-- Defined: `progs/src/freedom.c:822`
+- Defined: `progs/src/freedom.c:849`
 - Doc: head_line(f_hdr + i); } f_hdr[lend] = '\r'; i = lend + 2; } } /* Receive body bytes: TLS for f_secure, plain TCP otherwi
+- Depends on: `kernel/string.c`
 
 ### fetch (function) `static int fetch(char *host, char *path, int port)`
-- Defined: `progs/src/freedom.c:833`
+- Defined: `progs/src/freedom.c:860`
 - Doc: Send one HTTP request and process the response body. Returns the status code, or 0 on transport failure. Sets f_redir wh
+- Depends on: `kernel/string.c`
 
 ### fetch_css (function) `static void fetch_css(char *host, char *path)`
-- Defined: `progs/src/freedom.c:993`
+- Defined: `progs/src/freedom.c:1031`
 - Doc: Fetch a linked stylesheet and print its raw body (through the UTF-8 * gate). No redirect chasing: the bound is one reque
+- Depends on: `kernel/string.c`
 
 ### print_css_dump (function) `static void print_css_dump(void)`
-- Defined: `progs/src/freedom.c:1071`
-- Doc: } continue; } f_ws = 0; put_utf(c); got++; } } close(fd); putchar('\n'); printf("freedom: %s (%d bytes)\n", host, got); 
+- Defined: `progs/src/freedom.c:1113`
+- Doc: } continue; } f_ws = 0; put_utf(c); got++; } } tls_close(fd); putchar('\n'); printf("freedom: %s (%d bytes)\n", host, go
+- Depends on: `kernel/string.c`
 
 ### print_dom_dump (function) `static void print_dom_dump(void)`
-- Defined: `progs/src/freedom.c:1080`
+- Defined: `progs/src/freedom.c:1122`
 - Doc: putchar('\n'); printf("freedom: %s (%d bytes)\n", host, got); } /* Print the collected CSS dump. static void print_css_d
+- Depends on: `kernel/string.c`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/src/freedom.c:1086`
+- Defined: `progs/src/freedom.c:1128`
+- Depends on: `kernel/string.c`
 
 ### curlfree (function) `* spirit of curlfree (http.c + htmlfilter.c): a bounded header phase, * Content-Length or EOF body reading, Transfer-Encoding: chunked * decoding, redirect chasing with a hop bound, and a filter that `
 - Defined: `progs/src/freedom.c:4`
+- Depends on: `kernel/string.c`
 
-### connect (function) `int connect(int fd, void *addr, int addrlen);`
-- Defined: `progs/src/freedom.c:32`
-
-### sendto (function) `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);`
-- Defined: `progs/src/freedom.c:33`
-
-### recvfrom (function) `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);`
-- Defined: `progs/src/freedom.c:34`
-
-### close (function) `int close(int fd);`
-- Defined: `progs/src/freedom.c:35`
-
-### net_dns_resolve (function) `int net_dns_resolve(char *host);`
-- Defined: `progs/src/freedom.c:36`
+### net_dns_resolve (function) `int net_dns_resolve(const char *host);`
+- Defined: `progs/src/freedom.c:41`
+- Doc: Ring-3 TLS build (phase 2 of docs/TLS_MIGRATION.md): host libc for sockets/stdio/strings (identical ABI numbers inside t
+- Depends on: `kernel/string.c`
 
 ### tls_handshake (function) `int tls_handshake(int fd, char *host);`
-- Defined: `progs/src/freedom.c:37`
+- Defined: `progs/src/freedom.c:42`
+- Depends on: `kernel/string.c`
 
 ### tls_send (function) `int tls_send(int fd, char *buf, int len);`
-- Defined: `progs/src/freedom.c:38`
+- Defined: `progs/src/freedom.c:43`
+- Depends on: `kernel/string.c`
 
 ### tls_recv (function) `int tls_recv(int fd, char *buf, int len);`
-- Defined: `progs/src/freedom.c:39`
+- Defined: `progs/src/freedom.c:44`
+- Depends on: `kernel/string.c`
+
+### socket (function) `int socket(int domain, int type, int proto);`
+- Defined: `progs/src/freedom.c:52`
+- Doc: else
+- Depends on: `kernel/string.c`
+
+### connect (function) `int connect(int fd, void *addr, int addrlen);`
+- Defined: `progs/src/freedom.c:53`
+- Depends on: `kernel/string.c`
+
+### sendto (function) `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);`
+- Defined: `progs/src/freedom.c:54`
+- Depends on: `kernel/string.c`
+
+### recvfrom (function) `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);`
+- Defined: `progs/src/freedom.c:55`
+- Depends on: `kernel/string.c`
+
+### close (function) `int close(int fd);`
+- Defined: `progs/src/freedom.c:56`
+- Depends on: `kernel/string.c`
 
 ### printf (function) `int printf(char *fmt, ...);`
-- Defined: `progs/src/freedom.c:40`
+- Defined: `progs/src/freedom.c:63`
+- Depends on: `kernel/string.c`
 
 ### puts (function) `int puts(char *s);`
-- Defined: `progs/src/freedom.c:41`
+- Defined: `progs/src/freedom.c:64`
+- Depends on: `kernel/string.c`
 
 ### strlen (function) `int strlen(char *s);`
-- Defined: `progs/src/freedom.c:42`
+- Defined: `progs/src/freedom.c:65`
+- Depends on: `kernel/string.c`
 
 ### strchr (function) `char *strchr(char *s, int c);`
-- Defined: `progs/src/freedom.c:43`
+- Defined: `progs/src/freedom.c:66`
+- Depends on: `kernel/string.c`
 
 ### strcmp (function) `int strcmp(char *a, char *b);`
-- Defined: `progs/src/freedom.c:44`
+- Defined: `progs/src/freedom.c:67`
+- Depends on: `kernel/string.c`
 
 ### strncmp (function) `int strncmp(char *a, char *b, int n);`
-- Defined: `progs/src/freedom.c:45`
+- Defined: `progs/src/freedom.c:68`
+- Depends on: `kernel/string.c`
 
 ### memcpy (function) `int memcpy(char *dst, char *src, int n);`
-- Defined: `progs/src/freedom.c:46`
+- Defined: `progs/src/freedom.c:69`
+- Depends on: `kernel/string.c`
 
 ### memset (function) `int memset(char *dst, int c, int n);`
-- Defined: `progs/src/freedom.c:47`
+- Defined: `progs/src/freedom.c:70`
+- Depends on: `kernel/string.c`
 
 ### putchar (function) `int putchar(int c);`
-- Defined: `progs/src/freedom.c:48`
+- Defined: `progs/src/freedom.c:71`
+- Depends on: `kernel/string.c`
 
 ### put_entity (function) `put_entity(f_ent);`
-- Defined: `progs/src/freedom.c:730`
+- Defined: `progs/src/freedom.c:757`
+- Depends on: `kernel/string.c`
 
 ## progs/src/ftest.c
 
@@ -23188,7 +23309,7 @@ Z_DumpHeap
 ### close (function) `int close(int fd);`
 - Defined: `progs/src/http.c:10`
 
-### net_dns_resolve (function) `int net_dns_resolve(char *host);`
+### net_dns_resolve (function) `int net_dns_resolve(const char *host);`
 - Defined: `progs/src/http.c:11`
 
 ### puts (function) `int puts(char *s);`
@@ -23954,40 +24075,24 @@ Z_DumpHeap
 - Defined: `progs/tls_u/tls_u_main.c:10`
 - Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
 
-### resolve (function) `static int resolve(const char *host, unsigned *ip_out)`
-- Defined: `progs/tls_u/tls_u_main.c:48`
-- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
-
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/tls_u/tls_u_main.c:72`
-- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
-
-### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
-- Defined: `progs/tls_u/tls_u_main.c:32`
-- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
-
-### memset (function) `memset(&hints, 0, sizeof(hints));`
-- Defined: `progs/tls_u/tls_u_main.c:60`
-- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
-
-### freeaddrinfo (function) `freeaddrinfo(res);`
-- Defined: `progs/tls_u/tls_u_main.c:66`
-- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
-
-### minios_dns (function) `return minios_dns(host, ip_out);`
-- Defined: `progs/tls_u/tls_u_main.c:70`
+- Defined: `progs/tls_u/tls_u_main.c:46`
 - Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
 
 ### fprintf (function) `fprintf(stderr, "usage: tlsget <host-or-ip> [path] [port]\n");`
-- Defined: `progs/tls_u/tls_u_main.c:87`
+- Defined: `progs/tls_u/tls_u_main.c:61`
 - Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
 
 ### perror (function) `perror("tlsget: socket");`
-- Defined: `progs/tls_u/tls_u_main.c:103`
+- Defined: `progs/tls_u/tls_u_main.c:80`
+- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
+
+### memset (function) `memset(&sa, 0, sizeof(sa));`
+- Defined: `progs/tls_u/tls_u_main.c:83`
 - Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
 
 ### close (function) `close(fd);`
-- Defined: `progs/tls_u/tls_u_main.c:112`
+- Defined: `progs/tls_u/tls_u_main.c:89`
 - Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
 
 ## progs/tls_u/tls_u_port.c
@@ -23998,27 +24103,75 @@ Z_DumpHeap
 - Depends on: `kernel/string.c`, `kernel/time.c`
 
 ### tls_u_recv (function) `int tls_u_recv(int fd, char *buf, int len)`
-- Defined: `progs/tls_u/tls_u_port.c:34`
+- Defined: `progs/tls_u/tls_u_port.c:38`
 - Depends on: `kernel/string.c`, `kernel/time.c`
 
 ### tls_u_recv_timeout (function) `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms)`
-- Defined: `progs/tls_u/tls_u_port.c:39`
+- Defined: `progs/tls_u/tls_u_port.c:43`
 - Depends on: `kernel/string.c`, `kernel/time.c`
 
 ### tls_u_close (function) `void tls_u_close(int fd)`
-- Defined: `progs/tls_u/tls_u_port.c:50`
-- Depends on: `kernel/string.c`, `kernel/time.c`
-
-### tls_now_days (function) `long tls_now_days(void)`
 - Defined: `progs/tls_u/tls_u_port.c:54`
 - Depends on: `kernel/string.c`, `kernel/time.c`
 
+### tls_close (function) `void tls_close(int fd)`
+- Defined: `progs/tls_u/tls_u_port.c:67`
+- Doc: Session-aware close for multi-fetch processes (freedom follows redirects and linked stylesheets, reusing the lowest free
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### tls_now_days (function) `long tls_now_days(void)`
+- Defined: `progs/tls_u/tls_u_port.c:71`
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
 ### tls_random (function) `void tls_random(unsigned char *out, unsigned len)`
-- Defined: `progs/tls_u/tls_u_port.c:60`
+- Defined: `progs/tls_u/tls_u_port.c:77`
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### u_raw_syscall3 (function) `static long u_raw_syscall3(long n, long a1, long a2, long a3)`
+- Defined: `progs/tls_u/tls_u_port.c:98`
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### parse_quad (function) `static int parse_quad(const char *s, unsigned *ip_out)`
+- Defined: `progs/tls_u/tls_u_port.c:122`
+- Doc: Strict dotted-quad parser (clang-tidy cert-err34-c: sscanf %u has undefined overflow and accepts whitespace/sign, so "99
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### tls_u_resolve (function) `int tls_u_resolve(const char *host, unsigned *ip_out)`
+- Defined: `progs/tls_u/tls_u_port.c:146`
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### net_dns_resolve (function) `int net_dns_resolve(const char *host)`
+- Defined: `progs/tls_u/tls_u_port.c:183`
+- Doc: freedom's resolver name: kernel DNS value semantics (u32 host order, * -1 on failure).
 - Depends on: `kernel/string.c`, `kernel/time.c`
 
 ### close (function) `close(fd);`
-- Defined: `progs/tls_u/tls_u_port.c:52`
+- Defined: `progs/tls_u/tls_u_port.c:56`
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### tls_free_fd (function) `void tls_free_fd(int fd);`
+- Defined: `progs/tls_u/tls_u_port.c:66`
+- Doc: Session-aware close for multi-fetch processes (freedom follows redirects and linked stylesheets, reusing the lowest free
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
+- Defined: `progs/tls_u/tls_u_port.c:101`
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### memset (function) `memset(&hints, 0, sizeof(hints));`
+- Defined: `progs/tls_u/tls_u_port.c:152`
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### freeaddrinfo (function) `freeaddrinfo(res);`
+- Defined: `progs/tls_u/tls_u_port.c:158`
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### answer (function) `* answer (some resolvers go IPv6-only on the first query). */ memset(&hints, 0, sizeof(hints));`
+- Defined: `progs/tls_u/tls_u_port.c:163`
+- Depends on: `kernel/string.c`, `kernel/time.c`
+
+### u_minios_dns (function) `return u_minios_dns(host, ip_out);`
+- Defined: `progs/tls_u/tls_u_port.c:178`
 - Depends on: `kernel/string.c`, `kernel/time.c`
 
 ## progs/topogpt3/topogpt3.c
@@ -24928,10 +25081,29 @@ Z_DumpHeap
 
 ## rtc.h
 
+### rtc_days_from_civil (function) `static inline long rtc_days_from_civil(long y, long m, long d)`
+- Defined: `rtc.h:18`
+- Doc: Days since 1970-01-01 for a civil date (Howard Hinnant's algorithm, pure integer arithmetic, no tables). Powers rtc_wall
+- Imported by: `drivers/rtc.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`, `tests/test_rtc.c`
+
 ### rtc_read_tod (function) `int rtc_read_tod(int *hour, int *min, int *sec);`
 - Defined: `rtc.h:3`
 - Doc: ifndef RTC_H define RTC_H
-- Imported by: `drivers/rtc.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`
+- Imported by: `drivers/rtc.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`, `tests/test_rtc.c`
+
+### rtc_read_date (function) `int rtc_read_date(int *year, int *mon, int *day);`
+- Defined: `rtc.h:11`
+- Doc: Calendar date from the CMOS RTC (registers 0x07-0x09). Full year (CMOS carries two digits; 0..99 maps to 2000..2099). Fa
+- Imported by: `drivers/rtc.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`, `tests/test_rtc.c`
+
+### suite (function) `* host suite (tests/test_rtc.c);`
+- Defined: `rtc.h:15`
+- Imported by: `drivers/rtc.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`, `tests/test_rtc.c`
+
+### rtc_wall_seconds (function) `int rtc_wall_seconds(unsigned long *out);`
+- Defined: `rtc.h:33`
+- Doc: Wall-clock seconds since the Unix epoch from one RTC snapshot. Returns 1 and stores the value, or 0 on any RTC failure (
+- Imported by: `drivers/rtc.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`, `tests/test_rtc.c`
 
 ## sb16.h
 
@@ -25008,140 +25180,150 @@ Z_DumpHeap
 ## sched.h
 
 ### __attribute__ (function) `typedef struct __attribute__((packed))`
-- Defined: `sched.h:211`
+- Defined: `sched.h:221`
 - Doc: Per-CPU TSS selectors: slot 5 + 2*cpu in the runtime GDT (each TSS descriptor occupies two 8-byte slots).  CPU 0 keeps s
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### STR (function) `* Both immediates derive from these macros via STR();`
+- Defined: `sched.h:64`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ### volatile (function) `__asm__ volatile("mov %%gs:0, %0" : "=r"(val));`
-- Defined: `sched.h:145`
+- Defined: `sched.h:155`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ### sched_init (function) `void sched_init(void);`
-- Defined: `sched.h:215`
+- Defined: `sched.h:225`
 - Doc: Per-CPU TSS selectors: slot 5 + 2*cpu in the runtime GDT (each TSS descriptor occupies two 8-byte slots).  CPU 0 keeps s
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### tss_init_ap (function) `void tss_init_ap(int cpu);`
-- Defined: `sched.h:216`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### smp_ap_idle_loop (function) `void smp_ap_idle_loop(void);`
-- Defined: `sched.h:217`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### proc_create (function) `int proc_create(const char *name, int parent_pid);`
-- Defined: `sched.h:218`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### proc_get (function) `proc_t *proc_get(int pid);`
-- Defined: `sched.h:219`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### schedule (function) `void schedule(void);`
-- Defined: `sched.h:220`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### sched_set_nice (function) `int sched_set_nice(int pid, int nice);`
-- Defined: `sched.h:221`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### seccomp_deny_one (function) `int seccomp_deny_one(int pid, int n);`
-- Defined: `sched.h:222`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### seccomp_allow_one (function) `int seccomp_allow_one(int pid, int n);`
-- Defined: `sched.h:223`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### seccomp_denied (function) `int seccomp_denied(int pid, int n);`
-- Defined: `sched.h:224`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### rlimit_cpu_exceeded (function) `int rlimit_cpu_exceeded(int pid);`
-- Defined: `sched.h:225`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### rlimit_cpu_tick (function) `void rlimit_cpu_tick(int pid);`
+### kstack_report (function) `void kstack_report(void);`
 - Defined: `sched.h:226`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### switch_to (function) `void switch_to(proc_t *prev, proc_t *next);`
+### tss_init_ap (function) `void tss_init_ap(int cpu);`
 - Defined: `sched.h:227`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### switch_to_notrap (function) `void switch_to_notrap(proc_t *prev, proc_t *next);`
+### smp_ap_idle_loop (function) `void smp_ap_idle_loop(void);`
 - Defined: `sched.h:228`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### switch_save_only (function) `void switch_save_only(proc_t *prev);`
+### proc_create (function) `int proc_create(const char *name, int parent_pid);`
 - Defined: `sched.h:229`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### resume_iretq (function) `void resume_iretq(void);`
+### proc_get (function) `proc_t *proc_get(int pid);`
 - Defined: `sched.h:230`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### yield (function) `void yield(void);`
+### schedule (function) `void schedule(void);`
 - Defined: `sched.h:231`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### do_exit (function) `void do_exit(int code);`
+### sched_set_nice (function) `int sched_set_nice(int pid, int nice);`
 - Defined: `sched.h:232`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### do_clone (function) `long do_clone(long flags, long newsp);`
+### seccomp_deny_one (function) `int seccomp_deny_one(int pid, int n);`
 - Defined: `sched.h:233`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### do_thread_spawn (function) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+### seccomp_allow_one (function) `int seccomp_allow_one(int pid, int n);`
 - Defined: `sched.h:234`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### do_waitpid (function) `int do_waitpid(int pid);`
+### seccomp_denied (function) `int seccomp_denied(int pid, int n);`
+- Defined: `sched.h:235`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### rlimit_cpu_exceeded (function) `int rlimit_cpu_exceeded(int pid);`
 - Defined: `sched.h:236`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### do_kill (function) `int do_kill(int pid);`
+### rlimit_cpu_tick (function) `void rlimit_cpu_tick(int pid);`
 - Defined: `sched.h:237`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### timer_tick (function) `void timer_tick(void);`
+### switch_to (function) `void switch_to(proc_t *prev, proc_t *next);`
 - Defined: `sched.h:238`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### pt_clone_user (function) `uint64_t pt_clone_user(uint64_t parent_cr3);`
+### switch_to_notrap (function) `void switch_to_notrap(proc_t *prev, proc_t *next);`
+- Defined: `sched.h:239`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### switch_save_only (function) `void switch_save_only(proc_t *prev);`
+- Defined: `sched.h:240`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### resume_iretq (function) `void resume_iretq(void);`
 - Defined: `sched.h:241`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### yield (function) `void yield(void);`
+- Defined: `sched.h:242`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### do_exit (function) `void do_exit(int code);`
+- Defined: `sched.h:243`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### do_clone (function) `long do_clone(long flags, long newsp);`
+- Defined: `sched.h:244`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### do_thread_spawn (function) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+- Defined: `sched.h:245`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### do_waitpid (function) `int do_waitpid(int pid);`
+- Defined: `sched.h:247`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### do_kill (function) `int do_kill(int pid);`
+- Defined: `sched.h:248`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### timer_tick (function) `void timer_tick(void);`
+- Defined: `sched.h:249`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### pt_clone_user (function) `uint64_t pt_clone_user(uint64_t parent_cr3);`
+- Defined: `sched.h:252`
 - Doc: void     switch_to(proc_t *prev, proc_t *next); void     switch_to_notrap(proc_t *prev, proc_t *next); void     switch_s
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ### pt_free_user (function) `void pt_free_user(uint64_t cr3);`
-- Defined: `sched.h:242`
+- Defined: `sched.h:253`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
@@ -25210,7 +25392,7 @@ Z_DumpHeap
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### smp_init (function) `void smp_init(void)`
-- Defined: `smp.c:302`
+- Defined: `smp.c:304`
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### syscall_entry (function) `extern void syscall_entry(void);`
@@ -25223,46 +25405,46 @@ Z_DumpHeap
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### wrmsr (function) `wrmsr(MSR_GSBASE, (unsigned long)&cpus[cpu]);`
-- Defined: `smp.c:227`
-- Doc: unsigned id = lapic_read(LAPIC_ID_OFF) >> 24; int cpu = __sync_fetch_and_add(&ap_count, 1) + 1; /* Initialize per-CPU cp
+- Defined: `smp.c:229`
+- Doc: ap_count and the "SMP: Brought up N CPUs" banner. unsigned id = lapic_read(LAPIC_ID_OFF) >> 24; int cpu = __sync_fetch_a
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### BSP (function) `* were programmed only on the BSP (syscall_init runs in kmain), so * an AP's first sysretq loaded SS from a zeroed STAR (selector 0x08, * kernel code, as SS) and died with #SS. The values mirror * sys`
-- Defined: `smp.c:236`
+- Defined: `smp.c:238`
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### tss_init_ap (function) `tss_init_ap(cpu);`
-- Defined: `smp.c:256`
+- Defined: `smp.c:258`
 - Doc: EFER is per-CPU: ap_entry.S only sets LME, so the AP runs with EFER.NXE clear.  Every user-window PTE carries the NX bit
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### spin_lock_irqsave (function) `spin_lock_irqsave(&smp_lock, &flags);`
-- Defined: `smp.c:278`
-- Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
-
-### spin_unlock_irqrestore (function) `spin_unlock_irqrestore(&smp_lock, flags);`
 - Defined: `smp.c:280`
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
+### spin_unlock_irqrestore (function) `spin_unlock_irqrestore(&smp_lock, flags);`
+- Defined: `smp.c:282`
+- Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
+
 ### smp_ap_idle_loop (function) `smp_ap_idle_loop();`
-- Defined: `smp.c:297`
+- Defined: `smp.c:299`
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### kmemcpy (function) `kmemcpy((void *)(unsigned long)AP_STUB_ADDR, ap_stub_blob, ap_stub_len);`
-- Defined: `smp.c:316`
+- Defined: `smp.c:318`
 - Doc: Virtual-wire mode via the local APIC: with the LAPIC enabled, the PIC's INTR line only reaches the CPU through LINT0, so
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### INIT (function) `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status never clears), * so edge-triggered is used. Two SIPIs deliver the startup vector. */ l`
-- Defined: `smp.c:321`
+- Defined: `smp.c:323`
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### kprintf (function) `else kprintf("SMP: 1 CPU (APs not woken)\n");`
-- Defined: `smp.c:346`
+- Defined: `smp.c:348`
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ### smp_ipi_broadcast (function) `smp_ipi_broadcast(32);`
-- Defined: `smp.c:353`
+- Defined: `smp.c:355`
 - Depends on: `ap_stub.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `sched.h`, `smp.h`
 
 ## smp.h
@@ -25494,40 +25676,44 @@ Z_DumpHeap
 
 ## test_bdd.sh
 
+### should_run (function)
+- Defined: `test_bdd.sh:35`
+- Doc: MATCH filter: skip scenarios whose name lacks the substring (and make the following expects no-ops so a skipped boot can
+
 ### cleanup_stale_qemu (function)
-- Defined: `test_bdd.sh:31`
+- Defined: `test_bdd.sh:43`
 
 ### scenario (function)
-- Defined: `test_bdd.sh:42`
+- Defined: `test_bdd.sh:54`
 - Doc: scenario <name> <script of shell commands>
 
 ### scenario_smp (function)
-- Defined: `test_bdd.sh:60`
+- Defined: `test_bdd.sh:74`
 - Doc: scenario_smp <name> <script> -- same as scenario but with -smp 2
 
 ### expect (function)
-- Defined: `test_bdd.sh:79`
+- Defined: `test_bdd.sh:95`
 - Doc: expect <marker>
 
 ### expect_count (function)
-- Defined: `test_bdd.sh:100`
+- Defined: `test_bdd.sh:117`
 - Doc: expect_count <count> <marker>: the marker must appear exactly that many times in the log. Used where a single occurrence
 
 ### refute (function)
-- Defined: `test_bdd.sh:122`
+- Defined: `test_bdd.sh:140`
 - Doc: refute <marker>: the marker must NOT appear (suppressed hostile content).
 
 ### http_server_start (function)
-- Defined: `test_bdd.sh:691`
+- Defined: `test_bdd.sh:722`
 
 ### http_server_stop (function)
-- Defined: `test_bdd.sh:698`
+- Defined: `test_bdd.sh:729`
 
 ### http_fixture_start (function)
-- Defined: `test_bdd.sh:703`
+- Defined: `test_bdd.sh:734`
 
 ### http_fixture_stop (function)
-- Defined: `test_bdd.sh:710`
+- Defined: `test_bdd.sh:741`
 
 ## test_http_server.py
 
@@ -25625,18 +25811,50 @@ Z_DumpHeap
 
 ## tests/test_fault.c
 
+### range_ok (function) `static int range_ok(unsigned long p, unsigned long len)`
+- Defined: `tests/test_fault.c:33`
+- Depends on: `kernel/string.c`, `vma.h`
+
+### str_ok (function) `static int str_ok(const unsigned char *mem, unsigned long p,
+                  unsigned long maxlen)`
+- Defined: `tests/test_fault.c:39`
+- Doc: static int failures = 0; #define CHECK(c, m) do { if (!(c)) { failures++; fprintf(stderr, "FAIL: %s:%d: %s\n", __FILE__,
+- Depends on: `kernel/string.c`, `vma.h`
+
+### normalize (function) `static void normalize(const char *path, char *out, unsigned cap)`
+- Defined: `tests/test_fault.c:50`
+- Doc: Minimal mirror of fs/vfs.c fs_resolve (cwd-relative, cap 64): * collapses ".", pops "..", skips empty components.
+- Depends on: `kernel/string.c`, `vma.h`
+
+### path_trusted (function) `static int path_trusted(const char *full)`
+- Defined: `tests/test_fault.c:81`
+- Doc: define TRUSTED_DIR "objects/" define TRUSTED_LEN 8
+- Depends on: `kernel/string.c`, `vma.h`
+
 ### main (function) `int main(void)`
-- Defined: `tests/test_fault.c:14`
-- Doc: define CHECK(c, m) do { if (!(c)) { failures++; fprintf(stderr, "FAIL: %s:%d: %s\n", __FILE__, __LINE__, m); } } while (
-- Depends on: `vma.h`
+- Defined: `tests/test_fault.c:91`
+- Depends on: `kernel/string.c`, `vma.h`
+
+### against (function) `* after bounding against (END-BASE)/elemsz, so the product cannot * wrap past the range check);`
+- Defined: `tests/test_fault.c:10`
+- Depends on: `kernel/string.c`, `vma.h`
+
+### memcpy (function) `memcpy(out + len, start, clen);`
+- Defined: `tests/test_fault.c:72`
+- Depends on: `kernel/string.c`, `vma.h`
 
 ### vma_tree_init (function) `vma_tree_init();`
-- Defined: `tests/test_fault.c:17`
-- Depends on: `vma.h`
+- Defined: `tests/test_fault.c:94`
+- Depends on: `kernel/string.c`, `vma.h`
 
 ### CHECK (function) `CHECK(i == VMA_MAX, "pool holds VMA_MAX nodes");`
-- Defined: `tests/test_fault.c:23`
-- Depends on: `vma.h`
+- Defined: `tests/test_fault.c:100`
+- Depends on: `kernel/string.c`, `vma.h`
+
+### memset (function) `memset(umem, 'A', sizeof(umem));`
+- Defined: `tests/test_fault.c:122`
+- Doc: CHECK(vma_tree_find(vma_live_root, 0x500000ul) != VMA_NIL, "find hits"); CHECK(vma_tree_find(vma_live_root, 0x500000ul) 
+- Depends on: `kernel/string.c`, `vma.h`
 
 ## tests/test_futex.c
 
@@ -25677,7 +25895,7 @@ Z_DumpHeap
 - Depends on: `futex.h`
 
 ### printf (function) `else printf("futex: %d failures\n", failures);`
-- Defined: `tests/test_futex.c:141`
+- Defined: `tests/test_futex.c:156`
 - Depends on: `futex.h`
 
 ## tests/test_hal_io.c
@@ -25797,6 +26015,17 @@ Z_DumpHeap
 ### printf (function) `else printf("rcu: %d failures\n", failures);`
 - Defined: `tests/test_rcu.c:95`
 - Depends on: `rcu.h`
+
+## tests/test_rtc.c
+
+### main (function) `int main(void)`
+- Defined: `tests/test_rtc.c:17`
+- Doc: define CHECK(c, m) do { if (!(c)) { failures++; fprintf(stderr, "FAIL: %s:%d: %s\n", __FILE__, __LINE__, m); } } while (
+- Depends on: `rtc.h`
+
+### CHECK (function) `CHECK(rtc_days_from_civil(1970, 1, 1) == 0, "epoch is day zero");`
+- Defined: `tests/test_rtc.c:19`
+- Depends on: `rtc.h`
 
 ## tests/test_sanitize.c
 
@@ -26122,142 +26351,142 @@ Z_DumpHeap
 
 ## tls.h
 
+### tls_free_fd (function) `static inline void tls_free_fd(int fd)`
+- Defined: `tls.h:293`
+- Doc: Kernel built without the TLS engine (net/tls*.c unlinked): no session can ever exist, so the net.c close path needs no c
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+
 ### sha256_init (function) `void sha256_init(struct sha256_ctx *c);`
 - Defined: `tls.h:167`
 - Doc: unsigned char cli_pub_y[32]; /* Leaf certificate public key (for the SKE signature) struct tls_pubkey leaf_pk; int  leaf
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### sha256_update (function) `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len);`
 - Defined: `tls.h:169`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### sha256_final (function) `void sha256_final(struct sha256_ctx *c, unsigned char out[32]);`
 - Defined: `tls.h:170`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### sha256 (function) `void sha256(const unsigned char *data, unsigned len, unsigned char out[32]);`
 - Defined: `tls.h:171`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### sha384 (function) `void sha384(const unsigned char *data, unsigned len, unsigned char out[48]);`
 - Defined: `tls.h:172`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### hmac_sha256 (function) `void hmac_sha256(const unsigned char *key, unsigned klen, const unsigned char *data, unsigned dlen, unsigned char out[32]);`
 - Defined: `tls.h:173`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### tls_prf (function) `void tls_prf(const unsigned char *secret, unsigned secret_len, const char *label, const unsigned char *seed, unsigned seed_len, unsigned char *out, unsigned out_len);`
 - Defined: `tls.h:179`
 - Doc: /* ========== Crypto (tls_crypto.c) ========== void sha256_init(struct sha256_ctx *c); void sha256_update(struct sha256_
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### aes128_encrypt_block (function) `void aes128_encrypt_block(const unsigned char key[16], const unsigned char in[16], unsigned char out[16]);`
 - Defined: `tls.h:184`
 - Doc: void sha256_final(struct sha256_ctx *c, unsigned char out[32]); void sha256(const unsigned char *data, unsigned len, uns
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### aes128_gcm_seal (function) `int aes128_gcm_seal(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned char *aad, unsigned aad_len, const unsigned char *pt, unsigned pt_len, unsigned cha`
 - Defined: `tls.h:189`
 - Doc: GCM. Each call seals one record: tag = 16 bytes appended to ct. * Returns 0 on success, -1 on overflow (len > TLS_REC_MA
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### aes128_gcm_open (function) `int aes128_gcm_open(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned char *aad, unsigned aad_len, const unsigned char *ct, unsigned ct_len, const unsign`
 - Defined: `tls.h:197`
 - Doc: GCM. Each call seals one record: tag = 16 bytes appended to ct. * Returns 0 on success, -1 on overflow (len > TLS_REC_MA
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### aes128_gcm_seal_core (function) `int aes128_gcm_seal_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad, unsigned aad_len, const unsigned char *pt, unsigned pt_len, unsigned char *ct, unsigned c`
 - Defined: `tls.h:208`
 - Doc: Core GCM with an arbitrary 12-byte nonce (the TLS API above is the 4-byte salt + 8-byte sequence special case). Used by 
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### aes128_gcm_open_core (function) `int aes128_gcm_open_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad, unsigned aad_len, const unsigned char *ct, unsigned ct_len, const unsigned char tag[16], `
 - Defined: `tls.h:213`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### p256_scalar_mult (function) `int p256_scalar_mult(const unsigned char scalar[32], const unsigned char qx[32], const unsigned char qy[32], unsigned char rx[32], unsigned char ry[32]);`
 - Defined: `tls.h:222`
 - Doc: secp256r1 / secp384r1: shared Jacobian point arithmetic over NIST * primes. curve: 0 = P-256, 1 = P-384.
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### p384_scalar_mult (function) `int p384_scalar_mult(const unsigned char scalar[48], const unsigned char qx[48], const unsigned char qy[48], unsigned char rx[48], unsigned char ry[48]);`
 - Defined: `tls.h:225`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### p256_ecdh (function) `int p256_ecdh(const unsigned char priv[32], const unsigned char peer_x[32], const unsigned char peer_y[32], unsigned char z[32]);`
 - Defined: `tls.h:231`
 - Doc: ECDH shared secret: Z = priv * peer_pub (P-256). Returns 0 on success, * -1 when the peer point is not on the curve (fai
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### p256_point_valid (function) `int p256_point_valid(const unsigned char x[32], const unsigned char y[32]);`
 - Defined: `tls.h:236`
 - Doc: ECDH shared secret: Z = priv * peer_pub (P-256). Returns 0 on success, * -1 when the peer point is not on the curve (fai
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### p256_pub (function) `int p256_pub(const unsigned char priv[32], unsigned char x[32], unsigned char y[32]);`
 - Defined: `tls.h:237`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### p256_scalar_valid (function) `int p256_scalar_valid(const unsigned char scalar[32]);`
 - Defined: `tls.h:239`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### ecdsa_verify (function) `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[], const unsigned char digest[], unsigned digest_len, const unsigned char sig[], unsigned sig_len);`
 - Defined: `tls.h:243`
 - Doc: ECDSA verify over a SHA-256 or SHA-384 digest. curve: 0 = P-256, * 1 = P-384. Returns 0 when the signature verifies.
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### rsa_pkcs1_verify_sha256 (function) `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const unsigned char digest[32], const unsigned char *sig, unsigned sig_len);`
 - Defined: `tls.h:249`
 - Doc: RSA PKCS#1 v1.5 signature verify with SHA-256. modulus up to 4096 bits. * digest is the SHA-256 of the signed data. Retu
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### rsa_pkcs1_verify_sha384 (function) `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const unsigned char digest[48], const unsigned char *sig, unsigned sig_len);`
 - Defined: `tls.h:253`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### tls_x509_parse_pubkey (function) `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len, struct tls_pubkey *pk);`
 - Defined: `tls.h:261`
 - Doc: RSA PKCS#1 v1.5 signature verify with SHA-256. modulus up to 4096 bits. * digest is the SHA-256 of the signed data. Retu
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### now (function) `* window against now (days since epoch). Returns 0 on success. */ int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len, unsigned cert_lens[], int n_certs, const char *host, long no`
 - Defined: `tls.h:267`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### tls_handshake (function) `int tls_handshake(int fd, const char *host);`
 - Defined: `tls.h:277`
 - Doc: Blocking TLS 1.2 handshake over an open TCP socket (net fd index). host is the SNI + certificate hostname. Returns 0 on 
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### tls_send (function) `int tls_send(int fd, const char *buf, int len);`
 - Defined: `tls.h:280`
 - Doc: Blocking TLS 1.2 handshake over an open TCP socket (net fd index). host is the SNI + certificate hostname. Returns 0 on 
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### tls_recv (function) `int tls_recv(int fd, char *buf, int len);`
 - Defined: `tls.h:284`
 - Doc: Receive decrypted application bytes. 0 = clean EOF (close_notify or FIN * at a record boundary); -1 = protocol error / t
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
-
-### tls_free_fd (function) `void tls_free_fd(int fd);`
-- Defined: `tls.h:287`
-- Doc: Receive decrypted application bytes. 0 = clean EOF (close_notify or FIN * at a record boundary); -1 = protocol error / t
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### tls_sys_handshake (function) `long tls_sys_handshake(long fd, long host);`
-- Defined: `tls.h:290`
-- Doc: Receive decrypted application bytes. 0 = clean EOF (close_notify or FIN * at a record boundary); -1 = protocol error / t
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Defined: `tls.h:297`
+- Doc: Kernel built without the TLS engine (net/tls*.c unlinked): no session can ever exist, so the net.c close path needs no c
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### tls_sys_send (function) `long tls_sys_send(long fd, long buf, long len);`
-- Defined: `tls.h:291`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Defined: `tls.h:298`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ### tls_sys_recv (function) `long tls_sys_recv(long fd, long buf, long len);`
-- Defined: `tls.h:292`
-- Imported by: `kernel/syscalls.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- Defined: `tls.h:299`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 
 ## tls_port.h
 
@@ -26319,6 +26548,11 @@ Z_DumpHeap
 
 ### tls_u_close (function) `void tls_u_close(int fd);`
 - Defined: `tls_port.h:84`
+- Depends on: `kernel.h`, `kernel/string.c`, `kernel/time.c`, `net.h`
+- Imported by: `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+
+### syscall (function) `* the MiniOS DNS syscall (200, invoked sig-0-safe). 0 on success. */ int tls_u_resolve(const char *host, unsigned *ip_out);`
+- Defined: `tls_port.h:95`
 - Depends on: `kernel.h`, `kernel/string.c`, `kernel/time.c`, `net.h`
 - Imported by: `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
 

@@ -1051,37 +1051,37 @@ AM_drawThings
 - Doc: doomgeneric_minios.c - MiniOS platform layer for doomgeneric.
 - Language: c
 - Symbols:
-  - `color` (struct, line 78)
-  - `mini_parse_autoframes` (function, line 22) `static void mini_parse_autoframes(int argc, char **argv)`
-  - `sys_time_ms` (function, line 35) `static long sys_time_ms(void)`
-  - `sys_kbd` (function, line 41) `static long sys_kbd(void)`
-  - `sys_palette` (function, line 46) `static long sys_palette(const unsigned char *pal)`
-  - `sys_kbd_raw` (function, line 51) `static long sys_kbd_raw(int on)`
-  - `sys_vga_mode` (function, line 56) `static long sys_vga_mode(int on)`
-  - `sys_doom_frame` (function, line 61) `static long sys_doom_frame(void)`
-  - `load_vga_palette` (function, line 84) `static void load_vga_palette(void)`
-  - `scancode_to_doom` (function, line 97) `static unsigned char scancode_to_doom(unsigned char raw)`
-  - `kbd_enqueue` (function, line 156) `static void kbd_enqueue(unsigned char doom_key, int pressed)`
-  - `kbd_poll` (function, line 163) `static void kbd_poll(void)`
-  - `DG_Init` (function, line 206) `void DG_Init(void)`
-  - `DG_DrawFrame` (function, line 214) `void DG_DrawFrame(void)`
-  - `DG_SleepMs` (function, line 244) `void DG_SleepMs(uint32_t ms)`
-  - `DG_GetTicksMs` (function, line 250) `uint32_t DG_GetTicksMs(void)`
-  - `DG_GetKey` (function, line 254) `int DG_GetKey(int *pressed, unsigned char *key)`
-  - `DG_SetWindowTitle` (function, line 265) `void DG_SetWindowTitle(const char *title)`
+  - `color` (struct, line 79)
+  - `mini_parse_autoframes` (function, line 23) `static void mini_parse_autoframes(int argc, char **argv)`
+  - `sys_time_ms` (function, line 36) `static long sys_time_ms(void)`
+  - `sys_kbd` (function, line 42) `static long sys_kbd(void)`
+  - `sys_palette` (function, line 47) `static long sys_palette(const unsigned char *pal)`
+  - `sys_kbd_raw` (function, line 52) `static long sys_kbd_raw(int on)`
+  - `sys_vga_mode` (function, line 57) `static long sys_vga_mode(int on)`
+  - `sys_doom_frame` (function, line 62) `static long sys_doom_frame(void)`
+  - `load_vga_palette` (function, line 85) `static void load_vga_palette(void)`
+  - `scancode_to_doom` (function, line 98) `static unsigned char scancode_to_doom(unsigned char raw)`
+  - `kbd_enqueue` (function, line 157) `static void kbd_enqueue(unsigned char doom_key, int pressed)`
+  - `kbd_poll` (function, line 164) `static void kbd_poll(void)`
+  - `DG_Init` (function, line 207) `void DG_Init(void)`
+  - `DG_DrawFrame` (function, line 215) `void DG_DrawFrame(void)`
+  - `DG_SleepMs` (function, line 245) `void DG_SleepMs(uint32_t ms)`
+  - `DG_GetTicksMs` (function, line 251) `uint32_t DG_GetTicksMs(void)`
+  - `DG_GetKey` (function, line 255) `int DG_GetKey(int *pressed, unsigned char *key)`
+  - `DG_SetWindowTitle` (function, line 266) `void DG_SetWindowTitle(const char *title)`
   - `MINIOS_DOOM_BACKBUF_ADDR` (function, line 4) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
-  - `volatile` (function, line 38) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
-  - `printf` (function, line 239) `printf("minios: played %d frames, quitting\n", mini_frames);`
-  - `fflush` (function, line 240) `fflush(stdout);`
-  - `exit` (function, line 241) `exit(0);`
-  - `colors` (variable, line 79) `extern struct color colors[256];`
-  - `I_VideoBuffer` (variable, line 204) `extern unsigned char *I_VideoBuffer;`
-  - `myargc` (variable, line 208) `extern int myargc;`
-  - `myargv` (variable, line 209) `extern char **myargv;`
-  - `FB_ADDR` (macro, line 71) `#define FB_ADDR`
-  - `FB_WIDTH` (macro, line 72) `#define FB_WIDTH`
-  - `FB_HEIGHT` (macro, line 73) `#define FB_HEIGHT`
-  - `KBD_QUEUE_SIZE` (macro, line 152) `#define KBD_QUEUE_SIZE`
+  - `volatile` (function, line 39) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
+  - `printf` (function, line 240) `printf("minios: played %d frames, quitting\n", mini_frames);`
+  - `fflush` (function, line 241) `fflush(stdout);`
+  - `exit` (function, line 242) `exit(0);`
+  - `colors` (variable, line 80) `extern struct color colors[256];`
+  - `I_VideoBuffer` (variable, line 205) `extern unsigned char *I_VideoBuffer;`
+  - `myargc` (variable, line 209) `extern int myargc;`
+  - `myargv` (variable, line 210) `extern char **myargv;`
+  - `FB_ADDR` (macro, line 72) `#define FB_ADDR`
+  - `FB_WIDTH` (macro, line 73) `#define FB_WIDTH`
+  - `FB_HEIGHT` (macro, line 74) `#define FB_HEIGHT`
+  - `KBD_QUEUE_SIZE` (macro, line 153) `#define KBD_QUEUE_SIZE`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/doomgeneric_sdl.c

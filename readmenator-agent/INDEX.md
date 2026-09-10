@@ -25,7 +25,7 @@
 | `drivers/kbd.c` | include "kernel.h" include "vga_fb.h" include "kbd.h"  ========================= | drivers | 19 |
 | `drivers/kbd.h` | ifndef KBD_H define KBD_H | drivers | 15 |
 | `drivers/pcspk.c` | include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with  | drivers | 20 |
-| `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | drivers | 21 |
+| `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | drivers | 27 |
 | `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h"  Sound Blaster 16 DMA audio | drivers | 62 |
 | `editor.h` | ifndef EDITOR_H define EDITOR_H  editor.h -- the built-in line editor contract. | root | 2 |
 | `fs/kfile.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 22 |
@@ -33,18 +33,18 @@
 | `fs/ramdisk.c` | include "kernel.h"  ============================================================ | fs | 25 |
 | `fs/vfs.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 37 |
 | `fs/zip.c` | zip.c — the unzip/zip shell builtins over the miniz zip library. | fs | 19 |
-| `futex.h` | ifndef FUTEX_H define FUTEX_H  Docstring: futex.h -- Fast userspace mutex sleep/ | root | 12 |
+| `futex.h` | ifndef FUTEX_H define FUTEX_H  Docstring: futex.h -- Fast userspace mutex sleep/ | root | 17 |
 | `gen_minifs.py` | - | root | 0 |
 | `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 35 |
 | `install.sh` | - | root | 0 |
-| `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 36 |
-| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 270 |
+| `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 38 |
+| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 273 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
 | `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | kernel | 31 |
 | `kernel/cvm_host.c` | - | kernel | 55 |
 | `kernel/editor.c` | include "kernel.h" include "shell.h" include "editor.h"  ======================= | kernel | 31 |
 | `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | kernel | 18 |
-| `kernel/futex.c` | Docstring: kernel/futex.c -- Kernel side of the futex contract. | kernel | 10 |
+| `kernel/futex.c` | Docstring: kernel/futex.c -- Kernel side of the futex contract. | kernel | 11 |
 | `kernel/klog.c` | klog.c - Structured kernel logging with levels and subsystems. | kernel | 9 |
 | `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | kernel | 43 |
 | `kernel/lz4_kernel.c` | include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE  | kernel | 11 |
@@ -55,14 +55,14 @@
 | `kernel/printf.c` | include "kernel.h"  ============================================================ | kernel | 15 |
 | `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | kernel | 21 |
 | `kernel/redirect.c` | include "kernel.h"  ============================================================ | kernel | 7 |
-| `kernel/sched.c` | - | kernel | 105 |
+| `kernel/sched.c` | - | kernel | 114 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 8 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 10 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 108 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 109 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 154 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 152 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
 | `kernel/time.c` | include "kernel.h"  ============================================================ | kernel | 5 |
 | `kernel/vga_fb.c` | - | kernel | 101 |
@@ -93,7 +93,7 @@
 | `progs/asm/aes.s` | - | asm | 28 |
 | `progs/asm/cp.s` | - | asm | 2 |
 | `progs/asm/fib.s` | - | asm | 3 |
-| `progs/asm/freedom.s` | - | asm | 91 |
+| `progs/asm/freedom.s` | - | asm | 92 |
 | `progs/asm/http.s` | - | asm | 3 |
 | `progs/asm/json.s` | - | asm | 32 |
 | `progs/asm/ldhello.s` | - | asm | 2 |
@@ -309,7 +309,7 @@
 | `progs/src/cp.c` | - | src | 8 |
 | `progs/src/cpl.c` | Ring-3 privilege probe. Reads the CS selector at runtime and exits with | src | 4 |
 | `progs/src/fib.c` | - | src | 2 |
-| `progs/src/freedom.c` | freedom - a headless text browser for MiniOS. | src | 60 |
+| `progs/src/freedom.c` | freedom - a headless text browser for MiniOS. | src | 62 |
 | `progs/src/ftest.c` | Exercises the kernel libc surface used by loaded .o programs: fprintf to stdout/ | src | 7 |
 | `progs/src/hello.c` | MiniOS test program — compiled as relocatable .o, loaded by kernel ELF loader | src | 2 |
 | `progs/src/hello.py` | - | src | 0 |
@@ -333,33 +333,34 @@
 | `progs/src/test_all.sh` | test_all.sh -- comprehensive non-interactive test suite for MiniOS.  Run with:   | src | 0 |
 | `progs/src/thdemo.c` | thdemo.c -- Producer-consumer over mthreads (roadmap Phase 1, M1). | src | 16 |
 | `progs/src/w1.c` | - | src | 2 |
-| `progs/tls_u/tls_u_main.c` | tlsget - minimal HTTPS GET over the ring-3 TLS stack. | tls_u | 12 |
-| `progs/tls_u/tls_u_port.c` | tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3). | tls_u | 8 |
+| `progs/tls_u/tls_u_main.c` | tlsget - minimal HTTPS GET over the ring-3 TLS stack. | tls_u | 8 |
+| `progs/tls_u/tls_u_port.c` | tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3). | tls_u | 20 |
 | `progs/topogpt3/topogpt3.c` | - | misc | 132 |
 | `progs/vedit/vedit.c` | vedit.c - fullscreen mini IDE for MiniOS, hosted on Nuklear. | misc | 115 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 31 |
 | `qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | root | 29 |
 | `rcu.h` | ifndef RCU_H define RCU_H  Docstring: rcu.h -- Read-copy-update, lite epoch edit | root | 18 |
-| `rtc.h` | ifndef RTC_H define RTC_H | root | 2 |
+| `rtc.h` | ifndef RTC_H define RTC_H | root | 6 |
 | `sanitize.h` | ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point | root | 5 |
 | `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 27 |
-| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Pro | root | 72 |
+| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Pro | root | 76 |
 | `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 8 |
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 48 |
 | `smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | root | 11 |
 | `spinlock.h` | ifndef SPINLOCK_H define SPINLOCK_H  spinlock.h -- Lightweight spinlock for Mini | root | 22 |
 | `sync.h` | ifndef SYNC_H define SYNC_H  sync.h -- Blocking synchronization primitives (road | root | 36 |
-| `test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the | root | 10 |
+| `test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the | root | 11 |
 | `test_http_server.py` | - | root | 3 |
 | `tests/host_aes.sh` | host_aes.sh - host-side verification for the AES-256-CTR command tools.  The min | tests | 3 |
 | `tests/host_codecs.sh` | host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The | tests | 5 |
 | `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 6 |
 | `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 8 |
-| `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 4 |
+| `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 15 |
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 11 |
 | `tests/test_hal_io.c` | Docstring: Host test for arch/x86/hal_io.h (make test-hal). | tests | 9 |
 | `tests/test_percpu_rq.c` | Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq). | tests | 10 |
 | `tests/test_rcu.c` | Docstring: Host test for kernel/rcu.c (make test-rcu). | tests | 13 |
+| `tests/test_rtc.c` | test_rtc.c -- host test for the pure date math in drivers/rtc.c | tests | 3 |
 | `tests/test_sanitize.c` | Docstring: Host test for sanitize.h (make test-sanitize). | tests | 17 |
 | `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 19 |
 | `tests/test_tick.c` | Docstring: Host test for kernel/tick.c (make test-tick). | tests | 12 |
@@ -367,7 +368,7 @@
 | `tests/test_vma_bench.c` | test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 11 |
 | `tick.h` | Docstring: Tick listener bus contract. | root | 14 |
 | `tls.h` | ifndef TLS_H define TLS_H  ========== TLS 1.2 client (RFC 5246) ========== | root | 73 |
-| `tls_port.h` | ifndef TLS_PORT_H define TLS_PORT_H  Portability shim between the MiniOS kernel  | root | 49 |
+| `tls_port.h` | ifndef TLS_PORT_H define TLS_PORT_H  Portability shim between the MiniOS kernel  | root | 50 |
 | `tls_roots.h` | tls_roots.h - embedded CA roots (DER), generated by mkroots.sh. | root | 0 |
 | `tls_test.c` | tls_test.c - host-side tests for the kernel TLS stack. | root | 34 |
 | `tls_test.py` | - | root | 16 |

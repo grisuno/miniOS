@@ -75,59 +75,59 @@
   - `MINIOS_SYS_CLOCK_GETTIME` (macro, line 196) `#define MINIOS_SYS_CLOCK_GETTIME`
   - `MINIOS_SYS_TGKILL` (macro, line 197) `#define MINIOS_SYS_TGKILL`
   - `MINIOS_SYS_DNS` (macro, line 200) `#define MINIOS_SYS_DNS`
-  - `MINIOS_SYS_TLS_HANDSHAKE` (macro, line 201) `#define MINIOS_SYS_TLS_HANDSHAKE`
-  - `MINIOS_SYS_TLS_SEND` (macro, line 202) `#define MINIOS_SYS_TLS_SEND`
-  - `MINIOS_SYS_TLS_RECV` (macro, line 203) `#define MINIOS_SYS_TLS_RECV`
-  - `MINIOS_SYS_TIME` (macro, line 204) `#define MINIOS_SYS_TIME`
-  - `MINIOS_SYS_KBD` (macro, line 205) `#define MINIOS_SYS_KBD`
-  - `MINIOS_SYS_PALETTE` (macro, line 206) `#define MINIOS_SYS_PALETTE`
-  - `MINIOS_SYS_KBD_RAW` (macro, line 207) `#define MINIOS_SYS_KBD_RAW`
-  - `MINIOS_SYS_VGA_MODE` (macro, line 208) `#define MINIOS_SYS_VGA_MODE`
-  - `MINIOS_SYS_PCSPK_INIT` (macro, line 209) `#define MINIOS_SYS_PCSPK_INIT`
-  - `MINIOS_SYS_PCSPK_TONE` (macro, line 210) `#define MINIOS_SYS_PCSPK_TONE`
-  - `MINIOS_SYS_DOOM_FRAME` (macro, line 211) `#define MINIOS_SYS_DOOM_FRAME`
-  - `MINIOS_SYS_RTC` (macro, line 212) `#define MINIOS_SYS_RTC`
-  - `MINIOS_SYS_FB_INFO` (macro, line 213) `#define MINIOS_SYS_FB_INFO`
-  - `MINIOS_SYS_PCSPK_VOL` (macro, line 214) `#define MINIOS_SYS_PCSPK_VOL`
-  - `MINIOS_SYS_SPAWN` (macro, line 215) `#define MINIOS_SYS_SPAWN`
-  - `MINIOS_SYS_LZ4_COMPRESS` (macro, line 216) `#define MINIOS_SYS_LZ4_COMPRESS`
-  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 217) `#define MINIOS_SYS_LZ4_DECOMPRESS`
-  - `MINIOS_SYS_MOUSE` (macro, line 218) `#define MINIOS_SYS_MOUSE`
-  - `MINIOS_SYS_NK_FRAME` (macro, line 219) `#define MINIOS_SYS_NK_FRAME`
-  - `MINIOS_SYS_SB16_OPEN` (macro, line 220) `#define MINIOS_SYS_SB16_OPEN`
-  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 221) `#define MINIOS_SYS_SB16_SUBMIT`
-  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 222) `#define MINIOS_SYS_GFX_SET_TITLE`
-  - `MINIOS_SYS_SB16_PUMP` (macro, line 223) `#define MINIOS_SYS_SB16_PUMP`
-  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 224) `#define MINIOS_SYS_SB16_STREAM_OPEN`
-  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 225) `#define MINIOS_SYS_SB16_STREAM_CLOSE`
-  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 226) `#define MINIOS_SYS_SB16_STREAM_SUBMIT`
-  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 227) `#define MINIOS_SYS_SB16_STREAM_VOLUME`
-  - `MINIOS_SYS_THREAD_SPAWN` (macro, line 228) `#define MINIOS_SYS_THREAD_SPAWN`
-  - `MINIOS_SYS_FUTEX_WAIT` (macro, line 229) `#define MINIOS_SYS_FUTEX_WAIT`
-  - `MINIOS_SYS_FUTEX_WAKE` (macro, line 230) `#define MINIOS_SYS_FUTEX_WAKE`
-  - `MINIOS_SYS_SUBMIT_BATCH` (macro, line 231) `#define MINIOS_SYS_SUBMIT_BATCH`
-  - `MINIOS_SYS_GETC_RAW` (macro, line 232) `#define MINIOS_SYS_GETC_RAW`
-  - `MINIOS_SYS_GFX_PRESENT` (macro, line 233) `#define MINIOS_SYS_GFX_PRESENT`
-  - `MINIOS_SYS_SECCOMP` (macro, line 234) `#define MINIOS_SYS_SECCOMP`
-  - `MINIOS_SYS_NICE` (macro, line 235) `#define MINIOS_SYS_NICE`
-  - `MINIOS_SYS_RLIMIT` (macro, line 236) `#define MINIOS_SYS_RLIMIT`
-  - `MINIOS_SYS_CLONE` (macro, line 237) `#define MINIOS_SYS_CLONE`
-  - `MINIOS_GFX_BUF_GAME` (macro, line 246) `#define MINIOS_GFX_BUF_GAME`
-  - `MINIOS_GFX_BUF_NK` (macro, line 247) `#define MINIOS_GFX_BUF_NK`
-  - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 248) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
-  - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 249) `#define MINIOS_SYS_WINDOW_PRESENT`
-  - `MINIOS_SYS_WINDOW_TITLE` (macro, line 250) `#define MINIOS_SYS_WINDOW_TITLE`
-  - `SYS_TIME_MS` (macro, line 253) `#define SYS_TIME_MS`
-  - `SYS_PALETTE` (macro, line 254) `#define SYS_PALETTE`
-  - `SYS_PCSPK_INIT` (macro, line 255) `#define SYS_PCSPK_INIT`
-  - `SYS_PCSPK_TONE` (macro, line 256) `#define SYS_PCSPK_TONE`
-  - `SYS_RTC` (macro, line 257) `#define SYS_RTC`
-  - `SYS_FB_INFO` (macro, line 258) `#define SYS_FB_INFO`
-  - `SYS_PCSPK_VOL` (macro, line 259) `#define SYS_PCSPK_VOL`
-  - `SYS_SPAWN` (macro, line 260) `#define SYS_SPAWN`
-  - `SYS_TIME` (macro, line 261) `#define SYS_TIME`
-  - `SYS_WRITE` (macro, line 262) `#define SYS_WRITE`
-  - `MINIOS_EABI_MISMATCH` (macro, line 265) `#define MINIOS_EABI_MISMATCH`
+  - `MINIOS_SYS_TLS_HANDSHAKE` (macro, line 206) `#define MINIOS_SYS_TLS_HANDSHAKE`
+  - `MINIOS_SYS_TLS_SEND` (macro, line 207) `#define MINIOS_SYS_TLS_SEND`
+  - `MINIOS_SYS_TLS_RECV` (macro, line 208) `#define MINIOS_SYS_TLS_RECV`
+  - `MINIOS_SYS_TIME` (macro, line 209) `#define MINIOS_SYS_TIME`
+  - `MINIOS_SYS_KBD` (macro, line 210) `#define MINIOS_SYS_KBD`
+  - `MINIOS_SYS_PALETTE` (macro, line 211) `#define MINIOS_SYS_PALETTE`
+  - `MINIOS_SYS_KBD_RAW` (macro, line 212) `#define MINIOS_SYS_KBD_RAW`
+  - `MINIOS_SYS_VGA_MODE` (macro, line 213) `#define MINIOS_SYS_VGA_MODE`
+  - `MINIOS_SYS_PCSPK_INIT` (macro, line 214) `#define MINIOS_SYS_PCSPK_INIT`
+  - `MINIOS_SYS_PCSPK_TONE` (macro, line 215) `#define MINIOS_SYS_PCSPK_TONE`
+  - `MINIOS_SYS_DOOM_FRAME` (macro, line 216) `#define MINIOS_SYS_DOOM_FRAME`
+  - `MINIOS_SYS_RTC` (macro, line 217) `#define MINIOS_SYS_RTC`
+  - `MINIOS_SYS_FB_INFO` (macro, line 218) `#define MINIOS_SYS_FB_INFO`
+  - `MINIOS_SYS_PCSPK_VOL` (macro, line 219) `#define MINIOS_SYS_PCSPK_VOL`
+  - `MINIOS_SYS_SPAWN` (macro, line 220) `#define MINIOS_SYS_SPAWN`
+  - `MINIOS_SYS_LZ4_COMPRESS` (macro, line 221) `#define MINIOS_SYS_LZ4_COMPRESS`
+  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 222) `#define MINIOS_SYS_LZ4_DECOMPRESS`
+  - `MINIOS_SYS_MOUSE` (macro, line 223) `#define MINIOS_SYS_MOUSE`
+  - `MINIOS_SYS_NK_FRAME` (macro, line 224) `#define MINIOS_SYS_NK_FRAME`
+  - `MINIOS_SYS_SB16_OPEN` (macro, line 225) `#define MINIOS_SYS_SB16_OPEN`
+  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 226) `#define MINIOS_SYS_SB16_SUBMIT`
+  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 227) `#define MINIOS_SYS_GFX_SET_TITLE`
+  - `MINIOS_SYS_SB16_PUMP` (macro, line 228) `#define MINIOS_SYS_SB16_PUMP`
+  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 229) `#define MINIOS_SYS_SB16_STREAM_OPEN`
+  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 230) `#define MINIOS_SYS_SB16_STREAM_CLOSE`
+  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 231) `#define MINIOS_SYS_SB16_STREAM_SUBMIT`
+  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 232) `#define MINIOS_SYS_SB16_STREAM_VOLUME`
+  - `MINIOS_SYS_THREAD_SPAWN` (macro, line 233) `#define MINIOS_SYS_THREAD_SPAWN`
+  - `MINIOS_SYS_FUTEX_WAIT` (macro, line 234) `#define MINIOS_SYS_FUTEX_WAIT`
+  - `MINIOS_SYS_FUTEX_WAKE` (macro, line 235) `#define MINIOS_SYS_FUTEX_WAKE`
+  - `MINIOS_SYS_SUBMIT_BATCH` (macro, line 236) `#define MINIOS_SYS_SUBMIT_BATCH`
+  - `MINIOS_SYS_GETC_RAW` (macro, line 237) `#define MINIOS_SYS_GETC_RAW`
+  - `MINIOS_SYS_GFX_PRESENT` (macro, line 238) `#define MINIOS_SYS_GFX_PRESENT`
+  - `MINIOS_SYS_SECCOMP` (macro, line 239) `#define MINIOS_SYS_SECCOMP`
+  - `MINIOS_SYS_NICE` (macro, line 240) `#define MINIOS_SYS_NICE`
+  - `MINIOS_SYS_RLIMIT` (macro, line 241) `#define MINIOS_SYS_RLIMIT`
+  - `MINIOS_SYS_CLONE` (macro, line 242) `#define MINIOS_SYS_CLONE`
+  - `MINIOS_GFX_BUF_GAME` (macro, line 251) `#define MINIOS_GFX_BUF_GAME`
+  - `MINIOS_GFX_BUF_NK` (macro, line 252) `#define MINIOS_GFX_BUF_NK`
+  - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 253) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
+  - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 254) `#define MINIOS_SYS_WINDOW_PRESENT`
+  - `MINIOS_SYS_WINDOW_TITLE` (macro, line 255) `#define MINIOS_SYS_WINDOW_TITLE`
+  - `SYS_TIME_MS` (macro, line 258) `#define SYS_TIME_MS`
+  - `SYS_PALETTE` (macro, line 259) `#define SYS_PALETTE`
+  - `SYS_PCSPK_INIT` (macro, line 260) `#define SYS_PCSPK_INIT`
+  - `SYS_PCSPK_TONE` (macro, line 261) `#define SYS_PCSPK_TONE`
+  - `SYS_RTC` (macro, line 262) `#define SYS_RTC`
+  - `SYS_FB_INFO` (macro, line 263) `#define SYS_FB_INFO`
+  - `SYS_PCSPK_VOL` (macro, line 264) `#define SYS_PCSPK_VOL`
+  - `SYS_SPAWN` (macro, line 265) `#define SYS_SPAWN`
+  - `SYS_TIME` (macro, line 266) `#define SYS_TIME`
+  - `SYS_WRITE` (macro, line 267) `#define SYS_WRITE`
+  - `MINIOS_EABI_MISMATCH` (macro, line 270) `#define MINIOS_EABI_MISMATCH`
 - Imported by: `kernel.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `vga_fb.h`
 
 ## progs/piano/piano.c
@@ -244,43 +244,43 @@
 - Doc: q2generic_minios.c - MiniOS platform layer for quake2generic.
 - Language: c
 - Symbols:
-  - `SYS_DOOM_FRAME` (function, line 5) `* SYS_DOOM_FRAME (211) and the kernel composites the buffer onto the
- * hi-res desktop as a title...`
-  - `sys_kbd` (function, line 28) `static long sys_kbd(void)`
-  - `sys_palette` (function, line 34) `static long sys_palette(const unsigned char *pal)`
-  - `sys_kbd_raw` (function, line 40) `static long sys_kbd_raw(int on)`
-  - `sys_vga_mode` (function, line 46) `static long sys_vga_mode(int on)`
-  - `sys_doom_frame` (function, line 52) `static long sys_doom_frame(void)`
-  - `sys_mouse` (function, line 58) `static long sys_mouse(int *buf)`
-  - `sys_set_title` (function, line 64) `static long sys_set_title(const char *t)`
-  - `q2g_parse_autoframes` (function, line 86) `static void q2g_parse_autoframes(int argc, char **argv)`
-  - `QG_GetMouseDiff` (function, line 101) `void QG_GetMouseDiff(int *dx, int *dy)`
-  - `QG_CaptureMouse` (function, line 112) `void QG_CaptureMouse(void)`
-  - `QG_ReleaseMouse` (function, line 116) `void QG_ReleaseMouse(void)`
-  - `QG_Mkdir` (function, line 119) `void QG_Mkdir(const char *path)`
-  - `scancode_to_q2key` (function, line 123) `static unsigned char scancode_to_q2key(unsigned char raw)`
-  - `extended_to_q2key` (function, line 206) `static unsigned char extended_to_q2key(unsigned char sc)`
-  - `kbd_poll` (function, line 224) `static void kbd_poll(void)`
-  - `SWimp_SetPalette` (function, line 254) `void SWimp_SetPalette(const unsigned char *palette)`
-  - `SWimp_SetMode` (function, line 264) `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)`
-  - `SWimp_Init` (function, line 281) `int SWimp_Init(void *hInstance, void *wndProc)`
-  - `SWimp_Shutdown` (function, line 287) `void SWimp_Shutdown(void)`
-  - `SWimp_BeginFrame` (function, line 290) `void SWimp_BeginFrame(float camera_separation)`
-  - `SWimp_EndFrame` (function, line 293) `void SWimp_EndFrame(void)`
-  - `SWimp_AppActivate` (function, line 312) `void SWimp_AppActivate(qboolean active)`
-  - `QG_Milliseconds` (function, line 316) `int QG_Milliseconds(void)`
-  - `main` (function, line 320) `int main(int argc, char **argv)`
+  - `MINIOS_GFX_BUF_GAME` (function, line 5) `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel
+ * compat alias) and the...`
+  - `sys_kbd` (function, line 29) `static long sys_kbd(void)`
+  - `sys_palette` (function, line 35) `static long sys_palette(const unsigned char *pal)`
+  - `sys_kbd_raw` (function, line 41) `static long sys_kbd_raw(int on)`
+  - `sys_vga_mode` (function, line 47) `static long sys_vga_mode(int on)`
+  - `sys_doom_frame` (function, line 53) `static long sys_doom_frame(void)`
+  - `sys_mouse` (function, line 59) `static long sys_mouse(int *buf)`
+  - `sys_set_title` (function, line 65) `static long sys_set_title(const char *t)`
+  - `q2g_parse_autoframes` (function, line 87) `static void q2g_parse_autoframes(int argc, char **argv)`
+  - `QG_GetMouseDiff` (function, line 102) `void QG_GetMouseDiff(int *dx, int *dy)`
+  - `QG_CaptureMouse` (function, line 113) `void QG_CaptureMouse(void)`
+  - `QG_ReleaseMouse` (function, line 117) `void QG_ReleaseMouse(void)`
+  - `QG_Mkdir` (function, line 120) `void QG_Mkdir(const char *path)`
+  - `scancode_to_q2key` (function, line 124) `static unsigned char scancode_to_q2key(unsigned char raw)`
+  - `extended_to_q2key` (function, line 207) `static unsigned char extended_to_q2key(unsigned char sc)`
+  - `kbd_poll` (function, line 225) `static void kbd_poll(void)`
+  - `SWimp_SetPalette` (function, line 255) `void SWimp_SetPalette(const unsigned char *palette)`
+  - `SWimp_SetMode` (function, line 265) `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)`
+  - `SWimp_Init` (function, line 282) `int SWimp_Init(void *hInstance, void *wndProc)`
+  - `SWimp_Shutdown` (function, line 288) `void SWimp_Shutdown(void)`
+  - `SWimp_BeginFrame` (function, line 291) `void SWimp_BeginFrame(float camera_separation)`
+  - `SWimp_EndFrame` (function, line 294) `void SWimp_EndFrame(void)`
+  - `SWimp_AppActivate` (function, line 313) `void SWimp_AppActivate(qboolean active)`
+  - `QG_Milliseconds` (function, line 317) `int QG_Milliseconds(void)`
+  - `main` (function, line 321) `int main(int argc, char **argv)`
   - `MINIOS_DOOM_BACKBUF_ADDR` (function, line 4) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
-  - `volatile` (function, line 25) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
-  - `Sys_Quit` (function, line 75) `extern void Sys_Quit(void);`
-  - `Quake2_SendKey` (function, line 237) `Quake2_SendKey(qkey, !(raw2 & 0x80));`
-  - `printf` (function, line 306) `printf("minios: played %d frames, quitting\n", s_frames);`
-  - `fflush` (function, line 307) `fflush(stdout);`
-  - `Quake2_Init` (function, line 327) `Quake2_Init(argc, argv);`
-  - `Quake2_Frame` (function, line 341) `Quake2_Frame(time);`
-  - `Q2G_FB_W` (macro, line 19) `#define Q2G_FB_W`
-  - `Q2G_FB_H` (macro, line 21) `#define Q2G_FB_H`
-  - `Q2G_BACKBUF` (macro, line 70) `#define Q2G_BACKBUF`
+  - `volatile` (function, line 26) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
+  - `Sys_Quit` (function, line 76) `extern void Sys_Quit(void);`
+  - `Quake2_SendKey` (function, line 238) `Quake2_SendKey(qkey, !(raw2 & 0x80));`
+  - `printf` (function, line 307) `printf("minios: played %d frames, quitting\n", s_frames);`
+  - `fflush` (function, line 308) `fflush(stdout);`
+  - `Quake2_Init` (function, line 328) `Quake2_Init(argc, argv);`
+  - `Quake2_Frame` (function, line 342) `Quake2_Frame(time);`
+  - `Q2G_FB_W` (macro, line 20) `#define Q2G_FB_W`
+  - `Q2G_FB_H` (macro, line 22) `#define Q2G_FB_H`
+  - `Q2G_BACKBUF` (macro, line 71) `#define Q2G_BACKBUF`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ## progs/topogpt3/topogpt3.c

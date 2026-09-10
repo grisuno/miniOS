@@ -53,11 +53,23 @@
 - Doc: test_fault.c -- fault-injection suite (boyscout gap #10).
 - Language: c
 - Symbols:
-  - `main` (function, line 14) `int main(void)`
-  - `vma_tree_init` (function, line 17) `vma_tree_init();`
-  - `CHECK` (function, line 23) `CHECK(i == VMA_MAX, "pool holds VMA_MAX nodes");`
-  - `CHECK` (macro, line 13) `#define CHECK(c, m)`
-- Depends on: `vma.h`
+  - `range_ok` (function, line 33) `static int range_ok(unsigned long p, unsigned long len)`
+  - `str_ok` (function, line 39) `static int str_ok(const unsigned char *mem, unsigned long p,
+                  unsigned long maxlen)`
+  - `normalize` (function, line 50) `static void normalize(const char *path, char *out, unsigned cap)`
+  - `path_trusted` (function, line 81) `static int path_trusted(const char *full)`
+  - `main` (function, line 91) `int main(void)`
+  - `against` (function, line 10) `* after bounding against (END-BASE)/elemsz, so the product cannot * wrap past the range check);`
+  - `memcpy` (function, line 72) `memcpy(out + len, start, clen);`
+  - `vma_tree_init` (function, line 94) `vma_tree_init();`
+  - `CHECK` (function, line 100) `CHECK(i == VMA_MAX, "pool holds VMA_MAX nodes");`
+  - `memset` (function, line 122) `memset(umem, 'A', sizeof(umem));`
+  - `CHECK` (macro, line 26) `#define CHECK(c, m)`
+  - `U_BASE` (macro, line 29) `#define U_BASE`
+  - `U_END` (macro, line 30) `#define U_END`
+  - `TRUSTED_DIR` (macro, line 79) `#define TRUSTED_DIR`
+  - `TRUSTED_LEN` (macro, line 80) `#define TRUSTED_LEN`
+- Depends on: `kernel/string.c`, `vma.h`
 
 ## tests/test_futex.c
 - Layer: testing
@@ -73,7 +85,7 @@
   - `futex_init` (function, line 57) `futex_init();`
   - `CHECK` (function, line 68) `CHECK(futex_wait((unsigned long)&word_a, 6) == FUTEX_NOMATCH, "mismatch returns NOMATCH");`
   - `futex_wait` (function, line 95) `futex_wait((unsigned long)&word_a, 1);`
-  - `printf` (function, line 141) `else printf("futex: %d failures\n", failures);`
+  - `printf` (function, line 156) `else printf("futex: %d failures\n", failures);`
   - `CHECK` (macro, line 31) `#define CHECK(cond, msg)`
 - Depends on: `futex.h`
 
@@ -129,6 +141,16 @@
   - `printf` (function, line 95) `else printf("rcu: %d failures\n", failures);`
   - `CHECK` (macro, line 29) `#define CHECK(cond, msg)`
 - Depends on: `rcu.h`
+
+## tests/test_rtc.c
+- Layer: testing
+- Doc: test_rtc.c -- host test for the pure date math in drivers/rtc.c
+- Language: c
+- Symbols:
+  - `main` (function, line 17) `int main(void)`
+  - `CHECK` (function, line 19) `CHECK(rtc_days_from_civil(1970, 1, 1) == 0, "epoch is day zero");`
+  - `CHECK` (macro, line 16) `#define CHECK(c, m)`
+- Depends on: `rtc.h`
 
 ## tests/test_sanitize.c
 - Layer: testing
