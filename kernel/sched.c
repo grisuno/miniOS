@@ -205,6 +205,40 @@ static void fpu_free_proc(proc_t *p) {
     if (p->fpu_save) { kfree(p->fpu_save); p->fpu_save = 0; }
 }
 
+/* Per-process VMA contexts (vma.h contract; defined here so vma.c stays
+ * host-testable). A private pool is VMA_MAX nodes from the kernel heap. */
+vma_ctx_t *vma_ctx_alloc(void) {
+    vma_ctx_t *c = (vma_ctx_t *)kmalloc(sizeof(vma_ctx_t));
+    vma_node_t *pool;
+    if (!c) return 0;
+    pool = (vma_node_t *)kmalloc((unsigned long)VMA_MAX * sizeof(vma_node_t));
+    if (!pool) { kfree(c); return 0; }
+    vma_ctx_init(c, pool);
+    return c;
+}
+
+void vma_ctx_free(vma_ctx_t *c) {
+    if (!c || c == &vma_legacy) return;
+    if (c->pool && c->pool != vma_pool) kfree(c->pool);
+    kfree(c);
+}
+
+static int vma_owned(proc_t *p) {
+    return p && p->vma && p->vma != &vma_legacy &&
+           !(p->clone_flags & CLONE_VM);
+}
+
+/* Rebind the global VMA view alongside the brk/mmap view. Callers already
+ * hold sched_lock (+mm_lock at the swap sites); the bind itself is a few
+ * stores. Shared (VM/legacy) contexts make this a semantic no-op. */
+static void vma_save_proc(proc_t *p) {
+    if (p && p->vma) vma_ctx_save(p->vma);
+}
+
+static void vma_load_proc(proc_t *p) {
+    if (p && p->vma) vma_ctx_bind(p->vma);
+}
+
 /* Serial-observable stack health: per-proc high-water marks plus the
  * legacy 32 KB syscall stack, ending in `kstack: ok` or
  * `kstack: OVERFLOW`. The shell `kstack` builtin calls this. */
@@ -577,7 +611,24 @@ void smp_ap_idle_loop(void) {
  * ever observed, leave it alone (fail safe, never migrate it). */
 static void sched_ap_preempt(trap_frame_t *frame) {
     proc_t *cur = proc_get(current_pid);
-    if (!cur || cur->state != PROC_RUNNING) return;
+    if (!cur || cur->state != PROC_RUNNING) {
+        /* A kill turned the running thread into a zombie under us: drop
+         * it and park in the idle context instead of resuming a corpse. */
+        if (cur && cur->state == PROC_ZOMBIE) {
+            int me = this_cpu()->cpu_id;
+            irqflags_t zflags;
+            spin_lock_irqsave(&sched_lock, &zflags);
+            current_pid = -1;
+            spin_unlock_irqrestore(&sched_lock, zflags);
+            sched_rearm_kgs();
+            ap_idle_proc[me].ctx.rip = (uint64_t)smp_ap_idle_loop;
+            ap_idle_proc[me].ctx.rsp =
+                (uint64_t)&ap_idle_stack[me][sizeof(ap_idle_stack[0])];
+            ap_idle_proc[me].ctx.cr3 = read_cr3();
+            switch_to_notrap(cur, &ap_idle_proc[me]);
+        }
+        return;
+    }
     if (!(cur->clone_flags & CLONE_VM)) return;
     rlimit_cpu_tick(current_pid);
     sched_save_preempt(cur, frame, 0);
@@ -715,7 +766,21 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         }
         if (cpu->is_bsp && proc_count > 1) {
             proc_t *cur = proc_get(current_pid);
-            if (cur && cur->state == PROC_RUNNING) {
+            /* A kill turned the running context into a zombie under us:
+             * abandon it to the idle context instead of resuming a
+             * corpse (mirrors the AP path and the schedule() idle
+             * path). The reaper frees it via do_waitpid. */
+            if (cur && cur->state == PROC_ZOMBIE) {
+                int me = cpu->cpu_id;
+                sched_save_preempt(cur, frame, 0);
+                current_pid = -1;
+                sched_rearm_kgs();
+                ap_idle_proc[me].ctx.rip = (uint64_t)smp_ap_idle_loop;
+                ap_idle_proc[me].ctx.rsp =
+                    (uint64_t)&ap_idle_stack[me][sizeof(ap_idle_stack[0])];
+                ap_idle_proc[me].ctx.cr3 = read_cr3();
+                switch_to_notrap(cur, &ap_idle_proc[me]);
+            } else if (cur && cur->state == PROC_RUNNING) {
                 rlimit_cpu_tick(current_pid);
                 /* A preempt from ring 3 parks the whole trap frame in the
                  * pid's dedicated slot and resumes it later through
@@ -764,12 +829,16 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                      * sched_lock) so a concurrent brk/mmap syscall on an
                      * AP cannot interleave it. */
                     spin_lock_irqsave(&mm_lock, &mflags);
-                    if (!(cur->clone_flags & CLONE_VM))
+                    if (!(cur->clone_flags & CLONE_VM)) {
                         cur->brk = g_brk, cur->brk_limit = g_brk_limit, cur->mmap_cur = user_mmap_cur;
+                        vma_save_proc(cur);
+                    }
                     current_pid = next;
                     nxt->state = PROC_RUNNING;
-                    if (!(nxt->clone_flags & CLONE_VM))
+                    if (!(nxt->clone_flags & CLONE_VM)) {
                         g_brk = nxt->brk, g_brk_limit = nxt->brk_limit, user_mmap_cur = nxt->mmap_cur;
+                        vma_load_proc(nxt);
+                    }
                     spin_unlock_irqrestore(&mm_lock, mflags);
                     spin_unlock_irqrestore(&sched_lock, sflags);
                     /* Re-arm the swap slot before abandoning this frame:
@@ -1006,7 +1075,11 @@ int proc_create(const char *name, int parent_pid) {
     p->open_files = 0;
     p->cpu_kill_pending = 0;
     p->pid = pid;
-    p->state = PROC_READY;
+    /* Build unpublished: a READY slot is claimable by another CPU mid-
+     * build (a slow step like the 192 KB VMA pool alloc widens that
+     * window to a full tick). PROC_SWITCHING is never claimable; the
+     * slot goes READY only below, fully built. */
+    p->state = PROC_SWITCHING;
     p->parent_pid = parent_pid;
     p->clone_flags = 0;
     kstrncpy(p->name, name, sizeof(p->name) - 1);
@@ -1034,6 +1107,15 @@ int proc_create(const char *name, int parent_pid) {
         spin_unlock(&sched_lock);
         return -1;
     }
+    p->vma = vma_ctx_alloc();
+    if (!p->vma) {
+        fpu_free_proc(p);
+        free_kstack(kstack_top);
+        p->kstack = 0;
+        p->state = PROC_FREE;
+        spin_unlock(&sched_lock);
+        return -1;
+    }
 
     /* Build iretq frame at the top of the kernel stack */
     unsigned long *frame = (unsigned long *)(kstack_top - 40);
@@ -1053,6 +1135,7 @@ int proc_create(const char *name, int parent_pid) {
     p->ctx.rflags = 0x200;
 
     if (proc_count <= pid) proc_count = pid + 1;
+    p->state = PROC_READY;
     spin_unlock(&sched_lock);
     return pid;
 }
@@ -1111,7 +1194,7 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
     child = &procs[pid];
     kmemset(child, 0, sizeof(proc_t));
     child->pid = pid;
-    child->state = PROC_READY;
+    child->state = PROC_SWITCHING;
     child->parent_pid = 0;
     child->clone_flags = 0;
     child->brk = brk;
@@ -1138,6 +1221,16 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
         pt_free_user(new_cr3);
         return -1;
     }
+    child->vma = vma_ctx_alloc();
+    if (!child->vma) {
+        fpu_free_proc(child);
+        free_kstack(kstack_top);
+        child->kstack = 0;
+        child->state = PROC_FREE;
+        spin_unlock(&sched_lock);
+        pt_free_user(new_cr3);
+        return -1;
+    }
     {
         unsigned long *frame = (unsigned long *)(kstack_top - 40);
         frame[0] = (unsigned long)entry;
@@ -1151,6 +1244,7 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
     child->ctx.cr3 = new_cr3;
     child->ctx.rflags = 0x202;
     if (proc_count <= pid) proc_count = pid + 1;
+    child->state = PROC_READY;
     spin_unlock(&sched_lock);
     return pid;
 }
@@ -1255,9 +1349,9 @@ void schedule(void) {
      * brk/mmap syscall cannot interleave it. */
     irqflags_t mflags;
     spin_lock_irqsave(&mm_lock, &mflags);
-    if (cur) { if (!(cur->clone_flags & CLONE_VM)) { cur->brk = g_brk; cur->brk_limit = g_brk_limit; cur->mmap_cur = user_mmap_cur; } }
+    if (cur) { if (!(cur->clone_flags & CLONE_VM)) { cur->brk = g_brk; cur->brk_limit = g_brk_limit; cur->mmap_cur = user_mmap_cur; vma_save_proc(cur); } }
     current_pid = next;
-    if (!(nxt->clone_flags & CLONE_VM)) { g_brk = nxt->brk; g_brk_limit = nxt->brk_limit; user_mmap_cur = nxt->mmap_cur; }
+    if (!(nxt->clone_flags & CLONE_VM)) { g_brk = nxt->brk; g_brk_limit = nxt->brk_limit; user_mmap_cur = nxt->mmap_cur; vma_load_proc(nxt); }
     spin_unlock_irqrestore(&mm_lock, mflags);
     /* Capture the continuation while the thread is still PROC_SWITCHING
      * (never claimable), publish it as READY only once the ctx is
@@ -1340,7 +1434,7 @@ long do_thread_spawn(unsigned long fn, unsigned long stack,
     proc_t *child = &procs[pid];
     kmemset(child, 0, sizeof(proc_t));
     child->pid = pid;
-    child->state = PROC_READY;
+    child->state = PROC_SWITCHING;
     child->parent_pid = current_pid;
     child->clone_flags = CLONE_VM;
     child->wq_next = WQ_NONE;
@@ -1376,6 +1470,7 @@ long do_thread_spawn(unsigned long fn, unsigned long stack,
     child->brk = cur->brk;
     child->brk_limit = cur->brk_limit;
     child->mmap_cur = cur->mmap_cur;
+    child->vma = cur->vma ? cur->vma : &vma_legacy;
 
     /* iretq frame [rip, cs, rflags, rsp, ss]: start at fn(arg). */
     unsigned long *frame = (unsigned long *)(kstack_top - 40);
@@ -1392,6 +1487,7 @@ long do_thread_spawn(unsigned long fn, unsigned long stack,
     child->ctx.rax = 0;
 
     if (proc_count <= pid) proc_count = pid + 1;
+    child->state = PROC_READY;
     {
         int home = this_cpu()->cpu_id;
         spin_unlock(&sched_lock);
@@ -1418,7 +1514,7 @@ long do_clone(long flags, long newsp) {
     proc_t *child = &procs[pid];
     kmemset(child, 0, sizeof(proc_t));
     child->pid = pid;
-    child->state = PROC_READY;
+    child->state = PROC_SWITCHING;
     child->parent_pid = current_pid;
     child->clone_flags = cflags;
     child->rl_as_max = cur->rl_as_max;
@@ -1445,9 +1541,20 @@ long do_clone(long flags, long newsp) {
 
     if (cflags & CLONE_VM) {
         child->ctx.cr3 = cur->ctx.cr3;
+        child->vma = cur->vma ? cur->vma : &vma_legacy;
     } else {
         uint64_t new_cr3 = pt_clone_user(read_cr3());
         child->ctx.cr3 = new_cr3 ? new_cr3 : read_cr3();
+        child->vma = vma_ctx_alloc();
+        if (!child->vma) {
+            if (new_cr3) pt_free_user(new_cr3);
+            fpu_free_proc(child);
+            free_kstack(kstack_top);
+            child->kstack = 0;
+            child->state = PROC_FREE;
+            spin_unlock(&sched_lock);
+            return -1;
+        }
     }
 
     child->brk = cur->brk;
@@ -1467,6 +1574,7 @@ long do_clone(long flags, long newsp) {
     child->ctx.rax = 0;
 
     if (proc_count <= pid) proc_count = pid + 1;
+    child->state = PROC_READY;
     {
         int home = this_cpu()->cpu_id;
         int vm_child = (cflags & CLONE_VM) ? 1 : 0;
@@ -1477,45 +1585,124 @@ long do_clone(long flags, long newsp) {
     }
 }
 
+/* Reap one zombie child of current_pid matching pid (-1 = any). Returns
+ * the exit code, or WAITPID_NONE when no zombie matches yet. Resources
+ * free exactly once here (never in do_exit: the zombie still runs its
+ * exit tail on its stack under SMP). */
+static int waitpid_scan(int pid, int *found) {
+    int i;
+    for (i = 0; i < MAX_PROCS; i++) {
+        if (procs[i].state != PROC_FREE
+            && procs[i].parent_pid == current_pid
+            && procs[i].state == PROC_ZOMBIE
+            && (pid == -1 || pid == procs[i].pid)) {
+            int code = procs[i].exit_code;
+            if (found) *found = procs[i].pid;
+            if (procs[i].ctx.cr3
+                && !(procs[i].clone_flags & CLONE_VM))
+                pt_free_user(procs[i].ctx.cr3);
+            if (vma_owned(&procs[i])) vma_ctx_free(procs[i].vma);
+            procs[i].vma = 0;
+            free_kstack(procs[i].kstack);
+            procs[i].kstack = 0;
+            fpu_free_proc(&procs[i]);
+            procs[i].state = PROC_FREE;
+            return code;
+        }
+    }
+    return WAITPID_NONE;
+}
+
 int do_waitpid(int pid) {
     proc_t *cur = proc_get(current_pid);
     if (!cur) return -1;
     for (;;) {
+        int rc;
         spin_lock(&sched_lock);
-        int i;
-        for (i = 0; i < MAX_PROCS; i++) {
-            if (procs[i].state != PROC_FREE
-                && procs[i].parent_pid == current_pid
-                && procs[i].state == PROC_ZOMBIE
-                && (pid == -1 || pid == procs[i].pid)) {
-                int code = procs[i].exit_code;
-                /* Reap owned resources exactly once.  do_exit no longer
-                 * frees anything (the zombie still runs its exit tail on
-                 * its stack under SMP): the reaper frees the kernel stack
-                 * and the page tables here, after the zombie has parked.
-                 * CLONE_VM threads share the parent's page tables; their
-                 * private kernel stack is still freed here. */
-                if (procs[i].ctx.cr3
-                    && !(procs[i].clone_flags & CLONE_VM))
-                    pt_free_user(procs[i].ctx.cr3);
-                free_kstack(procs[i].kstack);
-                procs[i].kstack = 0;
-                fpu_free_proc(&procs[i]);
-                procs[i].state = PROC_FREE;
-                spin_unlock(&sched_lock);
-                return code;
-            }
-        }
+        rc = waitpid_scan(pid, 0);
         spin_unlock(&sched_lock);
+        if (rc != WAITPID_NONE) return rc;
         cur->state = PROC_BLOCKED;
         schedule();
     }
 }
 
+/* Reap one zombie child for `jobs`/auto-reap messages: returns 1 with
+ * pid+code, or 0 when none is ready. Never blocks. */
+int shell_reap_nb(int *pid_out, int *code_out) {
+    int code, pid = -1;
+    if (!proc_get(current_pid)) return 0;
+    spin_lock(&sched_lock);
+    code = waitpid_scan(-1, &pid);
+    spin_unlock(&sched_lock);
+    if (code == WAITPID_NONE) return 0;
+    if (pid_out) *pid_out = pid;
+    if (code_out) *code_out = code;
+    return 1;
+}
+
+/* Reap one specific zombie child (foreground wait). Returns 1 with the
+ * code, or 0 when that pid is not a reaped zombie right now. */
+int shell_reap_one(int pid, int *code_out) {
+    int code, found = -1;
+    if (!proc_get(current_pid)) return 0;
+    spin_lock(&sched_lock);
+    code = waitpid_scan(pid, &found);
+    spin_unlock(&sched_lock);
+    if (code == WAITPID_NONE) return 0;
+    if (code_out) *code_out = code;
+    return 1;
+}
+
+/* Live non-free children of the caller (shell job table size). */
+int shell_nchildren(void) {
+    int n = 0, i, me = current_pid;
+    spin_lock(&sched_lock);
+    for (i = 0; i < MAX_PROCS; i++)
+        if (procs[i].state != PROC_FREE && procs[i].parent_pid == me)
+            n++;
+    spin_unlock(&sched_lock);
+    return n;
+}
+
+/* Non-blocking reap (WNOHANG semantics): returns the exit code, or
+ * WAITPID_NONE when no zombie child matches right now (a real exit code
+ * is never that value, so a killed job reporting -1 is still reaped). */
+int do_waitpid_nb(int pid) {
+    int rc;
+    if (!proc_get(current_pid)) return WAITPID_NONE;
+    spin_lock(&sched_lock);
+    rc = waitpid_scan(pid, 0);
+    spin_unlock(&sched_lock);
+    return rc;
+}
+
+/* True kill: the TARGET becomes a zombie for its parent to reap (its
+ * stack/tables free in do_waitpid, never here). Killing self keeps the
+ * old do_exit path. A zombie on an AP is abandoned by the AP preempt
+ * path, so a kill never leaves a corpse running. */
 int do_kill(int pid) {
-    proc_t *p = proc_get(pid);
-    if (!p) return -1;
-    do_exit(-1);
+    proc_t *tgt;
+    if (pid == current_pid) {
+        do_exit(-1);
+        return 0;
+    }
+    spin_lock(&sched_lock);
+    tgt = proc_get(pid);
+    if (!tgt || pid <= 0) { spin_unlock(&sched_lock); return -1; }
+    if (tgt->state == PROC_FREE || tgt->state == PROC_ZOMBIE) {
+        spin_unlock(&sched_lock);
+        return -1;
+    }
+    tgt->exit_code = -1;
+    tgt->state = PROC_ZOMBIE;
+    tgt->exited = 1;
+    if (tgt->parent_pid >= 0) {
+        proc_t *par = proc_get(tgt->parent_pid);
+        if (par && par->state == PROC_BLOCKED)
+            par->state = PROC_READY;
+    }
+    spin_unlock(&sched_lock);
     return 0;
 }
 
@@ -1663,6 +1850,11 @@ void sched_init(void) {
      * an image its live FPU registers would be dropped by the preempt
      * park (the save path skips a null area). */
     procs[0].fpu_save = fpu_alloc_clean();
+    /* The legacy single-window VMA view: pid 0 and every k_exec_user run
+     * share it, so the historical path behaves exactly as before. */
+    vma_ctx_init(&vma_legacy, 0);
+    vma_ctx_bind(&vma_legacy);
+    procs[0].vma = &vma_legacy;
 
     /* IDT and TSS FIRST: pic_init unmasks IRQ0/1/12, and the PIT starts
      * firing the moment pit_init runs — an IRQ delivered with the IDT

@@ -344,6 +344,33 @@ expect "mrun: pid 1 exit code: 55"
 expect "Hello"
 expect "powering off"
 
+scenario "background jobs return the prompt and auto-reap" "mrun bin/fib.elf &
+wait
+jobs
+poweroff"
+expect "1 job(s) in background"
+expect "job done: pid 1 code: 55"
+expect "jobs: none"
+expect "powering off"
+
+scenario "kill terminates a running job" "run doomgeneric.elf mini_autoframes 400 &
+kill 1
+wait
+poweroff"
+expect "started as job pid 1"
+expect "kill: pid 1 terminated"
+expect "powering off"
+
+scenario "Ctrl+C kills the foreground job" "mrun doomgeneric.elf
+$(printf '\003')
+jobs
+poweroff"
+expect "started as pid 1"
+expect "\\^C"
+expect "exit code: -1"
+expect "jobs: none"
+expect "powering off"
+
 scenario "wm split opens a second terminal tiled beside the first" "wm split
 wm list
 poweroff"

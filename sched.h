@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "spinlock.h"
+#include "vma.h"
 
 /* ---- Process states ---- */
 #define PROC_FREE       0
@@ -65,6 +66,12 @@ typedef struct {
      * faults otherwise. 0 means no image yet: the switch asm skips
      * save/restore, so idle contexts and half-built procs never fault. */
     void       *fpu_save;
+    /* Per-process mmap bookkeeping (multitask foundation): non-CLONE_VM
+     * processes own a heap-backed vma_ctx_t (private pool); CLONE_VM
+     * threads share their parent's pointer; the legacy window (pid 0
+     * and every k_exec_user run) shares &vma_legacy. The brk/mmap-view
+     * switch rebinds the global VMA view alongside g_brk. */
+    vma_ctx_t  *vma;
 } proc_t;
 /* Single source of truth for the PCB footprint (review fix for the
  * 0a92118 imulq drift): the syscall_entry trampoline in kernel.c cannot
@@ -74,7 +81,7 @@ typedef struct {
  * macros' values automatically on rebuild -- no asm hunt. procs[] itself
  * is a static 64-entry .bss array (~19 KB at 304 B/entry), far below the
  * USER_LOAD_BASE budget enforced by `make check-size`. */
-#define PROC_T_SIZE 312
+#define PROC_T_SIZE 320
 #define PROC_KSTACK_OFF 168
 /* Offset of fpu_save inside proc_t: the ctx_sw.S save/restore paths
  * address it as imm(proc) without C, so it is named here beside
@@ -262,6 +269,11 @@ long     do_clone(long flags, long newsp);
 long     do_thread_spawn(unsigned long fn, unsigned long stack,
                          unsigned long arg);
 int      do_waitpid(int pid);
+int      do_waitpid_nb(int pid);
+int      shell_reap_nb(int *pid_out, int *code_out);
+int      shell_reap_one(int pid, int *code_out);
+int      shell_nchildren(void);
+#define WAITPID_NONE (-0x7FFF)
 int      do_kill(int pid);
 void     timer_tick(void);
 

@@ -639,6 +639,15 @@ static void shell_readline_hist(char *buf, int size) {
             gen = shell_edit_gen;
             pos = shell_edit_pos;
         }
+        /* Ctrl+C at the prompt: no foreground job to kill, so bell and
+         * keep the line (foreground waits handle ^C separately). Ctrl+D
+         * is EOF: an empty line submits (fresh prompt), a non-empty
+         * line bells like a terminal. */
+        if (c == 0x03) { vga_putc('\a'); continue; }
+        if (c == 0x04) {
+            if (kstrlen(buf)) { vga_putc('\a'); continue; }
+            c = '\n';
+        }
         if (c == '\n' || c == '\r') {
             vga_putc('\n');
             vga_fb_hide_text_cursor();
@@ -929,6 +938,15 @@ int shell_parse(char *line, char **argv, int max_args) {
 
 void shell_run(void) {
     while (1) {
+        /* Reap finished background jobs before printing the prompt, so a
+         * dead job never lingers past one command and pid slots cannot
+         * leak. At a fresh prompt act is empty, so the report cannot
+         * corrupt a half-typed line. */
+        {
+            int rp, rc;
+            while (shell_reap_nb(&rp, &rc))
+                kprintf("job done: pid %d code: %d\n", rp, rc);
+        }
         if (shell_pending_len > 0) {
             /* A desktop icon was clicked while a program ran; run it now
              * that the shell has control again, without a fresh prompt. */
@@ -1373,11 +1391,51 @@ static int shell_read_elf_bytes(const char *name, unsigned char **out,
     return -1;
 }
 
+/* Foreground wait over spawned jobs with Ctrl+C: polls for each pid's
+ * exit, yields the CPU between polls (voluntary switches; the 100 Hz
+ * timer preempts involuntarily per OSDev's preemptive model), and on
+ * Ctrl+C kills the whole foreground set like SIGINT, then reaps. Returns
+ * the last exit code (130 when interrupted). */
+static int shell_wait_fg(int *pids, int n, int kill_on_int) {
+    int ndone = 0, last = 0;
+    int done[8] = {0,0,0,0,0,0,0,0};
+    int i;
+    if (n > 8) n = 8;
+    for (;;) {
+        for (i = 0; i < n; i++) {
+            int code;
+            if (done[i]) continue;
+            if (shell_reap_one(pids[i], &code)) {
+                done[i] = 1;
+                ndone++;
+                last = code;
+                kprintf("mrun: pid %d exit code: %d\n", pids[i], code);
+            }
+        }
+        if (ndone >= n) return last;
+        if (console_peek() == 0x03) {
+            console_getc();
+            kprintf("^C\n");
+            if (kill_on_int) {
+                for (i = 0; i < n; i++)
+                    if (!done[i]) do_kill(pids[i]);
+                last = 130;
+            } else {
+                return 130;
+            }
+            continue;
+        }
+        yield();
+    }
+}
+
 static void shell_cmd_mrun(int argc, char **argv) {
     int pids[8];
     int npids = 0;
     int i;
-    if (argc < 2) { vga_puts("usage: mrun <a.elf> [b.elf ...]\n"); return; }
+    int bg = 0;
+    if (argc > 1 && kstrcmp(argv[argc - 1], "&") == 0) { bg = 1; argc--; }
+    if (argc < 2) { vga_puts("usage: mrun <a.elf> [b.elf ...] [&]\n"); return; }
     if (argc - 1 > 8) { vga_puts("mrun: at most 8 programs\n"); return; }
     for (i = 1; i < argc; i++) {
         unsigned char *data = 0;
@@ -1409,10 +1467,39 @@ static void shell_cmd_mrun(int argc, char **argv) {
         kprintf("mrun: %s started as pid %d\n", argv[i], pid);
         pids[npids++] = pid;
     }
-    for (i = 0; i < npids; i++) {
-        int code = do_waitpid(pids[i]);
-        kprintf("mrun: pid %d exit code: %d\n", pids[i], code);
+    if (bg) {
+        if (npids) kprintf("mrun: %d job(s) in background\n", npids);
+        return;
     }
+    if (npids) shell_wait_fg(pids, npids, 1);
+}
+
+/* `run <elf> &`: background a single isolated ELF (same spawn path as
+ * mrun). ET_REL and .cvm stay foreground-only: ring-0 extensions and the
+ * single cached interpreter cannot run detached. */
+static void shell_run_bg(const char *name, int argc, char **argv) {
+    unsigned char *data = 0;
+    unsigned size = 0;
+    int pid;
+    if (shell_read_elf_bytes(name, &data, &size)) {
+        kprintf("run: %s: not found\n", name);
+        return;
+    }
+    if (size < 4 || !(data[0] == 0x7F && data[1] == 'E' &&
+                      data[2] == 'L' && data[3] == 'F')) {
+        kprintf("run: %s: not an ELF (cvm/o run in foreground)\n", name);
+        kfree(data);
+        return;
+    }
+    if (((const Elf64_Ehdr *)data)->e_type == ET_REL) {
+        kprintf("run: %s: ET_REL runs in foreground\n", name);
+        kfree(data);
+        return;
+    }
+    pid = proc_spawn_elf(name, data, size, argc, argv);
+    kfree(data);
+    if (pid < 0) { kprintf("run: %s: spawn failed\n", name); return; }
+    kprintf("run: %s started as job pid %d\n", name, pid);
 }
 
 /* Unified dispatcher used by `run` and by bare commands: a registered program
@@ -1705,6 +1792,83 @@ static void shell_cmd_wm(int argc, char **argv) {
             vga_fb_nterms_get());
 }
 
+/* Job control (`jobs`/`wait`/`kill` + trailing `&`): real preemptive
+ * parallelism for ring-3 ELFs. `run p.elf &` / `mrun a b &` spawn isolated
+ * processes (own CR3 via proc_spawn_elf) and return the prompt at once;
+ * the 100 Hz timer preempts shell and jobs against each other while voluntary
+ * yield()s in the wait loops keep most switches cooperative (OSDev's
+ * preemptive model: involuntary preemption is the backstop, not the norm).
+ * Exits surface three ways: the fg wait prints them, `wait` reaps on demand,
+ * and the prompt auto-reaps leftovers as `job done`, so pid slots never
+ * leak. Ctrl+C kills the foreground set (SIGKILL semantics; rt_sigaction
+ * handlers stay a stub, so no guest handler runs). Limits: background is
+ * ET_EXEC/DYN only (ET_REL/.cvm refuse `&`), one shared fd table and VMA
+ * tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+ * Ctrl+C (it never polls the console). */
+static const char *shell_proc_state(int st) {
+    switch (st) {
+    case PROC_READY: return "ready";
+    case PROC_RUNNING: return "run";
+    case PROC_BLOCKED: return "wait";
+    case PROC_ZOMBIE: return "done";
+    default: return "?";
+    }
+}
+
+static void shell_cmd_jobs(void) {
+    int i, n = 0;
+    spin_lock(&sched_lock);
+    for (i = 0; i < MAX_PROCS; i++) {
+        if (procs[i].state == PROC_FREE || procs[i].parent_pid != 0)
+            continue;
+        kprintf("job pid %d %s %s\n", procs[i].pid,
+                shell_proc_state(procs[i].state), procs[i].name);
+        n++;
+    }
+    spin_unlock(&sched_lock);
+    if (!n) kprintf("jobs: none\n");
+}
+
+static void shell_cmd_wait(int argc, char **argv) {
+    if (argc > 1) {
+        int pid = (int)katol(argv[1]);
+        int one[1] = { pid };
+        int code;
+        if (pid <= 0) { vga_puts("usage: wait [pid]\n"); return; }
+        if (!shell_reap_one(pid, &code))
+            shell_wait_fg(one, 1, 0);
+        return;
+    }
+    for (;;) {
+        int rp, rc;
+        while (shell_reap_nb(&rp, &rc))
+            kprintf("mrun: pid %d exit code: %d\n", rp, rc);
+        if (!shell_nchildren()) return;
+        if (console_peek() == 0x03) {
+            console_getc();
+            kprintf("^C\n");
+            return;
+        }
+        yield();
+    }
+}
+
+static void shell_cmd_kill(int argc, char **argv) {
+    int pid, i, mine = 0;
+    if (argc < 2) { vga_puts("usage: kill <pid>\n"); return; }
+    pid = (int)katol(argv[1]);
+    if (pid <= 0) { vga_puts("usage: kill <pid>\n"); return; }
+    spin_lock(&sched_lock);
+    for (i = 0; i < MAX_PROCS; i++)
+        if (procs[i].state != PROC_FREE && procs[i].pid == pid &&
+            procs[i].parent_pid == 0)
+            mine = 1;
+    spin_unlock(&sched_lock);
+    if (!mine) { kprintf("kill: %d: no such job\n", pid); return; }
+    if (do_kill(pid)) kprintf("kill: %d: failed\n", pid);
+    else kprintf("kill: pid %d terminated\n", pid);
+}
+
 /* `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed
  * in bounded chunks so a large MiniFS file never needs a whole-file buffer.
  * This is the integrity tool for CVM modules and any ramdisk payload: an
@@ -1757,6 +1921,8 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  edit <file>        line editor for ramdisk files\n");
         vga_puts("  vedit <file>       fullscreen editor (C/Python/Lua)\n");
         vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
+        vga_puts("  run/mrun ... &    background jobs (isolated ELFs, prompt returns)\n");
+        vga_puts("  jobs|wait|kill    list / reap / terminate background jobs (^C kills fg)\n");
         vga_puts("  mrun <a.elf> [...] run isolated ELFs concurrently (multitask)\n");
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
         vga_puts("  <cmd> > <file>     redirect command output to a file\n");
@@ -2220,13 +2386,28 @@ void shell_exec_builtin(int argc, char **argv) {
                                progname, entry, progname);
     }
     else if (kstrcmp(argv[0], "run") == 0) {
-        if (argc < 2) { vga_puts("usage: run <program|file> [args...]\n"); return; }
+        if (argc < 2) { vga_puts("usage: run <program|file> [args...] [&]\n"); return; }
+        if (kstrcmp(argv[argc - 1], "&") == 0) {
+            argc--;
+            if (argc < 2) { vga_puts("usage: run <program|file> [args...] [&]\n"); return; }
+            shell_run_bg(argv[1], argc - 1, argv + 1);
+            return;
+        }
         int ret = shell_run_any(argv[1], argc - 1, argv + 1);
         if (ret < 0) shell_report("run: not found: ", argv[1]);
         else shell_report_exit(ret);
     }
     else if (kstrcmp(argv[0], "mrun") == 0) {
         shell_cmd_mrun(argc, argv);
+    }
+    else if (kstrcmp(argv[0], "jobs") == 0) {
+        shell_cmd_jobs();
+    }
+    else if (kstrcmp(argv[0], "wait") == 0) {
+        shell_cmd_wait(argc, argv);
+    }
+    else if (kstrcmp(argv[0], "kill") == 0) {
+        shell_cmd_kill(argc, argv);
     }
     else if (kstrcmp(argv[0], "sh") == 0) {
         if (argc < 2) { vga_puts("usage: sh <script.sh>\n"); return; }

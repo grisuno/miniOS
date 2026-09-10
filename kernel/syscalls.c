@@ -668,6 +668,19 @@ static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6
     return -9;
 }
 
+/* Back isolated user windows (mrun/proc_spawn_elf): their page tables
+ * start with only segments + stack mapped, so heap/mmap growth must
+ * materialize pages. Shared-window PTEs are already present and the call
+ * below is a no-op there: zero behavior change on the legacy path. */
+static int mm_ensure_cur(unsigned long start, unsigned long end) {
+    unsigned long cr3, p;
+    __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+    for (p = start & ~0xFFFUL; p < end; p += 0x1000)
+        if (mm_user_ensure_page(cr3, p)) return -1;
+    __asm__ volatile("mov %%cr3, %%rax; mov %%rax, %%cr3" ::: "rax", "memory");
+    return 0;
+}
+
 static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     unsigned long addr = (unsigned long)a1;
@@ -683,8 +696,15 @@ static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6) 
         return r;
     }
     if (addr >= USER_LOAD_BASE && addr <= g_brk_limit
-        && addr <= user_mmap_cur)
+        && addr <= user_mmap_cur) {
+        unsigned long old = g_brk;
         g_brk = addr;
+        if (addr > old && mm_ensure_cur(old, addr)) {
+            g_brk = old;
+            spin_unlock_irqrestore(&mm_lock, flags);
+            return -12;
+        }
+    }
     long r = (long)g_brk;
     spin_unlock_irqrestore(&mm_lock, flags);
     return r;
@@ -733,6 +753,11 @@ static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)
     }
     if (user_mmap_cur - n < g_brk) { ret = -12; goto mmap_out; }
     user_mmap_cur -= n;
+    if (mm_ensure_cur(user_mmap_cur, user_mmap_cur + n)) {
+        user_mmap_cur += n;
+        ret = -12;
+        goto mmap_out;
+    }
     vma_tree_insert(&vma_live_root, user_mmap_cur, n);
     ret = (long)user_mmap_cur;
 mmap_out:
@@ -880,9 +905,26 @@ static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)
     return do_proc_exit(a1);
 }
 
+/* wait4(pid, status, options, rusage): options bit 0 is WNOHANG (Linux
+ * ABI value 1). Non-blocking returns 0 when no child exited yet (status
+ * untouched); blocking reaps like before. The status word carries the raw
+ * exit code (no WEXITSTATUS encoding: MiniOS reports codes directly). */
 static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    return do_waitpid((int)a1);
+    int *status = (int *)a2;
+    int options = (int)a3;
+    (void)a4; (void)a5; (void)a6;
+    if (a2 && !user_range_ok((unsigned long)a2, sizeof(int))) return EFAULT;
+    if (options & 1) {
+        int code = do_waitpid_nb((int)a1);
+        if (code == WAITPID_NONE) return 0;
+        if (status) *status = code;
+        return (int)a1 >= 0 ? (int)a1 : 0;
+    }
+    {
+        int code = do_waitpid((int)a1);
+        if (status) *status = code;
+        return code;
+    }
 }
 
 static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6) {

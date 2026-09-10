@@ -12,9 +12,11 @@
 
 vma_node_t vma_pool[VMA_MAX];
 int        vma_pool_n;
+vma_node_t *vma_pool_ptr;
 
-static vma_node_t vma_nil_store;
 vma_node_t *VMA_NIL;
+
+vma_ctx_t vma_legacy;
 
 vma_node_t *vma_live_root;
 
@@ -27,10 +29,45 @@ static vma_node_t *vma_mru = 0;
 static unsigned long vma_mru_base = 0;
 vma_node_t *vma_free_root;
 
+void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool) {
+    if (!c) return;
+    c->pool = pool ? pool : vma_pool;
+    c->pool_n = 0;
+    c->nil.red = 0;
+    c->nil.left = c->nil.right = c->nil.parent = &c->nil;
+    c->nil.base = 0;
+    c->nil.len = 0;
+    c->live = &c->nil;
+    c->free = &c->nil;
+    c->mru = 0;
+    c->mru_base = 0;
+}
+
+void vma_ctx_bind(vma_ctx_t *c) {
+    if (!c) return;
+    VMA_NIL = &c->nil;
+    vma_pool_ptr = c->pool;
+    vma_pool_n = c->pool_n;
+    vma_live_root = c->live;
+    vma_free_root = c->free;
+    vma_mru = c->mru;
+    vma_mru_base = c->mru_base;
+}
+
+void vma_ctx_save(vma_ctx_t *c) {
+    if (!c) return;
+    c->pool_n = vma_pool_n;
+    c->live = vma_live_root;
+    c->free = vma_free_root;
+    c->mru = vma_mru;
+    c->mru_base = vma_mru_base;
+}
+
 void vma_tree_init(void) {
+    if (!VMA_NIL) vma_ctx_bind(&vma_legacy);
+    if (!VMA_NIL) return;
     vma_mru = 0;
     vma_mru_base = 0;
-    VMA_NIL = &vma_nil_store;
     VMA_NIL->red = 0;
     VMA_NIL->left = VMA_NIL->right = VMA_NIL->parent = VMA_NIL;
     VMA_NIL->base = 0;
@@ -41,8 +78,9 @@ void vma_tree_init(void) {
 }
 
 static vma_node_t *vma_alloc_node(void) {
+    vma_node_t *pool = vma_pool_ptr ? vma_pool_ptr : vma_pool;
     if (vma_pool_n >= VMA_MAX) return VMA_NIL;
-    return &vma_pool[vma_pool_n++];
+    return &pool[vma_pool_n++];
 }
 
 static void vma_rotate_left(vma_node_t **root, vma_node_t *x) {

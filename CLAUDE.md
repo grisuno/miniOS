@@ -713,12 +713,49 @@ the extended `pt_free_user` (heap pages freed, identity pages and shared
 graphics slots untouched). `mrun a.elf b.elf ...` runs isolated ELFs
 concurrently; the BDD suite pins `mrun: pid 1 exit code: 55` beside `Hello`.
 The legacy `run`/`k_exec_user` path is byte-for-byte unchanged.
-Best-effort limits of this revision: no per-process VMA isolation (programs
-that `mmap` concurrently share the global tree), one shared fd table, no
-`fork`/`execve` yet (`sys_linux_fork/vfork/execve` still answer 0), and APs
-still claim `CLONE_VM` threads only. `fork` with `mm_copy_user_page`,
-per-process VMA pools and the desktop-process phases above are the
-follow-ups, in that order.
+
+### Preemptive multitasking + job control (OSDev model)
+MiniOS follows the OSDev recommended model — kernel stack per task (the
+16 KB `kstack_pool` slot per proc, TCB in `procs[]`, CR3 in `ctx`) with
+preemptive multitasking: involuntary switches from the 100 Hz timer ISR
+plus voluntary `yield()`s in every wait loop, so most switches stay
+cooperative and preemption is the backstop, not the norm.
+
+- **Background jobs:** `run p.elf &` / `mrun a b &` spawn isolated
+  processes and return the prompt at once; the shell stays usable while
+  jobs run (proven: `echo` answers mid-`thdemo` with its 10 futex
+  threads, DOOM boots its WAD while the prompt serves). `jobs` lists
+  them, `wait [pid]` reaps (blocking), `kill <pid>` terminates a real
+  target (the old `do_kill` exited the caller; now the victim goes
+  ZOMBIE for its parent, abandoned by the BSP/AP preempt paths so no
+  corpse keeps running). Unreaped exits surface as `job done: pid N
+  code: C` before the next prompt, so pid slots never leak. `wait4`
+  honors `WNOHANG` with a `WAITPID_NONE` sentinel (a killed job's -1
+  still reaps distinctly).
+- **Per-process VMA (`vma.h`/`vma.c` + `sched.c`):** every non-`CLONE_VM`
+  process owns a heap-backed `vma_ctx_t` (private 4096-node pool); the
+  globals are a view rebound on each brk/mmap switch, and `brk`/`mmap`
+  materialize pages via `mm_user_ensure_page` (no-op on the shared
+  window). This fixed the DOOM-in-isolation #GP (fresh window over a
+  stale shared tree with `VMA_NIL == NULL`). Threads share the pointer.
+- **Signals, minimal and honest:** Ctrl+C kills the foreground set
+  (prompt bell when there is none; `^C` + exit 130 path), Ctrl+D is EOF
+  (empty line submits, non-empty bells). Semantics are SIGKILL-like:
+  `rt_sigaction` stays a stub, no guest handler ever runs. Legacy
+  blocking `run` never polls the console, so it ignores Ctrl+C.
+- **Build discipline (pre-existing gap, now documented):** the Makefile
+  tracks no header dependencies, so after touching any `.h` run `rm
+  *.o && make` — a stale `kernel.o` keeps the old `PROC_T_SIZE` in the
+  syscall-entry trampoline while `sched.o` moves on, and every spawned
+  child hangs in its first syscall with no diagnostic.
+- **Construction race closed:** a newborn slot stays `PROC_SWITCHING`
+  (never claimable) until fully built; publishing `READY` early let a
+  tick claim a half-built context (the 192 KB pool alloc widened that
+  window to a whole tick, hanging the machine with no output).
+- Honest limits remaining: one shared fd table, no `fork`/`execve`
+  (`sys_linux_fork/vfork/execve` still answer 0; `mm_copy_user_page`
+  waits for it), APs claim `CLONE_VM` threads only, no Alt-Tab
+  mid-`edit`, serial sees one interleaved console (use `wm list`).
 
 ### Taskbar with clock and volume (`vga_fb.c` + `rtc.c` + `pcspk.c`)
 The bottom taskbar is the desktop's status strip, not a hint line. It shows
