@@ -7,11 +7,14 @@
 - Symbols:
   - `syscall` (function, line 10) `* the MiniOS DNS syscall (200, sig 0: error-check only, sends nothing).
  * The kernel keeps servi...`
-  - `main` (function, line 46) `int main(int argc, char **argv)`
-  - `fprintf` (function, line 61) `fprintf(stderr, "usage: tlsget <host-or-ip> [path] [port]\n");`
-  - `perror` (function, line 80) `perror("tlsget: socket");`
-  - `memset` (function, line 83) `memset(&sa, 0, sizeof(sa));`
-  - `close` (function, line 89) `close(fd);`
+  - `parse_port` (function, line 47) `static int parse_port(const char *s)`
+  - `main` (function, line 60) `int main(int argc, char **argv)`
+  - `va_start` (function, line 38) `va_start(ap, fmt);`
+  - `va_end` (function, line 40) `va_end(ap);`
+  - `diag` (function, line 75) `diag("usage: tlsget <host-or-ip> [path] [port]\n");`
+  - `perror` (function, line 94) `perror("tlsget: socket");`
+  - `memset` (function, line 97) `memset(&sa, 0, sizeof(sa));`
+  - `close` (function, line 103) `close(fd);`
   - `_POSIX_C_SOURCE` (macro, line 13) `#define _POSIX_C_SOURCE`
   - `_DEFAULT_SOURCE` (macro, line 15) `#define _DEFAULT_SOURCE`
 - Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`

@@ -75,48 +75,56 @@
 - Doc: include "kernel.h" include "vga_fb.h" include "kbd.h"  ================================================================
 - Language: c
 - Symbols:
-  - `kbd_q_push` (function, line 49) `void kbd_q_push(unsigned char c)`
-  - `kbd_raw_push_internal` (function, line 56) `static void kbd_raw_push_internal(unsigned char c)`
-  - `kbd_q_empty` (function, line 63) `int kbd_q_empty(void)`
-  - `kbd_q_pop` (function, line 65) `int kbd_q_pop(void)`
-  - `kbd_available` (function, line 72) `int kbd_available(void)`
-  - `kbd_raw_mode_get` (function, line 78) `int kbd_raw_mode_get(void)`
-  - `kbd_raw_mode_set` (function, line 80) `void kbd_raw_mode_set(int on)`
-  - `kbd_raw_empty` (function, line 81) `int kbd_raw_empty(void)`
-  - `kbd_raw_pop` (function, line 82) `int kbd_raw_pop(void)`
-  - `kbd_raw_push_byte` (function, line 88) `void kbd_raw_push_byte(unsigned char c)`
-  - `kbd_e0_get` (function, line 89) `int kbd_e0_get(void)`
-  - `kbd_e0_set` (function, line 90) `void kbd_e0_set(int v)`
-  - `kbd_flush_all` (function, line 91) `void kbd_flush_all(void)`
-  - `kbd_read` (function, line 95) `int kbd_read(void)`
-  - `kbd_reset_for_shell` (function, line 198) `void kbd_reset_for_shell(void)`
-  - `volatile` (function, line 75) `__asm__ volatile("inb $0x64, %0" : "=a"(s));`
-  - `KBD_QUEUE_LEN` (macro, line 38) `#define KBD_QUEUE_LEN`
-  - `KBD_SCAN_DEL` (macro, line 40) `#define KBD_SCAN_DEL`
-  - `KBD_RAW_LEN` (macro, line 44) `#define KBD_RAW_LEN`
+  - `kbd_get_layout` (function, line 95) `int kbd_get_layout(void)`
+  - `kbd_set_layout` (function, line 97) `void kbd_set_layout(int layout)`
+  - `kbd_toggle_layout` (function, line 101) `void kbd_toggle_layout(void)`
+  - `kbd_q_push` (function, line 124) `void kbd_q_push(unsigned char c)`
+  - `kbd_raw_push_internal` (function, line 131) `static void kbd_raw_push_internal(unsigned char c)`
+  - `kbd_q_empty` (function, line 138) `int kbd_q_empty(void)`
+  - `kbd_q_pop` (function, line 140) `int kbd_q_pop(void)`
+  - `kbd_available` (function, line 147) `int kbd_available(void)`
+  - `kbd_raw_mode_get` (function, line 153) `int kbd_raw_mode_get(void)`
+  - `kbd_raw_mode_set` (function, line 155) `void kbd_raw_mode_set(int on)`
+  - `kbd_raw_empty` (function, line 156) `int kbd_raw_empty(void)`
+  - `kbd_raw_pop` (function, line 157) `int kbd_raw_pop(void)`
+  - `kbd_raw_push_byte` (function, line 163) `void kbd_raw_push_byte(unsigned char c)`
+  - `kbd_e0_get` (function, line 164) `int kbd_e0_get(void)`
+  - `kbd_e0_set` (function, line 165) `void kbd_e0_set(int v)`
+  - `kbd_flush_all` (function, line 166) `void kbd_flush_all(void)`
+  - `kbd_read` (function, line 170) `int kbd_read(void)`
+  - `kbd_reset_for_shell` (function, line 282) `void kbd_reset_for_shell(void)`
+  - `volatile` (function, line 150) `__asm__ volatile("inb $0x64, %0" : "=a"(s));`
+  - `KBD_QUEUE_LEN` (macro, line 113) `#define KBD_QUEUE_LEN`
+  - `KBD_SCAN_DEL` (macro, line 115) `#define KBD_SCAN_DEL`
+  - `KBD_RAW_LEN` (macro, line 119) `#define KBD_RAW_LEN`
 - Depends on: `drivers/kbd.h`, `kernel.h`, `vga_fb.h`
 
 ## drivers/kbd.h
 - Layer: infrastructure
-- Doc: ifndef KBD_H define KBD_H
+- Doc: ifndef KBD_H define KBD_H  Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty. Toggled from the taskbar widg
 - Language: h
 - Symbols:
-  - `kbd_available` (function, line 3) `int kbd_available(void);`
-  - `kbd_read` (function, line 5) `int kbd_read(void);`
-  - `kbd_reset_for_shell` (function, line 6) `void kbd_reset_for_shell(void);`
-  - `kbd_q_empty` (function, line 9) `int kbd_q_empty(void);`
-  - `kbd_q_pop` (function, line 10) `int kbd_q_pop(void);`
-  - `kbd_q_push` (function, line 11) `void kbd_q_push(unsigned char c);`
-  - `kbd_raw_mode_get` (function, line 14) `int kbd_raw_mode_get(void);`
-  - `kbd_raw_mode_set` (function, line 15) `void kbd_raw_mode_set(int on);`
-  - `kbd_raw_empty` (function, line 16) `int kbd_raw_empty(void);`
-  - `kbd_raw_pop` (function, line 17) `int kbd_raw_pop(void);`
-  - `kbd_raw_push_byte` (function, line 18) `void kbd_raw_push_byte(unsigned char c);`
-  - `kbd_e0_get` (function, line 19) `int kbd_e0_get(void);`
-  - `kbd_e0_set` (function, line 20) `void kbd_e0_set(int v);`
-  - `kbd_flush_all` (function, line 21) `void kbd_flush_all(void);`
+  - `kbd_available` (function, line 8) `int kbd_available(void);`
+  - `kbd_read` (function, line 10) `int kbd_read(void);`
+  - `kbd_reset_for_shell` (function, line 11) `void kbd_reset_for_shell(void);`
+  - `kbd_get_layout` (function, line 14) `int kbd_get_layout(void);`
+  - `kbd_set_layout` (function, line 15) `void kbd_set_layout(int layout);`
+  - `kbd_toggle_layout` (function, line 16) `void kbd_toggle_layout(void);`
+  - `kbd_q_empty` (function, line 26) `int kbd_q_empty(void);`
+  - `kbd_q_pop` (function, line 27) `int kbd_q_pop(void);`
+  - `kbd_q_push` (function, line 28) `void kbd_q_push(unsigned char c);`
+  - `kbd_raw_mode_get` (function, line 31) `int kbd_raw_mode_get(void);`
+  - `kbd_raw_mode_set` (function, line 32) `void kbd_raw_mode_set(int on);`
+  - `kbd_raw_empty` (function, line 33) `int kbd_raw_empty(void);`
+  - `kbd_raw_pop` (function, line 34) `int kbd_raw_pop(void);`
+  - `kbd_raw_push_byte` (function, line 35) `void kbd_raw_push_byte(unsigned char c);`
+  - `kbd_e0_get` (function, line 36) `int kbd_e0_get(void);`
+  - `kbd_e0_set` (function, line 37) `void kbd_e0_set(int v);`
+  - `kbd_flush_all` (function, line 38) `void kbd_flush_all(void);`
   - `KBD_H` (macro, line 2) `#define KBD_H`
-- Imported by: `drivers/kbd.c`, `kernel/exec.c`, `kernel/shell.c`, `kernel/syscalls.c`
+  - `KBD_LAYOUT_EN` (macro, line 6) `#define KBD_LAYOUT_EN`
+  - `KBD_LAYOUT_ES` (macro, line 7) `#define KBD_LAYOUT_ES`
+- Imported by: `drivers/kbd.c`, `kernel/exec.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`
 
 ## drivers/pcspk.c
 - Layer: infrastructure

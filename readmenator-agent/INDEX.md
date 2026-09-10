@@ -9,7 +9,7 @@
 | `arch/x86/boot/stage1.S` | stage1.S - MiniOS boot sector. | boot | 11 |
 | `arch/x86/boot/stage2.S` | stage2.S - MiniOS second-stage loader. | boot | 40 |
 | `arch/x86/ctx_sw.S` | - | x86 | 5 |
-| `arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 36 |
+| `arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 37 |
 | `arch/x86/isr_stubs.S` | - | x86 | 24 |
 | `arch/x86/msr.h` | ifndef ARCH_X86_MSR_H define ARCH_X86_MSR_H  Model-Specific Register access for  | x86 | 10 |
 | `audio.h` | ifndef AUDIO_H define AUDIO_H  Unified audio API for MiniOS. | root | 18 |
@@ -22,8 +22,8 @@
 | `drivers/block.c` | Block device layer for MiniFS. | drivers | 17 |
 | `drivers/driver.c` | include "driver.h"  driver.c -- Device registry for the Strategy-pattern driver  | drivers | 8 |
 | `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | drivers | 24 |
-| `drivers/kbd.c` | include "kernel.h" include "vga_fb.h" include "kbd.h"  ========================= | drivers | 19 |
-| `drivers/kbd.h` | ifndef KBD_H define KBD_H | drivers | 15 |
+| `drivers/kbd.c` | include "kernel.h" include "vga_fb.h" include "kbd.h"  ========================= | drivers | 22 |
+| `drivers/kbd.h` | ifndef KBD_H define KBD_H  Keyboard layout: US qwerty (default) or Spanish (Spai | drivers | 20 |
 | `drivers/pcspk.c` | include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with  | drivers | 20 |
 | `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | drivers | 27 |
 | `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h"  Sound Blaster 16 DMA audio | drivers | 62 |
@@ -37,8 +37,8 @@
 | `gen_minifs.py` | - | root | 0 |
 | `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 35 |
 | `install.sh` | - | root | 0 |
-| `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 38 |
-| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 273 |
+| `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 37 |
+| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 274 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
 | `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | kernel | 31 |
 | `kernel/cvm_host.c` | - | kernel | 55 |
@@ -65,7 +65,7 @@
 | `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 152 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
 | `kernel/time.c` | include "kernel.h"  ============================================================ | kernel | 5 |
-| `kernel/vga_fb.c` | - | kernel | 101 |
+| `kernel/vga_fb.c` | - | kernel | 104 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 4 |
 | `mcp/__init__.py` | - | mcp | 0 |
 | `mcp/mcp_dbg_driver.py` | - | mcp | 6 |
@@ -333,7 +333,7 @@
 | `progs/src/test_all.sh` | test_all.sh -- comprehensive non-interactive test suite for MiniOS.  Run with:   | src | 0 |
 | `progs/src/thdemo.c` | thdemo.c -- Producer-consumer over mthreads (roadmap Phase 1, M1). | src | 16 |
 | `progs/src/w1.c` | - | src | 2 |
-| `progs/tls_u/tls_u_main.c` | tlsget - minimal HTTPS GET over the ring-3 TLS stack. | tls_u | 8 |
+| `progs/tls_u/tls_u_main.c` | tlsget - minimal HTTPS GET over the ring-3 TLS stack. | tls_u | 11 |
 | `progs/tls_u/tls_u_port.c` | tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3). | tls_u | 20 |
 | `progs/topogpt3/topogpt3.c` | - | misc | 132 |
 | `progs/vedit/vedit.c` | vedit.c - fullscreen mini IDE for MiniOS, hosted on Nuklear. | misc | 115 |
@@ -365,7 +365,7 @@
 | `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 19 |
 | `tests/test_tick.c` | Docstring: Host test for kernel/tick.c (make test-tick). | tests | 12 |
 | `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 13 |
-| `tests/test_vma_bench.c` | test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 11 |
+| `tests/test_vma_bench.c` | test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 10 |
 | `tick.h` | Docstring: Tick listener bus contract. | root | 14 |
 | `tls.h` | ifndef TLS_H define TLS_H  ========== TLS 1.2 client (RFC 5246) ========== | root | 73 |
 | `tls_port.h` | ifndef TLS_PORT_H define TLS_PORT_H  Portability shim between the MiniOS kernel  | root | 50 |
@@ -392,7 +392,7 @@
 | `tools/repro_gui.py` | - | tools | 10 |
 | `tools/test_codecs.sh` | test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  T | tools | 0 |
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
-| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Fram | root | 100 |
+| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Fram | root | 102 |
 | `vma.c` | include "vma.h" | root | 11 |
 | `vma.h` | ifndef VMA_H define VMA_H | root | 13 |
 | `zip.h` | ifndef ZIP_H define ZIP_H  zip.h — MiniOS integration API for the miniz zip libr | root | 3 |

@@ -53,22 +53,22 @@
 - Doc: test_fault.c -- fault-injection suite (boyscout gap #10).
 - Language: c
 - Symbols:
-  - `range_ok` (function, line 33) `static int range_ok(unsigned long p, unsigned long len)`
-  - `str_ok` (function, line 39) `static int str_ok(const unsigned char *mem, unsigned long p,
+  - `range_ok` (function, line 35) `static int range_ok(unsigned long p, unsigned long len)`
+  - `str_ok` (function, line 41) `static int str_ok(const unsigned char *mem, unsigned long p,
                   unsigned long maxlen)`
-  - `normalize` (function, line 50) `static void normalize(const char *path, char *out, unsigned cap)`
-  - `path_trusted` (function, line 81) `static int path_trusted(const char *full)`
-  - `main` (function, line 91) `int main(void)`
+  - `normalize` (function, line 52) `static void normalize(const char *path, char *out, unsigned cap)`
+  - `path_trusted` (function, line 83) `static int path_trusted(const char *full)`
+  - `main` (function, line 93) `int main(void)`
   - `against` (function, line 10) `* after bounding against (END-BASE)/elemsz, so the product cannot * wrap past the range check);`
-  - `memcpy` (function, line 72) `memcpy(out + len, start, clen);`
-  - `vma_tree_init` (function, line 94) `vma_tree_init();`
-  - `CHECK` (function, line 100) `CHECK(i == VMA_MAX, "pool holds VMA_MAX nodes");`
-  - `memset` (function, line 122) `memset(umem, 'A', sizeof(umem));`
-  - `CHECK` (macro, line 26) `#define CHECK(c, m)`
-  - `U_BASE` (macro, line 29) `#define U_BASE`
-  - `U_END` (macro, line 30) `#define U_END`
-  - `TRUSTED_DIR` (macro, line 79) `#define TRUSTED_DIR`
-  - `TRUSTED_LEN` (macro, line 80) `#define TRUSTED_LEN`
+  - `memcpy` (function, line 74) `memcpy(out + len, start, clen);`
+  - `vma_tree_init` (function, line 96) `vma_tree_init();`
+  - `CHECK` (function, line 102) `CHECK(i == VMA_MAX, "pool holds VMA_MAX nodes");`
+  - `memset` (function, line 124) `memset(umem, 'A', sizeof(umem));`
+  - `CHECK` (macro, line 28) `#define CHECK(c, m)`
+  - `U_BASE` (macro, line 31) `#define U_BASE`
+  - `U_END` (macro, line 32) `#define U_END`
+  - `TRUSTED_DIR` (macro, line 81) `#define TRUSTED_DIR`
+  - `TRUSTED_LEN` (macro, line 82) `#define TRUSTED_LEN`
 - Depends on: `kernel/string.c`, `vma.h`
 
 ## tests/test_futex.c
@@ -97,10 +97,10 @@
   - `main` (function, line 29) `int main(void)`
   - `fprintf` (function, line 26) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
   - `CHECK` (function, line 31) `CHECK(HAL_PIC1_CMD == 0x20, "master pic command port");`
-  - `hal_outb` (function, line 49) `hal_outb(HAL_PIC1_CMD, HAL_PIC_EOI);`
-  - `hal_lapic_eoi` (function, line 54) `hal_lapic_eoi();`
-  - `hal_pic_eoi` (function, line 57) `hal_pic_eoi(12);`
-  - `printf` (function, line 63) `printf("hal_io: ok\n");`
+  - `hal_outb` (function, line 50) `hal_outb(HAL_PIC1_CMD, HAL_PIC_EOI);`
+  - `hal_lapic_eoi` (function, line 55) `hal_lapic_eoi();`
+  - `hal_pic_eoi` (function, line 58) `hal_pic_eoi(12);`
+  - `printf` (function, line 64) `printf("hal_io: ok\n");`
   - `HAL_IO_HOST_TEST` (macro, line 10) `#define HAL_IO_HOST_TEST`
   - `CHECK` (macro, line 22) `#define CHECK(cond, msg)`
 - Depends on: `arch/x86/hal_io.h`
@@ -250,11 +250,10 @@
   - `l_insert` (function, line 23) `static void l_insert(unsigned long b)`
   - `l_find` (function, line 28) `static int l_find(unsigned long b)`
   - `bench` (function, line 33) `static void bench(int n)`
-  - `main` (function, line 52) `int main(void)`
+  - `main` (function, line 53) `int main(void)`
   - `gettimeofday` (function, line 15) `gettimeofday(&tv, 0);`
   - `vma_tree_init` (function, line 37) `vma_tree_init();`
   - `vma_tree_insert` (function, line 40) `vma_tree_insert(&vma_live_root, 0x500000ul + (unsigned long)i * 0x1000, 0x1000);`
   - `vma_tree_find` (function, line 43) `vma_tree_find(vma_live_root, 0x500000ul + (unsigned long)i * 0x1000);`
-  - `printf` (function, line 49) `printf("n=%d tree_insert=%.2fus/op tree_find=%.2fus/op list=%.2fus/op\n", n, (double)(t1-t0)/n, (double)(t2-t1)/n, (double)(t3-t2)/n);`
   - `LIST_MAX` (macro, line 20) `#define LIST_MAX`
 - Depends on: `kernel/time.c`, `vma.h`

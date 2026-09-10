@@ -427,27 +427,27 @@
   - `smp_any_ap_idle` (function, line 587) `static int smp_any_ap_idle(void)`
   - `rlimit_cpu_exceeded` (function, line 613) `int rlimit_cpu_exceeded(int pid)`
   - `isr_dispatch` (function, line 634) `void isr_dispatch(int vector, trap_frame_t *frame)`
-  - `BSP` (function, line 911) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+  - `BSP` (function, line 919) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
-  - `proc_get` (function, line 931) `proc_t *proc_get(int pid)`
-  - `proc_create` (function, line 937) `int proc_create(const char *name, int parent_pid)`
-  - `sched_park_as_returned` (function, line 1012) `static void sched_park_as_returned(proc_t *cur)`
-  - `schedule` (function, line 1021) `void schedule(void)`
-  - `yield` (function, line 1095) `void yield(void)`
-  - `do_exit` (function, line 1110) `void do_exit(int code)`
-  - `do_thread_spawn` (function, line 1150) `long do_thread_spawn(unsigned long fn, unsigned long stack,
+  - `proc_get` (function, line 939) `proc_t *proc_get(int pid)`
+  - `proc_create` (function, line 945) `int proc_create(const char *name, int parent_pid)`
+  - `sched_park_as_returned` (function, line 1020) `static void sched_park_as_returned(proc_t *cur)`
+  - `schedule` (function, line 1029) `void schedule(void)`
+  - `yield` (function, line 1103) `void yield(void)`
+  - `do_exit` (function, line 1118) `void do_exit(int code)`
+  - `do_thread_spawn` (function, line 1158) `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)`
-  - `do_waitpid` (function, line 1279) `int do_waitpid(int pid)`
-  - `do_kill` (function, line 1313) `int do_kill(int pid)`
-  - `timer_tick` (function, line 1320) `void timer_tick(void)`
-  - `mouse_wait_cmd` (function, line 1324) `static void mouse_wait_cmd(void)`
-  - `mouse_wait_data` (function, line 1330) `static void mouse_wait_data(void)`
-  - `mouse_write` (function, line 1337) `static void mouse_write(unsigned char data)`
-  - `mouse_read` (function, line 1344) `static unsigned char mouse_read(void)`
-  - `mouse_hw_init` (function, line 1349) `static void mouse_hw_init(void)`
-  - `mouse_disable` (function, line 1400) `void mouse_disable(void)`
-  - `mouse_enable` (function, line 1402) `void mouse_enable(void)`
-  - `sched_init` (function, line 1403) `void sched_init(void)`
+  - `do_waitpid` (function, line 1287) `int do_waitpid(int pid)`
+  - `do_kill` (function, line 1321) `int do_kill(int pid)`
+  - `timer_tick` (function, line 1328) `void timer_tick(void)`
+  - `mouse_wait_cmd` (function, line 1332) `static void mouse_wait_cmd(void)`
+  - `mouse_wait_data` (function, line 1338) `static void mouse_wait_data(void)`
+  - `mouse_write` (function, line 1345) `static void mouse_write(unsigned char data)`
+  - `mouse_read` (function, line 1352) `static unsigned char mouse_read(void)`
+  - `mouse_hw_init` (function, line 1357) `static void mouse_hw_init(void)`
+  - `mouse_disable` (function, line 1408) `void mouse_disable(void)`
+  - `mouse_enable` (function, line 1410) `void mouse_enable(void)`
+  - `sched_init` (function, line 1411) `void sched_init(void)`
   - `sb16_poll` (function, line 21) `sb16_poll();`
   - `vga_fb_mouse_tick` (function, line 27) `vga_fb_mouse_tick();`
   - `user_trampoline` (function, line 47) `extern void user_trampoline(void);`
@@ -476,30 +476,30 @@
   - `rcu_poll` (function, line 658) `rcu_poll();`
   - `hal_lapic_eoi` (function, line 668) `hal_lapic_eoi();`
   - `syscall` (function, line 734) `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid math faults. */ sched_rearm_kgs();`
-  - `sb16_irq` (function, line 812) `sb16_irq();`
-  - `serial_puts` (function, line 828) `serial_puts("EXCEPTION ");`
-  - `k_user_fault_return` (function, line 918) `k_user_fault_return();`
-  - `__builtin_unreachable` (function, line 919) `__builtin_unreachable();`
-  - `spin_lock` (function, line 939) `spin_lock(&sched_lock);`
-  - `kstrncpy` (function, line 960) `kstrncpy(p->name, name, sizeof(p->name) - 1);`
-  - `spin_unlock` (function, line 996) `spin_unlock(&sched_lock);`
-  - `PROC_SWITCHING` (function, line 1040) `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A BLOCKED/ZOMBIE * thread keeps its state (no one claims it until a wake). */ switch_save_only(cu`
-  - `spin_unlock_keep_irq` (function, line 1047) `spin_unlock_keep_irq(&sched_lock);`
-  - `switch_save_only` (function, line 1088) `switch_save_only(cur);`
-  - `returns` (function, line 1104) `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
-  - `rq_enqueue` (function, line 1208) `rq_enqueue(home, pid);`
-  - `outb` (function, line 1340) `outb(0x64, 0xD4);`
-  - `inb` (function, line 1347) `return inb(0x60);`
-  - `wrong` (function, line 1372) `* later packet is framed wrong (a left press reads back as bit 1, * motion warps), permanently. */ mouse_write(0xFF);`
-  - `it` (function, line 1412) `* it (SPAWN/exec point proc 0 here transiently);`
-  - `kstrcpy` (function, line 1455) `kstrcpy(procs[0].name, "kernel");`
-  - `zeroed` (function, line 1464) `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe pre-mouse-init. */ idt_init();`
-  - `futex_init` (function, line 1468) `futex_init();`
-  - `rq_init` (function, line 1469) `rq_init();`
-  - `rcu_init` (function, line 1470) `rcu_init();`
-  - `tick_reset` (function, line 1471) `tick_reset();`
-  - `tick_register_audio` (function, line 1472) `tick_register_audio(sched_tick_audio, 0);`
-  - `tick_register_desktop` (function, line 1473) `tick_register_desktop(sched_tick_desktop, 0);`
+  - `sb16_irq` (function, line 820) `sb16_irq();`
+  - `serial_puts` (function, line 836) `serial_puts("EXCEPTION ");`
+  - `k_user_fault_return` (function, line 926) `k_user_fault_return();`
+  - `__builtin_unreachable` (function, line 927) `__builtin_unreachable();`
+  - `spin_lock` (function, line 947) `spin_lock(&sched_lock);`
+  - `kstrncpy` (function, line 968) `kstrncpy(p->name, name, sizeof(p->name) - 1);`
+  - `spin_unlock` (function, line 1004) `spin_unlock(&sched_lock);`
+  - `PROC_SWITCHING` (function, line 1048) `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A BLOCKED/ZOMBIE * thread keeps its state (no one claims it until a wake). */ switch_save_only(cu`
+  - `spin_unlock_keep_irq` (function, line 1055) `spin_unlock_keep_irq(&sched_lock);`
+  - `switch_save_only` (function, line 1096) `switch_save_only(cur);`
+  - `returns` (function, line 1112) `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
+  - `rq_enqueue` (function, line 1216) `rq_enqueue(home, pid);`
+  - `outb` (function, line 1348) `outb(0x64, 0xD4);`
+  - `inb` (function, line 1355) `return inb(0x60);`
+  - `wrong` (function, line 1380) `* later packet is framed wrong (a left press reads back as bit 1, * motion warps), permanently. */ mouse_write(0xFF);`
+  - `it` (function, line 1420) `* it (SPAWN/exec point proc 0 here transiently);`
+  - `kstrcpy` (function, line 1463) `kstrcpy(procs[0].name, "kernel");`
+  - `zeroed` (function, line 1472) `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe pre-mouse-init. */ idt_init();`
+  - `futex_init` (function, line 1476) `futex_init();`
+  - `rq_init` (function, line 1477) `rq_init();`
+  - `rcu_init` (function, line 1478) `rcu_init();`
+  - `tick_reset` (function, line 1479) `tick_reset();`
+  - `tick_register_audio` (function, line 1480) `tick_register_audio(sched_tick_audio, 0);`
+  - `tick_register_desktop` (function, line 1481) `tick_register_desktop(sched_tick_desktop, 0);`
   - `isr_stub_table` (variable, line 106) `extern void *isr_stub_table[];`
   - `mm_lock` (variable, line 355) `extern spinlock_t mm_lock;`
   - `MY_SYS_KSTK_TOP` (macro, line 35) `#define MY_SYS_KSTK_TOP`
@@ -633,22 +633,22 @@ static void shell_hist_na...`
   - `kfwrite` (function, line 1455) `kfwrite(hdr, 1, (unsigned long)n, f);`
   - `kfclose` (function, line 1474) `kfclose(f);`
   - `XXH64_reset` (function, line 1527) `XXH64_reset(&h, 0);`
-  - `vga_clear` (function, line 1575) `vga_clear();`
-  - `shell_cmd_edit` (function, line 1581) `shell_cmd_edit(argc, argv);`
-  - `shell_report` (function, line 1587) `shell_report("ls: name too long: ", argv[1]);`
-  - `minifs_stat` (function, line 1697) `minifs_stat(de.inode, &st);`
-  - `ramdisk_delete` (function, line 1737) `ramdisk_delete(f);`
-  - `net_cmd_status` (function, line 1858) `net_cmd_status();`
-  - `net_cmd_ping` (function, line 1861) `net_cmd_ping(argv[2]);`
-  - `net_cmd_dns` (function, line 1864) `net_cmd_dns(argv[2]);`
-  - `rq_stats` (function, line 1886) `rq_stats(c, &hits, &steals, &drops);`
-  - `pcspk_set_volume` (function, line 1950) `pcspk_set_volume(v);`
-  - `kstack_report` (function, line 1962) `kstack_report();`
-  - `sb16_counters` (function, line 1966) `sb16_counters(&c);`
-  - `shell_cmd_unzip` (function, line 1985) `shell_cmd_unzip(argc, argv);`
-  - `shell_cmd_zip` (function, line 1988) `shell_cmd_zip(argc, argv);`
-  - `shell_report_exit` (function, line 2004) `else shell_report_exit(ret);`
-  - `shell_cmd_sh` (function, line 2008) `shell_cmd_sh(argc, argv);`
+  - `vga_clear` (function, line 1576) `vga_clear();`
+  - `shell_cmd_edit` (function, line 1582) `shell_cmd_edit(argc, argv);`
+  - `shell_report` (function, line 1588) `shell_report("ls: name too long: ", argv[1]);`
+  - `minifs_stat` (function, line 1698) `minifs_stat(de.inode, &st);`
+  - `ramdisk_delete` (function, line 1738) `ramdisk_delete(f);`
+  - `net_cmd_status` (function, line 1859) `net_cmd_status();`
+  - `net_cmd_ping` (function, line 1862) `net_cmd_ping(argv[2]);`
+  - `net_cmd_dns` (function, line 1865) `net_cmd_dns(argv[2]);`
+  - `rq_stats` (function, line 1887) `rq_stats(c, &hits, &steals, &drops);`
+  - `pcspk_set_volume` (function, line 1951) `pcspk_set_volume(v);`
+  - `kstack_report` (function, line 1975) `kstack_report();`
+  - `sb16_counters` (function, line 1979) `sb16_counters(&c);`
+  - `shell_cmd_unzip` (function, line 1998) `shell_cmd_unzip(argc, argv);`
+  - `shell_cmd_zip` (function, line 2001) `shell_cmd_zip(argc, argv);`
+  - `shell_report_exit` (function, line 2017) `else shell_report_exit(ret);`
+  - `shell_cmd_sh` (function, line 2021) `shell_cmd_sh(argc, argv);`
   - `XXH_STATIC_LINKING_ONLY` (macro, line 12) `#define XXH_STATIC_LINKING_ONLY`
   - `SHELL_CVM_INTERP` (macro, line 35) `#define SHELL_CVM_INTERP`
   - `SHELL_RUN_DIRS` (macro, line 54) `#define SHELL_RUN_DIRS`
@@ -933,108 +933,111 @@ static long sys_minios_gfx_prese...`
 - Layer: utility
 - Language: c
 - Symbols:
-  - `vga_fb_boot_config` (function, line 26) `void vga_fb_boot_config(void)`
-  - `fb_bytes_per_pixel` (function, line 53) `int fb_bytes_per_pixel(void)`
-  - `lg_get` (function, line 106) `static const char *lg_get(int i)`
-  - `lg_push` (function, line 112) `static void lg_push(const char *line, int len)`
-  - `line_nrows` (function, line 124) `static int line_nrows(int len)`
-  - `act_nrows` (function, line 130) `static int act_nrows(void)`
-  - `total_rows` (function, line 134) `static int total_rows(void)`
-  - `disp_clamp` (function, line 142) `static void disp_clamp(void)`
-  - `line_at` (function, line 160) `static const char *line_at(int abs, int *off)`
-  - `cursor_save_bg` (function, line 202) `static void cursor_save_bg(int mx, int my)`
-  - `cursor_draw` (function, line 210) `static void cursor_draw(int mx, int my)`
-  - `cursor_restore` (function, line 221) `static void cursor_restore(int mx, int my)`
-  - `cursor_over` (function, line 235) `static int cursor_over(int x0, int y0, int w, int h)`
-  - `vga_fb_set_gfx_mode` (function, line 259) `void vga_fb_set_gfx_mode(int on)`
-  - `vga_fb_gfx_cursor_erase` (function, line 272) `static void vga_fb_gfx_cursor_erase(void)`
-  - `vga_fb_gfx_cursor_draw` (function, line 280) `static void vga_fb_gfx_cursor_draw(void)`
-  - `vga_fb_set_gfx_palette` (function, line 488) `void vga_fb_set_gfx_palette(const unsigned char *pal)`
-  - `fb_pack_idx` (function, line 504) `static unsigned long fb_pack_idx(unsigned idx)`
-  - `fb_write_packed` (function, line 519) `static void fb_write_packed(int x, int y, unsigned long rgb)`
-  - `fb_read_packed` (function, line 539) `static unsigned long fb_read_packed(int x, int y)`
-  - `vga_fb_read_rgb` (function, line 563) `unsigned long vga_fb_read_rgb(int x, int y)`
-  - `wall_level` (function, line 567) `static int wall_level(int v)`
-  - `vga_fb_set_palette` (function, line 575) `static void vga_fb_set_palette(void)`
-  - `vga_fb_pixel` (function, line 610) `void vga_fb_pixel(int x, int y, uint8_t color)`
-  - `vga_fb_rect` (function, line 618) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
-  - `vga_fb_char` (function, line 625) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
-  - `vga_fb_str` (function, line 640) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
-  - `text_px` (function, line 652) `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
-  - `wm_draw_buttons` (function, line 679) `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
-  - `wm_buttons_hit` (function, line 705) `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
-  - `wm_close_pending` (function, line 720) `int wm_close_pending(void)`
-  - `wm_clear_close` (function, line 721) `void wm_clear_close(void)`
-  - `wm_gfx_mode_active` (function, line 722) `int wm_gfx_mode_active(void)`
-  - `wm_button_click` (function, line 727) `static int wm_button_click(int mx, int my)`
-  - `USER_LOAD_BASE` (function, line 775) `* table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
+  - `vga_fb_boot_config` (function, line 27) `void vga_fb_boot_config(void)`
+  - `fb_bytes_per_pixel` (function, line 54) `int fb_bytes_per_pixel(void)`
+  - `lg_get` (function, line 107) `static const char *lg_get(int i)`
+  - `lg_push` (function, line 113) `static void lg_push(const char *line, int len)`
+  - `line_nrows` (function, line 125) `static int line_nrows(int len)`
+  - `act_nrows` (function, line 131) `static int act_nrows(void)`
+  - `total_rows` (function, line 135) `static int total_rows(void)`
+  - `disp_clamp` (function, line 143) `static void disp_clamp(void)`
+  - `line_at` (function, line 161) `static const char *line_at(int abs, int *off)`
+  - `cursor_save_bg` (function, line 205) `static void cursor_save_bg(int mx, int my)`
+  - `cursor_draw` (function, line 213) `static void cursor_draw(int mx, int my)`
+  - `cursor_restore` (function, line 224) `static void cursor_restore(int mx, int my)`
+  - `cursor_over` (function, line 239) `static int cursor_over(int x0, int y0, int w, int h)`
+  - `vga_fb_set_gfx_mode` (function, line 263) `void vga_fb_set_gfx_mode(int on)`
+  - `vga_fb_gfx_cursor_erase` (function, line 276) `static void vga_fb_gfx_cursor_erase(void)`
+  - `vga_fb_gfx_cursor_draw` (function, line 284) `static void vga_fb_gfx_cursor_draw(void)`
+  - `vga_fb_set_gfx_palette` (function, line 492) `void vga_fb_set_gfx_palette(const unsigned char *pal)`
+  - `fb_pack_idx` (function, line 508) `static unsigned long fb_pack_idx(unsigned idx)`
+  - `fb_write_packed` (function, line 523) `static void fb_write_packed(int x, int y, unsigned long rgb)`
+  - `fb_read_packed` (function, line 543) `static unsigned long fb_read_packed(int x, int y)`
+  - `vga_fb_read_rgb` (function, line 567) `unsigned long vga_fb_read_rgb(int x, int y)`
+  - `wall_level` (function, line 571) `static int wall_level(int v)`
+  - `vga_fb_set_palette` (function, line 579) `static void vga_fb_set_palette(void)`
+  - `fb_glyph` (function, line 633) `static const uint8_t *fb_glyph(unsigned char c)`
+  - `vga_fb_pixel` (function, line 654) `void vga_fb_pixel(int x, int y, uint8_t color)`
+  - `vga_fb_rect` (function, line 662) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
+  - `vga_fb_char` (function, line 669) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
+  - `vga_fb_str` (function, line 683) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
+  - `text_px` (function, line 695) `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
+  - `wm_draw_buttons` (function, line 721) `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
+  - `wm_buttons_hit` (function, line 747) `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
+  - `wm_close_pending` (function, line 762) `int wm_close_pending(void)`
+  - `wm_clear_close` (function, line 763) `void wm_clear_close(void)`
+  - `wm_gfx_mode_active` (function, line 764) `int wm_gfx_mode_active(void)`
+  - `wm_button_click` (function, line 769) `static int wm_button_click(int mx, int my)`
+  - `USER_LOAD_BASE` (function, line 817) `* table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
  * fits with ~1 KB to s...`
-  - `vga_fb_blit_gfx_window` (function, line 816) `void vga_fb_blit_gfx_window(void)`
-  - `vga_fb_clear` (function, line 847) `void vga_fb_clear(void)`
-  - `vga_fb_blit_nk_window` (function, line 863) `void vga_fb_blit_nk_window(void)`
-  - `term_recalc` (function, line 898) `static void term_recalc(void)`
-  - `draw_title` (function, line 925) `static void draw_title(void)`
-  - `taskbar_layout` (function, line 942) `static void taskbar_layout(void)`
-  - `draw_speaker_icon` (function, line 960) `static void draw_speaker_icon(int x, int y, uint8_t color)`
-  - `taskbar_render` (function, line 968) `static void taskbar_render(void)`
-  - `taskbar_tick` (function, line 995) `static void taskbar_tick(void)`
-  - `taskbar_handle_click` (function, line 1009) `static void taskbar_handle_click(int mx, int my)`
-  - `draw_scrollbar` (function, line 1043) `static void draw_scrollbar(void)`
-  - `render_blank_row` (function, line 1078) `static void render_blank_row(int vrow)`
-  - `render_row` (function, line 1088) `static void render_row(int vrow, int abs)`
-  - `term_render` (function, line 1116) `static void term_render(void)`
-  - `term_render_active` (function, line 1129) `static void term_render_active(void)`
-  - `line` (function, line 1170) `* display stale bytes left over from a longer previous line (e.g. the prompt
+  - `vga_fb_blit_gfx_window` (function, line 858) `void vga_fb_blit_gfx_window(void)`
+  - `vga_fb_clear` (function, line 889) `void vga_fb_clear(void)`
+  - `vga_fb_blit_nk_window` (function, line 905) `void vga_fb_blit_nk_window(void)`
+  - `term_recalc` (function, line 940) `static void term_recalc(void)`
+  - `draw_title` (function, line 967) `static void draw_title(void)`
+  - `taskbar_layout` (function, line 986) `static void taskbar_layout(void)`
+  - `draw_speaker_icon` (function, line 1006) `static void draw_speaker_icon(int x, int y, uint8_t color)`
+  - `taskbar_render` (function, line 1014) `static void taskbar_render(void)`
+  - `taskbar_tick` (function, line 1044) `static void taskbar_tick(void)`
+  - `taskbar_handle_click` (function, line 1060) `static void taskbar_handle_click(int mx, int my)`
+  - `draw_scrollbar` (function, line 1101) `static void draw_scrollbar(void)`
+  - `render_blank_row` (function, line 1136) `static void render_blank_row(int vrow)`
+  - `render_row` (function, line 1146) `static void render_row(int vrow, int abs)`
+  - `term_render` (function, line 1174) `static void term_render(void)`
+  - `term_render_active` (function, line 1187) `static void term_render_active(void)`
+  - `line` (function, line 1228) `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...`
-  - `escapes` (function, line 1179) `* swallowing them here keeps the escapes (which the serial side needs)
+  - `escapes` (function, line 1237) `* swallowing them here keeps the escapes (which the serial side needs)
      * from printing as li...`
-  - `vga_fb_puts_term` (function, line 1235) `void vga_fb_puts_term(const char *s)`
-  - `vga_fb_text_cursor` (function, line 1242) `void vga_fb_text_cursor(int col)`
-  - `vga_fb_hide_text_cursor` (function, line 1250) `void vga_fb_hide_text_cursor(void)`
-  - `vga_fb_draw_desktop` (function, line 1253) `void vga_fb_draw_desktop(void)`
-  - `vga_fb_toggle_fullscreen` (function, line 1282) `void vga_fb_toggle_fullscreen(void)`
-  - `vga_fb_toggle_minimize` (function, line 1292) `void vga_fb_toggle_minimize(void)`
-  - `vga_fb_is_minimized` (function, line 1298) `int vga_fb_is_minimized(void)`
-  - `vga_fb_is_fullscreen` (function, line 1300) `int vga_fb_is_fullscreen(void)`
-  - `vga_fb_move_terminal` (function, line 1321) `void vga_fb_move_terminal(int dx, int dy)`
-  - `term_max_cols` (function, line 1350) `static int term_max_cols(void)`
-  - `term_max_rows` (function, line 1354) `static int term_max_rows(void)`
-  - `term_finish_layout` (function, line 1358) `static void term_finish_layout(void)`
-  - `vga_fb_snap_window` (function, line 1364) `void vga_fb_snap_window(int zone)`
-  - `vga_fb_resize` (function, line 1386) `void vga_fb_resize(int dcols, int drows)`
-  - `vga_fb_reset_default` (function, line 1404) `void vga_fb_reset_default(void)`
-  - `wallpaper_ensure` (function, line 1442) `static void wallpaper_ensure(void)`
-  - `wallpaper_draw` (function, line 1477) `static void wallpaper_draw(void)`
-  - `pipe_field` (function, line 1511) `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
-  - `icon_nearest` (function, line 1529) `static int icon_nearest(int r, int g, int b)`
-  - `icon_embedded` (function, line 1545) `static const uint8_t *icon_embedded(const char *name)`
-  - `icon_decode` (function, line 1565) `static const uint8_t *icon_decode(const char *path)`
-  - `icon_embedded_rgba` (function, line 1599) `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)`
-  - `dock_label_px` (function, line 1627) `static int dock_label_px(const struct desktop_shortcut *sc)`
-  - `shortcuts_layout` (function, line 1636) `static void shortcuts_layout(void)`
-  - `shortcut_cell_left` (function, line 1654) `static int shortcut_cell_left(int i)`
-  - `desktop_shortcuts_load` (function, line 1660) `void desktop_shortcuts_load(void)`
-  - `desktop_shortcuts_draw` (function, line 1713) `void desktop_shortcuts_draw(void)`
-  - `desktop_shortcuts_hit_test` (function, line 1767) `const char *desktop_shortcuts_hit_test(int mx, int my)`
-  - `vga_fb_mouse_tick` (function, line 1782) `void vga_fb_mouse_tick(void)`
-  - `vga_fb_mouse_init` (function, line 1905) `void vga_fb_mouse_init(void)`
-  - `vga_fb_init` (function, line 1920) `void vga_fb_init(void)`
-  - `outb` (function, line 493) `outb(0x3C8, 0);`
-  - `vga_fb_close_active` (function, line 756) `case WM_BTN_CLOSE: vga_fb_close_active();`
-  - `blit_indexed_truecolor` (function, line 843) `blit_indexed_truecolor(bb, DOOM_W, DOOM_H, dst_x, dst_y + FONT_H);`
-  - `kmemset` (function, line 849) `kmemset((void *)FB_ADDR, 0, (unsigned long)fb_pitch * (unsigned long)fb_height);`
-  - `ksprintf` (function, line 983) `ksprintf(buf, "%u%%", vol);`
-  - `pcspk_set_volume` (function, line 1023) `pcspk_set_volume(spk_saved_valid ? spk_saved_vol : v);`
-  - `term_draw_cell` (function, line 1230) `term_draw_cell(act_len - 1);`
-  - `stbi_image_free` (function, line 1454) `stbi_image_free(img);`
-  - `kfclose` (function, line 1701) `kfclose(f);`
-  - `bar` (function, line 1837) `* triggers whether the user aims the arrow tip or the sprite body at * the title bar (the tip is offset CURSOR_TIP_Y below the sprite's * top-left corner). */ int in_title = (my >= term_px_y && my < t`
-  - `vga_fb_drag_terminal` (function, line 1851) `vga_fb_drag_terminal(mx, my, grab_cx);`
-  - `CURSOR_TIP_X` (macro, line 190) `#define CURSOR_TIP_X`
-  - `CURSOR_TIP_Y` (macro, line 191) `#define CURSOR_TIP_Y`
-  - `WIN_DEF_COLS` (macro, line 402) `#define WIN_DEF_COLS`
-  - `WIN_DEF_ROWS` (macro, line 403) `#define WIN_DEF_ROWS`
-  - `WIN_DEF_X` (macro, line 404) `#define WIN_DEF_X`
-  - `WIN_DEF_Y` (macro, line 405) `#define WIN_DEF_Y`
-  - `FB_OFFSET` (macro, line 425) `#define FB_OFFSET(x,y)`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `kernel.h`, `vga_fb.h`
+  - `vga_fb_puts_term` (function, line 1293) `void vga_fb_puts_term(const char *s)`
+  - `vga_fb_text_cursor` (function, line 1300) `void vga_fb_text_cursor(int col)`
+  - `vga_fb_hide_text_cursor` (function, line 1308) `void vga_fb_hide_text_cursor(void)`
+  - `vga_fb_draw_desktop` (function, line 1311) `void vga_fb_draw_desktop(void)`
+  - `vga_fb_toggle_fullscreen` (function, line 1340) `void vga_fb_toggle_fullscreen(void)`
+  - `vga_fb_toggle_minimize` (function, line 1350) `void vga_fb_toggle_minimize(void)`
+  - `vga_fb_is_minimized` (function, line 1356) `int vga_fb_is_minimized(void)`
+  - `vga_fb_is_fullscreen` (function, line 1358) `int vga_fb_is_fullscreen(void)`
+  - `vga_fb_move_terminal` (function, line 1379) `void vga_fb_move_terminal(int dx, int dy)`
+  - `term_max_cols` (function, line 1408) `static int term_max_cols(void)`
+  - `term_max_rows` (function, line 1412) `static int term_max_rows(void)`
+  - `term_finish_layout` (function, line 1416) `static void term_finish_layout(void)`
+  - `vga_fb_snap_window` (function, line 1422) `void vga_fb_snap_window(int zone)`
+  - `vga_fb_resize` (function, line 1444) `void vga_fb_resize(int dcols, int drows)`
+  - `vga_fb_reset_default` (function, line 1462) `void vga_fb_reset_default(void)`
+  - `wallpaper_ensure` (function, line 1500) `static void wallpaper_ensure(void)`
+  - `wallpaper_draw` (function, line 1535) `static void wallpaper_draw(void)`
+  - `pipe_field` (function, line 1569) `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
+  - `icon_nearest` (function, line 1587) `static int icon_nearest(int r, int g, int b)`
+  - `icon_embedded` (function, line 1603) `static const uint8_t *icon_embedded(const char *name)`
+  - `icon_decode` (function, line 1623) `static const uint8_t *icon_decode(const char *path)`
+  - `icon_embedded_rgba` (function, line 1657) `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)`
+  - `dock_label_px` (function, line 1685) `static int dock_label_px(const struct desktop_shortcut *sc)`
+  - `shortcuts_layout` (function, line 1694) `static void shortcuts_layout(void)`
+  - `shortcut_cell_left` (function, line 1712) `static int shortcut_cell_left(int i)`
+  - `desktop_shortcuts_load` (function, line 1718) `void desktop_shortcuts_load(void)`
+  - `desktop_shortcuts_draw` (function, line 1771) `void desktop_shortcuts_draw(void)`
+  - `desktop_shortcuts_hit_test` (function, line 1825) `const char *desktop_shortcuts_hit_test(int mx, int my)`
+  - `vga_fb_mouse_tick` (function, line 1840) `void vga_fb_mouse_tick(void)`
+  - `vga_fb_mouse_init` (function, line 1961) `void vga_fb_mouse_init(void)`
+  - `vga_fb_init` (function, line 1976) `void vga_fb_init(void)`
+  - `outb` (function, line 497) `outb(0x3C8, 0);`
+  - `vga_fb_close_active` (function, line 798) `case WM_BTN_CLOSE: vga_fb_close_active();`
+  - `blit_indexed_truecolor` (function, line 885) `blit_indexed_truecolor(bb, DOOM_W, DOOM_H, dst_x, dst_y + FONT_H);`
+  - `kmemset` (function, line 891) `kmemset((void *)FB_ADDR, 0, (unsigned long)fb_pitch * (unsigned long)fb_height);`
+  - `ksprintf` (function, line 1029) `ksprintf(buf, "%u%%", vol);`
+  - `kbd_toggle_layout` (function, line 1072) `kbd_toggle_layout();`
+  - `pcspk_set_volume` (function, line 1081) `pcspk_set_volume(spk_saved_valid ? spk_saved_vol : v);`
+  - `term_draw_cell` (function, line 1288) `term_draw_cell(act_len - 1);`
+  - `stbi_image_free` (function, line 1512) `stbi_image_free(img);`
+  - `kfclose` (function, line 1759) `kfclose(f);`
+  - `vga_fb_drag_terminal` (function, line 1907) `vga_fb_drag_terminal(mx, my, grab_cx);`
+  - `CURSOR_TIP_X` (macro, line 191) `#define CURSOR_TIP_X`
+  - `CURSOR_TIP_Y` (macro, line 192) `#define CURSOR_TIP_Y`
+  - `CURSOR_W` (macro, line 193) `#define CURSOR_W`
+  - `CURSOR_H` (macro, line 194) `#define CURSOR_H`
+  - `WIN_DEF_COLS` (macro, line 406) `#define WIN_DEF_COLS`
+  - `WIN_DEF_ROWS` (macro, line 407) `#define WIN_DEF_ROWS`
+  - `WIN_DEF_X` (macro, line 408) `#define WIN_DEF_X`
+  - `WIN_DEF_Y` (macro, line 409) `#define WIN_DEF_Y`
+  - `FB_OFFSET` (macro, line 429) `#define FB_OFFSET(x,y)`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `vga_fb.h`

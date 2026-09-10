@@ -31,24 +31,24 @@
 - Doc: Docstring: x86 port I/O hardware abstraction contract.
 - Language: h
 - Symbols:
-  - `hal_outb` (function, line 68) `static inline void hal_outb(unsigned short port, unsigned char val)`
-  - `hal_inb` (function, line 75) `static inline unsigned char hal_inb(unsigned short port)`
-  - `hal_outw` (function, line 81) `static inline void hal_outw(unsigned short port, unsigned short val)`
-  - `hal_inw` (function, line 88) `static inline unsigned short hal_inw(unsigned short port)`
-  - `hal_lapic_eoi` (function, line 94) `static inline void hal_lapic_eoi(void)`
-  - `hal_pic_eoi` (function, line 99) `static inline void hal_pic_eoi(int irq)`
-  - `hal_outb` (function, line 109) `static inline void hal_outb(unsigned short port, unsigned char val)`
-  - `hal_inb` (function, line 114) `static inline unsigned char hal_inb(unsigned short port)`
-  - `hal_outw` (function, line 121) `static inline void hal_outw(unsigned short port, unsigned short val)`
-  - `hal_inw` (function, line 126) `static inline unsigned short hal_inw(unsigned short port)`
-  - `hal_lapic_eoi` (function, line 133) `static inline void hal_lapic_eoi(void)`
-  - `hal_pic_eoi` (function, line 138) `static inline void hal_pic_eoi(int irq)`
-  - `volatile` (function, line 110) `__asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));`
-  - `hal_io_stub_writes` (variable, line 57) `extern unsigned hal_io_stub_writes;`
-  - `hal_io_stub_last_port` (variable, line 59) `extern unsigned hal_io_stub_last_port;`
-  - `hal_io_stub_last_val` (variable, line 61) `extern unsigned hal_io_stub_last_val;`
-  - `hal_io_stub_lapic_eois` (variable, line 63) `extern unsigned hal_io_stub_lapic_eois;`
-  - `hal_io_stub_read_val` (variable, line 65) `extern unsigned char hal_io_stub_read_val;`
+  - `hal_outb` (function, line 70) `static inline void hal_outb(unsigned short port, unsigned char val)`
+  - `hal_inb` (function, line 77) `static inline unsigned char hal_inb(unsigned short port)`
+  - `hal_outw` (function, line 83) `static inline void hal_outw(unsigned short port, unsigned short val)`
+  - `hal_inw` (function, line 90) `static inline unsigned short hal_inw(unsigned short port)`
+  - `hal_lapic_eoi` (function, line 96) `static inline void hal_lapic_eoi(void)`
+  - `hal_pic_eoi` (function, line 101) `static inline void hal_pic_eoi(int irq)`
+  - `hal_outb` (function, line 111) `static inline void hal_outb(unsigned short port, unsigned char val)`
+  - `hal_inb` (function, line 116) `static inline unsigned char hal_inb(unsigned short port)`
+  - `hal_outw` (function, line 123) `static inline void hal_outw(unsigned short port, unsigned short val)`
+  - `hal_inw` (function, line 128) `static inline unsigned short hal_inw(unsigned short port)`
+  - `hal_lapic_eoi` (function, line 135) `static inline void hal_lapic_eoi(void)`
+  - `hal_pic_eoi` (function, line 140) `static inline void hal_pic_eoi(int irq)`
+  - `volatile` (function, line 112) `__asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));`
+  - `hal_io_stub_writes` (variable, line 59) `extern unsigned hal_io_stub_writes;`
+  - `hal_io_stub_last_port` (variable, line 61) `extern unsigned hal_io_stub_last_port;`
+  - `hal_io_stub_last_val` (variable, line 63) `extern unsigned hal_io_stub_last_val;`
+  - `hal_io_stub_lapic_eois` (variable, line 65) `extern unsigned hal_io_stub_lapic_eois;`
+  - `hal_io_stub_read_val` (variable, line 67) `extern unsigned char hal_io_stub_read_val;`
   - `HAL_IO_H` (macro, line 13) `#define HAL_IO_H`
   - `HAL_PIC1_CMD` (macro, line 16) `#define HAL_PIC1_CMD`
   - `HAL_PIC1_DATA` (macro, line 18) `#define HAL_PIC1_DATA`
@@ -63,10 +63,11 @@
   - `HAL_PS2_IBF_EMPTY` (macro, line 38) `#define HAL_PS2_IBF_EMPTY`
   - `HAL_PS2_OBF_FULL` (macro, line 40) `#define HAL_PS2_OBF_FULL`
   - `HAL_MOUSE_SYNC_BIT` (macro, line 43) `#define HAL_MOUSE_SYNC_BIT`
-  - `HAL_MOUSE_BUTTON_MASK` (macro, line 45) `#define HAL_MOUSE_BUTTON_MASK`
-  - `HAL_MOUSE_PACKET_LEN` (macro, line 47) `#define HAL_MOUSE_PACKET_LEN`
-  - `HAL_MOUSE_SCALE` (macro, line 49) `#define HAL_MOUSE_SCALE`
-  - `HAL_LAPIC_EOI_ADDR` (macro, line 52) `#define HAL_LAPIC_EOI_ADDR`
+  - `HAL_MOUSE_OVF_BITS` (macro, line 45) `#define HAL_MOUSE_OVF_BITS`
+  - `HAL_MOUSE_BUTTON_MASK` (macro, line 47) `#define HAL_MOUSE_BUTTON_MASK`
+  - `HAL_MOUSE_PACKET_LEN` (macro, line 49) `#define HAL_MOUSE_PACKET_LEN`
+  - `HAL_MOUSE_SCALE` (macro, line 51) `#define HAL_MOUSE_SCALE`
+  - `HAL_LAPIC_EOI_ADDR` (macro, line 54) `#define HAL_LAPIC_EOI_ADDR`
 - Imported by: `kernel/sched.c`, `tests/test_hal_io.c`
 
 ## arch/x86/isr_stubs.S
