@@ -807,6 +807,10 @@ framebuffer is not.
   shared, and running a program blocks both windows (one `exec_return`).
   `wm close` on window 1 destroys it (heap freed, focus back to 0); window
   0 never closes (it resets to default like the historical X button).
+  The dock's Terminal icon runs `wm split` (`progs/etc/shortcuts`), so a
+  click opens/focuses the second shell with no typing — verified over QMP
+  with separated button down/up (a joint down+up can land inside one tick
+  and read as no click); a repeat click just refocuses window 1.
   Honest limits: no Alt-Tab mid-`edit` (the modal editor echoes into
   whichever window is focused), serial sees one interleaved console (use
   `wm list`'s `line` flag to tell which window holds a parked line).

@@ -4,7 +4,7 @@
 # icon:   path to 32x32 PNG on ramdisk/MiniFS
 # command: shell command to run on click
 # Lines starting with # are comments. Max 16 shortcuts.
-Terminal|icons/terminal.png|~shell
+Terminal|icons/terminal.png|wm split
 DOOM|icons/doom.png|doomgeneric.elf
 Quake 2|icons/quake2.png|run quake2generic.elf +set basedir .
 Nuklear|icons/nuklear.png|nuklear
