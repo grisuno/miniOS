@@ -60,6 +60,7 @@ static inline unsigned long read_cr3(void) {
  * if it fires, the struct changed and the macros in sched.h must be
  * updated to match -- the asm follows automatically. */
 _Static_assert(__builtin_offsetof(proc_t, kstack) == PROC_KSTACK_OFF, "proc kstack off");
+_Static_assert(__builtin_offsetof(proc_t, fpu_save) == PROC_FPU_OFF, "proc fpu off");
 _Static_assert(sizeof(proc_t) == PROC_T_SIZE, "proc size");
 /* The AP stub loads the GDT with the SMP limit; it must cover one TSS
  * descriptor (two slots) per CPU past the 5 stage-2 entries. */
@@ -163,6 +164,45 @@ static void free_kstack(uint64_t top) {
     if (!top) return;
     int idx = (int)(((char *)top - (char *)kstack_pool) / (KSTACK_SZ));
     if (idx >= 0 && idx < MAX_PROCS) kstack_used[idx] = 0;
+}
+
+/* ---- Per-thread FPU/SSE state (Phase 0.1, ADR-0014) ----
+ * The switch asm (ctx_sw.S) saves GPRs only; without an FPU image two
+ * float-heavy threads corrupt each other's XMM/x87 registers on every
+ * preempt. Each proc owns a 512-byte fxsave area (heap, 16-aligned by
+ * the dlmalloc contract, so fxsave never #GPs on alignment).
+ * A fresh image is explicit zeros plus the default MXCSR (0x1F80, all
+ * exceptions masked): fxsave-capturing the live registers at create
+ * time would inherit whoever ran last, and an all-zero MXCSR would
+ * unmask every exception for the new thread. */
+static inline void fpu_save_to(void *area) {
+    __asm__ volatile("fxsave (%0)" :: "r"(area) : "memory");
+}
+
+static inline void fpu_restore_from(void *area) {
+    __asm__ volatile("fxrstor (%0)" :: "r"(area) : "memory");
+}
+
+static void *fpu_alloc_clean(void) {
+    unsigned char *a = (unsigned char *)kmalloc(FPU_SAVE_SZ);
+    unsigned i;
+    if (!a) return 0;
+    for (i = 0; i < FPU_SAVE_SZ; i++) a[i] = 0;
+    /* Architectural default state (what fninit establishes): x87
+     * control 0x037F (extended precision, all exceptions masked),
+     * abridged tag 0xFF (all eight registers empty), MXCSR 0x1F80.
+     * An all-zero image would run new threads at single precision
+     * with unmasked x87 exceptions and a "full" register stack, so
+     * the first long double op would fault or misround. */
+    a[0] = 0x7F; a[1] = 0x03;
+    a[4] = 0xFF;
+    a[FPU_MXCSR_OFF] = (unsigned char)(FPU_MXCSR_DEFAULT & 0xFF);
+    a[FPU_MXCSR_OFF + 1] = (unsigned char)((FPU_MXCSR_DEFAULT >> 8) & 0xFF);
+    return a;
+}
+
+static void fpu_free_proc(proc_t *p) {
+    if (p->fpu_save) { kfree(p->fpu_save); p->fpu_save = 0; }
 }
 
 /* Serial-observable stack health: per-proc high-water marks plus the
@@ -380,6 +420,10 @@ static void sched_save_preempt(proc_t *cur, trap_frame_t *frame,
     (void)from_user;
     trap_frame_t *dst = &isr_park[cur->pid];
     kmemcpy(dst, frame, sizeof(trap_frame_t));
+    /* The preempted thread's live FPU registers die with this ISR frame
+     * unless they are parked now: the switch_to_notrap below restores
+     * but never saves, and resume_iretq only pops GPRs. */
+    if (cur->fpu_save) fpu_save_to(cur->fpu_save);
     cur->ctx.rip = (uint64_t)resume_iretq;
     cur->ctx.rsp = (uint64_t)dst;
 }
@@ -982,6 +1026,14 @@ int proc_create(const char *name, int parent_pid) {
     uint64_t kstack_top = alloc_kstack();
     if (!kstack_top) { spin_unlock(&sched_lock); return -1; }
     p->kstack = kstack_top;
+    p->fpu_save = fpu_alloc_clean();
+    if (!p->fpu_save) {
+        free_kstack(kstack_top);
+        p->kstack = 0;
+        p->state = PROC_FREE;
+        spin_unlock(&sched_lock);
+        return -1;
+    }
 
     /* Build iretq frame at the top of the kernel stack */
     unsigned long *frame = (unsigned long *)(kstack_top - 40);
@@ -1010,24 +1062,44 @@ int proc_create(const char *name, int parent_pid) {
  * next claim the thread RETURNS from schedule() into its own caller
  * (yield / sleep_on / do_waitpid / do_exit) instead of replaying
  * schedule()'s tail on a foreign CPU — the tail's unlock and
- * current_pid writes must never run twice.  Frame walk: this helper's
- * rbp -> (%rbp) = schedule()'s rbp -> 8(schedule rbp) = schedule's
- * return address, 16(schedule rbp) = the caller's rsp.  Requires a
- * frame pointer (the kernel builds with -fno-omit-frame-pointer).
+ * current_pid writes must never run twice.
+ *
+ * Frame walk done right: this MUST observe schedule()'s own frame, so
+ * it is always_inline (it runs as part of schedule(), whose live rbp
+ * is its frame) and uses __builtin_return_address(0) /
+ * __builtin_frame_address(0) instead of hand-rolled rbp arithmetic.
+ * The previous revision was a noinline helper that read (%%rbp) on
+ * entry: gcc omits the frame of such a leaf, so the walk started one
+ * frame too deep and parked the CALLER's return address (e.g. the
+ * address after `call do_waitpid` in sys_linux_wait4) as the resume
+ * rip. A thread resumed without an intervening timer preempt (which
+ * would have re-parked it correctly via resume_iretq) then continued
+ * AFTER its own syscall helper — skipping the reap in do_waitpid and
+ * returning the parked rip as the syscall result. Threads that were
+ * preempted first behaved, which is why heavy workloads (thdemo)
+ * passed while a single spawn/block/resume tripped it deterministically.
  * switch_save_only has just captured the live callee-saved GPRs, which
- * the caller needs; only rip/rsp/rflags are overridden. */
-__attribute__((noinline))
-static void sched_park_as_returned(proc_t *cur) {
-    unsigned long rip, rsp, sched_rbp;
-    __asm__ volatile("movq (%%rbp), %0" : "=r"(sched_rbp));
-    __asm__ volatile("movq 8(%2), %0; leaq 16(%2), %1"
-                     : "=&r"(rip), "=&r"(rsp) : "r"(sched_rbp));
-    cur->ctx.rip = rip;
-    cur->ctx.rsp = rsp;
+ * the caller needs; rip/rsp/rbp/rflags are overridden, because a resume
+ * that keeps schedule()'s own rbp runs the caller's frame accesses
+ * (locals, leave/ret) on the wrong frame. */
+__attribute__((always_inline))
+static inline void sched_park_as_returned(proc_t *cur) {
+    unsigned long sched_rbp = (unsigned long)__builtin_frame_address(0);
+    cur->ctx.rip = (unsigned long)__builtin_return_address(0);
+    cur->ctx.rsp = sched_rbp + 16;
+    cur->ctx.rbp = *(unsigned long *)sched_rbp;
     cur->ctx.rflags = 0x202;
 }
 
 void schedule(void) {
+    /* Callee-saved discipline (ADR-0014, enforced by -ffixed-rbx/r12-r15
+     * on this TU in the Makefile): the voluntary switch below saves the
+     * live registers, which are schedule()'s, not the caller's. With the
+     * five callee-saved registers reserved, the compiler cannot put
+     * schedule() locals in them, so the caller's set rides through every
+     * switch untouched; rbp rides in ctx.rbp via the park. Removing a
+     * -ffixed flag silently reopens the hang where do_waitpid resumed
+     * with schedule()'s r13d as its pid and matched nothing forever. */
     cpu_t *me = this_cpu();
     int vm_only = !me->is_bsp;
     spin_lock(&sched_lock);
@@ -1185,6 +1257,18 @@ long do_thread_spawn(unsigned long fn, unsigned long stack,
     uint64_t kstack_top = alloc_kstack();
     if (!kstack_top) { spin_unlock(&sched_lock); return -1; }
     child->kstack = kstack_top;
+    /* A spawned thread starts at fn(arg) with integer registers only;
+     * its FPU starts from the clean default, never the spawner's live
+     * registers (float args would need XMM inheritance, which the
+     * arg-passing contract does not carry: fn takes one integer arg). */
+    child->fpu_save = fpu_alloc_clean();
+    if (!child->fpu_save) {
+        free_kstack(kstack_top);
+        child->kstack = 0;
+        child->state = PROC_FREE;
+        spin_unlock(&sched_lock);
+        return -1;
+    }
 
     /* Share the address space; inherit the current brk/mmap view.  The
      * live view stays in the globals while threads run (schedule() skips
@@ -1250,6 +1334,16 @@ long do_clone(long flags, long newsp) {
     uint64_t kstack_top = alloc_kstack();
     if (!kstack_top) { spin_unlock(&sched_lock); return -1; }
     child->kstack = kstack_top;
+    /* Fresh FPU default like thread_spawn: a clone child resumes at its
+     * own entry with clean float state, never the parent's live regs. */
+    child->fpu_save = fpu_alloc_clean();
+    if (!child->fpu_save) {
+        free_kstack(kstack_top);
+        child->kstack = 0;
+        child->state = PROC_FREE;
+        spin_unlock(&sched_lock);
+        return -1;
+    }
 
     if (cflags & CLONE_VM) {
         child->ctx.cr3 = cur->ctx.cr3;
@@ -1308,6 +1402,7 @@ int do_waitpid(int pid) {
                     pt_free_user(procs[i].ctx.cr3);
                 free_kstack(procs[i].kstack);
                 procs[i].kstack = 0;
+                fpu_free_proc(&procs[i]);
                 procs[i].state = PROC_FREE;
                 spin_unlock(&sched_lock);
                 return code;
@@ -1466,6 +1561,10 @@ void sched_init(void) {
      * syscall_entry); k_exec_user temporarily points this one at a
      * deeper stack for the run. */
     procs[0].kstack = alloc_kstack();
+    /* The boot proc preempts like any other once threads exist; without
+     * an image its live FPU registers would be dropped by the preempt
+     * park (the save path skips a null area). */
+    procs[0].fpu_save = fpu_alloc_clean();
 
     /* IDT and TSS FIRST: pic_init unmasks IRQ0/1/12, and the PIT starts
      * firing the moment pit_init runs — an IRQ delivered with the IDT

@@ -54,6 +54,8 @@ echo PASS: echo-ok
 # === DATE & VOL ===
 date
 echo PASS: date-ok
+clock
+echo PASS: clock-ok
 vol
 echo PASS: vol-ok
 vol 40
@@ -206,6 +208,8 @@ run objects/xxhash.o
 echo PASS: xxhash-ok
 run objects/dlmalloc.o
 echo PASS: dlmalloc-ok
+run fptest
+echo PASS: fptest-ok
 
 # === REPEATED RUNS (heap stability) ===
 run cvm/fib.cvm

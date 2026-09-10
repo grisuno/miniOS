@@ -1,4 +1,5 @@
 #include "kernel.h"
+#include "ktime.h"
 
 /* ================================================================
  *  PIT-calibrated TSC for SYS_TIME (syscall 204)
@@ -32,4 +33,12 @@ static void ktime_init(void) {
 unsigned long ktime_ms(void) {
     if (!tsc_per_ms) ktime_init();
     return (ktime_rdtsc() - tsc_base_ms) / tsc_per_ms;
+}
+
+/* Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3:
+ * clock_gettime nsec and gettimeofday usec both derive from here, so the
+ * two clocks share one source and never disagree about ordering). */
+unsigned long ktime_us(void) {
+    if (!tsc_per_ms) ktime_init();
+    return ktime_us_from_delta(ktime_rdtsc() - tsc_base_ms, tsc_per_ms);
 }

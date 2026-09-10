@@ -30,6 +30,8 @@
 #include "percpu_rq.h"
 #include "sanitize.h"
 #include "shell.h"
+#include "ktime.h"
+#include "randmix.h"
 
 /* ---- File descriptor table for open/read/write/close -------------------- */
 
@@ -68,7 +70,24 @@ typedef struct {
 #define MINIOS_SYSCALL_COUNT 128
 
 static int k_syscall_spawn(const char *path, const char *redirect,
-                            int child_argc, const char **child_argv);
+                             int child_argc, const char **child_argv);
+
+/* wall_us_now: RTC-anchored wall clock in microseconds (Phase 0.2/0.3).
+ * The RTC gives whole seconds; the fraction is the free-running ktime_us
+ * rebased at every RTC second edge, so successive reads order correctly
+ * across the edge. Shared by gettimeofday (96), clock_gettime (228) and
+ * the shell `clock` builtin: one source, never three disagreeing clocks.
+ * On RTC failure the base stays 0 and time reads as small uptime-like
+ * values; callers that need an epoch treat 0 as "no clock". */
+unsigned long wall_us_now(void) {
+    static unsigned long base_sec;
+    static unsigned long base_ktime;
+    unsigned long sec = 0, now;
+    rtc_wall_seconds(&sec);
+    now = ktime_us();
+    if (sec != base_sec) { base_sec = sec; base_ktime = now; }
+    return wall_us_from_parts(base_sec, base_ktime, now);
+}
 
 static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
@@ -876,6 +895,20 @@ static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6
     return 0;
 }
 
+/* fsync/fdatasync: the ramdisk is memory (always durable) and MiniFS
+ * persists through kfclose/minifs_sync, so there is nothing to flush
+ * that close would not already flush. Success is truthful here, not a
+ * lie: no write-back cache sits between the caller and the medium. */
+static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    return 0;
+}
+
+static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    return 0;
+}
+
 static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     char *buf = (char *)a1;
@@ -927,22 +960,24 @@ static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6
 }
 
 static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6) {
-    /* Wall-clock epoch seconds from the CMOS RTC (second resolution:
-     * tv_usec is always 0). The old code returned TSC milliseconds
-     * since boot, which is uptime, not an epoch: every consumer that
-     * compares against absolute dates broke, notably the ring-3 TLS
-     * engine's certificate validity window (days computed to 0, so no
-     * real chain ever verified in-guest). On RTC failure the fields
-     * stay 0/0 and the call still returns 0; TLS treats epoch 0 as "no
-     * clock" and fails the chain check closed downstream. */
+    /* Wall-clock epoch seconds from the CMOS RTC plus a monotonic
+     * microsecond fraction from the calibrated TSC (Phase 0.3). The old
+     * code pinned tv_usec to 0, so two calls inside one second compared
+     * equal. The fraction is free-running (ktime_us mod 1e6), NOT phase
+     * aligned to the RTC second edge: the wall_us_from_parts rebase
+     * below re-anchors every RTC second, so ordering holds across the
+     * edge instead of inverting for half a second. On RTC failure the
+     * fields stay 0/0 and the call still returns 0; TLS treats epoch 0
+     * as "no clock" and fails the chain check closed downstream. */
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     if (a1) {
         unsigned long *tv = (unsigned long *)a1;
-        unsigned long sec = 0;
         if (!user_range_ok((unsigned long)a1, 2 * sizeof(unsigned long))) return EFAULT;
-        rtc_wall_seconds(&sec);
-        tv[0] = sec;
-        tv[1] = 0;
+        {
+            unsigned long total = wall_us_now();
+            tv[0] = total / 1000000UL;
+            tv[1] = total % 1000000UL;
+        }
     }
     return 0;
 }
@@ -960,8 +995,11 @@ static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, lo
 }
 
 static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6) {
+    /* Phase 0.4: the thread's own pid, not a constant 1. Every
+     * thread_spawn/clone child owns a distinct pid and current_pid
+     * resolves per-CPU via the GS base, so pthread_self layers on top. */
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    return 1;
+    return (long)current_pid;
 }
 
 #define LINUX_SYSCALL_COUNT 200
@@ -996,7 +1034,9 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [60]  = { sys_linux_exit,         "exit" },
     [61]  = { sys_linux_wait4,        "wait4" },
     [62]  = { sys_linux_kill,         "kill" },
-    [74]  = { sys_linux_flock,        "flock" },
+    [73]  = { sys_linux_flock,        "flock" },
+    [74]  = { sys_linux_fsync,        "fsync" },
+    [75]  = { sys_linux_fdatasync,    "fdatasync" },
     [79]  = { sys_linux_getcwd,       "getcwd" },
     [87]  = { sys_linux_unlink,       "unlink" },
     [89]  = { sys_linux_readlink,     "readlink" },
@@ -1116,32 +1156,31 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     case 257: /* openat (open/2 is table-driven) */
         return do_open_path((const char *)a2, a3);
     /* 12, 9, 11, 158 now live in linux_syscall_table. */
-    case 218: return 1;
-    case 228: /* clock_gettime: wall-clock epoch like gettimeofday
-        * (CLOCK_* id ignored: one CMOS wall clock, second resolution). */
+    case 218: /* set_tid_address: record nothing (single robust-list slot
+        * arrives in Phase 1.B); return the caller tid like Linux. */
+        return (long)current_pid;
+    case 228: /* clock_gettime: id 1 (MONOTONIC) reads the calibrated TSC
+        * directly; every other id reads the RTC-anchored wall clock
+        * (Phase 0.2: two successive reads differ and order correctly). */
         if (a2) {
             unsigned long *ts = (unsigned long *)a2;
-            unsigned long sec = 0;
             if (!user_range_ok((unsigned long)ts, 2 * sizeof(unsigned long))) return EFAULT;
-            rtc_wall_seconds(&sec);
-            ts[0] = sec; ts[1] = 0;
+            if (a1 == 1) {
+                unsigned long us = ktime_us();
+                ts[0] = us / 1000000UL; ts[1] = (us % 1000000UL) * 1000UL;
+            } else {
+                unsigned long total = wall_us_now();
+                ts[0] = total / 1000000UL;
+                ts[1] = (total % 1000000UL) * 1000UL;
+            }
         }
         return 0;
     /* 16, 24, 39, 57, 58, 59, 60, 61, 62, 41, 42, 44, 45, 48, 7 now
      * live in linux_syscall_table; 231 shares do_proc_exit. */
     case 231: /* exit_group (exit/60 is table-driven) */
         return do_proc_exit(a1);
-    /* 200-205, 207, 208 are table-driven (minios_syscall_table);
-     * these switch copies were unreachable dead code. */
-    /* 209-217, 219-222 are table-driven (minios_syscall_table);
-     * these switch copies were unreachable dead code. */
-    /* 224 is table-driven (minios_syscall_table); switch copy was dead. */
-    /* 229, 230, 232, 233, 206 are table-driven (minios_syscall_table);
-     * these switch copies were unreachable dead code.
-     * 5, 10, 13, 14, 186 now live in linux_syscall_table. */
     case 234: { /* tgkill */
-        int sig = (int)a3;
-        static const int fatal[] = {1,2,3,4,5,6,7,8,9,11,13,14,15};
+        int sig = (int)a3;        static const int fatal[] = {1,2,3,4,5,6,7,8,9,11,13,14,15};
         if (sig <= 0) return -22;
         for (unsigned _i = 0; _i < sizeof(fatal)/sizeof(fatal[0]); _i++)
             if (sig == fatal[_i]) {
@@ -1155,25 +1194,64 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
             }
         return 0;
     }
-    /* 87, 74, 21, 89, 96 now live in linux_syscall_table. */
-    case 267: return -2;
-    case 273: return 0;
-    case 301: return 0;
-    case 302: return 0;
-    case 318: { /* getrandom */
+    /* 87, 73, 74, 75, 21, 89, 96 now live in linux_syscall_table. */
+    case 267: /* readlinkat: MiniOS has no symlinks, so dirfd+path can
+        * never resolve to one; EINVAL like readlink (89), never a
+        * forged link length. A real readlinkat arrives in Phase 1.A. */
+        return -22;
+    case 273: /* set_robust_list: recorded nowhere yet (Phase 1.B either
+        * stores the per-thread list or ADRs the no-op); answering 0
+        * lets thread init proceed, and robust-mutex owner-death is the
+        * documented gap. */
+        return 0;
+    case 301: /* fanotify_mark shadow: fossil set_robust_list alias kept
+        * answering 0 so old binaries keep booting; new code uses 273. */
+        return 0;
+    case 302: /* prlimit64: unimplemented (ENOSYS, not the old 0: the
+        * MiniOS RLIMIT custom semantics live at 240 under their own
+        * name, and 302 must not masquerade as success). */
+        return -38;
+    case 318: { /* getrandom: RDRAND when the CPU offers it, folded with
+        * TSC/tick/pid jitter through splitmix64 (Phase 0.5). The old
+        * TSC-XOR-index stream was predictable from boot time. */
         unsigned char *buf = (unsigned char *)a1;
-        unsigned long cnt = a2;
+        unsigned long cnt = (unsigned long)a2;
+        unsigned long i, word = 0;
+        int have_rdrand = 0;
         if (cnt > 0 && !user_range_ok((unsigned long)buf, cnt)) return EFAULT;
-        unsigned long lo = 0, hi = 0;
-        for (unsigned long i = 0; i < cnt; i++) {
+        {
+            unsigned int ecx = 0;
+            __asm__ volatile("mov $1, %%eax; cpuid; mov %%ecx, %0"
+                             : "=r"(ecx) :: "eax", "ebx", "edx");
+            have_rdrand = (ecx & (1u << 30)) != 0;
+        }
+        for (i = 0; i < cnt; i++) {
             if ((i & 7) == 0) {
+                unsigned long long r = 0;
+                unsigned long lo = 0, hi = 0;
+                int ok = 0;
+                if (have_rdrand) {
+                    int tries;
+                    for (tries = 0; tries < 10; tries++) {
+                        unsigned char cf = 0;
+                        __asm__ volatile(
+                            "rdrand %1; setc %0"
+                            : "=r"(cf), "=r"(r) :: "cc");
+                        if (cf) { ok = 1; break; }
+                    }
+                }
                 __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
+                word = randmix64(((unsigned long)r ^ (ok ? 0x9E3779B97F4A7C15UL : 0UL)) +
+                                 (lo ^ (hi << 1)) + sys_ticks +
+                                 (unsigned long)current_pid + i);
             }
-            buf[i] = (unsigned char)((lo >> (8 * (i & 7))) ^ (hi & 0xFF) ^ i);
+            buf[i] = (unsigned char)(word >> (8 * (i & 7)));
         }
         return (long)cnt;
     }
-    case 334: return -1;
+    case 334: /* rseq: restartable sequences unsupported; glibc probes,
+        * sees an error and runs without them. -1, never a forged area. */
+        return -1;
     /* 79 now lives in linux_syscall_table. */
     case 262: { /* newfstatat */
         const char *path = (const char *)a2;

@@ -1959,6 +1959,19 @@ void shell_exec_builtin(int argc, char **argv) {
         else
             vga_puts("date: clock unavailable\n");
     }
+    else if (kstrcmp(argv[0], "clock") == 0) {
+        /* Phase 0.2/0.3 BDD hook: two wall-clock reads and two monotonic
+         * reads; neither may step backwards, and the wall fraction must
+         * stay inside the second. A regression to second resolution or
+         * to the old uptime-as-epoch prints visibly wrong values here. */
+        unsigned long w1 = wall_us_now(), m1 = ktime_us();
+        unsigned long w2 = wall_us_now(), m2 = ktime_us();
+        kprintf("clock: wall=%lu.%06lu mono=%lu us\n",
+                w1 / 1000000UL, w1 % 1000000UL, m1);
+        kprintf("clock: wall=%lu.%06lu mono=%lu us %s\n",
+                w2 / 1000000UL, w2 % 1000000UL, m2,
+                (w2 >= w1 && m2 >= m1) ? "monotonic" : "BACKWARDS");
+    }
     else if (kstrcmp(argv[0], "kbd") == 0) {
         if (argc > 1) {
             if (kstrcmp(argv[1], "en") == 0)

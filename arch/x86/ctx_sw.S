@@ -19,6 +19,15 @@
  * iretq with the parked/spawned rflags, and kernel continuations re-enable
  * interrupts explicitly (schedule sti's after switch_to returns).
  *
+ * FPU/SSE (Phase 0.1, ADR-0014): the save path fxsave's prev's image
+ * and the restore path fxrstor's next's, so float-heavy threads keep
+ * their XMM/x87 registers across preempts. The image pointer lives at
+ * byte 304 of the PCB (PROC_FPU_OFF in sched.h; the C _Static_assert
+ * pins the offset, this file mirrors it like the ctx offsets above).
+ * A null image is skipped: idle contexts own none, and a skip is always
+ * safe (nothing was ever saved there). resume_iretq needs no FPU work:
+ * the switch that selected this thread already fxrstor'd its image.
+ *
  * Restore order (rdi/rsi swap):
  *   1. rax = &next (freed after saving prev's regs)
  *   2. rdi loaded from next's PCB via rax
@@ -69,6 +78,11 @@ switch_to:
         movq    %rax, 136(%rdi)     /* rflags */
         movq    %cr3, %rax
         movq    %rax, 144(%rdi)     /* cr3 */
+        movq    304(%rdi), %rax     /* fpu_save (PROC_FPU_OFF); 0 skips */
+        testq   %rax, %rax
+        jz      4f
+        fxsave  (%rax)
+4:
         testl   %r11d, %r11d
         jz      3f
         jmp     switch_to_notrap
@@ -79,6 +93,16 @@ switch_to_notrap:
         /* 1. Switch page tables */
         movq    144(%rsi), %rax
         movq    %rax, %cr3
+
+        /* 1b. FPU image: rsi still holds &next, so the pointer load can
+         * be re-derived after fxrstor clobbers rax. Null skips. */
+        movq    %rsi, %rax
+        movq    304(%rax), %rax
+        testq   %rax, %rax
+        jz      5f
+        fxrstor (%rax)
+        movq    %rsi, %rax
+5:
 
         /* 2. rax = &next (rsi is free to use as scratch now) */
         movq    %rsi, %rax

@@ -117,6 +117,27 @@
   - `fib` (function, line 1) `int fib(int n)`
   - `main` (function, line 5) `int main(void)`
 
+## progs/src/fptest.c
+- Layer: testing
+- Doc: fptest.c -- FPU/SSE context-switch probe (Phase 0.1, ADR-0014).
+- Language: c
+- Symbols:
+  - `fp_slot_t` (struct, line 56)
+  - `read_mxcsr` (function, line 41) `static unsigned int read_mxcsr(void)`
+  - `raw_gettid` (function, line 47) `static long raw_gettid(void)`
+  - `raw_getrandom` (function, line 51) `static long raw_getrandom(void *buf, unsigned long n)`
+  - `stack_align_canary` (function, line 78) `static void stack_align_canary(void)`
+  - `worker` (function, line 83) `static void *worker(void *p)`
+  - `main` (function, line 147) `int main(void)`
+  - `gettid` (function, line 20) `* * The same run smokes gettid (Phase 0.4: the two workers must observe * distinct tids, never the constant 1) and getrandom (Phase 0.5: it * must fill the buffer and report the count, never EFAULT). `
+  - `volatile` (function, line 44) `__asm__ volatile("stmxcsr %0" : "=m"(v));`
+  - `m_syscall6` (function, line 49) `return m_syscall6(MINIOS_SYS_GETTID, 0, 0, 0);`
+  - `myield` (function, line 118) `myield();`
+  - `__sync_fetch_and_add` (function, line 143) `__sync_fetch_and_add(&worker_tails, 1);`
+  - `printf` (function, line 165) `printf("fptest: FAIL (getrandom=%ld)\n", rn);`
+  - `FP_ITERS` (macro, line 37) `#define FP_ITERS`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
 ## progs/src/freedom.c
 - Layer: utility
 - Doc: freedom - a headless text browser for MiniOS.
@@ -421,11 +442,11 @@
   - `mmutex_lock` (function, line 74) `static inline void mmutex_lock(mmutex_t *m)`
   - `mmutex_unlock` (function, line 89) `static inline void mmutex_unlock(mmutex_t *m)`
   - `mthread_entry` (function, line 98) `static void mthread_entry(void *p)`
-  - `mthread_create` (function, line 112) `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
-  - `mthread_join` (function, line 135) `static int mthread_join(mthread_t t, void **retval)`
+  - `mthread_create` (function, line 116) `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
+  - `mthread_join` (function, line 139) `static int mthread_join(mthread_t t, void **retval)`
   - `volatile` (function, line 52) `__asm__ volatile("syscall" : "=a"(r) : "a"(n), "D"(a), "S"(b), "d"(c) : "rcx", "r11", "memory");`
-  - `__attribute__` (function, line 111) `__attribute__((aligned(16)));`
-  - `__sync_synchronize` (function, line 140) `__sync_synchronize();`
+  - `__attribute__` (function, line 115) `__attribute__((aligned(16)));`
+  - `__sync_synchronize` (function, line 144) `__sync_synchronize();`
   - `MTHREADS_H` (macro, line 24) `#define MTHREADS_H`
   - `MTHREAD_STACK_SZ` (macro, line 27) `#define MTHREAD_STACK_SZ`
   - `MTHREAD_MAX` (macro, line 29) `#define MTHREAD_MAX`
@@ -434,7 +455,7 @@
   - `MMUTEX_CONTENDED` (macro, line 33) `#define MMUTEX_CONTENDED`
   - `MMUTEX_SPINS` (macro, line 34) `#define MMUTEX_SPINS`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ## progs/src/nx.c
 - Layer: utility

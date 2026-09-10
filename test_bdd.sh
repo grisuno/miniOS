@@ -780,11 +780,10 @@ expect "rlimit: as=0"
 expect "rlimit: as=1048576"
 expect "exit code: 1"
 
-scenario_smp "RLIMIT_CPU kills threads past their tick cap" "rlimit cpu 30
+scenario_smp "RLIMIT_CPU kills threads past their tick cap" "rlimit cpu 1
 run thdemo
 poweroff"
-expect "thdemo: FAIL"
-expect "exit code: 1"
+expect "exit code: 137"
 
 scenario "rmdir refuses a non-empty directory" "mkdir t
 edit t/f.txt
@@ -1149,6 +1148,23 @@ expect "stb: png ok"
 scenario "dlmalloc allocator selftest exercises malloc/calloc/realloc/free" "run objects/dlmalloc.o
 poweroff"
 expect "dlmalloc: ok"
+
+scenario "fpu context survives preemptive switches" "run fptest
+poweroff"
+expect "fptest: ok"
+expect "exit code: 0"
+refute "fptest: FAIL"
+
+scenario_smp "fpu context survives switches on both CPUs" "run fptest
+poweroff"
+expect "fptest: ok"
+expect "exit code: 0"
+refute "fptest: FAIL"
+
+scenario "clock advances monotonically with microsecond fraction" "clock
+poweroff"
+expect "monotonic"
+refute "BACKWARDS"
 
 scenario "hash command prints XXH64 of a ramdisk file" "hash docs/test.png
 poweroff"

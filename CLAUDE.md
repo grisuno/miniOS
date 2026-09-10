@@ -1897,8 +1897,8 @@ is forbidden; the answer to a survivor is a new scenario.
 ## Validation Gate (must pass before any commit)
 ```bash
 make                # zero warnings
-make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n, all green
-sh src/test_all.sh  # one-boot comprehensive non-interactive suite (64 PASS)
+make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers, all green
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (66 PASS)
 ./test_bdd.sh       # all scenarios green (full interactive suite)
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh         # every mutant killed (BDD + host TLS + host VMA suites)
@@ -2309,8 +2309,8 @@ CI gates enforce architectural constraints:
 ### Validation Gate (updated)
 ```bash
 make                        # zero warnings
-make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n, all green
-sh src/test_all.sh          # one-boot comprehensive non-interactive suite (61 PASS)
+make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers, all green
+sh src/test_all.sh          # one-boot comprehensive non-interactive suite (66 PASS)
 ./test_bdd.sh               # all scenarios green (full interactive suite)
 ./tools/test_codecs.sh      # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh                 # every mutant killed
@@ -2321,6 +2321,8 @@ make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
+make test-ktime test-randmix  # Phase 0 truthfulness: TSC->usec + getrandom mixer green
+python3 tools/check_abi_numbers.py  # Phase 0.6: syscall numbers match Linux x86-64 (also in lint)
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD
 mcp/mutate_mcp.sh           # every MCP mutant killed
 python3 tools/check_cohesion.py KNOWLEDGE_BASE.jsonld

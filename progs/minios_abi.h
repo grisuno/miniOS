@@ -33,7 +33,7 @@
  * The kernel ELF loader recomputes it and compares against the binary's
  * embedded copy.  A mismatch rejects the binary before execution.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 5
+#define MINIOS_ABI_VERSION 6
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -62,6 +62,11 @@
     MINIOS_SYS_GFX_PRESENT     ^ \
     MINIOS_SYS_SECCOMP         ^ \
     MINIOS_SYS_NICE            ^ \
+    MINIOS_SYS_FLOCK           ^ \
+    MINIOS_SYS_FSYNC           ^ \
+    MINIOS_SYS_FDATASYNC       ^ \
+    MINIOS_SYS_SET_ROBUST_LIST ^ \
+    MINIOS_SYS_STATX           ^ \
     MINIOS_SYS_RLIMIT            \
 )
 
@@ -178,16 +183,28 @@
 #define MINIOS_SYS_UNLINK       87
 #define MINIOS_SYS_READLINK     89
 #define MINIOS_SYS_GETTID      186
-#define MINIOS_SYS_FLOCK        74
+/* Phase 0.6 (ADR-0014): flock was 74, but Linux x86-64 74 is fsync
+ * (73 is flock). A host-built static ELF trapping fsync got flock
+ * semantics. 73/74/75 now match the Linux table exactly. */
+#define MINIOS_SYS_FLOCK        73
+#define MINIOS_SYS_FSYNC        74
+#define MINIOS_SYS_FDATASYNC    75
 #define MINIOS_SYS_GETCWD       79
 #define MINIOS_SYS_GETTIMEOFDAY 96
 #define MINIOS_SYS_ARCH_PRCTL  158
 #define MINIOS_SYS_OPENAT      257
 #define MINIOS_SYS_NEWFSTATAT  262
 #define MINIOS_SYS_READLINK     89
-#define MINIOS_SYS_STATX       267
-#define MINIOS_SYS_SET_MEMPOLICY 273
-#define MINIOS_SYS_SET_ROBUST_LIST 301
+/* Phase 0.6 (ADR-0014): statx was 267, but Linux x86-64 267 is
+ * readlinkat; statx is 332. The header now claims the true number. */
+#define MINIOS_SYS_STATX       332
+/* Phase 0.6 (ADR-0014): this was SET_MEMPOLICY 273, but Linux x86-64
+ * 273 is set_robust_list (set_mempolicy is 238). The label now names
+ * the number the kernel actually stubs. */
+#define MINIOS_SYS_SET_ROBUST_LIST 273
+/* 301 was a fossil alias of set_robust_list; the true number is 273.
+ * The kernel still answers 0 there for old binaries (see syscalls.c),
+ * but new code must use 273. */
 #define MINIOS_SYS_PRLIMIT64   302
 #define MINIOS_SYS_GETRANDOM   318
 #define MINIOS_SYS_RSEQ        334

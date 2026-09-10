@@ -84,6 +84,11 @@ fi
 
 SOURCES="kernel.c arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c"
 SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c"
+# Every file a MUTATIONS entry touches MUST be listed here: restore_sources
+# backs these up before the run and restores after each mutant. A file
+# missing here keeps its mutation (the fpu-no-save residue disabled
+# fxsave/fxrstor in the tree for days and poisoned every later boot).
+SOURCES="$SOURCES arch/x86/ctx_sw.S progs/minios_abi.h ktime.h randmix.h sched.h progs/src/mthreads.h"
 
 restore_sources() {
     local f
@@ -188,6 +193,26 @@ batch-completion-off-by-one | s/\\*completed = i + 1;/\\*completed = i;/ | kerne
 rcu-grace-shortened | s/if (rcu_state.pending\\[i\\].epoch < rcu_state.epoch)/if (rcu_state.pending[i].epoch <= rcu_state.epoch)/ | kernel/rcu.c
 sanitize-neg-check-dropped | s/if ((count) < 0) return EFAULT;/if (0) return EFAULT;/ | sanitize.h
 sanitize-wrap-check-dropped | s/if (_sz \\/ _es != _n) return EFAULT;/if (0) return EFAULT;/ | sanitize.h
+
+abi-flock-back-to-74 | s/#define MINIOS_SYS_FLOCK        73/#define MINIOS_SYS_FLOCK        74/ | progs/minios_abi.h
+abi-fsync-claims-73 | s/#define MINIOS_SYS_FSYNC        74/#define MINIOS_SYS_FSYNC        73/ | progs/minios_abi.h
+abi-statx-back-to-267 | s/#define MINIOS_SYS_STATX       332/#define MINIOS_SYS_STATX       267/ | progs/minios_abi.h
+abi-robust-back-to-301 | s/#define MINIOS_SYS_SET_ROBUST_LIST 273/#define MINIOS_SYS_SET_ROBUST_LIST 301/ | progs/minios_abi.h
+truth-gettid-returns-one | s/return (long)current_pid;/return 1;/ | kernel/syscalls.c
+truth-getrandom-count-zero | s/return (long)cnt;/return 0;/ | kernel/syscalls.c
+truth-gettimeofday-usec-zero | s/tv\\[1\\] = total % 1000000UL;/tv[1] = 0;/ | kernel/syscalls.c
+fpu-no-save | s/fxsave  (%rax)/\\/* mutant: no save *\\// | arch/x86/ctx_sw.S
+fpu-no-restore | s/fxrstor (%rax)/\\/* mutant: no restore *\\// | arch/x86/ctx_sw.S
+fpu-preempt-no-save | s/if (cur->fpu_save) fpu_save_to(cur->fpu_save);/if (0) {}/ | kernel/sched.c
+fpu-mxcsr-zero | s/a\\[FPU_MXCSR_OFF\\] = (unsigned char)(FPU_MXCSR_DEFAULT & 0xFF);/a[FPU_MXCSR_OFF] = 0;/ | kernel/sched.c
+fpu-cw-single | s/a\\[0\\] = 0x7F; a\\[1\\] = 0x03;/a[0] = 0; a[1] = 0;/ | kernel/sched.c
+sched-imulq-stale | s/STR(PROC_T_SIZE)/304/ | kernel.c
+sched-park-rip-zero | s/cur->ctx.rip = (unsigned long)__builtin_return_address(0);/cur->ctx.rip = 0;/ | kernel/sched.c
+sched-park-rbp-zero | s/cur->ctx.rbp = \\*(unsigned long \\*)sched_rbp;/cur->ctx.rbp = 0;/ | kernel/sched.c
+mthreads-stack-no-adjust | s/(mthread_stacks\\[i\\] + MTHREAD_STACK_SZ) - 8;/(mthread_stacks[i] + MTHREAD_STACK_SZ);/ | progs/src/mthreads.h
+ktime-us-factor | s/\\* 1000UL +/ * 100UL +/ | ktime.h
+randmix-constant | s/return x ^ (x >> 31);/return 0;/ | randmix.h
+clock-backwards | s/(w2 >= w1 \\&\\& m2 >= m1) ? "monotonic" : "BACKWARDS"/(w2 >= w1 \&\& m2 >= m1) ? "BACKWARDS" : "monotonic"/ | kernel/shell.c
 "
 
 # Parse the mutation table into parallel arrays (preserving order).
@@ -324,15 +349,47 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
         sanitize.h)
             make -C "$HERE" test-sanitize > "$BACKUP/suite.log" 2>&1
             ;;
+        ktime.h)
+            make -C "$HERE" test-ktime > "$BACKUP/suite.log" 2>&1
+            ;;
+        randmix.h)
+            make -C "$HERE" test-randmix > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/minios_abi.h)
+            python3 "$HERE/tools/check_abi_numbers.py" > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/syscalls.c)
+            # MATCH must not leak into the suite: --match selects MUTANTS
+            # by name, but test_bdd.sh reads the same variable as a
+            # scenario filter. Leaking it skips every scenario whose name
+            # lacks the string, the suite exits 0 on zero assertions, and
+            # the mutant SURVIVES vacuously (this is how fpu-no-save got a
+            # false SURVIVED while disabling fxsave in the tree).
+            FAIL_FAST=1 MATCH="" "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1 && \
+            python3 "$HERE/tools/check_abi_numbers.py" >> "$BACKUP/suite.log" 2>&1
+            ;;
         *)
-            FAIL_FAST=1 "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            FAIL_FAST=1 MATCH="" "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
     esac
     if [ $? -eq 0 ]; then
-        echo "MUTANT $name: SURVIVED (test gap!)"
-        sed -n 's/^=== summary/    suite: summary/p' "$BACKUP/suite.log"
-        record "$name" SURVIVED
-        SURVIVED=$((SURVIVED + 1))
+        # A BDD suite that asserted nothing is not a pass (see the MATCH
+        # leak above): a vacuous green must never read as a covered
+        # mutant. A "0 passed" BDD summary means the run proved nothing:
+        # mark BROKEN so a human looks, instead of SURVIVED so nobody
+        # does. (Host suites print no summary; their exit code is already
+        # the verdict, so only logs carrying a summary qualify.)
+        if grep -q "=== summary" "$BACKUP/suite.log" && \
+           grep -q "0 passed" "$BACKUP/suite.log"; then
+            echo "MUTANT $name: BROKEN (suite asserted nothing)"
+            record "$name" BROKEN
+            BROKEN=$((BROKEN + 1))
+        else
+            echo "MUTANT $name: SURVIVED (test gap!)"
+            sed -n 's/^=== summary/    suite: summary/p' "$BACKUP/suite.log"
+            record "$name" SURVIVED
+            SURVIVED=$((SURVIVED + 1))
+        fi
     else
         echo "MUTANT $name: KILLED"
         record "$name" KILLED

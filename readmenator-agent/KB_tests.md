@@ -105,6 +105,16 @@
   - `CHECK` (macro, line 22) `#define CHECK(cond, msg)`
 - Depends on: `arch/x86/hal_io.h`
 
+## tests/test_ktime.c
+- Layer: testing
+- Doc: test_ktime.c -- host test for the pure conversion math in ktime.h
+- Language: c
+- Symbols:
+  - `main` (function, line 15) `int main(void)`
+  - `CHECK` (function, line 17) `CHECK(ktime_us_from_delta(0, 3000000UL) == 0, "zero delta");`
+  - `CHECK` (macro, line 14) `#define CHECK(c, m)`
+- Depends on: `ktime.h`
+
 ## tests/test_percpu_rq.c
 - Layer: testing
 - Doc: Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq).
@@ -121,6 +131,17 @@
   - `printf` (function, line 84) `else printf("percpu_rq: %d failures\n", failures);`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `percpu_rq.h`
+
+## tests/test_randmix.c
+- Layer: testing
+- Doc: test_randmix.c -- host test for the getrandom mixer in randmix.h
+- Language: c
+- Symbols:
+  - `popcount64` (function, line 17) `static int popcount64(unsigned long x)`
+  - `main` (function, line 23) `int main(void)`
+  - `CHECK` (function, line 25) `CHECK(randmix64(0) == randmix64(0), "deterministic");`
+  - `CHECK` (macro, line 16) `#define CHECK(c, m)`
+- Depends on: `randmix.h`
 
 ## tests/test_rcu.c
 - Layer: testing

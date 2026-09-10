@@ -17,8 +17,9 @@ waiter-to-owner edge and `pi_boost` donates up the blocked-on chain
 `pi_recompute` restores each holder to `max(base, live donations)`.
 `mutex_trylock` is the non-blocking, never-deadlocking acquisition for
 re-enterable paths. State lives in pid-indexed parallel arrays because
-`proc_t` is 248 bytes by asm contract (sched.c asserts, syscall_entry
-hardcodes) and cannot grow. Scheduler policy honoring `pi_get_eff` in
+`proc_t` was 248 bytes by asm contract when written (312 since the
+Phase 0 FPU work in ADR-0014; `sched.c` asserts, `syscall_entry`
+derives) and must not grow carelessly. Scheduler policy honoring `pi_get_eff` in
 the pick path is explicit future work, not silent scope: the mechanism
 is complete and host-tested, the policy hook is documented.
 

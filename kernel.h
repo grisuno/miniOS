@@ -563,6 +563,8 @@ static inline unsigned long ramdisk_image_size(void) {
 
 /* ========== Kernel clock ========== */
 unsigned long ktime_ms(void);
+unsigned long ktime_us(void);
+unsigned long wall_us_now(void);
 
 /* ========== PC speaker ========== */
 void     pcspk_init(void);

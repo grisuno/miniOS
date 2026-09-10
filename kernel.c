@@ -126,8 +126,10 @@ extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a
 
 /* ---- syscall trampoline: marshal Linux ABI regs into the C ABI ----------
  * Every syscall swaps onto the calling proc's own kernel stack
- * (procs[pid].kstack, located as procs + pid * 304 + 168; the C side
- * asserts both numbers), so concurrent thread syscalls never share one:
+ * (procs[pid].kstack, located as procs + pid * PROC_T_SIZE +
+ * PROC_KSTACK_OFF; the C side asserts both numbers and the asm derives
+ * both immediates from the macros, so growing proc_t can never strand
+ * a stale stride here again), so concurrent thread syscalls never share one:
  * sharing a single entry stack corrupts both frames when a timer tick
  * interleaves two syscalls.  Ring-0 ET_REL syscalls use the same
  * per-proc stack of whoever runs them (never the legacy shared
@@ -178,7 +180,7 @@ __asm__(
     "  .quad 0\n"
     ".align 8\n"
     "kstack_base:\n"
-    "  .quad procs+168\n"
+    "  .quad procs+" STR(PROC_KSTACK_OFF) "\n"
     ".align 8\n"
     "sc_top_save_addr:\n"
     "  .quad sc_top_save\n"
@@ -261,7 +263,7 @@ __asm__(
     "  movq %rax, %gs:96\n"      /* sc_ret = return value */
     "  movl %gs:12, %eax\n"
     "  movq %rax, %gs:88\n"      /* sc_pid = pid */
-    "  imulq $304, %rax\n"
+    "  imulq $" STR(PROC_T_SIZE) ", %rax\n"
     "  addq kstack_base(%rip), %rax\n"  /* rax = &PCB.kstack */
     "  cmpq $" STR(USER_WIN_LO) ", (%rax)\n"  /* origin = saved user rsp */
     "  jb 20f\n"

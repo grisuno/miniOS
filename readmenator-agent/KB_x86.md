@@ -20,11 +20,11 @@
 - Layer: utility
 - Language: S
 - Symbols:
-  - `switch_save_only` (function, line 35)
-  - `switch_to` (function, line 44)
-  - `switch_to_notrap` (function, line 76)
-  - `user_trampoline` (function, line 135)
-  - `resume_iretq` (function, line 148)
+  - `switch_save_only` (function, line 44)
+  - `switch_to` (function, line 53)
+  - `switch_to_notrap` (function, line 90)
+  - `user_trampoline` (function, line 159)
+  - `resume_iretq` (function, line 172)
 
 ## arch/x86/hal_io.h
 - Layer: utility

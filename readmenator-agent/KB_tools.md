@@ -5,6 +5,15 @@
 - Doc: boot_run.sh -- boot the MiniOS image in QEMU and drive the shell over the serial console with a list of commands, captur
 - Language: sh
 
+## tools/check_abi_numbers.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `normalize` (function, line 127) `def normalize(minios_name)`
+  - `parse_abi` (function, line 131) `def parse_abi(path)`
+  - `parse_dispatch` (function, line 142) `def parse_dispatch(path)`
+  - `main` (function, line 155) `def main()`
+
 ## tools/check_cohesion.py
 - Layer: utility
 - Language: py

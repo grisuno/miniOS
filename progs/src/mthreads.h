@@ -104,8 +104,12 @@ static void mthread_entry(void *p) {
 }
 
 /* Slot storage lives here: single-TU use (one instance per binary).
- * Stacks are 16-aligned; the TOP is passed to the kernel (stacks grow
- * down, and the SysV ABI needs 16-byte alignment at call time). */
+ * Stacks are 16-aligned, but the kernel enters the thread through iretq,
+ * not call, so there is no pushed return address: passing the raw top
+ * would leave every frame 8 bytes off SysV alignment and the first
+ * movaps spill (glibc printf %f) faults with #GP. The -8 reserves the
+ * phantom return address, so the entry function observes rsp%16==8
+ * exactly like a called function (Phase 0.1, ADR-0014). */
 static mthread_slot_t mthread_slots[MTHREAD_MAX];
 static char mthread_stacks[MTHREAD_MAX][MTHREAD_STACK_SZ]
     __attribute__((aligned(16)));
@@ -121,7 +125,7 @@ static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg) {
     mthread_slots[i].arg = arg;
     mthread_slots[i].retval = 0;
     mthread_slots[i].used = 1;
-    long stack_top = (long)(mthread_stacks[i] + MTHREAD_STACK_SZ);
+    long stack_top = (long)(mthread_stacks[i] + MTHREAD_STACK_SZ) - 8;
     long pid = m_syscall6(MINIOS_SYS_THREAD_SPAWN, (long)mthread_entry,
                           stack_top, (long)&mthread_slots[i]);
     if (pid < 0) {

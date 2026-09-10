@@ -57,6 +57,14 @@ typedef struct {
     int open_files;
     int cpu_kill_pending;
     char        name[32];
+    /* Per-thread FPU/SSE image (Phase 0.1, ADR-0014): 512-byte fxsave
+     * area, heap-allocated at proc_create so the 64-entry procs[] array
+     * grows by 8 bytes/slot, not 512 (a 32 KB .bss growth would overflow
+     * USER_LOAD_BASE, which sits ~1 KB past _kernel_end). The pointed-to
+     * buffer is 16-byte aligned (dlmalloc MALLOC_ALIGNMENT), as fxsave
+     * faults otherwise. 0 means no image yet: the switch asm skips
+     * save/restore, so idle contexts and half-built procs never fault. */
+    void       *fpu_save;
 } proc_t;
 /* Single source of truth for the PCB footprint (review fix for the
  * 0a92118 imulq drift): the syscall_entry trampoline in kernel.c cannot
@@ -66,8 +74,17 @@ typedef struct {
  * macros' values automatically on rebuild -- no asm hunt. procs[] itself
  * is a static 64-entry .bss array (~19 KB at 304 B/entry), far below the
  * USER_LOAD_BASE budget enforced by `make check-size`. */
-#define PROC_T_SIZE 304
+#define PROC_T_SIZE 312
 #define PROC_KSTACK_OFF 168
+/* Offset of fpu_save inside proc_t: the ctx_sw.S save/restore paths
+ * address it as imm(proc) without C, so it is named here beside
+ * PROC_T_SIZE (same imulq-drift lesson: the _Static_asserts in
+ * kernel/sched.c prove offset and size against the struct). */
+#define PROC_FPU_OFF 304
+/* fxsave/fxrstor image footprint; MXCSR lives at byte 24 of it. */
+#define FPU_SAVE_SZ 512
+#define FPU_MXCSR_OFF 24
+#define FPU_MXCSR_DEFAULT 0x1F80
 /* Seccomp-basic: bit for MiniOS syscall n in proc_t.seccomp_deny. Only the
  * 200..231 window is filterable (the framebuffer/audio/spawn/TLS surface);
  * Linux-ABI numbers are never filtered so a filter cannot break exit. */

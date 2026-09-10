@@ -260,19 +260,19 @@
 ## arch/x86/ctx_sw.S
 
 ### switch_save_only (function)
-- Defined: `arch/x86/ctx_sw.S:35`
-
-### switch_to (function)
 - Defined: `arch/x86/ctx_sw.S:44`
 
+### switch_to (function)
+- Defined: `arch/x86/ctx_sw.S:53`
+
 ### switch_to_notrap (function)
-- Defined: `arch/x86/ctx_sw.S:76`
+- Defined: `arch/x86/ctx_sw.S:90`
 
 ### user_trampoline (function)
-- Defined: `arch/x86/ctx_sw.S:135`
+- Defined: `arch/x86/ctx_sw.S:159`
 
 ### resume_iretq (function)
-- Defined: `arch/x86/ctx_sw.S:148`
+- Defined: `arch/x86/ctx_sw.S:172`
 
 ## arch/x86/hal_io.h
 
@@ -1907,7 +1907,7 @@ static int zip_sanitize_name(con...`
 
 ### __attribute__ (function) `__attribute__((section(".init.text")))
 void kmain(void)`
-- Defined: `kernel.c:356`
+- Defined: `kernel.c:358`
 - Doc: ================================================================ Kernel entry point * ==================================
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
@@ -1926,103 +1926,103 @@ void kmain(void)`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### global (function) `* The kstack top likewise cannot live in a global (a thread preempted * mid-syscall would have its top overwritten by the next thread's * entry): it is saved per-pid in sc_top_save[], written at entry`
-- Defined: `kernel.c:141`
+- Defined: `kernel.c:143`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### kstack (function) `* kstack (0 on the BSP, 1 on APs): harmless while a single process * runs, fatal as soon as two threads syscall concurrently. */ _Static_assert(__builtin_offsetof(cpu_t, cur_pid) == 12, "cpu cur_pid o`
-- Defined: `kernel.c:156`
+- Defined: `kernel.c:158`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### volatile (function) `__asm__ volatile( "mov $0x10, %%ax\n" "mov %%ax, %%ds\n" "mov %%ax, %%es\n" "mov %%ax, %%fs\n" "mov %%ax, %%gs\n" "mov %%ax, %%ss\n" "mov $0x90000, %%rsp\n" ::: "ax" );`
-- Defined: `kernel.c:359`
+- Defined: `kernel.c:361`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### EM (function) `* CR0: clear EM (bit 2), set MP (bit 1);`
-- Defined: `kernel.c:371`
+- Defined: `kernel.c:373`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### serial_init (function) `serial_init();`
-- Defined: `kernel.c:382`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
-
-### vga_clear (function) `vga_clear();`
 - Defined: `kernel.c:384`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
+### vga_clear (function) `vga_clear();`
+- Defined: `kernel.c:386`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
+
 ### outb (function) `outb(0x21, 0xFF);`
-- Defined: `kernel.c:390`
+- Defined: `kernel.c:392`
 - Doc: Mask every PIC line immediately: until sched_init's pic_init remaps the 8259s and installs the IDT, the power-on vector 
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### vga_puts (function) `vga_puts("MiniOS Kernel v0.3\n====================\n");`
-- Defined: `kernel.c:392`
+- Defined: `kernel.c:394`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### kallocator_init (function) `kallocator_init();`
-- Defined: `kernel.c:393`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
-
-### ramdisk_init (function) `ramdisk_init();`
 - Defined: `kernel.c:395`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### register_libc_symbols (function) `register_libc_symbols();`
-- Defined: `kernel.c:396`
+### ramdisk_init (function) `ramdisk_init();`
+- Defined: `kernel.c:397`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### vga_fb_boot_config (function) `vga_fb_boot_config();`
+### register_libc_symbols (function) `register_libc_symbols();`
 - Defined: `kernel.c:398`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### mm_setup_protections (function) `mm_setup_protections();`
-- Defined: `kernel.c:399`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
-
-### kprintf (function) `kprintf("fb: %dx%d pitch %d bpp %d base 0x%lx\n", fb_width, fb_height, fb_pitch, fb_bpp, fb_phys_base);`
+### vga_fb_boot_config (function) `vga_fb_boot_config();`
 - Defined: `kernel.c:400`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
+### mm_setup_protections (function) `mm_setup_protections();`
+- Defined: `kernel.c:401`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
+
+### kprintf (function) `kprintf("fb: %dx%d pitch %d bpp %d base 0x%lx\n", fb_width, fb_height, fb_pitch, fb_bpp, fb_phys_base);`
+- Defined: `kernel.c:402`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
+
 ### net_init (function) `net_init();`
-- Defined: `kernel.c:406`
+- Defined: `kernel.c:408`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### size (function) `* image size (see kernel.ld);`
-- Defined: `kernel.c:409`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
-
-### ramdisk_setup_from (function) `ramdisk_setup_from(ramdisk_start, (unsigned)ramdisk_image_size());`
 - Defined: `kernel.c:411`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### block_init (function) `block_init();`
+### ramdisk_setup_from (function) `ramdisk_setup_from(ramdisk_start, (unsigned)ramdisk_image_size());`
 - Defined: `kernel.c:413`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
-### minifs_init (function) `minifs_init();`
+### block_init (function) `block_init();`
 - Defined: `kernel.c:415`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
+### minifs_init (function) `minifs_init();`
+- Defined: `kernel.c:417`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
+
 ### vfs_register_builtins (function) `vfs_register_builtins();`
-- Defined: `kernel.c:424`
+- Defined: `kernel.c:426`
 - Doc: Register VFS drivers.  Ramdisk is always available; MiniFS is * registered only when the IDE disk was found and mounted.
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### sched_init (function) `sched_init();`
-- Defined: `kernel.c:431`
+- Defined: `kernel.c:433`
 - Doc: Initialize the scheduler: IDT, TSS, PIC, PIT timer. * This enables interrupts and the 100 Hz timer tick.
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### vga_fb_init (function) `vga_fb_init();`
-- Defined: `kernel.c:433`
+- Defined: `kernel.c:435`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### smp_init (function) `smp_init();`
-- Defined: `kernel.c:444`
+- Defined: `kernel.c:446`
 - Doc: Probe the Sound Blaster 16 for real audio; fall back to the PC speaker * when none is present. if (sb16_init()) kprintf(
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ### shell_run (function) `shell_run();`
-- Defined: `kernel.c:445`
+- Defined: `kernel.c:447`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ## kernel.h
@@ -2836,107 +2836,117 @@ void kmain(void)`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
+### ktime_us (function) `unsigned long ktime_us(void);`
+- Defined: `kernel.h:566`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### wall_us_now (function) `unsigned long wall_us_now(void);`
+- Defined: `kernel.h:567`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
 ### pcspk_init (function) `void pcspk_init(void);`
-- Defined: `kernel.h:568`
-- Doc: ADDRESS is the size: declare char[], never size_t (that would read memory at that address), read it by address only, and
+- Defined: `kernel.h:570`
+- Doc: it with pointer subtraction in C (undefined behaviour). The value is a link-time difference, so it is invariant under th
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### pcspk_tone (function) `void pcspk_tone(unsigned freq);`
-- Defined: `kernel.h:569`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### pcspk_off (function) `void pcspk_off(void);`
-- Defined: `kernel.h:570`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### pcspk_set_volume (function) `void pcspk_set_volume(unsigned volume);`
 - Defined: `kernel.h:571`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### pcspk_get_volume (function) `unsigned pcspk_get_volume(void);`
+### pcspk_off (function) `void pcspk_off(void);`
 - Defined: `kernel.h:572`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
+### pcspk_set_volume (function) `void pcspk_set_volume(unsigned volume);`
+- Defined: `kernel.h:573`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### pcspk_get_volume (function) `unsigned pcspk_get_volume(void);`
+- Defined: `kernel.h:574`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
 ### rtc_read_tod (function) `int rtc_read_tod(int *hour, int *min, int *sec);`
-- Defined: `kernel.h:575`
-- Doc: return (unsigned long)ramdisk_size; } /* ========== Kernel clock ========== unsigned long ktime_ms(void); /* ========== 
+- Defined: `kernel.h:577`
+- Doc: /* ========== Kernel clock ========== unsigned long ktime_ms(void); unsigned long ktime_us(void); unsigned long wall_us_
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ide_init (function) `void ide_init(void);`
-- Defined: `kernel.h:578`
-- Doc: /* ========== Kernel clock ========== unsigned long ktime_ms(void); /* ========== PC speaker ========== void     pcspk_i
+- Defined: `kernel.h:580`
+- Doc: unsigned long ktime_us(void); unsigned long wall_us_now(void); /* ========== PC speaker ========== void     pcspk_init(v
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### ide_read_sectors (function) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);`
-- Defined: `kernel.h:579`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### ide_write_sectors (function) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);`
-- Defined: `kernel.h:580`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### ide_read_sector (function) `int ide_read_sector(unsigned int lba, void *buf);`
 - Defined: `kernel.h:581`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### ide_write_sector (function) `int ide_write_sector(unsigned int lba, const void *buf);`
+### ide_write_sectors (function) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);`
 - Defined: `kernel.h:582`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### ide_total_sectors (function) `unsigned int ide_total_sectors(void);`
+### ide_read_sector (function) `int ide_read_sector(unsigned int lba, void *buf);`
 - Defined: `kernel.h:583`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### ide_present (function) `int ide_present(void);`
+### ide_write_sector (function) `int ide_write_sector(unsigned int lba, const void *buf);`
 - Defined: `kernel.h:584`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
+### ide_total_sectors (function) `unsigned int ide_total_sectors(void);`
+- Defined: `kernel.h:585`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### ide_present (function) `int ide_present(void);`
+- Defined: `kernel.h:586`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
 ### block_init (function) `void block_init(void);`
-- Defined: `kernel.h:587`
+- Defined: `kernel.h:589`
 - Doc: /* ========== RTC time-of-day ========== int rtc_read_tod(int *hour, int *min, int *sec); /* ========== IDE driver =====
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
 ### block_read (function) `int block_read(unsigned int block_num, void *buf);`
-- Defined: `kernel.h:588`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### block_write (function) `int block_write(unsigned int block_num, const void *buf);`
-- Defined: `kernel.h:589`
-- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
-
-### block_read_multi (function) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);`
 - Defined: `kernel.h:590`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### block_write_multi (function) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);`
+### block_write (function) `int block_write(unsigned int block_num, const void *buf);`
 - Defined: `kernel.h:591`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
-### block_total (function) `unsigned int block_total(void);`
+### block_read_multi (function) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);`
 - Defined: `kernel.h:592`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
 
+### block_write_multi (function) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);`
+- Defined: `kernel.h:593`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
+### block_total (function) `unsigned int block_total(void);`
+- Defined: `kernel.h:594`
+- Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+
 ### k_user_fault_return (function) `void k_user_fault_return(void);`
-- Defined: `kernel.h:595`
+- Defined: `kernel.h:597`
 - Doc: int  ide_read_sector(unsigned int lba, void *buf); int  ide_write_sector(unsigned int lba, const void *buf); unsigned in
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
@@ -3977,219 +3987,237 @@ void kmain(void)`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### __attribute__ (function) `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:77`
+- Defined: `kernel/sched.c:78`
 - Doc: --- TSS (one per CPU) ----  Every CPU that runs ring-3 code needs a private TSS: a timer tick that preempts ring 3 switc
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### __attribute__ (function) `typedef struct __attribute__((packed))`
-- Defined: `kernel/sched.c:98`
+- Defined: `kernel/sched.c:99`
 - Doc: Per-CPU idle stacks: a park into the idle context re-enters * smp_ap_idle_loop here (idle_proc ctx.rsp points at the top
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### kstack_paint (function) `static void kstack_paint(uint64_t top, unsigned long size)`
-- Defined: `kernel/sched.c:125`
+- Defined: `kernel/sched.c:126`
 - Doc: --- Kernel-stack canary + high-water diagnostic ---- A slot is painted with KSTACK_PAINT at claim time with a KSTACK_CAN
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### kstack_usage (function) `static int kstack_usage(uint64_t top, unsigned long size,
                         unsigned long *...`
-- Defined: `kernel/sched.c:135`
+- Defined: `kernel/sched.c:136`
 - Doc: allocation rate only, never in the ISR path; the report is fail-closed * (a dead canary prints OVERFLOW, never a forged 
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### alloc_kstack (function) `static uint64_t alloc_kstack(void)`
-- Defined: `kernel/sched.c:149`
+- Defined: `kernel/sched.c:150`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### free_kstack (function) `static void free_kstack(uint64_t top)`
-- Defined: `kernel/sched.c:161`
+- Defined: `kernel/sched.c:162`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### MXCSR (function) `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all
+ * exceptions masked): fxsa...`
+- Defined: `kernel/sched.c:174`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### fpu_restore_from (function) `static inline void fpu_restore_from(void *area)`
+- Defined: `kernel/sched.c:181`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### fpu_alloc_clean (function) `static void *fpu_alloc_clean(void)`
+- Defined: `kernel/sched.c:185`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### fpu_free_proc (function) `static void fpu_free_proc(proc_t *p)`
+- Defined: `kernel/sched.c:203`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### kstack_report (function) `void kstack_report(void)`
-- Defined: `kernel/sched.c:171`
+- Defined: `kernel/sched.c:211`
 - Doc: Serial-observable stack health: per-proc high-water marks plus the legacy 32 KB syscall stack, ending in `kstack: ok` or
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### idt_set (function) `static void idt_set(int vec, void (*h)(void))`
-- Defined: `kernel/sched.c:223`
+- Defined: `kernel/sched.c:263`
 - Doc: Parked trap frames for preempted ring-3 contexts, one slot per pid. The ISR copies the preempted frame here (never onto 
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### idt_init (function) `static void idt_init(void)`
-- Defined: `kernel/sched.c:233`
+- Defined: `kernel/sched.c:273`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### pic_init (function) `static void pic_init(void)`
-- Defined: `kernel/sched.c:246`
+- Defined: `kernel/sched.c:286`
 - Doc: } static void idt_init(void) { kmemset(idt, 0, sizeof(idt)); int i; for (i = 0; i < 256; i++) if (isr_stub_table[i]) idt
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### pit_init (function) `static void pit_init(void)`
-- Defined: `kernel/sched.c:281`
+- Defined: `kernel/sched.c:321`
 - Doc: Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + IRQ4 (COM1, UART IER stays 0 so it never fires) + IRQ5 
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### pic_eoi (function) `static void pic_eoi(int irq)`
-- Defined: `kernel/sched.c:287`
+- Defined: `kernel/sched.c:327`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tss_write_desc (function) `static void tss_write_desc(int cpu)`
-- Defined: `kernel/sched.c:294`
+- Defined: `kernel/sched.c:334`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tss_init (function) `static void tss_init(void)`
-- Defined: `kernel/sched.c:311`
+- Defined: `kernel/sched.c:351`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tss_init_ap (function) `void tss_init_ap(int cpu)`
-- Defined: `kernel/sched.c:343`
+- Defined: `kernel/sched.c:383`
 - Doc: Load this AP's task register.  The BSP wrote every descriptor in tss_init before the APs were woken, so the AP only poin
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### context (function) `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...`
-- Defined: `kernel/sched.c:361`
+- Defined: `kernel/sched.c:401`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### point (function) `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...`
-- Defined: `kernel/sched.c:374`
+- Defined: `kernel/sched.c:414`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_next_locked (function) `static int sched_next_locked(int start, int vm_only)`
-- Defined: `kernel/sched.c:395`
+- Defined: `kernel/sched.c:439`
 - Doc: Fair-share scan with sched_lock HELD.  Returns a claimed (PROC_RUNNING) pid or -1.  vm_only restricts the pick to CLONE_
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_set_nice (function) `int sched_set_nice(int pid, int nice)`
-- Defined: `kernel/sched.c:413`
+- Defined: `kernel/sched.c:457`
 - Doc: for (t = 0; t < MAX_PROCS; t++) { int cand = (start + 1 + t) % MAX_PROCS; unsigned long key; if (procs[cand].state != PR
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### seccomp_deny_one (function) `int seccomp_deny_one(int pid, int n)`
-- Defined: `kernel/sched.c:422`
+- Defined: `kernel/sched.c:466`
 - Doc: procs[best].state = PROC_RUNNING; procs[best].vruntime += 64u + (unsigned long)(procs[best].nice + 20) * 4u; return best
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### seccomp_allow_one (function) `int seccomp_allow_one(int pid, int n)`
-- Defined: `kernel/sched.c:429`
+- Defined: `kernel/sched.c:473`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### seccomp_denied (function) `int seccomp_denied(int pid, int n)`
-- Defined: `kernel/sched.c:436`
+- Defined: `kernel/sched.c:480`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### smp_try_claim_hint (function) `static int smp_try_claim_hint(int pid, int vm_only)`
-- Defined: `kernel/sched.c:445`
+- Defined: `kernel/sched.c:489`
 - Doc: Claim one READY thread for this CPU's idle loop (the AP only claims CLONE_VM threads): marks it RUNNING under lock and i
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### smp_claim_thread_v (function) `static int smp_claim_thread_v(int vm_only)`
-- Defined: `kernel/sched.c:460`
+- Defined: `kernel/sched.c:504`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### smp_ap_idle_loop (function) `void smp_ap_idle_loop(void)`
-- Defined: `kernel/sched.c:500`
+- Defined: `kernel/sched.c:544`
 - Doc: AP idle loop: hlt until a CLONE_VM thread is ready, run it, repeat. Entered once from smp_ap_entry on the AP stub stack;
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_ap_preempt (function) `static void sched_ap_preempt(trap_frame_t *frame)`
-- Defined: `kernel/sched.c:534`
+- Defined: `kernel/sched.c:578`
 - Doc: AP timer preemption: time-slice the AP's current CLONE_VM thread with the next READY one.  An idle AP (cur_pid -1) needs
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### smp_any_ap_idle (function) `static int smp_any_ap_idle(void)`
-- Defined: `kernel/sched.c:587`
+- Defined: `kernel/sched.c:631`
 - Doc: True when some AP is idle.  The BSP tick uses this to leave freshly parked CLONE_VM threads unclaimed: the idle AP's nex
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rlimit_cpu_exceeded (function) `int rlimit_cpu_exceeded(int pid)`
-- Defined: `kernel/sched.c:613`
+- Defined: `kernel/sched.c:657`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### isr_dispatch (function) `void isr_dispatch(int vector, trap_frame_t *frame)`
-- Defined: `kernel/sched.c:634`
+- Defined: `kernel/sched.c:678`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### BSP (function) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
-- Defined: `kernel/sched.c:919`
+- Defined: `kernel/sched.c:963`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### proc_get (function) `proc_t *proc_get(int pid)`
-- Defined: `kernel/sched.c:939`
+- Defined: `kernel/sched.c:983`
 - Doc: serial_puts("  [recovering: ring-3 user fault, returning EFAULT]\n"); k_user_fault_return(); __builtin_unreachable(); } 
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### proc_create (function) `int proc_create(const char *name, int parent_pid)`
-- Defined: `kernel/sched.c:945`
+- Defined: `kernel/sched.c:989`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
-### sched_park_as_returned (function) `static void sched_park_as_returned(proc_t *cur)`
-- Defined: `kernel/sched.c:1020`
+### schedule (function) `* that keeps schedule()'s own rbp runs the caller's frame accesses
+ * (locals, leave/ret) on the ...`
+- Defined: `kernel/sched.c:1083`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### schedule (function) `void schedule(void)`
-- Defined: `kernel/sched.c:1029`
+- Defined: `kernel/sched.c:1093`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### yield (function) `void yield(void)`
-- Defined: `kernel/sched.c:1103`
+- Defined: `kernel/sched.c:1175`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### do_exit (function) `void do_exit(int code)`
-- Defined: `kernel/sched.c:1118`
+- Defined: `kernel/sched.c:1190`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### do_thread_spawn (function) `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)`
-- Defined: `kernel/sched.c:1158`
+- Defined: `kernel/sched.c:1230`
 - Doc: frame is ambiguous, this one starts cleanly at fn(arg) on the given stack:  child RIP = fn, child RSP = stack, child RDI
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### do_waitpid (function) `int do_waitpid(int pid)`
-- Defined: `kernel/sched.c:1287`
+- Defined: `kernel/sched.c:1381`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### do_kill (function) `int do_kill(int pid)`
-- Defined: `kernel/sched.c:1321`
+- Defined: `kernel/sched.c:1416`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### timer_tick (function) `void timer_tick(void)`
-- Defined: `kernel/sched.c:1328`
+- Defined: `kernel/sched.c:1423`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_wait_cmd (function) `static void mouse_wait_cmd(void)`
-- Defined: `kernel/sched.c:1332`
+- Defined: `kernel/sched.c:1427`
 - Doc: schedule(); } } int do_kill(int pid) { proc_t *p = proc_get(pid); if (!p) return -1; do_exit(-1); return 0; } void timer
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_wait_data (function) `static void mouse_wait_data(void)`
-- Defined: `kernel/sched.c:1338`
+- Defined: `kernel/sched.c:1433`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_write (function) `static void mouse_write(unsigned char data)`
-- Defined: `kernel/sched.c:1345`
+- Defined: `kernel/sched.c:1440`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_read (function) `static unsigned char mouse_read(void)`
-- Defined: `kernel/sched.c:1352`
+- Defined: `kernel/sched.c:1447`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_hw_init (function) `static void mouse_hw_init(void)`
-- Defined: `kernel/sched.c:1357`
+- Defined: `kernel/sched.c:1452`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_disable (function) `void mouse_disable(void)`
-- Defined: `kernel/sched.c:1408`
+- Defined: `kernel/sched.c:1503`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### mouse_enable (function) `void mouse_enable(void)`
-- Defined: `kernel/sched.c:1410`
+- Defined: `kernel/sched.c:1505`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_init (function) `void sched_init(void)`
-- Defined: `kernel/sched.c:1411`
+- Defined: `kernel/sched.c:1506`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sb16_poll (function) `sb16_poll();`
@@ -4213,194 +4241,206 @@ void kmain(void)`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### descriptor (function) `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 == GDT64_SMP_BYTES, "GDT SMP size");`
-- Defined: `kernel/sched.c:65`
+- Defined: `kernel/sched.c:66`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### here (function) `* smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */ static char ap_idle_stack[MAX_CPUS][4096] __attribute__((aligned(16)));`
-- Defined: `kernel/sched.c:90`
+- Defined: `kernel/sched.c:91`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### kprintf (function) `kprintf(" pid=%d (%s) stack foreign top=0x%lx\n", i, procs[i].name, (unsigned long)top);`
-- Defined: `kernel/sched.c:187`
+- Defined: `kernel/sched.c:227`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### kmemset (function) `kmemset(idt, 0, sizeof(idt));`
-- Defined: `kernel/sched.c:235`
+- Defined: `kernel/sched.c:275`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### hal_outb (function) `hal_outb(HAL_PIC1_CMD, 0x11);`
-- Defined: `kernel/sched.c:265`
+- Defined: `kernel/sched.c:305`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### IRQ4 (function) `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit set * means masked, so 0xC8 masks only IRQ3, IRQ6 and IRQ7. Masking IRQ5 * here starv`
-- Defined: `kernel/sched.c:270`
+- Defined: `kernel/sched.c:310`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### hal_pic_eoi (function) `hal_pic_eoi(irq);`
-- Defined: `kernel/sched.c:289`
+- Defined: `kernel/sched.c:329`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### wrmsr (function) `wrmsr(MSR_KERNEL_GS_BASE, (unsigned long)this_cpu());`
-- Defined: `kernel/sched.c:365`
+- Defined: `kernel/sched.c:405`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### kmemcpy (function) `kmemcpy(dst, frame, sizeof(trap_frame_t));`
-- Defined: `kernel/sched.c:382`
+- Defined: `kernel/sched.c:422`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### spin_lock_irqsave (function) `spin_lock_irqsave(&sched_lock, &flags);`
-- Defined: `kernel/sched.c:450`
+- Defined: `kernel/sched.c:494`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### spin_unlock_irqrestore (function) `spin_unlock_irqrestore(&sched_lock, flags);`
-- Defined: `kernel/sched.c:457`
+- Defined: `kernel/sched.c:501`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rq_note_poll (function) `rq_note_poll(me);`
-- Defined: `kernel/sched.c:478`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
-
-### __sync_fetch_and_add (function) `__sync_fetch_and_add(&smp_idle_polls[cpu], 1);`
-- Defined: `kernel/sched.c:509`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
-
-### sched_rearm_kgs (function) `sched_rearm_kgs();`
-- Defined: `kernel/sched.c:521`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
-
-### switch_to (function) `switch_to(&ap_idle_proc[cpu], next);`
 - Defined: `kernel/sched.c:522`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
+### __sync_fetch_and_add (function) `__sync_fetch_and_add(&smp_idle_polls[cpu], 1);`
+- Defined: `kernel/sched.c:553`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### sched_rearm_kgs (function) `sched_rearm_kgs();`
+- Defined: `kernel/sched.c:565`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### switch_to (function) `switch_to(&ap_idle_proc[cpu], next);`
+- Defined: `kernel/sched.c:566`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
 ### rlimit_cpu_tick (function) `rlimit_cpu_tick(current_pid);`
-- Defined: `kernel/sched.c:538`
+- Defined: `kernel/sched.c:582`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sched_save_preempt (function) `sched_save_preempt(cur, frame, 0);`
-- Defined: `kernel/sched.c:539`
+- Defined: `kernel/sched.c:583`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### switch_to_notrap (function) `switch_to_notrap(cur, &ap_idle_proc[me]);`
-- Defined: `kernel/sched.c:568`
+- Defined: `kernel/sched.c:612`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tick_run_audio (function) `tick_run_audio();`
-- Defined: `kernel/sched.c:656`
+- Defined: `kernel/sched.c:700`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rcu_note_tick (function) `rcu_note_tick(cpu->cpu_id);`
-- Defined: `kernel/sched.c:657`
+- Defined: `kernel/sched.c:701`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rcu_poll (function) `rcu_poll();`
-- Defined: `kernel/sched.c:658`
+- Defined: `kernel/sched.c:702`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### hal_lapic_eoi (function) `hal_lapic_eoi();`
-- Defined: `kernel/sched.c:668`
+- Defined: `kernel/sched.c:712`
 - Doc: AP: LAPIC EOI (LAPIC_EOI_OFF 0x0B0, named in smp.c) * instead of PIC EOI; also count it for the `smp` builtin.
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### syscall (function) `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid math faults. */ sched_rearm_kgs();`
-- Defined: `kernel/sched.c:734`
+- Defined: `kernel/sched.c:778`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### sb16_irq (function) `sb16_irq();`
-- Defined: `kernel/sched.c:820`
+- Defined: `kernel/sched.c:864`
 - Doc: mouse_phase = 0; mouse_state.buttons = mouse_packet[0] & HAL_MOUSE_BUTTON_MASK; int dx = (int)(signed char)mouse_packet[
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### serial_puts (function) `serial_puts("EXCEPTION ");`
-- Defined: `kernel/sched.c:836`
+- Defined: `kernel/sched.c:880`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### k_user_fault_return (function) `k_user_fault_return();`
-- Defined: `kernel/sched.c:926`
+- Defined: `kernel/sched.c:970`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### __builtin_unreachable (function) `__builtin_unreachable();`
-- Defined: `kernel/sched.c:927`
+- Defined: `kernel/sched.c:971`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### spin_lock (function) `spin_lock(&sched_lock);`
-- Defined: `kernel/sched.c:947`
+- Defined: `kernel/sched.c:991`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### kstrncpy (function) `kstrncpy(p->name, name, sizeof(p->name) - 1);`
-- Defined: `kernel/sched.c:968`
+- Defined: `kernel/sched.c:1012`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### spin_unlock (function) `spin_unlock(&sched_lock);`
-- Defined: `kernel/sched.c:1004`
+- Defined: `kernel/sched.c:1034`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### PROC_SWITCHING (function) `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A BLOCKED/ZOMBIE * thread keeps its state (no one claims it until a wake). */ switch_save_only(cu`
-- Defined: `kernel/sched.c:1048`
+- Defined: `kernel/sched.c:1120`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### sched_park_as_returned (function) `sched_park_as_returned(cur);`
+- Defined: `kernel/sched.c:1124`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### spin_unlock_keep_irq (function) `spin_unlock_keep_irq(&sched_lock);`
-- Defined: `kernel/sched.c:1055`
+- Defined: `kernel/sched.c:1127`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### switch_save_only (function) `switch_save_only(cur);`
-- Defined: `kernel/sched.c:1096`
+- Defined: `kernel/sched.c:1168`
 - Doc: Capture the continuation while the thread is still PROC_SWITCHING (never claimable), publish it as READY only once the c
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### returns (function) `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
-- Defined: `kernel/sched.c:1112`
+- Defined: `kernel/sched.c:1184`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### registers (function) `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one integer arg). */ child->fpu_save = fpu_alloc_clean();`
+- Defined: `kernel/sched.c:1262`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rq_enqueue (function) `rq_enqueue(home, pid);`
-- Defined: `kernel/sched.c:1216`
+- Defined: `kernel/sched.c:1300`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### outb (function) `outb(0x64, 0xD4);`
-- Defined: `kernel/sched.c:1348`
+- Defined: `kernel/sched.c:1443`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### inb (function) `return inb(0x60);`
-- Defined: `kernel/sched.c:1355`
+- Defined: `kernel/sched.c:1450`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### wrong (function) `* later packet is framed wrong (a left press reads back as bit 1, * motion warps), permanently. */ mouse_write(0xFF);`
-- Defined: `kernel/sched.c:1380`
+- Defined: `kernel/sched.c:1475`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### it (function) `* it (SPAWN/exec point proc 0 here transiently);`
-- Defined: `kernel/sched.c:1420`
+- Defined: `kernel/sched.c:1515`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### kstrcpy (function) `kstrcpy(procs[0].name, "kernel");`
-- Defined: `kernel/sched.c:1463`
+- Defined: `kernel/sched.c:1558`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
+
+### park (function) `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */ procs[0].fpu_save = fpu_alloc_clean();`
+- Defined: `kernel/sched.c:1565`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### zeroed (function) `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe pre-mouse-init. */ idt_init();`
-- Defined: `kernel/sched.c:1472`
+- Defined: `kernel/sched.c:1571`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### futex_init (function) `futex_init();`
-- Defined: `kernel/sched.c:1476`
+- Defined: `kernel/sched.c:1575`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rq_init (function) `rq_init();`
-- Defined: `kernel/sched.c:1477`
+- Defined: `kernel/sched.c:1576`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### rcu_init (function) `rcu_init();`
-- Defined: `kernel/sched.c:1478`
+- Defined: `kernel/sched.c:1577`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tick_reset (function) `tick_reset();`
-- Defined: `kernel/sched.c:1479`
+- Defined: `kernel/sched.c:1578`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tick_register_audio (function) `tick_register_audio(sched_tick_audio, 0);`
-- Defined: `kernel/sched.c:1480`
+- Defined: `kernel/sched.c:1579`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ### tick_register_desktop (function) `tick_register_desktop(sched_tick_desktop, 0);`
-- Defined: `kernel/sched.c:1481`
+- Defined: `kernel/sched.c:1580`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/hal_io.h`, `arch/x86/msr.h`, `futex.h`, `kernel.h`, `percpu_rq.h`, `rcu.h`, `sb16.h`, `sched.h`, `smp.h`, `sync.h`, `tick.h`, `vga_fb.h`
 
 ## kernel/scrollback.c
@@ -4881,27 +4921,27 @@ static void shell_hist_na...`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### kstack_report (function) `kstack_report();`
-- Defined: `kernel/shell.c:1975`
+- Defined: `kernel/shell.c:1988`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### sb16_counters (function) `sb16_counters(&c);`
-- Defined: `kernel/shell.c:1979`
+- Defined: `kernel/shell.c:1992`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_cmd_unzip (function) `shell_cmd_unzip(argc, argv);`
-- Defined: `kernel/shell.c:1998`
+- Defined: `kernel/shell.c:2011`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_cmd_zip (function) `shell_cmd_zip(argc, argv);`
-- Defined: `kernel/shell.c:2001`
+- Defined: `kernel/shell.c:2014`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_report_exit (function) `else shell_report_exit(ret);`
-- Defined: `kernel/shell.c:2017`
+- Defined: `kernel/shell.c:2030`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ### shell_cmd_sh (function) `shell_cmd_sh(argc, argv);`
-- Defined: `kernel/shell.c:2021`
+- Defined: `kernel/shell.c:2034`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
 
 ## kernel/string.c
@@ -5135,576 +5175,594 @@ static void shell_hist_na...`
 
 ## kernel/syscalls.c
 
+### wall_us_now (function) `unsigned long wall_us_now(void)`
+- Defined: `kernel/syscalls.c:82`
+- Doc: wall_us_now: RTC-anchored wall clock in microseconds (Phase 0.2/0.3). The RTC gives whole seconds; the fraction is the f
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
 ### sys_minios_dns (function) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:72`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:91`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_tls_retired (function) `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:78`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:97`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_futex (function) `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:85`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:104`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_time (function) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:114`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:133`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_kbd (function) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:118`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:137`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_palette (function) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:133`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:152`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_kbd_raw (function) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:145`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:164`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_vga_mode (function) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:151`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:170`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_pcspk_init (function) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:158`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:177`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_pcspk_tone (function) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:162`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:181`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_doom_frame (function) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:166`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:185`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_rtc (function) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:170`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:189`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_fb_info (function) `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:184`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:203`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_pcspk_vol (function) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:196`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:215`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_spawn (function) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:204`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:223`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_lz4_compress (function) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:215`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:234`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_lz4_decompress (function) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:228`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:247`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_mouse (function) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:242`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:261`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_nk_frame (function) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:251`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:270`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_open (function) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:261`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:280`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_submit (function) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:266`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:285`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_gfx_title (function) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:274`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:293`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_pump (function) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:288`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:307`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_stream_open (function) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:292`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:311`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_stream_close (function) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:296`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:315`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_stream_submit (function) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:300`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:319`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_sb16_stream_vol (function) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:308`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:327`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_clone (function) `static long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:318`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:337`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_thread_spawn (function) `static long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:326`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:345`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_futex_wait (function) `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:336`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:355`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_futex_wake (function) `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:342`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:361`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### batch_kdispatch (function) `static long batch_kdispatch(uint32_t opcode)`
-- Defined: `kernel/syscalls.c:351`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:370`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### DOOM_FRAME (function) `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
 static long sys_minios_gfx_prese...`
-- Defined: `kernel/syscalls.c:366`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:385`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_seccomp (function) `static long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:384`
+- Defined: `kernel/syscalls.c:403`
 - Doc: Seccomp-basic (238): a1 = op (1 deny-one, 2 allow-one, 3 deny-all), a2 = syscall number (ops 1-2). Applies to current_pi
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_nice (function) `static long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:400`
+- Defined: `kernel/syscalls.c:419`
 - Doc: int pid = current_pid; if (a1 == SECCOMP_OP_DENY_ONE) return seccomp_deny_one(pid, (int)a2); if (a1 == SECCOMP_OP_ALLOW_
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_getc_raw (function) `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:417`
+- Defined: `kernel/syscalls.c:436`
 - Doc: Raw keystroke read for fullscreen ring-3 programs (vedit): one byte from the serial + PS/2 multiplexer with no line buff
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_submit_batch (function) `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:422`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:441`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_minios_rlimit (function) `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:446`
+- Defined: `kernel/syscalls.c:465`
 - Doc: RLIMIT/cgroups-lite (240): a1 = op (SET/GET), a2 = resource (AS/CPU/NOFILE), a3 = value for SET. Values are bytes, ticks
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### syscall_trace_enabled (function) `long syscall_trace_enabled(void)`
-- Defined: `kernel/syscalls.c:523`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:542`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### syscall_trace_set (function) `void syscall_trace_set(int on)`
-- Defined: `kernel/syscalls.c:525`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:544`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_write (function) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:570`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:589`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_writev (function) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:580`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:599`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### do_open_path (function) `static long do_open_path(const char *path, long flags)`
-- Defined: `kernel/syscalls.c:601`
+- Defined: `kernel/syscalls.c:620`
 - Doc: return EFAULT; for (k = 0; k < cnt; k++) { unsigned long j; if (iov[k].iov_len > 0 && !user_range_ok((unsigned long)iov[
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_open (function) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:625`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:644`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_close (function) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:630`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:649`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_lseek (function) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:641`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:660`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_brk (function) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:651`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:670`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_mmap (function) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:673`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:692`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_munmap (function) `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:723`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:742`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_mprotect (function) `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:741`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:760`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_sigaction (function) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:746`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:765`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_sigprocmask (function) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:751`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:770`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_ioctl (function) `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:756`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:775`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_access (function) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:761`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:780`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_yield (function) `static long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:783`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:802`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_getpid (function) `static long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:788`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:807`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_socket (function) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:793`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:812`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_connect (function) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:798`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:817`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_sendto (function) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:804`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:823`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_recvfrom (function) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:809`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:828`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_shutdown (function) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:814`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:833`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_poll (function) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:819`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:838`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_fork (function) `static long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:826`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:845`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_vfork (function) `static long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:831`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:850`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_execve (function) `static long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:836`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:855`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_exit (function) `static long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:858`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:877`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_wait4 (function) `static long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:863`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:882`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_kill (function) `static long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:868`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:887`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_flock (function) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:873`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:892`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### sys_linux_fsync (function) `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:902`
+- Doc: fsync/fdatasync: the ramdisk is memory (always durable) and MiniFS persists through kfclose/minifs_sync, so there is not
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### sys_linux_fdatasync (function) `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:906`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_getcwd (function) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:878`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:911`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_unlink (function) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:890`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:923`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_readlink (function) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:903`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:936`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_fstat (function) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:908`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:941`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_gettimeofday (function) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:928`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:961`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_arch_prctl (function) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:949`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:984`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_gettid (function) `static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:961`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:996`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### trace_is_noisy (function) `static int trace_is_noisy(long n)`
-- Defined: `kernel/syscalls.c:1009`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1049`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### ksyscall (function) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:1014`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1054`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### user_range_ok (function) `int user_range_ok(unsigned long p, unsigned long len)`
-- Defined: `kernel/syscalls.c:1036`
+- Defined: `kernel/syscalls.c:1076`
 - Doc: --- User-pointer validation --------------------------------------------- The syscall boundary is the hardened edge betw
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### products (function) `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
  * pre-bounded against (END-...`
-- Defined: `kernel/syscalls.c:1054`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1094`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### ksyscall_dispatch (function) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:1066`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1106`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### tools (function) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
-- Defined: `kernel/syscalls.c:1227`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1305`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### by (function) `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to progs/minios_abi.h * 2. Implementing a static long sys_*(long a1, ..., long a6) function here `
-- Defined: `kernel/syscalls.c:49`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:51`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### k_syscall_spawn (function) `static int k_syscall_spawn(const char *path, const char *redirect, int child_argc, const char **child_argv);`
-- Defined: `kernel/syscalls.c:69`
+- Defined: `kernel/syscalls.c:71`
 - Doc: define MINIOS_SYSCALL_BASE  200 define MINIOS_SYSCALL_COUNT 128
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### net_sys_dns (function) `return net_sys_dns(a1);`
-- Defined: `kernel/syscalls.c:76`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### futex_wake (function) `return futex_wake(uaddr, (int)n);`
-- Defined: `kernel/syscalls.c:107`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### volatile (function) `__asm__ volatile("inb $0x60, %0" : "=a"(sc));`
-- Defined: `kernel/syscalls.c:125`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### kbd_q_pop (function) `return kbd_q_pop();`
-- Defined: `kernel/syscalls.c:131`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### SANITIZE_RANGE (function) `SANITIZE_RANGE(a1, 768);`
-- Defined: `kernel/syscalls.c:138`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### vga_fb_set_gfx_palette (function) `vga_fb_set_gfx_palette(tmp);`
-- Defined: `kernel/syscalls.c:142`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### kbd_raw_mode_set (function) `kbd_raw_mode_set((int)a1);`
-- Defined: `kernel/syscalls.c:147`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### kbd_flush_all (function) `kbd_flush_all();`
-- Defined: `kernel/syscalls.c:148`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### vga_mode_set (function) `vga_mode_set((int)a1);`
-- Defined: `kernel/syscalls.c:153`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### vga_fb_set_gfx_mode (function) `vga_fb_set_gfx_mode((int)a1);`
-- Defined: `kernel/syscalls.c:155`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### pcspk_init (function) `pcspk_init();`
-- Defined: `kernel/syscalls.c:160`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### pcspk_tone (function) `pcspk_tone((unsigned)a1);`
-- Defined: `kernel/syscalls.c:164`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### vga_fb_blit_gfx_window (function) `vga_fb_blit_gfx_window();`
-- Defined: `kernel/syscalls.c:168`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### pcspk_set_volume (function) `pcspk_set_volume((unsigned)v);`
-- Defined: `kernel/syscalls.c:201`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### vga_fb_blit_nk_window (function) `vga_fb_blit_nk_window();`
-- Defined: `kernel/syscalls.c:258`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### SANITIZE_LEN_NEG (function) `SANITIZE_LEN_NEG(len);`
-- Defined: `kernel/syscalls.c:270`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### sb16_pcm_submit (function) `return sb16_pcm_submit(pcm, (unsigned)len);`
-- Defined: `kernel/syscalls.c:272`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### sb16_pump (function) `sb16_pump();`
-- Defined: `kernel/syscalls.c:290`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### sb16_stream_open (function) `return sb16_stream_open();`
-- Defined: `kernel/syscalls.c:294`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### sb16_stream_close (function) `sb16_stream_close((int)a1);`
-- Defined: `kernel/syscalls.c:298`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### sb16_stream_submit (function) `return sb16_stream_submit((int)a1, pcm, (unsigned)len);`
-- Defined: `kernel/syscalls.c:306`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### sb16_stream_volume (function) `sb16_stream_volume((int)a1, (unsigned char)a2);`
-- Defined: `kernel/syscalls.c:310`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### space (function) `* CLONE_VM: share address space (same CR3). * CLONE_FILES: share fd table. * Returns child PID to parent, 0 to child. */ extern long do_clone(long flags, long newsp);`
-- Defined: `kernel/syscalls.c:314`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### do_clone (function) `return do_clone(flags, newsp);`
-- Defined: `kernel/syscalls.c:321`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### do_thread_spawn (function) `extern long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
-- Defined: `kernel/syscalls.c:323`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### futex_wait (function) `return futex_wait((unsigned long)a1, (int)a2);`
-- Defined: `kernel/syscalls.c:340`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### yield (function) `yield();`
-- Defined: `kernel/syscalls.c:355`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### SANITIZE_COPY_IN (function) `SANITIZE_COPY_IN(kops, a1, count, sizeof(batch_op_t));`
-- Defined: `kernel/syscalls.c:432`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### kprintf (function) `kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);`
-- Defined: `kernel/syscalls.c:550`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### vga_putc (function) `vga_putc((char)c);`
-- Defined: `kernel/syscalls.c:558`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### kfclose (function) `kfclose(kfd_table[a1]);`
-- Defined: `kernel/syscalls.c:636`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### kfseek (function) `kfseek(kfd_table[a1], a2, (int)a3);`
-- Defined: `kernel/syscalls.c:645`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### spin_lock_irqsave (function) `spin_lock_irqsave(&mm_lock, &flags);`
-- Defined: `kernel/syscalls.c:657`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### spin_unlock_irqrestore (function) `spin_unlock_irqrestore(&mm_lock, flags);`
-- Defined: `kernel/syscalls.c:663`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### vma_tree_delete (function) `vma_tree_delete(&vma_free_root, best->base);`
-- Defined: `kernel/syscalls.c:707`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### vma_tree_insert (function) `vma_tree_insert(&vma_live_root, addr, n);`
-- Defined: `kernel/syscalls.c:710`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### net_sys_socket (function) `return net_sys_socket(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:796`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### net_sys_connect (function) `return net_sys_connect(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:802`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### net_sys_sendto (function) `return net_sys_sendto(a1, a2, a3, a4, a5, a6);`
-- Defined: `kernel/syscalls.c:807`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### net_sys_recvfrom (function) `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);`
-- Defined: `kernel/syscalls.c:812`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### net_sys_shutdown (function) `return net_sys_shutdown(a1, a2);`
-- Defined: `kernel/syscalls.c:817`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### net_sys_poll (function) `return net_sys_poll(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:824`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### do_exit (function) `do_exit((int)code);`
-- Defined: `kernel/syscalls.c:851`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### klongjmp (function) `klongjmp(&exec_return, 1);`
-- Defined: `kernel/syscalls.c:855`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### do_proc_exit (function) `return do_proc_exit(a1);`
-- Defined: `kernel/syscalls.c:861`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### do_waitpid (function) `return do_waitpid((int)a1);`
-- Defined: `kernel/syscalls.c:866`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
-
-### do_kill (function) `return do_kill((int)a1);`
-- Defined: `kernel/syscalls.c:871`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### rtc_wall_seconds (function) `rtc_wall_seconds(&sec);`
-- Defined: `kernel/syscalls.c:943`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:86`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### wall_us_from_parts (function) `return wall_us_from_parts(base_sec, base_ktime, now);`
+- Defined: `kernel/syscalls.c:89`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### net_sys_dns (function) `return net_sys_dns(a1);`
+- Defined: `kernel/syscalls.c:95`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### futex_wake (function) `return futex_wake(uaddr, (int)n);`
+- Defined: `kernel/syscalls.c:126`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### volatile (function) `__asm__ volatile("inb $0x60, %0" : "=a"(sc));`
+- Defined: `kernel/syscalls.c:144`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### kbd_q_pop (function) `return kbd_q_pop();`
+- Defined: `kernel/syscalls.c:150`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### SANITIZE_RANGE (function) `SANITIZE_RANGE(a1, 768);`
+- Defined: `kernel/syscalls.c:157`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### vga_fb_set_gfx_palette (function) `vga_fb_set_gfx_palette(tmp);`
+- Defined: `kernel/syscalls.c:161`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### kbd_raw_mode_set (function) `kbd_raw_mode_set((int)a1);`
+- Defined: `kernel/syscalls.c:166`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### kbd_flush_all (function) `kbd_flush_all();`
+- Defined: `kernel/syscalls.c:167`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### vga_mode_set (function) `vga_mode_set((int)a1);`
+- Defined: `kernel/syscalls.c:172`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### vga_fb_set_gfx_mode (function) `vga_fb_set_gfx_mode((int)a1);`
+- Defined: `kernel/syscalls.c:174`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### pcspk_init (function) `pcspk_init();`
+- Defined: `kernel/syscalls.c:179`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### pcspk_tone (function) `pcspk_tone((unsigned)a1);`
+- Defined: `kernel/syscalls.c:183`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### vga_fb_blit_gfx_window (function) `vga_fb_blit_gfx_window();`
+- Defined: `kernel/syscalls.c:187`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### pcspk_set_volume (function) `pcspk_set_volume((unsigned)v);`
+- Defined: `kernel/syscalls.c:220`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### vga_fb_blit_nk_window (function) `vga_fb_blit_nk_window();`
+- Defined: `kernel/syscalls.c:277`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### SANITIZE_LEN_NEG (function) `SANITIZE_LEN_NEG(len);`
+- Defined: `kernel/syscalls.c:289`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### sb16_pcm_submit (function) `return sb16_pcm_submit(pcm, (unsigned)len);`
+- Defined: `kernel/syscalls.c:291`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### sb16_pump (function) `sb16_pump();`
+- Defined: `kernel/syscalls.c:309`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### sb16_stream_open (function) `return sb16_stream_open();`
+- Defined: `kernel/syscalls.c:313`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### sb16_stream_close (function) `sb16_stream_close((int)a1);`
+- Defined: `kernel/syscalls.c:317`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### sb16_stream_submit (function) `return sb16_stream_submit((int)a1, pcm, (unsigned)len);`
+- Defined: `kernel/syscalls.c:325`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### sb16_stream_volume (function) `sb16_stream_volume((int)a1, (unsigned char)a2);`
+- Defined: `kernel/syscalls.c:329`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### space (function) `* CLONE_VM: share address space (same CR3). * CLONE_FILES: share fd table. * Returns child PID to parent, 0 to child. */ extern long do_clone(long flags, long newsp);`
+- Defined: `kernel/syscalls.c:333`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### do_clone (function) `return do_clone(flags, newsp);`
+- Defined: `kernel/syscalls.c:340`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### do_thread_spawn (function) `extern long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+- Defined: `kernel/syscalls.c:342`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### futex_wait (function) `return futex_wait((unsigned long)a1, (int)a2);`
+- Defined: `kernel/syscalls.c:359`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### yield (function) `yield();`
+- Defined: `kernel/syscalls.c:374`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### SANITIZE_COPY_IN (function) `SANITIZE_COPY_IN(kops, a1, count, sizeof(batch_op_t));`
+- Defined: `kernel/syscalls.c:451`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### kprintf (function) `kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);`
+- Defined: `kernel/syscalls.c:569`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### vga_putc (function) `vga_putc((char)c);`
+- Defined: `kernel/syscalls.c:577`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### kfclose (function) `kfclose(kfd_table[a1]);`
+- Defined: `kernel/syscalls.c:655`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### kfseek (function) `kfseek(kfd_table[a1], a2, (int)a3);`
+- Defined: `kernel/syscalls.c:664`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### spin_lock_irqsave (function) `spin_lock_irqsave(&mm_lock, &flags);`
+- Defined: `kernel/syscalls.c:676`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### spin_unlock_irqrestore (function) `spin_unlock_irqrestore(&mm_lock, flags);`
+- Defined: `kernel/syscalls.c:682`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### vma_tree_delete (function) `vma_tree_delete(&vma_free_root, best->base);`
+- Defined: `kernel/syscalls.c:726`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### vma_tree_insert (function) `vma_tree_insert(&vma_live_root, addr, n);`
+- Defined: `kernel/syscalls.c:729`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### net_sys_socket (function) `return net_sys_socket(a1, a2, a3);`
+- Defined: `kernel/syscalls.c:815`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### net_sys_connect (function) `return net_sys_connect(a1, a2, a3);`
+- Defined: `kernel/syscalls.c:821`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### net_sys_sendto (function) `return net_sys_sendto(a1, a2, a3, a4, a5, a6);`
+- Defined: `kernel/syscalls.c:826`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### net_sys_recvfrom (function) `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);`
+- Defined: `kernel/syscalls.c:831`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### net_sys_shutdown (function) `return net_sys_shutdown(a1, a2);`
+- Defined: `kernel/syscalls.c:836`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### net_sys_poll (function) `return net_sys_poll(a1, a2, a3);`
+- Defined: `kernel/syscalls.c:843`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### do_exit (function) `do_exit((int)code);`
+- Defined: `kernel/syscalls.c:870`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### klongjmp (function) `klongjmp(&exec_return, 1);`
+- Defined: `kernel/syscalls.c:874`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### do_proc_exit (function) `return do_proc_exit(a1);`
+- Defined: `kernel/syscalls.c:880`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### do_waitpid (function) `return do_waitpid((int)a1);`
+- Defined: `kernel/syscalls.c:885`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+
+### do_kill (function) `return do_kill((int)a1);`
+- Defined: `kernel/syscalls.c:890`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### wrmsr (function) `wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);`
-- Defined: `kernel/syscalls.c:956`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:991`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### Discipline (function) `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok is ONLY for exact-size * buffers (sizeof(int), 144-byte stat, fixed PCM length);`
-- Defined: `kernel/syscalls.c:1049`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1089`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### wm_clear_close (function) `wm_clear_close();`
-- Defined: `kernel/syscalls.c:1069`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1109`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### LIMITATION (function) `* * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from * a ring-3 interpreter (lua/micropython) must save the parent's user window, * whose full span cannot fit in the kernel h`
-- Defined: `kernel/syscalls.c:1219`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1297`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### kmemcpy (function) `kmemcpy(kargv[i], child_argv[i], slen);`
-- Defined: `kernel/syscalls.c:1258`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1336`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### ramdisk_read (function) `ramdisk_read(f, data, 0, f->size);`
-- Defined: `kernel/syscalls.c:1279`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1357`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### kfree (function) `kfree(data);`
-- Defined: `kernel/syscalls.c:1305`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1383`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ### swap_in (function) `swap_in();`
-- Defined: `kernel/syscalls.c:1393`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/syscalls.c:1471`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `vga_fb.h`, `zip.h`
 
 ## kernel/tick.c
 
@@ -5751,28 +5809,39 @@ static long sys_minios_gfx_prese...`
 ## kernel/time.c
 
 ### ktime_rdtsc (function) `static unsigned long ktime_rdtsc(void)`
-- Defined: `kernel/time.c:11`
-- Depends on: `kernel.h`
+- Defined: `kernel/time.c:12`
+- Depends on: `kernel.h`, `ktime.h`
 - Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
 
 ### ktime_init (function) `static void ktime_init(void)`
-- Defined: `kernel/time.c:17`
-- Depends on: `kernel.h`
+- Defined: `kernel/time.c:18`
+- Depends on: `kernel.h`, `ktime.h`
 - Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
 
 ### ktime_ms (function) `unsigned long ktime_ms(void)`
-- Defined: `kernel/time.c:31`
-- Depends on: `kernel.h`
+- Defined: `kernel/time.c:32`
+- Depends on: `kernel.h`, `ktime.h`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
+
+### ktime_us (function) `unsigned long ktime_us(void)`
+- Defined: `kernel/time.c:41`
+- Doc: Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime nsec and gettimeofday usec both deri
+- Depends on: `kernel.h`, `ktime.h`
 - Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
 
 ### volatile (function) `__asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));`
-- Defined: `kernel/time.c:14`
-- Depends on: `kernel.h`
+- Defined: `kernel/time.c:15`
+- Depends on: `kernel.h`, `ktime.h`
 - Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
 
 ### outb (function) `outb(0x61, (unsigned char)((inb(0x61) & 0x0F) | 0x01));`
-- Defined: `kernel/time.c:20`
-- Depends on: `kernel.h`
+- Defined: `kernel/time.c:21`
+- Depends on: `kernel.h`, `ktime.h`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
+
+### ktime_us_from_delta (function) `return ktime_us_from_delta(ktime_rdtsc() - tsc_base_ms, tsc_per_ms);`
+- Defined: `kernel/time.c:43`
+- Depends on: `kernel.h`, `ktime.h`
 - Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/qga_client.py`, `tools/repro_gui.py`
 
 ## kernel/vga_fb.c
@@ -6203,6 +6272,20 @@ static long sys_minios_gfx_prese...`
 ### vga_fb_drag_terminal (function) `vga_fb_drag_terminal(mx, my, grab_cx);`
 - Defined: `kernel/vga_fb.c:1907`
 - Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `vga_fb.h`
+
+## ktime.h
+
+### ktime_us_from_delta (function) `static inline unsigned long ktime_us_from_delta(unsigned long delta_ticks,
+                      ...`
+- Defined: `ktime.h:18`
+- Doc: ktime.h -- pure time-conversion helpers shared by the kernel clock (kernel/time.c) and the host suite (tests/test_ktime.
+- Imported by: `kernel/syscalls.c`, `kernel/time.c`, `tests/test_ktime.c`
+
+### wall_us_from_parts (function) `static inline unsigned long wall_us_from_parts(unsigned long base_sec,
+                          ...`
+- Defined: `ktime.h:30`
+- Doc: wall_us_from_parts: wall-clock microseconds from an RTC-anchored base. base_sec is the last seen RTC second, base_ktime_
+- Imported by: `kernel/syscalls.c`, `kernel/time.c`, `tests/test_ktime.c`
 
 ## lz4_kernel.h
 
@@ -7106,16 +7189,16 @@ static long sys_minios_gfx_prese...`
 - Defined: `mutate.sh:51`
 
 ### restore_sources (function)
-- Defined: `mutate.sh:88`
+- Defined: `mutate.sh:93`
 
 ### cleanup (function)
-- Defined: `mutate.sh:95`
+- Defined: `mutate.sh:100`
 
 ### record (function)
-- Defined: `mutate.sh:219`
+- Defined: `mutate.sh:244`
 
 ### find_index (function)
-- Defined: `mutate.sh:225`
+- Defined: `mutate.sh:250`
 - Doc: Locate a mutant by name.
 
 ## net.h
@@ -23049,6 +23132,57 @@ Z_DumpHeap
 ### main (function) `int main(void)`
 - Defined: `progs/src/fib.c:5`
 
+## progs/src/fptest.c
+
+### read_mxcsr (function) `static unsigned int read_mxcsr(void)`
+- Defined: `progs/src/fptest.c:41`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### raw_gettid (function) `static long raw_gettid(void)`
+- Defined: `progs/src/fptest.c:47`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### raw_getrandom (function) `static long raw_getrandom(void *buf, unsigned long n)`
+- Defined: `progs/src/fptest.c:51`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### stack_align_canary (function) `static void stack_align_canary(void)`
+- Defined: `progs/src/fptest.c:78`
+- Doc: Stack-alignment canary: an aligned SSE store to a stack slot faults with #GP unless the thread entry stack satisfies Sys
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### worker (function) `static void *worker(void *p)`
+- Defined: `progs/src/fptest.c:83`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### main (function) `int main(void)`
+- Defined: `progs/src/fptest.c:147`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### gettid (function) `* * The same run smokes gettid (Phase 0.4: the two workers must observe * distinct tids, never the constant 1) and getrandom (Phase 0.5: it * must fill the buffer and report the count, never EFAULT). `
+- Defined: `progs/src/fptest.c:20`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### volatile (function) `__asm__ volatile("stmxcsr %0" : "=m"(v));`
+- Defined: `progs/src/fptest.c:44`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### m_syscall6 (function) `return m_syscall6(MINIOS_SYS_GETTID, 0, 0, 0);`
+- Defined: `progs/src/fptest.c:49`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### myield (function) `myield();`
+- Defined: `progs/src/fptest.c:118`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### __sync_fetch_and_add (function) `__sync_fetch_and_add(&worker_tails, 1);`
+- Defined: `progs/src/fptest.c:143`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
+### printf (function) `printf("fptest: FAIL (getrandom=%ld)\n", rn);`
+- Defined: `progs/src/fptest.c:165`
+- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+
 ## progs/src/freedom.c
 
 ### tls_close (function) `static int tls_close(int fd)`
@@ -23683,68 +23817,68 @@ Z_DumpHeap
 ### m_syscall6 (function) `static inline long m_syscall6(long n, long a, long b, long c)`
 - Defined: `progs/src/mthreads.h:49`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### myield (function) `static inline void myield(void)`
 - Defined: `progs/src/mthreads.h:58`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### mfutex_wait (function) `static inline long mfutex_wait(volatile int *addr, int val)`
 - Defined: `progs/src/mthreads.h:62`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### mfutex_wake (function) `static inline long mfutex_wake(volatile int *addr, int n)`
 - Defined: `progs/src/mthreads.h:66`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### mmutex_init (function) `static inline void mmutex_init(mmutex_t *m)`
 - Defined: `progs/src/mthreads.h:70`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### mmutex_lock (function) `static inline void mmutex_lock(mmutex_t *m)`
 - Defined: `progs/src/mthreads.h:74`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### mmutex_unlock (function) `static inline void mmutex_unlock(mmutex_t *m)`
 - Defined: `progs/src/mthreads.h:89`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### mthread_entry (function) `static void mthread_entry(void *p)`
 - Defined: `progs/src/mthreads.h:98`
 - Doc: Thread entry trampoline: runs fn(arg), stores the return, exits 0. * The exit code is always 0; join reads retval from t
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### mthread_create (function) `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
-- Defined: `progs/src/mthreads.h:112`
+- Defined: `progs/src/mthreads.h:116`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### mthread_join (function) `static int mthread_join(mthread_t t, void **retval)`
-- Defined: `progs/src/mthreads.h:135`
+- Defined: `progs/src/mthreads.h:139`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### volatile (function) `__asm__ volatile("syscall" : "=a"(r) : "a"(n), "D"(a), "S"(b), "d"(c) : "rcx", "r11", "memory");`
 - Defined: `progs/src/mthreads.h:52`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### __attribute__ (function) `__attribute__((aligned(16)));`
-- Defined: `progs/src/mthreads.h:111`
+- Defined: `progs/src/mthreads.h:115`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ### __sync_synchronize (function) `__sync_synchronize();`
-- Defined: `progs/src/mthreads.h:140`
+- Defined: `progs/src/mthreads.h:144`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
 
 ## progs/src/nx.c
 
@@ -25066,6 +25200,13 @@ Z_DumpHeap
 - Defined: `qga.h:49`
 - Imported by: `qga.c`
 
+## randmix.h
+
+### source (function) `* source (all-zero seed) still walks, because the increment is inside
+ * the mixer, not in the ca...`
+- Defined: `randmix.h:11`
+- Imported by: `kernel/syscalls.c`, `tests/test_randmix.c`
+
 ## rcu.h
 
 ### retirement (function) `* retirement (the writer keeps ownership) instead of dropping the free. * Callbacks run in tick context with interrupts disabled, so they must * be short and non-blocking. rcu_synchronize spins on qui`
@@ -25230,150 +25371,150 @@ Z_DumpHeap
 ## sched.h
 
 ### __attribute__ (function) `typedef struct __attribute__((packed))`
-- Defined: `sched.h:221`
+- Defined: `sched.h:238`
 - Doc: Per-CPU TSS selectors: slot 5 + 2*cpu in the runtime GDT (each TSS descriptor occupies two 8-byte slots).  CPU 0 keeps s
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ### STR (function) `* Both immediates derive from these macros via STR();`
-- Defined: `sched.h:64`
+- Defined: `sched.h:72`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ### volatile (function) `__asm__ volatile("mov %%gs:0, %0" : "=r"(val));`
-- Defined: `sched.h:155`
+- Defined: `sched.h:172`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ### sched_init (function) `void sched_init(void);`
-- Defined: `sched.h:225`
+- Defined: `sched.h:242`
 - Doc: Per-CPU TSS selectors: slot 5 + 2*cpu in the runtime GDT (each TSS descriptor occupies two 8-byte slots).  CPU 0 keeps s
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ### kstack_report (function) `void kstack_report(void);`
-- Defined: `sched.h:226`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### tss_init_ap (function) `void tss_init_ap(int cpu);`
-- Defined: `sched.h:227`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### smp_ap_idle_loop (function) `void smp_ap_idle_loop(void);`
-- Defined: `sched.h:228`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### proc_create (function) `int proc_create(const char *name, int parent_pid);`
-- Defined: `sched.h:229`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### proc_get (function) `proc_t *proc_get(int pid);`
-- Defined: `sched.h:230`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### schedule (function) `void schedule(void);`
-- Defined: `sched.h:231`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### sched_set_nice (function) `int sched_set_nice(int pid, int nice);`
-- Defined: `sched.h:232`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### seccomp_deny_one (function) `int seccomp_deny_one(int pid, int n);`
-- Defined: `sched.h:233`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### seccomp_allow_one (function) `int seccomp_allow_one(int pid, int n);`
-- Defined: `sched.h:234`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### seccomp_denied (function) `int seccomp_denied(int pid, int n);`
-- Defined: `sched.h:235`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### rlimit_cpu_exceeded (function) `int rlimit_cpu_exceeded(int pid);`
-- Defined: `sched.h:236`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### rlimit_cpu_tick (function) `void rlimit_cpu_tick(int pid);`
-- Defined: `sched.h:237`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### switch_to (function) `void switch_to(proc_t *prev, proc_t *next);`
-- Defined: `sched.h:238`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### switch_to_notrap (function) `void switch_to_notrap(proc_t *prev, proc_t *next);`
-- Defined: `sched.h:239`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### switch_save_only (function) `void switch_save_only(proc_t *prev);`
-- Defined: `sched.h:240`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### resume_iretq (function) `void resume_iretq(void);`
-- Defined: `sched.h:241`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### yield (function) `void yield(void);`
-- Defined: `sched.h:242`
-- Depends on: `spinlock.h`
-- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
-
-### do_exit (function) `void do_exit(int code);`
 - Defined: `sched.h:243`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### do_clone (function) `long do_clone(long flags, long newsp);`
+### tss_init_ap (function) `void tss_init_ap(int cpu);`
 - Defined: `sched.h:244`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### do_thread_spawn (function) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+### smp_ap_idle_loop (function) `void smp_ap_idle_loop(void);`
 - Defined: `sched.h:245`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### do_waitpid (function) `int do_waitpid(int pid);`
+### proc_create (function) `int proc_create(const char *name, int parent_pid);`
+- Defined: `sched.h:246`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### proc_get (function) `proc_t *proc_get(int pid);`
 - Defined: `sched.h:247`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### do_kill (function) `int do_kill(int pid);`
+### schedule (function) `void schedule(void);`
 - Defined: `sched.h:248`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### timer_tick (function) `void timer_tick(void);`
+### sched_set_nice (function) `int sched_set_nice(int pid, int nice);`
 - Defined: `sched.h:249`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
-### pt_clone_user (function) `uint64_t pt_clone_user(uint64_t parent_cr3);`
+### seccomp_deny_one (function) `int seccomp_deny_one(int pid, int n);`
+- Defined: `sched.h:250`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### seccomp_allow_one (function) `int seccomp_allow_one(int pid, int n);`
+- Defined: `sched.h:251`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### seccomp_denied (function) `int seccomp_denied(int pid, int n);`
 - Defined: `sched.h:252`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### rlimit_cpu_exceeded (function) `int rlimit_cpu_exceeded(int pid);`
+- Defined: `sched.h:253`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### rlimit_cpu_tick (function) `void rlimit_cpu_tick(int pid);`
+- Defined: `sched.h:254`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### switch_to (function) `void switch_to(proc_t *prev, proc_t *next);`
+- Defined: `sched.h:255`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### switch_to_notrap (function) `void switch_to_notrap(proc_t *prev, proc_t *next);`
+- Defined: `sched.h:256`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### switch_save_only (function) `void switch_save_only(proc_t *prev);`
+- Defined: `sched.h:257`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### resume_iretq (function) `void resume_iretq(void);`
+- Defined: `sched.h:258`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### yield (function) `void yield(void);`
+- Defined: `sched.h:259`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### do_exit (function) `void do_exit(int code);`
+- Defined: `sched.h:260`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### do_clone (function) `long do_clone(long flags, long newsp);`
+- Defined: `sched.h:261`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### do_thread_spawn (function) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+- Defined: `sched.h:262`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### do_waitpid (function) `int do_waitpid(int pid);`
+- Defined: `sched.h:264`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### do_kill (function) `int do_kill(int pid);`
+- Defined: `sched.h:265`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### timer_tick (function) `void timer_tick(void);`
+- Defined: `sched.h:266`
+- Depends on: `spinlock.h`
+- Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+
+### pt_clone_user (function) `uint64_t pt_clone_user(uint64_t parent_cr3);`
+- Defined: `sched.h:269`
 - Doc: void     switch_to(proc_t *prev, proc_t *next); void     switch_to_notrap(proc_t *prev, proc_t *next); void     switch_s
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
 ### pt_free_user (function) `void pt_free_user(uint64_t cr3);`
-- Defined: `sched.h:253`
+- Defined: `sched.h:270`
 - Depends on: `spinlock.h`
 - Imported by: `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
 
@@ -25978,6 +26119,17 @@ Z_DumpHeap
 - Defined: `tests/test_hal_io.c:64`
 - Depends on: `arch/x86/hal_io.h`
 
+## tests/test_ktime.c
+
+### main (function) `int main(void)`
+- Defined: `tests/test_ktime.c:15`
+- Doc: define CHECK(c, m) do { if (!(c)) { failures++; fprintf(stderr, "FAIL: %s:%d: %s\n", __FILE__, __LINE__, m); } } while (
+- Depends on: `ktime.h`
+
+### CHECK (function) `CHECK(ktime_us_from_delta(0, 3000000UL) == 0, "zero delta");`
+- Defined: `tests/test_ktime.c:17`
+- Depends on: `ktime.h`
+
 ## tests/test_percpu_rq.c
 
 ### main (function) `int main(void)`
@@ -26015,6 +26167,21 @@ Z_DumpHeap
 ### printf (function) `else printf("percpu_rq: %d failures\n", failures);`
 - Defined: `tests/test_percpu_rq.c:84`
 - Depends on: `percpu_rq.h`
+
+## tests/test_randmix.c
+
+### popcount64 (function) `static int popcount64(unsigned long x)`
+- Defined: `tests/test_randmix.c:17`
+- Doc: define CHECK(c, m) do { if (!(c)) { failures++; fprintf(stderr, "FAIL: %s:%d: %s\n", __FILE__, __LINE__, m); } } while (
+- Depends on: `randmix.h`
+
+### main (function) `int main(void)`
+- Defined: `tests/test_randmix.c:23`
+- Depends on: `randmix.h`
+
+### CHECK (function) `CHECK(randmix64(0) == randmix64(0), "deterministic");`
+- Defined: `tests/test_randmix.c:25`
+- Depends on: `randmix.h`
 
 ## tests/test_rcu.c
 
@@ -26802,6 +26969,20 @@ Z_DumpHeap
 ### run (method) `def run(self)`
 - Defined: `tls_test.py:248`
 - Depends on: `kernel/time.c`
+
+## tools/check_abi_numbers.py
+
+### normalize (function) `def normalize(minios_name)`
+- Defined: `tools/check_abi_numbers.py:127`
+
+### parse_abi (function) `def parse_abi(path)`
+- Defined: `tools/check_abi_numbers.py:131`
+
+### parse_dispatch (function) `def parse_dispatch(path)`
+- Defined: `tools/check_abi_numbers.py:142`
+
+### main (function) `def main()`
+- Defined: `tools/check_abi_numbers.py:155`
 
 ## tools/check_cohesion.py
 

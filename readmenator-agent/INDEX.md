@@ -38,7 +38,7 @@
 | `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 35 |
 | `install.sh` | - | root | 0 |
 | `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 37 |
-| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 274 |
+| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 276 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
 | `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | kernel | 31 |
 | `kernel/cvm_host.c` | - | kernel | 55 |
@@ -55,17 +55,18 @@
 | `kernel/printf.c` | include "kernel.h"  ============================================================ | kernel | 15 |
 | `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | kernel | 21 |
 | `kernel/redirect.c` | include "kernel.h"  ============================================================ | kernel | 7 |
-| `kernel/sched.c` | - | kernel | 114 |
+| `kernel/sched.c` | - | kernel | 121 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 8 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 10 |
 | `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 109 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 152 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 156 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
-| `kernel/time.c` | include "kernel.h"  ============================================================ | kernel | 5 |
+| `kernel/time.c` | include "kernel.h" include "ktime.h"  ========================================== | kernel | 7 |
 | `kernel/vga_fb.c` | - | kernel | 104 |
+| `ktime.h` | ifndef KTIME_H define KTIME_H  ktime.h -- pure time-conversion helpers shared by | root | 3 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 4 |
 | `mcp/__init__.py` | - | mcp | 0 |
 | `mcp/mcp_dbg_driver.py` | - | mcp | 6 |
@@ -293,7 +294,7 @@
 | `progs/micropython/variants/minios/manifest.py` | manifest.py -- frozen modules for the MiniOS MicroPython variant. Scripts listed | minios | 0 |
 | `progs/micropython/variants/minios/minios_module.c` | - | minios | 33 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 |
-| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 123 |
+| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 124 |
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 59 |
 | `progs/nuklear/cvm_emit.h` | ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (c | nuklear | 6 |
 | `progs/nuklear/node_editor.c` | node_editor.c — visual low-code editor that compiles to CVM bytecode. | nuklear | 76 |
@@ -309,6 +310,7 @@
 | `progs/src/cp.c` | - | src | 8 |
 | `progs/src/cpl.c` | Ring-3 privilege probe. Reads the CS selector at runtime and exits with | src | 4 |
 | `progs/src/fib.c` | - | src | 2 |
+| `progs/src/fptest.c` | fptest.c -- FPU/SSE context-switch probe (Phase 0.1, ADR-0014). | src | 14 |
 | `progs/src/freedom.c` | freedom - a headless text browser for MiniOS. | src | 62 |
 | `progs/src/ftest.c` | Exercises the kernel libc surface used by loaded .o programs: fprintf to stdout/ | src | 7 |
 | `progs/src/hello.c` | MiniOS test program — compiled as relocatable .o, loaded by kernel ELF loader | src | 2 |
@@ -339,11 +341,12 @@
 | `progs/vedit/vedit.c` | vedit.c - fullscreen mini IDE for MiniOS, hosted on Nuklear. | misc | 115 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 31 |
 | `qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | root | 29 |
+| `randmix.h` | ifndef RANDMIX_H define RANDMIX_H  randmix.h -- entropy mixer for getrandom (318 | root | 2 |
 | `rcu.h` | ifndef RCU_H define RCU_H  Docstring: rcu.h -- Read-copy-update, lite epoch edit | root | 18 |
 | `rtc.h` | ifndef RTC_H define RTC_H | root | 6 |
 | `sanitize.h` | ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point | root | 5 |
 | `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 27 |
-| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Pro | root | 76 |
+| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Pro | root | 80 |
 | `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 8 |
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 48 |
 | `smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | root | 11 |
@@ -358,7 +361,9 @@
 | `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 15 |
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 11 |
 | `tests/test_hal_io.c` | Docstring: Host test for arch/x86/hal_io.h (make test-hal). | tests | 9 |
+| `tests/test_ktime.c` | test_ktime.c -- host test for the pure conversion math in ktime.h | tests | 3 |
 | `tests/test_percpu_rq.c` | Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq). | tests | 10 |
+| `tests/test_randmix.c` | test_randmix.c -- host test for the getrandom mixer in randmix.h | tests | 4 |
 | `tests/test_rcu.c` | Docstring: Host test for kernel/rcu.c (make test-rcu). | tests | 13 |
 | `tests/test_rtc.c` | test_rtc.c -- host test for the pure date math in drivers/rtc.c | tests | 3 |
 | `tests/test_sanitize.c` | Docstring: Host test for sanitize.h (make test-sanitize). | tests | 17 |
@@ -374,6 +379,7 @@
 | `tls_test.py` | - | root | 16 |
 | `tls_test_roots.h` | tls_test_roots.h - generated by tls_test.py; never built into the kernel. The te | root | 0 |
 | `tools/boot_run.sh` | boot_run.sh -- boot the MiniOS image in QEMU and drive the shell over the serial | tools | 0 |
+| `tools/check_abi_numbers.py` | - | tools | 4 |
 | `tools/check_cohesion.py` | - | tools | 4 |
 | `tools/check_complexity.py` | - | tools | 3 |
 | `tools/check_kb_sync.py` | - | tools | 2 |

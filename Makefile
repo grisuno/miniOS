@@ -916,6 +916,13 @@ $(BIN_DIR)/thdemo: $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -I$(PROGS_DIR) -o $@ $(SRC_DIR)/thdemo.c
 	chmod +x $@
 
+# fptest: FPU/SSE context-switch probe (Phase 0.1, ADR-0014). Two threads
+# grind distinct FP constants across voluntary yields plus timer/AP
+# preempts; any lost register flips the accumulator and prints FAIL.
+$(BIN_DIR)/fptest: $(SRC_DIR)/fptest.c $(SRC_DIR)/mthreads.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wall -I$(PROGS_DIR) -o $@ $(SRC_DIR)/fptest.c
+	chmod +x $@
+
 # ── topogpt3 (TopoGPT3 transformer inference, static ring-3 ELF) ──
 # Self-contained single-file C engine.  Loads fp16 weights from MiniFS.
 # Built like Lua/DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
@@ -946,6 +953,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/sbtone $(SRC_DIR)/sbtone.c \
                $(BIN_DIR)/tlsget $(PROGS_DIR)/tls_u/tls_u_main.c $(PROGS_DIR)/tls_u/tls_u_port.c \
                $(BIN_DIR)/thdemo $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h \
+               $(BIN_DIR)/fptest $(SRC_DIR)/fptest.c \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                 $(BIN_DIR)/json $(SRC_DIR)/json.c \
                 $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
@@ -1055,6 +1063,7 @@ lint: | $(TOOLS_DIR)
 	    -fsyntax-only $(PROGS_DIR)/tls_u/tls_u_main.c $(PROGS_DIR)/tls_u/tls_u_port.c
 	clang-tidy $(LINT_HOST_SRCS) --warnings-as-errors='*' \
 	    --checks='$(LINT_TIDY_CHECKS)' -- -std=c99 -DTLS_RING3 -I. -I$(PROGS_DIR)
+	python3 tools/check_abi_numbers.py
 	bash -n mutate.sh && bash -n test_bdd.sh && echo "lint: ok"
 
 # Sync primitives host test (tests/test_sync.c + kernel/sync.c).
@@ -1138,7 +1147,7 @@ test-driver: driver_test
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1149,6 +1158,22 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/tick_test
 	$(TOOLS_DIR)/hal_test
 	$(TOOLS_DIR)/driver_test
+	$(TOOLS_DIR)/ktime_test
+	$(TOOLS_DIR)/randmix_test
+
+# Phase 0.2/0.3 host test: pure TSC-to-microsecond conversion in ktime.h.
+ktime_test: tests/test_ktime.c ktime.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/ktime_test tests/test_ktime.c
+
+test-ktime: ktime_test
+	$(TOOLS_DIR)/ktime_test
+
+# Phase 0.5 host test: getrandom splitmix64 mixer in randmix.h.
+randmix_test: tests/test_randmix.c randmix.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/randmix_test tests/test_randmix.c
+
+test-randmix: randmix_test
+	$(TOOLS_DIR)/randmix_test
 
 # ── Ramdisk image ─────────────────────────────────────────────────
 # The Makefile is a prerequisite because it carries the file list: editing
@@ -1345,8 +1370,15 @@ $(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
 $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip: tools/gen_zip_fixtures.py
 	python3 tools/gen_zip_fixtures.py $(PROGS_DIR)/etc/
 
+# sched.o reserves the callee-saved registers (ADR-0014): the voluntary
+# switch saves schedule()'s live registers, not its caller's, so a
+# thread resumed in its caller must still find its own rbx/r12-r15.
+# With these fixed the compiler cannot use them inside schedule(), and
+# the caller's set survives every voluntary switch by construction.
+# Removing a flag reopens the lost-waitpid-pid hang; check_abi_numbers
+# does not cover it, the thdemo/fptest BDD scenarios do.
 sched.o: kernel/sched.c sched.h kernel.h arch/x86/boot/bootdefs.h arch/x86/hal_io.h tick.h vga_fb.h sb16.h pcspk.h futex.h percpu_rq.h rcu.h
-	$(CC) $(CFLAGS_KERN) -c $< -o $@
+	$(CC) $(CFLAGS_KERN) -ffixed-rbx -ffixed-r12 -ffixed-r13 -ffixed-r14 -ffixed-r15 -c $< -o $@
 
 tick.o: kernel/tick.c tick.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
@@ -1605,6 +1637,7 @@ clean: saves-backup
 	rm -f $(BIN_DIR)/opl3
 	rm -f $(BIN_DIR)/sbtone
 	rm -f $(BIN_DIR)/thdemo
+	rm -f $(BIN_DIR)/fptest
 	rm -f $(BIN_DIR)/piano.elf $(BIN_DIR)/piano
 	rm -f $(PROGS_DIR)/icons/piano.png
 	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm
