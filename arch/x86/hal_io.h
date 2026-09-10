@@ -41,6 +41,8 @@
 
 /** Docstring: Mouse packet first-byte sync bit. */
 #define HAL_MOUSE_SYNC_BIT 0x08
+/** Docstring: Mouse packet first-byte overflow bits (X/Y counters wrapped). */
+#define HAL_MOUSE_OVF_BITS 0xC0
 /** Docstring: Mouse packet button mask. */
 #define HAL_MOUSE_BUTTON_MASK 0x07
 /** Docstring: Mouse packet byte count for Intellimouse mode. */

@@ -710,6 +710,22 @@ scenario "vol rejects non-numeric input" "vol abc
 poweroff"
 expect "usage: vol"
 
+scenario "kbd reports the default layout" "kbd
+poweroff"
+expect "kbd: en"
+
+scenario "kbd switches layout and back" "kbd es
+kbd
+kbd en
+kbd
+poweroff"
+expect_count 2 "kbd: es"
+expect_count 2 "kbd: en"
+
+scenario "kbd rejects an unknown layout" "kbd fr
+poweroff"
+expect "usage: kbd"
+
 scenario "net reports the slirp configuration" "net
 poweroff"
 expect "rtl8139"

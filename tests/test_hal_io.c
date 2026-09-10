@@ -39,6 +39,7 @@ int main(void) {
     CHECK(HAL_PS2_DATA == 0x60, "ps2 data port");
     CHECK(HAL_PS2_MOUSE_OBF == 0x20, "ps2 mouse obf bit");
     CHECK(HAL_MOUSE_SYNC_BIT == 0x08, "mouse sync bit");
+    CHECK(HAL_MOUSE_OVF_BITS == 0xC0, "mouse overflow bits");
     CHECK(HAL_MOUSE_BUTTON_MASK == 0x07, "mouse button mask");
     CHECK(HAL_MOUSE_SCALE == 2, "mouse scale factor");
     CHECK(HAL_MOUSE_PACKET_LEN == 4, "mouse packet length");

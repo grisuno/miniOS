@@ -747,9 +747,23 @@ framebuffer is not.
   guarantee that sound never regresses.
 - **Taskbar widgets:** the speaker icon sits in the taskbar with `-`/`+`
   buttons that call `pcspk_set_volume`; a left click on the icon toggles
-  mute, and the `-`/`+` buttons step the volume by `TASKBAR_VOL_STEP`. Mouse
-  hit-testing lives in `vga_fb_mouse_tick` beside the existing title-bar drag
-  and scrollbar logic; there is no separate input path.
+  mute, and the `-`/`+`   buttons step the volume by `TASKBAR_VOL_STEP`. Left
+  of the speaker an `EN`/`ES` label shows the keyboard layout and toggles it
+  on click (`EN` US qwerty, `ES` Spanish qwerty with Latin-1 `ñ Ñ ¡ ¿ ´ ¨ ·
+  ª º ç Ç ¬` glyphs in the framebuffer font; `^ ´ ` ¨` emit their spacing
+  symbol, no composition; code characters live on Right Alt (AltGr) exactly
+  like on real hardware — `AltGr+3` is `#`, `AltGr+2` `@`, `AltGr+`` `[`,
+  `AltGr++` `]`, `AltGr+´` `{`, `AltGr+ç` `}`, `AltGr+º` `\`, `AltGr+1` `|`,
+  `AltGr+4` `~`, `AltGr+6` `¬` — so ES is fully usable for code editing;
+  only `€` is missing, it has no Latin-1 byte). Console input accepts
+  printable Latin-1 (`kbd_is_printable`, 32..126 plus 160..255) in the
+  prompt, the `edit` line reader and the terminal, so `ñ` travels from key
+  to buffer to screen as one byte. Mouse hit-testing lives in `vga_fb_mouse_tick` beside the
+  existing title-bar drag and scrollbar logic; there is no separate input
+  path. The cursor tip is the sprite's top-left pixel, so a click lands where
+  the arrow points; the IRQ12 phase guard also rejects first-byte overflow
+  bits, so a stray init reply (`0xFA`/`0xAA`) can never shift the packet
+  framing and warp the first motion after boot.
 - **Tiling shortcuts (Alt = WM modifier, `kernel.c` + `vga_fb.c`):** the window
   is moved, snapped and resized from the keyboard for a tiling-WM feel. Alt is
   tracked as a modifier beside Shift and Ctrl. Alt+Enter toggles fullscreen,
@@ -780,11 +794,13 @@ framebuffer is not.
   builtin (`wm state`, `wm minimize`, `wm maximize`, `wm close`) drives the
   same functions as the buttons and shortcuts and reports state over the
   serial console, so the BDD suite asserts the WM behaviour exactly like
-  `date`/`vol`/`gfx`.
+  `date`/`vol`/`kbd`/`gfx`.
 - **Shell surface:** `date` prints `HH:MM:SS` from `rtc_read_tod` (a failed
   read prints a diagnostic); `vol [0-100]` prints the volume and, with an
-  argument, sets it after strict decimal parsing and clamping. This is the
-  TDD hook: the BDD suite asserts `date` and `vol` through the serial console.
+  argument, sets it after strict decimal parsing and clamping; `kbd [en|es]`
+  prints the keyboard layout and, with an argument, sets it (`toggle`
+  switches). This is the
+  TDD hook: the BDD suite asserts `date`, `vol` and `kbd` through the serial console.
 
 ## Kernel Contracts
 
@@ -1738,11 +1754,11 @@ QEMU boot.  Every command prints a `PASS:` marker; the host runner greps the
 serial log for these markers.  The script ships on the ramdisk (`progs/src/`)
 and is added to both `PROGS` and `MINIFS_FILES` in the Makefile.
 
-Categories tested (61 PASS):
+Categories tested (64 PASS):
 - **Boot/help**: boot banner, help, clear
 - **Filesystem**: ls (root, objects, bin), mkdir, cd, pwd, rm, cp
 - **Redirects**: `>` and `>>`
-- **Builtins**: echo, date, vol (set/report/reset), ps, trace, net, gfx, wm, hash
+- **Builtins**: echo, date, vol (set/report/reset), kbd (report/es/en), ps, trace, net, gfx, wm, hash
 - **Toolchain**: minigcc.o compile, ld.o link, run ELF, run CVM
 - **Bare names**: ld.o, .elf, .cvm without `run` prefix
 - **Self-host**: minigcc.elf compiles, ld.o links, run
@@ -1758,7 +1774,7 @@ Categories tested (61 PASS):
 Usage from host:
 ```bash
 tools/boot_run.sh "sh src/test_all.sh" --timeout 120
-strings boot_run.log | grep -c 'PASS:'   # expect 61
+strings boot_run.log | grep -c 'PASS:'   # expect 64
 ```
 
 ### In-OS test suites (Lua / MicroPython toolchain)
@@ -1882,7 +1898,7 @@ is forbidden; the answer to a survivor is a new scenario.
 ```bash
 make                # zero warnings
 make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n, all green
-sh src/test_all.sh  # one-boot comprehensive non-interactive suite (61 PASS)
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (64 PASS)
 ./test_bdd.sh       # all scenarios green (full interactive suite)
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh         # every mutant killed (BDD + host TLS + host VMA suites)

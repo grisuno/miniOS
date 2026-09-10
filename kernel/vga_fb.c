@@ -9,6 +9,7 @@
 #include "kernel.h"
 #include "vga_fb.h"
 #include "bootdefs.h"
+#include "drivers/kbd.h"
 #include "desktop_shortcuts.h"
 #include "desktop_icons.h"
 #include "stb_api.h"
@@ -184,21 +185,23 @@ static const uint8_t cursor_bmp[8] = {
     0b00001100,
 };
 
-/* The arrow's visual point is its lower-right tip, not the cell's top-left
- * corner. Click hit-tests use (mouse + tip) so a click lands where the user
- * aims the arrow instead of a few pixels up-left of it. */
-#define CURSOR_TIP_X 6
-#define CURSOR_TIP_Y 7
+/* The arrow's visual point is its top-left pixel: the sprite is drawn with its
+ * top-left corner at (mx, my), so click hit-tests use (mx, my) directly and a
+ * click lands where the user aims the arrow tip. */
+#define CURSOR_TIP_X 0
+#define CURSOR_TIP_Y 0
+#define CURSOR_W 8
+#define CURSOR_H 8
 
 static unsigned long cursor_save[8][8];
 static int cursor_old_x, cursor_old_y;
 static int cursor_visible;
 
-/* The cursor is drawn with its arrow tip at (mx, my), so the sprite spans
- * up-left of the pointer by CURSOR_TIP offsets. The caller clamps mx/my so
- * the sprite's top-left corner stays non-negative and the raw FB reads in
- * cursor_save_bg never go out of bounds. The snapshot holds packed RGB so a
- * restore is exact in any color depth. */
+/* The cursor is drawn with its top-left corner at (mx, my), so the sprite
+ * spans down-right of the pointer. The caller clamps mx/my so the position
+ * stays inside the framebuffer; pixels outside the screen are clipped by the
+ * packed helpers, and the snapshot holds packed RGB so a restore is exact in
+ * any color depth. */
 static void cursor_save_bg(int mx, int my) {
     int i, j;
     int x0 = mx - CURSOR_TIP_X;
@@ -231,12 +234,13 @@ static void cursor_restore(int mx, int my) {
 /* True when the cursor sprite overlaps the given screen rectangle. Used to
  * decide whether a partial repaint (taskbar, terminal content) overwrote the
  * cursor, in which case its saved background must be refreshed; otherwise the
- * cursor keeps its saved background and moves without leaving a trail. */
+ * cursor keeps its saved background and moves without leaving a trail. The
+ * sprite is CURSOR_W x CURSOR_H with its top-left corner at (mx, my). */
 static int cursor_over(int x0, int y0, int w, int h) {
-    int cxl = mouse_state.x - CURSOR_TIP_X;   /* sprite left edge */
-    int cxt = mouse_state.x + 1;              /* sprite right edge */
-    int cyl = mouse_state.y - CURSOR_TIP_Y;   /* sprite top edge */
-    int cyt = mouse_state.y;                  /* sprite bottom edge */
+    int cxl = mouse_state.x;                 /* sprite left edge */
+    int cxt = mouse_state.x + CURSOR_W;      /* sprite right edge */
+    int cyl = mouse_state.y;                 /* sprite top edge */
+    int cyt = mouse_state.y + CURSOR_H;      /* sprite bottom edge */
     return cxl < x0 + w && cxt > x0 && cyl < y0 + h && cyt > y0;
 }
 
@@ -282,9 +286,9 @@ static void vga_fb_gfx_cursor_draw(void) {
     if (!vga_fb_gfx_mode) return;
     mx = mouse_state.x;
     my = mouse_state.y;
-    if (mx < CURSOR_TIP_X) mx = CURSOR_TIP_X;
+    if (mx < 0) mx = 0;
     if (mx >= fb_width)    mx = fb_width - 1;
-    if (my < CURSOR_TIP_Y) my = CURSOR_TIP_Y;
+    if (my < 0) my = 0;
     if (my >= fb_height)   my = fb_height - 1;
     mouse_state.x = mx;
     mouse_state.y = my;
@@ -606,6 +610,46 @@ static void vga_fb_set_palette(void) {
     }
 }
 
+/* ---- Latin-1 Spanish glyphs (8x8, same style as font8x8) ----
+ * The ES keyboard layout emits these single-byte Latin-1 codes; without
+ * glyphs they would render as blanks. Approximations of the base letter
+ * with the Spanish diacritic, recognizable at 8x8. */
+static const uint8_t glyph_inv_excl[8] = {0x18,0x00,0x18,0x18,0x18,0x18,0x18,0x00};
+static const uint8_t glyph_diaeresis[8]= {0x66,0x66,0x00,0x00,0x00,0x00,0x00,0x00};
+static const uint8_t glyph_ord_fem[8]  = {0x78,0x0C,0x7C,0xCC,0x7C,0x00,0x00,0x00};
+static const uint8_t glyph_notsign[8]  = {0x7C,0x04,0x04,0x04,0x00,0x00,0x00,0x00};static const uint8_t glyph_acute[8]    = {0x0C,0x0C,0x18,0x00,0x00,0x00,0x00,0x00};
+static const uint8_t glyph_middot[8]   = {0x00,0x00,0x00,0x18,0x18,0x00,0x00,0x00};
+static const uint8_t glyph_ord_masc[8] = {0x38,0x44,0x44,0x38,0x00,0x00,0x00,0x00};
+static const uint8_t glyph_inv_quest[8]= {0x00,0x18,0x00,0x18,0x18,0x30,0x66,0x3C};
+static const uint8_t glyph_Ccedil[8]   = {0x3C,0x66,0xC0,0xC0,0xC0,0x66,0x3C,0x30};
+static const uint8_t glyph_Ntilde[8]   = {0x76,0xDC,0xE6,0xF6,0xDE,0xCE,0xC6,0x00};
+static const uint8_t glyph_ccedil[8]   = {0x00,0x00,0x7C,0xC6,0xC0,0xC6,0x7C,0x30};
+static const uint8_t glyph_ntilde[8]   = {0x76,0xDC,0xDC,0x66,0x66,0x66,0x66,0x00};
+
+/* Resolve one byte to its 8-row glyph: ASCII through font8x8, Spanish
+ * Latin-1 through the table above, anything else (including control codes)
+ * as a blank. Takes an unsigned value so Latin-1 bytes above 127 survive a
+ * signed-char parameter. */
+static const uint8_t *fb_glyph(unsigned char c) {
+    if (c < 32) return font8x8[0];
+    if (c <= 127) return font8x8[c - 32];
+    switch (c) {
+    case 0xA1: return glyph_inv_excl;
+    case 0xA8: return glyph_diaeresis;
+    case 0xAA: return glyph_ord_fem;
+    case 0xAC: return glyph_notsign;
+    case 0xB4: return glyph_acute;
+    case 0xB7: return glyph_middot;
+    case 0xBA: return glyph_ord_masc;
+    case 0xBF: return glyph_inv_quest;
+    case 0xC7: return glyph_Ccedil;
+    case 0xD1: return glyph_Ntilde;
+    case 0xE7: return glyph_ccedil;
+    case 0xF1: return glyph_ntilde;
+    default: return font8x8[0];
+    }
+}
+
 /* ---- Drawing primitives ---- */
 void vga_fb_pixel(int x, int y, uint8_t color) {
     if (fb_bpp == 8) {
@@ -627,8 +671,7 @@ void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg) {
     int px, py, i, j;
     uint8_t bits;
     const uint8_t *glyph;
-    if (c < 32 || c > 127) c = 32;
-    glyph = font8x8[c - 32];
+    glyph = fb_glyph((unsigned char)c);
     px = term_px_x + col * FONT_W;
     py = term_content_y() + row * FONT_H;
     for (j = 0; j < FONT_H; j++) {
@@ -654,9 +697,8 @@ static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg) {
     uint8_t bits;
     const uint8_t *glyph;
     for (k = 0; s[k]; k++) {
-        char c = s[k];
-        if (c < 32 || c > 127) c = 32;
-        glyph = font8x8[c - 32];
+        unsigned char c = (unsigned char)s[k];
+        glyph = fb_glyph(c);
         for (j = 0; j < FONT_H; j++) {
             bits = glyph[j];
             for (i = 0; i < FONT_W; i++)
@@ -932,12 +974,14 @@ static void draw_title(void) {
     wm_draw_buttons(term_px_x, term_px_y, w, COL_TITLE_TXT, COL_TITLEBAR);
 }
 
-/* ---- Taskbar (clock + speaker volume) ----
+/* ---- Taskbar (clock + speaker volume + keyboard layout) ----
  * The bottom strip is the desktop's status bar: a live CMOS clock on the
- * right and a speaker icon with -/+ volume buttons. The widgets and the
- * shell `date`/`vol` builtins share the same rtc_read_tod/pcspk_get_volume
- * state, so the framebuffer and the serial console can never disagree. */
-static int tb_spk_x, tb_minus_x, tb_plus_x, tb_vol_x, tb_clock_x;
+ * right, a speaker icon with -/+ volume buttons, and an "EN"/"ES" keyboard
+ * layout widget left of the speaker. The widgets and the shell
+ * `date`/`vol`/`kbd` builtins share the same
+ * rtc_read_tod/pcspk_get_volume/kbd_get_layout state, so the framebuffer and
+ * the serial console can never disagree. */
+static int tb_spk_x, tb_minus_x, tb_plus_x, tb_vol_x, tb_clock_x, tb_kbd_x;
 static int tb_restore_x, tb_restore_w;
 
 static void taskbar_layout(void) {
@@ -951,6 +995,8 @@ static void taskbar_layout(void) {
     x -= TASKBAR_BTN_W;             tb_minus_x = x;
     x -= TASKBAR_PAD;
     x -= TASKBAR_ICON_W;            tb_spk_x = x;
+    x -= TASKBAR_PAD;
+    x -= TASKBAR_KBD_W;             tb_kbd_x = x;
     /* Restore button on the far left: "[]" when a window is minimized. */
     tb_restore_w = 2 * FONT_W;
     tb_restore_x = TASKBAR_PAD;
@@ -982,6 +1028,9 @@ static void taskbar_render(void) {
     text_px(tb_plus_x, y, "+", COL_TASKBAR_TXT, COL_TASKBAR);
     ksprintf(buf, "%u%%", vol);
     text_px(tb_vol_x, y, buf, COL_TASKBAR_TXT, COL_TASKBAR);
+    text_px(tb_kbd_x, y,
+            kbd_get_layout() == KBD_LAYOUT_ES ? "ES" : "EN",
+            COL_TASKBAR_TXT, COL_TASKBAR);
     if (rtc_read_tod(&h, &m, &s)) {
         ksprintf(buf, "%02d:%02d:%02d", h, m, s);
         text_px(tb_clock_x, y, buf, COL_TASKBAR_TXT, COL_TASKBAR);
@@ -1004,8 +1053,10 @@ static void taskbar_tick(void) {
         cursor_visible = 0;
 }
 
-/* Click handling for the speaker icon and -/+ buttons, plus the restore
- * button that reappears while the terminal window is minimized. */
+/* Click handling for the keyboard widget, the speaker icon and -/+
+ * buttons, plus the restore button that reappears while the terminal window
+ * is minimized. A click on "EN" switches to Spanish and a click on "ES"
+ * switches back to English. */
 static void taskbar_handle_click(int mx, int my) {
     unsigned v;
     static int spk_saved_valid;
@@ -1015,6 +1066,13 @@ static void taskbar_handle_click(int mx, int my) {
     if (term_minimized &&
         mx >= tb_restore_x && mx < tb_restore_x + tb_restore_w) {
         vga_fb_toggle_minimize();
+        return;
+    }
+    if (mx >= tb_kbd_x && mx < tb_kbd_x + TASKBAR_KBD_W) {
+        kbd_toggle_layout();
+        taskbar_render();
+        if (cursor_over(0, y, fb_width, FONT_H))
+            cursor_visible = 0;
         return;
     }
     if (mx >= tb_spk_x && mx < tb_spk_x + TASKBAR_ICON_W) {
@@ -1214,7 +1272,7 @@ void vga_fb_putc_term(char c) {
         else term_render_active();
         return;
     }
-    if (c >= 32 && c <= 126) {
+    if (kbd_is_printable((unsigned char)c)) {
         int old_len = act_len;
         if (act_len < SB_LINE_MAX - 1) {
             act[act_len++] = c;
@@ -1833,11 +1891,9 @@ void vga_fb_mouse_tick(void) {
      * tick(s) after a window-control button was clicked, so the button action
      * (minimize/maximize/close) fires without the window jumping. */
     if (!term_fullscreen && !term_minimized && !skip_drag) {
-        /* The grab zone covers the title bar and a little below, so the drag
-         * triggers whether the user aims the arrow tip or the sprite body at
-         * the title bar (the tip is offset CURSOR_TIP_Y below the sprite's
-         * top-left corner). */
-        int in_title = (my >= term_px_y && my < term_content_y() + CURSOR_TIP_Y &&
+        /* The grab zone is exactly the title bar: the cursor tip is the
+         * sprite's top-left pixel, so (mx, my) is where the user aims. */
+        int in_title = (my >= term_px_y && my < term_content_y() &&
                         mx >= term_px_x && mx < term_px_x + win_w);
         if (mouse_state.buttons & 1) {
             if (!dragging && in_title) {
@@ -1875,11 +1931,11 @@ void vga_fb_mouse_tick(void) {
         }
     }
 
-    /* Clamp the mouse so the cursor sprite's top-left corner (offset up-left
-     * of the tip) stays inside the framebuffer and never reads out of bounds. */
-    if (mouse_state.x < CURSOR_TIP_X) mouse_state.x = CURSOR_TIP_X;
+    /* Clamp the mouse into the framebuffer. Out-of-range sprite pixels are
+     * clipped by the packed helpers, so clamping the tip is enough. */
+    if (mouse_state.x < 0) mouse_state.x = 0;
     if (mouse_state.x >= fb_width) mouse_state.x = fb_width - 1;
-    if (mouse_state.y < CURSOR_TIP_Y) mouse_state.y = CURSOR_TIP_Y;
+    if (mouse_state.y < 0) mouse_state.y = 0;
     if (mouse_state.y >= fb_height) mouse_state.y = fb_height - 1;
 
     mx = mouse_state.x;

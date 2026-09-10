@@ -111,6 +111,9 @@ extern int nk_win_x, nk_win_y;
 #define TASKBAR_VOL_STEP   10
 #define TASKBAR_ICON_W     8
 #define TASKBAR_BTN_W      8
+/* Keyboard-layout widget: two-letter "EN"/"ES" label, click toggles. */
+#define TASKBAR_KBD_CH     2      /* "EN" / "ES" */
+#define TASKBAR_KBD_W      (TASKBAR_KBD_CH * FONT_W)
 
 /* Tiling snap zones (Alt is the WM modifier). */
 #define TILING_LEFT          0

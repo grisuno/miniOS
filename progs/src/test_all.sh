@@ -62,6 +62,16 @@ echo PASS: vol-set-ok
 vol 100
 echo PASS: vol-reset-ok
 
+# === KBD LAYOUT ===
+kbd
+echo PASS: kbd-ok
+kbd es
+kbd
+echo PASS: kbd-es-ok
+kbd en
+kbd
+echo PASS: kbd-en-ok
+
 # === PS & TRACE ===
 ps
 echo PASS: ps-ok

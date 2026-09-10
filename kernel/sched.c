@@ -782,7 +782,15 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         unsigned char data;
         data = hal_inb(HAL_PS2_DATA);
         if (mouse_phase == 0) {
-            if (data & HAL_MOUSE_SYNC_BIT) {
+            /* A stray init reply (reset ACK 0xFA, self-test 0xAA) left in the
+             * output buffer also carries the sync bit, so sync alone cannot
+             * frame packets: accepting one shifts every later byte by one and
+             * the first motion after boot warps (+16 px, Y off by -2*dx).
+             * Both strays carry overflow bits, which a real packet sets only
+             * when its counters wrapped; dropping such a packet is harmless
+             * (the next one re-syncs the buttons) while accepting a stray
+             * corrupts the framing permanently. */
+            if ((data & HAL_MOUSE_SYNC_BIT) && !(data & HAL_MOUSE_OVF_BITS)) {
                 mouse_packet[0] = data;
                 mouse_phase = 1;
             }

@@ -1,9 +1,26 @@
 #ifndef KBD_H
 #define KBD_H
 
+/* Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty. Toggled
+ * from the taskbar widget or the `kbd` shell builtin. */
+#define KBD_LAYOUT_EN 0
+#define KBD_LAYOUT_ES 1
+
 int  kbd_available(void);
 int  kbd_read(void);
 void kbd_reset_for_shell(void);
+
+/* Layout selection */
+int  kbd_get_layout(void);
+void kbd_set_layout(int layout);
+void kbd_toggle_layout(void);
+
+/* Printable test for console input: ASCII 32..126 plus Latin-1 160..255
+ * (the ES layout emits single-byte Latin-1 for ñ ¡ ¿ ´ ¨ · ª º ç Ç ¬).
+ * DEL (127) and the C1 controls (128..159) are never input. */
+static inline int kbd_is_printable(int c) {
+    return (c >= 32 && c <= 126) || (c >= 160 && c <= 255);
+}
 
 /* Translated queue (shell input) */
 int  kbd_q_empty(void);

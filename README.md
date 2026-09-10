@@ -83,6 +83,16 @@ The bottom taskbar is a live status strip, not a hint line:
   A click on the speaker icon toggles mute; the `-`/`+` buttons step the
   volume. The shell `vol [0-100]` builtin reads and sets the same state, so the
   desktop and the serial console can never disagree.
+- **Keyboard layout:** an `EN`/`ES` label left of the speaker shows the active
+  layout and toggles it on click (`EN` US qwerty, `ES` Spanish qwerty with
+  Latin-1 `ñ Ñ ¡ ¿ ´ ¨ · ª º ç Ç ¬` glyphs; dead keys emit their spacing symbol,
+  no composition; code characters live on Right Alt (AltGr) exactly like on
+  real hardware — `AltGr+3` is `#`, `AltGr+2` `@`, `AltGr+`` `[`,
+  `AltGr++` `]`, `AltGr+´` `{`, `AltGr+ç` `}`, `AltGr+º` `\`, `AltGr+1` `|`,
+  `AltGr+4` `~`, `AltGr+6` `¬` — so ES is fully usable for code editing;
+  only `€` is missing, it has no Latin-1 byte). The shell `kbd [en|es]`
+  builtin reads and sets the same state. The
+  cursor tip is the arrow's top-left pixel, so a click lands where it points.
 
 ## Tiling window shortcuts
 
@@ -423,12 +433,12 @@ serial log for these markers. The script ships on the ramdisk.
 
 ```bash
 tools/boot_run.sh "sh src/test_all.sh" --timeout 120
-strings boot_run.log | grep -c 'PASS:'   # expect 61
+strings boot_run.log | grep -c 'PASS:'   # expect 64
 ```
 
-Categories tested (61 PASS):
+Categories tested (64 PASS):
 - Boot/help, filesystem (ls/mkdir/cd/pwd/rm/cp), redirects (>  >>)
-- Builtins: echo, date, vol (set/report/reset), ps, trace, net, gfx, wm, hash
+- Builtins: echo, date, vol (set/report/reset), kbd (report/es/en), ps, trace, net, gfx, wm, hash
 - Toolchain: minigcc.o compile, ld.o link, run ELF, run CVM
 - Bare names without `run` prefix
 - Self-host: minigcc.elf compiles, ld.o links, run
@@ -1234,7 +1244,7 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `progs/` | ramdisk contents organized by kind: `objects/`, `bin/`, `cvm/`, `src/`, `asm/`, `docs/` |
 | `mkramdisk.py` | packs `progs/` into the ramdisk image |
 | `test_bdd.sh` / `test_http_server.py` | behavioural suite and its HTTP fixture |
-| `progs/src/test_all.sh` | one-boot comprehensive non-interactive test (61 PASS) |
+| `progs/src/test_all.sh` | one-boot comprehensive non-interactive test (64 PASS) |
 | `mcp/minios_mcp.py` | MCP bridge: boots the OS and exposes its console as tools |
 | `mcp/test_minios_mcp.py` | unit + QEMU BDD suite for the bridge |
 | `mcp/mutate_mcp.sh` | mutation testing for the bridge |
@@ -1579,7 +1589,7 @@ relies on QEMU-zeroed RAM (NOBITS, no loader fill).
 ## Validation gate, governance, libraries
 
 Every change must pass, in order: `make` (zero warnings),
-`sh src/test_all.sh` (61 PASS), `./test_bdd.sh` (full serial suite),
+`sh src/test_all.sh` (64 PASS), `./test_bdd.sh` (full serial suite),
 `./tools/test_codecs.sh` (lzss/lz4/aes roundtrips, pass=3), `./mutate.sh`
 (every kernel/boot mutant killed; survivors mean a missing scenario, and only
 provably equivalent mutants may leave the set), `make test-tls` (host crypto

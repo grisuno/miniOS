@@ -382,7 +382,7 @@ void shell_readline_buf(char *buf, int size) {
             }
             continue;
         }
-        if (pos < size - 1 && c >= 32 && c < 127) {
+        if (pos < size - 1 && kbd_is_printable(c)) {
             buf[pos++] = (char)c;
             vga_putc((char)c);
         }
@@ -807,7 +807,7 @@ static void shell_readline_hist(char *buf, int size) {
             }
             continue;
         }
-        if (c == '\b' || c == 0x7F || (c >= 32 && c < 127)) {
+        if (c == '\b' || c == 0x7F || kbd_is_printable(c)) {
             if (shell_hist_idx >= 0) shell_hist_idx = -1;
         }
         /* Ctrl keys: A/E start/end, U kill front, K kill tail, W kill word. */
@@ -844,7 +844,7 @@ static void shell_readline_hist(char *buf, int size) {
             }
             continue;
         }
-        if (pos < size - 1 && c >= 32 && c < 127) {
+        if (pos < size - 1 && kbd_is_printable(c)) {
             int at_end = (pos == (int)kstrlen(buf));
             shell_line_insert(buf, size, &pos, (char)c);
             if (at_end) {
@@ -1534,7 +1534,7 @@ static void shell_cmd_hash(int argc, char **argv) {
 void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
         vga_puts("Commands: help clear ls lsfs cat catfs echo edit rm mkdir cd pwd ps load run sh\n");
-        vga_puts("          net trace date vol gfx wm hash unzip zip smp rmdir rlimit nice seccomp poweroff\n");
+        vga_puts("          net trace date vol kbd gfx wm hash unzip zip smp rmdir rlimit nice seccomp poweroff\n");
         vga_puts("  ls [dir]           list files (under the cwd by default)\n");
         vga_puts("  lsfs               list files on the MiniFS disk filesystem\n");
         vga_puts("  catfs <file>       print a file from MiniFS\n");
@@ -1553,6 +1553,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  trace [on|off]     report Linux syscalls\n");
         vga_puts("  date               print the CMOS clock (HH:MM:SS)\n");
         vga_puts("  vol [0-100]        print or set the PC-speaker volume\n");
+        vga_puts("  kbd [en|es]        print or set the keyboard layout\n");
         vga_puts("  gfx [..]           graphics state / pixel / rect / shot\n");
         vga_puts("  wm [op]            window mgmt: minimize|maximize|close|state\n");
         vga_puts("  hash <file>        XXH64 checksum of a file\n");
@@ -1957,6 +1958,18 @@ void shell_exec_builtin(int argc, char **argv) {
             kprintf("%02d:%02d:%02d\n", h, m, s);
         else
             vga_puts("date: clock unavailable\n");
+    }
+    else if (kstrcmp(argv[0], "kbd") == 0) {
+        if (argc > 1) {
+            if (kstrcmp(argv[1], "en") == 0)
+                kbd_set_layout(KBD_LAYOUT_EN);
+            else if (kstrcmp(argv[1], "es") == 0)
+                kbd_set_layout(KBD_LAYOUT_ES);
+            else if (kstrcmp(argv[1], "toggle") == 0)
+                kbd_toggle_layout();
+            else { vga_puts("usage: kbd [en|es]\n"); return; }
+        }
+        kprintf("kbd: %s\n", kbd_get_layout() == KBD_LAYOUT_ES ? "es" : "en");
     }
     else if (kstrcmp(argv[0], "kstack") == 0) {
         kstack_report();
