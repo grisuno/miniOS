@@ -344,6 +344,32 @@ expect "mrun: pid 1 exit code: 55"
 expect "Hello"
 expect "powering off"
 
+scenario "wm split opens a second terminal tiled beside the first" "wm split
+wm list
+poweroff"
+expect "wm: split: term2 on, focus 1"
+expect "win term0"
+expect "win term1 *"
+expect "powering off"
+
+scenario "wm focus cycles and tile arranges both terminals" "wm split
+wm focus next
+wm tile
+wm list
+poweroff"
+expect "focus 0 nterms 2"
+expect "win term1"
+expect "powering off"
+
+scenario "wm close removes the second terminal and restores one" "wm split
+wm focus 1
+wm close
+wm list
+poweroff"
+expect "win term0 *"
+refute "win term1"
+expect "powering off"
+
 scenario "a bare .cvm name runs directly from cvm/ without run" "w1.cvm
 poweroff"
 expect "hola cvm"

@@ -780,6 +780,36 @@ framebuffer is not.
   the window to its default position and size. The window keeps its current
   size across redraws (resize/snap persist instead of snapping back to the
   default like the old layout engine).
+- **Focus + tiling across windows (Alt-Tab, Super-Tab, `vga_fb.c` + `drivers/kbd.c`):**
+  the focused window owns the keyboard; its title bar paints bright
+  (`COL_TITLEBAR`) while unfocused terminals dim (`COL_SHADOW`) with a `*`
+  marking the focused one. Alt+Tab cycles focus across present terminals plus
+  the graphics window while a program owns the display; Super (E0 0x5B/0x5C,
+  tracked as `kbd_super` beside Alt) + Tab tiles all present terminals (one
+  fills the screen, two split left/right; graphics windows stay centered
+  because the running program owns the display); Super+arrows snap the
+  focused window like Alt+arrows. Clicking an unfocused terminal raises it
+  through the same select path, so mouse and keys agree. The `wm` builtin
+  drives the same functions (`wm focus [next|0|1|2]`, `wm tile`, `wm list`,
+  `wm state` reports `focus`/`nterms`) so the BDD suite asserts them over
+  serial exactly like `date`/`vol`; real scancodes are covered by QMP
+  `input-send-event` (`alt`+`tab`, `meta_l`+`tab`) against `display none`.
+- **Second terminal (`wm split`, `vga_fb.c` + `shell.c`):** two shells share
+  one execution engine — the globals every terminal function uses always
+  mirror the focused window, and `tw_park`/`tw_unpark` swap the whole window
+  state (geometry, logical ring, active line, cursor) between the globals and
+  the per-window slot. Window 0 keeps the historical static ring; window 1's
+  64 KB ring lives on the kernel heap (a static would blow the
+  `USER_LOAD_BASE` `.bss` budget). The shell parks its half-typed line per
+  window (`shell_focus_park/restore` over `vga_fb_park/unpark_line`, with a
+  generation counter so the readline loop adopts the incoming line instead
+  of dropping the first keystroke after Alt-Tab); history and cwd stay
+  shared, and running a program blocks both windows (one `exec_return`).
+  `wm close` on window 1 destroys it (heap freed, focus back to 0); window
+  0 never closes (it resets to default like the historical X button).
+  Honest limits: no Alt-Tab mid-`edit` (the modal editor echoes into
+  whichever window is focused), serial sees one interleaved console (use
+  `wm list`'s `line` flag to tell which window holds a parked line).
 - **Window controls (title-bar buttons, `vga_fb.c`):** every titled window
   (terminal, DOOM, Nuklear) carries the classic three glyph buttons at the
   right end of its title bar — minimize (`_`), maximize (open square) and

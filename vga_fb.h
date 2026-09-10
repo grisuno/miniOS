@@ -181,6 +181,17 @@ void     vga_fb_toggle_minimize(void);
 int      vga_fb_is_minimized(void);
 int      vga_fb_is_fullscreen(void);
 int      vga_fb_close_active(void);
+/* Multi-window manager: Alt-Tab focus cycle, Super-Tab tiling, second
+ * terminal. Focus ids 0/1 = terminals, 2 = graphics window. */
+#define WM_FOCUS_GFX 2
+void     vga_fb_focus_next(void);
+int      vga_fb_focus_id(int id);
+int      vga_fb_focus_get(void);
+int      vga_fb_nterms_get(void);
+int      vga_fb_term_split(void);
+int      vga_fb_term_close_focused(void);
+void     vga_fb_tile_all(void);
+void     vga_fb_list_windows(void);
 int      wm_close_pending(void);
 void     wm_clear_close(void);
 int      wm_gfx_mode_active(void);

@@ -105,6 +105,9 @@ void kbd_toggle_layout(void) {
 static int kbd_shift;
 static int kbd_ctrl;
 static int kbd_alt;
+/* Super/Windows modifier (E0 0x5B/0x5C, either side): the tile-WM key.
+ * Tracked like Alt; cleared with the other modifiers on shell reset. */
+static int kbd_super;
 /* Right Alt (AltGr on ES hardware): E0 0x38 make/break, tracked separately
  * from Left Alt so the Alt+ tiling shortcuts never fire from it and EN (no
  * AltGr layer) ignores it. Cleared with the other modifiers on shell reset
@@ -193,6 +196,7 @@ int kbd_read(void) {
         if (sc == KEY_LCTRL) kbd_ctrl = 0;
         if (sc == KEY_LALT) kbd_alt = 0;
         if (kbd_e0 && sc == KEY_RALT) kbd_altgr = 0;
+        if (kbd_e0 && (sc == KEY_SUPER_L || sc == KEY_SUPER_R)) kbd_super = 0;
         kbd_e0 = 0;
         return -1;
     }
@@ -200,6 +204,7 @@ int kbd_read(void) {
     if (kbd_e0) {
         kbd_e0 = 0;
         if (sc == KEY_RALT) { kbd_altgr = 1; return -1; }
+        if (sc == KEY_SUPER_L || sc == KEY_SUPER_R) { kbd_super = 1; return -1; }
         if (kbd_ctrl && vga_fb_active) {
             if (sc == KEY_UP)       { vga_fb_move_terminal(0, -1); return -1; }
             if (sc == KEY_DOWN)     { vga_fb_move_terminal(0,  1); return -1; }
@@ -207,6 +212,14 @@ int kbd_read(void) {
             if (sc == KEY_RIGHT)    { vga_fb_move_terminal( 1, 0); return -1; }
         }
         if (kbd_alt && vga_fb_active) {
+            if (sc == KEY_UP)       { vga_fb_snap_window(TILING_TOP); return -1; }
+            if (sc == KEY_DOWN)     { vga_fb_snap_window(TILING_BOTTOM); return -1; }
+            if (sc == KEY_LEFT)     { vga_fb_snap_window(TILING_LEFT); return -1; }
+            if (sc == KEY_RIGHT)    { vga_fb_snap_window(TILING_RIGHT); return -1; }
+            if (sc == KEY_HOME)     { vga_fb_snap_window(TILING_TOP_LEFT); return -1; }
+            if (sc == KEY_END)      { vga_fb_snap_window(TILING_BOTTOM_RIGHT); return -1; }
+        }
+        if (kbd_super && vga_fb_active) {
             if (sc == KEY_UP)       { vga_fb_snap_window(TILING_TOP); return -1; }
             if (sc == KEY_DOWN)     { vga_fb_snap_window(TILING_BOTTOM); return -1; }
             if (sc == KEY_LEFT)     { vga_fb_snap_window(TILING_LEFT); return -1; }
@@ -242,6 +255,12 @@ int kbd_read(void) {
     if (sc == KEY_LSHIFT || sc == KEY_RSHIFT) { kbd_shift = 1; return -1; }
     if (sc == KEY_LCTRL) { kbd_ctrl = 1; return -1; }
     if (sc == KEY_LALT) { kbd_alt = 1; return -1; }
+    /* Alt-Tab cycles window focus, Super-Tab tiles them. Both are consumed
+     * here so Tab never reaches shell completion with a WM modifier held. */
+    if (sc == KEY_TAB && vga_fb_active) {
+        if (kbd_alt) { vga_fb_focus_next(); return -1; }
+        if (kbd_super) { vga_fb_tile_all(); return -1; }
+    }
 
     if (vga_fb_active) {
         if (sc == KEY_F11) { vga_fb_toggle_fullscreen(); return -1; }
@@ -283,6 +302,7 @@ int kbd_read(void) {
 void kbd_reset_for_shell(void) {
     kbd_raw_mode = 0;
     kbd_altgr = 0;
+    kbd_super = 0;
     kbd_q_head = kbd_q_tail = 0;
     kbd_raw_head = kbd_raw_tail = 0;
     kbd_e0 = 0;

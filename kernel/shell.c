@@ -85,6 +85,37 @@ static int  shell_line_saved_pos;
  * the line start exactly. Kept in sync by every echo/repaint path. */
 static int  shell_cur;
 
+/* Multi-window input routing: the focused terminal owns cmd_buf while the
+ * prompt is active. Alt-Tab (or `wm focus`, or a title-bar click) parks the
+ * half-typed line into the outgoing window and restores the incoming one;
+ * shell_edit_gen tells the readline loop its buffer moved under it. */
+static int  shell_in_readline;
+int  shell_edit_pos;
+unsigned shell_edit_gen;
+int shell_readline_active(void) { return shell_in_readline; }
+void shell_focus_park(void) {
+    if (!shell_in_readline) return;
+    vga_fb_park_line(cmd_buf, shell_edit_pos);
+    shell_hist_idx = -1;
+}
+void shell_focus_restore(void) {
+    int p = 0;
+    char tmp[CMD_BUF_SZ];
+    if (!shell_in_readline) return;
+    if (vga_fb_unpark_line(tmp, &p)) {
+        kmemcpy(cmd_buf, tmp, (unsigned long)CMD_BUF_SZ);
+        shell_edit_pos = p;
+        shell_cur = p;
+    } else {
+        cmd_buf[0] = '\0';
+        shell_edit_pos = 0;
+        shell_cur = 0;
+    }
+    shell_hist_idx = -1;
+    shell_edit_gen++;
+    vga_fb_text_cursor(shell_edit_pos);
+}
+
 static void shell_prompt(void) { vga_puts("\nminiOS> "); }
 
 void shell_exec_builtin(int argc, char **argv);
@@ -588,14 +619,31 @@ static void shell_hist_nav(char *buf, int size, int *pos, int up) {
  * editing key while scrolling returns to the live line. */
 static void shell_readline_hist(char *buf, int size) {
     int pos = 0;
+    unsigned gen;
     kmemset(buf, 0, (unsigned long)size);
+    shell_in_readline = 1;
+    shell_edit_pos = 0;
+    gen = shell_edit_gen;
     while (1) {
-        int c = console_getc();
+        int c;
+        shell_edit_pos = pos;
+        c = console_getc();
         if (c < 0) continue;
+        /* A window switch moved cmd_buf under us (Alt-Tab, `wm focus`,
+         * title click): adopt the incoming window's line and handle this
+         * byte against it. The byte arrived after the switch, so it
+         * belongs to the new window; discarding it here ate the first
+         * keystroke after every Alt-Tab ("wm list" ran as "m list").
+         * The screen already shows the line; no repaint needed. */
+        if (gen != shell_edit_gen) {
+            gen = shell_edit_gen;
+            pos = shell_edit_pos;
+        }
         if (c == '\n' || c == '\r') {
             vga_putc('\n');
             vga_fb_hide_text_cursor();
             shell_cur = 0;
+            shell_in_readline = 0;
             buf[kstrlen(buf)] = 0;
             shell_hist_idx = -1;
             if (buf[0] && (shell_hist_count == 0 ||
@@ -1604,25 +1652,57 @@ static void shell_cmd_gfx(int argc, char **argv) {
     vga_puts("usage: gfx [pixel <x> <y> | rect <x0> <y0> <x1> <y1> | shot <file> | frames | palette]\n");
 }
 
-/* `wm <op>` — window-manager operations on the terminal window, exposed as a
- * shell builtin so the tilin-WM behaviour (minimize/maximize/close) is
- * observable and testable over the serial console exactly like `date`/`vol`.
- * The operations are the same functions the title-bar buttons and the Alt
- * shortcuts call, so the framebuffer and the shell can never disagree. */
+/* `wm <op>` — window-manager operations, exposed as a shell builtin so the
+ * tiling-WM behaviour is observable and testable over the serial console
+ * exactly like `date`/`vol`. The operations are the same functions the
+ * title-bar buttons, the Alt/Super shortcuts and the mouse tick call, so
+ * the framebuffer and the shell can never disagree. */
 static void shell_cmd_wm(int argc, char **argv) {
     if (argc > 1) {
         if (kstrcmp(argv[1], "minimize") == 0) { vga_fb_toggle_minimize(); return; }
         if (kstrcmp(argv[1], "maximize") == 0) { vga_fb_toggle_fullscreen(); return; }
-        if (kstrcmp(argv[1], "close") == 0) { vga_fb_close_active(); return; }
+        if (kstrcmp(argv[1], "close") == 0) {
+            if (!vga_fb_term_close_focused()) vga_fb_close_active();
+            return;
+        }
+        if (kstrcmp(argv[1], "split") == 0) {
+            if (vga_fb_term_split())
+                kprintf("wm: split failed (out of memory)\n");
+            else
+                kprintf("wm: split: term2 on, focus %d\n", vga_fb_focus_get());
+            return;
+        }
+        if (kstrcmp(argv[1], "list") == 0) { vga_fb_list_windows(); return; }
+        if (kstrcmp(argv[1], "tile") == 0) {
+            vga_fb_tile_all();
+            kprintf("wm: tiled %d terms\n", vga_fb_nterms_get());
+            return;
+        }
+        if (kstrcmp(argv[1], "focus") == 0) {
+            if (argc > 2) {
+                if (kstrcmp(argv[2], "next") == 0) vga_fb_focus_next();
+                else if (argv[2][0] >= '0' && argv[2][0] <= '2' && !argv[2][1]) {
+                    if (vga_fb_focus_id(argv[2][0] - '0'))
+                        kprintf("wm: no such window\n");
+                } else {
+                    vga_puts("usage: wm focus [next|0|1|2]\n");
+                    return;
+                }
+            } else {
+                vga_fb_focus_next();
+            }
+            /* fall through to report */
+        }
         if (kstrcmp(argv[1], "state") == 0) { /* fall through to report */ }
-        else {
-            vga_puts("usage: wm [minimize|maximize|close|state]\n");
+        else if (kstrcmp(argv[1], "focus") != 0) {
+            vga_puts("usage: wm [minimize|maximize|close|split|list|tile|focus|state]\n");
             return;
         }
     }
-    kprintf("wm: minimized %d fullscreen %d gfx-mode %d\n",
+    kprintf("wm: minimized %d fullscreen %d gfx-mode %d focus %d nterms %d\n",
             vga_fb_is_minimized(), vga_fb_is_fullscreen(),
-            wm_gfx_mode_active());
+            wm_gfx_mode_active(), vga_fb_focus_get(),
+            vga_fb_nterms_get());
 }
 
 /* `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed
@@ -1669,7 +1749,8 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  vol [0-100]        print or set the PC-speaker volume\n");
         vga_puts("  kbd [en|es]        print or set the keyboard layout\n");
         vga_puts("  gfx [..]           graphics state / pixel / rect / shot\n");
-        vga_puts("  wm [op]            window mgmt: minimize|maximize|close|state\n");
+        vga_puts("  wm [op]            window mgmt: minimize|maximize|close|split|list|tile|focus|state\n");
+        vga_puts("  Alt+Tab focus next, Super+Tab tile, Super+arrows snap focused\n");
         vga_puts("  hash <file>        XXH64 checksum of a file\n");
         vga_puts("  unzip <z> [dir]    extract a ZIP archive (or -l to list)\n");
         vga_puts("  zip <out> <f...>   store files into a ZIP archive\n");

@@ -108,6 +108,9 @@ int  serial_getc(void);
 #define KEY_RALT      0x38
 #define KEY_HOME      0x47
 #define KEY_END       0x4F
+#define KEY_TAB       0x0F
+#define KEY_SUPER_L   0x5B
+#define KEY_SUPER_R   0x5C
 
 int  kbd_read(void);
 int  kbd_available(void);
@@ -476,6 +479,24 @@ void vga_gfx_ran_set(int on);
 /* ========== Desktop shortcut launch ========== */
 void desktop_launch(const char *cmd);
 void shell_queue_launch(const char *cmd);
+
+/* ========== Multi-window manager (vga_fb.c) ========== */
+void vga_fb_focus_next(void);
+int  vga_fb_focus_id(int id);
+int  vga_fb_focus_get(void);
+int  vga_fb_nterms_get(void);
+int  vga_fb_term_split(void);
+int  vga_fb_term_close_focused(void);
+void vga_fb_tile_all(void);
+void vga_fb_list_windows(void);
+void vga_fb_park_line(const char *b, int p);
+int  vga_fb_unpark_line(char *b, int *p);
+
+/* Shell side of window focus: park/restore the half-typed input line so it
+ * travels with its window. Implemented in shell.c, called from vga_fb.c. */
+int  shell_readline_active(void);
+void shell_focus_park(void);
+void shell_focus_restore(void);
 
 /* ========== User-pointer validation (kernel.c) ========== */
 int user_range_ok(unsigned long p, unsigned long len);

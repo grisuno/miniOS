@@ -417,6 +417,322 @@ static int term_fullscreen;
 static int term_minimized;
 static int term_px_x, term_px_y, term_px_w, term_px_h;
 
+/* ---- Multi-window manager (Alt-Tab focus + Super-Tab tiling) ----
+ *
+ * Up to WM_MAX_TERMS terminal windows share one shell engine: the globals
+ * above always mirror the FOCUSED window, so every terminal function below
+ * keeps working untouched. tw_park/tw_unpark copy the whole window state
+ * (geometry + logical ring + active line + cursor) between the globals and
+ * the per-window slot. The second window's ring lives on the kernel heap
+ * (64 KB: a static would blow the USER_LOAD_BASE .bss budget); window 0
+ * keeps the historical static ring. Focus ids: 0/1 = terminals,
+ * WM_FOCUS_GFX = a composited graphics window. The shell parks its input
+ * line per window through shell_focus_park/restore (kernel.h), so each
+ * terminal keeps its own half-typed command across Alt-Tab. History and
+ * cwd stay shared; running a program blocks both windows (one exec
+ * engine), documented in CLAUDE.md. */
+#define WM_MAX_TERMS 2
+#define WM_ELINE_SZ 256
+static void term_finish_layout(void);
+typedef struct {
+    int present;
+    int valid;
+    int x, y, sz_cols, sz_rows, cols, rows, px_x, px_y, px_w, px_h;
+    int fullscreen, minimized;
+    char (*lg)[SB_LINE_MAX];
+    int head, tail, count;
+    char act[SB_LINE_MAX];
+    int act_len, disp_off, cursor_col, csi;
+    char eline[WM_ELINE_SZ];
+    int epos, has_line;
+} termwin_t;
+static termwin_t twins[WM_MAX_TERMS];
+static int wm_nterms = 1;
+static int wm_focus;
+static int wm_term;
+static int wm_inited;
+
+static void tw_park(int i) {
+    termwin_t *t = &twins[i];
+    int k;
+    if (i < 0 || i >= WM_MAX_TERMS || !t->present) return;
+    t->x = term_x; t->y = term_y;
+    t->sz_cols = term_sz_cols; t->sz_rows = term_sz_rows;
+    t->cols = term_cols; t->rows = term_rows;
+    t->px_x = term_px_x; t->px_y = term_px_y;
+    t->px_w = term_px_w; t->px_h = term_px_h;
+    t->fullscreen = term_fullscreen; t->minimized = term_minimized;
+    for (k = 0; k < lg_count && k < SB_MAX_LINES; k++) {
+        const char *s = lg[(lg_head + k) % SB_MAX_LINES];
+        int l;
+        for (l = 0; l < SB_LINE_MAX - 1 && s[l]; l++) t->lg[k][l] = s[l];
+        t->lg[k][l] = '\0';
+    }
+    t->head = 0; t->tail = lg_count % SB_MAX_LINES; t->count = lg_count;
+    for (k = 0; k <= act_len && k < SB_LINE_MAX; k++) t->act[k] = act[k];
+    t->act_len = act_len;
+    t->disp_off = disp_off; t->cursor_col = term_cursor_col; t->csi = csi_state;
+    t->valid = 1;
+}
+
+static void tw_unpark(int i) {
+    termwin_t *t = &twins[i];
+    int k;
+    if (i < 0 || i >= WM_MAX_TERMS || !t->present || !t->valid) return;
+    term_x = t->x; term_y = t->y;
+    term_sz_cols = t->sz_cols; term_sz_rows = t->sz_rows;
+    term_cols = t->cols; term_rows = t->rows;
+    term_px_x = t->px_x; term_px_y = t->px_y;
+    term_px_w = t->px_w; term_px_h = t->px_h;
+    term_fullscreen = t->fullscreen; term_minimized = t->minimized;
+    lg_head = 0; lg_tail = 0; lg_count = 0;
+    for (k = 0; k < t->count && k < SB_MAX_LINES; k++) {
+        const char *s = t->lg[k];
+        int l;
+        for (l = 0; l < SB_LINE_MAX - 1 && s[l]; l++) lg[k][l] = s[l];
+        lg[k][l] = '\0';
+        lg_tail = (lg_tail + 1) % SB_MAX_LINES;
+        lg_count++;
+    }
+    for (k = 0; k <= t->act_len && k < SB_LINE_MAX; k++) act[k] = t->act[k];
+    act_len = t->act_len;
+    disp_off = t->disp_off; term_cursor_col = t->cursor_col; csi_state = t->csi;
+}
+
+static void wm_init_once(void) {
+    int k;
+    if (wm_inited) return;
+    wm_inited = 1;
+    wm_nterms = 1;
+    wm_focus = 0;
+    wm_term = 0;
+    for (k = 0; k < WM_MAX_TERMS; k++) {
+        twins[k].present = (k == 0);
+        twins[k].valid = 0;
+        twins[k].lg = 0;
+        twins[k].has_line = 0;
+        twins[k].eline[0] = '\0';
+        twins[k].epos = 0;
+    }
+    twins[0].lg = lg;
+}
+
+/* Select window i as the focused one (globals mirror it). Parked shell
+ * input travels with the window, so a half-typed line waits on the
+ * window it was typed in. No-op when i is not a present terminal. */
+static void tw_select(int i) {
+    if (i < 0 || i >= wm_nterms) return;
+    if (!twins[i].present) return;
+    if (shell_readline_active()) shell_focus_park();
+    tw_park(wm_term);
+    wm_focus = i;
+    wm_term = i;
+    tw_unpark(i);
+    if (shell_readline_active()) shell_focus_restore();
+}
+
+int vga_fb_focus_get(void) { return wm_focus; }
+int vga_fb_nterms_get(void) { return wm_nterms; }
+
+/* Cycle focus across present terminals plus the graphics window when a
+ * program owns the display. Same function the Alt-Tab key and `wm focus`
+ * call, so key and shell can never disagree. */
+void vga_fb_focus_next(void) {
+    int ids[3];
+    int n = 0, k, at = -1;
+    int i;
+    int nx;
+    wm_init_once();
+    for (i = 0; i < wm_nterms; i++)
+        if (twins[i].present) ids[n++] = i;
+    if (vga_fb_gfx_mode) ids[n++] = WM_FOCUS_GFX;
+    if (n < 2) return;
+    for (k = 0; k < n; k++)
+        if (ids[k] == wm_focus) at = k;
+    if (at < 0) {
+        if (ids[0] == WM_FOCUS_GFX) vga_fb_focus_id(WM_FOCUS_GFX);
+        else tw_select(ids[0]);
+        vga_fb_draw_desktop();
+        return;
+    }
+    nx = ids[(at + 1) % n];
+    if (nx == WM_FOCUS_GFX) {
+        if (shell_readline_active()) shell_focus_park();
+        tw_park(wm_term);
+        wm_focus = WM_FOCUS_GFX;
+    } else {
+        tw_select(nx);
+    }
+    vga_fb_draw_desktop();
+}
+
+/* Focus window id directly (0/1 terminal, 2 graphics). Fail closed. */
+int vga_fb_focus_id(int id) {
+    wm_init_once();
+    if (id == WM_FOCUS_GFX) {
+        if (!vga_fb_gfx_mode) return -1;
+        if (shell_readline_active()) shell_focus_park();
+        tw_park(wm_term);
+        wm_focus = WM_FOCUS_GFX;
+        vga_fb_draw_desktop();
+        return 0;
+    }
+    if (id < 0 || id >= wm_nterms || !twins[id].present) return -1;
+    if (id == wm_focus) return 0;
+    tw_select(id);
+    wm_term = id;
+    vga_fb_draw_desktop();
+    return 0;
+}
+
+/* Open the second terminal (heap ring, right half) or focus it when open. */
+int vga_fb_term_split(void) {
+    int i;
+    char (*ring)[SB_LINE_MAX];
+    wm_init_once();
+    if (wm_nterms >= WM_MAX_TERMS && twins[1].present) {
+        tw_select(1);
+        vga_fb_draw_desktop();
+        return 0;
+    }
+    ring = (char (*)[SB_LINE_MAX])kmalloc(
+        (unsigned long)SB_MAX_LINES * (unsigned long)SB_LINE_MAX);
+    if (!ring) return -1;
+    for (i = 0; i < SB_MAX_LINES; i++) ring[i][0] = '\0';
+    tw_park(wm_term);
+    twins[1].present = 1;
+    twins[1].lg = ring;
+    twins[1].head = twins[1].tail = twins[1].count = 0;
+    twins[1].act[0] = '\0';
+    twins[1].act_len = 0;
+    twins[1].disp_off = 0;
+    twins[1].cursor_col = -1;
+    twins[1].csi = 0;
+    twins[1].has_line = 0;
+    twins[1].eline[0] = '\0';
+    twins[1].epos = 0;
+    twins[1].valid = 1;
+    wm_nterms = WM_MAX_TERMS;
+    tw_unpark(wm_term);
+    vga_fb_tile_all();
+    tw_select(1);
+    vga_fb_draw_desktop();
+    return 0;
+}
+
+/* Close the focused second terminal (window 0 never closes: it resets
+ * like the historical close button). */
+int vga_fb_term_close_focused(void) {
+    wm_init_once();
+    if (wm_focus == 1 && twins[1].present) {
+        if (twins[1].lg && twins[1].lg != lg) kfree(twins[1].lg);
+        twins[1].lg = 0;
+        twins[1].present = 0;
+        twins[1].has_line = 0;
+        wm_nterms = 1;
+        tw_select(0);
+        vga_fb_reset_default();
+        return 1;
+    }
+    return 0;
+}
+
+/* Tile all present terminals: one fills the screen, two split left/right.
+ * Graphics windows stay centered (the running program owns the display). */
+void vga_fb_tile_all(void) {
+    int mc, mr, hw, ow;
+    int cur;
+    wm_init_once();
+    cur = wm_term;
+    tw_park(cur);
+    mc = (fb_width - SCROLLBAR_W) / FONT_W;
+    if (mc > TERM_MAX_COLS) mc = TERM_MAX_COLS;
+    mr = (fb_height - 2 * FONT_H) / FONT_H;
+    if (mr > TERM_MAX_ROWS) mr = TERM_MAX_ROWS;
+    hw = mc / 2;
+    ow = mc - hw;
+    if (wm_nterms < 2 || !twins[1].present) {
+        twins[0].fullscreen = 1;
+        twins[0].minimized = 0;
+    } else {
+        twins[0].fullscreen = 0; twins[0].minimized = 0;
+        twins[0].sz_cols = hw; twins[0].sz_rows = mr;
+        twins[0].x = 0; twins[0].y = 0;
+        twins[1].fullscreen = 0; twins[1].minimized = 0;
+        twins[1].sz_cols = ow; twins[1].sz_rows = mr;
+        twins[1].x = hw; twins[1].y = 0;
+    }
+    tw_unpark(cur);
+    term_finish_layout();
+}
+
+/* Serial-observable window list for `wm list` (BDD surface). Parked state
+ * is read from the slots, never by disturbing the live globals: the
+ * focused window's live values sit in the globals, the rest in twins. */
+void vga_fb_list_windows(void) {
+    int i;
+    int cur = wm_term;
+    char b[128];
+    wm_init_once();
+    tw_park(cur);
+    for (i = 0; i < wm_nterms; i++) {
+        termwin_t *t;
+        if (!twins[i].present) continue;
+        t = &twins[i];
+        ksprintf(b, "win term%d %c cols=%d rows=%d x=%d y=%d min=%d fs=%d%s\n",
+                 i, (i == wm_focus) ? '*' : ' ',
+                 t->cols, t->rows, t->x, t->y,
+                 t->minimized, t->fullscreen,
+                 t->has_line ? " line" : "");
+        serial_puts(b);
+    }
+    tw_unpark(cur);
+    if (vga_fb_gfx_mode) {
+        serial_puts(wm_focus == WM_FOCUS_GFX ? "win gfx * " : "win gfx   ");
+        serial_puts(gfx_win_title);
+        serial_puts("\n");
+    }
+}
+
+/* Park the shell's half-typed line into the focused window slot. */
+void vga_fb_park_line(const char *b, int p) {
+    termwin_t *t;
+    int k;
+    wm_init_once();
+    if (wm_focus < 0 || wm_focus >= WM_MAX_TERMS) return;
+    t = &twins[wm_focus];
+    for (k = 0; k < WM_ELINE_SZ - 1 && b[k]; k++) t->eline[k] = b[k];
+    t->eline[k] = '\0';
+    t->epos = p;
+    /* A fresh prompt parks empty: record no line, so `wm list` does not
+     * claim a half-typed command that never existed. */
+    t->has_line = (b[0] != '\0' || p > 0) ? 1 : 0;
+}
+
+/* Restore the focused window's parked line. Returns 1 when one existed. */
+int vga_fb_unpark_line(char *b, int *p) {
+    termwin_t *t;
+    int k;
+    wm_init_once();
+    if (wm_focus < 0 || wm_focus >= WM_MAX_TERMS) return 0;
+    t = &twins[wm_focus];
+    if (!t->has_line) return 0;
+    for (k = 0; k < WM_ELINE_SZ - 1 && t->eline[k]; k++) b[k] = t->eline[k];
+    b[k] = '\0';
+    *p = t->epos;
+    return 1;
+}
+
+/* Hit-test: is (mx,my) inside terminal i's rectangle (title + content)? */
+static int tw_hit(int i, int mx, int my) {
+    termwin_t *t = &twins[i];
+    int w = t->px_w + SCROLLBAR_W;
+    int h = t->px_h + FONT_H;
+    if (!t->present || t->minimized) return 0;
+    return mx >= t->px_x && mx < t->px_x + w &&
+           my >= t->px_y && my < t->px_y + h;
+}
+
 /* Close request for a graphics window. A ring-3 program owns the display and
  * only the kernel can end it: the WM's close button sets this flag and the
  * syscall dispatcher acts on it at the program's next syscall, so the exit
@@ -868,10 +1184,13 @@ void vga_fb_blit_gfx_window(void) {
     gfx_win_x = dst_x;
     gfx_win_y = dst_y;
     gfx_win_w = DOOM_W + SCROLLBAR_W;
-    vga_fb_rect(dst_x, dst_y, DOOM_W + SCROLLBAR_W, FONT_H, COL_TITLEBAR);
-    text_px(dst_x + 4, dst_y, gfx_win_title, COL_TITLE_TXT, COL_TITLEBAR);
-    wm_draw_buttons(dst_x, dst_y, DOOM_W + SCROLLBAR_W,
-                    COL_TITLE_TXT, COL_TITLEBAR);
+    {
+        uint8_t gbg = (wm_focus == WM_FOCUS_GFX) ? COL_TITLEBAR : COL_SHADOW;
+        vga_fb_rect(dst_x, dst_y, DOOM_W + SCROLLBAR_W, FONT_H, gbg);
+        text_px(dst_x + 4, dst_y, gfx_win_title, COL_TITLE_TXT, gbg);
+        wm_draw_buttons(dst_x, dst_y, DOOM_W + SCROLLBAR_W,
+                        COL_TITLE_TXT, gbg);
+    }
     /* Indexed back-buffer pixels expand through the program's own palette,
      * so the game keeps its colors without recoloring the desktop. */
     if (fb_bpp == 8) {
@@ -916,10 +1235,13 @@ void vga_fb_blit_nk_window(void) {
     gfx_win_x = dst_x;
     gfx_win_y = dst_y;
     gfx_win_w = NK_W + SCROLLBAR_W;
-    vga_fb_rect(dst_x, dst_y, NK_W + SCROLLBAR_W, FONT_H, COL_TITLEBAR);
-    text_px(dst_x + 4, dst_y, "Nuklear", COL_TITLE_TXT, COL_TITLEBAR);
-    wm_draw_buttons(dst_x, dst_y, NK_W + SCROLLBAR_W,
-                    COL_TITLE_TXT, COL_TITLEBAR);
+    {
+        uint8_t gbg = (wm_focus == WM_FOCUS_GFX) ? COL_TITLEBAR : COL_SHADOW;
+        vga_fb_rect(dst_x, dst_y, NK_W + SCROLLBAR_W, FONT_H, gbg);
+        text_px(dst_x + 4, dst_y, "Nuklear", COL_TITLE_TXT, gbg);
+        wm_draw_buttons(dst_x, dst_y, NK_W + SCROLLBAR_W,
+                        COL_TITLE_TXT, gbg);
+    }
     if (fb_bpp == 8) {
         for (r = 0; r < NK_H; r++) {
             volatile uint8_t *dst = &FB_ADDR[(unsigned)(dst_y + FONT_H + r) * (unsigned)fb_pitch + (unsigned)dst_x];
@@ -964,15 +1286,21 @@ static void term_recalc(void) {
 }
 
 /* ---- Desktop ---- */
-static void draw_title(void) {
-    const char *title = "MiniOS Terminal";
+static void draw_title_win(int idx, int focused) {
+    const char *title = idx == 0 ? "MiniOS Terminal" : "MiniOS Terminal 2";
+    uint8_t bg = focused ? COL_TITLEBAR : COL_SHADOW;
     int w = term_px_w + SCROLLBAR_W;
     int tw = 3 * (WM_BTN_W + WM_BTN_PAD) + 8;   /* room for the controls */
-    vga_fb_rect(term_px_x, term_px_y, w, FONT_H, COL_TITLEBAR);
+    vga_fb_rect(term_px_x, term_px_y, w, FONT_H, bg);
     if (w > tw)
-        text_px(term_px_x + 4, term_px_y, title, COL_TITLE_TXT, COL_TITLEBAR);
-    wm_draw_buttons(term_px_x, term_px_y, w, COL_TITLE_TXT, COL_TITLEBAR);
+        text_px(term_px_x + 4, term_px_y, title, COL_TITLE_TXT, bg);
+    if (focused && w > tw + 2 * FONT_W)
+        text_px(term_px_x + w - tw - 2 * FONT_W - 4, term_px_y, "*",
+                COL_TITLE_TXT, bg);
+    wm_draw_buttons(term_px_x, term_px_y, w, COL_TITLE_TXT, bg);
 }
+
+
 
 /* ---- Taskbar (clock + speaker volume + keyboard layout) ----
  * The bottom strip is the desktop's status bar: a live CMOS clock on the
@@ -1310,9 +1638,17 @@ void vga_fb_hide_text_cursor(void) {
 }
 
 void vga_fb_draw_desktop(void) {
+    int cur, i, order[WM_MAX_TERMS], n = 0;
     vga_fb_set_palette();
     vga_fb_clear();
+    wm_init_once();
+    cur = wm_term;
+    /* Recalc BEFORE parking: on the first boot the globals still hold
+     * their zero init, and parking them first would snapshot zeros that
+     * the final unpark restores over the recalculated geometry (leaving
+     * term_cols = 0, which divides by zero in term_draw_cell). */
     term_recalc();
+    tw_park(cur);
     wallpaper_draw();
     desktop_shortcuts_load();
     /* Dock sits on the wallpaper, BELOW the terminal window: drawn before the
@@ -1320,17 +1656,29 @@ void vga_fb_draw_desktop(void) {
      * (normal window-on-top-of-dock behaviour), never the reverse. */
     desktop_shortcuts_draw();
     taskbar_render();
-    /* A minimized window is not drawn; the content stays in the logical ring,
-     * so restoring repaints it from scratch with nothing lost. */
-    if (!term_minimized) {
-        draw_title();
-        /* Repaint the terminal content (live or scrolled view) so the prompt
-         * and any typed/echoed text survive a window move, snap, resize or
-         * fullscreen toggle. Re-wrapping from the logical lines makes the
-         * content adapt to the new window size instead of being clipped. */
-        disp_clamp();
-        term_render();
+    /* All present terminals paint, unfocused first so the focused window is
+     * on top where they overlap. A minimized window is not drawn; the
+     * content stays in its slot, so restoring repaints it with nothing
+     * lost. Single-window boots take the exact same path as before. */
+    for (i = 0; i < wm_nterms; i++)
+        if (twins[i].present && i != cur) order[n++] = i;
+    for (i = 0; i < wm_nterms; i++)
+        if (twins[i].present && i == cur) order[n++] = i;
+    for (i = 0; i < n; i++) {
+        tw_unpark(order[i]);
+        term_recalc();
+        if (!term_minimized) {
+            draw_title_win(order[i], order[i] == wm_focus);
+            /* Repaint the terminal content (live or scrolled view) so the
+             * prompt and any typed/echoed text survive a window move,
+             * snap, resize or fullscreen toggle. Re-wrapping from the
+             * logical lines makes the content adapt to the new window
+             * size instead of being clipped. */
+            disp_clamp();
+            term_render();
+        }
     }
+    tw_unpark(cur);
     /* Any redraw changed the pixels under the cursor; force a fresh save so a
      * stale snapshot never leaves pointer trails behind. */
     cursor_visible = 0;
@@ -1860,6 +2208,22 @@ void vga_fb_mouse_tick(void) {
             skip_drag = 1;
             return;
         }
+        /* Click-to-focus: a click on an unfocused terminal raises it.
+         * Same select path as Alt-Tab, so mouse and key agree. */
+        {
+            int f;
+            for (f = 0; f < wm_nterms; f++) {
+                if (f == wm_focus || !twins[f].present) continue;
+                if (tw_hit(f, mouse_state.x, mouse_state.y)) {
+                    tw_select(f);
+                    vga_fb_draw_desktop();
+                    tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
+                    cursor_visible = 0;
+                    skip_drag = 1;
+                    return;
+                }
+            }
+        }
         /* Check desktop icon clicks. */
         const char *cmd = desktop_shortcuts_hit_test(mouse_state.x, mouse_state.y);
         if (cmd) desktop_launch(cmd);
@@ -1972,6 +2336,10 @@ void vga_fb_mouse_init(void) {
     act_len = 0;
     act[0] = '\0';
     disp_off = 0;
+    wm_inited = 0;
+    wm_nterms = 1;
+    wm_focus = 0;
+    wm_term = 0;
 }
 
 void vga_fb_init(void) {
