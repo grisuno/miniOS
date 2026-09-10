@@ -352,7 +352,7 @@ __asm__(
 
 extern char ramdisk_start[];
 extern char ramdisk_end[];
-extern char ramdisk_size[];
+/* ramdisk_size decl + ramdisk_image_size() wrapper live in kernel.h. */
 
 __attribute__((section(".init.text")))
 void kmain(void) {
@@ -407,8 +407,8 @@ void kmain(void) {
 
     /* ramdisk_size is an absolute linker symbol whose address IS the
      * image size (see kernel.ld); no pointer subtraction involved. */
-    if ((unsigned long)ramdisk_size > 0) {
-        ramdisk_setup_from(ramdisk_start, (unsigned)(unsigned long)ramdisk_size);
+    if (ramdisk_image_size() > 0) {
+        ramdisk_setup_from(ramdisk_start, (unsigned)ramdisk_image_size());
     }
 
     block_init();

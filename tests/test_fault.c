@@ -23,7 +23,9 @@
 #include "vma.h"
 
 static int failures = 0;
-#define CHECK(c, m) do { if (!(c)) { failures++; fprintf(stderr, "FAIL: %s:%d: %s\n", __FILE__, __LINE__, m); } } while (0)
+/* cert-err33-c: even test diagnostics are checked; a blind harness that
+ * cannot report is itself a failure. */
+#define CHECK(c, m) do { if (!(c)) { failures++; if (fprintf(stderr, "FAIL: %s:%d: %s\n", __FILE__, __LINE__, m) < 0) failures++; } } while (0)
 
 /* ---- Mirror of kernel/syscalls.c user window ---- */
 #define U_BASE ((unsigned long)0x00400000ul)
@@ -188,6 +190,6 @@ int main(void) {
         CHECK(ip == 0, "zero still refused");
     }
 
-    if (!failures) printf("fault: ok (pool=%d)\n", VMA_MAX);
+    if (!failures && printf("fault: ok (pool=%d)\n", VMA_MAX) < 0) failures++;
     return failures ? 1 : 0;
 }

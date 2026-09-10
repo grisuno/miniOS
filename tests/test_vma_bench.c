@@ -46,12 +46,13 @@ static void bench(int n) {
     for (i = 0; i < n; i++) l_insert(0x500000ul + (unsigned long)i * 0x1000);
     for (i = 0; i < n; i++) l_find(0x500000ul + (unsigned long)i * 0x1000);
     t3 = now_us();
-    printf("n=%d tree_insert=%.2fus/op tree_find=%.2fus/op list=%.2fus/op\n",
-           n, (double)(t1-t0)/n, (double)(t2-t1)/n, (double)(t3-t2)/n);
+    if (printf("n=%d tree_insert=%.2fus/op tree_find=%.2fus/op list=%.2fus/op\n",
+               n, (double)(t1-t0)/n, (double)(t2-t1)/n, (double)(t3-t2)/n) < 0)
+        return;
 }
 
 int main(void) {
     bench(16); bench(48); bench(512);
-    printf("vma-bench: ok (informational)\n");
+    if (printf("vma-bench: ok (informational)\n") < 0) return 1;
     return 0;
 }

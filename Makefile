@@ -1045,7 +1045,7 @@ LINT_KERN_SRCS = kernel/loader.c kernel/shell.c kernel/syscalls.c \
                  kernel/sched.c kernel/mm.c smp.c fs/minifs.c net/net.c
 LINT_HOST_SRCS = progs/tls_u/tls_u_port.c progs/tls_u/tls_u_main.c \
                  tests/test_fault.c tests/test_vma_bench.c
-LINT_TIDY_CHECKS = bugprone-*,-bugprone-reserved-identifier,-bugprone-easily-swappable-parameters,clang-analyzer-security*,cert-err34-c,misc-definitions-in-headers
+LINT_TIDY_CHECKS = bugprone-*,-bugprone-reserved-identifier,-bugprone-easily-swappable-parameters,clang-analyzer-security*,cert-err34-c,cert-err33-c,misc-definitions-in-headers
 
 lint: | $(TOOLS_DIR)
 	cppcheck --error-exitcode=1 --inline-suppr --enable=warning,performance,portability \

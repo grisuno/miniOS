@@ -40,14 +40,15 @@ reason; "noisy tool" is not a reason.
 - `cert-err34-c sscanf %u` (`tls_u_port.c` dotted quad): real
   (overflow is UB before the `<256` check), **fixed** with strict
   `parse_quad` (digits+dots only, per-octet bound, full consumption).
-- `cert-err33-c` (unchecked `fprintf`/`fwrite` returns in CLI tools):
-  **accepted**, with a sharper reason than convention alone: these are
-  best-effort diagnostics on `stderr`, never the program's output or
-  state. Aborting (or restructuring) a fetch tool because a diagnostic
-  write hit a closed pipe would trade a visible error for a confusing
-  one; the kernel side (`kprintf`) is void-return by design, so there is
-  no return to check there either. Revisit if a tool ever writes
-  billable output through an unchecked call.
+ - `cert-err33-c` (unchecked `fprintf`/`fwrite` returns in CLI tools):
+   real, **fixed**: `tls_u_main.c` routes every `stderr` diagnostic
+   through `diag()`, which exits 3 fail-closed when the write fails
+   (exit codes: 0 ok, 1 fetch failure, 2 usage, 3 blind operator);
+   the body `fwrite` to stdout was already checked. Test harnesses
+   (`test_fault.c`, `test_vma_bench.c`) check their reporting prints
+   the same way. Enforced in the gate: `cert-err33-c` is now part of
+   `LINT_TIDY_CHECKS`. The kernel side (`kprintf`) stays void-return
+   by design, so there is no return to check there.
 - `bugprone-reserved-identifier` (`_POSIX_C_SOURCE`, `_DEFAULT_SOURCE`):
   **accepted by necessity**. Feature-test macros are reserved by design;
   required to expose `getaddrinfo`/`poll` declarations.

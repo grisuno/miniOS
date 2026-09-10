@@ -23,9 +23,23 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 #include "tls_port.h"
 #include "tls.h"
+
+/* cert-err33-c: every diagnostic write is checked. stderr carries only
+ * diagnostics here (the page body goes to stdout, itself checked at the
+ * fwrite site), so a failed diagnostic means the operator is blind:
+ * exit 3 fail-closed instead of continuing silently. Exit codes: 0 ok,
+ * 1 fetch failure, 2 usage, 3 diagnostic output failed. */
+static void diag(const char *fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+    int r = vfprintf(stderr, fmt, ap);
+    va_end(ap);
+    if (r < 0) exit(3);
+}
 
 /* Strict port parser (clang-tidy cert-err34-c: atoi reports no
  * errors, so "abc" and overflow both become 0 and fail open into the
@@ -58,7 +72,7 @@ int main(int argc, char **argv) {
     int rlen;
 
     if (argc < 2) {
-        fprintf(stderr, "usage: tlsget <host-or-ip> [path] [port]\n");
+        diag("usage: tlsget <host-or-ip> [path] [port]\n");
         return 2;
     }
     host = argv[1];
@@ -66,13 +80,13 @@ int main(int argc, char **argv) {
     if (argc > 3) {
         int p = parse_port(argv[3]);
         if (p < 0) {
-            fprintf(stderr, "tlsget: bad port\n");
+            diag("tlsget: bad port\n");
             return 2;
         }
         port = p;
     }
     if (tls_u_resolve(host, &ip) != 0) {
-        fprintf(stderr, "tlsget: cannot resolve %s\n", host);
+        diag("tlsget: cannot resolve %s\n", host);
         return 1;
     }
     fd = (int)socket(AF_INET, SOCK_STREAM, 0);
@@ -90,7 +104,7 @@ int main(int argc, char **argv) {
         return 1;
     }
     if (tls_handshake(fd, host) != 0) {
-        fprintf(stderr, "tlsget: handshake failed\n");
+        diag("tlsget: handshake failed\n");
         close(fd);
         return 1;
     }
@@ -100,31 +114,31 @@ int main(int argc, char **argv) {
                     "Connection: close\r\n\r\n",
                     path, host);
     if (rlen <= 0 || rlen >= (int)sizeof(req)) {
-        fprintf(stderr, "tlsget: request too long\n");
+        diag("tlsget: request too long\n");
         close(fd);
         return 1;
     }
     if (tls_send(fd, req, rlen) != rlen) {
-        fprintf(stderr, "tlsget: send failed\n");
+        diag("tlsget: send failed\n");
         close(fd);
         return 1;
     }
     for (;;) {
         n = tls_recv(fd, body, (int)sizeof(body));
         if (n < 0) {
-            fprintf(stderr, "tlsget: recv failed\n");
+            diag("tlsget: recv failed\n");
             close(fd);
             return 1;
         }
         if (n == 0) break;
         total += n;
         if (fwrite(body, 1, (size_t)n, stdout) != (size_t)n) {
-            fprintf(stderr, "tlsget: stdout failed\n");
+            diag("tlsget: stdout failed\n");
             close(fd);
             return 1;
         }
     }
     close(fd);
-    fprintf(stderr, "tlsget: %s (%ld bytes)\n", host, total);
+    diag("tlsget: %s (%ld bytes)\n", host, total);
     return 0;
 }

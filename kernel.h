@@ -549,6 +549,18 @@ extern char ramdisk_start[];
 extern char ramdisk_end[];
 extern char ramdisk_size[];
 
+/* ramdisk_size is an absolute linker symbol (kernel.ld computes it as
+ * ramdisk_end - ramdisk_start, where the subtraction is legal). Its
+ * ADDRESS is the size: declare char[], never size_t (that would read
+ * memory at that address), read it by address only, and never recompute
+ * it with pointer subtraction in C (undefined behaviour). The value is
+ * a link-time difference, so it is invariant under the KASLR slide:
+ * ramdisk_start and ramdisk_end move together inside the contiguous
+ * image span. */
+static inline unsigned long ramdisk_image_size(void) {
+    return (unsigned long)ramdisk_size;
+}
+
 /* ========== Kernel clock ========== */
 unsigned long ktime_ms(void);
 
