@@ -11,7 +11,6 @@
 
 #include "kernel.h"
 #include "net.h"
-#include "tls.h"
 #include "bootdefs.h"
 #include "minifs.h"
 #include "ide.h"
@@ -76,35 +75,41 @@ static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)
     if (!user_str_ok((unsigned long)a1, 255)) return EFAULT;
     return net_sys_dns(a1);
 }
-static long sys_minios_tls_handshake(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a3; (void)a4; (void)a5; (void)a6;
-#ifdef MINIOS_NO_TLS
-    (void)a1; (void)a2;
+static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6) {
+    /* Retired kernel-TLS numbers (201/203): the engine left ring 0 and
+     * 202 now serves Linux futex, so these always answer -ENOSYS.
+     * Fossil miniGCC binaries still trap them and fail closed. */
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     return -38;
-#else
-    if (!user_str_ok((unsigned long)a2, 255)) return EFAULT;
-    return tls_sys_handshake(a1, a2);
-#endif
 }
-static long sys_minios_tls_send(long a1, long a2, long a3, long a4, long a5, long a6) {
+static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6) {
+    /* Linux futex(2): __NR_futex is 202, the retired MINIOS_SYS_TLS_SEND
+     * number, so it is served here rather than in the Linux switch below
+     * (the MiniOS table is consulted first for 200..327 and would win).
+     * glibc's NPTL/malloc/resolver issue raw futex traps — e.g. a
+     * WAKE|PRIVATE inside getaddrinfo, which is what `freedom google.cl`
+     * needs — and answering -ENOSYS aborts the process ("The futex
+     * facility returned an unexpected error code", exit 134). WAIT/WAKE
+     * run on kernel/futex.c; a mismatch is -EAGAIN like Linux (the
+     * MiniOS 226/227 pair keeps its own FUTEX_NOMATCH convention
+     * untouched). No timeout support: a WAIT with a deadline sleeps
+     * until woken. Every other op (REQUEUE, BITSET, PI...) is -ENOSYS. */
+    unsigned long uaddr = (unsigned long)a1;
+    int cmd = futex_linux_cmd(a2);
+    long n;
     (void)a4; (void)a5; (void)a6;
-#ifdef MINIOS_NO_TLS
-    (void)a1; (void)a2; (void)a3;
-    return -38;
-#else
-    if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
-    return tls_sys_send(a1, a2, a3);
-#endif
-}
-static long sys_minios_tls_recv(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a4; (void)a5; (void)a6;
-#ifdef MINIOS_NO_TLS
-    (void)a1; (void)a2; (void)a3;
-    return -38;
-#else
-    if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
-    return tls_sys_recv(a1, a2, a3);
-#endif
+    if (cmd < 0) return -38;
+    if (!user_range_ok(uaddr, 4)) return EFAULT;
+    if (cmd == LINUX_FUTEX_WAKE) {
+        n = a3;
+        if (n < 0) n = 0;
+        if (n > FUTEX_WAKE_ALL) n = FUTEX_WAKE_ALL;
+        return futex_wake(uaddr, (int)n);
+    }
+    n = futex_wait(uaddr, (int)a3);
+    if (n == FUTEX_NOMATCH) return -11; /* EAGAIN */
+    if (n == FUTEX_NOPROC) return -22;  /* EINVAL */
+    return n; /* FUTEX_OK == 0 */
 }
 static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
@@ -245,12 +250,12 @@ static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a
 }
 static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    vga_fb_blit_nk_window();
     if (a1) {
         int *o = (int *)(unsigned long)a1;
         if (!user_range_ok((unsigned long)a1, 2 * sizeof(int))) return EFAULT;
         o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
     }
+    vga_fb_blit_nk_window();
     return 0;
 }
 static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -362,12 +367,12 @@ static long batch_kdispatch(uint32_t opcode) {
 static long sys_minios_gfx_present(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     if (a1 == 1) {
-        vga_fb_blit_nk_window();
         if (a2) {
             int *o = (int *)(unsigned long)a2;
             if (!user_range_ok((unsigned long)a2, 2 * sizeof(int))) return EFAULT;
             o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
         }
+        vga_fb_blit_nk_window();
         return 0;
     }
     vga_fb_blit_gfx_window();
@@ -471,9 +476,9 @@ static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long 
 
 static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] = {
     [MINIOS_SYS_DNS - MINIOS_SYSCALL_BASE]         = { sys_minios_dns,         "dns" },
-    [MINIOS_SYS_TLS_HANDSHAKE - MINIOS_SYSCALL_BASE] = { sys_minios_tls_handshake, "tls_handshake" },
-    [MINIOS_SYS_TLS_SEND - MINIOS_SYSCALL_BASE]    = { sys_minios_tls_send,    "tls_send" },
-    [MINIOS_SYS_TLS_RECV - MINIOS_SYSCALL_BASE]    = { sys_minios_tls_recv,    "tls_recv" },
+    [MINIOS_SYS_TLS_HANDSHAKE - MINIOS_SYSCALL_BASE] = { sys_minios_tls_retired, "tls_retired" },
+    [MINIOS_SYS_TLS_SEND - MINIOS_SYSCALL_BASE]    = { sys_linux_futex,    "futex" },
+    [MINIOS_SYS_TLS_RECV - MINIOS_SYSCALL_BASE]    = { sys_minios_tls_retired, "tls_retired" },
     [MINIOS_SYS_TIME - MINIOS_SYSCALL_BASE]        = { sys_minios_time,        "time" },
     [MINIOS_SYS_KBD - MINIOS_SYSCALL_BASE]         = { sys_minios_kbd,         "kbd" },
     [MINIOS_SYS_PALETTE - MINIOS_SYSCALL_BASE]     = { sys_minios_palette,     "palette" },
@@ -922,16 +927,22 @@ static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6
 }
 
 static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6) {
+    /* Wall-clock epoch seconds from the CMOS RTC (second resolution:
+     * tv_usec is always 0). The old code returned TSC milliseconds
+     * since boot, which is uptime, not an epoch: every consumer that
+     * compares against absolute dates broke, notably the ring-3 TLS
+     * engine's certificate validity window (days computed to 0, so no
+     * real chain ever verified in-guest). On RTC failure the fields
+     * stay 0/0 and the call still returns 0; TLS treats epoch 0 as "no
+     * clock" and fails the chain check closed downstream. */
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     if (a1) {
         unsigned long *tv = (unsigned long *)a1;
+        unsigned long sec = 0;
         if (!user_range_ok((unsigned long)a1, 2 * sizeof(unsigned long))) return EFAULT;
-        unsigned long lo = 0, hi = 0;
-        __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
-        unsigned long tsc = ((unsigned long)hi << 32) | lo;
-        unsigned long ms = tsc / 1000000UL;
-        tv[0] = ms / 1000;
-        tv[1] = (ms % 1000) * 1000;
+        rtc_wall_seconds(&sec);
+        tv[0] = sec;
+        tv[1] = 0;
     }
     return 0;
 }
@@ -1005,10 +1016,13 @@ long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
     long ret;
     int show = s_trace_enabled && !trace_is_noisy(n);
     if (show)
-        kprintf("syscall %d(%d, %d, %d, %d, %d, %d)",
-                (int)n, (int)a1, (int)a2, (int)a3, (int)a4, (int)a5, (int)a6);
+        kprintf("syscall %d(%ld, %ld, %ld, %ld, %ld, %ld)",
+                (int)n, a1, a2, a3, a4, a5, a6);
     ret = ksyscall_dispatch(n, a1, a2, a3, a4, a5, a6);
-    if (show) kprintf(" = %d\n", (int)ret);
+    /* Full 64-bit result: printing (int)ret once hid a valid DNS answer
+     * (an IPv4 >= 128.0.0.0 looks negative in 32 bits) and sent a debug
+     * session down the wrong path. */
+    if (show) kprintf(" = %ld\n", ret);
     return ret;
 }
 
@@ -1025,6 +1039,22 @@ int user_range_ok(unsigned long p, unsigned long len) {
     if (len > USER_LOAD_END - p) return 0;
     return p + len <= USER_LOAD_END;
 }
+
+/* user_str_ok(p, maxlen): 1 iff a NUL byte sits within [p, p+maxlen) and
+ * the whole span stays inside the user window; 0 otherwise (no NUL in
+ * the first maxlen bytes, or the span would leave the window). Callers
+ * must then read at most maxlen bytes: the check and the copy share the
+ * same bound, so the gfx_title over-read class (validate 1, read 31)
+ * cannot recur.
+ *
+ * Discipline (audit 2026-09, kept as comment, not a deprecation: both
+ * primitives are legitimate): user_range_ok is ONLY for exact-size
+ * buffers (sizeof(int), 144-byte stat, fixed PCM length); every NUL-
+ * terminated string goes through user_str_ok/SANITIZE_STR. Count-by-size
+ * products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
+ * pre-bounded against (END-BASE)/elemsz BEFORE the multiply, so the
+ * product cannot wrap past the range check. New handlers must use the
+ * SANITIZE_* macros, which encode all three rules. */
 
 int user_str_ok(unsigned long p, unsigned long maxlen) {
     unsigned long i;
@@ -1072,6 +1102,8 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         const minios_syscall_entry_t *e = &minios_syscall_table[n - MINIOS_SYSCALL_BASE];
         if (e->fn) {
             if (n != MINIOS_SYS_SECCOMP && n != MINIOS_SYS_NICE &&
+                n != MINIOS_SYS_TLS_SEND && /* now Linux futex: filtering
+                it would abort any glibc program that locks */
                 n >= SECCOMP_MIN && n <= SECCOMP_MAX &&
                 seccomp_denied(current_pid, (int)n))
                 return -1;
@@ -1085,11 +1117,14 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         return do_open_path((const char *)a2, a3);
     /* 12, 9, 11, 158 now live in linux_syscall_table. */
     case 218: return 1;
-    case 228: /* clock_gettime */
+    case 228: /* clock_gettime: wall-clock epoch like gettimeofday
+        * (CLOCK_* id ignored: one CMOS wall clock, second resolution). */
         if (a2) {
             unsigned long *ts = (unsigned long *)a2;
+            unsigned long sec = 0;
             if (!user_range_ok((unsigned long)ts, 2 * sizeof(unsigned long))) return EFAULT;
-            ts[0] = 0; ts[1] = 0;
+            rtc_wall_seconds(&sec);
+            ts[0] = sec; ts[1] = 0;
         }
         return 0;
     /* 16, 24, 39, 57, 58, 59, 60, 61, 62, 41, 42, 44, 45, 48, 7 now
@@ -1317,9 +1352,14 @@ static int k_syscall_spawn(const char *path, const char *redirect,
 
     int rc = EFAULT;
     if (etype == ET_REL) {
+        /* Same gate as shell.c, same constant: `resolved` is fs_resolve()
+         * output (normalised, no symlinks), and the bytes in `data` were
+         * snapshotted from that same path above, so a concurrent rename
+         * only selects different bytes -- hostile bytes still face the
+         * ELF/reloc validators and ETREL_IMAGE_MAX. */
         const char *rp = resolved;
         if (rp[0] == '/') rp++;
-        if (!(rp[0]=='o'&&rp[1]=='b'&&rp[2]=='j'&&rp[3]=='e'&&rp[4]=='c'&&rp[5]=='t'&&rp[6]=='s'&&rp[7]=='/')) {
+        if (kstrncmp(rp, ETREL_TRUSTED_DIR, ETREL_TRUSTED_LEN) != 0) {
             kprintf("SPAWN: refusing untrusted ET_REL");
             kfree(data);
             if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }

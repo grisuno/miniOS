@@ -726,7 +726,16 @@ framebuffer is not.
   non-BCD field, an impossible hour/minute/second, or a clock that never stops
   updating returns failure, never a plausible-but-wrong time. The taskbar
   redraws the clock when the second changes and treats a failed read as "clock
-  unavailable", never a stale value.
+  unavailable", never a stale value. `rtc_read_date` adds the calendar side
+  (CMOS 0x07-0x09, two-digit year mapped to 2000..2099, Feb 29 validated
+  against the leap rule including the %400 century case) and
+  `rtc_days_from_civil` converts to post-1970 days, so `gettimeofday(96)`
+  and `clock_gettime(228)` report true epoch seconds (second resolution,
+  usec/nsec zero). The old `gettimeofday` returned TSC milliseconds since
+  boot — uptime, not an epoch — which silently broke every absolute-date
+  consumer, notably the ring-3 TLS certificate window (days computed to 0,
+  so no real chain ever verified in-guest). On RTC failure both syscalls
+  report 0/0 and TLS fails the chain closed downstream.
 - **Volume (`pcspk.c`):** a master volume 0..100, `PCSPK_VOL_DEFAULT` at boot,
   clamped on set. The PC speaker has no hardware amplitude and this kernel does
   not drive a PWM carrier, so volume is a **mute switch**: `pcspk_tone` opens
@@ -1062,9 +1071,12 @@ driver, dropped fragments in the stack).
 - All constants are named in `net.h` (`NET_*`); none of the fixed
   addresses, ports or timeouts appears as a bare literal.
 
-### TLS client (tls.c + tls_crypto.c + tls_x509.c)
-The kernel speaks TLS 1.2 as a client over an established TCP socket, so
-`https://` works without the browser ever touching key material. The scope
+### TLS client (userspace: tlsget/freedom over net/tls*.c)
+TLS 1.2 left ring 0 (`net/tls*.c` never link into the image; 201/203
+always answer `-ENOSYS` and 202 serves Linux `futex(2)`). The same sources compile
+unchanged with `-DTLS_RING3` into `tlsget`/`freedom`, so `https://`
+works without the kernel ever touching key material. The engine spec
+below describes the shared sources, not kernel code. The scope
 is fixed and fail-closed: no downgrade, no fallback, no session resumption.
 
 - Handshake: `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256` (0xC02F) and
@@ -1116,13 +1128,24 @@ is fixed and fail-closed: no downgrade, no fallback, no session resumption.
   records are decrypted before their level/description is read, so an
   encrypted close_notify is a clean EOF and never a bogus diagnostic).
   All three validate fd and length and return -1 with a diagnostic on
-  misuse.
+  misuse. Retired: the engine left ring 0 for good, so 201/203 always
+  answer `-ENOSYS` and 202 serves Linux `futex(2)` instead (`__NR_futex`
+  collides with the old TLS_SEND number; glibc's NPTL aborts without a
+  real futex there). Fossil miniGCC binaries still trap all three and
+  fail closed. The supported path is `tlsget`/`freedom`, which link the
+  same engine in ring 3 and never trap 201-203. Multi-fetch processes
+  must close through `tls_close` (frees the fd-keyed session), never raw
+  `close`, or the next fetch reuses the recycled fd onto a live slot.
 
 ### Headless browser (`freedom`)
 `bin/freedom` is the headless text browser: a curlfree-style engine (the
 host `http.c` + `htmlfilter.c` ideas) with a FreeDom-style omnibox. It is
-built from `progs/src/freedom.c` through the miniGCC-to-ld chain, like `bin/cp`,
-and talks to the stack through the Linux socket syscalls plus the DNS
+built from `progs/src/freedom.c` with the host toolchain linked against
+the shared ring-3 TLS engine (`tlsget`/`freedom3` sources), so `https://`
+works with no TLS in the kernel; `bin/freedom-mini` is the miniGCC-to-ld
+twin of the same source (http only: miniGCC cannot compile the
+struct-heavy TLS engine), kept as toolchain dogfood. Both talk to the
+stack through the Linux socket syscalls plus the DNS
 syscall; every timeout, retransmission and EOF (0 = FIN) semantics it leans
 on is already implemented in the network driver, so the program owns only
 HTTP semantics.
@@ -1139,10 +1162,13 @@ HTTP semantics.
   body is read either to `Content-Length` (never waiting for the FIN past
   the announced body) or to EOF, decoding `Transfer-Encoding: chunked`
   in place. Header names match case-insensitively. On `https://` the same
-  dialogue runs over the TLS syscalls after `tls_handshake`.
+  dialogue runs over the ring-3 TLS engine after `tls_handshake`; a failed
+  handshake fails closed with
+  `freedom: https handshake with <host> failed` (BDD-pinned against a
+  plain-HTTP port), with no key material crossing ring 0.
 - Redirects (curlfree + FreeDom policy): a 3xx with a `Location` is chased
   up to `FREEDOM_HOPS_MAX` hops. Absolute `http://` and `https://` targets
-  are followed (https through the TLS syscalls); relative targets resolve
+  are followed (https through the ring-3 TLS engine); relative targets resolve
   against the current path; any other explicit scheme in a `Location` is
   refused, fail closed.
 - HTML filter (htmlfilter.c): comments are skipped, `script`/`style`
@@ -1169,9 +1195,11 @@ HTTP semantics.
 - Diagnostics are `freedom: ...` lines; the fetch ends with
   `freedom: <host> (<n> bytes)`.
 - Build: the ld stubs grew `tls_handshake`/`tls_send`/`tls_recv` (MiniOS
-  syscalls 201-203), so the toolchain in `ld/ld.c` and the ramdisk binary
-  must be rebuilt together; the Makefile already derives `bin/freedom`
-  from `progs/src/freedom.c`. Two toolchain fixes this program leans on,
+  syscalls 201-203, now `-ENOSYS` on a default kernel), so the toolchain
+  in `ld/ld.c` and the ramdisk binary must be rebuilt together; the
+  Makefile derives `bin/freedom` (host gcc + ring-3 TLS) and
+  `bin/freedom-mini` (miniGCC-to-ld, http only) from `progs/src/freedom.c`.
+  Two toolchain fixes this program leans on,
   both in the sibling checkouts: ld's `strip_comment` must ignore `#`
   inside string literals (`.asciz "#"` is the id/class separator in the
   dumps), and miniGCC must index a chained subscript on a pointer array
@@ -1251,9 +1279,23 @@ on the IDE disk):
   it back into the fresh image via `mkfs.minifs.py`, so a rebuild never wipes
   runtime saves. The `os.img` rule refreshes `minifs.bin` the same way because
   a kernel-only rebuild re-embeds it and would otherwise clobber the live
-  partition with the stale artifact. Only `make clean` (which deletes the
-  images) loses saves.
+  partition with the stale artifact. Not even `make clean` loses saves:
+  it snapshots them to `saves-backup/` first (no-op when there is nothing
+  to save), and the image rules reseed from there when `os.img` has
+  nothing to carry forward — so clean + rebuild restores the partida
+  byte-identical. `saves-backup/` is gitignored; copy it elsewhere for
+  off-machine backup.
 - `ps` lists the registered programs (name, kind, entry address).
+- `kstack` reports kernel-stack health: per-proc high-water marks plus the
+  legacy 32 KB syscall stack, ending in `kstack: ok` (or `OVERFLOW`). Every
+  pool slot is paint-filled at claim time with a canary word at its bottom
+  (`sched.c`), so a stack that overruns into its neighbour's slot is
+  detected instead of corrupting silently; the legacy slot paints at
+  `sched_init`. BDD asserts `kstack: ok` after boot and after a threaded
+  run. This is the instrument for the historical intermittent black-screen
+  class (a fault with no recovery halts the machine with no serial after
+  the banner): the next black screen gets a `kstack` reading first instead
+  of a guess.
 - The prompt stays `miniOS> `: the cwd is reported by `pwd`, so the MCP
   marker wait keeps working unchanged.
 
@@ -1850,6 +1892,7 @@ make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts gree
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
+make test-rtc        # RTC civil-date math suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
@@ -1951,7 +1994,8 @@ install:
 - `minios_addons` lists the addons and whether each is installed. The
   marketplace ships `cp` and `freedom`; the freedom addon is the dogfood
   of the whole system: its source travels from git into the OS and is
-  rebuilt inside the OS by miniGCC and `ld`.
+  rebuilt inside the OS by miniGCC and `ld` as `bin/freedom-mini` (the
+  http-only twin; https needs the host-built `freedom`).
 - `minios_install <name>` boots the machine if needed, clones `repo_url`
   (`git clone`, `shell=False`, bounded timeout), uploads each `files` entry
   into the OS through the editor, builds with the `build` shell lines and
@@ -2260,6 +2304,7 @@ make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts gree
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
+make test-rtc        # RTC civil-date math suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD
 mcp/mutate_mcp.sh           # every MCP mutant killed
 python3 tools/check_cohesion.py KNOWLEDGE_BASE.jsonld

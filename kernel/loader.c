@@ -55,6 +55,13 @@ typedef struct {
 #define ELF64_R_TYPE(i)   ((i) & 0xffffffff)
 #define SHN_UNDEF         0
 
+/* ET_REL image cap: a hostile .o must not drive an unbounded kmalloc.
+ * Measured need (2026-09, host gcc -O2): ld.o carries a 12.6 MB .bss and
+ * loads at ~12.7 MB total; minigcc.o ~0.8 MB, cvm.o ~36 KB. 16 MB fails
+ * closed with a diagnostic instead of draining the 192 MB kernel heap.
+ * Do not tighten below ld.o without remeasuring. */
+#define ETREL_IMAGE_MAX (16u * 1024u * 1024u)
+
 #define SHT_SYMTAB  2
 #define SHT_STRTAB  3
 #define SHT_RELA    4
@@ -142,12 +149,6 @@ void *elf_load(void *data, unsigned size) {
     const char *strtab = 0;
     Elf64_Xword strtab_size = 0;
 
-    /* Boyscout cap: a hostile .o must not drive an unbounded kmalloc.
-     * Measured need (2026-09, host gcc -O2): ld.o carries a 12.6 MB .bss
-     * and loads at ~12.7 MB total; minigcc.o ~0.8 MB, cvm.o ~36 KB.
-     * 16 MB fails closed with a diagnostic instead of draining the
-     * 192 MB kernel heap. Do not tighten below ld.o without remeasuring. */
-    #define ETREL_IMAGE_MAX (16u * 1024u * 1024u)
     unsigned total_alloc = 0;
     unsigned i;
     for (i = 0; i < shnum; i++) {

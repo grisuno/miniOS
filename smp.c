@@ -208,9 +208,11 @@ static void ap_lapic_timer_init(void) {
  * them.  Non-VM processes stay on the BSP by construction (the AP-side
  * pick and preempt paths only ever consider CLONE_VM). */
 void smp_ap_entry(void) {
-    /* Progress marker: 0x42 at 0x80000 proves we reached C */
-    *(volatile unsigned char *)0x80000UL = 0x42;
-
+    /* No progress-marker store here: 0x80000 is the bottom of the
+     * legacy syscall kernel stack, so a marker byte there is a
+     * cross-region write into another subsystem's stack (it trips the
+     * kstack canary). AP liveness is already observable through
+     * ap_count and the "SMP: Brought up N CPUs" banner. */
     unsigned id = lapic_read(LAPIC_ID_OFF) >> 24;
     int cpu = __sync_fetch_and_add(&ap_count, 1) + 1;
 

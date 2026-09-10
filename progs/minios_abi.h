@@ -198,6 +198,11 @@
 
 /* --- MiniOS custom syscalls (200-299) --- */
 #define MINIOS_SYS_DNS          200
+/* 201/203: retired kernel-TLS numbers, always -ENOSYS (the engine left
+ * ring 0; fossil miniGCC binaries still trap them and fail closed).
+ * 202 serves Linux futex(2) instead (glibc NPTL/malloc/resolver need
+ * __NR_futex; -ENOSYS there aborts the process). Values are frozen so
+ * the ABI checksum never moves for this. */
 #define MINIOS_SYS_TLS_HANDSHAKE 201
 #define MINIOS_SYS_TLS_SEND     202
 #define MINIOS_SYS_TLS_RECV     203

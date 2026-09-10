@@ -180,6 +180,9 @@ rlimit-as-shell-ignored | s/if (kstrcmp(argv\[1\], "as") == 0) rp->rl_as_max = v
 lapic-cal-fallback | s/lapic_cal_valid = 1;/lapic_cal_valid = 0;/ | smp.c
 futex-value-check-inverted | s/if (\\*(volatile int \\*)uaddr != val)/if (*(volatile int *)uaddr == val)/ | kernel/futex.c
 futex-wake-count-unbounded | s/while (pid != WQ_NONE \\&\\& woken < n)/while (pid != WQ_NONE)/ | kernel/futex.c
+futex-linux-private-unmasked | s/long cmd = op & ~(long)LINUX_FUTEX_PRIVATE_FLAG;/long cmd = op;/ | kernel/futex.c
+futex-linux-wake-dropped | s/if (cmd == LINUX_FUTEX_WAIT || cmd == LINUX_FUTEX_WAKE)/if (cmd == LINUX_FUTEX_WAIT)/ | kernel/futex.c
+rtc-epoch-day-off-by-one | s/return era * 146097 + doe - 719468;/return era * 146097 + doe - 719467;/ | rtc.h
 percpu-rq-full-drop-lost | s/if (rqueues\\[cpu\\].count >= RQ_DEPTH)/if (rqueues[cpu].count > RQ_DEPTH)/ | kernel/percpu_rq.c
 batch-completion-off-by-one | s/\\*completed = i + 1;/\\*completed = i;/ | kernel/batch.c
 rcu-grace-shortened | s/if (rcu_state.pending\\[i\\].epoch < rcu_state.epoch)/if (rcu_state.pending[i].epoch <= rcu_state.epoch)/ | kernel/rcu.c
@@ -305,6 +308,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         kernel/futex.c)
             make -C "$HERE" test-futex > "$BACKUP/suite.log" 2>&1
+            ;;
+        rtc.h)
+            make -C "$HERE" test-rtc > "$BACKUP/suite.log" 2>&1
             ;;
         kernel/percpu_rq.c)
             make -C "$HERE" test-percpu-rq > "$BACKUP/suite.log" 2>&1

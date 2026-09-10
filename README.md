@@ -1527,7 +1527,7 @@ recording and removes upload parts. The YAML dialect is a strict stdlib-only
 subset (whitelisted keys, bounded names, validated `dst`, printable-ASCII
 lines); the host shell is never invoked. The marketplace ships `cp` and
 `freedom` (the freedom addon rebuilds the browser inside the OS from git as
-the end-to-end dogfood, driven by `mcp/mcp_dogfood.py` over stdio JSON-RPC).
+`freedom-mini`, the http-only miniGCC twin, as the end-to-end dogfood, driven by `mcp/mcp_dogfood.py` over stdio JSON-RPC).
 
 ## QEMU guest agent channel (COM2)
 

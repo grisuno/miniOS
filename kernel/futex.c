@@ -80,6 +80,14 @@ long futex_wait(unsigned long uaddr, int val) {
     return FUTEX_OK;
 }
 
+/** Docstring: Decode a Linux futex(2) op to WAIT/WAKE. */
+int futex_linux_cmd(long op) {
+    long cmd = op & ~(long)LINUX_FUTEX_PRIVATE_FLAG;
+    if (cmd == LINUX_FUTEX_WAIT || cmd == LINUX_FUTEX_WAKE)
+        return (int)cmd;
+    return -1;
+}
+
 /** Docstring: Wake up to n sleepers waiting on uaddr.
  *
  * Only entries whose recorded address equals uaddr change state; hash

@@ -10,14 +10,20 @@ reason; "noisy tool" is not a reason.
   stack local's address to the interpreter through `argv[0]`. Real bug,
   **fixed** with a `kmalloc` buffer (recursion-safe, freed after the call).
 - `tls_u_port.c constParameterPointer` (`net_dns_resolve(char *host)`):
-  **accepted**. The signature must match `freedom.c`'s declaration and the
-  kernel stub name it replaces; `const` would fork the two build paths
-  (miniGCC subset risk) for zero safety gain (function never writes it).
+  real, **fixed**: the parameter is now `const char *` in the definition
+  (`tls_u_port.c`), both `freedom.c` declarations (ring-3 and miniGCC
+  branches) and `http.c`. The old "miniGCC subset risk" excuse was wrong:
+  `progs/src/aes.c` already uses `const char *` all over and builds
+  through miniGCC+ld, and the rebuilt `freedom-mini`/`http.elf` prove it.
+  The callee chain was already const-clean (`tls_u_resolve`,
+  `u_minios_dns`, `getaddrinfo`), so no warnings introduced.
 - `fs/minifs.c subtractPointers` (error): `&ramdisk_end[0] -
-  &ramdisk_start[0]`. **Accepted with inline suppression**:
-  `kernel.ld` places both symbols adjacently in one section, so the size
-  idiom holds by link layout (fallback path only; production defines
-  `KERNEL_SECTORS`). Suppression is inline + justified, never global.
+  &ramdisk_start[0]`. Real (subtraction between distinct objects is
+  undefined behaviour no matter what the linker layout is), **fixed**:
+  `kernel.ld` now provides the absolute symbol `ramdisk_size =
+  ramdisk_end - ramdisk_start` (subtraction legal at link time) and both
+  C sites (`kernel.c`, `fs/minifs.c` fallback path) read the size by
+  address. The inline suppressions are gone.
 - `net/net.c oppositeInnerCondition` (style): `if (pos >= len) return;`
   at the top of a `for (... && pos < len ...)` DNS answer loop. Real dead
   code (the for-condition guards every iteration entry), **removed**.
@@ -35,9 +41,13 @@ reason; "noisy tool" is not a reason.
   (overflow is UB before the `<256` check), **fixed** with strict
   `parse_quad` (digits+dots only, per-octet bound, full consumption).
 - `cert-err33-c` (unchecked `fprintf`/`fwrite` returns in CLI tools):
-  **accepted**. Failure handling a `stderr` diagnostic write adds no
-  safety; the codebase convention (kernel `kprintf`, `freedom`) ignores
-  console-write returns everywhere.
+  **accepted**, with a sharper reason than convention alone: these are
+  best-effort diagnostics on `stderr`, never the program's output or
+  state. Aborting (or restructuring) a fetch tool because a diagnostic
+  write hit a closed pipe would trade a visible error for a confusing
+  one; the kernel side (`kprintf`) is void-return by design, so there is
+  no return to check there either. Revisit if a tool ever writes
+  billable output through an unchecked call.
 - `bugprone-reserved-identifier` (`_POSIX_C_SOURCE`, `_DEFAULT_SOURCE`):
   **accepted by necessity**. Feature-test macros are reserved by design;
   required to expose `getaddrinfo`/`poll` declarations.

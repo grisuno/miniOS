@@ -13,6 +13,7 @@
 
 #include "kernel.h"
 #include "net.h"
+#include "tls.h"
 #include "rtl8139.h"
 
 /* ================================================================

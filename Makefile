@@ -95,18 +95,17 @@ QEMU_ACCEL  =
 # with `make ENABLE_KASLR=0` when a deterministic physical layout is wanted
 # (e.g. register-level debugging of the boot path).
 # Boyscout hardening flags (see CLAUDE.md critique response):
-#   ENABLE_TLS=0 builds without the in-kernel TLS engine (syscalls 201-203
-#     return -ENOSYS), shrinking ring-0 attack surface; userspace TLS over
-#     plain sockets is the long-term direction.
+#   The in-kernel TLS engine is gone for good: net/tls*.c never link into
+#   the image, 201/203 always answer -ENOSYS and 202 serves Linux futex(2)
+#   (glibc's NPTL needs it; answering -ENOSYS aborts any threaded libc
+#   program). Userspace TLS over plain sockets (tlsget/freedom) is the
+#   only path. MINIOS_NO_TLS stays defined so tls.h keeps serving net.c
+#   its inline tls_free_fd no-op.
 #   ENABLE_AP_TIMER=1 gives each AP its own periodic LAPIC timer instead of
 #     relying solely on the BSP IPI broadcast (default 0 = IPI mode).
-ENABLE_TLS ?= 1
-ENABLE_AP_TIMER ?= 0
-ifeq ($(ENABLE_TLS),0)
 TLS_FLAG = -DMINIOS_NO_TLS
-else
-TLS_FLAG =
-endif
+KERN_TLS_OBJS =
+ENABLE_AP_TIMER ?= 0
 ifeq ($(ENABLE_AP_TIMER),1)
 AP_TIMER_FLAG = -DMINIOS_AP_TIMER
 else
@@ -428,11 +427,15 @@ $(BIN_DIR)/unaes: $(ASM_DIR)/aes.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 # ── freedom: the headless text browser (curlfree-style engine,
-#    FreeDom-style omnibox), rebuilt from its C source at build time.
+#    FreeDom-style omnibox). The shipped `freedom` is the ring-3 build
+#    (host gcc + the shared ring-3 TLS engine), so https works with no
+#    TLS in the kernel; `freedom-mini` is the miniGCC-built twin (http
+#    only: miniGCC cannot compile the struct-heavy TLS engine), kept as
+#    toolchain dogfood. Both are built from the same progs/src/freedom.c.
 $(ASM_DIR)/freedom.s: $(SRC_DIR)/freedom.c $(MINIGCC_BIN)
 	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
 
-$(BIN_DIR)/freedom: $(ASM_DIR)/freedom.s $(LD_TOOL)
+$(BIN_DIR)/freedom-mini: $(ASM_DIR)/freedom.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
 # ── DOOM (doomgeneric port) ──────────────────────────────────────────────
@@ -885,18 +888,22 @@ tlsget-host: $(TLSU_SRCS) tls_port.h tls.h tls_roots.h | $(TOOLS_DIR)
 	$(CC) -std=c99 -O2 -Wall -DTLS_RING3 -I. -I$(PROGS_DIR) \
 	      -o $(TOOLS_DIR)/tlsget $(TLSU_SRCS)
 
-# freedom3: phase 2 of docs/TLS_MIGRATION.md. The miniGCC-built freedom
-# traps kernel TLS syscalls 201-203; this twin builds the same
-# progs/src/freedom.c with host gcc + glibc and links the shared ring-3
-# TLS objects, so no handshake byte crosses ring 0. Ships alongside
-# freedom (which keeps working unchanged) for output-equivalence runs.
+# freedom / freedom3: the shipped browser is the ring-3 build of the same
+# progs/src/freedom.c (host gcc + glibc, shared ring-3 TLS objects, so no
+# handshake byte crosses ring 0 and https works with no TLS in the
+# kernel). `freedom` is the command-path name; `freedom3` is a byte copy
+# kept for the BDD/output-equivalence runs that reference it.
 FREEDOM3_SRCS = $(SRC_DIR)/freedom.c \
                 $(PROGS_DIR)/tls_u/tls_u_port.c \
                 net/tls.c net/tls_crypto.c net/tls_x509.c
 
-$(BIN_DIR)/freedom3: $(FREEDOM3_SRCS) tls_port.h tls.h tls_roots.h
+$(BIN_DIR)/freedom: $(FREEDOM3_SRCS) tls_port.h tls.h tls_roots.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 \
 	      -I. -I$(PROGS_DIR) -o $@ $(FREEDOM3_SRCS)
+	chmod +x $@
+
+$(BIN_DIR)/freedom3: $(BIN_DIR)/freedom
+	cp $< $@
 	chmod +x $@
 
 freedom3-host: $(FREEDOM3_SRCS) tls_port.h tls.h tls_roots.h | $(TOOLS_DIR)
@@ -940,9 +947,9 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/tlsget $(PROGS_DIR)/tls_u/tls_u_main.c $(PROGS_DIR)/tls_u/tls_u_port.c \
                $(BIN_DIR)/thdemo $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
-               $(BIN_DIR)/json $(SRC_DIR)/json.c \
-               $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
-               $(BIN_DIR)/freedom3 \
+                $(BIN_DIR)/json $(SRC_DIR)/json.c \
+                $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
+                $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
                $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
                $(PROGS_DIR)/vedit/vedit.c \
                $(BIN_DIR)/lzss $(BIN_DIR)/unlzss $(SRC_DIR)/lzss.c $(ASM_DIR)/lzss.s \
@@ -1114,6 +1121,13 @@ hal_test: tests/test_hal_io.c arch/x86/hal_io.h | $(TOOLS_DIR)
 
 test-hal: hal_test
 	$(TOOLS_DIR)/hal_test
+
+# RTC date-math host test (tests/test_rtc.c + rtc.h inline).
+rtc_test: tests/test_rtc.c rtc.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/rtc_test tests/test_rtc.c
+
+test-rtc: rtc_test
+	$(TOOLS_DIR)/rtc_test
 
 # Device-registry host test (tests/test_driver.c + drivers/driver.c).
 driver_test: tests/test_driver.c drivers/driver.c driver.h | $(TOOLS_DIR)
@@ -1391,9 +1405,9 @@ batch.o: kernel/batch.c batch.h
 rcu.o: kernel/rcu.c rcu.h sched.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o tls_x509.o ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o tls.o tls_crypto.o \
-	      tls_x509.o ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o \
+kernel.elf: kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
+	      ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o -o $@
 
@@ -1441,6 +1455,10 @@ minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(PROGS_DIR
 	@STAGE="$(SAVES_STAGE)"; \
 	rm -rf "$$STAGE"; \
 	python3 tools/minifs_saves.py backup os.img "$$STAGE"; \
+	if [ ! -d "$$STAGE/saves" ] && [ -d saves-backup/saves ]; then \
+	  mkdir -p "$$STAGE"; cp -r saves-backup/saves "$$STAGE/saves"; \
+	  echo "minifs_saves: reseeded from saves-backup/"; \
+	fi; \
 	EXTRA=""; \
 	if [ -d "$$STAGE/saves" ]; then EXTRA="$$STAGE/saves"; fi; \
 	python3 mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES) $$EXTRA; \
@@ -1450,6 +1468,10 @@ os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	@STAGE="$(SAVES_STAGE)"; \
 	rm -rf "$$STAGE"; \
 	if [ -f os.img ]; then python3 tools/minifs_saves.py backup os.img "$$STAGE"; fi; \
+	if [ ! -d "$$STAGE/saves" ] && [ -d saves-backup/saves ]; then \
+	  mkdir -p "$$STAGE"; cp -r saves-backup/saves "$$STAGE/saves"; \
+	  echo "minifs_saves: reseeded from saves-backup/"; \
+	fi; \
 	if [ -d "$$STAGE/saves" ]; then \
 	  python3 mkfs.minifs.py minifs.bin $(MINIFS_BLOCKS) $(MINIFS_FILES) "$$STAGE/saves"; \
 	fi; \
@@ -1556,7 +1578,12 @@ serial: os.img
 test: os.img
 	./test_bdd.sh
 
-clean:
+# clean snapshots the guest saves first: the images are the only other
+# copy of saves/, so deleting them without a backup would wipe them.
+# saves-backup is a no-op (exit 0) when os.img is missing or carries no
+# saves/, and saves-backup/ feeds the automatic reseed in the
+# minifs.bin/os.img rules, so a clean + rebuild loses nothing.
+clean: saves-backup
 	rm -rf $(TOOLS_DIR)
 	rm -f *.o *.elf *.bin *.img ramdisk_data.c ramdisk.bin
 	rm -f .kaslrflag .mutate-state Makefile.bak
@@ -1565,7 +1592,7 @@ clean:
 	rm -f $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf \
 	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
 	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
-	      $(BIN_DIR)/cp $(BIN_DIR)/freedom \
+	      $(BIN_DIR)/cp $(BIN_DIR)/freedom $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
 	      $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
 	      $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \
 	      $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 \
@@ -1595,9 +1622,17 @@ minifs-mkfs:
 minifs-dump:
 	python3 minifs_dump.py minifs.bin $(ARGS)
 
+# Host backup of the guest saves/ dir (Pokemon battery + savestates).
+# The images are the only other copy and `make clean` deletes them, so
+# snapshot before any clean or fresh clone: the minifs.bin/os.img rules
+# reseed the staging dir from saves-backup/ when os.img has no saves to
+# carry forward. Usage: make saves-backup  (once, while saves are live)
+saves-backup:
+	python3 tools/minifs_saves.py backup os.img saves-backup
+
 minifs-fsck:
 	python3 minifs_fsck.py minifs.bin
 
 .PHONY: all run run-kvm run-headless clean debug gdb serial test \
         sources sources-update sources-status toolchain selfhost \
-        minifs-mkfs minifs-dump minifs-fsck os.iso usb os.usb.img
+        minifs-mkfs minifs-dump minifs-fsck saves-backup os.iso usb os.usb.img

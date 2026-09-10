@@ -89,7 +89,8 @@ minios_send {line: "freedom --dump-dom https://example.com"}
 ```
 
 No `run` prefix: `bin/freedom` resolves through the command path like
-`cp`. It speaks https through the kernel TLS client (bare hosts default
+`cp`. It speaks https through the ring-3 TLS engine linked into the
+binary (no TLS in the kernel; bare hosts default
 to `https://`; DuckDuckGo searches run over https); an argument that is
 not a URL becomes a DuckDuckGo HTML search, dangerous schemes are
 searched, never executed, and page bytes pass a UTF-8 gate before

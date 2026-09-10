@@ -136,6 +136,21 @@ int main(void) {
         CHECK(futex_wake((unsigned long)&word_a, -5) == 0,
               "negative count wakes nothing");
     }
+    {
+        /* Linux op decode for syscall 202 (the retired TLS_SEND number):
+         * WAIT/WAKE served, PRIVATE masked, everything else refused.
+         * This is what keeps glibc's NPTL alive in-guest: a WAKE|PRIVATE
+         * from getaddrinfo must decode to WAKE, never -1 (which the old
+         * stub turned into the fatal -ENOSYS). */
+        CHECK(futex_linux_cmd(0) == 0, "WAIT decodes");
+        CHECK(futex_linux_cmd(1) == 1, "WAKE decodes");
+        CHECK(futex_linux_cmd(128) == 0, "WAIT|PRIVATE decodes");
+        CHECK(futex_linux_cmd(129) == 1, "WAKE|PRIVATE decodes");
+        CHECK(futex_linux_cmd(2) == -1, "REQUEUE refused");
+        CHECK(futex_linux_cmd(9) == -1, "WAIT_BITSET refused");
+        CHECK(futex_linux_cmd(137) == -1, "WAKE|PRIVATE|extra refused");
+        CHECK(futex_linux_cmd(-1) == -1, "negative op refused");
+    }
     if (failures == 0)
         printf("futex: ok\n");
     else

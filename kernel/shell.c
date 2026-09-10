@@ -1073,14 +1073,22 @@ static int shell_resolve_run(const char *name, char *out, unsigned cap) {
 
 /* ET_REL trust gate (boyscout fix for ring-0 .o without validation):
  * relocatables execute as kernel extensions, so only the toolchain
- * directory owns them. objects/ prefix (or the bare cvm interpreter
- * bootstrap) is trusted; any other ET_REL path is refused with a
- * diagnostic pointing at 'ld -f elf'. ET_EXEC/ET_DYN/CVM are unaffected. */
+ * directory (ETREL_TRUSTED_DIR in kernel.h) owns them. `full` is already
+ * normalised by fs_resolve (".."/"."/"//" collapsed, no symlinks on
+ * MiniFS), so a prefix match is a containment proof, not a string hope.
+ * TOCTOU note: the bytes are snapshotted into a kernel buffer at open
+ * time and the gate checks the same resolved path the bytes were read
+ * from; swapping the file between resolve and open only changes WHICH
+ * bytes load, and hostile bytes still face the ELF/reloc validators plus
+ * the ETREL_IMAGE_MAX cap. ET_EXEC/ET_DYN/CVM are unaffected. */
 static int etrel_path_trusted(const char *full) {
     const char *p = full;
+    unsigned i;
     if (p[0] == '/') p++;
-    if (kstrncmp(p, "objects/", 8) == 0) return 1;
-    if (kstrcmp(p, "objects/cvm.o") == 0) return 1;
+    for (i = 0; p[i] && p[i] != '/'; i++) {
+        if (p[i] == '.' && (p[i + 1] == 0 || p[i + 1] == '/')) return 0;
+    }
+    if (kstrncmp(p, ETREL_TRUSTED_DIR, ETREL_TRUSTED_LEN) == 0) return 1;
     return 0;
 }
 /* Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`.
@@ -1539,6 +1547,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  seccomp <op> [n]   deny/allow MiniOS syscalls 200..231\n");
         vga_puts("  ps                 list registered programs\n");
         vga_puts("  smp                per-CPU state and thread dispatches\n");
+        vga_puts("  kstack             kernel-stack high-water marks + canary\n");
         vga_puts("  net                network status (rtl8139, slirp)\n");
         vga_puts("  net ping <ip>      one ICMP echo\n");
         vga_puts("  trace [on|off]     report Linux syscalls\n");
@@ -1948,6 +1957,9 @@ void shell_exec_builtin(int argc, char **argv) {
             kprintf("%02d:%02d:%02d\n", h, m, s);
         else
             vga_puts("date: clock unavailable\n");
+    }
+    else if (kstrcmp(argv[0], "kstack") == 0) {
+        kstack_report();
     }
     else if (kstrcmp(argv[0], "sb16") == 0) {
         sb16_counters_t c;

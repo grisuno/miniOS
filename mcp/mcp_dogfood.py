@@ -96,16 +96,16 @@ def main():
         assert "usage: freedom" in r["text"], r
         print("freedom (no args): usage diagnostic OK")
 
-        r = c.tool("minios_send", {"line": "freedom https://example.com"})
-        assert "TLS" in r["text"], r
-        print("freedom (https): TLS refusal OK")
+        r = c.tool("minios_send", {"line": "freedom https://10.0.2.2:8899/README.txt"})
+        assert "https handshake with 10.0.2.2 failed" in r["text"], r
+        print("freedom (https against plain http): fail-closed OK")
 
-        r = c.tool("minios_send", {"line": "freedom http://10.0.2.2:8899/docs/hostile.html"})
+        r = c.tool("minios_send", {"line": "freedom-mini http://10.0.2.2:8899/docs/hostile.html"})
         assert "first block" in r["text"], r
         assert "bold & safe" in r["text"], r
         assert "evil" not in r["text"], r
         assert "freedom: 10.0.2.2 (" in r["text"], r
-        print("freedom (http fetch): filtered page OK")
+        print("freedom-mini (http fetch): filtered page OK")
 
         r = c.tool("minios_poweroff")
         print("poweroff OK:", "powering off" in r["text"])

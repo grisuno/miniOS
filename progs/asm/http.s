@@ -104,7 +104,7 @@ main:
     setl %al
     movzbq %al, %rax
     cmpq $0, %rax
-    je .L27
+    je .L29
     leaq .Lstr10(%rip), %rax
     pushq %rax
     movq 0(%rsp), %rdi
@@ -119,7 +119,7 @@ main:
     movq $1, %rax
     leave
     ret
-.L27:
+.L29:
     leaq -672(%rbp), %rax
     pushq %rax
     movq -32(%rbp), %rax
@@ -146,10 +146,27 @@ main:
     movq $0, %rax
     popq %rcx
     cmpq %rax, %rcx
-    setl %al
+    sete %al
     movzbq %al, %rax
+    testq %rax, %rax
+    jne .L31
+    movq -672(%rbp), %rax
+    pushq %rax
+    movq $1, %rax
+    negq %rax
+    popq %rcx
+    cmpq %rax, %rcx
+    sete %al
+    movzbq %al, %rax
+    testq %rax, %rax
+    jne .L31
+    xorl %eax, %eax
+    jmp .L32
+.L31:
+    movl $1, %eax
+.L32:
     cmpq $0, %rax
-    je .L29
+    je .L33
     leaq .Lstr11(%rip), %rax
     pushq %rax
     movq 0(%rsp), %rdi
@@ -164,7 +181,7 @@ main:
     movq $2, %rax
     leave
     ret
-.L29:
+.L33:
     leaq -608(%rbp), %rax
     pushq %rax
     movq $2, %rax
@@ -194,7 +211,7 @@ main:
     setl %al
     movzbq %al, %rax
     cmpq $0, %rax
-    je .L31
+    je .L35
     leaq .Lstr12(%rip), %rax
     pushq %rax
     movq 0(%rsp), %rdi
@@ -209,7 +226,7 @@ main:
     movq $3, %rax
     leave
     ret
-.L31:
+.L35:
     leaq -688(%rbp), %rax
     pushq %rax
     movq -32(%rbp), %rax
@@ -375,7 +392,7 @@ main:
     setl %al
     movzbq %al, %rax
     cmpq $0, %rax
-    je .L33
+    je .L37
     leaq .Lstr13(%rip), %rax
     pushq %rax
     movq 0(%rsp), %rdi
@@ -390,7 +407,7 @@ main:
     movq $4, %rax
     leave
     ret
-.L33:
+.L37:
     movq -608(%rbp), %rax
     pushq %rax
     movq -48(%rbp), %rax
@@ -425,7 +442,7 @@ main:
     setg %al
     movzbq %al, %rax
     cmpq $0, %rax
-    je .L35
+    je .L39
     movq -608(%rbp), %rax
     pushq %rax
     movq -32(%rbp), %rax
@@ -474,8 +491,8 @@ main:
     call sendto
     movq %r12, %rsp
     popq %r12
-    jmp .L36
-.L35:
+    jmp .L40
+.L39:
     movq -608(%rbp), %rax
     pushq %rax
     leaq .Lstr14(%rip), %rax
@@ -502,7 +519,7 @@ main:
     call sendto
     movq %r12, %rsp
     popq %r12
-.L36:
+.L40:
     movq -608(%rbp), %rax
     pushq %rax
     movq -64(%rbp), %rax
@@ -534,8 +551,8 @@ main:
     movq $0, %rax
     popq %rcx
     movq %rax, (%rcx)
-    jmp .L38
-.L37:
+    jmp .L42
+.L41:
     leaq -624(%rbp), %rax
     pushq %rax
     movq -608(%rbp), %rax
@@ -574,16 +591,16 @@ main:
     setle %al
     movzbq %al, %rax
     cmpq $0, %rax
-    je .L40
-    jmp .L39
-.L40:
+    je .L44
+    jmp .L43
+.L44:
     leaq -656(%rbp), %rax
     pushq %rax
     movq $0, %rax
     popq %rcx
     movq %rax, (%rcx)
-    jmp .L44
-.L42:
+    jmp .L48
+.L46:
     leaq -576(%rbp), %rax
     pushq %rax
     movq -656(%rbp), %rax
@@ -600,13 +617,13 @@ main:
     call putchar
     movq %r12, %rsp
     popq %r12
-.L43:
+.L47:
     leaq -656(%rbp), %rax
     movq (%rax), %rcx
     addq $1, (%rax)
     movq %rcx, %rax
-    jmp .L44
-.L44:
+    jmp .L48
+.L48:
     movq -656(%rbp), %rax
     pushq %rax
     movq -624(%rbp), %rax
@@ -615,8 +632,8 @@ main:
     setl %al
     movzbq %al, %rax
     cmpq $0, %rax
-    jne .L42
-.L45:
+    jne .L46
+.L49:
     leaq -640(%rbp), %rax
     pushq %rax
     movq (%rax), %rax
@@ -626,9 +643,9 @@ main:
     addq %rcx, %rax
     popq %rcx
     movq %rax, (%rcx)
-.L38:
-    jmp .L37
-.L39:
+.L42:
+    jmp .L41
+.L43:
     movq -608(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi

@@ -54,9 +54,14 @@ with `-EABI_MISMATCH`.
 ## Security notes
 
 - Every pointer validated against the user window; strings NUL-bounded.
-- `ET_REL` is ring-0 and trusted-path only (`objects/`); anything else must
-  link with `ld -f elf` and run at ring 3.
-- TLS lives in the kernel for now (fail-closed, no downgrade); build with
-  `make ENABLE_TLS=0` to remove it (`-ENOSYS`).
+- `ET_REL` is ring-0 and trusted-path only (`ETREL_TRUSTED_DIR` in
+  kernel.h, `objects/`); anything else must
+  link with `ld -f elf` and run at ring 3. Paths are normalised by
+  `fs_resolve` before the gate; the image cap is `ETREL_IMAGE_MAX`
+  (16 MB, measured over ld.o's ~12.7 MB).
+- TLS is userspace-only (`tlsget`/`freedom`, ring-3 engine); 201/203
+  always answer `-ENOSYS`, and 202 serves Linux `futex(2)` (`__NR_futex`
+  collides with the retired TLS_SEND number — answering `-ENOSYS` there
+  aborts any glibc program that locks, e.g. `getaddrinfo`).
 - MiniFS mounts only after a superblock self-check; full repair is host-side
   (`minifs_fsck.py`); journal recovery runs at mount.

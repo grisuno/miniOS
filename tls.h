@@ -284,7 +284,14 @@ int tls_send(int fd, const char *buf, int len);
 int tls_recv(int fd, char *buf, int len);
 
 /* Free the session attached to fd. A socket without TLS costs nothing. */
+#ifndef MINIOS_NO_TLS
 void tls_free_fd(int fd);
+#else
+/* Kernel built without the TLS engine (net/tls*.c unlinked): no session
+ * can ever exist, so the net.c close path needs no call. Inline no-op
+ * keeps the reference without pulling the engine back in. */
+static inline void tls_free_fd(int fd) { (void)fd; }
+#endif
 
 /* ========== Syscalls (kernel wiring in tls.c) ========== */
 long tls_sys_handshake(long fd, long host);

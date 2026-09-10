@@ -2,7 +2,8 @@
  *
  * DOOM renders into a kernel back-buffer in the user window at virtual
  * MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h); each frame it calls
- * SYS_DOOM_FRAME (211) and the kernel composites the buffer onto the
+ * MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel
+ * compat alias) and the kernel composites the buffer onto the
  * hi-res desktop as a titled window at native 320x200, leaving the shell
  * window visible.  All ABI constants come from minios_abi.h so the
  * addresses never drift from the kernel.
@@ -60,14 +61,14 @@ static long sys_vga_mode(int on) {
 }
 static long sys_doom_frame(void) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_DOOM_FRAME), "D"(0) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"((long)MINIOS_GFX_BUF_GAME), "S"((long)0) : "rcx","r11","memory");
     return ret;
 }
 
 /* ---------- Graphics back-buffer ---------- */
 
 /* DOOM renders into a kernel-backed back-buffer in the user window; the
- * kernel composites it onto the desktop as a window on SYS_DOOM_FRAME. */
+ * kernel composites it onto the desktop as a window on GFX_PRESENT/BUF_GAME. */
 #define FB_ADDR    ((volatile uint8_t *)MINIOS_DOOM_BACKBUF_ADDR)
 #define FB_WIDTH   320
 #define FB_HEIGHT  200

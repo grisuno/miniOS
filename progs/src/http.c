@@ -8,7 +8,7 @@ int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);
 int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);
 int shutdown(int fd, int how);
 int close(int fd);
-int net_dns_resolve(char *host);
+int net_dns_resolve(const char *host);
 int puts(char *s);
 int printf(char *fmt, ...);
 int strlen(char *s);
@@ -32,12 +32,15 @@ int main(int argc, char **argv) {
     char buf[512];
     char sa[16];
     int fd, n, total, i, ip, port;
+    /* NOTE: int on purpose (miniGCC rejects unsigned declarations).
+     * Compare against the 0/-1 sentinels, never `ip < 0`: an IPv4 >=
+     * 128.0.0.0 is negative as int and must still be accepted. */
     if (argc < 3) {
         puts("usage: http <host> <port> [path]");
         return 1;
     }
     ip = net_dns_resolve(argv[1]);
-    if (ip < 0) {
+    if (ip == 0 || ip == -1) {
         puts("dns failed");
         return 2;
     }

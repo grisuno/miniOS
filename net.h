@@ -98,7 +98,11 @@ void net_rx_handle_frame(const unsigned char *frame, unsigned len);
  * the stack (dropped fragments); defined in net.c. */
 extern unsigned int net_rx_dropped;
 
-/* TLS sessions attached to socket fds (tls.c); net_sys_close frees them. */
+/* TLS sessions attached to socket fds (tls.c); net_sys_close frees them.
+ * With MINIOS_NO_TLS the engine is unlinked and tls.h carries the inline
+ * no-op; this declaration would collide with it, so it is omitted. */
+#ifndef MINIOS_NO_TLS
 void tls_free_fd(int fd);
+#endif
 
 #endif

@@ -3,8 +3,9 @@
  * Software rasterizer for an 8-bit indexed back-buffer: Nuklear emits an
  * abstract draw command list (nk__begin/nk__next); this layer rasterizes
  * every command into the palette-indexed back-buffer at NK_BACKBUF_ADDR with
- * scissor clipping, then the app calls SYS_NK_FRAME to composite the buffer
- * as a titled desktop window. Colors are mapped to the hybrid palette
+ * scissor clipping, then the app calls MINIOS_SYS_GFX_PRESENT with
+ * MINIOS_GFX_BUF_NK (220 stays as a kernel compat alias) to composite
+ * the buffer as a titled desktop window. Colors are mapped to the hybrid palette
  * (indices 0-14 = desktop colors, 15-255 = UI ramp) by nearest neighbour.
  *
  * Input: raw PS/2 scancodes (SYS_KBD in raw mode) are translated to Nuklear
@@ -70,7 +71,7 @@ long nk_sys_mouse_badptr(void) {
 }
 long nk_sys_nk_frame(int *origin) {
     long ret;
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_NK_FRAME), "D"(origin) : "rcx","r11","memory");
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"((long)MINIOS_GFX_BUF_NK), "S"(origin) : "rcx","r11","memory");
     return ret;
 }
 
@@ -658,7 +659,7 @@ void nk_poll_input(struct nk_context *ctx) {
     }
 
     /* Mouse: translate desktop coordinates into the UI window's local
-     * coordinates (the window content origin is reported by SYS_NK_FRAME). */
+     * coordinates (the window content origin is reported by GFX_PRESENT). */
     if (nk_sys_mouse(mouse) == 0) {
         int lx = mouse[0] - nk_win_origin_x;
         int ly = mouse[1] - nk_win_origin_y;

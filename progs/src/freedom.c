@@ -38,17 +38,25 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
-int net_dns_resolve(char *host);
+int net_dns_resolve(const char *host);
 int tls_handshake(int fd, char *host);
 int tls_send(int fd, char *buf, int len);
 int tls_recv(int fd, char *buf, int len);
+/* Session-aware close (frees the TLS session for fd, no-op when none):
+ * every fetch path must use this, never raw close(), or the next fetch
+ * reuses the recycled fd number onto a live slot and its handshake
+ * fails with "session already exists" (redirects and linked stylesheets
+ * hit this on their second fetch). */
+void tls_close(int fd);
 #else
 int socket(int domain, int type, int proto);
 int connect(int fd, void *addr, int addrlen);
 int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);
 int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);
 int close(int fd);
-int net_dns_resolve(char *host);
+/* miniGCC twin: no TLS engine linked, so no session can exist. */
+static int tls_close(int fd) { return close(fd); }
+int net_dns_resolve(const char *host);
 int tls_handshake(int fd, char *host);
 int tls_send(int fd, char *buf, int len);
 int tls_recv(int fd, char *buf, int len);
@@ -152,9 +160,12 @@ static int atoi(char *s) {
 }
 
 /* Append src to dst at pos; returns the new length or -1 when it does
- * not fit. */
+ * not fit. A negative pos (a previous append in the chain failed) stays
+ * -1 without touching dst, so chained callers like classify_tag cannot
+ * walk to dst-1. */
 static int append(char *dst, int pos, char *src, int cap) {
     int n;
+    if (pos < 0) return -1;
     n = strlen(src);
     if (pos + n >= cap) return -1;
     memcpy(dst + pos, src, n);
@@ -852,8 +863,15 @@ static int fetch(char *host, char *path, int port) {
     char req[768];
     int fd, n, i, ip, pos, stage, got;
 
+    /* NOTE: no `unsigned` here on purpose: miniGCC rejects unsigned
+     * declarations, and plain int carries the address bits fine. An
+     * IPv4 >= 128.0.0.0 is negative as int, so the old `ip < 0` check
+     * refused half the internet ("cannot resolve" www.example.com
+     * while example.com worked). Only the 0/-1 sentinels fail; DNS
+     * never returns them, and the >>/&255 extracts below are
+     * sign-agnostic. */
     ip = net_dns_resolve(host);
-    if (ip < 0) {
+    if (ip == 0 || ip == -1) {
         printf("freedom: cannot resolve %s\n", host);
         return 0;
     }
@@ -876,13 +894,13 @@ static int fetch(char *host, char *path, int port) {
     if (connect(fd, sa, 16) < 0) {
 #endif
         printf("freedom: connect to %s failed\n", host);
-        close(fd);
+        tls_close(fd);
         return 0;
     }
     if (f_secure) {
         if (tls_handshake(fd, host) < 0) {
             printf("freedom: https handshake with %s failed\n", host);
-            close(fd);
+            tls_close(fd);
             return 0;
         }
     }
@@ -897,7 +915,7 @@ static int fetch(char *host, char *path, int port) {
     pos = append(req, pos, "\r\nConnection: close\r\n\r\n", 768);
     if (send_all(fd, req, pos) < 0) {
         printf("freedom: send to %s failed\n", host);
-        close(fd);
+        tls_close(fd);
         return 0;
     }
 
@@ -945,7 +963,7 @@ static int fetch(char *host, char *path, int port) {
             c = buf[i++];
             if (stage == 0) {
                 if (f_hlen >= FREEDOM_HDR_MAX) {
-                    close(fd);
+                    tls_close(fd);
                     puts("freedom: response header too large");
                     return 0;
                 }
@@ -976,7 +994,7 @@ static int fetch(char *host, char *path, int port) {
                         else if (c >= 'A' && c <= 'F') d = c - 'A' + 10;
                         if (d >= 0) f_csize = f_csize * 16 + d;
                         if (f_csize > FREEDOM_CHUNK_MAX) {
-                            close(fd);
+                            tls_close(fd);
                             puts("freedom: chunk too large");
                             return 0;
                         }
@@ -1002,7 +1020,7 @@ static int fetch(char *host, char *path, int port) {
             }
         }
     }
-    close(fd);
+    tls_close(fd);
     if (f_mode == 0) putchar('\n');
     printf("freedom: %s (%d bytes)\n", host, got);
     return f_status;
@@ -1017,7 +1035,7 @@ static void fetch_css(char *host, char *path) {
     int fd, n, i, ip, pos, stage, got;
 
     ip = net_dns_resolve(host);
-    if (ip < 0) {
+    if (ip == 0 || ip == -1) {
         printf("freedom: cannot resolve %s\n", host);
         return;
     }
@@ -1037,13 +1055,13 @@ static void fetch_css(char *host, char *path) {
     if (connect(fd, sa, 16) < 0) {
 #endif
         printf("freedom: connect to %s failed\n", host);
-        close(fd);
+        tls_close(fd);
         return;
     }
     if (f_secure) {
         if (tls_handshake(fd, host) < 0) {
             printf("freedom: https handshake with %s failed\n", host);
-            close(fd);
+            tls_close(fd);
             return;
         }
     }
@@ -1055,7 +1073,7 @@ static void fetch_css(char *host, char *path) {
     pos = append(req, pos, "\r\nUser-Agent: freedom/1.0 (MiniOS)", 768);
     pos = append(req, pos, "\r\nConnection: close\r\n\r\n", 768);
     if (send_all(fd, req, pos) < 0) {
-        close(fd);
+        tls_close(fd);
         return;
     }
     f_hlen = 0;
@@ -1071,7 +1089,7 @@ static void fetch_css(char *host, char *path) {
             if (stage == 0) {
                 f_hdr[f_hlen++] = c;
                 if (f_hlen >= FREEDOM_HDR_MAX) {
-                    close(fd);
+                    tls_close(fd);
                     return;
                 }
                 if (f_hlen >= 4 &&
@@ -1086,7 +1104,7 @@ static void fetch_css(char *host, char *path) {
             got++;
         }
     }
-    close(fd);
+    tls_close(fd);
     putchar('\n');
     printf("freedom: %s (%d bytes)\n", host, got);
 }

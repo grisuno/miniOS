@@ -1,7 +1,10 @@
 # TLS migration: kernel engine → userspace library
 
-Status: phase 1 landed. The kernel still serves syscalls 201-203 for
-`freedom`; `tlsget` proves the same sources run in ring 3.
+Status: complete. The kernel no longer ships the TLS engine
+(`net/tls*.c` never link into the image; 201/203 always answer `-ENOSYS`
+and 202 serves Linux `futex(2)`). `tlsget`/`freedom` are the supported
+HTTPS path. There is no legacy opt-in: a switchable engine preserved a
+trap (kernel TLS and glibc were never compatible at 202), not a fallback.
 
 ## Why
 
@@ -31,19 +34,26 @@ MiniOS socket range 100+ and host small fds).
   on MiniFS): `tlsget <host> [path] [port]` does TCP + `tls_handshake`
   + HTTP GET over the shared stack. Verified on the host against
   `openssl s_server` (`make tlsget-host`, same sources, same flag).
-- [x] **2. Relink freedom.** `progs/bin/freedom3` builds the same
+- [x] **2. Relink freedom.** `progs/bin/freedom` builds the same
   `progs/src/freedom.c` with host gcc + glibc (`FREEDOM_RING3_LIBC`
   shim: casts miniGCC cannot parse stay behind `#ifdef`) and links the
   shared ring-3 TLS objects, so no handshake byte crosses ring 0.
-  Plain-HTTP output is byte-identical to `freedom` in-guest (7822 =
-  7822); a throwaway CA fails closed with the same UX. BDD scenario
-  "freedom3 fetches the same page without kernel TLS" pins it.
-  `freedom` (miniGCC, syscalls 201-203) keeps working unchanged.
-- [ ] **3. Kernel engine becomes opt-in legacy.** 201-203 stay behind
-  `ENABLE_TLS=1` (already the default-off path via `MINIOS_NO_TLS`
-  returning `-ENOSYS`), then are removed with the ABI bump.
-- [ ] **4. Delete `net/tls*.c` from the kernel image.** The kernel keeps
-  only TCP/UDP/DNS sockets.
+  Plain-HTTP output is byte-identical to the miniGCC twin in-guest
+  (7822 = 7822); a throwaway CA fails closed with the same UX. BDD
+  scenarios pin http fetches, the https fail-closed message and the
+  `freedom3` byte-copy alias; `bin/freedom-mini` is the miniGCC-to-ld
+  twin of the same source (http only), kept as toolchain dogfood and
+  pinned by its own BDD fetch scenario.
+- [x] **3. Kernel engine removed for good.** There is no opt-in legacy
+  build anymore: 201/203 always answer `-ENOSYS`, and 202 serves Linux
+  `futex(2)` — kernel TLS and glibc ring-3 were never compatible at that
+  number (`__NR_futex` collides with TLS_SEND; glibc aborts without a
+  real futex), so keeping a switchable engine preserved a trap, not a
+  fallback. `net/tls*.c` never link into the image.
+- [x] **4. Delete `net/tls*.c` from the kernel image.** Default build
+  unlinks `tls.o tls_crypto.o tls_x509.o` (`KERN_TLS_OBJS` empty); the
+  kernel keeps only TCP/UDP/DNS sockets. `make test-tls` still compiles
+  the same sources on the host, so the crypto stays covered.
 
 ## Verification
 

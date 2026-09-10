@@ -1166,15 +1166,14 @@ int minifs_mount(void) {
     fs_lba_raw = 9 + KERNEL_SECTORS;
 #else
     fs_lba_raw = 9;
-    /* Linker-symbol size idiom: kernel.ld places ramdisk_end immediately
-     * after ramdisk_start in one section, so the subtraction is the
-     * image size by construction (the analyzer cannot see the link
-     * layout; justification for the inline suppression below).
-     * Production always defines KERNEL_SECTORS; this is the fallback
-     * path only. */
-// cppcheck-suppress subtractPointers
-// cppcheck-suppress subtractPointers
-    {   unsigned int ksize = (unsigned int)(&ramdisk_end[0] - &ramdisk_start[0]);
+    /* ramdisk_size is an absolute linker symbol whose address IS the
+     * embedded image size (kernel.ld computes it as
+     * ramdisk_end - ramdisk_start at link time, where the subtraction
+     * is legal). Reading it by address avoids pointer subtraction
+     * between distinct objects in C (undefined behaviour,
+     * cppcheck subtractPointers). Production always defines
+     * KERNEL_SECTORS; this is the fallback path only. */
+    {   unsigned int ksize = (unsigned int)(unsigned long)ramdisk_size;
         if (ksize == 0) ksize = 1;
         fs_lba_raw += (ksize + IDE_SECTOR_SIZE - 1) / IDE_SECTOR_SIZE;
     }

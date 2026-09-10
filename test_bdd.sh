@@ -188,6 +188,18 @@ poweroff"
 expect "lapic_cal="
 expect "measured"
 
+scenario "kernel stacks report headroom after boot" "kstack
+poweroff"
+expect "kstack: ok"
+refute "OVERFLOW"
+
+scenario_smp "kernel stacks stay intact after threaded run" "run thdemo
+kstack
+poweroff"
+expect "thdemo: PASS"
+expect "kstack: ok"
+refute "OVERFLOW"
+
 scenario_smp "mthreads producer-consumer passes on both CPUs" "run thdemo
 poweroff"
 expect "thdemo: PASS"
@@ -778,7 +790,12 @@ poweroff"
 expect "minimal 64-bit kernel"
 expect "freedom: 10.0.2.2 ("
 
-scenario "freedom3 fetches the same page without kernel TLS" "run bin/freedom3 http://10.0.2.2:8899/README.txt
+scenario "freedom3 alias fetches the same page" "run bin/freedom3 http://10.0.2.2:8899/README.txt
+poweroff"
+expect "minimal 64-bit kernel"
+expect "freedom: 10.0.2.2 ("
+
+scenario "freedom-mini fetches a page (miniGCC http-only twin)" "run bin/freedom-mini http://10.0.2.2:8899/README.txt
 poweroff"
 expect "minimal 64-bit kernel"
 expect "freedom: 10.0.2.2 ("
@@ -821,6 +838,11 @@ expect "freedom: 10.0.2.2 (6000 bytes)"
 scenario "freedom fails closed on https against a plain-http port" "run bin/freedom https://10.0.2.2:8899/README.txt
 poweroff"
 expect "freedom: https handshake with 10.0.2.2 failed"
+
+scenario "freedom resolves a hostname without aborting (glibc futex on 202)" "freedom nosuchhost.invalid
+poweroff"
+expect "freedom: cannot resolve nosuchhost.invalid"
+refute "futex facility"
 
 scenario "freedom follows an https redirect and fails closed on plain http" "run bin/freedom http://10.0.2.2:8900/redirecthttps
 poweroff"

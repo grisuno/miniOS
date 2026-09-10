@@ -205,7 +205,7 @@ __asm__(
     "  movq %rcx, %gs:80\n"         /* sc_rip = user rip */
     "  movl %gs:12, %eax\n"         /* cur_pid (gs:8 is cpu_id) */
     "  movq %rax, %gs:88\n"         /* sc_pid = pid */
-    "  imulq $304, %rax\n"          /* sizeof(proc_t), asserted in sched.c */
+    "  imulq $" STR(PROC_T_SIZE) ", %rax\n"  /* == sizeof(proc_t), see sched.h */
     "  addq kstack_base(%rip), %rax\n"  /* rax = &PCB.kstack */
     "  jmp 13f\n"
     /* --- ring 0: per-proc kernel stack; swapgs puts the per-CPU base
@@ -216,7 +216,7 @@ __asm__(
     "  movq %rcx, %gs:80\n"
     "  movl %gs:12, %eax\n"
     "  movq %rax, %gs:88\n"
-    "  imulq $304, %rax\n"
+    "  imulq $" STR(PROC_T_SIZE) ", %rax\n"
     "  addq kstack_base(%rip), %rax\n"
     /* --- shared swap + top save (IF=0, rax = &PCB.kstack) --- */
     "13:\n"
@@ -352,6 +352,7 @@ __asm__(
 
 extern char ramdisk_start[];
 extern char ramdisk_end[];
+extern char ramdisk_size[];
 
 __attribute__((section(".init.text")))
 void kmain(void) {
@@ -404,8 +405,10 @@ void kmain(void) {
             USER_LOAD_BASE, USER_LOAD_END, SYS_KSTK_TOP);
     net_init();
 
-    if ((unsigned long)(ramdisk_end - ramdisk_start) > 0) {
-        ramdisk_setup_from(ramdisk_start, (unsigned)(ramdisk_end - ramdisk_start));
+    /* ramdisk_size is an absolute linker symbol whose address IS the
+     * image size (see kernel.ld); no pointer subtraction involved. */
+    if ((unsigned long)ramdisk_size > 0) {
+        ramdisk_setup_from(ramdisk_start, (unsigned)(unsigned long)ramdisk_size);
     }
 
     block_init();

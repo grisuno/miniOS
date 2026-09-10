@@ -56,6 +56,19 @@ void tls_u_close(int fd) {
     close(fd);
 }
 
+/* Session-aware close for multi-fetch processes (freedom follows
+ * redirects and linked stylesheets, reusing the lowest free fd number
+ * every time). The engine keys sessions by raw fd and only clears the
+ * slot on handshake error; a successful session lives until someone
+ * frees it, so plain close() leaks the slot and the next handshake on
+ * the recycled fd number fails with "session already exists". Freeing
+ * an fd with no session is a safe no-op. */
+void tls_free_fd(int fd); /* session table owner: net/tls.c */
+void tls_close(int fd) {
+    tls_free_fd(fd);
+    close(fd);
+}
+
 long tls_now_days(void) {
     struct timeval tv;
     if (gettimeofday(&tv, 0) != 0) return 0;
@@ -167,7 +180,7 @@ int tls_u_resolve(const char *host, unsigned *ip_out) {
 
 /* freedom's resolver name: kernel DNS value semantics (u32 host order,
  * -1 on failure). */
-int net_dns_resolve(char *host) {
+int net_dns_resolve(const char *host) {
     unsigned ip;
     if (tls_u_resolve(host, &ip) != 0) return -1;
     return (int)ip;

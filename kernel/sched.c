@@ -54,11 +54,13 @@ static inline unsigned long read_cr3(void) {
 }
 
 /* Layout contract with the syscall_entry asm in kernel.c, which locates
- * the current proc's kernel stack top as procs + pid * SIZE + KSTACK_OFF
- * (it cannot use C here).  If either assert fires, update the immediates
- * in that trampoline to match. */
-_Static_assert(__builtin_offsetof(proc_t, kstack) == 168, "proc kstack off");
-_Static_assert(sizeof(proc_t) == 304, "proc size");
+ * the current proc's kernel stack top as procs + pid * PROC_T_SIZE +
+ * PROC_KSTACK_OFF (it cannot use C here). The asm derives both immediates
+ * from the sched.h macros via STR(), so this assert is the single check:
+ * if it fires, the struct changed and the macros in sched.h must be
+ * updated to match -- the asm follows automatically. */
+_Static_assert(__builtin_offsetof(proc_t, kstack) == PROC_KSTACK_OFF, "proc kstack off");
+_Static_assert(sizeof(proc_t) == PROC_T_SIZE, "proc size");
 /* The AP stub loads the GDT with the SMP limit; it must cover one TSS
  * descriptor (two slots) per CPU past the 5 stage-2 entries. */
 _Static_assert((5 + 2 * MAX_CPUS) * 8 == GDT64_SMP_BYTES, "GDT SMP size");
@@ -105,15 +107,53 @@ idtr_t bsp_idtr;
 extern void *isr_stub_table[];
 
 /* ---- Kernel stack pool ---- */
-static char kstack_pool[MAX_PROCS][16*1024] __attribute__((aligned(16)));
+#define KSTACK_SZ      (16*1024)
+static char kstack_pool[MAX_PROCS][KSTACK_SZ] __attribute__((aligned(16)));
 static int kstack_used[MAX_PROCS];  /* 0 = free, 1 = in use */
+
+/* ---- Kernel-stack canary + high-water diagnostic ----
+ * A slot is painted with KSTACK_PAINT at claim time with a KSTACK_CANARY
+ * word at its very bottom. kstack_report() scans for the deepest
+ * clobbered word: the high-water mark shows how close a stack came to
+ * overflowing, and a dead canary proves an overflow already happened
+ * (a stack that overruns writes into its neighbour's slot, the classic
+ * "address touched by someone else" corruption). Paint cost is at
+ * allocation rate only, never in the ISR path; the report is fail-closed
+ * (a dead canary prints OVERFLOW, never a forged number). */
+#define KSTACK_PAINT   0xA5A5A5A5A5A5A5A5ULL
+#define KSTACK_CANARY  0x4B535441434B3735ULL
+
+static void kstack_paint(uint64_t top, unsigned long size) {
+    unsigned long long *p = (unsigned long long *)(top - size);
+    unsigned long n = size / 8;
+    unsigned long i;
+    for (i = 1; i < n; i++) p[i] = (unsigned long long)KSTACK_PAINT;
+    p[0] = (unsigned long long)KSTACK_CANARY;
+}
+
+/* 0 = intact (used_out = high-water bytes), -1 = canary dead. */
+static int kstack_usage(uint64_t top, unsigned long size,
+                        unsigned long *used_out) {
+    unsigned long long *p = (unsigned long long *)(top - size);
+    unsigned long n = size / 8;
+    unsigned long i;
+    if (p[0] != (unsigned long long)KSTACK_CANARY) {
+        *used_out = size;
+        return -1;
+    }
+    for (i = 1; i < n; i++)
+        if (p[i] != (unsigned long long)KSTACK_PAINT) break;
+    *used_out = (i >= n) ? 0 : (unsigned long)(top - (uint64_t)&p[i]);
+    return 0;
+}
 
 static uint64_t alloc_kstack(void) {
     int i;
     for (i = 0; i < MAX_PROCS; i++) {
         if (!kstack_used[i]) {
             kstack_used[i] = 1;
-            return (uint64_t)&kstack_pool[i][16*1024];
+            kstack_paint((uint64_t)&kstack_pool[i][KSTACK_SZ], KSTACK_SZ);
+            return (uint64_t)&kstack_pool[i][KSTACK_SZ];
         }
     }
     return 0;
@@ -121,8 +161,46 @@ static uint64_t alloc_kstack(void) {
 
 static void free_kstack(uint64_t top) {
     if (!top) return;
-    int idx = (int)(((char *)top - (char *)kstack_pool) / (16*1024));
+    int idx = (int)(((char *)top - (char *)kstack_pool) / (KSTACK_SZ));
     if (idx >= 0 && idx < MAX_PROCS) kstack_used[idx] = 0;
+}
+
+/* Serial-observable stack health: per-proc high-water marks plus the
+ * legacy 32 KB syscall stack, ending in `kstack: ok` or
+ * `kstack: OVERFLOW`. The shell `kstack` builtin calls this. */
+void kstack_report(void) {
+    int i, bad = 0;
+    unsigned leg_sz = (unsigned)(SYS_KSTK_TOP - SYS_KSTK_BASE);
+    for (i = 0; i < MAX_PROCS; i++) {
+        unsigned long used = 0;
+        unsigned size;
+        int rc;
+        uint64_t top;
+        if (procs[i].state == PROC_FREE) continue;
+        top = procs[i].kstack;
+        if (top >= SYS_KSTK_BASE && top <= SYS_KSTK_TOP) {
+            size = leg_sz;
+        } else if (top >= (uint64_t)kstack_pool &&
+                   top <= (uint64_t)&kstack_pool[MAX_PROCS][0]) {
+            size = KSTACK_SZ;
+        } else {
+            kprintf("  pid=%d (%s) stack foreign top=0x%lx\n",
+                    i, procs[i].name, (unsigned long)top);
+            continue;
+        }
+        rc = kstack_usage(top, size, &used);
+        if (rc != 0) bad = 1;
+        kprintf("  pid=%d (%s) used=%lu/%u%s\n", i, procs[i].name, used,
+                size, rc != 0 ? " OVERFLOW" : "");
+    }
+    {
+        unsigned long used = 0;
+        int rc = kstack_usage(SYS_KSTK_TOP, leg_sz, &used);
+        if (rc != 0) bad = 1;
+        kprintf("  legacy used=%lu/%u%s\n", used, leg_sz,
+                rc != 0 ? " OVERFLOW" : "");
+    }
+    kprintf("kstack: %s\n", bad ? "OVERFLOW" : "ok");
 }
 
 /* ---- Trap frame (must match isr_stubs.S) ---- */
@@ -1329,6 +1407,11 @@ void sched_init(void) {
     kmemset(cpus, 0, sizeof(cpus));
     kmemset(ap_idle_proc, 0, sizeof(ap_idle_proc));
     proc_count = 1;
+
+    /* Paint the legacy 32 KB syscall stack before anything can run on
+     * it (SPAWN/exec point proc 0 here transiently); the pool slots
+     * paint at alloc. kstack_report() reads both. */
+    kstack_paint(SYS_KSTK_TOP, SYS_KSTK_TOP - SYS_KSTK_BASE);
 
     /* Per-CPU idle contexts: pid -1 marks them as never-pickable; a
      * state other than PROC_READY keeps every scan away.  The AP fills

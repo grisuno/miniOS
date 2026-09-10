@@ -58,6 +58,16 @@ typedef struct {
     int cpu_kill_pending;
     char        name[32];
 } proc_t;
+/* Single source of truth for the PCB footprint (review fix for the
+ * 0a92118 imulq drift): the syscall_entry trampoline in kernel.c cannot
+ * use C, so it multiplies pid by PROC_T_SIZE and adds PROC_KSTACK_OFF.
+ * Both immediates derive from these macros via STR(); the _Static_asserts
+ * in kernel/sched.c prove macro == struct. Adding a field changes the
+ * macros' values automatically on rebuild -- no asm hunt. procs[] itself
+ * is a static 64-entry .bss array (~19 KB at 304 B/entry), far below the
+ * USER_LOAD_BASE budget enforced by `make check-size`. */
+#define PROC_T_SIZE 304
+#define PROC_KSTACK_OFF 168
 /* Seccomp-basic: bit for MiniOS syscall n in proc_t.seccomp_deny. Only the
  * 200..231 window is filterable (the framebuffer/audio/spawn/TLS surface);
  * Linux-ABI numbers are never filtered so a filter cannot break exit. */
@@ -213,6 +223,7 @@ extern idtr_t bsp_idtr;
 
 /* ---- Functions ---- */
 void     sched_init(void);
+void     kstack_report(void);
 void     tss_init_ap(int cpu);
 void     smp_ap_idle_loop(void);
 int      proc_create(const char *name, int parent_pid);

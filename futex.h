@@ -57,6 +57,14 @@
 #define FUTEX_NOPROC (-1)
 #define FUTEX_WAKE_ALL 0x7fffffff
 
+/* Linux futex(2) op numbers. __NR_futex is 202, the retired
+ * MINIOS_SYS_TLS_SEND number, so syscalls.c serves raw glibc futex traps
+ * here instead of a second table. Only WAIT/WAKE are implemented, on top
+ * of futex_wait/futex_wake below. */
+#define LINUX_FUTEX_WAIT 0
+#define LINUX_FUTEX_WAKE 1
+#define LINUX_FUTEX_PRIVATE_FLAG 128
+
 typedef struct {
     spinlock_t lock;
     int head;
@@ -66,5 +74,13 @@ typedef struct {
 void futex_init(void);
 long futex_wait(unsigned long uaddr, int val);
 long futex_wake(unsigned long uaddr, int n);
+
+/* Decode a Linux futex(2) op to LINUX_FUTEX_WAIT/WAKE, masking
+ * FUTEX_PRIVATE_FLAG (process-private is served on the same global
+ * buckets: same semantics, no isolation shortcut). Returns -1 for
+ * anything unserved (REQUEUE, CMP_REQUEUE, WAKE_OP, WAIT_BITSET,
+ * PI/PP...). Host-tested (tests/test_futex.c); the kernel errno mapping
+ * lives in syscalls.c, which is not host-compilable. */
+int futex_linux_cmd(long op);
 
 #endif

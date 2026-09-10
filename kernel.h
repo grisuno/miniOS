@@ -208,6 +208,16 @@ int fs_resolve(const char *path, char *out, unsigned cap);
 int fs_dir_exists(const char *dir);
 int fs_is_dir(const char *resolved);
 
+/* ET_REL trust root (single source of truth for the ring-0 trust gate).
+ * Relocatables execute as kernel extensions, so only this ramdisk prefix
+ * owns them. shell.c, syscalls.c (SPAWN) and docs/ABI.md all reference
+ * this macro; fs_resolve() normalises "..", "." and duplicate slashes
+ * before the gate ever sees a path, so "objects/../../x" collapses and
+ * cannot escape. MiniFS carries no symlinks (readlink returns -EINVAL),
+ * so there is no alias the prefix check can miss. */
+#define ETREL_TRUSTED_DIR "objects/"
+#define ETREL_TRUSTED_LEN 8
+
 /* =========================================================================
  * VFS (Virtual File System) abstraction
  * =========================================================================
@@ -537,6 +547,7 @@ extern KFILE *kfd_table[KFD_MAX];
 extern unsigned long kernel_end;
 extern char ramdisk_start[];
 extern char ramdisk_end[];
+extern char ramdisk_size[];
 
 /* ========== Kernel clock ========== */
 unsigned long ktime_ms(void);

@@ -12,6 +12,9 @@
 #define RTC_REG_SEC      0x00
 #define RTC_REG_MIN      0x02
 #define RTC_REG_HOUR     0x04
+#define RTC_REG_DAY      0x07
+#define RTC_REG_MON      0x08
+#define RTC_REG_YEAR     0x09
 #define RTC_REG_STATUS_A 0x0A
 #define RTC_REG_STATUS_B 0x0B
 
@@ -59,5 +62,53 @@ int rtc_read_tod(int *hour, int *min, int *sec) {
     *hour = hr;
     *min = mn;
     *sec = sc;
+    return 1;
+}
+
+static int rtc_month_len(long full_year, long mon) {
+    static const unsigned char lens[12] =
+        { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    unsigned char n = lens[mon - 1];
+    if (mon == 2 && full_year % 4 == 0 &&
+        (full_year % 100 != 0 || full_year % 400 == 0))
+        n = 29;
+    return (int)n;
+}
+
+int rtc_read_date(int *year, int *mon, int *day) {
+    int spins;
+    int yy, mo, dy;
+    long full;
+    if (!year || !mon || !day) return 0;
+    for (spins = 0; spins < RTC_UPDATE_WAIT; spins++)
+        if (!(rtc_cmos_read(RTC_REG_STATUS_A) & RTC_UPDATE_IN_PROGRESS)) break;
+    dy = rtc_cmos_read(RTC_REG_DAY);
+    mo = rtc_cmos_read(RTC_REG_MON);
+    yy = rtc_cmos_read(RTC_REG_YEAR);
+    if (!(rtc_cmos_read(RTC_REG_STATUS_B) & RTC_BCD_FLAG)) {
+        dy = rtc_from_bcd((unsigned char)dy);
+        mo = rtc_from_bcd((unsigned char)mo);
+        yy = rtc_from_bcd((unsigned char)yy);
+    }
+    if (yy < 0 || yy > 99 || mo < 1 || mo > 12) return 0;
+    full = 2000L + (long)yy;
+    if (dy < 1 || dy > rtc_month_len(full, (long)mo)) return 0;
+    *year = (int)full;
+    *mon = mo;
+    *day = dy;
+    return 1;
+}
+
+int rtc_wall_seconds(unsigned long *out) {
+    int h, m, s, y, mo, dy;
+    long days;
+    if (!out) return 0;
+    if (!rtc_read_tod(&h, &m, &s)) return 0;
+    if (!rtc_read_date(&y, &mo, &dy)) return 0;
+    days = rtc_days_from_civil((long)y, (long)mo, (long)dy);
+    if (days < 0) return 0;
+    *out = (unsigned long)days * 86400UL +
+           (unsigned long)h * 3600UL +
+           (unsigned long)m * 60UL + (unsigned long)s;
     return 1;
 }
