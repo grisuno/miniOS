@@ -820,17 +820,21 @@ framebuffer is not.
 - **Focus + tiling across windows (Alt-Tab, Super-Tab, `vga_fb.c` + `drivers/kbd.c`):**
   the focused window owns the keyboard; its title bar paints bright
   (`COL_TITLEBAR`) while unfocused terminals dim (`COL_SHADOW`) with a `*`
-  marking the focused one. Alt+Tab cycles focus across present terminals plus
-  the graphics window while a program owns the display; Super (E0 0x5B/0x5C,
-  tracked as `kbd_super` beside Alt) + Tab tiles all present terminals (one
-  fills the screen, two split left/right; graphics windows stay centered
-  because the running program owns the display); Super+arrows snap the
+  marking the focused one. Alt+Tab cycles focus across EVERY window —
+  present terminals plus the graphics window (`WM_FOCUS_GFX`), like
+  Windows/Linux, never terminals-only; Super (E0 0x5B/0x5C, tracked as
+  `kbd_super` beside Alt) + Tab tiles them all (one terminal fills it, two
+  go left/right; with a graphics window the terminal(s) yield the right
+  half — two stack vertically on the left — and a window too wide for the
+  half goes right-aligned instead of centered). Super+arrows snap the
   focused window like Alt+arrows. Clicking an unfocused terminal raises it
   through the same select path, so mouse and keys agree. The `wm` builtin
   drives the same functions (`wm focus [next|0|1|2]`, `wm tile`, `wm list`,
   `wm state` reports `focus`/`nterms`) so the BDD suite asserts them over
-  serial exactly like `date`/`vol`; real scancodes are covered by QMP
-  `input-send-event` (`alt`+`tab`, `meta_l`+`tab`) against `display none`.
+  serial exactly like `date`/`vol` (including a background-DOOM scenario
+  that focuses, tiles, lists and closes the gfx window); real scancodes are
+  covered by QMP `input-send-event` (`alt`+`tab`, `meta_l`+`tab`) against
+  `display none`.
 - **Second terminal (`wm split`, `vga_fb.c` + `shell.c`):** two shells share
   one execution engine — the globals every terminal function uses always
   mirror the focused window, and `tw_park`/`tw_unpark` swap the whole window
@@ -842,8 +846,16 @@ framebuffer is not.
   generation counter so the readline loop adopts the incoming line instead
   of dropping the first keystroke after Alt-Tab); history and cwd stay
   shared, and running a program blocks both windows (one `exec_return`).
-  `wm close` on window 1 destroys it (heap freed, focus back to 0); window
-  0 never closes (it resets to default like the historical X button).
+  While split, window 0 snapshots to the heap too: its slot borrows the
+  static ring, which IS the live one, so sharing it merged both windows'
+  content and aliased `tw_park`'s copy (src == dst), rotting scrollback
+  once `lg_head` moved. `wm close` drops the split from any focus (typing
+  it in window 0 still closes window 1, never a silent no-op), adopts the
+  live ring into window 0 so no output is lost, frees both heap rings and
+  re-homes window 0 on the static ring; window 0 never closes (it resets
+  to default like the historical X button). An empty submit (Enter /
+  Ctrl+D on a blank line) clears the window's live-prompt flag, or every
+  refocus stacked another `miniOS> `.
   The dock's Terminal icon runs `wm split` (`progs/etc/shortcuts`), so a
   click opens/focuses the second shell with no typing — verified over QMP
   with separated button down/up (a joint down+up can land inside one tick
@@ -851,6 +863,21 @@ framebuffer is not.
   Honest limits: no Alt-Tab mid-`edit` (the modal editor echoes into
   whichever window is focused), serial sees one interleaved console (use
   `wm list`'s `line` flag to tell which window holds a parked line).
+- **Focus-routed input (`vga_fb_ps2_owner`, `drivers/kbd.c` +
+  `kernel/syscalls.c`):** one PS/2 keyboard feeds every window, so the
+  focused window owns it — a background gfx job (`run doomgeneric.elf
+  mini_autoframes 3000 &`, shell stays interactive) reads `SYS_KBD` only
+  while the gfx window is focused, the shell's `kbd_read` only while a
+  terminal is, and neither touches the port when unfocused, so the two
+  never split the scancode stream. A legacy foreground program owns
+  everything (its shell is blocked, nobody to steal from). `kbd_read`
+  always translates cooked for the shell even with the global raw mode on
+  (a bg raw game used to deafen shell PS/2), and focusing the gfx window
+  flushes stale raw bytes. Serial bypasses routing and stays a shell
+  console at every focus. `sleep <secs>` (yield loop, Ctrl+C aborts) paces
+  scripts across a booting bg job. Honest limits: one interactive gfx app
+  at a time (two bg games race one port); PS/2 Ctrl+C reaches `wait` only
+  with a terminal focused (serial Ctrl+C always works).
 - **Window controls (title-bar buttons, `vga_fb.c`):** every titled window
   (terminal, DOOM, Nuklear) carries the classic three glyph buttons at the
   right end of its title bar — minimize (`_`), maximize (open square) and
@@ -860,12 +887,33 @@ framebuffer is not.
   close restores the terminal to its default geometry because the shell
   cannot be closed. For a graphics window the buttons target the composited
   DOOM/Nuklear title bar: maximize is a no-op (the window is already display-
-  sized) and close arms `wm_close_request`, which the syscall dispatcher
+  sized) and   close arms `wm_close_request`, which the syscall dispatcher
   honours on the child's next syscall (`exec_exit_code = 130`, `klongjmp` on
   the child's own stack — never from the ISR), so a graphics program is
-  terminated cleanly from its title-bar X. Alt+M toggles minimize and
+  terminated cleanly from its title-bar X. A background job has no fg exec
+  frame, so its close request reaps it as `do_exit(130)` instead of stealing
+  the shell's `klongjmp` target. Alt+M toggles minimize and
   Alt+X/Alt+Q close the active window. Fullscreen and minimize are mutually
   exclusive: entering one clears the other.
+- **WM inside games (raw scancodes, `drivers/kbd.c`):** DOOM/Quake/Nuklear/
+  piano read raw Set-1 scancodes through `SYS_KBD` (205), bypassing the
+  cooked translation where Alt-Tab lives — so the WM used to die the moment
+  a game owned the keyboard. `raw_track_mods`/`wm_raw_combo` (shared core)
+  intercept on both raw paths (`kbd_read`'s raw branch and
+  `kbd_sys_raw_filter` for the direct-port syscall read): Alt+Tab focuses,
+  Super+Tab tiles, Super+arrows/Home/End snap, Alt+Enter/M/X/Q/`[`/`]`/`-`/
+  `=`/`0` act, and a swallowed Tab make swallows its break too. Bare keys
+  always reach the game, and Alt+arrows stay with the game (DOOM strafes
+  with them); Super is never a game key, so it carries the full set raw.
+  The `SYS_KBD` path holds back the `0xE0` prefix while Alt/Super is held
+  (no stray prefix wedges a game's key pump) and modifiers are tracked raw,
+  so nothing sticks across `kbd_reset_for_shell` (which now clears every
+  modifier, not just Super/AltGr). `vga_fb_tile_all` parks a fitting gfx
+  window (DOOM 320px) on the right half beside the terminal(s); a full-size
+  one (Nuklear/vedit 800px) stays centered. Honest limits: legacy blocking
+  `run` still blocks the shell (type in a terminal while a fg game runs
+  needs `run game &` + preempt), and one keyboard feeds both a bg game and
+  the shell — WM combos are consumed, the rest reaches both.
 - **Minimize/restore (`wm` builtin):** while the terminal is minimized the
   window is not drawn and the taskbar shows a `[]` restore button on the far
   left. The mouse tick ignores wheel/drag/scrollbar while minimized. The `wm`
@@ -873,6 +921,48 @@ framebuffer is not.
   same functions as the buttons and shortcuts and reports state over the
   serial console, so the BDD suite asserts the WM behaviour exactly like
   `date`/`vol`/`kbd`/`gfx`.
+- **Persistent graphics layer (`gfx_keep_*`, `vga_fb.c`):** every desktop
+  redraw wipes the whole framebuffer, which used to bury any program that
+  only composites on input — vedit/Nuklear sit blocked in `read` with no
+  next frame coming, so Alt+Tab made the window vanish until the next
+  keypress, with no way back. Both blits now save the finished window
+  (title + content, cursor excluded) into a fixed heap buffer sized for the
+  largest window, allocated once and never freed (no alloc/free races with
+  the ISR tick, dims invalidate on mode-on), and `draw_desktop` re-blits it
+  on top after the terminals at the current WM offset. A save racing a
+  restore tears one cosmetic frame; all copies clamp.
+- **Taskbar running-app button (`taskbar_render`, click):** while a graphics
+  program owns the display the taskbar shows a small button right after the
+  restore slot: the app's own 32x32 desktop icon downsampled to the 8px row
+  plus its title, bright when focused. The icon resolves through
+  `etc/shortcuts` (never a hardcoded list): `vga_fb_set_gfx_program`
+  records the compositor — the shell's launch name for foreground runs,
+  `procs[current_pid].name` attributed per frame for background jobs, so it
+  is always whoever is actually on screen — and matches it against each
+  shortcut's command binary (`run quake2generic.elf +set basedir .` matches
+  `quake2generic.elf`); the window title against the shortcut name is the
+  fallback (case-insensitive, `*` suffix ignored), text-only when nothing
+  matches. This is why every app sets its title at startup (Nuklear, Piano
+  and vedit call `SYS_GFX_SET_TITLE`; DOOM keeps the default): title-less
+  programs all read "DOOM" and shared one icon. Clicking the button focuses
+  the graphics window, which redraws it on top through the persistent layer
+  — a buried app is always reachable. `wm list` reports it as
+  `win gfxbtn x=.. w=.. icon|text` for the BDD pin.
+- **Desktop art sources (`tools/gen_desktop_pngs.py` vs `gen_icons.py`):**
+  custom art (wallpaper + per-app icons) converts from user PNGs at the
+  repo root, pixel art (terminal) generates procedurally; the sets are
+  disjoint by Makefile rule. Pokemon ships the root `pokemon.png` Pikachu
+  (32x32 RGBA like every icon), never the old generated pokeball.
+- **GUI proof (`tools/test_gui_wm.py`):** serial `wm` commands share the
+  functions but not the reality (blocking reads, frame timing), so the WM
+  is also proven headless over QMP: real Alt+Tab/Super-Tab scancodes with
+  vedit in the foreground, judged on pixels (vedit painted, identical after
+  Alt+Tab, still painted after tile), then a background vedit whose taskbar
+  button is clicked through a real relative-mouse walk, asserting serial
+  `focus 2`. Serial goes over a unix socket (pipes make QEMU block-buffer
+  stdout; sends are paced ~20ms for the 16-byte 16550 FIFO), stdin is held
+  open (EOF exits QEMU), RAM is 1G (256M dies silently), and in practice
+  QMP +y moves the cursor down.
 - **Shell surface:** `date` prints `HH:MM:SS` from `rtc_read_tod` (a failed
   read prints a diagnostic); `vol [0-100]` prints the volume and, with an
   argument, sets it after strict decimal parsing and clamping; `kbd [en|es]`
@@ -1978,6 +2068,7 @@ make                # zero warnings
 make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers, all green
 sh src/test_all.sh  # one-boot comprehensive non-interactive suite (66 PASS)
 ./test_bdd.sh       # all scenarios green (full interactive suite)
+python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh         # every mutant killed (BDD + host TLS + host VMA suites)
 make test-tls       # host-side crypto + full-handshake suite green
@@ -2390,6 +2481,7 @@ make                        # zero warnings
 make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers, all green
 sh src/test_all.sh          # one-boot comprehensive non-interactive suite (66 PASS)
 ./test_bdd.sh               # all scenarios green (full interactive suite)
+python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 ./tools/test_codecs.sh      # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh                 # every mutant killed
 make test-tls               # host-side crypto + handshake suite

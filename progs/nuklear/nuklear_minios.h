@@ -32,6 +32,7 @@ long nk_sys_mouse(int *xybw);          /* int[4]: x, y, buttons, wheel */
  * validation, so a mutant that drops the bounds check is killed. */
 long nk_sys_mouse_badptr(void);
 long nk_sys_nk_frame(int *origin);     /* int[2]: window content origin */
+long nk_sys_gfx_set_title(const char *t); /* taskbar title + icon match */
 
 /* Hybrid palette: indices 0-14 are the desktop colors (kept so the desktop
  * behind the window never recolors); 15-255 are the UI ramp. */

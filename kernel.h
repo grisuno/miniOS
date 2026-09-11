@@ -491,6 +491,12 @@ void vga_fb_tile_all(void);
 void vga_fb_list_windows(void);
 void vga_fb_park_line(const char *b, int p);
 int  vga_fb_unpark_line(char *b, int *p);
+void vga_fb_set_gfx_program(const char *name);
+int  vga_fb_act_empty(void);
+int  vga_fb_prompt_live(void);
+void vga_fb_note_prompt(void);
+void vga_fb_clear_prompt(void);
+int  vga_fb_prompted(void);
 
 /* Shell side of window focus: park/restore the half-typed input line so it
  * travels with its window. Implemented in shell.c, called from vga_fb.c. */

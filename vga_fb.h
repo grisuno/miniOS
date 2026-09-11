@@ -187,6 +187,12 @@ int      vga_fb_close_active(void);
 void     vga_fb_focus_next(void);
 int      vga_fb_focus_id(int id);
 int      vga_fb_focus_get(void);
+/* PS/2 ownership for pid: 1 when pid may consume the keyboard port. One
+ * keyboard feeds every window, so the focused window owns it: a background
+ * gfx job reads only while the gfx window is focused, the shell only while
+ * a terminal is. A legacy foreground program owns everything (its shell is
+ * blocked, so there is nobody to steal from). Serial stays shell-only. */
+int      vga_fb_ps2_owner(int pid);
 int      vga_fb_nterms_get(void);
 int      vga_fb_term_split(void);
 int      vga_fb_term_close_focused(void);

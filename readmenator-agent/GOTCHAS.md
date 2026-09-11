@@ -4,7 +4,7 @@
 
 These files have the most connections. Changes here have high blast radius.
 
-- `kernel.h` (score: 111.60)
+- `kernel.h` (score: 114.20)
 - `progs/doomgeneric/doomtype.h` (score: 101.40)
 - `kernel/string.c` (score: 93.30)
 - `progs/doomgeneric/doomdef.h` (score: 90.90)
@@ -20,13 +20,13 @@ These files have the most connections. Changes here have high blast radius.
 - `kernel.h` -- complexity: 1.0, centrality: 1.0, combined: 1.0
 - `progs/doomgeneric/d_main.c` -- complexity: 0.4, centrality: 1.0, combined: 0.7
 - `progs/doomgeneric/g_game.c` -- complexity: 0.3, centrality: 0.8, combined: 0.6
-- `progs/doomgeneric/st_stuff.c` -- complexity: 0.6, centrality: 0.6, combined: 0.6
+- `progs/doomgeneric/st_stuff.c` -- complexity: 0.5, centrality: 0.6, combined: 0.5
 - `kernel/syscalls.c` -- complexity: 0.5, centrality: 0.5, combined: 0.5
 - `progs/doomgeneric/m_menu.c` -- complexity: 0.3, centrality: 0.6, combined: 0.5
 - `progs/doomgeneric/doomstat.h` -- complexity: 0.2, centrality: 0.5, combined: 0.4
-- `progs/doomgeneric/d_englsh.h` -- complexity: 1.0, centrality: 0.0, combined: 0.4
 - `progs/doomgeneric/doomtype.h` -- complexity: 0.0, centrality: 0.6, combined: 0.4
-- `progs/doomgeneric/am_map.c` -- complexity: 0.3, centrality: 0.4, combined: 0.4
+- `progs/doomgeneric/d_englsh.h` -- complexity: 0.9, centrality: 0.0, combined: 0.4
+- `kernel/shell.c` -- complexity: 0.4, centrality: 0.3, combined: 0.4
 
 ## Dependency Cycles
 

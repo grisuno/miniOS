@@ -564,6 +564,7 @@ static void ui_run(int bench_ms) {
     int fw, fh, fp;
 
     nk_sys_vga_mode(1);
+    nk_sys_gfx_set_title("Piano");
     nk_sys_kbd_raw(1);
     nk_build_palette(pal768);
     nk_sys_palette(pal768);

@@ -72,6 +72,12 @@ static unsigned long fb_read_packed(int x, int y);
 /* Forward: the wallpaper cache lives with the shortcut-icon code below, but
  * the desktop painter above needs it. */
 static void wallpaper_draw(void);
+static int icon_nearest(int r, int g, int b);
+static const uint8_t *gfx_task_icon(void);
+static void taskbar_layout(void);
+static int tb_gfx_x, tb_gfx_w;
+static struct desktop_shortcut shortcuts[MAX_SHORTCUTS];
+static int shortcut_count;
 
 /* ---- Unified terminal buffer (logical lines, re-flowed at display width) ----
  *
@@ -258,16 +264,192 @@ static int vga_fb_gfx_mode;
 
 /* Geometry of the last composited graphics window (DOOM or Nuklear). The WM
  * uses it to hit-test the title-bar window controls while a graphics program
- * owns the display. */
-static int gfx_win_x, gfx_win_y, gfx_win_w;
+ * owns the display. gfx_win_ox/oy are WM offsets added to the centered
+ * position (move/snap/tile/drag write them; 0 = centered); gfx_win_h is the
+ * content height for hit-testing. Offsets reset when graphics mode ends, so
+ * the next program starts centered. */
+static int gfx_win_x, gfx_win_y, gfx_win_w, gfx_win_h;
+static int gfx_win_ox, gfx_win_oy;
+
+/* Persistent graphics layer: the last composited window (title bar plus
+ * content) as raw framebuffer pixels. A desktop redraw (Alt+Tab, tile,
+ * drag, taskbar tick) wipes the whole framebuffer, which used to bury any
+ * program that only composites on input — vedit/Nuklear sit blocked in
+ * read with no next frame coming, so the window vanished until the next
+ * keypress. draw_desktop re-blits this copy on top after the terminals, so
+ * the window survives every redraw at its current WM offset. One fixed
+ * buffer sized for the largest window (Nuklear + title), allocated once on
+ * the first composite and never freed: no alloc/free races between the
+ * syscall composite path and the ISR-driven desktop tick, and no UAF. Dims
+ * invalidate on mode-on so a new program never flashes the previous one's
+ * frame. A save racing a restore tears one cosmetic frame; every copy
+ * clamps, so even torn dims stay in bounds. */
+#define GFX_KEEP_W (NK_W + SCROLLBAR_W)
+#define GFX_KEEP_H (NK_H + FONT_H)
+static uint8_t *gfx_keep;
+static int gfx_keep_w, gfx_keep_h, gfx_keep_bpx;
+static void gfx_target(int *x, int *y);
+
+static void gfx_keep_save(int x, int y, int w, int h) {
+    int r, c, bpx;
+    if (w > GFX_KEEP_W) w = GFX_KEEP_W;
+    if (h > GFX_KEEP_H) h = GFX_KEEP_H;
+    if (w <= 0 || h <= 0) return;
+    if (!gfx_keep) {
+        gfx_keep = kmalloc((unsigned long)GFX_KEEP_W *
+                           (unsigned long)GFX_KEEP_H * 4UL);
+        if (!gfx_keep) return;
+    }
+    bpx = fb_bytes_per_pixel();
+    for (r = 0; r < h; r++) {
+        int sy = y + r;
+        uint8_t *drow;
+        if (sy < 0 || sy >= fb_height) continue;
+        drow = gfx_keep + (unsigned long)r * (unsigned long)GFX_KEEP_W * 4UL;
+        for (c = 0; c < w; c++) {
+            int sx = x + c;
+            unsigned long px;
+            if (sx < 0 || sx >= fb_width) continue;
+            px = fb_read_packed(sx, sy);
+            drow[(unsigned long)c * 4UL + 0] = (uint8_t)(px & 0xFF);
+            drow[(unsigned long)c * 4UL + 1] = (uint8_t)((px >> 8) & 0xFF);
+            drow[(unsigned long)c * 4UL + 2] = (uint8_t)((px >> 16) & 0xFF);
+        }
+    }
+    gfx_keep_w = w;
+    gfx_keep_h = h;
+    gfx_keep_bpx = bpx;
+}
+
+static void gfx_keep_restore(void) {
+    int r, c, w, h, x, y;
+    if (!vga_fb_gfx_mode || !gfx_keep || gfx_keep_w <= 0 || gfx_keep_h <= 0)
+        return;
+    if (gfx_keep_bpx != fb_bytes_per_pixel()) return;
+    w = gfx_keep_w;
+    h = gfx_keep_h;
+    if (w > GFX_KEEP_W) w = GFX_KEEP_W;
+    if (h > GFX_KEEP_H) h = GFX_KEEP_H;
+    gfx_target(&x, &y);
+    gfx_win_x = x;
+    gfx_win_y = y;
+    for (r = 0; r < h; r++) {
+        int dy = y + r;
+        uint8_t *srow;
+        if (dy < 0 || dy >= fb_height) continue;
+        srow = gfx_keep + (unsigned long)r * (unsigned long)GFX_KEEP_W * 4UL;
+        for (c = 0; c < w; c++) {
+            int dx = x + c;
+            unsigned long px;
+            if (dx < 0 || dx >= fb_width) continue;
+            px = (unsigned long)srow[(unsigned long)c * 4UL + 0] |
+                 ((unsigned long)srow[(unsigned long)c * 4UL + 1] << 8) |
+                 ((unsigned long)srow[(unsigned long)c * 4UL + 2] << 16);
+            fb_write_packed(dx, dy, px);
+        }
+    }
+}
+
+/* Compositor identity for the taskbar button: basename of the program that
+ * composited last. The shell records its fg launch name; the syscall layer
+ * attributes every background frame to procs[current_pid].name, so the
+ * button always shows whoever is actually on screen (last frame wins, same
+ * as the pixels). Matched against the shortcut COMMANDS from etc/shortcuts
+ * — never against a hardcoded app list. Cleared with the graphics mode. */
+#define GFX_PROG_LEN 32
+static char gfx_prog[GFX_PROG_LEN];
+
+void vga_fb_set_gfx_program(const char *name) {
+    unsigned long i = 0, start = 0;
+    if (!name) {
+        gfx_prog[0] = '\0';
+        return;
+    }
+    {
+        unsigned long k = kstrlen(name), j;
+        for (j = 0; j < k; j++)
+            if (name[j] == '/') start = j + 1;
+    }
+    for (i = 0; i < (unsigned long)(GFX_PROG_LEN - 1) && name[start + i]; i++)
+        gfx_prog[i] = name[start + i];
+    gfx_prog[i] = '\0';
+}
+
+/* Basename of a shortcut command's program: first token after an optional
+ * `run`, then past the last '/'. "run quake2generic.elf +set basedir ." ->
+ * "quake2generic.elf"; "nuklear" -> "nuklear". */
+static void shcmd_base(const char *cmd, char *out, unsigned long cap) {
+    unsigned long s = 0, e, i, last;
+    if (cap == 0) return;
+    out[0] = '\0';
+    if (!cmd) return;
+    if (kstrncmp(cmd, "run ", 4) == 0) s = 4;
+    while (cmd[s] == ' ') s++;
+    e = s;
+    while (cmd[e] && cmd[e] != ' ') e++;
+    last = s;
+    for (i = s; i < e; i++)
+        if (cmd[i] == '/') last = i + 1;
+    for (i = 0; i + 1 < cap && last + i < e; i++)
+        out[i] = cmd[last + i];
+    out[i] = '\0';
+}
+
+static int ci_eq(const char *a, const char *b) {
+    unsigned long i;
+    for (i = 0; ; i++) {
+        int ca = a[i], cb = b[i];
+        if (ca >= 'A' && ca <= 'Z') ca += 32;
+        if (cb >= 'A' && cb <= 'Z') cb += 32;
+        if (ca != cb) return 0;
+        if (ca == 0) return 1;
+    }
+}
+
+/* Icon of the running program via the shortcuts config: whoever composited
+ * last, resolved through its launch command. Zero hardcoded names. */
+static const uint8_t *gfx_prog_icon(void) {
+    int i;
+    char base[GFX_PROG_LEN];
+    desktop_shortcuts_load();
+    if (!gfx_prog[0]) return 0;
+    for (i = 0; i < shortcut_count; i++) {
+        shcmd_base(shortcuts[i].cmd, base, sizeof(base));
+        if (base[0] && ci_eq(base, gfx_prog)) return shortcuts[i].pixels;
+    }
+    return 0;
+}
 
 void vga_fb_set_gfx_mode(int on) {
     vga_fb_gfx_mode = on;
-    if (!on) cursor_visible = 0;
+    if (!on) {
+        cursor_visible = 0;
+        gfx_win_ox = 0;
+        gfx_win_oy = 0;
+        gfx_prog[0] = '\0';
+    } else {
+        gfx_keep_w = 0;
+    }
     /* A new graphics program claims the display: drop any title the previous
      * one set (via SYS_GFX_SET_TITLE), so the next DOOM window is not
      * mis-labelled with the last program's name. */
     if (on) gfx_win_title = "DOOM";
+}
+
+/* Centered origin of a w×h graphics window, plus the WM offset, clamped
+ * on screen. Every blit positions through here, so move/snap/tile/drag
+ * govern graphics windows exactly like terminals. */
+static void gfx_place(int w, int h, int *ox, int *oy) {
+    int cx = (fb_width - w) / 2 + gfx_win_ox;
+    int cy = (fb_height - h) / 2 + gfx_win_oy;
+    if (cx < 0) cx = 0;
+    if (cy < 0) cy = 0;
+    if (cx + w > fb_width) cx = fb_width - w;
+    if (cy + h > fb_height) cy = fb_height - h;
+    if (cx < 0) cx = 0;
+    if (cy < 0) cy = 0;
+    *ox = cx;
+    *oy = cy;
 }
 
 /* Restore the last composite's pointer before the new frame covers it. Only
@@ -430,10 +612,18 @@ static int term_px_x, term_px_y, term_px_w, term_px_h;
  * line per window through shell_focus_park/restore (kernel.h), so each
  * terminal keeps its own half-typed command across Alt-Tab. History and
  * cwd stay shared; running a program blocks both windows (one exec
- * engine), documented in CLAUDE.md. */
+ * engine), documented in CLAUDE.md. While split, window 0 also snapshots
+ * to the heap: its slot borrows the static ring, which IS the live one,
+ * so sharing it would merge both windows' content and alias park's copy.
+ * Close drops the snapshot and re-homes window 0 on the static ring. */
 #define WM_MAX_TERMS 2
 #define WM_ELINE_SZ 256
 static void term_finish_layout(void);
+static void term_recalc(void);
+static int term_max_cols(void);
+static int term_max_rows(void);
+static void gfx_tile_right(void);
+static void gfx_target(int *x, int *y);
 typedef struct {
     int present;
     int valid;
@@ -445,6 +635,7 @@ typedef struct {
     int act_len, disp_off, cursor_col, csi;
     char eline[WM_ELINE_SZ];
     int epos, has_line;
+    int prompted;
 } termwin_t;
 static termwin_t twins[WM_MAX_TERMS];
 static int wm_nterms = 1;
@@ -462,13 +653,20 @@ static void tw_park(int i) {
     t->px_x = term_px_x; t->px_y = term_px_y;
     t->px_w = term_px_w; t->px_h = term_px_h;
     t->fullscreen = term_fullscreen; t->minimized = term_minimized;
-    for (k = 0; k < lg_count && k < SB_MAX_LINES; k++) {
-        const char *s = lg[(lg_head + k) % SB_MAX_LINES];
-        int l;
-        for (l = 0; l < SB_LINE_MAX - 1 && s[l]; l++) t->lg[k][l] = s[l];
-        t->lg[k][l] = '\0';
+    if (t->lg == lg) {
+        /* Window 0 at home borrows the live ring itself: snapshot indices
+         * only. A line copy here would alias src == dst and rotate the
+         * ring once lg_head != 0, eating scrollback on every switch. */
+        t->head = lg_head; t->tail = lg_tail; t->count = lg_count;
+    } else {
+        for (k = 0; k < lg_count && k < SB_MAX_LINES; k++) {
+            const char *s = lg[(lg_head + k) % SB_MAX_LINES];
+            int l;
+            for (l = 0; l < SB_LINE_MAX - 1 && s[l]; l++) t->lg[k][l] = s[l];
+            t->lg[k][l] = '\0';
+        }
+        t->head = 0; t->tail = lg_count % SB_MAX_LINES; t->count = lg_count;
     }
-    t->head = 0; t->tail = lg_count % SB_MAX_LINES; t->count = lg_count;
     for (k = 0; k <= act_len && k < SB_LINE_MAX; k++) t->act[k] = act[k];
     t->act_len = act_len;
     t->disp_off = disp_off; t->cursor_col = term_cursor_col; t->csi = csi_state;
@@ -485,18 +683,26 @@ static void tw_unpark(int i) {
     term_px_x = t->px_x; term_px_y = t->px_y;
     term_px_w = t->px_w; term_px_h = t->px_h;
     term_fullscreen = t->fullscreen; term_minimized = t->minimized;
-    lg_head = 0; lg_tail = 0; lg_count = 0;
-    for (k = 0; k < t->count && k < SB_MAX_LINES; k++) {
-        const char *s = t->lg[k];
-        int l;
-        for (l = 0; l < SB_LINE_MAX - 1 && s[l]; l++) lg[k][l] = s[l];
-        lg[k][l] = '\0';
-        lg_tail = (lg_tail + 1) % SB_MAX_LINES;
-        lg_count++;
+    if (t->lg == lg) {
+        lg_head = t->head; lg_tail = t->tail; lg_count = t->count;
+    } else {
+        lg_head = 0; lg_tail = 0; lg_count = 0;
+        for (k = 0; k < t->count && k < SB_MAX_LINES; k++) {
+            const char *s = t->lg[k];
+            int l;
+            for (l = 0; l < SB_LINE_MAX - 1 && s[l]; l++) lg[k][l] = s[l];
+            lg[k][l] = '\0';
+            lg_tail = (lg_tail + 1) % SB_MAX_LINES;
+            lg_count++;
+        }
     }
     for (k = 0; k <= t->act_len && k < SB_LINE_MAX; k++) act[k] = t->act[k];
     act_len = t->act_len;
     disp_off = t->disp_off; term_cursor_col = t->cursor_col; csi_state = t->csi;
+    /* The slot's derived fields (cols/rows/px) lag resizes: tile/snap write
+     * x/y/sz only, so recompute from the restored size or a refocused
+     * window paints with the previous layout's dimensions. */
+    term_recalc();
 }
 
 static void wm_init_once(void) {
@@ -513,6 +719,7 @@ static void wm_init_once(void) {
         twins[k].has_line = 0;
         twins[k].eline[0] = '\0';
         twins[k].epos = 0;
+        twins[k].prompted = 0;
     }
     twins[0].lg = lg;
 }
@@ -560,6 +767,7 @@ void vga_fb_focus_next(void) {
         if (shell_readline_active()) shell_focus_park();
         tw_park(wm_term);
         wm_focus = WM_FOCUS_GFX;
+        kbd_raw_flush();
     } else {
         tw_select(nx);
     }
@@ -574,6 +782,7 @@ int vga_fb_focus_id(int id) {
         if (shell_readline_active()) shell_focus_park();
         tw_park(wm_term);
         wm_focus = WM_FOCUS_GFX;
+        kbd_raw_flush();
         vga_fb_draw_desktop();
         return 0;
     }
@@ -585,10 +794,15 @@ int vga_fb_focus_id(int id) {
     return 0;
 }
 
-/* Open the second terminal (heap ring, right half) or focus it when open. */
+/* Open the second terminal (heap ring, right half) or focus it when open.
+ * Window 0 also takes a heap snapshot while split: its slot borrows the
+ * static ring, which IS the live one, so without a private copy both
+ * windows would share content (same prompt/output on both) and a park
+ * would alias src == dst. Single-terminal boots keep the static ring. */
 int vga_fb_term_split(void) {
     int i;
     char (*ring)[SB_LINE_MAX];
+    char (*snap0)[SB_LINE_MAX];
     wm_init_once();
     if (wm_nterms >= WM_MAX_TERMS && twins[1].present) {
         tw_select(1);
@@ -599,6 +813,14 @@ int vga_fb_term_split(void) {
         (unsigned long)SB_MAX_LINES * (unsigned long)SB_LINE_MAX);
     if (!ring) return -1;
     for (i = 0; i < SB_MAX_LINES; i++) ring[i][0] = '\0';
+    if (twins[0].lg == lg) {
+        snap0 = (char (*)[SB_LINE_MAX])kmalloc(
+            (unsigned long)SB_MAX_LINES * (unsigned long)SB_LINE_MAX);
+        if (!snap0) { kfree(ring); return -1; }
+        for (i = 0; i < SB_MAX_LINES; i++) snap0[i][0] = '\0';
+        twins[0].lg = snap0;
+        twins[0].valid = 0;
+    }
     tw_park(wm_term);
     twins[1].present = 1;
     twins[1].lg = ring;
@@ -620,25 +842,41 @@ int vga_fb_term_split(void) {
     return 0;
 }
 
-/* Close the focused second terminal (window 0 never closes: it resets
- * like the historical close button). */
+/* Close the second terminal (window 0 never closes: it resets like the
+ * historical close button). Closes from any focus — `wm close` typed in
+ * window 0 still means "drop the split", never a silent no-op. The live
+ * ring is adopted as window 0's own (it may show the closing window), its
+ * heap snapshot is dropped and the slot re-homes on the static ring, so
+ * closing never eats the output printed since the last switch (that loss
+ * is what left phantom duplicate prompts behind). */
 int vga_fb_term_close_focused(void) {
     wm_init_once();
-    if (wm_focus == 1 && twins[1].present) {
-        if (twins[1].lg && twins[1].lg != lg) kfree(twins[1].lg);
-        twins[1].lg = 0;
-        twins[1].present = 0;
-        twins[1].has_line = 0;
-        wm_nterms = 1;
-        tw_select(0);
-        vga_fb_reset_default();
-        return 1;
-    }
-    return 0;
+    if (!twins[1].present) return 0;
+    if (twins[0].lg && twins[0].lg != lg) kfree(twins[0].lg);
+    twins[0].lg = lg;
+    twins[0].head = lg_head; twins[0].tail = lg_tail; twins[0].count = lg_count;
+    twins[0].valid = 1;
+    if (wm_term == 1) wm_term = 0;
+    if (wm_focus == 1) wm_focus = 0;
+    if (twins[1].lg && twins[1].lg != lg) kfree(twins[1].lg);
+    twins[1].lg = 0;
+    twins[1].present = 0;
+    twins[1].has_line = 0;
+    twins[1].eline[0] = '\0';
+    twins[1].epos = 0;
+    twins[1].prompted = 0;
+    wm_nterms = 1;
+    vga_fb_reset_default();
+    return 1;
 }
 
-/* Tile all present terminals: one fills the screen, two split left/right.
- * Graphics windows stay centered (the running program owns the display). */
+/* Tile every open window: with no graphics program one terminal fills the
+ * screen and two go left/right; with one, the terminal(s) yield the right
+ * half to it (two terminals stack vertically on the left half, which keeps
+ * every window visible instead of burying a terminal under the graphics).
+ * A graphics window too wide for the half goes right-aligned rather than
+ * centered, covering less of the terminals. Applies on the program's next
+ * composited frame. */
 void vga_fb_tile_all(void) {
     int mc, mr, hw, ow;
     int cur;
@@ -651,9 +889,25 @@ void vga_fb_tile_all(void) {
     if (mr > TERM_MAX_ROWS) mr = TERM_MAX_ROWS;
     hw = mc / 2;
     ow = mc - hw;
-    if (wm_nterms < 2 || !twins[1].present) {
+    if (vga_fb_gfx_mode && wm_nterms < 2) {
+        /* One terminal left, graphics right. */
+        twins[0].fullscreen = 0; twins[0].minimized = 0;
+        twins[0].sz_cols = hw; twins[0].sz_rows = mr;
+        twins[0].x = 0; twins[0].y = 0;
+        gfx_tile_right();
+    } else if (wm_nterms < 2 || !twins[1].present) {
         twins[0].fullscreen = 1;
         twins[0].minimized = 0;
+        if (vga_fb_gfx_mode) gfx_tile_right();
+    } else if (vga_fb_gfx_mode) {
+        int top_rows = mr / 2, bot_rows = mr - mr / 2;
+        twins[0].fullscreen = 0; twins[0].minimized = 0;
+        twins[0].sz_cols = hw; twins[0].sz_rows = top_rows;
+        twins[0].x = 0; twins[0].y = 0;
+        twins[1].fullscreen = 0; twins[1].minimized = 0;
+        twins[1].sz_cols = hw; twins[1].sz_rows = bot_rows;
+        twins[1].x = 0; twins[1].y = top_rows;
+        gfx_tile_right();
     } else {
         twins[0].fullscreen = 0; twins[0].minimized = 0;
         twins[0].sz_cols = hw; twins[0].sz_rows = mr;
@@ -666,9 +920,30 @@ void vga_fb_tile_all(void) {
     term_finish_layout();
 }
 
+/* Park the graphics window in the right half when it fits, else
+ * right-aligned: DOOM (320px) side-tiles beside the terminal(s) with no
+ * overlap, while a full-size window (Nuklear/vedit 800px) cannot shrink
+ * and covers the least terminal area there. */
+static void gfx_tile_right(void) {
+    int w = gfx_win_w, h = gfx_win_h > 0 ? gfx_win_h : FONT_H;
+    int cx = (fb_width - w) / 2, cy = (fb_height - h) / 2;
+    int tx;
+    if (w <= 0) return;
+    if (w <= fb_width / 2)
+        tx = fb_width * 3 / 4 - w / 2;
+    else
+        tx = fb_width - w;
+    gfx_win_ox = tx - cx;
+    gfx_win_oy = 0;
+    (void)cy;
+}
+
 /* Serial-observable window list for `wm list` (BDD surface). Parked state
  * is read from the slots, never by disturbing the live globals: the
- * focused window's live values sit in the globals, the rest in twins. */
+ * focused window's live values sit in the globals, the rest in twins.
+ * A parked slot's derived cols/rows lag resizes (tile/snap write x/y/sz
+ * only), so they are derived from the authoritative size here; the live
+ * window reports its globals. */
 void vga_fb_list_windows(void) {
     int i;
     int cur = wm_term;
@@ -677,21 +952,68 @@ void vga_fb_list_windows(void) {
     tw_park(cur);
     for (i = 0; i < wm_nterms; i++) {
         termwin_t *t;
+        int dc, dr;
         if (!twins[i].present) continue;
         t = &twins[i];
+        if (i == cur) {
+            dc = term_cols; dr = term_rows;
+        } else if (t->fullscreen) {
+            dc = term_max_cols(); dr = term_max_rows();
+        } else {
+            dc = t->sz_cols; dr = t->sz_rows;
+            if (dc > term_max_cols()) dc = term_max_cols();
+            if (dr > term_max_rows()) dr = term_max_rows();
+        }
         ksprintf(b, "win term%d %c cols=%d rows=%d x=%d y=%d min=%d fs=%d%s\n",
                  i, (i == wm_focus) ? '*' : ' ',
-                 t->cols, t->rows, t->x, t->y,
+                 dc, dr, (i == cur) ? term_x : t->x, (i == cur) ? term_y : t->y,
                  t->minimized, t->fullscreen,
                  t->has_line ? " line" : "");
         serial_puts(b);
     }
     tw_unpark(cur);
     if (vga_fb_gfx_mode) {
-        serial_puts(wm_focus == WM_FOCUS_GFX ? "win gfx * " : "win gfx   ");
-        serial_puts(gfx_win_title);
-        serial_puts("\n");
+        int gx, gy;
+        gfx_target(&gx, &gy);
+        ksprintf(b, "win gfx %c %s x=%d y=%d w=%d h=%d\n",
+                 (wm_focus == WM_FOCUS_GFX) ? '*' : ' ',
+                 gfx_win_title, gx, gy, gfx_win_w, gfx_win_h);
+        serial_puts(b);
+        taskbar_layout();
+        ksprintf(b, "win gfxbtn x=%d w=%d %s\n",
+                 tb_gfx_x, tb_gfx_w, gfx_task_icon() ? "icon" : "text");
+        serial_puts(b);
     }
+}
+
+/* 1 when the focused window's active line is empty (fresh prompt spot). */
+int vga_fb_act_empty(void) { return act_len == 0; }
+
+/* The shell loop calls note after printing a prompt (it is live in the
+ * focused window) and clear once the line is submitted for execution. */
+void vga_fb_note_prompt(void) {
+    wm_init_once();
+    if (wm_focus >= 0 && wm_focus < WM_MAX_TERMS)
+        twins[wm_focus].prompted = 1;
+}
+void vga_fb_clear_prompt(void) {
+    wm_init_once();
+    if (wm_focus >= 0 && wm_focus < WM_MAX_TERMS)
+        twins[wm_focus].prompted = 0;
+}
+int vga_fb_prompted(void) {
+    wm_init_once();
+    if (wm_focus < 0 || wm_focus >= WM_MAX_TERMS) return 0;
+    return twins[wm_focus].prompted;
+}
+
+/* 1 when the active line is empty or holds exactly a fresh prompt, so
+ * printing another one would stack duplicate `miniOS> ` lines on every
+ * refocus. Compares the whole line, not a prefix. */
+int vga_fb_prompt_live(void) {
+    if (act_len == 0) return 1;
+    if (kstrcmp(act, "miniOS> ") == 0) return 1;
+    return 0;
 }
 
 /* Park the shell's half-typed line into the focused window slot. */
@@ -1079,6 +1401,18 @@ int wm_close_pending(void) { return wm_close_request; }
 void wm_clear_close(void) { wm_close_request = 0; }
 int wm_gfx_mode_active(void) { return vga_fb_gfx_mode; }
 
+/* PS/2 ownership for pid (see vga_fb.h): the focused window owns the one
+ * keyboard. Needs user_program_active (fg legacy run blocks the shell, so
+ * the runner keeps everything) and current pid (bg jobs read through
+ * syscalls as themselves, the shell as pid 0). */
+int vga_fb_ps2_owner(int pid) {
+    extern volatile int user_program_active;
+    if (user_program_active) return 1;
+    if (!vga_fb_gfx_mode) return pid == 0;
+    if (wm_focus == WM_FOCUS_GFX) return pid != 0;
+    return pid == 0;
+}
+
 /* Hit-test and dispatch a click on a titled window's controls. The active
  * window is the graphics window when one is composited, else the terminal.
  * Returns 1 when the click was consumed by a window control. */
@@ -1174,16 +1508,15 @@ static void blit_indexed_truecolor(const volatile uint8_t *bb, int bb_w,
 
 void vga_fb_blit_gfx_window(void) {
     const volatile uint8_t *bb = (const volatile uint8_t *)DOOM_BACKBUF_ADDR;
-    int dst_x = (fb_width - DOOM_W) / 2;
-    int dst_y = (fb_height - DOOM_H) / 2;
+    int dst_x, dst_y;
     int r, b;
     gfx_frames_composited++;
     vga_fb_gfx_cursor_erase();
-    if (dst_x < 0) dst_x = 0;
-    if (dst_y < 0) dst_y = 0;
+    gfx_place(DOOM_W + SCROLLBAR_W, DOOM_H + FONT_H, &dst_x, &dst_y);
     gfx_win_x = dst_x;
     gfx_win_y = dst_y;
     gfx_win_w = DOOM_W + SCROLLBAR_W;
+    gfx_win_h = DOOM_H + FONT_H;
     {
         uint8_t gbg = (wm_focus == WM_FOCUS_GFX) ? COL_TITLEBAR : COL_SHADOW;
         vga_fb_rect(dst_x, dst_y, DOOM_W + SCROLLBAR_W, FONT_H, gbg);
@@ -1203,6 +1536,7 @@ void vga_fb_blit_gfx_window(void) {
     } else {
         blit_indexed_truecolor(bb, DOOM_W, DOOM_H, dst_x, dst_y + FONT_H);
     }
+    gfx_keep_save(dst_x, dst_y, DOOM_W + SCROLLBAR_W, DOOM_H + FONT_H);
     vga_fb_gfx_cursor_draw();
 }
 
@@ -1223,18 +1557,17 @@ int nk_win_x, nk_win_y;
  * window stays visible around it. */
 void vga_fb_blit_nk_window(void) {
     const volatile uint8_t *bb = (const volatile uint8_t *)NK_BACKBUF_ADDR;
-    int dst_x = (fb_width - NK_W) / 2;
-    int dst_y = (fb_height - NK_H) / 2;
+    int dst_x, dst_y;
     int r, b;
     gfx_frames_composited++;
     vga_fb_gfx_cursor_erase();
-    if (dst_x < 0) dst_x = 0;
-    if (dst_y < 0) dst_y = 0;
+    gfx_place(NK_W + SCROLLBAR_W, NK_H + FONT_H, &dst_x, &dst_y);
     nk_win_x = dst_x;
     nk_win_y = dst_y;
     gfx_win_x = dst_x;
     gfx_win_y = dst_y;
     gfx_win_w = NK_W + SCROLLBAR_W;
+    gfx_win_h = NK_H + FONT_H;
     {
         uint8_t gbg = (wm_focus == WM_FOCUS_GFX) ? COL_TITLEBAR : COL_SHADOW;
         vga_fb_rect(dst_x, dst_y, NK_W + SCROLLBAR_W, FONT_H, gbg);
@@ -1252,6 +1585,7 @@ void vga_fb_blit_nk_window(void) {
     } else {
         blit_indexed_truecolor(bb, NK_W, NK_H, dst_x, dst_y + FONT_H);
     }
+    gfx_keep_save(dst_x, dst_y, NK_W + SCROLLBAR_W, NK_H + FONT_H);
     vga_fb_gfx_cursor_draw();
 }
 
@@ -1312,6 +1646,10 @@ static void draw_title_win(int idx, int focused) {
 static int tb_spk_x, tb_minus_x, tb_plus_x, tb_vol_x, tb_clock_x, tb_kbd_x;
 static int tb_restore_x, tb_restore_w;
 
+/* Title chars shown on the running-app taskbar button (icon + text must
+ * stay small: the taskbar is a single 8px row). */
+#define TB_GFX_TITLE_MAX 10
+
 static void taskbar_layout(void) {
     int x = fb_width;
     x -= TASKBAR_CLOCK_CH * FONT_W; tb_clock_x = x;
@@ -1328,6 +1666,16 @@ static void taskbar_layout(void) {
     /* Restore button on the far left: "[]" when a window is minimized. */
     tb_restore_w = 2 * FONT_W;
     tb_restore_x = TASKBAR_PAD;
+    /* Running-app button right after it: mini icon + title while a graphics
+     * program owns the display. Clicking it focuses the app (brings it to
+     * the front), so a window buried by Alt+Tab/tile is always reachable. */
+    tb_gfx_x = tb_restore_x + tb_restore_w + TASKBAR_PAD;
+    tb_gfx_w = 0;
+    if (vga_fb_gfx_mode) {
+        int tl = (int)kstrlen(gfx_win_title);
+        if (tl > TB_GFX_TITLE_MAX) tl = TB_GFX_TITLE_MAX;
+        tb_gfx_w = FONT_W + 2 + tl * FONT_W;
+    }
 }
 
 /* 8x8 speaker glyph: body on the left, two sound arcs to the right. */
@@ -1345,9 +1693,49 @@ static void taskbar_render(void) {
     int h, m, s;
     unsigned vol = pcspk_get_volume();
     int y = fb_height - FONT_H;
+    int lx = 0;
     vga_fb_rect(0, y, fb_width, FONT_H, COL_TASKBAR);
     taskbar_layout();
-    text_px(0, y, "Drag title:move Wheel:scroll Alt:snap/resize",
+    if (vga_fb_gfx_mode) {
+        /* Running-app button: the app's own 32x32 icon downsampled to the
+         * 8px row plus its title (bright when focused). The hint line
+         * starts after it instead of underneath. */
+        const uint8_t *ipx = gfx_task_icon();
+        int tx = tb_gfx_x;
+        int k;
+        char t[TB_GFX_TITLE_MAX + 1];
+        uint8_t fg = (wm_focus == WM_FOCUS_GFX) ? COL_HIGHLIGHT :
+                                                   COL_TASKBAR_TXT;
+        vga_fb_rect(tb_gfx_x, y, tb_gfx_w, FONT_H, COL_TASKBAR);
+        if (ipx) {
+            int ix, iy;
+            for (iy = 0; iy < FONT_H; iy++) {
+                for (ix = 0; ix < FONT_W; ix++) {
+                    const uint8_t *sp =
+                        ipx + ((unsigned long)(iy * 4) * ICON_W +
+                               (unsigned long)(ix * 4)) * 4UL;
+                    if (sp[3] < 128) continue;
+                    if (fb_bpp == 8)
+                        vga_fb_pixel(tx + ix, y + iy,
+                                     (uint8_t)(ICON_PAL_BASE +
+                                               icon_nearest(sp[0], sp[1],
+                                                            sp[2])));
+                    else
+                        fb_write_packed(tx + ix, y + iy,
+                                        ((unsigned long)sp[0] << 16) |
+                                        ((unsigned long)sp[1] << 8) |
+                                        (unsigned long)sp[2]);
+                }
+            }
+            tx += FONT_W + 2;
+        }
+        for (k = 0; k < TB_GFX_TITLE_MAX && gfx_win_title[k]; k++)
+            t[k] = gfx_win_title[k];
+        t[k] = '\0';
+        text_px(tx, y, t, fg, COL_TASKBAR);
+        lx = tb_gfx_x + tb_gfx_w + TASKBAR_PAD;
+    }
+    text_px(lx, y, "Drag title:move Wheel:scroll Alt:snap/resize",
             COL_TASKBAR_TXT, COL_TASKBAR);
     if (term_minimized)
         text_px(tb_restore_x, y, "[]", COL_HIGHLIGHT, COL_TASKBAR);
@@ -1394,6 +1782,14 @@ static void taskbar_handle_click(int mx, int my) {
     if (term_minimized &&
         mx >= tb_restore_x && mx < tb_restore_x + tb_restore_w) {
         vga_fb_toggle_minimize();
+        return;
+    }
+    /* Running-app button: focus the graphics window, which redraws it on
+     * top through the persistent layer — the buried app comes back. */
+    taskbar_layout();
+    if (vga_fb_gfx_mode && tb_gfx_w > 0 &&
+        mx >= tb_gfx_x && mx < tb_gfx_x + tb_gfx_w) {
+        vga_fb_focus_id(WM_FOCUS_GFX);
         return;
     }
     if (mx >= tb_kbd_x && mx < tb_kbd_x + TASKBAR_KBD_W) {
@@ -1679,6 +2075,10 @@ void vga_fb_draw_desktop(void) {
         }
     }
     tw_unpark(cur);
+    /* The persistent graphics window (if any) paints last, on top of the
+     * terminals — the same z-order as a live composite — so an app blocked
+     * in read survives the redraw that just wiped the framebuffer. */
+    gfx_keep_restore();
     /* Any redraw changed the pixels under the cursor; force a fresh save so a
      * stale snapshot never leaves pointer trails behind. */
     cursor_visible = 0;
@@ -1705,14 +2105,48 @@ void vga_fb_toggle_minimize(void) {
 int vga_fb_is_minimized(void) { return term_minimized; }
 int vga_fb_is_fullscreen(void) { return term_fullscreen; }
 
-/* Close the active window. For a graphics window this arms the close request
- * that the syscall dispatcher honours on the child's next syscall; for the
- * terminal window it restores the default position (the shell cannot be
- * closed). Returns 1 when a close was armed, 0 otherwise. */
+/* Target origin of the graphics window under the current offsets (same
+ * math as the blits, for hit-testing and `wm list` without a frame). */
+static void gfx_target(int *x, int *y) {
+    gfx_place(gfx_win_w, gfx_win_h, x, y);
+}
+
+/* Snap the focused graphics window into a screen region (halves place it
+ * against that edge, quadrants into that corner). Takes effect on the
+ * program's next composited frame. */
+static void gfx_snap(int zone) {
+    int w = gfx_win_w, h = gfx_win_h;
+    int cx = (fb_width - w) / 2, cy = (fb_height - h) / 2;
+    int tx = cx, ty = cy;
+    switch (zone) {
+    case TILING_LEFT: tx = 0; ty = cy; break;
+    case TILING_RIGHT: tx = fb_width - w; ty = cy; break;
+    case TILING_TOP: tx = cx; ty = 0; break;
+    case TILING_BOTTOM: tx = cx; ty = fb_height - h; break;
+    case TILING_TOP_LEFT: tx = 0; ty = 0; break;
+    case TILING_TOP_RIGHT: tx = fb_width - w; ty = 0; break;
+    case TILING_BOTTOM_LEFT: tx = 0; ty = fb_height - h; break;
+    case TILING_BOTTOM_RIGHT: tx = fb_width - w; ty = fb_height - h; break;
+    default: return;
+    }
+    gfx_win_ox = tx - cx;
+    gfx_win_oy = ty - cy;
+}
+
+/* Close the focused window. For the graphics window (focused) this arms
+ * the close request that the syscall dispatcher honours on the child's
+ * next syscall; for a terminal it restores the default position (the
+ * shell cannot be closed). Returns 1 when a close was armed, 0
+ * otherwise. */
 int vga_fb_close_active(void) {
-    if (vga_fb_gfx_mode) {
+    if (vga_fb_gfx_mode && wm_focus == WM_FOCUS_GFX) {
         wm_close_request = 1;
         return 1;
+    }
+    if (vga_fb_gfx_mode) {
+        /* A graphics program owns the display: only its own focused
+         * window may close it, never a terminal shortcut. */
+        return 0;
     }
     term_minimized = 0;
     term_fullscreen = 0;
@@ -1726,6 +2160,14 @@ int vga_fb_close_active(void) {
 }
 
 void vga_fb_move_terminal(int dx, int dy) {
+    /* Ctrl+arrows move the focused window: terminals by cell, graphics
+     * by pixels (fixed-size backbuffer, next frame applies it). */
+    if (wm_focus == WM_FOCUS_GFX && vga_fb_gfx_mode) {
+        if (dx == 0 && dy == 0) { gfx_win_ox = 0; gfx_win_oy = 0; return; }
+        gfx_win_ox += dx * FONT_W;
+        gfx_win_oy += dy * FONT_H;
+        return;
+    }
     if (dx == 0 && dy == 0) {
         /* Reset to default position */
         term_fullscreen = 0;
@@ -1769,7 +2211,12 @@ static void term_finish_layout(void) {
 }
 
 void vga_fb_snap_window(int zone) {
-    int mc = term_max_cols();
+    int mc;
+    if (wm_focus == WM_FOCUS_GFX && vga_fb_gfx_mode) {
+        gfx_snap(zone);
+        return;
+    }
+    mc = term_max_cols();
     int mr = term_max_rows();
     int hw = mc / 2;
     int hh = mr / 2;
@@ -1791,7 +2238,10 @@ void vga_fb_snap_window(int zone) {
 }
 
 void vga_fb_resize(int dcols, int drows) {
-    int mc = term_max_cols();
+    int mc;
+    /* Graphics backbuffers are fixed-size: resize is terminal-only. */
+    if (wm_focus == WM_FOCUS_GFX && vga_fb_gfx_mode) return;
+    mc = term_max_cols();
     int mr = term_max_rows();
     int ncol = term_sz_cols + dcols;
     int nrow = term_sz_rows + drows;
@@ -2171,6 +2621,33 @@ void desktop_shortcuts_draw(void) {
     }
 }
 
+/* Icon for the taskbar running-app button. First the running program via
+ * its launch command (config-driven, covers apps that never set a window
+ * title); then the window title against the shortcut name as fallback
+ * (case-insensitive, "*" suffix ignored). Text-only button when nothing
+ * matches. Load is idempotent, so a click before the first desktop paint
+ * still resolves. */
+static const uint8_t *gfx_task_icon(void) {
+    const uint8_t *p = gfx_prog_icon();
+    int i, k;
+    if (p) return p;
+    desktop_shortcuts_load();
+    for (i = 0; i < shortcut_count; i++) {
+        const char *a = shortcuts[i].name;
+        const char *b = gfx_win_title;
+        if (!a[0] || !b) continue;
+        for (k = 0; ; k++) {
+            int ca = a[k], cb = b[k];
+            if (ca >= 'A' && ca <= 'Z') ca += 32;
+            if (cb >= 'A' && cb <= 'Z') cb += 32;
+            if (ca == 0 && (cb == 0 || cb == ' ' || cb == '*'))
+                return shortcuts[i].pixels;
+            if (ca != cb) break;
+        }
+    }
+    return 0;
+}
+
 const char *desktop_shortcuts_hit_test(int mx, int my) {
     shortcuts_layout();
     for (int i = 0; i < shortcut_count; i++) {
@@ -2224,6 +2701,21 @@ void vga_fb_mouse_tick(void) {
                 }
             }
         }
+        /* Click-to-focus the graphics window by its title bar (buttons
+         * were already hit-tested above). Works while the program runs:
+         * the ISR tick drives the WM even when the shell is blocked. */
+        if (vga_fb_gfx_mode && wm_focus != WM_FOCUS_GFX) {
+            int gx, gy;
+            gfx_target(&gx, &gy);
+            if (mouse_state.y >= gy && mouse_state.y < gy + FONT_H &&
+                mouse_state.x >= gx && mouse_state.x < gx + gfx_win_w) {
+                vga_fb_focus_id(WM_FOCUS_GFX);
+                tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
+                cursor_visible = 0;
+                skip_drag = 1;
+                return;
+            }
+        }
         /* Check desktop icon clicks. */
         const char *cmd = desktop_shortcuts_hit_test(mouse_state.x, mouse_state.y);
         if (cmd) desktop_launch(cmd);
@@ -2249,6 +2741,40 @@ void vga_fb_mouse_tick(void) {
 
     mx = mouse_state.x;
     my = mouse_state.y;
+
+    /* Graphics-window drag: grab its title bar and move it (offsets apply
+     * on the program's next frame). Runs even while the game owns the
+     * display, since this tick is ISR-driven. */
+    {
+        static int gdrag;
+        static int ggx, ggy;
+        if (vga_fb_gfx_mode && !skip_drag) {
+            int gx, gy;
+            gfx_target(&gx, &gy);
+            int in_gtitle = (my >= gy && my < gy + FONT_H &&
+                             mx >= gx && mx < gx + gfx_win_w);
+            if (mouse_state.buttons & 1) {
+                if (!gdrag && in_gtitle) {
+                    gdrag = 1;
+                    ggx = mx - gx;
+                    ggy = my - gy;
+                }
+            } else {
+                gdrag = 0;
+            }
+            if (gdrag) {
+                int cx = (fb_width - gfx_win_w) / 2;
+                int cy = (fb_height - gfx_win_h) / 2;
+                gfx_win_ox = mx - ggx - cx;
+                gfx_win_oy = my - ggy - cy;
+                cursor_visible = 0;
+                mx = mouse_state.x;
+                my = mouse_state.y;
+            }
+        } else {
+            gdrag = 0;
+        }
+    }
 
     /* Title-bar drag: grab the window on a left press over the title bar and
      * move it while the button is held.  skip_drag suppresses the drag on the

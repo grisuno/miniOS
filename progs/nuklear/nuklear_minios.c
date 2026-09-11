@@ -74,6 +74,11 @@ long nk_sys_nk_frame(int *origin) {
     __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"((long)MINIOS_GFX_BUF_NK), "S"(origin) : "rcx","r11","memory");
     return ret;
 }
+long nk_sys_gfx_set_title(const char *t) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_SET_TITLE), "D"(t) : "rcx","r11","memory");
+    return ret;
+}
 
 /* ---- Hybrid palette ---- */
 /* Indices 0-14 must exactly match vga_fb.c's desktop palette so the desktop

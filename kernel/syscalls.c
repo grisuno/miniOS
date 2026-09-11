@@ -137,13 +137,18 @@ static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6
 static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     (void)a1;
+    /* Focus-owned PS/2: an unfocused reader touches no hardware, so a
+     * background game and the shell never split the scancode stream. A
+     * legacy foreground program owns everything (its shell is blocked). */
+    if (!vga_fb_ps2_owner(current_pid)) return -1;
     if (kbd_raw_mode_get()) {
         if (!kbd_raw_empty()) return kbd_raw_pop();
         if (!kbd_available()) return -1;
         unsigned char sc;
         __asm__ volatile("inb $0x60, %0" : "=a"(sc));
-        if (sc == KEY_E0) { kbd_e0_set(1); return 0xE0; }
-        if (kbd_e0_get()) { kbd_e0_set(0); return (long)sc; }
+        /* WM-first: Alt+Tab / Super+Tab / Super+arrows / Alt+close work
+         * while a game owns the keyboard; consumed bytes never reach it. */
+        if (kbd_sys_raw_filter(sc)) return -1;
         return (long)sc;
     }
     if (kbd_q_empty()) return -1;
@@ -182,8 +187,19 @@ static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, l
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     pcspk_tone((unsigned)a1); return 0;
 }
+/* Attribute a composited frame to its program for the taskbar button: a
+ * background job frames as itself (procs name), a legacy foreground run as
+ * the launch name the shell recorded. Last frame wins, same as the pixels. */
+static void gfx_note_compositor(void) {
+    int pid = current_pid;
+    if (user_program_active) return;
+    if (pid > 0 && pid < MAX_PROCS && procs[pid].state != PROC_FREE &&
+        procs[pid].name[0])
+        vga_fb_set_gfx_program(procs[pid].name);
+}
 static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    gfx_note_compositor();
     vga_fb_blit_gfx_window(); return 0;
 }
 static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -274,6 +290,7 @@ static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, lon
         if (!user_range_ok((unsigned long)a1, 2 * sizeof(int))) return EFAULT;
         o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
     }
+    gfx_note_compositor();
     vga_fb_blit_nk_window();
     return 0;
 }
@@ -1149,6 +1166,13 @@ int user_str_ok(unsigned long p, unsigned long maxlen) {
 static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
     if (wm_close_pending()) {
         wm_clear_close();
+        /* A background job has no fg exec frame to unwind: reaping it as
+         * a 130 exit is the same outcome without hijacking the shell's
+         * klongjmp target (which would corrupt whoever owns it). */
+        if (current_pid != 0) {
+            do_exit(130);
+            return 0;
+        }
         exec_exit_code = 130;
         klongjmp(&exec_return, 1);
         return 0;

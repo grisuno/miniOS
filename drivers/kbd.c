@@ -1,4 +1,5 @@
 #include "kernel.h"
+#include "sched.h"
 #include "vga_fb.h"
 #include "kbd.h"
 
@@ -171,19 +172,143 @@ void kbd_flush_all(void) {
     kbd_raw_head = kbd_raw_tail = 0;
 }
 
+/* Drop queued raw scancodes (shell-typed while a terminal owned PS/2) so a
+ * newly focused game never replays them as input. Cooked shell keys stay. */
+void kbd_raw_flush(void) {
+    kbd_raw_head = kbd_raw_tail = 0;
+}
+
+/* ---- Raw-path WM filter (shared core) ----
+ *
+ * A ring-3 graphics program (DOOM, Quake, Nuklear, piano) reads raw PS/2
+ * scancodes through SYS_KBD / the raw queue, bypassing the cooked
+ * translation below where Alt-Tab / Super-Tab live. Without interception
+ * here the WM dies the moment a game owns the keyboard. raw_track_mods
+ * keeps the modifier state in sync on both paths (the old raw branch never
+ * tracked Alt/Super, so a modifier held across raw mode stuck forever);
+ * wm_raw_combo performs the WM action and reports 1 when the byte must be
+ * swallowed. Deliberately narrower than the cooked set: bare keys (Tab,
+ * F11/F5, arrows) always reach the game, and Alt+arrows stay with the game
+ * too (DOOM strafes with Alt+arrows); Super is never a game key, so the
+ * full Super set plus Alt+Tab / Alt+Enter / Alt+M,X,Q / Alt+[/]-/=/0 work
+ * raw. A swallowed Tab make also swallows its break (same flag as cooked
+ * would need, kept here beside the consumer). */
+static int wm_raw_swallow_tab_break;
+
+static int raw_track_mods(int code, int brk, int e0) {
+    if (!e0 && (code == KEY_LSHIFT || code == KEY_RSHIFT)) { kbd_shift = !brk; return 1; }
+    if (!e0 && code == KEY_LCTRL) { kbd_ctrl = !brk; return 1; }
+    if (!e0 && code == KEY_LALT) { kbd_alt = !brk; return 1; }
+    if (e0 && code == KEY_RALT) { kbd_altgr = !brk; return 1; }
+    if (e0 && (code == KEY_SUPER_L || code == KEY_SUPER_R)) { kbd_super = !brk; return 1; }
+    return 0;
+}
+
+static int wm_raw_combo(int code, int e0) {
+    int zone;
+    if (!vga_fb_active) return 0;
+    if (!e0 && code == KEY_TAB) {
+        if (kbd_alt) { vga_fb_focus_next(); wm_raw_swallow_tab_break = 1; return 1; }
+        if (kbd_super) { vga_fb_tile_all(); wm_raw_swallow_tab_break = 1; return 1; }
+        return 0;
+    }
+    if (e0 && (code == KEY_UP || code == KEY_DOWN || code == KEY_LEFT ||
+               code == KEY_RIGHT || code == KEY_HOME || code == KEY_END)) {
+        if (!kbd_super) return 0;
+        if (code == KEY_UP) zone = TILING_TOP;
+        else if (code == KEY_DOWN) zone = TILING_BOTTOM;
+        else if (code == KEY_LEFT) zone = TILING_LEFT;
+        else if (code == KEY_RIGHT) zone = TILING_RIGHT;
+        else if (code == KEY_HOME) zone = TILING_TOP_LEFT;
+        else zone = TILING_BOTTOM_RIGHT;
+        vga_fb_snap_window(zone);
+        return 1;
+    }
+    if (!e0 && kbd_alt && !kbd_altgr) {
+        if (code == KEY_ENTER) { vga_fb_toggle_fullscreen(); return 1; }
+        if (code == KEY_HOME) { vga_fb_snap_window(TILING_TOP_LEFT); return 1; }
+        if (code == KEY_END) { vga_fb_snap_window(TILING_BOTTOM_RIGHT); return 1; }
+        if (code == 0x32) { vga_fb_toggle_minimize(); return 1; }        /* M */
+        if (code == 0x2D || code == 0x10) { vga_fb_close_active(); return 1; } /* X Q */
+        if (code == 0x1A) { vga_fb_resize(-1, 0); return 1; }            /* [ */
+        if (code == 0x1B) { vga_fb_resize(1, 0); return 1; }             /* ] */
+        if (code == 0x0C) { vga_fb_resize(-1, -1); return 1; }           /* - */
+        if (code == 0x0D) { vga_fb_resize(1, 1); return 1; }             /* = */
+        if (code == 0x0B) { vga_fb_reset_default(); return 1; }          /* 0 */
+    }
+    return 0;
+}
+
+/* SYS_KBD raw-path filter (one byte per syscall). Owns the E0 flag on this
+ * path: the 0xE0 prefix was already delivered to the app on the previous
+ * call, so when Alt/Super is held the prefix is held back (e0 == 2) instead
+ * — swallowing the pair avoids a stray 0xE0 that would wedge a game's key
+ * pump waiting for a second byte that never comes. A held-back prefix whose
+ * second byte is not a WM combo is delivered bare (keypad alias): games map
+ * both, so play survives. Returns 1 when sc must be swallowed. */
+int kbd_sys_raw_filter(unsigned char sc) {
+    int brk, code, e0;
+    if (sc == KEY_E0) {
+        if (kbd_alt || kbd_super) { kbd_e0 = 2; return 1; }
+        kbd_e0 = 1;
+        return 0;
+    }
+    brk = (sc & 0x80) ? 1 : 0;
+    code = sc & 0x7F;
+    e0 = kbd_e0;
+    kbd_e0 = 0;
+    if (raw_track_mods(code, brk, e0 != 0)) return 0;
+    if (brk) {
+        if (e0 == 0 && code == KEY_TAB && wm_raw_swallow_tab_break) {
+            wm_raw_swallow_tab_break = 0;
+            return 1;
+        }
+        return 0;
+    }
+    return wm_raw_combo(code, e0 != 0);
+}
+
 int kbd_read(void) {
+    /* Not the PS/2 owner (bg gfx focused while the shell polls, or vice
+     * versa): touch no hardware, drop stale shell keys. The serial path
+     * in raw_try/blocking_getc is untouched, so the serial console stays
+     * a shell console at every focus. */
+    if (!vga_fb_ps2_owner(current_pid)) {
+        while (!kbd_q_empty()) kbd_q_pop();
+        return -1;
+    }
     if (!kbd_q_empty()) return kbd_q_pop();
     while (!kbd_available()) __asm__ volatile("pause");
     unsigned char sc;
     __asm__ volatile("inb $0x60, %0" : "=a"(sc));
 
-    if (kbd_raw_mode) {
+    /* Raw fill only for non-shell owners (a bg/fg proc reading through
+     * GETC_RAW with raw mode on). The shell itself (pid 0, alive) always
+     * takes the cooked translation below, so a background raw game can
+     * never deafen the shell's PS/2 input by flipping the global mode. */
+    if (kbd_raw_mode && (user_program_active || current_pid != 0)) {
+        int brk = (sc & 0x80) ? 1 : 0;
+        int code = sc & 0x7F;
+        int e0;
         if (sc == KEY_E0) { kbd_e0 = 1; return -1; }
-        if (kbd_e0) {
-            kbd_e0 = 0;
-            kbd_raw_push_internal(0xE0); kbd_raw_push_internal(sc);
+        e0 = kbd_e0;
+        kbd_e0 = 0;
+        if (raw_track_mods(code, brk, e0)) {
+            if (e0) kbd_raw_push_internal(0xE0);
+            kbd_raw_push_internal(sc);
             return -1;
         }
+        if (brk) {
+            if (!e0 && code == KEY_TAB && wm_raw_swallow_tab_break) {
+                wm_raw_swallow_tab_break = 0;
+                return -1;
+            }
+            if (e0) kbd_raw_push_internal(0xE0);
+            kbd_raw_push_internal(sc);
+            return -1;
+        }
+        if (wm_raw_combo(code, e0)) return -1;
+        if (e0) kbd_raw_push_internal(0xE0);
         kbd_raw_push_internal(sc);
         return -1;
     }
@@ -301,8 +426,12 @@ int kbd_read(void) {
 
 void kbd_reset_for_shell(void) {
     kbd_raw_mode = 0;
+    kbd_shift = 0;
+    kbd_ctrl = 0;
+    kbd_alt = 0;
     kbd_altgr = 0;
     kbd_super = 0;
+    wm_raw_swallow_tab_break = 0;
     kbd_q_head = kbd_q_tail = 0;
     kbd_raw_head = kbd_raw_tail = 0;
     kbd_e0 = 0;

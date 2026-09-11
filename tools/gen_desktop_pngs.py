@@ -8,9 +8,11 @@ Sources (repo root by default, overridable with --src-dir):
   piano.png              piano icon source
   nuklear.png            Nuklear icon source
   vedit.png              vedit editor icon source
+  pokemon.png            Pokemon icon source (Pikachu art, not pixel art)
 
 Outputs (under the MiniOS repo):
-  progs/icons/doom.png, quake2.png, piano.png, nuklear.png, vedit.png   32x32 RGBA
+  progs/icons/doom.png, quake2.png, piano.png, nuklear.png, vedit.png,
+  pokemon.png                                               32x32 RGBA
   progs/wall/wallpaper.png                                   800x600 RGB
 
 The kernel runs in an 8-bit palette mode, so it maps icon pixels to the
@@ -47,6 +49,7 @@ ICON_JOBS = (
     ("piano.png", "piano.png"),
     ("nuklear.png", "nuklear.png"),
     ("vedit.png", "vedit.png"),
+    ("pokemon.png", "pokemon.png"),
 )
 
 

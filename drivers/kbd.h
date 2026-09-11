@@ -36,5 +36,13 @@ void kbd_raw_push_byte(unsigned char c);
 int  kbd_e0_get(void);
 void kbd_e0_set(int v);
 void kbd_flush_all(void);
+void kbd_raw_flush(void);
+
+/* Raw-path WM filter for the SYS_KBD direct-port read (DOOM/Quake/Nuklear
+ * read scancodes one byte per syscall, bypassing kbd_read): tracks E0 and
+ * modifiers, performs Alt+Tab / Super+Tab / Super+arrows / Alt+Enter,M,X,Q
+ * and swallows the consumed bytes. Returns 1 when sc must not reach the
+ * app. Declared here so kernel/syscalls.c shares the one implementation. */
+int  kbd_sys_raw_filter(unsigned char sc);
 
 #endif

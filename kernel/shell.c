@@ -110,13 +110,22 @@ void shell_focus_restore(void) {
         cmd_buf[0] = '\0';
         shell_edit_pos = 0;
         shell_cur = 0;
+        /* Fresh window: print its own prompt so both terminals always
+         * show a live `miniOS> ` — unless one is already there (refocus
+         * would stack duplicate prompts). No newline on an empty line,
+         * so no blank ring entry; otherwise start a new line. */
+        if (!vga_fb_prompt_live()) {
+            if (vga_fb_act_empty()) vga_puts("miniOS> ");
+            else vga_puts("\nminiOS> ");
+        }
+        shell_cur = (int)kstrlen(cmd_buf);
     }
     shell_hist_idx = -1;
     shell_edit_gen++;
     vga_fb_text_cursor(shell_edit_pos);
 }
 
-static void shell_prompt(void) { vga_puts("\nminiOS> "); }
+static void shell_prompt(void) { vga_puts("\nminiOS> "); vga_fb_note_prompt(); }
 
 void shell_exec_builtin(int argc, char **argv);
 static int etrel_path_trusted(const char *full);
@@ -957,6 +966,10 @@ void shell_run(void) {
             shell_readline();
         }
 
+        /* An empty submit (Enter / Ctrl+D on a blank line) consumed the
+         * live prompt too: clear it before looping, or every refocus
+         * stacks another `miniOS> ` on the window. */
+        vga_fb_clear_prompt();
         if (cmd_buf[0] == 0) continue;
 
         char *argv[MAX_ARGS + 1];
@@ -1507,6 +1520,9 @@ static void shell_run_bg(const char *name, int argc, char **argv) {
  * as typed. Returns the exit code, or -1 when the name cannot be run. */
 int shell_run_any(const char *name, int argc, char **argv) {
     int nl = (int)kstrlen(name);
+    /* Record the launch name for the taskbar button: if this program goes
+     * graphics, the button resolves its icon through etc/shortcuts. */
+    vga_fb_set_gfx_program(name);
     if (nl >= 4 && kstrcmp(name + nl - 4, ".cvm") == 0)
         return shell_run_file(name, argc, argv);
     KProg *p = kprog_lookup(name);
@@ -1765,6 +1781,22 @@ static void shell_cmd_wm(int argc, char **argv) {
             kprintf("wm: tiled %d terms\n", vga_fb_nterms_get());
             return;
         }
+        if (kstrcmp(argv[1], "snap") == 0) {
+            int z = -1;
+            if (argc < 3) { vga_puts("usage: wm snap left|right|top|bottom|tl|tr|bl|br\n"); return; }
+            if (kstrcmp(argv[2], "left") == 0) z = TILING_LEFT;
+            else if (kstrcmp(argv[2], "right") == 0) z = TILING_RIGHT;
+            else if (kstrcmp(argv[2], "top") == 0) z = TILING_TOP;
+            else if (kstrcmp(argv[2], "bottom") == 0) z = TILING_BOTTOM;
+            else if (kstrcmp(argv[2], "tl") == 0) z = TILING_TOP_LEFT;
+            else if (kstrcmp(argv[2], "tr") == 0) z = TILING_TOP_RIGHT;
+            else if (kstrcmp(argv[2], "bl") == 0) z = TILING_BOTTOM_LEFT;
+            else if (kstrcmp(argv[2], "br") == 0) z = TILING_BOTTOM_RIGHT;
+            else { vga_puts("usage: wm snap left|right|top|bottom|tl|tr|bl|br\n"); return; }
+            vga_fb_snap_window(z);
+            kprintf("wm: snapped focus %d\n", vga_fb_focus_get());
+            return;
+        }
         if (kstrcmp(argv[1], "focus") == 0) {
             if (argc > 2) {
                 if (kstrcmp(argv[2], "next") == 0) vga_fb_focus_next();
@@ -1923,6 +1955,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  run  <name|file>   run a loaded program, ELF or .cvm module\n");
         vga_puts("  run/mrun ... &    background jobs (isolated ELFs, prompt returns)\n");
         vga_puts("  jobs|wait|kill    list / reap / terminate background jobs (^C kills fg)\n");
+        vga_puts("  sleep <secs>      yield until the wall clock advances (^C aborts)\n");
         vga_puts("  mrun <a.elf> [...] run isolated ELFs concurrently (multitask)\n");
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
         vga_puts("  <cmd> > <file>     redirect command output to a file\n");
@@ -2408,6 +2441,21 @@ void shell_exec_builtin(int argc, char **argv) {
     }
     else if (kstrcmp(argv[0], "kill") == 0) {
         shell_cmd_kill(argc, argv);
+    }
+    else if (kstrcmp(argv[0], "sleep") == 0) {
+        /* `sleep <secs>`: yield until the wall clock advances, so a
+         * background job (a booting game, a finishing fetch) can be
+         * awaited before the next command observes it. Ctrl+C aborts. */
+        long secs, end;
+        if (argc < 2) { vga_puts("usage: sleep <secs>\n"); return; }
+        secs = katol(argv[1]);
+        if (secs < 0) secs = 0;
+        if (secs > 3600) secs = 3600;
+        end = (long)ktime_ms() + secs * 1000;
+        while ((long)ktime_ms() < end) {
+            if (console_peek() == 0x03) { console_getc(); kprintf("^C\n"); return; }
+            yield();
+        }
     }
     else if (kstrcmp(argv[0], "sh") == 0) {
         if (argc < 2) { vga_puts("usage: sh <script.sh>\n"); return; }

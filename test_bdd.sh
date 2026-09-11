@@ -397,6 +397,32 @@ expect "win term0 *"
 refute "win term1"
 expect "powering off"
 
+scenario "wm close from window 0 still drops the split" "wm split
+wm close
+wm list
+poweroff"
+expect "win term0 *"
+refute "win term1"
+expect "powering off"
+
+scenario "background gfx joins the Alt-Tab cycle and tiles with terminals" "run doomgeneric.elf mini_autoframes 3000 &
+sleep 10
+wm focus next
+wm state
+wm tile
+wm list
+wm close
+wait
+poweroff"
+expect "started as job pid"
+expect "focus 2"
+expect "win gfx *"
+expect "win gfxbtn"
+expect "icon"
+expect "win term0"
+expect "exit code: 130"
+expect "powering off"
+
 scenario "a bare .cvm name runs directly from cvm/ without run" "w1.cvm
 poweroff"
 expect "hola cvm"

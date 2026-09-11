@@ -932,6 +932,7 @@ static void gui_run(void) {
     int fw, fh, fp;
 
     nk_sys_vga_mode(1);
+    nk_sys_gfx_set_title("Nuklear");
     nk_sys_kbd_raw(1);
     nk_build_palette(pal768);
     nk_sys_palette(pal768);

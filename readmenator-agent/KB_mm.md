@@ -11,11 +11,18 @@
   - `pt_page_alloc` (function, line 140) `void *pt_page_alloc(void)`
   - `pt_page_free` (function, line 150) `void pt_page_free(void *ptr)`
   - `pt_clone_user` (function, line 156) `uint64_t pt_clone_user(uint64_t parent_cr3)`
-  - `pt_free_user` (function, line 254) `void pt_free_user(uint64_t cr3)`
+  - `mt_shared_slot` (function, line 270) `static int mt_shared_slot(unsigned long pd_idx)`
+  - `pt_clone_user_empty` (function, line 287) `unsigned long pt_clone_user_empty(void)`
+  - `mm_user_ensure_page` (function, line 344) `int mm_user_ensure_page(unsigned long cr3, unsigned long va)`
+  - `mm_copy_user_page` (function, line 372) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)`
+  - `pt_free_user` (function, line 443) `void pt_free_user(uint64_t cr3)`
   - `kprintf` (function, line 29) `kprintf("mm: kernel image reaches 0x%lx, must stay below 0x%lx\n", (unsigned long)_kernel_end, USER_LOAD_BASE);`
   - `wrmsr` (function, line 37) `wrmsr(MSR_EFER, rdmsr(MSR_EFER) | EFER_NXE);`
   - `kmemset` (function, line 147) `kmemset((void *)aligned, 0, 0x1000);`
   - `kfree` (function, line 154) `kfree(raw);`
+  - `volatile` (function, line 397) `__asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));`
+  - `kmemcpy` (function, line 399) `kmemcpy((void *)dst_phys, (void *)src_phys, 0x1000);`
+  - `pt_free_data_pages` (function, line 446) `pt_free_data_pages(cr3);`
   - `_kernel_end` (variable, line 26) `extern char _kernel_end[];`
   - `PT_ALLOC_HDR` (macro, line 138) `#define PT_ALLOC_HDR`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`

@@ -1343,23 +1343,24 @@ zip.o: fs/zip.c zip.h kernel.h third_party/miniz/miniz.h
 dlmalloc_impl.o: third_party/dlmalloc/dlmalloc_impl.c third_party/dlmalloc/malloc.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-# Desktop icon PNGs: terminal/pokemon are pixel art generated from
-# tools/gen_icons.py; doom/quake2/nuklear/piano are custom art converted
-# from user-supplied sources (cgoblin.png wallpaper + icon PNGs in
+# Desktop icon PNGs: terminal is pixel art generated from
+# tools/gen_icons.py; doom/quake2/nuklear/piano/vedit/pokemon are custom art
+# converted from user-supplied sources (cgoblin.png wallpaper + icon PNGs in
 # DESKTOP_SRC_DIR) by tools/gen_desktop_pngs.py. The two generators own
 # disjoint target sets so neither ever clobbers the other's output.
-$(PROGS_DIR)/icons/terminal.png $(PROGS_DIR)/icons/pokemon.png: tools/gen_icons.py
-	python3 tools/gen_icons.py $(PROGS_DIR)/icons/ terminal pokemon
+$(PROGS_DIR)/icons/terminal.png: tools/gen_icons.py
+	python3 tools/gen_icons.py $(PROGS_DIR)/icons/ terminal
 
 # Custom desktop art: location of the user sources is overridable and
 # defaults to the repo root; nothing assumes an absolute path.
 DESKTOP_SRC_DIR = .
 DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
                $(DESKTOP_SRC_DIR)/quake2.png $(DESKTOP_SRC_DIR)/piano.png \
-               $(DESKTOP_SRC_DIR)/nuklear.png $(DESKTOP_SRC_DIR)/vedit.png
+               $(DESKTOP_SRC_DIR)/nuklear.png $(DESKTOP_SRC_DIR)/vedit.png \
+               $(DESKTOP_SRC_DIR)/pokemon.png
 DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/quake2.png \
               $(PROGS_DIR)/icons/piano.png $(PROGS_DIR)/icons/nuklear.png \
-              $(PROGS_DIR)/icons/vedit.png \
+              $(PROGS_DIR)/icons/vedit.png $(PROGS_DIR)/icons/pokemon.png \
               $(PROGS_DIR)/wall/wallpaper.png
 $(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
 	python3 tools/gen_desktop_pngs.py --src-dir $(DESKTOP_SRC_DIR) --repo .

@@ -166,33 +166,34 @@
   - `ctrl_active` (function, line 535) `static int ctrl_active(int id)`
   - `ctrl_press` (function, line 544) `static void ctrl_press(int id)`
   - `ui_run` (function, line 562) `static void ui_run(int bench_ms)`
-  - `run_selftest` (function, line 729) `static int run_selftest(void)`
-  - `main` (function, line 895) `int main(int argc, char **argv)`
+  - `run_selftest` (function, line 730) `static int run_selftest(void)`
+  - `main` (function, line 896) `int main(int argc, char **argv)`
   - `volatile` (function, line 87) `__asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");`
   - `OPL3_WriteReg` (function, line 106) `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);`
   - `o3_instrument` (function, line 262) `o3_instrument(ch, vel);`
   - `memset` (function, line 406) `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));`
   - `OPL3_GenerateStream` (function, line 462) `OPL3_GenerateStream(&o3, st, (uint32_t)n);`
   - `nk_sys_vga_mode` (function, line 565) `nk_sys_vga_mode(1);`
-  - `nk_sys_kbd_raw` (function, line 567) `nk_sys_kbd_raw(1);`
-  - `nk_build_palette` (function, line 568) `nk_build_palette(pal768);`
-  - `nk_sys_palette` (function, line 569) `nk_sys_palette(pal768);`
-  - `nk_sys_fb_info` (function, line 570) `nk_sys_fb_info(&fw, &fh, &fp);`
-  - `OPL3_Reset` (function, line 573) `OPL3_Reset(&o3, RATE);`
-  - `nk_set_scancode_hook` (function, line 581) `nk_set_scancode_hook(piano_scancode, 0);`
-  - `printf` (function, line 590) `printf("piano: init failed\n");`
-  - `nk_input_begin` (function, line 611) `nk_input_begin(&ctx);`
-  - `nk_poll_input` (function, line 612) `nk_poll_input(&ctx);`
-  - `nk_input_end` (function, line 613) `nk_input_end(&ctx);`
-  - `nk_rgb` (function, line 635) `: nk_rgb(240, 240, 240);`
-  - `nk_fill_rect` (function, line 636) `nk_fill_rect(canvas, r, 0, col);`
-  - `nk_stroke_rect` (function, line 637) `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));`
-  - `nk_draw_text` (function, line 649) `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));`
-  - `snprintf` (function, line 655) `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 C4 base oct%+d vol%d", octave, volume);`
-  - `nk_end` (function, line 670) `nk_end(&ctx);`
-  - `nk_rasterize` (function, line 692) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 696) `nk_clear(&ctx);`
-  - `nk_free` (function, line 722) `nk_free(&ctx);`
+  - `nk_sys_gfx_set_title` (function, line 567) `nk_sys_gfx_set_title("Piano");`
+  - `nk_sys_kbd_raw` (function, line 568) `nk_sys_kbd_raw(1);`
+  - `nk_build_palette` (function, line 569) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 570) `nk_sys_palette(pal768);`
+  - `nk_sys_fb_info` (function, line 571) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `OPL3_Reset` (function, line 574) `OPL3_Reset(&o3, RATE);`
+  - `nk_set_scancode_hook` (function, line 582) `nk_set_scancode_hook(piano_scancode, 0);`
+  - `printf` (function, line 591) `printf("piano: init failed\n");`
+  - `nk_input_begin` (function, line 612) `nk_input_begin(&ctx);`
+  - `nk_poll_input` (function, line 613) `nk_poll_input(&ctx);`
+  - `nk_input_end` (function, line 614) `nk_input_end(&ctx);`
+  - `nk_rgb` (function, line 636) `: nk_rgb(240, 240, 240);`
+  - `nk_fill_rect` (function, line 637) `nk_fill_rect(canvas, r, 0, col);`
+  - `nk_stroke_rect` (function, line 638) `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));`
+  - `nk_draw_text` (function, line 650) `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));`
+  - `snprintf` (function, line 656) `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 C4 base oct%+d vol%d", octave, volume);`
+  - `nk_end` (function, line 671) `nk_end(&ctx);`
+  - `nk_rasterize` (function, line 693) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 697) `nk_clear(&ctx);`
+  - `nk_free` (function, line 723) `nk_free(&ctx);`
   - `UI_MEMORY` (macro, line 53) `#define UI_MEMORY`
   - `SYS_SB16_OPEN` (macro, line 56) `#define SYS_SB16_OPEN`
   - `SYS_SB16_SUBMIT` (macro, line 58) `#define SYS_SB16_SUBMIT`

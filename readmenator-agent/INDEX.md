@@ -22,8 +22,8 @@
 | `drivers/block.c` | Block device layer for MiniFS. | drivers | 17 |
 | `drivers/driver.c` | include "driver.h"  driver.c -- Device registry for the Strategy-pattern driver  | drivers | 8 |
 | `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | drivers | 24 |
-| `drivers/kbd.c` | include "kernel.h" include "vga_fb.h" include "kbd.h"  ========================= | drivers | 22 |
-| `drivers/kbd.h` | ifndef KBD_H define KBD_H  Keyboard layout: US qwerty (default) or Spanish (Spai | drivers | 20 |
+| `drivers/kbd.c` | include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h"  ======= | drivers | 29 |
+| `drivers/kbd.h` | ifndef KBD_H define KBD_H  Keyboard layout: US qwerty (default) or Spanish (Spai | drivers | 22 |
 | `drivers/pcspk.c` | include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with  | drivers | 20 |
 | `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | drivers | 27 |
 | `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h"  Sound Blaster 16 DMA audio | drivers | 62 |
@@ -38,7 +38,7 @@
 | `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 35 |
 | `install.sh` | - | root | 0 |
 | `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 37 |
-| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 276 |
+| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 302 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
 | `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | kernel | 31 |
 | `kernel/cvm_host.c` | - | kernel | 55 |
@@ -46,26 +46,26 @@
 | `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | kernel | 18 |
 | `kernel/futex.c` | Docstring: kernel/futex.c -- Kernel side of the futex contract. | kernel | 11 |
 | `kernel/klog.c` | klog.c - Structured kernel logging with levels and subsystems. | kernel | 9 |
-| `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | kernel | 43 |
+| `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | kernel | 44 |
 | `kernel/lz4_kernel.c` | include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE  | kernel | 11 |
 | `kernel/mm.c` | include "kernel.h" include "sched.h"  ========================================== | kernel | 12 |
-| `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 13 |
+| `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 20 |
 | `kernel/mm/swap.c` | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | mm | 10 |
 | `kernel/percpu_rq.c` | Docstring: kernel/percpu_rq.c -- Per-CPU runqueue hints and stealing. | kernel | 14 |
 | `kernel/printf.c` | include "kernel.h"  ============================================================ | kernel | 15 |
 | `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | kernel | 21 |
 | `kernel/redirect.c` | include "kernel.h"  ============================================================ | kernel | 7 |
-| `kernel/sched.c` | - | kernel | 121 |
+| `kernel/sched.c` | - | kernel | 135 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 8 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 10 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 109 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 130 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 156 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 157 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
 | `kernel/time.c` | include "kernel.h" include "ktime.h"  ========================================== | kernel | 7 |
-| `kernel/vga_fb.c` | - | kernel | 104 |
+| `kernel/vga_fb.c` | - | kernel | 148 |
 | `ktime.h` | ifndef KTIME_H define KTIME_H  ktime.h -- pure time-conversion helpers shared by | root | 3 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 4 |
 | `mcp/__init__.py` | - | mcp | 0 |
@@ -297,10 +297,10 @@
 | `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 124 |
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 59 |
 | `progs/nuklear/cvm_emit.h` | ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (c | nuklear | 6 |
-| `progs/nuklear/node_editor.c` | node_editor.c — visual low-code editor that compiles to CVM bytecode. | nuklear | 76 |
-| `progs/nuklear/nuklear_minios.c` | nuklear_minios.c — MiniOS platform layer for Nuklear. | nuklear | 38 |
-| `progs/nuklear/nuklear_minios.h` | ifndef NUKLEAR_MINIOS_H define NUKLEAR_MINIOS_H  nuklear_minios.h — MiniOS platf | nuklear | 19 |
-| `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 85 |
+| `progs/nuklear/node_editor.c` | node_editor.c — visual low-code editor that compiles to CVM bytecode. | nuklear | 77 |
+| `progs/nuklear/nuklear_minios.c` | nuklear_minios.c — MiniOS platform layer for Nuklear. | nuklear | 39 |
+| `progs/nuklear/nuklear_minios.h` | ifndef NUKLEAR_MINIOS_H define NUKLEAR_MINIOS_H  nuklear_minios.h — MiniOS platf | nuklear | 20 |
+| `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 86 |
 | `progs/pokemon/fetch.sh` | fetch.sh - clone the gb-recompiled tool into progs/pokemon/upstream.  The upstre | pokemon | 0 |
 | `progs/pokemon/minios_stubs/SDL.h` | SDL.h stub for MiniOS cross-compilation | misc | 10 |
 | `progs/pokemon/platform_minios.c` | - | pokemon | 110 |
@@ -346,7 +346,7 @@
 | `rtc.h` | ifndef RTC_H define RTC_H | root | 6 |
 | `sanitize.h` | ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point | root | 5 |
 | `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 27 |
-| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h"  ---- Pro | root | 80 |
+| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h" include " | root | 86 |
 | `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 8 |
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 48 |
 | `smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | root | 11 |
@@ -397,8 +397,9 @@
 | `tools/qga_test.sh` | Quick standalone smoke test for the QEMU guest agent: boots os.img once with the | tools | 3 |
 | `tools/repro_gui.py` | - | tools | 10 |
 | `tools/test_codecs.sh` | test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  T | tools | 0 |
+| `tools/test_gui_wm.py` | - | tools | 17 |
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
-| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Fram | root | 102 |
-| `vma.c` | include "vma.h" | root | 11 |
-| `vma.h` | ifndef VMA_H define VMA_H | root | 13 |
+| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Fram | root | 112 |
+| `vma.c` | include "vma.h" | root | 14 |
+| `vma.h` | ifndef VMA_H define VMA_H | root | 21 |
 | `zip.h` | ifndef ZIP_H define ZIP_H  zip.h — MiniOS integration API for the miniz zip libr | root | 3 |

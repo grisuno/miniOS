@@ -66,16 +66,16 @@
 - Layer: utility
 - Language: py
 - Symbols:
-  - `write_atomic` (function, line 53) `def write_atomic(img, path)`
-  - `main` (function, line 59) `def main()`
+  - `write_atomic` (function, line 56) `def write_atomic(img, path)`
+  - `main` (function, line 62) `def main()`
 
 ## tools/gen_icons.py
 - Layer: utility
 - Language: py
 - Symbols:
-  - `make_png` (function, line 213) `def make_png(pixels, palette, width, height)`
-  - `make_chunk` (function, line 243) `def make_chunk(chunk_type, data)`
-  - `main` (function, line 248) `def main()`
+  - `make_png` (function, line 179) `def make_png(pixels, palette, width, height)`
+  - `make_chunk` (function, line 209) `def make_chunk(chunk_type, data)`
+  - `main` (function, line 214) `def main()`
 
 ## tools/gen_zip_fixtures.py
 - Layer: data_access
@@ -181,6 +181,29 @@
 - Layer: testing
 - Doc: test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  The interpreter in-OS suites (test.lua / 
 - Language: sh
+
+## tools/test_gui_wm.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `note` (function, line 36) `def note(ok, msg)`
+  - `Guest` (class, line 42) `class Guest`
+  - `meandiff` (method, line 198) `def meandiff(a_path, b_path)`
+  - `main` (method, line 208) `def main()`
+  - `__init__` (method, line 43) `def __init__(self)`
+  - `_ser` (method, line 69) `def _ser(self)`
+  - `_reader` (method, line 81) `def _reader(self)`
+  - `snapshot` (method, line 97) `def snapshot(self)`
+  - `wait_prompt` (method, line 101) `def wait_prompt(self, timeout)`
+  - `send` (method, line 109) `def send(self, line, settle)`
+  - `qmp_cmd` (method, line 124) `def qmp_cmd(self, obj)`
+  - `_qmp` (method, line 137) `def _qmp(self, obj)`
+  - `key` (method, line 145) `def key(self, qcode, down, up)`
+  - `rel` (method, line 157) `def rel(self, dx, dy)`
+  - `btn` (method, line 164) `def btn(self, down)`
+  - `dump` (method, line 170) `def dump(self, name)`
+  - `stop` (method, line 177) `def stop(self)`
+- Depends on: `kernel/time.c`
 
 ## tools/test_sb16.sh
 - Layer: testing
