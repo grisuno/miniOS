@@ -114,6 +114,14 @@ unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
 /* Enter a ring-3 program via iretq. */
 extern unsigned long syscall_kstack;
 
+/* Kernel stack the exec frame runs on.  It must hold both the ring-3
+ * program's syscall frames and any ring-0 ET_REL child it spawns through
+ * SYS_SPAWN (the toolchain's minigcc/ld recurse deeply), so it is larger
+ * than the per-proc scheduler slot: a child that overflowed the old 32 KB
+ * wrote past its stack into adjacent kernel-heap page tables and made
+ * pt_free_user spin on the corrupted entries. */
+#define EXEC_KSTACK_SZ (64 * 1024)
+
 int k_exec_user(void *entry, int argc, char **argv) {
     char *stk = (char *)USER_STACK_BASE;
     unsigned long *sp = setup_user_stack(stk, USER_STACK_SIZE, argc, argv);
@@ -121,8 +129,8 @@ int k_exec_user(void *entry, int argc, char **argv) {
     if (!sp) return -1;
     exec_exit_code = 0;
     /* Ring-3 syscalls swap onto procs[0].kstack (see syscall_entry), so
-     * point it at a freshly allocated stack with the usual 32 KB depth
-     * for the run; the pool slot from sched_init is restored after. */
+     * point it at a freshly allocated stack with the usual depth for the
+     * run; the pool slot from sched_init is restored after. */
     uint64_t saved_p0kstack = procs[0].kstack;
 
     unsigned long parent_cr3;
@@ -132,7 +140,7 @@ int k_exec_user(void *entry, int argc, char **argv) {
         __asm__ volatile("mov %0, %%cr3; mov %%cr3, %%rax" :: "r"(new_cr3) : "rax", "memory");
     }
 
-    unsigned long child_stack_sz = SYS_KSTK_TOP - SYS_KSTK_BASE;
+    unsigned long child_stack_sz = EXEC_KSTACK_SZ;
     void *child_stack = kmalloc(child_stack_sz);
     if (child_stack)
         procs[0].kstack = (uint64_t)child_stack + child_stack_sz;

@@ -15,6 +15,12 @@
 #include <stdint.h>
 #include "minios_abi.h"
 
+/* Forward declarations so this header is self-contained when included
+ * without nuklear.h first (font8x8.c does exactly that). */
+struct nk_context;
+struct nk_user_font;
+struct nk_command_buffer;
+
 #define NK_W           MINIOS_NK_W
 #define NK_H           MINIOS_NK_H
 #define NK_BACKBUF      ((volatile uint8_t *)MINIOS_NK_BACKBUF_ADDR)

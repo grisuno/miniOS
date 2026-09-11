@@ -1479,6 +1479,13 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     unsigned long saved_mmap     = user_mmap_cur;
     unsigned long saved_fsbase   = rdmsr(MSR_FSBASE);
     unsigned long saved_gsbase   = rdmsr(MSR_GSBASE);
+    /* An ET_REL child runs at ring 0 and exits through do_proc_exit's
+     * klongjmp, which bypasses syscall_entry's write-back of the per-proc
+     * stack top.  Left uncorrected, procs[0].kstack drifts down on every
+     * nested spawn and the parent's own exit longjmps into a corrupt
+     * frame.  Save and restore it so a spawn from a ring-3 program (the
+     * vedit IDE) is transparent to the caller. */
+    uint64_t saved_p0_kstack = procs[0].kstack;
 
     static vma_node_t parent_vma_pool_copy[VMA_MAX];
     for (int i = 0; i < vma_pool_n; i++)
@@ -1489,32 +1496,6 @@ static int k_syscall_spawn(const char *path, const char *redirect,
 
     KFILE *saved_kfd[KFD_MAX];
     for (int i = 0; i < KFD_MAX; i++) saved_kfd[i] = kfd_table[i];
-
-    int swap_saved = 0;
-    unsigned long window_sz = 0;
-    if (etype == ET_EXEC || etype == ET_DYN) {
-        unsigned long parent_top = USER_LOAD_BASE + 0x1000;
-        volatile unsigned long *scan =
-            (volatile unsigned long *)USER_LOAD_END;
-        while (scan > (volatile unsigned long *)USER_LOAD_BASE) {
-            scan = (volatile unsigned long *)((unsigned long)scan - 0x1000);
-            int all_zero = 1;
-            for (int j = 0; j < 512; j++) {
-                if (scan[j] != 0) { all_zero = 0; break; }
-            }
-            if (!all_zero) {
-                parent_top = (unsigned long)scan + 0x1000;
-                break;
-            }
-        }
-        if (g_brk > parent_top) parent_top = g_brk;
-        if (parent_top < USER_STACK_BASE) parent_top = USER_STACK_BASE;
-        window_sz = parent_top - USER_LOAD_BASE;
-        if (window_sz < 0x1000) window_sz = 0x1000;
-        if (window_sz > 64UL * 1024 * 1024) window_sz = 64UL * 1024 * 1024;
-
-        swap_saved = swap_out(window_sz);
-    }
 
     int rc = EFAULT;
     if (etype == ET_REL) {
@@ -1546,18 +1527,25 @@ static int k_syscall_spawn(const char *path, const char *redirect,
             rc = k_run_rel(entry, child_argc, kargv ? kargv : (char **)child_argv);
         if (did_redirect) redirect_commit(redirect, 0);
     } else if (etype == ET_EXEC || etype == ET_DYN) {
-        void *entry = load_exec_elf((void *)data, data_size);
+        /* Run the child in its own window through the same isolated spawn
+         * path `mrun` uses, then block until it exits.  The legacy
+         * swap_out + k_exec_user route re-cloned the boot page tables,
+         * discarding the freshly loaded image, so a ring-3 interpreter
+         * (lua/micropython/vedit) could not spawn an ET_EXEC child.  The
+         * isolated process has private heap-owned pages, its own CR3 and
+         * a user_trampoline entry, so the parent is left byte-for-byte
+         * intact. */
         int did_redirect = 0;
+        int pid;
         if (redirect && redirect[0]) did_redirect = redirect_begin();
-        if (entry)
-            rc = k_exec_user(entry, child_argc,
-                             kargv ? (char **)kargv : (char **)child_argv);
+        pid = proc_spawn_elf(resolved, data, data_size, child_argc,
+                             kargv ? kargv : (char **)child_argv);
+        if (pid > 0)
+            rc = do_waitpid(pid);
         if (did_redirect) redirect_commit(redirect, 0);
     }
 
-    if (swap_saved) {
-        swap_in();
-    }
+    procs[0].kstack = saved_p0_kstack;
     kfree(data);
 
     if (kargv) {

@@ -1177,6 +1177,13 @@ rtc_test: tests/test_rtc.c rtc.h | $(TOOLS_DIR)
 test-rtc: rtc_test
 	$(TOOLS_DIR)/rtc_test
 
+# Vedit IDE build-contract host test (tests/test_vedit_build.c, spec pin).
+vedit_build_test: tests/test_vedit_build.c | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/vedit_build_test tests/test_vedit_build.c
+
+test-vedit: vedit_build_test
+	$(TOOLS_DIR)/vedit_build_test
+
 # Device-registry host test (tests/test_driver.c + drivers/driver.c).
 driver_test: tests/test_driver.c drivers/driver.c driver.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/driver_test tests/test_driver.c drivers/driver.c

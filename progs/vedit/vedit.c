@@ -1,29 +1,13 @@
-/* vedit.c - fullscreen mini IDE for MiniOS, hosted on Nuklear.
+/** vedit IDE build and run contract.
  *
- * A visual text editor with live C/Python/Lua syntax highlighting that
- * runs as an ordinary ring-3 program, never as kernel code: it renders
- * into the Nuklear back-buffer and the kernel composites it as a titled
- * window on the desktop (the DOOM/Nuklear/piano pattern), so the shell
- * stays visible and the desktop keeps working around it.
- *
- * Every platform fact comes from minios_abi.h or a syscall, never from
- * a literal: syscall numbers from MINIOS_SYS_*, geometry from
- * NK_W/NK_H, cell metrics from the platform font at runtime, the
- * composite origin from SYS_NK_FRAME. Keystrokes arrive through
- * GETC_RAW (serial + PS/2 multiplexer with no line buffering, echo or
- * scrollback detour); frames leave as pixels, diagnostics as stdout
- * text (serial only while the gfx mode owns the display).
- *
- * Interaction: arrows move, typing inserts, Enter splits with
- * auto-indent, Tab indents, Backspace/Delete erase and join lines,
- * Home/End/PgUp/PgDn jump, ^O/^S save, ^N save-as (rename + save),
- * ^W find (wraps once), ^G goto, ^X save+quit, Esc quit without saving,
- * ^L dumps the buffer with ANSI highlight to the console
- * (serial fallback, BDD hook). With no file argument the buffer opens
- * as "untitled". The on-screen Save/Find/Name/Done buttons are clickable
- * too. Bounds are the kernel
- * editor's (512 lines, 127 chars); full lines, overflowing joins and
- * full buffers refuse whole, and a truncated load refuses to save.
+ * Ctrl+R saves the buffer then builds or runs it by extension through
+ * SYS_SPAWN so the shell stays usable: .c compiles with objects/minigcc.o
+ * into asm/<base>.s, .lua runs with lua, .py runs with micropython. Ctrl+L
+ * prompts for a link format and links the compiled asm/<base>.s with
+ * objects/ld.o into bin/<base>.elf or cvm/<base>.cvm. Every build drops
+ * the graphics mode first so the desktop terminal stays ordered and the
+ * toolchain output lands on the console, then the IDE resumes. Untitled
+ * buffers highlight as C until a name with an extension is given.
  */
 
 #include <stdio.h>
@@ -33,7 +17,7 @@
 #include "nuklear.h"
 #include "nuklear_minios.h"
 
-/* ---- MiniOS syscalls vedit needs beyond the platform layer ---- */
+/** Platform syscalls vedit needs beyond the platform layer. */
 static long vedit_getc_raw(long blocking) {
     long ret;
     __asm__ volatile("syscall" : "=a"(ret)
@@ -42,6 +26,7 @@ static long vedit_getc_raw(long blocking) {
     return ret;
 }
 
+/** Set the graphics window title. */
 static long vedit_set_title(const char *t) {
     long ret;
     __asm__ volatile("syscall" : "=a"(ret)
@@ -50,7 +35,28 @@ static long vedit_set_title(const char *t) {
     return ret;
 }
 
-/* ---- Bounds (the kernel editor's, so files round-trip byte-identical) -- */
+/** Run a program through SYS_SPAWN, preserving the IDE across the child. */
+static long vedit_spawn(const char *path, const char *redir, int argc,
+                        const char **argv) {
+    long ret;
+    register long r10 __asm__("r10") = (long)argv;
+    __asm__ volatile("syscall" : "=a"(ret)
+                     : "a"(MINIOS_SYS_SPAWN), "D"(path), "S"(redir),
+                       "d"((long)argc), "r"(r10)
+                     : "rcx", "r11", "memory");
+    return ret;
+}
+
+/** Release or reclaim the display so toolchain output stays on the terminal. */
+static long vedit_vga(int on) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret)
+                     : "a"(MINIOS_SYS_VGA_MODE), "D"((long)on)
+                     : "rcx", "r11", "memory");
+    return ret;
+}
+
+/** Central configuration: every bound, key, tool, directory and label. */
 #define VEDIT_MAX_LINES 512
 #define VEDIT_LINE_MAX 128
 #define VEDIT_LINE_USED (VEDIT_LINE_MAX - 1)
@@ -62,6 +68,24 @@ static long vedit_set_title(const char *t) {
 #define VEDIT_TAB_W 4
 #define VEDIT_SEQ_SPINS 20000
 #define VEDIT_UI_MEMORY (4 * 1024 * 1024)
+#define VEDIT_KEY_RUN 18
+#define VEDIT_KEY_LINK 12
+#define VEDIT_KEY_DUMP 4
+#define VEDIT_TOOL_MINIGCC "/objects/minigcc.o"
+#define VEDIT_TOOL_LD "/objects/ld.o"
+#define VEDIT_TOOL_CVM "/objects/cvm.o"
+#define VEDIT_TOOL_LUA "/lua"
+#define VEDIT_TOOL_PY "/micropython"
+#define VEDIT_DIR_ASM "/asm/"
+#define VEDIT_DIR_BIN "/bin/"
+#define VEDIT_DIR_CVM "/cvm/"
+#define VEDIT_BUILD_LOG "/tmp/vedit.log"
+#define VEDIT_LINK_ELF "elf"
+#define VEDIT_LINK_CVM "cvm"
+#define VEDIT_STATUS_MAX 256
+#define VEDIT_BASE_MAX 48
+#define VEDIT_PATH_MAX 64
+#define VEDIT_LOG_TAIL 4096
 
 /* ---- Languages ---- */
 #define VEDIT_LANG_TEXT 0
@@ -202,6 +226,7 @@ static int vedit_is_kw(const char *table, const char *word, int wlen) {
     return 0;
 }
 
+/** Map a file name to its highlight language. */
 static int vedit_lang_of(const char *fname) {
     size_t n = strlen(fname);
     if (n >= 2 && fname[n - 2] == '.') {
@@ -215,8 +240,10 @@ static int vedit_lang_of(const char *fname) {
     if (n >= 4 && fname[n - 4] == '.' && fname[n - 3] == 'l' &&
         fname[n - 2] == 'u' && fname[n - 1] == 'a')
         return VEDIT_LANG_LUA;
-    return VEDIT_LANG_TEXT;
+    return VEDIT_LANG_C;
 }
+
+/** Name a highlight language for the status row. */
 
 static const char *vedit_lang_name(int lang) {
     if (lang == VEDIT_LANG_C) return "C";
@@ -870,7 +897,286 @@ static int vedit_load(void) {
     return 1;
 }
 
-/* ---- Keyboard: GETC_RAW bytes decoded into extended key codes ---- */
+/** Report whether a file name ends with the given extension. */
+static int vedit_has_ext(const char *fname, const char *ext) {
+    size_t n = strlen(fname);
+    size_t e = strlen(ext);
+    size_t k;
+    if (e == 0 || e > n) return 0;
+    for (k = 0; k < e; k++) {
+        if (fname[n - e + k] != ext[k]) return 0;
+    }
+    return 1;
+}
+
+/** Copy the base name without directories or extension into dst. */
+static int vedit_base_of(const char *fname, char *dst, size_t cap) {
+    size_t n = strlen(fname);
+    size_t s = 0;
+    size_t e = n;
+    size_t k;
+    size_t len;
+    for (k = 0; k < n; k++) {
+        if (fname[k] == '/') s = k + 1;
+    }
+    for (k = s; k < n; k++) {
+        if (fname[k] == '.') e = k;
+    }
+    if (e <= s) e = n;
+    len = e - s;
+    if (len == 0 || len + 1 > cap || len >= VEDIT_BASE_MAX) return -1;
+    for (k = 0; k < len; k++) dst[k] = fname[s + k];
+    dst[len] = 0;
+    return 0;
+}
+
+/** Join dir + base + ext into dst with bounds checking. */
+static int vedit_join(const char *dir, const char *base, const char *ext,
+                      char *dst, size_t cap) {
+    size_t d = strlen(dir);
+    size_t b = strlen(base);
+    size_t e = strlen(ext);
+    size_t k = 0;
+    size_t i;
+    if (d + b + e + 1 > cap) return -1;
+    if (d + b + e + 1 > VEDIT_PATH_MAX) return -1;
+    for (i = 0; i < d; i++) dst[k++] = dir[i];
+    for (i = 0; i < b; i++) dst[k++] = base[i];
+    for (i = 0; i < e; i++) dst[k++] = ext[i];
+    dst[k] = 0;
+    return 0;
+}
+
+/** Accept only the two linker formats, rejecting anything else. */
+static int vedit_link_fmt(const char *s) {
+    size_t k = 0;
+    const char *e = VEDIT_LINK_ELF;
+    const char *c = VEDIT_LINK_CVM;
+    while (e[k] && s[k] == e[k]) k++;
+    if (e[k] == 0 && s[k] == 0) return 1;
+    k = 0;
+    while (c[k] && s[k] == c[k]) k++;
+    if (c[k] == 0 && s[k] == 0) return 2;
+    return 0;
+}
+
+/** Print a captured toolchain log to the console in bounded chunks. */
+static void vedit_print_log(const char *path) {
+    FILE *f = fopen(path, "r");
+    char buf[512];
+    size_t n;
+    if (!f) {
+        printf("vedit: no output captured\n");
+        return;
+    }
+    while ((n = fread(buf, 1, sizeof(buf), f)) > 0) {
+        size_t k;
+        for (k = 0; k < n; k++) putchar(buf[k]);
+    }
+    fclose(f);
+    fflush(stdout);
+}
+
+/** Drop the display, run one child, echo its log, then resume the IDE. */
+static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
+                                const char **argv, const char *label) {
+    unsigned char pal768[768];
+    long rc;
+    char nb[VEDIT_MSG_MAX];
+    vedit_vga(0);
+    printf("--- vedit: %s ---\n", label);
+    fflush(stdout);
+    rc = vedit_spawn(tool, redir, argc, argv);
+    if (redir && redir[0]) vedit_print_log(redir);
+    printf("vedit: %s exit code: %ld\n", label, rc);
+    fflush(stdout);
+    vedit_vga(1);
+    nk_build_palette(pal768);
+    nk_sys_palette(pal768);
+    if (rc < 0) {
+        snprintf(nb, sizeof(nb), "%s failed (%ld)", label, rc);
+        vedit_set_msg(nb);
+    } else if (rc != 0) {
+        snprintf(nb, sizeof(nb), "%s exit %ld", label, rc);
+        vedit_set_msg(nb);
+    } else {
+        snprintf(nb, sizeof(nb), "%s ok", label);
+        vedit_set_msg(nb);
+    }
+    return rc;
+}
+
+/** Run a freshly linked artifact so its output lands on the console. */
+static void vedit_cmd_exec(const char *out, int kind) {
+    const char *args[2];
+    char label[VEDIT_MSG_MAX];
+    snprintf(label, sizeof(label), "run %s", out);
+    args[0] = out;
+    args[1] = 0;
+    if (kind == 1)
+        vedit_spawn_visible(out, 0, 1, args, label);
+    else
+        vedit_spawn_visible(VEDIT_TOOL_CVM, 0, 1, args, label);
+}
+
+/** Save, then compile or run the current buffer by extension. */
+static void vedit_cmd_run(void) {
+    char base[VEDIT_BASE_MAX];
+    char out[VEDIT_PATH_MAX];
+    char label[VEDIT_MSG_MAX];
+    const char *tool;
+    const char *args[3];
+    const char *redir = 0;
+    size_t k;
+    if (vedit_trunc) {
+        vedit_set_msg("refusing to run: file did not fit in the buffer");
+        return;
+    }
+    if (vedit_save() != 0) return;
+    if (vedit_has_ext(vedit_fname, ".c") || vedit_has_ext(vedit_fname, ".h")) {
+        if (vedit_base_of(vedit_fname, base, sizeof(base)) != 0) {
+            vedit_set_msg("name too long");
+            return;
+        }
+        if (vedit_join(VEDIT_DIR_ASM, base, ".s", out, sizeof(out)) != 0) {
+            vedit_set_msg("name too long");
+            return;
+        }
+        tool = VEDIT_TOOL_MINIGCC;
+        args[0] = tool;
+        args[1] = vedit_fname;
+        args[2] = 0;
+        for (k = 0; k < sizeof(label) - 1 && vedit_fname[k]; k++)
+            label[k] = vedit_fname[k];
+        label[k] = 0;
+        vedit_spawn_visible(tool, out, 2, args, label);
+        return;
+    }
+    if (vedit_has_ext(vedit_fname, ".lua")) tool = VEDIT_TOOL_LUA;
+    else if (vedit_has_ext(vedit_fname, ".py")) tool = VEDIT_TOOL_PY;
+    else {
+        vedit_set_msg("usage: save as .c, .lua or .py first");
+        return;
+    }
+    args[0] = tool;
+    args[1] = vedit_fname;
+    args[2] = 0;
+    for (k = 0; k < sizeof(label) - 1 && vedit_fname[k]; k++)
+        label[k] = vedit_fname[k];
+    label[k] = 0;
+    redir = VEDIT_BUILD_LOG;
+    vedit_spawn_visible(tool, redir, 2, args, label);
+}
+
+/** Save, then link asm/<base>.s into bin/<base>.elf or cvm/<base>.cvm. */
+static void vedit_cmd_link(const char *fmt) {
+    char base[VEDIT_BASE_MAX];
+    char in[VEDIT_PATH_MAX];
+    char out[VEDIT_PATH_MAX];
+    char label[VEDIT_MSG_MAX];
+    const char *tool = VEDIT_TOOL_LD;
+    const char *args[7];
+    int kind = vedit_link_fmt(fmt ? fmt : "");
+    if (kind == 0) {
+        vedit_set_msg("usage: elf|cvm");
+        return;
+    }
+    if (vedit_trunc) {
+        vedit_set_msg("refusing to link: file did not fit in the buffer");
+        return;
+    }
+    if (vedit_save() != 0) return;
+    if (vedit_base_of(vedit_fname, base, sizeof(base)) != 0) {
+        vedit_set_msg("name too long");
+        return;
+    }
+    if (vedit_join(VEDIT_DIR_ASM, base, ".s", in, sizeof(in)) != 0) {
+        vedit_set_msg("name too long");
+        return;
+    }
+    if (kind == 1) {
+        if (vedit_join(VEDIT_DIR_BIN, base, ".elf", out, sizeof(out)) != 0) {
+            vedit_set_msg("name too long");
+            return;
+        }
+    } else {
+        if (vedit_join(VEDIT_DIR_CVM, base, ".cvm", out, sizeof(out)) != 0) {
+            vedit_set_msg("name too long");
+            return;
+        }
+    }
+    args[0] = tool;
+    args[1] = "-f";
+    args[2] = (kind == 1) ? VEDIT_LINK_ELF : VEDIT_LINK_CVM;
+    args[3] = "-o";
+    args[4] = out;
+    args[5] = in;
+    args[6] = 0;
+    snprintf(label, sizeof(label), "link %s", out);
+    if (vedit_spawn_visible(tool, VEDIT_BUILD_LOG, 6, args, label) == 0)
+        vedit_cmd_exec(out, kind);
+}
+
+/** Headless build contract check: no display, no syscalls, exit status only. */
+static int vedit_selftest_build(void) {
+    char base[VEDIT_BASE_MAX];
+    char path[VEDIT_PATH_MAX];
+    int fails = 0;
+    if (vedit_lang_of(VEDIT_DEFAULT_FILE) != VEDIT_LANG_C) {
+        printf("vedit: untitled must highlight as C\n");
+        fails++;
+    }
+    if (vedit_lang_of("a.c") != VEDIT_LANG_C) {
+        printf("vedit: .c must highlight as C\n");
+        fails++;
+    }
+    if (vedit_lang_of("a.py") != VEDIT_LANG_PY) {
+        printf("vedit: .py must highlight as Python\n");
+        fails++;
+    }
+    if (vedit_lang_of("a.lua") != VEDIT_LANG_LUA) {
+        printf("vedit: .lua must highlight as Lua\n");
+        fails++;
+    }
+    if (!vedit_has_ext("a.c", ".c") || vedit_has_ext("a.c", ".lua")) {
+        printf("vedit: extension match broken\n");
+        fails++;
+    }
+    if (vedit_base_of("src/a.c", base, sizeof(base)) != 0) {
+        printf("vedit: base strip failed\n");
+        fails++;
+    } else if (strcmp(base, "a") != 0) {
+        printf("vedit: base must be a, got %s\n", base);
+        fails++;
+    }
+    if (vedit_join(VEDIT_DIR_ASM, "a", ".s", path, sizeof(path)) != 0) {
+        printf("vedit: join failed\n");
+        fails++;
+    } else if (strcmp(path, "/asm/a.s") != 0) {
+        printf("vedit: join must be /asm/a.s, got %s\n", path);
+        fails++;
+    }
+    if (vedit_link_fmt("elf") != 1 || vedit_link_fmt("cvm") != 2) {
+        printf("vedit: link formats broken\n");
+        fails++;
+    }
+    if (vedit_link_fmt("exe") != 0 || vedit_link_fmt("") != 0) {
+        printf("vedit: bad link format must fail\n");
+        fails++;
+    }
+    if (VEDIT_KEY_RUN != 18 || VEDIT_KEY_LINK != 12 || VEDIT_KEY_DUMP != 4) {
+        printf("vedit: shortcut contract broken\n");
+        fails++;
+    }
+    if (fails) {
+        printf("vedit: build selftest FAIL (%d)\n", fails);
+        return 1;
+    }
+    printf("vedit: build ok (run=^R link=^L dump=^D)\n");
+    return 0;
+}
+
+/** Keyboard: GETC_RAW bytes decoded into extended key codes. */
 
 static long vedit_getc_blocking(void) {
     return vedit_getc_raw(1);
@@ -914,8 +1220,7 @@ static int vedit_read_key(void) {
     return VEDIT_KEY_ESC;
 }
 
-/* ---- Serial ANSI mirror (^L dump + save lines; the UI itself is pixels) -- */
-
+/** Serial ANSI mirror: the UI itself is pixels. */
 static void vedit_ansi_for(int col) {
     if (col == VEDIT_COL_KEYWORD) printf("\033[1;34m");
     else if (col == VEDIT_COL_STRING) printf("\033[33m");
@@ -953,7 +1258,7 @@ static void vedit_console_dump(void) {
 
 /* ---- Nuklear UI ---- */
 
-/* Prompt state for find/goto/save-as, answered on the status row. */
+/** Prompt state for find/goto/save-as/link, answered on the status row. */
 static int vedit_prompt_on;
 static char vedit_prompt_label[16];
 static char vedit_prompt_buf[VEDIT_LINE_MAX];
@@ -961,6 +1266,7 @@ static int vedit_prompt_pos;
 #define VEDIT_PROMPT_FIND 0
 #define VEDIT_PROMPT_GOTO 1
 #define VEDIT_PROMPT_NAME 2
+#define VEDIT_PROMPT_LINK 3
 static int vedit_prompt_mode;
 
 static void vedit_prompt_open(const char *label, int mode) {
@@ -1066,15 +1372,16 @@ static void vedit_draw_row(struct nk_command_buffer *canvas,
     }
 }
 
+/** Draw the IDE window: menu buttons, code rows, status and help. */
 static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                           int *quit, int *save_and_quit) {
     struct nk_command_buffer *canvas;
     int r;
     int li;
-    char status[256];
+    char status[VEDIT_STATUS_MAX];
     static const char *help =
         "arrows move  type  Enter split  Tab indent  ^O save  ^N name  ^X done  "
-        "^W find  ^G goto  ^L console  Esc exit";
+        "^W find  ^G goto  ^R run  ^L link+run  ^D console  Esc exit";
     static int prev_buttons = 0;
     int mouse[4] = {0, 0, 0, 0};
     int mdown = 0;
@@ -1083,8 +1390,8 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
     int btn_h = vedit_ch + 6;
     int bx = vedit_cw;
     int by = 2;
-    static const char *labels[4] = {"^O Save", "^W Find", "^N Name",
-                                        "^X Done"};
+    static const char *labels[6] = {"^O Save", "^W Find", "^N Name",
+                                        "^R Run", "^L Link", "^X Done"};
 
     vedit_clamp();
     vedit_follow();
@@ -1113,7 +1420,7 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
 
     nk_fill_rect(canvas, nk_rect(0, 0, (float)NK_W, (float)vedit_menu_h), 0,
                  vedit_c_header());
-    for (r = 0; r < 4; r++) {
+    for (r = 0; r < 6; r++) {
         int x = bx + r * (btn_w + vedit_cw);
         int hover = mdown && mouse[0] >= x && mouse[0] < x + btn_w &&
             mouse[1] >= by && mouse[1] < by + btn_h;
@@ -1136,6 +1443,10 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                 vedit_prompt_find();
             } else if (r == 2) {
                 vedit_prompt_saveas();
+            } else if (r == 3) {
+                vedit_cmd_run();
+            } else if (r == 4) {
+                vedit_prompt_open("link elf/cvm: ", VEDIT_PROMPT_LINK);
             } else {
                 *save_and_quit = 1;
                 *quit = 1;
@@ -1187,7 +1498,7 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
     nk_end(ctx);
 }
 
-/* Route one decoded key: prompt captures everything while open. */
+/** Route one decoded key while a prompt is open. */
 static void vedit_prompt_key(int key) {
     if (key == '\n' || key == '\r') {
         vedit_prompt_on = 0;
@@ -1221,6 +1532,8 @@ static void vedit_prompt_key(int key) {
                     printf("vedit: wrote %d line(s) to %s\n",
                            vedit_count, vedit_fname);
             }
+        } else if (vedit_prompt_mode == VEDIT_PROMPT_LINK) {
+            vedit_cmd_link(vedit_prompt_buf);
         } else {
             vedit_find(vedit_prompt_buf);
         }
@@ -1244,7 +1557,7 @@ static void vedit_prompt_key(int key) {
     }
 }
 
-/* Route one decoded key: prompt captures everything while open. */
+/** Route one decoded key when no prompt is open. */
 static void vedit_key(int key, int *quit, int *save_and_quit) {
     if (vedit_prompt_on) {
         vedit_prompt_key(key);
@@ -1301,7 +1614,11 @@ static void vedit_key(int key, int *quit, int *save_and_quit) {
         vedit_prompt_saveas();
     } else if (key == 7) {
         vedit_prompt_open("goto: ", VEDIT_PROMPT_GOTO);
-    } else if (key == 12) {
+    } else if (key == VEDIT_KEY_RUN) {
+        vedit_cmd_run();
+    } else if (key == VEDIT_KEY_LINK) {
+        vedit_prompt_open("link elf/cvm: ", VEDIT_PROMPT_LINK);
+    } else if (key == VEDIT_KEY_DUMP) {
         vedit_console_dump();
     } else if (key == 24) {
         *save_and_quit = 1;
@@ -1475,6 +1792,8 @@ int main(int argc, char **argv) {
     const char *fname;
     if (argc > 1 && strcmp(argv[1], "--selftest") == 0)
         return vedit_selftest();
+    if (argc > 1 && strcmp(argv[1], "--selftest-build") == 0)
+        return vedit_selftest_build();
     if (argc == 1) {
         fname = VEDIT_DEFAULT_FILE;
     } else if (argc == 2) {

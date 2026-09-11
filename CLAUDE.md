@@ -1552,15 +1552,38 @@ beside it).
 - Interaction: arrow-key navigation with in-place typing (no line
   numbers to name), Enter splits with auto-indent, Tab inserts a stop,
   Backspace/Delete erase and join, Home/End/PgUp/PgDn jump, `^O`/`^S`
-  save, `^W` find (wraps once), `^G` goto line, `^X` save+quit, Esc
-  quit without saving, `^L` dumps the buffer with ANSI highlight to
-  the console (serial fallback and BDD hook). Save/Find/Done are also
+  save, `^N` save-as, `^W` find (wraps once), `^G` goto line, `^R`
+  build/run by extension, `^L` link (prompts `elf|cvm`), `^X`
+  save+quit, Esc quit without saving, `^D` dumps the buffer with ANSI
+  highlight to the console (serial fallback and BDD hook; moved from
+  `^L` so the linker owns `^L`). Save/Find/Name/Run/Link/Done are also
   clickable buttons; the wheel scrolls. A 512-line / 127-char buffer
   with the same fail-closed rules as `edit`: full lines, overflowing
   joins and full buffers refuse whole, and a truncated load refuses
-  to save.
+  to save and to build.
+- Build/run (`^R`, `^L`, single-file contract in `progs/vedit/vedit.c`):
+  `^R` saves then routes by extension through `SYS_SPAWN` (215) so the
+  IDE survives the child: `.c`/`.h`/`.s` compile with
+  `objects/minigcc.o <file>` redirected to `asm/<base>.s`, `.lua` runs
+  with `lua <file>`, `.py` runs with `micropython <file>`; `^L`
+  prompts `link elf/cvm: ` and links `asm/<base>.s` with
+  `objects/ld.o -f <fmt> -o bin/<base>.elf|cvm/<base>.cvm`, then runs
+  the freshly linked artifact (`cvm.o` for a `.cvm`, the ELF directly)
+  so its output lands on the console without leaving the IDE. Every
+  build drops `SYS_VGA_MODE` first so the desktop terminal stays
+  ordered and the toolchain log lands on the console, then resumes the
+  IDE and reports the exit code in the status row. `mrun` stays the
+  shell-level multitask path (`mrun vedit.elf &` tiles the IDE beside
+  the terminal with Super+Tab); in-IDE builds use synchronous `SPAWN`
+  because `mrun` is a shell builtin, not a syscall. All bounds, keys,
+  tools, directories and formats live in the centralized `VEDIT_*`
+  config. The tool and artifact paths are root-anchored (`/objects/`*,
+  `/asm/`, `/bin/`, `/cvm/`), never host paths, so editing a file in a
+  subdirectory (`cd src`) still resolves the toolchain and outputs at
+  the system root instead of under the cwd.
 - Highlighting: C (`.c`/`.h`/`.s`, with `//` and `/* */` plus `#`
-  directives), MicroPython (`.py`, with `#` and triple-quoted strings)
+  directives; also the default for `untitled` until a name with an
+  extension is given), MicroPython (`.py`, with `#` and triple-quoted strings)
   and Lua (`.lua`, with `--`, `--[[ ]]` blocks and `[[ ]]` strings);
   keywords, strings, comments, numbers and directives each get an ink,
   drawn as per-token runs on the canvas with a block cursor.
@@ -1575,6 +1598,10 @@ beside it).
   piano, the window title carries the dirty `*`, and the kernel redraws
   the desktop on exit. `vedit --selftest` renders one frame and proves
   the composite landed, mirroring the Nuklear selftest.
+  `vedit --selftest-build` checks the headless build contract (untitled
+  defaults to C, extension routing, base/path joins, `elf|cvm` parsing,
+  `^R`/`^L`/`^D` shortcuts) and prints `vedit: build ok`; the BDD suite
+  pins it and `make test-vedit` locks the same vectors on the host.
 - The kernel `edit` stays: scripted flows (the MCP `minios_write`
   editor upload, the marketplace, the BDD suite) drive it
   non-interactively, which a fullscreen program cannot serve.
@@ -1737,10 +1764,16 @@ repository as an out-of-tree unix-port variant.
 
 - **`minios` module + `SYS_SPAWN` (215)**: the variant ships a `minios` C
     module exposing kernel services and `run()`; `SYS_SPAWN` runs a ramdisk
-    program from the interpreter while preserving it (saving the user window,
-    FS/GS base, fd table and brk/mmap cursors across an ET_EXEC/DYN child).
-    ET_REL children (`minigcc.o`, `ld.o`) run at ring 0 and work; this drives
-    `build.py`, `shell.py` and `test.py` on the ramdisk.
+    program from the interpreter while preserving it.  ET_REL children
+    (`minigcc.o`, `ld.o`) run at ring 0 through `k_run_rel`; ET_EXEC/ET_DYN
+    children run in a fresh isolated window via `proc_spawn_elf` (the same
+    path `mrun` uses) and the caller blocks in `do_waitpid`, so the parent
+    address space, FS/GS base, fd table and brk/mmap cursors are untouched.
+    This drives `build.py`, `shell.py` and `test.py` on the ramdisk.  The
+    exec frame's kernel stack is `EXEC_KSTACK_SZ` (64 KB, `kernel/exec.c`):
+    it must hold a ring-0 toolchain child's deep recursion (minigcc/ld), and
+    a child that overflowed the old 32 KB stack wrote into adjacent kernel-heap
+    page tables, making the parent's `pt_free_user` spin on the corruption.
 
 ## Nuklear node editor (`nuklear`)
 
@@ -1987,16 +2020,17 @@ is also packed onto MiniFS. The suites are fail-safe, never crashing: every
 returns `nil` reports a clean FAIL instead of aborting the script.
 
 The ET_EXEC tool tests (`json`, `lzss`, `lz4`, `aes`, `freedom`, and running
-the freshly built `_t.elf`) report FAIL with `exit=nil`: SYS_SPAWN of an
-ET_EXEC child from inside an interpreter is a **pre-existing limitation**. A
-ring-3 interpreter must be preserved across the child, which loads into the
-same shared user window, so SYS_SPAWN has to save the parent window — a span
-that cannot fit in the kernel heap alongside the ramdisk, and whose
-klongjmp/syscall-stack unwind is not robust in a single address space. The
-spawn therefore returns `-EFAULT` cleanly (the interpreter gets `nil`), never
-a crash or a hang. This is why the interpreter suites cover the module
-bindings, the filesystem and the **ET_REL** toolchain (minigcc/ld work); the
-ET_EXEC tools are exercised at the shell level by `tools/test_codecs.sh`, which
+the freshly built `_t.elf`) used to report FAIL with `exit=nil`: SYS_SPAWN of
+an ET_EXEC child from inside an interpreter was a limitation of the legacy
+shared-window route (swap_out + `k_exec_user` re-cloned the boot page tables,
+discarding the freshly loaded image). SYS_SPAWN's ET_EXEC/ET_DYN branch now
+uses the same isolated path `mrun` does: `proc_spawn_elf` builds the child in
+a fresh user window with its own CR3 and `user_trampoline` entry, and the
+caller blocks in `do_waitpid` until it exits. The parent is left byte-for-byte
+intact, so a ring-3 interpreter (lua, micropython, the vedit IDE) can spawn
+ET_EXEC children; the interpreter suites cover the module bindings, the
+filesystem and the **ET_REL** toolchain (minigcc/ld work), and the ET_EXEC
+tools stay exercised at the shell level by `tools/test_codecs.sh`, which
 drives the real `lzss`/`unlzss`, `lz4`/`unlz4` and `aes`/`unaes` roundtrips
 through the serial console (pass=3 in the gate).
 
@@ -2107,6 +2141,7 @@ make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
+make test-vedit      # vedit IDE build-contract suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
@@ -2521,6 +2556,7 @@ make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
+make test-vedit      # vedit IDE build-contract suite green
 make test-ktime test-randmix  # Phase 0 truthfulness: TSC->usec + getrandom mixer green
 python3 tools/check_abi_numbers.py  # Phase 0.6: syscall numbers match Linux x86-64 (also in lint)
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD

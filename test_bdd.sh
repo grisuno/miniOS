@@ -481,16 +481,25 @@ expect "wrote 1 line(s) to vis.txt"
 expect "hello visual"
 expect "exit code: 0"
 
-scenario "vedit console dump highlights C keywords with ANSI" $'vedit hl.c\nint main(void) { return 0; }\x0c\x1b\npoweroff'
+scenario "vedit console dump highlights C keywords with ANSI" $'vedit hl.c\nint main(void) { return 0; }\x04\x1b\npoweroff'
 expect "main"
 expect "return"
-expect $'\x1b[1;34m'
+expect $'\x1b\[1;34m'
 refute "wrote"
 expect "exit code: 0"
 
 scenario "vedit selftest renders one UI frame" "vedit --selftest
 poweroff"
 expect "vedit: frame ok (800x360)"
+
+scenario "vedit build contract passes headless" "vedit --selftest-build
+poweroff"
+expect "vedit: build ok (run=^R link=^L dump=^D)"
+
+scenario "vedit compiles, links and runs from the IDE shortcuts" $'cd src\nvedit ideb.c\nint main(void) { return 9; }\x12\x0ccvm\n\x18\nrun /cvm/ideb.cvm\npoweroff'
+expect "vedit: ideb.c exit code: 0"
+expect "vedit: link /cvm/ideb.cvm exit code: 0"
+expect "exit code: 9"
 
 scenario "shell redirects command output to a file" "echo redirected text > r.txt
 cat r.txt
