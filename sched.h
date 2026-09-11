@@ -115,6 +115,10 @@ typedef struct {
 #define RLIM_CPU      2
 #define RLIM_NOFILE   3
 #define RLIM_EXIT_CPU 137
+/* Nice range for SYS_NICE (239): clamped on set, default 0. */
+#define NICE_MIN    (-20)
+#define NICE_MAX    19
+#define NICE_DEFAULT 0
 
 /* clone() flags */
 #define CLONE_VM    0x00000100  /* share address space (same CR3) */

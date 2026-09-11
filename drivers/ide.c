@@ -35,10 +35,10 @@ static int ide_wait_not_busy(unsigned int timeout) {
 static int ide_wait_drq(unsigned int timeout) {
     unsigned int i;
     for (i = 0; i < timeout; i++) {
-        unsigned char s = ide_read_status();
-        if (s & IDE_STATUS_ERR) return -1;
-        if (s & IDE_STATUS_DF)  return -1;
-        if (s & IDE_STATUS_DRQ) return 0;
+        unsigned char status = ide_read_status();
+        if (status & IDE_STATUS_ERR) return -1;
+        if (status & IDE_STATUS_DF)  return -1;
+        if (status & IDE_STATUS_DRQ) return 0;
     }
     return -1;
 }

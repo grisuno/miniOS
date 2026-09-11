@@ -21,28 +21,10 @@
 
 static unsigned short rtl_iobase_val;
 
-static void outb_port(unsigned short port, unsigned char val) {
-    __asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));
-}
-
-static unsigned char inb_port(unsigned short port) {
-    unsigned char v;
-    __asm__ volatile("inb %1, %0" : "=a"(v) : "Nd"(port));
-    return v;
-}
-
-static void outw_port(unsigned short port, unsigned short val) {
-    __asm__ volatile("outw %0, %1" : : "a"(val), "Nd"(port));
-}
-
+/* Byte/word port I/O comes from kernel.h (outb/inb/outw/inw, same asm).
+ * Only the dword pair stays local: the shared header has no outl/inl. */
 static void outl_port(unsigned short port, unsigned int val) {
     __asm__ volatile("outl %0, %1" : : "a"(val), "Nd"(port));
-}
-
-static unsigned short inw_port(unsigned short port) {
-    unsigned short v;
-    __asm__ volatile("inw %1, %0" : "=a"(v) : "Nd"(port));
-    return v;
 }
 
 static unsigned int inl_port(unsigned short port) {
@@ -51,10 +33,10 @@ static unsigned int inl_port(unsigned short port) {
     return v;
 }
 
-static unsigned char rtl_reg8(unsigned short off) { return inb_port((unsigned short)(rtl_iobase_val + off)); }
-static void rtl_reg8_w(unsigned short off, unsigned char v) { outb_port((unsigned short)(rtl_iobase_val + off), v); }
-static unsigned short rtl_reg16(unsigned short off) { return inw_port((unsigned short)(rtl_iobase_val + off)); }
-static void rtl_reg16_w(unsigned short off, unsigned short v) { outw_port((unsigned short)(rtl_iobase_val + off), v); }
+static unsigned char rtl_reg8(unsigned short off) { return inb((unsigned short)(rtl_iobase_val + off)); }
+static void rtl_reg8_w(unsigned short off, unsigned char v) { outb((unsigned short)(rtl_iobase_val + off), v); }
+static unsigned short rtl_reg16(unsigned short off) { return inw((unsigned short)(rtl_iobase_val + off)); }
+static void rtl_reg16_w(unsigned short off, unsigned short v) { outw((unsigned short)(rtl_iobase_val + off), v); }
 static unsigned int rtl_reg32(unsigned short off) { return inl_port((unsigned short)(rtl_iobase_val + off)); }
 static void rtl_reg32_w(unsigned short off, unsigned int v) { outl_port((unsigned short)(rtl_iobase_val + off), v); }
 
@@ -107,14 +89,14 @@ static unsigned long rtl_rdtsc(void) {
 
 static void net_time_init(void) {
     unsigned long t0, t1;
-    outb_port(0x61, (unsigned char)((inb_port(0x61) & 0x0F) | 0x01));
-    outb_port(0x43, 0xB0);
-    outb_port(0x42, 0x96);
-    outb_port(0x42, 0x04);
+    outb(0x61, (unsigned char)((inb(0x61) & 0x0F) | 0x01));
+    outb(0x43, 0xB0);
+    outb(0x42, 0x96);
+    outb(0x42, 0x04);
     t0 = rtl_rdtsc();
-    while (!(inb_port(0x61) & 0x20));
+    while (!(inb(0x61) & 0x20));
     t1 = rtl_rdtsc();
-    outb_port(0x61, (unsigned char)(inb_port(0x61) & 0x0F));
+    outb(0x61, (unsigned char)(inb(0x61) & 0x0F));
     rtl_tsc_per_ms = t1 - t0;
     rtl_tsc_base = t1;
 }

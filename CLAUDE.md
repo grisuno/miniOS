@@ -1077,7 +1077,14 @@ below that stack (`USER_BRK_END`) and anonymous `mmap` allocations are carved
 from the same window, so every address a user program can obtain is a user
 page. Syscalls switch to a dedicated kernel stack (`syscall_kstack`, exchanged
 on entry, `SYS_KSTK_TOP`) and return with `sysretq`, so the kernel never runs
-on a user stack and never touches the user red zone. The exit path
+on a user stack and never touches the user red zone. The return path
+discriminates on the caller RIP, never on RSP: RSP is attacker-settable
+without faulting while RIP is constrained to executable mappings, so an
+`RSP=0` spoof takes the `sysretq` path instead of retaining CPL0 through
+`jmp *%rcx` (ring-0 ET_REL callers trap from heap code and keep the `jmp`
+return). The entry range-checks the pid (`jae 98f`, fail closed with
+`-EFAULT` touching no memory), so a corrupt `cur_pid` can neither index
+`sc_top_save` out of bounds nor swap onto a wild kstack. The exit path
 (`klongjmp` back to the shell) restores the kernel data segments and resets
 the syscall kernel stack for the next program.
 
@@ -1601,7 +1608,11 @@ beside it).
   `vedit --selftest-build` checks the headless build contract (untitled
   defaults to C, extension routing, base/path joins, `elf|cvm` parsing,
   `^R`/`^L`/`^D` shortcuts) and prints `vedit: build ok`; the BDD suite
-  pins it and `make test-vedit` locks the same vectors on the host.
+  pins it and `make test-vedit` locks the same vectors on the host
+  (including a `t_lang_of` mirror of `vedit_lang_of`, so spec drift fails
+  the build). The scanner shares `vedit_parse_string`/`vedit_parse_number`
+  (C-only quote flag)/`vedit_parse_keyword` helpers; per-language quirks
+  (C `#`/`/* */`, Python triple-quote, Lua long brackets) stay in the caller.
 - The kernel `edit` stays: scripted flows (the MCP `minios_write`
   editor upload, the marketplace, the BDD suite) drive it
   non-interactively, which a fullscreen program cannot serve.
@@ -2475,6 +2486,10 @@ Extracted so far:
   driver further split into its own contract `net/rtl8139.c` with the
   boundary header `net/rtl8139.h`
 - Scheduler: sched.c, vga_fb.c, lz4_kernel.c, cvm_host.c moved to `kernel/`
+- Syscalls: proc-leaf handlers (clone, seccomp, nice, yield, getpid/tid,
+  fork/vfork/execve stubs, exit, wait4, kill) moved to
+  `kernel/syscalls_proc.c` with the boundary header `syscalls_proc.h`;
+  first increment of the `syscalls.c` decomposition, tables unchanged
 - Memory: VMA red-black tree moved to `vma.c` (its own contract, was inline
   in loader.c against a divergent `vma.h`)
 - Editor: the built-in line editor moved to `kernel/editor.c` with the
@@ -2484,7 +2499,8 @@ Extracted so far:
 - Arch: isr_stubs.S, ctx_sw.S, ap_entry.S moved to `arch/x86/`
 
 Future extractions: shell.c (circular deps with console_getc/redirect),
-loader.c (deps on static mm funcs), mm.c.
+loader.c (deps on static mm funcs), mm.c, and the remaining `syscalls.c`
+leaves (fd table, spawn bridge, mm, net, gfx handlers, in that risk order).
 
 ### VFS Invariant Documentation (Phase 1.4)
 

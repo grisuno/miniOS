@@ -143,7 +143,10 @@ extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a
  * The kstack top likewise cannot live in a global (a thread preempted
  * mid-syscall would have its top overwritten by the next thread's
  * entry): it is saved per-pid in sc_top_save[], written at entry and
- * read at exit by the owning thread only.  The pushed frame layout is
+ * read at exit by the owning thread only.  Pid is range-checked at
+ * entry (13f: jae 98f, fail closed with -EFAULT touching no memory),
+ * so a corrupt cur_pid can neither index sc_top_save OOB nor xchg
+ * onto a wild kstack address.  The pushed frame layout is
  * identical on both paths (r11/rip/n/a1..a6/pid/pcb), and the kernel
  * never runs on a user stack and never touches the user red zone.  The
  * return discriminates on the caller RIP, never on the saved rsp: rsp
@@ -227,6 +230,10 @@ __asm__(
     "  addq kstack_base(%rip), %rax\n"
     /* --- shared swap + top save (IF=0, rax = &PCB.kstack) --- */
     "13:\n"
+    "  movl %gs:88, %ecx\n"       /* pid; rip stays parked in gs:80 */
+    "  cmpl $" STR(MAX_PROCS) ", %ecx\n"
+    "  jae 98f\n"                 /* pid OOB (incl. -1 idle): fail closed below */
+    "  movq %gs:80, %rcx\n"       /* restore caller rip */
     "  xchgq %rsp, (%rax)\n"        /* rsp = top; rsp saved in the PCB */
     "  pushq %rax\n"                /* &PCB.kstack */
     "  movq %gs:88, %rcx\n"         /* pid (rip safe in scratch) */
@@ -339,6 +346,23 @@ __asm__(
     "  jae 1f\n"
     "  sysretq\n"
     "1:\n"
+    "  jmp *%rcx\n"
+    /* --- pid-OOB fail closed: entry validated pid before any mem use,
+     * so sc_top_save and the kstack xchg are never indexed wild. No
+     * stack or scratch touched yet: r11/rsp still caller-owned, rip
+     * reloaded from scratch, -EFAULT in rax, return by rip like 21f. */
+    "98:\n"
+    "  movq %gs:80, %rcx\n"       /* caller rip */
+    "  movq $-14, %rax\n"         /* -EFAULT */
+    "  cmpq $" STR(USER_WIN_LO) ", %rcx\n"
+    "  jb 97f\n"
+    "  cmpq $" STR(USER_WIN_HI) ", %rcx\n"
+    "  jae 97f\n"
+    "  swapgs\n"                  /* restore user GS */
+    "  sysretq\n"
+    "97:\n"
+    "  swapgs\n"                 /* undo the entry swapgs (ring-0 path) */
+    "  sti\n"                    /* ring-0 callers ran with IF=1 */
     "  jmp *%rcx\n"
 );
 

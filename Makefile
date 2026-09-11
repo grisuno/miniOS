@@ -1089,6 +1089,7 @@ test-fault: fault_test
 # Advisory: flawfinder (triaged in LINT_TRIAGE.md), -Wextra on pre-existing
 # kernel files (15 grandfathered, none in added lines).
 LINT_KERN_SRCS = kernel/loader.c kernel/shell.c kernel/syscalls.c \
+                 kernel/syscalls_proc.c \
                  kernel/sched.c kernel/mm.c smp.c fs/minifs.c net/net.c
 LINT_HOST_SRCS = progs/tls_u/tls_u_port.c progs/tls_u/tls_u_main.c \
                  tests/test_fault.c tests/test_vma_bench.c
@@ -1307,7 +1308,10 @@ klog.o: kernel/klog.c kernel.h
 exec.o: kernel/exec.c kernel.h bootdefs.h arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h shell.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c
@@ -1484,8 +1488,8 @@ batch.o: kernel/batch.c batch.h
 rcu.o: kernel/rcu.c rcu.h sched.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
+kernel.elf: kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o -o $@

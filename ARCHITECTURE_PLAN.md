@@ -138,6 +138,47 @@ before tackling more coupled code. `kernel.c` loses ~90 lines.
 **Files:** `serial.c`, `string.c` (new); `kernel.c` (functions removed);
 `kernel.h` (`katol` declaration added); `Makefile` (compilation + link rules)
 
+### Phase 1.5: Syscall Trampoline Hardening + Proc-Leaf Split (DONE)
+
+**What changed:**
+- `syscall_entry` return discriminates on caller RIP, never RSP
+  (`8(%rsp)` frame slot at exit, `%rcx` at the `21f` tail). RSP is
+  attacker-settable without faulting; RIP is constrained to executable
+  mappings, so an `RSP=0` spoof now takes the `sysretq` path and can no
+  longer retain CPL0 via `jmp *%rcx`.
+- Entry pid gate (`13f`: `cmpl $MAX_PROCS`, `jae 98f`): fail closed with
+  `-EFAULT` touching no memory, so a corrupt `cur_pid` can neither index
+  `sc_top_save` OOB nor `xchg` onto a wild kstack.
+- First `syscalls.c` split increment: proc-leaf handlers (clone,
+  thread_spawn, seccomp, nice, yield, getpid/gettid, fork/vfork/execve
+  stubs, exit/`do_proc_exit`, wait4, kill) move verbatim to
+  `kernel/syscalls_proc.c` with boundary header `syscalls_proc.h`;
+  dispatch tables reference the original names, no behaviour change
+  (`syscalls.c` 1568 -> 1444 lines).
+- Boy scout: `NICE_MIN`/`NICE_MAX` named in `sched.h`,
+  `ide_wait_drq` `s` -> `status`, rtl8139 byte/word port I/O unified onto
+  `kernel.h` (dword pair stays local: no shared `outl`/`inl`).
+- vedit scanner DRY: shared `vedit_parse_string`/`vedit_parse_number`
+  (C-only `allow_quote`)/`vedit_parse_keyword` helpers; per-language
+  quirks (C `#`/`/* */`, Python triple-quote, Lua long brackets) stay in
+  the caller. Host/guest build-contract mirror documented with a
+  `t_lang_of` pin in `tests/test_vedit_build.c`.
+
+**Why it matters:** the RSP-spoof escalation is closed with a minimal
+asm diff (no `proc_t` growth: pid 0 is shared by `k_exec_user` and
+`k_run_rel`, so per-pid mode cannot discriminate the legacy paths); the
+proc split proves the syscalls.c decomposition pattern before riskier
+increments (fd table, spawn, mm, net, gfx).
+
+**Files:** `kernel.c` (trampoline), `kernel/syscalls_proc.c`,
+`syscalls_proc.h` (new), `kernel/syscalls.c`, `sched.h`, `drivers/ide.c`,
+`net/rtl8139.c`, `progs/vedit/vedit.c`, `tests/test_vedit_build.c`,
+`Makefile` (rule + link + lint list)
+
+**Validation:** `make` zero warnings, `kernel.elf` links, `make check-size`
+ok, `make test-vedit` ok, vedit `--selftest-build` ok, `os.img` builds
+with `saves/` preserved. BDD/QEMU stays in the maintainer gate.
+
 ### Directory Reorganization (DONE)
 
 **What changed:** Restructured the project from a flat layout into a
@@ -411,6 +452,15 @@ code paths. Target mutation score > 70% on critical modules.
 ---
 
 ## Phase 6: God Object Reduction (Weeks 10-16, LOW but STRATEGIC)
+
+### 6.0 Decompose syscalls.c, proc-leaf increment (DONE)
+
+**Spec:** move the proc-leaf handlers out of the `syscalls.c`
+mega-dispatcher into `kernel/syscalls_proc.c` + `syscalls_proc.h`,
+keeping dispatch-table names stable. Done (see Phase 1.5). Next
+increments in risk order: fd table, spawn bridge, mm (brk/mmap),
+net handlers, gfx handlers. Each increment keeps table names stable
+and must pass the full validation gate before the next starts.
 
 ### 6.1 Extract Shell to shell.c
 
