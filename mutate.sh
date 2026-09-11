@@ -89,6 +89,7 @@ SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c"
 # missing here keeps its mutation (the fpu-no-save residue disabled
 # fxsave/fxrstor in the tree for days and poisoned every later boot).
 SOURCES="$SOURCES arch/x86/ctx_sw.S progs/minios_abi.h ktime.h randmix.h sched.h progs/src/mthreads.h"
+SOURCES="$SOURCES progs/src/freedom_wl.c"
 
 restore_sources() {
     local f
@@ -212,7 +213,12 @@ sched-park-rbp-zero | s/cur->ctx.rbp = \\*(unsigned long \\*)sched_rbp;/cur->ctx
 mthreads-stack-no-adjust | s/(mthread_stacks\\[i\\] + MTHREAD_STACK_SZ) - 8;/(mthread_stacks[i] + MTHREAD_STACK_SZ);/ | progs/src/mthreads.h
 ktime-us-factor | s/\\* 1000UL +/ * 100UL +/ | ktime.h
 randmix-constant | s/return x ^ (x >> 31);/return 0;/ | randmix.h
-clock-backwards | s/(w2 >= w1 \\&\\& m2 >= m1) ? "monotonic" : "BACKWARDS"/(w2 >= w1 \&\& m2 >= m1) ? "BACKWARDS" : "monotonic"/ | kernel/shell.c
+clock-backwards | s/(w2 >= w1 \&\& m2 >= m1) ? \"monotonic\" : \"BACKWARDS\"/(w2 >= w1 \&\& m2 >= m1) ? \"BACKWARDS\" : \"monotonic\"/ | kernel/shell.c
+truth-uname-fails | s/\[63\]  = { sys_linux_uname,        \"uname\" },/[63]  = { 0, \"uname\" },/ | kernel/syscalls.c
+freedom-wl-clip-origin-sign | s/\*w += \*x;/\*w -= *x;/ | progs/src/freedom_wl.c
+freedom-wl-https-port | s/*port = c->port_https;/*port = c->port_http;/ | progs/src/freedom_wl.c
+freedom-wl-title-bound-lost | s/if (n < 0L || n > c->title_max) {/if (n < 0L) {/ | progs/src/freedom_wl.c
+freedom-wl-keysym-enter-lost | s/if (make == 0x1CL) {/if (make == 0x1DL) {/ | progs/src/freedom_wl.c
 "
 
 # Parse the mutation table into parallel arrays (preserving order).
@@ -354,6 +360,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         randmix.h)
             make -C "$HERE" test-randmix > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/src/freedom_wl.c)
+            make -C "$HERE" test-freedom-wl > "$BACKUP/suite.log" 2>&1
             ;;
         progs/minios_abi.h)
             python3 "$HERE/tools/check_abi_numbers.py" > "$BACKUP/suite.log" 2>&1

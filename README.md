@@ -310,6 +310,14 @@ dumps. The crypto and the roots are host-tested by `make test-tls` (fixed
 vectors plus full TLS 1.2 handshakes against OpenSSL-driven servers,
 including the negative set).
 
+`bin/freedom_wl` is the graphical browser: the same omnibox and fetch
+semantics through the Wayland-to-MiniOS layer into a desktop window
+(100x45 text over the shared 8x8 font, scroll with arrows/PgUp/PgDn or
+the mouse wheel, `q`/ESC quits). `freedom_wl --once <url>` renders one
+frame and exits for scripts; without `--once` it browses interactively.
+Proven live: `freedom_wl --once http://10.0.2.2:8899/README.txt`
+fetches 3193 bytes and the `gfx frames` counter climbs by one.
+
 ## Shell
 
 | Command | Purpose |

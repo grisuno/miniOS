@@ -37,6 +37,9 @@ LUA_REF ?= v5.4.7
 NUKLEAR_URL ?= https://github.com/Immediate-Mode-UI/Nuklear
 NUKLEAR_DIR ?= ../nuklear
 
+FREEDOM_URL ?= https://github.com/grisuno/FreeDom
+FREEDOM_DIR ?= ../FreeDom
+
 # Nuked-OPL3: cycle-accurate YMF262 (OPL3) FM emulator, LGPL-2.1, pure C.
 # Renders OPL3 audio to PCM at ring 3 (progs/src/opl3.c) fed to the kernel's
 # SB16 driver through the MiniOS PCM syscalls.  The source rides on the host
@@ -208,6 +211,14 @@ sources:
 	else \
 	    echo "cloning  $(LUA_URL) -> $(LUA_DIR) ($(LUA_REF))"; \
 	    $(GIT) clone --depth 1 -b $(LUA_REF) "$(LUA_URL)" "$(LUA_DIR)" || exit 1; \
+	fi
+	@if [ -d "$(FREEDOM_DIR)/.git" ]; then \
+	    echo "present  $(FREEDOM_DIR)"; \
+	elif [ -e "$(FREEDOM_DIR)" ]; then \
+	    echo "skipped  $(FREEDOM_DIR) exists and is not a git clone"; \
+	else \
+	    echo "cloning  $(FREEDOM_URL) -> $(FREEDOM_DIR)"; \
+	    $(GIT) clone --depth 1 "$(FREEDOM_URL)" "$(FREEDOM_DIR)" || exit 1; \
 	fi
 
 sources-update: sources
@@ -785,7 +796,12 @@ $(BIN_DIR)/pollready: $(BIN_DIR)/pollready.elf
 # a node graph into the kernel back-buffer (SYS_NK_FRAME 220) and compiles
 # the graph to a .cvm module (cvm_emit.c) the interpreter can run. Built
 # exactly like DOOM: host gcc -static, ring-3 ET_EXEC, ships on MiniFS.
-NUKLEAR_SRCS = $(PROGS_DIR)/nuklear/nuklear_minios.c \
+# Shared back-buffer platform: rasterizer plus the single 8x8 font copy.
+# Every NK-window program links this, never one half of it.
+NUKLEAR_PLATFORM = $(PROGS_DIR)/nuklear/nuklear_minios.c \
+                   $(PROGS_DIR)/nuklear/font8x8.c
+
+NUKLEAR_SRCS = $(NUKLEAR_PLATFORM) \
                $(PROGS_DIR)/nuklear/node_editor.c \
                $(PROGS_DIR)/nuklear/cvm_emit.c
 
@@ -815,7 +831,7 @@ $(BIN_DIR)/nuklear: $(BIN_DIR)/nuklear.elf
 # Built like the node editor (reuses nuklear_minios.c), static ring-3,
 # ships on MiniFS.
 PIANO_SRCS = $(PROGS_DIR)/piano/piano.c \
-             $(PROGS_DIR)/nuklear/nuklear_minios.c
+             $(NUKLEAR_PLATFORM)
 
 $(BIN_DIR)/piano.elf: $(PIANO_SRCS) $(NUKLEAR_DIR)/nuklear.h \
                       $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.h
@@ -837,7 +853,7 @@ $(BIN_DIR)/piano: $(BIN_DIR)/piano.elf
 # buffering or echo); files load/save through the unified filesystem.
 # Static ELF on MiniFS with a bare-name alias. See progs/vedit/vedit.c.
 VEDIT_SRCS = $(PROGS_DIR)/vedit/vedit.c \
-             $(PROGS_DIR)/nuklear/nuklear_minios.c
+             $(NUKLEAR_PLATFORM)
 
 $(BIN_DIR)/vedit.elf: $(VEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
@@ -923,6 +939,27 @@ $(BIN_DIR)/fptest: $(SRC_DIR)/fptest.c $(SRC_DIR)/mthreads.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -I$(PROGS_DIR) -o $@ $(SRC_DIR)/fptest.c
 	chmod +x $@
 
+# freedom_wl: Wayland to MiniOS intermediate layer for FreeDom.
+# Same pattern as doomgeneric_minios: guest writes the NK back-buffer
+# and presents through GFX_PRESENT BUF_NK. Ships on MiniFS with source.
+# Links the shared ring-3 TLS engine (https works with no TLS in the
+# kernel, exactly like bin/freedom) and the shared 8x8 font unit.
+FREEDOM_WL_SRCS = $(SRC_DIR)/freedom_wl.c \
+                  $(PROGS_DIR)/nuklear/font8x8.c \
+                  $(PROGS_DIR)/tls_u/tls_u_port.c \
+                  net/tls.c net/tls_crypto.c net/tls_x509.c
+
+$(BIN_DIR)/freedom_wl: $(FREEDOM_WL_SRCS) tls_port.h tls.h tls_roots.h $(PROGS_DIR)/nuklear/nuklear_minios.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 \
+	      -I. -I$(PROGS_DIR) -I$(PROGS_DIR)/nuklear -o $@ $(FREEDOM_WL_SRCS)
+	chmod +x $@
+
+freedom_wl_test: tests/test_freedom_wl.c $(SRC_DIR)/freedom_wl.c | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -I$(PROGS_DIR) -o $(TOOLS_DIR)/freedom_wl_test tests/test_freedom_wl.c
+
+test-freedom-wl: freedom_wl_test
+	$(TOOLS_DIR)/freedom_wl_test
+
 # ── topogpt3 (TopoGPT3 transformer inference, static ring-3 ELF) ──
 # Self-contained single-file C engine.  Loads fp16 weights from MiniFS.
 # Built like Lua/DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
@@ -956,8 +993,10 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/fptest $(SRC_DIR)/fptest.c \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                 $(BIN_DIR)/json $(SRC_DIR)/json.c \
-                $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
-                $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
+                 $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
+                 $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
+                 $(BIN_DIR)/freedom_wl $(SRC_DIR)/freedom_wl.c \
+                 $(PROGS_DIR)/nuklear/font8x8.c $(PROGS_DIR)/nuklear/nuklear_minios.h \
                $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
                $(PROGS_DIR)/vedit/vedit.c \
                $(BIN_DIR)/lzss $(BIN_DIR)/unlzss $(SRC_DIR)/lzss.c $(ASM_DIR)/lzss.s \
@@ -1471,7 +1510,10 @@ check-size: kernel.elf
 # ── Disk image ────────────────────────────────────────────────────
 # MiniFS image: 512 MB filesystem appended after the kernel, contains DOOM,
 # Quake 2 (pak0 alone is 184 MB) and the Pokemon Crystal port (88 MB ELF).
-MINIFS_BLOCKS ?= 131072
+# FreeDom readiness growth: 768 MB to host browser assets and fonts.
+# Disk-only change: user and kernel memory addresses derive from
+# progs/minios_abi.h and never move with this number.
+MINIFS_BLOCKS ?= 196608
 
 # Persistent guest data: everything the user saves at runtime lives under
 # saves/ on MiniFS (Pokemon battery .sav/.rtc and .state savestates).

@@ -1390,6 +1390,34 @@ HTTP semantics.
   (`argv[1][0]`, the flag check) with a byte load after the pointer
   element was loaded.
 
+### FreeDom Wayland layer (`freedom_wl`)
+`bin/freedom_wl` is the Wayland-to-MiniOS intermediate layer for FreeDom,
+the same role `doomgeneric_minios.c` plays for DOOM, and a complete
+graphical browser in one file (`progs/src/freedom_wl.c`): the FreeDom
+omnibox policy, HTTP/1.0 fetch over the socket syscalls with DNS from
+syscall 200 and https through the shared ring-3 TLS engine (no key
+material crosses ring 0, exactly like `bin/freedom`), redirect chasing,
+chunked decoding, an HTML-to-text filter over a 100x45 layout on the
+shared 8x8 font (`progs/nuklear/font8x8.c`, one copy linked by every
+NK-window program through `NUKLEAR_PLATFORM`), and an input loop with
+keyboard and wheel scroll. A Wayland surface becomes the Nuklear
+back-buffer window (`MINIOS_NK_W`x`MINIOS_NK_H`), present routes through
+`GFX_PRESENT` with `BUF_NK`, title through `GFX_SET_TITLE`, pointer through
+`SYS_MOUSE`, keyboard through `SYS_KBD`. Keysyms translate from PS/2 Set 1,
+dirty rects clamp to the surface, UTF-8 sanitizes fail-closed. Every tunable
+lives in `FreedomWlConfig`, every address comes from `minios_abi.h`, no
+absolute paths. `FREEDOM_DIR` (`../FreeDom`, fifth sibling repo) is cloned by
+`make sources` and never touched when present. MiniFS grows to 768 MB
+(`MINIFS_BLOCKS` 196608) for browser assets and fonts; the growth is
+disk-only and moves no memory address. Proof: `make test-freedom-wl` (host),
+`freedom_wl --selftest` prints `freedom_wl: frame ok (800x360)` (BDD),
+`freedom_wl --once <url>` fetches and presents with `freedom_wl: <host>
+(<n> bytes)` (live boot: README is 3193 bytes and `gfx frames` climbs 0 to
+1; `google.com` chases to `www.google.com` over real TLS and renders whole
+at 83 KB against the 256 KB body cap), five mutants (clip, https port,
+title, keysym, uname) die in `mutate.sh`.
+See ADR-0019.
+
 ### Ramdisk names
 File names are at most `RAMDISK_FNAME_LEN - 1` characters. Names may
 contain `/`, which is how directories are expressed (`bin/cp`, `objects/ld.o`):
@@ -2073,6 +2101,7 @@ python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, task
 ./mutate.sh         # every mutant killed (BDD + host TLS + host VMA suites)
 make test-tls       # host-side crypto + full-handshake suite green
 make test-vma       # host-side VMA red-black tree suite green
+make test-freedom-wl  # Wayland-to-MiniOS mapping suite green (ADR-0019)
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
@@ -2486,6 +2515,7 @@ python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, task
 ./mutate.sh                 # every mutant killed
 make test-tls               # host-side crypto + handshake suite
 make test-vma               # host-side VMA red-black tree suite
+make test-freedom-wl  # Wayland-to-MiniOS mapping suite green (ADR-0019)
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green

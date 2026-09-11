@@ -1061,6 +1061,27 @@ static long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a
     return (long)current_pid;
 }
 
+static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6) {
+    /* Every static glibc binary calls uname(63) during startup; answering
+     * ENOSYS printed a scary UNIMPL line for programs that then ran fine.
+     * struct utsname is six 65-byte fields (390 total): validate the whole
+     * span, zero it, then copy literals that always fit. Honest values,
+     * no host facts leaked. */
+    char *u;
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    if (!a1) return EFAULT;
+    if (!user_range_ok((unsigned long)a1, 390)) return EFAULT;
+    u = (char *)a1;
+    kmemset(u, 0, 390);
+    kstrcpy(u, "MiniOS");
+    kstrcpy(u + 65, "minios");
+    kstrcpy(u + 130, "1");
+    kstrcpy(u + 195, "#1 MiniOS");
+    kstrcpy(u + 260, "x86_64");
+    kstrcpy(u + 325, "(none)");
+    return 0;
+}
+
 #define LINUX_SYSCALL_COUNT 200
 
 static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
@@ -1093,6 +1114,7 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [60]  = { sys_linux_exit,         "exit" },
     [61]  = { sys_linux_wait4,        "wait4" },
     [62]  = { sys_linux_kill,         "kill" },
+    [63]  = { sys_linux_uname,        "uname" },
     [73]  = { sys_linux_flock,        "flock" },
     [74]  = { sys_linux_fsync,        "fsync" },
     [75]  = { sys_linux_fdatasync,    "fdatasync" },

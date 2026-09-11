@@ -1163,6 +1163,15 @@ scenario "nuklear selftest renders one UI frame" "nuklear --selftest
 poweroff"
 expect "nuklear: frame ok (800x360)"
 
+scenario "freedom_wl selftest presents through the nk window" "freedom_wl --selftest
+poweroff"
+expect "freedom_wl: frame ok (800x360)"
+
+scenario "freedom_wl fetches a page and presents it" "freedom_wl --once http://10.0.2.2:8899/README.txt
+poweroff"
+expect "freedom_wl: 10.0.2.2 ("
+refute "UNIMPL"
+
 scenario "nuklear compiles a demo graph to cvm and runs it" "nuklear --demo cvm/demo.cvm
 run cvm/demo.cvm
 poweroff"

@@ -180,6 +180,7 @@
 #define MINIOS_SYS_EXIT         60
 #define MINIOS_SYS_WAIT4        61
 #define MINIOS_SYS_KILL         62
+#define MINIOS_SYS_UNAME        63
 #define MINIOS_SYS_UNLINK       87
 #define MINIOS_SYS_READLINK     89
 #define MINIOS_SYS_GETTID      186
