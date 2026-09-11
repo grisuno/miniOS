@@ -226,6 +226,66 @@ static int vedit_is_kw(const char *table, const char *word, int wlen) {
     return 0;
 }
 
+/** Shared token helpers for vedit_scan_line (DRY, no behaviour change).
+ *
+ * Per-language quirks stay in the caller (C block comments and '#'
+ * directives, Python triple-quoted strings, Lua long brackets and '--'
+ * comments). Only the byte-identical pieces live here: quoted strings
+ * with backslash escapes, number runs and whole-word keyword lookup.
+ * allow_quote exists because C digit separators (1'000'000) are not
+ * valid in Python/Lua numbers.
+ */
+static int vedit_parse_string(const char *t, int len, int i) {
+    int q = (unsigned char)t[i];
+    int j = i + 1;
+    vedit_cell[i] = VEDIT_COL_STRING;
+    while (j < len) {
+        int e = (unsigned char)t[j];
+        vedit_cell[j] = VEDIT_COL_STRING;
+        if (e == '\\' && j + 1 < len) {
+            vedit_cell[j + 1] = VEDIT_COL_STRING;
+            j += 2;
+        } else if (e == q) {
+            j++;
+            break;
+        } else {
+            j++;
+        }
+    }
+    return j;
+}
+
+static int vedit_parse_number(const char *t, int len, int i, int allow_quote) {
+    int j = i;
+    int k;
+    while (j < len) {
+        int e = (unsigned char)t[j];
+        if (vedit_is_wordc(e) || e == '.' || e == '_' ||
+            (allow_quote && e == '\''))
+            j++;
+        else
+            break;
+    }
+    for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_NUMBER;
+    return j;
+}
+
+static int vedit_parse_keyword(const char *t, int len, int i,
+                               const char *kw_table) {
+    char w[VEDIT_WORD_MAX];
+    int wl = 0;
+    int j = i;
+    int k;
+    while (j < len && vedit_is_wordc((unsigned char)t[j])) {
+        if (wl < VEDIT_WORD_MAX - 1) w[wl++] = t[j];
+        j++;
+    }
+    if (vedit_is_kw(kw_table, w, wl)) {
+        for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_KEYWORD;
+    }
+    return j;
+}
+
 /** Map a file name to its highlight language. */
 static int vedit_lang_of(const char *fname) {
     size_t n = strlen(fname);
@@ -300,46 +360,11 @@ static int vedit_scan_line(const char *t, int len, int st) {
                     vedit_cell[k] = VEDIT_COL_COMMENT;
                 i = j + 2;
             } else if (c == '"' || c == '\'') {
-                int q = c;
-                j = i + 1;
-                vedit_cell[i] = VEDIT_COL_STRING;
-                while (j < len) {
-                    int e = (unsigned char)t[j];
-                    vedit_cell[j] = VEDIT_COL_STRING;
-                    if (e == '\\' && j + 1 < len) {
-                        vedit_cell[j + 1] = VEDIT_COL_STRING;
-                        j += 2;
-                    } else if (e == q) {
-                        j++;
-                        break;
-                    } else {
-                        j++;
-                    }
-                }
-                i = j;
+                i = vedit_parse_string(t, len, i);
             } else if (vedit_is_digit(c)) {
-                j = i;
-                while (j < len) {
-                    int e = (unsigned char)t[j];
-                    if (vedit_is_wordc(e) || e == '.' || e == '\'' || e == '_')
-                        j++;
-                    else
-                        break;
-                }
-                for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_NUMBER;
-                i = j;
+                i = vedit_parse_number(t, len, i, 1);
             } else if (vedit_is_alpha(c)) {
-                char w[VEDIT_WORD_MAX];
-                int wl = 0;
-                j = i;
-                while (j < len && vedit_is_wordc((unsigned char)t[j])) {
-                    if (wl < VEDIT_WORD_MAX - 1) w[wl++] = t[j];
-                    j++;
-                }
-                if (vedit_is_kw(vedit_kw_c, w, wl)) {
-                    for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_KEYWORD;
-                }
-                i = j;
+                i = vedit_parse_keyword(t, len, i, vedit_kw_c);
             } else {
                 i++;
             }
@@ -387,46 +412,11 @@ static int vedit_scan_line(const char *t, int len, int st) {
                     vedit_cell[k] = VEDIT_COL_STRING;
                 i = j + 3;
             } else if (c == '"' || c == '\'') {
-                int q = c;
-                j = i + 1;
-                vedit_cell[i] = VEDIT_COL_STRING;
-                while (j < len) {
-                    int e = (unsigned char)t[j];
-                    vedit_cell[j] = VEDIT_COL_STRING;
-                    if (e == '\\' && j + 1 < len) {
-                        vedit_cell[j + 1] = VEDIT_COL_STRING;
-                        j += 2;
-                    } else if (e == q) {
-                        j++;
-                        break;
-                    } else {
-                        j++;
-                    }
-                }
-                i = j;
+                i = vedit_parse_string(t, len, i);
             } else if (vedit_is_digit(c)) {
-                j = i;
-                while (j < len) {
-                    int e = (unsigned char)t[j];
-                    if (vedit_is_wordc(e) || e == '.' || e == '_')
-                        j++;
-                    else
-                        break;
-                }
-                for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_NUMBER;
-                i = j;
+                i = vedit_parse_number(t, len, i, 0);
             } else if (vedit_is_alpha(c)) {
-                char w[VEDIT_WORD_MAX];
-                int wl = 0;
-                j = i;
-                while (j < len && vedit_is_wordc((unsigned char)t[j])) {
-                    if (wl < VEDIT_WORD_MAX - 1) w[wl++] = t[j];
-                    j++;
-                }
-                if (vedit_is_kw(vedit_kw_py, w, wl)) {
-                    for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_KEYWORD;
-                }
-                i = j;
+                i = vedit_parse_keyword(t, len, i, vedit_kw_py);
             } else {
                 i++;
             }
@@ -491,46 +481,11 @@ static int vedit_scan_line(const char *t, int len, int st) {
             for (k = i + 2; k <= j + 1; k++) vedit_cell[k] = VEDIT_COL_STRING;
             i = j + 2;
         } else if (c == '"' || c == '\'') {
-            int q = c;
-            j = i + 1;
-            vedit_cell[i] = VEDIT_COL_STRING;
-            while (j < len) {
-                int e = (unsigned char)t[j];
-                vedit_cell[j] = VEDIT_COL_STRING;
-                if (e == '\\' && j + 1 < len) {
-                    vedit_cell[j + 1] = VEDIT_COL_STRING;
-                    j += 2;
-                } else if (e == q) {
-                    j++;
-                    break;
-                } else {
-                    j++;
-                }
-            }
-            i = j;
+            i = vedit_parse_string(t, len, i);
         } else if (vedit_is_digit(c)) {
-            j = i;
-            while (j < len) {
-                int e = (unsigned char)t[j];
-                if (vedit_is_wordc(e) || e == '.' || e == '_')
-                    j++;
-                else
-                    break;
-            }
-            for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_NUMBER;
-            i = j;
+            i = vedit_parse_number(t, len, i, 0);
         } else if (vedit_is_alpha(c)) {
-            char w[VEDIT_WORD_MAX];
-            int wl = 0;
-            j = i;
-            while (j < len && vedit_is_wordc((unsigned char)t[j])) {
-                if (wl < VEDIT_WORD_MAX - 1) w[wl++] = t[j];
-                j++;
-            }
-            if (vedit_is_kw(vedit_kw_lua, w, wl)) {
-                for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_KEYWORD;
-            }
-            i = j;
+            i = vedit_parse_keyword(t, len, i, vedit_kw_lua);
         } else {
             i++;
         }
@@ -1117,7 +1072,9 @@ static void vedit_cmd_link(const char *fmt) {
         vedit_cmd_exec(out, kind);
 }
 
-/** Headless build contract check: no display, no syscalls, exit status only. */
+/** Headless build contract check: no display, no syscalls, exit status only.
+ * Mirror contract with tests/test_vedit_build.c: any vector added here
+ * must gain a host CHECK there too, so spec drift fails the build. */
 static int vedit_selftest_build(void) {
     char base[VEDIT_BASE_MAX];
     char path[VEDIT_PATH_MAX];

@@ -5,6 +5,15 @@
  * The code-level killer is the guest selftest (vedit --selftest-build),
  * which executes the same vectors against the real implementation; this
  * host test locks the spec so silent contract drift fails the build.
+ *
+ * MIRROR CONTRACT (keep in sync with vedit_selftest_build):
+ *   t_has_ext  <-> vedit_has_ext    (same suffix match, empty ext fails)
+ *   t_base_of  <-> vedit_base_of    (strip dirs, cut at '.', 48-byte cap)
+ *   t_join     <-> vedit_join       (dir+base+ext, 64-byte cap)
+ *   t_link_fmt <-> vedit_link_fmt   ("elf"=1, "cvm"=2, else 0)
+ *   t_lang_of  <-> vedit_lang_of    (untitled/.c/.h/.s=C, .py=PY, .lua=LUA)
+ *   shortcuts  <-> VEDIT_KEY_RUN/LINK/DUMP (18/12/4)
+ * If a vector changes in the guest, update the host CHECKs here too.
  */
 
 #include <stdio.h>
@@ -78,9 +87,33 @@ static int t_link_fmt(const char *s) {
     return 0;
 }
 
+/* Mirror of vedit_lang_of: 1=C, 2=PY, 3=LUA. Unknown defaults to C,
+ * exactly like the guest (untitled highlights as C). */
+static int t_lang_of(const char *fname) {
+    size_t n = strlen(fname);
+    if (n >= 2 && fname[n - 2] == '.') {
+        if (fname[n - 1] == 'c') return 1;
+        if (fname[n - 1] == 'h') return 1;
+        if (fname[n - 1] == 's') return 1;
+    }
+    if (n >= 3 && fname[n - 3] == '.' &&
+        fname[n - 2] == 'p' && fname[n - 1] == 'y')
+        return 2;
+    if (n >= 4 && fname[n - 4] == '.' && fname[n - 3] == 'l' &&
+        fname[n - 2] == 'u' && fname[n - 1] == 'a')
+        return 3;
+    return 1;
+}
+
 int main(void) {
     char base[48];
     char path[64];
+
+    CHECK(t_lang_of("untitled") == 1, "untitled highlights as C");
+    CHECK(t_lang_of("a.c") == 1, ".c highlights as C");
+    CHECK(t_lang_of("a.h") == 1, ".h highlights as C");
+    CHECK(t_lang_of("a.py") == 2, ".py highlights as Python");
+    CHECK(t_lang_of("a.lua") == 3, ".lua highlights as Lua");
 
     CHECK(t_has_ext("a.c", ".c"), "c ext matches");
     CHECK(!t_has_ext("a.c", ".lua"), "c is not lua");

@@ -146,11 +146,16 @@ extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a
  * read at exit by the owning thread only.  The pushed frame layout is
  * identical on both paths (r11/rip/n/a1..a6/pid/pcb), and the kernel
  * never runs on a user stack and never touches the user red zone.  The
- * return discriminates on the restored rsp: a syscall that came from
- * ring 3 ran on the user stack in the user window and returns with
- * sysretq (ring 3); a ring-0 ET_REL syscall ran on a kernel stack and
- * returns with `jmp *%rcx`, the old contract, because sysretq always
- * lands on ring 3. */
+ * return discriminates on the caller RIP, never on the saved rsp: rsp
+ * is attacker-controlled (a ring-3 caller sets any rsp before syscall
+ * without faulting, since syscall touches no stack), while rip is
+ * constrained to executable mappings (a ring-3 caller can only trap
+ * from the user window; heap/kernel fetch faults at CPL3).  A syscall
+ * trapped from the user window returns with sysretq (ring 3); a ring-0
+ * ET_REL syscall trapped from heap/kernel code returns with `jmp *%rcx`,
+ * the old contract, because sysretq always lands on ring 3.  Checking
+ * rsp instead lets a ring-3 attacker set rsp=0, force the jmp path and
+ * retain CPL0 with a controlled rip. */
 
 /* cpu_t layout contract for the syscall_entry asm below: it reads
  * cur_pid at gs:12 (gs:0 is the self pointer for this_cpu(), gs:8 is
@@ -265,9 +270,9 @@ __asm__(
     "  movq %rax, %gs:88\n"      /* sc_pid = pid */
     "  imulq $" STR(PROC_T_SIZE) ", %rax\n"
     "  addq kstack_base(%rip), %rax\n"  /* rax = &PCB.kstack */
-    "  cmpq $" STR(USER_WIN_LO) ", (%rax)\n"  /* origin = saved user rsp */
+    "  cmpq $" STR(USER_WIN_LO) ", 8(%rsp)\n"  /* caller rip in frame; rsp is spoofable */
     "  jb 20f\n"
-    "  cmpq $" STR(USER_WIN_HI) ", (%rax)\n"
+    "  cmpq $" STR(USER_WIN_HI) ", 8(%rsp)\n"
     "  jae 20f\n"
     /* --- ring-3 exit: restore the user rsp saved in the PCB, and put
      * the kstack top back so the next entry finds a stack, not a stale
@@ -328,9 +333,9 @@ __asm__(
     "  swapgs\n"                 /* undo the entry swapgs (ring-0 path) */
     "  sti\n"                    /* ring-0 callers ran with IF=1 (old contract) */
     "21:\n"
-    "  cmpq $" STR(USER_WIN_LO) ", %rsp\n"
+    "  cmpq $" STR(USER_WIN_LO) ", %rcx\n"  /* rcx = caller rip; rsp is spoofable */
     "  jb 1f\n"
-    "  cmpq $" STR(USER_WIN_HI) ", %rsp\n"
+    "  cmpq $" STR(USER_WIN_HI) ", %rcx\n"
     "  jae 1f\n"
     "  sysretq\n"
     "1:\n"
