@@ -674,17 +674,21 @@ loading missions. Two bugs remained, and both were invisible until the map
 grew, which is exactly why they are worth writing down.
 
 **Bug one: the syscall trampoline silently downgraded the game to ring 0.**
-The syscall entry decides how to return by inspecting the restored stack
-pointer: if it lies inside the user window it returns to ring 3 with
-`sysretq`, otherwise it returns to ring 0 with `jmp *%rcx` (the contract for
-the ring-0 `.o` toolchain). The window bounds for that decision,
-`USER_WIN_HI`, were still `0x07400000` (116 MB) after the window grew to
-192 MB. The game's stack sits at the *top* of the window, near 192 MB, so
-every syscall saw `rsp >= USER_WIN_HI` and took the ring-0 return path. The
-game ran in supervisor mode for its whole life. The tell was the crash dump:
+The syscall entry decides how to return: ring-3 callers get `sysretq`,
+the ring-0 `.o` toolchain gets `jmp *%rcx`. At the time, the decision
+inspected the restored stack pointer against the user window, and the
+window bound for that decision, `USER_WIN_HI`, was still `0x07400000`
+(116 MB) after the window grew to 192 MB. The game's stack sits at the
+*top* of the window, near 192 MB, so every syscall saw
+`rsp >= USER_WIN_HI` and took the ring-0 return path. The game ran in
+supervisor mode for its whole life. The tell was the crash dump:
 `cs=8` (kernel) with a user stack pointer, a combination that is impossible
 for a real ring-3 fault, and it could only mean the game had been running at
 ring 0. The fix was a one-line correction: `USER_WIN_HI` to `0x0C000000`.
+Since then the decision moved to the caller RIP — RSP is attacker-settable
+without faulting while RIP is constrained to executable mappings, so an
+`RSP=0` spoof can no longer retain CPL0 — and the entry range-checks the
+pid, failing closed with `-EFAULT` before touching any per-pid state.
 This matters beyond Quake: any ring-3 program whose stack sits high in a
 grown window would silently lose its protection.
 
@@ -1154,6 +1158,16 @@ the string fits in the remaining space and returns NULL on overflow.
 `k_exec_user` checks the return value and refuses to enter ring 3 with a
 NULL stack pointer.
 
+## Syscall return hardening
+
+The syscall return path discriminates on the caller RIP, never on RSP:
+a ring-3 program can set any RSP before trapping (the `syscall`
+instruction touches no stack), while its RIP is confined to executable
+user-window mappings. A spoofed `RSP=0` therefore takes the `sysretq`
+path instead of retaining CPL0 through `jmp *%rcx`. The entry also
+range-checks the pid and fails closed with `-EFAULT` before indexing
+`sc_top_save` or swapping onto a per-proc kernel stack.
+
 ## Architectural abstractions
 
 ### VFS (Virtual File System)
@@ -1225,6 +1239,7 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `kernel/shell.c` / `shell.h` | shell prompt, command resolution, builtins |
 | `kernel/editor.c` / `editor.h` | line editor (nano-like: status, goto, search, range listing) |
 | `kernel/syscalls.c` | Linux ABI syscall dispatcher, user pointer validation |
+| `kernel/syscalls_proc.c` / `syscalls_proc.h` | process syscalls: clone, seccomp, nice, yield, getpid/tid, exit, wait4, kill |
 | `kernel/redirect.c` | shell I/O redirection (`>`, `>>`) |
 | `kernel/sched.c` | process management, timer ISR, desktop tick |
 | `kernel/vga_fb.c` | VESA framebuffer desktop, windowed terminal, mouse, WM |
