@@ -40,7 +40,7 @@ def main():
         q = g.QMP(g.QMP_SOCK)
 
         # gdb command file: break on page fault, dump, continue.
-        with open("/tmp/opencode/gdb_cmds.txt", "w") as f:
+        with open(os.path.join(g.WORK, "gdb_cmds.txt"), "w") as f:
             f.write("set pagination off\n"
                     "set confirm off\n"
                     "target remote :1234\n"
@@ -56,8 +56,8 @@ def main():
                     " quit\n"
                     "end\n"
                     "continue\n")
-        gdblog = open("/tmp/opencode/gdb.out", "w")
-        gd = subprocess.Popen(["gdb", "-q", "-x", "/tmp/opencode/gdb_cmds.txt", "kernel.elf"],
+        gdblog = open(os.path.join(g.WORK, "gdb.out"), "w")
+        gd = subprocess.Popen(["gdb", "-q", "-x", os.path.join(g.WORK, "gdb_cmds.txt"), "kernel.elf"],
                               stdout=gdblog, stderr=subprocess.STDOUT, env=dict(os.environ))
         time.sleep(4)
         print("gdb alive:", gd.poll() is None)

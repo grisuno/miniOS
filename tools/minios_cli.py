@@ -25,12 +25,13 @@ import os
 import select
 import subprocess
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MCP = os.path.join(HERE, "..", "mcp", "minios_mcp.py")
 IMAGE = os.path.join(HERE, "..", "os.img")
-PIDFILE = os.path.join("/tmp/opencode", "minios_cli.pid")
+PIDFILE = os.path.join(tempfile.gettempdir(), "minios_cli.pid")
 TMO = 120.0
 
 

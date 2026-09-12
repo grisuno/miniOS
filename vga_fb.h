@@ -107,7 +107,7 @@ extern int nk_win_x, nk_win_y;
 
 /* Taskbar geometry (drawn at the bottom, height = one font row). */
 #define TASKBAR_H         FONT_H
-#define TASKBAR_PAD        4
+#define TASKBAR_PAD        8
 #define TASKBAR_CLOCK_CH   8      /* "HH:MM:SS" */
 #define TASKBAR_VOL_CH     3      /* "NN%" */
 #define TASKBAR_VOL_STEP   10
@@ -116,6 +116,9 @@ extern int nk_win_x, nk_win_y;
 /* Keyboard-layout widget: two-letter "EN"/"ES" label, click toggles. */
 #define TASKBAR_KBD_CH     2      /* "EN" / "ES" */
 #define TASKBAR_KBD_W      (TASKBAR_KBD_CH * FONT_W)
+/* Theme widget: active theme name (clamped to 6 chars), click cycles. */
+#define TASKBAR_THEME_CH   6
+#define TASKBAR_THEME_W    (TASKBAR_THEME_CH * FONT_W)
 
 /* Tiling snap zones (Alt is the WM modifier). */
 #define TILING_LEFT          0
@@ -189,6 +192,7 @@ int      vga_fb_close_active(void);
 void     vga_fb_focus_next(void);
 int      vga_fb_focus_id(int id);
 int      vga_fb_focus_get(void);
+int      vga_fb_theme_name(char *dst, int cap);
 /* PS/2 ownership for pid: 1 when pid may consume the keyboard port. One
  * keyboard feeds every window, so the focused window owns it: a background
  * gfx job reads only while the gfx window is focused, the shell only while

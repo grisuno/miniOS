@@ -158,6 +158,12 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/etc/shortcuts \
             $(PROGS_DIR)/etc/association \
+            $(PROGS_DIR)/etc/themes/current \
+            $(PROGS_DIR)/etc/themes/dark \
+            $(PROGS_DIR)/etc/themes/light \
+            $(PROGS_DIR)/etc/themes/amber \
+            $(PROGS_DIR)/etc/themes/forest \
+            $(PROGS_DIR)/etc/themes/slate \
             $(PROGS_DIR)/etc/host.zip \
             $(PROGS_DIR)/etc/hostile.zip \
             $(PROGS_DIR)/icons/terminal.png \
@@ -799,10 +805,12 @@ $(BIN_DIR)/pollready: $(BIN_DIR)/pollready.elf
 # a node graph into the kernel back-buffer (SYS_NK_FRAME 220) and compiles
 # the graph to a .cvm module (cvm_emit.c) the interpreter can run. Built
 # exactly like DOOM: host gcc -static, ring-3 ET_EXEC, ships on MiniFS.
-# Shared back-buffer platform: rasterizer plus the single 8x8 font copy.
-# Every NK-window program links this, never one half of it.
+# Shared back-buffer platform: rasterizer plus the single 8x8 font copy
+# plus the shared theme loader. Every NK-window program links this,
+# never one part of it.
 NUKLEAR_PLATFORM = $(PROGS_DIR)/nuklear/nuklear_minios.c \
-                   $(PROGS_DIR)/nuklear/font8x8.c
+                   $(PROGS_DIR)/nuklear/font8x8.c \
+                   $(PROGS_DIR)/nuklear/nuklear_theme.c
 
 NUKLEAR_SRCS = $(NUKLEAR_PLATFORM) \
                $(PROGS_DIR)/nuklear/node_editor.c \
@@ -1019,6 +1027,10 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                  $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
                  $(BIN_DIR)/freedom_wl $(SRC_DIR)/freedom_wl.c \
                  $(PROGS_DIR)/nuklear/font8x8.c $(PROGS_DIR)/nuklear/nuklear_minios.h \
+                 $(PROGS_DIR)/nuklear/nuklear_theme.c $(PROGS_DIR)/nuklear/nuklear_theme.h \
+                 $(PROGS_DIR)/etc/themes/current $(PROGS_DIR)/etc/themes/dark \
+                 $(PROGS_DIR)/etc/themes/light $(PROGS_DIR)/etc/themes/amber \
+                 $(PROGS_DIR)/etc/themes/forest $(PROGS_DIR)/etc/themes/slate \
                $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
                $(PROGS_DIR)/vedit/vedit.c \
                $(BIN_DIR)/file.elf $(BIN_DIR)/file \
@@ -1217,6 +1229,13 @@ file_assoc_test: tests/test_file_assoc.c | $(TOOLS_DIR)
 
 test-file: file_assoc_test
 	$(TOOLS_DIR)/file_assoc_test
+
+# Shared Nuklear theme host test (tests/test_theme.c, spec pin).
+theme_test: tests/test_theme.c progs/nuklear/nuklear_theme.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/theme_test tests/test_theme.c
+
+test-theme: theme_test
+	$(TOOLS_DIR)/theme_test
 
 # Device-registry host test (tests/test_driver.c + drivers/driver.c).
 driver_test: tests/test_driver.c drivers/driver.c driver.h | $(TOOLS_DIR)

@@ -5,7 +5,8 @@ Serial `wm` commands call the same functions as the real paths, but they
 cannot prove what the user sees: a program blocked in read (vedit) stops
 compositing, so any desktop redraw used to bury it until the next keypress.
 This boots the real image headless (-display none), drives the shell over
-stdio pipes, injects PS/2 through QMP and judges pixels with PIL:
+stdio pipes, injects PS/2 through QMP and judges pixels with PIL. Work
+dir (sockets, dumps) is a mkdtemp, printed at start for eyeballing.
 
   1. split terminals, run vedit (foreground, shell blocked)
   2. Alt+Tab -> vedit still painted (was: wiped until next key)
@@ -14,21 +15,24 @@ stdio pipes, injects PS/2 through QMP and judges pixels with PIL:
      serial `wm state` reports focus 2 (the buried app comes back)
 
 Fails loudly (exit 1) with the mean-abs-diff numbers. Dumps stay in
-/tmp/opencode/ for eyeballing.
+the printed work dir for eyeballing.
 """
 import json
 import os
 import socket
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMAGE = os.path.join(HERE, "..", "os.img")
-QMP_SOCK = "/tmp/opencode/gui_qmp.sock"
-SER_SOCK = "/tmp/opencode/gui_ser.sock"
-DUMPS = "/tmp/opencode"
+WORK = tempfile.mkdtemp(prefix="gui_wm_")
+QMP_SOCK = os.path.join(WORK, "qmp.sock")
+SER_SOCK = os.path.join(WORK, "ser.sock")
+HOLD = os.path.join(WORK, "stdin.hold")
+DUMPS = WORK
 
 FAIL = []
 
@@ -48,7 +52,9 @@ class Guest:
         # Unix-socket serial: bidirectional and unbuffered (pipes make QEMU
         # block-buffer stdout; ptys EIO here). stdin is a held-open file,
         # never EOF (EOF on stdin exits QEMU silently).
-        self._stdin_hold = open("/tmp/opencode/gui_stdin.hold", "rb")
+        with open(HOLD, "wb") as f:
+            pass
+        self._stdin_hold = open(HOLD, "rb")
         qemu = ["qemu-system-x86_64", "-drive",
                 "file=%s,format=raw,if=ide" % IMAGE,
                 "-m", "1G", "-nic", "user,model=rtl8139", "-vga", "std",

@@ -17,6 +17,7 @@
 #include "minios_abi.h"
 #include "nuklear.h"
 #include "nuklear_minios.h"
+#include "nuklear_theme.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_ONLY_PNG
@@ -58,6 +59,7 @@ struct file_assoc {
 static struct file_assoc file_table[FILE_ASSOC_MAX];
 static int file_table_n;
 
+static int file_quit;
 static char file_cwd[FILE_MAX_PATH];
 static char file_entries[FILE_LIST_CAP];
 static long file_entry_count;
@@ -412,11 +414,14 @@ static void file_ui_build(struct nk_context *ctx) {
                  NK_WINDOW_BORDER | NK_WINDOW_MOVABLE)) {
         nk_layout_row_dynamic(ctx, 22, 1);
         nk_label(ctx, file_status, NK_TEXT_LEFT);
-        nk_layout_row_dynamic(ctx, 24, 5);
+        nk_layout_row_dynamic(ctx, 24, 6);
         if (nk_button_label(ctx, "up")) {
             file_parent(file_cwd);
             file_preview_on = 0;
             file_refresh();
+        }
+        if (nk_button_label(ctx, "quit")) {
+            file_quit = 1;
         }
         if (nk_button_label(ctx, "root")) {
             strcpy(file_cwd, "/");
@@ -533,7 +538,16 @@ static int file_selftest(void) {
         printf("file: selftest dir_list failed (%ld)\n", rc);
         return 1;
     }
-    printf("file: ok (%ld entries at /)\n", rc);
+    {
+        char theme[NK_THEME_NAME_MAX + 1];
+        unsigned char rgb[NK_THEME_KEY_COUNT][3];
+        nk_theme_active(theme, sizeof(theme));
+        if (nk_theme_probe(0, rgb) != 0 && nk_theme_probe("dark", rgb) != 0) {
+            printf("file: selftest theme failed\n");
+            return 1;
+        }
+        printf("file: ok (%ld entries at /, theme %s)\n", rc, theme);
+    }
     return 0;
 }
 
@@ -555,11 +569,13 @@ static void file_gui_run(void) {
         nk_sys_vga_mode(0);
         return;
     }
+    nk_theme_apply(&ctx, 0);
     strcpy(file_cwd, "/");
     file_preview_on = 0;
+    file_quit = 0;
     file_assoc_load();
     file_refresh();
-    for (;;) {
+    while (!file_quit) {
         long k;
         nk_input_begin(&ctx);
         nk_poll_input(&ctx);
@@ -573,6 +589,7 @@ static void file_gui_run(void) {
             }
         }
         nk_input_end(&ctx);
+        if (nk_quit_requested()) file_quit = 1;
         file_ui_build(&ctx);
         nk_rasterize(&ctx);
         if (file_preview_on)
@@ -588,6 +605,9 @@ static void file_gui_run(void) {
             }
         }
     }
+    nk_free(&ctx);
+    nk_sys_kbd_raw(0);
+    nk_sys_vga_mode(0);
 }
 
 int main(int argc, char **argv) {

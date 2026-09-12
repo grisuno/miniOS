@@ -1004,9 +1004,12 @@ void shell_run(void) {
         }
         if (shell_pending_len > 0) {
             /* A desktop icon was clicked while a program ran; run it now
-             * that the shell has control again, without a fresh prompt. */
-            kmemcpy(cmd_buf, shell_pending_cmd, (unsigned long)shell_pending_len + 1);
+             * that the shell has control again, without a fresh prompt.
+             * Through desktop_launch so the cwd pin applies: a queued
+             * icon is still an icon, not a shell-relative command. */
+            desktop_launch(shell_pending_cmd);
             shell_pending_len = 0;
+            continue;
         } else {
             shell_prompt();
             shell_readline();
@@ -1605,6 +1608,13 @@ void desktop_launch(const char *cmd) {
         /* ~shell: bring the terminal to focus (already visible). */
         return;
     }
+    /* Icons are not relative to the shell: a dock launch runs with the
+     * cwd pinned to the root and restores the shell cwd afterwards, so
+     * `+set basedir .` (Quake 2) or any other relative path in a
+     * shortcut resolves against / no matter where the shell sits. */
+    char saved_cwd[RAMDISK_FNAME_LEN];
+    kmemcpy(saved_cwd, fs_cwd, sizeof(saved_cwd));
+    fs_cwd[0] = 0;
     /* Parse command into argv (space-separated, max 8 args).  Each arg is
      * copied sequentially into buf so argv pointers stay valid for the call. */
     char buf[128];
@@ -1623,6 +1633,7 @@ void desktop_launch(const char *cmd) {
         argc++;
     }
     if (argc > 0) shell_exec_builtin(argc, argv);
+    kmemcpy(fs_cwd, saved_cwd, sizeof(saved_cwd));
 }
 
 /* ---- Graphics debugging (`gfx` builtin) ----
@@ -1875,6 +1886,11 @@ static void shell_cmd_wm(int argc, char **argv) {
             vga_fb_is_minimized(), vga_fb_is_fullscreen(),
             wm_gfx_mode_active(), vga_fb_focus_get(),
             vga_fb_nterms_get());
+    {
+        char theme[17];
+        vga_fb_theme_name(theme, sizeof(theme));
+        kprintf("wm: theme %s\n", theme);
+    }
     {
         unsigned long cooked = 0;
         unsigned long raw = 0;

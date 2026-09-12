@@ -20,7 +20,7 @@ Actions:
   mouse DX DY        inject relative mouse motion
   click              inject a left-button press+release
   key QCODE [up]     inject a keyboard key (qemu keycode, e.g. esc, return)
-  dump NAME          screendump the VGA to /tmp/opencode/NAME.png
+  dump NAME          screendump the VGA to $TMPDIR/gui_*/NAME.png
   sleep SECS         pause
 """
 import json
@@ -30,12 +30,14 @@ import select
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMAGE = os.path.join(HERE, "..", "os.img")
-QMP_SOCK = "/tmp/opencode/gui_qmp.sock"
-DUMPS = "/tmp/opencode"
+WORK = tempfile.mkdtemp(prefix="gui_")
+QMP_SOCK = os.path.join(WORK, "qmp.sock")
+DUMPS = WORK
 DISPLAY = os.environ.get("DISPLAY", ":0")
 
 

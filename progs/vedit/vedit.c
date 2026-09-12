@@ -16,6 +16,7 @@
 #include <stdint.h>
 #include "nuklear.h"
 #include "nuklear_minios.h"
+#include "nuklear_theme.h"
 
 /** Platform syscalls vedit needs beyond the platform layer. */
 static long vedit_getc_raw(long blocking) {
@@ -1689,6 +1690,7 @@ static void vedit_gui_run(void) {
         nk_sys_vga_mode(0);
         return;
     }
+    nk_theme_apply(&ctx, 0);
 
     vedit_set_msg("type to edit, ^X done");
     vedit_sync_title();

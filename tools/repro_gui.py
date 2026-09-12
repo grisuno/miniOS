@@ -18,11 +18,13 @@ import select
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMAGE = os.path.join(HERE, "..", "os.img")
-QMP_SOCK = "/tmp/opencode/repro_qmp.sock"
+WORK = tempfile.mkdtemp(prefix="repro_gui_")
+QMP_SOCK = os.path.join(WORK, "qmp.sock")
 
 
 def read_serial(master, timeout=1.0):

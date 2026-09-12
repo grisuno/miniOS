@@ -26,6 +26,7 @@
 
 #include "nuklear.h"
 #include "nuklear_minios.h"
+#include "nuklear_theme.h"
 #include "cvm_emit.h"
 
 /* ---- Graph model (mirrors cvm_node, plus canvas position) ---- */
@@ -946,6 +947,7 @@ static void gui_run(void) {
         nk_sys_vga_mode(0);
         return;
     }
+    nk_theme_apply(&ctx, 0);
 
     graph_add(G_NUM); g_nodes[0].ival = 2;
     graph_add(G_NUM); g_nodes[1].ival = 3;
@@ -958,6 +960,7 @@ static void gui_run(void) {
         nk_input_begin(&ctx);
         nk_poll_input(&ctx);
         nk_input_end(&ctx);
+        if (nk_quit_requested()) ui_quit = 1;
 
         ui_build(&ctx, (float)NK_W, (float)NK_H);
 

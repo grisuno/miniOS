@@ -860,6 +860,14 @@ framebuffer is not.
   click opens/focuses the second shell with no typing — verified over QMP
   with separated button down/up (a joint down+up can land inside one tick
   and read as no click); a repeat click just refocuses window 1.
+  Icons are never relative to the shell: `desktop_launch` (`kernel/shell.c`)
+  pins the cwd to `/` while the shortcut command runs and restores it
+  after (a click during a running program queues through the same path),
+  so `run quake2generic.elf +set basedir .` resolves `baseq2/` at the
+  root no matter where the shell sits — a wrong cwd used to kill Quake
+  with `Couldn't load pics/colormap.pcx`, mimicking memory exhaustion.
+  `tools/test_gui_icon_cwd.py` proves it over QMP (template-matched dock
+  click from a shell sitting in `/cvm`).
   Honest limits: no Alt-Tab mid-`edit` (the modal editor echoes into
   whichever window is focused), serial sees one interleaved console (use
   `wm list`'s `line` flag to tell which window holds a parked line).
@@ -875,6 +883,14 @@ framebuffer is not.
   cooked queue) and `read(0)` answers `-EAGAIN` when unfocused, so a
   polling game can never steal shell bytes; foreground runs (legacy
   `run`, `mrun` fg via `shell_fg_active`) keep the full multiplexer.
+  The cursor has exactly one painter per mode: the tick owns it on the
+  desktop, the present path (`blit_gfx_buf` erase-then-draw) owns it
+  while a graphics program runs. Sharing the save/old state between
+  the 25 Hz tick and ~60 fps presents raced every frame and stranded
+  stale sprites (worst on the title-bar hitboxes the tick touches), so
+  in gfx mode the tick never draws or restores and only invalidates
+  across real repaints. `tools/test_gui_fashion.py` proves it over QMP
+  (one arrow sprite after motion, stable idle frames, ESC quits).
   Taking the display also takes focus (`wm_gfx_focus_sync` inside
   `vga_fb_set_gfx_mode`): enabling graphics mode parks the shell line
   and focuses the graphics window with stale raw bytes flushed, so a
@@ -1705,8 +1721,37 @@ count, fail closed on bad pointers, overlong names and truncation.
   the repo-root `file.png`/`shell.png` sources through
   `tools/gen_desktop_pngs.py` like every other icon.
 - Proof: `file --selftest` runs the assoc vectors plus a live `/`
-  listing (`file: ok (N entries at /)`, BDD-pinned), and `make test-file`
-  locks the same parser vectors on the host.
+  listing (`file: ok (N entries at /, theme dark)`, BDD-pinned), and
+  `make test-file` locks the same parser vectors on the host.
+- Every NK app quits the same way: ESC or Alt+F4 through the platform
+  latch (`nk_quit_requested` in `nuklear_minios.c`, polled per frame)
+  plus an on-canvas Quit control (file's `quit` button, piano's `Quit`
+  pad, the node editor's existing Quit; vedit already exits on Esc/^X).
+  No window depends on the title-bar X alone.
+
+### Nuklear themes (`nuklear_theme`, all NK apps)
+`progs/nuklear/nuklear_theme.c` (header `nuklear_theme.h`) is the one
+theme loader every NK app links through `NUKLEAR_PLATFORM` (file,
+nuklear, piano, vedit): each calls `nk_theme_apply(&ctx, 0)` after
+`nk_init_fixed`, which resolves `/etc/themes/current` (else `dark`),
+loads `/etc/themes/<name>` over a compiled-in fallback and pushes the
+32 colors via `nk_style_from_table`. A theme file is `key r g b` lines
+(the key list is the `NK_THEME_KEY_LIST` X-macro shared with
+`tests/test_theme.c`, so no copy can drift); shipped values sit on the
+6x6x6 cube (multiples of 51) so the 8-bit backend maps them exactly
+instead of nearest-neighbour. Fail closed: unknown keys skipped,
+numbers clamped, overlong lines drained, bad names fall back to `dark`.
+Switching is a write to `current` (`echo light > etc/themes/current`)
+and a relaunch; no reboot, no rebuild. The taskbar shows the active
+name left of EN/ES (bright, `TASKBAR_THEME_CH` wide, `TASKBAR_PAD`
+breathing room like every other widget since the crowding fix) and a
+click cycles `etc/themes/` in ramdisk order with wraparound, writing
+the choice back; `wm state` reports it as `wm: theme <name>` (BDD-pinned)
+so the widget is serial-observable. Proof: `file --selftest` prints
+the active theme name (BDD pins `theme dark`), `make test-theme` pins
+the contract plus all five shipped files (`dark light amber forest
+slate`, 32 keys each, unique, palette-exact, `current` naming an
+existing file).
 
 ### PC speaker audio (`pcspk.c` + Doom)
 The kernel owns the QEMU PC speaker through two syscalls: 209 `pcspk_init`
@@ -2233,6 +2278,8 @@ make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n
 sh src/test_all.sh  # one-boot comprehensive non-interactive suite (66 PASS)
 ./test_bdd.sh       # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
+python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
+python3 tools/test_gui_fashion.py  # QMP pixel proof: one cursor, stable frames, ESC quit
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh         # every mutant killed (BDD + host TLS + host VMA suites)
 make test-tls       # host-side crypto + full-handshake suite green
@@ -2245,6 +2292,7 @@ make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
 make test-file       # file browser assoc-contract suite green
+make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
@@ -2659,6 +2707,8 @@ make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated +
 sh src/test_all.sh          # one-boot comprehensive non-interactive suite (66 PASS)
 ./test_bdd.sh               # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
+python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
+python3 tools/test_gui_fashion.py  # QMP pixel proof: one cursor, stable frames, ESC quit
 ./tools/test_codecs.sh      # lzss/lz4/aes roundtrips (pass=3)
 ./mutate.sh                 # every mutant killed
 make test-tls               # host-side crypto + handshake suite
@@ -2671,6 +2721,7 @@ make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
 make test-file       # file browser assoc-contract suite green
+make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
 make test-ktime test-randmix  # Phase 0 truthfulness: TSC->usec + getrandom mixer green
 python3 tools/check_abi_numbers.py  # Phase 0.6: syscall numbers match Linux x86-64 (also in lint)

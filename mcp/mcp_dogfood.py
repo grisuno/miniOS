@@ -9,6 +9,7 @@ import os
 import select
 import subprocess
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -20,8 +21,9 @@ class Client:
         env = dict(os.environ)
         env["MINIOS_ADDONS_DIR"] = addons_dir
         env["MINIOS_IMAGE"] = os.path.join(os.path.dirname(HERE), "os.img")
-        env["MINIOS_PIDFILE"] = os.path.join("/tmp/opencode/dogfood", "qemu.pid")
-        env["MINIOS_ADDON_STATE"] = os.path.join("/tmp/opencode/dogfood", "state.json")
+        work = tempfile.mkdtemp(prefix="dogfood_")
+        env["MINIOS_PIDFILE"] = os.path.join(work, "qemu.pid")
+        env["MINIOS_ADDON_STATE"] = os.path.join(work, "state.json")
         env["MINIOS_TMO_PROMPT"] = "60000"
         env["MINIOS_TMO_BOOT"] = "60000"
         self.proc = subprocess.Popen(

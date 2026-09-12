@@ -9,12 +9,14 @@ import os
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__)) + "/.."
-QMP = "/tmp/opencode/probe_qmp.sock"
-SER = "/tmp/opencode/probe_ser.sock"
-HOLD = "/tmp/opencode/probe_stdin.hold"
+WORK = tempfile.mkdtemp(prefix="probe_vga_")
+QMP = os.path.join(WORK, "qmp.sock")
+SER = os.path.join(WORK, "ser.sock")
+HOLD = os.path.join(WORK, "stdin.hold")
 
 
 def main():
@@ -101,7 +103,7 @@ def main():
 
         def dump(name):
             qmp({"execute": "screendump",
-                 "arguments": {"filename": "/tmp/opencode/probe_%s.ppm" % name,
+                 "arguments": {"filename": os.path.join(WORK, "probe_%s.ppm" % name),
                                "format": "ppm"}})
             time.sleep(0.5)
 
@@ -112,8 +114,8 @@ def main():
         time.sleep(2)
         dump("b")
         from PIL import Image, ImageChops
-        a = Image.open("/tmp/opencode/probe_a.ppm").convert("RGB")
-        b = Image.open("/tmp/opencode/probe_b.ppm").convert("RGB")
+        a = Image.open(os.path.join(WORK, "probe_a.ppm")).convert("RGB")
+        b = Image.open(os.path.join(WORK, "probe_b.ppm")).convert("RGB")
         bb = ImageChops.difference(a, b).convert("L").point(
             lambda v: 255 if v > 10 else 0).getbbox()
         print("diffbbox", bb)

@@ -48,6 +48,7 @@
 
 #include "nuklear.h"
 #include "nuklear_minios.h"
+#include "nuklear_theme.h"
 #include "opl3.h"
 #include "minios_abi.h"
 
@@ -525,6 +526,7 @@ static const struct { int x; int y; int w; int h; const char *label; } ctrls[] =
     { 5*(BTN_W + BTN_GAP), CTRL_Y, BTN_W, CTRL_H, "Echo" },
     { 6*(BTN_W + BTN_GAP), CTRL_Y, BTN_W, CTRL_H, "Tremolo" },
     { 7*(BTN_W + BTN_GAP), CTRL_Y, BTN_W, CTRL_H, "Clip" },
+    { 8*(BTN_W + BTN_GAP), CTRL_Y, BTN_W, CTRL_H, "Quit" },
 };
 #define NCTRLS ((int)(sizeof(ctrls) / sizeof(ctrls[0])))
 
@@ -593,6 +595,7 @@ static void ui_run(int bench_ms) {
         nk_sys_vga_mode(0);
         return;
     }
+    nk_theme_apply(&ctx, 0);
 
     int origin[2] = {0, 0};
     int quit = 0;
@@ -674,6 +677,7 @@ static void ui_run(int bench_ms) {
          * key is latched on button-down so releasing off-key (or sliding
          * off while dragging) still releases the right voice instead of
          * leaving it stuck.  Keyboard notes arrive via piano_scancode. */
+        if (nk_quit_requested()) quit = 1;
         int hit = hit_key((int)mx, (int)my);
         if (down && !last_down) {
             if (hit >= 0) {
@@ -681,7 +685,11 @@ static void ui_run(int bench_ms) {
                 note_on_key(hit, keys[hit].midi, hit_velocity(hit, (int)my));
             } else {
                 int c;
-                for (c = 0; c < NCTRLS; c++) if (ctrl_hit(c, (int)mx, (int)my)) { ctrl_press(c); break; }
+                for (c = 0; c < NCTRLS; c++) if (ctrl_hit(c, (int)mx, (int)my)) {
+                    if (c == NCTRLS - 1) quit = 1;
+                    else ctrl_press(c);
+                    break;
+                }
             }
         } else if (!down && last_down) {
             if (pressed_key >= 0) {

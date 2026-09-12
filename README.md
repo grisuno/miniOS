@@ -442,6 +442,24 @@ miniOS> file               # GUI: navigate, open, run, preview
 miniOS> file --selftest    # headless: assoc vectors plus a live listing
 ```
 
+## Nuklear themes
+
+I theme every Nuklear app (file, nuklear, piano, vedit) from one shared
+loader (`progs/nuklear/nuklear_theme.c`). Themes live in `etc/themes` as
+plain `key r g b` files; `etc/themes/current` names the active one
+(`dark` by default; `light`, `amber`, `forest` and `slate` ship too).
+Values sit on the 6x6x6 cube so the 8-bit backend maps them exactly.
+Click the theme name in the taskbar (next to EN/ES) to cycle, or write
+it directly and relaunch the app:
+
+```
+miniOS> echo light > etc/themes/current
+miniOS> file               # now in light
+```
+
+Every graphical app quits with ESC or Alt+F4 as well as its Quit
+button, so closing never depends on the small title-bar X.
+
 Build from source:
 
 ```bash

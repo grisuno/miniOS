@@ -476,6 +476,7 @@ struct nk_user_font nk_minios_font(void) {
 
 static int kbd_shift, kbd_ctrl, kbd_alt;
 static int pending_e0;
+static int nk_quit_req;
 static int nk_win_origin_x, nk_win_origin_y;
 
 static const char kbd_us[128] = {
@@ -540,6 +541,8 @@ static void handle_scancode(struct nk_context *ctx, unsigned char sc) {
     case 0x0E: feed_key(ctx, NK_KEY_BACKSPACE, make); return;
     case 0x0F: feed_key(ctx, NK_KEY_TAB, make); return;
     case 0x39: if (make) nk_input_unicode(ctx, ' '); return;
+    case 0x01: if (make) nk_quit_req = 1; return;
+    case 0x3E: if (make && kbd_alt) nk_quit_req = 1; return;
     default: break;
     }
 
@@ -592,4 +595,13 @@ void nk_poll_input(struct nk_context *ctx) {
 void nk_set_window_origin(int x, int y) {
     nk_win_origin_x = x;
     nk_win_origin_y = y;
+}
+
+/** WM quit gesture latch: ESC or Alt+F4 pressed since the last poll.
+ * Returns 1 once per gesture, then clears. Every NK app polls this per
+ * frame so no window depends on the tiny title-bar X to close. */
+int nk_quit_requested(void) {
+    int r = nk_quit_req;
+    nk_quit_req = 0;
+    return r;
 }

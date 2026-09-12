@@ -1175,6 +1175,11 @@ expect "nuklear: frame ok (800x360)"
 scenario "file browser lists the root and passes its assoc vectors" "file --selftest
 poweroff"
 expect "file: ok ("
+expect "theme dark"
+
+scenario "wm state reports the active theme" "wm state
+poweroff"
+expect "wm: theme dark"
 
 scenario "freedom_wl selftest presents through the nk window" "freedom_wl --selftest
 poweroff"

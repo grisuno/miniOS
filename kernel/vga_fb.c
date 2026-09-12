@@ -1729,6 +1729,7 @@ static void draw_title_win(int idx, int focused) {
  * rtc_read_tod/pcspk_get_volume/kbd_get_layout state, so the framebuffer and
  * the serial console can never disagree. */
 static int tb_spk_x, tb_minus_x, tb_plus_x, tb_vol_x, tb_clock_x, tb_kbd_x;
+static int tb_theme_x;
 static int tb_restore_x, tb_restore_w;
 
 /* Title chars shown on the running-app taskbar button (icon + text must
@@ -1748,6 +1749,8 @@ static void taskbar_layout(void) {
     x -= TASKBAR_ICON_W;            tb_spk_x = x;
     x -= TASKBAR_PAD;
     x -= TASKBAR_KBD_W;             tb_kbd_x = x;
+    x -= TASKBAR_PAD;
+    x -= TASKBAR_THEME_W;           tb_theme_x = x;
     /* Restore button on the far left: "[]" when a window is minimized. */
     tb_restore_w = 2 * FONT_W;
     tb_restore_x = TASKBAR_PAD;
@@ -1832,6 +1835,16 @@ static void taskbar_render(void) {
     text_px(tb_kbd_x, y,
             kbd_get_layout() == KBD_LAYOUT_ES ? "ES" : "EN",
             COL_TASKBAR_TXT, COL_TASKBAR);
+    {
+        char theme[17];
+        char tshow[TASKBAR_THEME_CH + 1];
+        int k;
+        vga_fb_theme_name(theme, sizeof(theme));
+        for (k = 0; k < TASKBAR_THEME_CH && theme[k]; k++)
+            tshow[k] = theme[k];
+        tshow[k] = 0;
+        text_px(tb_theme_x, y, tshow, COL_HIGHLIGHT, COL_TASKBAR);
+    }
     if (rtc_read_tod(&h, &m, &s)) {
         ksprintf(buf, "%02d:%02d:%02d", h, m, s);
         text_px(tb_clock_x, y, buf, COL_TASKBAR_TXT, COL_TASKBAR);
@@ -1854,10 +1867,71 @@ static void taskbar_tick(void) {
         cursor_visible = 0;
 }
 
+/** Docstring: Active Nuklear theme name for the taskbar widget.
+ *
+ * Reads etc/themes/current (ramdisk); a missing file, a bad name or an
+ * overlong read falls back to "dark", never a stale or partial name. */
+int vga_fb_theme_name(char *dst, int cap) {
+    KFILE *f;
+    int n = 0;
+    if (cap <= 16) return -1;
+    f = kfopen("etc/themes/current", "r");
+    if (f) {
+        int c;
+        while (n < 16 && (c = kfgetc(f)) != EOF && c != '\n' && c != '\r') {
+            if (!((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))) break;
+            dst[n++] = (char)c;
+        }
+        kfclose(f);
+        if (n > 0) { dst[n] = 0; return 0; }
+    }
+    dst[0] = 'd'; dst[1] = 'a'; dst[2] = 'r'; dst[3] = 'k'; dst[4] = 0;
+    return -1;
+}
+
+/* Cycle the active theme to the next etc/themes/ entry (ramdisk). Holds
+ * no locks; click context only. Writes the choice back to current so the
+ * next app launch picks it up; running apps keep their theme. */
+static void taskbar_theme_cycle(void) {
+    RDFile *files[RAMDISK_MAX_FILES];
+    char cur[17];
+    int n, i, idx = -1, count = 0;
+    char names[16][17];
+    vga_fb_theme_name(cur, sizeof(cur));
+    n = ramdisk_list(files, RAMDISK_MAX_FILES);
+    for (i = 0; i < n && count < 16; i++) {
+        const char *nm = files[i]->name;
+        const char *rel;
+        unsigned k;
+        int ok = 1;
+        if (kstrncmp(nm, "etc/themes/", 11) != 0) continue;
+        rel = nm + 11;
+        if (!rel[0] || kstrcmp(rel, "current") == 0) continue;
+        for (k = 0; rel[k]; k++) {
+            if (k >= 16 ||
+                !((rel[k] >= 'a' && rel[k] <= 'z') ||
+                  (rel[k] >= '0' && rel[k] <= '9'))) { ok = 0; break; }
+        }
+        if (!ok || k == 0) continue;
+        kmemcpy(names[count], rel, k + 1);
+        if (kstrcmp(rel, cur) == 0) idx = count;
+        count++;
+    }
+    if (count == 0) return;
+    {
+        const char *next = names[(idx + 1) % count];
+        KFILE *f = kfopen("etc/themes/current", "w");
+        if (!f) return;
+        kfputs(next, f);
+        kfputc('\n', f);
+        kfclose(f);
+    }
+}
+
 /* Click handling for the keyboard widget, the speaker icon and -/+
  * buttons, plus the restore button that reappears while the terminal window
  * is minimized. A click on "EN" switches to Spanish and a click on "ES"
- * switches back to English. */
+ * switches back to English. A click on the theme name cycles etc/themes. */
 static void taskbar_handle_click(int mx, int my) {
     unsigned v;
     static int spk_saved_valid;
@@ -1879,6 +1953,13 @@ static void taskbar_handle_click(int mx, int my) {
     }
     if (mx >= tb_kbd_x && mx < tb_kbd_x + TASKBAR_KBD_W) {
         kbd_toggle_layout();
+        taskbar_render();
+        if (cursor_over(0, y, fb_width, FONT_H))
+            cursor_visible = 0;
+        return;
+    }
+    if (mx >= tb_theme_x && mx < tb_theme_x + TASKBAR_THEME_W) {
+        taskbar_theme_cycle();
         taskbar_render();
         if (cursor_over(0, y, fb_width, FONT_H))
             cursor_visible = 0;
@@ -2753,15 +2834,26 @@ void vga_fb_mouse_tick(void) {
     wm_event_config_t ecfg = wm_event_cfg();
     int mx, my;
     int win_w = term_px_w + SCROLLBAR_W;
+    int gfx_cursor;
 
     if (!mouse_state.present) return;
+
+    /* Single cursor owner: while a graphics program owns the display the
+     * present path (blit_gfx_buf) is the sole cursor painter. The tick
+     * sharing cursor_save/cursor_old with it raced every present (~60fps
+     * vs 25Hz): stale restores painted trails and flicker, worst on the
+     * title-bar hitboxes the tick touches each pass. So in gfx mode the
+     * tick never draws or restores the cursor and only invalidates it
+     * across real repaints (draw_desktop/taskbar_render clear it
+     * themselves); anywhere else the invalidation is gated off. */
+    gfx_cursor = vga_fb_gfx_mode;
 
     taskbar_tick();
     if (wm_is_click_edge(&ecfg, (int)tb_prev_buttons, mouse_state.buttons)) {
         taskbar_handle_click(mouse_state.x, mouse_state.y);
         if (wm_button_click(mouse_state.x, mouse_state.y)) {
             tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
-            cursor_visible = 0;
+            if (!gfx_cursor) cursor_visible = 0;
             wm_skip_drag = 1;
             return;
         }
@@ -2842,7 +2934,9 @@ void vga_fb_mouse_tick(void) {
                 int cy = (fb_height - gfx_win_h) / 2;
                 gfx_win_ox = mx - wm_ggx - cx;
                 gfx_win_oy = my - wm_ggy - cy;
-                cursor_visible = 0;
+                /* No repaint here: the next present moves the window and
+                 * its cursor together, so invalidating would strand a
+                 * stale sprite (the old drag-trail bug). */
                 mx = mouse_state.x;
                 my = mouse_state.y;
             }
@@ -2863,7 +2957,7 @@ void vga_fb_mouse_tick(void) {
         }
         if (wm_dragging) {
             vga_fb_drag_terminal(mx, my, wm_grab_cx);
-            cursor_visible = 0;
+            if (!gfx_cursor) cursor_visible = 0;
             mx = mouse_state.x;
             my = mouse_state.y;
         }
@@ -2894,7 +2988,9 @@ void vga_fb_mouse_tick(void) {
     mx = mouse_state.x;
     my = mouse_state.y;
 
-    /* Erase old cursor and draw new one */
+    /* Erase old cursor and draw new one. Skipped wholesale in gfx mode:
+     * the present path owns the cursor there (see above). */
+    if (gfx_cursor) return;
     if (cursor_visible) {
         if (mx != cursor_old_x || my != cursor_old_y) {
             cursor_restore(cursor_old_x, cursor_old_y);

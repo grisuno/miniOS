@@ -61,6 +61,11 @@ void nk_rasterize(struct nk_context *ctx);
 void nk_set_window_origin(int x, int y);
 void nk_poll_input(struct nk_context *ctx);
 
+/* WM quit gesture: ESC or Alt+F4 since the last poll (1 once, then
+ * clears). Every NK app checks this per frame so closing never depends
+ * on the title-bar X alone. */
+int nk_quit_requested(void);
+
 /* Raw scancode hook: piano-style apps need note on/off with break events,
  * which the Nuklear key/unicode translation discards. When set, the hook
  * fires for every PS/2 set-1 scancode drained by nk_poll_input, after E0

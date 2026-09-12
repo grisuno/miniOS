@@ -5,6 +5,7 @@ import os
 import select
 import subprocess
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -15,8 +16,9 @@ class Client:
     def __init__(self):
         env = dict(os.environ)
         env["MINIOS_IMAGE"] = os.path.join(os.path.dirname(HERE), "os.img")
-        env["MINIOS_PIDFILE"] = "/tmp/opencode/dbg/qemu.pid"
-        env["MINIOS_ADDON_STATE"] = "/tmp/opencode/dbg/state.json"
+        work = tempfile.mkdtemp(prefix="dbg_")
+        env["MINIOS_PIDFILE"] = os.path.join(work, "qemu.pid")
+        env["MINIOS_ADDON_STATE"] = os.path.join(work, "state.json")
         self.proc = subprocess.Popen(
             [sys.executable, os.path.join(HERE, "minios_mcp.py")],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
