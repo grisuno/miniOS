@@ -54,82 +54,83 @@
   - `MINIOS_SYS_EXIT` (macro, line 180) `#define MINIOS_SYS_EXIT`
   - `MINIOS_SYS_WAIT4` (macro, line 181) `#define MINIOS_SYS_WAIT4`
   - `MINIOS_SYS_KILL` (macro, line 182) `#define MINIOS_SYS_KILL`
-  - `MINIOS_SYS_UNLINK` (macro, line 183) `#define MINIOS_SYS_UNLINK`
-  - `MINIOS_SYS_READLINK` (macro, line 184) `#define MINIOS_SYS_READLINK`
-  - `MINIOS_SYS_GETTID` (macro, line 185) `#define MINIOS_SYS_GETTID`
-  - `MINIOS_SYS_FLOCK` (macro, line 189) `#define MINIOS_SYS_FLOCK`
-  - `MINIOS_SYS_FSYNC` (macro, line 190) `#define MINIOS_SYS_FSYNC`
-  - `MINIOS_SYS_FDATASYNC` (macro, line 191) `#define MINIOS_SYS_FDATASYNC`
-  - `MINIOS_SYS_GETCWD` (macro, line 192) `#define MINIOS_SYS_GETCWD`
-  - `MINIOS_SYS_GETTIMEOFDAY` (macro, line 193) `#define MINIOS_SYS_GETTIMEOFDAY`
-  - `MINIOS_SYS_ARCH_PRCTL` (macro, line 194) `#define MINIOS_SYS_ARCH_PRCTL`
-  - `MINIOS_SYS_OPENAT` (macro, line 195) `#define MINIOS_SYS_OPENAT`
-  - `MINIOS_SYS_NEWFSTATAT` (macro, line 196) `#define MINIOS_SYS_NEWFSTATAT`
-  - `MINIOS_SYS_READLINK` (macro, line 197) `#define MINIOS_SYS_READLINK`
-  - `MINIOS_SYS_STATX` (macro, line 200) `#define MINIOS_SYS_STATX`
-  - `MINIOS_SYS_SET_ROBUST_LIST` (macro, line 204) `#define MINIOS_SYS_SET_ROBUST_LIST`
-  - `MINIOS_SYS_PRLIMIT64` (macro, line 208) `#define MINIOS_SYS_PRLIMIT64`
-  - `MINIOS_SYS_GETRANDOM` (macro, line 209) `#define MINIOS_SYS_GETRANDOM`
-  - `MINIOS_SYS_RSEQ` (macro, line 210) `#define MINIOS_SYS_RSEQ`
-  - `MINIOS_SYS_EXIT_GROUP` (macro, line 211) `#define MINIOS_SYS_EXIT_GROUP`
-  - `MINIOS_SYS_SET_TID_ADDRESS` (macro, line 212) `#define MINIOS_SYS_SET_TID_ADDRESS`
-  - `MINIOS_SYS_CLOCK_GETTIME` (macro, line 213) `#define MINIOS_SYS_CLOCK_GETTIME`
-  - `MINIOS_SYS_TGKILL` (macro, line 214) `#define MINIOS_SYS_TGKILL`
-  - `MINIOS_SYS_DNS` (macro, line 217) `#define MINIOS_SYS_DNS`
-  - `MINIOS_SYS_TLS_HANDSHAKE` (macro, line 223) `#define MINIOS_SYS_TLS_HANDSHAKE`
-  - `MINIOS_SYS_TLS_SEND` (macro, line 224) `#define MINIOS_SYS_TLS_SEND`
-  - `MINIOS_SYS_TLS_RECV` (macro, line 225) `#define MINIOS_SYS_TLS_RECV`
-  - `MINIOS_SYS_TIME` (macro, line 226) `#define MINIOS_SYS_TIME`
-  - `MINIOS_SYS_KBD` (macro, line 227) `#define MINIOS_SYS_KBD`
-  - `MINIOS_SYS_PALETTE` (macro, line 228) `#define MINIOS_SYS_PALETTE`
-  - `MINIOS_SYS_KBD_RAW` (macro, line 229) `#define MINIOS_SYS_KBD_RAW`
-  - `MINIOS_SYS_VGA_MODE` (macro, line 230) `#define MINIOS_SYS_VGA_MODE`
-  - `MINIOS_SYS_PCSPK_INIT` (macro, line 231) `#define MINIOS_SYS_PCSPK_INIT`
-  - `MINIOS_SYS_PCSPK_TONE` (macro, line 232) `#define MINIOS_SYS_PCSPK_TONE`
-  - `MINIOS_SYS_DOOM_FRAME` (macro, line 233) `#define MINIOS_SYS_DOOM_FRAME`
-  - `MINIOS_SYS_RTC` (macro, line 234) `#define MINIOS_SYS_RTC`
-  - `MINIOS_SYS_FB_INFO` (macro, line 235) `#define MINIOS_SYS_FB_INFO`
-  - `MINIOS_SYS_PCSPK_VOL` (macro, line 236) `#define MINIOS_SYS_PCSPK_VOL`
-  - `MINIOS_SYS_SPAWN` (macro, line 237) `#define MINIOS_SYS_SPAWN`
-  - `MINIOS_SYS_LZ4_COMPRESS` (macro, line 238) `#define MINIOS_SYS_LZ4_COMPRESS`
-  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 239) `#define MINIOS_SYS_LZ4_DECOMPRESS`
-  - `MINIOS_SYS_MOUSE` (macro, line 240) `#define MINIOS_SYS_MOUSE`
-  - `MINIOS_SYS_NK_FRAME` (macro, line 241) `#define MINIOS_SYS_NK_FRAME`
-  - `MINIOS_SYS_SB16_OPEN` (macro, line 242) `#define MINIOS_SYS_SB16_OPEN`
-  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 243) `#define MINIOS_SYS_SB16_SUBMIT`
-  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 244) `#define MINIOS_SYS_GFX_SET_TITLE`
-  - `MINIOS_SYS_SB16_PUMP` (macro, line 245) `#define MINIOS_SYS_SB16_PUMP`
-  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 246) `#define MINIOS_SYS_SB16_STREAM_OPEN`
-  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 247) `#define MINIOS_SYS_SB16_STREAM_CLOSE`
-  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 248) `#define MINIOS_SYS_SB16_STREAM_SUBMIT`
-  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 249) `#define MINIOS_SYS_SB16_STREAM_VOLUME`
-  - `MINIOS_SYS_THREAD_SPAWN` (macro, line 250) `#define MINIOS_SYS_THREAD_SPAWN`
-  - `MINIOS_SYS_FUTEX_WAIT` (macro, line 251) `#define MINIOS_SYS_FUTEX_WAIT`
-  - `MINIOS_SYS_FUTEX_WAKE` (macro, line 252) `#define MINIOS_SYS_FUTEX_WAKE`
-  - `MINIOS_SYS_SUBMIT_BATCH` (macro, line 253) `#define MINIOS_SYS_SUBMIT_BATCH`
-  - `MINIOS_SYS_GETC_RAW` (macro, line 254) `#define MINIOS_SYS_GETC_RAW`
-  - `MINIOS_SYS_GFX_PRESENT` (macro, line 255) `#define MINIOS_SYS_GFX_PRESENT`
-  - `MINIOS_SYS_SECCOMP` (macro, line 256) `#define MINIOS_SYS_SECCOMP`
-  - `MINIOS_SYS_NICE` (macro, line 257) `#define MINIOS_SYS_NICE`
-  - `MINIOS_SYS_RLIMIT` (macro, line 258) `#define MINIOS_SYS_RLIMIT`
-  - `MINIOS_SYS_CLONE` (macro, line 259) `#define MINIOS_SYS_CLONE`
-  - `MINIOS_GFX_BUF_GAME` (macro, line 268) `#define MINIOS_GFX_BUF_GAME`
-  - `MINIOS_GFX_BUF_NK` (macro, line 269) `#define MINIOS_GFX_BUF_NK`
-  - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 270) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
-  - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 271) `#define MINIOS_SYS_WINDOW_PRESENT`
-  - `MINIOS_SYS_WINDOW_TITLE` (macro, line 272) `#define MINIOS_SYS_WINDOW_TITLE`
-  - `SYS_TIME_MS` (macro, line 275) `#define SYS_TIME_MS`
-  - `SYS_PALETTE` (macro, line 276) `#define SYS_PALETTE`
-  - `SYS_PCSPK_INIT` (macro, line 277) `#define SYS_PCSPK_INIT`
-  - `SYS_PCSPK_TONE` (macro, line 278) `#define SYS_PCSPK_TONE`
-  - `SYS_RTC` (macro, line 279) `#define SYS_RTC`
-  - `SYS_FB_INFO` (macro, line 280) `#define SYS_FB_INFO`
-  - `SYS_PCSPK_VOL` (macro, line 281) `#define SYS_PCSPK_VOL`
-  - `SYS_SPAWN` (macro, line 282) `#define SYS_SPAWN`
-  - `SYS_TIME` (macro, line 283) `#define SYS_TIME`
-  - `SYS_WRITE` (macro, line 284) `#define SYS_WRITE`
-  - `MINIOS_EABI_MISMATCH` (macro, line 287) `#define MINIOS_EABI_MISMATCH`
-- Imported by: `kernel.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `vga_fb.h`
+  - `MINIOS_SYS_UNAME` (macro, line 183) `#define MINIOS_SYS_UNAME`
+  - `MINIOS_SYS_UNLINK` (macro, line 184) `#define MINIOS_SYS_UNLINK`
+  - `MINIOS_SYS_READLINK` (macro, line 185) `#define MINIOS_SYS_READLINK`
+  - `MINIOS_SYS_GETTID` (macro, line 186) `#define MINIOS_SYS_GETTID`
+  - `MINIOS_SYS_FLOCK` (macro, line 190) `#define MINIOS_SYS_FLOCK`
+  - `MINIOS_SYS_FSYNC` (macro, line 191) `#define MINIOS_SYS_FSYNC`
+  - `MINIOS_SYS_FDATASYNC` (macro, line 192) `#define MINIOS_SYS_FDATASYNC`
+  - `MINIOS_SYS_GETCWD` (macro, line 193) `#define MINIOS_SYS_GETCWD`
+  - `MINIOS_SYS_GETTIMEOFDAY` (macro, line 194) `#define MINIOS_SYS_GETTIMEOFDAY`
+  - `MINIOS_SYS_ARCH_PRCTL` (macro, line 195) `#define MINIOS_SYS_ARCH_PRCTL`
+  - `MINIOS_SYS_OPENAT` (macro, line 196) `#define MINIOS_SYS_OPENAT`
+  - `MINIOS_SYS_NEWFSTATAT` (macro, line 197) `#define MINIOS_SYS_NEWFSTATAT`
+  - `MINIOS_SYS_READLINK` (macro, line 198) `#define MINIOS_SYS_READLINK`
+  - `MINIOS_SYS_STATX` (macro, line 201) `#define MINIOS_SYS_STATX`
+  - `MINIOS_SYS_SET_ROBUST_LIST` (macro, line 205) `#define MINIOS_SYS_SET_ROBUST_LIST`
+  - `MINIOS_SYS_PRLIMIT64` (macro, line 209) `#define MINIOS_SYS_PRLIMIT64`
+  - `MINIOS_SYS_GETRANDOM` (macro, line 210) `#define MINIOS_SYS_GETRANDOM`
+  - `MINIOS_SYS_RSEQ` (macro, line 211) `#define MINIOS_SYS_RSEQ`
+  - `MINIOS_SYS_EXIT_GROUP` (macro, line 212) `#define MINIOS_SYS_EXIT_GROUP`
+  - `MINIOS_SYS_SET_TID_ADDRESS` (macro, line 213) `#define MINIOS_SYS_SET_TID_ADDRESS`
+  - `MINIOS_SYS_CLOCK_GETTIME` (macro, line 214) `#define MINIOS_SYS_CLOCK_GETTIME`
+  - `MINIOS_SYS_TGKILL` (macro, line 215) `#define MINIOS_SYS_TGKILL`
+  - `MINIOS_SYS_DNS` (macro, line 218) `#define MINIOS_SYS_DNS`
+  - `MINIOS_SYS_TLS_HANDSHAKE` (macro, line 224) `#define MINIOS_SYS_TLS_HANDSHAKE`
+  - `MINIOS_SYS_TLS_SEND` (macro, line 225) `#define MINIOS_SYS_TLS_SEND`
+  - `MINIOS_SYS_TLS_RECV` (macro, line 226) `#define MINIOS_SYS_TLS_RECV`
+  - `MINIOS_SYS_TIME` (macro, line 227) `#define MINIOS_SYS_TIME`
+  - `MINIOS_SYS_KBD` (macro, line 228) `#define MINIOS_SYS_KBD`
+  - `MINIOS_SYS_PALETTE` (macro, line 229) `#define MINIOS_SYS_PALETTE`
+  - `MINIOS_SYS_KBD_RAW` (macro, line 230) `#define MINIOS_SYS_KBD_RAW`
+  - `MINIOS_SYS_VGA_MODE` (macro, line 231) `#define MINIOS_SYS_VGA_MODE`
+  - `MINIOS_SYS_PCSPK_INIT` (macro, line 232) `#define MINIOS_SYS_PCSPK_INIT`
+  - `MINIOS_SYS_PCSPK_TONE` (macro, line 233) `#define MINIOS_SYS_PCSPK_TONE`
+  - `MINIOS_SYS_DOOM_FRAME` (macro, line 234) `#define MINIOS_SYS_DOOM_FRAME`
+  - `MINIOS_SYS_RTC` (macro, line 235) `#define MINIOS_SYS_RTC`
+  - `MINIOS_SYS_FB_INFO` (macro, line 236) `#define MINIOS_SYS_FB_INFO`
+  - `MINIOS_SYS_PCSPK_VOL` (macro, line 237) `#define MINIOS_SYS_PCSPK_VOL`
+  - `MINIOS_SYS_SPAWN` (macro, line 238) `#define MINIOS_SYS_SPAWN`
+  - `MINIOS_SYS_LZ4_COMPRESS` (macro, line 239) `#define MINIOS_SYS_LZ4_COMPRESS`
+  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 240) `#define MINIOS_SYS_LZ4_DECOMPRESS`
+  - `MINIOS_SYS_MOUSE` (macro, line 241) `#define MINIOS_SYS_MOUSE`
+  - `MINIOS_SYS_NK_FRAME` (macro, line 242) `#define MINIOS_SYS_NK_FRAME`
+  - `MINIOS_SYS_SB16_OPEN` (macro, line 243) `#define MINIOS_SYS_SB16_OPEN`
+  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 244) `#define MINIOS_SYS_SB16_SUBMIT`
+  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 245) `#define MINIOS_SYS_GFX_SET_TITLE`
+  - `MINIOS_SYS_SB16_PUMP` (macro, line 246) `#define MINIOS_SYS_SB16_PUMP`
+  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 247) `#define MINIOS_SYS_SB16_STREAM_OPEN`
+  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 248) `#define MINIOS_SYS_SB16_STREAM_CLOSE`
+  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 249) `#define MINIOS_SYS_SB16_STREAM_SUBMIT`
+  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 250) `#define MINIOS_SYS_SB16_STREAM_VOLUME`
+  - `MINIOS_SYS_THREAD_SPAWN` (macro, line 251) `#define MINIOS_SYS_THREAD_SPAWN`
+  - `MINIOS_SYS_FUTEX_WAIT` (macro, line 252) `#define MINIOS_SYS_FUTEX_WAIT`
+  - `MINIOS_SYS_FUTEX_WAKE` (macro, line 253) `#define MINIOS_SYS_FUTEX_WAKE`
+  - `MINIOS_SYS_SUBMIT_BATCH` (macro, line 254) `#define MINIOS_SYS_SUBMIT_BATCH`
+  - `MINIOS_SYS_GETC_RAW` (macro, line 255) `#define MINIOS_SYS_GETC_RAW`
+  - `MINIOS_SYS_GFX_PRESENT` (macro, line 256) `#define MINIOS_SYS_GFX_PRESENT`
+  - `MINIOS_SYS_SECCOMP` (macro, line 257) `#define MINIOS_SYS_SECCOMP`
+  - `MINIOS_SYS_NICE` (macro, line 258) `#define MINIOS_SYS_NICE`
+  - `MINIOS_SYS_RLIMIT` (macro, line 259) `#define MINIOS_SYS_RLIMIT`
+  - `MINIOS_SYS_CLONE` (macro, line 260) `#define MINIOS_SYS_CLONE`
+  - `MINIOS_GFX_BUF_GAME` (macro, line 269) `#define MINIOS_GFX_BUF_GAME`
+  - `MINIOS_GFX_BUF_NK` (macro, line 270) `#define MINIOS_GFX_BUF_NK`
+  - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 271) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
+  - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 272) `#define MINIOS_SYS_WINDOW_PRESENT`
+  - `MINIOS_SYS_WINDOW_TITLE` (macro, line 273) `#define MINIOS_SYS_WINDOW_TITLE`
+  - `SYS_TIME_MS` (macro, line 276) `#define SYS_TIME_MS`
+  - `SYS_PALETTE` (macro, line 277) `#define SYS_PALETTE`
+  - `SYS_PCSPK_INIT` (macro, line 278) `#define SYS_PCSPK_INIT`
+  - `SYS_PCSPK_TONE` (macro, line 279) `#define SYS_PCSPK_TONE`
+  - `SYS_RTC` (macro, line 280) `#define SYS_RTC`
+  - `SYS_FB_INFO` (macro, line 281) `#define SYS_FB_INFO`
+  - `SYS_PCSPK_VOL` (macro, line 282) `#define SYS_PCSPK_VOL`
+  - `SYS_SPAWN` (macro, line 283) `#define SYS_SPAWN`
+  - `SYS_TIME` (macro, line 284) `#define SYS_TIME`
+  - `SYS_WRITE` (macro, line 285) `#define SYS_WRITE`
+  - `MINIOS_EABI_MISMATCH` (macro, line 288) `#define MINIOS_EABI_MISMATCH`
+- Imported by: `kernel.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `vga_fb.h`
 
 ## progs/piano/piano.c
 - Layer: utility
@@ -440,124 +441,161 @@
 
 ## progs/vedit/vedit.c
 - Layer: infrastructure
-- Doc: vedit.c - fullscreen mini IDE for MiniOS, hosted on Nuklear.
+- Doc: vedit IDE build and run contract.
 - Language: c
 - Symbols:
-  - `vedit_getc_raw` (function, line 37) `static long vedit_getc_raw(long blocking)`
-  - `vedit_set_title` (function, line 44) `static long vedit_set_title(const char *t)`
-  - `vedit_c_bg` (function, line 100) `static struct nk_color vedit_c_bg(void)`
-  - `vedit_c_gutter` (function, line 101) `static struct nk_color vedit_c_gutter(void)`
-  - `vedit_c_default` (function, line 102) `static struct nk_color vedit_c_default(void)`
-  - `vedit_c_keyword` (function, line 103) `static struct nk_color vedit_c_keyword(void)`
-  - `vedit_c_string` (function, line 104) `static struct nk_color vedit_c_string(void)`
-  - `vedit_c_comment` (function, line 105) `static struct nk_color vedit_c_comment(void)`
-  - `vedit_c_number` (function, line 106) `static struct nk_color vedit_c_number(void)`
-  - `vedit_c_preproc` (function, line 107) `static struct nk_color vedit_c_preproc(void)`
-  - `vedit_c_header` (function, line 108) `static struct nk_color vedit_c_header(void)`
-  - `vedit_c_headtxt` (function, line 109) `static struct nk_color vedit_c_headtxt(void)`
-  - `vedit_c_status` (function, line 110) `static struct nk_color vedit_c_status(void)`
-  - `vedit_c_cursor` (function, line 111) `static struct nk_color vedit_c_cursor(void)`
-  - `vedit_ink` (function, line 112) `static struct nk_color vedit_ink(int col)`
-  - `vedit_set_msg` (function, line 168) `static void vedit_set_msg(const char *s)`
-  - `vedit_is_alpha` (function, line 175) `static int vedit_is_alpha(int c)`
-  - `vedit_is_digit` (function, line 179) `static int vedit_is_digit(int c)`
-  - `vedit_is_wordc` (function, line 183) `static int vedit_is_wordc(int c)`
-  - `vedit_is_kw` (function, line 187) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
-  - `vedit_lang_of` (function, line 204) `static int vedit_lang_of(const char *fname)`
-  - `vedit_lang_name` (function, line 220) `static const char *vedit_lang_name(int lang)`
-  - `vedit_scan_line` (function, line 229) `static int vedit_scan_line(const char *t, int len, int st)`
-  - `vedit_state_at` (function, line 515) `static int vedit_state_at(int row)`
-  - `vedit_row_ptr` (function, line 523) `static char *vedit_row_ptr(int idx)`
-  - `vedit_clamp` (function, line 527) `static void vedit_clamp(void)`
-  - `vedit_follow` (function, line 539) `static void vedit_follow(void)`
-  - `vedit_insert_char` (function, line 552) `static void vedit_insert_char(int c)`
-  - `vedit_delete_line_at` (function, line 578) `static void vedit_delete_line_at(int idx)`
-  - `vedit_backspace` (function, line 589) `static void vedit_backspace(void)`
-  - `vedit_delete_char` (function, line 620) `static void vedit_delete_char(void)`
-  - `vedit_split` (function, line 648) `static void vedit_split(void)`
-  - `vedit_tab` (function, line 696) `static void vedit_tab(void)`
-  - `vedit_find` (function, line 723) `static void vedit_find(const char *needle)`
-  - `vedit_save` (function, line 773) `static int vedit_save(void)`
-  - `vedit_load` (function, line 816) `static int vedit_load(void)`
-  - `vedit_getc_blocking` (function, line 874) `static long vedit_getc_blocking(void)`
-  - `vedit_poll` (function, line 878) `static int vedit_poll(void)`
-  - `vedit_read_key` (function, line 888) `static int vedit_read_key(void)`
-  - `vedit_ansi_for` (function, line 918) `static void vedit_ansi_for(int col)`
-  - `vedit_console_dump` (function, line 926) `static void vedit_console_dump(void)`
-  - `vedit_prompt_open` (function, line 965) `static void vedit_prompt_open(const char *label, int mode)`
-  - `vedit_prompt_find` (function, line 976) `static void vedit_prompt_find(void)`
-  - `vedit_prompt_saveas` (function, line 980) `static void vedit_prompt_saveas(void)`
-  - `vedit_draw_row` (function, line 990) `static void vedit_draw_row(struct nk_command_buffer *canvas,
+  - `vedit_getc_raw` (function, line 21) `static long vedit_getc_raw(long blocking)`
+  - `vedit_set_title` (function, line 30) `static long vedit_set_title(const char *t)`
+  - `vedit_spawn` (function, line 39) `static long vedit_spawn(const char *path, const char *redir, int argc,
+                        co...`
+  - `vedit_vga` (function, line 51) `static long vedit_vga(int on)`
+  - `vedit_c_bg` (function, line 124) `static struct nk_color vedit_c_bg(void)`
+  - `vedit_c_gutter` (function, line 125) `static struct nk_color vedit_c_gutter(void)`
+  - `vedit_c_default` (function, line 126) `static struct nk_color vedit_c_default(void)`
+  - `vedit_c_keyword` (function, line 127) `static struct nk_color vedit_c_keyword(void)`
+  - `vedit_c_string` (function, line 128) `static struct nk_color vedit_c_string(void)`
+  - `vedit_c_comment` (function, line 129) `static struct nk_color vedit_c_comment(void)`
+  - `vedit_c_number` (function, line 130) `static struct nk_color vedit_c_number(void)`
+  - `vedit_c_preproc` (function, line 131) `static struct nk_color vedit_c_preproc(void)`
+  - `vedit_c_header` (function, line 132) `static struct nk_color vedit_c_header(void)`
+  - `vedit_c_headtxt` (function, line 133) `static struct nk_color vedit_c_headtxt(void)`
+  - `vedit_c_status` (function, line 134) `static struct nk_color vedit_c_status(void)`
+  - `vedit_c_cursor` (function, line 135) `static struct nk_color vedit_c_cursor(void)`
+  - `vedit_ink` (function, line 136) `static struct nk_color vedit_ink(int col)`
+  - `vedit_set_msg` (function, line 192) `static void vedit_set_msg(const char *s)`
+  - `vedit_is_alpha` (function, line 199) `static int vedit_is_alpha(int c)`
+  - `vedit_is_digit` (function, line 203) `static int vedit_is_digit(int c)`
+  - `vedit_is_wordc` (function, line 207) `static int vedit_is_wordc(int c)`
+  - `vedit_is_kw` (function, line 211) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
+  - `separators` (function, line 235) `* allow_quote exists because C digit separators (1'000'000) are not
+ * valid in Python/Lua number...`
+  - `vedit_parse_number` (function, line 257) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
+  - `vedit_parse_keyword` (function, line 272) `static int vedit_parse_keyword(const char *t, int len, int i,
+                               cons...`
+  - `vedit_lang_of` (function, line 290) `static int vedit_lang_of(const char *fname)`
+  - `vedit_lang_name` (function, line 307) `static const char *vedit_lang_name(int lang)`
+  - `vedit_scan_line` (function, line 316) `static int vedit_scan_line(const char *t, int len, int st)`
+  - `vedit_state_at` (function, line 497) `static int vedit_state_at(int row)`
+  - `vedit_row_ptr` (function, line 505) `static char *vedit_row_ptr(int idx)`
+  - `vedit_clamp` (function, line 509) `static void vedit_clamp(void)`
+  - `vedit_follow` (function, line 521) `static void vedit_follow(void)`
+  - `vedit_insert_char` (function, line 534) `static void vedit_insert_char(int c)`
+  - `vedit_delete_line_at` (function, line 560) `static void vedit_delete_line_at(int idx)`
+  - `vedit_backspace` (function, line 571) `static void vedit_backspace(void)`
+  - `vedit_delete_char` (function, line 602) `static void vedit_delete_char(void)`
+  - `vedit_split` (function, line 630) `static void vedit_split(void)`
+  - `vedit_tab` (function, line 678) `static void vedit_tab(void)`
+  - `vedit_find` (function, line 705) `static void vedit_find(const char *needle)`
+  - `vedit_save` (function, line 755) `static int vedit_save(void)`
+  - `vedit_load` (function, line 798) `static int vedit_load(void)`
+  - `vedit_has_ext` (function, line 856) `static int vedit_has_ext(const char *fname, const char *ext)`
+  - `vedit_base_of` (function, line 868) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
+  - `vedit_join` (function, line 889) `static int vedit_join(const char *dir, const char *base, const char *ext,
+                      c...`
+  - `vedit_link_fmt` (function, line 906) `static int vedit_link_fmt(const char *s)`
+  - `vedit_print_log` (function, line 919) `static void vedit_print_log(const char *path)`
+  - `vedit_spawn_visible` (function, line 936) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
+                  ...`
+  - `vedit_cmd_exec` (function, line 965) `static void vedit_cmd_exec(const char *out, int kind)`
+  - `vedit_cmd_run` (function, line 978) `static void vedit_cmd_run(void)`
+  - `vedit_cmd_link` (function, line 1027) `static void vedit_cmd_link(const char *fmt)`
+  - `vedit_selftest_build` (function, line 1078) `static int vedit_selftest_build(void)`
+  - `vedit_getc_blocking` (function, line 1137) `static long vedit_getc_blocking(void)`
+  - `vedit_poll` (function, line 1141) `static int vedit_poll(void)`
+  - `vedit_read_key` (function, line 1151) `static int vedit_read_key(void)`
+  - `vedit_ansi_for` (function, line 1181) `static void vedit_ansi_for(int col)`
+  - `vedit_console_dump` (function, line 1188) `static void vedit_console_dump(void)`
+  - `vedit_prompt_open` (function, line 1228) `static void vedit_prompt_open(const char *label, int mode)`
+  - `vedit_prompt_find` (function, line 1239) `static void vedit_prompt_find(void)`
+  - `vedit_prompt_saveas` (function, line 1243) `static void vedit_prompt_saveas(void)`
+  - `vedit_draw_row` (function, line 1253) `static void vedit_draw_row(struct nk_command_buffer *canvas,
                            struct nk...`
-  - `vedit_draw_ui` (function, line 1068) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
+  - `vedit_draw_ui` (function, line 1333) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                     ...`
-  - `vedit_prompt_key` (function, line 1191) `static void vedit_prompt_key(int key)`
-  - `vedit_key` (function, line 1248) `static void vedit_key(int key, int *quit, int *save_and_quit)`
-  - `vedit_sync_title` (function, line 1323) `static void vedit_sync_title(void)`
-  - `vedit_gui_run` (function, line 1333) `static void vedit_gui_run(void)`
-  - `vedit_selftest` (function, line 1404) `static int vedit_selftest(void)`
-  - `main` (function, line 1471) `int main(int argc, char **argv)`
-  - `desktop` (function, line 6) `* window on the desktop (the DOOM/Nuklear/piano pattern), so the shell * stays visible and the desktop keeps working around it. * * Every platform fact comes from minios_abi.h or a syscall, never from`
-  - `text` (function, line 15) `* text (serial only while the gfx mode owns the display). * * Interaction: arrows move, typing inserts, Enter splits with * auto-indent, Tab indents, Backspace/Delete erase and join lines, * Home/End/`
-  - `volatile` (function, line 39) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GETC_RAW), "D"(blocking) : "rcx", "r11", "memory");`
-  - `memcpy` (function, line 172) `memcpy(vedit_msg, s, n);`
-  - `memmove` (function, line 584) `memmove(vedit_row_ptr(k), vedit_row_ptr(k + 1), VEDIT_LINE_MAX);`
-  - `snprintf` (function, line 746) `snprintf(nb, sizeof(nb), "found line %d", r + 1);`
-  - `fclose` (function, line 790) `fclose(f);`
-  - `printf` (function, line 932) `printf("--- %s [%s] %d lines ---\n", vedit_fname, vedit_lang_name(vedit_lang), vedit_count);`
-  - `putchar` (function, line 946) `putchar(l[c]);`
-  - `fflush` (function, line 951) `fflush(stdout);`
-  - `nk_draw_text` (function, line 1013) `nk_draw_text(canvas, nk_rect((float)(x - vedit_gutter_w * vedit_cw), (float)y, (float)(vedit_gutter_w * vedit_cw), (float)vedit_ch), num, (int)strlen(num), font, bg, vedit_c_gutter());`
-  - `nk_fill_rect` (function, line 1019) `nk_fill_rect(canvas, nk_rect((float)x, (float)y, (float)((vedit_cols - vedit_gutter_w) * vedit_cw), (float)vedit_ch), 0, bg);`
-  - `nk_end` (function, line 1095) `nk_end(ctx);`
-  - `nk_sys_vga_mode` (function, line 1344) `nk_sys_vga_mode(1);`
-  - `nk_build_palette` (function, line 1346) `nk_build_palette(pal768);`
-  - `nk_sys_palette` (function, line 1347) `nk_sys_palette(pal768);`
-  - `nk_sys_fb_info` (function, line 1348) `nk_sys_fb_info(&fw, &fh, &fp);`
-  - `nk_input_begin` (function, line 1379) `nk_input_begin(&ctx);`
-  - `nk_input_end` (function, line 1380) `nk_input_end(&ctx);`
-  - `nk_rasterize` (function, line 1382) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 1385) `nk_clear(&ctx);`
-  - `nk_free` (function, line 1398) `nk_free(&ctx);`
-  - `memset` (function, line 1503) `memset(vedit_used, 0, VEDIT_MAX_LINES * sizeof(int));`
-  - `free` (function, line 1520) `free(vedit_pool);`
-  - `VEDIT_MAX_LINES` (macro, line 54) `#define VEDIT_MAX_LINES`
-  - `VEDIT_LINE_MAX` (macro, line 55) `#define VEDIT_LINE_MAX`
-  - `VEDIT_LINE_USED` (macro, line 56) `#define VEDIT_LINE_USED`
-  - `VEDIT_FILE_MAX` (macro, line 57) `#define VEDIT_FILE_MAX`
-  - `VEDIT_FNAME_MAX` (macro, line 58) `#define VEDIT_FNAME_MAX`
-  - `VEDIT_DEFAULT_FILE` (macro, line 59) `#define VEDIT_DEFAULT_FILE`
-  - `VEDIT_MSG_MAX` (macro, line 60) `#define VEDIT_MSG_MAX`
-  - `VEDIT_WORD_MAX` (macro, line 61) `#define VEDIT_WORD_MAX`
-  - `VEDIT_TAB_W` (macro, line 62) `#define VEDIT_TAB_W`
-  - `VEDIT_SEQ_SPINS` (macro, line 63) `#define VEDIT_SEQ_SPINS`
-  - `VEDIT_UI_MEMORY` (macro, line 64) `#define VEDIT_UI_MEMORY`
-  - `VEDIT_LANG_TEXT` (macro, line 67) `#define VEDIT_LANG_TEXT`
-  - `VEDIT_LANG_C` (macro, line 68) `#define VEDIT_LANG_C`
-  - `VEDIT_LANG_PY` (macro, line 69) `#define VEDIT_LANG_PY`
-  - `VEDIT_LANG_LUA` (macro, line 70) `#define VEDIT_LANG_LUA`
-  - `VEDIT_COL_DEFAULT` (macro, line 73) `#define VEDIT_COL_DEFAULT`
-  - `VEDIT_COL_KEYWORD` (macro, line 74) `#define VEDIT_COL_KEYWORD`
-  - `VEDIT_COL_STRING` (macro, line 75) `#define VEDIT_COL_STRING`
-  - `VEDIT_COL_COMMENT` (macro, line 76) `#define VEDIT_COL_COMMENT`
-  - `VEDIT_COL_NUMBER` (macro, line 77) `#define VEDIT_COL_NUMBER`
-  - `VEDIT_COL_PREPROC` (macro, line 78) `#define VEDIT_COL_PREPROC`
-  - `VEDIT_ST_BLOCK` (macro, line 81) `#define VEDIT_ST_BLOCK`
-  - `VEDIT_ST_PY3S` (macro, line 82) `#define VEDIT_ST_PY3S`
-  - `VEDIT_ST_PY3D` (macro, line 83) `#define VEDIT_ST_PY3D`
-  - `VEDIT_ST_LUABLK` (macro, line 84) `#define VEDIT_ST_LUABLK`
-  - `VEDIT_ST_LUASTR` (macro, line 85) `#define VEDIT_ST_LUASTR`
-  - `VEDIT_KEY_UP` (macro, line 88) `#define VEDIT_KEY_UP`
-  - `VEDIT_KEY_DOWN` (macro, line 89) `#define VEDIT_KEY_DOWN`
-  - `VEDIT_KEY_LEFT` (macro, line 90) `#define VEDIT_KEY_LEFT`
-  - `VEDIT_KEY_RIGHT` (macro, line 91) `#define VEDIT_KEY_RIGHT`
-  - `VEDIT_KEY_HOME` (macro, line 92) `#define VEDIT_KEY_HOME`
-  - `VEDIT_KEY_END` (macro, line 93) `#define VEDIT_KEY_END`
-  - `VEDIT_KEY_PGUP` (macro, line 94) `#define VEDIT_KEY_PGUP`
-  - `VEDIT_KEY_PGDN` (macro, line 95) `#define VEDIT_KEY_PGDN`
-  - `VEDIT_KEY_DEL` (macro, line 96) `#define VEDIT_KEY_DEL`
-  - `VEDIT_KEY_ESC` (macro, line 97) `#define VEDIT_KEY_ESC`
-  - `VEDIT_PROMPT_FIND` (macro, line 961) `#define VEDIT_PROMPT_FIND`
-  - `VEDIT_PROMPT_GOTO` (macro, line 962) `#define VEDIT_PROMPT_GOTO`
-  - `VEDIT_PROMPT_NAME` (macro, line 963) `#define VEDIT_PROMPT_NAME`
+  - `vedit_prompt_key` (function, line 1459) `static void vedit_prompt_key(int key)`
+  - `vedit_key` (function, line 1518) `static void vedit_key(int key, int *quit, int *save_and_quit)`
+  - `vedit_sync_title` (function, line 1597) `static void vedit_sync_title(void)`
+  - `vedit_gui_run` (function, line 1607) `static void vedit_gui_run(void)`
+  - `vedit_selftest` (function, line 1678) `static int vedit_selftest(void)`
+  - `main` (function, line 1745) `int main(int argc, char **argv)`
+  - `volatile` (function, line 23) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GETC_RAW), "D"(blocking) : "rcx", "r11", "memory");`
+  - `memcpy` (function, line 196) `memcpy(vedit_msg, s, n);`
+  - `memmove` (function, line 566) `memmove(vedit_row_ptr(k), vedit_row_ptr(k + 1), VEDIT_LINE_MAX);`
+  - `snprintf` (function, line 728) `snprintf(nb, sizeof(nb), "found line %d", r + 1);`
+  - `fclose` (function, line 772) `fclose(f);`
+  - `printf` (function, line 924) `printf("vedit: no output captured\n");`
+  - `fflush` (function, line 932) `fflush(stdout);`
+  - `nk_build_palette` (function, line 949) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 950) `nk_sys_palette(pal768);`
+  - `putchar` (function, line 1208) `putchar(l[c]);`
+  - `nk_draw_text` (function, line 1276) `nk_draw_text(canvas, nk_rect((float)(x - vedit_gutter_w * vedit_cw), (float)y, (float)(vedit_gutter_w * vedit_cw), (float)vedit_ch), num, (int)strlen(num), font, bg, vedit_c_gutter());`
+  - `nk_fill_rect` (function, line 1282) `nk_fill_rect(canvas, nk_rect((float)x, (float)y, (float)((vedit_cols - vedit_gutter_w) * vedit_cw), (float)vedit_ch), 0, bg);`
+  - `nk_end` (function, line 1359) `nk_end(ctx);`
+  - `nk_sys_vga_mode` (function, line 1618) `nk_sys_vga_mode(1);`
+  - `nk_sys_fb_info` (function, line 1622) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `nk_input_begin` (function, line 1653) `nk_input_begin(&ctx);`
+  - `nk_input_end` (function, line 1654) `nk_input_end(&ctx);`
+  - `nk_rasterize` (function, line 1656) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 1659) `nk_clear(&ctx);`
+  - `nk_free` (function, line 1672) `nk_free(&ctx);`
+  - `memset` (function, line 1779) `memset(vedit_used, 0, VEDIT_MAX_LINES * sizeof(int));`
+  - `free` (function, line 1796) `free(vedit_pool);`
+  - `VEDIT_MAX_LINES` (macro, line 60) `#define VEDIT_MAX_LINES`
+  - `VEDIT_LINE_MAX` (macro, line 61) `#define VEDIT_LINE_MAX`
+  - `VEDIT_LINE_USED` (macro, line 62) `#define VEDIT_LINE_USED`
+  - `VEDIT_FILE_MAX` (macro, line 63) `#define VEDIT_FILE_MAX`
+  - `VEDIT_FNAME_MAX` (macro, line 64) `#define VEDIT_FNAME_MAX`
+  - `VEDIT_DEFAULT_FILE` (macro, line 65) `#define VEDIT_DEFAULT_FILE`
+  - `VEDIT_MSG_MAX` (macro, line 66) `#define VEDIT_MSG_MAX`
+  - `VEDIT_WORD_MAX` (macro, line 67) `#define VEDIT_WORD_MAX`
+  - `VEDIT_TAB_W` (macro, line 68) `#define VEDIT_TAB_W`
+  - `VEDIT_SEQ_SPINS` (macro, line 69) `#define VEDIT_SEQ_SPINS`
+  - `VEDIT_UI_MEMORY` (macro, line 70) `#define VEDIT_UI_MEMORY`
+  - `VEDIT_KEY_RUN` (macro, line 71) `#define VEDIT_KEY_RUN`
+  - `VEDIT_KEY_LINK` (macro, line 72) `#define VEDIT_KEY_LINK`
+  - `VEDIT_KEY_DUMP` (macro, line 73) `#define VEDIT_KEY_DUMP`
+  - `VEDIT_TOOL_MINIGCC` (macro, line 74) `#define VEDIT_TOOL_MINIGCC`
+  - `VEDIT_TOOL_LD` (macro, line 75) `#define VEDIT_TOOL_LD`
+  - `VEDIT_TOOL_CVM` (macro, line 76) `#define VEDIT_TOOL_CVM`
+  - `VEDIT_TOOL_LUA` (macro, line 77) `#define VEDIT_TOOL_LUA`
+  - `VEDIT_TOOL_PY` (macro, line 78) `#define VEDIT_TOOL_PY`
+  - `VEDIT_DIR_ASM` (macro, line 79) `#define VEDIT_DIR_ASM`
+  - `VEDIT_DIR_BIN` (macro, line 80) `#define VEDIT_DIR_BIN`
+  - `VEDIT_DIR_CVM` (macro, line 81) `#define VEDIT_DIR_CVM`
+  - `VEDIT_BUILD_LOG` (macro, line 82) `#define VEDIT_BUILD_LOG`
+  - `VEDIT_LINK_ELF` (macro, line 83) `#define VEDIT_LINK_ELF`
+  - `VEDIT_LINK_CVM` (macro, line 84) `#define VEDIT_LINK_CVM`
+  - `VEDIT_STATUS_MAX` (macro, line 85) `#define VEDIT_STATUS_MAX`
+  - `VEDIT_BASE_MAX` (macro, line 86) `#define VEDIT_BASE_MAX`
+  - `VEDIT_PATH_MAX` (macro, line 87) `#define VEDIT_PATH_MAX`
+  - `VEDIT_LOG_TAIL` (macro, line 88) `#define VEDIT_LOG_TAIL`
+  - `VEDIT_LANG_TEXT` (macro, line 91) `#define VEDIT_LANG_TEXT`
+  - `VEDIT_LANG_C` (macro, line 92) `#define VEDIT_LANG_C`
+  - `VEDIT_LANG_PY` (macro, line 93) `#define VEDIT_LANG_PY`
+  - `VEDIT_LANG_LUA` (macro, line 94) `#define VEDIT_LANG_LUA`
+  - `VEDIT_COL_DEFAULT` (macro, line 97) `#define VEDIT_COL_DEFAULT`
+  - `VEDIT_COL_KEYWORD` (macro, line 98) `#define VEDIT_COL_KEYWORD`
+  - `VEDIT_COL_STRING` (macro, line 99) `#define VEDIT_COL_STRING`
+  - `VEDIT_COL_COMMENT` (macro, line 100) `#define VEDIT_COL_COMMENT`
+  - `VEDIT_COL_NUMBER` (macro, line 101) `#define VEDIT_COL_NUMBER`
+  - `VEDIT_COL_PREPROC` (macro, line 102) `#define VEDIT_COL_PREPROC`
+  - `VEDIT_ST_BLOCK` (macro, line 105) `#define VEDIT_ST_BLOCK`
+  - `VEDIT_ST_PY3S` (macro, line 106) `#define VEDIT_ST_PY3S`
+  - `VEDIT_ST_PY3D` (macro, line 107) `#define VEDIT_ST_PY3D`
+  - `VEDIT_ST_LUABLK` (macro, line 108) `#define VEDIT_ST_LUABLK`
+  - `VEDIT_ST_LUASTR` (macro, line 109) `#define VEDIT_ST_LUASTR`
+  - `VEDIT_KEY_UP` (macro, line 112) `#define VEDIT_KEY_UP`
+  - `VEDIT_KEY_DOWN` (macro, line 113) `#define VEDIT_KEY_DOWN`
+  - `VEDIT_KEY_LEFT` (macro, line 114) `#define VEDIT_KEY_LEFT`
+  - `VEDIT_KEY_RIGHT` (macro, line 115) `#define VEDIT_KEY_RIGHT`
+  - `VEDIT_KEY_HOME` (macro, line 116) `#define VEDIT_KEY_HOME`
+  - `VEDIT_KEY_END` (macro, line 117) `#define VEDIT_KEY_END`
+  - `VEDIT_KEY_PGUP` (macro, line 118) `#define VEDIT_KEY_PGUP`
+  - `VEDIT_KEY_PGDN` (macro, line 119) `#define VEDIT_KEY_PGDN`
+  - `VEDIT_KEY_DEL` (macro, line 120) `#define VEDIT_KEY_DEL`
+  - `VEDIT_KEY_ESC` (macro, line 121) `#define VEDIT_KEY_ESC`
+  - `VEDIT_PROMPT_FIND` (macro, line 1223) `#define VEDIT_PROMPT_FIND`
+  - `VEDIT_PROMPT_GOTO` (macro, line 1224) `#define VEDIT_PROMPT_GOTO`
+  - `VEDIT_PROMPT_NAME` (macro, line 1225) `#define VEDIT_PROMPT_NAME`
+  - `VEDIT_PROMPT_LINK` (macro, line 1226) `#define VEDIT_PROMPT_LINK`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`

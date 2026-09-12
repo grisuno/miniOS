@@ -72,40 +72,49 @@
 
 ## drivers/kbd.c
 - Layer: infrastructure
-- Doc: include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h"  ===============================================
+- Doc: include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h" include "wm_events.h"  =========================
 - Language: c
 - Symbols:
-  - `kbd_get_layout` (function, line 96) `int kbd_get_layout(void)`
-  - `kbd_set_layout` (function, line 98) `void kbd_set_layout(int layout)`
-  - `kbd_toggle_layout` (function, line 102) `void kbd_toggle_layout(void)`
-  - `kbd_q_push` (function, line 128) `void kbd_q_push(unsigned char c)`
-  - `kbd_raw_push_internal` (function, line 135) `static void kbd_raw_push_internal(unsigned char c)`
-  - `kbd_q_empty` (function, line 142) `int kbd_q_empty(void)`
-  - `kbd_q_pop` (function, line 144) `int kbd_q_pop(void)`
-  - `kbd_available` (function, line 151) `int kbd_available(void)`
-  - `kbd_raw_mode_get` (function, line 157) `int kbd_raw_mode_get(void)`
-  - `kbd_raw_mode_set` (function, line 159) `void kbd_raw_mode_set(int on)`
-  - `kbd_raw_empty` (function, line 160) `int kbd_raw_empty(void)`
-  - `kbd_raw_pop` (function, line 161) `int kbd_raw_pop(void)`
-  - `kbd_raw_push_byte` (function, line 167) `void kbd_raw_push_byte(unsigned char c)`
-  - `kbd_e0_get` (function, line 168) `int kbd_e0_get(void)`
-  - `kbd_e0_set` (function, line 169) `void kbd_e0_set(int v)`
-  - `kbd_flush_all` (function, line 170) `void kbd_flush_all(void)`
-  - `kbd_raw_flush` (function, line 177) `void kbd_raw_flush(void)`
-  - `raw_track_mods` (function, line 197) `static int raw_track_mods(int code, int brk, int e0)`
-  - `wm_raw_combo` (function, line 206) `static int wm_raw_combo(int code, int e0)`
-  - `bare` (function, line 247) `* second byte is not a WM combo is delivered bare (keypad alias): games map
+  - `kbd_get_layout` (function, line 97) `int kbd_get_layout(void)`
+  - `kbd_set_layout` (function, line 99) `void kbd_set_layout(int layout)`
+  - `kbd_toggle_layout` (function, line 103) `void kbd_toggle_layout(void)`
+  - `kbd_drop_counts` (function, line 130) `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw)`
+  - `kbd_q_push` (function, line 143) `void kbd_q_push(unsigned char c)`
+  - `kbd_raw_push_internal` (function, line 153) `static void kbd_raw_push_internal(unsigned char c)`
+  - `kbd_q_empty` (function, line 163) `int kbd_q_empty(void)`
+  - `kbd_q_pop` (function, line 165) `int kbd_q_pop(void)`
+  - `kbd_available` (function, line 172) `int kbd_available(void)`
+  - `kbd_raw_mode_get` (function, line 178) `int kbd_raw_mode_get(void)`
+  - `kbd_raw_mode_set` (function, line 180) `void kbd_raw_mode_set(int on)`
+  - `kbd_raw_empty` (function, line 181) `int kbd_raw_empty(void)`
+  - `kbd_raw_pop` (function, line 182) `int kbd_raw_pop(void)`
+  - `kbd_raw_push_byte` (function, line 188) `void kbd_raw_push_byte(unsigned char c)`
+  - `kbd_e0_get` (function, line 189) `int kbd_e0_get(void)`
+  - `kbd_e0_set` (function, line 190) `void kbd_e0_set(int v)`
+  - `kbd_flush_all` (function, line 191) `void kbd_flush_all(void)`
+  - `kbd_raw_flush` (function, line 198) `void kbd_raw_flush(void)`
+  - `raw_track_mods` (function, line 218) `static int raw_track_mods(int code, int brk, int e0)`
+  - `wm_combo_dispatch` (function, line 229) `static int wm_combo_dispatch(int action, int zone)`
+  - `wm_raw_combo` (function, line 280) `static int wm_raw_combo(int code, int e0)`
+  - `bare` (function, line 300) `* second byte is not a WM combo is delivered bare (keypad alias): games map
  * both, so play surv...`
-  - `kbd_read` (function, line 270) `int kbd_read(void)`
-  - `kbd_reset_for_shell` (function, line 426) `void kbd_reset_for_shell(void)`
-  - `volatile` (function, line 154) `__asm__ volatile("inb $0x64, %0" : "=a"(s));`
-  - `paths` (function, line 187) `* keeps the modifier state in sync on both paths (the old raw branch never * tracked Alt/Super, so a modifier held across raw mode stuck forever);`
-  - `too` (function, line 192) `* too (DOOM strafes with Alt+arrows);`
-  - `vga_fb_snap_window` (function, line 224) `vga_fb_snap_window(zone);`
-  - `KBD_QUEUE_LEN` (macro, line 117) `#define KBD_QUEUE_LEN`
-  - `KBD_SCAN_DEL` (macro, line 119) `#define KBD_SCAN_DEL`
-  - `KBD_RAW_LEN` (macro, line 123) `#define KBD_RAW_LEN`
-- Depends on: `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`
+  - `kbd_read` (function, line 323) `int kbd_read(void)`
+  - `kbd_reset_for_shell` (function, line 455) `void kbd_reset_for_shell(void)`
+  - `volatile` (function, line 175) `__asm__ volatile("inb $0x64, %0" : "=a"(s));`
+  - `paths` (function, line 208) `* keeps the modifier state in sync on both paths (the old raw branch never * tracked Alt/Super, so a modifier held across raw mode stuck forever);`
+  - `too` (function, line 213) `* too (DOOM strafes with Alt+arrows);`
+  - `vga_fb_focus_next` (function, line 235) `vga_fb_focus_next();`
+  - `vga_fb_tile_all` (function, line 239) `vga_fb_tile_all();`
+  - `vga_fb_toggle_fullscreen` (function, line 243) `vga_fb_toggle_fullscreen();`
+  - `vga_fb_toggle_minimize` (function, line 247) `vga_fb_toggle_minimize();`
+  - `vga_fb_close_active` (function, line 251) `vga_fb_close_active();`
+  - `vga_fb_snap_window` (function, line 255) `vga_fb_snap_window(zone);`
+  - `vga_fb_resize` (function, line 259) `vga_fb_resize(-1, 0);`
+  - `vga_fb_reset_default` (function, line 275) `vga_fb_reset_default();`
+  - `KBD_QUEUE_LEN` (macro, line 118) `#define KBD_QUEUE_LEN`
+  - `KBD_SCAN_DEL` (macro, line 120) `#define KBD_SCAN_DEL`
+  - `KBD_RAW_LEN` (macro, line 138) `#define KBD_RAW_LEN`
+- Depends on: `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`
 
 ## drivers/kbd.h
 - Layer: infrastructure
@@ -121,16 +130,17 @@
   - `kbd_q_empty` (function, line 26) `int kbd_q_empty(void);`
   - `kbd_q_pop` (function, line 27) `int kbd_q_pop(void);`
   - `kbd_q_push` (function, line 28) `void kbd_q_push(unsigned char c);`
-  - `kbd_raw_mode_get` (function, line 31) `int kbd_raw_mode_get(void);`
-  - `kbd_raw_mode_set` (function, line 32) `void kbd_raw_mode_set(int on);`
-  - `kbd_raw_empty` (function, line 33) `int kbd_raw_empty(void);`
-  - `kbd_raw_pop` (function, line 34) `int kbd_raw_pop(void);`
-  - `kbd_raw_push_byte` (function, line 35) `void kbd_raw_push_byte(unsigned char c);`
-  - `kbd_e0_get` (function, line 36) `int kbd_e0_get(void);`
-  - `kbd_e0_set` (function, line 37) `void kbd_e0_set(int v);`
-  - `kbd_flush_all` (function, line 38) `void kbd_flush_all(void);`
-  - `kbd_raw_flush` (function, line 39) `void kbd_raw_flush(void);`
-  - `kbd_sys_raw_filter` (function, line 46) `int kbd_sys_raw_filter(unsigned char sc);`
+  - `kbd_drop_counts` (function, line 31) `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw);`
+  - `kbd_raw_mode_get` (function, line 34) `int kbd_raw_mode_get(void);`
+  - `kbd_raw_mode_set` (function, line 35) `void kbd_raw_mode_set(int on);`
+  - `kbd_raw_empty` (function, line 36) `int kbd_raw_empty(void);`
+  - `kbd_raw_pop` (function, line 37) `int kbd_raw_pop(void);`
+  - `kbd_raw_push_byte` (function, line 38) `void kbd_raw_push_byte(unsigned char c);`
+  - `kbd_e0_get` (function, line 39) `int kbd_e0_get(void);`
+  - `kbd_e0_set` (function, line 40) `void kbd_e0_set(int v);`
+  - `kbd_flush_all` (function, line 41) `void kbd_flush_all(void);`
+  - `kbd_raw_flush` (function, line 42) `void kbd_raw_flush(void);`
+  - `kbd_sys_raw_filter` (function, line 49) `int kbd_sys_raw_filter(unsigned char sc);`
   - `KBD_H` (macro, line 2) `#define KBD_H`
   - `KBD_LAYOUT_EN` (macro, line 6) `#define KBD_LAYOUT_EN`
   - `KBD_LAYOUT_ES` (macro, line 7) `#define KBD_LAYOUT_ES`

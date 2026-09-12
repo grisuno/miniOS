@@ -71,6 +71,18 @@
   - `TRUSTED_LEN` (macro, line 82) `#define TRUSTED_LEN`
 - Depends on: `kernel/string.c`, `vma.h`
 
+## tests/test_freedom_wl.c
+- Layer: testing
+- Doc: test_freedom_wl - host suite for the Wayland to MiniOS mapping.
+- Language: c
+- Symbols:
+  - `check_host` (function, line 12) `static int check_host(int cond, const char *name)`
+  - `main` (function, line 22) `int main(void)`
+  - `printf` (function, line 14) `printf("FAIL: %s\n", name);`
+  - `wl_copy` (function, line 108) `wl_copy(rh, "a.b", 64L);`
+  - `FREEDOM_WL_HOST_TEST` (macro, line 7) `#define FREEDOM_WL_HOST_TEST`
+- Depends on: `progs/src/freedom_wl.c`
+
 ## tests/test_futex.c
 - Layer: testing
 - Doc: Docstring: Host test for kernel/futex.c (make test-futex).
@@ -242,6 +254,23 @@
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `tick.h`
 
+## tests/test_vedit_build.c
+- Layer: testing
+- Doc: Docstring: Host test for the vedit IDE build contract (make test-vedit).
+- Language: c
+- Symbols:
+  - `t_has_ext` (function, line 30) `static int t_has_ext(const char *fname, const char *ext)`
+  - `t_base_of` (function, line 41) `static int t_base_of(const char *fname, char *dst, size_t cap)`
+  - `t_join` (function, line 61) `static int t_join(const char *dir, const char *base, const char *ext,
+                  char *dst...`
+  - `t_link_fmt` (function, line 77) `static int t_link_fmt(const char *s)`
+  - `main` (function, line 107) `int main(void)`
+  - `fprintf` (function, line 27) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `CHECK` (function, line 111) `CHECK(t_lang_of("untitled") == 1, "untitled highlights as C");`
+  - `printf` (function, line 146) `printf("vedit build host test FAIL (%d)\n", failures);`
+  - `CHECK` (macro, line 23) `#define CHECK(cond, msg)`
+- Depends on: `kernel/string.c`
+
 ## tests/test_vma.c
 - Layer: testing
 - Doc: Host-side unit test for the VMA red-black tree (vma.c).
@@ -278,3 +307,16 @@
   - `vma_tree_find` (function, line 43) `vma_tree_find(vma_live_root, 0x500000ul + (unsigned long)i * 0x1000);`
   - `LIST_MAX` (macro, line 20) `#define LIST_MAX`
 - Depends on: `kernel/time.c`, `vma.h`
+
+## tests/test_wm.c
+- Layer: testing
+- Doc: Docstring: Host test for wm_geom.h and wm_events.h (make test-wm).
+- Language: c
+- Symbols:
+  - `main` (function, line 26) `int main(void)`
+  - `fprintf` (function, line 23) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `CHECK` (function, line 40) `CHECK(gcfg.font_w == 8, "geom config carries font width");`
+  - `wm_clamp_point` (function, line 85) `wm_clamp_point(&cx, &cy, 800, 600);`
+  - `printf` (function, line 304) `printf("wm: ok\n");`
+  - `CHECK` (macro, line 19) `#define CHECK(cond, msg)`
+- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`

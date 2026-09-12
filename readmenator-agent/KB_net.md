@@ -86,43 +86,40 @@
 - Doc: include "kernel.h" include "net.h" include "rtl8139.h"
 - Language: c
 - Symbols:
-  - `outb_port` (function, line 23) `static void outb_port(unsigned short port, unsigned char val)`
-  - `inb_port` (function, line 27) `static unsigned char inb_port(unsigned short port)`
-  - `outw_port` (function, line 33) `static void outw_port(unsigned short port, unsigned short val)`
-  - `outl_port` (function, line 37) `static void outl_port(unsigned short port, unsigned int val)`
-  - `inw_port` (function, line 41) `static unsigned short inw_port(unsigned short port)`
-  - `inl_port` (function, line 47) `static unsigned int inl_port(unsigned short port)`
-  - `rtl_reg8` (function, line 53) `static unsigned char rtl_reg8(unsigned short off)`
-  - `rtl_reg8_w` (function, line 55) `static void rtl_reg8_w(unsigned short off, unsigned char v)`
-  - `rtl_reg16` (function, line 56) `static unsigned short rtl_reg16(unsigned short off)`
-  - `rtl_reg16_w` (function, line 57) `static void rtl_reg16_w(unsigned short off, unsigned short v)`
-  - `rtl_reg32` (function, line 58) `static unsigned int rtl_reg32(unsigned short off)`
-  - `rtl_reg32_w` (function, line 59) `static void rtl_reg32_w(unsigned short off, unsigned int v)`
-  - `pci_read32` (function, line 69) `static unsigned int pci_read32(unsigned bus, unsigned dev, unsigned func, unsigned reg)`
-  - `pci_write32` (function, line 74) `static void pci_write32(unsigned bus, unsigned dev, unsigned func, unsigned reg, unsigned int val)`
-  - `rtl_find` (function, line 79) `static unsigned short rtl_find(void)`
-  - `rtl_rdtsc` (function, line 101) `static unsigned long rtl_rdtsc(void)`
-  - `net_time_init` (function, line 107) `static void net_time_init(void)`
-  - `net_time_ms` (function, line 121) `unsigned long net_time_ms(void)`
-  - `rtl_present` (function, line 137) `int rtl_present(void)`
-  - `rtl_reset` (function, line 141) `static void rtl_reset(void)`
-  - `rtl_init` (function, line 150) `void rtl_init(void)`
-  - `rtl_send` (function, line 181) `int rtl_send(const unsigned char *frame, unsigned len)`
-  - `rtl_get_mac` (function, line 209) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
-  - `rtl_iobase` (function, line 214) `unsigned short rtl_iobase(void)`
-  - `rtl_counters` (function, line 218) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
-  - `rtl_rx_frame_wrapped` (function, line 226) `static void rtl_rx_frame_wrapped(unsigned length)`
-  - `rtl_poll` (function, line 236) `void rtl_poll(void)`
-  - `volatile` (function, line 25) `__asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));`
-  - `net_rx_handle_frame` (function, line 234) `net_rx_handle_frame(rtl_rx_scratch, n);`
-  - `RTL_REG_CR` (macro, line 60) `#define RTL_REG_CR`
-  - `RTL_REG_TSD0` (macro, line 62) `#define RTL_REG_TSD0`
-  - `RTL_REG_TSAD0` (macro, line 63) `#define RTL_REG_TSAD0`
-  - `RTL_REG_RBSTART` (macro, line 64) `#define RTL_REG_RBSTART`
-  - `RTL_REG_CAPR` (macro, line 65) `#define RTL_REG_CAPR`
-  - `RTL_REG_CBR` (macro, line 66) `#define RTL_REG_CBR`
-  - `RTL_REG_9346CR` (macro, line 67) `#define RTL_REG_9346CR`
-  - `RTL_REG_CONFIG1` (macro, line 68) `#define RTL_REG_CONFIG1`
+  - `outl_port` (function, line 26) `static void outl_port(unsigned short port, unsigned int val)`
+  - `inl_port` (function, line 29) `static unsigned int inl_port(unsigned short port)`
+  - `rtl_reg8` (function, line 35) `static unsigned char rtl_reg8(unsigned short off)`
+  - `rtl_reg8_w` (function, line 37) `static void rtl_reg8_w(unsigned short off, unsigned char v)`
+  - `rtl_reg16` (function, line 38) `static unsigned short rtl_reg16(unsigned short off)`
+  - `rtl_reg16_w` (function, line 39) `static void rtl_reg16_w(unsigned short off, unsigned short v)`
+  - `rtl_reg32` (function, line 40) `static unsigned int rtl_reg32(unsigned short off)`
+  - `rtl_reg32_w` (function, line 41) `static void rtl_reg32_w(unsigned short off, unsigned int v)`
+  - `pci_read32` (function, line 51) `static unsigned int pci_read32(unsigned bus, unsigned dev, unsigned func, unsigned reg)`
+  - `pci_write32` (function, line 56) `static void pci_write32(unsigned bus, unsigned dev, unsigned func, unsigned reg, unsigned int val)`
+  - `rtl_find` (function, line 61) `static unsigned short rtl_find(void)`
+  - `rtl_rdtsc` (function, line 83) `static unsigned long rtl_rdtsc(void)`
+  - `net_time_init` (function, line 89) `static void net_time_init(void)`
+  - `net_time_ms` (function, line 103) `unsigned long net_time_ms(void)`
+  - `rtl_present` (function, line 119) `int rtl_present(void)`
+  - `rtl_reset` (function, line 123) `static void rtl_reset(void)`
+  - `rtl_init` (function, line 132) `void rtl_init(void)`
+  - `rtl_send` (function, line 163) `int rtl_send(const unsigned char *frame, unsigned len)`
+  - `rtl_get_mac` (function, line 191) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
+  - `rtl_iobase` (function, line 196) `unsigned short rtl_iobase(void)`
+  - `rtl_counters` (function, line 200) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
+  - `rtl_rx_frame_wrapped` (function, line 208) `static void rtl_rx_frame_wrapped(unsigned length)`
+  - `rtl_poll` (function, line 218) `void rtl_poll(void)`
+  - `volatile` (function, line 27) `__asm__ volatile("outl %0, %1" : : "a"(val), "Nd"(port));`
+  - `outb` (function, line 92) `outb(0x61, (unsigned char)((inb(0x61) & 0x0F) | 0x01));`
+  - `net_rx_handle_frame` (function, line 216) `net_rx_handle_frame(rtl_rx_scratch, n);`
+  - `RTL_REG_CR` (macro, line 42) `#define RTL_REG_CR`
+  - `RTL_REG_TSD0` (macro, line 44) `#define RTL_REG_TSD0`
+  - `RTL_REG_TSAD0` (macro, line 45) `#define RTL_REG_TSAD0`
+  - `RTL_REG_RBSTART` (macro, line 46) `#define RTL_REG_RBSTART`
+  - `RTL_REG_CAPR` (macro, line 47) `#define RTL_REG_CAPR`
+  - `RTL_REG_CBR` (macro, line 48) `#define RTL_REG_CBR`
+  - `RTL_REG_9346CR` (macro, line 49) `#define RTL_REG_9346CR`
+  - `RTL_REG_CONFIG1` (macro, line 50) `#define RTL_REG_CONFIG1`
 - Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
 
 ## net/rtl8139.h

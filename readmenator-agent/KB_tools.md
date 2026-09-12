@@ -211,3 +211,11 @@
 - Language: sh
 - Symbols:
   - `fail_msg` (function, line 45)
+
+## tools/wm_scoped.sh
+- Layer: utility
+- Doc: Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs host WM unit tests, rebuilds touched kerne
+- Language: sh
+- Symbols:
+  - `say` (function, line 8)
+  - `die` (function, line 9)
