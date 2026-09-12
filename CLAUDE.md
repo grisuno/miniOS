@@ -1494,7 +1494,12 @@ keyboard and wheel scroll. A Wayland surface becomes the Nuklear
 back-buffer window (`MINIOS_NK_W`x`MINIOS_NK_H`), present routes through
 `GFX_PRESENT` with `BUF_NK`, title through `GFX_SET_TITLE`, pointer through
 `SYS_MOUSE`, keyboard through `SYS_KBD`. Keysyms translate from PS/2 Set 1,
-dirty rects clamp to the surface, UTF-8 sanitizes fail-closed. Every tunable
+dirty rects clamp to the surface, UTF-8 sanitizes fail-closed. The browser
+uploads its 768-byte graphics palette through `SYS_PALETTE` before every
+present (indices 0-14 match the desktop palette, the rest mirror the Nuklear
+hybrid ramp), so the terminal-style page stays visible on true-color VBE modes
+instead of rendering black on black through the kernel gray-ramp default.
+Every tunable
 lives in `FreedomWlConfig`, every address comes from `minios_abi.h`, no
 absolute paths. `FREEDOM_DIR` (`../FreeDom`, fifth sibling repo) is cloned by
 `make sources` and never touched when present. MiniFS grows to 768 MB
@@ -1505,8 +1510,33 @@ disk-only and moves no memory address. Proof: `make test-freedom-wl` (host),
 (<n> bytes)` (live boot: README is 3193 bytes and `gfx frames` climbs 0 to
 1; `google.com` chases to `www.google.com` over real TLS and renders whole
 at 83 KB against the 256 KB body cap), five mutants (clip, https port,
-title, keysym, uname) die in `mutate.sh`.
+title, keysym, uname) die in `mutate.sh`, plus the palette-bg mutant dies
+in the host suite (`palette bg terminal`).
 See ADR-0019.
+
+### Real FreeDom browser (`freedomui`)
+`bin/freedomui` is the real FreeDom engine on MiniOS, built exactly like
+DOOM and Quake 2: host gcc `-static -no-pie` links the engine core
+(`url`, `link_nav`, `html_parse` over Lexbor, `ui_layout`) from the
+sibling `../FreeDom` checkout with the platform layer
+`progs/freedomui/freedomui_minios.c`, and the ELF ships on MiniFS. Every
+Wayland and Cairo call is replaced in that one file: the NK back-buffer
+window is the surface, `GFX_PRESENT` with `BUF_NK` presents, `GFX_SET_TITLE`
+titles, `SYS_MOUSE`/`SYS_KBD` feed input, `SYS_PALETTE` uploads the hybrid
+palette before every present (same table as Nuklear, so no black window on
+true-color VBE), `SYS_TIME` paces, `VGA_MODE` claims the display, and fetch
+runs over the socket syscalls with DNS plus the ring-3 TLS engine. Parsing
+goes through `hp_parse` with secure defaults and layout through
+`ui_wrap_text`, so what renders is engine output, not a rewritten filter.
+Out of scope for v1: JS, images, video, sandbox confinement, persistence.
+Build is conditional (`FREEDOMUI_AVAILABLE`, sibling plus static Lexbor)
+like `Q2G_AVAILABLE`. Proof: `make test-freedomui` (host, omnibox plus
+Lexbor parse plus wrap), `freedomui --selftest` prints
+`freedomui: frame ok (800x360)` (BDD), `freedomui --once <url>` fetches and
+presents with `freedomui: <host> (<n> bytes, <m> elems)` (live boot proves
+`gfx frames` climbs 0 to 1), two mutants (palette-bg, omnibox-kind) die in
+`mutate.sh`.
+See ADR-0021.
 
 ### Ramdisk names
 File names are at most `RAMDISK_FNAME_LEN - 1` characters. Names may
@@ -2344,6 +2374,7 @@ python3 tools/test_gui_fashion.py  # QMP pixel proof: one cursor, stable frames,
 make test-tls       # host-side crypto + full-handshake suite green
 make test-vma       # host-side VMA red-black tree suite green
 make test-freedom-wl  # Wayland-to-MiniOS mapping suite green (ADR-0019)
+make test-freedomui   # real FreeDom engine backend suite green (ADR-0021)
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
@@ -2793,6 +2824,7 @@ python3 tools/test_gui_fashion.py  # QMP pixel proof: one cursor, stable frames,
 make test-tls               # host-side crypto + handshake suite
 make test-vma               # host-side VMA red-black tree suite
 make test-freedom-wl  # Wayland-to-MiniOS mapping suite green (ADR-0019)
+make test-freedomui   # real FreeDom engine backend suite green (ADR-0021)
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green

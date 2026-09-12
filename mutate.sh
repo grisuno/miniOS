@@ -90,6 +90,7 @@ SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c"
 # fxsave/fxrstor in the tree for days and poisoned every later boot).
 SOURCES="$SOURCES arch/x86/ctx_sw.S progs/minios_abi.h ktime.h randmix.h sched.h progs/src/mthreads.h"
 SOURCES="$SOURCES progs/src/freedom_wl.c progs/vedit/vedit.c"
+SOURCES="$SOURCES progs/freedomui/freedomui_minios.c tests/test_freedomui.c"
 # Mechanism: SOURCES is the backup/restore allowlist, not documentation.
 # Every file named by the mutation table MUST appear here, or a mutant
 # applied to it is never restored and leaks into the tree (and stacks
@@ -225,6 +226,9 @@ freedom-wl-clip-origin-sign | s/\*w += \*x;/\*w -= *x;/ | progs/src/freedom_wl.c
 freedom-wl-https-port | s/*port = c->port_https;/*port = c->port_http;/ | progs/src/freedom_wl.c
 freedom-wl-title-bound-lost | s/if (n < 0L || n > c->title_max) {/if (n < 0L) {/ | progs/src/freedom_wl.c
 freedom-wl-keysym-enter-lost | s/if (make == 0x1CL) {/if (make == 0x1DL) {/ | progs/src/freedom_wl.c
+freedomui-palette-bg-black | s/{15, 15, 15}, {0, 220, 0},/{0, 0, 0}, {0, 0, 0},/ | progs/freedomui/freedomui_minios.c
+freedomui-omnibox-kind-flip | s/if (kind != 0) {/if (kind != 1) {/ | progs/freedomui/freedomui_minios.c
+freedom-wl-palette-bg-black | s/{15, 15, 15}, {0, 220, 0},/{0, 0, 0}, {0, 0, 0},/ | progs/src/freedom_wl.c
 vedit-untitled-not-c | s/    return VEDIT_LANG_C;/    return VEDIT_LANG_TEXT;/ | progs/vedit/vedit.c
 vedit-link-elf-rejected | s/if (e\\[k\\] == 0 \\&\\& s\\[k\\] == 0) return 1;/if (e[k] == 0 \&\& s[k] == 0) return 0;/ | progs/vedit/vedit.c
 vedit-asm-dir-broken | s/#define VEDIT_DIR_ASM \"\/asm\//\#define VEDIT_DIR_ASM \"\/asx\// | progs/vedit/vedit.c
@@ -381,6 +385,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         progs/src/freedom_wl.c)
             make -C "$HERE" test-freedom-wl > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/freedomui/freedomui_minios.c|tests/test_freedomui.c)
+            make -C "$HERE" test-freedomui > "$BACKUP/suite.log" 2>&1
             ;;
         tests/test_paint.c)
             make -C "$HERE" test-paint > "$BACKUP/suite.log" 2>&1

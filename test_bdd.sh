@@ -1196,6 +1196,15 @@ poweroff"
 expect "freedom_wl: 10.0.2.2 ("
 refute "UNIMPL"
 
+scenario "freedomui selftest parses through the real engine and presents" "freedomui --selftest
+poweroff"
+expect "freedomui: frame ok (800x360)"
+
+scenario "freedomui fetches a page and presents it" "freedomui --once http://10.0.2.2:8899/README.txt
+poweroff"
+expect "freedomui: 10.0.2.2 ("
+refute "UNIMPL"
+
 scenario "nuklear compiles a demo graph to cvm and runs it" "nuklear --demo cvm/demo.cvm
 run cvm/demo.cvm
 poweroff"

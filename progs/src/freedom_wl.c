@@ -983,6 +983,71 @@ static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off
     return pos;
 }
 
+/** Build the 768-byte graphics palette for the NK back-buffer window.
+ *
+ * Indices 0-14 exactly match the desktop palette in progs/nuklear/nuklear_minios.c
+ * so the desktop behind the window is never recolored; 15-230 carry a 6x6x6
+ * RGB cube, 231-241 carry grays and 242-255 carry saturated accents. Without
+ * this upload the kernel expands the back-buffer through its gray-ramp default
+ * (index 6 and 7 both near black), so the terminal-style page renders as black
+ * on black on true-color VBE modes. Fail-closed on null or short buffers.
+ */
+static long freedom_wl_build_palette(unsigned char *pal, long cap) {
+    static const unsigned char desk[15][3] = {
+        {0, 0, 0}, {15, 15, 50}, {100, 100, 110}, {255, 255, 255},
+        {60, 90, 140}, {255, 255, 255}, {15, 15, 15}, {0, 220, 0},
+        {0, 160, 0}, {180, 180, 190}, {255, 255, 255}, {30, 30, 40},
+        {100, 140, 220}, {60, 60, 70}, {140, 140, 155}
+    };
+    static const unsigned char grays[11] = {0, 25, 51, 76, 102, 127, 153, 178, 204, 229, 255};
+    static const unsigned char accents[14][3] = {
+        {255, 0, 0}, {0, 255, 0}, {0, 0, 255}, {255, 255, 0},
+        {0, 255, 255}, {255, 0, 255}, {255, 128, 0}, {128, 0, 255},
+        {255, 0, 128}, {0, 128, 255}, {128, 255, 0}, {255, 128, 128},
+        {128, 255, 128}, {128, 128, 255}
+    };
+    long idx;
+    long r;
+    long g;
+    long b;
+    long i;
+    if (!pal || cap < 768L) {
+        return -1L;
+    }
+    for (i = 0L; i < 15L; i++) {
+        pal[i * 3L] = desk[i][0];
+        pal[i * 3L + 1L] = desk[i][1];
+        pal[i * 3L + 2L] = desk[i][2];
+    }
+    idx = 15L;
+    for (r = 0L; r < 6L; r++) {
+        for (g = 0L; g < 6L; g++) {
+            for (b = 0L; b < 6L; b++) {
+                pal[idx * 3L] = (unsigned char)(r * 51L);
+                pal[idx * 3L + 1L] = (unsigned char)(g * 51L);
+                pal[idx * 3L + 2L] = (unsigned char)(b * 51L);
+                idx++;
+            }
+        }
+    }
+    for (i = 0L; i < 11L; i++) {
+        pal[idx * 3L] = grays[i];
+        pal[idx * 3L + 1L] = grays[i];
+        pal[idx * 3L + 2L] = grays[i];
+        idx++;
+    }
+    for (i = 0L; i < 14L; i++) {
+        pal[idx * 3L] = accents[i][0];
+        pal[idx * 3L + 1L] = accents[i][1];
+        pal[idx * 3L + 2L] = accents[i][2];
+        idx++;
+    }
+    if (idx != 256L) {
+        return -1L;
+    }
+    return 0L;
+}
+
 #ifndef FREEDOM_WL_HOST_TEST
 /** Runtime page buffers. */
 static char w_host[WL_HOST_MAX];
@@ -1009,6 +1074,13 @@ static long freedom_wl_sys_present(long buf, long origin) {
 static long freedom_wl_sys_title(char *t) {
     long ret;
     __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_SET_TITLE), "D"(t) : "rcx", "r11", "memory");
+    return ret;
+}
+
+/** Upload the 768-byte graphics palette before presenting indexed pixels. */
+static long freedom_wl_sys_palette(unsigned char *pal) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_PALETTE), "D"(pal) : "rcx", "r11", "memory");
     return ret;
 }
 
@@ -1383,8 +1455,12 @@ static long wl_render(FreedomWlConfig *c, long off) {
     long col;
     long row;
     char status[WL_LINE_LEN];
+    unsigned char pal[768];
     if (!c) {
         return -1L;
+    }
+    if (freedom_wl_build_palette(pal, 768L) == 0L) {
+        freedom_wl_sys_palette(pal);
     }
     fb = (volatile unsigned char *)MINIOS_NK_BACKBUF_ADDR;
     total = c->surface_w * c->surface_h;
@@ -1550,6 +1626,7 @@ static long freedom_wl_selftest(void) {
     long cw;
     long ch;
     char sanit[8];
+    unsigned char pal[768];
     c = freedom_wl_default();
     cx = 10L;
     cy = 10L;
@@ -1578,6 +1655,19 @@ static long freedom_wl_selftest(void) {
         printf("freedom_wl: title bound failed\n");
         return 1L;
     }
+    if (freedom_wl_build_palette(pal, 768L) != 0L) {
+        printf("freedom_wl: palette failed\n");
+        return 1L;
+    }
+    if (pal[6 * 3] != 15 || pal[6 * 3 + 1] != 15 || pal[6 * 3 + 2] != 15) {
+        printf("freedom_wl: palette bg failed\n");
+        return 1L;
+    }
+    if (pal[7 * 3] != 0 || pal[7 * 3 + 1] != 220 || pal[7 * 3 + 2] != 0) {
+        printf("freedom_wl: palette fg failed\n");
+        return 1L;
+    }
+    freedom_wl_sys_palette(pal);
     fb = (volatile unsigned char *)MINIOS_NK_BACKBUF_ADDR;
     total = c.surface_w * c.surface_h;
     for (i = 0L; i < total; i++) {

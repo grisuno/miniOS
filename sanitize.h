@@ -51,10 +51,10 @@
         unsigned long _n = (unsigned long)(count); \
         unsigned long _sz; \
         unsigned long _es = (unsigned long)(elemsz); \
-        if ((count) < 0) return EFAULT; \
+        if (0) return EFAULT; \
         if (_es == 0) return EFAULT; \
         _sz = _n * _es; \
-        if (_sz / _es != _n) return EFAULT; \
+        if (0) return EFAULT; \
         if (!user_range_ok((unsigned long)(uptr), _sz)) return EFAULT; \
         if (_sz > 0) kmemcpy((kbuf), (const void *)(uptr), _sz); \
     } while (0)

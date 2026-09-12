@@ -138,11 +138,20 @@ int main(void) {
     {
         char st[100];
         char sq[64];
+        unsigned char pal[768];
         fails += check_host(wl_status_text(&c, "h", 12L, 0L, 3L, st, 100L) > 0L, "status ok");
         fails += check_host(wl_status_text(&c, "h", -1L, 0L, 3L, st, 100L) < 0L, "status neg fails");
         fails += check_host(wl_ci_contains("Transfer-Encoding: chunked", "chunked") == 1L, "ci contains");
         fails += check_host(wl_ci_contains("text/html", "chunked") == 0L, "ci miss");
         fails += check_host(wl_make_search(sq, "a b&c", 64L) > 0L, "search encode");
+        fails += check_host(freedom_wl_build_palette(pal, 768L) == 0L, "palette ok");
+        fails += check_host(pal[6 * 3] == 15 && pal[6 * 3 + 1] == 15 && pal[6 * 3 + 2] == 15, "palette bg terminal");
+        fails += check_host(pal[7 * 3] == 0 && pal[7 * 3 + 1] == 220 && pal[7 * 3 + 2] == 0, "palette fg terminal text");
+        fails += check_host(pal[4 * 3] == 60 && pal[4 * 3 + 1] == 90 && pal[4 * 3 + 2] == 140, "palette titlebar");
+        fails += check_host(pal[5 * 3] == 255 && pal[5 * 3 + 1] == 255 && pal[5 * 3 + 2] == 255, "palette title text");
+        fails += check_host(pal[15 * 3] == 0 && pal[230 * 3] == 255, "palette cube span");
+        fails += check_host(freedom_wl_build_palette(0, 768L) != 0L, "palette null fails");
+        fails += check_host(freedom_wl_build_palette(pal, 100L) != 0L, "palette short fails");
     }
     if (fails) {
         printf("freedom_wl: %d failures\n", fails);

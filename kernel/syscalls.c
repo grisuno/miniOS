@@ -96,7 +96,7 @@ unsigned long wall_us_now(void) {
 
 static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    if (!user_str_ok((unsigned long)a1, 255)) return EFAULT;
+    SANITIZE_STR(a1, 255);
     return net_sys_dns(a1);
 }
 static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -212,10 +212,9 @@ static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)
     int *hp = (int *)(unsigned long)a1;
     int *mp = (int *)(unsigned long)a2;
     int *sp = (int *)(unsigned long)a3;
-    if (!user_range_ok((unsigned long)a1, sizeof(int)) ||
-        !user_range_ok((unsigned long)a2, sizeof(int)) ||
-        !user_range_ok((unsigned long)a3, sizeof(int)))
-        return EFAULT;
+    SANITIZE_RANGE(a1, sizeof(int));
+    SANITIZE_RANGE(a2, sizeof(int));
+    SANITIZE_RANGE(a3, sizeof(int));
     int h, m, s;
     if (!rtc_read_tod(&h, &m, &s)) return -5;
     *hp = h; *mp = m; *sp = s;
@@ -226,10 +225,9 @@ static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long
     int *wp = (int *)(unsigned long)a1;
     int *hp = (int *)(unsigned long)a2;
     int *pp = (int *)(unsigned long)a3;
-    if (!user_range_ok((unsigned long)a1, sizeof(int)) ||
-        !user_range_ok((unsigned long)a2, sizeof(int)) ||
-        !user_range_ok((unsigned long)a3, sizeof(int)))
-        return EFAULT;
+    SANITIZE_RANGE(a1, sizeof(int));
+    SANITIZE_RANGE(a2, sizeof(int));
+    SANITIZE_RANGE(a3, sizeof(int));
     *wp = fb_width; *hp = fb_height; *pp = fb_pitch;
     return 0;
 }
@@ -244,7 +242,7 @@ static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, lo
 static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a5; (void)a6;
     const char *path = (const char *)a1;
-    if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
     /* SPAWN saves and replaces the shared user-window view (brk/mmap
      * cursors, VMA trees, fd table): it is a BSP-only operation.  A
      * thread running on an AP shares its address space with siblings,
@@ -257,8 +255,8 @@ static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5,
     char *src = (char *)a1; char *dst = (char *)a3;
     int src_len = (int)a2; int dst_cap = (int)a4;
     if (src_len <= 0 || dst_cap <= 4) return 0;
-    if (!user_range_ok((unsigned long)src, (unsigned long)src_len)) return EFAULT;
-    if (!user_range_ok((unsigned long)dst, (unsigned long)dst_cap)) return EFAULT;
+    SANITIZE_RANGE(src, (unsigned long)src_len);
+    SANITIZE_RANGE(dst, (unsigned long)dst_cap);
     int ret = LZ4_compress_default(src, dst + 4, src_len, dst_cap - 4);
     if (ret <= 0 || ret >= src_len) return 0;
     dst[0] = (char)(src_len & 255); dst[1] = (char)((src_len >> 8) & 255);
@@ -270,11 +268,11 @@ static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a
     char *src = (char *)a1; char *dst = (char *)a3;
     int src_len = (int)a2; int dst_cap = (int)a4;
     if (src_len <= 4) return 0;
-    if (!user_range_ok((unsigned long)src, (unsigned long)src_len)) return EFAULT;
+    SANITIZE_RANGE(src, (unsigned long)src_len);
     unsigned int orig = (unsigned int)((unsigned char)src[0] | ((unsigned char)src[1] << 8) |
                                        ((unsigned char)src[2] << 16) | ((unsigned char)src[3] << 24));
     if (orig > (unsigned int)dst_cap) return 0;
-    if (dst_cap > 0 && !user_range_ok((unsigned long)dst, (unsigned long)dst_cap)) return EFAULT;
+    if (dst_cap > 0) { SANITIZE_RANGE(dst, (unsigned long)dst_cap); }
     int ret = LZ4_decompress_safe(src + 4, dst, src_len - 4, dst_cap);
     if (ret < 0 || (unsigned int)ret != orig) return 0;
     return ret;
@@ -287,7 +285,7 @@ static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a
     int mb;
     int mw;
     irqflags_t flags;
-    if (!user_range_ok((unsigned long)a1, 4 * sizeof(int))) return EFAULT;
+    SANITIZE_RANGE(a1, 4 * sizeof(int));
     if (!vga_fb_ps2_owner(current_pid)) return -1;
     flags = spin_save_irq();
     mx = mouse_state.x;
@@ -306,7 +304,7 @@ static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, lon
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     if (a1) {
         int *o = (int *)(unsigned long)a1;
-        if (!user_range_ok((unsigned long)a1, 2 * sizeof(int))) return EFAULT;
+        SANITIZE_RANGE(a1, 2 * sizeof(int));
         o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
     }
     gfx_note_compositor();
@@ -330,7 +328,7 @@ static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, lo
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     const char *t = (const char *)(unsigned long)a1;
     if (!t) return EFAULT;
-    if (!user_str_ok((unsigned long)t, 31)) return EFAULT;
+    SANITIZE_STR(t, 31);
     extern const char *gfx_win_title;
     static char title_buf[32];
     int i;
@@ -506,10 +504,10 @@ static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, lon
     long count = 0;
     int i, n;
     (void)a4; (void)a5; (void)a6;
-    if (!user_str_ok((unsigned long)a1, RAMDISK_FNAME_LEN)) return EFAULT;
+    SANITIZE_STR(a1, RAMDISK_FNAME_LEN);
     if (a3 <= 0 || a3 > 65536) return -22;
     cap = (unsigned long)a3;
-    if (!user_range_ok((unsigned long)a2, cap)) return EFAULT;
+    SANITIZE_RANGE(a2, cap);
     if (!fs_resolve((const char *)a1, resolved, sizeof(resolved))) return -36;
     {
         unsigned len = (unsigned)kstrlen(resolved);
@@ -1409,53 +1407,114 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
  */
 
 static int k_syscall_spawn(const char *path, const char *redirect,
-                            int child_argc, const char **child_argv) {
-    if (!path || !user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN))
-        return EFAULT;
+                             int child_argc, const char **child_argv); /* fwd */
 
-    if (child_argc > 0 && child_argv) {
-        if (!user_range_ok((unsigned long)child_argv,
-                           (unsigned long)(child_argc + 1) * sizeof(char *)))
-            return EFAULT;
-        for (int i = 0; i < child_argc; i++) {
-            if (!child_argv[i]) break;
-            unsigned long s = (unsigned long)child_argv[i];
-            if (s < USER_LOAD_BASE || s >= USER_LOAD_END) return EFAULT;
-            if (!user_str_ok(s, USER_LOAD_END - s)) return EFAULT;
-        }
+/* Spawn context: scalar shared-window view saved across a child run.
+ * The VMA pool copy stays in a file-static array (VMA_MAX nodes ~= 160 KB,
+ * far beyond any kernel stack); the struct carries only the roots + count,
+ * so it is stack-safe. Backup/restore are symmetric: every field saved is
+ * restored, no silent partial state. */
+typedef struct {
+    unsigned long brk;
+    unsigned long brk_lim;
+    unsigned long mmap_cur;
+    unsigned long fsbase;
+    unsigned long gsbase;
+    uint64_t p0_kstack;
+    vma_node_t *live_root;
+    vma_node_t *free_root;
+    int pool_n;
+    KFILE *kfd[KFD_MAX];
+} spawn_ctx_t;
+
+static vma_node_t spawn_vma_copy[VMA_MAX];
+
+static void spawn_backup(spawn_ctx_t *c) {
+    int i;
+    c->brk = g_brk;
+    c->brk_lim = g_brk_limit;
+    c->mmap_cur = user_mmap_cur;
+    c->fsbase = rdmsr(MSR_FSBASE);
+    c->gsbase = rdmsr(MSR_GSBASE);
+    c->p0_kstack = procs[0].kstack;
+    for (i = 0; i < vma_pool_n; i++)
+        spawn_vma_copy[i] = vma_pool[i];
+    c->live_root = vma_live_root;
+    c->free_root = vma_free_root;
+    c->pool_n = vma_pool_n;
+    for (i = 0; i < KFD_MAX; i++)
+        c->kfd[i] = kfd_table[i];
+}
+
+static void spawn_restore(const spawn_ctx_t *c) {
+    int i;
+    g_brk = c->brk;
+    g_brk_limit = c->brk_lim;
+    user_mmap_cur = c->mmap_cur;
+    procs[0].kstack = c->p0_kstack;
+    for (i = 0; i < c->pool_n; i++)
+        vma_pool[i] = spawn_vma_copy[i];
+    vma_pool_n = c->pool_n;
+    vma_live_root = c->live_root;
+    vma_free_root = c->free_root;
+    wrmsr(MSR_FSBASE, c->fsbase);
+    wrmsr(MSR_GSBASE, c->gsbase);
+    for (i = 0; i < KFD_MAX; i++)
+        kfd_table[i] = c->kfd[i];
+}
+
+static void spawn_free_argv(char **kargv, int argc) {
+    int i;
+    if (!kargv) return;
+    for (i = 0; i < argc; i++)
+        if (kargv[i]) kfree(kargv[i]);
+    kfree(kargv);
+}
+
+static char **spawn_copy_argv(int argc, const char **uargv) {
+    char **kargv;
+    int i;
+    if (argc <= 0 || !uargv) return 0;
+    kargv = (char **)kmalloc((unsigned)(argc + 1) * sizeof(char *));
+    if (!kargv) return 0;
+    for (i = 0; i <= argc; i++) kargv[i] = 0;
+    for (i = 0; i < argc; i++) {
+        unsigned slen;
+        if (!uargv[i]) break;
+        slen = (unsigned)kstrlen(uargv[i]) + 1;
+        kargv[i] = (char *)kmalloc(slen);
+        if (!kargv[i]) { spawn_free_argv(kargv, i); return 0; }
+        kmemcpy(kargv[i], uargv[i], slen);
     }
+    kargv[argc] = 0;
+    return kargv;
+}
 
-    char **kargv = 0;
-    if (child_argc > 0 && child_argv) {
-        kargv = (char **)kmalloc((unsigned)(child_argc + 1) * sizeof(char *));
-        if (!kargv) return EFAULT;
-        for (int i = 0; i <= child_argc; i++) kargv[i] = 0;
-        for (int i = 0; i < child_argc; i++) {
-            if (!child_argv[i]) break;
-            unsigned slen = (unsigned)kstrlen(child_argv[i]) + 1;
-            kargv[i] = (char *)kmalloc(slen);
-            if (!kargv[i]) { for (int j = 0; j < i; j++) kfree(kargv[j]); kfree(kargv); return EFAULT; }
-            kmemcpy(kargv[i], child_argv[i], slen);
-        }
-        kargv[child_argc] = 0;
+static int spawn_validate_argv(int argc, const char **uargv) {
+    int i;
+    if (argc <= 0 || !uargv) return 1;
+    if (!user_range_ok((unsigned long)uargv,
+                       (unsigned long)(argc + 1) * sizeof(char *)))
+        return 0;
+    for (i = 0; i < argc; i++) {
+        unsigned long s;
+        if (!uargv[i]) break;
+        s = (unsigned long)uargv[i];
+        if (s < USER_LOAD_BASE || s >= USER_LOAD_END) return 0;
+        if (!user_str_ok(s, USER_LOAD_END - s)) return 0;
     }
+    return 1;
+}
 
-    char resolved[RAMDISK_FNAME_LEN];
-    if (!fs_resolve(path, resolved, sizeof(resolved))) {
-        if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
-        return EFAULT;
-    }
-
+static unsigned char *spawn_load_image(const char *resolved, unsigned *size_out) {
     RDFile *f = ramdisk_open(resolved);
     unsigned char *data = 0;
     unsigned data_size = 0;
+    *size_out = 0;
     if (f) {
         data_size = f->size ? f->size : 1;
         data = (unsigned char *)kmalloc(data_size);
-        if (!data) {
-            if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
-            return EFAULT;
-        }
+        if (!data) return 0;
         ramdisk_read(f, data, 0, f->size);
     } else if (minifs_is_mounted()) {
         int ino = minifs_resolve_path(resolved);
@@ -1475,43 +1534,55 @@ static int k_syscall_spawn(const char *path, const char *redirect,
             }
         }
     }
+    if (!data) return 0;
+    *size_out = data_size;
+    return data;
+}
+
+static int k_syscall_spawn(const char *path, const char *redirect,
+                             int child_argc, const char **child_argv) {
+    char resolved[RAMDISK_FNAME_LEN];
+    char **kargv = 0;
+    unsigned char *data = 0;
+    unsigned data_size = 0;
+    Elf64_Half etype;
+    spawn_ctx_t ctx;
+    int rc = EFAULT;
+    if (!path) return EFAULT;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+
+    if (!spawn_validate_argv(child_argc, child_argv))
+        return EFAULT;
+
+    kargv = spawn_copy_argv(child_argc, child_argv);
+    if (child_argc > 0 && child_argv && !kargv) return EFAULT;
+
+    if (!fs_resolve(path, resolved, sizeof(resolved))) {
+        spawn_free_argv(kargv, child_argc);
+        return EFAULT;
+    }
+
+    data = spawn_load_image(resolved, &data_size);
     if (!data) {
-        if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
+        spawn_free_argv(kargv, child_argc);
         return EFAULT;
     }
 
     if (data_size < EI_NIDENT ||
         !(data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F')) {
         kfree(data);
-        if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
+        spawn_free_argv(kargv, child_argc);
         return EFAULT;
     }
-    Elf64_Half etype = ((const Elf64_Ehdr *)data)->e_type;
+    etype = ((const Elf64_Ehdr *)data)->e_type;
 
-    unsigned long saved_brk      = g_brk;
-    unsigned long saved_brk_lim  = g_brk_limit;
-    unsigned long saved_mmap     = user_mmap_cur;
-    unsigned long saved_fsbase   = rdmsr(MSR_FSBASE);
-    unsigned long saved_gsbase   = rdmsr(MSR_GSBASE);
     /* An ET_REL child runs at ring 0 and exits through do_proc_exit's
      * klongjmp, which bypasses syscall_entry's write-back of the per-proc
      * stack top.  Left uncorrected, procs[0].kstack drifts down on every
      * nested spawn and the parent's own exit longjmps into a corrupt
      * frame.  Save and restore it so a spawn from a ring-3 program (the
      * vedit IDE) is transparent to the caller. */
-    uint64_t saved_p0_kstack = procs[0].kstack;
-
-    static vma_node_t parent_vma_pool_copy[VMA_MAX];
-    for (int i = 0; i < vma_pool_n; i++)
-        parent_vma_pool_copy[i] = vma_pool[i];
-    vma_node_t *parent_live_root = vma_live_root;
-    vma_node_t *parent_free_root = vma_free_root;
-    int parent_pool_n = vma_pool_n;
-
-    KFILE *saved_kfd[KFD_MAX];
-    for (int i = 0; i < KFD_MAX; i++) saved_kfd[i] = kfd_table[i];
-
-    int rc = EFAULT;
+    spawn_backup(&ctx);
     if (etype == ET_REL) {
         /* Same gate as shell.c, same constant: `resolved` is fs_resolve()
          * output (normalised, no symlinks), and the bytes in `data` were
@@ -1523,7 +1594,8 @@ static int k_syscall_spawn(const char *path, const char *redirect,
         if (kstrncmp(rp, ETREL_TRUSTED_DIR, ETREL_TRUSTED_LEN) != 0) {
             kprintf("SPAWN: refusing untrusted ET_REL");
             kfree(data);
-            if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
+            spawn_free_argv(kargv, child_argc);
+            spawn_restore(&ctx);
             return EFAULT;
         }
         prog_entry_t entry;
@@ -1562,24 +1634,9 @@ static int k_syscall_spawn(const char *path, const char *redirect,
         if (did_redirect) redirect_commit(redirect, 0);
     }
 
-    procs[0].kstack = saved_p0_kstack;
     kfree(data);
-
-    if (kargv) {
-        for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]);
-        kfree(kargv);
-    }
-
-    g_brk       = saved_brk;
-    g_brk_limit = saved_brk_lim;
-    user_mmap_cur = saved_mmap;
-    for (int i = 0; i < parent_pool_n; i++) vma_pool[i] = parent_vma_pool_copy[i];
-    vma_pool_n = parent_pool_n;
-    vma_live_root = parent_live_root;
-    vma_free_root = parent_free_root;
-    wrmsr(MSR_FSBASE, saved_fsbase);
-    wrmsr(MSR_GSBASE, saved_gsbase);
-    for (int i = 0; i < KFD_MAX; i++) kfd_table[i] = saved_kfd[i];
+    spawn_free_argv(kargv, child_argc);
+    spawn_restore(&ctx);
 
     return rc;
 }

@@ -119,6 +119,14 @@ typedef struct {
 #define NICE_MIN    (-20)
 #define NICE_MAX    19
 #define NICE_DEFAULT 0
+/* Fair-share scheduling weights (sched_next_locked): the key that picks
+ * the next READY task is vruntime + (nice + OFFSET) * MULT_KEY, and the
+ * winner is charged BASE_QUANTUM + (nice + OFFSET) * MULT_CHARGE. Equal
+ * nice degrades to round-robin via the rotating start. */
+#define SCHED_BASE_QUANTUM    64u
+#define SCHED_NICE_MULT_KEY   8u
+#define SCHED_NICE_MULT_CHARGE 4u
+#define SCHED_NICE_OFFSET     20
 
 /* clone() flags */
 #define CLONE_VM    0x00000100  /* share address space (same CR3) */

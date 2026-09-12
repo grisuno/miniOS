@@ -72,6 +72,7 @@ void vga_fb_blit_nk_window(void);
 extern int nk_win_x, nk_win_y;
 
 /* Palette indices */
+#define COL_BLACK       0
 #define COL_BG          1
 #define COL_TASKBAR     2
 #define COL_TASKBAR_TXT 3

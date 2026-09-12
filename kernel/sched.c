@@ -479,20 +479,20 @@ static int sched_next_locked(int start, int vm_only) {
         unsigned long key;
         if (procs[cand].state != PROC_READY) continue;
         if (vm_only && !(procs[cand].clone_flags & CLONE_VM)) continue;
-        key = procs[cand].vruntime + (unsigned long)(procs[cand].nice + 20) * 8u;
+        key = procs[cand].vruntime + (unsigned long)(procs[cand].nice + SCHED_NICE_OFFSET) * SCHED_NICE_MULT_KEY;
         if (best < 0 || key < best_key) { best = cand; best_key = key; }
     }
     if (best < 0) return -1;
     procs[best].state = PROC_RUNNING;
-    procs[best].vruntime += 64u + (unsigned long)(procs[best].nice + 20) * 4u;
+    procs[best].vruntime += SCHED_BASE_QUANTUM + (unsigned long)(procs[best].nice + SCHED_NICE_OFFSET) * SCHED_NICE_MULT_CHARGE;
     return best;
 }
 /* Set scheduling niceness for pid (-20..19, clamped). Returns 0 or -1. */
 int sched_set_nice(int pid, int nice) {
     if (pid < 0 || pid >= MAX_PROCS) return -1;
     if (procs[pid].state == PROC_FREE) return -1;
-    if (nice < -20) nice = -20;
-    if (nice > 19) nice = 19;
+    if (nice < NICE_MIN) nice = NICE_MIN;
+    if (nice > NICE_MAX) nice = NICE_MAX;
     procs[pid].nice = nice;
     return 0;
 }

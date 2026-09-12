@@ -18,7 +18,10 @@ file. A Wayland surface becomes the Nuklear back-buffer window
 (`MINIOS_NK_W` x `MINIOS_NK_H`). Present uses `GFX_PRESENT` with
 `BUF_NK`. Title uses `GFX_SET_TITLE`. Pointer uses `SYS_MOUSE`.
 Keyboard uses `SYS_KBD`. Keysyms translate from PS/2 Set 1. Dirty rects
-clamp to the surface. UTF-8 sanitizes fail-closed. Every tunable lives
+clamp to the surface. UTF-8 sanitizes fail-closed. The browser uploads its
+768-byte graphics palette through `SYS_PALETTE` before every present
+(indices 0-14 match the desktop palette, the rest mirror the Nuklear hybrid
+ramp), so the page stays visible on true-color VBE modes. Every tunable lives
 in `FreedomWlConfig`. Every address comes from `minios_abi.h`.
 
 **Full browser, not a stub.** The same file is a complete graphical
@@ -63,7 +66,8 @@ uname(63) handler. Live boot proves more: the README fetch
 reports 3193 bytes with exit 0 and the `gfx frames` counter climbs
 from 0 to 1, so the page really composited; `google.com` chases to
 `www.google.com` over real TLS and renders whole. Five mutants (clip
-sign, https port, title bound, keysym, uname) die in `mutate.sh`.
+sign, https port, title bound, keysym, uname) die in `mutate.sh`, plus the
+palette-bg mutant dies in the host suite (`palette bg terminal`).
 
 ## uname(63), found on the way
 

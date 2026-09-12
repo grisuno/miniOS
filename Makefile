@@ -1009,6 +1009,48 @@ freedom_wl_test: tests/test_freedom_wl.c $(SRC_DIR)/freedom_wl.c | $(TOOLS_DIR)
 test-freedom-wl: freedom_wl_test
 	$(TOOLS_DIR)/freedom_wl_test
 
+# ── freedomui (real FreeDom engine on MiniOS, static glibc ELF) ──────
+# DOOM/Q2G contract: host gcc -static, ring-3 ET_EXEC, on MiniFS. Links the
+# real engine core (url, link_nav, html_parse over Lexbor, ui_layout) with a
+# MiniOS platform layer replacing every Wayland/Cairo call (NK back-buffer
+# window, GFX_PRESENT BUF_NK, SYS_MOUSE/SYS_KBD, MiniOS sockets plus the
+# ring-3 TLS engine). Build is conditional: skipped when the sibling
+# checkout or the static Lexbor archive is absent.
+FREEDOMUI_DIR   = $(PROGS_DIR)/freedomui
+FREEDOMUI_LEXBOR ?= $(shell pkg-config --variable=libdir lexbor 2>/dev/null)/liblexbor_static.a
+FREEDOMUI_AVAILABLE := $(if $(wildcard $(FREEDOM_DIR)/src/url.c),$(if $(wildcard $(FREEDOMUI_LEXBOR)),1,0),0)
+
+FREEDOMUI_SRCS = $(FREEDOMUI_DIR)/freedomui_minios.c \
+                 $(PROGS_DIR)/nuklear/font8x8.c \
+                 $(PROGS_DIR)/tls_u/tls_u_port.c \
+                 net/tls.c net/tls_crypto.c net/tls_x509.c \
+                 $(FREEDOM_DIR)/src/url.c \
+                 $(FREEDOM_DIR)/src/link_nav.c \
+                 $(FREEDOM_DIR)/src/html_parse.c \
+                 $(FREEDOM_DIR)/src/ui_layout.c
+
+ifeq ($(FREEDOMUI_AVAILABLE),1)
+$(BIN_DIR)/freedomui: $(FREEDOMUI_SRCS) tls_port.h tls.h tls_roots.h
+	$(CC) -static -no-pie -std=c11 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 \
+	      -D_POSIX_C_SOURCE=200809L \
+	      -I. -I$(PROGS_DIR) -I$(PROGS_DIR)/nuklear -I$(FREEDOM_DIR)/include \
+	      -o $@ $(FREEDOMUI_SRCS) $(FREEDOMUI_LEXBOR) -lm
+	chmod +x $@
+else
+$(BIN_DIR)/freedomui:
+	@echo "SKIP $@ (need $(FREEDOM_DIR)/src/url.c and $(FREEDOMUI_LEXBOR))"
+endif
+
+freedomui_test: tests/test_freedomui.c $(FREEDOMUI_DIR)/freedomui_minios.c | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -std=c11 -D_POSIX_C_SOURCE=200809L -I. -I$(PROGS_DIR) -I$(FREEDOM_DIR)/include \
+	      -o $(TOOLS_DIR)/freedomui_test tests/test_freedomui.c \
+	      $(FREEDOM_DIR)/src/url.c $(FREEDOM_DIR)/src/link_nav.c \
+	      $(FREEDOM_DIR)/src/html_parse.c $(FREEDOM_DIR)/src/ui_layout.c \
+	      $(shell pkg-config --cflags --libs lexbor 2>/dev/null || echo -llexbor)
+
+test-freedomui: freedomui_test
+	$(TOOLS_DIR)/freedomui_test
+
 # ── topogpt3 (TopoGPT3 transformer inference, static ring-3 ELF) ──
 # Self-contained single-file C engine.  Loads fp16 weights from MiniFS.
 # Built like Lua/DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
@@ -1044,8 +1086,9 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                 $(BIN_DIR)/json $(SRC_DIR)/json.c \
                  $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
                  $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
-                 $(BIN_DIR)/freedom_wl $(SRC_DIR)/freedom_wl.c \
-                 $(PROGS_DIR)/nuklear/font8x8.c $(PROGS_DIR)/nuklear/nuklear_minios.h \
+                  $(BIN_DIR)/freedom_wl $(SRC_DIR)/freedom_wl.c \
+                  $(BIN_DIR)/freedomui $(FREEDOMUI_DIR)/freedomui_minios.c \
+                  $(PROGS_DIR)/nuklear/font8x8.c $(PROGS_DIR)/nuklear/nuklear_minios.h \
                  $(PROGS_DIR)/nuklear/nuklear_theme.c $(PROGS_DIR)/nuklear/nuklear_theme.h \
                  $(PROGS_DIR)/etc/themes/current $(PROGS_DIR)/etc/themes/dark \
                  $(PROGS_DIR)/etc/themes/light $(PROGS_DIR)/etc/themes/amber \

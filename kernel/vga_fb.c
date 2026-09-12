@@ -29,6 +29,10 @@
 #include "wm_focus.h"
 #include "wm_layout.h"
 
+/** Docstring: Focus ids share one space across terminals and graphics. */
+_Static_assert(WM_FOCUS_GFX == WM_WINDOW_GFX_ID,
+               "gfx focus id drifted from unified window contract");
+
 /** Docstring: File-scope drag state shared by the tick and focus paths. */
 static int wm_dragging;
 static int wm_grab_cx;
@@ -271,14 +275,35 @@ static void cursor_save_bg(int mx, int my) {
             cursor_save[j][i] = fb_read_packed(x0 + i, y0 + j);
 }
 
+/** Docstring: True when the arrow bitmap sets pixel i,j. */
+static int cursor_is_set(int i, int j)
+{
+    if (i < 0 || i >= 8 || j < 0 || j >= 8) return 0;
+    return (cursor_bmp[j] & (0x80 >> i)) ? 1 : 0;
+}
+
+/** Docstring: True when an 8-neighbour of i,j belongs to the arrow. */
+static int cursor_has_set_neighbour(int i, int j)
+{
+    int dj, di;
+    for (dj = -1; dj <= 1; dj++)
+        for (di = -1; di <= 1; di++) {
+            if (di == 0 && dj == 0) continue;
+            if (cursor_is_set(i + di, j + dj)) return 1;
+        }
+    return 0;
+}
+
 static void cursor_draw(int mx, int my) {
     int i, j;
     int x0 = mx - CURSOR_TIP_X;
     int y0 = my - CURSOR_TIP_Y;
     for (j = 0; j < 8; j++)
         for (i = 0; i < 8; i++) {
-            if (cursor_bmp[j] & (0x80 >> i))
+            if (cursor_is_set(i, j))
                 vga_fb_pixel(x0 + i, y0 + j, COL_WHITE);
+            else if (cursor_has_set_neighbour(i, j))
+                vga_fb_pixel(x0 + i, y0 + j, COL_BLACK);
         }
 }
 
@@ -2891,6 +2916,32 @@ const char *desktop_shortcuts_hit_test(int mx, int my) {
     return 0;
 }
 
+/** Docstring: Click-to-focus over terminals through the select path. */
+static int mouse_try_focus_term(int mx, int my)
+{
+    int f;
+    for (f = 0; f < wm_nterms; f++) {
+        if (f == wm_focus || !twins[f].present) continue;
+        if (tw_hit(f, mx, my)) {
+            tw_select(f);
+            vga_fb_draw_desktop();
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/** Docstring: Click-to-focus over the graphics window body. */
+static int mouse_try_focus_gfx(int mx, int my)
+{
+    if (!vga_fb_gfx_mode || wm_focus == WM_FOCUS_GFX) return 0;
+    if (gfx_hit(mx, my)) {
+        vga_fb_focus_id(WM_FOCUS_GFX);
+        return 1;
+    }
+    return 0;
+}
+
 /** Docstring: Per-tick mouse dispatch over unified geometry and events. */
 void vga_fb_mouse_tick(void) {
     static unsigned tb_prev_buttons;
@@ -2923,28 +2974,17 @@ void vga_fb_mouse_tick(void) {
         }
         /* Click-to-focus: a click on an unfocused terminal raises it.
          * Same select path as Alt-Tab, so mouse and key agree. */
-        {
-            int f;
-            for (f = 0; f < wm_nterms; f++) {
-                if (f == wm_focus || !twins[f].present) continue;
-                if (tw_hit(f, mouse_state.x, mouse_state.y)) {
-                    tw_select(f);
-                    vga_fb_draw_desktop();
-                    tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
-                    cursor_visible = 0;
-                    wm_skip_drag = 1;
-                    return;
-                }
-            }
+        if (mouse_try_focus_term(mouse_state.x, mouse_state.y)) {
+            tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
+            cursor_visible = 0;
+            wm_skip_drag = 1;
+            return;
         }
-        if (vga_fb_gfx_mode && wm_focus != WM_FOCUS_GFX) {
-            if (gfx_hit(mouse_state.x, mouse_state.y)) {
-                vga_fb_focus_id(WM_FOCUS_GFX);
-                tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
-                cursor_visible = 0;
-                wm_skip_drag = 1;
-                return;
-            }
+        if (mouse_try_focus_gfx(mouse_state.x, mouse_state.y)) {
+            tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
+            cursor_visible = 0;
+            wm_skip_drag = 1;
+            return;
         }
         const char *cmd = desktop_shortcuts_hit_test(mouse_state.x, mouse_state.y);
         if (cmd) desktop_launch(cmd);
