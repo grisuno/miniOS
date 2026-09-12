@@ -104,4 +104,132 @@ static inline int wm_event_suppresses_drag(const wm_event_t *evt)
     return evt != 0 && evt->type == WM_EVT_CLICK;
 }
 
+/** Docstring: Set-1 scancode ids for every key the WM consumes. */
+#define WM_SC_TAB 0x0F
+#define WM_SC_ENTER 0x1C
+#define WM_SC_MINUS 0x0C
+#define WM_SC_EQUAL 0x0D
+#define WM_SC_ZERO 0x0B
+#define WM_SC_Q 0x10
+#define WM_SC_LBRACKET 0x1A
+#define WM_SC_RBRACKET 0x1B
+#define WM_SC_M 0x32
+#define WM_SC_X 0x2D
+#define WM_SC_UP 0x48
+#define WM_SC_DOWN 0x50
+#define WM_SC_LEFT 0x4B
+#define WM_SC_RIGHT 0x4D
+#define WM_SC_HOME 0x47
+#define WM_SC_END 0x4F
+
+/** Docstring: Snap targets matching the TILING_* order left to bottom-right. */
+#define WM_SNAP_LEFT 0
+#define WM_SNAP_RIGHT 1
+#define WM_SNAP_TOP 2
+#define WM_SNAP_BOTTOM 3
+#define WM_SNAP_TOP_LEFT 4
+#define WM_SNAP_TOP_RIGHT 5
+#define WM_SNAP_BOTTOM_LEFT 6
+#define WM_SNAP_BOTTOM_RIGHT 7
+
+/** Docstring: Input paths sharing one combo table. */
+#define WM_PATH_COOKED 1
+#define WM_PATH_RAW 2
+
+/** Docstring: Discrete WM combo actions. */
+typedef enum {
+    WM_COMBO_NONE = 0,
+    WM_COMBO_FOCUS_NEXT = 1,
+    WM_COMBO_TILE_ALL = 2,
+    WM_COMBO_FULLSCREEN = 3,
+    WM_COMBO_MINIMIZE = 4,
+    WM_COMBO_CLOSE = 5,
+    WM_COMBO_SNAP = 6,
+    WM_COMBO_RESIZE_DEC_W = 7,
+    WM_COMBO_RESIZE_INC_W = 8,
+    WM_COMBO_RESIZE_DEC_BOTH = 9,
+    WM_COMBO_RESIZE_INC_BOTH = 10,
+    WM_COMBO_RESET = 11
+} wm_combo_action_t;
+
+/** Docstring: One row of the shared Alt/Super combo table. */
+typedef struct {
+    int alt;
+    int sup;
+    int e0;
+    int sc;
+    int paths;
+    int action;
+    int zone;
+} wm_combo_t;
+
+/** Docstring: Shared Alt/Super combo table for cooked and raw paths. */
+static const wm_combo_t WM_COMBOS[] = {
+    {1, 0, 0, WM_SC_TAB, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_FOCUS_NEXT, 0},
+    {0, 1, 0, WM_SC_TAB, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_TILE_ALL, 0},
+    {1, 0, 0, WM_SC_ENTER, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_FULLSCREEN, 0},
+    {1, 0, 0, WM_SC_M, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_MINIMIZE, 0},
+    {1, 0, 0, WM_SC_X, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_CLOSE, 0},
+    {1, 0, 0, WM_SC_Q, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_CLOSE, 0},
+    {1, 0, 0, WM_SC_LBRACKET, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_RESIZE_DEC_W, 0},
+    {1, 0, 0, WM_SC_RBRACKET, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_RESIZE_INC_W, 0},
+    {1, 0, 0, WM_SC_MINUS, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_RESIZE_DEC_BOTH, 0},
+    {1, 0, 0, WM_SC_EQUAL, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_RESIZE_INC_BOTH, 0},
+    {1, 0, 0, WM_SC_ZERO, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_RESET, 0},
+    {1, 0, 0, WM_SC_HOME, WM_PATH_RAW, WM_COMBO_SNAP, WM_SNAP_TOP_LEFT},
+    {1, 0, 0, WM_SC_END, WM_PATH_RAW, WM_COMBO_SNAP, WM_SNAP_BOTTOM_RIGHT},
+    {1, 0, 1, WM_SC_UP, WM_PATH_COOKED, WM_COMBO_SNAP, WM_SNAP_TOP},
+    {1, 0, 1, WM_SC_DOWN, WM_PATH_COOKED, WM_COMBO_SNAP, WM_SNAP_BOTTOM},
+    {1, 0, 1, WM_SC_LEFT, WM_PATH_COOKED, WM_COMBO_SNAP, WM_SNAP_LEFT},
+    {1, 0, 1, WM_SC_RIGHT, WM_PATH_COOKED, WM_COMBO_SNAP, WM_SNAP_RIGHT},
+    {1, 0, 1, WM_SC_HOME, WM_PATH_COOKED, WM_COMBO_SNAP, WM_SNAP_TOP_LEFT},
+    {1, 0, 1, WM_SC_END, WM_PATH_COOKED, WM_COMBO_SNAP, WM_SNAP_BOTTOM_RIGHT},
+    {0, 1, 1, WM_SC_UP, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_SNAP, WM_SNAP_TOP},
+    {0, 1, 1, WM_SC_DOWN, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_SNAP, WM_SNAP_BOTTOM},
+    {0, 1, 1, WM_SC_LEFT, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_SNAP, WM_SNAP_LEFT},
+    {0, 1, 1, WM_SC_RIGHT, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_SNAP, WM_SNAP_RIGHT},
+    {0, 1, 1, WM_SC_HOME, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_SNAP, WM_SNAP_TOP_LEFT},
+    {0, 1, 1, WM_SC_END, WM_PATH_COOKED | WM_PATH_RAW, WM_COMBO_SNAP, WM_SNAP_BOTTOM_RIGHT}
+};
+
+/** Docstring: Row count of the shared combo table. */
+#define WM_COMBOS_N (sizeof(WM_COMBOS) / sizeof(WM_COMBOS[0]))
+
+/** Docstring: Lookup one Alt/Super combo, fail closed on AltGr or mismatch. */
+static inline int wm_combo_lookup(int alt, int altgr, int sup, int e0, int sc, int path, int *zone_out)
+{
+    unsigned long i;
+    if (zone_out != 0) {
+        *zone_out = 0;
+    }
+    if (altgr) {
+        return WM_COMBO_NONE;
+    }
+    if (path != WM_PATH_COOKED && path != WM_PATH_RAW) {
+        return WM_COMBO_NONE;
+    }
+    for (i = 0; i < WM_COMBOS_N; i++) {
+        if (WM_COMBOS[i].alt != (alt ? 1 : 0)) {
+            continue;
+        }
+        if (WM_COMBOS[i].sup != (sup ? 1 : 0)) {
+            continue;
+        }
+        if (WM_COMBOS[i].e0 != (e0 ? 1 : 0)) {
+            continue;
+        }
+        if (WM_COMBOS[i].sc != sc) {
+            continue;
+        }
+        if (!(WM_COMBOS[i].paths & path)) {
+            continue;
+        }
+        if (zone_out != 0) {
+            *zone_out = WM_COMBOS[i].zone;
+        }
+        return WM_COMBOS[i].action;
+    }
+    return WM_COMBO_NONE;
+}
+
 #endif

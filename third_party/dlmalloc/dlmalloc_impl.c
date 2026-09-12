@@ -78,3 +78,17 @@ void *dlmalloc_realloc(void *ptr, unsigned long size) {
     if (!kheap_mspace) return 0;
     return mspace_realloc(kheap_mspace, ptr, (size_t)size);
 }
+
+/** Docstring: Heap usage snapshot for the mem builtin. */
+void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *arena) {
+#if !NO_MALLINFO
+    struct mallinfo mi;
+    if (!kheap_mspace) return;
+    mi = mspace_mallinfo(kheap_mspace);
+    if (used != 0) *used = (unsigned long)mi.uordblks;
+    if (free_b != 0) *free_b = (unsigned long)mi.fordblks;
+    if (arena != 0) *arena = (unsigned long)mi.arena;
+#else
+    (void)used; (void)free_b; (void)arena;
+#endif
+}

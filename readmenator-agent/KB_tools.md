@@ -142,6 +142,19 @@
 - Symbols:
   - `main` (function, line 29) `def main()`
 
+## tools/probe_compute_vga.py
+- Layer: utility
+- Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute. Boots os.img headless, runs a command, moves the PS/2 mou
+- Language: py
+- Symbols:
+  - `main` (function, line 20) `def main()`
+  - `send` (function, line 53) `def send(line)`
+  - `poll` (function, line 59) `def poll(timeout)`
+  - `qmp` (function, line 86) `def qmp(obj)`
+  - `rel` (function, line 95) `def rel(dx, dy)`
+  - `dump` (function, line 102) `def dump(name)`
+- Depends on: `kernel/time.c`
+
 ## tools/qga_client.py
 - Layer: infrastructure
 - Language: py

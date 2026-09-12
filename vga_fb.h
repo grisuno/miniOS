@@ -47,6 +47,8 @@ void vga_fb_boot_config(void);
 #define DOOM_BACKBUF_ADDR MINIOS_DOOM_BACKBUF_ADDR
 void vga_fb_blit_gfx_window(void);
 extern const char *gfx_win_title;
+/** Docstring: Default graphics window title before SYS_GFX_SET_TITLE. */
+#define GFX_TITLE_DEFAULT "DOOM"
 
 /* Number of frames a ring-3 graphics program (DOOM, Quake 2, Nuklear) has
  * composited through SYS_DOOM_FRAME / SYS_NK_FRAME since boot. The shell's

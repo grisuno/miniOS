@@ -119,7 +119,7 @@ static void elf_load_fail(void *base, void **sec_addrs, const char *why) {
 
 /* ---- ET_REL loader (ring-0 toolchain objects) ---- */
 
-void *elf_load(void *data, unsigned size) {
+void *elf_load(void *data, unsigned size, void **base_out) {
     Elf64_Ehdr *ehdr = (Elf64_Ehdr *)data;
 
     if (size < sizeof(Elf64_Ehdr)) return 0;
@@ -353,6 +353,7 @@ void *elf_load(void *data, unsigned size) {
         return 0;
     }
     kfree(sec_addrs);
+    if (base_out != 0) *base_out = base;
     return entry;
 }
 

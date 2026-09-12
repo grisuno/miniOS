@@ -29,7 +29,7 @@
 | `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h"  Sound Blaster 16 DMA audio | drivers | 62 |
 | `editor.h` | ifndef EDITOR_H define EDITOR_H  editor.h -- the built-in line editor contract. | root | 2 |
 | `fs/kfile.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 22 |
-| `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 66 |
+| `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 67 |
 | `fs/ramdisk.c` | include "kernel.h"  ============================================================ | fs | 25 |
 | `fs/vfs.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 37 |
 | `fs/zip.c` | zip.c — the unzip/zip shell builtins over the miniz zip library. | fs | 19 |
@@ -38,7 +38,7 @@
 | `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 35 |
 | `install.sh` | - | root | 0 |
 | `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 37 |
-| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 303 |
+| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 305 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
 | `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | kernel | 31 |
 | `kernel/cvm_host.c` | - | kernel | 55 |
@@ -58,7 +58,7 @@
 | `kernel/sched.c` | - | kernel | 135 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 8 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 10 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 136 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 140 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
@@ -76,7 +76,7 @@
 | `mcp/minios_mcp.py` | - | mcp | 50 |
 | `mcp/mutate_mcp.sh` | Mutation testing for the MiniOS MCP bridge. Every mutant is injected into a priv | mcp | 1 |
 | `mcp/test_minios_mcp.py` | - | mcp | 99 |
-| `minifs.h` | ifndef MINIFS_H define MINIFS_H  MiniFS: a minimal Unix-like filesystem for Mini | root | 75 |
+| `minifs.h` | ifndef MINIFS_H define MINIFS_H  MiniFS: a minimal Unix-like filesystem for Mini | root | 76 |
 | `minifs_dump.py` | - | root | 12 |
 | `minifs_fsck.py` | - | root | 14 |
 | `mkfs.minifs.py` | - | root | 20 |
@@ -400,6 +400,7 @@
 | `tools/minios_cli.py` | - | tools | 6 |
 | `tools/minios_gui.py` | - | tools | 9 |
 | `tools/mkpak1.py` | - | tools | 1 |
+| `tools/probe_compute_vga.py` | Docstring: VGA liveness probe during CPU-bound ring-3 compute. Boots os.img head | tools | 6 |
 | `tools/qga_client.py` | - | tools | 4 |
 | `tools/qga_test.sh` | Quick standalone smoke test for the QEMU guest agent: boots os.img once with the | tools | 3 |
 | `tools/repro_gui.py` | - | tools | 10 |

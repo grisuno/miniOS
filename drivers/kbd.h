@@ -27,6 +27,9 @@ int  kbd_q_empty(void);
 int  kbd_q_pop(void);
 void kbd_q_push(unsigned char c);
 
+/** Docstring: Drop counters for full cooked and raw queues. */
+void kbd_drop_counts(unsigned long *cooked, unsigned long *raw);
+
 /* Raw queue (DOOM / SYS_KBD) */
 int  kbd_raw_mode_get(void);
 void kbd_raw_mode_set(int on);

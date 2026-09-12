@@ -95,6 +95,8 @@ void minifs_journal_touch(unsigned int phys)`
   - `minifs_file_open` (function, line 1345) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
   - `minifs_file_close` (function, line 1359) `int minifs_file_close(MiniFSFile *f)`
   - `minifs_get_total_blocks` (function, line 1366) `unsigned int minifs_get_total_blocks(void)`
+  - `minifs_usage` (function, line 1372) `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
+                  unsigned int *fr...`
   - `minifs_journal_touch` (function, line 14) `void minifs_journal_touch(unsigned int phys);`
   - `kmemset` (function, line 84) `kmemset(buf, 0, MINIFS_BLOCK_SIZE);`
   - `kmemcpy` (function, line 86) `kmemcpy(buf, &fs_sb, sizeof(MiniFSSuper));`
@@ -114,31 +116,31 @@ void minifs_journal_touch(unsigned int phys)`
 - Doc: include "kernel.h"  ================================================================
 - Language: c
 - Symbols:
-  - `RDSuper` (struct, line 14)
-  - `ramdisk_reserve` (function, line 24) `static int ramdisk_reserve(unsigned long want)`
-  - `ramdisk_setup_from` (function, line 42) `void ramdisk_setup_from(void *data, unsigned size)`
-  - `ramdisk_init` (function, line 94) `void ramdisk_init(void)`
-  - `ramdisk_open` (function, line 111) `RDFile *ramdisk_open(const char *name)`
-  - `ramdisk_read` (function, line 121) `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len)`
-  - `ramdisk_write` (function, line 129) `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len)`
-  - `ramdisk_create` (function, line 137) `RDFile *ramdisk_create(const char *name, unsigned size)`
-  - `ramdisk_resize` (function, line 151) `int ramdisk_resize(RDFile *f, unsigned newsize)`
-  - `ramdisk_list` (function, line 188) `int ramdisk_list(RDFile **out, int max)`
-  - `ramdisk_count` (function, line 196) `int ramdisk_count(void)`
-  - `ramdisk_file_name` (function, line 201) `const char *ramdisk_file_name(int idx)`
-  - `ramdisk_delete` (function, line 206) `int ramdisk_delete(RDFile *f)`
-  - `kprintf` (function, line 31) `kprintf("ramdisk: cannot allocate %lu KB (heap exhausted)\n", want / 1024);`
-  - `kmemset` (function, line 35) `kmemset(area, 0, want);`
-  - `kmemcpy` (function, line 84) `kmemcpy(f->name, esrc, RAMDISK_FNAME_LEN);`
-  - `kfree` (function, line 103) `kfree(rd);`
-  - `kstrncpy` (function, line 143) `kstrncpy(f->name, name, RAMDISK_FNAME_LEN - 1);`
-  - `kmemmove` (function, line 170) `kmemmove(rd_data + new_end, rd_data + old_end, move_len);`
+  - `RDSuper` (struct, line 13)
+  - `ramdisk_reserve` (function, line 23) `static int ramdisk_reserve(unsigned long want)`
+  - `ramdisk_setup_from` (function, line 41) `void ramdisk_setup_from(void *data, unsigned size)`
+  - `ramdisk_init` (function, line 93) `void ramdisk_init(void)`
+  - `ramdisk_open` (function, line 110) `RDFile *ramdisk_open(const char *name)`
+  - `ramdisk_read` (function, line 120) `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len)`
+  - `ramdisk_write` (function, line 128) `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len)`
+  - `ramdisk_create` (function, line 136) `RDFile *ramdisk_create(const char *name, unsigned size)`
+  - `ramdisk_resize` (function, line 150) `int ramdisk_resize(RDFile *f, unsigned newsize)`
+  - `ramdisk_list` (function, line 187) `int ramdisk_list(RDFile **out, int max)`
+  - `ramdisk_count` (function, line 195) `int ramdisk_count(void)`
+  - `ramdisk_usage` (function, line 202) `void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max)`
+  - `ramdisk_file_name` (function, line 207) `const char *ramdisk_file_name(int idx)`
+  - `ramdisk_delete` (function, line 212) `int ramdisk_delete(RDFile *f)`
+  - `kprintf` (function, line 30) `kprintf("ramdisk: cannot allocate %lu KB (heap exhausted)\n", want / 1024);`
+  - `kmemset` (function, line 34) `kmemset(area, 0, want);`
+  - `kmemcpy` (function, line 83) `kmemcpy(f->name, esrc, RAMDISK_FNAME_LEN);`
+  - `kfree` (function, line 102) `kfree(rd);`
+  - `kstrncpy` (function, line 142) `kstrncpy(f->name, name, RAMDISK_FNAME_LEN - 1);`
+  - `kmemmove` (function, line 169) `kmemmove(rd_data + new_end, rd_data + old_end, move_len);`
   - `RD_MAGIC` (macro, line 6) `#define RD_MAGIC`
   - `RD_HEADER_SIZE` (macro, line 8) `#define RD_HEADER_SIZE`
   - `RD_ENTRY_SIZE` (macro, line 9) `#define RD_ENTRY_SIZE`
   - `RD_DATA_MIN` (macro, line 10) `#define RD_DATA_MIN`
   - `RD_DATA_SPARE` (macro, line 11) `#define RD_DATA_SPARE`
-  - `RD_DATA_MAX` (macro, line 12) `#define RD_DATA_MAX`
 - Depends on: `kernel.h`
 
 ## fs/vfs.c

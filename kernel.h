@@ -157,6 +157,8 @@ void *dlmalloc_malloc(unsigned long size);
 void  dlmalloc_free(void *ptr);
 void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);
 void *dlmalloc_realloc(void *ptr, unsigned long size);
+/** Docstring: Heap usage snapshot for the mem builtin. */
+void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *arena);
 
 /* =========================================================================
  * Ramdisk file system
@@ -200,6 +202,8 @@ int      ramdisk_list(RDFile **out, int max);
 void     ramdisk_setup_from(void *data, unsigned size);
 int      ramdisk_count(void);
 const char *ramdisk_file_name(int idx);
+/** Docstring: Ramdisk usage snapshot for the mem builtin. */
+void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max);
 
 #define RD_DATA_MAX (48UL * 1024 * 1024)
 
@@ -503,6 +507,8 @@ int  vga_fb_prompted(void);
 int  shell_readline_active(void);
 void shell_focus_park(void);
 void shell_focus_restore(void);
+/** Docstring: Nonzero while the shell blocks in a foreground wait. */
+extern volatile int shell_fg_active;
 
 /* ========== User-pointer validation (kernel.c) ========== */
 int user_range_ok(unsigned long p, unsigned long len);
@@ -556,7 +562,7 @@ typedef struct {
 #define ET_EXEC     2
 #define ET_DYN      3
 
-void *elf_load(void *data, unsigned size);       /* ET_REL relocatable .o */
+void *elf_load(void *data, unsigned size, void **base_out);       /* ET_REL relocatable .o */
 void *load_exec_elf(void *data, unsigned size);  /* ET_EXEC / ET_DYN */
 void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
                          unsigned long *brk_out);

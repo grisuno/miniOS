@@ -1367,3 +1367,12 @@ int minifs_file_close(MiniFSFile *f) {
 unsigned int minifs_get_total_blocks(void) {
     return fs_sb.total_blocks;
 }
+
+/** Docstring: Filesystem usage snapshot for the mem builtin. */
+void minifs_usage(unsigned int *free_b, unsigned int *total_b,
+                  unsigned int *free_i, unsigned int *total_i) {
+    if (free_b != 0) *free_b = fs_sb.free_blocks;
+    if (total_b != 0) *total_b = fs_sb.total_blocks;
+    if (free_i != 0) *free_i = fs_sb.free_inodes;
+    if (total_i != 0) *total_i = fs_sb.total_inodes;
+}

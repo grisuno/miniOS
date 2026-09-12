@@ -9,7 +9,6 @@
 #define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)
 #define RD_DATA_MIN    (512UL * 1024)
 #define RD_DATA_SPARE  (1024UL * 1024)
-#define RD_DATA_MAX    (48UL * 1024 * 1024)
 
 typedef struct {
     unsigned magic;
@@ -197,6 +196,13 @@ int ramdisk_list(RDFile **out, int max) {
 int ramdisk_count(void) {
     if (!rd) return 0;
     return (int)rd->count;
+}
+
+/** Docstring: Ramdisk usage snapshot for the mem builtin. */
+void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max) {
+    if (used != 0) *used = rd_used;
+    if (cap != 0) *cap = rd_cap;
+    if (max != 0) *max = (unsigned)RD_DATA_MAX;
 }
 
 const char *ramdisk_file_name(int idx) {

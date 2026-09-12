@@ -25,6 +25,10 @@ int shell_parse(char *line, char **argv, int max_args);
 int console_raw_try(void);
 int console_raw_get(void);
 
+/** Docstring: PS/2-only GETC_RAW source for background jobs. */
+int console_job_try(void);
+int console_job_get(void);
+
 /* Execute a shell script: read `path` line by line, skip blanks and `#`
  * comments, parse each line and dispatch it through the normal builtin/
  * program path.  Returns 0 on success, 1 on file error. */

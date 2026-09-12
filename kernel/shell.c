@@ -54,6 +54,8 @@ static const ShellRunDir shell_run_dirs[] = {
 #define SHELL_RUN_DIRS (sizeof(shell_run_dirs) / sizeof(shell_run_dirs[0]))
 
 static char cmd_buf[CMD_BUF_SZ];
+/** Docstring: Nonzero while the shell blocks in a foreground wait. */
+volatile int shell_fg_active = 0;
 /* A desktop-icon launch that arrived while a user program owned the CPU.
  * The ISR-driven desktop tick cannot run shell_run_any (it would re-enter
  * k_exec_user from ISR context and corrupt the running program), so the
@@ -314,6 +316,24 @@ int console_raw_get(void) {
     return raw_blocking_getc();
 }
 
+/** Docstring: PS/2-only GETC_RAW source for ring-3 background jobs. */
+int console_job_try(void) {
+    if (kbd_available()) {
+        int c = kbd_read();
+        if (c >= 0) return c;
+    }
+    return -1;
+}
+
+/** Docstring: Blocking PS/2-only GETC_RAW source for background jobs. */
+int console_job_get(void) {
+    for (;;) {
+        int c = console_job_try();
+        if (c >= 0) return c;
+        __asm__ volatile("pause");
+    }
+}
+
 /* ---- Scrollback view ----
  *
  * Renders a 25-row window over (scrollback ring + live screen) into the VGA
@@ -440,6 +460,18 @@ static const char *shell_name_base(const char *path) {
     return base;
 }
 
+/* Builtin names for first-word TAB completion (zsh completes builtins;
+ * only the shell dispatch below knows them, so they are listed once here
+ * for the completer instead of hiding behind the file tiers). */
+static const char *shell_builtin_names[] = {
+    "cat", "catfs", "cd", "clear", "clock", "date", "echo", "edit",
+    "gfx", "hash", "help", "jobs", "kbd", "kill", "kstack", "load",
+    "ls", "lsfs", "mem", "mkdir", "mrun", "net", "nice", "perf", "poweroff",
+    "ps", "pwd", "rlimit", "rm", "rmdir", "run", "seccomp", "sh",
+    "sleep", "smp", "trace", "unzip", "vol", "wait", "wm", "zip",
+};
+#define SHELL_BUILTIN_COUNT (sizeof(shell_builtin_names) / sizeof(shell_builtin_names[0]))
+
 /* Runnable tier of a file name for first-word TAB completion: 0=.elf,
  * 1=.cvm, 2=.o, 3=anything else. A bare command word completes toward the
  * highest-priority non-empty tier, so `poke` offers the game binary instead
@@ -455,6 +487,7 @@ static int shell_complete_tier(const char *nm) {
 /* Replace the current word [word_start, word_start+wlen) in `buf` with `text`
  * and move the cursor to the end of the completed line. Bounds checked: a
  * completion that would overflow `size` is refused, never truncated. */
+static void shell_line_repaint(char *buf, int size, int pos);
 static void shell_complete_replace(char *buf, int size, int *pos,
                                    char *word_start, unsigned long wlen,
                                    const char *text) {
@@ -467,10 +500,7 @@ static void shell_complete_replace(char *buf, int size, int *pos,
     kmemcpy(word_start, text, tlen);
     *pos = (int)(head + tlen + tail);
     buf[*pos] = 0;
-    for (unsigned long i = 0; i < wlen; i++) vga_putc('\b');
-    vga_puts(text);
-    vga_putc('\n');
-    shell_cur = 0;
+    shell_line_repaint(buf, size, *pos);
 }
 
 static void shell_readline(void) {
@@ -764,8 +794,24 @@ static void shell_readline_hist(char *buf, int size) {
                 }
             }
             for (int i = 0; i < kprog_count && ncomps < 32; i++) {
-                if (kstrncmp(kprog_table[i].name, word_start, wlen) == 0)
+                int dup = 0;
+                if (kstrncmp(kprog_table[i].name, word_start, wlen) != 0)
+                    continue;
+                for (int k = 0; k < ncomps; k++) {
+                    if (kstrcmp(comps[k], kprog_table[i].name) == 0) { dup = 1; break; }
+                }
+                if (!dup)
                     comps[ncomps++] = kprog_table[i].name;
+            }
+            for (unsigned long i = 0; i < SHELL_BUILTIN_COUNT && ncomps < 32; i++) {
+                int dup = 0;
+                if (kstrncmp(shell_builtin_names[i], word_start, wlen) != 0)
+                    continue;
+                for (int k = 0; k < ncomps; k++) {
+                    if (kstrcmp(comps[k], shell_builtin_names[i]) == 0) { dup = 1; break; }
+                }
+                if (!dup)
+                    comps[ncomps++] = (char *)shell_builtin_names[i];
             }
             if (ncomps == 0) {
                 /* A bare first word (no '/') completes runnable-first: the
@@ -1053,7 +1099,7 @@ static int shell_load(const char *fname, char *progname_out, void **entry_out) {
             if (!etrel_path_trusted(resolved)) {
                 kprintf("load: refusing untrusted ET_REL '%s'", resolved);
             } else {
-                entry = elf_load(data, data_size);
+                entry = elf_load(data, data_size, 0);
                 if (entry) { k_register_program(progname_out, (prog_entry_t)entry); kind = 1; }
             }
         } else if (etype == ET_EXEC || etype == ET_DYN) {
@@ -1185,9 +1231,14 @@ static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
             kprintf("run: refusing untrusted ET_REL '%s': link to ELF with 'ld -f elf'", srcpath);
             return -1;
         }
-        prog_entry_t entry = elf_load((void *)data, size);
+        prog_entry_t entry;
+        void *base = 0;
+        int rc;
+        entry = elf_load((void *)data, size, &base);
         if (!entry) return -1;
-        return k_run_rel(entry, argc, argv);
+        rc = k_run_rel(entry, argc, argv);
+        kfree(base);
+        return rc;
     }
     if (etype == ET_EXEC || etype == ET_DYN) {
         void *entry = load_exec_elf((void *)data, size);
@@ -1270,7 +1321,7 @@ static int shell_run_cvm(const char *full, int argc, char **argv) {
         unsigned char *data = kmalloc(rf->size ? rf->size : 1);
         if (!data) { kprintf("run: out of memory\n"); return -1; }
         ramdisk_read(rf, data, 0, rf->size);
-        void *e = elf_load(data, rf->size);
+        void *e = elf_load(data, rf->size, 0);
         kfree(data);
         if (!e) { shell_report("run: cannot load objects/cvm.o", 0); return -1; }
         cvm_entry = (prog_entry_t)e;
@@ -1414,6 +1465,7 @@ static int shell_wait_fg(int *pids, int n, int kill_on_int) {
     int done[8] = {0,0,0,0,0,0,0,0};
     int i;
     if (n > 8) n = 8;
+    shell_fg_active = 1;
     for (;;) {
         for (i = 0; i < n; i++) {
             int code;
@@ -1425,7 +1477,7 @@ static int shell_wait_fg(int *pids, int n, int kill_on_int) {
                 kprintf("mrun: pid %d exit code: %d\n", pids[i], code);
             }
         }
-        if (ndone >= n) return last;
+        if (ndone >= n) { shell_fg_active = 0; return last; }
         if (console_peek() == 0x03) {
             console_getc();
             kprintf("^C\n");
@@ -1434,6 +1486,7 @@ static int shell_wait_fg(int *pids, int n, int kill_on_int) {
                     if (!done[i]) do_kill(pids[i]);
                 last = 130;
             } else {
+                shell_fg_active = 0;
                 return 130;
             }
             continue;
@@ -1822,6 +1875,12 @@ static void shell_cmd_wm(int argc, char **argv) {
             vga_fb_is_minimized(), vga_fb_is_fullscreen(),
             wm_gfx_mode_active(), vga_fb_focus_get(),
             vga_fb_nterms_get());
+    {
+        unsigned long cooked = 0;
+        unsigned long raw = 0;
+        kbd_drop_counts(&cooked, &raw);
+        kprintf("wm: kbd drops cooked=%lu raw=%lu\n", cooked, raw);
+    }
 }
 
 /* Job control (`jobs`/`wait`/`kill` + trailing `&`): real preemptive
@@ -1843,21 +1902,31 @@ static const char *shell_proc_state(int st) {
     case PROC_RUNNING: return "run";
     case PROC_BLOCKED: return "wait";
     case PROC_ZOMBIE: return "done";
+    case PROC_SWITCHING: return "spawn";
     default: return "?";
     }
 }
 
 static void shell_cmd_jobs(void) {
+    struct job_row { int pid; int state; char name[32]; };
+    struct job_row snap[MAX_PROCS];
     int i, n = 0;
     spin_lock(&sched_lock);
-    for (i = 0; i < MAX_PROCS; i++) {
+    for (i = 0; i < MAX_PROCS && n < MAX_PROCS; i++) {
+        int k;
         if (procs[i].state == PROC_FREE || procs[i].parent_pid != 0)
             continue;
-        kprintf("job pid %d %s %s\n", procs[i].pid,
-                shell_proc_state(procs[i].state), procs[i].name);
+        snap[n].pid = procs[i].pid;
+        snap[n].state = procs[i].state;
+        for (k = 0; k < 31 && procs[i].name[k]; k++)
+            snap[n].name[k] = procs[i].name[k];
+        snap[n].name[k] = 0;
         n++;
     }
     spin_unlock(&sched_lock);
+    for (i = 0; i < n; i++)
+        kprintf("job pid %d %s %s\n", snap[i].pid,
+                shell_proc_state(snap[i].state), snap[i].name);
     if (!n) kprintf("jobs: none\n");
 }
 
@@ -1873,12 +1942,14 @@ static void shell_cmd_wait(int argc, char **argv) {
     }
     for (;;) {
         int rp, rc;
+        shell_fg_active = 1;
         while (shell_reap_nb(&rp, &rc))
             kprintf("mrun: pid %d exit code: %d\n", rp, rc);
-        if (!shell_nchildren()) return;
+        if (!shell_nchildren()) { shell_fg_active = 0; return; }
         if (console_peek() == 0x03) {
             console_getc();
             kprintf("^C\n");
+            shell_fg_active = 0;
             return;
         }
         yield();
@@ -1899,6 +1970,36 @@ static void shell_cmd_kill(int argc, char **argv) {
     if (!mine) { kprintf("kill: %d: no such job\n", pid); return; }
     if (do_kill(pid)) kprintf("kill: %d: failed\n", pid);
     else kprintf("kill: pid %d terminated\n", pid);
+}
+
+/* `mem` — memory and disk pressure in one screenful: kernel heap use
+ * (dlmalloc), ramdisk use versus its cap, MiniFS free blocks/inodes and
+ * live processes. The demo-scale failure mode is a silent exhaustion
+ * (a big Zone alloc or a ramdisk write fails closed far from its cause),
+ * so this is the first thing to read when a load stops loading. */
+static void shell_cmd_mem(void) {
+    unsigned long hu = 0, hf = 0, ha = 0;
+    unsigned ru = 0, rc = 0, rm = 0;
+    int i, nlive = 0;
+    dlmalloc_usage(&hu, &hf, &ha);
+    kprintf("mem: heap used=%luK free=%luK arena=%luK\n",
+            hu / 1024, hf / 1024, ha / 1024);
+    ramdisk_usage(&ru, &rc, &rm);
+    kprintf("mem: ramdisk used=%luK cap=%luK max=%luK files=%d\n",
+            ru / 1024, rc / 1024, rm / 1024, ramdisk_count());
+    if (minifs_is_mounted()) {
+        unsigned int fb = 0, tb = 0, fi = 0, ti = 0;
+        minifs_usage(&fb, &tb, &fi, &ti);
+        kprintf("mem: minifs free=%u/%u blocks free=%u/%u inodes\n",
+                fb, tb, fi, ti);
+    } else {
+        vga_puts("mem: minifs not mounted\n");
+    }
+    spin_lock(&sched_lock);
+    for (i = 0; i < MAX_PROCS; i++)
+        if (procs[i].state != PROC_FREE) nlive++;
+    spin_unlock(&sched_lock);
+    kprintf("mem: procs live=%d/%d\n", nlive, MAX_PROCS);
 }
 
 /* `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed
@@ -1935,7 +2036,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  rlimit [k] [v]     caps: as bytes, cpu ticks, nofile count\n");
         vga_puts("  nice [n]           scheduler niceness -20..19\n");
         vga_puts("  seccomp <op> [n]   deny/allow MiniOS syscalls 200..231\n");
-        vga_puts("  ps                 list registered programs\n");
+        vga_puts("  ps                 list live processes (pid/ppid/state)\n");
         vga_puts("  smp                per-CPU state and thread dispatches\n");
         vga_puts("  kstack             kernel-stack high-water marks + canary\n");
         vga_puts("  net                network status (rtl8139, slirp)\n");
@@ -1948,6 +2049,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  wm [op]            window mgmt: minimize|maximize|close|split|list|tile|focus|state\n");
         vga_puts("  Alt+Tab focus next, Super+Tab tile, Super+arrows snap focused\n");
         vga_puts("  hash <file>        XXH64 checksum of a file\n");
+        vga_puts("  mem                heap/ramdisk/minifs/procs pressure\n");
         vga_puts("  unzip <z> [dir]    extract a ZIP archive (or -l to list)\n");
         vga_puts("  zip <out> <f...>   store files into a ZIP archive\n");
         vga_puts("  edit <file>        line editor for ramdisk files\n");
@@ -2263,14 +2365,29 @@ void shell_exec_builtin(int argc, char **argv) {
         }
     }
     else if (kstrcmp(argv[0], "ps") == 0) {
-        int i;
-        for (i = 0; i < kprog_count; i++) {
-            KProg *p = &kprog_table[i];
-            kprintf("  %-12s  %s  %p\n", p->name,
-                    p->is_proc ? "proc" : "rel",
-                    p->is_proc ? p->proc_entry : (void *)p->entry);
+        struct ps_row { int pid; int ppid; int state; char name[32]; };
+        struct ps_row snap[MAX_PROCS];
+        int i, n = 0;
+        spin_lock(&sched_lock);
+        for (i = 0; i < MAX_PROCS && n < MAX_PROCS; i++) {
+            int k;
+            if (procs[i].state == PROC_FREE)
+                continue;
+            snap[n].pid = procs[i].pid;
+            snap[n].ppid = procs[i].parent_pid;
+            snap[n].state = procs[i].state;
+            for (k = 0; k < 31 && procs[i].name[k]; k++)
+                snap[n].name[k] = procs[i].name[k];
+            snap[n].name[k] = 0;
+            n++;
         }
-        if (kprog_count == 0) vga_puts("  (no programs registered)\n");
+        spin_unlock(&sched_lock);
+        kprintf("  pid  ppid state name\n");
+        for (i = 0; i < n; i++)
+            kprintf("  %-4d %-4d %-5s %s\n", snap[i].pid,
+                    snap[i].ppid,
+                    shell_proc_state(snap[i].state), snap[i].name);
+        if (!n) vga_puts("  (no processes)\n");
     }
     else if (kstrcmp(argv[0], "smp") == 0) {
         int c;
@@ -2401,6 +2518,10 @@ void shell_exec_builtin(int argc, char **argv) {
     }
     else if (kstrcmp(argv[0], "hash") == 0) {
         shell_cmd_hash(argc, argv);
+    }
+    else if (kstrcmp(argv[0], "mem") == 0) {
+        (void)argc; (void)argv;
+        shell_cmd_mem();
     }
     else if (kstrcmp(argv[0], "unzip") == 0) {
         shell_cmd_unzip(argc, argv);

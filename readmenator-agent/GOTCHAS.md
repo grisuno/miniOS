@@ -4,7 +4,7 @@
 
 These files have the most connections. Changes here have high blast radius.
 
-- `kernel.h` (score: 116.30)
+- `kernel.h` (score: 116.50)
 - `progs/doomgeneric/doomtype.h` (score: 101.40)
 - `kernel/string.c` (score: 97.30)
 - `progs/doomgeneric/doomdef.h` (score: 90.90)
@@ -26,7 +26,7 @@ These files have the most connections. Changes here have high blast radius.
 - `progs/doomgeneric/doomstat.h` -- complexity: 0.2, centrality: 0.5, combined: 0.4
 - `kernel/vga_fb.c` -- complexity: 0.5, centrality: 0.3, combined: 0.4
 - `progs/doomgeneric/doomtype.h` -- complexity: 0.0, centrality: 0.6, combined: 0.4
-- `progs/doomgeneric/d_englsh.h` -- complexity: 0.9, centrality: 0.0, combined: 0.4
+- `kernel/shell.c` -- complexity: 0.5, centrality: 0.3, combined: 0.4
 
 ## Dependency Cycles
 

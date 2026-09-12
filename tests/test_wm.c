@@ -279,6 +279,27 @@ int main(void)
         CHECK(wm_focus_set(&st, 2) == -1, "inactive graphics refused");
     }
 
+    {
+        int zone = -1;
+        CHECK(wm_combo_lookup(1, 0, 0, 0, WM_SC_TAB, WM_PATH_COOKED, &zone) == WM_COMBO_FOCUS_NEXT, "alt tab cooked focuses");
+        CHECK(wm_combo_lookup(1, 0, 0, 0, WM_SC_TAB, WM_PATH_RAW, &zone) == WM_COMBO_FOCUS_NEXT, "alt tab raw focuses");
+        CHECK(wm_combo_lookup(0, 0, 1, 0, WM_SC_TAB, WM_PATH_COOKED, &zone) == WM_COMBO_TILE_ALL, "super tab cooked tiles");
+        CHECK(wm_combo_lookup(0, 0, 1, 0, WM_SC_TAB, WM_PATH_RAW, &zone) == WM_COMBO_TILE_ALL, "super tab raw tiles");
+        CHECK(wm_combo_lookup(1, 1, 0, 0, WM_SC_TAB, WM_PATH_COOKED, &zone) == WM_COMBO_NONE, "altgr blocks combo");
+        CHECK(wm_combo_lookup(1, 0, 0, 1, WM_SC_UP, WM_PATH_COOKED, &zone) == WM_COMBO_SNAP, "alt arrows cooked snap");
+        CHECK(wm_combo_lookup(1, 0, 0, 1, WM_SC_UP, WM_PATH_RAW, &zone) == WM_COMBO_NONE, "alt arrows raw stay game");
+        CHECK(wm_combo_lookup(0, 0, 1, 1, WM_SC_LEFT, WM_PATH_RAW, &zone) == WM_COMBO_SNAP, "super arrows raw snap");
+        CHECK(wm_combo_lookup(1, 0, 0, 0, WM_SC_M, WM_PATH_COOKED, &zone) == WM_COMBO_MINIMIZE, "alt m minimizes");
+        CHECK(wm_combo_lookup(1, 0, 0, 0, WM_SC_X, WM_PATH_RAW, &zone) == WM_COMBO_CLOSE, "alt x raw closes");
+        CHECK(wm_combo_lookup(1, 0, 0, 0, WM_SC_LBRACKET, WM_PATH_COOKED, &zone) == WM_COMBO_RESIZE_DEC_W, "alt bracket resizes");
+        CHECK(wm_combo_lookup(1, 0, 0, 0, WM_SC_ZERO, WM_PATH_COOKED, &zone) == WM_COMBO_RESET, "alt zero resets");
+        CHECK(wm_combo_lookup(0, 0, 0, 0, WM_SC_TAB, WM_PATH_COOKED, &zone) == WM_COMBO_NONE, "bare tab ignored");
+        CHECK(wm_combo_lookup(1, 0, 0, 0, WM_SC_TAB, 0, &zone) == WM_COMBO_NONE, "bad path fails closed");
+        zone = -1;
+        CHECK(wm_combo_lookup(0, 0, 1, 1, WM_SC_HOME, WM_PATH_COOKED, &zone) == WM_COMBO_SNAP, "super home snaps");
+        CHECK(zone == WM_SNAP_TOP_LEFT, "snap zone reports top left");
+    }
+
     if (failures == 0) {
         printf("wm: ok\n");
     }

@@ -282,10 +282,24 @@ static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a
 static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     int *m = (int *)(unsigned long)a1;
+    int mx;
+    int my;
+    int mb;
+    int mw;
+    irqflags_t flags;
     if (!user_range_ok((unsigned long)a1, 4 * sizeof(int))) return EFAULT;
-    m[0] = mouse_state.x; m[1] = mouse_state.y;
-    m[2] = mouse_state.buttons; m[3] = mouse_state.wheel;
+    if (!vga_fb_ps2_owner(current_pid)) return -1;
+    flags = spin_save_irq();
+    mx = mouse_state.x;
+    my = mouse_state.y;
+    mb = mouse_state.buttons;
+    mw = mouse_state.wheel;
     mouse_state.wheel = 0;
+    spin_restore_irq(flags);
+    m[0] = mx;
+    m[1] = my;
+    m[2] = mb;
+    m[3] = mw;
     return 0;
 }
 static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -410,8 +424,13 @@ static long sys_minios_gfx_present(long a1, long a2, long a3, long a4, long a5, 
  * Bytes are the same CSI form both consoles carry, PS/2 included. */
 static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    if (a1 == 0) return (long)console_raw_try();
-    return (long)console_raw_get();
+    if (!vga_fb_ps2_owner(current_pid)) return -1;
+    if (current_pid == 0 || user_program_active || shell_fg_active) {
+        if (a1 == 0) return (long)console_raw_try();
+        return (long)console_raw_get();
+    }
+    if (a1 == 0) return (long)console_job_try();
+    return (long)console_job_get();
 }
 
 static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6) {    batch_op_t kops[BATCH_MAX_OPS];
@@ -545,6 +564,7 @@ static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)
         return EFAULT;
     }
     if (a1 == 0) {
+        if (!vga_fb_ps2_owner(current_pid)) return -11;
         while (i < cnt) {
             int c = console_getc();
             if (c < 0) continue;
@@ -1388,7 +1408,9 @@ static int k_syscall_spawn(const char *path, const char *redirect,
             if (kargv) { for (int i = 0; i < child_argc; i++) if (kargv[i]) kfree(kargv[i]); kfree(kargv); }
             return EFAULT;
         }
-        prog_entry_t entry = elf_load((void *)data, data_size);
+        prog_entry_t entry;
+        void *base = 0;
+        entry = elf_load((void *)data, data_size, &base);
         kprintf("SPAWN: ET_REL entry=%lx argc=%d\n",
                 (unsigned long)entry, child_argc);
         if (entry) {
@@ -1401,6 +1423,7 @@ static int k_syscall_spawn(const char *path, const char *redirect,
         if (redirect && redirect[0]) did_redirect = redirect_begin();
         if (entry)
             rc = k_run_rel(entry, child_argc, kargv ? kargv : (char **)child_argv);
+        kfree(base);
         if (did_redirect) redirect_commit(redirect, 0);
     } else if (etype == ET_EXEC || etype == ET_DYN) {
         /* Run the child in its own window through the same isolated spawn

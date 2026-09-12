@@ -869,7 +869,13 @@ framebuffer is not.
   mini_autoframes 3000 &`, shell stays interactive) reads `SYS_KBD` only
   while the gfx window is focused, the shell's `kbd_read` only while a
   terminal is, and neither touches the port when unfocused, so the two
-  never split the scancode stream. A legacy foreground program owns
+  never split the scancode stream. The serial console is the shell's own
+  and is never shared: `GETC_RAW` (236) serves a background job from the
+  PS/2-only source (`console_job_try/get`, never serial or the shell's
+  cooked queue) and `read(0)` answers `-EAGAIN` when unfocused, so a
+  polling game can never steal shell bytes; foreground runs (legacy
+  `run`, `mrun` fg via `shell_fg_active`) keep the full multiplexer.
+  A legacy foreground program owns
   everything (its shell is blocked, nobody to steal from). `kbd_read`
   always translates cooked for the shell even with the global raw mode on
   (a bg raw game used to deafen shell PS/2), and focusing the gfx window
@@ -900,7 +906,10 @@ framebuffer is not.
   every rectangle (title, content, scrollbar, clamp) through
   `wm_geom_config_t` derived once from `FONT_W`/`FONT_H`/`SCROLLBAR_W`;
   `wm_events.h` owns click/release/scroll/move translation through
-  `wm_event_config_t` with a stateless pure translator. Drag grabs live at
+  `wm_event_config_t` with a stateless pure translator plus the shared
+  Alt/Super combo table (`WM_COMBOS`, `WM_SC_*`, `wm_combo_lookup`) used by
+  cooked and raw paths, so Alt-Tab/Super-Tab/snap/resize can never diverge
+  again and AltGr never triggers a combo. Drag grabs live at
   file scope (`wm_dragging`, `wm_gdrag`) so `tw_select` resets them on
   every focus change instead of leaking a stale grab. `wm_window.h` unifies
   terminal and graphics hit-testing plus focus rotation and paint order
@@ -920,7 +929,17 @@ framebuffer is not.
   intercept on both raw paths (`kbd_read`'s raw branch and
   `kbd_sys_raw_filter` for the direct-port syscall read): Alt+Tab focuses,
   Super+Tab tiles, Super+arrows/Home/End snap, Alt+Enter/M/X/Q/`[`/`]`/`-`/
-  `=`/`0` act, and a swallowed Tab make swallows its break too. Bare keys
+  `=`/`0` act, and a swallowed Tab make swallows its break too. The table is
+  the single source: `wm_combo_dispatch` in `drivers/kbd.c` serves cooked,
+  raw-fill and `SYS_KBD` paths, Alt+arrows stay cooked-only by path mask.
+  Clicking a graphics body focuses it (`gfx_hit` over `wm_window_contains`,
+  not title-only) and wheel/scroll act only when a terminal is focused.
+  `SYS_MOUSE` snapshots atomically under IRQ save and honors `ps2_owner`,
+  so an unfocused reader gets `-1` instead of leaked coordinates. `ps2_owner`
+  validates `0 <= pid < MAX_PROCS` and `sched.h` owns `user_program_active`.
+  Both blits share `blit_gfx_buf` under `GFX_TITLE_DEFAULT`, so DOOM/Nuklear
+  titles always come from `SYS_GFX_SET_TITLE`. `wm state` also reports
+  `kbd drops cooked/raw`. Bare keys
   always reach the game, and Alt+arrows stay with the game (DOOM strafes
   with them); Super is never a game key, so it carries the full set raw.
   The `SYS_KBD` path holds back the `0xE0` prefix while Alt/Super is held
@@ -1186,7 +1205,10 @@ loader (`shell_run_elf_buf`): `ET_REL` `.o` objects run at ring 0 through
 `k_exec_user`, and `.cvm` modules run on the `objects/cvm.o` interpreter
 loaded on demand (`shell_run_cvm`). Because the file is reloaded and
 relocated fresh on every invocation, running a toolchain object does not
-grow the registered-program table. The exit code is reported exactly as
+grow the registered-program table. The relocated image is freed when the
+run returns (`elf_load` reports its base, `run`/`SPAWN` release it), so
+repeated compiles do not bleed the heap: ten vedit builds cost no more
+than one. The exit code is reported exactly as
 `run` reports it; an unresolvable name falls through to
 `command not found` (bare) or `run: not found` (with `run`). `objects/`
 and `cvm/` are never on the bare command path — only registered programs,
@@ -1194,12 +1216,15 @@ the current directory, and the suffix-driven `bin/` lookup answer a bare
 name, so the command path stays root-anchored and an attacker can never
 run an arbitrary `.o` as a command by name alone.
 
-TAB completes the current word from registered programs and ramdisk file
-names: one TAB fills the longest unambiguous prefix, a second TAB on a
-unique match fills the whole name, and an ambiguous prefix lists the
-candidates. On the first word the newest history commands complete too
-(deduplicated first tokens, most recent first), so TAB after `minigcc`
-offers the most recent matching command. A bare first word (no `/`)
+TAB completes the current word from history, builtins, registered programs
+and ramdisk file names: one TAB fills the longest unambiguous prefix, a
+second TAB on a unique match fills the whole name, and an ambiguous prefix
+lists the candidates. Completion repaints the line in place (never a stray
+newline) with the cursor at the end, so the submitted command always
+matches what is on screen. On the first word the newest history commands
+complete too (deduplicated first tokens, most recent first), then the
+builtin names, so TAB after `minigcc` offers the most recent matching
+command and TAB after `pw` offers `pwd`. A bare first word (no `/`)
 completes runnable-first across the ramdisk and the MiniFS root (where the
 big ELFs live under bare names): the `.elf` tier, then `.cvm`, then `.o`,
 and only the highest-priority non-empty tier is kept, so `poke` offers
@@ -1522,7 +1547,13 @@ on the IDE disk):
   nothing to carry forward — so clean + rebuild restores the partida
   byte-identical. `saves-backup/` is gitignored; copy it elsewhere for
   off-machine backup.
-- `ps` lists the registered programs (name, kind, entry address).
+- `ps` lists the live process table (`pid ppid state name` from `procs[]`,
+  snapshot under `sched_lock` then printed after release, so console I/O
+  never runs with the scheduler lock held). `jobs` lists the shell's live
+  children, `wait [pid]` reaps, `kill <pid>` terminates a real target.
+- `mem` reports heap use/free (dlmalloc), ramdisk use/cap/max, MiniFS free
+  blocks/inodes and live process count: the first thing to read when a
+  load stops loading, before blaming the game.
 - `kstack` reports kernel-stack health: per-proc high-water marks plus the
   legacy 32 KB syscall stack, ending in `kstack: ok` (or `OVERFLOW`). Every
   pool slot is paint-filled at claim time with a canary word at its bottom

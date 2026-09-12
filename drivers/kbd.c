@@ -2,6 +2,7 @@
 #include "sched.h"
 #include "vga_fb.h"
 #include "kbd.h"
+#include "wm_events.h"
 
 /* ================================================================
  *  Keyboard driver — PS/2 scancode set 1 (US qwerty)
@@ -121,6 +122,20 @@ static unsigned char kbd_queue[KBD_QUEUE_LEN];
 static int kbd_q_head, kbd_q_tail;
 static int kbd_e0;
 
+/** Docstring: Full-queue drop counters observable via wm state. */
+static unsigned long kbd_drop_cooked;
+static unsigned long kbd_drop_raw;
+
+/** Docstring: Report cooked and raw queue drop counters. */
+void kbd_drop_counts(unsigned long *cooked, unsigned long *raw) {
+    if (cooked != 0) {
+        *cooked = kbd_drop_cooked;
+    }
+    if (raw != 0) {
+        *raw = kbd_drop_raw;
+    }
+}
+
 #define KBD_RAW_LEN 64
 static unsigned char kbd_raw[KBD_RAW_LEN];
 static int kbd_raw_head, kbd_raw_tail;
@@ -128,14 +143,20 @@ static int kbd_raw_mode;
 
 void kbd_q_push(unsigned char c) {
     int next = (kbd_q_tail + 1) % KBD_QUEUE_LEN;
-    if (next == kbd_q_head) return;
+    if (next == kbd_q_head) {
+        kbd_drop_cooked++;
+        return;
+    }
     kbd_queue[kbd_q_tail] = c;
     kbd_q_tail = next;
 }
 
 static void kbd_raw_push_internal(unsigned char c) {
     int next = (kbd_raw_tail + 1) % KBD_RAW_LEN;
-    if (next == kbd_raw_head) return;
+    if (next == kbd_raw_head) {
+        kbd_drop_raw++;
+        return;
+    }
     kbd_raw[kbd_raw_tail] = c;
     kbd_raw_tail = next;
 }
@@ -204,39 +225,71 @@ static int raw_track_mods(int code, int brk, int e0) {
     return 0;
 }
 
-static int wm_raw_combo(int code, int e0) {
-    int zone;
-    if (!vga_fb_active) return 0;
-    if (!e0 && code == KEY_TAB) {
-        if (kbd_alt) { vga_fb_focus_next(); wm_raw_swallow_tab_break = 1; return 1; }
-        if (kbd_super) { vga_fb_tile_all(); wm_raw_swallow_tab_break = 1; return 1; }
+/** Docstring: Dispatch one looked-up WM combo to the window manager. */
+static int wm_combo_dispatch(int action, int zone)
+{
+    if (!vga_fb_active) {
         return 0;
     }
-    if (e0 && (code == KEY_UP || code == KEY_DOWN || code == KEY_LEFT ||
-               code == KEY_RIGHT || code == KEY_HOME || code == KEY_END)) {
-        if (!kbd_super) return 0;
-        if (code == KEY_UP) zone = TILING_TOP;
-        else if (code == KEY_DOWN) zone = TILING_BOTTOM;
-        else if (code == KEY_LEFT) zone = TILING_LEFT;
-        else if (code == KEY_RIGHT) zone = TILING_RIGHT;
-        else if (code == KEY_HOME) zone = TILING_TOP_LEFT;
-        else zone = TILING_BOTTOM_RIGHT;
+    if (action == WM_COMBO_FOCUS_NEXT) {
+        vga_fb_focus_next();
+        return 1;
+    }
+    if (action == WM_COMBO_TILE_ALL) {
+        vga_fb_tile_all();
+        return 1;
+    }
+    if (action == WM_COMBO_FULLSCREEN) {
+        vga_fb_toggle_fullscreen();
+        return 1;
+    }
+    if (action == WM_COMBO_MINIMIZE) {
+        vga_fb_toggle_minimize();
+        return 1;
+    }
+    if (action == WM_COMBO_CLOSE) {
+        vga_fb_close_active();
+        return 1;
+    }
+    if (action == WM_COMBO_SNAP) {
         vga_fb_snap_window(zone);
         return 1;
     }
-    if (!e0 && kbd_alt && !kbd_altgr) {
-        if (code == KEY_ENTER) { vga_fb_toggle_fullscreen(); return 1; }
-        if (code == KEY_HOME) { vga_fb_snap_window(TILING_TOP_LEFT); return 1; }
-        if (code == KEY_END) { vga_fb_snap_window(TILING_BOTTOM_RIGHT); return 1; }
-        if (code == 0x32) { vga_fb_toggle_minimize(); return 1; }        /* M */
-        if (code == 0x2D || code == 0x10) { vga_fb_close_active(); return 1; } /* X Q */
-        if (code == 0x1A) { vga_fb_resize(-1, 0); return 1; }            /* [ */
-        if (code == 0x1B) { vga_fb_resize(1, 0); return 1; }             /* ] */
-        if (code == 0x0C) { vga_fb_resize(-1, -1); return 1; }           /* - */
-        if (code == 0x0D) { vga_fb_resize(1, 1); return 1; }             /* = */
-        if (code == 0x0B) { vga_fb_reset_default(); return 1; }          /* 0 */
+    if (action == WM_COMBO_RESIZE_DEC_W) {
+        vga_fb_resize(-1, 0);
+        return 1;
+    }
+    if (action == WM_COMBO_RESIZE_INC_W) {
+        vga_fb_resize(1, 0);
+        return 1;
+    }
+    if (action == WM_COMBO_RESIZE_DEC_BOTH) {
+        vga_fb_resize(-1, -1);
+        return 1;
+    }
+    if (action == WM_COMBO_RESIZE_INC_BOTH) {
+        vga_fb_resize(1, 1);
+        return 1;
+    }
+    if (action == WM_COMBO_RESET) {
+        vga_fb_reset_default();
+        return 1;
     }
     return 0;
+}
+
+static int wm_raw_combo(int code, int e0) {
+    int zone = 0;
+    int action;
+    if (!vga_fb_active) return 0;
+    action = wm_combo_lookup(kbd_alt, kbd_altgr, kbd_super, e0 ? 1 : 0, code, WM_PATH_RAW, &zone);
+    if (action == WM_COMBO_NONE) {
+        return 0;
+    }
+    if (action == WM_COMBO_FOCUS_NEXT || action == WM_COMBO_TILE_ALL) {
+        wm_raw_swallow_tab_break = 1;
+    }
+    return wm_combo_dispatch(action, zone);
 }
 
 /* SYS_KBD raw-path filter (one byte per syscall). Owns the E0 flag on this
@@ -327,6 +380,8 @@ int kbd_read(void) {
     }
 
     if (kbd_e0) {
+        int zone = 0;
+        int action;
         kbd_e0 = 0;
         if (sc == KEY_RALT) { kbd_altgr = 1; return -1; }
         if (sc == KEY_SUPER_L || sc == KEY_SUPER_R) { kbd_super = 1; return -1; }
@@ -336,21 +391,9 @@ int kbd_read(void) {
             if (sc == KEY_LEFT)     { vga_fb_move_terminal(-1, 0); return -1; }
             if (sc == KEY_RIGHT)    { vga_fb_move_terminal( 1, 0); return -1; }
         }
-        if (kbd_alt && vga_fb_active) {
-            if (sc == KEY_UP)       { vga_fb_snap_window(TILING_TOP); return -1; }
-            if (sc == KEY_DOWN)     { vga_fb_snap_window(TILING_BOTTOM); return -1; }
-            if (sc == KEY_LEFT)     { vga_fb_snap_window(TILING_LEFT); return -1; }
-            if (sc == KEY_RIGHT)    { vga_fb_snap_window(TILING_RIGHT); return -1; }
-            if (sc == KEY_HOME)     { vga_fb_snap_window(TILING_TOP_LEFT); return -1; }
-            if (sc == KEY_END)      { vga_fb_snap_window(TILING_BOTTOM_RIGHT); return -1; }
-        }
-        if (kbd_super && vga_fb_active) {
-            if (sc == KEY_UP)       { vga_fb_snap_window(TILING_TOP); return -1; }
-            if (sc == KEY_DOWN)     { vga_fb_snap_window(TILING_BOTTOM); return -1; }
-            if (sc == KEY_LEFT)     { vga_fb_snap_window(TILING_LEFT); return -1; }
-            if (sc == KEY_RIGHT)    { vga_fb_snap_window(TILING_RIGHT); return -1; }
-            if (sc == KEY_HOME)     { vga_fb_snap_window(TILING_TOP_LEFT); return -1; }
-            if (sc == KEY_END)      { vga_fb_snap_window(TILING_BOTTOM_RIGHT); return -1; }
+        action = wm_combo_lookup(kbd_alt, kbd_altgr, kbd_super, 1, sc, WM_PATH_COOKED, &zone);
+        if (action != WM_COMBO_NONE) {
+            if (wm_combo_dispatch(action, zone)) return -1;
         }
         if (sc == KEY_UP) {
             kbd_q_push(KEY_ESC); kbd_q_push(KEY_CSI); kbd_q_push(KEY_ARR_UP);
@@ -380,31 +423,17 @@ int kbd_read(void) {
     if (sc == KEY_LSHIFT || sc == KEY_RSHIFT) { kbd_shift = 1; return -1; }
     if (sc == KEY_LCTRL) { kbd_ctrl = 1; return -1; }
     if (sc == KEY_LALT) { kbd_alt = 1; return -1; }
-    /* Alt-Tab cycles window focus, Super-Tab tiles them. Both are consumed
-     * here so Tab never reaches shell completion with a WM modifier held. */
-    if (sc == KEY_TAB && vga_fb_active) {
-        if (kbd_alt) { vga_fb_focus_next(); return -1; }
-        if (kbd_super) { vga_fb_tile_all(); return -1; }
+    {
+        int zone = 0;
+        int action = wm_combo_lookup(kbd_alt, kbd_altgr, kbd_super, 0, sc, WM_PATH_COOKED, &zone);
+        if (action != WM_COMBO_NONE) {
+            if (wm_combo_dispatch(action, zone)) return -1;
+        }
     }
 
     if (vga_fb_active) {
         if (sc == KEY_F11) { vga_fb_toggle_fullscreen(); return -1; }
         if (sc == KEY_F5)  { vga_fb_move_terminal(0, 0); return -1; }
-    }
-
-    if (vga_fb_active && kbd_alt) {
-        char ch = kbd_us[sc];
-        if (sc == KEY_ENTER)      { vga_fb_toggle_fullscreen(); return -1; }
-        if (sc == KEY_HOME)       { vga_fb_snap_window(TILING_TOP_LEFT); return -1; }
-        if (sc == KEY_END)        { vga_fb_snap_window(TILING_BOTTOM_RIGHT); return -1; }
-        if (ch == 'm' || ch == 'M') { vga_fb_toggle_minimize(); return -1; }
-        if (ch == 'x' || ch == 'X') { vga_fb_close_active(); return -1; }
-        if (ch == 'q' || ch == 'Q') { vga_fb_close_active(); return -1; }
-        if (ch == '[')            { vga_fb_resize(-1, 0); return -1; }
-        if (ch == ']')            { vga_fb_resize(1, 0); return -1; }
-        if (ch == '-')            { vga_fb_resize(-1, -1); return -1; }
-        if (ch == '=')            { vga_fb_resize(1, 1); return -1; }
-        if (ch == '0')            { vga_fb_reset_default(); return -1; }
     }
 
     {

@@ -156,5 +156,8 @@ int  minifs_file_close(MiniFSFile *f);
 
 unsigned int minifs_get_lba_start(void);
 unsigned int minifs_get_total_blocks(void);
+/** Docstring: Filesystem usage snapshot for the mem builtin. */
+void minifs_usage(unsigned int *free_b, unsigned int *total_b,
+                  unsigned int *free_i, unsigned int *total_i);
 
 #endif
