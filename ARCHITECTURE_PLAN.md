@@ -208,6 +208,39 @@ fs/, net/) and makes the dependency graph visible at the directory level.
 `kernel.h` (new declarations); `kernel.c` (forward decls removed,
 functions made non-static); `CLAUDE.md`, `ARCHITECTURE_PLAN.md` (updated)
 
+### WM Header Contracts (DONE)
+
+**What changed:** The window manager inside `kernel/vga_fb.c` was a God
+Object: one 2900-line file owned terminal rendering, focus, drag, desktop
+icons, taskbar, graphics compositing and cursor handling, with hit-testing
+logic duplicated per window type and drag state hidden in function-static
+variables that a focus change could never reset. Six header-only contracts
+now own the pure logic, each in one file with a centralized config struct,
+integer-only and kernel-dependency-free so they compile on the host:
+
+```
+wm_geom.h      rectangles: title, content, scrollbar, clamp
+wm_events.h    click/release/scroll/move translation, stateless
+wm_window.h    unified terminal/graphics model, hit-test, focus rotation, paint order
+wm_render.h    back-to-front composition plan (graphics always last)
+wm_tiling.h    terminal cell layout (split, stack beside graphics, fullscreen single)
+wm_focus.h     validated focus transitions (invalid ids refused)
+```
+
+`kernel/vga_fb.c` consumes them (hit tests, edge detection, paint order,
+tiling cells, focus selection) and keeps owning only the pixel work and the
+kernel state. Drag grabs moved to file scope so `tw_select` resets them on
+every focus change.
+
+**Why it matters:** Title height, scrollbar edges and focus rotation each
+had one definition instead of five copies; every rectangle and transition
+is host-testable without booting QEMU.
+
+**Files:** `wm_geom.h`, `wm_events.h`, `wm_window.h`, `wm_render.h`,
+`wm_tiling.h`, `wm_focus.h`; `tests/test_wm.c` (`make test-wm`,
+mutation-covered); `kernel/vga_fb.c`; `Makefile`; `docs/adr/0020-wm-contracts.md`;
+`CLAUDE.md`, `README.md` (gates list `test-wm`)
+
 ---
 
 ## Phase 1: Stabilize Existing Abstractions (Weeks 1-3, CRITICAL)

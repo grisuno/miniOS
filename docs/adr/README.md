@@ -27,6 +27,9 @@ Consequences. Numbers are monotonic; status is `accepted` (shipped) or
 | [0011](0011-kernel-mediator.md) | Kernel as Mediator: bounded contexts, thin `kernel.c` | accepted |
 | [0012](0012-driver-strategy-vfs-facade.md) | Driver Strategy registry and VFS file_operations facade | accepted |
 | [0013](0013-priority-inheritance.md) | Priority inheritance on blocking mutexes | accepted |
+| [0014](0014-syscall-truthfulness.md) | Syscall truthfulness pass (FreeDom readiness Phase 0) | accepted |
+| [0019](0019-freedom-wl-shim.md) | FreeDom Wayland intermediate layer and MiniFS growth | accepted |
+| [0020](0020-wm-contracts.md) | Window manager header contracts (`wm_*.h`) | accepted |
 
 Formal analysis: [../vma-complexity.md](../vma-complexity.md) proves the
 $O(\log n)$ bound claimed in ADR-0005.

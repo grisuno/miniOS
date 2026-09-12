@@ -895,6 +895,24 @@ framebuffer is not.
   the shell's `klongjmp` target. Alt+M toggles minimize and
   Alt+X/Alt+Q close the active window. Fullscreen and minimize are mutually
   exclusive: entering one clears the other.
+- **WM geometry and events (`wm_geom.h`, `wm_events.h`, `vga_fb.c`):** the
+  tick no longer hardcodes title height or button edges. `wm_geom.h` owns
+  every rectangle (title, content, scrollbar, clamp) through
+  `wm_geom_config_t` derived once from `FONT_W`/`FONT_H`/`SCROLLBAR_W`;
+  `wm_events.h` owns click/release/scroll/move translation through
+  `wm_event_config_t` with a stateless pure translator. Drag grabs live at
+  file scope (`wm_dragging`, `wm_gdrag`) so `tw_select` resets them on
+  every focus change instead of leaking a stale grab. `wm_window.h` unifies
+  terminal and graphics hit-testing plus focus rotation and paint order
+  (`tw_hit` delegates, `tw_select` bounds-checks); `wm_render.h` owns the
+  back-to-front composition plan (wallpaper, shortcuts, taskbar, terminals,
+  graphics last); `wm_tiling.h` owns terminal cell layout (split, stack
+  beside graphics, fullscreen single); `wm_focus.h` owns validated focus
+  transitions (`vga_fb_focus_next`/`vga_fb_focus_id` delegate id selection
+  and refuse invalid targets). Host contract is
+  `make test-wm`; mutation gate covers title height, containment edges,
+  click/release confusion, paint and layer order, tiling splits (odd
+  widths included), focus validity and null/degenerate fail-closed.
 - **WM inside games (raw scancodes, `drivers/kbd.c`):** DOOM/Quake/Nuklear/
   piano read raw Set-1 scancodes through `SYS_KBD` (205), bypassing the
   cooked translation where Alt-Tab lives — so the WM used to die the moment
@@ -2153,6 +2171,7 @@ make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
+make test-wm         # WM geometry + event translator suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
@@ -2497,6 +2516,10 @@ Extracted so far:
   `CMD_BUF_SZ`/`MAX_ARGS` bounds are shared through `shell.h`
 - Boot: stage1.S, stage2.S, bootdefs.h moved to `arch/x86/boot/`
 - Arch: isr_stubs.S, ctx_sw.S, ap_entry.S moved to `arch/x86/`
+- WM: six header-only contracts at the root (`wm_geom.h`, `wm_events.h`,
+  `wm_window.h`, `wm_render.h`, `wm_tiling.h`, `wm_focus.h`, ADR-0020);
+  `kernel/vga_fb.c` consumes them for hit-testing, event edges, paint
+  order, tiling cells and focus transitions, host-tested by `make test-wm`
 
 Future extractions: shell.c (circular deps with console_getc/redirect),
 loader.c (deps on static mm funcs), mm.c, and the remaining `syscalls.c`
@@ -2573,6 +2596,7 @@ make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
+make test-wm         # WM geometry + event translator suite green
 make test-ktime test-randmix  # Phase 0 truthfulness: TSC->usec + getrandom mixer green
 python3 tools/check_abi_numbers.py  # Phase 0.6: syscall numbers match Linux x86-64 (also in lint)
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD

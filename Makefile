@@ -1192,9 +1192,16 @@ driver_test: tests/test_driver.c drivers/driver.c driver.h | $(TOOLS_DIR)
 test-driver: driver_test
 	$(TOOLS_DIR)/driver_test
 
+# Window manager geometry and event host test (header-only wm_geom.h + wm_events.h).
+wm_test: tests/test_wm.c wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/wm_test tests/test_wm.c
+
+test-wm: wm_test
+	$(TOOLS_DIR)/wm_test
+
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1207,6 +1214,7 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/driver_test
 	$(TOOLS_DIR)/ktime_test
 	$(TOOLS_DIR)/randmix_test
+	$(TOOLS_DIR)/wm_test
 
 # Phase 0.2/0.3 host test: pure TSC-to-microsecond conversion in ktime.h.
 ktime_test: tests/test_ktime.c ktime.h | $(TOOLS_DIR)
@@ -1435,7 +1443,7 @@ tick.o: kernel/tick.c tick.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
-           third_party/stb/stb_api.h
+           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 pcspk.o: drivers/pcspk.c pcspk.h driver.h kernel.h

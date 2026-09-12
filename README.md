@@ -1621,6 +1621,8 @@ vectors plus OpenSSL-driven full handshakes and the negative set),
 `make test-futex test-percpu-rq test-batch test-rcu` (SMP scaling contracts),
 `make test-sanitize` (syscall sanitize macros),
 `make test-tick test-hal` (timer tick bus + HAL port mapping),
+`make test-wm` (window manager geometry, events, window model, render plan,
+tiling and focus contracts),
 `python3 -m unittest -v mcp/test_minios_mcp.py`, and `mcp/mutate_mcp.sh`.
 Methodology is SDD (spec in `CLAUDE.md` first), TDD (failing scenario first),
 BDD (`test_bdd.sh` over the serial console), mutation testing, and the Boy
@@ -1661,6 +1663,7 @@ be a minimal wire client, not a port).
 | `test-sync` | host sync suite: wait queues, mutex/sem/cond/rwlock over the real `kernel/sync.c` |
 | `test-tick` | host tick suite: listener order, separation, gating, bounds over the real `kernel/tick.c` |
 | `test-hal` | host HAL suite: port/device constants and stub routing for `arch/x86/hal_io.h` |
+| `test-wm` | host WM suite: geometry, events, window model, render plan, tiling and focus over the header-only `wm_*.h` contracts |
 | `run` | boot the image in QEMU with a display (TCG by default) |
 | `run-kvm` | boot it with KVM acceleration (faster CPU, slower IDE I/O) |
 | `run-headless` | boot it headless on the serial console (no GUI window) |

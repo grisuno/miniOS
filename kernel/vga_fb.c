@@ -6,6 +6,13 @@
  * in the framebuffer terminal instead of VGA text buffer 0xB8000.
  * Keyboard shortcuts: F11=fullscreen, Ctrl+arrows=move, F5=reset.
  */
+/**
+ * Docstring: vga_fb desktop with terminal windows, mouse cursor and taskbar.
+ *
+ * Window geometry and mouse edge detection delegate to the wm_geom and
+ * wm_events contracts. Drag state lives at file scope so a focus change
+ * can reset it instead of leaking a stale grab into the next gesture.
+ */
 #include "kernel.h"
 #include "vga_fb.h"
 #include "bootdefs.h"
@@ -13,6 +20,51 @@
 #include "desktop_shortcuts.h"
 #include "desktop_icons.h"
 #include "stb_api.h"
+#include "wm_geom.h"
+#include "wm_events.h"
+#include "wm_window.h"
+#include "wm_render.h"
+#include "wm_tiling.h"
+#include "wm_focus.h"
+
+/** Docstring: File-scope drag state shared by the tick and focus paths. */
+static int wm_dragging;
+static int wm_grab_cx;
+static int wm_skip_drag;
+static int wm_gdrag;
+static int wm_ggx;
+static int wm_ggy;
+
+/** Docstring: Geometry config derived once from the font layout. */
+static wm_geom_config_t wm_geom_cfg(void)
+{
+    wm_geom_config_t cfg;
+    cfg.font_w = FONT_W;
+    cfg.font_h = FONT_H;
+    cfg.scrollbar_w = SCROLLBAR_W;
+    cfg.title_h = FONT_H;
+    return cfg;
+}
+
+/** Docstring: Event config for the PS/2 mouse button mask. */
+static wm_event_config_t wm_event_cfg(void)
+{
+    wm_event_config_t cfg;
+    cfg.left_mask = 1;
+    cfg.wheel_step = 3;
+    return cfg;
+}
+
+/** Docstring: Reset terminal and graphics drag grabs on focus change. */
+static void wm_drag_reset(void)
+{
+    wm_dragging = 0;
+    wm_grab_cx = 0;
+    wm_skip_drag = 0;
+    wm_gdrag = 0;
+    wm_ggx = 0;
+    wm_ggy = 0;
+}
 
 int vga_fb_active;
 unsigned long gfx_frames_composited;
@@ -724,9 +776,7 @@ static void wm_init_once(void) {
     twins[0].lg = lg;
 }
 
-/* Select window i as the focused one (globals mirror it). Parked shell
- * input travels with the window, so a half-typed line waits on the
- * window it was typed in. No-op when i is not a present terminal. */
+/** Docstring: Select window i and drop any in-flight drag grab. */
 static void tw_select(int i) {
     if (i < 0 || i >= wm_nterms) return;
     if (!twins[i].present) return;
@@ -735,34 +785,34 @@ static void tw_select(int i) {
     wm_focus = i;
     wm_term = i;
     tw_unpark(i);
+    wm_drag_reset();
     if (shell_readline_active()) shell_focus_restore();
 }
 
 int vga_fb_focus_get(void) { return wm_focus; }
 int vga_fb_nterms_get(void) { return wm_nterms; }
 
-/* Cycle focus across present terminals plus the graphics window when a
- * program owns the display. Same function the Alt-Tab key and `wm focus`
- * call, so key and shell can never disagree. */
+/** Docstring: Cycle focus across terminals plus graphics when active. */
 void vga_fb_focus_next(void) {
-    int ids[3];
-    int n = 0, k, at = -1;
+    wm_focus_state_t st;
     int i;
     int nx;
+    int ntargets = 0;
     wm_init_once();
-    for (i = 0; i < wm_nterms; i++)
-        if (twins[i].present) ids[n++] = i;
-    if (vga_fb_gfx_mode) ids[n++] = WM_FOCUS_GFX;
-    if (n < 2) return;
-    for (k = 0; k < n; k++)
-        if (ids[k] == wm_focus) at = k;
-    if (at < 0) {
-        if (ids[0] == WM_FOCUS_GFX) vga_fb_focus_id(WM_FOCUS_GFX);
-        else tw_select(ids[0]);
-        vga_fb_draw_desktop();
-        return;
-    }
-    nx = ids[(at + 1) % n];
+    st.focus = wm_focus;
+    st.nterms = wm_nterms;
+    st.gfx_active = vga_fb_gfx_mode ? 1 : 0;
+    for (i = 0; i < 4; i++)
+        st.present[i] = 0;
+    for (i = 0; i < wm_nterms && i < 4; i++)
+        st.present[i] = twins[i].present ? 1 : 0;
+    for (i = 0; i < st.nterms && i < 4; i++)
+        if (st.present[i]) ntargets++;
+    if (st.gfx_active) ntargets++;
+    if (ntargets < 2) return;
+    nx = wm_focus_next(&st);
+    if (nx == wm_focus) return;
+    if (!wm_focus_selectable(&st, nx)) return;
     if (nx == WM_FOCUS_GFX) {
         if (shell_readline_active()) shell_focus_park();
         tw_park(wm_term);
@@ -774,11 +824,20 @@ void vga_fb_focus_next(void) {
     vga_fb_draw_desktop();
 }
 
-/* Focus window id directly (0/1 terminal, 2 graphics). Fail closed. */
+/** Docstring: Focus window id directly, fail closed on invalid id. */
 int vga_fb_focus_id(int id) {
+    wm_focus_state_t st;
+    int i;
     wm_init_once();
+    st.focus = wm_focus;
+    st.nterms = wm_nterms;
+    st.gfx_active = vga_fb_gfx_mode ? 1 : 0;
+    for (i = 0; i < 4; i++)
+        st.present[i] = 0;
+    for (i = 0; i < wm_nterms && i < 4; i++)
+        st.present[i] = twins[i].present ? 1 : 0;
+    if (wm_focus_set(&st, id) < 0) return -1;
     if (id == WM_FOCUS_GFX) {
-        if (!vga_fb_gfx_mode) return -1;
         if (shell_readline_active()) shell_focus_park();
         tw_park(wm_term);
         wm_focus = WM_FOCUS_GFX;
@@ -786,7 +845,6 @@ int vga_fb_focus_id(int id) {
         vga_fb_draw_desktop();
         return 0;
     }
-    if (id < 0 || id >= wm_nterms || !twins[id].present) return -1;
     if (id == wm_focus) return 0;
     tw_select(id);
     wm_term = id;
@@ -870,16 +928,14 @@ int vga_fb_term_close_focused(void) {
     return 1;
 }
 
-/* Tile every open window: with no graphics program one terminal fills the
- * screen and two go left/right; with one, the terminal(s) yield the right
- * half to it (two terminals stack vertically on the left half, which keeps
- * every window visible instead of burying a terminal under the graphics).
- * A graphics window too wide for the half goes right-aligned rather than
- * centered, covering less of the terminals. Applies on the program's next
- * composited frame. */
+/** Docstring: Tile terminals through the tiling contract, graphics right. */
 void vga_fb_tile_all(void) {
-    int mc, mr, hw, ow;
+    int mc, mr;
     int cur;
+    int present[WM_MAX_TERMS];
+    wm_tile_cell_t cells[WM_MAX_TERMS];
+    int n;
+    int i;
     wm_init_once();
     cur = wm_term;
     tw_park(cur);
@@ -887,34 +943,29 @@ void vga_fb_tile_all(void) {
     if (mc > TERM_MAX_COLS) mc = TERM_MAX_COLS;
     mr = (fb_height - 2 * FONT_H) / FONT_H;
     if (mr > TERM_MAX_ROWS) mr = TERM_MAX_ROWS;
-    hw = mc / 2;
-    ow = mc - hw;
-    if (vga_fb_gfx_mode && wm_nterms < 2) {
-        /* One terminal left, graphics right. */
-        twins[0].fullscreen = 0; twins[0].minimized = 0;
-        twins[0].sz_cols = hw; twins[0].sz_rows = mr;
-        twins[0].x = 0; twins[0].y = 0;
-        gfx_tile_right();
-    } else if (wm_nterms < 2 || !twins[1].present) {
+    for (i = 0; i < WM_MAX_TERMS; i++)
+        present[i] = 0;
+    for (i = 0; i < wm_nterms && i < WM_MAX_TERMS; i++)
+        present[i] = twins[i].present ? 1 : 0;
+    n = wm_tile_layout(present, wm_nterms, vga_fb_gfx_mode ? 1 : 0, mc, mr, cells, WM_MAX_TERMS);
+    if (n <= 0) {
+        tw_unpark(cur);
+        term_finish_layout();
+        return;
+    }
+    if ((wm_nterms < 2 || !twins[1].present) && !vga_fb_gfx_mode) {
         twins[0].fullscreen = 1;
         twins[0].minimized = 0;
-        if (vga_fb_gfx_mode) gfx_tile_right();
-    } else if (vga_fb_gfx_mode) {
-        int top_rows = mr / 2, bot_rows = mr - mr / 2;
-        twins[0].fullscreen = 0; twins[0].minimized = 0;
-        twins[0].sz_cols = hw; twins[0].sz_rows = top_rows;
-        twins[0].x = 0; twins[0].y = 0;
-        twins[1].fullscreen = 0; twins[1].minimized = 0;
-        twins[1].sz_cols = hw; twins[1].sz_rows = bot_rows;
-        twins[1].x = 0; twins[1].y = top_rows;
-        gfx_tile_right();
     } else {
-        twins[0].fullscreen = 0; twins[0].minimized = 0;
-        twins[0].sz_cols = hw; twins[0].sz_rows = mr;
-        twins[0].x = 0; twins[0].y = 0;
-        twins[1].fullscreen = 0; twins[1].minimized = 0;
-        twins[1].sz_cols = ow; twins[1].sz_rows = mr;
-        twins[1].x = hw; twins[1].y = 0;
+        for (i = 0; i < n && i < WM_MAX_TERMS; i++) {
+            twins[i].fullscreen = cells[i].fullscreen;
+            twins[i].minimized = 0;
+            twins[i].sz_cols = cells[i].cols;
+            twins[i].sz_rows = cells[i].rows;
+            twins[i].x = cells[i].x;
+            twins[i].y = cells[i].y;
+        }
+        if (vga_fb_gfx_mode) gfx_tile_right();
     }
     tw_unpark(cur);
     term_finish_layout();
@@ -1046,13 +1097,20 @@ int vga_fb_unpark_line(char *b, int *p) {
 }
 
 /* Hit-test: is (mx,my) inside terminal i's rectangle (title + content)? */
+/** Docstring: True when point hits terminal window i including decorations. */
 static int tw_hit(int i, int mx, int my) {
     termwin_t *t = &twins[i];
-    int w = t->px_w + SCROLLBAR_W;
-    int h = t->px_h + FONT_H;
-    if (!t->present || t->minimized) return 0;
-    return mx >= t->px_x && mx < t->px_x + w &&
-           my >= t->px_y && my < t->px_y + h;
+    wm_window_t w;
+    if (i < 0 || i >= WM_MAX_TERMS) return 0;
+    w.kind = WM_WIN_TERMINAL;
+    w.id = i;
+    w.x = t->px_x;
+    w.y = t->px_y;
+    w.w = t->px_w + SCROLLBAR_W;
+    w.h = t->px_h + FONT_H;
+    w.present = t->present;
+    w.minimized = t->minimized;
+    return wm_window_contains(&w, mx, my);
 }
 
 /* Close request for a graphics window. A ring-3 program owns the display and
@@ -2035,6 +2093,7 @@ void vga_fb_hide_text_cursor(void) {
 
 void vga_fb_draw_desktop(void) {
     int cur, i, order[WM_MAX_TERMS], n = 0;
+    int present[WM_MAX_TERMS];
     vga_fb_set_palette();
     vga_fb_clear();
     wm_init_once();
@@ -2052,14 +2111,9 @@ void vga_fb_draw_desktop(void) {
      * (normal window-on-top-of-dock behaviour), never the reverse. */
     desktop_shortcuts_draw();
     taskbar_render();
-    /* All present terminals paint, unfocused first so the focused window is
-     * on top where they overlap. A minimized window is not drawn; the
-     * content stays in its slot, so restoring repaints it with nothing
-     * lost. Single-window boots take the exact same path as before. */
-    for (i = 0; i < wm_nterms; i++)
-        if (twins[i].present && i != cur) order[n++] = i;
-    for (i = 0; i < wm_nterms; i++)
-        if (twins[i].present && i == cur) order[n++] = i;
+    for (i = 0; i < wm_nterms && i < WM_MAX_TERMS; i++)
+        present[i] = twins[i].present;
+    n = wm_paint_order(present, wm_nterms, cur, order, WM_MAX_TERMS);
     for (i = 0; i < n; i++) {
         tw_unpark(order[i]);
         term_recalc();
@@ -2661,28 +2715,23 @@ const char *desktop_shortcuts_hit_test(int mx, int my) {
     return 0;
 }
 
-/* ---- Mouse ---- */
+/** Docstring: Per-tick mouse dispatch over unified geometry and events. */
 void vga_fb_mouse_tick(void) {
-    static int dragging;
-    static int grab_cx;
     static unsigned tb_prev_buttons;
-    static int skip_drag;   /* suppress drag on the tick after a button click */
+    wm_geom_config_t gcfg = wm_geom_cfg();
+    wm_event_config_t ecfg = wm_event_cfg();
     int mx, my;
     int win_w = term_px_w + SCROLLBAR_W;
 
     if (!mouse_state.present) return;
 
-    /* Refresh the taskbar clock and react to volume clicks on the rising edge
-     * of the left button, before any window drag/scrollbar handling. */
     taskbar_tick();
-    if ((mouse_state.buttons & 1) && !(tb_prev_buttons & 1)) {
+    if (wm_is_click_edge(&ecfg, (int)tb_prev_buttons, mouse_state.buttons)) {
         taskbar_handle_click(mouse_state.x, mouse_state.y);
-        /* Window controls (minimize/maximize/close) win over a title-bar drag
-         * on the same click: hit-test the active titled window first. */
         if (wm_button_click(mouse_state.x, mouse_state.y)) {
             tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
             cursor_visible = 0;
-            skip_drag = 1;
+            wm_skip_drag = 1;
             return;
         }
         /* Click-to-focus: a click on an unfocused terminal raises it.
@@ -2696,41 +2745,35 @@ void vga_fb_mouse_tick(void) {
                     vga_fb_draw_desktop();
                     tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
                     cursor_visible = 0;
-                    skip_drag = 1;
+                    wm_skip_drag = 1;
                     return;
                 }
             }
         }
-        /* Click-to-focus the graphics window by its title bar (buttons
-         * were already hit-tested above). Works while the program runs:
-         * the ISR tick drives the WM even when the shell is blocked. */
         if (vga_fb_gfx_mode && wm_focus != WM_FOCUS_GFX) {
             int gx, gy;
             gfx_target(&gx, &gy);
-            if (mouse_state.y >= gy && mouse_state.y < gy + FONT_H &&
-                mouse_state.x >= gx && mouse_state.x < gx + gfx_win_w) {
+            if (wm_hit_title_bar(&gcfg, gx, gy, gfx_win_w, mouse_state.x, mouse_state.y)) {
                 vga_fb_focus_id(WM_FOCUS_GFX);
                 tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
                 cursor_visible = 0;
-                skip_drag = 1;
+                wm_skip_drag = 1;
                 return;
             }
         }
-        /* Check desktop icon clicks. */
         const char *cmd = desktop_shortcuts_hit_test(mouse_state.x, mouse_state.y);
         if (cmd) desktop_launch(cmd);
     }
-    if (!(mouse_state.buttons & 1)) skip_drag = 0;
+    if (!(mouse_state.buttons & 1)) wm_skip_drag = 0;
     tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
 
-    /* Process wheel: scroll back/forward (only when the window is visible). */
     if (mouse_state.wheel != 0 && !term_minimized) {
         int tr = total_rows();
         int max_off = tr > term_rows ? tr - term_rows : 0;
         if (mouse_state.wheel > 0)
-            disp_off += 3;
+            disp_off += ecfg.wheel_step;
         else
-            disp_off -= 3;
+            disp_off -= ecfg.wheel_step;
         if (disp_off > max_off) disp_off = max_off;
         if (disp_off < 0) disp_off = 0;
         mouse_state.wheel = 0;
@@ -2742,91 +2785,76 @@ void vga_fb_mouse_tick(void) {
     mx = mouse_state.x;
     my = mouse_state.y;
 
-    /* Graphics-window drag: grab its title bar and move it (offsets apply
-     * on the program's next frame). Runs even while the game owns the
-     * display, since this tick is ISR-driven. */
     {
-        static int gdrag;
-        static int ggx, ggy;
-        if (vga_fb_gfx_mode && !skip_drag) {
+        if (vga_fb_gfx_mode && !wm_skip_drag) {
             int gx, gy;
             gfx_target(&gx, &gy);
-            int in_gtitle = (my >= gy && my < gy + FONT_H &&
-                             mx >= gx && mx < gx + gfx_win_w);
-            if (mouse_state.buttons & 1) {
-                if (!gdrag && in_gtitle) {
-                    gdrag = 1;
-                    ggx = mx - gx;
-                    ggy = my - gy;
+            if (wm_hit_title_bar(&gcfg, gx, gy, gfx_win_w, mx, my)) {
+                if (mouse_state.buttons & 1) {
+                    if (!wm_gdrag) {
+                        wm_gdrag = 1;
+                        wm_ggx = mx - gx;
+                        wm_ggy = my - gy;
+                    }
+                } else {
+                    wm_gdrag = 0;
                 }
-            } else {
-                gdrag = 0;
+            } else if (!(mouse_state.buttons & 1)) {
+                wm_gdrag = 0;
             }
-            if (gdrag) {
+            if (wm_gdrag) {
                 int cx = (fb_width - gfx_win_w) / 2;
                 int cy = (fb_height - gfx_win_h) / 2;
-                gfx_win_ox = mx - ggx - cx;
-                gfx_win_oy = my - ggy - cy;
+                gfx_win_ox = mx - wm_ggx - cx;
+                gfx_win_oy = my - wm_ggy - cy;
                 cursor_visible = 0;
                 mx = mouse_state.x;
                 my = mouse_state.y;
             }
         } else {
-            gdrag = 0;
+            wm_gdrag = 0;
         }
     }
 
-    /* Title-bar drag: grab the window on a left press over the title bar and
-     * move it while the button is held.  skip_drag suppresses the drag on the
-     * tick(s) after a window-control button was clicked, so the button action
-     * (minimize/maximize/close) fires without the window jumping. */
-    if (!term_fullscreen && !term_minimized && !skip_drag) {
-        /* The grab zone is exactly the title bar: the cursor tip is the
-         * sprite's top-left pixel, so (mx, my) is where the user aims. */
-        int in_title = (my >= term_px_y && my < term_content_y() &&
-                        mx >= term_px_x && mx < term_px_x + win_w);
+    if (!term_fullscreen && !term_minimized && !wm_skip_drag) {
+        int in_title = wm_hit_title_bar(&gcfg, term_px_x, term_px_y, win_w, mx, my);
         if (mouse_state.buttons & 1) {
-            if (!dragging && in_title) {
-                dragging = 1;
-                grab_cx = (mx - term_px_x) / FONT_W;
+            if (!wm_dragging && in_title) {
+                wm_dragging = 1;
+                wm_grab_cx = (mx - term_px_x) / FONT_W;
             }
         } else {
-            dragging = 0;
+            wm_dragging = 0;
         }
-        if (dragging) {
-            vga_fb_drag_terminal(mx, my, grab_cx);
-            cursor_visible = 0;   /* desktop redraw cleared the old cursor */
+        if (wm_dragging) {
+            vga_fb_drag_terminal(mx, my, wm_grab_cx);
+            cursor_visible = 0;
             mx = mouse_state.x;
             my = mouse_state.y;
         }
     }
 
-    /* Left click on the window scrollbar jumps the view to that position. */
-    if ((mouse_state.buttons & 1) && !dragging && !term_minimized &&
-        mx >= term_px_x + term_px_w && mx < term_px_x + win_w &&
-        my >= term_content_y() && my < term_content_y() + term_px_h) {
-        int sy = term_content_y();
-        int sh = term_px_h;
-        int total = total_rows();
-        int visible = term_rows;
-        if (total > visible && sh > 0) {
-            int max_off = total - visible;
-            int new_off = ((sy + sh - my) * max_off) / sh;
-            if (new_off < 0) new_off = 0;
-            if (new_off > max_off) new_off = max_off;
-            disp_off = new_off;
-            term_render();
-            if (cursor_over(term_px_x, term_content_y(), term_px_w, term_px_h))
-                cursor_visible = 0;
+    if ((mouse_state.buttons & 1) && !wm_dragging && !term_minimized) {
+        wm_rect_t sb = wm_scrollbar_rect(&gcfg, term_px_x, term_px_y, term_px_w, term_px_h);
+        if (wm_rect_contains(&sb, mx, my)) {
+            int sy = term_content_y();
+            int sh = term_px_h;
+            int total = total_rows();
+            int visible = term_rows;
+            if (total > visible && sh > 0) {
+                int max_off = total - visible;
+                int new_off = ((sy + sh - my) * max_off) / sh;
+                if (new_off < 0) new_off = 0;
+                if (new_off > max_off) new_off = max_off;
+                disp_off = new_off;
+                term_render();
+                if (cursor_over(term_px_x, term_content_y(), term_px_w, term_px_h))
+                    cursor_visible = 0;
+            }
         }
     }
 
-    /* Clamp the mouse into the framebuffer. Out-of-range sprite pixels are
-     * clipped by the packed helpers, so clamping the tip is enough. */
-    if (mouse_state.x < 0) mouse_state.x = 0;
-    if (mouse_state.x >= fb_width) mouse_state.x = fb_width - 1;
-    if (mouse_state.y < 0) mouse_state.y = 0;
-    if (mouse_state.y >= fb_height) mouse_state.y = fb_height - 1;
+    wm_clamp_point(&mouse_state.x, &mouse_state.y, fb_width, fb_height);
 
     mx = mouse_state.x;
     my = mouse_state.y;
