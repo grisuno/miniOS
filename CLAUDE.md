@@ -1743,6 +1743,51 @@ count, fail closed on bad pointers, overlong names and truncation.
   pad, the node editor's existing Quit; vedit already exits on Esc/^X).
   No window depends on the title-bar X alone.
 
+### Paint program (`paint`, ring 3, Nuklear)
+`bin/paint` is the canvas paint program, a ring-3 Nuklear app built like
+the file browser (host gcc `-static`, MiniFS with a bare-name alias,
+source beside it at `progs/paint/paint.c`, one file per contract with a
+centralized config). The canvas is 320x200 palette indices blitted into
+the NK back-buffer after rasterize (the file-preview pattern); the widget
+bounds from `nk_widget` are the single source for both the blit offset
+and mouse hit-testing, so no screen coordinate is hardcoded. There is no
+GLFW or OpenGL anywhere: MiniOS has no GPU stack, only the 8-bit
+composited back-buffer, so the desktop GLFW demo layout does not apply.
+
+- Tools: brush, line, rect, circle, fill and eraser with sizes 1/2/4; a
+  16-swatch picker drawn from exact hybrid-palette entries (black, the 14
+  saturated accents, white), so a saved PNG reloads pixel-identical
+  (nearest-mapping ties resolve to an identical RGB, never a wrong
+  color). Shape tools rubber-band from a 64 KB backup copy taken at
+  stroke start. The status row always shows tool, swatch, size and the
+  last file result.
+- PNG save/load is self-contained: the writer emits 8-bit truecolor PNG
+  with stored-deflate blocks, CRC-32 and Adler-32 (no third-party encoder
+  dependency; `stb_image_write` is not vendored), and the reader decodes
+  through stb_image and nearest-maps onto the hybrid palette, top-left
+  clamped with white margins. Paths go through a fail-closed gate
+  (printable ASCII, bounded, `.png` suffix, no `..` traversal).
+- The dock carries `Paint|icons/paint.png|paint`; the icon converts from
+  the repo-root `paint.png` source through `tools/gen_desktop_pngs.py`
+  like every other icon. `paint <file>` opens the GUI preloading that
+  file; the title `Paint` matches the shortcut name for the taskbar icon.
+- Proof: `paint --selftest` runs the core vectors, a 2x2 encode/decode
+  roundtrip (`paint: png ok`), a save/load roundtrip through the unified
+  filesystem (`paint: file ok (/paint_selftest.png)`) and one composited
+  frame (`paint: frame ok (800x360)`), all BDD-pinned; `make test-paint`
+  locks the mirror vectors plus the PNG byte-layout pin (192278 bytes
+  for the canvas) on the host. The frame probe scans the whole
+  framebuffer for a unique 4-pixel pattern instead of trusting the window
+  origin report, so it holds in any video mode (an 8-bit exact check
+  would fail where the origin report is stale, which the nuklear origin
+  check does on a truecolor fallback boot). Present and scan retry up
+  to three times with no serial output in between: a print takes
+  milliseconds over serial and opens windows for the 25 Hz desktop tick
+  between them.
+- Interactive strokes (drag painting) have no headless proof by
+  construction; the hit-testing shares the blit rect by construction, so
+  a landed blit implies aligned input.
+
 ### Nuklear themes (`nuklear_theme`, all NK apps)
 `progs/nuklear/nuklear_theme.c` (header `nuklear_theme.h`) is the one
 theme loader every NK app links through `NUKLEAR_PLATFORM` (file,
@@ -2144,7 +2189,7 @@ QEMU boot.  Every command prints a `PASS:` marker; the host runner greps the
 serial log for these markers.  The script ships on the ramdisk (`progs/src/`)
 and is added to both `PROGS` and `MINIFS_FILES` in the Makefile.
 
-Categories tested (64 PASS):
+Categories tested (68 PASS):
 - **Boot/help**: boot banner, help, clear
 - **Filesystem**: ls (root, objects, bin), mkdir, cd, pwd, rm, cp
 - **Redirects**: `>` and `>>`
@@ -2289,7 +2334,7 @@ is forbidden; the answer to a survivor is a new scenario.
 ```bash
 make                # zero warnings
 make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers, all green
-sh src/test_all.sh  # one-boot comprehensive non-interactive suite (66 PASS)
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (68 PASS)
 ./test_bdd.sh       # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -2306,6 +2351,7 @@ make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
 make test-file       # file browser assoc-contract suite green
+make test-paint      # paint canvas/PNG-contract suite green
 make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
@@ -2737,7 +2783,7 @@ CI gates enforce architectural constraints:
 ```bash
 make                        # zero warnings
 make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers, all green
-sh src/test_all.sh          # one-boot comprehensive non-interactive suite (66 PASS)
+sh src/test_all.sh          # one-boot comprehensive non-interactive suite (68 PASS)
 ./test_bdd.sh               # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -2754,6 +2800,7 @@ make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
 make test-file       # file browser assoc-contract suite green
+make test-paint      # paint canvas/PNG-contract suite green
 make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
 make test-ktime test-randmix  # Phase 0 truthfulness: TSC->usec + getrandom mixer green

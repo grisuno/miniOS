@@ -2,6 +2,7 @@
 """gen_desktop_pngs.py -- build MiniOS desktop art from user-supplied PNGs.
 
 Sources (repo root by default, overridable with --src-dir):
+  paint.png              paint icon source
   cgoblin.png            wallpaper source (any size, RGB/RGBA)
   doom.png               DOOM icon source
   quake2.png             Quake 2 icon source
@@ -12,7 +13,7 @@ Sources (repo root by default, overridable with --src-dir):
 
 Outputs (under the MiniOS repo):
   progs/icons/doom.png, quake2.png, piano.png, nuklear.png, vedit.png,
-  pokemon.png                                               32x32 RGBA
+  pokemon.png, file.png, shell.png, paint.png               32x32 RGBA
   progs/wall/wallpaper.png                                   800x600 RGB
 
 The kernel runs in an 8-bit palette mode, so it maps icon pixels to the
@@ -52,6 +53,7 @@ ICON_JOBS = (
     ("pokemon.png", "pokemon.png"),
     ("file.png", "file.png"),
     ("shell.png", "shell.png"),
+    ("paint.png", "paint.png"),
 )
 
 

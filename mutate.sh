@@ -90,6 +90,12 @@ SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c"
 # fxsave/fxrstor in the tree for days and poisoned every later boot).
 SOURCES="$SOURCES arch/x86/ctx_sw.S progs/minios_abi.h ktime.h randmix.h sched.h progs/src/mthreads.h"
 SOURCES="$SOURCES progs/src/freedom_wl.c progs/vedit/vedit.c"
+# Mechanism: SOURCES is the backup/restore allowlist, not documentation.
+# Every file named by the mutation table MUST appear here, or a mutant
+# applied to it is never restored and leaks into the tree (and stacks
+# under the next mutant, whose kill is then vacuous). This bit paint
+# when progs/paint/paint.c shipped mutants without a SOURCES entry.
+SOURCES="$SOURCES progs/paint/paint.c tests/test_paint.c"
 
 restore_sources() {
     local f
@@ -224,6 +230,13 @@ vedit-link-elf-rejected | s/if (e\\[k\\] == 0 \\&\\& s\\[k\\] == 0) return 1;/if
 vedit-asm-dir-broken | s/#define VEDIT_DIR_ASM \"\/asm\//\#define VEDIT_DIR_ASM \"\/asx\// | progs/vedit/vedit.c
 vedit-run-key-moved | s/#define VEDIT_KEY_RUN 18/#define VEDIT_KEY_RUN 19/ | progs/vedit/vedit.c
 vedit-base-dot-kept | s/s = k + 1;/s = 0;/ | progs/vedit/vedit.c
+paint-png-ihdr-type-dropped | s/if (paint_put_bytes(dst, cap, \\&pos, ihdr, 4) < 0) return -1;/if (0) return -1;/ | progs/paint/paint.c
+paint-flood-mark-lost | s/    buf\\[y \\* w + x\\] = nc;/    buf[y * w + x] = oc;/ | progs/paint/paint.c
+paint-path-traversal-accepted | s/        if (p\\[k\\] == \\x27.\\x27 \\&\\& p\\[k + 1\\] == \\x27.\\x27) return -1;/        if (p[k] == \\x27.\\x27 \&\& p[k+1] == \\x27.\\x27) return 0;/ | progs/paint/paint.c
+paint-blit-transposed | s/            fb\\[dy \\* NK_W + dx\\] = paint_px\\[y \\* PAINT_W + x\\];/            fb[dy * NK_W + dx] = paint_px[x * PAINT_W + y];/ | progs/paint/paint.c
+paint-test-plot-bounds-lost | s/    if (x < 0 || y < 0 || x >= w || y >= h) return -1;/    if (x < 0 || y < 0) return -1;/ | tests/test_paint.c
+paint-test-flood-noop-inverted | s/    if (oc == nc) return 0;/    if (oc == nc) return 1;/ | tests/test_paint.c
+paint-test-png-total-changed | s/    CHECK(total == 192278UL, \\x22png total bytes\\x22);/    CHECK(total == 192274UL, \\x22png total bytes\\x22);/ | tests/test_paint.c
 "
 
 # Parse the mutation table into parallel arrays (preserving order).
@@ -368,6 +381,12 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         progs/src/freedom_wl.c)
             make -C "$HERE" test-freedom-wl > "$BACKUP/suite.log" 2>&1
+            ;;
+        tests/test_paint.c)
+            make -C "$HERE" test-paint > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/paint/paint.c)
+            MATCH="paint" FAIL_FAST=1 "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         progs/minios_abi.h)
             python3 "$HERE/tools/check_abi_numbers.py" > "$BACKUP/suite.log" 2>&1

@@ -212,6 +212,8 @@ run fptest
 echo PASS: fptest-ok
 file --selftest
 echo PASS: file-selftest-ok
+paint --selftest
+echo PASS: paint-selftest-ok
 
 # === REPEATED RUNS (heap stability) ===
 run cvm/fib.cvm

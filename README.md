@@ -356,6 +356,7 @@ fetches 3193 bytes and the `gfx frames` counter climbs by one.
 | `sh <script.sh>` | run a shell script (sequential commands, `#` comments) |
 | `piano` | FM piano GUI (`--selftest` for headless, `--bench` for fps) |
 | `file` | Nuklear file browser (`--selftest` lists root headless) |
+| `paint` | Nuklear canvas paint, PNG save/load (`--selftest` proves vectors, file roundtrip and one frame) |
 | `topogpt3` | TopoGPT3 transformer inference engine (`-i` for interactive) |
 | `clear` / `poweroff` | console and power |
 

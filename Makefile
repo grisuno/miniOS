@@ -895,6 +895,25 @@ $(BIN_DIR)/file.elf: $(FILE_SRCS) $(NUKLEAR_DIR)/nuklear.h
 $(BIN_DIR)/file: $(BIN_DIR)/file.elf
 	cp $< $@
 
+# ── paint (Nuklear canvas paint: PNG save/load, ring 3) ──────────
+# A Nuklear paint program over the unified filesystem: toolbar (brush,
+# line, rect, circle, fill, eraser), 16-swatch picker on exact hybrid
+# palette entries, PNG save/load through a self-contained stored-deflate
+# writer plus stb_image decode. Static ELF on MiniFS with a bare-name
+# alias. See progs/paint/paint.c.
+PAINT_SRCS = $(PROGS_DIR)/paint/paint.c \
+             $(NUKLEAR_PLATFORM)
+
+$(BIN_DIR)/paint.elf: $(PAINT_SRCS) $(NUKLEAR_DIR)/nuklear.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
+	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
+	      -I$(PROGS_DIR) -Ithird_party/stb \
+	      -o $@ $(PAINT_SRCS) -lm
+	chmod +x $@
+
+$(BIN_DIR)/paint: $(BIN_DIR)/paint.elf
+	cp $< $@
+
 # ── opl3 (ring-3 Nuked-OPL3 FM synth -> SB16 PCM) ───────────────────
 # Static ELF like DOOM. Renders a melody through the Nuked-OPL3 chip emulator
 # and streams 8-bit mono PCM to the kernel SB16 driver (syscalls 221/222).
@@ -1033,9 +1052,11 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                  $(PROGS_DIR)/etc/themes/forest $(PROGS_DIR)/etc/themes/slate \
                $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
                $(PROGS_DIR)/vedit/vedit.c \
-               $(BIN_DIR)/file.elf $(BIN_DIR)/file \
-               $(PROGS_DIR)/file/file.c \
-               $(PROGS_DIR)/etc/association \
+                $(BIN_DIR)/file.elf $(BIN_DIR)/file \
+                $(PROGS_DIR)/file/file.c \
+                $(BIN_DIR)/paint.elf $(BIN_DIR)/paint \
+                $(PROGS_DIR)/paint/paint.c \
+                $(PROGS_DIR)/etc/association \
                $(PROGS_DIR)/etc/shortcuts \
                $(BIN_DIR)/lzss $(BIN_DIR)/unlzss $(SRC_DIR)/lzss.c $(ASM_DIR)/lzss.s \
                $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 $(SRC_DIR)/lz4.c $(ASM_DIR)/lz4.s \
@@ -1229,6 +1250,13 @@ file_assoc_test: tests/test_file_assoc.c | $(TOOLS_DIR)
 
 test-file: file_assoc_test
 	$(TOOLS_DIR)/file_assoc_test
+
+# Paint canvas/PNG-contract host test (tests/test_paint.c, spec pin).
+paint_test: tests/test_paint.c | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/paint_test tests/test_paint.c
+
+test-paint: paint_test
+	$(TOOLS_DIR)/paint_test
 
 # Shared Nuklear theme host test (tests/test_theme.c, spec pin).
 theme_test: tests/test_theme.c progs/nuklear/nuklear_theme.h | $(TOOLS_DIR)
@@ -1468,11 +1496,13 @@ DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
                $(DESKTOP_SRC_DIR)/quake2.png $(DESKTOP_SRC_DIR)/piano.png \
                $(DESKTOP_SRC_DIR)/nuklear.png $(DESKTOP_SRC_DIR)/vedit.png \
                $(DESKTOP_SRC_DIR)/pokemon.png \
-               $(DESKTOP_SRC_DIR)/file.png $(DESKTOP_SRC_DIR)/shell.png
+               $(DESKTOP_SRC_DIR)/file.png $(DESKTOP_SRC_DIR)/shell.png \
+               $(DESKTOP_SRC_DIR)/paint.png
 DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/quake2.png \
               $(PROGS_DIR)/icons/piano.png $(PROGS_DIR)/icons/nuklear.png \
               $(PROGS_DIR)/icons/vedit.png $(PROGS_DIR)/icons/pokemon.png \
               $(PROGS_DIR)/icons/file.png $(PROGS_DIR)/icons/shell.png \
+              $(PROGS_DIR)/icons/paint.png \
               $(PROGS_DIR)/wall/wallpaper.png
 $(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
 	python3 tools/gen_desktop_pngs.py --src-dir $(DESKTOP_SRC_DIR) --repo .

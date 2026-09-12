@@ -1177,6 +1177,12 @@ poweroff"
 expect "file: ok ("
 expect "theme dark"
 
+scenario "paint selftest proves the png roundtrip and one frame" "paint --selftest
+poweroff"
+expect "paint: png ok ("
+expect "paint: file ok (/paint_selftest.png)"
+expect "paint: frame ok (800x360)"
+
 scenario "wm state reports the active theme" "wm state
 poweroff"
 expect "wm: theme dark"
