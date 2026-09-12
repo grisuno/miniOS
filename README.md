@@ -93,6 +93,7 @@ The bottom taskbar is a live status strip, not a hint line:
   only `€` is missing, it has no Latin-1 byte). The shell `kbd [en|es]`
   builtin reads and sets the same state. The
   cursor tip is the arrow's top-left pixel, so a click lands where it points.
+- **Theme selector** an selector of themes to minios.
 
 ## Tiling window shortcuts
 
