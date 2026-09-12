@@ -14,6 +14,7 @@
 #include "wm_render.h"
 #include "wm_tiling.h"
 #include "wm_focus.h"
+#include "wm_layout.h"
 
 static int failures = 0;
 
@@ -298,6 +299,80 @@ int main(void)
         zone = -1;
         CHECK(wm_combo_lookup(0, 0, 1, 1, WM_SC_HOME, WM_PATH_COOKED, &zone) == WM_COMBO_SNAP, "super home snaps");
         CHECK(zone == WM_SNAP_TOP_LEFT, "snap zone reports top left");
+    }
+
+    {
+        wm_layout_config_t lcfg = WM_LAYOUT_CONFIG_DEFAULT;
+        wm_layout_window_t one[1];
+        wm_layout_window_t two[2];
+        wm_layout_window_t three[3];
+        wm_layout_cell_t cells[4];
+        wm_layout_cell_t prev[4];
+        wm_layout_cell_t solo;
+        int n;
+        CHECK(WM_LAYOUT_MODE_COUNT == 5, "layout carries five modes");
+        CHECK(wm_layout_mode_valid(WM_LAYOUT_TILE) != 0, "tile mode valid");
+        CHECK(wm_layout_mode_valid(WM_LAYOUT_FULLSCREEN) != 0, "fullscreen valid");
+        CHECK(wm_layout_mode_valid(99) == 0, "bad mode invalid");
+        CHECK(wm_layout_mode_name(WM_LAYOUT_BSP) != 0, "bsp name exists");
+        CHECK(wm_layout_mode_name(99) == 0, "bad mode name null");
+        one[0].kind = 1;
+        one[0].id = 0;
+        one[0].present = 1;
+        one[0].min_cols = 1;
+        one[0].min_rows = 1;
+        two[0] = one[0];
+        two[1] = one[0];
+        two[1].id = 1;
+        three[0] = one[0];
+        three[1] = one[0];
+        three[1].id = 1;
+        three[2] = one[0];
+        three[2].id = 2;
+        n = wm_layout_compute(&lcfg, two, 2, WM_LAYOUT_TILE, 0, 80, 40, cells, 4);
+        CHECK(n == 2, "tile dual covers both");
+        CHECK(cells[0].cols == 40 && cells[1].cols == 40, "tile dual halves cols");
+        CHECK(cells[0].x == 0 && cells[1].x == 40, "tile dual offsets second");
+        n = wm_layout_compute(&lcfg, two, 2, WM_LAYOUT_TILE, 0, 81, 40, cells, 4);
+        CHECK(n == 2 && cells[0].cols == 40 && cells[1].cols == 41, "tile odd keeps rest");
+        n = wm_layout_compute(&lcfg, one, 1, WM_LAYOUT_TILE, 0, 80, 40, cells, 4);
+        CHECK(n == 1 && cells[0].fullscreen == 1, "tile single fullscreen");
+        n = wm_layout_compute(&lcfg, three, 3, WM_LAYOUT_BSP, 0, 80, 40, cells, 4);
+        CHECK(n == 3, "bsp triple covers all");
+        CHECK(cells[0].cols == 40, "bsp first takes half");
+        CHECK(cells[1].x == 40, "bsp second starts at half");
+        CHECK(cells[2].cols + cells[2].x == 80, "bsp cells stay in grid");
+        n = wm_layout_compute(&lcfg, three, 3, WM_LAYOUT_CASCADE, 0, 80, 40, cells, 4);
+        CHECK(n == 3, "cascade triple covers all");
+        CHECK(cells[1].x > cells[0].x && cells[1].y > cells[0].y, "cascade offsets grow");
+        n = wm_layout_compute(&lcfg, three, 3, WM_LAYOUT_FIBONACCI, 0, 80, 40, cells, 4);
+        CHECK(n == 3, "fibonacci triple covers all");
+        CHECK(cells[0].cols > 0 && cells[0].rows > 0, "fibonacci first valid");
+        CHECK(cells[2].x + cells[2].cols <= 80, "fibonacci stays in cols");
+        CHECK(cells[2].y + cells[2].rows <= 40, "fibonacci stays in rows");
+        n = wm_layout_compute(&lcfg, two, 2, WM_LAYOUT_FULLSCREEN, 1, 80, 40, cells, 4);
+        CHECK(n == 2, "fullscreen returns both slots");
+        CHECK(cells[1].fullscreen == 1 && cells[1].cols == 80, "fullscreen focus fills");
+        CHECK(cells[0].cols == 0, "fullscreen hides rest");
+        CHECK(wm_layout_fullscreen_cell(80, 40, &solo) == 1, "fullscreen cell builds");
+        CHECK(solo.cols == 80 && solo.fullscreen == 1, "fullscreen cell fills");
+        CHECK(wm_layout_fullscreen_cell(0, 40, &solo) == 0, "zero grid fails closed");
+        CHECK(wm_layout_fullscreen_cell(80, 40, 0) == 0, "null out fails closed");
+        n = wm_layout_compute(&lcfg, two, 2, WM_LAYOUT_TILE, 0, 80, 40, cells, 4);
+        CHECK(n == 2, "same compares stable plan");
+        prev[0] = cells[0];
+        prev[1] = cells[1];
+        CHECK(wm_layout_same(cells, prev, 2) != 0, "identical plans match");
+        cells[1].x = 41;
+        CHECK(wm_layout_same(cells, prev, 2) == 0, "moved cell differs");
+        CHECK(wm_layout_same(0, prev, 2) == 0, "null plan differs");
+        CHECK(wm_layout_same(cells, prev, 0) != 0, "empty count matches");
+        CHECK(wm_layout_compute(0, two, 2, WM_LAYOUT_TILE, 0, 80, 40, cells, 4) == 2, "null config keeps tile");
+        CHECK(wm_layout_compute(&lcfg, two, 2, 99, 0, 80, 40, cells, 4) == 0, "bad mode lays nothing");
+        CHECK(wm_layout_compute(&lcfg, 0, 2, WM_LAYOUT_TILE, 0, 80, 40, cells, 4) == 0, "null wins lays nothing");
+        CHECK(wm_layout_compute(&lcfg, two, 2, WM_LAYOUT_TILE, 0, 0, 40, cells, 4) == 0, "zero grid lays nothing");
+        CHECK(wm_layout_compute(&lcfg, two, 2, WM_LAYOUT_TILE, 0, 80, 40, 0, 4) == 0, "null out lays nothing");
+        CHECK(wm_layout_compute(&lcfg, two, 2, WM_LAYOUT_TILE, 0, 80, 40, cells, 1) == 0, "small cap lays nothing");
     }
 
     if (failures == 0) {

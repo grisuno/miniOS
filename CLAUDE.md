@@ -944,10 +944,15 @@ framebuffer is not.
   graphics last); `wm_tiling.h` owns terminal cell layout (split, stack
   beside graphics, fullscreen single); `wm_focus.h` owns validated focus
   transitions (`vga_fb_focus_next`/`vga_fb_focus_id` delegate id selection
-  and refuse invalid targets). Host contract is
+  and refuse invalid targets); `wm_layout.h` owns unified placement across
+  `tile`/`bsp`/`cascade`/`fibonacci`/`fullscreen` (`wm_layout_compute`,
+  `wm_layout_same`, `wm_layout_fullscreen_cell`, config
+  `wm_layout_config_t`, spec `docs/wm_layout_spec.md`, manifest
+  `docs/wm_layout_manifest.md` via `tools/wm_layout_sync.py`). Host contract is
   `make test-wm`; mutation gate covers title height, containment edges,
   click/release confusion, paint and layer order, tiling splits (odd
-  widths included), focus validity and null/degenerate fail-closed.
+  widths included), bsp/cascade/fibonacci cells, fullscreen uniformity,
+  plan-equality and null/degenerate fail-closed.
 - **WM inside games (raw scancodes, `drivers/kbd.c`):** DOOM/Quake/Nuklear/
   piano read raw Set-1 scancodes through `SYS_KBD` (205), bypassing the
   cooked translation where Alt-Tab lives — so the WM used to die the moment
@@ -984,6 +989,15 @@ framebuffer is not.
   same functions as the buttons and shortcuts and reports state over the
   serial console, so the BDD suite asserts the WM behaviour exactly like
   `date`/`vol`/`kbd`/`gfx`.
+- **Layout modes (`wm layout`, `wm_layout.h`):** `tile` keeps the legacy
+  dual split exactly (odd remainder goes right, like `wm_tiling.h`);
+  `bsp` splits recursively alternating axes; `cascade` offsets by config
+  steps; `fibonacci` carves integer-ratio strips; `fullscreen` fills focus.
+  `wm layout [tile|bsp|cascade|fibonacci|cycle]` sets it, `wm state`
+  reports `wm: layout <name>`, Alt+Enter stays uniform (terminal fills
+  cells, gfx recenters native), and `vga_fb_tile_all` skips the redraw
+  when `wm_layout_same` proves the plan unchanged, which removes the
+  drag/tile flicker without touching the rasterizer.
 - **Persistent graphics layer (`gfx_keep_*`, `vga_fb.c`):** every desktop
   redraw wipes the whole framebuffer, which used to bury any program that
   only composites on input — vedit/Nuklear sit blocked in `read` with no
@@ -2475,6 +2489,25 @@ result travels into the OS.
 - Every constant named; boot-path constants live in `bootdefs.h`, kernel
   constants at the top of their subsystem.
 - No absolute filesystem paths and no host assumptions in the build.
+
+## Tools Doctrine
+Every helper that survives a session lives in `tools/` as a reusable
+contract, never as a scratch file. I build each tool self-contained in one
+file per contract, DRY and SOLID, production-ready with no placeholders and
+no simplifications, secure by default, with an adhoc architecture for its
+problem and no hardcoded values or magic numbers: every tunable lives in a
+central config class. I write each tool in English without emojis and without
+inline comments, using docstrings above the code they describe, with no
+absolute paths from any machine and no host assumptions. I document every
+tool with its purpose, usage, inputs, outputs and failure modes so a future
+session reuses it instead of rebuilding it, and I keep `tools/` free of
+single-use garbage: a script that cannot be reused does not land there. I
+scope tests and mutations to touched files between runs (`tools/wm_scoped.sh`
+pattern); I run `mutate.sh` and `test_bdd.sh` complete only at the end of a
+todo list because the full suites take hours. I debug fast from inside MiniOS
+with `trace on` followed by `sh src/test_all.sh`, `micropython src/test.py`
+or `lua src/test.lua`, adding cases there when they prove behavior faster
+than a host reboot.
 
 ## Architectural Abstractions
 

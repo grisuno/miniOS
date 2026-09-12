@@ -1245,7 +1245,7 @@ test-driver: driver_test
 	$(TOOLS_DIR)/driver_test
 
 # Window manager geometry and event host test (header-only wm_geom.h + wm_events.h).
-wm_test: tests/test_wm.c wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h | $(TOOLS_DIR)
+wm_test: tests/test_wm.c wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_layout.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/wm_test tests/test_wm.c
 
 test-wm: wm_test

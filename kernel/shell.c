@@ -9,6 +9,7 @@
 #include "sb16.h"
 #include "rtc.h"
 #include "drivers/kbd.h"
+#include "wm_layout.h"
 #define XXH_STATIC_LINKING_ONLY
 #include "xxhash.h"
 #include "zip.h"
@@ -1845,6 +1846,32 @@ static void shell_cmd_wm(int argc, char **argv) {
             kprintf("wm: tiled %d terms\n", vga_fb_nterms_get());
             return;
         }
+        if (kstrcmp(argv[1], "layout") == 0) {
+            int m = -1;
+            if (argc < 3) {
+                kprintf("wm: layout %s\n", vga_fb_layout_name());
+                return;
+            }
+            if (kstrcmp(argv[2], "tile") == 0) m = WM_LAYOUT_TILE;
+            else if (kstrcmp(argv[2], "bsp") == 0) m = WM_LAYOUT_BSP;
+            else if (kstrcmp(argv[2], "cascade") == 0) m = WM_LAYOUT_CASCADE;
+            else if (kstrcmp(argv[2], "fibonacci") == 0) m = WM_LAYOUT_FIBONACCI;
+            else if (kstrcmp(argv[2], "cycle") == 0) {
+                vga_fb_layout_cycle();
+                kprintf("wm: layout %s\n", vga_fb_layout_name());
+                return;
+            } else {
+                vga_puts("usage: wm layout [tile|bsp|cascade|fibonacci|cycle]\n");
+                return;
+            }
+            if (vga_fb_layout_set(m)) {
+                vga_puts("wm: layout failed\n");
+                return;
+            }
+            vga_fb_tile_all();
+            kprintf("wm: layout %s\n", vga_fb_layout_name());
+            return;
+        }
         if (kstrcmp(argv[1], "snap") == 0) {
             int z = -1;
             if (argc < 3) { vga_puts("usage: wm snap left|right|top|bottom|tl|tr|bl|br\n"); return; }
@@ -1878,7 +1905,7 @@ static void shell_cmd_wm(int argc, char **argv) {
         }
         if (kstrcmp(argv[1], "state") == 0) { /* fall through to report */ }
         else if (kstrcmp(argv[1], "focus") != 0) {
-            vga_puts("usage: wm [minimize|maximize|close|split|list|tile|focus|state]\n");
+            vga_puts("usage: wm [minimize|maximize|close|split|list|tile|layout|focus|state]\n");
             return;
         }
     }
@@ -1886,6 +1913,7 @@ static void shell_cmd_wm(int argc, char **argv) {
             vga_fb_is_minimized(), vga_fb_is_fullscreen(),
             wm_gfx_mode_active(), vga_fb_focus_get(),
             vga_fb_nterms_get());
+    kprintf("wm: layout %s\n", vga_fb_layout_name());
     {
         char theme[17];
         vga_fb_theme_name(theme, sizeof(theme));

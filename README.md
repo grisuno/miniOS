@@ -352,6 +352,7 @@ fetches 3193 bytes and the `gfx frames` counter climbs by one.
 | `wm minimize` | minimize the terminal window |
 | `wm maximize` | toggle fullscreen |
 | `wm close` | close the active window |
+| `wm layout [tile\|bsp\|cascade\|fibonacci\|cycle]` | set tiling layout, report active |
 | `sh <script.sh>` | run a shell script (sequential commands, `#` comments) |
 | `piano` | FM piano GUI (`--selftest` for headless, `--bench` for fps) |
 | `file` | Nuklear file browser (`--selftest` lists root headless) |

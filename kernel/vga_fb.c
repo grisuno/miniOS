@@ -27,6 +27,7 @@
 #include "wm_render.h"
 #include "wm_tiling.h"
 #include "wm_focus.h"
+#include "wm_layout.h"
 
 /** Docstring: File-scope drag state shared by the tick and focus paths. */
 static int wm_dragging;
@@ -697,6 +698,10 @@ static int wm_nterms = 1;
 static int wm_focus;
 static int wm_term;
 static int wm_inited;
+/** Docstring: Active layout mode plus last published plan for repaint skip. */
+static int wm_layout_mode = WM_LAYOUT_TILE;
+static wm_layout_cell_t wm_last_cells[WM_MAX_TERMS];
+static int wm_last_n = -1;
 
 static void tw_park(int i) {
     termwin_t *t = &twins[i];
@@ -956,11 +961,53 @@ int vga_fb_term_close_focused(void) {
 }
 
 /** Docstring: Tile terminals through the tiling contract, graphics right. */
+/** Docstring: Set active layout mode, fail closed on bad mode. */
+int vga_fb_layout_set(int mode)
+{
+    if (!wm_layout_mode_valid(mode)) {
+        return -1;
+    }
+    wm_layout_mode = mode;
+    wm_last_n = -1;
+    return 0;
+}
+
+/** Docstring: Cycle layout mode tile bsp cascade fibonacci. */
+void vga_fb_layout_cycle(void)
+{
+    if (wm_layout_mode == WM_LAYOUT_TILE) {
+        wm_layout_mode = WM_LAYOUT_BSP;
+    } else if (wm_layout_mode == WM_LAYOUT_BSP) {
+        wm_layout_mode = WM_LAYOUT_CASCADE;
+    } else if (wm_layout_mode == WM_LAYOUT_CASCADE) {
+        wm_layout_mode = WM_LAYOUT_FIBONACCI;
+    } else {
+        wm_layout_mode = WM_LAYOUT_TILE;
+    }
+    wm_last_n = -1;
+    vga_fb_tile_all();
+}
+
+/** Docstring: Active layout mode id. */
+int vga_fb_layout_get(void)
+{
+    return wm_layout_mode;
+}
+
+/** Docstring: Active layout mode name, never null. */
+const char *vga_fb_layout_name(void)
+{
+    const char *n = wm_layout_mode_name(wm_layout_mode);
+    return n ? n : "tile";
+}
+
 void vga_fb_tile_all(void) {
     int mc, mr;
     int cur;
     wm_focus_state_t st;
-    wm_tile_cell_t cells[WM_MAX_TERMS];
+    wm_layout_config_t lcfg = WM_LAYOUT_CONFIG_DEFAULT;
+    wm_layout_window_t wins[WM_MAX_TERMS];
+    wm_layout_cell_t cells[WM_MAX_TERMS];
     int n;
     int i;
     wm_snapshot_state(&st);
@@ -970,7 +1017,14 @@ void vga_fb_tile_all(void) {
     if (mc > TERM_MAX_COLS) mc = TERM_MAX_COLS;
     mr = (fb_height - 2 * FONT_H) / FONT_H;
     if (mr > TERM_MAX_ROWS) mr = TERM_MAX_ROWS;
-    n = wm_tile_layout(st.present, wm_nterms, vga_fb_gfx_mode ? 1 : 0, mc, mr, cells, WM_MAX_TERMS);
+    for (i = 0; i < wm_nterms && i < WM_MAX_TERMS; i++) {
+        wins[i].kind = 1;
+        wins[i].id = i;
+        wins[i].present = st.present[i];
+        wins[i].min_cols = 1;
+        wins[i].min_rows = 1;
+    }
+    n = wm_layout_compute(&lcfg, wins, wm_nterms, wm_layout_mode, cur, mc, mr, cells, WM_MAX_TERMS);
     if (n <= 0) {
         tw_unpark(cur);
         term_finish_layout();
@@ -979,7 +1033,12 @@ void vga_fb_tile_all(void) {
     if ((wm_nterms < 2 || !twins[1].present) && !vga_fb_gfx_mode) {
         twins[0].fullscreen = 1;
         twins[0].minimized = 0;
+        wm_last_n = -1;
     } else {
+        if (wm_last_n == n && wm_layout_same(wm_last_cells, cells, n)) {
+            tw_unpark(cur);
+            return;
+        }
         for (i = 0; i < n && i < WM_MAX_TERMS; i++) {
             twins[i].fullscreen = cells[i].fullscreen;
             twins[i].minimized = 0;
@@ -987,7 +1046,9 @@ void vga_fb_tile_all(void) {
             twins[i].sz_rows = cells[i].rows;
             twins[i].x = cells[i].x;
             twins[i].y = cells[i].y;
+            wm_last_cells[i] = cells[i];
         }
+        wm_last_n = n;
         if (vga_fb_gfx_mode) gfx_tile_right();
     }
     tw_unpark(cur);
@@ -2245,12 +2306,15 @@ void vga_fb_toggle_fullscreen(void) {
     if (vga_fb_gfx_mode && wm_focus == WM_FOCUS_GFX) {
         gfx_win_ox = 0;
         gfx_win_oy = 0;
+        wm_layout_mode = WM_LAYOUT_FULLSCREEN;
+        wm_last_n = -1;
         vga_fb_draw_desktop();
         return;
     }
     term_fullscreen = !term_fullscreen;
     if (term_fullscreen) term_minimized = 0;
     disp_off = 0;
+    wm_last_n = -1;
     vga_fb_draw_desktop();
 }
 

@@ -8,11 +8,12 @@ fail=0
 say() { printf '%s\n' "$1"; }
 die() { say "FAIL: $1"; fail=1; }
 say "== wm scoped =="
-make test-wm >/tmp/opencode_wm.log 2>&1 || die "test-wm failed"
-grep -q "wm: ok" /tmp/opencode_wm.log || die "wm vectors missing"
+make test-wm >build/wm_scoped_test.log 2>&1 || die "test-wm failed"
+grep -q "wm: ok" build/wm_scoped_test.log || die "wm vectors missing"
+python3 tools/wm_layout_sync.py --check >build/wm_scoped_sync.log 2>&1 || die "layout manifest drifted"
 rm -f vga_fb.o kbd.o syscalls.o shell.o
-make vga_fb.o kbd.o syscalls.o shell.o >/tmp/opencode_build.log 2>&1 || die "kernel objects failed"
-if grep -E "warning|error" /tmp/opencode_build.log; then die "warnings in touched objects"; fi
+make vga_fb.o kbd.o syscalls.o shell.o >build/wm_scoped_build.log 2>&1 || die "kernel objects failed"
+if grep -E "warning|error" build/wm_scoped_build.log; then die "warnings in touched objects"; fi
 grep -q "WM_COMBOS" wm_events.h || die "combo table missing"
 grep -q "wm_combo_lookup" drivers/kbd.c || die "kbd lookup missing"
 if grep -n "code == 0x" drivers/kbd.c >/dev/null; then die "raw magics remain in kbd.c"; fi
@@ -33,5 +34,11 @@ grep -q "ps2_owner(current_pid)) return -11" kernel/syscalls.c || die "read stdi
 grep -q "elf_load((void \*)data, size, &base)" kernel/shell.c || die "run image free missing"
 grep -q "elf_load((void \*)data, data_size, &base)" kernel/syscalls.c || die "spawn image free missing"
 grep -q "dlmalloc_usage" kernel/shell.c || die "mem builtin missing"
+grep -q "wm_layout_compute" kernel/vga_fb.c || die "layout engine unused in kernel"
+grep -q "wm_layout_same" kernel/vga_fb.c || die "repaint skip missing"
+grep -q "vga_fb_layout_set" vga_fb.h || die "layout api missing"
+grep -q "wm layout" kernel/shell.c || die "layout builtin missing"
+grep -q "wm_layout.h" Makefile || die "layout test deps missing"
+python3 tools/wm_layout_sync.py --check >/dev/null 2>&1 || die "layout manifest drifted"
 if [ "$fail" -eq 0 ]; then say "wm scoped: ok"; else say "wm scoped: FAIL"; fi
 exit "$fail"
