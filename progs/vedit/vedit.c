@@ -56,6 +56,26 @@ static long vedit_vga(int on) {
     return ret;
 }
 
+/** Force cooked keyboard mode: GETC_RAW (this editor's only key source)
+ * starves while raw mode diverts PS/2 bytes to the raw queue, so vedit
+ * asserts its requirement at startup instead of inheriting the
+ * launcher's mode (a file-browser spawn left raw on and all keys died). */
+static long vedit_kbd_raw(int on) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret)
+                     : "a"(MINIOS_SYS_KBD_RAW), "D"((long)on)
+                     : "rcx", "r11", "memory");
+    return ret;
+}
+
+/** Wall-clock milliseconds for the cross-frame ESC-sequence timeout. */
+static unsigned long vedit_time_ms(void) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME)
+                     : "rcx", "r11", "memory");
+    return (unsigned long)ret;
+}
+
 /** Central configuration: every bound, key, tool, directory and label. */
 #define VEDIT_MAX_LINES 512
 #define VEDIT_LINE_MAX 128
@@ -66,7 +86,8 @@ static long vedit_vga(int on) {
 #define VEDIT_MSG_MAX 128
 #define VEDIT_WORD_MAX 32
 #define VEDIT_TAB_W 4
-#define VEDIT_SEQ_SPINS 20000
+#define VEDIT_ESC_MS 100
+#define VEDIT_FRAME_MS 8
 #define VEDIT_UI_MEMORY (4 * 1024 * 1024)
 #define VEDIT_KEY_RUN 18
 #define VEDIT_KEY_LINK 12
@@ -1133,48 +1154,65 @@ static int vedit_selftest_build(void) {
     return 0;
 }
 
-/** Keyboard: GETC_RAW bytes decoded into extended key codes. */
+/** Keyboard: GETC_RAW bytes decoded into extended key codes.
+ *
+ * One nonblocking poll per frame; the ESC [ sequence state survives
+ * across frames with a bounded timeout, so the loop keeps presenting
+ * (and draining the mouse wheel) while a sequence is in flight instead
+ * of blocking the whole UI on the next byte. An incomplete sequence
+ * degrades to ESC, never a hang. */
+static int vedit_esc_state;
+static int vedit_esc_p1;
+static unsigned vedit_esc_t0;
 
-static long vedit_getc_blocking(void) {
-    return vedit_getc_raw(1);
-}
-
-static int vedit_poll(void) {
-    int n = 0;
-    while (n < VEDIT_SEQ_SPINS) {
-        long c = vedit_getc_raw(0);
-        if (c >= 0) return (int)c;
-        n++;
+static int vedit_read_key_poll(void) {
+    long c = vedit_getc_raw(0);
+    unsigned now;
+    if (c < 0) {
+        if (vedit_esc_state) {
+            now = (unsigned)vedit_time_ms();
+            if (now - vedit_esc_t0 > VEDIT_ESC_MS) {
+                vedit_esc_state = 0;
+                return VEDIT_KEY_ESC;
+            }
+        }
+        return -1;
     }
-    return -1;
-}
-
-static int vedit_read_key(void) {
-    long c = vedit_getc_blocking();
-    int p1;
-    int p2;
-    if (c != 27) return (int)c;
-    p1 = vedit_poll();
-    if (p1 < 0) return VEDIT_KEY_ESC;
-    if (p1 != '[') return VEDIT_KEY_ESC;
-    p1 = vedit_poll();
-    if (p1 < 0) return VEDIT_KEY_ESC;
-    if (p1 == 'A') return VEDIT_KEY_UP;
-    if (p1 == 'B') return VEDIT_KEY_DOWN;
-    if (p1 == 'C') return VEDIT_KEY_RIGHT;
-    if (p1 == 'D') return VEDIT_KEY_LEFT;
-    if (p1 == 'H') return VEDIT_KEY_HOME;
-    if (p1 == 'F') return VEDIT_KEY_END;
-    if (p1 == '3' || p1 == '5' || p1 == '6') {
-        p2 = vedit_poll();
-        if (p2 == '~') {
-            if (p1 == '3') return VEDIT_KEY_DEL;
-            if (p1 == '5') return VEDIT_KEY_PGUP;
-            return VEDIT_KEY_PGDN;
+    now = (unsigned)vedit_time_ms();
+    if (vedit_esc_state == 0) {
+        if (c != 27) return (int)c;
+        vedit_esc_state = 1;
+        vedit_esc_t0 = now;
+        return -1;
+    }
+    if (vedit_esc_state == 1) {
+        vedit_esc_state = 0;
+        if (c != '[') return VEDIT_KEY_ESC;
+        vedit_esc_state = 2;
+        vedit_esc_t0 = now;
+        return -1;
+    }
+    if (vedit_esc_state == 2) {
+        vedit_esc_state = 0;
+        if (c == 'A') return VEDIT_KEY_UP;
+        if (c == 'B') return VEDIT_KEY_DOWN;
+        if (c == 'C') return VEDIT_KEY_RIGHT;
+        if (c == 'D') return VEDIT_KEY_LEFT;
+        if (c == 'H') return VEDIT_KEY_HOME;
+        if (c == 'F') return VEDIT_KEY_END;
+        if (c == '3' || c == '5' || c == '6') {
+            vedit_esc_p1 = (int)c;
+            vedit_esc_state = 3;
+            vedit_esc_t0 = now;
+            return -1;
         }
         return VEDIT_KEY_ESC;
     }
-    return VEDIT_KEY_ESC;
+    vedit_esc_state = 0;
+    if (c != '~') return VEDIT_KEY_ESC;
+    if (vedit_esc_p1 == '3') return VEDIT_KEY_DEL;
+    if (vedit_esc_p1 == '5') return VEDIT_KEY_PGUP;
+    return VEDIT_KEY_PGDN;
 }
 
 /** Serial ANSI mirror: the UI itself is pixels. */
@@ -1369,10 +1407,15 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
         mdown = b;
         clicked = b && !prev_buttons;
         prev_buttons = b;
-        if (mouse[3] > 0) vedit_top += 3;
-        else if (mouse[3] < 0) vedit_top -= 3;
-        if (vedit_top < 0) vedit_top = 0;
-        if (mouse[3] && vedit_top > vedit_count) vedit_top = vedit_count;
+        if (mouse[3] && vedit_count > 0) {
+            if (mouse[3] > 0) {
+                vedit_cy += 3;
+                if (vedit_cy >= vedit_count) vedit_cy = vedit_count - 1;
+            } else {
+                vedit_cy -= 3;
+                if (vedit_cy < 0) vedit_cy = 0;
+            }
+        }
     }
 
     nk_fill_rect(canvas, nk_rect(0, 0, (float)NK_W, (float)vedit_menu_h), 0,
@@ -1617,6 +1660,7 @@ static void vedit_gui_run(void) {
     struct nk_context ctx;
 
     nk_sys_vga_mode(1);
+    vedit_kbd_raw(0);
     nk_build_palette(pal768);
     nk_sys_palette(pal768);
     nk_sys_fb_info(&fw, &fh, &fp);
@@ -1659,8 +1703,14 @@ static void vedit_gui_run(void) {
         nk_clear(&ctx);
         vedit_sync_title();
         if (!quit) {
-            key = vedit_read_key();
-            vedit_key(key, &quit, &save_and_quit);
+            key = vedit_read_key_poll();
+            if (key >= 0) vedit_key(key, &quit, &save_and_quit);
+        }
+        {
+            unsigned t0 = (unsigned)vedit_time_ms();
+            while ((unsigned)vedit_time_ms() - t0 < VEDIT_FRAME_MS) {
+                __asm__ volatile("pause");
+            }
         }
     }
 

@@ -1,0 +1,20 @@
+# MiniOS file association table
+# Format: ext|program
+# ext:     lowercase extension without dot (empty ext never matches)
+# program: absolute MiniOS path launched through SYS_SPAWN, or the
+#          word "shell" (run through the shell resolvers: .o at ring 0,
+#          .elf isolated ring 3, .cvm through objects/cvm.o), or the
+#          word "internal" (handled inside the file browser, e.g. png).
+# Text kinds open in vedit. Lines starting with # are comments.
+c|/vedit
+h|/vedit
+s|/vedit
+txt|/vedit
+py|/vedit
+sh|/vedit
+lua|/vedit
+html|/vedit
+o|shell
+elf|shell
+cvm|shell
+png|internal

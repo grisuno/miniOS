@@ -50,6 +50,8 @@ ICON_JOBS = (
     ("nuklear.png", "nuklear.png"),
     ("vedit.png", "vedit.png"),
     ("pokemon.png", "pokemon.png"),
+    ("file.png", "file.png"),
+    ("shell.png", "shell.png"),
 )
 
 

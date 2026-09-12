@@ -875,6 +875,16 @@ framebuffer is not.
   cooked queue) and `read(0)` answers `-EAGAIN` when unfocused, so a
   polling game can never steal shell bytes; foreground runs (legacy
   `run`, `mrun` fg via `shell_fg_active`) keep the full multiplexer.
+  Taking the display also takes focus (`wm_gfx_focus_sync` inside
+  `vga_fb_set_gfx_mode`): enabling graphics mode parks the shell line
+  and focuses the graphics window with stale raw bytes flushed, so a
+  gfx child spawned from another gfx app (file browser opening vedit)
+  owns PS/2 from its first frame instead of looking hung while its keys
+  and wheel land on the shell; disabling hands the focused terminal
+  back silently. Raw mode is per-app state each program asserts at
+  startup (piano/node editor/file set 1, vedit sets 0 because GETC_RAW
+  starves while raw diverts PS/2 to the raw queue), and the file
+  browser drops to 0 around every SPAWN so no child inherits its mode.
   A legacy foreground program owns
   everything (its shell is blocked, nobody to steal from). `kbd_read`
   always translates cooked for the shell even with the global raw mode on
@@ -1613,10 +1623,16 @@ beside it).
   save+quit, Esc quit without saving, `^D` dumps the buffer with ANSI
   highlight to the console (serial fallback and BDD hook; moved from
   `^L` so the linker owns `^L`). Save/Find/Name/Run/Link/Done are also
-  clickable buttons; the wheel scrolls. A 512-line / 127-char buffer
+  clickable buttons; the wheel scrolls by moving the cursor (the old
+  code moved only the viewport offset, which the cursor-follow pass
+  snapped straight back, so wheeling long files did nothing). A
+  512-line / 127-char buffer
   with the same fail-closed rules as `edit`: full lines, overflowing
   joins and full buffers refuse whole, and a truncated load refuses
-  to save and to build.
+  to save and to build. The frame loop polls instead of blocking on a
+  key (8 ms pacing like the node editor) so wheel and mouse drain every
+  frame; the ESC `[` decoder is a cross-frame state machine with a
+  100 ms timeout, degrading to a bare Esc instead of hanging.
 - Build/run (`^R`, `^L`, single-file contract in `progs/vedit/vedit.c`):
   `^R` saves then routes by extension through `SYS_SPAWN` (215) so the
   IDE survives the child: `.c`/`.h`/`.s` compile with
@@ -1665,6 +1681,32 @@ beside it).
 - The kernel `edit` stays: scripted flows (the MCP `minios_write`
   editor upload, the marketplace, the BDD suite) drive it
   non-interactively, which a fullscreen program cannot serve.
+
+### File browser (`file`, ring 3, Nuklear)
+`bin/file` is the graphical file browser, a ring-3 Nuklear app built like
+vedit (host gcc `-static`, MiniFS with a bare-name alias, source beside
+it at `progs/file/file.c`, one file per contract with a centralized
+config). It lists the unified filesystem (ramdisk first, MiniFS fallback)
+through the DIR_LIST syscall (241, `MINIOS_SYS_DIR_LIST`), which fills a
+user buffer with NUL-separated names (dirs carry `/`) and returns the
+count, fail closed on bad pointers, overlong names and truncation.
+
+- Dispatch comes from `etc/association` (plain `ext|program` lines, the
+  same shape as `etc/shortcuts`): text kinds (`c h s txt py sh lua html`)
+  open in `/vedit` through `SYS_SPAWN`, `o|elf|cvm` run through `shell`
+  semantics (ELF/o spawned directly, cvm through `/objects/cvm.o` with
+  the module as `argv[0]`), `png|internal` decodes in-app with stb_image
+  and blits downscaled into the NK back-buffer after rasterize. Unknown
+  kinds report instead of running. Assoc parsing is fail closed: only
+  `[a-z0-9]` exts, programs are absolute paths or `shell`/`internal`, and
+  a `|` inside the program rejects the line.
+- The dock carries `File|icons/file.png|file` beside a Terminal shortcut
+  that now uses the custom `icons/shell.png` art; both PNGs convert from
+  the repo-root `file.png`/`shell.png` sources through
+  `tools/gen_desktop_pngs.py` like every other icon.
+- Proof: `file --selftest` runs the assoc vectors plus a live `/`
+  listing (`file: ok (N entries at /)`, BDD-pinned), and `make test-file`
+  locks the same parser vectors on the host.
 
 ### PC speaker audio (`pcspk.c` + Doom)
 The kernel owns the QEMU PC speaker through two syscalls: 209 `pcspk_init`
@@ -2202,6 +2244,7 @@ make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
+make test-file       # file browser assoc-contract suite green
 make test-wm         # WM geometry + event translator suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
@@ -2627,6 +2670,7 @@ make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
 make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
+make test-file       # file browser assoc-contract suite green
 make test-wm         # WM geometry + event translator suite green
 make test-ktime test-randmix  # Phase 0 truthfulness: TSC->usec + getrandom mixer green
 python3 tools/check_abi_numbers.py  # Phase 0.6: syscall numbers match Linux x86-64 (also in lint)

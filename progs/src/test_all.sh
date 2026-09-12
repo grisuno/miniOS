@@ -210,6 +210,8 @@ run objects/dlmalloc.o
 echo PASS: dlmalloc-ok
 run fptest
 echo PASS: fptest-ok
+file --selftest
+echo PASS: file-selftest-ok
 
 # === REPEATED RUNS (heap stability) ===
 run cvm/fib.cvm

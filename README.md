@@ -354,6 +354,7 @@ fetches 3193 bytes and the `gfx frames` counter climbs by one.
 | `wm close` | close the active window |
 | `sh <script.sh>` | run a shell script (sequential commands, `#` comments) |
 | `piano` | FM piano GUI (`--selftest` for headless, `--bench` for fps) |
+| `file` | Nuklear file browser (`--selftest` lists root headless) |
 | `topogpt3` | TopoGPT3 transformer inference engine (`-i` for interactive) |
 | `clear` / `poweroff` | console and power |
 
@@ -426,6 +427,20 @@ The node editor supports Number, Add, Sub, Mul, Div, Neg, Print and Exit nodes.
 Pins are wired by dragging; Compile writes a `.cvm` module to the ramdisk.
 `--selftest` renders one frame through the full graphics pipeline and verifies
 the pixel landed in the framebuffer (`nuklear: frame ok (800x360)`).
+
+## File browser
+
+I ship `file` as a static ring-3 Nuklear browser over the unified
+filesystem (ramdisk first, MiniFS fallback) through the DIR_LIST syscall
+(241). Text kinds open in vedit via SYS_SPAWN, `.o`/`.elf` spawn directly,
+`.cvm` spawns through `/objects/cvm.o`, and png previews decode in-app
+with stb_image. Dispatch comes from `etc/association` (`ext|program`
+lines, `shell` for executables, `internal` for the png preview).
+
+```
+miniOS> file               # GUI: navigate, open, run, preview
+miniOS> file --selftest    # headless: assoc vectors plus a live listing
+```
 
 Build from source:
 

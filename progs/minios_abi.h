@@ -257,6 +257,7 @@
 #define MINIOS_SYS_SECCOMP       238
 #define MINIOS_SYS_NICE          239
 #define MINIOS_SYS_RLIMIT        240
+#define MINIOS_SYS_DIR_LIST      241
 
 #define MINIOS_SYS_CLONE             300
 

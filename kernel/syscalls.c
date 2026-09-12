@@ -487,6 +487,123 @@ static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long 
     return -22;
 }
 
+/** Docstring: unified directory listing for the ring-3 file browser.
+ *
+ * a1 = path, a2 = user buffer, a3 = buffer capacity. The buffer is
+ * filled with NUL-separated entry names relative to the directory;
+ * subdirectory names carry a trailing '/'. Returns the entry count, or
+ * a negative errno on failure. Ramdisk entries win; MiniFS entries
+ * merge underneath with exact-name dedupe. Truncation is safe: the
+ * call stops before an entry that would not fit and returns the
+ * entries that did fit. Paths resolve through fs_resolve, so '..'
+ * cannot escape, and overlong names fail closed. */
+static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6) {
+    char resolved[RAMDISK_FNAME_LEN];
+    char dir[RAMDISK_FNAME_LEN];
+    char *out;
+    unsigned long cap;
+    unsigned long used = 0;
+    long count = 0;
+    int i, n;
+    (void)a4; (void)a5; (void)a6;
+    if (!user_str_ok((unsigned long)a1, RAMDISK_FNAME_LEN)) return EFAULT;
+    if (a3 <= 0 || a3 > 65536) return -22;
+    cap = (unsigned long)a3;
+    if (!user_range_ok((unsigned long)a2, cap)) return EFAULT;
+    if (!fs_resolve((const char *)a1, resolved, sizeof(resolved))) return -36;
+    {
+        unsigned len = (unsigned)kstrlen(resolved);
+        if (len + 2 >= sizeof(dir)) return -36;
+        kmemcpy(dir, resolved, len + 1);
+        if (len > 0 && dir[len - 1] != '/') { dir[len] = '/'; dir[len + 1] = 0; len++; }
+        else if (len == 0) { dir[0] = 0; len = 0; }
+        if (!fs_dir_exists(len ? dir : "")) {
+            if (len == 0) { }
+            else return -2;
+        }
+    }
+    out = (char *)a2;
+    {
+        unsigned plen = (unsigned)kstrlen(dir);
+        RDFile *files[RAMDISK_MAX_FILES];
+        n = ramdisk_list(files, RAMDISK_MAX_FILES);
+        for (i = 0; i < n; i++) {
+            const char *nm = files[i]->name;
+            unsigned long nl;
+            const char *rel;
+            const char *slash;
+            unsigned long comp_len;
+            int k, dup = 0;
+            if (plen && kstrncmp(nm, dir, plen) != 0) continue;
+            rel = nm + plen;
+            if (!rel[0]) continue;
+            slash = kstrchr(rel, '/');
+            if (slash) comp_len = (unsigned long)(slash - rel) + 1;
+            else comp_len = (unsigned long)kstrlen(rel);
+            if (comp_len == 0 || comp_len >= RAMDISK_FNAME_LEN) continue;
+            for (k = 0; k < (int)used; ) {
+                unsigned long el = kstrlen(out + k) + 1;
+                if (el == comp_len + 1 && kstrncmp(out + k, rel, comp_len) == 0) { dup = 1; break; }
+                k += (int)el;
+            }
+            if (dup) continue;
+            nl = comp_len + 1;
+            if (used + nl > cap) break;
+            kmemcpy(out + used, rel, comp_len);
+            out[used + comp_len] = 0;
+            used += nl;
+            count++;
+        }
+    }
+    if (minifs_is_mounted()) {
+        char bare[RAMDISK_FNAME_LEN];
+        unsigned dl = (unsigned)kstrlen(dir);
+        int ino = MINIFS_ROOT_INODE;
+        kmemcpy(bare, dir, dl + 1);
+        while (dl > 0 && bare[dl - 1] == '/') bare[--dl] = 0;
+        if (dl > 0) {
+            int r = minifs_resolve_path(bare);
+            MiniFSInode st;
+            if (r < 0 || minifs_stat(r, &st) < 0 ||
+                (st.mode & MINIFS_S_IFDIR) != MINIFS_S_IFDIR)
+                ino = -1;
+            else ino = r;
+        }
+        if (ino >= 0) {
+            MiniFSDirEntry de;
+            char mname[RAMDISK_FNAME_LEN];
+            int idx = 0;
+            while (minifs_dir_read(ino, idx, &de, mname) == 0) {
+                MiniFSInode st;
+                int isdir = 0;
+                unsigned long ml, nl;
+                int k, dup = 0;
+                idx++;
+                if (de.inode == 0 || !mname[0]) continue;
+                if (minifs_stat(de.inode, &st) < 0) continue;
+                isdir = ((st.mode & MINIFS_S_IFDIR) == MINIFS_S_IFDIR);
+                ml = (unsigned long)kstrlen(mname);
+                if (ml == 0 || ml + (unsigned long)(isdir ? 1 : 0) >= RAMDISK_FNAME_LEN) continue;
+                for (k = 0; k < (int)used; ) {
+                    unsigned long el = kstrlen(out + k) + 1;
+                    unsigned long base = el - ((out[k + el - 2] == '/') ? 1 : 0) - 1;
+                    if (base == ml && kstrncmp(out + k, mname, ml) == 0) { dup = 1; break; }
+                    k += (int)el;
+                }
+                if (dup) continue;
+                nl = ml + (unsigned long)(isdir ? 1 : 0) + 1;
+                if (used + nl > cap) break;
+                kmemcpy(out + used, mname, ml);
+                if (isdir) out[used + ml] = '/';
+                out[used + nl - 1] = 0;
+                used += nl;
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
 static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] = {
     [MINIOS_SYS_DNS - MINIOS_SYSCALL_BASE]         = { sys_minios_dns,         "dns" },
     [MINIOS_SYS_TLS_HANDSHAKE - MINIOS_SYSCALL_BASE] = { sys_minios_tls_retired, "tls_retired" },
@@ -526,6 +643,7 @@ static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] =
     [MINIOS_SYS_GFX_PRESENT - MINIOS_SYSCALL_BASE] = { sys_minios_gfx_present, "gfx_present" },
     [MINIOS_SYS_SECCOMP - MINIOS_SYSCALL_BASE] = { sys_minios_seccomp, "seccomp" },
     [MINIOS_SYS_NICE - MINIOS_SYSCALL_BASE] = { sys_minios_nice, "nice" },
+    [MINIOS_SYS_DIR_LIST - MINIOS_SYSCALL_BASE] = { sys_minios_dir_list, "dir_list" },
 };
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };

@@ -157,10 +157,13 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(SRC_DIR)/test.lua $(SRC_DIR)/test_all.sh \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/etc/shortcuts \
+            $(PROGS_DIR)/etc/association \
             $(PROGS_DIR)/etc/host.zip \
             $(PROGS_DIR)/etc/hostile.zip \
             $(PROGS_DIR)/icons/terminal.png \
             $(PROGS_DIR)/icons/pokemon.png \
+            $(PROGS_DIR)/icons/file.png \
+            $(PROGS_DIR)/icons/shell.png \
             $(DOC_DIR)/test.png
 
 all: os.img
@@ -865,6 +868,25 @@ $(BIN_DIR)/vedit.elf: $(VEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h
 $(BIN_DIR)/vedit: $(BIN_DIR)/vedit.elf
 	cp $< $@
 
+# ── file (Nuklear file browser: ramdisk + MiniFS, ring 3) ──────────
+# A Nuklear browser over the unified filesystem through the DIR_LIST
+# syscall (241): text kinds open in vedit via SYS_SPAWN, .o/.elf/.cvm
+# run through the shell resolvers, png previews decode in-app with
+# stb_image. Dispatch comes from etc/association (ext|program).
+# Static ELF on MiniFS with a bare-name alias. See progs/file/file.c.
+FILE_SRCS = $(PROGS_DIR)/file/file.c \
+            $(NUKLEAR_PLATFORM)
+
+$(BIN_DIR)/file.elf: $(FILE_SRCS) $(NUKLEAR_DIR)/nuklear.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
+	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
+	      -I$(PROGS_DIR) -Ithird_party/stb \
+	      -o $@ $(FILE_SRCS) -lm
+	chmod +x $@
+
+$(BIN_DIR)/file: $(BIN_DIR)/file.elf
+	cp $< $@
+
 # ── opl3 (ring-3 Nuked-OPL3 FM synth -> SB16 PCM) ───────────────────
 # Static ELF like DOOM. Renders a melody through the Nuked-OPL3 chip emulator
 # and streams 8-bit mono PCM to the kernel SB16 driver (syscalls 221/222).
@@ -999,6 +1021,10 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                  $(PROGS_DIR)/nuklear/font8x8.c $(PROGS_DIR)/nuklear/nuklear_minios.h \
                $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
                $(PROGS_DIR)/vedit/vedit.c \
+               $(BIN_DIR)/file.elf $(BIN_DIR)/file \
+               $(PROGS_DIR)/file/file.c \
+               $(PROGS_DIR)/etc/association \
+               $(PROGS_DIR)/etc/shortcuts \
                $(BIN_DIR)/lzss $(BIN_DIR)/unlzss $(SRC_DIR)/lzss.c $(ASM_DIR)/lzss.s \
                $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 $(SRC_DIR)/lz4.c $(ASM_DIR)/lz4.s \
                $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o \
@@ -1184,6 +1210,13 @@ vedit_build_test: tests/test_vedit_build.c | $(TOOLS_DIR)
 
 test-vedit: vedit_build_test
 	$(TOOLS_DIR)/vedit_build_test
+
+# File browser assoc-contract host test (tests/test_file_assoc.c, spec pin).
+file_assoc_test: tests/test_file_assoc.c | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/file_assoc_test tests/test_file_assoc.c
+
+test-file: file_assoc_test
+	$(TOOLS_DIR)/file_assoc_test
 
 # Device-registry host test (tests/test_driver.c + drivers/driver.c).
 driver_test: tests/test_driver.c drivers/driver.c driver.h | $(TOOLS_DIR)
@@ -1415,10 +1448,12 @@ DESKTOP_SRC_DIR = .
 DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
                $(DESKTOP_SRC_DIR)/quake2.png $(DESKTOP_SRC_DIR)/piano.png \
                $(DESKTOP_SRC_DIR)/nuklear.png $(DESKTOP_SRC_DIR)/vedit.png \
-               $(DESKTOP_SRC_DIR)/pokemon.png
+               $(DESKTOP_SRC_DIR)/pokemon.png \
+               $(DESKTOP_SRC_DIR)/file.png $(DESKTOP_SRC_DIR)/shell.png
 DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/quake2.png \
               $(PROGS_DIR)/icons/piano.png $(PROGS_DIR)/icons/nuklear.png \
               $(PROGS_DIR)/icons/vedit.png $(PROGS_DIR)/icons/pokemon.png \
+              $(PROGS_DIR)/icons/file.png $(PROGS_DIR)/icons/shell.png \
               $(PROGS_DIR)/wall/wallpaper.png
 $(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
 	python3 tools/gen_desktop_pngs.py --src-dir $(DESKTOP_SRC_DIR) --repo .

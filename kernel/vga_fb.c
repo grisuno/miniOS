@@ -473,6 +473,7 @@ static const uint8_t *gfx_prog_icon(void) {
     return 0;
 }
 
+static void wm_gfx_focus_sync(int on);
 void vga_fb_set_gfx_mode(int on) {
     vga_fb_gfx_mode = on;
     if (!on) {
@@ -483,6 +484,7 @@ void vga_fb_set_gfx_mode(int on) {
     } else {
         gfx_keep_w = 0;
     }
+    wm_gfx_focus_sync(on);
     /* A new graphics program claims the display: drop any title the previous
      * one set (via SYS_GFX_SET_TITLE), so the next DOOM window is not
      * mis-labelled with the last program's name. */
@@ -831,6 +833,28 @@ void vga_fb_focus_next(void) {
         tw_select(nx);
     }
     vga_fb_draw_desktop();
+}
+
+/** Docstring: Route WM focus with the graphics mode switch.
+ *
+ * A program that enables the display owns the keyboard: without this,
+ * a gfx child spawned from another gfx app (file -> vedit) keeps the
+ * terminal focused, so its keys and wheel keep landing on the shell
+ * while the app looks hung. The enable arm mirrors the focus-gfx path
+ * (park shell line, flush stale raw bytes); the disable arm hands the
+ * terminal back silently, never with the Alt-Tab nag. */
+static void wm_gfx_focus_sync(int on) {
+    if (on) {
+        if (wm_focus != WM_FOCUS_GFX) {
+            if (shell_readline_active()) shell_focus_park();
+            tw_park(wm_term);
+            wm_focus = WM_FOCUS_GFX;
+            kbd_raw_flush();
+        }
+    } else {
+        if (wm_focus == WM_FOCUS_GFX)
+            tw_select(wm_term);
+    }
 }
 
 /** Docstring: Focus window id directly, fail closed on invalid id. */

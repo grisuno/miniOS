@@ -1172,6 +1172,10 @@ scenario "nuklear selftest renders one UI frame" "nuklear --selftest
 poweroff"
 expect "nuklear: frame ok (800x360)"
 
+scenario "file browser lists the root and passes its assoc vectors" "file --selftest
+poweroff"
+expect "file: ok ("
+
 scenario "freedom_wl selftest presents through the nk window" "freedom_wl --selftest
 poweroff"
 expect "freedom_wl: frame ok (800x360)"
