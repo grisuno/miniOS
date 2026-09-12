@@ -444,10 +444,66 @@ miniOS> file               # GUI: navigate, open, run, preview
 miniOS> file --selftest    # headless: assoc vectors plus a live listing
 ```
 
+## Paint
+
+I ship `paint` as a static ring-3 Nuklear canvas (320x200) with PNG
+save and load. There is no OpenGL or GLFW anywhere in this port: MiniOS
+has no GPU stack, only the 8-bit composited back-buffer, so the program
+renders into the shared `NK_BACKBUF_ADDR` window and presents through
+`SYS_NK_FRAME` (220) like every other NK app.
+
+The layout keeps an honest promise: the white canvas cell is exactly
+320 pixels wide, so every white pixel shown is paintable. Tools, colors
+and buttons live in the side panel instead of above an oversized slot.
+
+```
+miniOS> paint                  # GUI: draw, save to /drawing.png
+miniOS> paint /art/mono.png    # GUI preloading a file
+miniOS> paint --selftest       # headless: vectors, png, file, frame
+```
+
+Tools are brush, line, rect, circle, fill and eraser with sizes 1/2/4,
+and a 16-swatch picker drawn from exact hybrid-palette entries (black,
+the 14 saturated accents, white), so a saved file reloads pixel
+identical. Shape tools rubber-band from a backup copy taken at stroke
+start. The status row always shows the active tool, swatch, size and
+the last file result, and the app quits with ESC, Alt+F4 or its Quit
+button.
+
+PNG output needs no encoder dependency: the writer emits 8-bit
+truecolor PNG with stored-deflate blocks, CRC-32 and Adler-32, all
+self-contained in `progs/paint/paint.c` (one file per contract, every
+bound in the config block). Loading decodes through stb_image and
+nearest-maps onto the hybrid palette, clamped top-left with white
+margins. Save paths go through a fail-closed gate (printable ASCII,
+bounded, `.png` suffix, no `..` traversal). The dock carries
+`Paint|icons/paint.png|paint`; the icon converts from the repo-root
+`paint.png` through `tools/gen_desktop_pngs.py` like every other icon.
+
+Proof, all pinned: `paint --selftest` runs the core vectors, a 2x2
+encode/decode roundtrip (`paint: png ok`), a save/load roundtrip
+through the unified filesystem (`paint: file ok
+(/paint_selftest.png)`) and one composited frame (`paint: frame ok
+(800x360)`); `make test-paint` locks the mirror vectors plus the PNG
+byte-layout pin (192278 bytes for the canvas) on the host. The frame
+probe scans the whole framebuffer for a unique 4-pixel pattern instead
+of trusting the window origin report, so it holds in any video mode.
+Two honest limits: drag strokes have no headless proof (the
+hit-testing shares the blit rect by construction, so a landed blit
+implies aligned input), and the 16 swatches tie with the 6x6x6 cube on
+some entries, which the selftest asserts by color rather than index.
+
+Build from source:
+
+```bash
+make progs/bin/paint.elf    # or just `make` to rebuild everything
+make test-paint             # host vectors
+```
+
 ## Nuklear themes
 
-I theme every Nuklear app (file, nuklear, piano, vedit) from one shared
-loader (`progs/nuklear/nuklear_theme.c`). Themes live in `etc/themes` as
+I theme every Nuklear app (file, nuklear, piano, vedit, paint) from one
+shared loader (`progs/nuklear/nuklear_theme.c`). Themes live in `etc/themes` as
 plain `key r g b` files; `etc/themes/current` names the active one
 (`dark` by default; `light`, `amber`, `forest` and `slate` ship too).
 Values sit on the 6x6x6 cube so the 8-bit backend maps them exactly.

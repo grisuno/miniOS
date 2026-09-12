@@ -1645,153 +1645,156 @@ void kmain(void)` |
 | `serial_puts` | function | `kernel/serial.c:39` | `void serial_puts(const char *s)` |
 | `serial_rx_ready` | function | `kernel/serial.c:31` | `static int serial_rx_ready(void)` |
 | `serial_tx_ready` | function | `kernel/serial.c:29` | `static int serial_tx_ready(void)` |
-| `MAX_SEQ_POLL` | macro | `kernel/shell.c:233` | `#define MAX_SEQ_POLL` |
-| `PB_LEN` | macro | `kernel/shell.c:167` | `#define PB_LEN` |
-| `QEMU_PM_PORT` | macro | `kernel/shell.c:1118` | `#define QEMU_PM_PORT` |
-| `SB_EXIT` | macro | `kernel/shell.c:369` | `#define SB_EXIT` |
-| `SB_LEN` | macro | `kernel/shell.c:344` | `#define SB_LEN` |
-| `SB_PGDN` | macro | `kernel/shell.c:368` | `#define SB_PGDN` |
-| `SB_PGUP` | macro | `kernel/shell.c:366` | `#define SB_PGUP` |
-| `SHELL_BUILTIN_COUNT` | macro | `kernel/shell.c:473` | `#define SHELL_BUILTIN_COUNT` |
-| `SHELL_CVM_INTERP` | macro | `kernel/shell.c:35` | `#define SHELL_CVM_INTERP` |
-| `SHELL_HIST_MAX` | macro | `kernel/shell.c:79` | `#define SHELL_HIST_MAX` |
-| `SHELL_RUN_DIRS` | macro | `kernel/shell.c:54` | `#define SHELL_RUN_DIRS` |
-| `ShellRunDir` | struct | `kernel/shell.c:43` | `` |
-| `XXH64_reset` | function | `kernel/shell.c:2018` | `XXH64_reset(&h, 0);` |
-| `XXH_STATIC_LINKING_ONLY` | macro | `kernel/shell.c:12` | `#define XXH_STATIC_LINKING_ONLY` |
-| `code` | function | `kernel/shell.c:1462` | `* the last exit code (130 when interrupted). */
+| `MAX_SEQ_POLL` | macro | `kernel/shell.c:234` | `#define MAX_SEQ_POLL` |
+| `PB_LEN` | macro | `kernel/shell.c:168` | `#define PB_LEN` |
+| `QEMU_PM_PORT` | macro | `kernel/shell.c:1122` | `#define QEMU_PM_PORT` |
+| `SB_EXIT` | macro | `kernel/shell.c:370` | `#define SB_EXIT` |
+| `SB_LEN` | macro | `kernel/shell.c:345` | `#define SB_LEN` |
+| `SB_PGDN` | macro | `kernel/shell.c:369` | `#define SB_PGDN` |
+| `SB_PGUP` | macro | `kernel/shell.c:367` | `#define SB_PGUP` |
+| `SHELL_BUILTIN_COUNT` | macro | `kernel/shell.c:474` | `#define SHELL_BUILTIN_COUNT` |
+| `SHELL_CVM_INTERP` | macro | `kernel/shell.c:36` | `#define SHELL_CVM_INTERP` |
+| `SHELL_HIST_MAX` | macro | `kernel/shell.c:80` | `#define SHELL_HIST_MAX` |
+| `SHELL_RUN_DIRS` | macro | `kernel/shell.c:55` | `#define SHELL_RUN_DIRS` |
+| `ShellRunDir` | struct | `kernel/shell.c:44` | `` |
+| `XXH64_reset` | function | `kernel/shell.c:2062` | `XXH64_reset(&h, 0);` |
+| `XXH_STATIC_LINKING_ONLY` | macro | `kernel/shell.c:13` | `#define XXH_STATIC_LINKING_ONLY` |
+| `code` | function | `kernel/shell.c:1466` | `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...` |
-| `console_getc` | function | `kernel/shell.c:276` | `* returns console_getc() simply serves the FIFO again. */
+| `console_getc` | function | `kernel/shell.c:277` | `* returns console_getc() simply serves the FIFO again. */
 int console_getc(void)` |
-| `console_job_get` | function | `kernel/shell.c:329` | `int console_job_get(void)` |
-| `console_job_try` | function | `kernel/shell.c:320` | `int console_job_try(void)` |
-| `console_peek` | function | `kernel/shell.c:298` | `static int console_peek(void)` |
-| `console_raw_get` | function | `kernel/shell.c:314` | `int console_raw_get(void)` |
-| `console_raw_try` | function | `kernel/shell.c:311` | `int console_raw_try(void)` |
-| `consume_page_after_esc` | function | `kernel/shell.c:251` | `static int consume_page_after_esc(void)` |
-| `context` | function | `kernel/shell.c:1600` | `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);` |
-| `dlmalloc_usage` | function | `kernel/shell.c:1984` | `dlmalloc_usage(&hu, &hf, &ha);` |
-| `etrel_path_trusted` | function | `kernel/shell.c:1209` | `static int etrel_path_trusted(const char *full)` |
-| `gfx_parse_int` | function | `kernel/shell.c:1637` | `static int gfx_parse_int(const char *s, int *out)` |
-| `gfx_read_palette` | function | `kernel/shell.c:1657` | `static void gfx_read_palette(unsigned char pal[768])` |
-| `job_row` | struct | `kernel/shell.c:1911` | `` |
-| `k_exec_user` | function | `kernel/shell.c:1246` | `return k_exec_user(entry, argc, argv);` |
-| `k_run_rel` | function | `kernel/shell.c:1584` | `return k_run_rel(p->entry, argc, argv);` |
-| `kbd_drop_counts` | function | `kernel/shell.c:1881` | `kbd_drop_counts(&cooked, &raw);` |
-| `kfclose` | function | `kernel/shell.c:1792` | `kfclose(f);` |
-| `kfree` | function | `kernel/shell.c:1111` | `kfree(data);` |
-| `kfwrite` | function | `kernel/shell.c:1773` | `kfwrite(hdr, 1, (unsigned long)n, f);` |
-| `kmemcpy` | function | `kernel/shell.c:108` | `kmemcpy(cmd_buf, tmp, (unsigned long)CMD_BUF_SZ);` |
-| `kmemmove` | function | `kernel/shell.c:552` | `kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1));` |
-| `kmemset` | function | `kernel/shell.c:429` | `kmemset(buf, 0, (unsigned long)size);` |
-| `kprintf` | function | `kernel/shell.c:1100` | `kprintf("load: refusing untrusted ET_REL '%s'", resolved);` |
-| `kstack_report` | function | `kernel/shell.c:2500` | `kstack_report();` |
-| `line` | function | `kernel/shell.c:614` | `* to the live line (handled by the caller resetting shell_hist_idx). */
+| `console_job_get` | function | `kernel/shell.c:330` | `int console_job_get(void)` |
+| `console_job_try` | function | `kernel/shell.c:321` | `int console_job_try(void)` |
+| `console_peek` | function | `kernel/shell.c:299` | `static int console_peek(void)` |
+| `console_raw_get` | function | `kernel/shell.c:315` | `int console_raw_get(void)` |
+| `console_raw_try` | function | `kernel/shell.c:312` | `int console_raw_try(void)` |
+| `consume_page_after_esc` | function | `kernel/shell.c:252` | `static int consume_page_after_esc(void)` |
+| `context` | function | `kernel/shell.c:1604` | `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);` |
+| `desktop_launch` | function | `kernel/shell.c:1011` | `desktop_launch(shell_pending_cmd);` |
+| `dlmalloc_usage` | function | `kernel/shell.c:2028` | `dlmalloc_usage(&hu, &hf, &ha);` |
+| `etrel_path_trusted` | function | `kernel/shell.c:1213` | `static int etrel_path_trusted(const char *full)` |
+| `gfx_parse_int` | function | `kernel/shell.c:1649` | `static int gfx_parse_int(const char *s, int *out)` |
+| `gfx_read_palette` | function | `kernel/shell.c:1669` | `static void gfx_read_palette(unsigned char pal[768])` |
+| `job_row` | struct | `kernel/shell.c:1955` | `` |
+| `k_exec_user` | function | `kernel/shell.c:1250` | `return k_exec_user(entry, argc, argv);` |
+| `k_run_rel` | function | `kernel/shell.c:1588` | `return k_run_rel(p->entry, argc, argv);` |
+| `kbd_drop_counts` | function | `kernel/shell.c:1925` | `kbd_drop_counts(&cooked, &raw);` |
+| `kfclose` | function | `kernel/shell.c:1804` | `kfclose(f);` |
+| `kfree` | function | `kernel/shell.c:1115` | `kfree(data);` |
+| `kfwrite` | function | `kernel/shell.c:1785` | `kfwrite(hdr, 1, (unsigned long)n, f);` |
+| `kmemcpy` | function | `kernel/shell.c:109` | `kmemcpy(cmd_buf, tmp, (unsigned long)CMD_BUF_SZ);` |
+| `kmemmove` | function | `kernel/shell.c:553` | `kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1));` |
+| `kmemset` | function | `kernel/shell.c:430` | `kmemset(buf, 0, (unsigned long)size);` |
+| `kprintf` | function | `kernel/shell.c:1104` | `kprintf("load: refusing untrusted ET_REL '%s'", resolved);` |
+| `kstack_report` | function | `kernel/shell.c:2544` | `kstack_report();` |
+| `line` | function | `kernel/shell.c:615` | `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...` |
-| `minifs_read` | function | `kernel/shell.c:1079` | `minifs_read(ino, data, 0, data_size);` |
-| `minifs_stat` | function | `kernel/shell.c:2195` | `minifs_stat(de.inode, &st);` |
-| `minifs_usage` | function | `kernel/shell.c:1992` | `minifs_usage(&fb, &tb, &fi, &ti);` |
-| `net_cmd_dns` | function | `kernel/shell.c:2362` | `net_cmd_dns(argv[2]);` |
-| `net_cmd_ping` | function | `kernel/shell.c:2359` | `net_cmd_ping(argv[2]);` |
-| `net_cmd_status` | function | `kernel/shell.c:2356` | `net_cmd_status();` |
-| `outb` | function | `kernel/shell.c:1659` | `outb(0x3C7, 0);` |
-| `outw_port` | function | `kernel/shell.c:1114` | `static inline void outw_port(unsigned short port, unsigned short val)` |
-| `pb_count` | function | `kernel/shell.c:173` | `static int pb_count(void)` |
-| `pb_empty` | function | `kernel/shell.c:171` | `static int pb_empty(void)` |
-| `pb_peek` | function | `kernel/shell.c:190` | `static int pb_peek(void)` |
-| `pb_pop` | function | `kernel/shell.c:184` | `static int pb_pop(void)` |
-| `pb_push_back` | function | `kernel/shell.c:174` | `static void pb_push_back(unsigned char c)` |
-| `pb_push_front` | function | `kernel/shell.c:179` | `static void pb_push_front(unsigned char c)` |
-| `pcspk_set_volume` | function | `kernel/shell.c:2463` | `pcspk_set_volume(v);` |
-| `ps_row` | struct | `kernel/shell.c:2368` | `` |
-| `ramdisk_delete` | function | `kernel/shell.c:2235` | `ramdisk_delete(f);` |
-| `ramdisk_read` | function | `kernel/shell.c:1063` | `ramdisk_read(f, data, 0, data_size);` |
-| `ramdisk_usage` | function | `kernel/shell.c:1987` | `ramdisk_usage(&ru, &rc, &rm);` |
-| `raw_blocking_getc` | function | `kernel/shell.c:197` | `static int raw_blocking_getc(void)` |
-| `raw_try_getc` | function | `kernel/shell.c:216` | `static int raw_try_getc(void)` |
-| `root` | function | `kernel/shell.c:819` | `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * e` |
-| `rq_stats` | function | `kernel/shell.c:2399` | `rq_stats(c, &hits, &steals, &drops);` |
-| `sb16_counters` | function | `kernel/shell.c:2504` | `sb16_counters(&c);` |
-| `sb_init` | function | `kernel/shell.c:384` | `sb_init();` |
-| `scrollback_render` | function | `kernel/shell.c:345` | `static void scrollback_render(int voff, int total, const unsigned char *saved)` |
-| `scrollback_view` | function | `kernel/shell.c:382` | `static void scrollback_view(int initial_dir)` |
-| `serial_putc` | function | `kernel/shell.c:361` | `serial_putc(ch);` |
-| `shell_cmd_edit` | function | `kernel/shell.c:2079` | `shell_cmd_edit(argc, argv);` |
-| `shell_cmd_gfx` | function | `kernel/shell.c:1663` | `static void shell_cmd_gfx(int argc, char **argv)` |
-| `shell_cmd_hash` | function | `kernel/shell.c:2010` | `static void shell_cmd_hash(int argc, char **argv)` |
-| `shell_cmd_jobs` | function | `kernel/shell.c:1909` | `static void shell_cmd_jobs(void)` |
-| `shell_cmd_kill` | function | `kernel/shell.c:1958` | `static void shell_cmd_kill(int argc, char **argv)` |
-| `shell_cmd_mem` | function | `kernel/shell.c:1980` | `static void shell_cmd_mem(void)` |
-| `shell_cmd_mrun` | function | `kernel/shell.c:1497` | `static void shell_cmd_mrun(int argc, char **argv)` |
-| `shell_cmd_poweroff` | function | `kernel/shell.c:1120` | `static void shell_cmd_poweroff(void)` |
-| `shell_cmd_sh` | function | `kernel/shell.c:2583` | `shell_cmd_sh(argc, argv);` |
-| `shell_cmd_unzip` | function | `kernel/shell.c:2527` | `shell_cmd_unzip(argc, argv);` |
-| `shell_cmd_wait` | function | `kernel/shell.c:1932` | `static void shell_cmd_wait(int argc, char **argv)` |
-| `shell_cmd_wm` | function | `kernel/shell.c:1816` | `static void shell_cmd_wm(int argc, char **argv)` |
-| `shell_cmd_zip` | function | `kernel/shell.c:2530` | `shell_cmd_zip(argc, argv);` |
-| `shell_complete_replace` | function | `kernel/shell.c:491` | `static void shell_complete_replace(char *buf, int size, int *pos,
+| `minifs_read` | function | `kernel/shell.c:1083` | `minifs_read(ino, data, 0, data_size);` |
+| `minifs_stat` | function | `kernel/shell.c:2239` | `minifs_stat(de.inode, &st);` |
+| `minifs_usage` | function | `kernel/shell.c:2036` | `minifs_usage(&fb, &tb, &fi, &ti);` |
+| `net_cmd_dns` | function | `kernel/shell.c:2406` | `net_cmd_dns(argv[2]);` |
+| `net_cmd_ping` | function | `kernel/shell.c:2403` | `net_cmd_ping(argv[2]);` |
+| `net_cmd_status` | function | `kernel/shell.c:2400` | `net_cmd_status();` |
+| `outb` | function | `kernel/shell.c:1671` | `outb(0x3C7, 0);` |
+| `outw_port` | function | `kernel/shell.c:1118` | `static inline void outw_port(unsigned short port, unsigned short val)` |
+| `pb_count` | function | `kernel/shell.c:174` | `static int pb_count(void)` |
+| `pb_empty` | function | `kernel/shell.c:172` | `static int pb_empty(void)` |
+| `pb_peek` | function | `kernel/shell.c:191` | `static int pb_peek(void)` |
+| `pb_pop` | function | `kernel/shell.c:185` | `static int pb_pop(void)` |
+| `pb_push_back` | function | `kernel/shell.c:175` | `static void pb_push_back(unsigned char c)` |
+| `pb_push_front` | function | `kernel/shell.c:180` | `static void pb_push_front(unsigned char c)` |
+| `pcspk_set_volume` | function | `kernel/shell.c:2507` | `pcspk_set_volume(v);` |
+| `ps_row` | struct | `kernel/shell.c:2412` | `` |
+| `ramdisk_delete` | function | `kernel/shell.c:2279` | `ramdisk_delete(f);` |
+| `ramdisk_read` | function | `kernel/shell.c:1067` | `ramdisk_read(f, data, 0, data_size);` |
+| `ramdisk_usage` | function | `kernel/shell.c:2031` | `ramdisk_usage(&ru, &rc, &rm);` |
+| `raw_blocking_getc` | function | `kernel/shell.c:198` | `static int raw_blocking_getc(void)` |
+| `raw_try_getc` | function | `kernel/shell.c:217` | `static int raw_try_getc(void)` |
+| `root` | function | `kernel/shell.c:820` | `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * e` |
+| `rq_stats` | function | `kernel/shell.c:2443` | `rq_stats(c, &hits, &steals, &drops);` |
+| `sb16_counters` | function | `kernel/shell.c:2548` | `sb16_counters(&c);` |
+| `sb_init` | function | `kernel/shell.c:385` | `sb_init();` |
+| `scrollback_render` | function | `kernel/shell.c:346` | `static void scrollback_render(int voff, int total, const unsigned char *saved)` |
+| `scrollback_view` | function | `kernel/shell.c:383` | `static void scrollback_view(int initial_dir)` |
+| `serial_putc` | function | `kernel/shell.c:362` | `serial_putc(ch);` |
+| `shell_cmd_edit` | function | `kernel/shell.c:2123` | `shell_cmd_edit(argc, argv);` |
+| `shell_cmd_gfx` | function | `kernel/shell.c:1675` | `static void shell_cmd_gfx(int argc, char **argv)` |
+| `shell_cmd_hash` | function | `kernel/shell.c:2054` | `static void shell_cmd_hash(int argc, char **argv)` |
+| `shell_cmd_jobs` | function | `kernel/shell.c:1953` | `static void shell_cmd_jobs(void)` |
+| `shell_cmd_kill` | function | `kernel/shell.c:2002` | `static void shell_cmd_kill(int argc, char **argv)` |
+| `shell_cmd_mem` | function | `kernel/shell.c:2024` | `static void shell_cmd_mem(void)` |
+| `shell_cmd_mrun` | function | `kernel/shell.c:1501` | `static void shell_cmd_mrun(int argc, char **argv)` |
+| `shell_cmd_poweroff` | function | `kernel/shell.c:1124` | `static void shell_cmd_poweroff(void)` |
+| `shell_cmd_sh` | function | `kernel/shell.c:2627` | `shell_cmd_sh(argc, argv);` |
+| `shell_cmd_unzip` | function | `kernel/shell.c:2571` | `shell_cmd_unzip(argc, argv);` |
+| `shell_cmd_wait` | function | `kernel/shell.c:1976` | `static void shell_cmd_wait(int argc, char **argv)` |
+| `shell_cmd_wm` | function | `kernel/shell.c:1828` | `static void shell_cmd_wm(int argc, char **argv)` |
+| `shell_cmd_zip` | function | `kernel/shell.c:2574` | `shell_cmd_zip(argc, argv);` |
+| `shell_complete_replace` | function | `kernel/shell.c:492` | `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...` |
-| `shell_complete_tier` | function | `kernel/shell.c:479` | `static int shell_complete_tier(const char *nm)` |
-| `shell_exec_builtin` | function | `kernel/shell.c:2024` | `void shell_exec_builtin(int argc, char **argv)` |
-| `shell_file_is_real` | function | `kernel/shell.c:1155` | `static int shell_file_is_real(const char *resolved)` |
-| `shell_focus_park` | function | `kernel/shell.c:98` | `void shell_focus_park(void)` |
-| `shell_focus_restore` | function | `kernel/shell.c:103` | `void shell_focus_restore(void)` |
-| `shell_hist_nav` | function | `kernel/shell.c:717` | `shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);` |
-| `shell_hist_newest_match` | function | `kernel/shell.c:597` | `static int shell_hist_newest_match(const char *prefix, unsigned long plen)` |
-| `shell_hist_show` | function | `kernel/shell.c:514` | `static void shell_hist_show(char *buf, int size, int *pos, const char *text)` |
-| `shell_line_backspace` | function | `kernel/shell.c:558` | `static void shell_line_backspace(char *buf, int size, int *pos)` |
-| `shell_line_delete` | function | `kernel/shell.c:566` | `static void shell_line_delete(char *buf, int size, int *pos)` |
-| `shell_line_insert` | function | `kernel/shell.c:549` | `static void shell_line_insert(char *buf, int size, int *pos, char c)` |
-| `shell_line_kill_front` | function | `kernel/shell.c:573` | `static void shell_line_kill_front(char *buf, int size, int *pos)` |
-| `shell_line_kill_tail` | function | `kernel/shell.c:580` | `static void shell_line_kill_tail(char *buf, int size, int *pos)` |
-| `shell_line_kill_word` | function | `kernel/shell.c:585` | `static void shell_line_kill_word(char *buf, int size, int *pos)` |
-| `shell_line_repaint` | function | `kernel/shell.c:536` | `static void shell_line_repaint(char *buf, int size, int pos)` |
-| `shell_load` | function | `kernel/shell.c:1052` | `static int shell_load(const char *fname, char *progname_out, void **entry_out)` |
-| `shell_name_base` | function | `kernel/shell.c:456` | `static const char *shell_name_base(const char *path)` |
-| `shell_parse` | function | `kernel/shell.c:971` | `int shell_parse(char *line, char **argv, int max_args)` |
-| `shell_parse_vol` | function | `kernel/shell.c:138` | `static int shell_parse_vol(const char *s, unsigned *out)` |
-| `shell_prompt` | function | `kernel/shell.c:129` | `static void shell_prompt(void)` |
-| `shell_queue_launch` | function | `kernel/shell.c:69` | `void shell_queue_launch(const char *cmd)` |
-| `shell_read_elf_bytes` | function | `kernel/shell.c:1396` | `static int shell_read_elf_bytes(const char *name, unsigned char **out,
+| `shell_complete_tier` | function | `kernel/shell.c:480` | `static int shell_complete_tier(const char *nm)` |
+| `shell_exec_builtin` | function | `kernel/shell.c:2068` | `void shell_exec_builtin(int argc, char **argv)` |
+| `shell_file_is_real` | function | `kernel/shell.c:1159` | `static int shell_file_is_real(const char *resolved)` |
+| `shell_focus_park` | function | `kernel/shell.c:99` | `void shell_focus_park(void)` |
+| `shell_focus_restore` | function | `kernel/shell.c:104` | `void shell_focus_restore(void)` |
+| `shell_hist_nav` | function | `kernel/shell.c:718` | `shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);` |
+| `shell_hist_newest_match` | function | `kernel/shell.c:598` | `static int shell_hist_newest_match(const char *prefix, unsigned long plen)` |
+| `shell_hist_show` | function | `kernel/shell.c:515` | `static void shell_hist_show(char *buf, int size, int *pos, const char *text)` |
+| `shell_line_backspace` | function | `kernel/shell.c:559` | `static void shell_line_backspace(char *buf, int size, int *pos)` |
+| `shell_line_delete` | function | `kernel/shell.c:567` | `static void shell_line_delete(char *buf, int size, int *pos)` |
+| `shell_line_insert` | function | `kernel/shell.c:550` | `static void shell_line_insert(char *buf, int size, int *pos, char c)` |
+| `shell_line_kill_front` | function | `kernel/shell.c:574` | `static void shell_line_kill_front(char *buf, int size, int *pos)` |
+| `shell_line_kill_tail` | function | `kernel/shell.c:581` | `static void shell_line_kill_tail(char *buf, int size, int *pos)` |
+| `shell_line_kill_word` | function | `kernel/shell.c:586` | `static void shell_line_kill_word(char *buf, int size, int *pos)` |
+| `shell_line_repaint` | function | `kernel/shell.c:537` | `static void shell_line_repaint(char *buf, int size, int pos)` |
+| `shell_load` | function | `kernel/shell.c:1056` | `static int shell_load(const char *fname, char *progname_out, void **entry_out)` |
+| `shell_name_base` | function | `kernel/shell.c:457` | `static const char *shell_name_base(const char *path)` |
+| `shell_parse` | function | `kernel/shell.c:972` | `int shell_parse(char *line, char **argv, int max_args)` |
+| `shell_parse_vol` | function | `kernel/shell.c:139` | `static int shell_parse_vol(const char *s, unsigned *out)` |
+| `shell_prompt` | function | `kernel/shell.c:130` | `static void shell_prompt(void)` |
+| `shell_queue_launch` | function | `kernel/shell.c:70` | `void shell_queue_launch(const char *cmd)` |
+| `shell_read_elf_bytes` | function | `kernel/shell.c:1400` | `static int shell_read_elf_bytes(const char *name, unsigned char **out,
                           ...` |
-| `shell_readline` | function | `kernel/shell.c:505` | `static void shell_readline(void)` |
-| `shell_readline_active` | function | `kernel/shell.c:97` | `int shell_readline_active(void)` |
-| `shell_readline_buf` | function | `kernel/shell.c:427` | `void shell_readline_buf(char *buf, int size)` |
-| `shell_readline_hist` | function | `kernel/shell.c:659` | `static void shell_readline_hist(char *buf, int size)` |
-| `shell_report` | function | `kernel/shell.c:2085` | `shell_report("ls: name too long: ", argv[1]);` |
-| `shell_report_exit` | function | `kernel/shell.c:2552` | `else shell_report_exit(ret);` |
-| `shell_resolve_run` | function | `kernel/shell.c:1167` | `static int shell_resolve_run(const char *name, char *out, unsigned cap)` |
-| `shell_run` | function | `kernel/shell.c:992` | `void shell_run(void)` |
-| `shell_run_any` | function | `kernel/shell.c:1574` | `int shell_run_any(const char *name, int argc, char **argv)` |
-| `shell_run_bg` | function | `kernel/shell.c:1546` | `static void shell_run_bg(const char *name, int argc, char **argv)` |
-| `shell_run_cvm` | function | `kernel/shell.c:1316` | `static int shell_run_cvm(const char *full, int argc, char **argv)` |
-| `shell_run_dir_for` | function | `kernel/shell.c:1137` | `static const ShellRunDir *shell_run_dir_for(const char *name)` |
-| `shell_run_elf_buf_path` | function | `kernel/shell.c:1223` | `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+| `shell_readline` | function | `kernel/shell.c:506` | `static void shell_readline(void)` |
+| `shell_readline_active` | function | `kernel/shell.c:98` | `int shell_readline_active(void)` |
+| `shell_readline_buf` | function | `kernel/shell.c:428` | `void shell_readline_buf(char *buf, int size)` |
+| `shell_readline_hist` | function | `kernel/shell.c:660` | `static void shell_readline_hist(char *buf, int size)` |
+| `shell_report` | function | `kernel/shell.c:2129` | `shell_report("ls: name too long: ", argv[1]);` |
+| `shell_report_exit` | function | `kernel/shell.c:2596` | `else shell_report_exit(ret);` |
+| `shell_resolve_run` | function | `kernel/shell.c:1171` | `static int shell_resolve_run(const char *name, char *out, unsigned cap)` |
+| `shell_run` | function | `kernel/shell.c:993` | `void shell_run(void)` |
+| `shell_run_any` | function | `kernel/shell.c:1578` | `int shell_run_any(const char *name, int argc, char **argv)` |
+| `shell_run_bg` | function | `kernel/shell.c:1550` | `static void shell_run_bg(const char *name, int argc, char **argv)` |
+| `shell_run_cvm` | function | `kernel/shell.c:1320` | `static int shell_run_cvm(const char *full, int argc, char **argv)` |
+| `shell_run_dir_for` | function | `kernel/shell.c:1141` | `static const ShellRunDir *shell_run_dir_for(const char *name)` |
+| `shell_run_elf_buf_path` | function | `kernel/shell.c:1227` | `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...` |
-| `shell_run_elf_file` | function | `kernel/shell.c:1253` | `static int shell_run_elf_file(const char *full, int argc, char **argv)` |
-| `shell_run_elf_minifs` | function | `kernel/shell.c:1266` | `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` |
-| `shell_run_file` | function | `kernel/shell.c:1352` | `static int shell_run_file(const char *name, int argc, char **argv)` |
-| `spin_lock` | function | `kernel/shell.c:1914` | `spin_lock(&sched_lock);` |
-| `spin_unlock` | function | `kernel/shell.c:1926` | `spin_unlock(&sched_lock);` |
-| `tree` | function | `kernel/shell.c:1897` | `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+| `shell_run_elf_file` | function | `kernel/shell.c:1257` | `static int shell_run_elf_file(const char *full, int argc, char **argv)` |
+| `shell_run_elf_minifs` | function | `kernel/shell.c:1270` | `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` |
+| `shell_run_file` | function | `kernel/shell.c:1356` | `static int shell_run_file(const char *name, int argc, char **argv)` |
+| `spin_lock` | function | `kernel/shell.c:1958` | `spin_lock(&sched_lock);` |
+| `spin_unlock` | function | `kernel/shell.c:1970` | `spin_unlock(&sched_lock);` |
+| `tree` | function | `kernel/shell.c:1941` | `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...` |
-| `vga_clear` | function | `kernel/shell.c:2073` | `vga_clear();` |
-| `vga_cursor_enable` | function | `kernel/shell.c:391` | `vga_cursor_enable(0);` |
-| `vga_fb_clear_prompt` | function | `kernel/shell.c:1018` | `vga_fb_clear_prompt();` |
-| `vga_fb_focus_next` | function | `kernel/shell.c:1864` | `vga_fb_focus_next();` |
-| `vga_fb_hide_text_cursor` | function | `kernel/shell.c:692` | `vga_fb_hide_text_cursor();` |
-| `vga_fb_park_line` | function | `kernel/shell.c:100` | `vga_fb_park_line(cmd_buf, shell_edit_pos);` |
-| `vga_fb_set_gfx_program` | function | `kernel/shell.c:1578` | `vga_fb_set_gfx_program(name);` |
-| `vga_fb_snap_window` | function | `kernel/shell.c:1849` | `vga_fb_snap_window(z);` |
-| `vga_fb_text_cursor` | function | `kernel/shell.c:127` | `vga_fb_text_cursor(shell_edit_pos);` |
-| `vga_fb_tile_all` | function | `kernel/shell.c:1833` | `vga_fb_tile_all();` |
-| `vga_putc` | function | `kernel/shell.c:434` | `vga_putc('\n');` |
-| `vga_puts` | function | `kernel/shell.c:121` | `else vga_puts("\nminiOS> ");` |
-| `vga_set_cursor` | function | `kernel/shell.c:421` | `vga_set_cursor(saved_x, saved_y);` |
-| `vga_set_xy` | function | `kernel/shell.c:420` | `vga_set_xy(saved_x, saved_y);` |
-| `volatile` | function | `kernel/shell.c:211` | `__asm__ volatile("pause");` |
-| `window` | function | `kernel/shell.c:1389` | `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small ` |
-| `yield` | function | `kernel/shell.c:1494` | `yield();` |
+| `vga_clear` | function | `kernel/shell.c:2117` | `vga_clear();` |
+| `vga_cursor_enable` | function | `kernel/shell.c:392` | `vga_cursor_enable(0);` |
+| `vga_fb_clear_prompt` | function | `kernel/shell.c:1022` | `vga_fb_clear_prompt();` |
+| `vga_fb_focus_next` | function | `kernel/shell.c:1902` | `vga_fb_focus_next();` |
+| `vga_fb_hide_text_cursor` | function | `kernel/shell.c:693` | `vga_fb_hide_text_cursor();` |
+| `vga_fb_layout_cycle` | function | `kernel/shell.c:1860` | `vga_fb_layout_cycle();` |
+| `vga_fb_park_line` | function | `kernel/shell.c:101` | `vga_fb_park_line(cmd_buf, shell_edit_pos);` |
+| `vga_fb_set_gfx_program` | function | `kernel/shell.c:1582` | `vga_fb_set_gfx_program(name);` |
+| `vga_fb_snap_window` | function | `kernel/shell.c:1887` | `vga_fb_snap_window(z);` |
+| `vga_fb_text_cursor` | function | `kernel/shell.c:128` | `vga_fb_text_cursor(shell_edit_pos);` |
+| `vga_fb_theme_name` | function | `kernel/shell.c:1919` | `vga_fb_theme_name(theme, sizeof(theme));` |
+| `vga_fb_tile_all` | function | `kernel/shell.c:1845` | `vga_fb_tile_all();` |
+| `vga_putc` | function | `kernel/shell.c:435` | `vga_putc('\n');` |
+| `vga_puts` | function | `kernel/shell.c:122` | `else vga_puts("\nminiOS> ");` |
+| `vga_set_cursor` | function | `kernel/shell.c:422` | `vga_set_cursor(saved_x, saved_y);` |
+| `vga_set_xy` | function | `kernel/shell.c:421` | `vga_set_xy(saved_x, saved_y);` |
+| `volatile` | function | `kernel/shell.c:212` | `__asm__ volatile("pause");` |
+| `window` | function | `kernel/shell.c:1393` | `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small ` |
+| `yield` | function | `kernel/shell.c:1498` | `yield();` |
 | `katol` | function | `kernel/string.c:94` | `long katol(const char *s)` |
 | `kmemcmp` | function | `kernel/string.c:80` | `int kmemcmp(const void *a, const void *b, unsigned long n)` |
 | `kmemcpy` | function | `kernel/string.c:67` | `void *kmemcpy(void *dst, const void *src, unsigned long n)` |
@@ -1847,25 +1850,25 @@ static void shell_hist_na...` |
 | `wq_init` | function | `kernel/sync.c:26` | `void wq_init(wait_queue_t *q)` |
 | `DOOM_FRAME` | function | `kernel/syscalls.c:405` | `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
 static long sys_minios_gfx_prese...` |
-| `Discipline` | function | `kernel/syscalls.c:1066` | `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok is O` |
+| `Discipline` | function | `kernel/syscalls.c:1184` | `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok is O` |
 | `KFD_MAX` | macro | `kernel/syscalls.c:42` | `#define KFD_MAX` |
-| `LIMITATION` | function | `kernel/syscalls.c:1281` | `* * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from * a ring-3 interpreter (lua/micropython) ` |
-| `LINUX_SYSCALL_COUNT` | macro | `kernel/syscalls.c:980` | `#define LINUX_SYSCALL_COUNT` |
+| `LIMITATION` | function | `kernel/syscalls.c:1399` | `* * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from * a ring-3 interpreter (lua/micropython) ` |
+| `LINUX_SYSCALL_COUNT` | macro | `kernel/syscalls.c:1098` | `#define LINUX_SYSCALL_COUNT` |
 | `MINIOS_SYSCALL_BASE` | macro | `kernel/syscalls.c:73` | `#define MINIOS_SYSCALL_BASE` |
 | `MINIOS_SYSCALL_COUNT` | macro | `kernel/syscalls.c:75` | `#define MINIOS_SYSCALL_COUNT` |
 | `SANITIZE_COPY_IN` | function | `kernel/syscalls.c:445` | `SANITIZE_COPY_IN(kops, a1, count, sizeof(batch_op_t));` |
 | `SANITIZE_LEN_NEG` | function | `kernel/syscalls.c:325` | `SANITIZE_LEN_NEG(len);` |
 | `SANITIZE_RANGE` | function | `kernel/syscalls.c:167` | `SANITIZE_RANGE(a1, 768);` |
-| `SYSCALL_TRACE` | macro | `kernel/syscalls.c:532` | `#define SYSCALL_TRACE` |
-| `SYS_NOISY_GETC_RAW` | macro | `kernel/syscalls.c:547` | `#define SYS_NOISY_GETC_RAW` |
-| `SYS_NOISY_KBD` | macro | `kernel/syscalls.c:545` | `#define SYS_NOISY_KBD` |
-| `SYS_NOISY_MOUSE` | macro | `kernel/syscalls.c:546` | `#define SYS_NOISY_MOUSE` |
-| `SYS_NOISY_TIME` | macro | `kernel/syscalls.c:544` | `#define SYS_NOISY_TIME` |
+| `SYSCALL_TRACE` | macro | `kernel/syscalls.c:650` | `#define SYSCALL_TRACE` |
+| `SYS_NOISY_GETC_RAW` | macro | `kernel/syscalls.c:665` | `#define SYS_NOISY_GETC_RAW` |
+| `SYS_NOISY_KBD` | macro | `kernel/syscalls.c:663` | `#define SYS_NOISY_KBD` |
+| `SYS_NOISY_MOUSE` | macro | `kernel/syscalls.c:664` | `#define SYS_NOISY_MOUSE` |
+| `SYS_NOISY_TIME` | macro | `kernel/syscalls.c:662` | `#define SYS_NOISY_TIME` |
 | `batch_kdispatch` | function | `kernel/syscalls.c:390` | `static long batch_kdispatch(uint32_t opcode)` |
 | `by` | function | `kernel/syscalls.c:56` | `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to progs/minios_a` |
-| `do_exit` | function | `kernel/syscalls.c:1091` | `do_exit(130);` |
-| `do_open_path` | function | `kernel/syscalls.c:615` | `static long do_open_path(const char *path, long flags)` |
-| `do_proc_exit` | function | `kernel/syscalls.c:1165` | `return do_proc_exit(a1);` |
+| `do_exit` | function | `kernel/syscalls.c:1209` | `do_exit(130);` |
+| `do_open_path` | function | `kernel/syscalls.c:733` | `static long do_open_path(const char *path, long flags)` |
+| `do_proc_exit` | function | `kernel/syscalls.c:1283` | `return do_proc_exit(a1);` |
 | `futex_wait` | function | `kernel/syscalls.c:379` | `return futex_wait((unsigned long)a1, (int)a2);` |
 | `futex_wake` | function | `kernel/syscalls.c:131` | `return futex_wake(uaddr, (int)n);` |
 | `gfx_note_compositor` | function | `kernel/syscalls.c:207` | `gfx_note_compositor();` |
@@ -1874,32 +1877,32 @@ static long sys_minios_gfx_prese...` |
 | `kbd_flush_all` | function | `kernel/syscalls.c:177` | `kbd_flush_all();` |
 | `kbd_q_pop` | function | `kernel/syscalls.c:160` | `return kbd_q_pop();` |
 | `kbd_raw_mode_set` | function | `kernel/syscalls.c:176` | `kbd_raw_mode_set((int)a1);` |
-| `kfclose` | function | `kernel/syscalls.c:650` | `kfclose(kfd_table[a1]);` |
-| `kfree` | function | `kernel/syscalls.c:1367` | `kfree(data);` |
-| `kfseek` | function | `kernel/syscalls.c:659` | `kfseek(kfd_table[a1], a2, (int)a3);` |
-| `kiovec` | struct | `kernel/syscalls.c:531` | `` |
-| `klongjmp` | function | `kernel/syscalls.c:1095` | `klongjmp(&exec_return, 1);` |
-| `kmemcpy` | function | `kernel/syscalls.c:1320` | `kmemcpy(kargv[i], child_argv[i], slen);` |
-| `kmemset` | function | `kernel/syscalls.c:971` | `kmemset(u, 0, 390);` |
-| `kprintf` | function | `kernel/syscalls.c:563` | `kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);` |
-| `kstrcpy` | function | `kernel/syscalls.c:972` | `kstrcpy(u, "MiniOS");` |
-| `ksyscall` | function | `kernel/syscalls.c:1031` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `ksyscall_dispatch` | function | `kernel/syscalls.c:1083` | `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `kfclose` | function | `kernel/syscalls.c:768` | `kfclose(kfd_table[a1]);` |
+| `kfree` | function | `kernel/syscalls.c:1485` | `kfree(data);` |
+| `kfseek` | function | `kernel/syscalls.c:777` | `kfseek(kfd_table[a1], a2, (int)a3);` |
+| `kiovec` | struct | `kernel/syscalls.c:649` | `` |
+| `klongjmp` | function | `kernel/syscalls.c:1213` | `klongjmp(&exec_return, 1);` |
+| `kmemcpy` | function | `kernel/syscalls.c:517` | `kmemcpy(dir, resolved, len + 1);` |
+| `kmemset` | function | `kernel/syscalls.c:1089` | `kmemset(u, 0, 390);` |
+| `kprintf` | function | `kernel/syscalls.c:681` | `kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);` |
+| `kstrcpy` | function | `kernel/syscalls.c:1090` | `kstrcpy(u, "MiniOS");` |
+| `ksyscall` | function | `kernel/syscalls.c:1149` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `ksyscall_dispatch` | function | `kernel/syscalls.c:1201` | `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `minios_syscall_entry_t` | struct | `kernel/syscalls.c:69` | `` |
-| `mm_ensure_cur` | function | `kernel/syscalls.c:670` | `static int mm_ensure_cur(unsigned long start, unsigned long end)` |
-| `net_sys_connect` | function | `kernel/syscalls.c:831` | `return net_sys_connect(a1, a2, a3);` |
+| `mm_ensure_cur` | function | `kernel/syscalls.c:788` | `static int mm_ensure_cur(unsigned long start, unsigned long end)` |
+| `net_sys_connect` | function | `kernel/syscalls.c:949` | `return net_sys_connect(a1, a2, a3);` |
 | `net_sys_dns` | function | `kernel/syscalls.c:100` | `return net_sys_dns(a1);` |
-| `net_sys_poll` | function | `kernel/syscalls.c:853` | `return net_sys_poll(a1, a2, a3);` |
-| `net_sys_recvfrom` | function | `kernel/syscalls.c:841` | `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);` |
-| `net_sys_sendto` | function | `kernel/syscalls.c:836` | `return net_sys_sendto(a1, a2, a3, a4, a5, a6);` |
-| `net_sys_shutdown` | function | `kernel/syscalls.c:846` | `return net_sys_shutdown(a1, a2);` |
-| `net_sys_socket` | function | `kernel/syscalls.c:825` | `return net_sys_socket(a1, a2, a3);` |
+| `net_sys_poll` | function | `kernel/syscalls.c:971` | `return net_sys_poll(a1, a2, a3);` |
+| `net_sys_recvfrom` | function | `kernel/syscalls.c:959` | `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);` |
+| `net_sys_sendto` | function | `kernel/syscalls.c:954` | `return net_sys_sendto(a1, a2, a3, a4, a5, a6);` |
+| `net_sys_shutdown` | function | `kernel/syscalls.c:964` | `return net_sys_shutdown(a1, a2);` |
+| `net_sys_socket` | function | `kernel/syscalls.c:943` | `return net_sys_socket(a1, a2, a3);` |
 | `pcspk_init` | function | `kernel/syscalls.c:189` | `pcspk_init();` |
 | `pcspk_set_volume` | function | `kernel/syscalls.c:241` | `pcspk_set_volume((unsigned)v);` |
 | `pcspk_tone` | function | `kernel/syscalls.c:193` | `pcspk_tone((unsigned)a1);` |
-| `products` | function | `kernel/syscalls.c:1071` | `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
+| `products` | function | `kernel/syscalls.c:1189` | `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
  * pre-bounded against (END-...` |
-| `ramdisk_read` | function | `kernel/syscalls.c:1341` | `ramdisk_read(f, data, 0, f->size);` |
+| `ramdisk_read` | function | `kernel/syscalls.c:1459` | `ramdisk_read(f, data, 0, f->size);` |
 | `rtc_wall_seconds` | function | `kernel/syscalls.c:91` | `rtc_wall_seconds(&sec);` |
 | `sb16_pcm_submit` | function | `kernel/syscalls.c:327` | `return sb16_pcm_submit(pcm, (unsigned)len);` |
 | `sb16_pump` | function | `kernel/syscalls.c:345` | `sb16_pump();` |
@@ -1907,39 +1910,40 @@ static long sys_minios_gfx_prese...` |
 | `sb16_stream_open` | function | `kernel/syscalls.c:349` | `return sb16_stream_open();` |
 | `sb16_stream_submit` | function | `kernel/syscalls.c:361` | `return sb16_stream_submit((int)a1, pcm, (unsigned)len);` |
 | `sb16_stream_volume` | function | `kernel/syscalls.c:365` | `sb16_stream_volume((int)a1, (unsigned char)a2);` |
-| `spin_lock_irqsave` | function | `kernel/syscalls.c:684` | `spin_lock_irqsave(&mm_lock, &flags);` |
+| `spin_lock_irqsave` | function | `kernel/syscalls.c:802` | `spin_lock_irqsave(&mm_lock, &flags);` |
 | `spin_restore_irq` | function | `kernel/syscalls.c:298` | `spin_restore_irq(flags);` |
-| `spin_unlock_irqrestore` | function | `kernel/syscalls.c:690` | `spin_unlock_irqrestore(&mm_lock, flags);` |
-| `sys_linux_access` | function | `kernel/syscalls.c:800` | `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_arch_prctl` | function | `kernel/syscalls.c:947` | `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_brk` | function | `kernel/syscalls.c:678` | `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_close` | function | `kernel/syscalls.c:644` | `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_connect` | function | `kernel/syscalls.c:827` | `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_fdatasync` | function | `kernel/syscalls.c:869` | `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_flock` | function | `kernel/syscalls.c:855` | `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_fstat` | function | `kernel/syscalls.c:904` | `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_fsync` | function | `kernel/syscalls.c:865` | `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `spin_unlock_irqrestore` | function | `kernel/syscalls.c:808` | `spin_unlock_irqrestore(&mm_lock, flags);` |
+| `sys_linux_access` | function | `kernel/syscalls.c:918` | `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_arch_prctl` | function | `kernel/syscalls.c:1065` | `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_brk` | function | `kernel/syscalls.c:796` | `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_close` | function | `kernel/syscalls.c:762` | `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_connect` | function | `kernel/syscalls.c:945` | `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fdatasync` | function | `kernel/syscalls.c:987` | `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_flock` | function | `kernel/syscalls.c:973` | `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fstat` | function | `kernel/syscalls.c:1022` | `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fsync` | function | `kernel/syscalls.c:983` | `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_linux_futex` | function | `kernel/syscalls.c:109` | `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getcwd` | function | `kernel/syscalls.c:874` | `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_gettimeofday` | function | `kernel/syscalls.c:924` | `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_ioctl` | function | `kernel/syscalls.c:795` | `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_lseek` | function | `kernel/syscalls.c:655` | `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_mmap` | function | `kernel/syscalls.c:707` | `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_mprotect` | function | `kernel/syscalls.c:780` | `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_munmap` | function | `kernel/syscalls.c:762` | `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_open` | function | `kernel/syscalls.c:639` | `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_poll` | function | `kernel/syscalls.c:848` | `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_readlink` | function | `kernel/syscalls.c:899` | `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_recvfrom` | function | `kernel/syscalls.c:838` | `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_sendto` | function | `kernel/syscalls.c:833` | `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_shutdown` | function | `kernel/syscalls.c:843` | `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_sigaction` | function | `kernel/syscalls.c:785` | `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_sigprocmask` | function | `kernel/syscalls.c:790` | `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_socket` | function | `kernel/syscalls.c:822` | `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_uname` | function | `kernel/syscalls.c:959` | `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_unlink` | function | `kernel/syscalls.c:886` | `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_write` | function | `kernel/syscalls.c:584` | `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_writev` | function | `kernel/syscalls.c:594` | `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getcwd` | function | `kernel/syscalls.c:992` | `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_gettimeofday` | function | `kernel/syscalls.c:1042` | `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_ioctl` | function | `kernel/syscalls.c:913` | `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_lseek` | function | `kernel/syscalls.c:773` | `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_mmap` | function | `kernel/syscalls.c:825` | `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_mprotect` | function | `kernel/syscalls.c:898` | `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_munmap` | function | `kernel/syscalls.c:880` | `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_open` | function | `kernel/syscalls.c:757` | `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_poll` | function | `kernel/syscalls.c:966` | `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_readlink` | function | `kernel/syscalls.c:1017` | `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_recvfrom` | function | `kernel/syscalls.c:956` | `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sendto` | function | `kernel/syscalls.c:951` | `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_shutdown` | function | `kernel/syscalls.c:961` | `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sigaction` | function | `kernel/syscalls.c:903` | `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sigprocmask` | function | `kernel/syscalls.c:908` | `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_socket` | function | `kernel/syscalls.c:940` | `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_uname` | function | `kernel/syscalls.c:1077` | `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_unlink` | function | `kernel/syscalls.c:1004` | `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_write` | function | `kernel/syscalls.c:702` | `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_writev` | function | `kernel/syscalls.c:712` | `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_dir_list` | function | `kernel/syscalls.c:500` | `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_minios_dns` | function | `kernel/syscalls.c:96` | `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_minios_doom_frame` | function | `kernel/syscalls.c:205` | `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_minios_fb_info` | function | `kernel/syscalls.c:224` | `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)` |
@@ -1971,26 +1975,26 @@ static long sys_minios_gfx_prese...` |
 | `sys_minios_time` | function | `kernel/syscalls.c:138` | `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_minios_tls_retired` | function | `kernel/syscalls.c:102` | `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_minios_vga_mode` | function | `kernel/syscalls.c:180` | `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `syscall_trace_enabled` | function | `kernel/syscalls.c:536` | `long syscall_trace_enabled(void)` |
-| `syscall_trace_set` | function | `kernel/syscalls.c:538` | `void syscall_trace_set(int on)` |
-| `tools` | function | `kernel/syscalls.c:1289` | `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
+| `syscall_trace_enabled` | function | `kernel/syscalls.c:654` | `long syscall_trace_enabled(void)` |
+| `syscall_trace_set` | function | `kernel/syscalls.c:656` | `void syscall_trace_set(int on)` |
+| `tools` | function | `kernel/syscalls.c:1407` | `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...` |
-| `trace_is_noisy` | function | `kernel/syscalls.c:1026` | `static int trace_is_noisy(long n)` |
-| `user_range_ok` | function | `kernel/syscalls.c:1053` | `int user_range_ok(unsigned long p, unsigned long len)` |
+| `trace_is_noisy` | function | `kernel/syscalls.c:1144` | `static int trace_is_noisy(long n)` |
+| `user_range_ok` | function | `kernel/syscalls.c:1171` | `int user_range_ok(unsigned long p, unsigned long len)` |
 | `vga_fb_blit_gfx_window` | function | `kernel/syscalls.c:208` | `vga_fb_blit_gfx_window();` |
 | `vga_fb_blit_nk_window` | function | `kernel/syscalls.c:313` | `vga_fb_blit_nk_window();` |
 | `vga_fb_set_gfx_mode` | function | `kernel/syscalls.c:184` | `vga_fb_set_gfx_mode((int)a1);` |
 | `vga_fb_set_gfx_palette` | function | `kernel/syscalls.c:171` | `vga_fb_set_gfx_palette(tmp);` |
 | `vga_mode_set` | function | `kernel/syscalls.c:182` | `vga_mode_set((int)a1);` |
-| `vga_putc` | function | `kernel/syscalls.c:572` | `vga_putc((char)c);` |
-| `vma_tree_delete` | function | `kernel/syscalls.c:741` | `vma_tree_delete(&vma_free_root, best->base);` |
-| `vma_tree_insert` | function | `kernel/syscalls.c:744` | `vma_tree_insert(&vma_live_root, addr, n);` |
+| `vga_putc` | function | `kernel/syscalls.c:690` | `vga_putc((char)c);` |
+| `vma_tree_delete` | function | `kernel/syscalls.c:859` | `vma_tree_delete(&vma_free_root, best->base);` |
+| `vma_tree_insert` | function | `kernel/syscalls.c:862` | `vma_tree_insert(&vma_live_root, addr, n);` |
 | `volatile` | function | `kernel/syscalls.c:153` | `__asm__ volatile("inb $0x60, %0" : "=a"(sc));` |
 | `wall_us_from_parts` | function | `kernel/syscalls.c:94` | `return wall_us_from_parts(base_sec, base_ktime, now);` |
 | `wall_us_now` | function | `kernel/syscalls.c:87` | `unsigned long wall_us_now(void)` |
-| `wm_clear_close` | function | `kernel/syscalls.c:1086` | `wm_clear_close();` |
-| `wrmsr` | function | `kernel/syscalls.c:954` | `wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);` |
+| `wm_clear_close` | function | `kernel/syscalls.c:1204` | `wm_clear_close();` |
+| `wrmsr` | function | `kernel/syscalls.c:1072` | `wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);` |
 | `yield` | function | `kernel/syscalls.c:394` | `yield();` |
 | `code` | function | `kernel/syscalls_proc.c:113` | `* exit code (no WEXITSTATUS encoding: MiniOS reports codes directly). */
 long sys_linux_wait4(lon...` |
@@ -2030,165 +2034,177 @@ long sys_linux_wait4(lon...` |
 | `ktime_us_from_delta` | function | `kernel/time.c:43` | `return ktime_us_from_delta(ktime_rdtsc() - tsc_base_ms, tsc_per_ms);` |
 | `outb` | function | `kernel/time.c:21` | `outb(0x61, (unsigned char)((inb(0x61) & 0x0F) \| 0x01));` |
 | `volatile` | function | `kernel/time.c:15` | `__asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));` |
-| `CURSOR_H` | macro | `kernel/vga_fb.c:253` | `#define CURSOR_H` |
-| `CURSOR_TIP_X` | macro | `kernel/vga_fb.c:250` | `#define CURSOR_TIP_X` |
-| `CURSOR_TIP_Y` | macro | `kernel/vga_fb.c:251` | `#define CURSOR_TIP_Y` |
-| `CURSOR_W` | macro | `kernel/vga_fb.c:252` | `#define CURSOR_W` |
-| `FB_OFFSET` | macro | `kernel/vga_fb.c:1146` | `#define FB_OFFSET(x,y)` |
-| `GFX_KEEP_H` | macro | `kernel/vga_fb.c:341` | `#define GFX_KEEP_H` |
-| `GFX_KEEP_W` | macro | `kernel/vga_fb.c:340` | `#define GFX_KEEP_W` |
-| `GFX_PROG_LEN` | macro | `kernel/vga_fb.c:412` | `#define GFX_PROG_LEN` |
-| `TB_GFX_TITLE_MAX` | macro | `kernel/vga_fb.c:1712` | `#define TB_GFX_TITLE_MAX` |
-| `USER_LOAD_BASE` | function | `kernel/vga_fb.c:1552` | `* table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
+| `CURSOR_H` | macro | `kernel/vga_fb.c:254` | `#define CURSOR_H` |
+| `CURSOR_TIP_X` | macro | `kernel/vga_fb.c:251` | `#define CURSOR_TIP_X` |
+| `CURSOR_TIP_Y` | macro | `kernel/vga_fb.c:252` | `#define CURSOR_TIP_Y` |
+| `CURSOR_W` | macro | `kernel/vga_fb.c:253` | `#define CURSOR_W` |
+| `FB_OFFSET` | macro | `kernel/vga_fb.c:1231` | `#define FB_OFFSET(x,y)` |
+| `GFX_KEEP_H` | macro | `kernel/vga_fb.c:342` | `#define GFX_KEEP_H` |
+| `GFX_KEEP_W` | macro | `kernel/vga_fb.c:341` | `#define GFX_KEEP_W` |
+| `GFX_PROG_LEN` | macro | `kernel/vga_fb.c:413` | `#define GFX_PROG_LEN` |
+| `TB_GFX_TITLE_MAX` | macro | `kernel/vga_fb.c:1798` | `#define TB_GFX_TITLE_MAX` |
+| `USER_LOAD_BASE` | function | `kernel/vga_fb.c:1637` | `* table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
  * fits with ~1 KB to s...` |
-| `WIN_DEF_COLS` | macro | `kernel/vga_fb.c:642` | `#define WIN_DEF_COLS` |
-| `WIN_DEF_ROWS` | macro | `kernel/vga_fb.c:643` | `#define WIN_DEF_ROWS` |
-| `WIN_DEF_X` | macro | `kernel/vga_fb.c:644` | `#define WIN_DEF_X` |
-| `WIN_DEF_Y` | macro | `kernel/vga_fb.c:645` | `#define WIN_DEF_Y` |
-| `WM_ELINE_SZ` | macro | `kernel/vga_fb.c:674` | `#define WM_ELINE_SZ` |
-| `WM_MAX_TERMS` | macro | `kernel/vga_fb.c:673` | `#define WM_MAX_TERMS` |
-| `act_nrows` | function | `kernel/vga_fb.c:190` | `static int act_nrows(void)` |
-| `blit_gfx_buf` | function | `kernel/vga_fb.c:1595` | `static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh)` |
-| `blit_indexed_truecolor` | function | `kernel/vga_fb.c:1620` | `blit_indexed_truecolor(bb, bw, bh, dst_x, dst_y + FONT_H);` |
-| `ci_eq` | function | `kernel/vga_fb.c:450` | `static int ci_eq(const char *a, const char *b)` |
-| `command` | function | `kernel/vga_fb.c:2686` | `* its launch command (config-driven, covers apps that never set a window * title);` |
-| `content` | function | `kernel/vga_fb.c:861` | `* windows would share content (same prompt/output on both) and a park
+| `WIN_DEF_COLS` | macro | `kernel/vga_fb.c:645` | `#define WIN_DEF_COLS` |
+| `WIN_DEF_ROWS` | macro | `kernel/vga_fb.c:646` | `#define WIN_DEF_ROWS` |
+| `WIN_DEF_X` | macro | `kernel/vga_fb.c:647` | `#define WIN_DEF_X` |
+| `WIN_DEF_Y` | macro | `kernel/vga_fb.c:648` | `#define WIN_DEF_Y` |
+| `WM_ELINE_SZ` | macro | `kernel/vga_fb.c:677` | `#define WM_ELINE_SZ` |
+| `WM_MAX_TERMS` | macro | `kernel/vga_fb.c:676` | `#define WM_MAX_TERMS` |
+| `act_nrows` | function | `kernel/vga_fb.c:191` | `static int act_nrows(void)` |
+| `app` | function | `kernel/vga_fb.c:846` | `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep land` |
+| `blit_gfx_buf` | function | `kernel/vga_fb.c:1680` | `static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh)` |
+| `blit_indexed_truecolor` | function | `kernel/vga_fb.c:1705` | `blit_indexed_truecolor(bb, bw, bh, dst_x, dst_y + FONT_H);` |
+| `ci_eq` | function | `kernel/vga_fb.c:451` | `static int ci_eq(const char *a, const char *b)` |
+| `command` | function | `kernel/vga_fb.c:2855` | `* its launch command (config-driven, covers apps that never set a window * title);` |
+| `content` | function | `kernel/vga_fb.c:890` | `* windows would share content (same prompt/output on both) and a park
  * would alias src == dst. ...` |
-| `cursor_draw` | function | `kernel/vga_fb.c:272` | `static void cursor_draw(int mx, int my)` |
-| `cursor_over` | function | `kernel/vga_fb.c:298` | `static int cursor_over(int x0, int y0, int w, int h)` |
-| `cursor_restore` | function | `kernel/vga_fb.c:283` | `static void cursor_restore(int mx, int my)` |
-| `cursor_save_bg` | function | `kernel/vga_fb.c:264` | `static void cursor_save_bg(int mx, int my)` |
-| `desktop_shortcuts_draw` | function | `kernel/vga_fb.c:2630` | `void desktop_shortcuts_draw(void)` |
-| `desktop_shortcuts_hit_test` | function | `kernel/vga_fb.c:2711` | `const char *desktop_shortcuts_hit_test(int mx, int my)` |
-| `desktop_shortcuts_load` | function | `kernel/vga_fb.c:2577` | `void desktop_shortcuts_load(void)` |
-| `disp_clamp` | function | `kernel/vga_fb.c:202` | `static void disp_clamp(void)` |
-| `dock_label_px` | function | `kernel/vga_fb.c:2544` | `static int dock_label_px(const struct desktop_shortcut *sc)` |
-| `draw_scrollbar` | function | `kernel/vga_fb.c:1886` | `static void draw_scrollbar(void)` |
-| `draw_speaker_icon` | function | `kernel/vga_fb.c:1743` | `static void draw_speaker_icon(int x, int y, uint8_t color)` |
-| `draw_title_win` | function | `kernel/vga_fb.c:1684` | `static void draw_title_win(int idx, int focused)` |
-| `escapes` | function | `kernel/vga_fb.c:2022` | `* swallowing them here keeps the escapes (which the serial side needs)
+| `cursor_draw` | function | `kernel/vga_fb.c:273` | `static void cursor_draw(int mx, int my)` |
+| `cursor_over` | function | `kernel/vga_fb.c:299` | `static int cursor_over(int x0, int y0, int w, int h)` |
+| `cursor_restore` | function | `kernel/vga_fb.c:284` | `static void cursor_restore(int mx, int my)` |
+| `cursor_save_bg` | function | `kernel/vga_fb.c:265` | `static void cursor_save_bg(int mx, int my)` |
+| `desktop_shortcuts_draw` | function | `kernel/vga_fb.c:2799` | `void desktop_shortcuts_draw(void)` |
+| `desktop_shortcuts_hit_test` | function | `kernel/vga_fb.c:2880` | `const char *desktop_shortcuts_hit_test(int mx, int my)` |
+| `desktop_shortcuts_load` | function | `kernel/vga_fb.c:2746` | `void desktop_shortcuts_load(void)` |
+| `disp_clamp` | function | `kernel/vga_fb.c:203` | `static void disp_clamp(void)` |
+| `dock_label_px` | function | `kernel/vga_fb.c:2713` | `static int dock_label_px(const struct desktop_shortcut *sc)` |
+| `draw_scrollbar` | function | `kernel/vga_fb.c:2052` | `static void draw_scrollbar(void)` |
+| `draw_speaker_icon` | function | `kernel/vga_fb.c:1831` | `static void draw_speaker_icon(int x, int y, uint8_t color)` |
+| `draw_title_win` | function | `kernel/vga_fb.c:1769` | `static void draw_title_win(int idx, int focused)` |
+| `escapes` | function | `kernel/vga_fb.c:2188` | `* swallowing them here keeps the escapes (which the serial side needs)
      * from printing as li...` |
-| `fb_bytes_per_pixel` | function | `kernel/vga_fb.c:107` | `int fb_bytes_per_pixel(void)` |
-| `fb_glyph` | function | `kernel/vga_fb.c:1350` | `static const uint8_t *fb_glyph(unsigned char c)` |
-| `fb_pack_idx` | function | `kernel/vga_fb.c:1225` | `static unsigned long fb_pack_idx(unsigned idx)` |
-| `fb_read_packed` | function | `kernel/vga_fb.c:1260` | `static unsigned long fb_read_packed(int x, int y)` |
-| `fb_write_packed` | function | `kernel/vga_fb.c:1240` | `static void fb_write_packed(int x, int y, unsigned long rgb)` |
-| `gfx_hit` | function | `kernel/vga_fb.c:1112` | `static int gfx_hit(int mx, int my)` |
-| `gfx_keep_restore` | function | `kernel/vga_fb.c:376` | `static void gfx_keep_restore(void)` |
-| `gfx_keep_save` | function | `kernel/vga_fb.c:345` | `static void gfx_keep_save(int x, int y, int w, int h)` |
-| `gfx_place` | function | `kernel/vga_fb.c:496` | `static void gfx_place(int w, int h, int *ox, int *oy)` |
-| `gfx_prog_icon` | function | `kernel/vga_fb.c:464` | `static const uint8_t *gfx_prog_icon(void)` |
-| `gfx_snap` | function | `kernel/vga_fb.c:2174` | `static void gfx_snap(int zone)` |
-| `gfx_target` | function | `kernel/vga_fb.c:2167` | `static void gfx_target(int *x, int *y)` |
-| `gfx_task_icon` | function | `kernel/vga_fb.c:2691` | `static const uint8_t *gfx_task_icon(void)` |
-| `gfx_tile_right` | function | `kernel/vga_fb.c:974` | `static void gfx_tile_right(void)` |
-| `icon_decode` | function | `kernel/vga_fb.c:2482` | `static const uint8_t *icon_decode(const char *path)` |
-| `icon_embedded` | function | `kernel/vga_fb.c:2462` | `static const uint8_t *icon_embedded(const char *name)` |
-| `icon_embedded_rgba` | function | `kernel/vga_fb.c:2516` | `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)` |
-| `icon_nearest` | function | `kernel/vga_fb.c:2446` | `static int icon_nearest(int r, int g, int b)` |
-| `kbd_raw_flush` | function | `kernel/vga_fb.c:827` | `kbd_raw_flush();` |
-| `kbd_toggle_layout` | function | `kernel/vga_fb.c:1857` | `kbd_toggle_layout();` |
-| `kfclose` | function | `kernel/vga_fb.c:2618` | `kfclose(f);` |
-| `kmemset` | function | `kernel/vga_fb.c:1632` | `kmemset((void *)FB_ADDR, 0, (unsigned long)fb_pitch * (unsigned long)fb_height);` |
-| `ksprintf` | function | `kernel/vga_fb.c:1013` | `ksprintf(b, "win term%d %c cols=%d rows=%d x=%d y=%d min=%d fs=%d%s\n", i, (i == wm_focus) ? '*' : ' ', dc, dr, (i == cu` |
-| `lg_get` | function | `kernel/vga_fb.c:166` | `static const char *lg_get(int i)` |
-| `lg_push` | function | `kernel/vga_fb.c:172` | `static void lg_push(const char *line, int len)` |
-| `line` | function | `kernel/vga_fb.c:2013` | `* display stale bytes left over from a longer previous line (e.g. the prompt
+| `fb_bytes_per_pixel` | function | `kernel/vga_fb.c:108` | `int fb_bytes_per_pixel(void)` |
+| `fb_glyph` | function | `kernel/vga_fb.c:1435` | `static const uint8_t *fb_glyph(unsigned char c)` |
+| `fb_pack_idx` | function | `kernel/vga_fb.c:1310` | `static unsigned long fb_pack_idx(unsigned idx)` |
+| `fb_read_packed` | function | `kernel/vga_fb.c:1345` | `static unsigned long fb_read_packed(int x, int y)` |
+| `fb_write_packed` | function | `kernel/vga_fb.c:1325` | `static void fb_write_packed(int x, int y, unsigned long rgb)` |
+| `gfx_hit` | function | `kernel/vga_fb.c:1197` | `static int gfx_hit(int mx, int my)` |
+| `gfx_keep_restore` | function | `kernel/vga_fb.c:377` | `static void gfx_keep_restore(void)` |
+| `gfx_keep_save` | function | `kernel/vga_fb.c:346` | `static void gfx_keep_save(int x, int y, int w, int h)` |
+| `gfx_place` | function | `kernel/vga_fb.c:499` | `static void gfx_place(int w, int h, int *ox, int *oy)` |
+| `gfx_prog_icon` | function | `kernel/vga_fb.c:465` | `static const uint8_t *gfx_prog_icon(void)` |
+| `gfx_snap` | function | `kernel/vga_fb.c:2343` | `static void gfx_snap(int zone)` |
+| `gfx_target` | function | `kernel/vga_fb.c:2336` | `static void gfx_target(int *x, int *y)` |
+| `gfx_task_icon` | function | `kernel/vga_fb.c:2860` | `static const uint8_t *gfx_task_icon(void)` |
+| `gfx_tile_right` | function | `kernel/vga_fb.c:1059` | `static void gfx_tile_right(void)` |
+| `icon_decode` | function | `kernel/vga_fb.c:2651` | `static const uint8_t *icon_decode(const char *path)` |
+| `icon_embedded` | function | `kernel/vga_fb.c:2631` | `static const uint8_t *icon_embedded(const char *name)` |
+| `icon_embedded_rgba` | function | `kernel/vga_fb.c:2685` | `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)` |
+| `icon_nearest` | function | `kernel/vga_fb.c:2615` | `static int icon_nearest(int r, int g, int b)` |
+| `kbd_raw_flush` | function | `kernel/vga_fb.c:834` | `kbd_raw_flush();` |
+| `kbd_toggle_layout` | function | `kernel/vga_fb.c:2016` | `kbd_toggle_layout();` |
+| `kfclose` | function | `kernel/vga_fb.c:1946` | `kfclose(f);` |
+| `kfputc` | function | `kernel/vga_fb.c:1987` | `kfputc('\n', f);` |
+| `kfputs` | function | `kernel/vga_fb.c:1986` | `kfputs(next, f);` |
+| `kmemcpy` | function | `kernel/vga_fb.c:1977` | `kmemcpy(names[count], rel, k + 1);` |
+| `kmemset` | function | `kernel/vga_fb.c:1717` | `kmemset((void *)FB_ADDR, 0, (unsigned long)fb_pitch * (unsigned long)fb_height);` |
+| `ksprintf` | function | `kernel/vga_fb.c:1098` | `ksprintf(b, "win term%d %c cols=%d rows=%d x=%d y=%d min=%d fs=%d%s\n", i, (i == wm_focus) ? '*' : ' ', dc, dr, (i == cu` |
+| `lg_get` | function | `kernel/vga_fb.c:167` | `static const char *lg_get(int i)` |
+| `lg_push` | function | `kernel/vga_fb.c:173` | `static void lg_push(const char *line, int len)` |
+| `line` | function | `kernel/vga_fb.c:2179` | `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...` |
-| `line_at` | function | `kernel/vga_fb.c:220` | `static const char *line_at(int abs, int *off)` |
-| `line_nrows` | function | `kernel/vga_fb.c:184` | `static int line_nrows(int len)` |
-| `outb` | function | `kernel/vga_fb.c:1214` | `outb(0x3C8, 0);` |
-| `pcspk_set_volume` | function | `kernel/vga_fb.c:1866` | `pcspk_set_volume(spk_saved_valid ? spk_saved_vol : v);` |
-| `pipe_field` | function | `kernel/vga_fb.c:2428` | `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` |
-| `render_blank_row` | function | `kernel/vga_fb.c:1921` | `static void render_blank_row(int vrow)` |
-| `render_row` | function | `kernel/vga_fb.c:1931` | `static void render_row(int vrow, int abs)` |
-| `serial_puts` | function | `kernel/vga_fb.c:1018` | `serial_puts(b);` |
-| `shcmd_base` | function | `kernel/vga_fb.c:434` | `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` |
-| `shortcut_cell_left` | function | `kernel/vga_fb.c:2571` | `static int shortcut_cell_left(int i)` |
-| `shortcuts_layout` | function | `kernel/vga_fb.c:2553` | `static void shortcuts_layout(void)` |
-| `spin_restore_irq` | function | `kernel/vga_fb.c:2780` | `spin_restore_irq(flags);` |
-| `stbi_image_free` | function | `kernel/vga_fb.c:2371` | `stbi_image_free(img);` |
-| `taskbar_handle_click` | function | `kernel/vga_fb.c:1837` | `static void taskbar_handle_click(int mx, int my)` |
-| `taskbar_layout` | function | `kernel/vga_fb.c:1713` | `static void taskbar_layout(void)` |
-| `taskbar_render` | function | `kernel/vga_fb.c:1751` | `static void taskbar_render(void)` |
-| `taskbar_tick` | function | `kernel/vga_fb.c:1821` | `static void taskbar_tick(void)` |
-| `term_draw_cell` | function | `kernel/vga_fb.c:2073` | `term_draw_cell(act_len - 1);` |
-| `term_finish_layout` | function | `kernel/vga_fb.c:2263` | `static void term_finish_layout(void)` |
-| `term_max_cols` | function | `kernel/vga_fb.c:2255` | `static int term_max_cols(void)` |
-| `term_max_rows` | function | `kernel/vga_fb.c:2259` | `static int term_max_rows(void)` |
-| `term_recalc` | function | `kernel/vga_fb.c:1657` | `static void term_recalc(void)` |
-| `term_render` | function | `kernel/vga_fb.c:1959` | `static void term_render(void)` |
-| `term_render_active` | function | `kernel/vga_fb.c:1972` | `static void term_render_active(void)` |
-| `termwin_t` | struct | `kernel/vga_fb.c:680` | `` |
-| `text_px` | function | `kernel/vga_fb.c:1412` | `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)` |
-| `title` | function | `kernel/vga_fb.c:1762` | `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const uint8_t ` |
-| `total_rows` | function | `kernel/vga_fb.c:194` | `static int total_rows(void)` |
-| `tw_hit` | function | `kernel/vga_fb.c:1096` | `static int tw_hit(int i, int mx, int my)` |
-| `tw_park` | function | `kernel/vga_fb.c:698` | `static void tw_park(int i)` |
-| `tw_select` | function | `kernel/vga_fb.c:781` | `static void tw_select(int i)` |
-| `tw_unpark` | function | `kernel/vga_fb.c:728` | `static void tw_unpark(int i)` |
-| `vga_fb_act_empty` | function | `kernel/vga_fb.c:1036` | `int vga_fb_act_empty(void)` |
-| `vga_fb_blit_gfx_window` | function | `kernel/vga_fb.c:1625` | `void vga_fb_blit_gfx_window(void)` |
-| `vga_fb_blit_nk_window` | function | `kernel/vga_fb.c:1646` | `void vga_fb_blit_nk_window(void)` |
-| `vga_fb_boot_config` | function | `kernel/vga_fb.c:80` | `void vga_fb_boot_config(void)` |
-| `vga_fb_char` | function | `kernel/vga_fb.c:1386` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)` |
-| `vga_fb_clear` | function | `kernel/vga_fb.c:1630` | `void vga_fb_clear(void)` |
-| `vga_fb_clear_prompt` | function | `kernel/vga_fb.c:1045` | `void vga_fb_clear_prompt(void)` |
-| `vga_fb_close_active` | function | `kernel/vga_fb.c:2198` | `int vga_fb_close_active(void)` |
-| `vga_fb_drag_terminal` | function | `kernel/vga_fb.c:2841` | `vga_fb_drag_terminal(mx, my, wm_grab_cx);` |
-| `vga_fb_draw_desktop` | function | `kernel/vga_fb.c:2098` | `void vga_fb_draw_desktop(void)` |
-| `vga_fb_focus_get` | function | `kernel/vga_fb.c:792` | `int vga_fb_focus_get(void)` |
-| `vga_fb_focus_id` | function | `kernel/vga_fb.c:837` | `int vga_fb_focus_id(int id)` |
-| `vga_fb_focus_next` | function | `kernel/vga_fb.c:810` | `void vga_fb_focus_next(void)` |
-| `vga_fb_gfx_cursor_draw` | function | `kernel/vga_fb.c:520` | `static void vga_fb_gfx_cursor_draw(void)` |
-| `vga_fb_gfx_cursor_erase` | function | `kernel/vga_fb.c:512` | `static void vga_fb_gfx_cursor_erase(void)` |
-| `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:2093` | `void vga_fb_hide_text_cursor(void)` |
-| `vga_fb_init` | function | `kernel/vga_fb.c:2909` | `void vga_fb_init(void)` |
-| `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:2163` | `int vga_fb_is_fullscreen(void)` |
-| `vga_fb_is_minimized` | function | `kernel/vga_fb.c:2161` | `int vga_fb_is_minimized(void)` |
-| `vga_fb_list_windows` | function | `kernel/vga_fb.c:993` | `void vga_fb_list_windows(void)` |
-| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:2890` | `void vga_fb_mouse_init(void)` |
-| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:2726` | `void vga_fb_mouse_tick(void)` |
-| `vga_fb_move_terminal` | function | `kernel/vga_fb.c:2218` | `void vga_fb_move_terminal(int dx, int dy)` |
-| `vga_fb_note_prompt` | function | `kernel/vga_fb.c:1040` | `void vga_fb_note_prompt(void)` |
-| `vga_fb_nterms_get` | function | `kernel/vga_fb.c:794` | `int vga_fb_nterms_get(void)` |
-| `vga_fb_park_line` | function | `kernel/vga_fb.c:1066` | `void vga_fb_park_line(const char *b, int p)` |
-| `vga_fb_pixel` | function | `kernel/vga_fb.c:1371` | `void vga_fb_pixel(int x, int y, uint8_t color)` |
-| `vga_fb_prompt_live` | function | `kernel/vga_fb.c:1059` | `int vga_fb_prompt_live(void)` |
-| `vga_fb_prompted` | function | `kernel/vga_fb.c:1050` | `int vga_fb_prompted(void)` |
-| `vga_fb_ps2_owner` | function | `kernel/vga_fb.c:1484` | `int vga_fb_ps2_owner(int pid)` |
-| `vga_fb_puts_term` | function | `kernel/vga_fb.c:2078` | `void vga_fb_puts_term(const char *s)` |
-| `vga_fb_read_rgb` | function | `kernel/vga_fb.c:1284` | `unsigned long vga_fb_read_rgb(int x, int y)` |
-| `vga_fb_rect` | function | `kernel/vga_fb.c:1379` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` |
-| `vga_fb_reset_default` | function | `kernel/vga_fb.c:2317` | `void vga_fb_reset_default(void)` |
-| `vga_fb_resize` | function | `kernel/vga_fb.c:2296` | `void vga_fb_resize(int dcols, int drows)` |
-| `vga_fb_set_gfx_mode` | function | `kernel/vga_fb.c:475` | `void vga_fb_set_gfx_mode(int on)` |
-| `vga_fb_set_gfx_palette` | function | `kernel/vga_fb.c:1209` | `void vga_fb_set_gfx_palette(const unsigned char *pal)` |
-| `vga_fb_set_gfx_program` | function | `kernel/vga_fb.c:414` | `void vga_fb_set_gfx_program(const char *name)` |
-| `vga_fb_set_palette` | function | `kernel/vga_fb.c:1296` | `static void vga_fb_set_palette(void)` |
-| `vga_fb_snap_window` | function | `kernel/vga_fb.c:2269` | `void vga_fb_snap_window(int zone)` |
-| `vga_fb_str` | function | `kernel/vga_fb.c:1400` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)` |
-| `vga_fb_text_cursor` | function | `kernel/vga_fb.c:2085` | `void vga_fb_text_cursor(int col)` |
-| `vga_fb_tile_all` | function | `kernel/vga_fb.c:935` | `void vga_fb_tile_all(void)` |
-| `vga_fb_toggle_fullscreen` | function | `kernel/vga_fb.c:2139` | `void vga_fb_toggle_fullscreen(void)` |
-| `vga_fb_toggle_minimize` | function | `kernel/vga_fb.c:2155` | `void vga_fb_toggle_minimize(void)` |
-| `vga_fb_unpark_line` | function | `kernel/vga_fb.c:1081` | `int vga_fb_unpark_line(char *b, int *p)` |
-| `wall_level` | function | `kernel/vga_fb.c:1288` | `static int wall_level(int v)` |
-| `wallpaper_draw` | function | `kernel/vga_fb.c:2394` | `static void wallpaper_draw(void)` |
-| `wallpaper_ensure` | function | `kernel/vga_fb.c:2359` | `static void wallpaper_ensure(void)` |
-| `wm_button_click` | function | `kernel/vga_fb.c:1503` | `static int wm_button_click(int mx, int my)` |
-| `wm_buttons_hit` | function | `kernel/vga_fb.c:1464` | `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` |
-| `wm_clamp_point` | function | `kernel/vga_fb.c:2867` | `wm_clamp_point(&mouse_state.x, &mouse_state.y, fb_width, fb_height);` |
-| `wm_clear_close` | function | `kernel/vga_fb.c:1480` | `void wm_clear_close(void)` |
-| `wm_close_pending` | function | `kernel/vga_fb.c:1479` | `int wm_close_pending(void)` |
-| `wm_drag_reset` | function | `kernel/vga_fb.c:60` | `static void wm_drag_reset(void)` |
-| `wm_draw_buttons` | function | `kernel/vga_fb.c:1438` | `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` |
-| `wm_event_cfg` | function | `kernel/vga_fb.c:51` | `static wm_event_config_t wm_event_cfg(void)` |
-| `wm_geom_cfg` | function | `kernel/vga_fb.c:40` | `static wm_geom_config_t wm_geom_cfg(void)` |
-| `wm_gfx_mode_active` | function | `kernel/vga_fb.c:1481` | `int wm_gfx_mode_active(void)` |
-| `wm_init_once` | function | `kernel/vga_fb.c:760` | `static void wm_init_once(void)` |
-| `wm_snapshot_state` | function | `kernel/vga_fb.c:797` | `static void wm_snapshot_state(wm_focus_state_t *st)` |
-| `wm_window_contains` | function | `kernel/vga_fb.c:1108` | `return wm_window_contains(&w, mx, my);` |
+| `line_at` | function | `kernel/vga_fb.c:221` | `static const char *line_at(int abs, int *off)` |
+| `line_nrows` | function | `kernel/vga_fb.c:185` | `static int line_nrows(int len)` |
+| `outb` | function | `kernel/vga_fb.c:1299` | `outb(0x3C8, 0);` |
+| `path` | function | `kernel/vga_fb.c:2906` | `* present path (blit_gfx_buf) is the sole cursor painter. The tick * sharing cursor_save/cursor_old with it raced every ` |
+| `pcspk_set_volume` | function | `kernel/vga_fb.c:2032` | `pcspk_set_volume(spk_saved_valid ? spk_saved_vol : v);` |
+| `pipe_field` | function | `kernel/vga_fb.c:2597` | `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` |
+| `render_blank_row` | function | `kernel/vga_fb.c:2087` | `static void render_blank_row(int vrow)` |
+| `render_row` | function | `kernel/vga_fb.c:2097` | `static void render_row(int vrow, int abs)` |
+| `serial_puts` | function | `kernel/vga_fb.c:1103` | `serial_puts(b);` |
+| `shcmd_base` | function | `kernel/vga_fb.c:435` | `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` |
+| `shortcut_cell_left` | function | `kernel/vga_fb.c:2740` | `static int shortcut_cell_left(int i)` |
+| `shortcuts_layout` | function | `kernel/vga_fb.c:2722` | `static void shortcuts_layout(void)` |
+| `spin_restore_irq` | function | `kernel/vga_fb.c:2960` | `spin_restore_irq(flags);` |
+| `stbi_image_free` | function | `kernel/vga_fb.c:2540` | `stbi_image_free(img);` |
+| `taskbar_handle_click` | function | `kernel/vga_fb.c:1996` | `static void taskbar_handle_click(int mx, int my)` |
+| `taskbar_layout` | function | `kernel/vga_fb.c:1799` | `static void taskbar_layout(void)` |
+| `taskbar_render` | function | `kernel/vga_fb.c:1839` | `static void taskbar_render(void)` |
+| `taskbar_theme_cycle` | function | `kernel/vga_fb.c:1956` | `static void taskbar_theme_cycle(void)` |
+| `taskbar_tick` | function | `kernel/vga_fb.c:1919` | `static void taskbar_tick(void)` |
+| `term_draw_cell` | function | `kernel/vga_fb.c:2239` | `term_draw_cell(act_len - 1);` |
+| `term_finish_layout` | function | `kernel/vga_fb.c:2432` | `static void term_finish_layout(void)` |
+| `term_max_cols` | function | `kernel/vga_fb.c:2424` | `static int term_max_cols(void)` |
+| `term_max_rows` | function | `kernel/vga_fb.c:2428` | `static int term_max_rows(void)` |
+| `term_recalc` | function | `kernel/vga_fb.c:1742` | `static void term_recalc(void)` |
+| `term_render` | function | `kernel/vga_fb.c:2125` | `static void term_render(void)` |
+| `term_render_active` | function | `kernel/vga_fb.c:2138` | `static void term_render_active(void)` |
+| `termwin_t` | struct | `kernel/vga_fb.c:683` | `` |
+| `text_px` | function | `kernel/vga_fb.c:1497` | `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)` |
+| `title` | function | `kernel/vga_fb.c:1850` | `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const uint8_t ` |
+| `total_rows` | function | `kernel/vga_fb.c:195` | `static int total_rows(void)` |
+| `tw_hit` | function | `kernel/vga_fb.c:1181` | `static int tw_hit(int i, int mx, int my)` |
+| `tw_park` | function | `kernel/vga_fb.c:705` | `static void tw_park(int i)` |
+| `tw_select` | function | `kernel/vga_fb.c:788` | `static void tw_select(int i)` |
+| `tw_unpark` | function | `kernel/vga_fb.c:735` | `static void tw_unpark(int i)` |
+| `vga_fb_act_empty` | function | `kernel/vga_fb.c:1121` | `int vga_fb_act_empty(void)` |
+| `vga_fb_blit_gfx_window` | function | `kernel/vga_fb.c:1710` | `void vga_fb_blit_gfx_window(void)` |
+| `vga_fb_blit_nk_window` | function | `kernel/vga_fb.c:1731` | `void vga_fb_blit_nk_window(void)` |
+| `vga_fb_boot_config` | function | `kernel/vga_fb.c:81` | `void vga_fb_boot_config(void)` |
+| `vga_fb_char` | function | `kernel/vga_fb.c:1471` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)` |
+| `vga_fb_clear` | function | `kernel/vga_fb.c:1715` | `void vga_fb_clear(void)` |
+| `vga_fb_clear_prompt` | function | `kernel/vga_fb.c:1130` | `void vga_fb_clear_prompt(void)` |
+| `vga_fb_close_active` | function | `kernel/vga_fb.c:2367` | `int vga_fb_close_active(void)` |
+| `vga_fb_drag_terminal` | function | `kernel/vga_fb.c:3023` | `vga_fb_drag_terminal(mx, my, wm_grab_cx);` |
+| `vga_fb_draw_desktop` | function | `kernel/vga_fb.c:2264` | `void vga_fb_draw_desktop(void)` |
+| `vga_fb_focus_get` | function | `kernel/vga_fb.c:799` | `int vga_fb_focus_get(void)` |
+| `vga_fb_focus_id` | function | `kernel/vga_fb.c:866` | `int vga_fb_focus_id(int id)` |
+| `vga_fb_focus_next` | function | `kernel/vga_fb.c:817` | `void vga_fb_focus_next(void)` |
+| `vga_fb_gfx_cursor_draw` | function | `kernel/vga_fb.c:523` | `static void vga_fb_gfx_cursor_draw(void)` |
+| `vga_fb_gfx_cursor_erase` | function | `kernel/vga_fb.c:515` | `static void vga_fb_gfx_cursor_erase(void)` |
+| `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:2259` | `void vga_fb_hide_text_cursor(void)` |
+| `vga_fb_init` | function | `kernel/vga_fb.c:3093` | `void vga_fb_init(void)` |
+| `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:2332` | `int vga_fb_is_fullscreen(void)` |
+| `vga_fb_is_minimized` | function | `kernel/vga_fb.c:2330` | `int vga_fb_is_minimized(void)` |
+| `vga_fb_layout_cycle` | function | `kernel/vga_fb.c:976` | `void vga_fb_layout_cycle(void)` |
+| `vga_fb_layout_get` | function | `kernel/vga_fb.c:992` | `int vga_fb_layout_get(void)` |
+| `vga_fb_layout_name` | function | `kernel/vga_fb.c:998` | `const char *vga_fb_layout_name(void)` |
+| `vga_fb_layout_set` | function | `kernel/vga_fb.c:965` | `int vga_fb_layout_set(int mode)` |
+| `vga_fb_list_windows` | function | `kernel/vga_fb.c:1078` | `void vga_fb_list_windows(void)` |
+| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:3074` | `void vga_fb_mouse_init(void)` |
+| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:2895` | `void vga_fb_mouse_tick(void)` |
+| `vga_fb_move_terminal` | function | `kernel/vga_fb.c:2387` | `void vga_fb_move_terminal(int dx, int dy)` |
+| `vga_fb_note_prompt` | function | `kernel/vga_fb.c:1125` | `void vga_fb_note_prompt(void)` |
+| `vga_fb_nterms_get` | function | `kernel/vga_fb.c:801` | `int vga_fb_nterms_get(void)` |
+| `vga_fb_park_line` | function | `kernel/vga_fb.c:1151` | `void vga_fb_park_line(const char *b, int p)` |
+| `vga_fb_pixel` | function | `kernel/vga_fb.c:1456` | `void vga_fb_pixel(int x, int y, uint8_t color)` |
+| `vga_fb_prompt_live` | function | `kernel/vga_fb.c:1144` | `int vga_fb_prompt_live(void)` |
+| `vga_fb_prompted` | function | `kernel/vga_fb.c:1135` | `int vga_fb_prompted(void)` |
+| `vga_fb_ps2_owner` | function | `kernel/vga_fb.c:1569` | `int vga_fb_ps2_owner(int pid)` |
+| `vga_fb_puts_term` | function | `kernel/vga_fb.c:2244` | `void vga_fb_puts_term(const char *s)` |
+| `vga_fb_read_rgb` | function | `kernel/vga_fb.c:1369` | `unsigned long vga_fb_read_rgb(int x, int y)` |
+| `vga_fb_rect` | function | `kernel/vga_fb.c:1464` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` |
+| `vga_fb_reset_default` | function | `kernel/vga_fb.c:2486` | `void vga_fb_reset_default(void)` |
+| `vga_fb_resize` | function | `kernel/vga_fb.c:2465` | `void vga_fb_resize(int dcols, int drows)` |
+| `vga_fb_set_gfx_mode` | function | `kernel/vga_fb.c:478` | `void vga_fb_set_gfx_mode(int on)` |
+| `vga_fb_set_gfx_palette` | function | `kernel/vga_fb.c:1294` | `void vga_fb_set_gfx_palette(const unsigned char *pal)` |
+| `vga_fb_set_gfx_program` | function | `kernel/vga_fb.c:415` | `void vga_fb_set_gfx_program(const char *name)` |
+| `vga_fb_set_palette` | function | `kernel/vga_fb.c:1381` | `static void vga_fb_set_palette(void)` |
+| `vga_fb_snap_window` | function | `kernel/vga_fb.c:2438` | `void vga_fb_snap_window(int zone)` |
+| `vga_fb_str` | function | `kernel/vga_fb.c:1485` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)` |
+| `vga_fb_text_cursor` | function | `kernel/vga_fb.c:2251` | `void vga_fb_text_cursor(int col)` |
+| `vga_fb_theme_name` | function | `kernel/vga_fb.c:1935` | `int vga_fb_theme_name(char *dst, int cap)` |
+| `vga_fb_tile_all` | function | `kernel/vga_fb.c:1003` | `void vga_fb_tile_all(void)` |
+| `vga_fb_toggle_fullscreen` | function | `kernel/vga_fb.c:2305` | `void vga_fb_toggle_fullscreen(void)` |
+| `vga_fb_toggle_minimize` | function | `kernel/vga_fb.c:2324` | `void vga_fb_toggle_minimize(void)` |
+| `vga_fb_unpark_line` | function | `kernel/vga_fb.c:1166` | `int vga_fb_unpark_line(char *b, int *p)` |
+| `wall_level` | function | `kernel/vga_fb.c:1373` | `static int wall_level(int v)` |
+| `wallpaper_draw` | function | `kernel/vga_fb.c:2563` | `static void wallpaper_draw(void)` |
+| `wallpaper_ensure` | function | `kernel/vga_fb.c:2528` | `static void wallpaper_ensure(void)` |
+| `wm_button_click` | function | `kernel/vga_fb.c:1588` | `static int wm_button_click(int mx, int my)` |
+| `wm_buttons_hit` | function | `kernel/vga_fb.c:1549` | `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` |
+| `wm_clamp_point` | function | `kernel/vga_fb.c:3049` | `wm_clamp_point(&mouse_state.x, &mouse_state.y, fb_width, fb_height);` |
+| `wm_clear_close` | function | `kernel/vga_fb.c:1565` | `void wm_clear_close(void)` |
+| `wm_close_pending` | function | `kernel/vga_fb.c:1564` | `int wm_close_pending(void)` |
+| `wm_drag_reset` | function | `kernel/vga_fb.c:61` | `static void wm_drag_reset(void)` |
+| `wm_draw_buttons` | function | `kernel/vga_fb.c:1523` | `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` |
+| `wm_event_cfg` | function | `kernel/vga_fb.c:52` | `static wm_event_config_t wm_event_cfg(void)` |
+| `wm_geom_cfg` | function | `kernel/vga_fb.c:41` | `static wm_geom_config_t wm_geom_cfg(void)` |
+| `wm_gfx_focus_sync` | function | `kernel/vga_fb.c:851` | `static void wm_gfx_focus_sync(int on)` |
+| `wm_gfx_mode_active` | function | `kernel/vga_fb.c:1566` | `int wm_gfx_mode_active(void)` |
+| `wm_init_once` | function | `kernel/vga_fb.c:767` | `static void wm_init_once(void)` |
+| `wm_snapshot_state` | function | `kernel/vga_fb.c:804` | `static void wm_snapshot_state(wm_focus_state_t *st)` |
+| `wm_window_contains` | function | `kernel/vga_fb.c:1193` | `return wm_window_contains(&w, mx, my);` |
 | `KTIME_H` | macro | `ktime.h:2` | `#define KTIME_H` |
 | `ktime_us_from_delta` | function | `ktime.h:18` | `static inline unsigned long ktime_us_from_delta(unsigned long delta_ticks,
                       ...` |
@@ -2198,18 +2214,18 @@ long sys_linux_wait4(lon...` |
 | `LZ4_compressBound` | function | `lz4_kernel.h:5` | `int LZ4_compressBound(int inputSize);` |
 | `LZ4_compress_default` | function | `lz4_kernel.h:3` | `int LZ4_compress_default(const char *src, char *dst, int srcSize, int dstCapacity);` |
 | `LZ4_decompress_safe` | function | `lz4_kernel.h:6` | `int LZ4_decompress_safe(const char *src, char *dst, int compressedSize, int dstCapacity);` |
-| `Client` | class | `mcp/mcp_dbg_driver.py:14` | `class Client` |
-| `__init__` | method | `mcp/mcp_dbg_driver.py:15` | `def __init__(self)` |
-| `close` | method | `mcp/mcp_dbg_driver.py:52` | `def close(self)` |
-| `main` | method | `mcp/mcp_dbg_driver.py:62` | `def main()` |
-| `request` | method | `mcp/mcp_dbg_driver.py:26` | `def request(self, method, params)` |
-| `tool` | method | `mcp/mcp_dbg_driver.py:44` | `def tool(self, name, params)` |
-| `Client` | class | `mcp/mcp_dogfood.py:18` | `class Client` |
-| `__init__` | method | `mcp/mcp_dogfood.py:19` | `def __init__(self, addons_dir)` |
-| `close` | method | `mcp/mcp_dogfood.py:66` | `def close(self)` |
-| `main` | method | `mcp/mcp_dogfood.py:76` | `def main()` |
-| `request` | method | `mcp/mcp_dogfood.py:38` | `def request(self, method, params)` |
-| `tool` | method | `mcp/mcp_dogfood.py:56` | `def tool(self, name, params)` |
+| `Client` | class | `mcp/mcp_dbg_driver.py:15` | `class Client` |
+| `__init__` | method | `mcp/mcp_dbg_driver.py:16` | `def __init__(self)` |
+| `close` | method | `mcp/mcp_dbg_driver.py:54` | `def close(self)` |
+| `main` | method | `mcp/mcp_dbg_driver.py:64` | `def main()` |
+| `request` | method | `mcp/mcp_dbg_driver.py:28` | `def request(self, method, params)` |
+| `tool` | method | `mcp/mcp_dbg_driver.py:46` | `def tool(self, name, params)` |
+| `Client` | class | `mcp/mcp_dogfood.py:19` | `class Client` |
+| `__init__` | method | `mcp/mcp_dogfood.py:20` | `def __init__(self, addons_dir)` |
+| `close` | method | `mcp/mcp_dogfood.py:68` | `def close(self)` |
+| `main` | method | `mcp/mcp_dogfood.py:78` | `def main()` |
+| `request` | method | `mcp/mcp_dogfood.py:40` | `def request(self, method, params)` |
+| `tool` | method | `mcp/mcp_dogfood.py:58` | `def tool(self, name, params)` |
 | `AddonError` | class | `mcp/minios_addons.py:42` | `class AddonError(Exception)` |
 | `AddonState` | class | `mcp/minios_addons.py:332` | `class AddonState` |
 | `__init__` | method | `mcp/minios_addons.py:335` | `def __init__(self, path)` |
@@ -2500,10 +2516,10 @@ long sys_linux_wait4(lon...` |
 | `write_file` | method | `mkfs.minifs.py:174` | `def write_file(self, parent_ino, name, data)` |
 | `main` | function | `mkramdisk.py:30` | `def main()` |
 | `pack_name` | function | `mkramdisk.py:20` | `def pack_name(path, common)` |
-| `cleanup` | function | `mutate.sh:101` | `` |
-| `find_index` | function | `mutate.sh:261` | `` |
-| `record` | function | `mutate.sh:255` | `` |
-| `restore_sources` | function | `mutate.sh:94` | `` |
+| `cleanup` | function | `mutate.sh:107` | `` |
+| `find_index` | function | `mutate.sh:274` | `` |
+| `record` | function | `mutate.sh:268` | `` |
+| `restore_sources` | function | `mutate.sh:100` | `` |
 | `usage` | function | `mutate.sh:51` | `` |
 | `NET_ARP_CACHE` | macro | `net.h:37` | `#define NET_ARP_CACHE` |
 | `NET_ARP_REPLY` | macro | `net.h:39` | `#define NET_ARP_REPLY` |
@@ -7863,6 +7879,80 @@ Z_Malloc
 | `Z_Malloc` | function | `progs/doomgeneric/z_zone.h:54` | `void* Z_Malloc (int size, int tag, void *ptr);` |
 | `Z_ZoneSize` | function | `progs/doomgeneric/z_zone.h:63` | `unsigned int Z_ZoneSize(void);` |
 | `__Z_ZONE__` | macro | `progs/doomgeneric/z_zone.h:25` | `#define __Z_ZONE__` |
+| `FILE_ACTION_INTERNAL` | macro | `progs/file/file.c:45` | `#define FILE_ACTION_INTERNAL` |
+| `FILE_ACTION_SHELL` | macro | `progs/file/file.c:44` | `#define FILE_ACTION_SHELL` |
+| `FILE_ACT_INTERNAL` | macro | `progs/file/file.c:51` | `#define FILE_ACT_INTERNAL` |
+| `FILE_ACT_SHELL` | macro | `progs/file/file.c:50` | `#define FILE_ACT_SHELL` |
+| `FILE_ACT_TEXT` | macro | `progs/file/file.c:49` | `#define FILE_ACT_TEXT` |
+| `FILE_ACT_UNKNOWN` | macro | `progs/file/file.c:52` | `#define FILE_ACT_UNKNOWN` |
+| `FILE_ASSOC_MAX` | macro | `progs/file/file.c:32` | `#define FILE_ASSOC_MAX` |
+| `FILE_ASSOC_PATH` | macro | `progs/file/file.c:33` | `#define FILE_ASSOC_PATH` |
+| `FILE_EXT_MAX` | macro | `progs/file/file.c:34` | `#define FILE_EXT_MAX` |
+| `FILE_LIST_CAP` | macro | `progs/file/file.c:31` | `#define FILE_LIST_CAP` |
+| `FILE_LOG_LINE` | macro | `progs/file/file.c:46` | `#define FILE_LOG_LINE` |
+| `FILE_MAX_ENTRIES` | macro | `progs/file/file.c:29` | `#define FILE_MAX_ENTRIES` |
+| `FILE_MAX_PATH` | macro | `progs/file/file.c:28` | `#define FILE_MAX_PATH` |
+| `FILE_NAME_MAX` | macro | `progs/file/file.c:30` | `#define FILE_NAME_MAX` |
+| `FILE_PREVIEW_FILE_MAX` | macro | `progs/file/file.c:42` | `#define FILE_PREVIEW_FILE_MAX` |
+| `FILE_PREVIEW_H` | macro | `progs/file/file.c:41` | `#define FILE_PREVIEW_H` |
+| `FILE_PREVIEW_W` | macro | `progs/file/file.c:40` | `#define FILE_PREVIEW_W` |
+| `FILE_PROG_MAX` | macro | `progs/file/file.c:35` | `#define FILE_PROG_MAX` |
+| `FILE_STATUS_MAX` | macro | `progs/file/file.c:38` | `#define FILE_STATUS_MAX` |
+| `FILE_TITLE` | macro | `progs/file/file.c:43` | `#define FILE_TITLE` |
+| `FILE_TOOL_CVM` | macro | `progs/file/file.c:37` | `#define FILE_TOOL_CVM` |
+| `FILE_TOOL_VEDIT` | macro | `progs/file/file.c:36` | `#define FILE_TOOL_VEDIT` |
+| `FILE_UI_MEMORY` | macro | `progs/file/file.c:39` | `#define FILE_UI_MEMORY` |
+| `STBI_NO_STDIO` | macro | `progs/file/file.c:24` | `#define STBI_NO_STDIO` |
+| `STBI_ONLY_PNG` | macro | `progs/file/file.c:23` | `#define STBI_ONLY_PNG` |
+| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/file/file.c:21` | `#define STB_IMAGE_IMPLEMENTATION` |
+| `fclose` | function | `progs/file/file.c:188` | `fclose(f);` |
+| `fflush` | function | `progs/file/file.c:315` | `fflush(stdout);` |
+| `file_action_of` | function | `progs/file/file.c:202` | `static int file_action_of(const char *fname, const char **prog_out)` |
+| `file_activate` | function | `progs/file/file.c:381` | `static void file_activate(const char *dir, const char *name)` |
+| `file_assoc` | struct | `progs/file/file.c:54` | `` |
+| `file_assoc_line` | function | `progs/file/file.c:140` | `static int file_assoc_line(const char *line, char *ext, char *prog)` |
+| `file_assoc_load` | function | `progs/file/file.c:173` | `static void file_assoc_load(void)` |
+| `file_assoc_lookup` | function | `progs/file/file.c:192` | `static const char *file_assoc_lookup(const char *ext)` |
+| `file_ext_of` | function | `progs/file/file.c:95` | `static void file_ext_of(const char *fname, char *dst, unsigned cap)` |
+| `file_gui_run` | function | `progs/file/file.c:555` | `static void file_gui_run(void)` |
+| `file_join` | function | `progs/file/file.c:116` | `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)` |
+| `file_open_text` | function | `progs/file/file.c:331` | `static void file_open_text(const char *path)` |
+| `file_parent` | function | `progs/file/file.c:130` | `static void file_parent(char *path)` |
+| `file_preview_blit` | function | `progs/file/file.c:293` | `static void file_preview_blit(int ox, int oy)` |
+| `file_preview_load` | function | `progs/file/file.c:230` | `static int file_preview_load(const char *path)` |
+| `file_refresh` | function | `progs/file/file.c:215` | `static void file_refresh(void)` |
+| `file_run_shell` | function | `progs/file/file.c:342` | `static void file_run_shell(const char *path)` |
+| `file_selftest` | function | `progs/file/file.c:489` | `static int file_selftest(void)` |
+| `file_spawn_visible` | function | `progs/file/file.c:308` | `static long file_spawn_visible(const char *tool, int argc, const char **argv,
+                   ...` |
+| `file_sys_dir_list` | function | `progs/file/file.c:74` | `static long file_sys_dir_list(const char *path, char *buf, long cap)` |
+| `file_sys_spawn` | function | `progs/file/file.c:84` | `static long file_sys_spawn(const char *path, int argc, const char **argv)` |
+| `file_ui_build` | function | `progs/file/file.c:412` | `static void file_ui_build(struct nk_context *ctx)` |
+| `free` | function | `progs/file/file.c:247` | `free(raw);` |
+| `fseek` | function | `progs/file/file.c:240` | `fseek(f, 0, SEEK_END);` |
+| `main` | function | `progs/file/file.c:612` | `int main(int argc, char **argv)` |
+| `memcpy` | function | `progs/file/file.c:122` | `memcpy(dst, dir, a);` |
+| `nk_build_palette` | function | `progs/file/file.c:263` | `nk_build_palette(pal);` |
+| `nk_clear` | function | `progs/file/file.c:600` | `nk_clear(&ctx);` |
+| `nk_end` | function | `progs/file/file.c:485` | `nk_end(ctx);` |
+| `nk_free` | function | `progs/file/file.c:608` | `nk_free(&ctx);` |
+| `nk_input_begin` | function | `progs/file/file.c:580` | `nk_input_begin(&ctx);` |
+| `nk_input_end` | function | `progs/file/file.c:591` | `nk_input_end(&ctx);` |
+| `nk_label` | function | `progs/file/file.c:416` | `nk_label(ctx, file_status, NK_TEXT_LEFT);` |
+| `nk_layout_row_dynamic` | function | `progs/file/file.c:415` | `nk_layout_row_dynamic(ctx, 22, 1);` |
+| `nk_poll_input` | function | `progs/file/file.c:581` | `nk_poll_input(&ctx);` |
+| `nk_rasterize` | function | `progs/file/file.c:594` | `nk_rasterize(&ctx);` |
+| `nk_sys_gfx_set_title` | function | `progs/file/file.c:565` | `nk_sys_gfx_set_title(FILE_TITLE);` |
+| `nk_sys_kbd_raw` | function | `progs/file/file.c:313` | `nk_sys_kbd_raw(0);` |
+| `nk_sys_palette` | function | `progs/file/file.c:321` | `nk_sys_palette(pal768);` |
+| `nk_sys_vga_mode` | function | `progs/file/file.c:312` | `nk_sys_vga_mode(0);` |
+| `nk_theme_active` | function | `progs/file/file.c:544` | `nk_theme_active(theme, sizeof(theme));` |
+| `nk_theme_apply` | function | `progs/file/file.c:572` | `nk_theme_apply(&ctx, 0);` |
+| `printf` | function | `progs/file/file.c:314` | `printf("--- file: %s ---\n", label);` |
+| `snprintf` | function | `progs/file/file.c:220` | `snprintf(file_status, sizeof(file_status), "cannot list %s (%ld)", file_cwd, rc);` |
+| `stbi_image_free` | function | `progs/file/file.c:285` | `stbi_image_free(px);` |
+| `strcpy` | function | `progs/file/file.c:184` | `strcpy(file_table[file_table_n].ext, ext);` |
+| `volatile` | function | `progs/file/file.c:76` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_DIR_LIST), "D"(path), "S"(buf), "d"(cap) : "rcx", "r11", "memory` |
 | `docode` | function | `progs/lua/lua_main.c:40` | `static int docode(lua_State *L, const char *code)` |
 | `dofile` | function | `progs/lua/lua_main.c:50` | `static int dofile(lua_State *L, const char *name)` |
 | `fflush` | function | `progs/lua/lua_main.c:66` | `fflush(stdout);` |
@@ -7993,12 +8083,12 @@ Z_Malloc
 | `MINIOS_DOOM_BACKBUF_ADDR` | macro | `progs/minios_abi.h:118` | `#define MINIOS_DOOM_BACKBUF_ADDR` |
 | `MINIOS_DOOM_H` | macro | `progs/minios_abi.h:120` | `#define MINIOS_DOOM_H` |
 | `MINIOS_DOOM_W` | macro | `progs/minios_abi.h:119` | `#define MINIOS_DOOM_W` |
-| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:288` | `#define MINIOS_EABI_MISMATCH` |
+| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:289` | `#define MINIOS_EABI_MISMATCH` |
 | `MINIOS_FB_ADDR` | macro | `progs/minios_abi.h:121` | `#define MINIOS_FB_ADDR` |
 | `MINIOS_FB_HEIGHT_MAX` | macro | `progs/minios_abi.h:136` | `#define MINIOS_FB_HEIGHT_MAX` |
 | `MINIOS_FB_WIDTH_MAX` | macro | `progs/minios_abi.h:135` | `#define MINIOS_FB_WIDTH_MAX` |
-| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:269` | `#define MINIOS_GFX_BUF_GAME` |
-| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:270` | `#define MINIOS_GFX_BUF_NK` |
+| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:270` | `#define MINIOS_GFX_BUF_GAME` |
+| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:271` | `#define MINIOS_GFX_BUF_NK` |
 | `MINIOS_HEAP_BASE` | macro | `progs/minios_abi.h:129` | `#define MINIOS_HEAP_BASE` |
 | `MINIOS_HEAP_SIZE` | macro | `progs/minios_abi.h:130` | `#define MINIOS_HEAP_SIZE` |
 | `MINIOS_NK_BACKBUF_ADDR` | macro | `progs/minios_abi.h:122` | `#define MINIOS_NK_BACKBUF_ADDR` |
@@ -8008,9 +8098,10 @@ Z_Malloc
 | `MINIOS_SYS_ARCH_PRCTL` | macro | `progs/minios_abi.h:195` | `#define MINIOS_SYS_ARCH_PRCTL` |
 | `MINIOS_SYS_BRK` | macro | `progs/minios_abi.h:164` | `#define MINIOS_SYS_BRK` |
 | `MINIOS_SYS_CLOCK_GETTIME` | macro | `progs/minios_abi.h:214` | `#define MINIOS_SYS_CLOCK_GETTIME` |
-| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:260` | `#define MINIOS_SYS_CLONE` |
+| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:261` | `#define MINIOS_SYS_CLONE` |
 | `MINIOS_SYS_CLOSE` | macro | `progs/minios_abi.h:157` | `#define MINIOS_SYS_CLOSE` |
 | `MINIOS_SYS_CONNECT` | macro | `progs/minios_abi.h:173` | `#define MINIOS_SYS_CONNECT` |
+| `MINIOS_SYS_DIR_LIST` | macro | `progs/minios_abi.h:260` | `#define MINIOS_SYS_DIR_LIST` |
 | `MINIOS_SYS_DNS` | macro | `progs/minios_abi.h:218` | `#define MINIOS_SYS_DNS` |
 | `MINIOS_SYS_DOOM_FRAME` | macro | `progs/minios_abi.h:234` | `#define MINIOS_SYS_DOOM_FRAME` |
 | `MINIOS_SYS_EXECVE` | macro | `progs/minios_abi.h:179` | `#define MINIOS_SYS_EXECVE` |
@@ -8020,7 +8111,7 @@ Z_Malloc
 | `MINIOS_SYS_FDATASYNC` | macro | `progs/minios_abi.h:192` | `#define MINIOS_SYS_FDATASYNC` |
 | `MINIOS_SYS_FLOCK` | macro | `progs/minios_abi.h:190` | `#define MINIOS_SYS_FLOCK` |
 | `MINIOS_SYS_FORK` | macro | `progs/minios_abi.h:177` | `#define MINIOS_SYS_FORK` |
-| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:271` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
+| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:272` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
 | `MINIOS_SYS_FSTAT` | macro | `progs/minios_abi.h:158` | `#define MINIOS_SYS_FSTAT` |
 | `MINIOS_SYS_FSYNC` | macro | `progs/minios_abi.h:191` | `#define MINIOS_SYS_FSYNC` |
 | `MINIOS_SYS_FUTEX_WAIT` | macro | `progs/minios_abi.h:252` | `#define MINIOS_SYS_FUTEX_WAIT` |
@@ -8092,8 +8183,8 @@ Z_Malloc
 | `MINIOS_SYS_VFORK` | macro | `progs/minios_abi.h:178` | `#define MINIOS_SYS_VFORK` |
 | `MINIOS_SYS_VGA_MODE` | macro | `progs/minios_abi.h:231` | `#define MINIOS_SYS_VGA_MODE` |
 | `MINIOS_SYS_WAIT4` | macro | `progs/minios_abi.h:181` | `#define MINIOS_SYS_WAIT4` |
-| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:272` | `#define MINIOS_SYS_WINDOW_PRESENT` |
-| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:273` | `#define MINIOS_SYS_WINDOW_TITLE` |
+| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:273` | `#define MINIOS_SYS_WINDOW_PRESENT` |
+| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:274` | `#define MINIOS_SYS_WINDOW_TITLE` |
 | `MINIOS_SYS_WRITE` | macro | `progs/minios_abi.h:155` | `#define MINIOS_SYS_WRITE` |
 | `MINIOS_SYS_WRITEV` | macro | `progs/minios_abi.h:168` | `#define MINIOS_SYS_WRITEV` |
 | `MINIOS_USER_BRK_END` | macro | `progs/minios_abi.h:101` | `#define MINIOS_USER_BRK_END` |
@@ -8102,16 +8193,16 @@ Z_Malloc
 | `MINIOS_USER_STACK_BASE` | macro | `progs/minios_abi.h:100` | `#define MINIOS_USER_STACK_BASE` |
 | `MINIOS_USER_STACK_SIZE` | macro | `progs/minios_abi.h:98` | `#define MINIOS_USER_STACK_SIZE` |
 | `MINIOS_USER_STACK_TOP` | macro | `progs/minios_abi.h:99` | `#define MINIOS_USER_STACK_TOP` |
-| `SYS_FB_INFO` | macro | `progs/minios_abi.h:281` | `#define SYS_FB_INFO` |
-| `SYS_PALETTE` | macro | `progs/minios_abi.h:277` | `#define SYS_PALETTE` |
-| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:278` | `#define SYS_PCSPK_INIT` |
-| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:279` | `#define SYS_PCSPK_TONE` |
-| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:282` | `#define SYS_PCSPK_VOL` |
-| `SYS_RTC` | macro | `progs/minios_abi.h:280` | `#define SYS_RTC` |
-| `SYS_SPAWN` | macro | `progs/minios_abi.h:283` | `#define SYS_SPAWN` |
-| `SYS_TIME` | macro | `progs/minios_abi.h:284` | `#define SYS_TIME` |
-| `SYS_TIME_MS` | macro | `progs/minios_abi.h:276` | `#define SYS_TIME_MS` |
-| `SYS_WRITE` | macro | `progs/minios_abi.h:285` | `#define SYS_WRITE` |
+| `SYS_FB_INFO` | macro | `progs/minios_abi.h:282` | `#define SYS_FB_INFO` |
+| `SYS_PALETTE` | macro | `progs/minios_abi.h:278` | `#define SYS_PALETTE` |
+| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:279` | `#define SYS_PCSPK_INIT` |
+| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:280` | `#define SYS_PCSPK_TONE` |
+| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:283` | `#define SYS_PCSPK_VOL` |
+| `SYS_RTC` | macro | `progs/minios_abi.h:281` | `#define SYS_RTC` |
+| `SYS_SPAWN` | macro | `progs/minios_abi.h:284` | `#define SYS_SPAWN` |
+| `SYS_TIME` | macro | `progs/minios_abi.h:285` | `#define SYS_TIME` |
+| `SYS_TIME_MS` | macro | `progs/minios_abi.h:277` | `#define SYS_TIME_MS` |
+| `SYS_WRITE` | macro | `progs/minios_abi.h:286` | `#define SYS_WRITE` |
 | `CVM_FUNC_ENTRY_SIZE` | macro | `progs/nuklear/cvm_emit.c:35` | `#define CVM_FUNC_ENTRY_SIZE` |
 | `CVM_GLOBAL_ENTRY_SIZE` | macro | `progs/nuklear/cvm_emit.c:36` | `#define CVM_GLOBAL_ENTRY_SIZE` |
 | `CVM_MAGIC_0` | macro | `progs/nuklear/cvm_emit.c:29` | `#define CVM_MAGIC_0` |
@@ -8181,109 +8272,111 @@ Z_Malloc
 | `cvm_node_type` | enum | `progs/nuklear/cvm_emit.h:22` | `` |
 | `err` | function | `progs/nuklear/cvm_emit.h:67` | `* err (err_cap bytes). The module is heap-allocated and owned by the caller * (free it). */ int cvm_compile(const struct` |
 | `graph` | function | `progs/nuklear/cvm_emit.h:5` | `* * A node graph (constants, arithmetic, bitwise, comparisons, a conditional * select, and string constants feeding PRIN` |
-| `BEZIER_PAD` | macro | `progs/nuklear/node_editor.c:517` | `#define BEZIER_PAD` |
-| `GRID_SIZE` | macro | `progs/nuklear/node_editor.c:518` | `#define GRID_SIZE` |
-| `MAX_NODES` | macro | `progs/nuklear/node_editor.c:32` | `#define MAX_NODES` |
-| `NODE_W` | macro | `progs/nuklear/node_editor.c:513` | `#define NODE_W` |
-| `PIN_DIAM` | macro | `progs/nuklear/node_editor.c:516` | `#define PIN_DIAM` |
-| `PIN_R` | macro | `progs/nuklear/node_editor.c:515` | `#define PIN_R` |
-| `STR_MAX` | macro | `progs/nuklear/node_editor.c:33` | `#define STR_MAX` |
-| `TITLE_H` | macro | `progs/nuklear/node_editor.c:514` | `#define TITLE_H` |
-| `UI_MEMORY` | macro | `progs/nuklear/node_editor.c:499` | `#define UI_MEMORY` |
-| `adderr` | function | `progs/nuklear/node_editor.c:192` | `void adderr(const char *s)` |
-| `addrep` | function | `progs/nuklear/node_editor.c:182` | `void addrep(const char *s)` |
-| `close` | function | `progs/nuklear/node_editor.c:315` | `close(fd);` |
-| `compile_to` | function | `progs/nuklear/node_editor.c:282` | `static int compile_to(const char *path)` |
-| `fclose` | function | `progs/nuklear/node_editor.c:424` | `fclose(f);` |
-| `fprintf` | function | `progs/nuklear/node_editor.c:401` | `fprintf(f, "num %s %lld\n", names[i], g->ival);` |
-| `fputc` | function | `progs/nuklear/node_editor.c:339` | `fputc('"', f);` |
-| `free` | function | `progs/nuklear/node_editor.c:306` | `free(mod);` |
-| `gnode` | struct | `progs/nuklear/node_editor.c:43` | `` |
-| `graph_add` | function | `progs/nuklear/node_editor.c:120` | `static int graph_add(int kind)` |
-| `graph_clear` | function | `progs/nuklear/node_editor.c:114` | `static void graph_clear(void)` |
-| `graph_del` | function | `progs/nuklear/node_editor.c:134` | `static void graph_del(int idx)` |
-| `graph_to_compiler` | function | `progs/nuklear/node_editor.c:153` | `static int graph_to_compiler(struct cvm_node *out, int cap)` |
-| `gui_run` | function | `progs/nuklear/node_editor.c:930` | `static void gui_run(void)` |
-| `kind_color` | function | `progs/nuklear/node_editor.c:109` | `static struct nk_color kind_color(int k)` |
-| `kind_name` | function | `progs/nuklear/node_editor.c:104` | `static const char *kind_name(int k)` |
-| `main` | function | `progs/nuklear/node_editor.c:979` | `int main(int argc, char **argv)` |
-| `memcpy` | function | `progs/nuklear/node_editor.c:159` | `memcpy(out[i].sval, g->sval, sizeof(out[i].sval));` |
-| `memmove` | function | `progs/nuklear/node_editor.c:137` | `memmove(&g_nodes[idx], &g_nodes[idx + 1], (size_t)(g_count - idx - 1) * sizeof(g_nodes[0]));` |
-| `memset` | function | `progs/nuklear/node_editor.c:125` | `memset(n, 0, sizeof(*n));` |
-| `nk_build_palette` | function | `progs/nuklear/node_editor.c:937` | `nk_build_palette(pal768);` |
-| `nk_clear` | function | `progs/nuklear/node_editor.c:967` | `nk_clear(&ctx);` |
-| `nk_combobox` | function | `progs/nuklear/node_editor.c:634` | `nk_combobox(ctx, items, G_COUNT, &add_sel, 20, nk_vec2(150, 300));` |
-| `nk_edit_string_zero_terminated` | function | `progs/nuklear/node_editor.c:561` | `nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, n->sval, (int)sizeof(n->sval), 0);` |
-| `nk_end` | function | `progs/nuklear/node_editor.c:925` | `nk_end(ctx);` |
-| `nk_fill_circle` | function | `progs/nuklear/node_editor.c:911` | `nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));` |
-| `nk_fill_rect` | function | `progs/nuklear/node_editor.c:849` | `nk_fill_rect(canvas, title_bounds, 0, col);` |
-| `nk_free` | function | `progs/nuklear/node_editor.c:974` | `nk_free(&ctx);` |
-| `nk_group_end` | function | `progs/nuklear/node_editor.c:901` | `nk_group_end(ctx);` |
-| `nk_input_begin` | function | `progs/nuklear/node_editor.c:958` | `nk_input_begin(&ctx);` |
-| `nk_input_end` | function | `progs/nuklear/node_editor.c:960` | `nk_input_end(&ctx);` |
-| `nk_label` | function | `progs/nuklear/node_editor.c:544` | `nk_label(ctx, "select a node to edit its parameters", NK_TEXT_LEFT);` |
-| `nk_label_colored_wrap` | function | `progs/nuklear/node_editor.c:668` | `nk_label_colored_wrap(ctx, g_status, nk_rgb(255, 120, 120));` |
-| `nk_layout_row_begin` | function | `progs/nuklear/node_editor.c:572` | `nk_layout_row_begin(ctx, NK_STATIC, 20, 3);` |
-| `nk_layout_row_dynamic` | function | `progs/nuklear/node_editor.c:542` | `nk_layout_row_dynamic(ctx, 16, 1);` |
-| `nk_layout_row_end` | function | `progs/nuklear/node_editor.c:591` | `nk_layout_row_end(ctx);` |
-| `nk_layout_row_push` | function | `progs/nuklear/node_editor.c:573` | `nk_layout_row_push(ctx, 110);` |
-| `nk_layout_row_static` | function | `progs/nuklear/node_editor.c:609` | `nk_layout_row_static(ctx, 22, 90, 3);` |
-| `nk_layout_space_begin` | function | `progs/nuklear/node_editor.c:683` | `nk_layout_space_begin(ctx, NK_STATIC, canvas_h, g_count + 32);` |
-| `nk_layout_space_bounds` | function | `progs/nuklear/node_editor.c:744` | `nk_layout_space_bounds(ctx));` |
-| `nk_layout_space_end` | function | `progs/nuklear/node_editor.c:923` | `nk_layout_space_end(ctx);` |
-| `nk_layout_space_push` | function | `progs/nuklear/node_editor.c:841` | `nk_layout_space_push(ctx, nk_rect(n->x, n->y, NODE_W, h));` |
-| `nk_poll_input` | function | `progs/nuklear/node_editor.c:959` | `nk_poll_input(&ctx);` |
-| `nk_property_int` | function | `progs/nuklear/node_editor.c:555` | `nk_property_int(ctx, "value:", -2147483647, &v, 2147483647, 1, 10);` |
-| `nk_rasterize` | function | `progs/nuklear/node_editor.c:963` | `nk_rasterize(&ctx);` |
-| `nk_stroke_curve` | function | `progs/nuklear/node_editor.c:722` | `nk_stroke_curve(canvas, sx, sy, sx + BEZIER_PAD, sy, dx - BEZIER_PAD, dy, dx, dy, 2.0f, nk_rgb(180, 180, 180));` |
-| `nk_stroke_line` | function | `progs/nuklear/node_editor.c:702` | `nk_stroke_line(canvas, x + canvas_bounds.x, canvas_bounds.y, x + canvas_bounds.x, canvas_bounds.y + canvas_bounds.h, 1.0` |
-| `nk_sys_fb_info` | function | `progs/nuklear/node_editor.c:939` | `nk_sys_fb_info(&fw, &fh, &fp);` |
-| `nk_sys_gfx_set_title` | function | `progs/nuklear/node_editor.c:935` | `nk_sys_gfx_set_title("Nuklear");` |
-| `nk_sys_kbd_raw` | function | `progs/nuklear/node_editor.c:936` | `nk_sys_kbd_raw(1);` |
-| `nk_sys_palette` | function | `progs/nuklear/node_editor.c:938` | `nk_sys_palette(pal768);` |
-| `nk_sys_vga_mode` | function | `progs/nuklear/node_editor.c:933` | `nk_sys_vga_mode(1);` |
-| `node_h` | function | `progs/nuklear/node_editor.c:532` | `static float node_h(struct gnode *n)` |
-| `node_inputs` | function | `progs/nuklear/node_editor.c:94` | `static int node_inputs(int k)` |
-| `node_outputs` | function | `progs/nuklear/node_editor.c:99` | `static int node_outputs(int k)` |
-| `nodedef` | struct | `progs/nuklear/node_editor.c:54` | `` |
-| `parse_graph_file` | function | `progs/nuklear/node_editor.c:428` | `static int parse_graph_file(const char *path)` |
-| `parse_input` | function | `progs/nuklear/node_editor.c:442` | `int parse_input(const char *tok, int idx, int k)` |
-| `pin_y` | function | `progs/nuklear/node_editor.c:521` | `static float pin_y(struct gnode *n, int slot, int is_output)` |
-| `printf` | function | `progs/nuklear/node_editor.c:944` | `printf("nuklear: init failed\n");` |
-| `repair_graph` | function | `progs/nuklear/node_editor.c:175` | `static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,
+| `BEZIER_PAD` | macro | `progs/nuklear/node_editor.c:518` | `#define BEZIER_PAD` |
+| `GRID_SIZE` | macro | `progs/nuklear/node_editor.c:519` | `#define GRID_SIZE` |
+| `MAX_NODES` | macro | `progs/nuklear/node_editor.c:33` | `#define MAX_NODES` |
+| `NODE_W` | macro | `progs/nuklear/node_editor.c:514` | `#define NODE_W` |
+| `PIN_DIAM` | macro | `progs/nuklear/node_editor.c:517` | `#define PIN_DIAM` |
+| `PIN_R` | macro | `progs/nuklear/node_editor.c:516` | `#define PIN_R` |
+| `STR_MAX` | macro | `progs/nuklear/node_editor.c:34` | `#define STR_MAX` |
+| `TITLE_H` | macro | `progs/nuklear/node_editor.c:515` | `#define TITLE_H` |
+| `UI_MEMORY` | macro | `progs/nuklear/node_editor.c:500` | `#define UI_MEMORY` |
+| `adderr` | function | `progs/nuklear/node_editor.c:193` | `void adderr(const char *s)` |
+| `addrep` | function | `progs/nuklear/node_editor.c:183` | `void addrep(const char *s)` |
+| `close` | function | `progs/nuklear/node_editor.c:316` | `close(fd);` |
+| `compile_to` | function | `progs/nuklear/node_editor.c:283` | `static int compile_to(const char *path)` |
+| `fclose` | function | `progs/nuklear/node_editor.c:425` | `fclose(f);` |
+| `fprintf` | function | `progs/nuklear/node_editor.c:402` | `fprintf(f, "num %s %lld\n", names[i], g->ival);` |
+| `fputc` | function | `progs/nuklear/node_editor.c:340` | `fputc('"', f);` |
+| `free` | function | `progs/nuklear/node_editor.c:307` | `free(mod);` |
+| `gnode` | struct | `progs/nuklear/node_editor.c:44` | `` |
+| `graph_add` | function | `progs/nuklear/node_editor.c:121` | `static int graph_add(int kind)` |
+| `graph_clear` | function | `progs/nuklear/node_editor.c:115` | `static void graph_clear(void)` |
+| `graph_del` | function | `progs/nuklear/node_editor.c:135` | `static void graph_del(int idx)` |
+| `graph_to_compiler` | function | `progs/nuklear/node_editor.c:154` | `static int graph_to_compiler(struct cvm_node *out, int cap)` |
+| `gui_run` | function | `progs/nuklear/node_editor.c:931` | `static void gui_run(void)` |
+| `kind_color` | function | `progs/nuklear/node_editor.c:110` | `static struct nk_color kind_color(int k)` |
+| `kind_name` | function | `progs/nuklear/node_editor.c:105` | `static const char *kind_name(int k)` |
+| `main` | function | `progs/nuklear/node_editor.c:982` | `int main(int argc, char **argv)` |
+| `memcpy` | function | `progs/nuklear/node_editor.c:160` | `memcpy(out[i].sval, g->sval, sizeof(out[i].sval));` |
+| `memmove` | function | `progs/nuklear/node_editor.c:138` | `memmove(&g_nodes[idx], &g_nodes[idx + 1], (size_t)(g_count - idx - 1) * sizeof(g_nodes[0]));` |
+| `memset` | function | `progs/nuklear/node_editor.c:126` | `memset(n, 0, sizeof(*n));` |
+| `nk_build_palette` | function | `progs/nuklear/node_editor.c:938` | `nk_build_palette(pal768);` |
+| `nk_clear` | function | `progs/nuklear/node_editor.c:970` | `nk_clear(&ctx);` |
+| `nk_combobox` | function | `progs/nuklear/node_editor.c:635` | `nk_combobox(ctx, items, G_COUNT, &add_sel, 20, nk_vec2(150, 300));` |
+| `nk_edit_string_zero_terminated` | function | `progs/nuklear/node_editor.c:562` | `nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, n->sval, (int)sizeof(n->sval), 0);` |
+| `nk_end` | function | `progs/nuklear/node_editor.c:926` | `nk_end(ctx);` |
+| `nk_fill_circle` | function | `progs/nuklear/node_editor.c:912` | `nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));` |
+| `nk_fill_rect` | function | `progs/nuklear/node_editor.c:850` | `nk_fill_rect(canvas, title_bounds, 0, col);` |
+| `nk_free` | function | `progs/nuklear/node_editor.c:977` | `nk_free(&ctx);` |
+| `nk_group_end` | function | `progs/nuklear/node_editor.c:902` | `nk_group_end(ctx);` |
+| `nk_input_begin` | function | `progs/nuklear/node_editor.c:960` | `nk_input_begin(&ctx);` |
+| `nk_input_end` | function | `progs/nuklear/node_editor.c:962` | `nk_input_end(&ctx);` |
+| `nk_label` | function | `progs/nuklear/node_editor.c:545` | `nk_label(ctx, "select a node to edit its parameters", NK_TEXT_LEFT);` |
+| `nk_label_colored_wrap` | function | `progs/nuklear/node_editor.c:669` | `nk_label_colored_wrap(ctx, g_status, nk_rgb(255, 120, 120));` |
+| `nk_layout_row_begin` | function | `progs/nuklear/node_editor.c:573` | `nk_layout_row_begin(ctx, NK_STATIC, 20, 3);` |
+| `nk_layout_row_dynamic` | function | `progs/nuklear/node_editor.c:543` | `nk_layout_row_dynamic(ctx, 16, 1);` |
+| `nk_layout_row_end` | function | `progs/nuklear/node_editor.c:592` | `nk_layout_row_end(ctx);` |
+| `nk_layout_row_push` | function | `progs/nuklear/node_editor.c:574` | `nk_layout_row_push(ctx, 110);` |
+| `nk_layout_row_static` | function | `progs/nuklear/node_editor.c:610` | `nk_layout_row_static(ctx, 22, 90, 3);` |
+| `nk_layout_space_begin` | function | `progs/nuklear/node_editor.c:684` | `nk_layout_space_begin(ctx, NK_STATIC, canvas_h, g_count + 32);` |
+| `nk_layout_space_bounds` | function | `progs/nuklear/node_editor.c:745` | `nk_layout_space_bounds(ctx));` |
+| `nk_layout_space_end` | function | `progs/nuklear/node_editor.c:924` | `nk_layout_space_end(ctx);` |
+| `nk_layout_space_push` | function | `progs/nuklear/node_editor.c:842` | `nk_layout_space_push(ctx, nk_rect(n->x, n->y, NODE_W, h));` |
+| `nk_poll_input` | function | `progs/nuklear/node_editor.c:961` | `nk_poll_input(&ctx);` |
+| `nk_property_int` | function | `progs/nuklear/node_editor.c:556` | `nk_property_int(ctx, "value:", -2147483647, &v, 2147483647, 1, 10);` |
+| `nk_rasterize` | function | `progs/nuklear/node_editor.c:966` | `nk_rasterize(&ctx);` |
+| `nk_stroke_curve` | function | `progs/nuklear/node_editor.c:723` | `nk_stroke_curve(canvas, sx, sy, sx + BEZIER_PAD, sy, dx - BEZIER_PAD, dy, dx, dy, 2.0f, nk_rgb(180, 180, 180));` |
+| `nk_stroke_line` | function | `progs/nuklear/node_editor.c:703` | `nk_stroke_line(canvas, x + canvas_bounds.x, canvas_bounds.y, x + canvas_bounds.x, canvas_bounds.y + canvas_bounds.h, 1.0` |
+| `nk_sys_fb_info` | function | `progs/nuklear/node_editor.c:940` | `nk_sys_fb_info(&fw, &fh, &fp);` |
+| `nk_sys_gfx_set_title` | function | `progs/nuklear/node_editor.c:936` | `nk_sys_gfx_set_title("Nuklear");` |
+| `nk_sys_kbd_raw` | function | `progs/nuklear/node_editor.c:937` | `nk_sys_kbd_raw(1);` |
+| `nk_sys_palette` | function | `progs/nuklear/node_editor.c:939` | `nk_sys_palette(pal768);` |
+| `nk_sys_vga_mode` | function | `progs/nuklear/node_editor.c:934` | `nk_sys_vga_mode(1);` |
+| `nk_theme_apply` | function | `progs/nuklear/node_editor.c:950` | `nk_theme_apply(&ctx, 0);` |
+| `node_h` | function | `progs/nuklear/node_editor.c:533` | `static float node_h(struct gnode *n)` |
+| `node_inputs` | function | `progs/nuklear/node_editor.c:95` | `static int node_inputs(int k)` |
+| `node_outputs` | function | `progs/nuklear/node_editor.c:100` | `static int node_outputs(int k)` |
+| `nodedef` | struct | `progs/nuklear/node_editor.c:55` | `` |
+| `parse_graph_file` | function | `progs/nuklear/node_editor.c:429` | `static int parse_graph_file(const char *path)` |
+| `parse_input` | function | `progs/nuklear/node_editor.c:443` | `int parse_input(const char *tok, int idx, int k)` |
+| `pin_y` | function | `progs/nuklear/node_editor.c:522` | `static float pin_y(struct gnode *n, int slot, int is_output)` |
+| `printf` | function | `progs/nuklear/node_editor.c:945` | `printf("nuklear: init failed\n");` |
+| `repair_graph` | function | `progs/nuklear/node_editor.c:176` | `static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,
                    ...` |
-| `resolve` | function | `progs/nuklear/node_editor.c:436` | `int resolve(const char *nme, int upto)` |
-| `save_graph_file` | function | `progs/nuklear/node_editor.c:390` | `static int save_graph_file(const char *path)` |
-| `snprintf` | function | `progs/nuklear/node_editor.c:206` | `snprintf(m, sizeof(m), "node %d: bad type", i);` |
-| `ui_build` | function | `progs/nuklear/node_editor.c:620` | `static void ui_build(struct nk_context *ctx, float win_w, float win_h)` |
-| `ui_inspector` | function | `progs/nuklear/node_editor.c:540` | `static void ui_inspector(struct nk_context *ctx)` |
-| `volatile` | function | `progs/nuklear/node_editor.c:971` | `__asm__ volatile("pause");` |
-| `write_quoted` | function | `progs/nuklear/node_editor.c:338` | `static void write_quoted(FILE *f, const char *s)` |
+| `resolve` | function | `progs/nuklear/node_editor.c:437` | `int resolve(const char *nme, int upto)` |
+| `save_graph_file` | function | `progs/nuklear/node_editor.c:391` | `static int save_graph_file(const char *path)` |
+| `snprintf` | function | `progs/nuklear/node_editor.c:207` | `snprintf(m, sizeof(m), "node %d: bad type", i);` |
+| `ui_build` | function | `progs/nuklear/node_editor.c:621` | `static void ui_build(struct nk_context *ctx, float win_w, float win_h)` |
+| `ui_inspector` | function | `progs/nuklear/node_editor.c:541` | `static void ui_inspector(struct nk_context *ctx)` |
+| `volatile` | function | `progs/nuklear/node_editor.c:974` | `__asm__ volatile("pause");` |
+| `write_quoted` | function | `progs/nuklear/node_editor.c:339` | `static void write_quoted(FILE *f, const char *s)` |
 | `NK_IMPLEMENTATION` | macro | `progs/nuklear/nuklear_minios.c:16` | `#define NK_IMPLEMENTATION` |
 | `col_to_idx` | function | `progs/nuklear/nuklear_minios.c:160` | `static int col_to_idx(struct nk_color c)` |
 | `draw_arc` | function | `progs/nuklear/nuklear_minios.c:288` | `static void draw_arc(int cx, int cy, int r, float a0, float a1,
                      int filled, ...` |
 | `draw_line` | function | `progs/nuklear/nuklear_minios.c:202` | `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)` |
 | `draw_text` | function | `progs/nuklear/nuklear_minios.c:274` | `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)` |
-| `feed_key` | function | `progs/nuklear/nuklear_minios.c:499` | `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)` |
+| `feed_key` | function | `progs/nuklear/nuklear_minios.c:500` | `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)` |
 | `fill_circle` | function | `progs/nuklear/nuklear_minios.c:220` | `static void fill_circle(int cx, int cy, int r, int c)` |
 | `fill_poly` | function | `progs/nuklear/nuklear_minios.c:245` | `static void fill_poly(int *xs, int *ys, int n, int c)` |
 | `fill_rect` | function | `progs/nuklear/nuklear_minios.c:195` | `static void fill_rect(int x, int y, int w, int h, int c)` |
-| `handle_scancode` | function | `progs/nuklear/nuklear_minios.c:511` | `static void handle_scancode(struct nk_context *ctx, unsigned char sc)` |
+| `handle_scancode` | function | `progs/nuklear/nuklear_minios.c:512` | `static void handle_scancode(struct nk_context *ctx, unsigned char sc)` |
 | `list` | function | `progs/nuklear/nuklear_minios.c:4` | `* abstract draw command list (nk__begin/nk__next);` |
 | `nk_build_palette` | function | `progs/nuklear/nuklear_minios.c:152` | `nk_build_palette(pal768);` |
 | `nk_foreach` | function | `progs/nuklear/nuklear_minios.c:314` | `nk_foreach(cmd, ctx)` |
-| `nk_input_key` | function | `progs/nuklear/nuklear_minios.c:501` | `nk_input_key(ctx, key, down ? nk_true : nk_false);` |
-| `nk_input_motion` | function | `progs/nuklear/nuklear_minios.c:571` | `nk_input_motion(ctx, lx, ly);` |
-| `nk_input_scroll` | function | `progs/nuklear/nuklear_minios.c:587` | `nk_input_scroll(ctx, scroll);` |
-| `nk_input_unicode` | function | `progs/nuklear/nuklear_minios.c:550` | `nk_input_unicode(ctx, (nk_rune)ch);` |
+| `nk_input_key` | function | `progs/nuklear/nuklear_minios.c:502` | `nk_input_key(ctx, key, down ? nk_true : nk_false);` |
+| `nk_input_motion` | function | `progs/nuklear/nuklear_minios.c:574` | `nk_input_motion(ctx, lx, ly);` |
+| `nk_input_scroll` | function | `progs/nuklear/nuklear_minios.c:590` | `nk_input_scroll(ctx, scroll);` |
+| `nk_input_unicode` | function | `progs/nuklear/nuklear_minios.c:553` | `nk_input_unicode(ctx, (nk_rune)ch);` |
 | `nk_minios_font` | function | `progs/nuklear/nuklear_minios.c:465` | `struct nk_user_font nk_minios_font(void)` |
 | `nk_minios_font_width` | function | `progs/nuklear/nuklear_minios.c:460` | `static float nk_minios_font_width(nk_handle handle, float height,
                                ...` |
-| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.c:554` | `void nk_poll_input(struct nk_context *ctx)` |
+| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.c:557` | `void nk_poll_input(struct nk_context *ctx)` |
+| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.c:603` | `int nk_quit_requested(void)` |
 | `nk_rasterize` | function | `progs/nuklear/nuklear_minios.c:309` | `void nk_rasterize(struct nk_context *ctx)` |
-| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.c:506` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)` |
-| `nk_set_window_origin` | function | `progs/nuklear/nuklear_minios.c:591` | `void nk_set_window_origin(int x, int y)` |
+| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.c:507` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)` |
+| `nk_set_window_origin` | function | `progs/nuklear/nuklear_minios.c:594` | `void nk_set_window_origin(int x, int y)` |
 | `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.c:52` | `long nk_sys_fb_info(int *w, int *h, int *pitch)` |
 | `nk_sys_gfx_set_title` | function | `progs/nuklear/nuklear_minios.c:77` | `long nk_sys_gfx_set_title(const char *t)` |
 | `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.c:32` | `long nk_sys_kbd(void)` |
@@ -8310,8 +8403,9 @@ Z_Malloc
 | `nk_context` | struct | `progs/nuklear/nuklear_minios.h:20` | `` |
 | `nk_minios_font` | function | `progs/nuklear/nuklear_minios.h:51` | `struct nk_user_font nk_minios_font(void);` |
 | `nk_poll_input` | function | `progs/nuklear/nuklear_minios.h:62` | `void nk_poll_input(struct nk_context *ctx);` |
+| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.h:67` | `int nk_quit_requested(void);` |
 | `nk_rasterize` | function | `progs/nuklear/nuklear_minios.h:54` | `void nk_rasterize(struct nk_context *ctx);` |
-| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.h:71` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);` |
+| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.h:76` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);` |
 | `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.h:34` | `long nk_sys_fb_info(int *w, int *h, int *pitch);` |
 | `nk_sys_gfx_set_title` | function | `progs/nuklear/nuklear_minios.h:41` | `long nk_sys_gfx_set_title(const char *t);` |
 | `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.h:30` | `long nk_sys_kbd(void);` |
@@ -8323,93 +8417,214 @@ Z_Malloc
 | `nk_sys_time_ms` | function | `progs/nuklear/nuklear_minios.h:29` | `long nk_sys_time_ms(void);` |
 | `nk_sys_vga_mode` | function | `progs/nuklear/nuklear_minios.h:33` | `long nk_sys_vga_mode(int on);` |
 | `nk_user_font` | struct | `progs/nuklear/nuklear_minios.h:21` | `` |
-| `void` | function | `progs/nuklear/nuklear_minios.h:70` | `typedef void (*nk_scancode_cb)(int code, int make, int e0, void *ud);` |
-| `BK_H` | macro | `progs/piano/piano.c:167` | `#define BK_H` |
-| `BK_W` | macro | `progs/piano/piano.c:166` | `#define BK_W` |
-| `BTN_GAP` | macro | `progs/piano/piano.c:517` | `#define BTN_GAP` |
-| `BTN_W` | macro | `progs/piano/piano.c:516` | `#define BTN_W` |
-| `CTRL_H` | macro | `progs/piano/piano.c:515` | `#define CTRL_H` |
-| `CTRL_Y` | macro | `progs/piano/piano.c:514` | `#define CTRL_Y` |
-| `FX_DELAY_CAP` | macro | `progs/piano/piano.c:380` | `#define FX_DELAY_CAP` |
-| `FX_DELAY_MAX_MS` | macro | `progs/piano/piano.c:382` | `#define FX_DELAY_MAX_MS` |
-| `FX_FEEDBACK` | macro | `progs/piano/piano.c:383` | `#define FX_FEEDBACK` |
-| `FX_TREM_FREQ` | macro | `progs/piano/piano.c:385` | `#define FX_TREM_FREQ` |
-| `FX_WET` | macro | `progs/piano/piano.c:384` | `#define FX_WET` |
-| `KBD_NO_NOTE` | macro | `progs/piano/piano.c:271` | `#define KBD_NO_NOTE` |
-| `KEY_H` | macro | `progs/piano/piano.c:165` | `#define KEY_H` |
-| `KEY_W` | macro | `progs/piano/piano.c:164` | `#define KEY_W` |
-| `KEY_Y` | macro | `progs/piano/piano.c:168` | `#define KEY_Y` |
-| `MAX_AUDIO_MS` | macro | `progs/piano/piano.c:67` | `#define MAX_AUDIO_MS` |
-| `MAX_VOICES` | macro | `progs/piano/piano.c:195` | `#define MAX_VOICES` |
-| `NCTRLS` | macro | `progs/piano/piano.c:529` | `#define NCTRLS` |
-| `NKEYS` | macro | `progs/piano/piano.c:183` | `#define NKEYS` |
-| `OPL3_GenerateStream` | function | `progs/piano/piano.c:462` | `OPL3_GenerateStream(&o3, st, (uint32_t)n);` |
-| `OPL3_Reset` | function | `progs/piano/piano.c:574` | `OPL3_Reset(&o3, RATE);` |
-| `OPL3_WriteReg` | function | `progs/piano/piano.c:106` | `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);` |
-| `PCM_BUF` | macro | `progs/piano/piano.c:62` | `#define PCM_BUF` |
-| `PIANO_BASE_MIDI` | macro | `progs/piano/piano.c:169` | `#define PIANO_BASE_MIDI` |
-| `PIANO_FRAME_MS` | macro | `progs/piano/piano.c:75` | `#define PIANO_FRAME_MS` |
-| `PIANO_OCTAVES` | macro | `progs/piano/piano.c:170` | `#define PIANO_OCTAVES` |
-| `RATE` | macro | `progs/piano/piano.c:60` | `#define RATE` |
-| `SYS_SB16_OPEN` | macro | `progs/piano/piano.c:56` | `#define SYS_SB16_OPEN` |
-| `SYS_SB16_PUMP` | macro | `progs/piano/piano.c:59` | `#define SYS_SB16_PUMP` |
-| `SYS_SB16_SUBMIT` | macro | `progs/piano/piano.c:58` | `#define SYS_SB16_SUBMIT` |
-| `UI_MEMORY` | macro | `progs/piano/piano.c:53` | `#define UI_MEMORY` |
-| `clamp_midi` | function | `progs/piano/piano.c:207` | `static int clamp_midi(int m)` |
-| `ctrl_active` | function | `progs/piano/piano.c:535` | `static int ctrl_active(int id)` |
-| `ctrl_hit` | function | `progs/piano/piano.c:530` | `static int ctrl_hit(int id, int mx, int my)` |
-| `ctrl_press` | function | `progs/piano/piano.c:544` | `static void ctrl_press(int id)` |
-| `fx_configure` | function | `progs/piano/piano.c:395` | `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)` |
-| `fx_process` | function | `progs/piano/piano.c:413` | `static float fx_process(float x)` |
-| `hit_key` | function | `progs/piano/piano.c:486` | `static int hit_key(int mx, int my)` |
-| `hit_velocity` | function | `progs/piano/piano.c:504` | `static int hit_velocity(int key, int my)` |
-| `kbd_all_off` | function | `progs/piano/piano.c:306` | `static void kbd_all_off(void)` |
-| `kbd_semitone` | function | `progs/piano/piano.c:272` | `static int kbd_semitone(int code)` |
-| `key_rect` | function | `progs/piano/piano.c:479` | `static void key_rect(int key, int *x, int *y, int *w, int *h)` |
-| `main` | function | `progs/piano/piano.c:896` | `int main(int argc, char **argv)` |
-| `memset` | function | `progs/piano/piano.c:406` | `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));` |
-| `midi_to_key` | function | `progs/piano/piano.c:184` | `static int midi_to_key(int midi)` |
-| `nk_build_palette` | function | `progs/piano/piano.c:569` | `nk_build_palette(pal768);` |
-| `nk_clear` | function | `progs/piano/piano.c:697` | `nk_clear(&ctx);` |
-| `nk_draw_text` | function | `progs/piano/piano.c:650` | `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));` |
-| `nk_end` | function | `progs/piano/piano.c:671` | `nk_end(&ctx);` |
-| `nk_fill_rect` | function | `progs/piano/piano.c:637` | `nk_fill_rect(canvas, r, 0, col);` |
-| `nk_free` | function | `progs/piano/piano.c:723` | `nk_free(&ctx);` |
-| `nk_input_begin` | function | `progs/piano/piano.c:612` | `nk_input_begin(&ctx);` |
-| `nk_input_end` | function | `progs/piano/piano.c:614` | `nk_input_end(&ctx);` |
-| `nk_poll_input` | function | `progs/piano/piano.c:613` | `nk_poll_input(&ctx);` |
-| `nk_rasterize` | function | `progs/piano/piano.c:693` | `nk_rasterize(&ctx);` |
-| `nk_rgb` | function | `progs/piano/piano.c:636` | `: nk_rgb(240, 240, 240);` |
-| `nk_set_scancode_hook` | function | `progs/piano/piano.c:582` | `nk_set_scancode_hook(piano_scancode, 0);` |
-| `nk_stroke_rect` | function | `progs/piano/piano.c:638` | `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));` |
-| `nk_sys_fb_info` | function | `progs/piano/piano.c:571` | `nk_sys_fb_info(&fw, &fh, &fp);` |
-| `nk_sys_gfx_set_title` | function | `progs/piano/piano.c:567` | `nk_sys_gfx_set_title("Piano");` |
-| `nk_sys_kbd_raw` | function | `progs/piano/piano.c:568` | `nk_sys_kbd_raw(1);` |
-| `nk_sys_palette` | function | `progs/piano/piano.c:570` | `nk_sys_palette(pal768);` |
-| `nk_sys_vga_mode` | function | `progs/piano/piano.c:565` | `nk_sys_vga_mode(1);` |
-| `note_off_key` | function | `progs/piano/piano.c:241` | `static void note_off_key(int key)` |
-| `note_off_sc` | function | `progs/piano/piano.c:326` | `static void note_off_sc(int code)` |
-| `note_on_key` | function | `progs/piano/piano.c:255` | `static void note_on_key(int key, int midi, int vel)` |
-| `note_on_sc` | function | `progs/piano/piano.c:312` | `static void note_on_sc(int code, int vel)` |
-| `o3_chreg` | function | `progs/piano/piano.c:109` | `static void o3_chreg(int ch, int regbase, int val)` |
-| `o3_instrument` | function | `progs/piano/piano.c:262` | `o3_instrument(ch, vel);` |
-| `o3_note` | function | `progs/piano/piano.c:146` | `static void o3_note(int ch, int midi, int on)` |
-| `o3_op` | function | `progs/piano/piano.c:101` | `static int o3_op(int ch, int is_car)` |
-| `o3_opreg` | function | `progs/piano/piano.c:105` | `static void o3_opreg(int ch, int is_car, int regbase, int val)` |
-| `pedal_set` | function | `progs/piano/piano.c:215` | `static void pedal_set(int on)` |
-| `piano_scancode` | function | `progs/piano/piano.c:343` | `static void piano_scancode(int code, int make, int e0, void *ud)` |
-| `printf` | function | `progs/piano/piano.c:591` | `printf("piano: init failed\n");` |
-| `render_audio` | function | `progs/piano/piano.c:453` | `static void render_audio(long ms)` |
-| `run_selftest` | function | `progs/piano/piano.c:730` | `static int run_selftest(void)` |
-| `sb_flush` | function | `progs/piano/piano.c:444` | `static void sb_flush(void)` |
-| `snprintf` | function | `progs/piano/piano.c:656` | `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 C4 base oct%+d vol%d", octave, volume);` |
-| `sys_pcm_open` | function | `progs/piano/piano.c:76` | `static long sys_pcm_open(long on)` |
-| `sys_pcm_pump` | function | `progs/piano/piano.c:83` | `static long sys_pcm_pump(void)` |
-| `sys_pcm_submit` | function | `progs/piano/piano.c:80` | `static long sys_pcm_submit(const void *buf, long len)` |
-| `sys_yield` | function | `progs/piano/piano.c:86` | `static void sys_yield(void)` |
-| `ui_run` | function | `progs/piano/piano.c:562` | `static void ui_run(int bench_ms)` |
-| `voice_alloc` | function | `progs/piano/piano.c:228` | `static int voice_alloc(void)` |
-| `volatile` | function | `progs/piano/piano.c:87` | `__asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");` |
+| `void` | function | `progs/nuklear/nuklear_minios.h:75` | `typedef void (*nk_scancode_cb)(int code, int make, int e0, void *ud);` |
+| `X` | macro | `progs/nuklear/nuklear_theme.c:21` | `#define X(k, i)` |
+| `fclose` | function | `progs/nuklear/nuklear_theme.c:63` | `fclose(f);` |
+| `nk_style_from_table` | function | `progs/nuklear/nuklear_theme.c:148` | `nk_style_from_table(ctx, table);` |
+| `nk_theme_active` | function | `progs/nuklear/nuklear_theme.c:48` | `int nk_theme_active(char *dst, int cap)` |
+| `nk_theme_apply` | function | `progs/nuklear/nuklear_theme.c:140` | `int nk_theme_apply(struct nk_context *ctx, const char *name)` |
+| `nk_theme_name_ok` | function | `progs/nuklear/nuklear_theme.c:36` | `static int nk_theme_name_ok(const char *name)` |
+| `nk_theme_parse_line` | function | `progs/nuklear/nuklear_theme.c:72` | `static int nk_theme_parse_line(const char *line,
+                               unsigned char rgb...` |
+| `nk_theme_probe` | function | `progs/nuklear/nuklear_theme.c:104` | `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3])` |
+| `nk_theme_slot` | struct | `progs/nuklear/nuklear_theme.c:15` | `` |
+| `snprintf` | function | `progs/nuklear/nuklear_theme.c:69` | `snprintf(dst, (unsigned)cap, "%s", NK_THEME_DEFAULT);` |
+| `NK_THEME_DEFAULT` | macro | `progs/nuklear/nuklear_theme.h:20` | `#define NK_THEME_DEFAULT` |
+| `NK_THEME_KEY_COUNT` | macro | `progs/nuklear/nuklear_theme.h:56` | `#define NK_THEME_KEY_COUNT` |
+| `NK_THEME_KEY_LIST` | macro | `progs/nuklear/nuklear_theme.h:23` | `#define NK_THEME_KEY_LIST` |
+| `NK_THEME_KEY_MAX` | macro | `progs/nuklear/nuklear_theme.h:16` | `#define NK_THEME_KEY_MAX` |
+| `NK_THEME_LINE_MAX` | macro | `progs/nuklear/nuklear_theme.h:17` | `#define NK_THEME_LINE_MAX` |
+| `NK_THEME_NAME_MAX` | macro | `progs/nuklear/nuklear_theme.h:14` | `#define NK_THEME_NAME_MAX` |
+| `NK_THEME_PATH_CURRENT` | macro | `progs/nuklear/nuklear_theme.h:19` | `#define NK_THEME_PATH_CURRENT` |
+| `NK_THEME_PATH_DIR` | macro | `progs/nuklear/nuklear_theme.h:18` | `#define NK_THEME_PATH_DIR` |
+| `NUKLEAR_THEME_H` | macro | `progs/nuklear/nuklear_theme.h:2` | `#define NUKLEAR_THEME_H` |
+| `nk_context` | struct | `progs/nuklear/nuklear_theme.h:59` | `` |
+| `nk_theme_active` | function | `progs/nuklear/nuklear_theme.h:62` | `int nk_theme_active(char *dst, int cap);` |
+| `nk_theme_apply` | function | `progs/nuklear/nuklear_theme.h:68` | `int nk_theme_apply(struct nk_context *ctx, const char *name);` |
+| `nk_theme_probe` | function | `progs/nuklear/nuklear_theme.h:65` | `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3]);` |
+| `PAINT_DEFAULT_PATH` | macro | `progs/paint/paint.c:42` | `#define PAINT_DEFAULT_PATH` |
+| `PAINT_FILE_BTN_W` | macro | `progs/paint/paint.c:44` | `#define PAINT_FILE_BTN_W` |
+| `PAINT_FILE_MAX` | macro | `progs/paint/paint.c:36` | `#define PAINT_FILE_MAX` |
+| `PAINT_FRAME_ATTEMPTS` | macro | `progs/paint/paint.c:46` | `#define PAINT_FRAME_ATTEMPTS` |
+| `PAINT_FRAME_MS` | macro | `progs/paint/paint.c:45` | `#define PAINT_FRAME_MS` |
+| `PAINT_H` | macro | `progs/paint/paint.c:33` | `#define PAINT_H` |
+| `PAINT_N` | macro | `progs/paint/paint.c:34` | `#define PAINT_N` |
+| `PAINT_NCOLORS` | macro | `progs/paint/paint.c:47` | `#define PAINT_NCOLORS` |
+| `PAINT_NSIZES` | macro | `progs/paint/paint.c:48` | `#define PAINT_NSIZES` |
+| `PAINT_NTOOLS` | macro | `progs/paint/paint.c:49` | `#define PAINT_NTOOLS` |
+| `PAINT_PANEL_TITLE` | macro | `progs/paint/paint.c:43` | `#define PAINT_PANEL_TITLE` |
+| `PAINT_PATH_MAX` | macro | `progs/paint/paint.c:35` | `#define PAINT_PATH_MAX` |
+| `PAINT_PNG_MAX` | macro | `progs/paint/paint.c:39` | `#define PAINT_PNG_MAX` |
+| `PAINT_PNG_MAX_DIM` | macro | `progs/paint/paint.c:40` | `#define PAINT_PNG_MAX_DIM` |
+| `PAINT_STATUS_MAX` | macro | `progs/paint/paint.c:37` | `#define PAINT_STATUS_MAX` |
+| `PAINT_TITLE` | macro | `progs/paint/paint.c:41` | `#define PAINT_TITLE` |
+| `PAINT_TOOL_BRUSH` | macro | `progs/paint/paint.c:52` | `#define PAINT_TOOL_BRUSH` |
+| `PAINT_TOOL_CIRCLE` | macro | `progs/paint/paint.c:55` | `#define PAINT_TOOL_CIRCLE` |
+| `PAINT_TOOL_ERASER` | macro | `progs/paint/paint.c:57` | `#define PAINT_TOOL_ERASER` |
+| `PAINT_TOOL_FILL` | macro | `progs/paint/paint.c:56` | `#define PAINT_TOOL_FILL` |
+| `PAINT_TOOL_LINE` | macro | `progs/paint/paint.c:53` | `#define PAINT_TOOL_LINE` |
+| `PAINT_TOOL_RECT` | macro | `progs/paint/paint.c:54` | `#define PAINT_TOOL_RECT` |
+| `PAINT_UI_MEMORY` | macro | `progs/paint/paint.c:38` | `#define PAINT_UI_MEMORY` |
+| `PAINT_W` | macro | `progs/paint/paint.c:32` | `#define PAINT_W` |
+| `STBI_NO_STDIO` | macro | `progs/paint/paint.c:28` | `#define STBI_NO_STDIO` |
+| `STBI_ONLY_PNG` | macro | `progs/paint/paint.c:27` | `#define STBI_ONLY_PNG` |
+| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/paint/paint.c:25` | `#define STB_IMAGE_IMPLEMENTATION` |
+| `fclose` | function | `progs/paint/paint.c:483` | `fclose(f);` |
+| `main` | function | `progs/paint/paint.c:983` | `int main(int argc, char **argv)` |
+| `memcpy` | function | `progs/paint/paint.c:583` | `memcpy(paint_backup, paint_px, sizeof(paint_px));` |
+| `memset` | function | `progs/paint/paint.c:498` | `memset(paint_px, paint_colors[PAINT_NCOLORS - 1], sizeof(paint_px));` |
+| `nk_build_palette` | function | `progs/paint/paint.c:244` | `nk_build_palette(pal768);` |
+| `nk_clear` | function | `progs/paint/paint.c:971` | `nk_clear(&ctx);` |
+| `nk_edit_string_zero_terminated` | function | `progs/paint/paint.c:637` | `nk_edit_string_zero_terminated(ctx, NK_EDIT_SIMPLE, paint_path, sizeof(paint_path) - 1, nk_filter_ascii);` |
+| `nk_end` | function | `progs/paint/paint.c:704` | `nk_end(ctx);` |
+| `nk_fill_rect` | function | `progs/paint/paint.c:655` | `nk_fill_rect(cv, r, 0, nk_rgb(255, 255, 255));` |
+| `nk_free` | function | `progs/paint/paint.c:924` | `nk_free(&ctx);` |
+| `nk_group_end` | function | `progs/paint/paint.c:690` | `nk_group_end(ctx);` |
+| `nk_input_begin` | function | `progs/paint/paint.c:887` | `nk_input_begin(&ctx);` |
+| `nk_input_end` | function | `progs/paint/paint.c:888` | `nk_input_end(&ctx);` |
+| `nk_label` | function | `progs/paint/paint.c:701` | `nk_label(ctx, line, NK_TEXT_LEFT);` |
+| `nk_layout_row_dynamic` | function | `progs/paint/paint.c:660` | `nk_layout_row_dynamic(ctx, 24, PAINT_NTOOLS);` |
+| `nk_layout_row_template_begin` | function | `progs/paint/paint.c:632` | `nk_layout_row_template_begin(ctx, 24);` |
+| `nk_layout_row_template_end` | function | `progs/paint/paint.c:636` | `nk_layout_row_template_end(ctx);` |
+| `nk_layout_row_template_push_dynamic` | function | `progs/paint/paint.c:633` | `nk_layout_row_template_push_dynamic(ctx);` |
+| `nk_layout_row_template_push_static` | function | `progs/paint/paint.c:634` | `nk_layout_row_template_push_static(ctx, PAINT_FILE_BTN_W);` |
+| `nk_poll_input` | function | `progs/paint/paint.c:962` | `nk_poll_input(&ctx);` |
+| `nk_rasterize` | function | `progs/paint/paint.c:895` | `nk_rasterize(&ctx);` |
+| `nk_sys_fb_info` | function | `progs/paint/paint.c:882` | `nk_sys_fb_info(&fw, &fh, &fp);` |
+| `nk_sys_gfx_set_title` | function | `progs/paint/paint.c:942` | `nk_sys_gfx_set_title(PAINT_TITLE);` |
+| `nk_sys_kbd_raw` | function | `progs/paint/paint.c:880` | `nk_sys_kbd_raw(1);` |
+| `nk_sys_palette` | function | `progs/paint/paint.c:881` | `nk_sys_palette(pal768);` |
+| `nk_sys_vga_mode` | function | `progs/paint/paint.c:879` | `nk_sys_vga_mode(1);` |
+| `nk_theme_apply` | function | `progs/paint/paint.c:950` | `nk_theme_apply(&ctx, 0);` |
+| `nk_widget` | function | `progs/paint/paint.c:650` | `nk_widget(&r, ctx);` |
+| `paint_adler` | function | `progs/paint/paint.c:296` | `static unsigned long paint_adler(const unsigned char *p, unsigned long n)` |
+| `paint_blit` | function | `progs/paint/paint.c:548` | `static void paint_blit(int ox, int oy)` |
+| `paint_circle_fill` | function | `progs/paint/paint.c:161` | `static int paint_circle_fill(unsigned char *buf, int w, int h, int cx,
+                          ...` |
+| `paint_clamp` | function | `progs/paint/paint.c:92` | `static int paint_clamp(int v, int lo, int hi)` |
+| `paint_crc_init` | function | `progs/paint/paint.c:271` | `static void paint_crc_init(void)` |
+| `paint_crc_update` | function | `progs/paint/paint.c:284` | `static unsigned long paint_crc_update(unsigned long c,
+                                      cons...` |
+| `paint_dab` | function | `progs/paint/paint.c:108` | `static void paint_dab(unsigned char *buf, int w, int h, int x, int y,
+                      unsig...` |
+| `paint_flood` | function | `progs/paint/paint.c:179` | `static int paint_flood(unsigned char *buf, int w, int h, int x, int y,
+                       uns...` |
+| `paint_gui_run` | function | `progs/paint/paint.c:934` | `static void paint_gui_run(void)` |
+| `paint_handle_input` | function | `progs/paint/paint.c:569` | `static void paint_handle_input(struct nk_context *ctx)` |
+| `paint_ink` | function | `progs/paint/paint.c:562` | `static unsigned char paint_ink(void)` |
+| `paint_line` | function | `progs/paint/paint.c:119` | `static int paint_line(unsigned char *buf, int w, int h, int x0, int y0,
+                      int...` |
+| `paint_load_file` | function | `progs/paint/paint.c:461` | `static int paint_load_file(const char *path)` |
+| `paint_nearest` | function | `progs/paint/paint.c:223` | `static int paint_nearest(const unsigned char *pal, unsigned r, unsigned g,
+                      ...` |
+| `paint_pal` | function | `progs/paint/paint.c:240` | `static const unsigned char *paint_pal(void)` |
+| `paint_path_ok` | function | `progs/paint/paint.c:251` | `static int paint_path_ok(const char *p)` |
+| `paint_pattern_present` | function | `progs/paint/paint.c:712` | `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)` |
+| `paint_plot` | function | `progs/paint/paint.c:99` | `static int paint_plot(unsigned char *buf, int w, int h, int x, int y,
+                      unsig...` |
+| `paint_png_encode` | function | `progs/paint/paint.c:333` | `static long paint_png_encode(unsigned char *dst, unsigned long cap,
+                             ...` |
+| `paint_put_bytes` | function | `progs/paint/paint.c:320` | `static int paint_put_bytes(unsigned char *dst, unsigned long cap,
+                           unsi...` |
+| `paint_put_u32` | function | `progs/paint/paint.c:308` | `static int paint_put_u32(unsigned char *dst, unsigned long cap,
+                         unsigned...` |
+| `paint_rect_fill` | function | `progs/paint/paint.c:144` | `static int paint_rect_fill(unsigned char *buf, int w, int h, int x0, int y0,
+                    ...` |
+| `paint_save_file` | function | `progs/paint/paint.c:514` | `static int paint_save_file(const char *path)` |
+| `paint_selftest` | function | `progs/paint/paint.c:747` | `static int paint_selftest(void)` |
+| `paint_ui_build` | function | `progs/paint/paint.c:628` | `static void paint_ui_build(struct nk_context *ctx)` |
+| `printf` | function | `progs/paint/paint.c:766` | `printf("paint: selftest plot failed\n");` |
+| `snprintf` | function | `progs/paint/paint.c:473` | `snprintf(paint_status, sizeof(paint_status), "bad path %s", path);` |
+| `stbi_image_free` | function | `progs/paint/paint.c:509` | `stbi_image_free(px);` |
+| `strcpy` | function | `progs/paint/paint.c:996` | `strcpy(paint_path, argv[1]);` |
+| `volatile` | function | `progs/paint/paint.c:975` | `__asm__ volatile("pause");` |
+| `BK_H` | macro | `progs/piano/piano.c:168` | `#define BK_H` |
+| `BK_W` | macro | `progs/piano/piano.c:167` | `#define BK_W` |
+| `BTN_GAP` | macro | `progs/piano/piano.c:518` | `#define BTN_GAP` |
+| `BTN_W` | macro | `progs/piano/piano.c:517` | `#define BTN_W` |
+| `CTRL_H` | macro | `progs/piano/piano.c:516` | `#define CTRL_H` |
+| `CTRL_Y` | macro | `progs/piano/piano.c:515` | `#define CTRL_Y` |
+| `FX_DELAY_CAP` | macro | `progs/piano/piano.c:381` | `#define FX_DELAY_CAP` |
+| `FX_DELAY_MAX_MS` | macro | `progs/piano/piano.c:383` | `#define FX_DELAY_MAX_MS` |
+| `FX_FEEDBACK` | macro | `progs/piano/piano.c:384` | `#define FX_FEEDBACK` |
+| `FX_TREM_FREQ` | macro | `progs/piano/piano.c:386` | `#define FX_TREM_FREQ` |
+| `FX_WET` | macro | `progs/piano/piano.c:385` | `#define FX_WET` |
+| `KBD_NO_NOTE` | macro | `progs/piano/piano.c:272` | `#define KBD_NO_NOTE` |
+| `KEY_H` | macro | `progs/piano/piano.c:166` | `#define KEY_H` |
+| `KEY_W` | macro | `progs/piano/piano.c:165` | `#define KEY_W` |
+| `KEY_Y` | macro | `progs/piano/piano.c:169` | `#define KEY_Y` |
+| `MAX_AUDIO_MS` | macro | `progs/piano/piano.c:68` | `#define MAX_AUDIO_MS` |
+| `MAX_VOICES` | macro | `progs/piano/piano.c:196` | `#define MAX_VOICES` |
+| `NCTRLS` | macro | `progs/piano/piano.c:531` | `#define NCTRLS` |
+| `NKEYS` | macro | `progs/piano/piano.c:184` | `#define NKEYS` |
+| `OPL3_GenerateStream` | function | `progs/piano/piano.c:463` | `OPL3_GenerateStream(&o3, st, (uint32_t)n);` |
+| `OPL3_Reset` | function | `progs/piano/piano.c:576` | `OPL3_Reset(&o3, RATE);` |
+| `OPL3_WriteReg` | function | `progs/piano/piano.c:107` | `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);` |
+| `PCM_BUF` | macro | `progs/piano/piano.c:63` | `#define PCM_BUF` |
+| `PIANO_BASE_MIDI` | macro | `progs/piano/piano.c:170` | `#define PIANO_BASE_MIDI` |
+| `PIANO_FRAME_MS` | macro | `progs/piano/piano.c:76` | `#define PIANO_FRAME_MS` |
+| `PIANO_OCTAVES` | macro | `progs/piano/piano.c:171` | `#define PIANO_OCTAVES` |
+| `RATE` | macro | `progs/piano/piano.c:61` | `#define RATE` |
+| `SYS_SB16_OPEN` | macro | `progs/piano/piano.c:57` | `#define SYS_SB16_OPEN` |
+| `SYS_SB16_PUMP` | macro | `progs/piano/piano.c:60` | `#define SYS_SB16_PUMP` |
+| `SYS_SB16_SUBMIT` | macro | `progs/piano/piano.c:59` | `#define SYS_SB16_SUBMIT` |
+| `UI_MEMORY` | macro | `progs/piano/piano.c:54` | `#define UI_MEMORY` |
+| `clamp_midi` | function | `progs/piano/piano.c:208` | `static int clamp_midi(int m)` |
+| `ctrl_active` | function | `progs/piano/piano.c:537` | `static int ctrl_active(int id)` |
+| `ctrl_hit` | function | `progs/piano/piano.c:532` | `static int ctrl_hit(int id, int mx, int my)` |
+| `ctrl_press` | function | `progs/piano/piano.c:546` | `static void ctrl_press(int id)` |
+| `fx_configure` | function | `progs/piano/piano.c:396` | `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)` |
+| `fx_process` | function | `progs/piano/piano.c:414` | `static float fx_process(float x)` |
+| `hit_key` | function | `progs/piano/piano.c:487` | `static int hit_key(int mx, int my)` |
+| `hit_velocity` | function | `progs/piano/piano.c:505` | `static int hit_velocity(int key, int my)` |
+| `kbd_all_off` | function | `progs/piano/piano.c:307` | `static void kbd_all_off(void)` |
+| `kbd_semitone` | function | `progs/piano/piano.c:273` | `static int kbd_semitone(int code)` |
+| `key_rect` | function | `progs/piano/piano.c:480` | `static void key_rect(int key, int *x, int *y, int *w, int *h)` |
+| `main` | function | `progs/piano/piano.c:904` | `int main(int argc, char **argv)` |
+| `memset` | function | `progs/piano/piano.c:407` | `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));` |
+| `midi_to_key` | function | `progs/piano/piano.c:185` | `static int midi_to_key(int midi)` |
+| `nk_build_palette` | function | `progs/piano/piano.c:571` | `nk_build_palette(pal768);` |
+| `nk_clear` | function | `progs/piano/piano.c:705` | `nk_clear(&ctx);` |
+| `nk_draw_text` | function | `progs/piano/piano.c:653` | `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));` |
+| `nk_end` | function | `progs/piano/piano.c:674` | `nk_end(&ctx);` |
+| `nk_fill_rect` | function | `progs/piano/piano.c:640` | `nk_fill_rect(canvas, r, 0, col);` |
+| `nk_free` | function | `progs/piano/piano.c:731` | `nk_free(&ctx);` |
+| `nk_input_begin` | function | `progs/piano/piano.c:615` | `nk_input_begin(&ctx);` |
+| `nk_input_end` | function | `progs/piano/piano.c:617` | `nk_input_end(&ctx);` |
+| `nk_poll_input` | function | `progs/piano/piano.c:616` | `nk_poll_input(&ctx);` |
+| `nk_rasterize` | function | `progs/piano/piano.c:701` | `nk_rasterize(&ctx);` |
+| `nk_rgb` | function | `progs/piano/piano.c:639` | `: nk_rgb(240, 240, 240);` |
+| `nk_set_scancode_hook` | function | `progs/piano/piano.c:584` | `nk_set_scancode_hook(piano_scancode, 0);` |
+| `nk_stroke_rect` | function | `progs/piano/piano.c:641` | `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));` |
+| `nk_sys_fb_info` | function | `progs/piano/piano.c:573` | `nk_sys_fb_info(&fw, &fh, &fp);` |
+| `nk_sys_gfx_set_title` | function | `progs/piano/piano.c:569` | `nk_sys_gfx_set_title("Piano");` |
+| `nk_sys_kbd_raw` | function | `progs/piano/piano.c:570` | `nk_sys_kbd_raw(1);` |
+| `nk_sys_palette` | function | `progs/piano/piano.c:572` | `nk_sys_palette(pal768);` |
+| `nk_sys_vga_mode` | function | `progs/piano/piano.c:567` | `nk_sys_vga_mode(1);` |
+| `nk_theme_apply` | function | `progs/piano/piano.c:598` | `nk_theme_apply(&ctx, 0);` |
+| `note_off_key` | function | `progs/piano/piano.c:242` | `static void note_off_key(int key)` |
+| `note_off_sc` | function | `progs/piano/piano.c:327` | `static void note_off_sc(int code)` |
+| `note_on_key` | function | `progs/piano/piano.c:256` | `static void note_on_key(int key, int midi, int vel)` |
+| `note_on_sc` | function | `progs/piano/piano.c:313` | `static void note_on_sc(int code, int vel)` |
+| `o3_chreg` | function | `progs/piano/piano.c:110` | `static void o3_chreg(int ch, int regbase, int val)` |
+| `o3_instrument` | function | `progs/piano/piano.c:263` | `o3_instrument(ch, vel);` |
+| `o3_note` | function | `progs/piano/piano.c:147` | `static void o3_note(int ch, int midi, int on)` |
+| `o3_op` | function | `progs/piano/piano.c:102` | `static int o3_op(int ch, int is_car)` |
+| `o3_opreg` | function | `progs/piano/piano.c:106` | `static void o3_opreg(int ch, int is_car, int regbase, int val)` |
+| `pedal_set` | function | `progs/piano/piano.c:216` | `static void pedal_set(int on)` |
+| `piano_scancode` | function | `progs/piano/piano.c:344` | `static void piano_scancode(int code, int make, int e0, void *ud)` |
+| `printf` | function | `progs/piano/piano.c:593` | `printf("piano: init failed\n");` |
+| `render_audio` | function | `progs/piano/piano.c:454` | `static void render_audio(long ms)` |
+| `run_selftest` | function | `progs/piano/piano.c:738` | `static int run_selftest(void)` |
+| `sb_flush` | function | `progs/piano/piano.c:445` | `static void sb_flush(void)` |
+| `snprintf` | function | `progs/piano/piano.c:659` | `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 C4 base oct%+d vol%d", octave, volume);` |
+| `sys_pcm_open` | function | `progs/piano/piano.c:77` | `static long sys_pcm_open(long on)` |
+| `sys_pcm_pump` | function | `progs/piano/piano.c:84` | `static long sys_pcm_pump(void)` |
+| `sys_pcm_submit` | function | `progs/piano/piano.c:81` | `static long sys_pcm_submit(const void *buf, long len)` |
+| `sys_yield` | function | `progs/piano/piano.c:87` | `static void sys_yield(void)` |
+| `ui_run` | function | `progs/piano/piano.c:564` | `static void ui_run(int bench_ms)` |
+| `voice_alloc` | function | `progs/piano/piano.c:229` | `static int voice_alloc(void)` |
+| `volatile` | function | `progs/piano/piano.c:88` | `__asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");` |
 | `SDL_Delay` | function | `progs/pokemon/minios_stubs/SDL.h:14` | `static inline void SDL_Delay(Uint32 ms)` |
 | `SDL_GetPerformanceCounter` | function | `progs/pokemon/minios_stubs/SDL.h:10` | `static inline Uint64 SDL_GetPerformanceCounter(void)` |
 | `SDL_GetPerformanceFrequency` | function | `progs/pokemon/minios_stubs/SDL.h:12` | `static inline Uint64 SDL_GetPerformanceFrequency(void)` |
@@ -9280,160 +9495,162 @@ Z_Malloc
 | `torus_soft_assign` | function | `progs/topogpt3/topogpt3.c:820` | `static void torus_soft_assign(const float *phi1, const float *phi2,
                              ...` |
 | `volatile` | function | `progs/topogpt3/topogpt3.c:1605` | `__asm__ volatile ("rdtsc" : "=a"(lo), "=d"(hi));` |
-| `VEDIT_BASE_MAX` | macro | `progs/vedit/vedit.c:86` | `#define VEDIT_BASE_MAX` |
-| `VEDIT_BUILD_LOG` | macro | `progs/vedit/vedit.c:82` | `#define VEDIT_BUILD_LOG` |
-| `VEDIT_COL_COMMENT` | macro | `progs/vedit/vedit.c:100` | `#define VEDIT_COL_COMMENT` |
-| `VEDIT_COL_DEFAULT` | macro | `progs/vedit/vedit.c:97` | `#define VEDIT_COL_DEFAULT` |
-| `VEDIT_COL_KEYWORD` | macro | `progs/vedit/vedit.c:98` | `#define VEDIT_COL_KEYWORD` |
-| `VEDIT_COL_NUMBER` | macro | `progs/vedit/vedit.c:101` | `#define VEDIT_COL_NUMBER` |
-| `VEDIT_COL_PREPROC` | macro | `progs/vedit/vedit.c:102` | `#define VEDIT_COL_PREPROC` |
-| `VEDIT_COL_STRING` | macro | `progs/vedit/vedit.c:99` | `#define VEDIT_COL_STRING` |
-| `VEDIT_DEFAULT_FILE` | macro | `progs/vedit/vedit.c:65` | `#define VEDIT_DEFAULT_FILE` |
-| `VEDIT_DIR_ASM` | macro | `progs/vedit/vedit.c:79` | `#define VEDIT_DIR_ASM` |
-| `VEDIT_DIR_BIN` | macro | `progs/vedit/vedit.c:80` | `#define VEDIT_DIR_BIN` |
-| `VEDIT_DIR_CVM` | macro | `progs/vedit/vedit.c:81` | `#define VEDIT_DIR_CVM` |
-| `VEDIT_FILE_MAX` | macro | `progs/vedit/vedit.c:63` | `#define VEDIT_FILE_MAX` |
-| `VEDIT_FNAME_MAX` | macro | `progs/vedit/vedit.c:64` | `#define VEDIT_FNAME_MAX` |
-| `VEDIT_KEY_DEL` | macro | `progs/vedit/vedit.c:120` | `#define VEDIT_KEY_DEL` |
-| `VEDIT_KEY_DOWN` | macro | `progs/vedit/vedit.c:113` | `#define VEDIT_KEY_DOWN` |
-| `VEDIT_KEY_DUMP` | macro | `progs/vedit/vedit.c:73` | `#define VEDIT_KEY_DUMP` |
-| `VEDIT_KEY_END` | macro | `progs/vedit/vedit.c:117` | `#define VEDIT_KEY_END` |
-| `VEDIT_KEY_ESC` | macro | `progs/vedit/vedit.c:121` | `#define VEDIT_KEY_ESC` |
-| `VEDIT_KEY_HOME` | macro | `progs/vedit/vedit.c:116` | `#define VEDIT_KEY_HOME` |
-| `VEDIT_KEY_LEFT` | macro | `progs/vedit/vedit.c:114` | `#define VEDIT_KEY_LEFT` |
-| `VEDIT_KEY_LINK` | macro | `progs/vedit/vedit.c:72` | `#define VEDIT_KEY_LINK` |
-| `VEDIT_KEY_PGDN` | macro | `progs/vedit/vedit.c:119` | `#define VEDIT_KEY_PGDN` |
-| `VEDIT_KEY_PGUP` | macro | `progs/vedit/vedit.c:118` | `#define VEDIT_KEY_PGUP` |
-| `VEDIT_KEY_RIGHT` | macro | `progs/vedit/vedit.c:115` | `#define VEDIT_KEY_RIGHT` |
-| `VEDIT_KEY_RUN` | macro | `progs/vedit/vedit.c:71` | `#define VEDIT_KEY_RUN` |
-| `VEDIT_KEY_UP` | macro | `progs/vedit/vedit.c:112` | `#define VEDIT_KEY_UP` |
-| `VEDIT_LANG_C` | macro | `progs/vedit/vedit.c:92` | `#define VEDIT_LANG_C` |
-| `VEDIT_LANG_LUA` | macro | `progs/vedit/vedit.c:94` | `#define VEDIT_LANG_LUA` |
-| `VEDIT_LANG_PY` | macro | `progs/vedit/vedit.c:93` | `#define VEDIT_LANG_PY` |
-| `VEDIT_LANG_TEXT` | macro | `progs/vedit/vedit.c:91` | `#define VEDIT_LANG_TEXT` |
-| `VEDIT_LINE_MAX` | macro | `progs/vedit/vedit.c:61` | `#define VEDIT_LINE_MAX` |
-| `VEDIT_LINE_USED` | macro | `progs/vedit/vedit.c:62` | `#define VEDIT_LINE_USED` |
-| `VEDIT_LINK_CVM` | macro | `progs/vedit/vedit.c:84` | `#define VEDIT_LINK_CVM` |
-| `VEDIT_LINK_ELF` | macro | `progs/vedit/vedit.c:83` | `#define VEDIT_LINK_ELF` |
-| `VEDIT_LOG_TAIL` | macro | `progs/vedit/vedit.c:88` | `#define VEDIT_LOG_TAIL` |
-| `VEDIT_MAX_LINES` | macro | `progs/vedit/vedit.c:60` | `#define VEDIT_MAX_LINES` |
-| `VEDIT_MSG_MAX` | macro | `progs/vedit/vedit.c:66` | `#define VEDIT_MSG_MAX` |
-| `VEDIT_PATH_MAX` | macro | `progs/vedit/vedit.c:87` | `#define VEDIT_PATH_MAX` |
-| `VEDIT_PROMPT_FIND` | macro | `progs/vedit/vedit.c:1223` | `#define VEDIT_PROMPT_FIND` |
-| `VEDIT_PROMPT_GOTO` | macro | `progs/vedit/vedit.c:1224` | `#define VEDIT_PROMPT_GOTO` |
-| `VEDIT_PROMPT_LINK` | macro | `progs/vedit/vedit.c:1226` | `#define VEDIT_PROMPT_LINK` |
-| `VEDIT_PROMPT_NAME` | macro | `progs/vedit/vedit.c:1225` | `#define VEDIT_PROMPT_NAME` |
-| `VEDIT_SEQ_SPINS` | macro | `progs/vedit/vedit.c:69` | `#define VEDIT_SEQ_SPINS` |
-| `VEDIT_STATUS_MAX` | macro | `progs/vedit/vedit.c:85` | `#define VEDIT_STATUS_MAX` |
-| `VEDIT_ST_BLOCK` | macro | `progs/vedit/vedit.c:105` | `#define VEDIT_ST_BLOCK` |
-| `VEDIT_ST_LUABLK` | macro | `progs/vedit/vedit.c:108` | `#define VEDIT_ST_LUABLK` |
-| `VEDIT_ST_LUASTR` | macro | `progs/vedit/vedit.c:109` | `#define VEDIT_ST_LUASTR` |
-| `VEDIT_ST_PY3D` | macro | `progs/vedit/vedit.c:107` | `#define VEDIT_ST_PY3D` |
-| `VEDIT_ST_PY3S` | macro | `progs/vedit/vedit.c:106` | `#define VEDIT_ST_PY3S` |
-| `VEDIT_TAB_W` | macro | `progs/vedit/vedit.c:68` | `#define VEDIT_TAB_W` |
-| `VEDIT_TOOL_CVM` | macro | `progs/vedit/vedit.c:76` | `#define VEDIT_TOOL_CVM` |
-| `VEDIT_TOOL_LD` | macro | `progs/vedit/vedit.c:75` | `#define VEDIT_TOOL_LD` |
-| `VEDIT_TOOL_LUA` | macro | `progs/vedit/vedit.c:77` | `#define VEDIT_TOOL_LUA` |
-| `VEDIT_TOOL_MINIGCC` | macro | `progs/vedit/vedit.c:74` | `#define VEDIT_TOOL_MINIGCC` |
-| `VEDIT_TOOL_PY` | macro | `progs/vedit/vedit.c:78` | `#define VEDIT_TOOL_PY` |
-| `VEDIT_UI_MEMORY` | macro | `progs/vedit/vedit.c:70` | `#define VEDIT_UI_MEMORY` |
-| `VEDIT_WORD_MAX` | macro | `progs/vedit/vedit.c:67` | `#define VEDIT_WORD_MAX` |
-| `fclose` | function | `progs/vedit/vedit.c:772` | `fclose(f);` |
-| `fflush` | function | `progs/vedit/vedit.c:932` | `fflush(stdout);` |
-| `free` | function | `progs/vedit/vedit.c:1796` | `free(vedit_pool);` |
-| `main` | function | `progs/vedit/vedit.c:1745` | `int main(int argc, char **argv)` |
-| `memcpy` | function | `progs/vedit/vedit.c:196` | `memcpy(vedit_msg, s, n);` |
-| `memmove` | function | `progs/vedit/vedit.c:566` | `memmove(vedit_row_ptr(k), vedit_row_ptr(k + 1), VEDIT_LINE_MAX);` |
-| `memset` | function | `progs/vedit/vedit.c:1779` | `memset(vedit_used, 0, VEDIT_MAX_LINES * sizeof(int));` |
-| `nk_build_palette` | function | `progs/vedit/vedit.c:949` | `nk_build_palette(pal768);` |
-| `nk_clear` | function | `progs/vedit/vedit.c:1659` | `nk_clear(&ctx);` |
-| `nk_draw_text` | function | `progs/vedit/vedit.c:1276` | `nk_draw_text(canvas, nk_rect((float)(x - vedit_gutter_w * vedit_cw), (float)y, (float)(vedit_gutter_w * vedit_cw), (floa` |
-| `nk_end` | function | `progs/vedit/vedit.c:1359` | `nk_end(ctx);` |
-| `nk_fill_rect` | function | `progs/vedit/vedit.c:1282` | `nk_fill_rect(canvas, nk_rect((float)x, (float)y, (float)((vedit_cols - vedit_gutter_w) * vedit_cw), (float)vedit_ch), 0,` |
-| `nk_free` | function | `progs/vedit/vedit.c:1672` | `nk_free(&ctx);` |
-| `nk_input_begin` | function | `progs/vedit/vedit.c:1653` | `nk_input_begin(&ctx);` |
-| `nk_input_end` | function | `progs/vedit/vedit.c:1654` | `nk_input_end(&ctx);` |
-| `nk_rasterize` | function | `progs/vedit/vedit.c:1656` | `nk_rasterize(&ctx);` |
-| `nk_sys_fb_info` | function | `progs/vedit/vedit.c:1622` | `nk_sys_fb_info(&fw, &fh, &fp);` |
-| `nk_sys_palette` | function | `progs/vedit/vedit.c:950` | `nk_sys_palette(pal768);` |
-| `nk_sys_vga_mode` | function | `progs/vedit/vedit.c:1618` | `nk_sys_vga_mode(1);` |
-| `printf` | function | `progs/vedit/vedit.c:924` | `printf("vedit: no output captured\n");` |
-| `putchar` | function | `progs/vedit/vedit.c:1208` | `putchar(l[c]);` |
-| `separators` | function | `progs/vedit/vedit.c:235` | `* allow_quote exists because C digit separators (1'000'000) are not
+| `VEDIT_BASE_MAX` | macro | `progs/vedit/vedit.c:108` | `#define VEDIT_BASE_MAX` |
+| `VEDIT_BUILD_LOG` | macro | `progs/vedit/vedit.c:104` | `#define VEDIT_BUILD_LOG` |
+| `VEDIT_COL_COMMENT` | macro | `progs/vedit/vedit.c:122` | `#define VEDIT_COL_COMMENT` |
+| `VEDIT_COL_DEFAULT` | macro | `progs/vedit/vedit.c:119` | `#define VEDIT_COL_DEFAULT` |
+| `VEDIT_COL_KEYWORD` | macro | `progs/vedit/vedit.c:120` | `#define VEDIT_COL_KEYWORD` |
+| `VEDIT_COL_NUMBER` | macro | `progs/vedit/vedit.c:123` | `#define VEDIT_COL_NUMBER` |
+| `VEDIT_COL_PREPROC` | macro | `progs/vedit/vedit.c:124` | `#define VEDIT_COL_PREPROC` |
+| `VEDIT_COL_STRING` | macro | `progs/vedit/vedit.c:121` | `#define VEDIT_COL_STRING` |
+| `VEDIT_DEFAULT_FILE` | macro | `progs/vedit/vedit.c:86` | `#define VEDIT_DEFAULT_FILE` |
+| `VEDIT_DIR_ASM` | macro | `progs/vedit/vedit.c:101` | `#define VEDIT_DIR_ASM` |
+| `VEDIT_DIR_BIN` | macro | `progs/vedit/vedit.c:102` | `#define VEDIT_DIR_BIN` |
+| `VEDIT_DIR_CVM` | macro | `progs/vedit/vedit.c:103` | `#define VEDIT_DIR_CVM` |
+| `VEDIT_ESC_MS` | macro | `progs/vedit/vedit.c:90` | `#define VEDIT_ESC_MS` |
+| `VEDIT_FILE_MAX` | macro | `progs/vedit/vedit.c:84` | `#define VEDIT_FILE_MAX` |
+| `VEDIT_FNAME_MAX` | macro | `progs/vedit/vedit.c:85` | `#define VEDIT_FNAME_MAX` |
+| `VEDIT_FRAME_MS` | macro | `progs/vedit/vedit.c:91` | `#define VEDIT_FRAME_MS` |
+| `VEDIT_KEY_DEL` | macro | `progs/vedit/vedit.c:142` | `#define VEDIT_KEY_DEL` |
+| `VEDIT_KEY_DOWN` | macro | `progs/vedit/vedit.c:135` | `#define VEDIT_KEY_DOWN` |
+| `VEDIT_KEY_DUMP` | macro | `progs/vedit/vedit.c:95` | `#define VEDIT_KEY_DUMP` |
+| `VEDIT_KEY_END` | macro | `progs/vedit/vedit.c:139` | `#define VEDIT_KEY_END` |
+| `VEDIT_KEY_ESC` | macro | `progs/vedit/vedit.c:143` | `#define VEDIT_KEY_ESC` |
+| `VEDIT_KEY_HOME` | macro | `progs/vedit/vedit.c:138` | `#define VEDIT_KEY_HOME` |
+| `VEDIT_KEY_LEFT` | macro | `progs/vedit/vedit.c:136` | `#define VEDIT_KEY_LEFT` |
+| `VEDIT_KEY_LINK` | macro | `progs/vedit/vedit.c:94` | `#define VEDIT_KEY_LINK` |
+| `VEDIT_KEY_PGDN` | macro | `progs/vedit/vedit.c:141` | `#define VEDIT_KEY_PGDN` |
+| `VEDIT_KEY_PGUP` | macro | `progs/vedit/vedit.c:140` | `#define VEDIT_KEY_PGUP` |
+| `VEDIT_KEY_RIGHT` | macro | `progs/vedit/vedit.c:137` | `#define VEDIT_KEY_RIGHT` |
+| `VEDIT_KEY_RUN` | macro | `progs/vedit/vedit.c:93` | `#define VEDIT_KEY_RUN` |
+| `VEDIT_KEY_UP` | macro | `progs/vedit/vedit.c:134` | `#define VEDIT_KEY_UP` |
+| `VEDIT_LANG_C` | macro | `progs/vedit/vedit.c:114` | `#define VEDIT_LANG_C` |
+| `VEDIT_LANG_LUA` | macro | `progs/vedit/vedit.c:116` | `#define VEDIT_LANG_LUA` |
+| `VEDIT_LANG_PY` | macro | `progs/vedit/vedit.c:115` | `#define VEDIT_LANG_PY` |
+| `VEDIT_LANG_TEXT` | macro | `progs/vedit/vedit.c:113` | `#define VEDIT_LANG_TEXT` |
+| `VEDIT_LINE_MAX` | macro | `progs/vedit/vedit.c:82` | `#define VEDIT_LINE_MAX` |
+| `VEDIT_LINE_USED` | macro | `progs/vedit/vedit.c:83` | `#define VEDIT_LINE_USED` |
+| `VEDIT_LINK_CVM` | macro | `progs/vedit/vedit.c:106` | `#define VEDIT_LINK_CVM` |
+| `VEDIT_LINK_ELF` | macro | `progs/vedit/vedit.c:105` | `#define VEDIT_LINK_ELF` |
+| `VEDIT_LOG_TAIL` | macro | `progs/vedit/vedit.c:110` | `#define VEDIT_LOG_TAIL` |
+| `VEDIT_MAX_LINES` | macro | `progs/vedit/vedit.c:81` | `#define VEDIT_MAX_LINES` |
+| `VEDIT_MSG_MAX` | macro | `progs/vedit/vedit.c:87` | `#define VEDIT_MSG_MAX` |
+| `VEDIT_PATH_MAX` | macro | `progs/vedit/vedit.c:109` | `#define VEDIT_PATH_MAX` |
+| `VEDIT_PROMPT_FIND` | macro | `progs/vedit/vedit.c:1262` | `#define VEDIT_PROMPT_FIND` |
+| `VEDIT_PROMPT_GOTO` | macro | `progs/vedit/vedit.c:1263` | `#define VEDIT_PROMPT_GOTO` |
+| `VEDIT_PROMPT_LINK` | macro | `progs/vedit/vedit.c:1265` | `#define VEDIT_PROMPT_LINK` |
+| `VEDIT_PROMPT_NAME` | macro | `progs/vedit/vedit.c:1264` | `#define VEDIT_PROMPT_NAME` |
+| `VEDIT_STATUS_MAX` | macro | `progs/vedit/vedit.c:107` | `#define VEDIT_STATUS_MAX` |
+| `VEDIT_ST_BLOCK` | macro | `progs/vedit/vedit.c:127` | `#define VEDIT_ST_BLOCK` |
+| `VEDIT_ST_LUABLK` | macro | `progs/vedit/vedit.c:130` | `#define VEDIT_ST_LUABLK` |
+| `VEDIT_ST_LUASTR` | macro | `progs/vedit/vedit.c:131` | `#define VEDIT_ST_LUASTR` |
+| `VEDIT_ST_PY3D` | macro | `progs/vedit/vedit.c:129` | `#define VEDIT_ST_PY3D` |
+| `VEDIT_ST_PY3S` | macro | `progs/vedit/vedit.c:128` | `#define VEDIT_ST_PY3S` |
+| `VEDIT_TAB_W` | macro | `progs/vedit/vedit.c:89` | `#define VEDIT_TAB_W` |
+| `VEDIT_TOOL_CVM` | macro | `progs/vedit/vedit.c:98` | `#define VEDIT_TOOL_CVM` |
+| `VEDIT_TOOL_LD` | macro | `progs/vedit/vedit.c:97` | `#define VEDIT_TOOL_LD` |
+| `VEDIT_TOOL_LUA` | macro | `progs/vedit/vedit.c:99` | `#define VEDIT_TOOL_LUA` |
+| `VEDIT_TOOL_MINIGCC` | macro | `progs/vedit/vedit.c:96` | `#define VEDIT_TOOL_MINIGCC` |
+| `VEDIT_TOOL_PY` | macro | `progs/vedit/vedit.c:100` | `#define VEDIT_TOOL_PY` |
+| `VEDIT_UI_MEMORY` | macro | `progs/vedit/vedit.c:92` | `#define VEDIT_UI_MEMORY` |
+| `VEDIT_WORD_MAX` | macro | `progs/vedit/vedit.c:88` | `#define VEDIT_WORD_MAX` |
+| `fclose` | function | `progs/vedit/vedit.c:794` | `fclose(f);` |
+| `fflush` | function | `progs/vedit/vedit.c:954` | `fflush(stdout);` |
+| `free` | function | `progs/vedit/vedit.c:1848` | `free(vedit_pool);` |
+| `main` | function | `progs/vedit/vedit.c:1797` | `int main(int argc, char **argv)` |
+| `memcpy` | function | `progs/vedit/vedit.c:218` | `memcpy(vedit_msg, s, n);` |
+| `memmove` | function | `progs/vedit/vedit.c:588` | `memmove(vedit_row_ptr(k), vedit_row_ptr(k + 1), VEDIT_LINE_MAX);` |
+| `memset` | function | `progs/vedit/vedit.c:1831` | `memset(vedit_used, 0, VEDIT_MAX_LINES * sizeof(int));` |
+| `nk_build_palette` | function | `progs/vedit/vedit.c:971` | `nk_build_palette(pal768);` |
+| `nk_clear` | function | `progs/vedit/vedit.c:1705` | `nk_clear(&ctx);` |
+| `nk_draw_text` | function | `progs/vedit/vedit.c:1315` | `nk_draw_text(canvas, nk_rect((float)(x - vedit_gutter_w * vedit_cw), (float)y, (float)(vedit_gutter_w * vedit_cw), (floa` |
+| `nk_end` | function | `progs/vedit/vedit.c:1398` | `nk_end(ctx);` |
+| `nk_fill_rect` | function | `progs/vedit/vedit.c:1321` | `nk_fill_rect(canvas, nk_rect((float)x, (float)y, (float)((vedit_cols - vedit_gutter_w) * vedit_cw), (float)vedit_ch), 0,` |
+| `nk_free` | function | `progs/vedit/vedit.c:1724` | `nk_free(&ctx);` |
+| `nk_input_begin` | function | `progs/vedit/vedit.c:1699` | `nk_input_begin(&ctx);` |
+| `nk_input_end` | function | `progs/vedit/vedit.c:1700` | `nk_input_end(&ctx);` |
+| `nk_rasterize` | function | `progs/vedit/vedit.c:1702` | `nk_rasterize(&ctx);` |
+| `nk_sys_fb_info` | function | `progs/vedit/vedit.c:1667` | `nk_sys_fb_info(&fw, &fh, &fp);` |
+| `nk_sys_palette` | function | `progs/vedit/vedit.c:972` | `nk_sys_palette(pal768);` |
+| `nk_sys_vga_mode` | function | `progs/vedit/vedit.c:1662` | `nk_sys_vga_mode(1);` |
+| `nk_theme_apply` | function | `progs/vedit/vedit.c:1693` | `nk_theme_apply(&ctx, 0);` |
+| `printf` | function | `progs/vedit/vedit.c:946` | `printf("vedit: no output captured\n");` |
+| `putchar` | function | `progs/vedit/vedit.c:1247` | `putchar(l[c]);` |
+| `separators` | function | `progs/vedit/vedit.c:257` | `* allow_quote exists because C digit separators (1'000'000) are not
  * valid in Python/Lua number...` |
-| `snprintf` | function | `progs/vedit/vedit.c:728` | `snprintf(nb, sizeof(nb), "found line %d", r + 1);` |
-| `vedit_ansi_for` | function | `progs/vedit/vedit.c:1181` | `static void vedit_ansi_for(int col)` |
-| `vedit_backspace` | function | `progs/vedit/vedit.c:571` | `static void vedit_backspace(void)` |
-| `vedit_base_of` | function | `progs/vedit/vedit.c:868` | `static int vedit_base_of(const char *fname, char *dst, size_t cap)` |
-| `vedit_c_bg` | function | `progs/vedit/vedit.c:124` | `static struct nk_color vedit_c_bg(void)` |
-| `vedit_c_comment` | function | `progs/vedit/vedit.c:129` | `static struct nk_color vedit_c_comment(void)` |
-| `vedit_c_cursor` | function | `progs/vedit/vedit.c:135` | `static struct nk_color vedit_c_cursor(void)` |
-| `vedit_c_default` | function | `progs/vedit/vedit.c:126` | `static struct nk_color vedit_c_default(void)` |
-| `vedit_c_gutter` | function | `progs/vedit/vedit.c:125` | `static struct nk_color vedit_c_gutter(void)` |
-| `vedit_c_header` | function | `progs/vedit/vedit.c:132` | `static struct nk_color vedit_c_header(void)` |
-| `vedit_c_headtxt` | function | `progs/vedit/vedit.c:133` | `static struct nk_color vedit_c_headtxt(void)` |
-| `vedit_c_keyword` | function | `progs/vedit/vedit.c:127` | `static struct nk_color vedit_c_keyword(void)` |
-| `vedit_c_number` | function | `progs/vedit/vedit.c:130` | `static struct nk_color vedit_c_number(void)` |
-| `vedit_c_preproc` | function | `progs/vedit/vedit.c:131` | `static struct nk_color vedit_c_preproc(void)` |
-| `vedit_c_status` | function | `progs/vedit/vedit.c:134` | `static struct nk_color vedit_c_status(void)` |
-| `vedit_c_string` | function | `progs/vedit/vedit.c:128` | `static struct nk_color vedit_c_string(void)` |
-| `vedit_clamp` | function | `progs/vedit/vedit.c:509` | `static void vedit_clamp(void)` |
-| `vedit_cmd_exec` | function | `progs/vedit/vedit.c:965` | `static void vedit_cmd_exec(const char *out, int kind)` |
-| `vedit_cmd_link` | function | `progs/vedit/vedit.c:1027` | `static void vedit_cmd_link(const char *fmt)` |
-| `vedit_cmd_run` | function | `progs/vedit/vedit.c:978` | `static void vedit_cmd_run(void)` |
-| `vedit_console_dump` | function | `progs/vedit/vedit.c:1188` | `static void vedit_console_dump(void)` |
-| `vedit_delete_char` | function | `progs/vedit/vedit.c:602` | `static void vedit_delete_char(void)` |
-| `vedit_delete_line_at` | function | `progs/vedit/vedit.c:560` | `static void vedit_delete_line_at(int idx)` |
-| `vedit_draw_row` | function | `progs/vedit/vedit.c:1253` | `static void vedit_draw_row(struct nk_command_buffer *canvas,
+| `snprintf` | function | `progs/vedit/vedit.c:750` | `snprintf(nb, sizeof(nb), "found line %d", r + 1);` |
+| `vedit_ansi_for` | function | `progs/vedit/vedit.c:1220` | `static void vedit_ansi_for(int col)` |
+| `vedit_backspace` | function | `progs/vedit/vedit.c:593` | `static void vedit_backspace(void)` |
+| `vedit_base_of` | function | `progs/vedit/vedit.c:890` | `static int vedit_base_of(const char *fname, char *dst, size_t cap)` |
+| `vedit_c_bg` | function | `progs/vedit/vedit.c:146` | `static struct nk_color vedit_c_bg(void)` |
+| `vedit_c_comment` | function | `progs/vedit/vedit.c:151` | `static struct nk_color vedit_c_comment(void)` |
+| `vedit_c_cursor` | function | `progs/vedit/vedit.c:157` | `static struct nk_color vedit_c_cursor(void)` |
+| `vedit_c_default` | function | `progs/vedit/vedit.c:148` | `static struct nk_color vedit_c_default(void)` |
+| `vedit_c_gutter` | function | `progs/vedit/vedit.c:147` | `static struct nk_color vedit_c_gutter(void)` |
+| `vedit_c_header` | function | `progs/vedit/vedit.c:154` | `static struct nk_color vedit_c_header(void)` |
+| `vedit_c_headtxt` | function | `progs/vedit/vedit.c:155` | `static struct nk_color vedit_c_headtxt(void)` |
+| `vedit_c_keyword` | function | `progs/vedit/vedit.c:149` | `static struct nk_color vedit_c_keyword(void)` |
+| `vedit_c_number` | function | `progs/vedit/vedit.c:152` | `static struct nk_color vedit_c_number(void)` |
+| `vedit_c_preproc` | function | `progs/vedit/vedit.c:153` | `static struct nk_color vedit_c_preproc(void)` |
+| `vedit_c_status` | function | `progs/vedit/vedit.c:156` | `static struct nk_color vedit_c_status(void)` |
+| `vedit_c_string` | function | `progs/vedit/vedit.c:150` | `static struct nk_color vedit_c_string(void)` |
+| `vedit_clamp` | function | `progs/vedit/vedit.c:531` | `static void vedit_clamp(void)` |
+| `vedit_cmd_exec` | function | `progs/vedit/vedit.c:987` | `static void vedit_cmd_exec(const char *out, int kind)` |
+| `vedit_cmd_link` | function | `progs/vedit/vedit.c:1049` | `static void vedit_cmd_link(const char *fmt)` |
+| `vedit_cmd_run` | function | `progs/vedit/vedit.c:1000` | `static void vedit_cmd_run(void)` |
+| `vedit_console_dump` | function | `progs/vedit/vedit.c:1227` | `static void vedit_console_dump(void)` |
+| `vedit_delete_char` | function | `progs/vedit/vedit.c:624` | `static void vedit_delete_char(void)` |
+| `vedit_delete_line_at` | function | `progs/vedit/vedit.c:582` | `static void vedit_delete_line_at(int idx)` |
+| `vedit_draw_row` | function | `progs/vedit/vedit.c:1292` | `static void vedit_draw_row(struct nk_command_buffer *canvas,
                            struct nk...` |
-| `vedit_draw_ui` | function | `progs/vedit/vedit.c:1333` | `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
+| `vedit_draw_ui` | function | `progs/vedit/vedit.c:1372` | `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                     ...` |
-| `vedit_find` | function | `progs/vedit/vedit.c:705` | `static void vedit_find(const char *needle)` |
-| `vedit_follow` | function | `progs/vedit/vedit.c:521` | `static void vedit_follow(void)` |
-| `vedit_getc_blocking` | function | `progs/vedit/vedit.c:1137` | `static long vedit_getc_blocking(void)` |
-| `vedit_getc_raw` | function | `progs/vedit/vedit.c:21` | `static long vedit_getc_raw(long blocking)` |
-| `vedit_gui_run` | function | `progs/vedit/vedit.c:1607` | `static void vedit_gui_run(void)` |
-| `vedit_has_ext` | function | `progs/vedit/vedit.c:856` | `static int vedit_has_ext(const char *fname, const char *ext)` |
-| `vedit_ink` | function | `progs/vedit/vedit.c:136` | `static struct nk_color vedit_ink(int col)` |
-| `vedit_insert_char` | function | `progs/vedit/vedit.c:534` | `static void vedit_insert_char(int c)` |
-| `vedit_is_alpha` | function | `progs/vedit/vedit.c:199` | `static int vedit_is_alpha(int c)` |
-| `vedit_is_digit` | function | `progs/vedit/vedit.c:203` | `static int vedit_is_digit(int c)` |
-| `vedit_is_kw` | function | `progs/vedit/vedit.c:211` | `static int vedit_is_kw(const char *table, const char *word, int wlen)` |
-| `vedit_is_wordc` | function | `progs/vedit/vedit.c:207` | `static int vedit_is_wordc(int c)` |
-| `vedit_join` | function | `progs/vedit/vedit.c:889` | `static int vedit_join(const char *dir, const char *base, const char *ext,
+| `vedit_find` | function | `progs/vedit/vedit.c:727` | `static void vedit_find(const char *needle)` |
+| `vedit_follow` | function | `progs/vedit/vedit.c:543` | `static void vedit_follow(void)` |
+| `vedit_getc_raw` | function | `progs/vedit/vedit.c:22` | `static long vedit_getc_raw(long blocking)` |
+| `vedit_gui_run` | function | `progs/vedit/vedit.c:1651` | `static void vedit_gui_run(void)` |
+| `vedit_has_ext` | function | `progs/vedit/vedit.c:878` | `static int vedit_has_ext(const char *fname, const char *ext)` |
+| `vedit_ink` | function | `progs/vedit/vedit.c:158` | `static struct nk_color vedit_ink(int col)` |
+| `vedit_insert_char` | function | `progs/vedit/vedit.c:556` | `static void vedit_insert_char(int c)` |
+| `vedit_is_alpha` | function | `progs/vedit/vedit.c:221` | `static int vedit_is_alpha(int c)` |
+| `vedit_is_digit` | function | `progs/vedit/vedit.c:225` | `static int vedit_is_digit(int c)` |
+| `vedit_is_kw` | function | `progs/vedit/vedit.c:233` | `static int vedit_is_kw(const char *table, const char *word, int wlen)` |
+| `vedit_is_wordc` | function | `progs/vedit/vedit.c:229` | `static int vedit_is_wordc(int c)` |
+| `vedit_join` | function | `progs/vedit/vedit.c:911` | `static int vedit_join(const char *dir, const char *base, const char *ext,
                       c...` |
-| `vedit_key` | function | `progs/vedit/vedit.c:1518` | `static void vedit_key(int key, int *quit, int *save_and_quit)` |
-| `vedit_lang_name` | function | `progs/vedit/vedit.c:307` | `static const char *vedit_lang_name(int lang)` |
-| `vedit_lang_of` | function | `progs/vedit/vedit.c:290` | `static int vedit_lang_of(const char *fname)` |
-| `vedit_link_fmt` | function | `progs/vedit/vedit.c:906` | `static int vedit_link_fmt(const char *s)` |
-| `vedit_load` | function | `progs/vedit/vedit.c:798` | `static int vedit_load(void)` |
-| `vedit_parse_keyword` | function | `progs/vedit/vedit.c:272` | `static int vedit_parse_keyword(const char *t, int len, int i,
+| `vedit_kbd_raw` | function | `progs/vedit/vedit.c:64` | `static long vedit_kbd_raw(int on)` |
+| `vedit_key` | function | `progs/vedit/vedit.c:1562` | `static void vedit_key(int key, int *quit, int *save_and_quit)` |
+| `vedit_lang_name` | function | `progs/vedit/vedit.c:329` | `static const char *vedit_lang_name(int lang)` |
+| `vedit_lang_of` | function | `progs/vedit/vedit.c:312` | `static int vedit_lang_of(const char *fname)` |
+| `vedit_link_fmt` | function | `progs/vedit/vedit.c:928` | `static int vedit_link_fmt(const char *s)` |
+| `vedit_load` | function | `progs/vedit/vedit.c:820` | `static int vedit_load(void)` |
+| `vedit_parse_keyword` | function | `progs/vedit/vedit.c:294` | `static int vedit_parse_keyword(const char *t, int len, int i,
                                cons...` |
-| `vedit_parse_number` | function | `progs/vedit/vedit.c:257` | `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)` |
-| `vedit_poll` | function | `progs/vedit/vedit.c:1141` | `static int vedit_poll(void)` |
-| `vedit_print_log` | function | `progs/vedit/vedit.c:919` | `static void vedit_print_log(const char *path)` |
-| `vedit_prompt_find` | function | `progs/vedit/vedit.c:1239` | `static void vedit_prompt_find(void)` |
-| `vedit_prompt_key` | function | `progs/vedit/vedit.c:1459` | `static void vedit_prompt_key(int key)` |
-| `vedit_prompt_open` | function | `progs/vedit/vedit.c:1228` | `static void vedit_prompt_open(const char *label, int mode)` |
-| `vedit_prompt_saveas` | function | `progs/vedit/vedit.c:1243` | `static void vedit_prompt_saveas(void)` |
-| `vedit_read_key` | function | `progs/vedit/vedit.c:1151` | `static int vedit_read_key(void)` |
-| `vedit_row_ptr` | function | `progs/vedit/vedit.c:505` | `static char *vedit_row_ptr(int idx)` |
-| `vedit_save` | function | `progs/vedit/vedit.c:755` | `static int vedit_save(void)` |
-| `vedit_scan_line` | function | `progs/vedit/vedit.c:316` | `static int vedit_scan_line(const char *t, int len, int st)` |
-| `vedit_selftest` | function | `progs/vedit/vedit.c:1678` | `static int vedit_selftest(void)` |
-| `vedit_selftest_build` | function | `progs/vedit/vedit.c:1078` | `static int vedit_selftest_build(void)` |
-| `vedit_set_msg` | function | `progs/vedit/vedit.c:192` | `static void vedit_set_msg(const char *s)` |
-| `vedit_set_title` | function | `progs/vedit/vedit.c:30` | `static long vedit_set_title(const char *t)` |
-| `vedit_spawn` | function | `progs/vedit/vedit.c:39` | `static long vedit_spawn(const char *path, const char *redir, int argc,
+| `vedit_parse_number` | function | `progs/vedit/vedit.c:279` | `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)` |
+| `vedit_print_log` | function | `progs/vedit/vedit.c:941` | `static void vedit_print_log(const char *path)` |
+| `vedit_prompt_find` | function | `progs/vedit/vedit.c:1278` | `static void vedit_prompt_find(void)` |
+| `vedit_prompt_key` | function | `progs/vedit/vedit.c:1503` | `static void vedit_prompt_key(int key)` |
+| `vedit_prompt_open` | function | `progs/vedit/vedit.c:1267` | `static void vedit_prompt_open(const char *label, int mode)` |
+| `vedit_prompt_saveas` | function | `progs/vedit/vedit.c:1282` | `static void vedit_prompt_saveas(void)` |
+| `vedit_read_key_poll` | function | `progs/vedit/vedit.c:1168` | `static int vedit_read_key_poll(void)` |
+| `vedit_row_ptr` | function | `progs/vedit/vedit.c:527` | `static char *vedit_row_ptr(int idx)` |
+| `vedit_save` | function | `progs/vedit/vedit.c:777` | `static int vedit_save(void)` |
+| `vedit_scan_line` | function | `progs/vedit/vedit.c:338` | `static int vedit_scan_line(const char *t, int len, int st)` |
+| `vedit_selftest` | function | `progs/vedit/vedit.c:1730` | `static int vedit_selftest(void)` |
+| `vedit_selftest_build` | function | `progs/vedit/vedit.c:1100` | `static int vedit_selftest_build(void)` |
+| `vedit_set_msg` | function | `progs/vedit/vedit.c:214` | `static void vedit_set_msg(const char *s)` |
+| `vedit_set_title` | function | `progs/vedit/vedit.c:31` | `static long vedit_set_title(const char *t)` |
+| `vedit_spawn` | function | `progs/vedit/vedit.c:40` | `static long vedit_spawn(const char *path, const char *redir, int argc,
                         co...` |
-| `vedit_spawn_visible` | function | `progs/vedit/vedit.c:936` | `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
+| `vedit_spawn_visible` | function | `progs/vedit/vedit.c:958` | `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
                   ...` |
-| `vedit_split` | function | `progs/vedit/vedit.c:630` | `static void vedit_split(void)` |
-| `vedit_state_at` | function | `progs/vedit/vedit.c:497` | `static int vedit_state_at(int row)` |
-| `vedit_sync_title` | function | `progs/vedit/vedit.c:1597` | `static void vedit_sync_title(void)` |
-| `vedit_tab` | function | `progs/vedit/vedit.c:678` | `static void vedit_tab(void)` |
-| `vedit_vga` | function | `progs/vedit/vedit.c:51` | `static long vedit_vga(int on)` |
-| `volatile` | function | `progs/vedit/vedit.c:23` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GETC_RAW), "D"(blocking) : "rcx", "r11", "memory");` |
+| `vedit_split` | function | `progs/vedit/vedit.c:652` | `static void vedit_split(void)` |
+| `vedit_state_at` | function | `progs/vedit/vedit.c:519` | `static int vedit_state_at(int row)` |
+| `vedit_sync_title` | function | `progs/vedit/vedit.c:1641` | `static void vedit_sync_title(void)` |
+| `vedit_tab` | function | `progs/vedit/vedit.c:700` | `static void vedit_tab(void)` |
+| `vedit_time_ms` | function | `progs/vedit/vedit.c:73` | `static unsigned long vedit_time_ms(void)` |
+| `vedit_vga` | function | `progs/vedit/vedit.c:52` | `static long vedit_vga(int on)` |
+| `volatile` | function | `progs/vedit/vedit.c:24` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GETC_RAW), "D"(blocking) : "rcx", "r11", "memory");` |
 | `channel` | function | `qga.c:9` | `* * Polled channel (no interrupt controller): qga_init sets up COM2 and * qga_poll, called from raw_blocking_getc, servi` |
 | `kfclose` | function | `qga.c:391` | `kfclose(qga_files[handle]);` |
 | `kstrcpy` | function | `qga.c:90` | `else kstrcpy(np, key);` |
@@ -9837,6 +10054,14 @@ Z_Malloc
 | `str_ok` | function | `tests/test_fault.c:41` | `static int str_ok(const unsigned char *mem, unsigned long p,
                   unsigned long maxlen)` |
 | `vma_tree_init` | function | `tests/test_fault.c:96` | `vma_tree_init();` |
+| `CHECK` | macro | `tests/test_file_assoc.c:13` | `#define CHECK(cond, msg)` |
+| `CHECK` | function | `tests/test_file_assoc.c:81` | `CHECK(strcmp(ext, "c") == 0, "ext of hello.c");` |
+| `T_EXT_MAX` | macro | `tests/test_file_assoc.c:20` | `#define T_EXT_MAX` |
+| `T_PROG_MAX` | macro | `tests/test_file_assoc.c:22` | `#define T_PROG_MAX` |
+| `fprintf` | function | `tests/test_file_assoc.c:17` | `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);` |
+| `main` | function | `tests/test_file_assoc.c:75` | `int main(void)` |
+| `t_assoc_line` | function | `tests/test_file_assoc.c:43` | `static int t_assoc_line(const char *line, char *ext, char *prog)` |
+| `t_ext_of` | function | `tests/test_file_assoc.c:23` | `static void t_ext_of(const char *fname, char *dst, unsigned cap)` |
 | `FREEDOM_WL_HOST_TEST` | macro | `tests/test_freedom_wl.c:7` | `#define FREEDOM_WL_HOST_TEST` |
 | `check_host` | function | `tests/test_freedom_wl.c:12` | `static int check_host(int cond, const char *name)` |
 | `main` | function | `tests/test_freedom_wl.c:22` | `int main(void)` |
@@ -9865,6 +10090,35 @@ Z_Malloc
 | `CHECK` | macro | `tests/test_ktime.c:14` | `#define CHECK(c, m)` |
 | `CHECK` | function | `tests/test_ktime.c:17` | `CHECK(ktime_us_from_delta(0, 3000000UL) == 0, "zero delta");` |
 | `main` | function | `tests/test_ktime.c:15` | `int main(void)` |
+| `CHECK` | macro | `tests/test_paint.c:15` | `#define CHECK(cond, msg)` |
+| `CHECK` | function | `tests/test_paint.c:173` | `CHECK(t_plot(t_canvas, T_W, T_H, 0, 0, 7) == 0, "plot origin");` |
+| `T_H` | macro | `tests/test_paint.c:24` | `#define T_H` |
+| `T_N` | macro | `tests/test_paint.c:25` | `#define T_N` |
+| `T_PATH_MAX` | macro | `tests/test_paint.c:26` | `#define T_PATH_MAX` |
+| `T_W` | macro | `tests/test_paint.c:22` | `#define T_W` |
+| `fprintf` | function | `tests/test_paint.c:19` | `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);` |
+| `main` | function | `tests/test_paint.c:299` | `int main(void)` |
+| `memset` | function | `tests/test_paint.c:172` | `memset(t_canvas, 0, sizeof(t_canvas));` |
+| `printf` | function | `tests/test_paint.c:309` | `printf("paint: all host vectors pass\n");` |
+| `t_clamp` | function | `tests/test_paint.c:29` | `static int t_clamp(int v, int lo, int hi)` |
+| `t_crc` | function | `tests/test_paint.c:128` | `static unsigned long t_crc(const unsigned char *p, unsigned long n)` |
+| `t_crc_init` | function | `tests/test_paint.c:115` | `static void t_crc_init(void)` |
+| `t_flood` | function | `tests/test_paint.c:69` | `static int t_flood(unsigned char *buf, int w, int h, int x, int y,
+                   unsigned ch...` |
+| `t_line` | function | `tests/test_paint.c:43` | `static int t_line(unsigned char *buf, int w, int h, int x0, int y0, int x1,
+                  int...` |
+| `t_nearest` | function | `tests/test_paint.c:154` | `static int t_nearest(const unsigned char *pal, unsigned r, unsigned g,
+                     unsig...` |
+| `t_path_ok` | function | `tests/test_paint.c:137` | `static int t_path_ok(const char *p)` |
+| `t_plot` | function | `tests/test_paint.c:35` | `static int t_plot(unsigned char *buf, int w, int h, int x, int y,
+                  unsigned char c)` |
+| `test_flood` | function | `tests/test_paint.c:206` | `static void test_flood(void)` |
+| `test_line` | function | `tests/test_paint.c:187` | `static void test_line(void)` |
+| `test_nearest` | function | `tests/test_paint.c:286` | `static void test_nearest(void)` |
+| `test_path` | function | `tests/test_paint.c:272` | `static void test_path(void)` |
+| `test_plot` | function | `tests/test_paint.c:170` | `static void test_plot(void)` |
+| `test_png_codec` | function | `tests/test_paint.c:227` | `static void test_png_codec(void)` |
+| `test_png_layout` | function | `tests/test_paint.c:258` | `static void test_png_layout(void)` |
 | `CHECK` | macro | `tests/test_percpu_rq.c:16` | `#define CHECK(cond, msg)` |
 | `CHECK` | function | `tests/test_percpu_rq.c:33` | `CHECK(rq_empty(0), "fresh ring is empty");` |
 | `fprintf` | function | `tests/test_percpu_rq.c:20` | `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);` |
@@ -9931,6 +10185,18 @@ Z_Malloc
 | `sem_post` | function | `tests/test_sync.c:140` | `sem_post(&s);` |
 | `sem_wait` | function | `tests/test_sync.c:134` | `sem_wait(&s);` |
 | `sleep_on` | function | `tests/test_sync.c:78` | `sleep_on(&q);` |
+| `CHECK` | macro | `tests/test_theme.c:15` | `#define CHECK(cond, msg)` |
+| `CHECK` | function | `tests/test_theme.c:84` | `CHECK(f != 0, "theme file opens");` |
+| `X` | macro | `tests/test_theme.c:29` | `#define X(k, i)` |
+| `check_theme_file` | function | `tests/test_theme.c:77` | `static void check_theme_file(const char *path)` |
+| `cube_exact` | function | `tests/test_theme.c:73` | `static int cube_exact(long v)` |
+| `fclose` | function | `tests/test_theme.c:103` | `fclose(f);` |
+| `fprintf` | function | `tests/test_theme.c:19` | `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);` |
+| `main` | function | `tests/test_theme.c:106` | `int main(void)` |
+| `snprintf` | function | `tests/test_theme.c:147` | `snprintf(path, sizeof(path), "progs/etc/themes/%s", name);` |
+| `t_name_ok` | function | `tests/test_theme.c:33` | `static int t_name_ok(const char *name)` |
+| `t_parse_line` | function | `tests/test_theme.c:45` | `static int t_parse_line(const char *line, int *idx, long v[3])` |
+| `tslot` | struct | `tests/test_theme.c:23` | `` |
 | `CHECK` | macro | `tests/test_tick.c:16` | `#define CHECK(cond, msg)` |
 | `CHECK` | function | `tests/test_tick.c:56` | `CHECK(cfg.max_audio_listeners == TICK_MAX_AUDIO_LISTENERS, "config carries audio bound");` |
 | `dummy` | function | `tests/test_tick.c:46` | `static void dummy(void *ctx)` |
@@ -9976,12 +10242,12 @@ Z_Malloc
 | `vma_tree_find` | function | `tests/test_vma_bench.c:43` | `vma_tree_find(vma_live_root, 0x500000ul + (unsigned long)i * 0x1000);` |
 | `vma_tree_init` | function | `tests/test_vma_bench.c:37` | `vma_tree_init();` |
 | `vma_tree_insert` | function | `tests/test_vma_bench.c:40` | `vma_tree_insert(&vma_live_root, 0x500000ul + (unsigned long)i * 0x1000, 0x1000);` |
-| `CHECK` | macro | `tests/test_wm.c:19` | `#define CHECK(cond, msg)` |
-| `CHECK` | function | `tests/test_wm.c:40` | `CHECK(gcfg.font_w == 8, "geom config carries font width");` |
-| `fprintf` | function | `tests/test_wm.c:23` | `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);` |
-| `main` | function | `tests/test_wm.c:26` | `int main(void)` |
-| `printf` | function | `tests/test_wm.c:304` | `printf("wm: ok\n");` |
-| `wm_clamp_point` | function | `tests/test_wm.c:85` | `wm_clamp_point(&cx, &cy, 800, 600);` |
+| `CHECK` | macro | `tests/test_wm.c:20` | `#define CHECK(cond, msg)` |
+| `CHECK` | function | `tests/test_wm.c:41` | `CHECK(gcfg.font_w == 8, "geom config carries font width");` |
+| `fprintf` | function | `tests/test_wm.c:24` | `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);` |
+| `main` | function | `tests/test_wm.c:27` | `int main(void)` |
+| `printf` | function | `tests/test_wm.c:379` | `printf("wm: ok\n");` |
+| `wm_clamp_point` | function | `tests/test_wm.c:86` | `wm_clamp_point(&cx, &cy, 800, 600);` |
 | `TICK_CONFIG_DEFAULT` | macro | `tick.h:32` | `#define TICK_CONFIG_DEFAULT` |
 | `TICK_H` | macro | `tick.h:18` | `#define TICK_H` |
 | `TICK_MAX_AUDIO_LISTENERS` | macro | `tick.h:27` | `#define TICK_MAX_AUDIO_LISTENERS` |
@@ -10191,8 +10457,8 @@ Z_Malloc
 | `quit_doom` | function | `tools/gdb_repro.py:70` | `def quit_doom()` |
 | `rs` | function | `tools/gdb_repro.py:23` | `def rs(m, t)` |
 | `send` | function | `tools/gdb_repro.py:65` | `def send(line)` |
-| `main` | function | `tools/gen_desktop_pngs.py:62` | `def main()` |
-| `write_atomic` | function | `tools/gen_desktop_pngs.py:56` | `def write_atomic(img, path)` |
+| `main` | function | `tools/gen_desktop_pngs.py:66` | `def main()` |
+| `write_atomic` | function | `tools/gen_desktop_pngs.py:60` | `def write_atomic(img, path)` |
 | `main` | function | `tools/gen_icons.py:214` | `def main()` |
 | `make_chunk` | function | `tools/gen_icons.py:209` | `def make_chunk(chunk_type, data)` |
 | `make_png` | function | `tools/gen_icons.py:179` | `def make_png(pixels, palette, width, height)` |
@@ -10218,28 +10484,28 @@ Z_Malloc
 | `u32` | function | `tools/minifs_saves.py:44` | `def u32(d, o)` |
 | `valid_name` | method | `tools/minifs_saves.py:199` | `def valid_name(nm)` |
 | `walk` | method | `tools/minifs_saves.py:267` | `def walk(dir_ino, rel)` |
-| `Client` | class | `tools/minios_cli.py:37` | `class Client` |
-| `__init__` | method | `tools/minios_cli.py:38` | `def __init__(self)` |
-| `close` | method | `tools/minios_cli.py:86` | `def close(self)` |
-| `main` | method | `tools/minios_cli.py:99` | `def main()` |
-| `request` | method | `tools/minios_cli.py:55` | `def request(self, method, params)` |
-| `tool` | method | `tools/minios_cli.py:76` | `def tool(self, name, params)` |
-| `QMP` | class | `tools/minios_gui.py:58` | `class QMP` |
-| `__init__` | method | `tools/minios_gui.py:59` | `def __init__(self, path)` |
-| `_recv` | method | `tools/minios_gui.py:75` | `def _recv(self)` |
-| `cmd` | method | `tools/minios_gui.py:71` | `def cmd(self, obj)` |
-| `key` | method | `tools/minios_gui.py:100` | `def key(self, qcode, up)` |
-| `main` | method | `tools/minios_gui.py:110` | `def main()` |
-| `mouse` | method | `tools/minios_gui.py:90` | `def mouse(self, dx, dy, click)` |
-| `read_serial` | function | `tools/minios_gui.py:42` | `def read_serial(master, timeout)` |
-| `screendump` | method | `tools/minios_gui.py:106` | `def screendump(self, path)` |
+| `Client` | class | `tools/minios_cli.py:38` | `class Client` |
+| `__init__` | method | `tools/minios_cli.py:39` | `def __init__(self)` |
+| `close` | method | `tools/minios_cli.py:87` | `def close(self)` |
+| `main` | method | `tools/minios_cli.py:100` | `def main()` |
+| `request` | method | `tools/minios_cli.py:56` | `def request(self, method, params)` |
+| `tool` | method | `tools/minios_cli.py:77` | `def tool(self, name, params)` |
+| `QMP` | class | `tools/minios_gui.py:60` | `class QMP` |
+| `__init__` | method | `tools/minios_gui.py:61` | `def __init__(self, path)` |
+| `_recv` | method | `tools/minios_gui.py:77` | `def _recv(self)` |
+| `cmd` | method | `tools/minios_gui.py:73` | `def cmd(self, obj)` |
+| `key` | method | `tools/minios_gui.py:102` | `def key(self, qcode, up)` |
+| `main` | method | `tools/minios_gui.py:112` | `def main()` |
+| `mouse` | method | `tools/minios_gui.py:92` | `def mouse(self, dx, dy, click)` |
+| `read_serial` | function | `tools/minios_gui.py:44` | `def read_serial(master, timeout)` |
+| `screendump` | method | `tools/minios_gui.py:108` | `def screendump(self, path)` |
 | `main` | function | `tools/mkpak1.py:29` | `def main()` |
-| `dump` | function | `tools/probe_compute_vga.py:102` | `def dump(name)` |
-| `main` | function | `tools/probe_compute_vga.py:20` | `def main()` |
-| `poll` | function | `tools/probe_compute_vga.py:59` | `def poll(timeout)` |
-| `qmp` | function | `tools/probe_compute_vga.py:86` | `def qmp(obj)` |
-| `rel` | function | `tools/probe_compute_vga.py:95` | `def rel(dx, dy)` |
-| `send` | function | `tools/probe_compute_vga.py:53` | `def send(line)` |
+| `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |
+| `main` | function | `tools/probe_compute_vga.py:22` | `def main()` |
+| `poll` | function | `tools/probe_compute_vga.py:61` | `def poll(timeout)` |
+| `qmp` | function | `tools/probe_compute_vga.py:88` | `def qmp(obj)` |
+| `rel` | function | `tools/probe_compute_vga.py:97` | `def rel(dx, dy)` |
+| `send` | function | `tools/probe_compute_vga.py:55` | `def send(line)` |
 | `connect` | function | `tools/qga_client.py:57` | `def connect(path)` |
 | `main` | function | `tools/qga_client.py:74` | `def main(argv)` |
 | `read_reply` | function | `tools/qga_client.py:41` | `def read_reply(sock, timeout)` |
@@ -10247,34 +10513,86 @@ Z_Malloc
 | `check` | function | `tools/qga_test.sh:31` | `` |
 | `cleanup` | function | `tools/qga_test.sh:25` | `` |
 | `expect_in` | function | `tools/qga_test.sh:43` | `` |
-| `QMP` | class | `tools/repro_gui.py:44` | `class QMP` |
-| `__init__` | method | `tools/repro_gui.py:45` | `def __init__(self, path)` |
-| `_recv` | method | `tools/repro_gui.py:61` | `def _recv(self)` |
-| `cmd` | method | `tools/repro_gui.py:57` | `def cmd(self, obj)` |
-| `key` | method | `tools/repro_gui.py:85` | `def key(self, qcode, down)` |
-| `main` | method | `tools/repro_gui.py:90` | `def main()` |
-| `mouse` | method | `tools/repro_gui.py:76` | `def mouse(self, dx, dy, left)` |
-| `mouse_state` | method | `tools/repro_gui.py:116` | `def mouse_state()` |
-| `read_serial` | function | `tools/repro_gui.py:28` | `def read_serial(master, timeout)` |
-| `send` | method | `tools/repro_gui.py:111` | `def send(line)` |
-| `Guest` | class | `tools/test_gui_wm.py:42` | `class Guest` |
-| `__init__` | method | `tools/test_gui_wm.py:43` | `def __init__(self)` |
-| `_qmp` | method | `tools/test_gui_wm.py:137` | `def _qmp(self, obj)` |
-| `_reader` | method | `tools/test_gui_wm.py:81` | `def _reader(self)` |
-| `_ser` | method | `tools/test_gui_wm.py:69` | `def _ser(self)` |
-| `btn` | method | `tools/test_gui_wm.py:164` | `def btn(self, down)` |
-| `dump` | method | `tools/test_gui_wm.py:170` | `def dump(self, name)` |
-| `key` | method | `tools/test_gui_wm.py:145` | `def key(self, qcode, down, up)` |
-| `main` | method | `tools/test_gui_wm.py:208` | `def main()` |
-| `meandiff` | method | `tools/test_gui_wm.py:198` | `def meandiff(a_path, b_path)` |
-| `note` | function | `tools/test_gui_wm.py:36` | `def note(ok, msg)` |
-| `qmp_cmd` | method | `tools/test_gui_wm.py:124` | `def qmp_cmd(self, obj)` |
-| `rel` | method | `tools/test_gui_wm.py:157` | `def rel(self, dx, dy)` |
-| `send` | method | `tools/test_gui_wm.py:109` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/test_gui_wm.py:97` | `def snapshot(self)` |
-| `stop` | method | `tools/test_gui_wm.py:177` | `def stop(self)` |
-| `wait_prompt` | method | `tools/test_gui_wm.py:101` | `def wait_prompt(self, timeout)` |
+| `QMP` | class | `tools/repro_gui.py:46` | `class QMP` |
+| `__init__` | method | `tools/repro_gui.py:47` | `def __init__(self, path)` |
+| `_recv` | method | `tools/repro_gui.py:63` | `def _recv(self)` |
+| `cmd` | method | `tools/repro_gui.py:59` | `def cmd(self, obj)` |
+| `key` | method | `tools/repro_gui.py:87` | `def key(self, qcode, down)` |
+| `main` | method | `tools/repro_gui.py:92` | `def main()` |
+| `mouse` | method | `tools/repro_gui.py:78` | `def mouse(self, dx, dy, left)` |
+| `mouse_state` | method | `tools/repro_gui.py:118` | `def mouse_state()` |
+| `read_serial` | function | `tools/repro_gui.py:30` | `def read_serial(master, timeout)` |
+| `send` | method | `tools/repro_gui.py:113` | `def send(line)` |
+| `Guest` | class | `tools/test_gui_fashion.py:45` | `class Guest` |
+| `__init__` | method | `tools/test_gui_fashion.py:46` | `def __init__(self)` |
+| `_qmp` | method | `tools/test_gui_fashion.py:141` | `def _qmp(self, obj)` |
+| `_reader` | method | `tools/test_gui_fashion.py:82` | `def _reader(self)` |
+| `_ser` | method | `tools/test_gui_fashion.py:70` | `def _ser(self)` |
+| `count_arrows` | method | `tools/test_gui_fashion.py:206` | `def count_arrows(shot_path)` |
+| `dump` | method | `tools/test_gui_fashion.py:168` | `def dump(self, name)` |
+| `key` | method | `tools/test_gui_fashion.py:149` | `def key(self, qcode, down, up)` |
+| `main` | method | `tools/test_gui_fashion.py:239` | `def main()` |
+| `meandiff` | method | `tools/test_gui_fashion.py:190` | `def meandiff(a_path, b_path)` |
+| `note` | function | `tools/test_gui_fashion.py:39` | `def note(ok, msg)` |
+| `qmp_cmd` | method | `tools/test_gui_fashion.py:128` | `def qmp_cmd(self, obj)` |
+| `rel` | method | `tools/test_gui_fashion.py:161` | `def rel(self, dx, dy)` |
+| `send` | method | `tools/test_gui_fashion.py:118` | `def send(self, line, settle)` |
+| `snapshot` | method | `tools/test_gui_fashion.py:98` | `def snapshot(self)` |
+| `stop` | method | `tools/test_gui_fashion.py:175` | `def stop(self)` |
+| `wait_for` | method | `tools/test_gui_fashion.py:110` | `def wait_for(self, marker, timeout)` |
+| `wait_prompt` | method | `tools/test_gui_fashion.py:102` | `def wait_prompt(self, timeout)` |
+| `Guest` | class | `tools/test_gui_icon_cwd.py:42` | `class Guest` |
+| `__init__` | method | `tools/test_gui_icon_cwd.py:43` | `def __init__(self)` |
+| `_qmp` | method | `tools/test_gui_icon_cwd.py:130` | `def _qmp(self, obj)` |
+| `_reader` | method | `tools/test_gui_icon_cwd.py:79` | `def _reader(self)` |
+| `_ser` | method | `tools/test_gui_icon_cwd.py:67` | `def _ser(self)` |
+| `click` | method | `tools/test_gui_icon_cwd.py:145` | `def click(self)` |
+| `dump` | method | `tools/test_gui_icon_cwd.py:155` | `def dump(self, name)` |
+| `find_icon` | method | `tools/test_gui_icon_cwd.py:180` | `def find_icon(shot_path, icon_path)` |
+| `main` | method | `tools/test_gui_icon_cwd.py:228` | `def main()` |
+| `note` | function | `tools/test_gui_icon_cwd.py:36` | `def note(ok, msg)` |
+| `qmp_cmd` | method | `tools/test_gui_icon_cwd.py:117` | `def qmp_cmd(self, obj)` |
+| `rel` | method | `tools/test_gui_icon_cwd.py:138` | `def rel(self, dx, dy)` |
+| `send` | method | `tools/test_gui_icon_cwd.py:107` | `def send(self, line, settle)` |
+| `snapshot` | method | `tools/test_gui_icon_cwd.py:95` | `def snapshot(self)` |
+| `stop` | method | `tools/test_gui_icon_cwd.py:162` | `def stop(self)` |
+| `wait_prompt` | method | `tools/test_gui_icon_cwd.py:99` | `def wait_prompt(self, timeout)` |
+| `walk` | method | `tools/test_gui_icon_cwd.py:213` | `def walk(g, tx, ty, fw, fh)` |
+| `Guest` | class | `tools/test_gui_wm.py:46` | `class Guest` |
+| `__init__` | method | `tools/test_gui_wm.py:47` | `def __init__(self)` |
+| `_qmp` | method | `tools/test_gui_wm.py:143` | `def _qmp(self, obj)` |
+| `_reader` | method | `tools/test_gui_wm.py:87` | `def _reader(self)` |
+| `_ser` | method | `tools/test_gui_wm.py:75` | `def _ser(self)` |
+| `btn` | method | `tools/test_gui_wm.py:170` | `def btn(self, down)` |
+| `dump` | method | `tools/test_gui_wm.py:176` | `def dump(self, name)` |
+| `key` | method | `tools/test_gui_wm.py:151` | `def key(self, qcode, down, up)` |
+| `main` | method | `tools/test_gui_wm.py:214` | `def main()` |
+| `meandiff` | method | `tools/test_gui_wm.py:204` | `def meandiff(a_path, b_path)` |
+| `note` | function | `tools/test_gui_wm.py:40` | `def note(ok, msg)` |
+| `qmp_cmd` | method | `tools/test_gui_wm.py:130` | `def qmp_cmd(self, obj)` |
+| `rel` | method | `tools/test_gui_wm.py:163` | `def rel(self, dx, dy)` |
+| `send` | method | `tools/test_gui_wm.py:115` | `def send(self, line, settle)` |
+| `snapshot` | method | `tools/test_gui_wm.py:103` | `def snapshot(self)` |
+| `stop` | method | `tools/test_gui_wm.py:183` | `def stop(self)` |
+| `wait_prompt` | method | `tools/test_gui_wm.py:107` | `def wait_prompt(self, timeout)` |
 | `fail_msg` | function | `tools/test_sb16.sh:45` | `` |
+| `WmLayoutSync` | class | `tools/wm_layout_sync.py:46` | `class WmLayoutSync` |
+| `WmLayoutSyncConfig` | class | `tools/wm_layout_sync.py:17` | `class WmLayoutSyncConfig` |
+| `WmLayoutSyncResult` | class | `tools/wm_layout_sync.py:36` | `class WmLayoutSyncResult` |
+| `__init__` | method | `tools/wm_layout_sync.py:20` | `def __init__(self, root)` |
+| `__init__` | method | `tools/wm_layout_sync.py:39` | `def __init__(self, modes, symbols, checks)` |
+| `__init__` | method | `tools/wm_layout_sync.py:49` | `def __init__(self, config)` |
+| `_count_layout_checks` | method | `tools/wm_layout_sync.py:133` | `def _count_layout_checks(self, tests_text)` |
+| `_extract_modes` | method | `tools/wm_layout_sync.py:116` | `def _extract_modes(self, header_text)` |
+| `_extract_symbols` | method | `tools/wm_layout_sync.py:125` | `def _extract_symbols(self, header_text)` |
+| `_read_text` | method | `tools/wm_layout_sync.py:110` | `def _read_text(self, path)` |
+| `_require_modes` | method | `tools/wm_layout_sync.py:138` | `def _require_modes(self, modes)` |
+| `_require_symbols` | method | `tools/wm_layout_sync.py:144` | `def _require_symbols(self, symbols)` |
+| `discover` | method | `tools/wm_layout_sync.py:53` | `def discover(self)` |
+| `main` | method | `tools/wm_layout_sync.py:159` | `def main(argv)` |
+| `parse_args` | method | `tools/wm_layout_sync.py:151` | `def parse_args(argv)` |
+| `render` | method | `tools/wm_layout_sync.py:66` | `def render(self, result)` |
+| `synchronize` | method | `tools/wm_layout_sync.py:101` | `def synchronize(self, write)` |
 | `die` | function | `tools/wm_scoped.sh:9` | `` |
 | `say` | function | `tools/wm_scoped.sh:8` | `` |
 | `COL_BG` | macro | `vga_fb.h:75` | `#define COL_BG` |
@@ -10301,10 +10619,10 @@ Z_Malloc
 | `NK_BACKBUF_ADDR` | macro | `vga_fb.h:68` | `#define NK_BACKBUF_ADDR` |
 | `NK_H` | macro | `vga_fb.h:67` | `#define NK_H` |
 | `NK_W` | macro | `vga_fb.h:66` | `#define NK_W` |
-| `SB_LINE_MAX` | macro | `vga_fb.h:163` | `#define SB_LINE_MAX` |
-| `SB_MAX_LINES` | macro | `vga_fb.h:162` | `#define SB_MAX_LINES` |
-| `SCROLLBAR_PAD` | macro | `vga_fb.h:132` | `#define SCROLLBAR_PAD` |
-| `SCROLLBAR_W` | macro | `vga_fb.h:131` | `#define SCROLLBAR_W` |
+| `SB_LINE_MAX` | macro | `vga_fb.h:166` | `#define SB_LINE_MAX` |
+| `SB_MAX_LINES` | macro | `vga_fb.h:165` | `#define SB_MAX_LINES` |
+| `SCROLLBAR_PAD` | macro | `vga_fb.h:135` | `#define SCROLLBAR_PAD` |
+| `SCROLLBAR_W` | macro | `vga_fb.h:134` | `#define SCROLLBAR_W` |
 | `SYS_DOOM_FRAME` | function | `vga_fb.h:43` | `* and calls SYS_DOOM_FRAME (211) to have the kernel composite it onto the * desktop at its native resolution, so the she` |
 | `SYS_NK_FRAME` | function | `vga_fb.h:62` | `* SYS_NK_FRAME (220);` |
 | `TASKBAR_BTN_W` | macro | `vga_fb.h:115` | `#define TASKBAR_BTN_W` |
@@ -10314,29 +10632,31 @@ Z_Malloc
 | `TASKBAR_KBD_CH` | macro | `vga_fb.h:117` | `#define TASKBAR_KBD_CH` |
 | `TASKBAR_KBD_W` | macro | `vga_fb.h:118` | `#define TASKBAR_KBD_W` |
 | `TASKBAR_PAD` | macro | `vga_fb.h:110` | `#define TASKBAR_PAD` |
+| `TASKBAR_THEME_CH` | macro | `vga_fb.h:120` | `#define TASKBAR_THEME_CH` |
+| `TASKBAR_THEME_W` | macro | `vga_fb.h:121` | `#define TASKBAR_THEME_W` |
 | `TASKBAR_VOL_CH` | macro | `vga_fb.h:112` | `#define TASKBAR_VOL_CH` |
 | `TASKBAR_VOL_STEP` | macro | `vga_fb.h:113` | `#define TASKBAR_VOL_STEP` |
 | `TERM_MAX_COLS` | macro | `vga_fb.h:105` | `#define TERM_MAX_COLS` |
 | `TERM_MAX_ROWS` | macro | `vga_fb.h:106` | `#define TERM_MAX_ROWS` |
-| `TILING_BOTTOM` | macro | `vga_fb.h:124` | `#define TILING_BOTTOM` |
-| `TILING_BOTTOM_LEFT` | macro | `vga_fb.h:127` | `#define TILING_BOTTOM_LEFT` |
-| `TILING_BOTTOM_RIGHT` | macro | `vga_fb.h:128` | `#define TILING_BOTTOM_RIGHT` |
-| `TILING_LEFT` | macro | `vga_fb.h:121` | `#define TILING_LEFT` |
-| `TILING_RIGHT` | macro | `vga_fb.h:122` | `#define TILING_RIGHT` |
-| `TILING_TOP` | macro | `vga_fb.h:123` | `#define TILING_TOP` |
-| `TILING_TOP_LEFT` | macro | `vga_fb.h:125` | `#define TILING_TOP_LEFT` |
-| `TILING_TOP_RIGHT` | macro | `vga_fb.h:126` | `#define TILING_TOP_RIGHT` |
+| `TILING_BOTTOM` | macro | `vga_fb.h:127` | `#define TILING_BOTTOM` |
+| `TILING_BOTTOM_LEFT` | macro | `vga_fb.h:130` | `#define TILING_BOTTOM_LEFT` |
+| `TILING_BOTTOM_RIGHT` | macro | `vga_fb.h:131` | `#define TILING_BOTTOM_RIGHT` |
+| `TILING_LEFT` | macro | `vga_fb.h:124` | `#define TILING_LEFT` |
+| `TILING_RIGHT` | macro | `vga_fb.h:125` | `#define TILING_RIGHT` |
+| `TILING_TOP` | macro | `vga_fb.h:126` | `#define TILING_TOP` |
+| `TILING_TOP_LEFT` | macro | `vga_fb.h:128` | `#define TILING_TOP_LEFT` |
+| `TILING_TOP_RIGHT` | macro | `vga_fb.h:129` | `#define TILING_TOP_RIGHT` |
 | `VGA_FB_H` | macro | `vga_fb.h:2` | `#define VGA_FB_H` |
 | `WALLPAPER_PATH` | macro | `vga_fb.h:95` | `#define WALLPAPER_PATH` |
 | `WALL_PAL_BASE` | macro | `vga_fb.h:96` | `#define WALL_PAL_BASE` |
 | `WALL_PAL_SIZE` | macro | `vga_fb.h:97` | `#define WALL_PAL_SIZE` |
-| `WM_BTN_CLOSE` | macro | `vga_fb.h:142` | `#define WM_BTN_CLOSE` |
-| `WM_BTN_H` | macro | `vga_fb.h:138` | `#define WM_BTN_H` |
-| `WM_BTN_MAX` | macro | `vga_fb.h:141` | `#define WM_BTN_MAX` |
-| `WM_BTN_MIN` | macro | `vga_fb.h:140` | `#define WM_BTN_MIN` |
-| `WM_BTN_PAD` | macro | `vga_fb.h:139` | `#define WM_BTN_PAD` |
-| `WM_BTN_W` | macro | `vga_fb.h:137` | `#define WM_BTN_W` |
-| `WM_FOCUS_GFX` | macro | `vga_fb.h:188` | `#define WM_FOCUS_GFX` |
+| `WM_BTN_CLOSE` | macro | `vga_fb.h:145` | `#define WM_BTN_CLOSE` |
+| `WM_BTN_H` | macro | `vga_fb.h:141` | `#define WM_BTN_H` |
+| `WM_BTN_MAX` | macro | `vga_fb.h:144` | `#define WM_BTN_MAX` |
+| `WM_BTN_MIN` | macro | `vga_fb.h:143` | `#define WM_BTN_MIN` |
+| `WM_BTN_PAD` | macro | `vga_fb.h:142` | `#define WM_BTN_PAD` |
+| `WM_BTN_W` | macro | `vga_fb.h:140` | `#define WM_BTN_W` |
+| `WM_FOCUS_GFX` | macro | `vga_fb.h:191` | `#define WM_FOCUS_GFX` |
 | `below` | function | `vga_fb.h:91` | `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via stbi` |
 | `fb_bpp` | variable | `vga_fb.h:25` | `extern int fb_bpp;` |
 | `fb_bytes_per_pixel` | function | `vga_fb.h:29` | `int fb_bytes_per_pixel(void);` |
@@ -10346,50 +10666,55 @@ Z_Malloc
 | `fb_width` | variable | `vga_fb.h:22` | `extern int fb_width;` |
 | `gfx_frames_composited` | variable | `vga_fb.h:58` | `extern unsigned long gfx_frames_composited;` |
 | `gfx_win_title` | variable | `vga_fb.h:49` | `extern const char *gfx_win_title;` |
-| `mouse_state` | variable | `vga_fb.h:155` | `extern mouse_state_t mouse_state;` |
-| `mouse_state_t` | struct | `vga_fb.h:148` | `` |
+| `mouse_state` | variable | `vga_fb.h:158` | `extern mouse_state_t mouse_state;` |
+| `mouse_state_t` | struct | `vga_fb.h:151` | `` |
 | `nk_win_y` | variable | `vga_fb.h:72` | `extern int nk_win_x, nk_win_y;` |
-| `term_rows` | variable | `vga_fb.h:145` | `extern int term_x, term_y, term_cols, term_rows;` |
-| `vga_fb_active` | variable | `vga_fb.h:215` | `extern int vga_fb_active;` |
+| `term_rows` | variable | `vga_fb.h:148` | `extern int term_x, term_y, term_cols, term_rows;` |
+| `vga_fb_active` | variable | `vga_fb.h:223` | `extern int vga_fb_active;` |
 | `vga_fb_blit_nk_window` | function | `vga_fb.h:69` | `void vga_fb_blit_nk_window(void);` |
 | `vga_fb_boot_config` | function | `vga_fb.h:38` | `void vga_fb_boot_config(void);` |
-| `vga_fb_char` | function | `vga_fb.h:170` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);` |
-| `vga_fb_clear` | function | `vga_fb.h:167` | `void vga_fb_clear(void);` |
-| `vga_fb_close_active` | function | `vga_fb.h:185` | `int vga_fb_close_active(void);` |
-| `vga_fb_draw_desktop` | function | `vga_fb.h:176` | `void vga_fb_draw_desktop(void);` |
-| `vga_fb_focus_get` | function | `vga_fb.h:191` | `int vga_fb_focus_get(void);` |
-| `vga_fb_focus_id` | function | `vga_fb.h:190` | `int vga_fb_focus_id(int id);` |
-| `vga_fb_focus_next` | function | `vga_fb.h:189` | `void vga_fb_focus_next(void);` |
-| `vga_fb_hide_text_cursor` | function | `vga_fb.h:175` | `void vga_fb_hide_text_cursor(void);` |
-| `vga_fb_init` | function | `vga_fb.h:166` | `void vga_fb_init(void);` |
-| `vga_fb_is_fullscreen` | function | `vga_fb.h:184` | `int vga_fb_is_fullscreen(void);` |
-| `vga_fb_is_minimized` | function | `vga_fb.h:183` | `int vga_fb_is_minimized(void);` |
-| `vga_fb_list_windows` | function | `vga_fb.h:202` | `void vga_fb_list_windows(void);` |
-| `vga_fb_mouse_init` | function | `vga_fb.h:207` | `void vga_fb_mouse_init(void);` |
-| `vga_fb_mouse_tick` | function | `vga_fb.h:206` | `void vga_fb_mouse_tick(void);` |
-| `vga_fb_move_terminal` | function | `vga_fb.h:178` | `void vga_fb_move_terminal(int dx, int dy);` |
-| `vga_fb_nterms_get` | function | `vga_fb.h:198` | `int vga_fb_nterms_get(void);` |
-| `vga_fb_pixel` | function | `vga_fb.h:168` | `void vga_fb_pixel(int x, int y, uint8_t color);` |
-| `vga_fb_ps2_owner` | function | `vga_fb.h:197` | `int vga_fb_ps2_owner(int pid);` |
-| `vga_fb_putc_term` | function | `vga_fb.h:172` | `void vga_fb_putc_term(char c);` |
-| `vga_fb_puts_term` | function | `vga_fb.h:173` | `void vga_fb_puts_term(const char *s);` |
+| `vga_fb_char` | function | `vga_fb.h:173` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);` |
+| `vga_fb_clear` | function | `vga_fb.h:170` | `void vga_fb_clear(void);` |
+| `vga_fb_close_active` | function | `vga_fb.h:188` | `int vga_fb_close_active(void);` |
+| `vga_fb_draw_desktop` | function | `vga_fb.h:179` | `void vga_fb_draw_desktop(void);` |
+| `vga_fb_focus_get` | function | `vga_fb.h:194` | `int vga_fb_focus_get(void);` |
+| `vga_fb_focus_id` | function | `vga_fb.h:193` | `int vga_fb_focus_id(int id);` |
+| `vga_fb_focus_next` | function | `vga_fb.h:192` | `void vga_fb_focus_next(void);` |
+| `vga_fb_hide_text_cursor` | function | `vga_fb.h:178` | `void vga_fb_hide_text_cursor(void);` |
+| `vga_fb_init` | function | `vga_fb.h:169` | `void vga_fb_init(void);` |
+| `vga_fb_is_fullscreen` | function | `vga_fb.h:187` | `int vga_fb_is_fullscreen(void);` |
+| `vga_fb_is_minimized` | function | `vga_fb.h:186` | `int vga_fb_is_minimized(void);` |
+| `vga_fb_layout_cycle` | function | `vga_fb.h:207` | `void vga_fb_layout_cycle(void);` |
+| `vga_fb_layout_get` | function | `vga_fb.h:208` | `int vga_fb_layout_get(void);` |
+| `vga_fb_layout_name` | function | `vga_fb.h:209` | `const char *vga_fb_layout_name(void);` |
+| `vga_fb_layout_set` | function | `vga_fb.h:206` | `int vga_fb_layout_set(int mode);` |
+| `vga_fb_list_windows` | function | `vga_fb.h:210` | `void vga_fb_list_windows(void);` |
+| `vga_fb_mouse_init` | function | `vga_fb.h:215` | `void vga_fb_mouse_init(void);` |
+| `vga_fb_mouse_tick` | function | `vga_fb.h:214` | `void vga_fb_mouse_tick(void);` |
+| `vga_fb_move_terminal` | function | `vga_fb.h:181` | `void vga_fb_move_terminal(int dx, int dy);` |
+| `vga_fb_nterms_get` | function | `vga_fb.h:202` | `int vga_fb_nterms_get(void);` |
+| `vga_fb_pixel` | function | `vga_fb.h:171` | `void vga_fb_pixel(int x, int y, uint8_t color);` |
+| `vga_fb_ps2_owner` | function | `vga_fb.h:201` | `int vga_fb_ps2_owner(int pid);` |
+| `vga_fb_putc_term` | function | `vga_fb.h:175` | `void vga_fb_putc_term(char c);` |
+| `vga_fb_puts_term` | function | `vga_fb.h:176` | `void vga_fb_puts_term(const char *s);` |
 | `vga_fb_read_rgb` | function | `vga_fb.h:33` | `unsigned long vga_fb_read_rgb(int x, int y);` |
-| `vga_fb_rect` | function | `vga_fb.h:169` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);` |
-| `vga_fb_reset_default` | function | `vga_fb.h:181` | `void vga_fb_reset_default(void);` |
-| `vga_fb_resize` | function | `vga_fb.h:180` | `void vga_fb_resize(int dcols, int drows);` |
-| `vga_fb_set_gfx_mode` | function | `vga_fb.h:214` | `void vga_fb_set_gfx_mode(int on);` |
+| `vga_fb_rect` | function | `vga_fb.h:172` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);` |
+| `vga_fb_reset_default` | function | `vga_fb.h:184` | `void vga_fb_reset_default(void);` |
+| `vga_fb_resize` | function | `vga_fb.h:183` | `void vga_fb_resize(int dcols, int drows);` |
+| `vga_fb_set_gfx_mode` | function | `vga_fb.h:222` | `void vga_fb_set_gfx_mode(int on);` |
 | `vga_fb_set_gfx_palette` | function | `vga_fb.h:37` | `void vga_fb_set_gfx_palette(const unsigned char *pal);` |
-| `vga_fb_snap_window` | function | `vga_fb.h:179` | `void vga_fb_snap_window(int zone);` |
-| `vga_fb_str` | function | `vga_fb.h:171` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);` |
-| `vga_fb_term_close_focused` | function | `vga_fb.h:200` | `int vga_fb_term_close_focused(void);` |
-| `vga_fb_term_split` | function | `vga_fb.h:199` | `int vga_fb_term_split(void);` |
-| `vga_fb_text_cursor` | function | `vga_fb.h:174` | `void vga_fb_text_cursor(int col);` |
-| `vga_fb_tile_all` | function | `vga_fb.h:201` | `void vga_fb_tile_all(void);` |
-| `vga_fb_toggle_fullscreen` | function | `vga_fb.h:177` | `void vga_fb_toggle_fullscreen(void);` |
-| `vga_fb_toggle_minimize` | function | `vga_fb.h:182` | `void vga_fb_toggle_minimize(void);` |
-| `wm_clear_close` | function | `vga_fb.h:204` | `void wm_clear_close(void);` |
-| `wm_close_pending` | function | `vga_fb.h:203` | `int wm_close_pending(void);` |
-| `wm_gfx_mode_active` | function | `vga_fb.h:205` | `int wm_gfx_mode_active(void);` |
+| `vga_fb_snap_window` | function | `vga_fb.h:182` | `void vga_fb_snap_window(int zone);` |
+| `vga_fb_str` | function | `vga_fb.h:174` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);` |
+| `vga_fb_term_close_focused` | function | `vga_fb.h:204` | `int vga_fb_term_close_focused(void);` |
+| `vga_fb_term_split` | function | `vga_fb.h:203` | `int vga_fb_term_split(void);` |
+| `vga_fb_text_cursor` | function | `vga_fb.h:177` | `void vga_fb_text_cursor(int col);` |
+| `vga_fb_theme_name` | function | `vga_fb.h:195` | `int vga_fb_theme_name(char *dst, int cap);` |
+| `vga_fb_tile_all` | function | `vga_fb.h:205` | `void vga_fb_tile_all(void);` |
+| `vga_fb_toggle_fullscreen` | function | `vga_fb.h:180` | `void vga_fb_toggle_fullscreen(void);` |
+| `vga_fb_toggle_minimize` | function | `vga_fb.h:185` | `void vga_fb_toggle_minimize(void);` |
+| `wm_clear_close` | function | `vga_fb.h:212` | `void wm_clear_close(void);` |
+| `wm_close_pending` | function | `vga_fb.h:211` | `int wm_close_pending(void);` |
+| `wm_gfx_mode_active` | function | `vga_fb.h:213` | `int wm_gfx_mode_active(void);` |
 | `vma_alloc_node` | function | `vma.c:79` | `static vma_node_t *vma_alloc_node(void)` |
 | `vma_ctx_bind` | function | `vma.c:45` | `void vma_ctx_bind(vma_ctx_t *c)` |
 | `vma_ctx_init` | function | `vma.c:31` | `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool)` |
@@ -10480,6 +10805,22 @@ Z_Malloc
 | `wm_rect_valid` | function | `wm_geom.h:33` | `static inline int wm_rect_valid(const wm_rect_t *r)` |
 | `wm_scrollbar_rect` | function | `wm_geom.h:71` | `static inline wm_rect_t wm_scrollbar_rect(const wm_geom_config_t *cfg, int px, int py, int conten...` |
 | `wm_title_bar_rect` | function | `wm_geom.h:48` | `static inline wm_rect_t wm_title_bar_rect(const wm_geom_config_t *cfg, int px, int py, int w)` |
+| `WM_LAYOUT_CONFIG_DEFAULT` | macro | `wm_layout.h:45` | `#define WM_LAYOUT_CONFIG_DEFAULT` |
+| `WM_LAYOUT_H` | macro | `wm_layout.h:12` | `#define WM_LAYOUT_H` |
+| `WM_LAYOUT_MODE_COUNT` | macro | `wm_layout.h:24` | `#define WM_LAYOUT_MODE_COUNT` |
+| `wm_layout_cell_t` | struct | `wm_layout.h:48` | `` |
+| `wm_layout_clamp_cell` | function | `wm_layout.h:82` | `static inline int wm_layout_clamp_cell(wm_layout_cell_t *cell, int max_cols, int max_rows)` |
+| `wm_layout_compute` | function | `wm_layout.h:361` | `static inline int wm_layout_compute(const wm_layout_config_t *cfg, const wm_layout_window_t *wins...` |
+| `wm_layout_compute_bsp` | function | `wm_layout.h:182` | `static inline int wm_layout_compute_bsp(const wm_layout_window_t *wins, int nwin, int max_cols, i...` |
+| `wm_layout_compute_cascade` | function | `wm_layout.h:250` | `static inline int wm_layout_compute_cascade(const wm_layout_config_t *cfg, const wm_layout_window...` |
+| `wm_layout_compute_fibonacci` | function | `wm_layout.h:285` | `static inline int wm_layout_compute_fibonacci(const wm_layout_config_t *cfg, const wm_layout_wind...` |
+| `wm_layout_compute_tile` | function | `wm_layout.h:135` | `static inline int wm_layout_compute_tile(const wm_layout_window_t *wins, int nwin, int max_cols, ...` |
+| `wm_layout_config_t` | struct | `wm_layout.h:36` | `` |
+| `wm_layout_fullscreen_cell` | function | `wm_layout.h:118` | `static inline int wm_layout_fullscreen_cell(int max_cols, int max_rows, wm_layout_cell_t *out)` |
+| `wm_layout_mode_name` | function | `wm_layout.h:57` | `static inline const char *wm_layout_mode_name(int mode)` |
+| `wm_layout_mode_valid` | function | `wm_layout.h:76` | `static inline int wm_layout_mode_valid(int mode)` |
+| `wm_layout_same` | function | `wm_layout.h:443` | `static inline int wm_layout_same(const wm_layout_cell_t *a, const wm_layout_cell_t *b, int n)` |
+| `wm_layout_window_t` | struct | `wm_layout.h:27` | `` |
 | `WM_RENDER_CONFIG_DEFAULT` | macro | `wm_render.h:36` | `#define WM_RENDER_CONFIG_DEFAULT` |
 | `WM_RENDER_H` | macro | `wm_render.h:11` | `#define WM_RENDER_H` |
 | `wm_build_render_plan` | function | `wm_render.h:39` | `static inline int wm_build_render_plan(const wm_render_config_t *cfg, const int *present, int nte...` |

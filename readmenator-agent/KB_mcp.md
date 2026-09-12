@@ -8,24 +8,24 @@
 - Layer: infrastructure
 - Language: py
 - Symbols:
-  - `Client` (class, line 14) `class Client`
-  - `main` (method, line 62) `def main()`
-  - `__init__` (method, line 15) `def __init__(self)`
-  - `request` (method, line 26) `def request(self, method, params)`
-  - `tool` (method, line 44) `def tool(self, name, params)`
-  - `close` (method, line 52) `def close(self)`
+  - `Client` (class, line 15) `class Client`
+  - `main` (method, line 64) `def main()`
+  - `__init__` (method, line 16) `def __init__(self)`
+  - `request` (method, line 28) `def request(self, method, params)`
+  - `tool` (method, line 46) `def tool(self, name, params)`
+  - `close` (method, line 54) `def close(self)`
 - Depends on: `kernel/time.c`
 
 ## mcp/mcp_dogfood.py
 - Layer: utility
 - Language: py
 - Symbols:
-  - `Client` (class, line 18) `class Client`
-  - `main` (method, line 76) `def main()`
-  - `__init__` (method, line 19) `def __init__(self, addons_dir)`
-  - `request` (method, line 38) `def request(self, method, params)`
-  - `tool` (method, line 56) `def tool(self, name, params)`
-  - `close` (method, line 66) `def close(self)`
+  - `Client` (class, line 19) `class Client`
+  - `main` (method, line 78) `def main()`
+  - `__init__` (method, line 20) `def __init__(self, addons_dir)`
+  - `request` (method, line 40) `def request(self, method, params)`
+  - `tool` (method, line 58) `def tool(self, name, params)`
+  - `close` (method, line 68) `def close(self)`
 - Depends on: `kernel/time.c`
 
 ## mcp/minios_addons.py

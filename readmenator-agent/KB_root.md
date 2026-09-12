@@ -776,10 +776,10 @@ void kmain(void)`
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 94)
-  - `cleanup` (function, line 101)
-  - `record` (function, line 255)
-  - `find_index` (function, line 261)
+  - `restore_sources` (function, line 100)
+  - `cleanup` (function, line 107)
+  - `record` (function, line 268)
+  - `find_index` (function, line 274)
 
 ## net.h
 - Layer: utility
@@ -1603,7 +1603,7 @@ void kmain(void)`
 - Doc: ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Framebuffer geometry. The boot loader probes
 - Language: h
 - Symbols:
-  - `mouse_state_t` (struct, line 148)
+  - `mouse_state_t` (struct, line 151)
   - `fb_bytes_per_pixel` (function, line 29) `int fb_bytes_per_pixel(void);`
   - `vga_fb_read_rgb` (function, line 33) `unsigned long vga_fb_read_rgb(int x, int y);`
   - `vga_fb_set_gfx_palette` (function, line 37) `void vga_fb_set_gfx_palette(const unsigned char *pal);`
@@ -1612,41 +1612,46 @@ void kmain(void)`
   - `SYS_NK_FRAME` (function, line 62) `* SYS_NK_FRAME (220);`
   - `vga_fb_blit_nk_window` (function, line 69) `void vga_fb_blit_nk_window(void);`
   - `below` (function, line 91) `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via stbi_load_file, * stretched to the framebuffer and mapped to a fixed 6x6x6 websafe c`
-  - `vga_fb_init` (function, line 166) `void vga_fb_init(void);`
-  - `vga_fb_clear` (function, line 167) `void vga_fb_clear(void);`
-  - `vga_fb_pixel` (function, line 168) `void vga_fb_pixel(int x, int y, uint8_t color);`
-  - `vga_fb_rect` (function, line 169) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
-  - `vga_fb_char` (function, line 170) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
-  - `vga_fb_str` (function, line 171) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
-  - `vga_fb_putc_term` (function, line 172) `void vga_fb_putc_term(char c);`
-  - `vga_fb_puts_term` (function, line 173) `void vga_fb_puts_term(const char *s);`
-  - `vga_fb_text_cursor` (function, line 174) `void vga_fb_text_cursor(int col);`
-  - `vga_fb_hide_text_cursor` (function, line 175) `void vga_fb_hide_text_cursor(void);`
-  - `vga_fb_draw_desktop` (function, line 176) `void vga_fb_draw_desktop(void);`
-  - `vga_fb_toggle_fullscreen` (function, line 177) `void vga_fb_toggle_fullscreen(void);`
-  - `vga_fb_move_terminal` (function, line 178) `void vga_fb_move_terminal(int dx, int dy);`
-  - `vga_fb_snap_window` (function, line 179) `void vga_fb_snap_window(int zone);`
-  - `vga_fb_resize` (function, line 180) `void vga_fb_resize(int dcols, int drows);`
-  - `vga_fb_reset_default` (function, line 181) `void vga_fb_reset_default(void);`
-  - `vga_fb_toggle_minimize` (function, line 182) `void vga_fb_toggle_minimize(void);`
-  - `vga_fb_is_minimized` (function, line 183) `int vga_fb_is_minimized(void);`
-  - `vga_fb_is_fullscreen` (function, line 184) `int vga_fb_is_fullscreen(void);`
-  - `vga_fb_close_active` (function, line 185) `int vga_fb_close_active(void);`
-  - `vga_fb_focus_next` (function, line 189) `void vga_fb_focus_next(void);`
-  - `vga_fb_focus_id` (function, line 190) `int vga_fb_focus_id(int id);`
-  - `vga_fb_focus_get` (function, line 191) `int vga_fb_focus_get(void);`
-  - `vga_fb_ps2_owner` (function, line 197) `int vga_fb_ps2_owner(int pid);`
-  - `vga_fb_nterms_get` (function, line 198) `int vga_fb_nterms_get(void);`
-  - `vga_fb_term_split` (function, line 199) `int vga_fb_term_split(void);`
-  - `vga_fb_term_close_focused` (function, line 200) `int vga_fb_term_close_focused(void);`
-  - `vga_fb_tile_all` (function, line 201) `void vga_fb_tile_all(void);`
-  - `vga_fb_list_windows` (function, line 202) `void vga_fb_list_windows(void);`
-  - `wm_close_pending` (function, line 203) `int wm_close_pending(void);`
-  - `wm_clear_close` (function, line 204) `void wm_clear_close(void);`
-  - `wm_gfx_mode_active` (function, line 205) `int wm_gfx_mode_active(void);`
-  - `vga_fb_mouse_tick` (function, line 206) `void vga_fb_mouse_tick(void);`
-  - `vga_fb_mouse_init` (function, line 207) `void vga_fb_mouse_init(void);`
-  - `vga_fb_set_gfx_mode` (function, line 214) `void vga_fb_set_gfx_mode(int on);`
+  - `vga_fb_init` (function, line 169) `void vga_fb_init(void);`
+  - `vga_fb_clear` (function, line 170) `void vga_fb_clear(void);`
+  - `vga_fb_pixel` (function, line 171) `void vga_fb_pixel(int x, int y, uint8_t color);`
+  - `vga_fb_rect` (function, line 172) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
+  - `vga_fb_char` (function, line 173) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
+  - `vga_fb_str` (function, line 174) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
+  - `vga_fb_putc_term` (function, line 175) `void vga_fb_putc_term(char c);`
+  - `vga_fb_puts_term` (function, line 176) `void vga_fb_puts_term(const char *s);`
+  - `vga_fb_text_cursor` (function, line 177) `void vga_fb_text_cursor(int col);`
+  - `vga_fb_hide_text_cursor` (function, line 178) `void vga_fb_hide_text_cursor(void);`
+  - `vga_fb_draw_desktop` (function, line 179) `void vga_fb_draw_desktop(void);`
+  - `vga_fb_toggle_fullscreen` (function, line 180) `void vga_fb_toggle_fullscreen(void);`
+  - `vga_fb_move_terminal` (function, line 181) `void vga_fb_move_terminal(int dx, int dy);`
+  - `vga_fb_snap_window` (function, line 182) `void vga_fb_snap_window(int zone);`
+  - `vga_fb_resize` (function, line 183) `void vga_fb_resize(int dcols, int drows);`
+  - `vga_fb_reset_default` (function, line 184) `void vga_fb_reset_default(void);`
+  - `vga_fb_toggle_minimize` (function, line 185) `void vga_fb_toggle_minimize(void);`
+  - `vga_fb_is_minimized` (function, line 186) `int vga_fb_is_minimized(void);`
+  - `vga_fb_is_fullscreen` (function, line 187) `int vga_fb_is_fullscreen(void);`
+  - `vga_fb_close_active` (function, line 188) `int vga_fb_close_active(void);`
+  - `vga_fb_focus_next` (function, line 192) `void vga_fb_focus_next(void);`
+  - `vga_fb_focus_id` (function, line 193) `int vga_fb_focus_id(int id);`
+  - `vga_fb_focus_get` (function, line 194) `int vga_fb_focus_get(void);`
+  - `vga_fb_theme_name` (function, line 195) `int vga_fb_theme_name(char *dst, int cap);`
+  - `vga_fb_ps2_owner` (function, line 201) `int vga_fb_ps2_owner(int pid);`
+  - `vga_fb_nterms_get` (function, line 202) `int vga_fb_nterms_get(void);`
+  - `vga_fb_term_split` (function, line 203) `int vga_fb_term_split(void);`
+  - `vga_fb_term_close_focused` (function, line 204) `int vga_fb_term_close_focused(void);`
+  - `vga_fb_tile_all` (function, line 205) `void vga_fb_tile_all(void);`
+  - `vga_fb_layout_set` (function, line 206) `int vga_fb_layout_set(int mode);`
+  - `vga_fb_layout_cycle` (function, line 207) `void vga_fb_layout_cycle(void);`
+  - `vga_fb_layout_get` (function, line 208) `int vga_fb_layout_get(void);`
+  - `vga_fb_layout_name` (function, line 209) `const char *vga_fb_layout_name(void);`
+  - `vga_fb_list_windows` (function, line 210) `void vga_fb_list_windows(void);`
+  - `wm_close_pending` (function, line 211) `int wm_close_pending(void);`
+  - `wm_clear_close` (function, line 212) `void wm_clear_close(void);`
+  - `wm_gfx_mode_active` (function, line 213) `int wm_gfx_mode_active(void);`
+  - `vga_fb_mouse_tick` (function, line 214) `void vga_fb_mouse_tick(void);`
+  - `vga_fb_mouse_init` (function, line 215) `void vga_fb_mouse_init(void);`
+  - `vga_fb_set_gfx_mode` (function, line 222) `void vga_fb_set_gfx_mode(int on);`
   - `fb_width` (variable, line 22) `extern int fb_width;`
   - `fb_height` (variable, line 23) `extern int fb_height;`
   - `fb_pitch` (variable, line 24) `extern int fb_pitch;`
@@ -1655,9 +1660,9 @@ void kmain(void)`
   - `gfx_win_title` (variable, line 49) `extern const char *gfx_win_title;`
   - `gfx_frames_composited` (variable, line 58) `extern unsigned long gfx_frames_composited;`
   - `nk_win_y` (variable, line 72) `extern int nk_win_x, nk_win_y;`
-  - `term_rows` (variable, line 145) `extern int term_x, term_y, term_cols, term_rows;`
-  - `mouse_state` (variable, line 155) `extern mouse_state_t mouse_state;`
-  - `vga_fb_active` (variable, line 215) `extern int vga_fb_active;`
+  - `term_rows` (variable, line 148) `extern int term_x, term_y, term_cols, term_rows;`
+  - `mouse_state` (variable, line 158) `extern mouse_state_t mouse_state;`
+  - `vga_fb_active` (variable, line 223) `extern int vga_fb_active;`
   - `VGA_FB_H` (macro, line 2) `#define VGA_FB_H`
   - `FB_ADDR` (macro, line 21) `#define FB_ADDR`
   - `DOOM_W` (macro, line 45) `#define DOOM_W`
@@ -1697,25 +1702,27 @@ void kmain(void)`
   - `TASKBAR_BTN_W` (macro, line 115) `#define TASKBAR_BTN_W`
   - `TASKBAR_KBD_CH` (macro, line 117) `#define TASKBAR_KBD_CH`
   - `TASKBAR_KBD_W` (macro, line 118) `#define TASKBAR_KBD_W`
-  - `TILING_LEFT` (macro, line 121) `#define TILING_LEFT`
-  - `TILING_RIGHT` (macro, line 122) `#define TILING_RIGHT`
-  - `TILING_TOP` (macro, line 123) `#define TILING_TOP`
-  - `TILING_BOTTOM` (macro, line 124) `#define TILING_BOTTOM`
-  - `TILING_TOP_LEFT` (macro, line 125) `#define TILING_TOP_LEFT`
-  - `TILING_TOP_RIGHT` (macro, line 126) `#define TILING_TOP_RIGHT`
-  - `TILING_BOTTOM_LEFT` (macro, line 127) `#define TILING_BOTTOM_LEFT`
-  - `TILING_BOTTOM_RIGHT` (macro, line 128) `#define TILING_BOTTOM_RIGHT`
-  - `SCROLLBAR_W` (macro, line 131) `#define SCROLLBAR_W`
-  - `SCROLLBAR_PAD` (macro, line 132) `#define SCROLLBAR_PAD`
-  - `WM_BTN_W` (macro, line 137) `#define WM_BTN_W`
-  - `WM_BTN_H` (macro, line 138) `#define WM_BTN_H`
-  - `WM_BTN_PAD` (macro, line 139) `#define WM_BTN_PAD`
-  - `WM_BTN_MIN` (macro, line 140) `#define WM_BTN_MIN`
-  - `WM_BTN_MAX` (macro, line 141) `#define WM_BTN_MAX`
-  - `WM_BTN_CLOSE` (macro, line 142) `#define WM_BTN_CLOSE`
-  - `SB_MAX_LINES` (macro, line 162) `#define SB_MAX_LINES`
-  - `SB_LINE_MAX` (macro, line 163) `#define SB_LINE_MAX`
-  - `WM_FOCUS_GFX` (macro, line 188) `#define WM_FOCUS_GFX`
+  - `TASKBAR_THEME_CH` (macro, line 120) `#define TASKBAR_THEME_CH`
+  - `TASKBAR_THEME_W` (macro, line 121) `#define TASKBAR_THEME_W`
+  - `TILING_LEFT` (macro, line 124) `#define TILING_LEFT`
+  - `TILING_RIGHT` (macro, line 125) `#define TILING_RIGHT`
+  - `TILING_TOP` (macro, line 126) `#define TILING_TOP`
+  - `TILING_BOTTOM` (macro, line 127) `#define TILING_BOTTOM`
+  - `TILING_TOP_LEFT` (macro, line 128) `#define TILING_TOP_LEFT`
+  - `TILING_TOP_RIGHT` (macro, line 129) `#define TILING_TOP_RIGHT`
+  - `TILING_BOTTOM_LEFT` (macro, line 130) `#define TILING_BOTTOM_LEFT`
+  - `TILING_BOTTOM_RIGHT` (macro, line 131) `#define TILING_BOTTOM_RIGHT`
+  - `SCROLLBAR_W` (macro, line 134) `#define SCROLLBAR_W`
+  - `SCROLLBAR_PAD` (macro, line 135) `#define SCROLLBAR_PAD`
+  - `WM_BTN_W` (macro, line 140) `#define WM_BTN_W`
+  - `WM_BTN_H` (macro, line 141) `#define WM_BTN_H`
+  - `WM_BTN_PAD` (macro, line 142) `#define WM_BTN_PAD`
+  - `WM_BTN_MIN` (macro, line 143) `#define WM_BTN_MIN`
+  - `WM_BTN_MAX` (macro, line 144) `#define WM_BTN_MAX`
+  - `WM_BTN_CLOSE` (macro, line 145) `#define WM_BTN_CLOSE`
+  - `SB_MAX_LINES` (macro, line 165) `#define SB_MAX_LINES`
+  - `SB_LINE_MAX` (macro, line 166) `#define SB_LINE_MAX`
+  - `WM_FOCUS_GFX` (macro, line 191) `#define WM_FOCUS_GFX`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
@@ -1844,6 +1851,29 @@ void kmain(void)`
   - `WM_GEOM_H` (macro, line 11) `#define WM_GEOM_H`
   - `WM_GEOM_CONFIG_DEFAULT` (macro, line 22) `#define WM_GEOM_CONFIG_DEFAULT`
 - Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`, `wm_window.h`
+
+## wm_layout.h
+- Layer: presentation
+- Doc: Docstring: Unified layout contract for the MiniOS desktop.
+- Language: h
+- Symbols:
+  - `wm_layout_window_t` (struct, line 27)
+  - `wm_layout_config_t` (struct, line 36)
+  - `wm_layout_cell_t` (struct, line 48)
+  - `wm_layout_mode_name` (function, line 57) `static inline const char *wm_layout_mode_name(int mode)`
+  - `wm_layout_mode_valid` (function, line 76) `static inline int wm_layout_mode_valid(int mode)`
+  - `wm_layout_clamp_cell` (function, line 82) `static inline int wm_layout_clamp_cell(wm_layout_cell_t *cell, int max_cols, int max_rows)`
+  - `wm_layout_fullscreen_cell` (function, line 118) `static inline int wm_layout_fullscreen_cell(int max_cols, int max_rows, wm_layout_cell_t *out)`
+  - `wm_layout_compute_tile` (function, line 135) `static inline int wm_layout_compute_tile(const wm_layout_window_t *wins, int nwin, int max_cols, ...`
+  - `wm_layout_compute_bsp` (function, line 182) `static inline int wm_layout_compute_bsp(const wm_layout_window_t *wins, int nwin, int max_cols, i...`
+  - `wm_layout_compute_cascade` (function, line 250) `static inline int wm_layout_compute_cascade(const wm_layout_config_t *cfg, const wm_layout_window...`
+  - `wm_layout_compute_fibonacci` (function, line 285) `static inline int wm_layout_compute_fibonacci(const wm_layout_config_t *cfg, const wm_layout_wind...`
+  - `wm_layout_compute` (function, line 361) `static inline int wm_layout_compute(const wm_layout_config_t *cfg, const wm_layout_window_t *wins...`
+  - `wm_layout_same` (function, line 443) `static inline int wm_layout_same(const wm_layout_cell_t *a, const wm_layout_cell_t *b, int n)`
+  - `WM_LAYOUT_H` (macro, line 12) `#define WM_LAYOUT_H`
+  - `WM_LAYOUT_MODE_COUNT` (macro, line 24) `#define WM_LAYOUT_MODE_COUNT`
+  - `WM_LAYOUT_CONFIG_DEFAULT` (macro, line 45) `#define WM_LAYOUT_CONFIG_DEFAULT`
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
 
 ## wm_render.h
 - Layer: presentation

@@ -66,8 +66,8 @@
 - Layer: utility
 - Language: py
 - Symbols:
-  - `write_atomic` (function, line 56) `def write_atomic(img, path)`
-  - `main` (function, line 62) `def main()`
+  - `write_atomic` (function, line 60) `def write_atomic(img, path)`
+  - `main` (function, line 66) `def main()`
 
 ## tools/gen_icons.py
 - Layer: utility
@@ -113,27 +113,27 @@
 - Layer: utility
 - Language: py
 - Symbols:
-  - `Client` (class, line 37) `class Client`
-  - `main` (method, line 99) `def main()`
-  - `__init__` (method, line 38) `def __init__(self)`
-  - `request` (method, line 55) `def request(self, method, params)`
-  - `tool` (method, line 76) `def tool(self, name, params)`
-  - `close` (method, line 86) `def close(self)`
+  - `Client` (class, line 38) `class Client`
+  - `main` (method, line 100) `def main()`
+  - `__init__` (method, line 39) `def __init__(self)`
+  - `request` (method, line 56) `def request(self, method, params)`
+  - `tool` (method, line 77) `def tool(self, name, params)`
+  - `close` (method, line 87) `def close(self)`
 - Depends on: `kernel/time.c`
 
 ## tools/minios_gui.py
 - Layer: presentation
 - Language: py
 - Symbols:
-  - `read_serial` (function, line 42) `def read_serial(master, timeout)`
-  - `QMP` (class, line 58) `class QMP`
-  - `main` (method, line 110) `def main()`
-  - `__init__` (method, line 59) `def __init__(self, path)`
-  - `cmd` (method, line 71) `def cmd(self, obj)`
-  - `_recv` (method, line 75) `def _recv(self)`
-  - `mouse` (method, line 90) `def mouse(self, dx, dy, click)`
-  - `key` (method, line 100) `def key(self, qcode, up)`
-  - `screendump` (method, line 106) `def screendump(self, path)`
+  - `read_serial` (function, line 44) `def read_serial(master, timeout)`
+  - `QMP` (class, line 60) `class QMP`
+  - `main` (method, line 112) `def main()`
+  - `__init__` (method, line 61) `def __init__(self, path)`
+  - `cmd` (method, line 73) `def cmd(self, obj)`
+  - `_recv` (method, line 77) `def _recv(self)`
+  - `mouse` (method, line 92) `def mouse(self, dx, dy, click)`
+  - `key` (method, line 102) `def key(self, qcode, up)`
+  - `screendump` (method, line 108) `def screendump(self, path)`
 - Depends on: `kernel/time.c`
 
 ## tools/mkpak1.py
@@ -147,12 +147,12 @@
 - Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute. Boots os.img headless, runs a command, moves the PS/2 mou
 - Language: py
 - Symbols:
-  - `main` (function, line 20) `def main()`
-  - `send` (function, line 53) `def send(line)`
-  - `poll` (function, line 59) `def poll(timeout)`
-  - `qmp` (function, line 86) `def qmp(obj)`
-  - `rel` (function, line 95) `def rel(dx, dy)`
-  - `dump` (function, line 102) `def dump(name)`
+  - `main` (function, line 22) `def main()`
+  - `send` (function, line 55) `def send(line)`
+  - `poll` (function, line 61) `def poll(timeout)`
+  - `qmp` (function, line 88) `def qmp(obj)`
+  - `rel` (function, line 97) `def rel(dx, dy)`
+  - `dump` (function, line 104) `def dump(name)`
 - Depends on: `kernel/time.c`
 
 ## tools/qga_client.py
@@ -178,16 +178,16 @@
 - Layer: presentation
 - Language: py
 - Symbols:
-  - `read_serial` (function, line 28) `def read_serial(master, timeout)`
-  - `QMP` (class, line 44) `class QMP`
-  - `main` (method, line 90) `def main()`
-  - `__init__` (method, line 45) `def __init__(self, path)`
-  - `cmd` (method, line 57) `def cmd(self, obj)`
-  - `_recv` (method, line 61) `def _recv(self)`
-  - `mouse` (method, line 76) `def mouse(self, dx, dy, left)`
-  - `key` (method, line 85) `def key(self, qcode, down)`
-  - `send` (method, line 111) `def send(line)`
-  - `mouse_state` (method, line 116) `def mouse_state()`
+  - `read_serial` (function, line 30) `def read_serial(master, timeout)`
+  - `QMP` (class, line 46) `class QMP`
+  - `main` (method, line 92) `def main()`
+  - `__init__` (method, line 47) `def __init__(self, path)`
+  - `cmd` (method, line 59) `def cmd(self, obj)`
+  - `_recv` (method, line 63) `def _recv(self)`
+  - `mouse` (method, line 78) `def mouse(self, dx, dy, left)`
+  - `key` (method, line 87) `def key(self, qcode, down)`
+  - `send` (method, line 113) `def send(line)`
+  - `mouse_state` (method, line 118) `def mouse_state()`
 - Depends on: `kernel/time.c`
 
 ## tools/test_codecs.sh
@@ -195,27 +195,74 @@
 - Doc: test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  The interpreter in-OS suites (test.lua / 
 - Language: sh
 
-## tools/test_gui_wm.py
+## tools/test_gui_fashion.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `note` (function, line 39) `def note(ok, msg)`
+  - `Guest` (class, line 45) `class Guest`
+  - `meandiff` (method, line 190) `def meandiff(a_path, b_path)`
+  - `count_arrows` (method, line 206) `def count_arrows(shot_path)`
+  - `main` (method, line 239) `def main()`
+  - `__init__` (method, line 46) `def __init__(self)`
+  - `_ser` (method, line 70) `def _ser(self)`
+  - `_reader` (method, line 82) `def _reader(self)`
+  - `snapshot` (method, line 98) `def snapshot(self)`
+  - `wait_prompt` (method, line 102) `def wait_prompt(self, timeout)`
+  - `wait_for` (method, line 110) `def wait_for(self, marker, timeout)`
+  - `send` (method, line 118) `def send(self, line, settle)`
+  - `qmp_cmd` (method, line 128) `def qmp_cmd(self, obj)`
+  - `_qmp` (method, line 141) `def _qmp(self, obj)`
+  - `key` (method, line 149) `def key(self, qcode, down, up)`
+  - `rel` (method, line 161) `def rel(self, dx, dy)`
+  - `dump` (method, line 168) `def dump(self, name)`
+  - `stop` (method, line 175) `def stop(self)`
+- Depends on: `kernel/time.c`
+
+## tools/test_gui_icon_cwd.py
 - Layer: testing
 - Language: py
 - Symbols:
   - `note` (function, line 36) `def note(ok, msg)`
   - `Guest` (class, line 42) `class Guest`
-  - `meandiff` (method, line 198) `def meandiff(a_path, b_path)`
-  - `main` (method, line 208) `def main()`
+  - `find_icon` (method, line 180) `def find_icon(shot_path, icon_path)`
+  - `walk` (method, line 213) `def walk(g, tx, ty, fw, fh)`
+  - `main` (method, line 228) `def main()`
   - `__init__` (method, line 43) `def __init__(self)`
-  - `_ser` (method, line 69) `def _ser(self)`
-  - `_reader` (method, line 81) `def _reader(self)`
-  - `snapshot` (method, line 97) `def snapshot(self)`
-  - `wait_prompt` (method, line 101) `def wait_prompt(self, timeout)`
-  - `send` (method, line 109) `def send(self, line, settle)`
-  - `qmp_cmd` (method, line 124) `def qmp_cmd(self, obj)`
-  - `_qmp` (method, line 137) `def _qmp(self, obj)`
-  - `key` (method, line 145) `def key(self, qcode, down, up)`
-  - `rel` (method, line 157) `def rel(self, dx, dy)`
-  - `btn` (method, line 164) `def btn(self, down)`
-  - `dump` (method, line 170) `def dump(self, name)`
-  - `stop` (method, line 177) `def stop(self)`
+  - `_ser` (method, line 67) `def _ser(self)`
+  - `_reader` (method, line 79) `def _reader(self)`
+  - `snapshot` (method, line 95) `def snapshot(self)`
+  - `wait_prompt` (method, line 99) `def wait_prompt(self, timeout)`
+  - `send` (method, line 107) `def send(self, line, settle)`
+  - `qmp_cmd` (method, line 117) `def qmp_cmd(self, obj)`
+  - `_qmp` (method, line 130) `def _qmp(self, obj)`
+  - `rel` (method, line 138) `def rel(self, dx, dy)`
+  - `click` (method, line 145) `def click(self)`
+  - `dump` (method, line 155) `def dump(self, name)`
+  - `stop` (method, line 162) `def stop(self)`
+- Depends on: `kernel/time.c`
+
+## tools/test_gui_wm.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `note` (function, line 40) `def note(ok, msg)`
+  - `Guest` (class, line 46) `class Guest`
+  - `meandiff` (method, line 204) `def meandiff(a_path, b_path)`
+  - `main` (method, line 214) `def main()`
+  - `__init__` (method, line 47) `def __init__(self)`
+  - `_ser` (method, line 75) `def _ser(self)`
+  - `_reader` (method, line 87) `def _reader(self)`
+  - `snapshot` (method, line 103) `def snapshot(self)`
+  - `wait_prompt` (method, line 107) `def wait_prompt(self, timeout)`
+  - `send` (method, line 115) `def send(self, line, settle)`
+  - `qmp_cmd` (method, line 130) `def qmp_cmd(self, obj)`
+  - `_qmp` (method, line 143) `def _qmp(self, obj)`
+  - `key` (method, line 151) `def key(self, qcode, down, up)`
+  - `rel` (method, line 163) `def rel(self, dx, dy)`
+  - `btn` (method, line 170) `def btn(self, down)`
+  - `dump` (method, line 176) `def dump(self, name)`
+  - `stop` (method, line 183) `def stop(self)`
 - Depends on: `kernel/time.c`
 
 ## tools/test_sb16.sh
@@ -224,6 +271,28 @@
 - Language: sh
 - Symbols:
   - `fail_msg` (function, line 45)
+
+## tools/wm_layout_sync.py
+- Layer: presentation
+- Language: py
+- Symbols:
+  - `WmLayoutSyncConfig` (class, line 17) `class WmLayoutSyncConfig`
+  - `WmLayoutSyncResult` (class, line 36) `class WmLayoutSyncResult`
+  - `WmLayoutSync` (class, line 46) `class WmLayoutSync`
+  - `parse_args` (method, line 151) `def parse_args(argv)`
+  - `main` (method, line 159) `def main(argv)`
+  - `__init__` (method, line 20) `def __init__(self, root)`
+  - `__init__` (method, line 39) `def __init__(self, modes, symbols, checks)`
+  - `__init__` (method, line 49) `def __init__(self, config)`
+  - `discover` (method, line 53) `def discover(self)`
+  - `render` (method, line 66) `def render(self, result)`
+  - `synchronize` (method, line 101) `def synchronize(self, write)`
+  - `_read_text` (method, line 110) `def _read_text(self, path)`
+  - `_extract_modes` (method, line 116) `def _extract_modes(self, header_text)`
+  - `_extract_symbols` (method, line 125) `def _extract_symbols(self, header_text)`
+  - `_count_layout_checks` (method, line 133) `def _count_layout_checks(self, tests_text)`
+  - `_require_modes` (method, line 138) `def _require_modes(self, modes)`
+  - `_require_symbols` (method, line 144) `def _require_symbols(self, symbols)`
 
 ## tools/wm_scoped.sh
 - Layer: utility

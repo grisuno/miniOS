@@ -4836,555 +4836,568 @@ void kmain(void)`
 ## kernel/shell.c
 
 ### shell_queue_launch (function) `void shell_queue_launch(const char *cmd)`
-- Defined: `kernel/shell.c:69`
+- Defined: `kernel/shell.c:70`
 - Doc: Queue a desktop-icon command to run after the current user program exits. Overwrites any earlier pending launch; safe to
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_readline_active (function) `int shell_readline_active(void)`
-- Defined: `kernel/shell.c:97`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:98`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_focus_park (function) `void shell_focus_park(void)`
-- Defined: `kernel/shell.c:98`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:99`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_focus_restore (function) `void shell_focus_restore(void)`
-- Defined: `kernel/shell.c:103`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:104`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_prompt (function) `static void shell_prompt(void)`
-- Defined: `kernel/shell.c:129`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:130`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_parse_vol (function) `static int shell_parse_vol(const char *s, unsigned *out)`
-- Defined: `kernel/shell.c:138`
+- Defined: `kernel/shell.c:139`
 - Doc: Strict decimal parse for the `vol` builtin: the whole argument must be an optional sign followed by at least one digit, 
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### pb_empty (function) `static int pb_empty(void)`
-- Defined: `kernel/shell.c:171`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:172`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### pb_count (function) `static int pb_count(void)`
-- Defined: `kernel/shell.c:173`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:174`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### pb_push_back (function) `static void pb_push_back(unsigned char c)`
-- Defined: `kernel/shell.c:174`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:175`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### pb_push_front (function) `static void pb_push_front(unsigned char c)`
-- Defined: `kernel/shell.c:179`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:180`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### pb_pop (function) `static int pb_pop(void)`
-- Defined: `kernel/shell.c:184`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:185`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### pb_peek (function) `static int pb_peek(void)`
-- Defined: `kernel/shell.c:190`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:191`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### raw_blocking_getc (function) `static int raw_blocking_getc(void)`
-- Defined: `kernel/shell.c:197`
+- Defined: `kernel/shell.c:198`
 - Doc: Next raw byte (kbd queue, then serial, then PS/2) without touching the * pushback FIFO; blocks until one is available.
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### raw_try_getc (function) `static int raw_try_getc(void)`
-- Defined: `kernel/shell.c:216`
+- Defined: `kernel/shell.c:217`
 - Doc: int c = serial_getc(); if (c >= 0) return c; } if (kbd_available()) { int c = kbd_read(); if (c >= 0) return c; } if (vg
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### consume_page_after_esc (function) `static int consume_page_after_esc(void)`
-- Defined: `kernel/shell.c:251`
+- Defined: `kernel/shell.c:252`
 - Doc: Called after an ESC byte has been read. Pulls the remainder of the sequence non-blocking and classifies it. Returns 1 (P
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### console_getc (function) `* returns console_getc() simply serves the FIFO again. */
 int console_getc(void)`
-- Defined: `kernel/shell.c:276`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:277`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### console_peek (function) `static int console_peek(void)`
-- Defined: `kernel/shell.c:298`
+- Defined: `kernel/shell.c:299`
 - Doc: Next buffered byte without consuming it, or -1 when nothing is available right now. Used to tell an ESC prefix from a co
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### console_raw_try (function) `int console_raw_try(void)`
-- Defined: `kernel/shell.c:311`
+- Defined: `kernel/shell.c:312`
 - Doc: Raw console multiplexer for the GETC_RAW syscall (declared in shell.h). The same serial + PS/2 sources console_getc funn
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### console_raw_get (function) `int console_raw_get(void)`
-- Defined: `kernel/shell.c:314`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:315`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### console_job_try (function) `int console_job_try(void)`
-- Defined: `kernel/shell.c:320`
+- Defined: `kernel/shell.c:321`
 - Doc: The same serial + PS/2 sources console_getc funnels, but without the line buffering, echo or scrollback detour: a ring-3
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### console_job_get (function) `int console_job_get(void)`
-- Defined: `kernel/shell.c:329`
+- Defined: `kernel/shell.c:330`
 - Doc: int console_raw_get(void) { return raw_blocking_getc(); } /** Docstring: PS/2-only GETC_RAW source for ring-3 background
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### scrollback_render (function) `static void scrollback_render(int voff, int total, const unsigned char *saved)`
-- Defined: `kernel/shell.c:345`
+- Defined: `kernel/shell.c:346`
 - Doc: --- Scrollback view ----  Renders a 25-row window over (scrollback ring + live screen) into the VGA framebuffer and to t
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### scrollback_view (function) `static void scrollback_view(int initial_dir)`
-- Defined: `kernel/shell.c:382`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:383`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_readline_buf (function) `void shell_readline_buf(char *buf, int size)`
-- Defined: `kernel/shell.c:427`
+- Defined: `kernel/shell.c:428`
 - Doc: Read one line into buf (at most size-1 chars). Echoes input and * honours backspace. Shared by the shell prompt and the 
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_name_base (function) `static const char *shell_name_base(const char *path)`
-- Defined: `kernel/shell.c:456`
+- Defined: `kernel/shell.c:457`
 - Doc: The component of a ramdisk path after the last '/', or the whole path when * there is no '/'. Used to match a bare comma
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_complete_tier (function) `static int shell_complete_tier(const char *nm)`
-- Defined: `kernel/shell.c:479`
+- Defined: `kernel/shell.c:480`
 - Doc: Runnable tier of a file name for first-word TAB completion: 0=.elf, 1=.cvm, 2=.o, 3=anything else. A bare command word c
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_complete_replace (function) `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-- Defined: `kernel/shell.c:491`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:492`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_readline (function) `static void shell_readline(void)`
-- Defined: `kernel/shell.c:505`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:506`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_hist_show (function) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
-- Defined: `kernel/shell.c:514`
+- Defined: `kernel/shell.c:515`
 - Doc: Redraw the edit line: erase what is shown, then write `text` into buf and onto the console, leaving the text cursor at `
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_line_repaint (function) `static void shell_line_repaint(char *buf, int size, int pos)`
-- Defined: `kernel/shell.c:536`
+- Defined: `kernel/shell.c:537`
 - Doc: Repaint the edit line after a cursor move or mid-line edit: erase the whole visible line, rewrite buf, then back the con
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_line_insert (function) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
-- Defined: `kernel/shell.c:549`
+- Defined: `kernel/shell.c:550`
 - Doc: Insert character c into buf at `pos`, shifting the tail right. Bounds * checked; the caller repaints afterwards.
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_line_backspace (function) `static void shell_line_backspace(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:558`
+- Defined: `kernel/shell.c:559`
 - Doc: Insert character c into buf at `pos`, shifting the tail right. Bounds * checked; the caller repaints afterwards. static 
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_line_delete (function) `static void shell_line_delete(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:566`
+- Defined: `kernel/shell.c:567`
 - Doc: kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1)); buf[*pos] = c; (*pos)++; } /* Delete the characte
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_line_kill_front (function) `static void shell_line_kill_front(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:573`
+- Defined: `kernel/shell.c:574`
 - Doc: int len = (int)kstrlen(buf); if (*pos <= 0) return; kmemmove(buf + *pos - 1, buf + *pos, (unsigned long)(len - *pos + 1)
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_line_kill_tail (function) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:580`
+- Defined: `kernel/shell.c:581`
 - Doc: static void shell_line_delete(char *buf, int size, int *pos) { int len = (int)kstrlen(buf); if (*pos >= len) return; kme
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_line_kill_word (function) `static void shell_line_kill_word(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:585`
+- Defined: `kernel/shell.c:586`
 - Doc: /* Delete from the cursor to the start of the line (Ctrl+U). static void shell_line_kill_front(char *buf, int size, int 
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_hist_newest_match (function) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
-- Defined: `kernel/shell.c:597`
+- Defined: `kernel/shell.c:598`
 - Doc: Most recent history entry starting with `prefix` (of length plen) that is strictly longer than the prefix, or -1 when th
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### line (function) `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...`
-- Defined: `kernel/shell.c:614`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:615`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_readline_hist (function) `static void shell_readline_hist(char *buf, int size)`
-- Defined: `kernel/shell.c:659`
+- Defined: `kernel/shell.c:660`
 - Doc: Shell prompt readline: like shell_readline_buf plus command history. Up arrow (ESC [ A) recalls the previous command sta
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_parse (function) `int shell_parse(char *line, char **argv, int max_args)`
-- Defined: `kernel/shell.c:971`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:972`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_run (function) `void shell_run(void)`
-- Defined: `kernel/shell.c:992`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:993`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_load (function) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-- Defined: `kernel/shell.c:1052`
+- Defined: `kernel/shell.c:1056`
 - Doc: Load an ELF file from the ramdisk and register it under its filename stem. Returns 1 for an ET_REL program, 2 for an ET_
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### outw_port (function) `static inline void outw_port(unsigned short port, unsigned short val)`
-- Defined: `kernel/shell.c:1114`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1118`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_poweroff (function) `static void shell_cmd_poweroff(void)`
-- Defined: `kernel/shell.c:1120`
+- Defined: `kernel/shell.c:1124`
 - Doc: define QEMU_PM_PORT 0x604
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_run_dir_for (function) `static const ShellRunDir *shell_run_dir_for(const char *name)`
-- Defined: `kernel/shell.c:1137`
+- Defined: `kernel/shell.c:1141`
 - Doc: The toolchain directory that owns `name`, chosen by suffix. Bare names with * no recognised suffix fall through to the c
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_file_is_real (function) `static int shell_file_is_real(const char *resolved)`
-- Defined: `kernel/shell.c:1155`
+- Defined: `kernel/shell.c:1159`
 - Doc: Is `resolved` (already normalised against the cwd) a real ramdisk file? A * directory name or a non-existent path is rej
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_resolve_run (function) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-- Defined: `kernel/shell.c:1167`
+- Defined: `kernel/shell.c:1171`
 - Doc: Resolve `name` to a full ramdisk path suitable for running. A bare name is tried first against the cwd, then through the
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### etrel_path_trusted (function) `static int etrel_path_trusted(const char *full)`
-- Defined: `kernel/shell.c:1209`
+- Defined: `kernel/shell.c:1213`
 - Doc: ET_REL trust gate (boyscout fix for ring-0 .o without validation): relocatables execute as kernel extensions, so only th
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_run_elf_buf_path (function) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...`
-- Defined: `kernel/shell.c:1223`
+- Defined: `kernel/shell.c:1227`
 - Doc: Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`. argv[0] is the program name the program sees. 
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_run_elf_file (function) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-- Defined: `kernel/shell.c:1253`
+- Defined: `kernel/shell.c:1257`
 - Doc: Load the ramdisk file at `full` and run it as an ELF. Returns the exit * code, or -1 when the file cannot be read or loa
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_run_elf_minifs (function) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1266`
+- Defined: `kernel/shell.c:1270`
 - Doc: Load a Linux ELF from the MiniFS disk and run it (preserves the historical * `run` fallback when a name is not on the ra
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_run_cvm (function) `static int shell_run_cvm(const char *full, int argc, char **argv)`
-- Defined: `kernel/shell.c:1316`
+- Defined: `kernel/shell.c:1320`
 - Doc: Run a `.cvm` module at the resolved path `full`. The interpreter is loaded from the ramdisk on first use and cached. arg
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_run_file (function) `static int shell_run_file(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1352`
+- Defined: `kernel/shell.c:1356`
 - Doc: Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the interpreter, ELF files by content through the matching l
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_read_elf_bytes (function) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
                           ...`
-- Defined: `kernel/shell.c:1396`
+- Defined: `kernel/shell.c:1400`
 - Doc: --- Multitask run (mrun): concurrent isolated ELFs ----  `mrun a.elf b.elf ...` loads each ET_EXEC/ET_DYN into its own u
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### code (function) `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...`
-- Defined: `kernel/shell.c:1462`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1466`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_mrun (function) `static void shell_cmd_mrun(int argc, char **argv)`
-- Defined: `kernel/shell.c:1497`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1501`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_run_bg (function) `static void shell_run_bg(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1546`
+- Defined: `kernel/shell.c:1550`
 - Doc: `run <elf> &`: background a single isolated ELF (same spawn path as mrun). ET_REL and .cvm stay foreground-only: ring-0 
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_run_any (function) `int shell_run_any(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1574`
+- Defined: `kernel/shell.c:1578`
 - Doc: Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver. argv[
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### gfx_parse_int (function) `static int gfx_parse_int(const char *s, int *out)`
-- Defined: `kernel/shell.c:1637`
+- Defined: `kernel/shell.c:1649`
 - Doc: --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives, but a
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### gfx_read_palette (function) `static void gfx_read_palette(unsigned char pal[768])`
-- Defined: `kernel/shell.c:1657`
+- Defined: `kernel/shell.c:1669`
 - Doc: Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation). U
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_gfx (function) `static void shell_cmd_gfx(int argc, char **argv)`
-- Defined: `kernel/shell.c:1663`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1675`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_wm (function) `static void shell_cmd_wm(int argc, char **argv)`
-- Defined: `kernel/shell.c:1816`
+- Defined: `kernel/shell.c:1828`
 - Doc: `wm <op>` — window-manager operations, exposed as a shell builtin so the tiling-WM behaviour is observable and testable 
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### tree (function) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-- Defined: `kernel/shell.c:1897`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1941`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_jobs (function) `static void shell_cmd_jobs(void)`
-- Defined: `kernel/shell.c:1909`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1953`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_wait (function) `static void shell_cmd_wait(int argc, char **argv)`
-- Defined: `kernel/shell.c:1932`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1976`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_kill (function) `static void shell_cmd_kill(int argc, char **argv)`
-- Defined: `kernel/shell.c:1958`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2002`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_mem (function) `static void shell_cmd_mem(void)`
-- Defined: `kernel/shell.c:1980`
+- Defined: `kernel/shell.c:2024`
 - Doc: `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS free b
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_hash (function) `static void shell_cmd_hash(int argc, char **argv)`
-- Defined: `kernel/shell.c:2010`
+- Defined: `kernel/shell.c:2054`
 - Doc: `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file never
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_exec_builtin (function) `void shell_exec_builtin(int argc, char **argv)`
-- Defined: `kernel/shell.c:2024`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2068`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_fb_park_line (function) `vga_fb_park_line(cmd_buf, shell_edit_pos);`
-- Defined: `kernel/shell.c:100`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:101`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### kmemcpy (function) `kmemcpy(cmd_buf, tmp, (unsigned long)CMD_BUF_SZ);`
-- Defined: `kernel/shell.c:108`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:109`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_puts (function) `else vga_puts("\nminiOS> ");`
-- Defined: `kernel/shell.c:121`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:122`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_fb_text_cursor (function) `vga_fb_text_cursor(shell_edit_pos);`
-- Defined: `kernel/shell.c:127`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:128`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### volatile (function) `__asm__ volatile("pause");`
-- Defined: `kernel/shell.c:211`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:212`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### serial_putc (function) `serial_putc(ch);`
-- Defined: `kernel/shell.c:361`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:362`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### sb_init (function) `sb_init();`
-- Defined: `kernel/shell.c:384`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:385`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_cursor_enable (function) `vga_cursor_enable(0);`
-- Defined: `kernel/shell.c:391`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:392`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_set_xy (function) `vga_set_xy(saved_x, saved_y);`
-- Defined: `kernel/shell.c:420`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:421`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_set_cursor (function) `vga_set_cursor(saved_x, saved_y);`
-- Defined: `kernel/shell.c:421`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:422`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### kmemset (function) `kmemset(buf, 0, (unsigned long)size);`
-- Defined: `kernel/shell.c:429`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:430`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_putc (function) `vga_putc('\n');`
-- Defined: `kernel/shell.c:434`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:435`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### kmemmove (function) `kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1));`
-- Defined: `kernel/shell.c:552`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:553`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_fb_hide_text_cursor (function) `vga_fb_hide_text_cursor();`
-- Defined: `kernel/shell.c:692`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:693`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_hist_nav (function) `shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);`
-- Defined: `kernel/shell.c:717`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:718`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### root (function) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * explicit path or an argument word keeps every match, so * navigating to data file`
-- Defined: `kernel/shell.c:819`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:820`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
+
+### desktop_launch (function) `desktop_launch(shell_pending_cmd);`
+- Defined: `kernel/shell.c:1011`
+- Doc: A desktop icon was clicked while a program ran; run it now that the shell has control again, without a fresh prompt. Thr
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_fb_clear_prompt (function) `vga_fb_clear_prompt();`
-- Defined: `kernel/shell.c:1018`
+- Defined: `kernel/shell.c:1022`
 - Doc: An empty submit (Enter / Ctrl+D on a blank line) consumed the live prompt too: clear it before looping, or every refocus
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### ramdisk_read (function) `ramdisk_read(f, data, 0, data_size);`
-- Defined: `kernel/shell.c:1063`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1067`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### minifs_read (function) `minifs_read(ino, data, 0, data_size);`
-- Defined: `kernel/shell.c:1079`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1083`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### kprintf (function) `kprintf("load: refusing untrusted ET_REL '%s'", resolved);`
-- Defined: `kernel/shell.c:1100`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1104`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### kfree (function) `kfree(data);`
-- Defined: `kernel/shell.c:1111`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1115`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### k_exec_user (function) `return k_exec_user(entry, argc, argv);`
-- Defined: `kernel/shell.c:1246`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1250`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### window (function) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small programs overlap in * time instead of running one after another. ET_REL is refus`
-- Defined: `kernel/shell.c:1389`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1393`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### yield (function) `yield();`
-- Defined: `kernel/shell.c:1494`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1498`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_fb_set_gfx_program (function) `vga_fb_set_gfx_program(name);`
-- Defined: `kernel/shell.c:1578`
+- Defined: `kernel/shell.c:1582`
 - Doc: Record the launch name for the taskbar button: if this program goes * graphics, the button resolves its icon through etc
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### k_run_rel (function) `return k_run_rel(p->entry, argc, argv);`
-- Defined: `kernel/shell.c:1584`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1588`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### context (function) `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);`
-- Defined: `kernel/shell.c:1600`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1604`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### outb (function) `outb(0x3C7, 0);`
-- Defined: `kernel/shell.c:1659`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1671`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### kfwrite (function) `kfwrite(hdr, 1, (unsigned long)n, f);`
-- Defined: `kernel/shell.c:1773`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1785`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### kfclose (function) `kfclose(f);`
-- Defined: `kernel/shell.c:1792`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1804`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_fb_tile_all (function) `vga_fb_tile_all();`
-- Defined: `kernel/shell.c:1833`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1845`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
+
+### vga_fb_layout_cycle (function) `vga_fb_layout_cycle();`
+- Defined: `kernel/shell.c:1860`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_fb_snap_window (function) `vga_fb_snap_window(z);`
-- Defined: `kernel/shell.c:1849`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1887`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_fb_focus_next (function) `vga_fb_focus_next();`
-- Defined: `kernel/shell.c:1864`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1902`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
+
+### vga_fb_theme_name (function) `vga_fb_theme_name(theme, sizeof(theme));`
+- Defined: `kernel/shell.c:1919`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### kbd_drop_counts (function) `kbd_drop_counts(&cooked, &raw);`
-- Defined: `kernel/shell.c:1881`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1925`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### spin_lock (function) `spin_lock(&sched_lock);`
-- Defined: `kernel/shell.c:1914`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1958`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### spin_unlock (function) `spin_unlock(&sched_lock);`
-- Defined: `kernel/shell.c:1926`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:1970`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### dlmalloc_usage (function) `dlmalloc_usage(&hu, &hf, &ha);`
-- Defined: `kernel/shell.c:1984`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2028`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### ramdisk_usage (function) `ramdisk_usage(&ru, &rc, &rm);`
-- Defined: `kernel/shell.c:1987`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2031`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### minifs_usage (function) `minifs_usage(&fb, &tb, &fi, &ti);`
-- Defined: `kernel/shell.c:1992`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2036`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### XXH64_reset (function) `XXH64_reset(&h, 0);`
-- Defined: `kernel/shell.c:2018`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2062`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### vga_clear (function) `vga_clear();`
-- Defined: `kernel/shell.c:2073`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2117`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_edit (function) `shell_cmd_edit(argc, argv);`
-- Defined: `kernel/shell.c:2079`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2123`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_report (function) `shell_report("ls: name too long: ", argv[1]);`
-- Defined: `kernel/shell.c:2085`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2129`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### minifs_stat (function) `minifs_stat(de.inode, &st);`
-- Defined: `kernel/shell.c:2195`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2239`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### ramdisk_delete (function) `ramdisk_delete(f);`
-- Defined: `kernel/shell.c:2235`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2279`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### net_cmd_status (function) `net_cmd_status();`
-- Defined: `kernel/shell.c:2356`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2400`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### net_cmd_ping (function) `net_cmd_ping(argv[2]);`
-- Defined: `kernel/shell.c:2359`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2403`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### net_cmd_dns (function) `net_cmd_dns(argv[2]);`
-- Defined: `kernel/shell.c:2362`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2406`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### rq_stats (function) `rq_stats(c, &hits, &steals, &drops);`
-- Defined: `kernel/shell.c:2399`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2443`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### pcspk_set_volume (function) `pcspk_set_volume(v);`
-- Defined: `kernel/shell.c:2463`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2507`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### kstack_report (function) `kstack_report();`
-- Defined: `kernel/shell.c:2500`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2544`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### sb16_counters (function) `sb16_counters(&c);`
-- Defined: `kernel/shell.c:2504`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2548`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_unzip (function) `shell_cmd_unzip(argc, argv);`
-- Defined: `kernel/shell.c:2527`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2571`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_zip (function) `shell_cmd_zip(argc, argv);`
-- Defined: `kernel/shell.c:2530`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2574`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_report_exit (function) `else shell_report_exit(ret);`
-- Defined: `kernel/shell.c:2552`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2596`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ### shell_cmd_sh (function) `shell_cmd_sh(argc, argv);`
-- Defined: `kernel/shell.c:2583`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `zip.h`
+- Defined: `kernel/shell.c:2627`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
 
 ## kernel/string.c
 
@@ -5392,67 +5405,67 @@ static int shell_wait_fg(int *pids, int n, int ki...`
 - Defined: `kernel/string.c:16`
 - Doc: string.c -- Kernel string and memory functions.  Pure functions with no dependencies beyond their own prototypes in kern
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrcpy (function) `char *kstrcpy(char *dst, const char *src)`
 - Defined: `kernel/string.c:22`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncpy (function) `char *kstrncpy(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:28`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncat (function) `char *kstrncat(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:34`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrcmp (function) `int kstrcmp(const char *a, const char *b)`
 - Defined: `kernel/string.c:42`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncmp (function) `int kstrncmp(const char *a, const char *b, unsigned long n)`
 - Defined: `kernel/string.c:47`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrchr (function) `char *kstrchr(const char *s, int c)`
 - Defined: `kernel/string.c:52`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrstr (function) `char *kstrstr(const char *hay, const char *ndl)`
 - Defined: `kernel/string.c:57`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemcpy (function) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:67`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemset (function) `void *kmemset(void *dst, int c, unsigned long n)`
 - Defined: `kernel/string.c:74`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemcmp (function) `int kmemcmp(const void *a, const void *b, unsigned long n)`
 - Defined: `kernel/string.c:80`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemmove (function) `void *kmemmove(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:86`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### katol (function) `long katol(const char *s)`
 - Defined: `kernel/string.c:94`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_sanitize.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ## kernel/symtab.c
 
@@ -5762,167 +5775,172 @@ static long sys_minios_gfx_prese...`
 - Doc: RLIMIT/cgroups-lite (240): a1 = op (SET/GET), a2 = resource (AS/CPU/NOFILE), a3 = value for SET. Values are bytes, ticks
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
+### sys_minios_dir_list (function) `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)`
+- Defined: `kernel/syscalls.c:500`
+- Doc: Docstring: unified directory listing for the ring-3 file browser.  a1 = path, a2 = user buffer, a3 = buffer capacity. Th
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+
 ### syscall_trace_enabled (function) `long syscall_trace_enabled(void)`
-- Defined: `kernel/syscalls.c:536`
+- Defined: `kernel/syscalls.c:654`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### syscall_trace_set (function) `void syscall_trace_set(int on)`
-- Defined: `kernel/syscalls.c:538`
+- Defined: `kernel/syscalls.c:656`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_write (function) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:584`
+- Defined: `kernel/syscalls.c:702`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_writev (function) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:594`
+- Defined: `kernel/syscalls.c:712`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### do_open_path (function) `static long do_open_path(const char *path, long flags)`
-- Defined: `kernel/syscalls.c:615`
+- Defined: `kernel/syscalls.c:733`
 - Doc: return EFAULT; for (k = 0; k < cnt; k++) { unsigned long j; if (iov[k].iov_len > 0 && !user_range_ok((unsigned long)iov[
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_open (function) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:639`
+- Defined: `kernel/syscalls.c:757`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_close (function) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:644`
+- Defined: `kernel/syscalls.c:762`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_lseek (function) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:655`
+- Defined: `kernel/syscalls.c:773`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### mm_ensure_cur (function) `static int mm_ensure_cur(unsigned long start, unsigned long end)`
-- Defined: `kernel/syscalls.c:670`
+- Defined: `kernel/syscalls.c:788`
 - Doc: Back isolated user windows (mrun/proc_spawn_elf): their page tables start with only segments + stack mapped, so heap/mma
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_brk (function) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:678`
+- Defined: `kernel/syscalls.c:796`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_mmap (function) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:707`
+- Defined: `kernel/syscalls.c:825`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_munmap (function) `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:762`
+- Defined: `kernel/syscalls.c:880`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_mprotect (function) `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:780`
+- Defined: `kernel/syscalls.c:898`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_sigaction (function) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:785`
+- Defined: `kernel/syscalls.c:903`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_sigprocmask (function) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:790`
+- Defined: `kernel/syscalls.c:908`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_ioctl (function) `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:795`
+- Defined: `kernel/syscalls.c:913`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_access (function) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:800`
+- Defined: `kernel/syscalls.c:918`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_socket (function) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:822`
+- Defined: `kernel/syscalls.c:940`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_connect (function) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:827`
+- Defined: `kernel/syscalls.c:945`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_sendto (function) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:833`
+- Defined: `kernel/syscalls.c:951`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_recvfrom (function) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:838`
+- Defined: `kernel/syscalls.c:956`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_shutdown (function) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:843`
+- Defined: `kernel/syscalls.c:961`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_poll (function) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:848`
+- Defined: `kernel/syscalls.c:966`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_flock (function) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:855`
+- Defined: `kernel/syscalls.c:973`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_fsync (function) `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:865`
+- Defined: `kernel/syscalls.c:983`
 - Doc: fsync/fdatasync: the ramdisk is memory (always durable) and MiniFS persists through kfclose/minifs_sync, so there is not
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_fdatasync (function) `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:869`
+- Defined: `kernel/syscalls.c:987`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_getcwd (function) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:874`
+- Defined: `kernel/syscalls.c:992`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_unlink (function) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:886`
+- Defined: `kernel/syscalls.c:1004`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_readlink (function) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:899`
+- Defined: `kernel/syscalls.c:1017`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_fstat (function) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:904`
+- Defined: `kernel/syscalls.c:1022`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_gettimeofday (function) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:924`
+- Defined: `kernel/syscalls.c:1042`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_arch_prctl (function) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:947`
+- Defined: `kernel/syscalls.c:1065`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### sys_linux_uname (function) `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:959`
+- Defined: `kernel/syscalls.c:1077`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### trace_is_noisy (function) `static int trace_is_noisy(long n)`
-- Defined: `kernel/syscalls.c:1026`
+- Defined: `kernel/syscalls.c:1144`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### ksyscall (function) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:1031`
+- Defined: `kernel/syscalls.c:1149`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### user_range_ok (function) `int user_range_ok(unsigned long p, unsigned long len)`
-- Defined: `kernel/syscalls.c:1053`
+- Defined: `kernel/syscalls.c:1171`
 - Doc: --- User-pointer validation --------------------------------------------- The syscall boundary is the hardened edge betw
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### products (function) `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
  * pre-bounded against (END-...`
-- Defined: `kernel/syscalls.c:1071`
+- Defined: `kernel/syscalls.c:1189`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### ksyscall_dispatch (function) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- Defined: `kernel/syscalls.c:1083`
+- Defined: `kernel/syscalls.c:1201`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### tools (function) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
  * interpreter.
  */...`
-- Defined: `kernel/syscalls.c:1289`
+- Defined: `kernel/syscalls.c:1407`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### by (function) `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to progs/minios_abi.h * 2. Implementing a static long sys_*(long a1, ..., long a6) function here `
@@ -6050,109 +6068,109 @@ static long sys_minios_gfx_prese...`
 - Defined: `kernel/syscalls.c:445`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
+### kmemcpy (function) `kmemcpy(dir, resolved, len + 1);`
+- Defined: `kernel/syscalls.c:517`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+
 ### kprintf (function) `kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);`
-- Defined: `kernel/syscalls.c:563`
+- Defined: `kernel/syscalls.c:681`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### vga_putc (function) `vga_putc((char)c);`
-- Defined: `kernel/syscalls.c:572`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
-
-### kfclose (function) `kfclose(kfd_table[a1]);`
-- Defined: `kernel/syscalls.c:650`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
-
-### kfseek (function) `kfseek(kfd_table[a1], a2, (int)a3);`
-- Defined: `kernel/syscalls.c:659`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
-
-### spin_lock_irqsave (function) `spin_lock_irqsave(&mm_lock, &flags);`
-- Defined: `kernel/syscalls.c:684`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
-
-### spin_unlock_irqrestore (function) `spin_unlock_irqrestore(&mm_lock, flags);`
 - Defined: `kernel/syscalls.c:690`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
+### kfclose (function) `kfclose(kfd_table[a1]);`
+- Defined: `kernel/syscalls.c:768`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+
+### kfseek (function) `kfseek(kfd_table[a1], a2, (int)a3);`
+- Defined: `kernel/syscalls.c:777`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+
+### spin_lock_irqsave (function) `spin_lock_irqsave(&mm_lock, &flags);`
+- Defined: `kernel/syscalls.c:802`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+
+### spin_unlock_irqrestore (function) `spin_unlock_irqrestore(&mm_lock, flags);`
+- Defined: `kernel/syscalls.c:808`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+
 ### vma_tree_delete (function) `vma_tree_delete(&vma_free_root, best->base);`
-- Defined: `kernel/syscalls.c:741`
+- Defined: `kernel/syscalls.c:859`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### vma_tree_insert (function) `vma_tree_insert(&vma_live_root, addr, n);`
-- Defined: `kernel/syscalls.c:744`
+- Defined: `kernel/syscalls.c:862`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### net_sys_socket (function) `return net_sys_socket(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:825`
+- Defined: `kernel/syscalls.c:943`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### net_sys_connect (function) `return net_sys_connect(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:831`
+- Defined: `kernel/syscalls.c:949`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### net_sys_sendto (function) `return net_sys_sendto(a1, a2, a3, a4, a5, a6);`
-- Defined: `kernel/syscalls.c:836`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
-
-### net_sys_recvfrom (function) `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);`
-- Defined: `kernel/syscalls.c:841`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
-
-### net_sys_shutdown (function) `return net_sys_shutdown(a1, a2);`
-- Defined: `kernel/syscalls.c:846`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
-
-### net_sys_poll (function) `return net_sys_poll(a1, a2, a3);`
-- Defined: `kernel/syscalls.c:853`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
-
-### wrmsr (function) `wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);`
 - Defined: `kernel/syscalls.c:954`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
-### kmemset (function) `kmemset(u, 0, 390);`
+### net_sys_recvfrom (function) `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);`
+- Defined: `kernel/syscalls.c:959`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+
+### net_sys_shutdown (function) `return net_sys_shutdown(a1, a2);`
+- Defined: `kernel/syscalls.c:964`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+
+### net_sys_poll (function) `return net_sys_poll(a1, a2, a3);`
 - Defined: `kernel/syscalls.c:971`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
+### wrmsr (function) `wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);`
+- Defined: `kernel/syscalls.c:1072`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+
+### kmemset (function) `kmemset(u, 0, 390);`
+- Defined: `kernel/syscalls.c:1089`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+
 ### kstrcpy (function) `kstrcpy(u, "MiniOS");`
-- Defined: `kernel/syscalls.c:972`
+- Defined: `kernel/syscalls.c:1090`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### Discipline (function) `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok is ONLY for exact-size * buffers (sizeof(int), 144-byte stat, fixed PCM length);`
-- Defined: `kernel/syscalls.c:1066`
+- Defined: `kernel/syscalls.c:1184`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### wm_clear_close (function) `wm_clear_close();`
-- Defined: `kernel/syscalls.c:1086`
+- Defined: `kernel/syscalls.c:1204`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### do_exit (function) `do_exit(130);`
-- Defined: `kernel/syscalls.c:1091`
+- Defined: `kernel/syscalls.c:1209`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### klongjmp (function) `klongjmp(&exec_return, 1);`
-- Defined: `kernel/syscalls.c:1095`
+- Defined: `kernel/syscalls.c:1213`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### do_proc_exit (function) `return do_proc_exit(a1);`
-- Defined: `kernel/syscalls.c:1165`
+- Defined: `kernel/syscalls.c:1283`
 - Doc: 16, 24, 39, 57, 58, 59, 60, 61, 62, 41, 42, 44, 45, 48, 7 now * live in linux_syscall_table; 231 shares do_proc_exit. ca
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### LIMITATION (function) `* * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from * a ring-3 interpreter (lua/micropython) must save the parent's user window, * whose full span cannot fit in the kernel h`
-- Defined: `kernel/syscalls.c:1281`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
-
-### kmemcpy (function) `kmemcpy(kargv[i], child_argv[i], slen);`
-- Defined: `kernel/syscalls.c:1320`
+- Defined: `kernel/syscalls.c:1399`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### ramdisk_read (function) `ramdisk_read(f, data, 0, f->size);`
-- Defined: `kernel/syscalls.c:1341`
+- Defined: `kernel/syscalls.c:1459`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ### kfree (function) `kfree(data);`
-- Defined: `kernel/syscalls.c:1367`
+- Defined: `kernel/syscalls.c:1485`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ## kernel/syscalls_proc.c
@@ -6292,672 +6310,726 @@ long sys_linux_wait4(lon...`
 ### ktime_rdtsc (function) `static unsigned long ktime_rdtsc(void)`
 - Defined: `kernel/time.c:12`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### ktime_init (function) `static void ktime_init(void)`
 - Defined: `kernel/time.c:18`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### ktime_ms (function) `unsigned long ktime_ms(void)`
 - Defined: `kernel/time.c:32`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### ktime_us (function) `unsigned long ktime_us(void)`
 - Defined: `kernel/time.c:41`
 - Doc: Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime nsec and gettimeofday usec both deri
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### volatile (function) `__asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));`
 - Defined: `kernel/time.c:15`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### outb (function) `outb(0x61, (unsigned char)((inb(0x61) & 0x0F) | 0x01));`
 - Defined: `kernel/time.c:21`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### ktime_us_from_delta (function) `return ktime_us_from_delta(ktime_rdtsc() - tsc_base_ms, tsc_per_ms);`
 - Defined: `kernel/time.c:43`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ## kernel/vga_fb.c
 
 ### wm_geom_cfg (function) `static wm_geom_config_t wm_geom_cfg(void)`
-- Defined: `kernel/vga_fb.c:40`
-- Doc: #include "wm_window.h" #include "wm_render.h" #include "wm_tiling.h" #include "wm_focus.h" /** Docstring: File-scope dra
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:41`
+- Doc: #include "wm_render.h" #include "wm_tiling.h" #include "wm_focus.h" #include "wm_layout.h" /** Docstring: File-scope dra
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_event_cfg (function) `static wm_event_config_t wm_event_cfg(void)`
-- Defined: `kernel/vga_fb.c:51`
+- Defined: `kernel/vga_fb.c:52`
 - Doc: static int wm_ggy; /** Docstring: Geometry config derived once from the font layout. static wm_geom_config_t wm_geom_cfg
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_drag_reset (function) `static void wm_drag_reset(void)`
-- Defined: `kernel/vga_fb.c:60`
+- Defined: `kernel/vga_fb.c:61`
 - Doc: cfg.title_h = FONT_H; return cfg; } /** Docstring: Event config for the PS/2 mouse button mask. static wm_event_config_t
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_boot_config (function) `void vga_fb_boot_config(void)`
-- Defined: `kernel/vga_fb.c:80`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:81`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### fb_bytes_per_pixel (function) `int fb_bytes_per_pixel(void)`
-- Defined: `kernel/vga_fb.c:107`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:108`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### lg_get (function) `static const char *lg_get(int i)`
-- Defined: `kernel/vga_fb.c:166`
+- Defined: `kernel/vga_fb.c:167`
 - Doc: There is deliberately no "scroll the screen up" operation. A completed logical line is pushed to the ring exactly once, 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### lg_push (function) `static void lg_push(const char *line, int len)`
-- Defined: `kernel/vga_fb.c:172`
+- Defined: `kernel/vga_fb.c:173`
 - Doc: Append a completed logical line to the ring. The line is stored whole (no * width-dependent wrap), so it can be re-wrapp
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### line_nrows (function) `static int line_nrows(int len)`
-- Defined: `kernel/vga_fb.c:184`
+- Defined: `kernel/vga_fb.c:185`
 - Doc: Append a completed logical line to the ring. The line is stored whole (no * width-dependent wrap), so it can be re-wrapp
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### act_nrows (function) `static int act_nrows(void)`
-- Defined: `kernel/vga_fb.c:190`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:191`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### total_rows (function) `static int total_rows(void)`
-- Defined: `kernel/vga_fb.c:194`
+- Defined: `kernel/vga_fb.c:195`
 - Doc: else lg_head = (lg_head + 1) % SB_MAX_LINES; } /* Display rows a logical line of `len` characters occupies at term_cols.
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### disp_clamp (function) `static void disp_clamp(void)`
-- Defined: `kernel/vga_fb.c:202`
+- Defined: `kernel/vga_fb.c:203`
 - Doc: return n; } static int act_nrows(void) { return line_nrows(act_len); } /* Total display rows of the whole history (compl
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### line_at (function) `static const char *line_at(int abs, int *off)`
-- Defined: `kernel/vga_fb.c:220`
+- Defined: `kernel/vga_fb.c:221`
 - Doc: Locate the logical line contributing the display row `abs`, and set *off to the character offset where that display row 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### cursor_save_bg (function) `static void cursor_save_bg(int mx, int my)`
-- Defined: `kernel/vga_fb.c:264`
+- Defined: `kernel/vga_fb.c:265`
 - Doc: The cursor is drawn with its top-left corner at (mx, my), so the sprite spans down-right of the pointer. The caller clam
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### cursor_draw (function) `static void cursor_draw(int mx, int my)`
-- Defined: `kernel/vga_fb.c:272`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:273`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### cursor_restore (function) `static void cursor_restore(int mx, int my)`
-- Defined: `kernel/vga_fb.c:283`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:284`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### cursor_over (function) `static int cursor_over(int x0, int y0, int w, int h)`
-- Defined: `kernel/vga_fb.c:298`
+- Defined: `kernel/vga_fb.c:299`
 - Doc: True when the cursor sprite overlaps the given screen rectangle. Used to decide whether a partial repaint (taskbar, term
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### gfx_keep_save (function) `static void gfx_keep_save(int x, int y, int w, int h)`
-- Defined: `kernel/vga_fb.c:345`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:346`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### gfx_keep_restore (function) `static void gfx_keep_restore(void)`
-- Defined: `kernel/vga_fb.c:376`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:377`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_set_gfx_program (function) `void vga_fb_set_gfx_program(const char *name)`
-- Defined: `kernel/vga_fb.c:414`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:415`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### shcmd_base (function) `static void shcmd_base(const char *cmd, char *out, unsigned long cap)`
-- Defined: `kernel/vga_fb.c:434`
+- Defined: `kernel/vga_fb.c:435`
 - Doc: Basename of a shortcut command's program: first token after an optional `run`, then past the last '/'. "run quake2generi
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### ci_eq (function) `static int ci_eq(const char *a, const char *b)`
-- Defined: `kernel/vga_fb.c:450`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:451`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### gfx_prog_icon (function) `static const uint8_t *gfx_prog_icon(void)`
-- Defined: `kernel/vga_fb.c:464`
+- Defined: `kernel/vga_fb.c:465`
 - Doc: Icon of the running program via the shortcuts config: whoever composited * last, resolved through its launch command. Ze
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_set_gfx_mode (function) `void vga_fb_set_gfx_mode(int on)`
-- Defined: `kernel/vga_fb.c:475`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:478`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### gfx_place (function) `static void gfx_place(int w, int h, int *ox, int *oy)`
-- Defined: `kernel/vga_fb.c:496`
+- Defined: `kernel/vga_fb.c:499`
 - Doc: Centered origin of a w×h graphics window, plus the WM offset, clamped on screen. Every blit positions through here, so m
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_gfx_cursor_erase (function) `static void vga_fb_gfx_cursor_erase(void)`
-- Defined: `kernel/vga_fb.c:512`
+- Defined: `kernel/vga_fb.c:515`
 - Doc: Restore the last composite's pointer before the new frame covers it. Only meaningful in graphics mode; the desktop path 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_gfx_cursor_draw (function) `static void vga_fb_gfx_cursor_draw(void)`
-- Defined: `kernel/vga_fb.c:520`
+- Defined: `kernel/vga_fb.c:523`
 - Doc: Clamp the mouse into the framebuffer (the idle loop that normally clamps * never runs in graphics mode) and draw the poi
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### tw_park (function) `static void tw_park(int i)`
-- Defined: `kernel/vga_fb.c:698`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:705`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### tw_unpark (function) `static void tw_unpark(int i)`
-- Defined: `kernel/vga_fb.c:728`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:735`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_init_once (function) `static void wm_init_once(void)`
-- Defined: `kernel/vga_fb.c:760`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:767`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### tw_select (function) `static void tw_select(int i)`
-- Defined: `kernel/vga_fb.c:781`
+- Defined: `kernel/vga_fb.c:788`
 - Doc: wm_term = 0; for (k = 0; k < WM_MAX_TERMS; k++) { twins[k].present = (k == 0); twins[k].valid = 0; twins[k].lg = 0; twin
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_focus_get (function) `int vga_fb_focus_get(void)`
-- Defined: `kernel/vga_fb.c:792`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:799`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_nterms_get (function) `int vga_fb_nterms_get(void)`
-- Defined: `kernel/vga_fb.c:794`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:801`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_snapshot_state (function) `static void wm_snapshot_state(wm_focus_state_t *st)`
-- Defined: `kernel/vga_fb.c:797`
+- Defined: `kernel/vga_fb.c:804`
 - Doc: if (!twins[i].present) return; if (shell_readline_active()) shell_focus_park(); tw_park(wm_term); wm_focus = i; wm_term 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_focus_next (function) `void vga_fb_focus_next(void)`
-- Defined: `kernel/vga_fb.c:810`
+- Defined: `kernel/vga_fb.c:817`
 - Doc: /** Docstring: Single snapshot of every window for focus decisions. static void wm_snapshot_state(wm_focus_state_t *st) 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### wm_gfx_focus_sync (function) `static void wm_gfx_focus_sync(int on)`
+- Defined: `kernel/vga_fb.c:851`
+- Doc: Docstring: Route WM focus with the graphics mode switch.  A program that enables the display owns the keyboard: without 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_focus_id (function) `int vga_fb_focus_id(int id)`
-- Defined: `kernel/vga_fb.c:837`
-- Doc: if (nx == WM_FOCUS_GFX) { if (shell_readline_active()) shell_focus_park(); tw_park(wm_term); wm_focus = WM_FOCUS_GFX; kb
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:866`
+- Doc: if (on) { if (wm_focus != WM_FOCUS_GFX) { if (shell_readline_active()) shell_focus_park(); tw_park(wm_term); wm_focus = 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### content (function) `* windows would share content (same prompt/output on both) and a park
  * would alias src == dst. ...`
-- Defined: `kernel/vga_fb.c:861`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:890`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### vga_fb_layout_set (function) `int vga_fb_layout_set(int mode)`
+- Defined: `kernel/vga_fb.c:965`
+- Doc: if (twins[1].lg && twins[1].lg != lg) kfree(twins[1].lg); twins[1].lg = 0; twins[1].present = 0; twins[1].has_line = 0; 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### vga_fb_layout_cycle (function) `void vga_fb_layout_cycle(void)`
+- Defined: `kernel/vga_fb.c:976`
+- Doc: /** Docstring: Tile terminals through the tiling contract, graphics right. /** Docstring: Set active layout mode, fail c
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### vga_fb_layout_get (function) `int vga_fb_layout_get(void)`
+- Defined: `kernel/vga_fb.c:992`
+- Doc: if (wm_layout_mode == WM_LAYOUT_TILE) { wm_layout_mode = WM_LAYOUT_BSP; } else if (wm_layout_mode == WM_LAYOUT_BSP) { wm
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### vga_fb_layout_name (function) `const char *vga_fb_layout_name(void)`
+- Defined: `kernel/vga_fb.c:998`
+- Doc: } else { wm_layout_mode = WM_LAYOUT_TILE; } wm_last_n = -1; vga_fb_tile_all(); } /** Docstring: Active layout mode id. i
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_tile_all (function) `void vga_fb_tile_all(void)`
-- Defined: `kernel/vga_fb.c:935`
-- Doc: if (wm_focus == 1) wm_focus = 0; if (twins[1].lg && twins[1].lg != lg) kfree(twins[1].lg); twins[1].lg = 0; twins[1].pre
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1003`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### gfx_tile_right (function) `static void gfx_tile_right(void)`
-- Defined: `kernel/vga_fb.c:974`
-- Doc: twins[i].fullscreen = cells[i].fullscreen; twins[i].minimized = 0; twins[i].sz_cols = cells[i].cols; twins[i].sz_rows = 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1059`
+- Doc: twins[i].sz_cols = cells[i].cols; twins[i].sz_rows = cells[i].rows; twins[i].x = cells[i].x; twins[i].y = cells[i].y; wm
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_list_windows (function) `void vga_fb_list_windows(void)`
-- Defined: `kernel/vga_fb.c:993`
+- Defined: `kernel/vga_fb.c:1078`
 - Doc: Serial-observable window list for `wm list` (BDD surface). Parked state is read from the slots, never by disturbing the 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_act_empty (function) `int vga_fb_act_empty(void)`
-- Defined: `kernel/vga_fb.c:1036`
+- Defined: `kernel/vga_fb.c:1121`
 - Doc: int gx, gy; gfx_target(&gx, &gy); ksprintf(b, "win gfx %c %s x=%d y=%d w=%d h=%d\n", (wm_focus == WM_FOCUS_GFX) ? '*' : 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_note_prompt (function) `void vga_fb_note_prompt(void)`
-- Defined: `kernel/vga_fb.c:1040`
+- Defined: `kernel/vga_fb.c:1125`
 - Doc: The shell loop calls note after printing a prompt (it is live in the * focused window) and clear once the line is submit
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_clear_prompt (function) `void vga_fb_clear_prompt(void)`
-- Defined: `kernel/vga_fb.c:1045`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1130`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_prompted (function) `int vga_fb_prompted(void)`
-- Defined: `kernel/vga_fb.c:1050`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1135`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_prompt_live (function) `int vga_fb_prompt_live(void)`
-- Defined: `kernel/vga_fb.c:1059`
+- Defined: `kernel/vga_fb.c:1144`
 - Doc: 1 when the active line is empty or holds exactly a fresh prompt, so printing another one would stack duplicate `miniOS> 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_park_line (function) `void vga_fb_park_line(const char *b, int p)`
-- Defined: `kernel/vga_fb.c:1066`
+- Defined: `kernel/vga_fb.c:1151`
 - Doc: 1 when the active line is empty or holds exactly a fresh prompt, so printing another one would stack duplicate `miniOS> 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_unpark_line (function) `int vga_fb_unpark_line(char *b, int *p)`
-- Defined: `kernel/vga_fb.c:1081`
+- Defined: `kernel/vga_fb.c:1166`
 - Doc: A fresh prompt parks empty: record no line, so `wm list` does not * claim a half-typed command that never existed. t->ha
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### tw_hit (function) `static int tw_hit(int i, int mx, int my)`
-- Defined: `kernel/vga_fb.c:1096`
+- Defined: `kernel/vga_fb.c:1181`
 - Doc: termwin_t *t; int k; wm_init_once(); if (wm_focus < 0 || wm_focus >= WM_MAX_TERMS) return 0; t = &twins[wm_focus]; if (!
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### gfx_hit (function) `static int gfx_hit(int mx, int my)`
-- Defined: `kernel/vga_fb.c:1112`
+- Defined: `kernel/vga_fb.c:1197`
 - Doc: wm_window_t w; if (i < 0 || i >= WM_MAX_TERMS) return 0; w.kind = WM_WIN_TERMINAL; w.id = i; w.x = t->px_x; w.y = t->px_
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_set_gfx_palette (function) `void vga_fb_set_gfx_palette(const unsigned char *pal)`
-- Defined: `kernel/vga_fb.c:1209`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1294`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### fb_pack_idx (function) `static unsigned long fb_pack_idx(unsigned idx)`
-- Defined: `kernel/vga_fb.c:1225`
+- Defined: `kernel/vga_fb.c:1310`
 - Doc: --- True-color pixel layer ---- VBE true-color framebuffers store pixels natively as B,G,R(,X) bytes, so the DAC is bypa
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### fb_write_packed (function) `static void fb_write_packed(int x, int y, unsigned long rgb)`
-- Defined: `kernel/vga_fb.c:1240`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1325`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### fb_read_packed (function) `static unsigned long fb_read_packed(int x, int y)`
-- Defined: `kernel/vga_fb.c:1260`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1345`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_read_rgb (function) `unsigned long vga_fb_read_rgb(int x, int y)`
-- Defined: `kernel/vga_fb.c:1284`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1369`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wall_level (function) `static int wall_level(int v)`
-- Defined: `kernel/vga_fb.c:1288`
+- Defined: `kernel/vga_fb.c:1373`
 - Doc: 8-bit: return the raw palette index, not its resolved RGB. The cursor save/restore round-trips through fb_write_packed, 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_set_palette (function) `static void vga_fb_set_palette(void)`
-- Defined: `kernel/vga_fb.c:1296`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1381`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### fb_glyph (function) `static const uint8_t *fb_glyph(unsigned char c)`
-- Defined: `kernel/vga_fb.c:1350`
+- Defined: `kernel/vga_fb.c:1435`
 - Doc: Resolve one byte to its 8-row glyph: ASCII through font8x8, Spanish Latin-1 through the table above, anything else (incl
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_pixel (function) `void vga_fb_pixel(int x, int y, uint8_t color)`
-- Defined: `kernel/vga_fb.c:1371`
+- Defined: `kernel/vga_fb.c:1456`
 - Doc: case 0xAC: return glyph_notsign; case 0xB4: return glyph_acute; case 0xB7: return glyph_middot; case 0xBA: return glyph_
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_rect (function) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
-- Defined: `kernel/vga_fb.c:1379`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1464`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_char (function) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:1386`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1471`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_str (function) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:1400`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1485`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### text_px (function) `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:1412`
+- Defined: `kernel/vga_fb.c:1497`
 - Doc: Blit a text string at an absolute pixel position. Used for window chrome (title bar, taskbar) which lives outside the co
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_draw_buttons (function) `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:1438`
+- Defined: `kernel/vga_fb.c:1523`
 - Doc: --- Window controls ---- Three glyph buttons at the right end of a window's title bar: minimize (_), maximize (square) a
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_buttons_hit (function) `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
-- Defined: `kernel/vga_fb.c:1464`
+- Defined: `kernel/vga_fb.c:1549`
 - Doc: } for (i = 1; i < WM_BTN_H - 1; i++) { vga_fb_pixel(bx + 1, by + i, fg); vga_fb_pixel(bx + WM_BTN_W - 2, by + i, fg); } 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_close_pending (function) `int wm_close_pending(void)`
-- Defined: `kernel/vga_fb.c:1479`
+- Defined: `kernel/vga_fb.c:1564`
 - Doc: Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the child's o
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_clear_close (function) `void wm_clear_close(void)`
-- Defined: `kernel/vga_fb.c:1480`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1565`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_gfx_mode_active (function) `int wm_gfx_mode_active(void)`
-- Defined: `kernel/vga_fb.c:1481`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1566`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_ps2_owner (function) `int vga_fb_ps2_owner(int pid)`
-- Defined: `kernel/vga_fb.c:1484`
+- Defined: `kernel/vga_fb.c:1569`
 - Doc: Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the child's o
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_button_click (function) `static int wm_button_click(int mx, int my)`
-- Defined: `kernel/vga_fb.c:1503`
+- Defined: `kernel/vga_fb.c:1588`
 - Doc: Hit-test and dispatch a click on a titled window's controls. The active window is the graphics window when one is compos
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### USER_LOAD_BASE (function) `* table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
  * fits with ~1 KB to s...`
-- Defined: `kernel/vga_fb.c:1552`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1637`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### blit_gfx_buf (function) `static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh)`
-- Defined: `kernel/vga_fb.c:1595`
+- Defined: `kernel/vga_fb.c:1680`
 - Doc: } } else { for (b = 0; b < w; b++) { unsigned o = (unsigned)src[b] * 3u; row[0] = gfx_pal[o + 2]; row[1] = gfx_pal[o + 1
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_blit_gfx_window (function) `void vga_fb_blit_gfx_window(void)`
-- Defined: `kernel/vga_fb.c:1625`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1710`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_clear (function) `void vga_fb_clear(void)`
-- Defined: `kernel/vga_fb.c:1630`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1715`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_blit_nk_window (function) `void vga_fb_blit_nk_window(void)`
-- Defined: `kernel/vga_fb.c:1646`
+- Defined: `kernel/vga_fb.c:1731`
 - Doc: Composite the Nuklear UI back-buffer onto the desktop as a titled window, mirroring the DOOM window: the back-buffer is 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### term_recalc (function) `static void term_recalc(void)`
-- Defined: `kernel/vga_fb.c:1657`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1742`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### draw_title_win (function) `static void draw_title_win(int idx, int focused)`
-- Defined: `kernel/vga_fb.c:1684`
+- Defined: `kernel/vga_fb.c:1769`
 - Doc: Preserve the current window position, clamping it into range so a * drag or Ctrl+arrow move is not undone by the next la
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### taskbar_layout (function) `static void taskbar_layout(void)`
-- Defined: `kernel/vga_fb.c:1713`
+- Defined: `kernel/vga_fb.c:1799`
 - Doc: Title chars shown on the running-app taskbar button (icon + text must * stay small: the taskbar is a single 8px row). de
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### draw_speaker_icon (function) `static void draw_speaker_icon(int x, int y, uint8_t color)`
-- Defined: `kernel/vga_fb.c:1743`
+- Defined: `kernel/vga_fb.c:1831`
 - Doc: Running-app button right after it: mini icon + title while a graphics program owns the display. Clicking it focuses the 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### taskbar_render (function) `static void taskbar_render(void)`
-- Defined: `kernel/vga_fb.c:1751`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1839`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### taskbar_tick (function) `static void taskbar_tick(void)`
-- Defined: `kernel/vga_fb.c:1821`
+- Defined: `kernel/vga_fb.c:1919`
 - Doc: Redraw the clock only when the wall-clock second changes. Only the taskbar strip is repainted, so the cursor must be re-
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### vga_fb_theme_name (function) `int vga_fb_theme_name(char *dst, int cap)`
+- Defined: `kernel/vga_fb.c:1935`
+- Doc: Docstring: Active Nuklear theme name for the taskbar widget.  Reads etc/themes/current (ramdisk); a missing file, a bad 
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### taskbar_theme_cycle (function) `static void taskbar_theme_cycle(void)`
+- Defined: `kernel/vga_fb.c:1956`
+- Doc: Cycle the active theme to the next etc/themes/ entry (ramdisk). Holds no locks; click context only. Writes the choice ba
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### taskbar_handle_click (function) `static void taskbar_handle_click(int mx, int my)`
-- Defined: `kernel/vga_fb.c:1837`
+- Defined: `kernel/vga_fb.c:1996`
 - Doc: Click handling for the keyboard widget, the speaker icon and -/+ buttons, plus the restore button that reappears while t
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### draw_scrollbar (function) `static void draw_scrollbar(void)`
-- Defined: `kernel/vga_fb.c:1886`
+- Defined: `kernel/vga_fb.c:2052`
 - Doc: return; } if (mx >= tb_minus_x && mx < tb_minus_x + TASKBAR_BTN_W) { v = pcspk_get_volume(); pcspk_set_volume(v > TASKBA
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### render_blank_row (function) `static void render_blank_row(int vrow)`
-- Defined: `kernel/vga_fb.c:1921`
+- Defined: `kernel/vga_fb.c:2087`
 - Doc: Blank one viewport row: every cell is repainted with the terminal background. vga_fb_str with an empty string would draw
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### render_row (function) `static void render_row(int vrow, int abs)`
-- Defined: `kernel/vga_fb.c:1931`
+- Defined: `kernel/vga_fb.c:2097`
 - Doc: Render one display row at viewport row `vrow` for the absolute display row `abs`. Rows outside the history (above the ol
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### term_render (function) `static void term_render(void)`
-- Defined: `kernel/vga_fb.c:1959`
+- Defined: `kernel/vga_fb.c:2125`
 - Doc: Full repaint of the terminal window from the logical history, honouring the current scroll position. Used on desktop red
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### term_render_active (function) `static void term_render_active(void)`
-- Defined: `kernel/vga_fb.c:1972`
+- Defined: `kernel/vga_fb.c:2138`
 - Doc: Repaint only the bottom region that a live edit touches: from the active line's first visible display row to the bottom 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### line (function) `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...`
-- Defined: `kernel/vga_fb.c:2013`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2179`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### escapes (function) `* swallowing them here keeps the escapes (which the serial side needs)
      * from printing as li...`
-- Defined: `kernel/vga_fb.c:2022`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2188`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_puts_term (function) `void vga_fb_puts_term(const char *s)`
-- Defined: `kernel/vga_fb.c:2078`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2244`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_text_cursor (function) `void vga_fb_text_cursor(int col)`
-- Defined: `kernel/vga_fb.c:2085`
+- Defined: `kernel/vga_fb.c:2251`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_hide_text_cursor (function) `void vga_fb_hide_text_cursor(void)`
-- Defined: `kernel/vga_fb.c:2093`
+- Defined: `kernel/vga_fb.c:2259`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_draw_desktop (function) `void vga_fb_draw_desktop(void)`
-- Defined: `kernel/vga_fb.c:2098`
+- Defined: `kernel/vga_fb.c:2264`
 - Doc: it with a negative column. The cursor is a block rendered by render_row. void vga_fb_text_cursor(int col) { if (col < 0)
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_toggle_fullscreen (function) `void vga_fb_toggle_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:2139`
+- Defined: `kernel/vga_fb.c:2305`
 - Doc: term_recalc(); if (!term_minimized) { draw_title_win(plan[i].id, plan[i].id == wm_focus); disp_clamp(); term_render(); }
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_toggle_minimize (function) `void vga_fb_toggle_minimize(void)`
-- Defined: `kernel/vga_fb.c:2155`
+- Defined: `kernel/vga_fb.c:2324`
 - Doc: Minimize/restore the terminal window. The content is not touched; the window is merely hidden and repainted on restore. 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_is_minimized (function) `int vga_fb_is_minimized(void)`
-- Defined: `kernel/vga_fb.c:2161`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2330`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_is_fullscreen (function) `int vga_fb_is_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:2163`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2332`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### gfx_target (function) `static void gfx_target(int *x, int *y)`
-- Defined: `kernel/vga_fb.c:2167`
+- Defined: `kernel/vga_fb.c:2336`
 - Doc: Target origin of the graphics window under the current offsets (same * math as the blits, for hit-testing and `wm list` 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### gfx_snap (function) `static void gfx_snap(int zone)`
-- Defined: `kernel/vga_fb.c:2174`
+- Defined: `kernel/vga_fb.c:2343`
 - Doc: Snap the focused graphics window into a screen region (halves place it against that edge, quadrants into that corner). T
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_close_active (function) `int vga_fb_close_active(void)`
-- Defined: `kernel/vga_fb.c:2198`
+- Defined: `kernel/vga_fb.c:2367`
 - Doc: Close the focused window. For the graphics window (focused) this arms the close request that the syscall dispatcher hono
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_move_terminal (function) `void vga_fb_move_terminal(int dx, int dy)`
-- Defined: `kernel/vga_fb.c:2218`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2387`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### term_max_cols (function) `static int term_max_cols(void)`
-- Defined: `kernel/vga_fb.c:2255`
+- Defined: `kernel/vga_fb.c:2424`
 - Doc: --- Tiling window operations (Alt = WM modifier) ---- Snap places the window in a screen half or quadrant and sizes it t
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### term_max_rows (function) `static int term_max_rows(void)`
-- Defined: `kernel/vga_fb.c:2259`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2428`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### term_finish_layout (function) `static void term_finish_layout(void)`
-- Defined: `kernel/vga_fb.c:2263`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2432`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_snap_window (function) `void vga_fb_snap_window(int zone)`
-- Defined: `kernel/vga_fb.c:2269`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2438`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_resize (function) `void vga_fb_resize(int dcols, int drows)`
-- Defined: `kernel/vga_fb.c:2296`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2465`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_reset_default (function) `void vga_fb_reset_default(void)`
-- Defined: `kernel/vga_fb.c:2317`
+- Defined: `kernel/vga_fb.c:2486`
 - Doc: int ncol = term_sz_cols + dcols; int nrow = term_sz_rows + drows; if (ncol < 1) ncol = 1; if (nrow < 1) nrow = 1; if (nc
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wallpaper_ensure (function) `static void wallpaper_ensure(void)`
-- Defined: `kernel/vga_fb.c:2359`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2528`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wallpaper_draw (function) `static void wallpaper_draw(void)`
-- Defined: `kernel/vga_fb.c:2394`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2563`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### pipe_field (function) `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
-- Defined: `kernel/vga_fb.c:2428`
+- Defined: `kernel/vga_fb.c:2597`
 - Doc: --- Desktop shortcut icons ---- Shortcuts are defined in etc/shortcuts on the ramdisk, one per line: name|icon_path|comm
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### icon_nearest (function) `static int icon_nearest(int r, int g, int b)`
-- Defined: `kernel/vga_fb.c:2446`
+- Defined: `kernel/vga_fb.c:2615`
 - Doc: Nearest entry in the 16-colour icon palette (squared RGB distance, * integer-only: at most 3*255*255 per entry, far from
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### icon_embedded (function) `static const uint8_t *icon_embedded(const char *name)`
-- Defined: `kernel/vga_fb.c:2462`
+- Defined: `kernel/vga_fb.c:2631`
 - Doc: for (i = 0; i < ICON_PAL_SIZE; i++) { int dr = r - icon_pal[i][0]; int dg = g - icon_pal[i][1]; int db = b - icon_pal[i]
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### icon_decode (function) `static const uint8_t *icon_decode(const char *path)`
-- Defined: `kernel/vga_fb.c:2482`
+- Defined: `kernel/vga_fb.c:2651`
 - Doc: Decode a shortcut's PNG to raw 32x32 RGBA pixels. Returns a heap buffer that lives until reboot, or 0 on any failure (mi
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### icon_embedded_rgba (function) `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)`
-- Defined: `kernel/vga_fb.c:2516`
+- Defined: `kernel/vga_fb.c:2685`
 - Doc: Expand an embedded index icon (desktop_icons.h, transparent 0) to RGBA through the icon palette, so fallback art follows
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### dock_label_px (function) `static int dock_label_px(const struct desktop_shortcut *sc)`
-- Defined: `kernel/vga_fb.c:2544`
+- Defined: `kernel/vga_fb.c:2713`
 - Doc: Width of the longest shortcut label in pixels (cached after load). Labels are centred under their icon and a dock column
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### shortcuts_layout (function) `static void shortcuts_layout(void)`
-- Defined: `kernel/vga_fb.c:2553`
+- Defined: `kernel/vga_fb.c:2722`
 - Doc: Dock layout: one centred row just above the taskbar. Every shortcut owns a column `dock_cell_w` wide (enough for its lab
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### shortcut_cell_left (function) `static int shortcut_cell_left(int i)`
-- Defined: `kernel/vga_fb.c:2571`
+- Defined: `kernel/vga_fb.c:2740`
 - Doc: dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y; x0 = (fb_width - dock_w) / 2; if (x0 < 0) x0 = 0; y0 =
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### desktop_shortcuts_load (function) `void desktop_shortcuts_load(void)`
-- Defined: `kernel/vga_fb.c:2577`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2746`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### desktop_shortcuts_draw (function) `void desktop_shortcuts_draw(void)`
-- Defined: `kernel/vga_fb.c:2630`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2799`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### gfx_task_icon (function) `static const uint8_t *gfx_task_icon(void)`
-- Defined: `kernel/vga_fb.c:2691`
+- Defined: `kernel/vga_fb.c:2860`
 - Doc: Icon for the taskbar running-app button. First the running program via its launch command (config-driven, covers apps th
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### desktop_shortcuts_hit_test (function) `const char *desktop_shortcuts_hit_test(int mx, int my)`
-- Defined: `kernel/vga_fb.c:2711`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2880`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_mouse_tick (function) `void vga_fb_mouse_tick(void)`
-- Defined: `kernel/vga_fb.c:2726`
+- Defined: `kernel/vga_fb.c:2895`
 - Doc: const char *desktop_shortcuts_hit_test(int mx, int my) { shortcuts_layout(); for (int i = 0; i < shortcut_count; i++) { 
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_mouse_init (function) `void vga_fb_mouse_init(void)`
-- Defined: `kernel/vga_fb.c:2890`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:3074`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_init (function) `void vga_fb_init(void)`
-- Defined: `kernel/vga_fb.c:2909`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:3093`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### kbd_raw_flush (function) `kbd_raw_flush();`
-- Defined: `kernel/vga_fb.c:827`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:834`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### app (function) `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep landing on the shell * while the app looks hung. The enable arm mirrors the focus-gf`
+- Defined: `kernel/vga_fb.c:846`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### ksprintf (function) `ksprintf(b, "win term%d %c cols=%d rows=%d x=%d y=%d min=%d fs=%d%s\n", i, (i == wm_focus) ? '*' : ' ', dc, dr, (i == cur) ? term_x : t->x, (i == cur) ? term_y : t->y, t->minimized, t->fullscreen, t->`
-- Defined: `kernel/vga_fb.c:1013`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1098`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### serial_puts (function) `serial_puts(b);`
-- Defined: `kernel/vga_fb.c:1018`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1103`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_window_contains (function) `return wm_window_contains(&w, mx, my);`
-- Defined: `kernel/vga_fb.c:1108`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1193`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### outb (function) `outb(0x3C8, 0);`
-- Defined: `kernel/vga_fb.c:1214`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1299`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### blit_indexed_truecolor (function) `blit_indexed_truecolor(bb, bw, bh, dst_x, dst_y + FONT_H);`
-- Defined: `kernel/vga_fb.c:1620`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1705`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### kmemset (function) `kmemset((void *)FB_ADDR, 0, (unsigned long)fb_pitch * (unsigned long)fb_height);`
-- Defined: `kernel/vga_fb.c:1632`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1717`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### title (function) `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const uint8_t *ipx = gfx_task_icon();`
-- Defined: `kernel/vga_fb.c:1762`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
-
-### kbd_toggle_layout (function) `kbd_toggle_layout();`
-- Defined: `kernel/vga_fb.c:1857`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
-
-### pcspk_set_volume (function) `pcspk_set_volume(spk_saved_valid ? spk_saved_vol : v);`
-- Defined: `kernel/vga_fb.c:1866`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
-
-### term_draw_cell (function) `term_draw_cell(act_len - 1);`
-- Defined: `kernel/vga_fb.c:2073`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
-
-### stbi_image_free (function) `stbi_image_free(img);`
-- Defined: `kernel/vga_fb.c:2371`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1850`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### kfclose (function) `kfclose(f);`
-- Defined: `kernel/vga_fb.c:2618`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:1946`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### kmemcpy (function) `kmemcpy(names[count], rel, k + 1);`
+- Defined: `kernel/vga_fb.c:1977`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### kfputs (function) `kfputs(next, f);`
+- Defined: `kernel/vga_fb.c:1986`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### kfputc (function) `kfputc('\n', f);`
+- Defined: `kernel/vga_fb.c:1987`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### kbd_toggle_layout (function) `kbd_toggle_layout();`
+- Defined: `kernel/vga_fb.c:2016`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### pcspk_set_volume (function) `pcspk_set_volume(spk_saved_valid ? spk_saved_vol : v);`
+- Defined: `kernel/vga_fb.c:2032`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### term_draw_cell (function) `term_draw_cell(act_len - 1);`
+- Defined: `kernel/vga_fb.c:2239`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### stbi_image_free (function) `stbi_image_free(img);`
+- Defined: `kernel/vga_fb.c:2540`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### command (function) `* its launch command (config-driven, covers apps that never set a window * title);`
-- Defined: `kernel/vga_fb.c:2686`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2855`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+
+### path (function) `* present path (blit_gfx_buf) is the sole cursor painter. The tick * sharing cursor_save/cursor_old with it raced every present (~60fps * vs 25Hz): stale restores painted trails and flicker, worst on `
+- Defined: `kernel/vga_fb.c:2906`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### spin_restore_irq (function) `spin_restore_irq(flags);`
-- Defined: `kernel/vga_fb.c:2780`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:2960`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### vga_fb_drag_terminal (function) `vga_fb_drag_terminal(mx, my, wm_grab_cx);`
-- Defined: `kernel/vga_fb.c:2841`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:3023`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_clamp_point (function) `wm_clamp_point(&mouse_state.x, &mouse_state.y, fb_width, fb_height);`
-- Defined: `kernel/vga_fb.c:2867`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `kernel/vga_fb.c:3049`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ## ktime.h
 
@@ -6991,45 +7063,45 @@ long sys_linux_wait4(lon...`
 ## mcp/mcp_dbg_driver.py
 
 ### main (method) `def main()`
-- Defined: `mcp/mcp_dbg_driver.py:62`
+- Defined: `mcp/mcp_dbg_driver.py:64`
 - Depends on: `kernel/time.c`
 
 ### __init__ (method) `def __init__(self)`
-- Defined: `mcp/mcp_dbg_driver.py:15`
+- Defined: `mcp/mcp_dbg_driver.py:16`
 - Depends on: `kernel/time.c`
 
 ### request (method) `def request(self, method, params)`
-- Defined: `mcp/mcp_dbg_driver.py:26`
+- Defined: `mcp/mcp_dbg_driver.py:28`
 - Depends on: `kernel/time.c`
 
 ### tool (method) `def tool(self, name, params)`
-- Defined: `mcp/mcp_dbg_driver.py:44`
+- Defined: `mcp/mcp_dbg_driver.py:46`
 - Depends on: `kernel/time.c`
 
 ### close (method) `def close(self)`
-- Defined: `mcp/mcp_dbg_driver.py:52`
+- Defined: `mcp/mcp_dbg_driver.py:54`
 - Depends on: `kernel/time.c`
 
 ## mcp/mcp_dogfood.py
 
 ### main (method) `def main()`
-- Defined: `mcp/mcp_dogfood.py:76`
+- Defined: `mcp/mcp_dogfood.py:78`
 - Depends on: `kernel/time.c`
 
 ### __init__ (method) `def __init__(self, addons_dir)`
-- Defined: `mcp/mcp_dogfood.py:19`
+- Defined: `mcp/mcp_dogfood.py:20`
 - Depends on: `kernel/time.c`
 
 ### request (method) `def request(self, method, params)`
-- Defined: `mcp/mcp_dogfood.py:38`
+- Defined: `mcp/mcp_dogfood.py:40`
 - Depends on: `kernel/time.c`
 
 ### tool (method) `def tool(self, name, params)`
-- Defined: `mcp/mcp_dogfood.py:56`
+- Defined: `mcp/mcp_dogfood.py:58`
 - Depends on: `kernel/time.c`
 
 ### close (method) `def close(self)`
-- Defined: `mcp/mcp_dogfood.py:66`
+- Defined: `mcp/mcp_dogfood.py:68`
 - Depends on: `kernel/time.c`
 
 ## mcp/minios_addons.py
@@ -7880,16 +7952,16 @@ long sys_linux_wait4(lon...`
 - Defined: `mutate.sh:51`
 
 ### restore_sources (function)
-- Defined: `mutate.sh:94`
+- Defined: `mutate.sh:100`
 
 ### cleanup (function)
-- Defined: `mutate.sh:101`
+- Defined: `mutate.sh:107`
 
 ### record (function)
-- Defined: `mutate.sh:255`
+- Defined: `mutate.sh:268`
 
 ### find_index (function)
-- Defined: `mutate.sh:261`
+- Defined: `mutate.sh:274`
 - Doc: Locate a mutant by name.
 
 ## net.h
@@ -21908,6 +21980,211 @@ Z_DumpHeap
 - Defined: `progs/doomgeneric/z_zone.h:63`
 - Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_lights.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_tick.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_file_stdc.c`, `progs/doomgeneric/w_main.c`, `progs/doomgeneric/w_wad.c`, `progs/doomgeneric/wi_stuff.c`, `progs/doomgeneric/z_zone.c`
 
+## progs/file/file.c
+
+### file_sys_dir_list (function) `static long file_sys_dir_list(const char *path, char *buf, long cap)`
+- Defined: `progs/file/file.c:74`
+- Doc: static int file_table_n; static int file_quit; static char file_cwd[FILE_MAX_PATH]; static char file_entries[FILE_LIST_C
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_sys_spawn (function) `static long file_sys_spawn(const char *path, int argc, const char **argv)`
+- Defined: `progs/file/file.c:84`
+- Doc: static int file_preview_h; static int file_preview_on; /** Raw DIR_LIST syscall (241): names land NUL-separated in buf. 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_ext_of (function) `static void file_ext_of(const char *fname, char *dst, unsigned cap)`
+- Defined: `progs/file/file.c:95`
+- Doc: } /** Raw SPAWN syscall (215) preserving this app across the child. static long file_sys_spawn(const char *path, int arg
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_join (function) `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)`
+- Defined: `progs/file/file.c:116`
+- Doc: if (fname[k] == '.') { dot = k; found = 1; } if (!found || dot + 1 >= n) { dst[0] = 0; return; } { unsigned m = 0; for (
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_parent (function) `static void file_parent(char *path)`
+- Defined: `progs/file/file.c:130`
+- Doc: static int file_join(const char *dir, const char *name, char *dst, unsigned cap) { unsigned a = 0; unsigned b = 0; while
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_assoc_line (function) `static int file_assoc_line(const char *line, char *ext, char *prog)`
+- Defined: `progs/file/file.c:140`
+- Doc: return 0; } /** Parent of an absolute path, root stays root. static void file_parent(char *path) { unsigned n = 0; while
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_assoc_load (function) `static void file_assoc_load(void)`
+- Defined: `progs/file/file.c:173`
+- Doc: } if (line[p + k] && line[p + k] != '\n' && line[p + k] != '\r') return -1; while (p > 0 && (prog[p - 1] == ' ' || prog[
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_assoc_lookup (function) `static const char *file_assoc_lookup(const char *ext)`
+- Defined: `progs/file/file.c:192`
+- Doc: file_table_n = 0; f = fopen(FILE_ASSOC_PATH, "r"); if (!f) return; while (fgets(line, sizeof(line), f)) { if (file_assoc
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_action_of (function) `static int file_action_of(const char *fname, const char **prog_out)`
+- Defined: `progs/file/file.c:202`
+- Doc: fclose(f); } /** Program for an extension, empty when unmapped. static const char *file_assoc_lookup(const char *ext) { 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_refresh (function) `static void file_refresh(void)`
+- Defined: `progs/file/file.c:215`
+- Doc: /** Dispatch kind for a file name through the association table. static int file_action_of(const char *fname, const char
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_preview_load (function) `static int file_preview_load(const char *path)`
+- Defined: `progs/file/file.c:230`
+- Doc: long rc = file_sys_dir_list(file_cwd, file_entries, FILE_LIST_CAP); if (rc < 0) { file_entry_count = 0; file_entries[0] 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_preview_blit (function) `static void file_preview_blit(int ox, int oy)`
+- Defined: `progs/file/file.c:293`
+- Doc: if (d < bd) { bd = d; bi = k; } } file_preview_px[y * FILE_PREVIEW_W + x] = (unsigned char)bi; } } } stbi_image_free(px)
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_spawn_visible (function) `static long file_spawn_visible(const char *tool, int argc, const char **argv,
+                   ...`
+- Defined: `progs/file/file.c:308`
+- Doc: volatile uint8_t *fb = NK_BACKBUF; int x; int y; if (!file_preview_on) return; for (y = 0; y < file_preview_h; y++) for 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_open_text (function) `static void file_open_text(const char *path)`
+- Defined: `progs/file/file.c:331`
+- Doc: printf("file: %s exit code: %ld\n", label, rc); fflush(stdout); nk_sys_vga_mode(1); nk_build_palette(pal768); nk_sys_pal
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_run_shell (function) `static void file_run_shell(const char *path)`
+- Defined: `progs/file/file.c:342`
+- Doc: } /** Open a text file in vedit, preserving this browser. static void file_open_text(const char *path) { const char *arg
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_activate (function) `static void file_activate(const char *dir, const char *name)`
+- Defined: `progs/file/file.c:381`
+- Doc: if (strcmp(ext, "cvm") == 0) { args[0] = path; args[1] = 0; snprintf(label, sizeof(label), "run %s", path); file_spawn_v
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_ui_build (function) `static void file_ui_build(struct nk_context *ctx)`
+- Defined: `progs/file/file.c:412`
+- Doc: snprintf(file_preview_path, sizeof(file_preview_path), "%s", path); snprintf(file_status, sizeof(file_status), "preview 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_selftest (function) `static int file_selftest(void)`
+- Defined: `progs/file/file.c:489`
+- Doc: off += (long)el; idx++; if (off >= FILE_LIST_CAP) break; } } if (file_preview_on) { nk_layout_row_dynamic(ctx, 18, 1); n
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_gui_run (function) `static void file_gui_run(void)`
+- Defined: `progs/file/file.c:555`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### main (function) `int main(int argc, char **argv)`
+- Defined: `progs/file/file.c:612`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_DIR_LIST), "D"(path), "S"(buf), "d"(cap) : "rcx", "r11", "memory");`
+- Defined: `progs/file/file.c:76`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### memcpy (function) `memcpy(dst, dir, a);`
+- Defined: `progs/file/file.c:122`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### strcpy (function) `strcpy(file_table[file_table_n].ext, ext);`
+- Defined: `progs/file/file.c:184`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### fclose (function) `fclose(f);`
+- Defined: `progs/file/file.c:188`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### snprintf (function) `snprintf(file_status, sizeof(file_status), "cannot list %s (%ld)", file_cwd, rc);`
+- Defined: `progs/file/file.c:220`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### fseek (function) `fseek(f, 0, SEEK_END);`
+- Defined: `progs/file/file.c:240`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### free (function) `free(raw);`
+- Defined: `progs/file/file.c:247`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_build_palette (function) `nk_build_palette(pal);`
+- Defined: `progs/file/file.c:263`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### stbi_image_free (function) `stbi_image_free(px);`
+- Defined: `progs/file/file.c:285`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_sys_vga_mode (function) `nk_sys_vga_mode(0);`
+- Defined: `progs/file/file.c:312`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_sys_kbd_raw (function) `nk_sys_kbd_raw(0);`
+- Defined: `progs/file/file.c:313`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### printf (function) `printf("--- file: %s ---\n", label);`
+- Defined: `progs/file/file.c:314`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### fflush (function) `fflush(stdout);`
+- Defined: `progs/file/file.c:315`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_sys_palette (function) `nk_sys_palette(pal768);`
+- Defined: `progs/file/file.c:321`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_layout_row_dynamic (function) `nk_layout_row_dynamic(ctx, 22, 1);`
+- Defined: `progs/file/file.c:415`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_label (function) `nk_label(ctx, file_status, NK_TEXT_LEFT);`
+- Defined: `progs/file/file.c:416`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_end (function) `nk_end(ctx);`
+- Defined: `progs/file/file.c:485`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_theme_active (function) `nk_theme_active(theme, sizeof(theme));`
+- Defined: `progs/file/file.c:544`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_sys_gfx_set_title (function) `nk_sys_gfx_set_title(FILE_TITLE);`
+- Defined: `progs/file/file.c:565`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_theme_apply (function) `nk_theme_apply(&ctx, 0);`
+- Defined: `progs/file/file.c:572`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_input_begin (function) `nk_input_begin(&ctx);`
+- Defined: `progs/file/file.c:580`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_poll_input (function) `nk_poll_input(&ctx);`
+- Defined: `progs/file/file.c:581`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_input_end (function) `nk_input_end(&ctx);`
+- Defined: `progs/file/file.c:591`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_rasterize (function) `nk_rasterize(&ctx);`
+- Defined: `progs/file/file.c:594`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_clear (function) `nk_clear(&ctx);`
+- Defined: `progs/file/file.c:600`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_free (function) `nk_free(&ctx);`
+- Defined: `progs/file/file.c:608`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
 ## progs/lua/lua_main.c
 
 ### luaL_require_global (function) `static void luaL_require_global(lua_State *L, const char *name,
@@ -22324,276 +22601,280 @@ Z_DumpHeap
 ## progs/nuklear/node_editor.c
 
 ### node_inputs (function) `static int node_inputs(int k)`
-- Defined: `progs/nuklear/node_editor.c:94`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:95`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### node_outputs (function) `static int node_outputs(int k)`
-- Defined: `progs/nuklear/node_editor.c:99`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:100`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### kind_name (function) `static const char *kind_name(int k)`
-- Defined: `progs/nuklear/node_editor.c:104`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:105`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### kind_color (function) `static struct nk_color kind_color(int k)`
-- Defined: `progs/nuklear/node_editor.c:109`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:110`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### graph_clear (function) `static void graph_clear(void)`
-- Defined: `progs/nuklear/node_editor.c:114`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:115`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### graph_add (function) `static int graph_add(int kind)`
-- Defined: `progs/nuklear/node_editor.c:120`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:121`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### graph_del (function) `static void graph_del(int idx)`
-- Defined: `progs/nuklear/node_editor.c:134`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:135`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### graph_to_compiler (function) `static int graph_to_compiler(struct cvm_node *out, int cap)`
-- Defined: `progs/nuklear/node_editor.c:153`
+- Defined: `progs/nuklear/node_editor.c:154`
 - Doc: g_count--; for (int i = 0; i < g_count; i++) for (int k = 0; k < 3; k++) { if (g_nodes[i].in[k] == idx) { g_nodes[i].in[
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### repair_graph (function) `static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,
                    ...`
-- Defined: `progs/nuklear/node_editor.c:175`
+- Defined: `progs/nuklear/node_editor.c:176`
 - Doc: Pre-compile pass: repair every open data input with a const 0 fallback (an open PrStr prints an empty line), so Compile 
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### addrep (function) `void addrep(const char *s)`
-- Defined: `progs/nuklear/node_editor.c:182`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:183`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### adderr (function) `void adderr(const char *s)`
-- Defined: `progs/nuklear/node_editor.c:192`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:193`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### compile_to (function) `static int compile_to(const char *path)`
-- Defined: `progs/nuklear/node_editor.c:282`
+- Defined: `progs/nuklear/node_editor.c:283`
 - Doc: Compile the current graph to a file. Returns 0 on success. Open inputs are auto-repaired (const 0 / empty line) and repo
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### write_quoted (function) `static void write_quoted(FILE *f, const char *s)`
-- Defined: `progs/nuklear/node_editor.c:338`
+- Defined: `progs/nuklear/node_editor.c:339`
 - Doc: --- Headless graph text format (v2, backward compatible) ---- num a 5          str s "hi"       add b a c      add c a #
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### save_graph_file (function) `static int save_graph_file(const char *path)`
-- Defined: `progs/nuklear/node_editor.c:390`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:391`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### parse_graph_file (function) `static int parse_graph_file(const char *path)`
-- Defined: `progs/nuklear/node_editor.c:428`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:429`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### resolve (function) `int resolve(const char *nme, int upto)`
-- Defined: `progs/nuklear/node_editor.c:436`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:437`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### parse_input (function) `int parse_input(const char *tok, int idx, int k)`
-- Defined: `progs/nuklear/node_editor.c:442`
+- Defined: `progs/nuklear/node_editor.c:443`
 - Doc: static int parse_graph_file(const char *path) { FILE *f = fopen(path, "r"); if (!f) return -1; graph_clear(); static cha
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### pin_y (function) `static float pin_y(struct gnode *n, int slot, int is_output)`
-- Defined: `progs/nuklear/node_editor.c:521`
+- Defined: `progs/nuklear/node_editor.c:522`
 - Doc: /* Link-drag state: click an output pin, drag to an input pin. static int linking_active; static int linking_src_node; s
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### node_h (function) `static float node_h(struct gnode *n)`
-- Defined: `progs/nuklear/node_editor.c:532`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:533`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### ui_inspector (function) `static void ui_inspector(struct nk_context *ctx)`
-- Defined: `progs/nuklear/node_editor.c:540`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:541`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### ui_build (function) `static void ui_build(struct nk_context *ctx, float win_w, float win_h)`
-- Defined: `progs/nuklear/node_editor.c:620`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:621`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### gui_run (function) `static void gui_run(void)`
-- Defined: `progs/nuklear/node_editor.c:930`
+- Defined: `progs/nuklear/node_editor.c:931`
 - Doc: circle.y = pin_y(n, k, 0) - PIN_R + oy; circle.w = PIN_DIAM; circle.h = PIN_DIAM; nk_fill_circle(canvas, circle, n->in[k
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/nuklear/node_editor.c:979`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:982`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### memset (function) `memset(n, 0, sizeof(*n));`
-- Defined: `progs/nuklear/node_editor.c:125`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:126`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### memmove (function) `memmove(&g_nodes[idx], &g_nodes[idx + 1], (size_t)(g_count - idx - 1) * sizeof(g_nodes[0]));`
-- Defined: `progs/nuklear/node_editor.c:137`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:138`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### memcpy (function) `memcpy(out[i].sval, g->sval, sizeof(out[i].sval));`
-- Defined: `progs/nuklear/node_editor.c:159`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:160`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### snprintf (function) `snprintf(m, sizeof(m), "node %d: bad type", i);`
-- Defined: `progs/nuklear/node_editor.c:206`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:207`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### free (function) `free(mod);`
-- Defined: `progs/nuklear/node_editor.c:306`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:307`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### close (function) `close(fd);`
-- Defined: `progs/nuklear/node_editor.c:315`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:316`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### fputc (function) `fputc('"', f);`
-- Defined: `progs/nuklear/node_editor.c:339`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:340`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### fprintf (function) `fprintf(f, "num %s %lld\n", names[i], g->ival);`
-- Defined: `progs/nuklear/node_editor.c:401`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:402`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### fclose (function) `fclose(f);`
-- Defined: `progs/nuklear/node_editor.c:424`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:425`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_dynamic (function) `nk_layout_row_dynamic(ctx, 16, 1);`
-- Defined: `progs/nuklear/node_editor.c:542`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:543`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_label (function) `nk_label(ctx, "select a node to edit its parameters", NK_TEXT_LEFT);`
-- Defined: `progs/nuklear/node_editor.c:544`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:545`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_property_int (function) `nk_property_int(ctx, "value:", -2147483647, &v, 2147483647, 1, 10);`
-- Defined: `progs/nuklear/node_editor.c:555`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:556`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_edit_string_zero_terminated (function) `nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, n->sval, (int)sizeof(n->sval), 0);`
-- Defined: `progs/nuklear/node_editor.c:561`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:562`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_begin (function) `nk_layout_row_begin(ctx, NK_STATIC, 20, 3);`
-- Defined: `progs/nuklear/node_editor.c:572`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:573`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_push (function) `nk_layout_row_push(ctx, 110);`
-- Defined: `progs/nuklear/node_editor.c:573`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:574`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_end (function) `nk_layout_row_end(ctx);`
-- Defined: `progs/nuklear/node_editor.c:591`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:592`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_static (function) `nk_layout_row_static(ctx, 22, 90, 3);`
-- Defined: `progs/nuklear/node_editor.c:609`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:610`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_combobox (function) `nk_combobox(ctx, items, G_COUNT, &add_sel, 20, nk_vec2(150, 300));`
-- Defined: `progs/nuklear/node_editor.c:634`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:635`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_label_colored_wrap (function) `nk_label_colored_wrap(ctx, g_status, nk_rgb(255, 120, 120));`
-- Defined: `progs/nuklear/node_editor.c:668`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:669`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_space_begin (function) `nk_layout_space_begin(ctx, NK_STATIC, canvas_h, g_count + 32);`
-- Defined: `progs/nuklear/node_editor.c:683`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:684`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_stroke_line (function) `nk_stroke_line(canvas, x + canvas_bounds.x, canvas_bounds.y, x + canvas_bounds.x, canvas_bounds.y + canvas_bounds.h, 1.0f, grid_col);`
-- Defined: `progs/nuklear/node_editor.c:702`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:703`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_stroke_curve (function) `nk_stroke_curve(canvas, sx, sy, sx + BEZIER_PAD, sy, dx - BEZIER_PAD, dy, dx, dy, 2.0f, nk_rgb(180, 180, 180));`
-- Defined: `progs/nuklear/node_editor.c:722`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:723`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_space_bounds (function) `nk_layout_space_bounds(ctx));`
-- Defined: `progs/nuklear/node_editor.c:744`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:745`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_space_push (function) `nk_layout_space_push(ctx, nk_rect(n->x, n->y, NODE_W, h));`
-- Defined: `progs/nuklear/node_editor.c:841`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:842`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_fill_rect (function) `nk_fill_rect(canvas, title_bounds, 0, col);`
-- Defined: `progs/nuklear/node_editor.c:849`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:850`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_group_end (function) `nk_group_end(ctx);`
-- Defined: `progs/nuklear/node_editor.c:901`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:902`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_fill_circle (function) `nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));`
-- Defined: `progs/nuklear/node_editor.c:911`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:912`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_space_end (function) `nk_layout_space_end(ctx);`
-- Defined: `progs/nuklear/node_editor.c:923`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:924`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_end (function) `nk_end(ctx);`
-- Defined: `progs/nuklear/node_editor.c:925`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:926`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_vga_mode (function) `nk_sys_vga_mode(1);`
-- Defined: `progs/nuklear/node_editor.c:933`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:934`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_gfx_set_title (function) `nk_sys_gfx_set_title("Nuklear");`
-- Defined: `progs/nuklear/node_editor.c:935`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:936`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_kbd_raw (function) `nk_sys_kbd_raw(1);`
-- Defined: `progs/nuklear/node_editor.c:936`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:937`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_build_palette (function) `nk_build_palette(pal768);`
-- Defined: `progs/nuklear/node_editor.c:937`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:938`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_palette (function) `nk_sys_palette(pal768);`
-- Defined: `progs/nuklear/node_editor.c:938`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:939`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_fb_info (function) `nk_sys_fb_info(&fw, &fh, &fp);`
-- Defined: `progs/nuklear/node_editor.c:939`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:940`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### printf (function) `printf("nuklear: init failed\n");`
-- Defined: `progs/nuklear/node_editor.c:944`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:945`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_theme_apply (function) `nk_theme_apply(&ctx, 0);`
+- Defined: `progs/nuklear/node_editor.c:950`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_input_begin (function) `nk_input_begin(&ctx);`
-- Defined: `progs/nuklear/node_editor.c:958`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:960`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_poll_input (function) `nk_poll_input(&ctx);`
-- Defined: `progs/nuklear/node_editor.c:959`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:961`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_input_end (function) `nk_input_end(&ctx);`
-- Defined: `progs/nuklear/node_editor.c:960`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:962`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_rasterize (function) `nk_rasterize(&ctx);`
-- Defined: `progs/nuklear/node_editor.c:963`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:966`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_clear (function) `nk_clear(&ctx);`
-- Defined: `progs/nuklear/node_editor.c:967`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:970`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### volatile (function) `__asm__ volatile("pause");`
-- Defined: `progs/nuklear/node_editor.c:971`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:974`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_free (function) `nk_free(&ctx);`
-- Defined: `progs/nuklear/node_editor.c:974`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/nuklear/node_editor.c:977`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/nuklear/nuklear_minios.c
 
@@ -22707,23 +22988,28 @@ Z_DumpHeap
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### feed_key (function) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
-- Defined: `progs/nuklear/nuklear_minios.c:499`
+- Defined: `progs/nuklear/nuklear_minios.c:500`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_set_scancode_hook (function) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
-- Defined: `progs/nuklear/nuklear_minios.c:506`
+- Defined: `progs/nuklear/nuklear_minios.c:507`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### handle_scancode (function) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
-- Defined: `progs/nuklear/nuklear_minios.c:511`
+- Defined: `progs/nuklear/nuklear_minios.c:512`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_poll_input (function) `void nk_poll_input(struct nk_context *ctx)`
-- Defined: `progs/nuklear/nuklear_minios.c:554`
+- Defined: `progs/nuklear/nuklear_minios.c:557`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_set_window_origin (function) `void nk_set_window_origin(int x, int y)`
-- Defined: `progs/nuklear/nuklear_minios.c:591`
+- Defined: `progs/nuklear/nuklear_minios.c:594`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+
+### nk_quit_requested (function) `int nk_quit_requested(void)`
+- Defined: `progs/nuklear/nuklear_minios.c:603`
+- Doc: WM quit gesture latch: ESC or Alt+F4 pressed since the last poll. Returns 1 once per gesture, then clears. Every NK app 
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### list (function) `* abstract draw command list (nk__begin/nk__next);`
@@ -22739,19 +23025,19 @@ Z_DumpHeap
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_key (function) `nk_input_key(ctx, key, down ? nk_true : nk_false);`
-- Defined: `progs/nuklear/nuklear_minios.c:501`
+- Defined: `progs/nuklear/nuklear_minios.c:502`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_unicode (function) `nk_input_unicode(ctx, (nk_rune)ch);`
-- Defined: `progs/nuklear/nuklear_minios.c:550`
+- Defined: `progs/nuklear/nuklear_minios.c:553`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_motion (function) `nk_input_motion(ctx, lx, ly);`
-- Defined: `progs/nuklear/nuklear_minios.c:571`
+- Defined: `progs/nuklear/nuklear_minios.c:574`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ### nk_input_scroll (function) `nk_input_scroll(ctx, scroll);`
-- Defined: `progs/nuklear/nuklear_minios.c:587`
+- Defined: `progs/nuklear/nuklear_minios.c:590`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
 ## progs/nuklear/nuklear_minios.h
@@ -22760,339 +23046,669 @@ Z_DumpHeap
 - Defined: `progs/nuklear/nuklear_minios.h:29`
 - Doc: Forward declarations so this header is self-contained when included * without nuklear.h first (font8x8.c does exactly th
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_sys_kbd (function) `long nk_sys_kbd(void);`
 - Defined: `progs/nuklear/nuklear_minios.h:30`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_sys_palette (function) `long nk_sys_palette(const unsigned char *pal768);`
 - Defined: `progs/nuklear/nuklear_minios.h:31`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_sys_kbd_raw (function) `long nk_sys_kbd_raw(int on);`
 - Defined: `progs/nuklear/nuklear_minios.h:32`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_sys_vga_mode (function) `long nk_sys_vga_mode(int on);`
 - Defined: `progs/nuklear/nuklear_minios.h:33`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_sys_fb_info (function) `long nk_sys_fb_info(int *w, int *h, int *pitch);`
 - Defined: `progs/nuklear/nuklear_minios.h:34`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_sys_mouse (function) `long nk_sys_mouse(int *xybw);`
 - Defined: `progs/nuklear/nuklear_minios.h:35`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_sys_mouse_badptr (function) `long nk_sys_mouse_badptr(void);`
 - Defined: `progs/nuklear/nuklear_minios.h:39`
 - Doc: Call SYS_MOUSE with a pointer that is NOT in the user window; the kernel must reject it with -EFAULT. Used by --selftest
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_sys_nk_frame (function) `long nk_sys_nk_frame(int *origin);`
 - Defined: `progs/nuklear/nuklear_minios.h:40`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_sys_gfx_set_title (function) `long nk_sys_gfx_set_title(const char *t);`
 - Defined: `progs/nuklear/nuklear_minios.h:41`
 - Doc: Call SYS_MOUSE with a pointer that is NOT in the user window; the kernel must reject it with -EFAULT. Used by --selftest
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_build_palette (function) `void nk_build_palette(unsigned char *pal768);`
 - Defined: `progs/nuklear/nuklear_minios.h:45`
 - Doc: Hybrid palette: indices 0-14 are the desktop colors (kept so the desktop * behind the window never recolors); 15-255 are
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_minios_font (function) `struct nk_user_font nk_minios_font(void);`
 - Defined: `progs/nuklear/nuklear_minios.h:51`
 - Doc: Hybrid palette: indices 0-14 are the desktop colors (kept so the desktop * behind the window never recolors); 15-255 are
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_rasterize (function) `void nk_rasterize(struct nk_context *ctx);`
 - Defined: `progs/nuklear/nuklear_minios.h:54`
 - Doc: Hybrid palette: indices 0-14 are the desktop colors (kept so the desktop * behind the window never recolors); 15-255 are
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### SYS_NK_FRAME (function) `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);`
 - Defined: `progs/nuklear/nuklear_minios.h:60`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_poll_input (function) `void nk_poll_input(struct nk_context *ctx);`
 - Defined: `progs/nuklear/nuklear_minios.h:62`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+
+### nk_quit_requested (function) `int nk_quit_requested(void);`
+- Defined: `progs/nuklear/nuklear_minios.h:67`
+- Doc: WM quit gesture: ESC or Alt+F4 since the last poll (1 once, then clears). Every NK app checks this per frame so closing 
+- Depends on: `progs/minios_abi.h`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### void (function) `typedef void (*nk_scancode_cb)(int code, int make, int e0, void *ud);`
-- Defined: `progs/nuklear/nuklear_minios.h:70`
+- Defined: `progs/nuklear/nuklear_minios.h:75`
 - Doc: Raw scancode hook: piano-style apps need note on/off with break events, which the Nuklear key/unicode translation discar
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_set_scancode_hook (function) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
-- Defined: `progs/nuklear/nuklear_minios.h:71`
+- Defined: `progs/nuklear/nuklear_minios.h:76`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+
+## progs/nuklear/nuklear_theme.c
+
+### nk_theme_name_ok (function) `static int nk_theme_name_ok(const char *name)`
+- Defined: `progs/nuklear/nuklear_theme.c:36`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### nk_theme_active (function) `int nk_theme_active(char *dst, int cap)`
+- Defined: `progs/nuklear/nuklear_theme.c:48`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### nk_theme_parse_line (function) `static int nk_theme_parse_line(const char *line,
+                               unsigned char rgb...`
+- Defined: `progs/nuklear/nuklear_theme.c:72`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### nk_theme_probe (function) `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3])`
+- Defined: `progs/nuklear/nuklear_theme.c:104`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### nk_theme_apply (function) `int nk_theme_apply(struct nk_context *ctx, const char *name)`
+- Defined: `progs/nuklear/nuklear_theme.c:140`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### fclose (function) `fclose(f);`
+- Defined: `progs/nuklear/nuklear_theme.c:63`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### snprintf (function) `snprintf(dst, (unsigned)cap, "%s", NK_THEME_DEFAULT);`
+- Defined: `progs/nuklear/nuklear_theme.c:69`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### nk_style_from_table (function) `nk_style_from_table(ctx, table);`
+- Defined: `progs/nuklear/nuklear_theme.c:148`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+## progs/nuklear/nuklear_theme.h
+
+### nk_theme_active (function) `int nk_theme_active(char *dst, int cap);`
+- Defined: `progs/nuklear/nuklear_theme.h:62`
+- Doc: X(scrollbar_cursor, 24) \ X(scrollbar_cursor_hover, 25) \ X(scrollbar_cursor_active, 26) \ X(tab_header, 27) \ X(knob, 2
+- Imported by: `progs/file/file.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`, `tests/test_theme.c`
+
+### nk_theme_probe (function) `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3]);`
+- Defined: `progs/nuklear/nuklear_theme.h:65`
+- Doc: X(tab_header, 27) \ X(knob, 28) \ X(knob_cursor, 29) \ X(knob_cursor_hover, 30) \ X(knob_cursor_active, 31) #define NK_T
+- Imported by: `progs/file/file.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`, `tests/test_theme.c`
+
+### nk_theme_apply (function) `int nk_theme_apply(struct nk_context *ctx, const char *name);`
+- Defined: `progs/nuklear/nuklear_theme.h:68`
+- Doc: X(knob_cursor_hover, 30) \ X(knob_cursor_active, 31) #define NK_THEME_KEY_COUNT 32 struct nk_context; /** Resolve the ac
+- Imported by: `progs/file/file.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`, `tests/test_theme.c`
+
+## progs/paint/paint.c
+
+### paint_clamp (function) `static int paint_clamp(int v, int lo, int hi)`
+- Defined: `progs/paint/paint.c:92`
+- Doc: static int paint_size = 0; static int paint_down = 0; static int paint_lastx; static int paint_lasty; static int paint_a
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_plot (function) `static int paint_plot(unsigned char *buf, int w, int h, int x, int y,
+                      unsig...`
+- Defined: `progs/paint/paint.c:99`
+- Doc: static float paint_recty; static char paint_path[PAINT_PATH_MAX] = PAINT_DEFAULT_PATH; static char paint_status[PAINT_ST
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_dab (function) `static void paint_dab(unsigned char *buf, int w, int h, int x, int y,
+                      unsig...`
+- Defined: `progs/paint/paint.c:108`
+- Doc: if (v > hi) return hi; return v; } /** Bound-checked pixel plot, fail closed outside the canvas. static int paint_plot(u
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_line (function) `static int paint_line(unsigned char *buf, int w, int h, int x0, int y0,
+                      int...`
+- Defined: `progs/paint/paint.c:119`
+- Doc: } /** Filled square dab of side s centered on (x, y). static void paint_dab(unsigned char *buf, int w, int h, int x, int
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_rect_fill (function) `static int paint_rect_fill(unsigned char *buf, int w, int h, int x0, int y0,
+                    ...`
+- Defined: `progs/paint/paint.c:144`
+- Doc: paint_dab(buf, w, h, x0, y0, c, s); n++; } if (x0 == x1 && y0 == y1) break; { int e2 = 2 * err; if (e2 > -dy) { err -= d
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_circle_fill (function) `static int paint_circle_fill(unsigned char *buf, int w, int h, int cx,
+                          ...`
+- Defined: `progs/paint/paint.c:161`
+- Doc: int xb = x0 < x1 ? x1 : x0; int ya = y0 < y1 ? y0 : y1; int yb = y0 < y1 ? y1 : y0; int x; int y; int n = 0; if (!buf ||
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_flood (function) `static int paint_flood(unsigned char *buf, int w, int h, int x, int y,
+                       uns...`
+- Defined: `progs/paint/paint.c:179`
+- Doc: Bounded flood fill with mark-on-push: every cell is marked once, so * the explicit stack never exceeds the canvas size.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_nearest (function) `static int paint_nearest(const unsigned char *pal, unsigned r, unsigned g,
+                      ...`
+- Defined: `progs/paint/paint.c:223`
+- Doc: } if (cy + 1 < h && buf[(cy + 1) * w + cx] == oc) { buf[(cy + 1) * w + cx] = nc; sx[top] = cx; sy[top] = cy + 1; top++; 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_pal (function) `static const unsigned char *paint_pal(void)`
+- Defined: `progs/paint/paint.c:240`
+- Doc: unsigned long bd = 0xFFFFFFFFUL; unsigned k; if (!pal) return -1; for (k = 0; k < 256; k++) { long dr = (long)pal[k * 3]
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_path_ok (function) `static int paint_path_ok(const char *p)`
+- Defined: `progs/paint/paint.c:251`
+- Doc: } /** Cached hybrid palette: built once, shared by picker, save and load. static const unsigned char *paint_pal(void) { 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_crc_init (function) `static void paint_crc_init(void)`
+- Defined: `progs/paint/paint.c:271`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_crc_update (function) `static unsigned long paint_crc_update(unsigned long c,
+                                      cons...`
+- Defined: `progs/paint/paint.c:284`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_adler (function) `static unsigned long paint_adler(const unsigned char *p, unsigned long n)`
+- Defined: `progs/paint/paint.c:296`
+- Doc: paint_crc_ready = 1; } static unsigned long paint_crc_update(unsigned long c, const unsigned char *p, unsigned long n) {
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_put_u32 (function) `static int paint_put_u32(unsigned char *dst, unsigned long cap,
+                         unsigned...`
+- Defined: `progs/paint/paint.c:308`
+- Doc: /** Adler-32 over one buffer (the zlib trailer of a single IDAT). static unsigned long paint_adler(const unsigned char *
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_put_bytes (function) `static int paint_put_bytes(unsigned char *dst, unsigned long cap,
+                           unsi...`
+- Defined: `progs/paint/paint.c:320`
+- Doc: /** Bound-checked big-endian u32 store for the PNG writer. static int paint_put_u32(unsigned char *dst, unsigned long ca
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_png_encode (function) `static long paint_png_encode(unsigned char *dst, unsigned long cap,
+                             ...`
+- Defined: `progs/paint/paint.c:333`
+- Doc: Encode indexed pixels as 8-bit truecolor PNG (stored deflate blocks). * Returns the byte count or a negative code on any
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_load_file (function) `static int paint_load_file(const char *path)`
+- Defined: `progs/paint/paint.c:461`
+- Doc: Decode a PNG file into the canvas (top-left, clamped, nearest-mapped). * Reports through the status line, never a partia
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_save_file (function) `static int paint_save_file(const char *path)`
+- Defined: `progs/paint/paint.c:514`
+- Doc: for (x = 0; x < cw; x++) { int v = paint_nearest(pal768, px[(y * w + x) * 3], px[(y * w + x) * 3 + 1], px[(y * w + x) * 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_blit (function) `static void paint_blit(int ox, int oy)`
+- Defined: `progs/paint/paint.c:548`
+- Doc: } n = fwrite(paint_png, 1, (size_t)png_n, f); fclose(f); if (n != (size_t)png_n) { snprintf(paint_status, sizeof(paint_s
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_ink (function) `static unsigned char paint_ink(void)`
+- Defined: `progs/paint/paint.c:562`
+- Doc: static void paint_blit(int ox, int oy) { volatile uint8_t *fb = NK_BACKBUF; int x; int y; for (y = 0; y < PAINT_H; y++) 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_handle_input (function) `static void paint_handle_input(struct nk_context *ctx)`
+- Defined: `progs/paint/paint.c:569`
+- Doc: int dy = oy + y; if (dx < 0 || dx >= NK_W || dy < 0 || dy >= NK_H) continue; fb[dy * NK_W + dx] = paint_px[y * PAINT_W +
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_ui_build (function) `static void paint_ui_build(struct nk_context *ctx)`
+- Defined: `progs/paint/paint.c:628`
+- Doc: Build the file row, the exact-size canvas beside the tool panel, and the status row. The canvas cell is PAINT_W wide so 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_pattern_present (function) `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)`
+- Defined: `progs/paint/paint.c:712`
+- Doc: Scan the whole framebuffer for the canvas marker run (first four swatches consecutive). Position-independent: it holds w
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_selftest (function) `static int paint_selftest(void)`
+- Defined: `progs/paint/paint.c:747`
+- Doc: break; } } if (hit) { ox = x; oy = y; return 1; } } } return 0; } /** Headless selftest for BDD: core vectors, PNG round
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### paint_gui_run (function) `static void paint_gui_run(void)`
+- Defined: `progs/paint/paint.c:934`
+- Doc: printf("paint: composite did not land (canvas %d,%d origin %d,%d)\n", (int)paint_rectx, (int)paint_recty, origin[0], ori
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### main (function) `int main(int argc, char **argv)`
+- Defined: `progs/paint/paint.c:983`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_build_palette (function) `nk_build_palette(pal768);`
+- Defined: `progs/paint/paint.c:244`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### snprintf (function) `snprintf(paint_status, sizeof(paint_status), "bad path %s", path);`
+- Defined: `progs/paint/paint.c:473`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### fclose (function) `fclose(f);`
+- Defined: `progs/paint/paint.c:483`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### memset (function) `memset(paint_px, paint_colors[PAINT_NCOLORS - 1], sizeof(paint_px));`
+- Defined: `progs/paint/paint.c:498`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### stbi_image_free (function) `stbi_image_free(px);`
+- Defined: `progs/paint/paint.c:509`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### memcpy (function) `memcpy(paint_backup, paint_px, sizeof(paint_px));`
+- Defined: `progs/paint/paint.c:583`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_layout_row_template_begin (function) `nk_layout_row_template_begin(ctx, 24);`
+- Defined: `progs/paint/paint.c:632`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_layout_row_template_push_dynamic (function) `nk_layout_row_template_push_dynamic(ctx);`
+- Defined: `progs/paint/paint.c:633`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_layout_row_template_push_static (function) `nk_layout_row_template_push_static(ctx, PAINT_FILE_BTN_W);`
+- Defined: `progs/paint/paint.c:634`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_layout_row_template_end (function) `nk_layout_row_template_end(ctx);`
+- Defined: `progs/paint/paint.c:636`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_edit_string_zero_terminated (function) `nk_edit_string_zero_terminated(ctx, NK_EDIT_SIMPLE, paint_path, sizeof(paint_path) - 1, nk_filter_ascii);`
+- Defined: `progs/paint/paint.c:637`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_widget (function) `nk_widget(&r, ctx);`
+- Defined: `progs/paint/paint.c:650`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_fill_rect (function) `nk_fill_rect(cv, r, 0, nk_rgb(255, 255, 255));`
+- Defined: `progs/paint/paint.c:655`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_layout_row_dynamic (function) `nk_layout_row_dynamic(ctx, 24, PAINT_NTOOLS);`
+- Defined: `progs/paint/paint.c:660`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_group_end (function) `nk_group_end(ctx);`
+- Defined: `progs/paint/paint.c:690`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_label (function) `nk_label(ctx, line, NK_TEXT_LEFT);`
+- Defined: `progs/paint/paint.c:701`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_end (function) `nk_end(ctx);`
+- Defined: `progs/paint/paint.c:704`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### printf (function) `printf("paint: selftest plot failed\n");`
+- Defined: `progs/paint/paint.c:766`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_sys_vga_mode (function) `nk_sys_vga_mode(1);`
+- Defined: `progs/paint/paint.c:879`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_sys_kbd_raw (function) `nk_sys_kbd_raw(1);`
+- Defined: `progs/paint/paint.c:880`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_sys_palette (function) `nk_sys_palette(pal768);`
+- Defined: `progs/paint/paint.c:881`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_sys_fb_info (function) `nk_sys_fb_info(&fw, &fh, &fp);`
+- Defined: `progs/paint/paint.c:882`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_input_begin (function) `nk_input_begin(&ctx);`
+- Defined: `progs/paint/paint.c:887`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_input_end (function) `nk_input_end(&ctx);`
+- Defined: `progs/paint/paint.c:888`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_rasterize (function) `nk_rasterize(&ctx);`
+- Defined: `progs/paint/paint.c:895`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_free (function) `nk_free(&ctx);`
+- Defined: `progs/paint/paint.c:924`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_sys_gfx_set_title (function) `nk_sys_gfx_set_title(PAINT_TITLE);`
+- Defined: `progs/paint/paint.c:942`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_theme_apply (function) `nk_theme_apply(&ctx, 0);`
+- Defined: `progs/paint/paint.c:950`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_poll_input (function) `nk_poll_input(&ctx);`
+- Defined: `progs/paint/paint.c:962`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_clear (function) `nk_clear(&ctx);`
+- Defined: `progs/paint/paint.c:971`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### volatile (function) `__asm__ volatile("pause");`
+- Defined: `progs/paint/paint.c:975`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### strcpy (function) `strcpy(paint_path, argv[1]);`
+- Defined: `progs/paint/paint.c:996`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/piano/piano.c
 
 ### sys_pcm_open (function) `static long sys_pcm_open(long on)`
-- Defined: `progs/piano/piano.c:76`
+- Defined: `progs/piano/piano.c:77`
 - Doc: Per-frame render bite: after a stall the backlog is paced over several frames instead of one giant catch-up render, boun
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### sys_pcm_submit (function) `static long sys_pcm_submit(const void *buf, long len)`
-- Defined: `progs/piano/piano.c:80`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:81`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### sys_pcm_pump (function) `static long sys_pcm_pump(void)`
-- Defined: `progs/piano/piano.c:83`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:84`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### sys_yield (function) `static void sys_yield(void)`
-- Defined: `progs/piano/piano.c:86`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:87`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### o3_op (function) `static int o3_op(int ch, int is_car)`
-- Defined: `progs/piano/piano.c:101`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:102`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### o3_opreg (function) `static void o3_opreg(int ch, int is_car, int regbase, int val)`
-- Defined: `progs/piano/piano.c:105`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:106`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### o3_chreg (function) `static void o3_chreg(int ch, int regbase, int val)`
-- Defined: `progs/piano/piano.c:109`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:110`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### o3_note (function) `static void o3_note(int ch, int midi, int on)`
-- Defined: `progs/piano/piano.c:146`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:147`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### midi_to_key (function) `static int midi_to_key(int midi)`
-- Defined: `progs/piano/piano.c:184`
+- Defined: `progs/piano/piano.c:185`
 - Doc: define NKEYS ((int)(sizeof(keys) / sizeof(keys[0])))
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### clamp_midi (function) `static int clamp_midi(int m)`
-- Defined: `progs/piano/piano.c:207`
+- Defined: `progs/piano/piano.c:208`
 - Doc: Per-scancode voice tracking so chords and fast melodies work: each * pressed scancode owns its channel until release.  I
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### pedal_set (function) `static void pedal_set(int on)`
-- Defined: `progs/piano/piano.c:215`
+- Defined: `progs/piano/piano.c:216`
 - Doc: pressed scancode owns its channel until release.  Indexed by 7-bit code. static int sc_chan[128]; static int sustain_ped
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### voice_alloc (function) `static int voice_alloc(void)`
-- Defined: `progs/piano/piano.c:228`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:229`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### note_off_key (function) `static void note_off_key(int key)`
-- Defined: `progs/piano/piano.c:241`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:242`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### note_on_key (function) `static void note_on_key(int key, int midi, int vel)`
-- Defined: `progs/piano/piano.c:255`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:256`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### kbd_semitone (function) `static int kbd_semitone(int code)`
-- Defined: `progs/piano/piano.c:272`
+- Defined: `progs/piano/piano.c:273`
 - Doc: ── PC-keyboard MIDI map (Fruity Loops style) ───────────────────────── PS/2 set-1 scancodes (7-bit code, E0 clear) to se
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### kbd_all_off (function) `static void kbd_all_off(void)`
-- Defined: `progs/piano/piano.c:306`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:307`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### note_on_sc (function) `static void note_on_sc(int code, int vel)`
-- Defined: `progs/piano/piano.c:312`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:313`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### note_off_sc (function) `static void note_off_sc(int code)`
-- Defined: `progs/piano/piano.c:326`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:327`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### piano_scancode (function) `static void piano_scancode(int code, int make, int e0, void *ud)`
-- Defined: `progs/piano/piano.c:343`
+- Defined: `progs/piano/piano.c:344`
 - Doc: Raw scancode hook (registered with nk_set_scancode_hook): note on/off * plus comma/period octave shift.  Extended (E0) k
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### fx_configure (function) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
-- Defined: `progs/piano/piano.c:395`
+- Defined: `progs/piano/piano.c:396`
 - Doc: #define FX_DELAY_CAP (RATE)           /* 1 s of delay at 22050 Hz #define FX_DELAY_MAX_MS 800 #define FX_FEEDBACK 0.35f 
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### fx_process (function) `static float fx_process(float x)`
-- Defined: `progs/piano/piano.c:413`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:414`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### sb_flush (function) `static void sb_flush(void)`
-- Defined: `progs/piano/piano.c:444`
+- Defined: `progs/piano/piano.c:445`
 - Doc: Flush a fully-filled buffer to the kernel audio ring.  When the ring is full the submit is refused; the buffer is kept i
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### render_audio (function) `static void render_audio(long ms)`
-- Defined: `progs/piano/piano.c:453`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:454`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### key_rect (function) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
-- Defined: `progs/piano/piano.c:479`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:480`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### hit_key (function) `static int hit_key(int mx, int my)`
-- Defined: `progs/piano/piano.c:486`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:487`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### hit_velocity (function) `static int hit_velocity(int key, int my)`
-- Defined: `progs/piano/piano.c:504`
+- Defined: `progs/piano/piano.c:505`
 - Doc: Velocity 1..100 from the click's vertical position inside a key: the very * top is soft, the bottom is loud.
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### ctrl_hit (function) `static int ctrl_hit(int id, int mx, int my)`
-- Defined: `progs/piano/piano.c:530`
+- Defined: `progs/piano/piano.c:532`
 - Doc: define NCTRLS ((int)(sizeof(ctrls) / sizeof(ctrls[0])))
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### ctrl_active (function) `static int ctrl_active(int id)`
-- Defined: `progs/piano/piano.c:535`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:537`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### ctrl_press (function) `static void ctrl_press(int id)`
-- Defined: `progs/piano/piano.c:544`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:546`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### ui_run (function) `static void ui_run(int bench_ms)`
-- Defined: `progs/piano/piano.c:562`
+- Defined: `progs/piano/piano.c:564`
 - Doc: case 1: if (octave < 2) octave++; break; case 2: if (volume > 0) volume -= 5; break; case 3: if (volume < 100) volume +=
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### run_selftest (function) `static int run_selftest(void)`
-- Defined: `progs/piano/piano.c:730`
+- Defined: `progs/piano/piano.c:738`
 - Doc: Yield instead of busy-spinning: the old 8 ms pause loop burned CPU every frame and delayed input polling; a yield hands 
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/piano/piano.c:896`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:904`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### volatile (function) `__asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");`
-- Defined: `progs/piano/piano.c:87`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:88`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### OPL3_WriteReg (function) `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);`
-- Defined: `progs/piano/piano.c:106`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:107`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### o3_instrument (function) `o3_instrument(ch, vel);`
-- Defined: `progs/piano/piano.c:262`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:263`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### memset (function) `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));`
-- Defined: `progs/piano/piano.c:406`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:407`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### OPL3_GenerateStream (function) `OPL3_GenerateStream(&o3, st, (uint32_t)n);`
-- Defined: `progs/piano/piano.c:462`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:463`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_sys_vga_mode (function) `nk_sys_vga_mode(1);`
-- Defined: `progs/piano/piano.c:565`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:567`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_sys_gfx_set_title (function) `nk_sys_gfx_set_title("Piano");`
-- Defined: `progs/piano/piano.c:567`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:569`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_sys_kbd_raw (function) `nk_sys_kbd_raw(1);`
-- Defined: `progs/piano/piano.c:568`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:570`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_build_palette (function) `nk_build_palette(pal768);`
-- Defined: `progs/piano/piano.c:569`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:571`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_sys_palette (function) `nk_sys_palette(pal768);`
-- Defined: `progs/piano/piano.c:570`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:572`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_sys_fb_info (function) `nk_sys_fb_info(&fw, &fh, &fp);`
-- Defined: `progs/piano/piano.c:571`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:573`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### OPL3_Reset (function) `OPL3_Reset(&o3, RATE);`
-- Defined: `progs/piano/piano.c:574`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:576`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_set_scancode_hook (function) `nk_set_scancode_hook(piano_scancode, 0);`
-- Defined: `progs/piano/piano.c:582`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:584`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### printf (function) `printf("piano: init failed\n");`
-- Defined: `progs/piano/piano.c:591`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:593`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
+
+### nk_theme_apply (function) `nk_theme_apply(&ctx, 0);`
+- Defined: `progs/piano/piano.c:598`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_input_begin (function) `nk_input_begin(&ctx);`
-- Defined: `progs/piano/piano.c:612`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:615`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_poll_input (function) `nk_poll_input(&ctx);`
-- Defined: `progs/piano/piano.c:613`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:616`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_input_end (function) `nk_input_end(&ctx);`
-- Defined: `progs/piano/piano.c:614`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:617`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_rgb (function) `: nk_rgb(240, 240, 240);`
-- Defined: `progs/piano/piano.c:636`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:639`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_fill_rect (function) `nk_fill_rect(canvas, r, 0, col);`
-- Defined: `progs/piano/piano.c:637`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:640`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_stroke_rect (function) `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));`
-- Defined: `progs/piano/piano.c:638`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:641`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_draw_text (function) `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));`
-- Defined: `progs/piano/piano.c:650`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:653`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### snprintf (function) `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 C4 base oct%+d vol%d", octave, volume);`
-- Defined: `progs/piano/piano.c:656`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:659`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_end (function) `nk_end(&ctx);`
-- Defined: `progs/piano/piano.c:671`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:674`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_rasterize (function) `nk_rasterize(&ctx);`
-- Defined: `progs/piano/piano.c:693`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:701`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_clear (function) `nk_clear(&ctx);`
-- Defined: `progs/piano/piano.c:697`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:705`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ### nk_free (function) `nk_free(&ctx);`
-- Defined: `progs/piano/piano.c:723`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/src/opl3.c`
+- Defined: `progs/piano/piano.c:731`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ## progs/pokemon/minios_stubs/SDL.h
 
@@ -25688,394 +26304,399 @@ Z_DumpHeap
 ## progs/vedit/vedit.c
 
 ### vedit_getc_raw (function) `static long vedit_getc_raw(long blocking)`
-- Defined: `progs/vedit/vedit.c:21`
-- Doc: objects/ld.o into bin/<base>.elf or cvm/<base>.cvm. Every build drops the graphics mode first so the desktop terminal st
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:22`
+- Doc: the graphics mode first so the desktop terminal stays ordered and the toolchain output lands on the console, then the ID
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_set_title (function) `static long vedit_set_title(const char *t)`
-- Defined: `progs/vedit/vedit.c:30`
-- Doc: #include <stdint.h> #include "nuklear.h" #include "nuklear_minios.h" /** Platform syscalls vedit needs beyond the platfo
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:31`
+- Doc: #include "nuklear.h" #include "nuklear_minios.h" #include "nuklear_theme.h" /** Platform syscalls vedit needs beyond the
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_spawn (function) `static long vedit_spawn(const char *path, const char *redir, int argc,
                         co...`
-- Defined: `progs/vedit/vedit.c:39`
+- Defined: `progs/vedit/vedit.c:40`
 - Doc: : "rcx", "r11", "memory"); return ret; } /** Set the graphics window title. static long vedit_set_title(const char *t) {
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_vga (function) `static long vedit_vga(int on)`
-- Defined: `progs/vedit/vedit.c:51`
+- Defined: `progs/vedit/vedit.c:52`
 - Doc: /** Run a program through SYS_SPAWN, preserving the IDE across the child. static long vedit_spawn(const char *path, cons
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_kbd_raw (function) `static long vedit_kbd_raw(int on)`
+- Defined: `progs/vedit/vedit.c:64`
+- Doc: Force cooked keyboard mode: GETC_RAW (this editor's only key source) starves while raw mode diverts PS/2 bytes to the ra
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_time_ms (function) `static unsigned long vedit_time_ms(void)`
+- Defined: `progs/vedit/vedit.c:73`
+- Doc: Force cooked keyboard mode: GETC_RAW (this editor's only key source) starves while raw mode diverts PS/2 bytes to the ra
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_bg (function) `static struct nk_color vedit_c_bg(void)`
-- Defined: `progs/vedit/vedit.c:124`
+- Defined: `progs/vedit/vedit.c:146`
 - Doc: /* ---- Decoded keys above any byte ---- #define VEDIT_KEY_UP 1000 #define VEDIT_KEY_DOWN 1001 #define VEDIT_KEY_LEFT 10
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_gutter (function) `static struct nk_color vedit_c_gutter(void)`
-- Defined: `progs/vedit/vedit.c:125`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:147`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_default (function) `static struct nk_color vedit_c_default(void)`
-- Defined: `progs/vedit/vedit.c:126`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:148`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_keyword (function) `static struct nk_color vedit_c_keyword(void)`
-- Defined: `progs/vedit/vedit.c:127`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:149`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_string (function) `static struct nk_color vedit_c_string(void)`
-- Defined: `progs/vedit/vedit.c:128`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:150`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_comment (function) `static struct nk_color vedit_c_comment(void)`
-- Defined: `progs/vedit/vedit.c:129`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:151`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_number (function) `static struct nk_color vedit_c_number(void)`
-- Defined: `progs/vedit/vedit.c:130`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:152`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_preproc (function) `static struct nk_color vedit_c_preproc(void)`
-- Defined: `progs/vedit/vedit.c:131`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:153`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_header (function) `static struct nk_color vedit_c_header(void)`
-- Defined: `progs/vedit/vedit.c:132`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:154`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_headtxt (function) `static struct nk_color vedit_c_headtxt(void)`
-- Defined: `progs/vedit/vedit.c:133`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:155`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_status (function) `static struct nk_color vedit_c_status(void)`
-- Defined: `progs/vedit/vedit.c:134`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:156`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_cursor (function) `static struct nk_color vedit_c_cursor(void)`
-- Defined: `progs/vedit/vedit.c:135`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:157`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_ink (function) `static struct nk_color vedit_ink(int col)`
-- Defined: `progs/vedit/vedit.c:136`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:158`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_set_msg (function) `static void vedit_set_msg(const char *s)`
-- Defined: `progs/vedit/vedit.c:192`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:214`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_alpha (function) `static int vedit_is_alpha(int c)`
-- Defined: `progs/vedit/vedit.c:199`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:221`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_digit (function) `static int vedit_is_digit(int c)`
-- Defined: `progs/vedit/vedit.c:203`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:225`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_wordc (function) `static int vedit_is_wordc(int c)`
-- Defined: `progs/vedit/vedit.c:207`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:229`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_kw (function) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
-- Defined: `progs/vedit/vedit.c:211`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:233`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### separators (function) `* allow_quote exists because C digit separators (1'000'000) are not
  * valid in Python/Lua number...`
-- Defined: `progs/vedit/vedit.c:235`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:257`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_parse_number (function) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
-- Defined: `progs/vedit/vedit.c:257`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:279`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_parse_keyword (function) `static int vedit_parse_keyword(const char *t, int len, int i,
                                cons...`
-- Defined: `progs/vedit/vedit.c:272`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:294`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_lang_of (function) `static int vedit_lang_of(const char *fname)`
-- Defined: `progs/vedit/vedit.c:290`
+- Defined: `progs/vedit/vedit.c:312`
 - Doc: int wl = 0; int j = i; int k; while (j < len && vedit_is_wordc((unsigned char)t[j])) { if (wl < VEDIT_WORD_MAX - 1) w[wl
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_lang_name (function) `static const char *vedit_lang_name(int lang)`
-- Defined: `progs/vedit/vedit.c:307`
+- Defined: `progs/vedit/vedit.c:329`
 - Doc: if (fname[n - 1] == 'c') return VEDIT_LANG_C; if (fname[n - 1] == 'h') return VEDIT_LANG_C; if (fname[n - 1] == 's') ret
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_scan_line (function) `static int vedit_scan_line(const char *t, int len, int st)`
-- Defined: `progs/vedit/vedit.c:316`
+- Defined: `progs/vedit/vedit.c:338`
 - Doc: return VEDIT_LANG_LUA; return VEDIT_LANG_C; } /** Name a highlight language for the status row. static const char *vedit
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_state_at (function) `static int vedit_state_at(int row)`
-- Defined: `progs/vedit/vedit.c:497`
+- Defined: `progs/vedit/vedit.c:519`
 - Doc: } else if (c == '"' || c == '\'') { i = vedit_parse_string(t, len, i); } else if (vedit_is_digit(c)) { i = vedit_parse_n
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_row_ptr (function) `static char *vedit_row_ptr(int idx)`
-- Defined: `progs/vedit/vedit.c:505`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:527`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_clamp (function) `static void vedit_clamp(void)`
-- Defined: `progs/vedit/vedit.c:509`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:531`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_follow (function) `static void vedit_follow(void)`
-- Defined: `progs/vedit/vedit.c:521`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:543`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_insert_char (function) `static void vedit_insert_char(int c)`
-- Defined: `progs/vedit/vedit.c:534`
+- Defined: `progs/vedit/vedit.c:556`
 - Doc: } static void vedit_follow(void) { int textw = vedit_cols - vedit_gutter_w; if (vedit_cy < vedit_top) vedit_top = vedit_
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_delete_line_at (function) `static void vedit_delete_line_at(int idx)`
-- Defined: `progs/vedit/vedit.c:560`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:582`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_backspace (function) `static void vedit_backspace(void)`
-- Defined: `progs/vedit/vedit.c:571`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:593`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_delete_char (function) `static void vedit_delete_char(void)`
-- Defined: `progs/vedit/vedit.c:602`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:624`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_split (function) `static void vedit_split(void)`
-- Defined: `progs/vedit/vedit.c:630`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:652`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_tab (function) `static void vedit_tab(void)`
-- Defined: `progs/vedit/vedit.c:678`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:700`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_find (function) `static void vedit_find(const char *needle)`
-- Defined: `progs/vedit/vedit.c:705`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:727`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_save (function) `static int vedit_save(void)`
-- Defined: `progs/vedit/vedit.c:755`
+- Defined: `progs/vedit/vedit.c:777`
 - Doc: if (m == nlen) { char nb[32]; vedit_cy = r; vedit_cx = k; snprintf(nb, sizeof(nb), "found line %d (wrapped)", r + 1); ve
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_load (function) `static int vedit_load(void)`
-- Defined: `progs/vedit/vedit.c:798`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:820`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_has_ext (function) `static int vedit_has_ext(const char *fname, const char *ext)`
-- Defined: `progs/vedit/vedit.c:856`
+- Defined: `progs/vedit/vedit.c:878`
 - Doc: vedit_trunc = 1; } } } if (used > 0 && idx < VEDIT_MAX_LINES) { vedit_used[idx] = used; idx++; } vedit_count = idx; fclo
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_base_of (function) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
-- Defined: `progs/vedit/vedit.c:868`
+- Defined: `progs/vedit/vedit.c:890`
 - Doc: /** Report whether a file name ends with the given extension. static int vedit_has_ext(const char *fname, const char *ex
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_join (function) `static int vedit_join(const char *dir, const char *base, const char *ext,
                       c...`
-- Defined: `progs/vedit/vedit.c:889`
+- Defined: `progs/vedit/vedit.c:911`
 - Doc: if (fname[k] == '/') s = k + 1; } for (k = s; k < n; k++) { if (fname[k] == '.') e = k; } if (e <= s) e = n; len = e - s
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_link_fmt (function) `static int vedit_link_fmt(const char *s)`
-- Defined: `progs/vedit/vedit.c:906`
+- Defined: `progs/vedit/vedit.c:928`
 - Doc: size_t b = strlen(base); size_t e = strlen(ext); size_t k = 0; size_t i; if (d + b + e + 1 > cap) return -1; if (d + b +
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_print_log (function) `static void vedit_print_log(const char *path)`
-- Defined: `progs/vedit/vedit.c:919`
+- Defined: `progs/vedit/vedit.c:941`
 - Doc: /** Accept only the two linker formats, rejecting anything else. static int vedit_link_fmt(const char *s) { size_t k = 0
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_spawn_visible (function) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
                   ...`
-- Defined: `progs/vedit/vedit.c:936`
+- Defined: `progs/vedit/vedit.c:958`
 - Doc: size_t n; if (!f) { printf("vedit: no output captured\n"); return; } while ((n = fread(buf, 1, sizeof(buf), f)) > 0) { s
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_cmd_exec (function) `static void vedit_cmd_exec(const char *out, int kind)`
-- Defined: `progs/vedit/vedit.c:965`
+- Defined: `progs/vedit/vedit.c:987`
 - Doc: if (rc < 0) { snprintf(nb, sizeof(nb), "%s failed (%ld)", label, rc); vedit_set_msg(nb); } else if (rc != 0) { snprintf(
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_cmd_run (function) `static void vedit_cmd_run(void)`
-- Defined: `progs/vedit/vedit.c:978`
+- Defined: `progs/vedit/vedit.c:1000`
 - Doc: /** Run a freshly linked artifact so its output lands on the console. static void vedit_cmd_exec(const char *out, int ki
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_cmd_link (function) `static void vedit_cmd_link(const char *fmt)`
-- Defined: `progs/vedit/vedit.c:1027`
+- Defined: `progs/vedit/vedit.c:1049`
 - Doc: vedit_set_msg("usage: save as .c, .lua or .py first"); return; } args[0] = tool; args[1] = vedit_fname; args[2] = 0; for
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_selftest_build (function) `static int vedit_selftest_build(void)`
-- Defined: `progs/vedit/vedit.c:1078`
+- Defined: `progs/vedit/vedit.c:1100`
 - Doc: Headless build contract check: no display, no syscalls, exit status only. Mirror contract with tests/test_vedit_build.c:
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
-### vedit_getc_blocking (function) `static long vedit_getc_blocking(void)`
-- Defined: `progs/vedit/vedit.c:1137`
-- Doc: } if (VEDIT_KEY_RUN != 18 || VEDIT_KEY_LINK != 12 || VEDIT_KEY_DUMP != 4) { printf("vedit: shortcut contract broken\n");
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
-
-### vedit_poll (function) `static int vedit_poll(void)`
-- Defined: `progs/vedit/vedit.c:1141`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
-
-### vedit_read_key (function) `static int vedit_read_key(void)`
-- Defined: `progs/vedit/vedit.c:1151`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+### vedit_read_key_poll (function) `static int vedit_read_key_poll(void)`
+- Defined: `progs/vedit/vedit.c:1168`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_ansi_for (function) `static void vedit_ansi_for(int col)`
-- Defined: `progs/vedit/vedit.c:1181`
-- Doc: if (p1 == 'F') return VEDIT_KEY_END; if (p1 == '3' || p1 == '5' || p1 == '6') { p2 = vedit_poll(); if (p2 == '~') { if (
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1220`
+- Doc: vedit_esc_state = 3; vedit_esc_t0 = now; return -1; } return VEDIT_KEY_ESC; } vedit_esc_state = 0; if (c != '~') return 
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_console_dump (function) `static void vedit_console_dump(void)`
-- Defined: `progs/vedit/vedit.c:1188`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1227`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_open (function) `static void vedit_prompt_open(const char *label, int mode)`
-- Defined: `progs/vedit/vedit.c:1228`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1267`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_find (function) `static void vedit_prompt_find(void)`
-- Defined: `progs/vedit/vedit.c:1239`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1278`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_saveas (function) `static void vedit_prompt_saveas(void)`
-- Defined: `progs/vedit/vedit.c:1243`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1282`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_draw_row (function) `static void vedit_draw_row(struct nk_command_buffer *canvas,
                            struct nk...`
-- Defined: `progs/vedit/vedit.c:1253`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1292`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_draw_ui (function) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                     ...`
-- Defined: `progs/vedit/vedit.c:1333`
+- Defined: `progs/vedit/vedit.c:1372`
 - Doc: nk_fill_rect(canvas, nk_rect((float)ccx, (float)y, (float)vedit_cw, (float)vedit_ch), 0, vedit_c_cursor()); if (vedit_cx
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_key (function) `static void vedit_prompt_key(int key)`
-- Defined: `progs/vedit/vedit.c:1459`
+- Defined: `progs/vedit/vedit.c:1503`
 - Doc: vedit_cw), (float)(vedit_status_y + 2), (float)vedit_cw, (float)vedit_ch), 0, vedit_c_cursor()); } nk_draw_text(canvas, 
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_key (function) `static void vedit_key(int key, int *quit, int *save_and_quit)`
-- Defined: `progs/vedit/vedit.c:1518`
+- Defined: `progs/vedit/vedit.c:1562`
 - Doc: if (key == '\b' || key == 127) { if (vedit_prompt_pos > 0) { vedit_prompt_pos--; vedit_prompt_buf[vedit_prompt_pos] = 0;
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_sync_title (function) `static void vedit_sync_title(void)`
-- Defined: `progs/vedit/vedit.c:1597`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1641`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_gui_run (function) `static void vedit_gui_run(void)`
-- Defined: `progs/vedit/vedit.c:1607`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1651`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_selftest (function) `static int vedit_selftest(void)`
-- Defined: `progs/vedit/vedit.c:1678`
+- Defined: `progs/vedit/vedit.c:1730`
 - Doc: } } if (save_and_quit) { if (vedit_save() == 0) printf("vedit: wrote %d line(s) to %s\n", vedit_count, vedit_fname); } n
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/vedit/vedit.c:1745`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1797`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GETC_RAW), "D"(blocking) : "rcx", "r11", "memory");`
-- Defined: `progs/vedit/vedit.c:23`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:24`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### memcpy (function) `memcpy(vedit_msg, s, n);`
-- Defined: `progs/vedit/vedit.c:196`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:218`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### memmove (function) `memmove(vedit_row_ptr(k), vedit_row_ptr(k + 1), VEDIT_LINE_MAX);`
-- Defined: `progs/vedit/vedit.c:566`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:588`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### snprintf (function) `snprintf(nb, sizeof(nb), "found line %d", r + 1);`
-- Defined: `progs/vedit/vedit.c:728`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:750`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### fclose (function) `fclose(f);`
-- Defined: `progs/vedit/vedit.c:772`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:794`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### printf (function) `printf("vedit: no output captured\n");`
-- Defined: `progs/vedit/vedit.c:924`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:946`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### fflush (function) `fflush(stdout);`
-- Defined: `progs/vedit/vedit.c:932`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:954`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_build_palette (function) `nk_build_palette(pal768);`
-- Defined: `progs/vedit/vedit.c:949`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:971`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_palette (function) `nk_sys_palette(pal768);`
-- Defined: `progs/vedit/vedit.c:950`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:972`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### putchar (function) `putchar(l[c]);`
-- Defined: `progs/vedit/vedit.c:1208`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1247`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_draw_text (function) `nk_draw_text(canvas, nk_rect((float)(x - vedit_gutter_w * vedit_cw), (float)y, (float)(vedit_gutter_w * vedit_cw), (float)vedit_ch), num, (int)strlen(num), font, bg, vedit_c_gutter());`
-- Defined: `progs/vedit/vedit.c:1276`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1315`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_fill_rect (function) `nk_fill_rect(canvas, nk_rect((float)x, (float)y, (float)((vedit_cols - vedit_gutter_w) * vedit_cw), (float)vedit_ch), 0, bg);`
-- Defined: `progs/vedit/vedit.c:1282`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1321`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_end (function) `nk_end(ctx);`
-- Defined: `progs/vedit/vedit.c:1359`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1398`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_vga_mode (function) `nk_sys_vga_mode(1);`
-- Defined: `progs/vedit/vedit.c:1618`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1662`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_fb_info (function) `nk_sys_fb_info(&fw, &fh, &fp);`
-- Defined: `progs/vedit/vedit.c:1622`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1667`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_theme_apply (function) `nk_theme_apply(&ctx, 0);`
+- Defined: `progs/vedit/vedit.c:1693`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_input_begin (function) `nk_input_begin(&ctx);`
-- Defined: `progs/vedit/vedit.c:1653`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1699`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_input_end (function) `nk_input_end(&ctx);`
-- Defined: `progs/vedit/vedit.c:1654`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1700`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_rasterize (function) `nk_rasterize(&ctx);`
-- Defined: `progs/vedit/vedit.c:1656`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1702`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_clear (function) `nk_clear(&ctx);`
-- Defined: `progs/vedit/vedit.c:1659`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1705`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_free (function) `nk_free(&ctx);`
-- Defined: `progs/vedit/vedit.c:1672`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1724`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### memset (function) `memset(vedit_used, 0, VEDIT_MAX_LINES * sizeof(int));`
-- Defined: `progs/vedit/vedit.c:1779`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1831`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### free (function) `free(vedit_pool);`
-- Defined: `progs/vedit/vedit.c:1796`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Defined: `progs/vedit/vedit.c:1848`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## qga.c
 
@@ -27162,6 +27783,29 @@ Z_DumpHeap
 - Doc: CHECK(vma_tree_find(vma_live_root, 0x500000ul) != VMA_NIL, "find hits"); CHECK(vma_tree_find(vma_live_root, 0x500000ul) 
 - Depends on: `kernel/string.c`, `vma.h`
 
+## tests/test_file_assoc.c
+
+### t_ext_of (function) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
+- Defined: `tests/test_file_assoc.c:23`
+- Doc: define T_EXT_MAX 8 define T_PROG_MAX 32
+- Depends on: `kernel/string.c`
+
+### t_assoc_line (function) `static int t_assoc_line(const char *line, char *ext, char *prog)`
+- Defined: `tests/test_file_assoc.c:43`
+- Depends on: `kernel/string.c`
+
+### main (function) `int main(void)`
+- Defined: `tests/test_file_assoc.c:75`
+- Depends on: `kernel/string.c`
+
+### fprintf (function) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+- Defined: `tests/test_file_assoc.c:17`
+- Depends on: `kernel/string.c`
+
+### CHECK (function) `CHECK(strcmp(ext, "c") == 0, "ext of hello.c");`
+- Defined: `tests/test_file_assoc.c:81`
+- Depends on: `kernel/string.c`
+
 ## tests/test_freedom_wl.c
 
 ### check_host (function) `static int check_host(int cond, const char *name)`
@@ -27264,6 +27908,92 @@ Z_DumpHeap
 ### CHECK (function) `CHECK(ktime_us_from_delta(0, 3000000UL) == 0, "zero delta");`
 - Defined: `tests/test_ktime.c:17`
 - Depends on: `ktime.h`
+
+## tests/test_paint.c
+
+### t_clamp (function) `static int t_clamp(int v, int lo, int hi)`
+- Defined: `tests/test_paint.c:29`
+- Depends on: `kernel/string.c`
+
+### t_plot (function) `static int t_plot(unsigned char *buf, int w, int h, int x, int y,
+                  unsigned char c)`
+- Defined: `tests/test_paint.c:35`
+- Depends on: `kernel/string.c`
+
+### t_line (function) `static int t_line(unsigned char *buf, int w, int h, int x0, int y0, int x1,
+                  int...`
+- Defined: `tests/test_paint.c:43`
+- Depends on: `kernel/string.c`
+
+### t_flood (function) `static int t_flood(unsigned char *buf, int w, int h, int x, int y,
+                   unsigned ch...`
+- Defined: `tests/test_paint.c:69`
+- Depends on: `kernel/string.c`
+
+### t_crc_init (function) `static void t_crc_init(void)`
+- Defined: `tests/test_paint.c:115`
+- Depends on: `kernel/string.c`
+
+### t_crc (function) `static unsigned long t_crc(const unsigned char *p, unsigned long n)`
+- Defined: `tests/test_paint.c:128`
+- Depends on: `kernel/string.c`
+
+### t_path_ok (function) `static int t_path_ok(const char *p)`
+- Defined: `tests/test_paint.c:137`
+- Depends on: `kernel/string.c`
+
+### t_nearest (function) `static int t_nearest(const unsigned char *pal, unsigned r, unsigned g,
+                     unsig...`
+- Defined: `tests/test_paint.c:154`
+- Depends on: `kernel/string.c`
+
+### test_plot (function) `static void test_plot(void)`
+- Defined: `tests/test_paint.c:170`
+- Depends on: `kernel/string.c`
+
+### test_line (function) `static void test_line(void)`
+- Defined: `tests/test_paint.c:187`
+- Depends on: `kernel/string.c`
+
+### test_flood (function) `static void test_flood(void)`
+- Defined: `tests/test_paint.c:206`
+- Depends on: `kernel/string.c`
+
+### test_png_codec (function) `static void test_png_codec(void)`
+- Defined: `tests/test_paint.c:227`
+- Depends on: `kernel/string.c`
+
+### test_png_layout (function) `static void test_png_layout(void)`
+- Defined: `tests/test_paint.c:258`
+- Depends on: `kernel/string.c`
+
+### test_path (function) `static void test_path(void)`
+- Defined: `tests/test_paint.c:272`
+- Depends on: `kernel/string.c`
+
+### test_nearest (function) `static void test_nearest(void)`
+- Defined: `tests/test_paint.c:286`
+- Depends on: `kernel/string.c`
+
+### main (function) `int main(void)`
+- Defined: `tests/test_paint.c:299`
+- Depends on: `kernel/string.c`
+
+### fprintf (function) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+- Defined: `tests/test_paint.c:19`
+- Depends on: `kernel/string.c`
+
+### memset (function) `memset(t_canvas, 0, sizeof(t_canvas));`
+- Defined: `tests/test_paint.c:172`
+- Depends on: `kernel/string.c`
+
+### CHECK (function) `CHECK(t_plot(t_canvas, T_W, T_H, 0, 0, 7) == 0, "plot origin");`
+- Defined: `tests/test_paint.c:173`
+- Depends on: `kernel/string.c`
+
+### printf (function) `printf("paint: all host vectors pass\n");`
+- Defined: `tests/test_paint.c:309`
+- Depends on: `kernel/string.c`
 
 ## tests/test_percpu_rq.c
 
@@ -27515,6 +28245,44 @@ Z_DumpHeap
 - Defined: `tests/test_sync.c:267`
 - Depends on: `sync.h`
 
+## tests/test_theme.c
+
+### t_name_ok (function) `static int t_name_ok(const char *name)`
+- Defined: `tests/test_theme.c:33`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### t_parse_line (function) `static int t_parse_line(const char *line, int *idx, long v[3])`
+- Defined: `tests/test_theme.c:45`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### cube_exact (function) `static int cube_exact(long v)`
+- Defined: `tests/test_theme.c:73`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### check_theme_file (function) `static void check_theme_file(const char *path)`
+- Defined: `tests/test_theme.c:77`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### main (function) `int main(void)`
+- Defined: `tests/test_theme.c:106`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### fprintf (function) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+- Defined: `tests/test_theme.c:19`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### CHECK (function) `CHECK(f != 0, "theme file opens");`
+- Defined: `tests/test_theme.c:84`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### fclose (function) `fclose(f);`
+- Defined: `tests/test_theme.c:103`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+### snprintf (function) `snprintf(path, sizeof(path), "progs/etc/themes/%s", name);`
+- Defined: `tests/test_theme.c:147`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
 ## tests/test_tick.c
 
 ### rec_a (function) `static void rec_a(void *ctx)`
@@ -27688,24 +28456,24 @@ Z_DumpHeap
 ## tests/test_wm.c
 
 ### main (function) `int main(void)`
-- Defined: `tests/test_wm.c:26`
-- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `tests/test_wm.c:27`
+- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### fprintf (function) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-- Defined: `tests/test_wm.c:23`
-- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `tests/test_wm.c:24`
+- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### CHECK (function) `CHECK(gcfg.font_w == 8, "geom config carries font width");`
-- Defined: `tests/test_wm.c:40`
-- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `tests/test_wm.c:41`
+- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### wm_clamp_point (function) `wm_clamp_point(&cx, &cy, 800, 600);`
-- Defined: `tests/test_wm.c:85`
-- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `tests/test_wm.c:86`
+- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ### printf (function) `printf("wm: ok\n");`
-- Defined: `tests/test_wm.c:304`
-- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Defined: `tests/test_wm.c:379`
+- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
 
 ## tick.h
 
@@ -28257,10 +29025,10 @@ Z_DumpHeap
 ## tools/gen_desktop_pngs.py
 
 ### write_atomic (function) `def write_atomic(img, path)`
-- Defined: `tools/gen_desktop_pngs.py:56`
+- Defined: `tools/gen_desktop_pngs.py:60`
 
 ### main (function) `def main()`
-- Defined: `tools/gen_desktop_pngs.py:62`
+- Defined: `tools/gen_desktop_pngs.py:66`
 
 ## tools/gen_icons.py
 
@@ -28343,57 +29111,57 @@ Z_DumpHeap
 ## tools/minios_cli.py
 
 ### main (method) `def main()`
-- Defined: `tools/minios_cli.py:99`
+- Defined: `tools/minios_cli.py:100`
 - Depends on: `kernel/time.c`
 
 ### __init__ (method) `def __init__(self)`
-- Defined: `tools/minios_cli.py:38`
+- Defined: `tools/minios_cli.py:39`
 - Depends on: `kernel/time.c`
 
 ### request (method) `def request(self, method, params)`
-- Defined: `tools/minios_cli.py:55`
+- Defined: `tools/minios_cli.py:56`
 - Depends on: `kernel/time.c`
 
 ### tool (method) `def tool(self, name, params)`
-- Defined: `tools/minios_cli.py:76`
+- Defined: `tools/minios_cli.py:77`
 - Depends on: `kernel/time.c`
 
 ### close (method) `def close(self)`
-- Defined: `tools/minios_cli.py:86`
+- Defined: `tools/minios_cli.py:87`
 - Depends on: `kernel/time.c`
 
 ## tools/minios_gui.py
 
 ### read_serial (function) `def read_serial(master, timeout)`
-- Defined: `tools/minios_gui.py:42`
+- Defined: `tools/minios_gui.py:44`
 - Depends on: `kernel/time.c`
 
 ### main (method) `def main()`
-- Defined: `tools/minios_gui.py:110`
+- Defined: `tools/minios_gui.py:112`
 - Depends on: `kernel/time.c`
 
 ### __init__ (method) `def __init__(self, path)`
-- Defined: `tools/minios_gui.py:59`
+- Defined: `tools/minios_gui.py:61`
 - Depends on: `kernel/time.c`
 
 ### cmd (method) `def cmd(self, obj)`
-- Defined: `tools/minios_gui.py:71`
+- Defined: `tools/minios_gui.py:73`
 - Depends on: `kernel/time.c`
 
 ### _recv (method) `def _recv(self)`
-- Defined: `tools/minios_gui.py:75`
+- Defined: `tools/minios_gui.py:77`
 - Depends on: `kernel/time.c`
 
 ### mouse (method) `def mouse(self, dx, dy, click)`
-- Defined: `tools/minios_gui.py:90`
+- Defined: `tools/minios_gui.py:92`
 - Depends on: `kernel/time.c`
 
 ### key (method) `def key(self, qcode, up)`
-- Defined: `tools/minios_gui.py:100`
+- Defined: `tools/minios_gui.py:102`
 - Depends on: `kernel/time.c`
 
 ### screendump (method) `def screendump(self, path)`
-- Defined: `tools/minios_gui.py:106`
+- Defined: `tools/minios_gui.py:108`
 - Depends on: `kernel/time.c`
 
 ## tools/mkpak1.py
@@ -28404,27 +29172,27 @@ Z_DumpHeap
 ## tools/probe_compute_vga.py
 
 ### main (function) `def main()`
-- Defined: `tools/probe_compute_vga.py:20`
+- Defined: `tools/probe_compute_vga.py:22`
 - Depends on: `kernel/time.c`
 
 ### send (function) `def send(line)`
-- Defined: `tools/probe_compute_vga.py:53`
+- Defined: `tools/probe_compute_vga.py:55`
 - Depends on: `kernel/time.c`
 
 ### poll (function) `def poll(timeout)`
-- Defined: `tools/probe_compute_vga.py:59`
+- Defined: `tools/probe_compute_vga.py:61`
 - Depends on: `kernel/time.c`
 
 ### qmp (function) `def qmp(obj)`
-- Defined: `tools/probe_compute_vga.py:86`
+- Defined: `tools/probe_compute_vga.py:88`
 - Depends on: `kernel/time.c`
 
 ### rel (function) `def rel(dx, dy)`
-- Defined: `tools/probe_compute_vga.py:95`
+- Defined: `tools/probe_compute_vga.py:97`
 - Depends on: `kernel/time.c`
 
 ### dump (function) `def dump(name)`
-- Defined: `tools/probe_compute_vga.py:102`
+- Defined: `tools/probe_compute_vga.py:104`
 - Depends on: `kernel/time.c`
 
 ## tools/qga_client.py
@@ -28460,111 +29228,308 @@ Z_DumpHeap
 ## tools/repro_gui.py
 
 ### read_serial (function) `def read_serial(master, timeout)`
-- Defined: `tools/repro_gui.py:28`
+- Defined: `tools/repro_gui.py:30`
 - Depends on: `kernel/time.c`
 
 ### main (method) `def main()`
-- Defined: `tools/repro_gui.py:90`
+- Defined: `tools/repro_gui.py:92`
 - Depends on: `kernel/time.c`
 
 ### __init__ (method) `def __init__(self, path)`
-- Defined: `tools/repro_gui.py:45`
+- Defined: `tools/repro_gui.py:47`
 - Depends on: `kernel/time.c`
 
 ### cmd (method) `def cmd(self, obj)`
-- Defined: `tools/repro_gui.py:57`
+- Defined: `tools/repro_gui.py:59`
 - Depends on: `kernel/time.c`
 
 ### _recv (method) `def _recv(self)`
-- Defined: `tools/repro_gui.py:61`
+- Defined: `tools/repro_gui.py:63`
 - Depends on: `kernel/time.c`
 
 ### mouse (method) `def mouse(self, dx, dy, left)`
-- Defined: `tools/repro_gui.py:76`
+- Defined: `tools/repro_gui.py:78`
 - Depends on: `kernel/time.c`
 
 ### key (method) `def key(self, qcode, down)`
-- Defined: `tools/repro_gui.py:85`
+- Defined: `tools/repro_gui.py:87`
 - Depends on: `kernel/time.c`
 
 ### send (method) `def send(line)`
-- Defined: `tools/repro_gui.py:111`
+- Defined: `tools/repro_gui.py:113`
 - Depends on: `kernel/time.c`
 
 ### mouse_state (method) `def mouse_state()`
-- Defined: `tools/repro_gui.py:116`
+- Defined: `tools/repro_gui.py:118`
+- Depends on: `kernel/time.c`
+
+## tools/test_gui_fashion.py
+
+### note (function) `def note(ok, msg)`
+- Defined: `tools/test_gui_fashion.py:39`
+- Depends on: `kernel/time.c`
+
+### meandiff (method) `def meandiff(a_path, b_path)`
+- Defined: `tools/test_gui_fashion.py:190`
+- Depends on: `kernel/time.c`
+
+### count_arrows (method) `def count_arrows(shot_path)`
+- Defined: `tools/test_gui_fashion.py:206`
+- Doc: Cursor sprites by template: every arrow-white pixel near-white,
+- Depends on: `kernel/time.c`
+
+### main (method) `def main()`
+- Defined: `tools/test_gui_fashion.py:239`
+- Depends on: `kernel/time.c`
+
+### __init__ (method) `def __init__(self)`
+- Defined: `tools/test_gui_fashion.py:46`
+- Depends on: `kernel/time.c`
+
+### _ser (method) `def _ser(self)`
+- Defined: `tools/test_gui_fashion.py:70`
+- Depends on: `kernel/time.c`
+
+### _reader (method) `def _reader(self)`
+- Defined: `tools/test_gui_fashion.py:82`
+- Depends on: `kernel/time.c`
+
+### snapshot (method) `def snapshot(self)`
+- Defined: `tools/test_gui_fashion.py:98`
+- Depends on: `kernel/time.c`
+
+### wait_prompt (method) `def wait_prompt(self, timeout)`
+- Defined: `tools/test_gui_fashion.py:102`
+- Depends on: `kernel/time.c`
+
+### wait_for (method) `def wait_for(self, marker, timeout)`
+- Defined: `tools/test_gui_fashion.py:110`
+- Depends on: `kernel/time.c`
+
+### send (method) `def send(self, line, settle)`
+- Defined: `tools/test_gui_fashion.py:118`
+- Depends on: `kernel/time.c`
+
+### qmp_cmd (method) `def qmp_cmd(self, obj)`
+- Defined: `tools/test_gui_fashion.py:128`
+- Depends on: `kernel/time.c`
+
+### _qmp (method) `def _qmp(self, obj)`
+- Defined: `tools/test_gui_fashion.py:141`
+- Depends on: `kernel/time.c`
+
+### key (method) `def key(self, qcode, down, up)`
+- Defined: `tools/test_gui_fashion.py:149`
+- Depends on: `kernel/time.c`
+
+### rel (method) `def rel(self, dx, dy)`
+- Defined: `tools/test_gui_fashion.py:161`
+- Depends on: `kernel/time.c`
+
+### dump (method) `def dump(self, name)`
+- Defined: `tools/test_gui_fashion.py:168`
+- Depends on: `kernel/time.c`
+
+### stop (method) `def stop(self)`
+- Defined: `tools/test_gui_fashion.py:175`
+- Depends on: `kernel/time.c`
+
+## tools/test_gui_icon_cwd.py
+
+### note (function) `def note(ok, msg)`
+- Defined: `tools/test_gui_icon_cwd.py:36`
+- Depends on: `kernel/time.c`
+
+### find_icon (method) `def find_icon(shot_path, icon_path)`
+- Defined: `tools/test_gui_icon_cwd.py:180`
+- Doc: Center of the dock icon: global best template match, strict bar.
+- Depends on: `kernel/time.c`
+
+### walk (method) `def walk(g, tx, ty, fw, fh)`
+- Defined: `tools/test_gui_icon_cwd.py:213`
+- Doc: Relative walk from screen center (guest 2px per host unit).
+- Depends on: `kernel/time.c`
+
+### main (method) `def main()`
+- Defined: `tools/test_gui_icon_cwd.py:228`
+- Depends on: `kernel/time.c`
+
+### __init__ (method) `def __init__(self)`
+- Defined: `tools/test_gui_icon_cwd.py:43`
+- Depends on: `kernel/time.c`
+
+### _ser (method) `def _ser(self)`
+- Defined: `tools/test_gui_icon_cwd.py:67`
+- Depends on: `kernel/time.c`
+
+### _reader (method) `def _reader(self)`
+- Defined: `tools/test_gui_icon_cwd.py:79`
+- Depends on: `kernel/time.c`
+
+### snapshot (method) `def snapshot(self)`
+- Defined: `tools/test_gui_icon_cwd.py:95`
+- Depends on: `kernel/time.c`
+
+### wait_prompt (method) `def wait_prompt(self, timeout)`
+- Defined: `tools/test_gui_icon_cwd.py:99`
+- Depends on: `kernel/time.c`
+
+### send (method) `def send(self, line, settle)`
+- Defined: `tools/test_gui_icon_cwd.py:107`
+- Depends on: `kernel/time.c`
+
+### qmp_cmd (method) `def qmp_cmd(self, obj)`
+- Defined: `tools/test_gui_icon_cwd.py:117`
+- Depends on: `kernel/time.c`
+
+### _qmp (method) `def _qmp(self, obj)`
+- Defined: `tools/test_gui_icon_cwd.py:130`
+- Depends on: `kernel/time.c`
+
+### rel (method) `def rel(self, dx, dy)`
+- Defined: `tools/test_gui_icon_cwd.py:138`
+- Depends on: `kernel/time.c`
+
+### click (method) `def click(self)`
+- Defined: `tools/test_gui_icon_cwd.py:145`
+- Depends on: `kernel/time.c`
+
+### dump (method) `def dump(self, name)`
+- Defined: `tools/test_gui_icon_cwd.py:155`
+- Depends on: `kernel/time.c`
+
+### stop (method) `def stop(self)`
+- Defined: `tools/test_gui_icon_cwd.py:162`
 - Depends on: `kernel/time.c`
 
 ## tools/test_gui_wm.py
 
 ### note (function) `def note(ok, msg)`
-- Defined: `tools/test_gui_wm.py:36`
+- Defined: `tools/test_gui_wm.py:40`
 - Depends on: `kernel/time.c`
 
 ### meandiff (method) `def meandiff(a_path, b_path)`
-- Defined: `tools/test_gui_wm.py:198`
+- Defined: `tools/test_gui_wm.py:204`
 - Depends on: `kernel/time.c`
 
 ### main (method) `def main()`
-- Defined: `tools/test_gui_wm.py:208`
+- Defined: `tools/test_gui_wm.py:214`
 - Depends on: `kernel/time.c`
 
 ### __init__ (method) `def __init__(self)`
-- Defined: `tools/test_gui_wm.py:43`
+- Defined: `tools/test_gui_wm.py:47`
 - Depends on: `kernel/time.c`
 
 ### _ser (method) `def _ser(self)`
-- Defined: `tools/test_gui_wm.py:69`
+- Defined: `tools/test_gui_wm.py:75`
 - Depends on: `kernel/time.c`
 
 ### _reader (method) `def _reader(self)`
-- Defined: `tools/test_gui_wm.py:81`
+- Defined: `tools/test_gui_wm.py:87`
 - Depends on: `kernel/time.c`
 
 ### snapshot (method) `def snapshot(self)`
-- Defined: `tools/test_gui_wm.py:97`
+- Defined: `tools/test_gui_wm.py:103`
 - Depends on: `kernel/time.c`
 
 ### wait_prompt (method) `def wait_prompt(self, timeout)`
-- Defined: `tools/test_gui_wm.py:101`
+- Defined: `tools/test_gui_wm.py:107`
 - Depends on: `kernel/time.c`
 
 ### send (method) `def send(self, line, settle)`
-- Defined: `tools/test_gui_wm.py:109`
+- Defined: `tools/test_gui_wm.py:115`
 - Depends on: `kernel/time.c`
 
 ### qmp_cmd (method) `def qmp_cmd(self, obj)`
-- Defined: `tools/test_gui_wm.py:124`
+- Defined: `tools/test_gui_wm.py:130`
 - Depends on: `kernel/time.c`
 
 ### _qmp (method) `def _qmp(self, obj)`
-- Defined: `tools/test_gui_wm.py:137`
+- Defined: `tools/test_gui_wm.py:143`
 - Depends on: `kernel/time.c`
 
 ### key (method) `def key(self, qcode, down, up)`
-- Defined: `tools/test_gui_wm.py:145`
+- Defined: `tools/test_gui_wm.py:151`
 - Depends on: `kernel/time.c`
 
 ### rel (method) `def rel(self, dx, dy)`
-- Defined: `tools/test_gui_wm.py:157`
+- Defined: `tools/test_gui_wm.py:163`
 - Depends on: `kernel/time.c`
 
 ### btn (method) `def btn(self, down)`
-- Defined: `tools/test_gui_wm.py:164`
-- Depends on: `kernel/time.c`
-
-### dump (method) `def dump(self, name)`
 - Defined: `tools/test_gui_wm.py:170`
 - Depends on: `kernel/time.c`
 
+### dump (method) `def dump(self, name)`
+- Defined: `tools/test_gui_wm.py:176`
+- Depends on: `kernel/time.c`
+
 ### stop (method) `def stop(self)`
-- Defined: `tools/test_gui_wm.py:177`
+- Defined: `tools/test_gui_wm.py:183`
 - Depends on: `kernel/time.c`
 
 ## tools/test_sb16.sh
 
 ### fail_msg (function)
 - Defined: `tools/test_sb16.sh:45`
+
+## tools/wm_layout_sync.py
+
+### parse_args (method) `def parse_args(argv)`
+- Defined: `tools/wm_layout_sync.py:151`
+- Doc: Docstring: Parse CLI flags for check or write modes.
+
+### main (method) `def main(argv)`
+- Defined: `tools/wm_layout_sync.py:159`
+- Doc: Docstring: Run discovery and write or verify the manifest.
+
+### __init__ (method) `def __init__(self, root)`
+- Defined: `tools/wm_layout_sync.py:20`
+- Doc: Docstring: Bind all paths to one repository root.
+
+### __init__ (method) `def __init__(self, modes, symbols, checks)`
+- Defined: `tools/wm_layout_sync.py:39`
+- Doc: Docstring: Store discovered modes, symbols and check count.
+
+### __init__ (method) `def __init__(self, config)`
+- Defined: `tools/wm_layout_sync.py:49`
+- Doc: Docstring: Hold config as the sole tunable source.
+
+### discover (method) `def discover(self)`
+- Defined: `tools/wm_layout_sync.py:53`
+- Doc: Docstring: Extract modes, symbols and test checks from sources.
+
+### render (method) `def render(self, result)`
+- Defined: `tools/wm_layout_sync.py:66`
+- Doc: Docstring: Build manifest markdown from discovery result.
+
+### synchronize (method) `def synchronize(self, write)`
+- Defined: `tools/wm_layout_sync.py:101`
+- Doc: Docstring: Discover, render and optionally write the manifest.
+
+### _read_text (method) `def _read_text(self, path)`
+- Defined: `tools/wm_layout_sync.py:110`
+- Doc: Docstring: Read one source file or fail with a clear error.
+
+### _extract_modes (method) `def _extract_modes(self, header_text)`
+- Defined: `tools/wm_layout_sync.py:116`
+- Doc: Docstring: Collect layout mode names from the mode table.
+
+### _extract_symbols (method) `def _extract_symbols(self, header_text)`
+- Defined: `tools/wm_layout_sync.py:125`
+- Doc: Docstring: Collect required public symbols present in header.
+
+### _count_layout_checks (method) `def _count_layout_checks(self, tests_text)`
+- Defined: `tools/wm_layout_sync.py:133`
+- Doc: Docstring: Count layout assertions guarding the contract.
+
+### _require_modes (method) `def _require_modes(self, modes)`
+- Defined: `tools/wm_layout_sync.py:138`
+- Doc: Docstring: Refuse a header missing any required mode.
+
+### _require_symbols (method) `def _require_symbols(self, symbols)`
+- Defined: `tools/wm_layout_sync.py:144`
+- Doc: Docstring: Refuse a header missing any required symbol.
 
 ## tools/wm_scoped.sh
 
@@ -28621,180 +29586,205 @@ Z_DumpHeap
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
 ### vga_fb_init (function) `void vga_fb_init(void);`
-- Defined: `vga_fb.h:166`
+- Defined: `vga_fb.h:169`
 - Doc: A scrollback line can be up to the widest terminal (TERM_MAX_COLS), and a long logical line that wrapped across several 
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
 ### vga_fb_clear (function) `void vga_fb_clear(void);`
-- Defined: `vga_fb.h:167`
-- Depends on: `progs/minios_abi.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
-
-### vga_fb_pixel (function) `void vga_fb_pixel(int x, int y, uint8_t color);`
-- Defined: `vga_fb.h:168`
-- Depends on: `progs/minios_abi.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
-
-### vga_fb_rect (function) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
-- Defined: `vga_fb.h:169`
-- Depends on: `progs/minios_abi.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
-
-### vga_fb_char (function) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
 - Defined: `vga_fb.h:170`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_str (function) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
+### vga_fb_pixel (function) `void vga_fb_pixel(int x, int y, uint8_t color);`
 - Defined: `vga_fb.h:171`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_putc_term (function) `void vga_fb_putc_term(char c);`
+### vga_fb_rect (function) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
 - Defined: `vga_fb.h:172`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_puts_term (function) `void vga_fb_puts_term(const char *s);`
+### vga_fb_char (function) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
 - Defined: `vga_fb.h:173`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_text_cursor (function) `void vga_fb_text_cursor(int col);`
+### vga_fb_str (function) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
 - Defined: `vga_fb.h:174`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_hide_text_cursor (function) `void vga_fb_hide_text_cursor(void);`
+### vga_fb_putc_term (function) `void vga_fb_putc_term(char c);`
 - Defined: `vga_fb.h:175`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_draw_desktop (function) `void vga_fb_draw_desktop(void);`
+### vga_fb_puts_term (function) `void vga_fb_puts_term(const char *s);`
 - Defined: `vga_fb.h:176`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_toggle_fullscreen (function) `void vga_fb_toggle_fullscreen(void);`
+### vga_fb_text_cursor (function) `void vga_fb_text_cursor(int col);`
 - Defined: `vga_fb.h:177`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_move_terminal (function) `void vga_fb_move_terminal(int dx, int dy);`
+### vga_fb_hide_text_cursor (function) `void vga_fb_hide_text_cursor(void);`
 - Defined: `vga_fb.h:178`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_snap_window (function) `void vga_fb_snap_window(int zone);`
+### vga_fb_draw_desktop (function) `void vga_fb_draw_desktop(void);`
 - Defined: `vga_fb.h:179`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_resize (function) `void vga_fb_resize(int dcols, int drows);`
+### vga_fb_toggle_fullscreen (function) `void vga_fb_toggle_fullscreen(void);`
 - Defined: `vga_fb.h:180`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_reset_default (function) `void vga_fb_reset_default(void);`
+### vga_fb_move_terminal (function) `void vga_fb_move_terminal(int dx, int dy);`
 - Defined: `vga_fb.h:181`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_toggle_minimize (function) `void vga_fb_toggle_minimize(void);`
+### vga_fb_snap_window (function) `void vga_fb_snap_window(int zone);`
 - Defined: `vga_fb.h:182`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_is_minimized (function) `int vga_fb_is_minimized(void);`
+### vga_fb_resize (function) `void vga_fb_resize(int dcols, int drows);`
 - Defined: `vga_fb.h:183`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_is_fullscreen (function) `int vga_fb_is_fullscreen(void);`
+### vga_fb_reset_default (function) `void vga_fb_reset_default(void);`
 - Defined: `vga_fb.h:184`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_close_active (function) `int vga_fb_close_active(void);`
+### vga_fb_toggle_minimize (function) `void vga_fb_toggle_minimize(void);`
 - Defined: `vga_fb.h:185`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
+### vga_fb_is_minimized (function) `int vga_fb_is_minimized(void);`
+- Defined: `vga_fb.h:186`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### vga_fb_is_fullscreen (function) `int vga_fb_is_fullscreen(void);`
+- Defined: `vga_fb.h:187`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### vga_fb_close_active (function) `int vga_fb_close_active(void);`
+- Defined: `vga_fb.h:188`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
 ### vga_fb_focus_next (function) `void vga_fb_focus_next(void);`
-- Defined: `vga_fb.h:189`
+- Defined: `vga_fb.h:192`
 - Doc: Multi-window manager: Alt-Tab focus cycle, Super-Tab tiling, second * terminal. Focus ids 0/1 = terminals, 2 = graphics 
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
 ### vga_fb_focus_id (function) `int vga_fb_focus_id(int id);`
-- Defined: `vga_fb.h:190`
+- Defined: `vga_fb.h:193`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
 ### vga_fb_focus_get (function) `int vga_fb_focus_get(void);`
-- Defined: `vga_fb.h:191`
+- Defined: `vga_fb.h:194`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### vga_fb_theme_name (function) `int vga_fb_theme_name(char *dst, int cap);`
+- Defined: `vga_fb.h:195`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
 ### vga_fb_ps2_owner (function) `int vga_fb_ps2_owner(int pid);`
-- Defined: `vga_fb.h:197`
+- Defined: `vga_fb.h:201`
 - Doc: PS/2 ownership for pid: 1 when pid may consume the keyboard port. One keyboard feeds every window, so the focused window
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
 ### vga_fb_nterms_get (function) `int vga_fb_nterms_get(void);`
-- Defined: `vga_fb.h:198`
-- Depends on: `progs/minios_abi.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
-
-### vga_fb_term_split (function) `int vga_fb_term_split(void);`
-- Defined: `vga_fb.h:199`
-- Depends on: `progs/minios_abi.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
-
-### vga_fb_term_close_focused (function) `int vga_fb_term_close_focused(void);`
-- Defined: `vga_fb.h:200`
-- Depends on: `progs/minios_abi.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
-
-### vga_fb_tile_all (function) `void vga_fb_tile_all(void);`
-- Defined: `vga_fb.h:201`
-- Depends on: `progs/minios_abi.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
-
-### vga_fb_list_windows (function) `void vga_fb_list_windows(void);`
 - Defined: `vga_fb.h:202`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### wm_close_pending (function) `int wm_close_pending(void);`
+### vga_fb_term_split (function) `int vga_fb_term_split(void);`
 - Defined: `vga_fb.h:203`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### wm_clear_close (function) `void wm_clear_close(void);`
+### vga_fb_term_close_focused (function) `int vga_fb_term_close_focused(void);`
 - Defined: `vga_fb.h:204`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### wm_gfx_mode_active (function) `int wm_gfx_mode_active(void);`
+### vga_fb_tile_all (function) `void vga_fb_tile_all(void);`
 - Defined: `vga_fb.h:205`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_mouse_tick (function) `void vga_fb_mouse_tick(void);`
+### vga_fb_layout_set (function) `int vga_fb_layout_set(int mode);`
 - Defined: `vga_fb.h:206`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_mouse_init (function) `void vga_fb_mouse_init(void);`
+### vga_fb_layout_cycle (function) `void vga_fb_layout_cycle(void);`
 - Defined: `vga_fb.h:207`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
-### vga_fb_set_gfx_mode (function) `void vga_fb_set_gfx_mode(int on);`
+### vga_fb_layout_get (function) `int vga_fb_layout_get(void);`
+- Defined: `vga_fb.h:208`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### vga_fb_layout_name (function) `const char *vga_fb_layout_name(void);`
+- Defined: `vga_fb.h:209`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### vga_fb_list_windows (function) `void vga_fb_list_windows(void);`
+- Defined: `vga_fb.h:210`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### wm_close_pending (function) `int wm_close_pending(void);`
+- Defined: `vga_fb.h:211`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### wm_clear_close (function) `void wm_clear_close(void);`
+- Defined: `vga_fb.h:212`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### wm_gfx_mode_active (function) `int wm_gfx_mode_active(void);`
+- Defined: `vga_fb.h:213`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### vga_fb_mouse_tick (function) `void vga_fb_mouse_tick(void);`
 - Defined: `vga_fb.h:214`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### vga_fb_mouse_init (function) `void vga_fb_mouse_init(void);`
+- Defined: `vga_fb.h:215`
+- Depends on: `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+
+### vga_fb_set_gfx_mode (function) `void vga_fb_set_gfx_mode(int on);`
+- Defined: `vga_fb.h:222`
 - Doc: Graphics-mode pointer. SYS_VGA_MODE toggles vga_fb_set_gfx_mode; while a ring-3 graphics program owns the display the ke
 - Depends on: `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
@@ -28984,6 +29974,58 @@ Z_DumpHeap
 - Defined: `wm_geom.h:91`
 - Doc: r.y = py + th; r.w = sw; r.h = content_h > 0 ? content_h : 0; return r; } /** Docstring: True when point px,py hits the 
 - Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`, `wm_window.h`
+
+## wm_layout.h
+
+### wm_layout_mode_name (function) `static inline const char *wm_layout_mode_name(int mode)`
+- Defined: `wm_layout.h:57`
+- Doc: /** Docstring: Default layout matching the legacy two terminal split. #define WM_LAYOUT_CONFIG_DEFAULT { 0, 4, 2, 618, 1
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+### wm_layout_mode_valid (function) `static inline int wm_layout_mode_valid(int mode)`
+- Defined: `wm_layout.h:76`
+- Doc: case WM_LAYOUT_BSP: return "bsp"; case WM_LAYOUT_CASCADE: return "cascade"; case WM_LAYOUT_FIBONACCI: return "fibonacci"
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+### wm_layout_clamp_cell (function) `static inline int wm_layout_clamp_cell(wm_layout_cell_t *cell, int max_cols, int max_rows)`
+- Defined: `wm_layout.h:82`
+- Doc: case WM_LAYOUT_FULLSCREEN: return "fullscreen"; default: return 0; } } /** Docstring: True when mode is a selectable lay
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+### wm_layout_fullscreen_cell (function) `static inline int wm_layout_fullscreen_cell(int max_cols, int max_rows, wm_layout_cell_t *out)`
+- Defined: `wm_layout.h:118`
+- Doc: } if (cell->rows < 1) { cell->rows = 1; } if (cell->x + cell->cols > max_cols) { cell->cols = max_cols - cell->x; } if (
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+### wm_layout_compute_tile (function) `static inline int wm_layout_compute_tile(const wm_layout_window_t *wins, int nwin, int max_cols, ...`
+- Defined: `wm_layout.h:135`
+- Doc: return 0; } if (max_cols <= 0 || max_rows <= 0) { return 0; } out->x = 0; out->y = 0; out->cols = max_cols; out->rows = 
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+### wm_layout_compute_bsp (function) `static inline int wm_layout_compute_bsp(const wm_layout_window_t *wins, int nwin, int max_cols, i...`
+- Defined: `wm_layout.h:182`
+- Doc: } base = max_rows / nwin; rem = max_rows - base * nwin; for (i = 0; i < nwin; i++) { out[i].x = 0; out[i].y = i * base; 
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+### wm_layout_compute_cascade (function) `static inline int wm_layout_compute_cascade(const wm_layout_config_t *cfg, const wm_layout_window...`
+- Defined: `wm_layout.h:250`
+- Doc: } out[i].x = rx; out[i].y = ry; out[i].cols = rw; out[i].rows = half; out[i].fullscreen = 0; ry = ry + half; rh = rh - h
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+### wm_layout_compute_fibonacci (function) `static inline int wm_layout_compute_fibonacci(const wm_layout_config_t *cfg, const wm_layout_wind...`
+- Defined: `wm_layout.h:285`
+- Doc: out[i].cols = max_cols - ox; out[i].rows = max_rows - oy; out[i].fullscreen = 0; if (out[i].cols < 1) { out[i].cols = 1;
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+### wm_layout_compute (function) `static inline int wm_layout_compute(const wm_layout_config_t *cfg, const wm_layout_window_t *wins...`
+- Defined: `wm_layout.h:361`
+- Doc: } out[i].x = rx; out[i].y = ry; out[i].cols = rw; out[i].rows = cut; out[i].fullscreen = 0; ry = ry + cut; rh = rh - cut
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+### wm_layout_same (function) `static inline int wm_layout_same(const wm_layout_cell_t *a, const wm_layout_cell_t *b, int n)`
+- Defined: `wm_layout.h:443`
+- Doc: } if (n != nc) { return 0; } for (i = 0; i < nc; i++) { if (!wm_layout_clamp_cell(&cells[i], max_cols, max_rows)) { retu
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
 
 ## wm_render.h
 

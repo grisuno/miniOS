@@ -71,6 +71,21 @@
   - `TRUSTED_LEN` (macro, line 82) `#define TRUSTED_LEN`
 - Depends on: `kernel/string.c`, `vma.h`
 
+## tests/test_file_assoc.c
+- Layer: testing
+- Doc: Docstring: host test for the file browser assoc contract (make test-file).
+- Language: c
+- Symbols:
+  - `t_ext_of` (function, line 23) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
+  - `t_assoc_line` (function, line 43) `static int t_assoc_line(const char *line, char *ext, char *prog)`
+  - `main` (function, line 75) `int main(void)`
+  - `fprintf` (function, line 17) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `CHECK` (function, line 81) `CHECK(strcmp(ext, "c") == 0, "ext of hello.c");`
+  - `CHECK` (macro, line 13) `#define CHECK(cond, msg)`
+  - `T_EXT_MAX` (macro, line 20) `#define T_EXT_MAX`
+  - `T_PROG_MAX` (macro, line 22) `#define T_PROG_MAX`
+- Depends on: `kernel/string.c`
+
 ## tests/test_freedom_wl.c
 - Layer: testing
 - Doc: test_freedom_wl - host suite for the Wayland to MiniOS mapping.
@@ -126,6 +141,42 @@
   - `CHECK` (function, line 17) `CHECK(ktime_us_from_delta(0, 3000000UL) == 0, "zero delta");`
   - `CHECK` (macro, line 14) `#define CHECK(c, m)`
 - Depends on: `ktime.h`
+
+## tests/test_paint.c
+- Layer: testing
+- Doc: Docstring: host test for the paint canvas/PNG contract (make test-paint).
+- Language: c
+- Symbols:
+  - `t_clamp` (function, line 29) `static int t_clamp(int v, int lo, int hi)`
+  - `t_plot` (function, line 35) `static int t_plot(unsigned char *buf, int w, int h, int x, int y,
+                  unsigned char c)`
+  - `t_line` (function, line 43) `static int t_line(unsigned char *buf, int w, int h, int x0, int y0, int x1,
+                  int...`
+  - `t_flood` (function, line 69) `static int t_flood(unsigned char *buf, int w, int h, int x, int y,
+                   unsigned ch...`
+  - `t_crc_init` (function, line 115) `static void t_crc_init(void)`
+  - `t_crc` (function, line 128) `static unsigned long t_crc(const unsigned char *p, unsigned long n)`
+  - `t_path_ok` (function, line 137) `static int t_path_ok(const char *p)`
+  - `t_nearest` (function, line 154) `static int t_nearest(const unsigned char *pal, unsigned r, unsigned g,
+                     unsig...`
+  - `test_plot` (function, line 170) `static void test_plot(void)`
+  - `test_line` (function, line 187) `static void test_line(void)`
+  - `test_flood` (function, line 206) `static void test_flood(void)`
+  - `test_png_codec` (function, line 227) `static void test_png_codec(void)`
+  - `test_png_layout` (function, line 258) `static void test_png_layout(void)`
+  - `test_path` (function, line 272) `static void test_path(void)`
+  - `test_nearest` (function, line 286) `static void test_nearest(void)`
+  - `main` (function, line 299) `int main(void)`
+  - `fprintf` (function, line 19) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `memset` (function, line 172) `memset(t_canvas, 0, sizeof(t_canvas));`
+  - `CHECK` (function, line 173) `CHECK(t_plot(t_canvas, T_W, T_H, 0, 0, 7) == 0, "plot origin");`
+  - `printf` (function, line 309) `printf("paint: all host vectors pass\n");`
+  - `CHECK` (macro, line 15) `#define CHECK(cond, msg)`
+  - `T_W` (macro, line 22) `#define T_W`
+  - `T_H` (macro, line 24) `#define T_H`
+  - `T_N` (macro, line 25) `#define T_N`
+  - `T_PATH_MAX` (macro, line 26) `#define T_PATH_MAX`
+- Depends on: `kernel/string.c`
 
 ## tests/test_percpu_rq.c
 - Layer: testing
@@ -235,6 +286,25 @@
   - `CHECK` (macro, line 36) `#define CHECK(cond, msg)`
 - Depends on: `sync.h`
 
+## tests/test_theme.c
+- Layer: testing
+- Doc: Docstring: host test for the shared Nuklear theme contract.
+- Language: c
+- Symbols:
+  - `tslot` (struct, line 23)
+  - `t_name_ok` (function, line 33) `static int t_name_ok(const char *name)`
+  - `t_parse_line` (function, line 45) `static int t_parse_line(const char *line, int *idx, long v[3])`
+  - `cube_exact` (function, line 73) `static int cube_exact(long v)`
+  - `check_theme_file` (function, line 77) `static void check_theme_file(const char *path)`
+  - `main` (function, line 106) `int main(void)`
+  - `fprintf` (function, line 19) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `CHECK` (function, line 84) `CHECK(f != 0, "theme file opens");`
+  - `fclose` (function, line 103) `fclose(f);`
+  - `snprintf` (function, line 147) `snprintf(path, sizeof(path), "progs/etc/themes/%s", name);`
+  - `CHECK` (macro, line 15) `#define CHECK(cond, msg)`
+  - `X` (macro, line 29) `#define X(k, i)`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
 ## tests/test_tick.c
 - Layer: testing
 - Doc: Docstring: Host test for kernel/tick.c (make test-tick).
@@ -313,10 +383,10 @@
 - Doc: Docstring: Host test for wm_geom.h and wm_events.h (make test-wm).
 - Language: c
 - Symbols:
-  - `main` (function, line 26) `int main(void)`
-  - `fprintf` (function, line 23) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 40) `CHECK(gcfg.font_w == 8, "geom config carries font width");`
-  - `wm_clamp_point` (function, line 85) `wm_clamp_point(&cx, &cy, 800, 600);`
-  - `printf` (function, line 304) `printf("wm: ok\n");`
-  - `CHECK` (macro, line 19) `#define CHECK(cond, msg)`
-- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+  - `main` (function, line 27) `int main(void)`
+  - `fprintf` (function, line 24) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `CHECK` (function, line 41) `CHECK(gcfg.font_w == 8, "geom config carries font width");`
+  - `wm_clamp_point` (function, line 86) `wm_clamp_point(&cx, &cy, 800, 600);`
+  - `printf` (function, line 379) `printf("wm: ok\n");`
+  - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
+- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`

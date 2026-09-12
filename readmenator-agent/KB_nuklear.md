@@ -94,85 +94,86 @@
 - Doc: node_editor.c — visual low-code editor that compiles to CVM bytecode.
 - Language: c
 - Symbols:
-  - `gnode` (struct, line 43)
-  - `nodedef` (struct, line 54)
-  - `node_inputs` (function, line 94) `static int node_inputs(int k)`
-  - `node_outputs` (function, line 99) `static int node_outputs(int k)`
-  - `kind_name` (function, line 104) `static const char *kind_name(int k)`
-  - `kind_color` (function, line 109) `static struct nk_color kind_color(int k)`
-  - `graph_clear` (function, line 114) `static void graph_clear(void)`
-  - `graph_add` (function, line 120) `static int graph_add(int kind)`
-  - `graph_del` (function, line 134) `static void graph_del(int idx)`
-  - `graph_to_compiler` (function, line 153) `static int graph_to_compiler(struct cvm_node *out, int cap)`
-  - `repair_graph` (function, line 175) `static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,
+  - `gnode` (struct, line 44)
+  - `nodedef` (struct, line 55)
+  - `node_inputs` (function, line 95) `static int node_inputs(int k)`
+  - `node_outputs` (function, line 100) `static int node_outputs(int k)`
+  - `kind_name` (function, line 105) `static const char *kind_name(int k)`
+  - `kind_color` (function, line 110) `static struct nk_color kind_color(int k)`
+  - `graph_clear` (function, line 115) `static void graph_clear(void)`
+  - `graph_add` (function, line 121) `static int graph_add(int kind)`
+  - `graph_del` (function, line 135) `static void graph_del(int idx)`
+  - `graph_to_compiler` (function, line 154) `static int graph_to_compiler(struct cvm_node *out, int cap)`
+  - `repair_graph` (function, line 176) `static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,
                    ...`
-  - `addrep` (function, line 182) `void addrep(const char *s)`
-  - `adderr` (function, line 192) `void adderr(const char *s)`
-  - `compile_to` (function, line 282) `static int compile_to(const char *path)`
-  - `write_quoted` (function, line 338) `static void write_quoted(FILE *f, const char *s)`
-  - `save_graph_file` (function, line 390) `static int save_graph_file(const char *path)`
-  - `parse_graph_file` (function, line 428) `static int parse_graph_file(const char *path)`
-  - `resolve` (function, line 436) `int resolve(const char *nme, int upto)`
-  - `parse_input` (function, line 442) `int parse_input(const char *tok, int idx, int k)`
-  - `pin_y` (function, line 521) `static float pin_y(struct gnode *n, int slot, int is_output)`
-  - `node_h` (function, line 532) `static float node_h(struct gnode *n)`
-  - `ui_inspector` (function, line 540) `static void ui_inspector(struct nk_context *ctx)`
-  - `ui_build` (function, line 620) `static void ui_build(struct nk_context *ctx, float win_w, float win_h)`
-  - `gui_run` (function, line 930) `static void gui_run(void)`
-  - `main` (function, line 979) `int main(int argc, char **argv)`
-  - `memset` (function, line 125) `memset(n, 0, sizeof(*n));`
-  - `memmove` (function, line 137) `memmove(&g_nodes[idx], &g_nodes[idx + 1], (size_t)(g_count - idx - 1) * sizeof(g_nodes[0]));`
-  - `memcpy` (function, line 159) `memcpy(out[i].sval, g->sval, sizeof(out[i].sval));`
-  - `snprintf` (function, line 206) `snprintf(m, sizeof(m), "node %d: bad type", i);`
-  - `free` (function, line 306) `free(mod);`
-  - `close` (function, line 315) `close(fd);`
-  - `fputc` (function, line 339) `fputc('"', f);`
-  - `fprintf` (function, line 401) `fprintf(f, "num %s %lld\n", names[i], g->ival);`
-  - `fclose` (function, line 424) `fclose(f);`
-  - `nk_layout_row_dynamic` (function, line 542) `nk_layout_row_dynamic(ctx, 16, 1);`
-  - `nk_label` (function, line 544) `nk_label(ctx, "select a node to edit its parameters", NK_TEXT_LEFT);`
-  - `nk_property_int` (function, line 555) `nk_property_int(ctx, "value:", -2147483647, &v, 2147483647, 1, 10);`
-  - `nk_edit_string_zero_terminated` (function, line 561) `nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, n->sval, (int)sizeof(n->sval), 0);`
-  - `nk_layout_row_begin` (function, line 572) `nk_layout_row_begin(ctx, NK_STATIC, 20, 3);`
-  - `nk_layout_row_push` (function, line 573) `nk_layout_row_push(ctx, 110);`
-  - `nk_layout_row_end` (function, line 591) `nk_layout_row_end(ctx);`
-  - `nk_layout_row_static` (function, line 609) `nk_layout_row_static(ctx, 22, 90, 3);`
-  - `nk_combobox` (function, line 634) `nk_combobox(ctx, items, G_COUNT, &add_sel, 20, nk_vec2(150, 300));`
-  - `nk_label_colored_wrap` (function, line 668) `nk_label_colored_wrap(ctx, g_status, nk_rgb(255, 120, 120));`
-  - `nk_layout_space_begin` (function, line 683) `nk_layout_space_begin(ctx, NK_STATIC, canvas_h, g_count + 32);`
-  - `nk_stroke_line` (function, line 702) `nk_stroke_line(canvas, x + canvas_bounds.x, canvas_bounds.y, x + canvas_bounds.x, canvas_bounds.y + canvas_bounds.h, 1.0f, grid_col);`
-  - `nk_stroke_curve` (function, line 722) `nk_stroke_curve(canvas, sx, sy, sx + BEZIER_PAD, sy, dx - BEZIER_PAD, dy, dx, dy, 2.0f, nk_rgb(180, 180, 180));`
-  - `nk_layout_space_bounds` (function, line 744) `nk_layout_space_bounds(ctx));`
-  - `nk_layout_space_push` (function, line 841) `nk_layout_space_push(ctx, nk_rect(n->x, n->y, NODE_W, h));`
-  - `nk_fill_rect` (function, line 849) `nk_fill_rect(canvas, title_bounds, 0, col);`
-  - `nk_group_end` (function, line 901) `nk_group_end(ctx);`
-  - `nk_fill_circle` (function, line 911) `nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));`
-  - `nk_layout_space_end` (function, line 923) `nk_layout_space_end(ctx);`
-  - `nk_end` (function, line 925) `nk_end(ctx);`
-  - `nk_sys_vga_mode` (function, line 933) `nk_sys_vga_mode(1);`
-  - `nk_sys_gfx_set_title` (function, line 935) `nk_sys_gfx_set_title("Nuklear");`
-  - `nk_sys_kbd_raw` (function, line 936) `nk_sys_kbd_raw(1);`
-  - `nk_build_palette` (function, line 937) `nk_build_palette(pal768);`
-  - `nk_sys_palette` (function, line 938) `nk_sys_palette(pal768);`
-  - `nk_sys_fb_info` (function, line 939) `nk_sys_fb_info(&fw, &fh, &fp);`
-  - `printf` (function, line 944) `printf("nuklear: init failed\n");`
-  - `nk_input_begin` (function, line 958) `nk_input_begin(&ctx);`
-  - `nk_poll_input` (function, line 959) `nk_poll_input(&ctx);`
-  - `nk_input_end` (function, line 960) `nk_input_end(&ctx);`
-  - `nk_rasterize` (function, line 963) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 967) `nk_clear(&ctx);`
-  - `volatile` (function, line 971) `__asm__ volatile("pause");`
-  - `nk_free` (function, line 974) `nk_free(&ctx);`
-  - `MAX_NODES` (macro, line 32) `#define MAX_NODES`
-  - `STR_MAX` (macro, line 33) `#define STR_MAX`
-  - `UI_MEMORY` (macro, line 499) `#define UI_MEMORY`
-  - `NODE_W` (macro, line 513) `#define NODE_W`
-  - `TITLE_H` (macro, line 514) `#define TITLE_H`
-  - `PIN_R` (macro, line 515) `#define PIN_R`
-  - `PIN_DIAM` (macro, line 516) `#define PIN_DIAM`
-  - `BEZIER_PAD` (macro, line 517) `#define BEZIER_PAD`
-  - `GRID_SIZE` (macro, line 518) `#define GRID_SIZE`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`
+  - `addrep` (function, line 183) `void addrep(const char *s)`
+  - `adderr` (function, line 193) `void adderr(const char *s)`
+  - `compile_to` (function, line 283) `static int compile_to(const char *path)`
+  - `write_quoted` (function, line 339) `static void write_quoted(FILE *f, const char *s)`
+  - `save_graph_file` (function, line 391) `static int save_graph_file(const char *path)`
+  - `parse_graph_file` (function, line 429) `static int parse_graph_file(const char *path)`
+  - `resolve` (function, line 437) `int resolve(const char *nme, int upto)`
+  - `parse_input` (function, line 443) `int parse_input(const char *tok, int idx, int k)`
+  - `pin_y` (function, line 522) `static float pin_y(struct gnode *n, int slot, int is_output)`
+  - `node_h` (function, line 533) `static float node_h(struct gnode *n)`
+  - `ui_inspector` (function, line 541) `static void ui_inspector(struct nk_context *ctx)`
+  - `ui_build` (function, line 621) `static void ui_build(struct nk_context *ctx, float win_w, float win_h)`
+  - `gui_run` (function, line 931) `static void gui_run(void)`
+  - `main` (function, line 982) `int main(int argc, char **argv)`
+  - `memset` (function, line 126) `memset(n, 0, sizeof(*n));`
+  - `memmove` (function, line 138) `memmove(&g_nodes[idx], &g_nodes[idx + 1], (size_t)(g_count - idx - 1) * sizeof(g_nodes[0]));`
+  - `memcpy` (function, line 160) `memcpy(out[i].sval, g->sval, sizeof(out[i].sval));`
+  - `snprintf` (function, line 207) `snprintf(m, sizeof(m), "node %d: bad type", i);`
+  - `free` (function, line 307) `free(mod);`
+  - `close` (function, line 316) `close(fd);`
+  - `fputc` (function, line 340) `fputc('"', f);`
+  - `fprintf` (function, line 402) `fprintf(f, "num %s %lld\n", names[i], g->ival);`
+  - `fclose` (function, line 425) `fclose(f);`
+  - `nk_layout_row_dynamic` (function, line 543) `nk_layout_row_dynamic(ctx, 16, 1);`
+  - `nk_label` (function, line 545) `nk_label(ctx, "select a node to edit its parameters", NK_TEXT_LEFT);`
+  - `nk_property_int` (function, line 556) `nk_property_int(ctx, "value:", -2147483647, &v, 2147483647, 1, 10);`
+  - `nk_edit_string_zero_terminated` (function, line 562) `nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, n->sval, (int)sizeof(n->sval), 0);`
+  - `nk_layout_row_begin` (function, line 573) `nk_layout_row_begin(ctx, NK_STATIC, 20, 3);`
+  - `nk_layout_row_push` (function, line 574) `nk_layout_row_push(ctx, 110);`
+  - `nk_layout_row_end` (function, line 592) `nk_layout_row_end(ctx);`
+  - `nk_layout_row_static` (function, line 610) `nk_layout_row_static(ctx, 22, 90, 3);`
+  - `nk_combobox` (function, line 635) `nk_combobox(ctx, items, G_COUNT, &add_sel, 20, nk_vec2(150, 300));`
+  - `nk_label_colored_wrap` (function, line 669) `nk_label_colored_wrap(ctx, g_status, nk_rgb(255, 120, 120));`
+  - `nk_layout_space_begin` (function, line 684) `nk_layout_space_begin(ctx, NK_STATIC, canvas_h, g_count + 32);`
+  - `nk_stroke_line` (function, line 703) `nk_stroke_line(canvas, x + canvas_bounds.x, canvas_bounds.y, x + canvas_bounds.x, canvas_bounds.y + canvas_bounds.h, 1.0f, grid_col);`
+  - `nk_stroke_curve` (function, line 723) `nk_stroke_curve(canvas, sx, sy, sx + BEZIER_PAD, sy, dx - BEZIER_PAD, dy, dx, dy, 2.0f, nk_rgb(180, 180, 180));`
+  - `nk_layout_space_bounds` (function, line 745) `nk_layout_space_bounds(ctx));`
+  - `nk_layout_space_push` (function, line 842) `nk_layout_space_push(ctx, nk_rect(n->x, n->y, NODE_W, h));`
+  - `nk_fill_rect` (function, line 850) `nk_fill_rect(canvas, title_bounds, 0, col);`
+  - `nk_group_end` (function, line 902) `nk_group_end(ctx);`
+  - `nk_fill_circle` (function, line 912) `nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));`
+  - `nk_layout_space_end` (function, line 924) `nk_layout_space_end(ctx);`
+  - `nk_end` (function, line 926) `nk_end(ctx);`
+  - `nk_sys_vga_mode` (function, line 934) `nk_sys_vga_mode(1);`
+  - `nk_sys_gfx_set_title` (function, line 936) `nk_sys_gfx_set_title("Nuklear");`
+  - `nk_sys_kbd_raw` (function, line 937) `nk_sys_kbd_raw(1);`
+  - `nk_build_palette` (function, line 938) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 939) `nk_sys_palette(pal768);`
+  - `nk_sys_fb_info` (function, line 940) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `printf` (function, line 945) `printf("nuklear: init failed\n");`
+  - `nk_theme_apply` (function, line 950) `nk_theme_apply(&ctx, 0);`
+  - `nk_input_begin` (function, line 960) `nk_input_begin(&ctx);`
+  - `nk_poll_input` (function, line 961) `nk_poll_input(&ctx);`
+  - `nk_input_end` (function, line 962) `nk_input_end(&ctx);`
+  - `nk_rasterize` (function, line 966) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 970) `nk_clear(&ctx);`
+  - `volatile` (function, line 974) `__asm__ volatile("pause");`
+  - `nk_free` (function, line 977) `nk_free(&ctx);`
+  - `MAX_NODES` (macro, line 33) `#define MAX_NODES`
+  - `STR_MAX` (macro, line 34) `#define STR_MAX`
+  - `UI_MEMORY` (macro, line 500) `#define UI_MEMORY`
+  - `NODE_W` (macro, line 514) `#define NODE_W`
+  - `TITLE_H` (macro, line 515) `#define TITLE_H`
+  - `PIN_R` (macro, line 516) `#define PIN_R`
+  - `PIN_DIAM` (macro, line 517) `#define PIN_DIAM`
+  - `BEZIER_PAD` (macro, line 518) `#define BEZIER_PAD`
+  - `GRID_SIZE` (macro, line 519) `#define GRID_SIZE`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/nuklear/nuklear_minios.c
 - Layer: utility
@@ -207,18 +208,19 @@
   - `nk_minios_font_width` (function, line 460) `static float nk_minios_font_width(nk_handle handle, float height,
                                ...`
   - `nk_minios_font` (function, line 465) `struct nk_user_font nk_minios_font(void)`
-  - `feed_key` (function, line 499) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
-  - `nk_set_scancode_hook` (function, line 506) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
-  - `handle_scancode` (function, line 511) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
-  - `nk_poll_input` (function, line 554) `void nk_poll_input(struct nk_context *ctx)`
-  - `nk_set_window_origin` (function, line 591) `void nk_set_window_origin(int x, int y)`
+  - `feed_key` (function, line 500) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
+  - `nk_set_scancode_hook` (function, line 507) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
+  - `handle_scancode` (function, line 512) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
+  - `nk_poll_input` (function, line 557) `void nk_poll_input(struct nk_context *ctx)`
+  - `nk_set_window_origin` (function, line 594) `void nk_set_window_origin(int x, int y)`
+  - `nk_quit_requested` (function, line 603) `int nk_quit_requested(void)`
   - `list` (function, line 4) `* abstract draw command list (nk__begin/nk__next);`
   - `volatile` (function, line 29) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
   - `nk_build_palette` (function, line 152) `nk_build_palette(pal768);`
-  - `nk_input_key` (function, line 501) `nk_input_key(ctx, key, down ? nk_true : nk_false);`
-  - `nk_input_unicode` (function, line 550) `nk_input_unicode(ctx, (nk_rune)ch);`
-  - `nk_input_motion` (function, line 571) `nk_input_motion(ctx, lx, ly);`
-  - `nk_input_scroll` (function, line 587) `nk_input_scroll(ctx, scroll);`
+  - `nk_input_key` (function, line 502) `nk_input_key(ctx, key, down ? nk_true : nk_false);`
+  - `nk_input_unicode` (function, line 553) `nk_input_unicode(ctx, (nk_rune)ch);`
+  - `nk_input_motion` (function, line 574) `nk_input_motion(ctx, lx, ly);`
+  - `nk_input_scroll` (function, line 590) `nk_input_scroll(ctx, scroll);`
   - `NK_IMPLEMENTATION` (macro, line 16) `#define NK_IMPLEMENTATION`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
 
@@ -245,11 +247,50 @@
   - `nk_rasterize` (function, line 54) `void nk_rasterize(struct nk_context *ctx);`
   - `SYS_NK_FRAME` (function, line 60) `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);`
   - `nk_poll_input` (function, line 62) `void nk_poll_input(struct nk_context *ctx);`
-  - `void` (function, line 70) `typedef void (*nk_scancode_cb)(int code, int make, int e0, void *ud);`
-  - `nk_set_scancode_hook` (function, line 71) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
+  - `nk_quit_requested` (function, line 67) `int nk_quit_requested(void);`
+  - `void` (function, line 75) `typedef void (*nk_scancode_cb)(int code, int make, int e0, void *ud);`
+  - `nk_set_scancode_hook` (function, line 76) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
   - `NUKLEAR_MINIOS_H` (macro, line 2) `#define NUKLEAR_MINIOS_H`
   - `NK_W` (macro, line 23) `#define NK_W`
   - `NK_H` (macro, line 25) `#define NK_H`
   - `NK_BACKBUF` (macro, line 26) `#define NK_BACKBUF`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+
+## progs/nuklear/nuklear_theme.c
+- Layer: utility
+- Doc: Docstring: shared Nuklear theme loader, linked by every NK app.
+- Language: c
+- Symbols:
+  - `nk_theme_slot` (struct, line 15)
+  - `nk_theme_name_ok` (function, line 36) `static int nk_theme_name_ok(const char *name)`
+  - `nk_theme_active` (function, line 48) `int nk_theme_active(char *dst, int cap)`
+  - `nk_theme_parse_line` (function, line 72) `static int nk_theme_parse_line(const char *line,
+                               unsigned char rgb...`
+  - `nk_theme_probe` (function, line 104) `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3])`
+  - `nk_theme_apply` (function, line 140) `int nk_theme_apply(struct nk_context *ctx, const char *name)`
+  - `fclose` (function, line 63) `fclose(f);`
+  - `snprintf` (function, line 69) `snprintf(dst, (unsigned)cap, "%s", NK_THEME_DEFAULT);`
+  - `nk_style_from_table` (function, line 148) `nk_style_from_table(ctx, table);`
+  - `X` (macro, line 21) `#define X(k, i)`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+
+## progs/nuklear/nuklear_theme.h
+- Layer: utility
+- Doc: ifndef NUKLEAR_THEME_H define NUKLEAR_THEME_H  Docstring: shared Nuklear theme contract for every MiniOS NK app.
+- Language: h
+- Symbols:
+  - `nk_context` (struct, line 59)
+  - `nk_theme_active` (function, line 62) `int nk_theme_active(char *dst, int cap);`
+  - `nk_theme_probe` (function, line 65) `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3]);`
+  - `nk_theme_apply` (function, line 68) `int nk_theme_apply(struct nk_context *ctx, const char *name);`
+  - `NUKLEAR_THEME_H` (macro, line 2) `#define NUKLEAR_THEME_H`
+  - `NK_THEME_NAME_MAX` (macro, line 14) `#define NK_THEME_NAME_MAX`
+  - `NK_THEME_KEY_MAX` (macro, line 16) `#define NK_THEME_KEY_MAX`
+  - `NK_THEME_LINE_MAX` (macro, line 17) `#define NK_THEME_LINE_MAX`
+  - `NK_THEME_PATH_DIR` (macro, line 18) `#define NK_THEME_PATH_DIR`
+  - `NK_THEME_PATH_CURRENT` (macro, line 19) `#define NK_THEME_PATH_CURRENT`
+  - `NK_THEME_DEFAULT` (macro, line 20) `#define NK_THEME_DEFAULT`
+  - `NK_THEME_KEY_LIST` (macro, line 23) `#define NK_THEME_KEY_LIST`
+  - `NK_THEME_KEY_COUNT` (macro, line 56) `#define NK_THEME_KEY_COUNT`
+- Imported by: `progs/file/file.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`, `tests/test_theme.c`

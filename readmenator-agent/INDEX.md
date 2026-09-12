@@ -58,15 +58,15 @@
 | `kernel/sched.c` | - | kernel | 135 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 8 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 10 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 140 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 143 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 143 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 144 |
 | `kernel/syscalls_proc.c` | syscalls_proc.c - Process-management syscall handlers. | kernel | 21 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
 | `kernel/time.c` | include "kernel.h" include "ktime.h"  ========================================== | kernel | 7 |
-| `kernel/vga_fb.c` | - | kernel | 155 |
+| `kernel/vga_fb.c` | - | kernel | 167 |
 | `ktime.h` | ifndef KTIME_H define KTIME_H  ktime.h -- pure time-conversion helpers shared by | root | 3 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 4 |
 | `mcp/__init__.py` | - | mcp | 0 |
@@ -288,6 +288,7 @@
 | `progs/doomgeneric/wi_stuff.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 5 |
 | `progs/doomgeneric/z_zone.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 21 |
 | `progs/doomgeneric/z_zone.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 13 |
+| `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | misc | 73 |
 | `progs/lua/lua_main.c` | - | lua | 25 |
 | `progs/lua/minios.c` | - | lua | 27 |
 | `progs/micropython/variants/minios/lib/__init__.py` | MiniOS frozen library package. | lib | 0 |
@@ -295,14 +296,17 @@
 | `progs/micropython/variants/minios/manifest.py` | manifest.py -- frozen modules for the MiniOS MicroPython variant. Scripts listed | minios | 0 |
 | `progs/micropython/variants/minios/minios_module.c` | - | minios | 33 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 |
-| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 125 |
+| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 126 |
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 59 |
 | `progs/nuklear/cvm_emit.h` | ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (c | nuklear | 6 |
 | `progs/nuklear/font8x8.c` | font8x8 - shared 8x8 bitmap font for MiniOS ring-3 graphics programs. | nuklear | 0 |
-| `progs/nuklear/node_editor.c` | node_editor.c — visual low-code editor that compiles to CVM bytecode. | nuklear | 77 |
-| `progs/nuklear/nuklear_minios.c` | nuklear_minios.c — MiniOS platform layer for Nuklear. | nuklear | 39 |
-| `progs/nuklear/nuklear_minios.h` | ifndef NUKLEAR_MINIOS_H define NUKLEAR_MINIOS_H  nuklear_minios.h — MiniOS platf | nuklear | 24 |
-| `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 86 |
+| `progs/nuklear/node_editor.c` | node_editor.c — visual low-code editor that compiles to CVM bytecode. | nuklear | 78 |
+| `progs/nuklear/nuklear_minios.c` | nuklear_minios.c — MiniOS platform layer for Nuklear. | nuklear | 40 |
+| `progs/nuklear/nuklear_minios.h` | ifndef NUKLEAR_MINIOS_H define NUKLEAR_MINIOS_H  nuklear_minios.h — MiniOS platf | nuklear | 25 |
+| `progs/nuklear/nuklear_theme.c` | Docstring: shared Nuklear theme loader, linked by every NK app. | nuklear | 10 |
+| `progs/nuklear/nuklear_theme.h` | ifndef NUKLEAR_THEME_H define NUKLEAR_THEME_H  Docstring: shared Nuklear theme c | nuklear | 13 |
+| `progs/paint/paint.c` | Docstring: MiniOS paint program (Nuklear ring-3 app, MiniFS: paint/paint.elf). | misc | 85 |
+| `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 87 |
 | `progs/pokemon/fetch.sh` | fetch.sh - clone the gb-recompiled tool into progs/pokemon/upstream.  The upstre | pokemon | 0 |
 | `progs/pokemon/minios_stubs/SDL.h` | SDL.h stub for MiniOS cross-compilation | misc | 10 |
 | `progs/pokemon/platform_minios.c` | - | pokemon | 110 |
@@ -341,7 +345,7 @@
 | `progs/tls_u/tls_u_main.c` | tlsget - minimal HTTPS GET over the ring-3 TLS stack. | tls_u | 11 |
 | `progs/tls_u/tls_u_port.c` | tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3). | tls_u | 20 |
 | `progs/topogpt3/topogpt3.c` | - | misc | 132 |
-| `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 147 |
+| `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 149 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 31 |
 | `qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | root | 29 |
 | `randmix.h` | ifndef RANDMIX_H define RANDMIX_H  randmix.h -- entropy mixer for getrandom (318 | root | 2 |
@@ -363,16 +367,19 @@
 | `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 6 |
 | `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 8 |
 | `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 15 |
+| `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 8 |
 | `tests/test_freedom_wl.c` | test_freedom_wl - host suite for the Wayland to MiniOS mapping. | tests | 5 |
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 11 |
 | `tests/test_hal_io.c` | Docstring: Host test for arch/x86/hal_io.h (make test-hal). | tests | 9 |
 | `tests/test_ktime.c` | test_ktime.c -- host test for the pure conversion math in ktime.h | tests | 3 |
+| `tests/test_paint.c` | Docstring: host test for the paint canvas/PNG contract (make test-paint). | tests | 25 |
 | `tests/test_percpu_rq.c` | Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq). | tests | 10 |
 | `tests/test_randmix.c` | test_randmix.c -- host test for the getrandom mixer in randmix.h | tests | 4 |
 | `tests/test_rcu.c` | Docstring: Host test for kernel/rcu.c (make test-rcu). | tests | 13 |
 | `tests/test_rtc.c` | test_rtc.c -- host test for the pure date math in drivers/rtc.c | tests | 3 |
 | `tests/test_sanitize.c` | Docstring: Host test for sanitize.h (make test-sanitize). | tests | 17 |
 | `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 19 |
+| `tests/test_theme.c` | Docstring: host test for the shared Nuklear theme contract. | tests | 12 |
 | `tests/test_tick.c` | Docstring: Host test for kernel/tick.c (make test-tick). | tests | 12 |
 | `tests/test_vedit_build.c` | Docstring: Host test for the vedit IDE build contract (make test-vedit). | tests | 9 |
 | `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 13 |
@@ -405,15 +412,19 @@
 | `tools/qga_test.sh` | Quick standalone smoke test for the QEMU guest agent: boots os.img once with the | tools | 3 |
 | `tools/repro_gui.py` | - | tools | 10 |
 | `tools/test_codecs.sh` | test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  T | tools | 0 |
+| `tools/test_gui_fashion.py` | - | tools | 18 |
+| `tools/test_gui_icon_cwd.py` | - | tools | 17 |
 | `tools/test_gui_wm.py` | - | tools | 17 |
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
+| `tools/wm_layout_sync.py` | - | tools | 17 |
 | `tools/wm_scoped.sh` | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs ho | tools | 2 |
-| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Fram | root | 113 |
+| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Fram | root | 120 |
 | `vma.c` | include "vma.h" | root | 14 |
 | `vma.h` | ifndef VMA_H define VMA_H | root | 21 |
 | `wm_events.h` | Docstring: Window event contract for the MiniOS desktop. | root | 38 |
 | `wm_focus.h` | Docstring: Focus manager contract for the MiniOS desktop. | root | 6 |
 | `wm_geom.h` | Docstring: Window geometry contract for the MiniOS desktop. | root | 11 |
+| `wm_layout.h` | Docstring: Unified layout contract for the MiniOS desktop. | root | 16 |
 | `wm_render.h` | Docstring: Render pipeline contract for the MiniOS desktop. | root | 5 |
 | `wm_tiling.h` | Docstring: Tiling layout contract for the MiniOS desktop. | root | 3 |
 | `wm_window.h` | Docstring: Unified window contract for the MiniOS desktop. | root | 12 |

@@ -119,8 +119,9 @@ Ramdisk (flat, `/` is data): `objects/` ET_REL toolchain, `bin/` Linux
 ELFs + command path, `cvm/` CVM modules, `src/` C sources, `asm/`
 miniGCC output, `docs/`. MiniFS (real directories, persists `saves/`
 across rebuilds): big ELFs (`doomgeneric.elf`, `micropython.elf`,
-`lua.elf`, `nuklear.elf`, `piano.elf`, `quake2generic.elf`), WAD/PAK
-data, `aes`/`json`/`freedom`/`lzss`/`lz4` tools.
+`lua.elf`, `nuklear.elf`, `piano.elf`, `paint.elf`,
+`quake2generic.elf`), WAD/PAK data, `aes`/`json`/`freedom`/`lzss`/`lz4`
+tools.
 
 ## Syscall numbers (source of truth: `progs/minios_abi.h`)
 

@@ -5,15 +5,15 @@
 These files have the most connections. Changes here have high blast radius.
 
 - `kernel.h` (score: 116.50)
+- `kernel/string.c` (score: 109.30)
 - `progs/doomgeneric/doomtype.h` (score: 101.40)
-- `kernel/string.c` (score: 97.30)
 - `progs/doomgeneric/doomdef.h` (score: 90.90)
 - `progs/doomgeneric/d_main.c` (score: 89.30)
 - `progs/doomgeneric/doomstat.h` (score: 84.80)
 - `progs/doomgeneric/i_system.h` (score: 81.50)
 - `progs/doomgeneric/z_zone.h` (score: 81.30)
 - `progs/doomgeneric/g_game.c` (score: 77.70)
-- `kernel/syscalls.c` (score: 62.30)
+- `kernel/syscalls.c` (score: 62.40)
 
 ## Hotspots (complexity + centrality)
 
@@ -23,10 +23,10 @@ These files have the most connections. Changes here have high blast radius.
 - `progs/doomgeneric/st_stuff.c` -- complexity: 0.5, centrality: 0.5, combined: 0.5
 - `kernel/syscalls.c` -- complexity: 0.5, centrality: 0.6, combined: 0.5
 - `progs/doomgeneric/m_menu.c` -- complexity: 0.3, centrality: 0.6, combined: 0.5
-- `progs/doomgeneric/doomstat.h` -- complexity: 0.2, centrality: 0.5, combined: 0.4
 - `kernel/vga_fb.c` -- complexity: 0.5, centrality: 0.3, combined: 0.4
-- `progs/doomgeneric/doomtype.h` -- complexity: 0.0, centrality: 0.6, combined: 0.4
-- `kernel/shell.c` -- complexity: 0.5, centrality: 0.3, combined: 0.4
+- `kernel/shell.c` -- complexity: 0.5, centrality: 0.4, combined: 0.4
+- `kernel/string.c` -- complexity: 0.0, centrality: 0.6, combined: 0.4
+- `progs/doomgeneric/doomstat.h` -- complexity: 0.2, centrality: 0.5, combined: 0.4
 
 ## Dependency Cycles
 
@@ -37,4 +37,6 @@ Circular dependencies. Refactor to break the cycle.
 ## Layer Violations
 
 - `tests/test_wm.c` (testing) -> `wm_render.h` (presentation): testing must not import presentation
+- `tests/test_wm.c` (testing) -> `wm_layout.h` (presentation): testing must not import presentation
 - `tests/test_wm.c` (testing) -> `wm_render.h` (presentation): testing must not import presentation
+- `tests/test_wm.c` (testing) -> `wm_layout.h` (presentation): testing must not import presentation
