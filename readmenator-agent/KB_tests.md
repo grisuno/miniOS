@@ -43,6 +43,41 @@
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `batch.h`
 
+## tests/test_doom_pwad.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `GridValidationTests` (class, line 29) `class GridValidationTests(TestCase)`
+  - `PwadLayoutTests` (class, line 82) `class PwadLayoutTests(TestCase)`
+  - `PwadMutationTests` (class, line 181) `class PwadMutationTests(TestCase)`
+  - `ExtendedLegendTests` (class, line 255) `class ExtendedLegendTests(TestCase)`
+  - `test_valid_room_parses` (method, line 32) `def test_valid_room_parses(self)`
+  - `test_ragged_rows_refused` (method, line 36) `def test_ragged_rows_refused(self)`
+  - `test_missing_player_refused` (method, line 41) `def test_missing_player_refused(self)`
+  - `test_missing_exit_refused` (method, line 46) `def test_missing_exit_refused(self)`
+  - `test_illegal_char_refused` (method, line 51) `def test_illegal_char_refused(self)`
+  - `test_unreachable_exit_refused` (method, line 56) `def test_unreachable_exit_refused(self)`
+  - `test_exit_needs_wall` (method, line 66) `def test_exit_needs_wall(self)`
+  - `test_roundtrip_check` (method, line 85) `def test_roundtrip_check(self)`
+  - `test_header_pin` (method, line 96) `def test_header_pin(self)`
+  - `test_lump_order_pin` (method, line 103) `def test_lump_order_pin(self)`
+  - `test_things_pin` (method, line 115) `def test_things_pin(self)`
+  - `test_exit_switch_pin` (method, line 129) `def test_exit_switch_pin(self)`
+  - `test_exit_on_every_side` (method, line 141) `def test_exit_on_every_side(self)`
+  - `test_pillar_room_stays_closed` (method, line 154) `def test_pillar_room_stays_closed(self)`
+  - `test_open_boundary_dies` (method, line 168) `def test_open_boundary_dies(self)`
+  - `setUp` (method, line 184) `def setUp(self)`
+  - `test_bad_magic_dies` (method, line 188) `def test_bad_magic_dies(self)`
+  - `test_truncated_file_dies` (method, line 193) `def test_truncated_file_dies(self)`
+  - `test_swapped_lumps_die` (method, line 198) `def test_swapped_lumps_die(self)`
+  - `test_partial_record_dies` (method, line 212) `def test_partial_record_dies(self)`
+  - `test_wild_vertex_dies` (method, line 221) `def test_wild_vertex_dies(self)`
+  - `test_missing_exit_dies` (method, line 230) `def test_missing_exit_dies(self)`
+  - `test_unterminated_blockmap_dies` (method, line 243) `def test_unterminated_blockmap_dies(self)`
+  - `test_every_legend_char_builds` (method, line 273) `def test_every_legend_char_builds(self)`
+  - `test_every_thing_id_matches_engine` (method, line 278) `def test_every_thing_id_matches_engine(self)`
+- Depends on: `tools/doom_pwad.py`
+
 ## tests/test_driver.c
 - Layer: testing
 - Doc: test_driver.c -- Host test for the Strategy-pattern device registry.
@@ -150,10 +185,10 @@
   - `main` (function, line 29) `int main(void)`
   - `fprintf` (function, line 26) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
   - `CHECK` (function, line 31) `CHECK(HAL_PIC1_CMD == 0x20, "master pic command port");`
-  - `hal_outb` (function, line 50) `hal_outb(HAL_PIC1_CMD, HAL_PIC_EOI);`
-  - `hal_lapic_eoi` (function, line 55) `hal_lapic_eoi();`
-  - `hal_pic_eoi` (function, line 58) `hal_pic_eoi(12);`
-  - `printf` (function, line 64) `printf("hal_io: ok\n");`
+  - `hal_outb` (function, line 66) `hal_outb(HAL_PIC1_CMD, HAL_PIC_EOI);`
+  - `hal_lapic_eoi` (function, line 71) `hal_lapic_eoi();`
+  - `hal_pic_eoi` (function, line 74) `hal_pic_eoi(12);`
+  - `printf` (function, line 80) `printf("hal_io: ok\n");`
   - `HAL_IO_HOST_TEST` (macro, line 10) `#define HAL_IO_HOST_TEST`
   - `CHECK` (macro, line 22) `#define CHECK(cond, msg)`
 - Depends on: `arch/x86/hal_io.h`

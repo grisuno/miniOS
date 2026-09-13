@@ -1,5 +1,120 @@
 # Subsystem: misc
 
+## progs/doomedit/doomedit.c
+- Layer: infrastructure
+- Doc: doomedit.c - tile map editor that builds playable Doom PWADs.
+- Language: c
+- Symbols:
+  - `dmap_thing_type` (function, line 141) `static int dmap_thing_type(int cell)`
+  - `dmap_spawn` (function, line 229) `static long dmap_spawn(const char *path, int argc, const char **argv)`
+  - `dmap_vga` (function, line 240) `static long dmap_vga(int on)`
+  - `dmap_is_wall` (function, line 249) `static int dmap_is_wall(int row, int col)`
+  - `dmap_walkable` (function, line 256) `static int dmap_walkable(int cell)`
+  - `dmap_cell_color` (function, line 261) `static struct nk_color dmap_cell_color(int cell)`
+  - `dmap_new` (function, line 303) `static void dmap_new(void)`
+  - `dmap_recenter` (function, line 440) `static void dmap_recenter(void)`
+  - `dmap_load_preset` (function, line 452) `static int dmap_load_preset(int idx)`
+  - `dmap_rand` (function, line 482) `static unsigned dmap_rand(void)`
+  - `dmap_free_cell` (function, line 490) `static int dmap_free_cell(int *r, int *c)`
+  - `dmap_random_map` (function, line 504) `static void dmap_random_map(unsigned seed)`
+  - `dmap_load` (function, line 634) `static int dmap_load(const char *path)`
+  - `dmap_save_txt` (function, line 678) `static int dmap_save_txt(const char *path)`
+  - `dmap_validate` (function, line 699) `static int dmap_validate(char *msg, int max)`
+  - `dmap_w8` (function, line 767) `static void dmap_w8(unsigned v)`
+  - `dmap_w16` (function, line 768) `static void dmap_w16(int v)`
+  - `dmap_w32` (function, line 772) `static void dmap_w32(int v)`
+  - `dmap_wtex` (function, line 776) `static void dmap_wtex(const char *name)`
+  - `dmap_seg_angle` (function, line 783) `static int dmap_seg_angle(int dx, int dy)`
+  - `dmap_build_wad` (function, line 791) `static int dmap_build_wad(int *size_out)`
+  - `dmap_export_wad` (function, line 1007) `static int dmap_export_wad(const char *path)`
+  - `dmap_check_wad` (function, line 1022) `static int dmap_check_wad(const char *path)`
+  - `dmap_preview` (function, line 1040) `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)`
+  - `dmap_brush_combo` (function, line 1106) `static void dmap_brush_combo(struct nk_context *ctx)`
+  - `dmap_canvas` (function, line 1117) `static void dmap_canvas(struct nk_context *ctx)`
+  - `dmap_preview_row` (function, line 1161) `static void dmap_preview_row(struct nk_context *ctx)`
+  - `dmap_run_map` (function, line 1196) `static void dmap_run_map(void)`
+  - `dmap_scancode` (function, line 1299) `static void dmap_scancode(int code, int make, int e0, void *ud)`
+  - `dmap_gui_run` (function, line 1312) `static void dmap_gui_run(void)`
+  - `dmap_demo_room` (function, line 1358) `static void dmap_demo_room(void)`
+  - `dmap_selftest` (function, line 1370) `static int dmap_selftest(void)`
+  - `main` (function, line 1451) `int main(int argc, char **argv)`
+  - `volatile` (function, line 232) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_SPAWN), "D"(path), "S"((long)0), "d"((long)argc), "r"(r10) : "rcx", "r11", "memory");`
+  - `nk_rgb` (function, line 263) `case DMAP_WALL: return nk_rgb(150, 110, 70);`
+  - `snprintf` (function, line 477) `snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]);`
+  - `fclose` (function, line 646) `fclose(fp);`
+  - `nk_fill_rect` (function, line 1047) `nk_fill_rect(canvas, top, 0.0f, nk_rgb(24, 24, 40));`
+  - `nk_layout_row_dynamic` (function, line 1108) `nk_layout_row_dynamic(ctx, 22, 1);`
+  - `nk_combobox` (function, line 1109) `nk_combobox(ctx, dmap_brush_labels, DMAP_BRUSH_COUNT, &dmap_brush_sel, 20, nk_vec2(280, 260));`
+  - `nk_layout_row_static` (function, line 1164) `nk_layout_row_static(ctx, (float)(DMAP_PREV_H + 8), DMAP_PREV_W + 8, 1);`
+  - `nk_sys_kbd_raw` (function, line 1210) `nk_sys_kbd_raw(0);`
+  - `nk_sys_gfx_set_title` (function, line 1218) `nk_sys_gfx_set_title(DMAP_TITLE);`
+  - `nk_end` (function, line 1232) `nk_end(ctx);`
+  - `nk_label` (function, line 1252) `nk_label(ctx, line, NK_TEXT_LEFT);`
+  - `nk_layout_row_begin` (function, line 1254) `nk_layout_row_begin(ctx, NK_STATIC, row_h, 2);`
+  - `nk_layout_row_push` (function, line 1255) `nk_layout_row_push(ctx, (float)DMAP_CANVAS_W);`
+  - `nk_layout_row_end` (function, line 1288) `nk_layout_row_end(ctx);`
+  - `nk_group_end` (function, line 1291) `nk_group_end(ctx);`
+  - `nk_sys_vga_mode` (function, line 1317) `nk_sys_vga_mode(1);`
+  - `nk_build_palette` (function, line 1320) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 1321) `nk_sys_palette(pal768);`
+  - `printf` (function, line 1323) `printf("doomedit: init failed\n");`
+  - `nk_theme_apply` (function, line 1328) `nk_theme_apply(&ctx, 0);`
+  - `nk_set_scancode_hook` (function, line 1330) `nk_set_scancode_hook(dmap_scancode, 0);`
+  - `nk_input_begin` (function, line 1332) `nk_input_begin(&ctx);`
+  - `nk_poll_input` (function, line 1333) `nk_poll_input(&ctx);`
+  - `nk_input_end` (function, line 1334) `nk_input_end(&ctx);`
+  - `dmap_build` (function, line 1341) `dmap_build(&ctx);`
+  - `nk_rasterize` (function, line 1342) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 1345) `nk_clear(&ctx);`
+  - `nk_free` (function, line 1352) `nk_free(&ctx);`
+  - `nk_sys_fb_info` (function, line 1398) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `DMAP_MAX_W` (macro, line 51) `#define DMAP_MAX_W`
+  - `DMAP_MAX_H` (macro, line 52) `#define DMAP_MAX_H`
+  - `DMAP_DEF_W` (macro, line 53) `#define DMAP_DEF_W`
+  - `DMAP_DEF_H` (macro, line 54) `#define DMAP_DEF_H`
+  - `DMAP_TILE` (macro, line 55) `#define DMAP_TILE`
+  - `DMAP_CELL_PX` (macro, line 56) `#define DMAP_CELL_PX`
+  - `DMAP_CANVAS_W` (macro, line 57) `#define DMAP_CANVAS_W`
+  - `DMAP_PANEL_MIN_H` (macro, line 58) `#define DMAP_PANEL_MIN_H`
+  - `DMAP_PREV_W` (macro, line 59) `#define DMAP_PREV_W`
+  - `DMAP_PREV_H` (macro, line 60) `#define DMAP_PREV_H`
+  - `DMAP_UI_MEMORY` (macro, line 61) `#define DMAP_UI_MEMORY`
+  - `DMAP_WAD_MAX` (macro, line 62) `#define DMAP_WAD_MAX`
+  - `DMAP_FNAME_MAX` (macro, line 63) `#define DMAP_FNAME_MAX`
+  - `DMAP_STATUS_MAX` (macro, line 64) `#define DMAP_STATUS_MAX`
+  - `DMAP_SLOTS` (macro, line 65) `#define DMAP_SLOTS`
+  - `DMAP_LEVEL_COUNT` (macro, line 66) `#define DMAP_LEVEL_COUNT`
+  - `DMAP_RANDOM_ATTEMPTS` (macro, line 67) `#define DMAP_RANDOM_ATTEMPTS`
+  - `DMAP_ROOM_MAX` (macro, line 68) `#define DMAP_ROOM_MAX`
+  - `DMAP_ROOM_TRIES` (macro, line 69) `#define DMAP_ROOM_TRIES`
+  - `DMAP_FRAME_MS` (macro, line 70) `#define DMAP_FRAME_MS`
+  - `DMAP_TURN_STEP` (macro, line 71) `#define DMAP_TURN_STEP`
+  - `DMAP_MOVE_STEP` (macro, line 72) `#define DMAP_MOVE_STEP`
+  - `DMAP_FOV_PLANE` (macro, line 73) `#define DMAP_FOV_PLANE`
+  - `DMAP_MAX_LINES` (macro, line 74) `#define DMAP_MAX_LINES`
+  - `DMAP_MAX_VERTS` (macro, line 75) `#define DMAP_MAX_VERTS`
+  - `DMAP_MAX_THINGS` (macro, line 76) `#define DMAP_MAX_THINGS`
+  - `DMAP_PLAYER_TYPE` (macro, line 77) `#define DMAP_PLAYER_TYPE`
+  - `DMAP_THING_OPT` (macro, line 78) `#define DMAP_THING_OPT`
+  - `DMAP_EXIT_SPECIAL` (macro, line 79) `#define DMAP_EXIT_SPECIAL`
+  - `DMAP_FLAG_BLOCKING` (macro, line 80) `#define DMAP_FLAG_BLOCKING`
+  - `DMAP_NO_SIDE` (macro, line 81) `#define DMAP_NO_SIDE`
+  - `DMAP_WALL_MID` (macro, line 82) `#define DMAP_WALL_MID`
+  - `DMAP_EXIT_MID` (macro, line 83) `#define DMAP_EXIT_MID`
+  - `DMAP_UNUSED_TEX` (macro, line 84) `#define DMAP_UNUSED_TEX`
+  - `DMAP_FLOOR_FLAT` (macro, line 85) `#define DMAP_FLOOR_FLAT`
+  - `DMAP_CEIL_FLAT` (macro, line 86) `#define DMAP_CEIL_FLAT`
+  - `DMAP_FLOOR_H` (macro, line 87) `#define DMAP_FLOOR_H`
+  - `DMAP_CEIL_H` (macro, line 88) `#define DMAP_CEIL_H`
+  - `DMAP_LIGHT` (macro, line 89) `#define DMAP_LIGHT`
+  - `DMAP_NODE_LEAF` (macro, line 90) `#define DMAP_NODE_LEAF`
+  - `DMAP_TOOL_DOOM` (macro, line 91) `#define DMAP_TOOL_DOOM`
+  - `DMAP_SAVE_TXT` (macro, line 92) `#define DMAP_SAVE_TXT`
+  - `DMAP_SAVE_WAD` (macro, line 93) `#define DMAP_SAVE_WAD`
+  - `DMAP_TITLE` (macro, line 94) `#define DMAP_TITLE`
+  - `DMAP_BRUSH_COUNT` (macro, line 204) `#define DMAP_BRUSH_COUNT`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
 ## progs/file/file.c
 - Layer: utility
 - Doc: Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf).
@@ -267,7 +382,7 @@
   - `SYS_TIME` (macro, line 290) `#define SYS_TIME`
   - `SYS_WRITE` (macro, line 291) `#define SYS_WRITE`
   - `MINIOS_EABI_MISMATCH` (macro, line 294) `#define MINIOS_EABI_MISMATCH`
-- Imported by: `kernel.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `tests/test_abi.c`, `tools/abi_stamp.c`, `vga_fb.h`
+- Imported by: `kernel.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `tests/test_abi.c`, `tools/abi_stamp.c`, `vga_fb.h`
 
 ## progs/paint/paint.c
 - Layer: utility

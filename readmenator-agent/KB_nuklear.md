@@ -255,7 +255,7 @@
   - `NK_H` (macro, line 25) `#define NK_H`
   - `NK_BACKBUF` (macro, line 26) `#define NK_BACKBUF`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ## progs/nuklear/nuklear_theme.c
 - Layer: utility
@@ -293,4 +293,4 @@
   - `NK_THEME_DEFAULT` (macro, line 20) `#define NK_THEME_DEFAULT`
   - `NK_THEME_KEY_LIST` (macro, line 23) `#define NK_THEME_KEY_LIST`
   - `NK_THEME_KEY_COUNT` (macro, line 56) `#define NK_THEME_KEY_COUNT`
-- Imported by: `progs/file/file.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`, `tests/test_theme.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`, `tests/test_theme.c`

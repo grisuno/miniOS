@@ -10,7 +10,7 @@
 | `arch/x86/boot/stage1.S` | stage1.S - MiniOS boot sector. | boot | 11 |
 | `arch/x86/boot/stage2.S` | stage2.S - MiniOS second-stage loader. | boot | 40 |
 | `arch/x86/ctx_sw.S` | - | x86 | 5 |
-| `arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 37 |
+| `arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 53 |
 | `arch/x86/isr_stubs.S` | - | x86 | 24 |
 | `arch/x86/msr.h` | ifndef ARCH_X86_MSR_H define ARCH_X86_MSR_H  Model-Specific Register access for  | x86 | 10 |
 | `audio.h` | ifndef AUDIO_H define AUDIO_H  Unified audio API for MiniOS. | root | 18 |
@@ -23,14 +23,16 @@
 | `drivers/block.c` | Block device layer for MiniFS. | drivers | 17 |
 | `drivers/driver.c` | include "driver.h"  driver.c -- Device registry for the Strategy-pattern driver  | drivers | 8 |
 | `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | drivers | 24 |
-| `drivers/kbd.c` | include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h" include  | drivers | 45 |
+| `drivers/kbd.c` | include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h" include  | drivers | 44 |
 | `drivers/kbd.h` | ifndef KBD_H define KBD_H  Keyboard layout: US qwerty (default) or Spanish (Spai | drivers | 23 |
 | `drivers/modifiers.h` | ifndef MODIFIERS_H define MODIFIERS_H  Docstring: Unified modifier tracking for  | drivers | 11 |
+| `drivers/mouse.c` | Docstring: PS/2 mouse device driver (drivers/mouse.c). | drivers | 10 |
+| `drivers/mouse.h` | ifndef MOUSE_H define MOUSE_H  Docstring: mouse.h -- boundary of the PS/2 mouse  | drivers | 4 |
 | `drivers/pcspk.c` | include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with  | drivers | 20 |
 | `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | drivers | 27 |
 | `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h" include "driver.h"  Sound B | drivers | 67 |
 | `editor.h` | ifndef EDITOR_H define EDITOR_H  editor.h -- the built-in line editor contract. | root | 2 |
-| `fs/kfile.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 22 |
+| `fs/kfile.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 26 |
 | `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 67 |
 | `fs/ramdisk.c` | include "kernel.h"  ============================================================ | fs | 25 |
 | `fs/vfs.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 37 |
@@ -40,10 +42,12 @@
 | `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 35 |
 | `install.sh` | - | root | 0 |
 | `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 41 |
-| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 311 |
+| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 310 |
 | `kernel/abi.c` | Docstring: kernel/abi.c -- Boot-time ABI manifest gate. | kernel | 3 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
 | `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | kernel | 31 |
+| `kernel/console_in.c` | Docstring: Console input device (kernel/console_in.c). | kernel | 32 |
+| `kernel/console_in.h` | ifndef CONSOLE_IN_H define CONSOLE_IN_H  Docstring: console_in.h -- boundary of  | kernel | 8 |
 | `kernel/cvm_host.c` | - | kernel | 55 |
 | `kernel/editor.c` | include "kernel.h" include "shell.h" include "editor.h"  ======================= | kernel | 31 |
 | `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | kernel | 18 |
@@ -53,17 +57,17 @@
 | `kernel/lz4_kernel.c` | include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE  | kernel | 11 |
 | `kernel/minifetch.c` | Docstring: kernel/minifetch.c -- neofetch-style system screen. | kernel | 14 |
 | `kernel/mm.c` | include "kernel.h" include "sched.h"  ========================================== | kernel | 13 |
-| `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 20 |
+| `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 21 |
 | `kernel/mm/swap.c` | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | mm | 10 |
 | `kernel/percpu_rq.c` | Docstring: kernel/percpu_rq.c -- Per-CPU runqueue hints and stealing. | kernel | 14 |
 | `kernel/printf.c` | include "kernel.h"  ============================================================ | kernel | 15 |
 | `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | kernel | 21 |
 | `kernel/redirect.c` | include "kernel.h"  ============================================================ | kernel | 7 |
-| `kernel/sched.c` | - | kernel | 145 |
+| `kernel/sched.c` | - | kernel | 136 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 8 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 10 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 158 |
-| `kernel/spawn.c` | include "kernel.h" include "sched.h" include "vma.h" include "spawn.h" include " | kernel | 14 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 133 |
+| `kernel/spawn.c` | include "kernel.h" include "sched.h" include "vma.h" include "spawn.h" include " | kernel | 19 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
@@ -71,7 +75,9 @@
 | `kernel/syscalls_proc.c` | syscalls_proc.c - Process-management syscall handlers. | kernel | 21 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
 | `kernel/time.c` | include "kernel.h" include "ktime.h"  ========================================== | kernel | 7 |
-| `kernel/vga_fb.c` | - | kernel | 182 |
+| `kernel/vga_cursor.c` | Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c). | kernel | 14 |
+| `kernel/vga_cursor.h` | ifndef VGA_CURSOR_H define VGA_CURSOR_H  Docstring: vga_cursor.h -- boundary of  | kernel | 9 |
+| `kernel/vga_fb.c` | - | kernel | 177 |
 | `ktime.h` | ifndef KTIME_H define KTIME_H  ktime.h -- pure time-conversion helpers shared by | root | 3 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 4 |
 | `mcp/__init__.py` | - | mcp | 0 |
@@ -80,7 +86,7 @@
 | `mcp/minios_addons.py` | - | mcp | 16 |
 | `mcp/minios_mcp.py` | - | mcp | 50 |
 | `mcp/mutate_mcp.sh` | Mutation testing for the MiniOS MCP bridge. Every mutant is injected into a priv | mcp | 1 |
-| `mcp/test_minios_mcp.py` | - | mcp | 99 |
+| `mcp/test_minios_mcp.py` | - | mcp | 104 |
 | `minifetch.h` | Docstring: minifetch.h -- neofetch-style system screen contract. | root | 2 |
 | `minifs.h` | ifndef MINIFS_H define MINIFS_H  MiniFS: a minimal Unix-like filesystem for Mini | root | 76 |
 | `minifs_dump.py` | - | root | 12 |
@@ -108,6 +114,7 @@
 | `progs/asm/lz4.s` | - | asm | 7 |
 | `progs/asm/lzss.s` | - | asm | 30 |
 | `progs/asm/w1.s` | - | asm | 2 |
+| `progs/doomedit/doomedit.c` | doomedit.c - tile map editor that builds playable Doom PWADs. | misc | 108 |
 | `progs/doomgeneric/am_map.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 97 |
 | `progs/doomgeneric/am_map.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 9 |
 | `progs/doomgeneric/config.h` | config.hin.  Generated from configure.ac by autoheader. | doomgeneric | 16 |
@@ -361,7 +368,7 @@
 | `sanitize.h` | ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point | root | 5 |
 | `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 27 |
 | `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h" include " | root | 100 |
-| `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 10 |
+| `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 6 |
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 48 |
 | `smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | root | 11 |
 | `spawn.h` | ifndef SPAWN_H define SPAWN_H  include "kernel.h" include "vma.h" include "sched | root | 9 |
@@ -374,6 +381,7 @@
 | `tests/host_codecs.sh` | host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The | tests | 5 |
 | `tests/test_abi.c` | Docstring: tests/test_abi.c -- Host test for the ABI manifest gate. | tests | 3 |
 | `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 6 |
+| `tests/test_doom_pwad.py` | - | tests | 29 |
 | `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 12 |
 | `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 15 |
 | `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 8 |
@@ -407,12 +415,15 @@
 | `tools/abi_stamp.c` | Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator. | tools | 2 |
 | `tools/boot_run.sh` | boot_run.sh -- boot the MiniOS image in QEMU and drive the shell over the serial | tools | 0 |
 | `tools/check_abi_numbers.py` | - | tools | 4 |
+| `tools/check_addons.py` | - | tools | 2 |
 | `tools/check_cohesion.py` | - | tools | 4 |
 | `tools/check_complexity.py` | - | tools | 3 |
 | `tools/check_fork_stubs.py` | - | tools | 4 |
 | `tools/check_kb_sync.py` | - | tools | 2 |
+| `tools/check_mutant_anchors.py` | - | tools | 5 |
 | `tools/check_surprising.py` | - | tools | 5 |
 | `tools/check_syscall_sanitize.py` | - | tools | 8 |
+| `tools/doom_pwad.py` | - | tools | 22 |
 | `tools/extract_shell.py` | - | tools | 0 |
 | `tools/gdb_repro.py` | - | tools | 4 |
 | `tools/gen_desktop_pngs.py` | - | tools | 2 |
@@ -433,7 +444,7 @@
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
 | `tools/wm_layout_sync.py` | - | tools | 17 |
 | `tools/wm_scoped.sh` | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs ho | tools | 2 |
-| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h" inclu | root | 123 |
+| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h" inclu | root | 125 |
 | `vma.c` | include "vma.h" | root | 14 |
 | `vma.h` | ifndef VMA_H define VMA_H | root | 21 |
 | `wm_events.h` | Docstring: Window event contract for the MiniOS desktop. | root | 39 |

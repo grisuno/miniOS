@@ -8,25 +8,30 @@
   - `kfile_stdin` (function, line 14) `KFILE *kfile_stdin(void)`
   - `kfile_stdout` (function, line 16) `KFILE *kfile_stdout(void)`
   - `kfile_stderr` (function, line 17) `KFILE *kfile_stderr(void)`
-  - `kfopen` (function, line 33) `KFILE *kfopen(const char *path, const char *mode)`
-  - `kfclose` (function, line 105) `int kfclose(KFILE *f)`
-  - `kfgetc` (function, line 118) `int kfgetc(KFILE *f)`
-  - `kfgets` (function, line 139) `char *kfgets(char *buf, int size, KFILE *f)`
-  - `kfungetc` (function, line 153) `int kfungetc(int c, KFILE *f)`
-  - `kfread` (function, line 159) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfwrite` (function, line 181) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfseek` (function, line 210) `int kfseek(KFILE *f, long offset, int whence)`
-  - `kftell` (function, line 224) `long kftell(KFILE *f)`
-  - `kfflush` (function, line 228) `int kfflush(KFILE *f)`
-  - `kfputs` (function, line 251) `int kfputs(const char *s, KFILE *f)`
-  - `kfputc` (function, line 257) `int kfputc(int c, KFILE *f)`
-  - `krewind` (function, line 262) `void krewind(KFILE *f)`
-  - `kmemset` (function, line 41) `kmemset(f, 0, sizeof(KFILE));`
-  - `kmemcpy` (function, line 54) `kmemcpy(parent, resolved, plen);`
-  - `kfree` (function, line 115) `kfree(f);`
-  - `minifs_read` (function, line 129) `minifs_read(f->minifs_ino, &c, f->pos, 1);`
-  - `ramdisk_read` (function, line 135) `ramdisk_read(f->rf, &c, f->pos, 1);`
-  - `ramdisk_write` (function, line 246) `ramdisk_write(f->rf, f->wbuf, base, f->wsize);`
+  - `recovery` (function, line 23) `* halts the machine with no recovery (the DOOM ABI-drift black screen),
+ * so every public KFILE ...`
+  - `kfile_corrupt` (function, line 28) `static int kfile_corrupt(const KFILE *f)`
+  - `kfopen` (function, line 46) `KFILE *kfopen(const char *path, const char *mode)`
+  - `kfclose` (function, line 118) `int kfclose(KFILE *f)`
+  - `kfgetc` (function, line 131) `int kfgetc(KFILE *f)`
+  - `kfgets` (function, line 152) `char *kfgets(char *buf, int size, KFILE *f)`
+  - `kfungetc` (function, line 166) `int kfungetc(int c, KFILE *f)`
+  - `kfread` (function, line 172) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfwrite` (function, line 194) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfseek` (function, line 223) `int kfseek(KFILE *f, long offset, int whence)`
+  - `kftell` (function, line 242) `long kftell(KFILE *f)`
+  - `kfflush` (function, line 246) `int kfflush(KFILE *f)`
+  - `kfputs` (function, line 269) `int kfputs(const char *s, KFILE *f)`
+  - `kfputc` (function, line 275) `int kfputc(int c, KFILE *f)`
+  - `krewind` (function, line 280) `void krewind(KFILE *f)`
+  - `kfile_bad_ptr` (function, line 29) `return kfile_bad_ptr((const void *)f->rf) || kfile_bad_ptr((const void *)f->vfs);`
+  - `kmemset` (function, line 54) `kmemset(f, 0, sizeof(KFILE));`
+  - `kmemcpy` (function, line 67) `kmemcpy(parent, resolved, plen);`
+  - `kfree` (function, line 128) `kfree(f);`
+  - `minifs_read` (function, line 142) `minifs_read(f->minifs_ino, &c, f->pos, 1);`
+  - `ramdisk_read` (function, line 148) `ramdisk_read(f->rf, &c, f->pos, 1);`
+  - `kprintf` (function, line 227) `kprintf("kfile: corrupt handle (rf=%lx vfs=%lx) on seek - refusing\n", (unsigned long)f->rf, (unsigned long)f->vfs);`
+  - `ramdisk_write` (function, line 264) `ramdisk_write(f->rf, f->wbuf, base, f->wsize);`
 - Depends on: `kernel.h`, `minifs.h`
 
 ## fs/minifs.c

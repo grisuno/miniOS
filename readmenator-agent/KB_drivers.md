@@ -72,56 +72,55 @@
 
 ## drivers/kbd.c
 - Layer: infrastructure
-- Doc: include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h" include "modifiers.h" include "wm_events.h"  ===
+- Doc: include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h" include "modifiers.h" include "wm_events.h" incl
 - Language: c
 - Symbols:
-  - `kbd_get_layout` (function, line 98) `int kbd_get_layout(void)`
-  - `kbd_set_layout` (function, line 100) `void kbd_set_layout(int layout)`
-  - `kbd_toggle_layout` (function, line 104) `void kbd_toggle_layout(void)`
-  - `kbd_drop_counts` (function, line 131) `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw)`
-  - `kbd_q_push` (function, line 144) `void kbd_q_push(unsigned char c)`
-  - `kbd_raw_push_internal` (function, line 154) `static void kbd_raw_push_internal(unsigned char c)`
-  - `kbd_q_empty` (function, line 164) `int kbd_q_empty(void)`
-  - `kbd_q_pop` (function, line 166) `int kbd_q_pop(void)`
-  - `kbd_available` (function, line 173) `int kbd_available(void)`
-  - `kbd_raw_mode_get` (function, line 179) `int kbd_raw_mode_get(void)`
-  - `kbd_raw_mode_set` (function, line 181) `void kbd_raw_mode_set(int on)`
-  - `kbd_raw_empty` (function, line 182) `int kbd_raw_empty(void)`
-  - `kbd_raw_pop` (function, line 183) `int kbd_raw_pop(void)`
-  - `kbd_raw_push_byte` (function, line 189) `void kbd_raw_push_byte(unsigned char c)`
-  - `kbd_e0_get` (function, line 190) `int kbd_e0_get(void)`
-  - `kbd_e0_set` (function, line 191) `void kbd_e0_set(int v)`
-  - `kbd_flush_all` (function, line 192) `void kbd_flush_all(void)`
-  - `kbd_raw_flush` (function, line 199) `void kbd_raw_flush(void)`
-  - `raw_track_mods` (function, line 219) `static int raw_track_mods(int code, int brk, int e0)`
-  - `wm_combo_dispatch` (function, line 225) `static int wm_combo_dispatch(int action, int zone)`
-  - `wm_raw_combo` (function, line 276) `static int wm_raw_combo(int code, int e0)`
-  - `bare` (function, line 296) `* second byte is not a WM combo is delivered bare (keypad alias): games map
+  - `kbd_get_layout` (function, line 99) `int kbd_get_layout(void)`
+  - `kbd_set_layout` (function, line 101) `void kbd_set_layout(int layout)`
+  - `kbd_toggle_layout` (function, line 105) `void kbd_toggle_layout(void)`
+  - `kbd_drop_counts` (function, line 132) `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw)`
+  - `kbd_q_push` (function, line 145) `void kbd_q_push(unsigned char c)`
+  - `kbd_raw_push_internal` (function, line 155) `static void kbd_raw_push_internal(unsigned char c)`
+  - `kbd_q_empty` (function, line 165) `int kbd_q_empty(void)`
+  - `kbd_q_pop` (function, line 167) `int kbd_q_pop(void)`
+  - `kbd_available` (function, line 174) `int kbd_available(void)`
+  - `kbd_raw_mode_get` (function, line 180) `int kbd_raw_mode_get(void)`
+  - `kbd_raw_mode_set` (function, line 182) `void kbd_raw_mode_set(int on)`
+  - `kbd_raw_empty` (function, line 183) `int kbd_raw_empty(void)`
+  - `kbd_raw_pop` (function, line 184) `int kbd_raw_pop(void)`
+  - `kbd_raw_push_byte` (function, line 190) `void kbd_raw_push_byte(unsigned char c)`
+  - `kbd_e0_get` (function, line 191) `int kbd_e0_get(void)`
+  - `kbd_e0_set` (function, line 192) `void kbd_e0_set(int v)`
+  - `kbd_flush_all` (function, line 193) `void kbd_flush_all(void)`
+  - `kbd_raw_flush` (function, line 200) `void kbd_raw_flush(void)`
+  - `raw_track_mods` (function, line 220) `static int raw_track_mods(int code, int brk, int e0)`
+  - `wm_combo_dispatch` (function, line 226) `static int wm_combo_dispatch(int action, int zone)`
+  - `wm_raw_combo` (function, line 277) `static int wm_raw_combo(int code, int e0)`
+  - `bare` (function, line 297) `* second byte is not a WM combo is delivered bare (keypad alias): games map
  * both, so play surv...`
-  - `kbd_read` (function, line 319) `int kbd_read(void)`
-  - `kbd_reset_for_shell` (function, line 444) `void kbd_reset_for_shell(void)`
-  - `volatile` (function, line 176) `__asm__ volatile("inb $0x64, %0" : "=a"(s));`
-  - `paths` (function, line 209) `* keeps the modifier state in sync on both paths (the old raw branch never * tracked Alt/Super, so a modifier held across raw mode stuck forever);`
-  - `too` (function, line 214) `* too (DOOM strafes with Alt+arrows);`
-  - `modifiers_update` (function, line 221) `return modifiers_update(&kbd_keys, &kbd_mods, code, brk, e0);`
-  - `vga_fb_focus_next` (function, line 231) `vga_fb_focus_next();`
-  - `vga_fb_tile_all` (function, line 235) `vga_fb_tile_all();`
-  - `vga_fb_toggle_fullscreen` (function, line 239) `vga_fb_toggle_fullscreen();`
-  - `vga_fb_toggle_minimize` (function, line 243) `vga_fb_toggle_minimize();`
-  - `vga_fb_close_active` (function, line 247) `vga_fb_close_active();`
-  - `vga_fb_snap_window` (function, line 251) `vga_fb_snap_window(zone);`
-  - `vga_fb_resize` (function, line 255) `vga_fb_resize(-1, 0);`
-  - `vga_fb_reset_default` (function, line 271) `vga_fb_reset_default();`
-  - `modifiers_init` (function, line 447) `modifiers_init(&kbd_mods);`
-  - `kbd_shift` (macro, line 114) `#define kbd_shift`
-  - `kbd_ctrl` (macro, line 115) `#define kbd_ctrl`
-  - `kbd_alt` (macro, line 116) `#define kbd_alt`
-  - `kbd_super` (macro, line 117) `#define kbd_super`
-  - `kbd_altgr` (macro, line 118) `#define kbd_altgr`
-  - `KBD_QUEUE_LEN` (macro, line 119) `#define KBD_QUEUE_LEN`
-  - `KBD_SCAN_DEL` (macro, line 121) `#define KBD_SCAN_DEL`
-  - `KBD_RAW_LEN` (macro, line 139) `#define KBD_RAW_LEN`
-- Depends on: `drivers/kbd.h`, `drivers/modifiers.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`
+  - `kbd_read` (function, line 320) `int kbd_read(void)`
+  - `kbd_reset_for_shell` (function, line 445) `void kbd_reset_for_shell(void)`
+  - `paths` (function, line 210) `* keeps the modifier state in sync on both paths (the old raw branch never * tracked Alt/Super, so a modifier held across raw mode stuck forever);`
+  - `too` (function, line 215) `* too (DOOM strafes with Alt+arrows);`
+  - `modifiers_update` (function, line 222) `return modifiers_update(&kbd_keys, &kbd_mods, code, brk, e0);`
+  - `vga_fb_focus_next` (function, line 232) `vga_fb_focus_next();`
+  - `vga_fb_tile_all` (function, line 236) `vga_fb_tile_all();`
+  - `vga_fb_toggle_fullscreen` (function, line 240) `vga_fb_toggle_fullscreen();`
+  - `vga_fb_toggle_minimize` (function, line 244) `vga_fb_toggle_minimize();`
+  - `vga_fb_close_active` (function, line 248) `vga_fb_close_active();`
+  - `vga_fb_snap_window` (function, line 252) `vga_fb_snap_window(zone);`
+  - `vga_fb_resize` (function, line 256) `vga_fb_resize(-1, 0);`
+  - `vga_fb_reset_default` (function, line 272) `vga_fb_reset_default();`
+  - `modifiers_init` (function, line 448) `modifiers_init(&kbd_mods);`
+  - `kbd_shift` (macro, line 115) `#define kbd_shift`
+  - `kbd_ctrl` (macro, line 116) `#define kbd_ctrl`
+  - `kbd_alt` (macro, line 117) `#define kbd_alt`
+  - `kbd_super` (macro, line 118) `#define kbd_super`
+  - `kbd_altgr` (macro, line 119) `#define kbd_altgr`
+  - `KBD_QUEUE_LEN` (macro, line 120) `#define KBD_QUEUE_LEN`
+  - `KBD_SCAN_DEL` (macro, line 122) `#define KBD_SCAN_DEL`
+  - `KBD_RAW_LEN` (macro, line 140) `#define KBD_RAW_LEN`
+- Depends on: `arch/x86/hal_io.h`, `drivers/kbd.h`, `drivers/modifiers.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`
 
 ## drivers/kbd.h
 - Layer: infrastructure
@@ -151,7 +150,7 @@
   - `KBD_H` (macro, line 2) `#define KBD_H`
   - `KBD_LAYOUT_EN` (macro, line 6) `#define KBD_LAYOUT_EN`
   - `KBD_LAYOUT_ES` (macro, line 7) `#define KBD_LAYOUT_ES`
-- Imported by: `drivers/kbd.c`, `kernel/exec.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`
+- Imported by: `drivers/kbd.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`
 
 ## drivers/modifiers.h
 - Layer: infrastructure
@@ -171,6 +170,35 @@
   - `MOD_ALTGR` (macro, line 27) `#define MOD_ALTGR`
   - `MOD_SUPER` (macro, line 28) `#define MOD_SUPER`
 - Imported by: `drivers/kbd.c`, `tests/test_modifiers.c`, `wm_events.h`
+
+## drivers/mouse.c
+- Layer: infrastructure
+- Doc: Docstring: PS/2 mouse device driver (drivers/mouse.c).
+- Language: c
+- Symbols:
+  - `mouse_wait_cmd` (function, line 12) `static void mouse_wait_cmd(void)`
+  - `mouse_wait_data` (function, line 18) `static void mouse_wait_data(void)`
+  - `mouse_write` (function, line 25) `static void mouse_write(unsigned char data)`
+  - `mouse_read` (function, line 32) `static unsigned char mouse_read(void)`
+  - `mouse_hw_init` (function, line 37) `void mouse_hw_init(void)`
+  - `mouse_disable` (function, line 88) `void mouse_disable(void)`
+  - `mouse_enable` (function, line 90) `void mouse_enable(void)`
+  - `hal_outb` (function, line 28) `hal_outb(HAL_PS2_STATUS, HAL_PS2_CMD_WRITE_MOUSE);`
+  - `hal_inb` (function, line 35) `return hal_inb(HAL_PS2_DATA);`
+  - `wrong` (function, line 60) `* later packet is framed wrong (a left press reads back as bit 1, * motion warps), permanently. */ mouse_write(HAL_MOUSE_CMD_RESET);`
+- Depends on: `arch/x86/hal_io.h`, `drivers/mouse.h`, `kernel.h`
+
+## drivers/mouse.h
+- Layer: infrastructure
+- Doc: ifndef MOUSE_H define MOUSE_H  Docstring: mouse.h -- boundary of the PS/2 mouse device driver
+- Language: h
+- Symbols:
+  - `mouse_hw_init` (function, line 11) `void mouse_hw_init(void);`
+  - `mouse_disable` (function, line 14) `void mouse_disable(void);`
+  - `mouse_enable` (function, line 17) `void mouse_enable(void);`
+  - `MOUSE_H` (macro, line 2) `#define MOUSE_H`
+- Depends on: `kernel.h`
+- Imported by: `drivers/mouse.c`, `kernel/sched.c`
 
 ## drivers/pcspk.c
 - Layer: infrastructure

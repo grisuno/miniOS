@@ -23,6 +23,13 @@
   - `parse_dispatch` (function, line 142) `def parse_dispatch(path)`
   - `main` (function, line 155) `def main()`
 
+## tools/check_addons.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `load_parser` (function, line 22) `def load_parser()`
+  - `main` (function, line 31) `def main()`
+
 ## tools/check_cohesion.py
 - Layer: utility
 - Language: py
@@ -56,6 +63,16 @@
   - `regenerate_kb` (function, line 24) `def regenerate_kb()`
   - `main` (function, line 43) `def main()`
 
+## tools/check_mutant_anchors.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `Config` (class, line 17) `class Config`
+  - `bash_unquote` (method, line 26) `def bash_unquote(expr)`
+  - `parse_mutations` (method, line 41) `def parse_mutations(text)`
+  - `anchor_matches` (method, line 54) `def anchor_matches(repo, target, expr)`
+  - `main` (method, line 73) `def main()`
+
 ## tools/check_surprising.py
 - Layer: utility
 - Language: py
@@ -79,6 +96,34 @@
   - `audit_file` (method, line 217) `def audit_file(path)`
   - `main` (method, line 228) `def main()`
 
+## tools/doom_pwad.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `DoomPwadConfig` (class, line 43) `class DoomPwadConfig`
+  - `PwadError` (class, line 134) `class PwadError(Exception)`
+  - `pad_tex` (method, line 138) `def pad_tex(raw)`
+  - `parse_grid` (method, line 145) `def parse_grid(text)`
+  - `grid_extents` (method, line 168) `def grid_extents(rows)`
+  - `is_wall` (method, line 176) `def is_wall(rows, row, col)`
+  - `flood_reachable` (method, line 183) `def flood_reachable(rows)`
+  - `validate_grid` (method, line 213) `def validate_grid(rows)`
+  - `cell_corners` (method, line 242) `def cell_corners(row, col)`
+  - `compile_geometry` (method, line 252) `def compile_geometry(rows, exit_pos, wall_side)`
+  - `compile_things` (method, line 300) `def compile_things(rows)`
+  - `seg_angle` (method, line 321) `def seg_angle(dx, dy)`
+  - `build_lumps` (method, line 331) `def build_lumps(rows)`
+  - `build_pwad` (method, line 405) `def build_pwad(rows)`
+  - `read_pwad` (method, line 424) `def read_pwad(data)`
+  - `check_pwad` (method, line 447) `def check_pwad(data)`
+  - `cmd_build` (method, line 594) `def cmd_build(grid_path, out_path)`
+  - `cmd_check` (method, line 604) `def cmd_check(path)`
+  - `main` (method, line 612) `def main(argv)`
+  - `vertex` (method, line 259) `def vertex(x, y)`
+  - `payload` (method, line 458) `def payload(name)`
+  - `check_multiple` (method, line 463) `def check_multiple(name, fmt)`
+- Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
+
 ## tools/extract_shell.py
 - Layer: utility
 - Language: py
@@ -97,8 +142,8 @@
 - Layer: utility
 - Language: py
 - Symbols:
-  - `write_atomic` (function, line 60) `def write_atomic(img, path)`
-  - `main` (function, line 66) `def main()`
+  - `write_atomic` (function, line 62) `def write_atomic(img, path)`
+  - `main` (function, line 68) `def main()`
 
 ## tools/gen_icons.py
 - Layer: utility

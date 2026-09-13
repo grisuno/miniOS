@@ -728,23 +728,23 @@ AM_drawThings
   - `DEH_snprintf` (function, line 1508) `DEH_snprintf(file, sizeof(file), "%s.lmp", myargv[p+1]);`
   - `W_GenerateHashTable` (function, line 1531) `W_GenerateHashTable();`
   - `DEH_LoadLump` (function, line 1551) `DEH_LoadLump(i, false, false);`
-  - `I_PrintDivider` (function, line 1604) `I_PrintDivider();`
-  - `I_PrintStartupBanner` (function, line 1609) `I_PrintStartupBanner(gamedescription);`
-  - `I_CheckIsScreensaver` (function, line 1626) `I_CheckIsScreensaver();`
-  - `I_InitTimer` (function, line 1627) `I_InitTimer();`
-  - `I_InitJoystick` (function, line 1628) `I_InitJoystick();`
-  - `I_InitSound` (function, line 1629) `I_InitSound(true);`
-  - `I_InitMusic` (function, line 1630) `I_InitMusic();`
-  - `NET_Init` (function, line 1634) `NET_Init ();`
-  - `M_Init` (function, line 1776) `M_Init ();`
-  - `R_Init` (function, line 1779) `R_Init ();`
-  - `P_Init` (function, line 1782) `P_Init ();`
-  - `S_Init` (function, line 1787) `S_Init (sfxVolume * 8, musicVolume * 8);`
-  - `HU_Init` (function, line 1795) `HU_Init ();`
-  - `ST_Init` (function, line 1798) `ST_Init ();`
-  - `G_RecordDemo` (function, line 1827) `G_RecordDemo (myargv[p+1]);`
-  - `G_TimeDemo` (function, line 1842) `G_TimeDemo (demolumpname);`
-  - `G_LoadGame` (function, line 1849) `G_LoadGame(file);`
+  - `I_PrintDivider` (function, line 1603) `I_PrintDivider();`
+  - `I_PrintStartupBanner` (function, line 1608) `I_PrintStartupBanner(gamedescription);`
+  - `I_CheckIsScreensaver` (function, line 1625) `I_CheckIsScreensaver();`
+  - `I_InitTimer` (function, line 1626) `I_InitTimer();`
+  - `I_InitJoystick` (function, line 1627) `I_InitJoystick();`
+  - `I_InitSound` (function, line 1628) `I_InitSound(true);`
+  - `I_InitMusic` (function, line 1629) `I_InitMusic();`
+  - `NET_Init` (function, line 1633) `NET_Init ();`
+  - `M_Init` (function, line 1775) `M_Init ();`
+  - `R_Init` (function, line 1778) `R_Init ();`
+  - `P_Init` (function, line 1781) `P_Init ();`
+  - `S_Init` (function, line 1786) `S_Init (sfxVolume * 8, musicVolume * 8);`
+  - `HU_Init` (function, line 1794) `HU_Init ();`
+  - `ST_Init` (function, line 1797) `ST_Init ();`
+  - `G_RecordDemo` (function, line 1826) `G_RecordDemo (myargv[p+1]);`
+  - `G_TimeDemo` (function, line 1841) `G_TimeDemo (demolumpname);`
+  - `G_LoadGame` (function, line 1848) `G_LoadGame(file);`
   - `inhelpscreens` (variable, line 105) `extern boolean inhelpscreens;`
   - `setsizeneeded` (variable, line 165) `extern boolean setsizeneeded;`
   - `showMessages` (variable, line 166) `extern int showMessages;`
