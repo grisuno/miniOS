@@ -77,6 +77,8 @@ echo PASS: kbd-en-ok
 # === PS & TRACE ===
 ps
 echo PASS: ps-ok
+minifetch
+echo PASS: minifetch-ok
 trace on
 trace off
 echo PASS: trace-ok

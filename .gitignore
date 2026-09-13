@@ -12,6 +12,7 @@ Makefile.bak
 .readmenator_cache/
 .mutate-state
 .minifs-saves-stage/
+progs/etc/abi
 
 # Python
 __pycache__/

@@ -1419,17 +1419,9 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
 /* SYS_SPAWN (215): run a ramdisk program from inside the OS.
  * Saves the parent's user window, loads the child, runs it via k_exec_user,
  * and restores the parent on return. ET_REL children run at ring 0 via
- * k_run_rel; ET_EXEC/ET_DYN children run at ring 3 via k_exec_user.
- *
- * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from
- * a ring-3 interpreter (lua/micropython) must save the parent's user window,
- * whose full span cannot fit in the kernel heap alongside the ramdisk, and the
- * klongjmp/syscall-stack unwind after the child exits is not robust in the
- * single shared address space.  Such a spawn therefore returns -EFAULT cleanly
- * (the interpreter gets nil) rather than running or crashing.  This is why the
- * in-OS interpreter suites exercise only the ET_REL toolchain (minigcc/ld);
- * ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
- * interpreter.
+ * k_run_rel; ET_EXEC/ET_DYN children run in an isolated window via
+ * proc_spawn_elf (the same path mrun uses) and the caller blocks in
+ * do_waitpid, so the parent address space is left intact.
  */
 
 #include "spawn.h"

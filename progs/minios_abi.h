@@ -15,9 +15,14 @@
  *
  * ABI versioning: MINIOS_ABI_VERSION is a monotonic integer bumped on every
  * backwards-incompatible change to layout constants or syscall numbers.
- * MINIOS_ABI_CHECKSUM is a compile-time hash of all layout constants; the
- * ELF loader verifies both before accepting a binary.  A mismatch returns
- * -EABI_MISMATCH with a diagnostic.
+ * MINIOS_ABI_CHECKSUM is a compile-time hash of all layout constants.
+ * Both are build-time drift instruments: the kernel proves its side with
+ * _Static_asserts (kernel.c) and ring-3 programs include this same header,
+ * so both sides pick up changes on rebuild. They are NOT load-time gates:
+ * Linux-ABI binaries carry no MiniOS version note, so the loader cannot
+ * reject on version without breaking Linux compatibility (a hard
+ * requirement). Load-time ABI rejection is future work, tracked in
+ * ARCHITECTURE_PLAN.md Phase 1.1.
  */
 
 /* =========================================================================
@@ -30,8 +35,8 @@
  *   - kernel heap relocation
  *
  * MINIOS_ABI_CHECKSUM is computed at compile time from all layout constants.
- * The kernel ELF loader recomputes it and compares against the binary's
- * embedded copy.  A mismatch rejects the binary before execution.
+ * It is verified at build time (kernel _Static_asserts), not at load time:
+ * see the ABI Version note above for why the loader cannot gate on it.
  * ========================================================================= */
 #define MINIOS_ABI_VERSION 6
 

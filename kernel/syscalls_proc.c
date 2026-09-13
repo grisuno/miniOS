@@ -14,6 +14,7 @@
 
 long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
+    if (newsp && !user_range_ok((unsigned long)newsp, 8)) return EFAULT;
     return do_clone(flags, newsp);
 }
 
@@ -72,17 +73,17 @@ long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6) {
 
 long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    return 0;
+    return -38;
 }
 
 long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    return 0;
+    return -38;
 }
 
 long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    return 0;
+    return -38;
 }
 
 /* Shared by sys_linux_exit (60) and the exit_group fall-through (231).

@@ -782,6 +782,12 @@ scenario "date prints the CMOS wall clock" "date
 poweroff"
 expect "[0-9][0-9]:[0-9][0-9]:[0-9][0-9]"
 
+scenario "minifetch shows the logo and the spec panel" "minifetch
+poweroff"
+expect "user@minios"
+expect "OS: MiniOS x86_64 ABI v"
+expect "Toolchain: minigcc.o + ld.o + cvm.o"
+
 scenario "vol reports the default volume" "vol
 poweroff"
 expect "volume: 100%"

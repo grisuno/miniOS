@@ -66,6 +66,7 @@ void net_register_symbols(void);
 /* Shell commands */
 void net_cmd_status(void);
 void net_cmd_ping(const char *ip_text);
+void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);
 void net_cmd_dns(const char *host);
 
 /* Libc-style API for ET_REL programs */

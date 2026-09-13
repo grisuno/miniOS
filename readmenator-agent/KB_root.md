@@ -1,5 +1,22 @@
 # Subsystem: root
 
+## abi.h
+- Layer: utility
+- Doc: Docstring: abi.h -- Boot-time ABI manifest gate contract.
+- Language: h
+- Symbols:
+  - `abi_verify` (function, line 24) `int abi_verify(const char *text, long version, unsigned long checksum);`
+  - `abi_check_manifest` (function, line 28) `int abi_check_manifest(void);`
+  - `ABI_H` (macro, line 14) `#define ABI_H`
+  - `ABI_OK` (macro, line 15) `#define ABI_OK`
+  - `ABI_NO_MANIFEST` (macro, line 17) `#define ABI_NO_MANIFEST`
+  - `ABI_BAD_FORMAT` (macro, line 18) `#define ABI_BAD_FORMAT`
+  - `ABI_VERSION_MISMATCH` (macro, line 19) `#define ABI_VERSION_MISMATCH`
+  - `ABI_CHECKSUM_MISMATCH` (macro, line 20) `#define ABI_CHECKSUM_MISMATCH`
+  - `ABI_MANIFEST_NAME` (macro, line 21) `#define ABI_MANIFEST_NAME`
+  - `ABI_MANIFEST_MAX` (macro, line 23) `#define ABI_MANIFEST_MAX`
+- Imported by: `kernel.c`, `kernel/abi.c`, `tests/test_abi.c`
+
 ## ap_stub.h
 - Layer: testing
 - Doc: generated from ap_stub.bin - do not edit
@@ -237,45 +254,45 @@
 - Doc: kernel.c -- Mediator: boot orchestration and the syscall trampoline.
 - Language: c
 - Symbols:
-  - `syscall_init` (function, line 106) `void syscall_init(void)`
-  - `__attribute__` (function, line 387) `__attribute__((section(".init.text")))
+  - `syscall_init` (function, line 107) `void syscall_init(void)`
+  - `__attribute__` (function, line 388) `__attribute__((section(".init.text")))
 void kmain(void)`
-  - `table` (function, line 94) `* Symbol table (for resolving program references) * ================================================================ */ #define KSYM_MAX 256 /* ---- SYSCALL/SYSRET setup ------------------------------`
-  - `wrmsr` (function, line 111) `wrmsr(MSR_STAR, ((unsigned long)GDT64_DATA_SEL << 48) | ((unsigned long)GDT64_CODE_SEL << 32));`
-  - `ksyscall` (function, line 119) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sysretq` (function, line 157) `* trapped from the user window returns with sysretq (ring 3);`
-  - `kstack` (function, line 166) `* kstack (0 on the BSP, 1 on APs): harmless while a single process * runs, fatal as soon as two threads syscall concurrently. */ _Static_assert(__builtin_offsetof(cpu_t, cur_pid) == 12, "cpu cur_pid o`
-  - `volatile` (function, line 390) `__asm__ volatile( "mov $0x10, %%ax\n" "mov %%ax, %%ds\n" "mov %%ax, %%es\n" "mov %%ax, %%fs\n" "mov %%ax, %%gs\n" "mov %%ax, %%ss\n" "mov $0x90000, %%rsp\n" ::: "ax" );`
-  - `EM` (function, line 402) `* CR0: clear EM (bit 2), set MP (bit 1);`
-  - `serial_init` (function, line 413) `serial_init();`
-  - `vga_clear` (function, line 415) `vga_clear();`
-  - `outb` (function, line 421) `outb(0x21, 0xFF);`
-  - `vga_puts` (function, line 423) `vga_puts("MiniOS Kernel v0.3\n====================\n");`
-  - `kallocator_init` (function, line 424) `kallocator_init();`
-  - `ramdisk_init` (function, line 426) `ramdisk_init();`
-  - `register_libc_symbols` (function, line 427) `register_libc_symbols();`
-  - `vga_fb_boot_config` (function, line 429) `vga_fb_boot_config();`
-  - `mm_setup_protections` (function, line 430) `mm_setup_protections();`
-  - `kprintf` (function, line 431) `kprintf("fb: %dx%d pitch %d bpp %d base 0x%lx\n", fb_width, fb_height, fb_pitch, fb_bpp, fb_phys_base);`
-  - `net_init` (function, line 437) `net_init();`
-  - `size` (function, line 440) `* image size (see kernel.ld);`
-  - `ramdisk_setup_from` (function, line 442) `ramdisk_setup_from(ramdisk_start, (unsigned)ramdisk_image_size());`
-  - `block_init` (function, line 444) `block_init();`
-  - `minifs_init` (function, line 446) `minifs_init();`
-  - `vfs_register_builtins` (function, line 455) `vfs_register_builtins();`
-  - `sched_init` (function, line 462) `sched_init();`
-  - `vga_fb_init` (function, line 464) `vga_fb_init();`
-  - `smp_init` (function, line 475) `smp_init();`
-  - `shell_run` (function, line 476) `shell_run();`
-  - `syscall_kstack` (variable, line 105) `extern unsigned long syscall_kstack;`
-  - `ramdisk_start` (variable, line 383) `extern char ramdisk_start[];`
-  - `ramdisk_end` (variable, line 385) `extern char ramdisk_end[];`
-  - `USER_WIN_LO` (macro, line 55) `#define USER_WIN_LO`
-  - `USER_WIN_HI` (macro, line 56) `#define USER_WIN_HI`
-  - `STR_` (macro, line 57) `#define STR_(x)`
-  - `STR` (macro, line 58) `#define STR(x)`
-  - `KSYM_MAX` (macro, line 96) `#define KSYM_MAX`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
+  - `table` (function, line 95) `* Symbol table (for resolving program references) * ================================================================ */ #define KSYM_MAX 256 /* ---- SYSCALL/SYSRET setup ------------------------------`
+  - `wrmsr` (function, line 112) `wrmsr(MSR_STAR, ((unsigned long)GDT64_DATA_SEL << 48) | ((unsigned long)GDT64_CODE_SEL << 32));`
+  - `ksyscall` (function, line 120) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `sysretq` (function, line 158) `* trapped from the user window returns with sysretq (ring 3);`
+  - `kstack` (function, line 167) `* kstack (0 on the BSP, 1 on APs): harmless while a single process * runs, fatal as soon as two threads syscall concurrently. */ _Static_assert(__builtin_offsetof(cpu_t, cur_pid) == 12, "cpu cur_pid o`
+  - `volatile` (function, line 391) `__asm__ volatile( "mov $0x10, %%ax\n" "mov %%ax, %%ds\n" "mov %%ax, %%es\n" "mov %%ax, %%fs\n" "mov %%ax, %%gs\n" "mov %%ax, %%ss\n" "mov $0x90000, %%rsp\n" ::: "ax" );`
+  - `EM` (function, line 403) `* CR0: clear EM (bit 2), set MP (bit 1);`
+  - `serial_init` (function, line 414) `serial_init();`
+  - `vga_clear` (function, line 416) `vga_clear();`
+  - `outb` (function, line 422) `outb(0x21, 0xFF);`
+  - `vga_puts` (function, line 424) `vga_puts("MiniOS Kernel v0.3\n====================\n");`
+  - `kallocator_init` (function, line 425) `kallocator_init();`
+  - `ramdisk_init` (function, line 427) `ramdisk_init();`
+  - `register_libc_symbols` (function, line 428) `register_libc_symbols();`
+  - `vga_fb_boot_config` (function, line 430) `vga_fb_boot_config();`
+  - `mm_setup_protections` (function, line 431) `mm_setup_protections();`
+  - `kprintf` (function, line 432) `kprintf("fb: %dx%d pitch %d bpp %d base 0x%lx\n", fb_width, fb_height, fb_pitch, fb_bpp, fb_phys_base);`
+  - `net_init` (function, line 438) `net_init();`
+  - `size` (function, line 441) `* image size (see kernel.ld);`
+  - `ramdisk_setup_from` (function, line 443) `ramdisk_setup_from(ramdisk_start, (unsigned)ramdisk_image_size());`
+  - `block_init` (function, line 458) `block_init();`
+  - `minifs_init` (function, line 460) `minifs_init();`
+  - `vfs_register_builtins` (function, line 469) `vfs_register_builtins();`
+  - `sched_init` (function, line 476) `sched_init();`
+  - `vga_fb_init` (function, line 478) `vga_fb_init();`
+  - `smp_init` (function, line 489) `smp_init();`
+  - `shell_run` (function, line 490) `shell_run();`
+  - `syscall_kstack` (variable, line 106) `extern unsigned long syscall_kstack;`
+  - `ramdisk_start` (variable, line 384) `extern char ramdisk_start[];`
+  - `ramdisk_end` (variable, line 386) `extern char ramdisk_end[];`
+  - `USER_WIN_LO` (macro, line 56) `#define USER_WIN_LO`
+  - `USER_WIN_HI` (macro, line 57) `#define USER_WIN_HI`
+  - `STR_` (macro, line 58) `#define STR_(x)`
+  - `STR` (macro, line 59) `#define STR(x)`
+  - `KSYM_MAX` (macro, line 97) `#define KSYM_MAX`
+- Depends on: `abi.h`, `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `block.h`, `ide.h`, `kernel.h`, `minifs.h`, `net.h`, `sb16.h`, `sched.h`, `smp.h`, `vga_fb.h`
 
 ## kernel.h
 - Layer: utility
@@ -589,7 +606,7 @@ void kmain(void)`
   - `ET_DYN` (macro, line 563) `#define ET_DYN`
   - `KFD_MAX` (macro, line 582) `#define KFD_MAX`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `spawn.h`, `tls_port.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/abi.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `spawn.h`, `tls_port.h`
 
 ## ktime.h
 - Layer: utility
@@ -613,6 +630,15 @@ void kmain(void)`
   - `LZ4_decompress_safe` (function, line 6) `int LZ4_decompress_safe(const char *src, char *dst, int compressedSize, int dstCapacity);`
   - `LZ4_KERNEL_H` (macro, line 2) `#define LZ4_KERNEL_H`
 - Imported by: `fs/minifs.c`, `kernel/lz4_kernel.c`, `kernel/mm/swap.c`, `kernel/syscalls.c`
+
+## minifetch.h
+- Layer: utility
+- Doc: Docstring: minifetch.h -- neofetch-style system screen contract.
+- Language: h
+- Symbols:
+  - `shell_cmd_minifetch` (function, line 13) `void shell_cmd_minifetch(void);`
+  - `MINIFETCH_H` (macro, line 12) `#define MINIFETCH_H`
+- Imported by: `kernel/minifetch.c`, `kernel/shell.c`
 
 ## minifs.h
 - Layer: utility
@@ -695,7 +721,7 @@ void kmain(void)`
   - `MINIFS_JOP_COMMIT` (macro, line 85) `#define MINIFS_JOP_COMMIT`
   - `MINIFS_JSTATE_CLEAN` (macro, line 86) `#define MINIFS_JSTATE_CLEAN`
   - `MINIFS_JSTATE_DIRTY` (macro, line 88) `#define MINIFS_JSTATE_DIRTY`
-- Imported by: `fs/kfile.c`, `fs/minifs.c`, `fs/vfs.c`, `kernel.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`
+- Imported by: `fs/kfile.c`, `fs/minifs.c`, `fs/vfs.c`, `kernel.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`
 
 ## minifs_dump.py
 - Layer: utility
@@ -790,26 +816,27 @@ void kmain(void)`
   - `net_register_symbols` (function, line 64) `void net_register_symbols(void);`
   - `net_cmd_status` (function, line 67) `void net_cmd_status(void);`
   - `net_cmd_ping` (function, line 68) `void net_cmd_ping(const char *ip_text);`
-  - `net_cmd_dns` (function, line 69) `void net_cmd_dns(const char *host);`
-  - `net_open` (function, line 72) `int net_open(void);`
-  - `net_connect` (function, line 73) `int net_connect(const char *host, unsigned short port);`
-  - `net_send` (function, line 74) `int net_send(int fd, const char *buf, int len);`
-  - `net_recv` (function, line 75) `int net_recv(int fd, char *buf, int len);`
-  - `net_recv_timeout` (function, line 77) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);`
-  - `net_close` (function, line 78) `void net_close(int fd);`
-  - `net_sys_socket` (function, line 81) `long net_sys_socket(long a1, long a2, long a3);`
-  - `net_sys_connect` (function, line 82) `long net_sys_connect(long fd, long sockaddr, long addrlen);`
-  - `net_sys_sendto` (function, line 83) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);`
-  - `net_sys_recvfrom` (function, line 84) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);`
-  - `net_sys_shutdown` (function, line 85) `long net_sys_shutdown(long fd, long how);`
-  - `net_sys_close` (function, line 86) `long net_sys_close(long fd);`
-  - `net_sys_poll` (function, line 87) `long net_sys_poll(long fds, long nfds, long timeout_ms);`
-  - `net_sys_dns` (function, line 88) `long net_sys_dns(long host);`
-  - `net_time_ms` (function, line 91) `unsigned long net_time_ms(void);`
-  - `net_rx_handle_frame` (function, line 95) `void net_rx_handle_frame(const unsigned char *frame, unsigned len);`
-  - `stack` (function, line 98) `* the stack (dropped fragments);`
-  - `tls_free_fd` (function, line 105) `void tls_free_fd(int fd);`
-  - `net_rx_dropped` (variable, line 99) `extern unsigned int net_rx_dropped;`
+  - `net_get_addrs` (function, line 69) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);`
+  - `net_cmd_dns` (function, line 70) `void net_cmd_dns(const char *host);`
+  - `net_open` (function, line 73) `int net_open(void);`
+  - `net_connect` (function, line 74) `int net_connect(const char *host, unsigned short port);`
+  - `net_send` (function, line 75) `int net_send(int fd, const char *buf, int len);`
+  - `net_recv` (function, line 76) `int net_recv(int fd, char *buf, int len);`
+  - `net_recv_timeout` (function, line 78) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);`
+  - `net_close` (function, line 79) `void net_close(int fd);`
+  - `net_sys_socket` (function, line 82) `long net_sys_socket(long a1, long a2, long a3);`
+  - `net_sys_connect` (function, line 83) `long net_sys_connect(long fd, long sockaddr, long addrlen);`
+  - `net_sys_sendto` (function, line 84) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);`
+  - `net_sys_recvfrom` (function, line 85) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);`
+  - `net_sys_shutdown` (function, line 86) `long net_sys_shutdown(long fd, long how);`
+  - `net_sys_close` (function, line 87) `long net_sys_close(long fd);`
+  - `net_sys_poll` (function, line 88) `long net_sys_poll(long fds, long nfds, long timeout_ms);`
+  - `net_sys_dns` (function, line 89) `long net_sys_dns(long host);`
+  - `net_time_ms` (function, line 92) `unsigned long net_time_ms(void);`
+  - `net_rx_handle_frame` (function, line 96) `void net_rx_handle_frame(const unsigned char *frame, unsigned len);`
+  - `stack` (function, line 99) `* the stack (dropped fragments);`
+  - `tls_free_fd` (function, line 106) `void tls_free_fd(int fd);`
+  - `net_rx_dropped` (variable, line 100) `extern unsigned int net_rx_dropped;`
   - `NET_H` (macro, line 2) `#define NET_H`
   - `NET_IP_ADDR` (macro, line 5) `#define NET_IP_ADDR`
   - `NET_NETMASK` (macro, line 6) `#define NET_NETMASK`
@@ -844,7 +871,7 @@ void kmain(void)`
   - `NET_RETRY_MS` (macro, line 54) `#define NET_RETRY_MS`
   - `NET_TX_MAX` (macro, line 55) `#define NET_TX_MAX`
   - `NET_FD_BASE` (macro, line 58) `#define NET_FD_BASE`
-- Imported by: `kernel.c`, `kernel/shell.c`, `kernel/syscalls.c`, `net/net.c`, `net/rtl8139.c`, `net/rtl8139.h`, `tls_port.h`
+- Imported by: `kernel.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/syscalls.c`, `net/net.c`, `net/rtl8139.c`, `net/rtl8139.h`, `tls_port.h`
 
 ## pcspk.h
 - Layer: utility
@@ -1006,7 +1033,7 @@ void kmain(void)`
   - `suite` (function, line 15) `* host suite (tests/test_rtc.c);`
   - `rtc_wall_seconds` (function, line 33) `int rtc_wall_seconds(unsigned long *out);`
   - `RTC_H` (macro, line 2) `#define RTC_H`
-- Imported by: `drivers/rtc.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`, `tests/test_rtc.c`
+- Imported by: `drivers/rtc.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`, `tests/test_rtc.c`
 
 ## sanitize.h
 - Layer: utility
@@ -1153,7 +1180,7 @@ void kmain(void)`
   - `TSS_SEL` (macro, line 254) `#define TSS_SEL(cpu)`
   - `WAITPID_NONE` (macro, line 288) `#define WAITPID_NONE`
 - Depends on: `spinlock.h`, `vma.h`
-- Imported by: `drivers/kbd.c`, `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `spawn.h`, `sync.h`
+- Imported by: `drivers/kbd.c`, `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `spawn.h`, `sync.h`
 
 ## shell.h
 - Layer: utility
@@ -1371,10 +1398,10 @@ void kmain(void)`
   - `expect` (function, line 95)
   - `expect_count` (function, line 117)
   - `refute` (function, line 140)
-  - `http_server_start` (function, line 833)
-  - `http_server_stop` (function, line 840)
-  - `http_fixture_start` (function, line 845)
-  - `http_fixture_stop` (function, line 852)
+  - `http_server_start` (function, line 839)
+  - `http_server_stop` (function, line 846)
+  - `http_fixture_start` (function, line 851)
+  - `http_fixture_stop` (function, line 858)
 
 ## test_http_server.py
 - Layer: testing
@@ -1748,7 +1775,7 @@ void kmain(void)`
   - `SB_LINE_MAX` (macro, line 168) `#define SB_LINE_MAX`
   - `WM_FOCUS_GFX` (macro, line 193) `#define WM_FOCUS_GFX`
 - Depends on: `progs/minios_abi.h`, `wm_notify.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
 ## vma.c
 - Layer: utility

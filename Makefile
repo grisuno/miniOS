@@ -81,9 +81,11 @@ DISK_ALIGN_SECTORS  = 2048
 
 QEMU_DRIVE = -drive file=os.img,format=raw,if=ide
 QEMU_MEM   = -m 1G
-# -smp is present so a second vCPU exists, but the kernel is currently
-# single-core: without an SMP-aware kernel (AP boot, per-CPU APIC timer/stacks,
-# spinlocks) the extra vCPU just idles.  It does not speed anything up yet.
+# -smp boots a second vCPU: the AP runs the INIT/SIPI bring-up in smp.c,
+# sets its own GS base and claims CLONE_VM threads through its per-CPU
+# runqueue (work stealing in kernel/sched.c). The BSP keeps the global
+# scan and all non-VM processes; the AP never touches the PIC, PS/2 or
+# SB16. `smp` builtin reports per-CPU rq_hits/rq_steals/rq_drops.
 QEMU_NIC   = -nic user,model=rtl8139 -smp 2
 QEMU_AUDIO  = -audiodev pa,id=snd0 -machine pc,pcspk-audiodev=snd0 \
               -audiodev pa,id=snd1 -device sb16,iobase=0x220,irq=5,dma=1,audiodev=snd1
@@ -166,6 +168,7 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(PROGS_DIR)/etc/themes/slate \
             $(PROGS_DIR)/etc/host.zip \
             $(PROGS_DIR)/etc/hostile.zip \
+            $(PROGS_DIR)/etc/abi \
             $(PROGS_DIR)/icons/terminal.png \
             $(PROGS_DIR)/icons/pokemon.png \
             $(PROGS_DIR)/icons/file.png \
@@ -1191,7 +1194,7 @@ test-fault: fault_test
 # Advisory: flawfinder (triaged in LINT_TRIAGE.md), -Wextra on pre-existing
 # kernel files (15 grandfathered, none in added lines).
 LINT_KERN_SRCS = kernel/loader.c kernel/shell.c kernel/syscalls.c \
-                 kernel/syscalls_proc.c \
+                 kernel/syscalls_proc.c kernel/abi.c kernel/minifetch.c \
                  kernel/sched.c kernel/mm.c smp.c fs/minifs.c net/net.c
 LINT_HOST_SRCS = progs/tls_u/tls_u_port.c progs/tls_u/tls_u_main.c \
                  tests/test_fault.c tests/test_vma_bench.c
@@ -1206,6 +1209,8 @@ lint: | $(TOOLS_DIR)
 	clang-tidy $(LINT_HOST_SRCS) --warnings-as-errors='*' \
 	    --checks='$(LINT_TIDY_CHECKS)' -- -std=c99 -DTLS_RING3 -I. -I$(PROGS_DIR)
 	python3 tools/check_abi_numbers.py
+	python3 tools/check_fork_stubs.py
+	python3 tools/check_syscall_sanitize.py
 	bash -n mutate.sh && bash -n test_bdd.sh && echo "lint: ok"
 
 # Sync primitives host test (tests/test_sync.c + kernel/sync.c).
@@ -1258,6 +1263,12 @@ sanitize_test: tests/test_sanitize.c sanitize.h | $(TOOLS_DIR)
 
 test-sanitize: sanitize_test
 	$(TOOLS_DIR)/sanitize_test
+
+abi_test: tests/test_abi.c kernel/abi.c abi.h progs/minios_abi.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -Iprogs -DABI_HOST_TEST -o $(TOOLS_DIR)/abi_test tests/test_abi.c kernel/abi.c
+
+test-abi: abi_test
+	$(TOOLS_DIR)/abi_test
 
 # Tick bus host test (tests/test_tick.c + kernel/tick.c).
 tick_test: tests/test_tick.c kernel/tick.c tick.h | $(TOOLS_DIR)
@@ -1336,7 +1347,7 @@ test-wm: wm_test
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test modifiers_test notify_test
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test modifiers_test notify_test abi_test
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1352,6 +1363,7 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/wm_test
 	$(TOOLS_DIR)/modifiers_test
 	$(TOOLS_DIR)/notify_test
+	$(TOOLS_DIR)/abi_test
 
 # Phase 0.2/0.3 host test: pure TSC-to-microsecond conversion in ktime.h.
 ktime_test: tests/test_ktime.c ktime.h | $(TOOLS_DIR)
@@ -1370,6 +1382,10 @@ test-randmix: randmix_test
 # ── Ramdisk image ─────────────────────────────────────────────────
 # The Makefile is a prerequisite because it carries the file list: editing
 # PROGS must invalidate the image even when no individual file changed.
+$(PROGS_DIR)/etc/abi: tools/abi_stamp.c progs/minios_abi.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/abi_stamp tools/abi_stamp.c
+	$(TOOLS_DIR)/abi_stamp > $@
+
 ramdisk.bin: $(PROGS) mkramdisk.py Makefile
 	python3 mkramdisk.py $@ $(PROGS)
 
@@ -1405,7 +1421,7 @@ console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h
+         sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 editor.o: kernel/editor.c kernel.h shell.h editor.h vga_fb.h
@@ -1640,11 +1656,17 @@ batch.o: kernel/batch.c batch.h
 rcu.o: kernel/rcu.c rcu.h sched.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
+abi.o: kernel/abi.c abi.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+kernel.elf: kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
-	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o -o $@
+	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 
 kernel.bin: kernel.elf | check-size
 	$(OBJCOPY) -O binary $< $@

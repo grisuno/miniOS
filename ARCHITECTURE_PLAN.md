@@ -245,11 +245,22 @@ mutation-covered); `kernel/vga_fb.c`; `Makefile`; `docs/adr/0020-wm-contracts.md
 
 ## Phase 1: Stabilize Existing Abstractions (Weeks 1-3, CRITICAL)
 
-### 1.1 ABI Versioning
+### 1.1 ABI Versioning (PARTIAL: build-time gate done, load-time gate open)
 
 **Spec:** Add `MINIOS_ABI_VERSION` (monotonic integer) and `MINIOS_ABIChecksum`
 (computed from layout constants) to `minios_abi.h`. The ELF loader verifies
 both before accepting a binary. Mismatch returns `-EABI_MISMATCH`.
+
+**Status (audit 2026-09):** the version integer and the checksum exist and
+the kernel side is pinned by `_Static_assert`s, but no loader code reads
+them and `-EABI_MISMATCH` exists nowhere: the header comment promised a
+load-time gate that was never built, so the comment was rewritten to state
+the honest mechanism (build-time drift instrument, both sides rebuild from
+the same header). A load-time gate cannot reuse this scheme directly:
+Linux-ABI binaries carry no MiniOS version note, and rejecting them would
+break Linux compatibility, which is a hard requirement. The remaining work
+is a version note emitted by `ld` for MiniOS-toolchain binaries plus a
+loader check scoped to those binaries only; Linux ELFs stay ungated.
 
 **Files:** `progs/minios_abi.h`, `kernel.c` (ELF loader), `test_bdd.sh`
 
@@ -482,6 +493,22 @@ code paths. Target mutation score > 70% on critical modules.
 - Mutation score > 70% on critical modules
 - Every surviving mutant documented as equivalent or test gap
 
+### 5.5 Documented non-goals (audit 2026-09)
+
+**Spec:** record the items an external audit flagged that are deliberate
+design scope, not defects, so future audits stop re-flagging them.
+- Polled RTL8139 + stop-and-wait TCP/536-byte MSS: the teaching/bare-metal
+  contract (`net/net.c`, `net/rtl8139.c` headers). An IRQ-driven NIC with
+  sliding windows is a new feature, not a fix; no interrupt controller is
+  configured by design.
+- No VFS buffer cache: the ramdisk is memory (always durable) and MiniFS
+  persists through close/sync; `sys_linux_fsync` documents this. A cache
+  is future perf work, not a correctness gap.
+- `sys_linux_flock` answers 0: advisory-only scope, same class as fsync.
+  If real locking is ever needed it becomes `-ENOSYS`, never a silent lie.
+
+**Files:** `ARCHITECTURE_PLAN.md` (this entry)
+
 ---
 
 ## Phase 6: God Object Reduction (Weeks 10-16, LOW but STRATEGIC)
@@ -494,6 +521,45 @@ keeping dispatch-table names stable. Done (see Phase 1.5). Next
 increments in risk order: fd table, spawn bridge, mm (brk/mmap),
 net handlers, gfx handlers. Each increment keeps table names stable
 and must pass the full validation gate before the next starts.
+
+### 6.0a Fail-closed process stubs (DONE)
+
+**Spec:** `sys_linux_fork`, `sys_linux_vfork` and `sys_linux_execve`
+have no implementation. They answered 0 (success), which let userland
+believe a child existed when none did. All three now answer `-ENOSYS`
+(-38, the same code the dispatch default and `prlimit64` use), never
+success. `tools/check_fork_stubs.py` gates this in `make lint`: any
+success return in those handlers fails the build.
+
+**Files:** `kernel/syscalls_proc.c`, `tools/check_fork_stubs.py` (new),
+`Makefile` (lint rule), `CLAUDE.md` (honest-limits line + lint contract)
+
+### 6.0b Syscall sanitize audit + clone hardening (DONE)
+
+**Spec:** the audit asked for a line-by-line proof that every user pointer
+is checked before first dereference. `tools/check_syscall_sanitize.py`
+provides it: pointer aliases of a1..a6 must appear in a SANITIZE_* or
+user_* check in the same case-block, and raw args reaching known
+dereferencing callees (`futex_wait`, `net_sys_*`, `do_clone`) must be
+checked at the boundary. Callees that sanitize internally
+(`k_syscall_spawn`, `do_open_path`) stay delegated. The sweep found one
+real gap: `sys_minios_clone` passed `newsp` to `do_clone` unchecked; it
+now fails closed with `EFAULT` (0 still means inherit). futex/net
+boundaries were all present; `net_sys_sendto/recvfrom` ignore `to`/`from`
+by design (TCP-only), so no hidden hole there.
+
+**Files:** `tools/check_syscall_sanitize.py` (new),
+`kernel/syscalls_proc.c` (clone check), `Makefile` (lint rule)
+
+**DOD:**
+- Audit green on the tree
+- Three mutants killed (futex check, sendto check, clone check removed)
+- `make test-sanitize`, `make test-futex` green
+
+**DOD:**
+- fork/vfork/execve answer -ENOSYS
+- Stub gate green, mutant (stub back to 0) killed by the gate
+- `make test-sanitize`, `check_abi_numbers` green
 
 ### 6.1 Extract Shell to shell.c
 

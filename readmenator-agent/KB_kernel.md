@@ -1,5 +1,15 @@
 # Subsystem: kernel
 
+## kernel/abi.c
+- Layer: utility
+- Doc: Docstring: kernel/abi.c -- Boot-time ABI manifest gate.
+- Language: c
+- Symbols:
+  - `abi_parse_num` (function, line 20) `static int abi_parse_num(const char **pp, const char *end, unsigned long *out)`
+  - `abi_verify` (function, line 38) `int abi_verify(const char *text, long version, unsigned long checksum)`
+  - `abi_check_manifest` (function, line 74) `int abi_check_manifest(void)`
+- Depends on: `abi.h`, `kernel.h`
+
 ## kernel/batch.c
 - Layer: utility
 - Doc: Docstring: kernel/batch.c -- Ordered batch executor.
@@ -278,6 +288,28 @@
   - `HASH_BITS` (macro, line 3) `#define HASH_BITS`
   - `HASH_SIZE` (macro, line 5) `#define HASH_SIZE`
 - Depends on: `kernel.h`, `lz4_kernel.h`
+
+## kernel/minifetch.c
+- Layer: utility
+- Doc: Docstring: kernel/minifetch.c -- neofetch-style system screen.
+- Language: c
+- Symbols:
+  - `minifetch_cfg` (struct, line 21)
+  - `minifetch_row` (function, line 57) `static void minifetch_row(const unsigned char *img, int w, int h, int row,
+                      ...`
+  - `minifetch_logo` (function, line 81) `static void minifetch_logo(char rows[16][33])`
+  - `minifetch_specs` (function, line 101) `static int minifetch_specs(char lines[20][96])`
+  - `shell_cmd_minifetch` (function, line 156) `void shell_cmd_minifetch(void)`
+  - `stbi_image_free` (function, line 97) `stbi_image_free(img);`
+  - `dlmalloc_usage` (function, line 109) `dlmalloc_usage(&hu, &hf, &ha);`
+  - `ramdisk_usage` (function, line 111) `ramdisk_usage(&ru, &rc, &rm);`
+  - `net_get_addrs` (function, line 112) `net_get_addrs(mac, ip);`
+  - `spin_lock` (function, line 113) `spin_lock(&sched_lock);`
+  - `spin_unlock` (function, line 117) `spin_unlock(&sched_lock);`
+  - `ksprintf` (function, line 118) `ksprintf(lines[n++], "user@minios");`
+  - `minifs_usage` (function, line 137) `minifs_usage(&fb, &tb, &fi, &ti);`
+  - `vga_puts` (function, line 184) `vga_puts(line);`
+- Depends on: `kernel.h`, `minifetch.h`, `minifs.h`, `net.h`, `rtc.h`, `sched.h`, `vga_fb.h`
 
 ## kernel/mm.c
 - Layer: utility
@@ -574,158 +606,159 @@
 - Doc: include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include "smp.h" include "percpu_rq.h" include "v
 - Language: c
 - Symbols:
-  - `job_row` (struct, line 1967)
-  - `ps_row` (struct, line 2424)
-  - `ShellRunDir` (struct, line 45)
-  - `shell_queue_launch` (function, line 71) `void shell_queue_launch(const char *cmd)`
-  - `shell_readline_active` (function, line 99) `int shell_readline_active(void)`
-  - `shell_focus_park` (function, line 100) `void shell_focus_park(void)`
-  - `shell_focus_restore` (function, line 105) `void shell_focus_restore(void)`
-  - `shell_prompt` (function, line 131) `static void shell_prompt(void)`
-  - `shell_parse_vol` (function, line 140) `static int shell_parse_vol(const char *s, unsigned *out)`
-  - `pb_empty` (function, line 173) `static int pb_empty(void)`
-  - `pb_count` (function, line 175) `static int pb_count(void)`
-  - `pb_push_back` (function, line 176) `static void pb_push_back(unsigned char c)`
-  - `pb_push_front` (function, line 181) `static void pb_push_front(unsigned char c)`
-  - `pb_pop` (function, line 186) `static int pb_pop(void)`
-  - `pb_peek` (function, line 192) `static int pb_peek(void)`
-  - `raw_blocking_getc` (function, line 199) `static int raw_blocking_getc(void)`
-  - `raw_try_getc` (function, line 218) `static int raw_try_getc(void)`
-  - `consume_page_after_esc` (function, line 253) `static int consume_page_after_esc(void)`
-  - `console_getc` (function, line 278) `* returns console_getc() simply serves the FIFO again. */
+  - `job_row` (struct, line 1968)
+  - `ps_row` (struct, line 2426)
+  - `ShellRunDir` (struct, line 46)
+  - `shell_queue_launch` (function, line 72) `void shell_queue_launch(const char *cmd)`
+  - `shell_readline_active` (function, line 100) `int shell_readline_active(void)`
+  - `shell_focus_park` (function, line 101) `void shell_focus_park(void)`
+  - `shell_focus_restore` (function, line 106) `void shell_focus_restore(void)`
+  - `shell_prompt` (function, line 132) `static void shell_prompt(void)`
+  - `shell_parse_vol` (function, line 141) `static int shell_parse_vol(const char *s, unsigned *out)`
+  - `pb_empty` (function, line 174) `static int pb_empty(void)`
+  - `pb_count` (function, line 176) `static int pb_count(void)`
+  - `pb_push_back` (function, line 177) `static void pb_push_back(unsigned char c)`
+  - `pb_push_front` (function, line 182) `static void pb_push_front(unsigned char c)`
+  - `pb_pop` (function, line 187) `static int pb_pop(void)`
+  - `pb_peek` (function, line 193) `static int pb_peek(void)`
+  - `raw_blocking_getc` (function, line 200) `static int raw_blocking_getc(void)`
+  - `raw_try_getc` (function, line 219) `static int raw_try_getc(void)`
+  - `consume_page_after_esc` (function, line 254) `static int consume_page_after_esc(void)`
+  - `console_getc` (function, line 279) `* returns console_getc() simply serves the FIFO again. */
 int console_getc(void)`
-  - `console_peek` (function, line 300) `static int console_peek(void)`
-  - `console_raw_try` (function, line 313) `int console_raw_try(void)`
-  - `console_raw_get` (function, line 316) `int console_raw_get(void)`
-  - `console_job_try` (function, line 322) `int console_job_try(void)`
-  - `console_job_get` (function, line 331) `int console_job_get(void)`
-  - `scrollback_render` (function, line 347) `static void scrollback_render(int voff, int total, const unsigned char *saved)`
-  - `scrollback_view` (function, line 384) `static void scrollback_view(int initial_dir)`
-  - `shell_readline_buf` (function, line 429) `void shell_readline_buf(char *buf, int size)`
-  - `shell_name_base` (function, line 458) `static const char *shell_name_base(const char *path)`
-  - `shell_complete_tier` (function, line 481) `static int shell_complete_tier(const char *nm)`
-  - `shell_complete_replace` (function, line 493) `static void shell_complete_replace(char *buf, int size, int *pos,
+  - `console_peek` (function, line 301) `static int console_peek(void)`
+  - `console_raw_try` (function, line 314) `int console_raw_try(void)`
+  - `console_raw_get` (function, line 317) `int console_raw_get(void)`
+  - `console_job_try` (function, line 323) `int console_job_try(void)`
+  - `console_job_get` (function, line 332) `int console_job_get(void)`
+  - `scrollback_render` (function, line 348) `static void scrollback_render(int voff, int total, const unsigned char *saved)`
+  - `scrollback_view` (function, line 385) `static void scrollback_view(int initial_dir)`
+  - `shell_readline_buf` (function, line 430) `void shell_readline_buf(char *buf, int size)`
+  - `shell_name_base` (function, line 459) `static const char *shell_name_base(const char *path)`
+  - `shell_complete_tier` (function, line 482) `static int shell_complete_tier(const char *nm)`
+  - `shell_complete_replace` (function, line 494) `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-  - `shell_readline` (function, line 507) `static void shell_readline(void)`
-  - `shell_hist_show` (function, line 516) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
-  - `shell_line_repaint` (function, line 538) `static void shell_line_repaint(char *buf, int size, int pos)`
-  - `shell_line_insert` (function, line 551) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
-  - `shell_line_backspace` (function, line 560) `static void shell_line_backspace(char *buf, int size, int *pos)`
-  - `shell_line_delete` (function, line 568) `static void shell_line_delete(char *buf, int size, int *pos)`
-  - `shell_line_kill_front` (function, line 575) `static void shell_line_kill_front(char *buf, int size, int *pos)`
-  - `shell_line_kill_tail` (function, line 582) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
-  - `shell_line_kill_word` (function, line 587) `static void shell_line_kill_word(char *buf, int size, int *pos)`
-  - `shell_hist_newest_match` (function, line 599) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
-  - `line` (function, line 616) `* to the live line (handled by the caller resetting shell_hist_idx). */
+  - `shell_readline` (function, line 508) `static void shell_readline(void)`
+  - `shell_hist_show` (function, line 517) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
+  - `shell_line_repaint` (function, line 539) `static void shell_line_repaint(char *buf, int size, int pos)`
+  - `shell_line_insert` (function, line 552) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
+  - `shell_line_backspace` (function, line 561) `static void shell_line_backspace(char *buf, int size, int *pos)`
+  - `shell_line_delete` (function, line 569) `static void shell_line_delete(char *buf, int size, int *pos)`
+  - `shell_line_kill_front` (function, line 576) `static void shell_line_kill_front(char *buf, int size, int *pos)`
+  - `shell_line_kill_tail` (function, line 583) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
+  - `shell_line_kill_word` (function, line 588) `static void shell_line_kill_word(char *buf, int size, int *pos)`
+  - `shell_hist_newest_match` (function, line 600) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
+  - `line` (function, line 617) `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...`
-  - `shell_readline_hist` (function, line 661) `static void shell_readline_hist(char *buf, int size)`
-  - `shell_parse` (function, line 973) `int shell_parse(char *line, char **argv, int max_args)`
-  - `shell_run` (function, line 994) `void shell_run(void)`
-  - `shell_load` (function, line 1057) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-  - `outw_port` (function, line 1119) `static inline void outw_port(unsigned short port, unsigned short val)`
-  - `shell_cmd_poweroff` (function, line 1125) `static void shell_cmd_poweroff(void)`
-  - `shell_run_dir_for` (function, line 1142) `static const ShellRunDir *shell_run_dir_for(const char *name)`
-  - `shell_file_is_real` (function, line 1160) `static int shell_file_is_real(const char *resolved)`
-  - `shell_resolve_run` (function, line 1172) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-  - `etrel_path_trusted` (function, line 1214) `static int etrel_path_trusted(const char *full)`
-  - `shell_run_elf_buf_path` (function, line 1228) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+  - `shell_readline_hist` (function, line 662) `static void shell_readline_hist(char *buf, int size)`
+  - `shell_parse` (function, line 974) `int shell_parse(char *line, char **argv, int max_args)`
+  - `shell_run` (function, line 995) `void shell_run(void)`
+  - `shell_load` (function, line 1058) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
+  - `outw_port` (function, line 1120) `static inline void outw_port(unsigned short port, unsigned short val)`
+  - `shell_cmd_poweroff` (function, line 1126) `static void shell_cmd_poweroff(void)`
+  - `shell_run_dir_for` (function, line 1143) `static const ShellRunDir *shell_run_dir_for(const char *name)`
+  - `shell_file_is_real` (function, line 1161) `static int shell_file_is_real(const char *resolved)`
+  - `shell_resolve_run` (function, line 1173) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
+  - `etrel_path_trusted` (function, line 1215) `static int etrel_path_trusted(const char *full)`
+  - `shell_run_elf_buf_path` (function, line 1229) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...`
-  - `shell_run_elf_file` (function, line 1258) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-  - `shell_run_elf_minifs` (function, line 1271) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-  - `shell_run_cvm` (function, line 1321) `static int shell_run_cvm(const char *full, int argc, char **argv)`
-  - `shell_run_file` (function, line 1357) `static int shell_run_file(const char *name, int argc, char **argv)`
-  - `shell_read_elf_bytes` (function, line 1401) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
+  - `shell_run_elf_file` (function, line 1259) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
+  - `shell_run_elf_minifs` (function, line 1272) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
+  - `shell_run_cvm` (function, line 1322) `static int shell_run_cvm(const char *full, int argc, char **argv)`
+  - `shell_run_file` (function, line 1358) `static int shell_run_file(const char *name, int argc, char **argv)`
+  - `shell_read_elf_bytes` (function, line 1402) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
                           ...`
-  - `code` (function, line 1467) `* the last exit code (130 when interrupted). */
+  - `code` (function, line 1468) `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...`
-  - `shell_cmd_mrun` (function, line 1502) `static void shell_cmd_mrun(int argc, char **argv)`
-  - `shell_run_bg` (function, line 1551) `static void shell_run_bg(const char *name, int argc, char **argv)`
-  - `shell_run_any` (function, line 1579) `int shell_run_any(const char *name, int argc, char **argv)`
-  - `gfx_parse_int` (function, line 1650) `static int gfx_parse_int(const char *s, int *out)`
-  - `gfx_read_palette` (function, line 1670) `static void gfx_read_palette(unsigned char pal[768])`
-  - `shell_cmd_gfx` (function, line 1676) `static void shell_cmd_gfx(int argc, char **argv)`
-  - `shell_cmd_wm` (function, line 1829) `static void shell_cmd_wm(int argc, char **argv)`
-  - `tree` (function, line 1953) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+  - `shell_cmd_mrun` (function, line 1503) `static void shell_cmd_mrun(int argc, char **argv)`
+  - `shell_run_bg` (function, line 1552) `static void shell_run_bg(const char *name, int argc, char **argv)`
+  - `shell_run_any` (function, line 1580) `int shell_run_any(const char *name, int argc, char **argv)`
+  - `gfx_parse_int` (function, line 1651) `static int gfx_parse_int(const char *s, int *out)`
+  - `gfx_read_palette` (function, line 1671) `static void gfx_read_palette(unsigned char pal[768])`
+  - `shell_cmd_gfx` (function, line 1677) `static void shell_cmd_gfx(int argc, char **argv)`
+  - `shell_cmd_wm` (function, line 1830) `static void shell_cmd_wm(int argc, char **argv)`
+  - `tree` (function, line 1954) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-  - `shell_cmd_jobs` (function, line 1965) `static void shell_cmd_jobs(void)`
-  - `shell_cmd_wait` (function, line 1988) `static void shell_cmd_wait(int argc, char **argv)`
-  - `shell_cmd_kill` (function, line 2014) `static void shell_cmd_kill(int argc, char **argv)`
-  - `shell_cmd_mem` (function, line 2036) `static void shell_cmd_mem(void)`
-  - `shell_cmd_hash` (function, line 2066) `static void shell_cmd_hash(int argc, char **argv)`
-  - `shell_exec_builtin` (function, line 2080) `void shell_exec_builtin(int argc, char **argv)`
-  - `vga_fb_park_line` (function, line 102) `vga_fb_park_line(cmd_buf, shell_edit_pos);`
-  - `kmemcpy` (function, line 110) `kmemcpy(cmd_buf, tmp, (unsigned long)CMD_BUF_SZ);`
-  - `vga_puts` (function, line 123) `else vga_puts("\nminiOS> ");`
-  - `vga_fb_text_cursor` (function, line 129) `vga_fb_text_cursor(shell_edit_pos);`
-  - `volatile` (function, line 213) `__asm__ volatile("pause");`
-  - `serial_putc` (function, line 363) `serial_putc(ch);`
-  - `sb_init` (function, line 386) `sb_init();`
-  - `vga_cursor_enable` (function, line 393) `vga_cursor_enable(0);`
-  - `vga_set_xy` (function, line 422) `vga_set_xy(saved_x, saved_y);`
-  - `vga_set_cursor` (function, line 423) `vga_set_cursor(saved_x, saved_y);`
-  - `kmemset` (function, line 431) `kmemset(buf, 0, (unsigned long)size);`
-  - `vga_putc` (function, line 436) `vga_putc('\n');`
-  - `kmemmove` (function, line 554) `kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1));`
-  - `vga_fb_hide_text_cursor` (function, line 694) `vga_fb_hide_text_cursor();`
-  - `shell_hist_nav` (function, line 719) `shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);`
-  - `root` (function, line 821) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * explicit path or an argument word keeps every match, so * navigating to data file`
-  - `desktop_launch` (function, line 1012) `desktop_launch(shell_pending_cmd);`
-  - `vga_fb_clear_prompt` (function, line 1023) `vga_fb_clear_prompt();`
-  - `ramdisk_read` (function, line 1068) `ramdisk_read(f, data, 0, data_size);`
-  - `minifs_read` (function, line 1084) `minifs_read(ino, data, 0, data_size);`
-  - `kprintf` (function, line 1105) `kprintf("load: refusing untrusted ET_REL '%s'", resolved);`
-  - `kfree` (function, line 1116) `kfree(data);`
-  - `k_exec_user` (function, line 1251) `return k_exec_user(entry, argc, argv);`
-  - `window` (function, line 1394) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small programs overlap in * time instead of running one after another. ET_REL is refus`
-  - `yield` (function, line 1499) `yield();`
-  - `vga_fb_set_gfx_program` (function, line 1583) `vga_fb_set_gfx_program(name);`
-  - `k_run_rel` (function, line 1589) `return k_run_rel(p->entry, argc, argv);`
-  - `context` (function, line 1605) `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);`
-  - `outb` (function, line 1672) `outb(0x3C7, 0);`
-  - `kfwrite` (function, line 1786) `kfwrite(hdr, 1, (unsigned long)n, f);`
-  - `kfclose` (function, line 1805) `kfclose(f);`
-  - `vga_fb_tile_all` (function, line 1846) `vga_fb_tile_all();`
-  - `vga_fb_layout_cycle` (function, line 1861) `vga_fb_layout_cycle();`
-  - `vga_fb_snap_window` (function, line 1888) `vga_fb_snap_window(z);`
-  - `vga_fb_focus_report` (function, line 1899) `else vga_fb_focus_report(before, WM_FOCUS_SRC_PROGRAM);`
-  - `vga_fb_focus_next` (function, line 1906) `vga_fb_focus_next();`
-  - `vga_fb_theme_name` (function, line 1923) `vga_fb_theme_name(theme, sizeof(theme));`
-  - `kbd_drop_counts` (function, line 1929) `kbd_drop_counts(&cooked, &raw);`
-  - `spin_lock` (function, line 1970) `spin_lock(&sched_lock);`
-  - `spin_unlock` (function, line 1982) `spin_unlock(&sched_lock);`
-  - `dlmalloc_usage` (function, line 2040) `dlmalloc_usage(&hu, &hf, &ha);`
-  - `ramdisk_usage` (function, line 2043) `ramdisk_usage(&ru, &rc, &rm);`
-  - `minifs_usage` (function, line 2048) `minifs_usage(&fb, &tb, &fi, &ti);`
-  - `XXH64_reset` (function, line 2074) `XXH64_reset(&h, 0);`
-  - `vga_clear` (function, line 2129) `vga_clear();`
-  - `shell_cmd_edit` (function, line 2135) `shell_cmd_edit(argc, argv);`
-  - `shell_report` (function, line 2141) `shell_report("ls: name too long: ", argv[1]);`
-  - `minifs_stat` (function, line 2251) `minifs_stat(de.inode, &st);`
-  - `ramdisk_delete` (function, line 2291) `ramdisk_delete(f);`
-  - `net_cmd_status` (function, line 2412) `net_cmd_status();`
-  - `net_cmd_ping` (function, line 2415) `net_cmd_ping(argv[2]);`
-  - `net_cmd_dns` (function, line 2418) `net_cmd_dns(argv[2]);`
-  - `rq_stats` (function, line 2455) `rq_stats(c, &hits, &steals, &drops);`
-  - `pcspk_set_volume` (function, line 2519) `pcspk_set_volume(v);`
-  - `kstack_report` (function, line 2556) `kstack_report();`
-  - `sb16_counters` (function, line 2560) `sb16_counters(&c);`
-  - `shell_cmd_unzip` (function, line 2583) `shell_cmd_unzip(argc, argv);`
-  - `shell_cmd_zip` (function, line 2586) `shell_cmd_zip(argc, argv);`
-  - `shell_report_exit` (function, line 2608) `else shell_report_exit(ret);`
-  - `shell_cmd_sh` (function, line 2639) `shell_cmd_sh(argc, argv);`
+  - `shell_cmd_jobs` (function, line 1966) `static void shell_cmd_jobs(void)`
+  - `shell_cmd_wait` (function, line 1989) `static void shell_cmd_wait(int argc, char **argv)`
+  - `shell_cmd_kill` (function, line 2015) `static void shell_cmd_kill(int argc, char **argv)`
+  - `shell_cmd_mem` (function, line 2037) `static void shell_cmd_mem(void)`
+  - `shell_cmd_hash` (function, line 2067) `static void shell_cmd_hash(int argc, char **argv)`
+  - `shell_exec_builtin` (function, line 2081) `void shell_exec_builtin(int argc, char **argv)`
+  - `vga_fb_park_line` (function, line 103) `vga_fb_park_line(cmd_buf, shell_edit_pos);`
+  - `kmemcpy` (function, line 111) `kmemcpy(cmd_buf, tmp, (unsigned long)CMD_BUF_SZ);`
+  - `vga_puts` (function, line 124) `else vga_puts("\nminiOS> ");`
+  - `vga_fb_text_cursor` (function, line 130) `vga_fb_text_cursor(shell_edit_pos);`
+  - `volatile` (function, line 214) `__asm__ volatile("pause");`
+  - `serial_putc` (function, line 364) `serial_putc(ch);`
+  - `sb_init` (function, line 387) `sb_init();`
+  - `vga_cursor_enable` (function, line 394) `vga_cursor_enable(0);`
+  - `vga_set_xy` (function, line 423) `vga_set_xy(saved_x, saved_y);`
+  - `vga_set_cursor` (function, line 424) `vga_set_cursor(saved_x, saved_y);`
+  - `kmemset` (function, line 432) `kmemset(buf, 0, (unsigned long)size);`
+  - `vga_putc` (function, line 437) `vga_putc('\n');`
+  - `kmemmove` (function, line 555) `kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1));`
+  - `vga_fb_hide_text_cursor` (function, line 695) `vga_fb_hide_text_cursor();`
+  - `shell_hist_nav` (function, line 720) `shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);`
+  - `root` (function, line 822) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * explicit path or an argument word keeps every match, so * navigating to data file`
+  - `desktop_launch` (function, line 1013) `desktop_launch(shell_pending_cmd);`
+  - `vga_fb_clear_prompt` (function, line 1024) `vga_fb_clear_prompt();`
+  - `ramdisk_read` (function, line 1069) `ramdisk_read(f, data, 0, data_size);`
+  - `minifs_read` (function, line 1085) `minifs_read(ino, data, 0, data_size);`
+  - `kprintf` (function, line 1106) `kprintf("load: refusing untrusted ET_REL '%s'", resolved);`
+  - `kfree` (function, line 1117) `kfree(data);`
+  - `k_exec_user` (function, line 1252) `return k_exec_user(entry, argc, argv);`
+  - `window` (function, line 1395) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small programs overlap in * time instead of running one after another. ET_REL is refus`
+  - `yield` (function, line 1500) `yield();`
+  - `vga_fb_set_gfx_program` (function, line 1584) `vga_fb_set_gfx_program(name);`
+  - `k_run_rel` (function, line 1590) `return k_run_rel(p->entry, argc, argv);`
+  - `context` (function, line 1606) `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);`
+  - `outb` (function, line 1673) `outb(0x3C7, 0);`
+  - `kfwrite` (function, line 1787) `kfwrite(hdr, 1, (unsigned long)n, f);`
+  - `kfclose` (function, line 1806) `kfclose(f);`
+  - `vga_fb_tile_all` (function, line 1847) `vga_fb_tile_all();`
+  - `vga_fb_layout_cycle` (function, line 1862) `vga_fb_layout_cycle();`
+  - `vga_fb_snap_window` (function, line 1889) `vga_fb_snap_window(z);`
+  - `vga_fb_focus_report` (function, line 1900) `else vga_fb_focus_report(before, WM_FOCUS_SRC_PROGRAM);`
+  - `vga_fb_focus_next` (function, line 1907) `vga_fb_focus_next();`
+  - `vga_fb_theme_name` (function, line 1924) `vga_fb_theme_name(theme, sizeof(theme));`
+  - `kbd_drop_counts` (function, line 1930) `kbd_drop_counts(&cooked, &raw);`
+  - `spin_lock` (function, line 1971) `spin_lock(&sched_lock);`
+  - `spin_unlock` (function, line 1983) `spin_unlock(&sched_lock);`
+  - `dlmalloc_usage` (function, line 2041) `dlmalloc_usage(&hu, &hf, &ha);`
+  - `ramdisk_usage` (function, line 2044) `ramdisk_usage(&ru, &rc, &rm);`
+  - `minifs_usage` (function, line 2049) `minifs_usage(&fb, &tb, &fi, &ti);`
+  - `XXH64_reset` (function, line 2075) `XXH64_reset(&h, 0);`
+  - `vga_clear` (function, line 2131) `vga_clear();`
+  - `shell_cmd_edit` (function, line 2137) `shell_cmd_edit(argc, argv);`
+  - `shell_report` (function, line 2143) `shell_report("ls: name too long: ", argv[1]);`
+  - `minifs_stat` (function, line 2253) `minifs_stat(de.inode, &st);`
+  - `ramdisk_delete` (function, line 2293) `ramdisk_delete(f);`
+  - `net_cmd_status` (function, line 2414) `net_cmd_status();`
+  - `net_cmd_ping` (function, line 2417) `net_cmd_ping(argv[2]);`
+  - `net_cmd_dns` (function, line 2420) `net_cmd_dns(argv[2]);`
+  - `rq_stats` (function, line 2457) `rq_stats(c, &hits, &steals, &drops);`
+  - `pcspk_set_volume` (function, line 2521) `pcspk_set_volume(v);`
+  - `kstack_report` (function, line 2558) `kstack_report();`
+  - `sb16_counters` (function, line 2562) `sb16_counters(&c);`
+  - `shell_cmd_minifetch` (function, line 2586) `shell_cmd_minifetch();`
+  - `shell_cmd_unzip` (function, line 2589) `shell_cmd_unzip(argc, argv);`
+  - `shell_cmd_zip` (function, line 2592) `shell_cmd_zip(argc, argv);`
+  - `shell_report_exit` (function, line 2614) `else shell_report_exit(ret);`
+  - `shell_cmd_sh` (function, line 2645) `shell_cmd_sh(argc, argv);`
   - `XXH_STATIC_LINKING_ONLY` (macro, line 14) `#define XXH_STATIC_LINKING_ONLY`
-  - `SHELL_CVM_INTERP` (macro, line 37) `#define SHELL_CVM_INTERP`
-  - `SHELL_RUN_DIRS` (macro, line 56) `#define SHELL_RUN_DIRS`
-  - `SHELL_HIST_MAX` (macro, line 81) `#define SHELL_HIST_MAX`
-  - `PB_LEN` (macro, line 169) `#define PB_LEN`
-  - `MAX_SEQ_POLL` (macro, line 235) `#define MAX_SEQ_POLL`
-  - `SB_LEN` (macro, line 346) `#define SB_LEN`
-  - `SB_PGUP` (macro, line 368) `#define SB_PGUP`
-  - `SB_PGDN` (macro, line 370) `#define SB_PGDN`
-  - `SB_EXIT` (macro, line 371) `#define SB_EXIT`
-  - `SHELL_BUILTIN_COUNT` (macro, line 475) `#define SHELL_BUILTIN_COUNT`
-  - `QEMU_PM_PORT` (macro, line 1123) `#define QEMU_PM_PORT`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+  - `SHELL_CVM_INTERP` (macro, line 38) `#define SHELL_CVM_INTERP`
+  - `SHELL_RUN_DIRS` (macro, line 57) `#define SHELL_RUN_DIRS`
+  - `SHELL_HIST_MAX` (macro, line 82) `#define SHELL_HIST_MAX`
+  - `PB_LEN` (macro, line 170) `#define PB_LEN`
+  - `MAX_SEQ_POLL` (macro, line 236) `#define MAX_SEQ_POLL`
+  - `SB_LEN` (macro, line 347) `#define SB_LEN`
+  - `SB_PGUP` (macro, line 369) `#define SB_PGUP`
+  - `SB_PGDN` (macro, line 371) `#define SB_PGDN`
+  - `SB_EXIT` (macro, line 372) `#define SB_EXIT`
+  - `SHELL_BUILTIN_COUNT` (macro, line 476) `#define SHELL_BUILTIN_COUNT`
+  - `QEMU_PM_PORT` (macro, line 1124) `#define QEMU_PM_PORT`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ## kernel/spawn.c
 - Layer: utility
@@ -910,7 +943,7 @@ static long sys_minios_gfx_prese...`
   - `products` (function, line 1213) `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
  * pre-bounded against (END-...`
   - `ksyscall_dispatch` (function, line 1225) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `k_syscall_spawn` (function, line 1439) `static int k_syscall_spawn(const char *path, const char *redirect,
+  - `k_syscall_spawn` (function, line 1431) `static int k_syscall_spawn(const char *path, const char *redirect,
                              i...`
   - `by` (function, line 57) `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to progs/minios_abi.h * 2. Implementing a static long sys_*(long a1, ..., long a6) function here `
   - `rtc_wall_seconds` (function, line 92) `rtc_wall_seconds(&sec);`
@@ -966,11 +999,10 @@ static long sys_minios_gfx_prese...`
   - `do_exit` (function, line 1233) `do_exit(130);`
   - `klongjmp` (function, line 1237) `klongjmp(&exec_return, 1);`
   - `do_proc_exit` (function, line 1307) `return do_proc_exit(a1);`
-  - `LIMITATION` (function, line 1423) `* * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from * a ring-3 interpreter (lua/micropython) must save the parent's user window, * whose full span cannot fit in the kernel h`
-  - `tools` (function, line 1431) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an * interpreter. */ #include "spawn.h" static int k_syscall_spawn(const char *path, const char *redirect, int child_argc, co`
-  - `spawn_free_argv` (function, line 1454) `spawn_free_argv(kargv, child_argc);`
-  - `spawn_backup` (function, line 1468) `spawn_backup(&ctx);`
-  - `spawn_restore` (function, line 1473) `spawn_restore(&ctx);`
+  - `proc_spawn_elf` (function, line 1423) `* proc_spawn_elf (the same path mrun uses) and the caller blocks in * do_waitpid, so the parent address space is left intact. */ #include "spawn.h" static int k_syscall_spawn(const char *path, const c`
+  - `spawn_free_argv` (function, line 1446) `spawn_free_argv(kargv, child_argc);`
+  - `spawn_backup` (function, line 1460) `spawn_backup(&ctx);`
+  - `spawn_restore` (function, line 1465) `spawn_restore(&ctx);`
   - `gfx_win_title` (variable, line 350) `extern const char *gfx_win_title;`
   - `KFD_MAX` (macro, line 43) `#define KFD_MAX`
   - `MINIOS_SYSCALL_BASE` (macro, line 74) `#define MINIOS_SYSCALL_BASE`
@@ -989,27 +1021,27 @@ static long sys_minios_gfx_prese...`
 - Language: c
 - Symbols:
   - `sys_minios_clone` (function, line 14) `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-  - `sys_minios_thread_spawn` (function, line 19) `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_seccomp` (function, line 33) `long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_nice` (function, line 50) `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_yield` (function, line 62) `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_getpid` (function, line 67) `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fork` (function, line 72) `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_vfork` (function, line 77) `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_execve` (function, line 82) `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_exit` (function, line 104) `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `code` (function, line 113) `* exit code (no WEXITSTATUS encoding: MiniOS reports codes directly). */
+  - `sys_minios_thread_spawn` (function, line 20) `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_seccomp` (function, line 34) `long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_nice` (function, line 51) `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_yield` (function, line 63) `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_getpid` (function, line 68) `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fork` (function, line 73) `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_vfork` (function, line 78) `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_execve` (function, line 83) `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_exit` (function, line 105) `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `code` (function, line 114) `* exit code (no WEXITSTATUS encoding: MiniOS reports codes directly). */
 long sys_linux_wait4(lon...`
-  - `sys_linux_kill` (function, line 131) `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_gettid` (function, line 136) `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_kill` (function, line 132) `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_gettid` (function, line 137) `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
   - `state` (function, line 5) `* touches only scheduler state (current_pid, procs[], do_* / * seccomp_* / yield) plus the kernel-wide user_range_ok validator, so * this TU includes only kernel.h and sched.h. The dispatch tables in `
-  - `do_clone` (function, line 17) `return do_clone(flags, newsp);`
-  - `do_thread_spawn` (function, line 27) `return do_thread_spawn(fn, stack, (unsigned long)a3);`
-  - `yield` (function, line 65) `yield();`
-  - `do_exit` (function, line 97) `do_exit((int)code);`
-  - `klongjmp` (function, line 101) `klongjmp(&exec_return, 1);`
-  - `do_proc_exit` (function, line 107) `return do_proc_exit(a1);`
-  - `do_kill` (function, line 134) `return do_kill((int)a1);`
+  - `do_clone` (function, line 18) `return do_clone(flags, newsp);`
+  - `do_thread_spawn` (function, line 28) `return do_thread_spawn(fn, stack, (unsigned long)a3);`
+  - `yield` (function, line 66) `yield();`
+  - `do_exit` (function, line 98) `do_exit((int)code);`
+  - `klongjmp` (function, line 102) `klongjmp(&exec_return, 1);`
+  - `do_proc_exit` (function, line 108) `return do_proc_exit(a1);`
+  - `do_kill` (function, line 135) `return do_kill((int)a1);`
 - Depends on: `kernel.h`, `sched.h`
 
 ## kernel/tick.c

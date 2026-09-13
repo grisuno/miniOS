@@ -14,6 +14,7 @@
 #define XXH_STATIC_LINKING_ONLY
 #include "xxhash.h"
 #include "zip.h"
+#include "minifetch.h"
 #include "shell.h"
 #include "editor.h"
 
@@ -468,7 +469,7 @@ static const char *shell_name_base(const char *path) {
 static const char *shell_builtin_names[] = {
     "cat", "catfs", "cd", "clear", "clock", "date", "echo", "edit",
     "gfx", "hash", "help", "jobs", "kbd", "kill", "kstack", "load",
-    "ls", "lsfs", "mem", "mkdir", "mrun", "net", "nice", "perf", "poweroff",
+    "ls", "lsfs", "mem", "minifetch", "mkdir", "mrun", "net", "nice", "perf", "poweroff",
     "ps", "pwd", "rlimit", "rm", "rmdir", "run", "seccomp", "sh",
     "sleep", "smp", "trace", "unzip", "vol", "wait", "wm", "zip",
 };
@@ -2106,6 +2107,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  Alt+Tab focus next, Super+Tab tile, Super+arrows snap focused\n");
         vga_puts("  hash <file>        XXH64 checksum of a file\n");
         vga_puts("  mem                heap/ramdisk/minifs/procs pressure\n");
+        vga_puts("  minifetch          system screen (doom logo + specs)\n");
         vga_puts("  unzip <z> [dir]    extract a ZIP archive (or -l to list)\n");
         vga_puts("  zip <out> <f...>   store files into a ZIP archive\n");
         vga_puts("  edit <file>        line editor for ramdisk files\n");
@@ -2578,6 +2580,10 @@ void shell_exec_builtin(int argc, char **argv) {
     else if (kstrcmp(argv[0], "mem") == 0) {
         (void)argc; (void)argv;
         shell_cmd_mem();
+    }
+    else if (kstrcmp(argv[0], "minifetch") == 0) {
+        (void)argc; (void)argv;
+        shell_cmd_minifetch();
     }
     else if (kstrcmp(argv[0], "unzip") == 0) {
         shell_cmd_unzip(argc, argv);

@@ -1,5 +1,14 @@
 # Subsystem: tools
 
+## tools/abi_stamp.c
+- Layer: utility
+- Doc: Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator.
+- Language: c
+- Symbols:
+  - `main` (function, line 13) `int main(void)`
+  - `printf` (function, line 15) `printf("v=%d c=%lu\n", MINIOS_ABI_VERSION, (unsigned long)MINIOS_ABI_CHECKSUM);`
+- Depends on: `progs/minios_abi.h`
+
 ## tools/boot_run.sh
 - Layer: utility
 - Doc: boot_run.sh -- boot the MiniOS image in QEMU and drive the shell over the serial console with a list of commands, captur
@@ -31,6 +40,15 @@
   - `load_approval` (function, line 46) `def load_approval(policy_path)`
   - `main` (function, line 61) `def main()`
 
+## tools/check_fork_stubs.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `Config` (class, line 13) `class Config`
+  - `handler_body` (method, line 22) `def handler_body(text, name)`
+  - `check_stubs` (method, line 32) `def check_stubs(text, cfg)`
+  - `main` (method, line 47) `def main()`
+
 ## tools/check_kb_sync.py
 - Layer: utility
 - Language: py
@@ -47,6 +65,19 @@
   - `bfs_min_hops` (function, line 56) `def bfs_min_hops(nodes, edges, source, target_community, max_hops)`
   - `find_surprising_connections` (function, line 87) `def find_surprising_connections(nodes, edges, min_hops)`
   - `main` (function, line 118) `def main()`
+
+## tools/check_syscall_sanitize.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `Config` (class, line 18) `class Config`
+  - `split_functions` (method, line 69) `def split_functions(lines)`
+  - `checked_names` (method, line 112) `def checked_names(body)`
+  - `delegated_only` (method, line 122) `def delegated_only(body, alias)`
+  - `split_top_args` (method, line 143) `def split_top_args(argtext)`
+  - `audit_body` (method, line 162) `def audit_body(name, body)`
+  - `audit_file` (method, line 217) `def audit_file(path)`
+  - `main` (method, line 228) `def main()`
 
 ## tools/extract_shell.py
 - Layer: utility

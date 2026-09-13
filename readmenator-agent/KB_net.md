@@ -57,10 +57,11 @@
   - `net_sys_dns` (function, line 858) `long net_sys_dns(long host)`
   - `net_parse_ip` (function, line 868) `static int net_parse_ip(const char *text, unsigned char ip[4])`
   - `net_cmd_status` (function, line 893) `void net_cmd_status(void)`
-  - `net_cmd_ping` (function, line 909) `void net_cmd_ping(const char *ip_text)`
-  - `net_cmd_dns` (function, line 920) `void net_cmd_dns(const char *host)`
-  - `net_register_symbols` (function, line 933) `void net_register_symbols(void)`
-  - `net_init` (function, line 941) `void net_init(void)`
+  - `net_get_addrs` (function, line 911) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])`
+  - `net_cmd_ping` (function, line 916) `void net_cmd_ping(const char *ip_text)`
+  - `net_cmd_dns` (function, line 927) `void net_cmd_dns(const char *host)`
+  - `net_register_symbols` (function, line 940) `void net_register_symbols(void)`
+  - `net_init` (function, line 948) `void net_init(void)`
   - `kmemcpy` (function, line 81) `kmemcpy(net_arp_cache[i].mac, mac, NET_ETH_ALEN);`
   - `kmemset` (function, line 105) `kmemset(frame, 0, sizeof(frame));`
   - `rtl_send` (function, line 117) `rtl_send(frame, 42);`
@@ -71,9 +72,9 @@
   - `vga_puts` (function, line 897) `vga_puts("net: no rtl8139 found\n");`
   - `rtl_counters` (function, line 900) `rtl_counters(&tx_frames, &rx_frames);`
   - `kprintf` (function, line 901) `kprintf("rtl8139 iobase 0x%x\n", rtl_iobase());`
-  - `k_register_symbol` (function, line 935) `k_register_symbol("net_open", (void *)net_open);`
-  - `rtl_init` (function, line 943) `rtl_init();`
-  - `rtl_get_mac` (function, line 944) `rtl_get_mac(net_mac);`
+  - `k_register_symbol` (function, line 942) `k_register_symbol("net_open", (void *)net_open);`
+  - `rtl_init` (function, line 950) `rtl_init();`
+  - `rtl_get_mac` (function, line 951) `rtl_get_mac(net_mac);`
   - `NET_TCP_CLOSED` (macro, line 358) `#define NET_TCP_CLOSED`
   - `NET_TCP_SYN_SENT` (macro, line 360) `#define NET_TCP_SYN_SENT`
   - `NET_TCP_ESTABLISHED` (macro, line 361) `#define NET_TCP_ESTABLISHED`

@@ -20,6 +20,16 @@
   - `roundtrip` (function, line 31)
   - `reject` (function, line 40)
 
+## tests/test_abi.c
+- Layer: testing
+- Doc: Docstring: tests/test_abi.c -- Host test for the ABI manifest gate.
+- Language: c
+- Symbols:
+  - `expect` (function, line 15) `static void expect(const char *name, const char *manifest, int want)`
+  - `main` (function, line 24) `int main(void)`
+  - `printf` (function, line 20) `printf("FAIL: %s: want %d got %d\n", name, want, got);`
+- Depends on: `abi.h`, `progs/minios_abi.h`
+
 ## tests/test_batch.c
 - Layer: testing
 - Doc: Docstring: Host test for kernel/batch.c (make test-batch).

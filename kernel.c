@@ -8,6 +8,7 @@
  * proc_t layout asserted by sched.c. New logic belongs in a subsystem file,
  * never here. */
 #include "kernel.h"
+#include "abi.h"
 #include "net.h"
 #include "bootdefs.h"
 #include "minifs.h"
@@ -440,6 +441,19 @@ void kmain(void) {
      * image size (see kernel.ld); no pointer subtraction involved. */
     if (ramdisk_image_size() > 0) {
         ramdisk_setup_from(ramdisk_start, (unsigned)ramdisk_image_size());
+    }
+
+    /* ABI generation gate: the ramdisk must come from the same source
+     * generation as this kernel. A stale or foreign ramdisk halts here
+     * with a diagnostic instead of running mismatched binaries. */
+    {
+        int abi_rc = abi_check_manifest();
+        if (abi_rc != ABI_OK) {
+            kprintf("abi: manifest check failed (%d), halting; rebuild the image",
+                    abi_rc);
+            for (;;) __asm__ volatile("hlt");
+        }
+        kprintf("abi: manifest ok (v%d)\n", MINIOS_ABI_VERSION);
     }
 
     block_init();

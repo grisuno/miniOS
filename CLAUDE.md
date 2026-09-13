@@ -753,7 +753,9 @@ cooperative and preemption is the backstop, not the norm.
   tick claim a half-built context (the 192 KB pool alloc widened that
   window to a whole tick, hanging the machine with no output).
 - Honest limits remaining: one shared fd table, no `fork`/`execve`
-  (`sys_linux_fork/vfork/execve` still answer 0; `mm_copy_user_page`
+  (`sys_linux_fork/vfork/execve` answer `-ENOSYS`, never success: a stub
+  that returned 0 let userland believe a child existed when none did;
+  `tools/check_fork_stubs.py` gates this; `mm_copy_user_page`
   waits for it), APs claim `CLONE_VM` threads only, no Alt-Tab
   mid-`edit`, serial sees one interleaved console (use `wm list`).
 
@@ -1125,7 +1127,13 @@ macros apply. `SANITIZE_COPY_IN` copies into kernel memory before use, so
 userland cannot mutate an array between validation and execution (no
 TOCTOU). The macros name only `user_range_ok`/`user_str_ok`/`kmemcpy`/
 `EFAULT` and are host-tested (`make test-sanitize`, mutation-covered);
-`grep SANITIZE_` lists every sanitized entry point. Boundary rule:
+`grep SANITIZE_` lists every sanitized entry point. `tools/check_syscall_sanitize.py`
+gates the whole discipline in `make lint`: every pointer alias of a1..a6 must be
+checked in its own case-block and every raw arg reaching a dereferencing callee
+(`futex_wait`, `net_sys_*`, `do_clone`) must be boundary-checked; callees that
+sanitize internally (`k_syscall_spawn`, `do_open_path`) stay delegated. The sweep
+hardened `sys_minios_clone` (`newsp` now `EFAULT` unless 0-inherit or in-window).
+Boundary rule:
 sanitize at the boundary, trust internally. `writev` copies the iovec
 array into kernel memory before iterating it, so userland cannot mutate
 an entry between its range check and its use. Region-typed validation (heap
@@ -1676,6 +1684,12 @@ on the IDE disk):
 - `mem` reports heap use/free (dlmalloc), ramdisk use/cap/max, MiniFS free
   blocks/inodes and live process count: the first thing to read when a
   load stops loading, before blaming the game.
+- `minifetch` prints the neofetch-style screen (`kernel/minifetch.c`): the
+  left column renders `icons/doom.png` live as brightness ASCII (embedded
+  text fallback when undecodable) and the right column lists OS/ABI,
+  uptime, CPUs, procs, memory, disk, display, MAC/IP, date and toolchain,
+  each fact reused from the accessor its builtin owns. BDD asserts the
+  header, OS and toolchain lines over serial.
 - `kstack` reports kernel-stack health: per-proc high-water marks plus the
   legacy 32 KB syscall stack, ending in `kstack: ok` (or `OVERFLOW`). Every
   pool slot is paint-filled at claim time with a canary word at its bottom
@@ -2284,7 +2298,7 @@ QEMU boot.  Every command prints a `PASS:` marker; the host runner greps the
 serial log for these markers.  The script ships on the ramdisk (`progs/src/`)
 and is added to both `PROGS` and `MINIFS_FILES` in the Makefile.
 
-Categories tested (68 PASS):
+Categories tested (69 PASS):
 - **Boot/help**: boot banner, help, clear
 - **Filesystem**: ls (root, objects, bin), mkdir, cd, pwd, rm, cp
 - **Redirects**: `>` and `>>`
@@ -2434,8 +2448,8 @@ is forbidden; the answer to a survivor is a new scenario.
 ## Validation Gate (must pass before any commit)
 ```bash
 make                # zero warnings
-make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers, all green
-sh src/test_all.sh  # one-boot comprehensive non-interactive suite (68 PASS)
+make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit, all green
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (69 PASS)
 ./test_bdd.sh       # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -2884,8 +2898,8 @@ CI gates enforce architectural constraints:
 ### Validation Gate (updated)
 ```bash
 make                        # zero warnings
-make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers, all green
-sh src/test_all.sh          # one-boot comprehensive non-interactive suite (68 PASS)
+make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit, all green
+sh src/test_all.sh          # one-boot comprehensive non-interactive suite (69 PASS)
 ./test_bdd.sh               # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd

@@ -907,6 +907,13 @@ void net_cmd_status(void) {
     kprintf("rx       %u frames, %u bytes, %u dropped\n", rx_frames, net_rx_bytes, net_rx_dropped);
 }
 
+/** Docstring: Copy the station MAC and IP out for status screens. */
+void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]) {
+    int i;
+    for (i = 0; i < NET_ETH_ALEN; i++) mac_out[i] = net_mac[i];
+    for (i = 0; i < 4; i++) ip_out[i] = net_our_ip[i];
+}
+
 void net_cmd_ping(const char *ip_text) {
     unsigned char ip[4];
     if (!rtl_present()) { vga_puts("net: no rtl8139 found\n"); return; }

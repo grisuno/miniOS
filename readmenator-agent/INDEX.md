@@ -2,6 +2,7 @@
 
 | File | Purpose | Subsystem | Symbols |
 |------|---------|-----------|---------|
+| `abi.h` | Docstring: abi.h -- Boot-time ABI manifest gate contract. | root | 10 |
 | `ap_stub.h` | generated from ap_stub.bin - do not edit | root | 0 |
 | `app.py` | _*_ coding: utf8 _*_ | root | 0 |
 | `arch/x86/ap_entry.S` | ap_entry.S - SMP application-processor bootstrap stub. | x86 | 9 |
@@ -40,6 +41,7 @@
 | `install.sh` | - | root | 0 |
 | `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 37 |
 | `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 305 |
+| `kernel/abi.c` | Docstring: kernel/abi.c -- Boot-time ABI manifest gate. | kernel | 3 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
 | `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | kernel | 31 |
 | `kernel/cvm_host.c` | - | kernel | 55 |
@@ -49,6 +51,7 @@
 | `kernel/klog.c` | klog.c - Structured kernel logging with levels and subsystems. | kernel | 9 |
 | `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | kernel | 44 |
 | `kernel/lz4_kernel.c` | include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE  | kernel | 11 |
+| `kernel/minifetch.c` | Docstring: kernel/minifetch.c -- neofetch-style system screen. | kernel | 14 |
 | `kernel/mm.c` | include "kernel.h" include "sched.h"  ========================================== | kernel | 13 |
 | `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 20 |
 | `kernel/mm/swap.c` | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | mm | 10 |
@@ -59,12 +62,12 @@
 | `kernel/sched.c` | - | kernel | 135 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 8 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 10 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 144 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 145 |
 | `kernel/spawn.c` | include "kernel.h" include "sched.h" include "vma.h" include "spawn.h" include " | kernel | 14 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 147 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 146 |
 | `kernel/syscalls_proc.c` | syscalls_proc.c - Process-management syscall handlers. | kernel | 21 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
 | `kernel/time.c` | include "kernel.h" include "ktime.h"  ========================================== | kernel | 7 |
@@ -78,6 +81,7 @@
 | `mcp/minios_mcp.py` | - | mcp | 50 |
 | `mcp/mutate_mcp.sh` | Mutation testing for the MiniOS MCP bridge. Every mutant is injected into a priv | mcp | 1 |
 | `mcp/test_minios_mcp.py` | - | mcp | 99 |
+| `minifetch.h` | Docstring: minifetch.h -- neofetch-style system screen contract. | root | 2 |
 | `minifs.h` | ifndef MINIFS_H define MINIFS_H  MiniFS: a minimal Unix-like filesystem for Mini | root | 76 |
 | `minifs_dump.py` | - | root | 12 |
 | `minifs_fsck.py` | - | root | 14 |
@@ -85,8 +89,8 @@
 | `mkramdisk.py` | - | root | 2 |
 | `mkroots.sh` | mkroots.sh - regenerate tls_roots.h from the DER files in tls_roots_src/.  Prove | root | 0 |
 | `mutate.sh` | Mutation testing for MiniOS.  Each mutation is applied to the source in place, t | root | 5 |
-| `net.h` | ifndef NET_H define NET_H  ========== Fixed slirp configuration (QEMU -nic user) | root | 58 |
-| `net/net.c` | MiniOS network stack: rtl8139 under QEMU slirp user networking. | net | 68 |
+| `net.h` | ifndef NET_H define NET_H  ========== Fixed slirp configuration (QEMU -nic user) | root | 59 |
+| `net/net.c` | MiniOS network stack: rtl8139 under QEMU slirp user networking. | net | 69 |
 | `net/rtl8139.c` | include "kernel.h" include "net.h" include "rtl8139.h" | net | 34 |
 | `net/rtl8139.h` | ifndef RTL8139_H define RTL8139_H | net | 8 |
 | `net/tls.c` | tls.c - TLS 1.2 client sessions for MiniOS. | net | 42 |
@@ -368,6 +372,7 @@
 | `test_http_server.py` | - | root | 3 |
 | `tests/host_aes.sh` | host_aes.sh - host-side verification for the AES-256-CTR command tools.  The min | tests | 3 |
 | `tests/host_codecs.sh` | host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The | tests | 5 |
+| `tests/test_abi.c` | Docstring: tests/test_abi.c -- Host test for the ABI manifest gate. | tests | 3 |
 | `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 6 |
 | `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 12 |
 | `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 15 |
@@ -399,12 +404,15 @@
 | `tls_test.c` | tls_test.c - host-side tests for the kernel TLS stack. | root | 34 |
 | `tls_test.py` | - | root | 16 |
 | `tls_test_roots.h` | tls_test_roots.h - generated by tls_test.py; never built into the kernel. The te | root | 0 |
+| `tools/abi_stamp.c` | Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator. | tools | 2 |
 | `tools/boot_run.sh` | boot_run.sh -- boot the MiniOS image in QEMU and drive the shell over the serial | tools | 0 |
 | `tools/check_abi_numbers.py` | - | tools | 4 |
 | `tools/check_cohesion.py` | - | tools | 4 |
 | `tools/check_complexity.py` | - | tools | 3 |
+| `tools/check_fork_stubs.py` | - | tools | 4 |
 | `tools/check_kb_sync.py` | - | tools | 2 |
 | `tools/check_surprising.py` | - | tools | 5 |
+| `tools/check_syscall_sanitize.py` | - | tools | 8 |
 | `tools/extract_shell.py` | - | tools | 0 |
 | `tools/gdb_repro.py` | - | tools | 4 |
 | `tools/gen_desktop_pngs.py` | - | tools | 2 |
