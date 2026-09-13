@@ -1822,10 +1822,9 @@ tiling and focus contracts),
 Methodology is SDD (spec in `CLAUDE.md` first), TDD (failing scenario first),
 BDD (`test_bdd.sh` over the serial console), mutation testing, and the Boy
 Scout rule (debt and security defects found en route are fixed, never
-deferred). `mutate.sh` path anchors for the `kernel.c` to
-`shell.c`/`syscalls.c`/`vga_fb.c`/`redirect.c` decomposition are stale
-(BROKEN until re-anchored); the `arch/x86/boot/`, `net/`, `drivers/`, `fs/`
-drift is already fixed.
+deferred). `mutate.sh` anchor hygiene is enforced by
+`tools/check_mutant_anchors.py` (in `make lint`): every expression must
+match its target file or the check fails closed.
 
 Governance gates (`ARCH_POLICY.yaml`): `tools/check_cohesion.py` (community
 cohesion floor), `tools/check_complexity.py` (kernel symbol budget),

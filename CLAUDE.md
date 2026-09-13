@@ -656,19 +656,22 @@ dispatch paths.
 ### Port I/O HAL (`arch/x86/hal_io.h`)
 
 Header-only, single-file contract centralizing every port number,
-controller command and device address the timer ISR path touches
+controller command and device address the kernel touches
 (`HAL_PIC1_CMD`, `HAL_PIC1_DATA`, `HAL_PIC2_CMD`, `HAL_PIC2_DATA`,
 `HAL_PIC_EOI`, `HAL_PIT_CMD`, `HAL_PIT_CH0`, `HAL_PS2_STATUS`,
-`HAL_PS2_DATA`, `HAL_PS2_MOUSE_OBF`, `HAL_MOUSE_SYNC_BIT`,
+`HAL_PS2_DATA`, `HAL_PS2_MOUSE_OBF`, `HAL_PS2_IBF_EMPTY`,
+`HAL_PS2_OBF_FULL`, the `HAL_PS2_CMD_*` controller commands, the
+`HAL_MOUSE_CMD_*` device commands, the Intellimouse knock rates and id,
+`HAL_MOUSE_HW_TIMEOUT`, `HAL_MOUSE_SYNC_BIT`,
 `HAL_MOUSE_BUTTON_MASK`, `HAL_MOUSE_SCALE`, `HAL_MOUSE_PACKET_LEN`,
 `HAL_LAPIC_EOI_ADDR`). The `hal_outb`/`hal_inb`/`hal_outw`/`hal_inw`
 accessors emit the same instructions as the open-coded sites they
 replaced; `hal_pic_eoi`/`hal_lapic_eoi` own the EOI sequences. No bare
-port literal remains on the scheduler ISR path. Under
-`HAL_IO_HOST_TEST` the accessors log to stub counters instead of
-executing privileged instructions, which makes the mapping host-testable
-(`make test-hal`, mutation-covered). First step of the HAL the
-architecture plan calls for; further drivers migrate port by port.
+port literal or raw port-asm site remains on the scheduler, keyboard or
+syscall paths (serial/SB16/IDE drivers keep the legacy `kernel.h`
+accessors until their own HAL slices land). Under `HAL_IO_HOST_TEST` the
+accessors log to stub counters, which makes the mapping host-testable
+(`make test-hal`).
 
 ### Userspace desktop architecture (design spec, future implementation)
 
@@ -769,8 +772,10 @@ cooperative and preemption is the backstop, not the norm.
   (empty line submits, non-empty bells). Semantics are SIGKILL-like:
   `rt_sigaction` stays a stub, no guest handler ever runs. Legacy
   blocking `run` never polls the console, so it ignores Ctrl+C.
-- **Build discipline (pre-existing gap, now documented):** the Makefile
-  tracks no header dependencies, so after touching any `.h` run `rm
+- **Build discipline:** the Makefile carries explicit per-object header
+  dependencies (see the `shell.o:`/`syscalls.o:` rules), so touching a
+  listed `.h` rebuilds its dependents. When a change adds a new `#include`,
+  update that object's rule in the same edit; when in doubt run `rm
   *.o && make` — a stale `kernel.o` keeps the old `PROC_T_SIZE` in the
   syscall-entry trampoline while `sched.o` moves on, and every spawned
   child hangs in its first syscall with no diagnostic.
@@ -2565,14 +2570,13 @@ reproduced: `minios_autoframes 400` climbs `gfx frames` 0 to 400).
 5. **Boy Scout rule**: technical debt and security defects found on the way
    are fixed, never deferred as out of scope.
 
-Known drift (open): `mutate.sh` references each mutant's source by path, and
-the decomposition moved code into subdirectories AND from `kernel.c` into
-`shell.c`/`syscalls.c`/`vga_fb.c`/`redirect.c`. The subdirectory path drift
-(`arch/x86/boot/`, `net/`, `drivers/`, `fs/`) is fixed in this contract; the
-remaining `kernel.c`→`shell.c`/`syscalls.c`/`vga_fb.c`/`redirect.c` mutant
-anchors (rm/mkdir/cd/cat/ps/trace/editor/append/vol/nk/write-pointer-check)
-are stale and report BROKEN until re-anchored — tracked separately, not a
-regression of this release.
+Anchor hygiene: every `mutate.sh` expression must match its target file, or
+`mutate.sh` reports BROKEN instead of a kill and the gate silently weakens.
+`tools/check_mutant_anchors.py` (in `make lint`) applies each expression
+with sed itself to a scratch copy and fails closed on any no-change anchor.
+A BRE metacharacter left unescaped (notably a bare `*` where a literal star
+stands in the source) matches nothing: always escape literals (`\*`) and
+always run the checker after touching the table.
 
 A mutant may only leave the set when it is provably *equivalent* — no input
 can distinguish it from the original. That was the case for a mutant that
@@ -2987,11 +2991,20 @@ Extracted so far:
   audio, consumed by `block.c` through ops); VFS exposes the
   `file_operations`/`vnode_t` facade (ADR-0012)
 - Drivers: ide, block, pcspk, sb16, rtc moved to `drivers/`
+- Mouse: the PS/2 controller handshake, Intellimouse knock and
+  enable/disable verbs moved from `kernel/sched.c` to `drivers/mouse.c`
+  with the boundary header `drivers/mouse.h`; the IRQ12 packet phase
+  machine stays in the scheduler ISR dispatch beside its consumer
 - Filesystem: minifs, zip moved to `fs/`
 - Network: net, tls, tls_crypto, tls_x509 moved to `net/`; the rtl8139
   driver further split into its own contract `net/rtl8139.c` with the
   boundary header `net/rtl8139.h`
 - Scheduler: sched.c, vga_fb.c, lz4_kernel.c, cvm_host.c moved to `kernel/`
+- Cursor: the pointer sprite layer (bitmap, saved background, painted
+  position) moved from `kernel/vga_fb.c` to `kernel/vga_cursor.c` with the
+  boundary header `kernel/vga_cursor.h`; it draws only through the
+  framebuffer primitives (`vga_fb_pixel`, `fb_read/write_packed`), and the
+  compositor reaches it through place/move/erase/invalidate ops
 - Syscalls: proc-leaf handlers (clone, seccomp, nice, yield, getpid/tid,
   fork/vfork/execve stubs, exit, wait4, kill) moved to
   `kernel/syscalls_proc.c` with the boundary header `syscalls_proc.h`;
@@ -3007,10 +3020,17 @@ Extracted so far:
   `wm_window.h`, `wm_render.h`, `wm_tiling.h`, `wm_focus.h`, ADR-0020);
   `kernel/vga_fb.c` consumes them for hit-testing, event edges, paint
   order, tiling cells and focus transitions, host-tested by `make test-wm`
+- Console input: pushback FIFO, serial + PS/2 raw multiplexer,
+  blocking/peek/raw/job readers and the scrollback view moved from
+  `kernel/shell.c` (2961 lines) to `kernel/console_in.c` with the boundary
+  header `kernel/console_in.h`; the readline loop re-injects through the
+  public `console_ungetc`. `shell.h` re-exports the boundary, so the editor,
+  SPAWN waits and the GETC_RAW syscall include one header as before.
 
-Future extractions: shell.c (circular deps with console_getc/redirect),
-loader.c (deps on static mm funcs), mm.c, and the remaining `syscalls.c`
-leaves (fd table, spawn bridge, mm, net, gfx handlers, in that risk order).
+Future extractions: shell.c remainder — readline/history/completion state
+and builtins (~2700 lines), loader.c (deps on static mm funcs), mm.c, and
+the remaining `syscalls.c` leaves (fd table, spawn bridge, mm, net, gfx
+handlers, in that risk order).
 
 ### VFS Invariant Documentation (Phase 1.4)
 

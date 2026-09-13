@@ -26,6 +26,7 @@
 #include "rtc.h"
 #include "lz4_kernel.h"
 #include "drivers/kbd.h"
+#include "arch/x86/hal_io.h"
 #include "arch/x86/msr.h"
 #include "zip.h"
 #include "futex.h"
@@ -151,7 +152,7 @@ static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)
         if (!kbd_raw_empty()) return kbd_raw_pop();
         if (!kbd_available()) return -1;
         unsigned char sc;
-        __asm__ volatile("inb $0x60, %0" : "=a"(sc));
+        sc = hal_inb(HAL_PS2_DATA);
         /* WM-first: Alt+Tab / Super+Tab / Super+arrows / Alt+close work
          * while a game owns the keyboard; consumed bytes never reach it. */
         if (kbd_sys_raw_filter(sc)) return -1;

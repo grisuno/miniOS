@@ -38,6 +38,38 @@
 #define HAL_PS2_IBF_EMPTY 0x02
 /** Docstring: PS/2 status bit for output buffer full. */
 #define HAL_PS2_OBF_FULL 0x01
+/** Docstring: PS/2 controller command: forward next byte to the mouse. */
+#define HAL_PS2_CMD_WRITE_MOUSE 0xD4
+/** Docstring: PS/2 controller command: enable the auxiliary (mouse) port. */
+#define HAL_PS2_CMD_ENABLE_AUX 0xA8
+/** Docstring: PS/2 controller command: read the config byte. */
+#define HAL_PS2_CMD_READ_CONFIG 0x20
+/** Docstring: PS/2 controller command: write the config byte. */
+#define HAL_PS2_CMD_WRITE_CONFIG 0x60
+/** Docstring: PS/2 config byte bit: enable IRQ12 mouse interrupts. */
+#define HAL_PS2_CONFIG_IRQ12 0x02
+/** Docstring: Mouse device command: reset. */
+#define HAL_MOUSE_CMD_RESET 0xFF
+/** Docstring: Mouse device command: set sample rate (next byte is the rate). */
+#define HAL_MOUSE_CMD_SET_RATE 0xF3
+/** Docstring: Mouse device command: report device id. */
+#define HAL_MOUSE_CMD_GET_ID 0xF2
+/** Docstring: Mouse device command: restore defaults. */
+#define HAL_MOUSE_CMD_DEFAULTS 0xF6
+/** Docstring: Mouse device command: enable data reporting. */
+#define HAL_MOUSE_CMD_ENABLE 0xF4
+/** Docstring: Mouse device command: disable data reporting. */
+#define HAL_MOUSE_CMD_DISABLE 0xF5
+/** Docstring: Intellimouse detect rate, first byte of the 200/100/80 knock. */
+#define HAL_MOUSE_RATE_KNOCK_200 200
+/** Docstring: Intellimouse detect rate, second byte of the knock. */
+#define HAL_MOUSE_RATE_KNOCK_100 100
+/** Docstring: Intellimouse detect rate, third byte of the knock. */
+#define HAL_MOUSE_RATE_KNOCK_80 80
+/** Docstring: Device id reported by a wheel (Intellimouse) mouse. */
+#define HAL_MOUSE_ID_INTELLI 0x03
+/** Docstring: Poll bound for mouse controller/data waits. */
+#define HAL_MOUSE_HW_TIMEOUT 100000
 
 /** Docstring: Mouse packet first-byte sync bit. */
 #define HAL_MOUSE_SYNC_BIT 0x08

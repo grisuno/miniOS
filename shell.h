@@ -8,6 +8,7 @@
  * single source of the shell API. */
 
 #include "kernel.h"
+#include "kernel/console_in.h"
 
 #define CMD_BUF_SZ 256
 #define MAX_ARGS   16
@@ -18,16 +19,6 @@ void shell_readline_buf(char *buf, int size);
 
 /* Tokenize `line` into up to `max_args` argv entries; returns argc. */
 int shell_parse(char *line, char **argv, int max_args);
-
-/* Raw console multiplexer backing the GETC_RAW syscall: the same serial +
- * PS/2 sources the console reads, without line buffering, echo or the
- * scrollback detour. try returns -1 when idle; get blocks until a byte. */
-int console_raw_try(void);
-int console_raw_get(void);
-
-/** Docstring: PS/2-only GETC_RAW source for background jobs. */
-int console_job_try(void);
-int console_job_get(void);
 
 /* Execute a shell script: read `path` line by line, skip blanks and `#`
  * comments, parse each line and dispatch it through the normal builtin/

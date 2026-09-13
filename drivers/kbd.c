@@ -4,6 +4,7 @@
 #include "kbd.h"
 #include "modifiers.h"
 #include "wm_events.h"
+#include "arch/x86/hal_io.h"
 
 /* ================================================================
  *  Keyboard driver — PS/2 scancode set 1 (US qwerty)
@@ -173,8 +174,8 @@ int kbd_q_pop(void) {
 
 int kbd_available(void) {
     unsigned char s;
-    __asm__ volatile("inb $0x64, %0" : "=a"(s));
-    return (s & 1) && !(s & 0x20);
+    s = hal_inb(HAL_PS2_STATUS);
+    return (s & HAL_PS2_OBF_FULL) && !(s & HAL_PS2_MOUSE_OBF);
 }
 
 int kbd_raw_mode_get(void) { return kbd_raw_mode; }
@@ -329,7 +330,7 @@ int kbd_read(void) {
     if (!kbd_q_empty()) return kbd_q_pop();
     while (!kbd_available()) __asm__ volatile("pause");
     unsigned char sc;
-    __asm__ volatile("inb $0x60, %0" : "=a"(sc));
+    sc = hal_inb(HAL_PS2_DATA);
 
     /* Raw fill only for non-shell owners (a bg/fg proc reading through
      * GETC_RAW with raw mode on). The shell itself (pid 0, alive) always

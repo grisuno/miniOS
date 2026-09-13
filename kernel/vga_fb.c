@@ -14,6 +14,7 @@
  * can reset it instead of leaking a stale grab into the next gesture.
  */
 #include "kernel.h"
+#include "kernel/vga_cursor.h"
 #include "vga_fb.h"
 #include "bootdefs.h"
 #include "sched.h"
@@ -125,8 +126,8 @@ mouse_state_t mouse_state;
  * drawing code above keeps speaking indices; in 8-bit mode the helpers are
  * plain framebuffer accesses. Packed pixels are 0x00RRGGBB. */
 static unsigned long fb_pack_idx(unsigned idx);
-static void fb_write_packed(int x, int y, unsigned long rgb);
-static unsigned long fb_read_packed(int x, int y);
+unsigned long fb_read_packed(int x, int y);
+void fb_write_packed(int x, int y, unsigned long rgb);
 
 /* Forward: the wallpaper cache lives with the shortcut-icon code below, but
  * the desktop painter above needs it. */
@@ -238,97 +239,9 @@ static const char *line_at(int abs, int *off) {
 static void draw_scrollbar(void);
 static void term_render(void);
 
-/* ---- Mouse cursor bitmap (8x8 arrow) ---- */
-static const uint8_t cursor_bmp[8] = {
-    0b11000000,
-    0b11100000,
-    0b11110000,
-    0b11111000,
-    0b11111100,
-    0b11110000,
-    0b10011000,
-    0b00001100,
-};
+/* Pointer sprite state and ops live in kernel/vga_cursor.c; this file
+ * reaches them through kernel/vga_cursor.h. */
 
-/* The arrow's visual point is its top-left pixel: the sprite is drawn with its
- * top-left corner at (mx, my), so click hit-tests use (mx, my) directly and a
- * click lands where the user aims the arrow tip. */
-#define CURSOR_TIP_X 0
-#define CURSOR_TIP_Y 0
-#define CURSOR_W 8
-#define CURSOR_H 8
-
-static unsigned long cursor_save[8][8];
-static int cursor_old_x, cursor_old_y;
-static int cursor_visible;
-
-/* The cursor is drawn with its top-left corner at (mx, my), so the sprite
- * spans down-right of the pointer. The caller clamps mx/my so the position
- * stays inside the framebuffer; pixels outside the screen are clipped by the
- * packed helpers, and the snapshot holds packed RGB so a restore is exact in
- * any color depth. */
-static void cursor_save_bg(int mx, int my) {
-    int i, j;
-    int x0 = mx - CURSOR_TIP_X;
-    int y0 = my - CURSOR_TIP_Y;
-    for (j = 0; j < 8; j++)
-        for (i = 0; i < 8; i++)
-            cursor_save[j][i] = fb_read_packed(x0 + i, y0 + j);
-}
-
-/** Docstring: True when the arrow bitmap sets pixel i,j. */
-static int cursor_is_set(int i, int j)
-{
-    if (i < 0 || i >= 8 || j < 0 || j >= 8) return 0;
-    return (cursor_bmp[j] & (0x80 >> i)) ? 1 : 0;
-}
-
-/** Docstring: True when an 8-neighbour of i,j belongs to the arrow. */
-static int cursor_has_set_neighbour(int i, int j)
-{
-    int dj, di;
-    for (dj = -1; dj <= 1; dj++)
-        for (di = -1; di <= 1; di++) {
-            if (di == 0 && dj == 0) continue;
-            if (cursor_is_set(i + di, j + dj)) return 1;
-        }
-    return 0;
-}
-
-static void cursor_draw(int mx, int my) {
-    int i, j;
-    int x0 = mx - CURSOR_TIP_X;
-    int y0 = my - CURSOR_TIP_Y;
-    for (j = 0; j < 8; j++)
-        for (i = 0; i < 8; i++) {
-            if (cursor_is_set(i, j))
-                vga_fb_pixel(x0 + i, y0 + j, COL_WHITE);
-            else if (cursor_has_set_neighbour(i, j))
-                vga_fb_pixel(x0 + i, y0 + j, COL_BLACK);
-        }
-}
-
-static void cursor_restore(int mx, int my) {
-    int i, j;
-    int x0 = mx - CURSOR_TIP_X;
-    int y0 = my - CURSOR_TIP_Y;
-    for (j = 0; j < 8; j++)
-        for (i = 0; i < 8; i++)
-            fb_write_packed(x0 + i, y0 + j, cursor_save[j][i]);
-}
-
-/* True when the cursor sprite overlaps the given screen rectangle. Used to
- * decide whether a partial repaint (taskbar, terminal content) overwrote the
- * cursor, in which case its saved background must be refreshed; otherwise the
- * cursor keeps its saved background and moves without leaving a trail. The
- * sprite is CURSOR_W x CURSOR_H with its top-left corner at (mx, my). */
-static int cursor_over(int x0, int y0, int w, int h) {
-    int cxl = mouse_state.x;                 /* sprite left edge */
-    int cxt = mouse_state.x + CURSOR_W;      /* sprite right edge */
-    int cyl = mouse_state.y;                 /* sprite top edge */
-    int cyt = mouse_state.y + CURSOR_H;      /* sprite bottom edge */
-    return cxl < x0 + w && cxt > x0 && cyl < y0 + h && cyt > y0;
-}
 
 /* ---- Graphics-mode pointer (compositor contract) ----
  *
@@ -504,7 +417,7 @@ static void wm_gfx_focus_sync(int on);
 void vga_fb_set_gfx_mode(int on) {
     vga_fb_gfx_mode = on;
     if (!on) {
-        cursor_visible = 0;
+        cursor_invalidate();
         gfx_win_ox = 0;
         gfx_win_oy = 0;
         gfx_prog[0] = '\0';
@@ -539,9 +452,8 @@ static void gfx_place(int w, int h, int *ox, int *oy) {
  * meaningful in graphics mode; the desktop path (vga_fb_mouse_tick) manages
  * its own cursor with the same functions. */
 static void vga_fb_gfx_cursor_erase(void) {
-    if (!vga_fb_gfx_mode || !cursor_visible) return;
-    cursor_restore(cursor_old_x, cursor_old_y);
-    cursor_visible = 0;
+    if (!vga_fb_gfx_mode) return;
+    cursor_erase();
 }
 
 /* Clamp the mouse into the framebuffer (the idle loop that normally clamps
@@ -557,11 +469,7 @@ static void vga_fb_gfx_cursor_draw(void) {
     if (my >= fb_height)   my = fb_height - 1;
     mouse_state.x = mx;
     mouse_state.y = my;
-    cursor_save_bg(mx, my);
-    cursor_draw(mx, my);
-    cursor_old_x = mx;
-    cursor_old_y = my;
-    cursor_visible = 1;
+    cursor_place(mx, my);
 }
 
 /* ---- 8x8 CP437 font (ASCII 32-127) ---- */
@@ -732,7 +640,7 @@ static int wm_bus_ready;
 static void wm_focus_cursor_sync(const wm_notify_event_t *e)
 {
     (void)e;
-    cursor_visible = 0;
+    cursor_invalidate();
 }
 
 /** Docstring: Emit one focus event when the id actually moved. */
@@ -1396,7 +1304,7 @@ static unsigned long fb_pack_idx(unsigned idx) {
     return (r << 16) | (g << 8) | b;
 }
 
-static void fb_write_packed(int x, int y, unsigned long rgb) {
+void fb_write_packed(int x, int y, unsigned long rgb) {
     volatile uint8_t *p;
     if (x < 0 || x >= fb_width || y < 0 || y >= fb_height) return;
     p = FB_ADDR + (unsigned)y * (unsigned)fb_pitch;
@@ -1416,7 +1324,7 @@ static void fb_write_packed(int x, int y, unsigned long rgb) {
     }
 }
 
-static unsigned long fb_read_packed(int x, int y) {
+unsigned long fb_read_packed(int x, int y) {
     volatile uint8_t *p;
     if (x < 0 || x >= fb_width || y < 0 || y >= fb_height) return 0;
     p = FB_ADDR + (unsigned)y * (unsigned)fb_pitch;
@@ -1986,7 +1894,7 @@ static void taskbar_render(void) {
 }
 
 /* Redraw the clock only when the wall-clock second changes. Only the taskbar
- * strip is repainted, so the cursor must be re-saved (cursor_visible = 0) only
+ * strip is repainted, so the cursor must be re-saved (invalidated) only
  * when it actually sat over the taskbar; otherwise it keeps its saved
  * background and moves normally, which is what prevents pointer trails. */
 static void taskbar_tick(void) {
@@ -1997,8 +1905,7 @@ static void taskbar_tick(void) {
     if (h == last_h && m == last_m && s == last_s) return;
     last_h = h; last_m = m; last_s = s;
     taskbar_render();
-    if (cursor_over(0, y, fb_width, FONT_H))
-        cursor_visible = 0;
+    cursor_note_repaint(0, y, fb_width, FONT_H);
 }
 
 /** Docstring: Active Nuklear theme name for the taskbar widget.
@@ -2090,15 +1997,13 @@ static void taskbar_handle_click(int mx, int my) {
     if (mx >= tb_kbd_x && mx < tb_kbd_x + TASKBAR_KBD_W) {
         kbd_toggle_layout();
         taskbar_render();
-        if (cursor_over(0, y, fb_width, FONT_H))
-            cursor_visible = 0;
+        cursor_note_repaint(0, y, fb_width, FONT_H);
         return;
     }
     if (mx >= tb_theme_x && mx < tb_theme_x + TASKBAR_THEME_W) {
         taskbar_theme_cycle();
         taskbar_render();
-        if (cursor_over(0, y, fb_width, FONT_H))
-            cursor_visible = 0;
+        cursor_note_repaint(0, y, fb_width, FONT_H);
         return;
     }
     if (mx >= tb_spk_x && mx < tb_spk_x + TASKBAR_ICON_W) {
@@ -2372,7 +2277,7 @@ void vga_fb_draw_desktop(void) {
     }
     tw_unpark(cur);
     gfx_keep_restore();
-    cursor_visible = 0;
+    cursor_invalidate();
 }
 
 /* ---- Keyboard shortcuts ---- */
@@ -3008,7 +2913,7 @@ static void mouse_apply_wheel(int wheel, int step)
     if (disp_off < 0) disp_off = 0;
     term_render();
     if (cursor_over(term_px_x, term_content_y(), term_px_w, term_px_h))
-        cursor_visible = 0;
+        cursor_invalidate();
 }
 
 /** Docstring: Title-bar drag of the graphics window. */
@@ -3057,7 +2962,7 @@ static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int
     }
     if (wm_dragging) {
         vga_fb_drag_terminal(mx, my, wm_grab_cx);
-        if (!gfx_cursor) cursor_visible = 0;
+        if (!gfx_cursor) cursor_invalidate();
     }
 }
 
@@ -3081,7 +2986,7 @@ static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)
     disp_off = new_off;
     term_render();
     if (cursor_over(term_px_x, term_content_y(), term_px_w, term_px_h))
-        cursor_visible = 0;
+        cursor_invalidate();
 }
 
 /** Docstring: Per-tick mouse dispatch over unified geometry and events. */
@@ -3097,10 +3002,11 @@ void vga_fb_mouse_tick(void) {
 
     /* Single cursor owner: while a graphics program owns the display the
      * present path (blit_gfx_buf) is the sole cursor painter. The tick
-     * sharing cursor_save/cursor_old with it raced every present (~60fps
-     * vs 25Hz): stale restores painted trails and flicker, worst on the
-     * title-bar hitboxes the tick touches each pass. So in gfx mode the
-     * tick never draws or restores the cursor and only invalidates it
+     * used to share the sprite state with it and raced every present
+     * (~60fps vs 25Hz): stale restores painted trails and flicker, worst
+     * on the title-bar hitboxes the tick touches each pass. So in gfx
+     * mode the tick never draws or restores the cursor and only
+     * invalidates it
      * across real repaints (draw_desktop/taskbar_render clear it
      * themselves); anywhere else the invalidation is gated off. */
     gfx_cursor = vga_fb_gfx_mode;
@@ -3110,7 +3016,7 @@ void vga_fb_mouse_tick(void) {
         taskbar_handle_click(mouse_state.x, mouse_state.y);
         if (wm_button_click(mouse_state.x, mouse_state.y)) {
             tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
-            if (!gfx_cursor) cursor_visible = 0;
+            if (!gfx_cursor) cursor_invalidate();
             wm_skip_drag = 1;
             return;
         }
@@ -3166,21 +3072,7 @@ void vga_fb_mouse_tick(void) {
     /* Erase old cursor and draw new one. Skipped wholesale in gfx mode:
      * the present path owns the cursor there (see above). */
     if (gfx_cursor) return;
-    if (cursor_visible) {
-        if (mx != cursor_old_x || my != cursor_old_y) {
-            cursor_restore(cursor_old_x, cursor_old_y);
-            cursor_save_bg(mx, my);
-            cursor_draw(mx, my);
-            cursor_old_x = mx;
-            cursor_old_y = my;
-        }
-    } else {
-        cursor_save_bg(mx, my);
-        cursor_draw(mx, my);
-        cursor_old_x = mx;
-        cursor_old_y = my;
-        cursor_visible = 1;
-    }
+    cursor_move(mx, my);
 }
 
 void vga_fb_mouse_init(void) {
@@ -3191,7 +3083,7 @@ void vga_fb_mouse_init(void) {
     mouse_state.dy = 0;
     mouse_state.wheel = 0;
     mouse_state.present = 0;
-    cursor_visible = 0;
+    cursor_invalidate();
     lg_head = lg_tail = lg_count = 0;
     act_len = 0;
     act[0] = '\0';

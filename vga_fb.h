@@ -178,6 +178,10 @@ void     vga_fb_putc_term(char c);
 void     vga_fb_puts_term(const char *s);
 void     vga_fb_text_cursor(int col);
 void     vga_fb_hide_text_cursor(void);
+/* Packed-pixel primitives (0x00RRGGBB): the cursor layer draws through
+ * these so it never touches raw framebuffer memory itself. */
+unsigned long fb_read_packed(int x, int y);
+void     fb_write_packed(int x, int y, unsigned long rgb);
 void     vga_fb_draw_desktop(void);
 void     vga_fb_toggle_fullscreen(void);
 void     vga_fb_move_terminal(int dx, int dy);

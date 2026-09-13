@@ -1258,6 +1258,7 @@ lint: | $(TOOLS_DIR)
 	python3 tools/check_fork_stubs.py
 	python3 tools/check_syscall_sanitize.py
 	python3 tools/check_addons.py
+	python3 tools/check_mutant_anchors.py
 	bash -n mutate.sh && bash -n test_bdd.sh && echo "lint: ok"
 
 # Sync primitives host test (tests/test_sync.c + kernel/sync.c).
@@ -1482,10 +1483,16 @@ console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h
+         sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-editor.o: kernel/editor.c kernel.h shell.h editor.h vga_fb.h
+editor.o: kernel/editor.c kernel.h shell.h editor.h vga_fb.h kernel/console_in.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+console_in.o: kernel/console_in.c kernel.h drivers/kbd.h vga_fb.h kernel/console_in.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+vga_cursor.o: kernel/vga_cursor.c kernel.h vga_fb.h kernel/vga_cursor.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 serial.o: kernel/serial.c kernel.h
@@ -1518,7 +1525,11 @@ ramdisk.o: fs/ramdisk.c kernel.h
 time.o: kernel/time.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kbd.o: drivers/kbd.c kernel.h vga_fb.h drivers/kbd.h drivers/modifiers.h
+kbd.o: drivers/kbd.c kernel.h vga_fb.h drivers/kbd.h drivers/modifiers.h arch/x86/hal_io.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+mouse.o: drivers/mouse.c kernel.h arch/x86/hal_io.h drivers/mouse.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 printf.o: kernel/printf.c kernel.h
@@ -1530,7 +1541,7 @@ klog.o: kernel/klog.c kernel.h
 exec.o: kernel/exec.c kernel.h bootdefs.h arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h
@@ -1659,14 +1670,14 @@ $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip: tools/gen_zip_fixtures.p
 # the caller's set survives every voluntary switch by construction.
 # Removing a flag reopens the lost-waitpid-pid hang; check_abi_numbers
 # does not cover it, the thdemo/fptest BDD scenarios do.
-sched.o: kernel/sched.c sched.h kernel.h arch/x86/boot/bootdefs.h arch/x86/hal_io.h tick.h vga_fb.h sb16.h pcspk.h futex.h percpu_rq.h rcu.h
+sched.o: kernel/sched.c sched.h kernel.h arch/x86/boot/bootdefs.h arch/x86/hal_io.h drivers/mouse.h tick.h vga_fb.h sb16.h pcspk.h futex.h percpu_rq.h rcu.h
 	$(CC) $(CFLAGS_KERN) -ffixed-rbx -ffixed-r12 -ffixed-r13 -ffixed-r14 -ffixed-r15 -c $< -o $@
 
 tick.o: kernel/tick.c tick.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
-           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h
+           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h kernel/vga_cursor.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 pcspk.o: drivers/pcspk.c pcspk.h driver.h kernel.h
@@ -1725,10 +1736,10 @@ abi.o: kernel/abi.c abi.h kernel.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_cursor.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o \
-	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
+	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_cursor.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 
 kernel.bin: kernel.elf | check-size

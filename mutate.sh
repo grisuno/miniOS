@@ -131,14 +131,14 @@ run-o-dir | s/{ \".o\",    \"objects\/\" }/{ \".o\",    \"objectx\/\" }/ | kerne
 run-elf-dir | s/{ \".elf\",  \"bin\/\" }/{ \".elf\",  \"bix\/\" }/ | kernel/shell.c
 run-cvm-dir | s/{ \".cvm\",  \"cvm\/\" }/{ \".cvm\",  \"cvmx\/\" }/ | kernel/shell.c
 cwd-never-applied | s/kmemcpy(out, fs_cwd, kstrlen(fs_cwd) + 1);/kmemcpy(out, \"\", 1);/ | fs/vfs.c
-cd-always-fails | s/if (!fs_resolve(argv\\[1\\], resolved, sizeof(resolved))) {/if (1) {/ | kernel/shell.c
-rm-missing-passes | s/if (!f) { kprintf(\\\"rm: %s: no such file\\\\n\\\", argv\\[1\\]); return; }/if (0) {/ | kernel/shell.c
+cd-always-fails | s/if (!shell_resolve_arg(\\\"cd\\\"/if (1 || !shell_resolve_arg(\\\"cd\\\"/ | kernel/shell.c
+rm-missing-passes | s/kprintf(\\\"%s: %s: %s\\\\n\\\", cmd, arg, reason);/kprintf(\\\"removed %s\\\\n\\\", arg);/ | kernel/shell.c
 rm-dir-accepted | s/if (fs_is_dir(resolved)) {/if (0) {/ | kernel/shell.c
 mkdir-dup-passes | s/if (fs_dir_exists(dirname)) {/if (0) {/ | kernel/shell.c
 mkdir-parent-bypassed | s/if (!fs_dir_exists(parent)) {/if (0) {/ | kernel/shell.c
 cd-exists-bypassed | s/if (!fs_dir_exists(target)) {/if (0) {/ | kernel/shell.c
 kfopen-dir-refusal-bypassed | s/if (fs_is_dir(resolved)) return 0;/\\/* dir bypass *\\// | fs/kfile.c
-ps-empty | s/kprintf(\\\"  %-12s  %s  %p\\\\n\\\", p->name,/if (0) kprintf(\\\"  %-12s  %s  %p\\\\n\\\", p->name,/ | kernel/shell.c
+ps-empty | s/kprintf(\\\"  pid  ppid state name\\\\n\\\");/kprintf(\\\"  pid  ppid state name\\\\n\\\"); n = 0;/ | kernel/shell.c
 cat-drops-second-file | s/for (fi = 1; fi < argc; fi++)/for (fi = 1; fi < 2; fi++)/ | kernel/shell.c
 append-flag-ignored | s/            \\*append_mode = 1;/            \\*append_mode = 0;/ | kernel/redirect.c
 append-mode-acts-like-write | s/((mode\\[0\\] == \\x27a\\x27) ? 2 : 0)/((mode\\[0\\] == \\x27a\\x27) ? 1 : 0)/ | fs/kfile.c
@@ -157,8 +157,8 @@ rx-frame-truncated | s/    for (k = 0; k < n; k++) {/    for (k = 0; k < n - 128
 
 nk-frame-not-composited | s/        vga_fb_blit_nk_window();/        if (0) vga_fb_blit_nk_window();/ | kernel/syscalls.c
 nk-origin-not-reported | s/            o\\[0\\] = nk_win_x;/            o\\[0\\] = 0;/ | kernel/syscalls.c
-nk-mouse-bounds-unchecked | s/    if (!user_range_ok((unsigned long)a1, 4 \* sizeof(int))) return EFAULT;/    if (0) return EFAULT;/ | kernel/syscalls.c
-nk-backbuf-not-mapped | s/        unsigned char \\*buf = (unsigned char \\*)kmalloc(NK_W \\* NK_H);/        unsigned char \\*buf = 0;/ | kernel/mm/paging.c
+nk-mouse-bounds-unchecked | s/    SANITIZE_RANGE(a1, 4 \\* sizeof(int));/    (void)a1;/ | kernel/syscalls.c
+nk-backbuf-not-mapped | s/        buf = mm_page_aligned_alloc(NK_W \\* NK_H, \\&phys);/        buf = 0;/ | kernel/mm/paging.c
 
 tls-close-notify-unrecognized | s/if (s->rec_len == 2 \\&\\& s->rec\\[1\\] == 0) {/if (s->rec_len == 2 \\&\\& s->rec\\[1\\] == 1) {/ | net/tls.c
 tls-chain-stride | s/TLS_MEMCPY(s->chain + stored, m + pos, cl);/TLS_MEMCPY(s->chain + s->n_certs \\* TLS_CERT_MAX, m + pos, cl);/ | net/tls.c
@@ -195,7 +195,7 @@ futex-value-check-inverted | s/if (\\*(volatile int \\*)uaddr != val)/if (*(vola
 futex-wake-count-unbounded | s/while (pid != WQ_NONE \\&\\& woken < n)/while (pid != WQ_NONE)/ | kernel/futex.c
 futex-linux-private-unmasked | s/long cmd = op & ~(long)LINUX_FUTEX_PRIVATE_FLAG;/long cmd = op;/ | kernel/futex.c
 futex-linux-wake-dropped | s/if (cmd == LINUX_FUTEX_WAIT || cmd == LINUX_FUTEX_WAKE)/if (cmd == LINUX_FUTEX_WAIT)/ | kernel/futex.c
-rtc-epoch-day-off-by-one | s/return era * 146097 + doe - 719468;/return era * 146097 + doe - 719467;/ | rtc.h
+rtc-epoch-day-off-by-one | s/return era \\* 146097 + doe - 719468;/return era \\* 146097 + doe - 719467;/ | rtc.h
 percpu-rq-full-drop-lost | s/if (rqueues\\[cpu\\].count >= RQ_DEPTH)/if (rqueues[cpu].count > RQ_DEPTH)/ | kernel/percpu_rq.c
 batch-completion-off-by-one | s/\\*completed = i + 1;/\\*completed = i;/ | kernel/batch.c
 rcu-grace-shortened | s/if (rcu_state.pending\\[i\\].epoch < rcu_state.epoch)/if (rcu_state.pending[i].epoch <= rcu_state.epoch)/ | kernel/rcu.c

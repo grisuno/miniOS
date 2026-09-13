@@ -17,6 +17,7 @@
 #include "minifetch.h"
 #include "shell.h"
 #include "editor.h"
+#include "kernel/console_in.h"
 
 /* ================================================================
  *  Shell (kernel/shell.c)
@@ -168,263 +169,10 @@ static int shell_parse_vol(const char *s, unsigned *out) {
  * the serial line as ESC [ 5 ~ / ESC [ 6 ~ — enter a scrollback view of past
  * output; any other key leaves scrollback and is delivered to the caller. */
 
-#define PB_LEN 8
-static unsigned char pb_buf[PB_LEN];
-static int pb_head, pb_tail;
+/* Blocking reads live in kernel/console_in.c; the prompt loop below
+ * consumes them through console_getc/console_peek. */
 
-static int pb_empty(void) { return pb_head == pb_tail; }
-static int pb_count(void) { return (pb_tail - pb_head + PB_LEN) % PB_LEN; }
-static void pb_push_back(unsigned char c) {
-    if (pb_count() >= PB_LEN - 1) return;
-    pb_buf[pb_tail] = c;
-    pb_tail = (pb_tail + 1) % PB_LEN;
-}
-static void pb_push_front(unsigned char c) {
-    if (pb_count() >= PB_LEN - 1) return;
-    pb_head = (pb_head - 1 + PB_LEN) % PB_LEN;
-    pb_buf[pb_head] = c;
-}
-static int pb_pop(void) {
-    if (pb_empty()) return -1;
-    int c = pb_buf[pb_head];
-    pb_head = (pb_head + 1) % PB_LEN;
-    return c;
-}
-static int pb_peek(void) {
-    if (pb_empty()) return -1;
-    return pb_buf[pb_head];
-}
-
-/* Next raw byte (kbd queue, then serial, then PS/2) without touching the
- * pushback FIFO; blocks until one is available. */
-static int raw_blocking_getc(void) {
-    static unsigned mouse_tick_cnt;
-    for (;;) {
-        if (!kbd_q_empty()) return kbd_q_pop();
-        if (serial_available()) {
-            int c = serial_getc();
-            if (c >= 0) return c;
-        }
-        if (kbd_available()) {
-            int c = kbd_read();
-            if (c >= 0) return c;
-        }
-        if (vga_fb_active && (++mouse_tick_cnt & 0xFF) == 0)
-            vga_fb_mouse_tick();
-        __asm__ volatile("pause");
-    }
-}
-
-/* Non-blocking variant of the above for sequence lookahead. */
-static int raw_try_getc(void) {
-    if (!kbd_q_empty()) return kbd_q_pop();
-    if (serial_available()) {
-        int c = serial_getc();
-        if (c >= 0) return c;
-    }
-    if (kbd_available()) {
-        int c = kbd_read();
-        if (c >= 0) return c;
-    }
-    return -1;
-}
-
-/* Poll for the next raw byte with a bounded spin, so a multi-byte escape
- * sequence arriving over the serial line (byte by byte) is read as a unit.
- * Returns the byte, or -1 after MAX_SEQ_POLL polls. The bound keeps a bare
- * ESC (never completed into a sequence) from hanging the reader. */
-#define MAX_SEQ_POLL 200000
-static int raw_wait_seq(void) {
-    int n;
-    for (n = 0; n < MAX_SEQ_POLL; n++) {
-        int c = raw_try_getc();
-        if (c >= 0) return c;
-        __asm__ volatile("pause");
-    }
-    return -1;
-}
-
-static void scrollback_view(int initial_dir);
-
-/* Called after an ESC byte has been read. Pulls the remainder of the sequence
- * non-blocking and classifies it. Returns 1 (PageUp), 2 (PageDown), or 0 for
- * "not a page key" — in which case every byte pulled EXCEPT the leading ESC
- * is re-injected into the pushback FIFO so the caller can hand them back to
- * the readline layer exactly as it would a raw escape. */
-static int consume_page_after_esc(void) {
-    int p0 = raw_try_getc();
-    if (p0 < 0) return 0;                 /* bare ESC */
-    if (p0 != KEY_CSI) { pb_push_front((unsigned char)p0); return 0; }
-    /* After ESC [ the sequence is a unit: wait briefly for its final byte so
-     * a serial-delivered escape (arrow, Home/End, Del, PageUp/Down) is read
-     * intact instead of being split across reads. */
-    int p1 = raw_wait_seq();
-    if (p1 < 0) { pb_push_front((unsigned char)KEY_CSI); return 0; }
-    if (p1 == KEY_PGUP_SEQ || p1 == KEY_PGDN_SEQ || p1 == '3') {
-        int p2 = raw_wait_seq();
-        if (p2 == KEY_TILDE) return (p1 == KEY_PGUP_SEQ) ? 1 : (p1 == KEY_PGDN_SEQ) ? 2 : 3;
-        if (p2 >= 0) pb_push_front((unsigned char)p2);
-        pb_push_front((unsigned char)p1);
-        pb_push_front((unsigned char)KEY_CSI);
-        return 0;
-    }
-    pb_push_front((unsigned char)p1);
-    pb_push_front((unsigned char)KEY_CSI);
-    return 0;
-}
-
-/* Blocking read from either the PS/2 keyboard or COM1 serial line. Recognises
- * the PageUp/PageDown escape sequences and detours into the scrollback view;
-* the view re-injects any terminating key into the pushback FIFO, so once it
- * returns console_getc() simply serves the FIFO again. */
-int console_getc(void) {
-    if (!pb_empty()) return pb_pop();
-    int c = raw_blocking_getc();
-    if (c != KEY_ESC) return c;
-    int r = consume_page_after_esc();
-    if (r == 1) { scrollback_view(-1); return console_getc(); }
-    if (r == 2) { scrollback_view(+1); return console_getc(); }
-    if (r == 3) {
-        /* Delete key: re-inject the ESC [ 3 ~ sequence so the readline layer
-         * handles it identically to a keyboard-delivered Del. */
-        pb_push_front(KEY_TILDE);
-        pb_push_front('3');
-        pb_push_front(KEY_CSI);
-        return KEY_ESC;
-    }
-    return KEY_ESC;
-}
-
-/* Next buffered byte without consuming it, or -1 when nothing is available
- * right now. Used to tell an ESC prefix from a complete escape sequence,
- * which always arrives in one burst. Global so SYS_SPAWN waits in spawn.c
- * can poll for Ctrl+C exactly like the shell foreground wait does. */
-int console_peek(void) {
-    if (!pb_empty()) return pb_peek();
-    int c = raw_try_getc();
-    if (c >= 0) pb_push_back((unsigned char)c);
-    return pb_peek();
-}
-
-/* Raw console multiplexer for the GETC_RAW syscall (declared in shell.h).
- * The same serial + PS/2 sources console_getc funnels, but without the
- * line buffering, echo or scrollback detour: a ring-3 fullscreen program
- * reads keystrokes byte by byte. Blocking spins with a pause (and the
- * desktop tick, as the shell idle loop does); the try variant returns -1
- * when nothing is available so user space can implement its own timeout. */
-int console_raw_try(void) {
-    return raw_try_getc();
-}
-
-int console_raw_get(void) {
-    return raw_blocking_getc();
-}
-
-/** Docstring: PS/2-only GETC_RAW source for ring-3 background jobs. */
-int console_job_try(void) {
-    if (kbd_available()) {
-        int c = kbd_read();
-        if (c >= 0) return c;
-    }
-    return -1;
-}
-
-/** Docstring: Blocking PS/2-only GETC_RAW source for background jobs. */
-int console_job_get(void) {
-    for (;;) {
-        int c = console_job_try();
-        if (c >= 0) return c;
-        __asm__ volatile("pause");
-    }
-}
-
-/* ---- Scrollback view ----
- *
- * Renders a 25-row window over (scrollback ring + live screen) into the VGA
- * framebuffer and to the serial console, hides the cursor, and lets the user
- * page up/down through history. PageDown at the bottom, or any other key,
- * exits; the exit key is re-injected into the pushback FIFO so the readline
- * that was waiting for input receives it as if scrollback never happened. */
-#define SB_LEN  (VGA_ROWS * VGA_COLS * 2)
-
-static void scrollback_render(int voff, int total, const unsigned char *saved) {
-    int sb_cnt = sb_get_count();
-    char color = vga_get_color();
-    for (int r = 0; r < VGA_ROWS; r++) {
-        int li = voff + r;
-        for (int x = 0; x < VGA_COLS; x++) {
-            char ch;
-            if (li < sb_cnt) {
-                ch = sb_get_char(li, x);
-            } else {
-                int live_row = li - sb_cnt;
-                ch = (char)saved[(unsigned long)(live_row * VGA_COLS + x) * 2];
-            }
-            VGA_BASE[(unsigned long)(r * VGA_COLS + x) * 2]     = ch;
-            VGA_BASE[(unsigned long)(r * VGA_COLS + x) * 2 + 1] = color;
-            serial_putc(ch);
-        }
-        serial_putc('\n');
-    }
-}
-
-#define SB_PGUP  1
-#define SB_PGDN  2
-#define SB_EXIT  3
-
-/* Reads the next scrollback key event: PageUp/PageDown navigate; any other
- * key (or a non-page escape sequence) is re-injected and reported as SB_EXIT. */
-static int sb_next(void) {
-    int c = raw_blocking_getc();
-    if (c != KEY_ESC) { pb_push_front((unsigned char)c); return SB_EXIT; }
-    int r = consume_page_after_esc();
-    if (r == 1) return SB_PGUP;
-    if (r == 2) return SB_PGDN;
-    pb_push_front((unsigned char)KEY_ESC);   /* rest already re-injected */
-    return SB_EXIT;
-}
-
-static void scrollback_view(int initial_dir) {
-    sb_init();
-    int sb_cnt = sb_get_count();
-    if (sb_cnt == 0) return;
-
-    static unsigned char saved[SB_LEN];
-    for (int i = 0; i < SB_LEN; i++) saved[i] = VGA_BASE[i];
-    int saved_x = vga_get_x(), saved_y = vga_get_y();
-    vga_cursor_enable(0);
-
-    int total  = sb_cnt + VGA_ROWS;
-    int bottom = total - VGA_ROWS;
-    int voff   = (initial_dir < 0) ? bottom - VGA_ROWS : bottom;
-    if (voff < 0) voff = 0;
-    if (voff > bottom) voff = bottom;
-
-    scrollback_render(voff, total, saved);
-
-    for (;;) {
-        int k = sb_next();
-        if (k == SB_PGUP) {
-            int n = voff - VGA_ROWS;
-            if (n < 0) n = 0;
-            if (n != voff) { voff = n; scrollback_render(voff, total, saved); }
-            continue;
-        }
-        if (k == SB_PGDN) {
-            if (voff >= bottom) break;       /* at the live screen: leave */
-            int n = voff + VGA_ROWS;
-            if (n > bottom) n = bottom;
-            if (n != voff) { voff = n; scrollback_render(voff, total, saved); }
-            continue;
-        }
-        break;                               /* SB_EXIT: key re-injected     */
-    }
-
-    for (int i = 0; i < SB_LEN; i++) VGA_BASE[i] = saved[i];
-    vga_set_xy(saved_x, saved_y);
-    vga_set_cursor(saved_x, saved_y);
-    vga_cursor_enable(1);
-}
+/* non-blocking and classifies it; implementation in kernel/console_in.c. */
 
 /* Read one line into buf (at most size-1 chars). Echoes input and
  * honours backspace. Shared by the shell prompt and the editor. */
@@ -759,7 +507,7 @@ static void shell_readline_hist(char *buf, int size) {
                         shell_line_delete(buf, size, &pos);
                         shell_line_repaint(buf, size, pos);
                     } else if (t >= 0) {
-                        pb_push_front((unsigned char)t);
+                        console_ungetc((unsigned char)t);
                     }
                 }
             }
@@ -2272,6 +2020,17 @@ static void shell_cmd_hash(int argc, char **argv) {
     kprintf("hash: %s = %016lx\n", argv[1], (unsigned long)XXH64_digest(&h));
 }
 
+/** Docstring: Resolve `arg` against the cwd into `out`
+ * (`RAMDISK_FNAME_LEN` bytes); on failure print `<cmd>: <arg>: <reason>`
+ * and return 0. Unifies the resolve-or-diagnose prelude every path-taking
+ * builtin repeats. */
+static int shell_resolve_arg(const char *cmd, const char *arg,
+                             const char *reason, char *out) {
+    if (fs_resolve(arg, out, RAMDISK_FNAME_LEN)) return 1;
+    kprintf("%s: %s: %s\n", cmd, arg, reason);
+    return 0;
+}
+
 void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
         vga_puts("Commands: help clear ls lsfs cat catfs echo edit vedit rm mkdir cd pwd ps load run sh\n");
@@ -2482,8 +2241,7 @@ void shell_exec_builtin(int argc, char **argv) {
     else if (kstrcmp(argv[0], "rm") == 0) {
         if (argc < 2) { vga_puts("usage: rm <file>\n"); return; }
         char resolved[RAMDISK_FNAME_LEN];
-        if (!fs_resolve(argv[1], resolved, sizeof(resolved))) {
-            kprintf("rm: %s: no such file\n", argv[1]);
+        if (!shell_resolve_arg("rm", argv[1], "no such file", resolved)) {
             return;
         }
         if (fs_is_dir(resolved)) {
@@ -2509,8 +2267,8 @@ void shell_exec_builtin(int argc, char **argv) {
     else if (kstrcmp(argv[0], "mkdir") == 0) {
         if (argc < 2) { vga_puts("usage: mkdir <name>\n"); return; }
         char resolved[RAMDISK_FNAME_LEN];
-        if (!fs_resolve(argv[1], resolved, sizeof(resolved))) {
-            kprintf("mkdir: %s: name too long\n", argv[1]);
+        if (!shell_resolve_arg("mkdir", argv[1], "name too long",
+                              resolved)) {
             return;
         }
         char dirname[RAMDISK_FNAME_LEN];
@@ -2545,8 +2303,8 @@ void shell_exec_builtin(int argc, char **argv) {
     else if (kstrcmp(argv[0], "rmdir") == 0) {
         if (argc < 2) { vga_puts("usage: rmdir <dir>\n"); return; }
         char resolved[RAMDISK_FNAME_LEN];
-        if (!fs_resolve(argv[1], resolved, sizeof(resolved))) {
-            kprintf("rmdir: %s: no such directory\n", argv[1]);
+        if (!shell_resolve_arg("rmdir", argv[1], "no such directory",
+                              resolved)) {
             return;
         }
         char dirname[RAMDISK_FNAME_LEN];
@@ -2591,8 +2349,8 @@ void shell_exec_builtin(int argc, char **argv) {
     else if (kstrcmp(argv[0], "cd") == 0) {
         if (argc < 2) { fs_cwd[0] = 0; return; }
         char resolved[RAMDISK_FNAME_LEN];
-        if (!fs_resolve(argv[1], resolved, sizeof(resolved))) {
-            kprintf("cd: %s: no such directory\n", argv[1]);
+        if (!shell_resolve_arg("cd", argv[1], "no such directory",
+                              resolved)) {
             return;
         }
         unsigned rl = (unsigned)kstrlen(resolved);

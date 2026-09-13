@@ -14,6 +14,7 @@
 #include "tick.h"
 #include "arch/x86/hal_io.h"
 #include "arch/x86/msr.h"
+#include "drivers/mouse.h"
 
 /** Docstring: Audio tick adapter, forwards the bus dispatch to sb16_poll. */
 static void sched_tick_audio(void *ctx) {
@@ -1884,86 +1885,8 @@ int do_kill(int pid) {
 
 void timer_tick(void) { __sync_fetch_and_add(&sys_ticks, 1); }
 
-/* ---- PS/2 mouse hardware init ---- */
-static void mouse_wait_cmd(void) {
-    int timeout = 100000;
-    while (timeout--) {
-        if (!(inb(0x64) & 2)) return;
-    }
-}
+/* PS/2 mouse device verbs live in drivers/mouse.c (drivers/mouse.h). */
 
-static void mouse_wait_data(void) {
-    int timeout = 100000;
-    while (timeout--) {
-        if (inb(0x64) & 1) return;
-    }
-}
-
-static void mouse_write(unsigned char data) {
-    mouse_wait_cmd();
-    outb(0x64, 0xD4);
-    mouse_wait_cmd();
-    outb(0x60, data);
-}
-
-static unsigned char mouse_read(void) {
-    mouse_wait_data();
-    return inb(0x60);
-}
-
-static void mouse_hw_init(void) {
-    /* Drain any stale bytes in the output buffer */
-    while (inb(0x64) & 1) inb(0x60);
-
-    /* Enable auxiliary device (mouse) */
-    mouse_wait_cmd();
-    outb(0x64, 0xA8);
-
-    /* Enable IRQ12 by setting bit 1 of the PS/2 controller config byte */
-    mouse_wait_cmd();
-    outb(0x64, 0x20);
-    mouse_wait_data();
-    unsigned char config = inb(0x60);
-    mouse_wait_cmd();
-    outb(0x64, 0x60);
-    mouse_wait_cmd();
-    outb(0x60, config | 0x02);
-
-    /* Reset mouse.  A reset yields THREE reply bytes (0xFA ack, 0xAA
-     * self-test, device ID); reading fewer leaves the rest pending, and
-     * each stray enters the IRQ12 phase machine below: 0xAA has bit 3
-     * set, so the phase-0 guard accepts it as a packet start and every
-     * later packet is framed wrong (a left press reads back as bit 1,
-     * motion warps), permanently. */
-    mouse_write(0xFF);
-    mouse_read();
-    mouse_read();
-    mouse_read();
-
-    /* Enable Intellimouse extension for scroll wheel:
-     * Set sample rate to 200, 100, 80 in sequence */
-    mouse_write(0xF3); mouse_read();  /* set sample rate */
-    mouse_write(0xC8); mouse_read();  /* 200 */
-    mouse_write(0xF3); mouse_read();  /* set sample rate */
-    mouse_write(0x64); mouse_read();  /* 100 */
-    mouse_write(0xF3); mouse_read();  /* set sample rate */
-    mouse_write(0x50); mouse_read();  /* 80 */
-    /* Read device ID: 0x03 = Intellimouse (wheel) */
-    mouse_write(0xF2); mouse_read();
-    unsigned char id = mouse_read();
-    (void)id;
-
-    /* Set defaults */
-    mouse_write(0xF6);
-    mouse_read();
-
-    /* Enable data reporting */
-    mouse_write(0xF4);
-    mouse_read();
-}
-
-void mouse_disable(void) { mouse_write(0xF5); mouse_read(); }
-void mouse_enable(void)  { mouse_write(0xF4); mouse_read(); }
 
 void sched_init(void) {
     int c;
