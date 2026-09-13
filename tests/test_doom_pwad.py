@@ -252,5 +252,42 @@ class PwadMutationTests(unittest.TestCase):
             check_pwad(bytes(blob))
 
 
+class ExtendedLegendTests(unittest.TestCase):
+    """Every palette letter compiles to its engine thing id."""
+
+    FULL_ROOM = (
+        "#########\n"
+        "#P..z.g.#\n"
+                "#.vidbB.#\n"
+        "#.s.h.r.#\n"        "#.w.a.u.#\n"
+        "#.o.k.x.#\n"
+        "#.T.q.m.#\n"
+        "#.y.n.f.#\n"
+        "#.G.U.1.#\n"
+        "#.2.3.V.#\n"
+        "#.R.C.L.#\n"
+        "#.D.0.E.#\n"
+        "#########\n"
+    )
+
+    def test_every_legend_char_builds(self):
+        """A room holding the whole palette passes the checker."""
+        summary = check_pwad(build_pwad(parse_grid(self.FULL_ROOM)))
+        self.assertEqual(summary["sectors"], 1)
+
+    def test_every_thing_id_matches_engine(self):
+        """Each letter lands on the doomednum the engine spawns."""
+        blob = build_pwad(parse_grid(self.FULL_ROOM))
+        table = doom_pwad.read_pwad(blob)
+        pos, size, _ = table[1]
+        raw = blob[pos:pos + size]
+        width = struct.calcsize(Cfg.thing_fmt)
+        kinds = set()
+        for idx in range(size // width):
+            kinds.add(struct.unpack_from(Cfg.thing_fmt, raw, idx * width)[3])
+        for kind in sorted(set(Cfg.thing_types.values())):
+            self.assertIn(kind, kinds)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

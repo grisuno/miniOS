@@ -3,7 +3,7 @@
  * A ring-3 Nuklear application built exactly like the node editor
  * (host gcc -static -no-pie, ships on MiniFS with a bare-name alias).
  * The author paints walls, the player start, the exit switch marker
- * and a small thing palette on a tile canvas, watches a live DDA
+ * and a full thing palette on a tile canvas, watches a live DDA
  * raycaster preview in the Wolfenstein style of the sibling
  * ../raycastlib checkout, exports a single-sector E1M1 PWAD snapshot
  * into /saves, and boots the shipped Doom on it without ever writing
@@ -11,7 +11,7 @@
  *
  *     doomedit                      -> GUI editor
  *     doomedit --demo <out.wad>     -> write a fixed demo room PWAD
- *     doomedit --preset <0-4> <wad> -> write a bundled level PWAD
+ *     doomedit --preset <0-6> <wad> -> write a bundled level PWAD
  *     doomedit --export <grid> <wad> -> compile a grid text file
  *     doomedit --check <file.wad>   -> validate a PWAD file
  *     doomedit --selftest           -> one UI frame plus a build check
@@ -22,9 +22,17 @@
  * through the byte pin in tests/test_doom_pwad.py.
  *
  * Levels travel in the same one-char-per-tile grid text the editor saves
- * to /saves/dmapN.txt, so a level weighs a few hundred bytes. The five
+ * to /saves/dmapN.txt, so a level weighs a few hundred bytes. The seven
  * bundled levels below are compiled in as string rows in exactly that
- * format; the Random button grows the same format procedurally.
+ * format; the Random button grows rooms-plus-corridors maps in the same
+ * format procedurally.
+ *
+ * The thing palette only carries ids whose sprites ship in the bundled
+ * shareware Doom1.wad (checked against the engine's mobjinfo table and
+ * the IWAD lump list): cacodemon, lost soul, plasma rifle, BFG, berserk,
+ * invulnerability and the megasphere have no sprites there, so spawning
+ * them faults the renderer the moment they become visible. Doom has no
+ * quad damage; invisibility is the closest surviving powerup.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,13 +44,18 @@
 #include "nuklear_minios.h"
 #include "nuklear_theme.h"
 
-/** Central configuration: every bound, path, id and label in one place. */
-#define DMAP_MAX_W 24
-#define DMAP_MAX_H 16
-#define DMAP_DEF_W 14
-#define DMAP_DEF_H 10
+/** Central configuration: every bound, path, id and label in one place.
+ * The window is 800x360, so the canvas column (32 tiles at 14 px) plus
+ * the side panel must fit beside the toolbar and status rows without
+ * scrolling: 22 + 16 + max(canvas, panel) stays under 360. */
+#define DMAP_MAX_W 32
+#define DMAP_MAX_H 20
+#define DMAP_DEF_W 20
+#define DMAP_DEF_H 12
 #define DMAP_TILE 128
-#define DMAP_CELL_PX 22
+#define DMAP_CELL_PX 14
+#define DMAP_CANVAS_W (DMAP_MAX_W * DMAP_CELL_PX + 8)
+#define DMAP_PANEL_MIN_H 230
 #define DMAP_PREV_W 240
 #define DMAP_PREV_H 120
 #define DMAP_UI_MEMORY (2 * 1024 * 1024)
@@ -50,8 +63,10 @@
 #define DMAP_FNAME_MAX 64
 #define DMAP_STATUS_MAX 160
 #define DMAP_SLOTS 4
-#define DMAP_LEVEL_COUNT 5
+#define DMAP_LEVEL_COUNT 7
 #define DMAP_RANDOM_ATTEMPTS 64
+#define DMAP_ROOM_MAX 8
+#define DMAP_ROOM_TRIES 40
 #define DMAP_FRAME_MS 8
 #define DMAP_TURN_STEP 0.26f
 #define DMAP_MOVE_STEP 0.5f
@@ -78,7 +93,9 @@
 #define DMAP_SAVE_WAD "/saves/dmap%d.wad"
 #define DMAP_TITLE "DoomEdit"
 
-/** Brush kinds double as grid cell values on disk. */
+/** Brush kinds double as grid cell values on disk. Only things whose
+ * sprites ship in the shareware IWAD get a letter; the rest would fault
+ * the renderer once visible (see the file header). */
 enum {
     DMAP_WALL = '#',
     DMAP_FLOOR = '.',
@@ -86,23 +103,106 @@ enum {
     DMAP_EXIT = 'E',
     DMAP_IMP = 'i',
     DMAP_DEMON = 'd',
-    DMAP_SHOTGUY = 's',
+    DMAP_ZOMBIE = 'z',
+    DMAP_SHOTGUY = 'g',
+    DMAP_SPECTRE = 'v',
+    DMAP_BARON = 'b',
+    DMAP_BARREL = 'B',
+    DMAP_SHOTGUN = 's',
+    DMAP_CHAINGUN = 'h',
+    DMAP_RLAUNCH = 'r',
+    DMAP_CHAINSAW = 'w',
+    DMAP_SHELLS = 'a',
+    DMAP_CLIP = 'u',
+    DMAP_BULBOX = 'o',
+    DMAP_ROCKETS = 'k',
+    DMAP_RBOX = 'x',
+    DMAP_SBOX = 'T',
+    DMAP_STIM = 'q',
     DMAP_MEDI = 'm',
-    DMAP_SHELLS = 'a'
+    DMAP_SOUL = 'y',
+    DMAP_HBONUS = 'n',
+    DMAP_ABONUS = 'f',
+    DMAP_GARMOR = 'G',
+    DMAP_BARMOR = 'U',
+    DMAP_KEYB = '1',
+    DMAP_KEYR = '2',
+    DMAP_KEYY = '3',
+    DMAP_INVIS = 'V',
+    DMAP_RSUIT = 'R',
+    DMAP_CMAP = 'C',
+    DMAP_LAMP = 'L',
+    DMAP_PACK = 'D',
+    DMAP_PILLAR = '0'
 };
 
-/** Thing type ids, verified present in the shareware IWAD. */
+/** Thing type ids from the engine mobjinfo table, each with its sprite
+ * verified present in the shareware IWAD. */
 static int dmap_thing_type(int cell) {
     switch (cell) {
     case DMAP_PLAYER: return 1;
     case DMAP_IMP: return 3001;
     case DMAP_DEMON: return 3002;
-    case DMAP_SHOTGUY: return 2001;
-    case DMAP_MEDI: return 2012;
+    case DMAP_ZOMBIE: return 3004;
+    case DMAP_SHOTGUY: return 9;
+    case DMAP_SPECTRE: return 58;
+    case DMAP_BARON: return 3003;
+    case DMAP_BARREL: return 2035;
+    case DMAP_SHOTGUN: return 2001;
+    case DMAP_CHAINGUN: return 2002;
+    case DMAP_RLAUNCH: return 2003;
+    case DMAP_CHAINSAW: return 2005;
     case DMAP_SHELLS: return 2008;
+    case DMAP_CLIP: return 2007;
+    case DMAP_BULBOX: return 2048;
+    case DMAP_ROCKETS: return 2010;
+    case DMAP_RBOX: return 2046;
+    case DMAP_SBOX: return 2049;
+    case DMAP_STIM: return 2011;
+    case DMAP_MEDI: return 2012;
+    case DMAP_SOUL: return 2013;
+    case DMAP_HBONUS: return 2014;
+    case DMAP_ABONUS: return 2015;
+    case DMAP_GARMOR: return 2018;
+    case DMAP_BARMOR: return 2019;
+    case DMAP_KEYB: return 5;
+    case DMAP_KEYR: return 13;
+    case DMAP_KEYY: return 6;
+    case DMAP_INVIS: return 2024;
+    case DMAP_RSUIT: return 2025;
+    case DMAP_CMAP: return 2026;
+    case DMAP_LAMP: return 2045;
+    case DMAP_PACK: return 8;
+    case DMAP_PILLAR: return 2028;
     default: return 0;
     }
 }
+
+/** Brush metadata for the palette combobox, kind plus display label. */
+static const int dmap_brush_kinds[] = {
+    '#', '.', 'P', 'E',
+    'i', 'd', 'z', 'g', 'v', 'b', 'B',
+    's', 'h', 'r', 'w',
+    'a', 'u', 'o', 'k', 'x', 'T',
+    'q', 'm', 'y', 'n', 'f', 'G', 'U',
+    '1', '2', '3',
+    'V', 'R', 'C', 'L', 'D', '0'
+};
+static const char *dmap_brush_labels[] = {
+    "Wall (#)", "Floor (.)", "Player (P)", "Exit (E)",
+    "Imp (i)", "Demon (d)", "Zombie (z)", "Shotgun guy (g)",
+    "Spectre (v)", "Baron (b)", "Barrel (B)",
+    "Shotgun (s)", "Chaingun (h)", "Rocket launcher (r)", "Chainsaw (w)",
+    "Shells (a)", "Clip (u)", "Bullet box (o)", "Rockets (k)",
+    "Rocket box (x)", "Shell box (T)",
+    "Stimpack (q)", "Medikit (m)", "Soulsphere (y)", "Health bonus (n)",
+    "Armor bonus (f)", "Green armor (G)", "Blue armor (U)",
+    "Blue key (1)", "Red key (2)", "Yellow key (3)",
+    "Invisibility (V)", "Rad suit (R)", "Computer map (C)",
+    "Light amp (L)", "Backpack (D)", "Pillar (0)"
+};
+#define DMAP_BRUSH_COUNT (sizeof(dmap_brush_kinds) / sizeof(dmap_brush_kinds[0]))
+static int dmap_brush_sel = 0;
 
 /** Editor state: grid, brush, player view, slot and status line. */
 static char dmap_grid[DMAP_MAX_H][DMAP_MAX_W];
@@ -152,11 +252,51 @@ static int dmap_is_wall(int row, int col) {
     return dmap_grid[row][col] == DMAP_WALL;
 }
 
-/** True for cells the player can stand on. */
+/** True for cells the player can stand on: floor, markers and things. */
 static int dmap_walkable(int cell) {
-    return cell == DMAP_FLOOR || cell == DMAP_PLAYER || cell == DMAP_EXIT ||
-        cell == DMAP_IMP || cell == DMAP_DEMON || cell == DMAP_SHOTGUY ||
-        cell == DMAP_MEDI || cell == DMAP_SHELLS;
+    return cell == DMAP_FLOOR || cell == DMAP_EXIT || dmap_thing_type(cell) > 0;
+}
+
+/** Canvas ink per cell category, so the palette reads at a glance. */
+static struct nk_color dmap_cell_color(int cell) {
+    switch (cell) {
+    case DMAP_WALL: return nk_rgb(150, 110, 70);
+    case DMAP_PLAYER: return nk_rgb(90, 200, 90);
+    case DMAP_EXIT: return nk_rgb(220, 80, 80);
+    case DMAP_IMP:
+    case DMAP_DEMON:
+    case DMAP_ZOMBIE:
+    case DMAP_SHOTGUY:
+    case DMAP_SPECTRE:
+    case DMAP_BARON:
+    case DMAP_BARREL: return nk_rgb(200, 90, 50);
+    case DMAP_SHOTGUN:
+    case DMAP_CHAINGUN:
+    case DMAP_RLAUNCH:
+    case DMAP_CHAINSAW: return nk_rgb(90, 160, 220);
+    case DMAP_SHELLS:
+    case DMAP_CLIP:
+    case DMAP_BULBOX:
+    case DMAP_ROCKETS:
+    case DMAP_RBOX:
+    case DMAP_SBOX:
+    case DMAP_PACK: return nk_rgb(220, 200, 90);
+    case DMAP_STIM:
+    case DMAP_MEDI:
+    case DMAP_SOUL:
+    case DMAP_HBONUS: return nk_rgb(90, 200, 120);
+    case DMAP_ABONUS:
+    case DMAP_GARMOR:
+    case DMAP_BARMOR: return nk_rgb(90, 120, 220);
+    case DMAP_INVIS:
+    case DMAP_RSUIT:
+    case DMAP_CMAP:
+    case DMAP_LAMP: return nk_rgb(200, 90, 200);
+    case DMAP_KEYB:
+    case DMAP_KEYR:
+    case DMAP_KEYY: return nk_rgb(240, 240, 240);
+    default: return nk_rgb(64, 64, 64);
+    }
 }
 
 /** Fill the grid with floor and a solid border. */
@@ -190,10 +330,12 @@ static const char *dmap_level_names[DMAP_LEVEL_COUNT] = {
     "Imp Gallery",
     "Demon Pit",
     "Crossfire Chapel",
-    "Fortress of Lead"
+    "Fortress of Lead",
+    "Sunken Halls",
+    "Baron's Court"
 };
 
-static const char *dmap_levels[DMAP_LEVEL_COUNT][16] = {
+static const char *dmap_levels[DMAP_LEVEL_COUNT][DMAP_MAX_H + 1] = {
     {
         "############",
         "#P.........#",
@@ -255,6 +397,42 @@ static const char *dmap_levels[DMAP_LEVEL_COUNT][16] = {
         "#..i...m...d.#",
         "##############",
         0
+    },
+    {
+        "##########################",
+        "#P......#........#.......#",
+        "#.yy....#.uu.............#",
+        "#................#.......#",
+        "#..z....#...q....#..b.g..#",
+        "#.......#........#.......#",
+        "####.#######.########.####",
+        "#.......#........#.......#",
+        "#.o.....#.k......#.n.V...#",
+        "#.......#................#",
+        "#.w........h.....#E.r....#",
+        "#.......#........#.......#",
+        "#..f....#...G....#...U...#",
+        "##########################",
+        0
+    },
+    {
+        "############################",
+        "#P.......#........#........#",
+        "#.s......#...........u.....#",
+        "#........#..g.....#........#",
+        "#.................#........#",
+        "#....zz..#.....v..#.....a..#",
+        "#........#........#........#",
+        "#####.########.#######.#####",
+        "#........#........#........#",
+        "#.m..q...#.DB..B..#...R....#",
+        "#........#...bb...#........#",
+        "#.........###..####........#",
+        "#.h......#E...........r....#",
+        "#....T...#.G......#.....y..#",
+        "#........#........#........#",
+        "############################",
+        0
     }
 };
 
@@ -315,66 +493,135 @@ static int dmap_free_cell(int *r, int *c) {
     return dmap_grid[*r][*c] == DMAP_FLOOR;
 }
 
-/** Procedural map with the full palette: demons, imps, shotgunners,
- * medikits and shells on a random wall layout. Starts from the valid
- * plain room, carves wall blobs and scatters things only onto floor
- * cells (the player start and exit marker are never touched), then keeps
- * the first layout the validator accepts. Always leaves a valid map:
- * the fallback is the plain room when no attempt passes. */
+/** Procedural map of connected rooms: several non-overlapping rect
+ * rooms carved out of solid rock, joined in sequence by L corridors,
+ * the player starting in the first room and the exit marker in the
+ * last one, with the full thing palette scattered on floor cells.
+ * Keeps the first layout the validator accepts; the fallback is the
+ * plain room when no attempt passes. Single sector throughout: every
+ * room shares one floor height and light level, so doors and height
+ * steps stay a Phase 2 item. */
 static void dmap_random_map(unsigned seed) {
     char msg[DMAP_STATUS_MAX];
     int attempt;
-    static const int pack[6] = {DMAP_IMP, DMAP_DEMON, DMAP_SHOTGUY,
-        DMAP_IMP, DMAP_DEMON, DMAP_MEDI};
+    static const int pack[] = {DMAP_IMP, DMAP_IMP, DMAP_DEMON, DMAP_DEMON,
+        DMAP_ZOMBIE, DMAP_SHOTGUY, DMAP_SPECTRE, DMAP_BARON, DMAP_BARREL,
+        DMAP_SHOTGUN, DMAP_CHAINGUN, DMAP_RLAUNCH, DMAP_CHAINSAW,
+        DMAP_SHELLS, DMAP_CLIP, DMAP_BULBOX, DMAP_ROCKETS, DMAP_RBOX,
+        DMAP_SBOX, DMAP_STIM, DMAP_MEDI, DMAP_SOUL, DMAP_HBONUS,
+        DMAP_ABONUS, DMAP_GARMOR, DMAP_INVIS, DMAP_RSUIT, DMAP_CMAP,
+        DMAP_LAMP, DMAP_PACK, DMAP_PILLAR};
+    static const int must[] = {DMAP_DEMON, DMAP_SHOTGUY, DMAP_SHOTGUN,
+        DMAP_MEDI, DMAP_SHELLS};
     dmap_rng = seed ? seed : 0x9E3779B9u;
     for (attempt = 0; attempt < DMAP_RANDOM_ATTEMPTS; attempt++) {
-        int n, r, c, tries;
-        dmap_w = 10 + (int)(dmap_rand() % 11);
+        int r, c, k, n, nrooms = 0, tries;
+        static int rx[DMAP_ROOM_MAX], ry[DMAP_ROOM_MAX];
+        static int rw[DMAP_ROOM_MAX], rh[DMAP_ROOM_MAX];
+        static int cand_r[DMAP_MAX_W * DMAP_MAX_H];
+        static int cand_c[DMAP_MAX_W * DMAP_MAX_H];
+        int ncand = 0;
+        dmap_w = 18 + (int)(dmap_rand() % 15);
         if (dmap_w > DMAP_MAX_W)
             dmap_w = DMAP_MAX_W;
-        dmap_h = 8 + (int)(dmap_rand() % 5);
+        dmap_h = 12 + (int)(dmap_rand() % 9);
         if (dmap_h > DMAP_MAX_H)
             dmap_h = DMAP_MAX_H;
-        dmap_new();
-        n = 2 + (int)(dmap_rand() % 4);
-        for (; n > 0; n--) {
-            int len = 1 + (int)(dmap_rand() % 4);
-            r = 1 + (int)(dmap_rand() % (unsigned)(dmap_h - 2));
-            c = 1 + (int)(dmap_rand() % (unsigned)(dmap_w - 2));
-            for (; len > 0; len--) {
-                if (dmap_grid[r][c] == DMAP_FLOOR)
-                    dmap_grid[r][c] = DMAP_WALL;
-                r += (int)(dmap_rand() % 3) - 1;
-                c += (int)(dmap_rand() % 3) - 1;
-                if (r < 1)
-                    r = 1;
-                if (r > dmap_h - 2)
-                    r = dmap_h - 2;
-                if (c < 1)
-                    c = 1;
-                if (c > dmap_w - 2)
-                    c = dmap_w - 2;
+        for (r = 0; r < dmap_h; r++)
+            for (c = 0; c < dmap_w; c++)
+                dmap_grid[r][c] = DMAP_WALL;
+        n = 4 + (int)(dmap_rand() % 3);
+        for (; n > 0 && nrooms < DMAP_ROOM_MAX; n--) {
+            int w = 4 + (int)(dmap_rand() % 6);
+            int h = 3 + (int)(dmap_rand() % 5);
+            int x = -1, y = -1, ok;
+            if (w > dmap_w - 2 || h > dmap_h - 2)
+                continue;
+            for (tries = 0; tries < DMAP_ROOM_TRIES; tries++) {
+                x = 1 + (int)(dmap_rand() % (unsigned)(dmap_w - w - 1));
+                y = 1 + (int)(dmap_rand() % (unsigned)(dmap_h - h - 1));
+                ok = 1;
+                for (k = 0; k < nrooms; k++)
+                    if (x - 1 < rx[k] + rw[k] + 1 && rx[k] - 1 < x + w + 1 &&
+                        y - 1 < ry[k] + rh[k] + 1 && ry[k] - 1 < y + h + 1) {
+                        ok = 0;
+                        break;
+                    }
+                if (ok)
+                    break;
+            }
+            if (!ok)
+                continue;
+            rx[nrooms] = x;
+            ry[nrooms] = y;
+            rw[nrooms] = w;
+            rh[nrooms] = h;
+            nrooms++;
+            for (r = y; r < y + h; r++)
+                for (c = x; c < x + w; c++)
+                    dmap_grid[r][c] = DMAP_FLOOR;
+        }
+        if (nrooms < 3) {
+            dmap_rng = dmap_rng * 1664525u + 1013904223u;
+            continue;
+        }
+        for (k = 1; k < nrooms; k++) {
+            int x0 = rx[k - 1] + rw[k - 1] / 2, y0 = ry[k - 1] + rh[k - 1] / 2;
+            int x1 = rx[k] + rw[k] / 2, y1 = ry[k] + rh[k] / 2;
+            int order = (int)(dmap_rand() & 1u);
+            int x, y;
+            if (order) {
+                for (x = x0 < x1 ? x0 : x1; x <= (x0 < x1 ? x1 : x0); x++)
+                    dmap_grid[y0][x] = DMAP_FLOOR;
+                for (y = y0 < y1 ? y0 : y1; y <= (y0 < y1 ? y1 : y0); y++)
+                    dmap_grid[y][x1] = DMAP_FLOOR;
+            } else {
+                for (y = y0 < y1 ? y0 : y1; y <= (y0 < y1 ? y1 : y0); y++)
+                    dmap_grid[y][x0] = DMAP_FLOOR;
+                for (x = x0 < x1 ? x0 : x1; x <= (x0 < x1 ? x1 : x0); x++)
+                    dmap_grid[y1][x] = DMAP_FLOOR;
             }
         }
-        n = 2 + (int)(dmap_rand() % 4);
+        dmap_grid[ry[0] + rh[0] / 2][rx[0] + rw[0] / 2] = DMAP_PLAYER;
+        for (r = ry[nrooms - 1]; r < ry[nrooms - 1] + rh[nrooms - 1]; r++)
+            for (c = rx[nrooms - 1]; c < rx[nrooms - 1] + rw[nrooms - 1]; c++) {
+                static const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+                int q, wall = 0;
+                if (dmap_grid[r][c] != DMAP_FLOOR)
+                    continue;
+                for (q = 0; q < 4; q++)
+                    if (dmap_grid[r + dirs[q][0]][c + dirs[q][1]] == DMAP_WALL)
+                        wall = 1;
+                if (wall && ncand < DMAP_MAX_W * DMAP_MAX_H) {
+                    cand_r[ncand] = r;
+                    cand_c[ncand] = c;
+                    ncand++;
+                }
+            }
+        if (ncand == 0) {
+            dmap_rng = dmap_rng * 1664525u + 1013904223u;
+            continue;
+        }
+        k = (int)(dmap_rand() % (unsigned)ncand);
+        dmap_grid[cand_r[k]][cand_c[k]] = DMAP_EXIT;
+        n = dmap_w * dmap_h / 12;
         for (; n > 0; n--) {
             if (!dmap_free_cell(&r, &c))
                 continue;
-            dmap_grid[r][c] = (char)pack[dmap_rand() % 6];
+            dmap_grid[r][c] = (char)pack[dmap_rand() %
+                (sizeof(pack) / sizeof(pack[0]))];
         }
-        {
-            static const int must[4] = {DMAP_DEMON, DMAP_SHOTGUY, DMAP_MEDI, DMAP_SHELLS};
-            for (n = 0; n < 4; n++) {
-                for (tries = 0; tries < 32; tries++)
-                    if (dmap_free_cell(&r, &c)) {
-                        dmap_grid[r][c] = (char)must[n];
-                        break;
-                    }
-            }
+        for (n = 0; n < (int)(sizeof(must) / sizeof(must[0])); n++) {
+            for (tries = 0; tries < 32; tries++)
+                if (dmap_free_cell(&r, &c)) {
+                    dmap_grid[r][c] = (char)must[n];
+                    break;
+                }
         }
         if (dmap_validate(msg, sizeof(msg)) == 0) {
             dmap_recenter();
-            snprintf(dmap_status, sizeof(dmap_status), "random %dx%d ok", dmap_w, dmap_h);
+            snprintf(dmap_status, sizeof(dmap_status), "random %dx%d %d rooms ok",
+                dmap_w, dmap_h, nrooms);
             return;
         }
         dmap_rng = dmap_rng * 1664525u + 1013904223u;
@@ -855,25 +1102,22 @@ static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area) 
     }
 }
 
-/** Brush button row above the canvas. */
-static void dmap_brush_row(struct nk_context *ctx) {
-    static const char *labels[9] = {"Wall", "Floor", "Player", "Exit", "Imp", "Demon", "Shot", "Medi", "Shell"};
-    static const int kinds[9] = {DMAP_WALL, DMAP_FLOOR, DMAP_PLAYER, DMAP_EXIT,
-        DMAP_IMP, DMAP_DEMON, DMAP_SHOTGUY, DMAP_MEDI, DMAP_SHELLS};
-    int k;
-    nk_layout_row_dynamic(ctx, 22, 9);
-    for (k = 0; k < 9; k++) {
-        if (nk_option_label(ctx, labels[k], dmap_brush == kinds[k]))
-            dmap_brush = kinds[k];
-    }
+/** Brush combobox above the canvas: one row for the whole palette. */
+static void dmap_brush_combo(struct nk_context *ctx) {
+    int before = dmap_brush_sel;
+    nk_layout_row_dynamic(ctx, 22, 1);
+    nk_combobox(ctx, dmap_brush_labels, DMAP_BRUSH_COUNT, &dmap_brush_sel,
+        20, nk_vec2(280, 260));
+    if (dmap_brush_sel != before)
+        dmap_brush = dmap_brush_kinds[dmap_brush_sel];
 }
 
-/** Paintable tile canvas with per-cell colors and status glyphs. */
+/** Paintable tile canvas with per-category colors. The caller owns the
+ * layout row and column: this only claims the widget, draws and paints. */
 static void dmap_canvas(struct nk_context *ctx) {
     struct nk_command_buffer *canvas;
     struct nk_rect total;
     int row, col;
-    nk_layout_row_static(ctx, (float)(dmap_h * DMAP_CELL_PX + 8), dmap_w * DMAP_CELL_PX + 8, 1);
     if (!nk_widget(&total, ctx))
         return;
     canvas = nk_window_get_canvas(ctx);
@@ -883,17 +1127,8 @@ static void dmap_canvas(struct nk_context *ctx) {
             struct nk_rect cell = nk_rect(total.x + 4.0f + (float)(col * DMAP_CELL_PX),
                 total.y + 4.0f + (float)(row * DMAP_CELL_PX),
                 (float)(DMAP_CELL_PX - 1), (float)(DMAP_CELL_PX - 1));
-            struct nk_color fill = nk_rgb(64, 64, 64);
-            int v = dmap_grid[row][col];
-            if (v == DMAP_WALL)
-                fill = nk_rgb(150, 110, 70);
-            else if (v == DMAP_PLAYER)
-                fill = nk_rgb(90, 200, 90);
-            else if (v == DMAP_EXIT)
-                fill = nk_rgb(220, 80, 80);
-            else if (v != DMAP_FLOOR)
-                fill = nk_rgb(200, 170, 60);
-            nk_fill_rect(canvas, cell, 0.0f, fill);
+            nk_fill_rect(canvas, cell, 0.0f,
+                dmap_cell_color((unsigned char)dmap_grid[row][col]));
         }
     {
         float fx = total.x + 4.0f + (dmap_px - 0.15f) * (float)DMAP_CELL_PX;
@@ -984,9 +1219,15 @@ static void dmap_run_map(void) {
     snprintf(dmap_status, sizeof(dmap_status), "played %s", wad);
 }
 
-/** Main window layout: toolbar, canvas, preview and snapshot bar. */
+/** Main window layout: toolbar and status rows, then the canvas column
+ * beside the side panel (slots, level picker, brush combo, preview).
+ * The row height fits the taller side so nothing clips off the 360 px
+ * window: previously the preview buttons fell off-screen whenever the
+ * map had ten or more rows. */
 static void dmap_build(struct nk_context *ctx) {
     char txt[DMAP_FNAME_MAX], wad[DMAP_FNAME_MAX];
+    float canvas_h = (float)(dmap_h * DMAP_CELL_PX + 8);
+    float row_h = canvas_h > DMAP_PANEL_MIN_H ? canvas_h : DMAP_PANEL_MIN_H;
     if (!nk_begin(ctx, DMAP_TITLE, nk_rect(0, 0, (float)NK_W, (float)NK_H), 0)) {
         nk_end(ctx);
         return;
@@ -1004,45 +1245,52 @@ static void dmap_build(struct nk_context *ctx) {
         dmap_run_map();
     if (nk_button_label(ctx, "Quit"))
         dmap_quit = 1;
-    nk_layout_row_dynamic(ctx, 22, 1);
+    nk_layout_row_dynamic(ctx, 16, 1);
     {
         char line[DMAP_STATUS_MAX + 16];
         snprintf(line, sizeof(line), "slot: %d   %s", dmap_slot, dmap_status);
         nk_label(ctx, line, NK_TEXT_LEFT);
     }
-    nk_layout_row_dynamic(ctx, 22, 4);
-    if (nk_button_label(ctx, "Slot 0"))
-        dmap_slot = 0;
-    if (nk_button_label(ctx, "Slot 1"))
-        dmap_slot = 1;
-    if (nk_button_label(ctx, "Slot 2"))
-        dmap_slot = 2;
-    if (nk_button_label(ctx, "Slot 3"))
-        dmap_slot = 3;
-    nk_layout_row_begin(ctx, NK_STATIC, 22, 2);
-    nk_layout_row_push(ctx, 240);
-    {
-        static const char *items[DMAP_LEVEL_COUNT + 1];
-        static int items_init = 0;
-        int before, k;
-        if (!items_init) {
-            items[0] = "Custom";
-            for (k = 0; k < DMAP_LEVEL_COUNT; k++)
-                items[k + 1] = dmap_level_names[k];
-            items_init = 1;
-        }
-        before = dmap_level_sel;
-        nk_combobox(ctx, items, DMAP_LEVEL_COUNT + 1, &dmap_level_sel, 20, nk_vec2(240, 200));
-        if (dmap_level_sel != before && dmap_level_sel > 0)
-            dmap_load_preset(dmap_level_sel - 1);
-    }
-    nk_layout_row_push(ctx, 120);
-    if (nk_button_label(ctx, "Random"))
-        dmap_random_map((unsigned)nk_sys_time_ms() + 1u);
-    nk_layout_row_end(ctx);
-    dmap_brush_row(ctx);
+    nk_layout_row_begin(ctx, NK_STATIC, row_h, 2);
+    nk_layout_row_push(ctx, (float)DMAP_CANVAS_W);
     dmap_canvas(ctx);
-    dmap_preview_row(ctx);
+    nk_layout_row_push(ctx, (float)NK_W - (float)DMAP_CANVAS_W - 14.0f);
+    if (nk_group_begin(ctx, "panel", NK_WINDOW_BORDER)) {
+        nk_layout_row_dynamic(ctx, 22, 4);
+        if (nk_button_label(ctx, "Slot 0"))
+            dmap_slot = 0;
+        if (nk_button_label(ctx, "Slot 1"))
+            dmap_slot = 1;
+        if (nk_button_label(ctx, "Slot 2"))
+            dmap_slot = 2;
+        if (nk_button_label(ctx, "Slot 3"))
+            dmap_slot = 3;
+        nk_layout_row_begin(ctx, NK_STATIC, 22, 2);
+        nk_layout_row_push(ctx, 190);
+        {
+            static const char *items[DMAP_LEVEL_COUNT + 1];
+            static int items_init = 0;
+            int before, k;
+            if (!items_init) {
+                items[0] = "Custom";
+                for (k = 0; k < DMAP_LEVEL_COUNT; k++)
+                    items[k + 1] = dmap_level_names[k];
+                items_init = 1;
+            }
+            before = dmap_level_sel;
+            nk_combobox(ctx, items, DMAP_LEVEL_COUNT + 1, &dmap_level_sel, 20, nk_vec2(190, 200));
+            if (dmap_level_sel != before && dmap_level_sel > 0)
+                dmap_load_preset(dmap_level_sel - 1);
+        }
+        nk_layout_row_push(ctx, 90);
+        if (nk_button_label(ctx, "Random"))
+            dmap_random_map((unsigned)nk_sys_time_ms() + 1u);
+        nk_layout_row_end(ctx);
+        dmap_brush_combo(ctx);
+        dmap_preview_row(ctx);
+        nk_group_end(ctx);
+    }
+    nk_layout_row_end(ctx);
     dmap_validate(dmap_status, sizeof(dmap_status));
     nk_end(ctx);
 }
@@ -1241,7 +1489,7 @@ int main(int argc, char **argv) {
     if (argc > 1 && strcmp(argv[1], "--preset") == 0) {
         int idx;
         if (argc < 4) {
-            printf("usage: doomedit --preset <0-4> <out.wad>\n");
+            printf("usage: doomedit --preset <0-6> <out.wad>\n");
             return 2;
         }
         idx = atoi(argv[2]);
@@ -1288,8 +1536,8 @@ int main(int argc, char **argv) {
         printf("doomedit: tile editor that builds Doom PWAD snapshots\n");
         printf("  (no args)               GUI editor\n");
         printf("  --demo out.wad          write a fixed demo room\n");
-        printf("  --preset N out.wad      write bundled level N (0-4)\n");
-        printf("  --random [seed] out.wad write a procedural map\n");
+        printf("  --preset N out.wad      write bundled level N (0-6)\n");
+        printf("  --random [seed] out.wad write connected rooms procedurally\n");
         printf("  --export grid.txt out   compile a grid file\n");
         printf("  --check file.wad        validate a PWAD file\n");
         printf("  --selftest              one frame plus a build check\n");

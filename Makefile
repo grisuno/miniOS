@@ -1364,12 +1364,12 @@ test-paint: paint_test
 # Covers the python writer plus the C editor roundtrip: the C --demo
 # output must pass the python checker and vice versa, so the two
 # implementations cannot drift apart silently. Every bundled level
-# (--preset 0-4) exports and passes the checker too.
+# (--preset 0-6) exports and passes the checker too.
 test-doomedit: $(BIN_DIR)/doomedit.elf
 	python3 tests/test_doom_pwad.py
 	$(BIN_DIR)/doomedit.elf --demo $(TOOLS_DIR)/doomedit_demo.wad
 	python3 tools/doom_pwad.py check $(TOOLS_DIR)/doomedit_demo.wad
-	for i in 0 1 2 3 4; do \
+	for i in 0 1 2 3 4 5 6; do \
 	    $(BIN_DIR)/doomedit.elf --preset $$i $(TOOLS_DIR)/doomedit_level$$i.wad || exit 1; \
 	    python3 tools/doom_pwad.py check $(TOOLS_DIR)/doomedit_level$$i.wad || exit 1; \
 	done

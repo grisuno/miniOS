@@ -2329,9 +2329,11 @@ automated in the serial-console BDD suite (same as DOOM).
 `bin/doomedit` is the in-OS Doom map authoring path: a ring-3 Nuklear app
 built exactly like the node editor (host gcc `-static -no-pie`, MiniFS with
 a bare-name alias, one file per contract at `progs/doomedit/doomedit.c`
-with a centralized config). The author paints a tile grid (wall brush,
-player start, exit switch marker, imp/demon/shotgun-guy/medikit/shells),
-watches a live DDA raycaster preview in the style of the sibling
+with a centralized config). The author paints a tile grid up to 32x20 on a
+canvas beside a side panel (slots, level picker, brush combobox, raycaster
+preview, all visible without scrolling in the 800x360 window), choosing
+from the full thing palette below, watches a live DDA raycaster preview
+in the style of the sibling
 `../raycastlib` checkout (CC0, cloned by hand, reference only, never
 vendored), exports a single-sector E1M1 PWAD snapshot to `/saves`, and
 boots the shipped Doom on it with `-file` without ever writing to the
@@ -2360,15 +2362,27 @@ immutable IWAD.
   Booting without `-file` always returns to the original game; replay via
   the editor Run action (button or Ctrl+R through the scancode hook) or
   `run doomgeneric.elf -file /saves/dmapN.wad` from the shell.
-- **Bundled levels and procedural maps**: the level combo offers five
+- **Bundled levels and procedural maps**: the level combo offers seven
   compiled-in levels in the same one-char-per-tile grid text the editor
   saves (`Hangar of Dawn`, `Imp Gallery`, `Demon Pit`, `Crossfire Chapel`,
-  `Fortress of Lead`, a few hundred bytes each), and the Random button
-  grows a fresh map with the full thing palette (demons guaranteed),
-  retried until the validator accepts it. Headless:
+  `Fortress of Lead`, `Sunken Halls`, `Baron's Court`, a few hundred bytes
+  each), and the Random button grows connected rooms joined by corridors
+  with the full thing palette (demon, shotgun guy, shotgun, medikit and
+  shells guaranteed), retried until the validator accepts it. Headless:
   `doomedit --preset N out.wad` and `doomedit --random [seed] out.wad`;
   the selftest builds every preset plus a fixed-seed random map and
-  `make test-doomedit` runs all five through the Python checker.
+  `make test-doomedit` runs all seven through the Python checker.
+- **Thing palette**: enemies imp/demon/zombieman/shotgun guy/spectre/baron
+  plus exploding barrels; weapons shotgun/chaingun/rocket launcher/chainsaw;
+  ammo shells/clip/bullet box/rockets/rocket box/shell box; health
+  stimpack/medikit/soulsphere/health bonus; armor bonus/green/blue; keys
+  blue/red/yellow; powerups invisibility/radiation suit/computer map/light
+  amp; backpack and a decorative pillar. Every id is the engine's own
+  doomednum with its sprite verified present in the shareware `Doom1.wad`:
+  cacodemon, lost soul, plasma rifle, BFG, berserk, invulnerability and the
+  megasphere have no sprites there and would fault the renderer once
+  visible, so they are excluded (Doom has no quad damage; invisibility is
+  the closest surviving powerup).
 - **Dock icon**: `DoomEdit|icons/doomedit.png|doomedit` in
   `progs/etc/shortcuts`, converted from the repo-root `doomedit.png` by
   `tools/gen_desktop_pngs.py`.

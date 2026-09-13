@@ -13,10 +13,23 @@ Usage: doom_pwad.py build <grid.txt> <out.wad>
        doom_pwad.py info <file.wad>
 
 Grid legend: '#' wall, '.' floor, 'P' player 1 start, 'E' exit switch
-marker, 'i' imp, 'd' demon, 's' shotgun guy, 'm' medikit, 'a' shells.
+marker, enemies 'i' imp, 'd' demon, 'z' zombieman, 'g' shotgun guy,
+'v' spectre, 'b' baron, weapons 's' shotgun, 'h' chaingun, 'r' rocket
+launcher, 'w' chainsaw, ammo 'a' shells, 'u' clip, 'o' bullet box,
+'k' rockets, 'x' rocket box, 'T' shell box, health 'm' medikit,
+'q' stimpack, 'y' soulsphere, 'n' health bonus, armor 'f' armor bonus,
+'G' green armor, 'U' blue armor, keys '1' blue, '2' red, '3' yellow,
+powerups 'V' invisibility, 'R' radiation suit, 'C' computer map,
+'L' light amp, gear 'D' backpack, 'B' barrel, decor '0' pillar.
 The exit marker must sit on a floor tile next to a wall; the shared
 edge becomes the S1 exit switch linedef. Every walkable tile must be
 reachable from the player start, or the build is refused.
+
+Only thing ids whose sprites ship in the shareware Doom1.wad are
+exposed: cacodemon, lost soul, plasma rifle, BFG, berserk,
+invulnerability and the megasphere have no sprites there, so spawning
+them would crash the engine the moment they become visible. Doom has
+no quad damage; the closest powerups are the ones listed above.
 
 Texture, flat and thing ids below were verified byte-present in the
 shipped shareware Doom1.wad, so the engine never resolves a missing
@@ -58,14 +71,42 @@ class DoomPwadConfig:
     max_things = 256
 
     wall_chars = "#"
-    floor_chars = ".PEidsma"
+    floor_chars = ".PEidzgvsbhwrmaukxoTqynfGU123VRCLDJB0"
     thing_types = {
         "P": 1,
         "i": 3001,
         "d": 3002,
+        "z": 3004,
+        "g": 9,
+        "v": 58,
+        "b": 3003,
+        "B": 2035,
         "s": 2001,
-        "m": 2012,
+        "h": 2002,
+        "r": 2003,
+        "w": 2005,
         "a": 2008,
+        "u": 2007,
+        "o": 2048,
+        "k": 2010,
+        "x": 2046,
+        "T": 2049,
+        "q": 2011,
+        "m": 2012,
+        "y": 2013,
+        "n": 2014,
+        "f": 2015,
+        "G": 2018,
+        "U": 2019,
+        "1": 5,
+        "2": 13,
+        "3": 6,
+        "V": 2024,
+        "R": 2025,
+        "C": 2026,
+        "L": 2045,
+        "D": 8,
+        "0": 2028,
     }
     thing_options = 7
     player_angle = 0
