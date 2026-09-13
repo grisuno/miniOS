@@ -1,6 +1,6 @@
 # MiniOS
 
-<img width="1031" height="826" alt="image" src="https://github.com/user-attachments/assets/d35e7c69-5619-44a7-8263-e0a703b2723a" />
+<img width="1030" height="832" alt="image" src="https://github.com/user-attachments/assets/ae0f62e8-ebda-452d-b0a0-c276b7409958" />
 
 A 64-bit x86 teaching kernel that carries its own toolchain. You can write a C
 program inside the running system, compile it, link it and execute it without
