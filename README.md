@@ -216,6 +216,11 @@ make run-headless # boots it headless on the serial console (no GUI window)
 make serial     # boots it headless on the serial console
 make test       # behavioural suite (QEMU + serial console)
 make selfhost   # compile minigcc with minigcc, link with ld, check fixed point
+make run-iso    # boots the partitioned image in QEMU (IDE, like USB boot)
+make run-usb    # boots the partitioned image in QEMU over USB-HDD emulation
+make usb-list   # lists candidate target devices for USB writing
+make usb USB=/dev/sdX  # writes the bootable image to a USB pendrive (DD mode)
+make vdi        # converts the image to os.vdi for VirtualBox (hard disk)
 ```
 
 ### Choosing KVM vs TCG
@@ -236,6 +241,58 @@ the remaining data-transfer reads are inherent to PIO.
 
 The image is attached as an IDE disk. The boot path uses INT 13h extended
 (LBA) reads, which floppy emulation does not provide.
+
+### USB sticks, `os.iso` and VirtualBox
+
+`os.usb.img` is `os.img` plus a one-partition MBR table (the stage 1 code
+ends before the partition area, so nothing executable is overwritten);
+`os.iso` is that same raw disk image renamed for distribution. It is not an
+ISO9660 filesystem and carries no El Torito CD boot record and no UEFI
+loader, so it must always be written in DD mode (`make usb USB=/dev/sdX`,
+Rufus in DD mode, Balena Etcher) and never as an ISO-mode CD. For the same
+reason VirtualBox must attach the image as a hard disk (`make vdi`, then
+attach `os.vdi` on IDE/SATA), never as an optical drive: a virtual CD
+device expects ISO9660 and will not boot. `make usb` refuses the disk
+holding the running root filesystem and any target smaller than the image,
+and asks for `YES` before writing.
+
+## Other hypervisors and real hardware
+
+QEMU is the reference platform, and every scenario in `test_bdd.sh` runs on
+it. Work is starting to boot the same image on other hypervisors as a
+stepping stone to real hardware, with no changes to the guest image: the
+file under test is always the stock `os.usb.img`.
+
+| Platform | How | Status |
+|----------|-----|--------|
+| VirtualBox | `make vdi`, attach `os.vdi` as IDE/SATA hard disk | boots (optical attach does not, see above) |
+| VMware | `qemu-img convert -O vmdk os.usb.img os.vmdk`, attach as IDE hard disk | to be tested |
+| GNOME Boxes / virt-manager | attach `os.usb.img` directly as an existing IDE disk image | to be tested |
+| Real hardware (USB) | `make usb USB=/dev/sdX`, Legacy/CSM boot, Secure Boot off, USB-HDD first | to be tested |
+
+Known constraints that these tests will probe, carried over from the QEMU
+setup:
+
+- Boot is legacy MBR only (INT 13h LBA). There is no UEFI loader and no
+  El Torito support, so UEFI-only firmware without a CSM module cannot
+  boot the image.
+- The only disk driver is IDE PIO (`drivers/ide.c`). A machine or VM
+  exposing the disk exclusively through AHCI/SATA or NVMe will boot stage
+  1 and stage 2 (BIOS reads) but the kernel will not find its MiniFS
+  partition. Keep an IDE/compatibility mode available where possible.
+- The only NIC driver is rtl8139 on QEMU user networking. Other
+  hypervisors need their rtl8139 (or equivalent emulated) device, or the
+  network stays down while everything else works.
+- Audio is the PC speaker plus Sound Blaster 16; input is PS/2
+  keyboard and mouse. USB keyboards after boot are not driven by the
+  kernel (the BIOS owns the stick only until stage 2 loads), so real
+  hardware needs PS/2 ports or BIOS PS/2 emulation for input.
+- Video needs VESA BIOS Extensions (8-bit palette modes preferred, VGA
+  Mode 13h fallback). Headless BMC/KVM consoles without VBE will get
+  the serial console only.
+
+Results from each platform will be recorded here as they land: what
+booted, what failed, and which driver gap it maps to.
 
 ## Performance work
 

@@ -7742,6 +7742,14 @@ long sys_linux_wait4(lon...`
 - Defined: `lz4_kernel.h:6`
 - Imported by: `fs/minifs.c`, `kernel/lz4_kernel.c`, `kernel/mm/swap.c`, `kernel/syscalls.c`
 
+## make_usb.sh
+
+### usage (function)
+- Defined: `make_usb.sh:40`
+
+### wizard (function)
+- Defined: `make_usb.sh:56`
+
 ## mcp/mcp_dbg_driver.py
 
 ### main (method) `def main()`

@@ -640,6 +640,14 @@ void kmain(void)`
   - `LZ4_KERNEL_H` (macro, line 2) `#define LZ4_KERNEL_H`
 - Imported by: `fs/minifs.c`, `kernel/lz4_kernel.c`, `kernel/mm/swap.c`, `kernel/syscalls.c`
 
+## make_usb.sh
+- Layer: utility
+- Doc: Build the MiniOS bootable USB image and optionally write it to a device.  Wraps the Makefile targets so there is a singl
+- Language: sh
+- Symbols:
+  - `usage` (function, line 40)
+  - `wizard` (function, line 56)
+
 ## minifetch.h
 - Layer: utility
 - Doc: Docstring: minifetch.h -- neofetch-style system screen contract.

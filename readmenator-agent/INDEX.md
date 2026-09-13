@@ -80,6 +80,7 @@
 | `kernel/vga_fb.c` | - | kernel | 177 |
 | `ktime.h` | ifndef KTIME_H define KTIME_H  ktime.h -- pure time-conversion helpers shared by | root | 3 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 4 |
+| `make_usb.sh` | Build the MiniOS bootable USB image and optionally write it to a device.  Wraps  | root | 2 |
 | `mcp/__init__.py` | - | mcp | 0 |
 | `mcp/mcp_dbg_driver.py` | - | mcp | 6 |
 | `mcp/mcp_dogfood.py` | - | mcp | 6 |

@@ -2415,6 +2415,8 @@ long sys_linux_wait4(lon...` |
 | `LZ4_compressBound` | function | `lz4_kernel.h:5` | `int LZ4_compressBound(int inputSize);` |
 | `LZ4_compress_default` | function | `lz4_kernel.h:3` | `int LZ4_compress_default(const char *src, char *dst, int srcSize, int dstCapacity);` |
 | `LZ4_decompress_safe` | function | `lz4_kernel.h:6` | `int LZ4_decompress_safe(const char *src, char *dst, int compressedSize, int dstCapacity);` |
+| `usage` | function | `make_usb.sh:40` | `` |
+| `wizard` | function | `make_usb.sh:56` | `` |
 | `Client` | class | `mcp/mcp_dbg_driver.py:15` | `class Client` |
 | `__init__` | method | `mcp/mcp_dbg_driver.py:16` | `def __init__(self)` |
 | `close` | method | `mcp/mcp_dbg_driver.py:54` | `def close(self)` |

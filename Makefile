@@ -1852,33 +1852,77 @@ os.usb.img: os.img
 
 # ── ISO image (distribution + USB bootable via DD) ──────────────────
 # The kernel reads the ramdisk from absolute LBAs (LBA 2048+), which
-# is incompatible with ISO9660 disc layout.  This ISO contains os.img
-# as a raw file: write it to a USB pendrive with dd or Rufus (DD mode)
-# and the BIOS boots it via INT 13h LBA, identical to os.img itself.
-# CD/DVD boot (El Torito) is not supported.
-os.iso: os.img
+# is incompatible with ISO9660 disc layout, so there is no El Torito
+# CD boot and no UEFI loader: this file is the raw MBR disk image
+# (built from os.usb.img) renamed for distribution.  Write it in DD
+# mode (dd, Rufus DD, Balena) and the BIOS boots it via INT 13h LBA,
+# identical to os.img itself.  Do NOT attach it as a VirtualBox
+# optical drive (a CD device expects ISO9660): use `make vdi` and
+# attach the VDI as a hard disk instead.
+os.iso: os.usb.img
 	cp $< $@
-	@echo "=== os.iso built (raw disk image for USB) ==="; \
-	 echo "Write to USB:  sudo dd if=$@ of=/dev/sdX bs=4M status=progress conv=fsync"; \
+	@echo "=== os.iso built (raw disk image for USB, NOT El Torito) ==="; \
+	 echo "Write to USB:  make usb USB=/dev/sdX  (or Rufus in DD mode)"; \
+	 echo "VirtualBox:    make vdi, attach os.vdi as hard disk (not CD)"; \
 	 echo "Boot in QEMU:  make run-iso"
 
 # Boot in QEMU (IDE drive, same as real hardware USB boot)
-run-iso: os.img
+run-iso: os.usb.img
 	$(QEMU) -drive file=$<,format=raw,if=ide $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) $(QEMU_AUDIO)
 
-# Write os.img directly to a USB drive (INT 13h LBA, same as QEMU IDE)
-usb: os.img
-	@echo "=== USB writer ==="; \
-	 echo "This will DESTROY all data on the target device."; \
-	 echo "Available block devices:"; \
-	 lsblk -d -o NAME,SIZE,MODEL | grep -v loop | grep -v sr0; \
+# Boot the partitioned image in QEMU over USB-HDD emulation
+run-usb: os.usb.img
+	$(QEMU) -drive file=$<,format=raw,if=none,id=usb0 -usb -device usb-storage,drive=usb0 $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) $(QEMU_AUDIO)
+
+# List candidate target devices for `make usb`.  The image must be
+# written in DD mode (raw LBA layout); ISO-mode writers and Ventoy
+# cannot boot it because there is no ISO9660/El Torito on it.
+usb-list:
+	@echo "=== candidate devices (check SIZE + MODEL, unplug/replug to identify) ==="; \
+	 lsblk -d -o NAME,SIZE,MODEL,TRAN,RM,HOTPLUG | grep -v 'loop\|sr0'; \
 	 echo ""; \
-	 read -p "Enter USB device (e.g. /dev/sdb): " dev; \
-	 if [ ! -b "/dev/$$dev" ] && [ ! -b "$$dev" ]; then \
-	   echo "Error: not a block device"; exit 1; fi; \
-	 dev=$$(echo "$$dev" | sed 's|^/dev/||'); \
-	 sudo dd if=os.img of=/dev/$$dev bs=4M status=progress conv=fsync; \
-	 echo "=== written to /dev/$$dev ==="
+	 echo "Use as:  make usb USB=/dev/sdX   (whole disk, never a partition like sdX1)"
+
+# Write the bootable image to a USB pendrive (DD mode, same bytes QEMU boots).
+# Usage:  make usb USB=/dev/sdX   (preferred, non-interactive)
+#         make usb                (lists devices and asks)
+# Safety: refuses non-block devices, mounted system disks and targets
+# smaller than the image; always asks for YES before writing.
+USB ?=
+usb: os.usb.img
+	@if [ -n "$(USB)" ]; then dev="$(USB)"; \
+	 else echo "=== USB writer (this DESTROYS all data on the target) ==="; \
+	   lsblk -d -o NAME,SIZE,MODEL,TRAN,RM | grep -v 'loop\|sr0'; echo ""; \
+	   read -p "Enter USB device (e.g. /dev/sdb): " dev; fi; \
+	 case "$$dev" in /dev/*) ;; *) dev="/dev/$$dev";; esac; \
+	 if [ ! -b "$$dev" ]; then echo "Error: $$dev is not a block device"; exit 1; fi; \
+	 if findmnt -no SOURCE / | grep -q "^$$dev"; then \
+	   echo "Error: $$dev holds the running root filesystem, refusing"; exit 1; fi; \
+	 if findmnt -no SOURCE /home 2>/dev/null | grep -q "^$$dev"; then \
+	   echo "Error: $$dev holds /home, refusing"; exit 1; fi; \
+	 need=$$(stat -c%s os.usb.img); \
+	 have=$$(lsblk -dbno SIZE "$$dev"); \
+	 if [ "$$have" -lt "$$need" ]; then \
+	   echo "Error: $$dev ($$have bytes) is smaller than os.usb.img ($$need bytes)"; exit 1; fi; \
+	 echo "About to write os.usb.img ($$need bytes) to $$dev ($$have bytes)."; \
+	 echo "ALL DATA on $$dev will be DESTROYED."; \
+	 read -p "Type YES to continue: " ok; \
+	 if [ "$$ok" != "YES" ]; then echo "Aborted."; exit 1; fi; \
+	 sudo dd if=os.usb.img of="$$dev" bs=4M status=progress conv=fsync; \
+	 sync; \
+	 echo "=== written to $$dev ==="; \
+	 echo "Boot on hardware: enable Legacy/CSM boot, disable Secure Boot,"; \
+	 echo "  select the USB stick as boot device (USB-HDD). No UEFI entry exists."; \
+	 echo "Rufus alternative: select os.iso in DD mode (NOT ISO mode)."
+
+# VirtualBox disk for the "os.iso does not boot" case: the image is a raw
+# MBR hard disk, so it must be attached as a hard disk (IDE/SATA), never
+# as an optical CD/DVD drive.  Converts without reprogramming anything.
+vdi: os.usb.img
+	VBoxManage convertfromraw $< os.vdi --format VDI
+	@echo "=== os.vdi built ==="; \
+	 echo "VirtualBox: create VM (Linux 64-bit, 1G RAM), attach os.vdi as"; \
+	 echo "  hard disk on IDE/SATA, boot. Do NOT mount os.iso as optical."
 
 run: os.img
 	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) $(QEMU_AUDIO)
@@ -1919,7 +1963,7 @@ test: os.img
 # minifs.bin/os.img rules, so a clean + rebuild loses nothing.
 clean: saves-backup
 	rm -rf $(TOOLS_DIR)
-	rm -f *.o *.elf *.bin *.img ramdisk_data.c ramdisk.bin
+	rm -f *.o *.elf *.bin *.img os.iso os.vdi ramdisk_data.c ramdisk.bin
 	rm -f .kaslrflag .mutate-state Makefile.bak
 	rm -f *.log qemu.log qemu_trace.log qemu_trace2.log test_bdd.log
 	rm -f $(OBJ_DIR)/*.o
@@ -1971,6 +2015,6 @@ saves-backup:
 minifs-fsck:
 	python3 minifs_fsck.py minifs.bin
 
-.PHONY: all run run-kvm run-headless clean debug gdb serial test \
+.PHONY: all run run-kvm run-headless run-iso run-usb clean debug gdb serial test \
         sources sources-update sources-status addons toolchain selfhost \
-        minifs-mkfs minifs-dump minifs-fsck saves-backup os.iso usb os.usb.img
+        minifs-mkfs minifs-dump minifs-fsck saves-backup os.iso usb usb-list vdi os.usb.img
