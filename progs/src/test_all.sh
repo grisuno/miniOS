@@ -230,5 +230,28 @@ trace off
 echo PASS: trace-run-ok
 rm /tmp/trace_test.txt
 
+# === OBSERVABILITY ===
+trace verbose
+echo PASS: trace-verbose-ok
+strace run bin/lxhello.elf
+echo PASS: strace-ok
+ltrace run bin/lxhello.elf
+echo PASS: ltrace-ok
+vmmap
+echo PASS: vmmap-ok
+schedtop
+echo PASS: schedtop-ok
+irqstat
+echo PASS: irqstat-ok
+bootlog
+echo PASS: bootlog-ok
+gdb qemu
+echo PASS: gdb-ok
+gdb regs 0
+echo PASS: gdb-regs-ok
+gdb dump 0x400000 16
+echo PASS: gdb-dump-hex-ok
+trace off
+
 # === DONE ===
 echo PASS: ALL-TESTS-DONE

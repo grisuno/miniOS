@@ -113,6 +113,8 @@ static void lz_out_pair(int x, int y) {
     }
 }
 
+static int lz_next_mb;
+
 static int lz_encode(void) {
     int i, j, f1, x, y, r, s, bufferend, c;
     for (i = 0; i < LZSS_N - LZSS_F; i++) lz_win[i] = 32;
@@ -123,7 +125,17 @@ static int lz_encode(void) {
     bufferend = i;
     r = LZSS_N - LZSS_F;
     s = 0;
+    lz_next_mb = 1048576;
     while (r < bufferend && lz_err == LZSS_ERR_NONE) {
+        /* Heartbeat for multi-MB inputs: the match search is O(window)
+         * per byte, so a big file takes a while. One line per MB proves
+         * the machine is working instead of wedged (silent guests get
+         * power-cycled on stage). Only fires past the first MB, so the
+         * small-file output format is unchanged. */
+        if (lz_srcpos >= lz_next_mb) {
+            printf("lzss: %d bytes...\n", lz_srcpos);
+            lz_next_mb = lz_next_mb + 1048576;
+        }
         f1 = (LZSS_F <= bufferend - r) ? LZSS_F : bufferend - r;
         x = 0;
         y = 1;

@@ -95,7 +95,11 @@ program selects its mode from `argv[0]` (any invocation path containing
   sized from the input file and the derived expansion bound), compresses
   only when the result is reported with exact byte counts, and every I/O
   shortfall is a diagnostic plus a nonzero exit code, never a partial
-  silent write.
+  silent write. Past the first input MB the encoder prints one
+  `lzss: <bytes>...` heartbeat per MB (the match search is O(window) per
+  byte, so a multi-MB file takes a while and must never look wedged);
+  small-file output is a single result line. Proven on `DOOM1.WAD`
+  (4196020 -> 2349321 bytes, `unlzss` back byte-identical by `hash`).
 
 ### Compression tools (`lz4` / `unlz4`)
 `progs/src/lz4.c` builds `bin/lz4` and `bin/unlz4` from a single source, with
@@ -1620,8 +1624,10 @@ on the IDE disk):
 - `mkdir <name>` creates a directory entry: an empty file named
   `<resolved name>/`. The parent directory must already exist. Creating a
   directory that already exists is a diagnostic.
-- `rm <file>` deletes a ramdisk file; a missing file is a diagnostic and a
-  directory name (trailing `/`) is refused, never silently removed.
+- `rm <file>` deletes a file — ramdisk first, MiniFS fallback (writes
+  fall back to MiniFS via `kfopen`, so deletes must too, or a file the
+  shell just created is undeletable); a missing file is a diagnostic and
+  a directory name (trailing `/`) is refused, never silently removed.
 - `ls [dir]` lists the entries under a directory, defaulting to the cwd,
   names relative to it. At root, both ramdisk and MiniFS entries are shown
   (merged view). In subdirectories, ramdisk entries take priority; when the
@@ -1716,6 +1722,61 @@ traced one-to-one so a short program's full dialogue stays visible. `make gdb`
 boots QEMU with the gdb stub (`-s -S`) for register-level debugging;
 `gdb -ex 'target remote :1234' -ex 'add-symbol-file kernel.elf 0x100000'`
 attaches to the 64-bit kernel.
+
+### Observability / dissection toolbox (`strace`, `vmmap`, `schedtop`, `irqstat`, `bootlog`, `gdb`, `ltrace`)
+Seven shell builtins answer "what is the system doing right now" without
+leaving the machine; all state is snapshotted under the owning lock and
+printed after release, so console I/O never runs with `sched_lock` held.
+
+- `trace [on|off|verbose|quiet]`: `verbose` (also the `strace` default)
+  prints the resolved name (`syscall_name`, Linux table then MiniOS
+  window then the out-of-table Linux numbers the dispatcher answers) plus
+  a decoded hint — the path string for `open/openat/access/unlink/
+  readlink` (at most 48 chars, only after `user_str_ok`, else
+  `<bad-ptr>`), `code=` for `exit/exit_group`, `addr=` for `brk`,
+  `len=` for `mmap`, `fd/len` for `read/write`, `pid=` for
+  `kill/wait4`. Numeric mode is the legacy `syscall <n>(...)` format.
+- `strace <cmd> [args...]`: runs one shell command with verbose tracing
+  held on, then restores the previous mode (`trace off` state included).
+  Every line prints atomically after dispatch returns: the path hint is
+  snapshotted before dispatch (max 48 bytes, only after `user_str_ok`),
+  the whole `syscall name(...) hint = ret` line prints after, so program
+  output never interleaves mid-line. A program that prints without a
+  trailing newline still leaves its partial line first — its bytes, not
+  a corruption. Zero traced syscalls is itself a diagnosis: the target
+  never crossed into ring 3 (a shell builtin), so `strace` names it and
+  suggests a ring-3 target instead of printing a bare `done`.
+- `ltrace <cmd> [args...]`: honest proxy, stated up front on every run:
+  static ELFs carry no PLT to hook, so true function-level tracing is
+  impossible in-guest; it runs the `strace` path so the
+  allocator-backed traps `malloc/free` actually take
+  (`brk/mmap/munmap/mprotect/open/close`) stay visible.
+- `vmmap [pid]`: the user-window map from `progs/minios_abi.h`
+  (text/data, brk cur/cap, mmap cur/cap, game/fb/Nuklear reserved slots,
+  1 MB stack) plus the live VMA tree walked bounded (64-deep explicit
+  stack, 128 regions, then `truncated`). Pid 0 / the running view reads
+  the `g_brk` globals; any other pid reads its saved per-proc view.
+- `schedtop`: uptime from `sys_ticks`, per-CPU current pid plus
+  `dispatched/polls`, then one row per proc (state, nice, `vruntime`,
+  consumed `cpu_ticks`).
+- `irqstat`: ISR arrivals per source — `timer` from `sys_ticks` (100 Hz
+  PIT + BSP IPI broadcast), `kbd`/`mouse`/`sb16` counted at the top of
+  their `isr_dispatch` arms (`isr_cnt_*`), `bad_gs` from the GS guard —
+  plus NIC queue health (`rtl_counters`, `net_rx_dropped`), `sb16`
+  submits/drops and `gfx frames`.
+- `bootlog`: six timestamped phases marked in `kmain`
+  (`entry/heap/mm+fb/block+minifs/sched/smp+audio-ready`) in ms since
+  power-on (pre-`sched_init` marks are TSC-derived, still monotonic).
+- `gdb [regs [pid] | dump <addr> <len> | qemu]`: the in-OS inspector
+  half. `regs` dumps the stored context (`proc_t.ctx`, `cr3`, `kstack`);
+  the running pid prints LIVE-sampled `rip/rsp/rflags/cr3` instead
+  (GPRs are refused, not forged: the call path clobbers them, so only
+  preempted pids show truthful GPRs). `dump` hexdumps 1..256 bytes;
+  operands are decimal or `0x`-hex through `shell_parse_u64` (strict,
+  fail-closed on garbage/overflow). A remote RSP stub is deliberately out
+  of scope: the serial console belongs to the shell, so a stub here would
+  fight the prompt for every byte; `gdb qemu` prints the `make gdb` +
+  `target remote :1234` hookup for real breakpoints and single-step.
 
 ### Editor (`edit`)
 A command-driven line editor over ramdisk/MiniFS files, in its own contract
@@ -2298,11 +2359,12 @@ QEMU boot.  Every command prints a `PASS:` marker; the host runner greps the
 serial log for these markers.  The script ships on the ramdisk (`progs/src/`)
 and is added to both `PROGS` and `MINIFS_FILES` in the Makefile.
 
-Categories tested (69 PASS):
+Categories tested (79 PASS):
 - **Boot/help**: boot banner, help, clear
 - **Filesystem**: ls (root, objects, bin), mkdir, cd, pwd, rm, cp
 - **Redirects**: `>` and `>>`
 - **Builtins**: echo, date, vol (set/report/reset), kbd (report/es/en), ps, trace, net, gfx, wm, hash
+- **Observability**: trace verbose, strace, ltrace, vmmap, schedtop, irqstat, bootlog, gdb, gdb-regs, gdb-dump-hex
 - **Toolchain**: minigcc.o compile, ld.o link, run ELF, run CVM
 - **Bare names**: ld.o, .elf, .cvm without `run` prefix
 - **Self-host**: minigcc.elf compiles, ld.o links, run
@@ -2318,7 +2380,7 @@ Categories tested (69 PASS):
 Usage from host:
 ```bash
 tools/boot_run.sh "sh src/test_all.sh" --timeout 120
-strings boot_run.log | grep -c 'PASS:'   # expect 64
+strings boot_run.log | grep -c 'PASS:'   # expect 79
 ```
 
 ### In-OS test suites (Lua / MicroPython toolchain)
@@ -2449,7 +2511,7 @@ is forbidden; the answer to a survivor is a new scenario.
 ```bash
 make                # zero warnings
 make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit, all green
-sh src/test_all.sh  # one-boot comprehensive non-interactive suite (69 PASS)
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (79 PASS)
 ./test_bdd.sh       # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -2899,7 +2961,7 @@ CI gates enforce architectural constraints:
 ```bash
 make                        # zero warnings
 make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit, all green
-sh src/test_all.sh          # one-boot comprehensive non-interactive suite (69 PASS)
+sh src/test_all.sh          # one-boot comprehensive non-interactive suite (79 PASS)
 ./test_bdd.sh               # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd

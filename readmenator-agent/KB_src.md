@@ -442,17 +442,17 @@
   - `lz_flush_bits` (function, line 92) `static void lz_flush_bits(void)`
   - `lz_out_literal` (function, line 96) `static void lz_out_literal(int c)`
   - `lz_out_pair` (function, line 104) `static void lz_out_pair(int x, int y)`
-  - `lz_encode` (function, line 115) `static int lz_encode(void)`
-  - `lz_getbit` (function, line 160) `static int lz_getbit(int n)`
-  - `lz_decode` (function, line 176) `static int lz_decode(void)`
-  - `lz_hdr_put` (function, line 205) `static void lz_hdr_put(char *h, int size)`
-  - `lz_hdr_get` (function, line 216) `static int lz_hdr_get(char *h)`
-  - `lz_has` (function, line 224) `static int lz_has(const char *s, const char *needle)`
-  - `lz_read_all` (function, line 238) `static char *lz_read_all(const char *name, int *len)`
-  - `lz_write_all` (function, line 255) `static int lz_write_all(const char *name, char *data, int len)`
-  - `lz_compress` (function, line 265) `static int lz_compress(const char *src, const char *dst)`
-  - `lz_decompress` (function, line 312) `static int lz_decompress(const char *src, const char *dst)`
-  - `main` (function, line 384) `int main(int argc, char **argv)`
+  - `lz_encode` (function, line 117) `static int lz_encode(void)`
+  - `lz_getbit` (function, line 172) `static int lz_getbit(int n)`
+  - `lz_decode` (function, line 188) `static int lz_decode(void)`
+  - `lz_hdr_put` (function, line 217) `static void lz_hdr_put(char *h, int size)`
+  - `lz_hdr_get` (function, line 228) `static int lz_hdr_get(char *h)`
+  - `lz_has` (function, line 236) `static int lz_has(const char *s, const char *needle)`
+  - `lz_read_all` (function, line 250) `static char *lz_read_all(const char *name, int *len)`
+  - `lz_write_all` (function, line 267) `static int lz_write_all(const char *name, char *data, int len)`
+  - `lz_compress` (function, line 277) `static int lz_compress(const char *src, const char *dst)`
+  - `lz_decompress` (function, line 324) `static int lz_decompress(const char *src, const char *dst)`
+  - `main` (function, line 396) `int main(int argc, char **argv)`
   - `malloc` (function, line 12) `void *malloc();`
   - `free` (function, line 14) `void free();`
   - `printf` (function, line 15) `int printf();`

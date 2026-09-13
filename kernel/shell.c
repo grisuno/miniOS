@@ -467,11 +467,12 @@ static const char *shell_name_base(const char *path) {
  * only the shell dispatch below knows them, so they are listed once here
  * for the completer instead of hiding behind the file tiers). */
 static const char *shell_builtin_names[] = {
-    "cat", "catfs", "cd", "clear", "clock", "date", "echo", "edit",
-    "gfx", "hash", "help", "jobs", "kbd", "kill", "kstack", "load",
-    "ls", "lsfs", "mem", "minifetch", "mkdir", "mrun", "net", "nice", "perf", "poweroff",
-    "ps", "pwd", "rlimit", "rm", "rmdir", "run", "seccomp", "sh",
-    "sleep", "smp", "trace", "unzip", "vol", "wait", "wm", "zip",
+    "bootlog", "cat", "catfs", "cd", "clear", "clock", "date", "echo", "edit",
+    "gdb", "gfx", "hash", "help", "irqstat", "jobs", "kbd", "kill", "kstack",
+    "load", "ls", "lsfs", "ltrace", "mem", "minifetch", "mkdir", "mrun", "net",
+    "nice", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
+    "schedtop", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unzip",
+    "vmmap", "vol", "wait", "wm", "zip",
 };
 #define SHELL_BUILTIN_COUNT (sizeof(shell_builtin_names) / sizeof(shell_builtin_names[0]))
 
@@ -2059,6 +2060,197 @@ static void shell_cmd_mem(void) {
     kprintf("mem: procs live=%d/%d\n", nlive, MAX_PROCS);
 }
 
+/* `vmmap [pid]` -- virtual-memory map of one process. In this single-
+ * address-space kernel every process shares the window layout from
+ * progs/minios_abi.h; what differs per process is the brk/mmap view (the
+ * globals for pid 0 / the running view, the saved per-proc view otherwise)
+ * plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
+ * stack, 128 regions printed) and snapshot under sched_lock + mm_lock, so
+ * a hostile VMA shape can truncate the listing but never overflow it. */
+static void shell_cmd_vmmap(int argc, char **argv) {
+    int pid = 0, i;
+    unsigned long brk = 0, brk_lim = 0, mcur = 0;
+    vma_node_t *live = VMA_NIL;
+    char pname[32];
+    int found = 0;
+    if (argc > 1) {
+        pid = (int)katol(argv[1]);
+        if (pid < 0 || pid >= MAX_PROCS) {
+            kprintf("vmmap: pid %d out of range 0..%d\n", pid, MAX_PROCS - 1);
+            return;
+        }
+    }
+    spin_lock(&sched_lock);
+    if (procs[pid].state == PROC_FREE) {
+        spin_unlock(&sched_lock);
+        kprintf("vmmap: pid %d: no such process (see ps)\n", pid);
+        return;
+    }
+    found = 1;
+    for (i = 0; i < 31 && procs[pid].name[i]; i++) pname[i] = procs[pid].name[i];
+    pname[i] = 0;
+    if (pid == current_pid || pid == 0) {
+        brk = g_brk; brk_lim = g_brk_limit; mcur = user_mmap_cur;
+        live = vma_live_root;
+    } else if (procs[pid].vma) {
+        brk = procs[pid].brk; brk_lim = procs[pid].brk_limit;
+        mcur = procs[pid].mmap_cur;
+        live = procs[pid].vma->live;
+    }
+    spin_unlock(&sched_lock);
+    if (!found) return;
+    kprintf("vmmap: pid=%d (%s) window 0x%lx..0x%lx\n", pid, pname,
+            (unsigned long)USER_LOAD_BASE, (unsigned long)USER_LOAD_END);
+    kprintf("  text 0x%lx..0x%lx  brk 0x%lx cap 0x%lx  mmap 0x%lx..0x%lx\n",
+            (unsigned long)USER_LOAD_BASE, brk, brk, brk_lim,
+            mcur, (unsigned long)USER_BRK_END);
+    kprintf("  game 0x%lx  fb 0x%lx  nk 0x%lx  stack 0x%lx..0x%lx\n",
+            (unsigned long)DOOM_BACKBUF_ADDR, (unsigned long)FB_ADDR,
+            (unsigned long)NK_BACKBUF_ADDR,
+            (unsigned long)USER_STACK_BASE, (unsigned long)USER_STACK_TOP);
+    {
+        vma_node_t *stack[64];
+        int sp = 0, shown = 0;
+        vma_node_t *x = live;
+        kprintf("  vma-live:");
+        if (x == VMA_NIL) {
+            kprintf(" (empty)\n");
+        } else {
+            kprintf("\n");
+            while ((x != VMA_NIL || sp > 0) && shown < 128) {
+                while (x != VMA_NIL) {
+                    if (sp < 64) stack[sp++] = x; else break;
+                    x = x->left;
+                }
+                if (sp <= 0) break;
+                x = stack[--sp];
+                kprintf("    0x%lx len 0x%lx (%luK)\n",
+                        x->base, x->len, x->len / 1024);
+                shown++;
+                x = x->right;
+            }
+            if (shown >= 128) kprintf("    ... truncated at 128 regions\n");
+        }
+    }
+}
+
+/* Run a shell line with the syscall tracer held on, then restore the
+ * previous mode. `strace` uses the verbose (named + decoded) form;
+ * `ltrace` is the honest proxy this kernel can offer: static ELFs carry
+ * no PLT to hook, so it traces the allocator-backed syscalls malloc/free
+ * actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
+static void shell_cmd_trace_run(int argc, char **argv, int ltrace) {
+    int prev_on, prev_vb;
+    int ret;
+    if (argc < 2) {
+        vga_puts(ltrace ? "usage: ltrace <command> [args...]\n"
+                        : "usage: strace <command> [args...]\n");
+        return;
+    }
+    unsigned long before, after;
+    prev_on = (int)syscall_trace_enabled();
+    prev_vb = (int)syscall_trace_verbose_enabled();
+    syscall_trace_set(1);
+    syscall_trace_verbose_set(1);
+    if (ltrace)
+        vga_puts("ltrace: no PLT on static ELFs; brk/mmap/mprotect/open/close only\n");
+    before = syscall_trace_shown();
+    shell_exec_builtin(argc - 1, argv + 1);
+    after = syscall_trace_shown();
+    ret = 0;
+    (void)ret;
+    syscall_trace_set(prev_on);
+    syscall_trace_verbose_set(prev_vb);
+    /* Zero traced syscalls means the target never crossed into ring 3:
+     * a shell builtin runs in ring 0, so there is nothing to trace.
+     * Say so explicitly instead of printing a bare "done" that reads
+     * as "the tracer is broken". */
+    if (after == before)
+        kprintf("%s: '%s' is a shell builtin (ring 0): nothing to trace (try '%s run bin/lxhello.elf')\n",
+                ltrace ? "ltrace" : "strace", argv[1],
+                ltrace ? "ltrace" : "strace");
+    kprintf("%s: done (%lu syscalls, tracing %s)\n",
+            ltrace ? "ltrace" : "strace", after - before,
+            prev_on ? "restored on" : "off");
+}
+
+/* Strict unsigned parse for debugger/inspector operands: `0x`-prefixed
+ * hex or plain decimal, no signs, no trailing garbage, fail-closed on
+ * overflow or empty input. katol is decimal-only, so `gdb dump 0x400000`
+ * used to parse as 0; this is the single choke point for numeric
+ * inspector arguments. */
+static int shell_parse_u64(const char *s, unsigned long *out) {
+    unsigned long v = 0;
+    unsigned long base = 10;
+    int any = 0;
+    if (!s || !s[0]) return 0;
+    if (s[0] == '0' && (s[1] == 'x' || s[1] == 'X')) {
+        base = 16;
+        s += 2;
+    }
+    for (; *s; s++) {
+        unsigned long d;
+        if (*s >= '0' && *s <= '9') d = (unsigned long)(*s - '0');
+        else if (base == 16 && *s >= 'a' && *s <= 'f')
+            d = (unsigned long)(*s - 'a' + 10);
+        else if (base == 16 && *s >= 'A' && *s <= 'F')
+            d = (unsigned long)(*s - 'A' + 10);
+        else return 0;
+        if (d >= base) return 0;
+        if (v > (0xFFFFFFFFFFFFFFFFUL - d) / base) return 0;
+        v = v * base + d;
+        any = 1;
+    }
+    if (!any) return 0;
+    *out = v;
+    return 1;
+}
+
+/* `gdb <op>` -- in-OS inspector half of the debugger story. Full
+ * register-level debugging (breakpoints, single-step, live register edit)
+ * stays on the QEMU gdb stub: `make gdb`, then from the host
+ * `gdb -ex 'target remote :1234' -ex 'add-symbol-file kernel.elf 0x100000'`.
+ * Here: `gdb regs [pid]` dumps the stored context (LIVE sampled registers
+ * for the running pid), `gdb dump <addr> <len>` hexdumps 1..256 bytes
+ * (decimal or 0x-hex), `gdb qemu` prints the remote hookup. */
+static void shell_cmd_gdb(int argc, char **argv) {
+    if (argc < 2) {
+        vga_puts("usage: gdb [regs [pid] | dump <addr> <len> | qemu]\n");
+        return;
+    }
+    if (kstrcmp(argv[1], "regs") == 0) {
+        int pid = current_pid < 0 ? 0 : current_pid;
+        unsigned long v;
+        if (argc > 2) {
+            if (!shell_parse_u64(argv[2], &v) || v >= (unsigned long)MAX_PROCS) {
+                kprintf("gdb: bad pid '%s' (0..%d, see ps)\n",
+                        argv[2], MAX_PROCS - 1);
+                return;
+            }
+            pid = (int)v;
+        }
+        gdb_regs_report(pid);
+        return;
+    }
+    if (kstrcmp(argv[1], "dump") == 0) {
+        unsigned long addr, len;
+        if (argc < 4) { vga_puts("usage: gdb dump <addr> <len>\n"); return; }
+        if (!shell_parse_u64(argv[2], &addr) ||
+            !shell_parse_u64(argv[3], &len)) {
+            kprintf("gdb: bad number (decimal or 0x-hex, no garbage)\n");
+            return;
+        }
+        gdb_dump_report(addr, len);
+        return;
+    }
+    if (kstrcmp(argv[1], "qemu") == 0) {
+        vga_puts("gdb: make gdb -> QEMU -s -S (:1234, halted)\n");
+        vga_puts("gdb: host: target remote :1234 + add-symbol-file kernel.elf 0x100000\n");
+        return;
+    }
+    vga_puts("usage: gdb [regs [pid] | dump <addr> <len> | qemu]\n");
+}
+
 /* `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed
  * in bounded chunks so a large MiniFS file never needs a whole-file buffer.
  * This is the integrity tool for CVM modules and any ramdisk payload: an
@@ -2081,8 +2273,10 @@ static void shell_cmd_hash(int argc, char **argv) {
 
 void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
-        vga_puts("Commands: help clear ls lsfs cat catfs echo edit rm mkdir cd pwd ps load run sh\n");
-        vga_puts("          net trace date vol kbd gfx wm hash unzip zip smp rmdir rlimit nice seccomp poweroff\n");
+        vga_puts("Commands: help clear ls lsfs cat catfs echo edit vedit rm mkdir cd pwd ps load run sh\n");
+        vga_puts("          net trace strace ltrace vmmap schedtop irqstat bootlog gdb date vol kbd gfx wm hash\n");
+        vga_puts("          unzip zip smp kstack mem minifetch sb16 perf clock jobs wait kill sleep mrun\n");
+        vga_puts("          rmdir rlimit nice seccomp poweroff\n");
         vga_puts("  ls [dir]           list files (under the cwd by default)\n");
         vga_puts("  lsfs               list files on the MiniFS disk filesystem\n");
         vga_puts("  catfs <file>       print a file from MiniFS\n");
@@ -2098,7 +2292,14 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  kstack             kernel-stack high-water marks + canary\n");
         vga_puts("  net                network status (rtl8139, slirp)\n");
         vga_puts("  net ping <ip>      one ICMP echo\n");
-        vga_puts("  trace [on|off]     report Linux syscalls\n");
+        vga_puts("  trace [on|off|verbose|quiet] report syscalls (verbose names+args)\n");
+        vga_puts("  strace <cmd>       run one command with verbose tracing\n");
+        vga_puts("  ltrace <cmd>       allocator-trap proxy (no PLT on static ELFs)\n");
+        vga_puts("  vmmap [pid]        user-window map + VMA tree\n");
+        vga_puts("  schedtop           cpus, vruntime, ticks per proc\n");
+        vga_puts("  irqstat            timer/kbd/mouse/sb16/net/gfx arrivals\n");
+        vga_puts("  bootlog            timestamped boot phases\n");
+        vga_puts("  gdb [regs|dump|qemu] in-OS inspector; remote GDB via `make gdb`\n");
         vga_puts("  date               print the CMOS clock (HH:MM:SS)\n");
         vga_puts("  vol [0-100]        print or set the PC-speaker volume\n");
         vga_puts("  kbd [en|es]        print or set the keyboard layout\n");
@@ -2289,9 +2490,20 @@ void shell_exec_builtin(int argc, char **argv) {
             return;
         }
         RDFile *f = ramdisk_open(resolved);
-        if (!f) { kprintf("rm: %s: no such file\n", argv[1]); return; }
-        ramdisk_delete(f);
-        kprintf("removed %s\n", resolved);
+        if (f) {
+            ramdisk_delete(f);
+            kprintf("removed %s\n", resolved);
+            return;
+        }
+        /* Writes fall back to MiniFS when the ramdisk namespace cannot
+         * host them (kfopen), so deletes must too: otherwise a file the
+         * shell just created via redirect is undeletable (`rm: no such
+         * file` right after a successful `cat`). */
+        if (minifs_is_mounted() && minifs_unlink(resolved) == 0) {
+            kprintf("removed %s\n", resolved);
+            return;
+        }
+        kprintf("rm: %s: no such file\n", argv[1]);
     }
     else if (kstrcmp(argv[0], "mkdir") == 0) {
         if (argc < 2) { vga_puts("usage: mkdir <name>\n"); return; }
@@ -2405,9 +2617,40 @@ void shell_exec_builtin(int argc, char **argv) {
         if (argc > 1) {
             if (kstrcmp(argv[1], "on") == 0) syscall_trace_set(1);
             else if (kstrcmp(argv[1], "off") == 0) syscall_trace_set(0);
-            else { vga_puts("usage: trace [on|off]\n"); return; }
+            else if (kstrcmp(argv[1], "verbose") == 0) {
+                syscall_trace_set(1);
+                syscall_trace_verbose_set(1);
+            }
+            else if (kstrcmp(argv[1], "quiet") == 0) syscall_trace_verbose_set(0);
+            else { vga_puts("usage: trace [on|off|verbose|quiet]\n"); return; }
         }
-        kprintf("syscall tracing: %s\n", syscall_trace_enabled() ? "on" : "off");
+        kprintf("syscall tracing: %s (%s)\n",
+                syscall_trace_enabled() ? "on" : "off",
+                syscall_trace_verbose_enabled() ? "verbose" : "numeric");
+    }
+    else if (kstrcmp(argv[0], "strace") == 0) {
+        shell_cmd_trace_run(argc, argv, 0);
+    }
+    else if (kstrcmp(argv[0], "ltrace") == 0) {
+        shell_cmd_trace_run(argc, argv, 1);
+    }
+    else if (kstrcmp(argv[0], "vmmap") == 0) {
+        shell_cmd_vmmap(argc, argv);
+    }
+    else if (kstrcmp(argv[0], "schedtop") == 0) {
+        (void)argc; (void)argv;
+        schedtop_report();
+    }
+    else if (kstrcmp(argv[0], "irqstat") == 0) {
+        (void)argc; (void)argv;
+        irqstat_report();
+    }
+    else if (kstrcmp(argv[0], "bootlog") == 0) {
+        (void)argc; (void)argv;
+        bootlog_report();
+    }
+    else if (kstrcmp(argv[0], "gdb") == 0) {
+        shell_cmd_gdb(argc, argv);
     }
     else if (kstrcmp(argv[0], "net") == 0) {
         if (argc < 2) {

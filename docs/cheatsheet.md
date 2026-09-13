@@ -15,7 +15,7 @@ the guest the prompt is `miniOS>`; in the editor it is `edit>`.
 | `catfs <file>` | print a file from MiniFS |
 | `cd [dir]` / `pwd` | change / print working directory (`cd` alone goes to root, `cd ..` pops) |
 | `mkdir <name>` | create a directory entry (parent must exist) |
-| `rm <file>` | delete a ramdisk file (directories refused) |
+| `rm <file>` | delete a file (ramdisk first, MiniFS fallback; directories refused, use `rmdir`) |
 | `echo <text>` | print text |
 | `edit <file>` | line editor over ramdisk/MiniFS files |
 | `run <name\|file>` | run a program: `.o` at ring 0, `.elf` at ring 3, `.cvm` on the interpreter |
@@ -23,10 +23,18 @@ the guest the prompt is `miniOS>`; in the editor it is `edit>`.
 | `load <file>` | load an ELF (`.o` relocatable or Linux executable) |
 | `sh <script.sh>` | run a shell script file |
 | `cmd > file` / `cmd >> file` | redirect output (truncate / append); exit codes stay on console |
-| `ps` | list registered programs |
+| `ps` | list live processes (pid/ppid/state) |
 | `smp` | per-CPU state, dispatches, runqueue hits/steals/drops |
 | `net` | NIC status (MAC, IP, counters); `net ping <ip>` sends one ICMP echo |
-| `trace [on\|off]` | trace Linux-ABI syscalls (time/kbd/mouse excluded) |
+| `trace [on\|off\|verbose\|quiet]` | trace Linux-ABI syscalls, numeric or named+decoded (time/kbd/mouse/raw excluded) |
+| `strace <cmd> [args]` | run one command with verbose syscall tracing, then restore mode |
+| `ltrace <cmd> [args]` | no-PLT proxy: allocator-trap view (`brk/mmap/mprotect/open/close`) |
+| `vmmap [pid]` | user-window map (text/brk/mmap/bufs/stack) + live VMA tree |
+| `schedtop` | uptime, per-CPU cur, one row per proc (state/nice/vruntime/ticks) |
+| `irqstat` | ISR arrivals: timer/kbd/mouse/sb16 + net/sb16 queues + gfx frames |
+| `bootlog` | timestamped boot phases in ms since power-on |
+| `gdb regs [pid]` / `gdb dump <a> <l>` / `gdb qemu` | in-OS inspector (LIVE regs for running pid; decimal/`0x` addr; 1..256 bytes) / remote-GDB hookup |
+| `kstack` | kernel-stack high-water marks + canary (`kstack: ok`) |
 | `date` | CMOS clock `HH:MM:SS` |
 | `vol [0-100]` | print or set the PC-speaker volume (0 = mute) |
 | `sb16` | Sound Blaster 16 ring health and counters |
@@ -104,6 +112,9 @@ Alt+0 reset, Alt+M minimize, Alt+X / Alt+Q close, F11 fullscreen, F5 reset.
 | `make clean` | remove every build product (also drops `saves/`) |
 
 ## Host harnesses
+
+Full toolbox guide: `docs/debug_tools.md` (in-OS tools, MCP bridge, recipes,
+image-budget notes).
 
 ```sh
 tools/boot_run.sh "cmd1" "cmd2" --timeout 80 --log run.log

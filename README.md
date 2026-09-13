@@ -345,10 +345,17 @@ fetches 3193 bytes and the `gfx frames` counter climbs by one.
 | `catfs <file>` | print a file from the MiniFS filesystem |
 | `lsfs` | list files on the MiniFS filesystem |
 | `hash <file>` | print XXH64 checksum of a file |
-| `ps` | list registered programs (name, kind, entry address) |
+| `ps` | list live processes (pid/ppid/state) |
 | `smp` | per-CPU state (`cur`, `dispatched`, `polls`) and `bad_gs` counter |
 | `sb16` | Sound Blaster 16 diagnostics (presence, mode, ring fill, counters) |
-| `trace` / `trace on` / `trace off` | enable or disable syscall tracing |
+| `trace [on\|off\|verbose\|quiet]` | syscall tracing, numeric or named+decoded |
+| `strace <cmd>` / `ltrace <cmd>` | one-command verbose trace / no-PLT allocator-trap proxy |
+| `vmmap [pid]` | user-window map + live VMA tree |
+| `schedtop` | scheduler top: cpus, vruntime, ticks per proc |
+| `irqstat` | ISR arrivals: timer/kbd/mouse/sb16 + net/sb16 queues + gfx frames |
+| `bootlog` | timestamped boot phases (ms since power-on) |
+| `gdb regs [pid]` / `gdb dump <a> <l>` / `gdb qemu` | in-OS inspector / remote-GDB hookup |
+| `kstack` | kernel-stack high-water marks + canary |
 | `wm state` | print window manager state |
 | `wm minimize` | minimize the terminal window |
 | `wm maximize` | toggle fullscreen |
@@ -533,7 +540,7 @@ serial log for these markers. The script ships on the ramdisk.
 
 ```bash
 tools/boot_run.sh "sh src/test_all.sh" --timeout 120
-strings boot_run.log | grep -c 'PASS:'   # expect 64
+strings boot_run.log | grep -c 'PASS:'   # expect 79
 ```
 
 Categories tested (64 PASS):
@@ -974,6 +981,14 @@ and reports submit throughput, isolating the audio path from any GUI. `sb16`
 prints the SB16 driver counters (IRQ arms, watchdog poll arms, submits,
 drops) and the ring fill, so ring health is observable over the serial
 console without ears.
+
+The full dissection toolbox lives in [docs/debug_tools.md](./docs/debug_tools.md):
+`trace`/`strace`/`ltrace` (syscall dialogue, atomic lines, no-PLT proxy),
+`vmmap` (user window + VMA tree), `schedtop`, `irqstat`, `bootlog`,
+`gdb` (LIVE regs for the running pid, decimal/`0x` dump, `make gdb` remote
+hookup), plus the MCP bridge tools (`minios_send`/`minios_expect`/
+`minios_test`) and the host harnesses (`boot_run.sh`, `test_bdd.sh`,
+`test_gui_*.py`). `sh src/test_all.sh` covers the toolbox with 79 PASS.
 
 ## Lua
 

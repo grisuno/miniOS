@@ -579,6 +579,10 @@ void *ksym_resolve(const char *name);
 long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);
 long syscall_trace_enabled(void);
 void syscall_trace_set(int on);
+long syscall_trace_verbose_enabled(void);
+void syscall_trace_verbose_set(int on);
+unsigned long syscall_trace_shown(void);
+const char *syscall_name(long n);
 #define KFD_MAX 32
 extern KFILE *kfd_table[KFD_MAX];
 
@@ -604,6 +608,10 @@ static inline unsigned long ramdisk_image_size(void) {
 unsigned long ktime_ms(void);
 unsigned long ktime_us(void);
 unsigned long wall_us_now(void);
+
+/* ========== Boot-phase log (kernel.c, `bootlog` builtin) ========== */
+void bootlog_mark(const char *name);
+void bootlog_report(void);
 
 /* ========== PC speaker ========== */
 void     pcspk_init(void);

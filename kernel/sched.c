@@ -277,6 +277,144 @@ void kstack_report(void) {
     kprintf("kstack: %s\n", bad ? "OVERFLOW" : "ok");
 }
 
+/* `schedtop` -- one screenful of scheduler state: uptime from the 100 Hz
+ * tick, per-CPU current pid, then one row per live proc (state, nice,
+ * virtual runtime, consumed ticks). Snapshot under sched_lock, print
+ * after release so console I/O never runs with the scheduler held. */
+void schedtop_report(void) {
+    struct stop_row { int pid; int ppid; int state; int nice;
+        unsigned long vruntime; unsigned long ticks; char name[32]; };
+    struct stop_row snap[MAX_PROCS];
+    int cpu_cur[MAX_CPUS];
+    int n = 0, i, c;
+    unsigned long up;
+    kmemset(snap, 0, sizeof(snap));
+    spin_lock(&sched_lock);
+    up = (unsigned long)(sys_ticks / 100);
+    for (c = 0; c < cpu_count && c < MAX_CPUS; c++)
+        cpu_cur[c] = cpus[c].cur_pid;
+    for (i = 0; i < MAX_PROCS && n < MAX_PROCS; i++) {
+        int k;
+        if (procs[i].state == PROC_FREE) continue;
+        snap[n].pid = procs[i].pid;
+        snap[n].ppid = procs[i].parent_pid;
+        snap[n].state = procs[i].state;
+        snap[n].nice = procs[i].nice;
+        snap[n].vruntime = procs[i].vruntime;
+        snap[n].ticks = procs[i].cpu_ticks;
+        for (k = 0; k < 31 && procs[i].name[k]; k++)
+            snap[n].name[k] = procs[i].name[k];
+        snap[n].name[k] = 0;
+        n++;
+    }
+    spin_unlock(&sched_lock);
+    kprintf("schedtop: up %lus ticks %lu cpus %d\n",
+            up, (unsigned long)sys_ticks, cpu_count);
+    for (c = 0; c < cpu_count && c < MAX_CPUS; c++)
+        kprintf("  cpu%d cur=%d dispatched=%lu polls=%lu\n",
+                c, cpu_cur[c], smp_dispatches[c], smp_idle_polls[c]);
+    kprintf("  pid  ppid state nice vruntime ticks name\n");
+    for (i = 0; i < n; i++) {
+        const char *st = "?";
+        if (snap[i].state == PROC_READY) st = "ready";
+        else if (snap[i].state == PROC_RUNNING) st = "run";
+        else if (snap[i].state == PROC_BLOCKED) st = "wait";
+        else if (snap[i].state == PROC_ZOMBIE) st = "done";
+        else if (snap[i].state == PROC_SWITCHING) st = "spawn";
+        kprintf("  %-4d %-4d %-5s %-4d %-8lu %-5lu %s\n",
+                snap[i].pid, snap[i].ppid, st, snap[i].nice,
+                snap[i].vruntime, snap[i].ticks, snap[i].name);
+    }
+    if (!n) kprintf("  (no processes)\n");
+}
+
+/* `irqstat` -- interrupt arrivals per source. Timer ticks come from
+ * sys_ticks (PIT 100 Hz on the BSP, broadcast as IPIs to APs); kbd/mouse/
+ * sb16 are counted at the top of their isr_dispatch arms. NIC and audio
+ * queue health ride along from rtl/sb16 counters so one screen answers
+ * "is the hardware talking and is the guest keeping up". */
+void irqstat_report(void) {
+    unsigned int txf = 0, rxf = 0;
+    sb16_counters_t sc;
+    extern void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);
+    extern unsigned int net_rx_dropped;
+    extern int rtl_present(void);
+    if (rtl_present()) rtl_counters(&txf, &rxf);
+    sb16_counters(&sc);
+    kprintf("irqstat: timer=%lu kbd=%lu mouse=%lu sb16=%lu bad_gs=%u\n",
+            (unsigned long)sys_ticks,
+            isr_cnt_kbd, isr_cnt_mouse, isr_cnt_sb16, smp_dbg_bad_gs);
+    kprintf("irqstat: net tx=%u rx=%u drop=%u sb16 sub=%lu drop=%lu gfx=%lu\n",
+            txf, rxf, net_rx_dropped, sc.submits, sc.drops,
+            gfx_frames_composited);
+}
+
+/* In-OS debugger helpers for `gdb <op>`. This is NOT a remote stub: the
+ * serial console is the shell's, so an RSP server here would fight the
+ * prompt for every byte. Full register-level debugging stays on the QEMU
+ * gdb stub (`make gdb`, then `target remote :1234` from the host). These
+ * helpers are the serial-observable half: process contexts, stacks and a
+ * bounded memory hexdump, all fail-closed on bad pids/addresses. */
+void gdb_regs_report(int pid) {
+    proc_t *p;
+    if (pid < 0 || pid >= MAX_PROCS || procs[pid].state == PROC_FREE) {
+        kprintf("gdb: pid %d: no such process (see ps)\n", pid);
+        return;
+    }
+    p = &procs[pid];
+    if (pid == current_pid) {
+        /* The running context has no parked frame: its registers ARE the
+         * live stack. Sample what the ISA lets us read without a trap
+         * (rsp, rflags, rip-as-return-address, cr3) and say so. GPRs are
+         * clobbered by this very call path, so printing them would be a
+         * forged number; they are only truthful for preempted pids. */
+        unsigned long rsp, rfl, cr3;
+        unsigned long rip = (unsigned long)__builtin_return_address(0);
+        __asm__ volatile("mov %%rsp, %0" : "=r"(rsp));
+        __asm__ volatile("pushfq; pop %0" : "=r"(rfl));
+        __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+        kprintf("gdb: pid=%d (%s) state=%d LIVE (sampled now)\n",
+                p->pid, p->name, p->state);
+        kprintf("gdb: rip=0x%lx rsp=0x%lx rflags=0x%lx cr3=0x%lx kstack=0x%lx\n",
+                rip, rsp, rfl, cr3, (unsigned long)p->kstack);
+        kprintf("gdb: gprs not shown: live gprs are clobbered by this call\n");
+        return;
+    }
+    kprintf("gdb: pid=%d (%s) state=%d cr3=0x%lx\n",
+            p->pid, p->name, p->state, (unsigned long)p->ctx.cr3);
+    kprintf("gdb: rip=0x%lx rsp=0x%lx rflags=0x%lx rax=0x%lx rbx=0x%lx\n",
+            (unsigned long)p->ctx.rip, (unsigned long)p->ctx.rsp,
+            (unsigned long)p->ctx.rflags, (unsigned long)p->ctx.rax,
+            (unsigned long)p->ctx.rbx);
+    kprintf("gdb: rcx=0x%lx rdx=0x%lx rsi=0x%lx rdi=0x%lx rbp=0x%lx\n",
+            (unsigned long)p->ctx.rcx, (unsigned long)p->ctx.rdx,
+            (unsigned long)p->ctx.rsi, (unsigned long)p->ctx.rdi,
+            (unsigned long)p->ctx.rbp);
+    kprintf("gdb: r8=0x%lx r9=0x%lx r10=0x%lx r11=0x%lx r12=0x%lx\n",
+            (unsigned long)p->ctx.r8, (unsigned long)p->ctx.r9,
+            (unsigned long)p->ctx.r10, (unsigned long)p->ctx.r11,
+            (unsigned long)p->ctx.r12);
+    kprintf("gdb: r13=0x%lx r14=0x%lx r15=0x%lx kstack=0x%lx\n",
+            (unsigned long)p->ctx.r13, (unsigned long)p->ctx.r14,
+            (unsigned long)p->ctx.r15, (unsigned long)p->kstack);
+}
+
+void gdb_dump_report(unsigned long addr, unsigned long len) {
+    unsigned long i, j;
+    const unsigned char *p;
+    if (len == 0 || len > 256) {
+        kprintf("gdb: dump length 1..256 (got %lu)\n", len);
+        return;
+    }
+    p = (const unsigned char *)addr;
+    for (i = 0; i < len; i += 16) {
+        kprintf("gdb: 0x%lx:", addr + i);
+        for (j = 0; j < 16 && i + j < len; j++)
+            kprintf(" %02x", p[i + j]);
+        kprintf("\n");
+    }
+}
+
 /* ---- Trap frame (must match isr_stubs.S) ---- */
 typedef struct {
     uint64_t rax, rbx, rcx, rdx, rsi, rdi, rbp;
@@ -691,6 +829,15 @@ static int smp_any_ap_idle(void) {
  * cpus[]).  Reported by the `smp` builtin; nonzero means a GS-lifecycle
  * window fired (see cpu_or_null). */
 volatile unsigned smp_dbg_bad_gs;
+/* Observability counters for `irqstat`: per-source ISR arrivals. The
+ * timer slot reuses sys_ticks (100 Hz PIT + BSP IPI broadcast); kbd and
+ * mouse count IRQ1/IRQ12 deliveries, sb16 counts IRQ5 completions.
+ * Increment-only, read without a lock (single-word, torn reads impossible
+ * on x86 for aligned words; worst case the shell prints a value one tick
+ * stale, never a corrupt one). */
+volatile unsigned long isr_cnt_kbd;
+volatile unsigned long isr_cnt_mouse;
+volatile unsigned long isr_cnt_sb16;
 
 /* RLIMIT_CPU accounting: called once per timer tick for the running
  * proc on each CPU. Sets cpu_kill_pending when the cap is reached; the
@@ -885,8 +1032,9 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         }
         return;
     }
-    if (vector == 33) { pic_eoi(1); return; }
+    if (vector == 33) { __sync_fetch_and_add(&isr_cnt_kbd, 1); pic_eoi(1); return; }
     if (vector == 44) { /* IRQ12: PS/2 mouse */
+        __sync_fetch_and_add(&isr_cnt_mouse, 1);
         static int mouse_phase;
         static unsigned char mouse_packet[HAL_MOUSE_PACKET_LEN];
         unsigned char status;
@@ -930,6 +1078,7 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         return;
     }
     if (vector == 37) { /* IRQ5: Sound Blaster 16 DMA buffer complete */
+        __sync_fetch_and_add(&isr_cnt_sb16, 1);
         sb16_irq();
         pic_eoi(5);
         return;

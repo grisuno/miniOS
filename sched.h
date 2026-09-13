@@ -260,6 +260,13 @@ extern idtr_t bsp_idtr;
 /* ---- Functions ---- */
 void     sched_init(void);
 void     kstack_report(void);
+void     schedtop_report(void);
+void     irqstat_report(void);
+void     gdb_regs_report(int pid);
+void     gdb_dump_report(unsigned long addr, unsigned long len);
+extern volatile unsigned long isr_cnt_kbd;
+extern volatile unsigned long isr_cnt_mouse;
+extern volatile unsigned long isr_cnt_sb16;
 void     tss_init_ap(int cpu);
 void     smp_ap_idle_loop(void);
 int      proc_create(const char *name, int parent_pid);

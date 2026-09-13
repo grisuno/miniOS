@@ -667,9 +667,18 @@ struct kiovec { const char *iov_base; unsigned long iov_len; };
 #define SYSCALL_TRACE 0
 
 static int s_trace_enabled = SYSCALL_TRACE;
+static int s_trace_verbose = 0;
+/* Shown-syscall odometer for `strace`/`ltrace`: incremented once per
+ * traced (non-noisy) syscall while tracing is on. Lets the shell tell
+ * "your command made no syscalls" (a ring-0 builtin) apart from "the
+ * tracer is broken". SMP-safe increment; shell-time read. */
+static volatile unsigned long s_trace_shown;
 
 long syscall_trace_enabled(void) { return s_trace_enabled; }
 void syscall_trace_set(int on) { s_trace_enabled = on ? 1 : 0; }
+long syscall_trace_verbose_enabled(void) { return s_trace_verbose; }
+void syscall_trace_verbose_set(int on) { s_trace_verbose = on ? 1 : 0; }
+unsigned long syscall_trace_shown(void) { return s_trace_shown; }
 
 /* Syscall numbers that are poll/clock reads: tracing them floods the console
  * (SYS_TIME is called inside every pacing spin loop), which made `trace on`
@@ -1171,17 +1180,110 @@ static int trace_is_noisy(long n) {
            n == SYS_NOISY_GETC_RAW;
 }
 
+/* strace-style name resolver: Linux table first, then the MiniOS window,
+ * then the out-of-table Linux numbers the dispatcher answers (openat,
+ * newfstatat, clock_gettime, ...). The tail is a data table, not a switch:
+ * a `case N:` ladder would trip tools/check_abi_numbers.py (its CASE_RE
+ * parses every `case N:` in this file as a dispatch site) and forces a
+ * comment per number to satisfy Rule C. Unknown numbers stay numeric so a
+ * new stub never prints a wrong name. */
+struct sc_extra_name { long n; const char *name; };
+static const struct sc_extra_name sc_extra_names[] = {
+    { 4, "stat" }, { 6, "lstat" }, { 15, "rt_sigreturn" },
+    { 17, "pread64" }, { 18, "pwrite64" }, { 22, "pipe" },
+    { 23, "select" }, { 25, "mremap" }, { 28, "madvise" },
+    { 32, "dup" }, { 33, "dup2" }, { 35, "nanosleep" },
+    { 56, "clone" }, { 72, "fcntl" }, { 78, "getdents" },
+    { 97, "getrlimit" }, { 102, "getuid" }, { 104, "getgid" },
+    { 107, "geteuid" }, { 108, "getegid" }, { 157, "prctl" },
+    { 159, "getcpu" }, { 218, "set_tid_address" },
+    { 228, "clock_gettime" }, { 231, "exit_group" }, { 234, "tgkill" },
+    { 257, "openat" }, { 262, "newfstatat" }, { 267, "readlinkat" },
+    { 273, "set_robust_list" }, { 302, "prlimit64" }, { 318, "getrandom" },
+    { 332, "statx" }, { 334, "rseq" },
+};
+#define SC_EXTRA_COUNT (sizeof(sc_extra_names) / sizeof(sc_extra_names[0]))
+const char *syscall_name(long n) {
+    unsigned i;
+    if (n >= 0 && n < LINUX_SYSCALL_COUNT && linux_syscall_table[n].name)
+        return linux_syscall_table[n].name;
+    if (n >= MINIOS_SYSCALL_BASE &&
+        n < MINIOS_SYSCALL_BASE + MINIOS_SYSCALL_COUNT &&
+        minios_syscall_table[n - MINIOS_SYSCALL_BASE].name)
+        return minios_syscall_table[n - MINIOS_SYSCALL_BASE].name;
+    for (i = 0; i < SC_EXTRA_COUNT; i++)
+        if (sc_extra_names[i].n == n) return sc_extra_names[i].name;
+    return 0;
+}
+
+/* Verbose-tracer hint, split in two halves so a traced line never
+ * interleaves with the program's own output. The snapshot runs BEFORE
+ * dispatch (the only moment user memory may be read: a path argument is
+ * copied, at most 48 bytes, only after user_str_ok, non-printables
+ * folded to '?', "<bad-ptr>" when it does not validate). The print runs
+ * AFTER dispatch returns, so `syscall write(...) "..." = N` lands as one
+ * atomic line after the program's bytes instead of wrapping them. Scalar
+ * hints (code=/addr=/len=/fd/pid=) need no snapshot and print post-hoc. */
+#define TRACE_HINT_NONE 0
+#define TRACE_HINT_PATH 1
+static int trace_hint_snapshot(long n, long a1, long a2, char *out) {
+    const char *p = 0;
+    unsigned long i;
+    if (n == 2 || n == 21 || n == 87 || n == 89) p = (const char *)a1;
+    else if (n == 257 || n == 262) p = (const char *)a2;
+    else return TRACE_HINT_NONE;
+    if (!user_str_ok((unsigned long)p, 49)) {
+        out[0] = '<'; out[1] = 'b'; out[2] = 'a'; out[3] = 'd';
+        out[4] = '-'; out[5] = 'p'; out[6] = 't'; out[7] = 'r';
+        out[8] = '>'; out[9] = 0;
+        return TRACE_HINT_PATH;
+    }
+    for (i = 0; i < 48 && p[i]; i++)
+        out[i] = (p[i] < 32 || p[i] > 126) ? '?' : p[i];
+    out[i] = 0;
+    return TRACE_HINT_PATH;
+}
+
+static void trace_hint_print(long n, int kind, const char *path,
+                             long a1, long a2, long a3) {
+    if (kind == TRACE_HINT_PATH) {
+        kprintf(" \"%s\"", path);
+        return;
+    }
+    if (n == 60 || n == 231) kprintf(" code=%ld", a1);
+    else if (n == 12) kprintf(" addr=0x%lx", (unsigned long)a1);
+    else if (n == 9) kprintf(" len=%ld", a2);
+    else if (n == 0 || n == 1) kprintf(" fd=%ld len=%ld", a1, a3);
+    else if (n == 62 || n == 61) kprintf(" pid=%ld", a1);
+}
+
 long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
     long ret;
     int show = s_trace_enabled && !trace_is_noisy(n);
-    if (show)
-        kprintf("syscall %d(%ld, %ld, %ld, %ld, %ld, %ld)",
-                (int)n, a1, a2, a3, a4, a5, a6);
+    const char *nm = 0;
+    char path_hint[49];
+    int hint = TRACE_HINT_NONE;
+    path_hint[0] = 0;
+    if (show && s_trace_verbose) {
+        nm = syscall_name(n);
+        if (nm) hint = trace_hint_snapshot(n, a1, a2, path_hint);
+    }
     ret = ksyscall_dispatch(n, a1, a2, a3, a4, a5, a6);
-    /* Full 64-bit result: printing (int)ret once hid a valid DNS answer
-     * (an IPv4 >= 128.0.0.0 looks negative in 32 bits) and sent a debug
-     * session down the wrong path. */
-    if (show) kprintf(" = %ld\n", ret);
+    if (show) {
+        __sync_fetch_and_add(&s_trace_shown, 1);
+        /* Full 64-bit result: printing (int)ret once hid a valid DNS
+         * answer (an IPv4 >= 128.0.0.0 looks negative in 32 bits) and
+         * sent a debug session down the wrong path. */
+        if (nm) {
+            kprintf("syscall %s(%ld, %ld, %ld, %ld, %ld, %ld)",
+                    nm, a1, a2, a3, a4, a5, a6);
+            trace_hint_print(n, hint, path_hint, a1, a2, a3);
+        } else {
+            kprintf("syscall %d(%ld, %ld, %ld, %ld, %ld, %ld)",
+                    (int)n, a1, a2, a3, a4, a5, a6);
+        }
+        kprintf(" = %ld\n", ret);
+    }
     return ret;
 }
 

@@ -386,6 +386,30 @@ extern char ramdisk_start[];
 extern char ramdisk_end[];
 /* ramdisk_size decl + ramdisk_image_size() wrapper live in kernel.h. */
 
+/* `bootlog` -- timestamped boot-phase marks for the observability set.
+ * ktime_ms is PIT-calibrated only after sched_init, so early marks read
+ * 0 ms (TSC ticks since power-on divided down, still monotonic); later
+ * marks are wall milliseconds. Fixed table, no heap, no locks: marks are
+ * appended before the shell runs (single CPU), reads are shell-time. */
+#define BOOTLOG_MAX 12
+static const char *bootlog_name[BOOTLOG_MAX];
+static unsigned long bootlog_ms[BOOTLOG_MAX];
+static int bootlog_n;
+void bootlog_mark(const char *name) {
+    unsigned long ms = ktime_ms();
+    if (bootlog_n < 0 || bootlog_n >= BOOTLOG_MAX) return;
+    bootlog_name[bootlog_n] = name;
+    bootlog_ms[bootlog_n] = ms;
+    bootlog_n++;
+}
+void bootlog_report(void) {
+    int i;
+    kprintf("bootlog: %d phases (ms since power-on)\n", bootlog_n);
+    for (i = 0; i < bootlog_n; i++)
+        kprintf("  +%6lums %s\n", bootlog_ms[i], bootlog_name[i]);
+    if (!bootlog_n) kprintf("  (empty)\n");
+}
+
 __attribute__((section(".init.text")))
 void kmain(void) {
     __asm__ volatile(
@@ -422,13 +446,16 @@ void kmain(void) {
     outb(0x21, 0xFF);
     outb(0xA1, 0xFF);
     vga_puts("MiniOS Kernel v0.3\n====================\n");
+    bootlog_mark("entry");
 
     kallocator_init();
+    bootlog_mark("heap");
     ramdisk_init();
     register_libc_symbols();
     syscall_init();
     vga_fb_boot_config();
     mm_setup_protections();
+    bootlog_mark("mm+fb");
     kprintf("fb: %dx%d pitch %d bpp %d base 0x%lx\n",
             fb_width, fb_height, fb_pitch, fb_bpp, fb_phys_base);
     kprintf("kernel: physical base 0x%x, user pages 4 KB with NX\n",
@@ -458,6 +485,7 @@ void kmain(void) {
 
     block_init();
     minifs_init();
+    bootlog_mark("block+minifs");
     if (ide_present()) {
         if (minifs_mount() < 0) {
             kprintf("minifs: no filesystem found on disk\n");
@@ -475,6 +503,7 @@ void kmain(void) {
      * This enables interrupts and the 100 Hz timer tick. */
     sched_init();
     kprintf("Scheduler: IDT 256 entries, TSS loaded, PIT 100 Hz, preemptive\n");
+    bootlog_mark("sched");
 
     vga_fb_init();
 
@@ -487,6 +516,7 @@ void kmain(void) {
 
     /* Wake the application processors; fail-safe, APs idle, system unchanged. */
     smp_init();
+    bootlog_mark("smp+audio-ready");
 
     shell_run();
 }
