@@ -365,6 +365,7 @@ fetches 3193 bytes and the `gfx frames` counter climbs by one.
 | `piano` | FM piano GUI (`--selftest` for headless, `--bench` for fps) |
 | `file` | Nuklear file browser (`--selftest` lists root headless) |
 | `paint` | Nuklear canvas paint, PNG save/load (`--selftest` proves vectors, file roundtrip and one frame) |
+| `doomedit` | Doom PWAD tile editor: paint a room, preview in 3D, export to `/saves`, boot Doom on it (`--selftest`, `--demo out.wad`) |
 | `topogpt3` | TopoGPT3 transformer inference engine (`-i` for interactive) |
 | `clear` / `poweroff` | console and power |
 
@@ -506,6 +507,50 @@ Build from source:
 ```bash
 make progs/bin/paint.elf    # or just `make` to rebuild everything
 make test-paint             # host vectors
+```
+
+## Doom map editor (doomedit)
+
+I edit Doom maps inside the OS and play them without touching the
+shipped IWAD. `doomedit` is a static ring-3 Nuklear app (one file,
+`progs/doomedit/doomedit.c`) with a tile canvas, a wall brush, player
+start, exit switch and a small thing palette, plus a live DDA
+raycaster preview in the style of the sibling `../raycastlib`
+checkout. Export compiles the grid to a single-sector E1M1 PWAD
+snapshot in `/saves`; Run (button or Ctrl+R) boots the shipped Doom
+on it with `-file`, and the next reboot returns to the original game
+unless the snapshot is launched again. The level combo offers five
+bundled maps (`Hangar of Dawn`, `Imp Gallery`, `Demon Pit`,
+`Crossfire Chapel`, `Fortress of Lead`, each a few hundred bytes of
+grid text compiled into the binary), and the Random button grows a
+fresh map procedurally with the full palette (demons, imps,
+shotgunners, medikits, shells), retried until the validator accepts
+it, so every session can play something new. Painting any tile
+returns the combo to `Custom`. The desktop dock carries a
+dedicated DoomEdit shortcut (`DoomEdit|icons/doomedit.png|doomedit` in
+`progs/etc/shortcuts`, icon converted from the repo-root `doomedit.png`
+by `tools/gen_desktop_pngs.py`), so the editor launches with one click.
+Snapshots survive image
+rebuilds through the same `saves/` preservation that protects game
+saves. The shareware `-file` refusal in `progs/doomgeneric/d_main.c`
+is relaxed to a notice (the registered-version lump check stays), and
+`tools/doom_pwad.py` implements the same writer in Python for host
+use (`build`, `check`, `info` verbs, fail closed on every malformed
+grid or mutated file).
+
+```
+miniOS> doomedit                                # GUI editor
+miniOS> doomedit --demo /saves/dmap0.wad        # headless demo room
+miniOS> doomedit --preset 2 /saves/dmap1.wad    # bundled level (0-4)
+miniOS> doomedit --check /saves/dmap0.wad       # validate a snapshot
+miniOS> run doomgeneric.elf -file /saves/dmap0.wad mini_autoframes 30
+```
+
+Build from source:
+
+```bash
+make progs/bin/doomedit.elf   # or just `make` to rebuild everything
+make test-doomedit            # host vectors plus the C/Python roundtrip
 ```
 
 ## Nuklear themes
@@ -815,6 +860,22 @@ Quake had moved to `0x0B000000`, but DOOM's platform layer still rendered into
 the old address `0x7C00000`, so the kernel composited an empty buffer. Every
 consumer of a moved address has to move together; the fix was one constant in
 `doomgeneric_minios.c`.
+
+**Bug three: the back-buffers were mapped from an unaligned heap pointer.**
+The DOOM and Nuklear back-buffers are `kmalloc` regions whose pages are mapped
+into the user window one PTE at a time. x86 masks a PTE's low 12 bits into
+flags, so mapping from a 16-byte-aligned pointer silently drops the offset:
+the first mapped page starts at `buf & ~0xFFF`, up to 4095 bytes *before* the
+buffer. A guest rendering its whole frame to the mapped address then overwrites
+the heap chunk in front of the buffer, and when that chunk is a live `KFILE`
+the next seek reads pixel data as a pointer (`kfile: corrupt handle`,
+`kfree: wild pointer`, then a no-recovery `#GP`). It only surfaced through
+`SYS_SPAWN` and after a few spawned programs, because that is when the
+vulnerable chunk in front of the buffer holds a live handle: DoomEdit's Run
+button and the file browser opening a text file in vedit reproduced it every
+time, while the same binaries run from the shell did not. The fix over-allocates
+one page and rounds the base up (`mm_page_aligned_alloc`) and asserts
+`phys & 0xFFF == 0` at boot.
 
 The takeaway is not the constants, it is why they are the way they are. A
 window sized for the biggest ring-3 program, a page-table zone nothing else
@@ -1666,8 +1727,35 @@ registry `var/lib/addons.txt` and a host state file; failure aborts without
 recording and removes upload parts. The YAML dialect is a strict stdlib-only
 subset (whitelisted keys, bounded names, validated `dst`, printable-ASCII
 lines); the host shell is never invoked. The marketplace ships `cp` and
-`freedom` (the freedom addon rebuilds the browser inside the OS from git as
-`freedom-mini`, the http-only miniGCC twin, as the end-to-end dogfood, driven by `mcp/mcp_dogfood.py` over stdio JSON-RPC).
+`freedom` as installable `guest` addons (the freedom addon rebuilds the
+browser inside the OS from git as `freedom-mini`, the http-only miniGCC
+twin, as the end-to-end dogfood, driven by `mcp/mcp_dogfood.py` over stdio
+JSON-RPC).
+
+Every external source also carries an addon file, so the marketplace is
+the one package index even for software the editor-upload path cannot
+carry: `host` addons (toolchain, interpreters, engines, libraries) are
+built on the host with the ordinary gcc toolchain and packed into the
+image by `make`, while `reference` addons are source-only checkouts that
+are never vendored, linked or built. `minios_install` refuses non-guest
+addons with a diagnostic naming the make target instead of half-installing
+them; `make addons` validates every file in `addons/`.
+
+| Addon | Kind | Origin | Artifact |
+|-------|------|--------|----------|
+| `cp` | guest | miniOS `progs/src/cp.c` | `bin/cp` (built in-OS) |
+| `freedom` | guest | miniOS `progs/src/freedom.c` | `bin/freedom-mini` (built in-OS) |
+| `minigcc` | host | sibling `../miniGCC` | `objects/minigcc.o` |
+| `ld` | host | sibling `../ld` | `objects/ld.o` |
+| `cvm` | host | sibling `../cvm` | `objects/cvm.o` |
+| `lua` | host | sibling `../lua` (`v5.4.7`) | `lua` on MiniFS |
+| `micropython` | host | sibling `../micropython` (`v1.28.0`) | `micropython` on MiniFS |
+| `nuklear` | host | sibling `../nuklear` | `nuklear` on MiniFS |
+| `nuked-opl3` | host | sibling `../nuked-opl3` | `opl3` on MiniFS |
+| `doom` | host | vendored `progs/doomgeneric` | `doomgeneric.elf` on MiniFS |
+| `quake2` | host | nested `progs/quake2generic/quake2generic` | `quake2generic.elf` on MiniFS |
+| `doomedit` | host | in-repo `progs/doomedit` | `doomedit` on MiniFS |
+| `raycastlib` | reference | sibling `../raycastlib` | none (preview reference only) |
 
 ## QEMU guest agent channel (COM2)
 
@@ -1788,6 +1876,40 @@ be a minimal wire client, not a port).
 See `CLAUDE.md` for the full engineering contract.
 
 [https://medium.com/@lazyown.redteam/because-i-can-the-most-dangerous-words-in-a-world-of-subscription-based-obedience-05f38f99cd36](https://medium.com/@lazyown.redteam/because-i-can-the-most-dangerous-words-in-a-world-of-subscription-based-obedience-05f38f99cd36)
+
+## Acknowledgments
+
+MiniOS stands on the shoulders of third-party software. Thanks to every
+author and contributor behind the projects below; without their work this
+system would not exist.
+
+- DOOM, by id Software, played through the `doomgeneric` port layer by
+  ozkl, which is the bridge MiniOS builds its windowed port on.
+- Quake 2, by id Software, played through `quake2generic`, also by ozkl,
+  reusing the same back-buffer infrastructure as DOOM.
+- MicroPython, by Damien George and the MicroPython contributors: the
+  unix-port `minios` variant runs unmodified sources as ring-3 programs.
+- Lua, by the PUC-Rio team (Roberto Ierusalimschy, Luiz Henrique de
+  Figueiredo, Waldemar Celes): the 5.4 reference interpreter runs as a
+  ring-3 static ELF.
+- Nuklear, by Dmitry Hrabrov (vurtun): the single-header immediate-mode
+  UI library behind the node editor, the file browser, the paint program,
+  vedit and every other graphical tool.
+- Nuked-OPL3, by nukeykt: the cycle-accurate YMF262 emulator that renders
+  FM audio for the piano at ring 3.
+- Lexbor, by Alexander Borisov and contributors: the HTML parser behind
+  the real FreeDom engine port.
+- miniz, by Rich Geldreich and contributors: the zip reader and writer
+  behind the `zip` and `unzip` shell builtins.
+- dlmalloc, by Doug Lea: the kernel heap allocator.
+- stb, by Sean Barrett and contributors: `stb_image` decodes the PNG
+  previews, icons and paint files.
+- xxHash, by Yann Collet and contributors: the checksums behind the
+  integrity selftests.
+- The pokecrystal disassembly project and its community: the data source
+  the Pokemon target builds from.
+- QEMU, by Fabrice Bellard and the QEMU developers: the machine MiniOS
+  boots, tests and debugs on every day of development.
 
 <!-- readmenator-kb-link -->
 ## Knowledge Base

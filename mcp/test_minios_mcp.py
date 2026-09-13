@@ -515,6 +515,66 @@ class TestAddonYaml(unittest.TestCase):
         with self.assertRaises(self.ma.AddonError):
             self.ma.validate_addon(self.ma.parse_addon_yaml(bad), "cp.yaml")
 
+    def test_host_kind_accepts_empty_files(self):
+        text = VALID_ADDON.replace(
+            "  repo_url: https://github.com/grisuno/miniOS.git",
+            "  repo_url: https://github.com/lua/lua\n  kind: host\n  dir_var: LUA_DIR\n  ref: v5.4.7\n  artifact: lua",
+        ).replace(
+            "  files:\n    - src: progs/src/cp.c\n      dst: build/cp.c\n",
+            "  files: []\n",
+        ).replace(
+            "  build:\n    - run objects/minigcc.o build/cp.c > build/cp.s\n    - run objects/ld.o -f elf -o bin/cp build/cp.s\n",
+            "  host_build:\n    - make progs/bin/lua.elf\n",
+        )
+        addon = self.ma.validate_addon(self.ma.parse_addon_yaml(text), "lua.yaml")
+        self.assertEqual(addon["install"]["kind"], "host")
+        self.assertEqual(addon["install"]["artifact"], "lua")
+
+    def test_reference_kind_carries_nothing(self):
+        text = ("name: raycastlib\ndescription: Reference only.\nauthor: miniOS\n"
+                "version: \"1.0.0\"\ninstall:\n"
+                "  repo_url: https://github.com/grisuno/raycastlib\n"
+                "  kind: reference\n  dir_var: RAYCASTLIB_DIR\n  files: []\n")
+        addon = self.ma.validate_addon(self.ma.parse_addon_yaml(text), "raycastlib.yaml")
+        self.assertEqual(addon["install"]["kind"], "reference")
+
+    def test_bad_kind_rejected(self):
+        bad = VALID_ADDON.replace(
+            "  repo_url: https://github.com/grisuno/miniOS.git",
+            "  repo_url: https://github.com/grisuno/miniOS.git\n  kind: orbital",
+        )
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.validate_addon(self.ma.parse_addon_yaml(bad), "cp.yaml")
+
+    def test_host_kind_requires_artifact(self):
+        text = VALID_ADDON.replace(
+            "  repo_url: https://github.com/grisuno/miniOS.git",
+            "  repo_url: https://github.com/lua/lua\n  kind: host\n  dir_var: LUA_DIR",
+        ).replace(
+            "  files:\n    - src: progs/src/cp.c\n      dst: build/cp.c\n",
+            "  files: []\n",
+        ).replace(
+            "  build:\n    - run objects/minigcc.o build/cp.c > build/cp.s\n    - run objects/ld.o -f elf -o bin/cp build/cp.s\n",
+            "  host_build:\n    - make progs/bin/lua.elf\n",
+        )
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.validate_addon(self.ma.parse_addon_yaml(text), "lua.yaml")
+
+    def test_install_refuses_host_before_touching_session(self):
+        text = VALID_ADDON.replace(
+            "  repo_url: https://github.com/grisuno/miniOS.git",
+            "  repo_url: https://github.com/lua/lua\n  kind: host\n  dir_var: LUA_DIR\n  artifact: lua",
+        ).replace(
+            "  files:\n    - src: progs/src/cp.c\n      dst: build/cp.c\n",
+            "  files: []\n",
+        ).replace(
+            "  build:\n    - run objects/minigcc.o build/cp.c > build/cp.s\n    - run objects/ld.o -f elf -o bin/cp build/cp.s\n",
+            "  host_build:\n    - make progs/bin/lua.elf\n",
+        )
+        addon = self.ma.validate_addon(self.ma.parse_addon_yaml(text), "lua.yaml")
+        with self.assertRaises(self.ma.AddonError):
+            self.ma.install_addon(None, addon, {})
+
 
 class TestAddonHelpers(unittest.TestCase):
     @classmethod

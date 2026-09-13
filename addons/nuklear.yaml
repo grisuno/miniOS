@@ -1,0 +1,15 @@
+name: nuklear
+description: Nuklear single-header immediate-mode UI library plus the node editor demo (a low-code tool for the CVM). The library is cloned as a sibling checkout and never modified; progs/nuklear/nuklear_minios.c is the MiniOS platform layer every NK-window program links. Ships on MiniFS as nuklear.elf plus the bare-name alias.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/Immediate-Mode-UI/Nuklear
+  kind: host
+  dir_var: NUKLEAR_DIR
+  artifact: nuklear
+  files: []
+  host_build:
+    - make progs/bin/nuklear.elf
+  verify:
+    - line: nuklear --selftest
+      exit_code: 0

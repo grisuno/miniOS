@@ -297,8 +297,9 @@ int console_getc(void) {
 
 /* Next buffered byte without consuming it, or -1 when nothing is available
  * right now. Used to tell an ESC prefix from a complete escape sequence,
- * which always arrives in one burst. */
-static int console_peek(void) {
+ * which always arrives in one burst. Global so SYS_SPAWN waits in spawn.c
+ * can poll for Ctrl+C exactly like the shell foreground wait does. */
+int console_peek(void) {
     if (!pb_empty()) return pb_peek();
     int c = raw_try_getc();
     if (c >= 0) pb_push_back((unsigned char)c);

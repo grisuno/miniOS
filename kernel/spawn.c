@@ -3,6 +3,7 @@
 #include "vma.h"
 #include "spawn.h"
 #include "minifs.h"
+#include "vga_fb.h"
 #include "arch/x86/msr.h"
 
 /** Docstring: File-static VMA pool copy, stack-safe by construction. */
@@ -158,8 +159,8 @@ static int spawn_run_rel(const char *resolved, const char *redirect,
 
 /** Docstring: Run one ET_EXEC child in an isolated window. */
 static int spawn_run_exec(const char *resolved, const char *redirect,
-                          unsigned char *data, unsigned data_size,
-                          int argc, char **kargv, const char **uargv_fallback)
+                           unsigned char *data, unsigned data_size,
+                           int argc, char **kargv, const char **uargv_fallback)
 {
     int did_redirect = 0;
     int pid;
@@ -167,8 +168,35 @@ static int spawn_run_exec(const char *resolved, const char *redirect,
     if (redirect && redirect[0]) did_redirect = redirect_begin();
     pid = proc_spawn_elf(resolved, data, data_size, argc,
                          kargv ? kargv : (char **)uargv_fallback);
-    if (pid > 0)
-        rc = do_waitpid(pid);
+    if (pid > 0) {
+        /* Interruptible wait: the old blocking do_waitpid left a ring-3
+         * SPAWN parent (file browser, vedit IDE) unkillable when its
+         * child waited on stdin or looped forever (Ctrl+R on hello.py
+         * with input() hung the machine with no way out). Poll with
+         * do_waitpid_nb and yield like the shell foreground wait does:
+         * Ctrl+C kills the child (exit 130) and the title-bar X is
+         * honoured through wm_close_pending the same way. */
+        for (;;) {
+            rc = do_waitpid_nb(pid);
+            if (rc != WAITPID_NONE) break;
+            if (wm_close_pending()) {
+                wm_clear_close();
+                do_kill(pid);
+                do_waitpid(pid);
+                rc = 130;
+                break;
+            }
+            if (console_peek() == 0x03) {
+                console_getc();
+                kprintf("^C\n");
+                do_kill(pid);
+                do_waitpid(pid);
+                rc = 130;
+                break;
+            }
+            yield();
+        }
+    }
     if (did_redirect && redirect_commit(redirect, 0) != 0)
         kprintf("SPAWN: redirect to %s failed, output dropped", redirect);
     return rc;

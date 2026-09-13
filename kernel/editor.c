@@ -60,8 +60,10 @@ static void edit_free(EditBuf *e) {
 
 static int edit_load(EditBuf *e) {
     KFILE *f = kfopen(e->fname, "r");
+    unsigned filesize;
     if (!f) return 0;
-    if (f->rf->size > EDIT_FILE_MAX) {
+    filesize = f->minifs_ino >= 0 ? f->minifs_size : (f->rf ? f->rf->size : 0);
+    if (filesize > EDIT_FILE_MAX) {
         kfclose(f);
         return -1;
     }

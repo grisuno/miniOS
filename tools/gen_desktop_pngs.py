@@ -5,6 +5,7 @@ Sources (repo root by default, overridable with --src-dir):
   paint.png              paint icon source
   cgoblin.png            wallpaper source (any size, RGB/RGBA)
   doom.png               DOOM icon source
+  doomedit.png           doomedit map-editor icon source
   quake2.png             Quake 2 icon source
   piano.png              piano icon source
   nuklear.png            Nuklear icon source
@@ -12,8 +13,8 @@ Sources (repo root by default, overridable with --src-dir):
   pokemon.png            Pokemon icon source (Pikachu art, not pixel art)
 
 Outputs (under the MiniOS repo):
-  progs/icons/doom.png, quake2.png, piano.png, nuklear.png, vedit.png,
-  pokemon.png, file.png, shell.png, paint.png               32x32 RGBA
+  progs/icons/doom.png, doomedit.png, quake2.png, piano.png, nuklear.png,
+  vedit.png, pokemon.png, file.png, shell.png, paint.png  32x32 RGBA
   progs/wall/wallpaper.png                                   800x600 RGB
 
 The kernel runs in an 8-bit palette mode, so it maps icon pixels to the
@@ -46,6 +47,7 @@ WALL_W, WALL_H = 800, 600
 
 ICON_JOBS = (
     ("doom.png", "doom.png"),
+    ("doomedit.png", "doomedit.png"),
     ("quake2.png", "quake2.png"),
     ("piano.png", "piano.png"),
     ("nuklear.png", "nuklear.png"),

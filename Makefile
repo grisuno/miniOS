@@ -37,6 +37,13 @@ LUA_REF ?= v5.4.7
 NUKLEAR_URL ?= https://github.com/Immediate-Mode-UI/Nuklear
 NUKLEAR_DIR ?= ../nuklear
 
+# raycastlib: CC0 single-header C89 fixed-point raycaster, reference only
+# for the doomedit DDA preview (never vendored, never linked). Cloned by
+# `make sources` like every other sibling checkout so the reference is
+# reproducible from its upstream alone.
+RAYCASTLIB_URL ?= https://github.com/grisuno/raycastlib
+RAYCASTLIB_DIR ?= ../raycastlib
+
 FREEDOM_URL ?= https://github.com/grisuno/FreeDom
 FREEDOM_DIR ?= ../FreeDom
 
@@ -232,6 +239,14 @@ sources:
 	    echo "cloning  $(FREEDOM_URL) -> $(FREEDOM_DIR)"; \
 	    $(GIT) clone --depth 1 "$(FREEDOM_URL)" "$(FREEDOM_DIR)" || exit 1; \
 	fi
+	@if [ -d "$(RAYCASTLIB_DIR)/.git" ]; then \
+	    echo "present  $(RAYCASTLIB_DIR)"; \
+	elif [ -e "$(RAYCASTLIB_DIR)" ]; then \
+	    echo "skipped  $(RAYCASTLIB_DIR) exists and is not a git clone"; \
+	else \
+	    echo "cloning  $(RAYCASTLIB_URL) -> $(RAYCASTLIB_DIR)"; \
+	    $(GIT) clone --depth 1 "$(RAYCASTLIB_URL)" "$(RAYCASTLIB_DIR)" || exit 1; \
+	fi
 
 sources-update: sources
 	@for pair in $(SOURCE_REPOS); do \
@@ -253,6 +268,14 @@ sources-status:
 	        printf '%-16s %s\n' "$$dir" "absent (run 'make sources')"; \
 	    fi; \
 	done
+
+# Addon index: every external source carries an addons/*.yaml (guest =
+# installed in-OS through the editor, host = built by make and packed
+# into the image, reference = source-only checkout). Fails closed on any
+# invalid file so the marketplace index can never drift from the MCP
+# parser's dialect.
+addons:
+	python3 tools/check_addons.py
 
 # A missing source tree gets a direct instruction instead of make's own
 # "no rule to make target" message.
@@ -492,8 +515,8 @@ $(DOOM_DIR)/build:
 $(DOOM_DIR)/build/%.o: $(DOOM_DIR)/%.c | $(DOOM_DIR)/build
 	$(CC) $(CFLAGS_DOOM) -I$(DOOM_DIR) -I$(PROGS_DIR) -c $< -o $@
 
-$(BIN_DIR)/doomgeneric.elf: $(DOOM_OBJS)
-	$(CC) -static -no-pie -o $@ $^ -lm
+$(BIN_DIR)/doomgeneric.elf: $(DOOM_OBJS) $(PROGS_DIR)/minios_abi.h
+	$(CC) -static -no-pie -o $@ $(DOOM_OBJS) -lm
 	chmod +x $@
 
 # ── DOOM WAD file ───────────────────────────────────────────────────
@@ -834,6 +857,27 @@ $(BIN_DIR)/nuklear.elf: $(NUKLEAR_SRCS) $(NUKLEAR_DIR)/nuklear.h
 $(BIN_DIR)/nuklear: $(BIN_DIR)/nuklear.elf
 	cp $< $@
 
+# ── doomedit (Doom PWAD tile editor, ADR-0022) ────────────────────────
+# A ring-3 Nuklear app that paints single-sector E1M1 maps on a tile
+# canvas with a live DDA raycaster preview, exports PWAD snapshots to
+# /saves and boots the shipped Doom on them with -file. The IWAD stays
+# read-only; custom maps live only under saves/ like game saves.
+# The preview follows the ../raycastlib grid style (reference checkout,
+# cloned by `make sources`, never vendored nor linked).
+# Built exactly like the node editor, static ring-3, ships on MiniFS.
+DOOMEDIT_SRCS = $(NUKLEAR_PLATFORM) \
+                $(PROGS_DIR)/doomedit/doomedit.c
+
+$(BIN_DIR)/doomedit.elf: $(DOOMEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/minios_abi.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
+	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear -I$(PROGS_DIR) \
+	      -o $@ $(DOOMEDIT_SRCS) -lm
+	chmod +x $@
+
+# Bare-name alias so `doomedit` works without the .elf suffix.
+$(BIN_DIR)/doomedit: $(BIN_DIR)/doomedit.elf
+	cp $< $@
+
 # ── piano (Nuklear FM piano -> SB16 PCM) ───────────────────────────────
 # A clickable three-octave (C4..B6) piano keyboard in Nuklear that plays FM
 # sound through the kernel's Sound Blaster 16 driver, plus a PC-keyboard
@@ -1098,6 +1142,8 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                  $(PROGS_DIR)/etc/themes/forest $(PROGS_DIR)/etc/themes/slate \
                $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
                $(PROGS_DIR)/vedit/vedit.c \
+               $(BIN_DIR)/doomedit.elf $(BIN_DIR)/doomedit \
+               $(PROGS_DIR)/doomedit/doomedit.c \
                 $(BIN_DIR)/file.elf $(BIN_DIR)/file \
                 $(PROGS_DIR)/file/file.c \
                 $(BIN_DIR)/paint.elf $(BIN_DIR)/paint \
@@ -1211,6 +1257,7 @@ lint: | $(TOOLS_DIR)
 	python3 tools/check_abi_numbers.py
 	python3 tools/check_fork_stubs.py
 	python3 tools/check_syscall_sanitize.py
+	python3 tools/check_addons.py
 	bash -n mutate.sh && bash -n test_bdd.sh && echo "lint: ok"
 
 # Sync primitives host test (tests/test_sync.c + kernel/sync.c).
@@ -1311,6 +1358,20 @@ paint_test: tests/test_paint.c | $(TOOLS_DIR)
 
 test-paint: paint_test
 	$(TOOLS_DIR)/paint_test
+
+# Doom PWAD grid-compiler host test (tests/test_doom_pwad.py, ADR-0022).
+# Covers the python writer plus the C editor roundtrip: the C --demo
+# output must pass the python checker and vice versa, so the two
+# implementations cannot drift apart silently. Every bundled level
+# (--preset 0-4) exports and passes the checker too.
+test-doomedit: $(BIN_DIR)/doomedit.elf
+	python3 tests/test_doom_pwad.py
+	$(BIN_DIR)/doomedit.elf --demo $(TOOLS_DIR)/doomedit_demo.wad
+	python3 tools/doom_pwad.py check $(TOOLS_DIR)/doomedit_demo.wad
+	for i in 0 1 2 3 4; do \
+	    $(BIN_DIR)/doomedit.elf --preset $$i $(TOOLS_DIR)/doomedit_level$$i.wad || exit 1; \
+	    python3 tools/doom_pwad.py check $(TOOLS_DIR)/doomedit_level$$i.wad || exit 1; \
+	done
 
 # Shared Nuklear theme host test (tests/test_theme.c, spec pin).
 theme_test: tests/test_theme.c progs/nuklear/nuklear_theme.h | $(TOOLS_DIR)
@@ -1569,12 +1630,14 @@ $(PROGS_DIR)/icons/terminal.png: tools/gen_icons.py
 # defaults to the repo root; nothing assumes an absolute path.
 DESKTOP_SRC_DIR = .
 DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
+               $(DESKTOP_SRC_DIR)/doomedit.png \
                $(DESKTOP_SRC_DIR)/quake2.png $(DESKTOP_SRC_DIR)/piano.png \
                $(DESKTOP_SRC_DIR)/nuklear.png $(DESKTOP_SRC_DIR)/vedit.png \
                $(DESKTOP_SRC_DIR)/pokemon.png \
                $(DESKTOP_SRC_DIR)/file.png $(DESKTOP_SRC_DIR)/shell.png \
                $(DESKTOP_SRC_DIR)/paint.png
-DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/quake2.png \
+DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/doomedit.png \
+              $(PROGS_DIR)/icons/quake2.png \
               $(PROGS_DIR)/icons/piano.png $(PROGS_DIR)/icons/nuklear.png \
               $(PROGS_DIR)/icons/vedit.png $(PROGS_DIR)/icons/pokemon.png \
               $(PROGS_DIR)/icons/file.png $(PROGS_DIR)/icons/shell.png \
@@ -1861,7 +1924,10 @@ clean: saves-backup
 	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
 	      $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
 	      $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear \
-	      $(BIN_DIR)/quake2generic.elf
+	      $(BIN_DIR)/quake2generic.elf \
+	      $(BIN_DIR)/doomgeneric.elf \
+	      $(BIN_DIR)/doomedit.elf $(BIN_DIR)/doomedit
+	rm -rf $(DOOM_DIR)/build $(Q2G_DIR)/build
 	rm -f $(BIN_DIR)/opl3
 	rm -f $(BIN_DIR)/sbtone
 	rm -f $(BIN_DIR)/thdemo
@@ -1895,5 +1961,5 @@ minifs-fsck:
 	python3 minifs_fsck.py minifs.bin
 
 .PHONY: all run run-kvm run-headless clean debug gdb serial test \
-        sources sources-update sources-status toolchain selfhost \
+        sources sources-update sources-status addons toolchain selfhost \
         minifs-mkfs minifs-dump minifs-fsck saves-backup os.iso usb os.usb.img

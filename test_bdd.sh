@@ -1189,6 +1189,29 @@ expect "paint: png ok ("
 expect "paint: file ok (/paint_selftest.png)"
 expect "paint: frame ok (800x360)"
 
+scenario "doomedit selftest renders one UI frame and builds a PWAD" "doomedit --selftest
+poweroff"
+expect "doomedit: frame ok (800x360)"
+expect "doomedit: build ok ("
+
+scenario "doomedit demo exports a snapshot PWAD to saves/" "doomedit --demo /saves/dmap0.wad
+doomedit --check /saves/dmap0.wad
+poweroff"
+expect "doomedit: wrote /saves/dmap0.wad"
+expect "doomedit: /saves/dmap0.wad ok"
+
+scenario "doomedit preset exports a bundled level PWAD" "doomedit --preset 2 /saves/dmap1.wad
+doomedit --check /saves/dmap1.wad
+poweroff"
+expect "doomedit: wrote /saves/dmap1.wad (Demon Pit)"
+expect "doomedit: /saves/dmap1.wad ok"
+
+scenario "doom boots a snapshot PWAD with the IWAD untouched" "doomedit --demo /saves/dmap0.wad
+run doomgeneric.elf -file /saves/dmap0.wad mini_autoframes 30
+poweroff"
+expect "doomedit: wrote /saves/dmap0.wad"
+expect "exit code: 0"
+
 scenario "wm state reports the active theme" "wm state
 poweroff"
 expect "wm: theme dark"

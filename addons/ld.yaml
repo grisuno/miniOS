@@ -1,0 +1,12 @@
+name: ld
+description: MiniOS linker (ET_REL toolchain object). Built on the host from the sibling checkout and packed as objects/ld.o on the ramdisk; links miniGCC assembly into ELF or CVM modules (run objects/ld.o -f elf -o bin/p.elf asm/p.s).
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/grisuno/ld
+  kind: host
+  dir_var: LD_DIR
+  artifact: objects/ld.o
+  files: []
+  host_build:
+    - make progs/objects/ld.o

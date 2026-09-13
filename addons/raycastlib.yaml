@@ -1,0 +1,9 @@
+name: raycastlib
+description: CC0 single-header C89 fixed-point raycaster. Reference only for the doomedit DDA preview (ADR-0022): never vendored, never linked, never built. Cloned by make sources so the reference is reproducible from its upstream alone.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/grisuno/raycastlib
+  kind: reference
+  dir_var: RAYCASTLIB_DIR
+  files: []

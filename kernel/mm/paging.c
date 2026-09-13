@@ -16,6 +16,26 @@
 
 /* ---- Page table helpers (from kernel.c, now shared via bootdefs.h) ---- */
 
+/* Page-align a kmalloc'd region. The framebuffer/back-buffer PTEs are
+ * built once per 4 KB page from the buffer's base address, and x86 masks
+ * the low 12 bits of a PTE into flags, so a 16-byte-aligned `kmalloc`
+ * pointer would make the first mapped page start at `buf & ~0xFFF` —
+ * i.e. up to 4095 bytes BEFORE the buffer. A guest writing its frame to
+ * the mapped VA then overwrote the heap chunk in front of the buffer
+ * (a live KFILE), which is the corrupt-handle black screen. Over-
+ * allocate one page and round the base up so VA offset 0 is buffer
+ * offset 0. The raw pointer is deliberately untracked: both callers
+ * allocate once at boot and never free. */
+static unsigned char *mm_page_aligned_alloc(unsigned size,
+                                            unsigned long *phys_out) {
+    unsigned char *raw = (unsigned char *)kmalloc((unsigned long)size + 0x1000);
+    unsigned char *buf;
+    if (!raw) return 0;
+    buf = (unsigned char *)(((unsigned long)raw + 0xFFF) & ~0xFFFUL);
+    *phys_out = (unsigned long)buf;
+    return buf;
+}
+
 void mm_setup_protections(void) {
     volatile unsigned long *pml4 = (volatile unsigned long *)PT_PML4_ADDR;
     volatile unsigned long *pdpt = (volatile unsigned long *)PT_PDPT_ADDR;
@@ -79,11 +99,15 @@ void mm_setup_protections(void) {
         unsigned long *bb_pt = (unsigned long *)PT_USER_TABLES_ADDR +
                                (bb_pd_idx - lo) * 0x1000 /
                                sizeof(unsigned long);
-        unsigned char *buf = (unsigned char *)kmalloc(DOOM_W * DOOM_H);
+        unsigned char *buf;
         unsigned long phys;
         unsigned long k;
+        buf = mm_page_aligned_alloc(DOOM_W * DOOM_H, &phys);
         if (buf == 0) return;
-        phys = (unsigned long)buf;
+        if (phys & 0xFFFUL) {
+            kprintf("mm: DOOM back-buffer not page aligned\n");
+            return;
+        }
         for (k = 0; k < (DOOM_W * DOOM_H + 0xFFF) >> 12; k++)
             bb_pt[bb_pt_off + k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
     }
@@ -95,11 +119,15 @@ void mm_setup_protections(void) {
         unsigned long *bb_pt = (unsigned long *)PT_USER_TABLES_ADDR +
                                (bb_pd_idx - lo) * 0x1000 /
                                sizeof(unsigned long);
-        unsigned char *buf = (unsigned char *)kmalloc(NK_W * NK_H);
+        unsigned char *buf;
         unsigned long phys;
         unsigned long k;
+        buf = mm_page_aligned_alloc(NK_W * NK_H, &phys);
         if (buf == 0) return;
-        phys = (unsigned long)buf;
+        if (phys & 0xFFFUL) {
+            kprintf("mm: NK back-buffer not page aligned\n");
+            return;
+        }
         for (k = 0; k < (NK_W * NK_H + 0xFFF) >> 12; k++)
             bb_pt[bb_pt_off + k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
     }

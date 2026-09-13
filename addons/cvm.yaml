@@ -1,0 +1,15 @@
+name: cvm
+description: CVM v2 stack-bytecode interpreter (ET_REL toolchain object plus the cvm2 module format). Built on the host from the sibling checkout and packed as objects/cvm.o on the ramdisk; runs .cvm modules with a Linux-style argv.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/grisuno/cvm
+  kind: host
+  dir_var: CVM_DIR
+  artifact: objects/cvm.o
+  files: []
+  host_build:
+    - make progs/objects/cvm.o
+  verify:
+    - line: run cvm/fib.cvm
+      exit_code: 0

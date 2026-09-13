@@ -1,0 +1,14 @@
+name: doom
+description: DOOM (doomgeneric port) as a ring-3 static ELF with a windowed 320x200 back-buffer. Sources are vendored in-repo under progs/doomgeneric with the MiniOS platform layer; the shareware IWAD ships beside the binary on MiniFS. Headless proof is the mini_autoframes autoquit that climbs gfx frames and exits.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/grisuno/miniOS.git
+  kind: host
+  artifact: doomgeneric.elf
+  files: []
+  host_build:
+    - make progs/bin/doomgeneric.elf
+  verify:
+    - line: doomgeneric.elf mini_autoframes 1
+      exit_code: 0

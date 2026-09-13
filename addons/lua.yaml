@@ -1,0 +1,16 @@
+name: lua
+description: Lua 5.4 reference interpreter as a ring-3 static ELF. Built on the host from the sibling checkout and shipped on MiniFS as lua.elf plus the bare-name alias; runs scripts via the unified fs and drives the self-hosted toolchain suite (lua src/test.lua).
+author: miniOS
+version: "5.4.7"
+install:
+  repo_url: https://github.com/lua/lua
+  kind: host
+  dir_var: LUA_DIR
+  ref: v5.4.7
+  artifact: lua
+  files: []
+  host_build:
+    - make progs/bin/lua.elf
+  verify:
+    - line: lua src/test.lua
+      exit_code: 0

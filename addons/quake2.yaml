@@ -1,0 +1,11 @@
+name: quake2
+description: Quake 2 (quake2generic engine) as a ring-3 static ELF reusing the DOOM back-buffer infrastructure. The upstream checkout is nested at progs/quake2generic/quake2generic and the MiniOS platform layer lives beside it; the binary ships on MiniFS with baseq2/pak0.pak and runs with +set basedir .
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/ozkl/quake2generic
+  kind: host
+  artifact: quake2generic.elf
+  files: []
+  host_build:
+    - make progs/bin/quake2generic.elf

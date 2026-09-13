@@ -1,0 +1,14 @@
+name: doomedit
+description: Doom PWAD tile editor (ADR-0022): ring-3 Nuklear app with a live DDA preview in the raycastlib grid style, single-sector E1M1 snapshots into /saves, and -file boot of the immutable shareware IWAD. In-repo source built like the node editor; ships on MiniFS as doomedit.elf plus the bare-name alias with its dock icon.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/grisuno/miniOS.git
+  kind: host
+  artifact: doomedit
+  files: []
+  host_build:
+    - make progs/bin/doomedit.elf
+  verify:
+    - line: doomedit --selftest
+      exit_code: 0

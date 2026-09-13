@@ -1,0 +1,12 @@
+name: nuked-opl3
+description: Nuked-OPL3 cycle-accurate YMF262 FM emulator (LGPL-2.1, pure C). Rides on the host checkout and renders OPL3 audio to PCM at ring 3 (progs/src/opl3.c) fed to the kernel SB16 driver; sources ship beside the binaries so the LGPL relink and source obligations hold inside the machine.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/nukeykt/Nuked-OPL3
+  kind: host
+  dir_var: NUKED_OPL3_DIR
+  artifact: opl3
+  files: []
+  host_build:
+    - make progs/bin/opl3

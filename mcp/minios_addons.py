@@ -1,10 +1,19 @@
 """MiniOS addon marketplace (lazyaddons-style).
 
 Addons are YAML files that say where a program's source lives on GitHub and
-how it is built *inside* the OS. This module parses that YAML with a strict
-stdlib-only subset parser (no PyYAML) and installs addons into a running
-MiniOS session: clone the repo, upload each source through the editor in
-bounded chunks, reassemble with `cat`, build and verify inside the OS.
+how it is built. Two flavors share one dialect:
+
+- kind `guest` (default): built *inside* the OS. This module parses that
+  YAML with a strict stdlib-only subset parser (no PyYAML) and installs
+  the addon into a running MiniOS session: clone the repo, upload each
+  source through the editor in bounded chunks, reassemble with `cat`,
+  build and verify inside the OS.
+- kind `host`: built on the host with the ordinary gcc toolchain and
+  packed into the image by `make` (every sibling checkout and every
+  vendored tree). `minios_install` refuses these with a diagnostic that
+  names the make target instead of half-installing them.
+- kind `reference`: source-only reference checkouts (never vendored,
+  never linked, never built). Same refusal as `host`.
 
 The host shell is never invoked; the only commands run are the addon's own
 build/verify lines, driven line by line through the MiniOS shell.
@@ -28,7 +37,12 @@ ADDON_PATH_CHARS = frozenset(
 )
 
 ADDON_KEYS = frozenset(["name", "description", "author", "version", "install"])
-ADDON_INSTALL_KEYS = frozenset(["repo_url", "files", "build", "verify"])
+ADDON_INSTALL_KEYS = frozenset(["repo_url", "kind", "dir_var", "ref",
+                                "artifact", "files", "build", "host_build",
+                                "verify"])
+
+ADDON_KINDS = ("guest", "host", "reference")
+ADDON_META_MAX = 128
 
 ADDON_REGISTRY_PATH = "var/lib/addons.txt"
 
@@ -60,10 +74,12 @@ def parse_addon_yaml(text):
     """Parse the strict YAML subset. Returns the addon dict.
 
     Grammar: flat `key: value` lines; `install:` opens an indented block
-    with `repo_url:`, a `files:` list of `- src:`/`dst:` pairs, and
-    `build:` / `verify:` lists of `- ...` command lines (`verify` items
-    may carry a nested `exit_code:`). Everything else is a parse error
-    with its line number.
+    with `repo_url:`, an optional `kind:` (`guest` default, `host`,
+    `reference`), optional `dir_var:`/`ref:`/`artifact:` metadata, a
+    `files:` list of `- src:`/`dst:` pairs, and `build:` / `host_build:` /
+    `verify:` lists of `- ...` command lines (`verify` items may carry a
+    nested `exit_code:`). Everything else is a parse error with its line
+    number.
     """
 
     def fail(lineno, why):
@@ -110,7 +126,7 @@ def parse_addon_yaml(text):
                 k, _, v = body.partition(":")
                 k = k.strip()
                 v = _unquote(v)
-                if k in ("files", "build", "verify"):
+                if k in ("files", "build", "verify", "host_build"):
                     if v == "[]":
                         v = ""
                     if v:
@@ -141,10 +157,10 @@ def parse_addon_yaml(text):
                 else:
                     fail(lineno, "file entries take 'src:' and 'dst:'")
                 continue
-            if key == "build":
+            if key == "build" or key == "host_build":
                 if not body.startswith("- "):
                     fail(lineno, "build entries start with '-'")
-                install["build"].append(body[2:].strip())
+                install[key].append(body[2:].strip())
                 continue
             if key == "verify":
                 if body.startswith("- "):
@@ -211,9 +227,23 @@ def validate_addon(addon, source):
     if "\n" in repo_url or "\r" in repo_url:
         raise AddonError("%s: repo_url must be one line" % source)
 
+    kind = install.get("kind", "guest")
+    if kind not in ADDON_KINDS:
+        raise AddonError("%s: kind must be one of %s" % (source, "/".join(ADDON_KINDS)))
+    for meta in ("dir_var", "ref", "artifact"):
+        val = install.get(meta, "")
+        if not isinstance(val, str) or len(val) > ADDON_META_MAX:
+            raise AddonError("%s: %s missing or too long" % (source, meta))
+        if "\n" in val or "\r" in val:
+            raise AddonError("%s: %s must be one line" % (source, meta))
+
     files = install.get("files", [])
-    if not isinstance(files, list) or not files or len(files) > ADDON_MAX_ITEMS:
-        raise AddonError("%s: files must be a list of 1..%d entries" % (source, ADDON_MAX_ITEMS))
+    if not isinstance(files, list) or len(files) > ADDON_MAX_ITEMS:
+        raise AddonError("%s: files must be a list of at most %d entries" % (source, ADDON_MAX_ITEMS))
+    if kind == "guest" and not files:
+        raise AddonError("%s: guest addons need at least one file" % source)
+    if kind == "reference" and files:
+        raise AddonError("%s: reference addons carry no files" % source)
     for entry in files:
         src = entry.get("src")
         dst = entry.get("dst")
@@ -226,13 +256,28 @@ def validate_addon(addon, source):
     build = install.get("build", [])
     if not isinstance(build, list) or len(build) > ADDON_MAX_ITEMS:
         raise AddonError("%s: build must be a list of at most %d lines" % (source, ADDON_MAX_ITEMS))
+    host_build = install.get("host_build", [])
+    if not isinstance(host_build, list) or len(host_build) > ADDON_MAX_ITEMS:
+        raise AddonError("%s: host_build must be a list of at most %d lines" % (source, ADDON_MAX_ITEMS))
+    if kind == "reference" and (build or host_build):
+        raise AddonError("%s: reference addons carry no build lines" % source)
+    if kind == "host" and not install.get("artifact"):
+        raise AddonError("%s: host addons must name their artifact" % source)
+    if kind == "reference" and install.get("artifact"):
+        raise AddonError("%s: reference addons have no artifact" % source)
     verify = install.get("verify", [])
     if not isinstance(verify, list) or len(verify) > ADDON_MAX_ITEMS:
         raise AddonError("%s: verify must be a list of at most %d lines" % (source, ADDON_MAX_ITEMS))
+    if kind == "guest" and not verify:
+        raise AddonError("%s: guest addons need at least one verify line" % (source, ADDON_MAX_ITEMS))
     for line in build:
         problem = validate_shell_line(line)
         if problem:
             raise AddonError("%s: build line: %s" % (source, problem))
+    for line in host_build:
+        problem = validate_shell_line(line)
+        if problem:
+            raise AddonError("%s: host_build line: %s" % (source, problem))
     for entry in verify:
         line = entry.get("line")
         problem = validate_shell_line(line)
@@ -365,6 +410,15 @@ def install_addon(session, addon, cfg):
     name = addon["name"]
     version = addon.get("version", "")
     install = addon["install"]
+
+    # Host and reference addons are built (or only cloned) by make on the
+    # host; the editor-upload path cannot carry them, so refuse before
+    # touching the session instead of recording a half-installed package.
+    kind = install.get("kind", "guest")
+    if kind != "guest":
+        raise AddonError(
+            "addon '%s' is kind '%s': built by make, not the marketplace "
+            "(see addons/%s.yaml and the README addon table)" % (name, kind, name))
 
     if not session.booted():
         session.boot(timeout_ms)

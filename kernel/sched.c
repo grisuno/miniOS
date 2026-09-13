@@ -1173,6 +1173,33 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             }
             serial_puts("\n");
         }
+        /* Ring-3 wild-jump diagnosis: dump 8 words at the user stack so
+         * a jump outside the user window (RIP in kernel/low memory)
+         * still leaves an addr2line-able call chain. The whole user
+         * window is eagerly mapped, so any rsp inside it reads fault
+         * free; anything else skips the dump instead of nesting. */
+        {
+            char h[17];
+            static const char digits[] = "0123456789abcdef";
+            unsigned long rsp = frame->rsp;
+            int n = 0, k;
+            serial_puts("  ustack:");
+            if ((frame->cs & 3) == 3 && rsp >= USER_LOAD_BASE &&
+                rsp + 64 < USER_LOAD_END) {
+                unsigned long *sp = (unsigned long *)rsp;
+                for (k = 0; k < 8; k++) {
+                    unsigned long v = sp[k];
+                    serial_puts(" ");
+                    for (int i = 15; i >= 0; i--) { h[i] = digits[v & 0xF]; v >>= 4; }
+                    h[16] = 0;
+                    serial_puts(h);
+                    n++;
+                }
+            }
+            if (!n)
+                serial_puts(" <unreadable>");
+            serial_puts("\n");
+        }
         /* If a ring-3 user fault lands in the user window, recover:
          * pid 0 is the k_exec_user frame and longjmps back to the shell
          * with EFAULT.  A CLONE_VM thread (or any non-0 pid) must NOT

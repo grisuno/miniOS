@@ -417,6 +417,7 @@ void klog_enable(void);
 void shell_init(void);
 void shell_run(void);
 int  console_getc(void);
+int  console_peek(void);
 int  redirect_suspend(void);
 void redirect_resume(int was);
 int  redirect_begin(void);

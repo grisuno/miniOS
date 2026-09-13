@@ -1587,8 +1587,7 @@ void D_DoomMain (void)
 	int i;
 	
 	if ( gamemode == shareware)
-	    I_Error(DEH_String("\nYou cannot -file with the shareware "
-			       "version. Register!"));
+	    printf("MiniOS: shareware PWAD loading allowed; IWAD stays read-only.\n");
 
 	// Check for fake IWAD with right name,
 	// but w/o all the lumps of the registered version. 

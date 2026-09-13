@@ -16,6 +16,19 @@ KFILE *kfile_stdin(void)  { return kstdin; }
 KFILE *kfile_stdout(void) { return kstdout; }
 KFILE *kfile_stderr(void) { return kstderr; }
 
+/* A KFILE field is a kernel pointer, so it always lives in the canonical
+ * low half. A value outside it is the signature of heap corruption (a
+ * wild write landed on a live or freed KFILE) or a freed-and-reused slot
+ * still referenced by a stale fd. Dereferencing it faults with a #GP and
+ * halts the machine with no recovery (the DOOM ABI-drift black screen),
+ * so every public KFILE entry point refuses it loudly instead. */
+static int kfile_bad_ptr(const void *p) {
+    return p && (unsigned long)p >= 0x0000800000000000UL;
+}
+static int kfile_corrupt(const KFILE *f) {
+    return kfile_bad_ptr((const void *)f->rf) || kfile_bad_ptr((const void *)f->vfs);
+}
+
 /* A write lands on the ramdisk only when the parent directory entry
  * lives THERE (some ramdisk name carries that prefix). fs_dir_exists is
  * true when the directory lives on either filesystem, which misroutes
@@ -130,7 +143,7 @@ int kfgetc(KFILE *f) {
         f->pos++;
         return (unsigned char)c;
     }
-    if (!f->rf || f->pos >= f->rf->size) return EOF;
+    if (!f->rf || kfile_corrupt(f) || f->pos >= f->rf->size) return EOF;
     char c;
     ramdisk_read(f->rf, &c, f->pos, 1);
     f->pos++;
@@ -172,7 +185,7 @@ unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
         f->pos += total;
         return total / size;
     }
-    if (!f->rf) return 0;
+    if (!f->rf || kfile_corrupt(f)) return 0;
     if (f->pos + total > f->rf->size) total = f->rf->size - f->pos;
     ramdisk_read(f->rf, ptr, f->pos, (unsigned)total);
     f->pos += total;
@@ -210,6 +223,11 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
 
 int kfseek(KFILE *f, long offset, int whence) {
     if (!f) return -1;
+    if (kfile_corrupt(f)) {
+        kprintf("kfile: corrupt handle (rf=%lx vfs=%lx) on seek - refusing\n",
+                (unsigned long)f->rf, (unsigned long)f->vfs);
+        return -1;
+    }
     unsigned filesize = f->minifs_ino >= 0 ? f->minifs_size : (f->rf ? f->rf->size : 0);
     unsigned base;
     if (whence == 0) base = 0;
@@ -239,7 +257,7 @@ int kfflush(KFILE *f) {
         }
         return 0;
     }
-    if (!f->rf) return 0;
+    if (!f->rf || kfile_corrupt(f)) return 0;
     if (f->wbuf && f->wsize > 0) {
         unsigned base = (f->mode == 2) ? (unsigned)(f->pos - f->wsize) : 0;
         if (!ramdisk_resize(f->rf, base + f->wsize)) return -1;

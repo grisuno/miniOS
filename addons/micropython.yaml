@@ -1,0 +1,16 @@
+name: micropython
+description: MicroPython unix-port minios variant as a ring-3 static ELF. Built on the host from the sibling checkout (VARIANT_DIR progs/micropython/variants/minios, no upstream modifications) and shipped on MiniFS as micropython.elf plus the bare-name alias, with the minios module and SYS_SPAWN run().
+author: miniOS
+version: "1.28.0"
+install:
+  repo_url: https://github.com/micropython/micropython
+  kind: host
+  dir_var: MICROPYTHON_DIR
+  ref: v1.28.0
+  artifact: micropython
+  files: []
+  host_build:
+    - make progs/bin/micropython.elf
+  verify:
+    - line: micropython -c "print(6 * 7)"
+      exit_code: 0

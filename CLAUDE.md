@@ -42,17 +42,27 @@ stack region; a module whose layout cannot hold the argument list is
 rejected with a diagnostic, never silently corrupted.
 
 ## Source Contract
-The system spans four repositories: this one plus
-[miniGCC](https://github.com/grisuno/miniGCC),
-[ld](https://github.com/grisuno/ld) and
-[cvm](https://github.com/grisuno/cvm). The build must be reproducible from
-those upstreams alone, so:
+The system spans this repository plus one sibling checkout per external
+source: the toolchain ([miniGCC](https://github.com/grisuno/miniGCC),
+[ld](https://github.com/grisuno/ld),
+[cvm](https://github.com/grisuno/cvm)), the interpreters
+([lua](https://github.com/lua/lua),
+[micropython](https://github.com/micropython/micropython)), the UI and
+audio libraries ([nuklear](https://github.com/Immediate-Mode-UI/Nuklear),
+[nuked-opl3](https://github.com/nukeykt/Nuked-OPL3)), the browser
+([FreeDom](https://github.com/grisuno/FreeDom)) and the reference-only
+[raycastlib](https://github.com/grisuno/raycastlib). Every one of them
+carries an `addons/<name>.yaml` (see Addon doctrine); DOOM, Quake 2 and
+doomedit live in-repo or nested and carry one too. The build must be
+reproducible from those upstreams alone, so:
 
 - `make sources` clones the missing ones and `make sources-update` pulls
   them. Neither ever modifies a directory that already exists, so a checkout
   with local work is never clobbered.
 - Every location is overridable (`MINIGCC_DIR`, `LD_DIR`, `CVM_REPO_DIR`,
-  `CVM_DIR`) and so is every origin (`MINIGCC_URL`, `LD_URL`, `CVM_URL`).
+  `CVM_DIR`, `LUA_DIR`, `MICROPYTHON_DIR`, `NUKLEAR_DIR`, `NUKED_OPL3_DIR`,
+  `FREEDOM_DIR`, `RAYCASTLIB_DIR`) and so is every origin (`*_URL`, plus
+  `MICROPYTHON_REF`/`LUA_REF` where a release is pinned).
   Nothing in the build assumes an absolute path.
 - Everything on the ramdisk is regenerated from source: `minigcc.o`, `ld.o`
   and `cvm.o` from the sibling checkouts, and the demo programs from this
@@ -366,6 +376,18 @@ user programs crash at "unmapped" addresses — that is the historical
    `mm_setup_protections`); any new "map kernel memory into the user
    window" feature must write into those tables the same way, never into
    the PD leaves or the kernel image.
+6. A kernel-heap buffer mapped page-by-page into the user window MUST be
+   page-aligned. x86 masks a PTE's low 12 bits into flags, so a
+   16-byte-aligned `kmalloc` pointer makes the first mapped page start at
+   `buf & ~0xFFF` — up to 4095 bytes BEFORE the buffer. A guest writing
+   its whole frame to the mapped VA then overwrites the heap chunk in
+   front of it; when that chunk is a live `KFILE` the next seek/close hits
+   the corrupt fields (the historical `kfile: corrupt handle` /
+   `kfree: wild pointer` black screen, seen through SYS_SPAWN and after
+   several spawned programs). `mm_setup_protections` allocates the DOOM
+   and Nuklear back-buffers through `mm_page_aligned_alloc` (over-allocates
+   one page, rounds the base up) and asserts `phys & 0xFFF == 0` for both.
+   Never map a raw `kmalloc` pointer page-by-page without aligning it.
 
 ## VESA Hi-Res Desktop and Windowed DOOM
 
@@ -2297,6 +2319,60 @@ The BDD scenario `quake2generic binary exists on minifs` verifies the ELF
 ships on MiniFS. A full gameplay test requires the PAK file and is not
 automated in the serial-console BDD suite (same as DOOM).
 
+## Doom map editor (`doomedit`)
+
+`bin/doomedit` is the in-OS Doom map authoring path: a ring-3 Nuklear app
+built exactly like the node editor (host gcc `-static -no-pie`, MiniFS with
+a bare-name alias, one file per contract at `progs/doomedit/doomedit.c`
+with a centralized config). The author paints a tile grid (wall brush,
+player start, exit switch marker, imp/demon/shotgun-guy/medikit/shells),
+watches a live DDA raycaster preview in the style of the sibling
+`../raycastlib` checkout (CC0, cloned by hand, reference only, never
+vendored), exports a single-sector E1M1 PWAD snapshot to `/saves`, and
+boots the shipped Doom on it with `-file` without ever writing to the
+immutable IWAD.
+
+- **PWAD writer (`tools/doom_pwad.py`)**: a single-file host tool with the
+  same algorithm as the C exporter (`build`/`check`/`info` verbs). Grid
+  legend `#` wall, `.` floor, `P` player, `E` exit marker plus thing
+  stamps; the exit marker must sit next to a wall whose shared edge
+  becomes the S1 exit-switch linedef (special 11). Output is one convex
+  single sector: segs mirror the boundary linedefs, one subsector, one
+  root node with both children leaf, one shared-list blockmap, REJECT one
+  byte. Fail closed on ragged grids, open perimeters, missing player or
+  exit, unreachable tiles, oversized dimensions and every wild cross-lump
+  reference. All tunables live in `DoomPwadConfig`; textures, flats and
+  thing ids are verified byte-present in the shareware `Doom1.wad`.
+  Multi-sector maps with a real BSP compiler are an explicit Phase 2.
+- **Shareware `-file` gate (`progs/doomgeneric/d_main.c`)**: the shipped
+  IWAD is shareware, whose startup aborts any `-file` load. The
+  MiniOS-local patch relaxes that one abort into a notice; the
+  registered-version lump check stays intact and the IWAD file itself is
+  never opened for writing.
+- **Snapshots (`saves/`)**: custom maps live only under `saves/` on MiniFS,
+  which the image rules already extract and repack across rebuilds, so a
+  map survives `make os.img` and `make clean` through `saves-backup/`.
+  Booting without `-file` always returns to the original game; replay via
+  the editor Run action (button or Ctrl+R through the scancode hook) or
+  `run doomgeneric.elf -file /saves/dmapN.wad` from the shell.
+- **Bundled levels and procedural maps**: the level combo offers five
+  compiled-in levels in the same one-char-per-tile grid text the editor
+  saves (`Hangar of Dawn`, `Imp Gallery`, `Demon Pit`, `Crossfire Chapel`,
+  `Fortress of Lead`, a few hundred bytes each), and the Random button
+  grows a fresh map with the full thing palette (demons guaranteed),
+  retried until the validator accepts it. Headless:
+  `doomedit --preset N out.wad` and `doomedit --random [seed] out.wad`;
+  the selftest builds every preset plus a fixed-seed random map and
+  `make test-doomedit` runs all five through the Python checker.
+- **Dock icon**: `DoomEdit|icons/doomedit.png|doomedit` in
+  `progs/etc/shortcuts`, converted from the repo-root `doomedit.png` by
+  `tools/gen_desktop_pngs.py`.
+- **Proof**: `make test-doomedit` (python vectors plus the C `--demo`
+  output passing the python checker, so the two writers cannot drift);
+  BDD `doomedit --selftest` (frame plus build), demo export plus check in
+  `saves/`, preset export plus check, and Doom boot on the snapshot with
+  `exit code: 0` (see ADR-0022).
+
 ## Headless "it actually plays" harness (`tools/boot_run.sh`)
 
 A one-off manual check should not hand-roll a QEMU launch. `tools/boot_run.sh`
@@ -2510,7 +2586,7 @@ is forbidden; the answer to a survivor is a new scenario.
 ## Validation Gate (must pass before any commit)
 ```bash
 make                # zero warnings
-make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit, all green
+make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
 sh src/test_all.sh  # one-boot comprehensive non-interactive suite (79 PASS)
 ./test_bdd.sh       # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
@@ -2530,6 +2606,7 @@ make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
 make test-file       # file browser assoc-contract suite green
 make test-paint      # paint canvas/PNG-contract suite green
+make test-doomedit   # doom PWAD writer + C/Python roundtrip green
 make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
@@ -2658,6 +2735,37 @@ install:
   it drives the MCP server over stdio JSON-RPC, installs `freedom` from a
   git repo into the booted OS, then browses with the installed binary
   (plain command path, no `run`).
+
+### Addon doctrine (every external source is an addon)
+The marketplace is the one package index, not just the guest-install path.
+Every external source — sibling checkout, nested upstream, vendored tree
+or in-repo program — carries an `addons/<name>.yaml`, and adding a new
+third-party dependency without one fails `make addons` review exactly like
+a missing BDD scenario fails a feature. Three kinds share one dialect
+(`mcp/minios_addons.py`, stdlib-only, no PyYAML):
+- `guest` (default): built *inside* the OS through the editor-upload
+  contract above. Only small miniGCC-compilable sources qualify (`cp`,
+  `freedom-mini`). `minios_install` serves these and nothing else.
+- `host`: built on the host with the ordinary gcc toolchain and packed
+  into the image by `make` (toolchain, interpreters, engines, libraries:
+  `minigcc`, `ld`, `cvm`, `lua`, `micropython`, `nuklear`, `nuked-opl3`,
+  `doom`, `quake2`, `doomedit`). The YAML pins `repo_url`, the Makefile
+  directory variable (`dir_var`), the pinned ref when one exists, the
+  guest-visible `artifact`, the `host_build` make lines and the in-OS
+  `verify` proof. `minios_install` refuses these before touching the
+  session — the editor path cannot carry megabytes of host-built source,
+  so a refusal naming the make target is the honest fail-closed behavior,
+  never a half-installed package.
+- `reference`: source-only checkouts that are never vendored, linked or
+  built (`raycastlib`, the doomedit preview reference). No files, no
+  build lines, no artifact: the YAML exists so the reference stays pinned
+  and reproducible from its upstream alone.
+- `make addons` (`tools/check_addons.py`) validates every file and runs
+  inside `make lint`: a new dependency lands its YAML, its Makefile
+  `*_URL`/`*_DIR` (overridable, never absolute), its `make sources`
+  clone block and its README table row together, or it does not land.
+  The README addon table mirrors the `addons/` directory one row per
+  file; a row without a file (or a file without a row) is drift.
 
 ### Validation
 - `minios_write` and `minios_cat` accept file names over a strict
@@ -2960,7 +3068,7 @@ CI gates enforce architectural constraints:
 ### Validation Gate (updated)
 ```bash
 make                        # zero warnings
-make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit, all green
+make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
 sh src/test_all.sh          # one-boot comprehensive non-interactive suite (79 PASS)
 ./test_bdd.sh               # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
@@ -2980,6 +3088,7 @@ make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
 make test-file       # file browser assoc-contract suite green
 make test-paint      # paint canvas/PNG-contract suite green
+make test-doomedit   # doom PWAD writer + C/Python roundtrip green
 make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
 make test-ktime test-randmix  # Phase 0 truthfulness: TSC->usec + getrandom mixer green
