@@ -39,13 +39,17 @@
 - Language: c
 - Symbols:
   - `test_read` (function, line 15) `static int test_read(device_t *d, unsigned lba, unsigned count, void *buf)`
-  - `main` (function, line 24) `int main(void)`
-  - `memset` (function, line 27) `memset(&a, 0, sizeof(a));`
-  - `strcpy` (function, line 28) `strcpy(a.name, "ide0");`
-  - `device_reset` (function, line 31) `device_reset();`
-  - `assert` (function, line 33) `assert(device_count() == 0);`
-  - `snprintf` (function, line 66) `snprintf(d.name, sizeof(d.name), "dev%d", i);`
-  - `printf` (function, line 82) `printf("driver: ok\n");`
+  - `test_pcm_open` (function, line 27) `static void test_pcm_open(device_t *d)`
+  - `test_pcm_submit` (function, line 32) `static int test_pcm_submit(device_t *d, const unsigned char *pcm, unsigned len)`
+  - `test_tone` (function, line 38) `static void test_tone(device_t *d, unsigned freq)`
+  - `main` (function, line 64) `int main(void)`
+  - `memset` (function, line 67) `memset(&a, 0, sizeof(a));`
+  - `strcpy` (function, line 68) `strcpy(a.name, "ide0");`
+  - `device_reset` (function, line 71) `device_reset();`
+  - `assert` (function, line 73) `assert(device_count() == 0);`
+  - `snprintf` (function, line 106) `snprintf(d.name, sizeof(d.name), "dev%d", i);`
+  - `device_find` (function, line 141) `device_find("sb160")->audio->pcm_open(device_find("sb160"));`
+  - `printf` (function, line 150) `printf("driver: ok\n");`
 - Depends on: `driver.h`, `kernel/string.c`
 
 ## tests/test_fault.c
@@ -98,6 +102,18 @@
   - `FREEDOM_WL_HOST_TEST` (macro, line 7) `#define FREEDOM_WL_HOST_TEST`
 - Depends on: `progs/src/freedom_wl.c`
 
+## tests/test_freedomui.c
+- Layer: testing
+- Doc: test_freedomui - host suite for the real FreeDom MiniOS backend.
+- Language: c
+- Symbols:
+  - `main` (function, line 24) `int main(void)`
+  - `printf` (function, line 16) `printf("FAIL: %s\n", name);`
+  - `ui_layout_free` (function, line 90) `ui_layout_free(&lay);`
+  - `hp_free` (function, line 91) `hp_free(text);`
+  - `FREEDOMUI_HOST_TEST` (macro, line 9) `#define FREEDOMUI_HOST_TEST`
+- Depends on: `kernel/string.c`, `progs/freedomui/freedomui_minios.c`
+
 ## tests/test_futex.c
 - Layer: testing
 - Doc: Docstring: Host test for kernel/futex.c (make test-futex).
@@ -141,6 +157,35 @@
   - `CHECK` (function, line 17) `CHECK(ktime_us_from_delta(0, 3000000UL) == 0, "zero delta");`
   - `CHECK` (macro, line 14) `#define CHECK(c, m)`
 - Depends on: `ktime.h`
+
+## tests/test_modifiers.c
+- Layer: testing
+- Doc: include <stdio.h>  include "drivers/modifiers.h"
+- Language: c
+- Symbols:
+  - `main` (function, line 15) `int main(void)`
+  - `fprintf` (function, line 12) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `modifiers_init` (function, line 19) `modifiers_init(&st);`
+  - `CHECK` (function, line 20) `CHECK(st.shift == 0 && st.super == 0, "init clears");`
+  - `printf` (function, line 45) `else printf("modifiers: %d failures\n", failures);`
+  - `CHECK` (macro, line 8) `#define CHECK(cond, msg)`
+- Depends on: `drivers/modifiers.h`
+
+## tests/test_notify.c
+- Layer: testing
+- Doc: include <stdio.h>  include "wm_notify.h"
+- Language: c
+- Symbols:
+  - `probe_handler` (function, line 15) `static void probe_handler(const wm_notify_event_t *e)`
+  - `main` (function, line 21) `int main(void)`
+  - `fprintf` (function, line 12) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `wm_notify_reset` (function, line 27) `wm_notify_reset(&bus);`
+  - `CHECK` (function, line 28) `CHECK(wm_notify_last(&bus) == 0, "empty bus has no last");`
+  - `wm_notify_emit` (function, line 31) `wm_notify_emit(0, 0);`
+  - `wm_notify_subscribe` (function, line 45) `wm_notify_subscribe(&bus, probe_handler);`
+  - `printf` (function, line 56) `else printf("notify: %d failures\n", failures);`
+  - `CHECK` (macro, line 8) `#define CHECK(cond, msg)`
+- Depends on: `wm_notify.h`
 
 ## tests/test_paint.c
 - Layer: testing
@@ -329,16 +374,18 @@
 - Doc: Docstring: Host test for the vedit IDE build contract (make test-vedit).
 - Language: c
 - Symbols:
-  - `t_has_ext` (function, line 30) `static int t_has_ext(const char *fname, const char *ext)`
-  - `t_base_of` (function, line 41) `static int t_base_of(const char *fname, char *dst, size_t cap)`
-  - `t_join` (function, line 61) `static int t_join(const char *dir, const char *base, const char *ext,
+  - `t_has_ext` (function, line 31) `static int t_has_ext(const char *fname, const char *ext)`
+  - `t_base_of` (function, line 42) `static int t_base_of(const char *fname, char *dst, size_t cap)`
+  - `t_join` (function, line 62) `static int t_join(const char *dir, const char *base, const char *ext,
                   char *dst...`
-  - `t_link_fmt` (function, line 77) `static int t_link_fmt(const char *s)`
-  - `main` (function, line 107) `int main(void)`
-  - `fprintf` (function, line 27) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 111) `CHECK(t_lang_of("untitled") == 1, "untitled highlights as C");`
-  - `printf` (function, line 146) `printf("vedit build host test FAIL (%d)\n", failures);`
-  - `CHECK` (macro, line 23) `#define CHECK(cond, msg)`
+  - `t_link_fmt` (function, line 78) `static int t_link_fmt(const char *s)`
+  - `t_lang_of` (function, line 93) `static int t_lang_of(const char *fname)`
+  - `t_run_kind` (function, line 110) `static int t_run_kind(const char *fname)`
+  - `main` (function, line 117) `int main(void)`
+  - `fprintf` (function, line 28) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `CHECK` (function, line 121) `CHECK(t_lang_of("untitled") == 1, "untitled highlights as C");`
+  - `printf` (function, line 164) `printf("vedit build host test FAIL (%d)\n", failures);`
+  - `CHECK` (macro, line 24) `#define CHECK(cond, msg)`
 - Depends on: `kernel/string.c`
 
 ## tests/test_vma.c

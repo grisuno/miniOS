@@ -81,6 +81,61 @@
   - `FILE_ACT_UNKNOWN` (macro, line 52) `#define FILE_ACT_UNKNOWN`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
+## progs/freedomui/freedomui_minios.c
+- Layer: presentation
+- Doc: freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern.
+- Language: c
+- Symbols:
+  - `FreedomUiConfig` (struct, line 68)
+  - `present_buf` (type_alias, line 68) `typedef struct FreedomUiConfig { long present_buf;`
+  - `freedomui_default` (function, line 96) `static FreedomUiConfig freedomui_default(void)`
+  - `freedomui_build_palette` (function, line 132) `static long freedomui_build_palette(unsigned char *pal, long cap)`
+  - `freedomui_engine_text` (function, line 196) `static long freedomui_engine_text(char *body, long n, char **title, char **text)`
+  - `freedomui_sys_present` (function, line 244) `static long freedomui_sys_present(long buf, long origin)`
+  - `freedomui_sys_title` (function, line 251) `static long freedomui_sys_title(char *t)`
+  - `freedomui_sys_palette` (function, line 258) `static long freedomui_sys_palette(unsigned char *pal)`
+  - `freedomui_sys_mouse` (function, line 265) `static long freedomui_sys_mouse(long *m)`
+  - `freedomui_sys_kbd` (function, line 272) `static long freedomui_sys_kbd(void)`
+  - `freedomui_sys_vga_mode` (function, line 279) `static long freedomui_sys_vga_mode(long on)`
+  - `freedomui_sys_kbd_raw` (function, line 286) `static long freedomui_sys_kbd_raw(long on)`
+  - `freedomui_sys_yield` (function, line 293) `static long freedomui_sys_yield(void)`
+  - `fui_append` (function, line 300) `static long fui_append(char *dst, long pos, char *src, long cap)`
+  - `fui_strlen` (function, line 318) `static long fui_strlen(char *s, long cap)`
+  - `fui_split_url` (function, line 334) `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...`
+  - `fui_parse_headers` (function, line 403) `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...`
+  - `fui_fetch_raw` (function, line 521) `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)`
+  - `fui_render` (function, line 749) `static long fui_render(FreedomUiConfig *c, size_t off)`
+  - `fui_browse` (function, line 868) `static long fui_browse(FreedomUiConfig *c)`
+  - `freedomui_selftest` (function, line 947) `static long freedomui_selftest(void)`
+  - `freedomui_host_probe` (function, line 1035) `static long freedomui_host_probe(FreedomUiConfig *c)`
+  - `freedomui_host_entry` (function, line 1118) `int freedomui_host_entry(FreedomUiConfig *c)`
+  - `main` (function, line 1123) `int main(int argc, char **argv)`
+  - `net_dns_resolve` (function, line 42) `int net_dns_resolve(const char *host);`
+  - `tls_handshake` (function, line 44) `int tls_handshake(int fd, char *host);`
+  - `tls_send` (function, line 45) `int tls_send(int fd, char *buf, int len);`
+  - `tls_recv` (function, line 46) `int tls_recv(int fd, char *buf, int len);`
+  - `tls_close` (function, line 47) `void tls_close(int fd);`
+  - `hp_document_free` (function, line 213) `hp_document_free(doc);`
+  - `hp_free` (function, line 216) `hp_free(ti);`
+  - `volatile` (function, line 246) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
+  - `printf` (function, line 547) `printf("freedomui: cannot resolve %s\n", host);`
+  - `ui_layout_free` (function, line 1109) `ui_layout_free(&lay);`
+  - `FUI_COLS` (macro, line 50) `#define FUI_COLS`
+  - `FUI_TEXT_ROWS` (macro, line 51) `#define FUI_TEXT_ROWS`
+  - `FUI_BODY_CAP` (macro, line 52) `#define FUI_BODY_CAP`
+  - `FUI_HDR_MAX` (macro, line 53) `#define FUI_HDR_MAX`
+  - `FUI_NET_BUF` (macro, line 54) `#define FUI_NET_BUF`
+  - `FUI_REQ_MAX` (macro, line 55) `#define FUI_REQ_MAX`
+  - `FUI_HOST_MAX` (macro, line 56) `#define FUI_HOST_MAX`
+  - `FUI_PATH_MAX` (macro, line 57) `#define FUI_PATH_MAX`
+  - `FUI_URL_MAX` (macro, line 58) `#define FUI_URL_MAX`
+  - `FUI_HOPS_MAX` (macro, line 59) `#define FUI_HOPS_MAX`
+  - `FUI_FONT_W` (macro, line 60) `#define FUI_FONT_W`
+  - `FUI_FONT_H` (macro, line 61) `#define FUI_FONT_H`
+  - `FUI_TITLE_MAX` (macro, line 62) `#define FUI_TITLE_MAX`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `tests/test_freedomui.c`
+
 ## progs/minios_abi.h
 - Layer: utility
 - Doc: ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
@@ -212,7 +267,7 @@
   - `SYS_TIME` (macro, line 285) `#define SYS_TIME`
   - `SYS_WRITE` (macro, line 286) `#define SYS_WRITE`
   - `MINIOS_EABI_MISMATCH` (macro, line 289) `#define MINIOS_EABI_MISMATCH`
-- Imported by: `kernel.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `vga_fb.h`
+- Imported by: `kernel.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `vga_fb.h`
 
 ## progs/paint/paint.c
 - Layer: utility
@@ -637,96 +692,97 @@
   - `vedit_vga` (function, line 52) `static long vedit_vga(int on)`
   - `vedit_kbd_raw` (function, line 64) `static long vedit_kbd_raw(int on)`
   - `vedit_time_ms` (function, line 73) `static unsigned long vedit_time_ms(void)`
-  - `vedit_c_bg` (function, line 146) `static struct nk_color vedit_c_bg(void)`
-  - `vedit_c_gutter` (function, line 147) `static struct nk_color vedit_c_gutter(void)`
-  - `vedit_c_default` (function, line 148) `static struct nk_color vedit_c_default(void)`
-  - `vedit_c_keyword` (function, line 149) `static struct nk_color vedit_c_keyword(void)`
-  - `vedit_c_string` (function, line 150) `static struct nk_color vedit_c_string(void)`
-  - `vedit_c_comment` (function, line 151) `static struct nk_color vedit_c_comment(void)`
-  - `vedit_c_number` (function, line 152) `static struct nk_color vedit_c_number(void)`
-  - `vedit_c_preproc` (function, line 153) `static struct nk_color vedit_c_preproc(void)`
-  - `vedit_c_header` (function, line 154) `static struct nk_color vedit_c_header(void)`
-  - `vedit_c_headtxt` (function, line 155) `static struct nk_color vedit_c_headtxt(void)`
-  - `vedit_c_status` (function, line 156) `static struct nk_color vedit_c_status(void)`
-  - `vedit_c_cursor` (function, line 157) `static struct nk_color vedit_c_cursor(void)`
-  - `vedit_ink` (function, line 158) `static struct nk_color vedit_ink(int col)`
-  - `vedit_set_msg` (function, line 214) `static void vedit_set_msg(const char *s)`
-  - `vedit_is_alpha` (function, line 221) `static int vedit_is_alpha(int c)`
-  - `vedit_is_digit` (function, line 225) `static int vedit_is_digit(int c)`
-  - `vedit_is_wordc` (function, line 229) `static int vedit_is_wordc(int c)`
-  - `vedit_is_kw` (function, line 233) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
-  - `separators` (function, line 257) `* allow_quote exists because C digit separators (1'000'000) are not
+  - `vedit_c_bg` (function, line 147) `static struct nk_color vedit_c_bg(void)`
+  - `vedit_c_gutter` (function, line 148) `static struct nk_color vedit_c_gutter(void)`
+  - `vedit_c_default` (function, line 149) `static struct nk_color vedit_c_default(void)`
+  - `vedit_c_keyword` (function, line 150) `static struct nk_color vedit_c_keyword(void)`
+  - `vedit_c_string` (function, line 151) `static struct nk_color vedit_c_string(void)`
+  - `vedit_c_comment` (function, line 152) `static struct nk_color vedit_c_comment(void)`
+  - `vedit_c_number` (function, line 153) `static struct nk_color vedit_c_number(void)`
+  - `vedit_c_preproc` (function, line 154) `static struct nk_color vedit_c_preproc(void)`
+  - `vedit_c_header` (function, line 155) `static struct nk_color vedit_c_header(void)`
+  - `vedit_c_headtxt` (function, line 156) `static struct nk_color vedit_c_headtxt(void)`
+  - `vedit_c_status` (function, line 157) `static struct nk_color vedit_c_status(void)`
+  - `vedit_c_cursor` (function, line 158) `static struct nk_color vedit_c_cursor(void)`
+  - `vedit_ink` (function, line 159) `static struct nk_color vedit_ink(int col)`
+  - `vedit_set_msg` (function, line 229) `static void vedit_set_msg(const char *s)`
+  - `vedit_is_alpha` (function, line 236) `static int vedit_is_alpha(int c)`
+  - `vedit_is_digit` (function, line 240) `static int vedit_is_digit(int c)`
+  - `vedit_is_wordc` (function, line 244) `static int vedit_is_wordc(int c)`
+  - `vedit_is_kw` (function, line 248) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
+  - `separators` (function, line 272) `* allow_quote exists because C digit separators (1'000'000) are not
  * valid in Python/Lua number...`
-  - `vedit_parse_number` (function, line 279) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
-  - `vedit_parse_keyword` (function, line 294) `static int vedit_parse_keyword(const char *t, int len, int i,
+  - `vedit_parse_number` (function, line 294) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
+  - `vedit_parse_keyword` (function, line 309) `static int vedit_parse_keyword(const char *t, int len, int i,
                                cons...`
-  - `vedit_lang_of` (function, line 312) `static int vedit_lang_of(const char *fname)`
-  - `vedit_lang_name` (function, line 329) `static const char *vedit_lang_name(int lang)`
-  - `vedit_scan_line` (function, line 338) `static int vedit_scan_line(const char *t, int len, int st)`
-  - `vedit_state_at` (function, line 519) `static int vedit_state_at(int row)`
-  - `vedit_row_ptr` (function, line 527) `static char *vedit_row_ptr(int idx)`
-  - `vedit_clamp` (function, line 531) `static void vedit_clamp(void)`
-  - `vedit_follow` (function, line 543) `static void vedit_follow(void)`
-  - `vedit_insert_char` (function, line 556) `static void vedit_insert_char(int c)`
-  - `vedit_delete_line_at` (function, line 582) `static void vedit_delete_line_at(int idx)`
-  - `vedit_backspace` (function, line 593) `static void vedit_backspace(void)`
-  - `vedit_delete_char` (function, line 624) `static void vedit_delete_char(void)`
-  - `vedit_split` (function, line 652) `static void vedit_split(void)`
-  - `vedit_tab` (function, line 700) `static void vedit_tab(void)`
-  - `vedit_find` (function, line 727) `static void vedit_find(const char *needle)`
-  - `vedit_save` (function, line 777) `static int vedit_save(void)`
-  - `vedit_load` (function, line 820) `static int vedit_load(void)`
-  - `vedit_has_ext` (function, line 878) `static int vedit_has_ext(const char *fname, const char *ext)`
-  - `vedit_base_of` (function, line 890) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
-  - `vedit_join` (function, line 911) `static int vedit_join(const char *dir, const char *base, const char *ext,
+  - `vedit_lang_of` (function, line 327) `static int vedit_lang_of(const char *fname)`
+  - `vedit_lang_name` (function, line 344) `static const char *vedit_lang_name(int lang)`
+  - `vedit_scan_line` (function, line 354) `static int vedit_scan_line(const char *t, int len, int st)`
+  - `vedit_state_at` (function, line 607) `static int vedit_state_at(int row)`
+  - `vedit_row_ptr` (function, line 615) `static char *vedit_row_ptr(int idx)`
+  - `vedit_clamp` (function, line 619) `static void vedit_clamp(void)`
+  - `vedit_follow` (function, line 631) `static void vedit_follow(void)`
+  - `vedit_insert_char` (function, line 644) `static void vedit_insert_char(int c)`
+  - `vedit_delete_line_at` (function, line 670) `static void vedit_delete_line_at(int idx)`
+  - `vedit_backspace` (function, line 681) `static void vedit_backspace(void)`
+  - `vedit_delete_char` (function, line 712) `static void vedit_delete_char(void)`
+  - `vedit_split` (function, line 740) `static void vedit_split(void)`
+  - `vedit_tab` (function, line 788) `static void vedit_tab(void)`
+  - `vedit_find` (function, line 815) `static void vedit_find(const char *needle)`
+  - `vedit_save` (function, line 865) `static int vedit_save(void)`
+  - `vedit_load` (function, line 908) `static int vedit_load(void)`
+  - `vedit_has_ext` (function, line 966) `static int vedit_has_ext(const char *fname, const char *ext)`
+  - `vedit_base_of` (function, line 978) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
+  - `vedit_join` (function, line 999) `static int vedit_join(const char *dir, const char *base, const char *ext,
                       c...`
-  - `vedit_link_fmt` (function, line 928) `static int vedit_link_fmt(const char *s)`
-  - `vedit_print_log` (function, line 941) `static void vedit_print_log(const char *path)`
-  - `vedit_spawn_visible` (function, line 958) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
+  - `vedit_link_fmt` (function, line 1016) `static int vedit_link_fmt(const char *s)`
+  - `vedit_print_log` (function, line 1029) `static void vedit_print_log(const char *path)`
+  - `vedit_spawn_visible` (function, line 1046) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
                   ...`
-  - `vedit_cmd_exec` (function, line 987) `static void vedit_cmd_exec(const char *out, int kind)`
-  - `vedit_cmd_run` (function, line 1000) `static void vedit_cmd_run(void)`
-  - `vedit_cmd_link` (function, line 1049) `static void vedit_cmd_link(const char *fmt)`
-  - `vedit_selftest_build` (function, line 1100) `static int vedit_selftest_build(void)`
-  - `vedit_read_key_poll` (function, line 1168) `static int vedit_read_key_poll(void)`
-  - `vedit_ansi_for` (function, line 1220) `static void vedit_ansi_for(int col)`
-  - `vedit_console_dump` (function, line 1227) `static void vedit_console_dump(void)`
-  - `vedit_prompt_open` (function, line 1267) `static void vedit_prompt_open(const char *label, int mode)`
-  - `vedit_prompt_find` (function, line 1278) `static void vedit_prompt_find(void)`
-  - `vedit_prompt_saveas` (function, line 1282) `static void vedit_prompt_saveas(void)`
-  - `vedit_draw_row` (function, line 1292) `static void vedit_draw_row(struct nk_command_buffer *canvas,
+  - `vedit_cmd_exec` (function, line 1075) `static void vedit_cmd_exec(const char *out, int kind)`
+  - `vedit_run_kind` (function, line 1088) `static int vedit_run_kind(const char *fname)`
+  - `vedit_cmd_run` (function, line 1097) `static void vedit_cmd_run(void)`
+  - `vedit_cmd_link` (function, line 1173) `static void vedit_cmd_link(const char *fmt)`
+  - `vedit_selftest_build` (function, line 1224) `static int vedit_selftest_build(void)`
+  - `vedit_read_key_poll` (function, line 1312) `static int vedit_read_key_poll(void)`
+  - `vedit_ansi_for` (function, line 1364) `static void vedit_ansi_for(int col)`
+  - `vedit_console_dump` (function, line 1371) `static void vedit_console_dump(void)`
+  - `vedit_prompt_open` (function, line 1411) `static void vedit_prompt_open(const char *label, int mode)`
+  - `vedit_prompt_find` (function, line 1422) `static void vedit_prompt_find(void)`
+  - `vedit_prompt_saveas` (function, line 1426) `static void vedit_prompt_saveas(void)`
+  - `vedit_draw_row` (function, line 1436) `static void vedit_draw_row(struct nk_command_buffer *canvas,
                            struct nk...`
-  - `vedit_draw_ui` (function, line 1372) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
+  - `vedit_draw_ui` (function, line 1516) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                     ...`
-  - `vedit_prompt_key` (function, line 1503) `static void vedit_prompt_key(int key)`
-  - `vedit_key` (function, line 1562) `static void vedit_key(int key, int *quit, int *save_and_quit)`
-  - `vedit_sync_title` (function, line 1641) `static void vedit_sync_title(void)`
-  - `vedit_gui_run` (function, line 1651) `static void vedit_gui_run(void)`
-  - `vedit_selftest` (function, line 1730) `static int vedit_selftest(void)`
-  - `main` (function, line 1797) `int main(int argc, char **argv)`
+  - `vedit_prompt_key` (function, line 1647) `static void vedit_prompt_key(int key)`
+  - `vedit_key` (function, line 1706) `static void vedit_key(int key, int *quit, int *save_and_quit)`
+  - `vedit_sync_title` (function, line 1785) `static void vedit_sync_title(void)`
+  - `vedit_gui_run` (function, line 1795) `static void vedit_gui_run(void)`
+  - `vedit_selftest` (function, line 1874) `static int vedit_selftest(void)`
+  - `main` (function, line 1941) `int main(int argc, char **argv)`
   - `volatile` (function, line 24) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GETC_RAW), "D"(blocking) : "rcx", "r11", "memory");`
-  - `memcpy` (function, line 218) `memcpy(vedit_msg, s, n);`
-  - `memmove` (function, line 588) `memmove(vedit_row_ptr(k), vedit_row_ptr(k + 1), VEDIT_LINE_MAX);`
-  - `snprintf` (function, line 750) `snprintf(nb, sizeof(nb), "found line %d", r + 1);`
-  - `fclose` (function, line 794) `fclose(f);`
-  - `printf` (function, line 946) `printf("vedit: no output captured\n");`
-  - `fflush` (function, line 954) `fflush(stdout);`
-  - `nk_build_palette` (function, line 971) `nk_build_palette(pal768);`
-  - `nk_sys_palette` (function, line 972) `nk_sys_palette(pal768);`
-  - `putchar` (function, line 1247) `putchar(l[c]);`
-  - `nk_draw_text` (function, line 1315) `nk_draw_text(canvas, nk_rect((float)(x - vedit_gutter_w * vedit_cw), (float)y, (float)(vedit_gutter_w * vedit_cw), (float)vedit_ch), num, (int)strlen(num), font, bg, vedit_c_gutter());`
-  - `nk_fill_rect` (function, line 1321) `nk_fill_rect(canvas, nk_rect((float)x, (float)y, (float)((vedit_cols - vedit_gutter_w) * vedit_cw), (float)vedit_ch), 0, bg);`
-  - `nk_end` (function, line 1398) `nk_end(ctx);`
-  - `nk_sys_vga_mode` (function, line 1662) `nk_sys_vga_mode(1);`
-  - `nk_sys_fb_info` (function, line 1667) `nk_sys_fb_info(&fw, &fh, &fp);`
-  - `nk_theme_apply` (function, line 1693) `nk_theme_apply(&ctx, 0);`
-  - `nk_input_begin` (function, line 1699) `nk_input_begin(&ctx);`
-  - `nk_input_end` (function, line 1700) `nk_input_end(&ctx);`
-  - `nk_rasterize` (function, line 1702) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 1705) `nk_clear(&ctx);`
-  - `nk_free` (function, line 1724) `nk_free(&ctx);`
-  - `memset` (function, line 1831) `memset(vedit_used, 0, VEDIT_MAX_LINES * sizeof(int));`
-  - `free` (function, line 1848) `free(vedit_pool);`
+  - `memcpy` (function, line 233) `memcpy(vedit_msg, s, n);`
+  - `memmove` (function, line 676) `memmove(vedit_row_ptr(k), vedit_row_ptr(k + 1), VEDIT_LINE_MAX);`
+  - `snprintf` (function, line 838) `snprintf(nb, sizeof(nb), "found line %d", r + 1);`
+  - `fclose` (function, line 882) `fclose(f);`
+  - `printf` (function, line 1034) `printf("vedit: no output captured (%s missing)\n", path);`
+  - `fflush` (function, line 1042) `fflush(stdout);`
+  - `nk_build_palette` (function, line 1059) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 1060) `nk_sys_palette(pal768);`
+  - `putchar` (function, line 1391) `putchar(l[c]);`
+  - `nk_draw_text` (function, line 1459) `nk_draw_text(canvas, nk_rect((float)(x - vedit_gutter_w * vedit_cw), (float)y, (float)(vedit_gutter_w * vedit_cw), (float)vedit_ch), num, (int)strlen(num), font, bg, vedit_c_gutter());`
+  - `nk_fill_rect` (function, line 1465) `nk_fill_rect(canvas, nk_rect((float)x, (float)y, (float)((vedit_cols - vedit_gutter_w) * vedit_cw), (float)vedit_ch), 0, bg);`
+  - `nk_end` (function, line 1542) `nk_end(ctx);`
+  - `nk_sys_vga_mode` (function, line 1806) `nk_sys_vga_mode(1);`
+  - `nk_sys_fb_info` (function, line 1811) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `nk_theme_apply` (function, line 1837) `nk_theme_apply(&ctx, 0);`
+  - `nk_input_begin` (function, line 1843) `nk_input_begin(&ctx);`
+  - `nk_input_end` (function, line 1844) `nk_input_end(&ctx);`
+  - `nk_rasterize` (function, line 1846) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 1849) `nk_clear(&ctx);`
+  - `nk_free` (function, line 1868) `nk_free(&ctx);`
+  - `memset` (function, line 1975) `memset(vedit_used, 0, VEDIT_MAX_LINES * sizeof(int));`
+  - `free` (function, line 1992) `free(vedit_pool);`
   - `VEDIT_MAX_LINES` (macro, line 81) `#define VEDIT_MAX_LINES`
   - `VEDIT_LINE_MAX` (macro, line 82) `#define VEDIT_LINE_MAX`
   - `VEDIT_LINE_USED` (macro, line 83) `#define VEDIT_LINE_USED`
@@ -761,29 +817,30 @@
   - `VEDIT_LANG_C` (macro, line 114) `#define VEDIT_LANG_C`
   - `VEDIT_LANG_PY` (macro, line 115) `#define VEDIT_LANG_PY`
   - `VEDIT_LANG_LUA` (macro, line 116) `#define VEDIT_LANG_LUA`
-  - `VEDIT_COL_DEFAULT` (macro, line 119) `#define VEDIT_COL_DEFAULT`
-  - `VEDIT_COL_KEYWORD` (macro, line 120) `#define VEDIT_COL_KEYWORD`
-  - `VEDIT_COL_STRING` (macro, line 121) `#define VEDIT_COL_STRING`
-  - `VEDIT_COL_COMMENT` (macro, line 122) `#define VEDIT_COL_COMMENT`
-  - `VEDIT_COL_NUMBER` (macro, line 123) `#define VEDIT_COL_NUMBER`
-  - `VEDIT_COL_PREPROC` (macro, line 124) `#define VEDIT_COL_PREPROC`
-  - `VEDIT_ST_BLOCK` (macro, line 127) `#define VEDIT_ST_BLOCK`
-  - `VEDIT_ST_PY3S` (macro, line 128) `#define VEDIT_ST_PY3S`
-  - `VEDIT_ST_PY3D` (macro, line 129) `#define VEDIT_ST_PY3D`
-  - `VEDIT_ST_LUABLK` (macro, line 130) `#define VEDIT_ST_LUABLK`
-  - `VEDIT_ST_LUASTR` (macro, line 131) `#define VEDIT_ST_LUASTR`
-  - `VEDIT_KEY_UP` (macro, line 134) `#define VEDIT_KEY_UP`
-  - `VEDIT_KEY_DOWN` (macro, line 135) `#define VEDIT_KEY_DOWN`
-  - `VEDIT_KEY_LEFT` (macro, line 136) `#define VEDIT_KEY_LEFT`
-  - `VEDIT_KEY_RIGHT` (macro, line 137) `#define VEDIT_KEY_RIGHT`
-  - `VEDIT_KEY_HOME` (macro, line 138) `#define VEDIT_KEY_HOME`
-  - `VEDIT_KEY_END` (macro, line 139) `#define VEDIT_KEY_END`
-  - `VEDIT_KEY_PGUP` (macro, line 140) `#define VEDIT_KEY_PGUP`
-  - `VEDIT_KEY_PGDN` (macro, line 141) `#define VEDIT_KEY_PGDN`
-  - `VEDIT_KEY_DEL` (macro, line 142) `#define VEDIT_KEY_DEL`
-  - `VEDIT_KEY_ESC` (macro, line 143) `#define VEDIT_KEY_ESC`
-  - `VEDIT_PROMPT_FIND` (macro, line 1262) `#define VEDIT_PROMPT_FIND`
-  - `VEDIT_PROMPT_GOTO` (macro, line 1263) `#define VEDIT_PROMPT_GOTO`
-  - `VEDIT_PROMPT_NAME` (macro, line 1264) `#define VEDIT_PROMPT_NAME`
-  - `VEDIT_PROMPT_LINK` (macro, line 1265) `#define VEDIT_PROMPT_LINK`
+  - `VEDIT_LANG_ASM` (macro, line 117) `#define VEDIT_LANG_ASM`
+  - `VEDIT_COL_DEFAULT` (macro, line 120) `#define VEDIT_COL_DEFAULT`
+  - `VEDIT_COL_KEYWORD` (macro, line 121) `#define VEDIT_COL_KEYWORD`
+  - `VEDIT_COL_STRING` (macro, line 122) `#define VEDIT_COL_STRING`
+  - `VEDIT_COL_COMMENT` (macro, line 123) `#define VEDIT_COL_COMMENT`
+  - `VEDIT_COL_NUMBER` (macro, line 124) `#define VEDIT_COL_NUMBER`
+  - `VEDIT_COL_PREPROC` (macro, line 125) `#define VEDIT_COL_PREPROC`
+  - `VEDIT_ST_BLOCK` (macro, line 128) `#define VEDIT_ST_BLOCK`
+  - `VEDIT_ST_PY3S` (macro, line 129) `#define VEDIT_ST_PY3S`
+  - `VEDIT_ST_PY3D` (macro, line 130) `#define VEDIT_ST_PY3D`
+  - `VEDIT_ST_LUABLK` (macro, line 131) `#define VEDIT_ST_LUABLK`
+  - `VEDIT_ST_LUASTR` (macro, line 132) `#define VEDIT_ST_LUASTR`
+  - `VEDIT_KEY_UP` (macro, line 135) `#define VEDIT_KEY_UP`
+  - `VEDIT_KEY_DOWN` (macro, line 136) `#define VEDIT_KEY_DOWN`
+  - `VEDIT_KEY_LEFT` (macro, line 137) `#define VEDIT_KEY_LEFT`
+  - `VEDIT_KEY_RIGHT` (macro, line 138) `#define VEDIT_KEY_RIGHT`
+  - `VEDIT_KEY_HOME` (macro, line 139) `#define VEDIT_KEY_HOME`
+  - `VEDIT_KEY_END` (macro, line 140) `#define VEDIT_KEY_END`
+  - `VEDIT_KEY_PGUP` (macro, line 141) `#define VEDIT_KEY_PGUP`
+  - `VEDIT_KEY_PGDN` (macro, line 142) `#define VEDIT_KEY_PGDN`
+  - `VEDIT_KEY_DEL` (macro, line 143) `#define VEDIT_KEY_DEL`
+  - `VEDIT_KEY_ESC` (macro, line 144) `#define VEDIT_KEY_ESC`
+  - `VEDIT_PROMPT_FIND` (macro, line 1406) `#define VEDIT_PROMPT_FIND`
+  - `VEDIT_PROMPT_GOTO` (macro, line 1407) `#define VEDIT_PROMPT_GOTO`
+  - `VEDIT_PROMPT_NAME` (macro, line 1408) `#define VEDIT_PROMPT_NAME`
+  - `VEDIT_PROMPT_LINK` (macro, line 1409) `#define VEDIT_PROMPT_LINK`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`

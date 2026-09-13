@@ -287,15 +287,16 @@
   - `kallocator_init` (function, line 12) `void kallocator_init(void)`
   - `kmalloc` (function, line 21) `void *kmalloc(unsigned long size)`
   - `kfree` (function, line 27) `void kfree(void *ptr)`
-  - `kcalloc` (function, line 32) `void *kcalloc(unsigned long nmemb, unsigned long size)`
-  - `krealloc` (function, line 36) `void *krealloc(void *ptr, unsigned long size)`
-  - `kmalloc_percpu` (function, line 53) `void *kmalloc_percpu(unsigned long size, unsigned long align)`
+  - `kcalloc` (function, line 44) `void *kcalloc(unsigned long nmemb, unsigned long size)`
+  - `krealloc` (function, line 48) `void *krealloc(void *ptr, unsigned long size)`
+  - `kmalloc_percpu` (function, line 65) `void *kmalloc_percpu(unsigned long size, unsigned long align)`
   - `dlmalloc_init` (function, line 14) `dlmalloc_init();`
   - `dlmalloc_malloc` (function, line 25) `return dlmalloc_malloc(size);`
-  - `dlmalloc_free` (function, line 30) `dlmalloc_free(ptr);`
-  - `dlmalloc_calloc` (function, line 34) `return dlmalloc_calloc(nmemb, size);`
-  - `dlmalloc_realloc` (function, line 40) `return dlmalloc_realloc(ptr, size);`
-  - `kmemset` (function, line 61) `kmemset(base, 0, total);`
+  - `kprintf` (function, line 38) `kprintf("kfree: wild pointer %lx from %lx, halting", p, (unsigned long)__builtin_return_address(0));`
+  - `dlmalloc_free` (function, line 42) `dlmalloc_free(ptr);`
+  - `dlmalloc_calloc` (function, line 46) `return dlmalloc_calloc(nmemb, size);`
+  - `dlmalloc_realloc` (function, line 52) `return dlmalloc_realloc(ptr, size);`
+  - `kmemset` (function, line 73) `kmemset(base, 0, total);`
 - Depends on: `kernel.h`, `sched.h`
 
 ## kernel/percpu_rq.c
@@ -573,157 +574,182 @@
 - Doc: include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include "smp.h" include "percpu_rq.h" include "v
 - Language: c
 - Symbols:
-  - `job_row` (struct, line 1955)
-  - `ps_row` (struct, line 2412)
-  - `ShellRunDir` (struct, line 44)
-  - `shell_queue_launch` (function, line 70) `void shell_queue_launch(const char *cmd)`
-  - `shell_readline_active` (function, line 98) `int shell_readline_active(void)`
-  - `shell_focus_park` (function, line 99) `void shell_focus_park(void)`
-  - `shell_focus_restore` (function, line 104) `void shell_focus_restore(void)`
-  - `shell_prompt` (function, line 130) `static void shell_prompt(void)`
-  - `shell_parse_vol` (function, line 139) `static int shell_parse_vol(const char *s, unsigned *out)`
-  - `pb_empty` (function, line 172) `static int pb_empty(void)`
-  - `pb_count` (function, line 174) `static int pb_count(void)`
-  - `pb_push_back` (function, line 175) `static void pb_push_back(unsigned char c)`
-  - `pb_push_front` (function, line 180) `static void pb_push_front(unsigned char c)`
-  - `pb_pop` (function, line 185) `static int pb_pop(void)`
-  - `pb_peek` (function, line 191) `static int pb_peek(void)`
-  - `raw_blocking_getc` (function, line 198) `static int raw_blocking_getc(void)`
-  - `raw_try_getc` (function, line 217) `static int raw_try_getc(void)`
-  - `consume_page_after_esc` (function, line 252) `static int consume_page_after_esc(void)`
-  - `console_getc` (function, line 277) `* returns console_getc() simply serves the FIFO again. */
+  - `job_row` (struct, line 1967)
+  - `ps_row` (struct, line 2424)
+  - `ShellRunDir` (struct, line 45)
+  - `shell_queue_launch` (function, line 71) `void shell_queue_launch(const char *cmd)`
+  - `shell_readline_active` (function, line 99) `int shell_readline_active(void)`
+  - `shell_focus_park` (function, line 100) `void shell_focus_park(void)`
+  - `shell_focus_restore` (function, line 105) `void shell_focus_restore(void)`
+  - `shell_prompt` (function, line 131) `static void shell_prompt(void)`
+  - `shell_parse_vol` (function, line 140) `static int shell_parse_vol(const char *s, unsigned *out)`
+  - `pb_empty` (function, line 173) `static int pb_empty(void)`
+  - `pb_count` (function, line 175) `static int pb_count(void)`
+  - `pb_push_back` (function, line 176) `static void pb_push_back(unsigned char c)`
+  - `pb_push_front` (function, line 181) `static void pb_push_front(unsigned char c)`
+  - `pb_pop` (function, line 186) `static int pb_pop(void)`
+  - `pb_peek` (function, line 192) `static int pb_peek(void)`
+  - `raw_blocking_getc` (function, line 199) `static int raw_blocking_getc(void)`
+  - `raw_try_getc` (function, line 218) `static int raw_try_getc(void)`
+  - `consume_page_after_esc` (function, line 253) `static int consume_page_after_esc(void)`
+  - `console_getc` (function, line 278) `* returns console_getc() simply serves the FIFO again. */
 int console_getc(void)`
-  - `console_peek` (function, line 299) `static int console_peek(void)`
-  - `console_raw_try` (function, line 312) `int console_raw_try(void)`
-  - `console_raw_get` (function, line 315) `int console_raw_get(void)`
-  - `console_job_try` (function, line 321) `int console_job_try(void)`
-  - `console_job_get` (function, line 330) `int console_job_get(void)`
-  - `scrollback_render` (function, line 346) `static void scrollback_render(int voff, int total, const unsigned char *saved)`
-  - `scrollback_view` (function, line 383) `static void scrollback_view(int initial_dir)`
-  - `shell_readline_buf` (function, line 428) `void shell_readline_buf(char *buf, int size)`
-  - `shell_name_base` (function, line 457) `static const char *shell_name_base(const char *path)`
-  - `shell_complete_tier` (function, line 480) `static int shell_complete_tier(const char *nm)`
-  - `shell_complete_replace` (function, line 492) `static void shell_complete_replace(char *buf, int size, int *pos,
+  - `console_peek` (function, line 300) `static int console_peek(void)`
+  - `console_raw_try` (function, line 313) `int console_raw_try(void)`
+  - `console_raw_get` (function, line 316) `int console_raw_get(void)`
+  - `console_job_try` (function, line 322) `int console_job_try(void)`
+  - `console_job_get` (function, line 331) `int console_job_get(void)`
+  - `scrollback_render` (function, line 347) `static void scrollback_render(int voff, int total, const unsigned char *saved)`
+  - `scrollback_view` (function, line 384) `static void scrollback_view(int initial_dir)`
+  - `shell_readline_buf` (function, line 429) `void shell_readline_buf(char *buf, int size)`
+  - `shell_name_base` (function, line 458) `static const char *shell_name_base(const char *path)`
+  - `shell_complete_tier` (function, line 481) `static int shell_complete_tier(const char *nm)`
+  - `shell_complete_replace` (function, line 493) `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-  - `shell_readline` (function, line 506) `static void shell_readline(void)`
-  - `shell_hist_show` (function, line 515) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
-  - `shell_line_repaint` (function, line 537) `static void shell_line_repaint(char *buf, int size, int pos)`
-  - `shell_line_insert` (function, line 550) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
-  - `shell_line_backspace` (function, line 559) `static void shell_line_backspace(char *buf, int size, int *pos)`
-  - `shell_line_delete` (function, line 567) `static void shell_line_delete(char *buf, int size, int *pos)`
-  - `shell_line_kill_front` (function, line 574) `static void shell_line_kill_front(char *buf, int size, int *pos)`
-  - `shell_line_kill_tail` (function, line 581) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
-  - `shell_line_kill_word` (function, line 586) `static void shell_line_kill_word(char *buf, int size, int *pos)`
-  - `shell_hist_newest_match` (function, line 598) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
-  - `line` (function, line 615) `* to the live line (handled by the caller resetting shell_hist_idx). */
+  - `shell_readline` (function, line 507) `static void shell_readline(void)`
+  - `shell_hist_show` (function, line 516) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
+  - `shell_line_repaint` (function, line 538) `static void shell_line_repaint(char *buf, int size, int pos)`
+  - `shell_line_insert` (function, line 551) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
+  - `shell_line_backspace` (function, line 560) `static void shell_line_backspace(char *buf, int size, int *pos)`
+  - `shell_line_delete` (function, line 568) `static void shell_line_delete(char *buf, int size, int *pos)`
+  - `shell_line_kill_front` (function, line 575) `static void shell_line_kill_front(char *buf, int size, int *pos)`
+  - `shell_line_kill_tail` (function, line 582) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
+  - `shell_line_kill_word` (function, line 587) `static void shell_line_kill_word(char *buf, int size, int *pos)`
+  - `shell_hist_newest_match` (function, line 599) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
+  - `line` (function, line 616) `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...`
-  - `shell_readline_hist` (function, line 660) `static void shell_readline_hist(char *buf, int size)`
-  - `shell_parse` (function, line 972) `int shell_parse(char *line, char **argv, int max_args)`
-  - `shell_run` (function, line 993) `void shell_run(void)`
-  - `shell_load` (function, line 1056) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-  - `outw_port` (function, line 1118) `static inline void outw_port(unsigned short port, unsigned short val)`
-  - `shell_cmd_poweroff` (function, line 1124) `static void shell_cmd_poweroff(void)`
-  - `shell_run_dir_for` (function, line 1141) `static const ShellRunDir *shell_run_dir_for(const char *name)`
-  - `shell_file_is_real` (function, line 1159) `static int shell_file_is_real(const char *resolved)`
-  - `shell_resolve_run` (function, line 1171) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-  - `etrel_path_trusted` (function, line 1213) `static int etrel_path_trusted(const char *full)`
-  - `shell_run_elf_buf_path` (function, line 1227) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+  - `shell_readline_hist` (function, line 661) `static void shell_readline_hist(char *buf, int size)`
+  - `shell_parse` (function, line 973) `int shell_parse(char *line, char **argv, int max_args)`
+  - `shell_run` (function, line 994) `void shell_run(void)`
+  - `shell_load` (function, line 1057) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
+  - `outw_port` (function, line 1119) `static inline void outw_port(unsigned short port, unsigned short val)`
+  - `shell_cmd_poweroff` (function, line 1125) `static void shell_cmd_poweroff(void)`
+  - `shell_run_dir_for` (function, line 1142) `static const ShellRunDir *shell_run_dir_for(const char *name)`
+  - `shell_file_is_real` (function, line 1160) `static int shell_file_is_real(const char *resolved)`
+  - `shell_resolve_run` (function, line 1172) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
+  - `etrel_path_trusted` (function, line 1214) `static int etrel_path_trusted(const char *full)`
+  - `shell_run_elf_buf_path` (function, line 1228) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...`
-  - `shell_run_elf_file` (function, line 1257) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-  - `shell_run_elf_minifs` (function, line 1270) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-  - `shell_run_cvm` (function, line 1320) `static int shell_run_cvm(const char *full, int argc, char **argv)`
-  - `shell_run_file` (function, line 1356) `static int shell_run_file(const char *name, int argc, char **argv)`
-  - `shell_read_elf_bytes` (function, line 1400) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
+  - `shell_run_elf_file` (function, line 1258) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
+  - `shell_run_elf_minifs` (function, line 1271) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
+  - `shell_run_cvm` (function, line 1321) `static int shell_run_cvm(const char *full, int argc, char **argv)`
+  - `shell_run_file` (function, line 1357) `static int shell_run_file(const char *name, int argc, char **argv)`
+  - `shell_read_elf_bytes` (function, line 1401) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
                           ...`
-  - `code` (function, line 1466) `* the last exit code (130 when interrupted). */
+  - `code` (function, line 1467) `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...`
-  - `shell_cmd_mrun` (function, line 1501) `static void shell_cmd_mrun(int argc, char **argv)`
-  - `shell_run_bg` (function, line 1550) `static void shell_run_bg(const char *name, int argc, char **argv)`
-  - `shell_run_any` (function, line 1578) `int shell_run_any(const char *name, int argc, char **argv)`
-  - `gfx_parse_int` (function, line 1649) `static int gfx_parse_int(const char *s, int *out)`
-  - `gfx_read_palette` (function, line 1669) `static void gfx_read_palette(unsigned char pal[768])`
-  - `shell_cmd_gfx` (function, line 1675) `static void shell_cmd_gfx(int argc, char **argv)`
-  - `shell_cmd_wm` (function, line 1828) `static void shell_cmd_wm(int argc, char **argv)`
-  - `tree` (function, line 1941) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+  - `shell_cmd_mrun` (function, line 1502) `static void shell_cmd_mrun(int argc, char **argv)`
+  - `shell_run_bg` (function, line 1551) `static void shell_run_bg(const char *name, int argc, char **argv)`
+  - `shell_run_any` (function, line 1579) `int shell_run_any(const char *name, int argc, char **argv)`
+  - `gfx_parse_int` (function, line 1650) `static int gfx_parse_int(const char *s, int *out)`
+  - `gfx_read_palette` (function, line 1670) `static void gfx_read_palette(unsigned char pal[768])`
+  - `shell_cmd_gfx` (function, line 1676) `static void shell_cmd_gfx(int argc, char **argv)`
+  - `shell_cmd_wm` (function, line 1829) `static void shell_cmd_wm(int argc, char **argv)`
+  - `tree` (function, line 1953) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-  - `shell_cmd_jobs` (function, line 1953) `static void shell_cmd_jobs(void)`
-  - `shell_cmd_wait` (function, line 1976) `static void shell_cmd_wait(int argc, char **argv)`
-  - `shell_cmd_kill` (function, line 2002) `static void shell_cmd_kill(int argc, char **argv)`
-  - `shell_cmd_mem` (function, line 2024) `static void shell_cmd_mem(void)`
-  - `shell_cmd_hash` (function, line 2054) `static void shell_cmd_hash(int argc, char **argv)`
-  - `shell_exec_builtin` (function, line 2068) `void shell_exec_builtin(int argc, char **argv)`
-  - `vga_fb_park_line` (function, line 101) `vga_fb_park_line(cmd_buf, shell_edit_pos);`
-  - `kmemcpy` (function, line 109) `kmemcpy(cmd_buf, tmp, (unsigned long)CMD_BUF_SZ);`
-  - `vga_puts` (function, line 122) `else vga_puts("\nminiOS> ");`
-  - `vga_fb_text_cursor` (function, line 128) `vga_fb_text_cursor(shell_edit_pos);`
-  - `volatile` (function, line 212) `__asm__ volatile("pause");`
-  - `serial_putc` (function, line 362) `serial_putc(ch);`
-  - `sb_init` (function, line 385) `sb_init();`
-  - `vga_cursor_enable` (function, line 392) `vga_cursor_enable(0);`
-  - `vga_set_xy` (function, line 421) `vga_set_xy(saved_x, saved_y);`
-  - `vga_set_cursor` (function, line 422) `vga_set_cursor(saved_x, saved_y);`
-  - `kmemset` (function, line 430) `kmemset(buf, 0, (unsigned long)size);`
-  - `vga_putc` (function, line 435) `vga_putc('\n');`
-  - `kmemmove` (function, line 553) `kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1));`
-  - `vga_fb_hide_text_cursor` (function, line 693) `vga_fb_hide_text_cursor();`
-  - `shell_hist_nav` (function, line 718) `shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);`
-  - `root` (function, line 820) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * explicit path or an argument word keeps every match, so * navigating to data file`
-  - `desktop_launch` (function, line 1011) `desktop_launch(shell_pending_cmd);`
-  - `vga_fb_clear_prompt` (function, line 1022) `vga_fb_clear_prompt();`
-  - `ramdisk_read` (function, line 1067) `ramdisk_read(f, data, 0, data_size);`
-  - `minifs_read` (function, line 1083) `minifs_read(ino, data, 0, data_size);`
-  - `kprintf` (function, line 1104) `kprintf("load: refusing untrusted ET_REL '%s'", resolved);`
-  - `kfree` (function, line 1115) `kfree(data);`
-  - `k_exec_user` (function, line 1250) `return k_exec_user(entry, argc, argv);`
-  - `window` (function, line 1393) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small programs overlap in * time instead of running one after another. ET_REL is refus`
-  - `yield` (function, line 1498) `yield();`
-  - `vga_fb_set_gfx_program` (function, line 1582) `vga_fb_set_gfx_program(name);`
-  - `k_run_rel` (function, line 1588) `return k_run_rel(p->entry, argc, argv);`
-  - `context` (function, line 1604) `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);`
-  - `outb` (function, line 1671) `outb(0x3C7, 0);`
-  - `kfwrite` (function, line 1785) `kfwrite(hdr, 1, (unsigned long)n, f);`
-  - `kfclose` (function, line 1804) `kfclose(f);`
-  - `vga_fb_tile_all` (function, line 1845) `vga_fb_tile_all();`
-  - `vga_fb_layout_cycle` (function, line 1860) `vga_fb_layout_cycle();`
-  - `vga_fb_snap_window` (function, line 1887) `vga_fb_snap_window(z);`
-  - `vga_fb_focus_next` (function, line 1902) `vga_fb_focus_next();`
-  - `vga_fb_theme_name` (function, line 1919) `vga_fb_theme_name(theme, sizeof(theme));`
-  - `kbd_drop_counts` (function, line 1925) `kbd_drop_counts(&cooked, &raw);`
-  - `spin_lock` (function, line 1958) `spin_lock(&sched_lock);`
-  - `spin_unlock` (function, line 1970) `spin_unlock(&sched_lock);`
-  - `dlmalloc_usage` (function, line 2028) `dlmalloc_usage(&hu, &hf, &ha);`
-  - `ramdisk_usage` (function, line 2031) `ramdisk_usage(&ru, &rc, &rm);`
-  - `minifs_usage` (function, line 2036) `minifs_usage(&fb, &tb, &fi, &ti);`
-  - `XXH64_reset` (function, line 2062) `XXH64_reset(&h, 0);`
-  - `vga_clear` (function, line 2117) `vga_clear();`
-  - `shell_cmd_edit` (function, line 2123) `shell_cmd_edit(argc, argv);`
-  - `shell_report` (function, line 2129) `shell_report("ls: name too long: ", argv[1]);`
-  - `minifs_stat` (function, line 2239) `minifs_stat(de.inode, &st);`
-  - `ramdisk_delete` (function, line 2279) `ramdisk_delete(f);`
-  - `net_cmd_status` (function, line 2400) `net_cmd_status();`
-  - `net_cmd_ping` (function, line 2403) `net_cmd_ping(argv[2]);`
-  - `net_cmd_dns` (function, line 2406) `net_cmd_dns(argv[2]);`
-  - `rq_stats` (function, line 2443) `rq_stats(c, &hits, &steals, &drops);`
-  - `pcspk_set_volume` (function, line 2507) `pcspk_set_volume(v);`
-  - `kstack_report` (function, line 2544) `kstack_report();`
-  - `sb16_counters` (function, line 2548) `sb16_counters(&c);`
-  - `shell_cmd_unzip` (function, line 2571) `shell_cmd_unzip(argc, argv);`
-  - `shell_cmd_zip` (function, line 2574) `shell_cmd_zip(argc, argv);`
-  - `shell_report_exit` (function, line 2596) `else shell_report_exit(ret);`
-  - `shell_cmd_sh` (function, line 2627) `shell_cmd_sh(argc, argv);`
-  - `XXH_STATIC_LINKING_ONLY` (macro, line 13) `#define XXH_STATIC_LINKING_ONLY`
-  - `SHELL_CVM_INTERP` (macro, line 36) `#define SHELL_CVM_INTERP`
-  - `SHELL_RUN_DIRS` (macro, line 55) `#define SHELL_RUN_DIRS`
-  - `SHELL_HIST_MAX` (macro, line 80) `#define SHELL_HIST_MAX`
-  - `PB_LEN` (macro, line 168) `#define PB_LEN`
-  - `MAX_SEQ_POLL` (macro, line 234) `#define MAX_SEQ_POLL`
-  - `SB_LEN` (macro, line 345) `#define SB_LEN`
-  - `SB_PGUP` (macro, line 367) `#define SB_PGUP`
-  - `SB_PGDN` (macro, line 369) `#define SB_PGDN`
-  - `SB_EXIT` (macro, line 370) `#define SB_EXIT`
-  - `SHELL_BUILTIN_COUNT` (macro, line 474) `#define SHELL_BUILTIN_COUNT`
-  - `QEMU_PM_PORT` (macro, line 1122) `#define QEMU_PM_PORT`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `zip.h`
+  - `shell_cmd_jobs` (function, line 1965) `static void shell_cmd_jobs(void)`
+  - `shell_cmd_wait` (function, line 1988) `static void shell_cmd_wait(int argc, char **argv)`
+  - `shell_cmd_kill` (function, line 2014) `static void shell_cmd_kill(int argc, char **argv)`
+  - `shell_cmd_mem` (function, line 2036) `static void shell_cmd_mem(void)`
+  - `shell_cmd_hash` (function, line 2066) `static void shell_cmd_hash(int argc, char **argv)`
+  - `shell_exec_builtin` (function, line 2080) `void shell_exec_builtin(int argc, char **argv)`
+  - `vga_fb_park_line` (function, line 102) `vga_fb_park_line(cmd_buf, shell_edit_pos);`
+  - `kmemcpy` (function, line 110) `kmemcpy(cmd_buf, tmp, (unsigned long)CMD_BUF_SZ);`
+  - `vga_puts` (function, line 123) `else vga_puts("\nminiOS> ");`
+  - `vga_fb_text_cursor` (function, line 129) `vga_fb_text_cursor(shell_edit_pos);`
+  - `volatile` (function, line 213) `__asm__ volatile("pause");`
+  - `serial_putc` (function, line 363) `serial_putc(ch);`
+  - `sb_init` (function, line 386) `sb_init();`
+  - `vga_cursor_enable` (function, line 393) `vga_cursor_enable(0);`
+  - `vga_set_xy` (function, line 422) `vga_set_xy(saved_x, saved_y);`
+  - `vga_set_cursor` (function, line 423) `vga_set_cursor(saved_x, saved_y);`
+  - `kmemset` (function, line 431) `kmemset(buf, 0, (unsigned long)size);`
+  - `vga_putc` (function, line 436) `vga_putc('\n');`
+  - `kmemmove` (function, line 554) `kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1));`
+  - `vga_fb_hide_text_cursor` (function, line 694) `vga_fb_hide_text_cursor();`
+  - `shell_hist_nav` (function, line 719) `shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);`
+  - `root` (function, line 821) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * explicit path or an argument word keeps every match, so * navigating to data file`
+  - `desktop_launch` (function, line 1012) `desktop_launch(shell_pending_cmd);`
+  - `vga_fb_clear_prompt` (function, line 1023) `vga_fb_clear_prompt();`
+  - `ramdisk_read` (function, line 1068) `ramdisk_read(f, data, 0, data_size);`
+  - `minifs_read` (function, line 1084) `minifs_read(ino, data, 0, data_size);`
+  - `kprintf` (function, line 1105) `kprintf("load: refusing untrusted ET_REL '%s'", resolved);`
+  - `kfree` (function, line 1116) `kfree(data);`
+  - `k_exec_user` (function, line 1251) `return k_exec_user(entry, argc, argv);`
+  - `window` (function, line 1394) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small programs overlap in * time instead of running one after another. ET_REL is refus`
+  - `yield` (function, line 1499) `yield();`
+  - `vga_fb_set_gfx_program` (function, line 1583) `vga_fb_set_gfx_program(name);`
+  - `k_run_rel` (function, line 1589) `return k_run_rel(p->entry, argc, argv);`
+  - `context` (function, line 1605) `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);`
+  - `outb` (function, line 1672) `outb(0x3C7, 0);`
+  - `kfwrite` (function, line 1786) `kfwrite(hdr, 1, (unsigned long)n, f);`
+  - `kfclose` (function, line 1805) `kfclose(f);`
+  - `vga_fb_tile_all` (function, line 1846) `vga_fb_tile_all();`
+  - `vga_fb_layout_cycle` (function, line 1861) `vga_fb_layout_cycle();`
+  - `vga_fb_snap_window` (function, line 1888) `vga_fb_snap_window(z);`
+  - `vga_fb_focus_report` (function, line 1899) `else vga_fb_focus_report(before, WM_FOCUS_SRC_PROGRAM);`
+  - `vga_fb_focus_next` (function, line 1906) `vga_fb_focus_next();`
+  - `vga_fb_theme_name` (function, line 1923) `vga_fb_theme_name(theme, sizeof(theme));`
+  - `kbd_drop_counts` (function, line 1929) `kbd_drop_counts(&cooked, &raw);`
+  - `spin_lock` (function, line 1970) `spin_lock(&sched_lock);`
+  - `spin_unlock` (function, line 1982) `spin_unlock(&sched_lock);`
+  - `dlmalloc_usage` (function, line 2040) `dlmalloc_usage(&hu, &hf, &ha);`
+  - `ramdisk_usage` (function, line 2043) `ramdisk_usage(&ru, &rc, &rm);`
+  - `minifs_usage` (function, line 2048) `minifs_usage(&fb, &tb, &fi, &ti);`
+  - `XXH64_reset` (function, line 2074) `XXH64_reset(&h, 0);`
+  - `vga_clear` (function, line 2129) `vga_clear();`
+  - `shell_cmd_edit` (function, line 2135) `shell_cmd_edit(argc, argv);`
+  - `shell_report` (function, line 2141) `shell_report("ls: name too long: ", argv[1]);`
+  - `minifs_stat` (function, line 2251) `minifs_stat(de.inode, &st);`
+  - `ramdisk_delete` (function, line 2291) `ramdisk_delete(f);`
+  - `net_cmd_status` (function, line 2412) `net_cmd_status();`
+  - `net_cmd_ping` (function, line 2415) `net_cmd_ping(argv[2]);`
+  - `net_cmd_dns` (function, line 2418) `net_cmd_dns(argv[2]);`
+  - `rq_stats` (function, line 2455) `rq_stats(c, &hits, &steals, &drops);`
+  - `pcspk_set_volume` (function, line 2519) `pcspk_set_volume(v);`
+  - `kstack_report` (function, line 2556) `kstack_report();`
+  - `sb16_counters` (function, line 2560) `sb16_counters(&c);`
+  - `shell_cmd_unzip` (function, line 2583) `shell_cmd_unzip(argc, argv);`
+  - `shell_cmd_zip` (function, line 2586) `shell_cmd_zip(argc, argv);`
+  - `shell_report_exit` (function, line 2608) `else shell_report_exit(ret);`
+  - `shell_cmd_sh` (function, line 2639) `shell_cmd_sh(argc, argv);`
+  - `XXH_STATIC_LINKING_ONLY` (macro, line 14) `#define XXH_STATIC_LINKING_ONLY`
+  - `SHELL_CVM_INTERP` (macro, line 37) `#define SHELL_CVM_INTERP`
+  - `SHELL_RUN_DIRS` (macro, line 56) `#define SHELL_RUN_DIRS`
+  - `SHELL_HIST_MAX` (macro, line 81) `#define SHELL_HIST_MAX`
+  - `PB_LEN` (macro, line 169) `#define PB_LEN`
+  - `MAX_SEQ_POLL` (macro, line 235) `#define MAX_SEQ_POLL`
+  - `SB_LEN` (macro, line 346) `#define SB_LEN`
+  - `SB_PGUP` (macro, line 368) `#define SB_PGUP`
+  - `SB_PGDN` (macro, line 370) `#define SB_PGDN`
+  - `SB_EXIT` (macro, line 371) `#define SB_EXIT`
+  - `SHELL_BUILTIN_COUNT` (macro, line 475) `#define SHELL_BUILTIN_COUNT`
+  - `QEMU_PM_PORT` (macro, line 1123) `#define QEMU_PM_PORT`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+
+## kernel/spawn.c
+- Layer: utility
+- Doc: include "kernel.h" include "sched.h" include "vma.h" include "spawn.h" include "minifs.h" include "arch/x86/msr.h"  Docs
+- Language: c
+- Symbols:
+  - `spawn_backup` (function, line 12) `void spawn_backup(spawn_ctx_t *ctx)`
+  - `spawn_restore` (function, line 31) `void spawn_restore(const spawn_ctx_t *ctx)`
+  - `spawn_free_argv` (function, line 50) `void spawn_free_argv(char **kargv, int argc)`
+  - `spawn_copy_argv` (function, line 60) `char **spawn_copy_argv(int argc, const char **uargv)`
+  - `spawn_validate_argv` (function, line 81) `int spawn_validate_argv(int argc, const char **uargv)`
+  - `spawn_load_image` (function, line 99) `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out)`
+  - `spawn_run_rel` (function, line 134) `static int spawn_run_rel(const char *resolved, const char *redirect,
+                         uns...`
+  - `spawn_run_exec` (function, line 160) `static int spawn_run_exec(const char *resolved, const char *redirect,
+                          u...`
+  - `spawn_execute` (function, line 178) `int spawn_execute(const char *resolved, const char *redirect,
+                  unsigned char *da...`
+  - `wrmsr` (function, line 43) `wrmsr(MSR_FSBASE, ctx->fsbase);`
+  - `kfree` (function, line 56) `kfree(kargv);`
+  - `kmemcpy` (function, line 74) `kmemcpy(kargv[i], uargv[i], slen);`
+  - `ramdisk_read` (function, line 109) `ramdisk_read(f, data, 0, f->size);`
+  - `kprintf` (function, line 145) `kprintf("SPAWN: refusing untrusted ET_REL");`
+- Depends on: `arch/x86/msr.h`, `kernel.h`, `minifs.h`, `sched.h`, `spawn.h`, `vma.h`
 
 ## kernel/string.c
 - Layer: utility
@@ -744,7 +770,7 @@ static int shell_wait_fg(int *pids, int n, int ki...`
   - `kmemmove` (function, line 86) `void *kmemmove(void *dst, const void *src, unsigned long n)`
   - `katol` (function, line 94) `long katol(const char *s)`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ## kernel/symtab.c
 - Layer: utility
@@ -805,155 +831,157 @@ static int shell_wait_fg(int *pids, int n, int ki...`
 - Doc: syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN.
 - Language: c
 - Symbols:
-  - `kiovec` (struct, line 649)
-  - `minios_syscall_entry_t` (struct, line 69)
-  - `wall_us_now` (function, line 87) `unsigned long wall_us_now(void)`
-  - `sys_minios_dns` (function, line 96) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_tls_retired` (function, line 102) `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_futex` (function, line 109) `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_time` (function, line 138) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_kbd` (function, line 142) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_palette` (function, line 162) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_kbd_raw` (function, line 174) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_vga_mode` (function, line 180) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_init` (function, line 187) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_tone` (function, line 191) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_doom_frame` (function, line 205) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_rtc` (function, line 210) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `kiovec` (struct, line 665)
+  - `minios_syscall_entry_t` (struct, line 70)
+  - `wall_us_now` (function, line 88) `unsigned long wall_us_now(void)`
+  - `sys_minios_dns` (function, line 97) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_retired` (function, line 103) `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_futex` (function, line 110) `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_time` (function, line 139) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_kbd` (function, line 143) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_palette` (function, line 163) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_kbd_raw` (function, line 175) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_vga_mode` (function, line 181) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_init` (function, line 188) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_tone` (function, line 192) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_doom_frame` (function, line 206) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_rtc` (function, line 211) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
   - `sys_minios_fb_info` (function, line 224) `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_vol` (function, line 236) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_spawn` (function, line 244) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_lz4_compress` (function, line 255) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_lz4_decompress` (function, line 268) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_mouse` (function, line 282) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_nk_frame` (function, line 305) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_open` (function, line 316) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_submit` (function, line 321) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_gfx_title` (function, line 329) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_pump` (function, line 343) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_open` (function, line 347) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_close` (function, line 351) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_submit` (function, line 355) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_vol` (function, line 363) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_futex_wait` (function, line 375) `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_futex_wake` (function, line 381) `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `batch_kdispatch` (function, line 390) `static long batch_kdispatch(uint32_t opcode)`
-  - `DOOM_FRAME` (function, line 405) `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
+  - `sys_minios_pcspk_vol` (function, line 235) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_spawn` (function, line 243) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_lz4_compress` (function, line 254) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_lz4_decompress` (function, line 267) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_mouse` (function, line 281) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_nk_frame` (function, line 304) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sb16_audio_device` (function, line 316) `static device_t *sb16_audio_device(void)`
+  - `sys_minios_sb16_open` (function, line 322) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_submit` (function, line 334) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_gfx_title` (function, line 345) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_pump` (function, line 359) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_open` (function, line 363) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_close` (function, line 367) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_submit` (function, line 371) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_vol` (function, line 379) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_futex_wait` (function, line 391) `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_futex_wake` (function, line 397) `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `batch_kdispatch` (function, line 406) `static long batch_kdispatch(uint32_t opcode)`
+  - `DOOM_FRAME` (function, line 421) `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
 static long sys_minios_gfx_prese...`
-  - `sys_minios_getc_raw` (function, line 425) `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_submit_batch` (function, line 435) `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_rlimit` (function, line 459) `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_dir_list` (function, line 500) `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `syscall_trace_enabled` (function, line 654) `long syscall_trace_enabled(void)`
-  - `syscall_trace_set` (function, line 656) `void syscall_trace_set(int on)`
-  - `sys_linux_write` (function, line 702) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_writev` (function, line 712) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `do_open_path` (function, line 733) `static long do_open_path(const char *path, long flags)`
-  - `sys_linux_open` (function, line 757) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_close` (function, line 762) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_lseek` (function, line 773) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `mm_ensure_cur` (function, line 788) `static int mm_ensure_cur(unsigned long start, unsigned long end)`
-  - `sys_linux_brk` (function, line 796) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_mmap` (function, line 825) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_munmap` (function, line 880) `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_mprotect` (function, line 898) `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sigaction` (function, line 903) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sigprocmask` (function, line 908) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_ioctl` (function, line 913) `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_access` (function, line 918) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_socket` (function, line 940) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_connect` (function, line 945) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sendto` (function, line 951) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_recvfrom` (function, line 956) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_shutdown` (function, line 961) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_poll` (function, line 966) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_flock` (function, line 973) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fsync` (function, line 983) `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fdatasync` (function, line 987) `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_getcwd` (function, line 992) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_unlink` (function, line 1004) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_readlink` (function, line 1017) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fstat` (function, line 1022) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_gettimeofday` (function, line 1042) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_arch_prctl` (function, line 1065) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_uname` (function, line 1077) `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `trace_is_noisy` (function, line 1144) `static int trace_is_noisy(long n)`
-  - `ksyscall` (function, line 1149) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `user_range_ok` (function, line 1171) `int user_range_ok(unsigned long p, unsigned long len)`
-  - `products` (function, line 1189) `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
+  - `sys_minios_getc_raw` (function, line 441) `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_submit_batch` (function, line 451) `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_rlimit` (function, line 475) `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_dir_list` (function, line 516) `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `syscall_trace_enabled` (function, line 670) `long syscall_trace_enabled(void)`
+  - `syscall_trace_set` (function, line 672) `void syscall_trace_set(int on)`
+  - `sys_linux_write` (function, line 718) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_writev` (function, line 728) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `do_open_path` (function, line 759) `static long do_open_path(const char *path, long flags)`
+  - `sys_linux_open` (function, line 781) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_close` (function, line 786) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_lseek` (function, line 797) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `mm_ensure_cur` (function, line 812) `static int mm_ensure_cur(unsigned long start, unsigned long end)`
+  - `sys_linux_brk` (function, line 820) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_mmap` (function, line 849) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_munmap` (function, line 904) `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_mprotect` (function, line 922) `static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sigaction` (function, line 927) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sigprocmask` (function, line 932) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_ioctl` (function, line 937) `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_access` (function, line 942) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_socket` (function, line 964) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_connect` (function, line 969) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sendto` (function, line 975) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_recvfrom` (function, line 980) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_shutdown` (function, line 985) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_poll` (function, line 990) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_flock` (function, line 997) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fsync` (function, line 1007) `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fdatasync` (function, line 1011) `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_getcwd` (function, line 1016) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_unlink` (function, line 1028) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_readlink` (function, line 1041) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fstat` (function, line 1046) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_gettimeofday` (function, line 1066) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_arch_prctl` (function, line 1089) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_uname` (function, line 1101) `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `trace_is_noisy` (function, line 1168) `static int trace_is_noisy(long n)`
+  - `ksyscall` (function, line 1173) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `user_range_ok` (function, line 1195) `int user_range_ok(unsigned long p, unsigned long len)`
+  - `products` (function, line 1213) `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
  * pre-bounded against (END-...`
-  - `ksyscall_dispatch` (function, line 1201) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `tools` (function, line 1407) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an
- * interpreter.
- */...`
-  - `by` (function, line 56) `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to progs/minios_abi.h * 2. Implementing a static long sys_*(long a1, ..., long a6) function here `
-  - `k_syscall_spawn` (function, line 76) `static int k_syscall_spawn(const char *path, const char *redirect, int child_argc, const char **child_argv);`
-  - `rtc_wall_seconds` (function, line 91) `rtc_wall_seconds(&sec);`
-  - `wall_us_from_parts` (function, line 94) `return wall_us_from_parts(base_sec, base_ktime, now);`
-  - `net_sys_dns` (function, line 100) `return net_sys_dns(a1);`
-  - `futex_wake` (function, line 131) `return futex_wake(uaddr, (int)n);`
-  - `volatile` (function, line 153) `__asm__ volatile("inb $0x60, %0" : "=a"(sc));`
-  - `kbd_q_pop` (function, line 160) `return kbd_q_pop();`
-  - `SANITIZE_RANGE` (function, line 167) `SANITIZE_RANGE(a1, 768);`
-  - `vga_fb_set_gfx_palette` (function, line 171) `vga_fb_set_gfx_palette(tmp);`
-  - `kbd_raw_mode_set` (function, line 176) `kbd_raw_mode_set((int)a1);`
-  - `kbd_flush_all` (function, line 177) `kbd_flush_all();`
-  - `vga_mode_set` (function, line 182) `vga_mode_set((int)a1);`
-  - `vga_fb_set_gfx_mode` (function, line 184) `vga_fb_set_gfx_mode((int)a1);`
-  - `pcspk_init` (function, line 189) `pcspk_init();`
-  - `pcspk_tone` (function, line 193) `pcspk_tone((unsigned)a1);`
-  - `gfx_note_compositor` (function, line 207) `gfx_note_compositor();`
-  - `vga_fb_blit_gfx_window` (function, line 208) `vga_fb_blit_gfx_window();`
-  - `pcspk_set_volume` (function, line 241) `pcspk_set_volume((unsigned)v);`
-  - `spin_restore_irq` (function, line 298) `spin_restore_irq(flags);`
-  - `vga_fb_blit_nk_window` (function, line 313) `vga_fb_blit_nk_window();`
-  - `SANITIZE_LEN_NEG` (function, line 325) `SANITIZE_LEN_NEG(len);`
-  - `sb16_pcm_submit` (function, line 327) `return sb16_pcm_submit(pcm, (unsigned)len);`
-  - `sb16_pump` (function, line 345) `sb16_pump();`
-  - `sb16_stream_open` (function, line 349) `return sb16_stream_open();`
-  - `sb16_stream_close` (function, line 353) `sb16_stream_close((int)a1);`
-  - `sb16_stream_submit` (function, line 361) `return sb16_stream_submit((int)a1, pcm, (unsigned)len);`
-  - `sb16_stream_volume` (function, line 365) `sb16_stream_volume((int)a1, (unsigned char)a2);`
-  - `futex_wait` (function, line 379) `return futex_wait((unsigned long)a1, (int)a2);`
-  - `yield` (function, line 394) `yield();`
-  - `SANITIZE_COPY_IN` (function, line 445) `SANITIZE_COPY_IN(kops, a1, count, sizeof(batch_op_t));`
-  - `kmemcpy` (function, line 517) `kmemcpy(dir, resolved, len + 1);`
-  - `kprintf` (function, line 681) `kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);`
-  - `vga_putc` (function, line 690) `vga_putc((char)c);`
-  - `kfclose` (function, line 768) `kfclose(kfd_table[a1]);`
-  - `kfseek` (function, line 777) `kfseek(kfd_table[a1], a2, (int)a3);`
-  - `spin_lock_irqsave` (function, line 802) `spin_lock_irqsave(&mm_lock, &flags);`
-  - `spin_unlock_irqrestore` (function, line 808) `spin_unlock_irqrestore(&mm_lock, flags);`
-  - `vma_tree_delete` (function, line 859) `vma_tree_delete(&vma_free_root, best->base);`
-  - `vma_tree_insert` (function, line 862) `vma_tree_insert(&vma_live_root, addr, n);`
-  - `net_sys_socket` (function, line 943) `return net_sys_socket(a1, a2, a3);`
-  - `net_sys_connect` (function, line 949) `return net_sys_connect(a1, a2, a3);`
-  - `net_sys_sendto` (function, line 954) `return net_sys_sendto(a1, a2, a3, a4, a5, a6);`
-  - `net_sys_recvfrom` (function, line 959) `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);`
-  - `net_sys_shutdown` (function, line 964) `return net_sys_shutdown(a1, a2);`
-  - `net_sys_poll` (function, line 971) `return net_sys_poll(a1, a2, a3);`
-  - `wrmsr` (function, line 1072) `wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);`
-  - `kmemset` (function, line 1089) `kmemset(u, 0, 390);`
-  - `kstrcpy` (function, line 1090) `kstrcpy(u, "MiniOS");`
-  - `Discipline` (function, line 1184) `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok is ONLY for exact-size * buffers (sizeof(int), 144-byte stat, fixed PCM length);`
-  - `wm_clear_close` (function, line 1204) `wm_clear_close();`
-  - `do_exit` (function, line 1209) `do_exit(130);`
-  - `klongjmp` (function, line 1213) `klongjmp(&exec_return, 1);`
-  - `do_proc_exit` (function, line 1283) `return do_proc_exit(a1);`
-  - `LIMITATION` (function, line 1399) `* * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from * a ring-3 interpreter (lua/micropython) must save the parent's user window, * whose full span cannot fit in the kernel h`
-  - `ramdisk_read` (function, line 1459) `ramdisk_read(f, data, 0, f->size);`
-  - `kfree` (function, line 1485) `kfree(data);`
-  - `gfx_win_title` (variable, line 334) `extern const char *gfx_win_title;`
-  - `KFD_MAX` (macro, line 42) `#define KFD_MAX`
-  - `MINIOS_SYSCALL_BASE` (macro, line 73) `#define MINIOS_SYSCALL_BASE`
-  - `MINIOS_SYSCALL_COUNT` (macro, line 75) `#define MINIOS_SYSCALL_COUNT`
-  - `SYSCALL_TRACE` (macro, line 650) `#define SYSCALL_TRACE`
-  - `SYS_NOISY_TIME` (macro, line 662) `#define SYS_NOISY_TIME`
-  - `SYS_NOISY_KBD` (macro, line 663) `#define SYS_NOISY_KBD`
-  - `SYS_NOISY_MOUSE` (macro, line 664) `#define SYS_NOISY_MOUSE`
-  - `SYS_NOISY_GETC_RAW` (macro, line 665) `#define SYS_NOISY_GETC_RAW`
-  - `LINUX_SYSCALL_COUNT` (macro, line 1098) `#define LINUX_SYSCALL_COUNT`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
+  - `ksyscall_dispatch` (function, line 1225) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `k_syscall_spawn` (function, line 1439) `static int k_syscall_spawn(const char *path, const char *redirect,
+                             i...`
+  - `by` (function, line 57) `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to progs/minios_abi.h * 2. Implementing a static long sys_*(long a1, ..., long a6) function here `
+  - `rtc_wall_seconds` (function, line 92) `rtc_wall_seconds(&sec);`
+  - `wall_us_from_parts` (function, line 95) `return wall_us_from_parts(base_sec, base_ktime, now);`
+  - `SANITIZE_STR` (function, line 100) `SANITIZE_STR(a1, 255);`
+  - `net_sys_dns` (function, line 101) `return net_sys_dns(a1);`
+  - `SANITIZE_RANGE` (function, line 127) `SANITIZE_RANGE(uaddr, 4);`
+  - `futex_wake` (function, line 132) `return futex_wake(uaddr, (int)n);`
+  - `volatile` (function, line 154) `__asm__ volatile("inb $0x60, %0" : "=a"(sc));`
+  - `kbd_q_pop` (function, line 161) `return kbd_q_pop();`
+  - `vga_fb_set_gfx_palette` (function, line 172) `vga_fb_set_gfx_palette(tmp);`
+  - `kbd_raw_mode_set` (function, line 177) `kbd_raw_mode_set((int)a1);`
+  - `kbd_flush_all` (function, line 178) `kbd_flush_all();`
+  - `vga_mode_set` (function, line 183) `vga_mode_set((int)a1);`
+  - `vga_fb_set_gfx_mode` (function, line 185) `vga_fb_set_gfx_mode((int)a1);`
+  - `pcspk_init` (function, line 190) `pcspk_init();`
+  - `pcspk_tone` (function, line 194) `pcspk_tone((unsigned)a1);`
+  - `gfx_note_compositor` (function, line 208) `gfx_note_compositor();`
+  - `vga_fb_blit_gfx_window` (function, line 209) `vga_fb_blit_gfx_window();`
+  - `pcspk_set_volume` (function, line 240) `pcspk_set_volume((unsigned)v);`
+  - `spin_restore_irq` (function, line 297) `spin_restore_irq(flags);`
+  - `vga_fb_blit_nk_window` (function, line 312) `vga_fb_blit_nk_window();`
+  - `SANITIZE_LEN_NEG` (function, line 339) `SANITIZE_LEN_NEG(len);`
+  - `sb16_pump` (function, line 361) `sb16_pump();`
+  - `sb16_stream_open` (function, line 365) `return sb16_stream_open();`
+  - `sb16_stream_close` (function, line 369) `sb16_stream_close((int)a1);`
+  - `sb16_stream_submit` (function, line 377) `return sb16_stream_submit((int)a1, pcm, (unsigned)len);`
+  - `sb16_stream_volume` (function, line 381) `sb16_stream_volume((int)a1, (unsigned char)a2);`
+  - `futex_wait` (function, line 395) `return futex_wait((unsigned long)a1, (int)a2);`
+  - `yield` (function, line 410) `yield();`
+  - `SANITIZE_COPY_IN` (function, line 461) `SANITIZE_COPY_IN(kops, a1, count, sizeof(batch_op_t));`
+  - `kmemcpy` (function, line 533) `kmemcpy(dir, resolved, len + 1);`
+  - `kprintf` (function, line 697) `kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);`
+  - `vga_putc` (function, line 706) `vga_putc((char)c);`
+  - `kfree` (function, line 747) `kfree(kc);`
+  - `kfclose` (function, line 792) `kfclose(kfd_table[a1]);`
+  - `kfseek` (function, line 801) `kfseek(kfd_table[a1], a2, (int)a3);`
+  - `spin_lock_irqsave` (function, line 826) `spin_lock_irqsave(&mm_lock, &flags);`
+  - `spin_unlock_irqrestore` (function, line 832) `spin_unlock_irqrestore(&mm_lock, flags);`
+  - `vma_tree_delete` (function, line 883) `vma_tree_delete(&vma_free_root, best->base);`
+  - `vma_tree_insert` (function, line 886) `vma_tree_insert(&vma_live_root, addr, n);`
+  - `net_sys_socket` (function, line 967) `return net_sys_socket(a1, a2, a3);`
+  - `net_sys_connect` (function, line 973) `return net_sys_connect(a1, a2, a3);`
+  - `net_sys_sendto` (function, line 978) `return net_sys_sendto(a1, a2, a3, a4, a5, a6);`
+  - `net_sys_recvfrom` (function, line 983) `return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);`
+  - `net_sys_shutdown` (function, line 988) `return net_sys_shutdown(a1, a2);`
+  - `net_sys_poll` (function, line 995) `return net_sys_poll(a1, a2, a3);`
+  - `wrmsr` (function, line 1096) `wrmsr(a1 == 0x1002 ? MSR_FSBASE : MSR_GSBASE, v);`
+  - `kmemset` (function, line 1113) `kmemset(u, 0, 390);`
+  - `kstrcpy` (function, line 1114) `kstrcpy(u, "MiniOS");`
+  - `Discipline` (function, line 1208) `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok is ONLY for exact-size * buffers (sizeof(int), 144-byte stat, fixed PCM length);`
+  - `wm_clear_close` (function, line 1228) `wm_clear_close();`
+  - `do_exit` (function, line 1233) `do_exit(130);`
+  - `klongjmp` (function, line 1237) `klongjmp(&exec_return, 1);`
+  - `do_proc_exit` (function, line 1307) `return do_proc_exit(a1);`
+  - `LIMITATION` (function, line 1423) `* * KNOWN LIMITATION (pre-existing): SYS_SPAWN of an ET_EXEC/ET_DYN child from * a ring-3 interpreter (lua/micropython) must save the parent's user window, * whose full span cannot fit in the kernel h`
+  - `tools` (function, line 1431) `* ET_EXEC tools (lzss/lz4/aes/json/freedom) are run by the shell, not from an * interpreter. */ #include "spawn.h" static int k_syscall_spawn(const char *path, const char *redirect, int child_argc, co`
+  - `spawn_free_argv` (function, line 1454) `spawn_free_argv(kargv, child_argc);`
+  - `spawn_backup` (function, line 1468) `spawn_backup(&ctx);`
+  - `spawn_restore` (function, line 1473) `spawn_restore(&ctx);`
+  - `gfx_win_title` (variable, line 350) `extern const char *gfx_win_title;`
+  - `KFD_MAX` (macro, line 43) `#define KFD_MAX`
+  - `MINIOS_SYSCALL_BASE` (macro, line 74) `#define MINIOS_SYSCALL_BASE`
+  - `MINIOS_SYSCALL_COUNT` (macro, line 76) `#define MINIOS_SYSCALL_COUNT`
+  - `SYSCALL_TRACE` (macro, line 666) `#define SYSCALL_TRACE`
+  - `SYS_NOISY_TIME` (macro, line 678) `#define SYS_NOISY_TIME`
+  - `SYS_NOISY_KBD` (macro, line 679) `#define SYS_NOISY_KBD`
+  - `SYS_NOISY_MOUSE` (macro, line 680) `#define SYS_NOISY_MOUSE`
+  - `SYS_NOISY_GETC_RAW` (macro, line 681) `#define SYS_NOISY_GETC_RAW`
+  - `LINUX_SYSCALL_COUNT` (macro, line 1122) `#define LINUX_SYSCALL_COUNT`
+- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `batch.h`, `block.h`, `driver.h`, `drivers/kbd.h`, `futex.h`, `ide.h`, `kernel.h`, `ktime.h`, `lz4_kernel.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `randmix.h`, `rcu.h`, `rtc.h`, `sanitize.h`, `sb16.h`, `sched.h`, `shell.h`, `spawn.h`, `syscalls_proc.h`, `vga_fb.h`, `zip.h`
 
 ## kernel/syscalls_proc.c
 - Layer: utility
@@ -1019,175 +1047,190 @@ long sys_linux_wait4(lon...`
 - Layer: utility
 - Language: c
 - Symbols:
-  - `termwin_t` (struct, line 683)
-  - `wm_geom_cfg` (function, line 41) `static wm_geom_config_t wm_geom_cfg(void)`
-  - `wm_event_cfg` (function, line 52) `static wm_event_config_t wm_event_cfg(void)`
-  - `wm_drag_reset` (function, line 61) `static void wm_drag_reset(void)`
-  - `vga_fb_boot_config` (function, line 81) `void vga_fb_boot_config(void)`
-  - `fb_bytes_per_pixel` (function, line 108) `int fb_bytes_per_pixel(void)`
-  - `lg_get` (function, line 167) `static const char *lg_get(int i)`
-  - `lg_push` (function, line 173) `static void lg_push(const char *line, int len)`
-  - `line_nrows` (function, line 185) `static int line_nrows(int len)`
-  - `act_nrows` (function, line 191) `static int act_nrows(void)`
-  - `total_rows` (function, line 195) `static int total_rows(void)`
-  - `disp_clamp` (function, line 203) `static void disp_clamp(void)`
-  - `line_at` (function, line 221) `static const char *line_at(int abs, int *off)`
-  - `cursor_save_bg` (function, line 265) `static void cursor_save_bg(int mx, int my)`
-  - `cursor_draw` (function, line 273) `static void cursor_draw(int mx, int my)`
-  - `cursor_restore` (function, line 284) `static void cursor_restore(int mx, int my)`
-  - `cursor_over` (function, line 299) `static int cursor_over(int x0, int y0, int w, int h)`
-  - `gfx_keep_save` (function, line 346) `static void gfx_keep_save(int x, int y, int w, int h)`
-  - `gfx_keep_restore` (function, line 377) `static void gfx_keep_restore(void)`
-  - `vga_fb_set_gfx_program` (function, line 415) `void vga_fb_set_gfx_program(const char *name)`
-  - `shcmd_base` (function, line 435) `static void shcmd_base(const char *cmd, char *out, unsigned long cap)`
-  - `ci_eq` (function, line 451) `static int ci_eq(const char *a, const char *b)`
-  - `gfx_prog_icon` (function, line 465) `static const uint8_t *gfx_prog_icon(void)`
-  - `vga_fb_set_gfx_mode` (function, line 478) `void vga_fb_set_gfx_mode(int on)`
-  - `gfx_place` (function, line 499) `static void gfx_place(int w, int h, int *ox, int *oy)`
-  - `vga_fb_gfx_cursor_erase` (function, line 515) `static void vga_fb_gfx_cursor_erase(void)`
-  - `vga_fb_gfx_cursor_draw` (function, line 523) `static void vga_fb_gfx_cursor_draw(void)`
-  - `tw_park` (function, line 705) `static void tw_park(int i)`
-  - `tw_unpark` (function, line 735) `static void tw_unpark(int i)`
-  - `wm_init_once` (function, line 767) `static void wm_init_once(void)`
-  - `tw_select` (function, line 788) `static void tw_select(int i)`
-  - `vga_fb_focus_get` (function, line 799) `int vga_fb_focus_get(void)`
-  - `vga_fb_nterms_get` (function, line 801) `int vga_fb_nterms_get(void)`
-  - `wm_snapshot_state` (function, line 804) `static void wm_snapshot_state(wm_focus_state_t *st)`
-  - `vga_fb_focus_next` (function, line 817) `void vga_fb_focus_next(void)`
-  - `wm_gfx_focus_sync` (function, line 851) `static void wm_gfx_focus_sync(int on)`
-  - `vga_fb_focus_id` (function, line 866) `int vga_fb_focus_id(int id)`
-  - `content` (function, line 890) `* windows would share content (same prompt/output on both) and a park
+  - `termwin_t` (struct, line 709)
+  - `wm_geom_cfg` (function, line 46) `static wm_geom_config_t wm_geom_cfg(void)`
+  - `wm_event_cfg` (function, line 57) `static wm_event_config_t wm_event_cfg(void)`
+  - `wm_drag_reset` (function, line 66) `static void wm_drag_reset(void)`
+  - `vga_fb_boot_config` (function, line 86) `void vga_fb_boot_config(void)`
+  - `fb_bytes_per_pixel` (function, line 113) `int fb_bytes_per_pixel(void)`
+  - `lg_get` (function, line 172) `static const char *lg_get(int i)`
+  - `lg_push` (function, line 178) `static void lg_push(const char *line, int len)`
+  - `line_nrows` (function, line 190) `static int line_nrows(int len)`
+  - `act_nrows` (function, line 196) `static int act_nrows(void)`
+  - `total_rows` (function, line 200) `static int total_rows(void)`
+  - `disp_clamp` (function, line 208) `static void disp_clamp(void)`
+  - `line_at` (function, line 226) `static const char *line_at(int abs, int *off)`
+  - `cursor_save_bg` (function, line 270) `static void cursor_save_bg(int mx, int my)`
+  - `cursor_is_set` (function, line 280) `static int cursor_is_set(int i, int j)`
+  - `cursor_has_set_neighbour` (function, line 287) `static int cursor_has_set_neighbour(int i, int j)`
+  - `cursor_draw` (function, line 297) `static void cursor_draw(int mx, int my)`
+  - `cursor_restore` (function, line 310) `static void cursor_restore(int mx, int my)`
+  - `cursor_over` (function, line 325) `static int cursor_over(int x0, int y0, int w, int h)`
+  - `gfx_keep_save` (function, line 372) `static void gfx_keep_save(int x, int y, int w, int h)`
+  - `gfx_keep_restore` (function, line 403) `static void gfx_keep_restore(void)`
+  - `vga_fb_set_gfx_program` (function, line 441) `void vga_fb_set_gfx_program(const char *name)`
+  - `shcmd_base` (function, line 461) `static void shcmd_base(const char *cmd, char *out, unsigned long cap)`
+  - `ci_eq` (function, line 477) `static int ci_eq(const char *a, const char *b)`
+  - `gfx_prog_icon` (function, line 491) `static const uint8_t *gfx_prog_icon(void)`
+  - `vga_fb_set_gfx_mode` (function, line 504) `void vga_fb_set_gfx_mode(int on)`
+  - `gfx_place` (function, line 525) `static void gfx_place(int w, int h, int *ox, int *oy)`
+  - `vga_fb_gfx_cursor_erase` (function, line 541) `static void vga_fb_gfx_cursor_erase(void)`
+  - `vga_fb_gfx_cursor_draw` (function, line 549) `static void vga_fb_gfx_cursor_draw(void)`
+  - `wm_focus_cursor_sync` (function, line 732) `static void wm_focus_cursor_sync(const wm_notify_event_t *e)`
+  - `wm_emit_focus_moved` (function, line 739) `static void wm_emit_focus_moved(int before, int source)`
+  - `vga_fb_focus_event` (function, line 751) `const wm_notify_event_t *vga_fb_focus_event(void)`
+  - `vga_fb_focus_report` (function, line 757) `void vga_fb_focus_report(int before, int source)`
+  - `tw_park` (function, line 765) `static void tw_park(int i)`
+  - `tw_unpark` (function, line 795) `static void tw_unpark(int i)`
+  - `wm_init_once` (function, line 827) `static void wm_init_once(void)`
+  - `tw_select` (function, line 853) `static void tw_select(int i)`
+  - `vga_fb_focus_get` (function, line 864) `int vga_fb_focus_get(void)`
+  - `vga_fb_nterms_get` (function, line 866) `int vga_fb_nterms_get(void)`
+  - `wm_snapshot_state` (function, line 869) `static void wm_snapshot_state(wm_focus_state_t *st)`
+  - `vga_fb_focus_next` (function, line 882) `void vga_fb_focus_next(void)`
+  - `wm_gfx_focus_sync` (function, line 919) `static void wm_gfx_focus_sync(int on)`
+  - `vga_fb_focus_id` (function, line 938) `int vga_fb_focus_id(int id)`
+  - `content` (function, line 963) `* windows would share content (same prompt/output on both) and a park
  * would alias src == dst. ...`
-  - `vga_fb_layout_set` (function, line 965) `int vga_fb_layout_set(int mode)`
-  - `vga_fb_layout_cycle` (function, line 976) `void vga_fb_layout_cycle(void)`
-  - `vga_fb_layout_get` (function, line 992) `int vga_fb_layout_get(void)`
-  - `vga_fb_layout_name` (function, line 998) `const char *vga_fb_layout_name(void)`
-  - `vga_fb_tile_all` (function, line 1003) `void vga_fb_tile_all(void)`
-  - `gfx_tile_right` (function, line 1059) `static void gfx_tile_right(void)`
-  - `vga_fb_list_windows` (function, line 1078) `void vga_fb_list_windows(void)`
-  - `vga_fb_act_empty` (function, line 1121) `int vga_fb_act_empty(void)`
-  - `vga_fb_note_prompt` (function, line 1125) `void vga_fb_note_prompt(void)`
-  - `vga_fb_clear_prompt` (function, line 1130) `void vga_fb_clear_prompt(void)`
-  - `vga_fb_prompted` (function, line 1135) `int vga_fb_prompted(void)`
-  - `vga_fb_prompt_live` (function, line 1144) `int vga_fb_prompt_live(void)`
-  - `vga_fb_park_line` (function, line 1151) `void vga_fb_park_line(const char *b, int p)`
-  - `vga_fb_unpark_line` (function, line 1166) `int vga_fb_unpark_line(char *b, int *p)`
-  - `tw_hit` (function, line 1181) `static int tw_hit(int i, int mx, int my)`
-  - `gfx_hit` (function, line 1197) `static int gfx_hit(int mx, int my)`
-  - `vga_fb_set_gfx_palette` (function, line 1294) `void vga_fb_set_gfx_palette(const unsigned char *pal)`
-  - `fb_pack_idx` (function, line 1310) `static unsigned long fb_pack_idx(unsigned idx)`
-  - `fb_write_packed` (function, line 1325) `static void fb_write_packed(int x, int y, unsigned long rgb)`
-  - `fb_read_packed` (function, line 1345) `static unsigned long fb_read_packed(int x, int y)`
-  - `vga_fb_read_rgb` (function, line 1369) `unsigned long vga_fb_read_rgb(int x, int y)`
-  - `wall_level` (function, line 1373) `static int wall_level(int v)`
-  - `vga_fb_set_palette` (function, line 1381) `static void vga_fb_set_palette(void)`
-  - `fb_glyph` (function, line 1435) `static const uint8_t *fb_glyph(unsigned char c)`
-  - `vga_fb_pixel` (function, line 1456) `void vga_fb_pixel(int x, int y, uint8_t color)`
-  - `vga_fb_rect` (function, line 1464) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
-  - `vga_fb_char` (function, line 1471) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
-  - `vga_fb_str` (function, line 1485) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
-  - `text_px` (function, line 1497) `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
-  - `wm_draw_buttons` (function, line 1523) `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
-  - `wm_buttons_hit` (function, line 1549) `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
-  - `wm_close_pending` (function, line 1564) `int wm_close_pending(void)`
-  - `wm_clear_close` (function, line 1565) `void wm_clear_close(void)`
-  - `wm_gfx_mode_active` (function, line 1566) `int wm_gfx_mode_active(void)`
-  - `vga_fb_ps2_owner` (function, line 1569) `int vga_fb_ps2_owner(int pid)`
-  - `wm_button_click` (function, line 1588) `static int wm_button_click(int mx, int my)`
-  - `USER_LOAD_BASE` (function, line 1637) `* table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
+  - `vga_fb_layout_set` (function, line 1038) `int vga_fb_layout_set(int mode)`
+  - `vga_fb_layout_cycle` (function, line 1049) `void vga_fb_layout_cycle(void)`
+  - `vga_fb_layout_get` (function, line 1065) `int vga_fb_layout_get(void)`
+  - `vga_fb_layout_name` (function, line 1071) `const char *vga_fb_layout_name(void)`
+  - `vga_fb_tile_all` (function, line 1076) `void vga_fb_tile_all(void)`
+  - `gfx_tile_right` (function, line 1132) `static void gfx_tile_right(void)`
+  - `vga_fb_list_windows` (function, line 1151) `void vga_fb_list_windows(void)`
+  - `vga_fb_act_empty` (function, line 1194) `int vga_fb_act_empty(void)`
+  - `vga_fb_note_prompt` (function, line 1198) `void vga_fb_note_prompt(void)`
+  - `vga_fb_clear_prompt` (function, line 1203) `void vga_fb_clear_prompt(void)`
+  - `vga_fb_prompted` (function, line 1208) `int vga_fb_prompted(void)`
+  - `vga_fb_prompt_live` (function, line 1217) `int vga_fb_prompt_live(void)`
+  - `vga_fb_park_line` (function, line 1224) `void vga_fb_park_line(const char *b, int p)`
+  - `vga_fb_unpark_line` (function, line 1239) `int vga_fb_unpark_line(char *b, int *p)`
+  - `tw_hit` (function, line 1254) `static int tw_hit(int i, int mx, int my)`
+  - `gfx_hit` (function, line 1270) `static int gfx_hit(int mx, int my)`
+  - `vga_fb_set_gfx_palette` (function, line 1367) `void vga_fb_set_gfx_palette(const unsigned char *pal)`
+  - `fb_pack_idx` (function, line 1383) `static unsigned long fb_pack_idx(unsigned idx)`
+  - `fb_write_packed` (function, line 1398) `static void fb_write_packed(int x, int y, unsigned long rgb)`
+  - `fb_read_packed` (function, line 1418) `static unsigned long fb_read_packed(int x, int y)`
+  - `vga_fb_read_rgb` (function, line 1442) `unsigned long vga_fb_read_rgb(int x, int y)`
+  - `wall_level` (function, line 1446) `static int wall_level(int v)`
+  - `vga_fb_set_palette` (function, line 1454) `static void vga_fb_set_palette(void)`
+  - `fb_glyph` (function, line 1508) `static const uint8_t *fb_glyph(unsigned char c)`
+  - `vga_fb_pixel` (function, line 1529) `void vga_fb_pixel(int x, int y, uint8_t color)`
+  - `vga_fb_rect` (function, line 1537) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
+  - `vga_fb_char` (function, line 1544) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
+  - `vga_fb_str` (function, line 1558) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
+  - `text_px` (function, line 1570) `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
+  - `wm_draw_buttons` (function, line 1596) `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
+  - `wm_buttons_hit` (function, line 1622) `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
+  - `wm_close_pending` (function, line 1637) `int wm_close_pending(void)`
+  - `wm_clear_close` (function, line 1638) `void wm_clear_close(void)`
+  - `wm_gfx_mode_active` (function, line 1639) `int wm_gfx_mode_active(void)`
+  - `vga_fb_ps2_owner` (function, line 1642) `int vga_fb_ps2_owner(int pid)`
+  - `wm_button_click` (function, line 1661) `static int wm_button_click(int mx, int my)`
+  - `USER_LOAD_BASE` (function, line 1710) `* table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
  * fits with ~1 KB to s...`
-  - `blit_gfx_buf` (function, line 1680) `static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh)`
-  - `vga_fb_blit_gfx_window` (function, line 1710) `void vga_fb_blit_gfx_window(void)`
-  - `vga_fb_clear` (function, line 1715) `void vga_fb_clear(void)`
-  - `vga_fb_blit_nk_window` (function, line 1731) `void vga_fb_blit_nk_window(void)`
-  - `term_recalc` (function, line 1742) `static void term_recalc(void)`
-  - `draw_title_win` (function, line 1769) `static void draw_title_win(int idx, int focused)`
-  - `taskbar_layout` (function, line 1799) `static void taskbar_layout(void)`
-  - `draw_speaker_icon` (function, line 1831) `static void draw_speaker_icon(int x, int y, uint8_t color)`
-  - `taskbar_render` (function, line 1839) `static void taskbar_render(void)`
-  - `taskbar_tick` (function, line 1919) `static void taskbar_tick(void)`
-  - `vga_fb_theme_name` (function, line 1935) `int vga_fb_theme_name(char *dst, int cap)`
-  - `taskbar_theme_cycle` (function, line 1956) `static void taskbar_theme_cycle(void)`
-  - `taskbar_handle_click` (function, line 1996) `static void taskbar_handle_click(int mx, int my)`
-  - `draw_scrollbar` (function, line 2052) `static void draw_scrollbar(void)`
-  - `render_blank_row` (function, line 2087) `static void render_blank_row(int vrow)`
-  - `render_row` (function, line 2097) `static void render_row(int vrow, int abs)`
-  - `term_render` (function, line 2125) `static void term_render(void)`
-  - `term_render_active` (function, line 2138) `static void term_render_active(void)`
-  - `line` (function, line 2179) `* display stale bytes left over from a longer previous line (e.g. the prompt
+  - `blit_gfx_buf` (function, line 1753) `static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh)`
+  - `vga_fb_blit_gfx_window` (function, line 1783) `void vga_fb_blit_gfx_window(void)`
+  - `vga_fb_clear` (function, line 1788) `void vga_fb_clear(void)`
+  - `vga_fb_blit_nk_window` (function, line 1804) `void vga_fb_blit_nk_window(void)`
+  - `term_recalc` (function, line 1815) `static void term_recalc(void)`
+  - `draw_title_win` (function, line 1842) `static void draw_title_win(int idx, int focused)`
+  - `taskbar_layout` (function, line 1872) `static void taskbar_layout(void)`
+  - `draw_speaker_icon` (function, line 1904) `static void draw_speaker_icon(int x, int y, uint8_t color)`
+  - `taskbar_render` (function, line 1912) `static void taskbar_render(void)`
+  - `taskbar_tick` (function, line 1992) `static void taskbar_tick(void)`
+  - `vga_fb_theme_name` (function, line 2008) `int vga_fb_theme_name(char *dst, int cap)`
+  - `taskbar_theme_cycle` (function, line 2029) `static void taskbar_theme_cycle(void)`
+  - `taskbar_handle_click` (function, line 2069) `static void taskbar_handle_click(int mx, int my)`
+  - `draw_scrollbar` (function, line 2127) `static void draw_scrollbar(void)`
+  - `render_blank_row` (function, line 2162) `static void render_blank_row(int vrow)`
+  - `render_row` (function, line 2172) `static void render_row(int vrow, int abs)`
+  - `term_render` (function, line 2200) `static void term_render(void)`
+  - `term_render_active` (function, line 2213) `static void term_render_active(void)`
+  - `line` (function, line 2254) `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...`
-  - `escapes` (function, line 2188) `* swallowing them here keeps the escapes (which the serial side needs)
+  - `escapes` (function, line 2263) `* swallowing them here keeps the escapes (which the serial side needs)
      * from printing as li...`
-  - `vga_fb_puts_term` (function, line 2244) `void vga_fb_puts_term(const char *s)`
-  - `vga_fb_text_cursor` (function, line 2251) `void vga_fb_text_cursor(int col)`
-  - `vga_fb_hide_text_cursor` (function, line 2259) `void vga_fb_hide_text_cursor(void)`
-  - `vga_fb_draw_desktop` (function, line 2264) `void vga_fb_draw_desktop(void)`
-  - `vga_fb_toggle_fullscreen` (function, line 2305) `void vga_fb_toggle_fullscreen(void)`
-  - `vga_fb_toggle_minimize` (function, line 2324) `void vga_fb_toggle_minimize(void)`
-  - `vga_fb_is_minimized` (function, line 2330) `int vga_fb_is_minimized(void)`
-  - `vga_fb_is_fullscreen` (function, line 2332) `int vga_fb_is_fullscreen(void)`
-  - `gfx_target` (function, line 2336) `static void gfx_target(int *x, int *y)`
-  - `gfx_snap` (function, line 2343) `static void gfx_snap(int zone)`
-  - `vga_fb_close_active` (function, line 2367) `int vga_fb_close_active(void)`
-  - `vga_fb_move_terminal` (function, line 2387) `void vga_fb_move_terminal(int dx, int dy)`
-  - `term_max_cols` (function, line 2424) `static int term_max_cols(void)`
-  - `term_max_rows` (function, line 2428) `static int term_max_rows(void)`
-  - `term_finish_layout` (function, line 2432) `static void term_finish_layout(void)`
-  - `vga_fb_snap_window` (function, line 2438) `void vga_fb_snap_window(int zone)`
-  - `vga_fb_resize` (function, line 2465) `void vga_fb_resize(int dcols, int drows)`
-  - `vga_fb_reset_default` (function, line 2486) `void vga_fb_reset_default(void)`
-  - `wallpaper_ensure` (function, line 2528) `static void wallpaper_ensure(void)`
-  - `wallpaper_draw` (function, line 2563) `static void wallpaper_draw(void)`
-  - `pipe_field` (function, line 2597) `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
-  - `icon_nearest` (function, line 2615) `static int icon_nearest(int r, int g, int b)`
-  - `icon_embedded` (function, line 2631) `static const uint8_t *icon_embedded(const char *name)`
-  - `icon_decode` (function, line 2651) `static const uint8_t *icon_decode(const char *path)`
-  - `icon_embedded_rgba` (function, line 2685) `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)`
-  - `dock_label_px` (function, line 2713) `static int dock_label_px(const struct desktop_shortcut *sc)`
-  - `shortcuts_layout` (function, line 2722) `static void shortcuts_layout(void)`
-  - `shortcut_cell_left` (function, line 2740) `static int shortcut_cell_left(int i)`
-  - `desktop_shortcuts_load` (function, line 2746) `void desktop_shortcuts_load(void)`
-  - `desktop_shortcuts_draw` (function, line 2799) `void desktop_shortcuts_draw(void)`
-  - `gfx_task_icon` (function, line 2860) `static const uint8_t *gfx_task_icon(void)`
-  - `desktop_shortcuts_hit_test` (function, line 2880) `const char *desktop_shortcuts_hit_test(int mx, int my)`
-  - `vga_fb_mouse_tick` (function, line 2895) `void vga_fb_mouse_tick(void)`
-  - `vga_fb_mouse_init` (function, line 3074) `void vga_fb_mouse_init(void)`
-  - `vga_fb_init` (function, line 3093) `void vga_fb_init(void)`
-  - `kbd_raw_flush` (function, line 834) `kbd_raw_flush();`
-  - `app` (function, line 846) `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep landing on the shell * while the app looks hung. The enable arm mirrors the focus-gf`
-  - `ksprintf` (function, line 1098) `ksprintf(b, "win term%d %c cols=%d rows=%d x=%d y=%d min=%d fs=%d%s\n", i, (i == wm_focus) ? '*' : ' ', dc, dr, (i == cur) ? term_x : t->x, (i == cur) ? term_y : t->y, t->minimized, t->fullscreen, t->`
-  - `serial_puts` (function, line 1103) `serial_puts(b);`
-  - `wm_window_contains` (function, line 1193) `return wm_window_contains(&w, mx, my);`
-  - `outb` (function, line 1299) `outb(0x3C8, 0);`
-  - `blit_indexed_truecolor` (function, line 1705) `blit_indexed_truecolor(bb, bw, bh, dst_x, dst_y + FONT_H);`
-  - `kmemset` (function, line 1717) `kmemset((void *)FB_ADDR, 0, (unsigned long)fb_pitch * (unsigned long)fb_height);`
-  - `title` (function, line 1850) `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const uint8_t *ipx = gfx_task_icon();`
-  - `kfclose` (function, line 1946) `kfclose(f);`
-  - `kmemcpy` (function, line 1977) `kmemcpy(names[count], rel, k + 1);`
-  - `kfputs` (function, line 1986) `kfputs(next, f);`
-  - `kfputc` (function, line 1987) `kfputc('\n', f);`
-  - `kbd_toggle_layout` (function, line 2016) `kbd_toggle_layout();`
-  - `pcspk_set_volume` (function, line 2032) `pcspk_set_volume(spk_saved_valid ? spk_saved_vol : v);`
-  - `term_draw_cell` (function, line 2239) `term_draw_cell(act_len - 1);`
-  - `stbi_image_free` (function, line 2540) `stbi_image_free(img);`
-  - `command` (function, line 2855) `* its launch command (config-driven, covers apps that never set a window * title);`
-  - `path` (function, line 2906) `* present path (blit_gfx_buf) is the sole cursor painter. The tick * sharing cursor_save/cursor_old with it raced every present (~60fps * vs 25Hz): stale restores painted trails and flicker, worst on `
-  - `spin_restore_irq` (function, line 2960) `spin_restore_irq(flags);`
-  - `vga_fb_drag_terminal` (function, line 3023) `vga_fb_drag_terminal(mx, my, wm_grab_cx);`
-  - `wm_clamp_point` (function, line 3049) `wm_clamp_point(&mouse_state.x, &mouse_state.y, fb_width, fb_height);`
-  - `CURSOR_TIP_X` (macro, line 251) `#define CURSOR_TIP_X`
-  - `CURSOR_TIP_Y` (macro, line 252) `#define CURSOR_TIP_Y`
-  - `CURSOR_W` (macro, line 253) `#define CURSOR_W`
-  - `CURSOR_H` (macro, line 254) `#define CURSOR_H`
-  - `GFX_KEEP_W` (macro, line 341) `#define GFX_KEEP_W`
-  - `GFX_KEEP_H` (macro, line 342) `#define GFX_KEEP_H`
-  - `GFX_PROG_LEN` (macro, line 413) `#define GFX_PROG_LEN`
-  - `WIN_DEF_COLS` (macro, line 645) `#define WIN_DEF_COLS`
-  - `WIN_DEF_ROWS` (macro, line 646) `#define WIN_DEF_ROWS`
-  - `WIN_DEF_X` (macro, line 647) `#define WIN_DEF_X`
-  - `WIN_DEF_Y` (macro, line 648) `#define WIN_DEF_Y`
-  - `WM_MAX_TERMS` (macro, line 676) `#define WM_MAX_TERMS`
-  - `WM_ELINE_SZ` (macro, line 677) `#define WM_ELINE_SZ`
-  - `FB_OFFSET` (macro, line 1231) `#define FB_OFFSET(x,y)`
-  - `TB_GFX_TITLE_MAX` (macro, line 1798) `#define TB_GFX_TITLE_MAX`
-- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+  - `vga_fb_puts_term` (function, line 2319) `void vga_fb_puts_term(const char *s)`
+  - `vga_fb_text_cursor` (function, line 2326) `void vga_fb_text_cursor(int col)`
+  - `vga_fb_hide_text_cursor` (function, line 2334) `void vga_fb_hide_text_cursor(void)`
+  - `vga_fb_draw_desktop` (function, line 2339) `void vga_fb_draw_desktop(void)`
+  - `vga_fb_toggle_fullscreen` (function, line 2380) `void vga_fb_toggle_fullscreen(void)`
+  - `vga_fb_toggle_minimize` (function, line 2399) `void vga_fb_toggle_minimize(void)`
+  - `vga_fb_is_minimized` (function, line 2405) `int vga_fb_is_minimized(void)`
+  - `vga_fb_is_fullscreen` (function, line 2407) `int vga_fb_is_fullscreen(void)`
+  - `gfx_target` (function, line 2411) `static void gfx_target(int *x, int *y)`
+  - `gfx_snap` (function, line 2418) `static void gfx_snap(int zone)`
+  - `vga_fb_close_active` (function, line 2442) `int vga_fb_close_active(void)`
+  - `vga_fb_move_terminal` (function, line 2462) `void vga_fb_move_terminal(int dx, int dy)`
+  - `term_max_cols` (function, line 2499) `static int term_max_cols(void)`
+  - `term_max_rows` (function, line 2503) `static int term_max_rows(void)`
+  - `term_finish_layout` (function, line 2507) `static void term_finish_layout(void)`
+  - `vga_fb_snap_window` (function, line 2513) `void vga_fb_snap_window(int zone)`
+  - `vga_fb_resize` (function, line 2540) `void vga_fb_resize(int dcols, int drows)`
+  - `vga_fb_reset_default` (function, line 2561) `void vga_fb_reset_default(void)`
+  - `wallpaper_ensure` (function, line 2603) `static void wallpaper_ensure(void)`
+  - `wallpaper_draw` (function, line 2638) `static void wallpaper_draw(void)`
+  - `pipe_field` (function, line 2672) `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
+  - `icon_nearest` (function, line 2690) `static int icon_nearest(int r, int g, int b)`
+  - `icon_embedded` (function, line 2706) `static const uint8_t *icon_embedded(const char *name)`
+  - `icon_decode` (function, line 2726) `static const uint8_t *icon_decode(const char *path)`
+  - `icon_embedded_rgba` (function, line 2760) `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)`
+  - `dock_label_px` (function, line 2788) `static int dock_label_px(const struct desktop_shortcut *sc)`
+  - `shortcuts_layout` (function, line 2797) `static void shortcuts_layout(void)`
+  - `shortcut_cell_left` (function, line 2815) `static int shortcut_cell_left(int i)`
+  - `desktop_shortcuts_load` (function, line 2821) `void desktop_shortcuts_load(void)`
+  - `desktop_shortcuts_draw` (function, line 2874) `void desktop_shortcuts_draw(void)`
+  - `gfx_task_icon` (function, line 2935) `static const uint8_t *gfx_task_icon(void)`
+  - `desktop_shortcuts_hit_test` (function, line 2955) `const char *desktop_shortcuts_hit_test(int mx, int my)`
+  - `mouse_focus_topmost` (function, line 2970) `static int mouse_focus_topmost(int mx, int my)`
+  - `mouse_apply_wheel` (function, line 2996) `static void mouse_apply_wheel(int wheel, int step)`
+  - `mouse_drag_gfx` (function, line 3015) `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)`
+  - `mouse_drag_term` (function, line 3045) `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)`
+  - `mouse_scrollbar` (function, line 3065) `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)`
+  - `vga_fb_mouse_tick` (function, line 3088) `void vga_fb_mouse_tick(void)`
+  - `vga_fb_mouse_init` (function, line 3185) `void vga_fb_mouse_init(void)`
+  - `vga_fb_init` (function, line 3204) `void vga_fb_init(void)`
+  - `wm_notify_emit` (function, line 747) `wm_notify_emit(&wm_bus, &e);`
+  - `wm_notify_last` (function, line 753) `return wm_notify_last(&wm_bus);`
+  - `wm_notify_reset` (function, line 847) `wm_notify_reset(&wm_bus);`
+  - `wm_notify_subscribe` (function, line 848) `wm_notify_subscribe(&wm_bus, wm_focus_cursor_sync);`
+  - `kbd_raw_flush` (function, line 901) `kbd_raw_flush();`
+  - `app` (function, line 914) `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep landing on the shell * while the app looks hung. The enable arm mirrors the focus-gf`
+  - `ksprintf` (function, line 1171) `ksprintf(b, "win term%d %c cols=%d rows=%d x=%d y=%d min=%d fs=%d%s\n", i, (i == wm_focus) ? '*' : ' ', dc, dr, (i == cur) ? term_x : t->x, (i == cur) ? term_y : t->y, t->minimized, t->fullscreen, t->`
+  - `serial_puts` (function, line 1176) `serial_puts(b);`
+  - `wm_window_contains` (function, line 1266) `return wm_window_contains(&w, mx, my);`
+  - `outb` (function, line 1372) `outb(0x3C8, 0);`
+  - `blit_indexed_truecolor` (function, line 1778) `blit_indexed_truecolor(bb, bw, bh, dst_x, dst_y + FONT_H);`
+  - `kmemset` (function, line 1790) `kmemset((void *)FB_ADDR, 0, (unsigned long)fb_pitch * (unsigned long)fb_height);`
+  - `title` (function, line 1923) `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const uint8_t *ipx = gfx_task_icon();`
+  - `kfclose` (function, line 2019) `kfclose(f);`
+  - `kmemcpy` (function, line 2050) `kmemcpy(names[count], rel, k + 1);`
+  - `kfputs` (function, line 2059) `kfputs(next, f);`
+  - `kfputc` (function, line 2060) `kfputc('\n', f);`
+  - `kbd_toggle_layout` (function, line 2091) `kbd_toggle_layout();`
+  - `pcspk_set_volume` (function, line 2107) `pcspk_set_volume(spk_saved_valid ? spk_saved_vol : v);`
+  - `term_draw_cell` (function, line 2314) `term_draw_cell(act_len - 1);`
+  - `stbi_image_free` (function, line 2615) `stbi_image_free(img);`
+  - `command` (function, line 2930) `* its launch command (config-driven, covers apps that never set a window * title);`
+  - `vga_fb_drag_terminal` (function, line 3059) `vga_fb_drag_terminal(mx, my, wm_grab_cx);`
+  - `path` (function, line 3099) `* present path (blit_gfx_buf) is the sole cursor painter. The tick * sharing cursor_save/cursor_old with it raced every present (~60fps * vs 25Hz): stale restores painted trails and flicker, worst on `
+  - `spin_restore_irq` (function, line 3140) `spin_restore_irq(flags);`
+  - `wm_clamp_point` (function, line 3160) `wm_clamp_point(&mouse_state.x, &mouse_state.y, fb_width, fb_height);`
+  - `CURSOR_TIP_X` (macro, line 256) `#define CURSOR_TIP_X`
+  - `CURSOR_TIP_Y` (macro, line 257) `#define CURSOR_TIP_Y`
+  - `CURSOR_W` (macro, line 258) `#define CURSOR_W`
+  - `CURSOR_H` (macro, line 259) `#define CURSOR_H`
+  - `GFX_KEEP_W` (macro, line 367) `#define GFX_KEEP_W`
+  - `GFX_KEEP_H` (macro, line 368) `#define GFX_KEEP_H`
+  - `GFX_PROG_LEN` (macro, line 439) `#define GFX_PROG_LEN`
+  - `WIN_DEF_COLS` (macro, line 671) `#define WIN_DEF_COLS`
+  - `WIN_DEF_ROWS` (macro, line 672) `#define WIN_DEF_ROWS`
+  - `WIN_DEF_X` (macro, line 673) `#define WIN_DEF_X`
+  - `WIN_DEF_Y` (macro, line 674) `#define WIN_DEF_Y`
+  - `WM_MAX_TERMS` (macro, line 702) `#define WM_MAX_TERMS`
+  - `WM_ELINE_SZ` (macro, line 703) `#define WM_ELINE_SZ`
+  - `FB_OFFSET` (macro, line 1304) `#define FB_OFFSET(x,y)`
+  - `TB_GFX_TITLE_MAX` (macro, line 1871) `#define TB_GFX_TITLE_MAX`
+- Depends on: `arch/x86/boot/bootdefs.h`, `desktop_icons.h`, `desktop_shortcuts.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_notify.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`

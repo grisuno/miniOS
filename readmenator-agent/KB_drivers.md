@@ -72,49 +72,56 @@
 
 ## drivers/kbd.c
 - Layer: infrastructure
-- Doc: include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h" include "wm_events.h"  =========================
+- Doc: include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h" include "modifiers.h" include "wm_events.h"  ===
 - Language: c
 - Symbols:
-  - `kbd_get_layout` (function, line 97) `int kbd_get_layout(void)`
-  - `kbd_set_layout` (function, line 99) `void kbd_set_layout(int layout)`
-  - `kbd_toggle_layout` (function, line 103) `void kbd_toggle_layout(void)`
-  - `kbd_drop_counts` (function, line 130) `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw)`
-  - `kbd_q_push` (function, line 143) `void kbd_q_push(unsigned char c)`
-  - `kbd_raw_push_internal` (function, line 153) `static void kbd_raw_push_internal(unsigned char c)`
-  - `kbd_q_empty` (function, line 163) `int kbd_q_empty(void)`
-  - `kbd_q_pop` (function, line 165) `int kbd_q_pop(void)`
-  - `kbd_available` (function, line 172) `int kbd_available(void)`
-  - `kbd_raw_mode_get` (function, line 178) `int kbd_raw_mode_get(void)`
-  - `kbd_raw_mode_set` (function, line 180) `void kbd_raw_mode_set(int on)`
-  - `kbd_raw_empty` (function, line 181) `int kbd_raw_empty(void)`
-  - `kbd_raw_pop` (function, line 182) `int kbd_raw_pop(void)`
-  - `kbd_raw_push_byte` (function, line 188) `void kbd_raw_push_byte(unsigned char c)`
-  - `kbd_e0_get` (function, line 189) `int kbd_e0_get(void)`
-  - `kbd_e0_set` (function, line 190) `void kbd_e0_set(int v)`
-  - `kbd_flush_all` (function, line 191) `void kbd_flush_all(void)`
-  - `kbd_raw_flush` (function, line 198) `void kbd_raw_flush(void)`
-  - `raw_track_mods` (function, line 218) `static int raw_track_mods(int code, int brk, int e0)`
-  - `wm_combo_dispatch` (function, line 229) `static int wm_combo_dispatch(int action, int zone)`
-  - `wm_raw_combo` (function, line 280) `static int wm_raw_combo(int code, int e0)`
-  - `bare` (function, line 300) `* second byte is not a WM combo is delivered bare (keypad alias): games map
+  - `kbd_get_layout` (function, line 98) `int kbd_get_layout(void)`
+  - `kbd_set_layout` (function, line 100) `void kbd_set_layout(int layout)`
+  - `kbd_toggle_layout` (function, line 104) `void kbd_toggle_layout(void)`
+  - `kbd_drop_counts` (function, line 131) `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw)`
+  - `kbd_q_push` (function, line 144) `void kbd_q_push(unsigned char c)`
+  - `kbd_raw_push_internal` (function, line 154) `static void kbd_raw_push_internal(unsigned char c)`
+  - `kbd_q_empty` (function, line 164) `int kbd_q_empty(void)`
+  - `kbd_q_pop` (function, line 166) `int kbd_q_pop(void)`
+  - `kbd_available` (function, line 173) `int kbd_available(void)`
+  - `kbd_raw_mode_get` (function, line 179) `int kbd_raw_mode_get(void)`
+  - `kbd_raw_mode_set` (function, line 181) `void kbd_raw_mode_set(int on)`
+  - `kbd_raw_empty` (function, line 182) `int kbd_raw_empty(void)`
+  - `kbd_raw_pop` (function, line 183) `int kbd_raw_pop(void)`
+  - `kbd_raw_push_byte` (function, line 189) `void kbd_raw_push_byte(unsigned char c)`
+  - `kbd_e0_get` (function, line 190) `int kbd_e0_get(void)`
+  - `kbd_e0_set` (function, line 191) `void kbd_e0_set(int v)`
+  - `kbd_flush_all` (function, line 192) `void kbd_flush_all(void)`
+  - `kbd_raw_flush` (function, line 199) `void kbd_raw_flush(void)`
+  - `raw_track_mods` (function, line 219) `static int raw_track_mods(int code, int brk, int e0)`
+  - `wm_combo_dispatch` (function, line 225) `static int wm_combo_dispatch(int action, int zone)`
+  - `wm_raw_combo` (function, line 276) `static int wm_raw_combo(int code, int e0)`
+  - `bare` (function, line 296) `* second byte is not a WM combo is delivered bare (keypad alias): games map
  * both, so play surv...`
-  - `kbd_read` (function, line 323) `int kbd_read(void)`
-  - `kbd_reset_for_shell` (function, line 455) `void kbd_reset_for_shell(void)`
-  - `volatile` (function, line 175) `__asm__ volatile("inb $0x64, %0" : "=a"(s));`
-  - `paths` (function, line 208) `* keeps the modifier state in sync on both paths (the old raw branch never * tracked Alt/Super, so a modifier held across raw mode stuck forever);`
-  - `too` (function, line 213) `* too (DOOM strafes with Alt+arrows);`
-  - `vga_fb_focus_next` (function, line 235) `vga_fb_focus_next();`
-  - `vga_fb_tile_all` (function, line 239) `vga_fb_tile_all();`
-  - `vga_fb_toggle_fullscreen` (function, line 243) `vga_fb_toggle_fullscreen();`
-  - `vga_fb_toggle_minimize` (function, line 247) `vga_fb_toggle_minimize();`
-  - `vga_fb_close_active` (function, line 251) `vga_fb_close_active();`
-  - `vga_fb_snap_window` (function, line 255) `vga_fb_snap_window(zone);`
-  - `vga_fb_resize` (function, line 259) `vga_fb_resize(-1, 0);`
-  - `vga_fb_reset_default` (function, line 275) `vga_fb_reset_default();`
-  - `KBD_QUEUE_LEN` (macro, line 118) `#define KBD_QUEUE_LEN`
-  - `KBD_SCAN_DEL` (macro, line 120) `#define KBD_SCAN_DEL`
-  - `KBD_RAW_LEN` (macro, line 138) `#define KBD_RAW_LEN`
-- Depends on: `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`
+  - `kbd_read` (function, line 319) `int kbd_read(void)`
+  - `kbd_reset_for_shell` (function, line 444) `void kbd_reset_for_shell(void)`
+  - `volatile` (function, line 176) `__asm__ volatile("inb $0x64, %0" : "=a"(s));`
+  - `paths` (function, line 209) `* keeps the modifier state in sync on both paths (the old raw branch never * tracked Alt/Super, so a modifier held across raw mode stuck forever);`
+  - `too` (function, line 214) `* too (DOOM strafes with Alt+arrows);`
+  - `modifiers_update` (function, line 221) `return modifiers_update(&kbd_keys, &kbd_mods, code, brk, e0);`
+  - `vga_fb_focus_next` (function, line 231) `vga_fb_focus_next();`
+  - `vga_fb_tile_all` (function, line 235) `vga_fb_tile_all();`
+  - `vga_fb_toggle_fullscreen` (function, line 239) `vga_fb_toggle_fullscreen();`
+  - `vga_fb_toggle_minimize` (function, line 243) `vga_fb_toggle_minimize();`
+  - `vga_fb_close_active` (function, line 247) `vga_fb_close_active();`
+  - `vga_fb_snap_window` (function, line 251) `vga_fb_snap_window(zone);`
+  - `vga_fb_resize` (function, line 255) `vga_fb_resize(-1, 0);`
+  - `vga_fb_reset_default` (function, line 271) `vga_fb_reset_default();`
+  - `modifiers_init` (function, line 447) `modifiers_init(&kbd_mods);`
+  - `kbd_shift` (macro, line 114) `#define kbd_shift`
+  - `kbd_ctrl` (macro, line 115) `#define kbd_ctrl`
+  - `kbd_alt` (macro, line 116) `#define kbd_alt`
+  - `kbd_super` (macro, line 117) `#define kbd_super`
+  - `kbd_altgr` (macro, line 118) `#define kbd_altgr`
+  - `KBD_QUEUE_LEN` (macro, line 119) `#define KBD_QUEUE_LEN`
+  - `KBD_SCAN_DEL` (macro, line 121) `#define KBD_SCAN_DEL`
+  - `KBD_RAW_LEN` (macro, line 139) `#define KBD_RAW_LEN`
+- Depends on: `drivers/kbd.h`, `drivers/modifiers.h`, `kernel.h`, `sched.h`, `vga_fb.h`, `wm_events.h`
 
 ## drivers/kbd.h
 - Layer: infrastructure
@@ -146,6 +153,25 @@
   - `KBD_LAYOUT_ES` (macro, line 7) `#define KBD_LAYOUT_ES`
 - Imported by: `drivers/kbd.c`, `kernel/exec.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`
 
+## drivers/modifiers.h
+- Layer: infrastructure
+- Doc: ifndef MODIFIERS_H define MODIFIERS_H  Docstring: Unified modifier tracking for cooked and raw paths.
+- Language: h
+- Symbols:
+  - `modifier_state_t` (struct, line 5)
+  - `modifier_keys_t` (struct, line 14)
+  - `modifiers_init` (function, line 31) `static inline void modifiers_init(modifier_state_t *st)`
+  - `modifiers_update` (function, line 42) `static inline int modifiers_update(const modifier_keys_t *keys,
+                                 ...`
+  - `modifiers_match` (function, line 76) `static inline int modifiers_match(const modifier_state_t *st, int mask)`
+  - `MODIFIERS_H` (macro, line 2) `#define MODIFIERS_H`
+  - `MOD_SHIFT` (macro, line 23) `#define MOD_SHIFT`
+  - `MOD_CTRL` (macro, line 25) `#define MOD_CTRL`
+  - `MOD_ALT` (macro, line 26) `#define MOD_ALT`
+  - `MOD_ALTGR` (macro, line 27) `#define MOD_ALTGR`
+  - `MOD_SUPER` (macro, line 28) `#define MOD_SUPER`
+- Imported by: `drivers/kbd.c`, `tests/test_modifiers.c`, `wm_events.h`
+
 ## drivers/pcspk.c
 - Layer: infrastructure
 - Doc: include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with a software master volume. The speaker ha
@@ -155,13 +181,13 @@
   - `pcspk_ops_off` (function, line 37) `static void pcspk_ops_off(device_t *dev)`
   - `pcspk_ops_set_volume` (function, line 42) `static void pcspk_ops_set_volume(device_t *dev, unsigned vol)`
   - `pcspk_ops_get_volume` (function, line 47) `static unsigned pcspk_ops_get_volume(device_t *dev)`
-  - `pcspk_init` (function, line 67) `void pcspk_init(void)`
-  - `pcspk_set_volume` (function, line 73) `void pcspk_set_volume(unsigned volume)`
-  - `pcspk_get_volume` (function, line 77) `unsigned pcspk_get_volume(void)`
-  - `pcspk_tone` (function, line 81) `void pcspk_tone(unsigned freq)`
-  - `pcspk_off` (function, line 99) `void pcspk_off(void)`
-  - `outb` (function, line 70) `outb(SPEAKER_PORT, inb(SPEAKER_PORT) & 0xFC);`
-  - `device_register` (function, line 71) `device_register(&pcspk_device);`
+  - `pcspk_init` (function, line 71) `void pcspk_init(void)`
+  - `pcspk_set_volume` (function, line 77) `void pcspk_set_volume(unsigned volume)`
+  - `pcspk_get_volume` (function, line 81) `unsigned pcspk_get_volume(void)`
+  - `pcspk_tone` (function, line 85) `void pcspk_tone(unsigned freq)`
+  - `pcspk_off` (function, line 103) `void pcspk_off(void)`
+  - `outb` (function, line 74) `outb(SPEAKER_PORT, inb(SPEAKER_PORT) & 0xFC);`
+  - `device_register` (function, line 75) `device_register(&pcspk_device);`
   - `PIT_CH2_DATA` (macro, line 13) `#define PIT_CH2_DATA`
   - `PIT_CH2_CMD` (macro, line 15) `#define PIT_CH2_CMD`
   - `SPEAKER_PORT` (macro, line 16) `#define SPEAKER_PORT`
@@ -209,69 +235,74 @@
 
 ## drivers/sb16.c
 - Layer: infrastructure
-- Doc: include "kernel.h" include "sb16.h" include "sync.h"  Sound Blaster 16 DMA audio driver.
+- Doc: include "kernel.h" include "sb16.h" include "sync.h" include "driver.h"  Sound Blaster 16 DMA audio driver.
 - Language: c
 - Symbols:
-  - `sb16_kring_reset` (function, line 117) `static void sb16_kring_reset(void)`
-  - `sb16_slot` (function, line 128) `static unsigned char *sb16_slot(unsigned i)`
-  - `sb16_stream_open` (function, line 136) `int sb16_stream_open(void)`
-  - `sb16_stream_close` (function, line 152) `void sb16_stream_close(int id)`
-  - `sb16_stream_submit` (function, line 160) `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)`
-  - `sb16_stream_volume` (function, line 175) `void sb16_stream_volume(int id, unsigned char vol)`
-  - `sb16_stream_count` (function, line 181) `int sb16_stream_count(void)`
-  - `sb16_mix_all` (function, line 192) `static void sb16_mix_all(void)`
-  - `sb16_pump` (function, line 234) `void sb16_pump(void)`
-  - `sb16_wait_write` (function, line 276) `static int sb16_wait_write(void)`
-  - `sb16_cmd` (function, line 282) `static void sb16_cmd(unsigned char c)`
-  - `sb16_read_data` (function, line 287) `static int sb16_read_data(unsigned char *out)`
-  - `sb16_reset_dsp` (function, line 299) `static int sb16_reset_dsp(void)`
-  - `sb16_dma_play` (function, line 312) `static void sb16_dma_play(unsigned addr, unsigned len)`
-  - `sb16_refill` (function, line 328) `static void sb16_refill(int slot_index)`
-  - `sb16_arm` (function, line 344) `static void sb16_arm(int from_irq)`
-  - `sb16_present` (function, line 368) `int sb16_present(void)`
-  - `sb16_tone` (function, line 370) `void sb16_tone(unsigned freq)`
-  - `sb16_pcm_open` (function, line 385) `void sb16_pcm_open(void)`
-  - `sb16_pcm_close` (function, line 408) `void sb16_pcm_close(void)`
-  - `sb16_pcm_submit` (function, line 417) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)`
-  - `sb16_irq` (function, line 434) `void sb16_irq(void)`
-  - `sb16_poll` (function, line 441) `void sb16_poll(void)`
-  - `sb16_ring_free` (function, line 446) `unsigned sb16_ring_free(void)`
-  - `sb16_mode_active` (function, line 448) `int sb16_mode_active(void)`
-  - `sb16_counters` (function, line 449) `void sb16_counters(sb16_counters_t *out)`
-  - `sb16_init` (function, line 453) `int sb16_init(void)`
-  - `IRQ` (function, line 20) `* QEMU audio backends never raise the completion IRQ (they only consume once * their engine buffer drains, which a stalled host backend never does), and * without a fallback the 7-slot ring fills once`
-  - `kfree` (function, line 156) `kfree(streams[id].ring);`
-  - `outb` (function, line 285) `outb(SB16_DSP_WRITE_DATA, c);`
-  - `pending` (function, line 459) `* reading without it eats whatever byte happens to be pending (or * times out), so the probe used to fail or misread here. */ sb16_cmd(SB16_CMD_READ_VER);`
-  - `SB16_BASE_PORT` (macro, line 45) `#define SB16_BASE_PORT`
-  - `SB16_DSP_RESET` (macro, line 47) `#define SB16_DSP_RESET`
-  - `SB16_DSP_READ_DATA` (macro, line 48) `#define SB16_DSP_READ_DATA`
-  - `SB16_DSP_WRITE_DATA` (macro, line 49) `#define SB16_DSP_WRITE_DATA`
-  - `SB16_DSP_STATUS` (macro, line 50) `#define SB16_DSP_STATUS`
-  - `SB16_IRQ_ACK` (macro, line 51) `#define SB16_IRQ_ACK`
-  - `SB16_CMD_READ_VER` (macro, line 52) `#define SB16_CMD_READ_VER`
-  - `SB16_CMD_SET_FREQ` (macro, line 54) `#define SB16_CMD_SET_FREQ`
-  - `SB16_CMD_PLAY8` (macro, line 55) `#define SB16_CMD_PLAY8`
-  - `SB16_CMD_SPK_ON` (macro, line 56) `#define SB16_CMD_SPK_ON`
-  - `SB16_CMD_SPK_OFF` (macro, line 57) `#define SB16_CMD_SPK_OFF`
-  - `SB16_DSP_RDSTATUS` (macro, line 58) `#define SB16_DSP_RDSTATUS`
-  - `DMA_MODE_PORT` (macro, line 65) `#define DMA_MODE_PORT`
-  - `DMA_CH1_SINGLE_READ` (macro, line 66) `#define DMA_CH1_SINGLE_READ`
-  - `SB16_FREQ_LO` (macro, line 67) `#define SB16_FREQ_LO`
-  - `SB16_FREQ_HI` (macro, line 69) `#define SB16_FREQ_HI`
-  - `SB16_DSP_READY_MASK` (macro, line 70) `#define SB16_DSP_READY_MASK`
-  - `DMA_CH1_ADDR` (macro, line 72) `#define DMA_CH1_ADDR`
-  - `DMA_CH1_CNT` (macro, line 74) `#define DMA_CH1_CNT`
-  - `DMA_CH1_PAGE` (macro, line 75) `#define DMA_CH1_PAGE`
-  - `DMA_MASK` (macro, line 76) `#define DMA_MASK`
-  - `DMA_FF_CLR` (macro, line 77) `#define DMA_FF_CLR`
-  - `DMA_CH1_UNMASK` (macro, line 78) `#define DMA_CH1_UNMASK`
-  - `DMA_CH1_MASK` (macro, line 79) `#define DMA_CH1_MASK`
-  - `SB16_DMA_BUF0` (macro, line 80) `#define SB16_DMA_BUF0`
-  - `SB16_SILENCE_SLOT` (macro, line 82) `#define SB16_SILENCE_SLOT`
-  - `SB16_BUF` (macro, line 83) `#define SB16_BUF`
-  - `SB16_PROBE_WAIT` (macro, line 84) `#define SB16_PROBE_WAIT`
-  - `SB16_MODE_TONE` (macro, line 86) `#define SB16_MODE_TONE`
-  - `SB16_MODE_PCM` (macro, line 88) `#define SB16_MODE_PCM`
-  - `SB16_SQ_CYCLE` (macro, line 89) `#define SB16_SQ_CYCLE`
-- Depends on: `kernel.h`, `sb16.h`, `sync.h`
+  - `sb16_kring_reset` (function, line 118) `static void sb16_kring_reset(void)`
+  - `sb16_slot` (function, line 129) `static unsigned char *sb16_slot(unsigned i)`
+  - `sb16_stream_open` (function, line 137) `int sb16_stream_open(void)`
+  - `sb16_stream_close` (function, line 153) `void sb16_stream_close(int id)`
+  - `sb16_stream_submit` (function, line 161) `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)`
+  - `sb16_stream_volume` (function, line 176) `void sb16_stream_volume(int id, unsigned char vol)`
+  - `sb16_stream_count` (function, line 182) `int sb16_stream_count(void)`
+  - `sb16_mix_all` (function, line 193) `static void sb16_mix_all(void)`
+  - `sb16_pump` (function, line 235) `void sb16_pump(void)`
+  - `sb16_wait_write` (function, line 277) `static int sb16_wait_write(void)`
+  - `sb16_cmd` (function, line 283) `static void sb16_cmd(unsigned char c)`
+  - `sb16_read_data` (function, line 288) `static int sb16_read_data(unsigned char *out)`
+  - `sb16_reset_dsp` (function, line 300) `static int sb16_reset_dsp(void)`
+  - `sb16_dma_play` (function, line 313) `static void sb16_dma_play(unsigned addr, unsigned len)`
+  - `sb16_refill` (function, line 329) `static void sb16_refill(int slot_index)`
+  - `sb16_arm` (function, line 345) `static void sb16_arm(int from_irq)`
+  - `sb16_present` (function, line 369) `int sb16_present(void)`
+  - `sb16_tone` (function, line 371) `void sb16_tone(unsigned freq)`
+  - `sb16_pcm_open` (function, line 386) `void sb16_pcm_open(void)`
+  - `sb16_pcm_close` (function, line 409) `void sb16_pcm_close(void)`
+  - `sb16_pcm_submit` (function, line 418) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)`
+  - `sb16_irq` (function, line 435) `void sb16_irq(void)`
+  - `sb16_poll` (function, line 442) `void sb16_poll(void)`
+  - `sb16_ring_free` (function, line 447) `unsigned sb16_ring_free(void)`
+  - `sb16_mode_active` (function, line 449) `int sb16_mode_active(void)`
+  - `sb16_counters` (function, line 450) `void sb16_counters(sb16_counters_t *out)`
+  - `sb16_ops_present` (function, line 456) `static int sb16_ops_present(device_t *dev)`
+  - `sb16_ops_pcm_open` (function, line 463) `static void sb16_ops_pcm_open(device_t *dev)`
+  - `sb16_ops_pcm_close` (function, line 470) `static void sb16_ops_pcm_close(device_t *dev)`
+  - `sb16_ops_pcm_submit` (function, line 477) `static int sb16_ops_pcm_submit(device_t *dev, const unsigned char *pcm, unsigned len)`
+  - `sb16_init` (function, line 501) `int sb16_init(void)`
+  - `IRQ` (function, line 21) `* QEMU audio backends never raise the completion IRQ (they only consume once * their engine buffer drains, which a stalled host backend never does), and * without a fallback the 7-slot ring fills once`
+  - `kfree` (function, line 157) `kfree(streams[id].ring);`
+  - `outb` (function, line 286) `outb(SB16_DSP_WRITE_DATA, c);`
+  - `pending` (function, line 507) `* reading without it eats whatever byte happens to be pending (or * times out), so the probe used to fail or misread here. */ sb16_cmd(SB16_CMD_READ_VER);`
+  - `device_register` (function, line 524) `device_register(&sb16_device);`
+  - `SB16_BASE_PORT` (macro, line 46) `#define SB16_BASE_PORT`
+  - `SB16_DSP_RESET` (macro, line 48) `#define SB16_DSP_RESET`
+  - `SB16_DSP_READ_DATA` (macro, line 49) `#define SB16_DSP_READ_DATA`
+  - `SB16_DSP_WRITE_DATA` (macro, line 50) `#define SB16_DSP_WRITE_DATA`
+  - `SB16_DSP_STATUS` (macro, line 51) `#define SB16_DSP_STATUS`
+  - `SB16_IRQ_ACK` (macro, line 52) `#define SB16_IRQ_ACK`
+  - `SB16_CMD_READ_VER` (macro, line 53) `#define SB16_CMD_READ_VER`
+  - `SB16_CMD_SET_FREQ` (macro, line 55) `#define SB16_CMD_SET_FREQ`
+  - `SB16_CMD_PLAY8` (macro, line 56) `#define SB16_CMD_PLAY8`
+  - `SB16_CMD_SPK_ON` (macro, line 57) `#define SB16_CMD_SPK_ON`
+  - `SB16_CMD_SPK_OFF` (macro, line 58) `#define SB16_CMD_SPK_OFF`
+  - `SB16_DSP_RDSTATUS` (macro, line 59) `#define SB16_DSP_RDSTATUS`
+  - `DMA_MODE_PORT` (macro, line 66) `#define DMA_MODE_PORT`
+  - `DMA_CH1_SINGLE_READ` (macro, line 67) `#define DMA_CH1_SINGLE_READ`
+  - `SB16_FREQ_LO` (macro, line 68) `#define SB16_FREQ_LO`
+  - `SB16_FREQ_HI` (macro, line 70) `#define SB16_FREQ_HI`
+  - `SB16_DSP_READY_MASK` (macro, line 71) `#define SB16_DSP_READY_MASK`
+  - `DMA_CH1_ADDR` (macro, line 73) `#define DMA_CH1_ADDR`
+  - `DMA_CH1_CNT` (macro, line 75) `#define DMA_CH1_CNT`
+  - `DMA_CH1_PAGE` (macro, line 76) `#define DMA_CH1_PAGE`
+  - `DMA_MASK` (macro, line 77) `#define DMA_MASK`
+  - `DMA_FF_CLR` (macro, line 78) `#define DMA_FF_CLR`
+  - `DMA_CH1_UNMASK` (macro, line 79) `#define DMA_CH1_UNMASK`
+  - `DMA_CH1_MASK` (macro, line 80) `#define DMA_CH1_MASK`
+  - `SB16_DMA_BUF0` (macro, line 81) `#define SB16_DMA_BUF0`
+  - `SB16_SILENCE_SLOT` (macro, line 83) `#define SB16_SILENCE_SLOT`
+  - `SB16_BUF` (macro, line 84) `#define SB16_BUF`
+  - `SB16_PROBE_WAIT` (macro, line 85) `#define SB16_PROBE_WAIT`
+  - `SB16_MODE_TONE` (macro, line 87) `#define SB16_MODE_TONE`
+  - `SB16_MODE_PCM` (macro, line 89) `#define SB16_MODE_PCM`
+  - `SB16_SQ_CYCLE` (macro, line 90) `#define SB16_SQ_CYCLE`
+- Depends on: `driver.h`, `kernel.h`, `sb16.h`, `sync.h`

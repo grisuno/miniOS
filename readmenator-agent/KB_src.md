@@ -234,27 +234,29 @@
   - `wl_scroll_clamp` (function, line 639) `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)`
   - `wl_filter_wrap` (function, line 658) `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...`
   - `wl_status_text` (function, line 901) `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...`
-  - `freedom_wl_sys_present` (function, line 1002) `static long freedom_wl_sys_present(long buf, long origin)`
-  - `freedom_wl_sys_title` (function, line 1009) `static long freedom_wl_sys_title(char *t)`
-  - `freedom_wl_sys_mouse` (function, line 1016) `static long freedom_wl_sys_mouse(long *m)`
-  - `freedom_wl_sys_kbd` (function, line 1023) `static long freedom_wl_sys_kbd(void)`
-  - `freedom_wl_sys_vga_mode` (function, line 1030) `static long freedom_wl_sys_vga_mode(long on)`
-  - `freedom_wl_sys_kbd_raw` (function, line 1037) `static long freedom_wl_sys_kbd_raw(long on)`
-  - `freedom_wl_sys_yield` (function, line 1044) `static long freedom_wl_sys_yield(void)`
-  - `wl_parse_headers` (function, line 1051) `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...`
-  - `wl_fetch_raw` (function, line 1143) `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)`
-  - `wl_render` (function, line 1378) `static long wl_render(FreedomWlConfig *c, long off)`
-  - `wl_browse` (function, line 1461) `static long wl_browse(FreedomWlConfig *c)`
-  - `freedom_wl_selftest` (function, line 1542) `static long freedom_wl_selftest(void)`
-  - `freedom_wl_host_probe` (function, line 1607) `int freedom_wl_host_probe(FreedomWlConfig *c)`
-  - `main` (function, line 1639) `int main(int argc, char **argv)`
+  - `freedom_wl_build_palette` (function, line 995) `static long freedom_wl_build_palette(unsigned char *pal, long cap)`
+  - `freedom_wl_sys_present` (function, line 1067) `static long freedom_wl_sys_present(long buf, long origin)`
+  - `freedom_wl_sys_title` (function, line 1074) `static long freedom_wl_sys_title(char *t)`
+  - `freedom_wl_sys_palette` (function, line 1081) `static long freedom_wl_sys_palette(unsigned char *pal)`
+  - `freedom_wl_sys_mouse` (function, line 1088) `static long freedom_wl_sys_mouse(long *m)`
+  - `freedom_wl_sys_kbd` (function, line 1095) `static long freedom_wl_sys_kbd(void)`
+  - `freedom_wl_sys_vga_mode` (function, line 1102) `static long freedom_wl_sys_vga_mode(long on)`
+  - `freedom_wl_sys_kbd_raw` (function, line 1109) `static long freedom_wl_sys_kbd_raw(long on)`
+  - `freedom_wl_sys_yield` (function, line 1116) `static long freedom_wl_sys_yield(void)`
+  - `wl_parse_headers` (function, line 1123) `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...`
+  - `wl_fetch_raw` (function, line 1215) `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)`
+  - `wl_render` (function, line 1450) `static long wl_render(FreedomWlConfig *c, long off)`
+  - `wl_browse` (function, line 1537) `static long wl_browse(FreedomWlConfig *c)`
+  - `freedom_wl_selftest` (function, line 1618) `static long freedom_wl_selftest(void)`
+  - `freedom_wl_host_probe` (function, line 1697) `int freedom_wl_host_probe(FreedomWlConfig *c)`
+  - `main` (function, line 1729) `int main(int argc, char **argv)`
   - `net_dns_resolve` (function, line 39) `int net_dns_resolve(const char *host);`
   - `tls_handshake` (function, line 41) `int tls_handshake(int fd, char *host);`
   - `tls_send` (function, line 42) `int tls_send(int fd, char *buf, int len);`
   - `tls_recv` (function, line 43) `int tls_recv(int fd, char *buf, int len);`
   - `tls_close` (function, line 44) `void tls_close(int fd);`
-  - `volatile` (function, line 1004) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
-  - `printf` (function, line 1169) `printf("freedom_wl: cannot resolve %s\n", host);`
+  - `volatile` (function, line 1069) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
+  - `printf` (function, line 1241) `printf("freedom_wl: cannot resolve %s\n", host);`
   - `WL_COLS` (macro, line 47) `#define WL_COLS`
   - `WL_ROWS` (macro, line 48) `#define WL_ROWS`
   - `WL_TEXT_ROWS` (macro, line 49) `#define WL_TEXT_ROWS`

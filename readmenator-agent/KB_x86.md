@@ -114,4 +114,4 @@
   - `MSR_FSBASE` (macro, line 22) `#define MSR_FSBASE`
   - `MSR_GSBASE` (macro, line 23) `#define MSR_GSBASE`
   - `MSR_KERNEL_GS_BASE` (macro, line 24) `#define MSR_KERNEL_GS_BASE`
-- Imported by: `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `smp.c`
+- Imported by: `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `smp.c`

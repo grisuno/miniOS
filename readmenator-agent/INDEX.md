@@ -22,11 +22,12 @@
 | `drivers/block.c` | Block device layer for MiniFS. | drivers | 17 |
 | `drivers/driver.c` | include "driver.h"  driver.c -- Device registry for the Strategy-pattern driver  | drivers | 8 |
 | `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | drivers | 24 |
-| `drivers/kbd.c` | include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h" include  | drivers | 38 |
+| `drivers/kbd.c` | include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h" include  | drivers | 45 |
 | `drivers/kbd.h` | ifndef KBD_H define KBD_H  Keyboard layout: US qwerty (default) or Spanish (Spai | drivers | 23 |
+| `drivers/modifiers.h` | ifndef MODIFIERS_H define MODIFIERS_H  Docstring: Unified modifier tracking for  | drivers | 11 |
 | `drivers/pcspk.c` | include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with  | drivers | 20 |
 | `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | drivers | 27 |
-| `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h"  Sound Blaster 16 DMA audio | drivers | 62 |
+| `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h" include "driver.h"  Sound B | drivers | 67 |
 | `editor.h` | ifndef EDITOR_H define EDITOR_H  editor.h -- the built-in line editor contract. | root | 2 |
 | `fs/kfile.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 22 |
 | `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 67 |
@@ -48,7 +49,7 @@
 | `kernel/klog.c` | klog.c - Structured kernel logging with levels and subsystems. | kernel | 9 |
 | `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | kernel | 44 |
 | `kernel/lz4_kernel.c` | include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE  | kernel | 11 |
-| `kernel/mm.c` | include "kernel.h" include "sched.h"  ========================================== | kernel | 12 |
+| `kernel/mm.c` | include "kernel.h" include "sched.h"  ========================================== | kernel | 13 |
 | `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 20 |
 | `kernel/mm/swap.c` | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | mm | 10 |
 | `kernel/percpu_rq.c` | Docstring: kernel/percpu_rq.c -- Per-CPU runqueue hints and stealing. | kernel | 14 |
@@ -58,15 +59,16 @@
 | `kernel/sched.c` | - | kernel | 135 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 8 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 10 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 143 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 144 |
+| `kernel/spawn.c` | include "kernel.h" include "sched.h" include "vma.h" include "spawn.h" include " | kernel | 14 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 144 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 147 |
 | `kernel/syscalls_proc.c` | syscalls_proc.c - Process-management syscall handlers. | kernel | 21 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
 | `kernel/time.c` | include "kernel.h" include "ktime.h"  ========================================== | kernel | 7 |
-| `kernel/vga_fb.c` | - | kernel | 167 |
+| `kernel/vga_fb.c` | - | kernel | 182 |
 | `ktime.h` | ifndef KTIME_H define KTIME_H  ktime.h -- pure time-conversion helpers shared by | root | 3 |
 | `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 4 |
 | `mcp/__init__.py` | - | mcp | 0 |
@@ -289,6 +291,7 @@
 | `progs/doomgeneric/z_zone.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 21 |
 | `progs/doomgeneric/z_zone.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 13 |
 | `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | misc | 73 |
+| `progs/freedomui/freedomui_minios.c` | freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern. | misc | 47 |
 | `progs/lua/lua_main.c` | - | lua | 25 |
 | `progs/lua/minios.c` | - | lua | 27 |
 | `progs/micropython/variants/minios/lib/__init__.py` | MiniOS frozen library package. | lib | 0 |
@@ -318,7 +321,7 @@
 | `progs/src/fib.c` | - | src | 2 |
 | `progs/src/fptest.c` | fptest.c -- FPU/SSE context-switch probe (Phase 0.1, ADR-0014). | src | 14 |
 | `progs/src/freedom.c` | freedom - a headless text browser for MiniOS. | src | 62 |
-| `progs/src/freedom_wl.c` | freedom_wl - Wayland to MiniOS intermediate layer for FreeDom. | src | 60 |
+| `progs/src/freedom_wl.c` | freedom_wl - Wayland to MiniOS intermediate layer for FreeDom. | src | 62 |
 | `progs/src/ftest.c` | Exercises the kernel libc surface used by loaded .o programs: fprintf to stdout/ | src | 7 |
 | `progs/src/hello.c` | MiniOS test program — compiled as relocatable .o, loaded by kernel ELF loader | src | 2 |
 | `progs/src/hello.py` | - | src | 0 |
@@ -345,7 +348,7 @@
 | `progs/tls_u/tls_u_main.c` | tlsget - minimal HTTPS GET over the ring-3 TLS stack. | tls_u | 11 |
 | `progs/tls_u/tls_u_port.c` | tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3). | tls_u | 20 |
 | `progs/topogpt3/topogpt3.c` | - | misc | 132 |
-| `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 149 |
+| `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 151 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 31 |
 | `qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | root | 29 |
 | `randmix.h` | ifndef RANDMIX_H define RANDMIX_H  randmix.h -- entropy mixer for getrandom (318 | root | 2 |
@@ -353,10 +356,11 @@
 | `rtc.h` | ifndef RTC_H define RTC_H | root | 6 |
 | `sanitize.h` | ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point | root | 5 |
 | `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 27 |
-| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h" include " | root | 89 |
+| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h" include " | root | 93 |
 | `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 10 |
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 48 |
 | `smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | root | 11 |
+| `spawn.h` | ifndef SPAWN_H define SPAWN_H  include "kernel.h" include "vma.h" include "sched | root | 9 |
 | `spinlock.h` | ifndef SPINLOCK_H define SPINLOCK_H  spinlock.h -- Lightweight spinlock for Mini | root | 22 |
 | `sync.h` | ifndef SYNC_H define SYNC_H  sync.h -- Blocking synchronization primitives (road | root | 36 |
 | `syscalls_proc.h` | ifndef SYSCALLS_PROC_H define SYSCALLS_PROC_H  syscalls_proc.h -- process-manage | root | 15 |
@@ -365,13 +369,16 @@
 | `tests/host_aes.sh` | host_aes.sh - host-side verification for the AES-256-CTR command tools.  The min | tests | 3 |
 | `tests/host_codecs.sh` | host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The | tests | 5 |
 | `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 6 |
-| `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 8 |
+| `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 12 |
 | `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 15 |
 | `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 8 |
 | `tests/test_freedom_wl.c` | test_freedom_wl - host suite for the Wayland to MiniOS mapping. | tests | 5 |
+| `tests/test_freedomui.c` | test_freedomui - host suite for the real FreeDom MiniOS backend. | tests | 5 |
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 11 |
 | `tests/test_hal_io.c` | Docstring: Host test for arch/x86/hal_io.h (make test-hal). | tests | 9 |
 | `tests/test_ktime.c` | test_ktime.c -- host test for the pure conversion math in ktime.h | tests | 3 |
+| `tests/test_modifiers.c` | include <stdio.h>  include "drivers/modifiers.h" | tests | 6 |
+| `tests/test_notify.c` | include <stdio.h>  include "wm_notify.h" | tests | 9 |
 | `tests/test_paint.c` | Docstring: host test for the paint canvas/PNG contract (make test-paint). | tests | 25 |
 | `tests/test_percpu_rq.c` | Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq). | tests | 10 |
 | `tests/test_randmix.c` | test_randmix.c -- host test for the getrandom mixer in randmix.h | tests | 4 |
@@ -381,7 +388,7 @@
 | `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 19 |
 | `tests/test_theme.c` | Docstring: host test for the shared Nuklear theme contract. | tests | 12 |
 | `tests/test_tick.c` | Docstring: Host test for kernel/tick.c (make test-tick). | tests | 12 |
-| `tests/test_vedit_build.c` | Docstring: Host test for the vedit IDE build contract (make test-vedit). | tests | 9 |
+| `tests/test_vedit_build.c` | Docstring: Host test for the vedit IDE build contract (make test-vedit). | tests | 11 |
 | `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 13 |
 | `tests/test_vma_bench.c` | test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 10 |
 | `tests/test_wm.c` | Docstring: Host test for wm_geom.h and wm_events.h (make test-wm). | tests | 6 |
@@ -418,13 +425,14 @@
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
 | `tools/wm_layout_sync.py` | - | tools | 17 |
 | `tools/wm_scoped.sh` | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs ho | tools | 2 |
-| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Fram | root | 120 |
+| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h" inclu | root | 123 |
 | `vma.c` | include "vma.h" | root | 14 |
 | `vma.h` | ifndef VMA_H define VMA_H | root | 21 |
-| `wm_events.h` | Docstring: Window event contract for the MiniOS desktop. | root | 38 |
+| `wm_events.h` | Docstring: Window event contract for the MiniOS desktop. | root | 39 |
 | `wm_focus.h` | Docstring: Focus manager contract for the MiniOS desktop. | root | 6 |
 | `wm_geom.h` | Docstring: Window geometry contract for the MiniOS desktop. | root | 11 |
 | `wm_layout.h` | Docstring: Unified layout contract for the MiniOS desktop. | root | 16 |
+| `wm_notify.h` | ifndef WM_NOTIFY_H define WM_NOTIFY_H  Docstring: Focus event bus for the MiniOS | root | 10 |
 | `wm_render.h` | Docstring: Render pipeline contract for the MiniOS desktop. | root | 5 |
 | `wm_tiling.h` | Docstring: Tiling layout contract for the MiniOS desktop. | root | 3 |
 | `wm_window.h` | Docstring: Unified window contract for the MiniOS desktop. | root | 12 |

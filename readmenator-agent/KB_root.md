@@ -126,18 +126,18 @@
 - Doc: ifndef DRIVER_H define DRIVER_H  driver.h -- Strategy pattern for hardware drivers (thesis correction 2).
 - Language: h
 - Symbols:
-  - `device` (struct, line 44)
+  - `device` (struct, line 48)
   - `block_ops_t` (struct, line 28)
   - `audio_ops_t` (struct, line 37)
   - `device_t` (type_alias, line 25) `typedef struct device device_t;`
   - `int` (function, line 29) `int (*read_sectors)(device_t *dev, unsigned lba, unsigned count, void *buf);`
   - `unsigned` (function, line 33) `unsigned (*total_sectors)(device_t *dev);`
   - `void` (function, line 38) `void (*tone)(device_t *dev, unsigned freq);`
-  - `device_register` (function, line 51) `int device_register(device_t *dev);`
-  - `device_find` (function, line 53) `device_t *device_find(const char *name);`
-  - `device_find_by_type` (function, line 54) `device_t *device_find_by_type(int type);`
-  - `device_count` (function, line 55) `int device_count(void);`
-  - `device_reset` (function, line 56) `void device_reset(void);`
+  - `device_register` (function, line 55) `int device_register(device_t *dev);`
+  - `device_find` (function, line 57) `device_t *device_find(const char *name);`
+  - `device_find_by_type` (function, line 58) `device_t *device_find_by_type(int type);`
+  - `device_count` (function, line 59) `int device_count(void);`
+  - `device_reset` (function, line 60) `void device_reset(void);`
   - `DRIVER_H` (macro, line 2) `#define DRIVER_H`
   - `DEV_NAME_LEN` (macro, line 17) `#define DEV_NAME_LEN`
   - `DEV_MAX` (macro, line 19) `#define DEV_MAX`
@@ -145,7 +145,7 @@
   - `DEV_TYPE_AUDIO` (macro, line 22) `#define DEV_TYPE_AUDIO`
   - `DEV_TYPE_NET` (macro, line 23) `#define DEV_TYPE_NET`
   - `DEV_TYPE_CHAR` (macro, line 24) `#define DEV_TYPE_CHAR`
-- Imported by: `drivers/block.c`, `drivers/driver.c`, `drivers/ide.c`, `drivers/pcspk.c`, `tests/test_driver.c`
+- Imported by: `drivers/block.c`, `drivers/driver.c`, `drivers/ide.c`, `drivers/pcspk.c`, `drivers/sb16.c`, `kernel/syscalls.c`, `tests/test_driver.c`
 
 ## editor.h
 - Layer: infrastructure
@@ -589,7 +589,7 @@ void kmain(void)`
   - `ET_DYN` (macro, line 563) `#define ET_DYN`
   - `KFD_MAX` (macro, line 582) `#define KFD_MAX`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `tls_port.h`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/console.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/time.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `spawn.h`, `tls_port.h`
 
 ## ktime.h
 - Layer: utility
@@ -695,7 +695,7 @@ void kmain(void)`
   - `MINIFS_JOP_COMMIT` (macro, line 85) `#define MINIFS_JOP_COMMIT`
   - `MINIFS_JSTATE_CLEAN` (macro, line 86) `#define MINIFS_JSTATE_CLEAN`
   - `MINIFS_JSTATE_DIRTY` (macro, line 88) `#define MINIFS_JSTATE_DIRTY`
-- Imported by: `fs/kfile.c`, `fs/minifs.c`, `fs/vfs.c`, `kernel.c`, `kernel/shell.c`, `kernel/syscalls.c`
+- Imported by: `fs/kfile.c`, `fs/minifs.c`, `fs/vfs.c`, `kernel.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`
 
 ## minifs_dump.py
 - Layer: utility
@@ -776,10 +776,10 @@ void kmain(void)`
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 100)
-  - `cleanup` (function, line 107)
-  - `record` (function, line 268)
-  - `find_index` (function, line 274)
+  - `restore_sources` (function, line 101)
+  - `cleanup` (function, line 108)
+  - `record` (function, line 272)
+  - `find_index` (function, line 278)
 
 ## net.h
 - Layer: utility
@@ -1059,57 +1059,57 @@ void kmain(void)`
 - Doc: ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h" include "vma.h"  ---- Process states ----
 - Language: h
 - Symbols:
-  - `cpu` (struct, line 148)
+  - `cpu` (struct, line 156)
   - `ctx_regs_t` (struct, line 28)
   - `proc_t` (struct, line 38)
-  - `limit` (type_alias, line 249) `typedef struct __attribute__((packed)) { uint16_t limit;`
-  - `__attribute__` (function, line 249) `typedef struct __attribute__((packed))`
+  - `limit` (type_alias, line 257) `typedef struct __attribute__((packed)) { uint16_t limit;`
+  - `__attribute__` (function, line 257) `typedef struct __attribute__((packed))`
   - `STR` (function, line 79) `* Both immediates derive from these macros via STR();`
-  - `volatile` (function, line 183) `__asm__ volatile("mov %%gs:0, %0" : "=r"(val));`
-  - `sched_init` (function, line 253) `void sched_init(void);`
-  - `kstack_report` (function, line 254) `void kstack_report(void);`
-  - `tss_init_ap` (function, line 255) `void tss_init_ap(int cpu);`
-  - `smp_ap_idle_loop` (function, line 256) `void smp_ap_idle_loop(void);`
-  - `proc_create` (function, line 257) `int proc_create(const char *name, int parent_pid);`
-  - `proc_get` (function, line 258) `proc_t *proc_get(int pid);`
-  - `schedule` (function, line 259) `void schedule(void);`
-  - `sched_set_nice` (function, line 260) `int sched_set_nice(int pid, int nice);`
-  - `seccomp_deny_one` (function, line 261) `int seccomp_deny_one(int pid, int n);`
-  - `seccomp_allow_one` (function, line 262) `int seccomp_allow_one(int pid, int n);`
-  - `seccomp_denied` (function, line 263) `int seccomp_denied(int pid, int n);`
-  - `rlimit_cpu_exceeded` (function, line 264) `int rlimit_cpu_exceeded(int pid);`
-  - `rlimit_cpu_tick` (function, line 265) `void rlimit_cpu_tick(int pid);`
-  - `switch_to` (function, line 266) `void switch_to(proc_t *prev, proc_t *next);`
-  - `switch_to_notrap` (function, line 267) `void switch_to_notrap(proc_t *prev, proc_t *next);`
-  - `switch_save_only` (function, line 268) `void switch_save_only(proc_t *prev);`
-  - `resume_iretq` (function, line 269) `void resume_iretq(void);`
-  - `yield` (function, line 270) `void yield(void);`
-  - `do_exit` (function, line 271) `void do_exit(int code);`
-  - `do_clone` (function, line 272) `long do_clone(long flags, long newsp);`
-  - `do_thread_spawn` (function, line 273) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
-  - `do_waitpid` (function, line 275) `int do_waitpid(int pid);`
-  - `do_waitpid_nb` (function, line 276) `int do_waitpid_nb(int pid);`
-  - `shell_reap_nb` (function, line 277) `int shell_reap_nb(int *pid_out, int *code_out);`
-  - `shell_reap_one` (function, line 278) `int shell_reap_one(int pid, int *code_out);`
-  - `shell_nchildren` (function, line 279) `int shell_nchildren(void);`
-  - `do_kill` (function, line 281) `int do_kill(int pid);`
-  - `timer_tick` (function, line 282) `void timer_tick(void);`
-  - `pt_clone_user` (function, line 285) `uint64_t pt_clone_user(uint64_t parent_cr3);`
-  - `pt_free_user` (function, line 286) `void pt_free_user(uint64_t cr3);`
-  - `caller` (function, line 291) `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared fd table beyond * O_RDONLY stdin-style use are best-effort in this revision. */ int p`
-  - `cpus` (variable, line 173) `extern cpu_t cpus[MAX_CPUS];`
-  - `cpu_count` (variable, line 175) `extern int cpu_count;`
-  - `procs` (variable, line 213) `extern proc_t procs[MAX_PROCS];`
-  - `proc_count` (variable, line 214) `extern int proc_count;`
-  - `sys_ticks` (variable, line 215) `extern volatile uint64_t sys_ticks;`
-  - `user_program_active` (variable, line 216) `extern volatile int user_program_active;`
-  - `sched_lock` (variable, line 217) `extern spinlock_t sched_lock;`
-  - `sched_ready` (variable, line 218) `extern volatile int sched_ready;`
-  - `ap_idle_proc` (variable, line 236) `extern proc_t ap_idle_proc[MAX_CPUS];`
-  - `smp_dispatches` (variable, line 237) `extern volatile unsigned long smp_dispatches[MAX_CPUS];`
-  - `smp_idle_polls` (variable, line 238) `extern volatile unsigned long smp_idle_polls[MAX_CPUS];`
-  - `smp_dbg_bad_gs` (variable, line 241) `extern volatile unsigned smp_dbg_bad_gs;`
-  - `bsp_idtr` (variable, line 250) `extern idtr_t bsp_idtr;`
+  - `volatile` (function, line 191) `__asm__ volatile("mov %%gs:0, %0" : "=r"(val));`
+  - `sched_init` (function, line 261) `void sched_init(void);`
+  - `kstack_report` (function, line 262) `void kstack_report(void);`
+  - `tss_init_ap` (function, line 263) `void tss_init_ap(int cpu);`
+  - `smp_ap_idle_loop` (function, line 264) `void smp_ap_idle_loop(void);`
+  - `proc_create` (function, line 265) `int proc_create(const char *name, int parent_pid);`
+  - `proc_get` (function, line 266) `proc_t *proc_get(int pid);`
+  - `schedule` (function, line 267) `void schedule(void);`
+  - `sched_set_nice` (function, line 268) `int sched_set_nice(int pid, int nice);`
+  - `seccomp_deny_one` (function, line 269) `int seccomp_deny_one(int pid, int n);`
+  - `seccomp_allow_one` (function, line 270) `int seccomp_allow_one(int pid, int n);`
+  - `seccomp_denied` (function, line 271) `int seccomp_denied(int pid, int n);`
+  - `rlimit_cpu_exceeded` (function, line 272) `int rlimit_cpu_exceeded(int pid);`
+  - `rlimit_cpu_tick` (function, line 273) `void rlimit_cpu_tick(int pid);`
+  - `switch_to` (function, line 274) `void switch_to(proc_t *prev, proc_t *next);`
+  - `switch_to_notrap` (function, line 275) `void switch_to_notrap(proc_t *prev, proc_t *next);`
+  - `switch_save_only` (function, line 276) `void switch_save_only(proc_t *prev);`
+  - `resume_iretq` (function, line 277) `void resume_iretq(void);`
+  - `yield` (function, line 278) `void yield(void);`
+  - `do_exit` (function, line 279) `void do_exit(int code);`
+  - `do_clone` (function, line 280) `long do_clone(long flags, long newsp);`
+  - `do_thread_spawn` (function, line 281) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+  - `do_waitpid` (function, line 283) `int do_waitpid(int pid);`
+  - `do_waitpid_nb` (function, line 284) `int do_waitpid_nb(int pid);`
+  - `shell_reap_nb` (function, line 285) `int shell_reap_nb(int *pid_out, int *code_out);`
+  - `shell_reap_one` (function, line 286) `int shell_reap_one(int pid, int *code_out);`
+  - `shell_nchildren` (function, line 287) `int shell_nchildren(void);`
+  - `do_kill` (function, line 289) `int do_kill(int pid);`
+  - `timer_tick` (function, line 290) `void timer_tick(void);`
+  - `pt_clone_user` (function, line 293) `uint64_t pt_clone_user(uint64_t parent_cr3);`
+  - `pt_free_user` (function, line 294) `void pt_free_user(uint64_t cr3);`
+  - `caller` (function, line 299) `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared fd table beyond * O_RDONLY stdin-style use are best-effort in this revision. */ int p`
+  - `cpus` (variable, line 181) `extern cpu_t cpus[MAX_CPUS];`
+  - `cpu_count` (variable, line 183) `extern int cpu_count;`
+  - `procs` (variable, line 221) `extern proc_t procs[MAX_PROCS];`
+  - `proc_count` (variable, line 222) `extern int proc_count;`
+  - `sys_ticks` (variable, line 223) `extern volatile uint64_t sys_ticks;`
+  - `user_program_active` (variable, line 224) `extern volatile int user_program_active;`
+  - `sched_lock` (variable, line 225) `extern spinlock_t sched_lock;`
+  - `sched_ready` (variable, line 226) `extern volatile int sched_ready;`
+  - `ap_idle_proc` (variable, line 244) `extern proc_t ap_idle_proc[MAX_CPUS];`
+  - `smp_dispatches` (variable, line 245) `extern volatile unsigned long smp_dispatches[MAX_CPUS];`
+  - `smp_idle_polls` (variable, line 246) `extern volatile unsigned long smp_idle_polls[MAX_CPUS];`
+  - `smp_dbg_bad_gs` (variable, line 249) `extern volatile unsigned smp_dbg_bad_gs;`
+  - `bsp_idtr` (variable, line 258) `extern idtr_t bsp_idtr;`
   - `SCHED_H` (macro, line 2) `#define SCHED_H`
   - `PROC_FREE` (macro, line 9) `#define PROC_FREE`
   - `PROC_READY` (macro, line 10) `#define PROC_READY`
@@ -1142,14 +1142,18 @@ void kmain(void)`
   - `NICE_MIN` (macro, line 119) `#define NICE_MIN`
   - `NICE_MAX` (macro, line 120) `#define NICE_MAX`
   - `NICE_DEFAULT` (macro, line 121) `#define NICE_DEFAULT`
-  - `CLONE_VM` (macro, line 124) `#define CLONE_VM`
-  - `CLONE_FILES` (macro, line 125) `#define CLONE_FILES`
-  - `current_pid` (macro, line 192) `#define current_pid`
-  - `DESKTOP_TICK_INTERVAL` (macro, line 196) `#define DESKTOP_TICK_INTERVAL`
-  - `TSS_SEL` (macro, line 246) `#define TSS_SEL(cpu)`
-  - `WAITPID_NONE` (macro, line 280) `#define WAITPID_NONE`
+  - `SCHED_BASE_QUANTUM` (macro, line 126) `#define SCHED_BASE_QUANTUM`
+  - `SCHED_NICE_MULT_KEY` (macro, line 127) `#define SCHED_NICE_MULT_KEY`
+  - `SCHED_NICE_MULT_CHARGE` (macro, line 128) `#define SCHED_NICE_MULT_CHARGE`
+  - `SCHED_NICE_OFFSET` (macro, line 129) `#define SCHED_NICE_OFFSET`
+  - `CLONE_VM` (macro, line 132) `#define CLONE_VM`
+  - `CLONE_FILES` (macro, line 133) `#define CLONE_FILES`
+  - `current_pid` (macro, line 200) `#define current_pid`
+  - `DESKTOP_TICK_INTERVAL` (macro, line 204) `#define DESKTOP_TICK_INTERVAL`
+  - `TSS_SEL` (macro, line 254) `#define TSS_SEL(cpu)`
+  - `WAITPID_NONE` (macro, line 288) `#define WAITPID_NONE`
 - Depends on: `spinlock.h`, `vma.h`
-- Imported by: `drivers/kbd.c`, `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `sync.h`
+- Imported by: `drivers/kbd.c`, `futex.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `percpu_rq.h`, `rcu.h`, `smp.c`, `spawn.h`, `sync.h`
 
 ## shell.h
 - Layer: utility
@@ -1242,6 +1246,23 @@ void kmain(void)`
   - `SMP_H` (macro, line 2) `#define SMP_H`
 - Depends on: `spinlock.h`
 - Imported by: `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `smp.c`
+
+## spawn.h
+- Layer: utility
+- Doc: ifndef SPAWN_H define SPAWN_H  include "kernel.h" include "vma.h" include "sched.h"  Docstring: Scalar shared-window vie
+- Language: h
+- Symbols:
+  - `spawn_ctx_t` (struct, line 9)
+  - `spawn_backup` (function, line 23) `void spawn_backup(spawn_ctx_t *ctx);`
+  - `spawn_restore` (function, line 26) `void spawn_restore(const spawn_ctx_t *ctx);`
+  - `spawn_validate_argv` (function, line 29) `int spawn_validate_argv(int argc, const char **uargv);`
+  - `spawn_copy_argv` (function, line 32) `char **spawn_copy_argv(int argc, const char **uargv);`
+  - `spawn_free_argv` (function, line 35) `void spawn_free_argv(char **kargv, int argc);`
+  - `spawn_load_image` (function, line 38) `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);`
+  - `spawn_execute` (function, line 41) `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc, char **kargv, const char **uargv_fallback);`
+  - `SPAWN_H` (macro, line 2) `#define SPAWN_H`
+- Depends on: `kernel.h`, `sched.h`, `vma.h`
+- Imported by: `kernel/spawn.c`, `kernel/syscalls.c`
 
 ## spinlock.h
 - Layer: utility
@@ -1600,130 +1621,133 @@ void kmain(void)`
 
 ## vga_fb.h
 - Layer: utility
-- Doc: ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h"  Framebuffer geometry. The boot loader probes
+- Doc: ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h" include "wm_notify.h"  Framebuffer geometry. 
 - Language: h
 - Symbols:
-  - `mouse_state_t` (struct, line 151)
-  - `fb_bytes_per_pixel` (function, line 29) `int fb_bytes_per_pixel(void);`
-  - `vga_fb_read_rgb` (function, line 33) `unsigned long vga_fb_read_rgb(int x, int y);`
-  - `vga_fb_set_gfx_palette` (function, line 37) `void vga_fb_set_gfx_palette(const unsigned char *pal);`
-  - `vga_fb_boot_config` (function, line 38) `void vga_fb_boot_config(void);`
-  - `SYS_DOOM_FRAME` (function, line 43) `* and calls SYS_DOOM_FRAME (211) to have the kernel composite it onto the * desktop at its native resolution, so the shell window stays visible. */ #define DOOM_W MINIOS_DOOM_W #define DOOM_H MINIOS_D`
-  - `SYS_NK_FRAME` (function, line 62) `* SYS_NK_FRAME (220);`
-  - `vga_fb_blit_nk_window` (function, line 69) `void vga_fb_blit_nk_window(void);`
-  - `below` (function, line 91) `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via stbi_load_file, * stretched to the framebuffer and mapped to a fixed 6x6x6 websafe c`
-  - `vga_fb_init` (function, line 169) `void vga_fb_init(void);`
-  - `vga_fb_clear` (function, line 170) `void vga_fb_clear(void);`
-  - `vga_fb_pixel` (function, line 171) `void vga_fb_pixel(int x, int y, uint8_t color);`
-  - `vga_fb_rect` (function, line 172) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
-  - `vga_fb_char` (function, line 173) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
-  - `vga_fb_str` (function, line 174) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
-  - `vga_fb_putc_term` (function, line 175) `void vga_fb_putc_term(char c);`
-  - `vga_fb_puts_term` (function, line 176) `void vga_fb_puts_term(const char *s);`
-  - `vga_fb_text_cursor` (function, line 177) `void vga_fb_text_cursor(int col);`
-  - `vga_fb_hide_text_cursor` (function, line 178) `void vga_fb_hide_text_cursor(void);`
-  - `vga_fb_draw_desktop` (function, line 179) `void vga_fb_draw_desktop(void);`
-  - `vga_fb_toggle_fullscreen` (function, line 180) `void vga_fb_toggle_fullscreen(void);`
-  - `vga_fb_move_terminal` (function, line 181) `void vga_fb_move_terminal(int dx, int dy);`
-  - `vga_fb_snap_window` (function, line 182) `void vga_fb_snap_window(int zone);`
-  - `vga_fb_resize` (function, line 183) `void vga_fb_resize(int dcols, int drows);`
-  - `vga_fb_reset_default` (function, line 184) `void vga_fb_reset_default(void);`
-  - `vga_fb_toggle_minimize` (function, line 185) `void vga_fb_toggle_minimize(void);`
-  - `vga_fb_is_minimized` (function, line 186) `int vga_fb_is_minimized(void);`
-  - `vga_fb_is_fullscreen` (function, line 187) `int vga_fb_is_fullscreen(void);`
-  - `vga_fb_close_active` (function, line 188) `int vga_fb_close_active(void);`
-  - `vga_fb_focus_next` (function, line 192) `void vga_fb_focus_next(void);`
-  - `vga_fb_focus_id` (function, line 193) `int vga_fb_focus_id(int id);`
-  - `vga_fb_focus_get` (function, line 194) `int vga_fb_focus_get(void);`
-  - `vga_fb_theme_name` (function, line 195) `int vga_fb_theme_name(char *dst, int cap);`
-  - `vga_fb_ps2_owner` (function, line 201) `int vga_fb_ps2_owner(int pid);`
-  - `vga_fb_nterms_get` (function, line 202) `int vga_fb_nterms_get(void);`
-  - `vga_fb_term_split` (function, line 203) `int vga_fb_term_split(void);`
-  - `vga_fb_term_close_focused` (function, line 204) `int vga_fb_term_close_focused(void);`
-  - `vga_fb_tile_all` (function, line 205) `void vga_fb_tile_all(void);`
-  - `vga_fb_layout_set` (function, line 206) `int vga_fb_layout_set(int mode);`
-  - `vga_fb_layout_cycle` (function, line 207) `void vga_fb_layout_cycle(void);`
-  - `vga_fb_layout_get` (function, line 208) `int vga_fb_layout_get(void);`
-  - `vga_fb_layout_name` (function, line 209) `const char *vga_fb_layout_name(void);`
-  - `vga_fb_list_windows` (function, line 210) `void vga_fb_list_windows(void);`
-  - `wm_close_pending` (function, line 211) `int wm_close_pending(void);`
-  - `wm_clear_close` (function, line 212) `void wm_clear_close(void);`
-  - `wm_gfx_mode_active` (function, line 213) `int wm_gfx_mode_active(void);`
-  - `vga_fb_mouse_tick` (function, line 214) `void vga_fb_mouse_tick(void);`
-  - `vga_fb_mouse_init` (function, line 215) `void vga_fb_mouse_init(void);`
-  - `vga_fb_set_gfx_mode` (function, line 222) `void vga_fb_set_gfx_mode(int on);`
-  - `fb_width` (variable, line 22) `extern int fb_width;`
-  - `fb_height` (variable, line 23) `extern int fb_height;`
-  - `fb_pitch` (variable, line 24) `extern int fb_pitch;`
-  - `fb_bpp` (variable, line 25) `extern int fb_bpp;`
-  - `fb_phys_base` (variable, line 26) `extern unsigned long fb_phys_base;`
-  - `gfx_win_title` (variable, line 49) `extern const char *gfx_win_title;`
-  - `gfx_frames_composited` (variable, line 58) `extern unsigned long gfx_frames_composited;`
-  - `nk_win_y` (variable, line 72) `extern int nk_win_x, nk_win_y;`
-  - `term_rows` (variable, line 148) `extern int term_x, term_y, term_cols, term_rows;`
-  - `mouse_state` (variable, line 158) `extern mouse_state_t mouse_state;`
-  - `vga_fb_active` (variable, line 223) `extern int vga_fb_active;`
+  - `mouse_state_t` (struct, line 153)
+  - `fb_bytes_per_pixel` (function, line 30) `int fb_bytes_per_pixel(void);`
+  - `vga_fb_read_rgb` (function, line 34) `unsigned long vga_fb_read_rgb(int x, int y);`
+  - `vga_fb_set_gfx_palette` (function, line 38) `void vga_fb_set_gfx_palette(const unsigned char *pal);`
+  - `vga_fb_boot_config` (function, line 39) `void vga_fb_boot_config(void);`
+  - `SYS_DOOM_FRAME` (function, line 44) `* and calls SYS_DOOM_FRAME (211) to have the kernel composite it onto the * desktop at its native resolution, so the shell window stays visible. */ #define DOOM_W MINIOS_DOOM_W #define DOOM_H MINIOS_D`
+  - `SYS_NK_FRAME` (function, line 63) `* SYS_NK_FRAME (220);`
+  - `vga_fb_blit_nk_window` (function, line 70) `void vga_fb_blit_nk_window(void);`
+  - `below` (function, line 93) `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via stbi_load_file, * stretched to the framebuffer and mapped to a fixed 6x6x6 websafe c`
+  - `vga_fb_init` (function, line 171) `void vga_fb_init(void);`
+  - `vga_fb_clear` (function, line 172) `void vga_fb_clear(void);`
+  - `vga_fb_pixel` (function, line 173) `void vga_fb_pixel(int x, int y, uint8_t color);`
+  - `vga_fb_rect` (function, line 174) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
+  - `vga_fb_char` (function, line 175) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
+  - `vga_fb_str` (function, line 176) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
+  - `vga_fb_putc_term` (function, line 177) `void vga_fb_putc_term(char c);`
+  - `vga_fb_puts_term` (function, line 178) `void vga_fb_puts_term(const char *s);`
+  - `vga_fb_text_cursor` (function, line 179) `void vga_fb_text_cursor(int col);`
+  - `vga_fb_hide_text_cursor` (function, line 180) `void vga_fb_hide_text_cursor(void);`
+  - `vga_fb_draw_desktop` (function, line 181) `void vga_fb_draw_desktop(void);`
+  - `vga_fb_toggle_fullscreen` (function, line 182) `void vga_fb_toggle_fullscreen(void);`
+  - `vga_fb_move_terminal` (function, line 183) `void vga_fb_move_terminal(int dx, int dy);`
+  - `vga_fb_snap_window` (function, line 184) `void vga_fb_snap_window(int zone);`
+  - `vga_fb_resize` (function, line 185) `void vga_fb_resize(int dcols, int drows);`
+  - `vga_fb_reset_default` (function, line 186) `void vga_fb_reset_default(void);`
+  - `vga_fb_toggle_minimize` (function, line 187) `void vga_fb_toggle_minimize(void);`
+  - `vga_fb_is_minimized` (function, line 188) `int vga_fb_is_minimized(void);`
+  - `vga_fb_is_fullscreen` (function, line 189) `int vga_fb_is_fullscreen(void);`
+  - `vga_fb_close_active` (function, line 190) `int vga_fb_close_active(void);`
+  - `vga_fb_focus_next` (function, line 194) `void vga_fb_focus_next(void);`
+  - `vga_fb_focus_id` (function, line 195) `int vga_fb_focus_id(int id);`
+  - `vga_fb_focus_get` (function, line 196) `int vga_fb_focus_get(void);`
+  - `vga_fb_focus_event` (function, line 199) `const wm_notify_event_t *vga_fb_focus_event(void);`
+  - `vga_fb_focus_report` (function, line 200) `void vga_fb_focus_report(int before, int source);`
+  - `vga_fb_theme_name` (function, line 201) `int vga_fb_theme_name(char *dst, int cap);`
+  - `vga_fb_ps2_owner` (function, line 207) `int vga_fb_ps2_owner(int pid);`
+  - `vga_fb_nterms_get` (function, line 208) `int vga_fb_nterms_get(void);`
+  - `vga_fb_term_split` (function, line 209) `int vga_fb_term_split(void);`
+  - `vga_fb_term_close_focused` (function, line 210) `int vga_fb_term_close_focused(void);`
+  - `vga_fb_tile_all` (function, line 211) `void vga_fb_tile_all(void);`
+  - `vga_fb_layout_set` (function, line 212) `int vga_fb_layout_set(int mode);`
+  - `vga_fb_layout_cycle` (function, line 213) `void vga_fb_layout_cycle(void);`
+  - `vga_fb_layout_get` (function, line 214) `int vga_fb_layout_get(void);`
+  - `vga_fb_layout_name` (function, line 215) `const char *vga_fb_layout_name(void);`
+  - `vga_fb_list_windows` (function, line 216) `void vga_fb_list_windows(void);`
+  - `wm_close_pending` (function, line 217) `int wm_close_pending(void);`
+  - `wm_clear_close` (function, line 218) `void wm_clear_close(void);`
+  - `wm_gfx_mode_active` (function, line 219) `int wm_gfx_mode_active(void);`
+  - `vga_fb_mouse_tick` (function, line 220) `void vga_fb_mouse_tick(void);`
+  - `vga_fb_mouse_init` (function, line 221) `void vga_fb_mouse_init(void);`
+  - `vga_fb_set_gfx_mode` (function, line 228) `void vga_fb_set_gfx_mode(int on);`
+  - `fb_width` (variable, line 23) `extern int fb_width;`
+  - `fb_height` (variable, line 24) `extern int fb_height;`
+  - `fb_pitch` (variable, line 25) `extern int fb_pitch;`
+  - `fb_bpp` (variable, line 26) `extern int fb_bpp;`
+  - `fb_phys_base` (variable, line 27) `extern unsigned long fb_phys_base;`
+  - `gfx_win_title` (variable, line 50) `extern const char *gfx_win_title;`
+  - `gfx_frames_composited` (variable, line 59) `extern unsigned long gfx_frames_composited;`
+  - `nk_win_y` (variable, line 73) `extern int nk_win_x, nk_win_y;`
+  - `term_rows` (variable, line 150) `extern int term_x, term_y, term_cols, term_rows;`
+  - `mouse_state` (variable, line 160) `extern mouse_state_t mouse_state;`
+  - `vga_fb_active` (variable, line 229) `extern int vga_fb_active;`
   - `VGA_FB_H` (macro, line 2) `#define VGA_FB_H`
-  - `FB_ADDR` (macro, line 21) `#define FB_ADDR`
-  - `DOOM_W` (macro, line 45) `#define DOOM_W`
-  - `DOOM_H` (macro, line 46) `#define DOOM_H`
-  - `DOOM_BACKBUF_ADDR` (macro, line 47) `#define DOOM_BACKBUF_ADDR`
-  - `GFX_TITLE_DEFAULT` (macro, line 51) `#define GFX_TITLE_DEFAULT`
-  - `NK_W` (macro, line 66) `#define NK_W`
-  - `NK_H` (macro, line 67) `#define NK_H`
-  - `NK_BACKBUF_ADDR` (macro, line 68) `#define NK_BACKBUF_ADDR`
-  - `COL_BG` (macro, line 75) `#define COL_BG`
-  - `COL_TASKBAR` (macro, line 76) `#define COL_TASKBAR`
-  - `COL_TASKBAR_TXT` (macro, line 77) `#define COL_TASKBAR_TXT`
-  - `COL_TITLEBAR` (macro, line 78) `#define COL_TITLEBAR`
-  - `COL_TITLE_TXT` (macro, line 79) `#define COL_TITLE_TXT`
-  - `COL_TERMINAL` (macro, line 80) `#define COL_TERMINAL`
-  - `COL_TERM_TXT` (macro, line 81) `#define COL_TERM_TXT`
-  - `COL_TERM_CUR` (macro, line 82) `#define COL_TERM_CUR`
-  - `COL_BORDER` (macro, line 83) `#define COL_BORDER`
-  - `COL_WHITE` (macro, line 84) `#define COL_WHITE`
-  - `COL_SHADOW` (macro, line 85) `#define COL_SHADOW`
-  - `COL_HIGHLIGHT` (macro, line 86) `#define COL_HIGHLIGHT`
-  - `COL_SCROLLBAR` (macro, line 87) `#define COL_SCROLLBAR`
-  - `COL_SCROLL_THUMB` (macro, line 88) `#define COL_SCROLL_THUMB`
-  - `WALLPAPER_PATH` (macro, line 95) `#define WALLPAPER_PATH`
-  - `WALL_PAL_BASE` (macro, line 96) `#define WALL_PAL_BASE`
-  - `WALL_PAL_SIZE` (macro, line 97) `#define WALL_PAL_SIZE`
-  - `FONT_W` (macro, line 98) `#define FONT_W`
-  - `FONT_H` (macro, line 100) `#define FONT_H`
-  - `TERM_MAX_COLS` (macro, line 105) `#define TERM_MAX_COLS`
-  - `TERM_MAX_ROWS` (macro, line 106) `#define TERM_MAX_ROWS`
-  - `TASKBAR_H` (macro, line 109) `#define TASKBAR_H`
-  - `TASKBAR_PAD` (macro, line 110) `#define TASKBAR_PAD`
-  - `TASKBAR_CLOCK_CH` (macro, line 111) `#define TASKBAR_CLOCK_CH`
-  - `TASKBAR_VOL_CH` (macro, line 112) `#define TASKBAR_VOL_CH`
-  - `TASKBAR_VOL_STEP` (macro, line 113) `#define TASKBAR_VOL_STEP`
-  - `TASKBAR_ICON_W` (macro, line 114) `#define TASKBAR_ICON_W`
-  - `TASKBAR_BTN_W` (macro, line 115) `#define TASKBAR_BTN_W`
-  - `TASKBAR_KBD_CH` (macro, line 117) `#define TASKBAR_KBD_CH`
-  - `TASKBAR_KBD_W` (macro, line 118) `#define TASKBAR_KBD_W`
-  - `TASKBAR_THEME_CH` (macro, line 120) `#define TASKBAR_THEME_CH`
-  - `TASKBAR_THEME_W` (macro, line 121) `#define TASKBAR_THEME_W`
-  - `TILING_LEFT` (macro, line 124) `#define TILING_LEFT`
-  - `TILING_RIGHT` (macro, line 125) `#define TILING_RIGHT`
-  - `TILING_TOP` (macro, line 126) `#define TILING_TOP`
-  - `TILING_BOTTOM` (macro, line 127) `#define TILING_BOTTOM`
-  - `TILING_TOP_LEFT` (macro, line 128) `#define TILING_TOP_LEFT`
-  - `TILING_TOP_RIGHT` (macro, line 129) `#define TILING_TOP_RIGHT`
-  - `TILING_BOTTOM_LEFT` (macro, line 130) `#define TILING_BOTTOM_LEFT`
-  - `TILING_BOTTOM_RIGHT` (macro, line 131) `#define TILING_BOTTOM_RIGHT`
-  - `SCROLLBAR_W` (macro, line 134) `#define SCROLLBAR_W`
-  - `SCROLLBAR_PAD` (macro, line 135) `#define SCROLLBAR_PAD`
-  - `WM_BTN_W` (macro, line 140) `#define WM_BTN_W`
-  - `WM_BTN_H` (macro, line 141) `#define WM_BTN_H`
-  - `WM_BTN_PAD` (macro, line 142) `#define WM_BTN_PAD`
-  - `WM_BTN_MIN` (macro, line 143) `#define WM_BTN_MIN`
-  - `WM_BTN_MAX` (macro, line 144) `#define WM_BTN_MAX`
-  - `WM_BTN_CLOSE` (macro, line 145) `#define WM_BTN_CLOSE`
-  - `SB_MAX_LINES` (macro, line 165) `#define SB_MAX_LINES`
-  - `SB_LINE_MAX` (macro, line 166) `#define SB_LINE_MAX`
-  - `WM_FOCUS_GFX` (macro, line 191) `#define WM_FOCUS_GFX`
-- Depends on: `progs/minios_abi.h`
+  - `FB_ADDR` (macro, line 22) `#define FB_ADDR`
+  - `DOOM_W` (macro, line 46) `#define DOOM_W`
+  - `DOOM_H` (macro, line 47) `#define DOOM_H`
+  - `DOOM_BACKBUF_ADDR` (macro, line 48) `#define DOOM_BACKBUF_ADDR`
+  - `GFX_TITLE_DEFAULT` (macro, line 52) `#define GFX_TITLE_DEFAULT`
+  - `NK_W` (macro, line 67) `#define NK_W`
+  - `NK_H` (macro, line 68) `#define NK_H`
+  - `NK_BACKBUF_ADDR` (macro, line 69) `#define NK_BACKBUF_ADDR`
+  - `COL_BLACK` (macro, line 76) `#define COL_BLACK`
+  - `COL_BG` (macro, line 77) `#define COL_BG`
+  - `COL_TASKBAR` (macro, line 78) `#define COL_TASKBAR`
+  - `COL_TASKBAR_TXT` (macro, line 79) `#define COL_TASKBAR_TXT`
+  - `COL_TITLEBAR` (macro, line 80) `#define COL_TITLEBAR`
+  - `COL_TITLE_TXT` (macro, line 81) `#define COL_TITLE_TXT`
+  - `COL_TERMINAL` (macro, line 82) `#define COL_TERMINAL`
+  - `COL_TERM_TXT` (macro, line 83) `#define COL_TERM_TXT`
+  - `COL_TERM_CUR` (macro, line 84) `#define COL_TERM_CUR`
+  - `COL_BORDER` (macro, line 85) `#define COL_BORDER`
+  - `COL_WHITE` (macro, line 86) `#define COL_WHITE`
+  - `COL_SHADOW` (macro, line 87) `#define COL_SHADOW`
+  - `COL_HIGHLIGHT` (macro, line 88) `#define COL_HIGHLIGHT`
+  - `COL_SCROLLBAR` (macro, line 89) `#define COL_SCROLLBAR`
+  - `COL_SCROLL_THUMB` (macro, line 90) `#define COL_SCROLL_THUMB`
+  - `WALLPAPER_PATH` (macro, line 97) `#define WALLPAPER_PATH`
+  - `WALL_PAL_BASE` (macro, line 98) `#define WALL_PAL_BASE`
+  - `WALL_PAL_SIZE` (macro, line 99) `#define WALL_PAL_SIZE`
+  - `FONT_W` (macro, line 100) `#define FONT_W`
+  - `FONT_H` (macro, line 102) `#define FONT_H`
+  - `TERM_MAX_COLS` (macro, line 107) `#define TERM_MAX_COLS`
+  - `TERM_MAX_ROWS` (macro, line 108) `#define TERM_MAX_ROWS`
+  - `TASKBAR_H` (macro, line 111) `#define TASKBAR_H`
+  - `TASKBAR_PAD` (macro, line 112) `#define TASKBAR_PAD`
+  - `TASKBAR_CLOCK_CH` (macro, line 113) `#define TASKBAR_CLOCK_CH`
+  - `TASKBAR_VOL_CH` (macro, line 114) `#define TASKBAR_VOL_CH`
+  - `TASKBAR_VOL_STEP` (macro, line 115) `#define TASKBAR_VOL_STEP`
+  - `TASKBAR_ICON_W` (macro, line 116) `#define TASKBAR_ICON_W`
+  - `TASKBAR_BTN_W` (macro, line 117) `#define TASKBAR_BTN_W`
+  - `TASKBAR_KBD_CH` (macro, line 119) `#define TASKBAR_KBD_CH`
+  - `TASKBAR_KBD_W` (macro, line 120) `#define TASKBAR_KBD_W`
+  - `TASKBAR_THEME_CH` (macro, line 122) `#define TASKBAR_THEME_CH`
+  - `TASKBAR_THEME_W` (macro, line 123) `#define TASKBAR_THEME_W`
+  - `TILING_LEFT` (macro, line 126) `#define TILING_LEFT`
+  - `TILING_RIGHT` (macro, line 127) `#define TILING_RIGHT`
+  - `TILING_TOP` (macro, line 128) `#define TILING_TOP`
+  - `TILING_BOTTOM` (macro, line 129) `#define TILING_BOTTOM`
+  - `TILING_TOP_LEFT` (macro, line 130) `#define TILING_TOP_LEFT`
+  - `TILING_TOP_RIGHT` (macro, line 131) `#define TILING_TOP_RIGHT`
+  - `TILING_BOTTOM_LEFT` (macro, line 132) `#define TILING_BOTTOM_LEFT`
+  - `TILING_BOTTOM_RIGHT` (macro, line 133) `#define TILING_BOTTOM_RIGHT`
+  - `SCROLLBAR_W` (macro, line 136) `#define SCROLLBAR_W`
+  - `SCROLLBAR_PAD` (macro, line 137) `#define SCROLLBAR_PAD`
+  - `WM_BTN_W` (macro, line 142) `#define WM_BTN_W`
+  - `WM_BTN_H` (macro, line 143) `#define WM_BTN_H`
+  - `WM_BTN_PAD` (macro, line 144) `#define WM_BTN_PAD`
+  - `WM_BTN_MIN` (macro, line 145) `#define WM_BTN_MIN`
+  - `WM_BTN_MAX` (macro, line 146) `#define WM_BTN_MAX`
+  - `WM_BTN_CLOSE` (macro, line 147) `#define WM_BTN_CLOSE`
+  - `SB_MAX_LINES` (macro, line 167) `#define SB_MAX_LINES`
+  - `SB_LINE_MAX` (macro, line 168) `#define SB_LINE_MAX`
+  - `WM_FOCUS_GFX` (macro, line 193) `#define WM_FOCUS_GFX`
+- Depends on: `progs/minios_abi.h`, `wm_notify.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
 
 ## vma.c
@@ -1773,51 +1797,53 @@ void kmain(void)`
   - `vma_legacy` (variable, line 57) `extern vma_ctx_t vma_legacy;`
   - `VMA_H` (macro, line 2) `#define VMA_H`
   - `VMA_MAX` (macro, line 27) `#define VMA_MAX`
-- Imported by: `kernel.h`, `sched.h`, `tests/test_fault.c`, `tests/test_vma.c`, `tests/test_vma_bench.c`, `vma.c`
+- Imported by: `kernel.h`, `kernel/spawn.c`, `sched.h`, `spawn.h`, `tests/test_fault.c`, `tests/test_vma.c`, `tests/test_vma_bench.c`, `vma.c`
 
 ## wm_events.h
 - Layer: infrastructure
 - Doc: Docstring: Window event contract for the MiniOS desktop.
 - Language: h
 - Symbols:
-  - `wm_mouse_t` (struct, line 23)
-  - `wm_event_t` (struct, line 32)
-  - `wm_event_config_t` (struct, line 41)
-  - `wm_combo_t` (struct, line 156)
-  - `wm_is_click_edge` (function, line 50) `static inline int wm_is_click_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_buttons)`
-  - `wm_is_release_edge` (function, line 57) `static inline int wm_is_release_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_but...`
-  - `wm_translate_event` (function, line 64) `static inline wm_event_t wm_translate_event(const wm_event_config_t *cfg, const wm_mouse_t *prev,...`
-  - `wm_event_suppresses_drag` (function, line 102) `static inline int wm_event_suppresses_drag(const wm_event_t *evt)`
-  - `wm_combo_lookup` (function, line 199) `static inline int wm_combo_lookup(int alt, int altgr, int sup, int e0, int sc, int path, int *zon...`
+  - `wm_mouse_t` (struct, line 25)
+  - `wm_event_t` (struct, line 34)
+  - `wm_event_config_t` (struct, line 43)
+  - `wm_combo_t` (struct, line 158)
+  - `wm_is_click_edge` (function, line 52) `static inline int wm_is_click_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_buttons)`
+  - `wm_is_release_edge` (function, line 59) `static inline int wm_is_release_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_but...`
+  - `wm_translate_event` (function, line 66) `static inline wm_event_t wm_translate_event(const wm_event_config_t *cfg, const wm_mouse_t *prev,...`
+  - `wm_event_suppresses_drag` (function, line 104) `static inline int wm_event_suppresses_drag(const wm_event_t *evt)`
+  - `wm_combo_lookup` (function, line 201) `static inline int wm_combo_lookup(int alt, int altgr, int sup, int e0, int sc, int path, int *zon...`
+  - `wm_combo_lookup_mods` (function, line 238) `static inline int wm_combo_lookup_mods(const modifier_state_t *st, int e0, int sc, int path, int ...`
   - `WM_EVENTS_H` (macro, line 11) `#define WM_EVENTS_H`
-  - `WM_EVENT_CONFIG_DEFAULT` (macro, line 47) `#define WM_EVENT_CONFIG_DEFAULT`
-  - `WM_SC_TAB` (macro, line 108) `#define WM_SC_TAB`
-  - `WM_SC_ENTER` (macro, line 109) `#define WM_SC_ENTER`
-  - `WM_SC_MINUS` (macro, line 110) `#define WM_SC_MINUS`
-  - `WM_SC_EQUAL` (macro, line 111) `#define WM_SC_EQUAL`
-  - `WM_SC_ZERO` (macro, line 112) `#define WM_SC_ZERO`
-  - `WM_SC_Q` (macro, line 113) `#define WM_SC_Q`
-  - `WM_SC_LBRACKET` (macro, line 114) `#define WM_SC_LBRACKET`
-  - `WM_SC_RBRACKET` (macro, line 115) `#define WM_SC_RBRACKET`
-  - `WM_SC_M` (macro, line 116) `#define WM_SC_M`
-  - `WM_SC_X` (macro, line 117) `#define WM_SC_X`
-  - `WM_SC_UP` (macro, line 118) `#define WM_SC_UP`
-  - `WM_SC_DOWN` (macro, line 119) `#define WM_SC_DOWN`
-  - `WM_SC_LEFT` (macro, line 120) `#define WM_SC_LEFT`
-  - `WM_SC_RIGHT` (macro, line 121) `#define WM_SC_RIGHT`
-  - `WM_SC_HOME` (macro, line 122) `#define WM_SC_HOME`
-  - `WM_SC_END` (macro, line 123) `#define WM_SC_END`
-  - `WM_SNAP_LEFT` (macro, line 126) `#define WM_SNAP_LEFT`
-  - `WM_SNAP_RIGHT` (macro, line 127) `#define WM_SNAP_RIGHT`
-  - `WM_SNAP_TOP` (macro, line 128) `#define WM_SNAP_TOP`
-  - `WM_SNAP_BOTTOM` (macro, line 129) `#define WM_SNAP_BOTTOM`
-  - `WM_SNAP_TOP_LEFT` (macro, line 130) `#define WM_SNAP_TOP_LEFT`
-  - `WM_SNAP_TOP_RIGHT` (macro, line 131) `#define WM_SNAP_TOP_RIGHT`
-  - `WM_SNAP_BOTTOM_LEFT` (macro, line 132) `#define WM_SNAP_BOTTOM_LEFT`
-  - `WM_SNAP_BOTTOM_RIGHT` (macro, line 133) `#define WM_SNAP_BOTTOM_RIGHT`
-  - `WM_PATH_COOKED` (macro, line 136) `#define WM_PATH_COOKED`
-  - `WM_PATH_RAW` (macro, line 137) `#define WM_PATH_RAW`
-  - `WM_COMBOS_N` (macro, line 196) `#define WM_COMBOS_N`
+  - `WM_EVENT_CONFIG_DEFAULT` (macro, line 49) `#define WM_EVENT_CONFIG_DEFAULT`
+  - `WM_SC_TAB` (macro, line 110) `#define WM_SC_TAB`
+  - `WM_SC_ENTER` (macro, line 111) `#define WM_SC_ENTER`
+  - `WM_SC_MINUS` (macro, line 112) `#define WM_SC_MINUS`
+  - `WM_SC_EQUAL` (macro, line 113) `#define WM_SC_EQUAL`
+  - `WM_SC_ZERO` (macro, line 114) `#define WM_SC_ZERO`
+  - `WM_SC_Q` (macro, line 115) `#define WM_SC_Q`
+  - `WM_SC_LBRACKET` (macro, line 116) `#define WM_SC_LBRACKET`
+  - `WM_SC_RBRACKET` (macro, line 117) `#define WM_SC_RBRACKET`
+  - `WM_SC_M` (macro, line 118) `#define WM_SC_M`
+  - `WM_SC_X` (macro, line 119) `#define WM_SC_X`
+  - `WM_SC_UP` (macro, line 120) `#define WM_SC_UP`
+  - `WM_SC_DOWN` (macro, line 121) `#define WM_SC_DOWN`
+  - `WM_SC_LEFT` (macro, line 122) `#define WM_SC_LEFT`
+  - `WM_SC_RIGHT` (macro, line 123) `#define WM_SC_RIGHT`
+  - `WM_SC_HOME` (macro, line 124) `#define WM_SC_HOME`
+  - `WM_SC_END` (macro, line 125) `#define WM_SC_END`
+  - `WM_SNAP_LEFT` (macro, line 128) `#define WM_SNAP_LEFT`
+  - `WM_SNAP_RIGHT` (macro, line 129) `#define WM_SNAP_RIGHT`
+  - `WM_SNAP_TOP` (macro, line 130) `#define WM_SNAP_TOP`
+  - `WM_SNAP_BOTTOM` (macro, line 131) `#define WM_SNAP_BOTTOM`
+  - `WM_SNAP_TOP_LEFT` (macro, line 132) `#define WM_SNAP_TOP_LEFT`
+  - `WM_SNAP_TOP_RIGHT` (macro, line 133) `#define WM_SNAP_TOP_RIGHT`
+  - `WM_SNAP_BOTTOM_LEFT` (macro, line 134) `#define WM_SNAP_BOTTOM_LEFT`
+  - `WM_SNAP_BOTTOM_RIGHT` (macro, line 135) `#define WM_SNAP_BOTTOM_RIGHT`
+  - `WM_PATH_COOKED` (macro, line 138) `#define WM_PATH_COOKED`
+  - `WM_PATH_RAW` (macro, line 139) `#define WM_PATH_RAW`
+  - `WM_COMBOS_N` (macro, line 198) `#define WM_COMBOS_N`
+- Depends on: `drivers/modifiers.h`
 - Imported by: `drivers/kbd.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
 
 ## wm_focus.h
@@ -1874,6 +1900,26 @@ void kmain(void)`
   - `WM_LAYOUT_MODE_COUNT` (macro, line 24) `#define WM_LAYOUT_MODE_COUNT`
   - `WM_LAYOUT_CONFIG_DEFAULT` (macro, line 45) `#define WM_LAYOUT_CONFIG_DEFAULT`
 - Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## wm_notify.h
+- Layer: utility
+- Doc: ifndef WM_NOTIFY_H define WM_NOTIFY_H  Docstring: Focus event bus for the MiniOS desktop.
+- Language: h
+- Symbols:
+  - `wm_notify_event_t` (struct, line 30)
+  - `wm_notify_bus_t` (struct, line 43)
+  - `wm_notify_reset` (function, line 51) `static inline void wm_notify_reset(wm_notify_bus_t *bus)`
+  - `wm_notify_subscribe` (function, line 66) `static inline int wm_notify_subscribe(wm_notify_bus_t *bus,
+                                     ...`
+  - `wm_notify_emit` (function, line 76) `static inline void wm_notify_emit(wm_notify_bus_t *bus,
+                                  const w...`
+  - `wm_notify_last` (function, line 90) `static inline const wm_notify_event_t *wm_notify_last(
+    const wm_notify_bus_t *bus)`
+  - `wm_notify_src_name` (function, line 98) `static inline const char *wm_notify_src_name(int source)`
+  - `void` (function, line 38) `typedef void (*wm_notify_handler_t)(const wm_notify_event_t *event);`
+  - `WM_NOTIFY_H` (macro, line 2) `#define WM_NOTIFY_H`
+  - `WM_NOTIFY_MAX_HANDLERS` (macro, line 41) `#define WM_NOTIFY_MAX_HANDLERS`
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_notify.c`, `vga_fb.h`
 
 ## wm_render.h
 - Layer: presentation
