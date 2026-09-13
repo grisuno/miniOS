@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "minios_abi.h"
+#include "wm_notify.h"
 
 /* Framebuffer geometry. The boot loader probes VESA BIOS Extensions for a
  * high-resolution linear framebuffer (32-bit true color first, then the
@@ -193,6 +194,10 @@ int      vga_fb_close_active(void);
 void     vga_fb_focus_next(void);
 int      vga_fb_focus_id(int id);
 int      vga_fb_focus_get(void);
+/* Focus event bus (wm_notify.h): last move for serial-observable state,
+ * plus programmatic reporting for focus moves owned by other units. */
+const wm_notify_event_t *vga_fb_focus_event(void);
+void     vga_fb_focus_report(int before, int source);
 int      vga_fb_theme_name(char *dst, int cap);
 /* PS/2 ownership for pid: 1 when pid may consume the keyboard port. One
  * keyboard feeds every window, so the focused window owns it: a background

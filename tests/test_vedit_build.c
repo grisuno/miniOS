@@ -11,7 +11,8 @@
  *   t_base_of  <-> vedit_base_of    (strip dirs, cut at '.', 48-byte cap)
  *   t_join     <-> vedit_join       (dir+base+ext, 64-byte cap)
  *   t_link_fmt <-> vedit_link_fmt   ("elf"=1, "cvm"=2, else 0)
- *   t_lang_of  <-> vedit_lang_of    (untitled/.c/.h/.s=C, .py=PY, .lua=LUA)
+ *   t_lang_of  <-> vedit_lang_of    (untitled/.c/.h=C, .s=ASM, .py=PY, .lua=LUA)
+ *   t_run_kind <-> vedit_run_kind   (c/h=1, lua=2, py=3, s=4, else 0)
  *   shortcuts  <-> VEDIT_KEY_RUN/LINK/DUMP (18/12/4)
  * If a vector changes in the guest, update the host CHECKs here too.
  */
@@ -87,14 +88,14 @@ static int t_link_fmt(const char *s) {
     return 0;
 }
 
-/* Mirror of vedit_lang_of: 1=C, 2=PY, 3=LUA. Unknown defaults to C,
- * exactly like the guest (untitled highlights as C). */
+/* Mirror of vedit_lang_of: 1=C, 2=PY, 3=LUA, 4=ASM. Unknown defaults
+ * to C, exactly like the guest (untitled highlights as C). */
 static int t_lang_of(const char *fname) {
     size_t n = strlen(fname);
     if (n >= 2 && fname[n - 2] == '.') {
         if (fname[n - 1] == 'c') return 1;
         if (fname[n - 1] == 'h') return 1;
-        if (fname[n - 1] == 's') return 1;
+        if (fname[n - 1] == 's') return 4;
     }
     if (n >= 3 && fname[n - 3] == '.' &&
         fname[n - 2] == 'p' && fname[n - 1] == 'y')
@@ -103,6 +104,15 @@ static int t_lang_of(const char *fname) {
         fname[n - 2] == 'u' && fname[n - 1] == 'a')
         return 3;
     return 1;
+}
+
+/* Mirror of vedit_run_kind: 1=minigcc, 2=lua, 3=python, 4=ld, else 0. */
+static int t_run_kind(const char *fname) {
+    if (t_has_ext(fname, ".c") || t_has_ext(fname, ".h")) return 1;
+    if (t_has_ext(fname, ".lua")) return 2;
+    if (t_has_ext(fname, ".py")) return 3;
+    if (t_has_ext(fname, ".s")) return 4;
+    return 0;
 }
 
 int main(void) {
@@ -114,6 +124,14 @@ int main(void) {
     CHECK(t_lang_of("a.h") == 1, ".h highlights as C");
     CHECK(t_lang_of("a.py") == 2, ".py highlights as Python");
     CHECK(t_lang_of("a.lua") == 3, ".lua highlights as Lua");
+    CHECK(t_lang_of("a.s") == 4, ".s highlights as Asm");
+
+    CHECK(t_run_kind("a.c") == 1, ".c routes to minigcc");
+    CHECK(t_run_kind("a.h") == 1, ".h routes to minigcc");
+    CHECK(t_run_kind("a.lua") == 2, ".lua routes to lua");
+    CHECK(t_run_kind("a.py") == 3, ".py routes to python");
+    CHECK(t_run_kind("a.s") == 4, ".s routes to ld");
+    CHECK(t_run_kind("a.txt") == 0, ".txt routes nowhere");
 
     CHECK(t_has_ext("a.c", ".c"), "c ext matches");
     CHECK(!t_has_ext("a.c", ".lua"), "c is not lua");

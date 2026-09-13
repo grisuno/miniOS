@@ -1315,6 +1315,18 @@ driver_test: tests/test_driver.c drivers/driver.c driver.h | $(TOOLS_DIR)
 test-driver: driver_test
 	$(TOOLS_DIR)/driver_test
 
+modifiers_test: tests/test_modifiers.c drivers/modifiers.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/modifiers_test tests/test_modifiers.c
+
+test-modifiers: modifiers_test
+	$(TOOLS_DIR)/modifiers_test
+
+notify_test: tests/test_notify.c wm_notify.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/notify_test tests/test_notify.c
+
+test-notify: notify_test
+	$(TOOLS_DIR)/notify_test
+
 # Window manager geometry and event host test (header-only wm_geom.h + wm_events.h).
 wm_test: tests/test_wm.c wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_layout.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/wm_test tests/test_wm.c
@@ -1324,7 +1336,7 @@ test-wm: wm_test
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test modifiers_test notify_test
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1338,6 +1350,8 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/ktime_test
 	$(TOOLS_DIR)/randmix_test
 	$(TOOLS_DIR)/wm_test
+	$(TOOLS_DIR)/modifiers_test
+	$(TOOLS_DIR)/notify_test
 
 # Phase 0.2/0.3 host test: pure TSC-to-microsecond conversion in ktime.h.
 ktime_test: tests/test_ktime.c ktime.h | $(TOOLS_DIR)
@@ -1391,7 +1405,7 @@ console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h
+         sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 editor.o: kernel/editor.c kernel.h shell.h editor.h vga_fb.h
@@ -1427,7 +1441,7 @@ ramdisk.o: fs/ramdisk.c kernel.h
 time.o: kernel/time.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kbd.o: drivers/kbd.c kernel.h vga_fb.h drivers/kbd.h
+kbd.o: drivers/kbd.c kernel.h vga_fb.h drivers/kbd.h drivers/modifiers.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 printf.o: kernel/printf.c kernel.h
@@ -1439,7 +1453,10 @@ klog.o: kernel/klog.c kernel.h
 exec.o: kernel/exec.c kernel.h bootdefs.h arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h
@@ -1570,13 +1587,13 @@ tick.o: kernel/tick.c tick.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
-           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h
+           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 pcspk.o: drivers/pcspk.c pcspk.h driver.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-sb16.o: drivers/sb16.c sb16.h kernel.h
+sb16.o: drivers/sb16.c sb16.h kernel.h driver.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 rtc.o: drivers/rtc.c rtc.h kernel.h
@@ -1623,8 +1640,8 @@ batch.o: kernel/batch.c batch.h
 rcu.o: kernel/rcu.c rcu.h sched.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
+kernel.elf: kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o -o $@

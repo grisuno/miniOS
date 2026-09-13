@@ -1,6 +1,7 @@
 #include "kernel.h"
 #include "sb16.h"
 #include "sync.h"
+#include "driver.h"
 
 /* Sound Blaster 16 DMA audio driver.
  *
@@ -451,6 +452,53 @@ void sb16_counters(sb16_counters_t *out) {
     if (out) *out = sb16_stat;
 }
 
+/** Docstring: Strategy verbs publishing the PCM sink to the registry. */
+static int sb16_ops_present(device_t *dev)
+{
+    (void)dev;
+    return sb16_present();
+}
+
+/** Docstring: Strategy verb for PCM open. */
+static void sb16_ops_pcm_open(device_t *dev)
+{
+    (void)dev;
+    sb16_pcm_open();
+}
+
+/** Docstring: Strategy verb for PCM close. */
+static void sb16_ops_pcm_close(device_t *dev)
+{
+    (void)dev;
+    sb16_pcm_close();
+}
+
+/** Docstring: Strategy verb for PCM submit. */
+static int sb16_ops_pcm_submit(device_t *dev, const unsigned char *pcm, unsigned len)
+{
+    (void)dev;
+    return sb16_pcm_submit(pcm, len);
+}
+
+static const audio_ops_t sb16_audio_ops = {
+    .tone = 0,
+    .off = 0,
+    .set_volume = 0,
+    .get_volume = 0,
+    .present = sb16_ops_present,
+    .pcm_open = sb16_ops_pcm_open,
+    .pcm_close = sb16_ops_pcm_close,
+    .pcm_submit = sb16_ops_pcm_submit,
+};
+
+static device_t sb16_device = {
+    "sb160",
+    DEV_TYPE_AUDIO,
+    0,
+    &sb16_audio_ops,
+    0,
+};
+
 int sb16_init(void) {
     unsigned char major = 0, minor = 0;
     if (sb16_ready) return 1;
@@ -473,5 +521,6 @@ int sb16_init(void) {
     pcm_free = SB16_RING_CAP;
     sb16_ready = 1;
     sb16_last_arm_ms = ktime_ms();
+    device_register(&sb16_device);
     return 1;
 }

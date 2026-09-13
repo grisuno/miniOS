@@ -51,10 +51,14 @@ static unsigned pcspk_ops_get_volume(device_t *dev) {
 }
 
 static const audio_ops_t pcspk_audio_ops = {
-    pcspk_ops_tone,
-    pcspk_ops_off,
-    pcspk_ops_set_volume,
-    pcspk_ops_get_volume,
+    .tone = pcspk_ops_tone,
+    .off = pcspk_ops_off,
+    .set_volume = pcspk_ops_set_volume,
+    .get_volume = pcspk_ops_get_volume,
+    .present = 0,
+    .pcm_open = 0,
+    .pcm_close = 0,
+    .pcm_submit = 0,
 };
 
 static device_t pcspk_device = {

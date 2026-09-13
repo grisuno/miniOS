@@ -2,6 +2,7 @@
 #include "sched.h"
 #include "vga_fb.h"
 #include "kbd.h"
+#include "modifiers.h"
 #include "wm_events.h"
 
 /* ================================================================
@@ -104,17 +105,17 @@ void kbd_toggle_layout(void) {
     kbd_layout = (kbd_layout == KBD_LAYOUT_ES) ? KBD_LAYOUT_EN : KBD_LAYOUT_ES;
 }
 
-static int kbd_shift;
-static int kbd_ctrl;
-static int kbd_alt;
-/* Super/Windows modifier (E0 0x5B/0x5C, either side): the tile-WM key.
- * Tracked like Alt; cleared with the other modifiers on shell reset. */
-static int kbd_super;
-/* Right Alt (AltGr on ES hardware): E0 0x38 make/break, tracked separately
- * from Left Alt so the Alt+ tiling shortcuts never fire from it and EN (no
- * AltGr layer) ignores it. Cleared with the other modifiers on shell reset
- * so a held key cannot stick across a program exit. */
-static int kbd_altgr;
+/** Docstring: Single modifier state shared by cooked and raw paths. */
+static modifier_state_t kbd_mods;
+static const modifier_keys_t kbd_keys = {
+    KEY_LSHIFT, KEY_RSHIFT, KEY_LCTRL, KEY_LALT, KEY_RALT,
+    KEY_SUPER_L, KEY_SUPER_R
+};
+#define kbd_shift (kbd_mods.shift)
+#define kbd_ctrl (kbd_mods.ctrl)
+#define kbd_alt (kbd_mods.alt)
+#define kbd_super (kbd_mods.super)
+#define kbd_altgr (kbd_mods.altgr)
 
 #define KBD_QUEUE_LEN 8
 #define KBD_SCAN_DEL 0x53
@@ -217,12 +218,7 @@ void kbd_raw_flush(void) {
 static int wm_raw_swallow_tab_break;
 
 static int raw_track_mods(int code, int brk, int e0) {
-    if (!e0 && (code == KEY_LSHIFT || code == KEY_RSHIFT)) { kbd_shift = !brk; return 1; }
-    if (!e0 && code == KEY_LCTRL) { kbd_ctrl = !brk; return 1; }
-    if (!e0 && code == KEY_LALT) { kbd_alt = !brk; return 1; }
-    if (e0 && code == KEY_RALT) { kbd_altgr = !brk; return 1; }
-    if (e0 && (code == KEY_SUPER_L || code == KEY_SUPER_R)) { kbd_super = !brk; return 1; }
-    return 0;
+    return modifiers_update(&kbd_keys, &kbd_mods, code, brk, e0);
 }
 
 /** Docstring: Dispatch one looked-up WM combo to the window manager. */
@@ -282,7 +278,7 @@ static int wm_raw_combo(int code, int e0) {
     int zone = 0;
     int action;
     if (!vga_fb_active) return 0;
-    action = wm_combo_lookup(kbd_alt, kbd_altgr, kbd_super, e0 ? 1 : 0, code, WM_PATH_RAW, &zone);
+    action = wm_combo_lookup_mods(&kbd_mods, e0 ? 1 : 0, code, WM_PATH_RAW, &zone);
     if (action == WM_COMBO_NONE) {
         return 0;
     }
@@ -370,11 +366,7 @@ int kbd_read(void) {
 
     if (sc & 0x80) {
         sc &= 0x7F;
-        if (sc == KEY_LSHIFT || sc == KEY_RSHIFT) kbd_shift = 0;
-        if (sc == KEY_LCTRL) kbd_ctrl = 0;
-        if (sc == KEY_LALT) kbd_alt = 0;
-        if (kbd_e0 && sc == KEY_RALT) kbd_altgr = 0;
-        if (kbd_e0 && (sc == KEY_SUPER_L || sc == KEY_SUPER_R)) kbd_super = 0;
+        modifiers_update(&kbd_keys, &kbd_mods, sc, 1, kbd_e0);
         kbd_e0 = 0;
         return -1;
     }
@@ -383,15 +375,14 @@ int kbd_read(void) {
         int zone = 0;
         int action;
         kbd_e0 = 0;
-        if (sc == KEY_RALT) { kbd_altgr = 1; return -1; }
-        if (sc == KEY_SUPER_L || sc == KEY_SUPER_R) { kbd_super = 1; return -1; }
+        if (modifiers_update(&kbd_keys, &kbd_mods, sc, 0, 1)) return -1;
         if (kbd_ctrl && vga_fb_active) {
             if (sc == KEY_UP)       { vga_fb_move_terminal(0, -1); return -1; }
             if (sc == KEY_DOWN)     { vga_fb_move_terminal(0,  1); return -1; }
             if (sc == KEY_LEFT)     { vga_fb_move_terminal(-1, 0); return -1; }
             if (sc == KEY_RIGHT)    { vga_fb_move_terminal( 1, 0); return -1; }
         }
-        action = wm_combo_lookup(kbd_alt, kbd_altgr, kbd_super, 1, sc, WM_PATH_COOKED, &zone);
+        action = wm_combo_lookup_mods(&kbd_mods, 1, sc, WM_PATH_COOKED, &zone);
         if (action != WM_COMBO_NONE) {
             if (wm_combo_dispatch(action, zone)) return -1;
         }
@@ -420,12 +411,10 @@ int kbd_read(void) {
         return -1;
     }
 
-    if (sc == KEY_LSHIFT || sc == KEY_RSHIFT) { kbd_shift = 1; return -1; }
-    if (sc == KEY_LCTRL) { kbd_ctrl = 1; return -1; }
-    if (sc == KEY_LALT) { kbd_alt = 1; return -1; }
+    if (modifiers_update(&kbd_keys, &kbd_mods, sc, 0, 0)) return -1;
     {
         int zone = 0;
-        int action = wm_combo_lookup(kbd_alt, kbd_altgr, kbd_super, 0, sc, WM_PATH_COOKED, &zone);
+        int action = wm_combo_lookup_mods(&kbd_mods, 0, sc, WM_PATH_COOKED, &zone);
         if (action != WM_COMBO_NONE) {
             if (wm_combo_dispatch(action, zone)) return -1;
         }
@@ -455,11 +444,7 @@ int kbd_read(void) {
 
 void kbd_reset_for_shell(void) {
     kbd_raw_mode = 0;
-    kbd_shift = 0;
-    kbd_ctrl = 0;
-    kbd_alt = 0;
-    kbd_altgr = 0;
-    kbd_super = 0;
+    modifiers_init(&kbd_mods);
     wm_raw_swallow_tab_break = 0;
     kbd_q_head = kbd_q_tail = 0;
     kbd_raw_head = kbd_raw_tail = 0;

@@ -39,6 +39,10 @@ typedef struct {
     void     (*off)(device_t *dev);
     void     (*set_volume)(device_t *dev, unsigned vol);
     unsigned (*get_volume)(device_t *dev);
+    int      (*present)(device_t *dev);
+    void     (*pcm_open)(device_t *dev);
+    void     (*pcm_close)(device_t *dev);
+    int      (*pcm_submit)(device_t *dev, const unsigned char *pcm, unsigned len);
 } audio_ops_t;
 
 struct device {

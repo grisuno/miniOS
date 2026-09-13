@@ -828,7 +828,20 @@ framebuffer is not.
   half — two stack vertically on the left — and a window too wide for the
   half goes right-aligned instead of centered). Super+arrows snap the
   focused window like Alt+arrows. Clicking an unfocused terminal raises it
-  through the same select path, so mouse and keys agree. The `wm` builtin
+  through the same select path, so mouse and keys agree. Click-to-focus
+  follows paint order (graphics first, then terminals): the gfx window
+  composites on top, so it owns overlapping clicks, and an already-focused
+  target never repaints (`vga_fb_focus_id` early-outs). Mechanism, not
+  incident: testing terminals first stole gfx clicks — one click focused
+  the wrong window, the unfocused app read -1 from `SYS_MOUSE`, and the
+  user paid three clicks per action with a full repaint flash each time.
+  Every focus move emits once on the `wm_notify.h` bus at the user-intent
+  site (keyboard cycle, pointer click, taskbar button, mode switch, shell
+  command), never inside the mechanism, so one gesture is one event; the
+  cursor-sync subscriber owns stale-cursor invalidation (the tick no
+  longer clears it by hand on focus clicks) and `wm state` reports the
+  last move as `wm: focus-event <old>-><new> <kbd|ptr|bar|mode|prog>`.
+  The `wm` builtin
   drives the same functions (`wm focus [next|0|1|2]`, `wm tile`, `wm list`,
   `wm state` reports `focus`/`nterms`) so the BDD suite asserts them over
   serial exactly like `date`/`vol` (including a background-DOOM scenario
@@ -1113,11 +1126,50 @@ userland cannot mutate an array between validation and execution (no
 TOCTOU). The macros name only `user_range_ok`/`user_str_ok`/`kmemcpy`/
 `EFAULT` and are host-tested (`make test-sanitize`, mutation-covered);
 `grep SANITIZE_` lists every sanitized entry point. Boundary rule:
-sanitize at the boundary, trust internally. Region-typed validation (heap
+sanitize at the boundary, trust internally. `writev` copies the iovec
+array into kernel memory before iterating it, so userland cannot mutate
+an entry between its range check and its use. Region-typed validation (heap
 vs stack vs mmap) is deliberately deferred: the VMA tree tracks mmap
 regions only, and futex/batch words legitimately live in any writable
 region, so a single-type check would need a region-mask redesign plus
-tagging at load/brk/stack setup first.
+tagging at load/brk/stack setup first. Mechanism lesson, not incident:
+a disabled check is a live vulnerability even when the suite is green —
+`SANITIZE_COPY_IN` with its negative and wrap checks replaced by `if (0)`
+segfaults the host suite instead of passing it, which is how a committed
+mutant in this file was caught and reverted; never commit with a red
+`make test-sanitize`.
+
+### Spawn contract (`spawn.h` + `kernel/spawn.c`)
+`k_syscall_spawn` is a ~30-line thin wrapper: validate, copy argv,
+resolve, snapshot, `spawn_backup`, `spawn_execute`, release,
+`spawn_restore`. The context struct carries only scalars plus VMA roots;
+the pool copy lives in a file-static array because `VMA_MAX` nodes do not
+fit any kernel stack. `spawn_execute` runs ET_REL through the ring-0
+loader behind the `objects/` trust gate and ET_EXEC/ET_DYN through the
+isolated `proc_spawn_elf` window. Backup/restore are symmetric by
+construction; the `procs[0].kstack` save is unconditional because an
+ET_REL child exits through `klongjmp` past the entry write-back.
+
+### Audio Strategy (`driver.h` + `drivers/sb16.c`)
+The PCM sink joins the tone sink in the device registry: `audio_ops_t`
+carries `present`/`pcm_open`/`pcm_close`/`pcm_submit` beside the tone
+verbs, `sb160` registers on successful DSP probe (absent device is
+fail-closed: open reports 0, submit refuses -1), and the syscall layer
+dispatches through `device_find`, never by direct call. The pump and the
+mixer streams stay direct: the pump runs in ISR context and the streams
+are per-id mixer state, not device verbs. Host proof is `make
+test-driver`, which now covers tone-only vs PCM device dispatch.
+
+### Modifier contract (`drivers/modifiers.h`)
+One `modifier_state_t` serves the cooked and raw keyboard paths through
+`modifiers_update` (single consumer of every make/break edge) and
+`wm_combo_lookup_mods` (single entry into the shared `WM_COMBOS` table),
+host-tested by `make test-modifiers`. The old parallel tracking in
+`raw_track_mods` and the cooked break/make blocks is gone; behavior is
+unchanged because real hardware never E0-prefixes Shift/Ctrl/Alt.
+Cursor visibility is structural: the arrow paints white over a 1-px
+black outline (`COL_BLACK`), so it reads on the white paint canvas and
+on dark terminals alike.
 
 ### User-mode isolation
 ET_EXEC / ET_DYN binaries run at ring 3 under hardware page protection;
@@ -1685,23 +1737,31 @@ beside it).
   `^L` so the linker owns `^L`). Save/Find/Name/Run/Link/Done are also
   clickable buttons; the wheel scrolls by moving the cursor (the old
   code moved only the viewport offset, which the cursor-follow pass
-  snapped straight back, so wheeling long files did nothing). A
-  512-line / 127-char buffer
-  with the same fail-closed rules as `edit`: full lines, overflowing
-  joins and full buffers refuse whole, and a truncated load refuses
-  to save and to build. The frame loop polls instead of blocking on a
-  key (8 ms pacing like the node editor) so wheel and mouse drain every
+   snapped straight back, so wheeling long files did nothing). A
+   4096-line / 255-char heap buffer (1 MB pool, so real sources like
+   `freedom.c` at 1236 lines open whole)
+   with the same fail-closed rules as `edit`: full lines, overflowing
+   joins and full buffers refuse whole, and a truncated load refuses
+   to save and to build. The frame loop polls instead of blocking on a
+   key (8 ms pacing like the node editor) so wheel and mouse drain every
   frame; the ESC `[` decoder is a cross-frame state machine with a
   100 ms timeout, degrading to a bare Esc instead of hanging.
 - Build/run (`^R`, `^L`, single-file contract in `progs/vedit/vedit.c`):
   `^R` saves then routes by extension through `SYS_SPAWN` (215) so the
-  IDE survives the child: `.c`/`.h`/`.s` compile with
-  `objects/minigcc.o <file>` redirected to `asm/<base>.s`, `.lua` runs
-  with `lua <file>`, `.py` runs with `micropython <file>`; `^L`
+  IDE survives the child: `.c`/`.h` compile with
+  `objects/minigcc.o <file>` redirected to `asm/<base>.s`, `.s` links
+  with `objects/ld.o -f elf -o bin/<base>.elf` and runs the result
+  (same as `^L` answering `elf`, without prompting), `.lua` runs
+  with `lua <file>`, `.py` runs with `micropython <file>`; the routing
+  lives in `vedit_run_kind` (mirrored by `t_run_kind` in
+  `tests/test_vedit_build.c`, so drift fails `make test-vedit`). `^L`
   prompts `link elf/cvm: ` and links `asm/<base>.s` with
   `objects/ld.o -f <fmt> -o bin/<base>.elf|cvm/<base>.cvm`, then runs
   the freshly linked artifact (`cvm.o` for a `.cvm`, the ELF directly)
-  so its output lands on the console without leaving the IDE. Every
+  so its output lands on the console without leaving the IDE. A
+  redirect whose commit fails is loud, never a silent drop: the spawn
+  layer reports `SPAWN: redirect to <path> failed` on the live console
+  and the IDE names the missing log file. Every
   build drops `SYS_VGA_MODE` first so the desktop terminal stays
   ordered and the toolchain log lands on the console, then resumes the
   IDE and reports the exit code in the status row. `mrun` stays the
@@ -1713,12 +1773,17 @@ beside it).
   `/asm/`, `/bin/`, `/cvm/`), never host paths, so editing a file in a
   subdirectory (`cd src`) still resolves the toolchain and outputs at
   the system root instead of under the cwd.
-- Highlighting: C (`.c`/`.h`/`.s`, with `//` and `/* */` plus `#`
+- Highlighting: C (`.c`/`.h`, with `//` and `/* */` plus `#`
   directives; also the default for `untitled` until a name with an
-  extension is given), MicroPython (`.py`, with `#` and triple-quoted strings)
+  extension is given), Assembler (`.s`, AT&T x86-64: `#` and `/* */`
+  comments, `.directives` in preproc ink, `%registers` in number ink,
+  `label:` in string ink, mnemonics in keyword ink), MicroPython (`.py`,
+  with `#` and triple-quoted strings)
   and Lua (`.lua`, with `--`, `--[[ ]]` blocks and `[[ ]]` strings);
   keywords, strings, comments, numbers and directives each get an ink,
-  drawn as per-token runs on the canvas with a block cursor.
+  drawn as per-token runs on the canvas with a block cursor. The `.s`
+  routing is mirrored by `t_lang_of` in `tests/test_vedit_build.c`, so
+  spec drift fails `make test-vedit`.
 - Plumbing: every platform fact comes from `minios_abi.h` or a
   syscall, never a literal. Keystrokes arrive through syscall 236
   `GETC_RAW` (0 polls with `-1` when idle for the bounded ESC-sequence
@@ -2329,6 +2394,12 @@ the 64 MB reservation is unchanged and the physical memory map is untouched.
 The two kernel allocator entry points that matter for isolation are unchanged:
 `kallocator_init` still builds the heap once at boot, and every kmalloc path
 still fails closed (returns 0) rather than faulting on an exhausted heap.
+`kfree` fails loud instead of cryptic: a pointer outside
+`[HEAP_BASE, HEAP_BASE+HEAP_SIZE)` halts with `kfree: wild pointer <p>
+from <caller>` naming the culprit, because a wild free inside dlmalloc
+surfaces far away as a poisoned-pointer `#GP` with no attribution (seen
+once as a Quake 2 shutdown crash that clean headless runs never
+reproduced: `minios_autoframes 400` climbs `gfx frames` 0 to 400).
 
 ## Development Methodology (SDD + TDD + BDD)
 1. **SDD**: every feature begins with a spec in this file.

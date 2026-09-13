@@ -10,6 +10,7 @@
 #include "rtc.h"
 #include "drivers/kbd.h"
 #include "wm_layout.h"
+#include "wm_notify.h"
 #define XXH_STATIC_LINKING_ONLY
 #include "xxhash.h"
 #include "zip.h"
@@ -1892,8 +1893,11 @@ static void shell_cmd_wm(int argc, char **argv) {
             if (argc > 2) {
                 if (kstrcmp(argv[2], "next") == 0) vga_fb_focus_next();
                 else if (argv[2][0] >= '0' && argv[2][0] <= '2' && !argv[2][1]) {
+                    int before = vga_fb_focus_get();
                     if (vga_fb_focus_id(argv[2][0] - '0'))
                         kprintf("wm: no such window\n");
+                    else
+                        vga_fb_focus_report(before, WM_FOCUS_SRC_PROGRAM);
                 } else {
                     vga_puts("usage: wm focus [next|0|1|2]\n");
                     return;
@@ -1924,6 +1928,14 @@ static void shell_cmd_wm(int argc, char **argv) {
         unsigned long raw = 0;
         kbd_drop_counts(&cooked, &raw);
         kprintf("wm: kbd drops cooked=%lu raw=%lu\n", cooked, raw);
+    }
+    {
+        const wm_notify_event_t *fe = vga_fb_focus_event();
+        if (fe)
+            kprintf("wm: focus-event %d->%d %s\n", fe->old_focus,
+                    fe->new_focus, wm_notify_src_name(fe->source));
+        else
+            kprintf("wm: focus-event none\n");
     }
 }
 

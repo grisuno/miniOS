@@ -26,7 +26,19 @@ void *kmalloc(unsigned long size) {
 }
 
 void kfree(void *ptr) {
+    unsigned long p;
     if (!ptr) return;
+    /* Fail loud with attribution instead of a cryptic #GP inside
+     * dlmalloc: a pointer outside the heap is never a valid free, and
+     * the caller address identifies the culprit at the next crash
+     * instead of leaving a poisoned-pointer mystery. */
+    p = (unsigned long)ptr;
+    if (p < (unsigned long)HEAP_BASE ||
+        p >= (unsigned long)HEAP_BASE + (unsigned long)HEAP_SIZE) {
+        kprintf("kfree: wild pointer %lx from %lx, halting",
+                p, (unsigned long)__builtin_return_address(0));
+        for (;;) __asm__ volatile("hlt");
+    }
     dlmalloc_free(ptr);
 }
 

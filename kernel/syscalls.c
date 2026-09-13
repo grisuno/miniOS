@@ -33,6 +33,7 @@
 #include "rcu.h"
 #include "percpu_rq.h"
 #include "sanitize.h"
+#include "driver.h"
 #include "syscalls_proc.h"
 #include "shell.h"
 #include "ktime.h"
@@ -123,7 +124,7 @@ static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6
     long n;
     (void)a4; (void)a5; (void)a6;
     if (cmd < 0) return -38;
-    if (!user_range_ok(uaddr, 4)) return EFAULT;
+    SANITIZE_RANGE(uaddr, 4);
     if (cmd == LINUX_FUTEX_WAKE) {
         n = a3;
         if (n < 0) n = 0;
@@ -311,18 +312,35 @@ static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, lon
     vga_fb_blit_nk_window();
     return 0;
 }
+/** Docstring: Resolve the registered PCM sink, 0 when absent. */
+static device_t *sb16_audio_device(void)
+{
+    device_t *dev = device_find("sb160");
+    if (!dev || !dev->audio || !dev->audio->pcm_submit) return 0;
+    return dev;
+}
 static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    if (a1) sb16_pcm_open(); else sb16_pcm_close();
-    return sb16_present() ? 1 : 0;
+    device_t *dev = sb16_audio_device();
+    if (!dev) return 0;
+    if (a1) {
+        if (dev->audio->pcm_open) dev->audio->pcm_open(dev);
+    } else {
+        if (dev->audio->pcm_close) dev->audio->pcm_close(dev);
+    }
+    if (dev->audio->present) return dev->audio->present(dev) ? 1 : 0;
+    return 0;
 }
 static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     const unsigned char *pcm = (const unsigned char *)a1;
     long len = a2;
+    device_t *dev;
     SANITIZE_LEN_NEG(len);
     SANITIZE_RANGE(a1, len);
-    return sb16_pcm_submit(pcm, (unsigned)len);
+    dev = sb16_audio_device();
+    if (!dev) return -1;
+    return dev->audio->pcm_submit(dev, pcm, (unsigned)len);
 }
 static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
@@ -406,7 +424,7 @@ static long sys_minios_gfx_present(long a1, long a2, long a3, long a4, long a5, 
     if (a1 == 1) {
         if (a2) {
             int *o = (int *)(unsigned long)a2;
-            if (!user_range_ok((unsigned long)a2, 2 * sizeof(int))) return EFAULT;
+            SANITIZE_RANGE(a2, 2 * sizeof(int));
             o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
         }
         vga_fb_blit_nk_window();
@@ -701,7 +719,7 @@ static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)
 static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
     const char *buf = (const char *)a2; long cnt = a3, i;
-    if (cnt > 0 && !user_range_ok((unsigned long)buf, (unsigned long)cnt)) return EFAULT;
+    if (cnt > 0) { SANITIZE_RANGE(buf, (unsigned long)cnt); }
     if (a1 == 1 || a1 == 2) { for (i = 0; i < cnt; i++) vga_putc(buf[i]); return cnt; }
     if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1])
         return (long)kfwrite(buf, 1, (unsigned long)cnt, kfd_table[a1]);
@@ -711,19 +729,29 @@ static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6
 static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
     struct kiovec *iov = (struct kiovec *)a2; long cnt = a3, total = 0, k;
+    struct kiovec *kc = 0;
     if (cnt < 0 || (unsigned long)cnt > (USER_LOAD_END - USER_LOAD_BASE) / sizeof(struct kiovec))
         return -22;
-    if (cnt > 0 && !user_range_ok((unsigned long)iov, (unsigned long)cnt * sizeof(struct kiovec)))
-        return EFAULT;
+    if (cnt > 0) {
+        unsigned long span = (unsigned long)cnt * sizeof(struct kiovec);
+        if (span / sizeof(struct kiovec) != (unsigned long)cnt) return EFAULT;
+        SANITIZE_RANGE(iov, span);
+        kc = (struct kiovec *)kmalloc(span ? span : 1);
+        if (!kc) return EFAULT;
+        kmemcpy(kc, iov, span);
+    }
     for (k = 0; k < cnt; k++) {
         unsigned long j;
-        if (iov[k].iov_len > 0 &&
-            !user_range_ok((unsigned long)iov[k].iov_base, iov[k].iov_len))
+        if (kc[k].iov_len > 0 &&
+            !user_range_ok((unsigned long)kc[k].iov_base, kc[k].iov_len)) {
+            kfree(kc);
             return EFAULT;
+        }
         if (a1 == 1 || a1 == 2)
-            for (j = 0; j < iov[k].iov_len; j++) vga_putc(iov[k].iov_base[j]);
-        total += (long)iov[k].iov_len;
+            for (j = 0; j < kc[k].iov_len; j++) vga_putc(kc[k].iov_base[j]);
+        total += (long)kc[k].iov_len;
     }
+    if (kc) kfree(kc);
     return total;
 }
 
@@ -731,9 +759,7 @@ static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a
 static long do_open_path(const char *path, long flags) {
     const char *mode = ((flags & 1) || (flags & 0x40)) ? "w" : "r";
     int fd;
-    if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) {
-        return EFAULT;
-    }
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
     for (fd = 3; fd < KFD_MAX; fd++) if (!kfd_table[fd]) break;
     if (fd >= KFD_MAX) return -24;
     {
@@ -917,7 +943,7 @@ static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6
 static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     const char *path = (const char *)a1;
-    if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
     char resolved[RAMDISK_FNAME_LEN];
     if (!fs_resolve(path, resolved, sizeof(resolved))) return -2;
     RDFile *f = ramdisk_open(resolved);
@@ -943,17 +969,17 @@ static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a
 
 static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
-    if (!user_range_ok((unsigned long)a2, 16)) return EFAULT;
+    SANITIZE_RANGE(a2, 16);
     return net_sys_connect(a1, a2, a3);
 }
 
 static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6) {
-    if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
+    if (a3 > 0) { SANITIZE_RANGE(a2, (unsigned long)a3); }
     return net_sys_sendto(a1, a2, a3, a4, a5, a6);
 }
 
 static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6) {
-    if (a3 > 0 && !user_range_ok((unsigned long)a2, (unsigned long)a3)) return EFAULT;
+    if (a3 > 0) { SANITIZE_RANGE(a2, (unsigned long)a3); }
     return net_sys_recvfrom(a1, a2, a3, a4, a5, a6);
 }
 
@@ -965,7 +991,7 @@ static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long
 static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
     if (a2 < 0 || (unsigned long)a2 > (USER_LOAD_END - USER_LOAD_BASE) / 8) return -22;
-    if (a2 > 0 && !user_range_ok((unsigned long)a1, (unsigned long)a2 * 8)) return EFAULT;
+    if (a2 > 0) { SANITIZE_RANGE(a1, (unsigned long)a2 * 8); }
     return net_sys_poll(a1, a2, a3);
 }
 
@@ -993,7 +1019,7 @@ static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a
     char *buf = (char *)a1;
     unsigned long sz = (unsigned long)a2;
     if (!buf || sz == 0) return -22;
-    if (!user_range_ok((unsigned long)buf, sz)) return EFAULT;
+    SANITIZE_RANGE(buf, sz);
     unsigned long cwd_len = (unsigned long)kstrlen(fs_cwd);
     if (sz < cwd_len + 1) return -34;
     for (unsigned long i = 0; i <= cwd_len; i++) buf[i] = fs_cwd[i];
@@ -1003,7 +1029,7 @@ static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a
 static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     const char *path = (const char *)a1;
-    if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
     char resolved[RAMDISK_FNAME_LEN];
     if (!fs_resolve(path, resolved, sizeof(resolved))) return -36;
     if (fs_is_dir(resolved)) return -21;
@@ -1021,7 +1047,7 @@ static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long
 static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     unsigned long *st = (unsigned long *)a2;
-    if (!user_range_ok((unsigned long)a2, 144)) return EFAULT;
+    SANITIZE_RANGE(a2, 144);
     for (int i = 0; i < 18; i++) st[i] = 0;
     if (a1 == 0 || a1 == 1 || a1 == 2) {
         ((unsigned int *)(unsigned long)a2)[6] = 0020666;
@@ -1051,7 +1077,7 @@ static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, 
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     if (a1) {
         unsigned long *tv = (unsigned long *)a1;
-        if (!user_range_ok((unsigned long)a1, 2 * sizeof(unsigned long))) return EFAULT;
+        SANITIZE_RANGE(a1, 2 * sizeof(unsigned long));
         {
             unsigned long total = wall_us_now();
             tv[0] = total / 1000000UL;
@@ -1082,7 +1108,7 @@ static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6
     char *u;
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     if (!a1) return EFAULT;
-    if (!user_range_ok((unsigned long)a1, 390)) return EFAULT;
+    SANITIZE_RANGE(a1, 390);
     u = (char *)a1;
     kmemset(u, 0, 390);
     kstrcpy(u, "MiniOS");
@@ -1264,7 +1290,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         * (Phase 0.2: two successive reads differ and order correctly). */
         if (a2) {
             unsigned long *ts = (unsigned long *)a2;
-            if (!user_range_ok((unsigned long)ts, 2 * sizeof(unsigned long))) return EFAULT;
+            SANITIZE_RANGE(ts, 2 * sizeof(unsigned long));
             if (a1 == 1) {
                 unsigned long us = ktime_us();
                 ts[0] = us / 1000000UL; ts[1] = (us % 1000000UL) * 1000UL;
@@ -1318,7 +1344,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         unsigned long cnt = (unsigned long)a2;
         unsigned long i, word = 0;
         int have_rdrand = 0;
-        if (cnt > 0 && !user_range_ok((unsigned long)buf, cnt)) return EFAULT;
+        if (cnt > 0) { SANITIZE_RANGE(buf, cnt); }
         {
             unsigned int ecx = 0;
             __asm__ volatile("mov $1, %%eax; cpuid; mov %%ecx, %0"
@@ -1356,8 +1382,8 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     case 262: { /* newfstatat */
         const char *path = (const char *)a2;
         unsigned long *st = (unsigned long *)a3;
-        if (!user_str_ok((unsigned long)path, RAMDISK_FNAME_LEN)) return EFAULT;
-        if (!user_range_ok((unsigned long)st, 144)) return EFAULT;
+        SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+        SANITIZE_RANGE(st, 144);
         for (int i = 0; i < 18; i++) st[i] = 0;
         char resolved[RAMDISK_FNAME_LEN];
         if (!fs_resolve(path, resolved, sizeof(resolved))) return -2;
@@ -1406,138 +1432,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
  * interpreter.
  */
 
+#include "spawn.h"
+
 static int k_syscall_spawn(const char *path, const char *redirect,
-                             int child_argc, const char **child_argv); /* fwd */
-
-/* Spawn context: scalar shared-window view saved across a child run.
- * The VMA pool copy stays in a file-static array (VMA_MAX nodes ~= 160 KB,
- * far beyond any kernel stack); the struct carries only the roots + count,
- * so it is stack-safe. Backup/restore are symmetric: every field saved is
- * restored, no silent partial state. */
-typedef struct {
-    unsigned long brk;
-    unsigned long brk_lim;
-    unsigned long mmap_cur;
-    unsigned long fsbase;
-    unsigned long gsbase;
-    uint64_t p0_kstack;
-    vma_node_t *live_root;
-    vma_node_t *free_root;
-    int pool_n;
-    KFILE *kfd[KFD_MAX];
-} spawn_ctx_t;
-
-static vma_node_t spawn_vma_copy[VMA_MAX];
-
-static void spawn_backup(spawn_ctx_t *c) {
-    int i;
-    c->brk = g_brk;
-    c->brk_lim = g_brk_limit;
-    c->mmap_cur = user_mmap_cur;
-    c->fsbase = rdmsr(MSR_FSBASE);
-    c->gsbase = rdmsr(MSR_GSBASE);
-    c->p0_kstack = procs[0].kstack;
-    for (i = 0; i < vma_pool_n; i++)
-        spawn_vma_copy[i] = vma_pool[i];
-    c->live_root = vma_live_root;
-    c->free_root = vma_free_root;
-    c->pool_n = vma_pool_n;
-    for (i = 0; i < KFD_MAX; i++)
-        c->kfd[i] = kfd_table[i];
-}
-
-static void spawn_restore(const spawn_ctx_t *c) {
-    int i;
-    g_brk = c->brk;
-    g_brk_limit = c->brk_lim;
-    user_mmap_cur = c->mmap_cur;
-    procs[0].kstack = c->p0_kstack;
-    for (i = 0; i < c->pool_n; i++)
-        vma_pool[i] = spawn_vma_copy[i];
-    vma_pool_n = c->pool_n;
-    vma_live_root = c->live_root;
-    vma_free_root = c->free_root;
-    wrmsr(MSR_FSBASE, c->fsbase);
-    wrmsr(MSR_GSBASE, c->gsbase);
-    for (i = 0; i < KFD_MAX; i++)
-        kfd_table[i] = c->kfd[i];
-}
-
-static void spawn_free_argv(char **kargv, int argc) {
-    int i;
-    if (!kargv) return;
-    for (i = 0; i < argc; i++)
-        if (kargv[i]) kfree(kargv[i]);
-    kfree(kargv);
-}
-
-static char **spawn_copy_argv(int argc, const char **uargv) {
-    char **kargv;
-    int i;
-    if (argc <= 0 || !uargv) return 0;
-    kargv = (char **)kmalloc((unsigned)(argc + 1) * sizeof(char *));
-    if (!kargv) return 0;
-    for (i = 0; i <= argc; i++) kargv[i] = 0;
-    for (i = 0; i < argc; i++) {
-        unsigned slen;
-        if (!uargv[i]) break;
-        slen = (unsigned)kstrlen(uargv[i]) + 1;
-        kargv[i] = (char *)kmalloc(slen);
-        if (!kargv[i]) { spawn_free_argv(kargv, i); return 0; }
-        kmemcpy(kargv[i], uargv[i], slen);
-    }
-    kargv[argc] = 0;
-    return kargv;
-}
-
-static int spawn_validate_argv(int argc, const char **uargv) {
-    int i;
-    if (argc <= 0 || !uargv) return 1;
-    if (!user_range_ok((unsigned long)uargv,
-                       (unsigned long)(argc + 1) * sizeof(char *)))
-        return 0;
-    for (i = 0; i < argc; i++) {
-        unsigned long s;
-        if (!uargv[i]) break;
-        s = (unsigned long)uargv[i];
-        if (s < USER_LOAD_BASE || s >= USER_LOAD_END) return 0;
-        if (!user_str_ok(s, USER_LOAD_END - s)) return 0;
-    }
-    return 1;
-}
-
-static unsigned char *spawn_load_image(const char *resolved, unsigned *size_out) {
-    RDFile *f = ramdisk_open(resolved);
-    unsigned char *data = 0;
-    unsigned data_size = 0;
-    *size_out = 0;
-    if (f) {
-        data_size = f->size ? f->size : 1;
-        data = (unsigned char *)kmalloc(data_size);
-        if (!data) return 0;
-        ramdisk_read(f, data, 0, f->size);
-    } else if (minifs_is_mounted()) {
-        int ino = minifs_resolve_path(resolved);
-        if (ino < 0) {
-            const char *base = resolved;
-            const char *p;
-            for (p = resolved; *p; p++)
-                if (*p == '/') base = p + 1;
-            ino = minifs_resolve_path(base);
-        }
-        if (ino >= 0) {
-            MiniFSInode mi;
-            if (minifs_stat(ino, &mi) >= 0 && mi.size > 0) {
-                data_size = mi.size;
-                data = (unsigned char *)kmalloc(data_size);
-                if (data) minifs_read(ino, data, 0, data_size);
-            }
-        }
-    }
-    if (!data) return 0;
-    *size_out = data_size;
-    return data;
-}
+                             int child_argc, const char **child_argv);
 
 static int k_syscall_spawn(const char *path, const char *redirect,
                              int child_argc, const char **child_argv) {
@@ -1545,98 +1443,33 @@ static int k_syscall_spawn(const char *path, const char *redirect,
     char **kargv = 0;
     unsigned char *data = 0;
     unsigned data_size = 0;
-    Elf64_Half etype;
     spawn_ctx_t ctx;
-    int rc = EFAULT;
+    int rc;
     if (!path) return EFAULT;
     SANITIZE_STR(path, RAMDISK_FNAME_LEN);
-
-    if (!spawn_validate_argv(child_argc, child_argv))
-        return EFAULT;
-
+    if (!spawn_validate_argv(child_argc, child_argv)) return EFAULT;
     kargv = spawn_copy_argv(child_argc, child_argv);
     if (child_argc > 0 && child_argv && !kargv) return EFAULT;
-
     if (!fs_resolve(path, resolved, sizeof(resolved))) {
         spawn_free_argv(kargv, child_argc);
         return EFAULT;
     }
-
     data = spawn_load_image(resolved, &data_size);
     if (!data) {
         spawn_free_argv(kargv, child_argc);
         return EFAULT;
     }
-
     if (data_size < EI_NIDENT ||
         !(data[0] == 0x7F && data[1] == 'E' && data[2] == 'L' && data[3] == 'F')) {
         kfree(data);
         spawn_free_argv(kargv, child_argc);
         return EFAULT;
     }
-    etype = ((const Elf64_Ehdr *)data)->e_type;
-
-    /* An ET_REL child runs at ring 0 and exits through do_proc_exit's
-     * klongjmp, which bypasses syscall_entry's write-back of the per-proc
-     * stack top.  Left uncorrected, procs[0].kstack drifts down on every
-     * nested spawn and the parent's own exit longjmps into a corrupt
-     * frame.  Save and restore it so a spawn from a ring-3 program (the
-     * vedit IDE) is transparent to the caller. */
     spawn_backup(&ctx);
-    if (etype == ET_REL) {
-        /* Same gate as shell.c, same constant: `resolved` is fs_resolve()
-         * output (normalised, no symlinks), and the bytes in `data` were
-         * snapshotted from that same path above, so a concurrent rename
-         * only selects different bytes -- hostile bytes still face the
-         * ELF/reloc validators and ETREL_IMAGE_MAX. */
-        const char *rp = resolved;
-        if (rp[0] == '/') rp++;
-        if (kstrncmp(rp, ETREL_TRUSTED_DIR, ETREL_TRUSTED_LEN) != 0) {
-            kprintf("SPAWN: refusing untrusted ET_REL");
-            kfree(data);
-            spawn_free_argv(kargv, child_argc);
-            spawn_restore(&ctx);
-            return EFAULT;
-        }
-        prog_entry_t entry;
-        void *base = 0;
-        entry = elf_load((void *)data, data_size, &base);
-        kprintf("SPAWN: ET_REL entry=%lx argc=%d\n",
-                (unsigned long)entry, child_argc);
-        if (entry) {
-            unsigned char *code = (unsigned char *)entry;
-            kprintf("  [%lx]: ", (unsigned long)entry);
-            for (int _i = 0; _i < 16; _i++) kprintf("%02x ", code[_i]);
-            kprintf("\n");
-        }
-        int did_redirect = 0;
-        if (redirect && redirect[0]) did_redirect = redirect_begin();
-        if (entry)
-            rc = k_run_rel(entry, child_argc, kargv ? kargv : (char **)child_argv);
-        kfree(base);
-        if (did_redirect) redirect_commit(redirect, 0);
-    } else if (etype == ET_EXEC || etype == ET_DYN) {
-        /* Run the child in its own window through the same isolated spawn
-         * path `mrun` uses, then block until it exits.  The legacy
-         * swap_out + k_exec_user route re-cloned the boot page tables,
-         * discarding the freshly loaded image, so a ring-3 interpreter
-         * (lua/micropython/vedit) could not spawn an ET_EXEC child.  The
-         * isolated process has private heap-owned pages, its own CR3 and
-         * a user_trampoline entry, so the parent is left byte-for-byte
-         * intact. */
-        int did_redirect = 0;
-        int pid;
-        if (redirect && redirect[0]) did_redirect = redirect_begin();
-        pid = proc_spawn_elf(resolved, data, data_size, child_argc,
-                             kargv ? kargv : (char **)child_argv);
-        if (pid > 0)
-            rc = do_waitpid(pid);
-        if (did_redirect) redirect_commit(redirect, 0);
-    }
-
+    rc = spawn_execute(resolved, redirect, data, data_size,
+                       child_argc, kargv, child_argv);
     kfree(data);
     spawn_free_argv(kargv, child_argc);
     spawn_restore(&ctx);
-
     return rc;
 }

@@ -10,6 +10,8 @@
 #ifndef WM_EVENTS_H
 #define WM_EVENTS_H
 
+#include "drivers/modifiers.h"
+
 /** Docstring: Discrete window manager event kinds. */
 typedef enum {
     WM_EVT_NONE = 0,
@@ -224,12 +226,21 @@ static inline int wm_combo_lookup(int alt, int altgr, int sup, int e0, int sc, i
         if (!(WM_COMBOS[i].paths & path)) {
             continue;
         }
-        if (zone_out != 0) {
-            *zone_out = WM_COMBOS[i].zone;
-        }
-        return WM_COMBOS[i].action;
+    if (zone_out != 0) {
+        *zone_out = WM_COMBOS[i].zone;
+    }
+    return WM_COMBOS[i].action;
     }
     return WM_COMBO_NONE;
+}
+
+/** Docstring: Lookup through one modifier state, AltGr fail-closed. */
+static inline int wm_combo_lookup_mods(const modifier_state_t *st, int e0, int sc, int path, int *zone_out)
+{
+    if (st == 0) {
+        return WM_COMBO_NONE;
+    }
+    return wm_combo_lookup(st->alt, st->altgr, st->super, e0, sc, path, zone_out);
 }
 
 #endif

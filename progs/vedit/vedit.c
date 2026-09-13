@@ -78,10 +78,10 @@ static unsigned long vedit_time_ms(void) {
 }
 
 /** Central configuration: every bound, key, tool, directory and label. */
-#define VEDIT_MAX_LINES 512
-#define VEDIT_LINE_MAX 128
+#define VEDIT_MAX_LINES 4096
+#define VEDIT_LINE_MAX 256
 #define VEDIT_LINE_USED (VEDIT_LINE_MAX - 1)
-#define VEDIT_FILE_MAX (64 * 1024)
+#define VEDIT_FILE_MAX (512 * 1024)
 #define VEDIT_FNAME_MAX 64
 #define VEDIT_DEFAULT_FILE "untitled"
 #define VEDIT_MSG_MAX 128
@@ -114,6 +114,7 @@ static unsigned long vedit_time_ms(void) {
 #define VEDIT_LANG_C 1
 #define VEDIT_LANG_PY 2
 #define VEDIT_LANG_LUA 3
+#define VEDIT_LANG_ASM 4
 
 /* ---- Token colours (theme; RGB mirrors of the desktop/icon palette) ---- */
 #define VEDIT_COL_DEFAULT 0
@@ -183,6 +184,20 @@ static const char *vedit_kw_lua =
     " and break do else elseif end false for function goto if in local nil not"
     " or repeat return then true until while print require ipairs pairs"
     " tostring tonumber";
+
+static const char *vedit_kw_asm =
+    " mov movb movw movl movq movabs movzbw movzbl movzwl movzbq movzwq"
+    " movsbw movsbl movswl movsbq movswq movslq lea leaq push pushq pop popq"
+    " pushf popf pushfq popfq call callq ret retq leave enter jmp jmpq je jne"
+    " jz jnz jl jle jg jge ja jae jb jbe js jns jo jno jp jnp jcxz jecxz loop"
+    " loope loopne add addb addw addl addq sub subb subw subl subq imul mul"
+    " div idiv inc dec neg not and orb or andl andq orb orl orq xor xorb xorl"
+    " xorq shl shr sal sar rol ror test testb testl testq cmp cmpb cmpl cmpq"
+    " cmov xchg xadd bswap cmpxchg clc stc cld std cli sti nop hlt int int3"
+    " iret iretq syscall sysret sysenter sysexit in inb inw inl out outb outw"
+    " outl movs movsb movsw movsl movsq stos stosb stosw stosl stosq lods"
+    " lodsb lodsw lodsl lodsq scas scasb scasw scasl scasq cmps cmpsb cmpsw"
+    " cmpsl cmpsq rep repz repnz repzb repzl repzq cltq cqto cqo cdq";
 
 /* ---- Buffer: flat pool plus parallel used counts (no structs needed) ---- */
 static char *vedit_pool;
@@ -314,7 +329,7 @@ static int vedit_lang_of(const char *fname) {
     if (n >= 2 && fname[n - 2] == '.') {
         if (fname[n - 1] == 'c') return VEDIT_LANG_C;
         if (fname[n - 1] == 'h') return VEDIT_LANG_C;
-        if (fname[n - 1] == 's') return VEDIT_LANG_C;
+        if (fname[n - 1] == 's') return VEDIT_LANG_ASM;
     }
     if (n >= 3 && fname[n - 3] == '.' &&
         fname[n - 2] == 'p' && fname[n - 1] == 'y')
@@ -331,6 +346,7 @@ static const char *vedit_lang_name(int lang) {
     if (lang == VEDIT_LANG_C) return "C";
     if (lang == VEDIT_LANG_PY) return "Python";
     if (lang == VEDIT_LANG_LUA) return "Lua";
+    if (lang == VEDIT_LANG_ASM) return "Asm";
     return "text";
 }
 
@@ -439,6 +455,78 @@ static int vedit_scan_line(const char *t, int len, int st) {
                 i = vedit_parse_number(t, len, i, 0);
             } else if (vedit_is_alpha(c)) {
                 i = vedit_parse_keyword(t, len, i, vedit_kw_py);
+            } else {
+                i++;
+            }
+        }
+        return 0;
+    }
+    if (vedit_lang == VEDIT_LANG_ASM) {
+        if (st == VEDIT_ST_BLOCK) {
+            for (j = 0; j + 1 < len; j++) {
+                if (t[j] == '*' && t[j + 1] == '/') break;
+            }
+            if (j + 1 >= len) {
+                for (k = 0; k < len; k++) vedit_cell[k] = VEDIT_COL_COMMENT;
+                return VEDIT_ST_BLOCK;
+            }
+            for (k = 0; k <= j + 1; k++) vedit_cell[k] = VEDIT_COL_COMMENT;
+            i = j + 2;
+            st = 0;
+        }
+        while (i < len) {
+            int c = (unsigned char)t[i];
+            int d = (i + 1 < len) ? (unsigned char)t[i + 1] : 0;
+            if (c == '#') {
+                for (k = i; k < len; k++) vedit_cell[k] = VEDIT_COL_COMMENT;
+                break;
+            }
+            if (c == '/' && d == '*') {
+                vedit_cell[i] = vedit_cell[i + 1] = VEDIT_COL_COMMENT;
+                for (j = i + 2; j + 1 < len; j++) {
+                    if (t[j] == '*' && t[j + 1] == '/') break;
+                }
+                if (j + 1 >= len) {
+                    for (k = i + 2; k < len; k++)
+                        vedit_cell[k] = VEDIT_COL_COMMENT;
+                    return VEDIT_ST_BLOCK;
+                }
+                for (k = i + 2; k <= j + 1; k++)
+                    vedit_cell[k] = VEDIT_COL_COMMENT;
+                i = j + 2;
+            } else if (c == '"' || c == '\'') {
+                i = vedit_parse_string(t, len, i);
+            } else if (c == '.') {
+                j = i + 1;
+                while (j < len && (vedit_is_wordc((unsigned char)t[j])))
+                    j++;
+                for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_PREPROC;
+                i = (j > i + 1) ? j : i + 1;
+            } else if (c == '%') {
+                j = i + 1;
+                while (j < len && (vedit_is_wordc((unsigned char)t[j])))
+                    j++;
+                for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_NUMBER;
+                i = (j > i + 1) ? j : i + 1;
+            } else if (vedit_is_digit(c)) {
+                i = vedit_parse_number(t, len, i, 0);
+            } else if (vedit_is_alpha(c) || c == '_') {
+                char w[VEDIT_WORD_MAX];
+                int wl = 0;
+                j = i;
+                while (j < len && vedit_is_wordc((unsigned char)t[j])) {
+                    if (wl < VEDIT_WORD_MAX - 1) w[wl++] = t[j];
+                    j++;
+                }
+                if (j < len && t[j] == ':') {
+                    for (k = i; k <= j; k++) vedit_cell[k] = VEDIT_COL_STRING;
+                    i = j + 1;
+                } else if (vedit_is_kw(vedit_kw_asm, w, wl)) {
+                    for (k = i; k < j; k++) vedit_cell[k] = VEDIT_COL_KEYWORD;
+                    i = j;
+                } else {
+                    i = j;
+                }
             } else {
                 i++;
             }
@@ -943,7 +1031,7 @@ static void vedit_print_log(const char *path) {
     char buf[512];
     size_t n;
     if (!f) {
-        printf("vedit: no output captured\n");
+        printf("vedit: no output captured (%s missing)\n", path);
         return;
     }
     while ((n = fread(buf, 1, sizeof(buf), f)) > 0) {
@@ -996,21 +1084,32 @@ static void vedit_cmd_exec(const char *out, int kind) {
         vedit_spawn_visible(VEDIT_TOOL_CVM, 0, 1, args, label);
 }
 
+/** Decide the ^R tool for a file: 1=minigcc, 2=lua, 3=python, 4=ld. */
+static int vedit_run_kind(const char *fname) {
+    if (vedit_has_ext(fname, ".c") || vedit_has_ext(fname, ".h")) return 1;
+    if (vedit_has_ext(fname, ".lua")) return 2;
+    if (vedit_has_ext(fname, ".py")) return 3;
+    if (vedit_has_ext(fname, ".s")) return 4;
+    return 0;
+}
+
 /** Save, then compile or run the current buffer by extension. */
 static void vedit_cmd_run(void) {
     char base[VEDIT_BASE_MAX];
     char out[VEDIT_PATH_MAX];
     char label[VEDIT_MSG_MAX];
     const char *tool;
-    const char *args[3];
+    const char *args[7];
     const char *redir = 0;
     size_t k;
+    int kind;
     if (vedit_trunc) {
         vedit_set_msg("refusing to run: file did not fit in the buffer");
         return;
     }
     if (vedit_save() != 0) return;
-    if (vedit_has_ext(vedit_fname, ".c") || vedit_has_ext(vedit_fname, ".h")) {
+    kind = vedit_run_kind(vedit_fname);
+    if (kind == 1) {
         if (vedit_base_of(vedit_fname, base, sizeof(base)) != 0) {
             vedit_set_msg("name too long");
             return;
@@ -1029,10 +1128,35 @@ static void vedit_cmd_run(void) {
         vedit_spawn_visible(tool, out, 2, args, label);
         return;
     }
-    if (vedit_has_ext(vedit_fname, ".lua")) tool = VEDIT_TOOL_LUA;
-    else if (vedit_has_ext(vedit_fname, ".py")) tool = VEDIT_TOOL_PY;
+    if (kind == 4) {
+        if (vedit_base_of(vedit_fname, base, sizeof(base)) != 0) {
+            vedit_set_msg("name too long");
+            return;
+        }
+        if (vedit_join(VEDIT_DIR_BIN, base, ".elf", out, sizeof(out)) != 0) {
+            vedit_set_msg("name too long");
+            return;
+        }
+        tool = VEDIT_TOOL_LD;
+        args[0] = tool;
+        args[1] = "-f";
+        args[2] = VEDIT_LINK_ELF;
+        args[3] = "-o";
+        args[4] = out;
+        args[5] = vedit_fname;
+        args[6] = 0;
+        for (k = 0; k < sizeof(label) - 1 && vedit_fname[k]; k++)
+            label[k] = vedit_fname[k];
+        label[k] = 0;
+        if (vedit_spawn_visible(tool, VEDIT_BUILD_LOG, 6, args, label) != 0)
+            return;
+        vedit_cmd_exec(out, 1);
+        return;
+    }
+    if (kind == 2) tool = VEDIT_TOOL_LUA;
+    else if (kind == 3) tool = VEDIT_TOOL_PY;
     else {
-        vedit_set_msg("usage: save as .c, .lua or .py first");
+        vedit_set_msg("usage: save as .c, .s, .lua or .py first");
         return;
     }
     args[0] = tool;
@@ -1115,6 +1239,26 @@ static int vedit_selftest_build(void) {
     }
     if (vedit_lang_of("a.lua") != VEDIT_LANG_LUA) {
         printf("vedit: .lua must highlight as Lua\n");
+        fails++;
+    }
+    if (vedit_lang_of("a.s") != VEDIT_LANG_ASM) {
+        printf("vedit: .s must highlight as Asm\n");
+        fails++;
+    }
+    if (vedit_run_kind("a.c") != 1 || vedit_run_kind("a.h") != 1) {
+        printf("vedit: .c/.h must route to minigcc\n");
+        fails++;
+    }
+    if (vedit_run_kind("a.s") != 4) {
+        printf("vedit: .s must route to ld\n");
+        fails++;
+    }
+    if (vedit_run_kind("a.lua") != 2 || vedit_run_kind("a.py") != 3) {
+        printf("vedit: .lua/.py must route to runners\n");
+        fails++;
+    }
+    if (vedit_run_kind("a.txt") != 0) {
+        printf("vedit: .txt must route nowhere\n");
         fails++;
     }
     if (!vedit_has_ext("a.c", ".c") || vedit_has_ext("a.c", ".lua")) {

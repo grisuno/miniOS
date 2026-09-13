@@ -22,6 +22,46 @@ static const block_ops_t test_block_ops = {
     test_read, 0, 0, 0,
 };
 
+static int pcm_opened;
+static int pcm_submits;
+
+static void test_pcm_open(device_t *d) {
+    (void)d;
+    pcm_opened++;
+}
+
+static int test_pcm_submit(device_t *d, const unsigned char *pcm, unsigned len) {
+    (void)d; (void)pcm; (void)len;
+    pcm_submits++;
+    return 0;
+}
+
+static void test_tone(device_t *d, unsigned freq) {
+    (void)d; (void)freq;
+}
+
+static const audio_ops_t tone_ops = {
+    .tone = test_tone,
+    .off = 0,
+    .set_volume = 0,
+    .get_volume = 0,
+    .present = 0,
+    .pcm_open = 0,
+    .pcm_close = 0,
+    .pcm_submit = 0,
+};
+
+static const audio_ops_t pcm_ops = {
+    .tone = 0,
+    .off = 0,
+    .set_volume = 0,
+    .get_volume = 0,
+    .present = 0,
+    .pcm_open = test_pcm_open,
+    .pcm_close = 0,
+    .pcm_submit = test_pcm_submit,
+};
+
 int main(void) {
     device_t a;
     memset(&a, 0, sizeof(a));
@@ -74,6 +114,34 @@ int main(void) {
             strcpy(extra.name, "full");
             assert(device_register(&extra) < 0);
         }
+    }
+
+    device_reset();
+    assert(device_count() == 0);
+
+    {
+        device_t tone;
+        device_t pcm;
+        memset(&tone, 0, sizeof(tone));
+        memset(&pcm, 0, sizeof(pcm));
+        strcpy(tone.name, "pcspk0");
+        tone.type = DEV_TYPE_AUDIO;
+        tone.audio = &tone_ops;
+        strcpy(pcm.name, "sb160");
+        pcm.type = DEV_TYPE_AUDIO;
+        pcm.audio = &pcm_ops;
+        assert(device_register(&tone) == 0);
+        assert(device_register(&pcm) == 0);
+        assert(device_find("sb160") != 0);
+        assert(device_find("sb160")->audio == &pcm_ops);
+        assert(device_find("sb160")->audio->pcm_submit != 0);
+        assert(device_find("pcspk0")->audio == &tone_ops);
+        assert(device_find("pcspk0")->audio->pcm_submit == 0);
+        assert(pcm_opened == 0);
+        device_find("sb160")->audio->pcm_open(device_find("sb160"));
+        assert(pcm_opened == 1);
+        assert(device_find("sb160")->audio->pcm_submit(device_find("sb160"), 0, 0) == 0);
+        assert(device_find("nope") == 0);
     }
 
     device_reset();
