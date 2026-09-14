@@ -71,6 +71,11 @@ static unsigned char host_fb[MINIOS_DOOM_W * MINIOS_DOOM_H];
 #define MC_AUTOSTEP 1.02f
 #define MC_HP_MAX 20
 #define MC_PIGS 5
+#define MC_CREEPS_MAX 100
+#define MC_CREEPS_DEF 3
+#define MC_CREEP_HP 10
+#define MC_FUSE_MS 900
+#define MC_BOOM_R 2
 #define MC_PORK_HEAL 6
 #define MC_HUNGER_MAX 20
 #define MC_HUNGER_MS 35000
@@ -264,11 +269,16 @@ typedef struct {
     float vz;
     int alive;
     int hp;
+    int kind;
     long respawn_ms;
     long turn_ms;
     long hurt_until;
     long attack_ms;
+    long fuse_ms;
 } Pig;
+
+#define MOB_PIG 0
+#define MOB_CREEP 1
 
 static float day_light = 1.0f;
 static int mc_zoom = 0;
@@ -285,10 +295,16 @@ static void mc_toggle_zoom(void) {
 static int discovered_desert, discovered_snow, discovered_water;
 static long discover_ms;
 static Pig pigs[MC_PIGS];
+static Pig creeps[MC_CREEPS_MAX];
+static int n_creeps = MC_CREEPS_DEF;
+static int synced_n = MC_CREEPS_DEF;
+static long boom_flash_until;
 static int save_world(void);
 static void gen_world(unsigned int seed);
+static void mob_spawn_one(Pig *m, int id, int hp, long now);
 static void hurt(int dmg, const char *why);
 static const char *goal_text(void);
+static int player_collides(float x, float y, float z);
 
 static long s_time_ms(void) {
     long r;
@@ -317,6 +333,14 @@ static long s_kbd_seq(void) {
             return sc;
     }
     return -1;
+}
+
+/* Drain stale scancodes (typematic repeats, a release that arrived with
+ * its press) before leaving a menu, so they never retrigger on return. */
+static void kbd_drain(void) {
+    long guard = 256;
+    while (guard-- > 0 && s_kbd() >= 0)
+        ;
 }
 static long s_vga(long on) {
     long r;
@@ -812,17 +836,22 @@ static void gen_world(unsigned int seed) {
     {
         int i;
         for (i = 0; i < MC_PIGS; i++) {
-            pigs[i].x = pl_x + (float)((hash2(i * 17 + 5, 9) % 21) - 10);
-            pigs[i].y = pl_y + (float)((hash2(3, i * 29 + 7) % 21) - 10);
-            pigs[i].z = pl_z + 1.0f;
             pigs[i].yaw = (float)(hash2(i, i * 3) % 628) / 100.0f;
-            pigs[i].vz = 0;
-            pigs[i].alive = 1;
-            pigs[i].hp = MC_PIG_HP;
-            pigs[i].respawn_ms = 0;
+            pigs[i].kind = MOB_PIG;
             pigs[i].turn_ms = 0;
-            pigs[i].hurt_until = 0;
-            pigs[i].attack_ms = 0;
+            mob_spawn_one(&pigs[i], i, MC_PIG_HP, 0);
+        }
+        for (i = 0; i < MC_CREEPS_MAX; i++) {
+            creeps[i].yaw = (float)(hash2(i * 7, i) % 628) / 100.0f;
+            creeps[i].kind = MOB_CREEP;
+            creeps[i].turn_ms = 0;
+            if (i < n_creeps) {
+                mob_spawn_one(&creeps[i], MC_PIGS + i, MC_CREEP_HP, 0);
+            } else {
+                creeps[i].alive = 0;
+                creeps[i].respawn_ms = 0;
+                creeps[i].fuse_ms = 0;
+            }
         }
     }
     hotbar[0] = B_GRASS;
@@ -834,21 +863,23 @@ static void gen_world(unsigned int seed) {
     hotbar[6] = B_SAND;
     hotbar[7] = B_BRICK;
     hotbar[8] = B_BED;
-    hot_sel = 0;
+        hot_sel = 0;
+    synced_n = n_creeps;
     world_dirty = 1;
 }
 
-static void pigs_spawn_one(int i, long now) {
+static void mob_spawn_one(Pig *m, int id, int hp, long now) {
     int tries;
     (void)now;
-    pigs[i].alive = 1;
-    pigs[i].hp = MC_PIG_HP;
-    pigs[i].hurt_until = 0;
-    pigs[i].attack_ms = 0;
-    pigs[i].vz = 0;
+    m->alive = 1;
+    m->hp = hp;
+    m->hurt_until = 0;
+    m->attack_ms = 0;
+    m->fuse_ms = 0;
+    m->vz = 0;
     for (tries = 0; tries < 20; tries++) {
-        int tx = (int)pl_x + (int)(hash2(i * 91 + tries * 13, (int)frame_ms) % 21) - 10;
-        int ty = (int)pl_y + (int)(hash2((int)frame_ms, i * 57 + tries * 7) % 21) - 10;
+        int tx = (int)pl_x + (int)(hash2(id * 91 + tries * 13, (int)frame_ms) % 21) - 10;
+        int ty = (int)pl_y + (int)(hash2((int)frame_ms, id * 57 + tries * 7) % 21) - 10;
         int gz, z;
         if (tx < 2 || ty < 2 || tx >= MC_W - 2 || ty >= MC_D - 2)
             continue;
@@ -860,15 +891,35 @@ static void pigs_spawn_one(int i, long now) {
             }
         }
         if (gz > 0 && get_b(tx, ty, gz + 1) != B_WATER) {
-            pigs[i].x = (float)tx + 0.5f;
-            pigs[i].y = (float)ty + 0.5f;
-            pigs[i].z = (float)gz + 1.02f;
+            m->x = (float)tx + 0.5f;
+            m->y = (float)ty + 0.5f;
+            m->z = (float)gz + 1.02f;
             return;
         }
     }
-    pigs[i].x = spawn_x;
-    pigs[i].y = spawn_y;
-    pigs[i].z = spawn_z + 1.0f;
+    m->x = spawn_x;
+    m->y = spawn_y;
+    m->z = spawn_z + 1.0f;
+}
+
+/* Sync live creeper slots with the menu count: raising it drops fresh
+ * creepers near the player (instant encounters), lowering it retires
+ * the extras quietly. Pigs are untouched. */
+static void mobs_sync(void) {
+    int i;
+    if (n_creeps > MC_CREEPS_MAX)
+        n_creeps = MC_CREEPS_MAX;
+    if (n_creeps < 0)
+        n_creeps = 0;
+    if (n_creeps != synced_n)
+        printf("minicraft: creeps %d\n", n_creeps);
+    for (i = synced_n; i < n_creeps; i++)
+        mob_spawn_one(&creeps[i], MC_PIGS + i, MC_CREEP_HP, frame_ms);
+    for (i = n_creeps; i < synced_n; i++) {
+        creeps[i].alive = 0;
+        creeps[i].fuse_ms = 0;
+    }
+    synced_n = n_creeps;
 }
 
 static int pig_collides(float x, float y, float z) {
@@ -885,21 +936,111 @@ static int pig_collides(float x, float y, float z) {
     return 0;
 }
 
-static void tick_pigs(float dt, long now) {
-    int i;
-    for (i = 0; i < MC_PIGS; i++) {
-        Pig *p = &pigs[i];
+static void creeper_explode(Pig *c, long now) {
+    float cx = c->x, cy = c->y, cz = c->z + 0.5f;
+    int ix, iy, iz, k;
+    float pdx = pl_x - cx, pdy = pl_y - cy, pdz = (pl_z + 0.8f) - cz;
+    float pd = sqrtf(pdx * pdx + pdy * pdy + pdz * pdz);
+    c->alive = 0;
+    c->respawn_ms = now;
+    c->fuse_ms = 0;
+    boom_flash_until = now + 180;
+    beep(90, 250);
+    printf("minicraft: BOOM\n");
+    snprintf(last_act, sizeof(last_act), "BOOM");
+    last_act_ms = now;
+    for (iz = (int)cz - MC_BOOM_R; iz <= (int)cz + MC_BOOM_R; iz++) {
+        for (iy = (int)cy - MC_BOOM_R; iy <= (int)cy + MC_BOOM_R; iy++) {
+            for (ix = (int)cx - MC_BOOM_R; ix <= (int)cx + MC_BOOM_R; ix++) {
+                float ddx = (float)ix + 0.5f - cx;
+                float ddy = (float)iy + 0.5f - cy;
+                float ddz = (float)iz + 0.5f - cz;
+                unsigned char b;
+                if (sqrtf(ddx * ddx + ddy * ddy + ddz * ddz) > (float)MC_BOOM_R + 0.2f)
+                    continue;
+                b = get_b(ix, iy, iz);
+                if (b == B_AIR || b == B_BEDROCK)
+                    continue;
+                set_b(ix, iy, iz, B_AIR);
+            }
+        }
+    }
+    for (k = 0; k < MC_PIGS + n_creeps; k++) {
+        Pig *m = k < MC_PIGS ? &pigs[k] : &creeps[k - MC_PIGS];
+        float mdx, mdy, mdz, md;
+        if (m == c || !m->alive)
+            continue;
+        mdx = m->x - cx;
+        mdy = m->y - cy;
+        mdz = (m->z + 0.5f) - cz;
+        md = sqrtf(mdx * mdx + mdy * mdy + mdz * mdz);
+        if (md > 3.0f)
+            continue;
+        if (m->kind == MOB_CREEP) {
+            if (!m->fuse_ms)
+                m->fuse_ms = now + 250;
+        } else {
+            m->alive = 0;
+            m->respawn_ms = now;
+            pork++;
+            printf("minicraft: pork %d\n", pork);
+        }
+    }
+    if (pd < 3.5f) {
+        int dmg = pd < 1.5f ? 6 : pd < 2.5f ? 4 : 2;
+        float kl = 1.5f;
+        hurt(dmg, "BOOM");
+        if (pd > 0.01f) {
+            float nx = pl_x + pdx / pd * kl;
+            float ny = pl_y + pdy / pd * kl;
+            if (!player_collides(nx, pl_y, pl_z))
+                pl_x = nx;
+            if (!player_collides(pl_x, ny, pl_z))
+                pl_y = ny;
+        }
+    }
+}
+
+static void tick_mob(Pig *p, int id, float dt, long now) {
+    int i = id;
+    {
         float sp = (day_light < 0.35f) ? 2.2f : 1.6f;
         float pdx, pdy, pd;
         if (!p->alive) {
             if (now - p->respawn_ms > 10000)
-                pigs_spawn_one(i, now);
-            continue;
+                mob_spawn_one(p, id, p->kind == MOB_CREEP ? MC_CREEP_HP : MC_PIG_HP, now);
+            return;
         }
         pdx = p->x - pl_x;
         pdy = p->y - pl_y;
         pd = sqrtf(pdx * pdx + pdy * pdy);
-        if (p->hurt_until > now && pd > 0.01f) {
+        if (p->kind == MOB_CREEP) {
+            sp = (day_light < 0.35f) ? 2.4f : 2.0f;
+            if (pd < 10.0f && pd > 0.01f)
+                p->yaw = atan2f(-pdy, -pdx);
+            else if (now - p->turn_ms > 2500) {
+                p->turn_ms = now;
+                if ((hash2(id * 131 + (int)(now / 2500), id) % 100) < 60)
+                    p->yaw += (float)((hash2(id, (int)(now / 1000)) % 200) - 100) / 100.0f;
+            }
+            if (!p->fuse_ms && pd < 1.6f) {
+                p->fuse_ms = now + MC_FUSE_MS;
+                beep(880, 120);
+                printf("minicraft: fuse lit\n");
+            }
+            if (p->fuse_ms) {
+                if (pd > 3.0f) {
+                    p->fuse_ms = 0;
+                } else {
+                    snprintf(last_act, sizeof(last_act), "HUYE!");
+                    last_act_ms = now;
+                    if (now >= p->fuse_ms) {
+                        creeper_explode(p, now);
+                        return;
+                    }
+                }
+            }
+        } else if (p->hurt_until > now && pd > 0.01f) {
             p->yaw = atan2f(pdy, pdx);
             sp = 2.5f;
         } else if (now - p->turn_ms > 2500) {
@@ -907,7 +1048,7 @@ static void tick_pigs(float dt, long now) {
             if ((hash2(i * 131 + (int)(now / 2500), i) % 100) < 60)
                 p->yaw += (float)((hash2(i, (int)(now / 1000)) % 200) - 100) / 100.0f;
         }
-        if (pd < 1.3f && now - p->attack_ms > 1200) {
+        if (p->kind == MOB_PIG && pd < 1.3f && now - p->attack_ms > 1200) {
             p->attack_ms = now;
             hurt(day_light < 0.35f ? 2 : 1, "PIG");
         }
@@ -946,6 +1087,14 @@ static void tick_pigs(float dt, long now) {
             }
         }
     }
+}
+
+static void tick_pigs(float dt, long now) {
+    int i;
+    for (i = 0; i < MC_PIGS; i++)
+        tick_mob(&pigs[i], i, dt, now);
+    for (i = 0; i < n_creeps; i++)
+        tick_mob(&creeps[i], MC_PIGS + i, dt, now);
 }
 
 static unsigned char face_color(unsigned char b, int face) {
@@ -1373,20 +1522,52 @@ static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
     }
 }
 
-static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez) {
+static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1) {
+    int w = x1 - x0, h = y1 - y0;
+    int head = py < y0 + h / 3;
+    if (m->kind == MOB_CREEP) {
+        int flash = m->fuse_ms && (((frame_ms / 120) & 1) == 0);
+        if (flash)
+            return 64;
+        if (head) {
+            int ex0 = x0 + w / 4, ex1 = x0 + 3 * w / 4;
+            int my = y0 + h / 6;
+            unsigned char eye = day_light < 0.35f ? 60 : 3;
+            if ((px == ex0 || px == ex0 + 1 || px == ex1 - 1 || px == ex1) && py <= my + 1)
+                return eye;
+            if (px >= x0 + w / 2 - 1 && px <= x0 + w / 2 && py > my + 1)
+                return 3;
+            return ((px + py) & 1) ? 25 : 26;
+        }
+        if (px == x0 || px == x1 || py == y1)
+            return 27;
+        if (((px * 5 + py * 11 + id * 13) & 7) < 2)
+            return 3;
+        return ((px + py) & 1) ? 25 : 26;
+    }
+    if (head) {
+        unsigned char c = 63;
+        if (px == x0 + (x1 - x0) / 3 || px == x0 + 2 * (x1 - x0) / 3)
+            c = 3;
+        return c;
+    }
+    if (px == x0 || px == x1 || py == y1)
+        return 50;
+    return 63;
+}
+
+static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
+    float rx, float ry, float ux, float uy, float uz, float ez) {
     int i;
-    float fx = cyaw * cpit, fy = syaw * cpit, fz = spit;
-    float rx = syaw, ry = -cyaw;
-    float ux = -cyaw * spit, uy = -syaw * spit, uz = cpit;
-    for (i = 0; i < MC_PIGS; i++) {
+    for (i = 0; i < n; i++) {
         float ex, ey, ezz, fwd, rgt, up;
         float dist, sz, cx, cy;
         int x0, x1, y0, y1, px, py;
-        if (!pigs[i].alive)
+        if (!arr[i].alive)
             continue;
-        ex = pigs[i].x - pl_x;
-        ey = pigs[i].y - pl_y;
-        ezz = (pigs[i].z + 0.5f) - ez;
+        ex = arr[i].x - pl_x;
+        ey = arr[i].y - pl_y;
+        ezz = (arr[i].z + 0.5f) - ez;
         fwd = ex * fx + ey * fy + ezz * fz;
         if (fwd < 0.6f || fwd > MC_VIEW)
             continue;
@@ -1396,6 +1577,8 @@ static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez
         cy = (float)FB_H / 2.0f - (up / fwd) * (float)FB_H / 1.2f;
         dist = fwd;
         sz = 26.0f / dist;
+        if (arr[i].kind == MOB_CREEP)
+            sz *= 1.25f;
         if (sz < 2.0f)
             sz = 2.0f;
         if (sz > 60.0f)
@@ -1417,19 +1600,19 @@ static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez
                 body = px > x0 && px < x1 && py > y0 && py < y1;
                 if (!body)
                     continue;
-                if (py < y0 + (y1 - y0) / 3) {
-                    c = 63;
-                    if (px == x0 + (x1 - x0) / 3 || px == x0 + 2 * (x1 - x0) / 3)
-                        c = 3;
-                } else {
-                    c = 63;
-                    if (px == x0 || px == x1 || py == y1)
-                        c = 50;
-                }
+                c = mob_pixel(&arr[i], i, px, py, x0, x1, y0, y1);
                 BACKBUF[py * FB_W + px] = c;
             }
         }
     }
+}
+
+static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez) {
+    float fx = cyaw * cpit, fy = syaw * cpit, fz = spit;
+    float rx = syaw, ry = -cyaw;
+    float ux = -cyaw * spit, uy = -syaw * spit, uz = cpit;
+    render_mob_array(pigs, MC_PIGS, fx, fy, fz, rx, ry, ux, uy, uz, ez);
+    render_mob_array(creeps, n_creeps, fx, fy, fz, rx, ry, ux, uy, uz, ez);
 }
 
 static void render_frame(void) {
@@ -1441,6 +1624,20 @@ static void render_frame(void) {
     RayHit tgt = cast_ray(pl_x, pl_y, ez, fdx, fdy, fdz, MC_REACH);
     render_terrain(tgt, cyaw, syaw, cpit, spit, ez, tsec);
     render_pigs(cyaw, syaw, cpit, spit, ez);
+    if (frame_ms < boom_flash_until) {
+        int e;
+        for (e = 0; e < 6; e++) {
+            int x, y;
+            for (x = e; x < FB_W - e; x++) {
+                mc_pixel(x, e, 64);
+                mc_pixel(x, FB_H - 1 - e, 64);
+            }
+            for (y = e; y < FB_H - e; y++) {
+                mc_pixel(e, y, 64);
+                mc_pixel(FB_W - 1 - e, y, 64);
+            }
+        }
+    }
     {
         char hud0[48], hud1[64], hud2[48];
         char fc = mc_facing();
@@ -1529,6 +1726,7 @@ static void render_frame(void) {
 
 static int key_down[256];
 static int ext_down[256];
+static int esc_latch;
 static unsigned char sc_hist[16];
 static int sc_hist_n;
 static int sc_seq_timeouts;
@@ -1571,6 +1769,8 @@ static void poll_kbd(void) {
             unsigned char r = (unsigned char)sc;
             int press = !(r & 0x80);
             key_down[r & 0x7F] = press;
+            if ((r & 0x7F) == SC_ESC && press)
+                esc_latch = 1;
             if (!press)
                 continue;
             if ((r & 0x7F) >= SC_1 && (r & 0x7F) <= SC_9)
@@ -2096,24 +2296,27 @@ static void tick_interact(void) {
         dz = spit;
         h = cast_ray(pl_x, pl_y, eye_z(), dx, dy, dz, MC_REACH);
         if (lb && (lb_edge || lb_hold)) {
-            int pi, hit_pig = -1;
+            int pi, hit_id = -1;
+            Pig *hit_pp = 0;
             float best = 1e30f;
-            for (pi = 0; pi < MC_PIGS; pi++) {
-                float ex = pigs[pi].x - pl_x;
-                float ey = pigs[pi].y - pl_y;
-                float ezz = (pigs[pi].z + 0.5f) - eye_z();
+            for (pi = 0; pi < MC_PIGS + n_creeps; pi++) {
+                Pig *cand = pi < MC_PIGS ? &pigs[pi] : &creeps[pi - MC_PIGS];
+                float ex = cand->x - pl_x;
+                float ey = cand->y - pl_y;
+                float ezz = (cand->z + 0.5f) - eye_z();
                 float fwd = ex * dx + ey * dy + ezz * dz;
                 float perp;
-                if (!pigs[pi].alive || fwd < 0.5f || fwd > MC_REACH)
+                if (!cand->alive || fwd < 0.5f || fwd > MC_REACH)
                     continue;
                 perp = sqrtf(ex * ex + ey * ey + ezz * ezz - fwd * fwd);
                 if (perp < 0.9f && fwd < best) {
                     best = fwd;
-                    hit_pig = pi;
+                    hit_id = pi;
+                    hit_pp = cand;
                 }
             }
-            if (hit_pig >= 0 && (!h.hit || best < h.dist)) {
-                Pig *pp = &pigs[hit_pig];
+            if (hit_pp && (!h.hit || best < h.dist)) {
+                Pig *pp = hit_pp;
                 if (now >= pp->hurt_until) {
                     int dmg = have_tool[TOOL_SWORD] ? 6 : 4;
                     float kl = 0.8f, klx = 0, kly = 0;
@@ -2131,15 +2334,23 @@ static void tick_interact(void) {
                             pp->y += kly;
                     }
                     if (pp->hp <= 0) {
-                        int drop = 1 + (int)(hash2(hit_pig, (int)(now / 1000)) % 3);
                         pp->alive = 0;
                         pp->respawn_ms = now;
-                        pork += drop;
+                        pp->fuse_ms = 0;
                         world_dirty = 1;
-                        snprintf(last_act, sizeof(last_act), "+PORK %d", pork);
-                        last_act_ms = now;
-                        printf("minicraft: pork %d\n", pork);
-                        beep(520, 70);
+                        if (pp->kind == MOB_CREEP) {
+                            snprintf(last_act, sizeof(last_act), "CREEP DOWN");
+                            last_act_ms = now;
+                            printf("minicraft: creeper down\n");
+                            beep(520, 70);
+                        } else {
+                            int drop = 1 + (int)(hash2(hit_id, (int)(now / 1000)) % 3);
+                            pork += drop;
+                            snprintf(last_act, sizeof(last_act), "+PORK %d", pork);
+                            last_act_ms = now;
+                            printf("minicraft: pork %d\n", pork);
+                            beep(520, 70);
+                        }
                     } else {
                         snprintf(last_act, sizeof(last_act), "HIT %d", pp->hp);
                         last_act_ms = now;
@@ -2347,18 +2558,24 @@ static void load_reset_runtime(void) {
     spawn_y = pl_y;
     spawn_z = pl_z;
     for (i = 0; i < MC_PIGS; i++) {
-        pigs[i].x = pl_x + (float)((hash2(i * 17 + 5, 9) % 21) - 10);
-        pigs[i].y = pl_y + (float)((hash2(3, i * 29 + 7) % 21) - 10);
-        pigs[i].z = pl_z + 1.0f;
         pigs[i].yaw = 0;
-        pigs[i].vz = 0;
-        pigs[i].alive = 1;
-        pigs[i].hp = MC_PIG_HP;
-        pigs[i].respawn_ms = 0;
+        pigs[i].kind = MOB_PIG;
         pigs[i].turn_ms = 0;
-        pigs[i].hurt_until = 0;
-        pigs[i].attack_ms = 0;
+        mob_spawn_one(&pigs[i], i, MC_PIG_HP, frame_ms);
     }
+    for (i = 0; i < MC_CREEPS_MAX; i++) {
+        creeps[i].yaw = 0;
+        creeps[i].kind = MOB_CREEP;
+        creeps[i].turn_ms = 0;
+        if (i < n_creeps) {
+            mob_spawn_one(&creeps[i], MC_PIGS + i, MC_CREEP_HP, frame_ms);
+        } else {
+            creeps[i].alive = 0;
+            creeps[i].respawn_ms = 0;
+            creeps[i].fuse_ms = 0;
+        }
+    }
+    synced_n = n_creeps;
     world_dirty = 0;
 }
 
@@ -2628,6 +2845,99 @@ static int selftest(void) {
                 return 1;
             }
         }
+        {
+            long t0 = 100000;
+            set_b(11, 10, 10, B_STONE);
+            set_b(12, 10, 10, B_STONE);
+            creeps[0].x = 11.5f;
+            creeps[0].y = 10.5f;
+            creeps[0].z = 10.02f;
+            creeps[0].yaw = 0;
+            creeps[0].vz = 0;
+            creeps[0].alive = 1;
+            creeps[0].hp = MC_CREEP_HP;
+            creeps[0].kind = MOB_CREEP;
+            creeps[0].hurt_until = 0;
+            creeps[0].attack_ms = 0;
+            creeps[0].fuse_ms = 0;
+            pl_hp = MC_HP_MAX;
+            tick_mob(&creeps[0], MC_PIGS, 0.05f, t0);
+            if (!creeps[0].fuse_ms) {
+                printf("minicraft: selftest FAIL (fuse not lit)\n");
+                return 1;
+            }
+            tick_mob(&creeps[0], MC_PIGS, 0.05f, creeps[0].fuse_ms + 10);
+            if (creeps[0].alive) {
+                printf("minicraft: selftest FAIL (no boom)\n");
+                return 1;
+            }
+            if (get_b(11, 10, 10) != B_AIR || get_b(12, 10, 10) != B_AIR) {
+                printf("minicraft: selftest FAIL (crater missing)\n");
+                return 1;
+            }
+            if (pl_hp != MC_HP_MAX - 6) {
+                printf("minicraft: selftest FAIL (blast dmg %d)\n", pl_hp);
+                return 1;
+            }
+            creeps[1].x = 30.5f;
+            creeps[1].y = 30.5f;
+            creeps[1].z = 10.02f;
+            creeps[1].yaw = 0;
+            creeps[1].vz = 0;
+            creeps[1].alive = 1;
+            creeps[1].hp = MC_CREEP_HP;
+            creeps[1].kind = MOB_CREEP;
+            creeps[1].hurt_until = 0;
+            creeps[1].attack_ms = 0;
+            creeps[1].fuse_ms = t0 + MC_FUSE_MS;
+            tick_mob(&creeps[1], MC_PIGS + 1, 0.05f, t0 + 100);
+            if (creeps[1].fuse_ms) {
+                printf("minicraft: selftest FAIL (no defuse)\n");
+                return 1;
+            }
+            if (!creeps[1].alive) {
+                printf("minicraft: selftest FAIL (defused boom)\n");
+                return 1;
+            }
+            {
+                int g1 = 0, g0 = 0, sx, sy;
+                pl_x = 32.5f;
+                pl_y = 32.5f;
+                pl_z = 20.02f;
+                pl_yaw = 0;
+                pl_pitch = 0;
+                creeps[2].x = 34.5f;
+                creeps[2].y = 32.5f;
+                creeps[2].z = 21.0f;
+                creeps[2].yaw = 0;
+                creeps[2].vz = 0;
+                creeps[2].alive = 1;
+                creeps[2].hp = MC_CREEP_HP;
+                creeps[2].kind = MOB_CREEP;
+                creeps[2].hurt_until = 0;
+                creeps[2].attack_ms = 0;
+                creeps[2].fuse_ms = 0;
+                render_frame();
+                for (sy = 0; sy < FB_H; sy++)
+                    for (sx = 0; sx < FB_W; sx++) {
+                        unsigned char c = BACKBUF[sy * FB_W + sx];
+                        if (c == 25 || c == 26)
+                            g1++;
+                    }
+                creeps[2].alive = 0;
+                render_frame();
+                for (sy = 0; sy < FB_H; sy++)
+                    for (sx = 0; sx < FB_W; sx++) {
+                        unsigned char c = BACKBUF[sy * FB_W + sx];
+                        if (c == 25 || c == 26)
+                            g0++;
+                    }
+                if (g1 < g0 + 50) {
+                    printf("minicraft: selftest FAIL (creeper not green)\n");
+                    return 1;
+                }
+            }
+        }
     }
     printf("minicraft: frame ok (%dx%d)\n", FB_W, FB_H);
     return 0;
@@ -2769,15 +3079,17 @@ static void menu_text_c(int y, const char *s, unsigned char fg, unsigned char bg
 
 static int title_menu(int have_save, int *seed_io) {
     int seed = *seed_io < 1 ? 1 : *seed_io;
-    int nrows = have_save ? 4 : 3;
+    int nrows = have_save ? 5 : 4;
+    int seedrow = have_save ? 2 : 1;
     int sel = 0;
     int shift = 0;
+    int esc_armed = 1;
     if (seed > MC_SEED_MAX)
         seed = MC_SEED_MAX;
     for (;;) {
         int i;
-        char row0[32], row1[32], row2[32], zoomrow[32];
-        const char *rows[4];
+        char row0[32], row1[32], row2[32], zoomrow[32], creeprow[32];
+        const char *rows[5];
         for (i = 0; i < FB_W * FB_H; i++)
             BACKBUF[i] = 3;
         menu_text_c(28, "MINICRAFT", 2, 3);
@@ -2789,25 +3101,28 @@ static int title_menu(int have_save, int *seed_io) {
         snprintf(row1, sizeof(row1), "%s", have_save ? "NEW WORLD" : "SEED");
         snprintf(row2, sizeof(row2), "SEED < %d >", seed);
         snprintf(zoomrow, sizeof(zoomrow), "FULLSCREEN %s", mc_zoom ? "ON" : "OFF");
+        snprintf(creeprow, sizeof(creeprow), "CREEPS < %d >", n_creeps);
         rows[0] = row0;
         if (have_save) {
             rows[1] = row1;
             rows[2] = row2;
             rows[3] = zoomrow;
+            rows[4] = creeprow;
         } else {
             rows[1] = row2;
             rows[2] = zoomrow;
+            rows[3] = creeprow;
         }
         for (i = 0; i < nrows; i++) {
             char line[36];
             snprintf(line, sizeof(line), "%c %s", i == sel ? '>' : ' ', rows[i]);
             if (i == sel)
-                menu_text_c(88 + i * 16, line, 3, 2);
+                menu_text_c(84 + i * 15, line, 3, 2);
             else
-                menu_text_c(88 + i * 16, line, 2, 3);
+                menu_text_c(84 + i * 15, line, 2, 3);
         }
-        menu_text_c(156, "UP/DN CHOOSE L/R SEED", 2, 3);
-        menu_text_c(166, "0-9 TYPE ENTER OK ESC QUIT", 2, 3);
+        menu_text_c(162, "UP/DN CHOOSE L/R EDIT", 2, 3);
+        menu_text_c(172, "0-9 TYPE ENTER OK ESC QUIT", 2, 3);
         s_present();
         for (;;) {
             long sc = s_kbd();
@@ -2833,11 +3148,20 @@ static int title_menu(int have_save, int *seed_io) {
                     break;
                 }
                 if (r2 == EXT_LEFT || r2 == EXT_RIGHT) {
-                    seed += (r2 == EXT_LEFT ? -step : step);
-                    if (seed < 1)
-                        seed = 1;
-                    if (seed > MC_SEED_MAX)
-                        seed = MC_SEED_MAX;
+                    int dir = (r2 == EXT_LEFT ? -1 : 1);
+                    if (sel == seedrow) {
+                        seed += dir * step;
+                        if (seed < 1)
+                            seed = 1;
+                        if (seed > MC_SEED_MAX)
+                            seed = MC_SEED_MAX;
+                    } else if (sel == nrows - 1) {
+                        n_creeps += dir * (shift ? 10 : 1);
+                        if (n_creeps < 0)
+                            n_creeps = 0;
+                        if (n_creeps > MC_CREEPS_MAX)
+                            n_creeps = MC_CREEPS_MAX;
+                    }
                     break;
                 }
                 continue;
@@ -2849,33 +3173,53 @@ static int title_menu(int have_save, int *seed_io) {
                 shift = press;
                 continue;
             }
+            if (r == SC_ESC && !press) {
+                esc_armed = 1;
+                continue;
+            }
             if (!press)
                 continue;
             if (r == SC_ENTER) {
                 *seed_io = seed;
-                if (sel == nrows - 1) {
+                if (sel == nrows - 2) {
                     mc_toggle_zoom();
                     break;
                 }
+                if (sel == nrows - 1)
+                    break;
+                kbd_drain();
                 if (!have_save)
                     return 1;
                 if (sel == 0)
                     return 0;
                 return 1;
             }
-            if (r == SC_ESC)
+            if (r == SC_ESC) {
+                if (!esc_armed)
+                    continue;
+                kbd_drain();
                 return -1;
+            }
             if (r == SC_W || r == SC_S) {
                 sel = (sel + (r == SC_W ? nrows - 1 : 1)) % nrows;
                 break;
             }
             if (r == SC_A || r == SC_D) {
                 int step = shift ? 10 : 1;
-                seed += (r == SC_A ? -step : step);
-                if (seed < 1)
-                    seed = 1;
-                if (seed > MC_SEED_MAX)
-                    seed = MC_SEED_MAX;
+                int dir = (r == SC_A ? -1 : 1);
+                if (sel == seedrow) {
+                    seed += dir * step;
+                    if (seed < 1)
+                        seed = 1;
+                    if (seed > MC_SEED_MAX)
+                        seed = MC_SEED_MAX;
+                } else if (sel == nrows - 1) {
+                    n_creeps += dir * (shift ? 10 : 1);
+                    if (n_creeps < 0)
+                        n_creeps = 0;
+                    if (n_creeps > MC_CREEPS_MAX)
+                        n_creeps = MC_CREEPS_MAX;
+                }
                 break;
             }
             if (r == SC_BACK) {
@@ -2901,15 +3245,16 @@ static int pause_menu(int *seed_io) {
     int seed = *seed_io < 1 ? 1 : *seed_io;
     int sel = 0;
     int shift = 0;
+    int esc_armed = 1;
     char status[24];
-    int nrows = 6;
+    int nrows = 7;
     if (seed > MC_SEED_MAX)
         seed = MC_SEED_MAX;
     status[0] = 0;
     for (;;) {
         int i;
-        char seedrow[32], zoomrow[32];
-        const char *rows[6];
+        char seedrow[32], zoomrow[32], creeprow[32];
+        const char *rows[7];
         for (i = 0; i < FB_W * FB_H; i++)
             BACKBUF[i] = 3;
         menu_text_c(24, "PAUSA", 2, 3);
@@ -2920,19 +3265,21 @@ static int pause_menu(int *seed_io) {
         rows[3] = seedrow;
         snprintf(zoomrow, sizeof(zoomrow), "FULLSCREEN %s", mc_zoom ? "ON" : "OFF");
         rows[4] = zoomrow;
-        rows[5] = "QUIT";
+        snprintf(creeprow, sizeof(creeprow), "CREEPS < %d >", n_creeps);
+        rows[5] = creeprow;
+        rows[6] = "QUIT";
         for (i = 0; i < nrows; i++) {
             char line[36];
             snprintf(line, sizeof(line), "%c %s", i == sel ? '>' : ' ', rows[i]);
             if (i == sel)
-                menu_text_c(76 + i * 15, line, 3, 2);
+                menu_text_c(72 + i * 14, line, 3, 2);
             else
-                menu_text_c(76 + i * 15, line, 2, 3);
+                menu_text_c(72 + i * 14, line, 2, 3);
         }
         if (status[0])
-            menu_text_c(156, status, 2, 3);
-        menu_text_c(168, "UP/DN CHOOSE ENTER OK", 2, 3);
-        menu_text_c(178, "ESC RESUME ALTF4 QUIT", 2, 3);
+            menu_text_c(172, status, 2, 3);
+        menu_text_c(180, "UP/DN CHOOSE ENTER OK", 2, 3);
+        menu_text_c(190, "ESC RESUME ALTF4 QUIT", 2, 3);
         s_present();
         for (;;) {
             long sc = s_kbd();
@@ -2958,11 +3305,20 @@ static int pause_menu(int *seed_io) {
                     break;
                 }
                 if (r2 == EXT_LEFT || r2 == EXT_RIGHT) {
-                    seed += (r2 == EXT_LEFT ? -step : step);
-                    if (seed < 1)
-                        seed = 1;
-                    if (seed > MC_SEED_MAX)
-                        seed = MC_SEED_MAX;
+                    int dir = (r2 == EXT_LEFT ? -1 : 1);
+                    if (sel == 3) {
+                        seed += dir * step;
+                        if (seed < 1)
+                            seed = 1;
+                        if (seed > MC_SEED_MAX)
+                            seed = MC_SEED_MAX;
+                    } else if (sel == 5) {
+                        n_creeps += dir * (shift ? 10 : 1);
+                        if (n_creeps < 0)
+                            n_creeps = 0;
+                        if (n_creeps > MC_CREEPS_MAX)
+                            n_creeps = MC_CREEPS_MAX;
+                    }
                     break;
                 }
                 continue;
@@ -2974,14 +3330,24 @@ static int pause_menu(int *seed_io) {
                 shift = press;
                 continue;
             }
+            if (r == SC_ESC && !press) {
+                esc_armed = 1;
+                continue;
+            }
             if (!press)
                 continue;
-            if (r == SC_ESC)
+            if (r == SC_ESC) {
+                if (!esc_armed)
+                    continue;
+                kbd_drain();
                 return 0;
+            }
             if (r == SC_ENTER) {
                 *seed_io = seed;
-                if (sel == 0)
+                if (sel == 0) {
+                    kbd_drain();
                     return 0;
+                }
                 if (sel == 1) {
                     if (save_world() == 0)
                         snprintf(status, sizeof(status), "SAVED");
@@ -2989,14 +3355,20 @@ static int pause_menu(int *seed_io) {
                         snprintf(status, sizeof(status), "SAVE FAIL");
                     break;
                 }
-                if (sel == 2)
+                if (sel == 2) {
+                    kbd_drain();
                     return 1;
+                }
                 if (sel == 4) {
                     mc_toggle_zoom();
                     break;
                 }
                 if (sel == 5)
+                    break;
+                if (sel == 6) {
+                    kbd_drain();
                     return 2;
+                }
                 break;
             }
             if (r == SC_W || r == SC_S) {
@@ -3005,11 +3377,20 @@ static int pause_menu(int *seed_io) {
             }
             if (r == SC_A || r == SC_D) {
                 int step = shift ? 10 : 1;
-                seed += (r == SC_A ? -step : step);
-                if (seed < 1)
-                    seed = 1;
-                if (seed > MC_SEED_MAX)
-                    seed = MC_SEED_MAX;
+                int dir = (r == SC_A ? -1 : 1);
+                if (sel == 3) {
+                    seed += dir * step;
+                    if (seed < 1)
+                        seed = 1;
+                    if (seed > MC_SEED_MAX)
+                        seed = MC_SEED_MAX;
+                } else if (sel == 5) {
+                    n_creeps += dir * (shift ? 10 : 1);
+                    if (n_creeps < 0)
+                        n_creeps = 0;
+                    if (n_creeps > MC_CREEPS_MAX)
+                        n_creeps = MC_CREEPS_MAX;
+                }
                 break;
             }
             if (r == SC_BACK) {
@@ -3110,6 +3491,7 @@ int main(int argc, char **argv) {
             printf("minicraft: new world seed %d\n", menu_seed);
             gen_world((unsigned int)menu_seed);
         }
+        mobs_sync();
     }
     if (autoframes > 0) {
         for (i = 0; i < autoframes; i++) {
@@ -3138,7 +3520,6 @@ int main(int argc, char **argv) {
     {
         long prev = s_time_ms();
         long save_at = prev + MC_SAVE_SECS * 1000;
-        int esc_prev = 0;
         for (;;) {
             long now = s_time_ms();
             float dt = (float)(now - prev) / 1000.0f;
@@ -3155,9 +3536,10 @@ int main(int argc, char **argv) {
                 (float)MC_DAY_MS;
             day_light = 0.5f + 0.5f * cosf(phase * 6.2831853f);
             poll_kbd();
-            if (key_down[SC_ESC] && !esc_prev) {
-                int pr = pause_menu(&menu_seed);
-                esc_prev = 0;
+            if (esc_latch) {
+                int pr;
+                esc_latch = 0;
+                pr = pause_menu(&menu_seed);
                 key_down[SC_ESC] = 0;
                 hunger_ms = s_time_ms();
                 if (pr == 2) {
@@ -3170,9 +3552,8 @@ int main(int argc, char **argv) {
                     printf("minicraft: new world seed %d\n", menu_seed);
                     gen_world((unsigned int)menu_seed);
                 }
+                mobs_sync();
                 save_at = s_time_ms() + MC_SAVE_SECS * 1000;
-            } else {
-                esc_prev = key_down[SC_ESC];
             }
             if (key_down[SC_R]) {
                 if (save_world() != 0) {
