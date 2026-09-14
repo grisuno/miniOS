@@ -1238,6 +1238,18 @@ poweroff"
 expect "doomedit: wrote /saves/dmap0.wad"
 expect "exit code: 0"
 
+scenario "doomedit multi-sector preset exports doors and nukage" "doomedit --preset 8 /saves/dmap2.wad
+doomedit --check /saves/dmap2.wad
+poweroff"
+expect "doomedit: wrote /saves/dmap2.wad (Nukage Mills)"
+expect "doomedit: /saves/dmap2.wad ok"
+
+scenario "doom boots a multi-sector PWAD with working doors" "doomedit --preset 7 /saves/dmap3.wad
+run doomgeneric.elf -file /saves/dmap3.wad mini_autoframes 30
+poweroff"
+expect "doomedit: wrote /saves/dmap3.wad (Gatehouse)"
+expect "exit code: 0"
+
 scenario "wm state reports the active theme" "wm state
 poweroff"
 expect "wm: theme dark"

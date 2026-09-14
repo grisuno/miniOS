@@ -51,6 +51,9 @@
   - `PwadLayoutTests` (class, line 82) `class PwadLayoutTests(TestCase)`
   - `PwadMutationTests` (class, line 181) `class PwadMutationTests(TestCase)`
   - `ExtendedLegendTests` (class, line 255) `class ExtendedLegendTests(TestCase)`
+  - `lump_blob` (method, line 310) `def lump_blob(blob, idx)`
+  - `MultiSectorTests` (class, line 317) `class MultiSectorTests(TestCase)`
+  - `MultiSectorMutationTests` (class, line 388) `class MultiSectorMutationTests(TestCase)`
   - `test_valid_room_parses` (method, line 32) `def test_valid_room_parses(self)`
   - `test_ragged_rows_refused` (method, line 36) `def test_ragged_rows_refused(self)`
   - `test_missing_player_refused` (method, line 41) `def test_missing_player_refused(self)`
@@ -76,6 +79,18 @@
   - `test_unterminated_blockmap_dies` (method, line 243) `def test_unterminated_blockmap_dies(self)`
   - `test_every_legend_char_builds` (method, line 273) `def test_every_legend_char_builds(self)`
   - `test_every_thing_id_matches_engine` (method, line 278) `def test_every_thing_id_matches_engine(self)`
+  - `test_door_room_builds_two_sectors` (method, line 320) `def test_door_room_builds_two_sectors(self)`
+  - `test_door_lines_are_tagged_openers` (method, line 327) `def test_door_lines_are_tagged_openers(self)`
+  - `test_dark_and_nukage_sector_props` (method, line 355) `def test_dark_and_nukage_sector_props(self)`
+  - `test_reject_scales_with_sector_count` (method, line 374) `def test_reject_scales_with_sector_count(self)`
+  - `test_new_legend_chars_build` (method, line 382) `def test_new_legend_chars_build(self)`
+  - `setUp` (method, line 391) `def setUp(self)`
+  - `mutate_line` (method, line 395) `def mutate_line(self, idx, field, value)`
+  - `door_line` (method, line 406) `def door_line(self)`
+  - `test_door_tag_zero_dies` (method, line 418) `def test_door_tag_zero_dies(self)`
+  - `test_unknown_special_dies` (method, line 423) `def test_unknown_special_dies(self)`
+  - `test_onesided_with_back_dies` (method, line 428) `def test_onesided_with_back_dies(self)`
+  - `test_exit_tagged_dies` (method, line 433) `def test_exit_tagged_dies(self)`
 - Depends on: `tools/doom_pwad.py`
 
 ## tests/test_driver.c

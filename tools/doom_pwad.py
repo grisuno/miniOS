@@ -3,27 +3,36 @@
 
 Converts a text grid map into a single-level PWAD that replaces E1M1
 in the shareware IWAD, and validates PWAD files produced by any tool.
-The generated level is one convex-or-concave single sector, so the
-BSP it carries is trivially correct: every linedef becomes one seg,
-all segs form one subsector, and the root node points at that same
-subsector on both children. No external node builder is required.
+The generated level is multi-sector: each same-style floor region and
+each door block is its own sector, so rooms can differ in light, floor
+height and flats, and doors genuinely open. The BSP stays trivially
+correct: every linedef becomes one seg, all segs form one subsector,
+and the root node points at that same subsector on both children. One
+subsector needs no ordering, so no external node builder is required;
+sight, collision and clipping all work off the line/sector lists.
 
 Usage: doom_pwad.py build <grid.txt> <out.wad>
-       doom_pwad.py check <file.wad>
-       doom_pwad.py info <file.wad>
+        doom_pwad.py check <file.wad>
+        doom_pwad.py info <file.wad>
 
 Grid legend: '#' wall, '.' floor, 'P' player 1 start, 'E' exit switch
-marker, enemies 'i' imp, 'd' demon, 'z' zombieman, 'g' shotgun guy,
-'v' spectre, 'b' baron, weapons 's' shotgun, 'h' chaingun, 'r' rocket
-launcher, 'w' chainsaw, ammo 'a' shells, 'u' clip, 'o' bullet box,
-'k' rockets, 'x' rocket box, 'T' shell box, health 'm' medikit,
-'q' stimpack, 'y' soulsphere, 'n' health bonus, armor 'f' armor bonus,
-'G' green armor, 'U' blue armor, keys '1' blue, '2' red, '3' yellow,
-powerups 'V' invisibility, 'R' radiation suit, 'C' computer map,
-'L' light amp, gear 'D' backpack, 'B' barrel, decor '0' pillar.
-The exit marker must sit on a floor tile next to a wall; the shared
-edge becomes the S1 exit switch linedef. Every walkable tile must be
-reachable from the player start, or the build is refused.
+marker, '+' door cell, ',' dark floor, '~' nukage pit, enemies 'i' imp,
+'d' demon, 'z' zombieman, 'g' shotgun guy, 'v' spectre, 'b' baron,
+weapons 's' shotgun, 'h' chaingun, 'r' rocket launcher, 'w' chainsaw,
+ammo 'a' shells, 'u' clip, 'o' bullet box, 'k' rockets, 'x' rocket box,
+'T' shell box, health 'm' medikit, 'q' stimpack, 'y' soulsphere,
+'n' health bonus, armor 'f' armor bonus, 'G' green armor, 'U' blue
+armor, keys '1' blue, '2' red, '3' yellow, powerups 'V' invisibility,
+'R' radiation suit, 'C' computer map, 'L' light amp, gear 'D' backpack,
+'B' barrel, decor '0' pillar.
+A '+' cell is its own door sector (low ceiling, tagged) whose edges to
+neighbouring rooms are two-sided D1 open-door lines, usable from either
+side. A ',' region is the same room at low light; a '~' region is a
+damaging nukage pit with a lowered floor. The exit marker must sit on
+a normal or dark floor tile next to a wall; the shared edge becomes
+the S1 exit switch linedef. The player start must sit on a normal or
+dark floor tile. Every walkable tile must be reachable from the player
+start, or the build is refused.
 
 Only thing ids whose sprites ship in the shareware Doom1.wad are
 exposed: cacodemon, lost soul, plasma rifle, BFG, berserk,
@@ -69,9 +78,40 @@ class DoomPwadConfig:
     max_vertexes = 4096
     max_linedefs = 2048
     max_things = 256
+    max_sectors = 256
 
     wall_chars = "#"
-    floor_chars = ".PEidzgvsbhwrmaukxoTqynfGU123VRCLDJB0"
+    floor_chars = ".PEidzgvsbhwrmaukxoTqynfGU123VRCLDJB0+,~"
+    door_char = "+"
+    dark_char = ","
+    nukage_char = "~"
+
+    flag_blocking = 1
+    flag_twosided = 4
+    special_exit = 11
+    special_door = 31
+    no_side = -1
+    front_sector = 0
+
+    wall_mid = b"STARTAN3"
+    exit_mid = b"SW1EXIT"
+    door_upper = b"DOORTRAK"
+    dark_mid = b"BROWN1"
+    nukage_mid = b"STONE2"
+    unused_tex = b"-"
+    floor_flat = b"FLOOR4_8"
+    ceil_flat = b"CEIL3_5"
+    nukage_flat = b"NUKAGE1"
+    floor_height = 0
+    nukage_floor = -16
+    ceil_height = 128
+    door_ceil = 64
+    light_level = 160
+    dark_light = 96
+    door_light = 128
+    sector_special = 0
+    nukage_special = 7
+    sector_tag = 0
     thing_types = {
         "P": 1,
         "i": 3001,
@@ -111,21 +151,8 @@ class DoomPwadConfig:
     thing_options = 7
     player_angle = 0
 
-    flag_blocking = 1
-    special_exit = 11
-    no_side = -1
-    front_sector = 0
-
     wall_mid = b"STARTAN3"
     exit_mid = b"SW1EXIT"
-    unused_tex = b"-"
-    floor_flat = b"FLOOR4_8"
-    ceil_flat = b"CEIL3_5"
-    floor_height = 0
-    ceil_height = 128
-    light_level = 160
-    sector_special = 0
-    sector_tag = 0
 
     node_leaf = 0x8000
     exit_dirs = ((-1, 0), (0, 1), (1, 0), (0, -1))
@@ -249,12 +276,112 @@ def cell_corners(row, col):
     return (x0, x1, y_top, y_bottom)
 
 
+def cell_class(cell):
+    """Classify a walkable cell: doors stand alone, styles never merge."""
+    cfg = DoomPwadConfig
+    if cell == cfg.door_char:
+        return "door"
+    if cell == cfg.dark_char:
+        return "dark"
+    if cell == cfg.nukage_char:
+        return "nukage"
+    return "normal"
+
+
+def label_regions(rows):
+    """Flood same-class walkable cells into region ids; walls stay -1."""
+    cfg = DoomPwadConfig
+    height = len(rows)
+    width = len(rows[0])
+    labels = [[-1] * width for _ in range(height)]
+    regions = []
+    for row in range(height):
+        for col in range(width):
+            if rows[row][col] in cfg.wall_chars or labels[row][col] >= 0:
+                continue
+            want = cell_class(rows[row][col])
+            members = []
+            work = [(row, col)]
+            labels[row][col] = len(regions)
+            while work:
+                rrow, rcol = work.pop()
+                members.append((rrow, rcol))
+                for drow, dcol in cfg.exit_dirs:
+                    nrow, ncol = rrow + drow, rcol + dcol
+                    if nrow < 0 or ncol < 0 or nrow >= height or ncol >= width:
+                        continue
+                    if labels[nrow][ncol] >= 0:
+                        continue
+                    cell = rows[nrow][ncol]
+                    if cell in cfg.wall_chars or cell_class(cell) != want:
+                        continue
+                    labels[nrow][ncol] = len(regions)
+                    work.append((nrow, ncol))
+            regions.append({"class": want, "cells": members})
+    if len(regions) > cfg.max_sectors:
+        raise PwadError("too many sectors")
+    return labels, regions
+
+
+def region_sector(region, door_tag):
+    """Map a labelled region to its sector record fields and wall skin."""
+    cfg = DoomPwadConfig
+    want = region["class"]
+    if want == "door":
+        return {
+            "floor": cfg.floor_height,
+            "ceil": cfg.door_ceil,
+            "flat": cfg.floor_flat,
+            "light": cfg.door_light,
+            "special": cfg.sector_special,
+            "tag": door_tag,
+            "skin": cfg.door_upper,
+        }
+    if want == "dark":
+        return {
+            "floor": cfg.floor_height,
+            "ceil": cfg.ceil_height,
+            "flat": cfg.floor_flat,
+            "light": cfg.dark_light,
+            "special": cfg.sector_special,
+            "tag": cfg.sector_tag,
+            "skin": cfg.dark_mid,
+        }
+    if want == "nukage":
+        return {
+            "floor": cfg.nukage_floor,
+            "ceil": cfg.ceil_height,
+            "flat": cfg.nukage_flat,
+            "light": cfg.dark_light,
+            "special": cfg.nukage_special,
+            "tag": cfg.sector_tag,
+            "skin": cfg.nukage_mid,
+        }
+    return {
+        "floor": cfg.floor_height,
+        "ceil": cfg.ceil_height,
+        "flat": cfg.floor_flat,
+        "light": cfg.light_level,
+        "special": cfg.sector_special,
+        "tag": cfg.sector_tag,
+        "skin": cfg.wall_mid,
+    }
+
+
 def compile_geometry(rows, exit_pos, wall_side):
-    """Compile wall boundary edges into vertexes, linedefs and sides."""
+    """Compile edges into vertexes, two-sided rooms and tagged doors.
+
+    Returns vertexes, linedefs as (v1, v2, flags, special, tag, s0, s1),
+    sidedefs as (xoff, yoff, upper, lower, mid, sector) and the exit edge.
+    Edges against walls are one-sided; room-to-room and room-to-door
+    edges are two-sided with the front on the cell being compiled.
+    """
     cfg = DoomPwadConfig
     vertex_index = {}
     vertexes = []
     linedefs = []
+    sidedefs = []
+    emitted = set()
 
     def vertex(x, y):
         """Deduplicate lattice points shared by adjacent edges."""
@@ -268,33 +395,91 @@ def compile_geometry(rows, exit_pos, wall_side):
             vertexes.append(key)
         return idx
 
+    labels, regions = label_regions(rows)
+    door_tags = {}
+    for idx, region in enumerate(regions):
+        if region["class"] == "door":
+            door_tags[idx] = len(door_tags) + 1
+    sectors = [region_sector(region, door_tags.get(idx, cfg.sector_tag))
+               for idx, region in enumerate(regions)]
+
     exit_edge = None
     erow, ecol = exit_pos
-    for row, line in enumerate(rows):
-        for col, cell in enumerate(line):
-            if cell in cfg.wall_chars:
+    height = len(rows)
+    width = len(rows[0])
+    for row in range(height):
+        for col in range(width):
+            if rows[row][col] in cfg.wall_chars:
                 continue
+            here = labels[row][col]
             x0, x1, y_top, y_bottom = cell_corners(row, col)
             edges = []
-            if is_wall(rows, row - 1, col):
-                edges.append(((x0, y_top), (x1, y_top), (-1, 0)))
-            if is_wall(rows, row + 1, col):
-                edges.append(((x1, y_bottom), (x0, y_bottom), (1, 0)))
-            if is_wall(rows, row, col - 1):
-                edges.append(((x0, y_bottom), (x0, y_top), (0, -1)))
-            if is_wall(rows, row, col + 1):
-                edges.append(((x1, y_top), (x1, y_bottom), (0, 1)))
-            for start, end, side in edges:
-                if (row, col) == exit_pos and side == wall_side:
-                    exit_edge = len(linedefs)
+            if row == 0 or labels[row - 1][col] < 0:
+                edges.append(((x0, y_top), (x1, y_top), (-1, 0), None))
+            elif labels[row - 1][col] != here:
+                edges.append(((x0, y_top), (x1, y_top), (-1, 0),
+                              labels[row - 1][col]))
+            if row + 1 >= height or labels[row + 1][col] < 0:
+                edges.append(((x1, y_bottom), (x0, y_bottom), (1, 0), None))
+            elif labels[row + 1][col] != here:
+                edges.append(((x1, y_bottom), (x0, y_bottom), (1, 0),
+                              labels[row + 1][col]))
+            if col == 0 or labels[row][col - 1] < 0:
+                edges.append(((x0, y_bottom), (x0, y_top), (0, -1), None))
+            elif labels[row][col - 1] != here:
+                edges.append(((x0, y_bottom), (x0, y_top), (0, -1),
+                              labels[row][col - 1]))
+            if col + 1 >= width or labels[row][col + 1] < 0:
+                edges.append(((x1, y_top), (x1, y_bottom), (0, 1), None))
+            elif labels[row][col + 1] != here:
+                edges.append(((x1, y_top), (x1, y_bottom), (0, 1),
+                              labels[row][col + 1]))
+            for start, end, side, back in edges:
+                key = (min(start, end), max(start, end))
+                if key in emitted:
+                    continue
+                emitted.add(key)
                 v1 = vertex(*start)
                 v2 = vertex(*end)
-                linedefs.append((v1, v2, len(linedefs)))
+                if (row, col) == exit_pos and side == wall_side and back is None:
+                    exit_edge = len(linedefs)
+                if back is None:
+                    sidedefs.append((0, 0, cfg.unused_tex, cfg.unused_tex,
+                                     sectors[here]["skin"], here))
+                    linedefs.append((v1, v2, cfg.flag_blocking, 0, 0,
+                                     len(sidedefs) - 1, cfg.no_side))
+                else:
+                    front_sec = sectors[here]
+                    back_sec = sectors[back]
+                    if here in door_tags or back in door_tags:
+                        tag = door_tags.get(here, door_tags.get(back))
+                        sidedefs.append((0, 0, cfg.door_upper, cfg.unused_tex,
+                                         cfg.unused_tex, here))
+                        sidedefs.append((0, 0, cfg.door_upper, cfg.unused_tex,
+                                         cfg.unused_tex, back))
+                        linedefs.append((v1, v2, cfg.flag_twosided,
+                                         cfg.special_door, tag,
+                                         len(sidedefs) - 2,
+                                         len(sidedefs) - 1))
+                    else:
+                        if front_sec["floor"] == back_sec["floor"]:
+                            lower_front = cfg.unused_tex
+                            lower_back = cfg.unused_tex
+                        else:
+                            lower_front = front_sec["skin"]
+                            lower_back = back_sec["skin"]
+                        sidedefs.append((0, 0, cfg.unused_tex, lower_front,
+                                         cfg.unused_tex, here))
+                        sidedefs.append((0, 0, cfg.unused_tex, lower_back,
+                                         cfg.unused_tex, back))
+                        linedefs.append((v1, v2, cfg.flag_twosided, 0, 0,
+                                         len(sidedefs) - 2,
+                                         len(sidedefs) - 1))
     if exit_edge is None:
         raise PwadError("exit edge vanished during compile")
     if len(linedefs) > cfg.max_linedefs:
         raise PwadError("too many linedefs")
-    return vertexes, linedefs, exit_edge
+    return vertexes, linedefs, sidedefs, exit_edge, sectors
 
 
 def compile_things(rows):
@@ -332,29 +517,33 @@ def build_lumps(rows):
     """Compile a validated grid into the eleven E1M1 lump payloads."""
     cfg = DoomPwadConfig
     exit_pos, wall_side = validate_grid(rows)
-    vertexes, linedefs, exit_edge = compile_geometry(rows, exit_pos, wall_side)
+    vertexes, linedefs, sidedefs, exit_edge, sectors = compile_geometry(
+        rows, exit_pos, wall_side)
     things = compile_things(rows)
 
     things_lump = b"".join(struct.pack(cfg.thing_fmt, *t) for t in things)
 
     linedef_lump = b""
-    for idx, (v1, v2, side) in enumerate(linedefs):
-        special = cfg.special_exit if idx == exit_edge else 0
+    for idx, (v1, v2, flags, special, tag, s0, s1) in enumerate(linedefs):
+        if idx == exit_edge:
+            special = cfg.special_exit
         linedef_lump += struct.pack(
-            cfg.linedef_fmt, v1, v2, cfg.flag_blocking,
-            special, 0, side, cfg.no_side)
+            cfg.linedef_fmt, v1, v2, flags, special, tag, s0, s1)
 
     sidedef_lump = b""
-    for idx in range(len(linedefs)):
-        mid = cfg.exit_mid if idx == exit_edge else cfg.wall_mid
+    exit_s0 = linedefs[exit_edge][5]
+    sidedefs[exit_s0] = (
+        0, 0, cfg.unused_tex, cfg.unused_tex, cfg.exit_mid,
+        sidedefs[exit_s0][5])
+    for xoff, yoff, upper, lower, mid, sector in sidedefs:
         sidedef_lump += struct.pack(
-            cfg.sidedef_fmt, 0, 0, pad_tex(cfg.unused_tex),
-            pad_tex(cfg.unused_tex), pad_tex(mid), cfg.front_sector)
+            cfg.sidedef_fmt, xoff, yoff, pad_tex(upper),
+            pad_tex(lower), pad_tex(mid), sector)
 
     vertex_lump = b"".join(struct.pack(cfg.vertex_fmt, x, y) for x, y in vertexes)
 
     seg_lump = b""
-    for idx, (v1, v2, _) in enumerate(linedefs):
+    for idx, (v1, v2, _flags, _special, _tag, _s0, _s1) in enumerate(linedefs):
         x1, y1 = vertexes[v1]
         x2, y2 = vertexes[v2]
         seg_lump += struct.pack(
@@ -371,12 +560,15 @@ def build_lumps(rows):
         second[1] - first[1], *bbox,
         cfg.node_leaf, cfg.node_leaf)
 
-    sector_lump = struct.pack(
-        cfg.sector_fmt, cfg.floor_height, cfg.ceil_height,
-        pad_tex(cfg.floor_flat), pad_tex(cfg.ceil_flat),
-        cfg.light_level, cfg.sector_special, cfg.sector_tag)
+    sector_lump = b""
+    for sec in sectors:
+        sector_lump += struct.pack(
+            cfg.sector_fmt, sec["floor"], sec["ceil"],
+            pad_tex(sec["flat"]), pad_tex(cfg.ceil_flat),
+            sec["light"], sec["special"], sec["tag"])
 
-    reject_lump = b"\x00"
+    reject_size = (len(sectors) * len(sectors) + 7) // 8
+    reject_lump = b"\x00" * reject_size
 
     span_x = maxx - minx
     span_y = maxy - miny
@@ -484,8 +676,10 @@ def check_pwad(data):
         raise PwadError("missing BSP lumps in map")
     if sizes[b"E1M1"][1] != 0:
         raise PwadError("map label lump must be empty")
-    if sizes[b"REJECT"][1] != 1:
-        raise PwadError("single-sector REJECT must be one byte")
+    want_reject = (n_sectors * n_sectors + 7) // 8
+    if sizes[b"REJECT"][1] != want_reject:
+        raise PwadError("REJECT must hold %d bytes for %d sectors" % (
+            want_reject, n_sectors))
 
     raw_things = payload(b"THINGS")
     players = 0
@@ -497,26 +691,54 @@ def check_pwad(data):
     if players != 1:
         raise PwadError("want exactly one player start, found %d" % players)
 
+    raw_sectors = payload(b"SECTORS")
+    sector_width = struct.calcsize(cfg.sector_fmt)
+    sector_tags = set()
+    for idx in range(n_sectors):
+        tag = struct.unpack_from(cfg.sector_fmt, raw_sectors,
+                                 idx * sector_width)[-1]
+        if tag < 0 or tag > 255:
+            raise PwadError("sector %d has a wild tag" % idx)
+        if tag != 0:
+            if tag in sector_tags:
+                raise PwadError("sector tag %d is not unique" % tag)
+            sector_tags.add(tag)
+
     raw_lines = payload(b"LINEDEFS")
     width = struct.calcsize(cfg.linedef_fmt)
     exits = 0
     degree = [0] * n_vertexes
     for idx in range(n_lines):
-        v1, v2, _, special, _, s0, _ = struct.unpack_from(cfg.linedef_fmt, raw_lines, idx * width)
+        v1, v2, flags, special, tag, s0, s1 = struct.unpack_from(
+            cfg.linedef_fmt, raw_lines, idx * width)
         if not (0 <= v1 < n_vertexes and 0 <= v2 < n_vertexes):
             raise PwadError("linedef %d has a wild vertex" % idx)
         if v1 == v2:
             raise PwadError("linedef %d is zero length" % idx)
         if not (0 <= s0 < n_sides):
-            raise PwadError("linedef %d has a wild sidedef" % idx)
+            raise PwadError("linedef %d has a wild front sidedef" % idx)
+        if flags & cfg.flag_twosided:
+            if not (0 <= s1 < n_sides):
+                raise PwadError("linedef %d has a wild back sidedef" % idx)
+        elif s1 != cfg.no_side:
+            raise PwadError("linedef %d is one-sided with a back side" % idx)
         if special == cfg.special_exit:
             exits += 1
+            if tag != 0:
+                raise PwadError("exit switch %d must not be tagged" % idx)
+        elif special == cfg.special_door:
+            if tag == 0 or tag not in sector_tags:
+                raise PwadError("door line %d has a wild tag" % idx)
+        elif special != 0:
+            raise PwadError("linedef %d has an unknown special" % idx)
+        elif tag != 0:
+            raise PwadError("linedef %d is tagged without a special" % idx)
         degree[v1] += 1
         degree[v2] += 1
     if exits != 1:
         raise PwadError("want exactly one exit switch, found %d" % exits)
     for idx, deg in enumerate(degree):
-        if deg == 0 or deg % 2 != 0:
+        if deg < 2:
             raise PwadError("vertex %d leaves the boundary open" % idx)
 
     raw_sides = payload(b"SIDEDEFS")

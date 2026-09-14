@@ -3342,114 +3342,129 @@ long sys_linux_wait4(lon...` |
 | `main` | function | `progs/asm/lzss.s:3197` | `` |
 | `_start` | function | `progs/asm/w1.s:37` | `` |
 | `main` | function | `progs/asm/w1.s:3` | `` |
-| `DMAP_BRUSH_COUNT` | macro | `progs/doomedit/doomedit.c:204` | `#define DMAP_BRUSH_COUNT` |
-| `DMAP_CANVAS_W` | macro | `progs/doomedit/doomedit.c:57` | `#define DMAP_CANVAS_W` |
-| `DMAP_CEIL_FLAT` | macro | `progs/doomedit/doomedit.c:86` | `#define DMAP_CEIL_FLAT` |
-| `DMAP_CEIL_H` | macro | `progs/doomedit/doomedit.c:88` | `#define DMAP_CEIL_H` |
-| `DMAP_CELL_PX` | macro | `progs/doomedit/doomedit.c:56` | `#define DMAP_CELL_PX` |
-| `DMAP_DEF_H` | macro | `progs/doomedit/doomedit.c:54` | `#define DMAP_DEF_H` |
-| `DMAP_DEF_W` | macro | `progs/doomedit/doomedit.c:53` | `#define DMAP_DEF_W` |
-| `DMAP_EXIT_MID` | macro | `progs/doomedit/doomedit.c:83` | `#define DMAP_EXIT_MID` |
-| `DMAP_EXIT_SPECIAL` | macro | `progs/doomedit/doomedit.c:79` | `#define DMAP_EXIT_SPECIAL` |
-| `DMAP_FLAG_BLOCKING` | macro | `progs/doomedit/doomedit.c:80` | `#define DMAP_FLAG_BLOCKING` |
-| `DMAP_FLOOR_FLAT` | macro | `progs/doomedit/doomedit.c:85` | `#define DMAP_FLOOR_FLAT` |
-| `DMAP_FLOOR_H` | macro | `progs/doomedit/doomedit.c:87` | `#define DMAP_FLOOR_H` |
-| `DMAP_FNAME_MAX` | macro | `progs/doomedit/doomedit.c:63` | `#define DMAP_FNAME_MAX` |
-| `DMAP_FOV_PLANE` | macro | `progs/doomedit/doomedit.c:73` | `#define DMAP_FOV_PLANE` |
-| `DMAP_FRAME_MS` | macro | `progs/doomedit/doomedit.c:70` | `#define DMAP_FRAME_MS` |
-| `DMAP_LEVEL_COUNT` | macro | `progs/doomedit/doomedit.c:66` | `#define DMAP_LEVEL_COUNT` |
-| `DMAP_LIGHT` | macro | `progs/doomedit/doomedit.c:89` | `#define DMAP_LIGHT` |
-| `DMAP_MAX_H` | macro | `progs/doomedit/doomedit.c:52` | `#define DMAP_MAX_H` |
-| `DMAP_MAX_LINES` | macro | `progs/doomedit/doomedit.c:74` | `#define DMAP_MAX_LINES` |
-| `DMAP_MAX_THINGS` | macro | `progs/doomedit/doomedit.c:76` | `#define DMAP_MAX_THINGS` |
-| `DMAP_MAX_VERTS` | macro | `progs/doomedit/doomedit.c:75` | `#define DMAP_MAX_VERTS` |
-| `DMAP_MAX_W` | macro | `progs/doomedit/doomedit.c:51` | `#define DMAP_MAX_W` |
-| `DMAP_MOVE_STEP` | macro | `progs/doomedit/doomedit.c:72` | `#define DMAP_MOVE_STEP` |
-| `DMAP_NODE_LEAF` | macro | `progs/doomedit/doomedit.c:90` | `#define DMAP_NODE_LEAF` |
-| `DMAP_NO_SIDE` | macro | `progs/doomedit/doomedit.c:81` | `#define DMAP_NO_SIDE` |
-| `DMAP_PANEL_MIN_H` | macro | `progs/doomedit/doomedit.c:58` | `#define DMAP_PANEL_MIN_H` |
-| `DMAP_PLAYER_TYPE` | macro | `progs/doomedit/doomedit.c:77` | `#define DMAP_PLAYER_TYPE` |
-| `DMAP_PREV_H` | macro | `progs/doomedit/doomedit.c:60` | `#define DMAP_PREV_H` |
-| `DMAP_PREV_W` | macro | `progs/doomedit/doomedit.c:59` | `#define DMAP_PREV_W` |
-| `DMAP_RANDOM_ATTEMPTS` | macro | `progs/doomedit/doomedit.c:67` | `#define DMAP_RANDOM_ATTEMPTS` |
-| `DMAP_ROOM_MAX` | macro | `progs/doomedit/doomedit.c:68` | `#define DMAP_ROOM_MAX` |
-| `DMAP_ROOM_TRIES` | macro | `progs/doomedit/doomedit.c:69` | `#define DMAP_ROOM_TRIES` |
-| `DMAP_SAVE_TXT` | macro | `progs/doomedit/doomedit.c:92` | `#define DMAP_SAVE_TXT` |
-| `DMAP_SAVE_WAD` | macro | `progs/doomedit/doomedit.c:93` | `#define DMAP_SAVE_WAD` |
-| `DMAP_SLOTS` | macro | `progs/doomedit/doomedit.c:65` | `#define DMAP_SLOTS` |
-| `DMAP_STATUS_MAX` | macro | `progs/doomedit/doomedit.c:64` | `#define DMAP_STATUS_MAX` |
-| `DMAP_THING_OPT` | macro | `progs/doomedit/doomedit.c:78` | `#define DMAP_THING_OPT` |
-| `DMAP_TILE` | macro | `progs/doomedit/doomedit.c:55` | `#define DMAP_TILE` |
-| `DMAP_TITLE` | macro | `progs/doomedit/doomedit.c:94` | `#define DMAP_TITLE` |
-| `DMAP_TOOL_DOOM` | macro | `progs/doomedit/doomedit.c:91` | `#define DMAP_TOOL_DOOM` |
-| `DMAP_TURN_STEP` | macro | `progs/doomedit/doomedit.c:71` | `#define DMAP_TURN_STEP` |
-| `DMAP_UI_MEMORY` | macro | `progs/doomedit/doomedit.c:61` | `#define DMAP_UI_MEMORY` |
-| `DMAP_UNUSED_TEX` | macro | `progs/doomedit/doomedit.c:84` | `#define DMAP_UNUSED_TEX` |
-| `DMAP_WAD_MAX` | macro | `progs/doomedit/doomedit.c:62` | `#define DMAP_WAD_MAX` |
-| `DMAP_WALL_MID` | macro | `progs/doomedit/doomedit.c:82` | `#define DMAP_WALL_MID` |
-| `dmap_brush_combo` | function | `progs/doomedit/doomedit.c:1106` | `static void dmap_brush_combo(struct nk_context *ctx)` |
-| `dmap_build` | function | `progs/doomedit/doomedit.c:1341` | `dmap_build(&ctx);` |
-| `dmap_build_wad` | function | `progs/doomedit/doomedit.c:791` | `static int dmap_build_wad(int *size_out)` |
-| `dmap_canvas` | function | `progs/doomedit/doomedit.c:1117` | `static void dmap_canvas(struct nk_context *ctx)` |
-| `dmap_cell_color` | function | `progs/doomedit/doomedit.c:261` | `static struct nk_color dmap_cell_color(int cell)` |
-| `dmap_check_wad` | function | `progs/doomedit/doomedit.c:1022` | `static int dmap_check_wad(const char *path)` |
-| `dmap_demo_room` | function | `progs/doomedit/doomedit.c:1358` | `static void dmap_demo_room(void)` |
-| `dmap_export_wad` | function | `progs/doomedit/doomedit.c:1007` | `static int dmap_export_wad(const char *path)` |
-| `dmap_free_cell` | function | `progs/doomedit/doomedit.c:490` | `static int dmap_free_cell(int *r, int *c)` |
-| `dmap_gui_run` | function | `progs/doomedit/doomedit.c:1312` | `static void dmap_gui_run(void)` |
-| `dmap_is_wall` | function | `progs/doomedit/doomedit.c:249` | `static int dmap_is_wall(int row, int col)` |
-| `dmap_load` | function | `progs/doomedit/doomedit.c:634` | `static int dmap_load(const char *path)` |
-| `dmap_load_preset` | function | `progs/doomedit/doomedit.c:452` | `static int dmap_load_preset(int idx)` |
-| `dmap_new` | function | `progs/doomedit/doomedit.c:303` | `static void dmap_new(void)` |
-| `dmap_preview` | function | `progs/doomedit/doomedit.c:1040` | `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)` |
-| `dmap_preview_row` | function | `progs/doomedit/doomedit.c:1161` | `static void dmap_preview_row(struct nk_context *ctx)` |
-| `dmap_rand` | function | `progs/doomedit/doomedit.c:482` | `static unsigned dmap_rand(void)` |
-| `dmap_random_map` | function | `progs/doomedit/doomedit.c:504` | `static void dmap_random_map(unsigned seed)` |
-| `dmap_recenter` | function | `progs/doomedit/doomedit.c:440` | `static void dmap_recenter(void)` |
-| `dmap_run_map` | function | `progs/doomedit/doomedit.c:1196` | `static void dmap_run_map(void)` |
-| `dmap_save_txt` | function | `progs/doomedit/doomedit.c:678` | `static int dmap_save_txt(const char *path)` |
-| `dmap_scancode` | function | `progs/doomedit/doomedit.c:1299` | `static void dmap_scancode(int code, int make, int e0, void *ud)` |
-| `dmap_seg_angle` | function | `progs/doomedit/doomedit.c:783` | `static int dmap_seg_angle(int dx, int dy)` |
-| `dmap_selftest` | function | `progs/doomedit/doomedit.c:1370` | `static int dmap_selftest(void)` |
-| `dmap_spawn` | function | `progs/doomedit/doomedit.c:229` | `static long dmap_spawn(const char *path, int argc, const char **argv)` |
-| `dmap_thing_type` | function | `progs/doomedit/doomedit.c:141` | `static int dmap_thing_type(int cell)` |
-| `dmap_validate` | function | `progs/doomedit/doomedit.c:699` | `static int dmap_validate(char *msg, int max)` |
-| `dmap_vga` | function | `progs/doomedit/doomedit.c:240` | `static long dmap_vga(int on)` |
-| `dmap_w16` | function | `progs/doomedit/doomedit.c:768` | `static void dmap_w16(int v)` |
-| `dmap_w32` | function | `progs/doomedit/doomedit.c:772` | `static void dmap_w32(int v)` |
-| `dmap_w8` | function | `progs/doomedit/doomedit.c:767` | `static void dmap_w8(unsigned v)` |
-| `dmap_walkable` | function | `progs/doomedit/doomedit.c:256` | `static int dmap_walkable(int cell)` |
-| `dmap_wtex` | function | `progs/doomedit/doomedit.c:776` | `static void dmap_wtex(const char *name)` |
-| `fclose` | function | `progs/doomedit/doomedit.c:646` | `fclose(fp);` |
-| `main` | function | `progs/doomedit/doomedit.c:1451` | `int main(int argc, char **argv)` |
-| `nk_build_palette` | function | `progs/doomedit/doomedit.c:1320` | `nk_build_palette(pal768);` |
-| `nk_clear` | function | `progs/doomedit/doomedit.c:1345` | `nk_clear(&ctx);` |
-| `nk_combobox` | function | `progs/doomedit/doomedit.c:1109` | `nk_combobox(ctx, dmap_brush_labels, DMAP_BRUSH_COUNT, &dmap_brush_sel, 20, nk_vec2(280, 260));` |
-| `nk_end` | function | `progs/doomedit/doomedit.c:1232` | `nk_end(ctx);` |
-| `nk_fill_rect` | function | `progs/doomedit/doomedit.c:1047` | `nk_fill_rect(canvas, top, 0.0f, nk_rgb(24, 24, 40));` |
-| `nk_free` | function | `progs/doomedit/doomedit.c:1352` | `nk_free(&ctx);` |
-| `nk_group_end` | function | `progs/doomedit/doomedit.c:1291` | `nk_group_end(ctx);` |
-| `nk_input_begin` | function | `progs/doomedit/doomedit.c:1332` | `nk_input_begin(&ctx);` |
-| `nk_input_end` | function | `progs/doomedit/doomedit.c:1334` | `nk_input_end(&ctx);` |
-| `nk_label` | function | `progs/doomedit/doomedit.c:1252` | `nk_label(ctx, line, NK_TEXT_LEFT);` |
-| `nk_layout_row_begin` | function | `progs/doomedit/doomedit.c:1254` | `nk_layout_row_begin(ctx, NK_STATIC, row_h, 2);` |
-| `nk_layout_row_dynamic` | function | `progs/doomedit/doomedit.c:1108` | `nk_layout_row_dynamic(ctx, 22, 1);` |
-| `nk_layout_row_end` | function | `progs/doomedit/doomedit.c:1288` | `nk_layout_row_end(ctx);` |
-| `nk_layout_row_push` | function | `progs/doomedit/doomedit.c:1255` | `nk_layout_row_push(ctx, (float)DMAP_CANVAS_W);` |
-| `nk_layout_row_static` | function | `progs/doomedit/doomedit.c:1164` | `nk_layout_row_static(ctx, (float)(DMAP_PREV_H + 8), DMAP_PREV_W + 8, 1);` |
-| `nk_poll_input` | function | `progs/doomedit/doomedit.c:1333` | `nk_poll_input(&ctx);` |
-| `nk_rasterize` | function | `progs/doomedit/doomedit.c:1342` | `nk_rasterize(&ctx);` |
-| `nk_rgb` | function | `progs/doomedit/doomedit.c:263` | `case DMAP_WALL: return nk_rgb(150, 110, 70);` |
-| `nk_set_scancode_hook` | function | `progs/doomedit/doomedit.c:1330` | `nk_set_scancode_hook(dmap_scancode, 0);` |
-| `nk_sys_fb_info` | function | `progs/doomedit/doomedit.c:1398` | `nk_sys_fb_info(&fw, &fh, &fp);` |
-| `nk_sys_gfx_set_title` | function | `progs/doomedit/doomedit.c:1218` | `nk_sys_gfx_set_title(DMAP_TITLE);` |
-| `nk_sys_kbd_raw` | function | `progs/doomedit/doomedit.c:1210` | `nk_sys_kbd_raw(0);` |
-| `nk_sys_palette` | function | `progs/doomedit/doomedit.c:1321` | `nk_sys_palette(pal768);` |
-| `nk_sys_vga_mode` | function | `progs/doomedit/doomedit.c:1317` | `nk_sys_vga_mode(1);` |
-| `nk_theme_apply` | function | `progs/doomedit/doomedit.c:1328` | `nk_theme_apply(&ctx, 0);` |
-| `printf` | function | `progs/doomedit/doomedit.c:1323` | `printf("doomedit: init failed\n");` |
-| `snprintf` | function | `progs/doomedit/doomedit.c:477` | `snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]);` |
-| `volatile` | function | `progs/doomedit/doomedit.c:232` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_SPAWN), "D"(path), "S"((long)0), "d"((long)argc), "r"(r10) : "rc` |
+| `DMAP_BRUSH_COUNT` | macro | `progs/doomedit/doomedit.c:225` | `#define DMAP_BRUSH_COUNT` |
+| `DMAP_CANVAS_W` | macro | `progs/doomedit/doomedit.c:61` | `#define DMAP_CANVAS_W` |
+| `DMAP_CEIL_FLAT` | macro | `progs/doomedit/doomedit.c:97` | `#define DMAP_CEIL_FLAT` |
+| `DMAP_CEIL_H` | macro | `progs/doomedit/doomedit.c:100` | `#define DMAP_CEIL_H` |
+| `DMAP_CELL_PX` | macro | `progs/doomedit/doomedit.c:60` | `#define DMAP_CELL_PX` |
+| `DMAP_DARK_LIGHT` | macro | `progs/doomedit/doomedit.c:103` | `#define DMAP_DARK_LIGHT` |
+| `DMAP_DARK_MID` | macro | `progs/doomedit/doomedit.c:92` | `#define DMAP_DARK_MID` |
+| `DMAP_DEF_H` | macro | `progs/doomedit/doomedit.c:58` | `#define DMAP_DEF_H` |
+| `DMAP_DEF_W` | macro | `progs/doomedit/doomedit.c:57` | `#define DMAP_DEF_W` |
+| `DMAP_DOOR_CEIL` | macro | `progs/doomedit/doomedit.c:101` | `#define DMAP_DOOR_CEIL` |
+| `DMAP_DOOR_LIGHT` | macro | `progs/doomedit/doomedit.c:104` | `#define DMAP_DOOR_LIGHT` |
+| `DMAP_DOOR_SPECIAL` | macro | `progs/doomedit/doomedit.c:85` | `#define DMAP_DOOR_SPECIAL` |
+| `DMAP_DOOR_UPPER` | macro | `progs/doomedit/doomedit.c:91` | `#define DMAP_DOOR_UPPER` |
+| `DMAP_EXIT_MID` | macro | `progs/doomedit/doomedit.c:90` | `#define DMAP_EXIT_MID` |
+| `DMAP_EXIT_SPECIAL` | macro | `progs/doomedit/doomedit.c:84` | `#define DMAP_EXIT_SPECIAL` |
+| `DMAP_FLAG_BLOCKING` | macro | `progs/doomedit/doomedit.c:86` | `#define DMAP_FLAG_BLOCKING` |
+| `DMAP_FLAG_TWOSIDED` | macro | `progs/doomedit/doomedit.c:87` | `#define DMAP_FLAG_TWOSIDED` |
+| `DMAP_FLOOR_FLAT` | macro | `progs/doomedit/doomedit.c:95` | `#define DMAP_FLOOR_FLAT` |
+| `DMAP_FLOOR_H` | macro | `progs/doomedit/doomedit.c:98` | `#define DMAP_FLOOR_H` |
+| `DMAP_FNAME_MAX` | macro | `progs/doomedit/doomedit.c:67` | `#define DMAP_FNAME_MAX` |
+| `DMAP_FOV_PLANE` | macro | `progs/doomedit/doomedit.c:78` | `#define DMAP_FOV_PLANE` |
+| `DMAP_FRAME_MS` | macro | `progs/doomedit/doomedit.c:75` | `#define DMAP_FRAME_MS` |
+| `DMAP_LEVEL_COUNT` | macro | `progs/doomedit/doomedit.c:70` | `#define DMAP_LEVEL_COUNT` |
+| `DMAP_LIGHT` | macro | `progs/doomedit/doomedit.c:102` | `#define DMAP_LIGHT` |
+| `DMAP_MAX_H` | macro | `progs/doomedit/doomedit.c:56` | `#define DMAP_MAX_H` |
+| `DMAP_MAX_LINES` | macro | `progs/doomedit/doomedit.c:79` | `#define DMAP_MAX_LINES` |
+| `DMAP_MAX_SECTORS` | macro | `progs/doomedit/doomedit.c:72` | `#define DMAP_MAX_SECTORS` |
+| `DMAP_MAX_THINGS` | macro | `progs/doomedit/doomedit.c:81` | `#define DMAP_MAX_THINGS` |
+| `DMAP_MAX_VERTS` | macro | `progs/doomedit/doomedit.c:80` | `#define DMAP_MAX_VERTS` |
+| `DMAP_MAX_W` | macro | `progs/doomedit/doomedit.c:55` | `#define DMAP_MAX_W` |
+| `DMAP_MOVE_STEP` | macro | `progs/doomedit/doomedit.c:77` | `#define DMAP_MOVE_STEP` |
+| `DMAP_NODE_LEAF` | macro | `progs/doomedit/doomedit.c:106` | `#define DMAP_NODE_LEAF` |
+| `DMAP_NO_SIDE` | macro | `progs/doomedit/doomedit.c:88` | `#define DMAP_NO_SIDE` |
+| `DMAP_NUKE_FLAT` | macro | `progs/doomedit/doomedit.c:96` | `#define DMAP_NUKE_FLAT` |
+| `DMAP_NUKE_FLOOR` | macro | `progs/doomedit/doomedit.c:99` | `#define DMAP_NUKE_FLOOR` |
+| `DMAP_NUKE_MID` | macro | `progs/doomedit/doomedit.c:93` | `#define DMAP_NUKE_MID` |
+| `DMAP_NUKE_SPECIAL` | macro | `progs/doomedit/doomedit.c:105` | `#define DMAP_NUKE_SPECIAL` |
+| `DMAP_PANEL_MIN_H` | macro | `progs/doomedit/doomedit.c:62` | `#define DMAP_PANEL_MIN_H` |
+| `DMAP_PLAYER_TYPE` | macro | `progs/doomedit/doomedit.c:82` | `#define DMAP_PLAYER_TYPE` |
+| `DMAP_PREV_H` | macro | `progs/doomedit/doomedit.c:64` | `#define DMAP_PREV_H` |
+| `DMAP_PREV_W` | macro | `progs/doomedit/doomedit.c:63` | `#define DMAP_PREV_W` |
+| `DMAP_RANDOM_ATTEMPTS` | macro | `progs/doomedit/doomedit.c:71` | `#define DMAP_RANDOM_ATTEMPTS` |
+| `DMAP_ROOM_MAX` | macro | `progs/doomedit/doomedit.c:73` | `#define DMAP_ROOM_MAX` |
+| `DMAP_ROOM_TRIES` | macro | `progs/doomedit/doomedit.c:74` | `#define DMAP_ROOM_TRIES` |
+| `DMAP_SAVE_TXT` | macro | `progs/doomedit/doomedit.c:108` | `#define DMAP_SAVE_TXT` |
+| `DMAP_SAVE_WAD` | macro | `progs/doomedit/doomedit.c:109` | `#define DMAP_SAVE_WAD` |
+| `DMAP_SLOTS` | macro | `progs/doomedit/doomedit.c:69` | `#define DMAP_SLOTS` |
+| `DMAP_STATUS_MAX` | macro | `progs/doomedit/doomedit.c:68` | `#define DMAP_STATUS_MAX` |
+| `DMAP_THING_OPT` | macro | `progs/doomedit/doomedit.c:83` | `#define DMAP_THING_OPT` |
+| `DMAP_TILE` | macro | `progs/doomedit/doomedit.c:59` | `#define DMAP_TILE` |
+| `DMAP_TITLE` | macro | `progs/doomedit/doomedit.c:110` | `#define DMAP_TITLE` |
+| `DMAP_TOOL_DOOM` | macro | `progs/doomedit/doomedit.c:107` | `#define DMAP_TOOL_DOOM` |
+| `DMAP_TURN_STEP` | macro | `progs/doomedit/doomedit.c:76` | `#define DMAP_TURN_STEP` |
+| `DMAP_UI_MEMORY` | macro | `progs/doomedit/doomedit.c:65` | `#define DMAP_UI_MEMORY` |
+| `DMAP_UNUSED_TEX` | macro | `progs/doomedit/doomedit.c:94` | `#define DMAP_UNUSED_TEX` |
+| `DMAP_WAD_MAX` | macro | `progs/doomedit/doomedit.c:66` | `#define DMAP_WAD_MAX` |
+| `DMAP_WALL_MID` | macro | `progs/doomedit/doomedit.c:89` | `#define DMAP_WALL_MID` |
+| `areas` | function | `progs/doomedit/doomedit.c:826` | `* floor areas (doors stand alone, dark and nukage never merge);` |
+| `dmap_brush_combo` | function | `progs/doomedit/doomedit.c:1437` | `static void dmap_brush_combo(struct nk_context *ctx)` |
+| `dmap_build` | function | `progs/doomedit/doomedit.c:1672` | `dmap_build(&ctx);` |
+| `dmap_build_wad` | function | `progs/doomedit/doomedit.c:1020` | `static int dmap_build_wad(int *size_out)` |
+| `dmap_canvas` | function | `progs/doomedit/doomedit.c:1448` | `static void dmap_canvas(struct nk_context *ctx)` |
+| `dmap_cell_class` | function | `progs/doomedit/doomedit.c:283` | `static int dmap_cell_class(int cell)` |
+| `dmap_cell_color` | function | `progs/doomedit/doomedit.c:294` | `static struct nk_color dmap_cell_color(int cell)` |
+| `dmap_check_wad` | function | `progs/doomedit/doomedit.c:1352` | `static int dmap_check_wad(const char *path)` |
+| `dmap_demo_room` | function | `progs/doomedit/doomedit.c:1689` | `static void dmap_demo_room(void)` |
+| `dmap_export_wad` | function | `progs/doomedit/doomedit.c:1337` | `static int dmap_export_wad(const char *path)` |
+| `dmap_free_cell` | function | `progs/doomedit/doomedit.c:552` | `static int dmap_free_cell(int *r, int *c)` |
+| `dmap_gui_run` | function | `progs/doomedit/doomedit.c:1643` | `static void dmap_gui_run(void)` |
+| `dmap_is_wall` | function | `progs/doomedit/doomedit.c:270` | `static int dmap_is_wall(int row, int col)` |
+| `dmap_label_regions` | function | `progs/doomedit/doomedit.c:840` | `static int dmap_label_regions(void)` |
+| `dmap_load` | function | `progs/doomedit/doomedit.c:761` | `static int dmap_load(const char *path)` |
+| `dmap_load_preset` | function | `progs/doomedit/doomedit.c:514` | `static int dmap_load_preset(int idx)` |
+| `dmap_new` | function | `progs/doomedit/doomedit.c:339` | `static void dmap_new(void)` |
+| `dmap_preview` | function | `progs/doomedit/doomedit.c:1370` | `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)` |
+| `dmap_preview_row` | function | `progs/doomedit/doomedit.c:1492` | `static void dmap_preview_row(struct nk_context *ctx)` |
+| `dmap_rand` | function | `progs/doomedit/doomedit.c:544` | `static unsigned dmap_rand(void)` |
+| `dmap_random_map` | function | `progs/doomedit/doomedit.c:566` | `static void dmap_random_map(unsigned seed)` |
+| `dmap_recenter` | function | `progs/doomedit/doomedit.c:502` | `static void dmap_recenter(void)` |
+| `dmap_run_map` | function | `progs/doomedit/doomedit.c:1527` | `static void dmap_run_map(void)` |
+| `dmap_save_txt` | function | `progs/doomedit/doomedit.c:805` | `static int dmap_save_txt(const char *path)` |
+| `dmap_scancode` | function | `progs/doomedit/doomedit.c:1630` | `static void dmap_scancode(int code, int make, int e0, void *ud)` |
+| `dmap_seg_angle` | function | `progs/doomedit/doomedit.c:1010` | `static int dmap_seg_angle(int dx, int dy)` |
+| `dmap_selftest` | function | `progs/doomedit/doomedit.c:1701` | `static int dmap_selftest(void)` |
+| `dmap_spawn` | function | `progs/doomedit/doomedit.c:250` | `static long dmap_spawn(const char *path, int argc, const char **argv)` |
+| `dmap_thing_type` | function | `progs/doomedit/doomedit.c:160` | `static int dmap_thing_type(int cell)` |
+| `dmap_validate` | function | `progs/doomedit/doomedit.c:921` | `static int dmap_validate(char *msg, int max)` |
+| `dmap_vga` | function | `progs/doomedit/doomedit.c:261` | `static long dmap_vga(int on)` |
+| `dmap_w16` | function | `progs/doomedit/doomedit.c:995` | `static void dmap_w16(int v)` |
+| `dmap_w32` | function | `progs/doomedit/doomedit.c:999` | `static void dmap_w32(int v)` |
+| `dmap_w8` | function | `progs/doomedit/doomedit.c:994` | `static void dmap_w8(unsigned v)` |
+| `dmap_walkable` | function | `progs/doomedit/doomedit.c:277` | `static int dmap_walkable(int cell)` |
+| `dmap_wtex` | function | `progs/doomedit/doomedit.c:1003` | `static void dmap_wtex(const char *name)` |
+| `fclose` | function | `progs/doomedit/doomedit.c:773` | `fclose(fp);` |
+| `main` | function | `progs/doomedit/doomedit.c:1782` | `int main(int argc, char **argv)` |
+| `nk_build_palette` | function | `progs/doomedit/doomedit.c:1651` | `nk_build_palette(pal768);` |
+| `nk_clear` | function | `progs/doomedit/doomedit.c:1676` | `nk_clear(&ctx);` |
+| `nk_combobox` | function | `progs/doomedit/doomedit.c:1440` | `nk_combobox(ctx, dmap_brush_labels, DMAP_BRUSH_COUNT, &dmap_brush_sel, 20, nk_vec2(280, 260));` |
+| `nk_end` | function | `progs/doomedit/doomedit.c:1563` | `nk_end(ctx);` |
+| `nk_fill_rect` | function | `progs/doomedit/doomedit.c:1377` | `nk_fill_rect(canvas, top, 0.0f, nk_rgb(24, 24, 40));` |
+| `nk_free` | function | `progs/doomedit/doomedit.c:1683` | `nk_free(&ctx);` |
+| `nk_group_end` | function | `progs/doomedit/doomedit.c:1622` | `nk_group_end(ctx);` |
+| `nk_input_begin` | function | `progs/doomedit/doomedit.c:1663` | `nk_input_begin(&ctx);` |
+| `nk_input_end` | function | `progs/doomedit/doomedit.c:1665` | `nk_input_end(&ctx);` |
+| `nk_label` | function | `progs/doomedit/doomedit.c:1583` | `nk_label(ctx, line, NK_TEXT_LEFT);` |
+| `nk_layout_row_begin` | function | `progs/doomedit/doomedit.c:1585` | `nk_layout_row_begin(ctx, NK_STATIC, row_h, 2);` |
+| `nk_layout_row_dynamic` | function | `progs/doomedit/doomedit.c:1439` | `nk_layout_row_dynamic(ctx, 22, 1);` |
+| `nk_layout_row_end` | function | `progs/doomedit/doomedit.c:1619` | `nk_layout_row_end(ctx);` |
+| `nk_layout_row_push` | function | `progs/doomedit/doomedit.c:1586` | `nk_layout_row_push(ctx, (float)DMAP_CANVAS_W);` |
+| `nk_layout_row_static` | function | `progs/doomedit/doomedit.c:1495` | `nk_layout_row_static(ctx, (float)(DMAP_PREV_H + 8), DMAP_PREV_W + 8, 1);` |
+| `nk_poll_input` | function | `progs/doomedit/doomedit.c:1664` | `nk_poll_input(&ctx);` |
+| `nk_rasterize` | function | `progs/doomedit/doomedit.c:1673` | `nk_rasterize(&ctx);` |
+| `nk_rgb` | function | `progs/doomedit/doomedit.c:296` | `case DMAP_WALL: return nk_rgb(150, 110, 70);` |
+| `nk_set_scancode_hook` | function | `progs/doomedit/doomedit.c:1661` | `nk_set_scancode_hook(dmap_scancode, 0);` |
+| `nk_sys_fb_info` | function | `progs/doomedit/doomedit.c:1729` | `nk_sys_fb_info(&fw, &fh, &fp);` |
+| `nk_sys_gfx_set_title` | function | `progs/doomedit/doomedit.c:1549` | `nk_sys_gfx_set_title(DMAP_TITLE);` |
+| `nk_sys_kbd_raw` | function | `progs/doomedit/doomedit.c:1541` | `nk_sys_kbd_raw(0);` |
+| `nk_sys_palette` | function | `progs/doomedit/doomedit.c:1652` | `nk_sys_palette(pal768);` |
+| `nk_sys_vga_mode` | function | `progs/doomedit/doomedit.c:1648` | `nk_sys_vga_mode(1);` |
+| `nk_theme_apply` | function | `progs/doomedit/doomedit.c:1659` | `nk_theme_apply(&ctx, 0);` |
+| `printf` | function | `progs/doomedit/doomedit.c:1654` | `printf("doomedit: init failed\n");` |
+| `snprintf` | function | `progs/doomedit/doomedit.c:539` | `snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]);` |
+| `volatile` | function | `progs/doomedit/doomedit.c:253` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_SPAWN), "D"(path), "S"((long)0), "d"((long)argc), "r"(r10) : "rc` |
 | `AM_Drawer` | function | `progs/doomgeneric/am_map.c:1337` | `void AM_Drawer (void)` |
 | `AM_LevelInit` | function | `progs/doomgeneric/am_map.c:518` | `void AM_LevelInit(void)` |
 | `AM_NUMMARKPOINTS` | macro | `progs/doomgeneric/am_map.c:86` | `#define AM_NUMMARKPOINTS` |
@@ -10490,29 +10505,44 @@ Z_Malloc
 | `stub_dispatch` | function | `tests/test_batch.c:23` | `static long stub_dispatch(uint32_t opcode)` |
 | `ExtendedLegendTests` | class | `tests/test_doom_pwad.py:255` | `class ExtendedLegendTests(TestCase)` |
 | `GridValidationTests` | class | `tests/test_doom_pwad.py:29` | `class GridValidationTests(TestCase)` |
+| `MultiSectorMutationTests` | class | `tests/test_doom_pwad.py:388` | `class MultiSectorMutationTests(TestCase)` |
+| `MultiSectorTests` | class | `tests/test_doom_pwad.py:317` | `class MultiSectorTests(TestCase)` |
 | `PwadLayoutTests` | class | `tests/test_doom_pwad.py:82` | `class PwadLayoutTests(TestCase)` |
 | `PwadMutationTests` | class | `tests/test_doom_pwad.py:181` | `class PwadMutationTests(TestCase)` |
+| `door_line` | method | `tests/test_doom_pwad.py:406` | `def door_line(self)` |
+| `lump_blob` | method | `tests/test_doom_pwad.py:310` | `def lump_blob(blob, idx)` |
+| `mutate_line` | method | `tests/test_doom_pwad.py:395` | `def mutate_line(self, idx, field, value)` |
 | `setUp` | method | `tests/test_doom_pwad.py:184` | `def setUp(self)` |
+| `setUp` | method | `tests/test_doom_pwad.py:391` | `def setUp(self)` |
 | `test_bad_magic_dies` | method | `tests/test_doom_pwad.py:188` | `def test_bad_magic_dies(self)` |
+| `test_dark_and_nukage_sector_props` | method | `tests/test_doom_pwad.py:355` | `def test_dark_and_nukage_sector_props(self)` |
+| `test_door_lines_are_tagged_openers` | method | `tests/test_doom_pwad.py:327` | `def test_door_lines_are_tagged_openers(self)` |
+| `test_door_room_builds_two_sectors` | method | `tests/test_doom_pwad.py:320` | `def test_door_room_builds_two_sectors(self)` |
+| `test_door_tag_zero_dies` | method | `tests/test_doom_pwad.py:418` | `def test_door_tag_zero_dies(self)` |
 | `test_every_legend_char_builds` | method | `tests/test_doom_pwad.py:273` | `def test_every_legend_char_builds(self)` |
 | `test_every_thing_id_matches_engine` | method | `tests/test_doom_pwad.py:278` | `def test_every_thing_id_matches_engine(self)` |
 | `test_exit_needs_wall` | method | `tests/test_doom_pwad.py:66` | `def test_exit_needs_wall(self)` |
 | `test_exit_on_every_side` | method | `tests/test_doom_pwad.py:141` | `def test_exit_on_every_side(self)` |
 | `test_exit_switch_pin` | method | `tests/test_doom_pwad.py:129` | `def test_exit_switch_pin(self)` |
+| `test_exit_tagged_dies` | method | `tests/test_doom_pwad.py:433` | `def test_exit_tagged_dies(self)` |
 | `test_header_pin` | method | `tests/test_doom_pwad.py:96` | `def test_header_pin(self)` |
 | `test_illegal_char_refused` | method | `tests/test_doom_pwad.py:51` | `def test_illegal_char_refused(self)` |
 | `test_lump_order_pin` | method | `tests/test_doom_pwad.py:103` | `def test_lump_order_pin(self)` |
 | `test_missing_exit_dies` | method | `tests/test_doom_pwad.py:230` | `def test_missing_exit_dies(self)` |
 | `test_missing_exit_refused` | method | `tests/test_doom_pwad.py:46` | `def test_missing_exit_refused(self)` |
 | `test_missing_player_refused` | method | `tests/test_doom_pwad.py:41` | `def test_missing_player_refused(self)` |
+| `test_new_legend_chars_build` | method | `tests/test_doom_pwad.py:382` | `def test_new_legend_chars_build(self)` |
+| `test_onesided_with_back_dies` | method | `tests/test_doom_pwad.py:428` | `def test_onesided_with_back_dies(self)` |
 | `test_open_boundary_dies` | method | `tests/test_doom_pwad.py:168` | `def test_open_boundary_dies(self)` |
 | `test_partial_record_dies` | method | `tests/test_doom_pwad.py:212` | `def test_partial_record_dies(self)` |
 | `test_pillar_room_stays_closed` | method | `tests/test_doom_pwad.py:154` | `def test_pillar_room_stays_closed(self)` |
 | `test_ragged_rows_refused` | method | `tests/test_doom_pwad.py:36` | `def test_ragged_rows_refused(self)` |
+| `test_reject_scales_with_sector_count` | method | `tests/test_doom_pwad.py:374` | `def test_reject_scales_with_sector_count(self)` |
 | `test_roundtrip_check` | method | `tests/test_doom_pwad.py:85` | `def test_roundtrip_check(self)` |
 | `test_swapped_lumps_die` | method | `tests/test_doom_pwad.py:198` | `def test_swapped_lumps_die(self)` |
 | `test_things_pin` | method | `tests/test_doom_pwad.py:115` | `def test_things_pin(self)` |
 | `test_truncated_file_dies` | method | `tests/test_doom_pwad.py:193` | `def test_truncated_file_dies(self)` |
+| `test_unknown_special_dies` | method | `tests/test_doom_pwad.py:423` | `def test_unknown_special_dies(self)` |
 | `test_unreachable_exit_refused` | method | `tests/test_doom_pwad.py:56` | `def test_unreachable_exit_refused(self)` |
 | `test_unterminated_blockmap_dies` | method | `tests/test_doom_pwad.py:243` | `def test_unterminated_blockmap_dies(self)` |
 | `test_valid_room_parses` | method | `tests/test_doom_pwad.py:32` | `def test_valid_room_parses(self)` |
@@ -10987,28 +11017,31 @@ Z_Malloc
 | `main` | method | `tools/check_syscall_sanitize.py:228` | `def main()` |
 | `split_functions` | method | `tools/check_syscall_sanitize.py:69` | `def split_functions(lines)` |
 | `split_top_args` | method | `tools/check_syscall_sanitize.py:143` | `def split_top_args(argtext)` |
-| `DoomPwadConfig` | class | `tools/doom_pwad.py:43` | `class DoomPwadConfig` |
-| `PwadError` | class | `tools/doom_pwad.py:134` | `class PwadError(Exception)` |
-| `build_lumps` | method | `tools/doom_pwad.py:331` | `def build_lumps(rows)` |
-| `build_pwad` | method | `tools/doom_pwad.py:405` | `def build_pwad(rows)` |
-| `cell_corners` | method | `tools/doom_pwad.py:242` | `def cell_corners(row, col)` |
-| `check_multiple` | method | `tools/doom_pwad.py:463` | `def check_multiple(name, fmt)` |
-| `check_pwad` | method | `tools/doom_pwad.py:447` | `def check_pwad(data)` |
-| `cmd_build` | method | `tools/doom_pwad.py:594` | `def cmd_build(grid_path, out_path)` |
-| `cmd_check` | method | `tools/doom_pwad.py:604` | `def cmd_check(path)` |
-| `compile_geometry` | method | `tools/doom_pwad.py:252` | `def compile_geometry(rows, exit_pos, wall_side)` |
-| `compile_things` | method | `tools/doom_pwad.py:300` | `def compile_things(rows)` |
-| `flood_reachable` | method | `tools/doom_pwad.py:183` | `def flood_reachable(rows)` |
-| `grid_extents` | method | `tools/doom_pwad.py:168` | `def grid_extents(rows)` |
-| `is_wall` | method | `tools/doom_pwad.py:176` | `def is_wall(rows, row, col)` |
-| `main` | method | `tools/doom_pwad.py:612` | `def main(argv)` |
-| `pad_tex` | method | `tools/doom_pwad.py:138` | `def pad_tex(raw)` |
-| `parse_grid` | method | `tools/doom_pwad.py:145` | `def parse_grid(text)` |
-| `payload` | method | `tools/doom_pwad.py:458` | `def payload(name)` |
-| `read_pwad` | method | `tools/doom_pwad.py:424` | `def read_pwad(data)` |
-| `seg_angle` | method | `tools/doom_pwad.py:321` | `def seg_angle(dx, dy)` |
-| `validate_grid` | method | `tools/doom_pwad.py:213` | `def validate_grid(rows)` |
-| `vertex` | method | `tools/doom_pwad.py:259` | `def vertex(x, y)` |
+| `DoomPwadConfig` | class | `tools/doom_pwad.py:52` | `class DoomPwadConfig` |
+| `PwadError` | class | `tools/doom_pwad.py:161` | `class PwadError(Exception)` |
+| `build_lumps` | method | `tools/doom_pwad.py:516` | `def build_lumps(rows)` |
+| `build_pwad` | method | `tools/doom_pwad.py:597` | `def build_pwad(rows)` |
+| `cell_class` | method | `tools/doom_pwad.py:279` | `def cell_class(cell)` |
+| `cell_corners` | method | `tools/doom_pwad.py:269` | `def cell_corners(row, col)` |
+| `check_multiple` | method | `tools/doom_pwad.py:655` | `def check_multiple(name, fmt)` |
+| `check_pwad` | method | `tools/doom_pwad.py:639` | `def check_pwad(data)` |
+| `cmd_build` | method | `tools/doom_pwad.py:816` | `def cmd_build(grid_path, out_path)` |
+| `cmd_check` | method | `tools/doom_pwad.py:826` | `def cmd_check(path)` |
+| `compile_geometry` | method | `tools/doom_pwad.py:371` | `def compile_geometry(rows, exit_pos, wall_side)` |
+| `compile_things` | method | `tools/doom_pwad.py:485` | `def compile_things(rows)` |
+| `flood_reachable` | method | `tools/doom_pwad.py:210` | `def flood_reachable(rows)` |
+| `grid_extents` | method | `tools/doom_pwad.py:195` | `def grid_extents(rows)` |
+| `is_wall` | method | `tools/doom_pwad.py:203` | `def is_wall(rows, row, col)` |
+| `label_regions` | method | `tools/doom_pwad.py:291` | `def label_regions(rows)` |
+| `main` | method | `tools/doom_pwad.py:834` | `def main(argv)` |
+| `pad_tex` | method | `tools/doom_pwad.py:165` | `def pad_tex(raw)` |
+| `parse_grid` | method | `tools/doom_pwad.py:172` | `def parse_grid(text)` |
+| `payload` | method | `tools/doom_pwad.py:650` | `def payload(name)` |
+| `read_pwad` | method | `tools/doom_pwad.py:616` | `def read_pwad(data)` |
+| `region_sector` | method | `tools/doom_pwad.py:326` | `def region_sector(region, door_tag)` |
+| `seg_angle` | method | `tools/doom_pwad.py:506` | `def seg_angle(dx, dy)` |
+| `validate_grid` | method | `tools/doom_pwad.py:240` | `def validate_grid(rows)` |
+| `vertex` | method | `tools/doom_pwad.py:386` | `def vertex(x, y)` |
 | `main` | function | `tools/gdb_repro.py:27` | `def main()` |
 | `quit_doom` | function | `tools/gdb_repro.py:70` | `def quit_doom()` |
 | `rs` | function | `tools/gdb_repro.py:23` | `def rs(m, t)` |

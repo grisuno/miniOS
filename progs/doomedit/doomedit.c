@@ -5,21 +5,25 @@
  * The author paints walls, the player start, the exit switch marker
  * and a full thing palette on a tile canvas, watches a live DDA
  * raycaster preview in the Wolfenstein style of the sibling
- * ../raycastlib checkout, exports a single-sector E1M1 PWAD snapshot
+ * ../raycastlib checkout, exports a multi-sector E1M1 PWAD snapshot
  * into /saves, and boots the shipped Doom on it without ever writing
  * to the immutable IWAD.
  *
  *     doomedit                      -> GUI editor
  *     doomedit --demo <out.wad>     -> write a fixed demo room PWAD
- *     doomedit --preset <0-6> <wad> -> write a bundled level PWAD
+ *     doomedit --preset <0-8> <wad> -> write a bundled level PWAD
  *     doomedit --export <grid> <wad> -> compile a grid text file
  *     doomedit --check <file.wad>   -> validate a PWAD file
  *     doomedit --selftest           -> one UI frame plus a build check
  *
  * The PWAD layout implements the same algorithm as tools/doom_pwad.py:
- * one sector, segs mirroring the boundary linedefs, one subsector,
- * one root node, one shared-list blockmap. Both sides stay in sync
- * through the byte pin in tests/test_doom_pwad.py.
+ * one sector per room and door block, segs mirroring the linedefs, one
+ * subsector, one root node, one shared-list blockmap. Both sides stay
+ * in sync through the byte pin in tests/test_doom_pwad.py.
+ *
+ * Grid legend beyond walls/floor/things: '+' door cell (own tagged
+ * sector, D1 open-door lines both sides), ',' dark floor (low light),
+ * '~' nukage pit (low floor, damaging slime flat).
  *
  * Levels travel in the same one-char-per-tile grid text the editor saves
  * to /saves/dmapN.txt, so a level weighs a few hundred bytes. The seven
@@ -63,8 +67,9 @@
 #define DMAP_FNAME_MAX 64
 #define DMAP_STATUS_MAX 160
 #define DMAP_SLOTS 4
-#define DMAP_LEVEL_COUNT 7
+#define DMAP_LEVEL_COUNT 9
 #define DMAP_RANDOM_ATTEMPTS 64
+#define DMAP_MAX_SECTORS 256
 #define DMAP_ROOM_MAX 8
 #define DMAP_ROOM_TRIES 40
 #define DMAP_FRAME_MS 8
@@ -77,16 +82,27 @@
 #define DMAP_PLAYER_TYPE 1
 #define DMAP_THING_OPT 7
 #define DMAP_EXIT_SPECIAL 11
+#define DMAP_DOOR_SPECIAL 31
 #define DMAP_FLAG_BLOCKING 1
+#define DMAP_FLAG_TWOSIDED 4
 #define DMAP_NO_SIDE (-1)
 #define DMAP_WALL_MID "STARTAN3"
 #define DMAP_EXIT_MID "SW1EXIT"
+#define DMAP_DOOR_UPPER "DOORTRAK"
+#define DMAP_DARK_MID "BROWN1"
+#define DMAP_NUKE_MID "STONE2"
 #define DMAP_UNUSED_TEX "-"
 #define DMAP_FLOOR_FLAT "FLOOR4_8"
+#define DMAP_NUKE_FLAT "NUKAGE1"
 #define DMAP_CEIL_FLAT "CEIL3_5"
 #define DMAP_FLOOR_H 0
+#define DMAP_NUKE_FLOOR (-16)
 #define DMAP_CEIL_H 128
+#define DMAP_DOOR_CEIL 64
 #define DMAP_LIGHT 160
+#define DMAP_DARK_LIGHT 96
+#define DMAP_DOOR_LIGHT 128
+#define DMAP_NUKE_SPECIAL 7
 #define DMAP_NODE_LEAF 0x8000u
 #define DMAP_TOOL_DOOM "/doomgeneric.elf"
 #define DMAP_SAVE_TXT "/saves/dmap%d.txt"
@@ -133,7 +149,10 @@ enum {
     DMAP_CMAP = 'C',
     DMAP_LAMP = 'L',
     DMAP_PACK = 'D',
-    DMAP_PILLAR = '0'
+    DMAP_PILLAR = '0',
+    DMAP_DOOR = '+',
+    DMAP_DARK = ',',
+    DMAP_NUKE = '~'
 };
 
 /** Thing type ids from the engine mobjinfo table, each with its sprite
@@ -186,7 +205,8 @@ static const int dmap_brush_kinds[] = {
     'a', 'u', 'o', 'k', 'x', 'T',
     'q', 'm', 'y', 'n', 'f', 'G', 'U',
     '1', '2', '3',
-    'V', 'R', 'C', 'L', 'D', '0'
+    'V', 'R', 'C', 'L', 'D', '0',
+    '+', ',', '~'
 };
 static const char *dmap_brush_labels[] = {
     "Wall (#)", "Floor (.)", "Player (P)", "Exit (E)",
@@ -199,7 +219,8 @@ static const char *dmap_brush_labels[] = {
     "Armor bonus (f)", "Green armor (G)", "Blue armor (U)",
     "Blue key (1)", "Red key (2)", "Yellow key (3)",
     "Invisibility (V)", "Rad suit (R)", "Computer map (C)",
-    "Light amp (L)", "Backpack (D)", "Pillar (0)"
+    "Light amp (L)", "Backpack (D)", "Pillar (0)",
+    "Door (+)", "Dark floor (,)", "Nukage (~)"
 };
 #define DMAP_BRUSH_COUNT (sizeof(dmap_brush_kinds) / sizeof(dmap_brush_kinds[0]))
 static int dmap_brush_sel = 0;
@@ -254,7 +275,19 @@ static int dmap_is_wall(int row, int col) {
 
 /** True for cells the player can stand on: floor, markers and things. */
 static int dmap_walkable(int cell) {
-    return cell == DMAP_FLOOR || cell == DMAP_EXIT || dmap_thing_type(cell) > 0;
+    return cell == DMAP_FLOOR || cell == DMAP_EXIT || cell == DMAP_DOOR ||
+        cell == DMAP_DARK || cell == DMAP_NUKE || dmap_thing_type(cell) > 0;
+}
+
+/** Sector class of a walkable cell: doors stand alone, styles never merge. */
+static int dmap_cell_class(int cell) {
+    if (cell == DMAP_DOOR)
+        return 1;
+    if (cell == DMAP_DARK)
+        return 2;
+    if (cell == DMAP_NUKE)
+        return 3;
+    return 0;
 }
 
 /** Canvas ink per cell category, so the palette reads at a glance. */
@@ -295,6 +328,9 @@ static struct nk_color dmap_cell_color(int cell) {
     case DMAP_KEYB:
     case DMAP_KEYR:
     case DMAP_KEYY: return nk_rgb(240, 240, 240);
+    case DMAP_DOOR: return nk_rgb(220, 140, 40);
+    case DMAP_DARK: return nk_rgb(40, 40, 56);
+    case DMAP_NUKE: return nk_rgb(60, 160, 60);
     default: return nk_rgb(64, 64, 64);
     }
 }
@@ -332,7 +368,9 @@ static const char *dmap_level_names[DMAP_LEVEL_COUNT] = {
     "Crossfire Chapel",
     "Fortress of Lead",
     "Sunken Halls",
-    "Baron's Court"
+    "Baron's Court",
+    "Gatehouse",
+    "Nukage Mills"
 };
 
 static const char *dmap_levels[DMAP_LEVEL_COUNT][DMAP_MAX_H + 1] = {
@@ -433,6 +471,30 @@ static const char *dmap_levels[DMAP_LEVEL_COUNT][DMAP_MAX_H + 1] = {
         "#........#........#........#",
         "############################",
         0
+    },
+    {
+        "######################",
+        "#P.,,,.....####......#",
+        "#..,,,,....+...i....E#",
+        "#..,,,,....####..m...#",
+        "#......,...#+....a...#",
+        "#......,...#....##...#",
+        "#..s...,...d.........#",
+        "#......,...#####.....#",
+        "######################",
+        0
+    },
+    {
+        "########################",
+        "#P.....####............#",
+        "#..i...+......,,,,,....#",
+        "#......####...,,,,,...E#",
+        "#..m...#~~~#..,,,,,....#",
+        "#......#~~~+....a......#",
+        "#..s...#~~~#..d........#",
+        "#......#~~~#...........#",
+        "########################",
+        0
     }
 };
 
@@ -498,9 +560,9 @@ static int dmap_free_cell(int *r, int *c) {
  * the player starting in the first room and the exit marker in the
  * last one, with the full thing palette scattered on floor cells.
  * Keeps the first layout the validator accepts; the fallback is the
- * plain room when no attempt passes. Single sector throughout: every
- * room shares one floor height and light level, so doors and height
- * steps stay a Phase 2 item. */
+ * plain room when no attempt passes. Each attempt then gains a wall
+ * divider pierced by working doors, dark patches and one nukage pool,
+ * so random maps are multi-sector like the bundled ones. */
 static void dmap_random_map(unsigned seed) {
     char msg[DMAP_STATUS_MAX];
     int attempt;
@@ -618,6 +680,71 @@ static void dmap_random_map(unsigned seed) {
                     break;
                 }
         }
+        /* Split the map with a wall divider pierced by doors, then
+         * stain dark patches and one nukage pool. Reachability survives
+         * through the doors; blobs only replace plain floor. */
+        {
+            int vertical = (dmap_rand() & 1u) != 0, line, placed;
+            if (vertical && dmap_w > 8) {
+                line = 2 + (int)(dmap_rand() % (unsigned)(dmap_w - 4));
+                for (r = 1; r < dmap_h - 1; r++) {
+                    int ch = dmap_grid[r][line];
+                    if (ch == DMAP_PLAYER || ch == DMAP_EXIT)
+                        continue;
+                    if (dmap_thing_type(ch) > 0)
+                        continue;
+                    dmap_grid[r][line] = DMAP_WALL;
+                }
+                placed = 0;
+                for (tries = 0; tries < 16 && placed < 2; tries++) {
+                    r = 1 + (int)(dmap_rand() % (unsigned)(dmap_h - 2));
+                    if (dmap_grid[r][line] == DMAP_WALL) {
+                        dmap_grid[r][line] = DMAP_DOOR;
+                        placed++;
+                    }
+                }
+            } else if (!vertical && dmap_h > 8) {
+                line = 2 + (int)(dmap_rand() % (unsigned)(dmap_h - 4));
+                for (c = 1; c < dmap_w - 1; c++) {
+                    int ch = dmap_grid[line][c];
+                    if (ch == DMAP_PLAYER || ch == DMAP_EXIT)
+                        continue;
+                    if (dmap_thing_type(ch) > 0)
+                        continue;
+                    dmap_grid[line][c] = DMAP_WALL;
+                }
+                placed = 0;
+                for (tries = 0; tries < 16 && placed < 2; tries++) {
+                    c = 1 + (int)(dmap_rand() % (unsigned)(dmap_w - 2));
+                    if (dmap_grid[line][c] == DMAP_WALL) {
+                        dmap_grid[line][c] = DMAP_DOOR;
+                        placed++;
+                    }
+                }
+            }
+            for (n = 0; n < 3; n++) {
+                int br, bc, q;
+                if (!dmap_free_cell(&br, &bc))
+                    continue;
+                dmap_grid[br][bc] = DMAP_DARK;
+                for (q = 0; q < 4; q++) {
+                    int qr = br + (int)(dmap_rand() % 3) - 1;
+                    int qc = bc + (int)(dmap_rand() % 3) - 1;
+                    if (qr > 0 && qc > 0 && qr < dmap_h - 1 && qc < dmap_w - 1 &&
+                        dmap_grid[qr][qc] == DMAP_FLOOR)
+                        dmap_grid[qr][qc] = DMAP_DARK;
+                }
+            }
+            if (dmap_free_cell(&r, &c) && r + 1 < dmap_h - 1 && c + 1 < dmap_w - 1 &&
+                dmap_grid[r][c + 1] == DMAP_FLOOR &&
+                dmap_grid[r + 1][c] == DMAP_FLOOR &&
+                dmap_grid[r + 1][c + 1] == DMAP_FLOOR) {
+                dmap_grid[r][c] = DMAP_NUKE;
+                dmap_grid[r][c + 1] = DMAP_NUKE;
+                dmap_grid[r + 1][c] = DMAP_NUKE;
+                dmap_grid[r + 1][c + 1] = DMAP_NUKE;
+            }
+        }
         if (dmap_validate(msg, sizeof(msg)) == 0) {
             dmap_recenter();
             snprintf(dmap_status, sizeof(dmap_status), "random %dx%d %d rooms ok",
@@ -695,6 +822,101 @@ static int dmap_save_txt(const char *path) {
     return 0;
 }
 
+/** Sector table backing the multi-sector exporter. Regions are same-class
+ * floor areas (doors stand alone, dark and nukage never merge); every
+ * region becomes one sector, so light, heights and flats vary per room
+ * while the BSP stays one trivial subsector. */
+static int dmap_sect[DMAP_MAX_H][DMAP_MAX_W];
+static int dmap_nsectors;
+static int dmap_sec_floor[DMAP_MAX_SECTORS];
+static int dmap_sec_ceil[DMAP_MAX_SECTORS];
+static int dmap_sec_light[DMAP_MAX_SECTORS];
+static int dmap_sec_special[DMAP_MAX_SECTORS];
+static int dmap_sec_tag[DMAP_MAX_SECTORS];
+static const char *dmap_sec_flat[DMAP_MAX_SECTORS];
+static const char *dmap_sec_skin[DMAP_MAX_SECTORS];
+
+/** Flood same-class walkable cells into sector ids; walls stay -1. */
+static int dmap_label_regions(void) {
+    static const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    static int stack_r[DMAP_MAX_W * DMAP_MAX_H];
+    static int stack_c[DMAP_MAX_W * DMAP_MAX_H];
+    int row, col, nsec = 0, ndoor = 0;
+    for (row = 0; row < dmap_h; row++)
+        for (col = 0; col < dmap_w; col++)
+            dmap_sect[row][col] = -1;
+    for (row = 0; row < dmap_h; row++)
+        for (col = 0; col < dmap_w; col++) {
+            int want, top, k;
+            if (dmap_grid[row][col] == DMAP_WALL || dmap_sect[row][col] >= 0)
+                continue;
+            if (nsec >= DMAP_MAX_SECTORS)
+                return -1;
+            want = dmap_cell_class(dmap_grid[row][col]);
+            top = 0;
+            dmap_sect[row][col] = nsec;
+            stack_r[top] = row;
+            stack_c[top] = col;
+            top++;
+            while (top > 0) {
+                int r, c;
+                top--;
+                r = stack_r[top];
+                c = stack_c[top];
+                for (k = 0; k < 4; k++) {
+                    int nr = r + dirs[k][0], nc = c + dirs[k][1];
+                    if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w)
+                        continue;
+                    if (dmap_sect[nr][nc] >= 0 ||
+                        dmap_grid[nr][nc] == DMAP_WALL ||
+                        dmap_cell_class(dmap_grid[nr][nc]) != want)
+                        continue;
+                    dmap_sect[nr][nc] = nsec;
+                    stack_r[top] = nr;
+                    stack_c[top] = nc;
+                    top++;
+                }
+            }
+            if (want == 1) {
+                ndoor++;
+                dmap_sec_tag[nsec] = ndoor;
+                dmap_sec_floor[nsec] = DMAP_FLOOR_H;
+                dmap_sec_ceil[nsec] = DMAP_DOOR_CEIL;
+                dmap_sec_flat[nsec] = DMAP_FLOOR_FLAT;
+                dmap_sec_light[nsec] = DMAP_DOOR_LIGHT;
+                dmap_sec_special[nsec] = 0;
+                dmap_sec_skin[nsec] = DMAP_DOOR_UPPER;
+            } else if (want == 2) {
+                dmap_sec_tag[nsec] = 0;
+                dmap_sec_floor[nsec] = DMAP_FLOOR_H;
+                dmap_sec_ceil[nsec] = DMAP_CEIL_H;
+                dmap_sec_flat[nsec] = DMAP_FLOOR_FLAT;
+                dmap_sec_light[nsec] = DMAP_DARK_LIGHT;
+                dmap_sec_special[nsec] = 0;
+                dmap_sec_skin[nsec] = DMAP_DARK_MID;
+            } else if (want == 3) {
+                dmap_sec_tag[nsec] = 0;
+                dmap_sec_floor[nsec] = DMAP_NUKE_FLOOR;
+                dmap_sec_ceil[nsec] = DMAP_CEIL_H;
+                dmap_sec_flat[nsec] = DMAP_NUKE_FLAT;
+                dmap_sec_light[nsec] = DMAP_DARK_LIGHT;
+                dmap_sec_special[nsec] = DMAP_NUKE_SPECIAL;
+                dmap_sec_skin[nsec] = DMAP_NUKE_MID;
+            } else {
+                dmap_sec_tag[nsec] = 0;
+                dmap_sec_floor[nsec] = DMAP_FLOOR_H;
+                dmap_sec_ceil[nsec] = DMAP_CEIL_H;
+                dmap_sec_flat[nsec] = DMAP_FLOOR_FLAT;
+                dmap_sec_light[nsec] = DMAP_LIGHT;
+                dmap_sec_special[nsec] = 0;
+                dmap_sec_skin[nsec] = DMAP_WALL_MID;
+            }
+            nsec++;
+        }
+    dmap_nsectors = nsec;
+    return 0;
+}
+
 /** Validate the map, reporting the first problem for the status line. */
 static int dmap_validate(char *msg, int max) {
     int row, col, players = 0, exits = 0;
@@ -755,7 +977,12 @@ static int dmap_validate(char *msg, int max) {
             }
     for (k = 0; k < 4; k++)
         if (dmap_is_wall(er + dirs[k][0], ec + dirs[k][1])) {
-            snprintf(msg, (size_t)max, "ok: %dx%d single sector", dmap_w, dmap_h);
+            if (dmap_label_regions() != 0) {
+                snprintf(msg, (size_t)max, "too many sectors");
+                return -1;
+            }
+            snprintf(msg, (size_t)max, "ok: %dx%d %d sectors",
+                dmap_w, dmap_h, dmap_nsectors);
             return 0;
         }
     snprintf(msg, (size_t)max, "exit marker is not next to a wall");
@@ -787,15 +1014,28 @@ static int dmap_seg_angle(int dx, int dy) {
     return s >= 0x8000 ? s - 0x10000 : s;
 }
 
-/** Compile the grid into a vanilla single-sector E1M1 PWAD image. */
+/** Compile the grid into a vanilla multi-sector E1M1 PWAD image. Every
+ * region and door block is its own sector; all segs share one subsector
+ * under a trivial root node, which needs no ordering. */
 static int dmap_build_wad(int *size_out) {
     static int vx[DMAP_MAX_VERTS * 2];
     static int li_v[DMAP_MAX_LINES * 2];
     static int li_exit[DMAP_MAX_LINES];
+    static int li_flags[DMAP_MAX_LINES];
+    static int li_special[DMAP_MAX_LINES];
+    static int li_tag[DMAP_MAX_LINES];
+    static int li_s0[DMAP_MAX_LINES];
+    static int li_s1[DMAP_MAX_LINES];
+    static const char *sd_upper[DMAP_MAX_LINES * 2];
+    static const char *sd_lower[DMAP_MAX_LINES * 2];
+    static const char *sd_mid[DMAP_MAX_LINES * 2];
+    static int sd_sec[DMAP_MAX_LINES * 2];
+    static int em_a[DMAP_MAX_LINES];
+    static int em_b[DMAP_MAX_LINES];
     static int th_x[DMAP_MAX_THINGS];
     static int th_y[DMAP_MAX_THINGS];
     static int th_t[DMAP_MAX_THINGS];
-    int nv = 0, nl = 0, nt = 0;
+    int nv = 0, nl = 0, nt = 0, nsides = 0, nem = 0;
     int row, col, k, exit_edge = -1;
     int er = -1, ec = -1, edir = -1;
     static const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -826,10 +1066,11 @@ static int dmap_build_wad(int *size_out) {
         }
     for (row = 0; row < dmap_h; row++)
         for (col = 0; col < dmap_w; col++) {
-            int x0, x1, yt, yb, e;
+            int x0, x1, yt, yb, e, here;
             int ex[4][2][2], ed[4];
             if (!dmap_walkable(dmap_grid[row][col]))
                 continue;
+            here = dmap_sect[row][col];
             x0 = col * DMAP_TILE;
             x1 = (col + 1) * DMAP_TILE;
             yt = -row * DMAP_TILE;
@@ -841,9 +1082,33 @@ static int dmap_build_wad(int *size_out) {
             ed[0] = 0; ed[1] = 2; ed[2] = 3; ed[3] = 1;
             for (e = 0; e < 4; e++) {
                 int nr = row + dirs[ed[e]][0], nc = col + dirs[ed[e]][1];
-                int v1 = -1, v2 = -1, q;
-                if (!dmap_is_wall(nr, nc))
+                int v1 = -1, v2 = -1, q, back = -2, ka, kb, kk;
+                if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w ||
+                    dmap_grid[nr][nc] == DMAP_WALL)
+                    back = -1;
+                else if (dmap_sect[nr][nc] == here)
                     continue;
+                else
+                    back = dmap_sect[nr][nc];
+                ka = row * DMAP_MAX_W + col;
+                kb = nr * DMAP_MAX_W + nc;
+                if (back >= 0 && ka > kb) {
+                    kk = ka;
+                    ka = kb;
+                    kb = kk;
+                }
+                if (back >= 0) {
+                    for (q = 0; q < nem; q++)
+                        if (em_a[q] == ka && em_b[q] == kb)
+                            break;
+                    if (q < nem)
+                        continue;
+                    if (nem >= DMAP_MAX_LINES)
+                        return -1;
+                    em_a[nem] = ka;
+                    em_b[nem] = kb;
+                    nem++;
+                }
                 for (q = 0; q < nv; q++)
                     if (vx[q * 2] == ex[e][0][0] && vx[q * 2 + 1] == ex[e][0][1])
                         v1 = q;
@@ -860,13 +1125,65 @@ static int dmap_build_wad(int *size_out) {
                     vx[v2 * 2] = ex[e][1][0];
                     vx[v2 * 2 + 1] = ex[e][1][1];
                 }
-                if (v1 < 0 || v2 < 0 || nl >= DMAP_MAX_LINES)
+                if (v1 < 0 || v2 < 0 || nl >= DMAP_MAX_LINES ||
+                    nsides + 2 >= DMAP_MAX_LINES * 2)
                     return -1;
-                if (row == er && col == ec && ed[e] == edir)
+                if (row == er && col == ec && ed[e] == edir && back < 0)
                     exit_edge = nl;
                 li_v[nl * 2] = v1;
                 li_v[nl * 2 + 1] = v2;
                 li_exit[nl] = (nl == exit_edge);
+                if (back < 0) {
+                    li_flags[nl] = DMAP_FLAG_BLOCKING;
+                    li_special[nl] = 0;
+                    li_tag[nl] = 0;
+                    li_s0[nl] = nsides;
+                    li_s1[nl] = DMAP_NO_SIDE;
+                    sd_upper[nsides] = DMAP_UNUSED_TEX;
+                    sd_lower[nsides] = DMAP_UNUSED_TEX;
+                    sd_mid[nsides] = dmap_sec_skin[here];
+                    sd_sec[nsides] = here;
+                    nsides++;
+                } else {
+                    int verspre = dmap_sec_tag[here] != 0 ||
+                        dmap_sec_tag[back] != 0;
+                    li_flags[nl] = DMAP_FLAG_TWOSIDED;
+                    li_special[nl] = verspre ? DMAP_DOOR_SPECIAL : 0;
+                    li_tag[nl] = verspre ?
+                        (dmap_sec_tag[here] != 0 ? dmap_sec_tag[here] :
+                            dmap_sec_tag[back]) : 0;
+                    li_s0[nl] = nsides;
+                    li_s1[nl] = nsides + 1;
+                    if (verspre) {
+                        sd_upper[nsides] = DMAP_DOOR_UPPER;
+                        sd_lower[nsides] = DMAP_UNUSED_TEX;
+                        sd_mid[nsides] = DMAP_UNUSED_TEX;
+                        sd_sec[nsides] = here;
+                        sd_upper[nsides + 1] = DMAP_DOOR_UPPER;
+                        sd_lower[nsides + 1] = DMAP_UNUSED_TEX;
+                        sd_mid[nsides + 1] = DMAP_UNUSED_TEX;
+                        sd_sec[nsides + 1] = back;
+                    } else if (dmap_sec_floor[here] == dmap_sec_floor[back]) {
+                        sd_upper[nsides] = DMAP_UNUSED_TEX;
+                        sd_lower[nsides] = DMAP_UNUSED_TEX;
+                        sd_mid[nsides] = DMAP_UNUSED_TEX;
+                        sd_sec[nsides] = here;
+                        sd_upper[nsides + 1] = DMAP_UNUSED_TEX;
+                        sd_lower[nsides + 1] = DMAP_UNUSED_TEX;
+                        sd_mid[nsides + 1] = DMAP_UNUSED_TEX;
+                        sd_sec[nsides + 1] = back;
+                    } else {
+                        sd_upper[nsides] = DMAP_UNUSED_TEX;
+                        sd_lower[nsides] = dmap_sec_skin[here];
+                        sd_mid[nsides] = DMAP_UNUSED_TEX;
+                        sd_sec[nsides] = here;
+                        sd_upper[nsides + 1] = DMAP_UNUSED_TEX;
+                        sd_lower[nsides + 1] = dmap_sec_skin[back];
+                        sd_mid[nsides + 1] = DMAP_UNUSED_TEX;
+                        sd_sec[nsides + 1] = back;
+                    }
+                    nsides += 2;
+                }
                 nl++;
             }
         }
@@ -896,21 +1213,28 @@ static int dmap_build_wad(int *size_out) {
     for (k = 0; k < nl; k++) {
         dmap_w16(li_v[k * 2]);
         dmap_w16(li_v[k * 2 + 1]);
-        dmap_w16(DMAP_FLAG_BLOCKING);
-        dmap_w16(li_exit[k] ? DMAP_EXIT_SPECIAL : 0);
-        dmap_w16(0);
-        dmap_w16(k);
-        dmap_w16(DMAP_NO_SIDE);
+        dmap_w16(li_flags[k]);
+        dmap_w16(li_exit[k] ? DMAP_EXIT_SPECIAL : li_special[k]);
+        dmap_w16(li_tag[k]);
+        dmap_w16(li_s0[k]);
+        dmap_w16(li_s1[k]);
     }
     lump_size[2] = (int)(dmap_wp - base) - lump_pos[2];
     lump_pos[3] = (int)(dmap_wp - base);
-    for (k = 0; k < nl; k++) {
+    for (k = 0; k < nsides; k++) {
         dmap_w16(0);
         dmap_w16(0);
-        dmap_wtex(DMAP_UNUSED_TEX);
-        dmap_wtex(DMAP_UNUSED_TEX);
-        dmap_wtex(li_exit[k] ? DMAP_EXIT_MID : DMAP_WALL_MID);
-        dmap_w16(0);
+        dmap_wtex(sd_upper[k]);
+        dmap_wtex(sd_lower[k]);
+        dmap_wtex(sd_mid[k]);
+        dmap_w16(sd_sec[k]);
+    }
+    if (exit_edge >= 0) {
+        unsigned char *side = base + lump_pos[3] + li_s0[exit_edge] * 30 + 20;
+        const char *mid = DMAP_EXIT_MID;
+        int q;
+        for (q = 0; q < 8; q++)
+            side[q] = mid[q] ? (unsigned char)mid[q] : 0u;
     }
     lump_size[3] = (int)(dmap_wp - base) - lump_pos[3];
     lump_pos[4] = (int)(dmap_wp - base);
@@ -952,16 +1276,22 @@ static int dmap_build_wad(int *size_out) {
     dmap_w16((int)DMAP_NODE_LEAF);
     lump_size[7] = (int)(dmap_wp - base) - lump_pos[7];
     lump_pos[8] = (int)(dmap_wp - base);
-    dmap_w16(DMAP_FLOOR_H);
-    dmap_w16(DMAP_CEIL_H);
-    dmap_wtex(DMAP_FLOOR_FLAT);
-    dmap_wtex(DMAP_CEIL_FLAT);
-    dmap_w16(DMAP_LIGHT);
-    dmap_w16(0);
-    dmap_w16(0);
+    for (k = 0; k < dmap_nsectors; k++) {
+        dmap_w16(dmap_sec_floor[k]);
+        dmap_w16(dmap_sec_ceil[k]);
+        dmap_wtex(dmap_sec_flat[k]);
+        dmap_wtex(DMAP_CEIL_FLAT);
+        dmap_w16(dmap_sec_light[k]);
+        dmap_w16(dmap_sec_special[k]);
+        dmap_w16(dmap_sec_tag[k]);
+    }
     lump_size[8] = (int)(dmap_wp - base) - lump_pos[8];
     lump_pos[9] = (int)(dmap_wp - base);
-    dmap_w8(0);
+    {
+        int rj = (dmap_nsectors * dmap_nsectors + 7) / 8;
+        for (k = 0; k < rj; k++)
+            dmap_w8(0);
+    }
     lump_size[9] = (int)(dmap_wp - base) - lump_pos[9];
     lump_pos[10] = (int)(dmap_wp - base);
     dmap_w16(minx);
@@ -1084,7 +1414,8 @@ static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area) 
             }
             if (mapx < 0 || mapy < 0 || mapx >= dmap_w || mapy >= dmap_h)
                 hit = 1;
-            else if (dmap_grid[mapy][mapx] == DMAP_WALL)
+            else if (dmap_grid[mapy][mapx] == DMAP_WALL ||
+                dmap_grid[mapy][mapx] == DMAP_DOOR)
                 hit = 1;
         }
         dist = side == 0 ? sdx - ddx : sdy - ddy;
@@ -1489,7 +1820,7 @@ int main(int argc, char **argv) {
     if (argc > 1 && strcmp(argv[1], "--preset") == 0) {
         int idx;
         if (argc < 4) {
-            printf("usage: doomedit --preset <0-6> <out.wad>\n");
+            printf("usage: doomedit --preset <0-8> <out.wad>\n");
             return 2;
         }
         idx = atoi(argv[2]);
@@ -1536,7 +1867,7 @@ int main(int argc, char **argv) {
         printf("doomedit: tile editor that builds Doom PWAD snapshots\n");
         printf("  (no args)               GUI editor\n");
         printf("  --demo out.wad          write a fixed demo room\n");
-        printf("  --preset N out.wad      write bundled level N (0-6)\n");
+        printf("  --preset N out.wad      write bundled level N (0-8)\n");
         printf("  --random [seed] out.wad write connected rooms procedurally\n");
         printf("  --export grid.txt out   compile a grid file\n");
         printf("  --check file.wad        validate a PWAD file\n");

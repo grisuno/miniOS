@@ -2362,22 +2362,28 @@ preview, all visible without scrolling in the 800x360 window), choosing
 from the full thing palette below, watches a live DDA raycaster preview
 in the style of the sibling
 `../raycastlib` checkout (CC0, cloned by hand, reference only, never
-vendored), exports a single-sector E1M1 PWAD snapshot to `/saves`, and
+vendored), exports a multi-sector E1M1 PWAD snapshot to `/saves`, and
 boots the shipped Doom on it with `-file` without ever writing to the
 immutable IWAD.
 
 - **PWAD writer (`tools/doom_pwad.py`)**: a single-file host tool with the
   same algorithm as the C exporter (`build`/`check`/`info` verbs). Grid
-  legend `#` wall, `.` floor, `P` player, `E` exit marker plus thing
-  stamps; the exit marker must sit next to a wall whose shared edge
-  becomes the S1 exit-switch linedef (special 11). Output is one convex
-  single sector: segs mirror the boundary linedefs, one subsector, one
-  root node with both children leaf, one shared-list blockmap, REJECT one
-  byte. Fail closed on ragged grids, open perimeters, missing player or
-  exit, unreachable tiles, oversized dimensions and every wild cross-lump
-  reference. All tunables live in `DoomPwadConfig`; textures, flats and
+  legend `#` wall, `.` floor, `P` player, `E` exit marker, `+` door cell,
+  `,` dark floor, `~` nukage pit, plus thing stamps; the exit marker
+  must sit next to a wall whose shared edge becomes the S1 exit-switch
+  linedef (special 11). Output is multi-sector: every same-style floor
+  region and every door block is its own sector (rooms differ in light,
+  floor height and flats; doors are tagged sectors with D1 open-door
+  lines on both faces), while segs mirror the linedefs under one
+  subsector, one root node with both children leaf, one shared-list
+  blockmap and a sized REJECT bit table. One subsector needs no
+  ordering, so no BSP compiler is required; a partition-searching
+  builder for large maps stays an explicit later phase. Fail closed on
+  ragged grids, open perimeters, missing player or exit, unreachable
+  tiles, oversized dimensions and every wild cross-lump reference
+  (sized REJECT, paired sidedefs, tagged door lines, unique sector
+  tags). All tunables live in `DoomPwadConfig`; textures, flats and
   thing ids are verified byte-present in the shareware `Doom1.wad`.
-  Multi-sector maps with a real BSP compiler are an explicit Phase 2.
 - **Shareware `-file` gate (`progs/doomgeneric/d_main.c`)**: the shipped
   IWAD is shareware, whose startup aborts any `-file` load. The
   MiniOS-local patch relaxes that one abort into a notice; the
@@ -2389,16 +2395,18 @@ immutable IWAD.
   Booting without `-file` always returns to the original game; replay via
   the editor Run action (button or Ctrl+R through the scancode hook) or
   `run doomgeneric.elf -file /saves/dmapN.wad` from the shell.
-- **Bundled levels and procedural maps**: the level combo offers seven
+- **Bundled levels and procedural maps**: the level combo offers nine
   compiled-in levels in the same one-char-per-tile grid text the editor
   saves (`Hangar of Dawn`, `Imp Gallery`, `Demon Pit`, `Crossfire Chapel`,
-  `Fortress of Lead`, `Sunken Halls`, `Baron's Court`, a few hundred bytes
-  each), and the Random button grows connected rooms joined by corridors
-  with the full thing palette (demon, shotgun guy, shotgun, medikit and
-  shells guaranteed), retried until the validator accepts it. Headless:
+  `Fortress of Lead`, `Sunken Halls`, `Baron's Court`, `Gatehouse`,
+  `Nukage Mills`, a few hundred bytes each), and the Random button grows
+  connected rooms joined by corridors, splits them with a door-pierced
+  wall divider and stains dark patches plus one nukage pool, with the
+  full thing palette (demon, shotgun guy, shotgun, medikit and shells
+  guaranteed), retried until the validator accepts it. Headless:
   `doomedit --preset N out.wad` and `doomedit --random [seed] out.wad`;
   the selftest builds every preset plus a fixed-seed random map and
-  `make test-doomedit` runs all seven through the Python checker.
+  `make test-doomedit` runs all nine through the Python checker.
 - **Thing palette**: enemies imp/demon/zombieman/shotgun guy/spectre/baron
   plus exploding barrels; weapons shotgun/chaingun/rocket launcher/chainsaw;
   ammo shells/clip/bullet box/rockets/rocket box/shell box; health
@@ -2417,7 +2425,8 @@ immutable IWAD.
   output passing the python checker, so the two writers cannot drift);
   BDD `doomedit --selftest` (frame plus build), demo export plus check in
   `saves/`, preset export plus check, and Doom boot on the snapshot with
-  `exit code: 0` (see ADR-0022).
+  `exit code: 0`, plus a multi-sector preset export plus check and a Doom
+  boot on the door map with `exit code: 0` (see ADR-0022, ADR-0023).
 
 ## Headless "it actually plays" harness (`tools/boot_run.sh`)
 

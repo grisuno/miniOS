@@ -140,6 +140,7 @@ position and size.
 
 ## Demo
 
+- [https://www.youtube.com/watch?v=G1H5dkMCvmI](https://www.youtube.com/watch?v=G1H5dkMCvmI)
 - [https://www.youtube.com/watch?v=fhYKG21Cx-A](https://www.youtube.com/watch?v=fhYKG21Cx-A)
 - [https://www.youtube.com/watch?v=M4yVOq6bzMs](https://www.youtube.com/watch?v=M4yVOq6bzMs)
 - [https://www.youtube.com/watch?v=YUYEK7lQt0U](https://www.youtube.com/watch?v=YUYEK7lQt0U)
@@ -570,20 +571,24 @@ make test-paint             # host vectors
 
 I edit Doom maps inside the OS and play them without touching the
 shipped IWAD. `doomedit` is a static ring-3 Nuklear app (one file,
-`progs/doomedit/doomedit.c`) with a tile canvas, a wall brush, player
-start, exit switch and a small thing palette, plus a live DDA
-raycaster preview in the style of the sibling `../raycastlib`
-checkout. Export compiles the grid to a single-sector E1M1 PWAD
-snapshot in `/saves`; Run (button or Ctrl+R) boots the shipped Doom
-on it with `-file`, and the next reboot returns to the original game
-unless the snapshot is launched again. The level combo offers five
-bundled maps (`Hangar of Dawn`, `Imp Gallery`, `Demon Pit`,
-`Crossfire Chapel`, `Fortress of Lead`, each a few hundred bytes of
-grid text compiled into the binary), and the Random button grows a
-fresh map procedurally with the full palette (demons, imps,
-shotgunners, medikits, shells), retried until the validator accepts
-it, so every session can play something new. Painting any tile
-returns the combo to `Custom`. The desktop dock carries a
+`progs/doomedit/doomedit.c`) with a tile canvas, wall/door/floor
+brushes, player start, exit switch and the full shareware-verified
+thing palette, plus a live DDA raycaster preview in the style of the
+sibling `../raycastlib` checkout. Export compiles the grid to a
+multi-sector E1M1 PWAD snapshot in `/saves`; Run (button or Ctrl+R)
+boots the shipped Doom on it with `-file`, and the next reboot
+returns to the original game unless the snapshot is launched again.
+Every same-style floor region is its own sector, so rooms differ in
+light, floor height and flats, and `+` door cells become tagged door
+sectors with working D1 push-doors on both faces. `,` paints dark
+low-light floor, `~` digs a damaging nukage pit. The level combo
+offers nine bundled maps (from `Hangar of Dawn` to `Gatehouse` and
+`Nukage Mills`, each a few hundred bytes of grid text compiled into
+the binary), and the Random button grows connected rooms joined by
+corridors, then splits them with a door-pierced wall divider and
+stains dark patches plus one nukage pool, retried until the validator
+accepts it, so every session can play something new. Painting any
+tile returns the combo to `Custom`. The desktop dock carries a
 dedicated DoomEdit shortcut (`DoomEdit|icons/doomedit.png|doomedit` in
 `progs/etc/shortcuts`, icon converted from the repo-root `doomedit.png`
 by `tools/gen_desktop_pngs.py`), so the editor launches with one click.
@@ -593,12 +598,15 @@ saves. The shareware `-file` refusal in `progs/doomgeneric/d_main.c`
 is relaxed to a notice (the registered-version lump check stays), and
 `tools/doom_pwad.py` implements the same writer in Python for host
 use (`build`, `check`, `info` verbs, fail closed on every malformed
-grid or mutated file).
+grid or mutated file). The BSP stays one trivial subsector under a
+single root node, which needs no ordering and keeps sight, collision
+and clipping correct; the checker pins multi-sector invariants (sized
+REJECT, paired sidedefs, tagged door lines, unique sector tags).
 
 ```
 miniOS> doomedit                                # GUI editor
 miniOS> doomedit --demo /saves/dmap0.wad        # headless demo room
-miniOS> doomedit --preset 2 /saves/dmap1.wad    # bundled level (0-4)
+miniOS> doomedit --preset 8 /saves/dmap1.wad    # bundled level (0-8)
 miniOS> doomedit --check /saves/dmap0.wad       # validate a snapshot
 miniOS> run doomgeneric.elf -file /saves/dmap0.wad mini_autoframes 30
 ```

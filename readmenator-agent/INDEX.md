@@ -114,7 +114,7 @@
 | `progs/asm/lz4.s` | - | asm | 7 |
 | `progs/asm/lzss.s` | - | asm | 30 |
 | `progs/asm/w1.s` | - | asm | 2 |
-| `progs/doomedit/doomedit.c` | doomedit.c - tile map editor that builds playable Doom PWADs. | misc | 108 |
+| `progs/doomedit/doomedit.c` | doomedit.c - tile map editor that builds playable Doom PWADs. | misc | 123 |
 | `progs/doomgeneric/am_map.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 97 |
 | `progs/doomgeneric/am_map.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 9 |
 | `progs/doomgeneric/config.h` | config.hin.  Generated from configure.ac by autoheader. | doomgeneric | 16 |
@@ -382,7 +382,7 @@
 | `tests/host_codecs.sh` | host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The | tests | 5 |
 | `tests/test_abi.c` | Docstring: tests/test_abi.c -- Host test for the ABI manifest gate. | tests | 3 |
 | `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 6 |
-| `tests/test_doom_pwad.py` | - | tests | 29 |
+| `tests/test_doom_pwad.py` | - | tests | 44 |
 | `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 12 |
 | `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 15 |
 | `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 8 |
@@ -424,7 +424,7 @@
 | `tools/check_mutant_anchors.py` | - | tools | 5 |
 | `tools/check_surprising.py` | - | tools | 5 |
 | `tools/check_syscall_sanitize.py` | - | tools | 8 |
-| `tools/doom_pwad.py` | - | tools | 22 |
+| `tools/doom_pwad.py` | - | tools | 25 |
 | `tools/extract_shell.py` | - | tools | 0 |
 | `tools/gdb_repro.py` | - | tools | 4 |
 | `tools/gen_desktop_pngs.py` | - | tools | 2 |

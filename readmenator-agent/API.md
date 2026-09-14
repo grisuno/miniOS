@@ -10581,283 +10581,297 @@ long sys_linux_wait4(lon...`
 ## progs/doomedit/doomedit.c
 
 ### dmap_thing_type (function) `static int dmap_thing_type(int cell)`
-- Defined: `progs/doomedit/doomedit.c:141`
+- Defined: `progs/doomedit/doomedit.c:160`
 - Doc: Thing type ids from the engine mobjinfo table, each with its sprite * verified present in the shareware IWAD.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_spawn (function) `static long dmap_spawn(const char *path, int argc, const char **argv)`
-- Defined: `progs/doomedit/doomedit.c:229`
+- Defined: `progs/doomedit/doomedit.c:250`
 - Doc: static float dmap_py = 2.5f; static char dmap_status[DMAP_STATUS_MAX]; static int dmap_quit = 0; static int dmap_ctrl_he
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_vga (function) `static long dmap_vga(int on)`
-- Defined: `progs/doomedit/doomedit.c:240`
+- Defined: `progs/doomedit/doomedit.c:261`
 - Doc: static int dmap_validate(char *msg, int max); /** Run a program through SYS_SPAWN, preserving the editor. static long dm
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_is_wall (function) `static int dmap_is_wall(int row, int col)`
-- Defined: `progs/doomedit/doomedit.c:249`
+- Defined: `progs/doomedit/doomedit.c:270`
 - Doc: : "rcx", "r11", "memory"); return ret; } /** Release or reclaim the display around a spawned child. static long dmap_vga
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_walkable (function) `static int dmap_walkable(int cell)`
-- Defined: `progs/doomedit/doomedit.c:256`
+- Defined: `progs/doomedit/doomedit.c:277`
 - Doc: __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_VGA_MODE), "D"((long)on) : "rcx", "r11", "memory"); return ret; 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
-### dmap_cell_color (function) `static struct nk_color dmap_cell_color(int cell)`
-- Defined: `progs/doomedit/doomedit.c:261`
+### dmap_cell_class (function) `static int dmap_cell_class(int cell)`
+- Defined: `progs/doomedit/doomedit.c:283`
 - Doc: /** True for solid cells; out of bounds counts as wall to stay closed. static int dmap_is_wall(int row, int col) { if (r
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
+### dmap_cell_color (function) `static struct nk_color dmap_cell_color(int cell)`
+- Defined: `progs/doomedit/doomedit.c:294`
+- Doc: } /** Sector class of a walkable cell: doors stand alone, styles never merge. static int dmap_cell_class(int cell) { if 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
 ### dmap_new (function) `static void dmap_new(void)`
-- Defined: `progs/doomedit/doomedit.c:303`
-- Doc: case DMAP_GARMOR: case DMAP_BARMOR: return nk_rgb(90, 120, 220); case DMAP_INVIS: case DMAP_RSUIT: case DMAP_CMAP: case 
+- Defined: `progs/doomedit/doomedit.c:339`
+- Doc: case DMAP_RSUIT: case DMAP_CMAP: case DMAP_LAMP: return nk_rgb(200, 90, 200); case DMAP_KEYB: case DMAP_KEYR: case DMAP_
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_recenter (function) `static void dmap_recenter(void)`
-- Defined: `progs/doomedit/doomedit.c:440`
-- Doc: "#####.########.#######.#####", "#........#........#........#", "#.m..q...#.DB..B..#...R....#", "#........#...bb...#....
+- Defined: `progs/doomedit/doomedit.c:502`
+- Doc: "########################", "#P.....####............#", "#..i...+......,,,,,....#", "#......####...,,,,,...E#", "#..m...
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_load_preset (function) `static int dmap_load_preset(int idx)`
-- Defined: `progs/doomedit/doomedit.c:452`
+- Defined: `progs/doomedit/doomedit.c:514`
 - Doc: /** Move the preview camera onto the player start tile. static void dmap_recenter(void) { int r, c; for (r = 0; r < dmap
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_rand (function) `static unsigned dmap_rand(void)`
-- Defined: `progs/doomedit/doomedit.c:482`
+- Defined: `progs/doomedit/doomedit.c:544`
 - Doc: for (k = 0; k < dmap_w; k++) { int ch = dmap_levels[idx][row][k]; if (!dmap_walkable(ch) && ch != DMAP_WALL) return -1; 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_free_cell (function) `static int dmap_free_cell(int *r, int *c)`
-- Defined: `progs/doomedit/doomedit.c:490`
+- Defined: `progs/doomedit/doomedit.c:552`
 - Doc: dmap_level_sel = idx + 1; snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]); return 0; } /*
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_random_map (function) `static void dmap_random_map(unsigned seed)`
-- Defined: `progs/doomedit/doomedit.c:504`
+- Defined: `progs/doomedit/doomedit.c:566`
 - Doc: Procedural map of connected rooms: several non-overlapping rect rooms carved out of solid rock, joined in sequence by L 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_load (function) `static int dmap_load(const char *path)`
-- Defined: `progs/doomedit/doomedit.c:634`
+- Defined: `progs/doomedit/doomedit.c:761`
 - Doc: } if (dmap_validate(msg, sizeof(msg)) == 0) { dmap_recenter(); snprintf(dmap_status, sizeof(dmap_status), "random %dx%d 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_save_txt (function) `static int dmap_save_txt(const char *path)`
-- Defined: `progs/doomedit/doomedit.c:678`
+- Defined: `progs/doomedit/doomedit.c:805`
 - Doc: if (col != 0) { if (row == 0) dmap_w = col; if (col != dmap_w) return -1; row++; } if (row < 3) return -1; dmap_h = row;
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
+### dmap_label_regions (function) `static int dmap_label_regions(void)`
+- Defined: `progs/doomedit/doomedit.c:840`
+- Doc: floor areas (doors stand alone, dark and nukage never merge); every region becomes one sector, so light, heights and fla
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
 ### dmap_validate (function) `static int dmap_validate(char *msg, int max)`
-- Defined: `progs/doomedit/doomedit.c:699`
-- Doc: if (fputc(dmap_grid[row][col], fp) == EOF) { fclose(fp); return -1; } if (fputc('\n', fp) == EOF) { fclose(fp); return -
+- Defined: `progs/doomedit/doomedit.c:921`
+- Doc: dmap_sec_floor[nsec] = DMAP_FLOOR_H; dmap_sec_ceil[nsec] = DMAP_CEIL_H; dmap_sec_flat[nsec] = DMAP_FLOOR_FLAT; dmap_sec_
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_w8 (function) `static void dmap_w8(unsigned v)`
-- Defined: `progs/doomedit/doomedit.c:767`
+- Defined: `progs/doomedit/doomedit.c:994`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_w16 (function) `static void dmap_w16(int v)`
-- Defined: `progs/doomedit/doomedit.c:768`
+- Defined: `progs/doomedit/doomedit.c:995`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_w32 (function) `static void dmap_w32(int v)`
-- Defined: `progs/doomedit/doomedit.c:772`
+- Defined: `progs/doomedit/doomedit.c:999`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_wtex (function) `static void dmap_wtex(const char *name)`
-- Defined: `progs/doomedit/doomedit.c:776`
+- Defined: `progs/doomedit/doomedit.c:1003`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_seg_angle (function) `static int dmap_seg_angle(int dx, int dy)`
-- Defined: `progs/doomedit/doomedit.c:783`
+- Defined: `progs/doomedit/doomedit.c:1010`
 - Doc: dmap_wp++ = (unsigned char)(v & 0xFF); dmap_wp++ = (unsigned char)((v >> 8) & 0xFF); } static void dmap_w32(int v) { dma
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_build_wad (function) `static int dmap_build_wad(int *size_out)`
-- Defined: `progs/doomedit/doomedit.c:791`
-- Doc: int k; for (k = 0; k < 8; k++) dmap_w8(name[k] ? (unsigned)name[k] : 0u); } /** Stored short angle for a seg direction, 
+- Defined: `progs/doomedit/doomedit.c:1020`
+- Doc: Compile the grid into a vanilla multi-sector E1M1 PWAD image. Every region and door block is its own sector; all segs sh
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_export_wad (function) `static int dmap_export_wad(const char *path)`
-- Defined: `progs/doomedit/doomedit.c:1007`
+- Defined: `progs/doomedit/doomedit.c:1337`
 - Doc: dmap_wp = dmap_wad; dmap_w8('P'); dmap_w8('W'); dmap_w8('A'); dmap_w8('D'); dmap_w32(11); dmap_w32(table_off); size_out 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_check_wad (function) `static int dmap_check_wad(const char *path)`
-- Defined: `progs/doomedit/doomedit.c:1022`
+- Defined: `progs/doomedit/doomedit.c:1352`
 - Doc: int size = 0; FILE *fp; size_t wrote; if (dmap_build_wad(&size) != 0) return -1; fp = fopen(path, "wb"); if (!fp) return
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_preview (function) `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)`
-- Defined: `progs/doomedit/doomedit.c:1040`
+- Defined: `progs/doomedit/doomedit.c:1370`
 - Doc: if (!fp) return -1; if (fread(head, 1, 12, fp) != 12) { fclose(fp); return -1; } fclose(fp); magic_ok = head[0] == 'P' &
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_brush_combo (function) `static void dmap_brush_combo(struct nk_context *ctx)`
-- Defined: `progs/doomedit/doomedit.c:1106`
+- Defined: `progs/doomedit/doomedit.c:1437`
 - Doc: dist = 0.05f; line_h = (int)(area.h / dist); if (line_h > (int)area.h) line_h = (int)area.h; y0 = (int)(area.y + (area.h
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_canvas (function) `static void dmap_canvas(struct nk_context *ctx)`
-- Defined: `progs/doomedit/doomedit.c:1117`
+- Defined: `progs/doomedit/doomedit.c:1448`
 - Doc: Paintable tile canvas with per-category colors. The caller owns the * layout row and column: this only claims the widget
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_preview_row (function) `static void dmap_preview_row(struct nk_context *ctx)`
-- Defined: `progs/doomedit/doomedit.c:1161`
+- Defined: `progs/doomedit/doomedit.c:1492`
 - Doc: if (dmap_grid[rr][cc] == dmap_brush) dmap_grid[rr][cc] = DMAP_FLOOR; } dmap_grid[r][c] = (char)dmap_brush; dmap_level_se
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_run_map (function) `static void dmap_run_map(void)`
-- Defined: `progs/doomedit/doomedit.c:1196`
+- Defined: `progs/doomedit/doomedit.c:1527`
 - Doc: } if (nk_button_label(ctx, "Reset")) { int r, c; for (r = 0; r < dmap_h; r++) for (c = 0; c < dmap_w; c++) if (dmap_grid
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_scancode (function) `static void dmap_scancode(int code, int make, int e0, void *ud)`
-- Defined: `progs/doomedit/doomedit.c:1299`
+- Defined: `progs/doomedit/doomedit.c:1630`
 - Doc: nk_layout_row_push(ctx, 90); if (nk_button_label(ctx, "Random")) dmap_random_map((unsigned)nk_sys_time_ms() + 1u); nk_la
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_gui_run (function) `static void dmap_gui_run(void)`
-- Defined: `progs/doomedit/doomedit.c:1312`
+- Defined: `progs/doomedit/doomedit.c:1643`
 - Doc: /** Ctrl+R scancode hook: the Run gesture must work with focus in canvas. static void dmap_scancode(int code, int make, 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_demo_room (function) `static void dmap_demo_room(void)`
-- Defined: `progs/doomedit/doomedit.c:1358`
+- Defined: `progs/doomedit/doomedit.c:1689`
 - Doc: nk_set_window_origin(origin[0], origin[1]); nk_clear(&ctx); { unsigned t0 = (unsigned)nk_sys_time_ms(); while ((unsigned
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_selftest (function) `static int dmap_selftest(void)`
-- Defined: `progs/doomedit/doomedit.c:1370`
+- Defined: `progs/doomedit/doomedit.c:1701`
 - Doc: /** Headless demo room shared by --demo and the selftest build check. static void dmap_demo_room(void) { dmap_w = 9; dma
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/doomedit/doomedit.c:1451`
+- Defined: `progs/doomedit/doomedit.c:1782`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_SPAWN), "D"(path), "S"((long)0), "d"((long)argc), "r"(r10) : "rcx", "r11", "memory");`
-- Defined: `progs/doomedit/doomedit.c:232`
+- Defined: `progs/doomedit/doomedit.c:253`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_rgb (function) `case DMAP_WALL: return nk_rgb(150, 110, 70);`
-- Defined: `progs/doomedit/doomedit.c:263`
+- Defined: `progs/doomedit/doomedit.c:296`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### snprintf (function) `snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]);`
-- Defined: `progs/doomedit/doomedit.c:477`
+- Defined: `progs/doomedit/doomedit.c:539`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### fclose (function) `fclose(fp);`
-- Defined: `progs/doomedit/doomedit.c:646`
+- Defined: `progs/doomedit/doomedit.c:773`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### areas (function) `* floor areas (doors stand alone, dark and nukage never merge);`
+- Defined: `progs/doomedit/doomedit.c:826`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_fill_rect (function) `nk_fill_rect(canvas, top, 0.0f, nk_rgb(24, 24, 40));`
-- Defined: `progs/doomedit/doomedit.c:1047`
+- Defined: `progs/doomedit/doomedit.c:1377`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_dynamic (function) `nk_layout_row_dynamic(ctx, 22, 1);`
-- Defined: `progs/doomedit/doomedit.c:1108`
+- Defined: `progs/doomedit/doomedit.c:1439`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_combobox (function) `nk_combobox(ctx, dmap_brush_labels, DMAP_BRUSH_COUNT, &dmap_brush_sel, 20, nk_vec2(280, 260));`
-- Defined: `progs/doomedit/doomedit.c:1109`
+- Defined: `progs/doomedit/doomedit.c:1440`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_static (function) `nk_layout_row_static(ctx, (float)(DMAP_PREV_H + 8), DMAP_PREV_W + 8, 1);`
-- Defined: `progs/doomedit/doomedit.c:1164`
+- Defined: `progs/doomedit/doomedit.c:1495`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_kbd_raw (function) `nk_sys_kbd_raw(0);`
-- Defined: `progs/doomedit/doomedit.c:1210`
+- Defined: `progs/doomedit/doomedit.c:1541`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_gfx_set_title (function) `nk_sys_gfx_set_title(DMAP_TITLE);`
-- Defined: `progs/doomedit/doomedit.c:1218`
+- Defined: `progs/doomedit/doomedit.c:1549`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_end (function) `nk_end(ctx);`
-- Defined: `progs/doomedit/doomedit.c:1232`
+- Defined: `progs/doomedit/doomedit.c:1563`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_label (function) `nk_label(ctx, line, NK_TEXT_LEFT);`
-- Defined: `progs/doomedit/doomedit.c:1252`
+- Defined: `progs/doomedit/doomedit.c:1583`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_begin (function) `nk_layout_row_begin(ctx, NK_STATIC, row_h, 2);`
-- Defined: `progs/doomedit/doomedit.c:1254`
+- Defined: `progs/doomedit/doomedit.c:1585`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_push (function) `nk_layout_row_push(ctx, (float)DMAP_CANVAS_W);`
-- Defined: `progs/doomedit/doomedit.c:1255`
+- Defined: `progs/doomedit/doomedit.c:1586`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_end (function) `nk_layout_row_end(ctx);`
-- Defined: `progs/doomedit/doomedit.c:1288`
+- Defined: `progs/doomedit/doomedit.c:1619`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_group_end (function) `nk_group_end(ctx);`
-- Defined: `progs/doomedit/doomedit.c:1291`
+- Defined: `progs/doomedit/doomedit.c:1622`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_vga_mode (function) `nk_sys_vga_mode(1);`
-- Defined: `progs/doomedit/doomedit.c:1317`
+- Defined: `progs/doomedit/doomedit.c:1648`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_build_palette (function) `nk_build_palette(pal768);`
-- Defined: `progs/doomedit/doomedit.c:1320`
+- Defined: `progs/doomedit/doomedit.c:1651`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_palette (function) `nk_sys_palette(pal768);`
-- Defined: `progs/doomedit/doomedit.c:1321`
+- Defined: `progs/doomedit/doomedit.c:1652`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### printf (function) `printf("doomedit: init failed\n");`
-- Defined: `progs/doomedit/doomedit.c:1323`
+- Defined: `progs/doomedit/doomedit.c:1654`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_theme_apply (function) `nk_theme_apply(&ctx, 0);`
-- Defined: `progs/doomedit/doomedit.c:1328`
+- Defined: `progs/doomedit/doomedit.c:1659`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_set_scancode_hook (function) `nk_set_scancode_hook(dmap_scancode, 0);`
-- Defined: `progs/doomedit/doomedit.c:1330`
+- Defined: `progs/doomedit/doomedit.c:1661`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_input_begin (function) `nk_input_begin(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1332`
+- Defined: `progs/doomedit/doomedit.c:1663`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_poll_input (function) `nk_poll_input(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1333`
+- Defined: `progs/doomedit/doomedit.c:1664`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_input_end (function) `nk_input_end(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1334`
+- Defined: `progs/doomedit/doomedit.c:1665`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_build (function) `dmap_build(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1341`
+- Defined: `progs/doomedit/doomedit.c:1672`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_rasterize (function) `nk_rasterize(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1342`
+- Defined: `progs/doomedit/doomedit.c:1673`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_clear (function) `nk_clear(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1345`
+- Defined: `progs/doomedit/doomedit.c:1676`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_free (function) `nk_free(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1352`
+- Defined: `progs/doomedit/doomedit.c:1683`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_fb_info (function) `nk_sys_fb_info(&fw, &fh, &fp);`
-- Defined: `progs/doomedit/doomedit.c:1398`
+- Defined: `progs/doomedit/doomedit.c:1729`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/doomgeneric/am_map.c
@@ -29201,6 +29215,11 @@ Z_DumpHeap
 
 ## tests/test_doom_pwad.py
 
+### lump_blob (method) `def lump_blob(blob, idx)`
+- Defined: `tests/test_doom_pwad.py:310`
+- Doc: Slice one lump payload out of a built image by directory order.
+- Depends on: `tools/doom_pwad.py`
+
 ### test_valid_room_parses (method) `def test_valid_room_parses(self)`
 - Defined: `tests/test_doom_pwad.py:32`
 - Doc: A closed room with player and exit parses to five rows.
@@ -29324,6 +29343,66 @@ Z_DumpHeap
 ### test_every_thing_id_matches_engine (method) `def test_every_thing_id_matches_engine(self)`
 - Defined: `tests/test_doom_pwad.py:278`
 - Doc: Each letter lands on the doomednum the engine spawns.
+- Depends on: `tools/doom_pwad.py`
+
+### test_door_room_builds_two_sectors (method) `def test_door_room_builds_two_sectors(self)`
+- Defined: `tests/test_doom_pwad.py:320`
+- Doc: A door cell splits one room into two sectors with a tag.
+- Depends on: `tools/doom_pwad.py`
+
+### test_door_lines_are_tagged_openers (method) `def test_door_lines_are_tagged_openers(self)`
+- Defined: `tests/test_doom_pwad.py:327`
+- Doc: Both door faces carry D1 open with the door sector tag.
+- Depends on: `tools/doom_pwad.py`
+
+### test_dark_and_nukage_sector_props (method) `def test_dark_and_nukage_sector_props(self)`
+- Defined: `tests/test_doom_pwad.py:355`
+- Doc: Dark rooms dim the light, nukage drops the floor and stings.
+- Depends on: `tools/doom_pwad.py`
+
+### test_reject_scales_with_sector_count (method) `def test_reject_scales_with_sector_count(self)`
+- Defined: `tests/test_doom_pwad.py:374`
+- Doc: REJECT holds exactly the bit table for the sector count.
+- Depends on: `tools/doom_pwad.py`
+
+### test_new_legend_chars_build (method) `def test_new_legend_chars_build(self)`
+- Defined: `tests/test_doom_pwad.py:382`
+- Doc: Door, dark and nukage tiles pass the checker in one room.
+- Depends on: `tools/doom_pwad.py`
+
+### setUp (method) `def setUp(self)`
+- Defined: `tests/test_doom_pwad.py:391`
+- Doc: Build one known-good door image shared by every case.
+- Depends on: `tools/doom_pwad.py`
+
+### mutate_line (method) `def mutate_line(self, idx, field, value)`
+- Defined: `tests/test_doom_pwad.py:395`
+- Doc: Return the good image with one linedef field replaced.
+- Depends on: `tools/doom_pwad.py`
+
+### door_line (method) `def door_line(self)`
+- Defined: `tests/test_doom_pwad.py:406`
+- Doc: Index of the first D1 door line in the fixture image.
+- Depends on: `tools/doom_pwad.py`
+
+### test_door_tag_zero_dies (method) `def test_door_tag_zero_dies(self)`
+- Defined: `tests/test_doom_pwad.py:418`
+- Doc: A door opener without a tag is refused, never miswired.
+- Depends on: `tools/doom_pwad.py`
+
+### test_unknown_special_dies (method) `def test_unknown_special_dies(self)`
+- Defined: `tests/test_doom_pwad.py:423`
+- Doc: A linedef special the writer never emits is refused.
+- Depends on: `tools/doom_pwad.py`
+
+### test_onesided_with_back_dies (method) `def test_onesided_with_back_dies(self)`
+- Defined: `tests/test_doom_pwad.py:428`
+- Doc: A one-sided line smuggling a back sidedef is refused.
+- Depends on: `tools/doom_pwad.py`
+
+### test_exit_tagged_dies (method) `def test_exit_tagged_dies(self)`
+- Defined: `tests/test_doom_pwad.py:433`
+- Doc: The exit switch must stay untagged like the writer emits it.
 - Depends on: `tools/doom_pwad.py`
 
 ## tests/test_driver.c
@@ -30813,102 +30892,117 @@ Z_DumpHeap
 ## tools/doom_pwad.py
 
 ### pad_tex (method) `def pad_tex(raw)`
-- Defined: `tools/doom_pwad.py:138`
+- Defined: `tools/doom_pwad.py:165`
 - Doc: Return a texture or flat name padded to its 8-byte field.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### parse_grid (method) `def parse_grid(text)`
-- Defined: `tools/doom_pwad.py:145`
+- Defined: `tools/doom_pwad.py:172`
 - Doc: Parse grid text into rows, refusing empty or ragged input.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### grid_extents (method) `def grid_extents(rows)`
-- Defined: `tools/doom_pwad.py:168`
+- Defined: `tools/doom_pwad.py:195`
 - Doc: Return coordinate bounds of the lattice in map units.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### is_wall (method) `def is_wall(rows, row, col)`
-- Defined: `tools/doom_pwad.py:176`
+- Defined: `tools/doom_pwad.py:203`
 - Doc: Treat out-of-bounds cells as solid wall so maps stay closed.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### flood_reachable (method) `def flood_reachable(rows)`
-- Defined: `tools/doom_pwad.py:183`
+- Defined: `tools/doom_pwad.py:210`
 - Doc: Return the walkable set reachable from the player start tile.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### validate_grid (method) `def validate_grid(rows)`
-- Defined: `tools/doom_pwad.py:213`
+- Defined: `tools/doom_pwad.py:240`
 - Doc: Enforce single player, single exit, and full reachability.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### cell_corners (method) `def cell_corners(row, col)`
-- Defined: `tools/doom_pwad.py:242`
+- Defined: `tools/doom_pwad.py:269`
 - Doc: Return cell corners as (x0, x1, y_top, y_bottom) in map units.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
+### cell_class (method) `def cell_class(cell)`
+- Defined: `tools/doom_pwad.py:279`
+- Doc: Classify a walkable cell: doors stand alone, styles never merge.
+- Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
+
+### label_regions (method) `def label_regions(rows)`
+- Defined: `tools/doom_pwad.py:291`
+- Doc: Flood same-class walkable cells into region ids; walls stay -1.
+- Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
+
+### region_sector (method) `def region_sector(region, door_tag)`
+- Defined: `tools/doom_pwad.py:326`
+- Doc: Map a labelled region to its sector record fields and wall skin.
+- Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
+
 ### compile_geometry (method) `def compile_geometry(rows, exit_pos, wall_side)`
-- Defined: `tools/doom_pwad.py:252`
-- Doc: Compile wall boundary edges into vertexes, linedefs and sides.
+- Defined: `tools/doom_pwad.py:371`
+- Doc: Compile edges into vertexes, two-sided rooms and tagged doors.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### compile_things (method) `def compile_things(rows)`
-- Defined: `tools/doom_pwad.py:300`
+- Defined: `tools/doom_pwad.py:485`
 - Doc: Compile thing stamps into mapthing records in scan order.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### seg_angle (method) `def seg_angle(dx, dy)`
-- Defined: `tools/doom_pwad.py:321`
+- Defined: `tools/doom_pwad.py:506`
 - Doc: Return the stored short angle for a seg direction vector.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### build_lumps (method) `def build_lumps(rows)`
-- Defined: `tools/doom_pwad.py:331`
+- Defined: `tools/doom_pwad.py:516`
 - Doc: Compile a validated grid into the eleven E1M1 lump payloads.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### build_pwad (method) `def build_pwad(rows)`
-- Defined: `tools/doom_pwad.py:405`
+- Defined: `tools/doom_pwad.py:597`
 - Doc: Assemble lump payloads into a complete PWAD byte string.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### read_pwad (method) `def read_pwad(data)`
-- Defined: `tools/doom_pwad.py:424`
+- Defined: `tools/doom_pwad.py:616`
 - Doc: Split PWAD bytes into header fields and an ordered lump table.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### check_pwad (method) `def check_pwad(data)`
-- Defined: `tools/doom_pwad.py:447`
+- Defined: `tools/doom_pwad.py:639`
 - Doc: Validate lump order, record sizes and cross-lump references.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### cmd_build (method) `def cmd_build(grid_path, out_path)`
-- Defined: `tools/doom_pwad.py:594`
+- Defined: `tools/doom_pwad.py:816`
 - Doc: Build a PWAD from a grid file, refusing to write on any error.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### cmd_check (method) `def cmd_check(path)`
-- Defined: `tools/doom_pwad.py:604`
+- Defined: `tools/doom_pwad.py:826`
 - Doc: Validate a PWAD file and report its lump census on success.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### main (method) `def main(argv)`
-- Defined: `tools/doom_pwad.py:612`
+- Defined: `tools/doom_pwad.py:834`
 - Doc: Dispatch the build, check and info verbs with host-safe errors.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### vertex (method) `def vertex(x, y)`
-- Defined: `tools/doom_pwad.py:259`
+- Defined: `tools/doom_pwad.py:386`
 - Doc: Deduplicate lattice points shared by adjacent edges.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### payload (method) `def payload(name)`
-- Defined: `tools/doom_pwad.py:458`
+- Defined: `tools/doom_pwad.py:650`
 - Doc: Slice one lump payload out of the file image.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ### check_multiple (method) `def check_multiple(name, fmt)`
-- Defined: `tools/doom_pwad.py:463`
+- Defined: `tools/doom_pwad.py:655`
 - Doc: Require the lump length to hold whole records only.
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 

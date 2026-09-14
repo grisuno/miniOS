@@ -289,5 +289,160 @@ class ExtendedLegendTests(unittest.TestCase):
             self.assertIn(kind, kinds)
 
 
+DOOR_ROOM = (
+    "########\n"
+    "#P..+..#\n"
+    "#...#..#\n"
+    "#..E...#\n"
+    "########\n"
+)
+
+MOOD_ROOM = (
+    "#########\n"
+    "#P..,,..#\n"
+    "#...,,..#\n"
+    "#..+~~~.#\n"
+    "#..E~~~.#\n"
+    "#########\n"
+)
+
+
+def lump_blob(blob, idx):
+    """Slice one lump payload out of a built image by directory order."""
+    table = doom_pwad.read_pwad(blob)
+    pos, size, _ = table[idx]
+    return blob[pos:pos + size]
+
+
+class MultiSectorTests(unittest.TestCase):
+    """Doors, dark rooms and nukage pits compile to real sectors."""
+
+    def test_door_room_builds_two_sectors(self):
+        """A door cell splits one room into two sectors with a tag."""
+        summary = check_pwad(build_pwad(parse_grid(DOOR_ROOM)))
+        self.assertEqual(summary["sectors"], 2)
+        self.assertEqual(summary["subsectors"], 1)
+        self.assertEqual(summary["nodes"], 1)
+
+    def test_door_lines_are_tagged_openers(self):
+        """Both door faces carry D1 open with the door sector tag."""
+        blob = build_pwad(parse_grid(DOOR_ROOM))
+        raw = lump_blob(blob, 2)
+        width = struct.calcsize(Cfg.linedef_fmt)
+        doors = []
+        for idx in range(len(raw) // width):
+            _, _, flags, special, tag, _, s1 = struct.unpack_from(
+                Cfg.linedef_fmt, raw, idx * width)
+            if special == Cfg.special_door:
+                doors.append((flags, tag, s1))
+        self.assertEqual(len(doors), 2)
+        for flags, tag, s1 in doors:
+            self.assertTrue(flags & Cfg.flag_twosided)
+            self.assertNotEqual(tag, 0)
+            self.assertNotEqual(s1, Cfg.no_side)
+        sec_raw = lump_blob(blob, 8)
+        sec_width = struct.calcsize(Cfg.sector_fmt)
+        tags = {}
+        for idx in range(len(sec_raw) // sec_width):
+            floor, ceil, _, _, light, _, tag = struct.unpack_from(
+                Cfg.sector_fmt, sec_raw, idx * sec_width)
+            if tag != 0:
+                tags[tag] = (floor, ceil, light)
+        for _, tag, _ in doors:
+            self.assertIn(tag, tags)
+            self.assertEqual(tags[tag], (0, Cfg.door_ceil, Cfg.door_light))
+
+    def test_dark_and_nukage_sector_props(self):
+        """Dark rooms dim the light, nukage drops the floor and stings."""
+        blob = build_pwad(parse_grid(MOOD_ROOM))
+        summary = check_pwad(blob)
+        self.assertGreaterEqual(summary["sectors"], 4)
+        sec_raw = lump_blob(blob, 8)
+        sec_width = struct.calcsize(Cfg.sector_fmt)
+        props = []
+        for idx in range(len(sec_raw) // sec_width):
+            floor, _, flat, _, light, special, _ = struct.unpack_from(
+                Cfg.sector_fmt, sec_raw, idx * sec_width)
+            props.append((floor, flat.rstrip(b"\x00"), light, special))
+        dark = [p for p in props if p[2] == Cfg.dark_light and p[3] == 0]
+        self.assertTrue(dark)
+        nuke = [p for p in props
+                if p[0] == Cfg.nukage_floor and p[3] == Cfg.nukage_special]
+        self.assertEqual(len(nuke), 1)
+        self.assertEqual(nuke[0][1], Cfg.nukage_flat)
+
+    def test_reject_scales_with_sector_count(self):
+        """REJECT holds exactly the bit table for the sector count."""
+        for grid, nsec in ((ROOM, 1), (DOOR_ROOM, 2), (MOOD_ROOM, 5)):
+            blob = build_pwad(parse_grid(grid))
+            table = doom_pwad.read_pwad(blob)
+            pos, size, _ = table[9]
+            self.assertEqual(size, (nsec * nsec + 7) // 8)
+
+    def test_new_legend_chars_build(self):
+        """Door, dark and nukage tiles pass the checker in one room."""
+        summary = check_pwad(build_pwad(parse_grid(MOOD_ROOM)))
+        self.assertEqual(summary["things"], 1)
+
+
+class MultiSectorMutationTests(unittest.TestCase):
+    """Broken tags, specials and sidedef pairs fail closed."""
+
+    def setUp(self):
+        """Build one known-good door image shared by every case."""
+        self.good = build_pwad(parse_grid(DOOR_ROOM))
+
+    def mutate_line(self, idx, field, value):
+        """Return the good image with one linedef field replaced."""
+        blob = bytearray(self.good)
+        table = doom_pwad.read_pwad(bytes(blob))
+        pos, _, _ = table[2]
+        width = struct.calcsize(Cfg.linedef_fmt)
+        fields = list(struct.unpack_from(Cfg.linedef_fmt, blob, pos + idx * width))
+        fields[field] = value
+        struct.pack_into(Cfg.linedef_fmt, blob, pos + idx * width, *fields)
+        return bytes(blob)
+
+    def door_line(self):
+        """Index of the first D1 door line in the fixture image."""
+        table = doom_pwad.read_pwad(self.good)
+        pos, size, _ = table[2]
+        raw = self.good[pos:pos + size]
+        width = struct.calcsize(Cfg.linedef_fmt)
+        for idx in range(size // width):
+            if struct.unpack_from(Cfg.linedef_fmt, raw, idx * width)[3] == \
+                    Cfg.special_door:
+                return idx
+        raise AssertionError("fixture has no door line")
+
+    def test_door_tag_zero_dies(self):
+        """A door opener without a tag is refused, never miswired."""
+        with self.assertRaises(PwadError):
+            check_pwad(self.mutate_line(self.door_line(), 4, 0))
+
+    def test_unknown_special_dies(self):
+        """A linedef special the writer never emits is refused."""
+        with self.assertRaises(PwadError):
+            check_pwad(self.mutate_line(0, 3, 99))
+
+    def test_onesided_with_back_dies(self):
+        """A one-sided line smuggling a back sidedef is refused."""
+        with self.assertRaises(PwadError):
+            check_pwad(self.mutate_line(0, 6, 0))
+
+    def test_exit_tagged_dies(self):
+        """The exit switch must stay untagged like the writer emits it."""
+        table = doom_pwad.read_pwad(self.good)
+        pos, size, _ = table[2]
+        raw = self.good[pos:pos + size]
+        width = struct.calcsize(Cfg.linedef_fmt)
+        exits = [idx for idx in range(size // width)
+                 if struct.unpack_from(Cfg.linedef_fmt, raw, idx * width)[3] ==
+                 Cfg.special_exit]
+        self.assertEqual(len(exits), 1)
+        with self.assertRaises(PwadError):
+            check_pwad(self.mutate_line(exits[0], 4, 1))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

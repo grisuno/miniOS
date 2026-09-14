@@ -100,28 +100,31 @@
 - Layer: utility
 - Language: py
 - Symbols:
-  - `DoomPwadConfig` (class, line 43) `class DoomPwadConfig`
-  - `PwadError` (class, line 134) `class PwadError(Exception)`
-  - `pad_tex` (method, line 138) `def pad_tex(raw)`
-  - `parse_grid` (method, line 145) `def parse_grid(text)`
-  - `grid_extents` (method, line 168) `def grid_extents(rows)`
-  - `is_wall` (method, line 176) `def is_wall(rows, row, col)`
-  - `flood_reachable` (method, line 183) `def flood_reachable(rows)`
-  - `validate_grid` (method, line 213) `def validate_grid(rows)`
-  - `cell_corners` (method, line 242) `def cell_corners(row, col)`
-  - `compile_geometry` (method, line 252) `def compile_geometry(rows, exit_pos, wall_side)`
-  - `compile_things` (method, line 300) `def compile_things(rows)`
-  - `seg_angle` (method, line 321) `def seg_angle(dx, dy)`
-  - `build_lumps` (method, line 331) `def build_lumps(rows)`
-  - `build_pwad` (method, line 405) `def build_pwad(rows)`
-  - `read_pwad` (method, line 424) `def read_pwad(data)`
-  - `check_pwad` (method, line 447) `def check_pwad(data)`
-  - `cmd_build` (method, line 594) `def cmd_build(grid_path, out_path)`
-  - `cmd_check` (method, line 604) `def cmd_check(path)`
-  - `main` (method, line 612) `def main(argv)`
-  - `vertex` (method, line 259) `def vertex(x, y)`
-  - `payload` (method, line 458) `def payload(name)`
-  - `check_multiple` (method, line 463) `def check_multiple(name, fmt)`
+  - `DoomPwadConfig` (class, line 52) `class DoomPwadConfig`
+  - `PwadError` (class, line 161) `class PwadError(Exception)`
+  - `pad_tex` (method, line 165) `def pad_tex(raw)`
+  - `parse_grid` (method, line 172) `def parse_grid(text)`
+  - `grid_extents` (method, line 195) `def grid_extents(rows)`
+  - `is_wall` (method, line 203) `def is_wall(rows, row, col)`
+  - `flood_reachable` (method, line 210) `def flood_reachable(rows)`
+  - `validate_grid` (method, line 240) `def validate_grid(rows)`
+  - `cell_corners` (method, line 269) `def cell_corners(row, col)`
+  - `cell_class` (method, line 279) `def cell_class(cell)`
+  - `label_regions` (method, line 291) `def label_regions(rows)`
+  - `region_sector` (method, line 326) `def region_sector(region, door_tag)`
+  - `compile_geometry` (method, line 371) `def compile_geometry(rows, exit_pos, wall_side)`
+  - `compile_things` (method, line 485) `def compile_things(rows)`
+  - `seg_angle` (method, line 506) `def seg_angle(dx, dy)`
+  - `build_lumps` (method, line 516) `def build_lumps(rows)`
+  - `build_pwad` (method, line 597) `def build_pwad(rows)`
+  - `read_pwad` (method, line 616) `def read_pwad(data)`
+  - `check_pwad` (method, line 639) `def check_pwad(data)`
+  - `cmd_build` (method, line 816) `def cmd_build(grid_path, out_path)`
+  - `cmd_check` (method, line 826) `def cmd_check(path)`
+  - `main` (method, line 834) `def main(argv)`
+  - `vertex` (method, line 386) `def vertex(x, y)`
+  - `payload` (method, line 650) `def payload(name)`
+  - `check_multiple` (method, line 655) `def check_multiple(name, fmt)`
 - Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
 
 ## tools/extract_shell.py
