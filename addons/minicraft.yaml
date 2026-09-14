@@ -1,0 +1,14 @@
+name: minicraft
+description: Minecraft-like voxel walker (ring-3 DDA raycaster, 320x200 game buffer, break/place, saves/minicraft.map). In-repo source built like DOOM; ships on MiniFS as minicraft.elf plus the bare-name alias with its dock entry.
+author: miniOS
+version: "1.0.0"
+install:
+  repo_url: https://github.com/grisuno/miniOS.git
+  kind: host
+  artifact: minicraft
+  files: []
+  host_build:
+    - make progs/bin/minicraft.elf
+  verify:
+    - line: minicraft --selftest
+      exit_code: 0

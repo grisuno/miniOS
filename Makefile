@@ -961,6 +961,28 @@ $(BIN_DIR)/paint.elf: $(PAINT_SRCS) $(NUKLEAR_DIR)/nuklear.h
 $(BIN_DIR)/paint: $(BIN_DIR)/paint.elf
 	cp $< $@
 
+# ── minicraft (voxel walker: DDA raycaster, 320x200 game buffer) ───
+# Minecraft-like ring-3 game like DOOM/Q2G: host gcc -static, ET_EXEC,
+# writes MINIOS_DOOM_BACKBUF_ADDR and presents with GFX_PRESENT BUF_GAME.
+# World 64x64x32, break/place, saves/minicraft.map. Ships on MiniFS.
+MINICRAFT_SRCS = $(PROGS_DIR)/minicraft/minicraft.c
+
+$(BIN_DIR)/minicraft.elf: $(MINICRAFT_SRCS) $(PROGS_DIR)/minios_abi.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wall \
+	      -I$(PROGS_DIR) -o $@ $(MINICRAFT_SRCS) -lm
+	chmod +x $@
+
+$(BIN_DIR)/minicraft: $(BIN_DIR)/minicraft.elf
+	cp $< $@
+	chmod +x $@
+
+minicraft-host: $(MINICRAFT_SRCS) | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -DMINICRAFT_HOST_TEST -I$(PROGS_DIR) \
+	      -o $(TOOLS_DIR)/minicraft_test $(MINICRAFT_SRCS) -lm
+
+test-minicraft: minicraft-host
+	$(TOOLS_DIR)/minicraft_test --selftest
+
 # ── opl3 (ring-3 Nuked-OPL3 FM synth -> SB16 PCM) ───────────────────
 # Static ELF like DOOM. Renders a melody through the Nuked-OPL3 chip emulator
 # and streams 8-bit mono PCM to the kernel SB16 driver (syscalls 221/222).
@@ -1146,8 +1168,10 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(PROGS_DIR)/doomedit/doomedit.c \
                 $(BIN_DIR)/file.elf $(BIN_DIR)/file \
                 $(PROGS_DIR)/file/file.c \
-                $(BIN_DIR)/paint.elf $(BIN_DIR)/paint \
-                $(PROGS_DIR)/paint/paint.c \
+                 $(BIN_DIR)/paint.elf $(BIN_DIR)/paint \
+                 $(PROGS_DIR)/paint/paint.c \
+                 $(BIN_DIR)/minicraft.elf $(BIN_DIR)/minicraft \
+                 $(PROGS_DIR)/minicraft/minicraft.c \
                 $(PROGS_DIR)/etc/association \
                $(PROGS_DIR)/etc/shortcuts \
                $(BIN_DIR)/lzss $(BIN_DIR)/unlzss $(SRC_DIR)/lzss.c $(ASM_DIR)/lzss.s \
@@ -1650,13 +1674,13 @@ DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
                $(DESKTOP_SRC_DIR)/nuklear.png $(DESKTOP_SRC_DIR)/vedit.png \
                $(DESKTOP_SRC_DIR)/pokemon.png \
                $(DESKTOP_SRC_DIR)/file.png $(DESKTOP_SRC_DIR)/shell.png \
-               $(DESKTOP_SRC_DIR)/paint.png
+               $(DESKTOP_SRC_DIR)/paint.png $(DESKTOP_SRC_DIR)/minicraft.png
 DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/doomedit.png \
               $(PROGS_DIR)/icons/quake2.png \
               $(PROGS_DIR)/icons/piano.png $(PROGS_DIR)/icons/nuklear.png \
               $(PROGS_DIR)/icons/vedit.png $(PROGS_DIR)/icons/pokemon.png \
               $(PROGS_DIR)/icons/file.png $(PROGS_DIR)/icons/shell.png \
-              $(PROGS_DIR)/icons/paint.png \
+              $(PROGS_DIR)/icons/paint.png $(PROGS_DIR)/icons/minicraft.png \
               $(PROGS_DIR)/wall/wallpaper.png
 $(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
 	python3 tools/gen_desktop_pngs.py --src-dir $(DESKTOP_SRC_DIR) --repo .

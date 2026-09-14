@@ -14,7 +14,7 @@ Sources (repo root by default, overridable with --src-dir):
 
 Outputs (under the MiniOS repo):
   progs/icons/doom.png, doomedit.png, quake2.png, piano.png, nuklear.png,
-  vedit.png, pokemon.png, file.png, shell.png, paint.png  32x32 RGBA
+  vedit.png, pokemon.png, file.png, shell.png, paint.png, minicraft.png  32x32 RGBA
   progs/wall/wallpaper.png                                   800x600 RGB
 
 The kernel runs in an 8-bit palette mode, so it maps icon pixels to the
@@ -56,6 +56,7 @@ ICON_JOBS = (
     ("file.png", "file.png"),
     ("shell.png", "shell.png"),
     ("paint.png", "paint.png"),
+    ("minicraft.png", "minicraft.png"),
 )
 
 
