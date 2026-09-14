@@ -10581,297 +10581,355 @@ long sys_linux_wait4(lon...`
 ## progs/doomedit/doomedit.c
 
 ### dmap_thing_type (function) `static int dmap_thing_type(int cell)`
-- Defined: `progs/doomedit/doomedit.c:160`
+- Defined: `progs/doomedit/doomedit.c:165`
 - Doc: Thing type ids from the engine mobjinfo table, each with its sprite * verified present in the shareware IWAD.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
+### dmap_push_history (function) `static void dmap_push_history(void)`
+- Defined: `progs/doomedit/doomedit.c:271`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### dmap_undo (function) `static int dmap_undo(void)`
+- Defined: `progs/doomedit/doomedit.c:288`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### dmap_redo (function) `static int dmap_redo(void)`
+- Defined: `progs/doomedit/doomedit.c:306`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### dmap_apply_cell (function) `static void dmap_apply_cell(int r, int c, int brush)`
+- Defined: `progs/doomedit/doomedit.c:326`
+- Doc: dmap_undo_h[dmap_undo_top] = dmap_h; memcpy(dmap_undo_g[dmap_undo_top], dmap_grid, sizeof(dmap_grid)); dmap_undo_top++; 
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### dmap_flood_fill (function) `static void dmap_flood_fill(int sr, int sc, int new_cell)`
+- Defined: `progs/doomedit/doomedit.c:344`
+- Doc: if (brush == DMAP_PLAYER || brush == DMAP_EXIT) { for (rr = 0; rr < dmap_h; rr++) for (cc = 0; cc < dmap_w; cc++) if (dm
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### dmap_draw_line (function) `static void dmap_draw_line(int r0, int c0, int r1, int c1, int cell)`
+- Defined: `progs/doomedit/doomedit.c:383`
+- Doc: if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w) continue; if (dmap_grid[nr][nc] != old_cell) continue; dmap_grid[n
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### dmap_draw_rect (function) `static void dmap_draw_rect(int r0, int c0, int r1, int c1, int cell)`
+- Defined: `progs/doomedit/doomedit.c:411`
+- Doc: e2 = err; if (e2 > -dr) { err -= dc; r0 += sr; } if (e2 < dc) { err += dr; c0 += sc; } } dmap_level_sel = 0; } /** Hollo
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### dmap_reach_map (function) `static void dmap_reach_map(int seen[DMAP_MAX_H][DMAP_MAX_W])`
+- Defined: `progs/doomedit/doomedit.c:440`
+- Doc: for (r = rt; r <= rb; r++) { if (r >= 0 && r < dmap_h && cl >= 0 && cl < dmap_w) { if (dmap_grid[r][cl] != DMAP_PLAYER &
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### dmap_path_len (function) `static int dmap_path_len(void)`
+- Defined: `progs/doomedit/doomedit.c:480`
+- Doc: int nr = cr + dirs[k][0], nc = cc + dirs[k][1]; if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w) continue; if (seen
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### dmap_stats (function) `static void dmap_stats(char *out, int max)`
+- Defined: `progs/doomedit/doomedit.c:522`
+- Doc: if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w) continue; if (dist[nr][nc] >= 0 || !dmap_walkable(dmap_grid[nr][nc
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
 ### dmap_spawn (function) `static long dmap_spawn(const char *path, int argc, const char **argv)`
-- Defined: `progs/doomedit/doomedit.c:250`
-- Doc: static float dmap_py = 2.5f; static char dmap_status[DMAP_STATUS_MAX]; static int dmap_quit = 0; static int dmap_ctrl_he
+- Defined: `progs/doomedit/doomedit.c:550`
+- Doc: } path = dmap_path_len(); if (dmap_validate(msg, sizeof(msg)) == 0) snprintf(out, (size_t)max, "%dx%d %d sect path %d mo
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_vga (function) `static long dmap_vga(int on)`
-- Defined: `progs/doomedit/doomedit.c:261`
+- Defined: `progs/doomedit/doomedit.c:561`
 - Doc: static int dmap_validate(char *msg, int max); /** Run a program through SYS_SPAWN, preserving the editor. static long dm
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_is_wall (function) `static int dmap_is_wall(int row, int col)`
-- Defined: `progs/doomedit/doomedit.c:270`
+- Defined: `progs/doomedit/doomedit.c:570`
 - Doc: : "rcx", "r11", "memory"); return ret; } /** Release or reclaim the display around a spawned child. static long dmap_vga
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_walkable (function) `static int dmap_walkable(int cell)`
-- Defined: `progs/doomedit/doomedit.c:277`
+- Defined: `progs/doomedit/doomedit.c:577`
 - Doc: __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_VGA_MODE), "D"((long)on) : "rcx", "r11", "memory"); return ret; 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_cell_class (function) `static int dmap_cell_class(int cell)`
-- Defined: `progs/doomedit/doomedit.c:283`
+- Defined: `progs/doomedit/doomedit.c:583`
 - Doc: /** True for solid cells; out of bounds counts as wall to stay closed. static int dmap_is_wall(int row, int col) { if (r
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_cell_color (function) `static struct nk_color dmap_cell_color(int cell)`
-- Defined: `progs/doomedit/doomedit.c:294`
+- Defined: `progs/doomedit/doomedit.c:594`
 - Doc: } /** Sector class of a walkable cell: doors stand alone, styles never merge. static int dmap_cell_class(int cell) { if 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_new (function) `static void dmap_new(void)`
-- Defined: `progs/doomedit/doomedit.c:339`
+- Defined: `progs/doomedit/doomedit.c:639`
 - Doc: case DMAP_RSUIT: case DMAP_CMAP: case DMAP_LAMP: return nk_rgb(200, 90, 200); case DMAP_KEYB: case DMAP_KEYR: case DMAP_
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_recenter (function) `static void dmap_recenter(void)`
-- Defined: `progs/doomedit/doomedit.c:502`
+- Defined: `progs/doomedit/doomedit.c:804`
 - Doc: "########################", "#P.....####............#", "#..i...+......,,,,,....#", "#......####...,,,,,...E#", "#..m...
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_load_preset (function) `static int dmap_load_preset(int idx)`
-- Defined: `progs/doomedit/doomedit.c:514`
+- Defined: `progs/doomedit/doomedit.c:816`
 - Doc: /** Move the preview camera onto the player start tile. static void dmap_recenter(void) { int r, c; for (r = 0; r < dmap
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_rand (function) `static unsigned dmap_rand(void)`
-- Defined: `progs/doomedit/doomedit.c:544`
-- Doc: for (k = 0; k < dmap_w; k++) { int ch = dmap_levels[idx][row][k]; if (!dmap_walkable(ch) && ch != DMAP_WALL) return -1; 
+- Defined: `progs/doomedit/doomedit.c:849`
+- Doc: int ch = dmap_levels[idx][row][k]; if (!dmap_walkable(ch) && ch != DMAP_WALL) return -1; dmap_grid[row][k] = (char)ch; }
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_free_cell (function) `static int dmap_free_cell(int *r, int *c)`
-- Defined: `progs/doomedit/doomedit.c:552`
+- Defined: `progs/doomedit/doomedit.c:857`
 - Doc: dmap_level_sel = idx + 1; snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]); return 0; } /*
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_random_map (function) `static void dmap_random_map(unsigned seed)`
-- Defined: `progs/doomedit/doomedit.c:566`
+- Defined: `progs/doomedit/doomedit.c:871`
 - Doc: Procedural map of connected rooms: several non-overlapping rect rooms carved out of solid rock, joined in sequence by L 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_load (function) `static int dmap_load(const char *path)`
-- Defined: `progs/doomedit/doomedit.c:761`
+- Defined: `progs/doomedit/doomedit.c:1077`
 - Doc: } if (dmap_validate(msg, sizeof(msg)) == 0) { dmap_recenter(); snprintf(dmap_status, sizeof(dmap_status), "random %dx%d 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_save_txt (function) `static int dmap_save_txt(const char *path)`
-- Defined: `progs/doomedit/doomedit.c:805`
-- Doc: if (col != 0) { if (row == 0) dmap_w = col; if (col != dmap_w) return -1; row++; } if (row < 3) return -1; dmap_h = row;
+- Defined: `progs/doomedit/doomedit.c:1129`
+- Doc: if (row < 3 || w < 3 || w > DMAP_MAX_W) return -1; dmap_push_history(); dmap_anchor_active = 0; dmap_w = w; dmap_h = row
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_label_regions (function) `static int dmap_label_regions(void)`
-- Defined: `progs/doomedit/doomedit.c:840`
-- Doc: floor areas (doors stand alone, dark and nukage never merge); every region becomes one sector, so light, heights and fla
+- Defined: `progs/doomedit/doomedit.c:1163`
+- Doc: Sector table backing the multi-sector exporter. Regions are same-class floor areas (doors stand alone, dark and nukage n
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_validate (function) `static int dmap_validate(char *msg, int max)`
-- Defined: `progs/doomedit/doomedit.c:921`
+- Defined: `progs/doomedit/doomedit.c:1244`
 - Doc: dmap_sec_floor[nsec] = DMAP_FLOOR_H; dmap_sec_ceil[nsec] = DMAP_CEIL_H; dmap_sec_flat[nsec] = DMAP_FLOOR_FLAT; dmap_sec_
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_w8 (function) `static void dmap_w8(unsigned v)`
-- Defined: `progs/doomedit/doomedit.c:994`
+- Defined: `progs/doomedit/doomedit.c:1317`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_w16 (function) `static void dmap_w16(int v)`
-- Defined: `progs/doomedit/doomedit.c:995`
+- Defined: `progs/doomedit/doomedit.c:1318`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_w32 (function) `static void dmap_w32(int v)`
-- Defined: `progs/doomedit/doomedit.c:999`
+- Defined: `progs/doomedit/doomedit.c:1322`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_wtex (function) `static void dmap_wtex(const char *name)`
-- Defined: `progs/doomedit/doomedit.c:1003`
+- Defined: `progs/doomedit/doomedit.c:1326`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_seg_angle (function) `static int dmap_seg_angle(int dx, int dy)`
-- Defined: `progs/doomedit/doomedit.c:1010`
+- Defined: `progs/doomedit/doomedit.c:1333`
 - Doc: dmap_wp++ = (unsigned char)(v & 0xFF); dmap_wp++ = (unsigned char)((v >> 8) & 0xFF); } static void dmap_w32(int v) { dma
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_build_wad (function) `static int dmap_build_wad(int *size_out)`
-- Defined: `progs/doomedit/doomedit.c:1020`
+- Defined: `progs/doomedit/doomedit.c:1343`
 - Doc: Compile the grid into a vanilla multi-sector E1M1 PWAD image. Every region and door block is its own sector; all segs sh
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_export_wad (function) `static int dmap_export_wad(const char *path)`
-- Defined: `progs/doomedit/doomedit.c:1337`
+- Defined: `progs/doomedit/doomedit.c:1660`
 - Doc: dmap_wp = dmap_wad; dmap_w8('P'); dmap_w8('W'); dmap_w8('A'); dmap_w8('D'); dmap_w32(11); dmap_w32(table_off); size_out 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_check_wad (function) `static int dmap_check_wad(const char *path)`
-- Defined: `progs/doomedit/doomedit.c:1352`
+- Defined: `progs/doomedit/doomedit.c:1675`
 - Doc: int size = 0; FILE *fp; size_t wrote; if (dmap_build_wad(&size) != 0) return -1; fp = fopen(path, "wb"); if (!fp) return
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_preview (function) `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)`
-- Defined: `progs/doomedit/doomedit.c:1370`
+- Defined: `progs/doomedit/doomedit.c:1693`
 - Doc: if (!fp) return -1; if (fread(head, 1, 12, fp) != 12) { fclose(fp); return -1; } fclose(fp); magic_ok = head[0] == 'P' &
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_brush_combo (function) `static void dmap_brush_combo(struct nk_context *ctx)`
-- Defined: `progs/doomedit/doomedit.c:1437`
+- Defined: `progs/doomedit/doomedit.c:1760`
 - Doc: dist = 0.05f; line_h = (int)(area.h / dist); if (line_h > (int)area.h) line_h = (int)area.h; y0 = (int)(area.y + (area.h
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_canvas (function) `static void dmap_canvas(struct nk_context *ctx)`
-- Defined: `progs/doomedit/doomedit.c:1448`
-- Doc: Paintable tile canvas with per-category colors. The caller owns the * layout row and column: this only claims the widget
+- Defined: `progs/doomedit/doomedit.c:1773`
+- Doc: Paintable tile canvas with per-category colors. The caller owns the layout row and column: this only claims the widget, 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_preview_row (function) `static void dmap_preview_row(struct nk_context *ctx)`
-- Defined: `progs/doomedit/doomedit.c:1492`
-- Doc: if (dmap_grid[rr][cc] == dmap_brush) dmap_grid[rr][cc] = DMAP_FLOOR; } dmap_grid[r][c] = (char)dmap_brush; dmap_level_se
+- Defined: `progs/doomedit/doomedit.c:1863`
+- Doc: dmap_draw_rect(dmap_anchor_r, dmap_anchor_c, r, c, dmap_brush); dmap_anchor_active = 0; dmap_level_sel = 0; } } else { d
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_run_map (function) `static void dmap_run_map(void)`
-- Defined: `progs/doomedit/doomedit.c:1527`
+- Defined: `progs/doomedit/doomedit.c:1898`
 - Doc: } if (nk_button_label(ctx, "Reset")) { int r, c; for (r = 0; r < dmap_h; r++) for (c = 0; c < dmap_w; c++) if (dmap_grid
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_scancode (function) `static void dmap_scancode(int code, int make, int e0, void *ud)`
-- Defined: `progs/doomedit/doomedit.c:1630`
-- Doc: nk_layout_row_push(ctx, 90); if (nk_button_label(ctx, "Random")) dmap_random_map((unsigned)nk_sys_time_ms() + 1u); nk_la
+- Defined: `progs/doomedit/doomedit.c:2037`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_gui_run (function) `static void dmap_gui_run(void)`
-- Defined: `progs/doomedit/doomedit.c:1643`
-- Doc: /** Ctrl+R scancode hook: the Run gesture must work with focus in canvas. static void dmap_scancode(int code, int make, 
+- Defined: `progs/doomedit/doomedit.c:2056`
+- Doc: dmap_ctrl_held = make; return; } if (!make || !dmap_ctrl_held) return; if (code == 0x13) dmap_run_requested = 1; else if
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_demo_room (function) `static void dmap_demo_room(void)`
-- Defined: `progs/doomedit/doomedit.c:1689`
+- Defined: `progs/doomedit/doomedit.c:2110`
 - Doc: nk_set_window_origin(origin[0], origin[1]); nk_clear(&ctx); { unsigned t0 = (unsigned)nk_sys_time_ms(); while ((unsigned
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_selftest (function) `static int dmap_selftest(void)`
-- Defined: `progs/doomedit/doomedit.c:1701`
+- Defined: `progs/doomedit/doomedit.c:2122`
 - Doc: /** Headless demo room shared by --demo and the selftest build check. static void dmap_demo_room(void) { dmap_w = 9; dma
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/doomedit/doomedit.c:1782`
+- Defined: `progs/doomedit/doomedit.c:2237`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### memcpy (function) `memcpy(dmap_undo_g[i], dmap_undo_g[i + 1], sizeof(dmap_undo_g[i]));`
+- Defined: `progs/doomedit/doomedit.c:278`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### snprintf (function) `else snprintf(out, (size_t)max, "%dx%d floor %d path - mon %d: %s", dmap_w, dmap_h, floors, monsters, msg);`
+- Defined: `progs/doomedit/doomedit.c:541`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_SPAWN), "D"(path), "S"((long)0), "d"((long)argc), "r"(r10) : "rcx", "r11", "memory");`
-- Defined: `progs/doomedit/doomedit.c:253`
+- Defined: `progs/doomedit/doomedit.c:553`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_rgb (function) `case DMAP_WALL: return nk_rgb(150, 110, 70);`
-- Defined: `progs/doomedit/doomedit.c:296`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
-
-### snprintf (function) `snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]);`
-- Defined: `progs/doomedit/doomedit.c:539`
+- Defined: `progs/doomedit/doomedit.c:596`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### fclose (function) `fclose(fp);`
-- Defined: `progs/doomedit/doomedit.c:773`
+- Defined: `progs/doomedit/doomedit.c:1090`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### areas (function) `* floor areas (doors stand alone, dark and nukage never merge);`
-- Defined: `progs/doomedit/doomedit.c:826`
+- Defined: `progs/doomedit/doomedit.c:1150`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_fill_rect (function) `nk_fill_rect(canvas, top, 0.0f, nk_rgb(24, 24, 40));`
-- Defined: `progs/doomedit/doomedit.c:1377`
+- Defined: `progs/doomedit/doomedit.c:1700`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_dynamic (function) `nk_layout_row_dynamic(ctx, 22, 1);`
-- Defined: `progs/doomedit/doomedit.c:1439`
+- Defined: `progs/doomedit/doomedit.c:1762`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_combobox (function) `nk_combobox(ctx, dmap_brush_labels, DMAP_BRUSH_COUNT, &dmap_brush_sel, 20, nk_vec2(280, 260));`
-- Defined: `progs/doomedit/doomedit.c:1440`
+- Defined: `progs/doomedit/doomedit.c:1763`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_stroke_rect (function) `nk_stroke_rect(canvas, nk_rect(total.x + 4.0f + (float)(col * DMAP_CELL_PX), total.y + 4.0f + (float)(row * DMAP_CELL_PX), (float)(DMAP_CELL_PX - 1), (float)(DMAP_CELL_PX - 1)), 0.0f, 1.0f, nk_rgb(255`
+- Defined: `progs/doomedit/doomedit.c:1798`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### nk_stroke_line (function) `nk_stroke_line(canvas, total.x + 4.0f, y, total.x + 4.0f + (float)(dmap_w * DMAP_CELL_PX), y, 1.0f, line);`
+- Defined: `progs/doomedit/doomedit.c:1810`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_static (function) `nk_layout_row_static(ctx, (float)(DMAP_PREV_H + 8), DMAP_PREV_W + 8, 1);`
-- Defined: `progs/doomedit/doomedit.c:1495`
+- Defined: `progs/doomedit/doomedit.c:1866`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_kbd_raw (function) `nk_sys_kbd_raw(0);`
-- Defined: `progs/doomedit/doomedit.c:1541`
+- Defined: `progs/doomedit/doomedit.c:1912`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_gfx_set_title (function) `nk_sys_gfx_set_title(DMAP_TITLE);`
-- Defined: `progs/doomedit/doomedit.c:1549`
+- Defined: `progs/doomedit/doomedit.c:1920`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_end (function) `nk_end(ctx);`
-- Defined: `progs/doomedit/doomedit.c:1563`
+- Defined: `progs/doomedit/doomedit.c:1934`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_label (function) `nk_label(ctx, line, NK_TEXT_LEFT);`
-- Defined: `progs/doomedit/doomedit.c:1583`
+- Defined: `progs/doomedit/doomedit.c:1981`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_begin (function) `nk_layout_row_begin(ctx, NK_STATIC, row_h, 2);`
-- Defined: `progs/doomedit/doomedit.c:1585`
+- Defined: `progs/doomedit/doomedit.c:1983`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_push (function) `nk_layout_row_push(ctx, (float)DMAP_CANVAS_W);`
-- Defined: `progs/doomedit/doomedit.c:1586`
+- Defined: `progs/doomedit/doomedit.c:1984`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_layout_row_end (function) `nk_layout_row_end(ctx);`
-- Defined: `progs/doomedit/doomedit.c:1619`
+- Defined: `progs/doomedit/doomedit.c:2017`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_group_end (function) `nk_group_end(ctx);`
-- Defined: `progs/doomedit/doomedit.c:1622`
+- Defined: `progs/doomedit/doomedit.c:2026`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_vga_mode (function) `nk_sys_vga_mode(1);`
-- Defined: `progs/doomedit/doomedit.c:1648`
+- Defined: `progs/doomedit/doomedit.c:2061`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_build_palette (function) `nk_build_palette(pal768);`
-- Defined: `progs/doomedit/doomedit.c:1651`
+- Defined: `progs/doomedit/doomedit.c:2064`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_palette (function) `nk_sys_palette(pal768);`
-- Defined: `progs/doomedit/doomedit.c:1652`
+- Defined: `progs/doomedit/doomedit.c:2065`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### printf (function) `printf("doomedit: init failed\n");`
-- Defined: `progs/doomedit/doomedit.c:1654`
+- Defined: `progs/doomedit/doomedit.c:2067`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_theme_apply (function) `nk_theme_apply(&ctx, 0);`
-- Defined: `progs/doomedit/doomedit.c:1659`
+- Defined: `progs/doomedit/doomedit.c:2072`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_set_scancode_hook (function) `nk_set_scancode_hook(dmap_scancode, 0);`
-- Defined: `progs/doomedit/doomedit.c:1661`
+- Defined: `progs/doomedit/doomedit.c:2074`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_input_begin (function) `nk_input_begin(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1663`
+- Defined: `progs/doomedit/doomedit.c:2076`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_poll_input (function) `nk_poll_input(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1664`
+- Defined: `progs/doomedit/doomedit.c:2077`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_input_end (function) `nk_input_end(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1665`
+- Defined: `progs/doomedit/doomedit.c:2078`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### dmap_build (function) `dmap_build(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1672`
+- Defined: `progs/doomedit/doomedit.c:2093`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_rasterize (function) `nk_rasterize(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1673`
+- Defined: `progs/doomedit/doomedit.c:2094`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_clear (function) `nk_clear(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1676`
+- Defined: `progs/doomedit/doomedit.c:2097`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_free (function) `nk_free(&ctx);`
-- Defined: `progs/doomedit/doomedit.c:1683`
+- Defined: `progs/doomedit/doomedit.c:2104`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### nk_sys_fb_info (function) `nk_sys_fb_info(&fw, &fh, &fp);`
-- Defined: `progs/doomedit/doomedit.c:1729`
+- Defined: `progs/doomedit/doomedit.c:2150`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/doomgeneric/am_map.c

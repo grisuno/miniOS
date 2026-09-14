@@ -5,72 +5,85 @@
 - Doc: doomedit.c - tile map editor that builds playable Doom PWADs.
 - Language: c
 - Symbols:
-  - `dmap_thing_type` (function, line 160) `static int dmap_thing_type(int cell)`
-  - `dmap_spawn` (function, line 250) `static long dmap_spawn(const char *path, int argc, const char **argv)`
-  - `dmap_vga` (function, line 261) `static long dmap_vga(int on)`
-  - `dmap_is_wall` (function, line 270) `static int dmap_is_wall(int row, int col)`
-  - `dmap_walkable` (function, line 277) `static int dmap_walkable(int cell)`
-  - `dmap_cell_class` (function, line 283) `static int dmap_cell_class(int cell)`
-  - `dmap_cell_color` (function, line 294) `static struct nk_color dmap_cell_color(int cell)`
-  - `dmap_new` (function, line 339) `static void dmap_new(void)`
-  - `dmap_recenter` (function, line 502) `static void dmap_recenter(void)`
-  - `dmap_load_preset` (function, line 514) `static int dmap_load_preset(int idx)`
-  - `dmap_rand` (function, line 544) `static unsigned dmap_rand(void)`
-  - `dmap_free_cell` (function, line 552) `static int dmap_free_cell(int *r, int *c)`
-  - `dmap_random_map` (function, line 566) `static void dmap_random_map(unsigned seed)`
-  - `dmap_load` (function, line 761) `static int dmap_load(const char *path)`
-  - `dmap_save_txt` (function, line 805) `static int dmap_save_txt(const char *path)`
-  - `dmap_label_regions` (function, line 840) `static int dmap_label_regions(void)`
-  - `dmap_validate` (function, line 921) `static int dmap_validate(char *msg, int max)`
-  - `dmap_w8` (function, line 994) `static void dmap_w8(unsigned v)`
-  - `dmap_w16` (function, line 995) `static void dmap_w16(int v)`
-  - `dmap_w32` (function, line 999) `static void dmap_w32(int v)`
-  - `dmap_wtex` (function, line 1003) `static void dmap_wtex(const char *name)`
-  - `dmap_seg_angle` (function, line 1010) `static int dmap_seg_angle(int dx, int dy)`
-  - `dmap_build_wad` (function, line 1020) `static int dmap_build_wad(int *size_out)`
-  - `dmap_export_wad` (function, line 1337) `static int dmap_export_wad(const char *path)`
-  - `dmap_check_wad` (function, line 1352) `static int dmap_check_wad(const char *path)`
-  - `dmap_preview` (function, line 1370) `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)`
-  - `dmap_brush_combo` (function, line 1437) `static void dmap_brush_combo(struct nk_context *ctx)`
-  - `dmap_canvas` (function, line 1448) `static void dmap_canvas(struct nk_context *ctx)`
-  - `dmap_preview_row` (function, line 1492) `static void dmap_preview_row(struct nk_context *ctx)`
-  - `dmap_run_map` (function, line 1527) `static void dmap_run_map(void)`
-  - `dmap_scancode` (function, line 1630) `static void dmap_scancode(int code, int make, int e0, void *ud)`
-  - `dmap_gui_run` (function, line 1643) `static void dmap_gui_run(void)`
-  - `dmap_demo_room` (function, line 1689) `static void dmap_demo_room(void)`
-  - `dmap_selftest` (function, line 1701) `static int dmap_selftest(void)`
-  - `main` (function, line 1782) `int main(int argc, char **argv)`
-  - `volatile` (function, line 253) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_SPAWN), "D"(path), "S"((long)0), "d"((long)argc), "r"(r10) : "rcx", "r11", "memory");`
-  - `nk_rgb` (function, line 296) `case DMAP_WALL: return nk_rgb(150, 110, 70);`
-  - `snprintf` (function, line 539) `snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]);`
-  - `fclose` (function, line 773) `fclose(fp);`
-  - `areas` (function, line 826) `* floor areas (doors stand alone, dark and nukage never merge);`
-  - `nk_fill_rect` (function, line 1377) `nk_fill_rect(canvas, top, 0.0f, nk_rgb(24, 24, 40));`
-  - `nk_layout_row_dynamic` (function, line 1439) `nk_layout_row_dynamic(ctx, 22, 1);`
-  - `nk_combobox` (function, line 1440) `nk_combobox(ctx, dmap_brush_labels, DMAP_BRUSH_COUNT, &dmap_brush_sel, 20, nk_vec2(280, 260));`
-  - `nk_layout_row_static` (function, line 1495) `nk_layout_row_static(ctx, (float)(DMAP_PREV_H + 8), DMAP_PREV_W + 8, 1);`
-  - `nk_sys_kbd_raw` (function, line 1541) `nk_sys_kbd_raw(0);`
-  - `nk_sys_gfx_set_title` (function, line 1549) `nk_sys_gfx_set_title(DMAP_TITLE);`
-  - `nk_end` (function, line 1563) `nk_end(ctx);`
-  - `nk_label` (function, line 1583) `nk_label(ctx, line, NK_TEXT_LEFT);`
-  - `nk_layout_row_begin` (function, line 1585) `nk_layout_row_begin(ctx, NK_STATIC, row_h, 2);`
-  - `nk_layout_row_push` (function, line 1586) `nk_layout_row_push(ctx, (float)DMAP_CANVAS_W);`
-  - `nk_layout_row_end` (function, line 1619) `nk_layout_row_end(ctx);`
-  - `nk_group_end` (function, line 1622) `nk_group_end(ctx);`
-  - `nk_sys_vga_mode` (function, line 1648) `nk_sys_vga_mode(1);`
-  - `nk_build_palette` (function, line 1651) `nk_build_palette(pal768);`
-  - `nk_sys_palette` (function, line 1652) `nk_sys_palette(pal768);`
-  - `printf` (function, line 1654) `printf("doomedit: init failed\n");`
-  - `nk_theme_apply` (function, line 1659) `nk_theme_apply(&ctx, 0);`
-  - `nk_set_scancode_hook` (function, line 1661) `nk_set_scancode_hook(dmap_scancode, 0);`
-  - `nk_input_begin` (function, line 1663) `nk_input_begin(&ctx);`
-  - `nk_poll_input` (function, line 1664) `nk_poll_input(&ctx);`
-  - `nk_input_end` (function, line 1665) `nk_input_end(&ctx);`
-  - `dmap_build` (function, line 1672) `dmap_build(&ctx);`
-  - `nk_rasterize` (function, line 1673) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 1676) `nk_clear(&ctx);`
-  - `nk_free` (function, line 1683) `nk_free(&ctx);`
-  - `nk_sys_fb_info` (function, line 1729) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `dmap_thing_type` (function, line 165) `static int dmap_thing_type(int cell)`
+  - `dmap_push_history` (function, line 271) `static void dmap_push_history(void)`
+  - `dmap_undo` (function, line 288) `static int dmap_undo(void)`
+  - `dmap_redo` (function, line 306) `static int dmap_redo(void)`
+  - `dmap_apply_cell` (function, line 326) `static void dmap_apply_cell(int r, int c, int brush)`
+  - `dmap_flood_fill` (function, line 344) `static void dmap_flood_fill(int sr, int sc, int new_cell)`
+  - `dmap_draw_line` (function, line 383) `static void dmap_draw_line(int r0, int c0, int r1, int c1, int cell)`
+  - `dmap_draw_rect` (function, line 411) `static void dmap_draw_rect(int r0, int c0, int r1, int c1, int cell)`
+  - `dmap_reach_map` (function, line 440) `static void dmap_reach_map(int seen[DMAP_MAX_H][DMAP_MAX_W])`
+  - `dmap_path_len` (function, line 480) `static int dmap_path_len(void)`
+  - `dmap_stats` (function, line 522) `static void dmap_stats(char *out, int max)`
+  - `dmap_spawn` (function, line 550) `static long dmap_spawn(const char *path, int argc, const char **argv)`
+  - `dmap_vga` (function, line 561) `static long dmap_vga(int on)`
+  - `dmap_is_wall` (function, line 570) `static int dmap_is_wall(int row, int col)`
+  - `dmap_walkable` (function, line 577) `static int dmap_walkable(int cell)`
+  - `dmap_cell_class` (function, line 583) `static int dmap_cell_class(int cell)`
+  - `dmap_cell_color` (function, line 594) `static struct nk_color dmap_cell_color(int cell)`
+  - `dmap_new` (function, line 639) `static void dmap_new(void)`
+  - `dmap_recenter` (function, line 804) `static void dmap_recenter(void)`
+  - `dmap_load_preset` (function, line 816) `static int dmap_load_preset(int idx)`
+  - `dmap_rand` (function, line 849) `static unsigned dmap_rand(void)`
+  - `dmap_free_cell` (function, line 857) `static int dmap_free_cell(int *r, int *c)`
+  - `dmap_random_map` (function, line 871) `static void dmap_random_map(unsigned seed)`
+  - `dmap_load` (function, line 1077) `static int dmap_load(const char *path)`
+  - `dmap_save_txt` (function, line 1129) `static int dmap_save_txt(const char *path)`
+  - `dmap_label_regions` (function, line 1163) `static int dmap_label_regions(void)`
+  - `dmap_validate` (function, line 1244) `static int dmap_validate(char *msg, int max)`
+  - `dmap_w8` (function, line 1317) `static void dmap_w8(unsigned v)`
+  - `dmap_w16` (function, line 1318) `static void dmap_w16(int v)`
+  - `dmap_w32` (function, line 1322) `static void dmap_w32(int v)`
+  - `dmap_wtex` (function, line 1326) `static void dmap_wtex(const char *name)`
+  - `dmap_seg_angle` (function, line 1333) `static int dmap_seg_angle(int dx, int dy)`
+  - `dmap_build_wad` (function, line 1343) `static int dmap_build_wad(int *size_out)`
+  - `dmap_export_wad` (function, line 1660) `static int dmap_export_wad(const char *path)`
+  - `dmap_check_wad` (function, line 1675) `static int dmap_check_wad(const char *path)`
+  - `dmap_preview` (function, line 1693) `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)`
+  - `dmap_brush_combo` (function, line 1760) `static void dmap_brush_combo(struct nk_context *ctx)`
+  - `dmap_canvas` (function, line 1773) `static void dmap_canvas(struct nk_context *ctx)`
+  - `dmap_preview_row` (function, line 1863) `static void dmap_preview_row(struct nk_context *ctx)`
+  - `dmap_run_map` (function, line 1898) `static void dmap_run_map(void)`
+  - `dmap_scancode` (function, line 2037) `static void dmap_scancode(int code, int make, int e0, void *ud)`
+  - `dmap_gui_run` (function, line 2056) `static void dmap_gui_run(void)`
+  - `dmap_demo_room` (function, line 2110) `static void dmap_demo_room(void)`
+  - `dmap_selftest` (function, line 2122) `static int dmap_selftest(void)`
+  - `main` (function, line 2237) `int main(int argc, char **argv)`
+  - `memcpy` (function, line 278) `memcpy(dmap_undo_g[i], dmap_undo_g[i + 1], sizeof(dmap_undo_g[i]));`
+  - `snprintf` (function, line 541) `else snprintf(out, (size_t)max, "%dx%d floor %d path - mon %d: %s", dmap_w, dmap_h, floors, monsters, msg);`
+  - `volatile` (function, line 553) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_SPAWN), "D"(path), "S"((long)0), "d"((long)argc), "r"(r10) : "rcx", "r11", "memory");`
+  - `nk_rgb` (function, line 596) `case DMAP_WALL: return nk_rgb(150, 110, 70);`
+  - `fclose` (function, line 1090) `fclose(fp);`
+  - `areas` (function, line 1150) `* floor areas (doors stand alone, dark and nukage never merge);`
+  - `nk_fill_rect` (function, line 1700) `nk_fill_rect(canvas, top, 0.0f, nk_rgb(24, 24, 40));`
+  - `nk_layout_row_dynamic` (function, line 1762) `nk_layout_row_dynamic(ctx, 22, 1);`
+  - `nk_combobox` (function, line 1763) `nk_combobox(ctx, dmap_brush_labels, DMAP_BRUSH_COUNT, &dmap_brush_sel, 20, nk_vec2(280, 260));`
+  - `nk_stroke_rect` (function, line 1798) `nk_stroke_rect(canvas, nk_rect(total.x + 4.0f + (float)(col * DMAP_CELL_PX), total.y + 4.0f + (float)(row * DMAP_CELL_PX), (float)(DMAP_CELL_PX - 1), (float)(DMAP_CELL_PX - 1)), 0.0f, 1.0f, nk_rgb(255`
+  - `nk_stroke_line` (function, line 1810) `nk_stroke_line(canvas, total.x + 4.0f, y, total.x + 4.0f + (float)(dmap_w * DMAP_CELL_PX), y, 1.0f, line);`
+  - `nk_layout_row_static` (function, line 1866) `nk_layout_row_static(ctx, (float)(DMAP_PREV_H + 8), DMAP_PREV_W + 8, 1);`
+  - `nk_sys_kbd_raw` (function, line 1912) `nk_sys_kbd_raw(0);`
+  - `nk_sys_gfx_set_title` (function, line 1920) `nk_sys_gfx_set_title(DMAP_TITLE);`
+  - `nk_end` (function, line 1934) `nk_end(ctx);`
+  - `nk_label` (function, line 1981) `nk_label(ctx, line, NK_TEXT_LEFT);`
+  - `nk_layout_row_begin` (function, line 1983) `nk_layout_row_begin(ctx, NK_STATIC, row_h, 2);`
+  - `nk_layout_row_push` (function, line 1984) `nk_layout_row_push(ctx, (float)DMAP_CANVAS_W);`
+  - `nk_layout_row_end` (function, line 2017) `nk_layout_row_end(ctx);`
+  - `nk_group_end` (function, line 2026) `nk_group_end(ctx);`
+  - `nk_sys_vga_mode` (function, line 2061) `nk_sys_vga_mode(1);`
+  - `nk_build_palette` (function, line 2064) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 2065) `nk_sys_palette(pal768);`
+  - `printf` (function, line 2067) `printf("doomedit: init failed\n");`
+  - `nk_theme_apply` (function, line 2072) `nk_theme_apply(&ctx, 0);`
+  - `nk_set_scancode_hook` (function, line 2074) `nk_set_scancode_hook(dmap_scancode, 0);`
+  - `nk_input_begin` (function, line 2076) `nk_input_begin(&ctx);`
+  - `nk_poll_input` (function, line 2077) `nk_poll_input(&ctx);`
+  - `nk_input_end` (function, line 2078) `nk_input_end(&ctx);`
+  - `dmap_build` (function, line 2093) `dmap_build(&ctx);`
+  - `nk_rasterize` (function, line 2094) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 2097) `nk_clear(&ctx);`
+  - `nk_free` (function, line 2104) `nk_free(&ctx);`
+  - `nk_sys_fb_info` (function, line 2150) `nk_sys_fb_info(&fw, &fh, &fp);`
   - `DMAP_MAX_W` (macro, line 55) `#define DMAP_MAX_W`
   - `DMAP_MAX_H` (macro, line 56) `#define DMAP_MAX_H`
   - `DMAP_DEF_W` (macro, line 57) `#define DMAP_DEF_W`
@@ -127,7 +140,12 @@
   - `DMAP_SAVE_TXT` (macro, line 108) `#define DMAP_SAVE_TXT`
   - `DMAP_SAVE_WAD` (macro, line 109) `#define DMAP_SAVE_WAD`
   - `DMAP_TITLE` (macro, line 110) `#define DMAP_TITLE`
-  - `DMAP_BRUSH_COUNT` (macro, line 225) `#define DMAP_BRUSH_COUNT`
+  - `DMAP_HISTORY` (macro, line 111) `#define DMAP_HISTORY`
+  - `DMAP_TOOL_PAINT` (macro, line 112) `#define DMAP_TOOL_PAINT`
+  - `DMAP_TOOL_LINE` (macro, line 113) `#define DMAP_TOOL_LINE`
+  - `DMAP_TOOL_RECT` (macro, line 114) `#define DMAP_TOOL_RECT`
+  - `DMAP_TOOL_FILL` (macro, line 115) `#define DMAP_TOOL_FILL`
+  - `DMAP_BRUSH_COUNT` (macro, line 230) `#define DMAP_BRUSH_COUNT`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/file/file.c

@@ -114,7 +114,7 @@
 | `progs/asm/lz4.s` | - | asm | 7 |
 | `progs/asm/lzss.s` | - | asm | 30 |
 | `progs/asm/w1.s` | - | asm | 2 |
-| `progs/doomedit/doomedit.c` | doomedit.c - tile map editor that builds playable Doom PWADs. | misc | 123 |
+| `progs/doomedit/doomedit.c` | doomedit.c - tile map editor that builds playable Doom PWADs. | misc | 141 |
 | `progs/doomgeneric/am_map.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 97 |
 | `progs/doomgeneric/am_map.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 9 |
 | `progs/doomgeneric/config.h` | config.hin.  Generated from configure.ac by autoheader. | doomgeneric | 16 |

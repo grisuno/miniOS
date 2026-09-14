@@ -108,6 +108,11 @@
 #define DMAP_SAVE_TXT "/saves/dmap%d.txt"
 #define DMAP_SAVE_WAD "/saves/dmap%d.wad"
 #define DMAP_TITLE "DoomEdit"
+#define DMAP_HISTORY 16
+#define DMAP_TOOL_PAINT 0
+#define DMAP_TOOL_LINE 1
+#define DMAP_TOOL_RECT 2
+#define DMAP_TOOL_FILL 3
 
 /** Brush kinds double as grid cell values on disk. Only things whose
  * sprites ship in the shareware IWAD get a letter; the rest would fault
@@ -242,6 +247,301 @@ static int dmap_level_sel = 0;
 static unsigned dmap_rng = 0x12345678u;
 static char dmap_ui_memory[DMAP_UI_MEMORY];
 static unsigned char dmap_wad[DMAP_WAD_MAX];
+static int dmap_tool = DMAP_TOOL_PAINT;
+static int dmap_anchor_active = 0;
+static int dmap_anchor_r = 0;
+static int dmap_anchor_c = 0;
+static int dmap_show_grid = 1;
+static int dmap_show_unreach = 0;
+static int dmap_walkable(int cell);
+static void dmap_recenter(void);
+static int dmap_validate(char *msg, int max);
+static int dmap_nsectors;
+
+/** Undo/redo stacks: whole-grid snapshots, pushed once per gesture so a
+ * line, rect or fill undoes atomically. Any new edit clears redo. */
+static char dmap_undo_g[DMAP_HISTORY][DMAP_MAX_H][DMAP_MAX_W];
+static int dmap_undo_w[DMAP_HISTORY];
+static int dmap_undo_h[DMAP_HISTORY];
+static int dmap_undo_top = 0;
+static char dmap_redo_g[DMAP_HISTORY][DMAP_MAX_H][DMAP_MAX_W];
+static int dmap_redo_w[DMAP_HISTORY];
+static int dmap_redo_h[DMAP_HISTORY];
+static int dmap_redo_top = 0;
+
+static void dmap_push_history(void) {
+    int i;
+    if (dmap_undo_top >= DMAP_HISTORY) {
+        for (i = 0; i < DMAP_HISTORY - 1; i++) {
+            dmap_undo_w[i] = dmap_undo_w[i + 1];
+            dmap_undo_h[i] = dmap_undo_h[i + 1];
+            memcpy(dmap_undo_g[i], dmap_undo_g[i + 1], sizeof(dmap_undo_g[i]));
+        }
+        dmap_undo_top = DMAP_HISTORY - 1;
+    }
+    dmap_undo_w[dmap_undo_top] = dmap_w;
+    dmap_undo_h[dmap_undo_top] = dmap_h;
+    memcpy(dmap_undo_g[dmap_undo_top], dmap_grid, sizeof(dmap_grid));
+    dmap_undo_top++;
+    dmap_redo_top = 0;
+}
+
+static int dmap_undo(void) {
+    if (dmap_undo_top <= 0)
+        return -1;
+    if (dmap_redo_top < DMAP_HISTORY) {
+        dmap_redo_w[dmap_redo_top] = dmap_w;
+        dmap_redo_h[dmap_redo_top] = dmap_h;
+        memcpy(dmap_redo_g[dmap_redo_top], dmap_grid, sizeof(dmap_grid));
+        dmap_redo_top++;
+    }
+    dmap_undo_top--;
+    dmap_w = dmap_undo_w[dmap_undo_top];
+    dmap_h = dmap_undo_h[dmap_undo_top];
+    memcpy(dmap_grid, dmap_undo_g[dmap_undo_top], sizeof(dmap_grid));
+    dmap_anchor_active = 0;
+    dmap_recenter();
+    return 0;
+}
+
+static int dmap_redo(void) {
+    if (dmap_redo_top <= 0)
+        return -1;
+    if (dmap_undo_top < DMAP_HISTORY) {
+        dmap_undo_w[dmap_undo_top] = dmap_w;
+        dmap_undo_h[dmap_undo_top] = dmap_h;
+        memcpy(dmap_undo_g[dmap_undo_top], dmap_grid, sizeof(dmap_grid));
+        dmap_undo_top++;
+    }
+    dmap_redo_top--;
+    dmap_w = dmap_redo_w[dmap_redo_top];
+    dmap_h = dmap_redo_h[dmap_redo_top];
+    memcpy(dmap_grid, dmap_redo_g[dmap_redo_top], sizeof(dmap_grid));
+    dmap_anchor_active = 0;
+    dmap_recenter();
+    return 0;
+}
+
+/** Single-cell paint keeping the one-player / one-exit invariant. */
+static void dmap_apply_cell(int r, int c, int brush) {
+    int rr, cc;
+    if (r < 0 || c < 0 || r >= dmap_h || c >= dmap_w)
+        return;
+    if (brush == DMAP_PLAYER || brush == DMAP_EXIT) {
+        for (rr = 0; rr < dmap_h; rr++)
+            for (cc = 0; cc < dmap_w; cc++)
+                if (dmap_grid[rr][cc] == brush)
+                    dmap_grid[rr][cc] = DMAP_FLOOR;
+    }
+    dmap_grid[r][c] = (char)brush;
+    if (brush == DMAP_PLAYER) {
+        dmap_px = (float)c + 0.5f;
+        dmap_py = (float)r + 0.5f;
+    }
+}
+
+/** 4-way flood fill of the connected region holding old_cell. */
+static void dmap_flood_fill(int sr, int sc, int new_cell) {
+    static int stack_r[DMAP_MAX_W * DMAP_MAX_H];
+    static int stack_c[DMAP_MAX_W * DMAP_MAX_H];
+    static const int dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    int old_cell, top = 0, k;
+    if (sr < 0 || sc < 0 || sr >= dmap_h || sc >= dmap_w)
+        return;
+    old_cell = dmap_grid[sr][sc];
+    if (old_cell == new_cell)
+        return;
+    if (new_cell == DMAP_PLAYER || new_cell == DMAP_EXIT)
+        return;
+    if (old_cell == DMAP_PLAYER || old_cell == DMAP_EXIT)
+        return;
+    stack_r[top] = sr;
+    stack_c[top] = sc;
+    top++;
+    dmap_grid[sr][sc] = (char)new_cell;
+    while (top > 0) {
+        int r, c;
+        top--;
+        r = stack_r[top];
+        c = stack_c[top];
+        for (k = 0; k < 4; k++) {
+            int nr = r + dirs[k][0], nc = c + dirs[k][1];
+            if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w)
+                continue;
+            if (dmap_grid[nr][nc] != old_cell)
+                continue;
+            dmap_grid[nr][nc] = (char)new_cell;
+            stack_r[top] = nr;
+            stack_c[top] = nc;
+            top++;
+        }
+    }
+    dmap_level_sel = 0;
+}
+
+/** Bresenham line of cells, clipped to the grid. */
+static void dmap_draw_line(int r0, int c0, int r1, int c1, int cell) {
+    int dr = r1 > r0 ? r1 - r0 : r0 - r1;
+    int dc = c1 > c0 ? c1 - c0 : c0 - c1;
+    int sr = r0 < r1 ? 1 : -1, sc = c0 < c1 ? 1 : -1;
+    int err = (dr > dc ? dr : -dc) / 2, e2;
+    if (cell == DMAP_PLAYER || cell == DMAP_EXIT)
+        return;
+    for (;;) {
+        if (r0 >= 0 && r0 < dmap_h && c0 >= 0 && c0 < dmap_w) {
+            if (dmap_grid[r0][c0] != DMAP_PLAYER && dmap_grid[r0][c0] != DMAP_EXIT)
+                dmap_grid[r0][c0] = (char)cell;
+        }
+        if (r0 == r1 && c0 == c1)
+            break;
+        e2 = err;
+        if (e2 > -dr) {
+            err -= dc;
+            r0 += sr;
+        }
+        if (e2 < dc) {
+            err += dr;
+            c0 += sc;
+        }
+    }
+    dmap_level_sel = 0;
+}
+
+/** Hollow rectangle border between two corners, clipped to the grid. */
+static void dmap_draw_rect(int r0, int c0, int r1, int c1, int cell) {
+    int r, c, rt = r0 < r1 ? r0 : r1, rb = r0 < r1 ? r1 : r0;
+    int cl = c0 < c1 ? c0 : c1, cr = c0 < c1 ? c1 : c0;
+    if (cell == DMAP_PLAYER || cell == DMAP_EXIT)
+        return;
+    for (c = cl; c <= cr; c++) {
+        if (rt >= 0 && rt < dmap_h && c >= 0 && c < dmap_w) {
+            if (dmap_grid[rt][c] != DMAP_PLAYER && dmap_grid[rt][c] != DMAP_EXIT)
+                dmap_grid[rt][c] = (char)cell;
+        }
+        if (rb >= 0 && rb < dmap_h && c >= 0 && c < dmap_w) {
+            if (dmap_grid[rb][c] != DMAP_PLAYER && dmap_grid[rb][c] != DMAP_EXIT)
+                dmap_grid[rb][c] = (char)cell;
+        }
+    }
+    for (r = rt; r <= rb; r++) {
+        if (r >= 0 && r < dmap_h && cl >= 0 && cl < dmap_w) {
+            if (dmap_grid[r][cl] != DMAP_PLAYER && dmap_grid[r][cl] != DMAP_EXIT)
+                dmap_grid[r][cl] = (char)cell;
+        }
+        if (r >= 0 && r < dmap_h && cr >= 0 && cr < dmap_w) {
+            if (dmap_grid[r][cr] != DMAP_PLAYER && dmap_grid[r][cr] != DMAP_EXIT)
+                dmap_grid[r][cr] = (char)cell;
+        }
+    }
+    dmap_level_sel = 0;
+}
+
+/** BFS reachability from the player start; seen[] is 1 for reachable. */
+static void dmap_reach_map(int seen[DMAP_MAX_H][DMAP_MAX_W]) {
+    static const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    static int stack_r[DMAP_MAX_W * DMAP_MAX_H];
+    static int stack_c[DMAP_MAX_W * DMAP_MAX_H];
+    int r, c, top = 0, sr = -1, sc = -1, k;
+    for (r = 0; r < dmap_h; r++)
+        for (c = 0; c < dmap_w; c++)
+            seen[r][c] = 0;
+    for (r = 0; r < dmap_h; r++)
+        for (c = 0; c < dmap_w; c++)
+            if (dmap_grid[r][c] == DMAP_PLAYER) {
+                sr = r;
+                sc = c;
+            }
+    if (sr < 0)
+        return;
+    seen[sr][sc] = 1;
+    stack_r[top] = sr;
+    stack_c[top] = sc;
+    top++;
+    while (top > 0) {
+        int cr, cc;
+        top--;
+        cr = stack_r[top];
+        cc = stack_c[top];
+        for (k = 0; k < 4; k++) {
+            int nr = cr + dirs[k][0], nc = cc + dirs[k][1];
+            if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w)
+                continue;
+            if (seen[nr][nc] || !dmap_walkable(dmap_grid[nr][nc]))
+                continue;
+            seen[nr][nc] = 1;
+            stack_r[top] = nr;
+            stack_c[top] = nc;
+            top++;
+        }
+    }
+}
+
+/** Shortest walkable distance player -> exit in tiles, -1 when broken. */
+static int dmap_path_len(void) {
+    static const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    static int dist[DMAP_MAX_H][DMAP_MAX_W];
+    static int qr[DMAP_MAX_W * DMAP_MAX_H];
+    static int qc[DMAP_MAX_W * DMAP_MAX_H];
+    int r, c, head = 0, tail = 0, k, sr = -1, sc = -1;
+    for (r = 0; r < dmap_h; r++)
+        for (c = 0; c < dmap_w; c++)
+            dist[r][c] = -1;
+    for (r = 0; r < dmap_h; r++)
+        for (c = 0; c < dmap_w; c++)
+            if (dmap_grid[r][c] == DMAP_PLAYER) {
+                sr = r;
+                sc = c;
+            }
+    if (sr < 0)
+        return -1;
+    dist[sr][sc] = 0;
+    qr[tail] = sr;
+    qc[tail] = sc;
+    tail++;
+    while (head < tail) {
+        int cr = qr[head], cc = qc[head];
+        head++;
+        if (dmap_grid[cr][cc] == DMAP_EXIT)
+            return dist[cr][cc];
+        for (k = 0; k < 4; k++) {
+            int nr = cr + dirs[k][0], nc = cc + dirs[k][1];
+            if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w)
+                continue;
+            if (dist[nr][nc] >= 0 || !dmap_walkable(dmap_grid[nr][nc]))
+                continue;
+            dist[nr][nc] = dist[cr][cc] + 1;
+            qr[tail] = nr;
+            qc[tail] = nc;
+            tail++;
+        }
+    }
+    return -1;
+}
+
+/** Headless stats line for the panel: size, sectors, path, monsters. */
+static void dmap_stats(char *out, int max) {
+    int r, c, monsters = 0, floors = 0, things = 0, path;
+    char msg[DMAP_STATUS_MAX];
+    for (r = 0; r < dmap_h; r++)
+        for (c = 0; c < dmap_w; c++) {
+            int cell = dmap_grid[r][c];
+            if (cell == DMAP_WALL)
+                continue;
+            floors++;
+            if (dmap_thing_type(cell) > 0)
+                things++;
+            if (cell == DMAP_IMP || cell == DMAP_DEMON || cell == DMAP_ZOMBIE ||
+                cell == DMAP_SHOTGUY || cell == DMAP_SPECTRE || cell == DMAP_BARON)
+                monsters++;
+        }
+    path = dmap_path_len();
+    if (dmap_validate(msg, sizeof(msg)) == 0)
+        snprintf(out, (size_t)max, "%dx%d %d sect path %d mon %d things %d",
+            dmap_w, dmap_h, dmap_nsectors, path, monsters, things);
+    else
+        snprintf(out, (size_t)max, "%dx%d floor %d path - mon %d: %s",
+            dmap_w, dmap_h, floors, monsters, msg);
+}
 
 /** Forward: the validator lives below the level tables. */
 static int dmap_validate(char *msg, int max);
@@ -338,6 +638,8 @@ static struct nk_color dmap_cell_color(int cell) {
 /** Fill the grid with floor and a solid border. */
 static void dmap_new(void) {
     int row, col;
+    dmap_push_history();
+    dmap_anchor_active = 0;
     for (row = 0; row < dmap_h; row++)
         for (col = 0; col < dmap_w; col++)
             dmap_grid[row][col] = DMAP_FLOOR;
@@ -515,6 +817,8 @@ static int dmap_load_preset(int idx) {
     int row;
     if (idx < 0 || idx >= DMAP_LEVEL_COUNT)
         return -1;
+    dmap_push_history();
+    dmap_anchor_active = 0;
     dmap_h = 0;
     while (dmap_levels[idx][dmap_h])
         dmap_h++;
@@ -534,6 +838,7 @@ static int dmap_load_preset(int idx) {
             dmap_grid[row][k] = (char)ch;
         }
     }
+    dmap_anchor_active = 0;
     dmap_recenter();
     dmap_level_sel = idx + 1;
     snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]);
@@ -576,6 +881,8 @@ static void dmap_random_map(unsigned seed) {
     static const int must[] = {DMAP_DEMON, DMAP_SHOTGUY, DMAP_SHOTGUN,
         DMAP_MEDI, DMAP_SHELLS};
     dmap_rng = seed ? seed : 0x9E3779B9u;
+    dmap_push_history();
+    dmap_anchor_active = 0;
     for (attempt = 0; attempt < DMAP_RANDOM_ATTEMPTS; attempt++) {
         int r, c, k, n, nrooms = 0, tries;
         static int rx[DMAP_ROOM_MAX], ry[DMAP_ROOM_MAX];
@@ -643,6 +950,15 @@ static void dmap_random_map(unsigned seed) {
                 for (x = x0 < x1 ? x0 : x1; x <= (x0 < x1 ? x1 : x0); x++)
                     dmap_grid[y1][x] = DMAP_FLOOR;
             }
+        }
+        if (nrooms >= 4 && (dmap_rand() & 1u)) {
+            int x0 = rx[nrooms - 1] + rw[nrooms - 1] / 2, y0 = ry[nrooms - 1] + rh[nrooms - 1] / 2;
+            int x1 = rx[0] + rw[0] / 2, y1 = ry[0] + rh[0] / 2;
+            int x, y;
+            for (x = x0 < x1 ? x0 : x1; x <= (x0 < x1 ? x1 : x0); x++)
+                dmap_grid[y0][x] = DMAP_FLOOR;
+            for (y = y0 < y1 ? y0 : y1; y <= (y0 < y1 ? y1 : y0); y++)
+                dmap_grid[y][x1] = DMAP_FLOOR;
         }
         dmap_grid[ry[0] + rh[0] / 2][rx[0] + rw[0] / 2] = DMAP_PLAYER;
         for (r = ry[nrooms - 1]; r < ry[nrooms - 1] + rh[nrooms - 1]; r++)
@@ -759,8 +1075,9 @@ static void dmap_random_map(unsigned seed) {
 
 /** Load a grid text file, refusing ragged or illegal content. */
 static int dmap_load(const char *path) {
+    static char tmp[DMAP_MAX_H][DMAP_MAX_W];
     FILE *fp = fopen(path, "r");
-    int row = 0, col = 0, ch;
+    int row = 0, col = 0, ch, w = 0, r, c;
     if (!fp)
         return -1;
     while ((ch = fgetc(fp)) != EOF && row < DMAP_MAX_H) {
@@ -768,8 +1085,8 @@ static int dmap_load(const char *path) {
             if (col == 0)
                 continue;
             if (row == 0)
-                dmap_w = col;
-            if (col != dmap_w) {
+                w = col;
+            if (col != w) {
                 fclose(fp);
                 return -1;
             }
@@ -785,19 +1102,26 @@ static int dmap_load(const char *path) {
             fclose(fp);
             return -1;
         }
-        dmap_grid[row][col++] = (char)ch;
+        tmp[row][col++] = (char)ch;
     }
     fclose(fp);
     if (col != 0) {
         if (row == 0)
-            dmap_w = col;
-        if (col != dmap_w)
+            w = col;
+        if (col != w)
             return -1;
         row++;
     }
-    if (row < 3)
+    if (row < 3 || w < 3 || w > DMAP_MAX_W)
         return -1;
+    dmap_push_history();
+    dmap_anchor_active = 0;
+    dmap_w = w;
     dmap_h = row;
+    for (r = 0; r < dmap_h; r++)
+        for (c = 0; c < dmap_w; c++)
+            dmap_grid[r][c] = tmp[r][c];
+    dmap_recenter();
     return 0;
 }
 
@@ -827,7 +1151,6 @@ static int dmap_save_txt(const char *path) {
  * region becomes one sector, so light, heights and flats vary per room
  * while the BSP stays one trivial subsector. */
 static int dmap_sect[DMAP_MAX_H][DMAP_MAX_W];
-static int dmap_nsectors;
 static int dmap_sec_floor[DMAP_MAX_SECTORS];
 static int dmap_sec_ceil[DMAP_MAX_SECTORS];
 static int dmap_sec_light[DMAP_MAX_SECTORS];
@@ -1444,7 +1767,9 @@ static void dmap_brush_combo(struct nk_context *ctx) {
 }
 
 /** Paintable tile canvas with per-category colors. The caller owns the
- * layout row and column: this only claims the widget, draws and paints. */
+ * layout row and column: this only claims the widget, draws and paints.
+ * Tools: paint one cell, fill the connected region, or two clicks for a
+ * line / rectangle border. Single edits stay single-undo gestures. */
 static void dmap_canvas(struct nk_context *ctx) {
     struct nk_command_buffer *canvas;
     struct nk_rect total;
@@ -1461,6 +1786,43 @@ static void dmap_canvas(struct nk_context *ctx) {
             nk_fill_rect(canvas, cell, 0.0f,
                 dmap_cell_color((unsigned char)dmap_grid[row][col]));
         }
+    if (dmap_show_unreach) {
+        int seen[DMAP_MAX_H][DMAP_MAX_W];
+        dmap_reach_map(seen);
+        for (row = 0; row < dmap_h; row++)
+            for (col = 0; col < dmap_w; col++) {
+                if (dmap_grid[row][col] == DMAP_WALL || seen[row][col])
+                    continue;
+                if (!dmap_walkable(dmap_grid[row][col]))
+                    continue;
+                nk_stroke_rect(canvas,
+                    nk_rect(total.x + 4.0f + (float)(col * DMAP_CELL_PX),
+                        total.y + 4.0f + (float)(row * DMAP_CELL_PX),
+                        (float)(DMAP_CELL_PX - 1), (float)(DMAP_CELL_PX - 1)),
+                    0.0f, 1.0f, nk_rgb(255, 60, 60));
+            }
+    }
+    if (dmap_show_grid) {
+        int k;
+        struct nk_color line = nk_rgb(70, 70, 70);
+        for (k = 0; k <= dmap_h; k++) {
+            float y = total.y + 4.0f + (float)(k * DMAP_CELL_PX) - 0.5f;
+            nk_stroke_line(canvas, total.x + 4.0f, y,
+                total.x + 4.0f + (float)(dmap_w * DMAP_CELL_PX), y, 1.0f, line);
+        }
+        for (k = 0; k <= dmap_w; k++) {
+            float x = total.x + 4.0f + (float)(k * DMAP_CELL_PX) - 0.5f;
+            nk_stroke_line(canvas, x, total.y + 4.0f,
+                x, total.y + 4.0f + (float)(dmap_h * DMAP_CELL_PX), 1.0f, line);
+        }
+    }
+    if (dmap_anchor_active) {
+        nk_stroke_rect(canvas,
+            nk_rect(total.x + 4.0f + (float)(dmap_anchor_c * DMAP_CELL_PX),
+                total.y + 4.0f + (float)(dmap_anchor_r * DMAP_CELL_PX),
+                (float)(DMAP_CELL_PX - 1), (float)(DMAP_CELL_PX - 1)),
+            0.0f, 1.0f, nk_rgb(255, 255, 0));
+    }
     {
         float fx = total.x + 4.0f + (dmap_px - 0.15f) * (float)DMAP_CELL_PX;
         float fy = total.y + 4.0f + (dmap_py - 0.15f) * (float)DMAP_CELL_PX;
@@ -1471,18 +1833,27 @@ static void dmap_canvas(struct nk_context *ctx) {
         int c = (int)((m.x - total.x - 4.0f) / (float)DMAP_CELL_PX);
         int r = (int)((m.y - total.y - 4.0f) / (float)DMAP_CELL_PX);
         if (r >= 0 && c >= 0 && r < dmap_h && c < dmap_w) {
-            if (dmap_brush == DMAP_PLAYER || dmap_brush == DMAP_EXIT) {
-                int rr, cc;
-                for (rr = 0; rr < dmap_h; rr++)
-                    for (cc = 0; cc < dmap_w; cc++)
-                        if (dmap_grid[rr][cc] == dmap_brush)
-                            dmap_grid[rr][cc] = DMAP_FLOOR;
-            }
-            dmap_grid[r][c] = (char)dmap_brush;
-            dmap_level_sel = 0;
-            if (dmap_brush == DMAP_PLAYER) {
-                dmap_px = (float)c + 0.5f;
-                dmap_py = (float)r + 0.5f;
+            if (dmap_tool == DMAP_TOOL_FILL) {
+                dmap_push_history();
+                dmap_flood_fill(r, c, dmap_brush);
+            } else if (dmap_tool == DMAP_TOOL_LINE || dmap_tool == DMAP_TOOL_RECT) {
+                if (!dmap_anchor_active) {
+                    dmap_anchor_r = r;
+                    dmap_anchor_c = c;
+                    dmap_anchor_active = 1;
+                } else {
+                    dmap_push_history();
+                    if (dmap_tool == DMAP_TOOL_LINE)
+                        dmap_draw_line(dmap_anchor_r, dmap_anchor_c, r, c, dmap_brush);
+                    else
+                        dmap_draw_rect(dmap_anchor_r, dmap_anchor_c, r, c, dmap_brush);
+                    dmap_anchor_active = 0;
+                    dmap_level_sel = 0;
+                }
+            } else {
+                dmap_push_history();
+                dmap_apply_cell(r, c, dmap_brush);
+                dmap_level_sel = 0;
             }
         }
     }
@@ -1574,8 +1945,35 @@ static void dmap_build(struct nk_context *ctx) {
     }
     if (nk_button_label(ctx, "Run (Ctrl+R)"))
         dmap_run_map();
+    if (nk_button_label(ctx, "Undo"))
+        dmap_undo();
     if (nk_button_label(ctx, "Quit"))
         dmap_quit = 1;
+    nk_layout_row_dynamic(ctx, 22, 8);
+    if (nk_button_label(ctx, dmap_tool == DMAP_TOOL_PAINT ? "[Paint]" : "Paint")) {
+        dmap_tool = DMAP_TOOL_PAINT;
+        dmap_anchor_active = 0;
+    }
+    if (nk_button_label(ctx, dmap_tool == DMAP_TOOL_LINE ? "[Line]" : "Line")) {
+        dmap_tool = DMAP_TOOL_LINE;
+        dmap_anchor_active = 0;
+    }
+    if (nk_button_label(ctx, dmap_tool == DMAP_TOOL_RECT ? "[Rect]" : "Rect")) {
+        dmap_tool = DMAP_TOOL_RECT;
+        dmap_anchor_active = 0;
+    }
+    if (nk_button_label(ctx, dmap_tool == DMAP_TOOL_FILL ? "[Fill]" : "Fill")) {
+        dmap_tool = DMAP_TOOL_FILL;
+        dmap_anchor_active = 0;
+    }
+    if (nk_button_label(ctx, dmap_show_grid ? "[Grid]" : "Grid"))
+        dmap_show_grid = !dmap_show_grid;
+    if (nk_button_label(ctx, dmap_show_unreach ? "[Unreach]" : "Unreach"))
+        dmap_show_unreach = !dmap_show_unreach;
+    if (nk_button_label(ctx, "Redo"))
+        dmap_redo();
+    if (nk_button_label(ctx, "Valid"))
+        dmap_validate(dmap_status, sizeof(dmap_status));
     nk_layout_row_dynamic(ctx, 16, 1);
     {
         char line[DMAP_STATUS_MAX + 16];
@@ -1618,6 +2016,12 @@ static void dmap_build(struct nk_context *ctx) {
             dmap_random_map((unsigned)nk_sys_time_ms() + 1u);
         nk_layout_row_end(ctx);
         dmap_brush_combo(ctx);
+        nk_layout_row_dynamic(ctx, 14, 1);
+        {
+            char stats[DMAP_STATUS_MAX];
+            dmap_stats(stats, sizeof(stats));
+            nk_label(ctx, stats, NK_TEXT_LEFT);
+        }
         dmap_preview_row(ctx);
         nk_group_end(ctx);
     }
@@ -1626,7 +2030,10 @@ static void dmap_build(struct nk_context *ctx) {
     nk_end(ctx);
 }
 
-/** Ctrl+R scancode hook: the Run gesture must work with focus in canvas. */
+/** Ctrl+R scancode hook: the Run gesture must work with focus in canvas.
+ * Ctrl+Z / Ctrl+Y drive undo / redo on the same path. */
+static int dmap_undo_requested = 0;
+static int dmap_redo_requested = 0;
 static void dmap_scancode(int code, int make, int e0, void *ud) {
     (void)ud;
     if (e0)
@@ -1635,8 +2042,14 @@ static void dmap_scancode(int code, int make, int e0, void *ud) {
         dmap_ctrl_held = make;
         return;
     }
-    if (code == 0x13 && make && dmap_ctrl_held)
+    if (!make || !dmap_ctrl_held)
+        return;
+    if (code == 0x13)
         dmap_run_requested = 1;
+    else if (code == 0x2C)
+        dmap_undo_requested = 1;
+    else if (code == 0x15)
+        dmap_redo_requested = 1;
 }
 
 /** Frame loop owning the display exactly like the sibling editors. */
@@ -1668,6 +2081,14 @@ static void dmap_gui_run(void) {
         if (dmap_run_requested) {
             dmap_run_requested = 0;
             dmap_run_map();
+        }
+        if (dmap_undo_requested) {
+            dmap_undo_requested = 0;
+            dmap_undo();
+        }
+        if (dmap_redo_requested) {
+            dmap_redo_requested = 0;
+            dmap_redo();
         }
         dmap_build(&ctx);
         nk_rasterize(&ctx);
@@ -1773,6 +2194,40 @@ static int dmap_selftest(void) {
         return 1;
     }
     printf("doomedit: random ok (%d bytes)\n", size);
+    {
+        char stats[DMAP_STATUS_MAX];
+        dmap_w = 9;
+        dmap_h = 7;
+        dmap_new();
+        dmap_push_history();
+        dmap_flood_fill(3, 3, DMAP_DARK);
+        if (dmap_grid[3][3] != DMAP_DARK || dmap_grid[1][1] != DMAP_PLAYER) {
+            printf("doomedit: flood fill broke markers\n");
+            return 1;
+        }
+        dmap_push_history();
+        dmap_draw_line(2, 1, 2, 7, DMAP_WALL);
+        if (dmap_grid[2][4] != DMAP_WALL) {
+            printf("doomedit: line tool broke\n");
+            return 1;
+        }
+        if (dmap_undo() != 0 || dmap_grid[2][4] == DMAP_WALL) {
+            printf("doomedit: undo broke\n");
+            return 1;
+        }
+        if (dmap_redo() != 0 || dmap_grid[2][4] != DMAP_WALL) {
+            printf("doomedit: redo broke\n");
+            return 1;
+        }
+        dmap_undo();
+        dmap_undo();
+        dmap_stats(stats, sizeof(stats));
+        if (!stats[0]) {
+            printf("doomedit: stats broke\n");
+            return 1;
+        }
+        printf("doomedit: tools ok (%s)\n", stats);
+    }
     nk_sys_kbd_raw(0);
     nk_sys_vga_mode(0);
     printf("doomedit: frame ok (%dx%d)\n", NK_W, NK_H);
