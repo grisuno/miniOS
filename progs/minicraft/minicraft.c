@@ -70,6 +70,7 @@ static int mc_fly;
 static long frame_ms;
 static long last_act_ms;
 static char last_act[16];
+static int inv[B_COUNT];
 static int save_world(void);
 static void gen_world(unsigned int seed);
 
@@ -647,11 +648,14 @@ static void render_frame(void) {
             float cx = nx;
             float cyy = 1.0f;
             float cz = ny;
-            float dx = cx * cyaw - cyy * syaw;
-            float dy = cx * syaw + cyy * cyaw;
-            float dz = cz;
-            float dy2 = dy * cpit - dz * spit;
-            float dz2 = dy * spit + dz * cpit;
+            /* camera basis: forward=(cyaw,syaw,0), right=(syaw,-cyaw,0),
+             * up=(0,0,1). Pitch rotates the forward/up plane, leaving the
+             * right component fixed; W walks to the crosshair. */
+            float f2 = cyy * cpit - cz * spit;
+            float u2 = cyy * spit + cz * cpit;
+            float dx = f2 * cyaw + cx * syaw;
+            float dy2 = f2 * syaw - cx * cyaw;
+            float dz2 = u2;
             float il = 1.0f / sqrtf(dx * dx + dy2 * dy2 + dz2 * dz2);
             dx *= il;
             dy2 *= il;
@@ -699,16 +703,20 @@ static void render_frame(void) {
         }
     }
     {
-        char hud0[32], hud1[40];
+        char hud0[32], hud1[48];
         char fc = mc_facing();
         int ix = (int)pl_x, iy = (int)pl_y, iz = (int)pl_z;
         sprintf(hud0, "X%d Y%d Z%d F:%c", ix, iy, iz, fc);
         mc_text_bg(3, 3, hud0, 2, 3);
-        if (tgt.hit)
-            sprintf(hud1, "T:%s %dM", mc_block_name(get_b(tgt.bx, tgt.by, tgt.bz)),
-                    (int)tgt.dist);
-        else
-            sprintf(hud1, "T:-");
+        {
+            unsigned char sb = (unsigned char)hotbar[hot_sel];
+            if (tgt.hit)
+                sprintf(hud1, "T:%s %dM S:%sX%d W%d/10",
+                        mc_block_name(get_b(tgt.bx, tgt.by, tgt.bz)),
+                        (int)tgt.dist, mc_block_name(sb), inv[sb], inv[B_LOG]);
+            else
+                sprintf(hud1, "T:- S:%sX%d W%d/10", mc_block_name(sb), inv[sb], inv[B_LOG]);
+        }
         mc_text_bg(3, 11, hud1, 2, 3);
         if (mc_fly)
             mc_text_bg(FB_W - 3 * 4 * 4, 3, "FLY", 2, 3);
@@ -834,6 +842,16 @@ static void poll_kbd(void) {
                 pl_pitch = 0;
                 printf("minicraft: view leveled\n");
             }
+            if ((r & 0x7F) == 0x19) {
+                RayHit th = cast_ray(pl_x, pl_y, eye_z(),
+                                     cosf(pl_yaw) * cosf(pl_pitch),
+                                     sinf(pl_yaw) * cosf(pl_pitch),
+                                     sinf(pl_pitch), 6.0f);
+                printf("minicraft: pos %d %d %d yaw %.2f pitch %.2f tgt %s wood %d\n",
+                       (int)pl_x, (int)pl_y, (int)pl_z, pl_yaw, pl_pitch,
+                       th.hit ? mc_block_name(get_b(th.bx, th.by, th.bz)) : "-",
+                       inv[B_LOG]);
+            }
         }
     }
 }
@@ -936,9 +954,9 @@ static void tick_player(float dt) {
     if (ext_down[0x50])
         pl_pitch -= 2.4f * dt;
     if (ext_down[0x4B])
-        pl_yaw -= 3.2f * dt;
-    if (ext_down[0x4D])
         pl_yaw += 3.2f * dt;
+    if (ext_down[0x4D])
+        pl_yaw -= 3.2f * dt;
     if (pl_pitch > 1.25f)
         pl_pitch = 1.25f;
     if (pl_pitch < -1.25f)
@@ -963,7 +981,7 @@ static void tick_interact(void) {
             if (ddx > 60 || ddx < -60 || ddy > 60 || ddy < -60) {
                 /* focus change / teleport: ignore this jump */
             } else {
-                pl_yaw += (float)ddx * 0.006f;
+                pl_yaw -= (float)ddx * 0.006f;
                 pl_pitch -= (float)ddy * 0.006f;
                 if (pl_pitch > 1.25f)
                     pl_pitch = 1.25f;
@@ -1008,22 +1026,37 @@ static void tick_interact(void) {
             unsigned char b = get_b(h.bx, h.by, h.bz);
             if (b != B_BEDROCK && b != B_AIR) {
                 set_b(h.bx, h.by, h.bz, B_AIR);
+                if (b != B_WATER && inv[b] < 999)
+                    inv[b]++;
                 sprintf(last_act, "-%s", mc_block_name(b));
                 last_act_ms = now;
+                if (b == B_LOG && inv[b] == 10) {
+                    printf("minicraft: GOAL firewood x10 DONE\n");
+                    sprintf(last_act, "GOAL DONE");
+                }
             }
             last_edit_ms = now;
         } else if (rb && (rb_edge || rb_hold)) {
-            if (in_world(h.px, h.py, h.pz) && get_b(h.px, h.py, h.pz) == B_AIR) {
+            unsigned char there = in_world(h.px, h.py, h.pz)
+                ? get_b(h.px, h.py, h.pz)
+                : B_BEDROCK;
+            if (there == B_AIR || there == B_WATER) {
                 unsigned char nb = (unsigned char)hotbar[hot_sel];
                 int ok = 0;
-                if (!player_collides((float)h.px + 0.5f, (float)h.py + 0.5f, (float)h.pz))
-                    ok = 1;
-                else if (pl_z > (float)h.pz + 1.0f || pl_z + 1.7f < (float)h.pz)
-                    ok = 1;
-                if (ok) {
-                    set_b(h.px, h.py, h.pz, nb);
-                    sprintf(last_act, "+%s", mc_block_name(nb));
+                if (inv[nb] <= 0) {
+                    sprintf(last_act, "VACIO");
                     last_act_ms = now;
+                } else {
+                    if (!player_collides((float)h.px + 0.5f, (float)h.py + 0.5f, (float)h.pz))
+                        ok = 1;
+                    else if (pl_z > (float)h.pz + 1.0f || pl_z + 1.7f < (float)h.pz)
+                        ok = 1;
+                    if (ok) {
+                        set_b(h.px, h.py, h.pz, nb);
+                        inv[nb]--;
+                        sprintf(last_act, "+%s", mc_block_name(nb));
+                        last_act_ms = now;
+                    }
                 }
                 last_edit_ms = now;
             }
@@ -1049,6 +1082,7 @@ static int save_world(void) {
         st[4] = pl_pitch;
         st[5] = (float)hot_sel;
         fwrite(st, 1, sizeof(st), f);
+        fwrite(inv, 1, sizeof(inv), f);
     }
     fclose(f);
     return 0;
@@ -1065,6 +1099,9 @@ static int load_world(void) {
     light_build();
     {
         float st[6];
+        int i;
+        for (i = 0; i < B_COUNT; i++)
+            inv[i] = 0;
         if (fread(st, 1, sizeof(st), f) == sizeof(st)) {
             pl_x = st[0];
             pl_y = st[1];
@@ -1074,6 +1111,10 @@ static int load_world(void) {
             hot_sel = (int)st[5] % 9;
             if (hot_sel < 0)
                 hot_sel = 0;
+        }
+        if (fread(inv, 1, sizeof(inv), f) != sizeof(inv)) {
+            for (i = 0; i < B_COUNT; i++)
+                inv[i] = 0;
         }
         mc_fly = 0;
         pl_vz = 0;
@@ -1104,9 +1145,120 @@ static int selftest(void) {
             return 1;
         }
     }
+    /* view/move alignment: W at yaw 0 must walk +X and the crosshair
+     * must show a brick placed at +X (kills the 90-degree drift) */
+    {
+        int cx, cy, cz;
+        pl_x = 32.5f;
+        pl_y = 32.5f;
+        pl_z = 20.02f;
+        pl_yaw = 0;
+        pl_pitch = 0;
+        pl_vz = 0;
+        pl_on_ground = 0;
+        for (cx = 28; cx <= 37; cx++) {
+            for (cy = 28; cy <= 37; cy++) {
+                for (cz = 19; cz <= 23; cz++)
+                    set_b_raw(cx, cy, cz, B_AIR);
+            }
+        }
+        light_build();
+        set_b(35, 32, 21, B_BRICK);
+        memset(key_down, 0, sizeof(key_down));
+        memset(ext_down, 0, sizeof(ext_down));
+        key_down[0x11] = 1;
+        tick_player(0.1f);
+        key_down[0x11] = 0;
+        if (pl_x <= 32.5f) {
+            printf("minicraft: selftest FAIL (W does not advance)\n");
+            return 1;
+        }
+        if (fabsf(pl_y - 32.5f) > 0.01f) {
+            printf("minicraft: selftest FAIL (W strafes)\n");
+            return 1;
+        }
+        render_frame();
+        if (BACKBUF[100 * FB_W + 180] != 2) {
+            printf("minicraft: selftest FAIL (crosshair off +X)\n");
+            return 1;
+        }
+    }
     printf("minicraft: frame ok (%dx%d)\n", FB_W, FB_H);
     return 0;
 }
+
+#ifdef MINICRAFT_HOST_TEST
+static int dumpstats(void) {
+    int x, y;
+    long top_sky = 0, top_ground = 0, bot_sky = 0, bot_ground = 0;
+    gen_world(1);
+    build_palette();
+    render_frame();
+    for (y = 40; y < 80; y++) {
+        for (x = 0; x < FB_W; x++) {
+            unsigned char c = host_fb[y * FB_W + x];
+            if (c == 0 || c == 1)
+                top_sky++;
+            else if (c >= 10 && c <= 45)
+                top_ground++;
+        }
+    }
+    for (y = 120; y < 160; y++) {
+        for (x = 0; x < FB_W; x++) {
+            unsigned char c = host_fb[y * FB_W + x];
+            if (c == 0 || c == 1)
+                bot_sky++;
+            else if (c >= 10 && c <= 45)
+                bot_ground++;
+        }
+    }
+    printf("minicraft: stats top_sky=%ld top_ground=%ld bot_sky=%ld bot_ground=%ld cross=%d\n",
+           top_sky, top_ground, bot_sky, bot_ground, host_fb[100 * FB_W + 160]);
+    if (top_sky > top_ground && bot_ground > bot_sky)
+        printf("minicraft: orient ok (sky up, ground down)\n");
+    else
+        printf("minicraft: orient level-view terrain-filled (no sky band at pitch 0)\n");
+    {
+        int cx, cy, cz;
+        long sky;
+        pl_x = 32.5f;
+        pl_y = 32.5f;
+        pl_z = 20.02f;
+        pl_yaw = 0;
+        for (cx = 20; cx <= 45; cx++) {
+            for (cy = 20; cy <= 45; cy++) {
+                for (cz = 18; cz <= 26; cz++)
+                    set_b_raw(cx, cy, cz, B_AIR);
+            }
+        }
+        light_build();
+        pl_pitch = 0.6f;
+        render_frame();
+        sky = 0;
+        for (y = 0; y < FB_H; y++)
+            for (x = 0; x < FB_W; x++) {
+                unsigned char c = host_fb[y * FB_W + x];
+                if (c == 0 || c == 1)
+                    sky++;
+            }
+        printf("minicraft: lookup sky_px=%ld of %d (%s)\n",
+               sky, FB_W * FB_H, sky > FB_W * FB_H / 2 ? "ok sky above" : "FAIL no sky above");
+        pl_pitch = -0.6f;
+        render_frame();
+        sky = 0;
+        for (y = 0; y < FB_H; y++)
+            for (x = 0; x < FB_W; x++) {
+                unsigned char c = host_fb[y * FB_W + x];
+                if (c == 0 || c == 1)
+                    sky++;
+            }
+        printf("minicraft: lookdown sky_px=%ld of %d (%s)\n",
+               sky, FB_W * FB_H, sky < FB_W * FB_H / 10 ? "ok ground below" : "FAIL sky below");
+        pl_pitch = 0;
+    }
+    return 0;
+}
+#endif
 
 int main(int argc, char **argv) {
     int i;
@@ -1114,6 +1266,10 @@ int main(int argc, char **argv) {
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--selftest") == 0)
             return selftest();
+#ifdef MINICRAFT_HOST_TEST
+        if (strcmp(argv[i], "--dumpstats") == 0)
+            return dumpstats();
+#endif
         if (strcmp(argv[i], "autoframes") == 0 && i + 1 < argc)
             autoframes = atoi(argv[i + 1]);
         if (strcmp(argv[i], "--once") == 0)
@@ -1144,6 +1300,7 @@ int main(int argc, char **argv) {
     printf("minicraft: left-click break, right-click place, R save\n");
     printf("minicraft: T rescue to surface, N new world, C level view\n");
     printf("minicraft: look limited to +-72 deg so the horizon stays visible\n");
+    printf("minicraft: P pos report, goal 10 WOOD firewood\n");
     printf("minicraft: Esc save+quit\n");
     fflush(stdout);
     if (autoframes > 0) {
