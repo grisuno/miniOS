@@ -8462,70 +8462,149 @@ Z_Malloc
 | `MICROPY_VFS_ROM` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:81` | `#define MICROPY_VFS_ROM` |
 | `MICROPY_VFS_ROM_IOCTL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:82` | `#define MICROPY_VFS_ROM_IOCTL` |
 | `MICROPY_WARNINGS` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:19` | `#define MICROPY_WARNINGS` |
-| `BACKBUF` | macro | `progs/minicraft/minicraft.c:38` | `#define BACKBUF` |
-| `BACKBUF` | macro | `progs/minicraft/minicraft.c:40` | `#define BACKBUF` |
-| `FB_H` | macro | `progs/minicraft/minicraft.c:35` | `#define FB_H` |
-| `FB_W` | macro | `progs/minicraft/minicraft.c:33` | `#define FB_W` |
-| `MC_D` | macro | `progs/minicraft/minicraft.c:30` | `#define MC_D` |
-| `MC_EYE` | macro | `progs/minicraft/minicraft.c:495` | `#define MC_EYE` |
-| `MC_H` | macro | `progs/minicraft/minicraft.c:31` | `#define MC_H` |
-| `MC_W` | macro | `progs/minicraft/minicraft.c:28` | `#define MC_W` |
-| `MC_WORLD` | macro | `progs/minicraft/minicraft.c:32` | `#define MC_WORLD` |
-| `RayHit` | struct | `progs/minicraft/minicraft.c:417` | `` |
-| `SAVE_PATH` | macro | `progs/minicraft/minicraft.c:42` | `#define SAVE_PATH` |
-| `build_palette` | function | `progs/minicraft/minicraft.c:130` | `static void build_palette(void)` |
-| `cast_ray` | function | `progs/minicraft/minicraft.c:424` | `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)` |
-| `col_recompute` | function | `progs/minicraft/minicraft.c:198` | `static void col_recompute(int x, int y)` |
-| `cosf` | function | `progs/minicraft/minicraft.c:847` | `cosf(pl_yaw) * cosf(pl_pitch), sinf(pl_yaw) * cosf(pl_pitch), sinf(pl_pitch), 6.0f);` |
-| `dumpstats` | function | `progs/minicraft/minicraft.c:1191` | `static int dumpstats(void)` |
-| `eye_z` | function | `progs/minicraft/minicraft.c:497` | `static float eye_z(void)` |
-| `face_color` | function | `progs/minicraft/minicraft.c:381` | `static unsigned char face_color(unsigned char b, int face)` |
-| `fclose` | function | `progs/minicraft/minicraft.c:1073` | `fclose(f);` |
-| `fflush` | function | `progs/minicraft/minicraft.c:1305` | `fflush(stdout);` |
-| `fwrite` | function | `progs/minicraft/minicraft.c:1084` | `fwrite(st, 1, sizeof(st), f);` |
-| `gen_world` | function | `progs/minicraft/minicraft.c:273` | `static void gen_world(unsigned int seed)` |
-| `get_b` | function | `progs/minicraft/minicraft.c:190` | `static unsigned char get_b(int x, int y, int z)` |
-| `ground_h` | function | `progs/minicraft/minicraft.c:261` | `static int ground_h(int x, int y)` |
-| `hash2` | function | `progs/minicraft/minicraft.c:254` | `static unsigned int hash2(int x, int y)` |
-| `in_world` | function | `progs/minicraft/minicraft.c:186` | `static int in_world(int x, int y, int z)` |
-| `is_solid` | function | `progs/minicraft/minicraft.c:246` | `static int is_solid(unsigned char b)` |
-| `is_visible` | function | `progs/minicraft/minicraft.c:250` | `static int is_visible(unsigned char b)` |
-| `light_build` | function | `progs/minicraft/minicraft.c:223` | `static void light_build(void)` |
-| `load_world` | function | `progs/minicraft/minicraft.c:1090` | `static int load_world(void)` |
-| `main` | function | `progs/minicraft/minicraft.c:1262` | `int main(int argc, char **argv)` |
-| `mc_block_name` | function | `progs/minicraft/minicraft.c:604` | `static const char *mc_block_name(unsigned char b)` |
-| `mc_facing` | function | `progs/minicraft/minicraft.c:621` | `static char mc_facing(void)` |
-| `mc_glyph` | function | `progs/minicraft/minicraft.c:564` | `static int mc_glyph(char ch)` |
-| `mc_pixel` | function | `progs/minicraft/minicraft.c:572` | `static void mc_pixel(int x, int y, unsigned char c)` |
-| `mc_text` | function | `progs/minicraft/minicraft.c:578` | `static void mc_text(int x, int y, const char *s, unsigned char fg)` |
-| `mc_text_bg` | function | `progs/minicraft/minicraft.c:591` | `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)` |
-| `memset` | function | `progs/minicraft/minicraft.c:277` | `memset(world, 0, sizeof(world));` |
-| `move_axis` | function | `progs/minicraft/minicraft.c:875` | `static void move_axis(float nx, float ny, float nz)` |
-| `pal_set` | function | `progs/minicraft/minicraft.c:124` | `static void pal_set(int i, int r, int g, int b)` |
-| `player_collides` | function | `progs/minicraft/minicraft.c:858` | `static int player_collides(float x, float y, float z)` |
-| `poll_kbd` | function | `progs/minicraft/minicraft.c:782` | `static void poll_kbd(void)` |
-| `printf` | function | `progs/minicraft/minicraft.c:810` | `printf("minicraft: fly %s\n", mc_fly ? "on" : "off");` |
-| `render_frame` | function | `progs/minicraft/minicraft.c:636` | `static void render_frame(void)` |
-| `s_kbd` | function | `progs/minicraft/minicraft.c:82` | `static long s_kbd(void)` |
-| `s_kbd_raw` | function | `progs/minicraft/minicraft.c:87` | `static long s_kbd_raw(long on)` |
-| `s_mouse` | function | `progs/minicraft/minicraft.c:112` | `static long s_mouse(int *m)` |
-| `s_pal` | function | `progs/minicraft/minicraft.c:97` | `static long s_pal(const unsigned char *p)` |
-| `s_present` | function | `progs/minicraft/minicraft.c:102` | `static long s_present(void)` |
-| `s_time_ms` | function | `progs/minicraft/minicraft.c:76` | `static long s_time_ms(void)` |
-| `s_title` | function | `progs/minicraft/minicraft.c:107` | `static long s_title(const char *t)` |
-| `s_vga` | function | `progs/minicraft/minicraft.c:92` | `static long s_vga(long on)` |
-| `s_yield` | function | `progs/minicraft/minicraft.c:117` | `static void s_yield(void)` |
-| `save_world` | function | `progs/minicraft/minicraft.c:1067` | `static int save_world(void)` |
-| `selftest` | function | `progs/minicraft/minicraft.c:1126` | `static int selftest(void)` |
-| `set_b` | function | `progs/minicraft/minicraft.c:210` | `static void set_b(int x, int y, int z, unsigned char b)` |
-| `set_b_raw` | function | `progs/minicraft/minicraft.c:217` | `static void set_b_raw(int x, int y, int z, unsigned char b)` |
-| `sky_light` | function | `progs/minicraft/minicraft.c:233` | `static float sky_light(int x, int y, int z)` |
-| `sprintf` | function | `progs/minicraft/minicraft.c:709` | `sprintf(hud0, "X%d Y%d Z%d F:%c", ix, iy, iz, fc);` |
-| `tick_interact` | function | `progs/minicraft/minicraft.c:968` | `static void tick_interact(void)` |
-| `tick_player` | function | `progs/minicraft/minicraft.c:901` | `static void tick_player(float dt)` |
-| `try_autostep` | function | `progs/minicraft/minicraft.c:890` | `static void try_autostep(float tx, float ty)` |
-| `volatile` | function | `progs/minicraft/minicraft.c:79` | `__asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx", "r11", "memory");` |
-| `widx` | function | `progs/minicraft/minicraft.c:182` | `static int widx(int x, int y, int z)` |
+| `BACKBUF` | macro | `progs/minicraft/minicraft.c:39` | `#define BACKBUF` |
+| `BACKBUF` | macro | `progs/minicraft/minicraft.c:41` | `#define BACKBUF` |
+| `EXT_DOWN` | macro | `progs/minicraft/minicraft.c:96` | `#define EXT_DOWN` |
+| `EXT_LEFT` | macro | `progs/minicraft/minicraft.c:97` | `#define EXT_LEFT` |
+| `EXT_RIGHT` | macro | `progs/minicraft/minicraft.c:98` | `#define EXT_RIGHT` |
+| `EXT_UP` | macro | `progs/minicraft/minicraft.c:95` | `#define EXT_UP` |
+| `FB_H` | macro | `progs/minicraft/minicraft.c:36` | `#define FB_H` |
+| `FB_W` | macro | `progs/minicraft/minicraft.c:34` | `#define FB_W` |
+| `MC_AUTOSTEP` | macro | `progs/minicraft/minicraft.c:68` | `#define MC_AUTOSTEP` |
+| `MC_BREAK_MS` | macro | `progs/minicraft/minicraft.c:61` | `#define MC_BREAK_MS` |
+| `MC_D` | macro | `progs/minicraft/minicraft.c:31` | `#define MC_D` |
+| `MC_DDA_STEPS` | macro | `progs/minicraft/minicraft.c:60` | `#define MC_DDA_STEPS` |
+| `MC_EYE` | macro | `progs/minicraft/minicraft.c:50` | `#define MC_EYE` |
+| `MC_FLY_SPEED` | macro | `progs/minicraft/minicraft.c:55` | `#define MC_FLY_SPEED` |
+| `MC_GRAV` | macro | `progs/minicraft/minicraft.c:51` | `#define MC_GRAV` |
+| `MC_H` | macro | `progs/minicraft/minicraft.c:32` | `#define MC_H` |
+| `MC_HP_MAX` | macro | `progs/minicraft/minicraft.c:69` | `#define MC_HP_MAX` |
+| `MC_INV_MAX` | macro | `progs/minicraft/minicraft.c:66` | `#define MC_INV_MAX` |
+| `MC_JUMP` | macro | `progs/minicraft/minicraft.c:52` | `#define MC_JUMP` |
+| `MC_MAXFALL` | macro | `progs/minicraft/minicraft.c:53` | `#define MC_MAXFALL` |
+| `MC_MOUSE` | macro | `progs/minicraft/minicraft.c:57` | `#define MC_MOUSE` |
+| `MC_PIGS` | macro | `progs/minicraft/minicraft.c:70` | `#define MC_PIGS` |
+| `MC_PITCH_MAX` | macro | `progs/minicraft/minicraft.c:67` | `#define MC_PITCH_MAX` |
+| `MC_PLACE_MS` | macro | `progs/minicraft/minicraft.c:62` | `#define MC_PLACE_MS` |
+| `MC_PORK_HEAL` | macro | `progs/minicraft/minicraft.c:71` | `#define MC_PORK_HEAL` |
+| `MC_REACH` | macro | `progs/minicraft/minicraft.c:58` | `#define MC_REACH` |
+| `MC_SAVE_MAGIC` | macro | `progs/minicraft/minicraft.c:46` | `#define MC_SAVE_MAGIC` |
+| `MC_SAVE_SECS` | macro | `progs/minicraft/minicraft.c:72` | `#define MC_SAVE_SECS` |
+| `MC_SAVE_VERSION` | macro | `progs/minicraft/minicraft.c:47` | `#define MC_SAVE_VERSION` |
+| `MC_SPEED` | macro | `progs/minicraft/minicraft.c:54` | `#define MC_SPEED` |
+| `MC_SPRINT` | macro | `progs/minicraft/minicraft.c:56` | `#define MC_SPRINT` |
+| `MC_VIEW` | macro | `progs/minicraft/minicraft.c:59` | `#define MC_VIEW` |
+| `MC_W` | macro | `progs/minicraft/minicraft.c:29` | `#define MC_W` |
+| `MC_WATER_GRAV` | macro | `progs/minicraft/minicraft.c:63` | `#define MC_WATER_GRAV` |
+| `MC_WATER_SINK` | macro | `progs/minicraft/minicraft.c:64` | `#define MC_WATER_SINK` |
+| `MC_WATER_SWIM` | macro | `progs/minicraft/minicraft.c:65` | `#define MC_WATER_SWIM` |
+| `MC_WORLD` | macro | `progs/minicraft/minicraft.c:33` | `#define MC_WORLD` |
+| `Pig` | struct | `progs/minicraft/minicraft.c:144` | `` |
+| `RayHit` | struct | `progs/minicraft/minicraft.c:822` | `` |
+| `SAVE_PATH` | macro | `progs/minicraft/minicraft.c:43` | `#define SAVE_PATH` |
+| `SAVE_TMP_PATH` | macro | `progs/minicraft/minicraft.c:45` | `#define SAVE_TMP_PATH` |
+| `SC_1` | macro | `progs/minicraft/minicraft.c:76` | `#define SC_1` |
+| `SC_9` | macro | `progs/minicraft/minicraft.c:77` | `#define SC_9` |
+| `SC_A` | macro | `progs/minicraft/minicraft.c:83` | `#define SC_A` |
+| `SC_C` | macro | `progs/minicraft/minicraft.c:89` | `#define SC_C` |
+| `SC_CTRL` | macro | `progs/minicraft/minicraft.c:94` | `#define SC_CTRL` |
+| `SC_D` | macro | `progs/minicraft/minicraft.c:85` | `#define SC_D` |
+| `SC_E` | macro | `progs/minicraft/minicraft.c:79` | `#define SC_E` |
+| `SC_ESC` | macro | `progs/minicraft/minicraft.c:75` | `#define SC_ESC` |
+| `SC_F` | macro | `progs/minicraft/minicraft.c:86` | `#define SC_F` |
+| `SC_K` | macro | `progs/minicraft/minicraft.c:87` | `#define SC_K` |
+| `SC_L` | macro | `progs/minicraft/minicraft.c:88` | `#define SC_L` |
+| `SC_LSHIFT` | macro | `progs/minicraft/minicraft.c:92` | `#define SC_LSHIFT` |
+| `SC_N` | macro | `progs/minicraft/minicraft.c:90` | `#define SC_N` |
+| `SC_P` | macro | `progs/minicraft/minicraft.c:82` | `#define SC_P` |
+| `SC_R` | macro | `progs/minicraft/minicraft.c:80` | `#define SC_R` |
+| `SC_RSHIFT` | macro | `progs/minicraft/minicraft.c:93` | `#define SC_RSHIFT` |
+| `SC_S` | macro | `progs/minicraft/minicraft.c:84` | `#define SC_S` |
+| `SC_SPACE` | macro | `progs/minicraft/minicraft.c:91` | `#define SC_SPACE` |
+| `SC_T` | macro | `progs/minicraft/minicraft.c:81` | `#define SC_T` |
+| `SC_W` | macro | `progs/minicraft/minicraft.c:78` | `#define SC_W` |
+| `SaveHeader` | struct | `progs/minicraft/minicraft.c:1743` | `` |
+| `__attribute__` | function | `progs/minicraft/minicraft.c:205` | `static long __attribute__((unused)) s_tone(long f)` |
+| `beep` | function | `progs/minicraft/minicraft.c:210` | `static void beep(long freq, long dur_ms)` |
+| `block_intersects_player` | function | `progs/minicraft/minicraft.c:1420` | `static int block_intersects_player(int bx, int by, int bz)` |
+| `build_palette` | function | `progs/minicraft/minicraft.c:234` | `static void build_palette(void)` |
+| `cam_build` | function | `progs/minicraft/minicraft.c:1049` | `static void cam_build(void)` |
+| `cast_ray` | function | `progs/minicraft/minicraft.c:830` | `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)` |
+| `col_recompute` | function | `progs/minicraft/minicraft.c:309` | `static void col_recompute(int x, int y)` |
+| `cosf` | function | `progs/minicraft/minicraft.c:1360` | `cosf(pl_yaw) * cosf(pl_pitch), sinf(pl_yaw) * cosf(pl_pitch), sinf(pl_pitch), 6.0f);` |
+| `dumpstats` | function | `progs/minicraft/minicraft.c:2064` | `static int dumpstats(void)` |
+| `eye_z` | function | `progs/minicraft/minicraft.c:908` | `static float eye_z(void)` |
+| `face_color` | function | `progs/minicraft/minicraft.c:708` | `static unsigned char face_color(unsigned char b, int face)` |
+| `fclose` | function | `progs/minicraft/minicraft.c:1776` | `fclose(f);` |
+| `fflush` | function | `progs/minicraft/minicraft.c:2181` | `fflush(stdout);` |
+| `gen_world` | function | `progs/minicraft/minicraft.c:467` | `static void gen_world(unsigned int seed)` |
+| `get_b` | function | `progs/minicraft/minicraft.c:301` | `static unsigned char get_b(int x, int y, int z)` |
+| `ground_h_seed` | function | `progs/minicraft/minicraft.c:420` | `static int ground_h_seed(int x, int y, unsigned int seed)` |
+| `hash2` | function | `progs/minicraft/minicraft.c:400` | `static unsigned int hash2(int x, int y)` |
+| `hash2_seed` | function | `progs/minicraft/minicraft.c:407` | `static unsigned int hash2_seed(int x, int y, unsigned int seed)` |
+| `hurt` | function | `progs/minicraft/minicraft.c:1440` | `static void hurt(int dmg, const char *why)` |
+| `in_water_at` | function | `progs/minicraft/minicraft.c:392` | `static int in_water_at(float x, float y, float z)` |
+| `in_world` | function | `progs/minicraft/minicraft.c:297` | `static int in_world(int x, int y, int z)` |
+| `inv_add` | function | `progs/minicraft/minicraft.c:441` | `static int inv_add(int b, int n)` |
+| `inv_remove` | function | `progs/minicraft/minicraft.c:455` | `static int inv_remove(int b, int n)` |
+| `is_solid` | function | `progs/minicraft/minicraft.c:388` | `static int is_solid(unsigned char b)` |
+| `is_visible` | function | `progs/minicraft/minicraft.c:396` | `static int is_visible(unsigned char b)` |
+| `light_build` | function | `progs/minicraft/minicraft.c:366` | `static void light_build(void)` |
+| `light_recompute_col` | function | `progs/minicraft/minicraft.c:321` | `static void light_recompute_col(int x, int y)` |
+| `load_reset_runtime` | function | `progs/minicraft/minicraft.c:1812` | `static void load_reset_runtime(void)` |
+| `load_world` | function | `progs/minicraft/minicraft.c:1871` | `static int load_world(void)` |
+| `load_world_legacy` | function | `progs/minicraft/minicraft.c:1834` | `static int load_world_legacy(FILE *f)` |
+| `main` | function | `progs/minicraft/minicraft.c:2135` | `int main(int argc, char **argv)` |
+| `mc_block_name` | function | `progs/minicraft/minicraft.c:1015` | `static const char *mc_block_name(unsigned char b)` |
+| `mc_facing` | function | `progs/minicraft/minicraft.c:1034` | `static char mc_facing(void)` |
+| `mc_glyph` | function | `progs/minicraft/minicraft.c:975` | `static int mc_glyph(char ch)` |
+| `mc_pixel` | function | `progs/minicraft/minicraft.c:983` | `static void mc_pixel(int x, int y, unsigned char c)` |
+| `mc_smoothstep` | function | `progs/minicraft/minicraft.c:416` | `static float mc_smoothstep(float t)` |
+| `mc_text` | function | `progs/minicraft/minicraft.c:989` | `static void mc_text(int x, int y, const char *s, unsigned char fg)` |
+| `mc_text_bg` | function | `progs/minicraft/minicraft.c:1002` | `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)` |
+| `memset` | function | `progs/minicraft/minicraft.c:470` | `memset(world, 0, sizeof(world));` |
+| `move_x` | function | `progs/minicraft/minicraft.c:1395` | `static void move_x(float nx)` |
+| `move_y` | function | `progs/minicraft/minicraft.c:1400` | `static void move_y(float ny)` |
+| `move_z_abs` | function | `progs/minicraft/minicraft.c:1405` | `static MoveResult move_z_abs(float nz)` |
+| `pal_set` | function | `progs/minicraft/minicraft.c:228` | `static void pal_set(int i, int r, int g, int b)` |
+| `pig_collides` | function | `progs/minicraft/minicraft.c:642` | `static int pig_collides(float x, float y, float z)` |
+| `pigs_spawn_one` | function | `progs/minicraft/minicraft.c:612` | `static void pigs_spawn_one(int i, long now)` |
+| `player_collides` | function | `progs/minicraft/minicraft.c:1371` | `static int player_collides(float x, float y, float z)` |
+| `poll_kbd` | function | `progs/minicraft/minicraft.c:1250` | `static void poll_kbd(void)` |
+| `printf` | function | `progs/minicraft/minicraft.c:1278` | `printf("minicraft: fly %s\n", mc_fly ? "on" : "off");` |
+| `render_frame` | function | `progs/minicraft/minicraft.c:1161` | `static void render_frame(void)` |
+| `render_pigs` | function | `progs/minicraft/minicraft.c:1102` | `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)` |
+| `render_terrain` | function | `progs/minicraft/minicraft.c:1067` | `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
+                      ...` |
+| `rewind` | function | `progs/minicraft/minicraft.c:1886` | `rewind(f);` |
+| `s_kbd` | function | `progs/minicraft/minicraft.c:160` | `static long s_kbd(void)` |
+| `s_kbd_raw` | function | `progs/minicraft/minicraft.c:165` | `static long s_kbd_raw(long on)` |
+| `s_mouse` | function | `progs/minicraft/minicraft.c:190` | `static long s_mouse(int *m)` |
+| `s_pal` | function | `progs/minicraft/minicraft.c:175` | `static long s_pal(const unsigned char *p)` |
+| `s_pcspk_init` | function | `progs/minicraft/minicraft.c:200` | `static long s_pcspk_init(void)` |
+| `s_present` | function | `progs/minicraft/minicraft.c:180` | `static long s_present(void)` |
+| `s_time_ms` | function | `progs/minicraft/minicraft.c:154` | `static long s_time_ms(void)` |
+| `s_title` | function | `progs/minicraft/minicraft.c:185` | `static long s_title(const char *t)` |
+| `s_tone` | function | `progs/minicraft/minicraft.c:217` | `s_tone(0);` |
+| `s_vga` | function | `progs/minicraft/minicraft.c:170` | `static long s_vga(long on)` |
+| `s_yield` | function | `progs/minicraft/minicraft.c:195` | `static void s_yield(void)` |
+| `save_validate_loaded` | function | `progs/minicraft/minicraft.c:1790` | `static int save_validate_loaded(void)` |
+| `save_world` | function | `progs/minicraft/minicraft.c:1754` | `static int save_world(void)` |
+| `selftest` | function | `progs/minicraft/minicraft.c:1923` | `static int selftest(void)` |
+| `set_b` | function | `progs/minicraft/minicraft.c:337` | `static void set_b(int x, int y, int z, unsigned char b)` |
+| `set_b_raw` | function | `progs/minicraft/minicraft.c:360` | `static void set_b_raw(int x, int y, int z, unsigned char b)` |
+| `shade_block` | function | `progs/minicraft/minicraft.c:779` | `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
+             ...` |
+| `sky_color` | function | `progs/minicraft/minicraft.c:751` | `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)` |
+| `sky_light` | function | `progs/minicraft/minicraft.c:383` | `static float sky_light(int x, int y, int z)` |
+| `snprintf` | function | `progs/minicraft/minicraft.c:1175` | `snprintf(hud0, sizeof(hud0), "X%d Y%d Z%d F:%c %dFPS", ix, iy, iz, fc, (int)(fps_ema + 0.5f));` |
+| `tick_interact` | function | `progs/minicraft/minicraft.c:1611` | `static void tick_interact(void)` |
+| `tick_pigs` | function | `progs/minicraft/minicraft.c:656` | `static void tick_pigs(float dt, long now)` |
+| `tick_player` | function | `progs/minicraft/minicraft.c:1462` | `static void tick_player(float dt)` |
+| `tick_water` | function | `progs/minicraft/minicraft.c:1558` | `static void tick_water(long now)` |
+| `try_autostep` | function | `progs/minicraft/minicraft.c:1429` | `static void try_autostep(float tx, float ty)` |
+| `volatile` | function | `progs/minicraft/minicraft.c:157` | `__asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx", "r11", "memory");` |
+| `widx` | function | `progs/minicraft/minicraft.c:293` | `static int widx(int x, int y, int z)` |
 | `MINIOS_ABI_CHECKSUM` | macro | `progs/minios_abi.h:45` | `#define MINIOS_ABI_CHECKSUM` |
 | `MINIOS_ABI_H` | macro | `progs/minios_abi.h:2` | `#define MINIOS_ABI_H` |
 | `MINIOS_ABI_VERSION` | macro | `progs/minios_abi.h:41` | `#define MINIOS_ABI_VERSION` |

@@ -23722,219 +23722,325 @@ Z_DumpHeap
 ## progs/minicraft/minicraft.c
 
 ### s_time_ms (function) `static long s_time_ms(void)`
-- Defined: `progs/minicraft/minicraft.c:76`
+- Defined: `progs/minicraft/minicraft.c:154`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### s_kbd (function) `static long s_kbd(void)`
-- Defined: `progs/minicraft/minicraft.c:82`
+- Defined: `progs/minicraft/minicraft.c:160`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### s_kbd_raw (function) `static long s_kbd_raw(long on)`
-- Defined: `progs/minicraft/minicraft.c:87`
+- Defined: `progs/minicraft/minicraft.c:165`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### s_vga (function) `static long s_vga(long on)`
-- Defined: `progs/minicraft/minicraft.c:92`
+- Defined: `progs/minicraft/minicraft.c:170`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### s_pal (function) `static long s_pal(const unsigned char *p)`
-- Defined: `progs/minicraft/minicraft.c:97`
+- Defined: `progs/minicraft/minicraft.c:175`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### s_present (function) `static long s_present(void)`
-- Defined: `progs/minicraft/minicraft.c:102`
+- Defined: `progs/minicraft/minicraft.c:180`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### s_title (function) `static long s_title(const char *t)`
-- Defined: `progs/minicraft/minicraft.c:107`
+- Defined: `progs/minicraft/minicraft.c:185`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### s_mouse (function) `static long s_mouse(int *m)`
-- Defined: `progs/minicraft/minicraft.c:112`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### s_yield (function) `static void s_yield(void)`
-- Defined: `progs/minicraft/minicraft.c:117`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### pal_set (function) `static void pal_set(int i, int r, int g, int b)`
-- Defined: `progs/minicraft/minicraft.c:124`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### build_palette (function) `static void build_palette(void)`
-- Defined: `progs/minicraft/minicraft.c:130`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### widx (function) `static int widx(int x, int y, int z)`
-- Defined: `progs/minicraft/minicraft.c:182`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### in_world (function) `static int in_world(int x, int y, int z)`
-- Defined: `progs/minicraft/minicraft.c:186`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### get_b (function) `static unsigned char get_b(int x, int y, int z)`
 - Defined: `progs/minicraft/minicraft.c:190`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### col_recompute (function) `static void col_recompute(int x, int y)`
-- Defined: `progs/minicraft/minicraft.c:198`
+### s_yield (function) `static void s_yield(void)`
+- Defined: `progs/minicraft/minicraft.c:195`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### set_b (function) `static void set_b(int x, int y, int z, unsigned char b)`
+### s_pcspk_init (function) `static long s_pcspk_init(void)`
+- Defined: `progs/minicraft/minicraft.c:200`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### __attribute__ (function) `static long __attribute__((unused)) s_tone(long f)`
+- Defined: `progs/minicraft/minicraft.c:205`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### beep (function) `static void beep(long freq, long dur_ms)`
 - Defined: `progs/minicraft/minicraft.c:210`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
+### pal_set (function) `static void pal_set(int i, int r, int g, int b)`
+- Defined: `progs/minicraft/minicraft.c:228`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### build_palette (function) `static void build_palette(void)`
+- Defined: `progs/minicraft/minicraft.c:234`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### widx (function) `static int widx(int x, int y, int z)`
+- Defined: `progs/minicraft/minicraft.c:293`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### in_world (function) `static int in_world(int x, int y, int z)`
+- Defined: `progs/minicraft/minicraft.c:297`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### get_b (function) `static unsigned char get_b(int x, int y, int z)`
+- Defined: `progs/minicraft/minicraft.c:301`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### col_recompute (function) `static void col_recompute(int x, int y)`
+- Defined: `progs/minicraft/minicraft.c:309`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### light_recompute_col (function) `static void light_recompute_col(int x, int y)`
+- Defined: `progs/minicraft/minicraft.c:321`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### set_b (function) `static void set_b(int x, int y, int z, unsigned char b)`
+- Defined: `progs/minicraft/minicraft.c:337`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
 ### set_b_raw (function) `static void set_b_raw(int x, int y, int z, unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:217`
+- Defined: `progs/minicraft/minicraft.c:360`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### light_build (function) `static void light_build(void)`
-- Defined: `progs/minicraft/minicraft.c:223`
+- Defined: `progs/minicraft/minicraft.c:366`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sky_light (function) `static float sky_light(int x, int y, int z)`
-- Defined: `progs/minicraft/minicraft.c:233`
-- Doc: if (!in_world(x, y, z)) return; world[widx(x, y, z)] = b; } static void light_build(void) { int x, y; for (y = 0; y < MC
+- Defined: `progs/minicraft/minicraft.c:383`
+- Doc: for (y = 0; y < MC_D; y++) { for (x = 0; x < MC_W; x++) { int t; col_recompute(x, y); light_recompute_col(x, y); t = col
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### is_solid (function) `static int is_solid(unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:246`
+- Defined: `progs/minicraft/minicraft.c:388`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### in_water_at (function) `static int in_water_at(float x, float y, float z)`
+- Defined: `progs/minicraft/minicraft.c:392`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### is_visible (function) `static int is_visible(unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:250`
+- Defined: `progs/minicraft/minicraft.c:396`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### hash2 (function) `static unsigned int hash2(int x, int y)`
-- Defined: `progs/minicraft/minicraft.c:254`
+- Defined: `progs/minicraft/minicraft.c:400`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### ground_h (function) `static int ground_h(int x, int y)`
-- Defined: `progs/minicraft/minicraft.c:261`
+### hash2_seed (function) `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
+- Defined: `progs/minicraft/minicraft.c:407`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### mc_smoothstep (function) `static float mc_smoothstep(float t)`
+- Defined: `progs/minicraft/minicraft.c:416`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### ground_h_seed (function) `static int ground_h_seed(int x, int y, unsigned int seed)`
+- Defined: `progs/minicraft/minicraft.c:420`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### inv_add (function) `static int inv_add(int b, int n)`
+- Defined: `progs/minicraft/minicraft.c:441`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### inv_remove (function) `static int inv_remove(int b, int n)`
+- Defined: `progs/minicraft/minicraft.c:455`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gen_world (function) `static void gen_world(unsigned int seed)`
-- Defined: `progs/minicraft/minicraft.c:273`
+- Defined: `progs/minicraft/minicraft.c:467`
+- Doc: return 1; } static int inv_remove(int b, int n) { if (b <= B_AIR || b >= B_COUNT || n <= 0) return 0; if (inv[b] < n) re
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### pigs_spawn_one (function) `static void pigs_spawn_one(int i, long now)`
+- Defined: `progs/minicraft/minicraft.c:612`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### pig_collides (function) `static int pig_collides(float x, float y, float z)`
+- Defined: `progs/minicraft/minicraft.c:642`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### tick_pigs (function) `static void tick_pigs(float dt, long now)`
+- Defined: `progs/minicraft/minicraft.c:656`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### face_color (function) `static unsigned char face_color(unsigned char b, int face)`
-- Defined: `progs/minicraft/minicraft.c:381`
+- Defined: `progs/minicraft/minicraft.c:708`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### sky_color (function) `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
+- Defined: `progs/minicraft/minicraft.c:751`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### shade_block (function) `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
+             ...`
+- Defined: `progs/minicraft/minicraft.c:779`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### cast_ray (function) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
-- Defined: `progs/minicraft/minicraft.c:424`
+- Defined: `progs/minicraft/minicraft.c:830`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### eye_z (function) `static float eye_z(void)`
-- Defined: `progs/minicraft/minicraft.c:497`
-- Doc: define MC_EYE 1.55f
+- Defined: `progs/minicraft/minicraft.c:908`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_glyph (function) `static int mc_glyph(char ch)`
-- Defined: `progs/minicraft/minicraft.c:564`
+- Defined: `progs/minicraft/minicraft.c:975`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_pixel (function) `static void mc_pixel(int x, int y, unsigned char c)`
-- Defined: `progs/minicraft/minicraft.c:572`
+- Defined: `progs/minicraft/minicraft.c:983`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_text (function) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
-- Defined: `progs/minicraft/minicraft.c:578`
+- Defined: `progs/minicraft/minicraft.c:989`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_text_bg (function) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
-- Defined: `progs/minicraft/minicraft.c:591`
+- Defined: `progs/minicraft/minicraft.c:1002`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_block_name (function) `static const char *mc_block_name(unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:604`
+- Defined: `progs/minicraft/minicraft.c:1015`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_facing (function) `static char mc_facing(void)`
-- Defined: `progs/minicraft/minicraft.c:621`
+- Defined: `progs/minicraft/minicraft.c:1034`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### render_frame (function) `static void render_frame(void)`
-- Defined: `progs/minicraft/minicraft.c:636`
+### cam_build (function) `static void cam_build(void)`
+- Defined: `progs/minicraft/minicraft.c:1049`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### poll_kbd (function) `static void poll_kbd(void)`
-- Defined: `progs/minicraft/minicraft.c:782`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### player_collides (function) `static int player_collides(float x, float y, float z)`
-- Defined: `progs/minicraft/minicraft.c:858`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### move_axis (function) `static void move_axis(float nx, float ny, float nz)`
-- Defined: `progs/minicraft/minicraft.c:875`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### try_autostep (function) `static void try_autostep(float tx, float ty)`
-- Defined: `progs/minicraft/minicraft.c:890`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### tick_player (function) `static void tick_player(float dt)`
-- Defined: `progs/minicraft/minicraft.c:901`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### tick_interact (function) `static void tick_interact(void)`
-- Defined: `progs/minicraft/minicraft.c:968`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### save_world (function) `static int save_world(void)`
+### render_terrain (function) `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
+                      ...`
 - Defined: `progs/minicraft/minicraft.c:1067`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
+### render_pigs (function) `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
+- Defined: `progs/minicraft/minicraft.c:1102`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### render_frame (function) `static void render_frame(void)`
+- Defined: `progs/minicraft/minicraft.c:1161`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### poll_kbd (function) `static void poll_kbd(void)`
+- Defined: `progs/minicraft/minicraft.c:1250`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### player_collides (function) `static int player_collides(float x, float y, float z)`
+- Defined: `progs/minicraft/minicraft.c:1371`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### move_x (function) `static void move_x(float nx)`
+- Defined: `progs/minicraft/minicraft.c:1395`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### move_y (function) `static void move_y(float ny)`
+- Defined: `progs/minicraft/minicraft.c:1400`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### move_z_abs (function) `static MoveResult move_z_abs(float nz)`
+- Defined: `progs/minicraft/minicraft.c:1405`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### block_intersects_player (function) `static int block_intersects_player(int bx, int by, int bz)`
+- Defined: `progs/minicraft/minicraft.c:1420`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### try_autostep (function) `static void try_autostep(float tx, float ty)`
+- Defined: `progs/minicraft/minicraft.c:1429`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### hurt (function) `static void hurt(int dmg, const char *why)`
+- Defined: `progs/minicraft/minicraft.c:1440`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### tick_player (function) `static void tick_player(float dt)`
+- Defined: `progs/minicraft/minicraft.c:1462`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### tick_water (function) `static void tick_water(long now)`
+- Defined: `progs/minicraft/minicraft.c:1558`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### tick_interact (function) `static void tick_interact(void)`
+- Defined: `progs/minicraft/minicraft.c:1611`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### save_world (function) `static int save_world(void)`
+- Defined: `progs/minicraft/minicraft.c:1754`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### save_validate_loaded (function) `static int save_validate_loaded(void)`
+- Defined: `progs/minicraft/minicraft.c:1790`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### load_reset_runtime (function) `static void load_reset_runtime(void)`
+- Defined: `progs/minicraft/minicraft.c:1812`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### load_world_legacy (function) `static int load_world_legacy(FILE *f)`
+- Defined: `progs/minicraft/minicraft.c:1834`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
 ### load_world (function) `static int load_world(void)`
-- Defined: `progs/minicraft/minicraft.c:1090`
+- Defined: `progs/minicraft/minicraft.c:1871`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### selftest (function) `static int selftest(void)`
-- Defined: `progs/minicraft/minicraft.c:1126`
+- Defined: `progs/minicraft/minicraft.c:1923`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### dumpstats (function) `static int dumpstats(void)`
-- Defined: `progs/minicraft/minicraft.c:1191`
+- Defined: `progs/minicraft/minicraft.c:2064`
 - Doc: ifdef MINICRAFT_HOST_TEST
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/minicraft/minicraft.c:1262`
+- Defined: `progs/minicraft/minicraft.c:2135`
 - Doc: endif
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### volatile (function) `__asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx", "r11", "memory");`
-- Defined: `progs/minicraft/minicraft.c:79`
+- Defined: `progs/minicraft/minicraft.c:157`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### s_tone (function) `s_tone(0);`
+- Defined: `progs/minicraft/minicraft.c:217`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### memset (function) `memset(world, 0, sizeof(world));`
-- Defined: `progs/minicraft/minicraft.c:277`
+- Defined: `progs/minicraft/minicraft.c:470`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### sprintf (function) `sprintf(hud0, "X%d Y%d Z%d F:%c", ix, iy, iz, fc);`
-- Defined: `progs/minicraft/minicraft.c:709`
+### snprintf (function) `snprintf(hud0, sizeof(hud0), "X%d Y%d Z%d F:%c %dFPS", ix, iy, iz, fc, (int)(fps_ema + 0.5f));`
+- Defined: `progs/minicraft/minicraft.c:1175`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### printf (function) `printf("minicraft: fly %s\n", mc_fly ? "on" : "off");`
-- Defined: `progs/minicraft/minicraft.c:810`
+- Defined: `progs/minicraft/minicraft.c:1278`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### cosf (function) `cosf(pl_yaw) * cosf(pl_pitch), sinf(pl_yaw) * cosf(pl_pitch), sinf(pl_pitch), 6.0f);`
-- Defined: `progs/minicraft/minicraft.c:847`
+- Defined: `progs/minicraft/minicraft.c:1360`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### fclose (function) `fclose(f);`
-- Defined: `progs/minicraft/minicraft.c:1073`
+- Defined: `progs/minicraft/minicraft.c:1776`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### fwrite (function) `fwrite(st, 1, sizeof(st), f);`
-- Defined: `progs/minicraft/minicraft.c:1084`
+### rewind (function) `rewind(f);`
+- Defined: `progs/minicraft/minicraft.c:1886`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### fflush (function) `fflush(stdout);`
-- Defined: `progs/minicraft/minicraft.c:1305`
+- Defined: `progs/minicraft/minicraft.c:2181`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ## progs/nuklear/cvm_emit.c
