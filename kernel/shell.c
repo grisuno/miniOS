@@ -136,23 +136,12 @@ static void shell_prompt(void) { vga_puts("\nminiOS> "); vga_fb_note_prompt(); }
 void shell_exec_builtin(int argc, char **argv);
 static int etrel_path_trusted(const char *full);
 
-/* Strict decimal parse for the `vol` builtin: the whole argument must be an
- * optional sign followed by at least one digit, and the value is clamped to
- * the speaker's valid range. Garbage is rejected, never silently zero. */
+/* Strict decimal parse for the `vol` builtin: delegates the digit and
+ * overflow work to shell_parse_long and clamps the result to the
+ * speaker's valid range. Garbage is rejected, never silently zero. */
 static int shell_parse_vol(const char *s, unsigned *out) {
-    long v = 0;
-    int sign = 1;
-    if (!s || !*s) return 0;
-    if (*s == '-') { sign = -1; s++; }
-    else if (*s == '+') s++;
-    if (!*s) return 0;
-    for (; *s; s++) {
-        int d = *s - '0';
-        if (d < 0 || d > 9) return 0;
-        if (v > (PCSPK_VOL_MAX - (unsigned)d) / 10) v = PCSPK_VOL_MAX;
-        else v = v * 10 + d;
-    }
-    v *= sign;
+    long v;
+    if (!shell_parse_long(s, &v)) return 0;
     if (v < PCSPK_VOL_MIN) v = PCSPK_VOL_MIN;
     if (v > PCSPK_VOL_MAX) v = PCSPK_VOL_MAX;
     *out = (unsigned)v;
@@ -1739,10 +1728,16 @@ static void shell_cmd_jobs(void) {
 
 static void shell_cmd_wait(int argc, char **argv) {
     if (argc > 1) {
-        int pid = (int)katol(argv[1]);
-        int one[1] = { pid };
+        long pv;
+        int pid;
+        int one[1];
         int code;
-        if (pid <= 0) { vga_puts("usage: wait [pid]\n"); return; }
+        if (!shell_parse_long(argv[1], &pv) || pv <= 0 || pv >= MAX_PROCS) {
+            vga_puts("usage: wait [pid]\n");
+            return;
+        }
+        pid = (int)pv;
+        one[0] = pid;
         if (!shell_reap_one(pid, &code))
             shell_wait_fg(one, 1, 0);
         return;
@@ -1765,9 +1760,13 @@ static void shell_cmd_wait(int argc, char **argv) {
 
 static void shell_cmd_kill(int argc, char **argv) {
     int pid, i, mine = 0;
+    long pv;
     if (argc < 2) { vga_puts("usage: kill <pid>\n"); return; }
-    pid = (int)katol(argv[1]);
-    if (pid <= 0) { vga_puts("usage: kill <pid>\n"); return; }
+    if (!shell_parse_long(argv[1], &pv) || pv <= 0 || pv >= MAX_PROCS) {
+        vga_puts("usage: kill <pid>\n");
+        return;
+    }
+    pid = (int)pv;
     spin_lock(&sched_lock);
     for (i = 0; i < MAX_PROCS; i++)
         if (procs[i].state != PROC_FREE && procs[i].pid == pid &&
@@ -1822,12 +1821,13 @@ static void shell_cmd_vmmap(int argc, char **argv) {
     vma_node_t *live = VMA_NIL;
     char pname[32];
     int found = 0;
+    long pv;
     if (argc > 1) {
-        pid = (int)katol(argv[1]);
-        if (pid < 0 || pid >= MAX_PROCS) {
-            kprintf("vmmap: pid %d out of range 0..%d\n", pid, MAX_PROCS - 1);
+        if (!shell_parse_long(argv[1], &pv) || pv < 0 || pv >= MAX_PROCS) {
+            kprintf("vmmap: pid %s out of range 0..%d\n", argv[1], MAX_PROCS - 1);
             return;
         }
+        pid = (int)pv;
     }
     spin_lock(&sched_lock);
     if (procs[pid].state == PROC_FREE) {
@@ -1923,20 +1923,16 @@ static void shell_cmd_trace_run(int argc, char **argv, int ltrace) {
             prev_on ? "restored on" : "off");
 }
 
-/* Strict unsigned parse for debugger/inspector operands: `0x`-prefixed
- * hex or plain decimal, no signs, no trailing garbage, fail-closed on
- * overflow or empty input. katol is decimal-only, so `gdb dump 0x400000`
- * used to parse as 0; this is the single choke point for numeric
- * inspector arguments. */
-static int shell_parse_u64(const char *s, unsigned long *out) {
+/* Shared magnitude loop behind every strict numeric operand: consumes
+ * decimal digits (plus a-f when base is 16), whole string, fail-closed
+ * on empty input, garbage or a magnitude past lim. One copy serves the
+ * unsigned inspector parser, the signed shell/editor parser and, through
+ * it, the volume parser, so the digit/overflow logic cannot drift. */
+static int shell_parse_mag(const char *s, unsigned long base,
+                           unsigned long lim, unsigned long *out) {
     unsigned long v = 0;
-    unsigned long base = 10;
     int any = 0;
     if (!s || !s[0]) return 0;
-    if (s[0] == '0' && (s[1] == 'x' || s[1] == 'X')) {
-        base = 16;
-        s += 2;
-    }
     for (; *s; s++) {
         unsigned long d;
         if (*s >= '0' && *s <= '9') d = (unsigned long)(*s - '0');
@@ -1946,12 +1942,51 @@ static int shell_parse_u64(const char *s, unsigned long *out) {
             d = (unsigned long)(*s - 'A' + 10);
         else return 0;
         if (d >= base) return 0;
-        if (v > (0xFFFFFFFFFFFFFFFFUL - d) / base) return 0;
+        if (v > (lim - d) / base) return 0;
         v = v * base + d;
         any = 1;
     }
     if (!any) return 0;
     *out = v;
+    return 1;
+}
+
+/* Strict unsigned parse for debugger/inspector operands: `0x`-prefixed
+ * hex or plain decimal, no signs, no trailing garbage, fail-closed on
+ * overflow or empty input. katol is decimal-only, so `gdb dump 0x400000`
+ * used to parse as 0; this is the single choke point for numeric
+ * inspector arguments. */
+static int shell_parse_u64(const char *s, unsigned long *out) {
+    unsigned long base = 10;
+    if (!s || !s[0]) return 0;
+    if (s[0] == '0' && (s[1] == 'x' || s[1] == 'X')) {
+        base = 16;
+        s += 2;
+    }
+    return shell_parse_mag(s, base, 0xFFFFFFFFFFFFFFFFUL, out);
+}
+
+/* Strict signed decimal twin of shell_parse_u64: optional sign, at
+ * least one digit, whole string consumed, overflow fail-closed. The
+ * bound comes from the compiler's __LONG_MAX__ (freestanding-safe, no
+ * libc header needed); a negative sign allows one extra unit of
+ * magnitude for LONG_MIN. Shared through shell.h so the editor's line
+ * numbers use the same choke point instead of a second copy. */
+int shell_parse_long(const char *s, long *out) {
+    unsigned long v = 0;
+    unsigned long lim;
+    int neg = 0;
+    if (!s || !s[0]) return 0;
+    if (*s == '-') { neg = 1; s++; }
+    else if (*s == '+') s++;
+    lim = (unsigned long)__LONG_MAX__ + (neg ? 1UL : 0UL);
+    if (!shell_parse_mag(s, 10, lim, &v)) return 0;
+    if (neg) {
+        if (v == lim) *out = (-__LONG_MAX__) - 1;
+        else *out = -(long)v;
+    } else {
+        *out = (long)v;
+    }
     return 1;
 }
 
@@ -2469,20 +2504,35 @@ void shell_exec_builtin(int argc, char **argv) {
     }
     else if (kstrcmp(argv[0], "nice") == 0) {
         if (argc > 1) {
-            int n = (int)katol(argv[1]);
-            if (n < -20) n = -20;
-            if (n > 19) n = 19;
-            procs[current_pid < 0 ? 0 : current_pid].nice = n;
+            long nv;
+            int n;
+            if (!shell_parse_long(argv[1], &nv)) {
+                kprintf("nice: bad value '%s'\n", argv[1]);
+            } else {
+                n = (int)nv;
+                if (n < -20) n = -20;
+                if (n > 19) n = 19;
+                procs[current_pid < 0 ? 0 : current_pid].nice = n;
+            }
         }
         kprintf("nice: %d", procs[current_pid < 0 ? 0 : current_pid].nice);
     }
     else if (kstrcmp(argv[0], "seccomp") == 0) {
         int pid = current_pid < 0 ? 0 : current_pid;
+        long nv;
         if (argc > 2 && kstrcmp(argv[1], "deny") == 0) {
-            int n = (int)katol(argv[2]);
+            if (!shell_parse_long(argv[2], &nv) || nv < 0) {
+                kprintf("seccomp: bad number '%s'\n", argv[2]);
+                return;
+            }
+            int n = (int)nv;
             kprintf("seccomp: deny %d -> %d", n, seccomp_deny_one(pid, n));
         } else if (argc > 2 && kstrcmp(argv[1], "allow") == 0) {
-            int n = (int)katol(argv[2]);
+            if (!shell_parse_long(argv[2], &nv) || nv < 0) {
+                kprintf("seccomp: bad number '%s'\n", argv[2]);
+                return;
+            }
+            int n = (int)nv;
             kprintf("seccomp: allow %d -> %d", n, seccomp_allow_one(pid, n));
         } else {
             kprintf("seccomp: mask=%lx", (unsigned long)procs[pid].seccomp_deny);
@@ -2492,7 +2542,13 @@ void shell_exec_builtin(int argc, char **argv) {
         int pid = current_pid < 0 ? 0 : current_pid;
         proc_t *rp = &procs[pid];
         if (argc > 2) {
-            unsigned long v = (unsigned long)katol(argv[2]);
+            long lv;
+            unsigned long v;
+            if (!shell_parse_long(argv[2], &lv) || lv < 0) {
+                vga_puts("usage: rlimit [as|cpu|nofile] [value]\n");
+                return;
+            }
+            v = (unsigned long)lv;
             if (kstrcmp(argv[1], "as") == 0) rp->rl_as_max = v;
             else if (kstrcmp(argv[1], "cpu") == 0) {
                 rp->rl_cpu_max = v;
@@ -2632,8 +2688,13 @@ void shell_exec_builtin(int argc, char **argv) {
          * background job (a booting game, a finishing fetch) can be
          * awaited before the next command observes it. Ctrl+C aborts. */
         long secs, end;
+        long sv;
         if (argc < 2) { vga_puts("usage: sleep <secs>\n"); return; }
-        secs = katol(argv[1]);
+        if (!shell_parse_long(argv[1], &sv)) {
+            vga_puts("usage: sleep <secs>\n");
+            return;
+        }
+        secs = sv;
         if (secs < 0) secs = 0;
         if (secs > 3600) secs = 3600;
         end = (long)ktime_ms() + secs * 1000;

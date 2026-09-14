@@ -362,6 +362,12 @@ user programs crash at "unmapped" addresses — that is the historical
    ring-3 ELF, so this must never be discovered in QEMU. If the kernel outgrows 3 MB, grow `KASLR_IMAGE_SPAN` (bootdefs.h)
    AND the KASLR PT1 mapping (stage2.S) AND the link layout together — never
    shrink the gap by re-homing the page tables into the image footprint.
+   Because the gate is binding, size-critical translation units may carry
+   their own optimization flag with a NOTE at the rule: `shell.o` (the
+   largest TU) builds `-Os` against the kernel-wide `-O1`, the same pattern
+   the ramdisk `cvm.o` objects already use. A per-TU flag changes codegen
+   for the whole unit, so it must be revalidated by the shell-heavy suites
+   (`test_all.sh`, the editor/vol/kill BDD scenarios), never assumed safe.
 3. The kernel `.bss` is NOBITS and relies on zeroed RAM: QEMU zeroes memory
    at boot, so `.bss` needs no loader zero-fill. Do not rely on this for
    anything except `.bss`; anything with file content must be loaded.
@@ -1075,7 +1081,13 @@ framebuffer is not.
   custom art (wallpaper + per-app icons) converts from user PNGs at the
   repo root, pixel art (terminal) generates procedurally; the sets are
   disjoint by Makefile rule. Pokemon ships the root `pokemon.png` Pikachu
-  (32x32 RGBA like every icon), never the old generated pokeball.
+  (32x32 RGBA like every icon), never the old generated pokeball. The art
+  ships MiniFS-only (the 649 KB wallpaper cannot fit the ramdisk inside the
+  `USER_LOAD_BASE` image budget), so `make art` regenerates it explicitly
+  and both images depend on `DESKTOP_ART`: a first build after `make clean`
+  never boots art-less. Missing art degrades silently by design (solid fill,
+  embedded fallback icons), so a bare desktop means the files never packed,
+  never a decode error.
 - **GUI proof (`tools/test_gui_wm.py`):** serial `wm` commands share the
   functions but not the reality (blocking reads, frame timing), so the WM
   is also proven headless over QMP: real Alt+Tab/Super-Tab scancodes with
@@ -1803,7 +1815,22 @@ printed after release, so console I/O never runs with `sched_lock` held.
   fail-closed on garbage/overflow). A remote RSP stub is deliberately out
   of scope: the serial console belongs to the shell, so a stub here would
   fight the prompt for every byte; `gdb qemu` prints the `make gdb` +
-  `target remote :1234` hookup for real breakpoints and single-step.
+   `target remote :1234` hookup for real breakpoints and single-step.
+
+Numeric shell operands are strict at one choke point. `katol` stays lax on
+purpose (it is exported to ring-0 programs as `atol`/`strtol`, and the C
+library idiom stops at the first non-digit), so no builtin may use it for
+argument parsing: `wait`, `kill`, `vmmap`, `nice`, `seccomp`, `rlimit` and
+`sleep` parse through `shell_parse_long` (optional sign, full-string,
+overflow fail-closed, shared via `shell.h`), and the editor's line numbers
+(`g`, `l`, `i`) use the same function instead of a second copy. The digit
+loop itself lives once in `shell_parse_mag`, behind `shell_parse_u64`
+(hex-aware, inspector operands), `shell_parse_long` (signed, shell/editor
+operands) and `shell_parse_vol` (which only adds the 0..100 clamp). Garbage
+is always a diagnostic (`kill 12abc` is `usage: kill <pid>`, never pid 12),
+and silent zeroing is gone (`rlimit as abc` no longer zeroes the cap,
+`nice abc` no longer resets niceness). Pinned by BDD scenarios and the
+`kill-wait`/`rlimit`/`sleep`-`garbage-accepted` mutants.
 
 ### Editor (`edit`)
 A command-driven line editor over ramdisk/MiniFS files, in its own contract
@@ -2590,7 +2617,14 @@ Anchor hygiene: every `mutate.sh` expression must match its target file, or
 with sed itself to a scratch copy and fails closed on any no-change anchor.
 A BRE metacharacter left unescaped (notably a bare `*` where a literal star
 stands in the source) matches nothing: always escape literals (`\*`) and
-always run the checker after touching the table.
+always run the checker after touching the table. The checker derives the
+table bounds from the `MUTATIONS="` markers, never from line numbers: a
+hardcoded range once silently dropped the last row (and would have dropped
+every row added past it), so the range itself is structural now. The same
+BRE caution applies to `test_bdd.sh` markers: `expect` matches with grep,
+so a scenario must never assert a string containing `[...]` (`usage: wait
+[pid]` matches one char of {p,i,d}, never the brackets; assert `usage:
+wait` instead).
 
 A mutant may only leave the set when it is provably *equivalent* — no input
 can distinguish it from the original. That was the case for a mutant that

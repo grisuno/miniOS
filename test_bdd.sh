@@ -92,6 +92,8 @@ scenario_smp() {
 }
 
 # expect <marker>
+# The marker is a grep BRE pattern, not a literal: never write [...] in
+# one (a "[pid]" matches one char of {p,i,d}, never the brackets).
 expect() {
     if [ "$SKIP" = "1" ]; then return 0; fi
     local what="$1"
@@ -360,6 +362,18 @@ poweroff"
 expect "started as job pid 1"
 expect "kill: pid 1 terminated"
 expect "powering off"
+
+scenario "kill rejects a non-numeric pid" "kill abc
+poweroff"
+expect "usage: kill <pid>"
+
+scenario "wait rejects a non-numeric pid" "wait abc
+poweroff"
+expect "usage: wait"
+
+scenario "vmmap rejects a non-numeric pid" "vmmap abc
+poweroff"
+expect "vmmap: pid abc out of range"
 
 scenario "Ctrl+C kills the foreground job" "mrun doomgeneric.elf
 $(printf '\003')
@@ -880,6 +894,18 @@ poweroff"
 expect "rlimit: as=0"
 expect "rlimit: as=1048576"
 expect "exit code: 1"
+
+scenario "rlimit rejects a non-numeric value" "rlimit as abc
+poweroff"
+expect "usage: rlimit"
+
+scenario "sleep rejects non-numeric input" "sleep abc
+poweroff"
+expect "usage: sleep <secs>"
+
+scenario "nice rejects a non-numeric value" "nice abc
+poweroff"
+expect "nice: bad value"
 
 scenario_smp "RLIMIT_CPU kills threads past their tick cap" "rlimit cpu 1
 run thdemo

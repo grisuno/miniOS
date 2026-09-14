@@ -169,8 +169,11 @@ user-pages-supervisor | s/#define PT_FLAGS_USER             0x004/#define PT_FLA
 write-pointer-check-bypassed | s/int user_range_ok(unsigned long p, unsigned long len) {/int user_range_ok(unsigned long p, unsigned long len) { (void)p; (void)len; return 1; \\/\\* bypass \\*\\// | kernel/syscalls.c
 
 vol-default-zero | s/static unsigned pcspk_volume = PCSPK_VOL_DEFAULT;/static unsigned pcspk_volume = 0;/ | drivers/pcspk.c
-vol-sign-ignored | s/v \*= sign;/v \*= 1;/ | kernel/shell.c
+vol-sign-ignored | s/if (\*s == '-') { neg = 1; s++; }/if (*s == '-') { neg = 0; s++; }/ | kernel/shell.c
 vol-garbage-accepted | s/if (!shell_parse_vol(argv\\[1\\], &v)) {/if (0) {/ | kernel/shell.c
+kill-wait-garbage-accepted | s/if (!shell_parse_long(argv\\[1\\], &pv) || pv <= 0 || pv >= MAX_PROCS) {/if (0) {/ | kernel/shell.c
+rlimit-garbage-accepted | s/if (!shell_parse_long(argv\\[2\\], &lv) || lv < 0) {/if (0) {/ | kernel/shell.c
+sleep-garbage-accepted | s/if (!shell_parse_long(argv\\[1\\], &sv)) {/if (0) {/ | kernel/shell.c
 rtc-always-fails | s/    return 1;/    return 0;/ | drivers/rtc.c
 
 zip-traversal-allowed | s/if (clen == 2 \\&\\& start\\[0\\] == \\x27.\\x27 \\&\\& start\\[1\\] == \\x27.\\x27) return 0;/if (0) return 0;/ | fs/zip.c

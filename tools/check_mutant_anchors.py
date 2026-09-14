@@ -19,8 +19,8 @@ class Config:
 
     repo = Path(__file__).resolve().parent.parent
     mutate_sh = repo / "mutate.sh"
-    table_first = 120
-    table_last = 243
+    table_start_marker = 'MUTATIONS="'
+    table_end_marker = '"'
 
 
 def bash_unquote(expr):
@@ -39,9 +39,22 @@ def bash_unquote(expr):
 
 
 def parse_mutations(text):
-    """Extract (name, expression, target) triples from the MUTATIONS block."""
+    """Extract (name, expression, target) triples from the MUTATIONS block.
+
+    Bounds derive from the block markers, never from line numbers, so
+    adding a mutant cannot silently push rows out of the checked range.
+    """
     rows = []
-    for line in text.splitlines()[Config.table_first:Config.table_last]:
+    lines = text.splitlines()
+    first = next(
+        i for i, line in enumerate(lines)
+        if line.strip() == Config.table_start_marker
+    )
+    last = next(
+        i for i, line in enumerate(lines[first + 1:], start=first + 1)
+        if line.strip() == Config.table_end_marker
+    )
+    for line in lines[first + 1:last]:
         line = line.strip()
         if not line or "|" not in line:
             continue

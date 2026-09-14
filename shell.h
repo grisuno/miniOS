@@ -20,6 +20,14 @@ void shell_readline_buf(char *buf, int size);
 /* Tokenize `line` into up to `max_args` argv entries; returns argc. */
 int shell_parse(char *line, char **argv, int max_args);
 
+/* Strict signed decimal parse for numeric shell/editor operands: an
+ * optional sign followed by at least one digit, whole string consumed,
+ * fail-closed on empty input, trailing garbage or overflow. Returns 1
+ * and sets *out on success, 0 otherwise. Replaces katol (which stops
+ * at the first non-digit and wraps on overflow) at every builtin call
+ * site, so `kill 12abc` is a diagnostic instead of pid 12. */
+int shell_parse_long(const char *s, long *out);
+
 /* Execute a shell script: read `path` line by line, skip blanks and `#`
  * comments, parse each line and dispatch it through the normal builtin/
  * program path.  Returns 0 on success, 1 on file error. */

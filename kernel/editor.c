@@ -211,8 +211,11 @@ static int edit_refuse_save(EditBuf *e) {
 }
 
 static int edit_arg_line(int argc, char **argv, EditBuf *e, int *out) {
+    long nv;
+    int n;
     if (argc < 2) return -1;
-    int n = (int)katol(argv[1]);
+    if (!shell_parse_long(argv[1], &nv)) return -1;
+    n = (int)nv;
     if (n < 1 || n > e->count) return -1;
     *out = n - 1;
     return 0;
@@ -232,10 +235,21 @@ static void edit_loop(EditBuf *e) {
             edit_usage();
         } else if (kstrcmp(argv[0], "l") == 0) {
             int start = 1, end = e->count;
+            long a, b;
             if (argc >= 2) {
-                start = (int)katol(argv[1]);
+                if (!shell_parse_long(argv[1], &a)) {
+                    vga_puts("no such line\n");
+                    continue;
+                }
+                start = (int)a;
                 end = start;
-                if (argc >= 3) end = (int)katol(argv[2]);
+                if (argc >= 3) {
+                    if (!shell_parse_long(argv[2], &b)) {
+                        vga_puts("no such line\n");
+                        continue;
+                    }
+                    end = (int)b;
+                }
             }
             edit_list(e, start, end);
         } else if (kstrcmp(argv[0], "p") == 0) {
@@ -273,7 +287,13 @@ static void edit_loop(EditBuf *e) {
             shell_readline_buf(line, EDIT_LINE_MAX);
             if (edit_insert(e, e->count, line) != 0) vga_puts("buffer full\n");
         } else if (kstrcmp(argv[0], "i") == 0) {
-            int n = argc >= 2 ? (int)katol(argv[1]) : e->count + 1;
+            long iv;
+            int n;
+            if (argc >= 2 && !shell_parse_long(argv[1], &iv)) {
+                vga_puts("no such line\n");
+                continue;
+            }
+            n = argc >= 2 ? (int)iv : e->count + 1;
             if (n < 1 || n > e->count + 1) { vga_puts("no such line\n"); continue; }
             char line[EDIT_LINE_MAX];
             shell_readline_buf(line, EDIT_LINE_MAX);

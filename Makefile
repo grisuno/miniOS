@@ -1448,7 +1448,7 @@ $(PROGS_DIR)/etc/abi: tools/abi_stamp.c progs/minios_abi.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/abi_stamp tools/abi_stamp.c
 	$(TOOLS_DIR)/abi_stamp > $@
 
-ramdisk.bin: $(PROGS) mkramdisk.py Makefile
+ramdisk.bin: $(PROGS) $(DESKTOP_ART) mkramdisk.py Makefile
 	python3 mkramdisk.py $@ $(PROGS)
 
 ramdisk_data.c: ramdisk.bin
@@ -1484,7 +1484,11 @@ console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
          sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h
-	$(CC) $(CFLAGS_KERN) -c $< -o $@
+# NOTE: -Os, not the kernel-wide -O1. shell.o is the largest TU (~40 KB)
+# and the image ends just below USER_LOAD_BASE, so the check-size gate
+# is binding: bytes matter more than compiler speed in the prompt,
+# completion and builtin dispatch paths.
+	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
 editor.o: kernel/editor.c kernel.h shell.h editor.h vga_fb.h kernel/console_in.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
@@ -1656,6 +1660,14 @@ DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/doomedit.png \
               $(PROGS_DIR)/wall/wallpaper.png
 $(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
 	python3 tools/gen_desktop_pngs.py --src-dir $(DESKTOP_SRC_DIR) --repo .
+
+# Explicit entry point so a first build after `make clean` never boots
+# art-less: `make art && make all`. DESKTOP_ART is also a prerequisite of
+# both images (ramdisk packs the 4 icons it ships, minifs packs the whole
+# icons/ + wall/ dirs), so the dependency chain alone already guarantees
+# fresh art; this target just makes the step visible and runnable alone.
+.PHONY: art
+art: $(DESKTOP_ART)
 
 # Zip test fixtures: host-produced archives for the unzip builtin. host.zip
 # proves interop with a reference writer; hostile.zip carries escaping entry
