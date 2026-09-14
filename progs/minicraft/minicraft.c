@@ -8,9 +8,10 @@
  *
  * Engine: per-pixel DDA voxel raycaster (Amanatides & Woo) with integer
  * traversal and float ray setup. Face shading (top/side/bottom) plus
- * distance fog to sky. Physics: AABB player with gravity, jump and
- * axis-separated collision. Interaction: left click breaks, right click
- * places the selected hotbar block (raycast up to 6 blocks).
+ * exponential-style distance fog to sky. Physics: AABB player with gravity,
+ * jump, swim and axis-separated collision. Interaction: left click breaks,
+ * right click places the selected hotbar block (raycast up to 6 blocks).
+ * Survival: HP, fall damage, drowning, wandering pigs, pork, crafting.
  *
  * Headless proofs (same contract as DOOM/Q2G):
  *   minicraft --selftest        builds world, renders one frame, checks pixels
@@ -42,6 +43,30 @@ static unsigned char host_fb[MINIOS_DOOM_W * MINIOS_DOOM_H];
 
 #define SAVE_PATH "/saves/minicraft.map"
 
+/* Tunables: every magic lives here, never scattered in logic. */
+#define MC_EYE 1.55f
+#define MC_GRAV 25.0f
+#define MC_JUMP 8.4f
+#define MC_MAXFALL 16.0f
+#define MC_SPEED 4.4f
+#define MC_FLY_SPEED 8.0f
+#define MC_SPRINT 1.6f
+#define MC_MOUSE 0.006f
+#define MC_REACH 6.0f
+#define MC_VIEW 60.0f
+#define MC_DDA_STEPS 128
+#define MC_BREAK_MS 240
+#define MC_PLACE_MS 220
+#define MC_WATER_GRAV 8.0f
+#define MC_WATER_SINK 3.0f
+#define MC_WATER_SWIM 4.5f
+#define MC_INV_MAX 999
+#define MC_PITCH_MAX 1.25f
+#define MC_AUTOSTEP 1.02f
+#define MC_HP_MAX 20
+#define MC_PIGS 5
+#define MC_PORK_HEAL 6
+
 enum {
     B_AIR = 0,
     B_GRASS = 1,
@@ -55,10 +80,13 @@ enum {
     B_BRICK = 9,
     B_WATER = 10,
     B_BEDROCK = 11,
-    B_COUNT = 12
+    B_SNOW = 12,
+    B_FLOWER = 13,
+    B_COUNT = 14
 };
 
 static unsigned char world[MC_W * MC_D * MC_H];
+static float depth_buf[MINIOS_DOOM_W * MINIOS_DOOM_H];
 
 static float pl_x, pl_y, pl_z;
 static float pl_vz;
@@ -69,8 +97,23 @@ static int hot_sel;
 static int mc_fly;
 static long frame_ms;
 static long last_act_ms;
-static char last_act[16];
+static char last_act[24];
 static int inv[B_COUNT];
+static int pl_hp = MC_HP_MAX;
+static int pork = 0;
+static long drown_ms = 0;
+static float fps_ema = 10.0f;
+static int world_max_top = MC_H - 1;
+static float spawn_x, spawn_y, spawn_z;
+
+typedef struct {
+    float x, y, z, yaw;
+    float vz;
+    int alive;
+    long respawn_ms;
+    long turn_ms;
+} Pig;
+static Pig pigs[MC_PIGS];
 static int save_world(void);
 static void gen_world(unsigned int seed);
 
@@ -118,6 +161,32 @@ static void s_yield(void) {
     long r;
     __asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_SCHED_YIELD), "D"(0) : "rcx", "r11", "memory");
     (void)r;
+}
+static long s_pcspk_init(void) {
+    long r;
+    __asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_PCSPK_INIT), "D"(0) : "rcx", "r11", "memory");
+    return r;
+}
+static long __attribute__((unused)) s_tone(long f) {
+    long r;
+    __asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_PCSPK_TONE), "D"(f) : "rcx", "r11", "memory");
+    return r;
+}
+static void beep(long freq, long dur_ms) {
+#ifdef MINICRAFT_HOST_TEST
+    (void)freq;
+    (void)dur_ms;
+#else
+    long t0 = s_time_ms();
+    if (freq <= 0) {
+        s_tone(0);
+        return;
+    }
+    s_tone(freq);
+    while (s_time_ms() - t0 < dur_ms)
+        s_yield();
+    s_tone(0);
+#endif
 }
 
 static unsigned char mc_pal[768];
@@ -175,9 +244,16 @@ static void build_palette(void) {
     pal_set(43, 62, 62, 62);
     pal_set(44, 52, 52, 52);
     pal_set(45, 42, 42, 42);
+    pal_set(46, 235, 242, 250);
+    pal_set(47, 210, 225, 240);
+    pal_set(48, 180, 200, 220);
     pal_set(50, 90, 60, 30);
     pal_set(51, 60, 40, 20);
     pal_set(60, 200, 60, 60);
+    pal_set(61, 240, 220, 60);
+    pal_set(62, 255, 120, 200);
+    pal_set(63, 240, 180, 180);
+    pal_set(64, 255, 255, 255);
 }
 
 static int widx(int x, int y, int z) {
@@ -209,10 +285,22 @@ static void col_recompute(int x, int y) {
 }
 
 static void set_b(int x, int y, int z, unsigned char b) {
+    int t;
     if (!in_world(x, y, z))
         return;
     world[widx(x, y, z)] = b;
     col_recompute(x, y);
+    t = col_top[y * MC_W + x];
+    if (t > world_max_top)
+        world_max_top = t;
+    else if (t < world_max_top && (int)b == B_AIR) {
+        int xx, yy, m = -1;
+        for (yy = 0; yy < MC_D && m < world_max_top; yy++)
+            for (xx = 0; xx < MC_W; xx++)
+                if (col_top[yy * MC_W + xx] > m)
+                    m = col_top[yy * MC_W + xx];
+        world_max_top = m;
+    }
 }
 
 static void set_b_raw(int x, int y, int z, unsigned char b) {
@@ -222,11 +310,17 @@ static void set_b_raw(int x, int y, int z, unsigned char b) {
 }
 
 static void light_build(void) {
-    int x, y;
+    int x, y, m = -1;
     for (y = 0; y < MC_D; y++) {
-        for (x = 0; x < MC_W; x++)
+        for (x = 0; x < MC_W; x++) {
+            int t;
             col_recompute(x, y);
+            t = col_top[y * MC_W + x];
+            if (t > m)
+                m = t;
+        }
     }
+    world_max_top = m;
 }
 
 /* skylight 1.0 at surface fading to 0.22 deep: O(1) via column tops */
@@ -245,7 +339,11 @@ static float sky_light(int x, int y, int z) {
 }
 
 static int is_solid(unsigned char b) {
-    return b != B_AIR && b != B_WATER;
+    return b != B_AIR && b != B_WATER && b != B_FLOWER;
+}
+static int in_water_at(float x, float y, float z) {
+    int ix = (int)floorf(x), iy = (int)floorf(y), iz = (int)floorf(z);
+    return get_b(ix, iy, iz) == B_WATER;
 }
 
 static int is_visible(unsigned char b) {
@@ -278,23 +376,29 @@ static void gen_world(unsigned int seed) {
     for (y = 0; y < MC_D; y++) {
         for (x = 0; x < MC_W; x++) {
             int h = ground_h(x, y);
+            int desert = (hash2(x / 16 + 31, y / 16 + 11) % 100) < 22;
+            int snowy = h >= 19 || (hash2(x / 20 + 3, y / 20 + 77) % 100) < 12;
             for (z = 0; z <= h; z++) {
                 unsigned char b;
                 if (z == 0)
                     b = B_BEDROCK;
                 else if (z == h && h <= 8)
                     b = B_SAND;
+                else if (z == h && desert && h > 8)
+                    b = B_SAND;
+                else if (z == h && snowy && h > 8)
+                    b = B_SNOW;
                 else if (z == h)
                     b = B_GRASS;
                 else if (z >= h - 2)
-                    b = B_DIRT;
+                    b = (desert && h > 8) ? B_SAND : B_DIRT;
                 else if (z >= h - 5)
                     b = B_STONE;
                 else
                     b = (hash2(x * 3 + z, y * 5 - z) % 7 == 0) ? B_DIRT : B_STONE;
                 set_b_raw(x, y, z, b);
             }
-            if (h > 8 && hash2(x, y) % 97 < 3) {
+            if (h > 8 && !desert && !snowy && hash2(x, y) % 97 < 3) {
                 int th = h + 4;
                 int k;
                 if (th >= MC_H - 1)
@@ -314,6 +418,18 @@ static void gen_world(unsigned int seed) {
                         }
                     }
                 }
+            }
+            if (h > 8 && desert && hash2(x * 7, y * 7) % 89 < 4) {
+                int ch = h + 2 + (hash2(x, y * 3) % 2);
+                int k;
+                if (ch >= MC_H - 1)
+                    ch = MC_H - 2;
+                for (k = h + 1; k <= ch; k++)
+                    set_b_raw(x, y, k, B_LOG);
+            }
+            if (h > 8 && !desert && !snowy && hash2(x * 5 + 1, y * 5 + 2) % 100 < 6) {
+                if (get_b(x, y, h + 1) == B_AIR)
+                    set_b_raw(x, y, h + 1, B_FLOWER);
             }
             if (h <= 8) {
                 for (z = h + 1; z <= 8; z++)
@@ -367,6 +483,25 @@ static void gen_world(unsigned int seed) {
     pl_pitch = -0.05f;
     pl_vz = 0;
     pl_on_ground = 1;
+    spawn_x = pl_x;
+    spawn_y = pl_y;
+    spawn_z = pl_z;
+    pl_hp = MC_HP_MAX;
+    pork = 0;
+    drown_ms = 0;
+    {
+        int i;
+        for (i = 0; i < MC_PIGS; i++) {
+            pigs[i].x = pl_x + (float)((hash2(i * 17 + 5, 9) % 21) - 10);
+            pigs[i].y = pl_y + (float)((hash2(3, i * 29 + 7) % 21) - 10);
+            pigs[i].z = pl_z + 1.0f;
+            pigs[i].yaw = (float)(hash2(i, i * 3) % 628) / 100.0f;
+            pigs[i].vz = 0;
+            pigs[i].alive = 1;
+            pigs[i].respawn_ms = 0;
+            pigs[i].turn_ms = 0;
+        }
+    }
     hotbar[0] = B_GRASS;
     hotbar[1] = B_DIRT;
     hotbar[2] = B_STONE;
@@ -377,6 +512,102 @@ static void gen_world(unsigned int seed) {
     hotbar[7] = B_BRICK;
     hotbar[8] = B_GLASS;
     hot_sel = 0;
+}
+
+static void pigs_spawn_one(int i, long now) {
+    int tries;
+    (void)now;
+    pigs[i].alive = 1;
+    pigs[i].vz = 0;
+    for (tries = 0; tries < 20; tries++) {
+        int tx = (int)pl_x + (int)(hash2(i * 91 + tries * 13, (int)frame_ms) % 21) - 10;
+        int ty = (int)pl_y + (int)(hash2((int)frame_ms, i * 57 + tries * 7) % 21) - 10;
+        int gz, z;
+        if (tx < 2 || ty < 2 || tx >= MC_W - 2 || ty >= MC_D - 2)
+            continue;
+        gz = -1;
+        for (z = MC_H - 1; z > 0; z--) {
+            if (is_solid(get_b(tx, ty, z))) {
+                gz = z;
+                break;
+            }
+        }
+        if (gz > 0 && get_b(tx, ty, gz + 1) != B_WATER) {
+            pigs[i].x = (float)tx + 0.5f;
+            pigs[i].y = (float)ty + 0.5f;
+            pigs[i].z = (float)gz + 1.02f;
+            return;
+        }
+    }
+    pigs[i].x = spawn_x;
+    pigs[i].y = spawn_y;
+    pigs[i].z = spawn_z + 1.0f;
+}
+
+static int pig_collides(float x, float y, float z) {
+    float r = 0.3f, h = 0.9f;
+    int x0 = (int)floorf(x - r), x1 = (int)floorf(x + r);
+    int y0 = (int)floorf(y - r), y1 = (int)floorf(y + r);
+    int z0 = (int)floorf(z), z1 = (int)floorf(z + h);
+    int ix, iy, iz;
+    for (iz = z0; iz <= z1; iz++)
+        for (iy = y0; iy <= y1; iy++)
+            for (ix = x0; ix <= x1; ix++)
+                if (is_solid(get_b(ix, iy, iz)))
+                    return 1;
+    return 0;
+}
+
+static void tick_pigs(float dt, long now) {
+    int i;
+    for (i = 0; i < MC_PIGS; i++) {
+        Pig *p = &pigs[i];
+        float sp = 1.6f;
+        if (!p->alive) {
+            if (now - p->respawn_ms > 10000)
+                pigs_spawn_one(i, now);
+            continue;
+        }
+        if (now - p->turn_ms > 2500) {
+            p->turn_ms = now;
+            if ((hash2(i * 131 + (int)(now / 2500), i) % 100) < 60)
+                p->yaw += (float)((hash2(i, (int)(now / 1000)) % 200) - 100) / 100.0f;
+        }
+        {
+            float nx = p->x + cosf(p->yaw) * sp * dt;
+            float ny = p->y + sinf(p->yaw) * sp * dt;
+            if (!pig_collides(nx, p->y, p->z))
+                p->x = nx;
+            else
+                p->yaw += 1.7f;
+            if (!pig_collides(p->x, ny, p->z))
+                p->y = ny;
+            else
+                p->yaw -= 1.7f;
+            if (p->x < 1)
+                p->x = 1;
+            if (p->y < 1)
+                p->y = 1;
+            if (p->x >= MC_W - 1)
+                p->x = MC_W - 2;
+            if (p->y >= MC_D - 1)
+                p->y = MC_D - 2;
+        }
+        p->vz -= MC_GRAV * dt;
+        if (p->vz < -MC_MAXFALL)
+            p->vz = -MC_MAXFALL;
+        {
+            float nz = p->z + p->vz * dt;
+            if (!pig_collides(p->x, p->y, nz))
+                p->z = nz;
+            else
+                p->vz = 0;
+            if (p->z < 1.0f) {
+                p->z = 1.0f;
+                p->vz = 0;
+            }
+        }
+    }
 }
 
 static unsigned char face_color(unsigned char b, int face) {
@@ -409,9 +640,80 @@ static unsigned char face_color(unsigned char b, int face) {
         return face == 4 ? 40 : (face == 5 ? 42 : 41);
     case B_BEDROCK:
         return face == 4 ? 43 : (face == 5 ? 45 : 44);
+    case B_SNOW:
+        return face == 4 ? 46 : (face == 5 ? 48 : 47);
+    case B_FLOWER:
+        if (face == 4)
+            return 61;
+        if (face == 5)
+            return 50;
+        return ((face & 1) == 0) ? 60 : 62;
     default:
         return 17;
     }
+}
+
+static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec) {
+    unsigned char c;
+    if (dz > 0.35f)
+        c = 0;
+    else if (dz > 0.04f)
+        c = 1;
+    else if (dz > -0.04f)
+        c = 2;
+    else if (dz > -0.40f)
+        c = 30;
+    else
+        c = 44;
+    if (sun_dot > 0.9985f)
+        return 2;
+    if (sun_dot > 0.9965f)
+        return 1;
+    if (dz > 0.06f) {
+        int cx = (int)floorf(sun_dot * 40.0f + (float)x * 0.05f + tsec * 0.4f);
+        int cy = (int)floorf(dz * 60.0f + (float)y * 0.05f);
+        unsigned int n = hash2(cx, cy) % 100;
+        if (n < 22)
+            return 2;
+        if (n < 30)
+            return 1;
+    }
+    return c;
+}
+
+static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
+                                 float dist, int x, int y) {
+    unsigned char c = face_color(get_b(bx, by, bz), face);
+    float li;
+    (void)b;
+    /* procedural grain: 1 in 8 pixels shifts one palette step */
+    if (((unsigned int)hash2(bx * 13 + bz * 7, by * 13 - bz * 5) & 7) == 0) {
+        if (c > 10 && c != 34)
+            c = (unsigned char)(c - 1);
+    }
+    /* directional sun: Y-facing sides one dither step darker */
+    if (face == 2 && ((x * 3 + y * 7) & 3) == 0) {
+        if (c > 10)
+            c = (unsigned char)(c + 1 > 64 ? c : c + 1);
+    }
+    li = sky_light(bx, by, bz);
+    {
+        int hh = ((x * 73 + y * 149) & 7);
+        if ((float)hh >= li * 8.0f)
+            return 3;
+    }
+    /* exponential-style fog: quadratic dither to sky */
+    if (dist > 12.0f) {
+        float t = (dist - 12.0f) / 48.0f;
+        unsigned char fogc;
+        t = t * t * 3.0f;
+        if (t > 1.0f)
+            t = 1.0f;
+        fogc = (dist > 48.0f) ? 1 : 0;
+        if ((((unsigned int)(x * 73 + y * 149)) & 255) < (unsigned int)(t * 255.0f))
+            return fogc;
+    }
+    return c;
 }
 
 typedef struct {
@@ -440,7 +742,9 @@ static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float d
     float t = 0;
     int i;
     memset(&h, 0, sizeof(h));
-    for (i = 0; i < 128; i++) {
+    if (dz > 0 && iz > world_max_top)
+        return h;
+    for (i = 0; i < MC_DDA_STEPS; i++) {
         if (tmx < tmy && tmx < tmz) {
             ix += stepx;
             t = tmx;
@@ -461,6 +765,11 @@ static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float d
             return h;
         if (!in_world(ix, iy, iz)) {
             if (iz < 0 || iz >= MC_H)
+                return h;
+            if ((ix < 0 && stepx < 0) || (ix >= MC_W && stepx > 0) ||
+                (iy < 0 && stepy < 0) || (iy >= MC_D && stepy > 0))
+                return h;
+            if (iz > world_max_top && stepz > 0)
                 return h;
             continue;
         }
@@ -492,8 +801,6 @@ static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float d
     }
     return h;
 }
-
-#define MC_EYE 1.55f
 
 static float eye_z(void) {
     return pl_z + MC_EYE;
@@ -615,6 +922,8 @@ static const char *mc_block_name(unsigned char b) {
     case B_BRICK: return "BRICK";
     case B_WATER: return "WATER";
     case B_BEDROCK: return "BEDROCK";
+    case B_SNOW: return "SNOW";
+    case B_FLOWER: return "FLOWER";
     default: return "AIR";
     }
 }
@@ -634,12 +943,8 @@ static char mc_facing(void) {
     return 'S';
 }
 
-static void render_frame(void) {
-    float cyaw = cosf(pl_yaw), syaw = sinf(pl_yaw);
-    float cpit = cosf(pl_pitch), spit = sinf(pl_pitch);
-    float ez = eye_z();
-    float fdx = cyaw * cpit, fdy = syaw * cpit, fdz = spit;
-    RayHit tgt = cast_ray(pl_x, pl_y, ez, fdx, fdy, fdz, 6.0f);
+static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
+                           float spit, float ez, float tsec) {
     int x, y;
     for (y = 0; y < FB_H; y++) {
         for (x = 0; x < FB_W; x++) {
@@ -648,76 +953,122 @@ static void render_frame(void) {
             float cx = nx;
             float cyy = 1.0f;
             float cz = ny;
-            /* camera basis: forward=(cyaw,syaw,0), right=(syaw,-cyaw,0),
-             * up=(0,0,1). Pitch rotates the forward/up plane, leaving the
-             * right component fixed; W walks to the crosshair. */
             float f2 = cyy * cpit - cz * spit;
             float u2 = cyy * spit + cz * cpit;
             float dx = f2 * cyaw + cx * syaw;
             float dy2 = f2 * syaw - cx * cyaw;
             float dz2 = u2;
             float il = 1.0f / sqrtf(dx * dx + dy2 * dy2 + dz2 * dz2);
+            RayHit h;
+            unsigned char c;
             dx *= il;
             dy2 *= il;
             dz2 *= il;
-            {
-                RayHit h = cast_ray(pl_x, pl_y, ez, dx, dy2, dz2, 60.0f);
-                unsigned char c;
-                if (!h.hit) {
-                    /* sky glued to ray direction, never to the screen:
-                     * the horizon band is the up/down reference */
-                    if (dz2 > 0.35f)
-                        c = 0;
-                    else if (dz2 > 0.04f)
-                        c = 1;
-                    else if (dz2 > -0.04f)
+            h = cast_ray(pl_x, pl_y, ez, dx, dy2, dz2, MC_VIEW);
+            if (!h.hit) {
+                float sd = dx * 0.55f + dy2 * 0.35f + dz2 * 0.76f;
+                c = sky_color(dz2, sd, x, y, tsec);
+                depth_buf[y * FB_W + x] = 1e30f;
+            } else {
+                c = shade_block(get_b(h.bx, h.by, h.bz), h.face,
+                                h.bx, h.by, h.bz, h.dist, x, y);
+                if (tgt.hit && h.bx == tgt.bx && h.by == tgt.by && h.bz == tgt.bz) {
+                    if (((x + y) & 1) == 0)
                         c = 2;
-                    else if (dz2 > -0.40f)
-                        c = 30;
-                    else
-                        c = 44;
-                    {
-                        float sd = dx * 0.55f + dy2 * 0.35f + dz2 * 0.76f;
-                        if (sd > 0.9985f)
-                            c = 2;
-                        else if (sd > 0.9965f)
-                            c = 1;
-                    }
-                } else {
-                    c = face_color(get_b(h.bx, h.by, h.bz), h.face);
-                    {
-                        float li = sky_light(h.bx, h.by, h.bz);
-                        int hh = ((x * 73 + y * 149) & 7);
-                        if ((float)hh >= li * 8.0f)
-                            c = 3;
-                    }
-                    if (tgt.hit && h.bx == tgt.bx && h.by == tgt.by && h.bz == tgt.bz) {
-                        if (((x + y) & 1) == 0)
-                            c = 2;
-                    } else if (h.dist > 34.0f) {
-                        c = (h.dist > 48.0f) ? 1 : 0;
-                    }
                 }
-                BACKBUF[y * FB_W + x] = c;
+                depth_buf[y * FB_W + x] = h.dist;
+            }
+            BACKBUF[y * FB_W + x] = c;
+        }
+    }
+}
+
+static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez) {
+    int i;
+    float fx = cyaw * cpit, fy = syaw * cpit, fz = spit;
+    float rx = syaw, ry = -cyaw;
+    float ux = -cyaw * spit, uy = -syaw * spit, uz = cpit;
+    for (i = 0; i < MC_PIGS; i++) {
+        float ex, ey, ezz, fwd, rgt, up;
+        float dist, sz, cx, cy;
+        int x0, x1, y0, y1, px, py;
+        if (!pigs[i].alive)
+            continue;
+        ex = pigs[i].x - pl_x;
+        ey = pigs[i].y - pl_y;
+        ezz = (pigs[i].z + 0.5f) - ez;
+        fwd = ex * fx + ey * fy + ezz * fz;
+        if (fwd < 0.6f || fwd > MC_VIEW)
+            continue;
+        rgt = ex * rx + ey * ry;
+        up = ex * ux + ey * uy + ezz * uz;
+        cx = (float)FB_W / 2.0f + (rgt / fwd) * (float)FB_W / 1.9f;
+        cy = (float)FB_H / 2.0f - (up / fwd) * (float)FB_H / 1.2f;
+        dist = fwd;
+        sz = 26.0f / dist;
+        if (sz < 2.0f)
+            sz = 2.0f;
+        if (sz > 60.0f)
+            sz = 60.0f;
+        x0 = (int)(cx - sz / 2);
+        x1 = (int)(cx + sz / 2);
+        y0 = (int)(cy - sz / 2);
+        y1 = (int)(cy + sz / 2);
+        if (x1 < 0 || x0 >= FB_W || y1 < 0 || y0 >= FB_H)
+            continue;
+        for (py = y0; py <= y1; py++) {
+            for (px = x0; px <= x1; px++) {
+                int body;
+                unsigned char c;
+                if (px < 0 || px >= FB_W || py < 0 || py >= FB_H)
+                    continue;
+                if (depth_buf[py * FB_W + px] < dist)
+                    continue;
+                body = px > x0 && px < x1 && py > y0 && py < y1;
+                if (!body)
+                    continue;
+                if (py < y0 + (y1 - y0) / 3) {
+                    c = 63;
+                    if (px == x0 + (x1 - x0) / 3 || px == x0 + 2 * (x1 - x0) / 3)
+                        c = 3;
+                } else {
+                    c = 63;
+                    if (px == x0 || px == x1 || py == y1)
+                        c = 50;
+                }
+                BACKBUF[py * FB_W + px] = c;
             }
         }
     }
+}
+
+static void render_frame(void) {
+    float cyaw = cosf(pl_yaw), syaw = sinf(pl_yaw);
+    float cpit = cosf(pl_pitch), spit = sinf(pl_pitch);
+    float ez = eye_z();
+    float fdx = cyaw * cpit, fdy = syaw * cpit, fdz = spit;
+    float tsec = (float)frame_ms / 1000.0f;
+    RayHit tgt = cast_ray(pl_x, pl_y, ez, fdx, fdy, fdz, MC_REACH);
+    render_terrain(tgt, cyaw, syaw, cpit, spit, ez, tsec);
+    render_pigs(cyaw, syaw, cpit, spit, ez);
     {
-        char hud0[32], hud1[48];
+        char hud0[48], hud1[64], hud2[48];
         char fc = mc_facing();
         int ix = (int)pl_x, iy = (int)pl_y, iz = (int)pl_z;
-        sprintf(hud0, "X%d Y%d Z%d F:%c", ix, iy, iz, fc);
+        sprintf(hud0, "X%d Y%d Z%d F:%c %dFPS", ix, iy, iz, fc, (int)(fps_ema + 0.5f));
         mc_text_bg(3, 3, hud0, 2, 3);
         {
             unsigned char sb = (unsigned char)hotbar[hot_sel];
             if (tgt.hit)
-                sprintf(hud1, "T:%s %dM S:%sX%d W%d/10",
+                sprintf(hud1, "T:%s %dM S:%sX%d",
                         mc_block_name(get_b(tgt.bx, tgt.by, tgt.bz)),
-                        (int)tgt.dist, mc_block_name(sb), inv[sb], inv[B_LOG]);
+                        (int)tgt.dist, mc_block_name(sb), inv[sb]);
             else
-                sprintf(hud1, "T:- S:%sX%d W%d/10", mc_block_name(sb), inv[sb], inv[B_LOG]);
+                sprintf(hud1, "T:- S:%sX%d", mc_block_name(sb), inv[sb]);
         }
         mc_text_bg(3, 11, hud1, 2, 3);
+        sprintf(hud2, "HP:%d PORK:%d W:%d/10", pl_hp, pork, inv[B_LOG]);
+        mc_text_bg(3, 19, hud2, 2, 3);
         if (mc_fly)
             mc_text_bg(FB_W - 3 * 4 * 4, 3, "FLY", 2, 3);
         if (last_act[0] && frame_ms - last_act_ms < 2500)
@@ -727,7 +1078,7 @@ static void render_frame(void) {
             if (px >= 0 && py >= 0 && px < MC_W && py < MC_D) {
                 int top = col_top[py * MC_W + px];
                 if (pl_z < (float)top - 1.5f)
-                    mc_text_bg(3, 19, "T:SALIR", 2, 3);
+                    mc_text_bg(3, 35, "T:SALIR", 2, 3);
             }
         }
     }
@@ -833,10 +1184,59 @@ static void poll_kbd(void) {
                     printf("minicraft: rescued to surface %d\n", gz + 1);
                 }
             }
+            if ((r & 0x7F) == 0x25) {
+                if (inv[B_LOG] >= 4) {
+                    inv[B_LOG] -= 4;
+                    inv[B_PLANKS] += 16;
+                    if (inv[B_PLANKS] > MC_INV_MAX)
+                        inv[B_PLANKS] = MC_INV_MAX;
+                    sprintf(last_act, "+16 PLANKS");
+                    last_act_ms = frame_ms;
+                    printf("minicraft: crafted 16 planks\n");
+                    beep(660, 60);
+                } else {
+                    sprintf(last_act, "NEED 4 WOOD");
+                    last_act_ms = frame_ms;
+                }
+            }
+            if ((r & 0x7F) == 0x26) {
+                if (inv[B_PLANKS] >= 4) {
+                    inv[B_PLANKS] -= 4;
+                    inv[B_BRICK] += 4;
+                    if (inv[B_BRICK] > MC_INV_MAX)
+                        inv[B_BRICK] = MC_INV_MAX;
+                    sprintf(last_act, "+4 BRICK");
+                    last_act_ms = frame_ms;
+                    printf("minicraft: crafted 4 brick\n");
+                    beep(520, 60);
+                } else {
+                    sprintf(last_act, "NEED 4 PLANKS");
+                    last_act_ms = frame_ms;
+                }
+            }
+            if ((r & 0x7F) == 0x12) {
+                if (pork > 0 && pl_hp < MC_HP_MAX) {
+                    pork--;
+                    pl_hp += MC_PORK_HEAL;
+                    if (pl_hp > MC_HP_MAX)
+                        pl_hp = MC_HP_MAX;
+                    sprintf(last_act, "+HP %d", pl_hp);
+                    last_act_ms = frame_ms;
+                    beep(440, 80);
+                } else if (pork <= 0) {
+                    sprintf(last_act, "NO PORK");
+                    last_act_ms = frame_ms;
+                }
+            }
             if ((r & 0x7F) == 0x31) {
                 gen_world(1);
-                save_world();
-                printf("minicraft: new world\n");
+                if (save_world() != 0) {
+                    sprintf(last_act, "SAVE FAIL");
+                    last_act_ms = frame_ms;
+                    printf("minicraft: save failed\n");
+                } else {
+                    printf("minicraft: new world\n");
+                }
             }
             if ((r & 0x7F) == 0x2E && !mc_fly) {
                 pl_pitch = 0;
@@ -899,13 +1299,39 @@ static void try_autostep(float tx, float ty) {
     }
 }
 
+static void hurt(int dmg, const char *why) {
+    if (mc_fly || dmg <= 0)
+        return;
+    if (pl_hp <= 0)
+        return;
+    pl_hp -= dmg;
+    sprintf(last_act, "-%dHP %s", dmg, why);
+    last_act_ms = frame_ms;
+    beep(110, 120);
+    if (pl_hp <= 0) {
+        pl_hp = MC_HP_MAX;
+        pork = 0;
+        pl_x = spawn_x;
+        pl_y = spawn_y;
+        pl_z = spawn_z;
+        pl_vz = 0;
+        printf("minicraft: died (%s), respawned\n", why);
+        sprintf(last_act, "RESPAWN");
+        last_act_ms = frame_ms;
+    }
+}
+
 static void tick_player(float dt) {
-    float sprint = (key_down[0x2A] || key_down[0x36] || key_down[0x1D]) ? 1.6f : 1.0f;
-    float speed = (mc_fly ? 8.0f : 4.4f) * sprint;
+    float sprint = (key_down[0x2A] || key_down[0x36] || key_down[0x1D]) ? MC_SPRINT : 1.0f;
+    float speed = (mc_fly ? MC_FLY_SPEED : MC_SPEED) * sprint;
     float fx = cosf(pl_yaw), fy = sinf(pl_yaw);
     float rx = -fy, ry = fx;
     float mx = 0, my = 0;
     float ox, oy;
+    int feet_wet = in_water_at(pl_x, pl_y, pl_z + 0.2f);
+    int head_wet = in_water_at(pl_x, pl_y, eye_z());
+    if (feet_wet)
+        speed *= 0.6f;
     if (key_down[0x11])
         mx += fx, my += fy;
     if (key_down[0x1F])
@@ -922,7 +1348,7 @@ static void tick_player(float dt) {
             mx = mx / l * speed * dt;
             my = my / l * speed * dt;
             move_axis(pl_x + mx, pl_y + my, pl_z);
-            if (!mc_fly && pl_on_ground && pl_x == ox && pl_y == oy)
+            if (!mc_fly && !feet_wet && pl_on_ground && pl_x == ox && pl_y == oy)
                 try_autostep(ox + mx, oy + my);
         }
     }
@@ -934,15 +1360,42 @@ static void tick_player(float dt) {
             move_axis(pl_x, pl_y, pl_z - 6.0f * dt);
         pl_vz = 0;
         pl_on_ground = 0;
+    } else if (feet_wet || head_wet) {
+        if (key_down[0x39])
+            move_axis(pl_x, pl_y, pl_z + MC_WATER_SWIM * dt);
+        else
+            move_axis(pl_x, pl_y, pl_z - 1.0f * dt);
+        pl_vz = 0;
+        pl_on_ground = 0;
+        if (head_wet) {
+            drown_ms += (long)(dt * 1000.0f);
+            if (drown_ms > 4000) {
+                drown_ms = 3000;
+                hurt(1, "DROWN");
+            }
+        } else {
+            drown_ms = 0;
+        }
     } else {
+        float fall_v;
+        drown_ms = 0;
         if (key_down[0x39] && pl_on_ground) {
-            pl_vz = 8.4f;
+            pl_vz = MC_JUMP;
             pl_on_ground = 0;
         }
-        pl_vz -= 25.0f * dt;
-        if (pl_vz < -16.0f)
-            pl_vz = -16.0f;
-        move_axis(pl_x, pl_y, pl_z + pl_vz * dt);
+        fall_v = pl_vz;
+        pl_vz -= MC_GRAV * dt;
+        if (pl_vz < -MC_MAXFALL)
+            pl_vz = -MC_MAXFALL;
+        {
+            float before = pl_vz;
+            (void)before;
+            move_axis(pl_x, pl_y, pl_z + pl_vz * dt);
+            if (pl_on_ground && fall_v < -12.0f) {
+                int dmg = (int)((-fall_v - 12.0f) / 2.0f) + 1;
+                hurt(dmg, "FALL");
+            }
+        }
     }
     if (pl_z < 1.0f) {
         pl_z = 1.0f;
@@ -957,10 +1410,44 @@ static void tick_player(float dt) {
         pl_yaw += 3.2f * dt;
     if (ext_down[0x4D])
         pl_yaw -= 3.2f * dt;
-    if (pl_pitch > 1.25f)
-        pl_pitch = 1.25f;
-    if (pl_pitch < -1.25f)
-        pl_pitch = -1.25f;
+    if (pl_pitch > MC_PITCH_MAX)
+        pl_pitch = MC_PITCH_MAX;
+    if (pl_pitch < -MC_PITCH_MAX)
+        pl_pitch = -MC_PITCH_MAX;
+}
+
+static void tick_water(long now) {
+    static long last_w = 0;
+    int cx = (int)pl_x, cy = (int)pl_y;
+    int budget = 200;
+    int dx, dy;
+    if (now - last_w < 300)
+        return;
+    last_w = now;
+    for (dy = -8; dy <= 8 && budget > 0; dy++) {
+        for (dx = -8; dx <= 8 && budget > 0; dx++) {
+            int x = cx + dx, y = cy + dy;
+            int z, top;
+            if (x < 1 || y < 1 || x >= MC_W - 1 || y >= MC_D - 1)
+                continue;
+            top = col_top[y * MC_W + x];
+            for (z = top; z >= top - 3 && z > 0 && budget > 0; z--) {
+                if (get_b(x, y, z) != B_WATER)
+                    continue;
+                budget--;
+                if (get_b(x, y, z - 1) == B_AIR) {
+                    set_b(x, y, z - 1, B_WATER);
+                } else if ((hash2(x * 31 + z, y * 17 + (int)now / 300) % 100) < 25) {
+                    int dir = hash2(x + (int)now, y - z) % 4;
+                    int nx = x + (dir == 0 ? 1 : dir == 1 ? -1 : 0);
+                    int ny = y + (dir == 2 ? 1 : dir == 3 ? -1 : 0);
+                    if (in_world(nx, ny, z) && get_b(nx, ny, z) == B_AIR &&
+                        (is_solid(get_b(nx, ny, z - 1)) || get_b(nx, ny, z - 1) == B_WATER))
+                        set_b(nx, ny, z, B_WATER);
+                }
+            }
+        }
+    }
 }
 
 static int prev_buttons;
@@ -981,12 +1468,12 @@ static void tick_interact(void) {
             if (ddx > 60 || ddx < -60 || ddy > 60 || ddy < -60) {
                 /* focus change / teleport: ignore this jump */
             } else {
-                pl_yaw -= (float)ddx * 0.006f;
-                pl_pitch -= (float)ddy * 0.006f;
-                if (pl_pitch > 1.25f)
-                    pl_pitch = 1.25f;
-                if (pl_pitch < -1.25f)
-                    pl_pitch = -1.25f;
+                pl_yaw -= (float)ddx * MC_MOUSE;
+                pl_pitch -= (float)ddy * MC_MOUSE;
+                if (pl_pitch > MC_PITCH_MAX)
+                    pl_pitch = MC_PITCH_MAX;
+                if (pl_pitch < -MC_PITCH_MAX)
+                    pl_pitch = -MC_PITCH_MAX;
             }
         }
         pmx = m[0];
@@ -1000,8 +1487,8 @@ static void tick_interact(void) {
         int lb = m[2] & 1, rb = (m[2] & 2) != 0;
         int lb_edge = lb && !(prev_buttons & 1);
         int rb_edge = rb && !(prev_buttons & 2);
-        int lb_hold = lb && (now - last_edit_ms >= 240);
-        int rb_hold = rb && (now - last_edit_ms >= 220);
+        int lb_hold = lb && (now - last_edit_ms >= MC_BREAK_MS);
+        int rb_hold = rb && (now - last_edit_ms >= MC_PLACE_MS);
         if (!lb && !rb) {
             prev_buttons = m[2];
             return;
@@ -1017,7 +1504,37 @@ static void tick_interact(void) {
         dx = cyaw * cpit;
         dy = syaw * cpit;
         dz = spit;
-        h = cast_ray(pl_x, pl_y, eye_z(), dx, dy, dz, 6.0f);
+        h = cast_ray(pl_x, pl_y, eye_z(), dx, dy, dz, MC_REACH);
+        if (lb && (lb_edge || lb_hold)) {
+            int pi, hit_pig = -1;
+            float best = 1e30f;
+            for (pi = 0; pi < MC_PIGS; pi++) {
+                float ex = pigs[pi].x - pl_x;
+                float ey = pigs[pi].y - pl_y;
+                float ezz = (pigs[pi].z + 0.5f) - eye_z();
+                float fwd = ex * dx + ey * dy + ezz * dz;
+                float perp;
+                if (!pigs[pi].alive || fwd < 0.5f || fwd > MC_REACH)
+                    continue;
+                perp = sqrtf(ex * ex + ey * ey + ezz * ezz - fwd * fwd);
+                if (perp < 0.7f && fwd < best) {
+                    best = fwd;
+                    hit_pig = pi;
+                }
+            }
+            if (hit_pig >= 0 && (!h.hit || best < h.dist)) {
+                pigs[hit_pig].alive = 0;
+                pigs[hit_pig].respawn_ms = now;
+                pork++;
+                sprintf(last_act, "+PORK %d", pork);
+                last_act_ms = now;
+                printf("minicraft: pork %d\n", pork);
+                beep(520, 70);
+                last_edit_ms = now;
+                prev_buttons = m[2];
+                return;
+            }
+        }
         if (!h.hit) {
             prev_buttons = m[2];
             return;
@@ -1026,13 +1543,18 @@ static void tick_interact(void) {
             unsigned char b = get_b(h.bx, h.by, h.bz);
             if (b != B_BEDROCK && b != B_AIR) {
                 set_b(h.bx, h.by, h.bz, B_AIR);
-                if (b != B_WATER && inv[b] < 999)
+                if (b != B_WATER && b != B_FLOWER && inv[b] < MC_INV_MAX)
                     inv[b]++;
+                else if (b == B_FLOWER && inv[B_FLOWER] < MC_INV_MAX)
+                    inv[B_FLOWER]++;
                 sprintf(last_act, "-%s", mc_block_name(b));
                 last_act_ms = now;
+                beep(220, 50);
                 if (b == B_LOG && inv[b] == 10) {
                     printf("minicraft: GOAL firewood x10 DONE\n");
                     sprintf(last_act, "GOAL DONE");
+                    last_act_ms = now;
+                    beep(880, 120);
                 }
             }
             last_edit_ms = now;
@@ -1056,6 +1578,7 @@ static void tick_interact(void) {
                         inv[nb]--;
                         sprintf(last_act, "+%s", mc_block_name(nb));
                         last_act_ms = now;
+                        beep(440, 50);
                     }
                 }
                 last_edit_ms = now;
@@ -1112,13 +1635,41 @@ static int load_world(void) {
             if (hot_sel < 0)
                 hot_sel = 0;
         }
-        if (fread(inv, 1, sizeof(inv), f) != sizeof(inv)) {
-            for (i = 0; i < B_COUNT; i++)
-                inv[i] = 0;
+        {
+            int old_inv[12];
+            size_t n12 = fread(old_inv, 1, sizeof(old_inv), f);
+            if (n12 == sizeof(old_inv)) {
+                for (i = 0; i < 12 && i < B_COUNT; i++)
+                    inv[i] = old_inv[i];
+                if (fread(&inv[12], 1, sizeof(inv) - sizeof(old_inv), f) !=
+                    sizeof(inv) - sizeof(old_inv)) {
+                    inv[12] = 0;
+                    inv[13] = 0;
+                }
+            } else {
+                for (i = 0; i < B_COUNT; i++)
+                    inv[i] = 0;
+            }
         }
         mc_fly = 0;
         pl_vz = 0;
         pl_on_ground = 0;
+        pl_hp = MC_HP_MAX;
+        pork = 0;
+        drown_ms = 0;
+        spawn_x = pl_x;
+        spawn_y = pl_y;
+        spawn_z = pl_z;
+        for (i = 0; i < MC_PIGS; i++) {
+            pigs[i].x = pl_x + (float)((hash2(i * 17 + 5, 9) % 21) - 10);
+            pigs[i].y = pl_y + (float)((hash2(3, i * 29 + 7) % 21) - 10);
+            pigs[i].z = pl_z + 1.0f;
+            pigs[i].yaw = 0;
+            pigs[i].vz = 0;
+            pigs[i].alive = 1;
+            pigs[i].respawn_ms = 0;
+            pigs[i].turn_ms = 0;
+        }
     }
     fclose(f);
     return 0;
@@ -1164,6 +1715,8 @@ static int selftest(void) {
         }
         light_build();
         set_b(35, 32, 21, B_BRICK);
+        for (i = 0; i < MC_PIGS; i++)
+            pigs[i].alive = 0;
         memset(key_down, 0, sizeof(key_down));
         memset(ext_down, 0, sizeof(ext_down));
         key_down[0x11] = 1;
@@ -1199,7 +1752,7 @@ static int dumpstats(void) {
             unsigned char c = host_fb[y * FB_W + x];
             if (c == 0 || c == 1)
                 top_sky++;
-            else if (c >= 10 && c <= 45)
+            else if ((c >= 10 && c <= 48) || (c >= 60 && c <= 64))
                 top_ground++;
         }
     }
@@ -1208,7 +1761,7 @@ static int dumpstats(void) {
             unsigned char c = host_fb[y * FB_W + x];
             if (c == 0 || c == 1)
                 bot_sky++;
-            else if (c >= 10 && c <= 45)
+            else if ((c >= 10 && c <= 48) || (c >= 60 && c <= 64))
                 bot_ground++;
         }
     }
@@ -1276,9 +1829,10 @@ int main(int argc, char **argv) {
             autoframes = 1;
     }
     build_palette();
-    if (load_world() != 0)
+    if (load_world() != 0) {
+        printf("minicraft: no save, new world\n");
         gen_world(1);
-    else {
+    } else {
         hotbar[0] = B_GRASS;
         hotbar[1] = B_DIRT;
         hotbar[2] = B_STONE;
@@ -1290,16 +1844,18 @@ int main(int argc, char **argv) {
         hotbar[8] = B_GLASS;
         if (hot_sel < 0 || hot_sel > 8)
             hot_sel = 0;
+        printf("minicraft: save loaded\n");
     }
     s_vga(1);
     s_kbd_raw(1);
     s_title("Minicraft");
     s_pal(mc_pal);
-    printf("minicraft: WASD move, mouse/arrows look, Space jump, Shift sprint\n");
+    s_pcspk_init();
+    printf("minicraft: WASD move, mouse/arrows look, Space jump/swim, Shift sprint\n");
     printf("minicraft: F fly (Space up, C down), 1-9/wheel select\n");
-    printf("minicraft: left-click break, right-click place, R save\n");
+    printf("minicraft: left-click break/hunt, right-click place, R save\n");
+    printf("minicraft: K 4WOOD->16PLANKS, L 4PLANKS->4BRICK, E eat pork\n");
     printf("minicraft: T rescue to surface, N new world, C level view\n");
-    printf("minicraft: look limited to +-72 deg so the horizon stays visible\n");
     printf("minicraft: P pos report, goal 10 WOOD firewood\n");
     printf("minicraft: Esc save+quit\n");
     fflush(stdout);
@@ -1320,25 +1876,41 @@ int main(int argc, char **argv) {
         for (;;) {
             long now = s_time_ms();
             float dt = (float)(now - prev) / 1000.0f;
+            float inst;
             prev = now;
             frame_ms = now;
             if (dt < 0)
                 dt = 0;
             if (dt > 0.1f)
                 dt = 0.1f;
+            inst = dt > 0.001f ? 1.0f / dt : 99.0f;
+            fps_ema = fps_ema * 0.92f + inst * 0.08f;
             poll_kbd();
             if (key_down[0x01]) {
-                save_world();
+                if (save_world() != 0)
+                    printf("minicraft: save failed\n");
                 return 0;
             }
-            if (key_down[0x13])
-                save_world();
+            if (key_down[0x13]) {
+                if (save_world() != 0) {
+                    sprintf(last_act, "SAVE FAIL");
+                    last_act_ms = now;
+                    printf("minicraft: save failed\n");
+                } else {
+                    sprintf(last_act, "SAVED");
+                    last_act_ms = now;
+                }
+                key_down[0x13] = 0;
+            }
             tick_player(dt);
+            tick_pigs(dt, now);
+            tick_water(now);
             tick_interact();
             render_frame();
             s_present();
             if (now > save_at) {
-                save_world();
+                if (save_world() != 0)
+                    printf("minicraft: autosave failed\n");
                 save_at = now + 30000;
             }
             s_yield();
