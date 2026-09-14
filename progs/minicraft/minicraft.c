@@ -28,10 +28,12 @@
 
 #include "minios_abi.h"
 
-#define MC_W 64
-#define MC_D 64
 #define MC_H 32
-#define MC_WORLD (MC_W * MC_D * MC_H)
+#define MC_CHUNK 16
+#define MC_LOAD_R 3
+#define MC_CHUNKS ((MC_LOAD_R * 2 + 1) * (MC_LOAD_R * 2 + 1))
+#define MC_CVOL (MC_CHUNK * MC_CHUNK * MC_H)
+#define MC_COLS (MC_CHUNK * MC_CHUNK)
 
 #define FB_W MINIOS_DOOM_W
 #define FB_H MINIOS_DOOM_H
@@ -45,8 +47,10 @@ static unsigned char host_fb[MINIOS_DOOM_W * MINIOS_DOOM_H];
 #define SAVE_PATH "/saves/minicraft.map"
 #define SAVE_TMP_PATH "/saves/minicraft.map.tmp"
 #define MC_SAVE_MAGIC 0x4D434631u
-#define MC_SAVE_VERSION 3u
+#define MC_SAVE_VERSION 4u
 #define MC_SAVE_CRC_SEED 0xEDB88320u
+#define MC_CHUNK_MAGIC 0x4D434348u
+#define MC_CHUNK_VERSION 1u
 
 /* Tunables: every magic lives here, never scattered in logic. */
 #define MC_EYE 1.55f
@@ -84,7 +88,6 @@ static unsigned char host_fb[MINIOS_DOOM_W * MINIOS_DOOM_H];
 #define MC_DAY_MS 240000
 #define MC_SAVE_SECS 30
 #define MC_BAYER_N 16
-#define MC_TOP_HIST (MC_H + 1)
 #define MC_H_BASE 4
 #define MC_H_WT_DET 4
 #define MC_H_WT_MID 6
@@ -149,11 +152,15 @@ enum {
     B_COUNT = 15
 };
 
-static unsigned char world[MC_WORLD];
+static unsigned char ch_blocks[MC_CHUNKS][MC_CVOL];
+static unsigned char ch_light[MC_CHUNKS][MC_CVOL];
+static unsigned char ch_grain[MC_CHUNKS][MC_CVOL];
+static short ch_top[MC_CHUNKS][MC_COLS];
+static int ch_cx[MC_CHUNKS], ch_cy[MC_CHUNKS];
+static unsigned char ch_used[MC_CHUNKS], ch_dirty[MC_CHUNKS], ch_decor[MC_CHUNKS];
+static int ch_max[MC_CHUNKS];
+static int ch_cache = -1;
 static float depth_buf[MINIOS_DOOM_W * MINIOS_DOOM_H];
-static unsigned char light_map[MC_WORLD];
-static unsigned char grain_map[MC_WORLD];
-static int top_hist[MC_TOP_HIST];
 static const unsigned char bayer4[MC_BAYER_N] = {
     0, 128, 32, 160, 192, 64, 224, 96, 48, 176, 16, 144, 240, 112, 208, 80
 };
@@ -300,7 +307,7 @@ static int n_creeps = MC_CREEPS_DEF;
 static int synced_n = MC_CREEPS_DEF;
 static long boom_flash_until;
 static int save_world(void);
-static void gen_world(unsigned int seed);
+static void new_world(unsigned int seed);
 static void mob_spawn_one(Pig *m, int id, int hp, long now);
 static void hurt(int dmg, const char *why);
 static const char *goal_text(void);
@@ -471,64 +478,192 @@ static void build_palette(void) {
     pal_set(64, 255, 255, 255);
 }
 
-static int widx(int x, int y, int z) {
-    return (z * MC_D + y) * MC_W + x;
-}
-
 static int in_world(int x, int y, int z) {
-    return x >= 0 && x < MC_W && y >= 0 && y < MC_D && z >= 0 && z < MC_H;
+    (void)x;
+    (void)y;
+    return z >= 0 && z < MC_H;
 }
-
-static unsigned char get_b(int x, int y, int z) {
-    if (!in_world(x, y, z))
-        return B_AIR;
-    return world[widx(x, y, z)];
-}
-
-static int col_top[MC_W * MC_D];
 
 static unsigned int hash2(int x, int y);
 static unsigned int hash2_seed(int x, int y, unsigned int seed);
+static void gen_terrain_chunk(int slot);
+static void decorate_chunk(int slot);
+static void chunk_build_meta(int slot);
+static int save_chunk_file(int slot);
+static int load_chunk_file(int slot, int cx, int cy);
 
-static void top_hist_refresh_max(void) {
-    int t;
-    for (t = MC_H - 1; t >= -1; t--) {
-        if (top_hist[t + 1] > 0) {
-            world_max_top = t;
-            return;
+/* Chunk math on unbounded coords: floor division so negatives land right. */
+static int chunk_of(int v) {
+    return v >= 0 ? v / MC_CHUNK : -((-v + MC_CHUNK - 1) / MC_CHUNK);
+}
+
+static int chunk_local(int v) {
+    int r = v % MC_CHUNK;
+    return r < 0 ? r + MC_CHUNK : r;
+}
+
+static int chunk_lidx(int lx, int ly, int z) {
+    return (z * MC_CHUNK + ly) * MC_CHUNK + lx;
+}
+
+/* O(1) fast path: DDA walks neighbours, so the last chunk almost always
+ * hits; the 49-slot scan is the rare slow path, never the hot loop. */
+static int chunk_find(int cx, int cy) {
+    int i;
+    if (ch_cache >= 0 && ch_cache < MC_CHUNKS && ch_used[ch_cache] &&
+        ch_cx[ch_cache] == cx && ch_cy[ch_cache] == cy)
+        return ch_cache;
+    for (i = 0; i < MC_CHUNKS; i++) {
+        if (ch_used[i] && ch_cx[i] == cx && ch_cy[i] == cy) {
+            ch_cache = i;
+            return i;
         }
     }
-    world_max_top = -1;
+    return -1;
+}
+
+static void world_max_recompute(void) {
+    int i, m = -1;
+    for (i = 0; i < MC_CHUNKS; i++) {
+        if (ch_used[i] && ch_max[i] > m)
+            m = ch_max[i];
+    }
+    world_max_top = m;
+}
+
+static int chunk_evict_slot(int cx, int cy) {
+    int i, pick = -1, best = -1;
+    for (i = 0; i < MC_CHUNKS; i++) {
+        int d;
+        if (!ch_used[i])
+            return i;
+        d = abs(ch_cx[i] - cx);
+        {
+            int dy = abs(ch_cy[i] - cy);
+            if (dy > d)
+                d = dy;
+        }
+        if (d > best) {
+            best = d;
+            pick = i;
+        }
+    }
+    return pick;
+}
+
+static int chunk_ensure(int cx, int cy) {
+    int s = chunk_find(cx, cy);
+    if (s >= 0)
+        return s;
+    s = chunk_evict_slot(cx, cy);
+    if (s < 0)
+        return -1;
+    if (ch_used[s] && ch_dirty[s])
+        save_chunk_file(s);
+    ch_used[s] = 1;
+    ch_dirty[s] = 0;
+    ch_decor[s] = 0;
+    ch_cx[s] = cx;
+    ch_cy[s] = cy;
+    ch_max[s] = -1;
+    ch_cache = s;
+    if (!load_chunk_file(s, cx, cy))
+        gen_terrain_chunk(s);
+    chunk_build_meta(s);
+    world_max_recompute();
+    return s;
+}
+
+static void chunk_build_meta(int slot) {
+    int lx, ly;
+    int cx = ch_cx[slot], cy = ch_cy[slot];
+    int s = slot;
+    ch_max[s] = -1;
+    for (ly = 0; ly < MC_CHUNK; ly++) {
+        for (lx = 0; lx < MC_CHUNK; lx++) {
+            int z, t = -1;
+            for (z = MC_H - 1; z >= 0; z--) {
+                if (ch_blocks[s][chunk_lidx(lx, ly, z)] != B_AIR) {
+                    t = z;
+                    break;
+                }
+            }
+            ch_top[s][ly * MC_CHUNK + lx] = (short)t;
+            if (t > ch_max[s])
+                ch_max[s] = t;
+        }
+    }
+    {
+        int x0 = cx * MC_CHUNK, y0 = cy * MC_CHUNK;
+        for (ly = 0; ly < MC_CHUNK; ly++) {
+            for (lx = 0; lx < MC_CHUNK; lx++) {
+                int x = x0 + lx, y = y0 + ly;
+                int top = ch_top[s][ly * MC_CHUNK + lx];
+                int z;
+                for (z = 0; z < MC_H; z++) {
+                    int d = top - z;
+                    float l;
+                    if (d <= 0)
+                        l = 1.0f;
+                    else {
+                        l = 1.0f - (float)d / 10.0f;
+                        if (l < 0.22f)
+                            l = 0.22f;
+                    }
+                    ch_light[s][chunk_lidx(lx, ly, z)] = (unsigned char)(l * 255.0f);
+                    ch_grain[s][chunk_lidx(lx, ly, z)] =
+                        (unsigned char)(((hash2(x * 13 + z * 7, y * 13 - z * 5) & 7) == 0) ? 1 : 0);
+                }
+            }
+        }
+    }
 }
 
 static void col_recompute(int x, int y) {
-    int z;
-    int t = -1;
-    int old = col_top[y * MC_W + x];
+    int s = chunk_find(chunk_of(x), chunk_of(y));
+    int lx, ly, z, t = -1;
+    if (s < 0)
+        return;
+    lx = chunk_local(x);
+    ly = chunk_local(y);
     for (z = MC_H - 1; z >= 0; z--) {
-        if (world[widx(x, y, z)] != B_AIR) {
+        if (ch_blocks[s][chunk_lidx(lx, ly, z)] != B_AIR) {
             t = z;
             break;
         }
     }
-    if (old != t) {
-        if (old >= -1 && old < MC_H)
-            top_hist[old + 1]--;
-        if (t >= -1 && t < MC_H)
-            top_hist[t + 1]++;
-        col_top[y * MC_W + x] = t;
+    ch_top[s][ly * MC_CHUNK + lx] = (short)t;
+    {
+        int m = -1, k;
+        for (k = 0; k < MC_COLS; k++) {
+            if (ch_top[s][k] > m)
+                m = ch_top[s][k];
+        }
+        ch_max[s] = m;
     }
+    world_max_recompute();
 }
 
-static void grain_recompute_col(int x, int y) {
-    int z;
-    for (z = 0; z < MC_H; z++)
-        grain_map[widx(x, y, z)] =
-            (unsigned char)(((hash2(x * 13 + z * 7, y * 13 - z * 5) & 7) == 0) ? 1 : 0);
+static int col_top_at(int x, int y) {
+    int s = chunk_find(chunk_of(x), chunk_of(y));
+    if (s < 0)
+        return -1;
+    return ch_top[s][chunk_local(y) * MC_CHUNK + chunk_local(x)];
 }
 
 static void light_recompute_col(int x, int y) {
-    int z, top = col_top[y * MC_W + x];
+    int s = chunk_find(chunk_of(x), chunk_of(y));
+    int lx, ly, z, top;
+    int x0, y0, xx, yy;
+    if (s < 0)
+        return;
+    lx = chunk_local(x);
+    ly = chunk_local(y);
+    top = ch_top[s][ly * MC_CHUNK + lx];
+    x0 = ch_cx[s] * MC_CHUNK;
+    y0 = ch_cy[s] * MC_CHUNK;
+    xx = x0 + lx;
+    yy = y0 + ly;
     for (z = 0; z < MC_H; z++) {
         int d = top - z;
         float l;
@@ -539,56 +674,57 @@ static void light_recompute_col(int x, int y) {
             if (l < 0.22f)
                 l = 0.22f;
         }
-        light_map[widx(x, y, z)] = (unsigned char)(l * 255.0f);
+        ch_light[s][chunk_lidx(lx, ly, z)] = (unsigned char)(l * 255.0f);
+        ch_grain[s][chunk_lidx(lx, ly, z)] =
+            (unsigned char)(((hash2(xx * 13 + z * 7, yy * 13 - z * 5) & 7) == 0) ? 1 : 0);
     }
+}
+
+static unsigned char get_b(int x, int y, int z) {
+    int s;
+    if (z < 0 || z >= MC_H)
+        return B_AIR;
+    s = chunk_find(chunk_of(x), chunk_of(y));
+    if (s < 0)
+        return B_AIR;
+    return ch_blocks[s][chunk_lidx(chunk_local(x), chunk_local(y), z)];
 }
 
 static void set_b(int x, int y, int z, unsigned char b) {
-    int t;
-    if (!in_world(x, y, z))
+    int s;
+    if (z < 0 || z >= MC_H)
         return;
     if (b >= B_COUNT)
         return;
-    world[widx(x, y, z)] = b;
-    grain_map[widx(x, y, z)] =
-        (unsigned char)(((hash2(x * 13 + z * 7, y * 13 - z * 5) & 7) == 0) ? 1 : 0);
+    s = chunk_ensure(chunk_of(x), chunk_of(y));
+    if (s < 0)
+        return;
+    ch_blocks[s][chunk_lidx(chunk_local(x), chunk_local(y), z)] = b;
+    ch_dirty[s] = 1;
     col_recompute(x, y);
     light_recompute_col(x, y);
     world_dirty = 1;
-    t = col_top[y * MC_W + x];
-    if (t > world_max_top)
-        world_max_top = t;
-    else if (top_hist[world_max_top + 1] <= 0)
-        top_hist_refresh_max();
 }
 
 static void set_b_raw(int x, int y, int z, unsigned char b) {
-    if (!in_world(x, y, z))
+    int s;
+    if (z < 0 || z >= MC_H)
         return;
-    world[widx(x, y, z)] = b;
+    s = chunk_find(chunk_of(x), chunk_of(y));
+    if (s < 0)
+        return;
+    ch_blocks[s][chunk_lidx(chunk_local(x), chunk_local(y), z)] = b;
 }
 
-static void light_build(void) {
-    int x, y;
-    memset(top_hist, 0, sizeof(top_hist));
-    for (y = 0; y < MC_D; y++)
-        for (x = 0; x < MC_W; x++)
-            col_top[y * MC_W + x] = -2;
-    for (y = 0; y < MC_D; y++) {
-        for (x = 0; x < MC_W; x++) {
-            col_recompute(x, y);
-            light_recompute_col(x, y);
-            grain_recompute_col(x, y);
-        }
-    }
-    top_hist_refresh_max();
-}
-
-/* skylight 1.0 at surface fading to 0.22 deep: O(1) via light_map */
+/* skylight 1.0 at surface fading to 0.22 deep: O(1) via chunk light */
 static float sky_light(int x, int y, int z) {
-    if (!in_world(x, y, z))
+    int s;
+    if (z < 0 || z >= MC_H)
         return 1.0f;
-    return (float)light_map[widx(x, y, z)] / 255.0f;
+    s = chunk_find(chunk_of(x), chunk_of(y));
+    if (s < 0)
+        return 1.0f;
+    return (float)ch_light[s][chunk_lidx(chunk_local(x), chunk_local(y), z)] / 255.0f;
 }
 
 static int is_solid(unsigned char b) {
@@ -628,16 +764,16 @@ static float mc_smoothstep(float t) {
  * blocks breaks the perfect 16-grid alignment at the edges. A smoothed
  * (bilinear) field must NOT be thresholded here: averaging 4 uniforms
  * collapses the distribution and kills every biome but forest. */
+static int biome_fdiv(int v, int c) {
+    return v >= 0 ? v / c : -((-v + c - 1) / c);
+}
+
 static int biome_cell(int x, int y, unsigned int seed, int cell, int ox, int oy,
     unsigned int jit, int pct) {
-    int cx = x / cell, cy = y / cell;
+    int cx = biome_fdiv(x, cell), cy = biome_fdiv(y, cell);
     int jx = (int)(hash2_seed(cx + ox, cy + oy, seed ^ jit) % 5) - 2;
     int jy = (int)(hash2_seed(cx + oy, cy + ox, seed ^ (jit ^ 0x51EDu)) % 5) - 2;
-    int sx = (x + jx) / cell, sy = (y + jy) / cell;
-    if (sx < 0)
-        sx = 0;
-    if (sy < 0)
-        sy = 0;
+    int sx = biome_fdiv(x + jx, cell), sy = biome_fdiv(y + jy, cell);
     return (hash2_seed(sx + ox, sy + oy, seed) % 100) < (unsigned int)pct;
 }
 
@@ -703,90 +839,161 @@ static int inv_remove(int b, int n) {
     return 1;
 }
 
-/* World gen phases: 1 heights 2 materials 3 water 4 trees/cacti 5 deco 6 spawn. */
-static void gen_world(unsigned int seed) {
-    int x, y, z;
-    mc_seed = seed;
-    memset(world, 0, sizeof(world));
-    for (y = 0; y < MC_D; y++) {
-        for (x = 0; x < MC_W; x++) {
-            int h = ground_h_seed(x, y, seed);
-            int desert = biome_desert(x, y, seed);
-            int snowy = h >= 19 || biome_snow(x, y, seed);
-            for (z = 0; z <= h; z++) {
-                unsigned char b;
-                if (z == 0)
-                    b = B_BEDROCK;
-                else if (z == h && h <= 8)
-                    b = B_SAND;
-                else if (z == h && desert && h > 8)
-                    b = B_SAND;
-                else if (z == h && snowy && h > 8)
-                    b = B_SNOW;
-                else if (z == h)
-                    b = B_GRASS;
-                else if (z >= h - 2)
-                    b = (desert && h > 8) ? B_SAND : B_DIRT;
-                else if (z >= h - 5)
-                    b = B_STONE;
-                else
-                    b = (hash2_seed(x * 3 + z, y * 5 - z, seed) % 7 == 0) ? B_DIRT : B_STONE;
-                set_b_raw(x, y, z, b);
-            }
-            for (z = 3; z < h - 2 && z < MC_H - 8; z++) {
-                unsigned char cur = get_b(x, y, z);
-                if ((cur == B_STONE || cur == B_DIRT) && is_cave(x, y, z, seed))
-                    set_b_raw(x, y, z, B_AIR);
-            }
-            if (h > 8 && !desert && !snowy && hash2_seed(x, y, seed) % 97 < 3) {
-                int th = h + 4;
-                int k;
-                if (th >= MC_H - 1)
-                    th = MC_H - 2;
-                for (k = h + 1; k <= th; k++)
-                    set_b_raw(x, y, k, B_LOG);
-                for (k = th - 1; k <= th + 1; k++) {
-                    int dx, dy;
-                    for (dy = -2; dy <= 2; dy++) {
-                        for (dx = -2; dx <= 2; dx++) {
-                            if (dx == 0 && dy == 0 && k <= th)
-                                continue;
-                            if (dx * dx + dy * dy > 5 && k == th + 1)
-                                continue;
-                            if (get_b(x + dx, y + dy, k) == B_AIR)
-                                set_b_raw(x + dx, y + dy, k, B_LEAVES);
-                        }
-                    }
+/* World gen per column, split in two phases so chunk borders never seam:
+ * terrain first (position-pure from x, y, seed: identical on regen), then
+ * decoration (trees may spill 2 blocks into neighbours, whose terrain is
+ * guaranteed present by the load radius). */
+static void gen_column_terrain(int x, int y, unsigned int seed) {
+    int h = ground_h_seed(x, y, seed);
+    int desert = biome_desert(x, y, seed);
+    int snowy = h >= 19 || biome_snow(x, y, seed);
+    int z;
+    for (z = 0; z <= h; z++) {
+        unsigned char b;
+        if (z == 0)
+            b = B_BEDROCK;
+        else if (z == h && h <= 8)
+            b = B_SAND;
+        else if (z == h && desert && h > 8)
+            b = B_SAND;
+        else if (z == h && snowy && h > 8)
+            b = B_SNOW;
+        else if (z == h)
+            b = B_GRASS;
+        else if (z >= h - 2)
+            b = (desert && h > 8) ? B_SAND : B_DIRT;
+        else if (z >= h - 5)
+            b = B_STONE;
+        else
+            b = (hash2_seed(x * 3 + z, y * 5 - z, seed) % 7 == 0) ? B_DIRT : B_STONE;
+        set_b_raw(x, y, z, b);
+    }
+    for (z = 3; z < h - 2 && z < MC_H - 8; z++) {
+        unsigned char cur = get_b(x, y, z);
+        if ((cur == B_STONE || cur == B_DIRT) && is_cave(x, y, z, seed))
+            set_b_raw(x, y, z, B_AIR);
+    }
+    if (h <= 8) {
+        for (z = h + 1; z <= 8; z++)
+            set_b_raw(x, y, z, B_WATER);
+    }
+}
+
+static void decorate_column(int x, int y, unsigned int seed) {
+    int h = ground_h_seed(x, y, seed);
+    int desert = biome_desert(x, y, seed);
+    int snowy = h >= 19 || biome_snow(x, y, seed);
+    if (h > 8 && !desert && !snowy && hash2_seed(x, y, seed) % 97 < 3) {
+        int th = h + 4;
+        int k;
+        if (th >= MC_H - 1)
+            th = MC_H - 2;
+        for (k = h + 1; k <= th; k++)
+            set_b(x, y, k, B_LOG);
+        for (k = th - 1; k <= th + 1; k++) {
+            int dx, dy;
+            for (dy = -2; dy <= 2; dy++) {
+                for (dx = -2; dx <= 2; dx++) {
+                    if (dx == 0 && dy == 0 && k <= th)
+                        continue;
+                    if (dx * dx + dy * dy > 5 && k == th + 1)
+                        continue;
+                    if (get_b(x + dx, y + dy, k) == B_AIR)
+                        set_b(x + dx, y + dy, k, B_LEAVES);
                 }
-            }
-            if (h > 8 && desert && hash2_seed(x * 7, y * 7, seed) % 89 < 4) {
-                int ch = h + 2 + (hash2_seed(x, y * 3, seed) % 2);
-                int k;
-                if (ch >= MC_H - 1)
-                    ch = MC_H - 2;
-                for (k = h + 1; k <= ch; k++)
-                    set_b_raw(x, y, k, B_LOG);
-            }
-            if (h > 8 && !desert && !snowy && hash2_seed(x * 5 + 1, y * 5 + 2, seed) % 100 < 6) {
-                if (get_b(x, y, h + 1) == B_AIR)
-                    set_b_raw(x, y, h + 1, B_FLOWER);
-            }
-            if (h <= 8) {
-                for (z = h + 1; z <= 8; z++)
-                    set_b_raw(x, y, z, B_WATER);
             }
         }
     }
-    light_build();
+    if (h > 8 && desert && hash2_seed(x * 7, y * 7, seed) % 89 < 4) {
+        int ch = h + 2 + (hash2_seed(x, y * 3, seed) % 2);
+        int k;
+        if (ch >= MC_H - 1)
+            ch = MC_H - 2;
+        for (k = h + 1; k <= ch; k++)
+            set_b(x, y, k, B_LOG);
+    }
+    if (h > 8 && !desert && !snowy && hash2_seed(x * 5 + 1, y * 5 + 2, seed) % 100 < 6) {
+        if (get_b(x, y, h + 1) == B_AIR)
+            set_b(x, y, h + 1, B_FLOWER);
+    }
+}
+
+static void gen_terrain_chunk(int slot) {
+    int lx, ly;
+    int x0 = ch_cx[slot] * MC_CHUNK, y0 = ch_cy[slot] * MC_CHUNK;
+    for (ly = 0; ly < MC_CHUNK; ly++) {
+        for (lx = 0; lx < MC_CHUNK; lx++)
+            gen_column_terrain(x0 + lx, y0 + ly, mc_seed);
+    }
+}
+
+static void decorate_chunk(int slot) {
+    int lx, ly;
+    int x0 = ch_cx[slot] * MC_CHUNK, y0 = ch_cy[slot] * MC_CHUNK;
+    for (ly = 0; ly < MC_CHUNK; ly++) {
+        for (lx = 0; lx < MC_CHUNK; lx++)
+            decorate_column(x0 + lx, y0 + ly, mc_seed);
+    }
+}
+
+/* Keep a (2R+1)^2 ring of terrain around the player, an inner ring
+ * decorated, drop the rest (dirty chunks hit disk first). Runs every
+ * frame: pure cache hits when standing still, a few chunk gens on border
+ * crossings. Coordinates are unbounded: no edge, no wall, no wrap. */
+static void ensure_around_px(float px, float py) {
+    int pcx = chunk_of((int)floorf(px));
+    int pcy = chunk_of((int)floorf(py));
+    int dx, dy, i;
+    for (dy = -MC_LOAD_R; dy <= MC_LOAD_R; dy++) {
+        for (dx = -MC_LOAD_R; dx <= MC_LOAD_R; dx++)
+            chunk_ensure(pcx + dx, pcy + dy);
+    }
+    for (dy = -(MC_LOAD_R - 1); dy <= MC_LOAD_R - 1; dy++) {
+        for (dx = -(MC_LOAD_R - 1); dx <= MC_LOAD_R - 1; dx++) {
+            int s = chunk_find(pcx + dx, pcy + dy);
+            if (s >= 0 && !ch_decor[s]) {
+                ch_decor[s] = 1;
+                decorate_chunk(s);
+            }
+        }
+    }
+    for (i = 0; i < MC_CHUNKS; i++) {
+        int ox, oy;
+        if (!ch_used[i])
+            continue;
+        ox = abs(ch_cx[i] - pcx);
+        oy = abs(ch_cy[i] - pcy);
+        if (ox > MC_LOAD_R || oy > MC_LOAD_R) {
+            if (ch_dirty[i])
+                save_chunk_file(i);
+            ch_used[i] = 0;
+            if (ch_cache == i)
+                ch_cache = -1;
+        }
+    }
+    world_max_recompute();
+}
+
+static void ensure_around(void) {
+    ensure_around_px(pl_x, pl_y);
+}
+
+/* World gen phases: 1 terrain ring 2 decor ring 3 spawn 4 mobs. */
+static void new_world(unsigned int seed) {
+    int z, i;
+    mc_seed = seed;
+    for (i = 0; i < MC_CHUNKS; i++)
+        ch_used[i] = 0;
+    ch_cache = -1;
+    world_max_top = -1;
+    ensure_around_px(8.5f, 8.5f);
     {
-        int sx = MC_W / 2, sy = MC_D / 2;
+        int sx = 8, sy = 8;
         int tries, best_h = -1;
         for (tries = 0; tries < 40; tries++) {
-            int tx = MC_W / 2 + (tries * 7) % 17 - 8;
-            int ty = MC_D / 2 + (tries * 11) % 17 - 8;
+            int tx = 8 + (tries * 7) % 17 - 8;
+            int ty = 8 + (tries * 11) % 17 - 8;
             int dx, dy, clear = 1;
-            if (tx < 2 || ty < 2 || tx >= MC_W - 2 || ty >= MC_D - 2)
-                continue;
             for (dy = -2; dy <= 2 && clear; dy++) {
                 for (dx = -2; dx <= 2 && clear; dx++) {
                     int h = ground_h_seed(tx + dx, ty + dy, seed);
@@ -881,8 +1088,6 @@ static void mob_spawn_one(Pig *m, int id, int hp, long now) {
         int tx = (int)pl_x + (int)(hash2(id * 91 + tries * 13, (int)frame_ms) % 21) - 10;
         int ty = (int)pl_y + (int)(hash2((int)frame_ms, id * 57 + tries * 7) % 21) - 10;
         int gz, z;
-        if (tx < 2 || ty < 2 || tx >= MC_W - 2 || ty >= MC_D - 2)
-            continue;
         gz = -1;
         for (z = MC_H - 1; z > 0; z--) {
             if (is_solid(get_b(tx, ty, z))) {
@@ -1063,14 +1268,6 @@ static void tick_mob(Pig *p, int id, float dt, long now) {
                 p->y = ny;
             else
                 p->yaw -= 1.7f;
-            if (p->x < 1)
-                p->x = 1;
-            if (p->y < 1)
-                p->y = 1;
-            if (p->x >= MC_W - 1)
-                p->x = MC_W - 2;
-            if (p->y >= MC_D - 1)
-                p->y = MC_D - 2;
         }
         p->vz -= MC_GRAV * dt;
         if (p->vz < -MC_MAXFALL)
@@ -1192,9 +1389,13 @@ static unsigned char shade_block(unsigned char b, int face, int bx, int by, int 
             return 3;
     }
     /* procedural grain: precomputed per block, no hash per pixel */
-    if (in_world(bx, by, bz) && grain_map[widx(bx, by, bz)]) {
-        if (c > 10 && c != 34)
-            c = (unsigned char)(c - 1);
+    {
+        int gs = chunk_find(chunk_of(bx), chunk_of(by));
+        if (gs >= 0 && in_world(bx, by, bz) &&
+            ch_grain[gs][chunk_lidx(chunk_local(bx), chunk_local(by), bz)]) {
+            if (c > 10 && c != 34)
+                c = (unsigned char)(c - 1);
+        }
     }
     /* directional sun: Y-facing sides one dither step darker */
     if (face == 2 && ((x * 3 + y * 7) & 3) == 0) {
@@ -1298,16 +1499,12 @@ static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float d
         }
         if (t > maxd)
             return h;
-        if (!in_world(ix, iy, iz)) {
-            if (iz < 0 || iz >= MC_H)
-                return h;
-            if ((ix < 0 && stepx < 0) || (ix >= MC_W && stepx > 0) ||
-                (iy < 0 && stepy < 0) || (iy >= MC_D && stepy > 0))
-                return h;
-            if (iz > world_max_top && stepz > 0)
-                return h;
-            continue;
-        }
+        /* Infinite x/y: unloaded columns read as AIR (sky). Only z ends
+         * the ray; upward rays above the tallest loaded block quit early. */
+        if (iz < 0 || iz >= MC_H)
+            return h;
+        if (iz > world_max_top && stepz > 0)
+            return h;
         if (is_visible(get_b(ix, iy, iz))) {
             h.hit = 1;
             h.bx = ix;
@@ -1662,12 +1859,9 @@ static void render_frame(void) {
         if (last_act[0] && frame_ms - last_act_ms < 2500)
             mc_text_bg(3, 27, last_act, 2, 3);
         {
-            int px = (int)pl_x, py = (int)pl_y;
-            if (px >= 0 && py >= 0 && px < MC_W && py < MC_D) {
-                int top = col_top[py * MC_W + px];
-                if (pl_z < (float)top - 1.5f)
-                    mc_text_bg(3, 35, "T:SALIR", 2, 3);
-            }
+            int top = col_top_at((int)pl_x, (int)pl_y);
+            if (pl_z < (float)top - 1.5f)
+                mc_text_bg(3, 35, "T:SALIR", 2, 3);
         }
     }
     {
@@ -1787,14 +1981,6 @@ static void poll_kbd(void) {
             if ((r & 0x7F) == SC_T) {
                 int px = (int)pl_x, py = (int)pl_y;
                 int gz = -1, z;
-                if (px < 0)
-                    px = 0;
-                if (py < 0)
-                    py = 0;
-                if (px >= MC_W)
-                    px = MC_W - 1;
-                if (py >= MC_D)
-                    py = MC_D - 1;
                 for (z = MC_H - 1; z >= 0; z--) {
                     if (is_solid(get_b(px, py, z))) {
                         gz = z;
@@ -1887,7 +2073,7 @@ static void poll_kbd(void) {
             }
             if ((r & 0x7F) == SC_N) {
                 mc_seed++;
-                gen_world(mc_seed);
+                new_world(mc_seed);
                 if (save_world() != 0) {
                     snprintf(last_act, sizeof(last_act), "SAVE FAIL");
                     last_act_ms = frame_ms;
@@ -1905,8 +2091,10 @@ static void poll_kbd(void) {
                                      cosf(pl_yaw) * cosf(pl_pitch),
                                      sinf(pl_yaw) * cosf(pl_pitch),
                                      sinf(pl_pitch), 6.0f);
-                printf("minicraft: pos %d %d %d yaw %.2f pitch %.2f tgt %s wood %d\n",
-                       (int)pl_x, (int)pl_y, (int)pl_z, pl_yaw, pl_pitch,
+                printf("minicraft: pos %d %d %d chunk %d %d yaw %.2f pitch %.2f tgt %s wood %d\n",
+                       (int)pl_x, (int)pl_y, (int)pl_z,
+                       chunk_of((int)floorf(pl_x)), chunk_of((int)floorf(pl_y)),
+                       pl_yaw, pl_pitch,
                        th.hit ? mc_block_name(get_b(th.bx, th.by, th.bz)) : "-",
                        inv[B_LOG]);
                 {
@@ -2128,9 +2316,7 @@ static void tick_water(long now) {
         for (dx = -8; dx <= 8 && budget > 0; dx++) {
             int x = cx + dx, y = cy + dy;
             int z, top;
-            if (x < 1 || y < 1 || x >= MC_W - 1 || y >= MC_D - 1)
-                continue;
-            top = col_top[y * MC_W + x];
+            top = col_top_at(x, y);
             for (z = top; z >= top - 3 && z > 0 && budget > 0; z--) {
                 if (get_b(x, y, z) != B_WATER)
                     continue;
@@ -2206,8 +2392,6 @@ static void tick_discover(long now) {
     if (now - discover_ms < 1000)
         return;
     discover_ms = now;
-    if (px < 0 || py < 0 || px >= MC_W || py >= MC_D)
-        return;
     desert = biome_desert(px, py, mc_seed);
     snowy = biome_snow(px, py, mc_seed);
     for (z = (int)pl_z - 2; z <= (int)pl_z + 1; z++) {
@@ -2448,6 +2632,7 @@ static void tick_interact(void) {
     prev_buttons = m[2];
 }
 
+/* Frozen v3 header (saves already on disk); v4 appends mobs_n. */
 typedef struct {
     uint32_t magic;
     uint32_t version;
@@ -2460,7 +2645,34 @@ typedef struct {
     int32_t hunger;
     int32_t inv[B_COUNT];
     uint32_t crc;
+} SaveHeaderV3;
+
+typedef struct {
+    uint32_t magic;
+    uint32_t version;
+    uint32_t world_size;
+    uint32_t seed;
+    float px, py, pz, yaw, pitch;
+    int32_t hot_sel;
+    int32_t hp;
+    int32_t pork_n;
+    int32_t hunger;
+    int32_t mobs_n;
+    int32_t inv[B_COUNT];
+    uint32_t crc;
 } SaveHeader;
+
+typedef struct {
+    uint32_t magic;
+    uint32_t version;
+    int32_t cx;
+    int32_t cy;
+    uint32_t seed;
+    uint32_t crc;
+} ChunkHeader;
+
+#define MC_LEGACY_WORLD 131072u
+static unsigned char carve_buf[MC_LEGACY_WORLD];
 
 static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc) {
     const unsigned char *p = (const unsigned char *)data;
@@ -2477,11 +2689,83 @@ static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc) {
 
 static uint32_t save_compute_crc(const SaveHeader *hd) {
     SaveHeader tmp = *hd;
-    uint32_t crc = 0;
     tmp.crc = 0;
-    crc = mc_crc32(&tmp, sizeof(tmp), crc);
-    crc = mc_crc32(world, sizeof(world), crc);
-    return crc;
+    return mc_crc32(&tmp, sizeof(tmp), 0);
+}
+
+static void chunk_path(int cx, int cy, char *out, size_t n) {
+    snprintf(out, n, "/saves/mc_c_%d_%d.bin", cx, cy);
+}
+
+static int save_chunk_file(int slot) {
+    char path[64];
+    FILE *f;
+    ChunkHeader ch;
+    if (!ch_used[slot])
+        return 0;
+    chunk_path(ch_cx[slot], ch_cy[slot], path, sizeof(path));
+    f = fopen(path, "wb");
+    if (!f)
+        return -1;
+    ch.magic = MC_CHUNK_MAGIC;
+    ch.version = MC_CHUNK_VERSION;
+    ch.cx = (int32_t)ch_cx[slot];
+    ch.cy = (int32_t)ch_cy[slot];
+    ch.seed = mc_seed;
+    ch.crc = 0;
+    ch.crc = mc_crc32(&ch, sizeof(ch), 0);
+    ch.crc = mc_crc32(ch_blocks[slot], MC_CVOL, ch.crc);
+    if (fwrite(&ch, 1, sizeof(ch), f) != sizeof(ch)) {
+        fclose(f);
+        return -1;
+    }
+    if (fwrite(ch_blocks[slot], 1, MC_CVOL, f) != MC_CVOL) {
+        fclose(f);
+        return -1;
+    }
+    if (fclose(f) != 0)
+        return -1;
+    ch_dirty[slot] = 0;
+    return 0;
+}
+
+static int load_chunk_file(int slot, int cx, int cy) {
+    char path[64];
+    FILE *f;
+    ChunkHeader ch;
+    uint32_t crc;
+    int z;
+    chunk_path(cx, cy, path, sizeof(path));
+    f = fopen(path, "rb");
+    if (!f)
+        return 0;
+    if (fread(&ch, 1, sizeof(ch), f) != sizeof(ch)) {
+        fclose(f);
+        return 0;
+    }
+    if (ch.magic != MC_CHUNK_MAGIC || ch.version != MC_CHUNK_VERSION ||
+        ch.cx != (int32_t)cx || ch.cy != (int32_t)cy || ch.seed != mc_seed) {
+        fclose(f);
+        return 0;
+    }
+    if (fread(ch_blocks[slot], 1, MC_CVOL, f) != MC_CVOL) {
+        fclose(f);
+        return 0;
+    }
+    fclose(f);
+    {
+        ChunkHeader tmp = ch;
+        tmp.crc = 0;
+        crc = mc_crc32(&tmp, sizeof(tmp), 0);
+    }
+    crc = mc_crc32(ch_blocks[slot], MC_CVOL, crc);
+    if (crc != ch.crc)
+        return 0;
+    for (z = 0; z < MC_CVOL; z++) {
+        if (ch_blocks[slot][z] >= B_COUNT)
+            return 0;
+    }
+    return 1;
 }
 
 /* Direct write, no tmp+rename: the kernel has no rename(82) (UNIMPL),
@@ -2490,11 +2774,12 @@ static int save_world(void) {
     FILE *f = fopen(SAVE_PATH, "wb");
     SaveHeader hd;
     size_t i;
+    int s, rc = 0;
     if (!f)
         return -1;
     hd.magic = MC_SAVE_MAGIC;
     hd.version = MC_SAVE_VERSION;
-    hd.world_size = (uint32_t)sizeof(world);
+    hd.world_size = (uint32_t)MC_CVOL;
     hd.seed = mc_seed;
     hd.px = pl_x;
     hd.py = pl_y;
@@ -2505,6 +2790,7 @@ static int save_world(void) {
     hd.hp = (int32_t)pl_hp;
     hd.pork_n = (int32_t)pork;
     hd.hunger = (int32_t)pl_hunger;
+    hd.mobs_n = (int32_t)n_creeps;
     for (i = 0; i < B_COUNT; i++)
         hd.inv[i] = (int32_t)inv[i];
     hd.crc = 0;
@@ -2513,25 +2799,21 @@ static int save_world(void) {
         fclose(f);
         return -1;
     }
-    if (fwrite(world, 1, sizeof(world), f) != sizeof(world)) {
-        fclose(f);
-        return -1;
-    }
     if (fclose(f) != 0)
         return -1;
+    for (s = 0; s < MC_CHUNKS; s++) {
+        if (ch_used[s] && ch_dirty[s] && save_chunk_file(s) != 0)
+            rc = -1;
+    }
     unlink(SAVE_TMP_PATH);
-    world_dirty = 0;
-    return 0;
+    if (rc == 0)
+        world_dirty = 0;
+    return rc;
 }
 
 static int save_validate_loaded(void) {
-    size_t i;
     int k;
-    for (i = 0; i < sizeof(world); i++) {
-        if (world[i] >= B_COUNT)
-            return -1;
-    }
-    if (!(pl_x >= 0 && pl_x < MC_W && pl_y >= 0 && pl_y < MC_D && pl_z >= 0 && pl_z < MC_H))
+    if (!(pl_z >= 0 && pl_z < MC_H))
         return -1;
     if (hot_sel < 0 || hot_sel > 8)
         hot_sel = 0;
@@ -2579,14 +2861,43 @@ static void load_reset_runtime(void) {
     world_dirty = 0;
 }
 
+/* Import a 64x64x32 legacy blob into chunks (0..3, 0..3), then dirty so
+ * region files persist it. Old saves keep their world, new code owns it. */
+static void carve_blob(const unsigned char *blob) {
+    int cx, cy, x, y, z, s;
+    for (cy = 0; cy < 4; cy++) {
+        for (cx = 0; cx < 4; cx++)
+            chunk_ensure(cx, cy);
+    }
+    for (y = 0; y < 64; y++) {
+        for (x = 0; x < 64; x++) {
+            for (z = 0; z < MC_H; z++) {
+                unsigned char b = blob[(z * 64 + y) * 64 + x];
+                if (b < B_COUNT)
+                    set_b_raw(x, y, z, b);
+            }
+        }
+    }
+    for (cy = 0; cy < 4; cy++) {
+        for (cx = 0; cx < 4; cx++) {
+            s = chunk_find(cx, cy);
+            if (s >= 0) {
+                chunk_build_meta(s);
+                ch_dirty[s] = 1;
+            }
+        }
+    }
+    world_max_recompute();
+}
+
 /* Legacy raw save: fixed old_inv[12] layout is fragile if B_COUNT grows;
  * kept read-only for ancient saves, never written. Do not extend. */
 static int load_world_legacy(FILE *f) {
     float st[6];
     int i;
-    if (fread(world, 1, sizeof(world), f) != sizeof(world))
+    if (fread(carve_buf, 1, sizeof(carve_buf), f) != sizeof(carve_buf))
         return -1;
-    light_build();
+    carve_blob(carve_buf);
     for (i = 0; i < B_COUNT; i++)
         inv[i] = 0;
     if (fread(st, 1, sizeof(st), f) == sizeof(st)) {
@@ -2612,19 +2923,106 @@ static int load_world_legacy(FILE *f) {
     mc_seed = 1;
     pl_hp = MC_HP_MAX;
     pork = 0;
+    ensure_around();
     if (save_validate_loaded() != 0)
         return -1;
     load_reset_runtime();
     return 0;
 }
 
-static int load_world_v2_body(FILE *f, SaveHeader *hd) {
-    size_t tail = sizeof(SaveHeader) - sizeof(uint32_t) * 3 -
-        sizeof(int32_t) - sizeof(uint32_t);
-    if (fread(&hd->seed, 1, tail, f) != tail)
+static void load_apply_player(const SaveHeader *hd) {
+    size_t i;
+    mc_seed = hd->seed;
+    pl_x = hd->px;
+    pl_y = hd->py;
+    pl_z = hd->pz;
+    pl_yaw = hd->yaw;
+    pl_pitch = hd->pitch;
+    hot_sel = (int)hd->hot_sel;
+    pl_hp = (int)hd->hp;
+    pork = (int)hd->pork_n;
+    pl_hunger = (int)hd->hunger;
+    n_creeps = (int)hd->mobs_n;
+    if (n_creeps < 0 || n_creeps > MC_CREEPS_MAX)
+        n_creeps = MC_CREEPS_DEF;
+    for (i = 0; i < B_COUNT; i++)
+        inv[i] = (int)hd->inv[i];
+}
+
+static int load_world_v3(FILE *f, SaveHeader *hd) {
+    SaveHeaderV3 old;
+    size_t i;
+    if (fread(&old.seed, 1, sizeof(old) - sizeof(uint32_t) * 3, f) !=
+        sizeof(old) - sizeof(uint32_t) * 3)
         return -1;
-    hd->hunger = MC_HUNGER_MAX;
+    if (fread(carve_buf, 1, sizeof(carve_buf), f) != sizeof(carve_buf))
+        return -1;
+    hd->magic = old.magic;
+    hd->version = old.version;
+    hd->world_size = old.world_size;
+    hd->seed = old.seed;
+    hd->px = old.px;
+    hd->py = old.py;
+    hd->pz = old.pz;
+    hd->yaw = old.yaw;
+    hd->pitch = old.pitch;
+    hd->hot_sel = old.hot_sel;
+    hd->hp = old.hp;
+    hd->pork_n = old.pork_n;
+    hd->hunger = old.hunger;
+    hd->mobs_n = MC_CREEPS_DEF;
+    for (i = 0; i < B_COUNT; i++)
+        hd->inv[i] = old.inv[i];
+    hd->crc = old.crc;
+    {
+        SaveHeaderV3 tmp = old;
+        uint32_t crc;
+        tmp.crc = 0;
+        crc = mc_crc32(&tmp, sizeof(tmp), 0);
+        crc = mc_crc32(carve_buf, sizeof(carve_buf), crc);
+        if (crc != old.crc)
+            return -1;
+    }
+    mc_seed = hd->seed;
+    carve_blob(carve_buf);
+    load_apply_player(hd);
+    return 0;
+}
+
+static int load_world_v2(FILE *f, SaveHeader *hd) {
+    SaveHeaderV3 old;
+    size_t tail = sizeof(SaveHeaderV3) - sizeof(uint32_t) * 3 -
+        sizeof(int32_t) - sizeof(uint32_t);
+    size_t i;
+    memset(&old, 0, sizeof(old));
+    if (fread(&old.seed, 1, tail, f) != tail)
+        return -1;
+    if (fread(carve_buf, 1, sizeof(carve_buf), f) != sizeof(carve_buf))
+        return -1;
+    old.magic = MC_SAVE_MAGIC;
+    old.version = 2;
+    old.world_size = MC_LEGACY_WORLD;
+    old.hunger = MC_HUNGER_MAX;
+    hd->magic = old.magic;
+    hd->version = old.version;
+    hd->world_size = old.world_size;
+    hd->seed = old.seed;
+    hd->px = old.px;
+    hd->py = old.py;
+    hd->pz = old.pz;
+    hd->yaw = old.yaw;
+    hd->pitch = old.pitch;
+    hd->hot_sel = old.hot_sel;
+    hd->hp = old.hp;
+    hd->pork_n = old.pork_n;
+    hd->hunger = old.hunger;
+    hd->mobs_n = MC_CREEPS_DEF;
+    for (i = 0; i < B_COUNT; i++)
+        hd->inv[i] = old.inv[i];
     hd->crc = 0;
+    mc_seed = hd->seed;
+    carve_blob(carve_buf);
+    load_apply_player(hd);
     return 0;
 }
 
@@ -2632,7 +3030,7 @@ static int load_world(void) {
     FILE *f = fopen(SAVE_PATH, "rb");
     SaveHeader hd;
     size_t i;
-    int k;
+    int k, r = -1;
     uint32_t pre[3];
     if (!f)
         return -1;
@@ -2640,54 +3038,52 @@ static int load_world(void) {
         fclose(f);
         return -1;
     }
-    if (pre[0] != MC_SAVE_MAGIC || pre[2] != sizeof(world)) {
-        int r;
+    if (pre[0] != MC_SAVE_MAGIC) {
         rewind(f);
         r = load_world_legacy(f);
         fclose(f);
         return r;
     }
+    memset(&hd, 0, sizeof(hd));
     hd.magic = pre[0];
     hd.version = pre[1];
     hd.world_size = pre[2];
     if (hd.version == MC_SAVE_VERSION) {
         size_t tail = sizeof(hd) - sizeof(pre);
-        if (fread(&hd.seed, 1, tail, f) != tail) {
+        if (fread(&hd.seed, 1, tail, f) == tail &&
+            save_compute_crc(&hd) == hd.crc) {
+            fclose(f);
+            load_apply_player(&hd);
+            r = 0;
+        } else {
             fclose(f);
             return -1;
         }
-    } else if (hd.version == 2) {
-        if (load_world_v2_body(f, &hd) != 0) {
+    } else if (hd.version == 3 && hd.world_size == MC_LEGACY_WORLD) {
+        if (load_world_v3(f, &hd) == 0) {
+            fclose(f);
+            r = 0;
+        } else {
+            fclose(f);
+            return -1;
+        }
+    } else if (hd.version == 2 && hd.world_size == MC_LEGACY_WORLD) {
+        if (load_world_v2(f, &hd) == 0) {
+            fclose(f);
+            r = 0;
+        } else {
             fclose(f);
             return -1;
         }
     } else {
-        int r;
         rewind(f);
         r = load_world_legacy(f);
         fclose(f);
         return r;
     }
-    if (fread(world, 1, sizeof(world), f) != sizeof(world)) {
-        fclose(f);
+    if (r != 0)
         return -1;
-    }
-    fclose(f);
-    if (hd.version == MC_SAVE_VERSION && save_compute_crc(&hd) != hd.crc)
-        return -1;
-    light_build();
-    mc_seed = hd.seed;
-    pl_x = hd.px;
-    pl_y = hd.py;
-    pl_z = hd.pz;
-    pl_yaw = hd.yaw;
-    pl_pitch = hd.pitch;
-    hot_sel = (int)hd.hot_sel;
-    pl_hp = (int)hd.hp;
-    pork = (int)hd.pork_n;
-    pl_hunger = (int)hd.hunger;
-    for (i = 0; i < B_COUNT; i++)
-        inv[i] = (int)hd.inv[i];
+    ensure_around();
     if (save_validate_loaded() != 0)
         return -1;
     for (k = 0; k < B_COUNT; k++) {
@@ -2695,22 +3091,19 @@ static int load_world(void) {
             inv[k] = 0;
     }
     load_reset_runtime();
-    pl_hp = (int)hd.hp;
-    pork = (int)hd.pork_n;
-    pl_hunger = (int)hd.hunger;
-    if (pl_hp < 1 || pl_hp > MC_HP_MAX)
-        pl_hp = MC_HP_MAX;
-    if (pork < 0 || pork > MC_INV_MAX)
-        pork = 0;
-    if (pl_hunger < 0 || pl_hunger > MC_HUNGER_MAX)
-        pl_hunger = MC_HUNGER_MAX;
+    if (save_validate_loaded() != 0)
+        return -1;
+    for (i = 0; i < B_COUNT; i++) {
+        if (inv[i] < 0 || inv[i] > MC_INV_MAX)
+            inv[i] = 0;
+    }
     return 0;
 }
 
 static int selftest(void) {
     int n_solid = 0;
     int i;
-    gen_world(1);
+    new_world(1);
     build_palette();
     render_frame();
     for (i = 0; i < FB_W * FB_H; i++) {
@@ -2739,13 +3132,13 @@ static int selftest(void) {
         pl_pitch = 0;
         pl_vz = 0;
         pl_on_ground = 0;
+        ensure_around_px(32.5f, 32.5f);
         for (cx = 28; cx <= 37; cx++) {
             for (cy = 28; cy <= 37; cy++) {
                 for (cz = 19; cz <= 23; cz++)
-                    set_b_raw(cx, cy, cz, B_AIR);
+                    set_b(cx, cy, cz, B_AIR);
             }
         }
-        light_build();
         set_b(35, 32, 21, B_BRICK);
         for (i = 0; i < MC_PIGS; i++)
             pigs[i].alive = 0;
@@ -2789,9 +3182,9 @@ static int selftest(void) {
         memset(&hd, 0, sizeof(hd));
         hd.magic = MC_SAVE_MAGIC;
         hd.version = MC_SAVE_VERSION;
-        hd.world_size = (uint32_t)sizeof(world);
+        hd.world_size = (uint32_t)MC_CVOL;
         if (hd.magic != MC_SAVE_MAGIC || hd.version != MC_SAVE_VERSION ||
-            hd.world_size != sizeof(world)) {
+            hd.world_size != MC_CVOL) {
             printf("minicraft: selftest FAIL (save header)\n");
             return 1;
         }
@@ -2944,48 +3337,65 @@ static int selftest(void) {
 }
 
 #ifdef MINICRAFT_HOST_TEST
+/* 128x128 columns (64 biome cells): a 64-wide patch covers too few
+ * 16-block biome cells and the desert rate fluctuates wildly by area. */
 static int census(void) {
-    int x, y, z, desert = 0, snow = 0, water = 0, logs = 0, land = 0;
+    int cx, cy, x, y, z;
+    int desert = 0, snow = 0, water = 0, logs = 0, land = 0;
     int hmin = MC_H, hmax = 0, lakes = 0, peaks = 0;
-    gen_world(1);
-    for (y = 0; y < MC_D; y++) {
-        for (x = 0; x < MC_W; x++) {
-            int top = col_top[y * MC_W + x];
-            unsigned char s;
-            int has_log = 0;
-            if (top < 0)
+    new_world(1);
+    for (cy = -4; cy < 4; cy++) {
+        for (cx = -4; cx < 4; cx++) {
+            int s = chunk_ensure(cx, cy);
+            if (s < 0)
                 continue;
-            for (z = 0; z <= top; z++) {
-                if (get_b(x, y, z) == B_LOG) {
-                    has_log = 1;
-                    break;
+            if (!ch_decor[s]) {
+                ch_decor[s] = 1;
+                decorate_chunk(s);
+            }
+            for (y = 0; y < MC_CHUNK; y++) {
+                for (x = 0; x < MC_CHUNK; x++) {
+                    int wx = cx * MC_CHUNK + x, wy = cy * MC_CHUNK + y;
+                    int top = ch_top[s][y * MC_CHUNK + x];
+                    unsigned char b;
+                    int has_log = 0;
+                    if (top < 0)
+                        continue;
+                    for (z = 0; z <= top; z++) {
+                        if (ch_blocks[s][chunk_lidx(x, y, z)] == B_LOG) {
+                            has_log = 1;
+                            break;
+                        }
+                    }
+                    if (has_log)
+                        logs++;
+                    b = ch_blocks[s][chunk_lidx(x, y, top)];
+                    (void)wx;
+                    (void)wy;
+                    if (b == B_WATER) {
+                        water++;
+                        continue;
+                    }
+                    land++;
+                    if (top < hmin)
+                        hmin = top;
+                    if (top > hmax)
+                        hmax = top;
+                    if (top <= 8)
+                        lakes++;
+                    if (top >= 19)
+                        peaks++;
+                    if (b == B_SAND && top > 8)
+                        desert++;
+                    if (b == B_SNOW)
+                        snow++;
                 }
             }
-            if (has_log)
-                logs++;
-            s = get_b(x, y, top);
-            if (s == B_WATER) {
-                water++;
-                continue;
-            }
-            land++;
-            if (top < hmin)
-                hmin = top;
-            if (top > hmax)
-                hmax = top;
-            if (top <= 8)
-                lakes++;
-            if (top >= 19)
-                peaks++;
-            if (s == B_SAND && top > 8)
-                desert++;
-            if (s == B_SNOW)
-                snow++;
         }
     }
     printf("minicraft: census land=%d desert=%d snow=%d water=%d treecols=%d hmin=%d hmax=%d lakes=%d peaks=%d\n",
         land, desert, snow, water, logs, hmin, hmax, lakes, peaks);
-    if (land > 3000 && desert > land / 10 && snow > 0 && water > 0 && logs > 0) {
+    if (land > 12000 && desert > land / 10 && snow > land / 20 && water > land / 100 && logs > 0) {
         printf("minicraft: census ok (biomes present)\n");
         return 0;
     }
@@ -2996,7 +3406,7 @@ static int census(void) {
 static int dumpstats(void) {
     int x, y;
     long top_sky = 0, top_ground = 0, bot_sky = 0, bot_ground = 0;
-    gen_world(1);
+    new_world(1);
     build_palette();
     render_frame();
     for (y = 40; y < 80; y++) {
@@ -3030,13 +3440,13 @@ static int dumpstats(void) {
         pl_y = 32.5f;
         pl_z = 20.02f;
         pl_yaw = 0;
+        ensure_around_px(32.5f, 32.5f);
         for (cx = 20; cx <= 45; cx++) {
             for (cy = 20; cy <= 45; cy++) {
                 for (cz = 18; cz <= 26; cz++)
-                    set_b_raw(cx, cy, cz, B_AIR);
+                    set_b(cx, cy, cz, B_AIR);
             }
         }
-        light_build();
         pl_pitch = 0.6f;
         render_frame();
         sky = 0;
@@ -3414,6 +3824,7 @@ int main(int argc, char **argv) {
     int i;
     int autoframes = 0;
     int zoomframes = 0;
+    int walkframes = 0;
     int force_new = 0;
     int arg_seed = 1;
     int have_save = 0;
@@ -3431,6 +3842,8 @@ int main(int argc, char **argv) {
             autoframes = atoi(argv[i + 1]);
         if (strcmp(argv[i], "zoomframes") == 0 && i + 1 < argc)
             zoomframes = atoi(argv[i + 1]);
+        if (strcmp(argv[i], "walkframes") == 0 && i + 1 < argc)
+            walkframes = atoi(argv[i + 1]);
         if (strcmp(argv[i], "--once") == 0)
             autoframes = 1;
         if (strcmp(argv[i], "new") == 0 || strcmp(argv[i], "seed") == 0) {
@@ -3445,10 +3858,10 @@ int main(int argc, char **argv) {
     build_palette();
     if (force_new) {
         printf("minicraft: new world seed %d\n", arg_seed);
-        gen_world((unsigned int)arg_seed);
+        new_world((unsigned int)arg_seed);
     } else if (load_world() != 0) {
         printf("minicraft: no save, new world\n");
-        gen_world(1);
+        new_world(1);
     } else {
         hotbar[0] = B_GRASS;
         hotbar[1] = B_DIRT;
@@ -3481,7 +3894,7 @@ int main(int argc, char **argv) {
     printf("minicraft: G or F11 toggles 2x fullscreen zoom\n");
     printf("minicraft: title menu when run plain; 'minicraft new [seed]' skips it\n");
     fflush(stdout);
-    if (!force_new && autoframes == 0 && zoomframes == 0) {
+    if (!force_new && autoframes == 0 && zoomframes == 0 && walkframes == 0) {
         int mr = title_menu(have_save, &menu_seed);
         if (mr < 0) {
             s_zoom(0);
@@ -3489,7 +3902,7 @@ int main(int argc, char **argv) {
         }
         if (mr == 1) {
             printf("minicraft: new world seed %d\n", menu_seed);
-            gen_world((unsigned int)menu_seed);
+            new_world((unsigned int)menu_seed);
         }
         mobs_sync();
     }
@@ -3514,6 +3927,45 @@ int main(int argc, char **argv) {
         }
         s_zoom(0);
         printf("minicraft: played %d zoom frames, quitting\n", zoomframes);
+        fflush(stdout);
+        return 0;
+    }
+    if (walkframes > 0) {
+        int f, sx0, sy0;
+        mc_fly = 1;
+        pl_yaw = 0;
+        key_down[SC_SPACE] = 1;
+        for (f = 0; f < 200 && pl_z < 28.0f; f++) {
+            frame_ms += 16;
+            ensure_around();
+            tick_player(1.0f / 60.0f);
+            if ((f & 3) == 0) {
+                render_frame();
+                s_present();
+            }
+        }
+        key_down[SC_SPACE] = 0;
+        key_down[SC_W] = 1;
+        sx0 = chunk_of((int)floorf(pl_x));
+        sy0 = chunk_of((int)floorf(pl_y));
+        for (f = 0; f < walkframes; f++) {
+            frame_ms += 16;
+            ensure_around();
+            tick_player(1.0f / 60.0f);
+            tick_pigs(1.0f / 60.0f, frame_ms);
+            if ((f & 3) == 0) {
+                render_frame();
+                s_present();
+            }
+        }
+        key_down[SC_W] = 0;
+        printf("minicraft: walked %d frames chunk %d %d -> %d %d z %.1f, quitting\n",
+            walkframes, sx0, sy0,
+            chunk_of((int)floorf(pl_x)), chunk_of((int)floorf(pl_y)), pl_z);
+        if (save_world() != 0)
+            printf("minicraft: walk save failed\n");
+        else
+            printf("minicraft: walk saved\n");
         fflush(stdout);
         return 0;
     }
@@ -3550,7 +4002,7 @@ int main(int argc, char **argv) {
                 }
                 if (pr == 1) {
                     printf("minicraft: new world seed %d\n", menu_seed);
-                    gen_world((unsigned int)menu_seed);
+                    new_world((unsigned int)menu_seed);
                 }
                 mobs_sync();
                 save_at = s_time_ms() + MC_SAVE_SECS * 1000;
@@ -3566,6 +4018,7 @@ int main(int argc, char **argv) {
                 }
                 key_down[SC_R] = 0;
             }
+            ensure_around();
             tick_player(dt);
             tick_pigs(dt, now);
             tick_water(now);
