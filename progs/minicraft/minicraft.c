@@ -42,6 +42,9 @@ static unsigned char host_fb[MINIOS_DOOM_W * MINIOS_DOOM_H];
 #endif
 
 #define SAVE_PATH "/saves/minicraft.map"
+#define SAVE_TMP_PATH "/saves/minicraft.map.tmp"
+#define MC_SAVE_MAGIC 0x4D434631u
+#define MC_SAVE_VERSION 2u
 
 /* Tunables: every magic lives here, never scattered in logic. */
 #define MC_EYE 1.55f
@@ -66,6 +69,33 @@ static unsigned char host_fb[MINIOS_DOOM_W * MINIOS_DOOM_H];
 #define MC_HP_MAX 20
 #define MC_PIGS 5
 #define MC_PORK_HEAL 6
+#define MC_SAVE_SECS 30
+
+/* Named scancodes (Set 1): no bare 0x11/0x01 in logic. */
+#define SC_ESC 0x01
+#define SC_1 0x02
+#define SC_9 0x0A
+#define SC_W 0x11
+#define SC_E 0x12
+#define SC_R 0x13
+#define SC_T 0x14
+#define SC_P 0x19
+#define SC_A 0x1E
+#define SC_S 0x1F
+#define SC_D 0x20
+#define SC_F 0x21
+#define SC_K 0x25
+#define SC_L 0x26
+#define SC_C 0x2E
+#define SC_N 0x31
+#define SC_SPACE 0x39
+#define SC_LSHIFT 0x2A
+#define SC_RSHIFT 0x36
+#define SC_CTRL 0x1D
+#define EXT_UP 0x48
+#define EXT_DOWN 0x50
+#define EXT_LEFT 0x4B
+#define EXT_RIGHT 0x4D
 
 enum {
     B_AIR = 0,
@@ -85,8 +115,13 @@ enum {
     B_COUNT = 14
 };
 
-static unsigned char world[MC_W * MC_D * MC_H];
+static unsigned char world[MC_WORLD];
 static float depth_buf[MINIOS_DOOM_W * MINIOS_DOOM_H];
+static unsigned char light_map[MC_WORLD];
+static float cam_ray[MINIOS_DOOM_W * MINIOS_DOOM_H * 3];
+static int cam_ray_ready = 0;
+static unsigned int mc_seed = 1;
+static int world_dirty = 0;
 
 static float pl_x, pl_y, pl_z;
 static float pl_vz;
@@ -284,12 +319,32 @@ static void col_recompute(int x, int y) {
     col_top[y * MC_W + x] = t;
 }
 
+static void light_recompute_col(int x, int y) {
+    int z, top = col_top[y * MC_W + x];
+    for (z = 0; z < MC_H; z++) {
+        int d = top - z;
+        float l;
+        if (d <= 0)
+            l = 1.0f;
+        else {
+            l = 1.0f - (float)d / 10.0f;
+            if (l < 0.22f)
+                l = 0.22f;
+        }
+        light_map[widx(x, y, z)] = (unsigned char)(l * 255.0f);
+    }
+}
+
 static void set_b(int x, int y, int z, unsigned char b) {
     int t;
     if (!in_world(x, y, z))
         return;
+    if (b >= B_COUNT)
+        return;
     world[widx(x, y, z)] = b;
     col_recompute(x, y);
+    light_recompute_col(x, y);
+    world_dirty = 1;
     t = col_top[y * MC_W + x];
     if (t > world_max_top)
         world_max_top = t;
@@ -315,6 +370,7 @@ static void light_build(void) {
         for (x = 0; x < MC_W; x++) {
             int t;
             col_recompute(x, y);
+            light_recompute_col(x, y);
             t = col_top[y * MC_W + x];
             if (t > m)
                 m = t;
@@ -323,19 +379,11 @@ static void light_build(void) {
     world_max_top = m;
 }
 
-/* skylight 1.0 at surface fading to 0.22 deep: O(1) via column tops */
+/* skylight 1.0 at surface fading to 0.22 deep: O(1) via light_map */
 static float sky_light(int x, int y, int z) {
-    int d;
-    float l;
     if (!in_world(x, y, z))
         return 1.0f;
-    d = col_top[y * MC_W + x] - z;
-    if (d <= 0)
-        return 1.0f;
-    l = 1.0f - (float)d / 10.0f;
-    if (l < 0.22f)
-        l = 0.22f;
-    return l;
+    return (float)light_map[widx(x, y, z)] / 255.0f;
 }
 
 static int is_solid(unsigned char b) {
@@ -357,11 +405,33 @@ static unsigned int hash2(int x, int y) {
     return h;
 }
 
-static int ground_h(int x, int y) {
-    unsigned int a = hash2(x, y) % 100;
-    unsigned int b = hash2(x / 4, y / 4) % 100;
-    unsigned int c = hash2(x / 9 + 7, y / 9 + 3) % 100;
-    int h = 10 + (int)(a * 3 + b * 6 + c * 8) / 100;
+static unsigned int hash2_seed(int x, int y, unsigned int seed) {
+    unsigned int h = seed * 2246822519u;
+    h ^= (unsigned int)x * 374761393u;
+    h ^= (unsigned int)y * 668265263u;
+    h = (h ^ (h >> 13)) * 1274126177u;
+    h ^= h >> 16;
+    return h;
+}
+
+static float mc_smoothstep(float t) {
+    return t * t * (3.0f - 2.0f * t);
+}
+
+static int ground_h_seed(int x, int y, unsigned int seed) {
+    int cell = 9;
+    int x0 = (x / cell) * cell, y0 = (y / cell) * cell;
+    float fx = mc_smoothstep((float)(x - x0) / (float)cell);
+    float fy = mc_smoothstep((float)(y - y0) / (float)cell);
+    float n00 = (float)(hash2_seed(x0 / cell + 7, y0 / cell + 3, seed) % 100);
+    float n10 = (float)(hash2_seed(x0 / cell + 8, y0 / cell + 3, seed) % 100);
+    float n01 = (float)(hash2_seed(x0 / cell + 7, y0 / cell + 4, seed) % 100);
+    float n11 = (float)(hash2_seed(x0 / cell + 8, y0 / cell + 4, seed) % 100);
+    float coarse = n00 + (n10 - n00) * fx + (n01 - n00) * fy +
+        (n00 - n10 - n01 + n11) * fx * fy;
+    unsigned int mid = hash2_seed(x / 4, y / 4, seed ^ 0x9e3779b9u) % 100;
+    unsigned int det = hash2_seed(x, y, seed ^ 0x51ed2703u) % 100;
+    int h = 10 + (int)(det * 2 + mid * 5 + coarse * 10.0f) / 100;
     if (h < 4)
         h = 4;
     if (h > MC_H - 10)
@@ -369,15 +439,40 @@ static int ground_h(int x, int y) {
     return h;
 }
 
+static int inv_add(int b, int n) {
+    if (b <= B_AIR || b >= B_COUNT || n <= 0)
+        return 0;
+    if (b == B_WATER || b == B_BEDROCK)
+        return 0;
+    if (inv[b] >= MC_INV_MAX)
+        return 0;
+    inv[b] += n;
+    if (inv[b] > MC_INV_MAX)
+        inv[b] = MC_INV_MAX;
+    world_dirty = 1;
+    return 1;
+}
+
+static int inv_remove(int b, int n) {
+    if (b <= B_AIR || b >= B_COUNT || n <= 0)
+        return 0;
+    if (inv[b] < n)
+        return 0;
+    inv[b] -= n;
+    world_dirty = 1;
+    return 1;
+}
+
+/* World gen phases: 1 heights 2 materials 3 water 4 trees/cacti 5 deco 6 spawn. */
 static void gen_world(unsigned int seed) {
     int x, y, z;
-    (void)seed;
+    mc_seed = seed;
     memset(world, 0, sizeof(world));
     for (y = 0; y < MC_D; y++) {
         for (x = 0; x < MC_W; x++) {
-            int h = ground_h(x, y);
-            int desert = (hash2(x / 16 + 31, y / 16 + 11) % 100) < 22;
-            int snowy = h >= 19 || (hash2(x / 20 + 3, y / 20 + 77) % 100) < 12;
+            int h = ground_h_seed(x, y, seed);
+            int desert = (hash2_seed(x / 16 + 31, y / 16 + 11, seed) % 100) < 22;
+            int snowy = h >= 19 || (hash2_seed(x / 20 + 3, y / 20 + 77, seed) % 100) < 12;
             for (z = 0; z <= h; z++) {
                 unsigned char b;
                 if (z == 0)
@@ -395,10 +490,10 @@ static void gen_world(unsigned int seed) {
                 else if (z >= h - 5)
                     b = B_STONE;
                 else
-                    b = (hash2(x * 3 + z, y * 5 - z) % 7 == 0) ? B_DIRT : B_STONE;
+                    b = (hash2_seed(x * 3 + z, y * 5 - z, seed) % 7 == 0) ? B_DIRT : B_STONE;
                 set_b_raw(x, y, z, b);
             }
-            if (h > 8 && !desert && !snowy && hash2(x, y) % 97 < 3) {
+            if (h > 8 && !desert && !snowy && hash2_seed(x, y, seed) % 97 < 3) {
                 int th = h + 4;
                 int k;
                 if (th >= MC_H - 1)
@@ -419,15 +514,15 @@ static void gen_world(unsigned int seed) {
                     }
                 }
             }
-            if (h > 8 && desert && hash2(x * 7, y * 7) % 89 < 4) {
-                int ch = h + 2 + (hash2(x, y * 3) % 2);
+            if (h > 8 && desert && hash2_seed(x * 7, y * 7, seed) % 89 < 4) {
+                int ch = h + 2 + (hash2_seed(x, y * 3, seed) % 2);
                 int k;
                 if (ch >= MC_H - 1)
                     ch = MC_H - 2;
                 for (k = h + 1; k <= ch; k++)
                     set_b_raw(x, y, k, B_LOG);
             }
-            if (h > 8 && !desert && !snowy && hash2(x * 5 + 1, y * 5 + 2) % 100 < 6) {
+            if (h > 8 && !desert && !snowy && hash2_seed(x * 5 + 1, y * 5 + 2, seed) % 100 < 6) {
                 if (get_b(x, y, h + 1) == B_AIR)
                     set_b_raw(x, y, h + 1, B_FLOWER);
             }
@@ -449,7 +544,7 @@ static void gen_world(unsigned int seed) {
                 continue;
             for (dy = -2; dy <= 2 && clear; dy++) {
                 for (dx = -2; dx <= 2 && clear; dx++) {
-                    int h = ground_h(tx + dx, ty + dy);
+                    int h = ground_h_seed(tx + dx, ty + dy, seed);
                     int k;
                     for (k = h + 1; k <= h + 4; k++) {
                         unsigned char b = get_b(tx + dx, ty + dy, k);
@@ -512,6 +607,7 @@ static void gen_world(unsigned int seed) {
     hotbar[7] = B_BRICK;
     hotbar[8] = B_GLASS;
     hot_sel = 0;
+    world_dirty = 1;
 }
 
 static void pigs_spawn_one(int i, long now) {
@@ -685,7 +781,14 @@ static unsigned char shade_block(unsigned char b, int face, int bx, int by, int 
                                  float dist, int x, int y) {
     unsigned char c = face_color(get_b(bx, by, bz), face);
     float li;
-    (void)b;
+    /* palette-indexed honesty: no true blending, dither suggests it */
+    if (b == B_WATER && (((x * 2 + y * 3) & 3) == 0))
+        return 34;
+    if (b == B_LEAVES && (((x + y) & 3) == 0)) {
+        li = sky_light(bx, by, bz);
+        if (li < 0.9f)
+            return 3;
+    }
     /* procedural grain: 1 in 8 pixels shifts one palette step */
     if (((unsigned int)hash2(bx * 13 + bz * 7, by * 13 - bz * 5) & 7) == 0) {
         if (c > 10 && c != 34)
@@ -720,6 +823,7 @@ typedef struct {
     int hit;
     int bx, by, bz;
     int px, py, pz;
+    int nx, ny, nz;
     int face;
     float dist;
 } RayHit;
@@ -739,6 +843,7 @@ static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float d
     float tmy = dy != 0 ? ((stepy > 0 ? (iy + 1 - oy) : (oy - iy)) * tdy) : 1e30f;
     float tmz = dz != 0 ? ((stepz > 0 ? (iz + 1 - oz) : (oz - iz)) * tdz) : 1e30f;
     int face = 4;
+    int hnx = 0, hny = 0, hnz = 1;
     float t = 0;
     int i;
     memset(&h, 0, sizeof(h));
@@ -750,16 +855,25 @@ static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float d
             t = tmx;
             tmx += tdx;
             face = 0;
+            hnx = -stepx;
+            hny = 0;
+            hnz = 0;
         } else if (tmy < tmz) {
             iy += stepy;
             t = tmy;
             tmy += tdy;
             face = 2;
+            hnx = 0;
+            hny = -stepy;
+            hnz = 0;
         } else {
             iz += stepz;
             t = tmz;
             tmz += tdz;
             face = dz > 0 ? 5 : 4;
+            hnx = 0;
+            hny = 0;
+            hnz = -stepz;
         }
         if (t > maxd)
             return h;
@@ -780,22 +894,12 @@ static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float d
             h.bz = iz;
             h.face = face;
             h.dist = t;
-            h.px = ix - stepx * (face == 0);
-            h.py = iy - stepy * (face == 2);
-            h.pz = iz - stepz * (face == 4 || face == 5);
-            if (face == 0) {
-                h.px = ix - stepx;
-                h.py = iy;
-                h.pz = iz;
-            } else if (face == 2) {
-                h.px = ix;
-                h.py = iy - stepy;
-                h.pz = iz;
-            } else {
-                h.px = ix;
-                h.py = iy;
-                h.pz = iz - stepz;
-            }
+            h.nx = hnx;
+            h.ny = hny;
+            h.nz = hnz;
+            h.px = ix + hnx;
+            h.py = iy + hny;
+            h.pz = iz + hnz;
             return h;
         }
     }
@@ -943,27 +1047,40 @@ static char mc_facing(void) {
     return 'S';
 }
 
+static void cam_build(void) {
+    int x, y;
+    if (cam_ray_ready)
+        return;
+    for (y = 0; y < FB_H; y++) {
+        for (x = 0; x < FB_W; x++) {
+            float cx = ((float)x / (float)FB_W * 2.0f - 1.0f) * 0.95f;
+            float cyy = 1.0f;
+            float cz = (1.0f - (float)y / (float)FB_H * 2.0f) * 0.60f;
+            float il = 1.0f / sqrtf(cx * cx + cyy * cyy + cz * cz);
+            cam_ray[(y * FB_W + x) * 3 + 0] = cx * il;
+            cam_ray[(y * FB_W + x) * 3 + 1] = cyy * il;
+            cam_ray[(y * FB_W + x) * 3 + 2] = cz * il;
+        }
+    }
+    cam_ray_ready = 1;
+}
+
 static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
                            float spit, float ez, float tsec) {
     int x, y;
+    cam_build();
     for (y = 0; y < FB_H; y++) {
         for (x = 0; x < FB_W; x++) {
-            float nx = ((float)x / (float)FB_W * 2.0f - 1.0f) * 0.95f;
-            float ny = (1.0f - (float)y / (float)FB_H * 2.0f) * 0.60f;
-            float cx = nx;
-            float cyy = 1.0f;
-            float cz = ny;
+            float cx = cam_ray[(y * FB_W + x) * 3 + 0];
+            float cyy = cam_ray[(y * FB_W + x) * 3 + 1];
+            float cz = cam_ray[(y * FB_W + x) * 3 + 2];
             float f2 = cyy * cpit - cz * spit;
             float u2 = cyy * spit + cz * cpit;
             float dx = f2 * cyaw + cx * syaw;
             float dy2 = f2 * syaw - cx * cyaw;
             float dz2 = u2;
-            float il = 1.0f / sqrtf(dx * dx + dy2 * dy2 + dz2 * dz2);
             RayHit h;
             unsigned char c;
-            dx *= il;
-            dy2 *= il;
-            dz2 *= il;
             h = cast_ray(pl_x, pl_y, ez, dx, dy2, dz2, MC_VIEW);
             if (!h.hit) {
                 float sd = dx * 0.55f + dy2 * 0.35f + dz2 * 0.76f;
@@ -1055,19 +1172,19 @@ static void render_frame(void) {
         char hud0[48], hud1[64], hud2[48];
         char fc = mc_facing();
         int ix = (int)pl_x, iy = (int)pl_y, iz = (int)pl_z;
-        sprintf(hud0, "X%d Y%d Z%d F:%c %dFPS", ix, iy, iz, fc, (int)(fps_ema + 0.5f));
+        snprintf(hud0, sizeof(hud0), "X%d Y%d Z%d F:%c %dFPS", ix, iy, iz, fc, (int)(fps_ema + 0.5f));
         mc_text_bg(3, 3, hud0, 2, 3);
         {
             unsigned char sb = (unsigned char)hotbar[hot_sel];
             if (tgt.hit)
-                sprintf(hud1, "T:%s %dM S:%sX%d",
+                snprintf(hud1, sizeof(hud1), "T:%s %dM S:%sX%d",
                         mc_block_name(get_b(tgt.bx, tgt.by, tgt.bz)),
                         (int)tgt.dist, mc_block_name(sb), inv[sb]);
             else
-                sprintf(hud1, "T:- S:%sX%d", mc_block_name(sb), inv[sb]);
+                snprintf(hud1, sizeof(hud1), "T:- S:%sX%d", mc_block_name(sb), inv[sb]);
         }
         mc_text_bg(3, 11, hud1, 2, 3);
-        sprintf(hud2, "HP:%d PORK:%d W:%d/10", pl_hp, pork, inv[B_LOG]);
+        snprintf(hud2, sizeof(hud2), "HP:%d PORK:%d W:%d/10", pl_hp, pork, inv[B_LOG]);
         mc_text_bg(3, 19, hud2, 2, 3);
         if (mc_fly)
             mc_text_bg(FB_W - 3 * 4 * 4, 3, "FLY", 2, 3);
@@ -1153,14 +1270,14 @@ static void poll_kbd(void) {
             key_down[r & 0x7F] = press;
             if (!press)
                 continue;
-            if ((r & 0x7F) >= 0x02 && (r & 0x7F) <= 0x0A)
-                hot_sel = (r & 0x7F) - 0x02;
-            if ((r & 0x7F) == 0x21) {
+            if ((r & 0x7F) >= SC_1 && (r & 0x7F) <= SC_9)
+                hot_sel = (r & 0x7F) - SC_1;
+            if ((r & 0x7F) == SC_F) {
                 mc_fly = !mc_fly;
                 pl_vz = 0;
                 printf("minicraft: fly %s\n", mc_fly ? "on" : "off");
             }
-            if ((r & 0x7F) == 0x14) {
+            if ((r & 0x7F) == SC_T) {
                 int px = (int)pl_x, py = (int)pl_y;
                 int gz = -1, z;
                 if (px < 0)
@@ -1184,65 +1301,61 @@ static void poll_kbd(void) {
                     printf("minicraft: rescued to surface %d\n", gz + 1);
                 }
             }
-            if ((r & 0x7F) == 0x25) {
-                if (inv[B_LOG] >= 4) {
-                    inv[B_LOG] -= 4;
-                    inv[B_PLANKS] += 16;
-                    if (inv[B_PLANKS] > MC_INV_MAX)
-                        inv[B_PLANKS] = MC_INV_MAX;
-                    sprintf(last_act, "+16 PLANKS");
+            if ((r & 0x7F) == SC_K) {
+                if (inv_remove(B_LOG, 4)) {
+                    inv_add(B_PLANKS, 16);
+                    snprintf(last_act, sizeof(last_act), "+16 PLANKS");
                     last_act_ms = frame_ms;
                     printf("minicraft: crafted 16 planks\n");
                     beep(660, 60);
                 } else {
-                    sprintf(last_act, "NEED 4 WOOD");
+                    snprintf(last_act, sizeof(last_act), "NEED 4 WOOD");
                     last_act_ms = frame_ms;
                 }
             }
-            if ((r & 0x7F) == 0x26) {
-                if (inv[B_PLANKS] >= 4) {
-                    inv[B_PLANKS] -= 4;
-                    inv[B_BRICK] += 4;
-                    if (inv[B_BRICK] > MC_INV_MAX)
-                        inv[B_BRICK] = MC_INV_MAX;
-                    sprintf(last_act, "+4 BRICK");
+            if ((r & 0x7F) == SC_L) {
+                if (inv_remove(B_PLANKS, 4)) {
+                    inv_add(B_BRICK, 4);
+                    snprintf(last_act, sizeof(last_act), "+4 BRICK");
                     last_act_ms = frame_ms;
                     printf("minicraft: crafted 4 brick\n");
                     beep(520, 60);
                 } else {
-                    sprintf(last_act, "NEED 4 PLANKS");
+                    snprintf(last_act, sizeof(last_act), "NEED 4 PLANKS");
                     last_act_ms = frame_ms;
                 }
             }
-            if ((r & 0x7F) == 0x12) {
+            if ((r & 0x7F) == SC_E) {
                 if (pork > 0 && pl_hp < MC_HP_MAX) {
                     pork--;
+                    world_dirty = 1;
                     pl_hp += MC_PORK_HEAL;
                     if (pl_hp > MC_HP_MAX)
                         pl_hp = MC_HP_MAX;
-                    sprintf(last_act, "+HP %d", pl_hp);
+                    snprintf(last_act, sizeof(last_act), "+HP %d", pl_hp);
                     last_act_ms = frame_ms;
                     beep(440, 80);
                 } else if (pork <= 0) {
-                    sprintf(last_act, "NO PORK");
+                    snprintf(last_act, sizeof(last_act), "NO PORK");
                     last_act_ms = frame_ms;
                 }
             }
-            if ((r & 0x7F) == 0x31) {
-                gen_world(1);
+            if ((r & 0x7F) == SC_N) {
+                mc_seed++;
+                gen_world(mc_seed);
                 if (save_world() != 0) {
-                    sprintf(last_act, "SAVE FAIL");
+                    snprintf(last_act, sizeof(last_act), "SAVE FAIL");
                     last_act_ms = frame_ms;
                     printf("minicraft: save failed\n");
                 } else {
                     printf("minicraft: new world\n");
                 }
             }
-            if ((r & 0x7F) == 0x2E && !mc_fly) {
+            if ((r & 0x7F) == SC_C && !mc_fly) {
                 pl_pitch = 0;
                 printf("minicraft: view leveled\n");
             }
-            if ((r & 0x7F) == 0x19) {
+            if ((r & 0x7F) == SC_P) {
                 RayHit th = cast_ray(pl_x, pl_y, eye_z(),
                                      cosf(pl_yaw) * cosf(pl_pitch),
                                      sinf(pl_yaw) * cosf(pl_pitch),
@@ -1273,23 +1386,49 @@ static int player_collides(float x, float y, float z) {
     return 0;
 }
 
-static void move_axis(float nx, float ny, float nz) {
+typedef enum {
+    MOVE_FREE = 0,
+    MOVE_HIT_FLOOR,
+    MOVE_HIT_CEILING,
+    MOVE_HIT_WALL
+} MoveResult;
+
+static void move_x(float nx) {
     if (!player_collides(nx, pl_y, pl_z))
         pl_x = nx;
+}
+
+static void move_y(float ny) {
     if (!player_collides(pl_x, ny, pl_z))
         pl_y = ny;
+}
+
+static MoveResult move_z_abs(float nz) {
     if (!player_collides(pl_x, pl_y, nz)) {
         pl_z = nz;
         pl_on_ground = 0;
-    } else {
-        if (nz < pl_z)
-            pl_on_ground = 1;
-        pl_vz = 0;
+        return MOVE_FREE;
     }
+    if (nz < pl_z) {
+        pl_on_ground = 1;
+        pl_vz = 0;
+        return MOVE_HIT_FLOOR;
+    }
+    pl_vz = 0;
+    return MOVE_HIT_CEILING;
+}
+
+static int block_intersects_player(int bx, int by, int bz) {
+    float minx = pl_x - 0.3f, maxx = pl_x + 0.3f;
+    float miny = pl_y - 0.3f, maxy = pl_y + 0.3f;
+    float minz = pl_z, maxz = pl_z + 1.7f;
+    return maxx > (float)bx && minx < (float)(bx + 1) &&
+        maxy > (float)by && miny < (float)(by + 1) &&
+        maxz > (float)bz && minz < (float)(bz + 1);
 }
 
 static void try_autostep(float tx, float ty) {
-    float nz = pl_z + 1.02f;
+    float nz = pl_z + MC_AUTOSTEP;
     if (player_collides(tx, ty, pl_z) && !player_collides(tx, ty, nz)) {
         pl_x = tx;
         pl_y = ty;
@@ -1305,7 +1444,7 @@ static void hurt(int dmg, const char *why) {
     if (pl_hp <= 0)
         return;
     pl_hp -= dmg;
-    sprintf(last_act, "-%dHP %s", dmg, why);
+    snprintf(last_act, sizeof(last_act), "-%dHP %s", dmg, why);
     last_act_ms = frame_ms;
     beep(110, 120);
     if (pl_hp <= 0) {
@@ -1316,13 +1455,13 @@ static void hurt(int dmg, const char *why) {
         pl_z = spawn_z;
         pl_vz = 0;
         printf("minicraft: died (%s), respawned\n", why);
-        sprintf(last_act, "RESPAWN");
+        snprintf(last_act, sizeof(last_act), "RESPAWN");
         last_act_ms = frame_ms;
     }
 }
 
 static void tick_player(float dt) {
-    float sprint = (key_down[0x2A] || key_down[0x36] || key_down[0x1D]) ? MC_SPRINT : 1.0f;
+    float sprint = (key_down[SC_LSHIFT] || key_down[SC_RSHIFT] || key_down[SC_CTRL]) ? MC_SPRINT : 1.0f;
     float speed = (mc_fly ? MC_FLY_SPEED : MC_SPEED) * sprint;
     float fx = cosf(pl_yaw), fy = sinf(pl_yaw);
     float rx = -fy, ry = fx;
@@ -1332,13 +1471,13 @@ static void tick_player(float dt) {
     int head_wet = in_water_at(pl_x, pl_y, eye_z());
     if (feet_wet)
         speed *= 0.6f;
-    if (key_down[0x11])
+    if (key_down[SC_W])
         mx += fx, my += fy;
-    if (key_down[0x1F])
+    if (key_down[SC_S])
         mx -= fx, my -= fy;
-    if (key_down[0x1E])
+    if (key_down[SC_A])
         mx += rx, my += ry;
-    if (key_down[0x20])
+    if (key_down[SC_D])
         mx -= rx, my -= ry;
     ox = pl_x;
     oy = pl_y;
@@ -1347,25 +1486,29 @@ static void tick_player(float dt) {
         if (l > 0.01f) {
             mx = mx / l * speed * dt;
             my = my / l * speed * dt;
-            move_axis(pl_x + mx, pl_y + my, pl_z);
+            move_x(pl_x + mx);
+            move_y(pl_y + my);
             if (!mc_fly && !feet_wet && pl_on_ground && pl_x == ox && pl_y == oy)
                 try_autostep(ox + mx, oy + my);
         }
     }
     if (mc_fly) {
-        if (key_down[0x39])
-            move_axis(pl_x, pl_y, pl_z + 6.0f * dt);
+        if (key_down[SC_SPACE])
+            move_z_abs(pl_z + 6.0f * dt);
         /* shift doubles as sprint already; sink with C */
-        if (key_down[0x2E])
-            move_axis(pl_x, pl_y, pl_z - 6.0f * dt);
+        if (key_down[SC_C])
+            move_z_abs(pl_z - 6.0f * dt);
         pl_vz = 0;
         pl_on_ground = 0;
     } else if (feet_wet || head_wet) {
-        if (key_down[0x39])
-            move_axis(pl_x, pl_y, pl_z + MC_WATER_SWIM * dt);
-        else
-            move_axis(pl_x, pl_y, pl_z - 1.0f * dt);
-        pl_vz = 0;
+        if (key_down[SC_SPACE])
+            pl_vz = MC_WATER_SWIM;
+        else {
+            pl_vz -= MC_WATER_GRAV * dt;
+            if (pl_vz < -MC_WATER_SINK)
+                pl_vz = -MC_WATER_SINK;
+        }
+        move_z_abs(pl_z + pl_vz * dt);
         pl_on_ground = 0;
         if (head_wet) {
             drown_ms += (long)(dt * 1000.0f);
@@ -1378,8 +1521,9 @@ static void tick_player(float dt) {
         }
     } else {
         float fall_v;
+        MoveResult zr;
         drown_ms = 0;
-        if (key_down[0x39] && pl_on_ground) {
+        if (key_down[SC_SPACE] && pl_on_ground) {
             pl_vz = MC_JUMP;
             pl_on_ground = 0;
         }
@@ -1387,14 +1531,10 @@ static void tick_player(float dt) {
         pl_vz -= MC_GRAV * dt;
         if (pl_vz < -MC_MAXFALL)
             pl_vz = -MC_MAXFALL;
-        {
-            float before = pl_vz;
-            (void)before;
-            move_axis(pl_x, pl_y, pl_z + pl_vz * dt);
-            if (pl_on_ground && fall_v < -12.0f) {
-                int dmg = (int)((-fall_v - 12.0f) / 2.0f) + 1;
-                hurt(dmg, "FALL");
-            }
+        zr = move_z_abs(pl_z + pl_vz * dt);
+        if (zr == MOVE_HIT_FLOOR && fall_v < -12.0f) {
+            int dmg = (int)((-fall_v - 12.0f) / 2.0f) + 1;
+            hurt(dmg, "FALL");
         }
     }
     if (pl_z < 1.0f) {
@@ -1402,13 +1542,13 @@ static void tick_player(float dt) {
         pl_vz = 0;
         pl_on_ground = 1;
     }
-    if (ext_down[0x48])
+    if (ext_down[EXT_UP])
         pl_pitch += 2.4f * dt;
-    if (ext_down[0x50])
+    if (ext_down[EXT_DOWN])
         pl_pitch -= 2.4f * dt;
-    if (ext_down[0x4B])
+    if (ext_down[EXT_LEFT])
         pl_yaw += 3.2f * dt;
-    if (ext_down[0x4D])
+    if (ext_down[EXT_RIGHT])
         pl_yaw -= 3.2f * dt;
     if (pl_pitch > MC_PITCH_MAX)
         pl_pitch = MC_PITCH_MAX;
@@ -1418,9 +1558,10 @@ static void tick_player(float dt) {
 
 static void tick_water(long now) {
     static long last_w = 0;
+    static int qx[256], qy[256], qz[256];
     int cx = (int)pl_x, cy = (int)pl_y;
     int budget = 200;
-    int dx, dy;
+    int dx, dy, nq = 0, k;
     if (now - last_w < 300)
         return;
     last_w = now;
@@ -1436,17 +1577,32 @@ static void tick_water(long now) {
                     continue;
                 budget--;
                 if (get_b(x, y, z - 1) == B_AIR) {
-                    set_b(x, y, z - 1, B_WATER);
+                    if (nq < 256) {
+                        qx[nq] = x;
+                        qy[nq] = y;
+                        qz[nq] = z - 1;
+                        nq++;
+                    }
                 } else if ((hash2(x * 31 + z, y * 17 + (int)now / 300) % 100) < 25) {
                     int dir = hash2(x + (int)now, y - z) % 4;
                     int nx = x + (dir == 0 ? 1 : dir == 1 ? -1 : 0);
                     int ny = y + (dir == 2 ? 1 : dir == 3 ? -1 : 0);
                     if (in_world(nx, ny, z) && get_b(nx, ny, z) == B_AIR &&
-                        (is_solid(get_b(nx, ny, z - 1)) || get_b(nx, ny, z - 1) == B_WATER))
-                        set_b(nx, ny, z, B_WATER);
+                        (is_solid(get_b(nx, ny, z - 1)) || get_b(nx, ny, z - 1) == B_WATER)) {
+                        if (nq < 256) {
+                            qx[nq] = nx;
+                            qy[nq] = ny;
+                            qz[nq] = z;
+                            nq++;
+                        }
+                    }
                 }
             }
         }
+    }
+    for (k = 0; k < nq; k++) {
+        if (get_b(qx[k], qy[k], qz[k]) == B_AIR)
+            set_b(qx[k], qy[k], qz[k], B_WATER);
     }
 }
 
@@ -1526,7 +1682,8 @@ static void tick_interact(void) {
                 pigs[hit_pig].alive = 0;
                 pigs[hit_pig].respawn_ms = now;
                 pork++;
-                sprintf(last_act, "+PORK %d", pork);
+                world_dirty = 1;
+                snprintf(last_act, sizeof(last_act), "+PORK %d", pork);
                 last_act_ms = now;
                 printf("minicraft: pork %d\n", pork);
                 beep(520, 70);
@@ -1543,16 +1700,14 @@ static void tick_interact(void) {
             unsigned char b = get_b(h.bx, h.by, h.bz);
             if (b != B_BEDROCK && b != B_AIR) {
                 set_b(h.bx, h.by, h.bz, B_AIR);
-                if (b != B_WATER && b != B_FLOWER && inv[b] < MC_INV_MAX)
-                    inv[b]++;
-                else if (b == B_FLOWER && inv[B_FLOWER] < MC_INV_MAX)
-                    inv[B_FLOWER]++;
-                sprintf(last_act, "-%s", mc_block_name(b));
+                if (b != B_WATER)
+                    inv_add(b, 1);
+                snprintf(last_act, sizeof(last_act), "-%s", mc_block_name(b));
                 last_act_ms = now;
                 beep(220, 50);
                 if (b == B_LOG && inv[b] == 10) {
                     printf("minicraft: GOAL firewood x10 DONE\n");
-                    sprintf(last_act, "GOAL DONE");
+                    snprintf(last_act, sizeof(last_act), "GOAL DONE");
                     last_act_ms = now;
                     beep(880, 120);
                 }
@@ -1564,19 +1719,16 @@ static void tick_interact(void) {
                 : B_BEDROCK;
             if (there == B_AIR || there == B_WATER) {
                 unsigned char nb = (unsigned char)hotbar[hot_sel];
-                int ok = 0;
                 if (inv[nb] <= 0) {
-                    sprintf(last_act, "VACIO");
+                    snprintf(last_act, sizeof(last_act), "VACIO");
+                    last_act_ms = now;
+                } else if (block_intersects_player(h.px, h.py, h.pz)) {
+                    snprintf(last_act, sizeof(last_act), "OCUPADO");
                     last_act_ms = now;
                 } else {
-                    if (!player_collides((float)h.px + 0.5f, (float)h.py + 0.5f, (float)h.pz))
-                        ok = 1;
-                    else if (pl_z > (float)h.pz + 1.0f || pl_z + 1.7f < (float)h.pz)
-                        ok = 1;
-                    if (ok) {
+                    if (inv_remove(nb, 1)) {
                         set_b(h.px, h.py, h.pz, nb);
-                        inv[nb]--;
-                        sprintf(last_act, "+%s", mc_block_name(nb));
+                        snprintf(last_act, sizeof(last_act), "+%s", mc_block_name(nb));
                         last_act_ms = now;
                         beep(440, 50);
                     }
@@ -1588,90 +1740,184 @@ static void tick_interact(void) {
     prev_buttons = m[2];
 }
 
+typedef struct {
+    uint32_t magic;
+    uint32_t version;
+    uint32_t world_size;
+    uint32_t seed;
+    float px, py, pz, yaw, pitch;
+    int32_t hot_sel;
+    int32_t hp;
+    int32_t pork_n;
+    int32_t inv[B_COUNT];
+} SaveHeader;
+
 static int save_world(void) {
-    FILE *f = fopen(SAVE_PATH, "wb");
+    FILE *f = fopen(SAVE_TMP_PATH, "wb");
+    SaveHeader hd;
+    size_t i;
     if (!f)
         return -1;
+    hd.magic = MC_SAVE_MAGIC;
+    hd.version = MC_SAVE_VERSION;
+    hd.world_size = (uint32_t)sizeof(world);
+    hd.seed = mc_seed;
+    hd.px = pl_x;
+    hd.py = pl_y;
+    hd.pz = pl_z;
+    hd.yaw = pl_yaw;
+    hd.pitch = pl_pitch;
+    hd.hot_sel = (int32_t)hot_sel;
+    hd.hp = (int32_t)pl_hp;
+    hd.pork_n = (int32_t)pork;
+    for (i = 0; i < B_COUNT; i++)
+        hd.inv[i] = (int32_t)inv[i];
+    if (fwrite(&hd, 1, sizeof(hd), f) != sizeof(hd)) {
+        fclose(f);
+        return -1;
+    }
     if (fwrite(world, 1, sizeof(world), f) != sizeof(world)) {
         fclose(f);
         return -1;
     }
-    {
-        float st[6];
-        st[0] = pl_x;
-        st[1] = pl_y;
-        st[2] = pl_z;
-        st[3] = pl_yaw;
-        st[4] = pl_pitch;
-        st[5] = (float)hot_sel;
-        fwrite(st, 1, sizeof(st), f);
-        fwrite(inv, 1, sizeof(inv), f);
+    if (fclose(f) != 0)
+        return -1;
+    if (rename(SAVE_TMP_PATH, SAVE_PATH) != 0)
+        return -1;
+    world_dirty = 0;
+    return 0;
+}
+
+static int save_validate_loaded(void) {
+    size_t i;
+    int k;
+    for (i = 0; i < sizeof(world); i++) {
+        if (world[i] >= B_COUNT)
+            return -1;
     }
-    fclose(f);
+    if (!(pl_x >= 0 && pl_x < MC_W && pl_y >= 0 && pl_y < MC_D && pl_z >= 0 && pl_z < MC_H))
+        return -1;
+    if (hot_sel < 0 || hot_sel > 8)
+        hot_sel = 0;
+    if (pl_hp < 1 || pl_hp > MC_HP_MAX)
+        pl_hp = MC_HP_MAX;
+    if (pork < 0 || pork > MC_INV_MAX)
+        pork = 0;
+    for (k = 0; k < B_COUNT; k++) {
+        if (inv[k] < 0 || inv[k] > MC_INV_MAX)
+            inv[k] = 0;
+    }
+    return 0;
+}
+
+static void load_reset_runtime(void) {
+    int i;
+    mc_fly = 0;
+    pl_vz = 0;
+    pl_on_ground = 0;
+    drown_ms = 0;
+    spawn_x = pl_x;
+    spawn_y = pl_y;
+    spawn_z = pl_z;
+    for (i = 0; i < MC_PIGS; i++) {
+        pigs[i].x = pl_x + (float)((hash2(i * 17 + 5, 9) % 21) - 10);
+        pigs[i].y = pl_y + (float)((hash2(3, i * 29 + 7) % 21) - 10);
+        pigs[i].z = pl_z + 1.0f;
+        pigs[i].yaw = 0;
+        pigs[i].vz = 0;
+        pigs[i].alive = 1;
+        pigs[i].respawn_ms = 0;
+        pigs[i].turn_ms = 0;
+    }
+    world_dirty = 0;
+}
+
+static int load_world_legacy(FILE *f) {
+    float st[6];
+    int i;
+    if (fread(world, 1, sizeof(world), f) != sizeof(world))
+        return -1;
+    light_build();
+    for (i = 0; i < B_COUNT; i++)
+        inv[i] = 0;
+    if (fread(st, 1, sizeof(st), f) == sizeof(st)) {
+        pl_x = st[0];
+        pl_y = st[1];
+        pl_z = st[2];
+        pl_yaw = st[3];
+        pl_pitch = st[4];
+        hot_sel = (int)st[5] % 9;
+    }
+    {
+        int old_inv[12];
+        if (fread(old_inv, 1, sizeof(old_inv), f) == sizeof(old_inv)) {
+            for (i = 0; i < 12 && i < B_COUNT; i++)
+                inv[i] = old_inv[i];
+            if (fread(&inv[12], 1, sizeof(inv) - sizeof(old_inv), f) !=
+                sizeof(inv) - sizeof(old_inv)) {
+                inv[12] = 0;
+                inv[13] = 0;
+            }
+        }
+    }
+    mc_seed = 1;
+    pl_hp = MC_HP_MAX;
+    pork = 0;
+    if (save_validate_loaded() != 0)
+        return -1;
+    load_reset_runtime();
     return 0;
 }
 
 static int load_world(void) {
     FILE *f = fopen(SAVE_PATH, "rb");
+    SaveHeader hd;
+    size_t i;
+    int k;
     if (!f)
         return -1;
+    if (fread(&hd, 1, sizeof(hd), f) != sizeof(hd)) {
+        fclose(f);
+        return -1;
+    }
+    if (hd.magic != MC_SAVE_MAGIC || hd.version != MC_SAVE_VERSION ||
+        hd.world_size != sizeof(world)) {
+        int r;
+        rewind(f);
+        r = load_world_legacy(f);
+        fclose(f);
+        return r;
+    }
     if (fread(world, 1, sizeof(world), f) != sizeof(world)) {
         fclose(f);
         return -1;
     }
-    light_build();
-    {
-        float st[6];
-        int i;
-        for (i = 0; i < B_COUNT; i++)
-            inv[i] = 0;
-        if (fread(st, 1, sizeof(st), f) == sizeof(st)) {
-            pl_x = st[0];
-            pl_y = st[1];
-            pl_z = st[2];
-            pl_yaw = st[3];
-            pl_pitch = st[4];
-            hot_sel = (int)st[5] % 9;
-            if (hot_sel < 0)
-                hot_sel = 0;
-        }
-        {
-            int old_inv[12];
-            size_t n12 = fread(old_inv, 1, sizeof(old_inv), f);
-            if (n12 == sizeof(old_inv)) {
-                for (i = 0; i < 12 && i < B_COUNT; i++)
-                    inv[i] = old_inv[i];
-                if (fread(&inv[12], 1, sizeof(inv) - sizeof(old_inv), f) !=
-                    sizeof(inv) - sizeof(old_inv)) {
-                    inv[12] = 0;
-                    inv[13] = 0;
-                }
-            } else {
-                for (i = 0; i < B_COUNT; i++)
-                    inv[i] = 0;
-            }
-        }
-        mc_fly = 0;
-        pl_vz = 0;
-        pl_on_ground = 0;
-        pl_hp = MC_HP_MAX;
-        pork = 0;
-        drown_ms = 0;
-        spawn_x = pl_x;
-        spawn_y = pl_y;
-        spawn_z = pl_z;
-        for (i = 0; i < MC_PIGS; i++) {
-            pigs[i].x = pl_x + (float)((hash2(i * 17 + 5, 9) % 21) - 10);
-            pigs[i].y = pl_y + (float)((hash2(3, i * 29 + 7) % 21) - 10);
-            pigs[i].z = pl_z + 1.0f;
-            pigs[i].yaw = 0;
-            pigs[i].vz = 0;
-            pigs[i].alive = 1;
-            pigs[i].respawn_ms = 0;
-            pigs[i].turn_ms = 0;
-        }
-    }
     fclose(f);
+    light_build();
+    mc_seed = hd.seed;
+    pl_x = hd.px;
+    pl_y = hd.py;
+    pl_z = hd.pz;
+    pl_yaw = hd.yaw;
+    pl_pitch = hd.pitch;
+    hot_sel = (int)hd.hot_sel;
+    pl_hp = (int)hd.hp;
+    pork = (int)hd.pork_n;
+    for (i = 0; i < B_COUNT; i++)
+        inv[i] = (int)hd.inv[i];
+    if (save_validate_loaded() != 0)
+        return -1;
+    for (k = 0; k < B_COUNT; k++) {
+        if (inv[k] < 0 || inv[k] > MC_INV_MAX)
+            inv[k] = 0;
+    }
+    load_reset_runtime();
+    pl_hp = (int)hd.hp;
+    pork = (int)hd.pork_n;
+    if (pl_hp < 1 || pl_hp > MC_HP_MAX)
+        pl_hp = MC_HP_MAX;
+    if (pork < 0 || pork > MC_INV_MAX)
+        pork = 0;
     return 0;
 }
 
@@ -1719,9 +1965,9 @@ static int selftest(void) {
             pigs[i].alive = 0;
         memset(key_down, 0, sizeof(key_down));
         memset(ext_down, 0, sizeof(ext_down));
-        key_down[0x11] = 1;
+        key_down[SC_W] = 1;
         tick_player(0.1f);
-        key_down[0x11] = 0;
+        key_down[SC_W] = 0;
         if (pl_x <= 32.5f) {
             printf("minicraft: selftest FAIL (W does not advance)\n");
             return 1;
@@ -1731,9 +1977,83 @@ static int selftest(void) {
             return 1;
         }
         render_frame();
-        if (BACKBUF[100 * FB_W + 180] != 2) {
-            printf("minicraft: selftest FAIL (crosshair off +X)\n");
+        {
+            int sx, sy, found = 0;
+            RayHit th = cast_ray(pl_x, pl_y, eye_z(), 1, 0, 0, MC_REACH);
+            if (!th.hit || get_b(th.bx, th.by, th.bz) != B_BRICK) {
+                printf("minicraft: selftest FAIL (crosshair ray off +X)\n");
+                return 1;
+            }
+            for (sy = 90; sy <= 110 && !found; sy++)
+                for (sx = 140; sx <= 200; sx++)
+                    if (BACKBUF[sy * FB_W + sx] == 2)
+                        found = 1;
+            if (!found) {
+                printf("minicraft: selftest FAIL (no highlight near center)\n");
+                return 1;
+            }
+        }
+    }
+    {
+        SaveHeader hd;
+        memset(&hd, 0, sizeof(hd));
+        hd.magic = MC_SAVE_MAGIC;
+        hd.version = MC_SAVE_VERSION;
+        hd.world_size = (uint32_t)sizeof(world);
+        if (hd.magic != MC_SAVE_MAGIC || hd.version != MC_SAVE_VERSION ||
+            hd.world_size != sizeof(world)) {
+            printf("minicraft: selftest FAIL (save header)\n");
             return 1;
+        }
+        inv[B_LOG] = 5;
+        if (!inv_remove(B_LOG, 4) || inv[B_LOG] != 1) {
+            printf("minicraft: selftest FAIL (inv_remove)\n");
+            return 1;
+        }
+        if (!inv_add(B_PLANKS, 16) || inv[B_PLANKS] < 16) {
+            printf("minicraft: selftest FAIL (inv_add)\n");
+            return 1;
+        }
+        if (inv_add(B_WATER, 1) || inv_add(B_BEDROCK, 1) || inv_add(B_COUNT, 1)) {
+            printf("minicraft: selftest FAIL (inv_add accepts junk)\n");
+            return 1;
+        }
+        set_b(10, 10, 10, B_BRICK);
+        if (get_b(10, 10, 10) != B_BRICK) {
+            printf("minicraft: selftest FAIL (set_b)\n");
+            return 1;
+        }
+        set_b(10, 10, 10, B_AIR);
+        if (get_b(10, 10, 10) != B_AIR) {
+            printf("minicraft: selftest FAIL (break)\n");
+            return 1;
+        }
+        pl_x = 10.5f;
+        pl_y = 10.5f;
+        pl_z = 10.02f;
+        if (block_intersects_player(10, 10, 10) == 0) {
+            printf("minicraft: selftest FAIL (AABB miss)\n");
+            return 1;
+        }
+        if (block_intersects_player(30, 30, 30) != 0) {
+            printf("minicraft: selftest FAIL (AABB false hit)\n");
+            return 1;
+        }
+        {
+            RayHit h = cast_ray(8.5f, 10.5f, 10.5f, 1, 0, 0, MC_REACH);
+            if (!h.hit || h.nx != -1 || h.ny != 0 || h.nz != 0 ||
+                h.px != h.bx - 1 || h.py != h.by || h.pz != h.bz) {
+                printf("minicraft: selftest FAIL (ray normal)\n");
+                return 1;
+            }
+        }
+        {
+            unsigned int s1 = ground_h_seed(5, 5, 1);
+            unsigned int s2 = ground_h_seed(5, 5, 999);
+            if (s1 == s2 && ground_h_seed(6, 7, 1) == ground_h_seed(6, 7, 999)) {
+                printf("minicraft: selftest FAIL (seed ignored)\n");
+                return 1;
+            }
         }
     }
     printf("minicraft: frame ok (%dx%d)\n", FB_W, FB_H);
@@ -1872,7 +2192,7 @@ int main(int argc, char **argv) {
     }
     {
         long prev = s_time_ms();
-        long save_at = prev + 30000;
+        long save_at = prev + MC_SAVE_SECS * 1000;
         for (;;) {
             long now = s_time_ms();
             float dt = (float)(now - prev) / 1000.0f;
@@ -1886,21 +2206,21 @@ int main(int argc, char **argv) {
             inst = dt > 0.001f ? 1.0f / dt : 99.0f;
             fps_ema = fps_ema * 0.92f + inst * 0.08f;
             poll_kbd();
-            if (key_down[0x01]) {
+            if (key_down[SC_ESC]) {
                 if (save_world() != 0)
                     printf("minicraft: save failed\n");
                 return 0;
             }
-            if (key_down[0x13]) {
+            if (key_down[SC_R]) {
                 if (save_world() != 0) {
-                    sprintf(last_act, "SAVE FAIL");
+                    snprintf(last_act, sizeof(last_act), "SAVE FAIL");
                     last_act_ms = now;
                     printf("minicraft: save failed\n");
                 } else {
-                    sprintf(last_act, "SAVED");
+                    snprintf(last_act, sizeof(last_act), "SAVED");
                     last_act_ms = now;
                 }
-                key_down[0x13] = 0;
+                key_down[SC_R] = 0;
             }
             tick_player(dt);
             tick_pigs(dt, now);
@@ -1908,10 +2228,10 @@ int main(int argc, char **argv) {
             tick_interact();
             render_frame();
             s_present();
-            if (now > save_at) {
+            if (world_dirty && now > save_at) {
                 if (save_world() != 0)
                     printf("minicraft: autosave failed\n");
-                save_at = now + 30000;
+                save_at = now + MC_SAVE_SECS * 1000;
             }
             s_yield();
         }
