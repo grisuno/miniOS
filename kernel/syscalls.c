@@ -209,6 +209,15 @@ static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, l
     gfx_note_compositor();
     vga_fb_blit_gfx_window(); return 0;
 }
+/* 2x nearest-neighbour zoom for the 320x200 game window (a1 0/1).
+ * Scalar only, no pointer to validate; anything else is EINVAL. */
+static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    extern int gfx_zoom_2x;
+    if (a1 < 0 || a1 > 1) return -22;
+    gfx_zoom_2x = (int)a1;
+    return 0;
+}
 static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
     int *hp = (int *)(unsigned long)a1;
@@ -661,6 +670,7 @@ static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] =
     [MINIOS_SYS_SECCOMP - MINIOS_SYSCALL_BASE] = { sys_minios_seccomp, "seccomp" },
     [MINIOS_SYS_NICE - MINIOS_SYSCALL_BASE] = { sys_minios_nice, "nice" },
     [MINIOS_SYS_DIR_LIST - MINIOS_SYSCALL_BASE] = { sys_minios_dir_list, "dir_list" },
+    [MINIOS_SYS_GFX_ZOOM - MINIOS_SYSCALL_BASE] = { sys_minios_gfx_zoom, "gfx_zoom" },
 };
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };

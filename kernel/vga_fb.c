@@ -1657,12 +1657,19 @@ static void blit_indexed_truecolor(const volatile uint8_t *bb, int bb_w,
     }
 }
 
+/** Docstring: 2x nearest-neighbour zoom for the 320x200 game window,
+ * set via SYS_GFX_ZOOM. One int of .bss; the NK buffer never zooms. */
+int gfx_zoom_2x;
+
 /** Docstring: Composite one indexed back-buffer as a titled graphics window. */
 static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh) {
     int dst_x, dst_y;
     int r, b;
-    int win_w = bw + SCROLLBAR_W;
-    int win_h = bh + FONT_H;
+    int zoom = gfx_zoom_2x && bw == DOOM_W && bh == DOOM_H;
+    int dw = zoom ? bw * 2 : bw;
+    int dh = zoom ? bh * 2 : bh;
+    int win_w = dw + SCROLLBAR_W;
+    int win_h = dh + FONT_H;
     uint8_t gbg;
     gfx_frames_composited++;
     vga_fb_gfx_cursor_erase();
@@ -1676,14 +1683,65 @@ static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh) {
     text_px(dst_x + 4, dst_y, gfx_win_title, COL_TITLE_TXT, gbg);
     wm_draw_buttons(dst_x, dst_y, win_w, COL_TITLE_TXT, gbg);
     if (fb_bpp == 8) {
-        for (r = 0; r < bh; r++) {
-            volatile uint8_t *dst = &FB_ADDR[(unsigned)(dst_y + FONT_H + r) * (unsigned)fb_pitch + (unsigned)dst_x];
-            const volatile uint8_t *src = bb + r * bw;
-            for (b = 0; b < bw; b++)
-                dst[b] = src[b];
+        if (!zoom) {
+            for (r = 0; r < bh; r++) {
+                volatile uint8_t *dst = &FB_ADDR[(unsigned)(dst_y + FONT_H + r) * (unsigned)fb_pitch + (unsigned)dst_x];
+                const volatile uint8_t *src = bb + r * bw;
+                for (b = 0; b < bw; b++)
+                    dst[b] = src[b];
+            }
+        } else {
+            int x0 = dst_x < 0 ? -dst_x : 0;
+            int x1 = dst_x + dw > fb_width ? fb_width - dst_x : dw;
+            for (r = 0; r < bh; r++) {
+                const volatile uint8_t *src = bb + r * bw;
+                int k;
+                for (k = 0; k < 2; k++) {
+                    int y = dst_y + FONT_H + r * 2 + k;
+                    volatile uint8_t *dst;
+                    int xx;
+                    if (y < 0 || y >= fb_height) continue;
+                    if (x0 >= x1) continue;
+                    dst = &FB_ADDR[(unsigned)y * (unsigned)fb_pitch + (unsigned)dst_x];
+                    for (xx = x0; xx < x1; xx++)
+                        dst[xx] = src[xx / 2];
+                }
+            }
         }
-    } else {
+    } else if (!zoom) {
         blit_indexed_truecolor(bb, bw, bh, dst_x, dst_y + FONT_H);
+    } else {
+        volatile uint8_t *fb = (volatile uint8_t *)FB_ADDR;
+        unsigned pitch = (unsigned)fb_pitch;
+        int is32 = (fb_bpp == 32);
+        unsigned ps = is32 ? 4u : 3u;
+        for (r = 0; r < bh; r++) {
+            for (b = 0; b < bw; b++) {
+                unsigned o = (unsigned)bb[r * bw + b] * 3u;
+                unsigned px = ((unsigned)gfx_pal[o] << 16)
+                            | ((unsigned)gfx_pal[o + 1] << 8)
+                            | (unsigned)gfx_pal[o + 2];
+                int dx = dst_x + b * 2, dy = dst_y + FONT_H + r * 2;
+                int yy, xx;
+                for (yy = 0; yy < 2; yy++) {
+                    int y = dy + yy;
+                    if (y < 0 || y >= fb_height) continue;
+                    for (xx = 0; xx < 2; xx++) {
+                        int x = dx + xx;
+                        volatile uint8_t *p;
+                        if (x < 0 || x >= fb_width) continue;
+                        p = fb + (unsigned)y * pitch + (unsigned)x * ps;
+                        if (is32)
+                            *(volatile unsigned *)p = px;
+                        else {
+                            p[0] = gfx_pal[o + 2];
+                            p[1] = gfx_pal[o + 1];
+                            p[2] = gfx_pal[o];
+                        }
+                    }
+                }
+            }
+        }
     }
     gfx_keep_save(dst_x, dst_y, win_w, win_h);
     vga_fb_gfx_cursor_draw();

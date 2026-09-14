@@ -263,6 +263,7 @@
 #define MINIOS_SYS_NICE          239
 #define MINIOS_SYS_RLIMIT        240
 #define MINIOS_SYS_DIR_LIST      241
+#define MINIOS_SYS_GFX_ZOOM      242
 
 #define MINIOS_SYS_CLONE             300
 
