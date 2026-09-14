@@ -251,6 +251,77 @@
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 - Imported by: `tests/test_freedomui.c`
 
+## progs/minicraft/minicraft.c
+- Layer: utility
+- Doc: minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF).
+- Language: c
+- Symbols:
+  - `RayHit` (struct, line 417)
+  - `s_time_ms` (function, line 76) `static long s_time_ms(void)`
+  - `s_kbd` (function, line 82) `static long s_kbd(void)`
+  - `s_kbd_raw` (function, line 87) `static long s_kbd_raw(long on)`
+  - `s_vga` (function, line 92) `static long s_vga(long on)`
+  - `s_pal` (function, line 97) `static long s_pal(const unsigned char *p)`
+  - `s_present` (function, line 102) `static long s_present(void)`
+  - `s_title` (function, line 107) `static long s_title(const char *t)`
+  - `s_mouse` (function, line 112) `static long s_mouse(int *m)`
+  - `s_yield` (function, line 117) `static void s_yield(void)`
+  - `pal_set` (function, line 124) `static void pal_set(int i, int r, int g, int b)`
+  - `build_palette` (function, line 130) `static void build_palette(void)`
+  - `widx` (function, line 182) `static int widx(int x, int y, int z)`
+  - `in_world` (function, line 186) `static int in_world(int x, int y, int z)`
+  - `get_b` (function, line 190) `static unsigned char get_b(int x, int y, int z)`
+  - `col_recompute` (function, line 198) `static void col_recompute(int x, int y)`
+  - `set_b` (function, line 210) `static void set_b(int x, int y, int z, unsigned char b)`
+  - `set_b_raw` (function, line 217) `static void set_b_raw(int x, int y, int z, unsigned char b)`
+  - `light_build` (function, line 223) `static void light_build(void)`
+  - `sky_light` (function, line 233) `static float sky_light(int x, int y, int z)`
+  - `is_solid` (function, line 246) `static int is_solid(unsigned char b)`
+  - `is_visible` (function, line 250) `static int is_visible(unsigned char b)`
+  - `hash2` (function, line 254) `static unsigned int hash2(int x, int y)`
+  - `ground_h` (function, line 261) `static int ground_h(int x, int y)`
+  - `gen_world` (function, line 273) `static void gen_world(unsigned int seed)`
+  - `face_color` (function, line 381) `static unsigned char face_color(unsigned char b, int face)`
+  - `cast_ray` (function, line 424) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
+  - `eye_z` (function, line 497) `static float eye_z(void)`
+  - `mc_glyph` (function, line 564) `static int mc_glyph(char ch)`
+  - `mc_pixel` (function, line 572) `static void mc_pixel(int x, int y, unsigned char c)`
+  - `mc_text` (function, line 578) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
+  - `mc_text_bg` (function, line 591) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
+  - `mc_block_name` (function, line 604) `static const char *mc_block_name(unsigned char b)`
+  - `mc_facing` (function, line 621) `static char mc_facing(void)`
+  - `render_frame` (function, line 636) `static void render_frame(void)`
+  - `poll_kbd` (function, line 782) `static void poll_kbd(void)`
+  - `player_collides` (function, line 858) `static int player_collides(float x, float y, float z)`
+  - `move_axis` (function, line 875) `static void move_axis(float nx, float ny, float nz)`
+  - `try_autostep` (function, line 890) `static void try_autostep(float tx, float ty)`
+  - `tick_player` (function, line 901) `static void tick_player(float dt)`
+  - `tick_interact` (function, line 968) `static void tick_interact(void)`
+  - `save_world` (function, line 1067) `static int save_world(void)`
+  - `load_world` (function, line 1090) `static int load_world(void)`
+  - `selftest` (function, line 1126) `static int selftest(void)`
+  - `dumpstats` (function, line 1191) `static int dumpstats(void)`
+  - `main` (function, line 1262) `int main(int argc, char **argv)`
+  - `volatile` (function, line 79) `__asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx", "r11", "memory");`
+  - `memset` (function, line 277) `memset(world, 0, sizeof(world));`
+  - `sprintf` (function, line 709) `sprintf(hud0, "X%d Y%d Z%d F:%c", ix, iy, iz, fc);`
+  - `printf` (function, line 810) `printf("minicraft: fly %s\n", mc_fly ? "on" : "off");`
+  - `cosf` (function, line 847) `cosf(pl_yaw) * cosf(pl_pitch), sinf(pl_yaw) * cosf(pl_pitch), sinf(pl_pitch), 6.0f);`
+  - `fclose` (function, line 1073) `fclose(f);`
+  - `fwrite` (function, line 1084) `fwrite(st, 1, sizeof(st), f);`
+  - `fflush` (function, line 1305) `fflush(stdout);`
+  - `MC_W` (macro, line 28) `#define MC_W`
+  - `MC_D` (macro, line 30) `#define MC_D`
+  - `MC_H` (macro, line 31) `#define MC_H`
+  - `MC_WORLD` (macro, line 32) `#define MC_WORLD`
+  - `FB_W` (macro, line 33) `#define FB_W`
+  - `FB_H` (macro, line 35) `#define FB_H`
+  - `BACKBUF` (macro, line 38) `#define BACKBUF`
+  - `BACKBUF` (macro, line 40) `#define BACKBUF`
+  - `SAVE_PATH` (macro, line 42) `#define SAVE_PATH`
+  - `MC_EYE` (macro, line 495) `#define MC_EYE`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
 ## progs/minios_abi.h
 - Layer: utility
 - Doc: ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
@@ -382,7 +453,7 @@
   - `SYS_TIME` (macro, line 290) `#define SYS_TIME`
   - `SYS_WRITE` (macro, line 291) `#define SYS_WRITE`
   - `MINIOS_EABI_MISMATCH` (macro, line 294) `#define MINIOS_EABI_MISMATCH`
-- Imported by: `kernel.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `tests/test_abi.c`, `tools/abi_stamp.c`, `vga_fb.h`
+- Imported by: `kernel.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `tests/test_abi.c`, `tools/abi_stamp.c`, `vga_fb.h`
 
 ## progs/paint/paint.c
 - Layer: utility

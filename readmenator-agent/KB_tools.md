@@ -70,8 +70,8 @@
   - `Config` (class, line 17) `class Config`
   - `bash_unquote` (method, line 26) `def bash_unquote(expr)`
   - `parse_mutations` (method, line 41) `def parse_mutations(text)`
-  - `anchor_matches` (method, line 54) `def anchor_matches(repo, target, expr)`
-  - `main` (method, line 73) `def main()`
+  - `anchor_matches` (method, line 67) `def anchor_matches(repo, target, expr)`
+  - `main` (method, line 86) `def main()`
 
 ## tools/check_surprising.py
 - Layer: utility
@@ -142,8 +142,8 @@
 - Layer: utility
 - Language: py
 - Symbols:
-  - `write_atomic` (function, line 62) `def write_atomic(img, path)`
-  - `main` (function, line 68) `def main()`
+  - `write_atomic` (function, line 63) `def write_atomic(img, path)`
+  - `main` (function, line 69) `def main()`
 
 ## tools/gen_icons.py
 - Layer: utility
@@ -229,6 +229,18 @@
   - `qmp` (function, line 88) `def qmp(obj)`
   - `rel` (function, line 97) `def rel(dx, dy)`
   - `dump` (function, line 104) `def dump(name)`
+- Depends on: `kernel/time.c`
+
+## tools/probe_minicraft.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `main` (function, line 34) `def main()`
+  - `send` (function, line 68) `def send(line)`
+  - `poll` (function, line 74) `def poll(timeout)`
+  - `grab` (function, line 85) `def grab(pat, timeout)`
+  - `qkey` (function, line 143) `def qkey(qcode, down)`
+  - `pos` (function, line 154) `def pos(tag)`
 - Depends on: `kernel/time.c`
 
 ## tools/qga_client.py

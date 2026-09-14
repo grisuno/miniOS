@@ -23,11 +23,6 @@
 - Language: h
 - Imported by: `smp.c`
 
-## app.py
-- Layer: utility
-- Doc: _*_ coding: utf8 _*_
-- Language: py
-
 ## audio.h
 - Layer: infrastructure
 - Doc: ifndef AUDIO_H define AUDIO_H  Unified audio API for MiniOS.
@@ -821,8 +816,8 @@ void kmain(void)`
   - `usage` (function, line 51)
   - `restore_sources` (function, line 101)
   - `cleanup` (function, line 108)
-  - `record` (function, line 272)
-  - `find_index` (function, line 278)
+  - `record` (function, line 275)
+  - `find_index` (function, line 281)
 
 ## net.h
 - Layer: utility
@@ -1213,7 +1208,8 @@ void kmain(void)`
 - Symbols:
   - `shell_readline_buf` (function, line 18) `void shell_readline_buf(char *buf, int size);`
   - `shell_parse` (function, line 21) `int shell_parse(char *line, char **argv, int max_args);`
-  - `shell_cmd_sh` (function, line 26) `int shell_cmd_sh(int argc, char **argv);`
+  - `shell_parse_long` (function, line 29) `int shell_parse_long(const char *s, long *out);`
+  - `shell_cmd_sh` (function, line 34) `int shell_cmd_sh(int argc, char **argv);`
   - `SHELL_H` (macro, line 2) `#define SHELL_H`
   - `CMD_BUF_SZ` (macro, line 12) `#define CMD_BUF_SZ`
   - `MAX_ARGS` (macro, line 14) `#define MAX_ARGS`
@@ -1415,13 +1411,13 @@ void kmain(void)`
   - `cleanup_stale_qemu` (function, line 43)
   - `scenario` (function, line 54)
   - `scenario_smp` (function, line 74)
-  - `expect` (function, line 95)
-  - `expect_count` (function, line 117)
-  - `refute` (function, line 140)
-  - `http_server_start` (function, line 839)
-  - `http_server_stop` (function, line 846)
-  - `http_fixture_start` (function, line 851)
-  - `http_fixture_stop` (function, line 858)
+  - `expect` (function, line 97)
+  - `expect_count` (function, line 119)
+  - `refute` (function, line 142)
+  - `http_server_start` (function, line 853)
+  - `http_server_stop` (function, line 860)
+  - `http_fixture_start` (function, line 865)
+  - `http_fixture_stop` (function, line 872)
 
 ## test_http_server.py
 - Layer: testing

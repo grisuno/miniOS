@@ -942,6 +942,72 @@ tuning knobs. They are one layout, and changing any of them means re-checking
 every fixed low-memory address that assumed it was alone.
 
 
+## Minicraft
+
+MiniOS ships a Minecraft-like voxel walker as a static Linux ELF at ring 3,
+under the same contract as the DOOM and Quake 2 ports: host gcc,
+`-static -no-pie`, no MiniOS source compiled by miniGCC. It renders a
+64x64x32 block world with a per-pixel DDA raycaster (Amanatides and Woo)
+into the 320x200 game back-buffer and presents it with `SYS_GFX_PRESENT` /
+`BUF_GAME`, so the kernel composites it as a titled window exactly like
+DOOM. Palette, keyboard, mouse, time and VGA mode arrive through the
+canonical syscalls in `progs/minios_abi.h`; the whole game is one file,
+`progs/minicraft/minicraft.c`, plus the `Minicraft` desktop shortcut and
+the `addons/minicraft.yaml` host addon. The world has terrain with trees
+and lakes, per-column skylight, water that is visible but not solid, face
+shading, distance fog and dither, an AABB player with gravity, jumping and
+one-block autostep, and a 9-slot hotbar with a block inventory.
+
+```
+miniOS> run minicraft.elf        # or bare: minicraft
+miniOS> run minicraft.elf &      # background: shell stays usable, game keeps PS/2 focus
+```
+
+| Key | Action |
+|-----|--------|
+| WASD | move (W walks to the crosshair) |
+| Mouse / arrow keys | look (pitch clamped to +-72 deg) |
+| Space | jump (fly mode: rise) |
+| Shift | sprint x1.6 |
+| F | toggle fly (Space up, C down) |
+| 1-9 / wheel | hotbar select |
+| Left click | break block (adds to inventory) |
+| Right click | place selected block (spends inventory) |
+| R | save world |
+| T | rescue to surface |
+| N | new world |
+| C | level view |
+| P | position report on serial |
+| Esc | save and quit |
+
+The HUD shows `X Y Z F:<facing>`, the targeted block and distance,
+the selected block and its count, wood progress `W<n>/10`, a `FLY`
+flag, and a `T:SALIR` hint when buried below the surface. The game has
+one goal to give it shape: collect 10 WOOD, which prints
+`minicraft: GOAL firewood x10 DONE` on the serial console and
+`GOAL DONE` on the HUD. The world, player state and inventory persist
+in `/saves/minicraft.map` and survive image rebuilds through the same
+`saves/` preservation that protects the other games.
+
+Two properties were verified numerically rather than by screenshots.
+The camera basis keeps forward, right and up separate and rotates pitch
+in the forward/up plane, so looking up and down works at every yaw and
+W always walks toward the crosshair (an earlier build rotated the
+lateral axis instead, which deadened pitch except at specific yaws).
+Headless proofs: `minicraft --selftest` prints
+`minicraft: frame ok (320x200)`, `minicraft autoframes N` climbs
+`gfx frames`, and `tools/probe_minicraft.py` boots the image, runs the
+game in the background, and asserts over the serial console that frames
+climb, the upper/lower framebuffer bands read sky over ground, and QMP
+keys move the player (arrow-key turn, fly toggle, Space rise, W walk,
+all confirmed through P reports). Rebuild from source:
+
+```bash
+make progs/bin/minicraft.elf   # guest ELF + bare-name alias on MiniFS
+make test-minicraft            # host selftest: movement, crosshair, pitch sweep
+```
+
+
 ## Pokemon on MiniOS (gb-recompiled port)
 
 MiniOS runs a recompiled Game Boy / Game Boy Color game as a ring-3 static

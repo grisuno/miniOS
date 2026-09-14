@@ -3881,11 +3881,11 @@ void kmain(void)`
 - Depends on: `editor.h`, `kernel.h`, `shell.h`
 
 ### edit_loop (function) `static void edit_loop(EditBuf *e)`
-- Defined: `kernel/editor.c:220`
+- Defined: `kernel/editor.c:223`
 - Depends on: `editor.h`, `kernel.h`, `shell.h`
 
 ### shell_cmd_edit (function) `void shell_cmd_edit(int argc, char **argv)`
-- Defined: `kernel/editor.c:308`
+- Defined: `kernel/editor.c:328`
 - Depends on: `editor.h`, `kernel.h`, `shell.h`
 
 ### kfree (function) `kfree(e);`
@@ -3921,7 +3921,7 @@ void kmain(void)`
 - Depends on: `editor.h`, `kernel.h`, `shell.h`
 
 ### shell_readline_buf (function) `shell_readline_buf(buf, CMD_BUF_SZ);`
-- Defined: `kernel/editor.c:226`
+- Defined: `kernel/editor.c:229`
 - Depends on: `editor.h`, `kernel.h`, `shell.h`
 
 ## kernel/exec.c
@@ -5276,225 +5276,225 @@ void kmain(void)`
 
 ### shell_parse_vol (function) `static int shell_parse_vol(const char *s, unsigned *out)`
 - Defined: `kernel/shell.c:142`
-- Doc: Strict decimal parse for the `vol` builtin: the whole argument must be an optional sign followed by at least one digit, 
+- Doc: Strict decimal parse for the `vol` builtin: delegates the digit and overflow work to shell_parse_long and clamps the res
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_readline_buf (function) `void shell_readline_buf(char *buf, int size)`
-- Defined: `kernel/shell.c:179`
+- Defined: `kernel/shell.c:168`
 - Doc: Read one line into buf (at most size-1 chars). Echoes input and * honours backspace. Shared by the shell prompt and the 
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_name_base (function) `static const char *shell_name_base(const char *path)`
-- Defined: `kernel/shell.c:208`
+- Defined: `kernel/shell.c:197`
 - Doc: The component of a ramdisk path after the last '/', or the whole path when * there is no '/'. Used to match a bare comma
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_complete_tier (function) `static int shell_complete_tier(const char *nm)`
-- Defined: `kernel/shell.c:232`
+- Defined: `kernel/shell.c:221`
 - Doc: Runnable tier of a file name for first-word TAB completion: 0=.elf, 1=.cvm, 2=.o, 3=anything else. A bare command word c
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_complete_replace (function) `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-- Defined: `kernel/shell.c:244`
+- Defined: `kernel/shell.c:233`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_readline (function) `static void shell_readline(void)`
-- Defined: `kernel/shell.c:258`
+- Defined: `kernel/shell.c:247`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_hist_show (function) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
-- Defined: `kernel/shell.c:267`
+- Defined: `kernel/shell.c:256`
 - Doc: Redraw the edit line: erase what is shown, then write `text` into buf and onto the console, leaving the text cursor at `
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_line_repaint (function) `static void shell_line_repaint(char *buf, int size, int pos)`
-- Defined: `kernel/shell.c:289`
+- Defined: `kernel/shell.c:278`
 - Doc: Repaint the edit line after a cursor move or mid-line edit: erase the whole visible line, rewrite buf, then back the con
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_line_insert (function) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
-- Defined: `kernel/shell.c:302`
+- Defined: `kernel/shell.c:291`
 - Doc: Insert character c into buf at `pos`, shifting the tail right. Bounds * checked; the caller repaints afterwards.
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_line_backspace (function) `static void shell_line_backspace(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:311`
+- Defined: `kernel/shell.c:300`
 - Doc: Insert character c into buf at `pos`, shifting the tail right. Bounds * checked; the caller repaints afterwards. static 
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_line_delete (function) `static void shell_line_delete(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:319`
+- Defined: `kernel/shell.c:308`
 - Doc: kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1)); buf[*pos] = c; (*pos)++; } /* Delete the characte
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_line_kill_front (function) `static void shell_line_kill_front(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:326`
+- Defined: `kernel/shell.c:315`
 - Doc: int len = (int)kstrlen(buf); if (*pos <= 0) return; kmemmove(buf + *pos - 1, buf + *pos, (unsigned long)(len - *pos + 1)
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_line_kill_tail (function) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:333`
+- Defined: `kernel/shell.c:322`
 - Doc: static void shell_line_delete(char *buf, int size, int *pos) { int len = (int)kstrlen(buf); if (*pos >= len) return; kme
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_line_kill_word (function) `static void shell_line_kill_word(char *buf, int size, int *pos)`
-- Defined: `kernel/shell.c:338`
+- Defined: `kernel/shell.c:327`
 - Doc: /* Delete from the cursor to the start of the line (Ctrl+U). static void shell_line_kill_front(char *buf, int size, int 
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_hist_newest_match (function) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
-- Defined: `kernel/shell.c:350`
+- Defined: `kernel/shell.c:339`
 - Doc: Most recent history entry starting with `prefix` (of length plen) that is strictly longer than the prefix, or -1 when th
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### line (function) `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...`
-- Defined: `kernel/shell.c:367`
+- Defined: `kernel/shell.c:356`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_readline_hist (function) `static void shell_readline_hist(char *buf, int size)`
-- Defined: `kernel/shell.c:412`
+- Defined: `kernel/shell.c:401`
 - Doc: Shell prompt readline: like shell_readline_buf plus command history. Up arrow (ESC [ A) recalls the previous command sta
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_parse (function) `int shell_parse(char *line, char **argv, int max_args)`
-- Defined: `kernel/shell.c:724`
+- Defined: `kernel/shell.c:713`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_run (function) `void shell_run(void)`
-- Defined: `kernel/shell.c:745`
+- Defined: `kernel/shell.c:734`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_load (function) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-- Defined: `kernel/shell.c:808`
+- Defined: `kernel/shell.c:797`
 - Doc: Load an ELF file from the ramdisk and register it under its filename stem. Returns 1 for an ET_REL program, 2 for an ET_
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### outw_port (function) `static inline void outw_port(unsigned short port, unsigned short val)`
-- Defined: `kernel/shell.c:870`
+- Defined: `kernel/shell.c:859`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_poweroff (function) `static void shell_cmd_poweroff(void)`
-- Defined: `kernel/shell.c:876`
+- Defined: `kernel/shell.c:865`
 - Doc: define QEMU_PM_PORT 0x604
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_run_dir_for (function) `static const ShellRunDir *shell_run_dir_for(const char *name)`
-- Defined: `kernel/shell.c:893`
+- Defined: `kernel/shell.c:882`
 - Doc: The toolchain directory that owns `name`, chosen by suffix. Bare names with * no recognised suffix fall through to the c
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_file_is_real (function) `static int shell_file_is_real(const char *resolved)`
-- Defined: `kernel/shell.c:911`
+- Defined: `kernel/shell.c:900`
 - Doc: Is `resolved` (already normalised against the cwd) a real ramdisk file? A * directory name or a non-existent path is rej
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_resolve_run (function) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-- Defined: `kernel/shell.c:923`
+- Defined: `kernel/shell.c:912`
 - Doc: Resolve `name` to a full ramdisk path suitable for running. A bare name is tried first against the cwd, then through the
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### etrel_path_trusted (function) `static int etrel_path_trusted(const char *full)`
-- Defined: `kernel/shell.c:965`
+- Defined: `kernel/shell.c:954`
 - Doc: ET_REL trust gate (boyscout fix for ring-0 .o without validation): relocatables execute as kernel extensions, so only th
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_run_elf_buf_path (function) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...`
-- Defined: `kernel/shell.c:979`
+- Defined: `kernel/shell.c:968`
 - Doc: Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`. argv[0] is the program name the program sees. 
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_run_elf_file (function) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-- Defined: `kernel/shell.c:1009`
+- Defined: `kernel/shell.c:998`
 - Doc: Load the ramdisk file at `full` and run it as an ELF. Returns the exit * code, or -1 when the file cannot be read or loa
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_run_elf_minifs (function) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1022`
+- Defined: `kernel/shell.c:1011`
 - Doc: Load a Linux ELF from the MiniFS disk and run it (preserves the historical * `run` fallback when a name is not on the ra
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_run_cvm (function) `static int shell_run_cvm(const char *full, int argc, char **argv)`
-- Defined: `kernel/shell.c:1072`
+- Defined: `kernel/shell.c:1061`
 - Doc: Run a `.cvm` module at the resolved path `full`. The interpreter is loaded from the ramdisk on first use and cached. arg
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_run_file (function) `static int shell_run_file(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1108`
+- Defined: `kernel/shell.c:1097`
 - Doc: Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the interpreter, ELF files by content through the matching l
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_read_elf_bytes (function) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
                           ...`
-- Defined: `kernel/shell.c:1152`
+- Defined: `kernel/shell.c:1141`
 - Doc: --- Multitask run (mrun): concurrent isolated ELFs ----  `mrun a.elf b.elf ...` loads each ET_EXEC/ET_DYN into its own u
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### code (function) `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...`
-- Defined: `kernel/shell.c:1218`
+- Defined: `kernel/shell.c:1207`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_mrun (function) `static void shell_cmd_mrun(int argc, char **argv)`
-- Defined: `kernel/shell.c:1253`
+- Defined: `kernel/shell.c:1242`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_run_bg (function) `static void shell_run_bg(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1302`
+- Defined: `kernel/shell.c:1291`
 - Doc: `run <elf> &`: background a single isolated ELF (same spawn path as mrun). ET_REL and .cvm stay foreground-only: ring-0 
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_run_any (function) `int shell_run_any(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1330`
+- Defined: `kernel/shell.c:1319`
 - Doc: Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver. argv[
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### gfx_parse_int (function) `static int gfx_parse_int(const char *s, int *out)`
-- Defined: `kernel/shell.c:1401`
+- Defined: `kernel/shell.c:1390`
 - Doc: --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives, but a
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### gfx_read_palette (function) `static void gfx_read_palette(unsigned char pal[768])`
-- Defined: `kernel/shell.c:1421`
+- Defined: `kernel/shell.c:1410`
 - Doc: Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation). U
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_gfx (function) `static void shell_cmd_gfx(int argc, char **argv)`
-- Defined: `kernel/shell.c:1427`
+- Defined: `kernel/shell.c:1416`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_wm (function) `static void shell_cmd_wm(int argc, char **argv)`
-- Defined: `kernel/shell.c:1580`
+- Defined: `kernel/shell.c:1569`
 - Doc: `wm <op>` — window-manager operations, exposed as a shell builtin so the tiling-WM behaviour is observable and testable 
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### tree (function) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-- Defined: `kernel/shell.c:1704`
+- Defined: `kernel/shell.c:1693`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_jobs (function) `static void shell_cmd_jobs(void)`
-- Defined: `kernel/shell.c:1716`
+- Defined: `kernel/shell.c:1705`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_wait (function) `static void shell_cmd_wait(int argc, char **argv)`
-- Defined: `kernel/shell.c:1739`
+- Defined: `kernel/shell.c:1728`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_kill (function) `static void shell_cmd_kill(int argc, char **argv)`
-- Defined: `kernel/shell.c:1765`
+- Defined: `kernel/shell.c:1760`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_mem (function) `static void shell_cmd_mem(void)`
-- Defined: `kernel/shell.c:1787`
+- Defined: `kernel/shell.c:1786`
 - Doc: `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS free b
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### VMA (function) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...`
-- Defined: `kernel/shell.c:1816`
+- Defined: `kernel/shell.c:1815`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### to (function) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
@@ -5503,28 +5503,33 @@ static void shell_cmd_trac...`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_parse_u64 (function) `static int shell_parse_u64(const char *s, unsigned long *out)`
-- Defined: `kernel/shell.c:1931`
+- Defined: `kernel/shell.c:1959`
 - Doc: Strict unsigned parse for debugger/inspector operands: `0x`-prefixed hex or plain decimal, no signs, no trailing garbage
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
+### shell_parse_long (function) `int shell_parse_long(const char *s, long *out)`
+- Defined: `kernel/shell.c:1975`
+- Doc: Strict signed decimal twin of shell_parse_u64: optional sign, at least one digit, whole string consumed, overflow fail-c
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+
 ### shell_cmd_gdb (function) `static void shell_cmd_gdb(int argc, char **argv)`
-- Defined: `kernel/shell.c:1965`
+- Defined: `kernel/shell.c:2000`
 - Doc: `gdb <op>` -- in-OS inspector half of the debugger story. Full register-level debugging (breakpoints, single-step, live 
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_hash (function) `static void shell_cmd_hash(int argc, char **argv)`
-- Defined: `kernel/shell.c:2008`
+- Defined: `kernel/shell.c:2043`
 - Doc: `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file never
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_resolve_arg (function) `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...`
-- Defined: `kernel/shell.c:2027`
+- Defined: `kernel/shell.c:2062`
 - Doc: Docstring: Resolve `arg` against the cwd into `out` (`RAMDISK_FNAME_LEN` bytes); on failure print `<cmd>: <arg>: <reason
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_exec_builtin (function) `void shell_exec_builtin(int argc, char **argv)`
-- Defined: `kernel/shell.c:2033`
+- Defined: `kernel/shell.c:2068`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_fb_park_line (function) `vga_fb_park_line(cmd_buf, shell_edit_pos);`
@@ -5544,150 +5549,150 @@ static void shell_cmd_trac...`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### kmemset (function) `kmemset(buf, 0, (unsigned long)size);`
-- Defined: `kernel/shell.c:181`
+- Defined: `kernel/shell.c:170`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_putc (function) `vga_putc('\n');`
-- Defined: `kernel/shell.c:186`
+- Defined: `kernel/shell.c:175`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### kmemmove (function) `kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1));`
-- Defined: `kernel/shell.c:305`
+- Defined: `kernel/shell.c:294`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_fb_hide_text_cursor (function) `vga_fb_hide_text_cursor();`
-- Defined: `kernel/shell.c:445`
+- Defined: `kernel/shell.c:434`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### console_getc (function) `console_getc();`
-- Defined: `kernel/shell.c:466`
+- Defined: `kernel/shell.c:455`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_hist_nav (function) `shell_hist_nav(buf, size, &pos, b == KEY_ARR_UP);`
-- Defined: `kernel/shell.c:470`
+- Defined: `kernel/shell.c:459`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### console_ungetc (function) `console_ungetc((unsigned char)t);`
-- Defined: `kernel/shell.c:510`
+- Defined: `kernel/shell.c:499`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### root (function) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * explicit path or an argument word keeps every match, so * navigating to data file`
-- Defined: `kernel/shell.c:572`
+- Defined: `kernel/shell.c:561`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### desktop_launch (function) `desktop_launch(shell_pending_cmd);`
-- Defined: `kernel/shell.c:763`
+- Defined: `kernel/shell.c:752`
 - Doc: A desktop icon was clicked while a program ran; run it now that the shell has control again, without a fresh prompt. Thr
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_fb_clear_prompt (function) `vga_fb_clear_prompt();`
-- Defined: `kernel/shell.c:774`
+- Defined: `kernel/shell.c:763`
 - Doc: An empty submit (Enter / Ctrl+D on a blank line) consumed the live prompt too: clear it before looping, or every refocus
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### ramdisk_read (function) `ramdisk_read(f, data, 0, data_size);`
-- Defined: `kernel/shell.c:819`
+- Defined: `kernel/shell.c:808`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### minifs_read (function) `minifs_read(ino, data, 0, data_size);`
-- Defined: `kernel/shell.c:835`
+- Defined: `kernel/shell.c:824`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### kprintf (function) `kprintf("load: refusing untrusted ET_REL '%s'", resolved);`
-- Defined: `kernel/shell.c:856`
+- Defined: `kernel/shell.c:845`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### kfree (function) `kfree(data);`
-- Defined: `kernel/shell.c:867`
+- Defined: `kernel/shell.c:856`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### volatile (function) `__asm__ volatile("outw %0, %1" : : "a"(val), "Nd"(port));`
-- Defined: `kernel/shell.c:872`
+- Defined: `kernel/shell.c:861`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### k_exec_user (function) `return k_exec_user(entry, argc, argv);`
-- Defined: `kernel/shell.c:1002`
+- Defined: `kernel/shell.c:991`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### window (function) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small programs overlap in * time instead of running one after another. ET_REL is refus`
-- Defined: `kernel/shell.c:1145`
+- Defined: `kernel/shell.c:1134`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### yield (function) `yield();`
-- Defined: `kernel/shell.c:1250`
+- Defined: `kernel/shell.c:1239`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_fb_set_gfx_program (function) `vga_fb_set_gfx_program(name);`
-- Defined: `kernel/shell.c:1334`
+- Defined: `kernel/shell.c:1323`
 - Doc: Record the launch name for the taskbar button: if this program goes * graphics, the button resolves its icon through etc
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### k_run_rel (function) `return k_run_rel(p->entry, argc, argv);`
-- Defined: `kernel/shell.c:1340`
+- Defined: `kernel/shell.c:1329`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### context (function) `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);`
-- Defined: `kernel/shell.c:1356`
+- Defined: `kernel/shell.c:1345`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### outb (function) `outb(0x3C7, 0);`
-- Defined: `kernel/shell.c:1423`
+- Defined: `kernel/shell.c:1412`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### kfwrite (function) `kfwrite(hdr, 1, (unsigned long)n, f);`
-- Defined: `kernel/shell.c:1537`
+- Defined: `kernel/shell.c:1526`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### kfclose (function) `kfclose(f);`
-- Defined: `kernel/shell.c:1556`
+- Defined: `kernel/shell.c:1545`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_fb_tile_all (function) `vga_fb_tile_all();`
-- Defined: `kernel/shell.c:1597`
+- Defined: `kernel/shell.c:1586`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_fb_layout_cycle (function) `vga_fb_layout_cycle();`
-- Defined: `kernel/shell.c:1612`
+- Defined: `kernel/shell.c:1601`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_fb_snap_window (function) `vga_fb_snap_window(z);`
-- Defined: `kernel/shell.c:1639`
+- Defined: `kernel/shell.c:1628`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_fb_focus_report (function) `else vga_fb_focus_report(before, WM_FOCUS_SRC_PROGRAM);`
-- Defined: `kernel/shell.c:1650`
+- Defined: `kernel/shell.c:1639`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_fb_focus_next (function) `vga_fb_focus_next();`
-- Defined: `kernel/shell.c:1657`
+- Defined: `kernel/shell.c:1646`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### vga_fb_theme_name (function) `vga_fb_theme_name(theme, sizeof(theme));`
-- Defined: `kernel/shell.c:1674`
+- Defined: `kernel/shell.c:1663`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### kbd_drop_counts (function) `kbd_drop_counts(&cooked, &raw);`
-- Defined: `kernel/shell.c:1680`
+- Defined: `kernel/shell.c:1669`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### spin_lock (function) `spin_lock(&sched_lock);`
-- Defined: `kernel/shell.c:1721`
+- Defined: `kernel/shell.c:1710`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### spin_unlock (function) `spin_unlock(&sched_lock);`
-- Defined: `kernel/shell.c:1733`
+- Defined: `kernel/shell.c:1722`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### dlmalloc_usage (function) `dlmalloc_usage(&hu, &hf, &ha);`
-- Defined: `kernel/shell.c:1791`
+- Defined: `kernel/shell.c:1790`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### ramdisk_usage (function) `ramdisk_usage(&ru, &rc, &rm);`
-- Defined: `kernel/shell.c:1794`
+- Defined: `kernel/shell.c:1793`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### minifs_usage (function) `minifs_usage(&fb, &tb, &fi, &ti);`
-- Defined: `kernel/shell.c:1799`
+- Defined: `kernel/shell.c:1798`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### syscall_trace_set (function) `syscall_trace_set(1);`
@@ -5698,104 +5703,108 @@ static void shell_cmd_trac...`
 - Defined: `kernel/shell.c:1903`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
+### shell_parse_mag (function) `return shell_parse_mag(s, base, 0xFFFFFFFFFFFFFFFFUL, out);`
+- Defined: `kernel/shell.c:1966`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+
 ### gdb_regs_report (function) `gdb_regs_report(pid);`
-- Defined: `kernel/shell.c:1981`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
-
-### gdb_dump_report (function) `gdb_dump_report(addr, len);`
-- Defined: `kernel/shell.c:1992`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
-
-### XXH64_reset (function) `XXH64_reset(&h, 0);`
 - Defined: `kernel/shell.c:2016`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
+### gdb_dump_report (function) `gdb_dump_report(addr, len);`
+- Defined: `kernel/shell.c:2027`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+
+### XXH64_reset (function) `XXH64_reset(&h, 0);`
+- Defined: `kernel/shell.c:2051`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+
 ### vga_clear (function) `vga_clear();`
-- Defined: `kernel/shell.c:2092`
+- Defined: `kernel/shell.c:2127`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_edit (function) `shell_cmd_edit(argc, argv);`
-- Defined: `kernel/shell.c:2098`
+- Defined: `kernel/shell.c:2133`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_report (function) `shell_report("ls: name too long: ", argv[1]);`
-- Defined: `kernel/shell.c:2104`
+- Defined: `kernel/shell.c:2139`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### minifs_stat (function) `minifs_stat(de.inode, &st);`
-- Defined: `kernel/shell.c:2214`
+- Defined: `kernel/shell.c:2249`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### ramdisk_delete (function) `ramdisk_delete(f);`
-- Defined: `kernel/shell.c:2253`
+- Defined: `kernel/shell.c:2288`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_trace_run (function) `shell_cmd_trace_run(argc, argv, 0);`
-- Defined: `kernel/shell.c:2391`
+- Defined: `kernel/shell.c:2426`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### shell_cmd_vmmap (function) `shell_cmd_vmmap(argc, argv);`
-- Defined: `kernel/shell.c:2397`
+- Defined: `kernel/shell.c:2432`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### schedtop_report (function) `schedtop_report();`
-- Defined: `kernel/shell.c:2401`
+- Defined: `kernel/shell.c:2436`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### irqstat_report (function) `irqstat_report();`
-- Defined: `kernel/shell.c:2405`
+- Defined: `kernel/shell.c:2440`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### bootlog_report (function) `bootlog_report();`
-- Defined: `kernel/shell.c:2409`
+- Defined: `kernel/shell.c:2444`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### net_cmd_status (function) `net_cmd_status();`
-- Defined: `kernel/shell.c:2416`
+- Defined: `kernel/shell.c:2451`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### net_cmd_ping (function) `net_cmd_ping(argv[2]);`
-- Defined: `kernel/shell.c:2419`
+- Defined: `kernel/shell.c:2454`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### net_cmd_dns (function) `net_cmd_dns(argv[2]);`
-- Defined: `kernel/shell.c:2422`
+- Defined: `kernel/shell.c:2457`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### rq_stats (function) `rq_stats(c, &hits, &steals, &drops);`
-- Defined: `kernel/shell.c:2459`
+- Defined: `kernel/shell.c:2494`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### pcspk_set_volume (function) `pcspk_set_volume(v);`
-- Defined: `kernel/shell.c:2523`
+- Defined: `kernel/shell.c:2579`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ### kstack_report (function) `kstack_report();`
-- Defined: `kernel/shell.c:2560`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
-
-### sb16_counters (function) `sb16_counters(&c);`
-- Defined: `kernel/shell.c:2564`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
-
-### shell_cmd_minifetch (function) `shell_cmd_minifetch();`
-- Defined: `kernel/shell.c:2588`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
-
-### shell_cmd_unzip (function) `shell_cmd_unzip(argc, argv);`
-- Defined: `kernel/shell.c:2591`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
-
-### shell_cmd_zip (function) `shell_cmd_zip(argc, argv);`
-- Defined: `kernel/shell.c:2594`
-- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
-
-### shell_report_exit (function) `else shell_report_exit(ret);`
 - Defined: `kernel/shell.c:2616`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
-### shell_cmd_sh (function) `shell_cmd_sh(argc, argv);`
+### sb16_counters (function) `sb16_counters(&c);`
+- Defined: `kernel/shell.c:2620`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+
+### shell_cmd_minifetch (function) `shell_cmd_minifetch();`
+- Defined: `kernel/shell.c:2644`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+
+### shell_cmd_unzip (function) `shell_cmd_unzip(argc, argv);`
 - Defined: `kernel/shell.c:2647`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+
+### shell_cmd_zip (function) `shell_cmd_zip(argc, argv);`
+- Defined: `kernel/shell.c:2650`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+
+### shell_report_exit (function) `else shell_report_exit(ret);`
+- Defined: `kernel/shell.c:2672`
+- Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
+
+### shell_cmd_sh (function) `shell_cmd_sh(argc, argv);`
+- Defined: `kernel/shell.c:2708`
 - Depends on: `drivers/kbd.h`, `editor.h`, `kernel.h`, `kernel/console_in.h`, `minifetch.h`, `minifs.h`, `net.h`, `pcspk.h`, `percpu_rq.h`, `rtc.h`, `sb16.h`, `sched.h`, `shell.h`, `smp.h`, `vga_fb.h`, `wm_layout.h`, `wm_notify.h`, `zip.h`
 
 ## kernel/spawn.c
@@ -5894,67 +5903,67 @@ static void shell_cmd_trac...`
 - Defined: `kernel/string.c:16`
 - Doc: string.c -- Kernel string and memory functions.  Pure functions with no dependencies beyond their own prototypes in kern
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrcpy (function) `char *kstrcpy(char *dst, const char *src)`
 - Defined: `kernel/string.c:22`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncpy (function) `char *kstrncpy(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:28`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncat (function) `char *kstrncat(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:34`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrcmp (function) `int kstrcmp(const char *a, const char *b)`
 - Defined: `kernel/string.c:42`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncmp (function) `int kstrncmp(const char *a, const char *b, unsigned long n)`
 - Defined: `kernel/string.c:47`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrchr (function) `char *kstrchr(const char *s, int c)`
 - Defined: `kernel/string.c:52`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrstr (function) `char *kstrstr(const char *hay, const char *ndl)`
 - Defined: `kernel/string.c:57`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemcpy (function) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:67`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemset (function) `void *kmemset(void *dst, int c, unsigned long n)`
 - Defined: `kernel/string.c:74`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemcmp (function) `int kmemcmp(const void *a, const void *b, unsigned long n)`
 - Defined: `kernel/string.c:80`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemmove (function) `void *kmemmove(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:86`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ### katol (function) `long katol(const char *s)`
 - Defined: `kernel/string.c:94`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
 
 ## kernel/symtab.c
 
@@ -6832,38 +6841,38 @@ long sys_linux_wait4(lon...`
 ### ktime_rdtsc (function) `static unsigned long ktime_rdtsc(void)`
 - Defined: `kernel/time.c:12`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### ktime_init (function) `static void ktime_init(void)`
 - Defined: `kernel/time.c:18`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### ktime_ms (function) `unsigned long ktime_ms(void)`
 - Defined: `kernel/time.c:32`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### ktime_us (function) `unsigned long ktime_us(void)`
 - Defined: `kernel/time.c:41`
 - Doc: Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime nsec and gettimeofday usec both deri
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### volatile (function) `__asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));`
 - Defined: `kernel/time.c:15`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### outb (function) `outb(0x61, (unsigned char)((inb(0x61) & 0x0F) | 0x01));`
 - Defined: `kernel/time.c:21`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ### ktime_us_from_delta (function) `return ktime_us_from_delta(ktime_rdtsc() - tsc_base_ms, tsc_per_ms);`
 - Defined: `kernel/time.c:43`
 - Depends on: `kernel.h`, `ktime.h`
-- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
+- Imported by: `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/tls_u/tls_u_port.c`, `progs/tls_u/tls_u_port.c`, `test_http_server.py`, `tests/test_vma_bench.c`, `tls_port.h`, `tls_test.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_wm.py`
 
 ## kernel/vga_cursor.c
 
@@ -8670,10 +8679,10 @@ long sys_linux_wait4(lon...`
 - Defined: `mutate.sh:108`
 
 ### record (function)
-- Defined: `mutate.sh:272`
+- Defined: `mutate.sh:275`
 
 ### find_index (function)
-- Defined: `mutate.sh:278`
+- Defined: `mutate.sh:281`
 - Doc: Locate a mutant by name.
 
 ## net.h
@@ -23696,6 +23705,224 @@ Z_DumpHeap
 - Defined: `progs/micropython/variants/minios/minios_module.c:213`
 - Depends on: `progs/minios_abi.h`
 
+## progs/minicraft/minicraft.c
+
+### s_time_ms (function) `static long s_time_ms(void)`
+- Defined: `progs/minicraft/minicraft.c:76`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### s_kbd (function) `static long s_kbd(void)`
+- Defined: `progs/minicraft/minicraft.c:82`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### s_kbd_raw (function) `static long s_kbd_raw(long on)`
+- Defined: `progs/minicraft/minicraft.c:87`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### s_vga (function) `static long s_vga(long on)`
+- Defined: `progs/minicraft/minicraft.c:92`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### s_pal (function) `static long s_pal(const unsigned char *p)`
+- Defined: `progs/minicraft/minicraft.c:97`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### s_present (function) `static long s_present(void)`
+- Defined: `progs/minicraft/minicraft.c:102`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### s_title (function) `static long s_title(const char *t)`
+- Defined: `progs/minicraft/minicraft.c:107`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### s_mouse (function) `static long s_mouse(int *m)`
+- Defined: `progs/minicraft/minicraft.c:112`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### s_yield (function) `static void s_yield(void)`
+- Defined: `progs/minicraft/minicraft.c:117`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### pal_set (function) `static void pal_set(int i, int r, int g, int b)`
+- Defined: `progs/minicraft/minicraft.c:124`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### build_palette (function) `static void build_palette(void)`
+- Defined: `progs/minicraft/minicraft.c:130`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### widx (function) `static int widx(int x, int y, int z)`
+- Defined: `progs/minicraft/minicraft.c:182`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### in_world (function) `static int in_world(int x, int y, int z)`
+- Defined: `progs/minicraft/minicraft.c:186`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### get_b (function) `static unsigned char get_b(int x, int y, int z)`
+- Defined: `progs/minicraft/minicraft.c:190`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### col_recompute (function) `static void col_recompute(int x, int y)`
+- Defined: `progs/minicraft/minicraft.c:198`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### set_b (function) `static void set_b(int x, int y, int z, unsigned char b)`
+- Defined: `progs/minicraft/minicraft.c:210`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### set_b_raw (function) `static void set_b_raw(int x, int y, int z, unsigned char b)`
+- Defined: `progs/minicraft/minicraft.c:217`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### light_build (function) `static void light_build(void)`
+- Defined: `progs/minicraft/minicraft.c:223`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### sky_light (function) `static float sky_light(int x, int y, int z)`
+- Defined: `progs/minicraft/minicraft.c:233`
+- Doc: if (!in_world(x, y, z)) return; world[widx(x, y, z)] = b; } static void light_build(void) { int x, y; for (y = 0; y < MC
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### is_solid (function) `static int is_solid(unsigned char b)`
+- Defined: `progs/minicraft/minicraft.c:246`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### is_visible (function) `static int is_visible(unsigned char b)`
+- Defined: `progs/minicraft/minicraft.c:250`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### hash2 (function) `static unsigned int hash2(int x, int y)`
+- Defined: `progs/minicraft/minicraft.c:254`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### ground_h (function) `static int ground_h(int x, int y)`
+- Defined: `progs/minicraft/minicraft.c:261`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### gen_world (function) `static void gen_world(unsigned int seed)`
+- Defined: `progs/minicraft/minicraft.c:273`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### face_color (function) `static unsigned char face_color(unsigned char b, int face)`
+- Defined: `progs/minicraft/minicraft.c:381`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### cast_ray (function) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
+- Defined: `progs/minicraft/minicraft.c:424`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### eye_z (function) `static float eye_z(void)`
+- Defined: `progs/minicraft/minicraft.c:497`
+- Doc: define MC_EYE 1.55f
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### mc_glyph (function) `static int mc_glyph(char ch)`
+- Defined: `progs/minicraft/minicraft.c:564`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### mc_pixel (function) `static void mc_pixel(int x, int y, unsigned char c)`
+- Defined: `progs/minicraft/minicraft.c:572`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### mc_text (function) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
+- Defined: `progs/minicraft/minicraft.c:578`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### mc_text_bg (function) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
+- Defined: `progs/minicraft/minicraft.c:591`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### mc_block_name (function) `static const char *mc_block_name(unsigned char b)`
+- Defined: `progs/minicraft/minicraft.c:604`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### mc_facing (function) `static char mc_facing(void)`
+- Defined: `progs/minicraft/minicraft.c:621`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### render_frame (function) `static void render_frame(void)`
+- Defined: `progs/minicraft/minicraft.c:636`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### poll_kbd (function) `static void poll_kbd(void)`
+- Defined: `progs/minicraft/minicraft.c:782`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### player_collides (function) `static int player_collides(float x, float y, float z)`
+- Defined: `progs/minicraft/minicraft.c:858`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### move_axis (function) `static void move_axis(float nx, float ny, float nz)`
+- Defined: `progs/minicraft/minicraft.c:875`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### try_autostep (function) `static void try_autostep(float tx, float ty)`
+- Defined: `progs/minicraft/minicraft.c:890`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### tick_player (function) `static void tick_player(float dt)`
+- Defined: `progs/minicraft/minicraft.c:901`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### tick_interact (function) `static void tick_interact(void)`
+- Defined: `progs/minicraft/minicraft.c:968`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### save_world (function) `static int save_world(void)`
+- Defined: `progs/minicraft/minicraft.c:1067`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### load_world (function) `static int load_world(void)`
+- Defined: `progs/minicraft/minicraft.c:1090`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### selftest (function) `static int selftest(void)`
+- Defined: `progs/minicraft/minicraft.c:1126`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### dumpstats (function) `static int dumpstats(void)`
+- Defined: `progs/minicraft/minicraft.c:1191`
+- Doc: ifdef MINICRAFT_HOST_TEST
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### main (function) `int main(int argc, char **argv)`
+- Defined: `progs/minicraft/minicraft.c:1262`
+- Doc: endif
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### volatile (function) `__asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx", "r11", "memory");`
+- Defined: `progs/minicraft/minicraft.c:79`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### memset (function) `memset(world, 0, sizeof(world));`
+- Defined: `progs/minicraft/minicraft.c:277`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### sprintf (function) `sprintf(hud0, "X%d Y%d Z%d F:%c", ix, iy, iz, fc);`
+- Defined: `progs/minicraft/minicraft.c:709`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### printf (function) `printf("minicraft: fly %s\n", mc_fly ? "on" : "off");`
+- Defined: `progs/minicraft/minicraft.c:810`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### cosf (function) `cosf(pl_yaw) * cosf(pl_pitch), sinf(pl_yaw) * cosf(pl_pitch), sinf(pl_pitch), 6.0f);`
+- Defined: `progs/minicraft/minicraft.c:847`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### fclose (function) `fclose(f);`
+- Defined: `progs/minicraft/minicraft.c:1073`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### fwrite (function) `fwrite(st, 1, sizeof(st), f);`
+- Defined: `progs/minicraft/minicraft.c:1084`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### fflush (function) `fflush(stdout);`
+- Defined: `progs/minicraft/minicraft.c:1305`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
 ## progs/nuklear/cvm_emit.c
 
 ### code (function) `* exit code (OP_HALT leaves the operand-stack top as the exit status, which
@@ -28426,8 +28653,14 @@ Z_DumpHeap
 - Depends on: `kernel.h`, `kernel/console_in.h`
 - Imported by: `kernel/editor.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
+### shell_parse_long (function) `int shell_parse_long(const char *s, long *out);`
+- Defined: `shell.h:29`
+- Doc: Strict signed decimal parse for numeric shell/editor operands: an optional sign followed by at least one digit, whole st
+- Depends on: `kernel.h`, `kernel/console_in.h`
+- Imported by: `kernel/editor.c`, `kernel/shell.c`, `kernel/syscalls.c`
+
 ### shell_cmd_sh (function) `int shell_cmd_sh(int argc, char **argv);`
-- Defined: `shell.h:26`
+- Defined: `shell.h:34`
 - Doc: Execute a shell script: read `path` line by line, skip blanks and `#` comments, parse each line and dispatch it through 
 - Depends on: `kernel.h`, `kernel/console_in.h`
 - Imported by: `kernel/editor.c`, `kernel/shell.c`, `kernel/syscalls.c`
@@ -28869,28 +29102,28 @@ Z_DumpHeap
 - Doc: scenario_smp <name> <script> -- same as scenario but with -smp 2
 
 ### expect (function)
-- Defined: `test_bdd.sh:95`
-- Doc: expect <marker>
+- Defined: `test_bdd.sh:97`
+- Doc: expect <marker> The marker is a grep BRE pattern, not a literal: never write [...] in one (a "[pid]" matches one char of
 
 ### expect_count (function)
-- Defined: `test_bdd.sh:117`
+- Defined: `test_bdd.sh:119`
 - Doc: expect_count <count> <marker>: the marker must appear exactly that many times in the log. Used where a single occurrence
 
 ### refute (function)
-- Defined: `test_bdd.sh:140`
+- Defined: `test_bdd.sh:142`
 - Doc: refute <marker>: the marker must NOT appear (suppressed hostile content).
 
 ### http_server_start (function)
-- Defined: `test_bdd.sh:839`
+- Defined: `test_bdd.sh:853`
 
 ### http_server_stop (function)
-- Defined: `test_bdd.sh:846`
+- Defined: `test_bdd.sh:860`
 
 ### http_fixture_start (function)
-- Defined: `test_bdd.sh:851`
+- Defined: `test_bdd.sh:865`
 
 ### http_fixture_stop (function)
-- Defined: `test_bdd.sh:858`
+- Defined: `test_bdd.sh:872`
 
 ## test_http_server.py
 
@@ -30519,11 +30752,11 @@ Z_DumpHeap
 - Doc: Extract (name, expression, target) triples from the MUTATIONS block.
 
 ### anchor_matches (method) `def anchor_matches(repo, target, expr)`
-- Defined: `tools/check_mutant_anchors.py:54`
+- Defined: `tools/check_mutant_anchors.py:67`
 - Doc: Apply the sed expression to a scratch copy; True when it changes it.
 
 ### main (method) `def main()`
-- Defined: `tools/check_mutant_anchors.py:73`
+- Defined: `tools/check_mutant_anchors.py:86`
 - Doc: Entry point: report anchors that change nothing and exit nonzero.
 
 ## tools/check_surprising.py
@@ -30700,10 +30933,10 @@ Z_DumpHeap
 ## tools/gen_desktop_pngs.py
 
 ### write_atomic (function) `def write_atomic(img, path)`
-- Defined: `tools/gen_desktop_pngs.py:62`
+- Defined: `tools/gen_desktop_pngs.py:63`
 
 ### main (function) `def main()`
-- Defined: `tools/gen_desktop_pngs.py:68`
+- Defined: `tools/gen_desktop_pngs.py:69`
 
 ## tools/gen_icons.py
 
@@ -30868,6 +31101,32 @@ Z_DumpHeap
 
 ### dump (function) `def dump(name)`
 - Defined: `tools/probe_compute_vga.py:104`
+- Depends on: `kernel/time.c`
+
+## tools/probe_minicraft.py
+
+### main (function) `def main()`
+- Defined: `tools/probe_minicraft.py:34`
+- Depends on: `kernel/time.c`
+
+### send (function) `def send(line)`
+- Defined: `tools/probe_minicraft.py:68`
+- Depends on: `kernel/time.c`
+
+### poll (function) `def poll(timeout)`
+- Defined: `tools/probe_minicraft.py:74`
+- Depends on: `kernel/time.c`
+
+### grab (function) `def grab(pat, timeout)`
+- Defined: `tools/probe_minicraft.py:85`
+- Depends on: `kernel/time.c`
+
+### qkey (function) `def qkey(qcode, down)`
+- Defined: `tools/probe_minicraft.py:143`
+- Depends on: `kernel/time.c`
+
+### pos (function) `def pos(tag)`
+- Defined: `tools/probe_minicraft.py:154`
 - Depends on: `kernel/time.c`
 
 ## tools/qga_client.py

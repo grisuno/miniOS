@@ -4,7 +4,6 @@
 |------|---------|-----------|---------|
 | `abi.h` | Docstring: abi.h -- Boot-time ABI manifest gate contract. | root | 10 |
 | `ap_stub.h` | generated from ap_stub.bin - do not edit | root | 0 |
-| `app.py` | _*_ coding: utf8 _*_ | root | 0 |
 | `arch/x86/ap_entry.S` | ap_entry.S - SMP application-processor bootstrap stub. | x86 | 9 |
 | `arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | boot | 139 |
 | `arch/x86/boot/stage1.S` | stage1.S - MiniOS boot sector. | boot | 11 |
@@ -66,7 +65,7 @@
 | `kernel/sched.c` | - | kernel | 136 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 8 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 10 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 133 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 135 |
 | `kernel/spawn.c` | include "kernel.h" include "sched.h" include "vma.h" include "spawn.h" include " | kernel | 19 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
@@ -311,6 +310,7 @@
 | `progs/micropython/variants/minios/manifest.py` | manifest.py -- frozen modules for the MiniOS MicroPython variant. Scripts listed | minios | 0 |
 | `progs/micropython/variants/minios/minios_module.c` | - | minios | 33 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 |
+| `progs/minicraft/minicraft.c` | minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 64 |
 | `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 126 |
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 59 |
 | `progs/nuklear/cvm_emit.h` | ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (c | nuklear | 6 |
@@ -369,7 +369,7 @@
 | `sanitize.h` | ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point | root | 5 |
 | `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 27 |
 | `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h" include " | root | 100 |
-| `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 6 |
+| `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 7 |
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 48 |
 | `smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | root | 11 |
 | `spawn.h` | ifndef SPAWN_H define SPAWN_H  include "kernel.h" include "vma.h" include "sched | root | 9 |
@@ -435,6 +435,7 @@
 | `tools/minios_gui.py` | - | tools | 9 |
 | `tools/mkpak1.py` | - | tools | 1 |
 | `tools/probe_compute_vga.py` | Docstring: VGA liveness probe during CPU-bound ring-3 compute. Boots os.img head | tools | 6 |
+| `tools/probe_minicraft.py` | - | tools | 6 |
 | `tools/qga_client.py` | - | tools | 4 |
 | `tools/qga_test.sh` | Quick standalone smoke test for the QEMU guest agent: boots os.img once with the | tools | 3 |
 | `tools/repro_gui.py` | - | tools | 10 |
