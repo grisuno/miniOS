@@ -2731,8 +2731,8 @@ long sys_linux_wait4(lon...` |
 | `main` | function | `mkramdisk.py:30` | `def main()` |
 | `pack_name` | function | `mkramdisk.py:20` | `def pack_name(path, common)` |
 | `cleanup` | function | `mutate.sh:108` | `` |
-| `find_index` | function | `mutate.sh:281` | `` |
-| `record` | function | `mutate.sh:275` | `` |
+| `find_index` | function | `mutate.sh:289` | `` |
+| `record` | function | `mutate.sh:283` | `` |
 | `restore_sources` | function | `mutate.sh:101` | `` |
 | `usage` | function | `mutate.sh:51` | `` |
 | `NET_ARP_CACHE` | macro | `net.h:37` | `#define NET_ARP_CACHE` |
@@ -8358,6 +8358,121 @@ Z_Malloc
 | `tls_send` | function | `progs/freedomui/freedomui_minios.c:45` | `int tls_send(int fd, char *buf, int len);` |
 | `ui_layout_free` | function | `progs/freedomui/freedomui_minios.c:1109` | `ui_layout_free(&lay);` |
 | `volatile` | function | `progs/freedomui/freedomui_minios.c:246` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");` |
+| `AllocTracker` | type_alias | `progs/lisp/lisp.c:62` | `typedef struct AllocTracker AllocTracker;` |
+| `AllocTracker` | struct | `progs/lisp/lisp.c:149` | `` |
+| `Binding` | type_alias | `progs/lisp/lisp.c:61` | `typedef struct Binding Binding;` |
+| `Binding` | struct | `progs/lisp/lisp.c:132` | `` |
+| `Env` | type_alias | `progs/lisp/lisp.c:60` | `typedef struct Env Env;` |
+| `Env` | struct | `progs/lisp/lisp.c:141` | `` |
+| `LispConfig` | enum | `progs/lisp/lisp.c:33` | `` |
+| `Node` | type_alias | `progs/lisp/lisp.c:59` | `typedef struct Node Node;` |
+| `Node` | struct | `progs/lisp/lisp.c:105` | `` |
+| `ParseResult` | struct | `progs/lisp/lisp.c:96` | `` |
+| `Reader` | struct | `progs/lisp/lisp.c:173` | `` |
+| `Runtime` | type_alias | `progs/lisp/lisp.c:57` | `typedef struct Runtime Runtime;` |
+| `Runtime` | struct | `progs/lisp/lisp.c:157` | `` |
+| `StringBuilder` | struct | `progs/lisp/lisp.c:184` | `` |
+| `arg_at` | function | `progs/lisp/lisp.c:767` | `static Node *arg_at(Runtime *rt, Node *args, size_t index)` |
+| `bind_argv` | function | `progs/lisp/lisp.c:1954` | `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` |
+| `bind_primitive` | function | `progs/lisp/lisp.c:1905` | `static void bind_primitive(Runtime *rt, Env *env, const char *name,
+    PrimFn function)` |
+| `cleanup` | function | `progs/lisp/lisp.c:369` | `static void cleanup(Runtime *rt)` |
+| `cons` | function | `progs/lisp/lisp.c:330` | `static Node *cons(Runtime *rt, Node *car, Node *cdr)` |
+| `env_bind` | function | `progs/lisp/lisp.c:413` | `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)` |
+| `env_lookup` | function | `progs/lisp/lisp.c:446` | `static Node *env_lookup(Env *env, Node *symbol)` |
+| `env_new` | function | `progs/lisp/lisp.c:403` | `static Env *env_new(Runtime *rt, Env *parent)` |
+| `env_set` | function | `progs/lisp/lisp.c:424` | `static bool env_set(Env *env, Node *symbol, Node *value)` |
+| `eval` | function | `progs/lisp/lisp.c:1540` | `static Node *eval(Runtime *rt, Node *expression, Env *env)` |
+| `eval_list` | function | `progs/lisp/lisp.c:1484` | `static Node *eval_list(Runtime *rt, Node *list, Env *env)` |
+| `eval_sequence` | function | `progs/lisp/lisp.c:1508` | `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)` |
+| `exit` | function | `progs/lisp/lisp.c:228` | `exit(EXIT_FAILURE);` |
+| `fatal` | function | `progs/lisp/lisp.c:225` | `static void fatal(Runtime *rt, const char *message)` |
+| `fclose` | function | `progs/lisp/lisp.c:362` | `fclose(handle);` |
+| `fflush` | function | `progs/lisp/lisp.c:1058` | `fflush(rt->out);` |
+| `file_mode_allowed` | function | `progs/lisp/lisp.c:1078` | `static bool file_mode_allowed(const char *mode)` |
+| `fprintf` | function | `progs/lisp/lisp.c:227` | `fprintf(err, "fatal: %s\n", message);` |
+| `fputc` | function | `progs/lisp/lisp.c:1070` | `fputc('\n', rt->out);` |
+| `fputs` | function | `progs/lisp/lisp.c:1809` | `fputs("\\n", out);` |
+| `free` | function | `progs/lisp/lisp.c:246` | `free(ptr);` |
+| `get_two_numbers` | function | `progs/lisp/lisp.c:784` | `static bool get_two_numbers(Runtime *rt, Node *args, int64_t *a, int64_t *b)` |
+| `has_arity` | function | `progs/lisp/lisp.c:759` | `static bool has_arity(Runtime *rt, Node *args, size_t expected)` |
+| `init_env` | function | `progs/lisp/lisp.c:1913` | `static Env *init_env(Runtime *rt)` |
+| `is_nil` | function | `progs/lisp/lisp.c:340` | `static bool is_nil(Runtime *rt, const Node *node)` |
+| `lisp_version` | function | `progs/lisp/lisp.c:54` | `static const char *lisp_version(void)` |
+| `list_count` | function | `progs/lisp/lisp.c:742` | `static size_t list_count(Runtime *rt, Node *list, bool *proper)` |
+| `main` | function | `progs/lisp/lisp.c:2127` | `int main(int argc, char **argv)` |
+| `make_error` | function | `progs/lisp/lisp.c:285` | `static Node *make_error(Runtime *rt, const char *message)` |
+| `make_file` | function | `progs/lisp/lisp.c:347` | `static Node *make_file(Runtime *rt, FILE *handle)` |
+| `make_node` | function | `progs/lisp/lisp.c:276` | `static Node *make_node(Runtime *rt, NodeType type)` |
+| `make_num` | function | `progs/lisp/lisp.c:294` | `static Node *make_num(Runtime *rt, int64_t value)` |
+| `make_prim` | function | `progs/lisp/lisp.c:321` | `static Node *make_prim(Runtime *rt, PrimFn function)` |
+| `make_str` | function | `progs/lisp/lisp.c:303` | `static Node *make_str(Runtime *rt, const char *value)` |
+| `make_sym` | function | `progs/lisp/lisp.c:312` | `static Node *make_sym(Runtime *rt, const char *value)` |
+| `memcpy` | function | `progs/lisp/lisp.c:269` | `memcpy(copy, source, length);` |
+| `memset` | function | `progs/lisp/lisp.c:392` | `memset(rt, 0, sizeof *rt);` |
+| `msys` | function | `progs/lisp/lisp.c:197` | `static long msys(long n, long a1, long a2, long a3)` |
+| `msys5` | function | `progs/lisp/lisp.c:210` | `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` |
+| `parse_eof` | function | `progs/lisp/lisp.c:565` | `static ParseResult parse_eof(void)` |
+| `parse_error` | function | `progs/lisp/lisp.c:576` | `static ParseResult parse_error(const char *message)` |
+| `parse_ok` | function | `progs/lisp/lisp.c:554` | `static ParseResult parse_ok(Node *value)` |
+| `prim_add` | function | `progs/lisp/lisp.c:804` | `static Node *prim_add(Runtime *rt, Node *args)` |
+| `prim_car` | function | `progs/lisp/lisp.c:894` | `static Node *prim_car(Runtime *rt, Node *args)` |
+| `prim_cdr` | function | `progs/lisp/lisp.c:909` | `static Node *prim_cdr(Runtime *rt, Node *args)` |
+| `prim_char_code` | function | `progs/lisp/lisp.c:1028` | `static Node *prim_char_code(Runtime *rt, Node *args)` |
+| `prim_close_file` | function | `progs/lisp/lisp.c:1191` | `static Node *prim_close_file(Runtime *rt, Node *args)` |
+| `prim_cons` | function | `progs/lisp/lisp.c:924` | `static Node *prim_cons(Runtime *rt, Node *args)` |
+| `prim_div` | function | `progs/lisp/lisp.c:852` | `static Node *prim_div(Runtime *rt, Node *args)` |
+| `prim_eq` | function | `progs/lisp/lisp.c:870` | `static Node *prim_eq(Runtime *rt, Node *args)` |
+| `prim_error_message` | function | `progs/lisp/lisp.c:1253` | `static Node *prim_error_message(Runtime *rt, Node *args)` |
+| `prim_exit` | function | `progs/lisp/lisp.c:1268` | `static Node *prim_exit(Runtime *rt, Node *args)` |
+| `prim_fb_info` | function | `progs/lisp/lisp.c:1324` | `static Node *prim_fb_info(Runtime *rt, Node *args)` |
+| `prim_lt` | function | `progs/lisp/lisp.c:882` | `static Node *prim_lt(Runtime *rt, Node *args)` |
+| `prim_minios_run` | function | `progs/lisp/lisp.c:1422` | `static Node *prim_minios_run(Runtime *rt, Node *args)` |
+| `prim_mul` | function | `progs/lisp/lisp.c:836` | `static Node *prim_mul(Runtime *rt, Node *args)` |
+| `prim_null_p` | function | `progs/lisp/lisp.c:1219` | `static Node *prim_null_p(Runtime *rt, Node *args)` |
+| `prim_number_p` | function | `progs/lisp/lisp.c:1229` | `static Node *prim_number_p(Runtime *rt, Node *args)` |
+| `prim_open_file` | function | `progs/lisp/lisp.c:1097` | `static Node *prim_open_file(Runtime *rt, Node *args)` |
+| `prim_pal` | function | `progs/lisp/lisp.c:1370` | `static Node *prim_pal(Runtime *rt, Node *args)` |
+| `prim_pcspeaker` | function | `progs/lisp/lisp.c:1389` | `static Node *prim_pcspeaker(Runtime *rt, Node *args)` |
+| `prim_print` | function | `progs/lisp/lisp.c:1053` | `static Node *prim_print(Runtime *rt, Node *args)` |
+| `prim_println` | function | `progs/lisp/lisp.c:1065` | `static Node *prim_println(Runtime *rt, Node *args)` |
+| `prim_read_char` | function | `progs/lisp/lisp.c:1142` | `static Node *prim_read_char(Runtime *rt, Node *args)` |
+| `prim_rtc` | function | `progs/lisp/lisp.c:1306` | `static Node *prim_rtc(Runtime *rt, Node *args)` |
+| `prim_string_at` | function | `progs/lisp/lisp.c:1000` | `static Node *prim_string_at(Runtime *rt, Node *args)` |
+| `prim_string_concat` | function | `progs/lisp/lisp.c:934` | `static Node *prim_string_concat(Runtime *rt, Node *args)` |
+| `prim_string_eq` | function | `progs/lisp/lisp.c:967` | `static Node *prim_string_eq(Runtime *rt, Node *args)` |
+| `prim_string_length` | function | `progs/lisp/lisp.c:985` | `static Node *prim_string_length(Runtime *rt, Node *args)` |
+| `prim_string_p` | function | `progs/lisp/lisp.c:1241` | `static Node *prim_string_p(Runtime *rt, Node *args)` |
+| `prim_sub` | function | `progs/lisp/lisp.c:820` | `static Node *prim_sub(Runtime *rt, Node *args)` |
+| `prim_time_ms` | function | `progs/lisp/lisp.c:1295` | `static Node *prim_time_ms(Runtime *rt, Node *args)` |
+| `prim_vol` | function | `progs/lisp/lisp.c:1342` | `static Node *prim_vol(Runtime *rt, Node *args)` |
+| `prim_write` | function | `progs/lisp/lisp.c:1162` | `static Node *prim_write(Runtime *rt, Node *args)` |
+| `print_escaped_string` | function | `progs/lisp/lisp.c:1803` | `static void print_escaped_string(FILE *out, const char *value)` |
+| `print_node` | function | `progs/lisp/lisp.c:1834` | `static void print_node(Runtime *rt, Node *node, bool readable)` |
+| `print_usage` | function | `progs/lisp/lisp.c:2073` | `static void print_usage(Runtime *rt)` |
+| `process_inline` | function | `progs/lisp/lisp.c:2066` | `static int process_inline(Runtime *rt, const char *code)` |
+| `process_source` | function | `progs/lisp/lisp.c:2024` | `static int process_source(Runtime *rt, const char *source,
+    const char *source_name, bool echo)` |
+| `read_all_file` | function | `progs/lisp/lisp.c:1966` | `static char *read_all_file(const char *filename, size_t max_bytes)` |
+| `read_atom` | function | `progs/lisp/lisp.c:677` | `static ParseResult read_atom(Runtime *rt, Reader *reader)` |
+| `read_expr` | function | `progs/lisp/lisp.c:713` | `static ParseResult read_expr(Runtime *rt, Reader *reader)` |
+| `read_list` | function | `progs/lisp/lisp.c:588` | `static ParseResult read_list(Runtime *rt, Reader *reader)` |
+| `read_string` | function | `progs/lisp/lisp.c:618` | `static ParseResult read_string(Runtime *rt, Reader *reader)` |
+| `reader_at_end` | function | `progs/lisp/lisp.c:492` | `static bool reader_at_end(const Reader *reader)` |
+| `reader_next` | function | `progs/lisp/lisp.c:474` | `static char reader_next(Reader *reader)` |
+| `reader_peek` | function | `progs/lisp/lisp.c:467` | `static char reader_peek(const Reader *reader)` |
+| `repl` | function | `progs/lisp/lisp.c:2080` | `static int repl(Runtime *rt)` |
+| `runtime_init` | function | `progs/lisp/lisp.c:391` | `static void runtime_init(Runtime *rt)` |
+| `sb_init` | function | `progs/lisp/lisp.c:515` | `static void sb_init(StringBuilder *builder)` |
+| `sb_push` | function | `progs/lisp/lisp.c:528` | `static void sb_push(StringBuilder *builder, char value)` |
+| `skip_space_and_comments` | function | `progs/lisp/lisp.c:499` | `static void skip_space_and_comments(Reader *reader)` |
+| `snprintf` | function | `progs/lisp/lisp.c:580` | `snprintf(result.message, sizeof result.message, "%s", message ? message : "parse error");` |
+| `token_delimiter` | function | `progs/lisp/lisp.c:669` | `static bool token_delimiter(char c)` |
+| `valid_file` | function | `progs/lisp/lisp.c:1134` | `static bool valid_file(Node *node)` |
+| `valid_params` | function | `progs/lisp/lisp.c:1526` | `static bool valid_params(Runtime *rt, Node *params)` |
+| `volatile` | function | `progs/lisp/lisp.c:199` | `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");` |
+| `xalloc` | function | `progs/lisp/lisp.c:234` | `static void *xalloc(Runtime *rt, size_t size)` |
+| `xstrdup` | function | `progs/lisp/lisp.c:258` | `static char *xstrdup(Runtime *rt, const char *source)` |
 | `docode` | function | `progs/lua/lua_main.c:40` | `static int docode(lua_State *L, const char *code)` |
 | `dofile` | function | `progs/lua/lua_main.c:50` | `static int dofile(lua_State *L, const char *name)` |
 | `fflush` | function | `progs/lua/lua_main.c:66` | `fflush(stdout);` |
@@ -8722,12 +8837,12 @@ Z_Malloc
 | `MINIOS_DOOM_BACKBUF_ADDR` | macro | `progs/minios_abi.h:123` | `#define MINIOS_DOOM_BACKBUF_ADDR` |
 | `MINIOS_DOOM_H` | macro | `progs/minios_abi.h:125` | `#define MINIOS_DOOM_H` |
 | `MINIOS_DOOM_W` | macro | `progs/minios_abi.h:124` | `#define MINIOS_DOOM_W` |
-| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:295` | `#define MINIOS_EABI_MISMATCH` |
+| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:302` | `#define MINIOS_EABI_MISMATCH` |
 | `MINIOS_FB_ADDR` | macro | `progs/minios_abi.h:126` | `#define MINIOS_FB_ADDR` |
 | `MINIOS_FB_HEIGHT_MAX` | macro | `progs/minios_abi.h:141` | `#define MINIOS_FB_HEIGHT_MAX` |
 | `MINIOS_FB_WIDTH_MAX` | macro | `progs/minios_abi.h:140` | `#define MINIOS_FB_WIDTH_MAX` |
-| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:276` | `#define MINIOS_GFX_BUF_GAME` |
-| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:277` | `#define MINIOS_GFX_BUF_NK` |
+| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:283` | `#define MINIOS_GFX_BUF_GAME` |
+| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:284` | `#define MINIOS_GFX_BUF_NK` |
 | `MINIOS_HEAP_BASE` | macro | `progs/minios_abi.h:134` | `#define MINIOS_HEAP_BASE` |
 | `MINIOS_HEAP_SIZE` | macro | `progs/minios_abi.h:135` | `#define MINIOS_HEAP_SIZE` |
 | `MINIOS_NK_BACKBUF_ADDR` | macro | `progs/minios_abi.h:127` | `#define MINIOS_NK_BACKBUF_ADDR` |
@@ -8737,7 +8852,7 @@ Z_Malloc
 | `MINIOS_SYS_ARCH_PRCTL` | macro | `progs/minios_abi.h:200` | `#define MINIOS_SYS_ARCH_PRCTL` |
 | `MINIOS_SYS_BRK` | macro | `progs/minios_abi.h:169` | `#define MINIOS_SYS_BRK` |
 | `MINIOS_SYS_CLOCK_GETTIME` | macro | `progs/minios_abi.h:219` | `#define MINIOS_SYS_CLOCK_GETTIME` |
-| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:267` | `#define MINIOS_SYS_CLONE` |
+| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:274` | `#define MINIOS_SYS_CLONE` |
 | `MINIOS_SYS_CLOSE` | macro | `progs/minios_abi.h:162` | `#define MINIOS_SYS_CLOSE` |
 | `MINIOS_SYS_CONNECT` | macro | `progs/minios_abi.h:178` | `#define MINIOS_SYS_CONNECT` |
 | `MINIOS_SYS_DIR_LIST` | macro | `progs/minios_abi.h:265` | `#define MINIOS_SYS_DIR_LIST` |
@@ -8750,7 +8865,7 @@ Z_Malloc
 | `MINIOS_SYS_FDATASYNC` | macro | `progs/minios_abi.h:197` | `#define MINIOS_SYS_FDATASYNC` |
 | `MINIOS_SYS_FLOCK` | macro | `progs/minios_abi.h:195` | `#define MINIOS_SYS_FLOCK` |
 | `MINIOS_SYS_FORK` | macro | `progs/minios_abi.h:182` | `#define MINIOS_SYS_FORK` |
-| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:278` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
+| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:285` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
 | `MINIOS_SYS_FSTAT` | macro | `progs/minios_abi.h:163` | `#define MINIOS_SYS_FSTAT` |
 | `MINIOS_SYS_FSYNC` | macro | `progs/minios_abi.h:196` | `#define MINIOS_SYS_FSYNC` |
 | `MINIOS_SYS_FUTEX_WAIT` | macro | `progs/minios_abi.h:257` | `#define MINIOS_SYS_FUTEX_WAIT` |
@@ -8823,8 +8938,11 @@ Z_Malloc
 | `MINIOS_SYS_VFORK` | macro | `progs/minios_abi.h:183` | `#define MINIOS_SYS_VFORK` |
 | `MINIOS_SYS_VGA_MODE` | macro | `progs/minios_abi.h:236` | `#define MINIOS_SYS_VGA_MODE` |
 | `MINIOS_SYS_WAIT4` | macro | `progs/minios_abi.h:186` | `#define MINIOS_SYS_WAIT4` |
-| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:279` | `#define MINIOS_SYS_WINDOW_PRESENT` |
-| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:280` | `#define MINIOS_SYS_WINDOW_TITLE` |
+| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:286` | `#define MINIOS_SYS_WINDOW_PRESENT` |
+| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:287` | `#define MINIOS_SYS_WINDOW_TITLE` |
+| `MINIOS_SYS_WL_ATTACH` | macro | `progs/minios_abi.h:271` | `#define MINIOS_SYS_WL_ATTACH` |
+| `MINIOS_SYS_WL_COMMIT` | macro | `progs/minios_abi.h:272` | `#define MINIOS_SYS_WL_COMMIT` |
+| `MINIOS_SYS_WL_INPUT` | macro | `progs/minios_abi.h:273` | `#define MINIOS_SYS_WL_INPUT` |
 | `MINIOS_SYS_WRITE` | macro | `progs/minios_abi.h:160` | `#define MINIOS_SYS_WRITE` |
 | `MINIOS_SYS_WRITEV` | macro | `progs/minios_abi.h:173` | `#define MINIOS_SYS_WRITEV` |
 | `MINIOS_USER_BRK_END` | macro | `progs/minios_abi.h:106` | `#define MINIOS_USER_BRK_END` |
@@ -8833,16 +8951,16 @@ Z_Malloc
 | `MINIOS_USER_STACK_BASE` | macro | `progs/minios_abi.h:105` | `#define MINIOS_USER_STACK_BASE` |
 | `MINIOS_USER_STACK_SIZE` | macro | `progs/minios_abi.h:103` | `#define MINIOS_USER_STACK_SIZE` |
 | `MINIOS_USER_STACK_TOP` | macro | `progs/minios_abi.h:104` | `#define MINIOS_USER_STACK_TOP` |
-| `SYS_FB_INFO` | macro | `progs/minios_abi.h:288` | `#define SYS_FB_INFO` |
-| `SYS_PALETTE` | macro | `progs/minios_abi.h:284` | `#define SYS_PALETTE` |
-| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:285` | `#define SYS_PCSPK_INIT` |
-| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:286` | `#define SYS_PCSPK_TONE` |
-| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:289` | `#define SYS_PCSPK_VOL` |
-| `SYS_RTC` | macro | `progs/minios_abi.h:287` | `#define SYS_RTC` |
-| `SYS_SPAWN` | macro | `progs/minios_abi.h:290` | `#define SYS_SPAWN` |
-| `SYS_TIME` | macro | `progs/minios_abi.h:291` | `#define SYS_TIME` |
-| `SYS_TIME_MS` | macro | `progs/minios_abi.h:283` | `#define SYS_TIME_MS` |
-| `SYS_WRITE` | macro | `progs/minios_abi.h:292` | `#define SYS_WRITE` |
+| `SYS_FB_INFO` | macro | `progs/minios_abi.h:295` | `#define SYS_FB_INFO` |
+| `SYS_PALETTE` | macro | `progs/minios_abi.h:291` | `#define SYS_PALETTE` |
+| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:292` | `#define SYS_PCSPK_INIT` |
+| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:293` | `#define SYS_PCSPK_TONE` |
+| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:296` | `#define SYS_PCSPK_VOL` |
+| `SYS_RTC` | macro | `progs/minios_abi.h:294` | `#define SYS_RTC` |
+| `SYS_SPAWN` | macro | `progs/minios_abi.h:297` | `#define SYS_SPAWN` |
+| `SYS_TIME` | macro | `progs/minios_abi.h:298` | `#define SYS_TIME` |
+| `SYS_TIME_MS` | macro | `progs/minios_abi.h:290` | `#define SYS_TIME_MS` |
+| `SYS_WRITE` | macro | `progs/minios_abi.h:299` | `#define SYS_WRITE` |
 | `CVM_FUNC_ENTRY_SIZE` | macro | `progs/nuklear/cvm_emit.c:35` | `#define CVM_FUNC_ENTRY_SIZE` |
 | `CVM_GLOBAL_ENTRY_SIZE` | macro | `progs/nuklear/cvm_emit.c:36` | `#define CVM_GLOBAL_ENTRY_SIZE` |
 | `CVM_MAGIC_0` | macro | `progs/nuklear/cvm_emit.c:29` | `#define CVM_MAGIC_0` |
@@ -9600,68 +9718,70 @@ Z_Malloc
 | `tls_handshake` | function | `progs/src/freedom.c:42` | `int tls_handshake(int fd, char *host);` |
 | `tls_recv` | function | `progs/src/freedom.c:44` | `int tls_recv(int fd, char *buf, int len);` |
 | `tls_send` | function | `progs/src/freedom.c:43` | `int tls_send(int fd, char *buf, int len);` |
-| `FreedomWlConfig` | struct | `progs/src/freedom_wl.c:74` | `` |
-| `WL_BODY_CAP` | macro | `progs/src/freedom_wl.c:52` | `#define WL_BODY_CAP` |
-| `WL_COLS` | macro | `progs/src/freedom_wl.c:47` | `#define WL_COLS` |
-| `WL_ENT_MAX` | macro | `progs/src/freedom_wl.c:63` | `#define WL_ENT_MAX` |
-| `WL_FONT_H` | macro | `progs/src/freedom_wl.c:61` | `#define WL_FONT_H` |
-| `WL_FONT_W` | macro | `progs/src/freedom_wl.c:60` | `#define WL_FONT_W` |
-| `WL_HDR_MAX` | macro | `progs/src/freedom_wl.c:53` | `#define WL_HDR_MAX` |
-| `WL_HOPS_MAX` | macro | `progs/src/freedom_wl.c:59` | `#define WL_HOPS_MAX` |
-| `WL_HOST_MAX` | macro | `progs/src/freedom_wl.c:56` | `#define WL_HOST_MAX` |
-| `WL_LINES_MAX` | macro | `progs/src/freedom_wl.c:50` | `#define WL_LINES_MAX` |
-| `WL_LINE_LEN` | macro | `progs/src/freedom_wl.c:51` | `#define WL_LINE_LEN` |
-| `WL_NET_BUF` | macro | `progs/src/freedom_wl.c:54` | `#define WL_NET_BUF` |
-| `WL_PATH_MAX` | macro | `progs/src/freedom_wl.c:57` | `#define WL_PATH_MAX` |
-| `WL_REQ_MAX` | macro | `progs/src/freedom_wl.c:55` | `#define WL_REQ_MAX` |
-| `WL_ROWS` | macro | `progs/src/freedom_wl.c:48` | `#define WL_ROWS` |
-| `WL_TAG_MAX` | macro | `progs/src/freedom_wl.c:62` | `#define WL_TAG_MAX` |
-| `WL_TEXT_ROWS` | macro | `progs/src/freedom_wl.c:49` | `#define WL_TEXT_ROWS` |
-| `WL_URL_MAX` | macro | `progs/src/freedom_wl.c:58` | `#define WL_URL_MAX` |
-| `freedom_wl_build_palette` | function | `progs/src/freedom_wl.c:995` | `static long freedom_wl_build_palette(unsigned char *pal, long cap)` |
-| `freedom_wl_clip_rect` | function | `progs/src/freedom_wl.c:146` | `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)` |
-| `freedom_wl_default` | function | `progs/src/freedom_wl.c:109` | `static FreedomWlConfig freedom_wl_default(void)` |
-| `freedom_wl_frame_bytes` | function | `progs/src/freedom_wl.c:177` | `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)` |
-| `freedom_wl_host_probe` | function | `progs/src/freedom_wl.c:1697` | `int freedom_wl_host_probe(FreedomWlConfig *c)` |
-| `freedom_wl_keysym` | function | `progs/src/freedom_wl.c:196` | `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)` |
-| `freedom_wl_sanitize_utf8` | function | `progs/src/freedom_wl.c:236` | `static long freedom_wl_sanitize_utf8(char *s, long cap)` |
-| `freedom_wl_selftest` | function | `progs/src/freedom_wl.c:1618` | `static long freedom_wl_selftest(void)` |
-| `freedom_wl_sys_kbd` | function | `progs/src/freedom_wl.c:1095` | `static long freedom_wl_sys_kbd(void)` |
-| `freedom_wl_sys_kbd_raw` | function | `progs/src/freedom_wl.c:1109` | `static long freedom_wl_sys_kbd_raw(long on)` |
-| `freedom_wl_sys_mouse` | function | `progs/src/freedom_wl.c:1088` | `static long freedom_wl_sys_mouse(long *m)` |
-| `freedom_wl_sys_palette` | function | `progs/src/freedom_wl.c:1081` | `static long freedom_wl_sys_palette(unsigned char *pal)` |
-| `freedom_wl_sys_present` | function | `progs/src/freedom_wl.c:1067` | `static long freedom_wl_sys_present(long buf, long origin)` |
-| `freedom_wl_sys_title` | function | `progs/src/freedom_wl.c:1074` | `static long freedom_wl_sys_title(char *t)` |
-| `freedom_wl_sys_vga_mode` | function | `progs/src/freedom_wl.c:1102` | `static long freedom_wl_sys_vga_mode(long on)` |
-| `freedom_wl_sys_yield` | function | `progs/src/freedom_wl.c:1116` | `static long freedom_wl_sys_yield(void)` |
-| `freedom_wl_title_ok` | function | `progs/src/freedom_wl.c:309` | `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)` |
-| `main` | function | `progs/src/freedom_wl.c:1729` | `int main(int argc, char **argv)` |
-| `net_dns_resolve` | function | `progs/src/freedom_wl.c:39` | `int net_dns_resolve(const char *host);` |
-| `present_buf` | type_alias | `progs/src/freedom_wl.c:74` | `typedef struct FreedomWlConfig { long present_buf;` |
-| `printf` | function | `progs/src/freedom_wl.c:1241` | `printf("freedom_wl: cannot resolve %s\n", host);` |
-| `tls_close` | function | `progs/src/freedom_wl.c:44` | `void tls_close(int fd);` |
-| `tls_handshake` | function | `progs/src/freedom_wl.c:41` | `int tls_handshake(int fd, char *host);` |
-| `tls_recv` | function | `progs/src/freedom_wl.c:43` | `int tls_recv(int fd, char *buf, int len);` |
-| `tls_send` | function | `progs/src/freedom_wl.c:42` | `int tls_send(int fd, char *buf, int len);` |
-| `volatile` | function | `progs/src/freedom_wl.c:1069` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");` |
-| `wl_append` | function | `progs/src/freedom_wl.c:354` | `static long wl_append(char *dst, long pos, char *src, long cap)` |
-| `wl_browse` | function | `progs/src/freedom_wl.c:1537` | `static long wl_browse(FreedomWlConfig *c)` |
-| `wl_ci_contains` | function | `progs/src/freedom_wl.c:403` | `static long wl_ci_contains(char *s, char *needle)` |
-| `wl_ci_lower` | function | `progs/src/freedom_wl.c:377` | `static long wl_ci_lower(long ch)` |
-| `wl_ci_starts` | function | `progs/src/freedom_wl.c:385` | `static long wl_ci_starts(char *s, char *pre)` |
-| `wl_copy` | function | `progs/src/freedom_wl.c:320` | `static long wl_copy(char *dst, char *src, long cap)` |
-| `wl_fetch_raw` | function | `progs/src/freedom_wl.c:1215` | `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)` |
-| `wl_filter_wrap` | function | `progs/src/freedom_wl.c:658` | `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...` |
-| `wl_has_scheme` | function | `progs/src/freedom_wl.c:417` | `static long wl_has_scheme(char *s)` |
-| `wl_looks_like_url` | function | `progs/src/freedom_wl.c:443` | `static long wl_looks_like_url(char *s)` |
-| `wl_make_search` | function | `progs/src/freedom_wl.c:462` | `static long wl_make_search(char *out, char *query, long cap)` |
-| `wl_parse_headers` | function | `progs/src/freedom_wl.c:1123` | `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...` |
-| `wl_render` | function | `progs/src/freedom_wl.c:1450` | `static long wl_render(FreedomWlConfig *c, long off)` |
-| `wl_resolve_redirect` | function | `progs/src/freedom_wl.c:559` | `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...` |
-| `wl_scroll_clamp` | function | `progs/src/freedom_wl.c:639` | `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)` |
-| `wl_split_url` | function | `progs/src/freedom_wl.c:494` | `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...` |
-| `wl_status_text` | function | `progs/src/freedom_wl.c:901` | `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...` |
-| `wl_strlen` | function | `progs/src/freedom_wl.c:338` | `static long wl_strlen(char *s, long cap)` |
+| `FreedomWlConfig` | struct | `progs/src/freedom_wl.c:75` | `` |
+| `WL_BODY_CAP` | macro | `progs/src/freedom_wl.c:53` | `#define WL_BODY_CAP` |
+| `WL_COLS` | macro | `progs/src/freedom_wl.c:48` | `#define WL_COLS` |
+| `WL_ENT_MAX` | macro | `progs/src/freedom_wl.c:64` | `#define WL_ENT_MAX` |
+| `WL_FONT_H` | macro | `progs/src/freedom_wl.c:62` | `#define WL_FONT_H` |
+| `WL_FONT_W` | macro | `progs/src/freedom_wl.c:61` | `#define WL_FONT_W` |
+| `WL_HDR_MAX` | macro | `progs/src/freedom_wl.c:54` | `#define WL_HDR_MAX` |
+| `WL_HOPS_MAX` | macro | `progs/src/freedom_wl.c:60` | `#define WL_HOPS_MAX` |
+| `WL_HOST_MAX` | macro | `progs/src/freedom_wl.c:57` | `#define WL_HOST_MAX` |
+| `WL_LINES_MAX` | macro | `progs/src/freedom_wl.c:51` | `#define WL_LINES_MAX` |
+| `WL_LINE_LEN` | macro | `progs/src/freedom_wl.c:52` | `#define WL_LINE_LEN` |
+| `WL_NET_BUF` | macro | `progs/src/freedom_wl.c:55` | `#define WL_NET_BUF` |
+| `WL_PATH_MAX` | macro | `progs/src/freedom_wl.c:58` | `#define WL_PATH_MAX` |
+| `WL_REQ_MAX` | macro | `progs/src/freedom_wl.c:56` | `#define WL_REQ_MAX` |
+| `WL_ROWS` | macro | `progs/src/freedom_wl.c:49` | `#define WL_ROWS` |
+| `WL_TAG_MAX` | macro | `progs/src/freedom_wl.c:63` | `#define WL_TAG_MAX` |
+| `WL_TEXT_ROWS` | macro | `progs/src/freedom_wl.c:50` | `#define WL_TEXT_ROWS` |
+| `WL_URL_MAX` | macro | `progs/src/freedom_wl.c:59` | `#define WL_URL_MAX` |
+| `freedom_wl_build_palette` | function | `progs/src/freedom_wl.c:1012` | `static long freedom_wl_build_palette(unsigned char *pal, long cap)` |
+| `freedom_wl_clip_rect` | function | `progs/src/freedom_wl.c:163` | `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)` |
+| `freedom_wl_default` | function | `progs/src/freedom_wl.c:125` | `static FreedomWlConfig freedom_wl_default(void)` |
+| `freedom_wl_frame_bytes` | function | `progs/src/freedom_wl.c:194` | `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)` |
+| `freedom_wl_host_probe` | function | `progs/src/freedom_wl.c:1714` | `int freedom_wl_host_probe(FreedomWlConfig *c)` |
+| `freedom_wl_keysym` | function | `progs/src/freedom_wl.c:213` | `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)` |
+| `freedom_wl_sanitize_utf8` | function | `progs/src/freedom_wl.c:253` | `static long freedom_wl_sanitize_utf8(char *s, long cap)` |
+| `freedom_wl_selftest` | function | `progs/src/freedom_wl.c:1635` | `static long freedom_wl_selftest(void)` |
+| `freedom_wl_surface_id` | function | `progs/src/freedom_wl.c:113` | `static long freedom_wl_surface_id(void)` |
+| `freedom_wl_sys_kbd` | function | `progs/src/freedom_wl.c:1112` | `static long freedom_wl_sys_kbd(void)` |
+| `freedom_wl_sys_kbd_raw` | function | `progs/src/freedom_wl.c:1126` | `static long freedom_wl_sys_kbd_raw(long on)` |
+| `freedom_wl_sys_mouse` | function | `progs/src/freedom_wl.c:1105` | `static long freedom_wl_sys_mouse(long *m)` |
+| `freedom_wl_sys_palette` | function | `progs/src/freedom_wl.c:1098` | `static long freedom_wl_sys_palette(unsigned char *pal)` |
+| `freedom_wl_sys_present` | function | `progs/src/freedom_wl.c:1084` | `static long freedom_wl_sys_present(long buf, long origin)` |
+| `freedom_wl_sys_title` | function | `progs/src/freedom_wl.c:1091` | `static long freedom_wl_sys_title(char *t)` |
+| `freedom_wl_sys_vga_mode` | function | `progs/src/freedom_wl.c:1119` | `static long freedom_wl_sys_vga_mode(long on)` |
+| `freedom_wl_sys_yield` | function | `progs/src/freedom_wl.c:1133` | `static long freedom_wl_sys_yield(void)` |
+| `freedom_wl_title_ok` | function | `progs/src/freedom_wl.c:326` | `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)` |
+| `main` | function | `progs/src/freedom_wl.c:1746` | `int main(int argc, char **argv)` |
+| `net_dns_resolve` | function | `progs/src/freedom_wl.c:40` | `int net_dns_resolve(const char *host);` |
+| `present_buf` | type_alias | `progs/src/freedom_wl.c:75` | `typedef struct FreedomWlConfig { long present_buf;` |
+| `printf` | function | `progs/src/freedom_wl.c:1258` | `printf("freedom_wl: cannot resolve %s\n", host);` |
+| `tls_close` | function | `progs/src/freedom_wl.c:45` | `void tls_close(int fd);` |
+| `tls_handshake` | function | `progs/src/freedom_wl.c:42` | `int tls_handshake(int fd, char *host);` |
+| `tls_recv` | function | `progs/src/freedom_wl.c:44` | `int tls_recv(int fd, char *buf, int len);` |
+| `tls_send` | function | `progs/src/freedom_wl.c:43` | `int tls_send(int fd, char *buf, int len);` |
+| `volatile` | function | `progs/src/freedom_wl.c:1086` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");` |
+| `wl_append` | function | `progs/src/freedom_wl.c:371` | `static long wl_append(char *dst, long pos, char *src, long cap)` |
+| `wl_browse` | function | `progs/src/freedom_wl.c:1554` | `static long wl_browse(FreedomWlConfig *c)` |
+| `wl_ci_contains` | function | `progs/src/freedom_wl.c:420` | `static long wl_ci_contains(char *s, char *needle)` |
+| `wl_ci_lower` | function | `progs/src/freedom_wl.c:394` | `static long wl_ci_lower(long ch)` |
+| `wl_ci_starts` | function | `progs/src/freedom_wl.c:402` | `static long wl_ci_starts(char *s, char *pre)` |
+| `wl_client_init` | function | `progs/src/freedom_wl.c:116` | `wl_client_init(&cl);` |
+| `wl_copy` | function | `progs/src/freedom_wl.c:337` | `static long wl_copy(char *dst, char *src, long cap)` |
+| `wl_fetch_raw` | function | `progs/src/freedom_wl.c:1232` | `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)` |
+| `wl_filter_wrap` | function | `progs/src/freedom_wl.c:675` | `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...` |
+| `wl_has_scheme` | function | `progs/src/freedom_wl.c:434` | `static long wl_has_scheme(char *s)` |
+| `wl_looks_like_url` | function | `progs/src/freedom_wl.c:460` | `static long wl_looks_like_url(char *s)` |
+| `wl_make_search` | function | `progs/src/freedom_wl.c:479` | `static long wl_make_search(char *out, char *query, long cap)` |
+| `wl_parse_headers` | function | `progs/src/freedom_wl.c:1140` | `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...` |
+| `wl_render` | function | `progs/src/freedom_wl.c:1467` | `static long wl_render(FreedomWlConfig *c, long off)` |
+| `wl_resolve_redirect` | function | `progs/src/freedom_wl.c:576` | `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...` |
+| `wl_scroll_clamp` | function | `progs/src/freedom_wl.c:656` | `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)` |
+| `wl_split_url` | function | `progs/src/freedom_wl.c:511` | `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...` |
+| `wl_status_text` | function | `progs/src/freedom_wl.c:918` | `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...` |
+| `wl_strlen` | function | `progs/src/freedom_wl.c:355` | `static long wl_strlen(char *s, long cap)` |
 | `exit` | function | `progs/src/ftest.c:6` | `extern void exit(int code);` |
 | `fprintf` | function | `progs/src/ftest.c:3` | `extern int fprintf(void *stream, const char *fmt, ...);` |
 | `main` | function | `progs/src/ftest.c:9` | `int main(int argc, char **argv)` |
@@ -10295,6 +10415,81 @@ Z_Malloc
 | `vedit_time_ms` | function | `progs/vedit/vedit.c:73` | `static unsigned long vedit_time_ms(void)` |
 | `vedit_vga` | function | `progs/vedit/vedit.c:52` | `static long vedit_vga(int on)` |
 | `volatile` | function | `progs/vedit/vedit.c:24` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GETC_RAW), "D"(blocking) : "rcx", "r11", "memory");` |
+| `WLCOMP_BG` | macro | `progs/wl/wl_mini.h:381` | `#define WLCOMP_BG` |
+| `WLCOMP_BORDER` | macro | `progs/wl/wl_mini.h:382` | `#define WLCOMP_BORDER` |
+| `WL_CFG_DEFAULT` | macro | `progs/wl/wl_mini.h:63` | `#define WL_CFG_DEFAULT` |
+| `WL_ERR_BOUND` | macro | `progs/wl/wl_mini.h:28` | `#define WL_ERR_BOUND` |
+| `WL_ERR_ID` | macro | `progs/wl/wl_mini.h:31` | `#define WL_ERR_ID` |
+| `WL_ERR_OK` | macro | `progs/wl/wl_mini.h:26` | `#define WL_ERR_OK` |
+| `WL_ERR_SIZE` | macro | `progs/wl/wl_mini.h:30` | `#define WL_ERR_SIZE` |
+| `WL_ERR_STR` | macro | `progs/wl/wl_mini.h:32` | `#define WL_ERR_STR` |
+| `WL_ERR_TRUNC` | macro | `progs/wl/wl_mini.h:29` | `#define WL_ERR_TRUNC` |
+| `WL_HDR_SZ` | macro | `progs/wl/wl_mini.h:25` | `#define WL_HDR_SZ` |
+| `WL_ID_BUFFER_BASE` | macro | `progs/wl/wl_mini.h:41` | `#define WL_ID_BUFFER_BASE` |
+| `WL_ID_COMPOSITOR` | macro | `progs/wl/wl_mini.h:36` | `#define WL_ID_COMPOSITOR` |
+| `WL_ID_DISPLAY` | macro | `progs/wl/wl_mini.h:33` | `#define WL_ID_DISPLAY` |
+| `WL_ID_POOL_BASE` | macro | `progs/wl/wl_mini.h:40` | `#define WL_ID_POOL_BASE` |
+| `WL_ID_REGISTRY` | macro | `progs/wl/wl_mini.h:35` | `#define WL_ID_REGISTRY` |
+| `WL_ID_SHM` | macro | `progs/wl/wl_mini.h:37` | `#define WL_ID_SHM` |
+| `WL_ID_SURFACE_BASE` | macro | `progs/wl/wl_mini.h:39` | `#define WL_ID_SURFACE_BASE` |
+| `WL_ID_XDG_BASE` | macro | `progs/wl/wl_mini.h:38` | `#define WL_ID_XDG_BASE` |
+| `WL_MAX_MSG` | macro | `progs/wl/wl_mini.h:19` | `#define WL_MAX_MSG` |
+| `WL_MAX_POOLS` | macro | `progs/wl/wl_mini.h:23` | `#define WL_MAX_POOLS` |
+| `WL_MAX_STR` | macro | `progs/wl/wl_mini.h:21` | `#define WL_MAX_STR` |
+| `WL_MAX_SURFACES` | macro | `progs/wl/wl_mini.h:22` | `#define WL_MAX_SURFACES` |
+| `WL_MINI_H` | macro | `progs/wl/wl_mini.h:18` | `#define WL_MINI_H` |
+| `WL_OP_COMPOSITOR_CREATE_SURFACE` | macro | `progs/wl/wl_mini.h:45` | `#define WL_OP_COMPOSITOR_CREATE_SURFACE` |
+| `WL_OP_DISPLAY_GET_REGISTRY` | macro | `progs/wl/wl_mini.h:42` | `#define WL_OP_DISPLAY_GET_REGISTRY` |
+| `WL_OP_POOL_CREATE_BUFFER` | macro | `progs/wl/wl_mini.h:47` | `#define WL_OP_POOL_CREATE_BUFFER` |
+| `WL_OP_REGISTRY_BIND` | macro | `progs/wl/wl_mini.h:44` | `#define WL_OP_REGISTRY_BIND` |
+| `WL_OP_SHM_CREATE_POOL` | macro | `progs/wl/wl_mini.h:46` | `#define WL_OP_SHM_CREATE_POOL` |
+| `WL_OP_SURFACE_ATTACH` | macro | `progs/wl/wl_mini.h:48` | `#define WL_OP_SURFACE_ATTACH` |
+| `WL_OP_SURFACE_COMMIT` | macro | `progs/wl/wl_mini.h:49` | `#define WL_OP_SURFACE_COMMIT` |
+| `WL_OP_XDG_GET_TOPLEVEL` | macro | `progs/wl/wl_mini.h:50` | `#define WL_OP_XDG_GET_TOPLEVEL` |
+| `WL_POOL_MAX` | macro | `progs/wl/wl_mini.h:24` | `#define WL_POOL_MAX` |
+| `wl_cfg_t` | struct | `progs/wl/wl_mini.h:58` | `` |
+| `wl_client_init` | function | `progs/wl/wl_mini.h:424` | `static inline void wl_client_init(wl_client_t *cl)` |
+| `wl_client_pool` | function | `progs/wl/wl_mini.h:441` | `static inline int wl_client_pool(wl_client_t *cl, unsigned int *id)` |
+| `wl_client_surface` | function | `progs/wl/wl_mini.h:432` | `static inline int wl_client_surface(wl_client_t *cl, unsigned int *id)` |
+| `wl_client_t` | struct | `progs/wl/wl_mini.h:419` | `` |
+| `wl_comp_add` | function | `progs/wl/wl_mini.h:262` | `static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h)` |
+| `wl_comp_focus` | function | `progs/wl/wl_mini.h:321` | `static inline int wl_comp_focus(wl_comp_t *c, unsigned int id)` |
+| `wl_comp_hit` | function | `progs/wl/wl_mini.h:345` | `static inline int wl_comp_hit(const wl_comp_t *c, int x, int y)` |
+| `wl_comp_init` | function | `progs/wl/wl_mini.h:249` | `static inline void wl_comp_init(wl_comp_t *c)` |
+| `wl_comp_remove` | function | `progs/wl/wl_mini.h:295` | `static inline int wl_comp_remove(wl_comp_t *c, unsigned int id)` |
+| `wl_comp_set_color` | function | `progs/wl/wl_mini.h:358` | `static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color)` |
+| `wl_comp_t` | struct | `progs/wl/wl_mini.h:243` | `` |
+| `wl_hdr_decode` | function | `progs/wl/wl_mini.h:97` | `static inline int wl_hdr_decode(const unsigned char *src, int len,
+        wl_hdr_t *out)` |
+| `wl_hdr_encode` | function | `progs/wl/wl_mini.h:65` | `static inline int wl_hdr_encode(unsigned char *dst, int cap,
+        unsigned int id, unsigned in...` |
+| `wl_hdr_t` | struct | `progs/wl/wl_mini.h:52` | `` |
+| `wl_pool_fit` | function | `progs/wl/wl_mini.h:221` | `static inline int wl_pool_fit(int w, int h)` |
+| `wl_pool_id_valid` | function | `progs/wl/wl_mini.h:217` | `static inline int wl_pool_id_valid(unsigned int id)` |
+| `wl_str_decode` | function | `progs/wl/wl_mini.h:186` | `static inline int wl_str_decode(const unsigned char *src, int len, int off,
+        char *dst, in...` |
+| `wl_str_encode` | function | `progs/wl/wl_mini.h:162` | `static inline int wl_str_encode(unsigned char *dst, int cap, int off,
+        const char *s)` |
+| `wl_strlen_bounded` | function | `progs/wl/wl_mini.h:148` | `static inline int wl_strlen_bounded(const char *s)` |
+| `wl_surface_id_valid` | function | `progs/wl/wl_mini.h:212` | `static inline int wl_surface_id_valid(unsigned int id)` |
+| `wl_surface_t` | struct | `progs/wl/wl_mini.h:232` | `` |
+| `wl_u32_decode` | function | `progs/wl/wl_mini.h:137` | `static inline int wl_u32_decode(const unsigned char *src, int len, int off,
+        unsigned int *v)` |
+| `wl_u32_encode` | function | `progs/wl/wl_mini.h:126` | `static inline int wl_u32_encode(unsigned char *dst, int cap, int off,
+        unsigned int v)` |
+| `wlcomp_render` | function | `progs/wl/wl_mini.h:383` | `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,
+        int fb_w, int fb_h)` |
+| `WLCOMP_H` | macro | `progs/wl/wlcomp.c:25` | `#define WLCOMP_H` |
+| `WLCOMP_W` | macro | `progs/wl/wlcomp.c:23` | `#define WLCOMP_W` |
+| `main` | function | `progs/wl/wlcomp.c:105` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/wl/wlcomp.c:102` | `printf("wlcomp: frame ok (%dx%d)\n", WLCOMP_W, WLCOMP_H);` |
+| `volatile` | function | `progs/wl/wlcomp.c:29` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_SET_TITLE), "D"(t) : "rcx", "r11", "memory");` |
+| `wl_client_init` | function | `progs/wl/wlcomp.c:47` | `wl_client_init(&cl);` |
+| `wl_comp_init` | function | `progs/wl/wlcomp.c:76` | `wl_comp_init(&c);` |
+| `wlcomp_demo` | function | `progs/wl/wlcomp.c:42` | `static int wlcomp_demo(wl_comp_t *c)` |
+| `wlcomp_selftest` | function | `progs/wl/wlcomp.c:68` | `static int wlcomp_selftest(void)` |
+| `wlcomp_sys_present` | function | `progs/wl/wlcomp.c:34` | `static long wlcomp_sys_present(long buf)` |
+| `wlcomp_sys_title` | function | `progs/wl/wlcomp.c:26` | `static long wlcomp_sys_title(const char *t)` |
 | `channel` | function | `qga.c:9` | `* * Polled channel (no interrupt controller): qga_init sets up COM2 and * qga_poll, called from raw_blocking_getc, servi` |
 | `kfclose` | function | `qga.c:391` | `kfclose(qga_files[handle]);` |
 | `kstrcpy` | function | `qga.c:90` | `else kstrcpy(np, key);` |
@@ -10976,6 +11171,12 @@ Z_Malloc
 | `vma_tree_find` | function | `tests/test_vma_bench.c:43` | `vma_tree_find(vma_live_root, 0x500000ul + (unsigned long)i * 0x1000);` |
 | `vma_tree_init` | function | `tests/test_vma_bench.c:37` | `vma_tree_init();` |
 | `vma_tree_insert` | function | `tests/test_vma_bench.c:40` | `vma_tree_insert(&vma_live_root, 0x500000ul + (unsigned long)i * 0x1000, 0x1000);` |
+| `CHECK` | macro | `tests/test_wl.c:14` | `#define CHECK(cond, msg)` |
+| `CHECK` | function | `tests/test_wl.c:33` | `CHECK(wl_hdr_encode(buf, sizeof buf, WL_ID_DISPLAY, WL_OP_DISPLAY_GET_REGISTRY, 12, &h) == WL_ERR_OK, "hdr encode ok");` |
+| `fprintf` | function | `tests/test_wl.c:18` | `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);` |
+| `main` | function | `tests/test_wl.c:21` | `int main(void)` |
+| `wl_client_init` | function | `tests/test_wl.c:96` | `wl_client_init(&cl);` |
+| `wl_comp_init` | function | `tests/test_wl.c:76` | `wl_comp_init(&c);` |
 | `CHECK` | macro | `tests/test_wm.c:20` | `#define CHECK(cond, msg)` |
 | `CHECK` | function | `tests/test_wm.c:41` | `CHECK(gcfg.font_w == 8, "geom config carries font width");` |
 | `fprintf` | function | `tests/test_wm.c:24` | `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);` |
@@ -11244,26 +11445,29 @@ Z_Malloc
 | `make_png` | function | `tools/gen_icons.py:179` | `def make_png(pixels, palette, width, height)` |
 | `main` | function | `tools/gen_zip_fixtures.py:42` | `def main()` |
 | `write_zip` | function | `tools/gen_zip_fixtures.py:28` | `def write_zip(path, entries)` |
-| `FS` | class | `tools/minifs_saves.py:72` | `class FS` |
-| `Image` | class | `tools/minifs_saves.py:48` | `class Image` |
-| `__init__` | method | `tools/minifs_saves.py:51` | `def __init__(self, fn, base)` |
-| `__init__` | method | `tools/minifs_saves.py:73` | `def __init__(self, img)` |
-| `blk` | method | `tools/minifs_saves.py:62` | `def blk(self, n)` |
-| `close` | method | `tools/minifs_saves.py:59` | `def close(self)` |
-| `cmd_backup` | method | `tools/minifs_saves.py:245` | `def cmd_backup(img_path, stage)` |
-| `find_partition_base` | method | `tools/minifs_saves.py:207` | `def find_partition_base(fn)` |
-| `inode` | method | `tools/minifs_saves.py:82` | `def inode(self, i)` |
-| `is_dir` | method | `tools/minifs_saves.py:97` | `def is_dir(self, st)` |
-| `listdir` | method | `tools/minifs_saves.py:133` | `def listdir(self, ino)` |
-| `main` | method | `tools/minifs_saves.py:304` | `def main(argv)` |
-| `read_file` | method | `tools/minifs_saves.py:100` | `def read_file(self, ino)` |
-| `read_file_dir` | method | `tools/minifs_saves.py:148` | `def read_file_dir(self, ino)` |
-| `read_file_raw` | method | `tools/minifs_saves.py:156` | `def read_file_raw(self, st)` |
-| `resolve` | method | `tools/minifs_saves.py:180` | `def resolve(self, path)` |
-| `u16` | function | `tools/minifs_saves.py:40` | `def u16(d, o)` |
-| `u32` | function | `tools/minifs_saves.py:44` | `def u32(d, o)` |
-| `valid_name` | method | `tools/minifs_saves.py:199` | `def valid_name(nm)` |
-| `walk` | method | `tools/minifs_saves.py:267` | `def walk(dir_ino, rel)` |
+| `die` | function | `tools/lisp_scoped.sh:9` | `` |
+| `mutant` | function | `tools/lisp_scoped.sh:20` | `` |
+| `say` | function | `tools/lisp_scoped.sh:8` | `` |
+| `FS` | class | `tools/minifs_saves.py:81` | `class FS` |
+| `Image` | class | `tools/minifs_saves.py:57` | `class Image` |
+| `__init__` | method | `tools/minifs_saves.py:60` | `def __init__(self, fn, base)` |
+| `__init__` | method | `tools/minifs_saves.py:82` | `def __init__(self, img)` |
+| `blk` | method | `tools/minifs_saves.py:71` | `def blk(self, n)` |
+| `close` | method | `tools/minifs_saves.py:68` | `def close(self)` |
+| `cmd_backup` | method | `tools/minifs_saves.py:254` | `def cmd_backup(img_path, stage)` |
+| `find_partition_base` | method | `tools/minifs_saves.py:216` | `def find_partition_base(fn)` |
+| `inode` | method | `tools/minifs_saves.py:91` | `def inode(self, i)` |
+| `is_dir` | method | `tools/minifs_saves.py:106` | `def is_dir(self, st)` |
+| `listdir` | method | `tools/minifs_saves.py:142` | `def listdir(self, ino)` |
+| `main` | method | `tools/minifs_saves.py:316` | `def main(argv)` |
+| `read_file` | method | `tools/minifs_saves.py:109` | `def read_file(self, ino)` |
+| `read_file_dir` | method | `tools/minifs_saves.py:157` | `def read_file_dir(self, ino)` |
+| `read_file_raw` | method | `tools/minifs_saves.py:165` | `def read_file_raw(self, st)` |
+| `resolve` | method | `tools/minifs_saves.py:189` | `def resolve(self, path)` |
+| `u16` | function | `tools/minifs_saves.py:49` | `def u16(d, o)` |
+| `u32` | function | `tools/minifs_saves.py:53` | `def u32(d, o)` |
+| `valid_name` | method | `tools/minifs_saves.py:208` | `def valid_name(nm)` |
+| `walk` | method | `tools/minifs_saves.py:276` | `def walk(dir_ino, rel)` |
 | `Client` | class | `tools/minios_cli.py:38` | `class Client` |
 | `__init__` | method | `tools/minios_cli.py:39` | `def __init__(self)` |
 | `close` | method | `tools/minios_cli.py:87` | `def close(self)` |
@@ -11363,6 +11567,21 @@ Z_Malloc
 | `stop` | method | `tools/test_gui_wm.py:183` | `def stop(self)` |
 | `wait_prompt` | method | `tools/test_gui_wm.py:107` | `def wait_prompt(self, timeout)` |
 | `main` | function | `tools/test_gui_zoom.py:22` | `def main()` |
+| `LispConfig` | class | `tools/test_lisp.py:26` | `class LispConfig` |
+| `LispTest` | class | `tools/test_lisp.py:35` | `class LispTest` |
+| `__init__` | method | `tools/test_lisp.py:38` | `def __init__(self, binary, suite)` |
+| `build_binary` | method | `tools/test_lisp.py:182` | `def build_binary(source, output)` |
+| `check` | method | `tools/test_lisp.py:45` | `def check(self, name, actual, expected)` |
+| `check_cli` | method | `tools/test_lisp.py:139` | `def check_cli(self)` |
+| `check_error` | method | `tools/test_lisp.py:68` | `def check_error(self, name, code, fragment)` |
+| `check_eval` | method | `tools/test_lisp.py:63` | `def check_eval(self, name, code, stdout)` |
+| `check_exit_code` | method | `tools/test_lisp.py:132` | `def check_exit_code(self)` |
+| `check_file_roundtrip` | method | `tools/test_lisp.py:118` | `def check_file_roundtrip(self)` |
+| `check_suite_language_only` | method | `tools/test_lisp.py:156` | `def check_suite_language_only(self)` |
+| `main` | method | `tools/test_lisp.py:195` | `def main()` |
+| `report` | method | `tools/test_lisp.py:174` | `def report(self)` |
+| `run_all` | method | `tools/test_lisp.py:74` | `def run_all(self)` |
+| `run_expr` | method | `tools/test_lisp.py:56` | `def run_expr(self, code)` |
 | `fail_msg` | function | `tools/test_sb16.sh:45` | `` |
 | `WmLayoutSync` | class | `tools/wm_layout_sync.py:46` | `class WmLayoutSync` |
 | `WmLayoutSyncConfig` | class | `tools/wm_layout_sync.py:17` | `class WmLayoutSyncConfig` |

@@ -163,30 +163,39 @@
   - `write_zip` (function, line 28) `def write_zip(path, entries)`
   - `main` (function, line 42) `def main()`
 
+## tools/lisp_scoped.sh
+- Layer: utility
+- Doc: Docstring: Scoped Lisp validation for the MiniOS interpreter contract. Builds the ring-3 static ELF with zero warnings, 
+- Language: sh
+- Symbols:
+  - `say` (function, line 8)
+  - `die` (function, line 9)
+  - `mutant` (function, line 20)
+
 ## tools/minifs_saves.py
 - Layer: utility
 - Language: py
 - Symbols:
-  - `u16` (function, line 40) `def u16(d, o)`
-  - `u32` (function, line 44) `def u32(d, o)`
-  - `Image` (class, line 48) `class Image`
-  - `FS` (class, line 72) `class FS`
-  - `valid_name` (method, line 199) `def valid_name(nm)`
-  - `find_partition_base` (method, line 207) `def find_partition_base(fn)`
-  - `cmd_backup` (method, line 245) `def cmd_backup(img_path, stage)`
-  - `main` (method, line 304) `def main(argv)`
-  - `__init__` (method, line 51) `def __init__(self, fn, base)`
-  - `close` (method, line 59) `def close(self)`
-  - `blk` (method, line 62) `def blk(self, n)`
-  - `__init__` (method, line 73) `def __init__(self, img)`
-  - `inode` (method, line 82) `def inode(self, i)`
-  - `is_dir` (method, line 97) `def is_dir(self, st)`
-  - `read_file` (method, line 100) `def read_file(self, ino)`
-  - `listdir` (method, line 133) `def listdir(self, ino)`
-  - `read_file_dir` (method, line 148) `def read_file_dir(self, ino)`
-  - `read_file_raw` (method, line 156) `def read_file_raw(self, st)`
-  - `resolve` (method, line 180) `def resolve(self, path)`
-  - `walk` (method, line 267) `def walk(dir_ino, rel)`
+  - `u16` (function, line 49) `def u16(d, o)`
+  - `u32` (function, line 53) `def u32(d, o)`
+  - `Image` (class, line 57) `class Image`
+  - `FS` (class, line 81) `class FS`
+  - `valid_name` (method, line 208) `def valid_name(nm)`
+  - `find_partition_base` (method, line 216) `def find_partition_base(fn)`
+  - `cmd_backup` (method, line 254) `def cmd_backup(img_path, stage)`
+  - `main` (method, line 316) `def main(argv)`
+  - `__init__` (method, line 60) `def __init__(self, fn, base)`
+  - `close` (method, line 68) `def close(self)`
+  - `blk` (method, line 71) `def blk(self, n)`
+  - `__init__` (method, line 82) `def __init__(self, img)`
+  - `inode` (method, line 91) `def inode(self, i)`
+  - `is_dir` (method, line 106) `def is_dir(self, st)`
+  - `read_file` (method, line 109) `def read_file(self, ino)`
+  - `listdir` (method, line 142) `def listdir(self, ino)`
+  - `read_file_dir` (method, line 157) `def read_file_dir(self, ino)`
+  - `read_file_raw` (method, line 165) `def read_file_raw(self, st)`
+  - `resolve` (method, line 189) `def resolve(self, path)`
+  - `walk` (method, line 276) `def walk(dir_ino, rel)`
 
 ## tools/minios_cli.py
 - Layer: utility
@@ -370,6 +379,26 @@
 - Symbols:
   - `main` (function, line 22) `def main()`
 - Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
+
+## tools/test_lisp.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `LispConfig` (class, line 26) `class LispConfig`
+  - `LispTest` (class, line 35) `class LispTest`
+  - `build_binary` (method, line 182) `def build_binary(source, output)`
+  - `main` (method, line 195) `def main()`
+  - `__init__` (method, line 38) `def __init__(self, binary, suite)`
+  - `check` (method, line 45) `def check(self, name, actual, expected)`
+  - `run_expr` (method, line 56) `def run_expr(self, code)`
+  - `check_eval` (method, line 63) `def check_eval(self, name, code, stdout)`
+  - `check_error` (method, line 68) `def check_error(self, name, code, fragment)`
+  - `run_all` (method, line 74) `def run_all(self)`
+  - `check_file_roundtrip` (method, line 118) `def check_file_roundtrip(self)`
+  - `check_exit_code` (method, line 132) `def check_exit_code(self)`
+  - `check_cli` (method, line 139) `def check_cli(self)`
+  - `check_suite_language_only` (method, line 156) `def check_suite_language_only(self)`
+  - `report` (method, line 174) `def report(self)`
 
 ## tools/test_sb16.sh
 - Layer: testing

@@ -303,6 +303,7 @@
 | `progs/doomgeneric/z_zone.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 13 |
 | `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | misc | 73 |
 | `progs/freedomui/freedomui_minios.c` | freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern. | misc | 47 |
+| `progs/lisp/lisp.c` | - | misc | 113 |
 | `progs/lua/lua_main.c` | - | lua | 25 |
 | `progs/lua/minios.c` | - | lua | 27 |
 | `progs/micropython/variants/minios/lib/__init__.py` | MiniOS frozen library package. | lib | 0 |
@@ -311,7 +312,7 @@
 | `progs/micropython/variants/minios/minios_module.c` | - | minios | 33 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 |
 | `progs/minicraft/minicraft.c` | minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 230 |
-| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 127 |
+| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 130 |
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 59 |
 | `progs/nuklear/cvm_emit.h` | ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (c | nuklear | 6 |
 | `progs/nuklear/font8x8.c` | font8x8 - shared 8x8 bitmap font for MiniOS ring-3 graphics programs. | nuklear | 0 |
@@ -333,7 +334,7 @@
 | `progs/src/fib.c` | - | src | 2 |
 | `progs/src/fptest.c` | fptest.c -- FPU/SSE context-switch probe (Phase 0.1, ADR-0014). | src | 14 |
 | `progs/src/freedom.c` | freedom - a headless text browser for MiniOS. | src | 62 |
-| `progs/src/freedom_wl.c` | freedom_wl - Wayland to MiniOS intermediate layer for FreeDom. | src | 62 |
+| `progs/src/freedom_wl.c` | freedom_wl - Wayland to MiniOS intermediate layer for FreeDom. | src | 64 |
 | `progs/src/ftest.c` | Exercises the kernel libc surface used by loaded .o programs: fprintf to stdout/ | src | 7 |
 | `progs/src/hello.c` | MiniOS test program — compiled as relocatable .o, loaded by kernel ELF loader | src | 2 |
 | `progs/src/hello.py` | - | src | 0 |
@@ -361,6 +362,8 @@
 | `progs/tls_u/tls_u_port.c` | tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3). | tls_u | 20 |
 | `progs/topogpt3/topogpt3.c` | - | misc | 132 |
 | `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 151 |
+| `progs/wl/wl_mini.h` | wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024). | wl | 57 |
+| `progs/wl/wlcomp.c` | wlcomp - Wayland-mini ring-3 compositor (ADR-0024). | wl | 11 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 31 |
 | `qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | root | 29 |
 | `randmix.h` | ifndef RANDMIX_H define RANDMIX_H  randmix.h -- entropy mixer for getrandom (318 | root | 2 |
@@ -405,6 +408,7 @@
 | `tests/test_vedit_build.c` | Docstring: Host test for the vedit IDE build contract (make test-vedit). | tests | 11 |
 | `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 13 |
 | `tests/test_vma_bench.c` | test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 10 |
+| `tests/test_wl.c` | Host test for progs/wl/wl_mini.h (make test-wl). | tests | 6 |
 | `tests/test_wm.c` | Docstring: Host test for wm_geom.h and wm_events.h (make test-wm). | tests | 6 |
 | `tick.h` | Docstring: Tick listener bus contract. | root | 14 |
 | `tls.h` | ifndef TLS_H define TLS_H  ========== TLS 1.2 client (RFC 5246) ========== | root | 73 |
@@ -430,6 +434,7 @@
 | `tools/gen_desktop_pngs.py` | - | tools | 2 |
 | `tools/gen_icons.py` | - | tools | 3 |
 | `tools/gen_zip_fixtures.py` | - | tools | 2 |
+| `tools/lisp_scoped.sh` | Docstring: Scoped Lisp validation for the MiniOS interpreter contract. Builds th | tools | 3 |
 | `tools/minifs_saves.py` | - | tools | 20 |
 | `tools/minios_cli.py` | - | tools | 6 |
 | `tools/minios_gui.py` | - | tools | 9 |
@@ -445,6 +450,7 @@
 | `tools/test_gui_menu.py` | - | tools | 1 |
 | `tools/test_gui_wm.py` | - | tools | 17 |
 | `tools/test_gui_zoom.py` | - | tools | 1 |
+| `tools/test_lisp.py` | - | tools | 15 |
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
 | `tools/wm_layout_sync.py` | - | tools | 17 |
 | `tools/wm_scoped.sh` | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs ho | tools | 2 |

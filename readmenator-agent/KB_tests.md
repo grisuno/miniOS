@@ -485,6 +485,19 @@
   - `LIST_MAX` (macro, line 20) `#define LIST_MAX`
 - Depends on: `kernel/time.c`, `vma.h`
 
+## tests/test_wl.c
+- Layer: testing
+- Doc: Host test for progs/wl/wl_mini.h (make test-wl).
+- Language: c
+- Symbols:
+  - `main` (function, line 21) `int main(void)`
+  - `fprintf` (function, line 18) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `CHECK` (function, line 33) `CHECK(wl_hdr_encode(buf, sizeof buf, WL_ID_DISPLAY, WL_OP_DISPLAY_GET_REGISTRY, 12, &h) == WL_ERR_OK, "hdr encode ok");`
+  - `wl_comp_init` (function, line 76) `wl_comp_init(&c);`
+  - `wl_client_init` (function, line 96) `wl_client_init(&cl);`
+  - `CHECK` (macro, line 14) `#define CHECK(cond, msg)`
+- Depends on: `kernel/string.c`, `progs/wl/wl_mini.h`
+
 ## tests/test_wm.c
 - Layer: testing
 - Doc: Docstring: Host test for wm_geom.h and wm_events.h (make test-wm).

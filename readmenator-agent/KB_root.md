@@ -816,8 +816,8 @@ void kmain(void)`
   - `usage` (function, line 51)
   - `restore_sources` (function, line 101)
   - `cleanup` (function, line 108)
-  - `record` (function, line 275)
-  - `find_index` (function, line 281)
+  - `record` (function, line 283)
+  - `find_index` (function, line 289)
 
 ## net.h
 - Layer: utility

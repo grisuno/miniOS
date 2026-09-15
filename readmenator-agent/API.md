@@ -5903,67 +5903,67 @@ static void shell_cmd_trac...`
 - Defined: `kernel/string.c:16`
 - Doc: string.c -- Kernel string and memory functions.  Pure functions with no dependencies beyond their own prototypes in kern
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrcpy (function) `char *kstrcpy(char *dst, const char *src)`
 - Defined: `kernel/string.c:22`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncpy (function) `char *kstrncpy(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:28`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncat (function) `char *kstrncat(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:34`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrcmp (function) `int kstrcmp(const char *a, const char *b)`
 - Defined: `kernel/string.c:42`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrncmp (function) `int kstrncmp(const char *a, const char *b, unsigned long n)`
 - Defined: `kernel/string.c:47`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrchr (function) `char *kstrchr(const char *s, int c)`
 - Defined: `kernel/string.c:52`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kstrstr (function) `char *kstrstr(const char *hay, const char *ndl)`
 - Defined: `kernel/string.c:57`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemcpy (function) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:67`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemset (function) `void *kmemset(void *dst, int c, unsigned long n)`
 - Defined: `kernel/string.c:74`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemcmp (function) `int kmemcmp(const void *a, const void *b, unsigned long n)`
 - Defined: `kernel/string.c:80`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### kmemmove (function) `void *kmemmove(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:86`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ### katol (function) `long katol(const char *s)`
 - Defined: `kernel/string.c:94`
 - Depends on: `kernel.h`
-- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tls_port.h`, `tls_test.c`
+- Imported by: `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_paint.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_port.h`, `tls_test.c`
 
 ## kernel/symtab.c
 
@@ -8684,10 +8684,10 @@ long sys_linux_wait4(lon...`
 - Defined: `mutate.sh:108`
 
 ### record (function)
-- Defined: `mutate.sh:275`
+- Defined: `mutate.sh:283`
 
 ### find_index (function)
-- Defined: `mutate.sh:281`
+- Defined: `mutate.sh:289`
 - Doc: Locate a mutant by name.
 
 ## net.h
@@ -23462,6 +23462,494 @@ Z_DumpHeap
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 - Imported by: `tests/test_freedomui.c`
 
+## progs/lisp/lisp.c
+
+### lisp_version (function) `static const char *lisp_version(void)`
+- Defined: `progs/lisp/lisp.c:54`
+- Doc: Version string printed by --version and the REPL banner.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### msys (function) `static long msys(long n, long a1, long a2, long a3)`
+- Defined: `progs/lisp/lisp.c:197`
+- Doc: Raw 3-argument syscall through the x86-64 Linux ABI.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### msys5 (function) `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)`
+- Defined: `progs/lisp/lisp.c:210`
+- Doc: Raw 5-argument syscall for SYS_SPAWN with path, redirect, argc, argv.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### fatal (function) `static void fatal(Runtime *rt, const char *message)`
+- Defined: `progs/lisp/lisp.c:225`
+- Doc: Report a fatal internal failure and terminate the process.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### xalloc (function) `static void *xalloc(Runtime *rt, size_t size)`
+- Defined: `progs/lisp/lisp.c:234`
+- Doc: Allocate zeroed tracked memory that frees with the runtime.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### xstrdup (function) `static char *xstrdup(Runtime *rt, const char *source)`
+- Defined: `progs/lisp/lisp.c:258`
+- Doc: Duplicate a string into tracked memory.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### make_node (function) `static Node *make_node(Runtime *rt, NodeType type)`
+- Defined: `progs/lisp/lisp.c:276`
+- Doc: Allocate a node of the given type in tracked memory.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### make_error (function) `static Node *make_error(Runtime *rt, const char *message)`
+- Defined: `progs/lisp/lisp.c:285`
+- Doc: Build an error value carrying a diagnostic message.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### make_num (function) `static Node *make_num(Runtime *rt, int64_t value)`
+- Defined: `progs/lisp/lisp.c:294`
+- Doc: Build a numeric value node.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### make_str (function) `static Node *make_str(Runtime *rt, const char *value)`
+- Defined: `progs/lisp/lisp.c:303`
+- Doc: Build a string value node from a NUL-terminated source.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### make_sym (function) `static Node *make_sym(Runtime *rt, const char *value)`
+- Defined: `progs/lisp/lisp.c:312`
+- Doc: Build a symbol value node from a NUL-terminated name.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### make_prim (function) `static Node *make_prim(Runtime *rt, PrimFn function)`
+- Defined: `progs/lisp/lisp.c:321`
+- Doc: Build a primitive function value node.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### cons (function) `static Node *cons(Runtime *rt, Node *car, Node *cdr)`
+- Defined: `progs/lisp/lisp.c:330`
+- Doc: Build a cons cell from two values.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### is_nil (function) `static bool is_nil(Runtime *rt, const Node *node)`
+- Defined: `progs/lisp/lisp.c:340`
+- Doc: Test whether a node is the empty list in any of its spellings.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### make_file (function) `static Node *make_file(Runtime *rt, FILE *handle)`
+- Defined: `progs/lisp/lisp.c:347`
+- Doc: Register an open FILE handle and wrap it in a file value node.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### cleanup (function) `static void cleanup(Runtime *rt)`
+- Defined: `progs/lisp/lisp.c:369`
+- Doc: Close every tracked file and release every tracked allocation.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### runtime_init (function) `static void runtime_init(Runtime *rt)`
+- Defined: `progs/lisp/lisp.c:391`
+- Doc: Initialize a runtime with streams, constants and empty tables.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### env_new (function) `static Env *env_new(Runtime *rt, Env *parent)`
+- Defined: `progs/lisp/lisp.c:403`
+- Doc: Allocate a new environment frame with an optional parent.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### env_bind (function) `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)`
+- Defined: `progs/lisp/lisp.c:413`
+- Doc: Bind a symbol to a value in the innermost frame.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### env_set (function) `static bool env_set(Env *env, Node *symbol, Node *value)`
+- Defined: `progs/lisp/lisp.c:424`
+- Doc: Update the nearest visible binding of a symbol.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### env_lookup (function) `static Node *env_lookup(Env *env, Node *symbol)`
+- Defined: `progs/lisp/lisp.c:446`
+- Doc: Resolve the nearest visible binding of a symbol.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### reader_peek (function) `static char reader_peek(const Reader *reader)`
+- Defined: `progs/lisp/lisp.c:467`
+- Doc: Peek at the current reader character without consuming it.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### reader_next (function) `static char reader_next(Reader *reader)`
+- Defined: `progs/lisp/lisp.c:474`
+- Doc: Consume one reader character and track line and column.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### reader_at_end (function) `static bool reader_at_end(const Reader *reader)`
+- Defined: `progs/lisp/lisp.c:492`
+- Doc: Test whether the reader reached the end of its buffer.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### skip_space_and_comments (function) `static void skip_space_and_comments(Reader *reader)`
+- Defined: `progs/lisp/lisp.c:499`
+- Doc: Skip whitespace and line comments starting with a semicolon.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### sb_init (function) `static void sb_init(StringBuilder *builder)`
+- Defined: `progs/lisp/lisp.c:515`
+- Doc: Initialize a string builder with a bounded initial capacity.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### sb_push (function) `static void sb_push(StringBuilder *builder, char value)`
+- Defined: `progs/lisp/lisp.c:528`
+- Doc: Append one byte to a string builder with overflow-checked growth.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### parse_ok (function) `static ParseResult parse_ok(Node *value)`
+- Defined: `progs/lisp/lisp.c:554`
+- Doc: Build a successful parse result.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### parse_eof (function) `static ParseResult parse_eof(void)`
+- Defined: `progs/lisp/lisp.c:565`
+- Doc: Build an end-of-input parse result.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### parse_error (function) `static ParseResult parse_error(const char *message)`
+- Defined: `progs/lisp/lisp.c:576`
+- Doc: Build a parse error result with a bounded message.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### read_list (function) `static ParseResult read_list(Runtime *rt, Reader *reader)`
+- Defined: `progs/lisp/lisp.c:588`
+- Doc: Read a parenthesized list terminated by a closing paren.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### read_string (function) `static ParseResult read_string(Runtime *rt, Reader *reader)`
+- Defined: `progs/lisp/lisp.c:618`
+- Doc: Read a double-quoted string with backslash escapes.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### token_delimiter (function) `static bool token_delimiter(char c)`
+- Defined: `progs/lisp/lisp.c:669`
+- Doc: Test whether a character terminates an atom token.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### read_atom (function) `static ParseResult read_atom(Runtime *rt, Reader *reader)`
+- Defined: `progs/lisp/lisp.c:677`
+- Doc: Read a number, nil, t or symbol token.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### read_expr (function) `static ParseResult read_expr(Runtime *rt, Reader *reader)`
+- Defined: `progs/lisp/lisp.c:713`
+- Doc: Read one expression, skipping whitespace and comments first.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### list_count (function) `static size_t list_count(Runtime *rt, Node *list, bool *proper)`
+- Defined: `progs/lisp/lisp.c:742`
+- Doc: Count proper list elements and report whether the spine is proper.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### has_arity (function) `static bool has_arity(Runtime *rt, Node *args, size_t expected)`
+- Defined: `progs/lisp/lisp.c:759`
+- Doc: Test whether an argument list has exactly the expected length.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### arg_at (function) `static Node *arg_at(Runtime *rt, Node *args, size_t index)`
+- Defined: `progs/lisp/lisp.c:767`
+- Doc: Fetch the positional argument at an index or NULL when absent.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### get_two_numbers (function) `static bool get_two_numbers(Runtime *rt, Node *args, int64_t *a, int64_t *b)`
+- Defined: `progs/lisp/lisp.c:784`
+- Doc: Extract two numeric arguments or fail.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_add (function) `static Node *prim_add(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:804`
+- Doc: Add two numbers with overflow reported as an error value.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_sub (function) `static Node *prim_sub(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:820`
+- Doc: Subtract two numbers with overflow reported as an error value.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_mul (function) `static Node *prim_mul(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:836`
+- Doc: Multiply two numbers with overflow reported as an error value.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_div (function) `static Node *prim_div(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:852`
+- Doc: Divide two numbers with zero and overflow reported as errors.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_eq (function) `static Node *prim_eq(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:870`
+- Doc: Compare two numbers for equality.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_lt (function) `static Node *prim_lt(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:882`
+- Doc: Compare two numbers with less-than.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_car (function) `static Node *prim_car(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:894`
+- Doc: Return the first element of a cons cell or nil.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_cdr (function) `static Node *prim_cdr(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:909`
+- Doc: Return the rest of a cons cell or nil.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_cons (function) `static Node *prim_cons(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:924`
+- Doc: Build a cons cell from two values.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_string_concat (function) `static Node *prim_string_concat(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:934`
+- Doc: Concatenate two strings with an overflow-checked allocation.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_string_eq (function) `static Node *prim_string_eq(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:967`
+- Doc: Compare two strings for equality.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_string_length (function) `static Node *prim_string_length(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:985`
+- Doc: Return the byte length of a string.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_string_at (function) `static Node *prim_string_at(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1000`
+- Doc: Return the one-character string at a byte index or nil when out of range.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_char_code (function) `static Node *prim_char_code(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1028`
+- Doc: Convert between a one-character string and its byte value.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_print (function) `static Node *prim_print(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1053`
+- Doc: Print a value without a trailing newline.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_println (function) `static Node *prim_println(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1065`
+- Doc: Print a value with a trailing newline.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### file_mode_allowed (function) `static bool file_mode_allowed(const char *mode)`
+- Defined: `progs/lisp/lisp.c:1078`
+- Doc: Test whether a file mode string belongs to the safe whitelist.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_open_file (function) `static Node *prim_open_file(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1097`
+- Doc: Open a file with a whitelisted mode string.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### valid_file (function) `static bool valid_file(Node *node)`
+- Defined: `progs/lisp/lisp.c:1134`
+- Doc: Test whether a node is a usable open file value.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_read_char (function) `static Node *prim_read_char(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1142`
+- Doc: Read one byte from a file or nil at end of file.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_write (function) `static Node *prim_write(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1162`
+- Doc: Write a string or byte value to an open file.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_close_file (function) `static Node *prim_close_file(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1191`
+- Doc: Close an open file and release its runtime slot.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_null_p (function) `static Node *prim_null_p(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1219`
+- Doc: Test whether a value is nil.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_number_p (function) `static Node *prim_number_p(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1229`
+- Doc: Test whether a value is a number.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_string_p (function) `static Node *prim_string_p(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1241`
+- Doc: Test whether a value is a string.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_error_message (function) `static Node *prim_error_message(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1253`
+- Doc: Return the message of an error value or nil for other values.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_exit (function) `static Node *prim_exit(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1268`
+- Doc: Terminate the process with a numeric exit status.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_time_ms (function) `static Node *prim_time_ms(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1295`
+- Doc: Return milliseconds since boot through the kernel time service.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_rtc (function) `static Node *prim_rtc(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1306`
+- Doc: Return the clock time as a three-element list or nil when unavailable.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_fb_info (function) `static Node *prim_fb_info(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1324`
+- Doc: Return framebuffer width, height and pitch or nil when unavailable.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_vol (function) `static Node *prim_vol(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1342`
+- Doc: Read or set the speaker volume, clamped to the valid range.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_pal (function) `static Node *prim_pal(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1370`
+- Doc: Load a 768-byte VGA palette from a string value.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_pcspeaker (function) `static Node *prim_pcspeaker(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1389`
+- Doc: Play a speaker tone for a bounded millisecond duration.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### prim_minios_run (function) `static Node *prim_minios_run(Runtime *rt, Node *args)`
+- Defined: `progs/lisp/lisp.c:1422`
+- Doc: Run a program through SYS_SPAWN and return its exit code.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### eval_list (function) `static Node *eval_list(Runtime *rt, Node *list, Env *env)`
+- Defined: `progs/lisp/lisp.c:1484`
+- Doc: Evaluate every element of a list into a fresh proper list.  Error results travel as ordinary values so programs can insp
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### eval_sequence (function) `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)`
+- Defined: `progs/lisp/lisp.c:1508`
+- Doc: Evaluate a body sequence and return the last value.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### valid_params (function) `static bool valid_params(Runtime *rt, Node *params)`
+- Defined: `progs/lisp/lisp.c:1526`
+- Doc: Test whether a parameter list holds only symbols.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### eval (function) `static Node *eval(Runtime *rt, Node *expression, Env *env)`
+- Defined: `progs/lisp/lisp.c:1540`
+- Doc: Evaluate an expression with tail-call reuse and a bounded depth.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### print_escaped_string (function) `static void print_escaped_string(FILE *out, const char *value)`
+- Defined: `progs/lisp/lisp.c:1803`
+- Doc: Write a string with escape sequences for readable output.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### print_node (function) `static void print_node(Runtime *rt, Node *node, bool readable)`
+- Defined: `progs/lisp/lisp.c:1834`
+- Doc: Print a value in readable or display form with a bounded depth.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### bind_primitive (function) `static void bind_primitive(Runtime *rt, Env *env, const char *name,
+    PrimFn function)`
+- Defined: `progs/lisp/lisp.c:1905`
+- Doc: Register one named primitive in an environment frame.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### init_env (function) `static Env *init_env(Runtime *rt)`
+- Defined: `progs/lisp/lisp.c:1913`
+- Doc: Build the global environment with arithmetic, strings, files and MiniOS.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### bind_argv (function) `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)`
+- Defined: `progs/lisp/lisp.c:1954`
+- Doc: Expose the script argument vector as a proper list of strings.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### read_all_file (function) `static char *read_all_file(const char *filename, size_t max_bytes)`
+- Defined: `progs/lisp/lisp.c:1966`
+- Doc: Read a whole file into memory with a hard size cap.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### process_source (function) `static int process_source(Runtime *rt, const char *source,
+    const char *source_name, bool echo)`
+- Defined: `progs/lisp/lisp.c:2024`
+- Doc: Evaluate every form in a source buffer and report the first failure.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### process_inline (function) `static int process_inline(Runtime *rt, const char *code)`
+- Defined: `progs/lisp/lisp.c:2066`
+- Doc: Evaluate one inline expression from the -e flag.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### print_usage (function) `static void print_usage(Runtime *rt)`
+- Defined: `progs/lisp/lisp.c:2073`
+- Doc: Print usage for the command line interface.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### repl (function) `static int repl(Runtime *rt)`
+- Defined: `progs/lisp/lisp.c:2080`
+- Doc: Run the interactive read-eval loop on the runtime input stream.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### main (function) `int main(int argc, char **argv)`
+- Defined: `progs/lisp/lisp.c:2127`
+- Doc: Entry point with -e, script and REPL modes plus bounded arguments.
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### volatile (function) `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
+- Defined: `progs/lisp/lisp.c:199`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### fprintf (function) `fprintf(err, "fatal: %s\n", message);`
+- Defined: `progs/lisp/lisp.c:227`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### exit (function) `exit(EXIT_FAILURE);`
+- Defined: `progs/lisp/lisp.c:228`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### free (function) `free(ptr);`
+- Defined: `progs/lisp/lisp.c:246`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### memcpy (function) `memcpy(copy, source, length);`
+- Defined: `progs/lisp/lisp.c:269`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### fclose (function) `fclose(handle);`
+- Defined: `progs/lisp/lisp.c:362`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### memset (function) `memset(rt, 0, sizeof *rt);`
+- Defined: `progs/lisp/lisp.c:392`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### snprintf (function) `snprintf(result.message, sizeof result.message, "%s", message ? message : "parse error");`
+- Defined: `progs/lisp/lisp.c:580`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### fflush (function) `fflush(rt->out);`
+- Defined: `progs/lisp/lisp.c:1058`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### fputc (function) `fputc('\n', rt->out);`
+- Defined: `progs/lisp/lisp.c:1070`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### fputs (function) `fputs("\\n", out);`
+- Defined: `progs/lisp/lisp.c:1809`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
 ## progs/lua/lua_main.c
 
 ### luaL_require_global (function) `static void luaL_require_global(lua_State *L, const char *name,
@@ -26550,256 +27038,267 @@ Z_DumpHeap
 
 ## progs/src/freedom_wl.c
 
+### freedom_wl_surface_id (function) `static long freedom_wl_surface_id(void)`
+- Defined: `progs/src/freedom_wl.c:113`
+- Doc: Logical Wayland-mini surface id for this client (ADR-0024). The present path still uses GFX_PRESENT BUF_NK; the id names
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
+- Imported by: `tests/test_freedom_wl.c`
+
 ### freedom_wl_default (function) `static FreedomWlConfig freedom_wl_default(void)`
-- Defined: `progs/src/freedom_wl.c:109`
-- Doc: long path_max; long url_max; long hops_max; long font_w; long font_h; long port_http; long port_https; long ink_bg; long
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Defined: `progs/src/freedom_wl.c:125`
+- Doc: The present path still uses GFX_PRESENT BUF_NK; the id names the * client side of the future wlcomp mapping and is bound
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_clip_rect (function) `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)`
-- Defined: `progs/src/freedom_wl.c:146`
-- Doc: c.url_max = WL_URL_MAX; c.hops_max = WL_HOPS_MAX; c.font_w = WL_FONT_W; c.font_h = WL_FONT_H; c.port_http = 80L; c.port_
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Defined: `progs/src/freedom_wl.c:163`
+- Doc: c.hops_max = WL_HOPS_MAX; c.font_w = WL_FONT_W; c.font_h = WL_FONT_H; c.port_http = 80L; c.port_https = 443L; c.ink_bg =
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_frame_bytes (function) `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)`
-- Defined: `progs/src/freedom_wl.c:177`
+- Defined: `progs/src/freedom_wl.c:194`
 - Doc: } if (*x + *w > c->surface_w) { w = c->surface_w - *x; } if (*y + *h > c->surface_h) { h = c->surface_h - *y; } if (*w <
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_keysym (function) `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)`
-- Defined: `progs/src/freedom_wl.c:196`
+- Defined: `progs/src/freedom_wl.c:213`
 - Doc: if (w <= 0L || h <= 0L) { return -1L; } if (w > c->surface_w || h > c->surface_h) { return -1L; } bytes_per_pixel = 1L; 
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_sanitize_utf8 (function) `static long freedom_wl_sanitize_utf8(char *s, long cap)`
-- Defined: `progs/src/freedom_wl.c:236`
+- Defined: `progs/src/freedom_wl.c:253`
 - Doc: } if (make == 0x39L) { return 32L; } if (make == 0x0EL) { return 8L; } if (make == 0x0FL) { return 9L; } return -1L; } /
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_title_ok (function) `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)`
-- Defined: `progs/src/freedom_wl.c:309`
+- Defined: `progs/src/freedom_wl.c:326`
 - Doc: i++; } if (o >= cap - 1L) { break; } } if (o >= cap) { return -1L; } s[o] = 0; return o; } /** Validate a window title a
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_copy (function) `static long wl_copy(char *dst, char *src, long cap)`
-- Defined: `progs/src/freedom_wl.c:320`
+- Defined: `progs/src/freedom_wl.c:337`
 - Doc: } /** Validate a window title against the kernel title bound. static long freedom_wl_title_ok(FreedomWlConfig *c, char *
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_strlen (function) `static long wl_strlen(char *s, long cap)`
-- Defined: `progs/src/freedom_wl.c:338`
+- Defined: `progs/src/freedom_wl.c:355`
 - Doc: } i = 0L; while (src[i] != 0) { if (i + 1L >= cap) { return -1L; } dst[i] = src[i]; i++; } dst[i] = 0; return 0L; } /** 
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_append (function) `static long wl_append(char *dst, long pos, char *src, long cap)`
-- Defined: `progs/src/freedom_wl.c:354`
+- Defined: `progs/src/freedom_wl.c:371`
 - Doc: if (!s || cap <= 0L) { return -1L; } i = 0L; while (i < cap && s[i] != 0) { i++; } if (i >= cap) { return -1L; } return 
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_ci_lower (function) `static long wl_ci_lower(long ch)`
-- Defined: `progs/src/freedom_wl.c:377`
+- Defined: `progs/src/freedom_wl.c:394`
 - Doc: } if (pos + n >= cap) { return -1L; } i = 0L; while (i < n) { dst[pos + i] = src[i]; i++; } dst[pos + n] = 0; return pos
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_ci_starts (function) `static long wl_ci_starts(char *s, char *pre)`
-- Defined: `progs/src/freedom_wl.c:385`
+- Defined: `progs/src/freedom_wl.c:402`
 - Doc: } dst[pos + n] = 0; return pos + n; } /** ASCII lowercase fold. static long wl_ci_lower(long ch) { if (ch >= 'A' && ch <
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_ci_contains (function) `static long wl_ci_contains(char *s, char *needle)`
-- Defined: `progs/src/freedom_wl.c:403`
+- Defined: `progs/src/freedom_wl.c:420`
 - Doc: while (*pre) { if (*s == 0) { return 0L; } if (wl_ci_lower(*s) != wl_ci_lower(*pre)) { return 0L; } s++; pre++; } return
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_has_scheme (function) `static long wl_has_scheme(char *s)`
-- Defined: `progs/src/freedom_wl.c:417`
+- Defined: `progs/src/freedom_wl.c:434`
 - Doc: static long wl_ci_contains(char *s, char *needle) { if (!s || !needle) { return 0L; } while (*s) { if (wl_ci_starts(s, n
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_looks_like_url (function) `static long wl_looks_like_url(char *s)`
-- Defined: `progs/src/freedom_wl.c:443`
+- Defined: `progs/src/freedom_wl.c:460`
 - Doc: ch = s[i]; if (ch == ':') { return 1L; } if (!((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch 
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_make_search (function) `static long wl_make_search(char *out, char *query, long cap)`
-- Defined: `progs/src/freedom_wl.c:462`
+- Defined: `progs/src/freedom_wl.c:479`
 - Doc: dot = 0L; while (*s) { if (*s == ' ' || *s == '\t') { return 0L; } if (*s == '.') { dot = 1L; } s++; } return dot; } /**
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_split_url (function) `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...`
-- Defined: `progs/src/freedom_wl.c:494`
+- Defined: `progs/src/freedom_wl.c:511`
 - Doc: } else { out[pos] = *query; pos++; out[pos] = 0; } if (pos < 0L) { return -1L; } query++; } return pos; } /** Split an h
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_resolve_redirect (function) `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...`
-- Defined: `progs/src/freedom_wl.c:559`
+- Defined: `progs/src/freedom_wl.c:576`
 - Doc: if (plen < 0L) { return 0L; } if (wl_copy(path, p + hl, c->path_max) < 0L) { return 0L; } } else { path[0] = '/'; path[1
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_scroll_clamp (function) `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)`
-- Defined: `progs/src/freedom_wl.c:639`
+- Defined: `progs/src/freedom_wl.c:656`
 - Doc: if (last + 1L + l >= c->path_max) { return 0L; } i = 0L; while (i < l) { path[last + 1L + i] = loc[i]; i++; } path[last 
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_filter_wrap (function) `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...`
-- Defined: `progs/src/freedom_wl.c:658`
+- Defined: `progs/src/freedom_wl.c:675`
 - Doc: if (nlines <= c->text_rows) { return 0L; } maxoff = nlines - c->text_rows; if (off < 0L) { return 0L; } if (off > maxoff
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_status_text (function) `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...`
-- Defined: `progs/src/freedom_wl.c:901`
+- Defined: `progs/src/freedom_wl.c:918`
 - Doc: lines[li * linelen + co] = (char)ch; co++; lines[li * linelen + co] = 0; } if (co > 0L) { return li + 1L; } if (li == 0L
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_build_palette (function) `static long freedom_wl_build_palette(unsigned char *pal, long cap)`
-- Defined: `progs/src/freedom_wl.c:995`
+- Defined: `progs/src/freedom_wl.c:1012`
 - Doc: Build the 768-byte graphics palette for the NK back-buffer window.  Indices 0-14 exactly match the desktop palette in pr
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_sys_present (function) `static long freedom_wl_sys_present(long buf, long origin)`
-- Defined: `progs/src/freedom_wl.c:1067`
+- Defined: `progs/src/freedom_wl.c:1084`
 - Doc: static char w_host[WL_HOST_MAX]; static char w_path[WL_PATH_MAX]; static char w_loc[WL_URL_MAX]; static char w_hdr[WL_HD
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_sys_title (function) `static long freedom_wl_sys_title(char *t)`
-- Defined: `progs/src/freedom_wl.c:1074`
+- Defined: `progs/src/freedom_wl.c:1091`
 - Doc: static long w_nbytes; static long w_secure; static long w_port; static long w_status; static long w_truncated; /** Prese
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_sys_palette (function) `static long freedom_wl_sys_palette(unsigned char *pal)`
-- Defined: `progs/src/freedom_wl.c:1081`
+- Defined: `progs/src/freedom_wl.c:1098`
 - Doc: static long freedom_wl_sys_present(long buf, long origin) { long ret; __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIO
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_sys_mouse (function) `static long freedom_wl_sys_mouse(long *m)`
-- Defined: `progs/src/freedom_wl.c:1088`
+- Defined: `progs/src/freedom_wl.c:1105`
 - Doc: static long freedom_wl_sys_title(char *t) { long ret; __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_SET_TI
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_sys_kbd (function) `static long freedom_wl_sys_kbd(void)`
-- Defined: `progs/src/freedom_wl.c:1095`
+- Defined: `progs/src/freedom_wl.c:1112`
 - Doc: static long freedom_wl_sys_palette(unsigned char *pal) { long ret; __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_S
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_sys_vga_mode (function) `static long freedom_wl_sys_vga_mode(long on)`
-- Defined: `progs/src/freedom_wl.c:1102`
+- Defined: `progs/src/freedom_wl.c:1119`
 - Doc: static long freedom_wl_sys_mouse(long *m) { long ret; __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_MOUSE), "D
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_sys_kbd_raw (function) `static long freedom_wl_sys_kbd_raw(long on)`
-- Defined: `progs/src/freedom_wl.c:1109`
+- Defined: `progs/src/freedom_wl.c:1126`
 - Doc: static long freedom_wl_sys_kbd(void) { long ret; __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_KBD), "D"(0) : 
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_sys_yield (function) `static long freedom_wl_sys_yield(void)`
-- Defined: `progs/src/freedom_wl.c:1116`
+- Defined: `progs/src/freedom_wl.c:1133`
 - Doc: static long freedom_wl_sys_vga_mode(long on) { long ret; __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_VGA_MOD
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_parse_headers (function) `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...`
-- Defined: `progs/src/freedom_wl.c:1123`
+- Defined: `progs/src/freedom_wl.c:1140`
 - Doc: static long freedom_wl_sys_kbd_raw(long on) { long ret; __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_KBD_RAW)
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_fetch_raw (function) `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)`
-- Defined: `progs/src/freedom_wl.c:1215`
+- Defined: `progs/src/freedom_wl.c:1232`
 - Doc: if (!wl_ci_starts(hdr + k, "text")) { istext = 0L; } } } line++; while (hdr[i] == '\r' || hdr[i] == '\n') { i++; } } ret
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_render (function) `static long wl_render(FreedomWlConfig *c, long off)`
-- Defined: `progs/src/freedom_wl.c:1450`
+- Defined: `progs/src/freedom_wl.c:1467`
 - Doc: if (got < c->body_cap) { w_body[got] = (char)ch; got++; } else { w_truncated = 1L; } } } } tls_close((int)fd); return go
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### wl_browse (function) `static long wl_browse(FreedomWlConfig *c)`
-- Defined: `progs/src/freedom_wl.c:1537`
+- Defined: `progs/src/freedom_wl.c:1554`
 - Doc: long ink; if (bits & (0x80 >> px)) { ink = c->bar_fg; } else { ink = c->bar_bg; } fb[(c->text_rows * c->font_h + row) * 
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_selftest (function) `static long freedom_wl_selftest(void)`
-- Defined: `progs/src/freedom_wl.c:1618`
+- Defined: `progs/src/freedom_wl.c:1635`
 - Doc: off = off + (long)m[3] * c->scroll_step; changed = 1L; } if (changed) { off = wl_scroll_clamp(c, off, w_nlines); if (wl_
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### freedom_wl_host_probe (function) `int freedom_wl_host_probe(FreedomWlConfig *c)`
-- Defined: `progs/src/freedom_wl.c:1697`
+- Defined: `progs/src/freedom_wl.c:1714`
 - Doc: return 1L; } if (freedom_wl_sys_kbd() > 0x7FFFFFFFL) { printf("freedom_wl: kbd out of range\n"); return 1L; } freedom_wl
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/src/freedom_wl.c:1729`
+- Defined: `progs/src/freedom_wl.c:1746`
 - Doc: } if (freedom_wl_keysym(c, 0x1CL) != c->key_enter) { return 1; } buf[0] = 'h'; buf[1] = 'i'; buf[2] = 0; if (freedom_wl_
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### net_dns_resolve (function) `int net_dns_resolve(const char *host);`
-- Defined: `progs/src/freedom_wl.c:39`
+- Defined: `progs/src/freedom_wl.c:40`
 - Doc: include <stdio.h> include <string.h> include <stdint.h> include <unistd.h> include <sys/socket.h>
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### tls_handshake (function) `int tls_handshake(int fd, char *host);`
-- Defined: `progs/src/freedom_wl.c:41`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Defined: `progs/src/freedom_wl.c:42`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### tls_send (function) `int tls_send(int fd, char *buf, int len);`
-- Defined: `progs/src/freedom_wl.c:42`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Defined: `progs/src/freedom_wl.c:43`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### tls_recv (function) `int tls_recv(int fd, char *buf, int len);`
-- Defined: `progs/src/freedom_wl.c:43`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Defined: `progs/src/freedom_wl.c:44`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### tls_close (function) `void tls_close(int fd);`
-- Defined: `progs/src/freedom_wl.c:44`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Defined: `progs/src/freedom_wl.c:45`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
+- Imported by: `tests/test_freedom_wl.c`
+
+### wl_client_init (function) `wl_client_init(&cl);`
+- Defined: `progs/src/freedom_wl.c:116`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
-- Defined: `progs/src/freedom_wl.c:1069`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Defined: `progs/src/freedom_wl.c:1086`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ### printf (function) `printf("freedom_wl: cannot resolve %s\n", host);`
-- Defined: `progs/src/freedom_wl.c:1241`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `vga_fb.h`
+- Defined: `progs/src/freedom_wl.c:1258`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ## progs/src/ftest.c
@@ -28516,6 +29015,137 @@ Z_DumpHeap
 ### free (function) `free(vedit_pool);`
 - Defined: `progs/vedit/vedit.c:1992`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+## progs/wl/wl_mini.h
+
+### wl_hdr_encode (function) `static inline int wl_hdr_encode(unsigned char *dst, int cap,
+        unsigned int id, unsigned in...`
+- Defined: `progs/wl/wl_mini.h:65`
+- Doc: define WL_CFG_DEFAULT { 8u, 8u, 0u }
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_hdr_decode (function) `static inline int wl_hdr_decode(const unsigned char *src, int len,
+        wl_hdr_t *out)`
+- Defined: `progs/wl/wl_mini.h:97`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_u32_encode (function) `static inline int wl_u32_encode(unsigned char *dst, int cap, int off,
+        unsigned int v)`
+- Defined: `progs/wl/wl_mini.h:126`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_u32_decode (function) `static inline int wl_u32_decode(const unsigned char *src, int len, int off,
+        unsigned int *v)`
+- Defined: `progs/wl/wl_mini.h:137`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_strlen_bounded (function) `static inline int wl_strlen_bounded(const char *s)`
+- Defined: `progs/wl/wl_mini.h:148`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_str_encode (function) `static inline int wl_str_encode(unsigned char *dst, int cap, int off,
+        const char *s)`
+- Defined: `progs/wl/wl_mini.h:162`
+- Doc: static inline int wl_strlen_bounded(const char *s) { int n = 0; if (!s) return WL_ERR_STR; while (s[n] != '\0') { n++; i
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_str_decode (function) `static inline int wl_str_decode(const unsigned char *src, int len, int off,
+        char *dst, in...`
+- Defined: `progs/wl/wl_mini.h:186`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_surface_id_valid (function) `static inline int wl_surface_id_valid(unsigned int id)`
+- Defined: `progs/wl/wl_mini.h:212`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_pool_id_valid (function) `static inline int wl_pool_id_valid(unsigned int id)`
+- Defined: `progs/wl/wl_mini.h:217`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_pool_fit (function) `static inline int wl_pool_fit(int w, int h)`
+- Defined: `progs/wl/wl_mini.h:221`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_comp_init (function) `static inline void wl_comp_init(wl_comp_t *c)`
+- Defined: `progs/wl/wl_mini.h:249`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_comp_add (function) `static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h)`
+- Defined: `progs/wl/wl_mini.h:262`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_comp_remove (function) `static inline int wl_comp_remove(wl_comp_t *c, unsigned int id)`
+- Defined: `progs/wl/wl_mini.h:295`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_comp_focus (function) `static inline int wl_comp_focus(wl_comp_t *c, unsigned int id)`
+- Defined: `progs/wl/wl_mini.h:321`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_comp_hit (function) `static inline int wl_comp_hit(const wl_comp_t *c, int x, int y)`
+- Defined: `progs/wl/wl_mini.h:345`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_comp_set_color (function) `static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color)`
+- Defined: `progs/wl/wl_mini.h:358`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wlcomp_render (function) `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,
+        int fb_w, int fb_h)`
+- Defined: `progs/wl/wl_mini.h:383`
+- Doc: Software composite of the surface stack into a palette-index fb. Pure function, no syscalls: the guest points fb at the 
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_client_init (function) `static inline void wl_client_init(wl_client_t *cl)`
+- Defined: `progs/wl/wl_mini.h:424`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_client_surface (function) `static inline int wl_client_surface(wl_client_t *cl, unsigned int *id)`
+- Defined: `progs/wl/wl_mini.h:432`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+### wl_client_pool (function) `static inline int wl_client_pool(wl_client_t *cl, unsigned int *id)`
+- Defined: `progs/wl/wl_mini.h:441`
+- Imported by: `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
+## progs/wl/wlcomp.c
+
+### wlcomp_sys_title (function) `static long wlcomp_sys_title(const char *t)`
+- Defined: `progs/wl/wlcomp.c:26`
+- Doc: define WLCOMP_W 800 define WLCOMP_H 360
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
+
+### wlcomp_sys_present (function) `static long wlcomp_sys_present(long buf)`
+- Defined: `progs/wl/wlcomp.c:34`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
+
+### wlcomp_demo (function) `static int wlcomp_demo(wl_comp_t *c)`
+- Defined: `progs/wl/wlcomp.c:42`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
+
+### wlcomp_selftest (function) `static int wlcomp_selftest(void)`
+- Defined: `progs/wl/wlcomp.c:68`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
+
+### main (function) `int main(int argc, char **argv)`
+- Defined: `progs/wl/wlcomp.c:105`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
+
+### volatile (function) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_SET_TITLE), "D"(t) : "rcx", "r11", "memory");`
+- Defined: `progs/wl/wlcomp.c:29`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
+
+### wl_client_init (function) `wl_client_init(&cl);`
+- Defined: `progs/wl/wlcomp.c:47`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
+
+### wl_comp_init (function) `wl_comp_init(&c);`
+- Defined: `progs/wl/wlcomp.c:76`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
+
+### printf (function) `printf("wlcomp: frame ok (%dx%d)\n", WLCOMP_W, WLCOMP_H);`
+- Defined: `progs/wl/wlcomp.c:102`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
 
 ## qga.c
 
@@ -30627,6 +31257,28 @@ Z_DumpHeap
 - Defined: `tests/test_vma_bench.c:43`
 - Depends on: `kernel/time.c`, `vma.h`
 
+## tests/test_wl.c
+
+### main (function) `int main(void)`
+- Defined: `tests/test_wl.c:21`
+- Depends on: `kernel/string.c`, `progs/wl/wl_mini.h`
+
+### fprintf (function) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+- Defined: `tests/test_wl.c:18`
+- Depends on: `kernel/string.c`, `progs/wl/wl_mini.h`
+
+### CHECK (function) `CHECK(wl_hdr_encode(buf, sizeof buf, WL_ID_DISPLAY, WL_OP_DISPLAY_GET_REGISTRY, 12, &h) == WL_ERR_OK, "hdr encode ok");`
+- Defined: `tests/test_wl.c:33`
+- Depends on: `kernel/string.c`, `progs/wl/wl_mini.h`
+
+### wl_comp_init (function) `wl_comp_init(&c);`
+- Defined: `tests/test_wl.c:76`
+- Depends on: `kernel/string.c`, `progs/wl/wl_mini.h`
+
+### wl_client_init (function) `wl_client_init(&cl);`
+- Defined: `tests/test_wl.c:96`
+- Depends on: `kernel/string.c`, `progs/wl/wl_mini.h`
+
 ## tests/test_wm.c
 
 ### main (function) `int main(void)`
@@ -31423,62 +32075,73 @@ Z_DumpHeap
 ### main (function) `def main()`
 - Defined: `tools/gen_zip_fixtures.py:42`
 
+## tools/lisp_scoped.sh
+
+### say (function)
+- Defined: `tools/lisp_scoped.sh:8`
+
+### die (function)
+- Defined: `tools/lisp_scoped.sh:9`
+
+### mutant (function)
+- Defined: `tools/lisp_scoped.sh:20`
+
 ## tools/minifs_saves.py
 
 ### u16 (function) `def u16(d, o)`
-- Defined: `tools/minifs_saves.py:40`
+- Defined: `tools/minifs_saves.py:49`
 
 ### u32 (function) `def u32(d, o)`
-- Defined: `tools/minifs_saves.py:44`
+- Defined: `tools/minifs_saves.py:53`
 
 ### valid_name (method) `def valid_name(nm)`
-- Defined: `tools/minifs_saves.py:199`
+- Defined: `tools/minifs_saves.py:208`
 
 ### find_partition_base (method) `def find_partition_base(fn)`
-- Defined: `tools/minifs_saves.py:207`
+- Defined: `tools/minifs_saves.py:216`
 - Doc: Locate the MiniFS partition inside a host image file.
 
 ### cmd_backup (method) `def cmd_backup(img_path, stage)`
-- Defined: `tools/minifs_saves.py:245`
+- Defined: `tools/minifs_saves.py:254`
 
 ### main (method) `def main(argv)`
-- Defined: `tools/minifs_saves.py:304`
+- Defined: `tools/minifs_saves.py:316`
 
 ### __init__ (method) `def __init__(self, fn, base)`
-- Defined: `tools/minifs_saves.py:51`
+- Defined: `tools/minifs_saves.py:60`
 
 ### close (method) `def close(self)`
-- Defined: `tools/minifs_saves.py:59`
+- Defined: `tools/minifs_saves.py:68`
 
 ### blk (method) `def blk(self, n)`
-- Defined: `tools/minifs_saves.py:62`
+- Defined: `tools/minifs_saves.py:71`
 
 ### __init__ (method) `def __init__(self, img)`
-- Defined: `tools/minifs_saves.py:73`
-
-### inode (method) `def inode(self, i)`
 - Defined: `tools/minifs_saves.py:82`
 
+### inode (method) `def inode(self, i)`
+- Defined: `tools/minifs_saves.py:91`
+
 ### is_dir (method) `def is_dir(self, st)`
-- Defined: `tools/minifs_saves.py:97`
+- Defined: `tools/minifs_saves.py:106`
 
 ### read_file (method) `def read_file(self, ino)`
-- Defined: `tools/minifs_saves.py:100`
+- Defined: `tools/minifs_saves.py:109`
 
 ### listdir (method) `def listdir(self, ino)`
-- Defined: `tools/minifs_saves.py:133`
+- Defined: `tools/minifs_saves.py:142`
 
 ### read_file_dir (method) `def read_file_dir(self, ino)`
-- Defined: `tools/minifs_saves.py:148`
+- Defined: `tools/minifs_saves.py:157`
 
 ### read_file_raw (method) `def read_file_raw(self, st)`
-- Defined: `tools/minifs_saves.py:156`
+- Defined: `tools/minifs_saves.py:165`
 
 ### resolve (method) `def resolve(self, path)`
-- Defined: `tools/minifs_saves.py:180`
+- Defined: `tools/minifs_saves.py:189`
 
 ### walk (method) `def walk(dir_ino, rel)`
-- Defined: `tools/minifs_saves.py:267`
+- Defined: `tools/minifs_saves.py:276`
 
 ## tools/minios_cli.py
 
@@ -31893,6 +32556,59 @@ Z_DumpHeap
 ### main (function) `def main()`
 - Defined: `tools/test_gui_zoom.py:22`
 - Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
+
+## tools/test_lisp.py
+
+### build_binary (method) `def build_binary(source, output)`
+- Defined: `tools/test_lisp.py:182`
+- Doc: Compile the interpreter with warnings promoted to errors.
+
+### main (method) `def main()`
+- Defined: `tools/test_lisp.py:195`
+- Doc: Parse arguments, build the binary and drive the suite.
+
+### __init__ (method) `def __init__(self, binary, suite)`
+- Defined: `tools/test_lisp.py:38`
+
+### check (method) `def check(self, name, actual, expected)`
+- Defined: `tools/test_lisp.py:45`
+- Doc: Assert one observed value equals the expectation.
+
+### run_expr (method) `def run_expr(self, code)`
+- Defined: `tools/test_lisp.py:56`
+- Doc: Evaluate one inline expression and capture output.
+
+### check_eval (method) `def check_eval(self, name, code, stdout)`
+- Defined: `tools/test_lisp.py:63`
+- Doc: Assert an inline expression prints exactly the expectation.
+
+### check_error (method) `def check_error(self, name, code, fragment)`
+- Defined: `tools/test_lisp.py:68`
+- Doc: Assert an inline expression fails closed with a diagnostic.
+
+### run_all (method) `def run_all(self)`
+- Defined: `tools/test_lisp.py:74`
+- Doc: Drive every assertion vector in sequence.
+
+### check_file_roundtrip (method) `def check_file_roundtrip(self)`
+- Defined: `tools/test_lisp.py:118`
+- Doc: Assert a file write and read roundtrip through the interpreter.
+
+### check_exit_code (method) `def check_exit_code(self)`
+- Defined: `tools/test_lisp.py:132`
+- Doc: Assert a nonzero exit status survives the cleanup path.
+
+### check_cli (method) `def check_cli(self)`
+- Defined: `tools/test_lisp.py:139`
+- Doc: Assert version, help, unknown flag and missing file behaviors.
+
+### check_suite_language_only (method) `def check_suite_language_only(self)`
+- Defined: `tools/test_lisp.py:156`
+- Doc: Assert the shipped in-OS suite passes its language section.
+
+### report (method) `def report(self)`
+- Defined: `tools/test_lisp.py:174`
+- Doc: Print the totals and return the process exit status.
 
 ## tools/test_sb16.sh
 
