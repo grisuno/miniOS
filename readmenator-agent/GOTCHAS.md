@@ -13,7 +13,7 @@ These files have the most connections. Changes here have high blast radius.
 - `progs/doomgeneric/i_system.h` (score: 81.50)
 - `progs/doomgeneric/z_zone.h` (score: 81.30)
 - `progs/doomgeneric/g_game.c` (score: 77.70)
-- `kernel/syscalls.c` (score: 69.60)
+- `kernel/syscalls.c` (score: 69.80)
 
 ## Hotspots (complexity + centrality)
 
