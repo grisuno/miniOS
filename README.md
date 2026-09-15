@@ -2032,7 +2032,7 @@ system would not exist.
 - miniz, by Rich Geldreich and contributors: the zip reader and writer
   behind the `zip` and `unzip` shell builtins.
 - dlmalloc, by Doug Lea: the kernel heap allocator.
-- stb, by Sean Barrett and contributors: `stb_image` decodes the PNG
+- [stb](https://github.com/nothings/stb), by Sean Barrett and contributors: `stb_image` decodes the PNG
   previews, icons and paint files.
 - xxHash, by Yann Collet and contributors: the checksums behind the
   integrity selftests.
