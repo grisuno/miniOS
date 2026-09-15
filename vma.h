@@ -25,7 +25,7 @@ typedef struct vma_node {
     struct vma_node *left, *right, *parent;
 } vma_node_t;
 
-#define VMA_MAX 4096
+#define VMA_MAX 2048
 
 /* Per-process VMA context (multitask foundation): every non-CLONE_VM
  * process owns its live/free trees plus a private node pool, so two

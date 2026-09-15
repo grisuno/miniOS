@@ -42,8 +42,8 @@ static array with a bump cursor, so node allocation is $O(1)$.
 Worst case for $n$: alternating allocated/free pages over the user
 window $W$ bytes with minimum region $r$ gives $n \le W/r$. With
 $W = 184$ MB and $r = 4$ KB, $n \le 47104$ nominally, but the pool caps
-operations at `VMA_MAX` (4096) per exec, fail-closed (`VMA_NIL`). At the
-cap, $h \le 2\log_2(4097) < 25$ comparisons per operation: bounded,
+operations at `VMA_MAX` (2048) per exec, fail-closed (`VMA_NIL`). At the
+cap, $h \le 2\log_2(2049) < 23$ comparisons per operation: bounded,
 predictable, and independent of how adversarial the layout is.
 
 ## Test correspondence

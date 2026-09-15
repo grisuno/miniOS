@@ -2921,7 +2921,7 @@ A red-black tree for mmap tracking, implemented in its own contract
 against an unwired, divergent `vma.h`).  Replaces the former flat
 `mmap_used`/`mmap_free` arrays with O(log n) insert/find/delete.  Two
 trees: `vma_live_root` for active allocations, `vma_free_root` for
-reclaimed regions.  A static node pool (`VMA_MAX` = 4096) backs both
+reclaimed regions.  A static node pool (`VMA_MAX` = 2048) backs both
 trees and is reset by `vma_tree_init` on every exec; a pool that is
 exhausted fails closed (returns `VMA_NIL`), never overruns.  The mmap
 syscall (9) searches the free tree for reusable regions before carving
