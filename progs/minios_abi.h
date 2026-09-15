@@ -264,6 +264,13 @@
 #define MINIOS_SYS_RLIMIT        240
 #define MINIOS_SYS_DIR_LIST      241
 #define MINIOS_SYS_GFX_ZOOM      242
+/* Wayland-mini reservations (ADR-0024): ATTACH/COMMIT/INPUT for the
+ * ring-3 wlcomp compositor. Reserved only: the kernel answers -ENOSYS
+ * until Phase 2 wires them, so they stay OUT of the checksum and the
+ * ABI version does not move yet. */
+#define MINIOS_SYS_WL_ATTACH     243
+#define MINIOS_SYS_WL_COMMIT     244
+#define MINIOS_SYS_WL_INPUT      245
 
 #define MINIOS_SYS_CLONE             300
 

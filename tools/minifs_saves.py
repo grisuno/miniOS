@@ -6,7 +6,8 @@ runtime (Pokemon battery .sav/.rtc and .state savestates live in saves/ on
 MiniFS). Before mkfs runs, this tool extracts the live saves/ tree out of
 the previous os.img into a staging dir; the Makefile then passes that dir
 back into mkfs, so a rebuild carries the saves forward instead of wiping
-them.
+them. Only doom maps and Pokemon saves persist (PERSIST_SUFFIXES);
+minicraft chunks are skipped with a log line, never packed.
 
 Usage: minifs_saves.py backup <os.img|minifs.bin> <stagedir>
 
@@ -35,6 +36,14 @@ PER_INDIRECT = BLOCK_SIZE // 4
 MAX_FILE_BYTES = 16 * 1024 * 1024
 MAX_TOTAL_BYTES = 64 * 1024 * 1024
 MAX_ENTRIES = 1024
+
+# Only these guest saves persist across rebuilds: doom maps (*.wad plus
+# their *.txt grid sources) and Pokemon battery/savestates (*.sav, *.rtc,
+# *.state). Minicraft chunks (mc_c_*.bin, minicraft.map) regenerate
+# in-game, bloat every rebuild by megabytes, and once carried a corrupt
+# dirent name that aborted backup fail-closed; they are skipped with a
+# log line, never packed. Directories are always traversed.
+PERSIST_SUFFIXES = ('.wad', '.txt', '.sav', '.rtc', '.state')
 
 
 def u16(d, o):
@@ -275,6 +284,9 @@ def cmd_backup(img_path, stage):
             if ft == FT_DIR:
                 walk(ci, rel + nm + '/')
             else:
+                if not nm.endswith(PERSIST_SUFFIXES):
+                    print('  skip saves/%s%s (not persisted)' % (rel, nm))
+                    continue
                 data = fs.read_file(ci)
                 total[0] += len(data)
                 if total[0] > MAX_TOTAL_BYTES:

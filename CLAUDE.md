@@ -1714,7 +1714,9 @@ on the IDE disk):
   (`tools/minifs_saves.py`, byte-exact, fail-closed on compressed or
   double-indirect files, which the guest write path never produces) and pack
   it back into the fresh image via `mkfs.minifs.py`, so a rebuild never wipes
-  runtime saves. The `os.img` rule refreshes `minifs.bin` the same way because
+  runtime saves. Only doom maps (`*.wad`, `*.txt`) and Pokemon saves
+  (`*.sav`, `*.rtc`, `*.state`) persist (`PERSIST_SUFFIXES`); minicraft
+  chunks regenerate in-game and are skipped with a log line, never packed. The `os.img` rule refreshes `minifs.bin` the same way because
   a kernel-only rebuild re-embeds it and would otherwise clobber the live
   partition with the stale artifact. Not even `make clean` loses saves:
   it snapshots them to `saves-backup/` first (no-op when there is nothing

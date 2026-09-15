@@ -377,6 +377,15 @@ frame and exits for scripts; without `--once` it browses interactively.
 Proven live: `freedom_wl --once http://10.0.2.2:8899/README.txt`
 fetches 3193 bytes and the `gfx frames` counter climbs by one.
 
+`bin/wlcomp` is the Wayland-mini compositor (ADR-0024, `docs/wayland.md`):
+up to 8 client surfaces with focus z-order over `GFX_PRESENT`, spoken
+through the header-only `progs/wl/wl_mini.h` subset
+(`wl_display`/`wl_compositor`/`wl_surface`/`wl_shm`/`xdg_toplevel`).
+`wlcomp --selftest` prints `wlcomp: frame ok (800x360)`; `make test-wl`
+pins the wire bounds. Bare `wlcomp` composites two demo surfaces into
+a desktop window (`wlcomp: presented 2 surfaces (800x360)`, BDD-pinned
+with `gfx frames`). Syscalls 243/244/245 stay reserved until Phase 2.
+
 ## Shell
 
 | Command | Purpose |
@@ -1886,6 +1895,7 @@ them; `make addons` validates every file in `addons/`.
 | `doom` | host | vendored `progs/doomgeneric` | `doomgeneric.elf` on MiniFS |
 | `quake2` | host | nested `progs/quake2generic/quake2generic` | `quake2generic.elf` on MiniFS |
 | `doomedit` | host | in-repo `progs/doomedit` | `doomedit` on MiniFS |
+| `wlmini` | host | in-repo `progs/wl` | `wlcomp` on MiniFS |
 | `raycastlib` | reference | sibling `../raycastlib` | none (preview reference only) |
 
 ## QEMU guest agent channel (COM2)

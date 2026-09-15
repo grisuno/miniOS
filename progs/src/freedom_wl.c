@@ -30,6 +30,7 @@
  */
 #include "minios_abi.h"
 #include "vga_fb.h"
+#include "wl/wl_mini.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -103,7 +104,22 @@ typedef struct FreedomWlConfig {
     long ink_fg;
     long bar_bg;
     long bar_fg;
+    long wl_surface;
 } FreedomWlConfig;
+
+/** Logical Wayland-mini surface id for this client (ADR-0024).
+ * The present path still uses GFX_PRESENT BUF_NK; the id names the
+ * client side of the future wlcomp mapping and is bounds-checked. */
+static long freedom_wl_surface_id(void) {
+    wl_client_t cl;
+    unsigned int id = 0;
+    wl_client_init(&cl);
+    if (wl_client_surface(&cl, &id) != WL_ERR_OK)
+        return -1L;
+    if (!wl_surface_id_valid(id))
+        return -1L;
+    return (long)id;
+}
 
 /** Default configuration derived from the ABI header. */
 static FreedomWlConfig freedom_wl_default(void) {
@@ -139,6 +155,7 @@ static FreedomWlConfig freedom_wl_default(void) {
     c.ink_fg = (long)COL_TERM_TXT;
     c.bar_bg = (long)COL_TITLEBAR;
     c.bar_fg = (long)COL_TITLE_TXT;
+    c.wl_surface = freedom_wl_surface_id();
     return c;
 }
 

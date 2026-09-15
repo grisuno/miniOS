@@ -878,6 +878,18 @@ $(BIN_DIR)/doomedit.elf: $(DOOMEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/
 $(BIN_DIR)/doomedit: $(BIN_DIR)/doomedit.elf
 	cp $< $@
 
+# ── wlcomp (Wayland-mini ring-3 compositor, ADR-0024) ────────────────
+# Header-only wl_mini.h plus thin wlcomp.c: max 8 surfaces, focus
+# z-order, presents through GFX_PRESENT BUF_NK. Static ring-3, MiniFS.
+$(BIN_DIR)/wlcomp.elf: $(PROGS_DIR)/wl/wlcomp.c $(PROGS_DIR)/wl/wl_mini.h $(PROGS_DIR)/minios_abi.h
+	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
+	      -I$(PROGS_DIR) \
+	      -o $@ $(PROGS_DIR)/wl/wlcomp.c
+	chmod +x $@
+
+$(BIN_DIR)/wlcomp: $(BIN_DIR)/wlcomp.elf
+	cp $< $@
+
 # ── piano (Nuklear FM piano -> SB16 PCM) ───────────────────────────────
 # A clickable three-octave (C4..B6) piano keyboard in Nuklear that plays FM
 # sound through the kernel's Sound Blaster 16 driver, plus a PC-keyboard
@@ -1170,6 +1182,8 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                 $(PROGS_DIR)/file/file.c \
                  $(BIN_DIR)/paint.elf $(BIN_DIR)/paint \
                  $(PROGS_DIR)/paint/paint.c \
+                 $(BIN_DIR)/wlcomp.elf $(BIN_DIR)/wlcomp \
+                 $(PROGS_DIR)/wl/wlcomp.c $(PROGS_DIR)/wl/wl_mini.h \
                  $(BIN_DIR)/minicraft.elf $(BIN_DIR)/minicraft \
                  $(PROGS_DIR)/minicraft/minicraft.c \
                 $(PROGS_DIR)/etc/association \
@@ -1431,9 +1445,16 @@ wm_test: tests/test_wm.c wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling
 test-wm: wm_test
 	$(TOOLS_DIR)/wm_test
 
+# Wayland-mini wire/compositor host test (progs/wl/wl_mini.h, ADR-0024).
+wl_test: tests/test_wl.c progs/wl/wl_mini.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/wl_test tests/test_wl.c
+
+test-wl: wl_test
+	$(TOOLS_DIR)/wl_test
+
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test modifiers_test notify_test abi_test
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test modifiers_test notify_test abi_test wl_test
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1450,6 +1471,7 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/modifiers_test
 	$(TOOLS_DIR)/notify_test
 	$(TOOLS_DIR)/abi_test
+	$(TOOLS_DIR)/wl_test
 
 # Phase 0.2/0.3 host test: pure TSC-to-microsecond conversion in ktime.h.
 ktime_test: tests/test_ktime.c ktime.h | $(TOOLS_DIR)

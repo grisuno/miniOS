@@ -1263,6 +1263,13 @@ poweroff"
 expect "freedom_wl: 10.0.2.2 ("
 refute "UNIMPL"
 
+scenario "wlcomp presents two surfaces on the desktop" "wlcomp --selftest
+wlcomp
+gfx frames
+poweroff"
+expect "wlcomp: frame ok (800x360)"
+expect "wlcomp: presented 2 surfaces (800x360)"
+
 scenario "freedomui selftest parses through the real engine and presents" "freedomui --selftest
 poweroff"
 expect "freedomui: frame ok (800x360)"
