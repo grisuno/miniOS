@@ -63,15 +63,19 @@ binary, and `run` executed it as a ring-3 process. For a CVM module
 instead: `run objects/ld.o -f cvm -o cvm/p.cvm asm/p.s`, then
 `run cvm/p.cvm`.
 
-Interpreters are also on board: bare `micropython` or `lua` start a REPL,
-`micropython src/script.py` runs a file.
+Interpreters are also on board: bare `micropython`, `lua` or `lisp`
+start a REPL, `micropython src/script.py` runs a file, and
+`lisp src/test.lisp` runs the in-OS Lisp suite.
 
 ## 6. Verify your change
 
 ```sh
 make test-host           # all fast host suites (sync, vma, futex, percpu_rq,
-                         # batch, rcu, sanitize, tick, hal)
+                         # batch, rcu, sanitize, tick, hal, driver, ktime,
+                         # randmix, wm, modifiers, notify, abi, wl, lisp)
 make test-tick test-hal  # tick listener bus + HAL port mapping only
+make test-lisp           # Lisp interpreter vectors + in-OS suite head only
+make test-wl             # Wayland-mini wire roundtrip + fail-closed bounds only
 ```
 
 For a live-boot check without hand-rolling QEMU flags:

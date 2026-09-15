@@ -1641,6 +1641,35 @@ presents with `freedomui: <host> (<n> bytes, <m> elems)` (live boot proves
 `mutate.sh`.
 See ADR-0021.
 
+### Wayland-mini compositor (`wlcomp`)
+`bin/wlcomp` is the ring-3 Wayland-mini compositor from ADR-0024, built
+exactly like the other static ELFs (host gcc `-static -no-pie`, MiniFS
+with a bare-name alias, source beside it at `progs/wl/wlcomp.c`). The
+wire contract is the header-only `progs/wl/wl_mini.h`: the subset
+interfaces `wl_display`/`wl_registry`/`wl_compositor`/`wl_surface`/
+`wl_shm`/`wl_shm_pool`/`wl_buffer` plus `xdg_wm_base`/`xdg_surface`/
+`xdg_toplevel`, with encode/decode, ids, opcodes, pool and surface
+state, client helpers and compositor z-order in one file, the same
+header-only pattern as the `wm_*.h` contracts.
+
+- The compositor holds at most 8 surfaces with focus z-order and
+  presents through `GFX_PRESENT` with `BUF_NK` (titles through
+  `GFX_SET_TITLE`), so no layout address moves: surfaces reuse the
+  `MINIOS_NK_W/H` bounds and no new pinned address exists. Input focus
+  follows the `vga_fb_ps2_owner` rule like every other graphics app.
+  Transport starts as `pipe()` plus validated pool ids, never truncated
+  fds. Syscalls 243/244/245 (`WL_ATTACH`/`WL_COMMIT`/`WL_INPUT`) stay
+  reserved in `minios_abi.h` outside the checksum; the ABI version moves
+  only when the kernel answers them, and the kernel stays a
+  single-window compositor until that Phase 2 lands.
+- Proof: `make test-wl` (host, wire roundtrip plus fail-closed bounds:
+  liar size, truncated opcode, wild object id, pool overflow),
+  `wlcomp --selftest` prints `wlcomp: frame ok (800x360)`, and bare
+  `wlcomp` composites two demo surfaces
+  (`wlcomp: presented 2 surfaces (800x360)`, BDD-pinned beside the
+  `gfx frames` climb). Mutants for the three reserved numbers and the
+  size check die in the host suite.
+
 ### Ramdisk names
 File names are at most `RAMDISK_FNAME_LEN - 1` characters. Names may
 contain `/`, which is how directories are expressed (`bin/cp`, `objects/ld.o`):
@@ -2207,6 +2236,55 @@ repository as an out-of-tree unix-port variant.
     a child that overflowed the old 32 KB stack wrote into adjacent kernel-heap
     page tables, making the parent's `pt_free_user` spin on the corruption.
 
+## Lisp (`lisp.elf`)
+Lisp runs inside MiniOS exactly like Lua does: a ring-3 `ET_EXEC` binary
+built on the host with `gcc -static -no-pie` against the static glibc,
+shipped on MiniFS as `lisp.elf` plus the bare-name alias, running through
+the Linux syscall ABI. The difference from Lua and MicroPython is that
+there is no upstream checkout: the interpreter is one self-contained
+translation unit in this repository (`progs/lisp/lisp.c`), so there is no
+sibling directory to clone and `LISP_DIR` does not exist.
+
+- **Language**: int64 numbers, strings, symbols, cons cells and closures
+  with lexical scope. Special forms are `quote`, `if`, `begin`, `define`,
+  `set!`, `lambda` and `let`; builtins cover arithmetic, string ops,
+  `car`/`cdr`/`cons`, predicates (`null?`, `number?`, `string?`),
+  `error-message`, files (`open-file`, `read-char`, `write`,
+  `close-file`), `exit`, and the MiniOS primitives `time-ms`, `rtc`,
+  `fb-info`, `vol`, `pal`, `pcspeaker` and `minios-run` (SYS_SPAWN 215,
+  same isolated-window path the other interpreters use). CLI is
+  `lisp [-e expr] [script [args]]` with an interactive REPL on stdin;
+  `lisp src/test.lisp` runs the in-OS suite. `run lisp.elf`, bare
+  `lisp.elf` and bare `lisp` all work.
+- **Fail-closed arithmetic**: `+`, `-`, `*` use overflow-checked builtins
+  and `/` guards zero and `INT64_MIN / -1`; a violation is an error
+  value, never a wrap. File modes are whitelisted to read/write/append
+  (`r`, `w`, `a` plus binary), allocation and input sizes are bounded by
+  one config enum, and eval/print depth is capped so a cyclic structure
+  prints `<depth-exceeded>` instead of recursing forever.
+- **Errors are values**: a runtime fault evaluates to an error node that
+  travels through argument lists and `define`/`set!`/`let` bindings like
+  any value, and prints to stderr at the top level with a nonzero exit.
+  It propagates through `if` conditions and `begin` sequences instead of
+  branching, so tests must never assert on a bare error expression: the
+  suite binds errors through `error-message` and guards with `string?`
+  first (`check-error`, `check-spawn` in `progs/src/test.lisp`). An
+  assertion shaped `(string-eq (error-message X) msg)` passes vacuously
+  when `error-message` regresses to nil, because the resulting type error
+  itself aborts the check truthy through the suite's `if`; the `string?`
+  guard is what kills that mutant.
+- **Build**: `make progs/bin/lisp.elf` from `progs/lisp/lisp.c` plus
+  `minios_abi.h`; `make test-lisp` runs `tools/test_lisp.py` (host,
+  27 vectors: arithmetic, fail-closed errors, closures, strings, files,
+  predicates, CLI flags, the shipped suite in language-only mode).
+  `tools/lisp_scoped.sh` is the scoped gate (static ELF rebuild with
+  zero warnings plus 7 targeted mutants, all killed). `mutate.sh`
+  routes `progs/lisp/lisp.c` mutants to `make test-lisp`.
+- **History**: the first version printed every number with a stray `%`
+  prefix (`"%%" PRId64`, the exact `-Wformat-extra-args` warning the
+  user reported) and had no overflow checks; both are now pinned by
+  host vectors and mutants.
+
 ## Nuklear node editor (`nuklear`)
 
 Nuklear runs inside MiniOS exactly like DOOM and MicroPython: the upstream
@@ -2492,7 +2570,7 @@ QEMU boot.  Every command prints a `PASS:` marker; the host runner greps the
 serial log for these markers.  The script ships on the ramdisk (`progs/src/`)
 and is added to both `PROGS` and `MINIFS_FILES` in the Makefile.
 
-Categories tested (79 PASS):
+Categories tested (81 PASS):
 - **Boot/help**: boot banner, help, clear
 - **Filesystem**: ls (root, objects, bin), mkdir, cd, pwd, rm, cp
 - **Redirects**: `>` and `>>`
@@ -2506,6 +2584,7 @@ Categories tested (79 PASS):
 - **ZIP**: hostile archive (traversal refused), host-produced archive
 - **ELF programs**: lxhello, cpl, kmem, nx, mmreuse
 - **CVM modules**: fib, w1
+- **Lisp**: inline eval, in-OS suite
 - **Selftests**: xxhash.o, dlmalloc.o
 - **Heap stability**: repeated CVM runs
 - **Tracing**: trace on/off during cp
@@ -2513,18 +2592,20 @@ Categories tested (79 PASS):
 Usage from host:
 ```bash
 tools/boot_run.sh "sh src/test_all.sh" --timeout 120
-strings boot_run.log | grep -c 'PASS:'   # expect 79
+strings boot_run.log | grep -c 'PASS:'   # expect 81
 ```
 
-### In-OS test suites (Lua / MicroPython toolchain)
+### In-OS test suites (Lua / MicroPython / Lisp toolchain)
 
-`lua src/test.lua` and `micropython src/test.py` run the self-hosted
-toolchain from inside the machine via `minios.run()` (SYS_SPAWN). The
+`lua src/test.lua`, `micropython src/test.py` and `lisp src/test.lisp` run
+the self-hosted
+toolchain from inside the machine via `minios.run()` (SYS_SPAWN;
+`minios-run` in Lisp). The
 minigcc/ld steps now work because file writes fall back to MiniFS (see the
 filesystem section): a redirect or program write into `asm/_t.s` or `tmp/...`
 creates the parent directory on the real filesystem instead of being refused by
-the flat ramdisk. Both files ship on the **ramdisk** (`src/test.lua` and
-`src/test.py`), so `ls` shows them next to the other `src/` scripts; test.lua
+the flat ramdisk. All three files ship on the **ramdisk** (`src/test.lua`,
+`src/test.py`, `src/test.lisp`), so `ls` shows them next to the other `src/` scripts; test.lua
 is also packed onto MiniFS. The suites are fail-safe, never crashing: every
 `minios.run()` result is formatted through `tostring`/`str`, so a spawn that
 returns `nil` reports a clean FAIL instead of aborting the script.
@@ -2537,7 +2618,7 @@ discarding the freshly loaded image). SYS_SPAWN's ET_EXEC/ET_DYN branch now
 uses the same isolated path `mrun` does: `proc_spawn_elf` builds the child in
 a fresh user window with its own CR3 and `user_trampoline` entry, and the
 caller blocks in `do_waitpid` until it exits. The parent is left byte-for-byte
-intact, so a ring-3 interpreter (lua, micropython, the vedit IDE) can spawn
+intact, so a ring-3 interpreter (lua, micropython, lisp, the vedit IDE) can spawn
 ET_EXEC children; the interpreter suites cover the module bindings, the
 filesystem and the **ET_REL** toolchain (minigcc/ld work), and the ET_EXEC
 tools stay exercised at the shell level by `tools/test_codecs.sh`, which
@@ -2650,15 +2731,17 @@ is forbidden; the answer to a survivor is a new scenario.
 ```bash
 make                # zero warnings
 make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
-sh src/test_all.sh  # one-boot comprehensive non-interactive suite (79 PASS)
-./test_bdd.sh       # all scenarios green (full interactive suite)
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (81 PASS)
+/test_bdd.sh       # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
 python3 tools/test_gui_fashion.py  # QMP pixel proof: one cursor, stable frames, ESC quit
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
-./mutate.sh         # every mutant killed (BDD + host TLS + host VMA suites)
+/mutate.sh         # every mutant killed (BDD + host TLS + host VMA + host Lisp suites)
 make test-tls       # host-side crypto + full-handshake suite green
 make test-vma       # host-side VMA red-black tree suite green
+make test-lisp      # host-side Lisp interpreter suite green
+make test-wl        # host-side Wayland-mini wire suite green (ADR-0024)
 make test-freedom-wl  # Wayland-to-MiniOS mapping suite green (ADR-0019)
 make test-freedomui   # real FreeDom engine backend suite green (ADR-0021)
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
@@ -2997,7 +3080,8 @@ The table is organized as:
 - 200-299: MiniOS custom syscalls (networking, audio, graphics, ...)
 - 300+: Reserved for future use
 
-All runtime bindings (Lua `minios.c`, MicroPython `minios_module.c`, DOOM
+All runtime bindings (Lua `minios.c`, MicroPython `minios_module.c`, Lisp
+`lisp.c`, DOOM
 `doomgeneric_minios.c`, Nuklear `nuklear_minios.c`, Quake 2
 `q2generic_minios.c`, OPL3 `opl3.c`, SB16 `sbtone.c`, piano `piano.c`)
 must reference the `MINIOS_SYS_*` constants instead of defining their own.
@@ -3148,15 +3232,17 @@ CI gates enforce architectural constraints:
 ```bash
 make                        # zero warnings
 make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
-sh src/test_all.sh          # one-boot comprehensive non-interactive suite (79 PASS)
-./test_bdd.sh               # all scenarios green (full interactive suite)
+sh src/test_all.sh          # one-boot comprehensive non-interactive suite (81 PASS)
+/test_bdd.sh               # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
 python3 tools/test_gui_fashion.py  # QMP pixel proof: one cursor, stable frames, ESC quit
 ./tools/test_codecs.sh      # lzss/lz4/aes roundtrips (pass=3)
-./mutate.sh                 # every mutant killed
+/mutate.sh                 # every mutant killed
 make test-tls               # host-side crypto + handshake suite
 make test-vma               # host-side VMA red-black tree suite
+make test-lisp              # host-side Lisp interpreter suite green
+make test-wl                # host-side Wayland-mini wire suite green (ADR-0024)
 make test-freedom-wl  # Wayland-to-MiniOS mapping suite green (ADR-0019)
 make test-freedomui   # real FreeDom engine backend suite green (ADR-0021)
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green

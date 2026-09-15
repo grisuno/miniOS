@@ -1,0 +1,16 @@
+name: lisp
+description: Self-contained Lisp interpreter as a ring-3 static ELF. Built on the host from the in-repo single-file source progs/lisp/lisp.c (no upstream checkout) and shipped on MiniFS as lisp.elf plus the bare-name alias, with MiniOS primitives (time-ms, rtc, fb-info, vol, minios-run over SYS_SPAWN) and the in-OS suite lisp src/test.lisp.
+author: miniOS
+version: "2.1"
+install:
+  repo_url: https://github.com/grisuno/miniOS.git
+  kind: host
+  dir_var: PROGS_DIR
+  ref: main
+  artifact: lisp
+  files: []
+  host_build:
+    - make progs/bin/lisp.elf
+  verify:
+    - line: lisp src/test.lisp
+      exit_code: 0

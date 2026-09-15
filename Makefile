@@ -163,7 +163,7 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(OBJ_DIR)/stb.o $(OBJ_DIR)/xxhash.o $(OBJ_DIR)/dlmalloc.o \
             $(BIN_DIR)/minigcc.elf $(BIN_DIR)/cp \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
-            $(SRC_DIR)/test.lua $(SRC_DIR)/test_all.sh \
+            $(SRC_DIR)/test.lua $(SRC_DIR)/test.lisp $(SRC_DIR)/test_all.sh \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/etc/shortcuts \
             $(PROGS_DIR)/etc/association \
@@ -814,6 +814,35 @@ $(BIN_DIR)/lua.elf: $(addprefix $(LUA_DIR)/,$(LUA_LIB_SRCS)) $(LUA_APP_SRCS) $(L
 $(BIN_DIR)/lua: $(BIN_DIR)/lua.elf
 	cp $< $@
 
+# ── Lisp (self-contained interpreter + MiniOS primitives, static glibc ELF) ──
+# Same contract as Lua/MicroPython: host gcc -static, ring-3 ET_EXEC, on
+# MiniFS.  The interpreter is one in-repo translation unit
+# (progs/lisp/lisp.c, no upstream checkout): arithmetic with fail-closed
+# overflow, strings, closures with lexical scope, files, and the MiniOS
+# primitives time-ms/rtc/fb-info/vol/minios-run (SYS_SPAWN 215), so the
+# in-OS suite lisp src/test.lisp drives the toolchain like test.lua does.
+# CLI: lisp [-e expr] [script [args]] with an interactive REPL on stdin.
+LISP_SRCS = $(PROGS_DIR)/lisp/lisp.c
+
+$(BIN_DIR)/lisp.elf: $(LISP_SRCS) $(PROGS_DIR)/minios_abi.h
+	$(CC) -static -no-pie -std=c17 -O2 -Wall -Wextra -Wpedantic \
+	      -I$(PROGS_DIR) \
+	      -o $@ $(LISP_SRCS)
+	chmod +x $@
+
+# Bare-name alias so `lisp` works without the .elf suffix.
+$(BIN_DIR)/lisp: $(BIN_DIR)/lisp.elf
+	cp $< $@
+
+# Host-test twin of the same binary (same sources, dynamic link for the
+# test sandbox; kernel syscalls fail closed on the host by design).
+lisp-host: $(LISP_SRCS) $(PROGS_DIR)/minios_abi.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -std=c17 -Wpedantic -Werror -I$(PROGS_DIR) \
+	      -o $(TOOLS_DIR)/lisp $(LISP_SRCS)
+
+test-lisp: lisp-host
+	python3 tools/test_lisp.py --binary $(TOOLS_DIR)/lisp
+
 # Bare-name alias for the mmap/munmap reclaim probe.
 $(BIN_DIR)/mmreuse: $(BIN_DIR)/mmreuse.elf
 	cp $< $@
@@ -1153,6 +1182,8 @@ $(BIN_DIR)/topogpt3: $(BIN_DIR)/topogpt3.elf
 MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
                $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
                $(PROGS_DIR)/lua/minios.c $(PROGS_DIR)/lua/lua_main.c \
+               $(BIN_DIR)/lisp.elf $(BIN_DIR)/lisp \
+               $(PROGS_DIR)/lisp/lisp.c \
                $(BIN_DIR)/topogpt3.elf $(BIN_DIR)/topogpt3 \
                $(TOPOGPT3_WEIGHTS) $(TOPOGPT3_VOCAB) \
                $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear \
@@ -1203,6 +1234,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
                $(SRC_DIR)/hello.py \
                $(SRC_DIR)/test.lua \
+               $(SRC_DIR)/test.lisp \
                $(SRC_DIR)/test_all.sh \
                $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
                $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
@@ -1454,7 +1486,7 @@ test-wl: wl_test
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test modifiers_test notify_test abi_test wl_test
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test modifiers_test notify_test abi_test wl_test lisp-host
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1472,6 +1504,7 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/notify_test
 	$(TOOLS_DIR)/abi_test
 	$(TOOLS_DIR)/wl_test
+	python3 tools/test_lisp.py --binary $(TOOLS_DIR)/lisp
 
 # Phase 0.2/0.3 host test: pure TSC-to-microsecond conversion in ktime.h.
 ktime_test: tests/test_ktime.c ktime.h | $(TOOLS_DIR)
@@ -2036,6 +2069,7 @@ clean: saves-backup
 	      $(BIN_DIR)/aes $(BIN_DIR)/unaes \
 	      $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
 	      $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
+	      $(BIN_DIR)/lisp.elf $(BIN_DIR)/lisp \
 	      $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear \
 	      $(BIN_DIR)/quake2generic.elf \
 	      $(BIN_DIR)/doomgeneric.elf \

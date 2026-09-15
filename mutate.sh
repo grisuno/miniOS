@@ -205,6 +205,14 @@ rcu-grace-shortened | s/if (rcu_state.pending\\[i\\].epoch < rcu_state.epoch)/if
 sanitize-neg-check-dropped | s/if ((count) < 0) return EFAULT;/if (0) return EFAULT;/ | sanitize.h
 sanitize-wrap-check-dropped | s/if (_sz \\/ _es != _n) return EFAULT;/if (0) return EFAULT;/ | sanitize.h
 
+lisp-add-overflow-unchecked | s/if (__builtin_add_overflow(a, b, \\&out)) {/if (0) {/ | progs/lisp/lisp.c
+lisp-div-zero-unchecked | s/    if (b == 0) {/    if (0) {/ | progs/lisp/lisp.c
+lisp-num-format-prefix | s/fprintf(rt->out, \"%\" PRId64, node->as.num);/fprintf(rt->out, \"%%\" PRId64, node->as.num);/ | progs/lisp/lisp.c
+lisp-true-unbound | s/    env_bind(rt, env, rt->true_value, rt->true_value);/    (void)rt;/ | progs/lisp/lisp.c
+lisp-unbound-silent | s/result = value ? value : make_error(rt, \"unbound symbol\");/result = value ? value : rt->nil;/ | progs/lisp/lisp.c
+lisp-error-message-nil | s/return make_str(rt, value->as.error ? value->as.error : \"unknown\");/return rt->nil;/ | progs/lisp/lisp.c
+lisp-exit-code-zero | s/        exit(status);/        exit(0);/ | progs/lisp/lisp.c
+
 abi-flock-back-to-74 | s/#define MINIOS_SYS_FLOCK        73/#define MINIOS_SYS_FLOCK        74/ | progs/minios_abi.h
 abi-fsync-claims-73 | s/#define MINIOS_SYS_FSYNC        74/#define MINIOS_SYS_FSYNC        73/ | progs/minios_abi.h
 abi-statx-back-to-267 | s/#define MINIOS_SYS_STATX       332/#define MINIOS_SYS_STATX       267/ | progs/minios_abi.h
@@ -379,6 +387,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         sanitize.h)
             make -C "$HERE" test-sanitize > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/lisp/lisp.c)
+            make -C "$HERE" test-lisp > "$BACKUP/suite.log" 2>&1
             ;;
         ktime.h)
             make -C "$HERE" test-ktime > "$BACKUP/suite.log" 2>&1

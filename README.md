@@ -659,10 +659,10 @@ serial log for these markers. The script ships on the ramdisk.
 
 ```bash
 tools/boot_run.sh "sh src/test_all.sh" --timeout 120
-strings boot_run.log | grep -c 'PASS:'   # expect 79
+strings boot_run.log | grep -c 'PASS:'   # expect 81
 ```
 
-Categories tested (64 PASS):
+Categories tested (81 PASS):
 - Boot/help, filesystem (ls/mkdir/cd/pwd/rm/cp), redirects (>  >>)
 - Builtins: echo, date, vol (set/report/reset), kbd (report/es/en), ps, trace, net, gfx, wm, hash
 - Toolchain: minigcc.o compile, ld.o link, run ELF, run CVM
@@ -673,6 +673,7 @@ Categories tested (64 PASS):
 - ZIP: hostile archive (traversal refused), host-produced archive
 - ELF programs: lxhello, cpl, kmem, nx, mmreuse
 - CVM modules: fib, w1
+- Lisp: inline eval, in-OS suite
 - Selftests: xxhash.o, dlmalloc.o
 - Heap stability (repeated CVM runs), tracing
 
@@ -749,7 +750,7 @@ directory:
 | Directory | Contents |
 |-----------|----------|
 | `objects/` | ET_REL toolchain: `minigcc.o`, `ld.o`, `cvm.o`, demo `.o` |
-| `bin/` | Linux ELFs + command-path utilities (`cp`, `freedom`, `micropython`, `topogpt3`) |
+| `bin/` | Linux ELFs + command-path utilities (`cp`, `freedom`, `micropython`, `lisp`, `topogpt3`) |
 | `cvm/` | CVM modules: `fib.cvm`, `w1.cvm`, `minigcc.cvm` |
 | `src/` | C sources for every program on the ramdisk |
 | `asm/` | miniGCC assembly (`*.s`) for the toolchain-built programs |
@@ -1189,7 +1190,7 @@ The full dissection toolbox lives in [docs/debug_tools.md](./docs/debug_tools.md
 `gdb` (LIVE regs for the running pid, decimal/`0x` dump, `make gdb` remote
 hookup), plus the MCP bridge tools (`minios_send`/`minios_expect`/
 `minios_test`) and the host harnesses (`boot_run.sh`, `test_bdd.sh`,
-`test_gui_*.py`). `sh src/test_all.sh` covers the toolbox with 79 PASS.
+`test_gui_*.py`). `sh src/test_all.sh` covers the toolbox with 81 PASS.
 
 ## Lua
 
@@ -1251,6 +1252,57 @@ Build from source:
 make sources          # clones the Lua repository if missing
 make                  # builds lua.elf and packs it into MiniFS
 ```
+
+## Lisp
+
+MiniOS ships a small Lisp as a static Linux ELF at ring 3. Unlike Lua
+and MicroPython there is no upstream checkout: the interpreter is one
+self-contained file (`progs/lisp/lisp.c`), built with
+`gcc -static -no-pie` exactly like the other interpreters and shipped
+on MiniFS as `lisp.elf` plus the bare-name alias.
+
+```
+miniOS> lisp -e "(+ 40 2)"
+42
+miniOS> lisp src/test.lisp        # run the in-OS test suite
+miniOS> lisp                      # interactive REPL
+Lisp 2.1 (MiniOS)
+> ((lambda (x) (+ x 1)) 41)
+42
+>
+```
+
+The language covers int64 numbers, strings, symbols, cons cells and
+lexical closures (`quote`, `if`, `begin`, `define`, `set!`, `lambda`,
+`let`), file I/O (`open-file`, `read-char`, `write`, `close-file`),
+predicates (`null?`, `number?`, `string?`, `error-message`), `exit`,
+and the MiniOS primitives `time-ms`, `rtc`, `fb-info`, `vol`, `pal`,
+`pcspeaker` and `minios-run` (SYS_SPAWN 215, the same isolated-window
+path the other interpreters use, so the toolchain chain works):
+
+```
+miniOS> lisp -e '(minios-run "/objects/minigcc.o" (quote ("/src/fib.c")) "/asm/_t.s")'
+0
+```
+
+Arithmetic is fail-closed: overflow, division by zero and
+`INT64_MIN / -1` evaluate to error values instead of wrapping, file
+modes are whitelisted to read/write/append, and eval/print depth is
+capped. Errors are values: a fault prints to stderr with a nonzero
+exit, and `error-message` extracts the diagnostic for tests.
+
+Build and host-test from source:
+
+```bash
+make progs/bin/lisp.elf   # builds lisp.elf and the bare-name alias
+make test-lisp             # host suite: 27 vectors, zero warnings
+```
+
+The in-OS suite (`src/test.lisp`, on the ramdisk next to `test.lua`)
+covers the language, the MiniOS primitives and the full
+minigcc/ld/ELF roundtrip. Seven one-line mutants of the interpreter
+die in `tools/lisp_scoped.sh` (the `make test-lisp` routing in
+`mutate.sh` covers the full gate).
 
 ## MicroPython
 
@@ -1569,13 +1621,19 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `cvm_host.c` | CVM interpreter + JIT integration in MiniOS |
 | `progs/lua/lua_main.c` | Lua 5.4 entry point (REPL, -e, -l, script modes) |
 | `progs/lua/minios.c` | Lua bindings for MiniOS kernel services |
+| `progs/lisp/lisp.c` | self-contained Lisp interpreter + MiniOS primitives (ring-3 static ELF) |
+| `progs/src/test.lisp` | in-OS Lisp suite: language, primitives, toolchain roundtrip |
+| `progs/wl/wl_mini.h` | Wayland-mini wire contract (header-only, ADR-0024) |
+| `progs/wl/wlcomp.c` | ring-3 Wayland-mini compositor (max 8 surfaces) |
+| `tools/test_lisp.py` | host Lisp suite: 27 vectors, zero-warning build |
+| `tools/lisp_scoped.sh` | scoped Lisp gate: rebuild plus 7 targeted mutants |
 | `progs/topogpt3/topogpt3.c` | TopoGPT3 C inference engine (~2000 lines) |
 | `progs/topogpt3/topogpt3.fp16` | TopoGPT3 float16 model weights (47 MB) |
 | `progs/topogpt3/vocab.bin` | GPT-2 BPE vocabulary (50257 tokens, 422 KB) |
 | `progs/` | ramdisk contents organized by kind: `objects/`, `bin/`, `cvm/`, `src/`, `asm/`, `docs/` |
 | `mkramdisk.py` | packs `progs/` into the ramdisk image |
 | `test_bdd.sh` / `test_http_server.py` | behavioural suite and its HTTP fixture |
-| `progs/src/test_all.sh` | one-boot comprehensive non-interactive test (64 PASS) |
+| `progs/src/test_all.sh` | one-boot comprehensive non-interactive test (81 PASS) |
 | `mcp/minios_mcp.py` | MCP bridge: boots the OS and exposes its console as tools |
 | `mcp/test_minios_mcp.py` | unit + QEMU BDD suite for the bridge |
 | `mcp/mutate_mcp.sh` | mutation testing for the bridge |
@@ -1890,6 +1948,7 @@ them; `make addons` validates every file in `addons/`.
 | `cvm` | host | sibling `../cvm` | `objects/cvm.o` |
 | `lua` | host | sibling `../lua` (`v5.4.7`) | `lua` on MiniFS |
 | `micropython` | host | sibling `../micropython` (`v1.28.0`) | `micropython` on MiniFS |
+| `lisp` | host | in-repo `progs/lisp` | `lisp` on MiniFS |
 | `nuklear` | host | sibling `../nuklear` | `nuklear` on MiniFS |
 | `nuked-opl3` | host | sibling `../nuked-opl3` | `opl3` on MiniFS |
 | `doom` | host | vendored `progs/doomgeneric` | `doomgeneric.elf` on MiniFS |
@@ -1952,12 +2011,14 @@ relies on QEMU-zeroed RAM (NOBITS, no loader fill).
 ## Validation gate, governance, libraries
 
 Every change must pass, in order: `make` (zero warnings),
-`sh src/test_all.sh` (64 PASS), `./test_bdd.sh` (full serial suite),
+`sh src/test_all.sh` (81 PASS), `./test_bdd.sh` (full serial suite),
 `./tools/test_codecs.sh` (lzss/lz4/aes roundtrips, pass=3), `./mutate.sh`
 (every kernel/boot mutant killed; survivors mean a missing scenario, and only
 provably equivalent mutants may leave the set), `make test-tls` (host crypto
 vectors plus OpenSSL-driven full handshakes and the negative set),
 `make test-vma` (host red-black invariants, exhaustion, drain),
+`make test-lisp` (host Lisp interpreter vectors plus in-OS suite head),
+`make test-wl` (Wayland-mini wire roundtrip and fail-closed bounds),
 `make test-futex test-percpu-rq test-batch test-rcu` (SMP scaling contracts),
 `make test-sanitize` (syscall sanitize macros),
 `make test-tick test-hal` (timer tick bus + HAL port mapping),

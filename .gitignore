@@ -43,6 +43,7 @@ progs/bin/*.elf
 progs/bin/doomgeneric
 progs/bin/micropython*
 progs/bin/lua*
+progs/bin/lisp*
 progs/bin/nuklear*
 progs/bin/piano*
 progs/bin/opl3

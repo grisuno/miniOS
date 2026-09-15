@@ -1194,6 +1194,26 @@ sys.exit()
 poweroff"
 expect "42"
 
+# Lisp: a self-contained ring-3 static ELF on MiniFS (like Lua/MicroPython)
+# with MiniOS primitives over SYS_SPAWN. The -e flag evaluates one form,
+# a script file runs the in-OS suite, and bad input fails closed.
+scenario "lisp evaluates an inline form and prints the value" "lisp -e (+ 40 2)
+poweroff"
+expect "42"
+expect "exit code: 0"
+
+scenario "lisp reports a runtime error and returns a failure code" "lisp -e (/ 1 0)
+poweroff"
+expect "division by zero"
+expect "exit code: 1"
+
+scenario "lisp runs the in-OS suite from the ramdisk" "lisp src/test.lisp
+poweroff"
+expect "PASS closure"
+expect "PASS fs-write-read"
+expect "PASS toolchain-roundtrip"
+expect "exit code: 0"
+
 # Nuklear node editor: a ring-3 Nuklear app on MiniFS (like DOOM/MicroPython)
 # that compiles a node graph to CVM bytecode. The GUI renders through the
 # kernel back-buffer; the headless modes are what the serial console can

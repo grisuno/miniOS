@@ -205,6 +205,12 @@ echo PASS: cvm-fib-ok
 run cvm/w1.cvm
 echo PASS: cvm-w1-ok
 
+# === LISP ===
+lisp -e '(+ 40 2)'
+echo PASS: lisp-eval-ok
+lisp src/test.lisp
+echo PASS: lisp-suite-ok
+
 # === SELFTESTS (ring-0 .o objects) ===
 run objects/xxhash.o
 echo PASS: xxhash-ok
