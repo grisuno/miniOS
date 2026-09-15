@@ -1481,7 +1481,7 @@ touching the kernel core.
 A red-black tree (`vma.c`, `vma.h`) for mmap tracking, replacing the flat
 `mmap_used`/`mmap_free` arrays with O(log n) insert/find/delete. Two trees:
 `vma_live_root` for active allocations, `vma_free_root` for reclaimed regions.
-A static node pool (`VMA_MAX` = 4096) backs both trees and is reset on every
+A static node pool (`VMA_MAX` = 2048) backs both trees and is reset on every
 exec; exhaustion fails closed (returns `VMA_NIL`). The mmap syscall searches
 the free tree for reusable regions before carving fresh space; munmap moves the
 freed region to the free tree. Host-tested by `tests/test_vma.c` (`make
@@ -1927,7 +1927,11 @@ stack below `0x88000`, AP stub stack at `0x78000`, kernel image at virtual
 `0x100000` (must end below `0x400000`, asserted at boot), user load base
 `0x400000`, heap from `0x0C000000`. Never move the user-table zone above
 `0x100000`; if the image outgrows `KASLR_IMAGE_SPAN` (3 MB), grow the span,
-the KASLR `PT1` mapping and the link layout together.
+the KASLR `PT1` mapping and the link layout together. `make check-size`
+fails the build if `_kernel_end` passes `USER_LOAD_BASE`; the documented
+levers are per-TU `-Os` (the `shell.o` precedent), trimming the ramdisk,
+and the `VMA_MAX` pool bound (2048 nodes: the two static pools plus the
+per-process heap pool all scale with it).
 
 KASLR (default on, `make ENABLE_KASLR=0` disables) keeps virtual `0x100000`
 but randomizes the physical base: stage 2 mixes TSC with CMOS hours/minutes/
