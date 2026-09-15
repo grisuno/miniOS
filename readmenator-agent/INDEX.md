@@ -70,7 +70,7 @@
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 156 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 158 |
 | `kernel/syscalls_proc.c` | syscalls_proc.c - Process-management syscall handlers. | kernel | 21 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
 | `kernel/time.c` | include "kernel.h" include "ktime.h"  ========================================== | kernel | 7 |
@@ -310,8 +310,8 @@
 | `progs/micropython/variants/minios/manifest.py` | manifest.py -- frozen modules for the MiniOS MicroPython variant. Scripts listed | minios | 0 |
 | `progs/micropython/variants/minios/minios_module.c` | - | minios | 33 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 |
-| `progs/minicraft/minicraft.c` | minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 141 |
-| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 126 |
+| `progs/minicraft/minicraft.c` | minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 230 |
+| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 127 |
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 59 |
 | `progs/nuklear/cvm_emit.h` | ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (c | nuklear | 6 |
 | `progs/nuklear/font8x8.c` | font8x8 - shared 8x8 bitmap font for MiniOS ring-3 graphics programs. | nuklear | 0 |
@@ -442,7 +442,9 @@
 | `tools/test_codecs.sh` | test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  T | tools | 0 |
 | `tools/test_gui_fashion.py` | - | tools | 18 |
 | `tools/test_gui_icon_cwd.py` | - | tools | 17 |
+| `tools/test_gui_menu.py` | - | tools | 1 |
 | `tools/test_gui_wm.py` | - | tools | 17 |
+| `tools/test_gui_zoom.py` | - | tools | 1 |
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
 | `tools/wm_layout_sync.py` | - | tools | 17 |
 | `tools/wm_scoped.sh` | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs ho | tools | 2 |

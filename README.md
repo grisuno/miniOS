@@ -2037,7 +2037,7 @@ system would not exist.
 - xxHash, by Yann Collet and contributors: the checksums behind the
   integrity selftests.
 - The pokecrystal disassembly project and its community: the data source
-  the Pokemon target builds from.
+  the Pokemon target builds from. [gb-recompiled](https://github.com/arcanite24/gb-recompiled)
 - QEMU, by Fabrice Bellard and the QEMU developers: the machine MiniOS
   boots, tests and debugs on every day of development.
 

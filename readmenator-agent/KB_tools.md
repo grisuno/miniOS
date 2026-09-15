@@ -333,6 +333,13 @@
   - `stop` (method, line 162) `def stop(self)`
 - Depends on: `kernel/time.c`
 
+## tools/test_gui_menu.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `main` (function, line 20) `def main()`
+- Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
+
 ## tools/test_gui_wm.py
 - Layer: testing
 - Language: py
@@ -355,6 +362,14 @@
   - `dump` (method, line 176) `def dump(self, name)`
   - `stop` (method, line 183) `def stop(self)`
 - Depends on: `kernel/time.c`
+- Imported by: `tools/test_gui_menu.py`, `tools/test_gui_zoom.py`
+
+## tools/test_gui_zoom.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `main` (function, line 22) `def main()`
+- Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
 
 ## tools/test_sb16.sh
 - Layer: testing
