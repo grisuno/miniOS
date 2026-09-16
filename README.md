@@ -2098,7 +2098,7 @@ system would not exist.
 
 - [DOOM](https://github.com/SPinti-Software/doomgeneric), by id Software, played through the `doomgeneric` port layer by
   ozkl, which is the bridge MiniOS builds its windowed port on.
-- Quake 2, by id Software, played through `quake2generic`, also by ozkl,
+- [Quake 2](https://github.com/ozkl/quake2generic), by id Software, played through `quake2generic`, also by ozkl,
   reusing the same back-buffer infrastructure as DOOM.
 - MicroPython, by Damien George and the MicroPython contributors: the
   unix-port `minios` variant runs unmodified sources as ring-3 programs.
