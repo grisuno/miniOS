@@ -2963,6 +2963,7 @@
 - `tools/test_gui_zoom.py` -> `time`
 - `tools/test_lisp.py` -> `argparse`
 - `tools/test_lisp.py` -> `os`
+- `tools/test_lisp.py` -> `shutil`
 - `tools/test_lisp.py` -> `subprocess`
 - `tools/test_lisp.py` -> `sys`
 - `tools/test_lisp.py` -> `tempfile`

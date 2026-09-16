@@ -25435,43 +25435,43 @@ Z_DumpHeap
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### init_env (function) `static Env *init_env(Runtime *rt)`
-- Defined: `progs/lisp/lisp.c:2005`
+- Defined: `progs/lisp/lisp.c:2004`
 - Doc: Build the global environment with arithmetic, strings, files and MiniOS.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### bind_argv (function) `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)`
-- Defined: `progs/lisp/lisp.c:2018`
+- Defined: `progs/lisp/lisp.c:2017`
 - Doc: Expose the script argument vector as a proper list of strings.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### read_all_file (function) `static char *read_all_file(const char *filename, size_t max_bytes)`
-- Defined: `progs/lisp/lisp.c:2030`
+- Defined: `progs/lisp/lisp.c:2029`
 - Doc: Read a whole file into memory with a hard size cap.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### process_source (function) `static int process_source(Runtime *rt, const char *source,
     const char *source_name, bool echo)`
-- Defined: `progs/lisp/lisp.c:2088`
+- Defined: `progs/lisp/lisp.c:2087`
 - Doc: Evaluate every form in a source buffer and report the first failure.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### process_inline (function) `static int process_inline(Runtime *rt, const char *code)`
-- Defined: `progs/lisp/lisp.c:2130`
+- Defined: `progs/lisp/lisp.c:2129`
 - Doc: Evaluate one inline expression from the -e flag.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### print_usage (function) `static void print_usage(Runtime *rt)`
-- Defined: `progs/lisp/lisp.c:2137`
+- Defined: `progs/lisp/lisp.c:2136`
 - Doc: Print usage for the command line interface.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### repl (function) `static int repl(Runtime *rt)`
-- Defined: `progs/lisp/lisp.c:2144`
+- Defined: `progs/lisp/lisp.c:2143`
 - Doc: Run the interactive read-eval loop on the runtime input stream.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/lisp/lisp.c:2191`
+- Defined: `progs/lisp/lisp.c:2190`
 - Doc: Entry point with -e, script and REPL modes plus bounded arguments.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
@@ -25526,6 +25526,11 @@ Z_DumpHeap
 ### fputs (function) `fputs("\\n", out);`
 - Defined: `progs/lisp/lisp.c:1852`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+## progs/lisp/tin.c
+
+### main (function) `int main()`
+- Defined: `progs/lisp/tin.c:1`
 
 ## progs/lua/lua_main.c
 
@@ -32708,6 +32713,12 @@ Z_DumpHeap
 ### mutant (function)
 - Defined: `tools/lisp_scoped.sh:20`
 
+### lisp_mut (function)
+- Defined: `tools/lisp_scoped.sh:41`
+
+### mut_usage (function)
+- Defined: `tools/lisp_scoped.sh:63`
+
 ## tools/minifs_saves.py
 
 ### u16 (function) `def u16(d, o)`
@@ -33199,54 +33210,58 @@ Z_DumpHeap
 ## tools/test_lisp.py
 
 ### build_binary (method) `def build_binary(source, output)`
-- Defined: `tools/test_lisp.py:182`
+- Defined: `tools/test_lisp.py:308`
 - Doc: Compile the interpreter with warnings promoted to errors.
 
 ### main (method) `def main()`
-- Defined: `tools/test_lisp.py:195`
+- Defined: `tools/test_lisp.py:321`
 - Doc: Parse arguments, build the binary and drive the suite.
 
 ### __init__ (method) `def __init__(self, binary, suite)`
-- Defined: `tools/test_lisp.py:38`
+- Defined: `tools/test_lisp.py:40`
 
 ### check (method) `def check(self, name, actual, expected)`
-- Defined: `tools/test_lisp.py:45`
+- Defined: `tools/test_lisp.py:47`
 - Doc: Assert one observed value equals the expectation.
 
 ### run_expr (method) `def run_expr(self, code)`
-- Defined: `tools/test_lisp.py:56`
+- Defined: `tools/test_lisp.py:58`
 - Doc: Evaluate one inline expression and capture output.
 
 ### check_eval (method) `def check_eval(self, name, code, stdout)`
-- Defined: `tools/test_lisp.py:63`
+- Defined: `tools/test_lisp.py:65`
 - Doc: Assert an inline expression prints exactly the expectation.
 
 ### check_error (method) `def check_error(self, name, code, fragment)`
-- Defined: `tools/test_lisp.py:68`
+- Defined: `tools/test_lisp.py:70`
 - Doc: Assert an inline expression fails closed with a diagnostic.
 
 ### run_all (method) `def run_all(self)`
-- Defined: `tools/test_lisp.py:74`
+- Defined: `tools/test_lisp.py:76`
 - Doc: Drive every assertion vector in sequence.
 
 ### check_file_roundtrip (method) `def check_file_roundtrip(self)`
-- Defined: `tools/test_lisp.py:118`
+- Defined: `tools/test_lisp.py:121`
 - Doc: Assert a file write and read roundtrip through the interpreter.
 
 ### check_exit_code (method) `def check_exit_code(self)`
-- Defined: `tools/test_lisp.py:132`
+- Defined: `tools/test_lisp.py:135`
 - Doc: Assert a nonzero exit status survives the cleanup path.
 
 ### check_cli (method) `def check_cli(self)`
-- Defined: `tools/test_lisp.py:139`
+- Defined: `tools/test_lisp.py:142`
 - Doc: Assert version, help, unknown flag and missing file behaviors.
 
 ### check_suite_language_only (method) `def check_suite_language_only(self)`
-- Defined: `tools/test_lisp.py:156`
+- Defined: `tools/test_lisp.py:159`
 - Doc: Assert the shipped in-OS suite passes its language section.
 
+### check_minigcc_subset (method) `def check_minigcc_subset(self)`
+- Defined: `tools/test_lisp.py:177`
+- Doc: Assert the Lisp subset compiler covers expr codegen end to end.
+
 ### report (method) `def report(self)`
-- Defined: `tools/test_lisp.py:174`
+- Defined: `tools/test_lisp.py:300`
 - Doc: Print the totals and return the process exit status.
 
 ## tools/test_sb16.sh

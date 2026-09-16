@@ -332,7 +332,8 @@
 | `progs/doomgeneric/z_zone.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 13 |
 | `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | misc | 73 |
 | `progs/freedomui/freedomui_minios.c` | freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern. | misc | 47 |
-| `progs/lisp/lisp.c` | - | misc | 116 |
+| `progs/lisp/lisp.c` | - | lisp | 116 |
+| `progs/lisp/tin.c` | - | lisp | 1 |
 | `progs/lua/lua_main.c` | - | lua | 25 |
 | `progs/lua/minios.c` | - | lua | 27 |
 | `progs/micropython/variants/minios/lib/__init__.py` | MiniOS frozen library package. | lib | 0 |
@@ -446,7 +447,7 @@
 | `tools/gen_icons.py` | - | tools | 3 |
 | `tools/gen_zip_fixtures.py` | - | tools | 2 |
 | `tools/kernel_feature_survey.py` | - | tools | 8 |
-| `tools/lisp_scoped.sh` | Docstring: Scoped Lisp validation for the MiniOS interpreter contract. Builds th | tools | 3 |
+| `tools/lisp_scoped.sh` | Docstring: Scoped Lisp validation for the MiniOS interpreter contract. Builds th | tools | 5 |
 | `tools/minifs_saves.py` | - | tools | 21 |
 | `tools/minios_cli.py` | - | tools | 6 |
 | `tools/minios_gui.py` | - | tools | 9 |
@@ -463,7 +464,7 @@
 | `tools/test_gui_menu.py` | - | tools | 1 |
 | `tools/test_gui_wm.py` | - | tools | 17 |
 | `tools/test_gui_zoom.py` | - | tools | 1 |
-| `tools/test_lisp.py` | - | tools | 15 |
+| `tools/test_lisp.py` | - | tools | 16 |
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
 | `tools/wm_layout_sync.py` | - | tools | 17 |
 | `tools/wm_scoped.sh` | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs ho | tools | 2 |

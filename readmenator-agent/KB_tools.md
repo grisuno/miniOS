@@ -184,6 +184,8 @@
   - `say` (function, line 8)
   - `die` (function, line 9)
   - `mutant` (function, line 20)
+  - `lisp_mut` (function, line 41)
+  - `mut_usage` (function, line 63)
 
 ## tools/minifs_saves.py
 - Layer: utility
@@ -407,21 +409,22 @@
 - Layer: testing
 - Language: py
 - Symbols:
-  - `LispConfig` (class, line 26) `class LispConfig`
-  - `LispTest` (class, line 35) `class LispTest`
-  - `build_binary` (method, line 182) `def build_binary(source, output)`
-  - `main` (method, line 195) `def main()`
-  - `__init__` (method, line 38) `def __init__(self, binary, suite)`
-  - `check` (method, line 45) `def check(self, name, actual, expected)`
-  - `run_expr` (method, line 56) `def run_expr(self, code)`
-  - `check_eval` (method, line 63) `def check_eval(self, name, code, stdout)`
-  - `check_error` (method, line 68) `def check_error(self, name, code, fragment)`
-  - `run_all` (method, line 74) `def run_all(self)`
-  - `check_file_roundtrip` (method, line 118) `def check_file_roundtrip(self)`
-  - `check_exit_code` (method, line 132) `def check_exit_code(self)`
-  - `check_cli` (method, line 139) `def check_cli(self)`
-  - `check_suite_language_only` (method, line 156) `def check_suite_language_only(self)`
-  - `report` (method, line 174) `def report(self)`
+  - `LispConfig` (class, line 28) `class LispConfig`
+  - `LispTest` (class, line 37) `class LispTest`
+  - `build_binary` (method, line 308) `def build_binary(source, output)`
+  - `main` (method, line 321) `def main()`
+  - `__init__` (method, line 40) `def __init__(self, binary, suite)`
+  - `check` (method, line 47) `def check(self, name, actual, expected)`
+  - `run_expr` (method, line 58) `def run_expr(self, code)`
+  - `check_eval` (method, line 65) `def check_eval(self, name, code, stdout)`
+  - `check_error` (method, line 70) `def check_error(self, name, code, fragment)`
+  - `run_all` (method, line 76) `def run_all(self)`
+  - `check_file_roundtrip` (method, line 121) `def check_file_roundtrip(self)`
+  - `check_exit_code` (method, line 135) `def check_exit_code(self)`
+  - `check_cli` (method, line 142) `def check_cli(self)`
+  - `check_suite_language_only` (method, line 159) `def check_suite_language_only(self)`
+  - `check_minigcc_subset` (method, line 177) `def check_minigcc_subset(self)`
+  - `report` (method, line 300) `def report(self)`
 
 ## tools/test_sb16.sh
 - Layer: testing

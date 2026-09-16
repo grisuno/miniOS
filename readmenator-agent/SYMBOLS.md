@@ -9060,7 +9060,7 @@ Z_Malloc
 | `arg_matches` | function | `progs/lisp/lisp.c:815` | `static bool arg_matches(const Node *value, ArgKind kind)` |
 | `arity` | function | `progs/lisp/lisp.c:1299` | `* * Variable arity (0 or 1);` |
 | `arity0` | function | `progs/lisp/lisp.c:861` | `static bool arity0(Runtime *rt, Node *args)` |
-| `bind_argv` | function | `progs/lisp/lisp.c:2018` | `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` |
+| `bind_argv` | function | `progs/lisp/lisp.c:2017` | `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` |
 | `bind_primitive` | function | `progs/lisp/lisp.c:1948` | `static void bind_primitive(Runtime *rt, Env *env, const char *name,
     PrimFn function)` |
 | `check_args` | function | `progs/lisp/lisp.c:841` | `static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,
@@ -9084,11 +9084,11 @@ Z_Malloc
 | `fputs` | function | `progs/lisp/lisp.c:1852` | `fputs("\\n", out);` |
 | `free` | function | `progs/lisp/lisp.c:254` | `free(ptr);` |
 | `has_arity` | function | `progs/lisp/lisp.c:767` | `static bool has_arity(Runtime *rt, Node *args, size_t expected)` |
-| `init_env` | function | `progs/lisp/lisp.c:2005` | `static Env *init_env(Runtime *rt)` |
+| `init_env` | function | `progs/lisp/lisp.c:2004` | `static Env *init_env(Runtime *rt)` |
 | `is_nil` | function | `progs/lisp/lisp.c:348` | `static bool is_nil(Runtime *rt, const Node *node)` |
 | `lisp_version` | function | `progs/lisp/lisp.c:62` | `static const char *lisp_version(void)` |
 | `list_count` | function | `progs/lisp/lisp.c:750` | `static size_t list_count(Runtime *rt, Node *list, bool *proper)` |
-| `main` | function | `progs/lisp/lisp.c:2191` | `int main(int argc, char **argv)` |
+| `main` | function | `progs/lisp/lisp.c:2190` | `int main(int argc, char **argv)` |
 | `make_error` | function | `progs/lisp/lisp.c:293` | `static Node *make_error(Runtime *rt, const char *message)` |
 | `make_file` | function | `progs/lisp/lisp.c:355` | `static Node *make_file(Runtime *rt, FILE *handle)` |
 | `make_node` | function | `progs/lisp/lisp.c:284` | `static Node *make_node(Runtime *rt, NodeType type)` |
@@ -9137,11 +9137,11 @@ Z_Malloc
 | `prim_write` | function | `progs/lisp/lisp.c:1200` | `static Node *prim_write(Runtime *rt, Node *args)` |
 | `print_escaped_string` | function | `progs/lisp/lisp.c:1846` | `static void print_escaped_string(FILE *out, const char *value)` |
 | `print_node` | function | `progs/lisp/lisp.c:1877` | `static void print_node(Runtime *rt, Node *node, bool readable)` |
-| `print_usage` | function | `progs/lisp/lisp.c:2137` | `static void print_usage(Runtime *rt)` |
-| `process_inline` | function | `progs/lisp/lisp.c:2130` | `static int process_inline(Runtime *rt, const char *code)` |
-| `process_source` | function | `progs/lisp/lisp.c:2088` | `static int process_source(Runtime *rt, const char *source,
+| `print_usage` | function | `progs/lisp/lisp.c:2136` | `static void print_usage(Runtime *rt)` |
+| `process_inline` | function | `progs/lisp/lisp.c:2129` | `static int process_inline(Runtime *rt, const char *code)` |
+| `process_source` | function | `progs/lisp/lisp.c:2087` | `static int process_source(Runtime *rt, const char *source,
     const char *source_name, bool echo)` |
-| `read_all_file` | function | `progs/lisp/lisp.c:2030` | `static char *read_all_file(const char *filename, size_t max_bytes)` |
+| `read_all_file` | function | `progs/lisp/lisp.c:2029` | `static char *read_all_file(const char *filename, size_t max_bytes)` |
 | `read_atom` | function | `progs/lisp/lisp.c:685` | `static ParseResult read_atom(Runtime *rt, Reader *reader)` |
 | `read_expr` | function | `progs/lisp/lisp.c:721` | `static ParseResult read_expr(Runtime *rt, Reader *reader)` |
 | `read_list` | function | `progs/lisp/lisp.c:596` | `static ParseResult read_list(Runtime *rt, Reader *reader)` |
@@ -9149,7 +9149,7 @@ Z_Malloc
 | `reader_at_end` | function | `progs/lisp/lisp.c:500` | `static bool reader_at_end(const Reader *reader)` |
 | `reader_next` | function | `progs/lisp/lisp.c:482` | `static char reader_next(Reader *reader)` |
 | `reader_peek` | function | `progs/lisp/lisp.c:475` | `static char reader_peek(const Reader *reader)` |
-| `repl` | function | `progs/lisp/lisp.c:2144` | `static int repl(Runtime *rt)` |
+| `repl` | function | `progs/lisp/lisp.c:2143` | `static int repl(Runtime *rt)` |
 | `runtime_init` | function | `progs/lisp/lisp.c:399` | `static void runtime_init(Runtime *rt)` |
 | `sb_init` | function | `progs/lisp/lisp.c:523` | `static void sb_init(StringBuilder *builder)` |
 | `sb_push` | function | `progs/lisp/lisp.c:536` | `static void sb_push(StringBuilder *builder, char value)` |
@@ -9160,6 +9160,7 @@ Z_Malloc
 | `volatile` | function | `progs/lisp/lisp.c:207` | `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");` |
 | `xalloc` | function | `progs/lisp/lisp.c:242` | `static void *xalloc(Runtime *rt, size_t size)` |
 | `xstrdup` | function | `progs/lisp/lisp.c:266` | `static char *xstrdup(Runtime *rt, const char *source)` |
+| `main` | function | `progs/lisp/tin.c:1` | `int main()` |
 | `docode` | function | `progs/lua/lua_main.c:40` | `static int docode(lua_State *L, const char *code)` |
 | `dofile` | function | `progs/lua/lua_main.c:50` | `static int dofile(lua_State *L, const char *name)` |
 | `fflush` | function | `progs/lua/lua_main.c:66` | `fflush(stdout);` |
@@ -11716,6 +11717,8 @@ Z_Malloc
 | `render_text` | method | `tools/kernel_feature_survey.py:103` | `def render_text(findings)` |
 | `survey` | method | `tools/kernel_feature_survey.py:67` | `def survey(root)` |
 | `die` | function | `tools/lisp_scoped.sh:9` | `` |
+| `lisp_mut` | function | `tools/lisp_scoped.sh:41` | `` |
+| `mut_usage` | function | `tools/lisp_scoped.sh:63` | `` |
 | `mutant` | function | `tools/lisp_scoped.sh:20` | `` |
 | `say` | function | `tools/lisp_scoped.sh:8` | `` |
 | `FS` | class | `tools/minifs_saves.py:85` | `class FS` |
@@ -11842,21 +11845,22 @@ Z_Malloc
 | `stop` | method | `tools/test_gui_wm.py:183` | `def stop(self)` |
 | `wait_prompt` | method | `tools/test_gui_wm.py:107` | `def wait_prompt(self, timeout)` |
 | `main` | function | `tools/test_gui_zoom.py:22` | `def main()` |
-| `LispConfig` | class | `tools/test_lisp.py:26` | `class LispConfig` |
-| `LispTest` | class | `tools/test_lisp.py:35` | `class LispTest` |
-| `__init__` | method | `tools/test_lisp.py:38` | `def __init__(self, binary, suite)` |
-| `build_binary` | method | `tools/test_lisp.py:182` | `def build_binary(source, output)` |
-| `check` | method | `tools/test_lisp.py:45` | `def check(self, name, actual, expected)` |
-| `check_cli` | method | `tools/test_lisp.py:139` | `def check_cli(self)` |
-| `check_error` | method | `tools/test_lisp.py:68` | `def check_error(self, name, code, fragment)` |
-| `check_eval` | method | `tools/test_lisp.py:63` | `def check_eval(self, name, code, stdout)` |
-| `check_exit_code` | method | `tools/test_lisp.py:132` | `def check_exit_code(self)` |
-| `check_file_roundtrip` | method | `tools/test_lisp.py:118` | `def check_file_roundtrip(self)` |
-| `check_suite_language_only` | method | `tools/test_lisp.py:156` | `def check_suite_language_only(self)` |
-| `main` | method | `tools/test_lisp.py:195` | `def main()` |
-| `report` | method | `tools/test_lisp.py:174` | `def report(self)` |
-| `run_all` | method | `tools/test_lisp.py:74` | `def run_all(self)` |
-| `run_expr` | method | `tools/test_lisp.py:56` | `def run_expr(self, code)` |
+| `LispConfig` | class | `tools/test_lisp.py:28` | `class LispConfig` |
+| `LispTest` | class | `tools/test_lisp.py:37` | `class LispTest` |
+| `__init__` | method | `tools/test_lisp.py:40` | `def __init__(self, binary, suite)` |
+| `build_binary` | method | `tools/test_lisp.py:308` | `def build_binary(source, output)` |
+| `check` | method | `tools/test_lisp.py:47` | `def check(self, name, actual, expected)` |
+| `check_cli` | method | `tools/test_lisp.py:142` | `def check_cli(self)` |
+| `check_error` | method | `tools/test_lisp.py:70` | `def check_error(self, name, code, fragment)` |
+| `check_eval` | method | `tools/test_lisp.py:65` | `def check_eval(self, name, code, stdout)` |
+| `check_exit_code` | method | `tools/test_lisp.py:135` | `def check_exit_code(self)` |
+| `check_file_roundtrip` | method | `tools/test_lisp.py:121` | `def check_file_roundtrip(self)` |
+| `check_minigcc_subset` | method | `tools/test_lisp.py:177` | `def check_minigcc_subset(self)` |
+| `check_suite_language_only` | method | `tools/test_lisp.py:159` | `def check_suite_language_only(self)` |
+| `main` | method | `tools/test_lisp.py:321` | `def main()` |
+| `report` | method | `tools/test_lisp.py:300` | `def report(self)` |
+| `run_all` | method | `tools/test_lisp.py:76` | `def run_all(self)` |
+| `run_expr` | method | `tools/test_lisp.py:58` | `def run_expr(self, code)` |
 | `fail_msg` | function | `tools/test_sb16.sh:45` | `` |
 | `WmLayoutSync` | class | `tools/wm_layout_sync.py:46` | `class WmLayoutSync` |
 | `WmLayoutSyncConfig` | class | `tools/wm_layout_sync.py:17` | `class WmLayoutSyncConfig` |
