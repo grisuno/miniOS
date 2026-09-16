@@ -69,14 +69,15 @@ SOURCE_REPOS = $(MINIGCC_DIR)=$(MINIGCC_URL) \
                $(CVM_REPO_DIR)=$(CVM_URL) \
                $(LD_DIR)=$(LD_URL)
 
-CFLAGS_HOST = -std=c99 -Wall -Wextra -O2
+CFLAGS_HOST = -std=c99 -Wall -Wextra -O2 -Iheaders
 CFLAGS_DOOM = -std=gnu99 -Wall -O2 -DNORMALUNIX -DLINUX -DSNDSERV -D_DEFAULT_SOURCE \
               -Wno-unused-result -Wno-sign-compare -Wno-pointer-sign
 
-BOOTDEFS = arch/x86/boot/bootdefs.h
+BOOTDEFS = headers/arch/x86/boot/bootdefs.h
 
-# Source search path: headers stay in root (-I.), sources live in subdirs.
-VPATH = kernel:kernel/mm:drivers:fs:net:arch/x86:arch/x86/boot:third_party/stb:third_party/xxhash:third_party/dlmalloc:third_party/miniz
+# Source search path: headers live in headers/ (kernel-owned .h, with the
+# arch/drivers/kernel/net subpaths preserved), sources live in subdirs.
+VPATH = kernel:kernel/mm:drivers:fs:net:arch/x86:arch/x86/boot:third_party/stb:third_party/xxhash:third_party/dlmalloc:third_party/miniz:headers
 
 bootdef = $(shell sed -n 's/^#define[ \t]*$(1)[ \t]*\([0-9][0-9]*\).*/\1/p' $(BOOTDEFS))
 
@@ -140,11 +141,11 @@ $(KASLR_STAMP): kaslr-flag-force
 	@new='$(KASLR_FLAG)'; old="$$(cat $@ 2>/dev/null)"; \
 	 if [ "$$new" != "$$old" ]; then printf '%s\n' "$$new" > $@; fi
 
-CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os
+CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os -Iheaders -Iheaders/arch/x86/boot
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
               -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector \
               -fno-omit-frame-pointer -g $(TLS_FLAG) $(AP_TIMER_FLAG) \
-              -I. -Iarch/x86/boot -Ithird_party -Ithird_party/stb -Ithird_party/xxhash \
+              -I. -Iheaders -Iheaders/arch/x86/boot -Ithird_party -Ithird_party/stb -Ithird_party/xxhash \
               -I$(PROGS_DIR)
 
 PROGS_DIR = progs
@@ -1052,7 +1053,7 @@ TLSU_SRCS = $(PROGS_DIR)/tls_u/tls_u_main.c \
             net/tls.c net/tls_crypto.c net/tls_x509.c
 
 $(BIN_DIR)/tlsget: $(TLSU_SRCS) tls_port.h tls.h tls_roots.h
-	$(CC) -static -no-pie -std=c99 -O2 -Wall -DTLS_RING3 -I. -I$(PROGS_DIR) \
+	$(CC) -static -no-pie -std=c99 -O2 -Wall -DTLS_RING3 -I. -Iheaders -I$(PROGS_DIR) \
 	      -o $@ $(TLSU_SRCS)
 	chmod +x $@
 
@@ -1060,7 +1061,7 @@ $(BIN_DIR)/tlsget: $(TLSU_SRCS) tls_port.h tls.h tls_roots.h
 # local openssl s_server; see docs/TLS_MIGRATION.md). Same sources, same
 # -DTLS_RING3, dynamic link for the test sandbox.
 tlsget-host: $(TLSU_SRCS) tls_port.h tls.h tls_roots.h | $(TOOLS_DIR)
-	$(CC) -std=c99 -O2 -Wall -DTLS_RING3 -I. -I$(PROGS_DIR) \
+	$(CC) -std=c99 -O2 -Wall -DTLS_RING3 -I. -Iheaders -I$(PROGS_DIR) \
 	      -o $(TOOLS_DIR)/tlsget $(TLSU_SRCS)
 
 # freedom / freedom3: the shipped browser is the ring-3 build of the same
@@ -1074,7 +1075,7 @@ FREEDOM3_SRCS = $(SRC_DIR)/freedom.c \
 
 $(BIN_DIR)/freedom: $(FREEDOM3_SRCS) tls_port.h tls.h tls_roots.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 \
-	      -I. -I$(PROGS_DIR) -o $@ $(FREEDOM3_SRCS)
+	      -I. -Iheaders -I$(PROGS_DIR) -o $@ $(FREEDOM3_SRCS)
 	chmod +x $@
 
 $(BIN_DIR)/freedom3: $(BIN_DIR)/freedom
@@ -1082,7 +1083,7 @@ $(BIN_DIR)/freedom3: $(BIN_DIR)/freedom
 	chmod +x $@
 
 freedom3-host: $(FREEDOM3_SRCS) tls_port.h tls.h tls_roots.h | $(TOOLS_DIR)
-	$(CC) -std=c99 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 -I. -I$(PROGS_DIR) \
+	$(CC) -std=c99 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 -I. -Iheaders -I$(PROGS_DIR) \
 	      -o $(TOOLS_DIR)/freedom3 $(FREEDOM3_SRCS)
 
 # thdemo: producer-consumer over mthreads (10 threads on thread_spawn).
@@ -1110,11 +1111,11 @@ FREEDOM_WL_SRCS = $(SRC_DIR)/freedom_wl.c \
 
 $(BIN_DIR)/freedom_wl: $(FREEDOM_WL_SRCS) tls_port.h tls.h tls_roots.h $(PROGS_DIR)/nuklear/nuklear_minios.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 \
-	      -I. -I$(PROGS_DIR) -I$(PROGS_DIR)/nuklear -o $@ $(FREEDOM_WL_SRCS)
+	      -I. -Iheaders -I$(PROGS_DIR) -I$(PROGS_DIR)/nuklear -o $@ $(FREEDOM_WL_SRCS)
 	chmod +x $@
 
 freedom_wl_test: tests/test_freedom_wl.c $(SRC_DIR)/freedom_wl.c | $(TOOLS_DIR)
-	$(CC) $(CFLAGS_HOST) -I. -I$(PROGS_DIR) -o $(TOOLS_DIR)/freedom_wl_test tests/test_freedom_wl.c
+	$(CC) $(CFLAGS_HOST) -I. -Iheaders -I$(PROGS_DIR) -o $(TOOLS_DIR)/freedom_wl_test tests/test_freedom_wl.c
 
 test-freedom-wl: freedom_wl_test
 	$(TOOLS_DIR)/freedom_wl_test
@@ -1143,7 +1144,7 @@ ifeq ($(FREEDOMUI_AVAILABLE),1)
 $(BIN_DIR)/freedomui: $(FREEDOMUI_SRCS) tls_port.h tls.h tls_roots.h
 	$(CC) -static -no-pie -std=c11 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 \
 	      -D_POSIX_C_SOURCE=200809L \
-	      -I. -I$(PROGS_DIR) -I$(PROGS_DIR)/nuklear -I$(FREEDOM_DIR)/include \
+	      -I. -Iheaders -I$(PROGS_DIR) -I$(PROGS_DIR)/nuklear -I$(FREEDOM_DIR)/include \
 	      -o $@ $(FREEDOMUI_SRCS) $(FREEDOMUI_LEXBOR) -lm
 	chmod +x $@
 else
@@ -1152,7 +1153,7 @@ $(BIN_DIR)/freedomui:
 endif
 
 freedomui_test: tests/test_freedomui.c $(FREEDOMUI_DIR)/freedomui_minios.c | $(TOOLS_DIR)
-	$(CC) $(CFLAGS_HOST) -std=c11 -D_POSIX_C_SOURCE=200809L -I. -I$(PROGS_DIR) -I$(FREEDOM_DIR)/include \
+	$(CC) $(CFLAGS_HOST) -std=c11 -D_POSIX_C_SOURCE=200809L -I. -Iheaders -I$(PROGS_DIR) -I$(FREEDOM_DIR)/include \
 	      -o $(TOOLS_DIR)/freedomui_test tests/test_freedomui.c \
 	      $(FREEDOM_DIR)/src/url.c $(FREEDOM_DIR)/src/link_nav.c \
 	      $(FREEDOM_DIR)/src/html_parse.c $(FREEDOM_DIR)/src/ui_layout.c \
@@ -1273,10 +1274,10 @@ selfhost: $(BIN_DIR)/minigcc.elf
 # Fixed vectors plus full TLS 1.2 handshakes against openssl-driven
 # servers (RSA and ECDSA chains, correct hostname), plus the negative
 # set (unknown CA, wrong hostname, expired certificate).
-tls_test_roots.h: tls_test.py
+headers/tls_test_roots.h: tls_test.py
 	python3 tls_test.py --gen-only
 
-tls_test: tls_test.c tls_test_roots.h net/tls.c net/tls_crypto.c net/tls_x509.c \
+tls_test: tls_test.c headers/tls_test_roots.h net/tls.c net/tls_crypto.c net/tls_x509.c \
           tls.h tls_port.h
 	$(CC) $(CFLAGS_HOST) -DTLS_TEST -I. -o $(TOOLS_DIR)/tls_test \
 	      tls_test.c net/tls.c net/tls_crypto.c net/tls_x509.c
@@ -1319,11 +1320,11 @@ LINT_TIDY_CHECKS = bugprone-*,-bugprone-reserved-identifier,-bugprone-easily-swa
 lint: | $(TOOLS_DIR)
 	cppcheck --error-exitcode=1 --inline-suppr --enable=warning,performance,portability \
 	    --suppress=missingIncludeSystem --suppress=missingInclude \
-	    -I. -Iprogs -Iarch/x86/boot $(LINT_KERN_SRCS) $(LINT_HOST_SRCS)
-	$(CC) -std=c99 -Wall -Wextra -DTLS_RING3 -I. -I$(PROGS_DIR) \
+	    -I. -Iheaders -Iprogs -Iheaders/arch/x86/boot $(LINT_KERN_SRCS) $(LINT_HOST_SRCS)
+	$(CC) -std=c99 -Wall -Wextra -DTLS_RING3 -I. -Iheaders -I$(PROGS_DIR) \
 	    -fsyntax-only $(PROGS_DIR)/tls_u/tls_u_main.c $(PROGS_DIR)/tls_u/tls_u_port.c
 	clang-tidy $(LINT_HOST_SRCS) --warnings-as-errors='*' \
-	    --checks='$(LINT_TIDY_CHECKS)' -- -std=c99 -DTLS_RING3 -I. -I$(PROGS_DIR)
+	    --checks='$(LINT_TIDY_CHECKS)' -- -std=c99 -DTLS_RING3 -I. -Iheaders -I$(PROGS_DIR)
 	python3 tools/check_abi_numbers.py
 	python3 tools/check_fork_stubs.py
 	python3 tools/check_syscall_sanitize.py
@@ -1596,7 +1597,7 @@ mm.o: kernel/mm.c kernel.h
 scrollback.o: kernel/scrollback.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-paging.o: kernel/mm/paging.c kernel.h bootdefs.h vga_fb.h arch/x86/msr.h
+paging.o: kernel/mm/paging.c kernel.h $(BOOTDEFS) vga_fb.h arch/x86/msr.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 swap.o: kernel/mm/swap.c kernel.h ide.h lz4_kernel.h
@@ -1621,10 +1622,10 @@ printf.o: kernel/printf.c kernel.h
 klog.o: kernel/klog.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-exec.o: kernel/exec.c kernel.h bootdefs.h arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
+exec.o: kernel/exec.c kernel.h $(BOOTDEFS) arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h bootdefs.h minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h
@@ -1791,11 +1792,11 @@ ctx_sw.o: arch/x86/ctx_sw.S
 # with.  Placed at its real-mode address by ap_entry.ld, then extracted with
 # objcopy and embedded as a C array plus the runtime patch offset.
 ap_stub.bin: arch/x86/ap_entry.S arch/x86/ap_entry.ld $(BOOTDEFS)
-	$(CC) -c -m64 -Iarch/x86/boot arch/x86/ap_entry.S -o ap_entry.o
+	$(CC) -c -m64 -Iheaders/arch/x86/boot arch/x86/ap_entry.S -o ap_entry.o
 	$(LD) -m elf_x86_64 -T arch/x86/ap_entry.ld ap_entry.o -o ap_entry.elf
 	$(OBJCOPY) -O binary ap_entry.elf ap_stub.bin
 
-ap_stub.h: ap_stub.bin
+headers/ap_stub.h: ap_stub.bin
 	@echo "/* generated from ap_stub.bin - do not edit */" > $@
 	@echo "static const unsigned char ap_stub_blob[] = {" >> $@
 	@xxd -i ap_stub.bin | awk '/^  0x/{print "    "$$0}' >> $@
@@ -1803,7 +1804,7 @@ ap_stub.h: ap_stub.bin
 	@echo "static const unsigned int ap_stub_len = $$(stat -c%s ap_stub.bin);" >> $@
 	@echo "static const unsigned long ap_patch_off = $$(( 0x$$(nm ap_entry.elf | awk '/ap_patch_slot/{print $$1}') - 0x6000 ));" >> $@
 
-smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h ap_stub.h
+smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h headers/ap_stub.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 sync.o: kernel/sync.c sync.h sched.h spinlock.h
@@ -2086,7 +2087,7 @@ clean: saves-backup
 	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/lzss.s \
 	      $(ASM_DIR)/lz4.s $(ASM_DIR)/json.s $(ASM_DIR)/aes.s \
 	      $(ASM_DIR)/freedom.s
-	rm -f ap_stub.bin ap_stub.h ap_entry.o ap_entry.elf
+	rm -f ap_stub.bin headers/ap_stub.h ap_entry.o ap_entry.elf
 
 .SECONDARY:
 

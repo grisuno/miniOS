@@ -10,7 +10,7 @@
 #include "kernel.h"
 #include "drivers/kbd.h"
 #include "vga_fb.h"
-#include "console_in.h"
+#include "kernel/console_in.h"
 
 #define PB_LEN 8
 static unsigned char pb_buf[PB_LEN];

@@ -1,6 +1,6 @@
 #include "kernel.h"
 #include "net.h"
-#include "rtl8139.h"
+#include "net/rtl8139.h"
 
 /*
  * Polled rtl8139 NIC driver (QEMU slirp user networking target).

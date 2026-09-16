@@ -234,7 +234,7 @@ def gen_header(p):
     out.append(c_bytes(ec_sig, "test_ec_sig"))
     out.append(c_bytes(payload, "test_payload"))
     out.append("")
-    with open(os.path.join(HERE, "tls_test_roots.h"), "w") as f:
+    with open(os.path.join(HERE, "headers", "tls_test_roots.h"), "w") as f:
         f.write("\n".join(out))
 
 

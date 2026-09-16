@@ -82,13 +82,13 @@ if [ "$RESET" = "1" ]; then
     rm -f "$STATE_FILE"
 fi
 
-SOURCES="kernel.c arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c"
-SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c"
+SOURCES="kernel.c headers/arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c"
+SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c headers/rtc.h headers/sanitize.h"
 # Every file a MUTATIONS entry touches MUST be listed here: restore_sources
 # backs these up before the run and restores after each mutant. A file
 # missing here keeps its mutation (the fpu-no-save residue disabled
 # fxsave/fxrstor in the tree for days and poisoned every later boot).
-SOURCES="$SOURCES arch/x86/ctx_sw.S progs/minios_abi.h ktime.h randmix.h sched.h progs/src/mthreads.h"
+SOURCES="$SOURCES arch/x86/ctx_sw.S progs/minios_abi.h headers/ktime.h headers/randmix.h headers/sched.h progs/src/mthreads.h"
 SOURCES="$SOURCES progs/src/freedom_wl.c progs/vedit/vedit.c"
 SOURCES="$SOURCES progs/freedomui/freedomui_minios.c tests/test_freedomui.c"
 # Mechanism: SOURCES is the backup/restore allowlist, not documentation.
@@ -117,10 +117,10 @@ for f in $SOURCES; do
 done
 
 MUTATIONS="
-pd-drop-page-size | s/#define PT_FLAGS_PRESENT_RW_PS    0x083/#define PT_FLAGS_PRESENT_RW_PS    0x003/ | arch/x86/boot/bootdefs.h
-gdt64-code-to-data | s/#define GDT64_DESC_CODE           0x00209A0000000000/#define GDT64_DESC_CODE           0x0000920000000000/ | arch/x86/boot/bootdefs.h
-kernel-buffer-seg | s/#define BOOT_KERNEL_BUF_SEG       0x1000/#define BOOT_KERNEL_BUF_SEG       0x1001/ | arch/x86/boot/bootdefs.h
-chunk-copy-length | s/#define SECTOR_DWORD_SHIFT        7/#define SECTOR_DWORD_SHIFT        6/ | arch/x86/boot/bootdefs.h
+pd-drop-page-size | s/#define PT_FLAGS_PRESENT_RW_PS    0x083/#define PT_FLAGS_PRESENT_RW_PS    0x003/ | headers/arch/x86/boot/bootdefs.h
+gdt64-code-to-data | s/#define GDT64_DESC_CODE           0x00209A0000000000/#define GDT64_DESC_CODE           0x0000920000000000/ | headers/arch/x86/boot/bootdefs.h
+kernel-buffer-seg | s/#define BOOT_KERNEL_BUF_SEG       0x1000/#define BOOT_KERNEL_BUF_SEG       0x1001/ | headers/arch/x86/boot/bootdefs.h
+chunk-copy-length | s/#define SECTOR_DWORD_SHIFT        7/#define SECTOR_DWORD_SHIFT        6/ | headers/arch/x86/boot/bootdefs.h
 ramdisk-entry-stride | s/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 4)/ | fs/ramdisk.c
 redirect-captures-nothing | s/    redir_active = 1;/    redir_active = 0;/ | kernel/console.c
 status-leaks-into-redirect | s/int was = redirect_suspend();/int was = 0;/ | kernel/redirect.c
@@ -165,7 +165,7 @@ tls-chain-stride | s/TLS_MEMCPY(s->chain + stored, m + pos, cl);/TLS_MEMCPY(s->c
 tls-wildcard-overrun | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len; i++) {/ | net/tls_x509.c
 tls-wildcard-short-tail | s/    for (i = 0; i < name_len - 1; i++) {/    for (i = 0; i < name_len - 2; i++) {/ | net/tls_x509.c
 
-user-pages-supervisor | s/#define PT_FLAGS_USER             0x004/#define PT_FLAGS_USER             0x000/ | arch/x86/boot/bootdefs.h
+user-pages-supervisor | s/#define PT_FLAGS_USER             0x004/#define PT_FLAGS_USER             0x000/ | headers/arch/x86/boot/bootdefs.h
 write-pointer-check-bypassed | s/int user_range_ok(unsigned long p, unsigned long len) {/int user_range_ok(unsigned long p, unsigned long len) { (void)p; (void)len; return 1; \\/\\* bypass \\*\\// | kernel/syscalls.c
 
 vol-default-zero | s/static unsigned pcspk_volume = PCSPK_VOL_DEFAULT;/static unsigned pcspk_volume = 0;/ | drivers/pcspk.c
@@ -198,12 +198,12 @@ futex-value-check-inverted | s/if (\\*(volatile int \\*)uaddr != val)/if (*(vola
 futex-wake-count-unbounded | s/while (pid != WQ_NONE \\&\\& woken < n)/while (pid != WQ_NONE)/ | kernel/futex.c
 futex-linux-private-unmasked | s/long cmd = op & ~(long)LINUX_FUTEX_PRIVATE_FLAG;/long cmd = op;/ | kernel/futex.c
 futex-linux-wake-dropped | s/if (cmd == LINUX_FUTEX_WAIT || cmd == LINUX_FUTEX_WAKE)/if (cmd == LINUX_FUTEX_WAIT)/ | kernel/futex.c
-rtc-epoch-day-off-by-one | s/return era \\* 146097 + doe - 719468;/return era \\* 146097 + doe - 719467;/ | rtc.h
+rtc-epoch-day-off-by-one | s/return era \\* 146097 + doe - 719468;/return era \\* 146097 + doe - 719467;/ | headers/rtc.h
 percpu-rq-full-drop-lost | s/if (rqueues\\[cpu\\].count >= RQ_DEPTH)/if (rqueues[cpu].count > RQ_DEPTH)/ | kernel/percpu_rq.c
 batch-completion-off-by-one | s/\\*completed = i + 1;/\\*completed = i;/ | kernel/batch.c
 rcu-grace-shortened | s/if (rcu_state.pending\\[i\\].epoch < rcu_state.epoch)/if (rcu_state.pending[i].epoch <= rcu_state.epoch)/ | kernel/rcu.c
-sanitize-neg-check-dropped | s/if ((count) < 0) return EFAULT;/if (0) return EFAULT;/ | sanitize.h
-sanitize-wrap-check-dropped | s/if (_sz \\/ _es != _n) return EFAULT;/if (0) return EFAULT;/ | sanitize.h
+sanitize-neg-check-dropped | s/if ((count) < 0) return EFAULT;/if (0) return EFAULT;/ | headers/sanitize.h
+sanitize-wrap-check-dropped | s/if (_sz \\/ _es != _n) return EFAULT;/if (0) return EFAULT;/ | headers/sanitize.h
 
 lisp-add-overflow-unchecked | s/if (__builtin_add_overflow(a, b, \\&out)) {/if (0) {/ | progs/lisp/lisp.c
 lisp-div-zero-unchecked | s/    if (b == 0) {/    if (0) {/ | progs/lisp/lisp.c
@@ -229,8 +229,8 @@ sched-imulq-stale | s/STR(PROC_T_SIZE)/304/ | kernel.c
 sched-park-rip-zero | s/cur->ctx.rip = (unsigned long)__builtin_return_address(0);/cur->ctx.rip = 0;/ | kernel/sched.c
 sched-park-rbp-zero | s/cur->ctx.rbp = \\*(unsigned long \\*)sched_rbp;/cur->ctx.rbp = 0;/ | kernel/sched.c
 mthreads-stack-no-adjust | s/(mthread_stacks\\[i\\] + MTHREAD_STACK_SZ) - 8;/(mthread_stacks[i] + MTHREAD_STACK_SZ);/ | progs/src/mthreads.h
-ktime-us-factor | s/\\* 1000UL +/ * 100UL +/ | ktime.h
-randmix-constant | s/return x ^ (x >> 31);/return 0;/ | randmix.h
+ktime-us-factor | s/\\* 1000UL +/ * 100UL +/ | headers/ktime.h
+randmix-constant | s/return x ^ (x >> 31);/return 0;/ | headers/randmix.h
 clock-backwards | s/(w2 >= w1 \&\& m2 >= m1) ? \"monotonic\" : \"BACKWARDS\"/(w2 >= w1 \&\& m2 >= m1) ? \"BACKWARDS\" : \"monotonic\"/ | kernel/shell.c
 truth-uname-fails | s/\[63\]  = { sys_linux_uname,        \"uname\" },/[63]  = { 0, \"uname\" },/ | kernel/syscalls.c
 freedom-wl-clip-origin-sign | s/\*w += \*x;/\*w -= *x;/ | progs/src/freedom_wl.c
@@ -364,7 +364,7 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
     fi
 
     case "$file" in
-        net/tls.c|net/tls_x509.c|tls_crypto.c|tls.h)
+        net/tls.c|net/tls_x509.c|tls_crypto.c|headers/tls.h)
             make -C "$HERE" test-tls > "$BACKUP/suite.log" 2>&1
             ;;
         vma.c)
@@ -373,7 +373,7 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
         kernel/futex.c)
             make -C "$HERE" test-futex > "$BACKUP/suite.log" 2>&1
             ;;
-        rtc.h)
+        headers/rtc.h)
             make -C "$HERE" test-rtc > "$BACKUP/suite.log" 2>&1
             ;;
         kernel/percpu_rq.c)
@@ -385,16 +385,16 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
         kernel/rcu.c)
             make -C "$HERE" test-rcu > "$BACKUP/suite.log" 2>&1
             ;;
-        sanitize.h)
+        headers/sanitize.h)
             make -C "$HERE" test-sanitize > "$BACKUP/suite.log" 2>&1
             ;;
         progs/lisp/lisp.c)
             make -C "$HERE" test-lisp > "$BACKUP/suite.log" 2>&1
             ;;
-        ktime.h)
+        headers/ktime.h)
             make -C "$HERE" test-ktime > "$BACKUP/suite.log" 2>&1
             ;;
-        randmix.h)
+        headers/randmix.h)
             make -C "$HERE" test-randmix > "$BACKUP/suite.log" 2>&1
             ;;
         progs/src/freedom_wl.c)

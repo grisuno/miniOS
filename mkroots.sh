@@ -26,7 +26,7 @@
 set -e
 HERE="$(cd "$(dirname "$0")" && pwd)"
 SRC="$HERE/tls_roots_src"
-OUT="$HERE/tls_roots.h"
+OUT="$HERE/headers/tls_roots.h"
 
 python3 - "$SRC" "$OUT" <<'PYEOF'
 import sys

@@ -1,8 +1,8 @@
 #include "kernel.h"
 #include "sched.h"
 #include "vga_fb.h"
-#include "kbd.h"
-#include "modifiers.h"
+#include "drivers/kbd.h"
+#include "drivers/modifiers.h"
 #include "wm_events.h"
 #include "arch/x86/hal_io.h"
 

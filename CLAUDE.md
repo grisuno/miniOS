@@ -3220,7 +3220,8 @@ net/               net.c, tls.c, tls_crypto.c, tls_x509.c
 third_party/       xxhash, stb, dlmalloc, miniz
 ```
 
-Headers remain in the project root (accessed via `-I.`); source files live
+Kernel-owned headers live in `headers/` (accessed via `-Iheaders`, with the
+`arch/`/`drivers/`/`kernel/`/`net/` subpaths preserved); source files live
 in subdirectories. The Makefile uses `VPATH` so make finds sources in
 subdirs while `.o` files stay in the root for the link line.
 
