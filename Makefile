@@ -2012,10 +2012,57 @@ usb: os.usb.img
 # MBR hard disk, so it must be attached as a hard disk (IDE/SATA), never
 # as an optical CD/DVD drive.  Converts without reprogramming anything.
 vdi: os.usb.img
+	VBoxManage closemedium disk "$(abspath os.vdi)" --delete 2>/dev/null || true; \
+	rm -f os.vdi; \
 	VBoxManage convertfromraw $< os.vdi --format VDI
 	@echo "=== os.vdi built ==="; \
 	 echo "VirtualBox: create VM (Linux 64-bit, 1G RAM), attach os.vdi as"; \
 	 echo "  hard disk on IDE/SATA, boot. Do NOT mount os.iso as optical."
+
+# ── VirtualBox boot (mirrors `run`, no kernel/boot changes) ──────────
+# `make vb` boots the same image QEMU boots, converted to VDI and attached
+# as an IDE hard disk, then starts the VM.  Nothing in the boot path, the
+# kernel or os.img is touched, so QEMU keeps booting exactly as before.
+# Mapping to the QEMU flags in `run`: 1G RAM, 2 CPUs (-smp 2), IDE disk
+# (primary master PIO, which drivers/ide.c speaks), SB16 audio (0x220/IRQ5/
+# DMA1, which drivers/sb16.c speaks) and VBoxVGA (VESA VBE, which stage2
+# probes).  Known gap, stated up front: VirtualBox 7 dropped the rtl8139
+# NIC type, so the guest NIC is the default NAT device, drivers/rtl8139.c
+# reports the NIC absent (fail closed) and networking is unavailable under
+# VirtualBox.  Everything else (console, MiniFS, audio, graphics) is
+# unchanged.  Usage: `make vb` (GUI, like `run`), `make vb VB_TYPE=headless`
+# for a headless start.  Override the VM name with `make vb VB_VM=myvm`.
+VB_VM   ?= miniOS
+VB_VDI  ?= os.vdi
+VB_CPUS ?= 2
+VB_RAM  ?= 1024
+VB_VRAM ?= 16
+VB_TYPE ?= gui
+vb: os.usb.img
+	@command -v VBoxManage >/dev/null 2>&1 || { echo "Error: VBoxManage not found, install VirtualBox"; exit 1; }; \
+	if VBoxManage showvminfo "$(VB_VM)" 2>/dev/null | grep -q 'State:.*running'; then \
+	  echo "=== $(VB_VM) already running (power it off to boot a fresh image) ==="; \
+	  exit 0; \
+	fi; \
+	VBoxManage storageattach "$(VB_VM)" --storagectl IDE --port 0 --device 0 \
+	  --type hdd --medium none 2>/dev/null || true; \
+	VBoxManage closemedium disk "$(abspath $(VB_VDI))" --delete 2>/dev/null || true; \
+	rm -f "$(VB_VDI)"; \
+	VBoxManage convertfromraw os.usb.img "$(VB_VDI)" --format VDI || exit 1; \
+	if ! VBoxManage showvminfo "$(VB_VM)" >/dev/null 2>&1; then \
+	  VBoxManage createvm --name "$(VB_VM)" --ostype Linux_64 --register || exit 1; \
+	fi; \
+	VBoxManage modifyvm "$(VB_VM)" --memory $(VB_RAM) --cpus $(VB_CPUS) --vram $(VB_VRAM) \
+	  --acpi on --ioapic on --pae on --chipset piix3 \
+	  --boot1 disk --boot2 none --boot3 none --boot4 none \
+	  --nic1 nat --audio-enabled on --audio-controller sb16 --audio-codec sb16 \
+	  --graphicscontroller vboxvga || exit 1; \
+	if ! VBoxManage showvminfo "$(VB_VM)" 2>/dev/null | grep -q 'Storage Controller Name.*IDE'; then \
+	  VBoxManage storagectl "$(VB_VM)" --name IDE --add ide --controller PIIX4 || exit 1; \
+	fi; \
+	VBoxManage storageattach "$(VB_VM)" --storagectl IDE --port 0 --device 0 \
+	  --type hdd --medium "$(abspath $(VB_VDI))" || exit 1; \
+	VBoxManage startvm "$(VB_VM)" --type $(VB_TYPE)
 
 run: os.img
 	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) $(QEMU_AUDIO)

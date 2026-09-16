@@ -22,6 +22,7 @@ __pycache__/
 os.img
 os.hybrid.img
 *.img
+os.vdi
 
 # DOOM WAD — copyrighted id Software asset, not for redistribution
 *.wad
