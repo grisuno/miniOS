@@ -2,83 +2,118 @@
 
 | File | Purpose | Subsystem | Symbols |
 |------|---------|-----------|---------|
-| `abi.h` | Docstring: abi.h -- Boot-time ABI manifest gate contract. | root | 10 |
-| `ap_stub.h` | generated from ap_stub.bin - do not edit | root | 0 |
-| `arch/x86/ap_entry.S` | ap_entry.S - SMP application-processor bootstrap stub. | x86 | 9 |
-| `arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | boot | 139 |
+| `arch/x86/ap_entry.S` | ap_entry.S - SMP application-processor bootstrap stub. | - | 9 |
 | `arch/x86/boot/stage1.S` | stage1.S - MiniOS boot sector. | boot | 11 |
 | `arch/x86/boot/stage2.S` | stage2.S - MiniOS second-stage loader. | boot | 40 |
-| `arch/x86/ctx_sw.S` | - | x86 | 6 |
-| `arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 53 |
-| `arch/x86/isr_stubs.S` | - | x86 | 24 |
-| `arch/x86/msr.h` | ifndef ARCH_X86_MSR_H define ARCH_X86_MSR_H  Model-Specific Register access for  | x86 | 10 |
-| `audio.h` | ifndef AUDIO_H define AUDIO_H  Unified audio API for MiniOS. | root | 18 |
-| `batch.h` | ifndef BATCH_H define BATCH_H  Docstring: batch.h -- Batched synchronous syscall | root | 13 |
-| `block.h` | ifndef BLOCK_H define BLOCK_H  Block device abstraction for MiniFS. Maps 4096-by | root | 12 |
+| `arch/x86/ctx_sw.S` | - | - | 6 |
+| `arch/x86/isr_stubs.S` | - | - | 24 |
 | `bootloader.c` | - | root | 4 |
-| `desktop_icons.h` | desktop_icons.h -- embedded icon pixel data for desktop shortcuts. | root | 3 |
-| `desktop_shortcuts.h` | desktop_shortcuts.h -- configurable desktop icon shortcuts. | root | 20 |
-| `driver.h` | ifndef DRIVER_H define DRIVER_H  driver.h -- Strategy pattern for hardware drive | root | 19 |
-| `drivers/block.c` | Block device layer for MiniFS. | drivers | 17 |
-| `drivers/driver.c` | include "driver.h"  driver.c -- Device registry for the Strategy-pattern driver  | drivers | 8 |
-| `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | drivers | 24 |
-| `drivers/kbd.c` | include "kernel.h" include "sched.h" include "vga_fb.h" include "kbd.h" include  | drivers | 44 |
-| `drivers/kbd.h` | ifndef KBD_H define KBD_H  Keyboard layout: US qwerty (default) or Spanish (Spai | drivers | 23 |
-| `drivers/modifiers.h` | ifndef MODIFIERS_H define MODIFIERS_H  Docstring: Unified modifier tracking for  | drivers | 11 |
-| `drivers/mouse.c` | Docstring: PS/2 mouse device driver (drivers/mouse.c). | drivers | 10 |
-| `drivers/mouse.h` | ifndef MOUSE_H define MOUSE_H  Docstring: mouse.h -- boundary of the PS/2 mouse  | drivers | 4 |
-| `drivers/pcspk.c` | include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with  | drivers | 20 |
-| `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | drivers | 27 |
-| `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h" include "driver.h"  Sound B | drivers | 67 |
-| `editor.h` | ifndef EDITOR_H define EDITOR_H  editor.h -- the built-in line editor contract. | root | 2 |
+| `drivers/block.c` | Block device layer for MiniFS. | - | 17 |
+| `drivers/driver.c` | include "driver.h"  driver.c -- Device registry for the Strategy-pattern driver  | - | 8 |
+| `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | - | 24 |
+| `drivers/kbd.c` | include "kernel.h" include "sched.h" include "vga_fb.h" include "drivers/kbd.h"  | - | 44 |
+| `drivers/mouse.c` | Docstring: PS/2 mouse device driver (drivers/mouse.c). | - | 10 |
+| `drivers/pcspk.c` | include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with  | - | 20 |
+| `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | - | 27 |
+| `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h" include "driver.h"  Sound B | - | 67 |
 | `fs/kfile.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 26 |
 | `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 67 |
 | `fs/ramdisk.c` | include "kernel.h"  ============================================================ | fs | 25 |
 | `fs/vfs.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 37 |
 | `fs/zip.c` | zip.c — the unzip/zip shell builtins over the miniz zip library. | fs | 19 |
-| `futex.h` | ifndef FUTEX_H define FUTEX_H  Docstring: futex.h -- Fast userspace mutex sleep/ | root | 17 |
 | `gen_minifs.py` | - | root | 0 |
-| `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 35 |
+| `headers/abi.h` | Docstring: abi.h -- Boot-time ABI manifest gate contract. | headers | 10 |
+| `headers/ap_stub.h` | generated from ap_stub.bin - do not edit | headers | 0 |
+| `headers/arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | misc | 139 |
+| `headers/arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 53 |
+| `headers/arch/x86/msr.h` | ifndef ARCH_X86_MSR_H define ARCH_X86_MSR_H  Model-Specific Register access for  | x86 | 10 |
+| `headers/audio.h` | ifndef AUDIO_H define AUDIO_H  Unified audio API for MiniOS. | headers | 18 |
+| `headers/batch.h` | ifndef BATCH_H define BATCH_H  Docstring: batch.h -- Batched synchronous syscall | headers | 13 |
+| `headers/block.h` | ifndef BLOCK_H define BLOCK_H  Block device abstraction for MiniFS. Maps 4096-by | headers | 12 |
+| `headers/desktop_icons.h` | desktop_icons.h -- embedded icon pixel data for desktop shortcuts. | headers | 3 |
+| `headers/desktop_shortcuts.h` | desktop_shortcuts.h -- configurable desktop icon shortcuts. | headers | 20 |
+| `headers/driver.h` | ifndef DRIVER_H define DRIVER_H  driver.h -- Strategy pattern for hardware drive | headers | 19 |
+| `headers/drivers/kbd.h` | ifndef KBD_H define KBD_H  Keyboard layout: US qwerty (default) or Spanish (Spai | drivers | 23 |
+| `headers/drivers/modifiers.h` | ifndef MODIFIERS_H define MODIFIERS_H  Docstring: Unified modifier tracking for  | drivers | 11 |
+| `headers/drivers/mouse.h` | ifndef MOUSE_H define MOUSE_H  Docstring: mouse.h -- boundary of the PS/2 mouse  | drivers | 4 |
+| `headers/editor.h` | ifndef EDITOR_H define EDITOR_H  editor.h -- the built-in line editor contract. | headers | 2 |
+| `headers/futex.h` | ifndef FUTEX_H define FUTEX_H  Docstring: futex.h -- Fast userspace mutex sleep/ | headers | 17 |
+| `headers/ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | headers | 35 |
+| `headers/kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | headers | 311 |
+| `headers/kernel/console_in.h` | ifndef CONSOLE_IN_H define CONSOLE_IN_H  Docstring: console_in.h -- boundary of  | kernel | 8 |
+| `headers/kernel/vga_cursor.h` | ifndef VGA_CURSOR_H define VGA_CURSOR_H  Docstring: vga_cursor.h -- boundary of  | kernel | 9 |
+| `headers/ktime.h` | ifndef KTIME_H define KTIME_H  ktime.h -- pure time-conversion helpers shared by | headers | 3 |
+| `headers/lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | headers | 4 |
+| `headers/minifetch.h` | Docstring: minifetch.h -- neofetch-style system screen contract. | headers | 2 |
+| `headers/minifs.h` | ifndef MINIFS_H define MINIFS_H  MiniFS: a minimal Unix-like filesystem for Mini | headers | 76 |
+| `headers/net.h` | ifndef NET_H define NET_H  ========== Fixed slirp configuration (QEMU -nic user) | headers | 59 |
+| `headers/net/rtl8139.h` | ifndef RTL8139_H define RTL8139_H | misc | 8 |
+| `headers/pcspk.h` | ifndef PCSPK_H define PCSPK_H  define PCSPK_VOL_MIN     0 define PCSPK_VOL_MAX   | headers | 9 |
+| `headers/percpu_rq.h` | ifndef PERCPU_RQ_H define PERCPU_RQ_H  Docstring: percpu_rq.h -- Per-CPU runqueu | headers | 14 |
+| `headers/qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | headers | 29 |
+| `headers/randmix.h` | ifndef RANDMIX_H define RANDMIX_H  randmix.h -- entropy mixer for getrandom (318 | headers | 2 |
+| `headers/rcu.h` | ifndef RCU_H define RCU_H  Docstring: rcu.h -- Read-copy-update, lite epoch edit | headers | 18 |
+| `headers/rtc.h` | ifndef RTC_H define RTC_H | headers | 6 |
+| `headers/sanitize.h` | ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point | headers | 5 |
+| `headers/sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | headers | 27 |
+| `headers/sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h" include " | headers | 100 |
+| `headers/shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | headers | 7 |
+| `headers/smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | headers | 11 |
+| `headers/spawn.h` | ifndef SPAWN_H define SPAWN_H  include "kernel.h" include "vma.h" include "sched | headers | 9 |
+| `headers/spinlock.h` | ifndef SPINLOCK_H define SPINLOCK_H  spinlock.h -- Lightweight spinlock for Mini | headers | 22 |
+| `headers/sync.h` | ifndef SYNC_H define SYNC_H  sync.h -- Blocking synchronization primitives (road | headers | 36 |
+| `headers/syscalls_proc.h` | ifndef SYSCALLS_PROC_H define SYSCALLS_PROC_H  syscalls_proc.h -- process-manage | headers | 15 |
+| `headers/tick.h` | Docstring: Tick listener bus contract. | headers | 14 |
+| `headers/tls.h` | ifndef TLS_H define TLS_H  ========== TLS 1.2 client (RFC 5246) ========== | headers | 73 |
+| `headers/tls_port.h` | ifndef TLS_PORT_H define TLS_PORT_H  Portability shim between the MiniOS kernel  | headers | 50 |
+| `headers/tls_roots.h` | tls_roots.h - embedded CA roots (DER), generated by mkroots.sh. | headers | 0 |
+| `headers/tls_test_roots.h` | tls_test_roots.h - generated by tls_test.py; never built into the kernel. The te | headers | 0 |
+| `headers/vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h" inclu | headers | 125 |
+| `headers/vma.h` | ifndef VMA_H define VMA_H | headers | 21 |
+| `headers/wm_events.h` | Docstring: Window event contract for the MiniOS desktop. | headers | 39 |
+| `headers/wm_focus.h` | Docstring: Focus manager contract for the MiniOS desktop. | headers | 6 |
+| `headers/wm_geom.h` | Docstring: Window geometry contract for the MiniOS desktop. | headers | 11 |
+| `headers/wm_layout.h` | Docstring: Unified layout contract for the MiniOS desktop. | headers | 16 |
+| `headers/wm_notify.h` | ifndef WM_NOTIFY_H define WM_NOTIFY_H  Docstring: Focus event bus for the MiniOS | headers | 10 |
+| `headers/wm_render.h` | Docstring: Render pipeline contract for the MiniOS desktop. | headers | 5 |
+| `headers/wm_tiling.h` | Docstring: Tiling layout contract for the MiniOS desktop. | headers | 3 |
+| `headers/wm_window.h` | Docstring: Unified window contract for the MiniOS desktop. | headers | 12 |
+| `headers/zip.h` | ifndef ZIP_H define ZIP_H  zip.h — MiniOS integration API for the miniz zip libr | headers | 3 |
 | `install.sh` | - | root | 0 |
 | `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 41 |
-| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 311 |
-| `kernel/abi.c` | Docstring: kernel/abi.c -- Boot-time ABI manifest gate. | kernel | 3 |
-| `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
-| `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | kernel | 31 |
-| `kernel/console_in.c` | Docstring: Console input device (kernel/console_in.c). | kernel | 32 |
-| `kernel/console_in.h` | ifndef CONSOLE_IN_H define CONSOLE_IN_H  Docstring: console_in.h -- boundary of  | kernel | 8 |
-| `kernel/cvm_host.c` | - | kernel | 55 |
-| `kernel/editor.c` | include "kernel.h" include "shell.h" include "editor.h"  ======================= | kernel | 31 |
-| `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | kernel | 19 |
-| `kernel/futex.c` | Docstring: kernel/futex.c -- Kernel side of the futex contract. | kernel | 11 |
-| `kernel/klog.c` | klog.c - Structured kernel logging with levels and subsystems. | kernel | 9 |
-| `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | kernel | 44 |
-| `kernel/lz4_kernel.c` | include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE  | kernel | 11 |
-| `kernel/minifetch.c` | Docstring: kernel/minifetch.c -- neofetch-style system screen. | kernel | 14 |
-| `kernel/mm.c` | include "kernel.h" include "sched.h"  ========================================== | kernel | 13 |
+| `kernel/abi.c` | Docstring: kernel/abi.c -- Boot-time ABI manifest gate. | - | 3 |
+| `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | - | 1 |
+| `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | - | 31 |
+| `kernel/console_in.c` | Docstring: Console input device (kernel/console_in.c). | - | 32 |
+| `kernel/cvm_host.c` | - | - | 55 |
+| `kernel/editor.c` | include "kernel.h" include "shell.h" include "editor.h"  ======================= | - | 31 |
+| `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | - | 19 |
+| `kernel/futex.c` | Docstring: kernel/futex.c -- Kernel side of the futex contract. | - | 11 |
+| `kernel/klog.c` | klog.c - Structured kernel logging with levels and subsystems. | - | 9 |
+| `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | - | 44 |
+| `kernel/lz4_kernel.c` | include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE  | - | 11 |
+| `kernel/minifetch.c` | Docstring: kernel/minifetch.c -- neofetch-style system screen. | - | 14 |
+| `kernel/mm.c` | include "kernel.h" include "sched.h"  ========================================== | - | 13 |
 | `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 21 |
 | `kernel/mm/swap.c` | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | mm | 10 |
-| `kernel/percpu_rq.c` | Docstring: kernel/percpu_rq.c -- Per-CPU runqueue hints and stealing. | kernel | 14 |
-| `kernel/printf.c` | include "kernel.h"  ============================================================ | kernel | 15 |
-| `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | kernel | 21 |
-| `kernel/redirect.c` | include "kernel.h"  ============================================================ | kernel | 7 |
-| `kernel/sched.c` | - | kernel | 136 |
-| `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | kernel | 8 |
-| `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | kernel | 10 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | kernel | 135 |
-| `kernel/spawn.c` | include "kernel.h" include "sched.h" include "vma.h" include "spawn.h" include " | kernel | 19 |
-| `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | kernel | 13 |
-| `kernel/symtab.c` | include "kernel.h"  ============================================================ | kernel | 9 |
-| `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 31 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 158 |
-| `kernel/syscalls_proc.c` | syscalls_proc.c - Process-management syscall handlers. | kernel | 21 |
-| `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 9 |
-| `kernel/time.c` | include "kernel.h" include "ktime.h"  ========================================== | kernel | 7 |
-| `kernel/vga_cursor.c` | Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c). | kernel | 14 |
-| `kernel/vga_cursor.h` | ifndef VGA_CURSOR_H define VGA_CURSOR_H  Docstring: vga_cursor.h -- boundary of  | kernel | 9 |
-| `kernel/vga_fb.c` | - | kernel | 177 |
-| `ktime.h` | ifndef KTIME_H define KTIME_H  ktime.h -- pure time-conversion helpers shared by | root | 3 |
-| `lz4_kernel.h` | ifndef LZ4_KERNEL_H define LZ4_KERNEL_H | root | 4 |
+| `kernel/percpu_rq.c` | Docstring: kernel/percpu_rq.c -- Per-CPU runqueue hints and stealing. | - | 14 |
+| `kernel/printf.c` | include "kernel.h"  ============================================================ | - | 15 |
+| `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | - | 21 |
+| `kernel/redirect.c` | include "kernel.h"  ============================================================ | - | 7 |
+| `kernel/sched.c` | - | - | 136 |
+| `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | - | 8 |
+| `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | - | 10 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | - | 135 |
+| `kernel/spawn.c` | include "kernel.h" include "sched.h" include "vma.h" include "spawn.h" include " | - | 19 |
+| `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | - | 13 |
+| `kernel/symtab.c` | include "kernel.h"  ============================================================ | - | 9 |
+| `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | - | 31 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | - | 158 |
+| `kernel/syscalls_proc.c` | syscalls_proc.c - Process-management syscall handlers. | - | 21 |
+| `kernel/tick.c` | Docstring: Tick listener bus implementation. | - | 9 |
+| `kernel/time.c` | include "kernel.h" include "ktime.h"  ========================================== | - | 7 |
+| `kernel/vga_cursor.c` | Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c). | - | 14 |
+| `kernel/vga_fb.c` | - | - | 177 |
 | `make_usb.sh` | Build the MiniOS bootable USB image and optionally write it to a device.  Wraps  | root | 2 |
 | `mcp/__init__.py` | - | mcp | 0 |
 | `mcp/mcp_dbg_driver.py` | - | mcp | 6 |
@@ -87,23 +122,17 @@
 | `mcp/minios_mcp.py` | - | mcp | 50 |
 | `mcp/mutate_mcp.sh` | Mutation testing for the MiniOS MCP bridge. Every mutant is injected into a priv | mcp | 1 |
 | `mcp/test_minios_mcp.py` | - | mcp | 104 |
-| `minifetch.h` | Docstring: minifetch.h -- neofetch-style system screen contract. | root | 2 |
-| `minifs.h` | ifndef MINIFS_H define MINIFS_H  MiniFS: a minimal Unix-like filesystem for Mini | root | 76 |
 | `minifs_dump.py` | - | root | 12 |
 | `minifs_fsck.py` | - | root | 15 |
 | `mkfs.minifs.py` | - | root | 20 |
 | `mkramdisk.py` | - | root | 2 |
 | `mkroots.sh` | mkroots.sh - regenerate tls_roots.h from the DER files in tls_roots_src/.  Prove | root | 0 |
 | `mutate.sh` | Mutation testing for MiniOS.  Each mutation is applied to the source in place, t | root | 5 |
-| `net.h` | ifndef NET_H define NET_H  ========== Fixed slirp configuration (QEMU -nic user) | root | 59 |
 | `net/net.c` | MiniOS network stack: rtl8139 under QEMU slirp user networking. | net | 69 |
-| `net/rtl8139.c` | include "kernel.h" include "net.h" include "rtl8139.h" | net | 34 |
-| `net/rtl8139.h` | ifndef RTL8139_H define RTL8139_H | net | 8 |
+| `net/rtl8139.c` | include "kernel.h" include "net.h" include "net/rtl8139.h" | net | 34 |
 | `net/tls.c` | tls.c - TLS 1.2 client sessions for MiniOS. | net | 42 |
 | `net/tls_crypto.c` | tls_crypto.c - the crypto behind the kernel TLS 1.2 client. | net | 80 |
 | `net/tls_x509.c` | tls_x509.c - minimal X.509 DER parsing and chain verification. | net | 30 |
-| `pcspk.h` | ifndef PCSPK_H define PCSPK_H  define PCSPK_VOL_MIN     0 define PCSPK_VOL_MAX   | root | 9 |
-| `percpu_rq.h` | ifndef PERCPU_RQ_H define PERCPU_RQ_H  Docstring: percpu_rq.h -- Per-CPU runqueu | root | 14 |
 | `progs/asm/aes.s` | - | asm | 28 |
 | `progs/asm/cp.s` | - | asm | 2 |
 | `progs/asm/fib.s` | - | asm | 3 |
@@ -365,20 +394,7 @@
 | `progs/wl/wl_mini.h` | wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024). | wl | 57 |
 | `progs/wl/wlcomp.c` | wlcomp - Wayland-mini ring-3 compositor (ADR-0024). | wl | 11 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 31 |
-| `qga.h` | ifndef QGA_H define QGA_H  ========== QEMU guest agent channel (COM2, ISA 16550) | root | 29 |
-| `randmix.h` | ifndef RANDMIX_H define RANDMIX_H  randmix.h -- entropy mixer for getrandom (318 | root | 2 |
-| `rcu.h` | ifndef RCU_H define RCU_H  Docstring: rcu.h -- Read-copy-update, lite epoch edit | root | 18 |
-| `rtc.h` | ifndef RTC_H define RTC_H | root | 6 |
-| `sanitize.h` | ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point | root | 5 |
-| `sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | root | 27 |
-| `sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h" include " | root | 100 |
-| `shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | root | 7 |
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 48 |
-| `smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | root | 11 |
-| `spawn.h` | ifndef SPAWN_H define SPAWN_H  include "kernel.h" include "vma.h" include "sched | root | 9 |
-| `spinlock.h` | ifndef SPINLOCK_H define SPINLOCK_H  spinlock.h -- Lightweight spinlock for Mini | root | 22 |
-| `sync.h` | ifndef SYNC_H define SYNC_H  sync.h -- Blocking synchronization primitives (road | root | 36 |
-| `syscalls_proc.h` | ifndef SYSCALLS_PROC_H define SYSCALLS_PROC_H  syscalls_proc.h -- process-manage | root | 15 |
 | `test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the | root | 11 |
 | `test_http_server.py` | - | root | 3 |
 | `tests/host_aes.sh` | host_aes.sh - host-side verification for the AES-256-CTR command tools.  The min | tests | 3 |
@@ -410,13 +426,8 @@
 | `tests/test_vma_bench.c` | test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 10 |
 | `tests/test_wl.c` | Host test for progs/wl/wl_mini.h (make test-wl). | tests | 6 |
 | `tests/test_wm.c` | Docstring: Host test for wm_geom.h and wm_events.h (make test-wm). | tests | 6 |
-| `tick.h` | Docstring: Tick listener bus contract. | root | 14 |
-| `tls.h` | ifndef TLS_H define TLS_H  ========== TLS 1.2 client (RFC 5246) ========== | root | 73 |
-| `tls_port.h` | ifndef TLS_PORT_H define TLS_PORT_H  Portability shim between the MiniOS kernel  | root | 50 |
-| `tls_roots.h` | tls_roots.h - embedded CA roots (DER), generated by mkroots.sh. | root | 0 |
 | `tls_test.c` | tls_test.c - host-side tests for the kernel TLS stack. | root | 34 |
 | `tls_test.py` | - | root | 16 |
-| `tls_test_roots.h` | tls_test_roots.h - generated by tls_test.py; never built into the kernel. The te | root | 0 |
 | `tools/abi_stamp.c` | Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator. | tools | 2 |
 | `tools/boot_run.sh` | boot_run.sh -- boot the MiniOS image in QEMU and drive the shell over the serial | tools | 0 |
 | `tools/check_abi_numbers.py` | - | tools | 4 |
@@ -456,15 +467,4 @@
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
 | `tools/wm_layout_sync.py` | - | tools | 17 |
 | `tools/wm_scoped.sh` | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs ho | tools | 2 |
-| `vga_fb.h` | ifndef VGA_FB_H define VGA_FB_H  include <stdint.h> include "minios_abi.h" inclu | root | 125 |
 | `vma.c` | include "vma.h" | root | 14 |
-| `vma.h` | ifndef VMA_H define VMA_H | root | 21 |
-| `wm_events.h` | Docstring: Window event contract for the MiniOS desktop. | root | 39 |
-| `wm_focus.h` | Docstring: Focus manager contract for the MiniOS desktop. | root | 6 |
-| `wm_geom.h` | Docstring: Window geometry contract for the MiniOS desktop. | root | 11 |
-| `wm_layout.h` | Docstring: Unified layout contract for the MiniOS desktop. | root | 16 |
-| `wm_notify.h` | ifndef WM_NOTIFY_H define WM_NOTIFY_H  Docstring: Focus event bus for the MiniOS | root | 10 |
-| `wm_render.h` | Docstring: Render pipeline contract for the MiniOS desktop. | root | 5 |
-| `wm_tiling.h` | Docstring: Tiling layout contract for the MiniOS desktop. | root | 3 |
-| `wm_window.h` | Docstring: Unified window contract for the MiniOS desktop. | root | 12 |
-| `zip.h` | ifndef ZIP_H define ZIP_H  zip.h — MiniOS integration API for the miniz zip libr | root | 3 |

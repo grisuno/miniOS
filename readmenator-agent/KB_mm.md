@@ -27,7 +27,7 @@
   - `pt_free_data_pages` (function, line 474) `pt_free_data_pages(cr3);`
   - `_kernel_end` (variable, line 46) `extern char _kernel_end[];`
   - `PT_ALLOC_HDR` (macro, line 166) `#define PT_ALLOC_HDR`
-- Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `kernel.h`, `vga_fb.h`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/kernel.h`, `headers/vga_fb.h`
 
 ## kernel/mm/swap.c
 - Layer: utility
@@ -44,4 +44,4 @@
   - `SWAP_HDR_SECTORS` (macro, line 17) `#define SWAP_HDR_SECTORS`
   - `SWAP_MAX_SECTORS` (macro, line 18) `#define SWAP_MAX_SECTORS`
   - `SWAP_MAGIC` (macro, line 19) `#define SWAP_MAGIC`
-- Depends on: `ide.h`, `kernel.h`, `lz4_kernel.h`
+- Depends on: `headers/ide.h`, `headers/kernel.h`, `headers/lz4_kernel.h`

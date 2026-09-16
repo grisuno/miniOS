@@ -28,7 +28,7 @@
   - `expect` (function, line 15) `static void expect(const char *name, const char *manifest, int want)`
   - `main` (function, line 24) `int main(void)`
   - `printf` (function, line 20) `printf("FAIL: %s: want %d got %d\n", name, want, got);`
-- Depends on: `abi.h`, `progs/minios_abi.h`
+- Depends on: `headers/abi.h`, `progs/minios_abi.h`
 
 ## tests/test_batch.c
 - Layer: testing
@@ -41,7 +41,7 @@
   - `CHECK` (function, line 45) `CHECK(r == BATCH_OK, "clean batch returns OK");`
   - `printf` (function, line 100) `else printf("batch: %d failures\n", failures);`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
-- Depends on: `batch.h`
+- Depends on: `headers/batch.h`
 
 ## tests/test_doom_pwad.py
 - Layer: testing
@@ -110,7 +110,7 @@
   - `snprintf` (function, line 106) `snprintf(d.name, sizeof(d.name), "dev%d", i);`
   - `device_find` (function, line 141) `device_find("sb160")->audio->pcm_open(device_find("sb160"));`
   - `printf` (function, line 150) `printf("driver: ok\n");`
-- Depends on: `driver.h`, `kernel/string.c`
+- Depends on: `headers/driver.h`, `kernel/string.c`
 
 ## tests/test_fault.c
 - Layer: testing
@@ -133,7 +133,7 @@
   - `U_END` (macro, line 32) `#define U_END`
   - `TRUSTED_DIR` (macro, line 81) `#define TRUSTED_DIR`
   - `TRUSTED_LEN` (macro, line 82) `#define TRUSTED_LEN`
-- Depends on: `kernel/string.c`, `vma.h`
+- Depends on: `headers/vma.h`, `kernel/string.c`
 
 ## tests/test_file_assoc.c
 - Layer: testing
@@ -190,7 +190,7 @@
   - `futex_wait` (function, line 95) `futex_wait((unsigned long)&word_a, 1);`
   - `printf` (function, line 156) `else printf("futex: %d failures\n", failures);`
   - `CHECK` (macro, line 31) `#define CHECK(cond, msg)`
-- Depends on: `futex.h`
+- Depends on: `headers/futex.h`
 
 ## tests/test_hal_io.c
 - Layer: testing
@@ -206,7 +206,7 @@
   - `printf` (function, line 80) `printf("hal_io: ok\n");`
   - `HAL_IO_HOST_TEST` (macro, line 10) `#define HAL_IO_HOST_TEST`
   - `CHECK` (macro, line 22) `#define CHECK(cond, msg)`
-- Depends on: `arch/x86/hal_io.h`
+- Depends on: `headers/arch/x86/hal_io.h`
 
 ## tests/test_ktime.c
 - Layer: testing
@@ -216,7 +216,7 @@
   - `main` (function, line 15) `int main(void)`
   - `CHECK` (function, line 17) `CHECK(ktime_us_from_delta(0, 3000000UL) == 0, "zero delta");`
   - `CHECK` (macro, line 14) `#define CHECK(c, m)`
-- Depends on: `ktime.h`
+- Depends on: `headers/ktime.h`
 
 ## tests/test_modifiers.c
 - Layer: testing
@@ -229,7 +229,7 @@
   - `CHECK` (function, line 20) `CHECK(st.shift == 0 && st.super == 0, "init clears");`
   - `printf` (function, line 45) `else printf("modifiers: %d failures\n", failures);`
   - `CHECK` (macro, line 8) `#define CHECK(cond, msg)`
-- Depends on: `drivers/modifiers.h`
+- Depends on: `headers/drivers/modifiers.h`
 
 ## tests/test_notify.c
 - Layer: testing
@@ -245,7 +245,7 @@
   - `wm_notify_subscribe` (function, line 45) `wm_notify_subscribe(&bus, probe_handler);`
   - `printf` (function, line 56) `else printf("notify: %d failures\n", failures);`
   - `CHECK` (macro, line 8) `#define CHECK(cond, msg)`
-- Depends on: `wm_notify.h`
+- Depends on: `headers/wm_notify.h`
 
 ## tests/test_paint.c
 - Layer: testing
@@ -298,7 +298,7 @@
   - `rq_note_poll` (function, line 66) `rq_note_poll(0);`
   - `printf` (function, line 84) `else printf("percpu_rq: %d failures\n", failures);`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
-- Depends on: `percpu_rq.h`
+- Depends on: `headers/percpu_rq.h`
 
 ## tests/test_randmix.c
 - Layer: testing
@@ -309,7 +309,7 @@
   - `main` (function, line 23) `int main(void)`
   - `CHECK` (function, line 25) `CHECK(randmix64(0) == randmix64(0), "deterministic");`
   - `CHECK` (macro, line 16) `#define CHECK(c, m)`
-- Depends on: `randmix.h`
+- Depends on: `headers/randmix.h`
 
 ## tests/test_rcu.c
 - Layer: testing
@@ -329,7 +329,7 @@
   - `rcu_read_unlock` (function, line 88) `rcu_read_unlock();`
   - `printf` (function, line 95) `else printf("rcu: %d failures\n", failures);`
   - `CHECK` (macro, line 29) `#define CHECK(cond, msg)`
-- Depends on: `rcu.h`
+- Depends on: `headers/rcu.h`
 
 ## tests/test_rtc.c
 - Layer: testing
@@ -339,7 +339,7 @@
   - `main` (function, line 17) `int main(void)`
   - `CHECK` (function, line 19) `CHECK(rtc_days_from_civil(1970, 1, 1) == 0, "epoch is day zero");`
   - `CHECK` (macro, line 16) `#define CHECK(c, m)`
-- Depends on: `rtc.h`
+- Depends on: `headers/rtc.h`
 
 ## tests/test_sanitize.c
 - Layer: testing
@@ -363,7 +363,7 @@
   - `printf` (function, line 110) `else printf("sanitize: %d failures\n", failures);`
   - `EFAULT` (macro, line 12) `#define EFAULT`
   - `CHECK` (macro, line 40) `#define CHECK(cond, msg)`
-- Depends on: `kernel/string.c`, `sanitize.h`
+- Depends on: `headers/sanitize.h`, `kernel/string.c`
 
 ## tests/test_sync.c
 - Layer: testing
@@ -389,7 +389,7 @@
   - `mutex_note_waiter` (function, line 225) `mutex_note_waiter(&m, 2);`
   - `printf` (function, line 267) `else printf("sync: %d failures\n", failures);`
   - `CHECK` (macro, line 36) `#define CHECK(cond, msg)`
-- Depends on: `sync.h`
+- Depends on: `headers/sync.h`
 
 ## tests/test_theme.c
 - Layer: testing
@@ -427,7 +427,7 @@
   - `tick_run_desktop` (function, line 63) `tick_run_desktop();`
   - `printf` (function, line 113) `printf("tick: ok\n");`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
-- Depends on: `tick.h`
+- Depends on: `headers/tick.h`
 
 ## tests/test_vedit_build.c
 - Layer: testing
@@ -466,7 +466,7 @@
   - `vma_tree_insert` (function, line 157) `vma_tree_insert(&vma_live_root, (unsigned long)i * 0x1000, 0x1000);`
   - `printf` (function, line 176) `printf("vma: ok\n");`
   - `CHECK` (macro, line 19) `#define CHECK(cond, msg)`
-- Depends on: `vma.h`
+- Depends on: `headers/vma.h`
 
 ## tests/test_vma_bench.c
 - Layer: testing
@@ -483,7 +483,7 @@
   - `vma_tree_insert` (function, line 40) `vma_tree_insert(&vma_live_root, 0x500000ul + (unsigned long)i * 0x1000, 0x1000);`
   - `vma_tree_find` (function, line 43) `vma_tree_find(vma_live_root, 0x500000ul + (unsigned long)i * 0x1000);`
   - `LIST_MAX` (macro, line 20) `#define LIST_MAX`
-- Depends on: `kernel/time.c`, `vma.h`
+- Depends on: `headers/vma.h`, `kernel/time.c`
 
 ## tests/test_wl.c
 - Layer: testing
@@ -509,4 +509,4 @@
   - `wm_clamp_point` (function, line 86) `wm_clamp_point(&cx, &cy, 800, 600);`
   - `printf` (function, line 379) `printf("wm: ok\n");`
   - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
-- Depends on: `wm_events.h`, `wm_focus.h`, `wm_geom.h`, `wm_layout.h`, `wm_render.h`, `wm_tiling.h`, `wm_window.h`
+- Depends on: `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`

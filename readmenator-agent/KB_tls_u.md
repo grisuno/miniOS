@@ -17,7 +17,7 @@
   - `close` (function, line 103) `close(fd);`
   - `_POSIX_C_SOURCE` (macro, line 13) `#define _POSIX_C_SOURCE`
   - `_DEFAULT_SOURCE` (macro, line 15) `#define _DEFAULT_SOURCE`
-- Depends on: `kernel/string.c`, `tls.h`, `tls_port.h`
+- Depends on: `headers/tls.h`, `headers/tls_port.h`, `kernel/string.c`
 
 ## progs/tls_u/tls_u_port.c
 - Layer: utility

@@ -80,11 +80,11 @@
   - `NET_TCP_ESTABLISHED` (macro, line 361) `#define NET_TCP_ESTABLISHED`
   - `NET_TCP_FIN_SENT` (macro, line 362) `#define NET_TCP_FIN_SENT`
   - `NET_TCP_DEAD` (macro, line 363) `#define NET_TCP_DEAD`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`, `tls.h`
+- Depends on: `headers/kernel.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/tls.h`
 
 ## net/rtl8139.c
 - Layer: utility
-- Doc: include "kernel.h" include "net.h" include "rtl8139.h"
+- Doc: include "kernel.h" include "net.h" include "net/rtl8139.h"
 - Language: c
 - Symbols:
   - `outl_port` (function, line 26) `static void outl_port(unsigned short port, unsigned int val)`
@@ -121,23 +121,7 @@
   - `RTL_REG_CBR` (macro, line 48) `#define RTL_REG_CBR`
   - `RTL_REG_9346CR` (macro, line 49) `#define RTL_REG_9346CR`
   - `RTL_REG_CONFIG1` (macro, line 50) `#define RTL_REG_CONFIG1`
-- Depends on: `kernel.h`, `net.h`, `net/rtl8139.h`
-
-## net/rtl8139.h
-- Layer: utility
-- Doc: ifndef RTL8139_H define RTL8139_H
-- Language: h
-- Symbols:
-  - `rtl_present` (function, line 18) `int rtl_present(void);`
-  - `rtl_init` (function, line 21) `void rtl_init(void);`
-  - `rtl_send` (function, line 25) `int rtl_send(const unsigned char *frame, unsigned len);`
-  - `net_rx_handle_frame` (function, line 28) `* net_rx_handle_frame (the protocol demux in net.c). */ void rtl_poll(void);`
-  - `rtl_get_mac` (function, line 32) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN]);`
-  - `rtl_iobase` (function, line 35) `unsigned short rtl_iobase(void);`
-  - `rtl_counters` (function, line 38) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
-  - `RTL8139_H` (macro, line 2) `#define RTL8139_H`
-- Depends on: `net.h`
-- Imported by: `net/net.c`, `net/rtl8139.c`
+- Depends on: `headers/kernel.h`, `headers/net.h`, `headers/net/rtl8139.h`
 
 ## net/tls.c
 - Layer: utility
@@ -193,7 +177,7 @@
   - `sha256_init` (function, line 494) `sha256_init(&s->hs_hash);`
   - `volatile` (function, line 791) `__asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));`
   - `PORT_IO_DEFINED` (macro, line 809) `#define PORT_IO_DEFINED`
-- Depends on: `tls.h`, `tls_port.h`, `tls_roots.h`
+- Depends on: `headers/tls.h`, `headers/tls_port.h`, `headers/tls_roots.h`
 
 ## net/tls_crypto.c
 - Layer: utility
@@ -318,7 +302,7 @@
   - `TLS_MEMSET` (function, line 111) `TLS_MEMSET(pad, 0, sizeof(pad));`
   - `word` (function, line 326) `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */ r.hi = (v.hi >> 1) ^ (0xE100000000000000ULL & mask);`
   - `TLS_BN_WORDS` (macro, line 534) `#define TLS_BN_WORDS`
-- Depends on: `tls.h`, `tls_port.h`
+- Depends on: `headers/tls.h`, `headers/tls_port.h`
 
 ## net/tls_x509.c
 - Layer: utility
@@ -367,4 +351,4 @@
   - `ecdsa_verify` (function, line 515) `return ecdsa_verify(1, issuer_key->qx, issuer_key->qy, d384, 48, cert->sig, cert->sig_len);`
   - `TLS_FREE` (function, line 577) `done: TLS_FREE(certs);`
   - `TLS_SAN_MAX` (macro, line 170) `#define TLS_SAN_MAX`
-- Depends on: `tls.h`, `tls_port.h`
+- Depends on: `headers/tls.h`, `headers/tls_port.h`

@@ -32,7 +32,7 @@
   - `ramdisk_read` (function, line 148) `ramdisk_read(f->rf, &c, f->pos, 1);`
   - `kprintf` (function, line 227) `kprintf("kfile: corrupt handle (rf=%lx vfs=%lx) on seek - refusing\n", (unsigned long)f->rf, (unsigned long)f->vfs);`
   - `ramdisk_write` (function, line 264) `ramdisk_write(f->rf, f->wbuf, base, f->wsize);`
-- Depends on: `kernel.h`, `minifs.h`
+- Depends on: `headers/kernel.h`, `headers/minifs.h`
 
 ## fs/minifs.c
 - Layer: utility
@@ -114,7 +114,7 @@ void minifs_journal_touch(unsigned int phys)`
   - `block_set_base` (function, line 1210) `block_set_base(guess);`
   - `DE_NAME` (macro, line 12) `#define DE_NAME(de)`
   - `DE_NAME_W` (macro, line 13) `#define DE_NAME_W(de)`
-- Depends on: `block.h`, `ide.h`, `kernel.h`, `lz4_kernel.h`, `minifs.h`
+- Depends on: `headers/block.h`, `headers/ide.h`, `headers/kernel.h`, `headers/lz4_kernel.h`, `headers/minifs.h`
 
 ## fs/ramdisk.c
 - Layer: infrastructure
@@ -146,7 +146,7 @@ void minifs_journal_touch(unsigned int phys)`
   - `RD_ENTRY_SIZE` (macro, line 9) `#define RD_ENTRY_SIZE`
   - `RD_DATA_MIN` (macro, line 10) `#define RD_DATA_MIN`
   - `RD_DATA_SPARE` (macro, line 11) `#define RD_DATA_SPARE`
-- Depends on: `kernel.h`
+- Depends on: `headers/kernel.h`
 
 ## fs/vfs.c
 - Layer: utility
@@ -190,7 +190,7 @@ void minifs_journal_touch(unsigned int phys)`
   - `minifs_truncate` (function, line 239) `return minifs_truncate(h->ino, size);`
   - `VFS_MAX_MOUNTS` (macro, line 7) `#define VFS_MAX_MOUNTS`
   - `VFS_PREFIX_LEN` (macro, line 9) `#define VFS_PREFIX_LEN`
-- Depends on: `kernel.h`, `minifs.h`
+- Depends on: `headers/kernel.h`, `headers/minifs.h`
 
 ## fs/zip.c
 - Layer: utility
@@ -217,4 +217,4 @@ static int zip_sanitize_name(con...`
   - `mz_zip_reader_end` (function, line 248) `mz_zip_reader_end(&zip);`
   - `vga_puts` (function, line 264) `vga_puts("zip: cannot initialise archive\n");`
   - `mz_zip_writer_end` (function, line 310) `mz_zip_writer_end(&zip);`
-- Depends on: `kernel.h`
+- Depends on: `headers/kernel.h`

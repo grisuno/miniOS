@@ -276,7 +276,7 @@
   - `WL_FONT_H` (macro, line 62) `#define WL_FONT_H`
   - `WL_TAG_MAX` (macro, line 63) `#define WL_TAG_MAX`
   - `WL_ENT_MAX` (macro, line 64) `#define WL_ENT_MAX`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`, `vga_fb.h`
+- Depends on: `headers/vga_fb.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ## progs/src/ftest.c
