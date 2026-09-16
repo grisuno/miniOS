@@ -2102,26 +2102,26 @@ system would not exist.
   reusing the same back-buffer infrastructure as DOOM.
 - [MicroPython](https://github.com/micropython/micropython), by Damien George and the MicroPython contributors: the
   unix-port `minios` variant runs unmodified sources as ring-3 programs.
-- Lua, by the PUC-Rio team (Roberto Ierusalimschy, Luiz Henrique de
+- [Lua.org](https://www.lua.org/), by the PUC-Rio team (Roberto Ierusalimschy, Luiz Henrique de
   Figueiredo, Waldemar Celes): the 5.4 reference interpreter runs as a
   ring-3 static ELF.
-- Nuklear, by Dmitry Hrabrov (vurtun): the single-header immediate-mode
+- [Nuklear](https://github.com/vurtun/nuklear), by Dmitry Hrabrov (vurtun): the single-header immediate-mode
   UI library behind the node editor, the file browser, the paint program,
   vedit and every other graphical tool.
-- Nuked-OPL3, by nukeykt: the cycle-accurate YMF262 emulator that renders
+- [Nuked-OPL3](https://github.com/nukeykt/Nuked-OPL3), by nukeykt: the cycle-accurate YMF262 emulator that renders
   FM audio for the piano at ring 3.
-- Lexbor, by Alexander Borisov and contributors: the HTML parser behind
+- [Lexbor](https://github.com/lexbor/lexbor), by Alexander Borisov and contributors: the HTML parser behind
   the real FreeDom engine port.
-- miniz, by Rich Geldreich and contributors: the zip reader and writer
+- [miniz](https://github.com/richgel999/miniz), by Rich Geldreich and contributors: the zip reader and writer
   behind the `zip` and `unzip` shell builtins.
-- dlmalloc, by Doug Lea: the kernel heap allocator.
+- [dlmalloc](https://github.com/ennorehling/dlmalloc), by Doug Lea: the kernel heap allocator.
 - [stb](https://github.com/nothings/stb), by Sean Barrett and contributors: `stb_image` decodes the PNG
   previews, icons and paint files.
-- xxHash, by Yann Collet and contributors: the checksums behind the
+- [xxHash](https://github.com/cyan4973/xxhash), by Yann Collet and contributors: the checksums behind the
   integrity selftests.
 - The pokecrystal disassembly project and its community: the data source
   the Pokemon target builds from. [gb-recompiled](https://github.com/arcanite24/gb-recompiled)
-- QEMU, by Fabrice Bellard and the QEMU developers: the machine MiniOS
+- [QEMU](https://www.qemu.org/), by Fabrice Bellard and the QEMU developers: the machine MiniOS
   boots, tests and debugs on every day of development.
 - raycastlib, Public domain ray casting library, [Pokitto demos](https://gitlab.com/drummyfish/Pokitto-Raycasting) 
 
