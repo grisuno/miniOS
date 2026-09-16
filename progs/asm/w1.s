@@ -4,6 +4,10 @@ main:
     pushq %rbp
     movq %rsp, %rbp
     subq $80, %rsp
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq $1, %rax
     pushq %rax
     leaq .Lstr1(%rip), %rax
@@ -13,10 +17,6 @@ main:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call write
     movq %r12, %rsp

@@ -62,16 +62,15 @@ js_read_all:
     subq $96, %rsp
     movq %rdi, -16(%rbp)
     movq %rsi, -32(%rbp)
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     leaq .Lstr1(%rip), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fopen
     movq %r12, %rsp
@@ -87,6 +86,10 @@ js_read_all:
     leave
     ret
 .L8:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -80(%rbp), %rax
     pushq %rax
     movq $0, %rax
@@ -96,36 +99,32 @@ js_read_all:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fseek
     movq %r12, %rsp
     popq %r12
     movq -32(%rbp), %rax
     pushq %rax
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call ftell
     movq %r12, %rsp
     popq %r12
     popq %rcx
     movq %rax, (%rcx)
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call rewind
     movq %r12, %rsp
@@ -140,13 +139,13 @@ js_read_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L10
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -157,6 +156,10 @@ js_read_all:
 .L10:
     leaq -48(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -32(%rbp), %rax
     movq (%rax), %rax
     pushq %rax
@@ -165,10 +168,6 @@ js_read_all:
     addq %rcx, %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call malloc
     movq %r12, %rsp
@@ -181,13 +180,13 @@ js_read_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L12
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -198,6 +197,9 @@ js_read_all:
 .L12:
     leaq -64(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -211,23 +213,19 @@ js_read_all:
     movq 16(%rsp), %rsi
     movq 8(%rsp), %rdx
     movq 0(%rsp), %rcx
-    addq $32, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fread
     movq %r12, %rsp
     popq %r12
     popq %rcx
     movq %rax, (%rcx)
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -242,13 +240,13 @@ js_read_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L14
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
@@ -952,6 +950,9 @@ js_key_match:
     subq $80, %rsp
     movq %rdi, -16(%rbp)
     movq %rsi, -32(%rbp)
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq js_str(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
@@ -964,10 +965,6 @@ js_key_match:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call strcmp
     movq %r12, %rsp
@@ -2493,13 +2490,13 @@ js_indent:
     movq %rax, (%rcx)
     jmp .L338
 .L336:
-    movq $32, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $32, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -2529,13 +2526,13 @@ js_print_str:
     movq %rsp, %rbp
     subq $80, %rsp
     movq %rdi, -16(%rbp)
-    movq $34, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $34, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -2589,24 +2586,24 @@ js_print_str:
 .L355:
     cmpq $0, %rax
     je .L356
-    movq $92, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $92, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
     popq %r12
-    movsbq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movsbq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -2622,24 +2619,24 @@ js_print_str:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L358
-    movq $92, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $92, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
     popq %r12
-    movq $110, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $110, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -2655,24 +2652,24 @@ js_print_str:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L360
-    movq $92, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $92, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
     popq %r12
-    movq $116, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $116, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -2688,37 +2685,37 @@ js_print_str:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L362
-    movq $92, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $92, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
     popq %r12
-    movq $114, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $114, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
     popq %r12
     jmp .L363
 .L362:
-    movsbq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movsbq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -2733,13 +2730,13 @@ js_print_str:
     movq %rcx, %rax
     jmp .L352
 .L353:
-    movq $34, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $34, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -2780,13 +2777,13 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L392
-    leaq .Lstr7(%rip), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr7(%rip), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -2809,6 +2806,10 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L394
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     leaq js_num(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
@@ -2825,10 +2826,6 @@ js_print_value:
 .L397:
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -2851,6 +2848,9 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L398
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr10(%rip), %rax
     pushq %rax
     leaq js_num(%rip), %rax
@@ -2863,10 +2863,6 @@ js_print_value:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -2889,6 +2885,10 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L400
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     leaq js_str(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
@@ -2898,10 +2898,6 @@ js_print_value:
     movq (%rax), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_print_str
     movq %r12, %rsp
@@ -2924,13 +2920,13 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L402
-    movq $123, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $123, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -2950,13 +2946,13 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L404
-    movq $10, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $10, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -2988,6 +2984,10 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L407
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -2995,14 +2995,14 @@ js_print_value:
     addq %rcx, %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_indent
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     leaq js_key(%rip), %rax
     pushq %rax
     movq -64(%rbp), %rax
@@ -3012,25 +3012,24 @@ js_print_value:
     movq (%rax), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_print_str
     movq %r12, %rsp
     popq %r12
-    leaq .Lstr11(%rip), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr11(%rip), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -64(%rbp), %rax
     pushq %rax
     movq -32(%rbp), %rax
@@ -3041,10 +3040,6 @@ js_print_value:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_print_value
     movq %r12, %rsp
@@ -3069,25 +3064,25 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L408
-    movq $44, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $44, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
     popq %r12
 .L408:
-    movq $10, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $10, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -3109,24 +3104,24 @@ js_print_value:
     movq %rax, (%rcx)
     jmp .L406
 .L407:
-    movq -32(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -32(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call js_indent
     movq %r12, %rsp
     popq %r12
-    movq $125, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $125, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -3134,13 +3129,13 @@ js_print_value:
     leave
     ret
 .L402:
-    movq $91, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $91, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -3160,13 +3155,13 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L410
-    movq $10, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $10, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -3198,6 +3193,10 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L413
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -3205,14 +3204,13 @@ js_print_value:
     addq %rcx, %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_indent
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -64(%rbp), %rax
     pushq %rax
     movq -32(%rbp), %rax
@@ -3223,10 +3221,6 @@ js_print_value:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_print_value
     movq %r12, %rsp
@@ -3251,25 +3245,25 @@ js_print_value:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L414
-    movq $44, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $44, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
     popq %r12
 .L414:
-    movq $10, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $10, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -3291,24 +3285,24 @@ js_print_value:
     movq %rax, (%rcx)
     jmp .L412
 .L413:
-    movq -32(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -32(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call js_indent
     movq %r12, %rsp
     popq %r12
-    movq $93, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $93, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
@@ -3343,6 +3337,9 @@ js_find_member:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L421
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq js_key(%rip), %rax
     pushq %rax
     movq -48(%rbp), %rax
@@ -3355,10 +3352,6 @@ js_find_member:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call strcmp
     movq %r12, %rsp
@@ -3602,16 +3595,15 @@ js_query:
     je .L476
     leaq -48(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     leaq -128(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_find_member
     movq %r12, %rsp
@@ -3731,16 +3723,15 @@ js_query:
 .L484:
     leaq -48(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq -160(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_array_at
     movq %r12, %rsp
@@ -3793,13 +3784,13 @@ main:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L502
-    leaq .Lstr16(%rip), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr16(%rip), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call puts
     movq %r12, %rsp
@@ -3810,6 +3801,9 @@ main:
 .L502:
     leaq -48(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -3822,10 +3816,6 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_read_all
     movq %r12, %rsp
@@ -3838,6 +3828,9 @@ main:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L504
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr17(%rip), %rax
     pushq %rax
     movq -32(%rbp), %rax
@@ -3850,10 +3843,6 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3945,6 +3934,9 @@ main:
 .L509:
     cmpq $0, %rax
     je .L510
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr18(%rip), %rax
     pushq %rax
     movq -32(%rbp), %rax
@@ -3957,21 +3949,17 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
     popq %r12
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
@@ -3991,6 +3979,9 @@ main:
     je .L512
     leaq -96(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -80(%rbp), %rax
     pushq %rax
     movq -32(%rbp), %rax
@@ -4003,10 +3994,6 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_query
     movq %r12, %rsp
@@ -4022,6 +4009,9 @@ main:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L514
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr19(%rip), %rax
     pushq %rax
     movq -32(%rbp), %rax
@@ -4034,21 +4024,17 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
     popq %r12
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
@@ -4057,38 +4043,37 @@ main:
     leave
     ret
 .L514:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -96(%rbp), %rax
     pushq %rax
     movq $0, %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_print_value
     movq %r12, %rsp
     popq %r12
-    movq $10, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $10, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
     popq %r12
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
@@ -4097,38 +4082,37 @@ main:
     leave
     ret
 .L512:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -80(%rbp), %rax
     pushq %rax
     movq $0, %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call js_print_value
     movq %r12, %rsp
     popq %r12
-    movq $10, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $10, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call putchar
     movq %r12, %rsp
     popq %r12
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp

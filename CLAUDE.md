@@ -84,6 +84,56 @@ reproducible from those upstreams alone, so:
   `bin/` (Linux ELFs + command path), `cvm/` (CVM modules), `src/` (C
   sources), `asm/` (miniGCC assembly), `docs/`.
 
+### Toolchain kernel-build contract (sibling repos miniGCC/ld/cvm)
+The end state is that the kernel itself builds through the hosted chain
+(`minigcc.o` + `ld.o` on the ramdisk), with `cvm` in lockstep: any asm
+miniGCC emits, `ld` assembles/links into both ELF and CVM, and `cvm2`
+runs every bytecode `ld` generates. The three repos move as one; a gap
+lands in all three specs together. Feature demand is survey-verified, not
+assumed: `tools/kernel_feature_survey.py` scans this tree for function
+pointers, asm constraints, wide calls, unions, `long long`, bitfields,
+privileged mnemonics and section attributes, and every SDD claim about a
+gap must reproduce through it first.
+
+- miniGCC landed: `D`/`S` extended-asm constraints (fixed homes
+  `%rdi`/`%rsi`, scratch pool excludes pinned registers, overflow is
+  fail-closed `too many register asm operands`, `=&` earlyclobber
+  accepted; template `%N` stays full-width, narrow outputs go through
+  literal `%%dil`/`%%di`/`%%edi` stores). Proven by `tests/t_asm_ds.c`
+  (+`neg_asm_ds.c`) in `test_all.sh`, 42/42 green, 5 scoped mutants dead.
+  Still open, in survey order: function pointers (kernel tables
+  `vfs_ops_t`/syscall dispatch; landed: `(*name)(params)` declarators
+  for locals/globals/params/members/arrays, `call *%r10` codegen,
+  fail-closed arithmetic/callability, proven by `tests/t_fnptr.c`
+  (+4 `neg_fnptr*.c`) with 13 scoped mutants dead), >6-arg stack spill
+  (`ksyscall` takes 7; landed: any fixed count through registers plus
+  ordered stack spill with static parity padding, proven by
+  `tests/t_args7.c` plus the `tools/test_call_align.py` probe,
+  pad-inversion mutant dead), `unsigned`/`signed`/`long long` plus user
+  `typedef` and struct-member capture (lexer folding with multi-declarator
+  reseeds in statements, typedefs and `for`-init; struct `unsigned` capture
+  with `long`-as-8; scalar/chained/fnptr alias records; proven by
+  `tests/t_unsigned.c` + `t_struct_ul.c` + `t_longlong.c` +
+  `neg_typedef_arrcont.c` with 12 scoped mutants dead, 2 documented
+  equivalents); unions/bitfields are deferred with survey proof
+  (only ring-3 host-built programs use them). Standing gate found while
+  proving A7: miniGCC models plain `int` as 8 bytes (`sizeof(int) == 8`,
+  64-bit wrap) but the kernel needs LP64 (`minifs.h` superblock
+  `unsigned int` fields are 4 bytes on disk), so an LP64 follow-up (A8)
+  gates B1; integer `<`/`>` also stay signed-only (u64 >= 2^63 compares
+  wrong). Reusable probes live in `tools/` by contract:
+  `tools/kernel_feature_survey.py` (survey-verified feature demand, the
+  single source every SDD gap claim must reproduce through) and
+  `tools/test_call_align.py` (6/7/8-arg direct plus 7-arg indirect stack
+  alignment reporting).
+- ld open: `call *`/`jmp *` encodings, privileged EA forms
+  (`in`/`out`/`lidt`/`lgdt`/`mov-cr`, today documented future work),
+  kernel object/link mode per its own spec.
+- cvm open: indirect-call opcode + `ld -f cvm` lowering + parity matrix.
+- Method per milestone: SDD spec, TDD failing test, scoped suite +
+  scoped mutants on touched files only; full `mutate.sh` + `test_bdd.sh`
+  run once at the very end because they take hours.
+
 ### Compression tools (`lzss` / `unlzss`)
 `progs/src/lzss.c` is a single source that builds two command-path binaries:
 the linker emits the same program as `bin/lzss` and `bin/unlzss`, and the
@@ -1201,6 +1251,28 @@ isolated `proc_spawn_elf` window. Backup/restore are symmetric by
 construction; the `procs[0].kstack` save is unconditional because an
 ET_REL child exits through `klongjmp` past the entry write-back.
 
+An ET_REL child never runs on the caller's kernel stack: `k_run_rel`
+(`kernel/exec.c`) switches to a dedicated 256 KB heap stack through
+`k_run_on_stack` (`arch/x86/ctx_sw.S`) and frees it on either return
+path (normal return or `kexit` longjmp, whose setjmp sits on the
+caller stack with intact frames). The reasons are measured, not
+assumed: a SYS_SPAWN arriving from an isolated window runs on that
+process's 16 KB pool slot, and minigcc carries a 66 KB single frame
+in `parse_function`, so the slot overflowed into whatever the pool
+abuts -- observed as a silently lost MiniFS mount with no crash
+(file browser -> vedit -> Ctrl+R killed every later MiniFS access).
+OOM keeps the historical caller-stack behavior, fail-closed never
+applies here because refusing the spawn would break the IDE build
+key. The child entry is delivered with rsp%16==8, the de facto
+convention of the legacy spawn path (which tail-calls into it) that
+the sibling-built toolchain objects require: minigcc's
+`parse_function` faults its SIMD spills on a normalized rsp%16==0
+(proven: E=0 breaks fib.c with #GP, E=8 fixes it; all five in-tree
+ET_REL objects pass the gate under E=8). A future ET_REL built for
+strict SysV E=0 with its own SIMD spills would break the other way;
+that conflict is resolved in the toolchain repos, never by silently
+changing E here.
+
 ### Audio Strategy (`driver.h` + `drivers/sb16.c`)
 The PCM sink joins the tone sink in the device registry: `audio_ops_t`
 carries `present`/`pcm_open`/`pcm_close`/`pcm_submit` beside the tone
@@ -1401,6 +1473,15 @@ never reaches `poweroff`, so the kernel hangs (or the machine resets) while
 the ring-0 `stb.o` selftest runs. It fails deterministically and predates
 the zip/miniz work; it is tracked separately from this feature and is not a
 regression.
+
+Known limitation (pre-existing, under investigation): `fptest` passes in
+isolation but dies when run late in a churned session (after the lisp
+suite or the full `test_all.sh`, and on an immediate second run): the
+guest faults jumping to the user stack top (`EXCEPTION 0e`, fetch at
+`0x0BFFFFxx`) or halts silently. It is independent of the spawn and
+mount work — `thdemo` + `fptest` passes, and none of the changed lines
+execute on fptest's path (`k_exec_user`, clone, futex, mmap, FPU) —
+so it belongs to thread/proc teardown, not to this feature.
 
 ### Network (rtl8139 + slirp)
 The kernel owns an rtl8139 NIC under QEMU user networking (slirp) with the
@@ -1684,6 +1765,20 @@ A working directory (`cwd`) and directory-aware builtins, over a merged view
 of the ramdisk (flat namespace) and MiniFS (real directory-capable filesystem
 on the IDE disk):
 
+- **MiniFS mount is a superblock probe, never a computed LBA.**
+  `minifs_mount` tries the computed guess first and then every
+  2048-aligned candidate for a magic + version + block-size hit, because
+  the `KERNEL_SECTORS` fast path only ever reaches stage2: this unit
+  sees the ramdisk-size fallback, which underestimates the kernel image
+  and lands before the real partition (every icon, the wallpaper and
+  the whole toolchain fallback silently vanished the day the kernel
+  grew past the 2048-sector guess). Two companions ride with the
+  probe: `block_set_base` invalidates the direct-mapped block cache
+  (it is keyed by block number only, so a base change without a flush
+  serves the old partition's data), and the probe reads through a
+  4 KB scratch buffer, never `block_read` straight into the 48-byte
+  superblock (the old code smeared 4096 bytes over the neighbouring
+  `.bss` on every boot).
 - `pwd` prints the cwd (`/` for root). `cd [dir]` changes it: bare `cd` goes
   to root, `cd ..` pops one level, anything else resolves against the current
   cwd. A directory is any ramdisk name ending in `/` **or** a MiniFS directory
@@ -1843,7 +1938,11 @@ printed after release, so console I/O never runs with `sched_lock` held.
   (GPRs are refused, not forged: the call path clobbers them, so only
   preempted pids show truthful GPRs). `dump` hexdumps 1..256 bytes;
   operands are decimal or `0x`-hex through `shell_parse_u64` (strict,
-  fail-closed on garbage/overflow). A remote RSP stub is deliberately out
+  fail-closed on garbage/overflow). A fault whose rip and rsp both lie
+  in the kernel heap additionally prints 16 bytes at rip (`heapcode`)
+  and 4 words at rsp (`heapstack`): a #GP there is usually an
+  alignment fault in ring-0 code, and the opcode bytes name it without
+  a debugger attached. A remote RSP stub is deliberately out
   of scope: the serial console belongs to the shell, so a stub here would
   fight the prompt for every byte; `gdb qemu` prints the `make gdb` +
    `target remote :1234` hookup for real breakpoints and single-step.

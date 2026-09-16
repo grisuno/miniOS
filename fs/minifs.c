@@ -609,6 +609,7 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
                     next->inode = 0;
                     next->rec_len = (unsigned short)extra;
                     next->name_len = 0;
+                    next->file_type = 0;
                 }
                 minifs_journal_touch(phys);
                 return block_write(phys, buf);
@@ -647,28 +648,42 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
         off += de->rec_len;
     }
     if (last_de) {
-        unsigned int avail = MINIFS_BLOCK_SIZE -
-            ((unsigned long)last_de - (unsigned long)buf) - last_de->name_len
-            - sizeof(MiniFSDirEntry);
-        avail = roundup4(avail);
+        /* Tail append: last_de is the final record in the block, so free
+         * space is everything past it, BLOCK - (O + tail), where tail is
+         * last_de shrunk to its own minimum. The old formula added
+         * (tail - rec_len) to a rounded remainder, which collapses to the
+         * padding bytes and both starves appends (spurious new blocks)
+         * and, when it did fit, stamped ne->rec_len from the previous
+         * name length instead of the block remainder (the saves/
+         * minicraft.map entry landed with rec 16 for a 13-char name,
+         * overlapping the next header). A last record shorter than its
+         * own minimum is a corrupt chain: fail closed, never overlap. */
+        unsigned long last_off = (unsigned long)last_de - (unsigned long)buf;
         if (last_de->inode != 0) {
             unsigned int tail = roundup4(MINIFS_DIR_ENTRY_HDR_SIZE + last_de->name_len);
-            avail += tail - last_de->rec_len;
-            if (avail >= entry_len) {
-                unsigned int saved = last_de->rec_len;
+            unsigned int new_off;
+            if (last_de->rec_len < tail)
+                return -1;
+            if (tail > MINIFS_BLOCK_SIZE - last_off)
+                return -1;
+            new_off = (unsigned int)last_off + tail;
+            if (MINIFS_BLOCK_SIZE - new_off >= entry_len) {
                 last_de->rec_len = (unsigned short)tail;
                 MiniFSDirEntry *ne = (MiniFSDirEntry *)((char *)last_de + tail);
                 ne->inode = (unsigned int)child_ino;
                 ne->name_len = (unsigned char)namelen;
                 ne->file_type = type;
-                ne->rec_len = (unsigned short)(saved + last_de->name_len +
-                    sizeof(MiniFSDirEntry) - tail);
+                ne->rec_len = (unsigned short)(MINIFS_BLOCK_SIZE - new_off);
                 kmemcpy(DE_NAME_W(ne), name, namelen);
                 minifs_journal_touch(last_phys);
                 return block_write(last_phys, buf);
             }
         } else {
-            if (avail >= entry_len) {
+            /* Free tail slot: reuse it in place only when the new name
+             * fits inside its own record. The old code checked free space
+             * past the slot instead, so a 13-char name landed in a
+             * 16-byte slot and bled 5 bytes into the next header. */
+            if (last_de->rec_len >= entry_len) {
                 last_de->inode = (unsigned int)child_ino;
                 last_de->name_len = (unsigned char)namelen;
                 last_de->file_type = type;
@@ -1178,6 +1193,53 @@ int minifs_mount(void) {
 
     fs_lba_start = (fs_lba_raw + 2047) & ~2047u;
 
+    /* The KERNEL_SECTORS fast path is compiled into stage2 only; this
+     * translation unit never sees it, and the ramdisk-size fallback above
+     * underestimates the kernel image (ramdisk != kernel.bin), so a
+     * computed LBA silently lands before the real partition. Probe the
+     * disk for the superblock instead: try the computed guess first,
+     * then every 2048-sector aligned candidate. The first magic + version
+     * + block-size hit wins. */
+    {
+        MiniFSSuper probe;
+        unsigned char blk[MINIFS_BLOCK_SIZE];
+        unsigned int cand;
+        int found = 0;
+        unsigned int guess = fs_lba_start;
+        if (guess + 8 <= total_sectors) {
+            block_set_base(guess);
+            if (block_read(0, blk) == 0) {
+                kmemcpy(&probe, blk, sizeof(probe));
+                if (probe.magic == MINIFS_MAGIC &&
+                    probe.version == MINIFS_VERSION &&
+                    probe.block_size == MINIFS_BLOCK_SIZE) {
+                    fs_sb = probe;
+                    fs_lba_start = guess;
+                    found = 1;
+                }
+            }
+        }
+        for (cand = 2048; !found && cand + 8 <= total_sectors; cand += 2048) {
+            if (cand == guess)
+                continue;
+            block_set_base(cand);
+            if (block_read(0, blk) < 0)
+                continue;
+            kmemcpy(&probe, blk, sizeof(probe));
+            if (probe.magic == MINIFS_MAGIC &&
+                probe.version == MINIFS_VERSION &&
+                probe.block_size == MINIFS_BLOCK_SIZE) {
+                fs_sb = probe;
+                fs_lba_start = cand;
+                found = 1;
+            }
+        }
+        if (!found) {
+            kprintf("minifs: no valid filesystem, run mkfs first\n");
+            return -1;
+        }
+    }
+
     unsigned int fs_sectors = total_sectors - fs_lba_start;
     if (fs_sectors < SECTORS_PER_BLOCK * 4) {
         kprintf("minifs: not enough space after kernel (%u sectors, start=%u)\n",
@@ -1187,11 +1249,8 @@ int minifs_mount(void) {
 
     kprintf("minifs: looking for superblock at LBA %u\n", fs_lba_start);
     block_set_base(fs_lba_start);
-    if (block_read(0, (void *)&fs_sb) < 0) return -1;
-    if (fs_sb.magic != MINIFS_MAGIC) {
-        kprintf("minifs: no valid filesystem, run mkfs first\n");
-        return -1;
-    }
+    /* fs_sb already holds the probed superblock; the self-check below
+     * validates it. */
     /* Boot-time fsck-lite (boyscout fix for no-journaling corruption):
      * fail closed on an impossible superblock instead of mounting garbage
      * and corrupting further. The full checker stays host-side

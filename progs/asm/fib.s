@@ -18,6 +18,10 @@ fib:
     leave
     ret
 .L2:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -26,15 +30,15 @@ fib:
     movq %rcx, %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fib
     movq %r12, %rsp
     popq %r12
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     movq $2, %rax
@@ -43,10 +47,6 @@ fib:
     movq %rcx, %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fib
     movq %r12, %rsp
@@ -62,13 +62,13 @@ main:
     pushq %rbp
     movq %rsp, %rbp
     subq $80, %rsp
-    movq $10, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $10, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fib
     movq %r12, %rsp

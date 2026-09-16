@@ -223,19 +223,20 @@
   - `k_user_fault_return` (function, line 65) `void k_user_fault_return(void)`
   - `setup_user_stack` (function, line 81) `unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
                                ...`
-  - `k_run_rel` (function, line 217) `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
-  - `kexit` (function, line 249) `void kexit(int code)`
+  - `k_run_rel` (function, line 226) `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
+  - `kexit` (function, line 277) `void kexit(int code)`
   - `volatile` (function, line 67) `__asm__ volatile( "mov %[kdata], %%ax\n" "mov %%ax, %%ds\n" "mov %%ax, %%es\n" "mov %%ax, %%fs\n" "mov %%ax, %%gs\n" :: [kdata] "i"(GDT64_DATA_SEL) : "ax", "memory");`
   - `wrmsr` (function, line 75) `wrmsr(MSR_FSBASE, 0);`
   - `klongjmp` (function, line 77) `klongjmp(&exec_return, 1);`
   - `kmemcpy` (function, line 92) `kmemcpy(p, argv[i], l);`
-  - `__builtin_unreachable` (function, line 184) `__builtin_unreachable();`
-  - `pt_free_user` (function, line 189) `pt_free_user(new_cr3);`
-  - `vga_fb_set_gfx_mode` (function, line 211) `vga_fb_set_gfx_mode(0);`
-  - `vga_fb_draw_desktop` (function, line 212) `vga_fb_draw_desktop();`
-  - `kbd_reset_for_shell` (function, line 214) `kbd_reset_for_shell();`
+  - `__builtin_unreachable` (function, line 193) `__builtin_unreachable();`
+  - `pt_free_user` (function, line 198) `pt_free_user(new_cr3);`
+  - `vga_fb_set_gfx_mode` (function, line 220) `vga_fb_set_gfx_mode(0);`
+  - `vga_fb_draw_desktop` (function, line 221) `vga_fb_draw_desktop();`
+  - `kbd_reset_for_shell` (function, line 223) `kbd_reset_for_shell();`
   - `syscall_kstack` (variable, line 115) `extern unsigned long syscall_kstack;`
   - `EXEC_KSTACK_SZ` (macro, line 123) `#define EXEC_KSTACK_SZ`
+  - `ETREL_CHILD_STACK_SZ` (macro, line 132) `#define ETREL_CHILD_STACK_SZ`
 - Depends on: `arch/x86/boot/bootdefs.h`, `arch/x86/msr.h`, `drivers/kbd.h`, `kernel.h`, `sched.h`, `vga_fb.h`
 
 ## kernel/futex.c
@@ -535,26 +536,26 @@
   - `smp_any_ap_idle` (function, line 821) `static int smp_any_ap_idle(void)`
   - `rlimit_cpu_exceeded` (function, line 856) `int rlimit_cpu_exceeded(int pid)`
   - `isr_dispatch` (function, line 877) `void isr_dispatch(int vector, trap_frame_t *frame)`
-  - `BSP` (function, line 1209) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+  - `BSP` (function, line 1247) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
-  - `proc_get` (function, line 1229) `proc_t *proc_get(int pid)`
-  - `proc_create` (function, line 1235) `int proc_create(const char *name, int parent_pid)`
-  - `proc_spawn_elf` (function, line 1332) `int proc_spawn_elf(const char *name, void *data, unsigned size,
+  - `proc_get` (function, line 1267) `proc_t *proc_get(int pid)`
+  - `proc_create` (function, line 1273) `int proc_create(const char *name, int parent_pid)`
+  - `proc_spawn_elf` (function, line 1370) `int proc_spawn_elf(const char *name, void *data, unsigned size,
                    int argc, char...`
-  - `schedule` (function, line 1452) `* that keeps schedule()'s own rbp runs the caller's frame accesses
+  - `schedule` (function, line 1490) `* that keeps schedule()'s own rbp runs the caller's frame accesses
  * (locals, leave/ret) on the ...`
-  - `schedule` (function, line 1462) `void schedule(void)`
-  - `yield` (function, line 1544) `void yield(void)`
-  - `do_exit` (function, line 1559) `void do_exit(int code)`
-  - `do_thread_spawn` (function, line 1599) `long do_thread_spawn(unsigned long fn, unsigned long stack,
+  - `schedule` (function, line 1500) `void schedule(void)`
+  - `yield` (function, line 1582) `void yield(void)`
+  - `do_exit` (function, line 1597) `void do_exit(int code)`
+  - `do_thread_spawn` (function, line 1637) `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)`
-  - `do_waitpid` (function, line 1792) `int do_waitpid(int pid)`
-  - `shell_reap_nb` (function, line 1809) `int shell_reap_nb(int *pid_out, int *code_out)`
-  - `shell_reap_one` (function, line 1823) `int shell_reap_one(int pid, int *code_out)`
-  - `shell_nchildren` (function, line 1835) `int shell_nchildren(void)`
-  - `do_kill` (function, line 1861) `int do_kill(int pid)`
-  - `timer_tick` (function, line 1885) `void timer_tick(void)`
-  - `sched_init` (function, line 1889) `void sched_init(void)`
+  - `do_waitpid` (function, line 1830) `int do_waitpid(int pid)`
+  - `shell_reap_nb` (function, line 1847) `int shell_reap_nb(int *pid_out, int *code_out)`
+  - `shell_reap_one` (function, line 1861) `int shell_reap_one(int pid, int *code_out)`
+  - `shell_nchildren` (function, line 1873) `int shell_nchildren(void)`
+  - `do_kill` (function, line 1899) `int do_kill(int pid)`
+  - `timer_tick` (function, line 1923) `void timer_tick(void)`
+  - `sched_init` (function, line 1927) `void sched_init(void)`
   - `sb16_poll` (function, line 22) `sb16_poll();`
   - `vga_fb_mouse_tick` (function, line 28) `vga_fb_mouse_tick();`
   - `user_trampoline` (function, line 48) `extern void user_trampoline(void);`
@@ -594,29 +595,29 @@
   - `syscall` (function, line 995) `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid math faults. */ sched_rearm_kgs();`
   - `sb16_irq` (function, line 1083) `sb16_irq();`
   - `serial_puts` (function, line 1099) `serial_puts("EXCEPTION ");`
-  - `k_user_fault_return` (function, line 1216) `k_user_fault_return();`
-  - `__builtin_unreachable` (function, line 1217) `__builtin_unreachable();`
-  - `kstrncpy` (function, line 1262) `kstrncpy(p->name, name, sizeof(p->name) - 1);`
-  - `pt_free_user` (function, line 1352) `pt_free_user(new_cr3);`
-  - `PROC_SWITCHING` (function, line 1489) `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A BLOCKED/ZOMBIE * thread keeps its state (no one claims it until a wake). */ switch_save_only(cu`
-  - `sched_park_as_returned` (function, line 1493) `sched_park_as_returned(cur);`
-  - `spin_unlock_keep_irq` (function, line 1496) `spin_unlock_keep_irq(&sched_lock);`
-  - `switch_save_only` (function, line 1537) `switch_save_only(cur);`
-  - `returns` (function, line 1553) `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
-  - `registers` (function, line 1631) `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one integer arg). */ child->fpu_save = fpu_alloc_clean();`
-  - `rq_enqueue` (function, line 1671) `rq_enqueue(home, pid);`
-  - `it` (function, line 1899) `* it (SPAWN/exec point proc 0 here transiently);`
-  - `kstrcpy` (function, line 1942) `kstrcpy(procs[0].name, "kernel");`
-  - `park` (function, line 1949) `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */ procs[0].fpu_save = fpu_alloc_clean();`
-  - `vma_ctx_bind` (function, line 1955) `vma_ctx_bind(&vma_legacy);`
-  - `zeroed` (function, line 1960) `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe pre-mouse-init. */ idt_init();`
-  - `futex_init` (function, line 1964) `futex_init();`
-  - `rq_init` (function, line 1965) `rq_init();`
-  - `rcu_init` (function, line 1966) `rcu_init();`
-  - `tick_reset` (function, line 1967) `tick_reset();`
-  - `tick_register_audio` (function, line 1968) `tick_register_audio(sched_tick_audio, 0);`
-  - `tick_register_desktop` (function, line 1969) `tick_register_desktop(sched_tick_desktop, 0);`
-  - `mouse_hw_init` (function, line 1972) `mouse_hw_init();`
+  - `k_user_fault_return` (function, line 1254) `k_user_fault_return();`
+  - `__builtin_unreachable` (function, line 1255) `__builtin_unreachable();`
+  - `kstrncpy` (function, line 1300) `kstrncpy(p->name, name, sizeof(p->name) - 1);`
+  - `pt_free_user` (function, line 1390) `pt_free_user(new_cr3);`
+  - `PROC_SWITCHING` (function, line 1527) `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A BLOCKED/ZOMBIE * thread keeps its state (no one claims it until a wake). */ switch_save_only(cu`
+  - `sched_park_as_returned` (function, line 1531) `sched_park_as_returned(cur);`
+  - `spin_unlock_keep_irq` (function, line 1534) `spin_unlock_keep_irq(&sched_lock);`
+  - `switch_save_only` (function, line 1575) `switch_save_only(cur);`
+  - `returns` (function, line 1591) `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
+  - `registers` (function, line 1669) `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one integer arg). */ child->fpu_save = fpu_alloc_clean();`
+  - `rq_enqueue` (function, line 1709) `rq_enqueue(home, pid);`
+  - `it` (function, line 1937) `* it (SPAWN/exec point proc 0 here transiently);`
+  - `kstrcpy` (function, line 1980) `kstrcpy(procs[0].name, "kernel");`
+  - `park` (function, line 1987) `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */ procs[0].fpu_save = fpu_alloc_clean();`
+  - `vma_ctx_bind` (function, line 1993) `vma_ctx_bind(&vma_legacy);`
+  - `zeroed` (function, line 1998) `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe pre-mouse-init. */ idt_init();`
+  - `futex_init` (function, line 2002) `futex_init();`
+  - `rq_init` (function, line 2003) `rq_init();`
+  - `rcu_init` (function, line 2004) `rcu_init();`
+  - `tick_reset` (function, line 2005) `tick_reset();`
+  - `tick_register_audio` (function, line 2006) `tick_register_audio(sched_tick_audio, 0);`
+  - `tick_register_desktop` (function, line 2007) `tick_register_desktop(sched_tick_desktop, 0);`
+  - `mouse_hw_init` (function, line 2010) `mouse_hw_init();`
   - `isr_stub_table` (variable, line 108) `extern void *isr_stub_table[];`
   - `net_rx_dropped` (variable, line 341) `extern unsigned int net_rx_dropped;`
   - `mm_lock` (variable, line 568) `extern spinlock_t mm_lock;`

@@ -26,16 +26,15 @@ aes_read_all:
     subq $96, %rsp
     movq %rdi, -16(%rbp)
     movq %rsi, -32(%rbp)
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     leaq .Lstr1(%rip), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fopen
     movq %r12, %rsp
@@ -51,6 +50,10 @@ aes_read_all:
     leave
     ret
 .L12:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -80(%rbp), %rax
     pushq %rax
     movq $0, %rax
@@ -60,36 +63,32 @@ aes_read_all:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fseek
     movq %r12, %rsp
     popq %r12
     movq -32(%rbp), %rax
     pushq %rax
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call ftell
     movq %r12, %rsp
     popq %r12
     popq %rcx
     movq %rax, (%rcx)
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call rewind
     movq %r12, %rsp
@@ -104,13 +103,13 @@ aes_read_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L14
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -121,6 +120,10 @@ aes_read_all:
 .L14:
     leaq -48(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -32(%rbp), %rax
     movq (%rax), %rax
     pushq %rax
@@ -139,10 +142,6 @@ aes_read_all:
 .L19:
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call malloc
     movq %r12, %rsp
@@ -155,13 +154,13 @@ aes_read_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L20
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -172,6 +171,9 @@ aes_read_all:
 .L20:
     leaq -64(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -185,23 +187,19 @@ aes_read_all:
     movq 16(%rsp), %rsi
     movq 8(%rsp), %rdx
     movq 0(%rsp), %rcx
-    addq $32, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fread
     movq %r12, %rsp
     popq %r12
     popq %rcx
     movq %rax, (%rcx)
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -216,13 +214,13 @@ aes_read_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L22
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
@@ -244,16 +242,15 @@ aes_write_all:
     movq %rdi, -16(%rbp)
     movq %rsi, -32(%rbp)
     movq %rdx, -48(%rbp)
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     leaq .Lstr3(%rip), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fopen
     movq %r12, %rsp
@@ -271,6 +268,9 @@ aes_write_all:
 .L30:
     leaq -64(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -283,10 +283,6 @@ aes_write_all:
     movq 16(%rsp), %rsi
     movq 8(%rsp), %rdx
     movq 0(%rsp), %rcx
-    addq $32, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fwrite
     movq %r12, %rsp
@@ -302,13 +298,13 @@ aes_write_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L32
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -317,13 +313,13 @@ aes_write_all:
     leave
     ret
 .L32:
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -354,13 +350,13 @@ aes_has:
     movq %rsi, -32(%rbp)
     leaq -80(%rbp), %rax
     pushq %rax
-    movq -32(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -32(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call strlen
     movq %r12, %rsp
@@ -628,13 +624,13 @@ aes_parse_hex:
     movq %rdi, -16(%rbp)
     movq %rsi, -32(%rbp)
     movq %rdx, -48(%rbp)
-    movq -16(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -16(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call strlen
     movq %r12, %rsp
@@ -660,6 +656,10 @@ aes_parse_hex:
 .L104:
     leaq -80(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     movq -64(%rbp), %rax
@@ -668,10 +668,6 @@ aes_parse_hex:
     movsbq (%rax), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call hex_val
     movq %r12, %rsp
@@ -680,6 +676,10 @@ aes_parse_hex:
     movq %rax, (%rcx)
     leaq -96(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     movq -64(%rbp), %rax
@@ -692,10 +692,6 @@ aes_parse_hex:
     movsbq (%rax), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call hex_val
     movq %r12, %rsp
@@ -1004,16 +1000,15 @@ aes_init_tables:
     movq %rax, (%rcx)
     jmp .L152
 .L150:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     movq -32(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_gf_mul
     movq %r12, %rsp
@@ -1066,16 +1061,15 @@ aes_init_tables:
     pushq %rax
     movq -64(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq -32(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_rotl8
     movq %r12, %rsp
@@ -1156,6 +1150,10 @@ aes_init_tables:
     imulq $8, %rax
     addq %rcx, %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     leaq aes_rc(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
@@ -1170,10 +1168,6 @@ aes_init_tables:
     movq (%rax), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_xtime
     movq %r12, %rsp
@@ -2126,13 +2120,13 @@ aes_mix_columns:
     movq %rax, (%rcx)
     leaq -48(%rbp), %rax
     pushq %rax
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_xtime
     movq %r12, %rsp
@@ -2214,13 +2208,13 @@ aes_mix_columns:
     movq %rax, (%rcx)
     leaq -48(%rbp), %rax
     pushq %rax
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_xtime
     movq %r12, %rsp
@@ -2310,13 +2304,13 @@ aes_mix_columns:
     movq %rax, (%rcx)
     leaq -48(%rbp), %rax
     pushq %rax
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_xtime
     movq %r12, %rsp
@@ -2392,13 +2386,13 @@ aes_mix_columns:
     movq %rax, (%rcx)
     leaq -48(%rbp), %rax
     pushq %rax
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_xtime
     movq %r12, %rsp
@@ -2473,13 +2467,13 @@ aes_cipher:
     pushq %rbp
     movq %rsp, %rbp
     subq $80, %rsp
-    movq $0, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $0, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_add_round_key
     movq %r12, %rsp
@@ -2512,13 +2506,13 @@ aes_cipher:
     call aes_mix_columns
     movq %r12, %rsp
     popq %r12
-    movq -16(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -16(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_add_round_key
     movq %r12, %rsp
@@ -2554,13 +2548,13 @@ aes_cipher:
     call aes_shift_rows
     movq %r12, %rsp
     popq %r12
-    movq $14, %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq $14, %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_add_round_key
     movq %r12, %rsp
@@ -3089,6 +3083,10 @@ aes_run:
     movq %rdx, -48(%rbp)
     movq %rcx, -64(%rbp)
     movq %r8, -80(%rbp)
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq $64, %rax
@@ -3098,10 +3096,6 @@ aes_run:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_parse_hex
     movq %r12, %rsp
@@ -3111,15 +3105,18 @@ aes_run:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L302
-    leaq .Lstr19(%rip), %rax
-    pushq %rax
-    movq -16(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    leaq .Lstr19(%rip), %rax
+    pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
+    movq -16(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_tool_name
     movq %r12, %rsp
@@ -3133,10 +3130,6 @@ aes_run:
     movq 16(%rsp), %rsi
     movq 8(%rsp), %rdx
     movq 0(%rsp), %rcx
-    addq $32, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3145,6 +3138,10 @@ aes_run:
     leave
     ret
 .L302:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq $32, %rax
@@ -3154,10 +3151,6 @@ aes_run:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_parse_hex
     movq %r12, %rsp
@@ -3167,15 +3160,18 @@ aes_run:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L304
-    leaq .Lstr20(%rip), %rax
-    pushq %rax
-    movq -16(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    leaq .Lstr20(%rip), %rax
+    pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
+    movq -16(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_tool_name
     movq %r12, %rsp
@@ -3189,10 +3185,6 @@ aes_run:
     movq 16(%rsp), %rsi
     movq 8(%rsp), %rdx
     movq 0(%rsp), %rcx
-    addq $32, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3208,13 +3200,13 @@ aes_run:
     call aes_init_tables
     movq %r12, %rsp
     popq %r12
-    leaq -336(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq -336(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_key_expand
     movq %r12, %rsp
@@ -3265,16 +3257,15 @@ aes_run:
 .L309:
     leaq -480(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -64(%rbp), %rax
     pushq %rax
     leaq -496(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_read_all
     movq %r12, %rsp
@@ -3287,15 +3278,19 @@ aes_run:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L310
-    leaq .Lstr21(%rip), %rax
-    pushq %rax
-    movq -16(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr21(%rip), %rax
+    pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
+    movq -16(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_tool_name
     movq %r12, %rsp
@@ -3306,10 +3301,6 @@ aes_run:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3330,27 +3321,26 @@ aes_run:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L314
-    movq -480(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -480(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr22(%rip), %rax
     pushq %rax
     movq -64(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3361,13 +3351,13 @@ aes_run:
 .L314:
     leaq -512(%rbp), %rax
     pushq %rax
-    movq -480(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -480(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call aes_hdr_get
     movq %r12, %rsp
@@ -3383,27 +3373,26 @@ aes_run:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L316
-    movq -480(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -480(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr23(%rip), %rax
     pushq %rax
     movq -64(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3426,27 +3415,26 @@ aes_run:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L318
-    movq -480(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -480(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr24(%rip), %rax
     pushq %rax
     movq -64(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3455,6 +3443,9 @@ aes_run:
     leave
     ret
 .L318:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -480(%rbp), %rax
     pushq %rax
     movq $8, %rax
@@ -3465,14 +3456,14 @@ aes_run:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_ctr_crypt
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -80(%rbp), %rax
     pushq %rax
     movq -480(%rbp), %rax
@@ -3486,10 +3477,6 @@ aes_run:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_write_all
     movq %r12, %rsp
@@ -3499,27 +3486,26 @@ aes_run:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L320
-    movq -480(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -480(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr25(%rip), %rax
     pushq %rax
     movq -80(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3528,6 +3514,10 @@ aes_run:
     leave
     ret
 .L320:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     leaq .Lstr26(%rip), %rax
     pushq %rax
     movq -64(%rbp), %rax
@@ -3543,10 +3533,6 @@ aes_run:
     movq 16(%rsp), %rdx
     movq 8(%rsp), %rcx
     movq 0(%rsp), %r8
-    addq $40, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3555,6 +3541,10 @@ aes_run:
 .L312:
     leaq -528(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq $8, %rax
     pushq %rax
     movq -496(%rbp), %rax
@@ -3575,10 +3565,6 @@ aes_run:
     addq %rcx, %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call malloc
     movq %r12, %rsp
@@ -3591,24 +3577,24 @@ aes_run:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L324
-    movq -480(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -480(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
-    leaq .Lstr27(%rip), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr27(%rip), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3659,20 +3645,22 @@ aes_run:
     cmpq $0, %rax
     jne .L326
 .L329:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -528(%rbp), %rax
     pushq %rax
     movq -496(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_hdr_put
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -528(%rbp), %rax
     pushq %rax
     movq $8, %rax
@@ -3683,14 +3671,14 @@ aes_run:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_ctr_crypt
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -80(%rbp), %rax
     pushq %rax
     movq -528(%rbp), %rax
@@ -3704,10 +3692,6 @@ aes_run:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_write_all
     movq %r12, %rsp
@@ -3717,38 +3701,37 @@ aes_run:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L330
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -480(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -528(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr28(%rip), %rax
     pushq %rax
     movq -80(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3757,6 +3740,10 @@ aes_run:
     leave
     ret
 .L330:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     leaq .Lstr29(%rip), %rax
     pushq %rax
     movq -64(%rbp), %rax
@@ -3776,33 +3763,29 @@ aes_run:
     movq 16(%rsp), %rdx
     movq 8(%rsp), %rcx
     movq 0(%rsp), %r8
-    addq $40, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
     popq %r12
-    movq -528(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -528(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
 .L313:
-    movq -480(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -480(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
@@ -3830,6 +3813,9 @@ main:
     movzbq %al, %rax
     testq %rax, %rax
     je .L344
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq $0, %rax
@@ -3842,10 +3828,6 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_has
     movq %r12, %rsp
@@ -3886,6 +3868,9 @@ main:
 .L347:
     testq %rax, %rax
     je .L348
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -3898,10 +3883,6 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call strcmp
     movq %r12, %rsp
@@ -3949,26 +3930,26 @@ main:
     movq -48(%rbp), %rax
     cmpq $0, %rax
     je .L354
-    leaq .Lstr36(%rip), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr36(%rip), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
     popq %r12
     jmp .L355
 .L354:
-    leaq .Lstr37(%rip), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr37(%rip), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -3978,6 +3959,10 @@ main:
     leave
     ret
 .L352:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq -32(%rbp), %rax
@@ -4029,10 +4014,6 @@ main:
     movq 16(%rsp), %rdx
     movq 8(%rsp), %rcx
     movq 0(%rsp), %r8
-    addq $40, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call aes_run
     movq %r12, %rsp

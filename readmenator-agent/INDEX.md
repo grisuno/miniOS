@@ -8,7 +8,7 @@
 | `arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | boot | 139 |
 | `arch/x86/boot/stage1.S` | stage1.S - MiniOS boot sector. | boot | 11 |
 | `arch/x86/boot/stage2.S` | stage2.S - MiniOS second-stage loader. | boot | 40 |
-| `arch/x86/ctx_sw.S` | - | x86 | 5 |
+| `arch/x86/ctx_sw.S` | - | x86 | 6 |
 | `arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 53 |
 | `arch/x86/isr_stubs.S` | - | x86 | 24 |
 | `arch/x86/msr.h` | ifndef ARCH_X86_MSR_H define ARCH_X86_MSR_H  Model-Specific Register access for  | x86 | 10 |
@@ -41,7 +41,7 @@
 | `ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | root | 35 |
 | `install.sh` | - | root | 0 |
 | `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 41 |
-| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 310 |
+| `kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | root | 311 |
 | `kernel/abi.c` | Docstring: kernel/abi.c -- Boot-time ABI manifest gate. | kernel | 3 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | kernel | 1 |
 | `kernel/console.c` | include "kernel.h" include "sched.h" include "vga_fb.h" define XXH_STATIC_LINKIN | kernel | 31 |
@@ -49,7 +49,7 @@
 | `kernel/console_in.h` | ifndef CONSOLE_IN_H define CONSOLE_IN_H  Docstring: console_in.h -- boundary of  | kernel | 8 |
 | `kernel/cvm_host.c` | - | kernel | 55 |
 | `kernel/editor.c` | include "kernel.h" include "shell.h" include "editor.h"  ======================= | kernel | 31 |
-| `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | kernel | 18 |
+| `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | kernel | 19 |
 | `kernel/futex.c` | Docstring: kernel/futex.c -- Kernel side of the futex contract. | kernel | 11 |
 | `kernel/klog.c` | klog.c - Structured kernel logging with levels and subsystems. | kernel | 9 |
 | `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | kernel | 44 |
@@ -90,7 +90,7 @@
 | `minifetch.h` | Docstring: minifetch.h -- neofetch-style system screen contract. | root | 2 |
 | `minifs.h` | ifndef MINIFS_H define MINIFS_H  MiniFS: a minimal Unix-like filesystem for Mini | root | 76 |
 | `minifs_dump.py` | - | root | 12 |
-| `minifs_fsck.py` | - | root | 14 |
+| `minifs_fsck.py` | - | root | 15 |
 | `mkfs.minifs.py` | - | root | 20 |
 | `mkramdisk.py` | - | root | 2 |
 | `mkroots.sh` | mkroots.sh - regenerate tls_roots.h from the DER files in tls_roots_src/.  Prove | root | 0 |
@@ -303,7 +303,7 @@
 | `progs/doomgeneric/z_zone.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 13 |
 | `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | misc | 73 |
 | `progs/freedomui/freedomui_minios.c` | freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern. | misc | 47 |
-| `progs/lisp/lisp.c` | - | misc | 113 |
+| `progs/lisp/lisp.c` | - | misc | 116 |
 | `progs/lua/lua_main.c` | - | lua | 25 |
 | `progs/lua/minios.c` | - | lua | 27 |
 | `progs/micropython/variants/minios/lib/__init__.py` | MiniOS frozen library package. | lib | 0 |
@@ -434,8 +434,9 @@
 | `tools/gen_desktop_pngs.py` | - | tools | 2 |
 | `tools/gen_icons.py` | - | tools | 3 |
 | `tools/gen_zip_fixtures.py` | - | tools | 2 |
+| `tools/kernel_feature_survey.py` | - | tools | 8 |
 | `tools/lisp_scoped.sh` | Docstring: Scoped Lisp validation for the MiniOS interpreter contract. Builds th | tools | 3 |
-| `tools/minifs_saves.py` | - | tools | 20 |
+| `tools/minifs_saves.py` | - | tools | 21 |
 | `tools/minios_cli.py` | - | tools | 6 |
 | `tools/minios_gui.py` | - | tools | 9 |
 | `tools/mkpak1.py` | - | tools | 1 |
@@ -444,6 +445,7 @@
 | `tools/qga_client.py` | - | tools | 4 |
 | `tools/qga_test.sh` | Quick standalone smoke test for the QEMU guest agent: boots os.img once with the | tools | 3 |
 | `tools/repro_gui.py` | - | tools | 10 |
+| `tools/test_call_align.py` | - | tools | 4 |
 | `tools/test_codecs.sh` | test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  T | tools | 0 |
 | `tools/test_gui_fashion.py` | - | tools | 18 |
 | `tools/test_gui_icon_cwd.py` | - | tools | 17 |

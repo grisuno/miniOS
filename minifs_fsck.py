@@ -16,11 +16,32 @@ def u32(d,o): return struct.unpack_from('<I',d,o)[0]
 class FSCK:
     def __init__(self, fn):
         with open(fn,'rb') as f: self.d=f.read()
+        self.base = self._find_base()
         self.errors = 0
         self.sb = self._sb()
         self.bmap = bytearray(self.sb['total_blocks'])
         self.imap = bytearray(self.sb['total_inodes'])
-    def blk(self,n): return self.d[n*BLOCK_SIZE:(n+1)*BLOCK_SIZE]
+    def _find_base(self):
+        if len(self.d) >= BLOCK_SIZE and u32(self.d,0) == MAGIC:
+            return 0
+        import os
+        here = os.path.dirname(os.path.abspath(__file__))
+        kbin = os.path.join(here, 'kernel.bin')
+        if os.path.isfile(kbin):
+            ksec = (os.path.getsize(kbin) + 511) // 512
+            lba = ((9 + ksec + 2047) // 2048) * 2048
+            off = lba * 512
+            if off + BLOCK_SIZE <= len(self.d) and u32(self.d,off) == MAGIC:
+                return off
+        off = 0
+        while off < min(len(self.d), 64 * 1024 * 1024):
+            if off + BLOCK_SIZE <= len(self.d) and u32(self.d,off) == MAGIC:
+                return off
+            off += BLOCK_SIZE
+        return 0
+    def blk(self,n):
+        o = self.base + n*BLOCK_SIZE
+        return self.d[o:o+BLOCK_SIZE]
     def _sb(self):
         b=self.blk(0)
         sb={}
@@ -28,7 +49,7 @@ class FSCK:
             sb[n]=u32(b,i*4)
         return sb
     def inode(self,i):
-        o=self.sb['inode_table_start']*BLOCK_SIZE+i*128
+        o=self.base+self.sb['inode_table_start']*BLOCK_SIZE+i*128
         b=self.d[o:o+128]
         r={'mode':u16(b,0),'nlink':u16(b,2),'size':u32(b,8),'flags':u32(b,72)}
         r['direct']=[u32(b,24+j*4) for j in range(10)]
@@ -72,12 +93,30 @@ class FSCK:
         while off+DIR_HDR<=len(data):
             ci=u32(data,off); rl=u16(data,off+4); nl=data[off+6]; ft=data[off+7]
             if rl==0: break
-            if ci>0:
+            if rl < DIR_HDR or off+rl > len(data):
+                self.err(f"dir inode {ino}: entry at {off} has bad rec_len {rl}")
+                break
+            if ci>0 and nl>0:
+                minimal = ((DIR_HDR+nl+3)&~3)
+                if rl < minimal:
+                    raw = data[off+DIR_HDR:off+DIR_HDR+nl]
+                    self.err(f"dir inode {ino}: entry {raw!r} name spills past record (rl={rl} < {minimal})")
+                else:
+                    raw = data[off+DIR_HDR:off+DIR_HDR+nl]
+                    try:
+                        nm = raw.decode('utf-8')
+                    except UnicodeDecodeError:
+                        self.err(f"dir inode {ino}: entry at {off} name not utf-8")
+                        nm = ''
+                    if any(ord(c) < 32 or ord(c) == 127 for c in nm):
+                        self.err(f"dir inode {ino}: entry {nm!r} has control chars")
                 if ci<ROOT_INODE or ci>=self.sb['total_inodes']:
                     self.err(f"dir inode {ino}: entry inode {ci} out of range")
                 else:
                     self.scan_inode(ci)
                     if ft==2: self.scan_dir(ci)
+                if ft not in (1,2,3):
+                    self.err(f"dir inode {ino}: entry at {off} has bad file_type {ft}")
             off+=rl
     def run(self):
         sb=self.sb

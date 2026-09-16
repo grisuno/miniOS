@@ -466,6 +466,10 @@ void register_libc_symbols(void);
 int  k_exec_user(void *entry, int argc, char **argv);
 int  k_run_rel(prog_entry_t entry, int argc, char **argv);
 void kexit(int code);
+/* ET_REL stack switch (arch/x86/ctx_sw.S): runs entry(argc, argv) on
+ * the 64 KB stack ending at stack_top. See the asm contract there. */
+int  k_run_on_stack(void *stack_top, prog_entry_t entry, int argc,
+                    char **argv);
 
 /* ========== Execution infrastructure (kernel/exec.c) ========== */
 typedef struct { unsigned long v[8]; } kjmpbuf;

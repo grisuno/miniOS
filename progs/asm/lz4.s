@@ -8,13 +8,13 @@ lz4_has:
     movq %rsi, -32(%rbp)
     leaq -80(%rbp), %rax
     pushq %rax
-    movq -32(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -32(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call strlen
     movq %r12, %rsp
@@ -159,16 +159,15 @@ lz4_read_all:
     subq $96, %rsp
     movq %rdi, -16(%rbp)
     movq %rsi, -32(%rbp)
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     leaq .Lstr1(%rip), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fopen
     movq %r12, %rsp
@@ -184,6 +183,10 @@ lz4_read_all:
     leave
     ret
 .L44:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -80(%rbp), %rax
     pushq %rax
     movq $0, %rax
@@ -193,36 +196,32 @@ lz4_read_all:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fseek
     movq %r12, %rsp
     popq %r12
     movq -32(%rbp), %rax
     pushq %rax
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call ftell
     movq %r12, %rsp
     popq %r12
     popq %rcx
     movq %rax, (%rcx)
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call rewind
     movq %r12, %rsp
@@ -237,13 +236,13 @@ lz4_read_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L46
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -254,6 +253,10 @@ lz4_read_all:
 .L46:
     leaq -48(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -32(%rbp), %rax
     movq (%rax), %rax
     pushq %rax
@@ -272,10 +275,6 @@ lz4_read_all:
 .L51:
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call malloc
     movq %r12, %rsp
@@ -288,13 +287,13 @@ lz4_read_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L52
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -305,6 +304,9 @@ lz4_read_all:
 .L52:
     leaq -64(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -318,23 +320,19 @@ lz4_read_all:
     movq 16(%rsp), %rsi
     movq 8(%rsp), %rdx
     movq 0(%rsp), %rcx
-    addq $32, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fread
     movq %r12, %rsp
     popq %r12
     popq %rcx
     movq %rax, (%rcx)
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -349,13 +347,13 @@ lz4_read_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L54
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
@@ -377,16 +375,15 @@ lz4_write_all:
     movq %rdi, -16(%rbp)
     movq %rsi, -32(%rbp)
     movq %rdx, -48(%rbp)
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     leaq .Lstr3(%rip), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fopen
     movq %r12, %rsp
@@ -404,6 +401,9 @@ lz4_write_all:
 .L62:
     leaq -64(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -416,10 +416,6 @@ lz4_write_all:
     movq 16(%rsp), %rsi
     movq 8(%rsp), %rdx
     movq 0(%rsp), %rcx
-    addq $32, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call fwrite
     movq %r12, %rsp
@@ -435,13 +431,13 @@ lz4_write_all:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L64
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -450,13 +446,13 @@ lz4_write_all:
     leave
     ret
 .L64:
-    movq -80(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -80(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call fclose
     movq %r12, %rsp
@@ -487,16 +483,15 @@ lz4_compress_file:
     movq %rsi, -32(%rbp)
     leaq -48(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     leaq -80(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call lz4_read_all
     movq %r12, %rsp
@@ -509,16 +504,15 @@ lz4_compress_file:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L78
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr9(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -553,6 +547,10 @@ lz4_compress_file:
     movq %rax, (%rcx)
     leaq -64(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -96(%rbp), %rax
     pushq %rax
     movq $0, %rax
@@ -569,10 +567,6 @@ lz4_compress_file:
 .L81:
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call malloc
     movq %r12, %rsp
@@ -585,24 +579,24 @@ lz4_compress_file:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L82
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
-    leaq .Lstr10(%rip), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr10(%rip), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -613,6 +607,9 @@ lz4_compress_file:
 .L82:
     leaq -112(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq -80(%rbp), %rax
@@ -625,10 +622,6 @@ lz4_compress_file:
     movq 16(%rsp), %rsi
     movq 8(%rsp), %rdx
     movq 0(%rsp), %rcx
-    addq $32, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call lz4_compress
     movq %r12, %rsp
@@ -644,38 +637,37 @@ lz4_compress_file:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L84
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -64(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr11(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -684,6 +676,10 @@ lz4_compress_file:
     leave
     ret
 .L84:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq -64(%rbp), %rax
@@ -693,10 +689,6 @@ lz4_compress_file:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call lz4_write_all
     movq %r12, %rsp
@@ -706,38 +698,37 @@ lz4_compress_file:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L86
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -64(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr12(%rip), %rax
     pushq %rax
     movq -32(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -746,6 +737,10 @@ lz4_compress_file:
     leave
     ret
 .L86:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     leaq .Lstr13(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
@@ -761,32 +756,28 @@ lz4_compress_file:
     movq 16(%rsp), %rdx
     movq 8(%rsp), %rcx
     movq 0(%rsp), %r8
-    addq $40, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
     popq %r12
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
-    movq -64(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -64(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
@@ -805,16 +796,15 @@ lz4_decompress_file:
     movq %rsi, -32(%rbp)
     leaq -48(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -16(%rbp), %rax
     pushq %rax
     leaq -80(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call lz4_read_all
     movq %r12, %rsp
@@ -827,16 +817,15 @@ lz4_decompress_file:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L102
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr21(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -854,27 +843,26 @@ lz4_decompress_file:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L104
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr22(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -979,27 +967,26 @@ lz4_decompress_file:
 .L107:
     cmpq $0, %rax
     je .L108
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr23(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -1010,13 +997,13 @@ lz4_decompress_file:
 .L108:
     leaq -64(%rbp), %rax
     pushq %rax
-    movq -96(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -96(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call malloc
     movq %r12, %rsp
@@ -1029,24 +1016,24 @@ lz4_decompress_file:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L110
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
-    leaq .Lstr24(%rip), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr24(%rip), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -1057,6 +1044,9 @@ lz4_decompress_file:
 .L110:
     leaq -112(%rbp), %rax
     pushq %rax
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq -80(%rbp), %rax
@@ -1069,10 +1059,6 @@ lz4_decompress_file:
     movq 16(%rsp), %rsi
     movq 8(%rsp), %rdx
     movq 0(%rsp), %rcx
-    addq $32, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call lz4_decompress
     movq %r12, %rsp
@@ -1088,38 +1074,37 @@ lz4_decompress_file:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L112
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -64(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr25(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -1128,6 +1113,10 @@ lz4_decompress_file:
     leave
     ret
 .L112:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq -64(%rbp), %rax
@@ -1137,10 +1126,6 @@ lz4_decompress_file:
     movq 16(%rsp), %rdi
     movq 8(%rsp), %rsi
     movq 0(%rsp), %rdx
-    addq $24, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call lz4_write_all
     movq %r12, %rsp
@@ -1150,38 +1135,37 @@ lz4_decompress_file:
     movzbq %al, %rax
     cmpq $0, %rax
     je .L114
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -48(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     movq -64(%rbp), %rax
     pushq %rax
     movq 0(%rsp), %rdi
-    addq $8, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     leaq .Lstr26(%rip), %rax
     pushq %rax
     movq -32(%rbp), %rax
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -1190,6 +1174,10 @@ lz4_decompress_file:
     leave
     ret
 .L114:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
+    subq $8, %rsp
     leaq .Lstr27(%rip), %rax
     pushq %rax
     movq -16(%rbp), %rax
@@ -1205,32 +1193,28 @@ lz4_decompress_file:
     movq 16(%rsp), %rdx
     movq 8(%rsp), %rcx
     movq 0(%rsp), %r8
-    addq $40, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
     popq %r12
-    movq -48(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -48(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
     popq %r12
-    movq -64(%rbp), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    movq -64(%rbp), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call free
     movq %r12, %rsp
@@ -1258,6 +1242,9 @@ main:
     movzbq %al, %rax
     testq %rax, %rax
     je .L130
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq $0, %rax
@@ -1270,10 +1257,6 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call lz4_has
     movq %r12, %rsp
@@ -1314,6 +1297,9 @@ main:
 .L133:
     testq %rax, %rax
     je .L134
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -1326,10 +1312,6 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call strcmp
     movq %r12, %rsp
@@ -1377,26 +1359,26 @@ main:
     movq -48(%rbp), %rax
     cmpq $0, %rax
     je .L140
-    leaq .Lstr34(%rip), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr34(%rip), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
     popq %r12
     jmp .L141
 .L140:
-    leaq .Lstr35(%rip), %rax
-    pushq %rax
-    movq 0(%rsp), %rdi
-    addq $8, %rsp
     pushq %r12
     movq %rsp, %r12
     andq $-16, %rsp
+    subq $8, %rsp
+    leaq .Lstr35(%rip), %rax
+    pushq %rax
+    movq 0(%rsp), %rdi
     xorl %eax, %eax
     call printf
     movq %r12, %rsp
@@ -1409,6 +1391,9 @@ main:
     movq -48(%rbp), %rax
     cmpq $0, %rax
     je .L142
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq -64(%rbp), %rax
@@ -1431,10 +1416,6 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call lz4_decompress_file
     movq %r12, %rsp
@@ -1442,6 +1423,9 @@ main:
     leave
     ret
 .L142:
+    pushq %r12
+    movq %rsp, %r12
+    andq $-16, %rsp
     movq -32(%rbp), %rax
     pushq %rax
     movq -64(%rbp), %rax
@@ -1464,10 +1448,6 @@ main:
     pushq %rax
     movq 8(%rsp), %rdi
     movq 0(%rsp), %rsi
-    addq $16, %rsp
-    pushq %r12
-    movq %rsp, %r12
-    andq $-16, %rsp
     xorl %eax, %eax
     call lz4_compress_file
     movq %r12, %rsp

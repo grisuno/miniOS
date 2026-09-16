@@ -42,7 +42,11 @@ MAX_ENTRIES = 1024
 # *.state). Minicraft chunks (mc_c_*.bin, minicraft.map) regenerate
 # in-game, bloat every rebuild by megabytes, and once carried a corrupt
 # dirent name that aborted backup fail-closed; they are skipped with a
-# log line, never packed. Directories are always traversed.
+# log line, never packed. Skip-before-validate ordering is deliberate: a
+# name that can never persist (wrong suffix, undecodable bytes, or a
+# dirent whose name spills past its record) is skipped loudly instead of
+# aborting the whole backup, while any persisted candidate with an unsafe
+# name still aborts. Directories are always traversed.
 PERSIST_SUFFIXES = ('.wad', '.txt', '.sav', '.rtc', '.state')
 
 
@@ -150,8 +154,12 @@ class FS:
             if rl == 0 or off + rl > len(data):
                 break
             if ci > 0 and nl > 0:
-                nm = data[off + DIR_HDR:off + DIR_HDR + nl].decode('utf-8')
-                yield nm, ci, ft
+                raw = data[off + DIR_HDR:off + DIR_HDR + nl]
+                try:
+                    nm = raw.decode('utf-8')
+                except UnicodeDecodeError:
+                    nm = None
+                yield nm, ci, ft, rl, nl
             off += rl
 
     def read_file_dir(self, ino):
@@ -195,8 +203,8 @@ class FS:
             if not self.is_dir(st):
                 return -1
             found = -1
-            for nm, ci, _ft in self.listdir(ino):
-                if nm == part:
+            for nm, ci, _ft, _rl, _nl in self.listdir(ino):
+                if nm is not None and nm == part:
                     found = ci
                     break
             if found < 0:
@@ -210,6 +218,15 @@ def valid_name(nm):
         return False
     if nm in ('.', '..'):
         return False
+    return True
+
+
+def strict_name(nm):
+    if not valid_name(nm):
+        return False
+    for c in nm:
+        if ord(c) < 32 or ord(c) == 127:
+            return False
     return True
 
 
@@ -275,18 +292,28 @@ def cmd_backup(img_path, stage):
 
     def walk(dir_ino, rel):
         n = 0
-        for nm, ci, ft in fs.listdir(dir_ino):
-            if not valid_name(nm):
-                raise ValueError('unsafe entry name %r under saves/' % nm)
+        for nm, ci, ft, rl, nl in fs.listdir(dir_ino):
             n += 1
             if n > MAX_ENTRIES:
                 raise ValueError('too many entries under saves/')
+            if nm is None:
+                print('  skip saves/%sundecodable-name (not persisted)'
+                      % rel)
+                continue
+            if DIR_HDR + nl > rl:
+                print('  skip saves/%s%r (corrupt dirent: name spills past '
+                      'record, not persisted)' % (rel, nm))
+                continue
             if ft == FT_DIR:
+                if not valid_name(nm):
+                    raise ValueError('unsafe entry name %r under saves/' % nm)
                 walk(ci, rel + nm + '/')
             else:
                 if not nm.endswith(PERSIST_SUFFIXES):
-                    print('  skip saves/%s%s (not persisted)' % (rel, nm))
+                    print('  skip saves/%s%r (not persisted)' % (rel, nm))
                     continue
+                if not strict_name(nm):
+                    raise ValueError('unsafe entry name %r under saves/' % nm)
                 data = fs.read_file(ci)
                 total[0] += len(data)
                 if total[0] > MAX_TOTAL_BYTES:

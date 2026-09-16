@@ -9,17 +9,17 @@
   - `bc_invalidate` (function, line 32) `static void bc_invalidate(unsigned int block_num)`
   - `block_init` (function, line 37) `void block_init(void)`
   - `block_set_base` (function, line 43) `void block_set_base(unsigned int lba_base)`
-  - `block_dev_write` (function, line 59) `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
-  - `block_read` (function, line 66) `int block_read(unsigned int block_num, void *buf)`
-  - `block_write` (function, line 86) `int block_write(unsigned int block_num, const void *buf)`
-  - `block_read_multi` (function, line 92) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
-  - `block_write_multi` (function, line 97) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
-  - `block_flush` (function, line 104) `void block_flush(void)`
-  - `block_total` (function, line 106) `unsigned int block_total(void)`
+  - `block_dev_write` (function, line 63) `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
+  - `block_read` (function, line 70) `int block_read(unsigned int block_num, void *buf)`
+  - `block_write` (function, line 90) `int block_write(unsigned int block_num, const void *buf)`
+  - `block_read_multi` (function, line 96) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
+  - `block_write_multi` (function, line 101) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
+  - `block_flush` (function, line 108) `void block_flush(void)`
+  - `block_total` (function, line 110) `unsigned int block_total(void)`
   - `ide_init` (function, line 39) `ide_init();`
-  - `ide_read_sectors` (function, line 57) `return ide_read_sectors(lba, count, buf);`
-  - `ide_write_sectors` (function, line 64) `return ide_write_sectors(lba, count, buf);`
-  - `block_dev_read` (function, line 95) `return block_dev_read(lba, count * SECTORS_PER_BLOCK, buf);`
+  - `ide_read_sectors` (function, line 61) `return ide_read_sectors(lba, count, buf);`
+  - `ide_write_sectors` (function, line 68) `return ide_write_sectors(lba, count, buf);`
+  - `block_dev_read` (function, line 99) `return block_dev_read(lba, count * SECTORS_PER_BLOCK, buf);`
   - `BC_WAYS` (macro, line 23) `#define BC_WAYS`
   - `BC_MASK` (macro, line 24) `#define BC_MASK`
 - Depends on: `block.h`, `driver.h`, `ide.h`, `kernel.h`

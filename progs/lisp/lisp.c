@@ -2,7 +2,7 @@
  * lisp.c -- small Lisp interpreter for MiniOS.
  *
  * A self-contained Lisp in one translation unit, built on the host as a
- * ring-3 static ELF exactly like Lua and MicroPython, and shipped on MiniFS
+ * ring-3 static ELF and shipped on MiniFS with love :D
  * with a bare-name alias. Programs reach the kernel only through the Linux
  * syscall ABI plus the MiniOS custom numbers from minios_abi.h.
  *
@@ -10,6 +10,11 @@
  * with lexical scope, and the special forms quote, if, begin, define, set!,
  * lambda and let. Diagnostics go to stderr, values to stdout, exit status
  * follows the script result.
+ *
+ * DRY note: every primitive validates its arguments the same way --
+ * "N arguments of these types, or one specific error message". That
+ * validation lives once, in check_args()/arity0(); primitives themselves
+ * only encode the arity, the types and the message (see PRIM_* section).
  */
 #include <ctype.h>
 #include <errno.h>
@@ -28,7 +33,10 @@
  * Central configuration for every bound in the interpreter.
  *
  * No other literal below controls a limit, a port, a syscall number or a
- * user-visible string twice; edits happen here.
+ * user-visible string twice; edits happen here. Every array sized by one
+ * of these constants below (open_files[], argv[], message[]) MUST spell
+ * the constant, not the number, so this enum stays the single source of
+ * truth it claims to be.
  */
 enum LispConfig {
     LISP_MAX_OPEN_FILES = 64,
@@ -96,7 +104,7 @@ typedef enum {
 typedef struct {
     ParseStatus status;
     Node *value;
-    char message[160];
+    char message[LISP_PARSE_MESSAGE_BYTES];
 } ParseResult;
 
 /**
@@ -162,7 +170,7 @@ struct Runtime {
     FILE *out;
     FILE *err;
     FILE *in;
-    FILE *open_files[64];
+    FILE *open_files[LISP_MAX_OPEN_FILES];
     int eval_depth;
     int print_depth;
 };
@@ -778,37 +786,94 @@ static Node *arg_at(Runtime *rt, Node *args, size_t index) {
     return args->as.pair.car;
 }
 
+/* =========================================================================
+ * Generic argument checking
+ * =========================================================================
+ * Every primitive below used to hand-roll "right arity, right types, or
+ * bail with a message" -- ~20 copies of the same three lines with small
+ * variations. ArgKind + check_args() is that logic written once; a
+ * primitive now just declares the shape of what it wants.
+ *
+ * arity0() covers the handful of primitives that take no arguments at all
+ * (time-ms, rtc, fb-info), which is a degenerate case check_args() with
+ * n == 0 could technically serve but reads oddly with an empty kinds[].
+ * ========================================================================= */
+
 /**
- * Extract two numeric arguments or fail.
+ * Expected type of one positional argument for check_args().
  */
-static bool get_two_numbers(Runtime *rt, Node *args, int64_t *a, int64_t *b) {
-    Node *first;
-    Node *second;
-    if (!has_arity(rt, args, 2)) {
+typedef enum {
+    ARG_ANY,   /* no type constraint, just "present" */
+    ARG_NUM,   /* TYPE_NUM */
+    ARG_STR,   /* TYPE_STR with a non-NULL payload */
+    ARG_FILE   /* TYPE_FILE, open (not closed) */
+} ArgKind;
+
+/**
+ * Test whether an already-fetched argument matches one ArgKind.
+ */
+static bool arg_matches(const Node *value, ArgKind kind) {
+    if (!value) {
         return false;
     }
-    first = arg_at(rt, args, 0);
-    second = arg_at(rt, args, 1);
-    if (!first || !second || first->type != TYPE_NUM ||
-        second->type != TYPE_NUM) {
+    switch (kind) {
+    case ARG_NUM:
+        return value->type == TYPE_NUM;
+    case ARG_STR:
+        return value->type == TYPE_STR && value->as.str != NULL;
+    case ARG_FILE:
+        return value->type == TYPE_FILE && !value->as.file.closed &&
+            value->as.file.handle != NULL;
+    case ARG_ANY:
+    default:
+        return true;
+    }
+}
+
+/**
+ * Validate that args is a proper list of exactly n elements whose types
+ * match kinds[0..n), writing each fetched argument into out[0..n).
+ *
+ * Returns false (out[] left untouched) on any mismatch; the caller's one
+ * job on failure is to pick the error message, since that is the only
+ * part that legitimately differs between primitives.
+ */
+static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,
+    size_t n, Node **out) {
+    bool proper = false;
+    size_t i;
+    if (list_count(rt, args, &proper) != n || !proper) {
         return false;
     }
-    *a = first->as.num;
-    *b = second->as.num;
+    for (i = 0; i < n; i++) {
+        Node *value = arg_at(rt, args, i);
+        if (!arg_matches(value, kinds[i])) {
+            return false;
+        }
+        out[i] = value;
+    }
     return true;
+}
+
+/**
+ * Validate that args is the empty argument list.
+ */
+static bool arity0(Runtime *rt, Node *args) {
+    bool proper = false;
+    return list_count(rt, args, &proper) == 0 && proper;
 }
 
 /**
  * Add two numbers with overflow reported as an error value.
  */
 static Node *prim_add(Runtime *rt, Node *args) {
-    int64_t a = 0;
-    int64_t b = 0;
-    int64_t out = 0;
-    if (!get_two_numbers(rt, args, &a, &b)) {
+    static const ArgKind kinds[2] = { ARG_NUM, ARG_NUM };
+    Node *v[2];
+    int64_t out;
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "+ expects two numbers");
     }
-    if (__builtin_add_overflow(a, b, &out)) {
+    if (__builtin_add_overflow(v[0]->as.num, v[1]->as.num, &out)) {
         return make_error(rt, "integer overflow");
     }
     return make_num(rt, out);
@@ -818,13 +883,13 @@ static Node *prim_add(Runtime *rt, Node *args) {
  * Subtract two numbers with overflow reported as an error value.
  */
 static Node *prim_sub(Runtime *rt, Node *args) {
-    int64_t a = 0;
-    int64_t b = 0;
-    int64_t out = 0;
-    if (!get_two_numbers(rt, args, &a, &b)) {
+    static const ArgKind kinds[2] = { ARG_NUM, ARG_NUM };
+    Node *v[2];
+    int64_t out;
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "- expects two numbers");
     }
-    if (__builtin_sub_overflow(a, b, &out)) {
+    if (__builtin_sub_overflow(v[0]->as.num, v[1]->as.num, &out)) {
         return make_error(rt, "integer overflow");
     }
     return make_num(rt, out);
@@ -834,13 +899,13 @@ static Node *prim_sub(Runtime *rt, Node *args) {
  * Multiply two numbers with overflow reported as an error value.
  */
 static Node *prim_mul(Runtime *rt, Node *args) {
-    int64_t a = 0;
-    int64_t b = 0;
-    int64_t out = 0;
-    if (!get_two_numbers(rt, args, &a, &b)) {
+    static const ArgKind kinds[2] = { ARG_NUM, ARG_NUM };
+    Node *v[2];
+    int64_t out;
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "* expects two numbers");
     }
-    if (__builtin_mul_overflow(a, b, &out)) {
+    if (__builtin_mul_overflow(v[0]->as.num, v[1]->as.num, &out)) {
         return make_error(rt, "integer overflow");
     }
     return make_num(rt, out);
@@ -850,11 +915,15 @@ static Node *prim_mul(Runtime *rt, Node *args) {
  * Divide two numbers with zero and overflow reported as errors.
  */
 static Node *prim_div(Runtime *rt, Node *args) {
-    int64_t a = 0;
-    int64_t b = 0;
-    if (!get_two_numbers(rt, args, &a, &b)) {
+    static const ArgKind kinds[2] = { ARG_NUM, ARG_NUM };
+    Node *v[2];
+    int64_t a;
+    int64_t b;
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "/ expects two numbers");
     }
+    a = v[0]->as.num;
+    b = v[1]->as.num;
     if (b == 0) {
         return make_error(rt, "division by zero");
     }
@@ -868,94 +937,84 @@ static Node *prim_div(Runtime *rt, Node *args) {
  * Compare two numbers for equality.
  */
 static Node *prim_eq(Runtime *rt, Node *args) {
-    int64_t a = 0;
-    int64_t b = 0;
-    if (!get_two_numbers(rt, args, &a, &b)) {
+    static const ArgKind kinds[2] = { ARG_NUM, ARG_NUM };
+    Node *v[2];
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "= expects two numbers");
     }
-    return a == b ? rt->true_value : rt->nil;
+    return v[0]->as.num == v[1]->as.num ? rt->true_value : rt->nil;
 }
 
 /**
  * Compare two numbers with less-than.
  */
 static Node *prim_lt(Runtime *rt, Node *args) {
-    int64_t a = 0;
-    int64_t b = 0;
-    if (!get_two_numbers(rt, args, &a, &b)) {
+    static const ArgKind kinds[2] = { ARG_NUM, ARG_NUM };
+    Node *v[2];
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "< expects two numbers");
     }
-    return a < b ? rt->true_value : rt->nil;
+    return v[0]->as.num < v[1]->as.num ? rt->true_value : rt->nil;
 }
 
 /**
  * Return the first element of a cons cell or nil.
  */
 static Node *prim_car(Runtime *rt, Node *args) {
-    Node *value;
-    if (!has_arity(rt, args, 1)) {
+    static const ArgKind kinds[1] = { ARG_ANY };
+    Node *v[1];
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "car expects one argument");
     }
-    value = arg_at(rt, args, 0);
-    if (!value) {
-        return make_error(rt, "car expects one argument");
-    }
-    return value->type == TYPE_CONS ? value->as.pair.car : rt->nil;
+    return v[0]->type == TYPE_CONS ? v[0]->as.pair.car : rt->nil;
 }
 
 /**
  * Return the rest of a cons cell or nil.
  */
 static Node *prim_cdr(Runtime *rt, Node *args) {
-    Node *value;
-    if (!has_arity(rt, args, 1)) {
+    static const ArgKind kinds[1] = { ARG_ANY };
+    Node *v[1];
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "cdr expects one argument");
     }
-    value = arg_at(rt, args, 0);
-    if (!value) {
-        return make_error(rt, "cdr expects one argument");
-    }
-    return value->type == TYPE_CONS ? value->as.pair.cdr : rt->nil;
+    return v[0]->type == TYPE_CONS ? v[0]->as.pair.cdr : rt->nil;
 }
 
 /**
  * Build a cons cell from two values.
  */
 static Node *prim_cons(Runtime *rt, Node *args) {
-    if (!has_arity(rt, args, 2)) {
+    static const ArgKind kinds[2] = { ARG_ANY, ARG_ANY };
+    Node *v[2];
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "cons expects two arguments");
     }
-    return cons(rt, arg_at(rt, args, 0), arg_at(rt, args, 1));
+    return cons(rt, v[0], v[1]);
 }
 
 /**
  * Concatenate two strings with an overflow-checked allocation.
  */
 static Node *prim_string_concat(Runtime *rt, Node *args) {
-    Node *a;
-    Node *b;
+    static const ArgKind kinds[2] = { ARG_STR, ARG_STR };
+    Node *v[2];
     size_t la;
     size_t lb;
     char *data;
     Node *result;
-    if (!has_arity(rt, args, 2)) {
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "string-concat expects two arguments");
     }
-    a = arg_at(rt, args, 0);
-    b = arg_at(rt, args, 1);
-    if (!a || !b || a->type != TYPE_STR || b->type != TYPE_STR ||
-        !a->as.str || !b->as.str) {
-        return make_error(rt, "string-concat expects strings");
-    }
-    la = strlen(a->as.str);
-    lb = strlen(b->as.str);
+    la = strlen(v[0]->as.str);
+    lb = strlen(v[1]->as.str);
     if (la > (size_t)LISP_MAX_STRING_BYTES ||
         lb > (size_t)LISP_MAX_STRING_BYTES - la) {
         return make_error(rt, "string exceeds bound");
     }
     data = xalloc(rt, la + lb + 1);
-    memcpy(data, a->as.str, la);
-    memcpy(data + la, b->as.str, lb + 1);
+    memcpy(data, v[0]->as.str, la);
+    memcpy(data + la, v[1]->as.str, lb + 1);
     result = make_node(rt, TYPE_STR);
     result->as.str = data;
     return result;
@@ -965,59 +1024,44 @@ static Node *prim_string_concat(Runtime *rt, Node *args) {
  * Compare two strings for equality.
  */
 static Node *prim_string_eq(Runtime *rt, Node *args) {
-    Node *a;
-    Node *b;
-    if (!has_arity(rt, args, 2)) {
+    static const ArgKind kinds[2] = { ARG_STR, ARG_STR };
+    Node *v[2];
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "string-eq expects two arguments");
     }
-    a = arg_at(rt, args, 0);
-    b = arg_at(rt, args, 1);
-    if (!a || !b || a->type != TYPE_STR || b->type != TYPE_STR ||
-        !a->as.str || !b->as.str) {
-        return make_error(rt, "string-eq expects strings");
-    }
-    return strcmp(a->as.str, b->as.str) == 0 ? rt->true_value : rt->nil;
+    return strcmp(v[0]->as.str, v[1]->as.str) == 0 ? rt->true_value : rt->nil;
 }
 
 /**
  * Return the byte length of a string.
  */
 static Node *prim_string_length(Runtime *rt, Node *args) {
-    Node *value;
-    if (!has_arity(rt, args, 1)) {
+    static const ArgKind kinds[1] = { ARG_STR };
+    Node *v[1];
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "string-length expects one string");
     }
-    value = arg_at(rt, args, 0);
-    if (!value || value->type != TYPE_STR || !value->as.str) {
-        return make_error(rt, "string-length expects a string");
-    }
-    return make_num(rt, (int64_t)strlen(value->as.str));
+    return make_num(rt, (int64_t)strlen(v[0]->as.str));
 }
 
 /**
  * Return the one-character string at a byte index or nil when out of range.
  */
 static Node *prim_string_at(Runtime *rt, Node *args) {
-    Node *string;
-    Node *index;
+    static const ArgKind kinds[2] = { ARG_STR, ARG_NUM };
+    Node *v[2];
     int64_t position;
     size_t length;
     char value[2];
-    if (!has_arity(rt, args, 2)) {
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "string-at expects string and index");
     }
-    string = arg_at(rt, args, 0);
-    index = arg_at(rt, args, 1);
-    if (!string || !index || string->type != TYPE_STR ||
-        index->type != TYPE_NUM || !string->as.str) {
-        return make_error(rt, "string-at expects string and number");
-    }
-    position = index->as.num;
-    length = strlen(string->as.str);
+    position = v[1]->as.num;
+    length = strlen(v[0]->as.str);
     if (position < 0 || (uint64_t)position >= length) {
         return rt->nil;
     }
-    value[0] = string->as.str[position];
+    value[0] = v[0]->as.str[position];
     value[1] = '\0';
     return make_str(rt, value);
 }
@@ -1026,21 +1070,18 @@ static Node *prim_string_at(Runtime *rt, Node *args) {
  * Convert between a one-character string and its byte value.
  */
 static Node *prim_char_code(Runtime *rt, Node *args) {
-    Node *value;
+    static const ArgKind kinds[1] = { ARG_ANY };
+    Node *v[1];
     char result[2];
-    if (!has_arity(rt, args, 1)) {
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "char-code expects one argument");
     }
-    value = arg_at(rt, args, 0);
-    if (!value) {
-        return make_error(rt, "char-code expects one argument");
+    if (v[0]->type == TYPE_STR && v[0]->as.str && v[0]->as.str[0]) {
+        return make_num(rt, (unsigned char)v[0]->as.str[0]);
     }
-    if (value->type == TYPE_STR && value->as.str && value->as.str[0]) {
-        return make_num(rt, (unsigned char)value->as.str[0]);
-    }
-    if (value->type == TYPE_NUM && value->as.num >= 0 &&
-        value->as.num <= (int64_t)UCHAR_MAX) {
-        result[0] = (char)value->as.num;
+    if (v[0]->type == TYPE_NUM && v[0]->as.num >= 0 &&
+        v[0]->as.num <= (int64_t)UCHAR_MAX) {
+        result[0] = (char)v[0]->as.num;
         result[1] = '\0';
         return make_str(rt, result);
     }
@@ -1051,10 +1092,12 @@ static Node *prim_char_code(Runtime *rt, Node *args) {
  * Print a value without a trailing newline.
  */
 static Node *prim_print(Runtime *rt, Node *args) {
-    if (!has_arity(rt, args, 1)) {
+    static const ArgKind kinds[1] = { ARG_ANY };
+    Node *v[1];
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "print expects one argument");
     }
-    print_node(rt, arg_at(rt, args, 0), false);
+    print_node(rt, v[0], false);
     fflush(rt->out);
     return rt->nil;
 }
@@ -1063,10 +1106,12 @@ static Node *prim_print(Runtime *rt, Node *args) {
  * Print a value with a trailing newline.
  */
 static Node *prim_println(Runtime *rt, Node *args) {
-    if (!has_arity(rt, args, 1)) {
+    static const ArgKind kinds[1] = { ARG_ANY };
+    Node *v[1];
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "println expects one argument");
     }
-    print_node(rt, arg_at(rt, args, 0), false);
+    print_node(rt, v[0], false);
     fputc('\n', rt->out);
     fflush(rt->out);
     return rt->nil;
@@ -1093,6 +1138,10 @@ static bool file_mode_allowed(const char *mode) {
 
 /**
  * Open a file with a whitelisted mode string.
+ *
+ * Variable arity (1 or 2), so this stays outside check_args() rather
+ * than forcing a fixed-arity helper to grow an "optional" concept it
+ * doesn't otherwise need.
  */
 static Node *prim_open_file(Runtime *rt, Node *args) {
     Node *path;
@@ -1108,12 +1157,12 @@ static Node *prim_open_file(Runtime *rt, Node *args) {
         return make_error(rt, "open-file expects path and optional mode");
     }
     path = arg_at(rt, args, 0);
-    if (!path || path->type != TYPE_STR || !path->as.str) {
+    if (!arg_matches(path, ARG_STR)) {
         return make_error(rt, "open-file expects a string path");
     }
     if (count == 2) {
         Node *mode_node = arg_at(rt, args, 1);
-        if (!mode_node || mode_node->type != TYPE_STR || !mode_node->as.str) {
+        if (!arg_matches(mode_node, ARG_STR)) {
             return make_error(rt, "file mode must be a string");
         }
         mode = mode_node->as.str;
@@ -1129,27 +1178,16 @@ static Node *prim_open_file(Runtime *rt, Node *args) {
 }
 
 /**
- * Test whether a node is a usable open file value.
- */
-static bool valid_file(Node *node) {
-    return node && node->type == TYPE_FILE && !node->as.file.closed &&
-        node->as.file.handle;
-}
-
-/**
  * Read one byte from a file or nil at end of file.
  */
 static Node *prim_read_char(Runtime *rt, Node *args) {
-    Node *file;
+    static const ArgKind kinds[1] = { ARG_FILE };
+    Node *v[1];
     int value;
-    if (!has_arity(rt, args, 1)) {
-        return make_error(rt, "read-char expects one file");
-    }
-    file = arg_at(rt, args, 0);
-    if (!valid_file(file)) {
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "read-char expects an open file");
     }
-    value = fgetc(file->as.file.handle);
+    value = fgetc(v[0]->as.file.handle);
     if (value == EOF) {
         return rt->nil;
     }
@@ -1160,26 +1198,21 @@ static Node *prim_read_char(Runtime *rt, Node *args) {
  * Write a string or byte value to an open file.
  */
 static Node *prim_write(Runtime *rt, Node *args) {
-    Node *file;
-    Node *value;
+    static const ArgKind kinds[2] = { ARG_FILE, ARG_ANY };
+    Node *v[2];
     int result;
-    if (!has_arity(rt, args, 2)) {
-        return make_error(rt, "write expects file and value");
-    }
-    file = arg_at(rt, args, 0);
-    value = arg_at(rt, args, 1);
-    if (!valid_file(file) || !value) {
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "write expects an open file and a value");
     }
-    if (value->type == TYPE_STR && value->as.str) {
-        result = fputs(value->as.str, file->as.file.handle);
-    } else if (value->type == TYPE_NUM && value->as.num >= 0 &&
-        value->as.num <= (int64_t)UCHAR_MAX) {
-        result = fputc((unsigned char)value->as.num, file->as.file.handle);
+    if (v[1]->type == TYPE_STR && v[1]->as.str) {
+        result = fputs(v[1]->as.str, v[0]->as.file.handle);
+    } else if (v[1]->type == TYPE_NUM && v[1]->as.num >= 0 &&
+        v[1]->as.num <= (int64_t)UCHAR_MAX) {
+        result = fputc((unsigned char)v[1]->as.num, v[0]->as.file.handle);
     } else {
         return make_error(rt, "write expects a string or byte");
     }
-    if (result == EOF || fflush(file->as.file.handle) != 0) {
+    if (result == EOF || fflush(v[0]->as.file.handle) != 0) {
         return make_error(rt, "file write failed");
     }
     return rt->true_value;
@@ -1189,17 +1222,14 @@ static Node *prim_write(Runtime *rt, Node *args) {
  * Close an open file and release its runtime slot.
  */
 static Node *prim_close_file(Runtime *rt, Node *args) {
-    Node *file;
+    static const ArgKind kinds[1] = { ARG_FILE };
+    Node *v[1];
     FILE *handle;
     size_t i;
-    if (!has_arity(rt, args, 1)) {
-        return make_error(rt, "close-file expects one file");
-    }
-    file = arg_at(rt, args, 0);
-    if (!valid_file(file)) {
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "close-file expects an open file");
     }
-    handle = file->as.file.handle;
+    handle = v[0]->as.file.handle;
     if (fclose(handle) != 0) {
         return make_error(rt, "file close failed");
     }
@@ -1208,8 +1238,8 @@ static Node *prim_close_file(Runtime *rt, Node *args) {
             rt->open_files[i] = NULL;
         }
     }
-    file->as.file.handle = NULL;
-    file->as.file.closed = true;
+    v[0]->as.file.handle = NULL;
+    v[0]->as.file.closed = true;
     return rt->true_value;
 }
 
@@ -1217,53 +1247,58 @@ static Node *prim_close_file(Runtime *rt, Node *args) {
  * Test whether a value is nil.
  */
 static Node *prim_null_p(Runtime *rt, Node *args) {
-    if (!has_arity(rt, args, 1)) {
+    static const ArgKind kinds[1] = { ARG_ANY };
+    Node *v[1];
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "null? expects one argument");
     }
-    return is_nil(rt, arg_at(rt, args, 0)) ? rt->true_value : rt->nil;
+    return is_nil(rt, v[0]) ? rt->true_value : rt->nil;
 }
 
 /**
  * Test whether a value is a number.
  */
 static Node *prim_number_p(Runtime *rt, Node *args) {
-    Node *value;
-    if (!has_arity(rt, args, 1)) {
+    static const ArgKind kinds[1] = { ARG_ANY };
+    Node *v[1];
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "number? expects one argument");
     }
-    value = arg_at(rt, args, 0);
-    return value && value->type == TYPE_NUM ? rt->true_value : rt->nil;
+    return v[0]->type == TYPE_NUM ? rt->true_value : rt->nil;
 }
 
 /**
  * Test whether a value is a string.
  */
 static Node *prim_string_p(Runtime *rt, Node *args) {
-    Node *value;
-    if (!has_arity(rt, args, 1)) {
+    static const ArgKind kinds[1] = { ARG_ANY };
+    Node *v[1];
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "string? expects one argument");
     }
-    value = arg_at(rt, args, 0);
-    return value && value->type == TYPE_STR ? rt->true_value : rt->nil;
+    return v[0]->type == TYPE_STR ? rt->true_value : rt->nil;
 }
 
 /**
  * Return the message of an error value or nil for other values.
  */
 static Node *prim_error_message(Runtime *rt, Node *args) {
-    Node *value;
-    if (!has_arity(rt, args, 1)) {
+    static const ArgKind kinds[1] = { ARG_ANY };
+    Node *v[1];
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "error-message expects one argument");
     }
-    value = arg_at(rt, args, 0);
-    if (!value || value->type != TYPE_ERROR) {
+    if (v[0]->type != TYPE_ERROR) {
         return rt->nil;
     }
-    return make_str(rt, value->as.error ? value->as.error : "unknown");
+    return make_str(rt, v[0]->as.error ? v[0]->as.error : "unknown");
 }
 
 /**
  * Terminate the process with a numeric exit status.
+ *
+ * Variable arity (0 or 1); stays outside check_args() for the same
+ * reason open-file does.
  */
 static Node *prim_exit(Runtime *rt, Node *args) {
     bool proper = false;
@@ -1278,7 +1313,7 @@ static Node *prim_exit(Runtime *rt, Node *args) {
         exit(EXIT_SUCCESS);
     }
     value = arg_at(rt, args, 0);
-    if (!value || value->type != TYPE_NUM) {
+    if (!arg_matches(value, ARG_NUM)) {
         return make_error(rt, "exit expects a number");
     }
     {
@@ -1293,8 +1328,7 @@ static Node *prim_exit(Runtime *rt, Node *args) {
  * Return milliseconds since boot through the kernel time service.
  */
 static Node *prim_time_ms(Runtime *rt, Node *args) {
-    bool proper = false;
-    if (list_count(rt, args, &proper) != 0 || !proper) {
+    if (!arity0(rt, args)) {
         return make_error(rt, "time-ms expects no arguments");
     }
     return make_num(rt, (int64_t)msys((long)MINIOS_SYS_TIME, 0, 0, 0));
@@ -1307,8 +1341,7 @@ static Node *prim_rtc(Runtime *rt, Node *args) {
     int h = 0;
     int m = 0;
     int s = 0;
-    bool proper = false;
-    if (list_count(rt, args, &proper) != 0 || !proper) {
+    if (!arity0(rt, args)) {
         return make_error(rt, "rtc expects no arguments");
     }
     if (msys((long)MINIOS_SYS_RTC, (long)&h, (long)&m, (long)&s) < 0) {
@@ -1325,8 +1358,7 @@ static Node *prim_fb_info(Runtime *rt, Node *args) {
     int w = 0;
     int h = 0;
     int p = 0;
-    bool proper = false;
-    if (list_count(rt, args, &proper) != 0 || !proper) {
+    if (!arity0(rt, args)) {
         return make_error(rt, "fb-info expects no arguments");
     }
     if (msys((long)MINIOS_SYS_FB_INFO, (long)&w, (long)&h, (long)&p) < 0) {
@@ -1338,6 +1370,9 @@ static Node *prim_fb_info(Runtime *rt, Node *args) {
 
 /**
  * Read or set the speaker volume, clamped to the valid range.
+ *
+ * Variable arity (0 or 1); stays outside check_args() for the same
+ * reason open-file does.
  */
 static Node *prim_vol(Runtime *rt, Node *args) {
     bool proper = false;
@@ -1353,7 +1388,7 @@ static Node *prim_vol(Runtime *rt, Node *args) {
                 (long)LISP_VOL_READ, 0, 0));
     }
     value = arg_at(rt, args, 0);
-    if (!value || value->type != TYPE_NUM) {
+    if (!arg_matches(value, ARG_NUM)) {
         return make_error(rt, "vol expects a number");
     }
     if (value->as.num < (int64_t)LISP_VOL_MIN ||
@@ -1368,18 +1403,15 @@ static Node *prim_vol(Runtime *rt, Node *args) {
  * Load a 768-byte VGA palette from a string value.
  */
 static Node *prim_pal(Runtime *rt, Node *args) {
-    Node *value;
-    if (!has_arity(rt, args, 1)) {
+    static const ArgKind kinds[1] = { ARG_STR };
+    Node *v[1];
+    if (!check_args(rt, args, kinds, 1, v)) {
         return make_error(rt, "pal expects one string");
     }
-    value = arg_at(rt, args, 0);
-    if (!value || value->type != TYPE_STR || !value->as.str) {
-        return make_error(rt, "pal expects a string");
-    }
-    if (strlen(value->as.str) < (size_t)LISP_PALETTE_BYTES) {
+    if (strlen(v[0]->as.str) < (size_t)LISP_PALETTE_BYTES) {
         return make_error(rt, "palette must be 768 bytes");
     }
-    msys((long)MINIOS_SYS_PALETTE, (long)value->as.str, 0, 0);
+    msys((long)MINIOS_SYS_PALETTE, (long)v[0]->as.str, 0, 0);
     return rt->nil;
 }
 
@@ -1387,25 +1419,19 @@ static Node *prim_pal(Runtime *rt, Node *args) {
  * Play a speaker tone for a bounded millisecond duration.
  */
 static Node *prim_pcspeaker(Runtime *rt, Node *args) {
-    Node *freq_node;
-    Node *ms_node;
+    static const ArgKind kinds[2] = { ARG_NUM, ARG_NUM };
+    Node *v[2];
     long freq;
     long span;
     uint32_t start;
-    if (!has_arity(rt, args, 2)) {
+    if (!check_args(rt, args, kinds, 2, v)) {
         return make_error(rt, "pcspeaker expects frequency and ms");
     }
-    freq_node = arg_at(rt, args, 0);
-    ms_node = arg_at(rt, args, 1);
-    if (!freq_node || !ms_node || freq_node->type != TYPE_NUM ||
-        ms_node->type != TYPE_NUM) {
-        return make_error(rt, "pcspeaker expects numbers");
-    }
-    if (ms_node->as.num < 0 || ms_node->as.num > 60000) {
+    if (v[1]->as.num < 0 || v[1]->as.num > 60000) {
         return make_error(rt, "pcspeaker duration out of range");
     }
-    freq = (long)freq_node->as.num;
-    span = (long)ms_node->as.num;
+    freq = (long)v[0]->as.num;
+    span = (long)v[1]->as.num;
     msys((long)MINIOS_SYS_PCSPK_INIT, 0, 0, 0);
     msys((long)MINIOS_SYS_PCSPK_TONE, freq, 0, 0);
     start = (uint32_t)msys((long)MINIOS_SYS_TIME, 0, 0, 0);
@@ -1417,6 +1443,23 @@ static Node *prim_pcspeaker(Runtime *rt, Node *args) {
 }
 
 /**
+ * Quit the REPL cleanly by returning from the repl() function.
+ * Note: This only works if called within the REPL loop context.
+ * For a standalone script, use (quit).
+ */
+static Node *prim_quit(Runtime *rt, Node *args) {
+    if (!arity0(rt, args)) {
+        return make_error(rt, "quit expects no arguments");
+    }
+    // In a real REPL implementation, we might set a flag to break the loop.
+    // Since our repl() is a simple loop, we can just call exit for simplicity
+    // or rely on the user typing Ctrl+D. 
+    // However, to make it explicit as requested:
+    cleanup(rt);
+    exit(EXIT_SUCCESS);
+}
+
+/**
  * Run a program through SYS_SPAWN and return its exit code.
  */
 static Node *prim_minios_run(Runtime *rt, Node *args) {
@@ -1425,7 +1468,7 @@ static Node *prim_minios_run(Runtime *rt, Node *args) {
     Node *path;
     Node *arg_list;
     Node *redir_node;
-    const char *argv[65];
+    const char *argv[LISP_MAX_SPAWN_ARGS + 1];
     const char *redir = NULL;
     size_t n = 0;
     Node *cursor;
@@ -1435,7 +1478,7 @@ static Node *prim_minios_run(Runtime *rt, Node *args) {
         return make_error(rt, "minios-run expects path, args and redirect");
     }
     path = arg_at(rt, args, 0);
-    if (!path || path->type != TYPE_STR || !path->as.str) {
+    if (!arg_matches(path, ARG_STR)) {
         return make_error(rt, "minios-run expects a string path");
     }
     arg_list = count >= 2 ? arg_at(rt, args, 1) : rt->nil;
@@ -1449,7 +1492,7 @@ static Node *prim_minios_run(Runtime *rt, Node *args) {
                 return make_error(rt, "minios-run args must be a list");
             }
             item = cursor->as.pair.car;
-            if (!item || item->type != TYPE_STR || !item->as.str) {
+            if (!arg_matches(item, ARG_STR)) {
                 return make_error(rt, "minios-run args must be strings");
             }
             if (n + 1 >= (size_t)LISP_MAX_SPAWN_ARGS) {
@@ -1461,7 +1504,7 @@ static Node *prim_minios_run(Runtime *rt, Node *args) {
         }
     }
     if (!is_nil(rt, redir_node)) {
-        if (redir_node->type != TYPE_STR || !redir_node->as.str) {
+        if (!arg_matches(redir_node, ARG_STR)) {
             return make_error(rt, "minios-run redirect must be a string");
         }
         redir = redir_node->as.str;
@@ -1907,44 +1950,65 @@ static void bind_primitive(Runtime *rt, Env *env, const char *name,
     env_bind(rt, env, make_sym(rt, name), make_prim(rt, function));
 }
 
+/* =========================================================================
+ * Primitive registry
+ * =========================================================================
+ * A flat name -> function table instead of ~30 repeated bind_primitive()
+ * calls. Adding a builtin is now one row here; init_env() itself never
+ * needs to change again to register it.
+ * ========================================================================= */
+typedef struct {
+    const char *name;
+    PrimFn fn;
+} PrimEntry;
+
+static const PrimEntry PRIMITIVES[] = {
+    { "+", prim_add },
+    { "-", prim_sub },
+    { "*", prim_mul },
+    { "/", prim_div },
+    { "=", prim_eq },
+    { "<", prim_lt },
+    { "car", prim_car },
+    { "cdr", prim_cdr },
+    { "cons", prim_cons },
+    { "null?", prim_null_p },
+    { "number?", prim_number_p },
+    { "string?", prim_string_p },
+    { "error-message", prim_error_message },
+    { "string-concat", prim_string_concat },
+    { "string-eq", prim_string_eq },
+    { "string-length", prim_string_length },
+    { "string-at", prim_string_at },
+    { "char-code", prim_char_code },
+    { "print", prim_print },
+    { "println", prim_println },
+    { "open-file", prim_open_file },
+    { "read-char", prim_read_char },
+    { "write", prim_write },
+    { "close-file", prim_close_file },
+    { "exit", prim_exit },
+    { "time-ms", prim_time_ms },
+    { "rtc", prim_rtc },
+    { "fb-info", prim_fb_info },
+    { "vol", prim_vol },
+    { "pal", prim_pal },
+    { "pcspeaker", prim_pcspeaker },
+    { "exit", prim_exit },
+    { "quit", prim_quit },
+    { "minios-run", prim_minios_run }
+};
+
 /**
  * Build the global environment with arithmetic, strings, files and MiniOS.
  */
 static Env *init_env(Runtime *rt) {
     Env *env = env_new(rt, NULL);
+    size_t i;
     env_bind(rt, env, rt->true_value, rt->true_value);
-    bind_primitive(rt, env, "+", prim_add);
-    bind_primitive(rt, env, "-", prim_sub);
-    bind_primitive(rt, env, "*", prim_mul);
-    bind_primitive(rt, env, "/", prim_div);
-    bind_primitive(rt, env, "=", prim_eq);
-    bind_primitive(rt, env, "<", prim_lt);
-    bind_primitive(rt, env, "car", prim_car);
-    bind_primitive(rt, env, "cdr", prim_cdr);
-    bind_primitive(rt, env, "cons", prim_cons);
-    bind_primitive(rt, env, "null?", prim_null_p);
-    bind_primitive(rt, env, "number?", prim_number_p);
-    bind_primitive(rt, env, "string?", prim_string_p);
-    bind_primitive(rt, env, "error-message", prim_error_message);
-    bind_primitive(rt, env, "string-concat", prim_string_concat);
-    bind_primitive(rt, env, "string-eq", prim_string_eq);
-    bind_primitive(rt, env, "string-length", prim_string_length);
-    bind_primitive(rt, env, "string-at", prim_string_at);
-    bind_primitive(rt, env, "char-code", prim_char_code);
-    bind_primitive(rt, env, "print", prim_print);
-    bind_primitive(rt, env, "println", prim_println);
-    bind_primitive(rt, env, "open-file", prim_open_file);
-    bind_primitive(rt, env, "read-char", prim_read_char);
-    bind_primitive(rt, env, "write", prim_write);
-    bind_primitive(rt, env, "close-file", prim_close_file);
-    bind_primitive(rt, env, "exit", prim_exit);
-    bind_primitive(rt, env, "time-ms", prim_time_ms);
-    bind_primitive(rt, env, "rtc", prim_rtc);
-    bind_primitive(rt, env, "fb-info", prim_fb_info);
-    bind_primitive(rt, env, "vol", prim_vol);
-    bind_primitive(rt, env, "pal", prim_pal);
-    bind_primitive(rt, env, "pcspeaker", prim_pcspeaker);
-    bind_primitive(rt, env, "minios-run", prim_minios_run);
+    for (i = 0; i < sizeof PRIMITIVES / sizeof PRIMITIVES[0]; i++) {
+        bind_primitive(rt, env, PRIMITIVES[i].name, PRIMITIVES[i].fn);
+    }
     return env;
 }
 

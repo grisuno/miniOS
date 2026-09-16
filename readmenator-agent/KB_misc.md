@@ -288,121 +288,125 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `Node` (struct, line 105)
-  - `Binding` (struct, line 132)
-  - `Env` (struct, line 141)
-  - `AllocTracker` (struct, line 149)
-  - `Runtime` (struct, line 157)
-  - `ParseResult` (struct, line 96)
-  - `Reader` (struct, line 173)
-  - `StringBuilder` (struct, line 184)
-  - `LispConfig` (enum, line 33)
-  - `Runtime` (type_alias, line 57) `typedef struct Runtime Runtime;`
-  - `Node` (type_alias, line 59) `typedef struct Node Node;`
-  - `Env` (type_alias, line 60) `typedef struct Env Env;`
-  - `Binding` (type_alias, line 61) `typedef struct Binding Binding;`
-  - `AllocTracker` (type_alias, line 62) `typedef struct AllocTracker AllocTracker;`
-  - `lisp_version` (function, line 54) `static const char *lisp_version(void)`
-  - `msys` (function, line 197) `static long msys(long n, long a1, long a2, long a3)`
-  - `msys5` (function, line 210) `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)`
-  - `fatal` (function, line 225) `static void fatal(Runtime *rt, const char *message)`
-  - `xalloc` (function, line 234) `static void *xalloc(Runtime *rt, size_t size)`
-  - `xstrdup` (function, line 258) `static char *xstrdup(Runtime *rt, const char *source)`
-  - `make_node` (function, line 276) `static Node *make_node(Runtime *rt, NodeType type)`
-  - `make_error` (function, line 285) `static Node *make_error(Runtime *rt, const char *message)`
-  - `make_num` (function, line 294) `static Node *make_num(Runtime *rt, int64_t value)`
-  - `make_str` (function, line 303) `static Node *make_str(Runtime *rt, const char *value)`
-  - `make_sym` (function, line 312) `static Node *make_sym(Runtime *rt, const char *value)`
-  - `make_prim` (function, line 321) `static Node *make_prim(Runtime *rt, PrimFn function)`
-  - `cons` (function, line 330) `static Node *cons(Runtime *rt, Node *car, Node *cdr)`
-  - `is_nil` (function, line 340) `static bool is_nil(Runtime *rt, const Node *node)`
-  - `make_file` (function, line 347) `static Node *make_file(Runtime *rt, FILE *handle)`
-  - `cleanup` (function, line 369) `static void cleanup(Runtime *rt)`
-  - `runtime_init` (function, line 391) `static void runtime_init(Runtime *rt)`
-  - `env_new` (function, line 403) `static Env *env_new(Runtime *rt, Env *parent)`
-  - `env_bind` (function, line 413) `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)`
-  - `env_set` (function, line 424) `static bool env_set(Env *env, Node *symbol, Node *value)`
-  - `env_lookup` (function, line 446) `static Node *env_lookup(Env *env, Node *symbol)`
-  - `reader_peek` (function, line 467) `static char reader_peek(const Reader *reader)`
-  - `reader_next` (function, line 474) `static char reader_next(Reader *reader)`
-  - `reader_at_end` (function, line 492) `static bool reader_at_end(const Reader *reader)`
-  - `skip_space_and_comments` (function, line 499) `static void skip_space_and_comments(Reader *reader)`
-  - `sb_init` (function, line 515) `static void sb_init(StringBuilder *builder)`
-  - `sb_push` (function, line 528) `static void sb_push(StringBuilder *builder, char value)`
-  - `parse_ok` (function, line 554) `static ParseResult parse_ok(Node *value)`
-  - `parse_eof` (function, line 565) `static ParseResult parse_eof(void)`
-  - `parse_error` (function, line 576) `static ParseResult parse_error(const char *message)`
-  - `read_list` (function, line 588) `static ParseResult read_list(Runtime *rt, Reader *reader)`
-  - `read_string` (function, line 618) `static ParseResult read_string(Runtime *rt, Reader *reader)`
-  - `token_delimiter` (function, line 669) `static bool token_delimiter(char c)`
-  - `read_atom` (function, line 677) `static ParseResult read_atom(Runtime *rt, Reader *reader)`
-  - `read_expr` (function, line 713) `static ParseResult read_expr(Runtime *rt, Reader *reader)`
-  - `list_count` (function, line 742) `static size_t list_count(Runtime *rt, Node *list, bool *proper)`
-  - `has_arity` (function, line 759) `static bool has_arity(Runtime *rt, Node *args, size_t expected)`
-  - `arg_at` (function, line 767) `static Node *arg_at(Runtime *rt, Node *args, size_t index)`
-  - `get_two_numbers` (function, line 784) `static bool get_two_numbers(Runtime *rt, Node *args, int64_t *a, int64_t *b)`
-  - `prim_add` (function, line 804) `static Node *prim_add(Runtime *rt, Node *args)`
-  - `prim_sub` (function, line 820) `static Node *prim_sub(Runtime *rt, Node *args)`
-  - `prim_mul` (function, line 836) `static Node *prim_mul(Runtime *rt, Node *args)`
-  - `prim_div` (function, line 852) `static Node *prim_div(Runtime *rt, Node *args)`
-  - `prim_eq` (function, line 870) `static Node *prim_eq(Runtime *rt, Node *args)`
-  - `prim_lt` (function, line 882) `static Node *prim_lt(Runtime *rt, Node *args)`
-  - `prim_car` (function, line 894) `static Node *prim_car(Runtime *rt, Node *args)`
-  - `prim_cdr` (function, line 909) `static Node *prim_cdr(Runtime *rt, Node *args)`
-  - `prim_cons` (function, line 924) `static Node *prim_cons(Runtime *rt, Node *args)`
-  - `prim_string_concat` (function, line 934) `static Node *prim_string_concat(Runtime *rt, Node *args)`
-  - `prim_string_eq` (function, line 967) `static Node *prim_string_eq(Runtime *rt, Node *args)`
-  - `prim_string_length` (function, line 985) `static Node *prim_string_length(Runtime *rt, Node *args)`
-  - `prim_string_at` (function, line 1000) `static Node *prim_string_at(Runtime *rt, Node *args)`
-  - `prim_char_code` (function, line 1028) `static Node *prim_char_code(Runtime *rt, Node *args)`
-  - `prim_print` (function, line 1053) `static Node *prim_print(Runtime *rt, Node *args)`
-  - `prim_println` (function, line 1065) `static Node *prim_println(Runtime *rt, Node *args)`
-  - `file_mode_allowed` (function, line 1078) `static bool file_mode_allowed(const char *mode)`
-  - `prim_open_file` (function, line 1097) `static Node *prim_open_file(Runtime *rt, Node *args)`
-  - `valid_file` (function, line 1134) `static bool valid_file(Node *node)`
-  - `prim_read_char` (function, line 1142) `static Node *prim_read_char(Runtime *rt, Node *args)`
-  - `prim_write` (function, line 1162) `static Node *prim_write(Runtime *rt, Node *args)`
-  - `prim_close_file` (function, line 1191) `static Node *prim_close_file(Runtime *rt, Node *args)`
-  - `prim_null_p` (function, line 1219) `static Node *prim_null_p(Runtime *rt, Node *args)`
-  - `prim_number_p` (function, line 1229) `static Node *prim_number_p(Runtime *rt, Node *args)`
-  - `prim_string_p` (function, line 1241) `static Node *prim_string_p(Runtime *rt, Node *args)`
-  - `prim_error_message` (function, line 1253) `static Node *prim_error_message(Runtime *rt, Node *args)`
-  - `prim_exit` (function, line 1268) `static Node *prim_exit(Runtime *rt, Node *args)`
-  - `prim_time_ms` (function, line 1295) `static Node *prim_time_ms(Runtime *rt, Node *args)`
-  - `prim_rtc` (function, line 1306) `static Node *prim_rtc(Runtime *rt, Node *args)`
-  - `prim_fb_info` (function, line 1324) `static Node *prim_fb_info(Runtime *rt, Node *args)`
-  - `prim_vol` (function, line 1342) `static Node *prim_vol(Runtime *rt, Node *args)`
-  - `prim_pal` (function, line 1370) `static Node *prim_pal(Runtime *rt, Node *args)`
-  - `prim_pcspeaker` (function, line 1389) `static Node *prim_pcspeaker(Runtime *rt, Node *args)`
-  - `prim_minios_run` (function, line 1422) `static Node *prim_minios_run(Runtime *rt, Node *args)`
-  - `eval_list` (function, line 1484) `static Node *eval_list(Runtime *rt, Node *list, Env *env)`
-  - `eval_sequence` (function, line 1508) `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)`
-  - `valid_params` (function, line 1526) `static bool valid_params(Runtime *rt, Node *params)`
-  - `eval` (function, line 1540) `static Node *eval(Runtime *rt, Node *expression, Env *env)`
-  - `print_escaped_string` (function, line 1803) `static void print_escaped_string(FILE *out, const char *value)`
-  - `print_node` (function, line 1834) `static void print_node(Runtime *rt, Node *node, bool readable)`
-  - `bind_primitive` (function, line 1905) `static void bind_primitive(Runtime *rt, Env *env, const char *name,
+  - `Node` (struct, line 113)
+  - `Binding` (struct, line 140)
+  - `Env` (struct, line 149)
+  - `AllocTracker` (struct, line 157)
+  - `Runtime` (struct, line 165)
+  - `ParseResult` (struct, line 104)
+  - `Reader` (struct, line 181)
+  - `StringBuilder` (struct, line 192)
+  - `PrimEntry` (struct, line 1960)
+  - `LispConfig` (enum, line 41)
+  - `Runtime` (type_alias, line 65) `typedef struct Runtime Runtime;`
+  - `Node` (type_alias, line 67) `typedef struct Node Node;`
+  - `Env` (type_alias, line 68) `typedef struct Env Env;`
+  - `Binding` (type_alias, line 69) `typedef struct Binding Binding;`
+  - `AllocTracker` (type_alias, line 70) `typedef struct AllocTracker AllocTracker;`
+  - `lisp_version` (function, line 62) `static const char *lisp_version(void)`
+  - `msys` (function, line 205) `static long msys(long n, long a1, long a2, long a3)`
+  - `msys5` (function, line 218) `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)`
+  - `fatal` (function, line 233) `static void fatal(Runtime *rt, const char *message)`
+  - `xalloc` (function, line 242) `static void *xalloc(Runtime *rt, size_t size)`
+  - `xstrdup` (function, line 266) `static char *xstrdup(Runtime *rt, const char *source)`
+  - `make_node` (function, line 284) `static Node *make_node(Runtime *rt, NodeType type)`
+  - `make_error` (function, line 293) `static Node *make_error(Runtime *rt, const char *message)`
+  - `make_num` (function, line 302) `static Node *make_num(Runtime *rt, int64_t value)`
+  - `make_str` (function, line 311) `static Node *make_str(Runtime *rt, const char *value)`
+  - `make_sym` (function, line 320) `static Node *make_sym(Runtime *rt, const char *value)`
+  - `make_prim` (function, line 329) `static Node *make_prim(Runtime *rt, PrimFn function)`
+  - `cons` (function, line 338) `static Node *cons(Runtime *rt, Node *car, Node *cdr)`
+  - `is_nil` (function, line 348) `static bool is_nil(Runtime *rt, const Node *node)`
+  - `make_file` (function, line 355) `static Node *make_file(Runtime *rt, FILE *handle)`
+  - `cleanup` (function, line 377) `static void cleanup(Runtime *rt)`
+  - `runtime_init` (function, line 399) `static void runtime_init(Runtime *rt)`
+  - `env_new` (function, line 411) `static Env *env_new(Runtime *rt, Env *parent)`
+  - `env_bind` (function, line 421) `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)`
+  - `env_set` (function, line 432) `static bool env_set(Env *env, Node *symbol, Node *value)`
+  - `env_lookup` (function, line 454) `static Node *env_lookup(Env *env, Node *symbol)`
+  - `reader_peek` (function, line 475) `static char reader_peek(const Reader *reader)`
+  - `reader_next` (function, line 482) `static char reader_next(Reader *reader)`
+  - `reader_at_end` (function, line 500) `static bool reader_at_end(const Reader *reader)`
+  - `skip_space_and_comments` (function, line 507) `static void skip_space_and_comments(Reader *reader)`
+  - `sb_init` (function, line 523) `static void sb_init(StringBuilder *builder)`
+  - `sb_push` (function, line 536) `static void sb_push(StringBuilder *builder, char value)`
+  - `parse_ok` (function, line 562) `static ParseResult parse_ok(Node *value)`
+  - `parse_eof` (function, line 573) `static ParseResult parse_eof(void)`
+  - `parse_error` (function, line 584) `static ParseResult parse_error(const char *message)`
+  - `read_list` (function, line 596) `static ParseResult read_list(Runtime *rt, Reader *reader)`
+  - `read_string` (function, line 626) `static ParseResult read_string(Runtime *rt, Reader *reader)`
+  - `token_delimiter` (function, line 677) `static bool token_delimiter(char c)`
+  - `read_atom` (function, line 685) `static ParseResult read_atom(Runtime *rt, Reader *reader)`
+  - `read_expr` (function, line 721) `static ParseResult read_expr(Runtime *rt, Reader *reader)`
+  - `list_count` (function, line 750) `static size_t list_count(Runtime *rt, Node *list, bool *proper)`
+  - `has_arity` (function, line 767) `static bool has_arity(Runtime *rt, Node *args, size_t expected)`
+  - `arg_at` (function, line 775) `static Node *arg_at(Runtime *rt, Node *args, size_t index)`
+  - `arg_matches` (function, line 815) `static bool arg_matches(const Node *value, ArgKind kind)`
+  - `check_args` (function, line 841) `static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,
+    size_t n, Node **out)`
+  - `arity0` (function, line 861) `static bool arity0(Runtime *rt, Node *args)`
+  - `prim_add` (function, line 869) `static Node *prim_add(Runtime *rt, Node *args)`
+  - `prim_sub` (function, line 885) `static Node *prim_sub(Runtime *rt, Node *args)`
+  - `prim_mul` (function, line 901) `static Node *prim_mul(Runtime *rt, Node *args)`
+  - `prim_div` (function, line 917) `static Node *prim_div(Runtime *rt, Node *args)`
+  - `prim_eq` (function, line 939) `static Node *prim_eq(Runtime *rt, Node *args)`
+  - `prim_lt` (function, line 951) `static Node *prim_lt(Runtime *rt, Node *args)`
+  - `prim_car` (function, line 963) `static Node *prim_car(Runtime *rt, Node *args)`
+  - `prim_cdr` (function, line 975) `static Node *prim_cdr(Runtime *rt, Node *args)`
+  - `prim_cons` (function, line 987) `static Node *prim_cons(Runtime *rt, Node *args)`
+  - `prim_string_concat` (function, line 999) `static Node *prim_string_concat(Runtime *rt, Node *args)`
+  - `prim_string_eq` (function, line 1026) `static Node *prim_string_eq(Runtime *rt, Node *args)`
+  - `prim_string_length` (function, line 1038) `static Node *prim_string_length(Runtime *rt, Node *args)`
+  - `prim_string_at` (function, line 1050) `static Node *prim_string_at(Runtime *rt, Node *args)`
+  - `prim_char_code` (function, line 1072) `static Node *prim_char_code(Runtime *rt, Node *args)`
+  - `prim_print` (function, line 1094) `static Node *prim_print(Runtime *rt, Node *args)`
+  - `prim_println` (function, line 1108) `static Node *prim_println(Runtime *rt, Node *args)`
+  - `file_mode_allowed` (function, line 1123) `static bool file_mode_allowed(const char *mode)`
+  - `prim_read_char` (function, line 1183) `static Node *prim_read_char(Runtime *rt, Node *args)`
+  - `prim_write` (function, line 1200) `static Node *prim_write(Runtime *rt, Node *args)`
+  - `prim_close_file` (function, line 1224) `static Node *prim_close_file(Runtime *rt, Node *args)`
+  - `prim_null_p` (function, line 1249) `static Node *prim_null_p(Runtime *rt, Node *args)`
+  - `prim_number_p` (function, line 1261) `static Node *prim_number_p(Runtime *rt, Node *args)`
+  - `prim_string_p` (function, line 1273) `static Node *prim_string_p(Runtime *rt, Node *args)`
+  - `prim_error_message` (function, line 1285) `static Node *prim_error_message(Runtime *rt, Node *args)`
+  - `prim_exit` (function, line 1303) `static Node *prim_exit(Runtime *rt, Node *args)`
+  - `prim_time_ms` (function, line 1330) `static Node *prim_time_ms(Runtime *rt, Node *args)`
+  - `prim_rtc` (function, line 1340) `static Node *prim_rtc(Runtime *rt, Node *args)`
+  - `prim_fb_info` (function, line 1357) `static Node *prim_fb_info(Runtime *rt, Node *args)`
+  - `prim_vol` (function, line 1377) `static Node *prim_vol(Runtime *rt, Node *args)`
+  - `prim_pal` (function, line 1405) `static Node *prim_pal(Runtime *rt, Node *args)`
+  - `prim_pcspeaker` (function, line 1421) `static Node *prim_pcspeaker(Runtime *rt, Node *args)`
+  - `prim_minios_run` (function, line 1465) `static Node *prim_minios_run(Runtime *rt, Node *args)`
+  - `eval_list` (function, line 1527) `static Node *eval_list(Runtime *rt, Node *list, Env *env)`
+  - `eval_sequence` (function, line 1551) `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)`
+  - `valid_params` (function, line 1569) `static bool valid_params(Runtime *rt, Node *params)`
+  - `eval` (function, line 1583) `static Node *eval(Runtime *rt, Node *expression, Env *env)`
+  - `print_escaped_string` (function, line 1846) `static void print_escaped_string(FILE *out, const char *value)`
+  - `print_node` (function, line 1877) `static void print_node(Runtime *rt, Node *node, bool readable)`
+  - `bind_primitive` (function, line 1948) `static void bind_primitive(Runtime *rt, Env *env, const char *name,
     PrimFn function)`
-  - `init_env` (function, line 1913) `static Env *init_env(Runtime *rt)`
-  - `bind_argv` (function, line 1954) `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)`
-  - `read_all_file` (function, line 1966) `static char *read_all_file(const char *filename, size_t max_bytes)`
-  - `process_source` (function, line 2024) `static int process_source(Runtime *rt, const char *source,
+  - `init_env` (function, line 2005) `static Env *init_env(Runtime *rt)`
+  - `bind_argv` (function, line 2018) `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)`
+  - `read_all_file` (function, line 2030) `static char *read_all_file(const char *filename, size_t max_bytes)`
+  - `process_source` (function, line 2088) `static int process_source(Runtime *rt, const char *source,
     const char *source_name, bool echo)`
-  - `process_inline` (function, line 2066) `static int process_inline(Runtime *rt, const char *code)`
-  - `print_usage` (function, line 2073) `static void print_usage(Runtime *rt)`
-  - `repl` (function, line 2080) `static int repl(Runtime *rt)`
-  - `main` (function, line 2127) `int main(int argc, char **argv)`
-  - `volatile` (function, line 199) `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
-  - `fprintf` (function, line 227) `fprintf(err, "fatal: %s\n", message);`
-  - `exit` (function, line 228) `exit(EXIT_FAILURE);`
-  - `free` (function, line 246) `free(ptr);`
-  - `memcpy` (function, line 269) `memcpy(copy, source, length);`
-  - `fclose` (function, line 362) `fclose(handle);`
-  - `memset` (function, line 392) `memset(rt, 0, sizeof *rt);`
-  - `snprintf` (function, line 580) `snprintf(result.message, sizeof result.message, "%s", message ? message : "parse error");`
-  - `fflush` (function, line 1058) `fflush(rt->out);`
-  - `fputc` (function, line 1070) `fputc('\n', rt->out);`
-  - `fputs` (function, line 1809) `fputs("\\n", out);`
+  - `process_inline` (function, line 2130) `static int process_inline(Runtime *rt, const char *code)`
+  - `print_usage` (function, line 2137) `static void print_usage(Runtime *rt)`
+  - `repl` (function, line 2144) `static int repl(Runtime *rt)`
+  - `main` (function, line 2191) `int main(int argc, char **argv)`
+  - `numbers` (function, line 8) `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special forms quote, if, begin, define, set!, * lambda and let. Diagnostics go to stderr, va`
+  - `volatile` (function, line 207) `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
+  - `fprintf` (function, line 235) `fprintf(err, "fatal: %s\n", message);`
+  - `exit` (function, line 236) `exit(EXIT_FAILURE);`
+  - `free` (function, line 254) `free(ptr);`
+  - `memcpy` (function, line 277) `memcpy(copy, source, length);`
+  - `fclose` (function, line 370) `fclose(handle);`
+  - `memset` (function, line 400) `memset(rt, 0, sizeof *rt);`
+  - `snprintf` (function, line 588) `snprintf(result.message, sizeof result.message, "%s", message ? message : "parse error");`
+  - `fflush` (function, line 1101) `fflush(rt->out);`
+  - `fputc` (function, line 1115) `fputc('\n', rt->out);`
+  - `arity` (function, line 1299) `* * Variable arity (0 or 1);`
+  - `fputs` (function, line 1852) `fputs("\\n", out);`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ## progs/minicraft/minicraft.c

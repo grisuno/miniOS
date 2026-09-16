@@ -304,21 +304,21 @@ void kmain(void)`
   - `KFILE` (struct, line 337)
   - `KSym` (struct, line 436)
   - `KProg` (struct, line 441)
-  - `kjmpbuf` (struct, line 471)
-  - `Elf64_Ehdr` (struct, line 543)
+  - `kjmpbuf` (struct, line 475)
+  - `Elf64_Ehdr` (struct, line 547)
   - `file_operations` (type_alias, line 294) `typedef vfs_ops_t file_operations;`
   - `vnode_t` (type_alias, line 295) `typedef vfs_file_t vnode_t;`
-  - `Elf64_Addr` (type_alias, line 536) `typedef unsigned long long Elf64_Addr;`
-  - `Elf64_Off` (type_alias, line 537) `typedef unsigned long long Elf64_Off;`
-  - `Elf64_Word` (type_alias, line 538) `typedef unsigned int Elf64_Word;`
-  - `Elf64_Half` (type_alias, line 539) `typedef unsigned short Elf64_Half;`
-  - `Elf64_Xword` (type_alias, line 540) `typedef unsigned long long Elf64_Xword;`
-  - `Elf64_Sxword` (type_alias, line 541) `typedef long long Elf64_Sxword;`
+  - `Elf64_Addr` (type_alias, line 540) `typedef unsigned long long Elf64_Addr;`
+  - `Elf64_Off` (type_alias, line 541) `typedef unsigned long long Elf64_Off;`
+  - `Elf64_Word` (type_alias, line 542) `typedef unsigned int Elf64_Word;`
+  - `Elf64_Half` (type_alias, line 543) `typedef unsigned short Elf64_Half;`
+  - `Elf64_Xword` (type_alias, line 544) `typedef unsigned long long Elf64_Xword;`
+  - `Elf64_Sxword` (type_alias, line 545) `typedef long long Elf64_Sxword;`
   - `outb` (function, line 21) `static inline void outb(unsigned short port, unsigned char val)`
   - `inb` (function, line 24) `static inline unsigned char inb(unsigned short port)`
   - `outw` (function, line 29) `static inline void outw(unsigned short port, unsigned short val)`
   - `inw` (function, line 32) `static inline unsigned short inw(unsigned short port)`
-  - `C` (function, line 598) `* it with pointer subtraction in C (undefined behaviour). The value is
+  - `C` (function, line 602) `* it with pointer subtraction in C (undefined behaviour). The value is
  * a link-time difference,...`
   - `volatile` (function, line 22) `__asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));`
   - `vga_clear` (function, line 43) `void vga_clear(void);`
@@ -449,81 +449,82 @@ void kmain(void)`
   - `k_exec_user` (function, line 466) `int k_exec_user(void *entry, int argc, char **argv);`
   - `k_run_rel` (function, line 467) `int k_run_rel(prog_entry_t entry, int argc, char **argv);`
   - `kexit` (function, line 468) `void kexit(int code);`
-  - `ksetjmp` (function, line 472) `int ksetjmp(void *buf) __attribute__((returns_twice));`
-  - `klongjmp` (function, line 473) `void klongjmp(void *buf, int val) __attribute__((noreturn));`
-  - `setup_user_stack` (function, line 476) `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);`
-  - `vga_mode_set` (function, line 478) `void vga_mode_set(int on);`
-  - `vga_mode_is_active` (function, line 479) `int vga_mode_is_active(void);`
-  - `vga_gfx_ran_set` (function, line 480) `void vga_gfx_ran_set(int on);`
-  - `desktop_launch` (function, line 483) `void desktop_launch(const char *cmd);`
-  - `shell_queue_launch` (function, line 484) `void shell_queue_launch(const char *cmd);`
-  - `vga_fb_focus_next` (function, line 487) `void vga_fb_focus_next(void);`
-  - `vga_fb_focus_id` (function, line 488) `int vga_fb_focus_id(int id);`
-  - `vga_fb_focus_get` (function, line 489) `int vga_fb_focus_get(void);`
-  - `vga_fb_nterms_get` (function, line 490) `int vga_fb_nterms_get(void);`
-  - `vga_fb_term_split` (function, line 491) `int vga_fb_term_split(void);`
-  - `vga_fb_term_close_focused` (function, line 492) `int vga_fb_term_close_focused(void);`
-  - `vga_fb_tile_all` (function, line 493) `void vga_fb_tile_all(void);`
-  - `vga_fb_list_windows` (function, line 494) `void vga_fb_list_windows(void);`
-  - `vga_fb_park_line` (function, line 495) `void vga_fb_park_line(const char *b, int p);`
-  - `vga_fb_unpark_line` (function, line 496) `int vga_fb_unpark_line(char *b, int *p);`
-  - `vga_fb_set_gfx_program` (function, line 497) `void vga_fb_set_gfx_program(const char *name);`
-  - `vga_fb_act_empty` (function, line 498) `int vga_fb_act_empty(void);`
-  - `vga_fb_prompt_live` (function, line 499) `int vga_fb_prompt_live(void);`
-  - `vga_fb_note_prompt` (function, line 500) `void vga_fb_note_prompt(void);`
-  - `vga_fb_clear_prompt` (function, line 501) `void vga_fb_clear_prompt(void);`
-  - `vga_fb_prompted` (function, line 502) `int vga_fb_prompted(void);`
-  - `shell_readline_active` (function, line 506) `int shell_readline_active(void);`
-  - `shell_focus_park` (function, line 507) `void shell_focus_park(void);`
-  - `shell_focus_restore` (function, line 508) `void shell_focus_restore(void);`
-  - `user_range_ok` (function, line 513) `int user_range_ok(unsigned long p, unsigned long len);`
-  - `user_str_ok` (function, line 514) `int user_str_ok(unsigned long p, unsigned long maxlen);`
-  - `mm_setup_protections` (function, line 517) `void mm_setup_protections(void);`
-  - `pt_page_alloc` (function, line 518) `void *pt_page_alloc(void);`
-  - `pt_page_free` (function, line 519) `void pt_page_free(void *ptr);`
-  - `mm_user_pte_update` (function, line 520) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);`
-  - `mm_user_set_exec` (function, line 521) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);`
-  - `swap_out` (function, line 524) `int swap_out(unsigned long window_sz);`
-  - `swap_in` (function, line 525) `int swap_in(void);`
-  - `elf_load` (function, line 563) `void *elf_load(void *data, unsigned size, void **base_out);`
-  - `load_exec_elf` (function, line 565) `void *load_exec_elf(void *data, unsigned size);`
-  - `load_exec_elf_into` (function, line 566) `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out);`
-  - `pt_clone_user_empty` (function, line 568) `unsigned long pt_clone_user_empty(void);`
-  - `mm_user_ensure_page` (function, line 569) `int mm_user_ensure_page(unsigned long cr3, unsigned long va);`
-  - `mm_copy_user_page` (function, line 570) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);`
-  - `syscall_init` (function, line 574) `void syscall_init(void);`
-  - `ksyscall` (function, line 578) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `syscall_trace_enabled` (function, line 579) `long syscall_trace_enabled(void);`
-  - `syscall_trace_set` (function, line 580) `void syscall_trace_set(int on);`
-  - `syscall_trace_verbose_enabled` (function, line 581) `long syscall_trace_verbose_enabled(void);`
-  - `syscall_trace_verbose_set` (function, line 582) `void syscall_trace_verbose_set(int on);`
-  - `syscall_trace_shown` (function, line 583) `unsigned long syscall_trace_shown(void);`
-  - `syscall_name` (function, line 584) `const char *syscall_name(long n);`
-  - `ktime_ms` (function, line 607) `unsigned long ktime_ms(void);`
-  - `ktime_us` (function, line 608) `unsigned long ktime_us(void);`
-  - `wall_us_now` (function, line 609) `unsigned long wall_us_now(void);`
-  - `bootlog_mark` (function, line 612) `void bootlog_mark(const char *name);`
-  - `bootlog_report` (function, line 613) `void bootlog_report(void);`
-  - `pcspk_init` (function, line 616) `void pcspk_init(void);`
-  - `pcspk_tone` (function, line 617) `void pcspk_tone(unsigned freq);`
-  - `pcspk_off` (function, line 618) `void pcspk_off(void);`
-  - `pcspk_set_volume` (function, line 619) `void pcspk_set_volume(unsigned volume);`
-  - `pcspk_get_volume` (function, line 620) `unsigned pcspk_get_volume(void);`
-  - `rtc_read_tod` (function, line 623) `int rtc_read_tod(int *hour, int *min, int *sec);`
-  - `ide_init` (function, line 626) `void ide_init(void);`
-  - `ide_read_sectors` (function, line 627) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);`
-  - `ide_write_sectors` (function, line 628) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);`
-  - `ide_read_sector` (function, line 629) `int ide_read_sector(unsigned int lba, void *buf);`
-  - `ide_write_sector` (function, line 630) `int ide_write_sector(unsigned int lba, const void *buf);`
-  - `ide_total_sectors` (function, line 631) `unsigned int ide_total_sectors(void);`
-  - `ide_present` (function, line 632) `int ide_present(void);`
-  - `block_init` (function, line 635) `void block_init(void);`
-  - `block_read` (function, line 636) `int block_read(unsigned int block_num, void *buf);`
-  - `block_write` (function, line 637) `int block_write(unsigned int block_num, const void *buf);`
-  - `block_read_multi` (function, line 638) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);`
-  - `block_write_multi` (function, line 639) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);`
-  - `block_total` (function, line 640) `unsigned int block_total(void);`
-  - `k_user_fault_return` (function, line 643) `void k_user_fault_return(void);`
+  - `k_run_on_stack` (function, line 471) `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);`
+  - `ksetjmp` (function, line 476) `int ksetjmp(void *buf) __attribute__((returns_twice));`
+  - `klongjmp` (function, line 477) `void klongjmp(void *buf, int val) __attribute__((noreturn));`
+  - `setup_user_stack` (function, line 480) `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);`
+  - `vga_mode_set` (function, line 482) `void vga_mode_set(int on);`
+  - `vga_mode_is_active` (function, line 483) `int vga_mode_is_active(void);`
+  - `vga_gfx_ran_set` (function, line 484) `void vga_gfx_ran_set(int on);`
+  - `desktop_launch` (function, line 487) `void desktop_launch(const char *cmd);`
+  - `shell_queue_launch` (function, line 488) `void shell_queue_launch(const char *cmd);`
+  - `vga_fb_focus_next` (function, line 491) `void vga_fb_focus_next(void);`
+  - `vga_fb_focus_id` (function, line 492) `int vga_fb_focus_id(int id);`
+  - `vga_fb_focus_get` (function, line 493) `int vga_fb_focus_get(void);`
+  - `vga_fb_nterms_get` (function, line 494) `int vga_fb_nterms_get(void);`
+  - `vga_fb_term_split` (function, line 495) `int vga_fb_term_split(void);`
+  - `vga_fb_term_close_focused` (function, line 496) `int vga_fb_term_close_focused(void);`
+  - `vga_fb_tile_all` (function, line 497) `void vga_fb_tile_all(void);`
+  - `vga_fb_list_windows` (function, line 498) `void vga_fb_list_windows(void);`
+  - `vga_fb_park_line` (function, line 499) `void vga_fb_park_line(const char *b, int p);`
+  - `vga_fb_unpark_line` (function, line 500) `int vga_fb_unpark_line(char *b, int *p);`
+  - `vga_fb_set_gfx_program` (function, line 501) `void vga_fb_set_gfx_program(const char *name);`
+  - `vga_fb_act_empty` (function, line 502) `int vga_fb_act_empty(void);`
+  - `vga_fb_prompt_live` (function, line 503) `int vga_fb_prompt_live(void);`
+  - `vga_fb_note_prompt` (function, line 504) `void vga_fb_note_prompt(void);`
+  - `vga_fb_clear_prompt` (function, line 505) `void vga_fb_clear_prompt(void);`
+  - `vga_fb_prompted` (function, line 506) `int vga_fb_prompted(void);`
+  - `shell_readline_active` (function, line 510) `int shell_readline_active(void);`
+  - `shell_focus_park` (function, line 511) `void shell_focus_park(void);`
+  - `shell_focus_restore` (function, line 512) `void shell_focus_restore(void);`
+  - `user_range_ok` (function, line 517) `int user_range_ok(unsigned long p, unsigned long len);`
+  - `user_str_ok` (function, line 518) `int user_str_ok(unsigned long p, unsigned long maxlen);`
+  - `mm_setup_protections` (function, line 521) `void mm_setup_protections(void);`
+  - `pt_page_alloc` (function, line 522) `void *pt_page_alloc(void);`
+  - `pt_page_free` (function, line 523) `void pt_page_free(void *ptr);`
+  - `mm_user_pte_update` (function, line 524) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);`
+  - `mm_user_set_exec` (function, line 525) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);`
+  - `swap_out` (function, line 528) `int swap_out(unsigned long window_sz);`
+  - `swap_in` (function, line 529) `int swap_in(void);`
+  - `elf_load` (function, line 567) `void *elf_load(void *data, unsigned size, void **base_out);`
+  - `load_exec_elf` (function, line 569) `void *load_exec_elf(void *data, unsigned size);`
+  - `load_exec_elf_into` (function, line 570) `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out);`
+  - `pt_clone_user_empty` (function, line 572) `unsigned long pt_clone_user_empty(void);`
+  - `mm_user_ensure_page` (function, line 573) `int mm_user_ensure_page(unsigned long cr3, unsigned long va);`
+  - `mm_copy_user_page` (function, line 574) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);`
+  - `syscall_init` (function, line 578) `void syscall_init(void);`
+  - `ksyscall` (function, line 582) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `syscall_trace_enabled` (function, line 583) `long syscall_trace_enabled(void);`
+  - `syscall_trace_set` (function, line 584) `void syscall_trace_set(int on);`
+  - `syscall_trace_verbose_enabled` (function, line 585) `long syscall_trace_verbose_enabled(void);`
+  - `syscall_trace_verbose_set` (function, line 586) `void syscall_trace_verbose_set(int on);`
+  - `syscall_trace_shown` (function, line 587) `unsigned long syscall_trace_shown(void);`
+  - `syscall_name` (function, line 588) `const char *syscall_name(long n);`
+  - `ktime_ms` (function, line 611) `unsigned long ktime_ms(void);`
+  - `ktime_us` (function, line 612) `unsigned long ktime_us(void);`
+  - `wall_us_now` (function, line 613) `unsigned long wall_us_now(void);`
+  - `bootlog_mark` (function, line 616) `void bootlog_mark(const char *name);`
+  - `bootlog_report` (function, line 617) `void bootlog_report(void);`
+  - `pcspk_init` (function, line 620) `void pcspk_init(void);`
+  - `pcspk_tone` (function, line 621) `void pcspk_tone(unsigned freq);`
+  - `pcspk_off` (function, line 622) `void pcspk_off(void);`
+  - `pcspk_set_volume` (function, line 623) `void pcspk_set_volume(unsigned volume);`
+  - `pcspk_get_volume` (function, line 624) `unsigned pcspk_get_volume(void);`
+  - `rtc_read_tod` (function, line 627) `int rtc_read_tod(int *hour, int *min, int *sec);`
+  - `ide_init` (function, line 630) `void ide_init(void);`
+  - `ide_read_sectors` (function, line 631) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);`
+  - `ide_write_sectors` (function, line 632) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);`
+  - `ide_read_sector` (function, line 633) `int ide_read_sector(unsigned int lba, void *buf);`
+  - `ide_write_sector` (function, line 634) `int ide_write_sector(unsigned int lba, const void *buf);`
+  - `ide_total_sectors` (function, line 635) `unsigned int ide_total_sectors(void);`
+  - `ide_present` (function, line 636) `int ide_present(void);`
+  - `block_init` (function, line 639) `void block_init(void);`
+  - `block_read` (function, line 640) `int block_read(unsigned int block_num, void *buf);`
+  - `block_write` (function, line 641) `int block_write(unsigned int block_num, const void *buf);`
+  - `block_read_multi` (function, line 642) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);`
+  - `block_write_multi` (function, line 643) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);`
+  - `block_total` (function, line 644) `unsigned int block_total(void);`
+  - `k_user_fault_return` (function, line 647) `void k_user_fault_return(void);`
   - `console_lock` (variable, line 55) `extern spinlock_t console_lock;`
   - `ser_e_cpu` (variable, line 76) `extern unsigned long ser_e_ra, ser_e_cpu;`
   - `kmalloc_fail_after` (variable, line 144) `extern long kmalloc_fail_after;`
@@ -535,17 +536,17 @@ void kmain(void)`
   - `ksym_count` (variable, line 449) `extern int ksym_count;`
   - `kprog_table` (variable, line 450) `extern KProg kprog_table[];`
   - `kprog_count` (variable, line 451) `extern int kprog_count;`
-  - `exec_return` (variable, line 474) `extern kjmpbuf exec_return;`
-  - `exec_exit_code` (variable, line 475) `extern int exec_exit_code;`
-  - `shell_fg_active` (variable, line 510) `extern volatile int shell_fg_active;`
-  - `g_brk` (variable, line 528) `extern unsigned long g_brk;`
-  - `g_brk_limit` (variable, line 529) `extern unsigned long g_brk_limit;`
-  - `user_mmap_cur` (variable, line 530) `extern unsigned long user_mmap_cur;`
-  - `kfd_table` (variable, line 586) `extern KFILE *kfd_table[KFD_MAX];`
-  - `kernel_end` (variable, line 589) `extern unsigned long kernel_end;`
-  - `ramdisk_start` (variable, line 590) `extern char ramdisk_start[];`
-  - `ramdisk_end` (variable, line 591) `extern char ramdisk_end[];`
-  - `ramdisk_size` (variable, line 592) `extern char ramdisk_size[];`
+  - `exec_return` (variable, line 478) `extern kjmpbuf exec_return;`
+  - `exec_exit_code` (variable, line 479) `extern int exec_exit_code;`
+  - `shell_fg_active` (variable, line 514) `extern volatile int shell_fg_active;`
+  - `g_brk` (variable, line 532) `extern unsigned long g_brk;`
+  - `g_brk_limit` (variable, line 533) `extern unsigned long g_brk_limit;`
+  - `user_mmap_cur` (variable, line 534) `extern unsigned long user_mmap_cur;`
+  - `kfd_table` (variable, line 590) `extern KFILE *kfd_table[KFD_MAX];`
+  - `kernel_end` (variable, line 593) `extern unsigned long kernel_end;`
+  - `ramdisk_start` (variable, line 594) `extern char ramdisk_start[];`
+  - `ramdisk_end` (variable, line 595) `extern char ramdisk_end[];`
+  - `ramdisk_size` (variable, line 596) `extern char ramdisk_size[];`
   - `KERNEL_H` (macro, line 2) `#define KERNEL_H`
   - `EFAULT` (macro, line 3) `#define EFAULT`
   - `ALIGN_UP` (macro, line 18) `#define ALIGN_UP(x, a)`
@@ -604,11 +605,11 @@ void kmain(void)`
   - `EOF` (macro, line 335) `#define EOF`
   - `KSYM_MAX` (macro, line 432) `#define KSYM_MAX`
   - `KPROG_MAX` (macro, line 434) `#define KPROG_MAX`
-  - `EI_NIDENT` (macro, line 535) `#define EI_NIDENT`
-  - `ET_REL` (macro, line 559) `#define ET_REL`
-  - `ET_EXEC` (macro, line 561) `#define ET_EXEC`
-  - `ET_DYN` (macro, line 562) `#define ET_DYN`
-  - `KFD_MAX` (macro, line 585) `#define KFD_MAX`
+  - `EI_NIDENT` (macro, line 539) `#define EI_NIDENT`
+  - `ET_REL` (macro, line 563) `#define ET_REL`
+  - `ET_EXEC` (macro, line 565) `#define ET_EXEC`
+  - `ET_DYN` (macro, line 566) `#define ET_DYN`
+  - `KFD_MAX` (macro, line 589) `#define KFD_MAX`
 - Depends on: `progs/minios_abi.h`, `spinlock.h`, `vma.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/mouse.h`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `editor.h`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `kernel.c`, `kernel/abi.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/console_in.h`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/time.c`, `kernel/vga_cursor.c`, `kernel/vga_cursor.h`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `shell.h`, `smp.c`, `spawn.h`, `tls_port.h`
 
@@ -759,17 +760,18 @@ void kmain(void)`
   - `u16` (function, line 13) `def u16(d, o)`
   - `u32` (function, line 14) `def u32(d, o)`
   - `FSCK` (class, line 16) `class FSCK`
-  - `main` (method, line 97) `def main()`
+  - `main` (method, line 136) `def main()`
   - `__init__` (method, line 17) `def __init__(self, fn)`
-  - `blk` (method, line 23) `def blk(self, n)`
-  - `_sb` (method, line 24) `def _sb(self)`
-  - `inode` (method, line 30) `def inode(self, i)`
-  - `read` (method, line 37) `def read(self, ino)`
-  - `err` (method, line 52) `def err(self, msg)`
-  - `mark_block` (method, line 54) `def mark_block(self, n)`
-  - `scan_inode` (method, line 59) `def scan_inode(self, i)`
-  - `scan_dir` (method, line 68) `def scan_dir(self, ino)`
-  - `run` (method, line 82) `def run(self)`
+  - `_find_base` (method, line 24) `def _find_base(self)`
+  - `blk` (method, line 42) `def blk(self, n)`
+  - `_sb` (method, line 45) `def _sb(self)`
+  - `inode` (method, line 51) `def inode(self, i)`
+  - `read` (method, line 58) `def read(self, ino)`
+  - `err` (method, line 73) `def err(self, msg)`
+  - `mark_block` (method, line 75) `def mark_block(self, n)`
+  - `scan_inode` (method, line 80) `def scan_inode(self, i)`
+  - `scan_dir` (method, line 89) `def scan_dir(self, ino)`
+  - `run` (method, line 121) `def run(self)`
 
 ## mkfs.minifs.py
 - Layer: utility

@@ -163,6 +163,19 @@
   - `write_zip` (function, line 28) `def write_zip(path, entries)`
   - `main` (function, line 42) `def main()`
 
+## tools/kernel_feature_survey.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `SurveyConfig` (class, line 18) `class SurveyConfig`
+  - `iter_sources` (method, line 34) `def iter_sources(root)`
+  - `find_fnptr_hits` (method, line 43) `def find_fnptr_hits(path, text)`
+  - `find_asm_constraints` (method, line 49) `def find_asm_constraints(path, text)`
+  - `count_params` (method, line 59) `def count_params(params)`
+  - `survey` (method, line 67) `def survey(root)`
+  - `render_text` (method, line 103) `def render_text(findings)`
+  - `main` (method, line 122) `def main(argv)`
+
 ## tools/lisp_scoped.sh
 - Layer: utility
 - Doc: Docstring: Scoped Lisp validation for the MiniOS interpreter contract. Builds the ring-3 static ELF with zero warnings, 
@@ -176,26 +189,27 @@
 - Layer: utility
 - Language: py
 - Symbols:
-  - `u16` (function, line 49) `def u16(d, o)`
-  - `u32` (function, line 53) `def u32(d, o)`
-  - `Image` (class, line 57) `class Image`
-  - `FS` (class, line 81) `class FS`
-  - `valid_name` (method, line 208) `def valid_name(nm)`
-  - `find_partition_base` (method, line 216) `def find_partition_base(fn)`
-  - `cmd_backup` (method, line 254) `def cmd_backup(img_path, stage)`
-  - `main` (method, line 316) `def main(argv)`
-  - `__init__` (method, line 60) `def __init__(self, fn, base)`
-  - `close` (method, line 68) `def close(self)`
-  - `blk` (method, line 71) `def blk(self, n)`
-  - `__init__` (method, line 82) `def __init__(self, img)`
-  - `inode` (method, line 91) `def inode(self, i)`
-  - `is_dir` (method, line 106) `def is_dir(self, st)`
-  - `read_file` (method, line 109) `def read_file(self, ino)`
-  - `listdir` (method, line 142) `def listdir(self, ino)`
-  - `read_file_dir` (method, line 157) `def read_file_dir(self, ino)`
-  - `read_file_raw` (method, line 165) `def read_file_raw(self, st)`
-  - `resolve` (method, line 189) `def resolve(self, path)`
-  - `walk` (method, line 276) `def walk(dir_ino, rel)`
+  - `u16` (function, line 53) `def u16(d, o)`
+  - `u32` (function, line 57) `def u32(d, o)`
+  - `Image` (class, line 61) `class Image`
+  - `FS` (class, line 85) `class FS`
+  - `valid_name` (method, line 216) `def valid_name(nm)`
+  - `strict_name` (method, line 224) `def strict_name(nm)`
+  - `find_partition_base` (method, line 233) `def find_partition_base(fn)`
+  - `cmd_backup` (method, line 271) `def cmd_backup(img_path, stage)`
+  - `main` (method, line 343) `def main(argv)`
+  - `__init__` (method, line 64) `def __init__(self, fn, base)`
+  - `close` (method, line 72) `def close(self)`
+  - `blk` (method, line 75) `def blk(self, n)`
+  - `__init__` (method, line 86) `def __init__(self, img)`
+  - `inode` (method, line 95) `def inode(self, i)`
+  - `is_dir` (method, line 110) `def is_dir(self, st)`
+  - `read_file` (method, line 113) `def read_file(self, ino)`
+  - `listdir` (method, line 146) `def listdir(self, ino)`
+  - `read_file_dir` (method, line 165) `def read_file_dir(self, ino)`
+  - `read_file_raw` (method, line 173) `def read_file_raw(self, st)`
+  - `resolve` (method, line 197) `def resolve(self, path)`
+  - `walk` (method, line 293) `def walk(dir_ino, rel)`
 
 ## tools/minios_cli.py
 - Layer: utility
@@ -289,6 +303,15 @@
   - `send` (method, line 113) `def send(line)`
   - `mouse_state` (method, line 118) `def mouse_state()`
 - Depends on: `kernel/time.c`
+
+## tools/test_call_align.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `AlignConfig` (class, line 24) `class AlignConfig`
+  - `find_minigcc` (method, line 59) `def find_minigcc(explicit)`
+  - `run` (method, line 74) `def run(argv)`
+  - `main` (method, line 79) `def main(argv)`
 
 ## tools/test_codecs.sh
 - Layer: testing

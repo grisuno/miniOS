@@ -42,7 +42,11 @@ void block_init(void) {
 }
 
 void block_set_base(unsigned int lba_base) {
-    block_lba_base = lba_base;
+    if (lba_base != block_lba_base) {
+        unsigned int i;
+        for (i = 0; i < BC_WAYS; i++) bc_valid[i] = 0;
+        block_lba_base = lba_base;
+    }
 }
 
 /* Strategy consumer: sector I/O goes through the registered block device's

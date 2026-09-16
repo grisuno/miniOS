@@ -122,6 +122,15 @@ extern unsigned long syscall_kstack;
  * pt_free_user spin on the corrupted entries. */
 #define EXEC_KSTACK_SZ (64 * 1024)
 
+/* ET_REL child stack: the toolchain recurses deeper than any fixed
+ * small slot. Measured need is a 66 KB single frame in minigcc's
+ * parse_function, so 64 KB (the old EXEC_KSTACK_SZ and every 16 KB
+ * proc slot) overflows it: silently into pool neighbours from an
+ * isolated window (the lost MiniFS mount), by luck nowhere fatal
+ * from the shell. 256 KB is transient per spawn and leaves headroom
+ * for nesting. */
+#define ETREL_CHILD_STACK_SZ (256 * 1024)
+
 int k_exec_user(void *entry, int argc, char **argv) {
     char *stk = (char *)USER_STACK_BASE;
     unsigned long *sp = setup_user_stack(stk, USER_STACK_SIZE, argc, argv);
@@ -230,13 +239,32 @@ int k_run_rel(prog_entry_t entry, int argc, char **argv) {
 
     kjmpbuf saved_exec = exec_return;
 
+    /* The caller stack may be a 16 KB proc slot: a SYS_SPAWN that
+     * arrives from an isolated window runs here on procs[cur].kstack,
+     * and the toolchain's recursion (minigcc/ld) overflows it into
+     * whatever the pool abuts (seen as a silently lost MiniFS mount).
+     * Run the child on a dedicated ETREL_CHILD_STACK_SZ stack instead;
+     * the setjmp below stays on the caller stack so a kexit klongjmp
+     * lands back here with intact frames on either return path. OOM
+     * keeps the historical caller-stack behavior. child_stack is
+     * assigned before the setjmp and never modified after, so longjmp
+     * cannot clobber it. */
+    void *child_stack = kmalloc(ETREL_CHILD_STACK_SZ);
+
     if (ksetjmp(&exec_return) == 0) {
-        int rc = entry(argc, argv);
+        int rc;
+        if (child_stack)
+            rc = k_run_on_stack((char *)child_stack + ETREL_CHILD_STACK_SZ,
+                                entry, argc, argv);
+        else
+            rc = entry(argc, argv);
         exec_return = saved_exec;
+        if (child_stack) kfree(child_stack);
         return rc;
     }
 
     exec_return = saved_exec;
+    if (child_stack) kfree(child_stack);
     if (vga_mode13h || graphics_program_ran) {
         vga_mode13h = 0;
         graphics_program_ran = 0;

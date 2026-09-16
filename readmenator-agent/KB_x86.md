@@ -25,6 +25,7 @@
   - `switch_to_notrap` (function, line 90)
   - `user_trampoline` (function, line 159)
   - `resume_iretq` (function, line 172)
+  - `k_run_on_stack` (function, line 212)
 
 ## arch/x86/hal_io.h
 - Layer: utility

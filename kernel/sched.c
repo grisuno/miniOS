@@ -1174,6 +1174,44 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             }
             serial_puts("\n");
         }
+        /* Ring-0 heap fault diagnosis: dump 16 bytes at the faulting
+         * rip plus 4 words at rsp when both lie in the kernel heap.
+         * Best effort only: a #GP (unlike #PF) means the page is
+         * present, so its 2 MB executable heap page is readable, and
+         * rsp points at the live trap frame. A wild value outside the
+         * heap prints nothing instead of nesting a fault. */
+        {
+            unsigned long rip = frame->rip;
+            unsigned long rsp = frame->rsp;
+            if (rip >= (unsigned long)HEAP_BASE &&
+                rip + 16 < (unsigned long)HEAP_BASE + (unsigned long)HEAP_SIZE &&
+                rsp >= (unsigned long)HEAP_BASE &&
+                rsp + 32 < (unsigned long)HEAP_BASE + (unsigned long)HEAP_SIZE) {
+                char h[17];
+                static const char digits[] = "0123456789abcdef";
+                unsigned char *pb = (unsigned char *)rip;
+                unsigned long *pw = (unsigned long *)rsp;
+                int k;
+                serial_puts("  heapcode:");
+                for (k = 0; k < 16; k++) {
+                    unsigned long v = pb[k];
+                    h[0] = digits[(v >> 4) & 0xF];
+                    h[1] = digits[v & 0xF];
+                    h[2] = 0;
+                    serial_puts(" ");
+                    serial_puts(h);
+                }
+                serial_puts("\n  heapstack:");
+                for (k = 0; k < 4; k++) {
+                    unsigned long v = pw[k];
+                    for (int i = 15; i >= 0; i--) { h[i] = digits[v & 0xF]; v >>= 4; }
+                    h[16] = 0;
+                    serial_puts(" ");
+                    serial_puts(h);
+                }
+                serial_puts("\n");
+            }
+        }
         /* Ring-3 wild-jump diagnosis: dump 8 words at the user stack so
          * a jump outside the user window (RIP in kernel/low memory)
          * still leaves an addr2line-able call chain. The whole user

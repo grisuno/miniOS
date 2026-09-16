@@ -211,6 +211,7 @@
 | `vbe_try_bpp_ok` | function | `arch/x86/boot/stage2.S:399` | `` |
 | `vbe_try_fail` | function | `arch/x86/boot/stage2.S:427` | `` |
 | `vbe_try_mode` | function | `arch/x86/boot/stage2.S:368` | `` |
+| `k_run_on_stack` | function | `arch/x86/ctx_sw.S:212` | `` |
 | `resume_iretq` | function | `arch/x86/ctx_sw.S:172` | `` |
 | `switch_save_only` | function | `arch/x86/ctx_sw.S:44` | `` |
 | `switch_to` | function | `arch/x86/ctx_sw.S:53` | `` |
@@ -396,19 +397,19 @@
 | `BC_WAYS` | macro | `drivers/block.c:23` | `#define BC_WAYS` |
 | `bc_index` | function | `drivers/block.c:28` | `static unsigned int bc_index(unsigned int block_num)` |
 | `bc_invalidate` | function | `drivers/block.c:32` | `static void bc_invalidate(unsigned int block_num)` |
-| `block_dev_read` | function | `drivers/block.c:95` | `return block_dev_read(lba, count * SECTORS_PER_BLOCK, buf);` |
-| `block_dev_write` | function | `drivers/block.c:59` | `static int block_dev_write(unsigned lba, unsigned count, const void *buf)` |
-| `block_flush` | function | `drivers/block.c:104` | `void block_flush(void)` |
+| `block_dev_read` | function | `drivers/block.c:99` | `return block_dev_read(lba, count * SECTORS_PER_BLOCK, buf);` |
+| `block_dev_write` | function | `drivers/block.c:63` | `static int block_dev_write(unsigned lba, unsigned count, const void *buf)` |
+| `block_flush` | function | `drivers/block.c:108` | `void block_flush(void)` |
 | `block_init` | function | `drivers/block.c:37` | `void block_init(void)` |
-| `block_read` | function | `drivers/block.c:66` | `int block_read(unsigned int block_num, void *buf)` |
-| `block_read_multi` | function | `drivers/block.c:92` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)` |
+| `block_read` | function | `drivers/block.c:70` | `int block_read(unsigned int block_num, void *buf)` |
+| `block_read_multi` | function | `drivers/block.c:96` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)` |
 | `block_set_base` | function | `drivers/block.c:43` | `void block_set_base(unsigned int lba_base)` |
-| `block_total` | function | `drivers/block.c:106` | `unsigned int block_total(void)` |
-| `block_write` | function | `drivers/block.c:86` | `int block_write(unsigned int block_num, const void *buf)` |
-| `block_write_multi` | function | `drivers/block.c:97` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)` |
+| `block_total` | function | `drivers/block.c:110` | `unsigned int block_total(void)` |
+| `block_write` | function | `drivers/block.c:90` | `int block_write(unsigned int block_num, const void *buf)` |
+| `block_write_multi` | function | `drivers/block.c:101` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)` |
 | `ide_init` | function | `drivers/block.c:39` | `ide_init();` |
-| `ide_read_sectors` | function | `drivers/block.c:57` | `return ide_read_sectors(lba, count, buf);` |
-| `ide_write_sectors` | function | `drivers/block.c:64` | `return ide_write_sectors(lba, count, buf);` |
+| `ide_read_sectors` | function | `drivers/block.c:61` | `return ide_read_sectors(lba, count, buf);` |
+| `ide_write_sectors` | function | `drivers/block.c:68` | `return ide_write_sectors(lba, count, buf);` |
 | `dev_copy` | function | `drivers/driver.c:19` | `static void dev_copy(char *dst, const char *src, unsigned cap)` |
 | `dev_eq` | function | `drivers/driver.c:26` | `static int dev_eq(const char *a, const char *b)` |
 | `dev_len` | function | `drivers/driver.c:13` | `static unsigned dev_len(const char *s)` |
@@ -681,7 +682,7 @@
 | `DE_NAME` | macro | `fs/minifs.c:12` | `#define DE_NAME(de)` |
 | `DE_NAME_W` | macro | `fs/minifs.c:13` | `#define DE_NAME_W(de)` |
 | `block_read` | function | `fs/minifs.c:334` | `block_read(journal_start, buf);` |
-| `block_set_base` | function | `fs/minifs.c:1189` | `block_set_base(fs_lba_start);` |
+| `block_set_base` | function | `fs/minifs.c:1210` | `block_set_base(guess);` |
 | `block_write` | function | `fs/minifs.c:87` | `return block_write(0, buf);` |
 | `blocks` | function | `fs/minifs.c:431` | `* blocks (self-protection);` |
 | `bm_clear` | function | `fs/minifs.c:120` | `static void bm_clear(unsigned char *bm, unsigned int bit)` |
@@ -700,37 +701,37 @@ void minifs_journal_touch(unsigned int phys)` |
 | `journal_load_super` | function | `fs/minifs.c:331` | `static void journal_load_super(void)` |
 | `journal_save_entries` | function | `fs/minifs.c:358` | `static void journal_save_entries(void)` |
 | `journal_save_super` | function | `fs/minifs.c:347` | `static void journal_save_super(unsigned int state)` |
-| `kfree` | function | `fs/minifs.c:1006` | `kfree(cbuf);` |
+| `kfree` | function | `fs/minifs.c:1021` | `kfree(cbuf);` |
 | `kmemcpy` | function | `fs/minifs.c:86` | `kmemcpy(buf, &fs_sb, sizeof(MiniFSSuper));` |
 | `kmemset` | function | `fs/minifs.c:84` | `kmemset(buf, 0, MINIFS_BLOCK_SIZE);` |
 | `kprintf` | function | `fs/minifs.c:489` | `kprintf("minifs: journal super checksum bad, discarding log\n");` |
-| `kstrncpy` | function | `fs/minifs.c:795` | `kstrncpy(parent_buf, path, RAMDISK_FNAME_LEN - 1);` |
-| `minifs_access` | function | `fs/minifs.c:1139` | `int minifs_access(const char *path)` |
+| `kstrncpy` | function | `fs/minifs.c:810` | `kstrncpy(parent_buf, path, RAMDISK_FNAME_LEN - 1);` |
+| `minifs_access` | function | `fs/minifs.c:1154` | `int minifs_access(const char *path)` |
 | `minifs_alloc_block` | function | `fs/minifs.c:126` | `int minifs_alloc_block(void)` |
 | `minifs_alloc_inode` | function | `fs/minifs.c:151` | `int minifs_alloc_inode(void)` |
 | `minifs_compress` | function | `fs/minifs.c:27` | `unsigned int minifs_compress(const void *src, unsigned int src_len,
                              ...` |
 | `minifs_crc16` | function | `fs/minifs.c:48` | `static unsigned short minifs_crc16(const void *data, unsigned int len)` |
 | `minifs_crc32` | function | `fs/minifs.c:60` | `static unsigned int minifs_crc32(const void *data, unsigned int len)` |
-| `minifs_create` | function | `fs/minifs.c:789` | `int minifs_create(const char *path, unsigned short mode)` |
+| `minifs_create` | function | `fs/minifs.c:804` | `int minifs_create(const char *path, unsigned short mode)` |
 | `minifs_decompress` | function | `fs/minifs.c:37` | `unsigned int minifs_decompress(const void *src, unsigned int src_len,
                            ...` |
 | `minifs_dir_add_entry` | function | `fs/minifs.c:579` | `int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
                          u...` |
 | `minifs_dir_lookup` | function | `fs/minifs.c:555` | `int minifs_dir_lookup(int dir_ino, const char *name)` |
-| `minifs_dir_read` | function | `fs/minifs.c:722` | `int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)` |
-| `minifs_dir_remove_entry` | function | `fs/minifs.c:696` | `int minifs_dir_remove_entry(int dir_ino, const char *name)` |
-| `minifs_file_close` | function | `fs/minifs.c:1359` | `int minifs_file_close(MiniFSFile *f)` |
-| `minifs_file_open` | function | `fs/minifs.c:1345` | `MiniFSFile *minifs_file_open(int inode_num, int flags)` |
+| `minifs_dir_read` | function | `fs/minifs.c:737` | `int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)` |
+| `minifs_dir_remove_entry` | function | `fs/minifs.c:711` | `int minifs_dir_remove_entry(int dir_ino, const char *name)` |
+| `minifs_file_close` | function | `fs/minifs.c:1418` | `int minifs_file_close(MiniFSFile *f)` |
+| `minifs_file_open` | function | `fs/minifs.c:1404` | `MiniFSFile *minifs_file_open(int inode_num, int flags)` |
 | `minifs_free_block` | function | `fs/minifs.c:143` | `void minifs_free_block(unsigned int block)` |
 | `minifs_free_inode` | function | `fs/minifs.c:163` | `void minifs_free_inode(int num)` |
-| `minifs_get_lba_start` | function | `fs/minifs.c:1153` | `unsigned int minifs_get_lba_start(void)` |
-| `minifs_get_total_blocks` | function | `fs/minifs.c:1366` | `unsigned int minifs_get_total_blocks(void)` |
-| `minifs_init` | function | `fs/minifs.c:1145` | `void minifs_init(void)` |
+| `minifs_get_lba_start` | function | `fs/minifs.c:1168` | `unsigned int minifs_get_lba_start(void)` |
+| `minifs_get_total_blocks` | function | `fs/minifs.c:1425` | `unsigned int minifs_get_total_blocks(void)` |
+| `minifs_init` | function | `fs/minifs.c:1160` | `void minifs_init(void)` |
 | `minifs_inode_alloc_block` | function | `fs/minifs.c:240` | `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logblk)` |
 | `minifs_inode_get_block` | function | `fs/minifs.c:171` | `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logblk,
                            un...` |
-| `minifs_is_mounted` | function | `fs/minifs.c:1155` | `int minifs_is_mounted(void)` |
+| `minifs_is_mounted` | function | `fs/minifs.c:1170` | `int minifs_is_mounted(void)` |
 | `minifs_journal_abort` | function | `fs/minifs.c:410` | `void minifs_journal_abort(void)` |
 | `minifs_journal_add_block` | function | `fs/minifs.c:383` | `void minifs_journal_add_block(unsigned int block)` |
 | `minifs_journal_begin` | function | `fs/minifs.c:373` | `void minifs_journal_begin(unsigned int txn_id)` |
@@ -738,19 +739,19 @@ void minifs_journal_touch(unsigned int phys)` |
 | `minifs_journal_commit` | function | `fs/minifs.c:390` | `int minifs_journal_commit(unsigned int txn_id)` |
 | `minifs_journal_recover` | function | `fs/minifs.c:470` | `void minifs_journal_recover(void)` |
 | `minifs_journal_touch` | function | `fs/minifs.c:14` | `void minifs_journal_touch(unsigned int phys);` |
-| `minifs_mkdir` | function | `fs/minifs.c:843` | `int minifs_mkdir(const char *path, unsigned short mode)` |
-| `minifs_mkfs` | function | `fs/minifs.c:1259` | `int minifs_mkfs(unsigned int total_blocks)` |
-| `minifs_mount` | function | `fs/minifs.c:1156` | `int minifs_mount(void)` |
-| `minifs_read` | function | `fs/minifs.c:972` | `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)` |
-| `minifs_resolve_path` | function | `fs/minifs.c:756` | `int minifs_resolve_path(const char *path)` |
-| `minifs_rmdir` | function | `fs/minifs.c:932` | `int minifs_rmdir(const char *path)` |
-| `minifs_stat` | function | `fs/minifs.c:1135` | `int minifs_stat(int inode_num, MiniFSInode *out)` |
-| `minifs_sync` | function | `fs/minifs.c:1330` | `int minifs_sync(void)` |
-| `minifs_truncate` | function | `fs/minifs.c:1119` | `int minifs_truncate(int inode_num, unsigned int new_size)` |
-| `minifs_unlink` | function | `fs/minifs.c:893` | `int minifs_unlink(const char *path)` |
-| `minifs_usage` | function | `fs/minifs.c:1372` | `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
+| `minifs_mkdir` | function | `fs/minifs.c:858` | `int minifs_mkdir(const char *path, unsigned short mode)` |
+| `minifs_mkfs` | function | `fs/minifs.c:1318` | `int minifs_mkfs(unsigned int total_blocks)` |
+| `minifs_mount` | function | `fs/minifs.c:1171` | `int minifs_mount(void)` |
+| `minifs_read` | function | `fs/minifs.c:987` | `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)` |
+| `minifs_resolve_path` | function | `fs/minifs.c:771` | `int minifs_resolve_path(const char *path)` |
+| `minifs_rmdir` | function | `fs/minifs.c:947` | `int minifs_rmdir(const char *path)` |
+| `minifs_stat` | function | `fs/minifs.c:1150` | `int minifs_stat(int inode_num, MiniFSInode *out)` |
+| `minifs_sync` | function | `fs/minifs.c:1389` | `int minifs_sync(void)` |
+| `minifs_truncate` | function | `fs/minifs.c:1134` | `int minifs_truncate(int inode_num, unsigned int new_size)` |
+| `minifs_unlink` | function | `fs/minifs.c:908` | `int minifs_unlink(const char *path)` |
+| `minifs_usage` | function | `fs/minifs.c:1431` | `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
                   unsigned int *fr...` |
-| `minifs_write` | function | `fs/minifs.c:1036` | `int minifs_write(int inode_num, const void *buf, unsigned int offset,
+| `minifs_write` | function | `fs/minifs.c:1051` | `int minifs_write(int inode_num, const void *buf, unsigned int offset,
                  unsigned i...` |
 | `roundup4` | function | `fs/minifs.c:72` | `static unsigned int roundup4(unsigned int v)` |
 | `RDSuper` | struct | `fs/ramdisk.c:13` | `` |
@@ -930,23 +931,23 @@ void kmain(void)` |
 | `volatile` | function | `kernel.c:415` | `__asm__ volatile( "mov $0x10, %%ax\n" "mov %%ax, %%ds\n" "mov %%ax, %%es\n" "mov %%ax, %%fs\n" "mov %%ax, %%gs\n" "mov %` |
 | `wrmsr` | function | `kernel.c:112` | `wrmsr(MSR_STAR, ((unsigned long)GDT64_DATA_SEL << 48) \| ((unsigned long)GDT64_CODE_SEL << 32));` |
 | `ALIGN_UP` | macro | `kernel.h:18` | `#define ALIGN_UP(x, a)` |
-| `C` | function | `kernel.h:598` | `* it with pointer subtraction in C (undefined behaviour). The value is
+| `C` | function | `kernel.h:602` | `* it with pointer subtraction in C (undefined behaviour). The value is
  * a link-time difference,...` |
 | `EFAULT` | macro | `kernel.h:3` | `#define EFAULT` |
-| `EI_NIDENT` | macro | `kernel.h:535` | `#define EI_NIDENT` |
+| `EI_NIDENT` | macro | `kernel.h:539` | `#define EI_NIDENT` |
 | `EOF` | macro | `kernel.h:335` | `#define EOF` |
 | `ETREL_TRUSTED_DIR` | macro | `kernel.h:223` | `#define ETREL_TRUSTED_DIR` |
 | `ETREL_TRUSTED_LEN` | macro | `kernel.h:224` | `#define ETREL_TRUSTED_LEN` |
-| `ET_DYN` | macro | `kernel.h:562` | `#define ET_DYN` |
-| `ET_EXEC` | macro | `kernel.h:561` | `#define ET_EXEC` |
-| `ET_REL` | macro | `kernel.h:559` | `#define ET_REL` |
-| `Elf64_Addr` | type_alias | `kernel.h:536` | `typedef unsigned long long Elf64_Addr;` |
-| `Elf64_Ehdr` | struct | `kernel.h:543` | `` |
-| `Elf64_Half` | type_alias | `kernel.h:539` | `typedef unsigned short Elf64_Half;` |
-| `Elf64_Off` | type_alias | `kernel.h:537` | `typedef unsigned long long Elf64_Off;` |
-| `Elf64_Sxword` | type_alias | `kernel.h:541` | `typedef long long Elf64_Sxword;` |
-| `Elf64_Word` | type_alias | `kernel.h:538` | `typedef unsigned int Elf64_Word;` |
-| `Elf64_Xword` | type_alias | `kernel.h:540` | `typedef unsigned long long Elf64_Xword;` |
+| `ET_DYN` | macro | `kernel.h:566` | `#define ET_DYN` |
+| `ET_EXEC` | macro | `kernel.h:565` | `#define ET_EXEC` |
+| `ET_REL` | macro | `kernel.h:563` | `#define ET_REL` |
+| `Elf64_Addr` | type_alias | `kernel.h:540` | `typedef unsigned long long Elf64_Addr;` |
+| `Elf64_Ehdr` | struct | `kernel.h:547` | `` |
+| `Elf64_Half` | type_alias | `kernel.h:543` | `typedef unsigned short Elf64_Half;` |
+| `Elf64_Off` | type_alias | `kernel.h:541` | `typedef unsigned long long Elf64_Off;` |
+| `Elf64_Sxword` | type_alias | `kernel.h:545` | `typedef long long Elf64_Sxword;` |
+| `Elf64_Word` | type_alias | `kernel.h:542` | `typedef unsigned int Elf64_Word;` |
+| `Elf64_Xword` | type_alias | `kernel.h:544` | `typedef unsigned long long Elf64_Xword;` |
 | `HEAP_BASE` | macro | `kernel.h:139` | `#define HEAP_BASE` |
 | `HEAP_SIZE` | macro | `kernel.h:141` | `#define HEAP_SIZE` |
 | `KERNEL_H` | macro | `kernel.h:2` | `#define KERNEL_H` |
@@ -983,7 +984,7 @@ void kmain(void)` |
 | `KEY_TAB` | macro | `kernel.h:111` | `#define KEY_TAB` |
 | `KEY_TILDE` | macro | `kernel.h:106` | `#define KEY_TILDE` |
 | `KEY_UP` | macro | `kernel.h:87` | `#define KEY_UP` |
-| `KFD_MAX` | macro | `kernel.h:585` | `#define KFD_MAX` |
+| `KFD_MAX` | macro | `kernel.h:589` | `#define KFD_MAX` |
 | `KFILE` | struct | `kernel.h:337` | `` |
 | `KPROG_MAX` | macro | `kernel.h:434` | `#define KPROG_MAX` |
 | `KProg` | struct | `kernel.h:441` | `` |
@@ -1005,41 +1006,41 @@ void kmain(void)` |
 | `VGA_BASE` | macro | `kernel.h:40` | `#define VGA_BASE` |
 | `VGA_COLS` | macro | `kernel.h:41` | `#define VGA_COLS` |
 | `VGA_ROWS` | macro | `kernel.h:42` | `#define VGA_ROWS` |
-| `block_init` | function | `kernel.h:635` | `void block_init(void);` |
-| `block_read` | function | `kernel.h:636` | `int block_read(unsigned int block_num, void *buf);` |
-| `block_read_multi` | function | `kernel.h:638` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
-| `block_total` | function | `kernel.h:640` | `unsigned int block_total(void);` |
-| `block_write` | function | `kernel.h:637` | `int block_write(unsigned int block_num, const void *buf);` |
-| `block_write_multi` | function | `kernel.h:639` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
-| `bootlog_mark` | function | `kernel.h:612` | `void bootlog_mark(const char *name);` |
-| `bootlog_report` | function | `kernel.h:613` | `void bootlog_report(void);` |
+| `block_init` | function | `kernel.h:639` | `void block_init(void);` |
+| `block_read` | function | `kernel.h:640` | `int block_read(unsigned int block_num, void *buf);` |
+| `block_read_multi` | function | `kernel.h:642` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
+| `block_total` | function | `kernel.h:644` | `unsigned int block_total(void);` |
+| `block_write` | function | `kernel.h:641` | `int block_write(unsigned int block_num, const void *buf);` |
+| `block_write_multi` | function | `kernel.h:643` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
+| `bootlog_mark` | function | `kernel.h:616` | `void bootlog_mark(const char *name);` |
+| `bootlog_report` | function | `kernel.h:617` | `void bootlog_report(void);` |
 | `console_getc` | function | `kernel.h:417` | `int console_getc(void);` |
 | `console_lock` | variable | `kernel.h:55` | `extern spinlock_t console_lock;` |
 | `console_peek` | function | `kernel.h:418` | `int console_peek(void);` |
-| `desktop_launch` | function | `kernel.h:483` | `void desktop_launch(const char *cmd);` |
+| `desktop_launch` | function | `kernel.h:487` | `void desktop_launch(const char *cmd);` |
 | `dlmalloc_calloc` | function | `kernel.h:156` | `void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);` |
 | `dlmalloc_free` | function | `kernel.h:155` | `void dlmalloc_free(void *ptr);` |
 | `dlmalloc_init` | function | `kernel.h:153` | `void dlmalloc_init(void);` |
 | `dlmalloc_malloc` | function | `kernel.h:154` | `void *dlmalloc_malloc(unsigned long size);` |
 | `dlmalloc_realloc` | function | `kernel.h:157` | `void *dlmalloc_realloc(void *ptr, unsigned long size);` |
 | `dlmalloc_usage` | function | `kernel.h:159` | `void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *arena);` |
-| `elf_load` | function | `kernel.h:563` | `void *elf_load(void *data, unsigned size, void **base_out);` |
-| `exec_exit_code` | variable | `kernel.h:475` | `extern int exec_exit_code;` |
-| `exec_return` | variable | `kernel.h:474` | `extern kjmpbuf exec_return;` |
+| `elf_load` | function | `kernel.h:567` | `void *elf_load(void *data, unsigned size, void **base_out);` |
+| `exec_exit_code` | variable | `kernel.h:479` | `extern int exec_exit_code;` |
+| `exec_return` | variable | `kernel.h:478` | `extern kjmpbuf exec_return;` |
 | `file_operations` | type_alias | `kernel.h:294` | `typedef vfs_ops_t file_operations;` |
 | `fs_cwd` | variable | `kernel.h:307` | `extern char fs_cwd[];` |
 | `fs_dir_exists` | function | `kernel.h:213` | `int fs_dir_exists(const char *dir);` |
 | `fs_is_dir` | function | `kernel.h:214` | `int fs_is_dir(const char *resolved);` |
 | `fs_resolve` | function | `kernel.h:212` | `int fs_resolve(const char *path, char *out, unsigned cap);` |
-| `g_brk` | variable | `kernel.h:528` | `extern unsigned long g_brk;` |
-| `g_brk_limit` | variable | `kernel.h:529` | `extern unsigned long g_brk_limit;` |
-| `ide_init` | function | `kernel.h:626` | `void ide_init(void);` |
-| `ide_present` | function | `kernel.h:632` | `int ide_present(void);` |
-| `ide_read_sector` | function | `kernel.h:629` | `int ide_read_sector(unsigned int lba, void *buf);` |
-| `ide_read_sectors` | function | `kernel.h:627` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
-| `ide_total_sectors` | function | `kernel.h:631` | `unsigned int ide_total_sectors(void);` |
-| `ide_write_sector` | function | `kernel.h:630` | `int ide_write_sector(unsigned int lba, const void *buf);` |
-| `ide_write_sectors` | function | `kernel.h:628` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
+| `g_brk` | variable | `kernel.h:532` | `extern unsigned long g_brk;` |
+| `g_brk_limit` | variable | `kernel.h:533` | `extern unsigned long g_brk_limit;` |
+| `ide_init` | function | `kernel.h:630` | `void ide_init(void);` |
+| `ide_present` | function | `kernel.h:636` | `int ide_present(void);` |
+| `ide_read_sector` | function | `kernel.h:633` | `int ide_read_sector(unsigned int lba, void *buf);` |
+| `ide_read_sectors` | function | `kernel.h:631` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
+| `ide_total_sectors` | function | `kernel.h:635` | `unsigned int ide_total_sectors(void);` |
+| `ide_write_sector` | function | `kernel.h:634` | `int ide_write_sector(unsigned int lba, const void *buf);` |
+| `ide_write_sectors` | function | `kernel.h:632` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
 | `inb` | function | `kernel.h:24` | `static inline unsigned char inb(unsigned short port)` |
 | `int` | function | `kernel.h:271` | `int (*open)(const char *path, int mode, void **handle);` |
 | `inw` | function | `kernel.h:32` | `static inline unsigned short inw(unsigned short port)` |
@@ -1047,19 +1048,20 @@ void kmain(void)` |
 | `k_register_process` | function | `kernel.h:458` | `void k_register_process(const char *name, void *proc_entry);` |
 | `k_register_program` | function | `kernel.h:457` | `void k_register_program(const char *name, prog_entry_t entry);` |
 | `k_register_symbol` | function | `kernel.h:459` | `void k_register_symbol(const char *name, void *addr);` |
+| `k_run_on_stack` | function | `kernel.h:471` | `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);` |
 | `k_run_rel` | function | `kernel.h:467` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
 | `k_spawn` | function | `kernel.h:456` | `int k_spawn(const char *name, int argc, char **argv);` |
-| `k_user_fault_return` | function | `kernel.h:643` | `void k_user_fault_return(void);` |
+| `k_user_fault_return` | function | `kernel.h:647` | `void k_user_fault_return(void);` |
 | `kallocator_init` | function | `kernel.h:148` | `void kallocator_init(void);` |
 | `katol` | function | `kernel.h:384` | `long katol(const char *s);` |
 | `kbd_available` | function | `kernel.h:116` | `int kbd_available(void);` |
 | `kbd_read` | function | `kernel.h:114` | `int kbd_read(void);` |
 | `kbd_reset_for_shell` | function | `kernel.h:117` | `void kbd_reset_for_shell(void);` |
 | `kcalloc` | function | `kernel.h:146` | `void *kcalloc(unsigned long nmemb, unsigned long size);` |
-| `kernel_end` | variable | `kernel.h:589` | `extern unsigned long kernel_end;` |
+| `kernel_end` | variable | `kernel.h:593` | `extern unsigned long kernel_end;` |
 | `kexit` | function | `kernel.h:468` | `void kexit(int code);` |
 | `kfclose` | function | `kernel.h:351` | `int kfclose(KFILE *f);` |
-| `kfd_table` | variable | `kernel.h:586` | `extern KFILE *kfd_table[KFD_MAX];` |
+| `kfd_table` | variable | `kernel.h:590` | `extern KFILE *kfd_table[KFD_MAX];` |
 | `kfflush` | function | `kernel.h:361` | `int kfflush(KFILE *f);` |
 | `kfgetc` | function | `kernel.h:352` | `int kfgetc(KFILE *f);` |
 | `kfgets` | function | `kernel.h:353` | `char *kfgets(char *buf, int size, KFILE *f);` |
@@ -1076,14 +1078,14 @@ void kmain(void)` |
 | `kftell` | function | `kernel.h:358` | `long kftell(KFILE *f);` |
 | `kfungetc` | function | `kernel.h:354` | `int kfungetc(int c, KFILE *f);` |
 | `kfwrite` | function | `kernel.h:356` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
-| `kjmpbuf` | struct | `kernel.h:471` | `` |
+| `kjmpbuf` | struct | `kernel.h:475` | `` |
 | `klog` | function | `kernel.h:404` | `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);` |
 | `klog_disable` | function | `kernel.h:411` | `void klog_disable(void);` |
 | `klog_enable` | function | `kernel.h:412` | `void klog_enable(void);` |
 | `klog_hexdump` | function | `kernel.h:407` | `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);` |
 | `klog_set_level` | function | `kernel.h:409` | `void klog_set_level(log_level_t level);` |
 | `klog_set_subsys_level` | function | `kernel.h:410` | `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);` |
-| `klongjmp` | function | `kernel.h:473` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
+| `klongjmp` | function | `kernel.h:477` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
 | `kmalloc` | function | `kernel.h:142` | `void *kmalloc(unsigned long size);` |
 | `kmalloc_fail_after` | variable | `kernel.h:144` | `extern long kmalloc_fail_after;` |
 | `kmalloc_percpu` | function | `kernel.h:149` | `void *kmalloc_percpu(unsigned long size, unsigned long align);` |
@@ -1098,7 +1100,7 @@ void kmain(void)` |
 | `kprog_table` | variable | `kernel.h:450` | `extern KProg kprog_table[];` |
 | `krealloc` | function | `kernel.h:147` | `void *krealloc(void *ptr, unsigned long size);` |
 | `krewind` | function | `kernel.h:362` | `void krewind(KFILE *f);` |
-| `ksetjmp` | function | `kernel.h:472` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
+| `ksetjmp` | function | `kernel.h:476` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
 | `ksnprintf` | function | `kernel.h:390` | `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);` |
 | `ksprintf` | function | `kernel.h:389` | `int ksprintf(char *buf, const char *fmt, ...);` |
 | `kstderr` | variable | `kernel.h:366` | `extern KFILE *kstderr;` |
@@ -1115,31 +1117,31 @@ void kmain(void)` |
 | `ksym_count` | variable | `kernel.h:449` | `extern int ksym_count;` |
 | `ksym_resolve` | function | `kernel.h:455` | `void *ksym_resolve(const char *name);` |
 | `ksym_table` | variable | `kernel.h:447` | `extern KSym ksym_table[];` |
-| `ksyscall` | function | `kernel.h:578` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `ktime_ms` | function | `kernel.h:607` | `unsigned long ktime_ms(void);` |
-| `ktime_us` | function | `kernel.h:608` | `unsigned long ktime_us(void);` |
-| `load_exec_elf` | function | `kernel.h:565` | `void *load_exec_elf(void *data, unsigned size);` |
-| `load_exec_elf_into` | function | `kernel.h:566` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out);` |
+| `ksyscall` | function | `kernel.h:582` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `ktime_ms` | function | `kernel.h:611` | `unsigned long ktime_ms(void);` |
+| `ktime_us` | function | `kernel.h:612` | `unsigned long ktime_us(void);` |
+| `load_exec_elf` | function | `kernel.h:569` | `void *load_exec_elf(void *data, unsigned size);` |
+| `load_exec_elf_into` | function | `kernel.h:570` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out);` |
 | `minifs_mkdir_p` | function | `kernel.h:306` | `int minifs_mkdir_p(const char *resolved);` |
-| `mm_copy_user_page` | function | `kernel.h:570` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);` |
-| `mm_setup_protections` | function | `kernel.h:517` | `void mm_setup_protections(void);` |
-| `mm_user_ensure_page` | function | `kernel.h:569` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va);` |
-| `mm_user_pte_update` | function | `kernel.h:520` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
-| `mm_user_set_exec` | function | `kernel.h:521` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
+| `mm_copy_user_page` | function | `kernel.h:574` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);` |
+| `mm_setup_protections` | function | `kernel.h:521` | `void mm_setup_protections(void);` |
+| `mm_user_ensure_page` | function | `kernel.h:573` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va);` |
+| `mm_user_pte_update` | function | `kernel.h:524` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
+| `mm_user_set_exec` | function | `kernel.h:525` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
 | `outb` | function | `kernel.h:21` | `static inline void outb(unsigned short port, unsigned char val)` |
 | `outw` | function | `kernel.h:29` | `static inline void outw(unsigned short port, unsigned short val)` |
-| `pcspk_get_volume` | function | `kernel.h:620` | `unsigned pcspk_get_volume(void);` |
-| `pcspk_init` | function | `kernel.h:616` | `void pcspk_init(void);` |
-| `pcspk_off` | function | `kernel.h:618` | `void pcspk_off(void);` |
-| `pcspk_set_volume` | function | `kernel.h:619` | `void pcspk_set_volume(unsigned volume);` |
-| `pcspk_tone` | function | `kernel.h:617` | `void pcspk_tone(unsigned freq);` |
-| `pt_clone_user_empty` | function | `kernel.h:568` | `unsigned long pt_clone_user_empty(void);` |
-| `pt_page_alloc` | function | `kernel.h:518` | `void *pt_page_alloc(void);` |
-| `pt_page_free` | function | `kernel.h:519` | `void pt_page_free(void *ptr);` |
+| `pcspk_get_volume` | function | `kernel.h:624` | `unsigned pcspk_get_volume(void);` |
+| `pcspk_init` | function | `kernel.h:620` | `void pcspk_init(void);` |
+| `pcspk_off` | function | `kernel.h:622` | `void pcspk_off(void);` |
+| `pcspk_set_volume` | function | `kernel.h:623` | `void pcspk_set_volume(unsigned volume);` |
+| `pcspk_tone` | function | `kernel.h:621` | `void pcspk_tone(unsigned freq);` |
+| `pt_clone_user_empty` | function | `kernel.h:572` | `unsigned long pt_clone_user_empty(void);` |
+| `pt_page_alloc` | function | `kernel.h:522` | `void *pt_page_alloc(void);` |
+| `pt_page_free` | function | `kernel.h:523` | `void pt_page_free(void *ptr);` |
 | `ramdisk_count` | function | `kernel.h:201` | `int ramdisk_count(void);` |
 | `ramdisk_create` | function | `kernel.h:196` | `RDFile *ramdisk_create(const char *name, unsigned size);` |
 | `ramdisk_delete` | function | `kernel.h:198` | `int ramdisk_delete(RDFile *f);` |
-| `ramdisk_end` | variable | `kernel.h:591` | `extern char ramdisk_end[];` |
+| `ramdisk_end` | variable | `kernel.h:595` | `extern char ramdisk_end[];` |
 | `ramdisk_file_name` | function | `kernel.h:202` | `const char *ramdisk_file_name(int idx);` |
 | `ramdisk_init` | function | `kernel.h:191` | `void ramdisk_init(void);` |
 | `ramdisk_list` | function | `kernel.h:199` | `int ramdisk_list(RDFile **out, int max);` |
@@ -1147,8 +1149,8 @@ void kmain(void)` |
 | `ramdisk_read` | function | `kernel.h:194` | `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len);` |
 | `ramdisk_resize` | function | `kernel.h:197` | `int ramdisk_resize(RDFile *f, unsigned newsize);` |
 | `ramdisk_setup_from` | function | `kernel.h:200` | `void ramdisk_setup_from(void *data, unsigned size);` |
-| `ramdisk_size` | variable | `kernel.h:592` | `extern char ramdisk_size[];` |
-| `ramdisk_start` | variable | `kernel.h:590` | `extern char ramdisk_start[];` |
+| `ramdisk_size` | variable | `kernel.h:596` | `extern char ramdisk_size[];` |
+| `ramdisk_start` | variable | `kernel.h:594` | `extern char ramdisk_start[];` |
 | `ramdisk_usage` | function | `kernel.h:204` | `void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max);` |
 | `ramdisk_write` | function | `kernel.h:195` | `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);` |
 | `redirect_active` | function | `kernel.h:423` | `int redirect_active(void);` |
@@ -1157,7 +1159,7 @@ void kmain(void)` |
 | `redirect_resume` | function | `kernel.h:420` | `void redirect_resume(int was);` |
 | `redirect_suspend` | function | `kernel.h:419` | `int redirect_suspend(void);` |
 | `register_libc_symbols` | function | `kernel.h:463` | `void register_libc_symbols(void);` |
-| `rtc_read_tod` | function | `kernel.h:623` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
+| `rtc_read_tod` | function | `kernel.h:627` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
 | `sb_capture_row0` | function | `kernel.h:65` | `void sb_capture_row0(void);` |
 | `sb_get_char` | function | `kernel.h:69` | `char sb_get_char(int row, int col);` |
 | `sb_get_count` | function | `kernel.h:67` | `int sb_get_count(void);` |
@@ -1171,31 +1173,31 @@ void kmain(void)` |
 | `serial_init` | function | `kernel.h:72` | `void serial_init(void);` |
 | `serial_putc` | function | `kernel.h:73` | `void serial_putc(char c);` |
 | `serial_puts` | function | `kernel.h:74` | `void serial_puts(const char *s);` |
-| `setup_user_stack` | function | `kernel.h:476` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
+| `setup_user_stack` | function | `kernel.h:480` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
 | `shell_exec_builtin` | function | `kernel.h:426` | `void shell_exec_builtin(int argc, char **argv);` |
-| `shell_fg_active` | variable | `kernel.h:510` | `extern volatile int shell_fg_active;` |
-| `shell_focus_park` | function | `kernel.h:507` | `void shell_focus_park(void);` |
-| `shell_focus_restore` | function | `kernel.h:508` | `void shell_focus_restore(void);` |
+| `shell_fg_active` | variable | `kernel.h:514` | `extern volatile int shell_fg_active;` |
+| `shell_focus_park` | function | `kernel.h:511` | `void shell_focus_park(void);` |
+| `shell_focus_restore` | function | `kernel.h:512` | `void shell_focus_restore(void);` |
 | `shell_init` | function | `kernel.h:415` | `void shell_init(void);` |
-| `shell_queue_launch` | function | `kernel.h:484` | `void shell_queue_launch(const char *cmd);` |
-| `shell_readline_active` | function | `kernel.h:506` | `int shell_readline_active(void);` |
+| `shell_queue_launch` | function | `kernel.h:488` | `void shell_queue_launch(const char *cmd);` |
+| `shell_readline_active` | function | `kernel.h:510` | `int shell_readline_active(void);` |
 | `shell_report` | function | `kernel.h:428` | `void shell_report(const char *what, const char *detail);` |
 | `shell_report_exit` | function | `kernel.h:427` | `void shell_report_exit(int code);` |
 | `shell_run` | function | `kernel.h:416` | `void shell_run(void);` |
 | `shell_run_any` | function | `kernel.h:425` | `int shell_run_any(const char *name, int argc, char **argv);` |
 | `shell_take_redirect` | function | `kernel.h:424` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
-| `swap_in` | function | `kernel.h:525` | `int swap_in(void);` |
-| `swap_out` | function | `kernel.h:524` | `int swap_out(unsigned long window_sz);` |
-| `syscall_init` | function | `kernel.h:574` | `void syscall_init(void);` |
-| `syscall_name` | function | `kernel.h:584` | `const char *syscall_name(long n);` |
-| `syscall_trace_enabled` | function | `kernel.h:579` | `long syscall_trace_enabled(void);` |
-| `syscall_trace_set` | function | `kernel.h:580` | `void syscall_trace_set(int on);` |
-| `syscall_trace_shown` | function | `kernel.h:583` | `unsigned long syscall_trace_shown(void);` |
-| `syscall_trace_verbose_enabled` | function | `kernel.h:581` | `long syscall_trace_verbose_enabled(void);` |
-| `syscall_trace_verbose_set` | function | `kernel.h:582` | `void syscall_trace_verbose_set(int on);` |
-| `user_mmap_cur` | variable | `kernel.h:530` | `extern unsigned long user_mmap_cur;` |
-| `user_range_ok` | function | `kernel.h:513` | `int user_range_ok(unsigned long p, unsigned long len);` |
-| `user_str_ok` | function | `kernel.h:514` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
+| `swap_in` | function | `kernel.h:529` | `int swap_in(void);` |
+| `swap_out` | function | `kernel.h:528` | `int swap_out(unsigned long window_sz);` |
+| `syscall_init` | function | `kernel.h:578` | `void syscall_init(void);` |
+| `syscall_name` | function | `kernel.h:588` | `const char *syscall_name(long n);` |
+| `syscall_trace_enabled` | function | `kernel.h:583` | `long syscall_trace_enabled(void);` |
+| `syscall_trace_set` | function | `kernel.h:584` | `void syscall_trace_set(int on);` |
+| `syscall_trace_shown` | function | `kernel.h:587` | `unsigned long syscall_trace_shown(void);` |
+| `syscall_trace_verbose_enabled` | function | `kernel.h:585` | `long syscall_trace_verbose_enabled(void);` |
+| `syscall_trace_verbose_set` | function | `kernel.h:586` | `void syscall_trace_verbose_set(int on);` |
+| `user_mmap_cur` | variable | `kernel.h:534` | `extern unsigned long user_mmap_cur;` |
+| `user_range_ok` | function | `kernel.h:517` | `int user_range_ok(unsigned long p, unsigned long len);` |
+| `user_str_ok` | function | `kernel.h:518` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
 | `vfs_close` | function | `kernel.h:302` | `int vfs_close(vfs_file_t *f);` |
 | `vfs_file` | struct | `kernel.h:279` | `` |
 | `vfs_fstat` | function | `kernel.h:303` | `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);` |
@@ -1209,28 +1211,28 @@ void kmain(void)` |
 | `vfs_write` | function | `kernel.h:301` | `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);` |
 | `vga_clear` | function | `kernel.h:43` | `void vga_clear(void);` |
 | `vga_cursor_enable` | function | `kernel.h:50` | `void vga_cursor_enable(int on);` |
-| `vga_fb_act_empty` | function | `kernel.h:498` | `int vga_fb_act_empty(void);` |
-| `vga_fb_clear_prompt` | function | `kernel.h:501` | `void vga_fb_clear_prompt(void);` |
-| `vga_fb_focus_get` | function | `kernel.h:489` | `int vga_fb_focus_get(void);` |
-| `vga_fb_focus_id` | function | `kernel.h:488` | `int vga_fb_focus_id(int id);` |
-| `vga_fb_focus_next` | function | `kernel.h:487` | `void vga_fb_focus_next(void);` |
-| `vga_fb_list_windows` | function | `kernel.h:494` | `void vga_fb_list_windows(void);` |
-| `vga_fb_note_prompt` | function | `kernel.h:500` | `void vga_fb_note_prompt(void);` |
-| `vga_fb_nterms_get` | function | `kernel.h:490` | `int vga_fb_nterms_get(void);` |
-| `vga_fb_park_line` | function | `kernel.h:495` | `void vga_fb_park_line(const char *b, int p);` |
-| `vga_fb_prompt_live` | function | `kernel.h:499` | `int vga_fb_prompt_live(void);` |
-| `vga_fb_prompted` | function | `kernel.h:502` | `int vga_fb_prompted(void);` |
-| `vga_fb_set_gfx_program` | function | `kernel.h:497` | `void vga_fb_set_gfx_program(const char *name);` |
-| `vga_fb_term_close_focused` | function | `kernel.h:492` | `int vga_fb_term_close_focused(void);` |
-| `vga_fb_term_split` | function | `kernel.h:491` | `int vga_fb_term_split(void);` |
-| `vga_fb_tile_all` | function | `kernel.h:493` | `void vga_fb_tile_all(void);` |
-| `vga_fb_unpark_line` | function | `kernel.h:496` | `int vga_fb_unpark_line(char *b, int *p);` |
+| `vga_fb_act_empty` | function | `kernel.h:502` | `int vga_fb_act_empty(void);` |
+| `vga_fb_clear_prompt` | function | `kernel.h:505` | `void vga_fb_clear_prompt(void);` |
+| `vga_fb_focus_get` | function | `kernel.h:493` | `int vga_fb_focus_get(void);` |
+| `vga_fb_focus_id` | function | `kernel.h:492` | `int vga_fb_focus_id(int id);` |
+| `vga_fb_focus_next` | function | `kernel.h:491` | `void vga_fb_focus_next(void);` |
+| `vga_fb_list_windows` | function | `kernel.h:498` | `void vga_fb_list_windows(void);` |
+| `vga_fb_note_prompt` | function | `kernel.h:504` | `void vga_fb_note_prompt(void);` |
+| `vga_fb_nterms_get` | function | `kernel.h:494` | `int vga_fb_nterms_get(void);` |
+| `vga_fb_park_line` | function | `kernel.h:499` | `void vga_fb_park_line(const char *b, int p);` |
+| `vga_fb_prompt_live` | function | `kernel.h:503` | `int vga_fb_prompt_live(void);` |
+| `vga_fb_prompted` | function | `kernel.h:506` | `int vga_fb_prompted(void);` |
+| `vga_fb_set_gfx_program` | function | `kernel.h:501` | `void vga_fb_set_gfx_program(const char *name);` |
+| `vga_fb_term_close_focused` | function | `kernel.h:496` | `int vga_fb_term_close_focused(void);` |
+| `vga_fb_term_split` | function | `kernel.h:495` | `int vga_fb_term_split(void);` |
+| `vga_fb_tile_all` | function | `kernel.h:497` | `void vga_fb_tile_all(void);` |
+| `vga_fb_unpark_line` | function | `kernel.h:500` | `int vga_fb_unpark_line(char *b, int *p);` |
 | `vga_get_color` | function | `kernel.h:61` | `char vga_get_color(void);` |
 | `vga_get_x` | function | `kernel.h:58` | `int vga_get_x(void);` |
 | `vga_get_y` | function | `kernel.h:59` | `int vga_get_y(void);` |
-| `vga_gfx_ran_set` | function | `kernel.h:480` | `void vga_gfx_ran_set(int on);` |
-| `vga_mode_is_active` | function | `kernel.h:479` | `int vga_mode_is_active(void);` |
-| `vga_mode_set` | function | `kernel.h:478` | `void vga_mode_set(int on);` |
+| `vga_gfx_ran_set` | function | `kernel.h:484` | `void vga_gfx_ran_set(int on);` |
+| `vga_mode_is_active` | function | `kernel.h:483` | `int vga_mode_is_active(void);` |
+| `vga_mode_set` | function | `kernel.h:482` | `void vga_mode_set(int on);` |
 | `vga_newline` | function | `kernel.h:49` | `void vga_newline(void);` |
 | `vga_putc` | function | `kernel.h:45` | `void vga_putc(char c);` |
 | `vga_puts` | function | `kernel.h:46` | `void vga_puts(const char *s);` |
@@ -1239,7 +1241,7 @@ void kmain(void)` |
 | `vga_set_xy` | function | `kernel.h:60` | `void vga_set_xy(int x, int y);` |
 | `vnode_t` | type_alias | `kernel.h:295` | `typedef vfs_file_t vnode_t;` |
 | `volatile` | function | `kernel.h:22` | `__asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));` |
-| `wall_us_now` | function | `kernel.h:609` | `unsigned long wall_us_now(void);` |
+| `wall_us_now` | function | `kernel.h:613` | `unsigned long wall_us_now(void);` |
 | `abi_check_manifest` | function | `kernel/abi.c:74` | `int abi_check_manifest(void)` |
 | `abi_parse_num` | function | `kernel/abi.c:20` | `static int abi_parse_num(const char **pp, const char *end, unsigned long *out)` |
 | `abi_verify` | function | `kernel/abi.c:38` | `int abi_verify(const char *text, long version, unsigned long checksum)` |
@@ -1404,20 +1406,21 @@ void kmain(void)` |
 | `shell_readline_buf` | function | `kernel/editor.c:229` | `shell_readline_buf(buf, CMD_BUF_SZ);` |
 | `vga_putc` | function | `kernel/editor.c:118` | `vga_putc('\n');` |
 | `vga_puts` | function | `kernel/editor.c:126` | `vga_puts("(empty)\n");` |
+| `ETREL_CHILD_STACK_SZ` | macro | `kernel/exec.c:132` | `#define ETREL_CHILD_STACK_SZ` |
 | `EXEC_KSTACK_SZ` | macro | `kernel/exec.c:123` | `#define EXEC_KSTACK_SZ` |
-| `__builtin_unreachable` | function | `kernel/exec.c:184` | `__builtin_unreachable();` |
-| `k_run_rel` | function | `kernel/exec.c:217` | `int k_run_rel(prog_entry_t entry, int argc, char **argv)` |
+| `__builtin_unreachable` | function | `kernel/exec.c:193` | `__builtin_unreachable();` |
+| `k_run_rel` | function | `kernel/exec.c:226` | `int k_run_rel(prog_entry_t entry, int argc, char **argv)` |
 | `k_user_fault_return` | function | `kernel/exec.c:65` | `void k_user_fault_return(void)` |
-| `kbd_reset_for_shell` | function | `kernel/exec.c:214` | `kbd_reset_for_shell();` |
-| `kexit` | function | `kernel/exec.c:249` | `void kexit(int code)` |
+| `kbd_reset_for_shell` | function | `kernel/exec.c:223` | `kbd_reset_for_shell();` |
+| `kexit` | function | `kernel/exec.c:277` | `void kexit(int code)` |
 | `klongjmp` | function | `kernel/exec.c:77` | `klongjmp(&exec_return, 1);` |
 | `kmemcpy` | function | `kernel/exec.c:92` | `kmemcpy(p, argv[i], l);` |
-| `pt_free_user` | function | `kernel/exec.c:189` | `pt_free_user(new_cr3);` |
+| `pt_free_user` | function | `kernel/exec.c:198` | `pt_free_user(new_cr3);` |
 | `setup_user_stack` | function | `kernel/exec.c:81` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
                                ...` |
 | `syscall_kstack` | variable | `kernel/exec.c:115` | `extern unsigned long syscall_kstack;` |
-| `vga_fb_draw_desktop` | function | `kernel/exec.c:212` | `vga_fb_draw_desktop();` |
-| `vga_fb_set_gfx_mode` | function | `kernel/exec.c:211` | `vga_fb_set_gfx_mode(0);` |
+| `vga_fb_draw_desktop` | function | `kernel/exec.c:221` | `vga_fb_draw_desktop();` |
+| `vga_fb_set_gfx_mode` | function | `kernel/exec.c:220` | `vga_fb_set_gfx_mode(0);` |
 | `vga_gfx_ran_set` | function | `kernel/exec.c:62` | `void vga_gfx_ran_set(int on)` |
 | `vga_mode_is_active` | function | `kernel/exec.c:61` | `int  vga_mode_is_active(void)` |
 | `vga_mode_set` | function | `kernel/exec.c:59` | `void vga_mode_set(int on)` |
@@ -1624,7 +1627,7 @@ void kmain(void)` |
 | `shell_take_redirect` | function | `kernel/redirect.c:24` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode)` |
 | `vga_putc` | function | `kernel/redirect.c:21` | `vga_putc('\n');` |
 | `vga_puts` | function | `kernel/redirect.c:19` | `vga_puts(what);` |
-| `BSP` | function | `kernel/sched.c:1209` | `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+| `BSP` | function | `kernel/sched.c:1247` | `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...` |
 | `IRQ4` | function | `kernel/sched.c:483` | `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit set *` |
 | `KSTACK_CANARY` | macro | `kernel/sched.c:126` | `#define KSTACK_CANARY` |
@@ -1636,25 +1639,25 @@ void kmain(void)` |
 | `MY_USER_LOAD_BASE` | macro | `kernel/sched.c:38` | `#define MY_USER_LOAD_BASE` |
 | `MY_USER_STACK_TOP` | macro | `kernel/sched.c:37` | `#define MY_USER_STACK_TOP` |
 | `PROC_KSTACK_OFF` | function | `kernel/sched.c:59` | `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both immediates * from the sched.h macros via STR(), so this a` |
-| `PROC_SWITCHING` | function | `kernel/sched.c:1489` | `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A BLOCKED/ZOMBIE ` |
+| `PROC_SWITCHING` | function | `kernel/sched.c:1527` | `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A BLOCKED/ZOMBIE ` |
 | `__attribute__` | function | `kernel/sched.c:79` | `typedef struct __attribute__((packed))` |
 | `__attribute__` | function | `kernel/sched.c:100` | `typedef struct __attribute__((packed))` |
-| `__builtin_unreachable` | function | `kernel/sched.c:1217` | `__builtin_unreachable();` |
+| `__builtin_unreachable` | function | `kernel/sched.c:1255` | `__builtin_unreachable();` |
 | `__sync_fetch_and_add` | function | `kernel/sched.c:726` | `__sync_fetch_and_add(&smp_idle_polls[cpu], 1);` |
 | `alloc_kstack` | function | `kernel/sched.c:151` | `static uint64_t alloc_kstack(void)` |
 | `context` | function | `kernel/sched.c:574` | `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...` |
 | `descriptor` | function | `kernel/sched.c:67` | `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 == GDT64_SMP_BYTES` |
-| `do_exit` | function | `kernel/sched.c:1559` | `void do_exit(int code)` |
-| `do_kill` | function | `kernel/sched.c:1861` | `int do_kill(int pid)` |
-| `do_thread_spawn` | function | `kernel/sched.c:1599` | `long do_thread_spawn(unsigned long fn, unsigned long stack,
+| `do_exit` | function | `kernel/sched.c:1597` | `void do_exit(int code)` |
+| `do_kill` | function | `kernel/sched.c:1899` | `int do_kill(int pid)` |
+| `do_thread_spawn` | function | `kernel/sched.c:1637` | `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)` |
-| `do_waitpid` | function | `kernel/sched.c:1792` | `int do_waitpid(int pid)` |
+| `do_waitpid` | function | `kernel/sched.c:1830` | `int do_waitpid(int pid)` |
 | `fpu_alloc_clean` | function | `kernel/sched.c:186` | `static void *fpu_alloc_clean(void)` |
 | `fpu_free_proc` | function | `kernel/sched.c:204` | `static void fpu_free_proc(proc_t *p)` |
 | `fpu_restore_from` | function | `kernel/sched.c:182` | `static inline void fpu_restore_from(void *area)` |
 | `free_kstack` | function | `kernel/sched.c:163` | `static void free_kstack(uint64_t top)` |
-| `futex_init` | function | `kernel/sched.c:1964` | `futex_init();` |
+| `futex_init` | function | `kernel/sched.c:2002` | `futex_init();` |
 | `gdb_dump_report` | function | `kernel/sched.c:402` | `void gdb_dump_report(unsigned long addr, unsigned long len)` |
 | `hal_lapic_eoi` | function | `kernel/sched.c:911` | `hal_lapic_eoi();` |
 | `hal_outb` | function | `kernel/sched.c:478` | `hal_outb(HAL_PIC1_CMD, 0x11);` |
@@ -1665,8 +1668,8 @@ void kmain(void)` |
 | `irqstat_report` | function | `kernel/sched.c:337` | `void irqstat_report(void)` |
 | `isr_dispatch` | function | `kernel/sched.c:877` | `void isr_dispatch(int vector, trap_frame_t *frame)` |
 | `isr_stub_table` | variable | `kernel/sched.c:108` | `extern void *isr_stub_table[];` |
-| `it` | function | `kernel/sched.c:1899` | `* it (SPAWN/exec point proc 0 here transiently);` |
-| `k_user_fault_return` | function | `kernel/sched.c:1216` | `k_user_fault_return();` |
+| `it` | function | `kernel/sched.c:1937` | `* it (SPAWN/exec point proc 0 here transiently);` |
+| `k_user_fault_return` | function | `kernel/sched.c:1254` | `k_user_fault_return();` |
 | `kfree` | function | `kernel/sched.c:224` | `kfree(c);` |
 | `kmemcpy` | function | `kernel/sched.c:595` | `kmemcpy(dst, frame, sizeof(trap_frame_t));` |
 | `kmemset` | function | `kernel/sched.c:292` | `kmemset(snap, 0, sizeof(snap));` |
@@ -1675,34 +1678,34 @@ void kmain(void)` |
 | `kstack_report` | function | `kernel/sched.c:246` | `void kstack_report(void)` |
 | `kstack_usage` | function | `kernel/sched.c:137` | `static int kstack_usage(uint64_t top, unsigned long size,
                         unsigned long *...` |
-| `kstrcpy` | function | `kernel/sched.c:1942` | `kstrcpy(procs[0].name, "kernel");` |
-| `kstrncpy` | function | `kernel/sched.c:1262` | `kstrncpy(p->name, name, sizeof(p->name) - 1);` |
+| `kstrcpy` | function | `kernel/sched.c:1980` | `kstrcpy(procs[0].name, "kernel");` |
+| `kstrncpy` | function | `kernel/sched.c:1300` | `kstrncpy(p->name, name, sizeof(p->name) - 1);` |
 | `mm_lock` | variable | `kernel/sched.c:568` | `extern spinlock_t mm_lock;` |
-| `mouse_hw_init` | function | `kernel/sched.c:1972` | `mouse_hw_init();` |
+| `mouse_hw_init` | function | `kernel/sched.c:2010` | `mouse_hw_init();` |
 | `net_rx_dropped` | variable | `kernel/sched.c:341` | `extern unsigned int net_rx_dropped;` |
 | `off_lo` | type_alias | `kernel/sched.c:100` | `typedef struct __attribute__((packed)) { uint16_t off_lo;` |
-| `park` | function | `kernel/sched.c:1949` | `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */ procs[0].` |
+| `park` | function | `kernel/sched.c:1987` | `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */ procs[0].` |
 | `pic_eoi` | function | `kernel/sched.c:500` | `static void pic_eoi(int irq)` |
 | `pic_init` | function | `kernel/sched.c:459` | `static void pic_init(void)` |
 | `pit_init` | function | `kernel/sched.c:494` | `static void pit_init(void)` |
 | `point` | function | `kernel/sched.c:587` | `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...` |
-| `proc_create` | function | `kernel/sched.c:1235` | `int proc_create(const char *name, int parent_pid)` |
-| `proc_get` | function | `kernel/sched.c:1229` | `proc_t *proc_get(int pid)` |
-| `proc_spawn_elf` | function | `kernel/sched.c:1332` | `int proc_spawn_elf(const char *name, void *data, unsigned size,
+| `proc_create` | function | `kernel/sched.c:1273` | `int proc_create(const char *name, int parent_pid)` |
+| `proc_get` | function | `kernel/sched.c:1267` | `proc_t *proc_get(int pid)` |
+| `proc_spawn_elf` | function | `kernel/sched.c:1370` | `int proc_spawn_elf(const char *name, void *data, unsigned size,
                    int argc, char...` |
-| `pt_free_user` | function | `kernel/sched.c:1352` | `pt_free_user(new_cr3);` |
-| `rcu_init` | function | `kernel/sched.c:1966` | `rcu_init();` |
+| `pt_free_user` | function | `kernel/sched.c:1390` | `pt_free_user(new_cr3);` |
+| `rcu_init` | function | `kernel/sched.c:2004` | `rcu_init();` |
 | `rcu_note_tick` | function | `kernel/sched.c:900` | `rcu_note_tick(cpu->cpu_id);` |
 | `rcu_poll` | function | `kernel/sched.c:901` | `rcu_poll();` |
 | `read_cr3` | function | `kernel/sched.c:50` | `static inline unsigned long read_cr3(void)` |
-| `registers` | function | `kernel/sched.c:1631` | `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one intege` |
+| `registers` | function | `kernel/sched.c:1669` | `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one intege` |
 | `res0` | type_alias | `kernel/sched.c:79` | `typedef struct __attribute__((packed)) { uint32_t res0;` |
-| `returns` | function | `kernel/sched.c:1553` | `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");` |
+| `returns` | function | `kernel/sched.c:1591` | `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");` |
 | `rlimit_cpu_exceeded` | function | `kernel/sched.c:856` | `int rlimit_cpu_exceeded(int pid)` |
 | `rlimit_cpu_tick` | function | `kernel/sched.c:772` | `rlimit_cpu_tick(current_pid);` |
-| `rq_enqueue` | function | `kernel/sched.c:1671` | `rq_enqueue(home, pid);` |
-| `rq_init` | function | `kernel/sched.c:1965` | `rq_init();` |
+| `rq_enqueue` | function | `kernel/sched.c:1709` | `rq_enqueue(home, pid);` |
+| `rq_init` | function | `kernel/sched.c:2003` | `rq_init();` |
 | `rq_note_poll` | function | `kernel/sched.c:695` | `rq_note_poll(me);` |
 | `rtl_counters` | function | `kernel/sched.c:340` | `extern void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);` |
 | `rtl_present` | function | `kernel/sched.c:342` | `extern int rtl_present(void);` |
@@ -1710,26 +1713,26 @@ void kmain(void)` |
 | `sb16_irq` | function | `kernel/sched.c:1083` | `sb16_irq();` |
 | `sb16_poll` | function | `kernel/sched.c:22` | `sb16_poll();` |
 | `sched_ap_preempt` | function | `kernel/sched.c:751` | `static void sched_ap_preempt(trap_frame_t *frame)` |
-| `sched_init` | function | `kernel/sched.c:1889` | `void sched_init(void)` |
+| `sched_init` | function | `kernel/sched.c:1927` | `void sched_init(void)` |
 | `sched_lock` | function | `kernel/sched.c:233` | `* hold sched_lock (+mm_lock at the swap sites);` |
 | `sched_next_locked` | function | `kernel/sched.c:612` | `static int sched_next_locked(int start, int vm_only)` |
-| `sched_park_as_returned` | function | `kernel/sched.c:1493` | `sched_park_as_returned(cur);` |
+| `sched_park_as_returned` | function | `kernel/sched.c:1531` | `sched_park_as_returned(cur);` |
 | `sched_rearm_kgs` | function | `kernel/sched.c:738` | `sched_rearm_kgs();` |
 | `sched_save_preempt` | function | `kernel/sched.c:773` | `sched_save_preempt(cur, frame, 0);` |
 | `sched_set_nice` | function | `kernel/sched.c:630` | `int sched_set_nice(int pid, int nice)` |
 | `sched_tick_audio` | function | `kernel/sched.c:20` | `static void sched_tick_audio(void *ctx)` |
 | `sched_tick_desktop` | function | `kernel/sched.c:26` | `static void sched_tick_desktop(void *ctx)` |
 | `schedtop_report` | function | `kernel/sched.c:285` | `void schedtop_report(void)` |
-| `schedule` | function | `kernel/sched.c:1452` | `* that keeps schedule()'s own rbp runs the caller's frame accesses
+| `schedule` | function | `kernel/sched.c:1490` | `* that keeps schedule()'s own rbp runs the caller's frame accesses
  * (locals, leave/ret) on the ...` |
-| `schedule` | function | `kernel/sched.c:1462` | `void schedule(void)` |
+| `schedule` | function | `kernel/sched.c:1500` | `void schedule(void)` |
 | `seccomp_allow_one` | function | `kernel/sched.c:646` | `int seccomp_allow_one(int pid, int n)` |
 | `seccomp_denied` | function | `kernel/sched.c:653` | `int seccomp_denied(int pid, int n)` |
 | `seccomp_deny_one` | function | `kernel/sched.c:639` | `int seccomp_deny_one(int pid, int n)` |
 | `serial_puts` | function | `kernel/sched.c:1099` | `serial_puts("EXCEPTION ");` |
-| `shell_nchildren` | function | `kernel/sched.c:1835` | `int shell_nchildren(void)` |
-| `shell_reap_nb` | function | `kernel/sched.c:1809` | `int shell_reap_nb(int *pid_out, int *code_out)` |
-| `shell_reap_one` | function | `kernel/sched.c:1823` | `int shell_reap_one(int pid, int *code_out)` |
+| `shell_nchildren` | function | `kernel/sched.c:1873` | `int shell_nchildren(void)` |
+| `shell_reap_nb` | function | `kernel/sched.c:1847` | `int shell_reap_nb(int *pid_out, int *code_out)` |
+| `shell_reap_one` | function | `kernel/sched.c:1861` | `int shell_reap_one(int pid, int *code_out)` |
 | `smp_any_ap_idle` | function | `kernel/sched.c:821` | `static int smp_any_ap_idle(void)` |
 | `smp_ap_idle_loop` | function | `kernel/sched.c:717` | `void smp_ap_idle_loop(void)` |
 | `smp_claim_thread_v` | function | `kernel/sched.c:677` | `static int smp_claim_thread_v(int vm_only)` |
@@ -1738,20 +1741,20 @@ void kmain(void)` |
 | `spin_lock_irqsave` | function | `kernel/sched.c:667` | `spin_lock_irqsave(&sched_lock, &flags);` |
 | `spin_unlock` | function | `kernel/sched.c:311` | `spin_unlock(&sched_lock);` |
 | `spin_unlock_irqrestore` | function | `kernel/sched.c:674` | `spin_unlock_irqrestore(&sched_lock, flags);` |
-| `spin_unlock_keep_irq` | function | `kernel/sched.c:1496` | `spin_unlock_keep_irq(&sched_lock);` |
+| `spin_unlock_keep_irq` | function | `kernel/sched.c:1534` | `spin_unlock_keep_irq(&sched_lock);` |
 | `stop_row` | struct | `kernel/sched.c:286` | `` |
 | `stub` | function | `kernel/sched.c:356` | `* gdb stub (`make gdb`, then `target remote :1234` from the host). These
  * helpers are the seria...` |
-| `switch_save_only` | function | `kernel/sched.c:1537` | `switch_save_only(cur);` |
+| `switch_save_only` | function | `kernel/sched.c:1575` | `switch_save_only(cur);` |
 | `switch_to` | function | `kernel/sched.c:739` | `switch_to(&ap_idle_proc[cpu], next);` |
 | `switch_to_notrap` | function | `kernel/sched.c:767` | `switch_to_notrap(cur, &ap_idle_proc[me]);` |
 | `sys_ticks` | function | `kernel/sched.c:333` | `* sys_ticks (PIT 100 Hz on the BSP, broadcast as IPIs to APs);` |
 | `syscall` | function | `kernel/sched.c:995` | `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid math ` |
-| `tick_register_audio` | function | `kernel/sched.c:1968` | `tick_register_audio(sched_tick_audio, 0);` |
-| `tick_register_desktop` | function | `kernel/sched.c:1969` | `tick_register_desktop(sched_tick_desktop, 0);` |
-| `tick_reset` | function | `kernel/sched.c:1967` | `tick_reset();` |
+| `tick_register_audio` | function | `kernel/sched.c:2006` | `tick_register_audio(sched_tick_audio, 0);` |
+| `tick_register_desktop` | function | `kernel/sched.c:2007` | `tick_register_desktop(sched_tick_desktop, 0);` |
+| `tick_reset` | function | `kernel/sched.c:2005` | `tick_reset();` |
 | `tick_run_audio` | function | `kernel/sched.c:899` | `tick_run_audio();` |
-| `timer_tick` | function | `kernel/sched.c:1885` | `void timer_tick(void)` |
+| `timer_tick` | function | `kernel/sched.c:1923` | `void timer_tick(void)` |
 | `trap_frame_t` | struct | `kernel/sched.c:420` | `` |
 | `tss_init` | function | `kernel/sched.c:524` | `static void tss_init(void)` |
 | `tss_init_ap` | function | `kernel/sched.c:556` | `void tss_init_ap(int cpu)` |
@@ -1759,7 +1762,7 @@ void kmain(void)` |
 | `user_trampoline` | function | `kernel/sched.c:48` | `extern void user_trampoline(void);` |
 | `vga_fb_mouse_tick` | function | `kernel/sched.c:28` | `vga_fb_mouse_tick();` |
 | `vma_ctx_alloc` | function | `kernel/sched.c:211` | `vma_ctx_t *vma_ctx_alloc(void)` |
-| `vma_ctx_bind` | function | `kernel/sched.c:1955` | `vma_ctx_bind(&vma_legacy);` |
+| `vma_ctx_bind` | function | `kernel/sched.c:1993` | `vma_ctx_bind(&vma_legacy);` |
 | `vma_ctx_free` | function | `kernel/sched.c:220` | `void vma_ctx_free(vma_ctx_t *c)` |
 | `vma_ctx_init` | function | `kernel/sched.c:217` | `vma_ctx_init(c, pool);` |
 | `vma_load_proc` | function | `kernel/sched.c:238` | `static void vma_load_proc(proc_t *p)` |
@@ -1767,8 +1770,8 @@ void kmain(void)` |
 | `vma_save_proc` | function | `kernel/sched.c:235` | `static void vma_save_proc(proc_t *p)` |
 | `volatile` | function | `kernel/sched.c:53` | `__asm__ volatile("mov %%cr3, %0" : "=r"(v));` |
 | `wrmsr` | function | `kernel/sched.c:578` | `wrmsr(MSR_KERNEL_GS_BASE, (unsigned long)this_cpu());` |
-| `yield` | function | `kernel/sched.c:1544` | `void yield(void)` |
-| `zeroed` | function | `kernel/sched.c:1960` | `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe pre-mouse-` |
+| `yield` | function | `kernel/sched.c:1582` | `void yield(void)` |
+| `zeroed` | function | `kernel/sched.c:1998` | `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe pre-mouse-` |
 | `SCROLLBACK_ROWS` | macro | `kernel/scrollback.c:11` | `#define SCROLLBACK_ROWS` |
 | `sb_capture_row0` | function | `kernel/scrollback.c:22` | `void sb_capture_row0(void)` |
 | `sb_get_char` | function | `kernel/scrollback.c:40` | `char sb_get_char(int row, int col)` |
@@ -2696,16 +2699,17 @@ long sys_linux_wait4(lon...` |
 | `u32` | function | `minifs_dump.py:14` | `def u32(d, o)` |
 | `FSCK` | class | `minifs_fsck.py:16` | `class FSCK` |
 | `__init__` | method | `minifs_fsck.py:17` | `def __init__(self, fn)` |
-| `_sb` | method | `minifs_fsck.py:24` | `def _sb(self)` |
-| `blk` | method | `minifs_fsck.py:23` | `def blk(self, n)` |
-| `err` | method | `minifs_fsck.py:52` | `def err(self, msg)` |
-| `inode` | method | `minifs_fsck.py:30` | `def inode(self, i)` |
-| `main` | method | `minifs_fsck.py:97` | `def main()` |
-| `mark_block` | method | `minifs_fsck.py:54` | `def mark_block(self, n)` |
-| `read` | method | `minifs_fsck.py:37` | `def read(self, ino)` |
-| `run` | method | `minifs_fsck.py:82` | `def run(self)` |
-| `scan_dir` | method | `minifs_fsck.py:68` | `def scan_dir(self, ino)` |
-| `scan_inode` | method | `minifs_fsck.py:59` | `def scan_inode(self, i)` |
+| `_find_base` | method | `minifs_fsck.py:24` | `def _find_base(self)` |
+| `_sb` | method | `minifs_fsck.py:45` | `def _sb(self)` |
+| `blk` | method | `minifs_fsck.py:42` | `def blk(self, n)` |
+| `err` | method | `minifs_fsck.py:73` | `def err(self, msg)` |
+| `inode` | method | `minifs_fsck.py:51` | `def inode(self, i)` |
+| `main` | method | `minifs_fsck.py:136` | `def main()` |
+| `mark_block` | method | `minifs_fsck.py:75` | `def mark_block(self, n)` |
+| `read` | method | `minifs_fsck.py:58` | `def read(self, ino)` |
+| `run` | method | `minifs_fsck.py:121` | `def run(self)` |
+| `scan_dir` | method | `minifs_fsck.py:89` | `def scan_dir(self, ino)` |
+| `scan_inode` | method | `minifs_fsck.py:80` | `def scan_inode(self, i)` |
 | `u16` | function | `minifs_fsck.py:13` | `def u16(d, o)` |
 | `u32` | function | `minifs_fsck.py:14` | `def u32(d, o)` |
 | `MiniFS` | class | `mkfs.minifs.py:44` | `class MiniFS` |
@@ -3143,53 +3147,53 @@ long sys_linux_wait4(lon...` |
 | `rq_should_rescan` | function | `percpu_rq.h:66` | `int rq_should_rescan(int cpu);` |
 | `rq_stats` | function | `percpu_rq.h:68` | `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals, unsigned long *drops);` |
 | `rq_steal_once` | function | `percpu_rq.h:64` | `int rq_steal_once(int self_cpu, int *from_cpu);` |
-| `_start` | function | `progs/asm/aes.s:4124` | `` |
-| `aes_add_round_key` | function | `progs/asm/aes.s:1652` | `` |
-| `aes_cipher` | function | `progs/asm/aes.s:2472` | `` |
-| `aes_ctr_crypt` | function | `progs/asm/aes.s:2654` | `` |
-| `aes_gf_mul` | function | `progs/asm/aes.s:787` | `` |
-| `aes_has` | function | `progs/asm/aes.s:349` | `` |
-| `aes_hdr_get` | function | `progs/asm/aes.s:2912` | `` |
-| `aes_hdr_put` | function | `progs/asm/aes.s:2797` | `` |
-| `aes_init_tables` | function | `progs/asm/aes.s:974` | `` |
+| `_start` | function | `progs/asm/aes.s:4105` | `` |
+| `aes_add_round_key` | function | `progs/asm/aes.s:1646` | `` |
+| `aes_cipher` | function | `progs/asm/aes.s:2466` | `` |
+| `aes_ctr_crypt` | function | `progs/asm/aes.s:2648` | `` |
+| `aes_gf_mul` | function | `progs/asm/aes.s:783` | `` |
+| `aes_has` | function | `progs/asm/aes.s:345` | `` |
+| `aes_hdr_get` | function | `progs/asm/aes.s:2906` | `` |
+| `aes_hdr_put` | function | `progs/asm/aes.s:2791` | `` |
+| `aes_init_tables` | function | `progs/asm/aes.s:970` | `` |
 | `aes_iv` | function | `progs/asm/aes.s:19` | `` |
-| `aes_iv_increment` | function | `progs/asm/aes.s:2571` | `` |
-| `aes_key_expand` | function | `progs/asm/aes.s:1203` | `` |
-| `aes_mix_columns` | function | `progs/asm/aes.s:1999` | `` |
-| `aes_parse_hex` | function | `progs/asm/aes.s:624` | `` |
+| `aes_iv_increment` | function | `progs/asm/aes.s:2565` | `` |
+| `aes_key_expand` | function | `progs/asm/aes.s:1197` | `` |
+| `aes_mix_columns` | function | `progs/asm/aes.s:1993` | `` |
+| `aes_parse_hex` | function | `progs/asm/aes.s:620` | `` |
 | `aes_rc` | function | `progs/asm/aes.s:11` | `` |
 | `aes_read_all` | function | `progs/asm/aes.s:23` | `` |
 | `aes_rk` | function | `progs/asm/aes.s:3` | `` |
-| `aes_rotl8` | function | `progs/asm/aes.s:937` | `` |
-| `aes_run` | function | `progs/asm/aes.s:3083` | `` |
+| `aes_rotl8` | function | `progs/asm/aes.s:933` | `` |
+| `aes_run` | function | `progs/asm/aes.s:3077` | `` |
 | `aes_sb` | function | `progs/asm/aes.s:7` | `` |
-| `aes_shift_rows` | function | `progs/asm/aes.s:1780` | `` |
+| `aes_shift_rows` | function | `progs/asm/aes.s:1774` | `` |
 | `aes_st` | function | `progs/asm/aes.s:15` | `` |
-| `aes_sub_bytes` | function | `progs/asm/aes.s:1727` | `` |
-| `aes_tool_name` | function | `progs/asm/aes.s:3065` | `` |
-| `aes_write_all` | function | `progs/asm/aes.s:240` | `` |
-| `aes_xtime` | function | `progs/asm/aes.s:888` | `` |
-| `hex_val` | function | `progs/asm/aes.s:502` | `` |
-| `main` | function | `progs/asm/aes.s:3816` | `` |
-| `_start` | function | `progs/asm/cp.s:328` | `` |
+| `aes_sub_bytes` | function | `progs/asm/aes.s:1721` | `` |
+| `aes_tool_name` | function | `progs/asm/aes.s:3059` | `` |
+| `aes_write_all` | function | `progs/asm/aes.s:238` | `` |
+| `aes_xtime` | function | `progs/asm/aes.s:884` | `` |
+| `hex_val` | function | `progs/asm/aes.s:498` | `` |
+| `main` | function | `progs/asm/aes.s:3799` | `` |
+| `_start` | function | `progs/asm/cp.s:322` | `` |
 | `main` | function | `progs/asm/cp.s:3` | `` |
 | `_start` | function | `progs/asm/fib.s:82` | `` |
 | `fib` | function | `progs/asm/fib.s:3` | `` |
 | `main` | function | `progs/asm/fib.s:61` | `` |
-| `_start` | function | `progs/asm/freedom.s:11869` | `` |
+| `_start` | function | `progs/asm/freedom.s:11761` | `` |
 | `append` | function | `progs/asm/freedom.s:338` | `` |
 | `atoi` | function | `progs/asm/freedom.s:252` | `` |
-| `body_byte` | function | `progs/asm/freedom.s:6029` | `` |
+| `body_byte` | function | `progs/asm/freedom.s:5961` | `` |
 | `ci_eq` | function | `progs/asm/freedom.s:559` | `` |
 | `ci_index` | function | `progs/asm/freedom.s:656` | `` |
 | `ci_lower` | function | `progs/asm/freedom.s:437` | `` |
 | `ci_starts` | function | `progs/asm/freedom.s:486` | `` |
-| `classify_tag` | function | `progs/asm/freedom.s:4792` | `` |
-| `css_append` | function | `progs/asm/freedom.s:3863` | `` |
-| `css_line` | function | `progs/asm/freedom.s:3934` | `` |
-| `dom_append` | function | `progs/asm/freedom.s:3993` | `` |
-| `dom_nl` | function | `progs/asm/freedom.s:4098` | `` |
-| `dom_space` | function | `progs/asm/freedom.s:4064` | `` |
+| `classify_tag` | function | `progs/asm/freedom.s:4757` | `` |
+| `css_append` | function | `progs/asm/freedom.s:3849` | `` |
+| `css_line` | function | `progs/asm/freedom.s:3920` | `` |
+| `dom_append` | function | `progs/asm/freedom.s:3978` | `` |
+| `dom_nl` | function | `progs/asm/freedom.s:4083` | `` |
+| `dom_space` | function | `progs/asm/freedom.s:4049` | `` |
 | `f_attr` | function | `progs/asm/freedom.s:136` | `` |
 | `f_attr_on` | function | `progs/asm/freedom.s:120` | `` |
 | `f_attrlen` | function | `progs/asm/freedom.s:140` | `` |
@@ -3247,86 +3251,86 @@ long sys_linux_wait4(lon...` |
 | `f_vallen` | function | `progs/asm/freedom.s:148` | `` |
 | `f_waitq` | function | `progs/asm/freedom.s:124` | `` |
 | `f_ws` | function | `progs/asm/freedom.s:104` | `` |
-| `fetch` | function | `progs/asm/freedom.s:7888` | `` |
-| `fetch_css` | function | `progs/asm/freedom.s:9383` | `` |
-| `has_scheme` | function | `progs/asm/freedom.s:790` | `` |
-| `head_line` | function | `progs/asm/freedom.s:7274` | `` |
-| `is_void_tag` | function | `progs/asm/freedom.s:4470` | `` |
-| `looks_like_url` | function | `progs/asm/freedom.s:716` | `` |
-| `main` | function | `progs/asm/freedom.s:10391` | `` |
-| `make_search` | function | `progs/asm/freedom.s:1065` | `` |
-| `parse_head` | function | `progs/asm/freedom.s:7535` | `` |
-| `print_css_dump` | function | `progs/asm/freedom.s:10212` | `` |
-| `print_dom_dump` | function | `progs/asm/freedom.s:10312` | `` |
-| `put_entity` | function | `progs/asm/freedom.s:3026` | `` |
-| `put_text` | function | `progs/asm/freedom.s:2923` | `` |
-| `put_utf` | function | `progs/asm/freedom.s:2387` | `` |
-| `put_ws` | function | `progs/asm/freedom.s:2341` | `` |
-| `record_attr` | function | `progs/asm/freedom.s:4132` | `` |
-| `recv_body` | function | `progs/asm/freedom.s:7752` | `` |
-| `resolve_redirect` | function | `progs/asm/freedom.s:1816` | `` |
-| `send_all` | function | `progs/asm/freedom.s:7813` | `` |
-| `split_url` | function | `progs/asm/freedom.s:1301` | `` |
+| `fetch` | function | `progs/asm/freedom.s:7810` | `` |
+| `fetch_css` | function | `progs/asm/freedom.s:9293` | `` |
+| `has_scheme` | function | `progs/asm/freedom.s:789` | `` |
+| `head_line` | function | `progs/asm/freedom.s:7203` | `` |
+| `is_void_tag` | function | `progs/asm/freedom.s:4449` | `` |
+| `looks_like_url` | function | `progs/asm/freedom.s:715` | `` |
+| `main` | function | `progs/asm/freedom.s:10291` | `` |
+| `make_search` | function | `progs/asm/freedom.s:1064` | `` |
+| `parse_head` | function | `progs/asm/freedom.s:7460` | `` |
+| `print_css_dump` | function | `progs/asm/freedom.s:10112` | `` |
+| `print_dom_dump` | function | `progs/asm/freedom.s:10212` | `` |
+| `put_entity` | function | `progs/asm/freedom.s:3018` | `` |
+| `put_text` | function | `progs/asm/freedom.s:2915` | `` |
+| `put_utf` | function | `progs/asm/freedom.s:2379` | `` |
+| `put_ws` | function | `progs/asm/freedom.s:2333` | `` |
+| `record_attr` | function | `progs/asm/freedom.s:4117` | `` |
+| `recv_body` | function | `progs/asm/freedom.s:7676` | `` |
+| `resolve_redirect` | function | `progs/asm/freedom.s:1810` | `` |
+| `send_all` | function | `progs/asm/freedom.s:7736` | `` |
+| `split_url` | function | `progs/asm/freedom.s:1295` | `` |
 | `tls_close` | function | `progs/asm/freedom.s:3` | `` |
-| `_start` | function | `progs/asm/http.s:715` | `` |
+| `_start` | function | `progs/asm/http.s:709` | `` |
 | `atoi` | function | `progs/asm/http.s:3` | `` |
 | `main` | function | `progs/asm/http.s:89` | `` |
-| `_start` | function | `progs/asm/json.s:4185` | `` |
-| `js_array_at` | function | `progs/asm/json.s:3398` | `` |
+| `_start` | function | `progs/asm/json.s:4169` | `` |
+| `js_array_at` | function | `progs/asm/json.s:3391` | `` |
 | `js_count` | function | `progs/asm/json.s:23` | `` |
 | `js_err` | function | `progs/asm/json.s:55` | `` |
-| `js_find_member` | function | `progs/asm/json.s:3319` | `` |
+| `js_find_member` | function | `progs/asm/json.s:3313` | `` |
 | `js_first` | function | `progs/asm/json.s:19` | `` |
-| `js_indent` | function | `progs/asm/json.s:2484` | `` |
+| `js_indent` | function | `progs/asm/json.s:2481` | `` |
 | `js_key` | function | `progs/asm/json.s:3` | `` |
-| `js_key_match` | function | `progs/asm/json.s:949` | `` |
+| `js_key_match` | function | `progs/asm/json.s:947` | `` |
 | `js_len` | function | `progs/asm/json.s:51` | `` |
 | `js_n` | function | `progs/asm/json.s:31` | `` |
-| `js_new` | function | `progs/asm/json.s:276` | `` |
+| `js_new` | function | `progs/asm/json.s:274` | `` |
 | `js_next` | function | `progs/asm/json.s:27` | `` |
 | `js_num` | function | `progs/asm/json.s:15` | `` |
-| `js_parse_array` | function | `progs/asm/json.s:1338` | `` |
-| `js_parse_number` | function | `progs/asm/json.s:853` | `` |
-| `js_parse_object` | function | `progs/asm/json.s:986` | `` |
-| `js_parse_string` | function | `progs/asm/json.s:439` | `` |
-| `js_parse_value` | function | `progs/asm/json.s:1597` | `` |
-| `js_peek` | function | `progs/asm/json.s:399` | `` |
+| `js_parse_array` | function | `progs/asm/json.s:1335` | `` |
+| `js_parse_number` | function | `progs/asm/json.s:851` | `` |
+| `js_parse_object` | function | `progs/asm/json.s:983` | `` |
+| `js_parse_string` | function | `progs/asm/json.s:437` | `` |
+| `js_parse_value` | function | `progs/asm/json.s:1594` | `` |
+| `js_peek` | function | `progs/asm/json.s:397` | `` |
 | `js_plen` | function | `progs/asm/json.s:39` | `` |
 | `js_pool` | function | `progs/asm/json.s:35` | `` |
 | `js_pos` | function | `progs/asm/json.s:47` | `` |
-| `js_print_str` | function | `progs/asm/json.s:2527` | `` |
-| `js_print_value` | function | `progs/asm/json.s:2750` | `` |
-| `js_query` | function | `progs/asm/json.s:3467` | `` |
+| `js_print_str` | function | `progs/asm/json.s:2524` | `` |
+| `js_print_value` | function | `progs/asm/json.s:2747` | `` |
+| `js_query` | function | `progs/asm/json.s:3460` | `` |
 | `js_read_all` | function | `progs/asm/json.s:59` | `` |
-| `js_skip_ws` | function | `progs/asm/json.s:308` | `` |
+| `js_skip_ws` | function | `progs/asm/json.s:306` | `` |
 | `js_src` | function | `progs/asm/json.s:43` | `` |
 | `js_str` | function | `progs/asm/json.s:7` | `` |
 | `js_type` | function | `progs/asm/json.s:11` | `` |
-| `main` | function | `progs/asm/json.s:3781` | `` |
+| `main` | function | `progs/asm/json.s:3772` | `` |
 | `_start` | function | `progs/asm/ldhello.s:14` | `` |
 | `main` | function | `progs/asm/ldhello.s:3` | `` |
-| `_start` | function | `progs/asm/lz4.s:1555` | `` |
-| `lz4_compress_file` | function | `progs/asm/lz4.s:482` | `` |
-| `lz4_decompress_file` | function | `progs/asm/lz4.s:800` | `` |
+| `_start` | function | `progs/asm/lz4.s:1535` | `` |
+| `lz4_compress_file` | function | `progs/asm/lz4.s:478` | `` |
+| `lz4_decompress_file` | function | `progs/asm/lz4.s:791` | `` |
 | `lz4_has` | function | `progs/asm/lz4.s:3` | `` |
 | `lz4_read_all` | function | `progs/asm/lz4.s:156` | `` |
-| `lz4_write_all` | function | `progs/asm/lz4.s:373` | `` |
-| `main` | function | `progs/asm/lz4.s:1244` | `` |
-| `_start` | function | `progs/asm/lzss.s:3520` | `` |
+| `lz4_write_all` | function | `progs/asm/lz4.s:371` | `` |
+| `main` | function | `progs/asm/lz4.s:1228` | `` |
+| `_start` | function | `progs/asm/lzss.s:3497` | `` |
 | `lz_buf` | function | `progs/asm/lzss.s:35` | `` |
-| `lz_compress` | function | `progs/asm/lzss.s:2263` | `` |
-| `lz_decode` | function | `progs/asm/lzss.s:1173` | `` |
-| `lz_decompress` | function | `progs/asm/lzss.s:2639` | `` |
+| `lz_compress` | function | `progs/asm/lzss.s:2257` | `` |
+| `lz_decode` | function | `progs/asm/lzss.s:1171` | `` |
+| `lz_decompress` | function | `progs/asm/lzss.s:2628` | `` |
 | `lz_dst` | function | `progs/asm/lzss.s:19` | `` |
 | `lz_dstcap` | function | `progs/asm/lzss.s:23` | `` |
 | `lz_dstlen` | function | `progs/asm/lzss.s:27` | `` |
 | `lz_encode` | function | `progs/asm/lzss.s:451` | `` |
 | `lz_err` | function | `progs/asm/lzss.s:31` | `` |
 | `lz_flush_bits` | function | `progs/asm/lzss.s:223` | `` |
-| `lz_getbit` | function | `progs/asm/lzss.s:1053` | `` |
-| `lz_has` | function | `progs/asm/lzss.s:1784` | `` |
-| `lz_hdr_get` | function | `progs/asm/lzss.s:1631` | `` |
-| `lz_hdr_put` | function | `progs/asm/lzss.s:1516` | `` |
+| `lz_getbit` | function | `progs/asm/lzss.s:1051` | `` |
+| `lz_has` | function | `progs/asm/lzss.s:1782` | `` |
+| `lz_hdr_get` | function | `progs/asm/lzss.s:1629` | `` |
+| `lz_hdr_put` | function | `progs/asm/lzss.s:1514` | `` |
 | `lz_in_getc` | function | `progs/asm/lzss.s:43` | `` |
 | `lz_mask` | function | `progs/asm/lzss.s:39` | `` |
 | `lz_next_mb` | function | `progs/asm/lzss.s:447` | `` |
@@ -3335,13 +3339,13 @@ long sys_linux_wait4(lon...` |
 | `lz_out_put` | function | `progs/asm/lzss.s:79` | `` |
 | `lz_putbit0` | function | `progs/asm/lzss.s:174` | `` |
 | `lz_putbit1` | function | `progs/asm/lzss.s:116` | `` |
-| `lz_read_all` | function | `progs/asm/lzss.s:1937` | `` |
+| `lz_read_all` | function | `progs/asm/lzss.s:1935` | `` |
 | `lz_src` | function | `progs/asm/lzss.s:7` | `` |
 | `lz_srclen` | function | `progs/asm/lzss.s:11` | `` |
 | `lz_srcpos` | function | `progs/asm/lzss.s:15` | `` |
 | `lz_win` | function | `progs/asm/lzss.s:3` | `` |
-| `lz_write_all` | function | `progs/asm/lzss.s:2154` | `` |
-| `main` | function | `progs/asm/lzss.s:3197` | `` |
+| `lz_write_all` | function | `progs/asm/lzss.s:2150` | `` |
+| `main` | function | `progs/asm/lzss.s:3178` | `` |
 | `_start` | function | `progs/asm/w1.s:37` | `` |
 | `main` | function | `progs/asm/w1.s:3` | `` |
 | `DMAP_BRUSH_COUNT` | macro | `progs/doomedit/doomedit.c:230` | `#define DMAP_BRUSH_COUNT` |
@@ -8358,121 +8362,125 @@ Z_Malloc
 | `tls_send` | function | `progs/freedomui/freedomui_minios.c:45` | `int tls_send(int fd, char *buf, int len);` |
 | `ui_layout_free` | function | `progs/freedomui/freedomui_minios.c:1109` | `ui_layout_free(&lay);` |
 | `volatile` | function | `progs/freedomui/freedomui_minios.c:246` | `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");` |
-| `AllocTracker` | type_alias | `progs/lisp/lisp.c:62` | `typedef struct AllocTracker AllocTracker;` |
-| `AllocTracker` | struct | `progs/lisp/lisp.c:149` | `` |
-| `Binding` | type_alias | `progs/lisp/lisp.c:61` | `typedef struct Binding Binding;` |
-| `Binding` | struct | `progs/lisp/lisp.c:132` | `` |
-| `Env` | type_alias | `progs/lisp/lisp.c:60` | `typedef struct Env Env;` |
-| `Env` | struct | `progs/lisp/lisp.c:141` | `` |
-| `LispConfig` | enum | `progs/lisp/lisp.c:33` | `` |
-| `Node` | type_alias | `progs/lisp/lisp.c:59` | `typedef struct Node Node;` |
-| `Node` | struct | `progs/lisp/lisp.c:105` | `` |
-| `ParseResult` | struct | `progs/lisp/lisp.c:96` | `` |
-| `Reader` | struct | `progs/lisp/lisp.c:173` | `` |
-| `Runtime` | type_alias | `progs/lisp/lisp.c:57` | `typedef struct Runtime Runtime;` |
-| `Runtime` | struct | `progs/lisp/lisp.c:157` | `` |
-| `StringBuilder` | struct | `progs/lisp/lisp.c:184` | `` |
-| `arg_at` | function | `progs/lisp/lisp.c:767` | `static Node *arg_at(Runtime *rt, Node *args, size_t index)` |
-| `bind_argv` | function | `progs/lisp/lisp.c:1954` | `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` |
-| `bind_primitive` | function | `progs/lisp/lisp.c:1905` | `static void bind_primitive(Runtime *rt, Env *env, const char *name,
+| `AllocTracker` | type_alias | `progs/lisp/lisp.c:70` | `typedef struct AllocTracker AllocTracker;` |
+| `AllocTracker` | struct | `progs/lisp/lisp.c:157` | `` |
+| `Binding` | type_alias | `progs/lisp/lisp.c:69` | `typedef struct Binding Binding;` |
+| `Binding` | struct | `progs/lisp/lisp.c:140` | `` |
+| `Env` | type_alias | `progs/lisp/lisp.c:68` | `typedef struct Env Env;` |
+| `Env` | struct | `progs/lisp/lisp.c:149` | `` |
+| `LispConfig` | enum | `progs/lisp/lisp.c:41` | `` |
+| `Node` | type_alias | `progs/lisp/lisp.c:67` | `typedef struct Node Node;` |
+| `Node` | struct | `progs/lisp/lisp.c:113` | `` |
+| `ParseResult` | struct | `progs/lisp/lisp.c:104` | `` |
+| `PrimEntry` | struct | `progs/lisp/lisp.c:1960` | `` |
+| `Reader` | struct | `progs/lisp/lisp.c:181` | `` |
+| `Runtime` | type_alias | `progs/lisp/lisp.c:65` | `typedef struct Runtime Runtime;` |
+| `Runtime` | struct | `progs/lisp/lisp.c:165` | `` |
+| `StringBuilder` | struct | `progs/lisp/lisp.c:192` | `` |
+| `arg_at` | function | `progs/lisp/lisp.c:775` | `static Node *arg_at(Runtime *rt, Node *args, size_t index)` |
+| `arg_matches` | function | `progs/lisp/lisp.c:815` | `static bool arg_matches(const Node *value, ArgKind kind)` |
+| `arity` | function | `progs/lisp/lisp.c:1299` | `* * Variable arity (0 or 1);` |
+| `arity0` | function | `progs/lisp/lisp.c:861` | `static bool arity0(Runtime *rt, Node *args)` |
+| `bind_argv` | function | `progs/lisp/lisp.c:2018` | `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` |
+| `bind_primitive` | function | `progs/lisp/lisp.c:1948` | `static void bind_primitive(Runtime *rt, Env *env, const char *name,
     PrimFn function)` |
-| `cleanup` | function | `progs/lisp/lisp.c:369` | `static void cleanup(Runtime *rt)` |
-| `cons` | function | `progs/lisp/lisp.c:330` | `static Node *cons(Runtime *rt, Node *car, Node *cdr)` |
-| `env_bind` | function | `progs/lisp/lisp.c:413` | `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)` |
-| `env_lookup` | function | `progs/lisp/lisp.c:446` | `static Node *env_lookup(Env *env, Node *symbol)` |
-| `env_new` | function | `progs/lisp/lisp.c:403` | `static Env *env_new(Runtime *rt, Env *parent)` |
-| `env_set` | function | `progs/lisp/lisp.c:424` | `static bool env_set(Env *env, Node *symbol, Node *value)` |
-| `eval` | function | `progs/lisp/lisp.c:1540` | `static Node *eval(Runtime *rt, Node *expression, Env *env)` |
-| `eval_list` | function | `progs/lisp/lisp.c:1484` | `static Node *eval_list(Runtime *rt, Node *list, Env *env)` |
-| `eval_sequence` | function | `progs/lisp/lisp.c:1508` | `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)` |
-| `exit` | function | `progs/lisp/lisp.c:228` | `exit(EXIT_FAILURE);` |
-| `fatal` | function | `progs/lisp/lisp.c:225` | `static void fatal(Runtime *rt, const char *message)` |
-| `fclose` | function | `progs/lisp/lisp.c:362` | `fclose(handle);` |
-| `fflush` | function | `progs/lisp/lisp.c:1058` | `fflush(rt->out);` |
-| `file_mode_allowed` | function | `progs/lisp/lisp.c:1078` | `static bool file_mode_allowed(const char *mode)` |
-| `fprintf` | function | `progs/lisp/lisp.c:227` | `fprintf(err, "fatal: %s\n", message);` |
-| `fputc` | function | `progs/lisp/lisp.c:1070` | `fputc('\n', rt->out);` |
-| `fputs` | function | `progs/lisp/lisp.c:1809` | `fputs("\\n", out);` |
-| `free` | function | `progs/lisp/lisp.c:246` | `free(ptr);` |
-| `get_two_numbers` | function | `progs/lisp/lisp.c:784` | `static bool get_two_numbers(Runtime *rt, Node *args, int64_t *a, int64_t *b)` |
-| `has_arity` | function | `progs/lisp/lisp.c:759` | `static bool has_arity(Runtime *rt, Node *args, size_t expected)` |
-| `init_env` | function | `progs/lisp/lisp.c:1913` | `static Env *init_env(Runtime *rt)` |
-| `is_nil` | function | `progs/lisp/lisp.c:340` | `static bool is_nil(Runtime *rt, const Node *node)` |
-| `lisp_version` | function | `progs/lisp/lisp.c:54` | `static const char *lisp_version(void)` |
-| `list_count` | function | `progs/lisp/lisp.c:742` | `static size_t list_count(Runtime *rt, Node *list, bool *proper)` |
-| `main` | function | `progs/lisp/lisp.c:2127` | `int main(int argc, char **argv)` |
-| `make_error` | function | `progs/lisp/lisp.c:285` | `static Node *make_error(Runtime *rt, const char *message)` |
-| `make_file` | function | `progs/lisp/lisp.c:347` | `static Node *make_file(Runtime *rt, FILE *handle)` |
-| `make_node` | function | `progs/lisp/lisp.c:276` | `static Node *make_node(Runtime *rt, NodeType type)` |
-| `make_num` | function | `progs/lisp/lisp.c:294` | `static Node *make_num(Runtime *rt, int64_t value)` |
-| `make_prim` | function | `progs/lisp/lisp.c:321` | `static Node *make_prim(Runtime *rt, PrimFn function)` |
-| `make_str` | function | `progs/lisp/lisp.c:303` | `static Node *make_str(Runtime *rt, const char *value)` |
-| `make_sym` | function | `progs/lisp/lisp.c:312` | `static Node *make_sym(Runtime *rt, const char *value)` |
-| `memcpy` | function | `progs/lisp/lisp.c:269` | `memcpy(copy, source, length);` |
-| `memset` | function | `progs/lisp/lisp.c:392` | `memset(rt, 0, sizeof *rt);` |
-| `msys` | function | `progs/lisp/lisp.c:197` | `static long msys(long n, long a1, long a2, long a3)` |
-| `msys5` | function | `progs/lisp/lisp.c:210` | `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` |
-| `parse_eof` | function | `progs/lisp/lisp.c:565` | `static ParseResult parse_eof(void)` |
-| `parse_error` | function | `progs/lisp/lisp.c:576` | `static ParseResult parse_error(const char *message)` |
-| `parse_ok` | function | `progs/lisp/lisp.c:554` | `static ParseResult parse_ok(Node *value)` |
-| `prim_add` | function | `progs/lisp/lisp.c:804` | `static Node *prim_add(Runtime *rt, Node *args)` |
-| `prim_car` | function | `progs/lisp/lisp.c:894` | `static Node *prim_car(Runtime *rt, Node *args)` |
-| `prim_cdr` | function | `progs/lisp/lisp.c:909` | `static Node *prim_cdr(Runtime *rt, Node *args)` |
-| `prim_char_code` | function | `progs/lisp/lisp.c:1028` | `static Node *prim_char_code(Runtime *rt, Node *args)` |
-| `prim_close_file` | function | `progs/lisp/lisp.c:1191` | `static Node *prim_close_file(Runtime *rt, Node *args)` |
-| `prim_cons` | function | `progs/lisp/lisp.c:924` | `static Node *prim_cons(Runtime *rt, Node *args)` |
-| `prim_div` | function | `progs/lisp/lisp.c:852` | `static Node *prim_div(Runtime *rt, Node *args)` |
-| `prim_eq` | function | `progs/lisp/lisp.c:870` | `static Node *prim_eq(Runtime *rt, Node *args)` |
-| `prim_error_message` | function | `progs/lisp/lisp.c:1253` | `static Node *prim_error_message(Runtime *rt, Node *args)` |
-| `prim_exit` | function | `progs/lisp/lisp.c:1268` | `static Node *prim_exit(Runtime *rt, Node *args)` |
-| `prim_fb_info` | function | `progs/lisp/lisp.c:1324` | `static Node *prim_fb_info(Runtime *rt, Node *args)` |
-| `prim_lt` | function | `progs/lisp/lisp.c:882` | `static Node *prim_lt(Runtime *rt, Node *args)` |
-| `prim_minios_run` | function | `progs/lisp/lisp.c:1422` | `static Node *prim_minios_run(Runtime *rt, Node *args)` |
-| `prim_mul` | function | `progs/lisp/lisp.c:836` | `static Node *prim_mul(Runtime *rt, Node *args)` |
-| `prim_null_p` | function | `progs/lisp/lisp.c:1219` | `static Node *prim_null_p(Runtime *rt, Node *args)` |
-| `prim_number_p` | function | `progs/lisp/lisp.c:1229` | `static Node *prim_number_p(Runtime *rt, Node *args)` |
-| `prim_open_file` | function | `progs/lisp/lisp.c:1097` | `static Node *prim_open_file(Runtime *rt, Node *args)` |
-| `prim_pal` | function | `progs/lisp/lisp.c:1370` | `static Node *prim_pal(Runtime *rt, Node *args)` |
-| `prim_pcspeaker` | function | `progs/lisp/lisp.c:1389` | `static Node *prim_pcspeaker(Runtime *rt, Node *args)` |
-| `prim_print` | function | `progs/lisp/lisp.c:1053` | `static Node *prim_print(Runtime *rt, Node *args)` |
-| `prim_println` | function | `progs/lisp/lisp.c:1065` | `static Node *prim_println(Runtime *rt, Node *args)` |
-| `prim_read_char` | function | `progs/lisp/lisp.c:1142` | `static Node *prim_read_char(Runtime *rt, Node *args)` |
-| `prim_rtc` | function | `progs/lisp/lisp.c:1306` | `static Node *prim_rtc(Runtime *rt, Node *args)` |
-| `prim_string_at` | function | `progs/lisp/lisp.c:1000` | `static Node *prim_string_at(Runtime *rt, Node *args)` |
-| `prim_string_concat` | function | `progs/lisp/lisp.c:934` | `static Node *prim_string_concat(Runtime *rt, Node *args)` |
-| `prim_string_eq` | function | `progs/lisp/lisp.c:967` | `static Node *prim_string_eq(Runtime *rt, Node *args)` |
-| `prim_string_length` | function | `progs/lisp/lisp.c:985` | `static Node *prim_string_length(Runtime *rt, Node *args)` |
-| `prim_string_p` | function | `progs/lisp/lisp.c:1241` | `static Node *prim_string_p(Runtime *rt, Node *args)` |
-| `prim_sub` | function | `progs/lisp/lisp.c:820` | `static Node *prim_sub(Runtime *rt, Node *args)` |
-| `prim_time_ms` | function | `progs/lisp/lisp.c:1295` | `static Node *prim_time_ms(Runtime *rt, Node *args)` |
-| `prim_vol` | function | `progs/lisp/lisp.c:1342` | `static Node *prim_vol(Runtime *rt, Node *args)` |
-| `prim_write` | function | `progs/lisp/lisp.c:1162` | `static Node *prim_write(Runtime *rt, Node *args)` |
-| `print_escaped_string` | function | `progs/lisp/lisp.c:1803` | `static void print_escaped_string(FILE *out, const char *value)` |
-| `print_node` | function | `progs/lisp/lisp.c:1834` | `static void print_node(Runtime *rt, Node *node, bool readable)` |
-| `print_usage` | function | `progs/lisp/lisp.c:2073` | `static void print_usage(Runtime *rt)` |
-| `process_inline` | function | `progs/lisp/lisp.c:2066` | `static int process_inline(Runtime *rt, const char *code)` |
-| `process_source` | function | `progs/lisp/lisp.c:2024` | `static int process_source(Runtime *rt, const char *source,
+| `check_args` | function | `progs/lisp/lisp.c:841` | `static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,
+    size_t n, Node **out)` |
+| `cleanup` | function | `progs/lisp/lisp.c:377` | `static void cleanup(Runtime *rt)` |
+| `cons` | function | `progs/lisp/lisp.c:338` | `static Node *cons(Runtime *rt, Node *car, Node *cdr)` |
+| `env_bind` | function | `progs/lisp/lisp.c:421` | `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)` |
+| `env_lookup` | function | `progs/lisp/lisp.c:454` | `static Node *env_lookup(Env *env, Node *symbol)` |
+| `env_new` | function | `progs/lisp/lisp.c:411` | `static Env *env_new(Runtime *rt, Env *parent)` |
+| `env_set` | function | `progs/lisp/lisp.c:432` | `static bool env_set(Env *env, Node *symbol, Node *value)` |
+| `eval` | function | `progs/lisp/lisp.c:1583` | `static Node *eval(Runtime *rt, Node *expression, Env *env)` |
+| `eval_list` | function | `progs/lisp/lisp.c:1527` | `static Node *eval_list(Runtime *rt, Node *list, Env *env)` |
+| `eval_sequence` | function | `progs/lisp/lisp.c:1551` | `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)` |
+| `exit` | function | `progs/lisp/lisp.c:236` | `exit(EXIT_FAILURE);` |
+| `fatal` | function | `progs/lisp/lisp.c:233` | `static void fatal(Runtime *rt, const char *message)` |
+| `fclose` | function | `progs/lisp/lisp.c:370` | `fclose(handle);` |
+| `fflush` | function | `progs/lisp/lisp.c:1101` | `fflush(rt->out);` |
+| `file_mode_allowed` | function | `progs/lisp/lisp.c:1123` | `static bool file_mode_allowed(const char *mode)` |
+| `fprintf` | function | `progs/lisp/lisp.c:235` | `fprintf(err, "fatal: %s\n", message);` |
+| `fputc` | function | `progs/lisp/lisp.c:1115` | `fputc('\n', rt->out);` |
+| `fputs` | function | `progs/lisp/lisp.c:1852` | `fputs("\\n", out);` |
+| `free` | function | `progs/lisp/lisp.c:254` | `free(ptr);` |
+| `has_arity` | function | `progs/lisp/lisp.c:767` | `static bool has_arity(Runtime *rt, Node *args, size_t expected)` |
+| `init_env` | function | `progs/lisp/lisp.c:2005` | `static Env *init_env(Runtime *rt)` |
+| `is_nil` | function | `progs/lisp/lisp.c:348` | `static bool is_nil(Runtime *rt, const Node *node)` |
+| `lisp_version` | function | `progs/lisp/lisp.c:62` | `static const char *lisp_version(void)` |
+| `list_count` | function | `progs/lisp/lisp.c:750` | `static size_t list_count(Runtime *rt, Node *list, bool *proper)` |
+| `main` | function | `progs/lisp/lisp.c:2191` | `int main(int argc, char **argv)` |
+| `make_error` | function | `progs/lisp/lisp.c:293` | `static Node *make_error(Runtime *rt, const char *message)` |
+| `make_file` | function | `progs/lisp/lisp.c:355` | `static Node *make_file(Runtime *rt, FILE *handle)` |
+| `make_node` | function | `progs/lisp/lisp.c:284` | `static Node *make_node(Runtime *rt, NodeType type)` |
+| `make_num` | function | `progs/lisp/lisp.c:302` | `static Node *make_num(Runtime *rt, int64_t value)` |
+| `make_prim` | function | `progs/lisp/lisp.c:329` | `static Node *make_prim(Runtime *rt, PrimFn function)` |
+| `make_str` | function | `progs/lisp/lisp.c:311` | `static Node *make_str(Runtime *rt, const char *value)` |
+| `make_sym` | function | `progs/lisp/lisp.c:320` | `static Node *make_sym(Runtime *rt, const char *value)` |
+| `memcpy` | function | `progs/lisp/lisp.c:277` | `memcpy(copy, source, length);` |
+| `memset` | function | `progs/lisp/lisp.c:400` | `memset(rt, 0, sizeof *rt);` |
+| `msys` | function | `progs/lisp/lisp.c:205` | `static long msys(long n, long a1, long a2, long a3)` |
+| `msys5` | function | `progs/lisp/lisp.c:218` | `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` |
+| `numbers` | function | `progs/lisp/lisp.c:8` | `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special form` |
+| `parse_eof` | function | `progs/lisp/lisp.c:573` | `static ParseResult parse_eof(void)` |
+| `parse_error` | function | `progs/lisp/lisp.c:584` | `static ParseResult parse_error(const char *message)` |
+| `parse_ok` | function | `progs/lisp/lisp.c:562` | `static ParseResult parse_ok(Node *value)` |
+| `prim_add` | function | `progs/lisp/lisp.c:869` | `static Node *prim_add(Runtime *rt, Node *args)` |
+| `prim_car` | function | `progs/lisp/lisp.c:963` | `static Node *prim_car(Runtime *rt, Node *args)` |
+| `prim_cdr` | function | `progs/lisp/lisp.c:975` | `static Node *prim_cdr(Runtime *rt, Node *args)` |
+| `prim_char_code` | function | `progs/lisp/lisp.c:1072` | `static Node *prim_char_code(Runtime *rt, Node *args)` |
+| `prim_close_file` | function | `progs/lisp/lisp.c:1224` | `static Node *prim_close_file(Runtime *rt, Node *args)` |
+| `prim_cons` | function | `progs/lisp/lisp.c:987` | `static Node *prim_cons(Runtime *rt, Node *args)` |
+| `prim_div` | function | `progs/lisp/lisp.c:917` | `static Node *prim_div(Runtime *rt, Node *args)` |
+| `prim_eq` | function | `progs/lisp/lisp.c:939` | `static Node *prim_eq(Runtime *rt, Node *args)` |
+| `prim_error_message` | function | `progs/lisp/lisp.c:1285` | `static Node *prim_error_message(Runtime *rt, Node *args)` |
+| `prim_exit` | function | `progs/lisp/lisp.c:1303` | `static Node *prim_exit(Runtime *rt, Node *args)` |
+| `prim_fb_info` | function | `progs/lisp/lisp.c:1357` | `static Node *prim_fb_info(Runtime *rt, Node *args)` |
+| `prim_lt` | function | `progs/lisp/lisp.c:951` | `static Node *prim_lt(Runtime *rt, Node *args)` |
+| `prim_minios_run` | function | `progs/lisp/lisp.c:1465` | `static Node *prim_minios_run(Runtime *rt, Node *args)` |
+| `prim_mul` | function | `progs/lisp/lisp.c:901` | `static Node *prim_mul(Runtime *rt, Node *args)` |
+| `prim_null_p` | function | `progs/lisp/lisp.c:1249` | `static Node *prim_null_p(Runtime *rt, Node *args)` |
+| `prim_number_p` | function | `progs/lisp/lisp.c:1261` | `static Node *prim_number_p(Runtime *rt, Node *args)` |
+| `prim_pal` | function | `progs/lisp/lisp.c:1405` | `static Node *prim_pal(Runtime *rt, Node *args)` |
+| `prim_pcspeaker` | function | `progs/lisp/lisp.c:1421` | `static Node *prim_pcspeaker(Runtime *rt, Node *args)` |
+| `prim_print` | function | `progs/lisp/lisp.c:1094` | `static Node *prim_print(Runtime *rt, Node *args)` |
+| `prim_println` | function | `progs/lisp/lisp.c:1108` | `static Node *prim_println(Runtime *rt, Node *args)` |
+| `prim_read_char` | function | `progs/lisp/lisp.c:1183` | `static Node *prim_read_char(Runtime *rt, Node *args)` |
+| `prim_rtc` | function | `progs/lisp/lisp.c:1340` | `static Node *prim_rtc(Runtime *rt, Node *args)` |
+| `prim_string_at` | function | `progs/lisp/lisp.c:1050` | `static Node *prim_string_at(Runtime *rt, Node *args)` |
+| `prim_string_concat` | function | `progs/lisp/lisp.c:999` | `static Node *prim_string_concat(Runtime *rt, Node *args)` |
+| `prim_string_eq` | function | `progs/lisp/lisp.c:1026` | `static Node *prim_string_eq(Runtime *rt, Node *args)` |
+| `prim_string_length` | function | `progs/lisp/lisp.c:1038` | `static Node *prim_string_length(Runtime *rt, Node *args)` |
+| `prim_string_p` | function | `progs/lisp/lisp.c:1273` | `static Node *prim_string_p(Runtime *rt, Node *args)` |
+| `prim_sub` | function | `progs/lisp/lisp.c:885` | `static Node *prim_sub(Runtime *rt, Node *args)` |
+| `prim_time_ms` | function | `progs/lisp/lisp.c:1330` | `static Node *prim_time_ms(Runtime *rt, Node *args)` |
+| `prim_vol` | function | `progs/lisp/lisp.c:1377` | `static Node *prim_vol(Runtime *rt, Node *args)` |
+| `prim_write` | function | `progs/lisp/lisp.c:1200` | `static Node *prim_write(Runtime *rt, Node *args)` |
+| `print_escaped_string` | function | `progs/lisp/lisp.c:1846` | `static void print_escaped_string(FILE *out, const char *value)` |
+| `print_node` | function | `progs/lisp/lisp.c:1877` | `static void print_node(Runtime *rt, Node *node, bool readable)` |
+| `print_usage` | function | `progs/lisp/lisp.c:2137` | `static void print_usage(Runtime *rt)` |
+| `process_inline` | function | `progs/lisp/lisp.c:2130` | `static int process_inline(Runtime *rt, const char *code)` |
+| `process_source` | function | `progs/lisp/lisp.c:2088` | `static int process_source(Runtime *rt, const char *source,
     const char *source_name, bool echo)` |
-| `read_all_file` | function | `progs/lisp/lisp.c:1966` | `static char *read_all_file(const char *filename, size_t max_bytes)` |
-| `read_atom` | function | `progs/lisp/lisp.c:677` | `static ParseResult read_atom(Runtime *rt, Reader *reader)` |
-| `read_expr` | function | `progs/lisp/lisp.c:713` | `static ParseResult read_expr(Runtime *rt, Reader *reader)` |
-| `read_list` | function | `progs/lisp/lisp.c:588` | `static ParseResult read_list(Runtime *rt, Reader *reader)` |
-| `read_string` | function | `progs/lisp/lisp.c:618` | `static ParseResult read_string(Runtime *rt, Reader *reader)` |
-| `reader_at_end` | function | `progs/lisp/lisp.c:492` | `static bool reader_at_end(const Reader *reader)` |
-| `reader_next` | function | `progs/lisp/lisp.c:474` | `static char reader_next(Reader *reader)` |
-| `reader_peek` | function | `progs/lisp/lisp.c:467` | `static char reader_peek(const Reader *reader)` |
-| `repl` | function | `progs/lisp/lisp.c:2080` | `static int repl(Runtime *rt)` |
-| `runtime_init` | function | `progs/lisp/lisp.c:391` | `static void runtime_init(Runtime *rt)` |
-| `sb_init` | function | `progs/lisp/lisp.c:515` | `static void sb_init(StringBuilder *builder)` |
-| `sb_push` | function | `progs/lisp/lisp.c:528` | `static void sb_push(StringBuilder *builder, char value)` |
-| `skip_space_and_comments` | function | `progs/lisp/lisp.c:499` | `static void skip_space_and_comments(Reader *reader)` |
-| `snprintf` | function | `progs/lisp/lisp.c:580` | `snprintf(result.message, sizeof result.message, "%s", message ? message : "parse error");` |
-| `token_delimiter` | function | `progs/lisp/lisp.c:669` | `static bool token_delimiter(char c)` |
-| `valid_file` | function | `progs/lisp/lisp.c:1134` | `static bool valid_file(Node *node)` |
-| `valid_params` | function | `progs/lisp/lisp.c:1526` | `static bool valid_params(Runtime *rt, Node *params)` |
-| `volatile` | function | `progs/lisp/lisp.c:199` | `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");` |
-| `xalloc` | function | `progs/lisp/lisp.c:234` | `static void *xalloc(Runtime *rt, size_t size)` |
-| `xstrdup` | function | `progs/lisp/lisp.c:258` | `static char *xstrdup(Runtime *rt, const char *source)` |
+| `read_all_file` | function | `progs/lisp/lisp.c:2030` | `static char *read_all_file(const char *filename, size_t max_bytes)` |
+| `read_atom` | function | `progs/lisp/lisp.c:685` | `static ParseResult read_atom(Runtime *rt, Reader *reader)` |
+| `read_expr` | function | `progs/lisp/lisp.c:721` | `static ParseResult read_expr(Runtime *rt, Reader *reader)` |
+| `read_list` | function | `progs/lisp/lisp.c:596` | `static ParseResult read_list(Runtime *rt, Reader *reader)` |
+| `read_string` | function | `progs/lisp/lisp.c:626` | `static ParseResult read_string(Runtime *rt, Reader *reader)` |
+| `reader_at_end` | function | `progs/lisp/lisp.c:500` | `static bool reader_at_end(const Reader *reader)` |
+| `reader_next` | function | `progs/lisp/lisp.c:482` | `static char reader_next(Reader *reader)` |
+| `reader_peek` | function | `progs/lisp/lisp.c:475` | `static char reader_peek(const Reader *reader)` |
+| `repl` | function | `progs/lisp/lisp.c:2144` | `static int repl(Runtime *rt)` |
+| `runtime_init` | function | `progs/lisp/lisp.c:399` | `static void runtime_init(Runtime *rt)` |
+| `sb_init` | function | `progs/lisp/lisp.c:523` | `static void sb_init(StringBuilder *builder)` |
+| `sb_push` | function | `progs/lisp/lisp.c:536` | `static void sb_push(StringBuilder *builder, char value)` |
+| `skip_space_and_comments` | function | `progs/lisp/lisp.c:507` | `static void skip_space_and_comments(Reader *reader)` |
+| `snprintf` | function | `progs/lisp/lisp.c:588` | `snprintf(result.message, sizeof result.message, "%s", message ? message : "parse error");` |
+| `token_delimiter` | function | `progs/lisp/lisp.c:677` | `static bool token_delimiter(char c)` |
+| `valid_params` | function | `progs/lisp/lisp.c:1569` | `static bool valid_params(Runtime *rt, Node *params)` |
+| `volatile` | function | `progs/lisp/lisp.c:207` | `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");` |
+| `xalloc` | function | `progs/lisp/lisp.c:242` | `static void *xalloc(Runtime *rt, size_t size)` |
+| `xstrdup` | function | `progs/lisp/lisp.c:266` | `static char *xstrdup(Runtime *rt, const char *source)` |
 | `docode` | function | `progs/lua/lua_main.c:40` | `static int docode(lua_State *L, const char *code)` |
 | `dofile` | function | `progs/lua/lua_main.c:50` | `static int dofile(lua_State *L, const char *name)` |
 | `fflush` | function | `progs/lua/lua_main.c:66` | `fflush(stdout);` |
@@ -11445,29 +11453,38 @@ Z_Malloc
 | `make_png` | function | `tools/gen_icons.py:179` | `def make_png(pixels, palette, width, height)` |
 | `main` | function | `tools/gen_zip_fixtures.py:42` | `def main()` |
 | `write_zip` | function | `tools/gen_zip_fixtures.py:28` | `def write_zip(path, entries)` |
+| `SurveyConfig` | class | `tools/kernel_feature_survey.py:18` | `class SurveyConfig` |
+| `count_params` | method | `tools/kernel_feature_survey.py:59` | `def count_params(params)` |
+| `find_asm_constraints` | method | `tools/kernel_feature_survey.py:49` | `def find_asm_constraints(path, text)` |
+| `find_fnptr_hits` | method | `tools/kernel_feature_survey.py:43` | `def find_fnptr_hits(path, text)` |
+| `iter_sources` | method | `tools/kernel_feature_survey.py:34` | `def iter_sources(root)` |
+| `main` | method | `tools/kernel_feature_survey.py:122` | `def main(argv)` |
+| `render_text` | method | `tools/kernel_feature_survey.py:103` | `def render_text(findings)` |
+| `survey` | method | `tools/kernel_feature_survey.py:67` | `def survey(root)` |
 | `die` | function | `tools/lisp_scoped.sh:9` | `` |
 | `mutant` | function | `tools/lisp_scoped.sh:20` | `` |
 | `say` | function | `tools/lisp_scoped.sh:8` | `` |
-| `FS` | class | `tools/minifs_saves.py:81` | `class FS` |
-| `Image` | class | `tools/minifs_saves.py:57` | `class Image` |
-| `__init__` | method | `tools/minifs_saves.py:60` | `def __init__(self, fn, base)` |
-| `__init__` | method | `tools/minifs_saves.py:82` | `def __init__(self, img)` |
-| `blk` | method | `tools/minifs_saves.py:71` | `def blk(self, n)` |
-| `close` | method | `tools/minifs_saves.py:68` | `def close(self)` |
-| `cmd_backup` | method | `tools/minifs_saves.py:254` | `def cmd_backup(img_path, stage)` |
-| `find_partition_base` | method | `tools/minifs_saves.py:216` | `def find_partition_base(fn)` |
-| `inode` | method | `tools/minifs_saves.py:91` | `def inode(self, i)` |
-| `is_dir` | method | `tools/minifs_saves.py:106` | `def is_dir(self, st)` |
-| `listdir` | method | `tools/minifs_saves.py:142` | `def listdir(self, ino)` |
-| `main` | method | `tools/minifs_saves.py:316` | `def main(argv)` |
-| `read_file` | method | `tools/minifs_saves.py:109` | `def read_file(self, ino)` |
-| `read_file_dir` | method | `tools/minifs_saves.py:157` | `def read_file_dir(self, ino)` |
-| `read_file_raw` | method | `tools/minifs_saves.py:165` | `def read_file_raw(self, st)` |
-| `resolve` | method | `tools/minifs_saves.py:189` | `def resolve(self, path)` |
-| `u16` | function | `tools/minifs_saves.py:49` | `def u16(d, o)` |
-| `u32` | function | `tools/minifs_saves.py:53` | `def u32(d, o)` |
-| `valid_name` | method | `tools/minifs_saves.py:208` | `def valid_name(nm)` |
-| `walk` | method | `tools/minifs_saves.py:276` | `def walk(dir_ino, rel)` |
+| `FS` | class | `tools/minifs_saves.py:85` | `class FS` |
+| `Image` | class | `tools/minifs_saves.py:61` | `class Image` |
+| `__init__` | method | `tools/minifs_saves.py:64` | `def __init__(self, fn, base)` |
+| `__init__` | method | `tools/minifs_saves.py:86` | `def __init__(self, img)` |
+| `blk` | method | `tools/minifs_saves.py:75` | `def blk(self, n)` |
+| `close` | method | `tools/minifs_saves.py:72` | `def close(self)` |
+| `cmd_backup` | method | `tools/minifs_saves.py:271` | `def cmd_backup(img_path, stage)` |
+| `find_partition_base` | method | `tools/minifs_saves.py:233` | `def find_partition_base(fn)` |
+| `inode` | method | `tools/minifs_saves.py:95` | `def inode(self, i)` |
+| `is_dir` | method | `tools/minifs_saves.py:110` | `def is_dir(self, st)` |
+| `listdir` | method | `tools/minifs_saves.py:146` | `def listdir(self, ino)` |
+| `main` | method | `tools/minifs_saves.py:343` | `def main(argv)` |
+| `read_file` | method | `tools/minifs_saves.py:113` | `def read_file(self, ino)` |
+| `read_file_dir` | method | `tools/minifs_saves.py:165` | `def read_file_dir(self, ino)` |
+| `read_file_raw` | method | `tools/minifs_saves.py:173` | `def read_file_raw(self, st)` |
+| `resolve` | method | `tools/minifs_saves.py:197` | `def resolve(self, path)` |
+| `strict_name` | method | `tools/minifs_saves.py:224` | `def strict_name(nm)` |
+| `u16` | function | `tools/minifs_saves.py:53` | `def u16(d, o)` |
+| `u32` | function | `tools/minifs_saves.py:57` | `def u32(d, o)` |
+| `valid_name` | method | `tools/minifs_saves.py:216` | `def valid_name(nm)` |
+| `walk` | method | `tools/minifs_saves.py:293` | `def walk(dir_ino, rel)` |
 | `Client` | class | `tools/minios_cli.py:38` | `class Client` |
 | `__init__` | method | `tools/minios_cli.py:39` | `def __init__(self)` |
 | `close` | method | `tools/minios_cli.py:87` | `def close(self)` |
@@ -11513,6 +11530,10 @@ Z_Malloc
 | `mouse_state` | method | `tools/repro_gui.py:118` | `def mouse_state()` |
 | `read_serial` | function | `tools/repro_gui.py:30` | `def read_serial(master, timeout)` |
 | `send` | method | `tools/repro_gui.py:113` | `def send(line)` |
+| `AlignConfig` | class | `tools/test_call_align.py:24` | `class AlignConfig` |
+| `find_minigcc` | method | `tools/test_call_align.py:59` | `def find_minigcc(explicit)` |
+| `main` | method | `tools/test_call_align.py:79` | `def main(argv)` |
+| `run` | method | `tools/test_call_align.py:74` | `def run(argv)` |
 | `Guest` | class | `tools/test_gui_fashion.py:45` | `class Guest` |
 | `__init__` | method | `tools/test_gui_fashion.py:46` | `def __init__(self)` |
 | `_qmp` | method | `tools/test_gui_fashion.py:141` | `def _qmp(self, obj)` |

@@ -186,3 +186,38 @@ resume_iretq:
         popq    %r14
         popq    %r15
         iretq
+
+/*
+ * k_run_on_stack -- run an ET_REL child on a dedicated kernel stack.
+ * int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc,
+ *                    char **argv);
+ * rdi=top, rsi=entry, rdx=argc, rcx=argv. Runs entry(argc, argv) with
+ * rsp inside the new stack and returns its value. The caller may own
+ * only a 16 KB proc slot (SYS_SPAWN from an isolated window reaches
+ * k_run_rel on procs[cur].kstack): minigcc/ld recurse deeper than
+ * that and smashed whatever the slot abuts (historically the MiniFS
+ * statics, losing the mount with no crash). Only caller-saved regs
+ * are touched, with one deliberate deviation from SysV: entry is
+ * delivered with rsp%16==8, the de facto convention of the legacy
+ * spawn path (spawn_execute tail-calls into it), which the
+ * sibling-built toolchain objects require -- minigcc's parse_function
+ * faults its SIMD spills on a normalized rsp%16==0 (proven: E=0
+ * breaks fib.c, E=8 fixes it; all five in-tree ET_REL objects pass
+ * the gate under E=8). The caller rsp is stashed on the new stack
+ * and restored before ret, so a kexit klongjmp that lands in an
+ * outer ksetjmp (caller stack, frames intact) stays valid; both
+ * return paths restore before use.
+ */
+        .globl  k_run_on_stack
+k_run_on_stack:
+        movq    %rsp, %r8
+        movq    %rdi, %rsp
+        andq    $-16, %rsp
+        subq    $8, %rsp
+        pushq   %r8
+        movq    %rsi, %r9
+        movq    %rdx, %rdi
+        movq    %rcx, %rsi
+        call    *%r9
+        popq    %rsp
+        ret
