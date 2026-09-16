@@ -2096,7 +2096,7 @@ MiniOS stands on the shoulders of third-party software. Thanks to every
 author and contributor behind the projects below; without their work this
 system would not exist.
 
-- DOOM, by id Software, played through the `doomgeneric` port layer by
+- [DOOM](https://github.com/SPinti-Software/doomgeneric), by id Software, played through the `doomgeneric` port layer by
   ozkl, which is the bridge MiniOS builds its windowed port on.
 - Quake 2, by id Software, played through `quake2generic`, also by ozkl,
   reusing the same back-buffer infrastructure as DOOM.
