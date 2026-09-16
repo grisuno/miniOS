@@ -2100,7 +2100,7 @@ system would not exist.
   ozkl, which is the bridge MiniOS builds its windowed port on.
 - [Quake 2](https://github.com/ozkl/quake2generic), by id Software, played through `quake2generic`, also by ozkl,
   reusing the same back-buffer infrastructure as DOOM.
-- MicroPython, by Damien George and the MicroPython contributors: the
+- [MicroPython](https://github.com/micropython/micropython), by Damien George and the MicroPython contributors: the
   unix-port `minios` variant runs unmodified sources as ring-3 programs.
 - Lua, by the PUC-Rio team (Roberto Ierusalimschy, Luiz Henrique de
   Figueiredo, Waldemar Celes): the 5.4 reference interpreter runs as a
