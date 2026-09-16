@@ -1,0 +1,29 @@
+{
+  "tool": "readmenator",
+  "generated_at": "2026-09-16T01:46:56Z",
+  "project_root": "/home/grisun0/src_note/c/boot/repo/miniOS",
+  "files": 466,
+  "symbols": 11038,
+  "imports": 6159,
+  "resolved_imports": 1202,
+  "security_findings": 0,
+  "languages": {
+    "S": 5,
+    "c": 221,
+    "py": 52,
+    "h": 161,
+    "sh": 16,
+    "s": 10,
+    "lua": 1
+  },
+  "entrypoints": [
+    "kernel.c"
+  ],
+  "start_here": "INDEX.md",
+  "workflow": [
+    "grep -n '<keyword>' INDEX.md",
+    "cat KB_<subsystem>.md",
+    "grep -n '<file>' ARCHITECTURE.md SYMBOLS.md"
+  ],
+  "regenerate": "readmenator . --rebuild"
+}

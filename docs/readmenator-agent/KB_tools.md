@@ -1,0 +1,461 @@
+# Subsystem: tools
+
+## tools/abi_stamp.c
+- Layer: utility
+- Doc: Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator.
+- Language: c
+- Symbols:
+  - `main` (function, line 13) `int main(void)`
+  - `printf` (function, line 15) `printf("v=%d c=%lu\n", MINIOS_ABI_VERSION, (unsigned long)MINIOS_ABI_CHECKSUM);`
+- Depends on: `progs/minios_abi.h`
+
+## tools/boot_run.sh
+- Layer: utility
+- Doc: boot_run.sh -- boot the MiniOS image in QEMU and drive the shell over the serial console with a list of commands, captur
+- Language: sh
+
+## tools/check_abi_numbers.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `normalize` (function, line 127) `def normalize(minios_name)`
+  - `parse_abi` (function, line 131) `def parse_abi(path)`
+  - `parse_dispatch` (function, line 142) `def parse_dispatch(path)`
+  - `main` (function, line 155) `def main()`
+
+## tools/check_addons.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `load_parser` (function, line 22) `def load_parser()`
+  - `main` (function, line 31) `def main()`
+
+## tools/check_cohesion.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `load_cpg` (function, line 23) `def load_cpg(path)`
+  - `compute_cohesion` (function, line 31) `def compute_cohesion(community_nodes, community_edges)`
+  - `extract_communities` (function, line 42) `def extract_communities(cpg)`
+  - `main` (function, line 58) `def main()`
+
+## tools/check_complexity.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `count_symbols` (function, line 24) `def count_symbols(filepath)`
+  - `load_approval` (function, line 46) `def load_approval(policy_path)`
+  - `main` (function, line 61) `def main()`
+
+## tools/check_fork_stubs.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `Config` (class, line 13) `class Config`
+  - `handler_body` (method, line 22) `def handler_body(text, name)`
+  - `check_stubs` (method, line 32) `def check_stubs(text, cfg)`
+  - `main` (method, line 47) `def main()`
+
+## tools/check_kb_sync.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `regenerate_kb` (function, line 24) `def regenerate_kb()`
+  - `main` (function, line 43) `def main()`
+
+## tools/check_mutant_anchors.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `Config` (class, line 17) `class Config`
+  - `bash_unquote` (method, line 26) `def bash_unquote(expr)`
+  - `parse_mutations` (method, line 41) `def parse_mutations(text)`
+  - `anchor_matches` (method, line 67) `def anchor_matches(repo, target, expr)`
+  - `main` (method, line 86) `def main()`
+
+## tools/check_surprising.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `load_cpg` (function, line 25) `def load_cpg(path)`
+  - `build_graph` (function, line 33) `def build_graph(cpg)`
+  - `bfs_min_hops` (function, line 56) `def bfs_min_hops(nodes, edges, source, target_community, max_hops)`
+  - `find_surprising_connections` (function, line 87) `def find_surprising_connections(nodes, edges, min_hops)`
+  - `main` (function, line 118) `def main()`
+
+## tools/check_syscall_sanitize.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `Config` (class, line 18) `class Config`
+  - `split_functions` (method, line 69) `def split_functions(lines)`
+  - `checked_names` (method, line 112) `def checked_names(body)`
+  - `delegated_only` (method, line 122) `def delegated_only(body, alias)`
+  - `split_top_args` (method, line 143) `def split_top_args(argtext)`
+  - `audit_body` (method, line 162) `def audit_body(name, body)`
+  - `audit_file` (method, line 217) `def audit_file(path)`
+  - `main` (method, line 228) `def main()`
+
+## tools/doom_pwad.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `DoomPwadConfig` (class, line 52) `class DoomPwadConfig`
+  - `PwadError` (class, line 161) `class PwadError(Exception)`
+  - `pad_tex` (method, line 165) `def pad_tex(raw)`
+  - `parse_grid` (method, line 172) `def parse_grid(text)`
+  - `grid_extents` (method, line 195) `def grid_extents(rows)`
+  - `is_wall` (method, line 203) `def is_wall(rows, row, col)`
+  - `flood_reachable` (method, line 210) `def flood_reachable(rows)`
+  - `validate_grid` (method, line 240) `def validate_grid(rows)`
+  - `cell_corners` (method, line 269) `def cell_corners(row, col)`
+  - `cell_class` (method, line 279) `def cell_class(cell)`
+  - `label_regions` (method, line 291) `def label_regions(rows)`
+  - `region_sector` (method, line 326) `def region_sector(region, door_tag)`
+  - `compile_geometry` (method, line 371) `def compile_geometry(rows, exit_pos, wall_side)`
+  - `compile_things` (method, line 485) `def compile_things(rows)`
+  - `seg_angle` (method, line 506) `def seg_angle(dx, dy)`
+  - `build_lumps` (method, line 516) `def build_lumps(rows)`
+  - `build_pwad` (method, line 597) `def build_pwad(rows)`
+  - `read_pwad` (method, line 616) `def read_pwad(data)`
+  - `check_pwad` (method, line 639) `def check_pwad(data)`
+  - `cmd_build` (method, line 816) `def cmd_build(grid_path, out_path)`
+  - `cmd_check` (method, line 826) `def cmd_check(path)`
+  - `main` (method, line 834) `def main(argv)`
+  - `vertex` (method, line 386) `def vertex(x, y)`
+  - `payload` (method, line 650) `def payload(name)`
+  - `check_multiple` (method, line 655) `def check_multiple(name, fmt)`
+- Imported by: `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`, `tests/test_doom_pwad.py`
+
+## tools/extract_shell.py
+- Layer: utility
+- Language: py
+
+## tools/gdb_repro.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `rs` (function, line 23) `def rs(m, t)`
+  - `main` (function, line 27) `def main()`
+  - `send` (function, line 65) `def send(line)`
+  - `quit_doom` (function, line 70) `def quit_doom()`
+- Depends on: `kernel/time.c`
+
+## tools/gen_desktop_pngs.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `write_atomic` (function, line 63) `def write_atomic(img, path)`
+  - `main` (function, line 69) `def main()`
+
+## tools/gen_icons.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `make_png` (function, line 179) `def make_png(pixels, palette, width, height)`
+  - `make_chunk` (function, line 209) `def make_chunk(chunk_type, data)`
+  - `main` (function, line 214) `def main()`
+
+## tools/gen_zip_fixtures.py
+- Layer: data_access
+- Language: py
+- Symbols:
+  - `write_zip` (function, line 28) `def write_zip(path, entries)`
+  - `main` (function, line 42) `def main()`
+
+## tools/kernel_feature_survey.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `SurveyConfig` (class, line 18) `class SurveyConfig`
+  - `iter_sources` (method, line 34) `def iter_sources(root)`
+  - `find_fnptr_hits` (method, line 43) `def find_fnptr_hits(path, text)`
+  - `find_asm_constraints` (method, line 49) `def find_asm_constraints(path, text)`
+  - `count_params` (method, line 59) `def count_params(params)`
+  - `survey` (method, line 67) `def survey(root)`
+  - `render_text` (method, line 103) `def render_text(findings)`
+  - `main` (method, line 122) `def main(argv)`
+
+## tools/lisp_scoped.sh
+- Layer: utility
+- Doc: Docstring: Scoped Lisp validation for the MiniOS interpreter contract. Builds the ring-3 static ELF with zero warnings, 
+- Language: sh
+- Symbols:
+  - `say` (function, line 8)
+  - `die` (function, line 9)
+  - `mutant` (function, line 20)
+
+## tools/minifs_saves.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `u16` (function, line 53) `def u16(d, o)`
+  - `u32` (function, line 57) `def u32(d, o)`
+  - `Image` (class, line 61) `class Image`
+  - `FS` (class, line 85) `class FS`
+  - `valid_name` (method, line 216) `def valid_name(nm)`
+  - `strict_name` (method, line 224) `def strict_name(nm)`
+  - `find_partition_base` (method, line 233) `def find_partition_base(fn)`
+  - `cmd_backup` (method, line 271) `def cmd_backup(img_path, stage)`
+  - `main` (method, line 343) `def main(argv)`
+  - `__init__` (method, line 64) `def __init__(self, fn, base)`
+  - `close` (method, line 72) `def close(self)`
+  - `blk` (method, line 75) `def blk(self, n)`
+  - `__init__` (method, line 86) `def __init__(self, img)`
+  - `inode` (method, line 95) `def inode(self, i)`
+  - `is_dir` (method, line 110) `def is_dir(self, st)`
+  - `read_file` (method, line 113) `def read_file(self, ino)`
+  - `listdir` (method, line 146) `def listdir(self, ino)`
+  - `read_file_dir` (method, line 165) `def read_file_dir(self, ino)`
+  - `read_file_raw` (method, line 173) `def read_file_raw(self, st)`
+  - `resolve` (method, line 197) `def resolve(self, path)`
+  - `walk` (method, line 293) `def walk(dir_ino, rel)`
+
+## tools/minios_cli.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `Client` (class, line 38) `class Client`
+  - `main` (method, line 100) `def main()`
+  - `__init__` (method, line 39) `def __init__(self)`
+  - `request` (method, line 56) `def request(self, method, params)`
+  - `tool` (method, line 77) `def tool(self, name, params)`
+  - `close` (method, line 87) `def close(self)`
+- Depends on: `kernel/time.c`
+
+## tools/minios_gui.py
+- Layer: presentation
+- Language: py
+- Symbols:
+  - `read_serial` (function, line 44) `def read_serial(master, timeout)`
+  - `QMP` (class, line 60) `class QMP`
+  - `main` (method, line 112) `def main()`
+  - `__init__` (method, line 61) `def __init__(self, path)`
+  - `cmd` (method, line 73) `def cmd(self, obj)`
+  - `_recv` (method, line 77) `def _recv(self)`
+  - `mouse` (method, line 92) `def mouse(self, dx, dy, click)`
+  - `key` (method, line 102) `def key(self, qcode, up)`
+  - `screendump` (method, line 108) `def screendump(self, path)`
+- Depends on: `kernel/time.c`
+
+## tools/mkpak1.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `main` (function, line 29) `def main()`
+
+## tools/probe_compute_vga.py
+- Layer: utility
+- Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute. Boots os.img headless, runs a command, moves the PS/2 mou
+- Language: py
+- Symbols:
+  - `main` (function, line 22) `def main()`
+  - `send` (function, line 55) `def send(line)`
+  - `poll` (function, line 61) `def poll(timeout)`
+  - `qmp` (function, line 88) `def qmp(obj)`
+  - `rel` (function, line 97) `def rel(dx, dy)`
+  - `dump` (function, line 104) `def dump(name)`
+- Depends on: `kernel/time.c`
+
+## tools/probe_minicraft.py
+- Layer: utility
+- Language: py
+- Symbols:
+  - `main` (function, line 34) `def main()`
+  - `send` (function, line 68) `def send(line)`
+  - `poll` (function, line 74) `def poll(timeout)`
+  - `grab` (function, line 85) `def grab(pat, timeout)`
+  - `qkey` (function, line 143) `def qkey(qcode, down)`
+  - `pos` (function, line 154) `def pos(tag)`
+- Depends on: `kernel/time.c`
+
+## tools/qga_client.py
+- Layer: infrastructure
+- Language: py
+- Symbols:
+  - `send_command` (function, line 33) `def send_command(sock, cmd, args)`
+  - `read_reply` (function, line 41) `def read_reply(sock, timeout)`
+  - `connect` (function, line 57) `def connect(path)`
+  - `main` (function, line 74) `def main(argv)`
+- Depends on: `kernel/time.c`
+
+## tools/qga_test.sh
+- Layer: testing
+- Doc: Quick standalone smoke test for the QEMU guest agent: boots os.img once with the agent socket chardev, waits for the she
+- Language: sh
+- Symbols:
+  - `cleanup` (function, line 25)
+  - `check` (function, line 31)
+  - `expect_in` (function, line 43)
+
+## tools/repro_gui.py
+- Layer: presentation
+- Language: py
+- Symbols:
+  - `read_serial` (function, line 30) `def read_serial(master, timeout)`
+  - `QMP` (class, line 46) `class QMP`
+  - `main` (method, line 92) `def main()`
+  - `__init__` (method, line 47) `def __init__(self, path)`
+  - `cmd` (method, line 59) `def cmd(self, obj)`
+  - `_recv` (method, line 63) `def _recv(self)`
+  - `mouse` (method, line 78) `def mouse(self, dx, dy, left)`
+  - `key` (method, line 87) `def key(self, qcode, down)`
+  - `send` (method, line 113) `def send(line)`
+  - `mouse_state` (method, line 118) `def mouse_state()`
+- Depends on: `kernel/time.c`
+
+## tools/test_call_align.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `AlignConfig` (class, line 24) `class AlignConfig`
+  - `find_minigcc` (method, line 59) `def find_minigcc(explicit)`
+  - `run` (method, line 74) `def run(argv)`
+  - `main` (method, line 79) `def main(argv)`
+
+## tools/test_codecs.sh
+- Layer: testing
+- Doc: test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  The interpreter in-OS suites (test.lua / 
+- Language: sh
+
+## tools/test_gui_fashion.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `note` (function, line 39) `def note(ok, msg)`
+  - `Guest` (class, line 45) `class Guest`
+  - `meandiff` (method, line 190) `def meandiff(a_path, b_path)`
+  - `count_arrows` (method, line 206) `def count_arrows(shot_path)`
+  - `main` (method, line 239) `def main()`
+  - `__init__` (method, line 46) `def __init__(self)`
+  - `_ser` (method, line 70) `def _ser(self)`
+  - `_reader` (method, line 82) `def _reader(self)`
+  - `snapshot` (method, line 98) `def snapshot(self)`
+  - `wait_prompt` (method, line 102) `def wait_prompt(self, timeout)`
+  - `wait_for` (method, line 110) `def wait_for(self, marker, timeout)`
+  - `send` (method, line 118) `def send(self, line, settle)`
+  - `qmp_cmd` (method, line 128) `def qmp_cmd(self, obj)`
+  - `_qmp` (method, line 141) `def _qmp(self, obj)`
+  - `key` (method, line 149) `def key(self, qcode, down, up)`
+  - `rel` (method, line 161) `def rel(self, dx, dy)`
+  - `dump` (method, line 168) `def dump(self, name)`
+  - `stop` (method, line 175) `def stop(self)`
+- Depends on: `kernel/time.c`
+
+## tools/test_gui_icon_cwd.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `note` (function, line 36) `def note(ok, msg)`
+  - `Guest` (class, line 42) `class Guest`
+  - `find_icon` (method, line 180) `def find_icon(shot_path, icon_path)`
+  - `walk` (method, line 213) `def walk(g, tx, ty, fw, fh)`
+  - `main` (method, line 228) `def main()`
+  - `__init__` (method, line 43) `def __init__(self)`
+  - `_ser` (method, line 67) `def _ser(self)`
+  - `_reader` (method, line 79) `def _reader(self)`
+  - `snapshot` (method, line 95) `def snapshot(self)`
+  - `wait_prompt` (method, line 99) `def wait_prompt(self, timeout)`
+  - `send` (method, line 107) `def send(self, line, settle)`
+  - `qmp_cmd` (method, line 117) `def qmp_cmd(self, obj)`
+  - `_qmp` (method, line 130) `def _qmp(self, obj)`
+  - `rel` (method, line 138) `def rel(self, dx, dy)`
+  - `click` (method, line 145) `def click(self)`
+  - `dump` (method, line 155) `def dump(self, name)`
+  - `stop` (method, line 162) `def stop(self)`
+- Depends on: `kernel/time.c`
+
+## tools/test_gui_menu.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `main` (function, line 20) `def main()`
+- Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
+
+## tools/test_gui_wm.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `note` (function, line 40) `def note(ok, msg)`
+  - `Guest` (class, line 46) `class Guest`
+  - `meandiff` (method, line 204) `def meandiff(a_path, b_path)`
+  - `main` (method, line 214) `def main()`
+  - `__init__` (method, line 47) `def __init__(self)`
+  - `_ser` (method, line 75) `def _ser(self)`
+  - `_reader` (method, line 87) `def _reader(self)`
+  - `snapshot` (method, line 103) `def snapshot(self)`
+  - `wait_prompt` (method, line 107) `def wait_prompt(self, timeout)`
+  - `send` (method, line 115) `def send(self, line, settle)`
+  - `qmp_cmd` (method, line 130) `def qmp_cmd(self, obj)`
+  - `_qmp` (method, line 143) `def _qmp(self, obj)`
+  - `key` (method, line 151) `def key(self, qcode, down, up)`
+  - `rel` (method, line 163) `def rel(self, dx, dy)`
+  - `btn` (method, line 170) `def btn(self, down)`
+  - `dump` (method, line 176) `def dump(self, name)`
+  - `stop` (method, line 183) `def stop(self)`
+- Depends on: `kernel/time.c`
+- Imported by: `tools/test_gui_menu.py`, `tools/test_gui_zoom.py`
+
+## tools/test_gui_zoom.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `main` (function, line 22) `def main()`
+- Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
+
+## tools/test_lisp.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `LispConfig` (class, line 26) `class LispConfig`
+  - `LispTest` (class, line 35) `class LispTest`
+  - `build_binary` (method, line 182) `def build_binary(source, output)`
+  - `main` (method, line 195) `def main()`
+  - `__init__` (method, line 38) `def __init__(self, binary, suite)`
+  - `check` (method, line 45) `def check(self, name, actual, expected)`
+  - `run_expr` (method, line 56) `def run_expr(self, code)`
+  - `check_eval` (method, line 63) `def check_eval(self, name, code, stdout)`
+  - `check_error` (method, line 68) `def check_error(self, name, code, fragment)`
+  - `run_all` (method, line 74) `def run_all(self)`
+  - `check_file_roundtrip` (method, line 118) `def check_file_roundtrip(self)`
+  - `check_exit_code` (method, line 132) `def check_exit_code(self)`
+  - `check_cli` (method, line 139) `def check_cli(self)`
+  - `check_suite_language_only` (method, line 156) `def check_suite_language_only(self)`
+  - `report` (method, line 174) `def report(self)`
+
+## tools/test_sb16.sh
+- Layer: testing
+- Doc: test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk image once with the SB16 device attached (h
+- Language: sh
+- Symbols:
+  - `fail_msg` (function, line 45)
+
+## tools/wm_layout_sync.py
+- Layer: presentation
+- Language: py
+- Symbols:
+  - `WmLayoutSyncConfig` (class, line 17) `class WmLayoutSyncConfig`
+  - `WmLayoutSyncResult` (class, line 36) `class WmLayoutSyncResult`
+  - `WmLayoutSync` (class, line 46) `class WmLayoutSync`
+  - `parse_args` (method, line 151) `def parse_args(argv)`
+  - `main` (method, line 159) `def main(argv)`
+  - `__init__` (method, line 20) `def __init__(self, root)`
+  - `__init__` (method, line 39) `def __init__(self, modes, symbols, checks)`
+  - `__init__` (method, line 49) `def __init__(self, config)`
+  - `discover` (method, line 53) `def discover(self)`
+  - `render` (method, line 66) `def render(self, result)`
+  - `synchronize` (method, line 101) `def synchronize(self, write)`
+  - `_read_text` (method, line 110) `def _read_text(self, path)`
+  - `_extract_modes` (method, line 116) `def _extract_modes(self, header_text)`
+  - `_extract_symbols` (method, line 125) `def _extract_symbols(self, header_text)`
+  - `_count_layout_checks` (method, line 133) `def _count_layout_checks(self, tests_text)`
+  - `_require_modes` (method, line 138) `def _require_modes(self, modes)`
+  - `_require_symbols` (method, line 144) `def _require_symbols(self, symbols)`
+
+## tools/wm_scoped.sh
+- Layer: utility
+- Doc: Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs host WM unit tests, rebuilds touched kerne
+- Language: sh
+- Symbols:
+  - `say` (function, line 8)
+  - `die` (function, line 9)
