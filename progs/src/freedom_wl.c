@@ -30,6 +30,7 @@
  */
 #include "minios_abi.h"
 #include "vga_fb.h"
+#include "nk_palette.h"
 #include "wl/wl_mini.h"
 
 #include <stdio.h>
@@ -109,7 +110,7 @@ typedef struct FreedomWlConfig {
 
 /** Logical Wayland-mini surface id for this client (ADR-0024).
  * The present path still uses GFX_PRESENT BUF_NK; the id names the
- * client side of the future wlcomp mapping and is bounds-checked. */
+ * client side of the wlcomp mapping and is bounds-checked. */
 static long freedom_wl_surface_id(void) {
     wl_client_t cl;
     unsigned int id = 0;
@@ -119,6 +120,38 @@ static long freedom_wl_surface_id(void) {
     if (!wl_surface_id_valid(id))
         return -1L;
     return (long)id;
+}
+
+/** Attach this client to the wlcomp mapping: encode an attach message
+ * for the first pool and a commit for our surface, decode both back
+ * and require the roundtrip. The present path is unchanged; this call
+ * proves the client speaks the wire before it ever draws. */
+static long freedom_wl_surface_attach(FreedomWlConfig *c) {
+    unsigned char msg[WL_MAX_MSG];
+    unsigned int pool = 0;
+    unsigned int id = 0;
+    int w = 0;
+    int h = 0;
+    int n;
+    if (!c || c->wl_surface < 0L)
+        return -1L;
+    n = wl_attach_encode(msg, WL_MAX_MSG, WL_ID_POOL_BASE,
+        (int)c->surface_w, (int)c->surface_h);
+    if (n != WL_ATTACH_SZ)
+        return -1L;
+    if (wl_attach_decode(msg, n, &pool, &w, &h) != WL_ERR_OK)
+        return -1L;
+    if (pool != WL_ID_POOL_BASE || w != (int)c->surface_w
+        || h != (int)c->surface_h)
+        return -1L;
+    n = wl_commit_encode(msg, WL_MAX_MSG, (unsigned int)c->wl_surface);
+    if (n != WL_COMMIT_SZ)
+        return -1L;
+    if (wl_commit_decode(msg, n, &id) != WL_ERR_OK)
+        return -1L;
+    if (id != (unsigned int)c->wl_surface)
+        return -1L;
+    return 0L;
 }
 
 /** Default configuration derived from the ABI header. */
@@ -1000,66 +1033,11 @@ static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off
     return pos;
 }
 
-/** Build the 768-byte graphics palette for the NK back-buffer window.
- *
- * Indices 0-14 exactly match the desktop palette in progs/nuklear/nuklear_minios.c
- * so the desktop behind the window is never recolored; 15-230 carry a 6x6x6
- * RGB cube, 231-241 carry grays and 242-255 carry saturated accents. Without
- * this upload the kernel expands the back-buffer through its gray-ramp default
- * (index 6 and 7 both near black), so the terminal-style page renders as black
- * on black on true-color VBE modes. Fail-closed on null or short buffers.
- */
+/** Shared hybrid palette, one table for every NK-window app
+ * (progs/nk_palette.h); this wrapper keeps the historic name and
+ * fail-closed contract the host suite pins. */
 static long freedom_wl_build_palette(unsigned char *pal, long cap) {
-    static const unsigned char desk[15][3] = {
-        {0, 0, 0}, {15, 15, 50}, {100, 100, 110}, {255, 255, 255},
-        {60, 90, 140}, {255, 255, 255}, {15, 15, 15}, {0, 220, 0},
-        {0, 160, 0}, {180, 180, 190}, {255, 255, 255}, {30, 30, 40},
-        {100, 140, 220}, {60, 60, 70}, {140, 140, 155}
-    };
-    static const unsigned char grays[11] = {0, 25, 51, 76, 102, 127, 153, 178, 204, 229, 255};
-    static const unsigned char accents[14][3] = {
-        {255, 0, 0}, {0, 255, 0}, {0, 0, 255}, {255, 255, 0},
-        {0, 255, 255}, {255, 0, 255}, {255, 128, 0}, {128, 0, 255},
-        {255, 0, 128}, {0, 128, 255}, {128, 255, 0}, {255, 128, 128},
-        {128, 255, 128}, {128, 128, 255}
-    };
-    long idx;
-    long r;
-    long g;
-    long b;
-    long i;
-    if (!pal || cap < 768L) {
-        return -1L;
-    }
-    for (i = 0L; i < 15L; i++) {
-        pal[i * 3L] = desk[i][0];
-        pal[i * 3L + 1L] = desk[i][1];
-        pal[i * 3L + 2L] = desk[i][2];
-    }
-    idx = 15L;
-    for (r = 0L; r < 6L; r++) {
-        for (g = 0L; g < 6L; g++) {
-            for (b = 0L; b < 6L; b++) {
-                pal[idx * 3L] = (unsigned char)(r * 51L);
-                pal[idx * 3L + 1L] = (unsigned char)(g * 51L);
-                pal[idx * 3L + 2L] = (unsigned char)(b * 51L);
-                idx++;
-            }
-        }
-    }
-    for (i = 0L; i < 11L; i++) {
-        pal[idx * 3L] = grays[i];
-        pal[idx * 3L + 1L] = grays[i];
-        pal[idx * 3L + 2L] = grays[i];
-        idx++;
-    }
-    for (i = 0L; i < 14L; i++) {
-        pal[idx * 3L] = accents[i][0];
-        pal[idx * 3L + 1L] = accents[i][1];
-        pal[idx * 3L + 2L] = accents[i][2];
-        idx++;
-    }
-    if (idx != 256L) {
+    if (nk_palette_build(pal, cap) != NK_PAL_ERR_OK) {
         return -1L;
     }
     return 0L;
@@ -1672,6 +1650,10 @@ static long freedom_wl_selftest(void) {
         printf("freedom_wl: title bound failed\n");
         return 1L;
     }
+    if (freedom_wl_surface_attach(&c) != 0L) {
+        printf("freedom_wl: attach failed\n");
+        return 1L;
+    }
     if (freedom_wl_build_palette(pal, 768L) != 0L) {
         printf("freedom_wl: palette failed\n");
         return 1L;
@@ -1737,6 +1719,9 @@ int freedom_wl_host_probe(FreedomWlConfig *c) {
     buf[1] = 'i';
     buf[2] = 0;
     if (freedom_wl_sanitize_utf8(buf, 16L) != 2L) {
+        return 1;
+    }
+    if (freedom_wl_surface_attach(c) != 0L) {
         return 1;
     }
     return 0;

@@ -23,6 +23,11 @@
 
 #include "nuklear_minios.h"
 
+/* glibc program name for the mailbox box (GNU extension). */
+extern char *program_invocation_short_name;
+#include "nk_palette.h"
+#include "wl/wl_mbox.h"
+
 /* ---- MiniOS syscalls (canonical table from minios_abi.h) ---- */
 long nk_sys_time_ms(void) {
     long ret;
@@ -69,10 +74,118 @@ long nk_sys_mouse_badptr(void) {
                      : "rcx","r11","memory");
     return ret;
 }
+static void nk_mirror_tick(void);
+
 long nk_sys_nk_frame(int *origin) {
     long ret;
     __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"((long)MINIOS_GFX_BUF_NK), "S"(origin) : "rcx","r11","memory");
+    if (ret == 0) nk_mirror_tick();
     return ret;
+}
+
+/* Best-effort mailbox mirror (ADR-0026): when /shm/wl/mirror exists,
+ * every 8th present also publishes this window to the wlcomp server
+ * (raw pixels plus a six-message session under the program's own box
+ * name), so static selftests and scripted runs tile real app frames
+ * with zero code changes in the apps. Mirror errors never fail the
+ * present; the flag is probed once, so create it before app start. */
+static int nk_mirror_on = -1;
+static unsigned nk_mirror_tick_n = 0;
+
+static void nk_mirror_box(char *dst, int cap) {
+    const char *src = program_invocation_short_name;
+    int i = 0;
+    int o = 0;
+    if (!dst || cap <= 0) return;
+    if (!src) src = "nkapp";
+    while (src[i] != '\0' && o + 1 < cap && o < 16) {
+        char ch = src[i];
+        if (ch >= 'A' && ch <= 'Z') ch = (char)(ch + ('a' - 'A'));
+        if ((ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9'))
+            dst[o++] = ch;
+        i++;
+        if (i > 64) break;
+    }
+    if (o == 0 && cap > 6) {
+        dst[0] = 'n'; dst[1] = 'k'; dst[2] = 'a';
+        dst[3] = 'p'; dst[4] = 'p'; o = 5;
+    }
+    dst[o] = '\0';
+}
+
+static int nk_mirror_emit(const char *box, unsigned seq,
+        const unsigned char *msg, int mlen) {
+    char path[WL_MBOX_NAME_MAX];
+    unsigned char frame[WL_MAX_MSG + WL_MBOX_FRAME_HEAD];
+    FILE *f = 0;
+    int n = 0;
+    if (!box || !msg || mlen <= 0) return 1;
+    n = wl_mbox_frame_encode(frame, sizeof frame, seq, msg, mlen);
+    if (n <= 0) return 1;
+    if (wl_mbox_name(path, sizeof path, box, seq) <= 0) return 1;
+    f = fopen(path, "wb");
+    if (!f) return 1;
+    n = fwrite(frame, 1, (unsigned)n, f) == (unsigned)n ? 0 : 1;
+    if (fclose(f) != 0) n = 1;
+    return n;
+}
+
+static void nk_mirror_tick(void) {
+    char box[WL_MBOX_BOX_MAX];
+    char path[WL_MBOX_NAME_MAX];
+    unsigned char msg[WL_MAX_MSG];
+    wl_hdr_t h;
+    FILE *f = 0;
+    unsigned char *raw = 0;
+    unsigned seq = 1;
+    if (nk_mirror_on < 0) {
+        f = fopen(WL_MBOX_DIR "/mirror", "rb");
+        nk_mirror_on = (f != 0) ? 1 : 0;
+        if (f) fclose(f);
+    }
+    if (!nk_mirror_on) return;
+    if ((nk_mirror_tick_n++ % 8) != 0) return;
+    nk_mirror_box(box, sizeof box);
+    if (wl_mbox_box_ok(box) != WL_ERR_OK) return;
+    raw = (unsigned char *)NK_BACKBUF;
+    if (wl_mbox_raw_name(path, sizeof path, box) <= 0) return;
+    f = fopen(path, "wb");
+    if (!f) return;
+    if (fwrite(raw, 1, (unsigned)NK_W * (unsigned)NK_H, f)
+        != (unsigned)NK_W * (unsigned)NK_H) {
+        fclose(f);
+        return;
+    }
+    if (fclose(f) != 0) return;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_DISPLAY,
+            WL_OP_DISPLAY_GET_REGISTRY, 8, &h) != WL_ERR_OK)
+        return;
+    if (nk_mirror_emit(box, seq++, msg, 8) != 0) return;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_REGISTRY, WL_OP_REGISTRY_BIND,
+            12, &h) != WL_ERR_OK)
+        return;
+    if (wl_u32_encode(msg, sizeof msg, 8, WL_ID_COMPOSITOR) != WL_ERR_OK)
+        return;
+    if (nk_mirror_emit(box, seq++, msg, 12) != 0) return;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_COMPOSITOR,
+            WL_OP_COMPOSITOR_CREATE_SURFACE, 8, &h) != WL_ERR_OK)
+        return;
+    if (nk_mirror_emit(box, seq++, msg, 8) != 0) return;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_SHM, WL_OP_SHM_CREATE_POOL,
+            8, &h) != WL_ERR_OK)
+        return;
+    if (nk_mirror_emit(box, seq++, msg, 8) != 0) return;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_SURFACE_BASE,
+            WL_OP_SURFACE_ATTACH, 20, &h) != WL_ERR_OK)
+        return;
+    if (wl_attach_encode(msg + 8, (int)sizeof msg - 8, WL_ID_POOL_BASE,
+            NK_W, NK_H) != WL_ATTACH_SZ)
+        return;
+    if (nk_mirror_emit(box, seq++, msg, 20) != 0) return;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_SURFACE_BASE,
+            WL_OP_SURFACE_COMMIT, 8, &h) != WL_ERR_OK)
+        return;
+    nk_mirror_emit(box, seq++, msg, 8);
 }
 long nk_sys_gfx_set_title(const char *t) {
     long ret;
@@ -81,66 +194,11 @@ long nk_sys_gfx_set_title(const char *t) {
 }
 
 /* ---- Hybrid palette ---- */
-/* Indices 0-14 must exactly match vga_fb.c's desktop palette so the desktop
- * behind the window is never recolored while the app runs. */
-static const unsigned char desktop_pal[15][3] = {
-    {  0,  0,  0},   /*  0 black          */
-    { 15, 15, 50},   /*  1 bg dark navy   */
-    {100,100,110},   /*  2 taskbar        */
-    {255,255,255},   /*  3 taskbar text   */
-    { 60, 90,140},   /*  4 title bar      */
-    {255,255,255},   /*  5 title text     */
-    { 15, 15, 15},   /*  6 terminal bg    */
-    {  0,220,  0},   /*  7 terminal text  */
-    {  0,160,  0},   /*  8 cursor         */
-    {180,180,190},   /*  9 border         */
-    {255,255,255},   /* 10 white          */
-    { 30, 30, 40},   /* 11 shadow         */
-    {100,140,220},   /* 12 highlight      */
-    { 60, 60, 70},   /* 13 scrollbar bg   */
-    {140,140,155},   /* 14 scrollbar thumb */
-};
-
-/* UI ramp: a 6x6x6 RGB cube (indices 15..230) plus grays and saturated
- * accents (231..255), giving the nearest-neighbour mapper good coverage. */
+/* The desktop-exact hybrid palette lives once in progs/nk_palette.h;
+ * this wrapper keeps the platform signature while sharing the table. */
 void nk_build_palette(unsigned char *pal768) {
-    int i;
-    for (i = 0; i < 15; i++) {
-        pal768[i*3+0] = desktop_pal[i][0];
-        pal768[i*3+1] = desktop_pal[i][1];
-        pal768[i*3+2] = desktop_pal[i][2];
-    }
-    int idx = 15;
-    int r, g, b;
-    for (r = 0; r < 6; r++)
-        for (g = 0; g < 6; g++)
-            for (b = 0; b < 6; b++) {
-                pal768[idx*3+0] = (unsigned char)(r * 51);
-                pal768[idx*3+1] = (unsigned char)(g * 51);
-                pal768[idx*3+2] = (unsigned char)(b * 51);
-                idx++;
-            }
-    static const int grays[11] = {0,25,51,76,102,127,153,178,204,229,255};
-    for (i = 0; i < 11; i++) {
-        pal768[idx*3+0] = (unsigned char)grays[i];
-        pal768[idx*3+1] = (unsigned char)grays[i];
-        pal768[idx*3+2] = (unsigned char)grays[i];
-        idx++;
-    }
-    static const unsigned char accents[14][3] = {
-        {255,  0,  0}, {  0,255,  0}, {  0,  0,255}, {255,255,  0},
-        {  0,255,255}, {255,  0,255}, {255,128,  0}, {128,  0,255},
-        {255,  0,128}, {  0,128,255}, {128,255,  0}, {255,128,128},
-        {128,255,128}, {128,128,255},
-    };
-    for (i = 0; i < 14; i++) {
-        pal768[idx*3+0] = accents[i][0];
-        pal768[idx*3+1] = accents[i][1];
-        pal768[idx*3+2] = accents[i][2];
-        idx++;
-    }
-    /* The ramp must fill exactly 15..255. */
-    (void)idx;
+    if (nk_palette_build(pal768, NK_PAL_BYTES) != NK_PAL_ERR_OK)
+        return;
 }
 
 /* ---- Color mapping ---- */

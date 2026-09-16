@@ -52,6 +52,37 @@ KFILE *kfd_table[KFD_MAX];
  * mm_lock alone).  Declared extern in the scheduler via sched.c. */
 spinlock_t mm_lock = SPINLOCK_INIT;
 
+/* Leaf lock for kfd_table membership plus KFILE refcounts (see the
+ * KFILE contract in kernel.h). Every section is a few instructions:
+ * scan, assign, clear, bump or drop. File IO itself always runs
+ * outside it with a held reference instead, so a close racing a
+ * read drops the table slot but never frees under the reader, and
+ * two racing opens can never claim the same slot twice. */
+spinlock_t fd_lock = SPINLOCK_INIT;
+
+KFILE *kfd_get(int fd) {
+    irqflags_t flags;
+    KFILE *f = 0;
+    spin_lock_irqsave(&fd_lock, &flags);
+    if (fd >= 3 && fd < KFD_MAX && kfd_table[fd]) {
+        f = kfd_table[fd];
+        f->ref++;
+    }
+    spin_unlock_irqrestore(&fd_lock, flags);
+    return f;
+}
+
+void kfd_put(KFILE *f) {
+    irqflags_t flags;
+    int drop = 0;
+    if (!f) return;
+    spin_lock_irqsave(&fd_lock, &flags);
+    f->ref--;
+    if (f->ref <= 0) drop = 1;
+    spin_unlock_irqrestore(&fd_lock, flags);
+    if (drop) kfclose(f);
+}
+
 /* ---- MiniOS custom syscall table (200-299) --------------------------------
  *
  * Each entry is a handler function for a MiniOS custom syscall.  The table
@@ -531,6 +562,7 @@ static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, lon
     unsigned long used = 0;
     long count = 0;
     int i, n;
+    irqflags_t flags;
     (void)a4; (void)a5; (void)a6;
     SANITIZE_STR(a1, RAMDISK_FNAME_LEN);
     if (a3 <= 0 || a3 > 65536) return -22;
@@ -550,8 +582,10 @@ static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, lon
     }
     out = (char *)a2;
     {
-        unsigned plen = (unsigned)kstrlen(dir);
+        unsigned plen;
         RDFile *files[RAMDISK_MAX_FILES];
+        spin_lock_irqsave(&fs_lock, &flags);
+        plen = (unsigned)kstrlen(dir);
         n = ramdisk_list(files, RAMDISK_MAX_FILES);
         for (i = 0; i < n; i++) {
             const char *nm = files[i]->name;
@@ -627,6 +661,7 @@ static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, lon
             }
         }
     }
+    spin_unlock_irqrestore(&fs_lock, flags);
     return count;
 }
 
@@ -729,8 +764,13 @@ static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)
         }
         return i;
     }
-    if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
-        return (long)kfread(buf, 1, (unsigned long)cnt, kfd_table[a1]);
+    {
+        KFILE *f = kfd_get((int)a1);
+        if (f) {
+            long r = (long)kfread(buf, 1, (unsigned long)cnt, f);
+            kfd_put(f);
+            return r;
+        }
     }
     kprintf("READ: bad fd=%ld\n", a1);
     return -9;
@@ -741,8 +781,14 @@ static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6
     const char *buf = (const char *)a2; long cnt = a3, i;
     if (cnt > 0) { SANITIZE_RANGE(buf, (unsigned long)cnt); }
     if (a1 == 1 || a1 == 2) { for (i = 0; i < cnt; i++) vga_putc(buf[i]); return cnt; }
-    if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1])
-        return (long)kfwrite(buf, 1, (unsigned long)cnt, kfd_table[a1]);
+    {
+        KFILE *f = kfd_get((int)a1);
+        if (f) {
+            long r = (long)kfwrite(buf, 1, (unsigned long)cnt, f);
+            kfd_put(f);
+            return r;
+        }
+    }
     return -9;
 }
 
@@ -775,13 +821,15 @@ static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a
     return total;
 }
 
-/* Shared by sys_linux_open (2) and the openat fall-through (257). */
+/* Shared by sys_linux_open (2) and the openat fall-through (257). The
+ * slot scan and the publish re-check under fd_lock, so two racing
+ * opens can never claim the same slot; the slow kfopen runs outside
+ * the lock with nothing published yet. */
 static long do_open_path(const char *path, long flags) {
     const char *mode = ((flags & 1) || (flags & 0x40)) ? "w" : "r";
     int fd;
+    irqflags_t flags_irq;
     SANITIZE_STR(path, RAMDISK_FNAME_LEN);
-    for (fd = 3; fd < KFD_MAX; fd++) if (!kfd_table[fd]) break;
-    if (fd >= KFD_MAX) return -24;
     {
         proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
         if (op && op->rl_nofile_max && (unsigned long)op->open_files >= op->rl_nofile_max)
@@ -791,7 +839,15 @@ static long do_open_path(const char *path, long flags) {
     if (!f) {
         return -2;
     }
+    spin_lock_irqsave(&fd_lock, &flags_irq);
+    for (fd = 3; fd < KFD_MAX; fd++) if (!kfd_table[fd]) break;
+    if (fd >= KFD_MAX) {
+        spin_unlock_irqrestore(&fd_lock, flags_irq);
+        kfclose(f);
+        return -24;
+    }
     kfd_table[fd] = f;
+    spin_unlock_irqrestore(&fd_lock, flags_irq);
     {
         proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
         if (op && op->open_files < KFD_MAX) op->open_files++;
@@ -807,20 +863,34 @@ static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)
 static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     if (a1 >= NET_FD_BASE) return net_sys_close(a1);
-    if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
-        proc_t *cp = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
-        kfclose(kfd_table[a1]); kfd_table[a1] = 0;
-        if (cp && cp->open_files > 0) cp->open_files--;
+    {
+        irqflags_t flags_irq;
+        KFILE *f = 0;
+        spin_lock_irqsave(&fd_lock, &flags_irq);
+        if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
+            f = kfd_table[a1];
+            kfd_table[a1] = 0;
+        }
+        spin_unlock_irqrestore(&fd_lock, flags_irq);
+        if (f) {
+            proc_t *cp = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
+            kfd_put(f);
+            if (cp && cp->open_files > 0) cp->open_files--;
+        }
     }
     return 0;
 }
 
 static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
-    if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
-        kfseek(kfd_table[a1], a2, (int)a3);
-        long pos = kftell(kfd_table[a1]);
-        return pos;
+    {
+        KFILE *f = kfd_get((int)a1);
+        if (f) {
+            kfseek(f, a2, (int)a3);
+            long pos = kftell(f);
+            kfd_put(f);
+            return pos;
+        }
     }
     return -9;
 }
@@ -1053,10 +1123,16 @@ static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a
     char resolved[RAMDISK_FNAME_LEN];
     if (!fs_resolve(path, resolved, sizeof(resolved))) return -36;
     if (fs_is_dir(resolved)) return -21;
-    RDFile *f = ramdisk_open(resolved);
-    if (f) { ramdisk_delete(f); return 0; }
-    if (minifs_is_mounted() && minifs_unlink(resolved) == 0) return 0;
-    return -2;
+    {
+        irqflags_t flags;
+        int r = -2;
+        spin_lock_irqsave(&fs_lock, &flags);
+        RDFile *f = ramdisk_open(resolved);
+        if (f) { ramdisk_delete(f); r = 0; }
+        else if (minifs_is_mounted() && minifs_unlink(resolved) == 0) r = 0;
+        spin_unlock_irqrestore(&fs_lock, flags);
+        return r;
+    }
 }
 
 static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -1073,12 +1149,15 @@ static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6
         ((unsigned int *)(unsigned long)a2)[6] = 0020666;
     } else {
         ((unsigned int *)(unsigned long)a2)[6] = 0100666;
-        if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
-            KFILE *kf = kfd_table[a1];
-            if (kf->rf)
-                ((unsigned long *)(unsigned long)a2)[6] = (unsigned long)kf->rf->size;
-            else if (kf->minifs_ino >= 0)
-                ((unsigned long *)(unsigned long)a2)[6] = (unsigned long)kf->minifs_size;
+        {
+            KFILE *kf = kfd_get((int)a1);
+            if (kf) {
+                if (kf->rf)
+                    ((unsigned long *)(unsigned long)a2)[6] = (unsigned long)kf->rf->size;
+                else if (kf->minifs_ino >= 0)
+                    ((unsigned long *)(unsigned long)a2)[6] = (unsigned long)kf->minifs_size;
+                kfd_put(kf);
+            }
         }
     }
     return 0;

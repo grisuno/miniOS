@@ -76,15 +76,36 @@ static unsigned int div_round_up(unsigned int n, unsigned int d) {
     return (n + d - 1) / d;
 }
 
+/* ---- Heap scratch blocks ----
+ *
+ * No function in the runtime MiniFS path holds a block-sized stack
+ * scratch: isolated procs run syscalls on 16 KB pool slots and
+ * create/write chains nest block helpers 4+ deep, so 4 KB stack frames
+ * overflowed the slot and smashed returns (measured ring-0 #UD on
+ * lua->lua->cp). Every scratch below comes from the heap, fail-closed
+ * on OOM. Only mount/mkfs keep stack scratch (boot-time, deep stacks).
+ */
+static unsigned char *blk_new(void) {
+    return (unsigned char *)kmalloc(MINIFS_BLOCK_SIZE);
+}
+
+static void blk_free(unsigned char *b) {
+    if (b) kfree(b);
+}
+
 /* ---- Superblock I/O ---- */
 
 
 static int fs_write_super(void) {
-    unsigned char buf[MINIFS_BLOCK_SIZE];
+    unsigned char *buf = blk_new();
+    int rc;
+    if (!buf) return -1;
     kmemset(buf, 0, MINIFS_BLOCK_SIZE);
     fs_sb.checksum = minifs_crc16(&fs_sb, sizeof(MiniFSSuper) - 2);
     kmemcpy(buf, &fs_sb, sizeof(MiniFSSuper));
-    return block_write(0, buf);
+    rc = block_write(0, buf);
+    blk_free(buf);
+    return rc;
 }
 
 /* ---- Inode I/O ---- */
@@ -92,9 +113,11 @@ static int fs_write_super(void) {
 static int fs_read_inode(unsigned int num, MiniFSInode *out) {
     unsigned int block = fs_sb.inode_table_start + (num / MINIFS_INODES_PER_BLOCK);
     unsigned int offset = (num % MINIFS_INODES_PER_BLOCK) * sizeof(MiniFSInode);
-    unsigned char buf[MINIFS_BLOCK_SIZE];
-    if (block_read(block, buf) < 0) return -1;
+    unsigned char *buf = blk_new();
+    if (!buf) return -1;
+    if (block_read(block, buf) < 0) { blk_free(buf); return -1; }
     kmemcpy(out, buf + offset, sizeof(MiniFSInode));
+    blk_free(buf);
     return 0;
 }
 
@@ -102,10 +125,14 @@ static int fs_write_inode(unsigned int num, const MiniFSInode *in) {
     unsigned int block = fs_sb.inode_table_start + (num / MINIFS_INODES_PER_BLOCK);
     minifs_journal_touch(block);
     unsigned int offset = (num % MINIFS_INODES_PER_BLOCK) * sizeof(MiniFSInode);
-    unsigned char buf[MINIFS_BLOCK_SIZE];
-    if (block_read(block, buf) < 0) return -1;
+    unsigned char *buf = blk_new();
+    int rc;
+    if (!buf) return -1;
+    if (block_read(block, buf) < 0) { blk_free(buf); return -1; }
     kmemcpy(buf + offset, in, sizeof(MiniFSInode));
-    return block_write(block, buf);
+    rc = block_write(block, buf);
+    blk_free(buf);
+    return rc;
 }
 
 /* ---- Bitmap helpers ---- */
@@ -172,90 +199,113 @@ void minifs_free_inode(int num) {
 int minifs_inode_get_block(MiniFSInode *inode, unsigned int logblk,
                            unsigned int *phys) {
     unsigned int per = MINIFS_BLOCK_SIZE / 4;
-    unsigned char buf[MINIFS_BLOCK_SIZE];
-    if (logblk < 10) { *phys = inode->direct[logblk]; return 0; }
+    unsigned char *buf = blk_new();
+    int rc = -1;
+    if (!buf) return -1;
+    if (logblk < 10) { *phys = inode->direct[logblk]; rc = 0; goto out; }
     logblk -= 10;
     if (logblk < per) {
-        if (inode->indirect == 0) { *phys = 0; return 0; }
-        if (block_read(inode->indirect, buf) < 0) return -1;
+        if (inode->indirect == 0) { *phys = 0; rc = 0; goto out; }
+        if (block_read(inode->indirect, buf) < 0) goto out;
         *phys = ((unsigned int *)buf)[logblk];
-        return 0;
+        rc = 0;
+        goto out;
     }
     logblk -= per;
-    if (inode->dindirect == 0) { *phys = 0; return 0; }
-    if (block_read(inode->dindirect, buf) < 0) return -1;
+    if (inode->dindirect == 0) { *phys = 0; rc = 0; goto out; }
+    if (block_read(inode->dindirect, buf) < 0) goto out;
     {   unsigned int l1 = ((unsigned int *)buf)[logblk / per];
-        if (l1 == 0) { *phys = 0; return 0; }
-        if (block_read(l1, buf) < 0) return -1;
+        if (l1 == 0) { *phys = 0; rc = 0; goto out; }
+        if (block_read(l1, buf) < 0) goto out;
         *phys = ((unsigned int *)buf)[logblk % per];
     }
-    return 0;
+    rc = 0;
+out:
+    blk_free(buf);
+    return rc;
 }
 
 static int fs_inode_set_block(MiniFSInode *inode, unsigned int logblk,
                               unsigned int phys) {
     unsigned int per = MINIFS_BLOCK_SIZE / 4;
-    unsigned char buf[MINIFS_BLOCK_SIZE];
-    if (logblk < 10) { inode->direct[logblk] = phys; return 0; }
+    unsigned char *buf = blk_new();
+    int rc = -1;
+    if (!buf) return -1;
+    if (logblk < 10) { inode->direct[logblk] = phys; rc = 0; goto out; }
     logblk -= 10;
     if (logblk < per) {
         if (inode->indirect == 0) {
             int b = minifs_alloc_block();
-            if (b < 0) return -1;
+            if (b < 0) goto out;
             inode->indirect = (unsigned int)b;
             kmemset(buf, 0, MINIFS_BLOCK_SIZE);
-            if (block_write((unsigned int)b, buf) < 0) return -1;
+            if (block_write((unsigned int)b, buf) < 0) goto out;
         }
-        if (block_read(inode->indirect, buf) < 0) return -1;
+        if (block_read(inode->indirect, buf) < 0) goto out;
         ((unsigned int *)buf)[logblk] = phys;
-        return block_write(inode->indirect, buf);
+        rc = block_write(inode->indirect, buf);
+        goto out;
     }
     logblk -= per;
     if (inode->dindirect == 0) {
         int b = minifs_alloc_block();
-        if (b < 0) return -1;
+        if (b < 0) goto out;
         inode->dindirect = (unsigned int)b;
         kmemset(buf, 0, MINIFS_BLOCK_SIZE);
-        if (block_write((unsigned int)b, buf) < 0) return -1;
+        if (block_write((unsigned int)b, buf) < 0) goto out;
     }
-    {   unsigned char dibuf[MINIFS_BLOCK_SIZE];
-        if (block_read(inode->dindirect, dibuf) < 0) return -1;
+    {   unsigned char *dibuf = blk_new();
+        if (!dibuf) goto out;
+        if (block_read(inode->dindirect, dibuf) < 0) { blk_free(dibuf); goto out; }
         unsigned int l1idx = logblk / per;
         unsigned int l2idx = logblk % per;
         unsigned int l1 = ((unsigned int *)dibuf)[l1idx];
         if (l1 == 0) {
             int b = minifs_alloc_block();
-            if (b < 0) return -1;
+            if (b < 0) { blk_free(dibuf); goto out; }
             l1 = (unsigned int)b;
             ((unsigned int *)dibuf)[l1idx] = l1;
-            if (block_write(inode->dindirect, dibuf) < 0) return -1;
+            if (block_write(inode->dindirect, dibuf) < 0) { blk_free(dibuf); goto out; }
             kmemset(buf, 0, MINIFS_BLOCK_SIZE);
-            if (block_write(l1, buf) < 0) return -1;
+            if (block_write(l1, buf) < 0) { blk_free(dibuf); goto out; }
         }
-        if (block_read(l1, buf) < 0) return -1;
+        blk_free(dibuf);
+        if (block_read(l1, buf) < 0) goto out;
         ((unsigned int *)buf)[l2idx] = phys;
-        return block_write(l1, buf);
+        rc = block_write(l1, buf);
     }
+out:
+    blk_free(buf);
+    return rc;
 }
 
 int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logblk) {
-    unsigned char buf[MINIFS_BLOCK_SIZE];
-    int b = minifs_alloc_block();
-    if (b < 0) return -1;
+    unsigned char *buf = blk_new();
+    int b;
+    int rc;
+    if (!buf) return -1;
+    b = minifs_alloc_block();
+    if (b < 0) { blk_free(buf); return -1; }
     kmemset(buf, 0, MINIFS_BLOCK_SIZE);
     if (block_write((unsigned int)b, buf) < 0) {
+        blk_free(buf);
         minifs_free_block((unsigned int)b); return -1;
     }
     if (fs_inode_set_block(inode, logblk, (unsigned int)b) < 0) {
+        blk_free(buf);
         minifs_free_block((unsigned int)b); return -1;
     }
-    return b;
+    rc = b;
+    blk_free(buf);
+    return rc;
 }
 
 static void fs_inode_free_all_blocks(MiniFSInode *inode) {
     unsigned int i;
     unsigned int blocks = (inode->size + MINIFS_BLOCK_SIZE - 1) / MINIFS_BLOCK_SIZE;
-    unsigned char buf[MINIFS_BLOCK_SIZE];
+    unsigned char *buf = blk_new();
+    unsigned char *dibuf;
+    if (!buf) return;
     for (i = 0; i < blocks && i < 10; i++) {
         if (inode->direct[i]) {
             minifs_free_block(inode->direct[i]);
@@ -273,8 +323,9 @@ static void fs_inode_free_all_blocks(MiniFSInode *inode) {
         minifs_free_block(inode->indirect);
         inode->indirect = 0;
     }
+    dibuf = blk_new();
+    if (!dibuf) { blk_free(buf); return; }
     if (inode->dindirect) {
-        unsigned char dibuf[MINIFS_BLOCK_SIZE];
         if (block_read(inode->dindirect, dibuf) == 0) {
             unsigned int per = MINIFS_BLOCK_SIZE / 4;
             unsigned int j, k;
@@ -293,6 +344,8 @@ static void fs_inode_free_all_blocks(MiniFSInode *inode) {
         minifs_free_block(inode->dindirect);
         inode->dindirect = 0;
     }
+    blk_free(dibuf);
+    blk_free(buf);
     inode->size = 0;
 }
 
@@ -330,7 +383,8 @@ static unsigned int journal_current_txn;
 static int journal_active;
 
 static void journal_load_super(void) {
-    unsigned char buf[MINIFS_BLOCK_SIZE];
+    unsigned char *buf = blk_new();
+    if (!buf) return;
     block_read(journal_start, buf);
     MiniFSJournalSuper *js = (MiniFSJournalSuper *)buf;
     if (js->magic == 0x4A4F5552) {
@@ -343,32 +397,38 @@ static void journal_load_super(void) {
         js->checksum = minifs_crc32((unsigned char *)js, MINIFS_BLOCK_SIZE - 4);
         block_write(journal_start, buf);
     }
+    blk_free(buf);
 }
 
 static void journal_save_super(unsigned int state) {
-    unsigned char buf[MINIFS_BLOCK_SIZE];
+    unsigned char *buf = blk_new();
+    MiniFSJournalSuper *js;
+    if (!buf) return;
     block_read(journal_start, buf);
-    MiniFSJournalSuper *js = (MiniFSJournalSuper *)buf;
+    js = (MiniFSJournalSuper *)buf;
     js->state = state;
     js->next_txn = journal_next_txn;
     js->count = journal_entry_count;
     js->checksum = minifs_crc32((unsigned char *)js, MINIFS_BLOCK_SIZE - 4);
     block_write(journal_start, buf);
+    blk_free(buf);
 }
 
 static void journal_save_entries(void) {
     unsigned int slots_per_block = (MINIFS_BLOCK_SIZE / sizeof(MiniFSJournalEntry));
     unsigned int i;
+    unsigned char *buf = blk_new();
+    if (!buf) return;
     for (i = 0; i < journal_entry_count; i++) {
         unsigned int slot = i % slots_per_block;
         unsigned int blk = 1 + (i / slots_per_block);
-        unsigned char buf[MINIFS_BLOCK_SIZE];
         if (slot == 0) kmemset(buf, 0, MINIFS_BLOCK_SIZE);
         else block_read(journal_start + blk, buf);
         kmemcpy(buf + slot * sizeof(MiniFSJournalEntry),
                 &journal_entries[i], sizeof(MiniFSJournalEntry));
         block_write(journal_start + blk, buf);
     }
+    blk_free(buf);
 }
 
 void minifs_journal_begin(unsigned int txn_id) {
@@ -412,14 +472,17 @@ void minifs_journal_abort(void) {
     unsigned int hdr_blocks = (MINIFS_JOURNAL_MAX_ENTRIES + slots_per_block - 1) / slots_per_block;
     unsigned int data_base = journal_start + 1 + hdr_blocks;
     unsigned int i;
+    unsigned char *orig;
     if (!journal_active) return;
+    orig = blk_new();
+    if (!orig) return;
     for (i = 0; i < journal_entry_count; i++) {
         unsigned int phys = journal_entries[i].affected_blocks[0];
-        unsigned char orig[MINIFS_BLOCK_SIZE];
         if (phys >= fs_sb.total_blocks) continue;
         block_read(data_base + i, orig);
         block_write(phys, orig);
     }
+    blk_free(orig);
     minifs_journal_clear();
 }
 
@@ -436,7 +499,7 @@ void minifs_journal_touch(unsigned int phys) {
     unsigned int data_base;
     unsigned int data_slot;
     unsigned int i;
-    unsigned char orig[MINIFS_BLOCK_SIZE];
+    unsigned char *orig;
     MiniFSJournalEntry *e;
     if (!journal_active) return;
     if (phys >= fs_sb.total_blocks) return;
@@ -447,6 +510,8 @@ void minifs_journal_touch(unsigned int phys) {
     slots_per_block = MINIFS_BLOCK_SIZE / sizeof(MiniFSJournalEntry);
     hdr_blocks = (MINIFS_JOURNAL_MAX_ENTRIES + slots_per_block - 1) / slots_per_block;
     if (1 + hdr_blocks + journal_entry_count >= journal_blocks) return;
+    orig = blk_new();
+    if (!orig) return;
     data_base = journal_start + 1 + hdr_blocks;
     data_slot = journal_entry_count;
     e = &journal_entries[journal_entry_count];
@@ -459,6 +524,7 @@ void minifs_journal_touch(unsigned int phys) {
     journal_entry_count++;
     journal_save_entries();
     block_write(data_base + data_slot, orig);
+    blk_free(orig);
 }
 
 /* Mount-time recovery: replays the undo log left by a crash between
@@ -468,7 +534,9 @@ void minifs_journal_touch(unsigned int phys) {
  * block range are all validated; invalid entries are skipped and
  * counted, never applied. */
 void minifs_journal_recover(void) {
-    unsigned char buf[MINIFS_BLOCK_SIZE];
+    unsigned char *buf = blk_new();
+    unsigned char *ebuf;
+    unsigned char *orig;
     unsigned int slots_per_block = MINIFS_BLOCK_SIZE / sizeof(MiniFSJournalEntry);
     unsigned int hdr_blocks = (MINIFS_JOURNAL_MAX_ENTRIES + slots_per_block - 1) / slots_per_block;
     unsigned int data_base = journal_start + 1 + hdr_blocks;
@@ -476,27 +544,32 @@ void minifs_journal_recover(void) {
     unsigned int skipped = 0;
     unsigned int applied = 0;
     unsigned int i;
+    if (!buf) return;
+    ebuf = blk_new();
+    if (!ebuf) { blk_free(buf); return; }
+    orig = blk_new();
+    if (!orig) { blk_free(ebuf); blk_free(buf); return; }
     block_read(journal_start, buf);
     {
         MiniFSJournalSuper *js = (MiniFSJournalSuper *)buf;
         unsigned int want;
         if (js->magic != 0x4A4F5552 || js->state != MINIFS_JSTATE_DIRTY) {
             journal_load_super();
-            return;
+            goto out;
         }
         want = minifs_crc32(buf, MINIFS_BLOCK_SIZE - 4);
         if (want != js->checksum) {
             kprintf("minifs: journal super checksum bad, discarding log\n");
             journal_save_super(MINIFS_JSTATE_CLEAN);
             journal_load_super();
-            return;
+            goto out;
         }
         if (js->count > MINIFS_JOURNAL_MAX_ENTRIES) {
             kprintf("minifs: journal count %u out of range, discarding log\n",
                     js->count);
             journal_save_super(MINIFS_JSTATE_CLEAN);
             journal_load_super();
-            return;
+            goto out;
         }
         count = js->count;
         kprintf("minifs: recovering journal (%u entries)\n", count);
@@ -505,10 +578,8 @@ void minifs_journal_recover(void) {
     for (i = 0; i < count; i++) {
         unsigned int slot = i % slots_per_block;
         unsigned int blk = 1 + (i / slots_per_block);
-        unsigned char ebuf[MINIFS_BLOCK_SIZE];
         MiniFSJournalEntry e;
         unsigned int want;
-        unsigned char orig[MINIFS_BLOCK_SIZE];
         if (blk >= journal_blocks || data_base + i >= journal_start + journal_blocks) {
             skipped++;
             continue;
@@ -540,6 +611,10 @@ void minifs_journal_recover(void) {
     journal_load_super();
     kprintf("minifs: journal recovery complete (%u applied, %u skipped)\n",
             applied, skipped);
+out:
+    blk_free(orig);
+    blk_free(ebuf);
+    blk_free(buf);
 }
 
 /* ---- Path resolution ---- */
@@ -556,12 +631,14 @@ static int fs_namecmp(const char *a, unsigned char alen, const char *b) {
 int minifs_dir_lookup(int dir_ino, const char *name) {
     MiniFSInode dir;
     unsigned int total_blocks, b;
-    if (fs_read_inode((unsigned int)dir_ino, &dir) < 0) return -1;
-    if (!(dir.mode & MINIFS_S_IFDIR)) return -1;
+    unsigned char *buf = blk_new();
+    int rc = -1;
+    if (!buf) return -1;
+    if (fs_read_inode((unsigned int)dir_ino, &dir) < 0) goto out;
+    if (!(dir.mode & MINIFS_S_IFDIR)) goto out;
     total_blocks = (dir.size + MINIFS_BLOCK_SIZE - 1) / MINIFS_BLOCK_SIZE;
     for (b = 0; b < total_blocks; b++) {
         unsigned int phys;
-        unsigned char buf[MINIFS_BLOCK_SIZE];
         unsigned int off;
         if (minifs_inode_get_block(&dir, b, &phys) < 0 || phys == 0) continue;
         if (block_read(phys, buf) < 0) continue;
@@ -569,27 +646,33 @@ int minifs_dir_lookup(int dir_ino, const char *name) {
         while (off < MINIFS_BLOCK_SIZE) {
             MiniFSDirEntry *de = (MiniFSDirEntry *)(buf + off);
             if (de->rec_len == 0) break;
-            if (de->inode != 0 && fs_namecmp(DE_NAME(de), de->name_len, name) == 0)
-                return (int)de->inode;
+            if (de->inode != 0 && fs_namecmp(DE_NAME(de), de->name_len, name) == 0) {
+                rc = (int)de->inode;
+                goto out;
+            }
             off += de->rec_len;
         }
     }
-    return -1;
+out:
+    blk_free(buf);
+    return rc;
 }
 
 int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
-                         unsigned char type) {
+                          unsigned char type) {
     MiniFSInode dir;
     unsigned int namelen = (unsigned int)kstrlen(name);
     unsigned int entry_len = roundup4(MINIFS_DIR_ENTRY_HDR_SIZE + namelen);
     unsigned int total_blocks, b;
-    if (fs_read_inode((unsigned int)dir_ino, &dir) < 0) return -1;
-    if (!(dir.mode & MINIFS_S_IFDIR)) return -1;
+    unsigned char *buf = blk_new();
+    int rc = -1;
+    if (!buf) return -1;
+    if (fs_read_inode((unsigned int)dir_ino, &dir) < 0) goto out;
+    if (!(dir.mode & MINIFS_S_IFDIR)) goto out;
 
     total_blocks = (dir.size + MINIFS_BLOCK_SIZE - 1) / MINIFS_BLOCK_SIZE;
     for (b = 0; b < total_blocks; b++) {
         unsigned int phys;
-        unsigned char buf[MINIFS_BLOCK_SIZE];
         unsigned int off;
         if (minifs_inode_get_block(&dir, b, &phys) < 0 || phys == 0) continue;
         if (block_read(phys, buf) < 0) continue;
@@ -612,7 +695,8 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
                     next->file_type = 0;
                 }
                 minifs_journal_touch(phys);
-                return block_write(phys, buf);
+                rc = block_write(phys, buf);
+                goto out;
             }
             off += de->rec_len;
         }
@@ -620,10 +704,9 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
 
     if (dir.size == 0) {
         int nb = minifs_inode_alloc_block(&dir, 0);
-        if (nb < 0) return -1;
+        if (nb < 0) goto out;
         dir.size = MINIFS_BLOCK_SIZE;
-        if (fs_write_inode((unsigned int)dir_ino, &dir) < 0) return -1;
-        unsigned char buf[MINIFS_BLOCK_SIZE];
+        if (fs_write_inode((unsigned int)dir_ino, &dir) < 0) goto out;
         kmemset(buf, 0, MINIFS_BLOCK_SIZE);
         MiniFSDirEntry *de = (MiniFSDirEntry *)buf;
         de->inode = (unsigned int)child_ino;
@@ -631,14 +714,14 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
         de->file_type = type;
         de->rec_len = (unsigned short)MINIFS_BLOCK_SIZE;
         kmemcpy(DE_NAME_W(de), name, namelen);
-        return block_write((unsigned int)nb, buf);
+        rc = block_write((unsigned int)nb, buf);
+        goto out;
     }
 
     unsigned int last_b = total_blocks - 1;
     unsigned int last_phys;
-    if (minifs_inode_get_block(&dir, last_b, &last_phys) < 0) return -1;
-    unsigned char buf[MINIFS_BLOCK_SIZE];
-    if (block_read(last_phys, buf) < 0) return -1;
+    if (minifs_inode_get_block(&dir, last_b, &last_phys) < 0) goto out;
+    if (block_read(last_phys, buf) < 0) goto out;
     unsigned int off = 0;
     MiniFSDirEntry *last_de = 0;
     while (off < MINIFS_BLOCK_SIZE) {
@@ -663,9 +746,9 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
             unsigned int tail = roundup4(MINIFS_DIR_ENTRY_HDR_SIZE + last_de->name_len);
             unsigned int new_off;
             if (last_de->rec_len < tail)
-                return -1;
+                goto out;
             if (tail > MINIFS_BLOCK_SIZE - last_off)
-                return -1;
+                goto out;
             new_off = (unsigned int)last_off + tail;
             if (MINIFS_BLOCK_SIZE - new_off >= entry_len) {
                 last_de->rec_len = (unsigned short)tail;
@@ -676,7 +759,8 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
                 ne->rec_len = (unsigned short)(MINIFS_BLOCK_SIZE - new_off);
                 kmemcpy(DE_NAME_W(ne), name, namelen);
                 minifs_journal_touch(last_phys);
-                return block_write(last_phys, buf);
+                rc = block_write(last_phys, buf);
+                goto out;
             }
         } else {
             /* Free tail slot: reuse it in place only when the new name
@@ -689,34 +773,39 @@ int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
                 last_de->file_type = type;
                 kmemcpy(DE_NAME_W(last_de), name, namelen);
                 minifs_journal_touch(last_phys);
-                return block_write(last_phys, buf);
+                rc = block_write(last_phys, buf);
+                goto out;
             }
         }
     }
 
     int nb = minifs_inode_alloc_block(&dir, total_blocks);
-    if (nb < 0) return -1;
+    if (nb < 0) goto out;
     dir.size += MINIFS_BLOCK_SIZE;
-    if (fs_write_inode((unsigned int)dir_ino, &dir) < 0) return -1;
-    unsigned char nbuf[MINIFS_BLOCK_SIZE];
-    kmemset(nbuf, 0, MINIFS_BLOCK_SIZE);
-    MiniFSDirEntry *nde = (MiniFSDirEntry *)nbuf;
+    if (fs_write_inode((unsigned int)dir_ino, &dir) < 0) goto out;
+    kmemset(buf, 0, MINIFS_BLOCK_SIZE);
+    MiniFSDirEntry *nde = (MiniFSDirEntry *)buf;
     nde->inode = (unsigned int)child_ino;
     nde->name_len = (unsigned char)namelen;
     nde->file_type = type;
     nde->rec_len = (unsigned short)MINIFS_BLOCK_SIZE;
     kmemcpy(DE_NAME_W(nde), name, namelen);
-    return block_write((unsigned int)nb, nbuf);
+    rc = block_write((unsigned int)nb, buf);
+out:
+    blk_free(buf);
+    return rc;
 }
 
 int minifs_dir_remove_entry(int dir_ino, const char *name) {
     MiniFSInode dir;
     unsigned int total_blocks, b;
-    if (fs_read_inode((unsigned int)dir_ino, &dir) < 0) return -1;
+    unsigned char *buf = blk_new();
+    int rc = -1;
+    if (!buf) return -1;
+    if (fs_read_inode((unsigned int)dir_ino, &dir) < 0) goto out;
     total_blocks = (dir.size + MINIFS_BLOCK_SIZE - 1) / MINIFS_BLOCK_SIZE;
     for (b = 0; b < total_blocks; b++) {
         unsigned int phys;
-        unsigned char buf[MINIFS_BLOCK_SIZE];
         unsigned int off;
         if (minifs_inode_get_block(&dir, b, &phys) < 0 || phys == 0) continue;
         if (block_read(phys, buf) < 0) continue;
@@ -727,24 +816,29 @@ int minifs_dir_remove_entry(int dir_ino, const char *name) {
             if (de->inode != 0 && fs_namecmp(DE_NAME(de), de->name_len, name) == 0) {
                 de->inode = 0;
                 minifs_journal_touch(phys);
-                return block_write(phys, buf);
+                rc = block_write(phys, buf);
+                goto out;
             }
             off += de->rec_len;
         }
     }
-    return -1;
+out:
+    blk_free(buf);
+    return rc;
 }
 
 int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out) {
     MiniFSInode dir;
     unsigned int total_blocks, b;
     int count = 0;
-    if (fs_read_inode((unsigned int)dir_ino, &dir) < 0) return -1;
-    if (!(dir.mode & MINIFS_S_IFDIR)) return -1;
+    unsigned char *buf = blk_new();
+    int rc = -1;
+    if (!buf) return -1;
+    if (fs_read_inode((unsigned int)dir_ino, &dir) < 0) goto out;
+    if (!(dir.mode & MINIFS_S_IFDIR)) goto out;
     total_blocks = (dir.size + MINIFS_BLOCK_SIZE - 1) / MINIFS_BLOCK_SIZE;
     for (b = 0; b < total_blocks; b++) {
         unsigned int phys;
-        unsigned char buf[MINIFS_BLOCK_SIZE];
         unsigned int off;
         if (minifs_inode_get_block(&dir, b, &phys) < 0 || phys == 0) continue;
         if (block_read(phys, buf) < 0) continue;
@@ -757,14 +851,17 @@ int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)
                     kmemcpy(out, de, sizeof(MiniFSDirEntry));
                     kmemcpy(name_out, DE_NAME(de), de->name_len);
                     name_out[de->name_len] = 0;
-                    return 0;
+                    rc = 0;
+                    goto out;
                 }
                 count++;
             }
             off += de->rec_len;
         }
     }
-    return -1;
+out:
+    blk_free(buf);
+    return rc;
 }
 
 /* ---- Resolve a path to an inode number ---- */
@@ -988,13 +1085,16 @@ int minifs_rmdir(const char *path) {
 int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len) {
     MiniFSInode inode;
     unsigned char *dst = (unsigned char *)buf;
-    if (fs_read_inode((unsigned int)inode_num, &inode) < 0) return -1;
+    unsigned char *blkbuf = blk_new();
+    int rc = -1;
+    if (!blkbuf) return -1;
+    if (fs_read_inode((unsigned int)inode_num, &inode) < 0) goto out;
 
     /* If file is compressed, read compressed data, decompress, then extract */
     if (inode.flags & MINIFS_INODE_COMPRESSED) {
         unsigned int clen = inode.size;
         unsigned char *cbuf = (unsigned char *)kmalloc(clen);
-        if (!cbuf) return -1;
+        if (!cbuf) goto out;
         unsigned int done = 0;
         while (done < clen) {
             unsigned int logblk = done / MINIFS_BLOCK_SIZE;
@@ -1007,27 +1107,29 @@ int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)
                 done += toread;
                 continue;
             }
-            unsigned char blkbuf[MINIFS_BLOCK_SIZE];
-            if (block_read(phys, blkbuf) < 0) { kfree(cbuf); return -1; }
+            if (block_read(phys, blkbuf) < 0) { kfree(cbuf); goto out; }
             kmemcpy(cbuf + done, blkbuf + blkoff, toread);
             done += toread;
         }
         /* Decompress */
         unsigned int osize = *(unsigned int *)cbuf;
-        if (osize == 0 || osize > MINIFS_BLOCK_SIZE * 1024) { kfree(cbuf); return -1; }
-        unsigned char *obuf = (unsigned char *)kmalloc(osize);
-        if (!obuf) { kfree(cbuf); return -1; }
-        unsigned int dsize = minifs_decompress(cbuf, clen, obuf, osize);
+        unsigned char *obuf;
+        unsigned int dsize;
+        if (osize == 0 || osize > MINIFS_BLOCK_SIZE * 1024) { kfree(cbuf); goto out; }
+        obuf = (unsigned char *)kmalloc(osize);
+        if (!obuf) { kfree(cbuf); goto out; }
+        dsize = minifs_decompress(cbuf, clen, obuf, osize);
         kfree(cbuf);
-        if (dsize == 0) return -1;
-        if (offset >= dsize) { kfree(obuf); return 0; }
+        if (dsize == 0) { kfree(obuf); goto out; }
+        if (offset >= dsize) { kfree(obuf); rc = 0; goto out; }
         if (offset + len > dsize) len = dsize - offset;
         kmemcpy(dst, obuf + offset, len);
         kfree(obuf);
-        return (int)len;
+        rc = (int)len;
+        goto out;
     }
 
-    if (offset >= inode.size) return 0;
+    if (offset >= inode.size) { rc = 0; goto out; }
     if (offset + len > inode.size) len = inode.size - offset;
     unsigned int done = 0;
     while (done < len) {
@@ -1041,20 +1143,28 @@ int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)
             done += toread;
             continue;
         }
-        unsigned char blkbuf[MINIFS_BLOCK_SIZE];
-        if (block_read(phys, blkbuf) < 0) return -1;
+        if (block_read(phys, blkbuf) < 0) goto out;
         kmemcpy(dst + done, blkbuf + blkoff, toread);
         done += toread;
     }
-    return (int)done;
+    rc = (int)done;
+out:
+    blk_free(blkbuf);
+    return rc;
 }
 
 int minifs_write(int inode_num, const void *buf, unsigned int offset,
                  unsigned int len) {
     MiniFSInode inode;
     const unsigned char *src = (const unsigned char *)buf;
-    if (fs_read_inode((unsigned int)inode_num, &inode) < 0) return -1;
+    /* Heap staging, never stack: this runs on 16 KB isolated kstacks
+     * under ISR nesting, where two 4 KB locals plus frames overflow
+     * into the neighbour slot and smash returns (ring-0 #UD). */
+    unsigned char *blkbuf = (unsigned char *)kmalloc(MINIFS_BLOCK_SIZE);
     unsigned int done = 0;
+    int rc;
+    if (!blkbuf) return -1;
+    if (fs_read_inode((unsigned int)inode_num, &inode) < 0) { kfree(blkbuf); return -1; }
     while (done < len) {
         unsigned int logblk = (offset + done) / MINIFS_BLOCK_SIZE;
         unsigned int blkoff = (offset + done) % MINIFS_BLOCK_SIZE;
@@ -1062,8 +1172,8 @@ int minifs_write(int inode_num, const void *buf, unsigned int offset,
         if (towrite > MINIFS_BLOCK_SIZE - blkoff) towrite = MINIFS_BLOCK_SIZE - blkoff;
         unsigned int phys;
         if (minifs_inode_get_block(&inode, logblk, &phys) < 0 || phys == 0) {
-            if (minifs_inode_alloc_block(&inode, logblk) < 0) return -1;
-            if (minifs_inode_get_block(&inode, logblk, &phys) < 0) return -1;
+            if (minifs_inode_alloc_block(&inode, logblk) < 0) { kfree(blkbuf); return -1; }
+            if (minifs_inode_get_block(&inode, logblk, &phys) < 0) { kfree(blkbuf); return -1; }
             /* NOTE: do NOT re-read the inode here.  minifs_inode_alloc_block
              * records the fresh block only in the LOCAL inode struct; the
              * inode is persisted by the fs_write_inode at the end of this
@@ -1074,14 +1184,12 @@ int minifs_write(int inode_num, const void *buf, unsigned int offset,
              * fallback hit on the lua/MicroPython in-OS test files. */
         }
         if (blkoff > 0 || towrite < MINIFS_BLOCK_SIZE) {
-            unsigned char blkbuf[MINIFS_BLOCK_SIZE];
-            if (block_read(phys, blkbuf) < 0) return -1;
+            if (block_read(phys, blkbuf) < 0) { kfree(blkbuf); return -1; }
             kmemcpy(blkbuf + blkoff, src + done, towrite);
-            if (block_write(phys, blkbuf) < 0) return -1;
+            if (block_write(phys, blkbuf) < 0) { kfree(blkbuf); return -1; }
         } else {
-            unsigned char blkbuf[MINIFS_BLOCK_SIZE];
             kmemcpy(blkbuf, src + done, MINIFS_BLOCK_SIZE);
-            if (block_write(phys, blkbuf) < 0) return -1;
+            if (block_write(phys, blkbuf) < 0) { kfree(blkbuf); return -1; }
         }
         done += towrite;
     }
@@ -1091,7 +1199,9 @@ int minifs_write(int inode_num, const void *buf, unsigned int offset,
     inode.mtime = 0;
     inode.checksum = minifs_crc32(&inode, sizeof(MiniFSInode) - 4);
     fs_write_inode((unsigned int)inode_num, &inode);
-    return (int)done;
+    rc = (int)done;
+    kfree(blkbuf);
+    return rc;
 }
 
 /* Write a whole file, optionally compressing with LZ4.
@@ -1169,6 +1279,12 @@ void minifs_init(void) {
 unsigned int minifs_get_lba_start(void) { return fs_lba_start; }
 int minifs_is_mounted(void) { return fs_mounted; }
 
+/* Boot-time exemption from the -Wframe-larger-than=2048 gate: mount and
+ * mkfs run once on deep boot stacks, never on 16 KB proc slots, so their
+ * single 4 KB probe scratch is safe and keeps heap pressure off the
+ * early boot path. */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wframe-larger-than="
 int minifs_mount(void) {
     unsigned int total_sectors = ide_total_sectors();
     unsigned int fs_lba_raw;
@@ -1315,7 +1431,10 @@ int minifs_mount(void) {
             fs_sb.free_inodes, fs_sb.total_inodes);
     return 0;
 }
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wframe-larger-than="
 int minifs_mkfs(unsigned int total_blocks) {
     unsigned int ibm_blocks, bbm_blocks, it_blocks, data_start;
     unsigned int i;
@@ -1435,3 +1554,4 @@ void minifs_usage(unsigned int *free_b, unsigned int *total_b,
     if (free_i != 0) *free_i = fs_sb.free_inodes;
     if (total_i != 0) *total_i = fs_sb.total_inodes;
 }
+#pragma GCC diagnostic pop

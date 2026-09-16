@@ -331,6 +331,12 @@ extern char fs_cwd[];
  *   4. wbuf is allocated on write-mode open, freed on kfclose.
  *   5. For VFS-backed files, pos tracks the logical offset, not the
  *      driver's internal position (driver maintains its own state).
+ *   6. ref counts table membership plus live users: kfopen sets 1,
+ *      kfd_get adds one per snapshot, kfd_put drops one and frees
+ *      through kfclose at zero. Direct kernel users (never in the
+ *      table) keep the plain open/close pairing; only the syscall
+ *      layer uses get/put, so a close racing a read can never free
+ *      under it. The table itself mutates only under fd_lock.
  * ========================================================================= */
 #define EOF (-1)
 
@@ -345,6 +351,7 @@ typedef struct {
     int      minifs_ino; /* >=0 when backed by minifs, -1 = ramdisk */
     unsigned minifs_size;
     struct vfs_file *vfs; /* VFS backend (when non-NULL, dispatch via ops) */
+    int      ref;         /* table + snapshot references, see invariant 6 */
 } KFILE;
 
 KFILE *kfopen(const char *path, const char *mode);
@@ -588,6 +595,18 @@ unsigned long syscall_trace_shown(void);
 const char *syscall_name(long n);
 #define KFD_MAX 32
 extern KFILE *kfd_table[KFD_MAX];
+/* Leaf lock for the table above: taken last, held only across slot
+ * scan/assign/clear and refcount bumps, never across file IO, so it
+ * cannot deadlock against sched_lock/mm_lock and never stalls ticks
+ * behind a slow device. */
+extern spinlock_t fd_lock;
+KFILE *kfd_get(int fd);
+void kfd_put(KFILE *f);
+/* Big filesystem lock, defined in fs/kfile.c: serializes whole kf*
+ * bodies plus unlink and dir_list against each other. Leaf like
+ * fd_lock (never nested, never held across yields); heavy IO may
+ * delay a tick, which beats torn metadata. */
+extern spinlock_t fs_lock;
 
 /* ========== Kernel info ========== */
 extern unsigned long kernel_end;

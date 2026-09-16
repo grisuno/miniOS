@@ -20,6 +20,14 @@
 #define ONLY_MSPACES 1
 #define HAVE_MORECORE 0
 #define HAVE_MMAP 0
+/* Two processes allocating at once tore the bins apart (a background
+ * server draining mailboxes while a program image loads faulted both
+ * sides with wandering rips). Upstream is explicit: NOT thread-safe
+ * unless USE_LOCKS. The built-in CAS spin is enough here: sections
+ * are pure heap math (no IO, no yields), spinners keep interrupts on
+ * so the preempted holder always resumes, and the single mspace makes
+ * the per-space lock effectively global. */
+#define USE_LOCKS 1
 #define MALLOC_ALIGNMENT ((size_t)16U)
 #define LACKS_STDLIB_H
 #define LACKS_STRING_H

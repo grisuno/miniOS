@@ -16,6 +16,9 @@
  * Headless proofs (same contract as DOOM/Q2G):
  *   minicraft --selftest        builds world, renders one frame, checks pixels
  *   minicraft autoframes <n>    renders n frames with a slow yaw spin, exits 0
+ *   minicraft walkframes <n>    flies up, walks +W across chunks, saves, exits 0
+ *   minicraft standframes <n>   stands still while mobs converge, explode and
+ *                               kill the player; reports deaths, saves, exits 0
  * Both make `gfx frames` climb so the BDD suite observes real rendering.
  */
 
@@ -184,6 +187,7 @@ static int pl_hp = MC_HP_MAX;
 static int pl_hunger = 20;
 static long hunger_ms = 0;
 static int pork = 0;
+static long n_respawns = 0;
 static int have_tool[5];
 static int break_bx, break_by, break_bz;
 static long break_start;
@@ -327,6 +331,66 @@ static long s_kbd_raw(long on) {
     long r;
     __asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_KBD_RAW), "D"(on) : "rcx", "r11", "memory");
     return r;
+}
+
+/** Serial fallback for menus: SYS_KBD in raw mode carries PS/2 only,
+ * so a serial console can never drive a scancode menu (Enter, digits
+ * and arrows never arrive). GETC_RAW serves the serial side with no
+ * line buffering; translate its bytes to the scancode the menu
+ * already handles, -1 when idle. Menu-only: gameplay keeps the raw
+ * scancode path untouched. */
+static long s_getc_raw(void) {
+    long r;
+    __asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_GETC_RAW), "D"(0) : "rcx", "r11", "memory");
+    return r;
+}
+
+/** Serial stash: the game loop must not eat the pause menu's bytes.
+ * GETC_RAW consumes with no peek, so non-ESC bytes skipped in game
+ * wait here in order for the menus; menus always read through here,
+ * never past it. Bounded and app-local. */
+#define SER_STASH_CAP 32
+static unsigned char ser_stash[SER_STASH_CAP];
+static int ser_stash_n = 0;
+
+static long ser_get(void) {
+    int i;
+    long b;
+    if (ser_stash_n > 0) {
+        b = (long)ser_stash[0];
+        for (i = 1; i < ser_stash_n; i++)
+            ser_stash[i - 1] = ser_stash[i];
+        ser_stash_n--;
+        return b;
+    }
+    return s_getc_raw();
+}
+
+static void ser_unget(unsigned char b) {
+    if (ser_stash_n < SER_STASH_CAP)
+        ser_stash[ser_stash_n++] = b;
+}
+
+static long menu_ser_key(long b) {
+    if (b == 13L || b == 10L)
+        return (long)SC_ENTER;
+    if (b == 27L || b == 'q')
+        return (long)SC_ESC;
+    if (b == 'w')
+        return (long)SC_W;
+    if (b == 'a')
+        return (long)SC_A;
+    if (b == 's')
+        return (long)SC_S;
+    if (b == 'd')
+        return (long)SC_D;
+    if (b == 8L || b == 127L)
+        return (long)SC_BACK;
+    if (b >= '1' && b <= '9')
+        return (long)(SC_1 + (b - '1'));
+    if (b == '0')
+        return (long)SC_0;
+    return -1L;
 }
 /* Bounded wait for the second byte of an E0-prefixed scancode: PS/2 bytes
  * land separately, so a single non-blocking read after E0 usually wins the
@@ -1942,6 +2006,7 @@ static void poll_kbd(void) {
         if (sc < 0 || sc > 0xFFFF)
             break;
         sc_hist_push((unsigned char)sc);
+        sc_hist_push((unsigned char)sc);
         if (sc == 0xE0) {
             long sc2 = s_kbd_seq();
             if (sc2 < 0) {
@@ -2109,6 +2174,23 @@ static void poll_kbd(void) {
             }
         }
     }
+    /* Serial consoles never produce scancodes, so gameplay ESC would be
+     * unreachable headless: one serial ESC arms the pause menu exactly
+     * like the press edge above, and the main loop clears the latch.
+     * At most one wire byte per frame, and stashed bytes belong to
+     * whoever owns the next menu: draining the whole wire here would
+     * eat bytes addressed past the game (the shell poweroff after a
+     * scripted quit), with no way to put a front byte back. */
+    long b;
+    if (ser_stash_n > 0)
+        return;
+    b = s_getc_raw();
+    if (b < 0)
+        return;
+    if (b == 27L)
+        esc_latch = 1;
+    else if (b >= 0 && b <= 255L)
+        ser_unget((unsigned char)b);
 }
 
 static int player_collides(float x, float y, float z) {
@@ -2198,6 +2280,7 @@ static void hurt(int dmg, const char *why) {
         pl_y = spawn_y;
         pl_z = spawn_z;
         pl_vz = 0;
+        n_respawns++;
         printf("minicraft: died (%s), respawned\n", why);
         snprintf(last_act, sizeof(last_act), "RESPAWN");
         last_act_ms = frame_ms;
@@ -3539,8 +3622,12 @@ static int title_menu(int have_save, int *seed_io) {
             int press;
             unsigned char r;
             if (sc < 0 || sc > 0xFFFF) {
-                s_yield();
-                break;
+                long m = menu_ser_key(ser_get());
+                if (m < 0) {
+                    s_yield();
+                    break;
+                }
+                sc = m;
             }
             if (sc == 0xE0) {
                 long sc2 = s_kbd_seq();
@@ -3696,8 +3783,12 @@ static int pause_menu(int *seed_io) {
             int press;
             unsigned char r;
             if (sc < 0 || sc > 0xFFFF) {
-                s_yield();
-                break;
+                long m = menu_ser_key(ser_get());
+                if (m < 0) {
+                    s_yield();
+                    break;
+                }
+                sc = m;
             }
             if (sc == 0xE0) {
                 long sc2 = s_kbd_seq();
@@ -3825,6 +3916,7 @@ int main(int argc, char **argv) {
     int autoframes = 0;
     int zoomframes = 0;
     int walkframes = 0;
+    int standframes = 0;
     int force_new = 0;
     int arg_seed = 1;
     int have_save = 0;
@@ -3844,6 +3936,8 @@ int main(int argc, char **argv) {
             zoomframes = atoi(argv[i + 1]);
         if (strcmp(argv[i], "walkframes") == 0 && i + 1 < argc)
             walkframes = atoi(argv[i + 1]);
+        if (strcmp(argv[i], "standframes") == 0 && i + 1 < argc)
+            standframes = atoi(argv[i + 1]);
         if (strcmp(argv[i], "--once") == 0)
             autoframes = 1;
         if (strcmp(argv[i], "new") == 0 || strcmp(argv[i], "seed") == 0) {
@@ -3894,7 +3988,7 @@ int main(int argc, char **argv) {
     printf("minicraft: G or F11 toggles 2x fullscreen zoom\n");
     printf("minicraft: title menu when run plain; 'minicraft new [seed]' skips it\n");
     fflush(stdout);
-    if (!force_new && autoframes == 0 && zoomframes == 0 && walkframes == 0) {
+    if (!force_new && autoframes == 0 && zoomframes == 0 && walkframes == 0 && standframes == 0) {
         int mr = title_menu(have_save, &menu_seed);
         if (mr < 0) {
             s_zoom(0);
@@ -3966,6 +4060,42 @@ int main(int argc, char **argv) {
             printf("minicraft: walk save failed\n");
         else
             printf("minicraft: walk saved\n");
+        fflush(stdout);
+        return 0;
+    }
+    /* Headless death-loop stress: stand still while mobs converge,
+     * explode and kill the player; exercises explosion, hurt, respawn
+     * and the dirty autosave exactly like interactive play, with a
+     * serial-observable death count. Kills the BDD gap where death was
+     * only reachable with a live keyboard. */
+    if (standframes > 0) {
+        int f;
+        long save_at = frame_ms + MC_SAVE_SECS * 1000;
+        for (f = 0; f < standframes; f++) {
+            frame_ms += 16;
+            ensure_around();
+            tick_player(1.0f / 60.0f);
+            tick_pigs(1.0f / 60.0f, frame_ms);
+            tick_water(frame_ms);
+            tick_hunger(frame_ms);
+            tick_goals();
+            tick_discover(frame_ms);
+            if ((f & 3) == 0) {
+                render_frame();
+                s_present();
+            }
+            if (world_dirty && frame_ms > save_at) {
+                if (save_world() != 0)
+                    printf("minicraft: autosave failed\n");
+                save_at = frame_ms + MC_SAVE_SECS * 1000;
+            }
+        }
+        printf("minicraft: stood %d frames deaths %ld dirty %d, quitting\n",
+            standframes, n_respawns, world_dirty);
+        if (save_world() != 0)
+            printf("minicraft: stand save failed\n");
+        else
+            printf("minicraft: stand saved\n");
         fflush(stdout);
         return 0;
     }

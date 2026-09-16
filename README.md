@@ -377,14 +377,21 @@ frame and exits for scripts; without `--once` it browses interactively.
 Proven live: `freedom_wl --once http://10.0.2.2:8899/README.txt`
 fetches 3193 bytes and the `gfx frames` counter climbs by one.
 
-`bin/wlcomp` is the Wayland-mini compositor (ADR-0024, `docs/wayland.md`):
-up to 8 client surfaces with focus z-order over `GFX_PRESENT`, spoken
-through the header-only `progs/wl/wl_mini.h` subset
-(`wl_display`/`wl_compositor`/`wl_surface`/`wl_shm`/`xdg_toplevel`).
-`wlcomp --selftest` prints `wlcomp: frame ok (800x360)`; `make test-wl`
-pins the wire bounds. Bare `wlcomp` composites two demo surfaces into
+`bin/wlcomp` is the Wayland-mini compositor (ADR-0024/0025/0026,
+`docs/wayland.md`): up to 8 client surfaces with focus z-order over
+`GFX_PRESENT`, spoken through the header-only `progs/wl/wl_mini.h`
+subset plus the `progs/wl/wl_mbox.h` mailbox transport, with one
+shared palette in `progs/nk_palette.h`. `wlcomp --selftest` prints
+`wlcomp: frame ok (800x360)`; `make test-wl` pins wire, session and
+mailbox bounds. Bare `wlcomp` composites two demo surfaces into
 a desktop window (`wlcomp: presented 2 surfaces (800x360)`, BDD-pinned
-with `gfx frames`). Syscalls 243/244/245 stay reserved until Phase 2.
+with `gfx frames`); `wlcomp --server` runs the interactive desktop
+(click focuses, drag moves, `t` re-tiles, ESC quits),
+`wlcomp --client` attaches from a second process and `wlcomp --once`
+drains once for scripts. `make wl` boots the whole desktop directly
+(`tools/boot_wl.py`: clean, three clients, server in background).
+Syscalls 243/244/245 stay reserved; kernel `pipe()` is the proper
+later carrier.
 
 ## Shell
 

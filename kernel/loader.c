@@ -462,18 +462,29 @@ void *load_exec_elf(void *data, unsigned size) {
     unsigned nxr = 0;
     unsigned long max_end = 0;
     unsigned i;
+    /* The segments land in the LIVE user window and the tail below
+     * rewrites the shared brk/mmap view, so the whole load is one
+     * atomic section: a 100 Hz tick between two segments would switch
+     * CR3 into another process (copies landing in its pages, NX marks
+     * and brk carved from its view) and corrupt whoever loses. The
+     * isolated loader already works this way (cli around every CR3
+     * switch); the only difference here is that no switch is needed,
+     * just no preemption. Serial output stays polled, allocation
+     * stays heap-local, relocs stay pure, so nothing inside needs
+     * interrupts. Every exit below restores them. */
+    __asm__ volatile("cli");
     for (i = 0; i < e->e_phnum; i++) {
         if (ph[i].p_type != PT_LOAD) continue;
-        if (ph[i].p_vaddr > USER_LOAD_END - base) { kprintf("exec: vaddr %lx too big\n", ph[i].p_vaddr); return 0; }
+        if (ph[i].p_vaddr > USER_LOAD_END - base) { kprintf("exec: vaddr %lx too big\n", ph[i].p_vaddr); goto fail; }
         unsigned long dst = base + ph[i].p_vaddr;
         if (dst < USER_LOAD_BASE || dst >= USER_LOAD_END) {
             kprintf("exec: seg %d dst %lx outside user window\n", i, dst);
-            return 0;
+            goto fail;
         }
-        if (ph[i].p_memsz > USER_LOAD_END - dst) { kprintf("exec: memsz overflow\n"); return 0; }
-        if (ph[i].p_filesz > USER_LOAD_END - dst) { kprintf("exec: filesz overflow\n"); return 0; }
+        if (ph[i].p_memsz > USER_LOAD_END - dst) { kprintf("exec: memsz overflow\n"); goto fail; }
+        if (ph[i].p_filesz > USER_LOAD_END - dst) { kprintf("exec: filesz overflow\n"); goto fail; }
         if (ph[i].p_offset > size || ph[i].p_filesz > size - ph[i].p_offset)
-            { kprintf("exec: seg data beyond file\n"); return 0; }
+            { kprintf("exec: seg data beyond file\n"); goto fail; }
         if (ph[i].p_filesz > 0 && (ph[i].p_flags & PF_X) && nxr < ELF_MAX_SEGMENTS) {
             xr[nxr].start = dst;
             xr[nxr].end   = dst + ph[i].p_filesz;
@@ -486,7 +497,27 @@ void *load_exec_elf(void *data, unsigned size) {
                     (unsigned long)(ph[i].p_memsz - ph[i].p_filesz));
         if (dst + ph[i].p_memsz > max_end) max_end = dst + ph[i].p_memsz;
     }
-    if (max_end == 0) { kprintf("exec: no loadable segments\n"); return 0; }
+    if (max_end == 0) { kprintf("exec: no loadable segments\n"); goto fail; }
+
+    /* Fail closed on torn images: re-read every file-backed byte and
+     * refuse to enter ring 3 when the window disagrees with the file.
+     * This runs BEFORE apply_exec_relocs on purpose: relocations
+     * legitimately rewrite GOT/data in the window, so anything after
+     * them would cry wolf on every static binary. A concurrent writer
+     * (or a torn block fill) used to sail through validation and jump
+     * anywhere; now it is a diagnostic, and the diagnostic firing also
+     * names the corruption source outright. */
+    for (i = 0; i < e->e_phnum; i++) {
+        if (ph[i].p_type != PT_LOAD) continue;
+        if (ph[i].p_filesz > 0) {
+            unsigned long dst = base + ph[i].p_vaddr;
+            if (kmemcmp((void *)dst, (char *)data + ph[i].p_offset,
+                        (unsigned long)ph[i].p_filesz) != 0) {
+                kprintf("exec: image changed during load (seg %d)\n", i);
+                goto fail;
+            }
+        }
+    }
 
     unsigned long cur_cr3;
     __asm__ volatile("mov %%cr3, %0" : "=r"(cur_cr3));
@@ -506,7 +537,11 @@ void *load_exec_elf(void *data, unsigned size) {
         kprintf("exec: loaded at %lx entry %lx brk %lx\n", base + USER_LOAD_BASE, base + e->e_entry, g_brk);
         redirect_resume(was);
     }
+    __asm__ volatile("sti");
     return (void *)(base + e->e_entry);
+fail:
+    __asm__ volatile("sti");
+    return 0;
 }
 
 /* ---- Isolated loader (multitask foundation) ----

@@ -155,9 +155,12 @@ static int minifetch_specs(char lines[20][96]) {
 /** Docstring: Print the two-column fetch screen. */
 void shell_cmd_minifetch(void) {
     char logo[16][33];
-    char specs[20][96];
+    /* Heap spec table: 20x96 is 1920 B that must not live in this
+     * frame (stack discipline, CLAUDE.md). Fail-closed on OOM. */
+    char (*specs)[96] = (char (*)[96])kmalloc(20 * 96);
     int nspecs, r, g, i;
     char line[160];
+    if (!specs) { kprintf("minifetch: out of memory\n"); return; }
     minifetch_logo(logo);
     nspecs = minifetch_specs(specs);
     for (r = 0; r < mf_cfg.logo_rows || r < nspecs; r++) {
@@ -183,4 +186,5 @@ void shell_cmd_minifetch(void) {
         line[p] = 0;
         vga_puts(line);
     }
+    kfree(specs);
 }

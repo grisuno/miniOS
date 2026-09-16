@@ -23,7 +23,7 @@ typedef struct {
 void spawn_backup(spawn_ctx_t *ctx);
 
 /** Docstring: Restore a view previously saved by spawn_backup. */
-void spawn_restore(const spawn_ctx_t *ctx);
+void spawn_restore(spawn_ctx_t *ctx);
 
 /** Docstring: Validate user argv words against the user window. */
 int spawn_validate_argv(int argc, const char **uargv);

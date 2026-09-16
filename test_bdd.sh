@@ -515,6 +515,13 @@ expect "vedit: ideb.c exit code: 0"
 expect "vedit: link /cvm/ideb.cvm exit code: 0"
 expect "exit code: 9"
 
+scenario "vedit links and runs ELF from IDE shortcuts without hanging" $'cd src\nvedit ideb2.c\nint main(void) { return 12; }\x12\x0celf\n\x18\npoweroff'
+expect "vedit: run /bin/ideb2.elf exit code: 12"
+
+scenario "nested spawn from a background interpreter reaps its child" $'echo import minios > /tmp/mbg.py\necho print(\'M\'+\'BG\') >> /tmp/mbg.py\necho print(minios.run(\'/bin/cp\',[\'/src/hello.c\',\'/tmp/mbg_out.c\'])) >> /tmp/mbg.py\necho print(\'M\'+\'BGEND\') >> /tmp/mbg.py\nrun micropython.elf /tmp/mbg.py &\nsleep 25\npoweroff'
+expect "MBG"
+expect "MBGEND"
+
 scenario "shell redirects command output to a file" "echo redirected text > r.txt
 cat r.txt
 poweroff"
@@ -1494,6 +1501,18 @@ expect "minimized 0  fullscreen 1"
 scenario "quake2generic binary exists on minifs" "ls quake2generic.elf
 poweroff"
 expect "quake2generic.elf"
+
+# ── Minicraft (serial-driven menus) ────────────────────────────────
+
+scenario "minicraft serial menu starts a world and quits cleanly" $'rm /saves/minicraft.map\nrun minicraft.elf\n\n\x1bw\npoweroff'
+expect "new world seed"
+expect "exit code: 0"
+
+scenario "minicraft standframes survives explosions and saves" "run minicraft.elf standframes 1500
+poweroff"
+expect "stood 1500 frames"
+expect "stand saved"
+expect "exit code: 0"
 
 echo ""
 echo "=== summary: $PASS passed, $FAIL failed ==="

@@ -1,7 +1,7 @@
 name: wlmini
-description: Wayland-mini subset (wire protocol plus ring-3 wlcomp compositor, max 8 surfaces over GFX_PRESENT). Header-only contract progs/wl/wl_mini.h plus bin/wlcomp; host-tested by make test-wl. Ships on MiniFS as wlcomp plus the bare-name alias.
+description: Wayland-mini subset (wire protocol plus session plus mailbox transport plus ring-3 wlcomp compositor, max 8 surfaces over GFX_PRESENT). Header-only contracts progs/wl/wl_mini.h and progs/wl/wl_mbox.h plus shared palette progs/nk_palette.h plus bin/wlcomp with server, once, client and clean modes; host-tested by make test-wl. Ships on MiniFS as wlcomp plus the bare-name alias.
 author: miniOS
-version: "0.1.0"
+version: "0.3.0"
 install:
   repo_url: https://github.com/grisuno/miniOS.git
   kind: host

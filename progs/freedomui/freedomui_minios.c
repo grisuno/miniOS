@@ -27,6 +27,7 @@
  * loop drives scroll until q or ESC quits.
  */
 #include "minios_abi.h"
+#include "nk_palette.h"
 
 #include "url.h"
 #include "link_nav.h"
@@ -122,64 +123,12 @@ static FreedomUiConfig freedomui_default(void) {
     return c;
 }
 
-/** Build the 768-byte graphics palette for the NK back-buffer window.
- *
- * Indices 0-14 exactly match the desktop palette in
- * progs/nuklear/nuklear_minios.c so the desktop behind the window is never
- * recolored; 15-230 carry a 6x6x6 RGB cube, 231-241 carry grays and 242-255
- * carry saturated accents. Fail-closed on null or short buffers.
+/** Shared hybrid palette, one table for every NK-window app
+ * (progs/nk_palette.h); this wrapper keeps the historic name and
+ * fail-closed contract the host suite pins.
  */
 static long freedomui_build_palette(unsigned char *pal, long cap) {
-    static const unsigned char desk[15][3] = {
-        {0, 0, 0}, {15, 15, 50}, {100, 100, 110}, {255, 255, 255},
-        {60, 90, 140}, {255, 255, 255}, {15, 15, 15}, {0, 220, 0},
-        {0, 160, 0}, {180, 180, 190}, {255, 255, 255}, {30, 30, 40},
-        {100, 140, 220}, {60, 60, 70}, {140, 140, 155}
-    };
-    static const unsigned char grays[11] = {0, 25, 51, 76, 102, 127, 153, 178, 204, 229, 255};
-    static const unsigned char accents[14][3] = {
-        {255, 0, 0}, {0, 255, 0}, {0, 0, 255}, {255, 255, 0},
-        {0, 255, 255}, {255, 0, 255}, {255, 128, 0}, {128, 0, 255},
-        {255, 0, 128}, {0, 128, 255}, {128, 255, 0}, {255, 128, 128},
-        {128, 255, 128}, {128, 128, 255}
-    };
-    long idx;
-    long r;
-    long g;
-    long b;
-    long i;
-    if (!pal || cap < 768L) {
-        return -1L;
-    }
-    for (i = 0L; i < 15L; i++) {
-        pal[i * 3L] = desk[i][0];
-        pal[i * 3L + 1L] = desk[i][1];
-        pal[i * 3L + 2L] = desk[i][2];
-    }
-    idx = 15L;
-    for (r = 0L; r < 6L; r++) {
-        for (g = 0L; g < 6L; g++) {
-            for (b = 0L; b < 6L; b++) {
-                pal[idx * 3L] = (unsigned char)(r * 51L);
-                pal[idx * 3L + 1L] = (unsigned char)(g * 51L);
-                pal[idx * 3L + 2L] = (unsigned char)(b * 51L);
-                idx++;
-            }
-        }
-    }
-    for (i = 0L; i < 11L; i++) {
-        pal[idx * 3L] = grays[i];
-        pal[idx * 3L + 1L] = grays[i];
-        pal[idx * 3L + 2L] = grays[i];
-        idx++;
-    }
-    for (i = 0L; i < 14L; i++) {
-        pal[idx * 3L] = accents[i][0];
-        pal[idx * 3L + 1L] = accents[i][1];
-        pal[idx * 3L + 2L] = accents[i][2];
-        idx++;
-    }
-    if (idx != 256L) {
+    if (nk_palette_build(pal, cap) != NK_PAL_ERR_OK) {
         return -1L;
     }
     return 0L;

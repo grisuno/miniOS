@@ -44,17 +44,40 @@ static int ramdisk_dir_exists(const char *dir) {
     return 0;
 }
 
+/* Big filesystem lock: every kf* body below (except the console
+ * paths, which block in the console reader and must never hold a
+ * spinlock) runs atomically against every other file user, ring-3 or
+ * ring-0. MiniFS keeps all of its mutable state (bitmaps, inode
+ * table, journal, directory blocks) in unlocked statics, so two
+ * processes doing file IO at once tore each other's metadata: wrong
+ * block lists, wrong sizes, wrong bytes. The lock is a leaf (never
+ * nested, never held across yields) and only ever spans one call, so
+ * ticks coalesce instead of deadlocking; heavy IO may delay a tick,
+ * which is the documented cost of correctness here. */
+spinlock_t fs_lock = SPINLOCK_INIT;
+
+static inline void fs_take(irqflags_t *flags) {
+    spin_lock_irqsave(&fs_lock, flags);
+}
+
+static inline void fs_drop(irqflags_t flags) {
+    spin_unlock_irqrestore(&fs_lock, flags);
+}
+
 KFILE *kfopen(const char *path, const char *mode) {
     char resolved[RAMDISK_FNAME_LEN];
     int want_write;
+    irqflags_t flags;
+    KFILE *f = 0;
     if (!fs_resolve(path, resolved, sizeof(resolved))) return 0;
     if (fs_is_dir(resolved)) return 0;
-    KFILE *f = kmalloc(sizeof(KFILE));
+    f = kmalloc(sizeof(KFILE));
     if (!f) return 0;
     kmemset(f, 0, sizeof(KFILE));
     f->minifs_ino = -1;
     want_write = (mode[0] == 'w' || mode[0] == 'a');
 
+    fs_take(&flags);
     f->rf = ramdisk_open(resolved);
     if (!f->rf && want_write) {
         const char *slash = resolved + kstrlen(resolved);
@@ -73,7 +96,7 @@ KFILE *kfopen(const char *path, const char *mode) {
         }
         if (parent_ok) {
             f->rf = ramdisk_create(resolved, 0);
-            if (!f->rf) { kfree(f); return 0; }
+            if (!f->rf) { kfree(f); fs_drop(flags); return 0; }
         }
     }
     if (!f->rf && minifs_is_mounted()) {
@@ -99,7 +122,7 @@ KFILE *kfopen(const char *path, const char *mode) {
             }
         }
     }
-    if (!f->rf && f->minifs_ino < 0) { kfree(f); return 0; }
+    if (!f->rf && f->minifs_ino < 0) { kfree(f); fs_drop(flags); return 0; }
     f->mode = (mode[0] == 'w') ? 1 : ((mode[0] == 'a') ? 2 : 0);
     f->pos = 0;
     if (f->mode == 2) {
@@ -107,18 +130,27 @@ KFILE *kfopen(const char *path, const char *mode) {
         else if (f->minifs_ino >= 0) f->pos = f->minifs_size;
     }
     if (f->mode != 0 && (f->rf || f->minifs_ino >= 0)) {
-        if (f->mode == 1 && f->rf && f->rf->size && !ramdisk_resize(f->rf, 0)) { kfree(f); return 0; }
+        if (f->mode == 1 && f->rf && f->rf->size && !ramdisk_resize(f->rf, 0)) { kfree(f); fs_drop(flags); return 0; }
         f->wbuf = kmalloc(4096);
         f->wcap = 4096;
         f->wsize = 0;
-        if (!f->wbuf) { kfree(f); return 0; }
+        if (!f->wbuf) { kfree(f); fs_drop(flags); return 0; }
     }
+    f->ref = 1;
+    fs_drop(flags);
     return f;
 }
 
 int kfclose(KFILE *f) {
     int rc = 0;
+    irqflags_t flags;
     if (!f) return 0;
+    if (f->is_console) {
+        if (f->wbuf) kfree(f->wbuf);
+        kfree(f);
+        return 0;
+    }
+    fs_take(&flags);
     if (f->mode != 0) {
         rc = kfflush(f);
         if (rc == 0 && f->minifs_ino >= 0 && minifs_is_mounted())
@@ -126,6 +158,7 @@ int kfclose(KFILE *f) {
     }
     if (f->wbuf) kfree(f->wbuf);
     kfree(f);
+    fs_drop(flags);
     return rc;
 }
 
@@ -137,11 +170,18 @@ int kfgetc(KFILE *f) {
         return c;
     }
     if (f->minifs_ino >= 0) {
-        if (f->pos >= f->minifs_size) return EOF;
+        irqflags_t flags;
         char c;
-        minifs_read(f->minifs_ino, &c, f->pos, 1);
-        f->pos++;
-        return (unsigned char)c;
+        int rc;
+        fs_take(&flags);
+        if (f->pos >= f->minifs_size) rc = EOF;
+        else {
+            minifs_read(f->minifs_ino, &c, f->pos, 1);
+            f->pos++;
+            rc = (unsigned char)c;
+        }
+        fs_drop(flags);
+        return rc;
     }
     if (!f->rf || kfile_corrupt(f) || f->pos >= f->rf->size) return EOF;
     char c;
@@ -171,25 +211,33 @@ int kfungetc(int c, KFILE *f) {
 }
 
 unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
+    unsigned long total;
+    unsigned long rc;
+    irqflags_t flags;
     if (!f || !size || !n) return 0;
     if (n > 0 && size > 0xFFFFFFFFUL / n) return 0;
-    unsigned long total = size * n;
+    total = size * n;
     if (f->is_console) {
         char *b = ptr; unsigned long got = 0;
         while (got < total) { int c = kfgetc(f); if (c == EOF) break; b[got++] = (char)c; }
         return got / size;
     }
+    fs_take(&flags);
     if (f->minifs_ino >= 0) {
         if (f->pos + total > f->minifs_size) total = f->minifs_size - f->pos;
         minifs_read(f->minifs_ino, ptr, f->pos, (unsigned)total);
         f->pos += total;
-        return total / size;
+        rc = total / size;
+    } else if (!f->rf || kfile_corrupt(f)) {
+        rc = 0;
+    } else {
+        if (f->pos + total > f->rf->size) total = f->rf->size - f->pos;
+        ramdisk_read(f->rf, ptr, f->pos, (unsigned)total);
+        f->pos += total;
+        rc = total / size;
     }
-    if (!f->rf || kfile_corrupt(f)) return 0;
-    if (f->pos + total > f->rf->size) total = f->rf->size - f->pos;
-    ramdisk_read(f->rf, ptr, f->pos, (unsigned)total);
-    f->pos += total;
-    return total / size;
+    fs_drop(flags);
+    return rc;
 }
 
 unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f) {
@@ -203,21 +251,26 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
     }
     if (f->mode != 1 && f->mode != 2) return 0;
     if (bytes > RD_DATA_MAX || f->wsize > RD_DATA_MAX - bytes) return 0;
-    if (!f->wbuf) {
-        f->wbuf = kmalloc(4096);
-        f->wcap = 4096;
-        f->wsize = 0;
-        if (!f->wbuf) return 0;
+    {
+        irqflags_t flags;
+        fs_take(&flags);
+        if (!f->wbuf) {
+            f->wbuf = kmalloc(4096);
+            f->wcap = 4096;
+            f->wsize = 0;
+            if (!f->wbuf) { fs_drop(flags); return 0; }
+        }
+        while (f->wsize + bytes > f->wcap) {
+            if (f->wcap > RD_DATA_MAX / 2) { fs_drop(flags); return 0; }
+            f->wcap *= 2;
+            f->wbuf = krealloc(f->wbuf, f->wcap);
+            if (!f->wbuf) { fs_drop(flags); return 0; }
+        }
+        kmemcpy(f->wbuf + f->wsize, ptr, bytes);
+        f->wsize += bytes;
+        f->pos += bytes;
+        fs_drop(flags);
     }
-    while (f->wsize + bytes > f->wcap) {
-        if (f->wcap > RD_DATA_MAX / 2) return 0;
-        f->wcap *= 2;
-        f->wbuf = krealloc(f->wbuf, f->wcap);
-        if (!f->wbuf) return 0;
-    }
-    kmemcpy(f->wbuf + f->wsize, ptr, bytes);
-    f->wsize += bytes;
-    f->pos += bytes;
     return n;
 }
 

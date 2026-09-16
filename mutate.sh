@@ -97,6 +97,8 @@ SOURCES="$SOURCES progs/freedomui/freedomui_minios.c tests/test_freedomui.c"
 # under the next mutant, whose kill is then vacuous). This bit paint
 # when progs/paint/paint.c shipped mutants without a SOURCES entry.
 SOURCES="$SOURCES progs/paint/paint.c tests/test_paint.c"
+SOURCES="$SOURCES progs/nk_palette.h progs/wl/wl_mini.h progs/wl/wl_mbox.h progs/wl/wlcomp.c"
+SOURCES="$SOURCES progs/minicraft/minicraft.c"
 
 restore_sources() {
     local f
@@ -237,9 +239,10 @@ freedom-wl-clip-origin-sign | s/\*w += \*x;/\*w -= *x;/ | progs/src/freedom_wl.c
 freedom-wl-https-port | s/*port = c->port_https;/*port = c->port_http;/ | progs/src/freedom_wl.c
 freedom-wl-title-bound-lost | s/if (n < 0L || n > c->title_max) {/if (n < 0L) {/ | progs/src/freedom_wl.c
 freedom-wl-keysym-enter-lost | s/if (make == 0x1CL) {/if (make == 0x1DL) {/ | progs/src/freedom_wl.c
-freedomui-palette-bg-black | s/{15, 15, 15}, {0, 220, 0},/{0, 0, 0}, {0, 0, 0},/ | progs/freedomui/freedomui_minios.c
 freedomui-omnibox-kind-flip | s/if (kind != 0) {/if (kind != 1) {/ | progs/freedomui/freedomui_minios.c
-freedom-wl-palette-bg-black | s/{15, 15, 15}, {0, 220, 0},/{0, 0, 0}, {0, 0, 0},/ | progs/src/freedom_wl.c
+nk-palette-bg-black | s/{15, 15, 15}, {0, 220, 0},/{0, 0, 0}, {0, 0, 0},/ | progs/nk_palette.h
+spawn-nested-parent-zeroed | s/child->clone_flags = 0;/child->parent_pid = 0; child->clone_flags = 0;/ | kernel/sched.c
+minicraft-ser-enter-lost | s/if (b == 13L || b == 10L)/if (0) {/ | progs/minicraft/minicraft.c
 vedit-untitled-not-c | s/    return VEDIT_LANG_C;/    return VEDIT_LANG_TEXT;/ | progs/vedit/vedit.c
 vedit-link-elf-rejected | s/if (e\\[k\\] == 0 \\&\\& s\\[k\\] == 0) return 1;/if (e[k] == 0 \&\& s[k] == 0) return 0;/ | progs/vedit/vedit.c
 vedit-asm-dir-broken | s/#define VEDIT_DIR_ASM \"\/asm\//\#define VEDIT_DIR_ASM \"\/asx\// | progs/vedit/vedit.c
@@ -402,6 +405,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         progs/freedomui/freedomui_minios.c|tests/test_freedomui.c)
             make -C "$HERE" test-freedomui > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/nk_palette.h|progs/wl/wl_mini.h|progs/wl/wl_mbox.h|progs/wl/wlcomp.c)
+            make -C "$HERE" test-wl > "$BACKUP/suite.log" 2>&1
             ;;
         tests/test_paint.c)
             make -C "$HERE" test-paint > "$BACKUP/suite.log" 2>&1

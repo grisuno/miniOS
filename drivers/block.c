@@ -19,7 +19,18 @@
 static unsigned int block_total_sectors;
 static unsigned int block_lba_base;
 
-/* Direct-mapped cache: 16 x 4096 = 64 KB of recently-read blocks. */
+/* Direct-mapped cache: 16 x 4096 = 64 KB of recently-read blocks.
+ * Every shared line mutates only under bc_lock, which is a leaf (never
+ * held across file IO, never nested inside sched_lock/mm_lock/fd_lock)
+ * and only ever covers tag checks and 4 KB copies, never the IDE PIO:
+ * a miss reads into a private heap buffer with preemption allowed and
+ * installs atomically, so two processes filling colliding lines both
+ * get their own bytes instead of each other's. Without this, any two
+ * processes doing MiniFS IO at once (a background server draining its
+ * mailboxes while a program image loads) deterministically read torn
+ * blocks: wrong ELF bytes jump anywhere, wrong dirents resolve wrong
+ * files. Hit rate is unchanged; a miss costs one extra 4 KB copy. */
+static spinlock_t bc_lock = SPINLOCK_INIT;
 #define BC_WAYS 16
 #define BC_MASK (BC_WAYS - 1)
 static unsigned int  bc_block[BC_WAYS];
@@ -30,9 +41,15 @@ static unsigned int bc_index(unsigned int block_num) {
     return block_num & BC_MASK;
 }
 
-static void bc_invalidate(unsigned int block_num) {
+static void bc_invalidate_locked(unsigned int block_num) {
     unsigned int idx = bc_index(block_num);
     if (bc_valid[idx] && bc_block[idx] == block_num) bc_valid[idx] = 0;
+}
+
+static void bc_invalidate(unsigned int block_num) {
+    spin_lock(&bc_lock);
+    bc_invalidate_locked(block_num);
+    spin_unlock(&bc_lock);
 }
 
 void block_init(void) {
@@ -70,28 +87,49 @@ static int block_dev_write(unsigned lba, unsigned count, const void *buf) {
 
 int block_read(unsigned int block_num, void *buf) {
     unsigned int idx = bc_index(block_num);
+    unsigned char *tmp = 0;
+    unsigned int lba;
+    unsigned int i;
+    unsigned char *dst = (unsigned char *)buf;
+    if (!buf) return -1;
+    spin_lock(&bc_lock);
     if (bc_valid[idx] && bc_block[idx] == block_num) {
-        unsigned char *src = bc_data[idx], *dst = (unsigned char *)buf;
-        unsigned int i;
+        unsigned char *src = bc_data[idx];
         for (i = 0; i < BLOCK_SIZE; i++) dst[i] = src[i];
+        spin_unlock(&bc_lock);
         return 0;
     }
-    unsigned int lba = block_lba_base + block_num * SECTORS_PER_BLOCK;
-    if (block_dev_read(lba, SECTORS_PER_BLOCK, bc_data[idx]) < 0) return -1;
-    bc_block[idx] = block_num;
-    bc_valid[idx] = 1;
-    {
-        unsigned char *src = bc_data[idx], *dst = (unsigned char *)buf;
-        unsigned int i;
-        for (i = 0; i < BLOCK_SIZE; i++) dst[i] = src[i];
+    spin_unlock(&bc_lock);
+    tmp = (unsigned char *)kmalloc(BLOCK_SIZE);
+    if (!tmp) return -1;
+    lba = block_lba_base + block_num * SECTORS_PER_BLOCK;
+    if (block_dev_read(lba, SECTORS_PER_BLOCK, tmp) < 0) {
+        kfree(tmp);
+        return -1;
     }
+    spin_lock(&bc_lock);
+    if (bc_valid[idx] && bc_block[idx] == block_num) {
+        unsigned char *src = bc_data[idx];
+        for (i = 0; i < BLOCK_SIZE; i++) dst[i] = src[i];
+    } else {
+        unsigned char *line = bc_data[idx];
+        for (i = 0; i < BLOCK_SIZE; i++) line[i] = tmp[i];
+        bc_block[idx] = block_num;
+        bc_valid[idx] = 1;
+        for (i = 0; i < BLOCK_SIZE; i++) dst[i] = tmp[i];
+    }
+    spin_unlock(&bc_lock);
+    kfree(tmp);
     return 0;
 }
 
 int block_write(unsigned int block_num, const void *buf) {
-    bc_invalidate(block_num);
     unsigned int lba = block_lba_base + block_num * SECTORS_PER_BLOCK;
-    return block_dev_write(lba, SECTORS_PER_BLOCK, buf);
+    int r;
+    bc_invalidate(block_num);
+    r = block_dev_write(lba, SECTORS_PER_BLOCK, buf);
+    bc_invalidate(block_num);
+    return r;
 }
 
 int block_read_multi(unsigned int block_num, unsigned int count, void *buf) {
@@ -101,9 +139,16 @@ int block_read_multi(unsigned int block_num, unsigned int count, void *buf) {
 
 int block_write_multi(unsigned int block_num, unsigned int count, const void *buf) {
     unsigned int i;
-    for (i = 0; i < count; i++) bc_invalidate(block_num + i);
     unsigned int lba = block_lba_base + block_num * SECTORS_PER_BLOCK;
-    return block_dev_write(lba, count * SECTORS_PER_BLOCK, buf);
+    int r;
+    spin_lock(&bc_lock);
+    for (i = 0; i < count; i++) bc_invalidate_locked(block_num + i);
+    spin_unlock(&bc_lock);
+    r = block_dev_write(lba, count * SECTORS_PER_BLOCK, buf);
+    spin_lock(&bc_lock);
+    for (i = 0; i < count; i++) bc_invalidate_locked(block_num + i);
+    spin_unlock(&bc_lock);
+    return r;
 }
 
 void block_flush(void) { }

@@ -269,20 +269,25 @@ static int net_dns_resolve(const char *host, unsigned char ip_out[4]) {
         }
     }
 
+    /* Heap query: 1536 B must not live in this frame — DNS resolves
+     * from ring-3 connect on 16 KB proc slots (stack discipline,
+     * CLAUDE.md). One buffer reused across tries, fail-closed. */
+    unsigned char *q = (unsigned char *)kmalloc(NET_MAX_FRAME);
+    int rc = 0;
+    if (!q) return 0;
     for (tries = 0; tries < NET_DNS_TRIES; tries++) {
-        unsigned char q[NET_MAX_FRAME];
         const char *p = host;
         unsigned pos = 12;
         unsigned long deadline;
-        kmemset(q, 0, sizeof(q));
+        kmemset(q, 0, NET_MAX_FRAME);
         net_dns.id = (unsigned short)(net_ip_id + 0x9E3);
         net_put16(q, net_dns.id);
         net_put16(q + 2, 0x0100);
         net_put16(q + 4, 1);
-        while (*p && pos < sizeof(q) - 6) {
+        while (*p && pos < NET_MAX_FRAME - 6) {
             const char *dot = kstrchr(p, '.');
             unsigned seg = dot ? (unsigned)(dot - p) : (unsigned)kstrlen(p);
-            if (seg > 63) return 0;
+            if (seg > 63) goto out;
             q[pos++] = (unsigned char)seg;
             kmemcpy(q + pos, p, seg);
             pos += seg;
@@ -300,10 +305,14 @@ static int net_dns_resolve(const char *host, unsigned char ip_out[4]) {
         while (!net_dns.done && net_time_ms() < deadline) rtl_poll();
         if (net_dns.done) {
             kmemcpy(ip_out, net_dns.ip, 4);
-            return 1;
+            rc = 1;
+            goto out;
         }
     }
-    return 0;
+    rc = 0;
+out:
+    kfree(q);
+    return rc;
 }
 
 static int net_ping_active;
@@ -313,7 +322,10 @@ static int net_ping_got_reply;
 static void net_icmp_rx(const unsigned char *ip, unsigned len) {
     const unsigned char *icmp = ip + 20;
     unsigned icmp_len = len - 20;
-    unsigned short reply[NET_MAX_FRAME];
+    /* Heap reply: 3 KB must not live in this frame — RX runs nested
+     * under ring-3 socket syscalls on 16 KB proc slots (stack
+     * discipline, CLAUDE.md). OOM drops the reply, never corrupts. */
+    unsigned short *reply;
     if (icmp_len < 8) return;
     if (net_checksum(icmp, icmp_len) != 0) return;
     if (icmp[0] == 0) {                       /* echo reply */
@@ -323,12 +335,15 @@ static void net_icmp_rx(const unsigned char *ip, unsigned len) {
         }
     } else if (icmp[0] == 8) {                /* echo request: reply to us */
         if (kmemcmp(ip + 16, net_our_ip, 4) == 0) {
-            kmemset(reply, 0, sizeof(reply));
+            reply = (unsigned short *)kmalloc(NET_MAX_FRAME * sizeof(unsigned short));
+            if (!reply) return;
+            kmemset(reply, 0, NET_MAX_FRAME * sizeof(unsigned short));
             kmemcpy((unsigned char *)reply, icmp, icmp_len);
             ((unsigned char *)reply)[0] = 0;
             net_put16((unsigned char *)reply + 2, 0);
             net_put16((unsigned char *)reply + 2, net_checksum(reply, icmp_len));
             net_ip_send(ip, NET_PROTO_ICMP, (const unsigned char *)reply, icmp_len);
+            kfree(reply);
         }
     }
 }

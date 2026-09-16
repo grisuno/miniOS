@@ -144,9 +144,16 @@ $(KASLR_STAMP): kaslr-flag-force
 CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os -Iheaders -Iheaders/arch/x86/boot
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
               -Wall -O1 -mno-red-zone -mno-sse -mno-mmx -fno-pic -fno-stack-protector \
+              -Werror=frame-larger-than=2048 \
               -fno-omit-frame-pointer -g $(TLS_FLAG) $(AP_TIMER_FLAG) \
               -I. -Iheaders -Iheaders/arch/x86/boot -Ithird_party -Ithird_party/stb -Ithird_party/xxhash \
               -I$(PROGS_DIR)
+# Pristine upstream compiled into the kernel (xxhash, stb, miniz,
+# dlmalloc): never rewritten for the frame gate, so the 2 KB error
+# threshold is relaxed back to a 32 KB warning here. Their entry points
+# run on generous stacks (boot/selftest/ring-3 image decode), never on
+# 16 KB proc slots; see the stack discipline contract in CLAUDE.md.
+CFLAGS_UPSTREAM = $(CFLAGS_KERN) -Wframe-larger-than=32768
 
 PROGS_DIR = progs
 OBJ_DIR   = $(PROGS_DIR)/objects
@@ -877,7 +884,7 @@ $(NUKLEAR_DIR)/nuklear.h:
 	@echo "run 'make sources' to clone the Nuklear repository"
 	@exit 1
 
-$(BIN_DIR)/nuklear.elf: $(NUKLEAR_SRCS) $(NUKLEAR_DIR)/nuklear.h
+$(BIN_DIR)/nuklear.elf: $(NUKLEAR_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear -I$(PROGS_DIR) \
 	      -o $@ $(NUKLEAR_SRCS) -lm
@@ -898,7 +905,7 @@ $(BIN_DIR)/nuklear: $(BIN_DIR)/nuklear.elf
 DOOMEDIT_SRCS = $(NUKLEAR_PLATFORM) \
                 $(PROGS_DIR)/doomedit/doomedit.c
 
-$(BIN_DIR)/doomedit.elf: $(DOOMEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/minios_abi.h
+$(BIN_DIR)/doomedit.elf: $(DOOMEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/minios_abi.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear -I$(PROGS_DIR) \
 	      -o $@ $(DOOMEDIT_SRCS) -lm
@@ -911,7 +918,7 @@ $(BIN_DIR)/doomedit: $(BIN_DIR)/doomedit.elf
 # ── wlcomp (Wayland-mini ring-3 compositor, ADR-0024) ────────────────
 # Header-only wl_mini.h plus thin wlcomp.c: max 8 surfaces, focus
 # z-order, presents through GFX_PRESENT BUF_NK. Static ring-3, MiniFS.
-$(BIN_DIR)/wlcomp.elf: $(PROGS_DIR)/wl/wlcomp.c $(PROGS_DIR)/wl/wl_mini.h $(PROGS_DIR)/minios_abi.h
+$(BIN_DIR)/wlcomp.elf: $(PROGS_DIR)/wl/wlcomp.c $(PROGS_DIR)/wl/wl_mini.h $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/minios_abi.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(PROGS_DIR) \
 	      -o $@ $(PROGS_DIR)/wl/wlcomp.c
@@ -933,7 +940,7 @@ $(BIN_DIR)/wlcomp: $(BIN_DIR)/wlcomp.elf
 PIANO_SRCS = $(PROGS_DIR)/piano/piano.c \
              $(NUKLEAR_PLATFORM)
 
-$(BIN_DIR)/piano.elf: $(PIANO_SRCS) $(NUKLEAR_DIR)/nuklear.h \
+$(BIN_DIR)/piano.elf: $(PIANO_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h \
                       $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear -I$(NUKED_OPL3_DIR) \
@@ -955,7 +962,7 @@ $(BIN_DIR)/piano: $(BIN_DIR)/piano.elf
 VEDIT_SRCS = $(PROGS_DIR)/vedit/vedit.c \
              $(NUKLEAR_PLATFORM)
 
-$(BIN_DIR)/vedit.elf: $(VEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h
+$(BIN_DIR)/vedit.elf: $(VEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
 	      -I$(PROGS_DIR) \
@@ -974,7 +981,7 @@ $(BIN_DIR)/vedit: $(BIN_DIR)/vedit.elf
 FILE_SRCS = $(PROGS_DIR)/file/file.c \
             $(NUKLEAR_PLATFORM)
 
-$(BIN_DIR)/file.elf: $(FILE_SRCS) $(NUKLEAR_DIR)/nuklear.h
+$(BIN_DIR)/file.elf: $(FILE_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
 	      -I$(PROGS_DIR) -Ithird_party/stb \
@@ -993,7 +1000,7 @@ $(BIN_DIR)/file: $(BIN_DIR)/file.elf
 PAINT_SRCS = $(PROGS_DIR)/paint/paint.c \
              $(NUKLEAR_PLATFORM)
 
-$(BIN_DIR)/paint.elf: $(PAINT_SRCS) $(NUKLEAR_DIR)/nuklear.h
+$(BIN_DIR)/paint.elf: $(PAINT_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
 	      -I$(PROGS_DIR) -Ithird_party/stb \
@@ -1109,7 +1116,7 @@ FREEDOM_WL_SRCS = $(SRC_DIR)/freedom_wl.c \
                   $(PROGS_DIR)/tls_u/tls_u_port.c \
                   net/tls.c net/tls_crypto.c net/tls_x509.c
 
-$(BIN_DIR)/freedom_wl: $(FREEDOM_WL_SRCS) tls_port.h tls.h tls_roots.h $(PROGS_DIR)/nuklear/nuklear_minios.h
+$(BIN_DIR)/freedom_wl: $(FREEDOM_WL_SRCS) tls_port.h tls.h tls_roots.h $(PROGS_DIR)/nuklear/nuklear_minios.h $(PROGS_DIR)/nk_palette.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 \
 	      -I. -Iheaders -I$(PROGS_DIR) -I$(PROGS_DIR)/nuklear -o $@ $(FREEDOM_WL_SRCS)
 	chmod +x $@
@@ -1141,7 +1148,7 @@ FREEDOMUI_SRCS = $(FREEDOMUI_DIR)/freedomui_minios.c \
                  $(FREEDOM_DIR)/src/ui_layout.c
 
 ifeq ($(FREEDOMUI_AVAILABLE),1)
-$(BIN_DIR)/freedomui: $(FREEDOMUI_SRCS) tls_port.h tls.h tls_roots.h
+$(BIN_DIR)/freedomui: $(FREEDOMUI_SRCS) tls_port.h tls.h tls_roots.h $(PROGS_DIR)/nk_palette.h
 	$(CC) -static -no-pie -std=c11 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 \
 	      -D_POSIX_C_SOURCE=200809L \
 	      -I. -Iheaders -I$(PROGS_DIR) -I$(PROGS_DIR)/nuklear -I$(FREEDOM_DIR)/include \
@@ -1217,6 +1224,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                  $(PROGS_DIR)/paint/paint.c \
                  $(BIN_DIR)/wlcomp.elf $(BIN_DIR)/wlcomp \
                  $(PROGS_DIR)/wl/wlcomp.c $(PROGS_DIR)/wl/wl_mini.h \
+                 $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/nk_palette.h \
                  $(BIN_DIR)/minicraft.elf $(BIN_DIR)/minicraft \
                  $(PROGS_DIR)/minicraft/minicraft.c \
                 $(PROGS_DIR)/etc/association \
@@ -1480,11 +1488,18 @@ test-wm: wm_test
 	$(TOOLS_DIR)/wm_test
 
 # Wayland-mini wire/compositor host test (progs/wl/wl_mini.h, ADR-0024).
-wl_test: tests/test_wl.c progs/wl/wl_mini.h | $(TOOLS_DIR)
+wl_test: tests/test_wl.c progs/wl/wl_mini.h progs/wl/wl_mbox.h progs/nk_palette.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/wl_test tests/test_wl.c
 
 test-wl: wl_test
 	$(TOOLS_DIR)/wl_test
+
+# Wayland-mini desktop (ADR-0026, Fase 4): boot os.img, attach three demo
+# clients over the mailbox transport and run wlcomp --server in the
+# background, then attach the console for interactive use. Headless CI
+# instead screendumps and powers off: WL_HEADLESS=1 WL_SHOT=out.png make wl.
+wl: os.img
+	python3 tools/boot_wl.py
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
@@ -1686,7 +1701,7 @@ lz4_kernel.o: kernel/lz4_kernel.c lz4_kernel.h
 # drags in XXH3/XXH128 which reference memcpy/memcmp/free; redirect those
 # to the kernel's own implementations so the link resolves.
 xxhash.o: third_party/xxhash/xxhash.c third_party/xxhash/xxhash.h
-	$(CC) $(CFLAGS_KERN) -Dmemcpy=kmemcpy -Dmemmove=kmemmove -Dmemset=kmemset -Dmemcmp=kmemcmp -Dmalloc=kmalloc -Dfree=kfree -c $< -o $@
+	$(CC) $(CFLAGS_UPSTREAM) -Dmemcpy=kmemcpy -Dmemmove=kmemmove -Dmemset=kmemset -Dmemcmp=kmemcmp -Dmalloc=kmalloc -Dfree=kfree -c $< -o $@
 
 # stb image API: the single-header decode library compiled into the kernel
 # with PNG/TGA codecs only and the allocator redirected to the kernel heap.
@@ -1695,14 +1710,14 @@ xxhash.o: third_party/xxhash/xxhash.c third_party/xxhash/xxhash.h
 # kernel panic so the freestanding build does not need libc assert.
 stb_impl.o: third_party/stb/stb_impl.c third_party/stb/stb_image.h \
             third_party/stb/stb_api.h kernel.h
-	$(CC) $(CFLAGS_KERN) -Wno-unused-function -c $< -o $@
+	$(CC) $(CFLAGS_UPSTREAM) -Wno-unused-function -c $< -o $@
 
 # miniz zip library: the amalgamated 3.0.2 compiled into the kernel with the
 # allocator redirected to the kernel heap and stdio/time stripped (see
 # miniz_impl.c). The unzip/zip builtins in zip.c call its public API.
 miniz_impl.o: third_party/miniz/miniz_impl.c third_party/miniz/miniz.h \
               third_party/miniz/miniz.c kernel.h
-	$(CC) $(CFLAGS_KERN) -Ithird_party/miniz -c $< -o $@
+	$(CC) $(CFLAGS_UPSTREAM) -Ithird_party/miniz -c $< -o $@
 
 zip.o: fs/zip.c zip.h kernel.h third_party/miniz/miniz.h
 	$(CC) $(CFLAGS_KERN) -Ithird_party/miniz -c $< -o $@
@@ -1712,7 +1727,7 @@ zip.o: fs/zip.c zip.h kernel.h third_party/miniz/miniz.h
 # global malloc/free symbols are emitted). kernel.c delegates kmalloc/kfree/
 # realloc/calloc to it via the dlmalloc_* accessors in dlmalloc_impl.c.
 dlmalloc_impl.o: third_party/dlmalloc/dlmalloc_impl.c third_party/dlmalloc/malloc.c kernel.h
-	$(CC) $(CFLAGS_KERN) -c $< -o $@
+	$(CC) $(CFLAGS_UPSTREAM) -c $< -o $@
 
 # Desktop icon PNGs: terminal is pixel art generated from
 # tools/gen_icons.py; doom/quake2/nuklear/piano/vedit/pokemon are custom art

@@ -285,11 +285,15 @@ void kstack_report(void) {
 void schedtop_report(void) {
     struct stop_row { int pid; int ppid; int state; int nice;
         unsigned long vruntime; unsigned long ticks; char name[32]; };
-    struct stop_row snap[MAX_PROCS];
+    /* Heap snapshot, never stack: 64 rows are 4 KB and this diagnostic
+     * must not eat a quarter of a 16 KB slot (see the stack discipline
+     * contract in CLAUDE.md). Fail-closed on OOM. */
+    struct stop_row *snap = (struct stop_row *)kmalloc(sizeof(struct stop_row) * MAX_PROCS);
     int cpu_cur[MAX_CPUS];
     int n = 0, i, c;
     unsigned long up;
-    kmemset(snap, 0, sizeof(snap));
+    if (!snap) { kprintf("schedtop: out of memory\n"); return; }
+    kmemset(snap, 0, sizeof(struct stop_row) * MAX_PROCS);
     spin_lock(&sched_lock);
     up = (unsigned long)(sys_ticks / 100);
     for (c = 0; c < cpu_count && c < MAX_CPUS; c++)
@@ -327,6 +331,7 @@ void schedtop_report(void) {
                 snap[i].vruntime, snap[i].ticks, snap[i].name);
     }
     if (!n) kprintf("  (no processes)\n");
+    kfree(snap);
 }
 
 /* `irqstat` -- interrupt arrivals per source. Timer ticks come from
@@ -1118,6 +1123,21 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             v = fault_addr;
             for (int i = 15; i >= 0; i--) { h[i] = digits[v & 0xF]; v >>= 4; }
             serial_puts(h);
+            serial_puts(" pid=");
+            v = (unsigned long)current_pid;
+            for (int i = 15; i >= 8; i--) { h[i] = digits[v & 0xF]; v >>= 4; }
+            serial_puts(h + 8);
+            if (current_pid >= 0 && current_pid < MAX_PROCS) {
+                int ni = 0;
+                serial_puts(" ");
+                while (ni < 31 && procs[current_pid].name[ni] != 0) {
+                    char ch[2];
+                    ch[0] = procs[current_pid].name[ni];
+                    ch[1] = 0;
+                    serial_puts(ch);
+                    ni++;
+                }
+            }
             serial_puts("\n");
         }
         /* Dump the PTE of the faulting address (walk CR3): a user fault
@@ -1220,11 +1240,109 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         {
             char h[17];
             static const char digits[] = "0123456789abcdef";
+            unsigned long cr3v = 0;
+            int k;
+            __asm__ volatile("mov %%cr3, %0" : "=r"(cr3v));
+            serial_puts("  cr3=");
+            for (k = 15; k >= 0; k--) { h[k] = digits[cr3v & 0xF]; cr3v >>= 4; }
+            h[16] = 0;
+            serial_puts(h);
+            serial_puts("\n");
+        }
+        {
+            char h[17];
+            static const char digits[] = "0123456789abcdef";
             unsigned long rsp = frame->rsp;
             int n = 0, k;
             serial_puts("  ustack:");
             if ((frame->cs & 3) == 3 && rsp >= USER_LOAD_BASE &&
                 rsp + 64 < USER_LOAD_END) {
+                unsigned long *sp = (unsigned long *)rsp;
+                for (k = 0; k < 8; k++) {
+                    unsigned long v = sp[k];
+                    serial_puts(" ");
+                    for (int i = 15; i >= 0; i--) { h[i] = digits[v & 0xF]; v >>= 4; }
+                    h[16] = 0;
+                    serial_puts(h);
+                    n++;
+                }
+            }
+            if (!n)
+                serial_puts(" <unreadable>");
+            serial_puts("\n");
+        }
+        /* Post-mortem process table: pid, state, kernel stack top and
+         * name for every live slot, so a fault names who else was
+         * around (a waiter, a zombie nobody reaps, a puzzling slot).
+         * Reads procs[] only; the faulting CPU is already parked. */
+        {
+            char h[17];
+            static const char digits[] = "0123456789abcdef";
+            int i;
+            serial_puts("  ps:");
+            for (i = 0; i < MAX_PROCS; i++) {
+                int ni;
+                unsigned long v;
+                if (procs[i].state == PROC_FREE)
+                    continue;
+                serial_puts(" ");
+                v = (unsigned long)procs[i].pid;
+                for (ni = 15; ni >= 8; ni--) { h[ni] = digits[v & 0xF]; v >>= 4; }
+                serial_puts(h + 8);
+                serial_puts("/");
+                v = (unsigned long)procs[i].state;
+                for (ni = 15; ni >= 8; ni--) { h[ni] = digits[v & 0xF]; v >>= 4; }
+                serial_puts(h + 8);
+                serial_puts("/");
+                v = (unsigned long)procs[i].kstack;
+                for (ni = 15; ni >= 0; ni--) { h[ni] = digits[v & 0xF]; v >>= 4; }
+                h[16] = 0;
+                serial_puts(h);
+                serial_puts(" ");
+                ni = 0;
+                serial_puts("[");
+                while (ni < 12 && procs[i].name[ni] != 0) {
+                    char ch[2];
+                    ch[0] = procs[i].name[ni];
+                    ch[1] = 0;
+                    serial_puts(ch);
+                    ni++;
+                }
+                serial_puts("]");
+            }
+            serial_puts("\n");
+        }
+        /* Timer-vector integrity: a wild IDT entry turns every tick
+         * into a wild fetch, which reads exactly like a smashed
+         * return. Recompose vector 32 (PIT) from its descriptor and
+         * print it: anything but the installed stub names IDT
+         * corruption outright. */
+        {
+            char h[17];
+            static const char digits[] = "0123456789abcdef";
+            unsigned long v =
+                (unsigned long)idt[32].off_lo
+                | ((unsigned long)idt[32].off_mid << 16)
+                | ((unsigned long)idt[32].off_hi << 32);
+            int k;
+            serial_puts("  idt32=");
+            for (k = 15; k >= 0; k--) { h[k] = digits[v & 0xF]; v >>= 4; }
+            h[16] = 0;
+            serial_puts(h);
+            serial_puts("\n");
+        }
+        /* Ring-0 wild-jump diagnosis: same dump for a kernel rsp in
+         * the kernel image, heap or pool slots. A smashed return
+         * address (tiny rip like 0x13 with rsp on a kstack) names
+         * the overflower through addr2line. Reads below the kernel
+         * link base are skipped instead of nesting. */
+        {
+            char h[17];
+            static const char digits[] = "0123456789abcdef";
+            unsigned long rsp = frame->rsp;
+            int n = 0, k;
+            serial_puts("  kstack:");
+            if ((frame->cs & 3) == 0 && rsp >= 0x100000UL) {
                 unsigned long *sp = (unsigned long *)rsp;
                 for (k = 0; k < 8; k++) {
                     unsigned long v = sp[k];
@@ -1410,7 +1528,14 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
     kmemset(child, 0, sizeof(proc_t));
     child->pid = pid;
     child->state = PROC_SWITCHING;
-    child->parent_pid = 0;
+    /* The true caller, not pid 0: waitpid_scan matches parent_pid ==
+     * current_pid and do_exit wakes a BLOCKED parent, so a child
+     * spawned from an isolated program (vedit building through
+     * SYS_SPAWN, an interpreter running ET_EXEC tools) must name that
+     * program or the parent blocks in do_waitpid forever while the
+     * child is reaped by nobody. Shell spawns keep parent 0 exactly
+     * as before, so jobs/wait/kill are untouched. */
+    child->parent_pid = current_pid;
     child->clone_flags = 0;
     child->brk = brk;
     child->brk_limit = USER_BRK_END;

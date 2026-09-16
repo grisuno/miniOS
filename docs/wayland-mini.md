@@ -29,30 +29,90 @@ Todo lo que exceda falla cerrado (`WL_ERR_*`), nunca trunca.
 
 ## Transporte
 
-Fase 1: `pipe()` + memoria compartida sustituta: pool fijo por
-superficie en heap del compositor, cliente escribe via `WL_ATTACH`
-(syscall 243, reserva) o via `pipe` en modo shim. Sin `SCM_RIGHTS`:
-el fd se sustituye por `pool_id` + `offset` validados contra la ventana
-de usuario. Fase posterior: `AF_UNIX` real si el kernel lo gana.
+Fase 1 (hecha): el wire de attach/commit existe como encode/decode
+puros (`wl_attach_encode/decode` para pool mas dimensiones,
+`wl_commit_encode/decode` para el id de superficie) y cada cliente lo
+habla logicamente: `freedom_wl` lo recorre en su selftest y en su
+sonda de host. Sin `SCM_RIGHTS`: el fd se sustituye por `pool_id`
+validado. El transporte vivo entre procesos por `pipe()` sigue abierto:
+las superficies son estado dentro del compositor y ningun byte shm
+cruza procesos todavia. Fase posterior: `AF_UNIX` real si el kernel
+lo gana.
 
 ## Compositor
 
 `bin/wlcomp` ring-3 (no kernel): posee N<=8 superficies, z-order por
-foco, compone sobre `FB_ADDR` y presenta con `GFX_PRESENT BUF_NK`
-(compat con `vga_fb_blit_nk_window`). Input: foco posee `SYS_MOUSE` /
-`SYS_KBD` (misma regla que `vga_fb_ps2_owner`). Titulo por
-`GFX_SET_TITLE`. Contador `gfx frames` existente prueba render.
+foco, las embaldosa con `wl_comp_layout_tile` (una llena, dos en
+vertical, tres o mas en rejilla), compone pixeles reales de cliente
+con `wlcomp_blit` sobre el back-buffer NK y presenta con
+`GFX_PRESENT BUF_NK` (compat con `vga_fb_blit_nk_window`). Geometria
+movil por `wl_comp_set_rect` con validacion. Input: foco posee
+`SYS_MOUSE` / `SYS_KBD` (misma regla que `vga_fb_ps2_owner`). Titulo
+por `GFX_SET_TITLE`. Contador `gfx frames` existente prueba render.
 
 ## Syscalls reservados (no cableados aun)
 
 `243 WL_ATTACH`, `244 WL_COMMIT`, `245 WL_INPUT`. Definidos en
 `progs/minios_abi.h`, fuera del checksum hasta que el kernel los
-responda (entonces se sube `MINIOS_ABI_VERSION`). Hoy wlcomp corre en
-modo shim `pipe()` sin necesitarlos.
+responda (entonces se sube `MINIOS_ABI_VERSION`). Hoy wlcomp compone
+en ring-3 sin necesitarlos.
+
+## Sesion (Fase 2)
+
+La sesion vive separada del transporte y corre sobre cualquier fuente
+de bytes: `wl_stream_t` reensambla mensajes partidos en cualquier
+punto (incluso a mitad de cabecera) con buffer acotado
+(`WL_STREAM_CAP`, `WL_ERR_MORE` pide mas bytes, un size mentiroso
+mata la conexion), `wl_iface_t` lleva las tablas de descriptores
+escritas a mano para las diez interfaces (sin scanner a esta escala),
+`wl_comp_attach_buf` enlaza un buffer a su superficie, y
+`wl_dispatch` enruta cada pedido del subset a las operaciones
+`wl_comp_*` existentes, fallando cerrado ante id salvaje, opcode
+desconocido y payload corto. `wlcomp --selftest` lo prueba con una
+sesion sintetica de nueve mensajes alimentada en dos trozos.
+
+## Multiproceso y escritorio (Fase 3)
+
+El transporte mailbox lleva los primeros bytes vivos entre procesos
+sin ningun cambio de kernel: un mensaje de wire por fichero bajo
+`/shm/wl/<box>-<seq>.msg` (magia `WLMB` mas secuencia), pixeles al
+lado como `<box>.raw` del tamano exacto del ultimo attach. El
+servidor drena como maximo `WL_MBOX_POLL_MAX` ficheros por tick en
+el orden listado (attach y commit son independientes del orden por
+construccion), valida cada marco antes de despachar, borra lo
+consumido y deja los escritos a medias para el proximo poll. Una
+superficie por conexion (la caja duena su slot) acota el servidor a
+`WL_MAX_SURFACES` sin tabla de traduccion; el espacio completo de
+ids queda para el futuro carrier `pipe()`. El ruteo vive en
+`wl_mbox_route` (puro y testeado) y la frescura en `wl_mbox_fresh`;
+el IO (stdio, `DIR_LIST`, `unlink`) queda en `wlcomp.c` y se prueba
+vivo en guest.
+
+`wlcomp` deja de ser demo de un disparo: `--server` dueno de la
+pantalla por `SYS_VGA_MODE`, sube la paleta compartida antes de cada
+present, enfoca al click, arrastra con `wl_comp_set_rect`, remalla
+con `t`, sale con ESC redibujando el escritorio. `--once` drena una
+vez para scripts. `--client` adjunta una superficie desde otro
+proceso. `--clean` borra el directorio. Como el layout redimensiona
+celdas y los pixeles llegan al tamano del attach, el servidor
+reescala al encajar (`wl_scale_nearest`, vecino mas cercano); un raw
+mentiroso cae a tinta solida, nunca a marco roto.
+
+La paleta hibrida de 768 bytes vivia en tres copias identicas
+mientras el programa que mas la necesitaba no tenia ninguna, y en
+VBE truecolor eso se leia como glitch. Hoy vive una vez en
+`progs/nk_palette.h` con los tres sitios como envoltorios delgados,
+y `wlcomp` la sube antes de cada present como toda app NK.
 
 ## Pruebas
 
 `make test-wl` (`tests/test_wl.c` vs `progs/wl/wl_mini.h`): encode/
 decode, bounds, string truncada, object_id salvaje, pool overflow,
-z-order. BDD: `wlcomp --selftest` imprime `wlcomp: frame ok (800x360)`.
-Mutantes: size mentiroso, opcode truncado, attach fuera de ventana.
+z-order, rectangulos, geometria de embaldosado, blit de pixeles,
+roundtrip de attach/commit y pool/id salvaje en decode, reensamblado
+partido, sesion completa de nueve mensajes y tabla de interfaces. BDD:
+`wlcomp --selftest` imprime `wlcomp: frame ok (800x360)`.
+Mutantes: size mentiroso, opcode truncado, attach fuera de ventana,
+columnas de layout, borde de blit, id de commit, ajuste de rect,
+stream partido, consume salteado, attach corto, tamano de creacion,
+lookup de interfaz. Decisión: `docs/adr/0025-wayland-session.md`.

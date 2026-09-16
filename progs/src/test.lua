@@ -133,7 +133,7 @@ end
 -- pcall catches the error so the suite continues.
 
 local function test_bin_cp()
-  local ok, rc = pcall(minios.run, '/cp', {'/src/hello.c', '/tmp/_cp_test.c'})
+  local ok, rc = pcall(minios.run, '/bin/cp', {'/src/hello.c', '/tmp/_cp_test.c'})
   local passed = ok and rc == 0
   check('cp copies file', passed, string.format('exit=%s', tostring(rc)))
 end

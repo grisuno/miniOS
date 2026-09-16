@@ -1209,6 +1209,56 @@ a bounds check, a program with many large argv entries could write below
 checks `l > (p - sbase)` and returns NULL on overflow. `k_exec_user` checks
 the return value and refuses to enter ring 3 with a NULL stack pointer.
 
+### Kernel stack discipline (read before adding ANY kernel local)
+Ring-3 syscalls run on per-proc 16 KB slots (`KSTACK_SZ` in
+`kernel/sched.c`, 64 slots = 1 MB of `.bss`). A chain like
+`write_inode -> journal_touch -> journal_save_entries` nested three 4 KB
+stack frames plus the syscall frames and overflowed the slot, smashing a
+return into a ring-0 `#UD` (`EXCEPTION 6, rip=0x3`, measured on
+`lua -> lua -> /bin/cp` with a MiniFS write). The shell never caught it
+because the shell runs on its own generous boot stack — only isolated
+procs died, which is why single-level shell tests stayed green while
+nested execution (file browser -> vedit -> toolchain) crashed. The
+16 KB size is NOT negotiable upward: the pool already costs 1 MB of
+`.bss` and `_kernel_end` sits ~47 KB below `USER_LOAD_BASE`, so doubling
+the slots does not fit the image budget. Chunking was never the problem:
+the block layer always moved in `MINIFS_BLOCK_SIZE` units correctly; the
+bug was *where the scratch lived* (stack vs heap), not its size.
+
+Rules, enforced by the build, not by review:
+
+1. No kernel function holds a stack frame larger than 2 KB.
+   `CFLAGS_KERN` carries `-Werror=frame-larger-than=2048`, so a violator
+   fails `make` outright. The limit leaves room for ~6 nested frames
+   plus ISR nesting inside one 16 KB slot.
+2. Block-sized scratch is heap, fail-closed on OOM. The pattern is
+   `blk_new`/`blk_free` in `fs/minifs.c` (every runtime MiniFS helper),
+   heap query/reply buffers in `net/net.c` (`net_dns_resolve`,
+   `net_icmp_rx`), a heap hash table in `LZ4_compress_default` (16 KB —
+   OOM degrades to storing uncompressed, the existing fail-closed path),
+   and heap snapshots in `schedtop_report`/`ps`/`ls`/`minifetch`.
+3. Exemptions are named, scoped and boring: `minifs_mount`/`minifs_mkfs`
+   keep stack scratch (boot-time only, deep stacks) via a `#pragma GCC
+   diagnostic` pair each, and `shell_exec_builtin` is exempt because it
+   runs only on the shell's boot stack (no syscall path reaches it; -Os
+   inlines single-use helpers into its frame). Pristine upstream
+   (`CFLAGS_UPSTREAM`: xxhash, stb, miniz, dlmalloc) warns at 32 KB
+   instead — never rewritten for the gate; their entry points run on
+   generous stacks (boot/selftest/ring-3 decode), never on proc slots.
+   A new exemption needs the same proof (which generous stack, why no
+   syscall path), never "it is only a little over".
+4. Verify with depth, not with single-level tests: the repro is a
+   two-level nested spawn doing a real MiniFS write (lua -> lua -> cp),
+   plus the toolchain chain and a background writer. `kstack` reports
+   high-water marks and dead canaries (`kstack: ok` is BDD-pinned), but
+   it only observes — the gate above is what prevents.
+
+Adopted strategies if pressure returns: heap kstacks per proc (192 MB
+heap, frees the 1 MB `.bss` pool entirely, needs leak-proof free on
+every exit path), fewer slots than procs (caps live procs), guard pages
+between slots (needs 4 KB paging work in the identity map first). In
+that order; none scheduled while the gate holds.
+
 ### Syscall argument sanitization (`sanitize.h`)
 Every MiniOS handler takes user pointers only through the `SANITIZE_*`
 macros (range, string, non-negative length, and copy-in with an explicit
@@ -1483,6 +1533,36 @@ mount work — `thdemo` + `fptest` passes, and none of the changed lines
 execute on fptest's path (`k_exec_user`, clone, futex, mmap, FPU) —
 so it belongs to thread/proc teardown, not to this feature.
 
+Known limitation (pre-existing, characterized 2026-09-16, same family
+as `fptest` above): two heavyweight ring-3 processes running
+concurrently can fault one side with `EXCEPTION 0e` (fetch at own
+RODATA/text or a near-null read in glibc init, pid-attributed since
+the fault line carries `pid=` plus the program name). The matrix is
+deterministic about the shape: single-heavyweight runs are always
+clean (paint/file/vedit/nuklear selftests, `fptest`, lua suite pass
+alone and sequentially); an infinite background (Wayland server,
+`doomgeneric` attract loop, micropython file churn) plus a big
+foreground faults one side within seconds, with no Wayland code on
+the failing path (`doomgeneric &` + `paint --selftest` faults doom
+with `-14`). Mechanism, closed one layer at a time: legacy
+`load_exec_elf` wrote the live window and `g_brk`/VMA with no
+preemption guard (now `cli` like the isolated path), `kfd_table`
+had no lock or ownership (now `fd_lock` plus `KFILE` refcounts),
+`block_read` filled its shared cache line unlocked (now private
+fill plus atomic install), whole `kf*` bodies and `unlink` plus
+`dir_list` ran unlocked against each other (now `fs_lock`), and
+dlmalloc ran with `USE_LOCKS` off despite concurrent allocators
+(now on, built-in CAS spin). What remains open is narrower than it
+was: image bytes verify clean at load, the initial stack verifies
+healthy, yet glibc init still jumps wild under sustained overlap,
+so the next audit layer is the preempt park/resume path and the
+MiniFS write internals. Until that lands, run heavyweights
+sequentially (each alone, as `make wl` does) and treat overlapping
+big processes as the known-red configuration instead of a demo
+target. The `make wl` desktop is structured exactly that way:
+clients attach one by one and exit, the server is then the sole
+heavyweight, and the shell stays builtin-only beside it.
+
 ### Network (rtl8139 + slirp)
 The kernel owns an rtl8139 NIC under QEMU user networking (slirp) with the
 standard fixed configuration: address `10.0.2.15`, netmask `255.255.255.0`,
@@ -1743,13 +1823,79 @@ header-only pattern as the `wm_*.h` contracts.
   reserved in `minios_abi.h` outside the checksum; the ABI version moves
   only when the kernel answers them, and the kernel stays a
   single-window compositor until that Phase 2 lands.
+- I tile the surfaces in the compositor instead of overlapping them:
+  `wl_comp_set_rect` moves and resizes one surface with validated
+  geometry, `wl_comp_layout_tile` lays every mapped surface over the
+  frame in z-order (one fills, two split vertically, three or more form
+  a grid with the remainder absorbed), and `wlcomp_blit` composites
+  real client pixels with clipping and a 1px border, falling back to
+  the solid color when a client supplies no pixels. Geometry bounds
+  live in one place (`WL_SURF_MAX_W/H`, reused by `wl_pool_fit`,
+  layout and blit). Clients speak attach/commit over the wire
+  (`wl_attach_encode/decode` for pool plus dimensions,
+  `wl_commit_encode/decode` for the surface id, fail-closed on wild
+  ids, oversize frames and truncation); `freedom_wl` proves adoption
+  by roundtripping both messages in its selftest and host probe while
+  its present path stays `GFX_PRESENT BUF_NK`. Bare `wlcomp` tiles two
+  demo surfaces side by side with generated stripe and checker pixels
+  instead of overlapping solid rects. Live cross-process transport
+  over `pipe()` stays the open step: surfaces are in-compositor state
+  and no shm bytes cross processes yet.
+- I separate the session from the transport (ADR-0025): `wl_stream_t`
+  reassembles messages split anywhere with a bounded buffer
+  (`WL_ERR_MORE` asks for more bytes, a liar size kills the
+  connection), `wl_iface_t` carries the hand-written descriptor tables
+  for the ten interfaces, and `wl_dispatch` routes every subset
+  request to the existing `wl_comp_*` operations, fail-closed on wild
+  ids, unknown opcodes and short payloads. `wlcomp --selftest` drives
+  a nine-message synthetic session fed in two chunks split mid-header.
+  Either future carrier (kernel `pipe()` as new nr 22 handler, or
+  MiniFS mailbox files as a zero-kernel interim) feeds the stream
+  unchanged. The kernel audit behind this stands: no `pipe()`
+  handler exists, sockets serve TCP only, and there is no `AF_UNIX`,
+  `socketpair`, `SCM_RIGHTS` or `dup`, so live multi-process bytes
+  are Fase 3, never assumed here.
+- I carry live multiprocess bytes on mailbox files (ADR-0026):
+  one wire message per file under `/shm/wl/<box>-<seq>.msg`
+  (`WLMB` magic plus sequence), pixels beside it as `<box>.raw`
+  sized by the last attach. The server drains at most
+  `WL_MBOX_POLL_MAX` files per tick, validates every frame before
+  dispatch, unlinks what it consumed and leaves torn writes for the
+  next poll. One surface per connection bounds the server with no id
+  translation table; routing (`wl_mbox_route`) and freshness
+  (`wl_mbox_fresh`) stay pure and host-tested while stdio, `DIR_LIST`
+  and `unlink` live in `wlcomp.c` and prove out live in the guest.
+  `wlcomp` is a desktop now: `--server` owns the display, focuses on
+  click, drags through `wl_comp_set_rect`, re-tiles on `t`, quits on
+  ESC; `--once` drains once for scripts; `--client` attaches from a
+  second process; `--clean` clears the directory. Layout resizes
+  cells while pixels arrive at attach size, so the server rescales on
+  fit (`wl_scale_nearest`); a lying raw degrades to solid ink, never
+  a torn frame. `make wl` boots this desktop directly (Fase 4,
+  `tools/boot_wl.sh`).
+- The 768-byte hybrid palette lived in three identical copies while
+  the program that needed it most had none, which read as a glitch
+  on truecolor VBE modes. It lives once in `progs/nk_palette.h`
+  with the three call sites as thin wrappers, and `wlcomp` uploads
+  it before every present like every other NK-window app.
 - Proof: `make test-wl` (host, wire roundtrip plus fail-closed bounds:
-  liar size, truncated opcode, wild object id, pool overflow),
+  liar size, truncated opcode, wild object id, pool overflow, rect
+  bounds, tile geometry, pixel blit, attach/commit roundtrip and wild
+  pool/id on decode, split reassembly, nine-message session, iface
+  table, mailbox names plus frames plus route plus freshness, palette
+  bytes, scaler vectors),
   `wlcomp --selftest` prints `wlcomp: frame ok (800x360)`, and bare
   `wlcomp` composites two demo surfaces
   (`wlcomp: presented 2 surfaces (800x360)`, BDD-pinned beside the
-  `gfx frames` climb). Mutants for the three reserved numbers and the
-  size check die in the host suite.
+  `gfx frames` climb). Live proof is `wlcomp --client` plus
+  `wlcomp --once` beside the `gfx frames` climb from 0 to 1, and a
+  headless QMP screendump carrying desktop-exact inks. Mutants for
+  the three reserved numbers and the size check die in the host
+  suite; fifteen scoped mutants over the header paths (layout
+  columns, attach pool, blit border, commit id, rect fit, stream
+  split, consume skip, short attach, create size, iface lookup,
+  scale axes, mailbox magic, mailbox freshness, route commit, route
+  short) die in `make test-wl` via `tools/wl_scoped.sh`.
 
 ### Ramdisk names
 File names are at most `RAMDISK_FNAME_LEN - 1` characters. Names may

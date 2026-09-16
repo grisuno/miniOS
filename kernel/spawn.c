@@ -25,11 +25,11 @@ void spawn_backup(spawn_ctx_t *ctx)
     ctx->free_root = vma_free_root;
     ctx->pool_n = vma_pool_n;
     for (i = 0; i < KFD_MAX; i++)
-        ctx->kfd[i] = kfd_table[i];
+        ctx->kfd[i] = kfd_get(i);
 }
 
 /** Docstring: Restore a view previously saved by spawn_backup. */
-void spawn_restore(const spawn_ctx_t *ctx)
+void spawn_restore(spawn_ctx_t *ctx)
 {
     int i;
     g_brk = ctx->brk;
@@ -43,8 +43,25 @@ void spawn_restore(const spawn_ctx_t *ctx)
     vma_free_root = ctx->free_root;
     wrmsr(MSR_FSBASE, ctx->fsbase);
     wrmsr(MSR_GSBASE, ctx->gsbase);
-    for (i = 0; i < KFD_MAX; i++)
-        kfd_table[i] = ctx->kfd[i];
+    {
+        irqflags_t flags_irq;
+        KFILE *drop[KFD_MAX];
+        int ndrop = 0;
+        spin_lock_irqsave(&fd_lock, &flags_irq);
+        for (i = 0; i < KFD_MAX; i++) {
+            KFILE *old = kfd_table[i];
+            kfd_table[i] = ctx->kfd[i];
+            ctx->kfd[i] = 0;
+            if (old) {
+                old->ref--;
+                if (old->ref <= 0 && ndrop < KFD_MAX)
+                    drop[ndrop++] = old;
+            }
+        }
+        spin_unlock_irqrestore(&fd_lock, flags_irq);
+        for (i = 0; i < ndrop; i++)
+            kfclose(drop[i]);
+    }
 }
 
 /** Docstring: Release a copy produced by spawn_copy_argv. */

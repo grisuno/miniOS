@@ -146,7 +146,7 @@ def test_spawn_preserves_interpreter():
 # reports FAIL and continues instead of aborting.
 
 def test_bin_cp():
-    rc = safe_run('/cp', ['/src/hello.c', '/tmp/_cp_test.c'])
+    rc = safe_run('/bin/cp', ['/src/hello.c', '/tmp/_cp_test.c'])
     check('cp copies file', rc == 0, 'exit=%s' % str(rc))
 
 

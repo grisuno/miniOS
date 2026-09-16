@@ -39,7 +39,10 @@ int LZ4_compressBound(int inputSize)
 
 int LZ4_compress_default(const char *src, char *dst, int srcSize, int dstCapacity)
 {
-    int hash_table[HASH_SIZE];
+    /* Heap hash table: 16 KB must not live in this frame — compression
+     * runs from file writes on 16 KB proc slots (stack discipline,
+     * CLAUDE.md). OOM returns 0 and the caller stores uncompressed. */
+    int *hash_table = (int *)kmalloc(sizeof(int) * HASH_SIZE);
     const unsigned char *input = (const unsigned char *)src;
     unsigned char *op = (unsigned char *)dst;
     const unsigned char *anchor = input;
@@ -47,12 +50,19 @@ int LZ4_compress_default(const char *src, char *dst, int srcSize, int dstCapacit
     const unsigned char *iend = input + srcSize;
     int ml_field, ll_field, token;
 
-    if (srcSize <= 0)
+    int rc;
+    if (!hash_table)
         return 0;
-    if (dstCapacity < LZ4_compressBound(srcSize))
+    if (srcSize <= 0) {
+        kfree(hash_table);
         return 0;
+    }
+    if (dstCapacity < LZ4_compressBound(srcSize)) {
+        kfree(hash_table);
+        return 0;
+    }
 
-    kmemset(hash_table, 0, sizeof(hash_table));
+    kmemset(hash_table, 0, sizeof(int) * HASH_SIZE);
 
     if (srcSize < 13)
         goto _last_literals;
@@ -158,7 +168,9 @@ _last_literals:
         op += remaining;
     }
 
-    return (int)(op - (unsigned char *)dst);
+    rc = (int)(op - (unsigned char *)dst);
+    kfree(hash_table);
+    return rc;
 }
 
 int LZ4_decompress_safe(const char *src, char *dst, int compressedSize, int dstCapacity)
