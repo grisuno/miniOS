@@ -2119,7 +2119,7 @@ system would not exist.
   previews, icons and paint files.
 - [xxHash](https://github.com/cyan4973/xxhash), by Yann Collet and contributors: the checksums behind the
   integrity selftests.
-- The pokecrystal disassembly project and its community: the data source
+- [The pokecrystal disassembly project](https://github.com/arcanite24/gb-recompiled) and its community: the data source
   the Pokemon target builds from. [gb-recompiled](https://github.com/arcanite24/gb-recompiled)
 - [QEMU](https://www.qemu.org/), by Fabrice Bellard and the QEMU developers: the machine MiniOS
   boots, tests and debugs on every day of development.
