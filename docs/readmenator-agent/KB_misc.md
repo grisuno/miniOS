@@ -1,0 +1,1526 @@
+# Subsystem: misc
+
+## headers/arch/x86/boot/bootdefs.h
+- Layer: utility
+- Doc: bootdefs.h - centralized configuration for the MiniOS two-stage boot path.
+- Language: h
+- Symbols:
+  - `address` (function, line 179) `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and 64-bit GDT stage 2 built for the BSP. */ #define AP_STUB_ADDR 0x6000 #define GDT64_COD`
+  - `BOOTDEFS_H` (macro, line 46) `#define BOOTDEFS_H`
+  - `SECTOR_BYTES` (macro, line 47) `#define SECTOR_BYTES`
+  - `SECTOR_PARAGRAPH_SHIFT` (macro, line 49) `#define SECTOR_PARAGRAPH_SHIFT`
+  - `SECTOR_DWORD_SHIFT` (macro, line 50) `#define SECTOR_DWORD_SHIFT`
+  - `BOOT_SIGNATURE` (macro, line 51) `#define BOOT_SIGNATURE`
+  - `BOOT_SIGNATURE_BYTES` (macro, line 53) `#define BOOT_SIGNATURE_BYTES`
+  - `BOOT_SEG_NULL` (macro, line 54) `#define BOOT_SEG_NULL`
+  - `BOOT_STACK_TOP` (macro, line 56) `#define BOOT_STACK_TOP`
+  - `BOOT_DAP_ADDR` (macro, line 57) `#define BOOT_DAP_ADDR`
+  - `BOOT_DAP_SIZE` (macro, line 59) `#define BOOT_DAP_SIZE`
+  - `BOOT_DAP_OFF_COUNT` (macro, line 60) `#define BOOT_DAP_OFF_COUNT`
+  - `BOOT_DAP_OFF_OFFSET` (macro, line 61) `#define BOOT_DAP_OFF_OFFSET`
+  - `BOOT_DAP_OFF_SEGMENT` (macro, line 62) `#define BOOT_DAP_OFF_SEGMENT`
+  - `BOOT_DAP_OFF_LBA_LO` (macro, line 63) `#define BOOT_DAP_OFF_LBA_LO`
+  - `BOOT_DAP_OFF_LBA_HI` (macro, line 64) `#define BOOT_DAP_OFF_LBA_HI`
+  - `BOOT_DRIVE_ADDR` (macro, line 65) `#define BOOT_DRIVE_ADDR`
+  - `BOOT_KASLR_ADDR` (macro, line 66) `#define BOOT_KASLR_ADDR`
+  - `BOOT_STAGE2_LBA` (macro, line 67) `#define BOOT_STAGE2_LBA`
+  - `BOOT_STAGE2_SECTORS` (macro, line 69) `#define BOOT_STAGE2_SECTORS`
+  - `BOOT_STAGE2_ADDR` (macro, line 70) `#define BOOT_STAGE2_ADDR`
+  - `BOOT_STAGE2_SEG` (macro, line 71) `#define BOOT_STAGE2_SEG`
+  - `BOOT_KERNEL_LBA` (macro, line 72) `#define BOOT_KERNEL_LBA`
+  - `BOOT_KERNEL_BUF_ADDR` (macro, line 74) `#define BOOT_KERNEL_BUF_ADDR`
+  - `BOOT_KERNEL_BUF_SEG` (macro, line 75) `#define BOOT_KERNEL_BUF_SEG`
+  - `BOOT_KERNEL_PHYS_ADDR` (macro, line 76) `#define BOOT_KERNEL_PHYS_ADDR`
+  - `BOOT_CHUNK_SECTORS` (macro, line 77) `#define BOOT_CHUNK_SECTORS`
+  - `BOOT_BIOS_MAX_SECTORS` (macro, line 79) `#define BOOT_BIOS_MAX_SECTORS`
+  - `BOOT_PM_STACK_TOP` (macro, line 80) `#define BOOT_PM_STACK_TOP`
+  - `BIOS_DISK_INT` (macro, line 82) `#define BIOS_DISK_INT`
+  - `BIOS_DISK_EXT_CHECK` (macro, line 84) `#define BIOS_DISK_EXT_CHECK`
+  - `BIOS_DISK_EXT_REQ_MAGIC` (macro, line 85) `#define BIOS_DISK_EXT_REQ_MAGIC`
+  - `BIOS_DISK_EXT_ACK_MAGIC` (macro, line 86) `#define BIOS_DISK_EXT_ACK_MAGIC`
+  - `BIOS_DISK_EXT_PACKET_BIT` (macro, line 87) `#define BIOS_DISK_EXT_PACKET_BIT`
+  - `BIOS_DISK_READ_EXT` (macro, line 88) `#define BIOS_DISK_READ_EXT`
+  - `BIOS_VIDEO_INT` (macro, line 89) `#define BIOS_VIDEO_INT`
+  - `BIOS_VIDEO_TTY_WRITE` (macro, line 91) `#define BIOS_VIDEO_TTY_WRITE`
+  - `BIOS_VIDEO_TTY_ATTR` (macro, line 92) `#define BIOS_VIDEO_TTY_ATTR`
+  - `BIOS_VIDEO_SET_MODE` (macro, line 93) `#define BIOS_VIDEO_SET_MODE`
+  - `BIOS_VBE_GET_MODE_INFO` (macro, line 106) `#define BIOS_VBE_GET_MODE_INFO`
+  - `BIOS_VBE_SET_MODE` (macro, line 107) `#define BIOS_VBE_SET_MODE`
+  - `VBE_MODE_1024x768x32` (macro, line 108) `#define VBE_MODE_1024x768x32`
+  - `VBE_MODE_800x600x32` (macro, line 109) `#define VBE_MODE_800x600x32`
+  - `VBE_MODE_640x480x32` (macro, line 110) `#define VBE_MODE_640x480x32`
+  - `VBE_MODE_1024x768x8` (macro, line 111) `#define VBE_MODE_1024x768x8`
+  - `VBE_MODE_800x600x8` (macro, line 112) `#define VBE_MODE_800x600x8`
+  - `VBE_MODE_640x480x8` (macro, line 113) `#define VBE_MODE_640x480x8`
+  - `VBE_MODE_LFB` (macro, line 114) `#define VBE_MODE_LFB`
+  - `VBE_MODE_INFO_ADDR` (macro, line 115) `#define VBE_MODE_INFO_ADDR`
+  - `VBE_MODE_ATTR_OFF` (macro, line 116) `#define VBE_MODE_ATTR_OFF`
+  - `VBE_ATTR_SUPPORTED` (macro, line 117) `#define VBE_ATTR_SUPPORTED`
+  - `VBE_ATTR_LFB` (macro, line 118) `#define VBE_ATTR_LFB`
+  - `VBE_INFO_XRES_OFF` (macro, line 119) `#define VBE_INFO_XRES_OFF`
+  - `VBE_INFO_YRES_OFF` (macro, line 120) `#define VBE_INFO_YRES_OFF`
+  - `VBE_INFO_BYTES_SCAN_OFF` (macro, line 121) `#define VBE_INFO_BYTES_SCAN_OFF`
+  - `VBE_INFO_PHYSBASE_OFF` (macro, line 122) `#define VBE_INFO_PHYSBASE_OFF`
+  - `VBE_INFO_BPP_SRC_OFF` (macro, line 123) `#define VBE_INFO_BPP_SRC_OFF`
+  - `VBE_BPP_8` (macro, line 124) `#define VBE_BPP_8`
+  - `VBE_BPP_24` (macro, line 125) `#define VBE_BPP_24`
+  - `VBE_BPP_32` (macro, line 126) `#define VBE_BPP_32`
+  - `VBE_INFO_ADDR` (macro, line 138) `#define VBE_INFO_ADDR`
+  - `VBE_INFO_FBBASE_OFF` (macro, line 139) `#define VBE_INFO_FBBASE_OFF`
+  - `VBE_INFO_PITCH_OFF` (macro, line 140) `#define VBE_INFO_PITCH_OFF`
+  - `VBE_INFO_WIDTH_OFF` (macro, line 141) `#define VBE_INFO_WIDTH_OFF`
+  - `VBE_INFO_HEIGHT_OFF` (macro, line 142) `#define VBE_INFO_HEIGHT_OFF`
+  - `VBE_INFO_VALID_OFF` (macro, line 143) `#define VBE_INFO_VALID_OFF`
+  - `VBE_INFO_BPP_OFF` (macro, line 144) `#define VBE_INFO_BPP_OFF`
+  - `A20_CONTROL_PORT` (macro, line 145) `#define A20_CONTROL_PORT`
+  - `A20_ENABLE_BIT` (macro, line 147) `#define A20_ENABLE_BIT`
+  - `A20_RESET_CLEAR_MASK` (macro, line 148) `#define A20_RESET_CLEAR_MASK`
+  - `CR0_PE` (macro, line 149) `#define CR0_PE`
+  - `CR0_PE_CLEAR_MASK` (macro, line 151) `#define CR0_PE_CLEAR_MASK`
+  - `CR0_PG` (macro, line 152) `#define CR0_PG`
+  - `CR4_PAE` (macro, line 153) `#define CR4_PAE`
+  - `MSR_EFER` (macro, line 154) `#define MSR_EFER`
+  - `EFER_LME` (macro, line 156) `#define EFER_LME`
+  - `EFER_NXE` (macro, line 157) `#define EFER_NXE`
+  - `GDT32_CODE32_SEL` (macro, line 158) `#define GDT32_CODE32_SEL`
+  - `GDT32_DATA32_SEL` (macro, line 160) `#define GDT32_DATA32_SEL`
+  - `GDT32_CODE16_SEL` (macro, line 161) `#define GDT32_CODE16_SEL`
+  - `GDT32_DATA16_SEL` (macro, line 162) `#define GDT32_DATA16_SEL`
+  - `GDT32_DESC_NULL` (macro, line 163) `#define GDT32_DESC_NULL`
+  - `GDT32_DESC_CODE32` (macro, line 165) `#define GDT32_DESC_CODE32`
+  - `GDT32_DESC_DATA32` (macro, line 166) `#define GDT32_DESC_DATA32`
+  - `GDT32_DESC_CODE16` (macro, line 167) `#define GDT32_DESC_CODE16`
+  - `GDT32_DESC_DATA16` (macro, line 168) `#define GDT32_DESC_DATA16`
+  - `GDT64_ADDR` (macro, line 169) `#define GDT64_ADDR`
+  - `GDT64_BYTES` (macro, line 171) `#define GDT64_BYTES`
+  - `GDT64_SMP_BYTES` (macro, line 176) `#define GDT64_SMP_BYTES`
+  - `AP_STUB_ADDR` (macro, line 181) `#define AP_STUB_ADDR`
+  - `GDT64_CODE_SEL` (macro, line 182) `#define GDT64_CODE_SEL`
+  - `GDT64_DATA_SEL` (macro, line 183) `#define GDT64_DATA_SEL`
+  - `GDT64_USER_DATA_SEL` (macro, line 184) `#define GDT64_USER_DATA_SEL`
+  - `GDT64_USER_CODE_SEL` (macro, line 185) `#define GDT64_USER_CODE_SEL`
+  - `GDT64_DESC_NULL` (macro, line 186) `#define GDT64_DESC_NULL`
+  - `GDT64_DESC_CODE` (macro, line 187) `#define GDT64_DESC_CODE`
+  - `GDT64_DESC_DATA` (macro, line 188) `#define GDT64_DESC_DATA`
+  - `GDT64_DESC_UDATA` (macro, line 189) `#define GDT64_DESC_UDATA`
+  - `GDT64_DESC_UCODE` (macro, line 190) `#define GDT64_DESC_UCODE`
+  - `PT_PML4_ADDR` (macro, line 191) `#define PT_PML4_ADDR`
+  - `PT_PDPT_ADDR` (macro, line 193) `#define PT_PDPT_ADDR`
+  - `PT_PD_ADDR` (macro, line 194) `#define PT_PD_ADDR`
+  - `PT_USER0_ADDR` (macro, line 195) `#define PT_USER0_ADDR`
+  - `PT_USER1_ADDR` (macro, line 196) `#define PT_USER1_ADDR`
+  - `PT_ZERO_DWORDS` (macro, line 197) `#define PT_ZERO_DWORDS`
+  - `PT_FLAGS_PRESENT_RW` (macro, line 198) `#define PT_FLAGS_PRESENT_RW`
+  - `PT_FLAGS_PRESENT_RW_PS` (macro, line 199) `#define PT_FLAGS_PRESENT_RW_PS`
+  - `PT_FLAGS_PS` (macro, line 200) `#define PT_FLAGS_PS`
+  - `PT_FLAGS_USER` (macro, line 201) `#define PT_FLAGS_USER`
+  - `PT_FLAGS_PCD` (macro, line 202) `#define PT_FLAGS_PCD`
+  - `PT_FLAGS_NX` (macro, line 203) `#define PT_FLAGS_NX`
+  - `PT_ADDR_MASK` (macro, line 204) `#define PT_ADDR_MASK`
+  - `PT_USER_ENTRY` (macro, line 205) `#define PT_USER_ENTRY`
+  - `PT_USER_NX_ENTRY` (macro, line 206) `#define PT_USER_NX_ENTRY`
+  - `PT_ENTRY_PRESENT` (macro, line 207) `#define PT_ENTRY_PRESENT`
+  - `PT_ENTRY_USER` (macro, line 208) `#define PT_ENTRY_USER`
+  - `SB16_DMA_PT_ENTRY` (macro, line 214) `#define SB16_DMA_PT_ENTRY`
+  - `SB16_DMA_PT_PAGES` (macro, line 215) `#define SB16_DMA_PT_PAGES`
+  - `PT_PD_ENTRIES` (macro, line 216) `#define PT_PD_ENTRIES`
+  - `PT_PD_ENTRY_BYTES` (macro, line 217) `#define PT_PD_ENTRY_BYTES`
+  - `PT_PD_PAGE_BYTES` (macro, line 218) `#define PT_PD_PAGE_BYTES`
+  - `PT_PD_INDEX_SHIFT` (macro, line 219) `#define PT_PD_INDEX_SHIFT`
+  - `PT_FILL_START_INDEX` (macro, line 220) `#define PT_FILL_START_INDEX`
+  - `PT_FILL_START_ADDR` (macro, line 221) `#define PT_FILL_START_ADDR`
+  - `PT_FILL_ENTRIES` (macro, line 222) `#define PT_FILL_ENTRIES`
+  - `PT_USER_TABLES_ADDR` (macro, line 242) `#define PT_USER_TABLES_ADDR`
+  - `PT_USER_TABLES_BYTES` (macro, line 243) `#define PT_USER_TABLES_BYTES`
+  - `KASLR_MIN_ADDR` (macro, line 255) `#define KASLR_MIN_ADDR`
+  - `KASLR_ALIGN_SHIFT` (macro, line 256) `#define KASLR_ALIGN_SHIFT`
+  - `KASLR_MAX_UNITS` (macro, line 257) `#define KASLR_MAX_UNITS`
+  - `KASLR_IMG_OFF_1MB` (macro, line 258) `#define KASLR_IMG_OFF_1MB`
+  - `KASLR_IMG_OFF_2MB` (macro, line 259) `#define KASLR_IMG_OFF_2MB`
+  - `KASLR_IMAGE_SPAN` (macro, line 260) `#define KASLR_IMAGE_SPAN`
+  - `CMOS_INDEX_PORT` (macro, line 261) `#define CMOS_INDEX_PORT`
+  - `CMOS_DATA_PORT` (macro, line 263) `#define CMOS_DATA_PORT`
+  - `CMOS_NMI_DISABLE` (macro, line 264) `#define CMOS_NMI_DISABLE`
+  - `CMOS_REG_SECONDS` (macro, line 265) `#define CMOS_REG_SECONDS`
+  - `CMOS_REG_MINUTES` (macro, line 266) `#define CMOS_REG_MINUTES`
+  - `CMOS_REG_HOURS` (macro, line 267) `#define CMOS_REG_HOURS`
+- Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
+
+## headers/net/rtl8139.h
+- Layer: utility
+- Doc: ifndef RTL8139_H define RTL8139_H
+- Language: h
+- Symbols:
+  - `rtl_present` (function, line 18) `int rtl_present(void);`
+  - `rtl_init` (function, line 21) `void rtl_init(void);`
+  - `rtl_send` (function, line 25) `int rtl_send(const unsigned char *frame, unsigned len);`
+  - `net_rx_handle_frame` (function, line 28) `* net_rx_handle_frame (the protocol demux in net.c). */ void rtl_poll(void);`
+  - `rtl_get_mac` (function, line 32) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN]);`
+  - `rtl_iobase` (function, line 35) `unsigned short rtl_iobase(void);`
+  - `rtl_counters` (function, line 38) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
+  - `RTL8139_H` (macro, line 2) `#define RTL8139_H`
+- Depends on: `headers/net.h`
+- Imported by: `net/net.c`, `net/rtl8139.c`
+
+## progs/doomedit/doomedit.c
+- Layer: infrastructure
+- Doc: doomedit.c - tile map editor that builds playable Doom PWADs.
+- Language: c
+- Symbols:
+  - `dmap_thing_type` (function, line 165) `static int dmap_thing_type(int cell)`
+  - `dmap_push_history` (function, line 271) `static void dmap_push_history(void)`
+  - `dmap_undo` (function, line 288) `static int dmap_undo(void)`
+  - `dmap_redo` (function, line 306) `static int dmap_redo(void)`
+  - `dmap_apply_cell` (function, line 326) `static void dmap_apply_cell(int r, int c, int brush)`
+  - `dmap_flood_fill` (function, line 344) `static void dmap_flood_fill(int sr, int sc, int new_cell)`
+  - `dmap_draw_line` (function, line 383) `static void dmap_draw_line(int r0, int c0, int r1, int c1, int cell)`
+  - `dmap_draw_rect` (function, line 411) `static void dmap_draw_rect(int r0, int c0, int r1, int c1, int cell)`
+  - `dmap_reach_map` (function, line 440) `static void dmap_reach_map(int seen[DMAP_MAX_H][DMAP_MAX_W])`
+  - `dmap_path_len` (function, line 480) `static int dmap_path_len(void)`
+  - `dmap_stats` (function, line 522) `static void dmap_stats(char *out, int max)`
+  - `dmap_spawn` (function, line 550) `static long dmap_spawn(const char *path, int argc, const char **argv)`
+  - `dmap_vga` (function, line 561) `static long dmap_vga(int on)`
+  - `dmap_is_wall` (function, line 570) `static int dmap_is_wall(int row, int col)`
+  - `dmap_walkable` (function, line 577) `static int dmap_walkable(int cell)`
+  - `dmap_cell_class` (function, line 583) `static int dmap_cell_class(int cell)`
+  - `dmap_cell_color` (function, line 594) `static struct nk_color dmap_cell_color(int cell)`
+  - `dmap_new` (function, line 639) `static void dmap_new(void)`
+  - `dmap_recenter` (function, line 804) `static void dmap_recenter(void)`
+  - `dmap_load_preset` (function, line 816) `static int dmap_load_preset(int idx)`
+  - `dmap_rand` (function, line 849) `static unsigned dmap_rand(void)`
+  - `dmap_free_cell` (function, line 857) `static int dmap_free_cell(int *r, int *c)`
+  - `dmap_random_map` (function, line 871) `static void dmap_random_map(unsigned seed)`
+  - `dmap_load` (function, line 1077) `static int dmap_load(const char *path)`
+  - `dmap_save_txt` (function, line 1129) `static int dmap_save_txt(const char *path)`
+  - `dmap_label_regions` (function, line 1163) `static int dmap_label_regions(void)`
+  - `dmap_validate` (function, line 1244) `static int dmap_validate(char *msg, int max)`
+  - `dmap_w8` (function, line 1317) `static void dmap_w8(unsigned v)`
+  - `dmap_w16` (function, line 1318) `static void dmap_w16(int v)`
+  - `dmap_w32` (function, line 1322) `static void dmap_w32(int v)`
+  - `dmap_wtex` (function, line 1326) `static void dmap_wtex(const char *name)`
+  - `dmap_seg_angle` (function, line 1333) `static int dmap_seg_angle(int dx, int dy)`
+  - `dmap_build_wad` (function, line 1343) `static int dmap_build_wad(int *size_out)`
+  - `dmap_export_wad` (function, line 1660) `static int dmap_export_wad(const char *path)`
+  - `dmap_check_wad` (function, line 1675) `static int dmap_check_wad(const char *path)`
+  - `dmap_preview` (function, line 1693) `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)`
+  - `dmap_brush_combo` (function, line 1760) `static void dmap_brush_combo(struct nk_context *ctx)`
+  - `dmap_canvas` (function, line 1773) `static void dmap_canvas(struct nk_context *ctx)`
+  - `dmap_preview_row` (function, line 1863) `static void dmap_preview_row(struct nk_context *ctx)`
+  - `dmap_run_map` (function, line 1898) `static void dmap_run_map(void)`
+  - `dmap_scancode` (function, line 2037) `static void dmap_scancode(int code, int make, int e0, void *ud)`
+  - `dmap_gui_run` (function, line 2056) `static void dmap_gui_run(void)`
+  - `dmap_demo_room` (function, line 2110) `static void dmap_demo_room(void)`
+  - `dmap_selftest` (function, line 2122) `static int dmap_selftest(void)`
+  - `main` (function, line 2237) `int main(int argc, char **argv)`
+  - `memcpy` (function, line 278) `memcpy(dmap_undo_g[i], dmap_undo_g[i + 1], sizeof(dmap_undo_g[i]));`
+  - `snprintf` (function, line 541) `else snprintf(out, (size_t)max, "%dx%d floor %d path - mon %d: %s", dmap_w, dmap_h, floors, monsters, msg);`
+  - `volatile` (function, line 553) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_SPAWN), "D"(path), "S"((long)0), "d"((long)argc), "r"(r10) : "rcx", "r11", "memory");`
+  - `nk_rgb` (function, line 596) `case DMAP_WALL: return nk_rgb(150, 110, 70);`
+  - `fclose` (function, line 1090) `fclose(fp);`
+  - `areas` (function, line 1150) `* floor areas (doors stand alone, dark and nukage never merge);`
+  - `nk_fill_rect` (function, line 1700) `nk_fill_rect(canvas, top, 0.0f, nk_rgb(24, 24, 40));`
+  - `nk_layout_row_dynamic` (function, line 1762) `nk_layout_row_dynamic(ctx, 22, 1);`
+  - `nk_combobox` (function, line 1763) `nk_combobox(ctx, dmap_brush_labels, DMAP_BRUSH_COUNT, &dmap_brush_sel, 20, nk_vec2(280, 260));`
+  - `nk_stroke_rect` (function, line 1798) `nk_stroke_rect(canvas, nk_rect(total.x + 4.0f + (float)(col * DMAP_CELL_PX), total.y + 4.0f + (float)(row * DMAP_CELL_PX), (float)(DMAP_CELL_PX - 1), (float)(DMAP_CELL_PX - 1)), 0.0f, 1.0f, nk_rgb(255`
+  - `nk_stroke_line` (function, line 1810) `nk_stroke_line(canvas, total.x + 4.0f, y, total.x + 4.0f + (float)(dmap_w * DMAP_CELL_PX), y, 1.0f, line);`
+  - `nk_layout_row_static` (function, line 1866) `nk_layout_row_static(ctx, (float)(DMAP_PREV_H + 8), DMAP_PREV_W + 8, 1);`
+  - `nk_sys_kbd_raw` (function, line 1912) `nk_sys_kbd_raw(0);`
+  - `nk_sys_gfx_set_title` (function, line 1920) `nk_sys_gfx_set_title(DMAP_TITLE);`
+  - `nk_end` (function, line 1934) `nk_end(ctx);`
+  - `nk_label` (function, line 1981) `nk_label(ctx, line, NK_TEXT_LEFT);`
+  - `nk_layout_row_begin` (function, line 1983) `nk_layout_row_begin(ctx, NK_STATIC, row_h, 2);`
+  - `nk_layout_row_push` (function, line 1984) `nk_layout_row_push(ctx, (float)DMAP_CANVAS_W);`
+  - `nk_layout_row_end` (function, line 2017) `nk_layout_row_end(ctx);`
+  - `nk_group_end` (function, line 2026) `nk_group_end(ctx);`
+  - `nk_sys_vga_mode` (function, line 2061) `nk_sys_vga_mode(1);`
+  - `nk_build_palette` (function, line 2064) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 2065) `nk_sys_palette(pal768);`
+  - `printf` (function, line 2067) `printf("doomedit: init failed\n");`
+  - `nk_theme_apply` (function, line 2072) `nk_theme_apply(&ctx, 0);`
+  - `nk_set_scancode_hook` (function, line 2074) `nk_set_scancode_hook(dmap_scancode, 0);`
+  - `nk_input_begin` (function, line 2076) `nk_input_begin(&ctx);`
+  - `nk_poll_input` (function, line 2077) `nk_poll_input(&ctx);`
+  - `nk_input_end` (function, line 2078) `nk_input_end(&ctx);`
+  - `dmap_build` (function, line 2093) `dmap_build(&ctx);`
+  - `nk_rasterize` (function, line 2094) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 2097) `nk_clear(&ctx);`
+  - `nk_free` (function, line 2104) `nk_free(&ctx);`
+  - `nk_sys_fb_info` (function, line 2150) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `DMAP_MAX_W` (macro, line 55) `#define DMAP_MAX_W`
+  - `DMAP_MAX_H` (macro, line 56) `#define DMAP_MAX_H`
+  - `DMAP_DEF_W` (macro, line 57) `#define DMAP_DEF_W`
+  - `DMAP_DEF_H` (macro, line 58) `#define DMAP_DEF_H`
+  - `DMAP_TILE` (macro, line 59) `#define DMAP_TILE`
+  - `DMAP_CELL_PX` (macro, line 60) `#define DMAP_CELL_PX`
+  - `DMAP_CANVAS_W` (macro, line 61) `#define DMAP_CANVAS_W`
+  - `DMAP_PANEL_MIN_H` (macro, line 62) `#define DMAP_PANEL_MIN_H`
+  - `DMAP_PREV_W` (macro, line 63) `#define DMAP_PREV_W`
+  - `DMAP_PREV_H` (macro, line 64) `#define DMAP_PREV_H`
+  - `DMAP_UI_MEMORY` (macro, line 65) `#define DMAP_UI_MEMORY`
+  - `DMAP_WAD_MAX` (macro, line 66) `#define DMAP_WAD_MAX`
+  - `DMAP_FNAME_MAX` (macro, line 67) `#define DMAP_FNAME_MAX`
+  - `DMAP_STATUS_MAX` (macro, line 68) `#define DMAP_STATUS_MAX`
+  - `DMAP_SLOTS` (macro, line 69) `#define DMAP_SLOTS`
+  - `DMAP_LEVEL_COUNT` (macro, line 70) `#define DMAP_LEVEL_COUNT`
+  - `DMAP_RANDOM_ATTEMPTS` (macro, line 71) `#define DMAP_RANDOM_ATTEMPTS`
+  - `DMAP_MAX_SECTORS` (macro, line 72) `#define DMAP_MAX_SECTORS`
+  - `DMAP_ROOM_MAX` (macro, line 73) `#define DMAP_ROOM_MAX`
+  - `DMAP_ROOM_TRIES` (macro, line 74) `#define DMAP_ROOM_TRIES`
+  - `DMAP_FRAME_MS` (macro, line 75) `#define DMAP_FRAME_MS`
+  - `DMAP_TURN_STEP` (macro, line 76) `#define DMAP_TURN_STEP`
+  - `DMAP_MOVE_STEP` (macro, line 77) `#define DMAP_MOVE_STEP`
+  - `DMAP_FOV_PLANE` (macro, line 78) `#define DMAP_FOV_PLANE`
+  - `DMAP_MAX_LINES` (macro, line 79) `#define DMAP_MAX_LINES`
+  - `DMAP_MAX_VERTS` (macro, line 80) `#define DMAP_MAX_VERTS`
+  - `DMAP_MAX_THINGS` (macro, line 81) `#define DMAP_MAX_THINGS`
+  - `DMAP_PLAYER_TYPE` (macro, line 82) `#define DMAP_PLAYER_TYPE`
+  - `DMAP_THING_OPT` (macro, line 83) `#define DMAP_THING_OPT`
+  - `DMAP_EXIT_SPECIAL` (macro, line 84) `#define DMAP_EXIT_SPECIAL`
+  - `DMAP_DOOR_SPECIAL` (macro, line 85) `#define DMAP_DOOR_SPECIAL`
+  - `DMAP_FLAG_BLOCKING` (macro, line 86) `#define DMAP_FLAG_BLOCKING`
+  - `DMAP_FLAG_TWOSIDED` (macro, line 87) `#define DMAP_FLAG_TWOSIDED`
+  - `DMAP_NO_SIDE` (macro, line 88) `#define DMAP_NO_SIDE`
+  - `DMAP_WALL_MID` (macro, line 89) `#define DMAP_WALL_MID`
+  - `DMAP_EXIT_MID` (macro, line 90) `#define DMAP_EXIT_MID`
+  - `DMAP_DOOR_UPPER` (macro, line 91) `#define DMAP_DOOR_UPPER`
+  - `DMAP_DARK_MID` (macro, line 92) `#define DMAP_DARK_MID`
+  - `DMAP_NUKE_MID` (macro, line 93) `#define DMAP_NUKE_MID`
+  - `DMAP_UNUSED_TEX` (macro, line 94) `#define DMAP_UNUSED_TEX`
+  - `DMAP_FLOOR_FLAT` (macro, line 95) `#define DMAP_FLOOR_FLAT`
+  - `DMAP_NUKE_FLAT` (macro, line 96) `#define DMAP_NUKE_FLAT`
+  - `DMAP_CEIL_FLAT` (macro, line 97) `#define DMAP_CEIL_FLAT`
+  - `DMAP_FLOOR_H` (macro, line 98) `#define DMAP_FLOOR_H`
+  - `DMAP_NUKE_FLOOR` (macro, line 99) `#define DMAP_NUKE_FLOOR`
+  - `DMAP_CEIL_H` (macro, line 100) `#define DMAP_CEIL_H`
+  - `DMAP_DOOR_CEIL` (macro, line 101) `#define DMAP_DOOR_CEIL`
+  - `DMAP_LIGHT` (macro, line 102) `#define DMAP_LIGHT`
+  - `DMAP_DARK_LIGHT` (macro, line 103) `#define DMAP_DARK_LIGHT`
+  - `DMAP_DOOR_LIGHT` (macro, line 104) `#define DMAP_DOOR_LIGHT`
+  - `DMAP_NUKE_SPECIAL` (macro, line 105) `#define DMAP_NUKE_SPECIAL`
+  - `DMAP_NODE_LEAF` (macro, line 106) `#define DMAP_NODE_LEAF`
+  - `DMAP_TOOL_DOOM` (macro, line 107) `#define DMAP_TOOL_DOOM`
+  - `DMAP_SAVE_TXT` (macro, line 108) `#define DMAP_SAVE_TXT`
+  - `DMAP_SAVE_WAD` (macro, line 109) `#define DMAP_SAVE_WAD`
+  - `DMAP_TITLE` (macro, line 110) `#define DMAP_TITLE`
+  - `DMAP_HISTORY` (macro, line 111) `#define DMAP_HISTORY`
+  - `DMAP_TOOL_PAINT` (macro, line 112) `#define DMAP_TOOL_PAINT`
+  - `DMAP_TOOL_LINE` (macro, line 113) `#define DMAP_TOOL_LINE`
+  - `DMAP_TOOL_RECT` (macro, line 114) `#define DMAP_TOOL_RECT`
+  - `DMAP_TOOL_FILL` (macro, line 115) `#define DMAP_TOOL_FILL`
+  - `DMAP_BRUSH_COUNT` (macro, line 230) `#define DMAP_BRUSH_COUNT`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+## progs/file/file.c
+- Layer: utility
+- Doc: Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf).
+- Language: c
+- Symbols:
+  - `file_assoc` (struct, line 54)
+  - `file_sys_dir_list` (function, line 74) `static long file_sys_dir_list(const char *path, char *buf, long cap)`
+  - `file_sys_spawn` (function, line 84) `static long file_sys_spawn(const char *path, int argc, const char **argv)`
+  - `file_ext_of` (function, line 95) `static void file_ext_of(const char *fname, char *dst, unsigned cap)`
+  - `file_join` (function, line 116) `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)`
+  - `file_parent` (function, line 130) `static void file_parent(char *path)`
+  - `file_assoc_line` (function, line 140) `static int file_assoc_line(const char *line, char *ext, char *prog)`
+  - `file_assoc_load` (function, line 173) `static void file_assoc_load(void)`
+  - `file_assoc_lookup` (function, line 192) `static const char *file_assoc_lookup(const char *ext)`
+  - `file_action_of` (function, line 202) `static int file_action_of(const char *fname, const char **prog_out)`
+  - `file_refresh` (function, line 215) `static void file_refresh(void)`
+  - `file_preview_load` (function, line 230) `static int file_preview_load(const char *path)`
+  - `file_preview_blit` (function, line 293) `static void file_preview_blit(int ox, int oy)`
+  - `file_spawn_visible` (function, line 308) `static long file_spawn_visible(const char *tool, int argc, const char **argv,
+                   ...`
+  - `file_open_text` (function, line 331) `static void file_open_text(const char *path)`
+  - `file_run_shell` (function, line 342) `static void file_run_shell(const char *path)`
+  - `file_activate` (function, line 381) `static void file_activate(const char *dir, const char *name)`
+  - `file_ui_build` (function, line 412) `static void file_ui_build(struct nk_context *ctx)`
+  - `file_selftest` (function, line 489) `static int file_selftest(void)`
+  - `file_gui_run` (function, line 555) `static void file_gui_run(void)`
+  - `main` (function, line 612) `int main(int argc, char **argv)`
+  - `volatile` (function, line 76) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_DIR_LIST), "D"(path), "S"(buf), "d"(cap) : "rcx", "r11", "memory");`
+  - `memcpy` (function, line 122) `memcpy(dst, dir, a);`
+  - `strcpy` (function, line 184) `strcpy(file_table[file_table_n].ext, ext);`
+  - `fclose` (function, line 188) `fclose(f);`
+  - `snprintf` (function, line 220) `snprintf(file_status, sizeof(file_status), "cannot list %s (%ld)", file_cwd, rc);`
+  - `fseek` (function, line 240) `fseek(f, 0, SEEK_END);`
+  - `free` (function, line 247) `free(raw);`
+  - `nk_build_palette` (function, line 263) `nk_build_palette(pal);`
+  - `stbi_image_free` (function, line 285) `stbi_image_free(px);`
+  - `nk_sys_vga_mode` (function, line 312) `nk_sys_vga_mode(0);`
+  - `nk_sys_kbd_raw` (function, line 313) `nk_sys_kbd_raw(0);`
+  - `printf` (function, line 314) `printf("--- file: %s ---\n", label);`
+  - `fflush` (function, line 315) `fflush(stdout);`
+  - `nk_sys_palette` (function, line 321) `nk_sys_palette(pal768);`
+  - `nk_layout_row_dynamic` (function, line 415) `nk_layout_row_dynamic(ctx, 22, 1);`
+  - `nk_label` (function, line 416) `nk_label(ctx, file_status, NK_TEXT_LEFT);`
+  - `nk_end` (function, line 485) `nk_end(ctx);`
+  - `nk_theme_active` (function, line 544) `nk_theme_active(theme, sizeof(theme));`
+  - `nk_sys_gfx_set_title` (function, line 565) `nk_sys_gfx_set_title(FILE_TITLE);`
+  - `nk_theme_apply` (function, line 572) `nk_theme_apply(&ctx, 0);`
+  - `nk_input_begin` (function, line 580) `nk_input_begin(&ctx);`
+  - `nk_poll_input` (function, line 581) `nk_poll_input(&ctx);`
+  - `nk_input_end` (function, line 591) `nk_input_end(&ctx);`
+  - `nk_rasterize` (function, line 594) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 600) `nk_clear(&ctx);`
+  - `nk_free` (function, line 608) `nk_free(&ctx);`
+  - `STB_IMAGE_IMPLEMENTATION` (macro, line 21) `#define STB_IMAGE_IMPLEMENTATION`
+  - `STBI_ONLY_PNG` (macro, line 23) `#define STBI_ONLY_PNG`
+  - `STBI_NO_STDIO` (macro, line 24) `#define STBI_NO_STDIO`
+  - `FILE_MAX_PATH` (macro, line 28) `#define FILE_MAX_PATH`
+  - `FILE_MAX_ENTRIES` (macro, line 29) `#define FILE_MAX_ENTRIES`
+  - `FILE_NAME_MAX` (macro, line 30) `#define FILE_NAME_MAX`
+  - `FILE_LIST_CAP` (macro, line 31) `#define FILE_LIST_CAP`
+  - `FILE_ASSOC_MAX` (macro, line 32) `#define FILE_ASSOC_MAX`
+  - `FILE_ASSOC_PATH` (macro, line 33) `#define FILE_ASSOC_PATH`
+  - `FILE_EXT_MAX` (macro, line 34) `#define FILE_EXT_MAX`
+  - `FILE_PROG_MAX` (macro, line 35) `#define FILE_PROG_MAX`
+  - `FILE_TOOL_VEDIT` (macro, line 36) `#define FILE_TOOL_VEDIT`
+  - `FILE_TOOL_CVM` (macro, line 37) `#define FILE_TOOL_CVM`
+  - `FILE_STATUS_MAX` (macro, line 38) `#define FILE_STATUS_MAX`
+  - `FILE_UI_MEMORY` (macro, line 39) `#define FILE_UI_MEMORY`
+  - `FILE_PREVIEW_W` (macro, line 40) `#define FILE_PREVIEW_W`
+  - `FILE_PREVIEW_H` (macro, line 41) `#define FILE_PREVIEW_H`
+  - `FILE_PREVIEW_FILE_MAX` (macro, line 42) `#define FILE_PREVIEW_FILE_MAX`
+  - `FILE_TITLE` (macro, line 43) `#define FILE_TITLE`
+  - `FILE_ACTION_SHELL` (macro, line 44) `#define FILE_ACTION_SHELL`
+  - `FILE_ACTION_INTERNAL` (macro, line 45) `#define FILE_ACTION_INTERNAL`
+  - `FILE_LOG_LINE` (macro, line 46) `#define FILE_LOG_LINE`
+  - `FILE_ACT_TEXT` (macro, line 49) `#define FILE_ACT_TEXT`
+  - `FILE_ACT_SHELL` (macro, line 50) `#define FILE_ACT_SHELL`
+  - `FILE_ACT_INTERNAL` (macro, line 51) `#define FILE_ACT_INTERNAL`
+  - `FILE_ACT_UNKNOWN` (macro, line 52) `#define FILE_ACT_UNKNOWN`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+## progs/freedomui/freedomui_minios.c
+- Layer: presentation
+- Doc: freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern.
+- Language: c
+- Symbols:
+  - `FreedomUiConfig` (struct, line 68)
+  - `present_buf` (type_alias, line 68) `typedef struct FreedomUiConfig { long present_buf;`
+  - `freedomui_default` (function, line 96) `static FreedomUiConfig freedomui_default(void)`
+  - `freedomui_build_palette` (function, line 132) `static long freedomui_build_palette(unsigned char *pal, long cap)`
+  - `freedomui_engine_text` (function, line 196) `static long freedomui_engine_text(char *body, long n, char **title, char **text)`
+  - `freedomui_sys_present` (function, line 244) `static long freedomui_sys_present(long buf, long origin)`
+  - `freedomui_sys_title` (function, line 251) `static long freedomui_sys_title(char *t)`
+  - `freedomui_sys_palette` (function, line 258) `static long freedomui_sys_palette(unsigned char *pal)`
+  - `freedomui_sys_mouse` (function, line 265) `static long freedomui_sys_mouse(long *m)`
+  - `freedomui_sys_kbd` (function, line 272) `static long freedomui_sys_kbd(void)`
+  - `freedomui_sys_vga_mode` (function, line 279) `static long freedomui_sys_vga_mode(long on)`
+  - `freedomui_sys_kbd_raw` (function, line 286) `static long freedomui_sys_kbd_raw(long on)`
+  - `freedomui_sys_yield` (function, line 293) `static long freedomui_sys_yield(void)`
+  - `fui_append` (function, line 300) `static long fui_append(char *dst, long pos, char *src, long cap)`
+  - `fui_strlen` (function, line 318) `static long fui_strlen(char *s, long cap)`
+  - `fui_split_url` (function, line 334) `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...`
+  - `fui_parse_headers` (function, line 403) `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...`
+  - `fui_fetch_raw` (function, line 521) `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)`
+  - `fui_render` (function, line 749) `static long fui_render(FreedomUiConfig *c, size_t off)`
+  - `fui_browse` (function, line 868) `static long fui_browse(FreedomUiConfig *c)`
+  - `freedomui_selftest` (function, line 947) `static long freedomui_selftest(void)`
+  - `freedomui_host_probe` (function, line 1035) `static long freedomui_host_probe(FreedomUiConfig *c)`
+  - `freedomui_host_entry` (function, line 1118) `int freedomui_host_entry(FreedomUiConfig *c)`
+  - `main` (function, line 1123) `int main(int argc, char **argv)`
+  - `net_dns_resolve` (function, line 42) `int net_dns_resolve(const char *host);`
+  - `tls_handshake` (function, line 44) `int tls_handshake(int fd, char *host);`
+  - `tls_send` (function, line 45) `int tls_send(int fd, char *buf, int len);`
+  - `tls_recv` (function, line 46) `int tls_recv(int fd, char *buf, int len);`
+  - `tls_close` (function, line 47) `void tls_close(int fd);`
+  - `hp_document_free` (function, line 213) `hp_document_free(doc);`
+  - `hp_free` (function, line 216) `hp_free(ti);`
+  - `volatile` (function, line 246) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
+  - `printf` (function, line 547) `printf("freedomui: cannot resolve %s\n", host);`
+  - `ui_layout_free` (function, line 1109) `ui_layout_free(&lay);`
+  - `FUI_COLS` (macro, line 50) `#define FUI_COLS`
+  - `FUI_TEXT_ROWS` (macro, line 51) `#define FUI_TEXT_ROWS`
+  - `FUI_BODY_CAP` (macro, line 52) `#define FUI_BODY_CAP`
+  - `FUI_HDR_MAX` (macro, line 53) `#define FUI_HDR_MAX`
+  - `FUI_NET_BUF` (macro, line 54) `#define FUI_NET_BUF`
+  - `FUI_REQ_MAX` (macro, line 55) `#define FUI_REQ_MAX`
+  - `FUI_HOST_MAX` (macro, line 56) `#define FUI_HOST_MAX`
+  - `FUI_PATH_MAX` (macro, line 57) `#define FUI_PATH_MAX`
+  - `FUI_URL_MAX` (macro, line 58) `#define FUI_URL_MAX`
+  - `FUI_HOPS_MAX` (macro, line 59) `#define FUI_HOPS_MAX`
+  - `FUI_FONT_W` (macro, line 60) `#define FUI_FONT_W`
+  - `FUI_FONT_H` (macro, line 61) `#define FUI_FONT_H`
+  - `FUI_TITLE_MAX` (macro, line 62) `#define FUI_TITLE_MAX`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- Imported by: `tests/test_freedomui.c`
+
+## progs/lisp/lisp.c
+- Layer: utility
+- Language: c
+- Symbols:
+  - `Node` (struct, line 113)
+  - `Binding` (struct, line 140)
+  - `Env` (struct, line 149)
+  - `AllocTracker` (struct, line 157)
+  - `Runtime` (struct, line 165)
+  - `ParseResult` (struct, line 104)
+  - `Reader` (struct, line 181)
+  - `StringBuilder` (struct, line 192)
+  - `PrimEntry` (struct, line 1960)
+  - `LispConfig` (enum, line 41)
+  - `Runtime` (type_alias, line 65) `typedef struct Runtime Runtime;`
+  - `Node` (type_alias, line 67) `typedef struct Node Node;`
+  - `Env` (type_alias, line 68) `typedef struct Env Env;`
+  - `Binding` (type_alias, line 69) `typedef struct Binding Binding;`
+  - `AllocTracker` (type_alias, line 70) `typedef struct AllocTracker AllocTracker;`
+  - `lisp_version` (function, line 62) `static const char *lisp_version(void)`
+  - `msys` (function, line 205) `static long msys(long n, long a1, long a2, long a3)`
+  - `msys5` (function, line 218) `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)`
+  - `fatal` (function, line 233) `static void fatal(Runtime *rt, const char *message)`
+  - `xalloc` (function, line 242) `static void *xalloc(Runtime *rt, size_t size)`
+  - `xstrdup` (function, line 266) `static char *xstrdup(Runtime *rt, const char *source)`
+  - `make_node` (function, line 284) `static Node *make_node(Runtime *rt, NodeType type)`
+  - `make_error` (function, line 293) `static Node *make_error(Runtime *rt, const char *message)`
+  - `make_num` (function, line 302) `static Node *make_num(Runtime *rt, int64_t value)`
+  - `make_str` (function, line 311) `static Node *make_str(Runtime *rt, const char *value)`
+  - `make_sym` (function, line 320) `static Node *make_sym(Runtime *rt, const char *value)`
+  - `make_prim` (function, line 329) `static Node *make_prim(Runtime *rt, PrimFn function)`
+  - `cons` (function, line 338) `static Node *cons(Runtime *rt, Node *car, Node *cdr)`
+  - `is_nil` (function, line 348) `static bool is_nil(Runtime *rt, const Node *node)`
+  - `make_file` (function, line 355) `static Node *make_file(Runtime *rt, FILE *handle)`
+  - `cleanup` (function, line 377) `static void cleanup(Runtime *rt)`
+  - `runtime_init` (function, line 399) `static void runtime_init(Runtime *rt)`
+  - `env_new` (function, line 411) `static Env *env_new(Runtime *rt, Env *parent)`
+  - `env_bind` (function, line 421) `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)`
+  - `env_set` (function, line 432) `static bool env_set(Env *env, Node *symbol, Node *value)`
+  - `env_lookup` (function, line 454) `static Node *env_lookup(Env *env, Node *symbol)`
+  - `reader_peek` (function, line 475) `static char reader_peek(const Reader *reader)`
+  - `reader_next` (function, line 482) `static char reader_next(Reader *reader)`
+  - `reader_at_end` (function, line 500) `static bool reader_at_end(const Reader *reader)`
+  - `skip_space_and_comments` (function, line 507) `static void skip_space_and_comments(Reader *reader)`
+  - `sb_init` (function, line 523) `static void sb_init(StringBuilder *builder)`
+  - `sb_push` (function, line 536) `static void sb_push(StringBuilder *builder, char value)`
+  - `parse_ok` (function, line 562) `static ParseResult parse_ok(Node *value)`
+  - `parse_eof` (function, line 573) `static ParseResult parse_eof(void)`
+  - `parse_error` (function, line 584) `static ParseResult parse_error(const char *message)`
+  - `read_list` (function, line 596) `static ParseResult read_list(Runtime *rt, Reader *reader)`
+  - `read_string` (function, line 626) `static ParseResult read_string(Runtime *rt, Reader *reader)`
+  - `token_delimiter` (function, line 677) `static bool token_delimiter(char c)`
+  - `read_atom` (function, line 685) `static ParseResult read_atom(Runtime *rt, Reader *reader)`
+  - `read_expr` (function, line 721) `static ParseResult read_expr(Runtime *rt, Reader *reader)`
+  - `list_count` (function, line 750) `static size_t list_count(Runtime *rt, Node *list, bool *proper)`
+  - `has_arity` (function, line 767) `static bool has_arity(Runtime *rt, Node *args, size_t expected)`
+  - `arg_at` (function, line 775) `static Node *arg_at(Runtime *rt, Node *args, size_t index)`
+  - `arg_matches` (function, line 815) `static bool arg_matches(const Node *value, ArgKind kind)`
+  - `check_args` (function, line 841) `static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,
+    size_t n, Node **out)`
+  - `arity0` (function, line 861) `static bool arity0(Runtime *rt, Node *args)`
+  - `prim_add` (function, line 869) `static Node *prim_add(Runtime *rt, Node *args)`
+  - `prim_sub` (function, line 885) `static Node *prim_sub(Runtime *rt, Node *args)`
+  - `prim_mul` (function, line 901) `static Node *prim_mul(Runtime *rt, Node *args)`
+  - `prim_div` (function, line 917) `static Node *prim_div(Runtime *rt, Node *args)`
+  - `prim_eq` (function, line 939) `static Node *prim_eq(Runtime *rt, Node *args)`
+  - `prim_lt` (function, line 951) `static Node *prim_lt(Runtime *rt, Node *args)`
+  - `prim_car` (function, line 963) `static Node *prim_car(Runtime *rt, Node *args)`
+  - `prim_cdr` (function, line 975) `static Node *prim_cdr(Runtime *rt, Node *args)`
+  - `prim_cons` (function, line 987) `static Node *prim_cons(Runtime *rt, Node *args)`
+  - `prim_string_concat` (function, line 999) `static Node *prim_string_concat(Runtime *rt, Node *args)`
+  - `prim_string_eq` (function, line 1026) `static Node *prim_string_eq(Runtime *rt, Node *args)`
+  - `prim_string_length` (function, line 1038) `static Node *prim_string_length(Runtime *rt, Node *args)`
+  - `prim_string_at` (function, line 1050) `static Node *prim_string_at(Runtime *rt, Node *args)`
+  - `prim_char_code` (function, line 1072) `static Node *prim_char_code(Runtime *rt, Node *args)`
+  - `prim_print` (function, line 1094) `static Node *prim_print(Runtime *rt, Node *args)`
+  - `prim_println` (function, line 1108) `static Node *prim_println(Runtime *rt, Node *args)`
+  - `file_mode_allowed` (function, line 1123) `static bool file_mode_allowed(const char *mode)`
+  - `prim_read_char` (function, line 1183) `static Node *prim_read_char(Runtime *rt, Node *args)`
+  - `prim_write` (function, line 1200) `static Node *prim_write(Runtime *rt, Node *args)`
+  - `prim_close_file` (function, line 1224) `static Node *prim_close_file(Runtime *rt, Node *args)`
+  - `prim_null_p` (function, line 1249) `static Node *prim_null_p(Runtime *rt, Node *args)`
+  - `prim_number_p` (function, line 1261) `static Node *prim_number_p(Runtime *rt, Node *args)`
+  - `prim_string_p` (function, line 1273) `static Node *prim_string_p(Runtime *rt, Node *args)`
+  - `prim_error_message` (function, line 1285) `static Node *prim_error_message(Runtime *rt, Node *args)`
+  - `prim_exit` (function, line 1303) `static Node *prim_exit(Runtime *rt, Node *args)`
+  - `prim_time_ms` (function, line 1330) `static Node *prim_time_ms(Runtime *rt, Node *args)`
+  - `prim_rtc` (function, line 1340) `static Node *prim_rtc(Runtime *rt, Node *args)`
+  - `prim_fb_info` (function, line 1357) `static Node *prim_fb_info(Runtime *rt, Node *args)`
+  - `prim_vol` (function, line 1377) `static Node *prim_vol(Runtime *rt, Node *args)`
+  - `prim_pal` (function, line 1405) `static Node *prim_pal(Runtime *rt, Node *args)`
+  - `prim_pcspeaker` (function, line 1421) `static Node *prim_pcspeaker(Runtime *rt, Node *args)`
+  - `prim_minios_run` (function, line 1465) `static Node *prim_minios_run(Runtime *rt, Node *args)`
+  - `eval_list` (function, line 1527) `static Node *eval_list(Runtime *rt, Node *list, Env *env)`
+  - `eval_sequence` (function, line 1551) `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)`
+  - `valid_params` (function, line 1569) `static bool valid_params(Runtime *rt, Node *params)`
+  - `eval` (function, line 1583) `static Node *eval(Runtime *rt, Node *expression, Env *env)`
+  - `print_escaped_string` (function, line 1846) `static void print_escaped_string(FILE *out, const char *value)`
+  - `print_node` (function, line 1877) `static void print_node(Runtime *rt, Node *node, bool readable)`
+  - `bind_primitive` (function, line 1948) `static void bind_primitive(Runtime *rt, Env *env, const char *name,
+    PrimFn function)`
+  - `init_env` (function, line 2005) `static Env *init_env(Runtime *rt)`
+  - `bind_argv` (function, line 2018) `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)`
+  - `read_all_file` (function, line 2030) `static char *read_all_file(const char *filename, size_t max_bytes)`
+  - `process_source` (function, line 2088) `static int process_source(Runtime *rt, const char *source,
+    const char *source_name, bool echo)`
+  - `process_inline` (function, line 2130) `static int process_inline(Runtime *rt, const char *code)`
+  - `print_usage` (function, line 2137) `static void print_usage(Runtime *rt)`
+  - `repl` (function, line 2144) `static int repl(Runtime *rt)`
+  - `main` (function, line 2191) `int main(int argc, char **argv)`
+  - `numbers` (function, line 8) `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special forms quote, if, begin, define, set!, * lambda and let. Diagnostics go to stderr, va`
+  - `volatile` (function, line 207) `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
+  - `fprintf` (function, line 235) `fprintf(err, "fatal: %s\n", message);`
+  - `exit` (function, line 236) `exit(EXIT_FAILURE);`
+  - `free` (function, line 254) `free(ptr);`
+  - `memcpy` (function, line 277) `memcpy(copy, source, length);`
+  - `fclose` (function, line 370) `fclose(handle);`
+  - `memset` (function, line 400) `memset(rt, 0, sizeof *rt);`
+  - `snprintf` (function, line 588) `snprintf(result.message, sizeof result.message, "%s", message ? message : "parse error");`
+  - `fflush` (function, line 1101) `fflush(rt->out);`
+  - `fputc` (function, line 1115) `fputc('\n', rt->out);`
+  - `arity` (function, line 1299) `* * Variable arity (0 or 1);`
+  - `fputs` (function, line 1852) `fputs("\\n", out);`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+## progs/minicraft/minicraft.c
+- Layer: utility
+- Doc: minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF).
+- Language: c
+- Symbols:
+  - `Recipe` (struct, line 195)
+  - `Pig` (struct, line 274)
+  - `RayHit` (struct, line 1427)
+  - `SaveHeaderV3` (struct, line 2636)
+  - `SaveHeader` (struct, line 2650)
+  - `ChunkHeader` (struct, line 2665)
+  - `best_tool_for` (function, line 209) `static int best_tool_for(unsigned char b)`
+  - `break_time_ms` (function, line 228) `static long break_time_ms(unsigned char b, int tool)`
+  - `break_beep_for` (function, line 253) `static long break_beep_for(unsigned char b)`
+  - `mc_toggle_zoom` (function, line 294) `static void mc_toggle_zoom(void)`
+  - `s_time_ms` (function, line 315) `static long s_time_ms(void)`
+  - `s_kbd` (function, line 321) `static long s_kbd(void)`
+  - `s_kbd_raw` (function, line 326) `static long s_kbd_raw(long on)`
+  - `kbd_drain` (function, line 347) `static void kbd_drain(void)`
+  - `s_vga` (function, line 352) `static long s_vga(long on)`
+  - `s_pal` (function, line 357) `static long s_pal(const unsigned char *p)`
+  - `s_present` (function, line 362) `static long s_present(void)`
+  - `s_title` (function, line 367) `static long s_title(const char *t)`
+  - `s_mouse` (function, line 372) `static long s_mouse(int *m)`
+  - `s_zoom` (function, line 377) `static long s_zoom(long on)`
+  - `s_yield` (function, line 382) `static void s_yield(void)`
+  - `s_pcspk_init` (function, line 387) `static long s_pcspk_init(void)`
+  - `__attribute__` (function, line 392) `static long __attribute__((unused)) s_tone(long f)`
+  - `beep` (function, line 397) `static void beep(long freq, long dur_ms)`
+  - `pal_set` (function, line 415) `static void pal_set(int i, int r, int g, int b)`
+  - `build_palette` (function, line 421) `static void build_palette(void)`
+  - `in_world` (function, line 480) `static int in_world(int x, int y, int z)`
+  - `chunk_of` (function, line 496) `static int chunk_of(int v)`
+  - `chunk_local` (function, line 499) `static int chunk_local(int v)`
+  - `chunk_lidx` (function, line 504) `static int chunk_lidx(int lx, int ly, int z)`
+  - `chunk_find` (function, line 511) `static int chunk_find(int cx, int cy)`
+  - `world_max_recompute` (function, line 524) `static void world_max_recompute(void)`
+  - `chunk_evict_slot` (function, line 533) `static int chunk_evict_slot(int cx, int cy)`
+  - `chunk_ensure` (function, line 553) `static int chunk_ensure(int cx, int cy)`
+  - `chunk_build_meta` (function, line 576) `static void chunk_build_meta(int slot)`
+  - `col_recompute` (function, line 621) `static void col_recompute(int x, int y)`
+  - `col_top_at` (function, line 646) `static int col_top_at(int x, int y)`
+  - `light_recompute_col` (function, line 653) `static void light_recompute_col(int x, int y)`
+  - `get_b` (function, line 682) `static unsigned char get_b(int x, int y, int z)`
+  - `set_b` (function, line 692) `static void set_b(int x, int y, int z, unsigned char b)`
+  - `set_b_raw` (function, line 708) `static void set_b_raw(int x, int y, int z, unsigned char b)`
+  - `sky_light` (function, line 720) `static float sky_light(int x, int y, int z)`
+  - `is_solid` (function, line 729) `static int is_solid(unsigned char b)`
+  - `in_water_at` (function, line 733) `static int in_water_at(float x, float y, float z)`
+  - `is_visible` (function, line 737) `static int is_visible(unsigned char b)`
+  - `hash2` (function, line 741) `static unsigned int hash2(int x, int y)`
+  - `hash2_seed` (function, line 748) `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
+  - `mc_smoothstep` (function, line 757) `static float mc_smoothstep(float t)`
+  - `biome_fdiv` (function, line 767) `static int biome_fdiv(int v, int c)`
+  - `biome_cell` (function, line 770) `static int biome_cell(int x, int y, unsigned int seed, int cell, int ox, int oy,
+    unsigned int...`
+  - `biome_desert` (function, line 779) `static int biome_desert(int x, int y, unsigned int seed)`
+  - `biome_snow` (function, line 783) `static int biome_snow(int x, int y, unsigned int seed)`
+  - `is_cave` (function, line 787) `static int is_cave(int x, int y, int z, unsigned int seed)`
+  - `ground_h_seed` (function, line 795) `static int ground_h_seed(int x, int y, unsigned int seed)`
+  - `inv_add` (function, line 817) `static int inv_add(int b, int n)`
+  - `inv_remove` (function, line 831) `static int inv_remove(int b, int n)`
+  - `decorate_column` (function, line 881) `static void decorate_column(int x, int y, unsigned int seed)`
+  - `gen_terrain_chunk` (function, line 920) `static void gen_terrain_chunk(int slot)`
+  - `decorate_chunk` (function, line 929) `static void decorate_chunk(int slot)`
+  - `ensure_around_px` (function, line 943) `static void ensure_around_px(float px, float py)`
+  - `ensure_around` (function, line 976) `static void ensure_around(void)`
+  - `new_world` (function, line 982) `static void new_world(unsigned int seed)`
+  - `mob_spawn_one` (function, line 1077) `static void mob_spawn_one(Pig *m, int id, int hp, long now)`
+  - `pig_collides` (function, line 1129) `static int pig_collides(float x, float y, float z)`
+  - `creeper_explode` (function, line 1143) `static void creeper_explode(Pig *c, long now)`
+  - `tick_mob` (function, line 1208) `static void tick_mob(Pig *p, int id, float dt, long now)`
+  - `tick_pigs` (function, line 1288) `static void tick_pigs(float dt, long now)`
+  - `face_color` (function, line 1296) `static unsigned char face_color(unsigned char b, int face)`
+  - `sky_color` (function, line 1345) `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
+  - `shade_block` (function, line 1378) `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
+             ...`
+  - `cast_ray` (function, line 1435) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
+  - `eye_z` (function, line 1526) `static float eye_z(void)`
+  - `mc_glyph` (function, line 1593) `static int mc_glyph(char ch)`
+  - `mc_pixel` (function, line 1601) `static void mc_pixel(int x, int y, unsigned char c)`
+  - `mc_text` (function, line 1607) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
+  - `mc_text_bg` (function, line 1620) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
+  - `mc_block_name` (function, line 1633) `static const char *mc_block_name(unsigned char b)`
+  - `mc_facing` (function, line 1653) `static char mc_facing(void)`
+  - `cam_build` (function, line 1668) `static void cam_build(void)`
+  - `render_terrain` (function, line 1686) `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
+                      ...`
+  - `mob_pixel` (function, line 1721) `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)`
+  - `render_mob_array` (function, line 1755) `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
+    float rx, float r...`
+  - `render_pigs` (function, line 1806) `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
+  - `render_frame` (function, line 1814) `static void render_frame(void)`
+  - `sc_hist_push` (function, line 1927) `static void sc_hist_push(unsigned char b)`
+  - `poll_kbd` (function, line 1938) `static void poll_kbd(void)`
+  - `player_collides` (function, line 2113) `static int player_collides(float x, float y, float z)`
+  - `move_x` (function, line 2137) `static void move_x(float nx)`
+  - `move_y` (function, line 2142) `static void move_y(float ny)`
+  - `move_z_abs` (function, line 2147) `static MoveResult move_z_abs(float nz)`
+  - `block_intersects_player` (function, line 2162) `static int block_intersects_player(int bx, int by, int bz)`
+  - `try_autostep` (function, line 2171) `static void try_autostep(float tx, float ty)`
+  - `hurt` (function, line 2182) `static void hurt(int dmg, const char *why)`
+  - `tick_player` (function, line 2206) `static void tick_player(float dt)`
+  - `tick_water` (function, line 2305) `static void tick_water(long now)`
+  - `tick_hunger` (function, line 2353) `static void tick_hunger(long now)`
+  - `goal_text` (function, line 2365) `static const char *goal_text(void)`
+  - `tick_goals` (function, line 2376) `static void tick_goals(void)`
+  - `tick_discover` (function, line 2387) `static void tick_discover(long now)`
+  - `tick_interact` (function, line 2425) `static void tick_interact(void)`
+  - `mc_crc32` (function, line 2676) `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)`
+  - `save_compute_crc` (function, line 2689) `static uint32_t save_compute_crc(const SaveHeader *hd)`
+  - `chunk_path` (function, line 2695) `static void chunk_path(int cx, int cy, char *out, size_t n)`
+  - `save_chunk_file` (function, line 2699) `static int save_chunk_file(int slot)`
+  - `load_chunk_file` (function, line 2731) `static int load_chunk_file(int slot, int cx, int cy)`
+  - `save_validate_loaded` (function, line 2813) `static int save_validate_loaded(void)`
+  - `load_reset_runtime` (function, line 2832) `static void load_reset_runtime(void)`
+  - `carve_blob` (function, line 2866) `static void carve_blob(const unsigned char *blob)`
+  - `load_world_legacy` (function, line 2895) `static int load_world_legacy(FILE *f)`
+  - `load_apply_player` (function, line 2932) `static void load_apply_player(const SaveHeader *hd)`
+  - `load_world_v3` (function, line 2951) `static int load_world_v3(FILE *f, SaveHeader *hd)`
+  - `load_world_v2` (function, line 2991) `static int load_world_v2(FILE *f, SaveHeader *hd)`
+  - `load_world` (function, line 3028) `static int load_world(void)`
+  - `selftest` (function, line 3102) `static int selftest(void)`
+  - `census` (function, line 3342) `static int census(void)`
+  - `dumpstats` (function, line 3405) `static int dumpstats(void)`
+  - `title_menu` (function, line 3489) `static int title_menu(int have_save, int *seed_io)`
+  - `pause_menu` (function, line 3654) `static int pause_menu(int *seed_io)`
+  - `main` (function, line 3822) `int main(int argc, char **argv)`
+  - `snprintf` (function, line 298) `snprintf(last_act, sizeof(last_act), mc_zoom ? "ZOOM 2X" : "ZOOM 1X");`
+  - `printf` (function, line 300) `printf("minicraft: zoom %s\n", mc_zoom ? "2x" : "1x");`
+  - `save_world` (function, line 309) `static int save_world(void);`
+  - `volatile` (function, line 318) `__asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx", "r11", "memory");`
+  - `s_tone` (function, line 404) `s_tone(0);`
+  - `gen_column_terrain` (function, line 926) `gen_column_terrain(x0 + lx, y0 + ly, mc_seed);`
+  - `memset` (function, line 1454) `memset(&h, 0, sizeof(h));`
+  - `cosf` (function, line 2091) `cosf(pl_yaw) * cosf(pl_pitch), sinf(pl_yaw) * cosf(pl_pitch), sinf(pl_pitch), 6.0f);`
+  - `fclose` (function, line 2719) `fclose(f);`
+  - `unlink` (function, line 2808) `unlink(SAVE_TMP_PATH);`
+  - `rewind` (function, line 3042) `rewind(f);`
+  - `menu_text_c` (function, line 3505) `menu_text_c(28, "MINICRAFT", 2, 3);`
+  - `fflush` (function, line 3896) `fflush(stdout);`
+  - `mobs_sync` (function, line 3907) `mobs_sync();`
+  - `MC_H` (macro, line 30) `#define MC_H`
+  - `MC_CHUNK` (macro, line 32) `#define MC_CHUNK`
+  - `MC_LOAD_R` (macro, line 33) `#define MC_LOAD_R`
+  - `MC_CHUNKS` (macro, line 34) `#define MC_CHUNKS`
+  - `MC_CVOL` (macro, line 35) `#define MC_CVOL`
+  - `MC_COLS` (macro, line 36) `#define MC_COLS`
+  - `FB_W` (macro, line 37) `#define FB_W`
+  - `FB_H` (macro, line 39) `#define FB_H`
+  - `BACKBUF` (macro, line 42) `#define BACKBUF`
+  - `BACKBUF` (macro, line 44) `#define BACKBUF`
+  - `SAVE_PATH` (macro, line 46) `#define SAVE_PATH`
+  - `SAVE_TMP_PATH` (macro, line 48) `#define SAVE_TMP_PATH`
+  - `MC_SAVE_MAGIC` (macro, line 49) `#define MC_SAVE_MAGIC`
+  - `MC_SAVE_VERSION` (macro, line 50) `#define MC_SAVE_VERSION`
+  - `MC_SAVE_CRC_SEED` (macro, line 51) `#define MC_SAVE_CRC_SEED`
+  - `MC_CHUNK_MAGIC` (macro, line 52) `#define MC_CHUNK_MAGIC`
+  - `MC_CHUNK_VERSION` (macro, line 53) `#define MC_CHUNK_VERSION`
+  - `MC_EYE` (macro, line 56) `#define MC_EYE`
+  - `MC_GRAV` (macro, line 57) `#define MC_GRAV`
+  - `MC_JUMP` (macro, line 58) `#define MC_JUMP`
+  - `MC_MAXFALL` (macro, line 59) `#define MC_MAXFALL`
+  - `MC_SPEED` (macro, line 60) `#define MC_SPEED`
+  - `MC_FLY_SPEED` (macro, line 61) `#define MC_FLY_SPEED`
+  - `MC_SPRINT` (macro, line 62) `#define MC_SPRINT`
+  - `MC_MOUSE` (macro, line 63) `#define MC_MOUSE`
+  - `MC_REACH` (macro, line 64) `#define MC_REACH`
+  - `MC_VIEW` (macro, line 65) `#define MC_VIEW`
+  - `MC_DDA_STEPS` (macro, line 66) `#define MC_DDA_STEPS`
+  - `MC_BREAK_MS` (macro, line 67) `#define MC_BREAK_MS`
+  - `MC_BREAK_GRACE_MS` (macro, line 68) `#define MC_BREAK_GRACE_MS`
+  - `MC_PLACE_MS` (macro, line 69) `#define MC_PLACE_MS`
+  - `MC_WATER_GRAV` (macro, line 70) `#define MC_WATER_GRAV`
+  - `MC_WATER_SINK` (macro, line 71) `#define MC_WATER_SINK`
+  - `MC_WATER_SWIM` (macro, line 72) `#define MC_WATER_SWIM`
+  - `MC_INV_MAX` (macro, line 73) `#define MC_INV_MAX`
+  - `MC_PITCH_MAX` (macro, line 74) `#define MC_PITCH_MAX`
+  - `MC_AUTOSTEP` (macro, line 75) `#define MC_AUTOSTEP`
+  - `MC_HP_MAX` (macro, line 76) `#define MC_HP_MAX`
+  - `MC_PIGS` (macro, line 77) `#define MC_PIGS`
+  - `MC_CREEPS_MAX` (macro, line 78) `#define MC_CREEPS_MAX`
+  - `MC_CREEPS_DEF` (macro, line 79) `#define MC_CREEPS_DEF`
+  - `MC_CREEP_HP` (macro, line 80) `#define MC_CREEP_HP`
+  - `MC_FUSE_MS` (macro, line 81) `#define MC_FUSE_MS`
+  - `MC_BOOM_R` (macro, line 82) `#define MC_BOOM_R`
+  - `MC_PORK_HEAL` (macro, line 83) `#define MC_PORK_HEAL`
+  - `MC_HUNGER_MAX` (macro, line 84) `#define MC_HUNGER_MAX`
+  - `MC_HUNGER_MS` (macro, line 85) `#define MC_HUNGER_MS`
+  - `MC_PIG_HP` (macro, line 86) `#define MC_PIG_HP`
+  - `MC_PIG_HURT_MS` (macro, line 87) `#define MC_PIG_HURT_MS`
+  - `MC_DAY_MS` (macro, line 88) `#define MC_DAY_MS`
+  - `MC_SAVE_SECS` (macro, line 89) `#define MC_SAVE_SECS`
+  - `MC_BAYER_N` (macro, line 90) `#define MC_BAYER_N`
+  - `MC_H_BASE` (macro, line 91) `#define MC_H_BASE`
+  - `MC_H_WT_DET` (macro, line 92) `#define MC_H_WT_DET`
+  - `MC_H_WT_MID` (macro, line 93) `#define MC_H_WT_MID`
+  - `MC_H_WT_COARSE` (macro, line 94) `#define MC_H_WT_COARSE`
+  - `SC_ESC` (macro, line 97) `#define SC_ESC`
+  - `SC_1` (macro, line 98) `#define SC_1`
+  - `SC_9` (macro, line 99) `#define SC_9`
+  - `SC_Q` (macro, line 100) `#define SC_Q`
+  - `SC_W` (macro, line 101) `#define SC_W`
+  - `SC_E` (macro, line 102) `#define SC_E`
+  - `SC_R` (macro, line 103) `#define SC_R`
+  - `SC_T` (macro, line 104) `#define SC_T`
+  - `SC_U` (macro, line 105) `#define SC_U`
+  - `SC_I` (macro, line 106) `#define SC_I`
+  - `SC_O` (macro, line 107) `#define SC_O`
+  - `SC_P` (macro, line 108) `#define SC_P`
+  - `SC_J` (macro, line 109) `#define SC_J`
+  - `SC_A` (macro, line 110) `#define SC_A`
+  - `SC_S` (macro, line 111) `#define SC_S`
+  - `SC_D` (macro, line 112) `#define SC_D`
+  - `SC_F` (macro, line 113) `#define SC_F`
+  - `SC_G` (macro, line 114) `#define SC_G`
+  - `SC_K` (macro, line 115) `#define SC_K`
+  - `SC_L` (macro, line 116) `#define SC_L`
+  - `SC_C` (macro, line 117) `#define SC_C`
+  - `SC_V` (macro, line 118) `#define SC_V`
+  - `SC_B` (macro, line 119) `#define SC_B`
+  - `SC_N` (macro, line 120) `#define SC_N`
+  - `SC_ENTER` (macro, line 121) `#define SC_ENTER`
+  - `SC_BACK` (macro, line 122) `#define SC_BACK`
+  - `SC_0` (macro, line 123) `#define SC_0`
+  - `MC_SEED_MAX` (macro, line 124) `#define MC_SEED_MAX`
+  - `MC_KBD_SEQ_SPINS` (macro, line 125) `#define MC_KBD_SEQ_SPINS`
+  - `SC_SPACE` (macro, line 126) `#define SC_SPACE`
+  - `SC_LSHIFT` (macro, line 127) `#define SC_LSHIFT`
+  - `SC_RSHIFT` (macro, line 128) `#define SC_RSHIFT`
+  - `SC_CTRL` (macro, line 129) `#define SC_CTRL`
+  - `EXT_UP` (macro, line 130) `#define EXT_UP`
+  - `EXT_DOWN` (macro, line 131) `#define EXT_DOWN`
+  - `EXT_LEFT` (macro, line 132) `#define EXT_LEFT`
+  - `EXT_RIGHT` (macro, line 133) `#define EXT_RIGHT`
+  - `EXT_F11` (macro, line 134) `#define EXT_F11`
+  - `MOB_PIG` (macro, line 286) `#define MOB_PIG`
+  - `MOB_CREEP` (macro, line 288) `#define MOB_CREEP`
+  - `MC_LEGACY_WORLD` (macro, line 2673) `#define MC_LEGACY_WORLD`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+## progs/minios_abi.h
+- Layer: utility
+- Doc: ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
+- Language: h
+- Symbols:
+  - `MINIOS_ABI_H` (macro, line 2) `#define MINIOS_ABI_H`
+  - `MINIOS_ABI_VERSION` (macro, line 41) `#define MINIOS_ABI_VERSION`
+  - `MINIOS_ABI_CHECKSUM` (macro, line 45) `#define MINIOS_ABI_CHECKSUM`
+  - `MINIOS_USER_LOAD_BASE` (macro, line 101) `#define MINIOS_USER_LOAD_BASE`
+  - `MINIOS_USER_LOAD_END` (macro, line 102) `#define MINIOS_USER_LOAD_END`
+  - `MINIOS_USER_STACK_SIZE` (macro, line 103) `#define MINIOS_USER_STACK_SIZE`
+  - `MINIOS_USER_STACK_TOP` (macro, line 104) `#define MINIOS_USER_STACK_TOP`
+  - `MINIOS_USER_STACK_BASE` (macro, line 105) `#define MINIOS_USER_STACK_BASE`
+  - `MINIOS_USER_BRK_END` (macro, line 106) `#define MINIOS_USER_BRK_END`
+  - `MINIOS_DOOM_BACKBUF_ADDR` (macro, line 123) `#define MINIOS_DOOM_BACKBUF_ADDR`
+  - `MINIOS_DOOM_W` (macro, line 124) `#define MINIOS_DOOM_W`
+  - `MINIOS_DOOM_H` (macro, line 125) `#define MINIOS_DOOM_H`
+  - `MINIOS_FB_ADDR` (macro, line 126) `#define MINIOS_FB_ADDR`
+  - `MINIOS_NK_BACKBUF_ADDR` (macro, line 127) `#define MINIOS_NK_BACKBUF_ADDR`
+  - `MINIOS_NK_W` (macro, line 128) `#define MINIOS_NK_W`
+  - `MINIOS_NK_H` (macro, line 129) `#define MINIOS_NK_H`
+  - `MINIOS_HEAP_BASE` (macro, line 134) `#define MINIOS_HEAP_BASE`
+  - `MINIOS_HEAP_SIZE` (macro, line 135) `#define MINIOS_HEAP_SIZE`
+  - `MINIOS_FB_WIDTH_MAX` (macro, line 140) `#define MINIOS_FB_WIDTH_MAX`
+  - `MINIOS_FB_HEIGHT_MAX` (macro, line 141) `#define MINIOS_FB_HEIGHT_MAX`
+  - `MINIOS_SYS_READ` (macro, line 159) `#define MINIOS_SYS_READ`
+  - `MINIOS_SYS_WRITE` (macro, line 160) `#define MINIOS_SYS_WRITE`
+  - `MINIOS_SYS_OPEN` (macro, line 161) `#define MINIOS_SYS_OPEN`
+  - `MINIOS_SYS_CLOSE` (macro, line 162) `#define MINIOS_SYS_CLOSE`
+  - `MINIOS_SYS_FSTAT` (macro, line 163) `#define MINIOS_SYS_FSTAT`
+  - `MINIOS_SYS_POLL` (macro, line 164) `#define MINIOS_SYS_POLL`
+  - `MINIOS_SYS_LSEEK` (macro, line 165) `#define MINIOS_SYS_LSEEK`
+  - `MINIOS_SYS_MMAP` (macro, line 166) `#define MINIOS_SYS_MMAP`
+  - `MINIOS_SYS_MPROTECT` (macro, line 167) `#define MINIOS_SYS_MPROTECT`
+  - `MINIOS_SYS_MUNMAP` (macro, line 168) `#define MINIOS_SYS_MUNMAP`
+  - `MINIOS_SYS_BRK` (macro, line 169) `#define MINIOS_SYS_BRK`
+  - `MINIOS_SYS_RT_SIGACTION` (macro, line 170) `#define MINIOS_SYS_RT_SIGACTION`
+  - `MINIOS_SYS_RT_SIGPROCMASK` (macro, line 171) `#define MINIOS_SYS_RT_SIGPROCMASK`
+  - `MINIOS_SYS_IOCTL` (macro, line 172) `#define MINIOS_SYS_IOCTL`
+  - `MINIOS_SYS_WRITEV` (macro, line 173) `#define MINIOS_SYS_WRITEV`
+  - `MINIOS_SYS_ACCESS` (macro, line 174) `#define MINIOS_SYS_ACCESS`
+  - `MINIOS_SYS_SCHED_YIELD` (macro, line 175) `#define MINIOS_SYS_SCHED_YIELD`
+  - `MINIOS_SYS_GETPID` (macro, line 176) `#define MINIOS_SYS_GETPID`
+  - `MINIOS_SYS_SOCKET` (macro, line 177) `#define MINIOS_SYS_SOCKET`
+  - `MINIOS_SYS_CONNECT` (macro, line 178) `#define MINIOS_SYS_CONNECT`
+  - `MINIOS_SYS_SENDTO` (macro, line 179) `#define MINIOS_SYS_SENDTO`
+  - `MINIOS_SYS_RECVFROM` (macro, line 180) `#define MINIOS_SYS_RECVFROM`
+  - `MINIOS_SYS_SHUTDOWN` (macro, line 181) `#define MINIOS_SYS_SHUTDOWN`
+  - `MINIOS_SYS_FORK` (macro, line 182) `#define MINIOS_SYS_FORK`
+  - `MINIOS_SYS_VFORK` (macro, line 183) `#define MINIOS_SYS_VFORK`
+  - `MINIOS_SYS_EXECVE` (macro, line 184) `#define MINIOS_SYS_EXECVE`
+  - `MINIOS_SYS_EXIT` (macro, line 185) `#define MINIOS_SYS_EXIT`
+  - `MINIOS_SYS_WAIT4` (macro, line 186) `#define MINIOS_SYS_WAIT4`
+  - `MINIOS_SYS_KILL` (macro, line 187) `#define MINIOS_SYS_KILL`
+  - `MINIOS_SYS_UNAME` (macro, line 188) `#define MINIOS_SYS_UNAME`
+  - `MINIOS_SYS_UNLINK` (macro, line 189) `#define MINIOS_SYS_UNLINK`
+  - `MINIOS_SYS_READLINK` (macro, line 190) `#define MINIOS_SYS_READLINK`
+  - `MINIOS_SYS_GETTID` (macro, line 191) `#define MINIOS_SYS_GETTID`
+  - `MINIOS_SYS_FLOCK` (macro, line 195) `#define MINIOS_SYS_FLOCK`
+  - `MINIOS_SYS_FSYNC` (macro, line 196) `#define MINIOS_SYS_FSYNC`
+  - `MINIOS_SYS_FDATASYNC` (macro, line 197) `#define MINIOS_SYS_FDATASYNC`
+  - `MINIOS_SYS_GETCWD` (macro, line 198) `#define MINIOS_SYS_GETCWD`
+  - `MINIOS_SYS_GETTIMEOFDAY` (macro, line 199) `#define MINIOS_SYS_GETTIMEOFDAY`
+  - `MINIOS_SYS_ARCH_PRCTL` (macro, line 200) `#define MINIOS_SYS_ARCH_PRCTL`
+  - `MINIOS_SYS_OPENAT` (macro, line 201) `#define MINIOS_SYS_OPENAT`
+  - `MINIOS_SYS_NEWFSTATAT` (macro, line 202) `#define MINIOS_SYS_NEWFSTATAT`
+  - `MINIOS_SYS_READLINK` (macro, line 203) `#define MINIOS_SYS_READLINK`
+  - `MINIOS_SYS_STATX` (macro, line 206) `#define MINIOS_SYS_STATX`
+  - `MINIOS_SYS_SET_ROBUST_LIST` (macro, line 210) `#define MINIOS_SYS_SET_ROBUST_LIST`
+  - `MINIOS_SYS_PRLIMIT64` (macro, line 214) `#define MINIOS_SYS_PRLIMIT64`
+  - `MINIOS_SYS_GETRANDOM` (macro, line 215) `#define MINIOS_SYS_GETRANDOM`
+  - `MINIOS_SYS_RSEQ` (macro, line 216) `#define MINIOS_SYS_RSEQ`
+  - `MINIOS_SYS_EXIT_GROUP` (macro, line 217) `#define MINIOS_SYS_EXIT_GROUP`
+  - `MINIOS_SYS_SET_TID_ADDRESS` (macro, line 218) `#define MINIOS_SYS_SET_TID_ADDRESS`
+  - `MINIOS_SYS_CLOCK_GETTIME` (macro, line 219) `#define MINIOS_SYS_CLOCK_GETTIME`
+  - `MINIOS_SYS_TGKILL` (macro, line 220) `#define MINIOS_SYS_TGKILL`
+  - `MINIOS_SYS_DNS` (macro, line 223) `#define MINIOS_SYS_DNS`
+  - `MINIOS_SYS_TLS_HANDSHAKE` (macro, line 229) `#define MINIOS_SYS_TLS_HANDSHAKE`
+  - `MINIOS_SYS_TLS_SEND` (macro, line 230) `#define MINIOS_SYS_TLS_SEND`
+  - `MINIOS_SYS_TLS_RECV` (macro, line 231) `#define MINIOS_SYS_TLS_RECV`
+  - `MINIOS_SYS_TIME` (macro, line 232) `#define MINIOS_SYS_TIME`
+  - `MINIOS_SYS_KBD` (macro, line 233) `#define MINIOS_SYS_KBD`
+  - `MINIOS_SYS_PALETTE` (macro, line 234) `#define MINIOS_SYS_PALETTE`
+  - `MINIOS_SYS_KBD_RAW` (macro, line 235) `#define MINIOS_SYS_KBD_RAW`
+  - `MINIOS_SYS_VGA_MODE` (macro, line 236) `#define MINIOS_SYS_VGA_MODE`
+  - `MINIOS_SYS_PCSPK_INIT` (macro, line 237) `#define MINIOS_SYS_PCSPK_INIT`
+  - `MINIOS_SYS_PCSPK_TONE` (macro, line 238) `#define MINIOS_SYS_PCSPK_TONE`
+  - `MINIOS_SYS_DOOM_FRAME` (macro, line 239) `#define MINIOS_SYS_DOOM_FRAME`
+  - `MINIOS_SYS_RTC` (macro, line 240) `#define MINIOS_SYS_RTC`
+  - `MINIOS_SYS_FB_INFO` (macro, line 241) `#define MINIOS_SYS_FB_INFO`
+  - `MINIOS_SYS_PCSPK_VOL` (macro, line 242) `#define MINIOS_SYS_PCSPK_VOL`
+  - `MINIOS_SYS_SPAWN` (macro, line 243) `#define MINIOS_SYS_SPAWN`
+  - `MINIOS_SYS_LZ4_COMPRESS` (macro, line 244) `#define MINIOS_SYS_LZ4_COMPRESS`
+  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 245) `#define MINIOS_SYS_LZ4_DECOMPRESS`
+  - `MINIOS_SYS_MOUSE` (macro, line 246) `#define MINIOS_SYS_MOUSE`
+  - `MINIOS_SYS_NK_FRAME` (macro, line 247) `#define MINIOS_SYS_NK_FRAME`
+  - `MINIOS_SYS_SB16_OPEN` (macro, line 248) `#define MINIOS_SYS_SB16_OPEN`
+  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 249) `#define MINIOS_SYS_SB16_SUBMIT`
+  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 250) `#define MINIOS_SYS_GFX_SET_TITLE`
+  - `MINIOS_SYS_SB16_PUMP` (macro, line 251) `#define MINIOS_SYS_SB16_PUMP`
+  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 252) `#define MINIOS_SYS_SB16_STREAM_OPEN`
+  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 253) `#define MINIOS_SYS_SB16_STREAM_CLOSE`
+  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 254) `#define MINIOS_SYS_SB16_STREAM_SUBMIT`
+  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 255) `#define MINIOS_SYS_SB16_STREAM_VOLUME`
+  - `MINIOS_SYS_THREAD_SPAWN` (macro, line 256) `#define MINIOS_SYS_THREAD_SPAWN`
+  - `MINIOS_SYS_FUTEX_WAIT` (macro, line 257) `#define MINIOS_SYS_FUTEX_WAIT`
+  - `MINIOS_SYS_FUTEX_WAKE` (macro, line 258) `#define MINIOS_SYS_FUTEX_WAKE`
+  - `MINIOS_SYS_SUBMIT_BATCH` (macro, line 259) `#define MINIOS_SYS_SUBMIT_BATCH`
+  - `MINIOS_SYS_GETC_RAW` (macro, line 260) `#define MINIOS_SYS_GETC_RAW`
+  - `MINIOS_SYS_GFX_PRESENT` (macro, line 261) `#define MINIOS_SYS_GFX_PRESENT`
+  - `MINIOS_SYS_SECCOMP` (macro, line 262) `#define MINIOS_SYS_SECCOMP`
+  - `MINIOS_SYS_NICE` (macro, line 263) `#define MINIOS_SYS_NICE`
+  - `MINIOS_SYS_RLIMIT` (macro, line 264) `#define MINIOS_SYS_RLIMIT`
+  - `MINIOS_SYS_DIR_LIST` (macro, line 265) `#define MINIOS_SYS_DIR_LIST`
+  - `MINIOS_SYS_GFX_ZOOM` (macro, line 266) `#define MINIOS_SYS_GFX_ZOOM`
+  - `MINIOS_SYS_WL_ATTACH` (macro, line 271) `#define MINIOS_SYS_WL_ATTACH`
+  - `MINIOS_SYS_WL_COMMIT` (macro, line 272) `#define MINIOS_SYS_WL_COMMIT`
+  - `MINIOS_SYS_WL_INPUT` (macro, line 273) `#define MINIOS_SYS_WL_INPUT`
+  - `MINIOS_SYS_CLONE` (macro, line 274) `#define MINIOS_SYS_CLONE`
+  - `MINIOS_GFX_BUF_GAME` (macro, line 283) `#define MINIOS_GFX_BUF_GAME`
+  - `MINIOS_GFX_BUF_NK` (macro, line 284) `#define MINIOS_GFX_BUF_NK`
+  - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 285) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
+  - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 286) `#define MINIOS_SYS_WINDOW_PRESENT`
+  - `MINIOS_SYS_WINDOW_TITLE` (macro, line 287) `#define MINIOS_SYS_WINDOW_TITLE`
+  - `SYS_TIME_MS` (macro, line 290) `#define SYS_TIME_MS`
+  - `SYS_PALETTE` (macro, line 291) `#define SYS_PALETTE`
+  - `SYS_PCSPK_INIT` (macro, line 292) `#define SYS_PCSPK_INIT`
+  - `SYS_PCSPK_TONE` (macro, line 293) `#define SYS_PCSPK_TONE`
+  - `SYS_RTC` (macro, line 294) `#define SYS_RTC`
+  - `SYS_FB_INFO` (macro, line 295) `#define SYS_FB_INFO`
+  - `SYS_PCSPK_VOL` (macro, line 296) `#define SYS_PCSPK_VOL`
+  - `SYS_SPAWN` (macro, line 297) `#define SYS_SPAWN`
+  - `SYS_TIME` (macro, line 298) `#define SYS_TIME`
+  - `SYS_WRITE` (macro, line 299) `#define SYS_WRITE`
+  - `MINIOS_EABI_MISMATCH` (macro, line 302) `#define MINIOS_EABI_MISMATCH`
+- Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tools/abi_stamp.c`
+
+## progs/paint/paint.c
+- Layer: utility
+- Doc: Docstring: MiniOS paint program (Nuklear ring-3 app, MiniFS: paint/paint.elf).
+- Language: c
+- Symbols:
+  - `paint_clamp` (function, line 92) `static int paint_clamp(int v, int lo, int hi)`
+  - `paint_plot` (function, line 99) `static int paint_plot(unsigned char *buf, int w, int h, int x, int y,
+                      unsig...`
+  - `paint_dab` (function, line 108) `static void paint_dab(unsigned char *buf, int w, int h, int x, int y,
+                      unsig...`
+  - `paint_line` (function, line 119) `static int paint_line(unsigned char *buf, int w, int h, int x0, int y0,
+                      int...`
+  - `paint_rect_fill` (function, line 144) `static int paint_rect_fill(unsigned char *buf, int w, int h, int x0, int y0,
+                    ...`
+  - `paint_circle_fill` (function, line 161) `static int paint_circle_fill(unsigned char *buf, int w, int h, int cx,
+                          ...`
+  - `paint_flood` (function, line 179) `static int paint_flood(unsigned char *buf, int w, int h, int x, int y,
+                       uns...`
+  - `paint_nearest` (function, line 223) `static int paint_nearest(const unsigned char *pal, unsigned r, unsigned g,
+                      ...`
+  - `paint_pal` (function, line 240) `static const unsigned char *paint_pal(void)`
+  - `paint_path_ok` (function, line 251) `static int paint_path_ok(const char *p)`
+  - `paint_crc_init` (function, line 271) `static void paint_crc_init(void)`
+  - `paint_crc_update` (function, line 284) `static unsigned long paint_crc_update(unsigned long c,
+                                      cons...`
+  - `paint_adler` (function, line 296) `static unsigned long paint_adler(const unsigned char *p, unsigned long n)`
+  - `paint_put_u32` (function, line 308) `static int paint_put_u32(unsigned char *dst, unsigned long cap,
+                         unsigned...`
+  - `paint_put_bytes` (function, line 320) `static int paint_put_bytes(unsigned char *dst, unsigned long cap,
+                           unsi...`
+  - `paint_png_encode` (function, line 333) `static long paint_png_encode(unsigned char *dst, unsigned long cap,
+                             ...`
+  - `paint_load_file` (function, line 461) `static int paint_load_file(const char *path)`
+  - `paint_save_file` (function, line 514) `static int paint_save_file(const char *path)`
+  - `paint_blit` (function, line 548) `static void paint_blit(int ox, int oy)`
+  - `paint_ink` (function, line 562) `static unsigned char paint_ink(void)`
+  - `paint_handle_input` (function, line 569) `static void paint_handle_input(struct nk_context *ctx)`
+  - `paint_ui_build` (function, line 628) `static void paint_ui_build(struct nk_context *ctx)`
+  - `paint_pattern_present` (function, line 712) `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)`
+  - `paint_selftest` (function, line 747) `static int paint_selftest(void)`
+  - `paint_gui_run` (function, line 934) `static void paint_gui_run(void)`
+  - `main` (function, line 983) `int main(int argc, char **argv)`
+  - `nk_build_palette` (function, line 244) `nk_build_palette(pal768);`
+  - `snprintf` (function, line 473) `snprintf(paint_status, sizeof(paint_status), "bad path %s", path);`
+  - `fclose` (function, line 483) `fclose(f);`
+  - `memset` (function, line 498) `memset(paint_px, paint_colors[PAINT_NCOLORS - 1], sizeof(paint_px));`
+  - `stbi_image_free` (function, line 509) `stbi_image_free(px);`
+  - `memcpy` (function, line 583) `memcpy(paint_backup, paint_px, sizeof(paint_px));`
+  - `nk_layout_row_template_begin` (function, line 632) `nk_layout_row_template_begin(ctx, 24);`
+  - `nk_layout_row_template_push_dynamic` (function, line 633) `nk_layout_row_template_push_dynamic(ctx);`
+  - `nk_layout_row_template_push_static` (function, line 634) `nk_layout_row_template_push_static(ctx, PAINT_FILE_BTN_W);`
+  - `nk_layout_row_template_end` (function, line 636) `nk_layout_row_template_end(ctx);`
+  - `nk_edit_string_zero_terminated` (function, line 637) `nk_edit_string_zero_terminated(ctx, NK_EDIT_SIMPLE, paint_path, sizeof(paint_path) - 1, nk_filter_ascii);`
+  - `nk_widget` (function, line 650) `nk_widget(&r, ctx);`
+  - `nk_fill_rect` (function, line 655) `nk_fill_rect(cv, r, 0, nk_rgb(255, 255, 255));`
+  - `nk_layout_row_dynamic` (function, line 660) `nk_layout_row_dynamic(ctx, 24, PAINT_NTOOLS);`
+  - `nk_group_end` (function, line 690) `nk_group_end(ctx);`
+  - `nk_label` (function, line 701) `nk_label(ctx, line, NK_TEXT_LEFT);`
+  - `nk_end` (function, line 704) `nk_end(ctx);`
+  - `printf` (function, line 766) `printf("paint: selftest plot failed\n");`
+  - `nk_sys_vga_mode` (function, line 879) `nk_sys_vga_mode(1);`
+  - `nk_sys_kbd_raw` (function, line 880) `nk_sys_kbd_raw(1);`
+  - `nk_sys_palette` (function, line 881) `nk_sys_palette(pal768);`
+  - `nk_sys_fb_info` (function, line 882) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `nk_input_begin` (function, line 887) `nk_input_begin(&ctx);`
+  - `nk_input_end` (function, line 888) `nk_input_end(&ctx);`
+  - `nk_rasterize` (function, line 895) `nk_rasterize(&ctx);`
+  - `nk_free` (function, line 924) `nk_free(&ctx);`
+  - `nk_sys_gfx_set_title` (function, line 942) `nk_sys_gfx_set_title(PAINT_TITLE);`
+  - `nk_theme_apply` (function, line 950) `nk_theme_apply(&ctx, 0);`
+  - `nk_poll_input` (function, line 962) `nk_poll_input(&ctx);`
+  - `nk_clear` (function, line 971) `nk_clear(&ctx);`
+  - `volatile` (function, line 975) `__asm__ volatile("pause");`
+  - `strcpy` (function, line 996) `strcpy(paint_path, argv[1]);`
+  - `STB_IMAGE_IMPLEMENTATION` (macro, line 25) `#define STB_IMAGE_IMPLEMENTATION`
+  - `STBI_ONLY_PNG` (macro, line 27) `#define STBI_ONLY_PNG`
+  - `STBI_NO_STDIO` (macro, line 28) `#define STBI_NO_STDIO`
+  - `PAINT_W` (macro, line 32) `#define PAINT_W`
+  - `PAINT_H` (macro, line 33) `#define PAINT_H`
+  - `PAINT_N` (macro, line 34) `#define PAINT_N`
+  - `PAINT_PATH_MAX` (macro, line 35) `#define PAINT_PATH_MAX`
+  - `PAINT_FILE_MAX` (macro, line 36) `#define PAINT_FILE_MAX`
+  - `PAINT_STATUS_MAX` (macro, line 37) `#define PAINT_STATUS_MAX`
+  - `PAINT_UI_MEMORY` (macro, line 38) `#define PAINT_UI_MEMORY`
+  - `PAINT_PNG_MAX` (macro, line 39) `#define PAINT_PNG_MAX`
+  - `PAINT_PNG_MAX_DIM` (macro, line 40) `#define PAINT_PNG_MAX_DIM`
+  - `PAINT_TITLE` (macro, line 41) `#define PAINT_TITLE`
+  - `PAINT_DEFAULT_PATH` (macro, line 42) `#define PAINT_DEFAULT_PATH`
+  - `PAINT_PANEL_TITLE` (macro, line 43) `#define PAINT_PANEL_TITLE`
+  - `PAINT_FILE_BTN_W` (macro, line 44) `#define PAINT_FILE_BTN_W`
+  - `PAINT_FRAME_MS` (macro, line 45) `#define PAINT_FRAME_MS`
+  - `PAINT_FRAME_ATTEMPTS` (macro, line 46) `#define PAINT_FRAME_ATTEMPTS`
+  - `PAINT_NCOLORS` (macro, line 47) `#define PAINT_NCOLORS`
+  - `PAINT_NSIZES` (macro, line 48) `#define PAINT_NSIZES`
+  - `PAINT_NTOOLS` (macro, line 49) `#define PAINT_NTOOLS`
+  - `PAINT_TOOL_BRUSH` (macro, line 52) `#define PAINT_TOOL_BRUSH`
+  - `PAINT_TOOL_LINE` (macro, line 53) `#define PAINT_TOOL_LINE`
+  - `PAINT_TOOL_RECT` (macro, line 54) `#define PAINT_TOOL_RECT`
+  - `PAINT_TOOL_CIRCLE` (macro, line 55) `#define PAINT_TOOL_CIRCLE`
+  - `PAINT_TOOL_FILL` (macro, line 56) `#define PAINT_TOOL_FILL`
+  - `PAINT_TOOL_ERASER` (macro, line 57) `#define PAINT_TOOL_ERASER`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+## progs/piano/piano.c
+- Layer: utility
+- Doc: piano.c — a Nuklear piano that plays FM sound through the SB16 driver.
+- Language: c
+- Symbols:
+  - `sys_pcm_open` (function, line 77) `static long sys_pcm_open(long on)`
+  - `sys_pcm_submit` (function, line 81) `static long sys_pcm_submit(const void *buf, long len)`
+  - `sys_pcm_pump` (function, line 84) `static long sys_pcm_pump(void)`
+  - `sys_yield` (function, line 87) `static void sys_yield(void)`
+  - `o3_op` (function, line 102) `static int o3_op(int ch, int is_car)`
+  - `o3_opreg` (function, line 106) `static void o3_opreg(int ch, int is_car, int regbase, int val)`
+  - `o3_chreg` (function, line 110) `static void o3_chreg(int ch, int regbase, int val)`
+  - `o3_note` (function, line 147) `static void o3_note(int ch, int midi, int on)`
+  - `midi_to_key` (function, line 185) `static int midi_to_key(int midi)`
+  - `clamp_midi` (function, line 208) `static int clamp_midi(int m)`
+  - `pedal_set` (function, line 216) `static void pedal_set(int on)`
+  - `voice_alloc` (function, line 229) `static int voice_alloc(void)`
+  - `note_off_key` (function, line 242) `static void note_off_key(int key)`
+  - `note_on_key` (function, line 256) `static void note_on_key(int key, int midi, int vel)`
+  - `kbd_semitone` (function, line 273) `static int kbd_semitone(int code)`
+  - `kbd_all_off` (function, line 307) `static void kbd_all_off(void)`
+  - `note_on_sc` (function, line 313) `static void note_on_sc(int code, int vel)`
+  - `note_off_sc` (function, line 327) `static void note_off_sc(int code)`
+  - `piano_scancode` (function, line 344) `static void piano_scancode(int code, int make, int e0, void *ud)`
+  - `fx_configure` (function, line 396) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
+  - `fx_process` (function, line 414) `static float fx_process(float x)`
+  - `sb_flush` (function, line 445) `static void sb_flush(void)`
+  - `render_audio` (function, line 454) `static void render_audio(long ms)`
+  - `key_rect` (function, line 480) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
+  - `hit_key` (function, line 487) `static int hit_key(int mx, int my)`
+  - `hit_velocity` (function, line 505) `static int hit_velocity(int key, int my)`
+  - `ctrl_hit` (function, line 532) `static int ctrl_hit(int id, int mx, int my)`
+  - `ctrl_active` (function, line 537) `static int ctrl_active(int id)`
+  - `ctrl_press` (function, line 546) `static void ctrl_press(int id)`
+  - `ui_run` (function, line 564) `static void ui_run(int bench_ms)`
+  - `run_selftest` (function, line 738) `static int run_selftest(void)`
+  - `main` (function, line 904) `int main(int argc, char **argv)`
+  - `volatile` (function, line 88) `__asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");`
+  - `OPL3_WriteReg` (function, line 107) `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);`
+  - `o3_instrument` (function, line 263) `o3_instrument(ch, vel);`
+  - `memset` (function, line 407) `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));`
+  - `OPL3_GenerateStream` (function, line 463) `OPL3_GenerateStream(&o3, st, (uint32_t)n);`
+  - `nk_sys_vga_mode` (function, line 567) `nk_sys_vga_mode(1);`
+  - `nk_sys_gfx_set_title` (function, line 569) `nk_sys_gfx_set_title("Piano");`
+  - `nk_sys_kbd_raw` (function, line 570) `nk_sys_kbd_raw(1);`
+  - `nk_build_palette` (function, line 571) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 572) `nk_sys_palette(pal768);`
+  - `nk_sys_fb_info` (function, line 573) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `OPL3_Reset` (function, line 576) `OPL3_Reset(&o3, RATE);`
+  - `nk_set_scancode_hook` (function, line 584) `nk_set_scancode_hook(piano_scancode, 0);`
+  - `printf` (function, line 593) `printf("piano: init failed\n");`
+  - `nk_theme_apply` (function, line 598) `nk_theme_apply(&ctx, 0);`
+  - `nk_input_begin` (function, line 615) `nk_input_begin(&ctx);`
+  - `nk_poll_input` (function, line 616) `nk_poll_input(&ctx);`
+  - `nk_input_end` (function, line 617) `nk_input_end(&ctx);`
+  - `nk_rgb` (function, line 639) `: nk_rgb(240, 240, 240);`
+  - `nk_fill_rect` (function, line 640) `nk_fill_rect(canvas, r, 0, col);`
+  - `nk_stroke_rect` (function, line 641) `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));`
+  - `nk_draw_text` (function, line 653) `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));`
+  - `snprintf` (function, line 659) `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 C4 base oct%+d vol%d", octave, volume);`
+  - `nk_end` (function, line 674) `nk_end(&ctx);`
+  - `nk_rasterize` (function, line 701) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 705) `nk_clear(&ctx);`
+  - `nk_free` (function, line 731) `nk_free(&ctx);`
+  - `UI_MEMORY` (macro, line 54) `#define UI_MEMORY`
+  - `SYS_SB16_OPEN` (macro, line 57) `#define SYS_SB16_OPEN`
+  - `SYS_SB16_SUBMIT` (macro, line 59) `#define SYS_SB16_SUBMIT`
+  - `SYS_SB16_PUMP` (macro, line 60) `#define SYS_SB16_PUMP`
+  - `RATE` (macro, line 61) `#define RATE`
+  - `PCM_BUF` (macro, line 63) `#define PCM_BUF`
+  - `MAX_AUDIO_MS` (macro, line 68) `#define MAX_AUDIO_MS`
+  - `PIANO_FRAME_MS` (macro, line 76) `#define PIANO_FRAME_MS`
+  - `KEY_W` (macro, line 165) `#define KEY_W`
+  - `KEY_H` (macro, line 166) `#define KEY_H`
+  - `BK_W` (macro, line 167) `#define BK_W`
+  - `BK_H` (macro, line 168) `#define BK_H`
+  - `KEY_Y` (macro, line 169) `#define KEY_Y`
+  - `PIANO_BASE_MIDI` (macro, line 170) `#define PIANO_BASE_MIDI`
+  - `PIANO_OCTAVES` (macro, line 171) `#define PIANO_OCTAVES`
+  - `NKEYS` (macro, line 184) `#define NKEYS`
+  - `MAX_VOICES` (macro, line 196) `#define MAX_VOICES`
+  - `KBD_NO_NOTE` (macro, line 272) `#define KBD_NO_NOTE`
+  - `FX_DELAY_CAP` (macro, line 381) `#define FX_DELAY_CAP`
+  - `FX_DELAY_MAX_MS` (macro, line 383) `#define FX_DELAY_MAX_MS`
+  - `FX_FEEDBACK` (macro, line 384) `#define FX_FEEDBACK`
+  - `FX_WET` (macro, line 385) `#define FX_WET`
+  - `FX_TREM_FREQ` (macro, line 386) `#define FX_TREM_FREQ`
+  - `CTRL_Y` (macro, line 515) `#define CTRL_Y`
+  - `CTRL_H` (macro, line 516) `#define CTRL_H`
+  - `BTN_W` (macro, line 517) `#define BTN_W`
+  - `BTN_GAP` (macro, line 518) `#define BTN_GAP`
+  - `NCTRLS` (macro, line 531) `#define NCTRLS`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
+
+## progs/pokemon/minios_stubs/SDL.h
+- Layer: testing
+- Doc: SDL.h stub for MiniOS cross-compilation
+- Language: h
+- Symbols:
+  - `Uint64` (type_alias, line 5) `typedef uint64_t Uint64;`
+  - `Uint32` (type_alias, line 6) `typedef uint32_t Uint32;`
+  - `Sint32` (type_alias, line 7) `typedef int32_t Sint32;`
+  - `Sint16` (type_alias, line 8) `typedef int16_t Sint16;`
+  - `Uint8` (type_alias, line 9) `typedef uint8_t Uint8;`
+  - `SDL_GetPerformanceCounter` (function, line 10) `static inline Uint64 SDL_GetPerformanceCounter(void)`
+  - `SDL_GetPerformanceFrequency` (function, line 12) `static inline Uint64 SDL_GetPerformanceFrequency(void)`
+  - `SDL_GetTicks` (function, line 13) `static inline Uint32 SDL_GetTicks(void)`
+  - `SDL_Delay` (function, line 14) `static inline void SDL_Delay(Uint32 ms)`
+  - `SDL_H_STUB_MINIOS` (macro, line 3) `#define SDL_H_STUB_MINIOS`
+- Imported by: `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/i_cdmus.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`
+
+## progs/quake2generic/q2generic_minios.c
+- Layer: utility
+- Doc: q2generic_minios.c - MiniOS platform layer for quake2generic.
+- Language: c
+- Symbols:
+  - `MINIOS_GFX_BUF_GAME` (function, line 5) `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel
+ * compat alias) and the...`
+  - `sys_kbd` (function, line 29) `static long sys_kbd(void)`
+  - `sys_palette` (function, line 35) `static long sys_palette(const unsigned char *pal)`
+  - `sys_kbd_raw` (function, line 41) `static long sys_kbd_raw(int on)`
+  - `sys_vga_mode` (function, line 47) `static long sys_vga_mode(int on)`
+  - `sys_doom_frame` (function, line 53) `static long sys_doom_frame(void)`
+  - `sys_mouse` (function, line 59) `static long sys_mouse(int *buf)`
+  - `sys_set_title` (function, line 65) `static long sys_set_title(const char *t)`
+  - `q2g_parse_autoframes` (function, line 87) `static void q2g_parse_autoframes(int argc, char **argv)`
+  - `QG_GetMouseDiff` (function, line 102) `void QG_GetMouseDiff(int *dx, int *dy)`
+  - `QG_CaptureMouse` (function, line 113) `void QG_CaptureMouse(void)`
+  - `QG_ReleaseMouse` (function, line 117) `void QG_ReleaseMouse(void)`
+  - `QG_Mkdir` (function, line 120) `void QG_Mkdir(const char *path)`
+  - `scancode_to_q2key` (function, line 124) `static unsigned char scancode_to_q2key(unsigned char raw)`
+  - `extended_to_q2key` (function, line 207) `static unsigned char extended_to_q2key(unsigned char sc)`
+  - `kbd_poll` (function, line 225) `static void kbd_poll(void)`
+  - `SWimp_SetPalette` (function, line 255) `void SWimp_SetPalette(const unsigned char *palette)`
+  - `SWimp_SetMode` (function, line 265) `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)`
+  - `SWimp_Init` (function, line 282) `int SWimp_Init(void *hInstance, void *wndProc)`
+  - `SWimp_Shutdown` (function, line 288) `void SWimp_Shutdown(void)`
+  - `SWimp_BeginFrame` (function, line 291) `void SWimp_BeginFrame(float camera_separation)`
+  - `SWimp_EndFrame` (function, line 294) `void SWimp_EndFrame(void)`
+  - `SWimp_AppActivate` (function, line 313) `void SWimp_AppActivate(qboolean active)`
+  - `QG_Milliseconds` (function, line 317) `int QG_Milliseconds(void)`
+  - `main` (function, line 321) `int main(int argc, char **argv)`
+  - `MINIOS_DOOM_BACKBUF_ADDR` (function, line 4) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
+  - `volatile` (function, line 26) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
+  - `Sys_Quit` (function, line 76) `extern void Sys_Quit(void);`
+  - `Quake2_SendKey` (function, line 238) `Quake2_SendKey(qkey, !(raw2 & 0x80));`
+  - `printf` (function, line 307) `printf("minios: played %d frames, quitting\n", s_frames);`
+  - `fflush` (function, line 308) `fflush(stdout);`
+  - `Quake2_Init` (function, line 328) `Quake2_Init(argc, argv);`
+  - `Quake2_Frame` (function, line 342) `Quake2_Frame(time);`
+  - `Q2G_FB_W` (macro, line 20) `#define Q2G_FB_W`
+  - `Q2G_FB_H` (macro, line 22) `#define Q2G_FB_H`
+  - `Q2G_BACKBUF` (macro, line 71) `#define Q2G_BACKBUF`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
+
+## progs/topogpt3/topogpt3.c
+- Layer: utility
+- Language: c
+- Symbols:
+  - `FILE` (struct, line 24)
+  - `LayerWeights` (struct, line 176)
+  - `ModelWeights` (struct, line 224)
+  - `tg_exp` (function, line 113) `static float tg_exp(float x)`
+  - `tg_tanh` (function, line 127) `static float tg_tanh(float x)`
+  - `tg_sin` (function, line 134) `static float tg_sin(float x)`
+  - `tg_cos` (function, line 143) `static float tg_cos(float x)`
+  - `tg_fabs` (function, line 147) `static float tg_fabs(float x)`
+  - `tg_log` (function, line 151) `static float tg_log(float x)`
+  - `tg_fmax` (function, line 163) `static float tg_fmax(float a, float b)`
+  - `tg_fmin` (function, line 167) `static float tg_fmin(float a, float b)`
+  - `load_vocab` (function, line 254) `static void load_vocab(const char *path)`
+  - `build_torus_graph` (function, line 295) `static void build_torus_graph(void)`
+  - `precompute_rope` (function, line 326) `static void precompute_rope(void)`
+  - `matvec` (function, line 358) `static void matvec(const float *W, const float *x, float *y, int rows, int cols)`
+  - `matvec_bias` (function, line 369) `static void matvec_bias(const float *W, const float *b, const float *x, float *y,
+               ...`
+  - `rmsnorm` (function, line 381) `static void rmsnorm(const float *x, const float *w, float *y, int d)`
+  - `softmax` (function, line 390) `static void softmax(float *x, int n)`
+  - `gelu` (function, line 399) `static void gelu(float *x, int n)`
+  - `silu` (function, line 409) `static void silu(float *x, int n)`
+  - `swiglu` (function, line 417) `static void swiglu(const float *gate_w, const float *up_w, const float *down_w,
+                 ...`
+  - `quat_normalize` (function, line 434) `static void quat_normalize(float *q)`
+  - `quat_hamilton` (function, line 439) `static void quat_hamilton(const float *a, const float *b, float *c)`
+  - `quat_linear` (function, line 448) `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,
+     ...`
+  - `ifft_radix2` (function, line 504) `static void ifft_radix2(float *real, float *imag, int n)`
+  - `rfft` (function, line 513) `static void rfft(const float *x, float *Xr, float *Xi, int n)`
+  - `irfft` (function, line 522) `static void irfft(const float *Xr, const float *Xi, float *x, int n)`
+  - `filter1d` (function, line 536) `static void filter1d(const float *x, const float *kr, const float *ki,
+                      floa...`
+  - `ifft2d` (function, line 579) `static void ifft2d(float *data_r, float *data_i, int h, int w)`
+  - `rfft2d_real` (function, line 602) `static void rfft2d_real(const float *data, float *out_r, float *out_i,
+                         i...`
+  - `irfft2d` (function, line 629) `static void irfft2d(const float *in_r, const float *in_i, float *out,
+                     int h,...`
+  - `cmul` (function, line 664) `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)`
+  - `spectral_contract` (function, line 670) `static void spectral_contract(const float *Wr, const float *Wi,
+                               co...`
+  - `quat_spectral_layer_2d` (function, line 694) `static void quat_spectral_layer_2d(
+    const float *x, float *y,
+    const float *kr_w, const fl...`
+  - `spectral_ae_encode` (function, line 784) `static void spectral_ae_encode(const float *x, float *z, const LayerWeights *lw)`
+  - `spectral_ae_decode` (function, line 792) `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)`
+  - `process_torus_grid` (function, line 799) `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)`
+  - `torus_soft_assign` (function, line 820) `static void torus_soft_assign(const float *phi1, const float *phi2,
+                             ...`
+  - `message_passing` (function, line 842) `static void message_passing(const float *node_feat, float *out,
+                             cons...`
+  - `torus_brain_forward` (function, line 887) `static void torus_brain_forward(const float *x, float *out, float *recon_loss,
+                  ...`
+  - `attention_forward` (function, line 977) `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...`
+  - `moe_forward` (function, line 1077) `static void moe_forward(const float *x, float *out, const LayerWeights *lw)`
+  - `forward` (function, line 1127) `static void forward(const int *token_ids, int seq_len, float *logits_out)`
+  - `tokenize_string` (function, line 1194) `static int tokenize_string(const char *text, int *tokens, int max_tokens)`
+  - `apply_temperature` (function, line 1209) `static void apply_temperature(float *logits, int n, float temp)`
+  - `apply_repetition_penalty` (function, line 1215) `static void apply_repetition_penalty(float *logits, int n, const int *tokens,
+                   ...`
+  - `apply_top_k` (function, line 1228) `static void apply_top_k(float *logits, int n, int k)`
+  - `sample` (function, line 1247) `static int sample(const float *logits, int n)`
+  - `load_weights` (function, line 1281) `static int load_weights(const char *path)`
+  - `load_weights_fp16` (function, line 1451) `static int load_weights_fp16(const char *path)`
+  - `load_weights_auto` (function, line 1583) `static int load_weights_auto(const char *path)`
+  - `time_now_ms` (function, line 1600) `static double time_now_ms(void)`
+  - `decode_token` (function, line 1613) `static void decode_token(int tid)`
+  - `load_token_file` (function, line 1629) `static int load_token_file(const char *path, int *out_ids, int max_ids)`
+  - `decode_token_tiktoken` (function, line 1652) `static void decode_token_tiktoken(int tid)`
+  - `generate_tokens` (function, line 1660) `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,
+               ...`
+  - `generate` (function, line 1724) `static void generate(const char *prompt, int max_new_tokens, float temperature,
+                 ...`
+  - `interactive_mode` (function, line 1735) `static void interactive_mode(void)`
+  - `print_help` (function, line 1849) `static void print_help(void)`
+  - `main` (function, line 1884) `int main(int argc, char **argv)`
+  - `printf` (function, line 28) `extern int printf(const char *, ...);`
+  - `fprintf` (function, line 29) `extern int fprintf(FILE *, const char *, ...);`
+  - `sprintf` (function, line 30) `extern int sprintf(char *, const char *, ...);`
+  - `snprintf` (function, line 31) `extern int snprintf(char *, unsigned long, const char *, ...);`
+  - `puts` (function, line 32) `extern int puts(const char *);`
+  - `putchar` (function, line 33) `extern int putchar(int);`
+  - `fputc` (function, line 34) `extern int fputc(int, FILE *);`
+  - `fputs` (function, line 35) `extern int fputs(const char *, FILE *);`
+  - `fopen` (function, line 36) `extern FILE *fopen(const char *, const char *);`
+  - `fclose` (function, line 37) `extern int fclose(FILE *);`
+  - `fread` (function, line 38) `extern unsigned long fread(void *, unsigned long, unsigned long, FILE *);`
+  - `fwrite` (function, line 39) `extern unsigned long fwrite(const void *, unsigned long, unsigned long, FILE *);`
+  - `fseek` (function, line 40) `extern int fseek(FILE *, long, int);`
+  - `ftell` (function, line 41) `extern long ftell(FILE *);`
+  - `fflush` (function, line 42) `extern int fflush(FILE *);`
+  - `malloc` (function, line 47) `extern void *malloc(unsigned long);`
+  - `free` (function, line 48) `extern void free(void *);`
+  - `memcpy` (function, line 49) `extern void *memcpy(void *, const void *, unsigned long);`
+  - `memset` (function, line 50) `extern void *memset(void *, int, unsigned long);`
+  - `strcmp` (function, line 51) `extern int strcmp(const char *, const char *);`
+  - `strncmp` (function, line 52) `extern int strncmp(const char *, const char *, unsigned long);`
+  - `strlen` (function, line 53) `extern unsigned long strlen(const char *);`
+  - `strstr` (function, line 54) `extern char *strstr(const char *, const char *);`
+  - `fft_radix2` (function, line 508) `fft_radix2(real, imag, n);`
+  - `READ_TENSOR` (function, line 1326) `READ_TENSOR(W.token_embed, VOCAB_SIZE * D_MODEL);`
+  - `READ_TENSOR16` (function, line 1501) `READ_TENSOR16(W.token_embed, VOCAB_SIZE * D_MODEL);`
+  - `volatile` (function, line 1605) `__asm__ volatile ("rdtsc" : "=a"(lo), "=d"(hi));`
+  - `stdin` (variable, line 25) `extern FILE *stdin;`
+  - `stdout` (variable, line 26) `extern FILE *stdout;`
+  - `stderr` (variable, line 27) `extern FILE *stderr;`
+  - `NULL` (macro, line 43) `#define NULL`
+  - `SEEK_SET` (macro, line 44) `#define SEEK_SET`
+  - `SEEK_CUR` (macro, line 45) `#define SEEK_CUR`
+  - `SEEK_END` (macro, line 46) `#define SEEK_END`
+  - `VOCAB_SIZE` (macro, line 64) `#define VOCAB_SIZE`
+  - `D_MODEL` (macro, line 66) `#define D_MODEL`
+  - `N_HEADS` (macro, line 67) `#define N_HEADS`
+  - `N_KV_HEADS` (macro, line 68) `#define N_KV_HEADS`
+  - `GQA_GROUPS` (macro, line 69) `#define GQA_GROUPS`
+  - `D_HEAD` (macro, line 70) `#define D_HEAD`
+  - `D_QUAT` (macro, line 71) `#define D_QUAT`
+  - `N_LAYERS` (macro, line 72) `#define N_LAYERS`
+  - `MAX_SEQ_LEN` (macro, line 73) `#define MAX_SEQ_LEN`
+  - `N_EXPERTS` (macro, line 74) `#define N_EXPERTS`
+  - `MOE_TOP_K` (macro, line 75) `#define MOE_TOP_K`
+  - `N_NODES` (macro, line 76) `#define N_NODES`
+  - `N_RADIAL` (macro, line 77) `#define N_RADIAL`
+  - `N_ANGULAR` (macro, line 78) `#define N_ANGULAR`
+  - `N_EDGE_TYPES` (macro, line 79) `#define N_EDGE_TYPES`
+  - `N_EDGES` (macro, line 80) `#define N_EDGES`
+  - `SPECTRAL_LATENT_DIM` (macro, line 81) `#define SPECTRAL_LATENT_DIM`
+  - `D_LAT_Q` (macro, line 82) `#define D_LAT_Q`
+  - `TORUS_GRID_H` (macro, line 83) `#define TORUS_GRID_H`
+  - `TORUS_GRID_W` (macro, line 84) `#define TORUS_GRID_W`
+  - `FREQ_W` (macro, line 85) `#define FREQ_W`
+  - `N_SPECTRAL_LAYERS` (macro, line 86) `#define N_SPECTRAL_LAYERS`
+  - `EXPERT_INNER` (macro, line 87) `#define EXPERT_INNER`
+  - `READOUT_INNER` (macro, line 88) `#define READOUT_INNER`
+  - `EOS_TOKEN` (macro, line 89) `#define EOS_TOKEN`
+  - `EMBED_INNER` (macro, line 90) `#define EMBED_INNER`
+  - `PI` (macro, line 91) `#define PI`
+  - `EPS_RMS` (macro, line 92) `#define EPS_RMS`
+  - `TORUS_TEMP` (macro, line 93) `#define TORUS_TEMP`
+  - `MAX_TOKENS` (macro, line 94) `#define MAX_TOKENS`
+  - `MAX_PROMPT_LEN` (macro, line 95) `#define MAX_PROMPT_LEN`
+  - `MAX_LINE` (macro, line 96) `#define MAX_LINE`
+  - `TOK_TAB_SIZE` (macro, line 97) `#define TOK_TAB_SIZE`
+  - `TOK_VOCAB_SIZE` (macro, line 98) `#define TOK_VOCAB_SIZE`
+  - `SKIP_TENSOR` (macro, line 1300) `#define SKIP_TENSOR()`
+  - `READ_TENSOR` (macro, line 1310) `#define READ_TENSOR(dest, count)`
+  - `SKIP_TENSOR16` (macro, line 1470) `#define SKIP_TENSOR16()`
+  - `READ_TENSOR16` (macro, line 1480) `#define READ_TENSOR16(dest, count)`
+- Depends on: `kernel/string.c`
+
+## progs/vedit/vedit.c
+- Layer: infrastructure
+- Doc: vedit IDE build and run contract.
+- Language: c
+- Symbols:
+  - `vedit_getc_raw` (function, line 22) `static long vedit_getc_raw(long blocking)`
+  - `vedit_set_title` (function, line 31) `static long vedit_set_title(const char *t)`
+  - `vedit_spawn` (function, line 40) `static long vedit_spawn(const char *path, const char *redir, int argc,
+                        co...`
+  - `vedit_vga` (function, line 52) `static long vedit_vga(int on)`
+  - `vedit_kbd_raw` (function, line 64) `static long vedit_kbd_raw(int on)`
+  - `vedit_time_ms` (function, line 73) `static unsigned long vedit_time_ms(void)`
+  - `vedit_c_bg` (function, line 147) `static struct nk_color vedit_c_bg(void)`
+  - `vedit_c_gutter` (function, line 148) `static struct nk_color vedit_c_gutter(void)`
+  - `vedit_c_default` (function, line 149) `static struct nk_color vedit_c_default(void)`
+  - `vedit_c_keyword` (function, line 150) `static struct nk_color vedit_c_keyword(void)`
+  - `vedit_c_string` (function, line 151) `static struct nk_color vedit_c_string(void)`
+  - `vedit_c_comment` (function, line 152) `static struct nk_color vedit_c_comment(void)`
+  - `vedit_c_number` (function, line 153) `static struct nk_color vedit_c_number(void)`
+  - `vedit_c_preproc` (function, line 154) `static struct nk_color vedit_c_preproc(void)`
+  - `vedit_c_header` (function, line 155) `static struct nk_color vedit_c_header(void)`
+  - `vedit_c_headtxt` (function, line 156) `static struct nk_color vedit_c_headtxt(void)`
+  - `vedit_c_status` (function, line 157) `static struct nk_color vedit_c_status(void)`
+  - `vedit_c_cursor` (function, line 158) `static struct nk_color vedit_c_cursor(void)`
+  - `vedit_ink` (function, line 159) `static struct nk_color vedit_ink(int col)`
+  - `vedit_set_msg` (function, line 229) `static void vedit_set_msg(const char *s)`
+  - `vedit_is_alpha` (function, line 236) `static int vedit_is_alpha(int c)`
+  - `vedit_is_digit` (function, line 240) `static int vedit_is_digit(int c)`
+  - `vedit_is_wordc` (function, line 244) `static int vedit_is_wordc(int c)`
+  - `vedit_is_kw` (function, line 248) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
+  - `separators` (function, line 272) `* allow_quote exists because C digit separators (1'000'000) are not
+ * valid in Python/Lua number...`
+  - `vedit_parse_number` (function, line 294) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
+  - `vedit_parse_keyword` (function, line 309) `static int vedit_parse_keyword(const char *t, int len, int i,
+                               cons...`
+  - `vedit_lang_of` (function, line 327) `static int vedit_lang_of(const char *fname)`
+  - `vedit_lang_name` (function, line 344) `static const char *vedit_lang_name(int lang)`
+  - `vedit_scan_line` (function, line 354) `static int vedit_scan_line(const char *t, int len, int st)`
+  - `vedit_state_at` (function, line 607) `static int vedit_state_at(int row)`
+  - `vedit_row_ptr` (function, line 615) `static char *vedit_row_ptr(int idx)`
+  - `vedit_clamp` (function, line 619) `static void vedit_clamp(void)`
+  - `vedit_follow` (function, line 631) `static void vedit_follow(void)`
+  - `vedit_insert_char` (function, line 644) `static void vedit_insert_char(int c)`
+  - `vedit_delete_line_at` (function, line 670) `static void vedit_delete_line_at(int idx)`
+  - `vedit_backspace` (function, line 681) `static void vedit_backspace(void)`
+  - `vedit_delete_char` (function, line 712) `static void vedit_delete_char(void)`
+  - `vedit_split` (function, line 740) `static void vedit_split(void)`
+  - `vedit_tab` (function, line 788) `static void vedit_tab(void)`
+  - `vedit_find` (function, line 815) `static void vedit_find(const char *needle)`
+  - `vedit_save` (function, line 865) `static int vedit_save(void)`
+  - `vedit_load` (function, line 908) `static int vedit_load(void)`
+  - `vedit_has_ext` (function, line 966) `static int vedit_has_ext(const char *fname, const char *ext)`
+  - `vedit_base_of` (function, line 978) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
+  - `vedit_join` (function, line 999) `static int vedit_join(const char *dir, const char *base, const char *ext,
+                      c...`
+  - `vedit_link_fmt` (function, line 1016) `static int vedit_link_fmt(const char *s)`
+  - `vedit_print_log` (function, line 1029) `static void vedit_print_log(const char *path)`
+  - `vedit_spawn_visible` (function, line 1046) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
+                  ...`
+  - `vedit_cmd_exec` (function, line 1075) `static void vedit_cmd_exec(const char *out, int kind)`
+  - `vedit_run_kind` (function, line 1088) `static int vedit_run_kind(const char *fname)`
+  - `vedit_cmd_run` (function, line 1097) `static void vedit_cmd_run(void)`
+  - `vedit_cmd_link` (function, line 1173) `static void vedit_cmd_link(const char *fmt)`
+  - `vedit_selftest_build` (function, line 1224) `static int vedit_selftest_build(void)`
+  - `vedit_read_key_poll` (function, line 1312) `static int vedit_read_key_poll(void)`
+  - `vedit_ansi_for` (function, line 1364) `static void vedit_ansi_for(int col)`
+  - `vedit_console_dump` (function, line 1371) `static void vedit_console_dump(void)`
+  - `vedit_prompt_open` (function, line 1411) `static void vedit_prompt_open(const char *label, int mode)`
+  - `vedit_prompt_find` (function, line 1422) `static void vedit_prompt_find(void)`
+  - `vedit_prompt_saveas` (function, line 1426) `static void vedit_prompt_saveas(void)`
+  - `vedit_draw_row` (function, line 1436) `static void vedit_draw_row(struct nk_command_buffer *canvas,
+                           struct nk...`
+  - `vedit_draw_ui` (function, line 1516) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
+                    ...`
+  - `vedit_prompt_key` (function, line 1647) `static void vedit_prompt_key(int key)`
+  - `vedit_key` (function, line 1706) `static void vedit_key(int key, int *quit, int *save_and_quit)`
+  - `vedit_sync_title` (function, line 1785) `static void vedit_sync_title(void)`
+  - `vedit_gui_run` (function, line 1795) `static void vedit_gui_run(void)`
+  - `vedit_selftest` (function, line 1874) `static int vedit_selftest(void)`
+  - `main` (function, line 1941) `int main(int argc, char **argv)`
+  - `volatile` (function, line 24) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GETC_RAW), "D"(blocking) : "rcx", "r11", "memory");`
+  - `memcpy` (function, line 233) `memcpy(vedit_msg, s, n);`
+  - `memmove` (function, line 676) `memmove(vedit_row_ptr(k), vedit_row_ptr(k + 1), VEDIT_LINE_MAX);`
+  - `snprintf` (function, line 838) `snprintf(nb, sizeof(nb), "found line %d", r + 1);`
+  - `fclose` (function, line 882) `fclose(f);`
+  - `printf` (function, line 1034) `printf("vedit: no output captured (%s missing)\n", path);`
+  - `fflush` (function, line 1042) `fflush(stdout);`
+  - `nk_build_palette` (function, line 1059) `nk_build_palette(pal768);`
+  - `nk_sys_palette` (function, line 1060) `nk_sys_palette(pal768);`
+  - `putchar` (function, line 1391) `putchar(l[c]);`
+  - `nk_draw_text` (function, line 1459) `nk_draw_text(canvas, nk_rect((float)(x - vedit_gutter_w * vedit_cw), (float)y, (float)(vedit_gutter_w * vedit_cw), (float)vedit_ch), num, (int)strlen(num), font, bg, vedit_c_gutter());`
+  - `nk_fill_rect` (function, line 1465) `nk_fill_rect(canvas, nk_rect((float)x, (float)y, (float)((vedit_cols - vedit_gutter_w) * vedit_cw), (float)vedit_ch), 0, bg);`
+  - `nk_end` (function, line 1542) `nk_end(ctx);`
+  - `nk_sys_vga_mode` (function, line 1806) `nk_sys_vga_mode(1);`
+  - `nk_sys_fb_info` (function, line 1811) `nk_sys_fb_info(&fw, &fh, &fp);`
+  - `nk_theme_apply` (function, line 1837) `nk_theme_apply(&ctx, 0);`
+  - `nk_input_begin` (function, line 1843) `nk_input_begin(&ctx);`
+  - `nk_input_end` (function, line 1844) `nk_input_end(&ctx);`
+  - `nk_rasterize` (function, line 1846) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 1849) `nk_clear(&ctx);`
+  - `nk_free` (function, line 1868) `nk_free(&ctx);`
+  - `memset` (function, line 1975) `memset(vedit_used, 0, VEDIT_MAX_LINES * sizeof(int));`
+  - `free` (function, line 1992) `free(vedit_pool);`
+  - `VEDIT_MAX_LINES` (macro, line 81) `#define VEDIT_MAX_LINES`
+  - `VEDIT_LINE_MAX` (macro, line 82) `#define VEDIT_LINE_MAX`
+  - `VEDIT_LINE_USED` (macro, line 83) `#define VEDIT_LINE_USED`
+  - `VEDIT_FILE_MAX` (macro, line 84) `#define VEDIT_FILE_MAX`
+  - `VEDIT_FNAME_MAX` (macro, line 85) `#define VEDIT_FNAME_MAX`
+  - `VEDIT_DEFAULT_FILE` (macro, line 86) `#define VEDIT_DEFAULT_FILE`
+  - `VEDIT_MSG_MAX` (macro, line 87) `#define VEDIT_MSG_MAX`
+  - `VEDIT_WORD_MAX` (macro, line 88) `#define VEDIT_WORD_MAX`
+  - `VEDIT_TAB_W` (macro, line 89) `#define VEDIT_TAB_W`
+  - `VEDIT_ESC_MS` (macro, line 90) `#define VEDIT_ESC_MS`
+  - `VEDIT_FRAME_MS` (macro, line 91) `#define VEDIT_FRAME_MS`
+  - `VEDIT_UI_MEMORY` (macro, line 92) `#define VEDIT_UI_MEMORY`
+  - `VEDIT_KEY_RUN` (macro, line 93) `#define VEDIT_KEY_RUN`
+  - `VEDIT_KEY_LINK` (macro, line 94) `#define VEDIT_KEY_LINK`
+  - `VEDIT_KEY_DUMP` (macro, line 95) `#define VEDIT_KEY_DUMP`
+  - `VEDIT_TOOL_MINIGCC` (macro, line 96) `#define VEDIT_TOOL_MINIGCC`
+  - `VEDIT_TOOL_LD` (macro, line 97) `#define VEDIT_TOOL_LD`
+  - `VEDIT_TOOL_CVM` (macro, line 98) `#define VEDIT_TOOL_CVM`
+  - `VEDIT_TOOL_LUA` (macro, line 99) `#define VEDIT_TOOL_LUA`
+  - `VEDIT_TOOL_PY` (macro, line 100) `#define VEDIT_TOOL_PY`
+  - `VEDIT_DIR_ASM` (macro, line 101) `#define VEDIT_DIR_ASM`
+  - `VEDIT_DIR_BIN` (macro, line 102) `#define VEDIT_DIR_BIN`
+  - `VEDIT_DIR_CVM` (macro, line 103) `#define VEDIT_DIR_CVM`
+  - `VEDIT_BUILD_LOG` (macro, line 104) `#define VEDIT_BUILD_LOG`
+  - `VEDIT_LINK_ELF` (macro, line 105) `#define VEDIT_LINK_ELF`
+  - `VEDIT_LINK_CVM` (macro, line 106) `#define VEDIT_LINK_CVM`
+  - `VEDIT_STATUS_MAX` (macro, line 107) `#define VEDIT_STATUS_MAX`
+  - `VEDIT_BASE_MAX` (macro, line 108) `#define VEDIT_BASE_MAX`
+  - `VEDIT_PATH_MAX` (macro, line 109) `#define VEDIT_PATH_MAX`
+  - `VEDIT_LOG_TAIL` (macro, line 110) `#define VEDIT_LOG_TAIL`
+  - `VEDIT_LANG_TEXT` (macro, line 113) `#define VEDIT_LANG_TEXT`
+  - `VEDIT_LANG_C` (macro, line 114) `#define VEDIT_LANG_C`
+  - `VEDIT_LANG_PY` (macro, line 115) `#define VEDIT_LANG_PY`
+  - `VEDIT_LANG_LUA` (macro, line 116) `#define VEDIT_LANG_LUA`
+  - `VEDIT_LANG_ASM` (macro, line 117) `#define VEDIT_LANG_ASM`
+  - `VEDIT_COL_DEFAULT` (macro, line 120) `#define VEDIT_COL_DEFAULT`
+  - `VEDIT_COL_KEYWORD` (macro, line 121) `#define VEDIT_COL_KEYWORD`
+  - `VEDIT_COL_STRING` (macro, line 122) `#define VEDIT_COL_STRING`
+  - `VEDIT_COL_COMMENT` (macro, line 123) `#define VEDIT_COL_COMMENT`
+  - `VEDIT_COL_NUMBER` (macro, line 124) `#define VEDIT_COL_NUMBER`
+  - `VEDIT_COL_PREPROC` (macro, line 125) `#define VEDIT_COL_PREPROC`
+  - `VEDIT_ST_BLOCK` (macro, line 128) `#define VEDIT_ST_BLOCK`
+  - `VEDIT_ST_PY3S` (macro, line 129) `#define VEDIT_ST_PY3S`
+  - `VEDIT_ST_PY3D` (macro, line 130) `#define VEDIT_ST_PY3D`
+  - `VEDIT_ST_LUABLK` (macro, line 131) `#define VEDIT_ST_LUABLK`
+  - `VEDIT_ST_LUASTR` (macro, line 132) `#define VEDIT_ST_LUASTR`
+  - `VEDIT_KEY_UP` (macro, line 135) `#define VEDIT_KEY_UP`
+  - `VEDIT_KEY_DOWN` (macro, line 136) `#define VEDIT_KEY_DOWN`
+  - `VEDIT_KEY_LEFT` (macro, line 137) `#define VEDIT_KEY_LEFT`
+  - `VEDIT_KEY_RIGHT` (macro, line 138) `#define VEDIT_KEY_RIGHT`
+  - `VEDIT_KEY_HOME` (macro, line 139) `#define VEDIT_KEY_HOME`
+  - `VEDIT_KEY_END` (macro, line 140) `#define VEDIT_KEY_END`
+  - `VEDIT_KEY_PGUP` (macro, line 141) `#define VEDIT_KEY_PGUP`
+  - `VEDIT_KEY_PGDN` (macro, line 142) `#define VEDIT_KEY_PGDN`
+  - `VEDIT_KEY_DEL` (macro, line 143) `#define VEDIT_KEY_DEL`
+  - `VEDIT_KEY_ESC` (macro, line 144) `#define VEDIT_KEY_ESC`
+  - `VEDIT_PROMPT_FIND` (macro, line 1406) `#define VEDIT_PROMPT_FIND`
+  - `VEDIT_PROMPT_GOTO` (macro, line 1407) `#define VEDIT_PROMPT_GOTO`
+  - `VEDIT_PROMPT_NAME` (macro, line 1408) `#define VEDIT_PROMPT_NAME`
+  - `VEDIT_PROMPT_LINK` (macro, line 1409) `#define VEDIT_PROMPT_LINK`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`

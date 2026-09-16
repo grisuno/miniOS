@@ -1,0 +1,252 @@
+# Subsystem: asm
+
+## progs/asm/aes.s
+- Layer: utility
+- Language: s
+- Symbols:
+  - `aes_rk` (function, line 3)
+  - `aes_sb` (function, line 7)
+  - `aes_rc` (function, line 11)
+  - `aes_st` (function, line 15)
+  - `aes_iv` (function, line 19)
+  - `aes_read_all` (function, line 23)
+  - `aes_write_all` (function, line 238)
+  - `aes_has` (function, line 345)
+  - `hex_val` (function, line 498)
+  - `aes_parse_hex` (function, line 620)
+  - `aes_gf_mul` (function, line 783)
+  - `aes_xtime` (function, line 884)
+  - `aes_rotl8` (function, line 933)
+  - `aes_init_tables` (function, line 970)
+  - `aes_key_expand` (function, line 1197)
+  - `aes_add_round_key` (function, line 1646)
+  - `aes_sub_bytes` (function, line 1721)
+  - `aes_shift_rows` (function, line 1774)
+  - `aes_mix_columns` (function, line 1993)
+  - `aes_cipher` (function, line 2466)
+  - `aes_iv_increment` (function, line 2565)
+  - `aes_ctr_crypt` (function, line 2648)
+  - `aes_hdr_put` (function, line 2791)
+  - `aes_hdr_get` (function, line 2906)
+  - `aes_tool_name` (function, line 3059)
+  - `aes_run` (function, line 3077)
+  - `main` (function, line 3799)
+  - `_start` (function, line 4105)
+
+## progs/asm/cp.s
+- Layer: utility
+- Language: s
+- Symbols:
+  - `main` (function, line 3)
+  - `_start` (function, line 322)
+
+## progs/asm/fib.s
+- Layer: utility
+- Language: s
+- Symbols:
+  - `fib` (function, line 3)
+  - `main` (function, line 61)
+  - `_start` (function, line 82)
+
+## progs/asm/freedom.s
+- Layer: utility
+- Language: s
+- Symbols:
+  - `tls_close` (function, line 3)
+  - `f_host` (function, line 24)
+  - `f_path` (function, line 28)
+  - `f_port` (function, line 32)
+  - `f_secure` (function, line 36)
+  - `f_loc` (function, line 40)
+  - `f_redir` (function, line 44)
+  - `f_status` (function, line 48)
+  - `f_clen` (function, line 52)
+  - `f_has_clen` (function, line 56)
+  - `f_chunked` (function, line 60)
+  - `f_hdr` (function, line 64)
+  - `f_hlen` (function, line 68)
+  - `f_tag` (function, line 72)
+  - `f_suppress` (function, line 76)
+  - `f_comment` (function, line 80)
+  - `f_cmdash` (function, line 84)
+  - `f_tagn` (function, line 88)
+  - `f_tagnlen` (function, line 92)
+  - `f_ent` (function, line 96)
+  - `f_entlen` (function, line 100)
+  - `f_ws` (function, line 104)
+  - `f_utbuf` (function, line 108)
+  - `f_utlen` (function, line 112)
+  - `f_utrem` (function, line 116)
+  - `f_attr_on` (function, line 120)
+  - `f_waitq` (function, line 124)
+  - `f_inval` (function, line 128)
+  - `f_inval2` (function, line 132)
+  - `f_attr` (function, line 136)
+  - `f_attrlen` (function, line 140)
+  - `f_val` (function, line 144)
+  - `f_vallen` (function, line 148)
+  - `f_id` (function, line 152)
+  - `f_idlen` (function, line 156)
+  - `f_cls` (function, line 160)
+  - `f_clslen` (function, line 164)
+  - `f_href` (function, line 168)
+  - `f_hreflen` (function, line 172)
+  - `f_rel_ss` (function, line 176)
+  - `f_styleattr` (function, line 180)
+  - `f_stylelen` (function, line 184)
+  - `f_dump_css` (function, line 188)
+  - `f_dump_dom` (function, line 192)
+  - `f_mode` (function, line 196)
+  - `f_rawcap` (function, line 200)
+  - `f_depth` (function, line 204)
+  - `f_dom` (function, line 208)
+  - `f_domlen` (function, line 212)
+  - `f_css` (function, line 216)
+  - `f_csslen` (function, line 220)
+  - `f_linkhost` (function, line 224)
+  - `f_linkpath` (function, line 228)
+  - `f_linkn` (function, line 232)
+  - `f_cstage` (function, line 236)
+  - `f_csize` (function, line 240)
+  - `f_crem` (function, line 244)
+  - `f_bdone` (function, line 248)
+  - `atoi` (function, line 252)
+  - `append` (function, line 338)
+  - `ci_lower` (function, line 437)
+  - `ci_starts` (function, line 486)
+  - `ci_eq` (function, line 559)
+  - `ci_index` (function, line 656)
+  - `looks_like_url` (function, line 715)
+  - `has_scheme` (function, line 789)
+  - `make_search` (function, line 1064)
+  - `split_url` (function, line 1295)
+  - `resolve_redirect` (function, line 1810)
+  - `put_ws` (function, line 2333)
+  - `put_utf` (function, line 2379)
+  - `put_text` (function, line 2915)
+  - `put_entity` (function, line 3018)
+  - `css_append` (function, line 3849)
+  - `css_line` (function, line 3920)
+  - `dom_append` (function, line 3978)
+  - `dom_space` (function, line 4049)
+  - `dom_nl` (function, line 4083)
+  - `record_attr` (function, line 4117)
+  - `is_void_tag` (function, line 4449)
+  - `classify_tag` (function, line 4757)
+  - `body_byte` (function, line 5961)
+  - `head_line` (function, line 7203)
+  - `parse_head` (function, line 7460)
+  - `recv_body` (function, line 7676)
+  - `send_all` (function, line 7736)
+  - `fetch` (function, line 7810)
+  - `fetch_css` (function, line 9293)
+  - `print_css_dump` (function, line 10112)
+  - `print_dom_dump` (function, line 10212)
+  - `main` (function, line 10291)
+  - `_start` (function, line 11761)
+
+## progs/asm/http.s
+- Layer: presentation
+- Language: s
+- Symbols:
+  - `atoi` (function, line 3)
+  - `main` (function, line 89)
+  - `_start` (function, line 709)
+
+## progs/asm/json.s
+- Layer: utility
+- Language: s
+- Symbols:
+  - `js_key` (function, line 3)
+  - `js_str` (function, line 7)
+  - `js_type` (function, line 11)
+  - `js_num` (function, line 15)
+  - `js_first` (function, line 19)
+  - `js_count` (function, line 23)
+  - `js_next` (function, line 27)
+  - `js_n` (function, line 31)
+  - `js_pool` (function, line 35)
+  - `js_plen` (function, line 39)
+  - `js_src` (function, line 43)
+  - `js_pos` (function, line 47)
+  - `js_len` (function, line 51)
+  - `js_err` (function, line 55)
+  - `js_read_all` (function, line 59)
+  - `js_new` (function, line 274)
+  - `js_skip_ws` (function, line 306)
+  - `js_peek` (function, line 397)
+  - `js_parse_string` (function, line 437)
+  - `js_parse_number` (function, line 851)
+  - `js_key_match` (function, line 947)
+  - `js_parse_object` (function, line 983)
+  - `js_parse_array` (function, line 1335)
+  - `js_parse_value` (function, line 1594)
+  - `js_indent` (function, line 2481)
+  - `js_print_str` (function, line 2524)
+  - `js_print_value` (function, line 2747)
+  - `js_find_member` (function, line 3313)
+  - `js_array_at` (function, line 3391)
+  - `js_query` (function, line 3460)
+  - `main` (function, line 3772)
+  - `_start` (function, line 4169)
+
+## progs/asm/ldhello.s
+- Layer: utility
+- Language: s
+- Symbols:
+  - `main` (function, line 3)
+  - `_start` (function, line 14)
+
+## progs/asm/lz4.s
+- Layer: utility
+- Language: s
+- Symbols:
+  - `lz4_has` (function, line 3)
+  - `lz4_read_all` (function, line 156)
+  - `lz4_write_all` (function, line 371)
+  - `lz4_compress_file` (function, line 478)
+  - `lz4_decompress_file` (function, line 791)
+  - `main` (function, line 1228)
+  - `_start` (function, line 1535)
+
+## progs/asm/lzss.s
+- Layer: utility
+- Language: s
+- Symbols:
+  - `lz_win` (function, line 3)
+  - `lz_src` (function, line 7)
+  - `lz_srclen` (function, line 11)
+  - `lz_srcpos` (function, line 15)
+  - `lz_dst` (function, line 19)
+  - `lz_dstcap` (function, line 23)
+  - `lz_dstlen` (function, line 27)
+  - `lz_err` (function, line 31)
+  - `lz_buf` (function, line 35)
+  - `lz_mask` (function, line 39)
+  - `lz_in_getc` (function, line 43)
+  - `lz_out_put` (function, line 79)
+  - `lz_putbit1` (function, line 116)
+  - `lz_putbit0` (function, line 174)
+  - `lz_flush_bits` (function, line 223)
+  - `lz_out_literal` (function, line 251)
+  - `lz_out_pair` (function, line 321)
+  - `lz_next_mb` (function, line 447)
+  - `lz_encode` (function, line 451)
+  - `lz_getbit` (function, line 1051)
+  - `lz_decode` (function, line 1171)
+  - `lz_hdr_put` (function, line 1514)
+  - `lz_hdr_get` (function, line 1629)
+  - `lz_has` (function, line 1782)
+  - `lz_read_all` (function, line 1935)
+  - `lz_write_all` (function, line 2150)
+  - `lz_compress` (function, line 2257)
+  - `lz_decompress` (function, line 2628)
+  - `main` (function, line 3178)
+  - `_start` (function, line 3497)
+
+## progs/asm/w1.s
+- Layer: utility
+- Language: s
+- Symbols:
+  - `main` (function, line 3)
+  - `_start` (function, line 37)

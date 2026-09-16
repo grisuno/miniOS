@@ -1,0 +1,66 @@
+# Subsystem: boot
+
+## arch/x86/boot/stage1.S
+- Layer: utility
+- Doc: stage1.S - MiniOS boot sector.
+- Language: S
+- Symbols:
+  - `main` (function, line 28)
+  - `normalize` (function, line 32)
+  - `no_extensions` (function, line 78)
+  - `read_failed` (function, line 82)
+  - `fail` (function, line 85)
+  - `halt` (function, line 88)
+  - `puts` (function, line 93)
+  - `puts_next` (function, line 97)
+  - `puts_done` (function, line 103)
+  - `msg_no_lba` (function, line 107)
+  - `msg_read` (function, line 109)
+- Depends on: `headers/arch/x86/boot/bootdefs.h`
+
+## arch/x86/boot/stage2.S
+- Layer: utility
+- Doc: stage2.S - MiniOS second-stage loader.
+- Language: S
+- Symbols:
+  - `stage2_main` (function, line 39)
+  - `a20_ready` (function, line 54)
+  - `load_chunk` (function, line 69)
+  - `chunk_size_ready` (function, line 74)
+  - `read_piece` (function, line 81)
+  - `piece_size_ready` (function, line 86)
+  - `chunk_copy` (function, line 118)
+  - `chunk_leave_pm` (function, line 131)
+  - `chunk_resume` (function, line 141)
+  - `enter_long_mode` (function, line 162)
+  - `fill_pt0_low` (function, line 190)
+  - `dma_uncache` (function, line 208)
+  - `fill_pt0_kernel` (function, line 216)
+  - `fill_pt1_kernel` (function, line 235)
+  - `fill_pt1_bss` (function, line 244)
+  - `fill_page_directory` (function, line 260)
+  - `read_failed` (function, line 289)
+  - `halt` (function, line 293)
+  - `puts` (function, line 298)
+  - `puts_next` (function, line 302)
+  - `puts_done` (function, line 308)
+  - `msg_read` (function, line 312)
+  - `vbe_probe` (function, line 326)
+  - `vbe_try_mode` (function, line 368)
+  - `vbe_try_bpp_ok` (function, line 399)
+  - `vbe_set_fail` (function, line 424)
+  - `vbe_try_fail` (function, line 427)
+  - `vbe_ok` (function, line 433)
+  - `kaslr_pick` (function, line 442)
+  - `gdt32_start` (function, line 479)
+  - `gdt32_end` (function, line 485)
+  - `gdt32_ptr` (function, line 486)
+  - `gdt64_image` (function, line 491)
+  - `gdt64_ptr` (function, line 497)
+  - `saved_gdtr` (function, line 501)
+  - `sectors_left` (function, line 504)
+  - `chunk_sectors` (function, line 506)
+  - `next_lba` (function, line 508)
+  - `dest_addr` (function, line 510)
+  - `kaslr_dest` (function, line 512)
+- Depends on: `headers/arch/x86/boot/bootdefs.h`
