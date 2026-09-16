@@ -1,5 +1,5 @@
 name: lisp
-description: Self-contained Lisp interpreter as a ring-3 static ELF. Built on the host from the in-repo single-file source progs/lisp/lisp.c (no upstream checkout) and shipped on MiniFS as lisp.elf plus the bare-name alias, with MiniOS primitives (time-ms, rtc, fb-info, vol, minios-run over SYS_SPAWN) and the in-OS suite lisp src/test.lisp.
+description: Self-contained Lisp interpreter as a ring-3 static ELF. Built on the host from the in-repo single-file source progs/lisp/lisp.c (no upstream checkout) and shipped on MiniFS as lisp.elf plus the bare-name alias, with MiniOS primitives (time-ms, rtc, fb-info, vol, minios-run over SYS_SPAWN), the in-OS suite lisp src/test.lisp and the subset C compiler progs/lisp/minigcc.lisp (lisp minigcc.lisp compiles int main(){return expr;} to ld-ready assembly).
 author: miniOS
 version: "2.1"
 install:
@@ -13,4 +13,6 @@ install:
     - make progs/bin/lisp.elf
   verify:
     - line: lisp src/test.lisp
+      exit_code: 0
+    - line: lisp minigcc.lisp tin.c > asm/_t_addon.s
       exit_code: 0

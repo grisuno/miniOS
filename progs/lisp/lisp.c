@@ -1994,7 +1994,6 @@ static const PrimEntry PRIMITIVES[] = {
     { "vol", prim_vol },
     { "pal", prim_pal },
     { "pcspeaker", prim_pcspeaker },
-    { "exit", prim_exit },
     { "quit", prim_quit },
     { "minios-run", prim_minios_run }
 };

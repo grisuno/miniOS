@@ -1197,12 +1197,12 @@ expect "42"
 # Lisp: a self-contained ring-3 static ELF on MiniFS (like Lua/MicroPython)
 # with MiniOS primitives over SYS_SPAWN. The -e flag evaluates one form,
 # a script file runs the in-OS suite, and bad input fails closed.
-scenario "lisp evaluates an inline form and prints the value" "lisp -e (+ 40 2)
+scenario "lisp evaluates an inline form and prints the value" "lisp -e \"(+ 40 2)\"
 poweroff"
 expect "42"
 expect "exit code: 0"
 
-scenario "lisp reports a runtime error and returns a failure code" "lisp -e (/ 1 0)
+scenario "lisp reports a runtime error and returns a failure code" "lisp -e \"(/ 1 0)\"
 poweroff"
 expect "division by zero"
 expect "exit code: 1"
@@ -1213,6 +1213,28 @@ expect "PASS closure"
 expect "PASS fs-write-read"
 expect "PASS toolchain-roundtrip"
 expect "exit code: 0"
+
+# minigcc.lisp v0.2: the subset C compiler written in Lisp. It compiles
+# tin.c (return 40 + 2) to stdout; ld links it and the result runs as a
+# ring-3 ELF, proving the Lisp-to-asm path end to end.
+scenario "lisp minigcc compiles a tiny program end to end" "lisp minigcc.lisp tin.c > asm/_t_mini.s
+run objects/ld.o -f elf -o bin/_t_mini.elf asm/_t_mini.s
+run bin/_t_mini.elf
+poweroff"
+expect "exit code: 42"
+
+scenario "lisp minigcc prints usage with no file argument" "lisp minigcc.lisp
+poweroff"
+expect "usage: lisp minigcc.lisp <source.c> > out.s"
+expect "exit code: 1"
+
+# v0.3: functions with params and calls. test.c on the MiniFS root is the
+# real two-function shape (add plus main), linked and run for exit 12.
+scenario "lisp minigcc compiles calls end to end" "lisp minigcc.lisp test.c > asm/_t_call.s
+run objects/ld.o -f elf -o bin/_t_call.elf asm/_t_call.s
+run bin/_t_call.elf
+poweroff"
+expect "exit code: 12"
 
 # Nuklear node editor: a ring-3 Nuklear app on MiniFS (like DOOM/MicroPython)
 # that compiles a node graph to CVM bytecode. The GUI renders through the

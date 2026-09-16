@@ -1295,14 +1295,21 @@ Build and host-test from source:
 
 ```bash
 make progs/bin/lisp.elf   # builds lisp.elf and the bare-name alias
-make test-lisp             # host suite: 27 vectors, zero warnings
+make test-lisp             # host suite: 49 vectors, zero warnings
 ```
 
 The in-OS suite (`src/test.lisp`, on the ramdisk next to `test.lua`)
 covers the language, the MiniOS primitives and the full
 minigcc/ld/ELF roundtrip. Seven one-line mutants of the interpreter
+plus seven minigcc.lisp codegen/CLI mutants
 die in `tools/lisp_scoped.sh` (the `make test-lisp` routing in
-`mutate.sh` covers the full gate).
+`mutate.sh` covers the full gate). `progs/lisp/minigcc.lisp` is a
+subset C compiler written in Lisp (one or more `int f(int a,
+...){return <expr>;}` with params, calls, `+ - * /` and parens,
+`ld`-ready assembly with the same `_start` wrapper minigcc emits,
+usage/version CLI); `lisp minigcc.lisp tin.c > out.s`
+works in-OS from MiniFS, and the real two-function `test.c`
+compiles to `exit code: 12`.
 
 ## MicroPython
 
@@ -1622,11 +1629,12 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `progs/lua/lua_main.c` | Lua 5.4 entry point (REPL, -e, -l, script modes) |
 | `progs/lua/minios.c` | Lua bindings for MiniOS kernel services |
 | `progs/lisp/lisp.c` | self-contained Lisp interpreter + MiniOS primitives (ring-3 static ELF) |
+| `progs/lisp/minigcc.lisp` | subset C compiler in Lisp (v0.3: multi-function, params, calls, usage/version CLI, ld-ready asm) |
 | `progs/src/test.lisp` | in-OS Lisp suite: language, primitives, toolchain roundtrip |
 | `progs/wl/wl_mini.h` | Wayland-mini wire contract (header-only, ADR-0024) |
 | `progs/wl/wlcomp.c` | ring-3 Wayland-mini compositor (max 8 surfaces) |
-| `tools/test_lisp.py` | host Lisp suite: 27 vectors, zero-warning build |
-| `tools/lisp_scoped.sh` | scoped Lisp gate: rebuild plus 7 targeted mutants |
+| `tools/test_lisp.py` | host Lisp suite: 39 vectors, zero-warning build |
+| `tools/lisp_scoped.sh` | scoped Lisp gate: rebuild plus 10 targeted mutants |
 | `progs/topogpt3/topogpt3.c` | TopoGPT3 C inference engine (~2000 lines) |
 | `progs/topogpt3/topogpt3.fp16` | TopoGPT3 float16 model weights (47 MB) |
 | `progs/topogpt3/vocab.bin` | GPT-2 BPE vocabulary (50257 tokens, 422 KB) |

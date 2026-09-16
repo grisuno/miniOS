@@ -2374,11 +2374,41 @@ sibling directory to clone and `LISP_DIR` does not exist.
   guard is what kills that mutant.
 - **Build**: `make progs/bin/lisp.elf` from `progs/lisp/lisp.c` plus
   `minios_abi.h`; `make test-lisp` runs `tools/test_lisp.py` (host,
-  27 vectors: arithmetic, fail-closed errors, closures, strings, files,
-  predicates, CLI flags, the shipped suite in language-only mode).
+  49 vectors: arithmetic, fail-closed errors, closures, strings, files,
+  predicates, CLI flags, the shipped suite in language-only mode, plus
+  the minigcc subset end to end through the host `as`/`ld` and through
+  the MiniOS `ld -f elf` itself, plus the minigcc usage/version CLI).
   `tools/lisp_scoped.sh` is the scoped gate (static ELF rebuild with
-  zero warnings plus 7 targeted mutants, all killed). `mutate.sh`
+  zero warnings plus 7 targeted mutants, all killed, plus 7 minigcc.lisp
+  codegen/CLI mutants). `mutate.sh`
   routes `progs/lisp/lisp.c` mutants to `make test-lisp`.
+- **minigcc.lisp subset compiler** (`progs/lisp/minigcc.lisp`, v0.3):
+  a C compiler written in MiniOS Lisp, shipped on MiniFS beside `lisp.c`
+  (plus the `tin.c` demo fixture) so
+  `lisp minigcc.lisp tin.c > out.s` works in-OS. With no file argument,
+  `-h`/`--help` or `-v`/`--version` it prints the compiler name, version
+  and usage instead of compiling, exiting 1 on missing input and 0 on
+  flags. It compiles one or more `int` functions in order, each shaped
+  `int f(int a, ...){ return <expr>; }` with int or void params, a
+  single return body, and expressions of integers, params, calls,
+  `+ - * /` and parentheses (max 6 params and 6 args). Frames mirror
+  `../miniGCC` (`-(16+8i)(%rbp)` param slots) with the same
+  push-left/pop-rcx operand order (`rax` holds right, `rcx` holds
+  left); calls follow System V (args pushed left to right, odd counts
+  padded with the pad discarded into `r10`, popped into `rdi`..`r9` in
+  reverse, result in `rax`, stack-neutral so nested calls work); the
+  epilogue emits the same `_start` entry wrapper minigcc does, because
+  without it `ld` sets the entry to `main` directly and the first `ret`
+  jumps wild. Anything outside the shape is a diagnostic plus exit 1,
+  never bad assembly. Host proof is 8 semantic vectors assembled,
+  linked and executed plus 4 fail-closed vectors; the BDD scenarios
+  link the in-OS output with `ld.o` and assert `exit code: 42` for
+  `tin.c` and `exit code: 12` for the real two-function `test.c`, and
+  assert the no-args run prints the usage line with exit 1. Later
+  versions widen the shape toward full `minigcc.c`; the token model
+  (cons cells of kind and value, no `set-cdr` so the list builds
+  reversed) and the emit helpers are the stable interface for that
+  growth.
 - **History**: the first version printed every number with a stray `%`
   prefix (`"%%" PRId64`, the exact `-Wformat-extra-args` warning the
   user reported) and had no overflow checks; both are now pinned by

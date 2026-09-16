@@ -205,12 +205,12 @@ rcu-grace-shortened | s/if (rcu_state.pending\\[i\\].epoch < rcu_state.epoch)/if
 sanitize-neg-check-dropped | s/if ((count) < 0) return EFAULT;/if (0) return EFAULT;/ | headers/sanitize.h
 sanitize-wrap-check-dropped | s/if (_sz \\/ _es != _n) return EFAULT;/if (0) return EFAULT;/ | headers/sanitize.h
 
-lisp-add-overflow-unchecked | s/if (__builtin_add_overflow(a, b, \\&out)) {/if (0) {/ | progs/lisp/lisp.c
+lisp-add-overflow-unchecked | s/if (__builtin_add_overflow(v\[0\]->as.num, v\[1\]->as.num, \&out)) {/if (0) {/ | progs/lisp/lisp.c
 lisp-div-zero-unchecked | s/    if (b == 0) {/    if (0) {/ | progs/lisp/lisp.c
 lisp-num-format-prefix | s/fprintf(rt->out, \"%\" PRId64, node->as.num);/fprintf(rt->out, \"%%\" PRId64, node->as.num);/ | progs/lisp/lisp.c
 lisp-true-unbound | s/    env_bind(rt, env, rt->true_value, rt->true_value);/    (void)rt;/ | progs/lisp/lisp.c
 lisp-unbound-silent | s/result = value ? value : make_error(rt, \"unbound symbol\");/result = value ? value : rt->nil;/ | progs/lisp/lisp.c
-lisp-error-message-nil | s/return make_str(rt, value->as.error ? value->as.error : \"unknown\");/return rt->nil;/ | progs/lisp/lisp.c
+lisp-error-message-nil | s/return make_str(rt, v\[0\]->as.error ? v\[0\]->as.error : \"unknown\");/return rt->nil;/ | progs/lisp/lisp.c
 lisp-exit-code-zero | s/        exit(status);/        exit(0);/ | progs/lisp/lisp.c
 
 abi-flock-back-to-74 | s/#define MINIOS_SYS_FLOCK        73/#define MINIOS_SYS_FLOCK        74/ | progs/minios_abi.h

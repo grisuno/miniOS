@@ -1184,7 +1184,8 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
                $(PROGS_DIR)/lua/minios.c $(PROGS_DIR)/lua/lua_main.c \
                $(BIN_DIR)/lisp.elf $(BIN_DIR)/lisp \
-               $(PROGS_DIR)/lisp/lisp.c \
+               $(PROGS_DIR)/lisp/lisp.c $(PROGS_DIR)/lisp/minigcc.lisp \
+               $(PROGS_DIR)/lisp/tin.c \
                $(BIN_DIR)/topogpt3.elf $(BIN_DIR)/topogpt3 \
                $(TOPOGPT3_WEIGHTS) $(TOPOGPT3_VOCAB) \
                $(BIN_DIR)/nuklear.elf $(BIN_DIR)/nuklear \

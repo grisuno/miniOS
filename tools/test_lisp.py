@@ -13,6 +13,7 @@ Usage:
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -21,6 +22,7 @@ import tempfile
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_SRC = os.path.join(REPO, "progs", "lisp", "lisp.c")
 DEFAULT_SUITE = os.path.join(REPO, "progs", "src", "test.lisp")
+DEFAULT_MINIGCC = os.path.join(REPO, "progs", "lisp", "minigcc.lisp")
 
 
 class LispConfig:
@@ -104,7 +106,7 @@ class LispTest:
         self.check_error("mul-overflow", "(* 9223372036854775807 2)",
                          "integer overflow")
         self.check_error("div-zero", "(/ 1 0)", "division by zero")
-        self.check_error("unbound", "nosuchs ym", "unbound symbol")
+        self.check_error("unbound", "nosuchsymbol", "unbound symbol")
         self.check_error("arity", "(+ 1)", "+ expects two numbers")
         self.check_error("call-nonfunction", "(1 2)",
                          "attempt to call a non-function")
@@ -114,6 +116,7 @@ class LispTest:
         self.check_file_roundtrip()
         self.check_cli()
         self.check_suite_language_only()
+        self.check_minigcc_subset()
 
     def check_file_roundtrip(self):
         """Assert a file write and read roundtrip through the interpreter."""
@@ -170,6 +173,129 @@ class LispTest:
                                   text=True, timeout=LispConfig.timeout)
             self.check("suite-language-only",
                        (proc.returncode, "FAIL" in proc.stdout), (0, False))
+
+    def check_minigcc_subset(self):
+        """Assert the Lisp subset compiler covers expr codegen end to end.
+
+        Each vector compiles one tiny C source through minigcc.lisp, then
+        assembles and links the output with the host toolchain and checks
+        the process exit code. Vectors that need `as`/`ld` skip cleanly
+        when the host lacks them; the fail-closed vectors need no linker.
+        """
+        vectors = [
+            ("minigcc-demo", "int main(){return 40 + 2;}", 42),
+            ("minigcc-prec", "int main(){return 2 + 3 * 4 - 20 / 5;}", 10),
+            ("minigcc-paren", "int main(){return (2 + 3) * 4;}", 20),
+            ("minigcc-sub-chain", "int main(){return 100 - 30 - 12;}", 58),
+            ("minigcc-single", "int main(){return 7;}", 7),
+            ("minigcc-call",
+             "int add(int a, int b){return a + b;}"
+             "int main(void){return add(10, 2);}", 12),
+            ("minigcc-nested",
+             "int add(int a,int b){return a+b;}"
+             "int main(void){return add(add(1,2),4);}", 7),
+            ("minigcc-threeargs",
+             "int f(int a,int b,int c){return a*b+c;}"
+             "int main(){return f(3,4,5);}", 17),
+        ]
+        has_toolchain = shutil.which("as") and shutil.which("ld")
+        minios_ld = os.path.join(REPO, "build", "ld")
+        has_minios_ld = os.path.isfile(minios_ld) and os.access(minios_ld, os.X_OK)
+        proc = subprocess.run(
+            [self.binary, DEFAULT_MINIGCC],
+            capture_output=True, text=True, timeout=LispConfig.timeout)
+        self.check("minigcc-no-args-usage",
+                    (proc.returncode != 0,
+                     "usage: lisp minigcc.lisp <source.c> > out.s" in proc.stdout),
+                    (True, True))
+        proc = subprocess.run(
+            [self.binary, DEFAULT_MINIGCC, "--help"],
+            capture_output=True, text=True, timeout=LispConfig.timeout)
+        self.check("minigcc-help",
+                    (proc.returncode,
+                     "minigcc.lisp v" in proc.stdout),
+                    (0, True))
+        proc = subprocess.run(
+            [self.binary, DEFAULT_MINIGCC, "--version"],
+            capture_output=True, text=True, timeout=LispConfig.timeout)
+        self.check("minigcc-version",
+                    (proc.returncode, proc.stdout.startswith("minigcc.lisp v")),
+                    (0, True))
+        with tempfile.TemporaryDirectory() as tmp:
+            for name, source, want in vectors:
+                src = os.path.join(tmp, name + ".c")
+                asm = os.path.join(tmp, name + ".s")
+                with open(src, "w") as handle:
+                    handle.write(source)
+                proc = subprocess.run(
+                    [self.binary, DEFAULT_MINIGCC, src],
+                    capture_output=True, text=True,
+                    timeout=LispConfig.timeout)
+                if proc.returncode != 0 or ".globl main" not in proc.stdout:
+                    self.check(name, (proc.returncode, proc.stdout),
+                               (0, ".globl main"))
+                    continue
+                if not has_toolchain:
+                    self.check(name + "-emits", True, True)
+                    continue
+                with open(asm, "w") as handle:
+                    handle.write(proc.stdout)
+                obj = os.path.join(tmp, name + ".o")
+                exe = os.path.join(tmp, name)
+                proc = subprocess.run(
+                    ["as", "--64", asm, "-o", obj],
+                    capture_output=True, text=True,
+                    timeout=LispConfig.timeout)
+                if proc.returncode != 0:
+                    self.check(name, proc.stderr, "")
+                    continue
+                proc = subprocess.run(
+                    ["ld", obj, "-o", exe],
+                    capture_output=True, text=True,
+                    timeout=LispConfig.timeout)
+                if proc.returncode != 0:
+                    self.check(name, proc.stderr, "")
+                    continue
+                proc = subprocess.run([exe], capture_output=True,
+                                      timeout=LispConfig.timeout)
+                self.check(name, proc.returncode, want)
+                if has_minios_ld:
+                    meld = os.path.join(tmp, name + "_minios.elf")
+                    proc = subprocess.run(
+                        [minios_ld, "-f", "elf", "-o", meld, asm],
+                        capture_output=True, text=True,
+                        timeout=LispConfig.timeout)
+                    if proc.returncode != 0:
+                        self.check(name + "-minios-ld", proc.stderr, "")
+                        continue
+                    os.chmod(meld, 0o755)
+                    proc = subprocess.run([meld], capture_output=True,
+                                          timeout=LispConfig.timeout)
+                    self.check(name + "-minios-ld", proc.returncode, want)
+            bad = os.path.join(tmp, "bad.c")
+            with open(bad, "w") as handle:
+                handle.write("int main(){oops}")
+            proc = subprocess.run(
+                [self.binary, DEFAULT_MINIGCC, bad],
+                capture_output=True, text=True, timeout=LispConfig.timeout)
+            self.check("minigcc-bad-input",
+                        (proc.returncode != 0,
+                         "minigcc: expected return" in proc.stdout),
+                        (True, True))
+            with open(bad, "w") as handle:
+                handle.write("int main(){return x;}")
+            proc = subprocess.run(
+                [self.binary, DEFAULT_MINIGCC, bad],
+                capture_output=True, text=True, timeout=LispConfig.timeout)
+            self.check("minigcc-unbound-var",
+                        (proc.returncode != 0,
+                         "minigcc: unbound variable" in proc.stdout),
+                        (True, True))
+            proc = subprocess.run(
+                [self.binary, DEFAULT_MINIGCC,
+                 os.path.join(tmp, "does-not-exist.c")],
+                capture_output=True, text=True, timeout=LispConfig.timeout)
+            self.check("minigcc-missing-file", proc.returncode != 0, True)
 
     def report(self):
         """Print the totals and return the process exit status."""
