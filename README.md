@@ -2123,7 +2123,9 @@ system would not exist.
   the Pokemon target builds from. [gb-recompiled](https://github.com/arcanite24/gb-recompiled)
 - QEMU, by Fabrice Bellard and the QEMU developers: the machine MiniOS
   boots, tests and debugs on every day of development.
+- raycastlib, Public domain ray casting library, [Pokitto demos](https://gitlab.com/drummyfish/Pokitto-Raycasting) 
 
+ 
 <!-- readmenator-kb-link -->
 ## Knowledge Base
 
