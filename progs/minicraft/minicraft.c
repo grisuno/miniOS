@@ -83,6 +83,13 @@ static unsigned char host_fb[MINIOS_DOOM_W * MINIOS_DOOM_H];
 #define MC_CREEP_HP 10
 #define MC_FUSE_MS 900
 #define MC_BOOM_R 2
+/* Creeper senses: 3D range, vertical gate (no oler al que vuela alto),
+ * fuse only on 3D contact, defuse past the wider radius or the gate. */
+#define MC_CREEP_SENSE 12.0f
+#define MC_CREEP_DZ_MAX 4.0f
+#define MC_CREEP_FUSE_D 1.8f
+#define MC_CREEP_DEFUSE_D 3.5f
+#define MC_CREEP_SEP_D 1.0f
 #define MC_PORK_HEAL 6
 #define MC_HUNGER_MAX 20
 #define MC_HUNGER_MS 35000
@@ -823,30 +830,62 @@ static float mc_smoothstep(float t) {
     return t * t * (3.0f - 2.0f * t);
 }
 
-/* Discrete per-cell biome with wiggly borders: the cell hash keeps the
- * original 22%/12% rates exactly, while a cell-constant jitter of +-2
- * blocks breaks the perfect 16-grid alignment at the edges. A smoothed
+/* Voronoi biome lattice: floor division so negatives land right. A smoothed
  * (bilinear) field must NOT be thresholded here: averaging 4 uniforms
  * collapses the distribution and kills every biome but forest. */
 static int biome_fdiv(int v, int c) {
     return v >= 0 ? v / c : -((-v + c - 1) / c);
 }
 
-static int biome_cell(int x, int y, unsigned int seed, int cell, int ox, int oy,
-    unsigned int jit, int pct) {
-    int cx = biome_fdiv(x, cell), cy = biome_fdiv(y, cell);
-    int jx = (int)(hash2_seed(cx + ox, cy + oy, seed ^ jit) % 5) - 2;
-    int jy = (int)(hash2_seed(cx + oy, cy + ox, seed ^ (jit ^ 0x51EDu)) % 5) - 2;
-    int sx = biome_fdiv(x + jx, cell), sy = biome_fdiv(y + jy, cell);
-    return (hash2_seed(sx + ox, sy + oy, seed) % 100) < (unsigned int)pct;
+/* Voronoi (Worley) biomes: each lattice cell owns one jittered site;
+ * the query belongs to the nearest site, so borders are organic polygons
+ * instead of squares. Position-pure from (x, y, seed): identical on regen,
+ * O(1) per column, no allocation. Keeping the old 22%/12% site rates keeps
+ * the census distribution; only the shapes change.
+ * jc_voronoi.h was considered and rejected: it builds a full clipped edge
+ * graph with malloc per diagram, made for finite point sets, not for
+ * infinite streaming per-column queries. */
+#define MC_VORO_DESERT_CELL 24
+#define MC_VORO_SNOW_CELL 28
+
+static void voro_site(int cx, int cy, unsigned int seed, int cell,
+    int *sx, int *sy) {
+    unsigned int hx = hash2_seed(cx, cy, seed);
+    unsigned int hy = hash2_seed(cx, cy, seed ^ 0x9E3779B9u);
+    *sx = cx * cell + (int)(hx % (unsigned int)cell);
+    *sy = cy * cell + (int)(hy % (unsigned int)cell);
+}
+
+static int biome_voro(int x, int y, unsigned int seed, int cell,
+    int ox, int oy, unsigned int pct) {
+    int ccx = biome_fdiv(x - ox, cell), ccy = biome_fdiv(y - oy, cell);
+    int dx, dy, first = 1, bestd = 0;
+    unsigned int win = 0;
+    for (dy = -1; dy <= 1; dy++) {
+        for (dx = -1; dx <= 1; dx++) {
+            int sx, sy, ddx, ddy, d;
+            voro_site(ccx + dx, ccy + dy, seed, cell, &sx, &sy);
+            sx += ox;
+            sy += oy;
+            ddx = x - sx;
+            ddy = y - sy;
+            d = ddx * ddx + ddy * ddy;
+            if (first || d < bestd) {
+                first = 0;
+                bestd = d;
+                win = hash2_seed(ccx + dx + ox, ccy + dy + oy, seed);
+            }
+        }
+    }
+    return (win % 100) < pct;
 }
 
 static int biome_desert(int x, int y, unsigned int seed) {
-    return biome_cell(x, y, seed, 16, 31, 11, 0xD15EAu, 22);
+    return biome_voro(x, y, seed, MC_VORO_DESERT_CELL, 31, 11, 22);
 }
 
 static int biome_snow(int x, int y, unsigned int seed) {
-    return biome_cell(x, y, seed ^ 0x5BD1E995u, 20, 3, 77, 0x5EEDu, 12);
+    return biome_voro(x, y, seed ^ 0x5BD1E995u, MC_VORO_SNOW_CELL, 3, 77, 12);
 }
 
 static int is_cave(int x, int y, int z, unsigned int seed) {
@@ -1270,6 +1309,70 @@ static void creeper_explode(Pig *c, long now) {
     }
 }
 
+/* Creeper perception in 3D: planar delta, eye-height delta and full
+ * distance. The old code used planar distance only, so a player flying
+ * 10 blocks overhead still lit the fuse. */
+static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3) {
+    float dx = pl_x - c->x, dy = pl_y - c->y;
+    float dz = (pl_z + 0.8f) - (c->z + 0.5f);
+    *pdx = dx;
+    *pdy = dy;
+    *pdz = dz;
+    *pd3 = sqrtf(dx * dx + dy * dy + dz * dz);
+}
+
+/* Voxel line of sight between creeper eyes and player eyes, sampled
+ * every half block. Walls blind the chase; open field keeps the old
+ * behaviour byte for byte. Bounded steps, no allocation. */
+static int creep_has_los(Pig *c) {
+    float ax = c->x, ay = c->y, az = c->z + 0.5f;
+    float bx = pl_x, by = pl_y, bz = pl_z + 0.8f;
+    float dx = bx - ax, dy = by - ay, dz = bz - az;
+    float dist = sqrtf(dx * dx + dy * dy + dz * dz);
+    int steps, s;
+    if (dist < 0.001f)
+        return 1;
+    steps = (int)(dist * 2.0f) + 1;
+    if (steps > 64)
+        steps = 64;
+    for (s = 1; s < steps; s++) {
+        float t = (float)s / (float)steps;
+        int ix = (int)floorf(ax + dx * t);
+        int iy = (int)floorf(ay + dy * t);
+        int iz = (int)floorf(az + dz * t);
+        if (is_solid(get_b(ix, iy, iz)))
+            return 0;
+    }
+    return 1;
+}
+
+/* Herd separation: creepers inside MC_CREEP_SEP_D push apart so the pack
+ * never stacks on one tile and every one of the 3 does not arrive glued. */
+static void creep_separate(Pig *p, int id, float dt) {
+    int k;
+    for (k = 0; k < n_creeps; k++) {
+        Pig *o;
+        float dx, dy, d;
+        if (k == id - MC_PIGS)
+            continue;
+        o = &creeps[k];
+        if (!o->alive)
+            continue;
+        dx = p->x - o->x;
+        dy = p->y - o->y;
+        d = sqrtf(dx * dx + dy * dy);
+        if (d > 0.01f && d < MC_CREEP_SEP_D) {
+            float push = (MC_CREEP_SEP_D - d) * 2.0f * dt;
+            float nx = p->x + dx / d * push;
+            float ny = p->y + dy / d * push;
+            if (!pig_collides(nx, p->y, p->z))
+                p->x = nx;
+            if (!pig_collides(p->x, ny, p->z))
+                p->y = ny;
+        }
+    }
+}
+
 static void tick_mob(Pig *p, int id, float dt, long now) {
     int i = id;
     {
@@ -1284,21 +1387,30 @@ static void tick_mob(Pig *p, int id, float dt, long now) {
         pdy = p->y - pl_y;
         pd = sqrtf(pdx * pdx + pdy * pdy);
         if (p->kind == MOB_CREEP) {
+            float cdx, cdy, cdz, cd3;
+            float adz;
+            int sensed;
             sp = (day_light < 0.35f) ? 2.4f : 2.0f;
-            if (pd < 10.0f && pd > 0.01f)
-                p->yaw = atan2f(-pdy, -pdx);
+            creep_sense(p, &cdx, &cdy, &cdz, &cd3);
+            adz = cdz < 0 ? -cdz : cdz;
+            sensed = cd3 < MC_CREEP_SENSE && adz < MC_CREEP_DZ_MAX &&
+                creep_has_los(p);
+            if (sensed && cd3 > 0.01f)
+                p->yaw = atan2f(cdy, cdx);
             else if (now - p->turn_ms > 2500) {
                 p->turn_ms = now;
                 if ((hash2(id * 131 + (int)(now / 2500), id) % 100) < 60)
                     p->yaw += (float)((hash2(id, (int)(now / 1000)) % 200) - 100) / 100.0f;
             }
-            if (!p->fuse_ms && pd < 1.6f) {
+            /* Fuse only on 3D contact: flying overhead (big |dz|) or
+             * sniping from afar never lights it. Chocan conmigo = boom. */
+            if (!p->fuse_ms && cd3 < MC_CREEP_FUSE_D) {
                 p->fuse_ms = now + MC_FUSE_MS;
                 beep(880, 120);
                 printf("minicraft: fuse lit\n");
             }
             if (p->fuse_ms) {
-                if (pd > 3.0f) {
+                if (cd3 > MC_CREEP_DEFUSE_D || adz > MC_CREEP_DZ_MAX) {
                     p->fuse_ms = 0;
                 } else {
                     snprintf(last_act, sizeof(last_act), "HUYE!");
@@ -1308,6 +1420,36 @@ static void tick_mob(Pig *p, int id, float dt, long now) {
                         return;
                     }
                 }
+            }
+            /* Lit creepers hold position (only gravity + separation):
+             * the old code kept rushing, so the blast chased the player. */
+            if (p->fuse_ms) {
+                creep_separate(p, id, dt);
+            } else if (sensed) {
+                creep_separate(p, id, dt);
+                {
+                    float nx = p->x + cosf(p->yaw) * sp * dt;
+                    float ny = p->y + sinf(p->yaw) * sp * dt;
+                    if (!pig_collides(nx, p->y, p->z))
+                        p->x = nx;
+                    else
+                        p->yaw += 1.7f;
+                    if (!pig_collides(p->x, ny, p->z))
+                        p->y = ny;
+                    else
+                        p->yaw -= 1.7f;
+                }
+            } else {
+                float nx = p->x + cosf(p->yaw) * sp * dt * 0.4f;
+                float ny = p->y + sinf(p->yaw) * sp * dt * 0.4f;
+                if (!pig_collides(nx, p->y, p->z))
+                    p->x = nx;
+                else
+                    p->yaw += 1.7f;
+                if (!pig_collides(p->x, ny, p->z))
+                    p->y = ny;
+                else
+                    p->yaw -= 1.7f;
             }
         } else if (p->hurt_until > now && pd > 0.01f) {
             p->yaw = atan2f(pdy, pdx);
@@ -1321,7 +1463,9 @@ static void tick_mob(Pig *p, int id, float dt, long now) {
             p->attack_ms = now;
             hurt(day_light < 0.35f ? 2 : 1, "PIG");
         }
-        {
+        /* Creepers moved in their own branch above (chase / hold /
+         * wander); the shared stride below is pigs only. */
+        if (p->kind != MOB_CREEP) {
             float nx = p->x + cosf(p->yaw) * sp * dt;
             float ny = p->y + sinf(p->yaw) * sp * dt;
             if (!pig_collides(nx, p->y, p->z))
@@ -3373,6 +3517,28 @@ static int selftest(void) {
             }
             if (!creeps[1].alive) {
                 printf("minicraft: selftest FAIL (defused boom)\n");
+                return 1;
+            }
+            /* Flyover: player 6 above the creeper's head must neither
+             * light the fuse nor steer the chase. Contact = boom. */
+            creeps[1].x = 10.5f;
+            creeps[1].y = 10.5f;
+            creeps[1].z = 10.02f;
+            creeps[1].yaw = 0;
+            creeps[1].vz = 0;
+            creeps[1].alive = 1;
+            creeps[1].fuse_ms = 0;
+            creeps[1].turn_ms = t0 + 200;
+            pl_x = 10.5f;
+            pl_y = 10.5f;
+            pl_z = 16.02f;
+            tick_mob(&creeps[1], MC_PIGS + 1, 0.05f, t0 + 200);
+            if (creeps[1].fuse_ms) {
+                printf("minicraft: selftest FAIL (flyover lit fuse)\n");
+                return 1;
+            }
+            if (creeps[1].yaw != 0.0f) {
+                printf("minicraft: selftest FAIL (flyover steered chase)\n");
                 return 1;
             }
             {
