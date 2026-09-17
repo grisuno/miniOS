@@ -1,8 +1,9 @@
 # Recipe: Reduce File Complexity
 
-1. Read hotspots: `grep -A5 'Hotspots' readmenator-agent/GOTCHAS.md`
-2. Pick the worst offender
-3. Extract functions/classes into new files in the same subsystem
-4. Update imports
-5. Regenerate: `readmenator .`
+Target hotspot: `headers/kernel.h`
+(complexity 1.0, centrality 0.7)
 
+1. Read dependents: `grep -n 'headers/kernel.h' readmenator-agent/ARCHITECTURE.md`
+2. Extract functions/classes into new files in the same subsystem
+3. Update imports
+4. Regenerate: `readmenator .`

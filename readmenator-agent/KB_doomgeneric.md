@@ -10,7 +10,7 @@
   - `mpoint_t` (struct, line 121)
   - `mline_t` (struct, line 126)
   - `islope_t` (struct, line 131)
-  - `AM_getIslope` (function, line 273) `void
+  - `AM_getIslope` (function, line 275) `void
 AM_getIslope
 ( mline_t*	ml,
   islope_t*	is )`
@@ -22,14 +22,14 @@ AM_getIslope
   - `AM_changeWindowLoc` (function, line 395) `void AM_changeWindowLoc(void)`
   - `AM_initVariables` (function, line 424) `void AM_initVariables(void)`
   - `AM_loadPics` (function, line 480) `void AM_loadPics(void)`
-  - `AM_unloadPics` (function, line 492) `void AM_unloadPics(void)`
-  - `AM_clearMarks` (function, line 504) `void AM_clearMarks(void)`
+  - `AM_unloadPics` (function, line 493) `void AM_unloadPics(void)`
+  - `AM_clearMarks` (function, line 505) `void AM_clearMarks(void)`
   - `AM_LevelInit` (function, line 518) `void AM_LevelInit(void)`
   - `AM_Stop` (function, line 541) `void AM_Stop (void)`
   - `AM_Start` (function, line 554) `void AM_Start (void)`
   - `AM_minOutWindowScale` (function, line 573) `void AM_minOutWindowScale(void)`
   - `AM_maxOutWindowScale` (function, line 583) `void AM_maxOutWindowScale(void)`
-  - `AM_Responder` (function, line 594) `boolean
+  - `AM_Responder` (function, line 595) `boolean
 AM_Responder
 ( event_t*	ev )`
   - `AM_changeWindowScale` (function, line 742) `void AM_changeWindowScale(void)`
@@ -37,49 +37,39 @@ AM_Responder
   - `AM_updateLightLev` (function, line 785) `void AM_updateLightLev(void)`
   - `AM_Ticker` (function, line 806) `void AM_Ticker (void)`
   - `AM_clearFB` (function, line 834) `void AM_clearFB(int color)`
-  - `AM_clipMline` (function, line 847) `boolean
+  - `AM_clipMline` (function, line 848) `boolean
 AM_clipMline
 ( mline_t*	ml,
   fline_t*	fl )`
-  - `AM_drawFline` (function, line 983) `void
+  - `AM_drawFline` (function, line 984) `void
 AM_drawFline
 ( fline_t*	fl,
   int		color )`
-  - `AM_drawMline` (function, line 1061) `void
+  - `AM_drawMline` (function, line 1062) `void
 AM_drawMline
 ( mline_t*	ml,
   int		color )`
   - `AM_drawGrid` (function, line 1077) `void AM_drawGrid(int color)`
   - `AM_drawWalls` (function, line 1123) `void AM_drawWalls(void)`
-  - `AM_rotate` (function, line 1178) `void
+  - `AM_rotate` (function, line 1179) `void
 AM_rotate
 ( fixed_t*	x,
   fixed_t*	y,
   angle_t	a )`
-  - `AM_drawLineCharacter` (function, line 1196) `void
+  - `AM_drawLineCharacter` (function, line 1198) `void
 AM_drawLineCharacter
 ( mline_t*	lineguy,
   int		lineguylines,
   fixed_t	scale,
   angle_t	ang...`
-  - `AM_drawPlayers` (function, line 1245) `void AM_drawPlayers(void)`
-  - `AM_drawThings` (function, line 1289) `void
+  - `AM_drawPlayers` (function, line 1246) `void AM_drawPlayers(void)`
+  - `AM_drawThings` (function, line 1291) `void
 AM_drawThings
 ( int	colors,
   int 	colorrange)`
-  - `AM_drawMarks` (function, line 1310) `void AM_drawMarks(void)`
-  - `AM_drawCrosshair` (function, line 1331) `void AM_drawCrosshair(int color)`
-  - `AM_Drawer` (function, line 1337) `void AM_Drawer (void)`
-  - `ST_Responder` (function, line 473) `ST_Responder(&st_notify);`
-  - `DEH_snprintf` (function, line 487) `DEH_snprintf(namebuf, 9, "AMMNUM%d", i);`
-  - `W_ReleaseLumpName` (function, line 501) `W_ReleaseLumpName(namebuf);`
-  - `M_snprintf` (function, line 685) `M_snprintf(buffer, sizeof(buffer), "%s %d", DEH_String(AMSTR_MARKEDSPOT), markpointnum);`
-  - `memset` (function, line 836) `memset(fb, color, f_w*f_h);`
-  - `DOOUTCODE` (function, line 909) `DOOUTCODE(outcode1, fl->a.x, fl->a.y);`
-  - `DEH_fprintf` (function, line 1006) `DEH_fprintf(stderr, "fuck %d \r", fuck++);`
-  - `PUTDOT` (function, line 1028) `PUTDOT(x,y,color);`
-  - `FixedMul` (function, line 1187) `FixedMul(*x,finecosine[a>>ANGLETOFINESHIFT]) - FixedMul(*y,finesine[a>>ANGLETOFINESHIFT]);`
-  - `V_MarkRect` (function, line 1352) `V_MarkRect(f_x, f_y, f_w, f_h);`
+  - `AM_drawMarks` (function, line 1311) `void AM_drawMarks(void)`
+  - `AM_drawCrosshair` (function, line 1332) `void AM_drawCrosshair(int color)`
+  - `AM_Drawer` (function, line 1338) `void AM_Drawer (void)`
   - `REDS` (macro, line 50) `#define REDS`
   - `REDRANGE` (macro, line 51) `#define REDRANGE`
   - `BLUES` (macro, line 52) `#define BLUES`
@@ -135,7 +125,6 @@ AM_drawThings
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `AM_Responder` (function, line 32) `boolean AM_Responder (event_t* ev);`
   - `AM_Ticker` (function, line 35) `void AM_Ticker (void);`
   - `AM_Drawer` (function, line 39) `void AM_Drawer (void);`
   - `AM_Stop` (function, line 43) `void AM_Stop (void);`
@@ -469,7 +458,7 @@ AM_drawThings
 - Language: c
 - Symbols:
   - `D_PostEvent` (function, line 35) `void D_PostEvent (event_t* ev)`
-  - `D_PopEvent` (function, line 42) `event_t *D_PopEvent(void)`
+  - `D_PopEvent` (function, line 43) `event_t *D_PopEvent(void)`
   - `MAXEVENTS` (macro, line 24) `#define MAXEVENTS`
 - Depends on: `progs/doomgeneric/d_event.h`
 
@@ -508,34 +497,26 @@ AM_drawThings
 - Language: c
 - Symbols:
   - `registry_value_t` (struct, line 83)
-  - `AddIWADDir` (function, line 63) `static void AddIWADDir(char *dir)`
-  - `GetRegistryString` (function, line 191) `static char *GetRegistryString(registry_value_t *reg_val)`
-  - `CheckUninstallStrings` (function, line 235) `static void CheckUninstallStrings(void)`
-  - `CheckCollectorsEdition` (function, line 269) `static void CheckCollectorsEdition(void)`
-  - `CheckSteamEdition` (function, line 296) `static void CheckSteamEdition(void)`
-  - `CheckSteamGUSPatches` (function, line 323) `static void CheckSteamGUSPatches(void)`
-  - `CheckDOSDefaults` (function, line 363) `static void CheckDOSDefaults(void)`
-  - `DirIsFile` (function, line 390) `static boolean DirIsFile(char *path, char *filename)`
-  - `CheckDirectoryHasIWAD` (function, line 407) `static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)`
-  - `SearchDirectoryForIWAD` (function, line 448) `static char *SearchDirectoryForIWAD(char *dir, int mask, GameMission_t *mission)`
-  - `IdentifyIWADByName` (function, line 476) `static GameMission_t IdentifyIWADByName(char *name, int mask)`
-  - `AddDoomWadPath` (function, line 517) `static void AddDoomWadPath(void)`
-  - `BuildIWADDirList` (function, line 568) `static void BuildIWADDirList(void)`
-  - `D_FindWADByName` (function, line 629) `char *D_FindWADByName(char *name)`
-  - `D_TryFindWADByName` (function, line 680) `char *D_TryFindWADByName(char *filename)`
-  - `D_FindIWAD` (function, line 703) `char *D_FindIWAD(int mask, GameMission_t *mission)`
-  - `D_FindAllIWADs` (function, line 756) `const iwad_t **D_FindAllIWADs(int mask)`
-  - `D_SaveGameIWADName` (function, line 795) `char *D_SaveGameIWADName(GameMission_t gamemission)`
-  - `D_SuggestIWADName` (function, line 819) `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)`
-  - `D_SuggestGameName` (function, line 834) `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)`
-  - `free` (function, line 222) `free(result);`
-  - `RegCloseKey` (function, line 228) `RegCloseKey(key);`
-  - `M_snprintf` (function, line 347) `M_snprintf(patch_path, len, "%s\\%s\\ACBASS.PAT", install_path, STEAM_BFG_GUS_PATCHES);`
-  - `M_SetVariable` (function, line 355) `M_SetVariable("gus_patch_path", patch_path);`
-  - `strdup` (function, line 417) `return strdup(dir);`
-  - `fprintf` (function, line 431) `fprintf(stdout, "Trying IWAD file:'%s'\n", filename);`
-  - `I_Error` (function, line 731) `I_Error("IWAD file '%s' not found!", iwadfile);`
-  - `printf` (function, line 739) `printf("-iwad not specified, trying a few iwad names\n");`
+  - `AddIWADDir` (function, line 64) `static void AddIWADDir(char *dir)`
+  - `GetRegistryString` (function, line 192) `static char *GetRegistryString(registry_value_t *reg_val)`
+  - `CheckUninstallStrings` (function, line 236) `static void CheckUninstallStrings(void)`
+  - `CheckCollectorsEdition` (function, line 270) `static void CheckCollectorsEdition(void)`
+  - `CheckSteamEdition` (function, line 297) `static void CheckSteamEdition(void)`
+  - `CheckSteamGUSPatches` (function, line 324) `static void CheckSteamGUSPatches(void)`
+  - `CheckDOSDefaults` (function, line 364) `static void CheckDOSDefaults(void)`
+  - `DirIsFile` (function, line 391) `static boolean DirIsFile(char *path, char *filename)`
+  - `CheckDirectoryHasIWAD` (function, line 408) `static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)`
+  - `SearchDirectoryForIWAD` (function, line 449) `static char *SearchDirectoryForIWAD(char *dir, int mask, GameMission_t *mission)`
+  - `IdentifyIWADByName` (function, line 477) `static GameMission_t IdentifyIWADByName(char *name, int mask)`
+  - `AddDoomWadPath` (function, line 518) `static void AddDoomWadPath(void)`
+  - `BuildIWADDirList` (function, line 569) `static void BuildIWADDirList(void)`
+  - `D_FindWADByName` (function, line 630) `char *D_FindWADByName(char *name)`
+  - `D_TryFindWADByName` (function, line 681) `char *D_TryFindWADByName(char *filename)`
+  - `D_FindIWAD` (function, line 704) `char *D_FindIWAD(int mask, GameMission_t *mission)`
+  - `D_FindAllIWADs` (function, line 757) `const iwad_t **D_FindAllIWADs(int mask)`
+  - `D_SaveGameIWADName` (function, line 796) `char *D_SaveGameIWADName(GameMission_t gamemission)`
+  - `D_SuggestIWADName` (function, line 820) `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)`
+  - `D_SuggestGameName` (function, line 835) `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)`
   - `MAX_IWAD_DIRS` (macro, line 57) `#define MAX_IWAD_DIRS`
   - `WIN32_LEAN_AND_MEAN` (macro, line 79) `#define WIN32_LEAN_AND_MEAN`
   - `UNINSTALLER_STRING` (macro, line 89) `#define UNINSTALLER_STRING`
@@ -572,43 +553,25 @@ AM_drawThings
 - Language: c
 - Symbols:
   - `ticcmd_set_t` (struct, line 45)
-  - `GetAdjustedTime` (function, line 118) `static int GetAdjustedTime(void)`
-  - `BuildNewTic` (function, line 135) `static boolean BuildNewTic(void)`
-  - `NetUpdate` (function, line 202) `void NetUpdate (void)`
-  - `D_Disconnected` (function, line 251) `static void D_Disconnected(void)`
-  - `D_ReceiveTic` (function, line 270) `void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)`
-  - `D_StartGameLoop` (function, line 304) `void D_StartGameLoop(void)`
-  - `BlockUntilStart` (function, line 314) `static void BlockUntilStart(net_gamesettings_t *settings,
+  - `GetAdjustedTime` (function, line 119) `static int GetAdjustedTime(void)`
+  - `BuildNewTic` (function, line 136) `static boolean BuildNewTic(void)`
+  - `NetUpdate` (function, line 203) `void NetUpdate (void)`
+  - `D_Disconnected` (function, line 252) `static void D_Disconnected(void)`
+  - `D_ReceiveTic` (function, line 271) `void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)`
+  - `D_StartGameLoop` (function, line 305) `void D_StartGameLoop(void)`
+  - `BlockUntilStart` (function, line 315) `static void BlockUntilStart(net_gamesettings_t *settings,
                             netgame_sta...`
-  - `D_StartNetGame` (function, line 339) `void D_StartNetGame(net_gamesettings_t *settings,
+  - `D_StartNetGame` (function, line 340) `void D_StartNetGame(net_gamesettings_t *settings,
                     netgame_startup_callback_t ...`
-  - `D_InitNetGame` (function, line 451) `boolean D_InitNetGame(net_connect_data_t *connect_data)`
+  - `D_InitNetGame` (function, line 452) `boolean D_InitNetGame(net_connect_data_t *connect_data)`
   - `D_QuitNetGame` (function, line 560) `void D_QuitNetGame (void)`
-  - `GetLowTic` (function, line 567) `static int GetLowTic(void)`
-  - `OldNetSync` (function, line 590) `static void OldNetSync(void)`
-  - `PlayersInGame` (function, line 641) `static boolean PlayersInGame(void)`
-  - `TicdupSquash` (function, line 671) `static void TicdupSquash(ticcmd_set_t *set)`
-  - `SinglePlayerClear` (function, line 688) `static void SinglePlayerClear(ticcmd_set_t *set)`
-  - `TryRunTics` (function, line 705) `void TryRunTics (void)`
-  - `D_RegisterLoopCallbacks` (function, line 821) `void D_RegisterLoopCallbacks(loop_interface_t *i)`
-  - `I_StartTic` (function, line 142) `I_StartTic ();`
-  - `memset` (function, line 177) `memset(&cmd, 0, sizeof(ticcmd_t));`
-  - `NET_CL_SendTiccmd` (function, line 184) `NET_CL_SendTiccmd(&cmd, maketic);`
-  - `NET_CL_Run` (function, line 218) `NET_CL_Run();`
-  - `NET_SV_Run` (function, line 220) `NET_SV_Run();`
-  - `I_Error` (function, line 258) `I_Error("Disconnected from server in drone mode.");`
-  - `printf` (function, line 262) `printf("Disconnected from server.\n");`
-  - `I_Sleep` (function, line 333) `I_Sleep(100);`
-  - `NET_CL_StartGame` (function, line 406) `NET_CL_StartGame(settings);`
-  - `NET_CL_GetSettings` (function, line 411) `NET_CL_GetSettings(settings);`
-  - `I_AtExit` (function, line 461) `I_AtExit(D_QuitNetGame, true);`
-  - `NET_SV_Init` (function, line 477) `NET_SV_Init();`
-  - `NET_SV_AddModule` (function, line 478) `NET_SV_AddModule(&net_loop_server_module);`
-  - `NET_SV_RegisterWithMaster` (function, line 480) `NET_SV_RegisterWithMaster();`
-  - `NET_WaitForLaunch` (function, line 544) `NET_WaitForLaunch();`
-  - `NET_SV_Shutdown` (function, line 563) `NET_SV_Shutdown();`
-  - `NET_CL_Disconnect` (function, line 564) `NET_CL_Disconnect();`
-  - `memcpy` (function, line 807) `memcpy(local_playeringame, set->ingame, sizeof(local_playeringame));`
+  - `GetLowTic` (function, line 568) `static int GetLowTic(void)`
+  - `OldNetSync` (function, line 591) `static void OldNetSync(void)`
+  - `PlayersInGame` (function, line 642) `static boolean PlayersInGame(void)`
+  - `TicdupSquash` (function, line 672) `static void TicdupSquash(ticcmd_set_t *set)`
+  - `SinglePlayerClear` (function, line 689) `static void SinglePlayerClear(ticcmd_set_t *set)`
+  - `TryRunTics` (function, line 706) `void TryRunTics (void)`
+  - `D_RegisterLoopCallbacks` (function, line 822) `void D_RegisterLoopCallbacks(loop_interface_t *i)`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
 
 ## progs/doomgeneric/d_loop.h
@@ -617,14 +580,11 @@ AM_drawThings
 - Language: h
 - Symbols:
   - `loop_interface_t` (struct, line 31)
-  - `boolean` (function, line 27) `typedef boolean (*netgame_startup_callback_t)(int ready_players, int num_players);`
-  - `void` (function, line 34) `void (*ProcessEvents)();`
   - `D_RegisterLoopCallbacks` (function, line 52) `void D_RegisterLoopCallbacks(loop_interface_t *i);`
   - `NetUpdate` (function, line 55) `void NetUpdate (void);`
   - `D_QuitNetGame` (function, line 59) `void D_QuitNetGame (void);`
   - `TryRunTics` (function, line 62) `void TryRunTics (void);`
   - `D_StartGameLoop` (function, line 65) `void D_StartGameLoop(void);`
-  - `D_InitNetGame` (function, line 68) `boolean D_InitNetGame(net_connect_data_t *connect_data);`
   - `D_StartNetGame` (function, line 73) `void D_StartNetGame(net_gamesettings_t *settings, netgame_startup_callback_t callback);`
   - `singletics` (variable, line 76) `extern boolean singletics;`
   - `ticdup` (variable, line 78) `extern int gametic, ticdup;`
@@ -638,113 +598,29 @@ AM_drawThings
 - Language: c
 - Symbols:
   - `D_ProcessEvents` (function, line 139) `void D_ProcessEvents (void)`
-  - `D_Display` (function, line 168) `void D_Display (void)`
-  - `D_BindVariables` (function, line 334) `void D_BindVariables(void)`
-  - `D_GrabMouseCallback` (function, line 387) `boolean D_GrabMouseCallback(void)`
+  - `D_Display` (function, line 169) `void D_Display (void)`
+  - `D_BindVariables` (function, line 335) `void D_BindVariables(void)`
+  - `D_GrabMouseCallback` (function, line 388) `boolean D_GrabMouseCallback(void)`
   - `D_DoomLoop` (function, line 408) `void D_DoomLoop (void)`
   - `D_PageTicker` (function, line 490) `void D_PageTicker (void)`
   - `D_PageDrawer` (function, line 501) `void D_PageDrawer (void)`
   - `D_AdvanceDemo` (function, line 511) `void D_AdvanceDemo (void)`
   - `D_DoAdvanceDemo` (function, line 521) `void D_DoAdvanceDemo (void)`
   - `D_StartTitle` (function, line 609) `void D_StartTitle (void)`
-  - `GetGameName` (function, line 657) `static char *GetGameName(char *gamename)`
-  - `SetMissionForPackName` (function, line 700) `static void SetMissionForPackName(char *pack_name)`
-  - `D_IdentifyVersion` (function, line 736) `void D_IdentifyVersion(void)`
-  - `D_SetGameDescription` (function, line 819) `void D_SetGameDescription(void)`
-  - `D_AddFile` (function, line 882) `static boolean D_AddFile(char *filename)`
-  - `PrintDehackedBanners` (function, line 917) `void PrintDehackedBanners(void)`
-  - `InitGameVersion` (function, line 962) `static void InitGameVersion(void)`
-  - `PrintGameVersion` (function, line 1064) `void PrintGameVersion(void)`
-  - `D_Endoom` (function, line 1081) `static void D_Endoom(void)`
+  - `GetGameName` (function, line 658) `static char *GetGameName(char *gamename)`
+  - `SetMissionForPackName` (function, line 701) `static void SetMissionForPackName(char *pack_name)`
+  - `D_IdentifyVersion` (function, line 737) `void D_IdentifyVersion(void)`
+  - `D_SetGameDescription` (function, line 820) `void D_SetGameDescription(void)`
+  - `D_AddFile` (function, line 883) `static boolean D_AddFile(char *filename)`
+  - `PrintDehackedBanners` (function, line 918) `void PrintDehackedBanners(void)`
+  - `InitGameVersion` (function, line 963) `static void InitGameVersion(void)`
+  - `PrintGameVersion` (function, line 1065) `void PrintGameVersion(void)`
+  - `D_Endoom` (function, line 1082) `static void D_Endoom(void)`
   - `LoadIwadDeh` (function, line 1105) `static void LoadIwadDeh(void)`
   - `D_DoomMain` (function, line 1178) `void D_DoomMain (void)`
   - `D_ConnectNetGame` (function, line 129) `void D_ConnectNetGame(void);`
   - `D_CheckNetGame` (function, line 132) `void D_CheckNetGame(void);`
-  - `G_Responder` (function, line 151) `G_Responder (ev);`
   - `R_ExecuteSetViewSize` (function, line 167) `void R_ExecuteSetViewSize (void);`
-  - `wipe_StartScreen` (function, line 202) `wipe_StartScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);`
-  - `ST_Drawer` (function, line 222) `ST_Drawer (viewheight == 200, redrawsbar );`
-  - `WI_Drawer` (function, line 225) `case GS_INTERMISSION: WI_Drawer ();`
-  - `F_Drawer` (function, line 229) `case GS_FINALE: F_Drawer ();`
-  - `I_UpdateNoBlit` (function, line 240) `I_UpdateNoBlit ();`
-  - `R_FillBackScreen` (function, line 257) `R_FillBackScreen ();`
-  - `R_DrawViewBorder` (function, line 267) `R_DrawViewBorder ();`
-  - `V_DrawMouseSpeedBox` (function, line 275) `V_DrawMouseSpeedBox(testcontrols_mousespeed);`
-  - `V_DrawPatchDirect` (function, line 291) `V_DrawPatchDirect(viewwindowx + (scaledviewwidth - 68) / 2, y, W_CacheLumpName (DEH_String("M_PAUSE"), PU_CACHE));`
-  - `M_Drawer` (function, line 297) `M_Drawer ();`
-  - `NetUpdate` (function, line 298) `NetUpdate ();`
-  - `I_FinishUpdate` (function, line 304) `I_FinishUpdate ();`
-  - `wipe_EndScreen` (function, line 309) `wipe_EndScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);`
-  - `I_Sleep` (function, line 319) `I_Sleep(1);`
-  - `M_ApplyPlatformDefaults` (function, line 338) `M_ApplyPlatformDefaults();`
-  - `I_BindVideoVariables` (function, line 340) `I_BindVideoVariables();`
-  - `I_BindJoystickVariables` (function, line 342) `I_BindJoystickVariables();`
-  - `I_BindSoundVariables` (function, line 343) `I_BindSoundVariables();`
-  - `M_BindBaseControls` (function, line 344) `M_BindBaseControls();`
-  - `M_BindWeaponControls` (function, line 346) `M_BindWeaponControls();`
-  - `M_BindMapControls` (function, line 347) `M_BindMapControls();`
-  - `M_BindMenuControls` (function, line 348) `M_BindMenuControls();`
-  - `M_BindChatControls` (function, line 349) `M_BindChatControls(MAXPLAYERS);`
-  - `NET_BindVariables` (function, line 357) `NET_BindVariables();`
-  - `M_BindVariable` (function, line 359) `M_BindVariable("mouse_sensitivity", &mouseSensitivity);`
-  - `M_snprintf` (function, line 376) `M_snprintf(buf, sizeof(buf), "chatmacro%i", i);`
-  - `printf` (function, line 413) `printf(" WARNING: You are playing using one of the Doom Classic\n" " IWAD files shipped with the Doom 3: BFG Edition. These are\n" " known to be incompatible with the regular IWAD files and\n" " may c`
-  - `TryRunTics` (function, line 425) `TryRunTics();`
-  - `I_GraphicsCheckCommandLine` (function, line 430) `I_GraphicsCheckCommandLine();`
-  - `I_SetGrabMouseCallback` (function, line 432) `I_SetGrabMouseCallback(D_GrabMouseCallback);`
-  - `I_InitGraphics` (function, line 435) `I_InitGraphics();`
-  - `I_EnableLoadingDisk` (function, line 439) `I_EnableLoadingDisk();`
-  - `V_RestoreBuffer` (function, line 443) `V_RestoreBuffer();`
-  - `D_StartGameLoop` (function, line 449) `D_StartGameLoop();`
-  - `I_StartFrame` (function, line 462) `I_StartFrame ();`
-  - `S_UpdateSounds` (function, line 465) `S_UpdateSounds (players[consoleplayer].mo);`
-  - `V_DrawPatch` (function, line 503) `V_DrawPatch (0, 0, W_CacheLumpName(pagename, PU_CACHE));`
-  - `S_StartMusic` (function, line 554) `else S_StartMusic (mus_intro);`
-  - `G_DeferedPlayDemo` (function, line 557) `case 1: G_DeferedPlayDemo(DEH_String("demo1"));`
-  - `memmove` (function, line 686) `memmove(gamename, gamename + 1, gamename_size - 1);`
-  - `I_Error` (function, line 729) `I_Error("Unknown mission pack name: %s", pack_name);`
-  - `I_Endoom` (function, line 1097) `I_Endoom(endoom);`
-  - `exit` (function, line 1099) `exit(0);`
-  - `DEH_LoadLumpByName` (function, line 1113) `DEH_LoadLumpByName("DEHACKED", false, true);`
-  - `M_StringCopy` (function, line 1140) `M_StringCopy(chex_deh, iwadfile, chex_deh_len);`
-  - `M_StringConcat` (function, line 1142) `M_StringConcat(chex_deh, "chex.deh", chex_deh_len);`
-  - `free` (function, line 1153) `free(chex_deh);`
-  - `I_AtExit` (function, line 1186) `I_AtExit(D_Endoom, false);`
-  - `I_PrintBanner` (function, line 1190) `I_PrintBanner(PACKAGE_STRING);`
-  - `DEH_printf` (function, line 1192) `DEH_printf("Z_Init: Init zone memory allocation daemon. \n");`
-  - `Z_Init` (function, line 1194) `Z_Init ();`
-  - `NET_DedicatedServer` (function, line 1207) `NET_DedicatedServer();`
-  - `NET_MasterQuery` (function, line 1221) `NET_MasterQuery();`
-  - `NET_QueryAddress` (function, line 1237) `NET_QueryAddress(myargv[p+1]);`
-  - `NET_LANQuery` (function, line 1249) `NET_LANQuery();`
-  - `I_DisplayFPSDots` (function, line 1287) `I_DisplayFPSDots(devparm);`
-  - `M_SetConfigDir` (function, line 1329) `M_SetConfigDir("c:\\doomdata\\");`
-  - `V_Init` (function, line 1369) `V_Init ();`
-  - `M_SetConfigFilenames` (function, line 1373) `M_SetConfigFilenames("default.cfg", PROGRAM_PREFIX "doom.cfg");`
-  - `M_LoadDefaults` (function, line 1375) `M_LoadDefaults();`
-  - `W_CheckCorrectIWAD` (function, line 1398) `W_CheckCorrectIWAD(doom);`
-  - `DEH_AddStringReplacement` (function, line 1439) `DEH_AddStringReplacement(HUSTR_31, "level 31: idkfa");`
-  - `DEH_ParseCommandLine` (function, line 1465) `DEH_ParseCommandLine();`
-  - `DEH_snprintf` (function, line 1508) `DEH_snprintf(file, sizeof(file), "%s.lmp", myargv[p+1]);`
-  - `W_GenerateHashTable` (function, line 1531) `W_GenerateHashTable();`
-  - `DEH_LoadLump` (function, line 1551) `DEH_LoadLump(i, false, false);`
-  - `I_PrintDivider` (function, line 1603) `I_PrintDivider();`
-  - `I_PrintStartupBanner` (function, line 1608) `I_PrintStartupBanner(gamedescription);`
-  - `I_CheckIsScreensaver` (function, line 1625) `I_CheckIsScreensaver();`
-  - `I_InitTimer` (function, line 1626) `I_InitTimer();`
-  - `I_InitJoystick` (function, line 1627) `I_InitJoystick();`
-  - `I_InitSound` (function, line 1628) `I_InitSound(true);`
-  - `I_InitMusic` (function, line 1629) `I_InitMusic();`
-  - `NET_Init` (function, line 1633) `NET_Init ();`
-  - `M_Init` (function, line 1775) `M_Init ();`
-  - `R_Init` (function, line 1778) `R_Init ();`
-  - `P_Init` (function, line 1781) `P_Init ();`
-  - `S_Init` (function, line 1786) `S_Init (sfxVolume * 8, musicVolume * 8);`
-  - `HU_Init` (function, line 1794) `HU_Init ();`
-  - `ST_Init` (function, line 1797) `ST_Init ();`
-  - `G_RecordDemo` (function, line 1826) `G_RecordDemo (myargv[p+1]);`
-  - `G_TimeDemo` (function, line 1841) `G_TimeDemo (demolumpname);`
-  - `G_LoadGame` (function, line 1848) `G_LoadGame(file);`
   - `inhelpscreens` (variable, line 105) `extern boolean inhelpscreens;`
   - `setsizeneeded` (variable, line 165) `extern boolean setsizeneeded;`
   - `showMessages` (variable, line 166) `extern int showMessages;`
@@ -773,13 +649,13 @@ AM_drawThings
 - Doc: Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it and/or modify it under the t
 - Language: c
 - Symbols:
-  - `D_ValidGameMode` (function, line 49) `boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode)`
-  - `D_ValidEpisodeMap` (function, line 64) `boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
+  - `D_ValidGameMode` (function, line 50) `boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode)`
+  - `D_ValidEpisodeMap` (function, line 65) `boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
                           int e...`
-  - `D_GetNumEpisodes` (function, line 102) `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)`
-  - `D_ValidGameVersion` (function, line 134) `boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)`
-  - `D_IsEpisodeMap` (function, line 160) `boolean D_IsEpisodeMap(GameMission_t mission)`
-  - `D_GameMissionString` (function, line 181) `char *D_GameMissionString(GameMission_t mission)`
+  - `D_GetNumEpisodes` (function, line 103) `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)`
+  - `D_ValidGameVersion` (function, line 135) `boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)`
+  - `D_IsEpisodeMap` (function, line 161) `boolean D_IsEpisodeMap(GameMission_t mission)`
+  - `D_GameMissionString` (function, line 182) `char *D_GameMissionString(GameMission_t mission)`
 - Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`
 
 ## progs/doomgeneric/d_mode.h
@@ -787,11 +663,7 @@ AM_drawThings
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `D_ValidGameMode` (function, line 88) `boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode);`
-  - `D_ValidGameVersion` (function, line 90) `boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version);`
-  - `D_ValidEpisodeMap` (function, line 91) `boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode, int episode, int map);`
   - `D_GetNumEpisodes` (function, line 93) `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode);`
-  - `D_IsEpisodeMap` (function, line 94) `boolean D_IsEpisodeMap(GameMission_t mission);`
   - `D_GameMissionString` (function, line 95) `char *D_GameMissionString(GameMission_t mission);`
   - `__D_MODE__` (macro, line 21) `#define __D_MODE__`
 - Depends on: `progs/doomgeneric/doomtype.h`
@@ -802,22 +674,13 @@ AM_drawThings
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `PlayerQuitGame` (function, line 44) `static void PlayerQuitGame(player_t *player)`
-  - `RunTic` (function, line 70) `static void RunTic(ticcmd_t *cmds, boolean *ingame)`
-  - `LoadGameSettings` (function, line 107) `static void LoadGameSettings(net_gamesettings_t *settings)`
-  - `SaveGameSettings` (function, line 138) `static void SaveGameSettings(net_gamesettings_t *settings)`
-  - `InitConnectData` (function, line 158) `static void InitConnectData(net_connect_data_t *connect_data)`
-  - `D_ConnectNetGame` (function, line 214) `void D_ConnectNetGame(void)`
+  - `PlayerQuitGame` (function, line 45) `static void PlayerQuitGame(player_t *player)`
+  - `RunTic` (function, line 71) `static void RunTic(ticcmd_t *cmds, boolean *ingame)`
+  - `LoadGameSettings` (function, line 108) `static void LoadGameSettings(net_gamesettings_t *settings)`
+  - `SaveGameSettings` (function, line 139) `static void SaveGameSettings(net_gamesettings_t *settings)`
+  - `InitConnectData` (function, line 159) `static void InitConnectData(net_connect_data_t *connect_data)`
+  - `D_ConnectNetGame` (function, line 215) `void D_ConnectNetGame(void)`
   - `D_CheckNetGame` (function, line 240) `void D_CheckNetGame (void)`
-  - `M_StringCopy` (function, line 54) `M_StringCopy(exitmsg, DEH_String("Player 1 left the game"), sizeof(exitmsg));`
-  - `G_CheckDemoStatus` (function, line 67) `G_CheckDemoStatus ();`
-  - `G_Ticker` (function, line 93) `G_Ticker ();`
-  - `W_Checksum` (function, line 203) `W_Checksum(connect_data->wad_sha1sum);`
-  - `DEH_Checksum` (function, line 207) `DEH_Checksum(connect_data->deh_sha1sum);`
-  - `D_RegisterLoopCallbacks` (function, line 248) `D_RegisterLoopCallbacks(&doom_loop_interface);`
-  - `D_StartNetGame` (function, line 252) `D_StartNetGame(&settings, NULL);`
-  - `DEH_printf` (function, line 254) `DEH_printf("startskill %i deathmatch: %i startmap: %i startepisode: %i\n", startskill, deathmatch, startmap, startepisode);`
-  - `printf` (function, line 277) `printf(".\n");`
   - `advancedemo` (variable, line 73) `extern boolean advancedemo;`
 - Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
@@ -851,7 +714,6 @@ AM_drawThings
   - `thinker_s` (struct, line 58)
   - `think_t` (type_alias, line 54) `typedef actionf_t think_t;`
   - `prev` (type_alias, line 58) `typedef struct thinker_s { struct thinker_s* prev;`
-  - `void` (function, line 35) `typedef void (*actionf_v)();`
   - `__D_THINK__` (macro, line 23) `#define __D_THINK__`
 - Imported by: `progs/doomgeneric/info.h`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/r_defs.h`
 
@@ -874,7 +736,6 @@ AM_drawThings
   - `DEH_LoadFile` (function, line 34) `int DEH_LoadFile(char *filename);`
   - `DEH_LoadLump` (function, line 35) `int DEH_LoadLump(int lumpnum, boolean allow_long, boolean allow_error);`
   - `DEH_LoadLumpByName` (function, line 36) `int DEH_LoadLumpByName(char *name, boolean allow_long, boolean allow_error);`
-  - `DEH_ParseAssignment` (function, line 37) `boolean DEH_ParseAssignment(char *line, char **variable_name, char **value);`
   - `DEH_Checksum` (function, line 39) `void DEH_Checksum(sha1_digest_t digest);`
   - `deh_allow_extended_strings` (variable, line 41) `extern boolean deh_allow_extended_strings;`
   - `deh_allow_long_strings` (variable, line 43) `extern boolean deh_allow_long_strings;`
@@ -1022,16 +883,13 @@ AM_drawThings
 
 ## progs/doomgeneric/doomgeneric.c
 - Layer: utility
-- Doc: include "doomgeneric.h"
 - Language: c
 - Symbols:
-  - `dg_Create` (function, line 4) `void dg_Create()`
-  - `DG_Init` (function, line 9) `DG_Init();`
+  - `dg_Create` (function, line 6) `void dg_Create()`
 - Depends on: `progs/doomgeneric/doomgeneric.h`
 
 ## progs/doomgeneric/doomgeneric.h
 - Layer: utility
-- Doc: ifndef DOOM_GENERIC define DOOM_GENERIC  include <stdlib.h> include <stdint.h>  define DOOMGENERIC_RESX 320 define DOOMG
 - Language: h
 - Symbols:
   - `DG_Init` (function, line 12) `void DG_Init();`
@@ -1053,27 +911,23 @@ AM_drawThings
 - Symbols:
   - `color` (struct, line 79)
   - `mini_parse_autoframes` (function, line 23) `static void mini_parse_autoframes(int argc, char **argv)`
-  - `sys_time_ms` (function, line 36) `static long sys_time_ms(void)`
+  - `sys_time_ms` (function, line 37) `static long sys_time_ms(void)`
   - `sys_kbd` (function, line 42) `static long sys_kbd(void)`
   - `sys_palette` (function, line 47) `static long sys_palette(const unsigned char *pal)`
   - `sys_kbd_raw` (function, line 52) `static long sys_kbd_raw(int on)`
   - `sys_vga_mode` (function, line 57) `static long sys_vga_mode(int on)`
   - `sys_doom_frame` (function, line 62) `static long sys_doom_frame(void)`
-  - `load_vga_palette` (function, line 85) `static void load_vga_palette(void)`
-  - `scancode_to_doom` (function, line 98) `static unsigned char scancode_to_doom(unsigned char raw)`
-  - `kbd_enqueue` (function, line 157) `static void kbd_enqueue(unsigned char doom_key, int pressed)`
-  - `kbd_poll` (function, line 164) `static void kbd_poll(void)`
-  - `DG_Init` (function, line 207) `void DG_Init(void)`
-  - `DG_DrawFrame` (function, line 215) `void DG_DrawFrame(void)`
-  - `DG_SleepMs` (function, line 245) `void DG_SleepMs(uint32_t ms)`
-  - `DG_GetTicksMs` (function, line 251) `uint32_t DG_GetTicksMs(void)`
-  - `DG_GetKey` (function, line 255) `int DG_GetKey(int *pressed, unsigned char *key)`
-  - `DG_SetWindowTitle` (function, line 266) `void DG_SetWindowTitle(const char *title)`
+  - `load_vga_palette` (function, line 86) `static void load_vga_palette(void)`
+  - `scancode_to_doom` (function, line 99) `static unsigned char scancode_to_doom(unsigned char raw)`
+  - `kbd_enqueue` (function, line 158) `static void kbd_enqueue(unsigned char doom_key, int pressed)`
+  - `kbd_poll` (function, line 165) `static void kbd_poll(void)`
+  - `DG_Init` (function, line 208) `void DG_Init(void)`
+  - `DG_DrawFrame` (function, line 216) `void DG_DrawFrame(void)`
+  - `DG_SleepMs` (function, line 246) `void DG_SleepMs(uint32_t ms)`
+  - `DG_GetTicksMs` (function, line 252) `uint32_t DG_GetTicksMs(void)`
+  - `DG_GetKey` (function, line 256) `int DG_GetKey(int *pressed, unsigned char *key)`
+  - `DG_SetWindowTitle` (function, line 267) `void DG_SetWindowTitle(const char *title)`
   - `MINIOS_DOOM_BACKBUF_ADDR` (function, line 4) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
-  - `volatile` (function, line 39) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
-  - `printf` (function, line 240) `printf("minios: played %d frames, quitting\n", mini_frames);`
-  - `fflush` (function, line 241) `fflush(stdout);`
-  - `exit` (function, line 242) `exit(0);`
   - `colors` (variable, line 80) `extern struct color colors[256];`
   - `I_VideoBuffer` (variable, line 205) `extern unsigned char *I_VideoBuffer;`
   - `myargc` (variable, line 209) `extern int myargc;`
@@ -1086,155 +940,88 @@ AM_drawThings
 
 ## progs/doomgeneric/doomgeneric_sdl.c
 - Layer: utility
-- Doc: doomgeneric for soso os  include "doomkeys.h" include "m_argv.h" include "doomgeneric.h"  include <stdio.h> include <uni
+- Doc: doomgeneric for soso os
 - Language: c
 - Symbols:
-  - `convertToDoomKey` (function, line 22) `static unsigned char convertToDoomKey(unsigned int key)`
-  - `addKeyToQueue` (function, line 62) `static void addKeyToQueue(int pressed, unsigned int keyCode)`
+  - `convertToDoomKey` (function, line 23) `static unsigned char convertToDoomKey(unsigned int key)`
+  - `addKeyToQueue` (function, line 63) `static void addKeyToQueue(int pressed, unsigned int keyCode)`
   - `handleKeyInput` (function, line 72) `static void handleKeyInput()`
-  - `DG_Init` (function, line 91) `void DG_Init()`
-  - `DG_DrawFrame` (function, line 111) `void DG_DrawFrame()`
-  - `DG_SleepMs` (function, line 122) `void DG_SleepMs(uint32_t ms)`
-  - `DG_GetTicksMs` (function, line 127) `uint32_t DG_GetTicksMs()`
-  - `DG_GetKey` (function, line 132) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
-  - `DG_SetWindowTitle` (function, line 151) `void DG_SetWindowTitle(const char * title)`
-  - `puts` (function, line 76) `puts("Quit requested");`
-  - `atexit` (function, line 77) `atexit(SDL_Quit);`
-  - `exit` (function, line 78) `exit(1);`
-  - `SDL_RenderClear` (function, line 105) `SDL_RenderClear( renderer );`
-  - `SDL_RenderPresent` (function, line 107) `SDL_RenderPresent(renderer);`
-  - `SDL_UpdateTexture` (function, line 114) `SDL_UpdateTexture(texture, NULL, DG_ScreenBuffer, DOOMGENERIC_RESX*sizeof(uint32_t));`
-  - `SDL_RenderCopy` (function, line 117) `SDL_RenderCopy(renderer, texture, NULL, NULL);`
-  - `SDL_Delay` (function, line 125) `SDL_Delay(ms);`
-  - `SDL_GetTicks` (function, line 130) `return SDL_GetTicks();`
-  - `SDL_SetWindowTitle` (function, line 155) `SDL_SetWindowTitle(window, title);`
+  - `DG_Init` (function, line 93) `void DG_Init()`
+  - `DG_DrawFrame` (function, line 112) `void DG_DrawFrame()`
+  - `DG_SleepMs` (function, line 123) `void DG_SleepMs(uint32_t ms)`
+  - `DG_GetTicksMs` (function, line 128) `uint32_t DG_GetTicksMs()`
+  - `DG_GetKey` (function, line 133) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
+  - `DG_SetWindowTitle` (function, line 152) `void DG_SetWindowTitle(const char * title)`
   - `KEYQUEUE_SIZE` (macro, line 16) `#define KEYQUEUE_SIZE`
 - Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ## progs/doomgeneric/doomgeneric_soso.c
 - Layer: utility
-- Doc: doomgeneric for soso os  include "doomkeys.h" include "m_argv.h" include "doomgeneric.h"  include <stdio.h> include <fcn
+- Doc: doomgeneric for soso os
 - Language: c
 - Symbols:
   - `EnFrameBuferIoctl` (enum, line 36)
-  - `convertToDoomKey` (function, line 42) `static unsigned char convertToDoomKey(unsigned char scancode)`
-  - `addKeyToQueue` (function, line 91) `static void addKeyToQueue(int pressed, unsigned char keyCode)`
-  - `disableRawMode` (function, line 107) `void disableRawMode()`
-  - `enableRawMode` (function, line 113) `void enableRawMode()`
-  - `DG_Init` (function, line 123) `void DG_Init()`
-  - `handleKeyInput` (function, line 185) `static void handleKeyInput()`
-  - `DG_DrawFrame` (function, line 213) `void DG_DrawFrame()`
-  - `DG_SleepMs` (function, line 226) `void DG_SleepMs(uint32_t ms)`
-  - `DG_GetTicksMs` (function, line 231) `uint32_t DG_GetTicksMs()`
-  - `DG_GetKey` (function, line 236) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
-  - `DG_SetWindowTitle` (function, line 257) `void DG_SetWindowTitle(const char * title)`
-  - `tcsetattr` (function, line 111) `tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);`
-  - `tcgetattr` (function, line 116) `tcgetattr(STDIN_FILENO, &orig_termios);`
-  - `atexit` (function, line 117) `atexit(disableRawMode);`
-  - `printf` (function, line 130) `printf("Getting screen width...");`
-  - `exit` (function, line 141) `exit(1);`
-  - `ioctl` (function, line 167) `ioctl(KeyboardFd, 1, (void*)1);`
-  - `sscanf` (function, line 176) `sscanf(myargv[argPosX + 1], "%d", &s_PositionX);`
-  - `memcpy` (function, line 220) `memcpy(FrameBuffer + s_PositionX + (i + s_PositionY) * s_ScreenWidth, DG_ScreenBuffer + i * DOOMGENERIC_RESX, DOOMGENERIC_RESX * 4);`
-  - `sleep_ms` (function, line 229) `sleep_ms(ms);`
-  - `get_uptime_ms` (function, line 234) `return get_uptime_ms();`
+  - `convertToDoomKey` (function, line 43) `static unsigned char convertToDoomKey(unsigned char scancode)`
+  - `addKeyToQueue` (function, line 92) `static void addKeyToQueue(int pressed, unsigned char keyCode)`
+  - `disableRawMode` (function, line 108) `void disableRawMode()`
+  - `enableRawMode` (function, line 114) `void enableRawMode()`
+  - `DG_Init` (function, line 124) `void DG_Init()`
+  - `handleKeyInput` (function, line 186) `static void handleKeyInput()`
+  - `DG_DrawFrame` (function, line 214) `void DG_DrawFrame()`
+  - `DG_SleepMs` (function, line 227) `void DG_SleepMs(uint32_t ms)`
+  - `DG_GetTicksMs` (function, line 232) `uint32_t DG_GetTicksMs()`
+  - `DG_GetKey` (function, line 237) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
+  - `DG_SetWindowTitle` (function, line 258) `void DG_SetWindowTitle(const char * title)`
   - `KEYQUEUE_SIZE` (macro, line 23) `#define KEYQUEUE_SIZE`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ## progs/doomgeneric/doomgeneric_sosox.c
 - Layer: utility
-- Doc: doomgeneric for soso os (nano-x version) TODO: get keys from X, not using direct keyboard access!  include "doomkeys.h" 
+- Doc: doomgeneric for soso os (nano-x version) TODO: get keys from X, not using direct keyboard access!
 - Language: c
 - Symbols:
-  - `convert_to_doom_key` (function, line 37) `static unsigned char convert_to_doom_key(unsigned char scancode)`
-  - `add_key_to_queue` (function, line 87) `static void add_key_to_queue(int pressed, unsigned char key_code)`
-  - `disable_raw_mode` (function, line 101) `void disable_raw_mode()`
-  - `enable_raw_mode` (function, line 106) `void enable_raw_mode()`
-  - `DG_Init` (function, line 116) `void DG_Init()`
-  - `handle_key_input` (function, line 158) `static void handle_key_input()`
-  - `DG_DrawFrame` (function, line 186) `void DG_DrawFrame()`
-  - `DG_SleepMs` (function, line 224) `void DG_SleepMs(uint32_t ms)`
-  - `DG_GetTicksMs` (function, line 229) `uint32_t DG_GetTicksMs()`
-  - `DG_GetKey` (function, line 234) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
-  - `DG_SetWindowTitle` (function, line 255) `void DG_SetWindowTitle(const char * title)`
-  - `tcsetattr` (function, line 104) `tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);`
-  - `tcgetattr` (function, line 109) `tcgetattr(STDIN_FILENO, &orig_termios);`
-  - `atexit` (function, line 110) `atexit(disable_raw_mode);`
-  - `GrError` (function, line 121) `GrError("GrOpen failed");`
-  - `GrSetGCUseBackground` (function, line 126) `GrSetGCUseBackground(gc, GR_FALSE);`
-  - `GrSetGCForeground` (function, line 127) `GrSetGCForeground(gc, MWRGB( 255, 0, 0 ));`
-  - `GrSelectEvents` (function, line 137) `GrSelectEvents(wid, GR_EVENT_MASK_EXPOSURE | GR_EVENT_MASK_TIMER | GR_EVENT_MASK_CLOSE_REQ | GR_EVENT_MASK_BUTTON_DOWN | GR_EVENT_MASK_BUTTON_UP);`
-  - `GrMapWindow` (function, line 143) `GrMapWindow (wid);`
-  - `ioctl` (function, line 155) `ioctl(g_keyboard_fd, 1, (void*)1);`
-  - `GrGetNextEvent` (function, line 192) `GrGetNextEvent(&event);`
-  - `GrClose` (function, line 202) `case GR_EVENT_TYPE_CLOSE_REQ: GrClose();`
-  - `exit` (function, line 205) `exit (0);`
-  - `memcpy` (function, line 217) `memcpy(windowBuffer, DG_ScreenBuffer, DOOMGENERIC_RESX * DOOMGENERIC_RESY * 4);`
-  - `GrFlushWindow` (function, line 218) `GrFlushWindow(wid);`
-  - `sleep_ms` (function, line 227) `sleep_ms(ms);`
-  - `get_uptime_ms` (function, line 232) `return get_uptime_ms();`
-  - `GrSetWindowTitle` (function, line 258) `GrSetWindowTitle(wid, title);`
+  - `convert_to_doom_key` (function, line 39) `static unsigned char convert_to_doom_key(unsigned char scancode)`
+  - `add_key_to_queue` (function, line 88) `static void add_key_to_queue(int pressed, unsigned char key_code)`
+  - `disable_raw_mode` (function, line 102) `void disable_raw_mode()`
+  - `enable_raw_mode` (function, line 107) `void enable_raw_mode()`
+  - `DG_Init` (function, line 117) `void DG_Init()`
+  - `handle_key_input` (function, line 159) `static void handle_key_input()`
+  - `DG_DrawFrame` (function, line 187) `void DG_DrawFrame()`
+  - `DG_SleepMs` (function, line 225) `void DG_SleepMs(uint32_t ms)`
+  - `DG_GetTicksMs` (function, line 230) `uint32_t DG_GetTicksMs()`
+  - `DG_GetKey` (function, line 235) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
+  - `DG_SetWindowTitle` (function, line 256) `void DG_SetWindowTitle(const char * title)`
   - `KEYQUEUE_SIZE` (macro, line 23) `#define KEYQUEUE_SIZE`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/m_argv.h`
 
 ## progs/doomgeneric/doomgeneric_win.c
 - Layer: utility
-- Doc: include "doomkeys.h"  include "doomgeneric.h"  include <stdio.h>  include <Windows.h>
 - Language: c
 - Symbols:
-  - `convertToDoomKey` (function, line 19) `static unsigned char convertToDoomKey(unsigned char key)`
-  - `addKeyToQueue` (function, line 58) `static void addKeyToQueue(int pressed, unsigned char keyCode)`
-  - `wndProc` (function, line 69) `static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)`
-  - `DG_Init` (function, line 94) `void DG_Init()`
-  - `DG_DrawFrame` (function, line 145) `void DG_DrawFrame()`
-  - `DG_SleepMs` (function, line 161) `void DG_SleepMs(uint32_t ms)`
-  - `DG_GetTicksMs` (function, line 166) `uint32_t DG_GetTicksMs()`
-  - `DG_GetKey` (function, line 171) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
-  - `DG_SetWindowTitle` (function, line 192) `void DG_SetWindowTitle(const char * title)`
-  - `DestroyWindow` (function, line 74) `case WM_CLOSE: DestroyWindow(hwnd);`
-  - `PostQuitMessage` (function, line 77) `case WM_DESTROY: PostQuitMessage(0);`
-  - `ExitProcess` (function, line 79) `ExitProcess(0);`
-  - `printf` (function, line 81) `case WM_KEYDOWN: printf(" ****** WM_KEYDOWN : 0x%x\n", wParam);`
-  - `DefWindowProcA` (function, line 89) `default: return DefWindowProcA(hwnd, msg, wParam, lParam);`
-  - `exit` (function, line 118) `exit(-1);`
-  - `AdjustWindowRect` (function, line 126) `AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);`
-  - `ShowWindow` (function, line 134) `ShowWindow(hwnd, SW_SHOW);`
-  - `memset` (function, line 142) `memset(s_KeyQueue, 0, KEYQUEUE_SIZE * sizeof(unsigned short));`
-  - `TranslateMessage` (function, line 153) `TranslateMessage(&msg);`
-  - `DispatchMessageA` (function, line 154) `DispatchMessageA(&msg);`
-  - `StretchDIBits` (function, line 156) `StretchDIBits(s_Hdc, 0, 0, DOOMGENERIC_RESX, DOOMGENERIC_RESY, 0, 0, DOOMGENERIC_RESX, DOOMGENERIC_RESY, DG_ScreenBuffer, &s_Bmi, 0, SRCCOPY);`
-  - `SwapBuffers` (function, line 158) `SwapBuffers(s_Hdc);`
-  - `Sleep` (function, line 164) `Sleep(ms);`
-  - `GetTickCount` (function, line 169) `return GetTickCount();`
-  - `SetWindowTextA` (function, line 197) `SetWindowTextA(s_Hwnd, title);`
+  - `convertToDoomKey` (function, line 20) `static unsigned char convertToDoomKey(unsigned char key)`
+  - `addKeyToQueue` (function, line 59) `static void addKeyToQueue(int pressed, unsigned char keyCode)`
+  - `wndProc` (function, line 70) `static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)`
+  - `DG_Init` (function, line 95) `void DG_Init()`
+  - `DG_DrawFrame` (function, line 146) `void DG_DrawFrame()`
+  - `DG_SleepMs` (function, line 162) `void DG_SleepMs(uint32_t ms)`
+  - `DG_GetTicksMs` (function, line 167) `uint32_t DG_GetTicksMs()`
+  - `DG_GetKey` (function, line 172) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
+  - `DG_SetWindowTitle` (function, line 193) `void DG_SetWindowTitle(const char * title)`
   - `KEYQUEUE_SIZE` (macro, line 12) `#define KEYQUEUE_SIZE`
 - Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
 ## progs/doomgeneric/doomgeneric_xlib.c
 - Layer: utility
-- Doc: include "doomkeys.h"  include "doomgeneric.h"  include <ctype.h> include <stdio.h> include <string.h> include <unistd.h>
 - Language: c
 - Symbols:
-  - `convertToDoomKey` (function, line 26) `static unsigned char convertToDoomKey(unsigned int key)`
-  - `addKeyToQueue` (function, line 67) `static void addKeyToQueue(int pressed, unsigned int keyCode)`
-  - `DG_Init` (function, line 78) `void DG_Init()`
-  - `DG_DrawFrame` (function, line 125) `void DG_DrawFrame()`
-  - `DG_SleepMs` (function, line 171) `void DG_SleepMs(uint32_t ms)`
-  - `DG_GetTicksMs` (function, line 176) `uint32_t DG_GetTicksMs()`
-  - `DG_GetKey` (function, line 186) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
-  - `DG_SetWindowTitle` (function, line 207) `void DG_SetWindowTitle(const char * title)`
-  - `memset` (function, line 81) `memset(s_KeyQueue, 0, KEYQUEUE_SIZE * sizeof(unsigned short));`
-  - `XSelectInput` (function, line 100) `XSelectInput(s_Display, s_Window, StructureNotifyMask | KeyPressMask | KeyReleaseMask);`
-  - `XMapWindow` (function, line 102) `XMapWindow(s_Display, s_Window);`
-  - `XSetForeground` (function, line 106) `XSetForeground(s_Display, s_Gc, whiteColor);`
-  - `XkbSetDetectableAutoRepeat` (function, line 108) `XkbSetDetectableAutoRepeat(s_Display, 1, 0);`
-  - `XNextEvent` (function, line 116) `XNextEvent(s_Display, &e);`
-  - `XFillRectangle` (function, line 151) `XFillRectangle(s_Display, s_Pixmap, s_Gc, 0, 0, DOOMGENERIC_RESX, DOOMGENERIC_RESY);`
-  - `XDrawPoint` (function, line 159) `XDrawPoint(s_Display, s_Pixmap, s_Gc, c, r);`
-  - `XCopyArea` (function, line 162) `XCopyArea(s_Display, s_Pixmap, s_Window, s_Gc, 0, 0, DOOMGENERIC_RESX, DOOMGENERIC_RESY, 0, 0);`
-  - `usleep` (function, line 174) `usleep (ms * 1000);`
-  - `gettimeofday` (function, line 181) `gettimeofday(&tp, &tzp);`
-  - `XChangeProperty` (function, line 212) `XChangeProperty(s_Display, s_Window, XA_WM_NAME, XA_STRING, 8, PropModeReplace, title, strlen(title));`
+  - `convertToDoomKey` (function, line 27) `static unsigned char convertToDoomKey(unsigned int key)`
+  - `addKeyToQueue` (function, line 68) `static void addKeyToQueue(int pressed, unsigned int keyCode)`
+  - `DG_Init` (function, line 79) `void DG_Init()`
+  - `DG_DrawFrame` (function, line 127) `void DG_DrawFrame()`
+  - `DG_SleepMs` (function, line 172) `void DG_SleepMs(uint32_t ms)`
+  - `DG_GetTicksMs` (function, line 177) `uint32_t DG_GetTicksMs()`
+  - `DG_GetKey` (function, line 187) `int DG_GetKey(int* pressed, unsigned char* doomKey)`
+  - `DG_SetWindowTitle` (function, line 208) `void DG_SetWindowTitle(const char * title)`
   - `KEYQUEUE_SIZE` (macro, line 20) `#define KEYQUEUE_SIZE`
 - Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`
 
@@ -1430,7 +1217,7 @@ AM_drawThings
 - Layer: utility
 - Language: c
 - Symbols:
-  - `I_InitTimidityConfig` (function, line 42) `void I_InitTimidityConfig(void)`
+  - `I_InitTimidityConfig` (function, line 43) `void I_InitTimidityConfig(void)`
 - Depends on: `progs/doomgeneric/doomtype.h`
 
 ## progs/doomgeneric/f_finale.c
@@ -1441,28 +1228,22 @@ AM_drawThings
   - `textscreen_t` (struct, line 60)
   - `castinfo_t` (struct, line 300)
   - `F_StartFinale` (function, line 108) `void F_StartFinale (void)`
-  - `F_Responder` (function, line 157) `boolean F_Responder (event_t *event)`
+  - `F_Responder` (function, line 160) `boolean F_Responder (event_t *event)`
   - `F_Ticker` (function, line 172) `void F_Ticker (void)`
-  - `F_TextWrite` (function, line 225) `void F_TextWrite (void)`
+  - `F_TextWrite` (function, line 227) `void F_TextWrite (void)`
   - `F_StartCast` (function, line 340) `void F_StartCast (void)`
   - `F_CastTicker` (function, line 358) `void F_CastTicker (void)`
-  - `F_CastResponder` (function, line 464) `boolean F_CastResponder (event_t* ev)`
-  - `F_CastPrint` (function, line 484) `void F_CastPrint (char* text)`
-  - `F_CastDrawer` (function, line 540) `void F_CastDrawer (void)`
-  - `F_DrawPatchCol` (function, line 571) `void
+  - `F_CastResponder` (function, line 465) `boolean F_CastResponder (event_t* ev)`
+  - `F_CastPrint` (function, line 486) `void F_CastPrint (char* text)`
+  - `F_CastDrawer` (function, line 541) `void F_CastDrawer (void)`
+  - `F_DrawPatchCol` (function, line 572) `void
 F_DrawPatchCol
 ( int		x,
   patch_t*	patch,
   int		col )`
   - `F_BunnyScroll` (function, line 606) `void F_BunnyScroll (void)`
-  - `F_ArtScreenDrawer` (function, line 660) `static void F_ArtScreenDrawer(void)`
+  - `F_ArtScreenDrawer` (function, line 661) `static void F_ArtScreenDrawer(void)`
   - `F_Drawer` (function, line 702) `void F_Drawer (void)`
-  - `S_ChangeMusic` (function, line 119) `S_ChangeMusic(mus_victor, true);`
-  - `memcpy` (function, line 247) `memcpy (dest, src+((y&63)<<6), 64);`
-  - `V_MarkRect` (function, line 256) `V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);`
-  - `V_DrawPatch` (function, line 289) `V_DrawPatch(cx, cy, hu_font[c]);`
-  - `S_StartSound` (function, line 651) `S_StartSound (NULL, sfx_pistol);`
-  - `DEH_snprintf` (function, line 654) `DEH_snprintf(name, 10, "END%i", stage);`
   - `hu_font` (variable, line 224) `extern patch_t *hu_font[HU_FONTSIZE];`
   - `TEXTSPEED` (macro, line 56) `#define	TEXTSPEED`
   - `TEXTWAIT` (macro, line 58) `#define	TEXTWAIT`
@@ -1473,7 +1254,6 @@ F_DrawPatchCol
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `F_Responder` (function, line 31) `boolean F_Responder (event_t* ev);`
   - `F_Ticker` (function, line 34) `void F_Ticker (void);`
   - `F_Drawer` (function, line 37) `void F_Drawer (void);`
   - `F_StartFinale` (function, line 38) `void F_StartFinale (void);`
@@ -1486,54 +1266,54 @@ F_DrawPatchCol
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `wipe_shittyColMajorXform` (function, line 40) `void
+  - `wipe_shittyColMajorXform` (function, line 43) `void
 wipe_shittyColMajorXform
 ( short*	array,
   int		width,
   int		height )`
-  - `wipe_initColorXForm` (function, line 63) `int
+  - `wipe_initColorXForm` (function, line 65) `int
 wipe_initColorXForm
 ( int	width,
   int	height,
   int	ticks )`
-  - `wipe_doColorXForm` (function, line 73) `int
+  - `wipe_doColorXForm` (function, line 75) `int
 wipe_doColorXForm
 ( int	width,
   int	height,
   int	ticks )`
-  - `wipe_exitColorXForm` (function, line 119) `int
+  - `wipe_exitColorXForm` (function, line 121) `int
 wipe_exitColorXForm
 ( int	width,
   int	height,
   int	ticks )`
-  - `wipe_initMelt` (function, line 131) `int
+  - `wipe_initMelt` (function, line 133) `int
 wipe_initMelt
 ( int	width,
   int	height,
   int	ticks )`
-  - `wipe_doMelt` (function, line 162) `int
+  - `wipe_doMelt` (function, line 164) `int
 wipe_doMelt
 ( int	width,
   int	height,
   int	ticks )`
-  - `wipe_exitMelt` (function, line 217) `int
+  - `wipe_exitMelt` (function, line 219) `int
 wipe_exitMelt
 ( int	width,
   int	height,
   int	ticks )`
-  - `wipe_StartScreen` (function, line 229) `int
+  - `wipe_StartScreen` (function, line 231) `int
 wipe_StartScreen
 ( int	x,
   int	y,
   int	width,
   int	height )`
-  - `wipe_EndScreen` (function, line 241) `int
+  - `wipe_EndScreen` (function, line 243) `int
 wipe_EndScreen
 ( int	x,
   int	y,
   int	width,
   int	height )`
-  - `wipe_ScreenWipe` (function, line 254) `int
+  - `wipe_ScreenWipe` (function, line 256) `int
 wipe_ScreenWipe
 ( int	wipeno,
   int	x,
@@ -1541,11 +1321,6 @@ wipe_ScreenWipe
   int	width,
   int	height,
   int	ticks )`
-  - `memcpy` (function, line 57) `memcpy(array, dest, width*height*2);`
-  - `Z_Free` (function, line 59) `Z_Free(dest);`
-  - `I_ReadScreen` (function, line 238) `I_ReadScreen(wipe_scr_start);`
-  - `V_DrawBlock` (function, line 251) `V_DrawBlock(x, y, width, height, wipe_scr_start);`
-  - `V_MarkRect` (function, line 281) `V_MarkRect(0, 0, width, height);`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/f_wipe.h
@@ -1564,105 +1339,62 @@ wipe_ScreenWipe
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `G_CmdChecksum` (function, line 232) `int G_CmdChecksum (ticcmd_t* cmd)`
-  - `WeaponSelectable` (function, line 243) `static boolean WeaponSelectable(weapontype_t weapon)`
-  - `G_NextWeapon` (function, line 280) `static int G_NextWeapon(int direction)`
+  - `G_CmdChecksum` (function, line 233) `int G_CmdChecksum (ticcmd_t* cmd)`
+  - `WeaponSelectable` (function, line 244) `static boolean WeaponSelectable(weapontype_t weapon)`
+  - `G_NextWeapon` (function, line 281) `static int G_NextWeapon(int direction)`
   - `G_BuildTiccmd` (function, line 322) `void G_BuildTiccmd (ticcmd_t* cmd, int maketic)`
   - `G_DoLoadLevel` (function, line 603) `void G_DoLoadLevel (void)`
-  - `SetJoyButtons` (function, line 674) `static void SetJoyButtons(unsigned int buttons_mask)`
-  - `SetMouseButtons` (function, line 702) `static void SetMouseButtons(unsigned int buttons_mask)`
+  - `SetJoyButtons` (function, line 675) `static void SetJoyButtons(unsigned int buttons_mask)`
+  - `SetMouseButtons` (function, line 703) `static void SetMouseButtons(unsigned int buttons_mask)`
   - `G_Responder` (function, line 733) `boolean G_Responder (event_t* ev)`
   - `G_Ticker` (function, line 854) `void G_Ticker (void)`
   - `G_InitPlayer` (function, line 1039) `void G_InitPlayer (int player)`
   - `G_PlayerFinishLevel` (function, line 1051) `void G_PlayerFinishLevel (int player)`
   - `G_PlayerReborn` (function, line 1072) `void G_PlayerReborn (int player)`
-  - `G_CheckSpot` (function, line 1114) `boolean
+  - `G_CheckSpot` (function, line 1116) `boolean
 G_CheckSpot
 ( int		playernum,
   mapthing_t*	mthing )`
   - `G_DeathMatchSpawnPlayer` (function, line 1223) `void G_DeathMatchSpawnPlayer (int playernum)`
   - `G_DoReborn` (function, line 1250) `void G_DoReborn (int playernum)`
-  - `G_ScreenShot` (function, line 1294) `void G_ScreenShot (void)`
-  - `G_ExitLevel` (function, line 1327) `void G_ExitLevel (void)`
+  - `G_ScreenShot` (function, line 1296) `void G_ScreenShot (void)`
+  - `G_ExitLevel` (function, line 1328) `void G_ExitLevel (void)`
   - `G_SecretExitLevel` (function, line 1335) `void G_SecretExitLevel (void)`
-  - `G_DoCompleted` (function, line 1345) `void G_DoCompleted (void)`
+  - `G_DoCompleted` (function, line 1346) `void G_DoCompleted (void)`
   - `G_WorldDone` (function, line 1494) `void G_WorldDone (void)`
-  - `G_DoWorldDone` (function, line 1518) `void G_DoWorldDone (void)`
-  - `G_LoadGame` (function, line 1538) `void G_LoadGame (char* name)`
-  - `G_DoLoadGame` (function, line 1546) `void G_DoLoadGame (void)`
-  - `G_SaveGame` (function, line 1600) `void
+  - `G_DoWorldDone` (function, line 1519) `void G_DoWorldDone (void)`
+  - `G_LoadGame` (function, line 1539) `void G_LoadGame (char* name)`
+  - `G_DoLoadGame` (function, line 1548) `void G_DoLoadGame (void)`
+  - `G_SaveGame` (function, line 1601) `void
 G_SaveGame
 ( int	slot,
   char*	description )`
-  - `G_DoSaveGame` (function, line 1609) `void G_DoSaveGame (void)`
-  - `G_DeferedInitNew` (function, line 1696) `void
+  - `G_DoSaveGame` (function, line 1610) `void G_DoSaveGame (void)`
+  - `G_DeferedInitNew` (function, line 1698) `void
 G_DeferedInitNew
 ( skill_t	skill,
   int		episode,
   int		map)`
-  - `G_DoNewGame` (function, line 1708) `void G_DoNewGame (void)`
-  - `G_InitNew` (function, line 1724) `void
+  - `G_DoNewGame` (function, line 1710) `void G_DoNewGame (void)`
+  - `G_InitNew` (function, line 1727) `void
 G_InitNew
 ( skill_t	skill,
   int		episode,
   int		map )`
-  - `G_ReadDemoTiccmd` (function, line 1896) `void G_ReadDemoTiccmd (ticcmd_t* cmd)`
-  - `IncreaseDemoBuffer` (function, line 1925) `static void IncreaseDemoBuffer(void)`
-  - `G_WriteDemoTiccmd` (function, line 1955) `void G_WriteDemoTiccmd (ticcmd_t* cmd)`
+  - `G_ReadDemoTiccmd` (function, line 1898) `void G_ReadDemoTiccmd (ticcmd_t* cmd)`
+  - `IncreaseDemoBuffer` (function, line 1926) `static void IncreaseDemoBuffer(void)`
+  - `G_WriteDemoTiccmd` (function, line 1956) `void G_WriteDemoTiccmd (ticcmd_t* cmd)`
   - `G_RecordDemo` (function, line 2010) `void G_RecordDemo (char *name)`
   - `G_VanillaVersionCode` (function, line 2040) `int G_VanillaVersionCode(void)`
-  - `G_BeginRecording` (function, line 2057) `void G_BeginRecording (void)`
-  - `G_DeferedPlayDemo` (function, line 2106) `void G_DeferedPlayDemo (char* name)`
-  - `DemoVersionDescription` (function, line 2114) `static char *DemoVersionDescription(int version)`
-  - `G_DoPlayDemo` (function, line 2151) `void G_DoPlayDemo (void)`
+  - `G_BeginRecording` (function, line 2058) `void G_BeginRecording (void)`
+  - `G_DeferedPlayDemo` (function, line 2107) `void G_DeferedPlayDemo (char* name)`
+  - `DemoVersionDescription` (function, line 2115) `static char *DemoVersionDescription(int version)`
+  - `G_DoPlayDemo` (function, line 2152) `void G_DoPlayDemo (void)`
   - `G_TimeDemo` (function, line 2215) `void G_TimeDemo (char* name)`
-  - `G_CheckDemoStatus` (function, line 2242) `boolean G_CheckDemoStatus (void)`
+  - `G_CheckDemoStatus` (function, line 2243) `boolean G_CheckDemoStatus (void)`
   - `G_DoVictory` (function, line 88) `void G_DoVictory (void);`
-  - `memset` (function, line 331) `memset(cmd, 0, sizeof(ticcmd_t));`
-  - `P_SetupLevel` (function, line 654) `P_SetupLevel (gameepisode, gamemap, 0, gameskill);`
-  - `Z_CheckHeap` (function, line 658) `Z_CheckHeap ();`
-  - `M_StartControlPanel` (function, line 758) `M_StartControlPanel ();`
-  - `F_StartFinale` (function, line 888) `case ga_victory: F_StartFinale ();`
-  - `V_ScreenShot` (function, line 894) `case ga_screenshot: V_ScreenShot("DOOM%02i.%s");`
-  - `memcpy` (function, line 913) `memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));`
-  - `M_snprintf` (function, line 940) `M_snprintf(turbomessage, sizeof(turbomessage), "%s is turbo!", player_names[i]);`
-  - `I_Error` (function, line 951) `I_Error ("consistency failure (%i should be %i)", cmd->consistancy, consistancy[i][buf]);`
-  - `S_ResumeSound` (function, line 975) `else S_ResumeSound ();`
-  - `M_StringCopy` (function, line 982) `M_StringCopy(savedescription, "NET GAME", sizeof(savedescription));`
-  - `WI_End` (function, line 999) `WI_End();`
-  - `P_Ticker` (function, line 1007) `case GS_LEVEL: P_Ticker ();`
-  - `ST_Ticker` (function, line 1009) `ST_Ticker ();`
-  - `AM_Ticker` (function, line 1010) `AM_Ticker ();`
-  - `HU_Ticker` (function, line 1011) `HU_Ticker ();`
-  - `WI_Ticker` (function, line 1013) `case GS_INTERMISSION: WI_Ticker ();`
-  - `F_Ticker` (function, line 1017) `case GS_FINALE: F_Ticker ();`
-  - `D_PageTicker` (function, line 1021) `case GS_DEMOSCREEN: D_PageTicker ();`
   - `P_SpawnPlayer` (function, line 1113) `void P_SpawnPlayer (mapthing_t* mthing);`
-  - `StatCopy` (function, line 1484) `StatCopy(&wminfo);`
-  - `WI_Start` (function, line 1486) `WI_Start (&wminfo);`
   - `R_ExecuteSetViewSize` (function, line 1535) `void R_ExecuteSetViewSize (void);`
-  - `fclose` (function, line 1565) `fclose(save_stream);`
-  - `P_UnArchivePlayers` (function, line 1577) `P_UnArchivePlayers ();`
-  - `P_UnArchiveWorld` (function, line 1578) `P_UnArchiveWorld ();`
-  - `P_UnArchiveThinkers` (function, line 1579) `P_UnArchiveThinkers ();`
-  - `P_UnArchiveSpecials` (function, line 1580) `P_UnArchiveSpecials ();`
-  - `R_FillBackScreen` (function, line 1591) `R_FillBackScreen ();`
-  - `P_WriteSaveGameHeader` (function, line 1640) `P_WriteSaveGameHeader(savedescription);`
-  - `P_ArchivePlayers` (function, line 1642) `P_ArchivePlayers ();`
-  - `P_ArchiveWorld` (function, line 1644) `P_ArchiveWorld ();`
-  - `P_ArchiveThinkers` (function, line 1645) `P_ArchiveThinkers ();`
-  - `P_ArchiveSpecials` (function, line 1646) `P_ArchiveSpecials ();`
-  - `P_WriteSaveGameEOF` (function, line 1647) `P_WriteSaveGameEOF();`
-  - `remove` (function, line 1674) `remove(savegame_file);`
-  - `rename` (function, line 1676) `rename(temp_savegame_file, savegame_file);`
-  - `M_ClearRandom` (function, line 1804) `M_ClearRandom ();`
-  - `Z_Free` (function, line 1948) `Z_Free(demobuffer);`
-  - `printf` (function, line 2174) `printf("Demo is from a different game version (read %i, expected %i). Skipping demo.\n", demoversion, G_VanillaVersionCode());`
-  - `Z_ChangeTag` (function, line 2176) `Z_ChangeTag(demobuffer, PU_CACHE);`
-  - `D_StartTitle` (function, line 2179) `D_StartTitle();`
-  - `W_ReleaseLumpName` (function, line 2266) `W_ReleaseLumpName(defdemoname);`
-  - `D_AdvanceDemo` (function, line 2279) `else D_AdvanceDemo ();`
-  - `M_WriteFile` (function, line 2288) `M_WriteFile (demoname, demobuffer, demo_p - demobuffer);`
   - `player_names` (variable, line 939) `extern char *player_names[4];`
   - `pagename` (variable, line 1326) `extern char* pagename;`
   - `setsizeneeded` (variable, line 1534) `extern boolean setsizeneeded;`
@@ -1693,13 +1425,11 @@ G_InitNew
   - `G_BeginRecording` (function, line 53) `void G_BeginRecording (void);`
   - `G_PlayDemo` (function, line 55) `void G_PlayDemo (char* name);`
   - `G_TimeDemo` (function, line 57) `void G_TimeDemo (char* name);`
-  - `G_CheckDemoStatus` (function, line 58) `boolean G_CheckDemoStatus (void);`
   - `G_ExitLevel` (function, line 59) `void G_ExitLevel (void);`
   - `G_SecretExitLevel` (function, line 61) `void G_SecretExitLevel (void);`
   - `G_WorldDone` (function, line 62) `void G_WorldDone (void);`
   - `G_BuildTiccmd` (function, line 66) `void G_BuildTiccmd (ticcmd_t *cmd, int maketic);`
   - `G_Ticker` (function, line 68) `void G_Ticker (void);`
-  - `G_Responder` (function, line 70) `boolean G_Responder (event_t* ev);`
   - `G_ScreenShot` (function, line 71) `void G_ScreenShot (void);`
   - `G_DrawMouseSpeedBox` (function, line 73) `void G_DrawMouseSpeedBox(void);`
   - `G_VanillaVersionCode` (function, line 75) `int G_VanillaVersionCode(void);`
@@ -1715,21 +1445,14 @@ G_InitNew
 - Language: c
 - Symbols:
   - `gus_config_t` (struct, line 34)
-  - `MappingIndex` (function, line 42) `static unsigned int MappingIndex(void)`
-  - `SplitLine` (function, line 60) `static int SplitLine(char *line, char **fields, unsigned int max_fields)`
-  - `ParseLine` (function, line 107) `static void ParseLine(gus_config_t *config, char *line)`
-  - `ParseDMXConfig` (function, line 128) `static void ParseDMXConfig(char *dmxconf, gus_config_t *config)`
-  - `FreeDMXConfig` (function, line 164) `static void FreeDMXConfig(gus_config_t *config)`
-  - `ReadDMXConfig` (function, line 174) `static char *ReadDMXConfig(void)`
-  - `WriteTimidityConfig` (function, line 196) `static boolean WriteTimidityConfig(char *path, gus_config_t *config)`
-  - `GUS_WriteConfig` (function, line 243) `boolean GUS_WriteConfig(char *path)`
-  - `free` (function, line 123) `free(config->patch_names[instr_id]);`
-  - `memset` (function, line 133) `memset(config, 0, sizeof(gus_config_t));`
-  - `W_ReadLump` (function, line 192) `W_ReadLump(lumpnum, data);`
-  - `fprintf` (function, line 208) `fprintf(fstream, "# Autogenerated Timidity config.\n\n");`
-  - `fclose` (function, line 238) `fclose(fstream);`
-  - `printf` (function, line 252) `printf("You haven't configured gus_patch_path.\n");`
-  - `Z_Free` (function, line 267) `Z_Free(dmxconf);`
+  - `MappingIndex` (function, line 43) `static unsigned int MappingIndex(void)`
+  - `SplitLine` (function, line 61) `static int SplitLine(char *line, char **fields, unsigned int max_fields)`
+  - `ParseLine` (function, line 108) `static void ParseLine(gus_config_t *config, char *line)`
+  - `ParseDMXConfig` (function, line 129) `static void ParseDMXConfig(char *dmxconf, gus_config_t *config)`
+  - `FreeDMXConfig` (function, line 165) `static void FreeDMXConfig(gus_config_t *config)`
+  - `ReadDMXConfig` (function, line 175) `static char *ReadDMXConfig(void)`
+  - `WriteTimidityConfig` (function, line 197) `static boolean WriteTimidityConfig(char *path, gus_config_t *config)`
+  - `GUS_WriteConfig` (function, line 244) `boolean GUS_WriteConfig(char *path)`
   - `MAX_INSTRUMENTS` (macro, line 31) `#define MAX_INSTRUMENTS`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
@@ -1738,7 +1461,6 @@ G_InitNew
 - Doc: Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it and/or modify it under the t
 - Language: h
 - Symbols:
-  - `GUS_WriteConfig` (function, line 25) `boolean GUS_WriteConfig(char *path);`
   - `gus_patch_path` (variable, line 22) `extern char *gus_patch_path;`
   - `gus_ram_kb` (variable, line 24) `extern unsigned int gus_ram_kb;`
   - `__GUSCONF_H__` (macro, line 19) `#define __GUSCONF_H__`
@@ -1750,26 +1472,26 @@ G_InitNew
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `HUlib_init` (function, line 35) `void HUlib_init(void)`
-  - `HUlib_clearTextLine` (function, line 39) `void HUlib_clearTextLine(hu_textline_t* t)`
-  - `HUlib_initTextLine` (function, line 46) `void
+  - `HUlib_init` (function, line 36) `void HUlib_init(void)`
+  - `HUlib_clearTextLine` (function, line 40) `void HUlib_clearTextLine(hu_textline_t* t)`
+  - `HUlib_initTextLine` (function, line 48) `void
 HUlib_initTextLine
 ( hu_textline_t*	t,
   int			x,
   int			y,
   patch_t**		f,
   int			sc )`
-  - `HUlib_addCharToTextLine` (function, line 61) `boolean
+  - `HUlib_addCharToTextLine` (function, line 63) `boolean
 HUlib_addCharToTextLine
 ( hu_textline_t*	t,
   char			ch )`
-  - `HUlib_delCharFromTextLine` (function, line 79) `boolean HUlib_delCharFromTextLine(hu_textline_t* t)`
-  - `HUlib_drawTextLine` (function, line 92) `void
+  - `HUlib_delCharFromTextLine` (function, line 80) `boolean HUlib_delCharFromTextLine(hu_textline_t* t)`
+  - `HUlib_drawTextLine` (function, line 94) `void
 HUlib_drawTextLine
 ( hu_textline_t*	l,
   boolean		drawcursor )`
   - `HUlib_eraseTextLine` (function, line 137) `void HUlib_eraseTextLine(hu_textline_t* l)`
-  - `HUlib_initSText` (function, line 167) `void
+  - `HUlib_initSText` (function, line 169) `void
 HUlib_initSText
 ( hu_stext_t*	s,
   int		x,
@@ -1777,15 +1499,15 @@ HUlib_initSText
   int		h,
   patch_t**	font,
   int		star...`
-  - `HUlib_addLineToSText` (function, line 191) `void HUlib_addLineToSText(hu_stext_t* s)`
-  - `HUlib_addMessageToSText` (function, line 207) `void
+  - `HUlib_addLineToSText` (function, line 192) `void HUlib_addLineToSText(hu_stext_t* s)`
+  - `HUlib_addMessageToSText` (function, line 209) `void
 HUlib_addMessageToSText
 ( hu_stext_t*	s,
   char*		prefix,
   char*		msg )`
-  - `HUlib_drawSText` (function, line 222) `void HUlib_drawSText(hu_stext_t* s)`
-  - `HUlib_eraseSText` (function, line 245) `void HUlib_eraseSText(hu_stext_t* s)`
-  - `HUlib_initIText` (function, line 260) `void
+  - `HUlib_drawSText` (function, line 223) `void HUlib_drawSText(hu_stext_t* s)`
+  - `HUlib_eraseSText` (function, line 246) `void HUlib_eraseSText(hu_stext_t* s)`
+  - `HUlib_initIText` (function, line 262) `void
 HUlib_initIText
 ( hu_itext_t*	it,
   int		x,
@@ -1794,20 +1516,18 @@ HUlib_initIText
   int		startchar,
   ...`
   - `HUlib_delCharFromIText` (function, line 278) `void HUlib_delCharFromIText(hu_itext_t* it)`
-  - `HUlib_eraseLineFromIText` (function, line 283) `void HUlib_eraseLineFromIText(hu_itext_t* it)`
+  - `HUlib_eraseLineFromIText` (function, line 284) `void HUlib_eraseLineFromIText(hu_itext_t* it)`
   - `HUlib_resetIText` (function, line 291) `void HUlib_resetIText(hu_itext_t* it)`
-  - `HUlib_addPrefixToIText` (function, line 296) `void
+  - `HUlib_addPrefixToIText` (function, line 298) `void
 HUlib_addPrefixToIText
 ( hu_itext_t*	it,
   char*		str )`
-  - `HUlib_keyInIText` (function, line 309) `boolean
+  - `HUlib_keyInIText` (function, line 310) `boolean
 HUlib_keyInIText
 ( hu_itext_t*	it,
   unsigned char ch )`
-  - `HUlib_drawIText` (function, line 328) `void HUlib_drawIText(hu_itext_t* it)`
-  - `HUlib_eraseIText` (function, line 339) `void HUlib_eraseIText(hu_itext_t* it)`
-  - `V_DrawPatchDirect` (function, line 116) `V_DrawPatchDirect(x, l->y, l->f[c - l->sc]);`
-  - `R_VideoErase` (function, line 157) `R_VideoErase(yoffset, viewwindowx);`
+  - `HUlib_drawIText` (function, line 329) `void HUlib_drawIText(hu_itext_t* it)`
+  - `HUlib_eraseIText` (function, line 340) `void HUlib_eraseIText(hu_itext_t* it)`
   - `automapactive` (variable, line 33) `extern boolean automapactive;`
   - `noterased` (macro, line 32) `#define noterased`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
@@ -1823,8 +1543,6 @@ HUlib_keyInIText
   - `HUlib_init` (function, line 91) `void HUlib_init(void);`
   - `HUlib_clearTextLine` (function, line 98) `void HUlib_clearTextLine(hu_textline_t *t);`
   - `HUlib_initTextLine` (function, line 99) `void HUlib_initTextLine(hu_textline_t *t, int x, int y, patch_t **f, int sc);`
-  - `HUlib_addCharToTextLine` (function, line 103) `boolean HUlib_addCharToTextLine(hu_textline_t *t, char ch);`
-  - `HUlib_delCharFromTextLine` (function, line 106) `boolean HUlib_delCharFromTextLine(hu_textline_t *t);`
   - `HUlib_drawTextLine` (function, line 109) `void HUlib_drawTextLine(hu_textline_t *l, boolean drawcursor);`
   - `HUlib_eraseTextLine` (function, line 112) `void HUlib_eraseTextLine(hu_textline_t *l);`
   - `HUlib_initSText` (function, line 120) `void HUlib_initSText ( hu_stext_t* s, int x, int y, int h, patch_t** font, int startchar, boolean* on );`
@@ -1837,7 +1555,6 @@ HUlib_keyInIText
   - `HUlib_eraseLineFromIText` (function, line 160) `void HUlib_eraseLineFromIText(hu_itext_t* it);`
   - `HUlib_resetIText` (function, line 163) `void HUlib_resetIText(hu_itext_t* it);`
   - `HUlib_addPrefixToIText` (function, line 166) `void HUlib_addPrefixToIText ( hu_itext_t* it, char* str );`
-  - `HUlib_keyInIText` (function, line 172) `boolean HUlib_keyInIText ( hu_itext_t* it, unsigned char ch );`
   - `HUlib_drawIText` (function, line 176) `void HUlib_drawIText(hu_itext_t* it);`
   - `HUlib_eraseIText` (function, line 180) `void HUlib_eraseIText(hu_itext_t* it);`
   - `__HULIB__` (macro, line 19) `#define __HULIB__`
@@ -1852,28 +1569,15 @@ HUlib_keyInIText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `HU_Init` (function, line 285) `void HU_Init(void)`
-  - `HU_Stop` (function, line 302) `void HU_Stop(void)`
-  - `HU_Start` (function, line 307) `void HU_Start(void)`
-  - `HU_Drawer` (function, line 382) `void HU_Drawer(void)`
-  - `HU_Erase` (function, line 392) `void HU_Erase(void)`
-  - `HU_Ticker` (function, line 401) `void HU_Ticker(void)`
-  - `HU_queueChatChar` (function, line 480) `void HU_queueChatChar(char c)`
-  - `HU_dequeueChatChar` (function, line 494) `char HU_dequeueChatChar(void)`
-  - `HU_Responder` (function, line 511) `boolean HU_Responder(event_t *ev)`
-  - `DEH_snprintf` (function, line 297) `DEH_snprintf(buffer, 9, "STCFN%.3d", j++);`
-  - `HUlib_initSText` (function, line 324) `HUlib_initSText(&w_message, HU_MSGX, HU_MSGY, HU_MSGHEIGHT, hu_font, HU_FONTSTART, &message_on);`
-  - `HUlib_initTextLine` (function, line 330) `HUlib_initTextLine(&w_title, HU_TITLEX, HU_TITLEY, hu_font, HU_FONTSTART);`
-  - `HUlib_initIText` (function, line 370) `HUlib_initIText(&w_chat, HU_INPUTX, HU_INPUTY, hu_font, HU_FONTSTART, &chat_on);`
-  - `HUlib_drawSText` (function, line 385) `HUlib_drawSText(&w_message);`
-  - `HUlib_drawIText` (function, line 387) `HUlib_drawIText(&w_chat);`
-  - `HUlib_eraseSText` (function, line 395) `HUlib_eraseSText(&w_message);`
-  - `HUlib_eraseIText` (function, line 397) `HUlib_eraseIText(&w_chat);`
-  - `HUlib_eraseTextLine` (function, line 398) `HUlib_eraseTextLine(&w_title);`
-  - `HUlib_addMessageToSText` (function, line 422) `HUlib_addMessageToSText(&w_message, 0, plr->message);`
-  - `S_StartSound` (function, line 462) `else S_StartSound(0, sfx_tink);`
-  - `HUlib_resetIText` (function, line 465) `HUlib_resetIText(&w_inputbuffer[i]);`
-  - `M_StringCopy` (function, line 608) `M_StringCopy(lastmessage, chat_macros[c], sizeof(lastmessage));`
+  - `HU_Init` (function, line 286) `void HU_Init(void)`
+  - `HU_Stop` (function, line 303) `void HU_Stop(void)`
+  - `HU_Start` (function, line 308) `void HU_Start(void)`
+  - `HU_Drawer` (function, line 383) `void HU_Drawer(void)`
+  - `HU_Erase` (function, line 393) `void HU_Erase(void)`
+  - `HU_Ticker` (function, line 402) `void HU_Ticker(void)`
+  - `HU_queueChatChar` (function, line 482) `void HU_queueChatChar(char c)`
+  - `HU_dequeueChatChar` (function, line 495) `char HU_dequeueChatChar(void)`
+  - `HU_Responder` (function, line 512) `boolean HU_Responder(event_t *ev)`
   - `showMessages` (variable, line 102) `extern int showMessages;`
   - `HU_TITLE` (macro, line 47) `#define HU_TITLE`
   - `HU_TITLE2` (macro, line 48) `#define HU_TITLE2`
@@ -1898,7 +1602,6 @@ HUlib_keyInIText
 - Symbols:
   - `HU_Init` (function, line 45) `void HU_Init(void);`
   - `HU_Start` (function, line 47) `void HU_Start(void);`
-  - `HU_Responder` (function, line 48) `boolean HU_Responder(event_t* ev);`
   - `HU_Ticker` (function, line 50) `void HU_Ticker(void);`
   - `HU_Drawer` (function, line 52) `void HU_Drawer(void);`
   - `HU_dequeueChatChar` (function, line 53) `char HU_dequeueChatChar(void);`
@@ -1922,17 +1625,15 @@ HUlib_keyInIText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 1993-2008 Raven Software  This program is free software; you can r
 - Language: c
 - Symbols:
-  - `I_CDMusInit` (function, line 37) `int I_CDMusInit(void)`
-  - `I_CDMusPrintStartup` (function, line 91) `void I_CDMusPrintStartup(void)`
-  - `I_CDMusPlay` (function, line 106) `int I_CDMusPlay(int track)`
-  - `I_CDMusStop` (function, line 129) `int I_CDMusStop(void)`
-  - `I_CDMusResume` (function, line 144) `int I_CDMusResume(void)`
-  - `I_CDMusSetVolume` (function, line 159) `int I_CDMusSetVolume(int volume)`
-  - `I_CDMusFirstTrack` (function, line 168) `int I_CDMusFirstTrack(void)`
-  - `I_CDMusLastTrack` (function, line 201) `int I_CDMusLastTrack(void)`
-  - `I_CDMusTrackLength` (function, line 218) `int I_CDMusTrackLength(int track_num)`
-  - `printf` (function, line 97) `printf("I_CDMusInit: Using CD-ROM drive: %s\n", cd_name);`
-  - `fprintf` (function, line 102) `fprintf(stderr, "I_CDMusInit: %s\n", startup_error);`
+  - `I_CDMusInit` (function, line 38) `int I_CDMusInit(void)`
+  - `I_CDMusPrintStartup` (function, line 92) `void I_CDMusPrintStartup(void)`
+  - `I_CDMusPlay` (function, line 107) `int I_CDMusPlay(int track)`
+  - `I_CDMusStop` (function, line 130) `int I_CDMusStop(void)`
+  - `I_CDMusResume` (function, line 145) `int I_CDMusResume(void)`
+  - `I_CDMusSetVolume` (function, line 160) `int I_CDMusSetVolume(int volume)`
+  - `I_CDMusFirstTrack` (function, line 169) `int I_CDMusFirstTrack(void)`
+  - `I_CDMusLastTrack` (function, line 202) `int I_CDMusLastTrack(void)`
+  - `I_CDMusTrackLength` (function, line 219) `int I_CDMusTrackLength(int track_num)`
 - Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
 
 ## progs/doomgeneric/i_cdmus.h
@@ -1965,14 +1666,7 @@ HUlib_keyInIText
 - Doc: Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it and/or modify it under the t
 - Language: c
 - Symbols:
-  - `I_Endoom` (function, line 35) `void I_Endoom(byte *endoom_data)`
-  - `TXT_Init` (function, line 44) `TXT_Init();`
-  - `I_InitWindowTitle` (function, line 46) `I_InitWindowTitle();`
-  - `I_InitWindowIcon` (function, line 47) `I_InitWindowIcon();`
-  - `memcpy` (function, line 57) `memcpy(screendata + (y * TXT_SCREEN_W * 2), endoom_data + (y * ENDOOM_W + indent) * 2, TXT_SCREEN_W * 2);`
-  - `TXT_UpdateScreen` (function, line 66) `TXT_UpdateScreen();`
-  - `TXT_Sleep` (function, line 72) `TXT_Sleep(0);`
-  - `TXT_Shutdown` (function, line 77) `TXT_Shutdown();`
+  - `I_Endoom` (function, line 36) `void I_Endoom(byte *endoom_data)`
   - `ENDOOM_W` (macro, line 28) `#define ENDOOM_W`
   - `ENDOOM_H` (macro, line 30) `#define ENDOOM_H`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`
@@ -1991,12 +1685,11 @@ HUlib_keyInIText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `TranslateKey` (function, line 223) `static unsigned char TranslateKey(unsigned char key)`
-  - `GetTypedChar` (function, line 241) `static unsigned char GetTypedChar(unsigned char key)`
-  - `UpdateShiftStatus` (function, line 262) `static void UpdateShiftStatus(int pressed, unsigned char key)`
-  - `I_GetEvent` (function, line 277) `void I_GetEvent(void)`
-  - `I_InitInput` (function, line 337) `void I_InitInput(void)`
-  - `D_PostEvent` (function, line 302) `D_PostEvent(&event);`
+  - `TranslateKey` (function, line 225) `static unsigned char TranslateKey(unsigned char key)`
+  - `GetTypedChar` (function, line 242) `static unsigned char GetTypedChar(unsigned char key)`
+  - `UpdateShiftStatus` (function, line 263) `static void UpdateShiftStatus(int pressed, unsigned char key)`
+  - `I_GetEvent` (function, line 279) `void I_GetEvent(void)`
+  - `I_InitInput` (function, line 338) `void I_InitInput(void)`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_scale.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/i_joystick.c
@@ -2004,25 +1697,15 @@ HUlib_keyInIText
 - Doc: Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it and/or modify it under the t
 - Language: c
 - Symbols:
-  - `I_ShutdownJoystick` (function, line 76) `void I_ShutdownJoystick(void)`
+  - `I_ShutdownJoystick` (function, line 77) `void I_ShutdownJoystick(void)`
   - `IsValidAxis` (function, line 90) `static boolean IsValidAxis(int axis)`
-  - `I_InitJoystick` (function, line 114) `void I_InitJoystick(void)`
+  - `I_InitJoystick` (function, line 115) `void I_InitJoystick(void)`
   - `IsAxisButton` (function, line 171) `static boolean IsAxisButton(int physbutton)`
-  - `ReadButtonState` (function, line 202) `static int ReadButtonState(int vbutton)`
-  - `GetButtonsState` (function, line 227) `static int GetButtonsState(void)`
-  - `GetAxisState` (function, line 247) `static int GetAxisState(int axis, int invert)`
+  - `ReadButtonState` (function, line 203) `static int ReadButtonState(int vbutton)`
+  - `GetButtonsState` (function, line 228) `static int GetButtonsState(void)`
+  - `GetAxisState` (function, line 248) `static int GetAxisState(int axis, int invert)`
   - `I_UpdateJoystick` (function, line 321) `void I_UpdateJoystick(void)`
-  - `I_BindJoystickVariables` (function, line 338) `void I_BindJoystickVariables(void)`
-  - `SDL_JoystickClose` (function, line 82) `SDL_JoystickClose(joystick);`
-  - `SDL_QuitSubSystem` (function, line 84) `SDL_QuitSubSystem(SDL_INIT_JOYSTICK);`
-  - `HAT_AXIS_HAT` (function, line 106) `return HAT_AXIS_HAT(axis) < SDL_JoystickNumHats(joystick);`
-  - `printf` (function, line 130) `printf("I_InitJoystick: Invalid joystick ID: %i\n", joystick_index);`
-  - `SDL_JoystickEventState` (function, line 159) `SDL_JoystickEventState(SDL_ENABLE);`
-  - `I_AtExit` (function, line 165) `I_AtExit(I_ShutdownJoystick, true);`
-  - `SDL_JoystickGetButton` (function, line 222) `return SDL_JoystickGetButton(joystick, physbutton);`
-  - `D_PostEvent` (function, line 333) `D_PostEvent(&ev);`
-  - `M_BindVariable` (function, line 342) `M_BindVariable("use_joystick", &usejoystick);`
-  - `M_snprintf` (function, line 355) `M_snprintf(name, sizeof(name), "joystick_physical_button%i", i);`
+  - `I_BindJoystickVariables` (function, line 339) `void I_BindJoystickVariables(void)`
   - `DEAD_ZONE` (macro, line 37) `#define DEAD_ZONE`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
 
@@ -2056,55 +1739,48 @@ HUlib_keyInIText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `main` (function, line 38) `int main(int argc, char **argv)`
+  - `main` (function, line 40) `int main(int argc, char **argv)`
   - `D_DoomMain` (function, line 32) `void D_DoomMain (void);`
   - `M_FindResponseFile` (function, line 34) `void M_FindResponseFile(void);`
   - `dg_Create` (function, line 36) `void dg_Create();`
-  - `printf` (function, line 50) `printf("Starting D_DoomMain\r\n");`
 - Depends on: `progs/doomgeneric/m_argv.h`
 
 ## progs/doomgeneric/i_minios_sound.c
 - Layer: utility
-- Doc: include <stdio.h> include <stdlib.h> include <string.h> include "doomtype.h" include "doomfeatures.h" include "i_sound.h
 - Language: c
 - Symbols:
   - `pcspk_channel_t` (struct, line 17)
   - `mus_player_t` (struct, line 84)
-  - `sys_tone` (function, line 31) `static long sys_tone(unsigned f)`
+  - `sys_tone` (function, line 32) `static long sys_tone(unsigned f)`
   - `sys_time` (function, line 35) `static long sys_time(void)`
-  - `mus_read_varlen` (function, line 100) `static int mus_read_varlen(mus_player_t *m, unsigned long *out)`
+  - `mus_read_varlen` (function, line 101) `static int mus_read_varlen(mus_player_t *m, unsigned long *out)`
   - `mus_next_block` (function, line 115) `static int mus_next_block(mus_player_t *m, unsigned long *out)`
-  - `mus_note_cmp` (function, line 153) `static int mus_note_cmp(const void *a, const void *b)`
+  - `mus_note_cmp` (function, line 154) `static int mus_note_cmp(const void *a, const void *b)`
   - `mus_build_chord` (function, line 162) `static void mus_build_chord(mus_player_t *m)`
   - `mus_hold_tone` (function, line 185) `static void mus_hold_tone(unsigned freq, unsigned long ms)`
   - `mus_play_chord` (function, line 196) `static void mus_play_chord(mus_player_t *m)`
-  - `mus_advance` (function, line 209) `static void mus_advance(mus_player_t *m, unsigned long ms)`
-  - `MUS_Init` (function, line 230) `static boolean MUS_Init(void)`
-  - `MUS_Shutdown` (function, line 235) `static void MUS_Shutdown(void)`
-  - `MUS_SetMusicVolume` (function, line 240) `static void MUS_SetMusicVolume(int volume)`
-  - `MUS_Pause` (function, line 242) `static void MUS_Pause(void)`
+  - `mus_advance` (function, line 210) `static void mus_advance(mus_player_t *m, unsigned long ms)`
+  - `MUS_Init` (function, line 231) `static boolean MUS_Init(void)`
+  - `MUS_Shutdown` (function, line 236) `static void MUS_Shutdown(void)`
+  - `MUS_SetMusicVolume` (function, line 241) `static void MUS_SetMusicVolume(int volume)`
+  - `MUS_Pause` (function, line 243) `static void MUS_Pause(void)`
   - `MUS_Resume` (function, line 244) `static void MUS_Resume(void)`
-  - `MUS_RegisterSong` (function, line 245) `static void *MUS_RegisterSong(void *data, int len)`
-  - `MUS_UnRegisterSong` (function, line 260) `static void MUS_UnRegisterSong(void *handle)`
-  - `MUS_PlaySong` (function, line 266) `static void MUS_PlaySong(void *handle, boolean looping)`
-  - `MUS_StopSong` (function, line 279) `static void MUS_StopSong(void)`
-  - `MUS_MusicIsPlaying` (function, line 284) `static boolean MUS_MusicIsPlaying(void)`
-  - `MUS_Poll` (function, line 288) `static void MUS_Poll(void)`
-  - `PCSPK_Init` (function, line 317) `static boolean PCSPK_Init(boolean use_sfx_prefix)`
-  - `PCSPK_Shutdown` (function, line 324) `static void PCSPK_Shutdown(void)`
-  - `PCSPK_GetSfxLumpNum` (function, line 329) `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)`
-  - `free_channel` (function, line 340) `static void free_channel(int i)`
-  - `PCSPK_Update` (function, line 349) `static void PCSPK_Update(void)`
-  - `PCSPK_UpdateSoundParams` (function, line 381) `static void PCSPK_UpdateSoundParams(int ch, int v, int s)`
-  - `PCSPK_StartSound` (function, line 385) `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)`
-  - `PCSPK_StopSound` (function, line 435) `static void PCSPK_StopSound(int channel)`
-  - `PCSPK_SoundIsPlaying` (function, line 441) `static boolean PCSPK_SoundIsPlaying(int channel)`
-  - `PCSPK_CacheSounds` (function, line 447) `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)`
-  - `memset` (function, line 218) `memset(m->active, 0, sizeof(m->active));`
-  - `Z_Free` (function, line 250) `Z_Free(m);`
-  - `snprintf` (function, line 333) `snprintf(n, sizeof(n), "dp%s", sfx->name);`
-  - `W_CheckNumForName` (function, line 338) `return W_CheckNumForName(n);`
-  - `W_ReadLump` (function, line 405) `W_ReadLump(lump, tmp);`
+  - `MUS_RegisterSong` (function, line 246) `static void *MUS_RegisterSong(void *data, int len)`
+  - `MUS_UnRegisterSong` (function, line 261) `static void MUS_UnRegisterSong(void *handle)`
+  - `MUS_PlaySong` (function, line 267) `static void MUS_PlaySong(void *handle, boolean looping)`
+  - `MUS_StopSong` (function, line 280) `static void MUS_StopSong(void)`
+  - `MUS_MusicIsPlaying` (function, line 285) `static boolean MUS_MusicIsPlaying(void)`
+  - `MUS_Poll` (function, line 289) `static void MUS_Poll(void)`
+  - `PCSPK_Init` (function, line 318) `static boolean PCSPK_Init(boolean use_sfx_prefix)`
+  - `PCSPK_Shutdown` (function, line 325) `static void PCSPK_Shutdown(void)`
+  - `PCSPK_GetSfxLumpNum` (function, line 330) `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)`
+  - `free_channel` (function, line 341) `static void free_channel(int i)`
+  - `PCSPK_Update` (function, line 350) `static void PCSPK_Update(void)`
+  - `PCSPK_UpdateSoundParams` (function, line 382) `static void PCSPK_UpdateSoundParams(int ch, int v, int s)`
+  - `PCSPK_StartSound` (function, line 386) `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)`
+  - `PCSPK_StopSound` (function, line 436) `static void PCSPK_StopSound(int channel)`
+  - `PCSPK_SoundIsPlaying` (function, line 442) `static boolean PCSPK_SoundIsPlaying(int channel)`
+  - `PCSPK_CacheSounds` (function, line 448) `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)`
   - `PCSPK_CHANNELS` (macro, line 11) `#define PCSPK_CHANNELS`
   - `PCSPK_TICK_MS` (macro, line 13) `#define PCSPK_TICK_MS`
   - `MUS_TICKS_PER_SEC` (macro, line 57) `#define MUS_TICKS_PER_SEC`
@@ -2120,50 +1796,44 @@ HUlib_keyInIText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `I_InitScale` (function, line 60) `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch)`
-  - `I_Scale1x` (function, line 74) `static boolean I_Scale1x(int x1, int y1, int x2, int y2)`
-  - `I_Scale2x` (function, line 104) `static boolean I_Scale2x(int x1, int y1, int x2, int y2)`
-  - `I_Scale3x` (function, line 145) `static boolean I_Scale3x(int x1, int y1, int x2, int y2)`
-  - `I_Scale4x` (function, line 190) `static boolean I_Scale4x(int x1, int y1, int x2, int y2)`
-  - `I_Scale5x` (function, line 239) `static boolean I_Scale5x(int x1, int y1, int x2, int y2)`
-  - `FindNearestColor` (function, line 294) `static int FindNearestColor(byte *palette, int r, int g, int b)`
-  - `GenerateStretchTable` (function, line 331) `static byte *GenerateStretchTable(byte *palette, int pct)`
-  - `I_InitStretchTables` (function, line 360) `static void I_InitStretchTables(byte *palette)`
-  - `I_InitSquashTable` (function, line 386) `static void I_InitSquashTable(byte *palette)`
-  - `I_ResetScaleTables` (function, line 403) `void I_ResetScaleTables(byte *palette)`
-  - `WriteBlendedLine1x` (function, line 433) `static inline void WriteBlendedLine1x(byte *dest, byte *src1, byte *src2, 
+  - `I_InitScale` (function, line 61) `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch)`
+  - `I_Scale1x` (function, line 75) `static boolean I_Scale1x(int x1, int y1, int x2, int y2)`
+  - `I_Scale2x` (function, line 105) `static boolean I_Scale2x(int x1, int y1, int x2, int y2)`
+  - `I_Scale3x` (function, line 146) `static boolean I_Scale3x(int x1, int y1, int x2, int y2)`
+  - `I_Scale4x` (function, line 191) `static boolean I_Scale4x(int x1, int y1, int x2, int y2)`
+  - `I_Scale5x` (function, line 240) `static boolean I_Scale5x(int x1, int y1, int x2, int y2)`
+  - `FindNearestColor` (function, line 295) `static int FindNearestColor(byte *palette, int r, int g, int b)`
+  - `GenerateStretchTable` (function, line 332) `static byte *GenerateStretchTable(byte *palette, int pct)`
+  - `I_InitStretchTables` (function, line 361) `static void I_InitStretchTables(byte *palette)`
+  - `I_InitSquashTable` (function, line 387) `static void I_InitSquashTable(byte *palette)`
+  - `I_ResetScaleTables` (function, line 404) `void I_ResetScaleTables(byte *palette)`
+  - `WriteBlendedLine1x` (function, line 434) `static inline void WriteBlendedLine1x(byte *dest, byte *src1, byte *src2, 
                       ...`
-  - `I_Stretch1x` (function, line 449) `static boolean I_Stretch1x(int x1, int y1, int x2, int y2)`
-  - `WriteLine2x` (function, line 506) `static inline void WriteLine2x(byte *dest, byte *src)`
-  - `WriteBlendedLine2x` (function, line 519) `static inline void WriteBlendedLine2x(byte *dest, byte *src1, byte *src2, 
+  - `I_Stretch1x` (function, line 450) `static boolean I_Stretch1x(int x1, int y1, int x2, int y2)`
+  - `WriteLine2x` (function, line 507) `static inline void WriteLine2x(byte *dest, byte *src)`
+  - `WriteBlendedLine2x` (function, line 520) `static inline void WriteBlendedLine2x(byte *dest, byte *src1, byte *src2, 
                       ...`
-  - `I_Stretch2x` (function, line 538) `static boolean I_Stretch2x(int x1, int y1, int x2, int y2)`
-  - `WriteLine3x` (function, line 619) `static inline void WriteLine3x(byte *dest, byte *src)`
-  - `WriteBlendedLine3x` (function, line 633) `static inline void WriteBlendedLine3x(byte *dest, byte *src1, byte *src2, 
+  - `I_Stretch2x` (function, line 539) `static boolean I_Stretch2x(int x1, int y1, int x2, int y2)`
+  - `WriteLine3x` (function, line 620) `static inline void WriteLine3x(byte *dest, byte *src)`
+  - `WriteBlendedLine3x` (function, line 634) `static inline void WriteBlendedLine3x(byte *dest, byte *src1, byte *src2, 
                       ...`
-  - `I_Stretch3x` (function, line 653) `static boolean I_Stretch3x(int x1, int y1, int x2, int y2)`
-  - `WriteLine4x` (function, line 758) `static inline void WriteLine4x(byte *dest, byte *src)`
-  - `WriteBlendedLine4x` (function, line 773) `static inline void WriteBlendedLine4x(byte *dest, byte *src1, byte *src2, 
+  - `I_Stretch3x` (function, line 654) `static boolean I_Stretch3x(int x1, int y1, int x2, int y2)`
+  - `WriteLine4x` (function, line 759) `static inline void WriteLine4x(byte *dest, byte *src)`
+  - `WriteBlendedLine4x` (function, line 774) `static inline void WriteBlendedLine4x(byte *dest, byte *src1, byte *src2, 
                       ...`
-  - `I_Stretch4x` (function, line 794) `static boolean I_Stretch4x(int x1, int y1, int x2, int y2)`
-  - `WriteLine5x` (function, line 923) `static inline void WriteLine5x(byte *dest, byte *src)`
-  - `I_Stretch5x` (function, line 941) `static boolean I_Stretch5x(int x1, int y1, int x2, int y2)`
-  - `WriteSquashedLine1x` (function, line 1029) `static inline void WriteSquashedLine1x(byte *dest, byte *src)`
-  - `I_Squash1x` (function, line 1060) `static boolean I_Squash1x(int x1, int y1, int x2, int y2)`
-  - `WriteSquashedLine2x` (function, line 1101) `static inline void WriteSquashedLine2x(byte *dest, byte *src)`
-  - `I_Squash2x` (function, line 1159) `static boolean I_Squash2x(int x1, int y1, int x2, int y2)`
-  - `WriteSquashedLine3x` (function, line 1196) `static inline void WriteSquashedLine3x(byte *dest, byte *src)`
-  - `I_Squash3x` (function, line 1242) `static boolean I_Squash3x(int x1, int y1, int x2, int y2)`
-  - `WriteSquashedLine4x` (function, line 1278) `static inline void WriteSquashedLine4x(byte *dest, byte *src)`
-  - `I_Squash4x` (function, line 1353) `static boolean I_Squash4x(int x1, int y1, int x2, int y2)`
-  - `WriteSquashedLine5x` (function, line 1389) `static inline void WriteSquashedLine5x(byte *dest, byte *src)`
-  - `I_Squash5x` (function, line 1418) `static boolean I_Squash5x(int x1, int y1, int x2, int y2)`
-  - `memcpy` (function, line 88) `memcpy(screenp, bufp, w);`
-  - `printf` (function, line 376) `printf("I_InitStretchTables: Generating lookup tables..");`
-  - `fflush` (function, line 378) `fflush(stdout);`
-  - `puts` (function, line 382) `puts("");`
-  - `Z_Free` (function, line 408) `Z_Free(stretch_tables[0]);`
-  - `memset` (function, line 998) `memset(screenp, 0, 1600);`
+  - `I_Stretch4x` (function, line 795) `static boolean I_Stretch4x(int x1, int y1, int x2, int y2)`
+  - `WriteLine5x` (function, line 924) `static inline void WriteLine5x(byte *dest, byte *src)`
+  - `I_Stretch5x` (function, line 942) `static boolean I_Stretch5x(int x1, int y1, int x2, int y2)`
+  - `WriteSquashedLine1x` (function, line 1030) `static inline void WriteSquashedLine1x(byte *dest, byte *src)`
+  - `I_Squash1x` (function, line 1061) `static boolean I_Squash1x(int x1, int y1, int x2, int y2)`
+  - `WriteSquashedLine2x` (function, line 1102) `static inline void WriteSquashedLine2x(byte *dest, byte *src)`
+  - `I_Squash2x` (function, line 1160) `static boolean I_Squash2x(int x1, int y1, int x2, int y2)`
+  - `WriteSquashedLine3x` (function, line 1197) `static inline void WriteSquashedLine3x(byte *dest, byte *src)`
+  - `I_Squash3x` (function, line 1243) `static boolean I_Squash3x(int x1, int y1, int x2, int y2)`
+  - `WriteSquashedLine4x` (function, line 1279) `static inline void WriteSquashedLine4x(byte *dest, byte *src)`
+  - `I_Squash4x` (function, line 1354) `static boolean I_Squash4x(int x1, int y1, int x2, int y2)`
+  - `WriteSquashedLine5x` (function, line 1390) `static inline void WriteSquashedLine5x(byte *dest, byte *src)`
+  - `I_Squash5x` (function, line 1419) `static boolean I_Squash5x(int x1, int y1, int x2, int y2)`
   - `inline` (macro, line 32) `#define inline`
   - `DRAW_PIXEL2` (macro, line 1098) `#define DRAW_PIXEL2`
   - `DRAW_PIXEL3` (macro, line 1192) `#define DRAW_PIXEL3`
@@ -2202,33 +1872,32 @@ HUlib_keyInIText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `SndDeviceInList` (function, line 115) `static boolean SndDeviceInList(snddevice_t device, snddevice_t *list,
+  - `SndDeviceInList` (function, line 116) `static boolean SndDeviceInList(snddevice_t device, snddevice_t *list,
                            ...`
-  - `InitSfxModule` (function, line 134) `static void InitSfxModule(boolean use_sfx_prefix)`
-  - `InitMusicModule` (function, line 162) `static void InitMusicModule(void)`
-  - `I_InitSound` (function, line 194) `void I_InitSound(boolean use_sfx_prefix)`
-  - `I_ShutdownSound` (function, line 249) `void I_ShutdownSound(void)`
-  - `I_GetSfxLumpNum` (function, line 262) `int I_GetSfxLumpNum(sfxinfo_t *sfxinfo)`
-  - `I_UpdateSound` (function, line 274) `void I_UpdateSound(void)`
-  - `CheckVolumeSeparation` (function, line 287) `static void CheckVolumeSeparation(int *vol, int *sep)`
-  - `I_UpdateSoundParams` (function, line 308) `void I_UpdateSoundParams(int channel, int vol, int sep)`
-  - `I_StartSound` (function, line 317) `int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep)`
-  - `I_StopSound` (function, line 330) `void I_StopSound(int channel)`
-  - `I_SoundIsPlaying` (function, line 338) `boolean I_SoundIsPlaying(int channel)`
-  - `I_PrecacheSounds` (function, line 350) `void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)`
-  - `I_InitMusic` (function, line 358) `void I_InitMusic(void)`
-  - `I_ShutdownMusic` (function, line 362) `void I_ShutdownMusic(void)`
-  - `I_SetMusicVolume` (function, line 367) `void I_SetMusicVolume(int volume)`
-  - `I_PauseSong` (function, line 375) `void I_PauseSong(void)`
-  - `I_ResumeSong` (function, line 383) `void I_ResumeSong(void)`
-  - `I_RegisterSong` (function, line 391) `void *I_RegisterSong(void *data, int len)`
-  - `I_UnRegisterSong` (function, line 403) `void I_UnRegisterSong(void *handle)`
-  - `I_PlaySong` (function, line 411) `void I_PlaySong(void *handle, boolean looping)`
-  - `I_StopSong` (function, line 419) `void I_StopSong(void)`
-  - `I_MusicIsPlaying` (function, line 427) `boolean I_MusicIsPlaying(void)`
-  - `I_BindSoundVariables` (function, line 439) `void I_BindSoundVariables(void)`
+  - `InitSfxModule` (function, line 135) `static void InitSfxModule(boolean use_sfx_prefix)`
+  - `InitMusicModule` (function, line 163) `static void InitMusicModule(void)`
+  - `I_InitSound` (function, line 195) `void I_InitSound(boolean use_sfx_prefix)`
+  - `I_ShutdownSound` (function, line 250) `void I_ShutdownSound(void)`
+  - `I_GetSfxLumpNum` (function, line 263) `int I_GetSfxLumpNum(sfxinfo_t *sfxinfo)`
+  - `I_UpdateSound` (function, line 275) `void I_UpdateSound(void)`
+  - `CheckVolumeSeparation` (function, line 288) `static void CheckVolumeSeparation(int *vol, int *sep)`
+  - `I_UpdateSoundParams` (function, line 309) `void I_UpdateSoundParams(int channel, int vol, int sep)`
+  - `I_StartSound` (function, line 318) `int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep)`
+  - `I_StopSound` (function, line 331) `void I_StopSound(int channel)`
+  - `I_SoundIsPlaying` (function, line 339) `boolean I_SoundIsPlaying(int channel)`
+  - `I_PrecacheSounds` (function, line 351) `void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)`
+  - `I_InitMusic` (function, line 359) `void I_InitMusic(void)`
+  - `I_ShutdownMusic` (function, line 363) `void I_ShutdownMusic(void)`
+  - `I_SetMusicVolume` (function, line 368) `void I_SetMusicVolume(int volume)`
+  - `I_PauseSong` (function, line 376) `void I_PauseSong(void)`
+  - `I_ResumeSong` (function, line 384) `void I_ResumeSong(void)`
+  - `I_RegisterSong` (function, line 392) `void *I_RegisterSong(void *data, int len)`
+  - `I_UnRegisterSong` (function, line 404) `void I_UnRegisterSong(void *handle)`
+  - `I_PlaySong` (function, line 412) `void I_PlaySong(void *handle, boolean looping)`
+  - `I_StopSong` (function, line 420) `void I_StopSong(void)`
+  - `I_MusicIsPlaying` (function, line 428) `boolean I_MusicIsPlaying(void)`
+  - `I_BindSoundVariables` (function, line 440) `void I_BindSoundVariables(void)`
   - `I_InitTimidityConfig` (function, line 64) `extern void I_InitTimidityConfig(void);`
-  - `M_BindVariable` (function, line 445) `M_BindVariable("snd_musicdevice", &snd_musicdevice);`
   - `sound_sdl_module` (variable, line 66) `extern sound_module_t sound_sdl_module;`
   - `sound_pcsound_module` (variable, line 67) `extern sound_module_t sound_pcsound_module;`
   - `music_sdl_module` (variable, line 68) `extern music_module_t music_sdl_module;`
@@ -2250,9 +1919,6 @@ HUlib_keyInIText
   - `sound_module_t` (struct, line 105)
   - `music_module_t` (struct, line 164)
   - `sfxinfo_t` (type_alias, line 29) `typedef struct sfxinfo_struct sfxinfo_t;`
-  - `boolean` (function, line 114) `boolean (*Init)(boolean use_sfx_prefix);`
-  - `void` (function, line 118) `void (*Shutdown)(void);`
-  - `int` (function, line 122) `int (*GetSfxLumpNum)(sfxinfo_t *sfxinfo);`
   - `I_InitSound` (function, line 151) `void I_InitSound(boolean use_sfx_prefix);`
   - `I_ShutdownSound` (function, line 153) `void I_ShutdownSound(void);`
   - `I_GetSfxLumpNum` (function, line 154) `int I_GetSfxLumpNum(sfxinfo_t *sfxinfo);`
@@ -2260,7 +1926,6 @@ HUlib_keyInIText
   - `I_UpdateSoundParams` (function, line 156) `void I_UpdateSoundParams(int channel, int vol, int sep);`
   - `I_StartSound` (function, line 157) `int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep);`
   - `I_StopSound` (function, line 158) `void I_StopSound(int channel);`
-  - `I_SoundIsPlaying` (function, line 159) `boolean I_SoundIsPlaying(int channel);`
   - `I_PrecacheSounds` (function, line 160) `void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds);`
   - `I_InitMusic` (function, line 216) `void I_InitMusic(void);`
   - `I_ShutdownMusic` (function, line 218) `void I_ShutdownMusic(void);`
@@ -2271,7 +1936,6 @@ HUlib_keyInIText
   - `I_UnRegisterSong` (function, line 223) `void I_UnRegisterSong(void *handle);`
   - `I_PlaySong` (function, line 224) `void I_PlaySong(void *handle, boolean looping);`
   - `I_StopSong` (function, line 225) `void I_StopSong(void);`
-  - `I_MusicIsPlaying` (function, line 226) `boolean I_MusicIsPlaying(void);`
   - `I_BindSoundVariables` (function, line 234) `void I_BindSoundVariables(void);`
   - `snd_sfxdevice` (variable, line 227) `extern int snd_sfxdevice;`
   - `snd_musicdevice` (variable, line 229) `extern int snd_musicdevice;`
@@ -2305,45 +1969,20 @@ HUlib_keyInIText
 - Symbols:
   - `atexit_listentry_s` (struct, line 64)
   - `atexit_listentry_t` (type_alias, line 60) `typedef struct atexit_listentry_s atexit_listentry_t;`
-  - `I_AtExit` (function, line 72) `void I_AtExit(atexit_func_t func, boolean run_on_error)`
-  - `I_Tactile` (function, line 86) `void I_Tactile(int on, int off, int total)`
-  - `AutoAllocMemory` (function, line 94) `static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)`
-  - `I_ZoneBase` (function, line 132) `byte *I_ZoneBase (int *size)`
-  - `I_PrintBanner` (function, line 165) `void I_PrintBanner(char *msg)`
-  - `I_PrintDivider` (function, line 176) `void I_PrintDivider(void)`
-  - `I_PrintStartupBanner` (function, line 188) `void I_PrintStartupBanner(char *gamedescription)`
-  - `I_ConsoleStdout` (function, line 209) `boolean I_ConsoleStdout(void)`
-  - `I_Quit` (function, line 245) `void I_Quit (void)`
-  - `ZenityAvailable` (function, line 271) `static int ZenityAvailable(void)`
-  - `EscapeShellString` (function, line 279) `static char *EscapeShellString(char *string)`
-  - `ZenityErrorBox` (function, line 322) `static int ZenityErrorBox(char *message)`
-  - `I_Error` (function, line 358) `void I_Error (char *error, ...)`
-  - `I_GetMemoryValue` (function, line 501) `boolean I_GetMemoryValue(unsigned int offset, void *value, int size)`
-  - `printf` (function, line 159) `printf("zone memory: %p, %x allocated for zone\n", zonemem, *size);`
-  - `putchar` (function, line 172) `putchar(' ');`
-  - `puts` (function, line 173) `puts(msg);`
-  - `isatty` (function, line 217) `return isatty(fileno(stdout));`
-  - `I_CheckIsScreensaver` (function, line 230) `I_CheckIsScreensaver();`
-  - `I_InitTimer` (function, line 231) `I_InitTimer();`
-  - `I_InitJoystick` (function, line 232) `I_InitJoystick();`
-  - `I_BindVideoVariables` (function, line 236) `I_BindVideoVariables();`
-  - `I_BindJoystickVariables` (function, line 237) `I_BindJoystickVariables();`
-  - `I_BindSoundVariables` (function, line 238) `I_BindSoundVariables();`
-  - `SDL_Quit` (function, line 261) `SDL_Quit();`
-  - `exit` (function, line 262) `exit(0);`
-  - `M_snprintf` (function, line 339) `M_snprintf(errorboxpath, errorboxpath_size, "%s --error --text=%s", ZENITY_BINARY, escaped_message);`
-  - `free` (function, line 343) `free(errorboxpath);`
-  - `fprintf` (function, line 368) `fprintf(stderr, "Warning: recursive call to I_Error detected.\n");`
-  - `va_start` (function, line 379) `va_start(argptr, error);`
-  - `vfprintf` (function, line 381) `vfprintf(stderr, error, argptr);`
-  - `va_end` (function, line 383) `va_end(argptr);`
-  - `fflush` (function, line 384) `fflush(stderr);`
-  - `memset` (function, line 388) `memset(msgbuf, 0, sizeof(msgbuf));`
-  - `M_vsnprintf` (function, line 389) `M_vsnprintf(msgbuf, sizeof(msgbuf), error, argptr);`
-  - `MultiByteToWideChar` (function, line 415) `MultiByteToWideChar(CP_ACP, 0, msgbuf, strlen(msgbuf) + 1, wmsgbuf, sizeof(wmsgbuf));`
-  - `MessageBoxW` (function, line 419) `MessageBoxW(NULL, wmsgbuf, L"", MB_OK);`
-  - `CFUserNotificationDisplayNotice` (function, line 441) `CFUserNotificationDisplayNotice(0, kCFUserNotificationCautionAlertLevel, NULL, NULL, NULL, CFSTR(PACKAGE_STRING), message, NULL);`
-  - `M_StrToInt` (function, line 548) `M_StrToInt(myargv[p], &val);`
+  - `I_AtExit` (function, line 73) `void I_AtExit(atexit_func_t func, boolean run_on_error)`
+  - `I_Tactile` (function, line 87) `void I_Tactile(int on, int off, int total)`
+  - `AutoAllocMemory` (function, line 95) `static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)`
+  - `I_ZoneBase` (function, line 133) `byte *I_ZoneBase (int *size)`
+  - `I_PrintBanner` (function, line 166) `void I_PrintBanner(char *msg)`
+  - `I_PrintDivider` (function, line 177) `void I_PrintDivider(void)`
+  - `I_PrintStartupBanner` (function, line 189) `void I_PrintStartupBanner(char *gamedescription)`
+  - `I_ConsoleStdout` (function, line 210) `boolean I_ConsoleStdout(void)`
+  - `I_Quit` (function, line 246) `void I_Quit (void)`
+  - `ZenityAvailable` (function, line 272) `static int ZenityAvailable(void)`
+  - `EscapeShellString` (function, line 280) `static char *EscapeShellString(char *string)`
+  - `ZenityErrorBox` (function, line 323) `static int ZenityErrorBox(char *message)`
+  - `I_Error` (function, line 359) `void I_Error (char *error, ...)`
+  - `I_GetMemoryValue` (function, line 502) `boolean I_GetMemoryValue(unsigned int offset, void *value, int size)`
   - `WIN32_LEAN_AND_MEAN` (macro, line 27) `#define WIN32_LEAN_AND_MEAN`
   - `DEFAULT_RAM` (macro, line 57) `#define DEFAULT_RAM`
   - `MIN_RAM` (macro, line 59) `#define MIN_RAM`
@@ -2356,15 +1995,12 @@ HUlib_keyInIText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `void` (function, line 25) `typedef void (*atexit_func_t)(void);`
   - `I_Init` (function, line 30) `void I_Init (void);`
   - `I_ZoneBase` (function, line 35) `byte* I_ZoneBase (int *size);`
-  - `I_ConsoleStdout` (function, line 36) `boolean I_ConsoleStdout(void);`
   - `I_BaseTiccmd` (function, line 48) `ticcmd_t* I_BaseTiccmd (void);`
   - `I_Quit` (function, line 53) `void I_Quit (void);`
   - `I_Error` (function, line 54) `void I_Error (char *error, ...);`
   - `I_Tactile` (function, line 56) `void I_Tactile (int on, int off, int total);`
-  - `I_GetMemoryValue` (function, line 58) `boolean I_GetMemoryValue(unsigned int offset, void *value, int size);`
   - `I_AtExit` (function, line 64) `void I_AtExit(atexit_func_t func, boolean run_if_error);`
   - `I_BindVariables` (function, line 68) `void I_BindVariables(void);`
   - `I_PrintStartupBanner` (function, line 72) `void I_PrintStartupBanner(char *gamedescription);`
@@ -2379,14 +2015,12 @@ HUlib_keyInIText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `I_GetTicks` (function, line 35) `int I_GetTicks(void)`
-  - `I_GetTime` (function, line 41) `int  I_GetTime (void)`
-  - `I_GetTimeMS` (function, line 60) `int I_GetTimeMS(void)`
-  - `I_Sleep` (function, line 74) `void I_Sleep(int ms)`
-  - `I_WaitVBL` (function, line 82) `void I_WaitVBL(int count)`
-  - `I_InitTimer` (function, line 87) `void I_InitTimer(void)`
-  - `DG_GetTicksMs` (function, line 39) `return DG_GetTicksMs();`
-  - `DG_SleepMs` (function, line 79) `DG_SleepMs(ms);`
+  - `I_GetTicks` (function, line 37) `int I_GetTicks(void)`
+  - `I_GetTime` (function, line 42) `int  I_GetTime (void)`
+  - `I_GetTimeMS` (function, line 61) `int I_GetTimeMS(void)`
+  - `I_Sleep` (function, line 75) `void I_Sleep(int ms)`
+  - `I_WaitVBL` (function, line 83) `void I_WaitVBL(int count)`
+  - `I_InitTimer` (function, line 89) `void I_InitTimer(void)`
 - Depends on: `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_timer.h`
 
 ## progs/doomgeneric/i_timer.h
@@ -2412,34 +2046,28 @@ HUlib_keyInIText
   - `FB_ScreenInfo` (struct, line 60)
   - `color` (struct, line 80)
   - `col_t` (struct, line 120)
-  - `cmap_to_rgb565` (function, line 130) `void cmap_to_rgb565(uint16_t * out, uint8_t * in, int in_pixels)`
-  - `cmap_to_fb` (function, line 151) `void cmap_to_fb(uint8_t * out, uint8_t * in, int in_pixels)`
-  - `I_InitGraphics` (function, line 178) `void I_InitGraphics (void)`
-  - `I_ShutdownGraphics` (function, line 231) `void I_ShutdownGraphics (void)`
-  - `I_StartFrame` (function, line 236) `void I_StartFrame (void)`
-  - `I_StartTic` (function, line 241) `void I_StartTic (void)`
-  - `I_UpdateNoBlit` (function, line 246) `void I_UpdateNoBlit (void)`
-  - `I_FinishUpdate` (function, line 254) `void I_FinishUpdate (void)`
+  - `cmap_to_rgb565` (function, line 131) `void cmap_to_rgb565(uint16_t * out, uint8_t * in, int in_pixels)`
+  - `cmap_to_fb` (function, line 152) `void cmap_to_fb(uint8_t * out, uint8_t * in, int in_pixels)`
+  - `I_InitGraphics` (function, line 179) `void I_InitGraphics (void)`
+  - `I_ShutdownGraphics` (function, line 232) `void I_ShutdownGraphics (void)`
+  - `I_StartFrame` (function, line 237) `void I_StartFrame (void)`
+  - `I_StartTic` (function, line 242) `void I_StartTic (void)`
+  - `I_UpdateNoBlit` (function, line 247) `void I_UpdateNoBlit (void)`
+  - `I_FinishUpdate` (function, line 255) `void I_FinishUpdate (void)`
   - `I_ReadScreen` (function, line 302) `void I_ReadScreen (byte* scr)`
-  - `I_SetPalette` (function, line 314) `void I_SetPalette (byte* palette)`
-  - `I_GetPaletteIndex` (function, line 332) `int I_GetPaletteIndex (int r, int g, int b)`
-  - `I_BeginRead` (function, line 368) `void I_BeginRead (void)`
-  - `I_EndRead` (function, line 372) `void I_EndRead (void)`
-  - `I_SetWindowTitle` (function, line 376) `void I_SetWindowTitle (char *title)`
-  - `I_GraphicsCheckCommandLine` (function, line 381) `void I_GraphicsCheckCommandLine (void)`
-  - `I_SetGrabMouseCallback` (function, line 385) `void I_SetGrabMouseCallback (grabmouse_callback_t func)`
-  - `I_EnableLoadingDisk` (function, line 389) `void I_EnableLoadingDisk(void)`
-  - `I_BindVideoVariables` (function, line 393) `void I_BindVideoVariables (void)`
-  - `I_DisplayFPSDots` (function, line 397) `void I_DisplayFPSDots (boolean dots_on)`
-  - `I_CheckIsScreensaver` (function, line 401) `void I_CheckIsScreensaver (void)`
+  - `I_SetPalette` (function, line 315) `void I_SetPalette (byte* palette)`
+  - `I_GetPaletteIndex` (function, line 333) `int I_GetPaletteIndex (int r, int g, int b)`
+  - `I_BeginRead` (function, line 369) `void I_BeginRead (void)`
+  - `I_EndRead` (function, line 373) `void I_EndRead (void)`
+  - `I_SetWindowTitle` (function, line 377) `void I_SetWindowTitle (char *title)`
+  - `I_GraphicsCheckCommandLine` (function, line 382) `void I_GraphicsCheckCommandLine (void)`
+  - `I_SetGrabMouseCallback` (function, line 386) `void I_SetGrabMouseCallback (grabmouse_callback_t func)`
+  - `I_EnableLoadingDisk` (function, line 390) `void I_EnableLoadingDisk(void)`
+  - `I_BindVideoVariables` (function, line 394) `void I_BindVideoVariables (void)`
+  - `I_DisplayFPSDots` (function, line 398) `void I_DisplayFPSDots (boolean dots_on)`
+  - `I_CheckIsScreensaver` (function, line 402) `void I_CheckIsScreensaver (void)`
   - `I_GetEvent` (function, line 88) `void I_GetEvent(void);`
-  - `memset` (function, line 182) `memset(&s_Fb, 0, sizeof(struct FB_ScreenInfo));`
-  - `printf` (function, line 199) `printf("I_InitGraphics: framebuffer: x_res: %d, y_res: %d, x_virtual: %d, y_virtual: %d, bpp: %d\n", s_Fb.xres, s_Fb.yres, s_Fb.xres_virtual, s_Fb.yres_virtual, s_Fb.bits_per_pixel);`
   - `I_InitInput` (function, line 227) `extern int I_InitInput(void);`
-  - `Z_Free` (function, line 234) `Z_Free (I_VideoBuffer);`
-  - `memcpy` (function, line 283) `memcpy(line_out, line_in, SCREENWIDTH);`
-  - `DG_DrawFrame` (function, line 295) `DG_DrawFrame();`
-  - `DG_SetWindowTitle` (function, line 379) `DG_SetWindowTitle(title);`
   - `minios_palette_dirty` (variable, line 51) `extern volatile int minios_palette_dirty;`
   - `GFX_RGB565` (macro, line 310) `#define GFX_RGB565(r, g, b)`
   - `GFX_RGB565_R` (macro, line 311) `#define GFX_RGB565_R(color)`
@@ -2453,8 +2081,6 @@ HUlib_keyInIText
 - Language: h
 - Symbols:
   - `screen_mode_t` (struct, line 40)
-  - `void` (function, line 51) `void (*InitMode)(byte *palette);`
-  - `boolean` (function, line 56) `boolean (*DrawScreen)(int x1, int y1, int x2, int y2);`
   - `I_InitGraphics` (function, line 97) `void I_InitGraphics (void);`
   - `I_GraphicsCheckCommandLine` (function, line 98) `void I_GraphicsCheckCommandLine(void);`
   - `I_ShutdownGraphics` (function, line 100) `void I_ShutdownGraphics(void);`
@@ -2602,17 +2228,12 @@ HUlib_keyInIText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `M_CheckParmWithArgs` (function, line 42) `int M_CheckParmWithArgs(char *check, int num_args)`
-  - `M_ParmExists` (function, line 62) `boolean M_ParmExists(char *check)`
-  - `M_CheckParm` (function, line 67) `int M_CheckParm(char *check)`
-  - `LoadResponseFile` (function, line 74) `static void LoadResponseFile(int argv_index)`
-  - `M_FindResponseFile` (function, line 234) `void M_FindResponseFile(void)`
-  - `M_GetExecutableName` (function, line 249) `char *M_GetExecutableName(void)`
-  - `printf` (function, line 94) `printf ("\nNo such response file!");`
-  - `exit` (function, line 96) `exit(1);`
-  - `I_Error` (function, line 119) `I_Error("Failed to read full contents of '%s'", response_filename);`
-  - `fclose` (function, line 124) `fclose(handle);`
-  - `memset` (function, line 131) `memset(newargv, 0, sizeof(char *) * MAXARGVS);`
+  - `M_CheckParmWithArgs` (function, line 43) `int M_CheckParmWithArgs(char *check, int num_args)`
+  - `M_ParmExists` (function, line 63) `boolean M_ParmExists(char *check)`
+  - `M_CheckParm` (function, line 68) `int M_CheckParm(char *check)`
+  - `LoadResponseFile` (function, line 75) `static void LoadResponseFile(int argv_index)`
+  - `M_FindResponseFile` (function, line 235) `void M_FindResponseFile(void)`
+  - `M_GetExecutableName` (function, line 250) `char *M_GetExecutableName(void)`
   - `MAXARGVS` (macro, line 72) `#define MAXARGVS`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`
 
@@ -2624,7 +2245,6 @@ HUlib_keyInIText
   - `M_CheckParm` (function, line 33) `int M_CheckParm (char* check);`
   - `M_CheckParmWithArgs` (function, line 37) `int M_CheckParmWithArgs(char *check, int num_args);`
   - `M_FindResponseFile` (function, line 38) `void M_FindResponseFile(void);`
-  - `M_ParmExists` (function, line 42) `boolean M_ParmExists(char *check);`
   - `M_GetExecutableName` (function, line 46) `char *M_GetExecutableName(void);`
   - `myargc` (variable, line 28) `extern int myargc;`
   - `myargv` (variable, line 29) `extern char** myargv;`
@@ -2637,8 +2257,8 @@ HUlib_keyInIText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `M_ClearBox` (function, line 25) `void M_ClearBox (fixed_t *box)`
-  - `M_AddToBox` (function, line 34) `void
+  - `M_ClearBox` (function, line 29) `void M_ClearBox (fixed_t *box)`
+  - `M_AddToBox` (function, line 36) `void
 M_AddToBox
 ( fixed_t*	box,
   fixed_t	x,
@@ -2661,15 +2281,14 @@ M_AddToBox
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `cht_CheckCheat` (function, line 34) `int
+  - `cht_CheckCheat` (function, line 35) `int
 cht_CheckCheat
 ( cheatseq_t*	cht,
   char		key )`
-  - `cht_GetParam` (function, line 80) `void
+  - `cht_GetParam` (function, line 82) `void
 cht_GetParam
 ( cheatseq_t*	cht,
   char*		buffer )`
-  - `memcpy` (function, line 86) `memcpy(buffer, cht->parameter_buf, cht->parameter_chars);`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_cheat.h`
 
 ## progs/doomgeneric/m_cheat.h
@@ -2693,32 +2312,24 @@ cht_GetParam
 - Symbols:
   - `default_t` (struct, line 61)
   - `default_collection_t` (struct, line 88)
-  - `SearchCollection` (function, line 1562) `static default_t *SearchCollection(default_collection_t *collection, char *name)`
-  - `SaveDefaultCollection` (function, line 1607) `static void SaveDefaultCollection(default_collection_t *collection)`
-  - `ParseIntParameter` (function, line 1715) `static int ParseIntParameter(char *strparm)`
-  - `SetVariable` (function, line 1727) `static void SetVariable(default_t *def, char *value)`
-  - `LoadDefaultCollection` (function, line 1770) `static void LoadDefaultCollection(default_collection_t *collection)`
-  - `M_SetConfigFilenames` (function, line 1835) `void M_SetConfigFilenames(char *main_config, char *extra_config)`
-  - `M_SaveDefaults` (function, line 1845) `void M_SaveDefaults (void)`
-  - `M_SaveDefaultsAlternate` (function, line 1855) `void M_SaveDefaultsAlternate(char *main, char *extra)`
-  - `M_LoadDefaults` (function, line 1880) `void M_LoadDefaults (void)`
-  - `GetDefaultForName` (function, line 1936) `static default_t *GetDefaultForName(char *name)`
-  - `M_BindVariable` (function, line 1963) `void M_BindVariable(char *name, void *location)`
-  - `M_SetVariable` (function, line 1976) `boolean M_SetVariable(char *name, char *value)`
-  - `M_GetIntVariable` (function, line 1994) `int M_GetIntVariable(char *name)`
-  - `M_GetStrVariable` (function, line 2009) `const char *M_GetStrVariable(char *name)`
-  - `M_GetFloatVariable` (function, line 2024) `float M_GetFloatVariable(char *name)`
-  - `GetDefaultConfigDir` (function, line 2042) `static char *GetDefaultConfigDir(void)`
-  - `M_SetConfigDir` (function, line 2058) `void M_SetConfigDir(char *dir)`
-  - `M_GetSaveGameDir` (function, line 2086) `char *M_GetSaveGameDir(char *iwadname)`
-  - `fprintf` (function, line 1638) `fprintf(f, " ");`
-  - `fclose` (function, line 1709) `fclose (f);`
-  - `sscanf` (function, line 1722) `else sscanf(strparm, "%i", &parm);`
-  - `memmove` (function, line 1824) `memmove(strparm, strparm + 1, sizeof(strparm) - 1);`
-  - `printf` (function, line 1900) `printf (" default file: %s\n",doom_defaults.filename);`
-  - `I_Error` (function, line 1954) `I_Error("Unknown configuration variable: '%s'", name);`
-  - `M_MakeDirectory` (function, line 2078) `M_MakeDirectory(configdir);`
-  - `free` (function, line 2115) `free(topdir);`
+  - `SearchCollection` (function, line 1563) `static default_t *SearchCollection(default_collection_t *collection, char *name)`
+  - `SaveDefaultCollection` (function, line 1609) `static void SaveDefaultCollection(default_collection_t *collection)`
+  - `ParseIntParameter` (function, line 1716) `static int ParseIntParameter(char *strparm)`
+  - `SetVariable` (function, line 1728) `static void SetVariable(default_t *def, char *value)`
+  - `LoadDefaultCollection` (function, line 1771) `static void LoadDefaultCollection(default_collection_t *collection)`
+  - `M_SetConfigFilenames` (function, line 1836) `void M_SetConfigFilenames(char *main_config, char *extra_config)`
+  - `M_SaveDefaults` (function, line 1846) `void M_SaveDefaults (void)`
+  - `M_SaveDefaultsAlternate` (function, line 1856) `void M_SaveDefaultsAlternate(char *main, char *extra)`
+  - `M_LoadDefaults` (function, line 1881) `void M_LoadDefaults (void)`
+  - `GetDefaultForName` (function, line 1937) `static default_t *GetDefaultForName(char *name)`
+  - `M_BindVariable` (function, line 1964) `void M_BindVariable(char *name, void *location)`
+  - `M_SetVariable` (function, line 1977) `boolean M_SetVariable(char *name, char *value)`
+  - `M_GetIntVariable` (function, line 1995) `int M_GetIntVariable(char *name)`
+  - `M_GetStrVariable` (function, line 2010) `const char *M_GetStrVariable(char *name)`
+  - `M_GetFloatVariable` (function, line 2025) `float M_GetFloatVariable(char *name)`
+  - `GetDefaultConfigDir` (function, line 2043) `static char *GetDefaultConfigDir(void)`
+  - `M_SetConfigDir` (function, line 2059) `void M_SetConfigDir(char *dir)`
+  - `M_GetSaveGameDir` (function, line 2087) `char *M_GetSaveGameDir(char *iwadname)`
   - `CONFIG_VARIABLE_GENERIC` (macro, line 94) `#define CONFIG_VARIABLE_GENERIC(name, type)`
   - `CONFIG_VARIABLE_KEY` (macro, line 97) `#define CONFIG_VARIABLE_KEY(name)`
   - `CONFIG_VARIABLE_INT` (macro, line 100) `#define CONFIG_VARIABLE_INT(name)`
@@ -2737,7 +2348,6 @@ cht_GetParam
   - `M_SaveDefaultsAlternate` (function, line 27) `void M_SaveDefaultsAlternate(char *main, char *extra);`
   - `M_SetConfigDir` (function, line 28) `void M_SetConfigDir(char *dir);`
   - `M_BindVariable` (function, line 29) `void M_BindVariable(char *name, void *variable);`
-  - `M_SetVariable` (function, line 30) `boolean M_SetVariable(char *name, char *value);`
   - `M_GetIntVariable` (function, line 31) `int M_GetIntVariable(char *name);`
   - `M_GetStrVariable` (function, line 32) `const char *M_GetStrVariable(char *name);`
   - `M_GetFloatVariable` (function, line 33) `float M_GetFloatVariable(char *name);`
@@ -2753,17 +2363,15 @@ cht_GetParam
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 1993-2008 Raven Software Copyright(C) 2005-2014 Simon Howard  This
 - Language: c
 - Symbols:
-  - `M_BindBaseControls` (function, line 203) `void M_BindBaseControls(void)`
-  - `M_BindHereticControls` (function, line 240) `void M_BindHereticControls(void)`
-  - `M_BindHexenControls` (function, line 255) `void M_BindHexenControls(void)`
-  - `M_BindStrifeControls` (function, line 271) `void M_BindStrifeControls(void)`
-  - `M_BindWeaponControls` (function, line 306) `void M_BindWeaponControls(void)`
-  - `M_BindMapControls` (function, line 327) `void M_BindMapControls(void)`
-  - `M_BindMenuControls` (function, line 343) `void M_BindMenuControls(void)`
-  - `M_BindChatControls` (function, line 374) `void M_BindChatControls(unsigned int num_players)`
-  - `M_ApplyPlatformDefaults` (function, line 393) `void M_ApplyPlatformDefaults(void)`
-  - `M_BindVariable` (function, line 206) `M_BindVariable("key_right", &key_right);`
-  - `M_snprintf` (function, line 384) `M_snprintf(name, sizeof(name), "key_multi_msgplayer%i", i + 1);`
+  - `M_BindBaseControls` (function, line 204) `void M_BindBaseControls(void)`
+  - `M_BindHereticControls` (function, line 241) `void M_BindHereticControls(void)`
+  - `M_BindHexenControls` (function, line 256) `void M_BindHexenControls(void)`
+  - `M_BindStrifeControls` (function, line 272) `void M_BindStrifeControls(void)`
+  - `M_BindWeaponControls` (function, line 307) `void M_BindWeaponControls(void)`
+  - `M_BindMapControls` (function, line 328) `void M_BindMapControls(void)`
+  - `M_BindMenuControls` (function, line 344) `void M_BindMenuControls(void)`
+  - `M_BindChatControls` (function, line 375) `void M_BindChatControls(unsigned int num_players)`
+  - `M_ApplyPlatformDefaults` (function, line 394) `void M_ApplyPlatformDefaults(void)`
 - Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
 
 ## progs/doomgeneric/m_controls.h
@@ -2897,11 +2505,11 @@ cht_GetParam
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `FixedMul` (function, line 32) `fixed_t
+  - `FixedMul` (function, line 34) `fixed_t
 FixedMul
 ( fixed_t	a,
   fixed_t	b )`
-  - `FixedDiv` (function, line 46) `fixed_t FixedDiv(fixed_t a, fixed_t b)`
+  - `FixedDiv` (function, line 47) `fixed_t FixedDiv(fixed_t a, fixed_t b)`
 - Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_fixed.h`
 
 ## progs/doomgeneric/m_fixed.h
@@ -2934,65 +2542,65 @@ FixedMul
   - `M_DoSave` (function, line 622) `void M_DoSave(int slot)`
   - `M_SaveSelect` (function, line 635) `void M_SaveSelect(int choice)`
   - `M_SaveGame` (function, line 650) `void M_SaveGame (int choice)`
-  - `M_QuickSaveResponse` (function, line 671) `void M_QuickSaveResponse(int key)`
-  - `M_QuickSave` (function, line 680) `void M_QuickSave(void)`
+  - `M_QuickSaveResponse` (function, line 672) `void M_QuickSaveResponse(int key)`
+  - `M_QuickSave` (function, line 681) `void M_QuickSave(void)`
   - `M_QuickLoadResponse` (function, line 709) `void M_QuickLoadResponse(int key)`
-  - `M_QuickLoad` (function, line 717) `void M_QuickLoad(void)`
+  - `M_QuickLoad` (function, line 719) `void M_QuickLoad(void)`
   - `M_DrawReadThis1` (function, line 743) `void M_DrawReadThis1(void)`
   - `M_DrawReadThis2` (function, line 820) `void M_DrawReadThis2(void)`
   - `M_DrawSound` (function, line 834) `void M_DrawSound(void)`
-  - `M_Sound` (function, line 844) `void M_Sound(int choice)`
-  - `M_SfxVol` (function, line 849) `void M_SfxVol(int choice)`
-  - `M_MusicVol` (function, line 866) `void M_MusicVol(int choice)`
+  - `M_Sound` (function, line 845) `void M_Sound(int choice)`
+  - `M_SfxVol` (function, line 850) `void M_SfxVol(int choice)`
+  - `M_MusicVol` (function, line 867) `void M_MusicVol(int choice)`
   - `M_DrawMainMenu` (function, line 890) `void M_DrawMainMenu(void)`
   - `M_DrawNewGame` (function, line 902) `void M_DrawNewGame(void)`
-  - `M_NewGame` (function, line 907) `void M_NewGame(int choice)`
-  - `M_DrawEpisode` (function, line 929) `void M_DrawEpisode(void)`
-  - `M_VerifyNightmare` (function, line 934) `void M_VerifyNightmare(int key)`
-  - `M_ChooseSkill` (function, line 943) `void M_ChooseSkill(int choice)`
-  - `M_Episode` (function, line 955) `void M_Episode(int choice)`
-  - `M_DrawOptions` (function, line 986) `void M_DrawOptions(void)`
-  - `M_Options` (function, line 1006) `void M_Options(int choice)`
+  - `M_NewGame` (function, line 908) `void M_NewGame(int choice)`
+  - `M_DrawEpisode` (function, line 930) `void M_DrawEpisode(void)`
+  - `M_VerifyNightmare` (function, line 935) `void M_VerifyNightmare(int key)`
+  - `M_ChooseSkill` (function, line 944) `void M_ChooseSkill(int choice)`
+  - `M_Episode` (function, line 956) `void M_Episode(int choice)`
+  - `M_DrawOptions` (function, line 987) `void M_DrawOptions(void)`
+  - `M_Options` (function, line 1007) `void M_Options(int choice)`
   - `M_ChangeMessages` (function, line 1017) `void M_ChangeMessages(int choice)`
   - `M_EndGameResponse` (function, line 1035) `void M_EndGameResponse(int key)`
-  - `M_EndGame` (function, line 1044) `void M_EndGame(int choice)`
+  - `M_EndGame` (function, line 1045) `void M_EndGame(int choice)`
   - `M_ReadThis` (function, line 1069) `void M_ReadThis(int choice)`
-  - `M_ReadThis2` (function, line 1074) `void M_ReadThis2(int choice)`
-  - `M_FinishReadThis` (function, line 1092) `void M_FinishReadThis(int choice)`
-  - `M_QuitResponse` (function, line 1128) `void M_QuitResponse(int key)`
-  - `M_SelectEndMessage` (function, line 1145) `static char *M_SelectEndMessage(void)`
-  - `M_QuitDOOM` (function, line 1166) `void M_QuitDOOM(int choice)`
-  - `M_ChangeSensitivity` (function, line 1175) `void M_ChangeSensitivity(int choice)`
-  - `M_ChangeDetail` (function, line 1193) `void M_ChangeDetail(int choice)`
-  - `M_SizeDisplay` (function, line 1209) `void M_SizeDisplay(int choice)`
-  - `M_DrawThermo` (function, line 1243) `void
+  - `M_ReadThis2` (function, line 1075) `void M_ReadThis2(int choice)`
+  - `M_FinishReadThis` (function, line 1093) `void M_FinishReadThis(int choice)`
+  - `M_QuitResponse` (function, line 1131) `void M_QuitResponse(int key)`
+  - `M_SelectEndMessage` (function, line 1147) `static char *M_SelectEndMessage(void)`
+  - `M_QuitDOOM` (function, line 1168) `void M_QuitDOOM(int choice)`
+  - `M_ChangeSensitivity` (function, line 1179) `void M_ChangeSensitivity(int choice)`
+  - `M_ChangeDetail` (function, line 1197) `void M_ChangeDetail(int choice)`
+  - `M_SizeDisplay` (function, line 1213) `void M_SizeDisplay(int choice)`
+  - `M_DrawThermo` (function, line 1244) `void
 M_DrawThermo
 ( int	x,
   int	y,
   int	thermWidth,
   int	thermDot )`
-  - `M_DrawEmptyCell` (function, line 1266) `void
+  - `M_DrawEmptyCell` (function, line 1270) `void
 M_DrawEmptyCell
 ( menu_t*	menu,
   int		item )`
-  - `M_DrawSelCell` (function, line 1277) `void
+  - `M_DrawSelCell` (function, line 1279) `void
 M_DrawSelCell
 ( menu_t*	menu,
   int		item )`
-  - `M_StartMessage` (function, line 1286) `void
+  - `M_StartMessage` (function, line 1289) `void
 M_StartMessage
 ( char*		string,
   void*		routine,
   boolean	input )`
-  - `M_StopMessage` (function, line 1302) `void M_StopMessage(void)`
+  - `M_StopMessage` (function, line 1304) `void M_StopMessage(void)`
   - `M_StringWidth` (function, line 1315) `int M_StringWidth(char* string)`
   - `M_StringHeight` (function, line 1338) `int M_StringHeight(char* string)`
-  - `M_WriteText` (function, line 1356) `void
+  - `M_WriteText` (function, line 1357) `void
 M_WriteText
 ( int		x,
   int		y,
   char*		string)`
-  - `IsNullKey` (function, line 1402) `static boolean IsNullKey(int key)`
+  - `IsNullKey` (function, line 1403) `static boolean IsNullKey(int key)`
   - `M_Responder` (function, line 1416) `boolean M_Responder (event_t* ev)`
   - `M_StartControlPanel` (function, line 1899) `void M_StartControlPanel (void)`
   - `M_DrawOPLDev` (function, line 1913) `static void M_DrawOPLDev(void)`
@@ -3001,27 +2609,7 @@ M_WriteText
   - `M_SetupNextMenu` (function, line 2054) `void M_SetupNextMenu(menu_t *menudef)`
   - `M_Ticker` (function, line 2064) `void M_Ticker (void)`
   - `M_Init` (function, line 2077) `void M_Init (void)`
-  - `void` (function, line 98) `void (*messageRoutine)(int response);`
   - `M_StartGame` (function, line 193) `void M_StartGame(int choice);`
-  - `M_StringCopy` (function, line 511) `M_StringCopy(name, P_SaveGameFile(i), sizeof(name));`
-  - `fread` (function, line 520) `fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle);`
-  - `fclose` (function, line 521) `fclose(handle);`
-  - `V_DrawPatchDirect` (function, line 533) `V_DrawPatchDirect(72, 28, W_CacheLumpName(DEH_String("M_LOADG"), PU_CACHE));`
-  - `G_LoadGame` (function, line 577) `G_LoadGame (name);`
-  - `G_SaveGame` (function, line 624) `G_SaveGame (slot,savegamestrings[slot]);`
-  - `S_StartSound` (function, line 677) `S_StartSound(NULL,sfx_swtchx);`
-  - `DEH_snprintf` (function, line 700) `DEH_snprintf(tempstring, 80, QSPROMPT, savegamestrings[quickSaveSlot]);`
-  - `I_Error` (function, line 801) `default: I_Error("Unhandled game version");`
-  - `S_SetSfxVolume` (function, line 863) `S_SetSfxVolume(sfxVolume * 8);`
-  - `S_SetMusicVolume` (function, line 880) `S_SetMusicVolume(musicVolume * 8);`
-  - `G_DeferedInitNew` (function, line 939) `G_DeferedInitNew(nightmare,epi+1,1);`
-  - `fprintf` (function, line 970) `fprintf( stderr, "M_Episode: 4th episode requires UltimateDOOM\n");`
-  - `D_StartTitle` (function, line 1042) `D_StartTitle ();`
-  - `I_WaitVBL` (function, line 1141) `I_WaitVBL(105);`
-  - `I_Quit` (function, line 1143) `I_Quit ();`
-  - `R_SetViewSize` (function, line 1201) `R_SetViewSize (screenblocks, detailLevel);`
-  - `G_ScreenShot` (function, line 1649) `G_ScreenShot ();`
-  - `I_SetPalette` (function, line 1749) `I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));`
   - `I_OPL_DevMessages` (function, line 1915) `extern void I_OPL_DevMessages(char *, size_t);`
   - `hu_font` (variable, line 60) `extern patch_t* hu_font[HU_FONTSIZE];`
   - `message_dontfuckwithme` (variable, line 63) `extern boolean message_dontfuckwithme;`
@@ -3036,7 +2624,6 @@ M_WriteText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `M_Responder` (function, line 35) `boolean M_Responder (event_t *ev);`
   - `M_Ticker` (function, line 40) `void M_Ticker (void);`
   - `M_Drawer` (function, line 44) `void M_Drawer (void);`
   - `M_Init` (function, line 48) `void M_Init (void);`
@@ -3052,39 +2639,27 @@ M_WriteText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 1993-2008 Raven Software Copyright(C) 2005-2014 Simon Howard  This
 - Language: c
 - Symbols:
-  - `M_MakeDirectory` (function, line 54) `void M_MakeDirectory(char *path)`
-  - `M_FileExists` (function, line 65) `boolean M_FileExists(char *filename)`
-  - `M_FileLength` (function, line 88) `long M_FileLength(FILE *handle)`
-  - `M_WriteFile` (function, line 110) `boolean M_WriteFile(char *name, void *source, int length)`
-  - `M_ReadFile` (function, line 134) `int M_ReadFile(char *name, byte **buffer)`
-  - `M_TempFile` (function, line 165) `char *M_TempFile(char *s)`
-  - `M_StrToInt` (function, line 188) `boolean M_StrToInt(const char *str, int *result)`
-  - `M_ExtractFileBase` (function, line 196) `void M_ExtractFileBase(char *path, char *dest)`
-  - `M_ForceUppercase` (function, line 241) `void M_ForceUppercase(char *text)`
-  - `M_StrCaseStr` (function, line 257) `char *M_StrCaseStr(char *haystack, char *needle)`
-  - `M_StringDuplicate` (function, line 290) `char *M_StringDuplicate(const char *orig)`
-  - `M_StringReplace` (function, line 309) `char *M_StringReplace(const char *haystack, const char *needle,
+  - `M_MakeDirectory` (function, line 55) `void M_MakeDirectory(char *path)`
+  - `M_FileExists` (function, line 66) `boolean M_FileExists(char *filename)`
+  - `M_FileLength` (function, line 89) `long M_FileLength(FILE *handle)`
+  - `M_WriteFile` (function, line 111) `boolean M_WriteFile(char *name, void *source, int length)`
+  - `M_ReadFile` (function, line 135) `int M_ReadFile(char *name, byte **buffer)`
+  - `M_TempFile` (function, line 166) `char *M_TempFile(char *s)`
+  - `M_StrToInt` (function, line 189) `boolean M_StrToInt(const char *str, int *result)`
+  - `M_ExtractFileBase` (function, line 197) `void M_ExtractFileBase(char *path, char *dest)`
+  - `M_ForceUppercase` (function, line 242) `void M_ForceUppercase(char *text)`
+  - `M_StrCaseStr` (function, line 258) `char *M_StrCaseStr(char *haystack, char *needle)`
+  - `M_StringDuplicate` (function, line 291) `char *M_StringDuplicate(const char *orig)`
+  - `M_StringReplace` (function, line 310) `char *M_StringReplace(const char *haystack, const char *needle,
                       const char ...`
-  - `M_StringCopy` (function, line 371) `boolean M_StringCopy(char *dest, const char *src, size_t dest_size)`
-  - `M_StringConcat` (function, line 392) `boolean M_StringConcat(char *dest, const char *src, size_t dest_size)`
-  - `M_StringStartsWith` (function, line 407) `boolean M_StringStartsWith(const char *s, const char *prefix)`
-  - `M_StringEndsWith` (function, line 415) `boolean M_StringEndsWith(const char *s, const char *suffix)`
-  - `M_StringJoin` (function, line 424) `char *M_StringJoin(const char *s, ...)`
+  - `M_StringCopy` (function, line 372) `boolean M_StringCopy(char *dest, const char *src, size_t dest_size)`
+  - `M_StringConcat` (function, line 393) `boolean M_StringConcat(char *dest, const char *src, size_t dest_size)`
+  - `M_StringStartsWith` (function, line 408) `boolean M_StringStartsWith(const char *s, const char *prefix)`
+  - `M_StringEndsWith` (function, line 416) `boolean M_StringEndsWith(const char *s, const char *suffix)`
+  - `M_StringJoin` (function, line 425) `char *M_StringJoin(const char *s, ...)`
   - `M_vsnprintf` (function, line 481) `int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)`
   - `M_snprintf` (function, line 507) `int M_snprintf(char *buf, size_t buf_len, const char *s, ...)`
-  - `M_OEMToUTF8` (function, line 518) `char *M_OEMToUTF8(const char *oem)`
-  - `mkdir` (function, line 58) `mkdir(path);`
-  - `fclose` (function, line 74) `fclose(fstream);`
-  - `fseek` (function, line 98) `fseek(handle, 0, SEEK_END);`
-  - `memset` (function, line 219) `memset(dest, 0, 8);`
-  - `printf` (function, line 225) `printf("Warning: Truncated '%s' lump name to '%.8s'.\n", filename, dest);`
-  - `I_Error` (function, line 299) `I_Error("Failed to duplicate string (length %i)\n", strlen(orig));`
-  - `strncpy` (function, line 379) `strncpy(dest, src, dest_size - 1);`
-  - `va_start` (function, line 433) `va_start(args, s);`
-  - `va_end` (function, line 445) `va_end(args);`
-  - `MultiByteToWideChar` (function, line 526) `MultiByteToWideChar(CP_OEMCP, 0, oem, len, tmp, len);`
-  - `WideCharToMultiByte` (function, line 528) `WideCharToMultiByte(CP_UTF8, 0, tmp, len, result, len * 4, NULL, NULL);`
-  - `free` (function, line 529) `free(tmp);`
+  - `M_OEMToUTF8` (function, line 519) `char *M_OEMToUTF8(const char *oem)`
   - `WIN32_LEAN_AND_MEAN` (macro, line 28) `#define WIN32_LEAN_AND_MEAN`
   - `vsnprintf` (macro, line 476) `#define vsnprintf`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
@@ -3094,23 +2669,16 @@ M_WriteText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `M_WriteFile` (function, line 27) `boolean M_WriteFile(char *name, void *source, int length);`
   - `M_ReadFile` (function, line 29) `int M_ReadFile(char *name, byte **buffer);`
   - `M_MakeDirectory` (function, line 30) `void M_MakeDirectory(char *dir);`
   - `M_TempFile` (function, line 31) `char *M_TempFile(char *s);`
-  - `M_FileExists` (function, line 32) `boolean M_FileExists(char *file);`
   - `M_FileLength` (function, line 33) `long M_FileLength(FILE *handle);`
-  - `M_StrToInt` (function, line 34) `boolean M_StrToInt(const char *str, int *result);`
   - `M_ExtractFileBase` (function, line 35) `void M_ExtractFileBase(char *path, char *dest);`
   - `M_ForceUppercase` (function, line 36) `void M_ForceUppercase(char *text);`
   - `M_StrCaseStr` (function, line 37) `char *M_StrCaseStr(char *haystack, char *needle);`
   - `M_StringDuplicate` (function, line 38) `char *M_StringDuplicate(const char *orig);`
-  - `M_StringCopy` (function, line 39) `boolean M_StringCopy(char *dest, const char *src, size_t dest_size);`
-  - `M_StringConcat` (function, line 40) `boolean M_StringConcat(char *dest, const char *src, size_t dest_size);`
   - `M_StringReplace` (function, line 41) `char *M_StringReplace(const char *haystack, const char *needle, const char *replacement);`
   - `M_StringJoin` (function, line 43) `char *M_StringJoin(const char *s, ...);`
-  - `M_StringStartsWith` (function, line 44) `boolean M_StringStartsWith(const char *s, const char *prefix);`
-  - `M_StringEndsWith` (function, line 45) `boolean M_StringEndsWith(const char *s, const char *suffix);`
   - `M_vsnprintf` (function, line 46) `int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args);`
   - `M_snprintf` (function, line 47) `int M_snprintf(char *buf, size_t buf_len, const char *s, ...);`
   - `M_OEMToUTF8` (function, line 48) `char *M_OEMToUTF8(const char *ansi);`
@@ -3124,8 +2692,8 @@ M_WriteText
 - Language: c
 - Symbols:
   - `P_Random` (function, line 50) `int P_Random (void)`
-  - `M_Random` (function, line 55) `int M_Random (void)`
-  - `M_ClearRandom` (function, line 61) `void M_ClearRandom (void)`
+  - `M_Random` (function, line 56) `int M_Random (void)`
+  - `M_ClearRandom` (function, line 62) `void M_ClearRandom (void)`
 
 ## progs/doomgeneric/m_random.h
 - Layer: utility
@@ -3145,17 +2713,14 @@ M_WriteText
 - Language: c
 - Symbols:
   - `_MEMFILE` (struct, line 32)
-  - `mem_fopen_read` (function, line 41) `MEMFILE *mem_fopen_read(void *buf, size_t buflen)`
-  - `mem_fread` (function, line 57) `size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream)`
-  - `mem_fopen_write` (function, line 89) `MEMFILE *mem_fopen_write(void)`
-  - `mem_fwrite` (function, line 106) `size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)`
-  - `mem_get_buf` (function, line 142) `void mem_get_buf(MEMFILE *stream, void **buf, size_t *buflen)`
-  - `mem_fclose` (function, line 148) `void mem_fclose(MEMFILE *stream)`
-  - `mem_ftell` (function, line 158) `long mem_ftell(MEMFILE *stream)`
-  - `mem_fseek` (function, line 163) `int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)`
-  - `printf` (function, line 64) `printf("not a read stream\n");`
-  - `memcpy` (function, line 78) `memcpy(buf, stream->buf + stream->position, items * size);`
-  - `Z_Free` (function, line 127) `Z_Free(stream->buf);`
+  - `mem_fopen_read` (function, line 42) `MEMFILE *mem_fopen_read(void *buf, size_t buflen)`
+  - `mem_fread` (function, line 58) `size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream)`
+  - `mem_fopen_write` (function, line 90) `MEMFILE *mem_fopen_write(void)`
+  - `mem_fwrite` (function, line 107) `size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)`
+  - `mem_get_buf` (function, line 143) `void mem_get_buf(MEMFILE *stream, void **buf, size_t *buflen)`
+  - `mem_fclose` (function, line 149) `void mem_fclose(MEMFILE *stream)`
+  - `mem_ftell` (function, line 159) `long mem_ftell(MEMFILE *stream)`
+  - `mem_fseek` (function, line 164) `int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/memio.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/memio.h
@@ -3180,14 +2745,12 @@ M_WriteText
 - Doc: Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it and/or modify it under the t
 - Language: h
 - Symbols:
-  - `NET_CL_Connect` (function, line 24) `boolean NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data);`
   - `NET_CL_Disconnect` (function, line 26) `void NET_CL_Disconnect(void);`
   - `NET_CL_Run` (function, line 27) `void NET_CL_Run(void);`
   - `NET_CL_Init` (function, line 28) `void NET_CL_Init(void);`
   - `NET_CL_LaunchGame` (function, line 29) `void NET_CL_LaunchGame(void);`
   - `NET_CL_StartGame` (function, line 30) `void NET_CL_StartGame(net_gamesettings_t *settings);`
   - `NET_CL_SendTiccmd` (function, line 31) `void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic);`
-  - `NET_CL_GetSettings` (function, line 32) `boolean NET_CL_GetSettings(net_gamesettings_t *_settings);`
   - `NET_Init` (function, line 33) `void NET_Init(void);`
   - `NET_BindVariables` (function, line 34) `void NET_BindVariables(void);`
   - `net_client_connected` (variable, line 36) `extern boolean net_client_connected;`
@@ -3233,8 +2796,6 @@ M_WriteText
   - `net_packet_t` (type_alias, line 48) `typedef struct _net_packet_s net_packet_t;`
   - `net_addr_t` (type_alias, line 49) `typedef struct _net_addr_s net_addr_t;`
   - `net_context_t` (type_alias, line 50) `typedef struct _net_context_s net_context_t;`
-  - `boolean` (function, line 63) `boolean (*InitClient)(void);`
-  - `void` (function, line 71) `void (*SendPacket)(net_addr_t *addr, net_packet_t *packet);`
   - `NET_DEFS_H` (macro, line 19) `#define NET_DEFS_H`
   - `MAXNETNODES` (macro, line 30) `#define MAXNETNODES`
   - `NET_MAXPLAYERS` (macro, line 36) `#define NET_MAXPLAYERS`
@@ -3272,7 +2833,6 @@ M_WriteText
   - `NET_AddModule` (function, line 26) `void NET_AddModule(net_context_t *context, net_module_t *module);`
   - `NET_SendPacket` (function, line 27) `void NET_SendPacket(net_addr_t *addr, net_packet_t *packet);`
   - `NET_SendBroadcast` (function, line 28) `void NET_SendBroadcast(net_context_t *context, net_packet_t *packet);`
-  - `NET_RecvPacket` (function, line 29) `boolean NET_RecvPacket(net_context_t *context, net_addr_t **addr, net_packet_t **packet);`
   - `NET_AddrToString` (function, line 31) `char *NET_AddrToString(net_addr_t *addr);`
   - `NET_FreeAddress` (function, line 32) `void NET_FreeAddress(net_addr_t *addr);`
   - `NET_ResolveAddress` (function, line 33) `net_addr_t *NET_ResolveAddress(net_context_t *context, char *address);`
@@ -3300,12 +2860,6 @@ M_WriteText
   - `NET_NewPacket` (function, line 22) `net_packet_t *NET_NewPacket(int initial_size);`
   - `NET_PacketDup` (function, line 24) `net_packet_t *NET_PacketDup(net_packet_t *packet);`
   - `NET_FreePacket` (function, line 25) `void NET_FreePacket(net_packet_t *packet);`
-  - `NET_ReadInt8` (function, line 26) `boolean NET_ReadInt8(net_packet_t *packet, unsigned int *data);`
-  - `NET_ReadInt16` (function, line 28) `boolean NET_ReadInt16(net_packet_t *packet, unsigned int *data);`
-  - `NET_ReadInt32` (function, line 29) `boolean NET_ReadInt32(net_packet_t *packet, unsigned int *data);`
-  - `NET_ReadSInt8` (function, line 30) `boolean NET_ReadSInt8(net_packet_t *packet, signed int *data);`
-  - `NET_ReadSInt16` (function, line 32) `boolean NET_ReadSInt16(net_packet_t *packet, signed int *data);`
-  - `NET_ReadSInt32` (function, line 33) `boolean NET_ReadSInt32(net_packet_t *packet, signed int *data);`
   - `NET_ReadString` (function, line 34) `char *NET_ReadString(net_packet_t *packet);`
   - `NET_WriteInt8` (function, line 36) `void NET_WriteInt8(net_packet_t *packet, unsigned int i);`
   - `NET_WriteInt16` (function, line 38) `void NET_WriteInt16(net_packet_t *packet, unsigned int i);`
@@ -3319,7 +2873,6 @@ M_WriteText
 - Doc: Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it and/or modify it under the t
 - Language: h
 - Symbols:
-  - `void` (function, line 22) `typedef void (*net_query_callback_t)(net_addr_t *addr, net_querydata_t *querydata, unsigned int ping_time, void *user_data);`
   - `NET_StartLANQuery` (function, line 27) `extern int NET_StartLANQuery(void);`
   - `NET_StartMasterQuery` (function, line 29) `extern int NET_StartMasterQuery(void);`
   - `NET_LANQuery` (function, line 30) `extern void NET_LANQuery(void);`
@@ -3363,8 +2916,8 @@ M_WriteText
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `T_MoveCeiling` (function, line 44) `void T_MoveCeiling (ceiling_t* ceiling)`
-  - `EV_DoCeiling` (function, line 160) `int
+  - `T_MoveCeiling` (function, line 45) `void T_MoveCeiling (ceiling_t* ceiling)`
+  - `EV_DoCeiling` (function, line 161) `int
 EV_DoCeiling
 ( line_t*	line,
   ceiling_e	type )`
@@ -3372,9 +2925,6 @@ EV_DoCeiling
   - `P_RemoveActiveCeiling` (function, line 259) `void P_RemoveActiveCeiling(ceiling_t* c)`
   - `P_ActivateInStasisCeiling` (function, line 280) `void P_ActivateInStasisCeiling(line_t* line)`
   - `EV_CeilingCrushStop` (function, line 303) `int	EV_CeilingCrushStop(line_t	*line)`
-  - `S_StartSound` (function, line 67) `default: S_StartSound(&ceiling->sector->soundorg, sfx_stnmov);`
-  - `P_AddThinker` (function, line 193) `P_AddThinker (&ceiling->thinker);`
-  - `P_RemoveThinker` (function, line 268) `P_RemoveThinker (&activeceilings[i]->thinker);`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_doors.c
@@ -3383,35 +2933,31 @@ EV_DoCeiling
 - Language: c
 - Symbols:
   - `T_VerticalDoor` (function, line 57) `void T_VerticalDoor (vldoor_t* door)`
-  - `EV_DoLockedDoor` (function, line 193) `int
+  - `EV_DoLockedDoor` (function, line 195) `int
 EV_DoLockedDoor
 ( line_t*	line,
   vldoor_e	type,
   mobj_t*	thing )`
-  - `EV_DoDoor` (function, line 249) `int
+  - `EV_DoDoor` (function, line 252) `int
 EV_DoDoor
 ( line_t*	line,
   vldoor_e	type )`
-  - `EV_VerticalDoor` (function, line 336) `void
+  - `EV_VerticalDoor` (function, line 337) `void
 EV_VerticalDoor
 ( line_t*	line,
   mobj_t*	thing )`
   - `P_SpawnDoorCloseIn30` (function, line 519) `void P_SpawnDoorCloseIn30 (sector_t* sec)`
-  - `P_SpawnDoorRaiseIn5Mins` (function, line 541) `void
+  - `P_SpawnDoorRaiseIn5Mins` (function, line 542) `void
 P_SpawnDoorRaiseIn5Mins
 ( sector_t*	sec,
   int		secnum )`
-  - `P_InitSlidingDoorFrames` (function, line 579) `void P_InitSlidingDoorFrames(void)`
+  - `P_InitSlidingDoorFrames` (function, line 580) `void P_InitSlidingDoorFrames(void)`
   - `P_FindSlidingDoorType` (function, line 624) `int P_FindSlidingDoorType(line_t*	line)`
-  - `T_SlidingDoor` (function, line 638) `void T_SlidingDoor (slidedoor_t*	door)`
-  - `EV_SlidingDoor` (function, line 723) `void
+  - `T_SlidingDoor` (function, line 639) `void T_SlidingDoor (slidedoor_t*	door)`
+  - `EV_SlidingDoor` (function, line 727) `void
 EV_SlidingDoor
 ( line_t*	line,
   mobj_t*	thing )`
-  - `S_StartSound` (function, line 71) `S_StartSound(&door->sector->soundorg, sfx_bdcls);`
-  - `P_RemoveThinker` (function, line 121) `P_RemoveThinker (&door->thinker);`
-  - `P_AddThinker` (function, line 273) `P_AddThinker (&door->thinker);`
-  - `fprintf` (function, line 439) `fprintf(stderr, "EV_VerticalDoor: Tried to close " "something that wasn't a door.\n");`
 - Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_enemy.c
@@ -3419,20 +2965,20 @@ EV_SlidingDoor
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `P_RecursiveSound` (function, line 97) `void
+  - `P_RecursiveSound` (function, line 99) `void
 P_RecursiveSound
 ( sector_t*	sec,
   int		soundblocks )`
-  - `P_NoiseAlert` (function, line 151) `void
+  - `P_NoiseAlert` (function, line 152) `void
 P_NoiseAlert
 ( mobj_t*	target,
   mobj_t*	emmiter )`
   - `P_CheckMeleeRange` (function, line 167) `boolean P_CheckMeleeRange (mobj_t*	actor)`
   - `P_CheckMissileRange` (function, line 190) `boolean P_CheckMissileRange (mobj_t* actor)`
-  - `P_Move` (function, line 259) `boolean P_Move (mobj_t*	actor)`
+  - `P_Move` (function, line 260) `boolean P_Move (mobj_t*	actor)`
   - `P_TryWalk` (function, line 337) `boolean P_TryWalk (mobj_t* actor)`
-  - `P_NewChaseDir` (function, line 347) `void P_NewChaseDir (mobj_t*	actor)`
-  - `P_LookForPlayers` (function, line 486) `boolean
+  - `P_NewChaseDir` (function, line 351) `void P_NewChaseDir (mobj_t*	actor)`
+  - `P_LookForPlayers` (function, line 487) `boolean
 P_LookForPlayers
 ( mobj_t*	actor,
   boolean	allaround )`
@@ -3441,86 +2987,71 @@ P_LookForPlayers
   - `A_Chase` (function, line 657) `void A_Chase (mobj_t*	actor)`
   - `A_FaceTarget` (function, line 767) `void A_FaceTarget (mobj_t* actor)`
   - `A_PosAttack` (function, line 787) `void A_PosAttack (mobj_t* actor)`
-  - `A_SPosAttack` (function, line 805) `void A_SPosAttack (mobj_t* actor)`
-  - `A_CPosAttack` (function, line 829) `void A_CPosAttack (mobj_t* actor)`
-  - `A_CPosRefire` (function, line 849) `void A_CPosRefire (mobj_t* actor)`
-  - `A_SpidRefire` (function, line 865) `void A_SpidRefire (mobj_t* actor)`
-  - `A_BspiAttack` (function, line 882) `void A_BspiAttack (mobj_t *actor)`
+  - `A_SPosAttack` (function, line 806) `void A_SPosAttack (mobj_t* actor)`
+  - `A_CPosAttack` (function, line 830) `void A_CPosAttack (mobj_t* actor)`
+  - `A_CPosRefire` (function, line 850) `void A_CPosRefire (mobj_t* actor)`
+  - `A_SpidRefire` (function, line 867) `void A_SpidRefire (mobj_t* actor)`
+  - `A_BspiAttack` (function, line 883) `void A_BspiAttack (mobj_t *actor)`
   - `A_TroopAttack` (function, line 898) `void A_TroopAttack (mobj_t* actor)`
-  - `A_SargAttack` (function, line 918) `void A_SargAttack (mobj_t* actor)`
-  - `A_HeadAttack` (function, line 934) `void A_HeadAttack (mobj_t* actor)`
-  - `A_CyberAttack` (function, line 953) `void A_CyberAttack (mobj_t* actor)`
-  - `A_BruisAttack` (function, line 962) `void A_BruisAttack (mobj_t* actor)`
+  - `A_SargAttack` (function, line 920) `void A_SargAttack (mobj_t* actor)`
+  - `A_HeadAttack` (function, line 935) `void A_HeadAttack (mobj_t* actor)`
+  - `A_CyberAttack` (function, line 954) `void A_CyberAttack (mobj_t* actor)`
+  - `A_BruisAttack` (function, line 964) `void A_BruisAttack (mobj_t* actor)`
   - `A_SkelMissile` (function, line 987) `void A_SkelMissile (mobj_t* actor)`
-  - `A_Tracer` (function, line 1005) `void A_Tracer (mobj_t* actor)`
-  - `A_SkelWhoosh` (function, line 1076) `void A_SkelWhoosh (mobj_t*	actor)`
-  - `A_SkelFist` (function, line 1085) `void A_SkelFist (mobj_t*	actor)`
-  - `PIT_VileCheck` (function, line 1113) `boolean PIT_VileCheck (mobj_t*	thing)`
+  - `A_Tracer` (function, line 1006) `void A_Tracer (mobj_t* actor)`
+  - `A_SkelWhoosh` (function, line 1078) `void A_SkelWhoosh (mobj_t*	actor)`
+  - `A_SkelFist` (function, line 1086) `void A_SkelFist (mobj_t*	actor)`
+  - `PIT_VileCheck` (function, line 1114) `boolean PIT_VileCheck (mobj_t*	thing)`
   - `A_VileChase` (function, line 1152) `void A_VileChase (mobj_t* actor)`
   - `A_VileStart` (function, line 1218) `void A_VileStart (mobj_t* actor)`
-  - `A_StartFire` (function, line 1229) `void A_StartFire (mobj_t* actor)`
-  - `A_FireCrackle` (function, line 1235) `void A_FireCrackle (mobj_t* actor)`
-  - `A_Fire` (function, line 1241) `void A_Fire (mobj_t* actor)`
+  - `A_StartFire` (function, line 1230) `void A_StartFire (mobj_t* actor)`
+  - `A_FireCrackle` (function, line 1236) `void A_FireCrackle (mobj_t* actor)`
+  - `A_Fire` (function, line 1242) `void A_Fire (mobj_t* actor)`
   - `A_VileTarget` (function, line 1273) `void A_VileTarget (mobj_t*	actor)`
   - `A_VileAttack` (function, line 1298) `void A_VileAttack (mobj_t* actor)`
-  - `A_FatRaise` (function, line 1338) `void A_FatRaise (mobj_t *actor)`
-  - `A_FatAttack1` (function, line 1344) `void A_FatAttack1 (mobj_t* actor)`
-  - `A_FatAttack2` (function, line 1365) `void A_FatAttack2 (mobj_t* actor)`
-  - `A_FatAttack3` (function, line 1384) `void A_FatAttack3 (mobj_t*	actor)`
-  - `A_SkullAttack` (function, line 1414) `void A_SkullAttack (mobj_t* actor)`
-  - `A_PainShootSkull` (function, line 1445) `void
+  - `A_FatRaise` (function, line 1339) `void A_FatRaise (mobj_t *actor)`
+  - `A_FatAttack1` (function, line 1346) `void A_FatAttack1 (mobj_t* actor)`
+  - `A_FatAttack2` (function, line 1366) `void A_FatAttack2 (mobj_t* actor)`
+  - `A_FatAttack3` (function, line 1385) `void A_FatAttack3 (mobj_t*	actor)`
+  - `A_SkullAttack` (function, line 1415) `void A_SkullAttack (mobj_t* actor)`
+  - `A_PainShootSkull` (function, line 1446) `void
 A_PainShootSkull
 ( mobj_t*	actor,
   angle_t	angle )`
   - `A_PainAttack` (function, line 1508) `void A_PainAttack (mobj_t* actor)`
-  - `A_PainDie` (function, line 1516) `void A_PainDie (mobj_t* actor)`
-  - `A_Scream` (function, line 1525) `void A_Scream (mobj_t* actor)`
-  - `A_XScream` (function, line 1566) `void A_XScream (mobj_t* actor)`
-  - `A_Pain` (function, line 1572) `void A_Pain (mobj_t* actor)`
-  - `A_Fall` (function, line 1578) `void A_Fall (mobj_t *actor)`
+  - `A_PainDie` (function, line 1518) `void A_PainDie (mobj_t* actor)`
+  - `A_Scream` (function, line 1531) `void A_Scream (mobj_t* actor)`
+  - `A_XScream` (function, line 1568) `void A_XScream (mobj_t* actor)`
+  - `A_Pain` (function, line 1573) `void A_Pain (mobj_t* actor)`
+  - `A_Fall` (function, line 1581) `void A_Fall (mobj_t *actor)`
   - `A_Explode` (function, line 1594) `void A_Explode (mobj_t* thingy)`
-  - `CheckBossEnd` (function, line 1604) `static boolean CheckBossEnd(mobjtype_t motype)`
+  - `CheckBossEnd` (function, line 1605) `static boolean CheckBossEnd(mobjtype_t motype)`
   - `A_BossDeath` (function, line 1656) `void A_BossDeath (mobj_t* mo)`
-  - `A_Hoof` (function, line 1755) `void A_Hoof (mobj_t* mo)`
-  - `A_Metal` (function, line 1762) `void A_Metal (mobj_t* mo)`
-  - `A_BabyMetal` (function, line 1768) `void A_BabyMetal (mobj_t* mo)`
-  - `A_OpenShotgun2` (function, line 1774) `void
+  - `A_Hoof` (function, line 1757) `void A_Hoof (mobj_t* mo)`
+  - `A_Metal` (function, line 1763) `void A_Metal (mobj_t* mo)`
+  - `A_BabyMetal` (function, line 1769) `void A_BabyMetal (mobj_t* mo)`
+  - `A_OpenShotgun2` (function, line 1776) `void
 A_OpenShotgun2
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_LoadShotgun2` (function, line 1782) `void
+  - `A_LoadShotgun2` (function, line 1784) `void
 A_LoadShotgun2
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_CloseShotgun2` (function, line 1795) `void
+  - `A_CloseShotgun2` (function, line 1797) `void
 A_CloseShotgun2
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_BrainAwake` (function, line 1810) `void A_BrainAwake (mobj_t* mo)`
-  - `A_BrainPain` (function, line 1839) `void A_BrainPain (mobj_t*	mo)`
-  - `A_BrainScream` (function, line 1845) `void A_BrainScream (mobj_t*	mo)`
-  - `A_BrainExplode` (function, line 1870) `void A_BrainExplode (mobj_t* mo)`
-  - `A_BrainDie` (function, line 1892) `void A_BrainDie (mobj_t*	mo)`
-  - `A_BrainSpit` (function, line 1898) `void A_BrainSpit (mobj_t*	mo)`
+  - `A_BrainAwake` (function, line 1811) `void A_BrainAwake (mobj_t* mo)`
+  - `A_BrainPain` (function, line 1841) `void A_BrainPain (mobj_t*	mo)`
+  - `A_BrainScream` (function, line 1847) `void A_BrainScream (mobj_t*	mo)`
+  - `A_BrainExplode` (function, line 1873) `void A_BrainExplode (mobj_t* mo)`
+  - `A_BrainDie` (function, line 1894) `void A_BrainDie (mobj_t*	mo)`
+  - `A_BrainSpit` (function, line 1899) `void A_BrainSpit (mobj_t*	mo)`
   - `A_SpawnSound` (function, line 1928) `void A_SpawnSound (mobj_t* mo)`
-  - `A_SpawnFly` (function, line 1933) `void A_SpawnFly (mobj_t* mo)`
-  - `A_PlayerScream` (function, line 1989) `void A_PlayerScream (mobj_t* mo)`
-  - `P_LineOpening` (function, line 123) `P_LineOpening (check);`
-  - `EV_DoDoor` (function, line 577) `EV_DoDoor(&junk, vld_open);`
-  - `S_StartSound` (function, line 642) `S_StartSound (NULL, sound);`
-  - `P_SetMobjState` (function, line 647) `P_SetMobjState (actor, actor->info->seestate);`
-  - `P_LineAttack` (function, line 803) `P_LineAttack (actor, angle, MISSILERANGE, slope, damage);`
-  - `P_SpawnMissile` (function, line 891) `P_SpawnMissile (actor, actor->target, MT_ARACHPLAZ);`
-  - `P_DamageMobj` (function, line 910) `P_DamageMobj (actor->target, actor, actor, damage);`
-  - `P_SpawnPuff` (function, line 1018) `P_SpawnPuff (actor->x, actor->y, actor->z);`
-  - `P_UnsetThingPosition` (function, line 1259) `P_UnsetThingPosition (actor);`
-  - `P_SetThingPosition` (function, line 1264) `P_SetThingPosition (actor);`
-  - `P_RadiusAttack` (function, line 1325) `P_RadiusAttack (fire, actor, 70 );`
-  - `EV_DoFloor` (function, line 1713) `EV_DoFloor(&junk,lowerFloorToLowest);`
-  - `G_ExitLevel` (function, line 1752) `G_ExitLevel ();`
+  - `A_SpawnFly` (function, line 1934) `void A_SpawnFly (mobj_t* mo)`
+  - `A_PlayerScream` (function, line 1992) `void A_PlayerScream (mobj_t* mo)`
   - `A_ReFire` (function, line 1790) `void A_ReFire ( player_t* player, pspdef_t* psp );`
-  - `P_TeleportMove` (function, line 1984) `P_TeleportMove (newmobj, newmobj->x, newmobj->y);`
-  - `P_RemoveMobj` (function, line 1987) `P_RemoveMobj (mo);`
   - `FATSPREAD` (macro, line 1337) `#define	FATSPREAD`
   - `SKULLSPEED` (macro, line 1413) `#define	SKULLSPEED`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
@@ -3530,7 +3061,7 @@ A_CloseShotgun2
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `T_MovePlane` (function, line 41) `result_e
+  - `T_MovePlane` (function, line 42) `result_e
 T_MovePlane
 ( sector_t*	sector,
   fixed_t	speed,
@@ -3538,22 +3069,14 @@ T_MovePlane
   boolean	crush,
   int	...`
   - `T_MoveFloor` (function, line 202) `void T_MoveFloor(floormove_t* floor)`
-  - `EV_DoFloor` (function, line 250) `int
+  - `EV_DoFloor` (function, line 251) `int
 EV_DoFloor
 ( line_t*	line,
   floor_e	floortype )`
-  - `EV_BuildStairs` (function, line 443) `int
+  - `EV_BuildStairs` (function, line 444) `int
 EV_BuildStairs
 ( line_t*	line,
   stair_e	type )`
-  - `P_ChangeSector` (function, line 69) `P_ChangeSector(sector,crush);`
-  - `P_RemoveThinker` (function, line 240) `P_RemoveThinker(&floor->thinker);`
-  - `S_StartSound` (function, line 241) `S_StartSound(&floor->sector->soundorg, sfx_pstop);`
-  - `P_AddThinker` (function, line 274) `P_AddThinker (&floor->thinker);`
-  - `P_FindHighestFloorSurrounding` (function, line 287) `P_FindHighestFloorSurrounding(sec);`
-  - `P_FindLowestFloorSurrounding` (function, line 295) `P_FindLowestFloorSurrounding(sec);`
-  - `P_FindLowestCeilingSurrounding` (function, line 315) `P_FindLowestCeilingSurrounding(sec);`
-  - `P_FindNextHighestFloor` (function, line 327) `P_FindNextHighestFloor(sec,sec->floorheight);`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_inter.c
@@ -3561,51 +3084,46 @@ EV_BuildStairs
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `P_GiveAmmo` (function, line 64) `boolean
+  - `P_GiveAmmo` (function, line 66) `boolean
 P_GiveAmmo
 ( player_t*	player,
   ammotype_t	ammo,
   int		num )`
-  - `P_GiveWeapon` (function, line 159) `boolean
+  - `P_GiveWeapon` (function, line 160) `boolean
 P_GiveWeapon
 ( player_t*	player,
   weapontype_t	weapon,
   boolean	dropped )`
-  - `P_GiveBody` (function, line 222) `boolean
+  - `P_GiveBody` (function, line 223) `boolean
 P_GiveBody
 ( player_t*	player,
   int		num )`
-  - `P_GiveArmor` (function, line 245) `boolean
+  - `P_GiveArmor` (function, line 246) `boolean
 P_GiveArmor
 ( player_t*	player,
   int		armortype )`
-  - `P_GiveCard` (function, line 267) `void
+  - `P_GiveCard` (function, line 268) `void
 P_GiveCard
 ( player_t*	player,
   card_t	card )`
-  - `P_GivePower` (function, line 283) `boolean
+  - `P_GivePower` (function, line 284) `boolean
 P_GivePower
 ( player_t*	player,
   int /*powertype_t*/	power )`
-  - `P_TouchSpecialThing` (function, line 332) `void
+  - `P_TouchSpecialThing` (function, line 333) `void
 P_TouchSpecialThing
 ( mobj_t*	special,
   mobj_t*	toucher )`
-  - `P_KillMobj` (function, line 665) `void
+  - `P_KillMobj` (function, line 666) `void
 P_KillMobj
 ( mobj_t*	source,
   mobj_t*	target )`
-  - `P_DamageMobj` (function, line 778) `void
+  - `P_DamageMobj` (function, line 779) `void
 P_DamageMobj
 ( mobj_t*	target,
   mobj_t*	inflictor,
   mobj_t*	source,
   int 		damage )`
-  - `I_Error` (function, line 648) `default: I_Error ("P_SpecialThing: Unknown gettable thing");`
-  - `P_RemoveMobj` (function, line 655) `P_RemoveMobj (special);`
-  - `P_DropWeapon` (function, line 705) `P_DropWeapon (target->player);`
-  - `AM_Stop` (function, line 712) `AM_Stop ();`
-  - `P_SetMobjState` (function, line 720) `P_SetMobjState (target, target->info->xdeathstate);`
   - `BONUSADD` (macro, line 41) `#define BONUSADD`
 - Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
@@ -3614,7 +3132,6 @@ P_DamageMobj
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `P_GivePower` (function, line 22) `boolean P_GivePower(player_t*, int);`
   - `__P_INTER__` (macro, line 21) `#define __P_INTER__`
 - Imported by: `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/st_stuff.c`
 
@@ -3628,20 +3145,19 @@ P_DamageMobj
   - `T_LightFlash` (function, line 91) `void T_LightFlash (lightflash_t* flash)`
   - `P_SpawnLightFlash` (function, line 117) `void P_SpawnLightFlash (sector_t*	sector)`
   - `T_StrobeFlash` (function, line 148) `void T_StrobeFlash (strobe_t*		flash)`
-  - `P_SpawnStrobeFlash` (function, line 173) `void
+  - `P_SpawnStrobeFlash` (function, line 174) `void
 P_SpawnStrobeFlash
 ( sector_t*	sector,
   int		fastOrSlow,
   int		inSync )`
   - `EV_StartLightStrobing` (function, line 208) `void EV_StartLightStrobing(line_t*	line)`
   - `EV_TurnTagLightsOff` (function, line 229) `void EV_TurnTagLightsOff(line_t* line)`
-  - `EV_LightTurnOn` (function, line 263) `void
+  - `EV_LightTurnOn` (function, line 264) `void
 EV_LightTurnOn
 ( line_t*	line,
   int		bright )`
-  - `T_Glow` (function, line 306) `void T_Glow(glow_t*	g)`
-  - `P_SpawnGlowingLight` (function, line 332) `void P_SpawnGlowingLight(sector_t*	sector)`
-  - `P_AddThinker` (function, line 70) `P_AddThinker (&flick->thinker);`
+  - `T_Glow` (function, line 307) `void T_Glow(glow_t*	g)`
+  - `P_SpawnGlowingLight` (function, line 334) `void P_SpawnGlowingLight(sector_t*	sector)`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_local.h
@@ -3662,14 +3178,12 @@ EV_LightTurnOn
   - `P_SpawnMobj` (function, line 105) `mobj_t* P_SpawnMobj ( fixed_t x, fixed_t y, fixed_t z, mobjtype_t type );`
   - `P_RemoveMobj` (function, line 112) `void P_RemoveMobj (mobj_t* th);`
   - `P_SubstNullMobj` (function, line 114) `mobj_t* P_SubstNullMobj (mobj_t* th);`
-  - `P_SetMobjState` (function, line 115) `boolean P_SetMobjState (mobj_t* mobj, statenum_t state);`
   - `P_MobjThinker` (function, line 116) `void P_MobjThinker (mobj_t* mobj);`
   - `P_SpawnPuff` (function, line 117) `void P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);`
   - `P_SpawnBlood` (function, line 119) `void P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage);`
   - `P_SpawnMissile` (function, line 120) `mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);`
   - `P_SpawnPlayerMissile` (function, line 121) `void P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type);`
   - `P_NoiseAlert` (function, line 127) `void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);`
-  - `boolean` (function, line 159) `typedef boolean (*traverser_t) (intercept_t *in);`
   - `P_AproxDistance` (function, line 161) `fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);`
   - `P_PointOnLineSide` (function, line 163) `int P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);`
   - `P_PointOnDivlineSide` (function, line 164) `int P_PointOnDivlineSide (fixed_t x, fixed_t y, divline_t* line);`
@@ -3677,18 +3191,10 @@ EV_LightTurnOn
   - `P_InterceptVector` (function, line 166) `fixed_t P_InterceptVector (divline_t* v2, divline_t* v1);`
   - `P_BoxOnLineSide` (function, line 167) `int P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);`
   - `P_LineOpening` (function, line 173) `void P_LineOpening (line_t* linedef);`
-  - `P_BlockLinesIterator` (function, line 175) `boolean P_BlockLinesIterator (int x, int y, boolean(*func)(line_t*) );`
-  - `P_BlockThingsIterator` (function, line 177) `boolean P_BlockThingsIterator (int x, int y, boolean(*func)(mobj_t*) );`
-  - `P_PathTraverse` (function, line 184) `boolean P_PathTraverse ( fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2, int flags, boolean (*trav) (intercept_t *));`
   - `P_UnsetThingPosition` (function, line 193) `void P_UnsetThingPosition (mobj_t* thing);`
   - `P_SetThingPosition` (function, line 195) `void P_SetThingPosition (mobj_t* thing);`
-  - `P_CheckPosition` (function, line 224) `boolean P_CheckPosition (mobj_t *thing, fixed_t x, fixed_t y);`
-  - `P_TryMove` (function, line 226) `boolean P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);`
-  - `P_TeleportMove` (function, line 227) `boolean P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);`
   - `P_SlideMove` (function, line 228) `void P_SlideMove (mobj_t* mo);`
-  - `P_CheckSight` (function, line 229) `boolean P_CheckSight (mobj_t* t1, mobj_t* t2);`
   - `P_UseLines` (function, line 230) `void P_UseLines (player_t* player);`
-  - `P_ChangeSector` (function, line 231) `boolean P_ChangeSector (sector_t* sector, boolean crunch);`
   - `P_AimLineAttack` (function, line 235) `fixed_t P_AimLineAttack ( mobj_t* t1, angle_t angle, fixed_t distance );`
   - `P_LineAttack` (function, line 241) `void P_LineAttack ( mobj_t* t1, angle_t angle, fixed_t distance, fixed_t slope, int damage );`
   - `P_RadiusAttack` (function, line 249) `void P_RadiusAttack ( mobj_t* spot, mobj_t* source, int damage );`
@@ -3759,19 +3265,19 @@ EV_LightTurnOn
 - Language: c
 - Symbols:
   - `PIT_StompThing` (function, line 97) `boolean PIT_StompThing (mobj_t* thing)`
-  - `P_TeleportMove` (function, line 130) `boolean
+  - `P_TeleportMove` (function, line 131) `boolean
 P_TeleportMove
 ( mobj_t*	thing,
   fixed_t	x,
   fixed_t	y )`
   - `PIT_CheckLine` (function, line 206) `boolean PIT_CheckLine (line_t* ld)`
   - `PIT_CheckThing` (function, line 275) `boolean PIT_CheckThing (mobj_t* thing)`
-  - `P_CheckPosition` (function, line 401) `boolean
+  - `P_CheckPosition` (function, line 402) `boolean
 P_CheckPosition
 ( mobj_t*	thing,
   fixed_t	x,
   fixed_t	y )`
-  - `P_TryMove` (function, line 477) `boolean
+  - `P_TryMove` (function, line 478) `boolean
 P_TryMove
 ( mobj_t*	thing,
   fixed_t	x,
@@ -3780,50 +3286,35 @@ P_TryMove
   - `P_HitSlideLine` (function, line 611) `void P_HitSlideLine (line_t* ld)`
   - `PTR_SlideTraverse` (function, line 663) `boolean PTR_SlideTraverse (intercept_t* in)`
   - `P_SlideMove` (function, line 722) `void P_SlideMove (mobj_t* mo)`
-  - `PTR_AimTraverse` (function, line 842) `boolean
+  - `PTR_AimTraverse` (function, line 843) `boolean
 PTR_AimTraverse (intercept_t* in)`
   - `PTR_ShootTraverse` (function, line 928) `boolean PTR_ShootTraverse (intercept_t* in)`
-  - `P_AimLineAttack` (function, line 1067) `fixed_t
+  - `P_AimLineAttack` (function, line 1068) `fixed_t
 P_AimLineAttack
 ( mobj_t*	t1,
   angle_t	angle,
   fixed_t	distance )`
-  - `P_LineAttack` (function, line 1109) `void
+  - `P_LineAttack` (function, line 1110) `void
 P_LineAttack
 ( mobj_t*	t1,
   angle_t	angle,
   fixed_t	distance,
   fixed_t	slope,
   int		dama...`
-  - `PTR_UseTraverse` (function, line 1141) `boolean	PTR_UseTraverse (intercept_t* in)`
+  - `PTR_UseTraverse` (function, line 1142) `boolean	PTR_UseTraverse (intercept_t* in)`
   - `P_UseLines` (function, line 1177) `void P_UseLines (player_t*	player)`
   - `PIT_RadiusAttack` (function, line 1211) `boolean PIT_RadiusAttack (mobj_t* thing)`
-  - `P_RadiusAttack` (function, line 1252) `void
+  - `P_RadiusAttack` (function, line 1253) `void
 P_RadiusAttack
 ( mobj_t*	spot,
   mobj_t*	source,
   int		damage )`
   - `PIT_ChangeSector` (function, line 1304) `boolean PIT_ChangeSector (mobj_t*	thing)`
-  - `P_ChangeSector` (function, line 1367) `boolean
+  - `P_ChangeSector` (function, line 1368) `boolean
 P_ChangeSector
 ( sector_t*	sector,
   boolean	crunch )`
-  - `SpechitOverrun` (function, line 1390) `static void SpechitOverrun(line_t *ld)`
-  - `P_DamageMobj` (function, line 120) `P_DamageMobj (thing, tmthing, tmthing, 10000);`
-  - `P_UnsetThingPosition` (function, line 183) `P_UnsetThingPosition (thing);`
-  - `P_SetThingPosition` (function, line 189) `P_SetThingPosition (thing);`
-  - `P_LineOpening` (function, line 241) `P_LineOpening (ld);`
-  - `P_SetMobjState` (function, line 306) `P_SetMobjState (tmthing, tmthing->info->spawnstate);`
-  - `P_TouchSpecialThing` (function, line 364) `P_TouchSpecialThing (thing, tmthing);`
-  - `P_PathTraverse` (function, line 764) `P_PathTraverse ( leadx, leady, leadx+mo->momx, leady+mo->momy, PT_ADDLINES, PTR_SlideTraverse );`
-  - `P_SpawnPuff` (function, line 1013) `P_SpawnPuff (x,y,z);`
-  - `P_SpawnBlood` (function, line 1052) `else P_SpawnBlood (x,y,z, la_damage);`
-  - `S_StartSound` (function, line 1151) `S_StartSound (usething, sfx_noway);`
-  - `P_UseSpecialLine` (function, line 1165) `P_UseSpecialLine (usething, in->d.line, side);`
-  - `P_BlockThingsIterator` (function, line 1279) `P_BlockThingsIterator (x, y, PIT_RadiusAttack );`
-  - `P_RemoveMobj` (function, line 1331) `P_RemoveMobj (thing);`
-  - `M_StrToInt` (function, line 1415) `M_StrToInt(myargv[p+1], (int *) &baseaddr);`
-  - `fprintf` (function, line 1441) `default: fprintf(stderr, "SpechitOverrun: Warning: unable to emulate" "an overrun where numspechit=%i\n", numspechit);`
+  - `SpechitOverrun` (function, line 1391) `static void SpechitOverrun(line_t *ld)`
   - `topslope` (variable, line 834) `extern fixed_t topslope;`
   - `bottomslope` (variable, line 835) `extern fixed_t bottomslope;`
   - `DEFAULT_SPECHIT_MAGIC` (macro, line 49) `#define DEFAULT_SPECHIT_MAGIC`
@@ -3835,63 +3326,62 @@ P_ChangeSector
 - Language: c
 - Symbols:
   - `intercepts_overrun_t` (struct, line 738)
-  - `P_AproxDistance` (function, line 42) `fixed_t
+  - `P_AproxDistance` (function, line 44) `fixed_t
 P_AproxDistance
 ( fixed_t	dx,
   fixed_t	dy )`
-  - `P_PointOnLineSide` (function, line 60) `int
+  - `P_PointOnLineSide` (function, line 61) `int
 P_PointOnLineSide
 ( fixed_t	x,
   fixed_t	y,
   line_t*	line )`
-  - `P_BoxOnLineSide` (function, line 104) `int
+  - `P_BoxOnLineSide` (function, line 105) `int
 P_BoxOnLineSide
 ( fixed_t*	tmbox,
   line_t*	ld )`
-  - `P_PointOnDivlineSide` (function, line 155) `int
+  - `P_PointOnDivlineSide` (function, line 156) `int
 P_PointOnDivlineSide
 ( fixed_t	x,
   fixed_t	y,
   divline_t*	line )`
-  - `P_MakeDivline` (function, line 205) `void
+  - `P_MakeDivline` (function, line 206) `void
 P_MakeDivline
 ( line_t*	li,
   divline_t*	dl )`
-  - `P_InterceptVector` (function, line 225) `fixed_t
+  - `P_InterceptVector` (function, line 226) `fixed_t
 P_InterceptVector
 ( divline_t*	v2,
   divline_t*	v1 )`
-  - `P_LineOpening` (function, line 293) `void P_LineOpening (line_t* linedef)`
+  - `P_LineOpening` (function, line 295) `void P_LineOpening (line_t* linedef)`
   - `P_UnsetThingPosition` (function, line 342) `void P_UnsetThingPosition (mobj_t* thing)`
-  - `P_SetThingPosition` (function, line 390) `void
+  - `P_SetThingPosition` (function, line 391) `void
 P_SetThingPosition (mobj_t* thing)`
-  - `P_BlockLinesIterator` (function, line 466) `boolean
+  - `P_BlockLinesIterator` (function, line 467) `boolean
 P_BlockLinesIterator
 ( int			x,
   int			y,
   boolean(*func)(line_t*) )`
-  - `P_BlockThingsIterator` (function, line 507) `boolean
+  - `P_BlockThingsIterator` (function, line 508) `boolean
 P_BlockThingsIterator
 ( int			x,
   int			y,
   boolean(*func)(mobj_t*) )`
-  - `PIT_AddLineIntercepts` (function, line 558) `boolean
+  - `PIT_AddLineIntercepts` (function, line 559) `boolean
 PIT_AddLineIntercepts (line_t* ld)`
   - `PIT_AddThingIntercepts` (function, line 614) `boolean PIT_AddThingIntercepts (mobj_t* thing)`
-  - `P_TraverseIntercepts` (function, line 681) `boolean
+  - `P_TraverseIntercepts` (function, line 682) `boolean
 P_TraverseIntercepts
 ( traverser_t	func,
   fixed_t	maxfrac )`
-  - `InterceptsMemoryOverrun` (function, line 781) `static void InterceptsMemoryOverrun(int location, int value)`
-  - `InterceptsOverrun` (function, line 826) `static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)`
-  - `P_PathTraverse` (function, line 860) `boolean
+  - `InterceptsMemoryOverrun` (function, line 782) `static void InterceptsMemoryOverrun(int location, int value)`
+  - `InterceptsOverrun` (function, line 827) `static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)`
+  - `P_PathTraverse` (function, line 861) `boolean
 P_PathTraverse
 ( fixed_t		x1,
   fixed_t		y1,
   fixed_t		x2,
   fixed_t		y2,
   int			flags,...`
-  - `FixedMul` (function, line 242) `FixedMul ( (v1->x - v2->x)>>8 ,v1->dy ) +FixedMul ( (v2->y - v1->y)>>8, v1->dx );`
   - `bulletslope` (variable, line 730) `extern fixed_t bulletslope;`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
@@ -3900,61 +3390,49 @@ P_PathTraverse
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `P_SetMobjState` (function, line 46) `boolean
+  - `P_SetMobjState` (function, line 48) `boolean
 P_SetMobjState
 ( mobj_t*	mobj,
   statenum_t	state )`
   - `P_ExplodeMissile` (function, line 84) `void P_ExplodeMissile (mobj_t* mo)`
-  - `P_XYMovement` (function, line 107) `void P_XYMovement (mobj_t* mo)`
+  - `P_XYMovement` (function, line 108) `void P_XYMovement (mobj_t* mo)`
   - `P_ZMovement` (function, line 240) `void P_ZMovement (mobj_t* mo)`
-  - `P_NightmareRespawn` (function, line 382) `void
+  - `P_NightmareRespawn` (function, line 383) `void
 P_NightmareRespawn (mobj_t* mobj)`
   - `P_MobjThinker` (function, line 441) `void P_MobjThinker (mobj_t* mobj)`
-  - `P_SpawnMobj` (function, line 505) `mobj_t*
+  - `P_SpawnMobj` (function, line 506) `mobj_t*
 P_SpawnMobj
 ( fixed_t	x,
   fixed_t	y,
   fixed_t	z,
   mobjtype_t	type )`
-  - `P_RemoveMobj` (function, line 570) `void P_RemoveMobj (mobj_t* mobj)`
+  - `P_RemoveMobj` (function, line 572) `void P_RemoveMobj (mobj_t* mobj)`
   - `P_RespawnSpecials` (function, line 604) `void P_RespawnSpecials (void)`
   - `P_SpawnPlayer` (function, line 668) `void P_SpawnPlayer (mapthing_t* mthing)`
   - `P_SpawnMapThing` (function, line 739) `void P_SpawnMapThing (mapthing_t* mthing)`
-  - `P_SpawnPuff` (function, line 849) `void
+  - `P_SpawnPuff` (function, line 851) `void
 P_SpawnPuff
 ( fixed_t	x,
   fixed_t	y,
   fixed_t	z )`
-  - `P_SpawnBlood` (function, line 877) `void
+  - `P_SpawnBlood` (function, line 878) `void
 P_SpawnBlood
 ( fixed_t	x,
   fixed_t	y,
   fixed_t	z,
   int		damage )`
   - `P_CheckMissileSpawn` (function, line 907) `void P_CheckMissileSpawn (mobj_t* th)`
-  - `P_SubstNullMobj` (function, line 928) `mobj_t *P_SubstNullMobj(mobj_t *mobj)`
-  - `P_SpawnMissile` (function, line 949) `mobj_t*
+  - `P_SubstNullMobj` (function, line 929) `mobj_t *P_SubstNullMobj(mobj_t *mobj)`
+  - `P_SpawnMissile` (function, line 950) `mobj_t*
 P_SpawnMissile
 ( mobj_t*	source,
   mobj_t*	dest,
   mobjtype_t	type )`
-  - `P_SpawnPlayerMissile` (function, line 995) `void
+  - `P_SpawnPlayerMissile` (function, line 996) `void
 P_SpawnPlayerMissile
 ( mobj_t*	source,
   mobjtype_t	type )`
   - `G_PlayerReborn` (function, line 35) `void G_PlayerReborn (int player);`
-  - `P_SlideMove` (function, line 165) `P_SlideMove (mo);`
-  - `S_StartSound` (function, line 323) `S_StartSound (mo, sfx_oof);`
-  - `memset` (function, line 517) `memset (mobj, 0, sizeof (*mobj));`
-  - `P_SetThingPosition` (function, line 543) `P_SetThingPosition (mobj);`
-  - `P_AddThinker` (function, line 556) `P_AddThinker (&mobj->thinker);`
-  - `P_UnsetThingPosition` (function, line 589) `P_UnsetThingPosition (mobj);`
-  - `S_StopSound` (function, line 592) `S_StopSound (mobj);`
-  - `P_RemoveThinker` (function, line 595) `P_RemoveThinker ((thinker_t*)mobj);`
-  - `P_SetupPsprites` (function, line 717) `P_SetupPsprites (p);`
-  - `ST_Start` (function, line 727) `ST_Start ();`
-  - `HU_Start` (function, line 729) `HU_Start ();`
-  - `memcpy` (function, line 753) `memcpy (deathmatch_p, mthing, sizeof(*mthing));`
   - `attackrange` (variable, line 848) `extern fixed_t attackrange;`
   - `STOPSPEED` (macro, line 105) `#define STOPSPEED`
   - `FRICTION` (macro, line 106) `#define FRICTION`
@@ -3977,19 +3455,15 @@ P_SpawnPlayerMissile
 - Language: c
 - Symbols:
   - `T_PlatRaise` (function, line 45) `void T_PlatRaise(plat_t* plat)`
-  - `EV_DoPlat` (function, line 128) `int
+  - `EV_DoPlat` (function, line 129) `int
 EV_DoPlat
 ( line_t*	line,
   plattype_e	type,
   int		amount )`
-  - `P_ActivateInStasis` (function, line 245) `void P_ActivateInStasis(int tag)`
-  - `EV_StopPlat` (function, line 262) `void EV_StopPlat(line_t* line)`
-  - `P_AddActivePlat` (function, line 277) `void P_AddActivePlat(plat_t* plat)`
-  - `P_RemoveActivePlat` (function, line 290) `void P_RemoveActivePlat(plat_t* plat)`
-  - `S_StartSound` (function, line 69) `S_StartSound(&plat->sector->soundorg, sfx_pstart);`
-  - `P_AddThinker` (function, line 164) `P_AddThinker(&plat->thinker);`
-  - `I_Error` (function, line 288) `I_Error ("P_AddActivePlat: no more plats!");`
-  - `P_RemoveThinker` (function, line 298) `P_RemoveThinker(&(activeplats[i])->thinker);`
+  - `P_ActivateInStasis` (function, line 248) `void P_ActivateInStasis(int tag)`
+  - `EV_StopPlat` (function, line 263) `void EV_StopPlat(line_t* line)`
+  - `P_AddActivePlat` (function, line 278) `void P_AddActivePlat(plat_t* plat)`
+  - `P_RemoveActivePlat` (function, line 291) `void P_RemoveActivePlat(plat_t* plat)`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_pspr.c
@@ -3997,99 +3471,91 @@ EV_DoPlat
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `P_SetPsprite` (function, line 49) `void
+  - `P_SetPsprite` (function, line 50) `void
 P_SetPsprite
 ( player_t*	player,
   int		position,
   statenum_t	stnum )`
-  - `P_CalcSwing` (function, line 102) `void P_CalcSwing (player_t*	player)`
+  - `P_CalcSwing` (function, line 103) `void P_CalcSwing (player_t*	player)`
   - `P_BringUpWeapon` (function, line 129) `void P_BringUpWeapon (player_t* player)`
   - `P_CheckAmmo` (function, line 152) `boolean P_CheckAmmo (player_t* player)`
   - `P_FireWeapon` (function, line 237) `void P_FireWeapon (player_t* player)`
   - `P_DropWeapon` (function, line 256) `void P_DropWeapon (player_t* player)`
-  - `A_WeaponReady` (function, line 272) `void
+  - `A_WeaponReady` (function, line 273) `void
 A_WeaponReady
 ( player_t*	player,
   pspdef_t*	psp )`
   - `A_ReFire` (function, line 334) `void A_ReFire
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_CheckReload` (function, line 354) `void
+  - `A_CheckReload` (function, line 357) `void
 A_CheckReload
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_Lower` (function, line 375) `void
+  - `A_Lower` (function, line 376) `void
 A_Lower
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_Raise` (function, line 413) `void
+  - `A_Raise` (function, line 414) `void
 A_Raise
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_GunFlash` (function, line 439) `void
+  - `A_GunFlash` (function, line 440) `void
 A_GunFlash
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_Punch` (function, line 458) `void
+  - `A_Punch` (function, line 459) `void
 A_Punch
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_Saw` (function, line 492) `void
+  - `A_Saw` (function, line 493) `void
 A_Saw
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `DecreaseAmmo` (function, line 541) `static void DecreaseAmmo(player_t *player, int ammonum, int amount)`
-  - `A_FireMissile` (function, line 558) `void
+  - `DecreaseAmmo` (function, line 542) `static void DecreaseAmmo(player_t *player, int ammonum, int amount)`
+  - `A_FireMissile` (function, line 559) `void
 A_FireMissile
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_FireBFG` (function, line 571) `void
+  - `A_FireBFG` (function, line 572) `void
 A_FireBFG
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_FirePlasma` (function, line 586) `void
+  - `A_FirePlasma` (function, line 587) `void
 A_FirePlasma
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `P_BulletSlope` (function, line 608) `void P_BulletSlope (mobj_t*	mo)`
-  - `P_GunShot` (function, line 634) `void
+  - `P_BulletSlope` (function, line 610) `void P_BulletSlope (mobj_t*	mo)`
+  - `P_GunShot` (function, line 635) `void
 P_GunShot
 ( mobj_t*	mo,
   boolean	accurate )`
-  - `A_FirePistol` (function, line 655) `void
+  - `A_FirePistol` (function, line 656) `void
 A_FirePistol
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_FireShotgun` (function, line 677) `void
+  - `A_FireShotgun` (function, line 678) `void
 A_FireShotgun
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_FireShotgun2` (function, line 704) `void
+  - `A_FireShotgun2` (function, line 705) `void
 A_FireShotgun2
 ( player_t*	player,
   pspdef_t*	psp )`
-  - `A_FireCGun` (function, line 741) `void
+  - `A_FireCGun` (function, line 742) `void
 A_FireCGun
 ( player_t*	player,
   pspdef_t*	psp )`
   - `A_Light0` (function, line 770) `void A_Light0 (player_t *player, pspdef_t *psp)`
-  - `A_Light1` (function, line 774) `void A_Light1 (player_t *player, pspdef_t *psp)`
-  - `A_Light2` (function, line 779) `void A_Light2 (player_t *player, pspdef_t *psp)`
+  - `A_Light1` (function, line 775) `void A_Light1 (player_t *player, pspdef_t *psp)`
+  - `A_Light2` (function, line 780) `void A_Light2 (player_t *player, pspdef_t *psp)`
   - `A_BFGSpray` (function, line 790) `void A_BFGSpray (mobj_t* mo)`
-  - `A_BFGsound` (function, line 826) `void
+  - `A_BFGsound` (function, line 827) `void
 A_BFGsound
 ( player_t*	player,
   pspdef_t*	psp )`
   - `P_SetupPsprites` (function, line 840) `void P_SetupPsprites (player_t* player)`
   - `P_MovePsprites` (function, line 860) `void P_MovePsprites (player_t* player)`
-  - `P_SetMobjState` (function, line 243) `P_SetMobjState (player->mo, S_PLAY_ATK1);`
-  - `P_NoiseAlert` (function, line 247) `P_NoiseAlert (player->mo, player->mo);`
-  - `S_StartSound` (function, line 290) `S_StartSound (player->mo, sfx_sawidl);`
-  - `P_LineAttack` (function, line 475) `P_LineAttack (player->mo, angle, MELEERANGE, slope, damage);`
-  - `P_SpawnPlayerMissile` (function, line 564) `P_SpawnPlayerMissile (player->mo, MT_ROCKET);`
-  - `P_AimLineAttack` (function, line 804) `P_AimLineAttack (mo->target, an, 16*64*FRACUNIT);`
-  - `P_SpawnMobj` (function, line 808) `P_SpawnMobj (linetarget->x, linetarget->y, linetarget->z + (linetarget->height>>2), MT_EXTRABFG);`
-  - `P_DamageMobj` (function, line 817) `P_DamageMobj (linetarget, mo->target,mo->target, damage);`
   - `LOWERSPEED` (macro, line 37) `#define LOWERSPEED`
   - `RAISESPEED` (macro, line 39) `#define RAISESPEED`
   - `WEAPONBOTTOM` (macro, line 40) `#define WEAPONBOTTOM`
@@ -4113,50 +3579,50 @@ A_BFGsound
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `P_TempSaveGameFile` (function, line 46) `char *P_TempSaveGameFile(void)`
-  - `P_SaveGameFile` (function, line 60) `char *P_SaveGameFile(int slot)`
-  - `saveg_read8` (function, line 80) `static byte saveg_read8(void)`
-  - `saveg_write8` (function, line 98) `static void saveg_write8(byte value)`
-  - `saveg_read16` (function, line 111) `static short saveg_read16(void)`
-  - `saveg_write16` (function, line 121) `static void saveg_write16(short value)`
-  - `saveg_read32` (function, line 127) `static int saveg_read32(void)`
-  - `saveg_write32` (function, line 139) `static void saveg_write32(int value)`
-  - `saveg_read_pad` (function, line 149) `static void saveg_read_pad(void)`
-  - `saveg_write_pad` (function, line 165) `static void saveg_write_pad(void)`
-  - `saveg_readp` (function, line 184) `static void *saveg_readp(void)`
-  - `saveg_writep` (function, line 189) `static void saveg_writep(void *p)`
-  - `saveg_read_mapthing_t` (function, line 207) `static void saveg_read_mapthing_t(mapthing_t *str)`
-  - `saveg_write_mapthing_t` (function, line 225) `static void saveg_write_mapthing_t(mapthing_t *str)`
-  - `saveg_read_actionf_t` (function, line 247) `static void saveg_read_actionf_t(actionf_t *str)`
-  - `saveg_write_actionf_t` (function, line 253) `static void saveg_write_actionf_t(actionf_t *str)`
-  - `saveg_read_thinker_t` (function, line 272) `static void saveg_read_thinker_t(thinker_t *str)`
-  - `saveg_write_thinker_t` (function, line 284) `static void saveg_write_thinker_t(thinker_t *str)`
-  - `saveg_read_mobj_t` (function, line 300) `static void saveg_read_mobj_t(mobj_t *str)`
-  - `saveg_write_mobj_t` (function, line 420) `static void saveg_write_mobj_t(mobj_t *str)`
-  - `saveg_read_ticcmd_t` (function, line 540) `static void saveg_read_ticcmd_t(ticcmd_t *str)`
-  - `saveg_write_ticcmd_t` (function, line 562) `static void saveg_write_ticcmd_t(ticcmd_t *str)`
-  - `saveg_read_pspdef_t` (function, line 588) `static void saveg_read_pspdef_t(pspdef_t *str)`
-  - `saveg_write_pspdef_t` (function, line 614) `static void saveg_write_pspdef_t(pspdef_t *str)`
-  - `saveg_read_player_t` (function, line 640) `static void saveg_read_player_t(player_t *str)`
-  - `saveg_write_player_t` (function, line 771) `static void saveg_write_player_t(player_t *str)`
-  - `saveg_read_ceiling_t` (function, line 907) `static void saveg_read_ceiling_t(ceiling_t *str)`
-  - `saveg_write_ceiling_t` (function, line 943) `static void saveg_write_ceiling_t(ceiling_t *str)`
-  - `saveg_read_vldoor_t` (function, line 980) `static void saveg_read_vldoor_t(vldoor_t *str)`
-  - `saveg_write_vldoor_t` (function, line 1010) `static void saveg_write_vldoor_t(vldoor_t *str)`
-  - `saveg_read_floormove_t` (function, line 1041) `static void saveg_read_floormove_t(floormove_t *str)`
-  - `saveg_write_floormove_t` (function, line 1074) `static void saveg_write_floormove_t(floormove_t *str)`
-  - `saveg_read_plat_t` (function, line 1108) `static void saveg_read_plat_t(plat_t *str)`
-  - `saveg_write_plat_t` (function, line 1150) `static void saveg_write_plat_t(plat_t *str)`
-  - `saveg_read_lightflash_t` (function, line 1193) `static void saveg_read_lightflash_t(lightflash_t *str)`
-  - `saveg_write_lightflash_t` (function, line 1220) `static void saveg_write_lightflash_t(lightflash_t *str)`
-  - `saveg_read_strobe_t` (function, line 1248) `static void saveg_read_strobe_t(strobe_t *str)`
-  - `saveg_write_strobe_t` (function, line 1275) `static void saveg_write_strobe_t(strobe_t *str)`
-  - `saveg_read_glow_t` (function, line 1303) `static void saveg_read_glow_t(glow_t *str)`
-  - `saveg_write_glow_t` (function, line 1324) `static void saveg_write_glow_t(glow_t *str)`
-  - `P_WriteSaveGameHeader` (function, line 1346) `void P_WriteSaveGameHeader(char *description)`
-  - `P_ReadSaveGameHeader` (function, line 1378) `boolean P_ReadSaveGameHeader(void)`
-  - `P_ReadSaveGameEOF` (function, line 1418) `boolean P_ReadSaveGameEOF(void)`
-  - `P_WriteSaveGameEOF` (function, line 1431) `void P_WriteSaveGameEOF(void)`
+  - `P_TempSaveGameFile` (function, line 47) `char *P_TempSaveGameFile(void)`
+  - `P_SaveGameFile` (function, line 61) `char *P_SaveGameFile(int slot)`
+  - `saveg_read8` (function, line 81) `static byte saveg_read8(void)`
+  - `saveg_write8` (function, line 99) `static void saveg_write8(byte value)`
+  - `saveg_read16` (function, line 112) `static short saveg_read16(void)`
+  - `saveg_write16` (function, line 122) `static void saveg_write16(short value)`
+  - `saveg_read32` (function, line 128) `static int saveg_read32(void)`
+  - `saveg_write32` (function, line 140) `static void saveg_write32(int value)`
+  - `saveg_read_pad` (function, line 150) `static void saveg_read_pad(void)`
+  - `saveg_write_pad` (function, line 166) `static void saveg_write_pad(void)`
+  - `saveg_readp` (function, line 185) `static void *saveg_readp(void)`
+  - `saveg_writep` (function, line 190) `static void saveg_writep(void *p)`
+  - `saveg_read_mapthing_t` (function, line 208) `static void saveg_read_mapthing_t(mapthing_t *str)`
+  - `saveg_write_mapthing_t` (function, line 226) `static void saveg_write_mapthing_t(mapthing_t *str)`
+  - `saveg_read_actionf_t` (function, line 248) `static void saveg_read_actionf_t(actionf_t *str)`
+  - `saveg_write_actionf_t` (function, line 254) `static void saveg_write_actionf_t(actionf_t *str)`
+  - `saveg_read_thinker_t` (function, line 273) `static void saveg_read_thinker_t(thinker_t *str)`
+  - `saveg_write_thinker_t` (function, line 285) `static void saveg_write_thinker_t(thinker_t *str)`
+  - `saveg_read_mobj_t` (function, line 301) `static void saveg_read_mobj_t(mobj_t *str)`
+  - `saveg_write_mobj_t` (function, line 421) `static void saveg_write_mobj_t(mobj_t *str)`
+  - `saveg_read_ticcmd_t` (function, line 541) `static void saveg_read_ticcmd_t(ticcmd_t *str)`
+  - `saveg_write_ticcmd_t` (function, line 563) `static void saveg_write_ticcmd_t(ticcmd_t *str)`
+  - `saveg_read_pspdef_t` (function, line 589) `static void saveg_read_pspdef_t(pspdef_t *str)`
+  - `saveg_write_pspdef_t` (function, line 615) `static void saveg_write_pspdef_t(pspdef_t *str)`
+  - `saveg_read_player_t` (function, line 641) `static void saveg_read_player_t(player_t *str)`
+  - `saveg_write_player_t` (function, line 772) `static void saveg_write_player_t(player_t *str)`
+  - `saveg_read_ceiling_t` (function, line 908) `static void saveg_read_ceiling_t(ceiling_t *str)`
+  - `saveg_write_ceiling_t` (function, line 944) `static void saveg_write_ceiling_t(ceiling_t *str)`
+  - `saveg_read_vldoor_t` (function, line 981) `static void saveg_read_vldoor_t(vldoor_t *str)`
+  - `saveg_write_vldoor_t` (function, line 1011) `static void saveg_write_vldoor_t(vldoor_t *str)`
+  - `saveg_read_floormove_t` (function, line 1042) `static void saveg_read_floormove_t(floormove_t *str)`
+  - `saveg_write_floormove_t` (function, line 1075) `static void saveg_write_floormove_t(floormove_t *str)`
+  - `saveg_read_plat_t` (function, line 1109) `static void saveg_read_plat_t(plat_t *str)`
+  - `saveg_write_plat_t` (function, line 1151) `static void saveg_write_plat_t(plat_t *str)`
+  - `saveg_read_lightflash_t` (function, line 1194) `static void saveg_read_lightflash_t(lightflash_t *str)`
+  - `saveg_write_lightflash_t` (function, line 1221) `static void saveg_write_lightflash_t(lightflash_t *str)`
+  - `saveg_read_strobe_t` (function, line 1249) `static void saveg_read_strobe_t(strobe_t *str)`
+  - `saveg_write_strobe_t` (function, line 1276) `static void saveg_write_strobe_t(strobe_t *str)`
+  - `saveg_read_glow_t` (function, line 1304) `static void saveg_read_glow_t(glow_t *str)`
+  - `saveg_write_glow_t` (function, line 1325) `static void saveg_write_glow_t(glow_t *str)`
+  - `P_WriteSaveGameHeader` (function, line 1347) `void P_WriteSaveGameHeader(char *description)`
+  - `P_ReadSaveGameHeader` (function, line 1379) `boolean P_ReadSaveGameHeader(void)`
+  - `P_ReadSaveGameEOF` (function, line 1419) `boolean P_ReadSaveGameEOF(void)`
+  - `P_WriteSaveGameEOF` (function, line 1432) `void P_WriteSaveGameEOF(void)`
   - `P_ArchivePlayers` (function, line 1440) `void P_ArchivePlayers (void)`
   - `P_UnArchivePlayers` (function, line 1460) `void P_UnArchivePlayers (void)`
   - `P_ArchiveWorld` (function, line 1484) `void P_ArchiveWorld (void)`
@@ -4165,20 +3631,6 @@ A_BFGsound
   - `P_UnArchiveThinkers` (function, line 1620) `void P_UnArchiveThinkers (void)`
   - `P_ArchiveSpecials` (function, line 1704) `void P_ArchiveSpecials (void)`
   - `P_UnArchiveSpecials` (function, line 1793) `void P_UnArchiveSpecials (void)`
-  - `DEH_snprintf` (function, line 72) `DEH_snprintf(basename, 32, SAVEGAMENAME "%d.dsg", slot);`
-  - `M_snprintf` (function, line 74) `M_snprintf(filename, filename_size, "%s%s", savegamedir, basename);`
-  - `fprintf` (function, line 89) `fprintf(stderr, "saveg_read8: Unexpected end of file while " "reading save game\n");`
-  - `saveg_read_think_t` (function, line 282) `saveg_read_think_t(&str->function);`
-  - `saveg_write_think_t` (function, line 294) `saveg_write_think_t(&str->function);`
-  - `saveg_write_enum` (function, line 445) `saveg_write_enum(str->sprite);`
-  - `memset` (function, line 1356) `memset(name, 0, sizeof(name));`
-  - `Z_Free` (function, line 1635) `else Z_Free (currentthinker);`
-  - `P_InitThinkers` (function, line 1640) `P_InitThinkers ();`
-  - `P_SetThingPosition` (function, line 1658) `P_SetThingPosition (mobj);`
-  - `P_AddThinker` (function, line 1663) `P_AddThinker (&mobj->thinker);`
-  - `I_Error` (function, line 1665) `default: I_Error ("Unknown tclass %i in savegame",tclass);`
-  - `P_AddActiveCeiling` (function, line 1825) `P_AddActiveCeiling(ceiling);`
-  - `P_AddActivePlat` (function, line 1856) `P_AddActivePlat(plat);`
   - `SAVEGAME_EOF` (macro, line 35) `#define SAVEGAME_EOF`
   - `VERSIONSIZE` (macro, line 37) `#define VERSIONSIZE`
   - `saveg_read_enum` (macro, line 196) `#define saveg_read_enum`
@@ -4194,9 +3646,7 @@ A_BFGsound
 - Symbols:
   - `P_TempSaveGameFile` (function, line 30) `char *P_TempSaveGameFile(void);`
   - `P_SaveGameFile` (function, line 34) `char *P_SaveGameFile(int slot);`
-  - `P_ReadSaveGameHeader` (function, line 38) `boolean P_ReadSaveGameHeader(void);`
   - `P_WriteSaveGameHeader` (function, line 40) `void P_WriteSaveGameHeader(char *description);`
-  - `P_ReadSaveGameEOF` (function, line 43) `boolean P_ReadSaveGameEOF(void);`
   - `P_WriteSaveGameEOF` (function, line 45) `void P_WriteSaveGameEOF(void);`
   - `P_ArchivePlayers` (function, line 49) `void P_ArchivePlayers (void);`
   - `P_UnArchivePlayers` (function, line 50) `void P_UnArchivePlayers (void);`
@@ -4228,9 +3678,9 @@ A_BFGsound
   - `P_LoadSideDefs` (function, line 473) `void P_LoadSideDefs (int lump)`
   - `P_LoadBlockMap` (function, line 504) `void P_LoadBlockMap (int lump)`
   - `P_GroupLines` (function, line 545) `void P_GroupLines (void)`
-  - `PadRejectArray` (function, line 660) `static void PadRejectArray(byte *array, unsigned int len)`
-  - `P_LoadReject` (function, line 711) `static void P_LoadReject(int lumpnum)`
-  - `P_SetupLevel` (function, line 743) `void
+  - `PadRejectArray` (function, line 661) `static void PadRejectArray(byte *array, unsigned int len)`
+  - `P_LoadReject` (function, line 712) `static void P_LoadReject(int lumpnum)`
+  - `P_SetupLevel` (function, line 744) `void
 P_SetupLevel
 ( int		episode,
   int		map,
@@ -4238,22 +3688,6 @@ P_SetupLevel
   skill_t	skill)`
   - `P_Init` (function, line 847) `void P_Init (void)`
   - `P_SpawnMapThing` (function, line 42) `void P_SpawnMapThing (mapthing_t* mthing);`
-  - `W_ReleaseLumpNum` (function, line 147) `W_ReleaseLumpNum(lump);`
-  - `memset` (function, line 160) `memset(&null_sector, 0, sizeof(null_sector));`
-  - `I_GetMemoryValue` (function, line 161) `I_GetMemoryValue(0, &null_sector.floorheight, 4);`
-  - `W_ReadLump` (function, line 514) `W_ReadLump(lump, blockmaplump);`
-  - `M_ClearBox` (function, line 624) `M_ClearBox (bbox);`
-  - `M_AddToBox` (function, line 629) `M_AddToBox (bbox, li->v1->x, li->v1->y);`
-  - `fprintf` (function, line 694) `fprintf(stderr, "PadRejectArray: REJECT lump too short to pad! (%i > %i)\n", len, (int) sizeof(rejectpad));`
-  - `S_Start` (function, line 767) `S_Start ();`
-  - `Z_FreeTags` (function, line 768) `Z_FreeTags (PU_LEVEL, PU_PURGELEVEL-1);`
-  - `P_InitThinkers` (function, line 772) `P_InitThinkers ();`
-  - `DEH_snprintf` (function, line 779) `else DEH_snprintf(lumpname, 9, "map%i", map);`
-  - `G_DeathMatchSpawnPlayer` (function, line 820) `G_DeathMatchSpawnPlayer (i);`
-  - `P_SpawnSpecials` (function, line 829) `P_SpawnSpecials ();`
-  - `P_InitSwitchList` (function, line 849) `P_InitSwitchList ();`
-  - `P_InitPicAnims` (function, line 850) `P_InitPicAnims ();`
-  - `R_InitSprites` (function, line 851) `R_InitSprites (sprnames);`
   - `MAX_DEATHMATCH_STARTS` (macro, line 105) `#define MAX_DEATHMATCH_STARTS`
 - Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
@@ -4272,22 +3706,21 @@ P_SetupLevel
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `P_DivlineSide` (function, line 47) `int
+  - `P_DivlineSide` (function, line 48) `int
 P_DivlineSide
 ( fixed_t	x,
   fixed_t	y,
   divline_t*	node )`
-  - `P_InterceptVector2` (function, line 101) `fixed_t
+  - `P_InterceptVector2` (function, line 102) `fixed_t
 P_InterceptVector2
 ( divline_t*	v2,
   divline_t*	v1 )`
   - `P_CrossSubsector` (function, line 128) `boolean P_CrossSubsector (int num)`
   - `P_CrossBSPNode` (function, line 258) `boolean P_CrossBSPNode (int bspnum)`
-  - `P_CheckSight` (function, line 300) `boolean
+  - `P_CheckSight` (function, line 301) `boolean
 P_CheckSight
 ( mobj_t*	t1,
   mobj_t*	t2 )`
-  - `FixedMul` (function, line 117) `FixedMul ( (v2->y - v1->y)>>8 , v1->dx);`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 
 ## progs/doomgeneric/p_spec.c
@@ -4297,83 +3730,57 @@ P_CheckSight
 - Symbols:
   - `anim_t` (struct, line 55)
   - `animdef_t` (struct, line 68)
-  - `P_InitPicAnims` (function, line 140) `void P_InitPicAnims (void)`
-  - `getSide` (function, line 202) `side_t*
+  - `P_InitPicAnims` (function, line 143) `void P_InitPicAnims (void)`
+  - `getSide` (function, line 203) `side_t*
 getSide
 ( int		currentSector,
   int		line,
   int		side )`
-  - `getSector` (function, line 218) `sector_t*
+  - `getSector` (function, line 219) `sector_t*
 getSector
 ( int		currentSector,
   int		line,
   int		side )`
-  - `twoSided` (function, line 233) `int
+  - `twoSided` (function, line 234) `int
 twoSided
 ( int	sector,
   int	line )`
-  - `getNextSector` (function, line 249) `sector_t*
+  - `getNextSector` (function, line 250) `sector_t*
 getNextSector
 ( line_t*	line,
   sector_t*	sec )`
   - `P_FindLowestFloorSurrounding` (function, line 269) `fixed_t	P_FindLowestFloorSurrounding(sector_t* sec)`
   - `P_FindHighestFloorSurrounding` (function, line 296) `fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)`
-  - `P_FindNextHighestFloor` (function, line 328) `fixed_t
+  - `P_FindNextHighestFloor` (function, line 330) `fixed_t
 P_FindNextHighestFloor
 ( sector_t* sec,
   int       currentheight )`
-  - `P_FindLowestCeilingSurrounding` (function, line 391) `fixed_t
+  - `P_FindLowestCeilingSurrounding` (function, line 392) `fixed_t
 P_FindLowestCeilingSurrounding(sector_t* sec)`
   - `P_FindHighestCeilingSurrounding` (function, line 417) `fixed_t	P_FindHighestCeilingSurrounding(sector_t* sec)`
-  - `P_FindSectorFromLineTag` (function, line 443) `int
+  - `P_FindSectorFromLineTag` (function, line 444) `int
 P_FindSectorFromLineTag
 ( line_t*	line,
   int		start )`
-  - `P_FindMinSurroundingLight` (function, line 463) `int
+  - `P_FindMinSurroundingLight` (function, line 464) `int
 P_FindMinSurroundingLight
 ( sector_t*	sector,
   int		max )`
-  - `P_CrossSpecialLine` (function, line 501) `void
+  - `P_CrossSpecialLine` (function, line 502) `void
 P_CrossSpecialLine
 ( int		linenum,
   int		side,
   mobj_t*	thing )`
-  - `P_ShootSpecialLine` (function, line 968) `void
+  - `P_ShootSpecialLine` (function, line 969) `void
 P_ShootSpecialLine
 ( mobj_t*	thing,
   line_t*	line )`
   - `P_PlayerInSpecialSector` (function, line 1019) `void P_PlayerInSpecialSector (player_t* player)`
-  - `P_UpdateSpecials` (function, line 1092) `void P_UpdateSpecials (void)`
-  - `DonutOverrun` (function, line 1177) `static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic,
+  - `P_UpdateSpecials` (function, line 1093) `void P_UpdateSpecials (void)`
+  - `DonutOverrun` (function, line 1178) `static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic,
                          li...`
   - `EV_DoDonut` (function, line 1257) `int EV_DoDonut(line_t*	line)`
   - `P_SpawnSpecials` (function, line 1374) `void P_SpawnSpecials (void)`
-  - `I_Error` (function, line 360) `I_Error("Sector with more than 22 adjoining sectors. " "Vanilla will crash here");`
-  - `EV_DoDoor` (function, line 555) `EV_DoDoor(line,vld_open);`
-  - `EV_DoFloor` (function, line 573) `EV_DoFloor(line,raiseFloor);`
-  - `EV_DoCeiling` (function, line 579) `EV_DoCeiling(line,fastCrushAndRaise);`
-  - `EV_BuildStairs` (function, line 585) `EV_BuildStairs(line,build8);`
-  - `EV_DoPlat` (function, line 591) `EV_DoPlat(line,downWaitUpStay,0);`
-  - `EV_LightTurnOn` (function, line 597) `EV_LightTurnOn(line,0);`
-  - `EV_StartLightStrobing` (function, line 615) `EV_StartLightStrobing(line);`
-  - `EV_Teleport` (function, line 670) `EV_Teleport( line, side, thing );`
-  - `G_ExitLevel` (function, line 689) `G_ExitLevel ();`
-  - `EV_StopPlat` (function, line 700) `EV_StopPlat(line);`
-  - `EV_CeilingCrushStop` (function, line 712) `EV_CeilingCrushStop(line);`
-  - `EV_TurnTagLightsOff` (function, line 730) `EV_TurnTagLightsOff(line);`
-  - `G_SecretExitLevel` (function, line 772) `G_SecretExitLevel ();`
-  - `P_ChangeSwitchTexture` (function, line 995) `P_ChangeSwitchTexture(line,0);`
-  - `S_StartSound` (function, line 1161) `S_StartSound(&buttonlist[i].soundorg,sfx_swtchn);`
-  - `memset` (function, line 1162) `memset(&buttonlist[i],0,sizeof(button_t));`
-  - `M_StrToInt` (function, line 1225) `M_StrToInt(myargv[p + 1], &tmp_s3_floorheight);`
-  - `fprintf` (function, line 1231) `fprintf(stderr, "DonutOverrun: The second parameter for \"-donut\" " "switch should be greater than 0 and less than number " "of flats (%d). Using default value (%d) instead. \n", numflats, DONUT_FLOO`
-  - `P_AddThinker` (function, line 1329) `P_AddThinker (&floor->thinker);`
-  - `P_SpawnLightFlash` (function, line 1402) `P_SpawnLightFlash (sector);`
-  - `P_SpawnStrobeFlash` (function, line 1407) `P_SpawnStrobeFlash(sector,FASTDARK,0);`
-  - `P_SpawnGlowingLight` (function, line 1423) `P_SpawnGlowingLight(sector);`
-  - `P_SpawnDoorCloseIn30` (function, line 1432) `P_SpawnDoorCloseIn30 (sector);`
-  - `P_SpawnDoorRaiseIn5Mins` (function, line 1447) `P_SpawnDoorRaiseIn5Mins (sector, i);`
-  - `P_SpawnFireFlicker` (function, line 1449) `case 17: P_SpawnFireFlicker(sector);`
   - `anims` (variable, line 79) `extern anim_t anims[MAXANIMS];`
   - `lastanim` (variable, line 81) `extern anim_t* lastanim;`
   - `numlinespecials` (variable, line 137) `extern short numlinespecials;`
@@ -4407,7 +3814,6 @@ P_ShootSpecialLine
   - `P_InitPicAnims` (function, line 39) `void P_InitPicAnims (void);`
   - `P_SpawnSpecials` (function, line 42) `void P_SpawnSpecials (void);`
   - `P_UpdateSpecials` (function, line 45) `void P_UpdateSpecials (void);`
-  - `P_UseSpecialLine` (function, line 48) `boolean P_UseSpecialLine ( mobj_t* thing, line_t* line, int side );`
   - `P_ShootSpecialLine` (function, line 53) `void P_ShootSpecialLine ( mobj_t* thing, line_t* line );`
   - `P_CrossSpecialLine` (function, line 58) `void P_CrossSpecialLine ( int linenum, int side, mobj_t* thing );`
   - `P_PlayerInSpecialSector` (function, line 64) `void P_PlayerInSpecialSector (player_t* player);`
@@ -4455,7 +3861,6 @@ P_ShootSpecialLine
   - `P_RemoveActiveCeiling` (function, line 526) `void P_RemoveActiveCeiling(ceiling_t* c);`
   - `EV_CeilingCrushStop` (function, line 527) `int EV_CeilingCrushStop(line_t* line);`
   - `P_ActivateInStasisCeiling` (function, line 528) `void P_ActivateInStasisCeiling(line_t* line);`
-  - `T_MovePlane` (function, line 606) `result_e T_MovePlane ( sector_t* sector, fixed_t speed, fixed_t dest, boolean crush, int floorOrCeiling, int direction );`
   - `EV_BuildStairs` (function, line 615) `int EV_BuildStairs ( line_t* line, stair_e type );`
   - `EV_DoFloor` (function, line 620) `int EV_DoFloor ( line_t* line, floor_e floortype );`
   - `T_MoveFloor` (function, line 625) `void T_MoveFloor( floormove_t* floor);`
@@ -4495,27 +3900,21 @@ P_ShootSpecialLine
 - Language: c
 - Symbols:
   - `P_InitSwitchList` (function, line 101) `void P_InitSwitchList(void)`
-  - `P_StartButton` (function, line 148) `void
+  - `P_StartButton` (function, line 149) `void
 P_StartButton
 ( line_t*	line,
   bwhere_e	w,
   int		texture,
   int		time )`
-  - `P_ChangeSwitchTexture` (function, line 194) `void
+  - `P_ChangeSwitchTexture` (function, line 195) `void
 P_ChangeSwitchTexture
 ( line_t*	line,
   int 		useAgain )`
-  - `P_UseSpecialLine` (function, line 269) `boolean
+  - `P_UseSpecialLine` (function, line 270) `boolean
 P_UseSpecialLine
 ( mobj_t*	thing,
   line_t*	line,
   int		side )`
-  - `I_Error` (function, line 131) `I_Error("Can't find switch texture '%s'!", alphSwitchList[i].name1);`
-  - `S_StartSound` (function, line 222) `S_StartSound(buttonlist->soundorg,sound);`
-  - `EV_VerticalDoor` (function, line 332) `EV_VerticalDoor (line, thing);`
-  - `G_ExitLevel` (function, line 356) `G_ExitLevel ();`
-  - `G_SecretExitLevel` (function, line 428) `G_SecretExitLevel ();`
-  - `EV_LightTurnOn` (function, line 634) `EV_LightTurnOn(line,255);`
 - Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_telept.c
@@ -4523,12 +3922,11 @@ P_UseSpecialLine
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `EV_Teleport` (function, line 41) `int
+  - `EV_Teleport` (function, line 42) `int
 EV_Teleport
 ( line_t*	line,
   int		side,
   mobj_t*	thing )`
-  - `S_StartSound` (function, line 113) `S_StartSound (fog, sfx_telept);`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 
 ## progs/doomgeneric/p_tick.c
@@ -4541,10 +3939,7 @@ EV_Teleport
   - `P_RemoveThinker` (function, line 73) `void P_RemoveThinker (thinker_t* thinker)`
   - `P_AllocateThinker` (function, line 85) `void P_AllocateThinker (thinker_t*	thinker)`
   - `P_RunThinkers` (function, line 94) `void P_RunThinkers (void)`
-  - `P_Ticker` (function, line 122) `void P_Ticker (void)`
-  - `Z_Free` (function, line 106) `Z_Free (currentthinker);`
-  - `P_UpdateSpecials` (function, line 146) `P_UpdateSpecials ();`
-  - `P_RespawnSpecials` (function, line 147) `P_RespawnSpecials ();`
+  - `P_Ticker` (function, line 123) `void P_Ticker (void)`
 - Depends on: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/p_tick.h
@@ -4561,19 +3956,15 @@ EV_Teleport
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `P_Thrust` (function, line 51) `void
+  - `P_Thrust` (function, line 52) `void
 P_Thrust
 ( player_t*	player,
   angle_t	angle,
   fixed_t	move )`
   - `P_CalcHeight` (function, line 70) `void P_CalcHeight (player_t* player)`
   - `P_MovePlayer` (function, line 141) `void P_MovePlayer (player_t* player)`
-  - `P_DeathThink` (function, line 174) `void P_DeathThink (player_t* player)`
+  - `P_DeathThink` (function, line 175) `void P_DeathThink (player_t* player)`
   - `P_PlayerThink` (function, line 229) `void P_PlayerThink (player_t* player)`
-  - `FixedMul` (function, line 82) `FixedMul (player->mo->momx, player->mo->momx) + FixedMul (player->mo->momy,player->mo->momy);`
-  - `P_SetMobjState` (function, line 162) `P_SetMobjState (player->mo, S_PLAY_RUN1);`
-  - `P_MovePsprites` (function, line 179) `P_MovePsprites (player);`
-  - `P_UseLines` (function, line 319) `P_UseLines (player);`
   - `INVERSECOLORMAP` (macro, line 34) `#define INVERSECOLORMAP`
   - `MAXBOB` (macro, line 42) `#define MAXBOB`
   - `ANG5` (macro, line 173) `#define ANG5`
@@ -4586,21 +3977,20 @@ P_Thrust
 - Symbols:
   - `cliprange_t` (struct, line 73)
   - `R_ClearDrawSegs` (function, line 61) `void R_ClearDrawSegs (void)`
-  - `R_ClipSolidWallSegment` (function, line 96) `void
+  - `R_ClipSolidWallSegment` (function, line 97) `void
 R_ClipSolidWallSegment
 ( int			first,
   int			last )`
-  - `R_ClipPassWallSegment` (function, line 189) `void
+  - `R_ClipPassWallSegment` (function, line 190) `void
 R_ClipPassWallSegment
 ( int	first,
   int	last )`
   - `R_ClearClipSegs` (function, line 238) `void R_ClearClipSegs (void)`
   - `R_AddLine` (function, line 252) `void R_AddLine (seg_t*	line)`
-  - `R_CheckBBox` (function, line 372) `boolean R_CheckBBox (fixed_t*	bspcoord)`
+  - `R_CheckBBox` (function, line 374) `boolean R_CheckBBox (fixed_t*	bspcoord)`
   - `R_Subsector` (function, line 490) `void R_Subsector (int num)`
   - `R_RenderBSPNode` (function, line 545) `void R_RenderBSPNode (int bspnum)`
   - `R_StoreWallRange` (function, line 48) `void R_StoreWallRange ( int start, int stop );`
-  - `R_AddSprites` (function, line 527) `R_AddSprites (frontsector);`
   - `MAXSEGS` (macro, line 79) `#define MAXSEGS`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
 
@@ -4609,7 +3999,6 @@ R_ClipPassWallSegment
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `void` (function, line 48) `typedef void (*drawfunc_t) (int start, int stop);`
   - `R_ClearClipSegs` (function, line 54) `void R_ClearClipSegs (void);`
   - `R_ClearDrawSegs` (function, line 55) `void R_ClearDrawSegs (void);`
   - `R_RenderBSPNode` (function, line 56) `void R_RenderBSPNode (int bspnum);`
@@ -4640,7 +4029,7 @@ R_ClipPassWallSegment
   - `texture_s` (struct, line 106)
   - `texpatch_t` (struct, line 89)
   - `texture_t` (type_alias, line 103) `typedef struct texture_s texture_t;`
-  - `R_DrawColumnInCache` (function, line 185) `void
+  - `R_DrawColumnInCache` (function, line 186) `void
 R_DrawColumnInCache
 ( column_t*	patch,
   byte*		cache,
@@ -4648,11 +4037,11 @@ R_DrawColumnInCache
   int		cacheheight )`
   - `R_GenerateComposite` (function, line 226) `void R_GenerateComposite (int texnum)`
   - `R_GenerateLookup` (function, line 294) `void R_GenerateLookup (int texnum)`
-  - `R_GetColumn` (function, line 382) `byte*
+  - `R_GetColumn` (function, line 383) `byte*
 R_GetColumn
 ( int		tex,
   int		col )`
-  - `GenerateTextureHashTable` (function, line 402) `static void GenerateTextureHashTable(void)`
+  - `GenerateTextureHashTable` (function, line 404) `static void GenerateTextureHashTable(void)`
   - `R_InitTextures` (function, line 451) `void R_InitTextures (void)`
   - `R_InitFlats` (function, line 633) `void R_InitFlats (void)`
   - `R_InitSpriteLumps` (function, line 655) `void R_InitSpriteLumps (void)`
@@ -4661,17 +4050,7 @@ R_GetColumn
   - `R_FlatNumForName` (function, line 720) `int R_FlatNumForName (char* name)`
   - `R_CheckTextureNumForName` (function, line 744) `int	R_CheckTextureNumForName (char *name)`
   - `R_TextureNumForName` (function, line 775) `int	R_TextureNumForName (char* name)`
-  - `R_PrecacheLevel` (function, line 799) `void R_PrecacheLevel (void)`
-  - `Z_ChangeTag` (function, line 286) `Z_ChangeTag (block, PU_CACHE);`
-  - `memset` (function, line 321) `memset (patchcount, 0, texture->width);`
-  - `printf` (function, line 351) `printf ("R_GenerateLookup: column without a patch (%s)\n", texture->name);`
-  - `I_Error` (function, line 365) `I_Error ("R_GenerateLookup: texture %i is >64k", texnum);`
-  - `Z_Free` (function, line 372) `Z_Free(patchcount);`
-  - `M_StringCopy` (function, line 495) `M_StringCopy(name, name_p + i * 8, sizeof(name));`
-  - `W_ReleaseLumpName` (function, line 498) `W_ReleaseLumpName(DEH_String("PNAMES"));`
-  - `Z_Malloc` (function, line 572) `Z_Malloc (sizeof(texture_t) + sizeof(texpatch_t)*(SHORT(mtexture->patchcount)-1), PU_STATIC, 0);`
-  - `memcpy` (function, line 579) `memcpy (texture->name, mtexture->name, sizeof(texture->name));`
-  - `W_CacheLumpNum` (function, line 836) `W_CacheLumpNum(lump, PU_CACHE);`
+  - `R_PrecacheLevel` (function, line 800) `void R_PrecacheLevel (void)`
 - Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/r_data.h
@@ -4729,32 +4108,25 @@ R_GetColumn
 - Symbols:
   - `R_DrawColumn` (function, line 102) `void R_DrawColumn (void)`
   - `R_DrawColumn` (function, line 152) `void R_DrawColumn (void)`
-  - `R_DrawColumnLow` (function, line 206) `void R_DrawColumnLow (void)`
+  - `R_DrawColumnLow` (function, line 208) `void R_DrawColumnLow (void)`
   - `R_DrawFuzzColumn` (function, line 283) `void R_DrawFuzzColumn (void)`
-  - `R_DrawFuzzColumnLow` (function, line 341) `void R_DrawFuzzColumnLow (void)`
-  - `R_DrawTranslatedColumn` (function, line 423) `void R_DrawTranslatedColumn (void)`
-  - `R_DrawTranslatedColumnLow` (function, line 467) `void R_DrawTranslatedColumnLow (void)`
+  - `R_DrawFuzzColumnLow` (function, line 342) `void R_DrawFuzzColumnLow (void)`
+  - `R_DrawTranslatedColumn` (function, line 424) `void R_DrawTranslatedColumn (void)`
+  - `R_DrawTranslatedColumnLow` (function, line 468) `void R_DrawTranslatedColumnLow (void)`
   - `R_InitTranslationTables` (function, line 530) `void R_InitTranslationTables (void)`
   - `R_DrawSpan` (function, line 590) `void R_DrawSpan (void)`
   - `R_DrawSpan` (function, line 646) `void R_DrawSpan (void)`
   - `R_DrawSpanLow` (function, line 719) `void R_DrawSpanLow (void)`
-  - `R_InitBuffer` (function, line 776) `void
+  - `R_InitBuffer` (function, line 777) `void
 R_InitBuffer
 ( int		width,
   int		height )`
   - `R_FillBackScreen` (function, line 812) `void R_FillBackScreen (void)`
-  - `R_VideoErase` (function, line 918) `void
+  - `R_VideoErase` (function, line 919) `void
 R_VideoErase
 ( unsigned	ofs,
   int		count )`
   - `R_DrawViewBorder` (function, line 941) `void R_DrawViewBorder (void)`
-  - `I_Error` (function, line 228) `I_Error ("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);`
-  - `Z_Free` (function, line 835) `Z_Free(background_buffer);`
-  - `memcpy` (function, line 862) `memcpy (dest, src+((y&63)<<6), 64);`
-  - `V_UseBuffer` (function, line 874) `V_UseBuffer(background_buffer);`
-  - `V_DrawPatch` (function, line 880) `V_DrawPatch(viewwindowx+x, viewwindowy-8, patch);`
-  - `V_RestoreBuffer` (function, line 910) `V_RestoreBuffer();`
-  - `V_MarkRect` (function, line 972) `V_MarkRect (0,0,SCREENWIDTH, SCREENHEIGHT-SBARHEIGHT);`
   - `MAXWIDTH` (macro, line 41) `#define MAXWIDTH`
   - `MAXHEIGHT` (macro, line 42) `#define MAXHEIGHT`
   - `SBARHEIGHT` (macro, line 45) `#define SBARHEIGHT`
@@ -4815,32 +4187,32 @@ R_VideoErase
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `R_AddPointToBox` (function, line 122) `void
+  - `R_AddPointToBox` (function, line 123) `void
 R_AddPointToBox
 ( int		x,
   int		y,
   fixed_t*	box )`
-  - `R_PointOnSide` (function, line 145) `int
+  - `R_PointOnSide` (function, line 146) `int
 R_PointOnSide
 ( fixed_t	x,
   fixed_t	y,
   node_t*	node )`
-  - `R_PointOnSegSide` (function, line 196) `int
+  - `R_PointOnSegSide` (function, line 199) `int
 R_PointOnSegSide
 ( fixed_t	x,
   fixed_t	y,
   seg_t*	line )`
-  - `R_PointToAngle` (function, line 271) `angle_t
+  - `R_PointToAngle` (function, line 276) `angle_t
 R_PointToAngle
 ( fixed_t	x,
   fixed_t	y )`
-  - `R_PointToAngle2` (function, line 359) `angle_t
+  - `R_PointToAngle2` (function, line 362) `angle_t
 R_PointToAngle2
 ( fixed_t	x1,
   fixed_t	y1,
   fixed_t	x2,
   fixed_t	y2 )`
-  - `R_PointToDist` (function, line 373) `fixed_t
+  - `R_PointToDist` (function, line 376) `fixed_t
 R_PointToDist
 ( fixed_t	x,
   fixed_t	y )`
@@ -4848,34 +4220,19 @@ R_PointToDist
   - `R_ScaleFromGlobalAngle` (function, line 449) `fixed_t R_ScaleFromGlobalAngle (angle_t visangle)`
   - `R_InitTables` (function, line 505) `void R_InitTables (void)`
   - `R_InitTextureMapping` (function, line 540) `void R_InitTextureMapping (void)`
-  - `R_InitLightTables` (function, line 609) `void R_InitLightTables (void)`
-  - `R_SetViewSize` (function, line 651) `void
+  - `R_InitLightTables` (function, line 610) `void R_InitLightTables (void)`
+  - `R_SetViewSize` (function, line 654) `void
 R_SetViewSize
 ( int		blocks,
   int		detail )`
   - `R_ExecuteSetViewSize` (function, line 667) `void R_ExecuteSetViewSize (void)`
-  - `R_Init` (function, line 764) `void R_Init (void)`
-  - `R_PointInSubsector` (function, line 793) `subsector_t*
+  - `R_Init` (function, line 767) `void R_Init (void)`
+  - `R_PointInSubsector` (function, line 794) `subsector_t*
 R_PointInSubsector
 ( fixed_t	x,
   fixed_t	y )`
   - `R_SetupFrame` (function, line 823) `void R_SetupFrame (player_t* player)`
   - `R_RenderPlayerView` (function, line 863) `void R_RenderPlayerView (player_t* player)`
-  - `void` (function, line 106) `void (*colfunc) (void);`
-  - `R_InitBuffer` (function, line 712) `R_InitBuffer (scaledviewwidth, viewheight);`
-  - `R_InitData` (function, line 769) `R_InitData ();`
-  - `printf` (function, line 770) `printf (".");`
-  - `R_InitPlanes` (function, line 778) `R_InitPlanes ();`
-  - `R_InitSkyMap` (function, line 782) `R_InitSkyMap ();`
-  - `R_InitTranslationTables` (function, line 783) `R_InitTranslationTables ();`
-  - `R_ClearClipSegs` (function, line 868) `R_ClearClipSegs ();`
-  - `R_ClearDrawSegs` (function, line 869) `R_ClearDrawSegs ();`
-  - `R_ClearPlanes` (function, line 870) `R_ClearPlanes ();`
-  - `R_ClearSprites` (function, line 871) `R_ClearSprites ();`
-  - `NetUpdate` (function, line 874) `NetUpdate ();`
-  - `R_RenderBSPNode` (function, line 877) `R_RenderBSPNode (numnodes-1);`
-  - `R_DrawPlanes` (function, line 881) `R_DrawPlanes ();`
-  - `R_DrawMasked` (function, line 886) `R_DrawMasked ();`
   - `walllights` (variable, line 54) `extern lighttable_t** walllights;`
   - `FIELDOFVIEW` (macro, line 43) `#define FIELDOFVIEW`
   - `DISTMAP` (macro, line 608) `#define DISTMAP`
@@ -4931,23 +4288,23 @@ R_PointInSubsector
 - Language: c
 - Symbols:
   - `R_InitPlanes` (function, line 94) `void R_InitPlanes (void)`
-  - `R_MapPlane` (function, line 113) `void
+  - `R_MapPlane` (function, line 114) `void
 R_MapPlane
 ( int		y,
   int		x1,
   int		x2 )`
   - `R_ClearPlanes` (function, line 178) `void R_ClearPlanes (void)`
-  - `R_FindPlane` (function, line 210) `visplane_t*
+  - `R_FindPlane` (function, line 211) `visplane_t*
 R_FindPlane
 ( fixed_t	height,
   int		picnum,
   int		lightlevel )`
-  - `R_CheckPlane` (function, line 258) `visplane_t*
+  - `R_CheckPlane` (function, line 259) `visplane_t*
 R_CheckPlane
 ( visplane_t*	pl,
   int		start,
   int		stop )`
-  - `R_MakeSpans` (function, line 323) `void
+  - `R_MakeSpans` (function, line 324) `void
 R_MakeSpans
 ( int		x,
   int		t1,
@@ -4955,11 +4312,6 @@ R_MakeSpans
   int		t2,
   int		b2 )`
   - `R_DrawPlanes` (function, line 360) `void R_DrawPlanes (void)`
-  - `I_Error` (function, line 130) `I_Error ("R_MapPlane: %i, %i at %i",x1,x2,y);`
-  - `spanfunc` (function, line 170) `spanfunc ();`
-  - `memset` (function, line 194) `memset (cachedheight, 0, sizeof(cachedheight));`
-  - `colfunc` (function, line 410) `colfunc ();`
-  - `W_ReleaseLumpNum` (function, line 443) `W_ReleaseLumpNum(lumpnum);`
   - `MAXVISPLANES` (macro, line 45) `#define MAXVISPLANES`
   - `MAXOPENINGS` (macro, line 52) `#define MAXOPENINGS`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
@@ -4969,7 +4321,6 @@ R_MakeSpans
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `void` (function, line 30) `typedef void (*planefunction_t) (int top, int bottom);`
   - `R_InitPlanes` (function, line 42) `void R_InitPlanes (void);`
   - `R_ClearPlanes` (function, line 44) `void R_ClearPlanes (void);`
   - `R_MapPlane` (function, line 45) `void R_MapPlane ( int y, int x1, int x2 );`
@@ -4993,20 +4344,16 @@ R_MakeSpans
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `R_RenderMaskedSegRange` (function, line 95) `void
+  - `R_RenderMaskedSegRange` (function, line 96) `void
 R_RenderMaskedSegRange
 ( drawseg_t*	ds,
   int		x1,
   int		x2 )`
-  - `R_RenderSegLoop` (function, line 198) `void R_RenderSegLoop (void)`
-  - `R_StoreWallRange` (function, line 371) `void
+  - `R_RenderSegLoop` (function, line 199) `void R_RenderSegLoop (void)`
+  - `R_StoreWallRange` (function, line 372) `void
 R_StoreWallRange
 ( int	start,
   int	stop )`
-  - `R_DrawMaskedColumn` (function, line 176) `R_DrawMaskedColumn (col);`
-  - `colfunc` (function, line 284) `colfunc ();`
-  - `R_ScaleFromGlobalAngle` (function, line 417) `R_ScaleFromGlobalAngle (viewangle + xtoviewangle[start]);`
-  - `memcpy` (function, line 718) `memcpy (lastopening, ceilingclip+start, 2*(rw_stopx-start));`
   - `HEIGHTBITS` (macro, line 196) `#define HEIGHTBITS`
   - `HEIGHTUNIT` (macro, line 197) `#define HEIGHTUNIT`
 - Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
@@ -5100,7 +4447,7 @@ R_StoreWallRange
 - Language: c
 - Symbols:
   - `maskdraw_t` (struct, line 48)
-  - `R_InstallSpriteLump` (function, line 99) `void
+  - `R_InstallSpriteLump` (function, line 100) `void
 R_InstallSpriteLump
 ( int		lump,
   unsigned	frame,
@@ -5109,9 +4456,9 @@ R_InstallSpriteLump
   - `R_InitSpriteDefs` (function, line 171) `void R_InitSpriteDefs (char** namelist)`
   - `R_InitSprites` (function, line 291) `void R_InitSprites (char** namelist)`
   - `R_ClearSprites` (function, line 309) `void R_ClearSprites (void)`
-  - `R_NewVisSprite` (function, line 319) `vissprite_t* R_NewVisSprite (void)`
-  - `R_DrawMaskedColumn` (function, line 342) `void R_DrawMaskedColumn (column_t* column)`
-  - `R_DrawVisSprite` (function, line 388) `void
+  - `R_NewVisSprite` (function, line 320) `vissprite_t* R_NewVisSprite (void)`
+  - `R_DrawMaskedColumn` (function, line 343) `void R_DrawMaskedColumn (column_t* column)`
+  - `R_DrawVisSprite` (function, line 389) `void
 R_DrawVisSprite
 ( vissprite_t*		vis,
   int			x1,
@@ -5120,15 +4467,9 @@ R_DrawVisSprite
   - `R_AddSprites` (function, line 605) `void R_AddSprites (sector_t* sec)`
   - `R_DrawPSprite` (function, line 638) `void R_DrawPSprite (pspdef_t* psp)`
   - `R_DrawPlayerSprites` (function, line 738) `void R_DrawPlayerSprites (void)`
-  - `R_SortVisSprites` (function, line 777) `void R_SortVisSprites (void)`
+  - `R_SortVisSprites` (function, line 779) `void R_SortVisSprites (void)`
   - `R_DrawSprite` (function, line 837) `void R_DrawSprite (vissprite_t* spr)`
   - `R_DrawMasked` (function, line 951) `void R_DrawMasked (void)`
-  - `memset` (function, line 203) `memset (sprtemp,-1, sizeof(sprtemp));`
-  - `I_Error` (function, line 247) `I_Error ("R_InitSprites: No patches found " "for %s frame %c", spritename, frame+'A');`
-  - `Z_Malloc` (function, line 269) `Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);`
-  - `memcpy` (function, line 270) `memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));`
-  - `colfunc` (function, line 374) `colfunc ();`
-  - `LONG` (function, line 430) `LONG(patch->columnofs[texturecolumn]));`
   - `MINZ` (macro, line 37) `#define MINZ`
   - `BASEYCENTER` (macro, line 41) `#define BASEYCENTER`
 - Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
@@ -5168,41 +4509,24 @@ R_DrawVisSprite
 - Language: c
 - Symbols:
   - `channel_t` (struct, line 66)
-  - `S_Init` (function, line 113) `void S_Init(int sfxVolume, int musicVolume)`
-  - `S_Shutdown` (function, line 145) `void S_Shutdown(void)`
-  - `S_StopChannel` (function, line 151) `static void S_StopChannel(int cnum)`
-  - `S_Start` (function, line 190) `void S_Start(void)`
-  - `S_StopSound` (function, line 242) `void S_StopSound(mobj_t *origin)`
-  - `S_GetChannel` (function, line 261) `static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)`
-  - `S_AdjustSoundParams` (function, line 322) `static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
+  - `S_Init` (function, line 114) `void S_Init(int sfxVolume, int musicVolume)`
+  - `S_Shutdown` (function, line 146) `void S_Shutdown(void)`
+  - `S_StopChannel` (function, line 152) `static void S_StopChannel(int cnum)`
+  - `S_Start` (function, line 191) `void S_Start(void)`
+  - `S_StopSound` (function, line 243) `void S_StopSound(mobj_t *origin)`
+  - `S_GetChannel` (function, line 262) `static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)`
+  - `S_AdjustSoundParams` (function, line 323) `static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
                                i...`
-  - `S_StartSound` (function, line 390) `void S_StartSound(void *origin_p, int sfx_id)`
-  - `S_PauseSound` (function, line 481) `void S_PauseSound(void)`
-  - `S_ResumeSound` (function, line 490) `void S_ResumeSound(void)`
-  - `S_UpdateSounds` (function, line 503) `void S_UpdateSounds(mobj_t *listener)`
-  - `S_SetMusicVolume` (function, line 570) `void S_SetMusicVolume(int volume)`
-  - `S_SetSfxVolume` (function, line 581) `void S_SetSfxVolume(int volume)`
-  - `S_StartMusic` (function, line 595) `void S_StartMusic(int m_id)`
-  - `S_ChangeMusic` (function, line 600) `void S_ChangeMusic(int musicnum, int looping)`
-  - `S_MusicPlaying` (function, line 648) `boolean S_MusicPlaying(void)`
-  - `S_StopMusic` (function, line 653) `void S_StopMusic(void)`
-  - `I_PrecacheSounds` (function, line 117) `I_PrecacheSounds(S_sfx, NUMSFX);`
-  - `I_AtExit` (function, line 142) `I_AtExit(S_Shutdown, true);`
-  - `I_ShutdownSound` (function, line 148) `I_ShutdownSound();`
-  - `I_ShutdownMusic` (function, line 149) `I_ShutdownMusic();`
-  - `I_StopSound` (function, line 165) `I_StopSound(c->handle);`
-  - `I_Error` (function, line 406) `I_Error("Bad sfx #: %d", sfx_id);`
-  - `I_PauseSong` (function, line 486) `I_PauseSong();`
-  - `I_ResumeSong` (function, line 495) `I_ResumeSong();`
-  - `I_UpdateSound` (function, line 512) `I_UpdateSound();`
-  - `I_UpdateSoundParams` (function, line 557) `I_UpdateSoundParams(c->handle, volume, sep);`
-  - `I_SetMusicVolume` (function, line 578) `I_SetMusicVolume(volume);`
-  - `M_snprintf` (function, line 636) `M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name));`
-  - `I_PlaySong` (function, line 644) `I_PlaySong(handle, looping);`
-  - `I_MusicIsPlaying` (function, line 651) `return I_MusicIsPlaying();`
-  - `I_StopSong` (function, line 662) `I_StopSong();`
-  - `I_UnRegisterSong` (function, line 664) `I_UnRegisterSong(mus_playing->handle);`
-  - `W_ReleaseLumpNum` (function, line 665) `W_ReleaseLumpNum(mus_playing->lumpnum);`
+  - `S_StartSound` (function, line 391) `void S_StartSound(void *origin_p, int sfx_id)`
+  - `S_PauseSound` (function, line 482) `void S_PauseSound(void)`
+  - `S_ResumeSound` (function, line 491) `void S_ResumeSound(void)`
+  - `S_UpdateSounds` (function, line 504) `void S_UpdateSounds(mobj_t *listener)`
+  - `S_SetMusicVolume` (function, line 571) `void S_SetMusicVolume(int volume)`
+  - `S_SetSfxVolume` (function, line 582) `void S_SetSfxVolume(int volume)`
+  - `S_StartMusic` (function, line 596) `void S_StartMusic(int m_id)`
+  - `S_ChangeMusic` (function, line 601) `void S_ChangeMusic(int musicnum, int looping)`
+  - `S_MusicPlaying` (function, line 649) `boolean S_MusicPlaying(void)`
+  - `S_StopMusic` (function, line 654) `void S_StopMusic(void)`
   - `S_CLIPPING_DIST` (macro, line 43) `#define S_CLIPPING_DIST`
   - `S_CLOSE_DIST` (macro, line 51) `#define S_CLOSE_DIST`
   - `S_ATTENUATOR` (macro, line 55) `#define S_ATTENUATOR`
@@ -5224,7 +4548,6 @@ R_DrawVisSprite
   - `S_StopSound` (function, line 57) `void S_StopSound(mobj_t *origin);`
   - `S_StartMusic` (function, line 61) `void S_StartMusic(int music_id);`
   - `S_ChangeMusic` (function, line 65) `void S_ChangeMusic(int music_id, int looping);`
-  - `S_MusicPlaying` (function, line 68) `boolean S_MusicPlaying(void);`
   - `S_StopMusic` (function, line 71) `void S_StopMusic(void);`
   - `S_PauseSound` (function, line 74) `void S_PauseSound(void);`
   - `S_ResumeSound` (function, line 75) `void S_ResumeSound(void);`
@@ -5241,16 +4564,12 @@ R_DrawVisSprite
 - Doc: sha1.c - SHA1 hash function
 - Language: c
 - Symbols:
-  - `SHA1_Init` (function, line 39) `void SHA1_Init(sha1_context_t *hd)`
+  - `SHA1_Init` (function, line 40) `void SHA1_Init(sha1_context_t *hd)`
   - `Transform` (function, line 55) `static void Transform(sha1_context_t *hd, byte *data)`
   - `SHA1_Update` (function, line 198) `void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)`
-  - `SHA1_Final` (function, line 237) `void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)`
-  - `SHA1_UpdateInt32` (function, line 302) `void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)`
-  - `SHA1_UpdateString` (function, line 314) `void SHA1_UpdateString(sha1_context_t *context, char *str)`
-  - `memcpy` (function, line 68) `memcpy(x, data, 64);`
-  - `R` (function, line 105) `R( a, b, c, d, e, F1, K1, x[ 0] );`
-  - `memset` (function, line 273) `memset(hd->buf, 0, 56 );`
-  - `X` (function, line 293) `X(0);`
+  - `SHA1_Final` (function, line 238) `void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)`
+  - `SHA1_UpdateInt32` (function, line 303) `void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)`
+  - `SHA1_UpdateString` (function, line 315) `void SHA1_UpdateString(sha1_context_t *context, char *str)`
   - `K1` (macro, line 82) `#define K1`
   - `K2` (macro, line 85) `#define K2`
   - `K3` (macro, line 86) `#define K3`
@@ -5309,8 +4628,8 @@ R_DrawVisSprite
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `STlib_init` (function, line 50) `void STlib_init(void)`
-  - `STlib_initNum` (function, line 58) `void
+  - `STlib_init` (function, line 51) `void STlib_init(void)`
+  - `STlib_initNum` (function, line 59) `void
 STlib_initNum
 ( st_number_t*		n,
   int			x,
@@ -5318,15 +4637,15 @@ STlib_initNum
   patch_t**		pl,
   int*			num,
   bool...`
-  - `STlib_drawNum` (function, line 83) `void
+  - `STlib_drawNum` (function, line 84) `void
 STlib_drawNum
 ( st_number_t*	n,
   boolean	refresh )`
-  - `STlib_updateNum` (function, line 145) `void
+  - `STlib_updateNum` (function, line 146) `void
 STlib_updateNum
 ( st_number_t*		n,
   boolean		refresh )`
-  - `STlib_initPercent` (function, line 155) `void
+  - `STlib_initPercent` (function, line 156) `void
 STlib_initPercent
 ( st_percent_t*		p,
   int			x,
@@ -5334,22 +4653,22 @@ STlib_initPercent
   patch_t**		pl,
   int*			num,
  ...`
-  - `STlib_updatePercent` (function, line 168) `void
+  - `STlib_updatePercent` (function, line 173) `void
 STlib_updatePercent
 ( st_percent_t*		per,
   int			refresh )`
-  - `STlib_initMultIcon` (function, line 182) `void
+  - `STlib_initMultIcon` (function, line 186) `void
 STlib_initMultIcon
 ( st_multicon_t*	i,
   int			x,
   int			y,
   patch_t**		il,
   int*			inum,...`
-  - `STlib_updateMultIcon` (function, line 201) `void
+  - `STlib_updateMultIcon` (function, line 205) `void
 STlib_updateMultIcon
 ( st_multicon_t*	mi,
   boolean		refresh )`
-  - `STlib_initBinIcon` (function, line 232) `void
+  - `STlib_initBinIcon` (function, line 236) `void
 STlib_initBinIcon
 ( st_binicon_t*		b,
   int			x,
@@ -5357,12 +4676,10 @@ STlib_initBinIcon
   patch_t*		i,
   boolean*		val,
 ...`
-  - `STlib_updateBinIcon` (function, line 251) `void
+  - `STlib_updateBinIcon` (function, line 255) `void
 STlib_updateBinIcon
 ( st_binicon_t*		bi,
   boolean		refresh )`
-  - `V_CopyRect` (function, line 117) `V_CopyRect(x, n->y - ST_Y, st_backing_screen, w*numdigits, h, x, n->y);`
-  - `V_DrawPatch` (function, line 134) `V_DrawPatch(x, n->y, n->p[ num % 10 ]);`
   - `automapactive` (variable, line 40) `extern boolean automapactive;`
 - Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
@@ -5393,51 +4710,30 @@ STlib_updateBinIcon
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `ST_refreshBackground` (function, line 415) `void ST_refreshBackground(void)`
-  - `ST_Responder` (function, line 438) `boolean
+  - `ST_refreshBackground` (function, line 416) `void ST_refreshBackground(void)`
+  - `ST_Responder` (function, line 439) `boolean
 ST_Responder (event_t* ev)`
-  - `ST_calcPainOffset` (function, line 662) `int ST_calcPainOffset(void)`
+  - `ST_calcPainOffset` (function, line 665) `int ST_calcPainOffset(void)`
   - `ST_updateFaceWidget` (function, line 688) `void ST_updateFaceWidget(void)`
-  - `ST_updateWidgets` (function, line 859) `void ST_updateWidgets(void)`
-  - `ST_Ticker` (function, line 923) `void ST_Ticker (void)`
-  - `ST_doPaletteStuff` (function, line 935) `void ST_doPaletteStuff(void)`
-  - `ST_drawWidgets` (function, line 1000) `void ST_drawWidgets(boolean refresh)`
-  - `ST_doRefresh` (function, line 1035) `void ST_doRefresh(void)`
-  - `ST_diffDraw` (function, line 1048) `void ST_diffDraw(void)`
-  - `ST_Drawer` (function, line 1054) `void ST_Drawer (boolean fullscreen, boolean refresh)`
-  - `ST_loadUnloadGraphics` (function, line 1075) `static void ST_loadUnloadGraphics(load_callback_t callback)`
-  - `ST_loadCallback` (function, line 1161) `static void ST_loadCallback(char *lumpname, patch_t **variable)`
-  - `ST_loadGraphics` (function, line 1166) `void ST_loadGraphics(void)`
-  - `ST_loadData` (function, line 1171) `void ST_loadData(void)`
-  - `ST_unloadCallback` (function, line 1177) `static void ST_unloadCallback(char *lumpname, patch_t **variable)`
-  - `ST_unloadGraphics` (function, line 1183) `void ST_unloadGraphics(void)`
-  - `ST_unloadData` (function, line 1188) `void ST_unloadData(void)`
-  - `ST_initData` (function, line 1193) `void ST_initData(void)`
-  - `ST_createWidgets` (function, line 1224) `void ST_createWidgets(void)`
-  - `ST_Start` (function, line 1387) `void ST_Start (void)`
-  - `ST_Stop` (function, line 1400) `void ST_Stop (void)`
-  - `ST_Init` (function, line 1410) `void ST_Init (void)`
-  - `V_UseBuffer` (function, line 421) `V_UseBuffer(st_backing_screen);`
-  - `V_DrawPatch` (function, line 422) `V_DrawPatch(ST_X, 0, sbar);`
-  - `V_RestoreBuffer` (function, line 427) `V_RestoreBuffer();`
-  - `V_CopyRect` (function, line 429) `V_CopyRect(ST_X, 0, st_backing_screen, ST_WIDTH, ST_HEIGHT, ST_X, ST_Y);`
-  - `cht_GetParam` (function, line 520) `cht_GetParam(&cheat_mus, buf);`
-  - `S_ChangeMusic` (function, line 533) `else S_ChangeMusic(musnum, 1);`
-  - `G_DeferedInitNew` (function, line 657) `G_DeferedInitNew(gameskill, epsd, map);`
-  - `I_SetPalette` (function, line 996) `I_SetPalette (pal);`
-  - `STlib_updateNum` (function, line 1010) `STlib_updateNum(&w_ready, refresh);`
-  - `STlib_updatePercent` (function, line 1018) `STlib_updatePercent(&w_health, refresh);`
-  - `STlib_updateBinIcon` (function, line 1021) `STlib_updateBinIcon(&w_armsbg, refresh);`
-  - `STlib_updateMultIcon` (function, line 1025) `STlib_updateMultIcon(&w_arms[i], refresh);`
-  - `void` (function, line 1070) `typedef void (*load_callback_t)(char *lumpname, patch_t **variable);`
-  - `DEH_snprintf` (function, line 1088) `DEH_snprintf(namebuf, 9, "STTNUM%d", i);`
-  - `callback` (function, line 1089) `callback(namebuf, &tallnum[i]);`
-  - `W_ReleaseLumpName` (function, line 1180) `W_ReleaseLumpName(lumpname);`
-  - `STlib_init` (function, line 1220) `STlib_init();`
-  - `STlib_initNum` (function, line 1233) `STlib_initNum(&w_ready, ST_AMMOX, ST_AMMOY, tallnum, &plyr->ammo[weaponinfo[plyr->readyweapon].ammo], &st_statusbaron, ST_AMMOWIDTH );`
-  - `STlib_initPercent` (function, line 1245) `STlib_initPercent(&w_health, ST_HEALTHX, ST_HEALTHY, tallnum, &plyr->health, &st_statusbaron, tallpercent);`
-  - `STlib_initBinIcon` (function, line 1254) `STlib_initBinIcon(&w_armsbg, ST_ARMSBGX, ST_ARMSBGY, armsbg, &st_notdeathmatch, &st_statusbaron);`
-  - `STlib_initMultIcon` (function, line 1264) `STlib_initMultIcon(&w_arms[i], ST_ARMSX+(i%3)*ST_ARMSXSPACE, ST_ARMSY+(i/3)*ST_ARMSYSPACE, arms[i], (int *) &plyr->weaponowned[i+1], &st_armson);`
+  - `ST_updateWidgets` (function, line 860) `void ST_updateWidgets(void)`
+  - `ST_Ticker` (function, line 924) `void ST_Ticker (void)`
+  - `ST_doPaletteStuff` (function, line 936) `void ST_doPaletteStuff(void)`
+  - `ST_drawWidgets` (function, line 1001) `void ST_drawWidgets(boolean refresh)`
+  - `ST_doRefresh` (function, line 1036) `void ST_doRefresh(void)`
+  - `ST_diffDraw` (function, line 1049) `void ST_diffDraw(void)`
+  - `ST_Drawer` (function, line 1055) `void ST_Drawer (boolean fullscreen, boolean refresh)`
+  - `ST_loadUnloadGraphics` (function, line 1076) `static void ST_loadUnloadGraphics(load_callback_t callback)`
+  - `ST_loadCallback` (function, line 1162) `static void ST_loadCallback(char *lumpname, patch_t **variable)`
+  - `ST_loadGraphics` (function, line 1167) `void ST_loadGraphics(void)`
+  - `ST_loadData` (function, line 1172) `void ST_loadData(void)`
+  - `ST_unloadCallback` (function, line 1178) `static void ST_unloadCallback(char *lumpname, patch_t **variable)`
+  - `ST_unloadGraphics` (function, line 1184) `void ST_unloadGraphics(void)`
+  - `ST_unloadData` (function, line 1189) `void ST_unloadData(void)`
+  - `ST_initData` (function, line 1194) `void ST_initData(void)`
+  - `ST_createWidgets` (function, line 1227) `void ST_createWidgets(void)`
+  - `ST_Start` (function, line 1389) `void ST_Start (void)`
+  - `ST_Stop` (function, line 1401) `void ST_Stop (void)`
+  - `ST_Init` (function, line 1411) `void ST_Init (void)`
   - `STARTREDPALS` (macro, line 68) `#define STARTREDPALS`
   - `STARTBONUSPALS` (macro, line 69) `#define STARTBONUSPALS`
   - `NUMREDPALS` (macro, line 70) `#define NUMREDPALS`
@@ -5559,7 +4855,6 @@ ST_Responder (event_t* ev)`
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `ST_Responder` (function, line 40) `boolean ST_Responder (event_t* ev);`
   - `ST_Ticker` (function, line 43) `void ST_Ticker (void);`
   - `ST_Drawer` (function, line 46) `void ST_Drawer (boolean fullscreen, boolean refresh);`
   - `ST_Start` (function, line 49) `void ST_Start (void);`
@@ -5586,21 +4881,17 @@ ST_Responder (event_t* ev)`
 - Layer: utility
 - Language: c
 - Symbols:
-  - `DiscoverGamemode` (function, line 70) `static void DiscoverGamemode(wbstartstruct_t *stats, int num_stats)`
-  - `GetNumPlayers` (function, line 129) `static int GetNumPlayers(wbstartstruct_t *stats)`
-  - `PrintBanner` (function, line 149) `static void PrintBanner(FILE *stream)`
-  - `PrintPercentage` (function, line 154) `static void PrintPercentage(FILE *stream, int amount, int total)`
-  - `PrintPlayerStats` (function, line 179) `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,
+  - `DiscoverGamemode` (function, line 71) `static void DiscoverGamemode(wbstartstruct_t *stats, int num_stats)`
+  - `GetNumPlayers` (function, line 130) `static int GetNumPlayers(wbstartstruct_t *stats)`
+  - `PrintBanner` (function, line 150) `static void PrintBanner(FILE *stream)`
+  - `PrintPercentage` (function, line 155) `static void PrintPercentage(FILE *stream, int amount, int total)`
+  - `PrintPlayerStats` (function, line 180) `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,
         int player_num)`
-  - `PrintFragsTable` (function, line 212) `static void PrintFragsTable(FILE *stream, wbstartstruct_t *stats)`
-  - `PrintLevelName` (function, line 271) `static void PrintLevelName(FILE *stream, int episode, int level)`
-  - `PrintStats` (function, line 300) `static void PrintStats(FILE *stream, wbstartstruct_t *stats)`
-  - `StatCopy` (function, line 332) `void StatCopy(wbstartstruct_t *stats)`
-  - `StatDump` (function, line 342) `void StatDump(void)`
-  - `fprintf` (function, line 152) `fprintf(stream, "===========================================\n");`
-  - `memcpy` (function, line 337) `memcpy(&captured_stats[num_captured_stats], stats, sizeof(wbstartstruct_t));`
-  - `printf` (function, line 362) `printf("Statistics captured for %i level(s)\n", num_captured_stats);`
-  - `fclose` (function, line 387) `fclose(dumpfile);`
+  - `PrintFragsTable` (function, line 213) `static void PrintFragsTable(FILE *stream, wbstartstruct_t *stats)`
+  - `PrintLevelName` (function, line 272) `static void PrintLevelName(FILE *stream, int episode, int level)`
+  - `PrintStats` (function, line 301) `static void PrintStats(FILE *stream, wbstartstruct_t *stats)`
+  - `StatCopy` (function, line 333) `void StatCopy(wbstartstruct_t *stats)`
+  - `StatDump` (function, line 343) `void StatDump(void)`
   - `MAX_CAPTURES` (macro, line 55) `#define MAX_CAPTURES`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
 
@@ -5618,7 +4909,7 @@ ST_Responder (event_t* ev)`
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `SlopeDiv` (function, line 40) `int SlopeDiv(unsigned int num, unsigned int den)`
+  - `SlopeDiv` (function, line 41) `int SlopeDiv(unsigned int num, unsigned int den)`
 - Depends on: `progs/doomgeneric/tables.h`
 
 ## progs/doomgeneric/tables.h
@@ -5669,51 +4960,34 @@ ST_Responder (event_t* ev)`
                 int width, int height,
         ...`
   - `V_SetPatchClipCallback` (function, line 129) `void V_SetPatchClipCallback(vpatchclipfunc_t func)`
-  - `V_DrawPatch` (function, line 138) `void V_DrawPatch(int x, int y, patch_t *patch)`
-  - `V_DrawPatchFlipped` (function, line 202) `void V_DrawPatchFlipped(int x, int y, patch_t *patch)`
-  - `V_DrawPatchDirect` (function, line 267) `void V_DrawPatchDirect(int x, int y, patch_t *patch)`
-  - `V_DrawTLPatch` (function, line 278) `void V_DrawTLPatch(int x, int y, patch_t * patch)`
-  - `V_DrawXlaPatch` (function, line 328) `void V_DrawXlaPatch(int x, int y, patch_t * patch)`
-  - `V_DrawAltTLPatch` (function, line 377) `void V_DrawAltTLPatch(int x, int y, patch_t * patch)`
-  - `V_DrawShadowedPatch` (function, line 427) `void V_DrawShadowedPatch(int x, int y, patch_t *patch)`
-  - `V_LoadTintTable` (function, line 481) `void V_LoadTintTable(void)`
-  - `V_LoadXlaTable` (function, line 492) `void V_LoadXlaTable(void)`
-  - `V_DrawBlock` (function, line 502) `void V_DrawBlock(int x, int y, int width, int height, byte *src)`
-  - `V_DrawFilledBox` (function, line 528) `void V_DrawFilledBox(int x, int y, int w, int h, int c)`
-  - `V_DrawHorizLine` (function, line 548) `void V_DrawHorizLine(int x, int y, int w, int c)`
-  - `V_DrawVertLine` (function, line 561) `void V_DrawVertLine(int x, int y, int h, int c)`
-  - `V_DrawBox` (function, line 575) `void V_DrawBox(int x, int y, int w, int h, int c)`
-  - `V_DrawRawScreen` (function, line 588) `void V_DrawRawScreen(byte *raw)`
+  - `V_DrawPatch` (function, line 139) `void V_DrawPatch(int x, int y, patch_t *patch)`
+  - `V_DrawPatchFlipped` (function, line 203) `void V_DrawPatchFlipped(int x, int y, patch_t *patch)`
+  - `V_DrawPatchDirect` (function, line 268) `void V_DrawPatchDirect(int x, int y, patch_t *patch)`
+  - `V_DrawTLPatch` (function, line 279) `void V_DrawTLPatch(int x, int y, patch_t * patch)`
+  - `V_DrawXlaPatch` (function, line 329) `void V_DrawXlaPatch(int x, int y, patch_t * patch)`
+  - `V_DrawAltTLPatch` (function, line 378) `void V_DrawAltTLPatch(int x, int y, patch_t * patch)`
+  - `V_DrawShadowedPatch` (function, line 428) `void V_DrawShadowedPatch(int x, int y, patch_t *patch)`
+  - `V_LoadTintTable` (function, line 482) `void V_LoadTintTable(void)`
+  - `V_LoadXlaTable` (function, line 493) `void V_LoadXlaTable(void)`
+  - `V_DrawBlock` (function, line 503) `void V_DrawBlock(int x, int y, int width, int height, byte *src)`
+  - `V_DrawFilledBox` (function, line 529) `void V_DrawFilledBox(int x, int y, int w, int h, int c)`
+  - `V_DrawHorizLine` (function, line 549) `void V_DrawHorizLine(int x, int y, int w, int c)`
+  - `V_DrawVertLine` (function, line 562) `void V_DrawVertLine(int x, int y, int h, int c)`
+  - `V_DrawBox` (function, line 576) `void V_DrawBox(int x, int y, int w, int h, int c)`
+  - `V_DrawRawScreen` (function, line 589) `void V_DrawRawScreen(byte *raw)`
   - `V_Init` (function, line 597) `void V_Init (void)`
-  - `V_UseBuffer` (function, line 605) `void V_UseBuffer(byte *buffer)`
-  - `V_RestoreBuffer` (function, line 612) `void V_RestoreBuffer(void)`
-  - `WritePCXfile` (function, line 652) `void WritePCXfile(char *filename, byte *data,
+  - `V_UseBuffer` (function, line 606) `void V_UseBuffer(byte *buffer)`
+  - `V_RestoreBuffer` (function, line 613) `void V_RestoreBuffer(void)`
+  - `WritePCXfile` (function, line 653) `void WritePCXfile(char *filename, byte *data,
                   int width, int height,
           ...`
-  - `error_fn` (function, line 710) `static void error_fn(png_structp p, png_const_charp s)`
-  - `warning_fn` (function, line 715) `static void warning_fn(png_structp p, png_const_charp s)`
-  - `WritePNGfile` (function, line 720) `void WritePNGfile(char *filename, byte *data,
+  - `error_fn` (function, line 711) `static void error_fn(png_structp p, png_const_charp s)`
+  - `warning_fn` (function, line 716) `static void warning_fn(png_structp p, png_const_charp s)`
+  - `WritePNGfile` (function, line 721) `void WritePNGfile(char *filename, byte *data,
                   int width, int height,
           ...`
-  - `V_ScreenShot` (function, line 790) `void V_ScreenShot(char *format)`
-  - `V_DrawMouseSpeedBox` (function, line 845) `void V_DrawMouseSpeedBox(int speed)`
-  - `M_AddToBox` (function, line 76) `M_AddToBox (dirtybox, x, y);`
-  - `I_Error` (function, line 102) `I_Error ("Bad V_CopyRect");`
-  - `memcpy` (function, line 113) `memcpy(dest, src, width);`
-  - `memset` (function, line 674) `memset (pcx->palette,0,sizeof(pcx->palette));`
-  - `M_WriteFile` (function, line 701) `M_WriteFile (filename, pcx, length);`
-  - `Z_Free` (function, line 702) `Z_Free (pcx);`
-  - `printf` (function, line 713) `printf("libpng error: %s\n", s);`
-  - `png_destroy_write_struct` (function, line 747) `png_destroy_write_struct(&ppng, NULL);`
-  - `png_init_io` (function, line 750) `png_init_io(ppng, handle);`
-  - `png_set_IHDR` (function, line 752) `png_set_IHDR(ppng, pinfo, width, height, 8, PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);`
-  - `png_set_PLTE` (function, line 770) `png_set_PLTE(ppng, pinfo, pcolor, 256);`
-  - `free` (function, line 772) `free(pcolor);`
-  - `png_write_info` (function, line 773) `png_write_info(ppng, pinfo);`
-  - `png_write_row` (function, line 778) `png_write_row(ppng, data + i*SCREENWIDTH);`
-  - `png_write_end` (function, line 780) `png_write_end(ppng, pinfo);`
-  - `fclose` (function, line 783) `fclose(handle);`
-  - `M_snprintf` (function, line 813) `M_snprintf(lbmname, sizeof(lbmname), format, i, ext);`
+  - `V_ScreenShot` (function, line 791) `void V_ScreenShot(char *format)`
+  - `V_DrawMouseSpeedBox` (function, line 846) `void V_DrawMouseSpeedBox(int speed)`
   - `png_screenshots` (variable, line 800) `extern int png_screenshots;`
   - `usemouse` (variable, line 848) `extern int usemouse;`
   - `RANGECHECK` (macro, line 46) `#define RANGECHECK`
@@ -5726,7 +5000,6 @@ ST_Responder (event_t* ev)`
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: h
 - Symbols:
-  - `boolean` (function, line 44) `typedef boolean (*vpatchclipfunc_t)(patch_t *, int, int);`
   - `V_SetPatchClipCallback` (function, line 45) `void V_SetPatchClipCallback(vpatchclipfunc_t func);`
   - `V_Init` (function, line 49) `void V_Init (void);`
   - `V_CopyRect` (function, line 52) `void V_CopyRect(int srcx, int srcy, byte *source, int width, int height, int destx, int desty);`
@@ -5762,14 +5035,9 @@ ST_Responder (event_t* ev)`
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `GetFileNumber` (function, line 30) `static int GetFileNumber(wad_file_t *handle)`
-  - `ChecksumAddLump` (function, line 56) `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)`
-  - `W_Checksum` (function, line 67) `void W_Checksum(sha1_digest_t digest)`
-  - `M_StringCopy` (function, line 60) `M_StringCopy(buf, lump->name, sizeof(buf));`
-  - `SHA1_UpdateString` (function, line 62) `SHA1_UpdateString(sha1_context, buf);`
-  - `SHA1_UpdateInt32` (function, line 63) `SHA1_UpdateInt32(sha1_context, GetFileNumber(lump->wad_file));`
-  - `SHA1_Init` (function, line 72) `SHA1_Init(&sha1_context);`
-  - `SHA1_Final` (function, line 84) `SHA1_Final(digest, &sha1_context);`
+  - `GetFileNumber` (function, line 31) `static int GetFileNumber(wad_file_t *handle)`
+  - `ChecksumAddLump` (function, line 57) `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)`
+  - `W_Checksum` (function, line 68) `void W_Checksum(sha1_digest_t digest)`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/sha1.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
 
 ## progs/doomgeneric/w_checksum.h
@@ -5787,9 +5055,9 @@ ST_Responder (event_t* ev)`
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `W_OpenFile` (function, line 52) `wad_file_t *W_OpenFile(char *path)`
-  - `W_CloseFile` (function, line 84) `void W_CloseFile(wad_file_t *wad)`
-  - `W_Read` (function, line 89) `size_t W_Read(wad_file_t *wad, unsigned int offset,
+  - `W_OpenFile` (function, line 53) `wad_file_t *W_OpenFile(char *path)`
+  - `W_CloseFile` (function, line 85) `void W_CloseFile(wad_file_t *wad)`
+  - `W_Read` (function, line 90) `size_t W_Read(wad_file_t *wad, unsigned int offset,
               void *buffer, size_t buffer_len)`
   - `stdc_wad_file` (variable, line 27) `extern wad_file_class_t stdc_wad_file;`
   - `win32_wad_file` (variable, line 32) `extern wad_file_class_t win32_wad_file;`
@@ -5804,8 +5072,6 @@ ST_Responder (event_t* ev)`
   - `_wad_file_s` (struct, line 46)
   - `wad_file_class_t` (struct, line 28)
   - `wad_file_t` (type_alias, line 25) `typedef struct _wad_file_s wad_file_t;`
-  - `void` (function, line 35) `void (*CloseFile)(wad_file_t *file);`
-  - `size_t` (function, line 40) `size_t (*Read)(wad_file_t *file, unsigned int offset, void *buffer, size_t buffer_len);`
   - `W_OpenFile` (function, line 64) `wad_file_t *W_OpenFile(char *path);`
   - `W_CloseFile` (function, line 68) `void W_CloseFile(wad_file_t *wad);`
   - `W_Read` (function, line 74) `size_t W_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t buffer_len);`
@@ -5819,13 +5085,10 @@ ST_Responder (event_t* ev)`
 - Language: c
 - Symbols:
   - `stdc_wad_file_t` (struct, line 25)
-  - `W_StdC_OpenFile` (function, line 32) `static wad_file_t *W_StdC_OpenFile(char *path)`
-  - `W_StdC_CloseFile` (function, line 55) `static void W_StdC_CloseFile(wad_file_t *wad)`
-  - `W_StdC_Read` (function, line 68) `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
+  - `W_StdC_OpenFile` (function, line 33) `static wad_file_t *W_StdC_OpenFile(char *path)`
+  - `W_StdC_CloseFile` (function, line 56) `static void W_StdC_CloseFile(wad_file_t *wad)`
+  - `W_StdC_Read` (function, line 69) `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
                    void *buffer, size_t ...`
-  - `fclose` (function, line 61) `fclose(stdc_wad->fstream);`
-  - `Z_Free` (function, line 63) `Z_Free(stdc_wad);`
-  - `fseek` (function, line 78) `fseek(stdc_wad->fstream, offset, SEEK_SET);`
   - `stdc_wad_file` (variable, line 30) `extern wad_file_class_t stdc_wad_file;`
 - Depends on: `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_file.h`, `progs/doomgeneric/z_zone.h`
 
@@ -5834,12 +5097,7 @@ ST_Responder (event_t* ev)`
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `W_ParseCommandLine` (function, line 29) `boolean W_ParseCommandLine(void)`
-  - `printf` (function, line 59) `printf(" merging %s\n", filename);`
-  - `W_MergeFile` (function, line 61) `W_MergeFile(filename);`
-  - `W_NWTDashMerge` (function, line 89) `W_NWTDashMerge(filename);`
-  - `W_NWTMergeFile` (function, line 116) `W_NWTMergeFile(filename, W_NWT_MERGE_FLATS);`
-  - `W_AddFile` (function, line 190) `W_AddFile(filename);`
+  - `W_ParseCommandLine` (function, line 30) `boolean W_ParseCommandLine(void)`
 - Depends on: `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_merge.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/w_main.h
@@ -5847,7 +5105,6 @@ ST_Responder (event_t* ev)`
 - Doc: Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it and/or modify it under the t
 - Language: h
 - Symbols:
-  - `W_ParseCommandLine` (function, line 20) `boolean W_ParseCommandLine(void);`
   - `W_MAIN_H` (macro, line 19) `#define W_MAIN_H`
 - Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/w_main.c`
 
@@ -5870,36 +5127,22 @@ ST_Responder (event_t* ev)`
 - Doc: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can red
 - Language: c
 - Symbols:
-  - `W_LumpNameHash` (function, line 71) `unsigned int W_LumpNameHash(const char *s)`
+  - `W_LumpNameHash` (function, line 72) `unsigned int W_LumpNameHash(const char *s)`
   - `ExtendLumpInfo` (function, line 89) `static void ExtendLumpInfo(int newnumlumps)`
-  - `W_AddFile` (function, line 140) `wad_file_t *W_AddFile (char *filename)`
+  - `W_AddFile` (function, line 141) `wad_file_t *W_AddFile (char *filename)`
   - `W_NumLumps` (function, line 246) `int W_NumLumps (void)`
-  - `W_CheckNumForName` (function, line 257) `int W_CheckNumForName (char* name)`
+  - `W_CheckNumForName` (function, line 258) `int W_CheckNumForName (char* name)`
   - `W_GetNumForName` (function, line 308) `int W_GetNumForName (char* name)`
   - `W_LumpLength` (function, line 327) `int W_LumpLength (unsigned int lump)`
   - `W_ReadLump` (function, line 344) `void W_ReadLump(unsigned int lump, void *dest)`
-  - `W_CacheLumpNum` (function, line 383) `void *W_CacheLumpNum(int lumpnum, int tag)`
+  - `W_CacheLumpNum` (function, line 384) `void *W_CacheLumpNum(int lumpnum, int tag)`
   - `W_CacheLumpName` (function, line 431) `void *W_CacheLumpName(char *name, int tag)`
-  - `W_ReleaseLumpNum` (function, line 445) `void W_ReleaseLumpNum(int lumpnum)`
-  - `W_ReleaseLumpName` (function, line 466) `void W_ReleaseLumpName(char *name)`
-  - `W_Profile` (function, line 479) `void W_Profile (void)`
-  - `W_GenerateHashTable` (function, line 540) `void W_GenerateHashTable(void)`
-  - `W_CheckCorrectIWAD` (function, line 587) `void W_CheckCorrectIWAD(GameMission_t mission)`
+  - `W_ReleaseLumpNum` (function, line 446) `void W_ReleaseLumpNum(int lumpnum)`
+  - `W_ReleaseLumpName` (function, line 467) `void W_ReleaseLumpName(char *name)`
+  - `W_Profile` (function, line 480) `void W_Profile (void)`
+  - `W_GenerateHashTable` (function, line 541) `void W_GenerateHashTable(void)`
+  - `W_CheckCorrectIWAD` (function, line 588) `void W_CheckCorrectIWAD(GameMission_t mission)`
   - `I_EndRead` (function, line 38) `void I_EndRead (void);`
-  - `I_Error` (function, line 98) `I_Error ("Couldn't realloc lumpinfo");`
-  - `memcpy` (function, line 106) `memcpy(&newlumpinfo[i], &lumpinfo[i], sizeof(lumpinfo_t));`
-  - `Z_ChangeUser` (function, line 110) `Z_ChangeUser(newlumpinfo[i].cache, &newlumpinfo[i].cache);`
-  - `free` (function, line 123) `free(lumpinfo);`
-  - `printf` (function, line 159) `printf (" couldn't open %s\n", filename);`
-  - `M_ExtractFileBase` (function, line 180) `M_ExtractFileBase (filename, fileinfo->name);`
-  - `W_Read` (function, line 187) `W_Read(wad_file, 0, &header, sizeof(header));`
-  - `strncpy` (function, line 224) `strncpy(lump_p->name, filerover->name, 8);`
-  - `Z_Free` (function, line 229) `Z_Free(fileinfo);`
-  - `I_BeginRead` (function, line 355) `I_BeginRead ();`
-  - `Z_ChangeTag` (function, line 412) `Z_ChangeTag(lump->cache, tag);`
-  - `fprintf` (function, line 524) `fprintf (f,"%s ",name);`
-  - `fclose` (function, line 532) `fclose (f);`
-  - `memset` (function, line 556) `memset(lumphash, 0, sizeof(lumpinfo_t *) * numlumps);`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 
 ## progs/doomgeneric/w_wad.h
@@ -5938,67 +5181,56 @@ ST_Responder (event_t* ev)`
   - `WI_Responder` (function, line 409) `boolean WI_Responder(event_t* ev)`
   - `WI_drawLF` (function, line 416) `void WI_drawLF(void)`
   - `WI_drawEL` (function, line 452) `void WI_drawEL(void)`
-  - `WI_drawOnLnode` (function, line 469) `void
+  - `WI_drawOnLnode` (function, line 471) `void
 WI_drawOnLnode
 ( int		n,
   patch_t*	c[] )`
-  - `WI_initAnimatedBack` (function, line 516) `void WI_initAnimatedBack(void)`
-  - `WI_updateAnimatedBack` (function, line 547) `void WI_updateAnimatedBack(void)`
-  - `WI_drawAnimatedBack` (function, line 598) `void WI_drawAnimatedBack(void)`
-  - `WI_drawNum` (function, line 626) `int
+  - `WI_initAnimatedBack` (function, line 519) `void WI_initAnimatedBack(void)`
+  - `WI_updateAnimatedBack` (function, line 548) `void WI_updateAnimatedBack(void)`
+  - `WI_drawAnimatedBack` (function, line 599) `void WI_drawAnimatedBack(void)`
+  - `WI_drawNum` (function, line 628) `int
 WI_drawNum
 ( int		x,
   int		y,
   int		n,
   int		digits )`
-  - `WI_drawPercent` (function, line 683) `void
+  - `WI_drawPercent` (function, line 685) `void
 WI_drawPercent
 ( int		x,
   int		y,
   int		p )`
-  - `WI_drawTime` (function, line 703) `void
+  - `WI_drawTime` (function, line 704) `void
 WI_drawTime
 ( int		x,
   int		y,
   int		t )`
-  - `WI_End` (function, line 738) `void WI_End(void)`
-  - `WI_initNoState` (function, line 745) `void WI_initNoState(void)`
-  - `WI_updateNoState` (function, line 752) `void WI_updateNoState(void)`
-  - `WI_initShowNextLoc` (function, line 770) `void WI_initShowNextLoc(void)`
-  - `WI_updateShowNextLoc` (function, line 780) `void WI_updateShowNextLoc(void)`
-  - `WI_drawShowNextLoc` (function, line 790) `void WI_drawShowNextLoc(void)`
-  - `WI_drawNoState` (function, line 831) `void WI_drawNoState(void)`
-  - `WI_fragSum` (function, line 837) `int WI_fragSum(int playernum)`
-  - `WI_initDeathmatchStats` (function, line 866) `void WI_initDeathmatchStats(void)`
-  - `WI_updateDeathmatchStats` (function, line 895) `void WI_updateDeathmatchStats(void)`
-  - `WI_drawDeathmatchStats` (function, line 998) `void WI_drawDeathmatchStats(void)`
-  - `WI_initNetgameStats` (function, line 1088) `void WI_initNetgameStats(void)`
-  - `WI_updateNetgameStats` (function, line 1114) `void WI_updateNetgameStats(void)`
-  - `WI_drawNetgameStats` (function, line 1269) `void WI_drawNetgameStats(void)`
-  - `WI_initStats` (function, line 1328) `void WI_initStats(void)`
-  - `WI_updateStats` (function, line 1340) `void WI_updateStats(void)`
-  - `WI_drawStats` (function, line 1446) `void WI_drawStats(void)`
-  - `WI_checkForAccelerate` (function, line 1480) `void WI_checkForAccelerate(void)`
+  - `WI_End` (function, line 740) `void WI_End(void)`
+  - `WI_initNoState` (function, line 746) `void WI_initNoState(void)`
+  - `WI_updateNoState` (function, line 753) `void WI_updateNoState(void)`
+  - `WI_initShowNextLoc` (function, line 772) `void WI_initShowNextLoc(void)`
+  - `WI_updateShowNextLoc` (function, line 781) `void WI_updateShowNextLoc(void)`
+  - `WI_drawShowNextLoc` (function, line 791) `void WI_drawShowNextLoc(void)`
+  - `WI_drawNoState` (function, line 832) `void WI_drawNoState(void)`
+  - `WI_fragSum` (function, line 838) `int WI_fragSum(int playernum)`
+  - `WI_initDeathmatchStats` (function, line 869) `void WI_initDeathmatchStats(void)`
+  - `WI_updateDeathmatchStats` (function, line 898) `void WI_updateDeathmatchStats(void)`
+  - `WI_drawDeathmatchStats` (function, line 1001) `void WI_drawDeathmatchStats(void)`
+  - `WI_initNetgameStats` (function, line 1089) `void WI_initNetgameStats(void)`
+  - `WI_updateNetgameStats` (function, line 1117) `void WI_updateNetgameStats(void)`
+  - `WI_drawNetgameStats` (function, line 1272) `void WI_drawNetgameStats(void)`
+  - `WI_initStats` (function, line 1329) `void WI_initStats(void)`
+  - `WI_updateStats` (function, line 1341) `void WI_updateStats(void)`
+  - `WI_drawStats` (function, line 1447) `void WI_drawStats(void)`
+  - `WI_checkForAccelerate` (function, line 1481) `void WI_checkForAccelerate(void)`
   - `WI_Ticker` (function, line 1514) `void WI_Ticker(void)`
-  - `WI_loadUnloadData` (function, line 1553) `static void WI_loadUnloadData(load_callback_t callback)`
-  - `WI_loadCallback` (function, line 1703) `static void WI_loadCallback(char *name, patch_t **variable)`
-  - `WI_loadData` (function, line 1708) `void WI_loadData(void)`
-  - `WI_unloadCallback` (function, line 1734) `static void WI_unloadCallback(char *name, patch_t **variable)`
-  - `WI_unloadData` (function, line 1740) `void WI_unloadData(void)`
-  - `WI_Drawer` (function, line 1751) `void WI_Drawer (void)`
-  - `WI_initVariables` (function, line 1774) `void WI_initVariables(wbstartstruct_t* wbstartstruct)`
-  - `WI_Start` (function, line 1817) `void WI_Start(wbstartstruct_t* wbstartstruct)`
-  - `V_DrawPatch` (function, line 404) `V_DrawPatch(0, 0, background);`
-  - `printf` (function, line 513) `printf("Could not place patch on level %d", n+1);`
-  - `G_WorldDone` (function, line 764) `G_WorldDone();`
-  - `S_StartSound` (function, line 923) `S_StartSound(0, sfx_barexp);`
-  - `S_ChangeMusic` (function, line 1524) `else S_ChangeMusic(mus_inter, true);`
-  - `void` (function, line 1548) `typedef void (*load_callback_t)(char *lumpname, patch_t **variable);`
-  - `DEH_snprintf` (function, line 1564) `DEH_snprintf(name, 9, "CWILV%2.2d", i);`
-  - `callback` (function, line 1565) `callback(name, &lnames[i]);`
-  - `M_StringCopy` (function, line 1688) `M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));`
-  - `W_ReleaseLumpName` (function, line 1737) `W_ReleaseLumpName(name);`
-  - `RNGCHECK` (function, line 1786) `else RNGCHECK(wbs->epsd, 0, 2);`
+  - `WI_loadUnloadData` (function, line 1554) `static void WI_loadUnloadData(load_callback_t callback)`
+  - `WI_loadCallback` (function, line 1704) `static void WI_loadCallback(char *name, patch_t **variable)`
+  - `WI_loadData` (function, line 1709) `void WI_loadData(void)`
+  - `WI_unloadCallback` (function, line 1735) `static void WI_unloadCallback(char *name, patch_t **variable)`
+  - `WI_unloadData` (function, line 1741) `void WI_unloadData(void)`
+  - `WI_Drawer` (function, line 1752) `void WI_Drawer (void)`
+  - `WI_initVariables` (function, line 1776) `void WI_initVariables(wbstartstruct_t* wbstartstruct)`
+  - `WI_Start` (function, line 1818) `void WI_Start(wbstartstruct_t* wbstartstruct)`
   - `NUMEPISODES` (macro, line 61) `#define NUMEPISODES`
   - `NUMMAPS` (macro, line 62) `#define NUMMAPS`
   - `WI_TITLEY` (macro, line 75) `#define WI_TITLEY`
@@ -6053,28 +5285,25 @@ WI_drawTime
   - `Z_ClearZone` (function, line 71) `void Z_ClearZone (memzone_t* zone)`
   - `Z_Init` (function, line 97) `void Z_Init (void)`
   - `Z_Free` (function, line 126) `void Z_Free (void* ptr)`
-  - `Z_Malloc` (function, line 182) `void*
+  - `Z_Malloc` (function, line 185) `void*
 Z_Malloc
 ( int		size,
   int		tag,
   void*		user )`
-  - `Z_FreeTags` (function, line 297) `void
+  - `Z_FreeTags` (function, line 298) `void
 Z_FreeTags
 ( int		lowtag,
   int		hightag )`
-  - `Z_DumpHeap` (function, line 327) `void
+  - `Z_DumpHeap` (function, line 328) `void
 Z_DumpHeap
 ( int		lowtag,
   int		hightag )`
   - `Z_FileDumpHeap` (function, line 367) `void Z_FileDumpHeap (FILE* f)`
   - `Z_CheckHeap` (function, line 400) `void Z_CheckHeap (void)`
   - `Z_ChangeTag2` (function, line 429) `void Z_ChangeTag2(void *ptr, int tag, char *file, int line)`
-  - `Z_ChangeUser` (function, line 445) `void Z_ChangeUser(void *ptr, void **user)`
+  - `Z_ChangeUser` (function, line 446) `void Z_ChangeUser(void *ptr, void **user)`
   - `Z_FreeMemory` (function, line 466) `int Z_FreeMemory (void)`
-  - `Z_ZoneSize` (function, line 483) `unsigned int Z_ZoneSize(void)`
-  - `I_Error` (function, line 222) `I_Error ("Z_Malloc: failed on allocation of %i bytes", size);`
-  - `printf` (function, line 333) `printf ("zone size: %i location: %p\n", mainzone->size,mainzone);`
-  - `fprintf` (function, line 370) `fprintf (f,"zone size: %i location: %p\n",mainzone->size,mainzone);`
+  - `Z_ZoneSize` (function, line 484) `unsigned int Z_ZoneSize(void)`
   - `MEM_ALIGN` (macro, line 35) `#define MEM_ALIGN`
   - `ZONEID` (macro, line 37) `#define ZONEID`
   - `MINFRAGMENT` (macro, line 181) `#define MINFRAGMENT`

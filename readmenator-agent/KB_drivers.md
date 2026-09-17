@@ -2,7 +2,7 @@
 
 ## headers/drivers/kbd.h
 - Layer: infrastructure
-- Doc: ifndef KBD_H define KBD_H  Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty. Toggled from the taskbar widg
+- Doc: Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty. Toggled from the taskbar widget or the `kbd` shell built
 - Language: h
 - Symbols:
   - `kbd_available` (function, line 8) `int kbd_available(void);`
@@ -32,7 +32,7 @@
 
 ## headers/drivers/modifiers.h
 - Layer: infrastructure
-- Doc: ifndef MODIFIERS_H define MODIFIERS_H  Docstring: Unified modifier tracking for cooked and raw paths.
+- Doc: Docstring: Unified modifier tracking for cooked and raw paths.
 - Language: h
 - Symbols:
   - `modifier_state_t` (struct, line 5)
@@ -51,7 +51,7 @@
 
 ## headers/drivers/mouse.h
 - Layer: infrastructure
-- Doc: ifndef MOUSE_H define MOUSE_H  Docstring: mouse.h -- boundary of the PS/2 mouse device driver
+- Doc: Docstring: mouse.h -- boundary of the PS/2 mouse device driver
 - Language: h
 - Symbols:
   - `mouse_hw_init` (function, line 11) `void mouse_hw_init(void);`

@@ -2,7 +2,7 @@
 
 ## headers/kernel/console_in.h
 - Layer: utility
-- Doc: ifndef CONSOLE_IN_H define CONSOLE_IN_H  Docstring: console_in.h -- boundary of the console input device
+- Doc: Docstring: console_in.h -- boundary of the console input device
 - Language: h
 - Symbols:
   - `Consumers` (function, line 7) `* Consumers (shell prompt, editor, SPAWN waits, GETC_RAW syscall) include * this header instead of reaching into kernel/shell.c. */ #include "kernel.h" /** Docstring: Blocking read from PS/2 or COM1 w`
@@ -18,7 +18,7 @@
 
 ## headers/kernel/vga_cursor.h
 - Layer: utility
-- Doc: ifndef VGA_CURSOR_H define VGA_CURSOR_H  Docstring: vga_cursor.h -- boundary of the pointer sprite layer
+- Doc: Docstring: vga_cursor.h -- boundary of the pointer sprite layer
 - Language: h
 - Symbols:
   - `cursor_over` (function, line 16) `int cursor_over(int x0, int y0, int w, int h);`

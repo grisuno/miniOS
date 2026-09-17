@@ -5,29 +5,29 @@
 - Doc: aes.c - command path AES-256-CTR encryption tools: aes and unaes.
 - Language: c
 - Symbols:
-  - `aes_read_all` (function, line 68) `static char *aes_read_all(const char *name, int *len)`
-  - `aes_write_all` (function, line 85) `static int aes_write_all(const char *name, char *data, int len)`
-  - `aes_has` (function, line 95) `static int aes_has(const char *s, const char *needle)`
-  - `hex_val` (function, line 109) `static int hex_val(int c)`
-  - `aes_parse_hex` (function, line 116) `static int aes_parse_hex(const char *s, int want, int *out)`
+  - `aes_read_all` (function, line 69) `static char *aes_read_all(const char *name, int *len)`
+  - `aes_write_all` (function, line 86) `static int aes_write_all(const char *name, char *data, int len)`
+  - `aes_has` (function, line 96) `static int aes_has(const char *s, const char *needle)`
+  - `hex_val` (function, line 110) `static int hex_val(int c)`
+  - `aes_parse_hex` (function, line 117) `static int aes_parse_hex(const char *s, int want, int *out)`
   - `aes_gf_mul` (function, line 130) `static int aes_gf_mul(int a, int b)`
-  - `aes_xtime` (function, line 141) `static int aes_xtime(int x)`
-  - `aes_rotl8` (function, line 147) `static int aes_rotl8(int x, int n)`
+  - `aes_xtime` (function, line 142) `static int aes_xtime(int x)`
+  - `aes_rotl8` (function, line 148) `static int aes_rotl8(int x, int n)`
   - `aes_init_tables` (function, line 155) `static void aes_init_tables(void)`
   - `aes_key_expand` (function, line 174) `static void aes_key_expand(const int *key)`
-  - `aes_add_round_key` (function, line 208) `static void aes_add_round_key(int round)`
-  - `aes_sub_bytes` (function, line 214) `static void aes_sub_bytes(void)`
-  - `aes_shift_rows` (function, line 219) `static void aes_shift_rows(void)`
-  - `aes_mix_columns` (function, line 227) `static void aes_mix_columns(void)`
-  - `aes_cipher` (function, line 247) `static void aes_cipher(void)`
+  - `aes_add_round_key` (function, line 209) `static void aes_add_round_key(int round)`
+  - `aes_sub_bytes` (function, line 215) `static void aes_sub_bytes(void)`
+  - `aes_shift_rows` (function, line 220) `static void aes_shift_rows(void)`
+  - `aes_mix_columns` (function, line 228) `static void aes_mix_columns(void)`
+  - `aes_cipher` (function, line 248) `static void aes_cipher(void)`
   - `aes_iv_increment` (function, line 263) `static void aes_iv_increment(void)`
   - `aes_ctr_crypt` (function, line 273) `static void aes_ctr_crypt(char *data, int len)`
-  - `aes_hdr_put` (function, line 287) `static void aes_hdr_put(char *h, int size)`
-  - `aes_hdr_get` (function, line 298) `static int aes_hdr_get(char *h)`
-  - `aes_tool_name` (function, line 306) `static const char *aes_tool_name(int decode)`
-  - `aes_run` (function, line 311) `static int aes_run(int decode, const char *keyhex, const char *noncehex,
+  - `aes_hdr_put` (function, line 288) `static void aes_hdr_put(char *h, int size)`
+  - `aes_hdr_get` (function, line 299) `static int aes_hdr_get(char *h)`
+  - `aes_tool_name` (function, line 307) `static const char *aes_tool_name(int decode)`
+  - `aes_run` (function, line 312) `static int aes_run(int decode, const char *keyhex, const char *noncehex,
                    const...`
-  - `main` (function, line 383) `int main(int argc, char **argv)`
+  - `main` (function, line 384) `int main(int argc, char **argv)`
   - `GF` (function, line 8) `* generated procedurally from the GF(2^8) multiplicative inverse plus the * FIPS-197 affine transform, so the file carries no magic tables. The mode * is CTR (NIST SP 800-38A): no padding, encrypt and`
   - `putchar` (function, line 25) `int putchar();`
   - `strcmp` (function, line 26) `int strcmp();`
@@ -41,7 +41,6 @@
   - `rewind` (function, line 34) `void rewind();`
   - `malloc` (function, line 35) `void *malloc();`
   - `free` (function, line 36) `void free();`
-  - `printf` (function, line 320) `printf("%s: %s: key must be %d hex digits\n", aes_tool_name(decode), keyhex, HEX_KEY_LEN);`
   - `AES_MAGIC0` (macro, line 37) `#define AES_MAGIC0`
   - `AES_MAGIC1` (macro, line 39) `#define AES_MAGIC1`
   - `AES_MAGIC2` (macro, line 40) `#define AES_MAGIC2`
@@ -64,34 +63,32 @@
 
 ## progs/src/audio.c
 - Layer: infrastructure
-- Doc: include "minios_abi.h"
 - Language: c
 - Symbols:
-  - `syscall1` (function, line 2) `static long syscall1(long n, long a1)`
-  - `syscall2` (function, line 8) `static long syscall2(long n, long a1, long a2)`
-  - `syscall3` (function, line 14) `static long syscall3(long n, long a1, long a2, long a3)`
-  - `syscall0` (function, line 20) `static long syscall0(long n)`
-  - `audio_init` (function, line 26) `int audio_init(void)`
-  - `audio_tone` (function, line 30) `void audio_tone(unsigned freq)`
-  - `audio_pcm_open` (function, line 34) `int audio_pcm_open(unsigned rate, unsigned channels, unsigned format)`
-  - `audio_pcm_submit` (function, line 39) `int audio_pcm_submit(const void *buf, unsigned len)`
-  - `audio_pcm_pump` (function, line 43) `void audio_pcm_pump(void)`
-  - `audio_pcm_close` (function, line 47) `void audio_pcm_close(void)`
-  - `audio_set_volume` (function, line 51) `void audio_set_volume(unsigned volume)`
-  - `audio_get_volume` (function, line 55) `unsigned audio_get_volume(void)`
-  - `audio_sb16_present` (function, line 59) `int audio_sb16_present(void)`
-  - `audio_stream_open` (function, line 63) `int audio_stream_open(void)`
-  - `audio_stream_close` (function, line 67) `void audio_stream_close(int id)`
-  - `audio_stream_submit` (function, line 71) `int audio_stream_submit(int id, const void *buf, unsigned len)`
-  - `audio_stream_volume` (function, line 75) `void audio_stream_volume(int id, unsigned char vol)`
-  - `volatile` (function, line 5) `__asm__ volatile("syscall" : "=a"(r) : "a"(n), "D"(a1) : "rcx","r11","memory");`
+  - `syscall1` (function, line 3) `static long syscall1(long n, long a1)`
+  - `syscall2` (function, line 9) `static long syscall2(long n, long a1, long a2)`
+  - `syscall3` (function, line 15) `static long syscall3(long n, long a1, long a2, long a3)`
+  - `syscall0` (function, line 21) `static long syscall0(long n)`
+  - `audio_init` (function, line 27) `int audio_init(void)`
+  - `audio_tone` (function, line 31) `void audio_tone(unsigned freq)`
+  - `audio_pcm_open` (function, line 35) `int audio_pcm_open(unsigned rate, unsigned channels, unsigned format)`
+  - `audio_pcm_submit` (function, line 40) `int audio_pcm_submit(const void *buf, unsigned len)`
+  - `audio_pcm_pump` (function, line 44) `void audio_pcm_pump(void)`
+  - `audio_pcm_close` (function, line 48) `void audio_pcm_close(void)`
+  - `audio_set_volume` (function, line 52) `void audio_set_volume(unsigned volume)`
+  - `audio_get_volume` (function, line 56) `unsigned audio_get_volume(void)`
+  - `audio_sb16_present` (function, line 60) `int audio_sb16_present(void)`
+  - `audio_stream_open` (function, line 64) `int audio_stream_open(void)`
+  - `audio_stream_close` (function, line 68) `void audio_stream_close(int id)`
+  - `audio_stream_submit` (function, line 72) `int audio_stream_submit(int id, const void *buf, unsigned len)`
+  - `audio_stream_volume` (function, line 76) `void audio_stream_volume(int id, unsigned char vol)`
 - Depends on: `progs/minios_abi.h`
 
 ## progs/src/cp.c
 - Layer: utility
 - Language: c
 - Symbols:
-  - `main` (function, line 9) `int main(int argc, char **argv)`
+  - `main` (function, line 10) `int main(int argc, char **argv)`
   - `printf` (function, line 1) `int printf();`
   - `fopen` (function, line 2) `void *fopen();`
   - `fclose` (function, line 3) `int fclose();`
@@ -106,16 +103,15 @@
 - Language: c
 - Symbols:
   - `read_cpl` (function, line 6) `static long read_cpl(void)`
-  - `exit_now` (function, line 11) `static void exit_now(long code)`
-  - `_start` (function, line 15) `void _start(void)`
-  - `volatile` (function, line 8) `__asm__ volatile("mov %%cs, %0" : "=r"(cs));`
+  - `exit_now` (function, line 12) `static void exit_now(long code)`
+  - `_start` (function, line 16) `void _start(void)`
 
 ## progs/src/fib.c
 - Layer: utility
 - Language: c
 - Symbols:
   - `fib` (function, line 1) `int fib(int n)`
-  - `main` (function, line 5) `int main(void)`
+  - `main` (function, line 6) `int main(void)`
 
 ## progs/src/fptest.c
 - Layer: testing
@@ -123,18 +119,13 @@
 - Language: c
 - Symbols:
   - `fp_slot_t` (struct, line 56)
-  - `read_mxcsr` (function, line 41) `static unsigned int read_mxcsr(void)`
-  - `raw_gettid` (function, line 47) `static long raw_gettid(void)`
-  - `raw_getrandom` (function, line 51) `static long raw_getrandom(void *buf, unsigned long n)`
+  - `read_mxcsr` (function, line 42) `static unsigned int read_mxcsr(void)`
+  - `raw_gettid` (function, line 48) `static long raw_gettid(void)`
+  - `raw_getrandom` (function, line 52) `static long raw_getrandom(void *buf, unsigned long n)`
   - `stack_align_canary` (function, line 78) `static void stack_align_canary(void)`
-  - `worker` (function, line 83) `static void *worker(void *p)`
-  - `main` (function, line 147) `int main(void)`
+  - `worker` (function, line 84) `static void *worker(void *p)`
+  - `main` (function, line 148) `int main(void)`
   - `gettid` (function, line 20) `* * The same run smokes gettid (Phase 0.4: the two workers must observe * distinct tids, never the constant 1) and getrandom (Phase 0.5: it * must fill the buffer and report the count, never EFAULT). `
-  - `volatile` (function, line 44) `__asm__ volatile("stmxcsr %0" : "=m"(v));`
-  - `m_syscall6` (function, line 49) `return m_syscall6(MINIOS_SYS_GETTID, 0, 0, 0);`
-  - `myield` (function, line 118) `myield();`
-  - `__sync_fetch_and_add` (function, line 143) `__sync_fetch_and_add(&worker_tails, 1);`
-  - `printf` (function, line 165) `printf("fptest: FAIL (getrandom=%ld)\n", rn);`
   - `FP_ITERS` (macro, line 37) `#define FP_ITERS`
 - Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
 
@@ -146,7 +137,7 @@
   - `tls_close` (function, line 58) `static int tls_close(int fd)`
   - `atoi` (function, line 151) `static int atoi(char *s)`
   - `append` (function, line 166) `static int append(char *dst, int pos, char *src, int cap)`
-  - `ci_lower` (function, line 175) `static int ci_lower(int c)`
+  - `ci_lower` (function, line 176) `static int ci_lower(int c)`
   - `ci_starts` (function, line 182) `static int ci_starts(char *s, char *pre)`
   - `ci_eq` (function, line 193) `static int ci_eq(char *a, char *b)`
   - `ci_index` (function, line 203) `static int ci_index(char *s, char *needle)`
@@ -155,14 +146,14 @@
   - `make_search` (function, line 242) `static void make_search(char *out, char *query, int cap)`
   - `split_url` (function, line 266) `static int split_url(char *url)`
   - `resolve_redirect` (function, line 313) `static int resolve_redirect(void)`
-  - `put_ws` (function, line 365) `static void put_ws(void)`
+  - `put_ws` (function, line 366) `static void put_ws(void)`
   - `put_utf` (function, line 377) `static void put_utf(int c)`
   - `put_text` (function, line 427) `static void put_text(int c)`
-  - `css_append` (function, line 482) `static void css_append(char *s, int n)`
-  - `css_line` (function, line 488) `static void css_line(char *s)`
-  - `dom_append` (function, line 493) `static void dom_append(char *s, int n)`
-  - `dom_space` (function, line 499) `static void dom_space(void)`
-  - `dom_nl` (function, line 503) `static void dom_nl(void)`
+  - `css_append` (function, line 483) `static void css_append(char *s, int n)`
+  - `css_line` (function, line 489) `static void css_line(char *s)`
+  - `dom_append` (function, line 494) `static void dom_append(char *s, int n)`
+  - `dom_space` (function, line 500) `static void dom_space(void)`
+  - `dom_nl` (function, line 504) `static void dom_nl(void)`
   - `record_attr` (function, line 509) `static void record_attr(void)`
   - `is_void_tag` (function, line 534) `static int is_void_tag(void)`
   - `classify_tag` (function, line 546) `static void classify_tag(void)`
@@ -175,7 +166,7 @@
   - `fetch_css` (function, line 1031) `static void fetch_css(char *host, char *path)`
   - `print_css_dump` (function, line 1113) `static void print_css_dump(void)`
   - `print_dom_dump` (function, line 1122) `static void print_dom_dump(void)`
-  - `main` (function, line 1128) `int main(int argc, char **argv)`
+  - `main` (function, line 1129) `int main(int argc, char **argv)`
   - `curlfree` (function, line 4) `* spirit of curlfree (http.c + htmlfilter.c): a bounded header phase, * Content-Length or EOF body reading, Transfer-Encoding: chunked * decoding, redirect chasing with a hop bound, and a filter that `
   - `net_dns_resolve` (function, line 41) `int net_dns_resolve(const char *host);`
   - `tls_handshake` (function, line 42) `int tls_handshake(int fd, char *host);`
@@ -195,7 +186,6 @@
   - `memcpy` (function, line 69) `int memcpy(char *dst, char *src, int n);`
   - `memset` (function, line 70) `int memset(char *dst, int c, int n);`
   - `putchar` (function, line 71) `int putchar(int c);`
-  - `put_entity` (function, line 757) `put_entity(f_ent);`
   - `FREEDOM_HOPS_MAX` (macro, line 73) `#define FREEDOM_HOPS_MAX`
   - `FREEDOM_HDR_MAX` (macro, line 75) `#define FREEDOM_HDR_MAX`
   - `FREEDOM_BUF` (macro, line 76) `#define FREEDOM_BUF`
@@ -212,71 +202,69 @@
 - Doc: freedom_wl - Wayland to MiniOS intermediate layer for FreeDom.
 - Language: c
 - Symbols:
-  - `FreedomWlConfig` (struct, line 75)
-  - `present_buf` (type_alias, line 75) `typedef struct FreedomWlConfig { long present_buf;`
-  - `freedom_wl_surface_id` (function, line 113) `static long freedom_wl_surface_id(void)`
-  - `freedom_wl_default` (function, line 125) `static FreedomWlConfig freedom_wl_default(void)`
-  - `freedom_wl_clip_rect` (function, line 163) `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)`
-  - `freedom_wl_frame_bytes` (function, line 194) `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)`
-  - `freedom_wl_keysym` (function, line 213) `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)`
-  - `freedom_wl_sanitize_utf8` (function, line 253) `static long freedom_wl_sanitize_utf8(char *s, long cap)`
-  - `freedom_wl_title_ok` (function, line 326) `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)`
-  - `wl_copy` (function, line 337) `static long wl_copy(char *dst, char *src, long cap)`
-  - `wl_strlen` (function, line 355) `static long wl_strlen(char *s, long cap)`
-  - `wl_append` (function, line 371) `static long wl_append(char *dst, long pos, char *src, long cap)`
-  - `wl_ci_lower` (function, line 394) `static long wl_ci_lower(long ch)`
-  - `wl_ci_starts` (function, line 402) `static long wl_ci_starts(char *s, char *pre)`
-  - `wl_ci_contains` (function, line 420) `static long wl_ci_contains(char *s, char *needle)`
-  - `wl_has_scheme` (function, line 434) `static long wl_has_scheme(char *s)`
-  - `wl_looks_like_url` (function, line 460) `static long wl_looks_like_url(char *s)`
-  - `wl_make_search` (function, line 479) `static long wl_make_search(char *out, char *query, long cap)`
-  - `wl_split_url` (function, line 511) `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...`
-  - `wl_resolve_redirect` (function, line 576) `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...`
-  - `wl_scroll_clamp` (function, line 656) `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)`
-  - `wl_filter_wrap` (function, line 675) `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...`
-  - `wl_status_text` (function, line 918) `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...`
-  - `freedom_wl_build_palette` (function, line 1012) `static long freedom_wl_build_palette(unsigned char *pal, long cap)`
-  - `freedom_wl_sys_present` (function, line 1084) `static long freedom_wl_sys_present(long buf, long origin)`
-  - `freedom_wl_sys_title` (function, line 1091) `static long freedom_wl_sys_title(char *t)`
-  - `freedom_wl_sys_palette` (function, line 1098) `static long freedom_wl_sys_palette(unsigned char *pal)`
-  - `freedom_wl_sys_mouse` (function, line 1105) `static long freedom_wl_sys_mouse(long *m)`
-  - `freedom_wl_sys_kbd` (function, line 1112) `static long freedom_wl_sys_kbd(void)`
-  - `freedom_wl_sys_vga_mode` (function, line 1119) `static long freedom_wl_sys_vga_mode(long on)`
-  - `freedom_wl_sys_kbd_raw` (function, line 1126) `static long freedom_wl_sys_kbd_raw(long on)`
-  - `freedom_wl_sys_yield` (function, line 1133) `static long freedom_wl_sys_yield(void)`
-  - `wl_parse_headers` (function, line 1140) `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...`
-  - `wl_fetch_raw` (function, line 1232) `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)`
-  - `wl_render` (function, line 1467) `static long wl_render(FreedomWlConfig *c, long off)`
-  - `wl_browse` (function, line 1554) `static long wl_browse(FreedomWlConfig *c)`
-  - `freedom_wl_selftest` (function, line 1635) `static long freedom_wl_selftest(void)`
-  - `freedom_wl_host_probe` (function, line 1714) `int freedom_wl_host_probe(FreedomWlConfig *c)`
-  - `main` (function, line 1746) `int main(int argc, char **argv)`
-  - `net_dns_resolve` (function, line 40) `int net_dns_resolve(const char *host);`
-  - `tls_handshake` (function, line 42) `int tls_handshake(int fd, char *host);`
-  - `tls_send` (function, line 43) `int tls_send(int fd, char *buf, int len);`
-  - `tls_recv` (function, line 44) `int tls_recv(int fd, char *buf, int len);`
-  - `tls_close` (function, line 45) `void tls_close(int fd);`
-  - `wl_client_init` (function, line 116) `wl_client_init(&cl);`
-  - `volatile` (function, line 1086) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
-  - `printf` (function, line 1258) `printf("freedom_wl: cannot resolve %s\n", host);`
-  - `WL_COLS` (macro, line 48) `#define WL_COLS`
-  - `WL_ROWS` (macro, line 49) `#define WL_ROWS`
-  - `WL_TEXT_ROWS` (macro, line 50) `#define WL_TEXT_ROWS`
-  - `WL_LINES_MAX` (macro, line 51) `#define WL_LINES_MAX`
-  - `WL_LINE_LEN` (macro, line 52) `#define WL_LINE_LEN`
-  - `WL_BODY_CAP` (macro, line 53) `#define WL_BODY_CAP`
-  - `WL_HDR_MAX` (macro, line 54) `#define WL_HDR_MAX`
-  - `WL_NET_BUF` (macro, line 55) `#define WL_NET_BUF`
-  - `WL_REQ_MAX` (macro, line 56) `#define WL_REQ_MAX`
-  - `WL_HOST_MAX` (macro, line 57) `#define WL_HOST_MAX`
-  - `WL_PATH_MAX` (macro, line 58) `#define WL_PATH_MAX`
-  - `WL_URL_MAX` (macro, line 59) `#define WL_URL_MAX`
-  - `WL_HOPS_MAX` (macro, line 60) `#define WL_HOPS_MAX`
-  - `WL_FONT_W` (macro, line 61) `#define WL_FONT_W`
-  - `WL_FONT_H` (macro, line 62) `#define WL_FONT_H`
-  - `WL_TAG_MAX` (macro, line 63) `#define WL_TAG_MAX`
-  - `WL_ENT_MAX` (macro, line 64) `#define WL_ENT_MAX`
-- Depends on: `headers/vga_fb.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
+  - `FreedomWlConfig` (struct, line 76)
+  - `present_buf` (type_alias, line 76) `typedef struct FreedomWlConfig { long present_buf;`
+  - `freedom_wl_surface_id` (function, line 114) `static long freedom_wl_surface_id(void)`
+  - `freedom_wl_surface_attach` (function, line 129) `static long freedom_wl_surface_attach(FreedomWlConfig *c)`
+  - `freedom_wl_default` (function, line 158) `static FreedomWlConfig freedom_wl_default(void)`
+  - `freedom_wl_clip_rect` (function, line 196) `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)`
+  - `freedom_wl_frame_bytes` (function, line 227) `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)`
+  - `freedom_wl_keysym` (function, line 246) `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)`
+  - `freedom_wl_sanitize_utf8` (function, line 286) `static long freedom_wl_sanitize_utf8(char *s, long cap)`
+  - `freedom_wl_title_ok` (function, line 359) `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)`
+  - `wl_copy` (function, line 370) `static long wl_copy(char *dst, char *src, long cap)`
+  - `wl_strlen` (function, line 388) `static long wl_strlen(char *s, long cap)`
+  - `wl_append` (function, line 404) `static long wl_append(char *dst, long pos, char *src, long cap)`
+  - `wl_ci_lower` (function, line 427) `static long wl_ci_lower(long ch)`
+  - `wl_ci_starts` (function, line 435) `static long wl_ci_starts(char *s, char *pre)`
+  - `wl_ci_contains` (function, line 453) `static long wl_ci_contains(char *s, char *needle)`
+  - `wl_has_scheme` (function, line 467) `static long wl_has_scheme(char *s)`
+  - `wl_looks_like_url` (function, line 493) `static long wl_looks_like_url(char *s)`
+  - `wl_make_search` (function, line 512) `static long wl_make_search(char *out, char *query, long cap)`
+  - `wl_split_url` (function, line 544) `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...`
+  - `wl_resolve_redirect` (function, line 609) `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...`
+  - `wl_scroll_clamp` (function, line 689) `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)`
+  - `wl_filter_wrap` (function, line 708) `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...`
+  - `wl_status_text` (function, line 951) `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...`
+  - `freedom_wl_build_palette` (function, line 1039) `static long freedom_wl_build_palette(unsigned char *pal, long cap)`
+  - `freedom_wl_sys_present` (function, line 1062) `static long freedom_wl_sys_present(long buf, long origin)`
+  - `freedom_wl_sys_title` (function, line 1069) `static long freedom_wl_sys_title(char *t)`
+  - `freedom_wl_sys_palette` (function, line 1076) `static long freedom_wl_sys_palette(unsigned char *pal)`
+  - `freedom_wl_sys_mouse` (function, line 1083) `static long freedom_wl_sys_mouse(long *m)`
+  - `freedom_wl_sys_kbd` (function, line 1090) `static long freedom_wl_sys_kbd(void)`
+  - `freedom_wl_sys_vga_mode` (function, line 1097) `static long freedom_wl_sys_vga_mode(long on)`
+  - `freedom_wl_sys_kbd_raw` (function, line 1104) `static long freedom_wl_sys_kbd_raw(long on)`
+  - `freedom_wl_sys_yield` (function, line 1111) `static long freedom_wl_sys_yield(void)`
+  - `wl_parse_headers` (function, line 1118) `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...`
+  - `wl_fetch_raw` (function, line 1210) `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)`
+  - `wl_render` (function, line 1445) `static long wl_render(FreedomWlConfig *c, long off)`
+  - `wl_browse` (function, line 1532) `static long wl_browse(FreedomWlConfig *c)`
+  - `freedom_wl_selftest` (function, line 1613) `static long freedom_wl_selftest(void)`
+  - `freedom_wl_host_probe` (function, line 1696) `int freedom_wl_host_probe(FreedomWlConfig *c)`
+  - `main` (function, line 1731) `int main(int argc, char **argv)`
+  - `net_dns_resolve` (function, line 41) `int net_dns_resolve(const char *host);`
+  - `tls_handshake` (function, line 43) `int tls_handshake(int fd, char *host);`
+  - `tls_send` (function, line 44) `int tls_send(int fd, char *buf, int len);`
+  - `tls_recv` (function, line 45) `int tls_recv(int fd, char *buf, int len);`
+  - `tls_close` (function, line 46) `void tls_close(int fd);`
+  - `WL_COLS` (macro, line 49) `#define WL_COLS`
+  - `WL_ROWS` (macro, line 50) `#define WL_ROWS`
+  - `WL_TEXT_ROWS` (macro, line 51) `#define WL_TEXT_ROWS`
+  - `WL_LINES_MAX` (macro, line 52) `#define WL_LINES_MAX`
+  - `WL_LINE_LEN` (macro, line 53) `#define WL_LINE_LEN`
+  - `WL_BODY_CAP` (macro, line 54) `#define WL_BODY_CAP`
+  - `WL_HDR_MAX` (macro, line 55) `#define WL_HDR_MAX`
+  - `WL_NET_BUF` (macro, line 56) `#define WL_NET_BUF`
+  - `WL_REQ_MAX` (macro, line 57) `#define WL_REQ_MAX`
+  - `WL_HOST_MAX` (macro, line 58) `#define WL_HOST_MAX`
+  - `WL_PATH_MAX` (macro, line 59) `#define WL_PATH_MAX`
+  - `WL_URL_MAX` (macro, line 60) `#define WL_URL_MAX`
+  - `WL_HOPS_MAX` (macro, line 61) `#define WL_HOPS_MAX`
+  - `WL_FONT_W` (macro, line 62) `#define WL_FONT_W`
+  - `WL_FONT_H` (macro, line 63) `#define WL_FONT_H`
+  - `WL_TAG_MAX` (macro, line 64) `#define WL_TAG_MAX`
+  - `WL_ENT_MAX` (macro, line 65) `#define WL_ENT_MAX`
+- Depends on: `headers/vga_fb.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_mini.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ## progs/src/ftest.c
@@ -284,7 +272,7 @@
 - Doc: Exercises the kernel libc surface used by loaded .o programs: fprintf to stdout/stderr, snprintf into a buffer, and exit
 - Language: c
 - Symbols:
-  - `main` (function, line 9) `int main(int argc, char **argv)`
+  - `main` (function, line 10) `int main(int argc, char **argv)`
   - `fprintf` (function, line 3) `extern int fprintf(void *stream, const char *fmt, ...);`
   - `snprintf` (function, line 4) `extern int snprintf(char *buf, unsigned long size, const char *fmt, ...);`
   - `printf` (function, line 5) `extern int printf(const char *fmt, ...);`
@@ -297,7 +285,7 @@
 - Doc: MiniOS test program — compiled as relocatable .o, loaded by kernel ELF loader
 - Language: c
 - Symbols:
-  - `main` (function, line 3) `int main(int argc, char **argv)`
+  - `main` (function, line 4) `int main(int argc, char **argv)`
   - `printf` (function, line 2) `extern int printf(const char *fmt, ...);`
 
 ## progs/src/hello.py
@@ -310,7 +298,7 @@
 - Language: c
 - Symbols:
   - `atoi` (function, line 18) `int atoi(char *s)`
-  - `main` (function, line 28) `int main(int argc, char **argv)`
+  - `main` (function, line 29) `int main(int argc, char **argv)`
   - `kernel` (function, line 3) `* Hostnames are resolved by the kernel (net_dns_resolve syscall). */ int socket(int domain, int type, int proto);`
   - `connect` (function, line 6) `int connect(int fd, void *addr, int addrlen);`
   - `sendto` (function, line 7) `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);`
@@ -328,23 +316,23 @@
 - Doc: json.c - command path JSON tool: validate, pretty-print and query.
 - Language: c
 - Symbols:
-  - `js_read_all` (function, line 57) `static char *js_read_all(const char *name, int *len)`
-  - `js_new` (function, line 75) `static int js_new(void)`
-  - `js_skip_ws` (function, line 80) `static void js_skip_ws(void)`
-  - `js_peek` (function, line 88) `static int js_peek(void)`
-  - `js_parse_string` (function, line 96) `static int js_parse_string(void)`
-  - `js_parse_number` (function, line 132) `static int js_parse_number(void)`
-  - `js_key_match` (function, line 142) `static int js_key_match(int child, const char *key)`
-  - `js_parse_object` (function, line 146) `static int js_parse_object(void)`
-  - `js_parse_array` (function, line 181) `static int js_parse_array(void)`
-  - `js_parse_value` (function, line 210) `static int js_parse_value(void)`
-  - `js_indent` (function, line 280) `static void js_indent(int n)`
-  - `js_print_str` (function, line 285) `static void js_print_str(const char *s)`
-  - `js_print_value` (function, line 302) `static void js_print_value(int node, int depth)`
-  - `js_find_member` (function, line 346) `static int js_find_member(int obj, const char *key)`
-  - `js_array_at` (function, line 356) `static int js_array_at(int arr, int idx)`
-  - `js_query` (function, line 368) `static int js_query(int root, const char *path)`
-  - `main` (function, line 400) `int main(int argc, char **argv)`
+  - `js_read_all` (function, line 58) `static char *js_read_all(const char *name, int *len)`
+  - `js_new` (function, line 76) `static int js_new(void)`
+  - `js_skip_ws` (function, line 81) `static void js_skip_ws(void)`
+  - `js_peek` (function, line 89) `static int js_peek(void)`
+  - `js_parse_string` (function, line 97) `static int js_parse_string(void)`
+  - `js_parse_number` (function, line 133) `static int js_parse_number(void)`
+  - `js_key_match` (function, line 143) `static int js_key_match(int child, const char *key)`
+  - `js_parse_object` (function, line 147) `static int js_parse_object(void)`
+  - `js_parse_array` (function, line 182) `static int js_parse_array(void)`
+  - `js_parse_value` (function, line 211) `static int js_parse_value(void)`
+  - `js_indent` (function, line 281) `static void js_indent(int n)`
+  - `js_print_str` (function, line 286) `static void js_print_str(const char *s)`
+  - `js_print_value` (function, line 303) `static void js_print_value(int node, int depth)`
+  - `js_find_member` (function, line 347) `static int js_find_member(int obj, const char *key)`
+  - `js_array_at` (function, line 357) `static int js_array_at(int arr, int idx)`
+  - `js_query` (function, line 369) `static int js_query(int root, const char *path)`
+  - `main` (function, line 401) `int main(int argc, char **argv)`
   - `js_str` (function, line 5) `* members keep their key in js_str (the member value node) and their value * in the node itself, and object members / array elements are chained with * js_next. * * Usage: json <file> validate and pre`
   - `free` (function, line 14) `void free();`
   - `printf` (function, line 15) `int printf();`
@@ -376,9 +364,8 @@
 - Language: c
 - Symbols:
   - `syscall3` (function, line 7) `static long syscall3(long n, long a1, long a2, long a3)`
-  - `exit_now` (function, line 13) `static void exit_now(long code)`
-  - `_start` (function, line 17) `void _start(void)`
-  - `volatile` (function, line 9) `__asm__ volatile("syscall" : "=a"(r) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
+  - `exit_now` (function, line 14) `static void exit_now(long code)`
+  - `_start` (function, line 18) `void _start(void)`
 
 ## progs/src/ldhello.c
 - Layer: utility
@@ -390,13 +377,11 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `lx_syscall3` (function, line 10) `static long lx_syscall3(long n, long a1, long a2, long a3)`
-  - `lx_strlen` (function, line 22) `static unsigned long lx_strlen(const char *s)`
-  - `lx_write` (function, line 28) `static void lx_write(const char *s)`
-  - `lx_write_int` (function, line 32) `static void lx_write_int(long v)`
+  - `lx_syscall3` (function, line 11) `static long lx_syscall3(long n, long a1, long a2, long a3)`
+  - `lx_strlen` (function, line 23) `static unsigned long lx_strlen(const char *s)`
+  - `lx_write` (function, line 29) `static void lx_write(const char *s)`
+  - `lx_write_int` (function, line 33) `static void lx_write_int(long v)`
   - `lmain` (function, line 46) `int lmain(long argc, char **argv)`
-  - `volatile` (function, line 13) `__asm__ volatile("syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
-  - `__asm__` (function, line 61) `__asm__( ".global _start\n" "_start:\n" " movq (%rsp), %rdi\n" /* argc */ " leaq 8(%rsp), %rsi\n" /* argv */ " call lmain\n" " movl %eax, %edi\n" /* exit code = lmain() return */ " movl $60, %eax\n" /`
   - `SYS_write` (macro, line 19) `#define SYS_write`
   - `SYS_exit` (macro, line 21) `#define SYS_exit`
 
@@ -405,12 +390,12 @@
 - Doc: lz4.c - command path LZ4 (de)compression tools: lz4 and unlz4.
 - Language: c
 - Symbols:
-  - `lz4_has` (function, line 38) `static int lz4_has(const char *s, const char *needle)`
-  - `lz4_read_all` (function, line 52) `static char *lz4_read_all(const char *name, int *len)`
-  - `lz4_write_all` (function, line 69) `static int lz4_write_all(const char *name, char *data, int len)`
-  - `lz4_compress_file` (function, line 79) `static int lz4_compress_file(const char *src, const char *dst)`
-  - `lz4_decompress_file` (function, line 116) `static int lz4_decompress_file(const char *src, const char *dst)`
-  - `main` (function, line 163) `int main(int argc, char **argv)`
+  - `lz4_has` (function, line 39) `static int lz4_has(const char *s, const char *needle)`
+  - `lz4_read_all` (function, line 53) `static char *lz4_read_all(const char *name, int *len)`
+  - `lz4_write_all` (function, line 70) `static int lz4_write_all(const char *name, char *data, int len)`
+  - `lz4_compress_file` (function, line 80) `static int lz4_compress_file(const char *src, const char *dst)`
+  - `lz4_decompress_file` (function, line 117) `static int lz4_decompress_file(const char *src, const char *dst)`
+  - `main` (function, line 164) `int main(int argc, char **argv)`
   - `kernel` (function, line 5) `* * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so * these tools are thin front-ends over the two MiniOS syscalls 216 * (lz4_compress) and 217 (lz4_decompress), which mirro`
   - `free` (function, line 15) `void free();`
   - `printf` (function, line 16) `int printf();`
@@ -437,24 +422,24 @@
 - Doc: lzss.c - command path LZSS (de)compression tools: lzss and unlzss.
 - Language: c
 - Symbols:
-  - `lz_in_getc` (function, line 63) `static int lz_in_getc(void)`
-  - `lz_out_put` (function, line 68) `static void lz_out_put(int c)`
-  - `lz_putbit1` (function, line 73) `static void lz_putbit1(void)`
-  - `lz_putbit0` (function, line 83) `static void lz_putbit0(void)`
-  - `lz_flush_bits` (function, line 92) `static void lz_flush_bits(void)`
-  - `lz_out_literal` (function, line 96) `static void lz_out_literal(int c)`
-  - `lz_out_pair` (function, line 104) `static void lz_out_pair(int x, int y)`
-  - `lz_encode` (function, line 117) `static int lz_encode(void)`
-  - `lz_getbit` (function, line 172) `static int lz_getbit(int n)`
-  - `lz_decode` (function, line 188) `static int lz_decode(void)`
-  - `lz_hdr_put` (function, line 217) `static void lz_hdr_put(char *h, int size)`
-  - `lz_hdr_get` (function, line 228) `static int lz_hdr_get(char *h)`
-  - `lz_has` (function, line 236) `static int lz_has(const char *s, const char *needle)`
-  - `lz_read_all` (function, line 250) `static char *lz_read_all(const char *name, int *len)`
-  - `lz_write_all` (function, line 267) `static int lz_write_all(const char *name, char *data, int len)`
-  - `lz_compress` (function, line 277) `static int lz_compress(const char *src, const char *dst)`
-  - `lz_decompress` (function, line 324) `static int lz_decompress(const char *src, const char *dst)`
-  - `main` (function, line 396) `int main(int argc, char **argv)`
+  - `lz_in_getc` (function, line 64) `static int lz_in_getc(void)`
+  - `lz_out_put` (function, line 69) `static void lz_out_put(int c)`
+  - `lz_putbit1` (function, line 74) `static void lz_putbit1(void)`
+  - `lz_putbit0` (function, line 84) `static void lz_putbit0(void)`
+  - `lz_flush_bits` (function, line 93) `static void lz_flush_bits(void)`
+  - `lz_out_literal` (function, line 97) `static void lz_out_literal(int c)`
+  - `lz_out_pair` (function, line 105) `static void lz_out_pair(int x, int y)`
+  - `lz_encode` (function, line 118) `static int lz_encode(void)`
+  - `lz_getbit` (function, line 173) `static int lz_getbit(int n)`
+  - `lz_decode` (function, line 189) `static int lz_decode(void)`
+  - `lz_hdr_put` (function, line 218) `static void lz_hdr_put(char *h, int size)`
+  - `lz_hdr_get` (function, line 229) `static int lz_hdr_get(char *h)`
+  - `lz_has` (function, line 237) `static int lz_has(const char *s, const char *needle)`
+  - `lz_read_all` (function, line 251) `static char *lz_read_all(const char *name, int *len)`
+  - `lz_write_all` (function, line 268) `static int lz_write_all(const char *name, char *data, int len)`
+  - `lz_compress` (function, line 278) `static int lz_compress(const char *src, const char *dst)`
+  - `lz_decompress` (function, line 325) `static int lz_decompress(const char *src, const char *dst)`
+  - `main` (function, line 397) `int main(int argc, char **argv)`
   - `malloc` (function, line 12) `void *malloc();`
   - `free` (function, line 14) `void free();`
   - `printf` (function, line 15) `int printf();`
@@ -492,11 +477,10 @@
 - Language: c
 - Symbols:
   - `mmap_anon` (function, line 7) `static long mmap_anon(long len)`
-  - `munmap` (function, line 20) `static long munmap(long addr, long len)`
-  - `exit_now` (function, line 30) `static void exit_now(long code)`
-  - `_start` (function, line 34) `void _start(void)`
+  - `munmap` (function, line 21) `static long munmap(long addr, long len)`
+  - `exit_now` (function, line 31) `static void exit_now(long code)`
+  - `_start` (function, line 35) `void _start(void)`
   - `ENOMEM` (function, line 3) `* downward mmap cursor drains until a map fails with ENOMEM (-12);`
-  - `volatile` (function, line 14) `__asm__ volatile("syscall" : "=a"(r) : "0"(9), "D"(0), "r"(a2), "r"(a3), "r"(a4), "r"(a5), "r"(a6) : "rcx", "r11", "memory");`
 
 ## progs/src/mthreads.h
 - Layer: utility
@@ -506,19 +490,16 @@
   - `mmutex_t` (struct, line 38)
   - `mthread_slot_t` (struct, line 42)
   - `mthread_t` (type_alias, line 35) `typedef int mthread_t;`
-  - `m_syscall6` (function, line 49) `static inline long m_syscall6(long n, long a, long b, long c)`
-  - `myield` (function, line 58) `static inline void myield(void)`
-  - `mfutex_wait` (function, line 62) `static inline long mfutex_wait(volatile int *addr, int val)`
-  - `mfutex_wake` (function, line 66) `static inline long mfutex_wake(volatile int *addr, int n)`
-  - `mmutex_init` (function, line 70) `static inline void mmutex_init(mmutex_t *m)`
-  - `mmutex_lock` (function, line 74) `static inline void mmutex_lock(mmutex_t *m)`
-  - `mmutex_unlock` (function, line 89) `static inline void mmutex_unlock(mmutex_t *m)`
+  - `m_syscall6` (function, line 50) `static inline long m_syscall6(long n, long a, long b, long c)`
+  - `myield` (function, line 59) `static inline void myield(void)`
+  - `mfutex_wait` (function, line 63) `static inline long mfutex_wait(volatile int *addr, int val)`
+  - `mfutex_wake` (function, line 67) `static inline long mfutex_wake(volatile int *addr, int n)`
+  - `mmutex_init` (function, line 71) `static inline void mmutex_init(mmutex_t *m)`
+  - `mmutex_lock` (function, line 75) `static inline void mmutex_lock(mmutex_t *m)`
+  - `mmutex_unlock` (function, line 90) `static inline void mmutex_unlock(mmutex_t *m)`
   - `mthread_entry` (function, line 98) `static void mthread_entry(void *p)`
-  - `mthread_create` (function, line 116) `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
-  - `mthread_join` (function, line 139) `static int mthread_join(mthread_t t, void **retval)`
-  - `volatile` (function, line 52) `__asm__ volatile("syscall" : "=a"(r) : "a"(n), "D"(a), "S"(b), "d"(c) : "rcx", "r11", "memory");`
-  - `__attribute__` (function, line 115) `__attribute__((aligned(16)));`
-  - `__sync_synchronize` (function, line 144) `__sync_synchronize();`
+  - `mthread_create` (function, line 117) `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
+  - `mthread_join` (function, line 140) `static int mthread_join(mthread_t t, void **retval)`
   - `MTHREADS_H` (macro, line 24) `#define MTHREADS_H`
   - `MTHREAD_STACK_SZ` (macro, line 27) `#define MTHREAD_STACK_SZ`
   - `MTHREAD_MAX` (macro, line 29) `#define MTHREAD_MAX`
@@ -534,30 +515,23 @@
 - Doc: NX probe. Under the isolation contract every user page starts
 - Language: c
 - Symbols:
-  - `write_str` (function, line 10) `static long write_str(const char *s, long n)`
-  - `exit_now` (function, line 18) `static void exit_now(long code)`
-  - `_start` (function, line 22) `void _start(void)`
-  - `void` (function, line 9) `typedef void (*fn_t)(void);`
-  - `volatile` (function, line 13) `__asm__ volatile("syscall" : "=a"(r) : "a"(1), "D"(1), "S"(s), "d"(n) : "rcx", "r11", "memory");`
-  - `fn` (function, line 29) `fn();`
+  - `write_str` (function, line 11) `static long write_str(const char *s, long n)`
+  - `exit_now` (function, line 19) `static void exit_now(long code)`
+  - `_start` (function, line 23) `void _start(void)`
 
 ## progs/src/opl3.c
 - Layer: utility
 - Language: c
 - Symbols:
   - `note_t` (struct, line 102)
-  - `sys_time` (function, line 35) `static long sys_time(void)`
+  - `sys_time` (function, line 36) `static long sys_time(void)`
   - `sys_open` (function, line 39) `static long sys_open(long on)`
   - `sys_submit` (function, line 42) `static long sys_submit(const void *buf, long len)`
-  - `busy_ms` (function, line 45) `static void busy_ms(long ms)`
+  - `busy_ms` (function, line 46) `static void busy_ms(long ms)`
   - `opl3_set_instrument` (function, line 52) `static void opl3_set_instrument(opl3_chip *chip)`
-  - `opl3_note` (function, line 68) `static void opl3_note(opl3_chip *chip, unsigned block, unsigned fnum, int on)`
+  - `opl3_note` (function, line 69) `static void opl3_note(opl3_chip *chip, unsigned block, unsigned fnum, int on)`
   - `render` (function, line 77) `static void render(opl3_chip *chip, long ms, long *fail)`
-  - `main` (function, line 106) `int main(void)`
-  - `OPL3_WriteReg` (function, line 54) `OPL3_WriteReg(chip, 0x20, 0x01);`
-  - `OPL3_GenerateStream` (function, line 85) `OPL3_GenerateStream(chip, stereo, STEREO_FRAMES);`
-  - `OPL3_Reset` (function, line 110) `OPL3_Reset(&chip, SAMPLE_RATE);`
-  - `volatile` (function, line 137) `__asm__ volatile("syscall"::"a"(SYS_WRITE),"D"(1),"S"(msg),"d"((long)n) :"rcx","r11","memory");`
+  - `main` (function, line 107) `int main(void)`
   - `SYS_TIME` (macro, line 20) `#define SYS_TIME`
   - `SYS_SB16_OPEN` (macro, line 22) `#define SYS_SB16_OPEN`
   - `SYS_SB16_SUBMIT` (macro, line 23) `#define SYS_SB16_SUBMIT`
@@ -574,30 +548,24 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `p_write` (function, line 25) `static long p_write(long fd, const char *s, long n)`
-  - `p_strlen` (function, line 29) `static unsigned long p_strlen(const char *s)`
-  - `p_puts` (function, line 35) `static void p_puts(long fd, const char *s)`
-  - `p_atoi` (function, line 39) `static int p_atoi(const char *s)`
-  - `p_parse_ip` (function, line 45) `static int p_parse_ip(const char *s, unsigned char out[4])`
+  - `p_write` (function, line 26) `static long p_write(long fd, const char *s, long n)`
+  - `p_strlen` (function, line 30) `static unsigned long p_strlen(const char *s)`
+  - `p_puts` (function, line 36) `static void p_puts(long fd, const char *s)`
+  - `p_atoi` (function, line 40) `static int p_atoi(const char *s)`
+  - `p_parse_ip` (function, line 46) `static int p_parse_ip(const char *s, unsigned char out[4])`
   - `lmain` (function, line 63) `int lmain(long argc, char **argv)`
-  - `volatile` (function, line 19) `__asm__ volatile("syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3), "r"(r10), "r"(r8) : "rcx", "r11", "memory");`
-  - `p_syscall6` (function, line 27) `return p_syscall6(1, fd, (long)s, n, 0, 0);`
-  - `__asm__` (function, line 119) `__asm__( ".global _start\n" "_start:\n" " movq (%rsp), %rdi\n" " leaq 8(%rsp), %rsi\n" " call lmain\n" " movl %eax, %edi\n" " movl $60, %eax\n" " syscall\n" " hlt\n" );`
 
 ## progs/src/sbtone.c
 - Layer: utility
 - Doc: sbtone.c — headless SB16 diagnostic (ring-3, no GUI).
 - Language: c
 - Symbols:
-  - `buffers` (function, line 13) `*
+  - `buffers` (function, line 14) `*
  * Exit code is the number of submitted buffers (0 on failure to open).
  */
 
 #include <stdio.h>...`
-  - `main` (function, line 35) `int main(void)`
-  - `volatile` (function, line 31) `__asm__ volatile("syscall":"=a"(r):"a"(n),"D"(a),"S"(b),"d"(d) :"rcx","r11","memory");`
-  - `printf` (function, line 63) `printf("sbtone: submitted %ld buffers (%ld ms audio) in %ld ms guest\n", ok, audio_ms, now - start);`
-  - `call` (function, line 65) `call(SYS_SB16_OPEN, 0, 0, 0);`
+  - `main` (function, line 36) `int main(void)`
   - `SYS_SB16_OPEN` (macro, line 20) `#define SYS_SB16_OPEN`
   - `SYS_SB16_SUBMIT` (macro, line 22) `#define SYS_SB16_SUBMIT`
   - `SYS_TIME` (macro, line 23) `#define SYS_TIME`
@@ -685,16 +653,10 @@
 - Doc: thdemo.c -- Producer-consumer over mthreads (roadmap Phase 1, M1).
 - Language: c
 - Symbols:
-  - `producer` (function, line 35) `static void *producer(void *p)`
-  - `consumer` (function, line 56) `static void *consumer(void *p)`
-  - `main` (function, line 81) `int main(void)`
+  - `producer` (function, line 36) `static void *producer(void *p)`
+  - `consumer` (function, line 57) `static void *consumer(void *p)`
+  - `main` (function, line 82) `int main(void)`
   - `threads` (function, line 2) `* * Ten threads (1 main + 5 producers + 4 consumers) share one address * space through thread_spawn (MiniOS syscall 225): a bounded buffer, * a spin mutex and Mesa-style spin-waits. Workers never touc`
-  - `mmutex_lock` (function, line 41) `mmutex_lock(&m);`
-  - `mmutex_unlock` (function, line 43) `mmutex_unlock(&m);`
-  - `myield` (function, line 44) `myield();`
-  - `mmutex_init` (function, line 85) `mmutex_init(&m);`
-  - `printf` (function, line 88) `printf("thdemo: producer create failed\n");`
-  - `mthread_join` (function, line 101) `mthread_join(prod[i], 0);`
   - `NPROD` (macro, line 20) `#define NPROD`
   - `NCONS` (macro, line 22) `#define NCONS`
   - `PER_PROD` (macro, line 23) `#define PER_PROD`
@@ -707,5 +669,5 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `main` (function, line 2) `int main(void)`
+  - `main` (function, line 3) `int main(void)`
   - `write` (function, line 1) `int write(int fd, char *buf, int n);`

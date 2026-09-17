@@ -5,8 +5,7 @@
 - Doc: Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator.
 - Language: c
 - Symbols:
-  - `main` (function, line 13) `int main(void)`
-  - `printf` (function, line 15) `printf("v=%d c=%lu\n", MINIOS_ABI_VERSION, (unsigned long)MINIOS_ABI_CHECKSUM);`
+  - `main` (function, line 14) `int main(void)`
 - Depends on: `progs/minios_abi.h`
 
 ## tools/boot_run.sh
@@ -14,8 +13,30 @@
 - Doc: boot_run.sh -- boot the MiniOS image in QEMU and drive the shell over the serial console with a list of commands, captur
 - Language: sh
 
+## tools/boot_wl.py
+- Layer: utility
+- Doc: boot_wl.py - boot the miniOS Wayland-mini desktop in one step.  Builds nothing; `make wl` owns the build. Boots os.img, 
+- Language: py
+- Symbols:
+  - `WlBootConfig` (class, line 39) `class WlBootConfig`
+  - `WlBoot` (class, line 66) `class WlBoot`
+  - `main` (method, line 216) `def main()`
+  - `__init__` (method, line 67) `def __init__(self, cfg)`
+  - `fail` (method, line 74) `def fail(self, msg)`
+  - `close` (method, line 79) `def close(self)`
+  - `boot` (method, line 90) `def boot(self)`
+  - `snapshot` (method, line 106) `def snapshot(self, timeout)`
+  - `wait_prompt` (method, line 123) `def wait_prompt(self)`
+  - `send` (method, line 134) `def send(self, line)`
+  - `setup` (method, line 145) `def setup(self)`
+  - `qmp` (method, line 155) `def qmp(self, obj)`
+  - `headless` (method, line 172) `def headless(self)`
+  - `proxy` (method, line 185) `def proxy(self)`
+- Depends on: `kernel/time.c`
+
 ## tools/check_abi_numbers.py
 - Layer: utility
+- Doc: check_abi_numbers.py -- MiniOS syscall numbers vs Linux x86-64 truth.  Phase 0.6 of the FreeDom readiness plan: a browse
 - Language: py
 - Symbols:
   - `normalize` (function, line 127) `def normalize(minios_name)`
@@ -25,6 +46,7 @@
 
 ## tools/check_addons.py
 - Layer: utility
+- Doc: check_addons.py -- validate the MiniOS addon marketplace index.  Loads every addons/*.yaml through the strict stdlib-onl
 - Language: py
 - Symbols:
   - `load_parser` (function, line 22) `def load_parser()`
@@ -32,6 +54,7 @@
 
 ## tools/check_cohesion.py
 - Layer: utility
+- Doc: check_cohesion.py -- Architectural cohesion gate for MiniOS CI.  Parses the CPG JSON-LD output from readmenator and fail
 - Language: py
 - Symbols:
   - `load_cpg` (function, line 23) `def load_cpg(path)`
@@ -41,6 +64,7 @@
 
 ## tools/check_complexity.py
 - Layer: utility
+- Doc: check_complexity.py -- Kernel complexity gate for MiniOS CI.  Validates that kernel.c does not exceed the configured sym
 - Language: py
 - Symbols:
   - `count_symbols` (function, line 24) `def count_symbols(filepath)`
@@ -49,6 +73,7 @@
 
 ## tools/check_fork_stubs.py
 - Layer: testing
+- Doc: Fail-closed stub gate for unimplemented process syscalls.  fork, vfork and execve have no implementation in this kernel.
 - Language: py
 - Symbols:
   - `Config` (class, line 13) `class Config`
@@ -58,6 +83,7 @@
 
 ## tools/check_kb_sync.py
 - Layer: utility
+- Doc: check_kb_sync.py -- Verify KNOWLEDGE_BASE.md is in sync with code.  Runs readmenator to regenerate the knowledge base, t
 - Language: py
 - Symbols:
   - `regenerate_kb` (function, line 24) `def regenerate_kb()`
@@ -65,6 +91,7 @@
 
 ## tools/check_mutant_anchors.py
 - Layer: utility
+- Doc: Verify every mutate.sh mutant anchor matches its target file.  A mutant whose sed expression matches nothing is reported
 - Language: py
 - Symbols:
   - `Config` (class, line 17) `class Config`
@@ -75,6 +102,7 @@
 
 ## tools/check_surprising.py
 - Layer: utility
+- Doc: check_surprising.py -- Detect surprising architectural connections.  Parses the CPG JSON-LD output from readmenator and 
 - Language: py
 - Symbols:
   - `load_cpg` (function, line 25) `def load_cpg(path)`
@@ -85,6 +113,7 @@
 
 ## tools/check_syscall_sanitize.py
 - Layer: utility
+- Doc: Scoped audit gate for syscall user-pointer sanitization.  Every ring-3 pointer that reaches a syscall handler as a1..a6 
 - Language: py
 - Symbols:
   - `Config` (class, line 18) `class Config`
@@ -98,6 +127,7 @@
 
 ## tools/doom_pwad.py
 - Layer: utility
+- Doc: doom_pwad.py - grid map to vanilla Doom PWAD writer and checker.  Converts a text grid map into a single-level PWAD that
 - Language: py
 - Symbols:
   - `DoomPwadConfig` (class, line 52) `class DoomPwadConfig`
@@ -129,10 +159,12 @@
 
 ## tools/extract_shell.py
 - Layer: utility
+- Doc: tools/extract_shell.py -- Plan for Phase 6.1 shell extraction.  This script documents the shell extraction plan. The act
 - Language: py
 
 ## tools/gdb_repro.py
 - Layer: utility
+- Doc: gdb_repro.py — drive a graphics-program sequence under the GDB stub.  Boots MiniOS with the gdb server (-s), a QMP socke
 - Language: py
 - Symbols:
   - `rs` (function, line 23) `def rs(m, t)`
@@ -143,6 +175,7 @@
 
 ## tools/gen_desktop_pngs.py
 - Layer: utility
+- Doc: gen_desktop_pngs.py -- build MiniOS desktop art from user-supplied PNGs.  Sources (images/ by default, overridable with 
 - Language: py
 - Symbols:
   - `write_atomic` (function, line 63) `def write_atomic(img, path)`
@@ -150,21 +183,33 @@
 
 ## tools/gen_icons.py
 - Layer: utility
+- Doc: gen_icons.py -- generate 32x32 RGBA PNG icon files for the MiniOS desktop.  Each icon is defined as a 32-line string of 
 - Language: py
 - Symbols:
   - `make_png` (function, line 179) `def make_png(pixels, palette, width, height)`
   - `make_chunk` (function, line 209) `def make_chunk(chunk_type, data)`
   - `main` (function, line 214) `def main()`
 
+## tools/gen_minifs.py
+- Layer: utility
+- Doc: Generate minifs.c for MiniOS.
+- Language: py
+
 ## tools/gen_zip_fixtures.py
 - Layer: data_access
+- Doc: gen_zip_fixtures.py -- generate the zip test fixtures shipped on the ramdisk.  Two small ZIP archives, built with the ho
 - Language: py
 - Symbols:
   - `write_zip` (function, line 28) `def write_zip(path, entries)`
   - `main` (function, line 42) `def main()`
 
+## tools/install.sh
+- Layer: utility
+- Language: sh
+
 ## tools/kernel_feature_survey.py
 - Layer: utility
+- Doc: kernel_feature_survey.py - verify which C features the MiniOS kernel needs.  Scans kernel and ring-3 sources for constru
 - Language: py
 - Symbols:
   - `SurveyConfig` (class, line 18) `class SurveyConfig`
@@ -184,9 +229,59 @@
   - `say` (function, line 8)
   - `die` (function, line 9)
   - `mutant` (function, line 20)
+  - `lisp_mut` (function, line 41)
+  - `mut_usage` (function, line 63)
+
+## tools/make_usb.sh
+- Layer: utility
+- Doc: Build the MiniOS bootable USB image and optionally write it to a device.  Wraps the Makefile targets so there is a singl
+- Language: sh
+- Symbols:
+  - `usage` (function, line 40)
+  - `wizard` (function, line 56)
+
+## tools/minifs_dump.py
+- Layer: utility
+- Doc: minifs_dump.py - Dump/inspect a MiniFS filesystem image.
+- Language: py
+- Symbols:
+  - `u16` (function, line 13) `def u16(d, o)`
+  - `u32` (function, line 14) `def u32(d, o)`
+  - `mode_str` (function, line 16) `def mode_str(m)`
+  - `FS` (class, line 25) `class FS`
+  - `main` (method, line 105) `def main()`
+  - `__init__` (method, line 26) `def __init__(self, fn)`
+  - `blk` (method, line 29) `def blk(self, n)`
+  - `_sb` (method, line 30) `def _sb(self)`
+  - `inode` (method, line 38) `def inode(self, i)`
+  - `read` (method, line 47) `def read(self, ino)`
+  - `resolve` (method, line 67) `def resolve(self, path)`
+  - `ls` (method, line 86) `def ls(self, ino, prefix)`
+
+## tools/minifs_fsck.py
+- Layer: utility
+- Doc: minifs_fsck.py - Check MiniFS filesystem consistency.
+- Language: py
+- Symbols:
+  - `u16` (function, line 13) `def u16(d, o)`
+  - `u32` (function, line 14) `def u32(d, o)`
+  - `FSCK` (class, line 16) `class FSCK`
+  - `main` (method, line 136) `def main()`
+  - `__init__` (method, line 17) `def __init__(self, fn)`
+  - `_find_base` (method, line 24) `def _find_base(self)`
+  - `blk` (method, line 42) `def blk(self, n)`
+  - `_sb` (method, line 45) `def _sb(self)`
+  - `inode` (method, line 51) `def inode(self, i)`
+  - `read` (method, line 58) `def read(self, ino)`
+  - `err` (method, line 73) `def err(self, msg)`
+  - `mark_block` (method, line 75) `def mark_block(self, n)`
+  - `scan_inode` (method, line 80) `def scan_inode(self, i)`
+  - `scan_dir` (method, line 89) `def scan_dir(self, ino)`
+  - `run` (method, line 121) `def run(self)`
 
 ## tools/minifs_saves.py
 - Layer: utility
+- Doc: minifs_saves.py - preserve the guest's saves/ dir across image rebuilds.  Regenerating minifs.bin from scratch wipes eve
 - Language: py
 - Symbols:
   - `u16` (function, line 53) `def u16(d, o)`
@@ -213,6 +308,7 @@
 
 ## tools/minios_cli.py
 - Layer: utility
+- Doc: minios_cli.py — drive MiniOS through the MCP bridge, not by hand.  Starts mcp/minios_mcp.py (which owns the QEMU child a
 - Language: py
 - Symbols:
   - `Client` (class, line 38) `class Client`
@@ -225,6 +321,7 @@
 
 ## tools/minios_gui.py
 - Layer: presentation
+- Doc: minios_gui.py — inject VGA-mode input and capture the framebuffer.  Boots MiniOS with the emulated std VGA device (the l
 - Language: py
 - Symbols:
   - `read_serial` (function, line 44) `def read_serial(master, timeout)`
@@ -238,11 +335,120 @@
   - `screendump` (method, line 108) `def screendump(self, path)`
 - Depends on: `kernel/time.c`
 
+## tools/minios_hyper.py
+- Layer: utility
+- Doc: minios_hyper.py -- host-side ring-minus-one debugger for MiniOS.  QEMU already runs in host root mode above the guest ke
+- Language: py
+- Symbols:
+  - `HyperConfig` (class, line 50) `class HyperConfig`
+  - `RspCodec` (class, line 73) `class RspCodec`
+  - `QmpChannel` (class, line 96) `class QmpChannel`
+  - `GdbChannel` (class, line 152) `class GdbChannel`
+  - `Guest` (class, line 211) `class Guest`
+  - `FrameDiff` (class, line 339) `class FrameDiff`
+  - `HyperChecks` (class, line 409) `class HyperChecks`
+  - `run_selftest` (method, line 491) `def run_selftest()`
+  - `run_boot` (method, line 523) `def run_boot(checks, extra_shell, interactive)`
+  - `repl` (method, line 561) `def repl(guest)`
+  - `main` (method, line 591) `def main(argv)`
+  - `encode` (method, line 77) `def encode(payload)`
+  - `decode` (method, line 85) `def decode(frame)`
+  - `__init__` (method, line 99) `def __init__(self, path)`
+  - `_roundtrip` (method, line 109) `def _roundtrip(self, obj)`
+  - `raw` (method, line 117) `def raw(self, obj)`
+  - `screendump` (method, line 121) `def screendump(self, path)`
+  - `rel` (method, line 126) `def rel(self, dx, dy)`
+  - `key` (method, line 132) `def key(self, qcode)`
+  - `status` (method, line 141) `def status(self)`
+  - `close` (method, line 145) `def close(self)`
+  - `__init__` (method, line 155) `def __init__(self, port)`
+  - `_drain` (method, line 162) `def _drain(self)`
+  - `_cmd` (method, line 168) `def _cmd(self, payload)`
+  - `regs` (method, line 181) `def regs(self)`
+  - `read_mem` (method, line 185) `def read_mem(self, addr, length)`
+  - `halt` (method, line 195) `def halt(self)`
+  - `cont` (method, line 201) `def cont(self)`
+  - `close` (method, line 204) `def close(self)`
+  - `__init__` (method, line 214) `def __init__(self, with_gdb)`
+  - `_ser` (method, line 248) `def _ser(self)`
+  - `_reader` (method, line 260) `def _reader(self)`
+  - `snapshot` (method, line 276) `def snapshot(self)`
+  - `wait_for` (method, line 280) `def wait_for(self, marker, timeout)`
+  - `send` (method, line 288) `def send(self, line, settle)`
+  - `qmp_chan` (method, line 298) `def qmp_chan(self)`
+  - `gdb_chan` (method, line 303) `def gdb_chan(self)`
+  - `dump` (method, line 308) `def dump(self, name)`
+  - `stop` (method, line 314) `def stop(self)`
+  - `mean_diff` (method, line 343) `def mean_diff(a_path, b_path)`
+  - `cursor_positions` (method, line 356) `def cursor_positions(shot_path)`
+  - `count_cursors` (method, line 394) `def count_cursors(shot_path)`
+  - `moved_cursors` (method, line 399) `def moved_cursors(before_path, after_path)`
+  - `__init__` (method, line 412) `def __init__(self, guest)`
+  - `vga_idle` (method, line 415) `def vga_idle(self)`
+  - `vga_cursor` (method, line 427) `def vga_cursor(self)`
+  - `gfx_frames` (method, line 439) `def gfx_frames(self)`
+  - `pixel_oob` (method, line 452) `def pixel_oob(self)`
+  - `sys_trace` (method, line 465) `def sys_trace(self)`
+  - `_last_frames` (method, line 476) `def _last_frames(self)`
+  - `check` (method, line 495) `def check(ok, msg)`
+- Depends on: `kernel/time.c`
+
+## tools/mkfs.minifs.py
+- Layer: utility
+- Doc: mkfs.minifs.py - Create a MiniFS filesystem image for MiniOS.  Usage: python3 mkfs.minifs.py <output_file> <total_blocks
+- Language: py
+- Symbols:
+  - `roundup4` (function, line 22) `def roundup4(v)`
+  - `div_round_up` (function, line 25) `def div_round_up(n, d)`
+  - `crc16` (function, line 28) `def crc16(data)`
+  - `crc32` (function, line 36) `def crc32(data)`
+  - `MiniFS` (class, line 44) `class MiniFS`
+  - `main` (method, line 241) `def main()`
+  - `__init__` (method, line 45) `def __init__(self, total_blocks)`
+  - `mark_inodes_used` (method, line 67) `def mark_inodes_used(self, start, count)`
+  - `mark_blocks_used` (method, line 71) `def mark_blocks_used(self, start, count)`
+  - `alloc_inode` (method, line 75) `def alloc_inode(self)`
+  - `alloc_block` (method, line 81) `def alloc_block(self)`
+  - `create_root` (method, line 87) `def create_root(self)`
+  - `create_inode` (method, line 95) `def create_inode(self, mode)`
+  - `inode_set_size` (method, line 102) `def inode_set_size(self, ino, size)`
+  - `inode_set_block` (method, line 106) `def inode_set_block(self, ino, logblk, phys)`
+  - `add_dir_entry` (method, line 136) `def add_dir_entry(self, dir_ino, name, child_ino, ftype)`
+  - `write_file` (method, line 174) `def write_file(self, parent_ino, name, data)`
+  - `write_dir` (method, line 191) `def write_dir(self, parent_ino, name)`
+  - `serialize` (method, line 197) `def serialize(self)`
+  - `pack_tree` (method, line 271) `def pack_tree(parent_ino, path, rel)`
+
 ## tools/mkpak1.py
 - Layer: utility
+- Doc: Build baseq2/pak1.pak carrying the player model.  The Quake 2 shareware pak0.pak omits the player model (players/male/tr
 - Language: py
 - Symbols:
   - `main` (function, line 29) `def main()`
+
+## tools/mkramdisk.py
+- Layer: infrastructure
+- Doc: Build a MiniOS ramdisk image from files in a directory tree.  Each packed file is named by its path relative to the shar
+- Language: py
+- Symbols:
+  - `pack_name` (function, line 20) `def pack_name(path, common)`
+  - `main` (function, line 30) `def main()`
+
+## tools/mkroots.sh
+- Layer: utility
+- Doc: mkroots.sh - regenerate tls_roots.h from the DER files in tls_roots_src/.  Provenance of each root (2026 web PKI reality
+- Language: sh
+
+## tools/mutate.sh
+- Layer: utility
+- Doc: Mutation testing for MiniOS.  Each mutation is applied to the source in place, the disk image is rebuilt and the behavio
+- Language: sh
+- Symbols:
+  - `usage` (function, line 51)
+  - `restore_sources` (function, line 103)
+  - `cleanup` (function, line 110)
+  - `record` (function, line 286)
+  - `find_index` (function, line 292)
 
 ## tools/probe_compute_vga.py
 - Layer: utility
@@ -259,6 +465,7 @@
 
 ## tools/probe_minicraft.py
 - Layer: utility
+- Doc: probe_minicraft.py -- numeric minicraft probe without any PNG.  Boots os.img headless (display none), runs minicraft in 
 - Language: py
 - Symbols:
   - `main` (function, line 34) `def main()`
@@ -271,6 +478,7 @@
 
 ## tools/qga_client.py
 - Layer: infrastructure
+- Doc: Minimal QEMU guest agent client for MiniOS.  Connects to the guest agent socket (a QEMU chardev mapped to the kernel's C
 - Language: py
 - Symbols:
   - `send_command` (function, line 33) `def send_command(sock, cmd, args)`
@@ -290,6 +498,7 @@
 
 ## tools/repro_gui.py
 - Layer: presentation
+- Doc: repro_gui.py — reproduce the VGA/mouse state bug after ring-3 programs.  Boots MiniOS with a QMP socket (to inject PS/2 
 - Language: py
 - Symbols:
   - `read_serial` (function, line 30) `def read_serial(master, timeout)`
@@ -304,8 +513,26 @@
   - `mouse_state` (method, line 118) `def mouse_state()`
 - Depends on: `kernel/time.c`
 
+## tools/test_bdd.sh
+- Layer: testing
+- Doc: BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the serial console (COM1). Every scenario s
+- Language: sh
+- Symbols:
+  - `should_run` (function, line 35)
+  - `cleanup_stale_qemu` (function, line 43)
+  - `scenario` (function, line 54)
+  - `scenario_smp` (function, line 74)
+  - `expect` (function, line 97)
+  - `expect_count` (function, line 119)
+  - `refute` (function, line 142)
+  - `http_server_start` (function, line 860)
+  - `http_server_stop` (function, line 867)
+  - `http_fixture_start` (function, line 872)
+  - `http_fixture_stop` (function, line 879)
+
 ## tools/test_call_align.py
 - Layer: testing
+- Doc: test_call_align.py - verify stack alignment at call sites, both parities.  Compiles a probe with miniGCC whose callees r
 - Language: py
 - Symbols:
   - `AlignConfig` (class, line 24) `class AlignConfig`
@@ -320,6 +547,7 @@
 
 ## tools/test_gui_fashion.py
 - Layer: testing
+- Doc: test_gui_fashion.py -- GUI proof for the cursor/flicker/quit fixes.  Boots the real image and judges pixels over QMP scr
 - Language: py
 - Symbols:
   - `note` (function, line 39) `def note(ok, msg)`
@@ -344,6 +572,7 @@
 
 ## tools/test_gui_icon_cwd.py
 - Layer: testing
+- Doc: test_gui_icon_cwd.py -- GUI proof that dock launches ignore shell cwd.  Boots the real image, `cd cvm` over serial (the 
 - Language: py
 - Symbols:
   - `note` (function, line 36) `def note(ok, msg)`
@@ -367,6 +596,7 @@
 
 ## tools/test_gui_menu.py
 - Layer: testing
+- Doc: test_gui_menu.py -- serial proof that the minicraft pause menu works.  ESC must open the pause menu even when QMP delive
 - Language: py
 - Symbols:
   - `main` (function, line 20) `def main()`
@@ -374,6 +604,7 @@
 
 ## tools/test_gui_wm.py
 - Layer: testing
+- Doc: test_gui_wm.py -- GUI proof that graphics windows survive the WM.  Serial `wm` commands call the same functions as the r
 - Language: py
 - Symbols:
   - `note` (function, line 40) `def note(ok, msg)`
@@ -398,30 +629,43 @@
 
 ## tools/test_gui_zoom.py
 - Layer: testing
+- Doc: test_gui_zoom.py -- pixel proof that GFX_ZOOM doubles the game window.  Boots MiniOS headless (display none, QMP screend
 - Language: py
 - Symbols:
   - `main` (function, line 22) `def main()`
 - Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
 
-## tools/test_lisp.py
+## tools/test_http_server.py
 - Layer: testing
+- Doc: Host-side HTTP fixture for the freedom BDD scenarios.  Serves behaviours that python -m http.server cannot produce:  /ch
 - Language: py
 - Symbols:
-  - `LispConfig` (class, line 26) `class LispConfig`
-  - `LispTest` (class, line 35) `class LispTest`
-  - `build_binary` (method, line 182) `def build_binary(source, output)`
-  - `main` (method, line 195) `def main()`
-  - `__init__` (method, line 38) `def __init__(self, binary, suite)`
-  - `check` (method, line 45) `def check(self, name, actual, expected)`
-  - `run_expr` (method, line 56) `def run_expr(self, code)`
-  - `check_eval` (method, line 63) `def check_eval(self, name, code, stdout)`
-  - `check_error` (method, line 68) `def check_error(self, name, code, fragment)`
-  - `run_all` (method, line 74) `def run_all(self)`
-  - `check_file_roundtrip` (method, line 118) `def check_file_roundtrip(self)`
-  - `check_exit_code` (method, line 132) `def check_exit_code(self)`
-  - `check_cli` (method, line 139) `def check_cli(self)`
-  - `check_suite_language_only` (method, line 156) `def check_suite_language_only(self)`
-  - `report` (method, line 174) `def report(self)`
+  - `Handler` (class, line 21) `class Handler(BaseHTTPRequestHandler)`
+  - `do_GET` (method, line 24) `def do_GET(self)`
+  - `log_message` (method, line 114) `def log_message(self, fmt)`
+- Depends on: `kernel/time.c`
+
+## tools/test_lisp.py
+- Layer: testing
+- Doc: Host test suite for the MiniOS Lisp interpreter.  Builds progs/lisp/lisp.c with the host toolchain and drives the result
+- Language: py
+- Symbols:
+  - `LispConfig` (class, line 28) `class LispConfig`
+  - `LispTest` (class, line 37) `class LispTest`
+  - `build_binary` (method, line 308) `def build_binary(source, output)`
+  - `main` (method, line 321) `def main()`
+  - `__init__` (method, line 40) `def __init__(self, binary, suite)`
+  - `check` (method, line 47) `def check(self, name, actual, expected)`
+  - `run_expr` (method, line 58) `def run_expr(self, code)`
+  - `check_eval` (method, line 65) `def check_eval(self, name, code, stdout)`
+  - `check_error` (method, line 70) `def check_error(self, name, code, fragment)`
+  - `run_all` (method, line 76) `def run_all(self)`
+  - `check_file_roundtrip` (method, line 121) `def check_file_roundtrip(self)`
+  - `check_exit_code` (method, line 135) `def check_exit_code(self)`
+  - `check_cli` (method, line 142) `def check_cli(self)`
+  - `check_suite_language_only` (method, line 159) `def check_suite_language_only(self)`
+  - `check_minigcc_subset` (method, line 177) `def check_minigcc_subset(self)`
+  - `report` (method, line 300) `def report(self)`
 
 ## tools/test_sb16.sh
 - Layer: testing
@@ -430,8 +674,42 @@
 - Symbols:
   - `fail_msg` (function, line 45)
 
+## tools/tls_test.py
+- Layer: testing
+- Doc: Host-side TLS test driver for the MiniOS kernel TLS client.  Generates a throwaway CA and server certificates with opens
+- Language: py
+- Symbols:
+  - `run` (function, line 26) `def run(cmd)`
+  - `check` (function, line 30) `def check(cmd)`
+  - `gen_certs` (function, line 37) `def gen_certs()`
+  - `der_bytes` (function, line 154) `def der_bytes(pem_path)`
+  - `rsa_params` (function, line 162) `def rsa_params(key_path)`
+  - `ec_pub` (function, line 172) `def ec_pub(key_path)`
+  - `c_bytes` (function, line 183) `def c_bytes(data, name)`
+  - `gen_header` (function, line 191) `def gen_header(p)`
+  - `Server` (class, line 241) `class Server(Thread)`
+  - `serve` (method, line 280) `def serve(cert, key)`
+  - `serve_openssl` (method, line 288) `def serve_openssl(cert, key, chain)`
+  - `expect` (method, line 306) `def expect(bin_path, args, want_zero, marker)`
+  - `main` (method, line 319) `def main()`
+  - `server_cert` (method, line 61) `def server_cert(name, algo, curve, ca_name, ca_algo, curve_ca, extra, subj)`
+  - `__init__` (method, line 242) `def __init__(self, cert, key, tls13_ok)`
+  - `run` (method, line 248) `def run(self)`
+- Depends on: `kernel/time.c`
+
+## tools/wl_scoped.sh
+- Layer: utility
+- Doc: Docstring: Scoped Wayland-mini validation for the tiled ring-3 compositor. Runs host wire, mailbox and palette tests, re
+- Language: sh
+- Symbols:
+  - `say` (function, line 8)
+  - `die` (function, line 9)
+  - `mut` (function, line 69)
+  - `mutm` (function, line 76)
+
 ## tools/wm_layout_sync.py
 - Layer: presentation
+- Doc: Docstring: Synchronize the WM layout manifest from source truth.  I read wm_layout.h and tests/test_wm.c and regenerate 
 - Language: py
 - Symbols:
   - `WmLayoutSyncConfig` (class, line 17) `class WmLayoutSyncConfig`
