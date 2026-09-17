@@ -20,16 +20,23 @@ static unsigned int block_total_sectors;
 static unsigned int block_lba_base;
 
 /* Direct-mapped cache: 16 x 4096 = 64 KB of recently-read blocks.
- * Every shared line mutates only under bc_lock, which is a leaf (never
- * held across file IO, never nested inside sched_lock/mm_lock/fd_lock)
- * and only ever covers tag checks and 4 KB copies, never the IDE PIO:
- * a miss reads into a private heap buffer with preemption allowed and
- * installs atomically, so two processes filling colliding lines both
- * get their own bytes instead of each other's. Without this, any two
- * processes doing MiniFS IO at once (a background server draining its
- * mailboxes while a program image loads) deterministically read torn
- * blocks: wrong ELF bytes jump anywhere, wrong dirents resolve wrong
- * files. Hit rate is unchanged; a miss costs one extra 4 KB copy. */
+ * Every shared line mutates only under bc_lock, which is irqsave (a
+ * plain spin is fatal in this preemptive kernel: a holder preempted
+ * mid-copy by the 100 Hz timer with IF=1 is descheduled holding the
+ * lock, and a second context spinning for it with IF=0 kills the
+ * timer, so neither ever runs again -- the silent wedge a background
+ * wlcomp drain plus one shell write hit as an intermittent machine
+ * stop with a waiter spinning on fs_lock downstream). The lock is a
+ * leaf (never held across file IO, never nested inside
+ * sched_lock/mm_lock/fd_lock) and only ever covers tag checks and
+ * 4 KB copies, never the IDE PIO: a miss reads into a private heap
+ * buffer with preemption allowed and installs atomically, so two
+ * processes filling colliding lines both get their own bytes instead
+ * of each other's. Without this, any two processes doing MiniFS IO
+ * at once (a background server draining its mailboxes while a
+ * program image loads) deterministically read torn blocks: wrong ELF
+ * bytes jump anywhere, wrong dirents resolve wrong files. Hit rate
+ * is unchanged; a miss costs one extra 4 KB copy. */
 static spinlock_t bc_lock = SPINLOCK_INIT;
 #define BC_WAYS 16
 #define BC_MASK (BC_WAYS - 1)
@@ -47,9 +54,10 @@ static void bc_invalidate_locked(unsigned int block_num) {
 }
 
 static void bc_invalidate(unsigned int block_num) {
-    spin_lock(&bc_lock);
+    irqflags_t flags;
+    spin_lock_irqsave(&bc_lock, &flags);
     bc_invalidate_locked(block_num);
-    spin_unlock(&bc_lock);
+    spin_unlock_irqrestore(&bc_lock, flags);
 }
 
 void block_init(void) {
@@ -91,15 +99,16 @@ int block_read(unsigned int block_num, void *buf) {
     unsigned int lba;
     unsigned int i;
     unsigned char *dst = (unsigned char *)buf;
+    irqflags_t flags;
     if (!buf) return -1;
-    spin_lock(&bc_lock);
+    spin_lock_irqsave(&bc_lock, &flags);
     if (bc_valid[idx] && bc_block[idx] == block_num) {
         unsigned char *src = bc_data[idx];
         for (i = 0; i < BLOCK_SIZE; i++) dst[i] = src[i];
-        spin_unlock(&bc_lock);
+        spin_unlock_irqrestore(&bc_lock, flags);
         return 0;
     }
-    spin_unlock(&bc_lock);
+    spin_unlock_irqrestore(&bc_lock, flags);
     tmp = (unsigned char *)kmalloc(BLOCK_SIZE);
     if (!tmp) return -1;
     lba = block_lba_base + block_num * SECTORS_PER_BLOCK;
@@ -107,7 +116,7 @@ int block_read(unsigned int block_num, void *buf) {
         kfree(tmp);
         return -1;
     }
-    spin_lock(&bc_lock);
+    spin_lock_irqsave(&bc_lock, &flags);
     if (bc_valid[idx] && bc_block[idx] == block_num) {
         unsigned char *src = bc_data[idx];
         for (i = 0; i < BLOCK_SIZE; i++) dst[i] = src[i];
@@ -118,7 +127,7 @@ int block_read(unsigned int block_num, void *buf) {
         bc_valid[idx] = 1;
         for (i = 0; i < BLOCK_SIZE; i++) dst[i] = tmp[i];
     }
-    spin_unlock(&bc_lock);
+    spin_unlock_irqrestore(&bc_lock, flags);
     kfree(tmp);
     return 0;
 }
@@ -141,13 +150,14 @@ int block_write_multi(unsigned int block_num, unsigned int count, const void *bu
     unsigned int i;
     unsigned int lba = block_lba_base + block_num * SECTORS_PER_BLOCK;
     int r;
-    spin_lock(&bc_lock);
+    irqflags_t flags;
+    spin_lock_irqsave(&bc_lock, &flags);
     for (i = 0; i < count; i++) bc_invalidate_locked(block_num + i);
-    spin_unlock(&bc_lock);
+    spin_unlock_irqrestore(&bc_lock, flags);
     r = block_dev_write(lba, count * SECTORS_PER_BLOCK, buf);
-    spin_lock(&bc_lock);
+    spin_lock_irqsave(&bc_lock, &flags);
     for (i = 0; i < count; i++) bc_invalidate_locked(block_num + i);
-    spin_unlock(&bc_lock);
+    spin_unlock_irqrestore(&bc_lock, flags);
     return r;
 }
 

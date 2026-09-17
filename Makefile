@@ -918,7 +918,7 @@ $(BIN_DIR)/doomedit: $(BIN_DIR)/doomedit.elf
 # ── wlcomp (Wayland-mini ring-3 compositor, ADR-0024) ────────────────
 # Header-only wl_mini.h plus thin wlcomp.c: max 8 surfaces, focus
 # z-order, presents through GFX_PRESENT BUF_NK. Static ring-3, MiniFS.
-$(BIN_DIR)/wlcomp.elf: $(PROGS_DIR)/wl/wlcomp.c $(PROGS_DIR)/wl/wl_mini.h $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/minios_abi.h
+$(BIN_DIR)/wlcomp.elf: $(PROGS_DIR)/wl/wlcomp.c $(PROGS_DIR)/wl/wl_mini.h $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/wl/wl_client.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/minios_abi.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(PROGS_DIR) \
 	      -o $@ $(PROGS_DIR)/wl/wlcomp.c
@@ -1224,7 +1224,8 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                  $(PROGS_DIR)/paint/paint.c \
                  $(BIN_DIR)/wlcomp.elf $(BIN_DIR)/wlcomp \
                  $(PROGS_DIR)/wl/wlcomp.c $(PROGS_DIR)/wl/wl_mini.h \
-                 $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/nk_palette.h \
+                 $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/wl/wl_client.h \
+                 $(PROGS_DIR)/nk_palette.h \
                  $(BIN_DIR)/minicraft.elf $(BIN_DIR)/minicraft \
                  $(PROGS_DIR)/minicraft/minicraft.c \
                 $(PROGS_DIR)/etc/association \
@@ -1488,7 +1489,7 @@ test-wm: wm_test
 	$(TOOLS_DIR)/wm_test
 
 # Wayland-mini wire/compositor host test (progs/wl/wl_mini.h, ADR-0024).
-wl_test: tests/test_wl.c progs/wl/wl_mini.h progs/wl/wl_mbox.h progs/nk_palette.h | $(TOOLS_DIR)
+wl_test: tests/test_wl.c progs/wl/wl_mini.h progs/wl/wl_mbox.h progs/wl/wl_client.h progs/nk_palette.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/wl_test tests/test_wl.c
 
 test-wl: wl_test

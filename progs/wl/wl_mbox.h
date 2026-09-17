@@ -19,6 +19,7 @@
 #define WL_MBOX_DIR "/shm/wl"
 #define WL_MBOX_SUFFIX ".msg"
 #define WL_MBOX_RAW_SUFFIX ".raw"
+#define WL_MBOX_EV_SUFFIX ".ev"
 #define WL_MBOX_BOX_MAX 17
 #define WL_MBOX_NAME_MAX 64
 #define WL_MBOX_MAGIC 0x424D4C57u
@@ -218,6 +219,89 @@ static inline int wl_mbox_raw_name(char *dst, int cap, const char *box) {
     }
     dst[di] = '\0';
     return di;
+}
+
+/** Event path beside the mailbox, one fixed frame per focused box. */
+static inline int wl_mbox_ev_name(char *dst, int cap, const char *box) {
+    int di = 0;
+    int i = 0;
+    static const char dir[] = WL_MBOX_DIR "/";
+    static const char suf[] = WL_MBOX_EV_SUFFIX;
+    if (!dst || !box || cap <= 0)
+        return WL_ERR_BOUND;
+    if (wl_mbox_box_ok(box) != WL_ERR_OK)
+        return WL_ERR_STR;
+    while (dir[i] != '\0') {
+        if (di >= cap - 1)
+            return WL_ERR_BOUND;
+        dst[di++] = dir[i++];
+    }
+    i = 0;
+    while (box[i] != '\0') {
+        if (di >= cap - 1)
+            return WL_ERR_BOUND;
+        dst[di++] = box[i++];
+    }
+    i = 0;
+    while (suf[i] != '\0') {
+        if (di >= cap - 1)
+            return WL_ERR_BOUND;
+        dst[di++] = suf[i++];
+    }
+    dst[di] = '\0';
+    return di;
+}
+
+/** Client box name: lowercase alnum program plus decimal pid, so two
+ * instances of one app never share a mailbox. Pure, host-tested. */
+static inline int wl_client_box(const char *prog, long pid, char *dst,
+        int cap) {
+    int o = 0;
+    int i = 0;
+    long p = 0;
+    char digits[20];
+    int nd = 0;
+    if (!prog || !dst || cap <= 0)
+        return WL_ERR_BOUND;
+    if (pid < 0)
+        return WL_ERR_BOUND;
+    while (prog[i] != '\0' && o + 1 < cap && o < 16) {
+        char ch = prog[i];
+        if (ch >= 'A' && ch <= 'Z')
+            ch = (char)(ch + ('a' - 'A'));
+        if ((ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9'))
+            dst[o++] = ch;
+        i++;
+        if (i > 64)
+            break;
+    }
+    if (o == 0 && cap > 6) {
+        dst[0] = 'n';
+        dst[1] = 'k';
+        dst[2] = 'a';
+        dst[3] = 'p';
+        dst[4] = 'p';
+        o = 5;
+    }
+    p = pid;
+    if (p == 0) {
+        if (o + 1 >= cap)
+            return WL_ERR_BOUND;
+        dst[o++] = '0';
+    } else {
+        while (p > 0 && nd < 20) {
+            digits[nd++] = (char)('0' + (p % 10));
+            p /= 10;
+        }
+        if (o + nd >= cap)
+            return WL_ERR_BOUND;
+        while (nd > 0)
+            dst[o++] = digits[--nd];
+    }
+    dst[o] = '\0';
+    if (wl_mbox_box_ok(dst) != WL_ERR_OK)
+        return WL_ERR_STR;
+    return WL_ERR_OK;
 }
 
 /** Frame one wire message: magic plus sequence plus the raw message.

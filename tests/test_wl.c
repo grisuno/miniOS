@@ -483,6 +483,133 @@ int main(void) {
             "scale oversize refused");
     }
 
+    {
+        wl_comp_t w;
+        wl_client_t wc;
+        unsigned int a = 0;
+        unsigned int b = 0;
+        unsigned char fb[32 * 24];
+        int zone = 0;
+        wl_comp_init(&w);
+        wl_client_init(&wc);
+        CHECK(wl_client_surface(&wc, &a) == WL_ERR_OK, "chrome surf a");
+        CHECK(wl_client_surface(&wc, &b) == WL_ERR_OK, "chrome surf b");
+        CHECK(wl_comp_add(&w, a, 30, 30) == WL_ERR_OK, "chrome add a");
+        CHECK(wl_comp_add(&w, b, 30, 30) == WL_ERR_OK, "chrome add b");
+        w.items[0].x = 0; w.items[0].y = 0;
+        w.items[1].x = 4; w.items[1].y = 0;
+        CHECK(w.items[1].active == 1 && w.items[0].active == 0,
+            "chrome top is active");
+        CHECK(wl_comp_focus(&w, a) == WL_ERR_OK, "chrome refocus");
+        CHECK(w.items[0].active == 1 && w.items[1].active == 0,
+            "chrome focus flips active");
+        zone = wl_surface_hit_zone(&w.items[0], 2, 2);
+        CHECK(zone == WL_HIT_TITLE, "chrome title zone");
+        zone = wl_surface_hit_zone(&w.items[0], 27, 2);
+        CHECK(zone == WL_HIT_CLOSE, "chrome close zone");
+        zone = wl_surface_hit_zone(&w.items[0], 28, 28);
+        CHECK(zone == WL_HIT_RESIZE, "chrome resize zone");
+        zone = wl_surface_hit_zone(&w.items[0], 10, 20);
+        CHECK(zone == WL_HIT_BODY, "chrome body zone");
+        zone = wl_surface_hit_zone(&w.items[0], 60, 60);
+        CHECK(zone == WL_HIT_NONE, "chrome outside refused");
+        CHECK(wl_surface_hit_zone(0, 2, 2) == WL_HIT_NONE,
+            "chrome null refused");
+        CHECK(wlcomp_blit_chrome(&w, fb, 32, 24, 0, 0, 0)
+            == WL_ERR_OK, "chrome blit ok");
+        CHECK(fb[2 * 32 + 2] == (unsigned char)WL_TITLE_ACTIVE,
+            "chrome active title paints");
+        CHECK(fb[2 * 32 + 27] == (unsigned char)WL_CLOSE_INK,
+            "chrome close box paints");
+        CHECK(fb[20 * 32 + 10] == 4, "chrome body keeps color");
+        CHECK(wlcomp_blit_chrome(&w, fb, 32, 24, 0, 0, 0)
+            == WL_ERR_OK, "chrome blit stable");
+        CHECK(wl_comp_set_minimized(&w, b, 1) == WL_ERR_OK,
+            "chrome minimize ok");
+        CHECK(wl_comp_hit(&w, 6, 2) == (int)a,
+            "chrome minimized skips hit");
+        CHECK(wl_comp_layout_tile(&w, 32, 24) == 1,
+            "chrome tile skips minimized");
+        CHECK(wl_comp_set_minimized(&w, 7, 1) == WL_ERR_ID,
+            "chrome minimize stranger refused");
+        CHECK(wl_comp_set_minimized(0, a, 1) == WL_ERR_BOUND,
+            "chrome minimize null refused");
+        CHECK(wlcomp_blit_chrome(0, fb, 32, 24, 0, 0, 0)
+            == WL_ERR_BOUND, "chrome null refused");
+        CHECK(wlcomp_blit_chrome(&w, 0, 32, 24, 0, 0, 0)
+            == WL_ERR_BOUND, "chrome null fb refused");
+    }
+
+    {
+        wl_ev_t e;
+        wl_ev_t d;
+        unsigned char frame[WL_EV_SZ];
+        int cx = -9;
+        int cy = -9;
+        char box[WL_MBOX_BOX_MAX];
+        char path[WL_MBOX_NAME_MAX];
+        int i;
+        e.seq = 7;
+        e.mx = 100;
+        e.my = 50;
+        e.buttons = 1;
+        e.wheel = 3;
+        e.nsc = 2;
+        e.sc[0] = 0x1C;
+        e.sc[1] = 0x9C;
+        for (i = 2; i < WL_EV_SC_MAX; i++)
+            e.sc[i] = 0;
+        CHECK(wl_ev_encode(frame, sizeof frame, &e) == WL_EV_SZ,
+            "ev encode ok");
+        CHECK(wl_ev_decode(frame, WL_EV_SZ, &d) == WL_ERR_OK
+            && d.seq == 7 && d.mx == 100 && d.my == 50
+            && d.buttons == 1 && d.wheel == 3 && d.nsc == 2
+            && d.sc[0] == 0x1C && d.sc[1] == 0x9C,
+            "ev roundtrip");
+        CHECK(wl_ev_decode(frame, 4, &d) == WL_ERR_TRUNC,
+            "ev torn refused");
+        frame[0] = 'X';
+        CHECK(wl_ev_decode(frame, WL_EV_SZ, &d) == WL_ERR_BOUND,
+            "ev wild magic refused");
+        e.nsc = WL_EV_SC_MAX + 1;
+        CHECK(wl_ev_encode(frame, sizeof frame, &e) == WL_ERR_BOUND,
+            "ev wild count refused");
+        CHECK(wl_ev_encode(frame, 4, &e) == WL_ERR_BOUND,
+            "ev short cap refused");
+        CHECK(wl_ev_encode(0, WL_EV_SZ, &e) == WL_ERR_BOUND,
+            "ev null refused");
+        CHECK(wl_ev_map(10, 20, 0, 0, 30, 30, 30, 30, &cx, &cy) == 1
+            && cx == 9 && cy == 11,
+            "ev map centers");
+        CHECK(wl_ev_map(200, 200, 0, 0, 30, 30, 30, 30, &cx, &cy) == 0
+            && cx == -1 && cy == -1,
+            "ev map outside refused");
+        CHECK(wl_ev_map(2, 2, 0, 0, 30, 30, 30, 30, &cx, &cy) == 0,
+            "ev map title refused");
+        CHECK(wl_ev_map(10, 20, 0, 0, 30, 30, 30, 30, 0, &cy)
+            == WL_ERR_BOUND,
+            "ev map null refused");
+        CHECK(wl_client_box("Paint", 42, box, sizeof box) == WL_ERR_OK
+            && strcmp(box, "paint42") == 0,
+            "client box names pid");
+        CHECK(wl_client_box("a", 0, box, sizeof box) == WL_ERR_OK
+            && strcmp(box, "a0") == 0,
+            "client box pid zero");
+        CHECK(wl_client_box("UPPER", 7, box, 4) == WL_ERR_BOUND,
+            "client box short refused");
+        CHECK(wl_client_box("a", -1, box, sizeof box) == WL_ERR_BOUND,
+            "client box negative pid refused");
+        CHECK(wl_client_box(0, 7, box, sizeof box) == WL_ERR_BOUND,
+            "client box null refused");
+        CHECK(wl_mbox_ev_name(path, sizeof path, "paint42") > 0
+            && strcmp(path, "/shm/wl/paint42.ev") == 0,
+            "ev name builds");
+        CHECK(wl_mbox_ev_name(path, 8, "paint42") == WL_ERR_BOUND,
+            "ev name short refused");
+        CHECK(wl_mbox_ev_name(path, sizeof path, "UP") == WL_ERR_STR,
+            "ev name wild refused");
+    }
+
     if (failures == 0)
         printf("wl: ok (%d surfaces, msg %d)\n", WL_MAX_SURFACES, WL_MAX_MSG);
     return failures != 0;

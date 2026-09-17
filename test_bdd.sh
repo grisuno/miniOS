@@ -1319,6 +1319,19 @@ poweroff"
 expect "wlcomp: frame ok (800x360)"
 expect "wlcomp: presented 2 surfaces (800x360)"
 
+scenario "desktop starts and stops the wayland session" "desktop status
+desktop
+jobs
+desktop stop
+sleep 2
+desktop status
+poweroff"
+expect "desktop: mirror=0 client=0 server=stopped"
+expect "desktop: wayland up (server pid "
+expect "wlcomp"
+expect "desktop: stopping"
+expect "desktop: mirror=0 client=0 server=stopped"
+
 scenario "freedomui selftest parses through the real engine and presents" "freedomui --selftest
 poweroff"
 expect "freedomui: frame ok (800x360)"

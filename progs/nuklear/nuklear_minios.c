@@ -27,6 +27,7 @@
 extern char *program_invocation_short_name;
 #include "nk_palette.h"
 #include "wl/wl_mbox.h"
+#include "wl/wl_client.h"
 
 /* ---- MiniOS syscalls (canonical table from minios_abi.h) ---- */
 long nk_sys_time_ms(void) {
@@ -49,8 +50,71 @@ long nk_sys_kbd_raw(int on) {
     __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_KBD_RAW), "D"((long)on) : "rcx","r11","memory");
     return ret;
 }
+long nk_sys_getpid(void) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(39L) : "rcx","r11","memory");
+    return ret;
+}
+
+/* Wayland client mode (ADR-0026 live step): when /shm/wl/client
+ * exists this process is a pure producer for the wlcomp server. It
+ * never takes the display (no VGA mode, no direct present) and never
+ * touches PS/2; pixels go to its pid-unique mailbox every 2nd frame
+ * and input arrives from its .ev file. Probed once per process. */
+static int nk_client_on = -1;
+static char nk_client_box[WL_MBOX_BOX_MAX];
+static unsigned nk_client_seq = 1;
+static unsigned nk_client_frame = 0;
+static unsigned nk_client_ev_seq = 0;
+static unsigned nk_client_ev_wheel = 0;
+static int nk_client_ev_btn = 0;
+
+static int nk_client_probe(void) {
+    FILE *f = 0;
+    long pid = 0;
+    const char *prog = 0;
+    if (nk_client_on >= 0) return nk_client_on;
+    nk_client_on = 0;
+    nk_client_box[0] = '\0';
+    f = fopen(WL_MBOX_DIR "/client", "rb");
+    if (!f) return 0;
+    fclose(f);
+    nk_client_on = 1;
+    prog = program_invocation_short_name;
+    if (!prog) prog = "nkapp";
+    pid = nk_sys_getpid();
+    if (pid < 0) pid = 0;
+    if (wl_client_box(prog, pid, nk_client_box,
+            sizeof nk_client_box) != WL_ERR_OK) {
+        nk_client_on = 0;
+        return 0;
+    }
+    f = NULL;
+    {
+        char evp[WL_MBOX_NAME_MAX];
+        unsigned char raw[WL_EV_SZ];
+        wl_ev_t e;
+        size_t n = 0;
+        if (wl_mbox_ev_name(evp, sizeof evp, nk_client_box) > 0) {
+            f = fopen(evp, "rb");
+            if (f) {
+                n = fread(raw, 1, sizeof raw, f);
+                fclose(f);
+                if (n == sizeof raw
+                    && wl_ev_decode(raw, (int)n, &e) == WL_ERR_OK) {
+                    nk_client_ev_seq = e.seq;
+                    nk_client_ev_wheel = e.wheel;
+                }
+            }
+        }
+    }
+    return 1;
+}
+
 long nk_sys_vga_mode(int on) {
     long ret;
+    (void)on;
+    if (nk_client_probe()) return 0;
     __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_VGA_MODE), "D"((long)on) : "rcx","r11","memory");
     return ret;
 }
@@ -76,8 +140,92 @@ long nk_sys_mouse_badptr(void) {
 }
 static void nk_mirror_tick(void);
 
+/* Publish one client frame through the shared mailbox transport:
+ * pixels first, then the six-message session, each sequenced.
+ * Damage-tracked: a 32-bit FNV over the backbuffer skips the whole
+ * publish when nothing changed (an idle window costs zero fs churn,
+ * which is what keeps several live clients from saturating the
+ * mailbox), with a heartbeat every 32nd frame for resync. */
+static unsigned nk_client_last_hash = 0;
+
+static unsigned nk_client_hash(const unsigned char *p, unsigned n) {
+    unsigned h = 2166136261u;
+    unsigned i = 0;
+    if (!p) return 0;
+    for (i = 0; i < n; i++) {
+        h ^= p[i];
+        h *= 16777619u;
+    }
+    return h;
+}
+
+static int nk_client_publish(void) {
+    unsigned char msg[WL_MAX_MSG];
+    wl_hdr_t h;
+    unsigned char *raw = 0;
+    raw = (unsigned char *)NK_BACKBUF;
+    if (wl_client_raw_file(nk_client_box, raw, NK_W, NK_H)
+        != WL_ERR_OK)
+        return 1;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_DISPLAY,
+            WL_OP_DISPLAY_GET_REGISTRY, 8, &h) != WL_ERR_OK)
+        return 1;
+    if (wl_client_emit_file(nk_client_box, nk_client_seq++, msg, 8)
+        != WL_ERR_OK)
+        return 1;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_REGISTRY,
+            WL_OP_REGISTRY_BIND, 12, &h) != WL_ERR_OK)
+        return 1;
+    if (wl_u32_encode(msg, sizeof msg, 8, WL_ID_COMPOSITOR)
+        != WL_ERR_OK)
+        return 1;
+    if (wl_client_emit_file(nk_client_box, nk_client_seq++, msg, 12)
+        != WL_ERR_OK)
+        return 1;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_COMPOSITOR,
+            WL_OP_COMPOSITOR_CREATE_SURFACE, 8, &h) != WL_ERR_OK)
+        return 1;
+    if (wl_client_emit_file(nk_client_box, nk_client_seq++, msg, 8)
+        != WL_ERR_OK)
+        return 1;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_SHM,
+            WL_OP_SHM_CREATE_POOL, 8, &h) != WL_ERR_OK)
+        return 1;
+    if (wl_client_emit_file(nk_client_box, nk_client_seq++, msg, 8)
+        != WL_ERR_OK)
+        return 1;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_SURFACE_BASE,
+            WL_OP_SURFACE_ATTACH, 20, &h) != WL_ERR_OK)
+        return 1;
+    if (wl_attach_encode(msg + 8, (int)sizeof msg - 8,
+            WL_ID_POOL_BASE, NK_W, NK_H) != WL_ATTACH_SZ)
+        return 1;
+    if (wl_client_emit_file(nk_client_box, nk_client_seq++, msg, 20)
+        != WL_ERR_OK)
+        return 1;
+    if (wl_hdr_encode(msg, sizeof msg, WL_ID_SURFACE_BASE,
+            WL_OP_SURFACE_COMMIT, 8, &h) != WL_ERR_OK)
+        return 1;
+    if (wl_client_emit_file(nk_client_box, nk_client_seq++, msg, 8)
+        != WL_ERR_OK)
+        return 1;
+    return 0;
+}
+
 long nk_sys_nk_frame(int *origin) {
     long ret;
+    if (nk_client_probe()) {
+        unsigned h = 0;
+        if (origin) { origin[0] = 0; origin[1] = 0; }
+        nk_client_frame++;
+        h = nk_client_hash((unsigned char *)NK_BACKBUF,
+            (unsigned)NK_W * (unsigned)NK_H);
+        if (h != nk_client_last_hash || (nk_client_frame & 31) == 0) {
+            nk_client_last_hash = h;
+            nk_client_publish();
+        }
+        return 0;
+    }
     __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"((long)MINIOS_GFX_BUF_NK), "S"(origin) : "rcx","r11","memory");
     if (ret == 0) nk_mirror_tick();
     return ret;
@@ -613,9 +761,61 @@ static void handle_scancode(struct nk_context *ctx, unsigned char sc) {
     }
 }
 
+/* Client input pump: feed the pending .ev batch when its seq
+ * advanced, else hold the last state. Never touches PS/2; the
+ * server owns the port while the desktop runs. */
+static void nk_client_poll(struct nk_context *ctx) {
+    char evp[WL_MBOX_NAME_MAX];
+    unsigned char raw[WL_EV_SZ];
+    wl_ev_t e;
+    FILE *f = 0;
+    size_t n = 0;
+    unsigned i = 0;
+    int dw = 0;
+    if (!ctx) return;
+    if (wl_mbox_ev_name(evp, sizeof evp, nk_client_box) <= 0) return;
+    f = fopen(evp, "rb");
+    if (!f) return;
+    n = fread(raw, 1, sizeof raw, f);
+    fclose(f);
+    if (n != sizeof raw) return;
+    if (wl_ev_decode(raw, (int)n, &e) != WL_ERR_OK) return;
+    if (e.seq == nk_client_ev_seq) return;
+    nk_client_ev_seq = e.seq;
+    for (i = 0; i < e.nsc; i++)
+        handle_scancode(ctx, e.sc[i]);
+    if (e.mx >= 0 && e.my >= 0)
+        nk_input_motion(ctx, e.mx, e.my);
+    {
+        int b = (int)(e.buttons & 7u);
+        int now = e.mx >= 0 ? e.mx : 0;
+        int noy = e.my >= 0 ? e.my : 0;
+        if ((b & 1) != (nk_client_ev_btn & 1))
+            nk_input_button(ctx, NK_BUTTON_LEFT, now, noy,
+                    (b & 1) ? nk_true : nk_false);
+        if ((b & 2) != (nk_client_ev_btn & 2))
+            nk_input_button(ctx, NK_BUTTON_RIGHT, now, noy,
+                    (b & 2) ? nk_true : nk_false);
+        if ((b & 4) != (nk_client_ev_btn & 4))
+            nk_input_button(ctx, NK_BUTTON_MIDDLE, now, noy,
+                    (b & 4) ? nk_true : nk_false);
+        nk_client_ev_btn = b;
+    }
+    dw = (int)(e.wheel - nk_client_ev_wheel);
+    nk_client_ev_wheel = e.wheel;
+    if (dw != 0) {
+        struct nk_vec2 scroll;
+        scroll.x = 0;
+        scroll.y = (float)dw;
+        nk_input_scroll(ctx, scroll);
+    }
+}
+
 void nk_poll_input(struct nk_context *ctx) {
     int mouse[4];
     static int prev_buttons;
+
+    if (nk_client_probe()) { nk_client_poll(ctx); return; }
 
     /* Keyboard. */
     for (;;) {

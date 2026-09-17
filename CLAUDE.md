@@ -1865,14 +1865,20 @@ header-only pattern as the `wm_*.h` contracts.
   translation table; routing (`wl_mbox_route`) and freshness
   (`wl_mbox_fresh`) stay pure and host-tested while stdio, `DIR_LIST`
   and `unlink` live in `wlcomp.c` and prove out live in the guest.
-  `wlcomp` is a desktop now: `--server` owns the display, focuses on
-  click, drags through `wl_comp_set_rect`, re-tiles on `t`, quits on
-  ESC; `--once` drains once for scripts; `--client` attaches from a
-  second process; `--clean` clears the directory. Layout resizes
-  cells while pixels arrive at attach size, so the server rescales on
-  fit (`wl_scale_nearest`); a lying raw degrades to solid ink, never
-  a torn frame. `make wl` boots this desktop directly (Fase 4,
-  `tools/boot_wl.sh`).
+  The thin client `progs/wl/wl_client.h` owns the attach sequence
+  (`wl_client_raw_file`, `wl_client_emit_file`, `wl_client_attach`)
+  so every ring-3 program becomes a real multitasking client:
+  `mrun a &`, `mrun b &`, then the server tiles both. `wlcomp` is a
+  desktop now: `--server` owns the display, focuses on click, title
+  drag moves, rim drag resizes through `wl_comp_set_rect`, close box
+  closes through `wlserv_close` (slot plus raw unlinked for the next
+  client), `t` re-tiles, `m` minimizes the focused window, `u`
+  restores all, ESC quits; `--once` drains once for scripts;
+  `--client` attaches from a second process; `--clean` clears the
+  directory. Layout resizes cells while pixels arrive at attach size,
+  so the server rescales on fit (`wl_scale_nearest`); a lying raw
+  degrades to solid ink, never a torn frame. `make wl` boots this
+  desktop directly (Fase 4, `tools/boot_wl.sh`).
 - The 768-byte hybrid palette lived in three identical copies while
   the program that needed it most had none, which read as a glitch
   on truecolor VBE modes. It lives once in `progs/nk_palette.h`
@@ -1891,11 +1897,60 @@ header-only pattern as the `wm_*.h` contracts.
   `wlcomp --once` beside the `gfx frames` climb from 0 to 1, and a
   headless QMP screendump carrying desktop-exact inks. Mutants for
   the three reserved numbers and the size check die in the host
-  suite; fifteen scoped mutants over the header paths (layout
+  suite; nineteen scoped mutants over the header paths (layout
   columns, attach pool, blit border, commit id, rect fit, stream
   split, consume skip, short attach, create size, iface lookup,
   scale axes, mailbox magic, mailbox freshness, route commit, route
-  short) die in `make test-wl` via `tools/wl_scoped.sh`.
+  short, chrome active, chrome close, chrome minimize, chrome zone)
+  die in `make test-wl` via `tools/wl_scoped.sh`.
+- Window chrome is protocol, not pixels: `wl_mini.h` owns the title
+  geometry (`WL_TITLE_H`, `WL_CLOSE_W`, `WL_RESIZE_EDGE`), the
+  desktop-exact inks (`WL_TITLE_ACTIVE`, `WL_TITLE_INACTIVE`,
+  `WL_CLOSE_INK`), the hit zones (`WL_HIT_BODY/TITLE/CLOSE/RESIZE`)
+  through `wl_surface_hit_zone`, the active flag through
+  `wl_comp_refresh_active` (top-most mapped window paints bright),
+  minimize through `wl_comp_set_minimized` (skips hit, tile and
+  composite until restored), and `wlcomp_blit_chrome` (title plus
+  close box plus content, small surfaces fall back to the legacy
+  blit). The server hot loop never allocates: `wlserv_pool` plus two
+  static scratch frames replace the old per-frame malloc, and a
+  periodic stray sweep unlinks dead `.msg` files so crashed clients
+  leave no orphans. Syscalls 243/244/245 stay reserved outside the
+  checksum; the mailbox remains the zero-kernel transport.
+- I run the desktop from a plain boot with one command: the `desktop`
+  builtin writes the mirror+client flags and spawns `wlcomp --server`
+  as a background job (`desktop status`/`stop` round it out; `stop`
+  quits through the quit flag and clears session flags, and the shell
+  clears stale client/quit flags once at boot so a reboot never
+  blinds NK apps). Server shortcuts are Alt-held (`Alt+T/M/U/Q`) so
+  plain keys always reach the focused client; `wlserv_push_ev` maps
+  frame coords into raw-buffer coords (`wl_ev_map`) and serves a
+  44-byte `.ev` frame per focused box with a queued scancode batch
+  that clears after write (never replays). Every NK app speaks it
+  through `progs/nuklear/nuklear_minios.c` with zero app-code
+  changes: client mode skips the display takeover and PS/2, publishes
+  damage-tracked pixels (FNV, heartbeat every 32nd frame) under a
+  pid-unique box, and polls `.ev` for input. Host proof is `make
+  test-wl` (ev roundtrip plus map plus box vectors); live proof is
+  the `desktop` BDD scenario (up, jobs, stop, status).
+- Honest ceiling, measured: spawning a big ELF (`paint`, `file`,
+  ~800 KB) while the server runs faults it at startup (`EXCEPTION
+  0e`, NX fetch into `.rodata`, exit `-14`) before `main`, while
+  small ELFs (`fib`, exit 55) spawn fine and the same big apps spawn
+  fine with no server. Whole-load `cli` (legacy loader) does not
+  save it, so the defect sits in first-schedule/entry under constant
+  tick pressure (a constantly-READY server makes every tick switch,
+  and big-image windows are wide) — the documented open
+  preempt park/resume layer, not the Wayland code. Until it lands,
+  heavyweights run sequentially and static clients are the stable
+  desktop proof.
+- The block cache owns the other half of desktop stability:
+  `bc_lock` is irqsave (a plain spin preempted mid-copy by the timer
+  deschedules its holder, and a second context spinning with IF=0
+  kills the timer: the silent machine-stop a server drain plus one
+  shell write hit intermittently, observed as a waiter spinning on
+  `fs_lock` downstream). Leaf discipline unchanged, still never held
+  across PIO.
 
 ### Ramdisk names
 File names are at most `RAMDISK_FNAME_LEN - 1` characters. Names may

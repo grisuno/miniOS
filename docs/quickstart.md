@@ -39,6 +39,8 @@ make run            # with display (TCG by default)
 ```
 
 Wait for the `miniOS>` prompt. `poweroff` shuts the guest down.
+Type `desktop` for the tiled Wayland session (server plus client
+windows, `desktop stop` to leave); see `docs/wayland.md`.
 
 ## 5. Your first in-OS program
 

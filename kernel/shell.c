@@ -205,7 +205,8 @@ static const char *shell_name_base(const char *path) {
  * only the shell dispatch below knows them, so they are listed once here
  * for the completer instead of hiding behind the file tiers). */
 static const char *shell_builtin_names[] = {
-    "bootlog", "cat", "catfs", "cd", "clear", "clock", "date", "echo", "edit",
+    "bootlog", "cat", "catfs", "cd", "clear", "clock", "date", "desktop",
+    "echo", "edit",
     "gdb", "gfx", "hash", "help", "irqstat", "jobs", "kbd", "kill", "kstack",
     "load", "ls", "lsfs", "ltrace", "mem", "minifetch", "mkdir", "mrun", "net",
     "nice", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
@@ -733,7 +734,15 @@ int shell_parse(char *line, char **argv, int max_args) {
 }
 
 
+static void desktop_unflag(const char *name);
+
 void shell_run(void) {
+    /* Drop session flags left by a previous life (poweroff during a
+     * desktop session): client mode with no server would blind NK
+     * apps, and a stale quit is a stop nobody asked for. Once per
+     * boot, before the first prompt. */
+    desktop_unflag("client");
+    desktop_unflag("quit");
     while (1) {
         /* Reap finished background jobs before printing the prompt, so a
          * dead job never lingers past one command and pid slots cannot
@@ -1311,6 +1320,131 @@ static void shell_run_bg(const char *name, int argc, char **argv) {
     kfree(data);
     if (pid < 0) { kprintf("run: %s: spawn failed\n", name); return; }
     kprintf("run: %s started as job pid %d\n", name, pid);
+}
+
+/* `desktop`: one-command Wayland session (ADR-0026 live step).
+ *
+ * `desktop` writes the mirror+client flags under /shm/wl and spawns
+ * `wlcomp --server` as a background job, turning a plain `make run`
+ * boot into the tiled Wayland desktop: every NK app started after
+ * this (paint, vedit, file, nuklear, doomedit, piano) runs as a
+ * Wayland client (pixels to its pid-unique mailbox, input from its
+ * .ev file) instead of stealing the display, so windows tile with
+ * title bars, focus, close, resize and minimize under real
+ * preemptive multitasking (`jobs` lists clients beside the server).
+ * `desktop stop` asks the server out through the quit flag (a
+ * background job owns no console to hear keys on); `desktop status`
+ * reports flags plus the server pid state. Server shortcuts are
+ * Alt-held (Alt+T/M/U/Q) so plain keys always reach the focused
+ * client. A live client re-attaches after a title-X close, so
+ * closing one also wants `kill <pid>` (the box name carries it). */
+static int desktop_srv_pid = -1;
+
+static void desktop_path(const char *name, char *dst, unsigned cap) {
+    const char *base = "/shm/wl/";
+    unsigned bi = 0;
+    unsigned ni = 0;
+    while (base[bi] && bi + 1 < cap) { dst[bi] = base[bi]; bi++; }
+    while (name[ni] && bi + 1 < cap) { dst[bi++] = name[ni++]; }
+    dst[bi] = 0;
+}
+
+static void desktop_flag(const char *name) {
+    char path[RAMDISK_FNAME_LEN];
+    KFILE *f;
+    desktop_path(name, path, sizeof(path));
+    f = kfopen(path, "w");
+    if (!f) { kprintf("desktop: cannot write %s\n", path); return; }
+    kfwrite("1", 1, 1, f);
+    kfclose(f);
+}
+
+static int desktop_flag_on(const char *name) {
+    char path[RAMDISK_FNAME_LEN];
+    KFILE *f;
+    desktop_path(name, path, sizeof(path));
+    f = kfopen(path, "r");
+    if (!f) return 0;
+    kfclose(f);
+    return 1;
+}
+
+/* A reboot with a stale client flag would blind every NK app (client
+ * mode with no server mirrors into the void and never presents), so
+ * the shell clears session flags once at startup and `desktop stop`
+ * clears them on exit. Mirror stays: it is harmless without a server
+ * and external flows (make wl) set it themselves. */
+static void desktop_unflag(const char *name) {
+    char path[RAMDISK_FNAME_LEN];
+    desktop_path(name, path, sizeof(path));
+    if (minifs_is_mounted())
+        minifs_unlink(path);
+}
+
+static int desktop_srv_alive(void) {
+    int alive = 0;
+    int i;
+    if (desktop_srv_pid <= 0) return 0;
+    spin_lock(&sched_lock);
+    for (i = 0; i < MAX_PROCS; i++) {
+        if (procs[i].pid == desktop_srv_pid
+            && procs[i].state != PROC_FREE
+            && procs[i].state != PROC_ZOMBIE
+            && kstrncmp(procs[i].name, "wlcomp", 6) == 0)
+            alive = 1;
+    }
+    spin_unlock(&sched_lock);
+    return alive;
+}
+
+static void shell_cmd_desktop(int argc, char **argv) {
+    if (argc > 1 && kstrcmp(argv[1], "stop") == 0) {
+        desktop_flag("quit");
+        desktop_unflag("client");
+        desktop_unflag("mirror");
+        vga_puts("desktop: stopping (server exits, text mode returns)\n");
+        return;
+    }
+    if (argc > 1 && kstrcmp(argv[1], "status") == 0) {
+        kprintf("desktop: mirror=%d client=%d server=%s\n",
+            desktop_flag_on("mirror"), desktop_flag_on("client"),
+            desktop_srv_alive() ? "running" : "stopped");
+        return;
+    }
+    if (argc > 1) { vga_puts("usage: desktop [stop|status]\n"); return; }
+    if (desktop_srv_alive()) {
+        kprintf("desktop: server already running as pid %d\n",
+            desktop_srv_pid);
+        return;
+    }
+    desktop_flag("mirror");
+    desktop_flag("client");
+    {
+        unsigned char *data = 0;
+        unsigned size = 0;
+        char *pargv[2];
+        int pid;
+        if (shell_read_elf_bytes("wlcomp", &data, &size)) {
+            vga_puts("desktop: wlcomp: not found\n");
+            return;
+        }
+        if (size < 4 || !(data[0] == 0x7F && data[1] == 'E'
+                && data[2] == 'L' && data[3] == 'F')) {
+            vga_puts("desktop: wlcomp: not an ELF\n");
+            kfree(data);
+            return;
+        }
+        pargv[0] = "wlcomp";
+        pargv[1] = "--server";
+        pid = proc_spawn_elf("wlcomp", data, size, 2, pargv);
+        kfree(data);
+        if (pid < 0) { vga_puts("desktop: spawn failed\n"); return; }
+        desktop_srv_pid = pid;
+        kprintf("desktop: wayland up (server pid %d)\n", pid);
+        vga_puts("desktop: click focuses, drag moves, rim resizes, X closes\n");
+        vga_puts("desktop: Alt+T tile Alt+M minimize Alt+U restore Alt+Q quit\n");
+        vga_puts("desktop: start apps as clients (mrun paint &), jobs lists them\n");
+    }
 }
 
 /* Unified dispatcher used by `run` and by bare commands: a registered program
@@ -2181,6 +2315,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  gfx [..]           graphics state / pixel / rect / shot\n");
         vga_puts("  wm [op]            window mgmt: minimize|maximize|close|split|list|tile|focus|state\n");
         vga_puts("  Alt+Tab focus next, Super+Tab tile, Super+arrows snap focused\n");
+        vga_puts("  desktop [stop|status] wayland session: tile NK apps as windows\n");
         vga_puts("  hash <file>        XXH64 checksum of a file\n");
         vga_puts("  mem                heap/ramdisk/minifs/procs pressure\n");
         vga_puts("  minifetch          system screen (doom logo + specs)\n");
@@ -2703,6 +2838,9 @@ void shell_exec_builtin(int argc, char **argv) {
     }
     else if (kstrcmp(argv[0], "mrun") == 0) {
         shell_cmd_mrun(argc, argv);
+    }
+    else if (kstrcmp(argv[0], "desktop") == 0) {
+        shell_cmd_desktop(argc, argv);
     }
     else if (kstrcmp(argv[0], "jobs") == 0) {
         shell_cmd_jobs();

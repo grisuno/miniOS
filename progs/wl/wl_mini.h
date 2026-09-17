@@ -230,6 +230,24 @@ static inline int wl_pool_fit(int w, int h) {
     return WL_ERR_OK;
 }
 
+/** Window chrome geometry and inks. Title bar lives inside the
+ * surface frame below the 1px border so hit testing and compositing
+ * share one layout. Inks stay in the desktop-exact 0-14 range so the
+ * desktop behind never recolors. Small surfaces skip the bar and
+ * render exactly like before. */
+#define WL_TITLE_H 14
+#define WL_CLOSE_W 12
+#define WL_RESIZE_EDGE 5
+#define WL_TITLE_ACTIVE 4
+#define WL_TITLE_INACTIVE 2
+#define WL_CLOSE_INK 11
+
+#define WL_HIT_NONE (-1)
+#define WL_HIT_BODY 0
+#define WL_HIT_TITLE 1
+#define WL_HIT_CLOSE 2
+#define WL_HIT_RESIZE 3
+
 typedef struct {
     unsigned int id;
     int x;
@@ -239,6 +257,8 @@ typedef struct {
     int mapped;
     unsigned int pool;
     int color;
+    int active;
+    int minimized;
 } wl_surface_t;
 
 typedef struct {
@@ -257,8 +277,33 @@ static inline void wl_comp_init(wl_comp_t *c) {
     for (i = 0; i < WL_MAX_SURFACES; i++) {
         c->items[i].id = 0;
         c->items[i].mapped = 0;
+        c->items[i].active = 0;
+        c->items[i].minimized = 0;
         c->order[i] = 0;
     }
+}
+
+/** Refresh the active flag from z-order: only the top-most mapped,
+ * non-minimized surface reads active. Single place so focus, add and
+ * remove can never disagree on which title paints bright. */
+static inline void wl_comp_refresh_active(wl_comp_t *c) {
+    int i;
+    int top = -1;
+    if (!c)
+        return;
+    for (i = 0; i < WL_MAX_SURFACES; i++)
+        c->items[i].active = 0;
+    for (i = c->count - 1; i >= 0; i--) {
+        int slot = (int)c->order[i];
+        if (slot < 0 || slot >= WL_MAX_SURFACES)
+            continue;
+        if (c->items[slot].mapped && !c->items[slot].minimized) {
+            top = slot;
+            break;
+        }
+    }
+    if (top >= 0)
+        c->items[top].active = 1;
 }
 
 static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h) {
@@ -285,9 +330,12 @@ static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h) {
             c->items[i].mapped = 1;
             c->items[i].pool = 0;
             c->items[i].color = 4;
+            c->items[i].minimized = 0;
+            c->items[i].active = 0;
             c->order[c->count] = (unsigned int)i;
             c->count++;
             c->focus = i;
+            wl_comp_refresh_active(c);
             return WL_ERR_OK;
         }
     }
@@ -317,6 +365,7 @@ static inline int wl_comp_remove(wl_comp_t *c, unsigned int id) {
         }
     }
     c->focus = c->count > 0 ? (int)c->order[c->count - 1] : -1;
+    wl_comp_refresh_active(c);
     return WL_ERR_OK;
 }
 
@@ -338,6 +387,7 @@ static inline int wl_comp_focus(wl_comp_t *c, unsigned int id) {
                 c->order[k] = c->order[k + 1];
             c->order[c->count - 1] = (unsigned int)slot;
             c->focus = slot;
+            wl_comp_refresh_active(c);
             return WL_ERR_OK;
         }
     }
@@ -350,12 +400,57 @@ static inline int wl_comp_hit(const wl_comp_t *c, int x, int y) {
         return -1;
     for (i = c->count - 1; i >= 0; i--) {
         const wl_surface_t *s = &c->items[c->order[i]];
-        if (!s->mapped)
+        if (!s->mapped || s->minimized)
             continue;
         if (x >= s->x && x < s->x + s->w && y >= s->y && y < s->y + s->h)
             return (int)s->id;
     }
     return -1;
+}
+
+/** Classify a point inside one surface: close button first, then
+ * title drag strip, then the resize rim, else body. Points outside
+ * fail closed with HIT_NONE. Geometry mirrors wlcomp_blit_chrome so
+ * clicks and pixels can never disagree. */
+static inline int wl_surface_hit_zone(const wl_surface_t *s, int x, int y) {
+    int lx;
+    int ly;
+    int has_title;
+    if (!s || !s->mapped || s->minimized)
+        return WL_HIT_NONE;
+    if (x < s->x || x >= s->x + s->w || y < s->y || y >= s->y + s->h)
+        return WL_HIT_NONE;
+    lx = x - s->x;
+    ly = y - s->y;
+    if (lx == 0 || ly == 0 || lx == s->w - 1 || ly == s->h - 1)
+        return WL_HIT_RESIZE;
+    has_title = (s->w > WL_CLOSE_W + 4 && s->h > WL_TITLE_H + 2);
+    if (has_title && ly >= 1 && ly <= WL_TITLE_H) {
+        if (lx >= s->w - 1 - WL_CLOSE_W && lx < s->w - 1)
+            return WL_HIT_CLOSE;
+        return WL_HIT_TITLE;
+    }
+    if (lx >= s->w - WL_RESIZE_EDGE || ly >= s->h - WL_RESIZE_EDGE)
+        return WL_HIT_RESIZE;
+    return WL_HIT_BODY;
+}
+
+/** Minimize/restore one surface. Minimized surfaces keep their slot
+ * and geometry but skip hit testing, tiling and compositing until
+ * restored. */
+static inline int wl_comp_set_minimized(wl_comp_t *c, unsigned int id,
+        int minimized) {
+    int i;
+    if (!c)
+        return WL_ERR_BOUND;
+    for (i = 0; i < WL_MAX_SURFACES; i++) {
+        if (c->items[i].id == id) {
+            c->items[i].minimized = minimized ? 1 : 0;
+            wl_comp_refresh_active(c);
+            return WL_ERR_OK;
+        }
+    }
+    return WL_ERR_ID;
 }
 
 static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color) {
@@ -402,7 +497,7 @@ static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,
         int y0 = s->y < 0 ? 0 : s->y;
         int x1 = s->x + s->w > fb_w ? fb_w : s->x + s->w;
         int y1 = s->y + s->h > fb_h ? fb_h : s->y + s->h;
-        if (!s->mapped)
+        if (!s->mapped || s->minimized)
             continue;
         if (x0 >= x1 || y0 >= y1)
             continue;
@@ -462,7 +557,8 @@ static inline int wl_comp_layout_tile(wl_comp_t *c, int fb_w, int fb_h) {
         || fb_h > WL_SURF_MAX_H)
         return WL_ERR_BOUND;
     for (i = 0; i < c->count; i++) {
-        if (c->items[c->order[i]].mapped)
+        if (c->items[c->order[i]].mapped
+            && !c->items[c->order[i]].minimized)
             mapped++;
     }
     if (mapped <= 0)
@@ -487,7 +583,7 @@ static inline int wl_comp_layout_tile(wl_comp_t *c, int fb_w, int fb_h) {
         wl_surface_t *s = &c->items[c->order[i]];
         int col;
         int row;
-        if (!s->mapped)
+        if (!s->mapped || s->minimized)
             continue;
         col = k % cols;
         row = k / cols;
@@ -537,7 +633,7 @@ static inline int wlcomp_blit(const wl_comp_t *c, unsigned char *fb,
         int y0;
         int x1;
         int y1;
-        if (!s->mapped)
+        if (!s->mapped || s->minimized)
             continue;
         slot = (int)(s - c->items);
         if (px && px[slot]) {
@@ -559,6 +655,80 @@ static inline int wlcomp_blit(const wl_comp_t *c, unsigned char *fb,
                     fb[y * fb_w + x] = src[(y - s->y) * s->w + (x - s->x)];
                 else
                     fb[y * fb_w + x] = (unsigned char)s->color;
+            }
+        }
+    }
+    return WL_ERR_OK;
+}
+
+/** Composite with window chrome: a title strip inside the frame
+ * paints active vs inactive, with a close box at its right end, and
+ * client pixels fill only below it. Small surfaces render exactly
+ * like wlcomp_blit so the legacy selftest vectors never move. Pure
+ * function, same fail-closed bounds as wlcomp_blit, same slot tables. */
+static inline int wlcomp_blit_chrome(const wl_comp_t *c, unsigned char *fb,
+        int fb_w, int fb_h, const unsigned char * const *px,
+        const int *pw, const int *ph) {
+    int i;
+    int x;
+    int y;
+    if (!c || !fb || fb_w <= 0 || fb_h <= 0)
+        return WL_ERR_BOUND;
+    if (fb_w > WL_SURF_MAX_W || fb_h > WL_SURF_MAX_H)
+        return WL_ERR_BOUND;
+    if (px) {
+        for (i = 0; i < WL_MAX_SURFACES; i++) {
+            if (!px[i])
+                continue;
+            if (!pw || !ph || pw[i] <= 0 || ph[i] <= 0)
+                return WL_ERR_BOUND;
+        }
+    }
+    for (y = 0; y < fb_h; y++) {
+        for (x = 0; x < fb_w; x++)
+            fb[y * fb_w + x] = WLCOMP_BG;
+    }
+    for (i = 0; i < c->count; i++) {
+        const wl_surface_t *s = &c->items[c->order[i]];
+        const unsigned char *src = 0;
+        int slot;
+        int x0;
+        int y0;
+        int x1;
+        int y1;
+        int has_title;
+        if (!s->mapped || s->minimized)
+            continue;
+        slot = (int)(s - c->items);
+        if (px && px[slot]) {
+            if (pw[slot] != s->w || ph[slot] != s->h)
+                return WL_ERR_BOUND;
+            src = px[slot];
+        }
+        x0 = s->x < 0 ? 0 : s->x;
+        y0 = s->y < 0 ? 0 : s->y;
+        x1 = s->x + s->w > fb_w ? fb_w : s->x + s->w;
+        y1 = s->y + s->h > fb_h ? fb_h : s->y + s->h;
+        if (x0 >= x1 || y0 >= y1)
+            continue;
+        has_title = (s->w > WL_CLOSE_W + 4 && s->h > WL_TITLE_H + 2);
+        for (y = y0; y < y1; y++) {
+            for (x = x0; x < x1; x++) {
+                int lx = x - s->x;
+                int ly = y - s->y;
+                if (x == x0 || y == y0 || x == x1 - 1 || y == y1 - 1) {
+                    fb[y * fb_w + x] = WLCOMP_BORDER;
+                } else if (has_title && ly >= 1 && ly <= WL_TITLE_H) {
+                    if (lx >= s->w - 1 - WL_CLOSE_W && lx < s->w - 1)
+                        fb[y * fb_w + x] = WL_CLOSE_INK;
+                    else
+                        fb[y * fb_w + x] = (unsigned char)(s->active
+                            ? WL_TITLE_ACTIVE : WL_TITLE_INACTIVE);
+                } else if (src) {
+                    fb[y * fb_w + x] = src[(y - s->y) * s->w + (x - s->x)];
+                } else {
+                    fb[y * fb_w + x] = (unsigned char)s->color;
+                }
             }
         }
     }
@@ -672,6 +842,137 @@ static inline int wl_commit_decode(const unsigned char *src, int len,
     if (!wl_surface_id_valid(*id))
         return WL_ERR_ID;
     return WL_ERR_OK;
+}
+
+/** Server-to-client input event, one fixed frame per focused box.
+ * The server owns PS/2 while it owns the display, so clients never
+ * touch the port in client mode: they poll their <box>.ev file and
+ * feed whatever batch carries a newer seq. Mouse is client-buffer
+ * coords (mapped by wl_ev_map, -1 when outside), wheel is a
+ * monotonic total the client diffs, scancodes are raw Set-1 bytes
+ * (E0 prefixes included) the client's own translator consumes.
+ * A slow client loses middle batches (latest wins, documented);
+ * a batch is never replayed because the server clears after write. */
+#define WL_EV_MAGIC 0x56454C57u
+#define WL_EV_SC_MAX 16
+#define WL_EV_SZ 44
+
+typedef struct {
+    unsigned int seq;
+    int mx;
+    int my;
+    unsigned int buttons;
+    unsigned int wheel;
+    unsigned int nsc;
+    unsigned char sc[WL_EV_SC_MAX];
+} wl_ev_t;
+
+static inline int wl_ev_encode(unsigned char *dst, int cap,
+        const wl_ev_t *ev) {
+    int i;
+    if (!dst || !ev)
+        return WL_ERR_BOUND;
+    if (ev->nsc > (unsigned int)WL_EV_SC_MAX)
+        return WL_ERR_BOUND;
+    if (cap < WL_EV_SZ)
+        return WL_ERR_BOUND;
+    dst[0] = (unsigned char)(WL_EV_MAGIC & 0xFFu);
+    dst[1] = (unsigned char)((WL_EV_MAGIC >> 8) & 0xFFu);
+    dst[2] = (unsigned char)((WL_EV_MAGIC >> 16) & 0xFFu);
+    dst[3] = (unsigned char)((WL_EV_MAGIC >> 24) & 0xFFu);
+    if (wl_u32_encode(dst, cap, 4, ev->seq) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (wl_u32_encode(dst, cap, 8, (unsigned int)ev->mx) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (wl_u32_encode(dst, cap, 12, (unsigned int)ev->my) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (wl_u32_encode(dst, cap, 16, ev->buttons) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (wl_u32_encode(dst, cap, 20, ev->wheel) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (wl_u32_encode(dst, cap, 24, ev->nsc) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    for (i = 0; i < WL_EV_SC_MAX; i++)
+        dst[28 + i] = i < (int)ev->nsc ? ev->sc[i] : 0;
+    return WL_EV_SZ;
+}
+
+static inline int wl_ev_decode(const unsigned char *src, int len,
+        wl_ev_t *ev) {
+    unsigned int magic = 0;
+    unsigned int nsc = 0;
+    int i;
+    if (!src || !ev)
+        return WL_ERR_BOUND;
+    if (len < WL_EV_SZ)
+        return WL_ERR_TRUNC;
+    if (len > WL_EV_SZ)
+        return WL_ERR_BOUND;
+    magic = (unsigned int)src[0]
+        | ((unsigned int)src[1] << 8)
+        | ((unsigned int)src[2] << 16)
+        | ((unsigned int)src[3] << 24);
+    if (magic != WL_EV_MAGIC)
+        return WL_ERR_BOUND;
+    if (wl_u32_decode(src, len, 4, &ev->seq) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (wl_u32_decode(src, len, 8, (unsigned int *)&ev->mx)
+        != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (wl_u32_decode(src, len, 12, (unsigned int *)&ev->my)
+        != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (wl_u32_decode(src, len, 16, &ev->buttons) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (wl_u32_decode(src, len, 20, &ev->wheel) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (wl_u32_decode(src, len, 24, &nsc) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (nsc > (unsigned int)WL_EV_SC_MAX)
+        return WL_ERR_BOUND;
+    ev->nsc = nsc;
+    for (i = 0; i < WL_EV_SC_MAX; i++)
+        ev->sc[i] = src[28 + i];
+    return WL_ERR_OK;
+}
+
+/** Map a frame point into a client's raw buffer coords. The content
+ * area starts below the 1px border plus the title bar; the scale
+ * covers layout cells differing from attach dims. Outside maps to
+ * (-1,-1) with 0, never a clamped edge that would warp clicks. */
+static inline int wl_ev_map(int fx, int fy, int sx, int sy, int sw,
+        int sh, int rw, int rh, int *cx, int *cy) {
+    long x0;
+    long y0;
+    long cw;
+    long ch;
+    if (!cx || !cy)
+        return WL_ERR_BOUND;
+    *cx = -1;
+    *cy = -1;
+    if (sw <= WL_CLOSE_W + 4 || sh <= WL_TITLE_H + 2)
+        return 0;
+    if (rw <= 0 || rh <= 0 || rw > WL_SURF_MAX_W || rh > WL_SURF_MAX_H)
+        return WL_ERR_BOUND;
+    x0 = (long)sx + 1;
+    y0 = (long)sy + 1 + WL_TITLE_H;
+    cw = (long)sw - 2;
+    ch = (long)sh - 2 - WL_TITLE_H - 1;
+    if (cw <= 0 || ch <= 0)
+        return 0;
+    if (fx < x0 || fy < y0 || fx >= x0 + cw || fy >= y0 + ch)
+        return 0;
+    *cx = (int)(((long)(fx - x0) * (long)rw) / cw);
+    *cy = (int)(((long)(fy - y0) * (long)rh) / ch);
+    if (*cx < 0)
+        *cx = 0;
+    if (*cy < 0)
+        *cy = 0;
+    if (*cx >= rw)
+        *cx = rw - 1;
+    if (*cy >= rh)
+        *cy = rh - 1;
+    return 1;
 }
 
 typedef struct {

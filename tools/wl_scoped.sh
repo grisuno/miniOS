@@ -19,6 +19,22 @@ make progs/bin/wlcomp >build/wl_scoped_build.log 2>&1 || die "wlcomp guest build
 if grep -E "warning|error" build/wl_scoped_build.log; then die "warnings in wlcomp build"; fi
 grep -q "wl_comp_layout_tile" progs/wl/wl_mini.h || die "tile layout missing"
 grep -q "wlcomp_blit" progs/wl/wl_mini.h || die "pixel blit missing"
+grep -q "wlcomp_blit_chrome" progs/wl/wl_mini.h || die "chrome blit missing"
+grep -q "wl_surface_hit_zone" progs/wl/wl_mini.h || die "hit zone missing"
+grep -q "wl_comp_set_minimized" progs/wl/wl_mini.h || die "minimize missing"
+grep -q "wl_comp_refresh_active" progs/wl/wl_mini.h || die "active focus missing"
+grep -q "wl_client_attach" progs/wl/wl_client.h || die "client lib missing"
+grep -q "wl_ev_encode" progs/wl/wl_mini.h || die "ev encode missing"
+grep -q "wl_ev_decode" progs/wl/wl_mini.h || die "ev decode missing"
+grep -q "wl_ev_map" progs/wl/wl_mini.h || die "ev map missing"
+grep -q "wl_client_box" progs/wl/wl_mbox.h || die "client box missing"
+grep -q "wl_mbox_ev_name" progs/wl/wl_mbox.h || die "ev name missing"
+grep -q "nk_client_probe" progs/nuklear/nuklear_minios.c || die "nk client missing"
+grep -q "nk_client_poll" progs/nuklear/nuklear_minios.c || die "nk ev poll missing"
+grep -q "wlserv_push_ev" progs/wl/wlcomp.c || die "ev push missing"
+grep -q "wlserv_focus_box" progs/wl/wlcomp.c || die "focus box missing"
+grep -q "alt_held" progs/wl/wlcomp.c || die "alt shortcut missing"
+grep -q "shell_cmd_desktop" kernel/shell.c || die "desktop builtin missing"
 grep -q "wl_attach_encode" progs/wl/wl_mini.h || die "attach wire missing"
 grep -q "wl_commit_encode" progs/wl/wl_mini.h || die "commit wire missing"
 grep -q "wl_scale_nearest" progs/wl/wl_mini.h || die "scaler missing"
@@ -33,6 +49,10 @@ grep -q "wlcomp_session" progs/wl/wlcomp.c || die "session selftest missing"
 grep -q "wlcomp_server" progs/wl/wlcomp.c || die "server loop missing"
 grep -q "wlserv_drain" progs/wl/wlcomp.c || die "mailbox drain missing"
 grep -q "wlcomp_client" progs/wl/wlcomp.c || die "client attach missing"
+grep -q "wlserv_pool" progs/wl/wlcomp.c || die "static pool missing"
+grep -q "wlserv_close" progs/wl/wlcomp.c || die "close path missing"
+grep -q "wlserv_gc_strays" progs/wl/wlcomp.c || die "stray gc missing"
+grep -q "wl_client.h" progs/wl/wlcomp.c || die "client lib use missing"
 grep -q "freedom_wl_surface_attach" progs/src/freedom_wl.c || die "client attach missing"
 grep -q "nk_palette.h" progs/nuklear/nuklear_minios.c || die "nuklear palette share missing"
 grep -q "nk_palette.h" progs/freedomui/freedomui_minios.c || die "freedomui palette share missing"
@@ -74,6 +94,15 @@ mutm "mbox-magic" 's/if \(magic != WL_MBOX_MAGIC\)/if (0)/'
 mutm "mbox-fresh" 's/if \(boxes\[slot\]\.used && seq == boxes\[slot\]\.seq_last\)/if (0)/'
 mutm "route-commit-op" 's/if \(opcode == WL_OP_SURFACE_COMMIT\) \{\n            for \(i = 0; i < WL_MAX_SURFACES; i\+\+\)/if (opcode == 7) {\n            for (i = 0; i < WL_MAX_SURFACES; i++)/'
 mutm "route-attach-short" 's/if \(!arg \|\| alen < WL_ATTACH_SZ\)/if (0)/'
+mut "chrome-active" 's/c->items\[top\]\.active = 1;/c->items[top].active = 0;/'
+mut "chrome-close" 's/fb\[y \* fb_w \+ x\] = WL_CLOSE_INK;/fb[y * fb_w + x] = WLCOMP_BG;/'
+mut "chrome-minimize" 's/if \(!s->mapped || s->minimized\)/if (!s->mapped)/'
+mut "chrome-zone" 's/return WL_HIT_CLOSE;/return WL_HIT_TITLE;/'
+mut "ev-magic" 's/if \(magic != WL_EV_MAGIC\)/if (0)/'
+mut "ev-map-outside" 's/if \(fx < x0 || fy < y0 || fx >= x0 + cw || fy >= y0 + ch\)/if (0)/'
+mut "ev-nsc" 's/ev->nsc > \(unsigned int\)WL_EV_SC_MAX/ev->nsc > 999/'
+mutm "box-pid" 's/if \(pid < 0\)/if (0)/'
+mutm "ev-name-suffix" 's/static const char suf\[\] = WL_MBOX_EV_SUFFIX;/static const char suf[] = ".xx";/'
 cp build/wl_scoped_backup.h progs/wl/wl_mini.h
 cp build/wl_scoped_mbox.h progs/wl/wl_mbox.h
 make test-wl >build/wl_scoped_test.log 2>&1 || die "test-wl failed after restore"

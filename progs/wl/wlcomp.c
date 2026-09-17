@@ -33,6 +33,7 @@
 #include "nk_palette.h"
 #include "wl_mini.h"
 #include "wl/wl_mbox.h"
+#include "wl/wl_client.h"
 
 #define WLCOMP_W 800
 #define WLCOMP_H 360
@@ -385,11 +386,17 @@ static int wlcomp_selftest(void) {
 }
 
 /** Live server state: compositor plus mailbox slots plus one
- * cached pixel buffer per surface, indexed by items slot. */
+ * cached pixel buffer per surface, indexed by items slot. The cache
+ * is a static pool, never malloc in the frame loop: wlserv_fit loads
+ * the box raw file into a static scratch, resamples into a second
+ * scratch, then copies into the slot buffer. */
+static unsigned char wlserv_pool[WL_MAX_SURFACES][WL_POOL_MAX];
+static unsigned char wlserv_raw[WL_POOL_MAX];
+static unsigned char wlserv_dst[WL_POOL_MAX];
+
 typedef struct {
     wl_comp_t comp;
     wl_mbox_box_t boxes[WL_MAX_SURFACES];
-    unsigned char *px[WL_MAX_SURFACES];
     int pw[WL_MAX_SURFACES];
     int ph[WL_MAX_SURFACES];
     int rw[WL_MAX_SURFACES];
@@ -403,7 +410,6 @@ static void wlserv_init(wlserv_t *s) {
     wl_comp_init(&s->comp);
     wl_mbox_init(s->boxes);
     for (i = 0; i < WL_MAX_SURFACES; i++) {
-        s->px[i] = 0;
         s->pw[i] = 0;
         s->ph[i] = 0;
         s->rw[i] = 0;
@@ -442,7 +448,9 @@ static void wlserv_recolor(wl_comp_t *c) {
 }
 
 /** Composite the cached pixels and present with palette uploaded,
- * capturing the content origin for pointer translation. */
+ * capturing the content origin for pointer translation. Chrome
+ * (title bar plus close box plus active focus) paints here so every
+ * frame carries real window decorations. */
 static int wlserv_present(wlserv_t *s) {
     unsigned char *fb = (unsigned char *)MINIOS_NK_BACKBUF_ADDR;
     const unsigned char *px[WL_MAX_SURFACES];
@@ -452,8 +460,8 @@ static int wlserv_present(wlserv_t *s) {
     if (wlcomp_palette() != 0)
         return 1;
     for (i = 0; i < WL_MAX_SURFACES; i++)
-        px[i] = s->px[i];
-    if (wlcomp_blit(&s->comp, fb, WLCOMP_W, WLCOMP_H, px, s->pw,
+        px[i] = s->pw[i] > 0 && s->ph[i] > 0 ? wlserv_pool[i] : 0;
+    if (wlcomp_blit_chrome(&s->comp, fb, WLCOMP_W, WLCOMP_H, px, s->pw,
             s->ph) != WL_ERR_OK)
         return 1;
     wlcomp_sys_title("wlcomp");
@@ -467,36 +475,45 @@ static int wlserv_present(wlserv_t *s) {
 static void wlserv_drop(wlserv_t *s, int idx) {
     if (!s || idx < 0 || idx >= WL_MAX_SURFACES)
         return;
-    free(s->px[idx]);
-    s->px[idx] = 0;
     s->pw[idx] = 0;
     s->ph[idx] = 0;
 }
 
 /** Fit every mapped surface to its laid-out size: reload the box raw
- * file at attach dims, then resample into the live cell. Any short
- * file, size lie or allocation failure drops that cache, never a
- * neighbour, so one hostile client cannot blank the desktop. */
+ * file at attach dims, then resample into the live cell. Static
+ * scratch only, never malloc: any short file or size lie drops that
+ * cache, never a neighbour, so one hostile client cannot blank the
+ * desktop. */
 static void wlserv_fit(wlserv_t *s) {
     int b = 0;
     for (b = 0; b < WL_MAX_SURFACES; b++) {
         char path[WL_MBOX_NAME_MAX];
         FILE *f = 0;
         long n = 0;
-        unsigned char *raw = 0;
-        unsigned char *dst = 0;
+        long want = 0;
+        long cells = 0;
         int idx = -1;
         int w = 0;
         int h = 0;
-        if (!s->boxes[b].used)
+        int k = 0;
+        if (!s || !s->boxes[b].used)
             continue;
         idx = wlserv_slot(&s->comp,
             WL_ID_SURFACE_BASE + (unsigned int)b);
-        if (idx < 0 || !s->comp.items[idx].mapped)
+        if (idx < 0 || !s->comp.items[idx].mapped
+            || s->comp.items[idx].minimized) {
             continue;
+        }
         w = s->comp.items[idx].w;
         h = s->comp.items[idx].h;
         if (s->rw[idx] <= 0 || s->rh[idx] <= 0) {
+            wlserv_drop(s, idx);
+            continue;
+        }
+        want = (long)s->rw[idx] * (long)s->rh[idx];
+        cells = (long)w * (long)h;
+        if (want <= 0 || want > (long)WL_POOL_MAX || cells <= 0
+            || cells > (long)WL_POOL_MAX) {
             wlserv_drop(s, idx);
             continue;
         }
@@ -516,45 +533,264 @@ static void wlserv_fit(wlserv_t *s) {
             continue;
         }
         n = ftell(f);
-        if (n != (long)s->rw[idx] * (long)s->rh[idx]
-            || fseek(f, 0, SEEK_SET) != 0) {
+        if (n != want || fseek(f, 0, SEEK_SET) != 0) {
             fclose(f);
             wlserv_drop(s, idx);
             continue;
         }
-        raw = malloc((unsigned long)n);
-        if (!raw) {
-            fclose(f);
-            wlserv_drop(s, idx);
-            continue;
-        }
-        if (fread(raw, 1, (unsigned long)n, f)
+        if (fread(wlserv_raw, 1, (unsigned long)n, f)
             != (unsigned long)n) {
-            free(raw);
             fclose(f);
             wlserv_drop(s, idx);
             continue;
         }
         fclose(f);
-        dst = malloc((unsigned long)w * (unsigned long)h);
-        if (!dst) {
-            free(raw);
-            wlserv_drop(s, idx);
-            continue;
-        }
-        if (wl_scale_nearest(dst, w, h, raw, s->rw[idx],
+        if (wl_scale_nearest(wlserv_dst, w, h, wlserv_raw, s->rw[idx],
                 s->rh[idx]) != WL_ERR_OK) {
-            free(raw);
-            free(dst);
             wlserv_drop(s, idx);
             continue;
         }
-        free(raw);
-        free(s->px[idx]);
-        s->px[idx] = dst;
+        for (k = 0; k < cells; k++)
+            wlserv_pool[idx][k] = wlserv_dst[k];
         s->pw[idx] = w;
         s->ph[idx] = h;
     }
+}
+
+/** Unlink stray .msg files no client owns: names that fail the exact
+ * mailbox parse can never dispatch, so they are dead weight from a
+ * crashed client. The mirror flag carries no suffix and is kept. */
+static void wlserv_gc_strays(void) {
+    char names[4096];
+    long count = 0;
+    char *p = 0;
+    long k = 0;
+    count = wlcomp_sys_dir_list(WL_MBOX_DIR, names, sizeof names);
+    if (count <= 0)
+        return;
+    p = names;
+    for (k = 0; k < count; k++) {
+        int nl = 0;
+        int dot = -1;
+        int i = 0;
+        char box[WL_MBOX_BOX_MAX];
+        unsigned int seq = 0;
+        char path[WL_MBOX_NAME_MAX];
+        int di = 0;
+        while (p[nl] != '\0')
+            nl++;
+        for (i = 0; i < nl; i++) {
+            if (p[i] == '.')
+                dot = i;
+        }
+        if (dot < 0) {
+            p += nl + 1;
+            continue;
+        }
+        if (strcmp(p + dot, WL_MBOX_SUFFIX) != 0) {
+            p += nl + 1;
+            continue;
+        }
+        di = 0;
+        i = 0;
+        while (WL_MBOX_DIR[i] != '\0')
+            path[di++] = WL_MBOX_DIR[i++];
+        path[di++] = '/';
+        i = 0;
+        while (p[i] != '\0' && di < WL_MBOX_NAME_MAX - 1)
+            path[di++] = p[i++];
+        path[di] = '\0';
+        if (p[i] != '\0'
+            || wl_mbox_parse(path, box, sizeof box, &seq)
+                == WL_ERR_OK) {
+            p += nl + 1;
+            continue;
+        }
+        unlink(path);
+        p += nl + 1;
+    }
+}
+
+/** Server-to-client input delivery (ADR-0026 live step). The server
+ * owns PS/2 while it owns the display, so it forwards raw scancodes
+ * plus mapped pointer state to the focused box through its .ev file.
+ * Queues are static (never malloc): a full queue drops the oldest
+ * byte, a slow client loses middle batches by seq design. */
+static unsigned char wlserv_ev_pend[WL_MAX_SURFACES][WL_EV_SC_MAX];
+static unsigned wlserv_ev_npend[WL_MAX_SURFACES];
+static unsigned wlserv_ev_seq[WL_MAX_SURFACES];
+static unsigned wlserv_ev_wheel = 0;
+
+/** Focused box slot, or -1 when no mapped window holds input. */
+static int wlserv_focus_box(const wlserv_t *s) {
+    unsigned int id = 0;
+    int b = -1;
+    if (!s || s->comp.count <= 0)
+        return -1;
+    id = s->comp.items[s->comp.order[s->comp.count - 1]].id;
+    if (!wl_surface_id_valid(id))
+        return -1;
+    b = (int)(id - WL_ID_SURFACE_BASE);
+    if (b < 0 || b >= WL_MAX_SURFACES)
+        return -1;
+    if (!s->boxes[b].used)
+        return -1;
+    return b;
+}
+
+/** Queue one raw byte for the focused client. Bytes nobody owns are
+ * dropped, never buffered: input without a window is noise. */
+static void wlserv_key(wlserv_t *s, unsigned char byte) {
+    int b = 0;
+    unsigned n = 0;
+    unsigned i = 0;
+    if (!s)
+        return;
+    b = wlserv_focus_box(s);
+    if (b < 0)
+        return;
+    n = wlserv_ev_npend[b];
+    if (n >= WL_EV_SC_MAX) {
+        for (i = 0; i + 1 < WL_EV_SC_MAX; i++)
+            wlserv_ev_pend[b][i] = wlserv_ev_pend[b][i + 1];
+        n = WL_EV_SC_MAX - 1;
+    }
+    wlserv_ev_pend[b][n] = byte;
+    wlserv_ev_npend[b] = n + 1;
+}
+
+/** Drop a slot queue without serving it. */
+static void wlserv_ev_clear(wlserv_t *s, int b) {
+    (void)s;
+    if (b < 0 || b >= WL_MAX_SURFACES)
+        return;
+    wlserv_ev_npend[b] = 0;
+}
+
+/** Push the current input state to the focused box. Frame coords map
+ * into the client's raw buffer through wl_ev_map; outside is (-1,-1)
+ * so the client never warps a click. The queue clears after write,
+ * which is what keeps batches from replaying. */
+static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons) {
+    wl_ev_t e;
+    unsigned char frame[WL_EV_SZ];
+    char path[WL_MBOX_NAME_MAX];
+    FILE *f = 0;
+    int b = 0;
+    int idx = -1;
+    int cx = -1;
+    int cy = -1;
+    unsigned i = 0;
+    if (!s)
+        return;
+    b = wlserv_focus_box(s);
+    if (b < 0)
+        return;
+    idx = wlserv_slot(&s->comp, WL_ID_SURFACE_BASE + (unsigned int)b);
+    if (idx < 0)
+        return;
+    wl_ev_map(fx, fy, s->comp.items[idx].x, s->comp.items[idx].y,
+        s->comp.items[idx].w, s->comp.items[idx].h, s->rw[idx],
+        s->rh[idx], &cx, &cy);
+    e.seq = ++wlserv_ev_seq[b];
+    e.mx = cx;
+    e.my = cy;
+    e.buttons = (unsigned int)(buttons & 7);
+    e.wheel = wlserv_ev_wheel;
+    e.nsc = wlserv_ev_npend[b] > WL_EV_SC_MAX ? WL_EV_SC_MAX
+        : wlserv_ev_npend[b];
+    for (i = 0; i < WL_EV_SC_MAX; i++)
+        e.sc[i] = i < e.nsc ? wlserv_ev_pend[b][i] : 0;
+    wlserv_ev_npend[b] = 0;
+    if (wl_ev_encode(frame, sizeof frame, &e) != WL_EV_SZ)
+        return;
+    if (wl_mbox_ev_name(path, sizeof path, s->boxes[b].box) <= 0)
+        return;
+    f = fopen(path, "wb");
+    if (!f)
+        return;
+    if (fwrite(frame, 1, sizeof frame, f) != sizeof frame) {
+        fclose(f);
+        return;
+    }
+    fclose(f);
+}
+
+/** Unlink every stale .ev file so no dead input replays after a
+ * restart. Runs once at server start; live files are rewritten by
+ * their owners from then on. */
+static void wlserv_clean_ev(void) {
+    char names[4096];
+    long count = 0;
+    char *p = 0;
+    long k = 0;
+    count = wlcomp_sys_dir_list(WL_MBOX_DIR, names, sizeof names);
+    if (count <= 0)
+        return;
+    p = names;
+    for (k = 0; k < count; k++) {
+        int nl = 0;
+        int dot = -1;
+        int i = 0;
+        char path[WL_MBOX_NAME_MAX];
+        int di = 0;
+        while (p[nl] != '\0')
+            nl++;
+        for (i = 0; i < nl; i++) {
+            if (p[i] == '.')
+                dot = i;
+        }
+        if (dot >= 0 && strcmp(p + dot, WL_MBOX_EV_SUFFIX) == 0) {
+            di = 0;
+            i = 0;
+            while (WL_MBOX_DIR[i] != '\0')
+                path[di++] = WL_MBOX_DIR[i++];
+            path[di++] = '/';
+            i = 0;
+            while (p[i] != '\0' && di < WL_MBOX_NAME_MAX - 1)
+                path[di++] = p[i++];
+            path[di] = '\0';
+            if (p[i] == '\0')
+                unlink(path);
+        }
+        p += nl + 1;
+    }
+}
+
+/** Close one surface by id: remove it, free its box slot for the next
+ * client, drop its cache and unlink its raw pixels. Returns 1 when
+ * something closed. A live client re-attaches on its next frame, so
+ * closing a live window also wants the client's job killed from the
+ * shell; the box name carries the client pid for exactly that. */
+static int wlserv_close(wlserv_t *s, unsigned int id) {
+    int b = 0;
+    int idx = -1;
+    char path[WL_MBOX_NAME_MAX];
+    if (!s || !wl_surface_id_valid(id))
+        return 0;
+    b = (int)(id - WL_ID_SURFACE_BASE);
+    if (b < 0 || b >= WL_MAX_SURFACES)
+        return 0;
+    idx = wlserv_slot(&s->comp, id);
+    if (idx < 0)
+        return 0;
+    if (wl_comp_remove(&s->comp, id) != WL_ERR_OK)
+        return 0;
+    wlserv_drop(s, idx);
+    s->rw[idx] = 0;
+    s->rh[idx] = 0;
+    wlserv_ev_clear(s, b);
+    if (s->boxes[b].used) {
+        if (wl_mbox_raw_name(path, sizeof path, s->boxes[b].box) > 0)
+            unlink(path);
+        if (wl_mbox_ev_name(path, sizeof path, s->boxes[b].box) > 0)
+            unlink(path);
+        s->boxes[b].used = 0;
+        s->boxes[b].box[0] = '\0';
+        s->boxes[b].seq_last = 0;
+    }
+    wlserv_recolor(&s->comp);
+    return 1;
 }
 
 /** Drain at most WL_MBOX_POLL_MAX mailbox files: validate every frame
@@ -747,42 +983,17 @@ static const wlclient_pat_t *wlclient_find(const char *name) {
     return 0;
 }
 
-/** Write one framed session message as its own mailbox file. */
-static int wlclient_emit(const char *box, unsigned int seq,
-        const unsigned char *msg, int mlen) {
-    char path[WL_MBOX_NAME_MAX];
-    unsigned char frame[WL_MAX_MSG + WL_MBOX_FRAME_HEAD];
-    FILE *f = 0;
-    int n = 0;
-    int total = 0;
-    if (!box || !msg || mlen <= 0)
-        return 1;
-    n = wl_mbox_frame_encode(frame, sizeof frame, seq, msg, mlen);
-    if (n <= 0)
-        return 1;
-    if (wl_mbox_name(path, sizeof path, box, seq) <= 0)
-        return 1;
-    f = fopen(path, "wb");
-    if (!f)
-        return 1;
-    total = fwrite(frame, 1, (unsigned long)n, f) == (unsigned long)n
-        ? 0 : 1;
-    if (fclose(f) != 0)
-        total = 1;
-    return total;
-}
-
-/** Attach one client surface from a second process: pixels first so
- * the server never attaches a surface whose raw file is missing,
- * then the six-message session, each sequenced. */
+/** Attach one client surface from a second process through the
+ * shared wl_client.h transport: pixels first so the server never
+ * attaches a surface whose raw file is missing, then the six-message
+ * session, each sequenced. One-shot malloc is fine here; the server
+ * hot loop is the path that must never allocate. */
 static int wlcomp_client(const char *box, const char *pat) {
     const wlclient_pat_t *cp = 0;
     unsigned char *raw = 0;
-    char path[WL_MBOX_NAME_MAX];
     unsigned char msg[WL_MAX_MSG];
     wl_hdr_t h;
-    FILE *f = 0;
-    int seq = 1;
+    unsigned int seq = 1;
     cp = wlclient_find(pat);
     if (!cp || wl_mbox_box_ok(box) != WL_ERR_OK) {
         printf("usage: wlcomp --client <box> <stripe|checker|field|term>\n");
@@ -797,49 +1008,33 @@ static int wlcomp_client(const char *box, const char *pat) {
         wlcomp_term_pattern(raw, cp->w, cp->h);
     else
         wlcomp_pattern(raw, cp->w, cp->h, cp->a, cp->b, cp->checker);
-    if (wl_mbox_raw_name(path, sizeof path, box) <= 0) {
+    if (wl_client_raw_file(box, raw, cp->w, cp->h) != WL_ERR_OK) {
+        printf("wlcomp: client cannot write pixels\n");
         free(raw);
-        return 1;
-    }
-    f = fopen(path, "wb");
-    if (!f) {
-        printf("wlcomp: client cannot write %s\n", path);
-        free(raw);
-        return 1;
-    }
-    if (fwrite(raw, 1, (unsigned long)cp->w * (unsigned long)cp->h, f)
-        != (unsigned long)cp->w * (unsigned long)cp->h) {
-        printf("wlcomp: client short write\n");
-        free(raw);
-        fclose(f);
         return 1;
     }
     free(raw);
-    if (fclose(f) != 0) {
-        printf("wlcomp: client close failed\n");
-        return 1;
-    }
     if (wl_hdr_encode(msg, sizeof msg, WL_ID_DISPLAY,
             WL_OP_DISPLAY_GET_REGISTRY, 8, &h) != WL_ERR_OK)
         return 1;
-    if (wlclient_emit(box, (unsigned int)seq++, msg, 8) != 0)
+    if (wl_client_emit_file(box, seq++, msg, 8) != WL_ERR_OK)
         return 1;
     if (wl_hdr_encode(msg, sizeof msg, WL_ID_REGISTRY, WL_OP_REGISTRY_BIND,
             12, &h) != WL_ERR_OK)
         return 1;
     if (wl_u32_encode(msg, sizeof msg, 8, WL_ID_COMPOSITOR) != WL_ERR_OK)
         return 1;
-    if (wlclient_emit(box, (unsigned int)seq++, msg, 12) != 0)
+    if (wl_client_emit_file(box, seq++, msg, 12) != WL_ERR_OK)
         return 1;
     if (wl_hdr_encode(msg, sizeof msg, WL_ID_COMPOSITOR,
             WL_OP_COMPOSITOR_CREATE_SURFACE, 8, &h) != WL_ERR_OK)
         return 1;
-    if (wlclient_emit(box, (unsigned int)seq++, msg, 8) != 0)
+    if (wl_client_emit_file(box, seq++, msg, 8) != WL_ERR_OK)
         return 1;
     if (wl_hdr_encode(msg, sizeof msg, WL_ID_SHM, WL_OP_SHM_CREATE_POOL,
             8, &h) != WL_ERR_OK)
         return 1;
-    if (wlclient_emit(box, (unsigned int)seq++, msg, 8) != 0)
+    if (wl_client_emit_file(box, seq++, msg, 8) != WL_ERR_OK)
         return 1;
     if (wl_hdr_encode(msg, sizeof msg, WL_ID_SURFACE_BASE,
             WL_OP_SURFACE_ATTACH, 20, &h) != WL_ERR_OK)
@@ -847,12 +1042,12 @@ static int wlcomp_client(const char *box, const char *pat) {
     if (wl_attach_encode(msg + 8, (int)sizeof msg - 8, WL_ID_POOL_BASE,
             cp->w, cp->h) != WL_ATTACH_SZ)
         return 1;
-    if (wlclient_emit(box, (unsigned int)seq++, msg, 20) != 0)
+    if (wl_client_emit_file(box, seq++, msg, 20) != WL_ERR_OK)
         return 1;
     if (wl_hdr_encode(msg, sizeof msg, WL_ID_SURFACE_BASE,
             WL_OP_SURFACE_COMMIT, 8, &h) != WL_ERR_OK)
         return 1;
-    if (wlclient_emit(box, (unsigned int)seq++, msg, 8) != 0)
+    if (wl_client_emit_file(box, seq++, msg, 8) != WL_ERR_OK)
         return 1;
     printf("wlcomp: client %s attached (%dx%d)\n", box, cp->w, cp->h);
     return 0;
@@ -923,17 +1118,32 @@ static int wlcomp_once(void) {
     return 0;
 }
 
-/** Interactive desktop: click focuses, drag moves, t re-tiles,
- * ESC or q quits with the desktop redrawn behind it. */
+/** Interactive desktop: click focuses, title drag moves, rim drag
+ * resizes, close box closes, Alt+T re-tiles, Alt+M minimizes,
+ * Alt+U restores, Alt+Q quits with the desktop redrawn behind it.
+ * Plain keys always reach the focused client through its .ev file;
+ * only Alt-held combos act on the server, so typing never tiles.
+ * A /shm/wl/quit flag file quits cleanly too (the `desktop stop`
+ * path, which cannot send keystrokes to a background job). */
 static int wlcomp_server(void) {
     wlserv_t s;
     long tick = 0;
     int dragging = -1;
+    int dragmode = WL_HIT_NONE;
     int grabx = 0;
     int graby = 0;
+    int grabw = 0;
+    int grabh = 0;
+    int alt_held = 0;
+    int lastfx = -1000000;
+    int lastfy = -1000000;
+    int lastbtn = -1;
+    int lastfocus = -2;
+    int ev_force = 1;
     wlserv_init(&s);
     wlcomp_sys_vga_mode(1L);
     wlcomp_sys_kbd_raw(1L);
+    wlserv_clean_ev();
     wlserv_drain(&s);
     if (s.comp.count > 0) {
         if (wl_comp_layout_tile(&s.comp, WLCOMP_W, WLCOMP_H) <= 0)
@@ -947,60 +1157,127 @@ static int wlcomp_server(void) {
     for (;;) {
         int m[4];
         long sc = 0;
+        int fx = -1000000;
+        int fy = -1000000;
+        int buttons = 0;
+        int focusb = -1;
         tick++;
-        if (tick % 8 == 0 && wlserv_drain(&s) != 0) {
-            if (s.comp.count != s.last_count) {
-                if (wl_comp_layout_tile(&s.comp, WLCOMP_W,
-                        WLCOMP_H) <= 0)
-                    break;
-                s.last_count = s.comp.count;
+        if (tick % 64 == 0)
+            wlserv_gc_strays();
+        if (tick % 8 == 0) {
+            FILE *qf = fopen(WL_MBOX_DIR "/quit", "rb");
+            if (qf) {
+                fclose(qf);
+                unlink(WL_MBOX_DIR "/quit");
+                goto done;
             }
-            wlserv_fit(&s);
-            if (wlserv_present(&s) != 0)
-                break;
+            if (wlserv_drain(&s) != 0) {
+                if (s.comp.count != s.last_count) {
+                    if (wl_comp_layout_tile(&s.comp, WLCOMP_W,
+                            WLCOMP_H) <= 0)
+                        break;
+                    s.last_count = s.comp.count;
+                }
+                wlserv_fit(&s);
+                if (wlserv_present(&s) != 0)
+                    break;
+                ev_force = 1;
+            }
         }
         if (wlcomp_sys_mouse(m) == 0) {
-            int fx = m[0] - s.origin[0];
-            int fy = m[1] - s.origin[1];
-            int left = (m[2] & 1) != 0;
+            fx = m[0] - s.origin[0];
+            fy = m[1] - s.origin[1];
+            buttons = m[2] & 7;
+            wlserv_ev_wheel += (unsigned)m[3];
+            {
+                int left = (buttons & 1) != 0;
             if (left && dragging < 0) {
                 int hit = wl_comp_hit(&s.comp, fx, fy);
                 if (hit >= 0) {
                     int idx = wlserv_slot(&s.comp, (unsigned int)hit);
-                    if (idx >= 0) {
+                    int zone = WL_HIT_NONE;
+                    if (idx >= 0)
+                        zone = wl_surface_hit_zone(&s.comp.items[idx],
+                            fx, fy);
+                    if (zone == WL_HIT_CLOSE) {
+                        if (wlserv_close(&s, (unsigned int)hit)) {
+                            s.last_count = s.comp.count;
+                            if (s.comp.count > 0) {
+                                if (wl_comp_layout_tile(&s.comp,
+                                        WLCOMP_W, WLCOMP_H) <= 0)
+                                    break;
+                                s.last_count = s.comp.count;
+                                wlserv_fit(&s);
+                            }
+                            if (wlserv_present(&s) != 0)
+                                break;
+                        }
+                    } else if (idx >= 0 && zone != WL_HIT_NONE) {
                         wl_comp_focus(&s.comp, (unsigned int)hit);
                         dragging = idx;
+                        dragmode = zone;
                         grabx = fx - s.comp.items[idx].x;
                         graby = fy - s.comp.items[idx].y;
+                        grabw = s.comp.items[idx].w;
+                        grabh = s.comp.items[idx].h;
+                        ev_force = 1;
                         if (wlserv_present(&s) != 0)
                             break;
                     }
                 }
             } else if (left && dragging >= 0) {
                 unsigned int id = s.comp.items[dragging].id;
-                int w = s.comp.items[dragging].w;
-                int h = s.comp.items[dragging].h;
-                if (id != 0
-                    && wl_comp_set_rect(&s.comp, id, fx - grabx,
-                        fy - graby, w, h) == WL_ERR_OK) {
-                    if (wlserv_present(&s) != 0)
-                        break;
+                int x0 = s.comp.items[dragging].x;
+                int y0 = s.comp.items[dragging].y;
+                if (id != 0 && dragmode == WL_HIT_RESIZE) {
+                    int w = fx - x0 + 1;
+                    int h = fy - y0 + 1;
+                    if (w < WL_CLOSE_W + 8)
+                        w = WL_CLOSE_W + 8;
+                    if (h < WL_TITLE_H + 8)
+                        h = WL_TITLE_H + 8;
+                    if (wl_comp_set_rect(&s.comp, id, x0, y0, w,
+                            h) == WL_ERR_OK) {
+                        wlserv_fit(&s);
+                        if (wlserv_present(&s) != 0)
+                            break;
+                    }
+                } else if (id != 0) {
+                    int w = grabw;
+                    int h = grabh;
+                    if (wl_comp_set_rect(&s.comp, id, fx - grabx,
+                            fy - graby, w, h) == WL_ERR_OK) {
+                        if (wlserv_present(&s) != 0)
+                            break;
+                    }
                 }
             } else if (!left) {
                 dragging = -1;
+                dragmode = WL_HIT_NONE;
+            }
             }
         }
         sc = wlcomp_sys_kbd();
         while (sc >= 0) {
             if (sc == 0xE0L) {
-                sc = wlcomp_sys_kbd();
-                if (sc < 0)
+                long sc2 = wlcomp_sys_kbd();
+                if (sc2 < 0)
                     break;
+                if ((sc2 & 0x7FL) == 0x38L)
+                    alt_held = !(sc2 & 0x80L);
+                wlserv_key(&s, (unsigned char)sc);
+                wlserv_key(&s, (unsigned char)sc2);
+                ev_force = 1;
+                sc = wlcomp_sys_kbd();
             } else {
-                if (!(sc & 0x80L)) {
-                    long code = sc & 0x7FL;
-                    if (code == 0x01L)
-                        goto done;
+                unsigned char byte = (unsigned char)sc;
+                int make = !(sc & 0x80L);
+                long code = sc & 0x7FL;
+                int i = 0;
+                if (code == 0x38L)
+                    alt_held = make;
+                if (make && alt_held && (code == 0x14L || code == 0x32L
+                        || code == 0x16L || code == 0x10L)) {
                     if (code == 0x10L)
                         goto done;
                     if (code == 0x14L) {
@@ -1010,10 +1287,46 @@ static int wlcomp_server(void) {
                         wlserv_fit(&s);
                         if (wlserv_present(&s) != 0)
                             goto done;
+                        ev_force = 1;
                     }
+                    if (code == 0x32L && s.comp.focus >= 0) {
+                        unsigned int id =
+                            s.comp.items[s.comp.focus].id;
+                        if (id != 0
+                            && wl_comp_set_minimized(&s.comp, id,
+                                1) == WL_ERR_OK) {
+                            if (wlserv_present(&s) != 0)
+                                goto done;
+                            ev_force = 1;
+                        }
+                    }
+                    if (code == 0x16L) {
+                        for (i = 0; i < WL_MAX_SURFACES; i++) {
+                            if (s.comp.items[i].id != 0)
+                                s.comp.items[i].minimized = 0;
+                        }
+                        wl_comp_refresh_active(&s.comp);
+                        wlserv_fit(&s);
+                        if (wlserv_present(&s) != 0)
+                            goto done;
+                        ev_force = 1;
+                    }
+                } else {
+                    wlserv_key(&s, byte);
+                    ev_force = 1;
                 }
                 sc = wlcomp_sys_kbd();
             }
+        }
+        focusb = wlserv_focus_box(&s);
+        if (fx != -1000000 && (ev_force || fx != lastfx || fy != lastfy
+                || buttons != lastbtn || focusb != lastfocus)) {
+            wlserv_push_ev(&s, fx, fy, buttons);
+            lastfx = fx;
+            lastfy = fy;
+            lastbtn = buttons;
+            lastfocus = focusb;
+            ev_force = 0;
         }
         wlcomp_sys_yield();
     }
