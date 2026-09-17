@@ -344,13 +344,14 @@ static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a
 }
 static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    if (a1) {
-        int *o = (int *)(unsigned long)a1;
+    if (a1)
         SANITIZE_RANGE(a1, 2 * sizeof(int));
-        o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
-    }
     gfx_note_compositor();
     vga_fb_blit_nk_window();
+    if (a1) {
+        int *o = (int *)(unsigned long)a1;
+        o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
+    }
     return 0;
 }
 /** Docstring: Resolve the registered PCM sink, 0 when absent. */
@@ -463,12 +464,13 @@ static long batch_kdispatch(uint32_t opcode) {
 static long sys_minios_gfx_present(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     if (a1 == 1) {
+        if (a2)
+            SANITIZE_RANGE(a2, 2 * sizeof(int));
+        vga_fb_blit_nk_window();
         if (a2) {
             int *o = (int *)(unsigned long)a2;
-            SANITIZE_RANGE(a2, 2 * sizeof(int));
             o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
         }
-        vga_fb_blit_nk_window();
         return 0;
     }
     vga_fb_blit_gfx_window();
