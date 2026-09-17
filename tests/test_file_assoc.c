@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "progs/file/file_assoc.h"
 
 static int failures = 0;
 
@@ -97,6 +98,35 @@ int main(void) {
     CHECK(t_assoc_line("c|", ext, prog) != 0, "empty prog rejected");
     CHECK(t_assoc_line("c|vedit", ext, prog) != 0, "relative prog rejected");
     CHECK(t_assoc_line("c|/vedit|extra", ext, prog) != 0, "pipe in prog rejected");
+
+    {
+        struct fassoc_table t;
+        char ebuf[16];
+        char pbuf[40];
+        unsigned k = 0;
+        memset(&t, 0, sizeof(t));
+        CHECK(fassoc_count(&t) == 0, "empty table count zero");
+        CHECK(strcmp(fassoc_lookup(&t, "c"), "") == 0, "empty lookup misses");
+        for (k = 0; k < 64; k++) {
+            snprintf(ebuf, sizeof(ebuf), "e%u", k);
+            snprintf(pbuf, sizeof(pbuf), "/prog%u", k);
+            CHECK(fassoc_push(&t, ebuf, pbuf) == 0, "dynamic push grows past 32");
+        }
+        CHECK(fassoc_count(&t) == 64, "64 entries stored, old cap gone");
+        CHECK(strcmp(fassoc_lookup(&t, "e0"), "/prog0") == 0, "first lookup kept");
+        CHECK(strcmp(fassoc_lookup(&t, "e63"), "/prog63") == 0, "last lookup kept");
+        CHECK(strcmp(fassoc_lookup(&t, "nope"), "") == 0, "miss stays empty");
+        CHECK(fassoc_push(&t, "BAD", "/vedit") != 0, "uppercase ext rejected");
+        CHECK(fassoc_push(&t, "../x", "/vedit") != 0, "traversal ext rejected");
+        CHECK(fassoc_push(&t, "ok", "vedit") != 0, "relative prog rejected");
+        CHECK(fassoc_push(&t, "ok", "") != 0, "empty prog rejected");
+        CHECK(fassoc_count(&t) == 64, "rejected pushes mutate nothing");
+        fassoc_clear(&t);
+        CHECK(fassoc_count(&t) == 0, "clear empties count");
+        CHECK(fassoc_push(&t, "c", "/vedit") == 0, "reuse after clear");
+        fassoc_free(&t);
+        CHECK(fassoc_count(&t) == 0, "free resets count");
+    }
 
     if (failures == 0)
         printf("file-assoc: ok\n");

@@ -34,6 +34,7 @@
 #include "wl_mini.h"
 #include "wl/wl_mbox.h"
 #include "wl/wl_client.h"
+#include "wl/wl_pixbuf.h"
 
 #define WLCOMP_W 800
 #define WLCOMP_H 360
@@ -385,14 +386,13 @@ static int wlcomp_selftest(void) {
     return 0;
 }
 
-/** Live server state: compositor plus mailbox slots plus one
- * cached pixel buffer per surface, indexed by items slot. The cache
- * is a static pool, never malloc in the frame loop: wlserv_fit loads
- * the box raw file into a static scratch, resamples into a second
- * scratch, then copies into the slot buffer. */
-static unsigned char wlserv_pool[WL_MAX_SURFACES][WL_POOL_MAX];
-static unsigned char wlserv_raw[WL_POOL_MAX];
-static unsigned char wlserv_dst[WL_POOL_MAX];
+/** Live server state: compositor plus mailbox slots plus one heap
+ * pixel buffer per surface, indexed by items slot. Slot storage grows
+ * on attach or resize and releases on close, so steady frames
+ * allocate nothing: wlserv_fit reloads the box raw file into the
+ * reusable scratch, resamples into the second scratch, then commits
+ * into the slot buffer. */
+static struct wpix_store wlserv_pix;
 
 typedef struct {
     wl_comp_t comp;
@@ -409,6 +409,7 @@ static void wlserv_init(wlserv_t *s) {
     int i;
     wl_comp_init(&s->comp);
     wl_mbox_init(s->boxes);
+    wpix_init(&wlserv_pix);
     for (i = 0; i < WL_MAX_SURFACES; i++) {
         s->pw[i] = 0;
         s->ph[i] = 0;
@@ -460,7 +461,7 @@ static int wlserv_present(wlserv_t *s) {
     if (wlcomp_palette() != 0)
         return 1;
     for (i = 0; i < WL_MAX_SURFACES; i++)
-        px[i] = s->pw[i] > 0 && s->ph[i] > 0 ? wlserv_pool[i] : 0;
+        px[i] = s->pw[i] > 0 && s->ph[i] > 0 ? wpix_ptr(&wlserv_pix, i) : 0;
     if (wlcomp_blit_chrome(&s->comp, fb, WLCOMP_W, WLCOMP_H, px, s->pw,
             s->ph) != WL_ERR_OK)
         return 1;
@@ -475,15 +476,16 @@ static int wlserv_present(wlserv_t *s) {
 static void wlserv_drop(wlserv_t *s, int idx) {
     if (!s || idx < 0 || idx >= WL_MAX_SURFACES)
         return;
+    wpix_drop(&wlserv_pix, idx);
     s->pw[idx] = 0;
     s->ph[idx] = 0;
 }
 
 /** Fit every mapped surface to its laid-out size: reload the box raw
- * file at attach dims, then resample into the live cell. Static
- * scratch only, never malloc: any short file or size lie drops that
- * cache, never a neighbour, so one hostile client cannot blank the
- * desktop. */
+ * file at attach dims, then resample into the live cell. Heap slots
+ * size on geometry change only, so steady frames allocate nothing;
+ * any short file or size lie drops that cache, never a neighbour,
+ * so one hostile client cannot blank the desktop. */
 static void wlserv_fit(wlserv_t *s) {
     int b = 0;
     for (b = 0; b < WL_MAX_SURFACES; b++) {
@@ -495,7 +497,7 @@ static void wlserv_fit(wlserv_t *s) {
         int idx = -1;
         int w = 0;
         int h = 0;
-        int k = 0;
+        size_t need = 0;
         if (!s || !s->boxes[b].used)
             continue;
         idx = wlserv_slot(&s->comp,
@@ -512,8 +514,17 @@ static void wlserv_fit(wlserv_t *s) {
         }
         want = (long)s->rw[idx] * (long)s->rh[idx];
         cells = (long)w * (long)h;
-        if (want <= 0 || want > (long)WL_POOL_MAX || cells <= 0
-            || cells > (long)WL_POOL_MAX) {
+        if (want <= 0 || want > (long)WPIX_SLOT_MAX || cells <= 0
+            || cells > (long)WPIX_SLOT_MAX) {
+            wlserv_drop(s, idx);
+            continue;
+        }
+        if (wpix_ensure(&wlserv_pix, idx, w, h) != 0) {
+            wlserv_drop(s, idx);
+            continue;
+        }
+        need = (size_t)want > (size_t)cells ? (size_t)want : (size_t)cells;
+        if (wpix_tmp(&wlserv_pix, need) != 0) {
             wlserv_drop(s, idx);
             continue;
         }
@@ -538,20 +549,24 @@ static void wlserv_fit(wlserv_t *s) {
             wlserv_drop(s, idx);
             continue;
         }
-        if (fread(wlserv_raw, 1, (unsigned long)n, f)
+        if (fread(wpix_raw(&wlserv_pix), 1, (unsigned long)n, f)
             != (unsigned long)n) {
             fclose(f);
             wlserv_drop(s, idx);
             continue;
         }
         fclose(f);
-        if (wl_scale_nearest(wlserv_dst, w, h, wlserv_raw, s->rw[idx],
+        if (wl_scale_nearest(wpix_dst(&wlserv_pix), w, h,
+                wpix_raw(&wlserv_pix), s->rw[idx],
                 s->rh[idx]) != WL_ERR_OK) {
             wlserv_drop(s, idx);
             continue;
         }
-        for (k = 0; k < cells; k++)
-            wlserv_pool[idx][k] = wlserv_dst[k];
+        if (wpix_commit(&wlserv_pix, idx, wpix_dst(&wlserv_pix), w,
+                h) != 0) {
+            wlserv_drop(s, idx);
+            continue;
+        }
         s->pw[idx] = w;
         s->ph[idx] = h;
     }

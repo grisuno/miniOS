@@ -16,6 +16,7 @@
 #include <stdint.h>
 #include "minios_abi.h"
 #include "minios_png.h"
+#include "file/file_assoc.h"
 #include "nuklear.h"
 #include "nuklear_minios.h"
 #include "nuklear_theme.h"
@@ -30,7 +31,6 @@
 #define FILE_MAX_ENTRIES 256
 #define FILE_NAME_MAX 64
 #define FILE_LIST_CAP 8192
-#define FILE_ASSOC_MAX 32
 #define FILE_ASSOC_PATH "/etc/association"
 #define FILE_EXT_MAX 8
 #define FILE_PROG_MAX 32
@@ -57,8 +57,8 @@ struct file_assoc {
     char prog[FILE_PROG_MAX + 1];
 };
 
-static struct file_assoc file_table[FILE_ASSOC_MAX];
-static int file_table_n;
+/** Docstring: dynamic assoc table owns entries, fixed array removed. */
+static struct fassoc_table file_assocs;
 
 static int file_quit;
 static char file_cwd[FILE_MAX_PATH];
@@ -176,27 +176,19 @@ static void file_assoc_load(void) {
     char line[FILE_LOG_LINE];
     char ext[FILE_EXT_MAX + 1];
     char prog[FILE_PROG_MAX + 1];
-    file_table_n = 0;
+    fassoc_clear(&file_assocs);
     f = fopen(FILE_ASSOC_PATH, "r");
     if (!f) return;
     while (fgets(line, sizeof(line), f)) {
         if (file_assoc_line(line, ext, prog) != 0) continue;
-        if (file_table_n >= FILE_ASSOC_MAX) break;
-        strcpy(file_table[file_table_n].ext, ext);
-        strcpy(file_table[file_table_n].prog, prog);
-        file_table_n++;
+        if (fassoc_push(&file_assocs, ext, prog) != 0) break;
     }
     fclose(f);
 }
 
 /** Program for an extension, empty when unmapped. */
 static const char *file_assoc_lookup(const char *ext) {
-    int k;
-    if (!ext[0]) return "";
-    for (k = 0; k < file_table_n; k++)
-        if (strcmp(file_table[k].ext, ext) == 0)
-            return file_table[k].prog;
-    return "";
+    return fassoc_lookup(&file_assocs, ext);
 }
 
 /** Dispatch kind for a file name through the association table. */
@@ -463,14 +455,19 @@ static int file_selftest(void) {
     int act;
     char buf[512];
     long rc;
-    file_table_n = 0;
-    strcpy(file_table[0].ext, "c");
-    strcpy(file_table[0].prog, "/vedit");
-    strcpy(file_table[1].ext, "elf");
-    strcpy(file_table[1].prog, "shell");
-    strcpy(file_table[2].ext, "png");
-    strcpy(file_table[2].prog, "internal");
-    file_table_n = 3;
+    fassoc_clear(&file_assocs);
+    if (fassoc_push(&file_assocs, "c", "/vedit") != 0) {
+        printf("file: selftest assoc push failed\n");
+        return 1;
+    }
+    if (fassoc_push(&file_assocs, "elf", "shell") != 0) {
+        printf("file: selftest assoc push failed\n");
+        return 1;
+    }
+    if (fassoc_push(&file_assocs, "png", "internal") != 0) {
+        printf("file: selftest assoc push failed\n");
+        return 1;
+    }
     file_ext_of("hello.c", ext, sizeof(ext));
     if (strcmp(ext, "c") != 0) {
         printf("file: selftest ext failed\n");
@@ -503,6 +500,35 @@ static int file_selftest(void) {
     if (file_assoc_line("../x|/vedit", ext, buf) == 0) {
         printf("file: selftest traversal accepted\n");
         return 1;
+    }
+    {
+        unsigned k = 0;
+        char ebuf[16];
+        char pbuf[40];
+        fassoc_clear(&file_assocs);
+        for (k = 0; k < 40; k++) {
+            snprintf(ebuf, sizeof(ebuf), "e%u", k);
+            snprintf(pbuf, sizeof(pbuf), "/p%u", k);
+            if (fassoc_push(&file_assocs, ebuf, pbuf) != 0) {
+                printf("file: selftest growth failed\n");
+                return 1;
+            }
+        }
+        if (fassoc_count(&file_assocs) != 40) {
+            printf("file: selftest growth count failed\n");
+            return 1;
+        }
+        if (strcmp(fassoc_lookup(&file_assocs, "e39"), "/p39") != 0) {
+            printf("file: selftest growth lookup failed\n");
+            return 1;
+        }
+        fassoc_clear(&file_assocs);
+        if (fassoc_push(&file_assocs, "c", "/vedit") != 0 ||
+            fassoc_push(&file_assocs, "elf", "shell") != 0 ||
+            fassoc_push(&file_assocs, "png", "internal") != 0) {
+            printf("file: selftest assoc push failed\n");
+            return 1;
+        }
     }
     rc = file_sys_dir_list("/", buf, sizeof(buf));
     if (rc < 0) {

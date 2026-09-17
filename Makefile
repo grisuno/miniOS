@@ -921,7 +921,7 @@ $(BIN_DIR)/doomedit: $(BIN_DIR)/doomedit.elf
 # ── wlcomp (Wayland-mini ring-3 compositor, ADR-0024) ────────────────
 # Header-only wl_mini.h plus thin wlcomp.c: max 8 surfaces, focus
 # z-order, presents through GFX_PRESENT BUF_NK. Static ring-3, MiniFS.
-$(BIN_DIR)/wlcomp.elf: $(PROGS_DIR)/wl/wlcomp.c $(PROGS_DIR)/wl/wl_mini.h $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/wl/wl_client.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/minios_abi.h
+$(BIN_DIR)/wlcomp.elf: $(PROGS_DIR)/wl/wlcomp.c $(PROGS_DIR)/wl/wl_mini.h $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/wl/wl_client.h $(PROGS_DIR)/wl/wl_pixbuf.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/minios_abi.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(PROGS_DIR) \
 	      -o $@ $(PROGS_DIR)/wl/wlcomp.c
@@ -984,7 +984,7 @@ $(BIN_DIR)/vedit: $(BIN_DIR)/vedit.elf
 FILE_SRCS = $(PROGS_DIR)/file/file.c \
             $(NUKLEAR_PLATFORM)
 
-$(BIN_DIR)/file.elf: $(FILE_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h
+$(BIN_DIR)/file.elf: $(FILE_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/file/file_assoc.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
 	      -I$(PROGS_DIR) -Ithird_party/stb \
@@ -1433,7 +1433,7 @@ test-vedit: vedit_build_test
 	$(TOOLS_DIR)/vedit_build_test
 
 # File browser assoc-contract host test (tests/test_file_assoc.c, spec pin).
-file_assoc_test: tests/test_file_assoc.c | $(TOOLS_DIR)
+file_assoc_test: tests/test_file_assoc.c progs/file/file_assoc.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/file_assoc_test tests/test_file_assoc.c
 
 test-file: file_assoc_test
@@ -1501,7 +1501,7 @@ test-wm: wm_test
 	$(TOOLS_DIR)/wm_test
 
 # Wayland-mini wire/compositor host test (progs/wl/wl_mini.h, ADR-0024).
-wl_test: tests/test_wl.c progs/wl/wl_mini.h progs/wl/wl_mbox.h progs/wl/wl_client.h progs/nk_palette.h | $(TOOLS_DIR)
+wl_test: tests/test_wl.c progs/wl/wl_mini.h progs/wl/wl_mbox.h progs/wl/wl_client.h progs/wl/wl_pixbuf.h progs/nk_palette.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/wl_test tests/test_wl.c
 
 test-wl: wl_test

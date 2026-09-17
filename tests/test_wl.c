@@ -7,9 +7,11 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <malloc.h>
 
 #include "progs/wl/wl_mini.h"
 #include "progs/wl/wl_mbox.h"
+#include "progs/wl/wl_pixbuf.h"
 #include "progs/nk_palette.h"
 #include "progs/minios_abi.h"
 
@@ -620,6 +622,57 @@ int main(void) {
 
     CHECK(WL_SURF_MAX_W == MINIOS_NK_W, "surf max w tracks abi");
     CHECK(WL_SURF_MAX_H == MINIOS_NK_H, "surf max h tracks abi");
+
+    {
+        struct wpix_store s;
+        unsigned char *first = 0;
+        unsigned char pat[64 * 64];
+        int k = 0;
+        CHECK(wpix_init(&s) == 0, "pixbuf init ok");
+        CHECK(wpix_used(&s) == 0, "pixbuf empty used zero");
+        CHECK(wpix_ptr(&s, 0) == 0, "pixbuf empty ptr null");
+        CHECK(wpix_ensure(&s, 0, 320, 200) == 0, "pixbuf small slot fits");
+        CHECK(wpix_ptr(&s, 0) != 0, "pixbuf small ptr live");
+        CHECK(wpix_used(&s) == 320u * 200u, "pixbuf used counts cells");
+        first = wpix_ptr(&s, 0);
+        CHECK(wpix_ensure(&s, 0, 320, 200) == 0 && wpix_ptr(&s, 0) == first,
+            "pixbuf same geometry reuses");
+        CHECK(wpix_ensure(&s, 1, 800, 360) == 0, "pixbuf full slot fits");
+        CHECK(wpix_ensure(&s, 2, 801, 360) != 0, "pixbuf wide refused");
+        CHECK(wpix_ensure(&s, 2, 900, 300) != 0, "pixbuf wide in-budget refused");
+        CHECK(wpix_ensure(&s, 2, 0, 10) != 0, "pixbuf zero refused");
+        CHECK(wpix_ensure(&s, 9, 64, 64) != 0, "pixbuf wild slot refused");
+        CHECK(wpix_ptr(&s, 2) == 0, "pixbuf refused slot stays null");
+        for (k = 0; k < 64 * 64; k++) pat[k] = (unsigned char)(k & 0xFF);
+        CHECK(wpix_ensure(&s, 2, 64, 64) == 0, "pixbuf pattern slot fits");
+        CHECK(wpix_commit(&s, 2, pat, 64, 64) == 0, "pixbuf commit ok");
+        CHECK(wpix_ptr(&s, 2)[7] == pat[7], "pixbuf commit lands bytes");
+        CHECK(wpix_commit(&s, 2, pat, 32, 32) != 0, "pixbuf mismatch refused");
+        CHECK(wpix_tmp(&s, 800u * 360u) == 0, "pixbuf scratch grows");
+        CHECK(wpix_raw(&s) != 0 && wpix_dst(&s) != 0, "pixbuf scratch live");
+        CHECK(wpix_tmp(&s, 0) != 0, "pixbuf scratch zero refused");
+        CHECK(wpix_tmp(&s, (size_t)WPIX_SLOT_MAX + 1) != 0,
+            "pixbuf scratch oversize refused");
+        wpix_drop(&s, 0);
+        CHECK(wpix_ptr(&s, 0) == 0, "pixbuf drop clears ptr");
+        CHECK(wpix_used(&s) == 800u * 360u + 64u * 64u,
+            "pixbuf drop releases budget");
+        {
+            struct mallinfo2 before;
+            struct mallinfo2 after;
+            wpix_free(&s);
+            CHECK(wpix_init(&s) == 0, "pixbuf reinit ok");
+            before = mallinfo2();
+            CHECK(wpix_ensure(&s, 0, 800, 360) == 0, "pixbuf leak probe fits");
+            wpix_drop(&s, 0);
+            after = mallinfo2();
+            CHECK(after.uordblks <= before.uordblks + (size_t)WPIX_SLOT_MAX / 2,
+                "pixbuf drop returns memory");
+            wpix_free(&s);
+            CHECK(wpix_used(&s) == 0 && wpix_ptr(&s, 1) == 0,
+                "pixbuf free resets store");
+        }
+    }
 
     if (failures == 0)
         printf("wl: ok (%d surfaces, msg %d)\n", WL_MAX_SURFACES, WL_MAX_MSG);
