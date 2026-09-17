@@ -8,15 +8,15 @@ Every edge is tagged. Extracted means parsed from source; inferred means derived
 
 | Confidence | Count | Meaning |
 |------------|-------|---------|
-| EXTRACTED | 1221 | Resolved import edges parsed from source |
-| EXTRACTED | 1816 | Raw import statements (may include externals) |
+| EXTRACTED | 1227 | Resolved import edges parsed from source |
+| EXTRACTED | 1827 | Raw import statements (may include externals) |
 | INFERRED | 5 | Surprising cross-community bridges |
 | AMBIGUOUS | 0 | No uncertain edges are emitted by the static scanner |
 
 ## Coverage
 
-- Files: 476, communities: 9
-- File doc coverage: 418/476
+- Files: 478, communities: 13
+- File doc coverage: 420/478
 - Orphans (no docs at any level): 43
 - Layers detected: 5
 - Security findings: 0
@@ -31,7 +31,7 @@ Every edge is tagged. Extracted means parsed from source; inferred means derived
 
 ## Token Benchmark
 
-- Wiki index plus community pages estimate: ~162445 tokens (chars/4).
+- Wiki index plus community pages estimate: ~164606 tokens (chars/4).
 - Full re-read of every source file would cost strictly more on any non-trivial project; this wiki is the cheaper entry point.
 - Generation cost: $0, offline, no network calls.
 

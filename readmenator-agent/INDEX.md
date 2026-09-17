@@ -321,7 +321,8 @@
 | `progs/doomgeneric/wi_stuff.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 5 |
 | `progs/doomgeneric/z_zone.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 18 |
 | `progs/doomgeneric/z_zone.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 13 |
-| `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | misc | 47 |
+| `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | file | 46 |
+| `progs/file/file_assoc.h` | Docstring: dynamic association table for the MiniOS file browser. | file | 17 |
 | `progs/freedomui/freedomui_minios.c` | freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern. | misc | 42 |
 | `progs/lisp/lisp.c` | - | lisp | 105 |
 | `progs/lisp/tin.c` | - | lisp | 1 |
@@ -389,6 +390,7 @@
 | `progs/wl/wl_client.h` | wl_client.h - Thin mailbox client for Wayland-mini (ADR-0026). | wl | 5 |
 | `progs/wl/wl_mbox.h` | wl_mbox.h - Mailbox file transport for Wayland-mini (ADR-0026). | wl | 26 |
 | `progs/wl/wl_mini.h` | wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024). | wl | 104 |
+| `progs/wl/wl_pixbuf.h` | Docstring: heap pixel store for the Wayland-mini server. | wl | 18 |
 | `progs/wl/wlcomp.c` | wlcomp - Wayland-mini ring-3 compositor (ADR-0024, ADR-0026). | wl | 43 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 27 |
 | `smp.c` | SMP application-processor bring-up. | root | 39 |

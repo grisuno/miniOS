@@ -1,6 +1,6 @@
 # tests
 
-*Community 7 | 2 files | cohesion 1.00*
+*Community 11 | 2 files | cohesion 1.00*
 
 ## Definition
 
@@ -53,8 +53,7 @@ This community groups 2 file(s) rooted at `tests` with dominant language py (coh
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 7 (tests).
-- [INFERRED] shares_context community 1 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 7 (tests).
+- [INFERRED] shares_context community 0 <-> 11 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 11 (tests).
 
 ## Risks
 

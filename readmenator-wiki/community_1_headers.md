@@ -1,22 +1,26 @@
 # headers
 
-*Community 1 | 7 files | cohesion 0.40*
+*Community 1 | 11 files | cohesion 0.46*
 
 ## Definition
 
-This community groups 7 file(s) rooted at `headers` with dominant language c (cohesion 0.40). Central symbols: `BC_MASK`, `BC_WAYS`, `BLOCK_H`, `BLOCK_SHIFT`, `BLOCK_SIZE`, `DE_NAME`, `DE_NAME_W`, `HASH_BITS`. Core file: `fs/minifs.c` (61 symbols). Documented purpose: Block device layer for MiniFS..
+This community groups 11 file(s) rooted at `headers` with dominant language c (cohesion 0.46). Central symbols: `BC_MASK`, `BC_WAYS`, `BLOCK_H`, `BLOCK_SHIFT`, `BLOCK_SIZE`, `DEV_MAX`, `DEV_NAME_LEN`, `DEV_TYPE_AUDIO`. Core file: `fs/minifs.c` (61 symbols). Documented purpose: Block device layer for MiniFS..
 
 ## Files
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `drivers/block.c` | c | infrastructure | 14 | yes |
+| `drivers/driver.c` | c | infrastructure | 8 | yes |
+| `drivers/ide.c` | c | infrastructure | 19 | yes |
 | `fs/minifs.c` | c | utility | 61 | yes |
 | `headers/block.h` | h | utility | 12 | yes |
+| `headers/driver.h` | h | infrastructure | 16 | yes |
 | `headers/ide.h` | h | utility | 35 | yes |
 | `headers/lz4_kernel.h` | h | utility | 4 | no |
 | `kernel/lz4_kernel.c` | c | utility | 10 | no |
 | `kernel/mm/swap.c` | c | utility | 8 | yes |
+| `tests/test_driver.c` | c | testing | 5 | yes |
 
 ## Key Symbols
 
@@ -34,38 +38,35 @@ This community groups 7 file(s) rooted at `headers` with dominant language c (co
 - `block_write_multi` (function, `drivers/block.c:149`) `int block_write_multi(unsigned int block_num, unsigned int count, const void *bu`
 - `block_flush` (function, `drivers/block.c:164`) `void block_flush(void)`
 - `block_total` (function, `drivers/block.c:166`) `unsigned int block_total(void)`
-- `DE_NAME` (macro, `fs/minifs.c:12`) `#define DE_NAME(de)`
-- `DE_NAME_W` (macro, `fs/minifs.c:13`) `#define DE_NAME_W(de)`
-- `minifs_journal_touch` (function, `fs/minifs.c:15`) `void minifs_journal_touch(unsigned int phys);`
-- `minifs_compress` (function, `fs/minifs.c:27`) `unsigned int minifs_compress(const void *src, unsigned int src_len,` - #define DE_NAME_W(de) ((char *)((de) + 1)) void minifs_journal_touch(unsigned int phys); void minifs
-- `minifs_decompress` (function, `fs/minifs.c:38`) `unsigned int minifs_decompress(const void *src, unsigned int src_len,`
-- `minifs_crc16` (function, `fs/minifs.c:49`) `static unsigned short minifs_crc16(const void *data, unsigned int len)`
-- `minifs_crc32` (function, `fs/minifs.c:61`) `static unsigned int minifs_crc32(const void *data, unsigned int len)`
-- `roundup4` (function, `fs/minifs.c:73`) `static unsigned int roundup4(unsigned int v)`
-- `div_round_up` (function, `fs/minifs.c:75`) `static unsigned int div_round_up(unsigned int n, unsigned int d)`
-- `returns` (function, `fs/minifs.c:84`) `* overflowed the slot and smashed returns (measured ring-0 #UD on  * lua->lua->c`
-- `blk_free` (function, `fs/minifs.c:92`) `static void blk_free(unsigned char *b)`
-- `fs_write_super` (function, `fs/minifs.c:99`) `static int fs_write_super(void)`
-- `fs_read_inode` (function, `fs/minifs.c:113`) `static int fs_read_inode(unsigned int num, MiniFSInode *out)`
-- `fs_write_inode` (function, `fs/minifs.c:124`) `static int fs_write_inode(unsigned int num, const MiniFSInode *in)`
-- `bm_test` (function, `fs/minifs.c:140`) `static int bm_test(unsigned char *bm, unsigned int bit)`
-- `bm_set` (function, `fs/minifs.c:144`) `static void bm_set(unsigned char *bm, unsigned int bit)`
+- `dev_len` (function, `drivers/driver.c:14`) `static unsigned dev_len(const char *s)`
+- `dev_copy` (function, `drivers/driver.c:20`) `static void dev_copy(char *dst, const char *src, unsigned cap)`
+- `dev_eq` (function, `drivers/driver.c:27`) `static int dev_eq(const char *a, const char *b)`
+- `device_reset` (function, `drivers/driver.c:32`) `void device_reset(void)`
+- `device_register` (function, `drivers/driver.c:44`) `int device_register(device_t *dev)`
+- `device_find` (function, `drivers/driver.c:66`) `device_t *device_find(const char *name)`
+- `device_find_by_type` (function, `drivers/driver.c:76`) `device_t *device_find_by_type(int type)`
+- `device_count` (function, `drivers/driver.c:85`) `int device_count(void)`
+- `ide_delay` (function, `drivers/ide.c:13`) `static void ide_delay(void)`
+- `ide_read_status` (function, `drivers/ide.c:23`) `static unsigned char ide_read_status(void)`
+- `ide_wait_not_busy` (function, `drivers/ide.c:27`) `static int ide_wait_not_busy(unsigned int timeout)`
+- `ide_wait_drq` (function, `drivers/ide.c:35`) `static int ide_wait_drq(unsigned int timeout)`
+- `ide_select_drive` (function, `drivers/ide.c:46`) `static void ide_select_drive(unsigned char drive)`
+- `ide_soft_reset` (function, `drivers/ide.c:52`) `static void ide_soft_reset(void)`
+- `ide_identify` (function, `drivers/ide.c:59`) `static int ide_identify(void)`
+- `ide_init` (function, `drivers/ide.c:84`) `void ide_init(void)`
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 8
-- Cross-boundary resolved imports (EXTRACTED): 12
+- Internal resolved imports (EXTRACTED): 13
+- Cross-boundary resolved imports (EXTRACTED): 15
 
 ## Connections
 
 - [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/block.c imports headers/kernel.h.
-- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 2 (progs/doomgeneric).
-- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 3 (headers).
+- [EXTRACTED] depends_on community 1 <-> 3 (strength 0.9): Extracted import edge crosses communities: tests/test_driver.c imports kernel/string.c.
+- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 2 (headers).
 - [INFERRED] shares_context community 1 <-> 4 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 4 (headers).
-- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 5 (tools).
-- [INFERRED] shares_context community 1 <-> 6 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 6 (progs/src).
-- [INFERRED] shares_context community 1 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 7 (tests).
-- [INFERRED] shares_context community 1 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 8 (orphans).
+- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 5 (headers).
 
 ## Risks
 
@@ -75,14 +76,18 @@ This community groups 7 file(s) rooted at `headers` with dominant language c (co
 
 - Why do 2 file(s) lack file-level docs (e.g. `headers/lz4_kernel.h`)? What purpose do they serve?
 - What would break if the most connected file in headers changed?
-- Should headers be split, given cohesion 0.40?
+- Should headers be split, given cohesion 0.46?
 
 ## Sources
 
 - `drivers/block.c`
+- `drivers/driver.c`
+- `drivers/ide.c`
 - `fs/minifs.c`
 - `headers/block.h`
+- `headers/driver.h`
 - `headers/ide.h`
 - `headers/lz4_kernel.h`
 - `kernel/lz4_kernel.c`
 - `kernel/mm/swap.c`
+- `tests/test_driver.c`

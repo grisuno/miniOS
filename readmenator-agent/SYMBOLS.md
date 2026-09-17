@@ -7626,14 +7626,13 @@ Z_Malloc
 | `FILE_ACT_SHELL` | macro | `progs/file/file.c:51` | `#define FILE_ACT_SHELL` |
 | `FILE_ACT_TEXT` | macro | `progs/file/file.c:50` | `#define FILE_ACT_TEXT` |
 | `FILE_ACT_UNKNOWN` | macro | `progs/file/file.c:53` | `#define FILE_ACT_UNKNOWN` |
-| `FILE_ASSOC_MAX` | macro | `progs/file/file.c:33` | `#define FILE_ASSOC_MAX` |
 | `FILE_ASSOC_PATH` | macro | `progs/file/file.c:34` | `#define FILE_ASSOC_PATH` |
 | `FILE_EXT_MAX` | macro | `progs/file/file.c:35` | `#define FILE_EXT_MAX` |
-| `FILE_LIST_CAP` | macro | `progs/file/file.c:32` | `#define FILE_LIST_CAP` |
+| `FILE_LIST_CAP` | macro | `progs/file/file.c:33` | `#define FILE_LIST_CAP` |
 | `FILE_LOG_LINE` | macro | `progs/file/file.c:47` | `#define FILE_LOG_LINE` |
-| `FILE_MAX_ENTRIES` | macro | `progs/file/file.c:30` | `#define FILE_MAX_ENTRIES` |
-| `FILE_MAX_PATH` | macro | `progs/file/file.c:29` | `#define FILE_MAX_PATH` |
-| `FILE_NAME_MAX` | macro | `progs/file/file.c:31` | `#define FILE_NAME_MAX` |
+| `FILE_MAX_ENTRIES` | macro | `progs/file/file.c:31` | `#define FILE_MAX_ENTRIES` |
+| `FILE_MAX_PATH` | macro | `progs/file/file.c:30` | `#define FILE_MAX_PATH` |
+| `FILE_NAME_MAX` | macro | `progs/file/file.c:32` | `#define FILE_NAME_MAX` |
 | `FILE_PREVIEW_FILE_MAX` | macro | `progs/file/file.c:43` | `#define FILE_PREVIEW_FILE_MAX` |
 | `FILE_PREVIEW_H` | macro | `progs/file/file.c:42` | `#define FILE_PREVIEW_H` |
 | `FILE_PREVIEW_W` | macro | `progs/file/file.c:41` | `#define FILE_PREVIEW_W` |
@@ -7643,31 +7642,48 @@ Z_Malloc
 | `FILE_TOOL_CVM` | macro | `progs/file/file.c:38` | `#define FILE_TOOL_CVM` |
 | `FILE_TOOL_VEDIT` | macro | `progs/file/file.c:37` | `#define FILE_TOOL_VEDIT` |
 | `FILE_UI_MEMORY` | macro | `progs/file/file.c:40` | `#define FILE_UI_MEMORY` |
-| `STBI_NO_STDIO` | macro | `progs/file/file.c:25` | `#define STBI_NO_STDIO` |
-| `STBI_ONLY_PNG` | macro | `progs/file/file.c:24` | `#define STBI_ONLY_PNG` |
-| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/file/file.c:23` | `#define STB_IMAGE_IMPLEMENTATION` |
-| `file_action_of` | function | `progs/file/file.c:203` | `static int file_action_of(const char *fname, const char **prog_out)` |
-| `file_activate` | function | `progs/file/file.c:352` | `static void file_activate(const char *dir, const char *name)` |
+| `STBI_NO_STDIO` | macro | `progs/file/file.c:26` | `#define STBI_NO_STDIO` |
+| `STBI_ONLY_PNG` | macro | `progs/file/file.c:25` | `#define STBI_ONLY_PNG` |
+| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/file/file.c:24` | `#define STB_IMAGE_IMPLEMENTATION` |
+| `file_action_of` | function | `progs/file/file.c:195` | `static int file_action_of(const char *fname, const char **prog_out)` |
+| `file_activate` | function | `progs/file/file.c:344` | `static void file_activate(const char *dir, const char *name)` |
 | `file_assoc` | struct | `progs/file/file.c:55` | `` |
 | `file_assoc_line` | function | `progs/file/file.c:141` | `static int file_assoc_line(const char *line, char *ext, char *prog)` |
 | `file_assoc_load` | function | `progs/file/file.c:174` | `static void file_assoc_load(void)` |
-| `file_assoc_lookup` | function | `progs/file/file.c:193` | `static const char *file_assoc_lookup(const char *ext)` |
+| `file_assoc_lookup` | function | `progs/file/file.c:190` | `static const char *file_assoc_lookup(const char *ext)` |
 | `file_ext_of` | function | `progs/file/file.c:96` | `static void file_ext_of(const char *fname, char *dst, unsigned cap)` |
-| `file_gui_run` | function | `progs/file/file.c:527` | `static void file_gui_run(void)` |
+| `file_gui_run` | function | `progs/file/file.c:553` | `static void file_gui_run(void)` |
 | `file_join` | function | `progs/file/file.c:117` | `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)` |
-| `file_open_text` | function | `progs/file/file.c:302` | `static void file_open_text(const char *path)` |
+| `file_open_text` | function | `progs/file/file.c:294` | `static void file_open_text(const char *path)` |
 | `file_parent` | function | `progs/file/file.c:131` | `static void file_parent(char *path)` |
-| `file_preview_blit` | function | `progs/file/file.c:264` | `static void file_preview_blit(int ox, int oy)` |
-| `file_preview_load` | function | `progs/file/file.c:231` | `static int file_preview_load(const char *path)` |
-| `file_refresh` | function | `progs/file/file.c:216` | `static void file_refresh(void)` |
-| `file_run_shell` | function | `progs/file/file.c:313` | `static void file_run_shell(const char *path)` |
-| `file_selftest` | function | `progs/file/file.c:460` | `static int file_selftest(void)` |
-| `file_spawn_visible` | function | `progs/file/file.c:279` | `static long file_spawn_visible(const char *tool, int argc, const char **argv,
+| `file_preview_blit` | function | `progs/file/file.c:256` | `static void file_preview_blit(int ox, int oy)` |
+| `file_preview_load` | function | `progs/file/file.c:223` | `static int file_preview_load(const char *path)` |
+| `file_refresh` | function | `progs/file/file.c:208` | `static void file_refresh(void)` |
+| `file_run_shell` | function | `progs/file/file.c:305` | `static void file_run_shell(const char *path)` |
+| `file_selftest` | function | `progs/file/file.c:452` | `static int file_selftest(void)` |
+| `file_spawn_visible` | function | `progs/file/file.c:271` | `static long file_spawn_visible(const char *tool, int argc, const char **argv,
                    ...` |
 | `file_sys_dir_list` | function | `progs/file/file.c:75` | `static long file_sys_dir_list(const char *path, char *buf, long cap)` |
 | `file_sys_spawn` | function | `progs/file/file.c:85` | `static long file_sys_spawn(const char *path, int argc, const char **argv)` |
-| `file_ui_build` | function | `progs/file/file.c:383` | `static void file_ui_build(struct nk_context *ctx)` |
-| `main` | function | `progs/file/file.c:584` | `int main(int argc, char **argv)` |
+| `file_ui_build` | function | `progs/file/file.c:375` | `static void file_ui_build(struct nk_context *ctx)` |
+| `main` | function | `progs/file/file.c:610` | `int main(int argc, char **argv)` |
+| `FASSOC_EXT_MAX` | macro | `progs/file/file_assoc.h:22` | `#define FASSOC_EXT_MAX` |
+| `FASSOC_GROW_DEN` | macro | `progs/file/file_assoc.h:42` | `#define FASSOC_GROW_DEN` |
+| `FASSOC_GROW_NUM` | macro | `progs/file/file_assoc.h:38` | `#define FASSOC_GROW_NUM` |
+| `FASSOC_HARD_MAX` | macro | `progs/file/file_assoc.h:34` | `#define FASSOC_HARD_MAX` |
+| `FASSOC_INIT_CAP` | macro | `progs/file/file_assoc.h:30` | `#define FASSOC_INIT_CAP` |
+| `FASSOC_PROG_MAX` | macro | `progs/file/file_assoc.h:26` | `#define FASSOC_PROG_MAX` |
+| `MINIOS_FILE_ASSOC_H` | macro | `progs/file/file_assoc.h:15` | `#define MINIOS_FILE_ASSOC_H` |
+| `fassoc_clear` | function | `progs/file/file_assoc.h:89` | `static void fassoc_clear(struct fassoc_table *t)` |
+| `fassoc_count` | function | `progs/file/file_assoc.h:150` | `static size_t fassoc_count(const struct fassoc_table *t)` |
+| `fassoc_entry` | struct | `progs/file/file_assoc.h:46` | `` |
+| `fassoc_ext_ok` | function | `progs/file/file_assoc.h:59` | `static int fassoc_ext_ok(const char *ext)` |
+| `fassoc_free` | function | `progs/file/file_assoc.h:95` | `static void fassoc_free(struct fassoc_table *t)` |
+| `fassoc_lookup` | function | `progs/file/file_assoc.h:140` | `static const char *fassoc_lookup(const struct fassoc_table *t, const char *ext)` |
+| `fassoc_prog_ok` | function | `progs/file/file_assoc.h:73` | `static int fassoc_prog_ok(const char *prog)` |
+| `fassoc_push` | function | `progs/file/file_assoc.h:125` | `static int fassoc_push(struct fassoc_table *t, const char *ext, const char *prog)` |
+| `fassoc_reserve` | function | `progs/file/file_assoc.h:104` | `static int fassoc_reserve(struct fassoc_table *t, size_t want)` |
+| `fassoc_table` | struct | `progs/file/file_assoc.h:52` | `` |
 | `FUI_BODY_CAP` | macro | `progs/freedomui/freedomui_minios.c:53` | `#define FUI_BODY_CAP` |
 | `FUI_COLS` | macro | `progs/freedomui/freedomui_minios.c:51` | `#define FUI_COLS` |
 | `FUI_FONT_H` | macro | `progs/freedomui/freedomui_minios.c:62` | `#define FUI_FONT_H` |
@@ -9756,50 +9772,68 @@ Z_Malloc
         int fb_w, int...` |
 | `wlcomp_render` | function | `progs/wl/wl_mini.h:481` | `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,
         int fb_w, int fb_h)` |
-| `WLCOMP_CFG_DEFAULT` | macro | `progs/wl/wlcomp.c:52` | `#define WLCOMP_CFG_DEFAULT` |
-| `WLCOMP_H` | macro | `progs/wl/wlcomp.c:39` | `#define WLCOMP_H` |
-| `WLCOMP_W` | macro | `progs/wl/wlcomp.c:38` | `#define WLCOMP_W` |
-| `main` | function | `progs/wl/wlcomp.c:1340` | `int main(int argc, char **argv)` |
-| `wlclient_find` | function | `progs/wl/wlcomp.c:962` | `static const wlclient_pat_t *wlclient_find(const char *name)` |
-| `wlclient_pat_t` | struct | `progs/wl/wlcomp.c:952` | `` |
-| `wlcomp_cfg_t` | struct | `progs/wl/wlcomp.c:42` | `` |
-| `wlcomp_clean` | function | `progs/wl/wlcomp.c:1057` | `static int wlcomp_clean(void)` |
-| `wlcomp_client` | function | `progs/wl/wlcomp.c:991` | `static int wlcomp_client(const char *box, const char *pat)` |
-| `wlcomp_demo` | function | `progs/wl/wlcomp.c:186` | `static int wlcomp_demo(wl_comp_t *c)` |
-| `wlcomp_demo_blit` | function | `progs/wl/wlcomp.c:211` | `static int wlcomp_demo_blit(wl_comp_t *c, unsigned char *fb)` |
-| `wlcomp_emit` | function | `progs/wl/wlcomp.c:257` | `static int wlcomp_emit(unsigned char *s, int cap, int o, unsigned int id,
+| `MINIOS_WL_PIXBUF_H` | macro | `progs/wl/wl_pixbuf.h:17` | `#define MINIOS_WL_PIXBUF_H` |
+| `WPIX_BUDGET_MAX` | macro | `progs/wl/wl_pixbuf.h:44` | `#define WPIX_BUDGET_MAX` |
+| `WPIX_MAX_H` | macro | `progs/wl/wl_pixbuf.h:36` | `#define WPIX_MAX_H` |
+| `WPIX_MAX_SLOTS` | macro | `progs/wl/wl_pixbuf.h:28` | `#define WPIX_MAX_SLOTS` |
+| `WPIX_MAX_W` | macro | `progs/wl/wl_pixbuf.h:32` | `#define WPIX_MAX_W` |
+| `WPIX_SLOT_MAX` | macro | `progs/wl/wl_pixbuf.h:40` | `#define WPIX_SLOT_MAX` |
+| `wpix_commit` | function | `progs/wl/wl_pixbuf.h:175` | `static int wpix_commit(struct wpix_store *s, int idx, const unsigned char *src, int w, int h)` |
+| `wpix_drop` | function | `progs/wl/wl_pixbuf.h:127` | `static void wpix_drop(struct wpix_store *s, int idx)` |
+| `wpix_dst` | function | `progs/wl/wl_pixbuf.h:121` | `static unsigned char *wpix_dst(struct wpix_store *s)` |
+| `wpix_ensure` | function | `progs/wl/wl_pixbuf.h:153` | `static int wpix_ensure(struct wpix_store *s, int idx, int w, int h)` |
+| `wpix_free` | function | `progs/wl/wl_pixbuf.h:78` | `static void wpix_free(struct wpix_store *s)` |
+| `wpix_init` | function | `progs/wl/wl_pixbuf.h:63` | `static int wpix_init(struct wpix_store *s)` |
+| `wpix_ptr` | function | `progs/wl/wl_pixbuf.h:107` | `static unsigned char *wpix_ptr(struct wpix_store *s, int idx)` |
+| `wpix_raw` | function | `progs/wl/wl_pixbuf.h:115` | `static unsigned char *wpix_raw(struct wpix_store *s)` |
+| `wpix_slot` | struct | `progs/wl/wl_pixbuf.h:48` | `` |
+| `wpix_store` | struct | `progs/wl/wl_pixbuf.h:55` | `` |
+| `wpix_tmp` | function | `progs/wl/wl_pixbuf.h:136` | `static int wpix_tmp(struct wpix_store *s, size_t need)` |
+| `wpix_used` | function | `progs/wl/wl_pixbuf.h:95` | `static size_t wpix_used(const struct wpix_store *s)` |
+| `WLCOMP_CFG_DEFAULT` | macro | `progs/wl/wlcomp.c:53` | `#define WLCOMP_CFG_DEFAULT` |
+| `WLCOMP_H` | macro | `progs/wl/wlcomp.c:40` | `#define WLCOMP_H` |
+| `WLCOMP_W` | macro | `progs/wl/wlcomp.c:39` | `#define WLCOMP_W` |
+| `main` | function | `progs/wl/wlcomp.c:1355` | `int main(int argc, char **argv)` |
+| `wlclient_find` | function | `progs/wl/wlcomp.c:977` | `static const wlclient_pat_t *wlclient_find(const char *name)` |
+| `wlclient_pat_t` | struct | `progs/wl/wlcomp.c:967` | `` |
+| `wlcomp_cfg_t` | struct | `progs/wl/wlcomp.c:43` | `` |
+| `wlcomp_clean` | function | `progs/wl/wlcomp.c:1072` | `static int wlcomp_clean(void)` |
+| `wlcomp_client` | function | `progs/wl/wlcomp.c:1006` | `static int wlcomp_client(const char *box, const char *pat)` |
+| `wlcomp_demo` | function | `progs/wl/wlcomp.c:187` | `static int wlcomp_demo(wl_comp_t *c)` |
+| `wlcomp_demo_blit` | function | `progs/wl/wlcomp.c:212` | `static int wlcomp_demo_blit(wl_comp_t *c, unsigned char *fb)` |
+| `wlcomp_emit` | function | `progs/wl/wlcomp.c:258` | `static int wlcomp_emit(unsigned char *s, int cap, int o, unsigned int id,
         unsigned int op...` |
-| `wlcomp_once` | function | `progs/wl/wlcomp.c:1096` | `static int wlcomp_once(void)` |
-| `wlcomp_palette` | function | `progs/wl/wlcomp.c:136` | `static int wlcomp_palette(void)` |
-| `wlcomp_pattern` | function | `progs/wl/wlcomp.c:147` | `static void wlcomp_pattern(unsigned char *dst, int w, int h,
+| `wlcomp_once` | function | `progs/wl/wlcomp.c:1111` | `static int wlcomp_once(void)` |
+| `wlcomp_palette` | function | `progs/wl/wlcomp.c:137` | `static int wlcomp_palette(void)` |
+| `wlcomp_pattern` | function | `progs/wl/wlcomp.c:148` | `static void wlcomp_pattern(unsigned char *dst, int w, int h,
         unsigned char a, unsigned ch...` |
-| `wlcomp_selftest` | function | `progs/wl/wlcomp.c:342` | `static int wlcomp_selftest(void)` |
-| `wlcomp_server` | function | `progs/wl/wlcomp.c:1128` | `static int wlcomp_server(void)` |
-| `wlcomp_session` | function | `progs/wl/wlcomp.c:269` | `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)` |
-| `wlcomp_sys_dir_list` | function | `progs/wl/wlcomp.c:126` | `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)` |
-| `wlcomp_sys_kbd` | function | `progs/wl/wlcomp.c:94` | `static long wlcomp_sys_kbd(void)` |
-| `wlcomp_sys_kbd_raw` | function | `progs/wl/wlcomp.c:102` | `static long wlcomp_sys_kbd_raw(long on)` |
-| `wlcomp_sys_mouse` | function | `progs/wl/wlcomp.c:86` | `static long wlcomp_sys_mouse(int *m)` |
-| `wlcomp_sys_palette` | function | `progs/wl/wlcomp.c:78` | `static long wlcomp_sys_palette(unsigned char *pal)` |
-| `wlcomp_sys_present` | function | `progs/wl/wlcomp.c:62` | `static long wlcomp_sys_present(long buf)` |
-| `wlcomp_sys_present_origin` | function | `progs/wl/wlcomp.c:70` | `static long wlcomp_sys_present_origin(long buf, int *origin)` |
-| `wlcomp_sys_title` | function | `progs/wl/wlcomp.c:54` | `static long wlcomp_sys_title(const char *t)` |
-| `wlcomp_sys_vga_mode` | function | `progs/wl/wlcomp.c:110` | `static long wlcomp_sys_vga_mode(long on)` |
-| `wlcomp_sys_yield` | function | `progs/wl/wlcomp.c:118` | `static long wlcomp_sys_yield(void)` |
-| `wlserv_clean_ev` | function | `progs/wl/wlcomp.c:722` | `static void wlserv_clean_ev(void)` |
-| `wlserv_close` | function | `progs/wl/wlcomp.c:765` | `static int wlserv_close(wlserv_t *s, unsigned int id)` |
-| `wlserv_drain` | function | `progs/wl/wlcomp.c:799` | `static int wlserv_drain(wlserv_t *s)` |
-| `wlserv_drop` | function | `progs/wl/wlcomp.c:475` | `static void wlserv_drop(wlserv_t *s, int idx)` |
-| `wlserv_ev_clear` | function | `progs/wl/wlcomp.c:663` | `static void wlserv_ev_clear(wlserv_t *s, int b)` |
-| `wlserv_fit` | function | `progs/wl/wlcomp.c:487` | `static void wlserv_fit(wlserv_t *s)` |
-| `wlserv_focus_box` | function | `progs/wl/wlcomp.c:625` | `static int wlserv_focus_box(const wlserv_t *s)` |
-| `wlserv_gc_strays` | function | `progs/wl/wlcomp.c:563` | `static void wlserv_gc_strays(void)` |
+| `wlcomp_selftest` | function | `progs/wl/wlcomp.c:343` | `static int wlcomp_selftest(void)` |
+| `wlcomp_server` | function | `progs/wl/wlcomp.c:1143` | `static int wlcomp_server(void)` |
+| `wlcomp_session` | function | `progs/wl/wlcomp.c:270` | `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)` |
+| `wlcomp_sys_dir_list` | function | `progs/wl/wlcomp.c:127` | `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)` |
+| `wlcomp_sys_kbd` | function | `progs/wl/wlcomp.c:95` | `static long wlcomp_sys_kbd(void)` |
+| `wlcomp_sys_kbd_raw` | function | `progs/wl/wlcomp.c:103` | `static long wlcomp_sys_kbd_raw(long on)` |
+| `wlcomp_sys_mouse` | function | `progs/wl/wlcomp.c:87` | `static long wlcomp_sys_mouse(int *m)` |
+| `wlcomp_sys_palette` | function | `progs/wl/wlcomp.c:79` | `static long wlcomp_sys_palette(unsigned char *pal)` |
+| `wlcomp_sys_present` | function | `progs/wl/wlcomp.c:63` | `static long wlcomp_sys_present(long buf)` |
+| `wlcomp_sys_present_origin` | function | `progs/wl/wlcomp.c:71` | `static long wlcomp_sys_present_origin(long buf, int *origin)` |
+| `wlcomp_sys_title` | function | `progs/wl/wlcomp.c:55` | `static long wlcomp_sys_title(const char *t)` |
+| `wlcomp_sys_vga_mode` | function | `progs/wl/wlcomp.c:111` | `static long wlcomp_sys_vga_mode(long on)` |
+| `wlcomp_sys_yield` | function | `progs/wl/wlcomp.c:119` | `static long wlcomp_sys_yield(void)` |
+| `wlserv_clean_ev` | function | `progs/wl/wlcomp.c:737` | `static void wlserv_clean_ev(void)` |
+| `wlserv_close` | function | `progs/wl/wlcomp.c:780` | `static int wlserv_close(wlserv_t *s, unsigned int id)` |
+| `wlserv_drain` | function | `progs/wl/wlcomp.c:814` | `static int wlserv_drain(wlserv_t *s)` |
+| `wlserv_drop` | function | `progs/wl/wlcomp.c:476` | `static void wlserv_drop(wlserv_t *s, int idx)` |
+| `wlserv_ev_clear` | function | `progs/wl/wlcomp.c:678` | `static void wlserv_ev_clear(wlserv_t *s, int b)` |
+| `wlserv_fit` | function | `progs/wl/wlcomp.c:489` | `static void wlserv_fit(wlserv_t *s)` |
+| `wlserv_focus_box` | function | `progs/wl/wlcomp.c:640` | `static int wlserv_focus_box(const wlserv_t *s)` |
+| `wlserv_gc_strays` | function | `progs/wl/wlcomp.c:578` | `static void wlserv_gc_strays(void)` |
 | `wlserv_init` | function | `progs/wl/wlcomp.c:408` | `static void wlserv_init(wlserv_t *s)` |
-| `wlserv_key` | function | `progs/wl/wlcomp.c:643` | `static void wlserv_key(wlserv_t *s, unsigned char byte)` |
-| `wlserv_present` | function | `progs/wl/wlcomp.c:454` | `static int wlserv_present(wlserv_t *s)` |
-| `wlserv_push_ev` | function | `progs/wl/wlcomp.c:674` | `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)` |
-| `wlserv_recolor` | function | `progs/wl/wlcomp.c:437` | `static void wlserv_recolor(wl_comp_t *c)` |
-| `wlserv_slot` | function | `progs/wl/wlcomp.c:424` | `static int wlserv_slot(const wl_comp_t *c, unsigned int id)` |
+| `wlserv_key` | function | `progs/wl/wlcomp.c:658` | `static void wlserv_key(wlserv_t *s, unsigned char byte)` |
+| `wlserv_present` | function | `progs/wl/wlcomp.c:455` | `static int wlserv_present(wlserv_t *s)` |
+| `wlserv_push_ev` | function | `progs/wl/wlcomp.c:689` | `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)` |
+| `wlserv_recolor` | function | `progs/wl/wlcomp.c:438` | `static void wlserv_recolor(wl_comp_t *c)` |
+| `wlserv_slot` | function | `progs/wl/wlcomp.c:425` | `static int wlserv_slot(const wl_comp_t *c, unsigned int id)` |
 | `wlserv_t` | struct | `progs/wl/wlcomp.c:397` | `` |
 | `channel` | function | `qga.c:10` | `* * Polled channel (no interrupt controller): qga_init sets up COM2 and * qga_poll, called from raw_blocking_getc, servi` |
 | `qga_b64_encode` | function | `qga.c:231` | `static void qga_b64_encode(const unsigned char *in, int n)` |
@@ -9942,12 +9976,12 @@ Z_Malloc
 | `range_ok` | function | `tests/test_fault.c:35` | `static int range_ok(unsigned long p, unsigned long len)` |
 | `str_ok` | function | `tests/test_fault.c:41` | `static int str_ok(const unsigned char *mem, unsigned long p,
                   unsigned long maxlen)` |
-| `CHECK` | macro | `tests/test_file_assoc.c:14` | `#define CHECK(cond, msg)` |
-| `T_EXT_MAX` | macro | `tests/test_file_assoc.c:21` | `#define T_EXT_MAX` |
-| `T_PROG_MAX` | macro | `tests/test_file_assoc.c:22` | `#define T_PROG_MAX` |
-| `main` | function | `tests/test_file_assoc.c:76` | `int main(void)` |
-| `t_assoc_line` | function | `tests/test_file_assoc.c:44` | `static int t_assoc_line(const char *line, char *ext, char *prog)` |
-| `t_ext_of` | function | `tests/test_file_assoc.c:24` | `static void t_ext_of(const char *fname, char *dst, unsigned cap)` |
+| `CHECK` | macro | `tests/test_file_assoc.c:15` | `#define CHECK(cond, msg)` |
+| `T_EXT_MAX` | macro | `tests/test_file_assoc.c:22` | `#define T_EXT_MAX` |
+| `T_PROG_MAX` | macro | `tests/test_file_assoc.c:23` | `#define T_PROG_MAX` |
+| `main` | function | `tests/test_file_assoc.c:77` | `int main(void)` |
+| `t_assoc_line` | function | `tests/test_file_assoc.c:45` | `static int t_assoc_line(const char *line, char *ext, char *prog)` |
+| `t_ext_of` | function | `tests/test_file_assoc.c:25` | `static void t_ext_of(const char *fname, char *dst, unsigned cap)` |
 | `FREEDOM_WL_HOST_TEST` | macro | `tests/test_freedom_wl.c:8` | `#define FREEDOM_WL_HOST_TEST` |
 | `check_host` | function | `tests/test_freedom_wl.c:12` | `static int check_host(int cond, const char *name)` |
 | `main` | function | `tests/test_freedom_wl.c:22` | `int main(void)` |
@@ -10066,8 +10100,8 @@ Z_Malloc
 | `l_insert` | function | `tests/test_vma_bench.c:23` | `static void l_insert(unsigned long b)` |
 | `main` | function | `tests/test_vma_bench.c:54` | `int main(void)` |
 | `now_us` | function | `tests/test_vma_bench.c:13` | `static long now_us(void)` |
-| `CHECK` | macro | `tests/test_wl.c:18` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_wl.c:25` | `int main(void)` |
+| `CHECK` | macro | `tests/test_wl.c:20` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_wl.c:27` | `int main(void)` |
 | `CHECK` | macro | `tests/test_wm.c:21` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_wm.c:28` | `int main(void)` |
 | `CHECK` | macro | `tls_test.c:62` | `#define CHECK(name, cond)` |

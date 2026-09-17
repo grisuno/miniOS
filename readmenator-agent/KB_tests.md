@@ -126,13 +126,13 @@
 - Doc: Docstring: host test for the file browser assoc contract (make test-file).
 - Language: c
 - Symbols:
-  - `t_ext_of` (function, line 24) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
-  - `t_assoc_line` (function, line 44) `static int t_assoc_line(const char *line, char *ext, char *prog)`
-  - `main` (function, line 76) `int main(void)`
-  - `CHECK` (macro, line 14) `#define CHECK(cond, msg)`
-  - `T_EXT_MAX` (macro, line 21) `#define T_EXT_MAX`
-  - `T_PROG_MAX` (macro, line 22) `#define T_PROG_MAX`
-- Depends on: `kernel/string.c`
+  - `t_ext_of` (function, line 25) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
+  - `t_assoc_line` (function, line 45) `static int t_assoc_line(const char *line, char *ext, char *prog)`
+  - `main` (function, line 77) `int main(void)`
+  - `CHECK` (macro, line 15) `#define CHECK(cond, msg)`
+  - `T_EXT_MAX` (macro, line 22) `#define T_EXT_MAX`
+  - `T_PROG_MAX` (macro, line 23) `#define T_PROG_MAX`
+- Depends on: `kernel/string.c`, `progs/file/file_assoc.h`
 
 ## tests/test_freedom_wl.c
 - Layer: testing
@@ -395,9 +395,9 @@
 - Doc: Host test for progs/wl/wl_mini.h (make test-wl).
 - Language: c
 - Symbols:
-  - `main` (function, line 25) `int main(void)`
-  - `CHECK` (macro, line 18) `#define CHECK(cond, msg)`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`
+  - `main` (function, line 27) `int main(void)`
+  - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ## tests/test_wm.c
 - Layer: testing

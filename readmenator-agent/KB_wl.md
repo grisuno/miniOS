@@ -190,54 +190,80 @@
   - `WL_IFACE_COUNT` (macro, line 1077) `#define WL_IFACE_COUNT`
 - Imported by: `progs/src/freedom_wl.c`, `progs/wl/wl_mbox.h`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
 
+## progs/wl/wl_pixbuf.h
+- Layer: utility
+- Doc: Docstring: heap pixel store for the Wayland-mini server.
+- Language: h
+- Symbols:
+  - `wpix_slot` (struct, line 48)
+  - `wpix_store` (struct, line 55)
+  - `wpix_init` (function, line 63) `static int wpix_init(struct wpix_store *s)`
+  - `wpix_free` (function, line 78) `static void wpix_free(struct wpix_store *s)`
+  - `wpix_used` (function, line 95) `static size_t wpix_used(const struct wpix_store *s)`
+  - `wpix_ptr` (function, line 107) `static unsigned char *wpix_ptr(struct wpix_store *s, int idx)`
+  - `wpix_raw` (function, line 115) `static unsigned char *wpix_raw(struct wpix_store *s)`
+  - `wpix_dst` (function, line 121) `static unsigned char *wpix_dst(struct wpix_store *s)`
+  - `wpix_drop` (function, line 127) `static void wpix_drop(struct wpix_store *s, int idx)`
+  - `wpix_tmp` (function, line 136) `static int wpix_tmp(struct wpix_store *s, size_t need)`
+  - `wpix_ensure` (function, line 153) `static int wpix_ensure(struct wpix_store *s, int idx, int w, int h)`
+  - `wpix_commit` (function, line 175) `static int wpix_commit(struct wpix_store *s, int idx, const unsigned char *src, int w, int h)`
+  - `MINIOS_WL_PIXBUF_H` (macro, line 17) `#define MINIOS_WL_PIXBUF_H`
+  - `WPIX_MAX_SLOTS` (macro, line 28) `#define WPIX_MAX_SLOTS`
+  - `WPIX_MAX_W` (macro, line 32) `#define WPIX_MAX_W`
+  - `WPIX_MAX_H` (macro, line 36) `#define WPIX_MAX_H`
+  - `WPIX_SLOT_MAX` (macro, line 40) `#define WPIX_SLOT_MAX`
+  - `WPIX_BUDGET_MAX` (macro, line 44) `#define WPIX_BUDGET_MAX`
+- Depends on: `kernel/string.c`
+- Imported by: `progs/wl/wlcomp.c`, `tests/test_wl.c`
+
 ## progs/wl/wlcomp.c
 - Layer: utility
 - Doc: wlcomp - Wayland-mini ring-3 compositor (ADR-0024, ADR-0026).
 - Language: c
 - Symbols:
-  - `wlcomp_cfg_t` (struct, line 42)
+  - `wlcomp_cfg_t` (struct, line 43)
   - `wlserv_t` (struct, line 397)
-  - `wlclient_pat_t` (struct, line 952)
-  - `wlcomp_sys_title` (function, line 54) `static long wlcomp_sys_title(const char *t)`
-  - `wlcomp_sys_present` (function, line 62) `static long wlcomp_sys_present(long buf)`
-  - `wlcomp_sys_present_origin` (function, line 70) `static long wlcomp_sys_present_origin(long buf, int *origin)`
-  - `wlcomp_sys_palette` (function, line 78) `static long wlcomp_sys_palette(unsigned char *pal)`
-  - `wlcomp_sys_mouse` (function, line 86) `static long wlcomp_sys_mouse(int *m)`
-  - `wlcomp_sys_kbd` (function, line 94) `static long wlcomp_sys_kbd(void)`
-  - `wlcomp_sys_kbd_raw` (function, line 102) `static long wlcomp_sys_kbd_raw(long on)`
-  - `wlcomp_sys_vga_mode` (function, line 110) `static long wlcomp_sys_vga_mode(long on)`
-  - `wlcomp_sys_yield` (function, line 118) `static long wlcomp_sys_yield(void)`
-  - `wlcomp_sys_dir_list` (function, line 126) `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)`
-  - `wlcomp_palette` (function, line 136) `static int wlcomp_palette(void)`
-  - `wlcomp_pattern` (function, line 147) `static void wlcomp_pattern(unsigned char *dst, int w, int h,
+  - `wlclient_pat_t` (struct, line 967)
+  - `wlcomp_sys_title` (function, line 55) `static long wlcomp_sys_title(const char *t)`
+  - `wlcomp_sys_present` (function, line 63) `static long wlcomp_sys_present(long buf)`
+  - `wlcomp_sys_present_origin` (function, line 71) `static long wlcomp_sys_present_origin(long buf, int *origin)`
+  - `wlcomp_sys_palette` (function, line 79) `static long wlcomp_sys_palette(unsigned char *pal)`
+  - `wlcomp_sys_mouse` (function, line 87) `static long wlcomp_sys_mouse(int *m)`
+  - `wlcomp_sys_kbd` (function, line 95) `static long wlcomp_sys_kbd(void)`
+  - `wlcomp_sys_kbd_raw` (function, line 103) `static long wlcomp_sys_kbd_raw(long on)`
+  - `wlcomp_sys_vga_mode` (function, line 111) `static long wlcomp_sys_vga_mode(long on)`
+  - `wlcomp_sys_yield` (function, line 119) `static long wlcomp_sys_yield(void)`
+  - `wlcomp_sys_dir_list` (function, line 127) `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)`
+  - `wlcomp_palette` (function, line 137) `static int wlcomp_palette(void)`
+  - `wlcomp_pattern` (function, line 148) `static void wlcomp_pattern(unsigned char *dst, int w, int h,
         unsigned char a, unsigned ch...`
-  - `wlcomp_demo` (function, line 186) `static int wlcomp_demo(wl_comp_t *c)`
-  - `wlcomp_demo_blit` (function, line 211) `static int wlcomp_demo_blit(wl_comp_t *c, unsigned char *fb)`
-  - `wlcomp_emit` (function, line 257) `static int wlcomp_emit(unsigned char *s, int cap, int o, unsigned int id,
+  - `wlcomp_demo` (function, line 187) `static int wlcomp_demo(wl_comp_t *c)`
+  - `wlcomp_demo_blit` (function, line 212) `static int wlcomp_demo_blit(wl_comp_t *c, unsigned char *fb)`
+  - `wlcomp_emit` (function, line 258) `static int wlcomp_emit(unsigned char *s, int cap, int o, unsigned int id,
         unsigned int op...`
-  - `wlcomp_session` (function, line 269) `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)`
-  - `wlcomp_selftest` (function, line 342) `static int wlcomp_selftest(void)`
+  - `wlcomp_session` (function, line 270) `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)`
+  - `wlcomp_selftest` (function, line 343) `static int wlcomp_selftest(void)`
   - `wlserv_init` (function, line 408) `static void wlserv_init(wlserv_t *s)`
-  - `wlserv_slot` (function, line 424) `static int wlserv_slot(const wl_comp_t *c, unsigned int id)`
-  - `wlserv_recolor` (function, line 437) `static void wlserv_recolor(wl_comp_t *c)`
-  - `wlserv_present` (function, line 454) `static int wlserv_present(wlserv_t *s)`
-  - `wlserv_drop` (function, line 475) `static void wlserv_drop(wlserv_t *s, int idx)`
-  - `wlserv_fit` (function, line 487) `static void wlserv_fit(wlserv_t *s)`
-  - `wlserv_gc_strays` (function, line 563) `static void wlserv_gc_strays(void)`
-  - `wlserv_focus_box` (function, line 625) `static int wlserv_focus_box(const wlserv_t *s)`
-  - `wlserv_key` (function, line 643) `static void wlserv_key(wlserv_t *s, unsigned char byte)`
-  - `wlserv_ev_clear` (function, line 663) `static void wlserv_ev_clear(wlserv_t *s, int b)`
-  - `wlserv_push_ev` (function, line 674) `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)`
-  - `wlserv_clean_ev` (function, line 722) `static void wlserv_clean_ev(void)`
-  - `wlserv_close` (function, line 765) `static int wlserv_close(wlserv_t *s, unsigned int id)`
-  - `wlserv_drain` (function, line 799) `static int wlserv_drain(wlserv_t *s)`
-  - `wlclient_find` (function, line 962) `static const wlclient_pat_t *wlclient_find(const char *name)`
-  - `wlcomp_client` (function, line 991) `static int wlcomp_client(const char *box, const char *pat)`
-  - `wlcomp_clean` (function, line 1057) `static int wlcomp_clean(void)`
-  - `wlcomp_once` (function, line 1096) `static int wlcomp_once(void)`
-  - `wlcomp_server` (function, line 1128) `static int wlcomp_server(void)`
-  - `main` (function, line 1340) `int main(int argc, char **argv)`
-  - `WLCOMP_W` (macro, line 38) `#define WLCOMP_W`
-  - `WLCOMP_H` (macro, line 39) `#define WLCOMP_H`
-  - `WLCOMP_CFG_DEFAULT` (macro, line 52) `#define WLCOMP_CFG_DEFAULT`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`
+  - `wlserv_slot` (function, line 425) `static int wlserv_slot(const wl_comp_t *c, unsigned int id)`
+  - `wlserv_recolor` (function, line 438) `static void wlserv_recolor(wl_comp_t *c)`
+  - `wlserv_present` (function, line 455) `static int wlserv_present(wlserv_t *s)`
+  - `wlserv_drop` (function, line 476) `static void wlserv_drop(wlserv_t *s, int idx)`
+  - `wlserv_fit` (function, line 489) `static void wlserv_fit(wlserv_t *s)`
+  - `wlserv_gc_strays` (function, line 578) `static void wlserv_gc_strays(void)`
+  - `wlserv_focus_box` (function, line 640) `static int wlserv_focus_box(const wlserv_t *s)`
+  - `wlserv_key` (function, line 658) `static void wlserv_key(wlserv_t *s, unsigned char byte)`
+  - `wlserv_ev_clear` (function, line 678) `static void wlserv_ev_clear(wlserv_t *s, int b)`
+  - `wlserv_push_ev` (function, line 689) `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)`
+  - `wlserv_clean_ev` (function, line 737) `static void wlserv_clean_ev(void)`
+  - `wlserv_close` (function, line 780) `static int wlserv_close(wlserv_t *s, unsigned int id)`
+  - `wlserv_drain` (function, line 814) `static int wlserv_drain(wlserv_t *s)`
+  - `wlclient_find` (function, line 977) `static const wlclient_pat_t *wlclient_find(const char *name)`
+  - `wlcomp_client` (function, line 1006) `static int wlcomp_client(const char *box, const char *pat)`
+  - `wlcomp_clean` (function, line 1072) `static int wlcomp_clean(void)`
+  - `wlcomp_once` (function, line 1111) `static int wlcomp_once(void)`
+  - `wlcomp_server` (function, line 1143) `static int wlcomp_server(void)`
+  - `main` (function, line 1355) `int main(int argc, char **argv)`
+  - `WLCOMP_W` (macro, line 39) `#define WLCOMP_W`
+  - `WLCOMP_H` (macro, line 40) `#define WLCOMP_H`
+  - `WLCOMP_CFG_DEFAULT` (macro, line 53) `#define WLCOMP_CFG_DEFAULT`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`

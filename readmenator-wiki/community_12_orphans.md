@@ -1,6 +1,6 @@
 # orphans
 
-*Community 8 | 85 files | cohesion 0.00*
+*Community 12 | 85 files | cohesion 0.00*
 
 ## Definition
 
@@ -136,8 +136,7 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 8 (orphans).
-- [INFERRED] shares_context community 1 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 8 (orphans).
+- [INFERRED] shares_context community 0 <-> 12 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 12 (orphans).
 
 ## Risks
 
