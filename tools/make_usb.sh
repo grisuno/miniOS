@@ -7,7 +7,7 @@
 # itself.
 #
 # Usage:
-#   ./make_usb.sh [--list] [--device /dev/sdX] [--yes] [--vdi]
+#   tools/make_usb.sh [--list] [--device /dev/sdX] [--yes] [--vdi]
 #
 # With no arguments and a terminal on stdin, runs an interactive wizard
 # that asks for every needed value step by step and ends with a bootable
@@ -91,7 +91,7 @@ if [ -z "$DEVICE" ]; then
         echo "=== [2/2] image ready, no device given ==="
         make usb-list
         echo ""
-        echo "Write it with:  ./make_usb.sh --device /dev/sdX"
+        echo "Write it with:  tools/make_usb.sh --device /dev/sdX"
         echo "Or manually:    make usb USB=/dev/sdX"
         echo "Rufus users: select os.iso in DD mode (NOT ISO mode)."
         exit 0

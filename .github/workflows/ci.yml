@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run BDD Suite
-        run: ./test_bdd.sh
+        run: ./tools/test_bdd.sh
         timeout-minutes: 30
 
   codecs:
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run BDD with ${{ matrix.cores }} core(s)
         run: |
-          QEMU_EXTRA="-smp ${{ matrix.cores }}" ./test_bdd.sh
+          QEMU_EXTRA="-smp ${{ matrix.cores }}" ./tools/test_bdd.sh
         timeout-minutes: 30
 
   runtime-integration:
@@ -98,4 +98,4 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run Network Tests
         run: |
-          ./test_bdd.sh --match "net.*tcp|net.*dns|net.*tls|freedom"
+          ./tools/test_bdd.sh --match "net.*tcp|net.*dns|net.*tls|freedom"

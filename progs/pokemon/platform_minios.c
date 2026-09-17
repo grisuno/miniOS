@@ -49,6 +49,15 @@
 /* MiniOS ABI constants (MINIOS_DIR/progs on the include path) */
 #include "minios_abi.h"
 
+/* Shared ring-3 PNG helpers: bounds, 3-3-2 quantize, geometry, side-art
+ * candidate paths. The stb_image decoder below feeds RGB into them. */
+#include "minios_png.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_ONLY_PNG
+#define STBI_NO_STDIO
+#include "stb_image.h"
+
 /* ============================================================================
  * MiniOS syscalls
  * ========================================================================== */
@@ -734,10 +743,114 @@ static void poll_menu(void) {
     g_prev_lbtn = lbtn;
 }
 
+/* Side fringes: right strip always shows the pokemon icon, left strip
+ * shows the first decodable candidate from the shared list. Both decode
+ * from /icons (32x32 builds of the repo-root sources, cgoblin excluded
+ * by construction) through stb_image and the shared 3-3-2 helpers, so a
+ * missing or hostile file degrades to the historical black fringe. */
+static unsigned char *g_art_right_rgb = 0;
+static int g_art_right_w = 0;
+static int g_art_right_h = 0;
+static unsigned char *g_art_left_rgb = 0;
+static int g_art_left_w = 0;
+static int g_art_left_h = 0;
+
+static int pokemon_art_load_one(const char *path, unsigned char **rgb,
+                                int *w, int *h) {
+    unsigned char *raw = 0;
+    long raw_n = 0;
+    unsigned char *px = 0;
+    int iw = 0;
+    int ih = 0;
+    int comp = 0;
+    if (!path || !rgb || !w || !h)
+        return -1;
+    if (mpng_load_file(path, &raw, &raw_n, MPNG_FILE_MAX) != MPNG_ERR_OK)
+        return -1;
+    px = stbi_load_from_memory(raw, (int)raw_n, &iw, &ih, &comp, 3);
+    free(raw);
+    if (!px || iw <= 0 || ih <= 0 || iw > MPNG_MAX_DIM || ih > MPNG_MAX_DIM) {
+        if (px)
+            stbi_image_free(px);
+        return -1;
+    }
+    *rgb = px;
+    *w = iw;
+    *h = ih;
+    return 0;
+}
+
+static void pokemon_art_load(void) {
+    int k;
+    if (pokemon_art_load_one(MPNG_RIGHT_PATH, &g_art_right_rgb,
+                             &g_art_right_w, &g_art_right_h) != 0) {
+        g_art_right_rgb = 0;
+        g_art_right_w = 0;
+        g_art_right_h = 0;
+    }
+    for (k = 0; k < MPNG_LEFT_N; k++) {
+        if (pokemon_art_load_one(mpng_left_candidates[k], &g_art_left_rgb,
+                                 &g_art_left_w, &g_art_left_h) == 0)
+            return;
+    }
+    g_art_left_rgb = 0;
+    g_art_left_w = 0;
+    g_art_left_h = 0;
+}
+
+static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,
+                                 int box_x, int box_y, int box_w,
+                                 int box_h) {
+    volatile uint8_t *dst = FB_ADDR;
+    int scale;
+    int dw;
+    int dh;
+    int ox;
+    int oy;
+    int x;
+    int y;
+    if (!rgb || sw <= 0 || sh <= 0 || box_w <= 0 || box_h <= 0)
+        return;
+    scale = mpng_fit_scale(sw, sh, box_w, box_h);
+    if (scale < 1)
+        return;
+    dw = sw * scale;
+    dh = sh * scale;
+    ox = box_x + mpng_center(box_w, dw);
+    oy = box_y + mpng_center(box_h, dh);
+    if (ox < 0 || oy < 0)
+        return;
+    for (y = 0; y < dh; y++) {
+        int sy = y * sh / dh;
+        volatile uint8_t *row = dst + (oy + y) * FB_W + ox;
+        const unsigned char *srow = rgb + sy * sw * 3;
+        if (oy + y < 0 || oy + y >= FB_H)
+            continue;
+        for (x = 0; x < dw; x++) {
+            int sx = x * sw / dw;
+            const unsigned char *p = srow + sx * 3;
+            if (ox + x < 0 || ox + x >= FB_W)
+                continue;
+            row[x] = (uint8_t)mpng_332_idx(p[0], p[1], p[2]);
+        }
+    }
+}
+
+static void pokemon_art_draw(void) {
+    int side_w = GB_DST_X0;
+    int side_y = MENU_BAR_H;
+    int side_h = FB_H - MENU_BAR_H;
+    pokemon_art_draw_one(g_art_left_rgb, g_art_left_w, g_art_left_h,
+                         0, side_y, side_w, side_h);
+    pokemon_art_draw_one(g_art_right_rgb, g_art_right_w, g_art_right_h,
+                         GB_DST_X0 + GB_DST_W, side_y, side_w, side_h);
+}
+
 /* Scale and upload frame to backbuffer (nearest neighbor, exact 2x). */
 static void upload_frame(const uint32_t *framebuffer) {
     volatile uint8_t *dst = FB_ADDR;
 
+    pokemon_art_draw();
     for (int y = 0; y < GB_DST_H; y++) {
         int src_y = y >> 1;
         const uint32_t *src_row = framebuffer + src_y * GB_SCREEN_WIDTH;
@@ -814,6 +927,8 @@ bool gb_platform_init(int scale) {
     memset(g_last_guest_framebuffer, 0, sizeof(g_last_guest_framebuffer));
     memset((void *)FB_ADDR, 0, (size_t)FB_W * FB_H);
     push_332_palette();
+    pokemon_art_load();
+    pokemon_art_draw();
 
     g_last_frame_time = (uint32_t)sys_time_ms();
     fprintf(stderr, "[MINIOS] Platform initialized, backbuffer at %p\n",
@@ -1133,6 +1248,7 @@ void gb_platform_render_lcd_off_frame(void) {
     for (int y = 0; y < GB_DST_H; y++) {
         memset((void *)(dst + (GB_DST_Y0 + y) * FB_W + GB_DST_X0), 0, GB_DST_W);
     }
+    pokemon_art_draw();
     menu_draw();
     {
         int origin[2] = {0, 0};

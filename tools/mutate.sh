@@ -38,7 +38,7 @@
 
 set -u
 
-HERE="$(cd "$(dirname "$0")" && pwd)"
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
 BACKUP="$(mktemp -d "${TMPDIR:-/tmp}/minios_mut.XXXXXX")" || exit 1
 
 FROM=""
@@ -413,7 +413,7 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             make -C "$HERE" test-paint > "$BACKUP/suite.log" 2>&1
             ;;
         progs/paint/paint.c)
-            MATCH="paint" FAIL_FAST=1 "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            MATCH="paint" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         progs/minios_abi.h)
             python3 "$HERE/tools/check_abi_numbers.py" > "$BACKUP/suite.log" 2>&1
@@ -425,11 +425,11 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # lacks the string, the suite exits 0 on zero assertions, and
             # the mutant SURVIVES vacuously (this is how fpu-no-save got a
             # false SURVIVED while disabling fxsave in the tree).
-            FAIL_FAST=1 MATCH="" "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1 && \
+            FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1 && \
             python3 "$HERE/tools/check_abi_numbers.py" >> "$BACKUP/suite.log" 2>&1
             ;;
         *)
-            FAIL_FAST=1 MATCH="" "$HERE/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
     esac
     if [ $? -eq 0 ]; then

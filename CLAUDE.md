@@ -1128,9 +1128,9 @@ framebuffer is not.
   — a buried app is always reachable. `wm list` reports it as
   `win gfxbtn x=.. w=.. icon|text` for the BDD pin.
 - **Desktop art sources (`tools/gen_desktop_pngs.py` vs `gen_icons.py`):**
-  custom art (wallpaper + per-app icons) converts from user PNGs at the
-  repo root, pixel art (terminal) generates procedurally; the sets are
-  disjoint by Makefile rule. Pokemon ships the root `pokemon.png` Pikachu
+  custom art (wallpaper + per-app icons) converts from user PNGs in
+  `images/`, pixel art (terminal) generates procedurally; the sets are
+  disjoint by Makefile rule. Pokemon ships the `images/pokemon.png` Pikachu
   (32x32 RGBA like every icon), never the old generated pokeball. The art
   ships MiniFS-only (the 649 KB wallpaper cannot fit the ramdisk inside the
   `USER_LOAD_BASE` image budget), so `make art` regenerates it explicitly
@@ -2281,13 +2281,15 @@ count, fail closed on bad pointers, overlong names and truncation.
   open in `/vedit` through `SYS_SPAWN`, `o|elf|cvm` run through `shell`
   semantics (ELF/o spawned directly, cvm through `/objects/cvm.o` with
   the module as `argv[0]`), `png|internal` decodes in-app with stb_image
-  and blits downscaled into the NK back-buffer after rasterize. Unknown
+  and blits downscaled into the NK back-buffer after rasterize, through
+  the shared `progs/minios_png.h` helpers (bounded load, scaled
+  RGB-to-indexed, blit) that the pokemon side fringes also use. Unknown
   kinds report instead of running. Assoc parsing is fail closed: only
   `[a-z0-9]` exts, programs are absolute paths or `shell`/`internal`, and
   a `|` inside the program rejects the line.
 - The dock carries `File|icons/file.png|file` beside a Terminal shortcut
   that now uses the custom `icons/shell.png` art; both PNGs convert from
-  the repo-root `file.png`/`shell.png` sources through
+  the `images/file.png`/`images/shell.png` sources through
   `tools/gen_desktop_pngs.py` like every other icon.
 - Proof: `file --selftest` runs the assoc vectors plus a live `/`
   listing (`file: ok (N entries at /, theme dark)`, BDD-pinned), and
@@ -2323,7 +2325,7 @@ composited back-buffer, so the desktop GLFW demo layout does not apply.
   clamped with white margins. Paths go through a fail-closed gate
   (printable ASCII, bounded, `.png` suffix, no `..` traversal).
 - The dock carries `Paint|icons/paint.png|paint`; the icon converts from
-  the repo-root `paint.png` source through `tools/gen_desktop_pngs.py`
+  the `images/paint.png` source through `tools/gen_desktop_pngs.py`
   like every other icon. `paint <file>` opens the GUI preloading that
   file; the title `Paint` matches the shortcut name for the taskbar icon.
 - Proof: `paint --selftest` runs the core vectors, a 2x2 encode/decode
@@ -2829,7 +2831,7 @@ immutable IWAD.
   visible, so they are excluded (Doom has no quad damage; invisibility is
   the closest surviving powerup).
 - **Dock icon**: `DoomEdit|icons/doomedit.png|doomedit` in
-  `progs/etc/shortcuts`, converted from the repo-root `doomedit.png` by
+  `progs/etc/shortcuts`, converted from `images/doomedit.png` by
   `tools/gen_desktop_pngs.py`.
 - **Proof**: `make test-doomedit` (python vectors plus the C `--demo`
   output passing the python checker, so the two writers cannot drift);
@@ -3062,12 +3064,12 @@ is forbidden; the answer to a survivor is a new scenario.
 make                # zero warnings
 make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
 sh src/test_all.sh  # one-boot comprehensive non-interactive suite (81 PASS)
-/test_bdd.sh       # all scenarios green (full interactive suite)
+./tools/test_bdd.sh  # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
 python3 tools/test_gui_fashion.py  # QMP pixel proof: one cursor, stable frames, ESC quit
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
-/mutate.sh         # every mutant killed (BDD + host TLS + host VMA + host Lisp suites)
+./tools/mutate.sh    # every mutant killed (BDD + host TLS + host VMA + host Lisp suites)
 make test-tls       # host-side crypto + full-handshake suite green
 make test-vma       # host-side VMA red-black tree suite green
 make test-lisp      # host-side Lisp interpreter suite green
@@ -3082,6 +3084,7 @@ make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
 make test-file       # file browser assoc-contract suite green
 make test-paint      # paint canvas/PNG-contract suite green
+make test-png        # shared ring-3 PNG helpers + pokemon side-art policy green
 make test-doomedit   # doom PWAD writer + C/Python roundtrip green
 make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
@@ -3564,12 +3567,12 @@ CI gates enforce architectural constraints:
 make                        # zero warnings
 make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
 sh src/test_all.sh          # one-boot comprehensive non-interactive suite (81 PASS)
-/test_bdd.sh               # all scenarios green (full interactive suite)
+./tools/test_bdd.sh          # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
 python3 tools/test_gui_fashion.py  # QMP pixel proof: one cursor, stable frames, ESC quit
 ./tools/test_codecs.sh      # lzss/lz4/aes roundtrips (pass=3)
-/mutate.sh                 # every mutant killed
+./tools/mutate.sh            # every mutant killed
 make test-tls               # host-side crypto + handshake suite
 make test-vma               # host-side VMA red-black tree suite
 make test-lisp              # host-side Lisp interpreter suite green
@@ -3584,6 +3587,7 @@ make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
 make test-file       # file browser assoc-contract suite green
 make test-paint      # paint canvas/PNG-contract suite green
+make test-png        # shared ring-3 PNG helpers + pokemon side-art policy green
 make test-doomedit   # doom PWAD writer + C/Python roundtrip green
 make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green

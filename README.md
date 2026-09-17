@@ -560,8 +560,7 @@ bound in the config block). Loading decodes through stb_image and
 nearest-maps onto the hybrid palette, clamped top-left with white
 margins. Save paths go through a fail-closed gate (printable ASCII,
 bounded, `.png` suffix, no `..` traversal). The dock carries
-`Paint|icons/paint.png|paint`; the icon converts from the repo-root
-`paint.png` through `tools/gen_desktop_pngs.py` like every other icon.
+`Paint|icons/paint.png|paint`; the icon converts from `images/paint.png` through `tools/gen_desktop_pngs.py` like every other icon.
 
 Proof, all pinned: `paint --selftest` runs the core vectors, a 2x2
 encode/decode roundtrip (`paint: png ok`), a save/load roundtrip
@@ -606,8 +605,7 @@ stains dark patches plus one nukage pool, retried until the validator
 accepts it, so every session can play something new. Painting any
 tile returns the combo to `Custom`. The desktop dock carries a
 dedicated DoomEdit shortcut (`DoomEdit|icons/doomedit.png|doomedit` in
-`progs/etc/shortcuts`, icon converted from the repo-root `doomedit.png`
-by `tools/gen_desktop_pngs.py`), so the editor launches with one click.
+`progs/etc/shortcuts`, icon converted from `images/doomedit.png` by `tools/gen_desktop_pngs.py`), so the editor launches with one click.
 Snapshots survive image
 rebuilds through the same `saves/` preservation that protects game
 saves. The shareware `-file` refusal in `progs/doomgeneric/d_main.c`
@@ -764,8 +762,8 @@ directory:
 | `docs/` | HTML and other documentation fixtures |
 | `topogpt3/` | TopoGPT3 model: `topogpt3.c`, `topogpt3.fp16` (47 MB weights), `vocab.bin` |
 
-The ramdisk is flat, the `/` in a name is data, and `mkramdisk.py` derives
-each name from the path relative to `progs/`.
+The ramdisk is flat, the `/` in a name is data, and `tools/mkramdisk.py`
+derives each name from the path relative to `progs/`.
 
 ## Doom
 
@@ -1084,7 +1082,14 @@ Video: the GB screen (160x144) renders at exact 2x (320x288), centered in the
 800x360 NK back-buffer (`NK_BACKBUF_ADDR`), because the 320x200 DOOM buffer
 cannot fit a 2x GB frame. The palette is a 3-3-2 RGB ramp pushed once at init
 (`SYS_PALETTE`, 206); frames are presented with `SYS_NK_FRAME` (220). The
-window title is set with `SYS_GFX_SET_TITLE` (223).
+window title is set with `SYS_GFX_SET_TITLE` (223). The black side fringes
+carry art: the right strip always shows `/icons/pokemon.png` and the left
+strip shows the first decodable entry of the shared candidate list in
+`progs/minios_png.h` (`images/` icon art, cgoblin excluded as too large),
+integer-scaled and centered below the menu bar. Either side degrades to black
+when its file is missing or hostile. The mapping helpers live once in
+`progs/minios_png.h` (3-3-2 quantize, nearest palette, scale, blit, bounded
+load) and are shared with the file browser preview; `make test-png` pins them.
 
 Controls: arrows are the D-pad, Z is A, X is B, Enter is Start, Backspace is
 Select. The driver consumes raw PS/2 Set 1 scancodes (`SYS_KBD_RAW`, 207).
@@ -1630,8 +1635,8 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `drivers/pcspk.c` | PC speaker driver (tone, volume) |
 | `drivers/sb16.c` | Sound Blaster 16 DMA driver |
 | `drivers/rtc.c` | CMOS RTC clock driver |
-| `tls_roots_src/` + `mkroots.sh` | the 8 embedded CA roots and their generator |
-| `tls_test.py` / `tls_test.c` | host TLS suite: vectors + full handshakes |
+| `tls_roots_src/` + `tools/mkroots.sh` | the 8 embedded CA roots and their generator |
+| `tools/tls_test.py` / `tls_test.c` | host TLS suite: vectors + full handshakes |
 | `cvm_host.c` | CVM interpreter + JIT integration in MiniOS |
 | `progs/lua/lua_main.c` | Lua 5.4 entry point (REPL, -e, -l, script modes) |
 | `progs/lua/minios.c` | Lua bindings for MiniOS kernel services |
@@ -1646,14 +1651,14 @@ Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
 | `progs/topogpt3/topogpt3.fp16` | TopoGPT3 float16 model weights (47 MB) |
 | `progs/topogpt3/vocab.bin` | GPT-2 BPE vocabulary (50257 tokens, 422 KB) |
 | `progs/` | ramdisk contents organized by kind: `objects/`, `bin/`, `cvm/`, `src/`, `asm/`, `docs/` |
-| `mkramdisk.py` | packs `progs/` into the ramdisk image |
-| `test_bdd.sh` / `test_http_server.py` | behavioural suite and its HTTP fixture |
+| `tools/mkramdisk.py` | packs `progs/` into the ramdisk image |
+| `tools/test_bdd.sh` / `tools/test_http_server.py` | behavioural suite and its HTTP fixture |
 | `progs/src/test_all.sh` | one-boot comprehensive non-interactive test (81 PASS) |
 | `mcp/minios_mcp.py` | MCP bridge: boots the OS and exposes its console as tools |
 | `mcp/test_minios_mcp.py` | unit + QEMU BDD suite for the bridge |
 | `mcp/mutate_mcp.sh` | mutation testing for the bridge |
 | `skills/minios/SKILL.md` | agent skill: the edit/compile/link/run workflow over the bridge |
-| `mutate.sh` | mutation testing |
+| `tools/mutate.sh` | mutation testing |
 
 ## Agent bridge (MCP + skill)
 
@@ -1849,7 +1854,7 @@ ELF (`.o` relocatable or Linux executable) without running it.
 ## Filesystem: names, MiniFS fallback, unified opens
 
 Ramdisk names are at most `RAMDISK_FNAME_LEN - 1` chars; `/` is data (that is
-how `bin/cp` directories are expressed). `mkramdisk.py` derives each name
+how `bin/cp` directories are expressed). `tools/mkramdisk.py` derives each name
 from the path relative to the shared parent, so `progs/src/cp.c` ships as
 `src/cp.c`. Overlong names and collisions are build errors, never silent
 truncations. `mkdir` creates a directory as an empty file named `<name>/`
@@ -2026,8 +2031,8 @@ relies on QEMU-zeroed RAM (NOBITS, no loader fill).
 ## Validation gate, governance, libraries
 
 Every change must pass, in order: `make` (zero warnings),
-`sh src/test_all.sh` (81 PASS), `./test_bdd.sh` (full serial suite),
-`./tools/test_codecs.sh` (lzss/lz4/aes roundtrips, pass=3), `./mutate.sh`
+`sh src/test_all.sh` (81 PASS), `./tools/test_bdd.sh` (full serial suite),
+`./tools/test_codecs.sh` (lzss/lz4/aes roundtrips, pass=3), `./tools/mutate.sh`
 (every kernel/boot mutant killed; survivors mean a missing scenario, and only
 provably equivalent mutants may leave the set), `make test-tls` (host crypto
 vectors plus OpenSSL-driven full handshakes and the negative set),

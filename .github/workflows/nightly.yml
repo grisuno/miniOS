@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: make
       - name: Run Mutation Suite
-        run: ./mutate.sh
+        run: ./tools/mutate.sh
         timeout-minutes: 120
 
   mcp-mutation:
@@ -38,5 +38,5 @@ jobs:
         run: make
       - name: SMP Stress (8 cores)
         run: |
-          QEMU_EXTRA="-smp 8" ./test_bdd.sh
+          QEMU_EXTRA="-smp 8" ./tools/test_bdd.sh
         timeout-minutes: 60

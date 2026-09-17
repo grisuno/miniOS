@@ -24,7 +24,7 @@
 # set changes.
 
 set -e
-HERE="$(cd "$(dirname "$0")" && pwd)"
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$HERE/tls_roots_src"
 OUT="$HERE/headers/tls_roots.h"
 

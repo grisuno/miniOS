@@ -18,7 +18,7 @@ class Config:
     """Central configuration for the anchor check."""
 
     repo = Path(__file__).resolve().parent.parent
-    mutate_sh = repo / "mutate.sh"
+    mutate_sh = repo / "tools" / "mutate.sh"
     table_start_marker = 'MUTATIONS="'
     table_end_marker = '"'
 

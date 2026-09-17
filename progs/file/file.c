@@ -15,6 +15,7 @@
 #include <string.h>
 #include <stdint.h>
 #include "minios_abi.h"
+#include "minios_png.h"
 #include "nuklear.h"
 #include "nuklear_minios.h"
 #include "nuklear_theme.h"
@@ -228,58 +229,28 @@ static void file_refresh(void) {
 
 /** Decode a png file into the preview buffer, nearest-neighbor downscale. */
 static int file_preview_load(const char *path) {
-    FILE *f;
-    long sz;
     unsigned char *raw = 0;
+    long sz = 0;
     int w = 0;
     int h = 0;
     int comp = 0;
     unsigned char *px = 0;
-    f = fopen(path, "rb");
-    if (!f) return -1;
-    fseek(f, 0, SEEK_END);
-    sz = ftell(f);
-    fseek(f, 0, SEEK_SET);
-    if (sz <= 0 || sz > FILE_PREVIEW_FILE_MAX) { fclose(f); return -1; }
-    raw = malloc((unsigned long)sz);
-    if (!raw) { fclose(f); return -1; }
-    if (fread(raw, 1, (unsigned long)sz, f) != (unsigned long)sz) {
-        free(raw);
-        fclose(f);
+    if (mpng_load_file(path, &raw, &sz, FILE_PREVIEW_FILE_MAX) != 0)
         return -1;
-    }
-    fclose(f);
     px = stbi_load_from_memory(raw, (int)sz, &w, &h, &comp, 3);
     free(raw);
-    if (!px || w <= 0 || h <= 0) {
+    if (!px || w <= 0 || h <= 0 || w > MPNG_MAX_DIM * 8 || h > MPNG_MAX_DIM * 8) {
         if (px) stbi_image_free(px);
         return -1;
     }
     {
-        int k;
         unsigned char pal[768];
-        int x;
-        int y;
         nk_build_palette(pal);
-        for (y = 0; y < FILE_PREVIEW_H; y++) {
-            for (x = 0; x < FILE_PREVIEW_W; x++) {
-                int sx = x * w / FILE_PREVIEW_W;
-                int sy = y * h / FILE_PREVIEW_H;
-                unsigned char *p = px + (sy * w + sx) * 3;
-                int br = p[0];
-                int bg = p[1];
-                int bb = p[2];
-                int bi = 15;
-                int bd = 1 << 30;
-                for (k = 15; k < 256; k++) {
-                    int dr = (int)pal[k * 3] - br;
-                    int dg = (int)pal[k * 3 + 1] - bg;
-                    int db = (int)pal[k * 3 + 2] - bb;
-                    int d = dr * dr + dg * dg + db * db;
-                    if (d < bd) { bd = d; bi = k; }
-                }
-                file_preview_px[y * FILE_PREVIEW_W + x] = (unsigned char)bi;
-            }
+        if (mpng_rgb_to_idx_scaled(px, w, h, pal, 256, file_preview_px,
+                                   FILE_PREVIEW_W,
+                                   FILE_PREVIEW_H) != MPNG_ERR_OK) {
+            stbi_image_free(px);
+            return -1;
         }
     }
     stbi_image_free(px);

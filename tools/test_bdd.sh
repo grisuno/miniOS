@@ -12,7 +12,7 @@
 
 set -u
 
-HERE="$(cd "$(dirname "$0")" && pwd)"
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
 QEMU="${QEMU:-qemu-system-x86_64}"
 TMO="${TMO:-120}"
 MEM="${MEM:-1G}"
@@ -870,7 +870,7 @@ http_server_stop() {
 }
 
 http_fixture_start() {
-    python3 "$HERE/test_http_server.py" "${NET_HTTP2_PORT:-8900}" \
+    python3 "$HERE/tools/test_http_server.py" "${NET_HTTP2_PORT:-8900}" \
         > /dev/null 2>&1 &
     BDD_HTTP2_PID=$!
     sleep 1

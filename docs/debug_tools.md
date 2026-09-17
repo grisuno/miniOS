@@ -166,9 +166,9 @@ killed, parallel via `MUTATE_JOBS`).
 
 ```sh
 tools/boot_run.sh "strace run bin/lxhello.elf" "vmmap" --timeout 90 --log run.log
-./test_bdd.sh                       # full serial-console suite
+./tools/test_bdd.sh               # full serial-console suite
 ./tools/test_codecs.sh              # lzss/lz4/aes roundtrips (pass=3)
-./mutate.sh                         # kernel/boot mutants, all must die
+./tools/mutate.sh                 # kernel/boot mutants, all must die
 python3 tools/test_gui_wm.py        # QMP pixel proof (Alt+Tab/tile/taskbar)
 python3 tools/test_gui_fashion.py   # one cursor, stable frames, ESC quit
 python3 tools/test_gui_icon_cwd.py  # dock launch ignores shell cwd

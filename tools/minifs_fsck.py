@@ -25,7 +25,7 @@ class FSCK:
         if len(self.d) >= BLOCK_SIZE and u32(self.d,0) == MAGIC:
             return 0
         import os
-        here = os.path.dirname(os.path.abspath(__file__))
+        here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         kbin = os.path.join(here, 'kernel.bin')
         if os.path.isfile(kbin):
             ksec = (os.path.getsize(kbin) + 511) // 512

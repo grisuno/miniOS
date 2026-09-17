@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """gen_desktop_pngs.py -- build MiniOS desktop art from user-supplied PNGs.
 
-Sources (repo root by default, overridable with --src-dir):
+Sources (images/ by default, overridable with --src-dir):
   paint.png              paint icon source
   cgoblin.png            wallpaper source (any size, RGB/RGBA)
   doom.png               DOOM icon source
@@ -68,7 +68,7 @@ def write_atomic(img, path, **save_kw):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--src-dir", default=".",
+    ap.add_argument("--src-dir", default="images",
                     help="directory holding the user source PNGs")
     ap.add_argument("--repo", default=".",
                     help="MiniOS repo root (holds progs/ and tools/)")

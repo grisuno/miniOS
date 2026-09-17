@@ -118,9 +118,9 @@ image-budget notes).
 
 ```sh
 tools/boot_run.sh "cmd1" "cmd2" --timeout 80 --log run.log
-./test_bdd.sh                       # full serial-console suite
+./tools/test_bdd.sh               # full serial-console suite
 ./tools/test_codecs.sh              # lzss/lz4/aes roundtrips (pass=3)
-./mutate.sh                         # kernel/boot mutants, all must die
+./tools/mutate.sh                 # kernel/boot mutants, all must die
 python3 tools/minios_gui.py send "run doomgeneric.elf" sleep 10 dump shot
 ```
 

@@ -1284,8 +1284,8 @@ selfhost: $(BIN_DIR)/minigcc.elf
 # Fixed vectors plus full TLS 1.2 handshakes against openssl-driven
 # servers (RSA and ECDSA chains, correct hostname), plus the negative
 # set (unknown CA, wrong hostname, expired certificate).
-headers/tls_test_roots.h: tls_test.py
-	python3 tls_test.py --gen-only
+headers/tls_test_roots.h: tools/tls_test.py
+	python3 tools/tls_test.py --gen-only
 
 tls_test: tls_test.c headers/tls_test_roots.h net/tls.c net/tls_crypto.c net/tls_x509.c \
           tls.h tls_port.h
@@ -1293,7 +1293,7 @@ tls_test: tls_test.c headers/tls_test_roots.h net/tls.c net/tls_crypto.c net/tls
 	      tls_test.c net/tls.c net/tls_crypto.c net/tls_x509.c
 
 test-tls: tls_test
-	python3 tls_test.py
+	python3 tools/tls_test.py
 
 # VMA red-black tree host test (tests/test_vma.c + vma.c)
 vma_test: tests/test_vma.c vma.c vma.h
@@ -1340,7 +1340,7 @@ lint: | $(TOOLS_DIR)
 	python3 tools/check_syscall_sanitize.py
 	python3 tools/check_addons.py
 	python3 tools/check_mutant_anchors.py
-	bash -n mutate.sh && bash -n test_bdd.sh && echo "lint: ok"
+	bash -n tools/mutate.sh && bash -n tools/test_bdd.sh && echo "lint: ok"
 
 # Sync primitives host test (tests/test_sync.c + kernel/sync.c).
 # sync.c is scheduler-adjacent but keeps no other kernel dependency, so it
@@ -1440,6 +1440,13 @@ paint_test: tests/test_paint.c | $(TOOLS_DIR)
 
 test-paint: paint_test
 	$(TOOLS_DIR)/paint_test
+
+# Shared ring-3 PNG helpers host test (tests/test_minios_png.c, spec pin).
+mpng_test: tests/test_minios_png.c progs/minios_png.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/mpng_test tests/test_minios_png.c
+
+test-png: mpng_test
+	$(TOOLS_DIR)/mpng_test
 
 # Doom PWAD grid-compiler host test (tests/test_doom_pwad.py, ADR-0022).
 # Covers the python writer plus the C editor roundtrip: the C --demo
@@ -1545,8 +1552,8 @@ $(PROGS_DIR)/etc/abi: tools/abi_stamp.c progs/minios_abi.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/abi_stamp tools/abi_stamp.c
 	$(TOOLS_DIR)/abi_stamp > $@
 
-ramdisk.bin: $(PROGS) $(DESKTOP_ART) mkramdisk.py Makefile
-	python3 mkramdisk.py $@ $(PROGS)
+ramdisk.bin: $(PROGS) $(DESKTOP_ART) tools/mkramdisk.py Makefile
+	python3 tools/mkramdisk.py $@ $(PROGS)
 
 ramdisk_data.c: ramdisk.bin
 	xxd -i $< | sed 's/ramdisk_bin/embedded_ramdisk/; s/unsigned char/const unsigned char/; s/\[\] =/[] __attribute__((section(".ramdisk"))) __attribute__((used)) =/' > $@
@@ -1739,8 +1746,8 @@ $(PROGS_DIR)/icons/terminal.png: tools/gen_icons.py
 	python3 tools/gen_icons.py $(PROGS_DIR)/icons/ terminal
 
 # Custom desktop art: location of the user sources is overridable and
-# defaults to the repo root; nothing assumes an absolute path.
-DESKTOP_SRC_DIR = .
+# defaults to images/; nothing assumes an absolute path.
+DESKTOP_SRC_DIR = images
 DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
                $(DESKTOP_SRC_DIR)/doomedit.png \
                $(DESKTOP_SRC_DIR)/quake2.png $(DESKTOP_SRC_DIR)/piano.png \
@@ -1894,7 +1901,7 @@ SAVES_STAGE = .minifs-saves-stage
 
 # MiniFS content list lives in this Makefile too, so editing it must
 # invalidate the filesystem image exactly like ramdisk.bin.
-minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(PROGS_DIR)/baseq2/pak1.pak mkfs.minifs.py Makefile tools/minifs_saves.py
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(PROGS_DIR)/baseq2/pak1.pak tools/mkfs.minifs.py Makefile tools/minifs_saves.py
 	@STAGE="$(SAVES_STAGE)"; \
 	rm -rf "$$STAGE"; \
 	python3 tools/minifs_saves.py backup os.img "$$STAGE"; \
@@ -1904,7 +1911,7 @@ minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(PROGS_DIR
 	fi; \
 	EXTRA=""; \
 	if [ -d "$$STAGE/saves" ]; then EXTRA="$$STAGE/saves"; fi; \
-	python3 mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES) $$EXTRA; \
+	python3 tools/mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES) $$EXTRA; \
 	rm -rf "$$STAGE"
 
 os.img: stage1.bin stage2.bin kernel.bin minifs.bin
@@ -1916,7 +1923,7 @@ os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	  echo "minifs_saves: reseeded from saves-backup/"; \
 	fi; \
 	if [ -d "$$STAGE/saves" ]; then \
-	  python3 mkfs.minifs.py minifs.bin $(MINIFS_BLOCKS) $(MINIFS_FILES) "$$STAGE/saves"; \
+	  python3 tools/mkfs.minifs.py minifs.bin $(MINIFS_BLOCKS) $(MINIFS_FILES) "$$STAGE/saves"; \
 	fi; \
 	rm -rf "$$STAGE"
 	@ksec=$$(( ($$(stat -c%s kernel.bin) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )); \
@@ -2110,7 +2117,7 @@ serial: os.img
 	$(QEMU) $(QEMU_DRIVE) $(QEMU_MEM) $(QEMU_NIC) -display none -serial stdio
 
 test: os.img
-	./test_bdd.sh
+	./tools/test_bdd.sh
 
 # clean snapshots the guest saves first: the images are the only other
 # copy of saves/, so deleting them without a backup would wipe them.
@@ -2156,10 +2163,10 @@ clean: saves-backup
 .SECONDARY:
 
 minifs-mkfs:
-	python3 mkfs.minifs.py minifs.bin $(MINIFS_BLOCKS) $(MINIFS_FILES)
+	python3 tools/mkfs.minifs.py minifs.bin $(MINIFS_BLOCKS) $(MINIFS_FILES)
 
 minifs-dump:
-	python3 minifs_dump.py minifs.bin $(ARGS)
+	python3 tools/minifs_dump.py minifs.bin $(ARGS)
 
 # Host backup of the guest saves/ dir (Pokemon battery + savestates).
 # The images are the only other copy and `make clean` deletes them, so
@@ -2170,7 +2177,7 @@ saves-backup:
 	python3 tools/minifs_saves.py backup os.img saves-backup
 
 minifs-fsck:
-	python3 minifs_fsck.py minifs.bin
+	python3 tools/minifs_fsck.py minifs.bin
 
 .PHONY: all run run-kvm run-headless run-iso run-usb clean debug gdb serial test \
         sources sources-update sources-status addons toolchain selfhost \

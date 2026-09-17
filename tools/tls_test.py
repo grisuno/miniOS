@@ -18,7 +18,7 @@ import sys
 import threading
 import time
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORK = os.path.join(HERE, "build", "tls_test_work")
 TMP = os.path.join(HERE, "build")
 

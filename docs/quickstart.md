@@ -96,9 +96,9 @@ driven with `tools/minios_gui.py`, never headless; see `README.md`
 ```sh
 make
 sh src/test_all.sh
-./test_bdd.sh
+./tools/test_bdd.sh
 ./tools/test_codecs.sh
-./mutate.sh
+./tools/mutate.sh
 make test-tls
 make test-vma
 make test-futex test-percpu-rq test-batch test-rcu

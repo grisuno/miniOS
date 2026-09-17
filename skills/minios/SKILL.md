@@ -137,8 +137,8 @@ MiniOS, miniGCC, ld and cvm/cvm2 live in sibling repositories. Extending
 the toolchain is a host-side job: clone or copy the repositories into a
 scratch directory (for example under /tmp), apply SDD+TDD+BDD there, run
 their suites (miniGCC `test.sh`, ld `tests/run_tests.sh` and
-`tests/mutate.sh`, cvm suite, MiniOS `make`, `test_bdd.sh`, `mutate.sh`,
-`mcp/test_minios_mcp.py`, `mcp/mutate_mcp.sh`), then rebuild the ramdisk
+`tests/mutate.sh`, cvm suite, MiniOS `make`, `tools/test_bdd.sh`,
+`tools/mutate.sh`, `mcp/test_minios_mcp.py`, `mcp/mutate_mcp.sh`), then rebuild the ramdisk
 with `make` in the MiniOS repository and verify the change inside the OS
 through this bridge.
 

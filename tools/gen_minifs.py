@@ -2,7 +2,7 @@
 """Generate minifs.c for MiniOS."""
 import os
 
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "minifs.c")
+OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "minifs.c")
 
 code = r"""/* MiniFS: minimal Unix-like filesystem for MiniOS.
  *

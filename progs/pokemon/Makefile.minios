@@ -38,6 +38,7 @@ CC = clang
 
 FLAGS = -Os -static -no-pie -ffunction-sections -fdata-sections \
         -I$(STUBS) -I$(RUNTIME)/include -I$(MINIOS_DIR)/progs \
+        -I$(MINIOS_DIR)/third_party/stb \
         -DGB_HAS_SDL2 -DGB_MINIOS -DNDEBUG -w
 LDFLAGS = -static -no-pie -Wl,--gc-sections
 LIBS    = -lm

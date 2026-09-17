@@ -10,7 +10,11 @@ gb-recompiled generated project, no per-game patches):
 
 - `platform_minios.c` — implements the `gb_platform_*` interface with
   MiniOS syscalls: 800×360 NK backbuffer (GB at exact 2x), PS/2
-  keyboard, PC speaker audio, timing.
+  keyboard, PC speaker audio, timing. The side fringes show PNG art
+  (right always `/icons/pokemon.png`, left the first decodable entry of
+  the shared candidate list in `progs/minios_png.h`, cgoblin excluded),
+  integer-scaled through the shared 3-3-2 helpers; missing or hostile
+  files degrade to black.
 - `Makefile.minios` — static build of a generated project + runtime.
 - `minios_stubs/` — minimal `SDL.h` so the `GB_HAS_SDL2`-guarded
   prototypes stay visible without SDL2.
