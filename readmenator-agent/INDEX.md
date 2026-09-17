@@ -8,7 +8,7 @@
 | `arch/x86/ctx_sw.S` | - | - | 6 |
 | `arch/x86/isr_stubs.S` | - | - | 24 |
 | `bootloader.c` | - | root | 4 |
-| `drivers/block.c` | Block device layer for MiniFS. | - | 17 |
+| `drivers/block.c` | Block device layer for MiniFS. | - | 21 |
 | `drivers/driver.c` | include "driver.h"  driver.c -- Device registry for the Strategy-pattern driver  | - | 8 |
 | `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | - | 24 |
 | `drivers/kbd.c` | include "kernel.h" include "sched.h" include "vga_fb.h" include "drivers/kbd.h"  | - | 44 |
@@ -16,12 +16,11 @@
 | `drivers/pcspk.c` | include "kernel.h" include "pcspk.h" include "driver.h"  PC speaker driver with  | - | 20 |
 | `drivers/rtc.c` | include "kernel.h" include "rtc.h"  CMOS RTC time-of-day reader. The desktop clo | - | 27 |
 | `drivers/sb16.c` | include "kernel.h" include "sb16.h" include "sync.h" include "driver.h"  Sound B | - | 67 |
-| `fs/kfile.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 26 |
-| `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 67 |
+| `fs/kfile.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 30 |
+| `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 69 |
 | `fs/ramdisk.c` | include "kernel.h"  ============================================================ | fs | 25 |
 | `fs/vfs.c` | include "kernel.h" include "minifs.h"  ========================================= | fs | 37 |
 | `fs/zip.c` | zip.c — the unzip/zip shell builtins over the miniz zip library. | fs | 19 |
-| `gen_minifs.py` | - | root | 0 |
 | `headers/abi.h` | Docstring: abi.h -- Boot-time ABI manifest gate contract. | headers | 10 |
 | `headers/ap_stub.h` | generated from ap_stub.bin - do not edit | headers | 0 |
 | `headers/arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | misc | 139 |
@@ -39,7 +38,7 @@
 | `headers/editor.h` | ifndef EDITOR_H define EDITOR_H  editor.h -- the built-in line editor contract. | headers | 2 |
 | `headers/futex.h` | ifndef FUTEX_H define FUTEX_H  Docstring: futex.h -- Fast userspace mutex sleep/ | headers | 17 |
 | `headers/ide.h` | ifndef IDE_H define IDE_H  IDE/ATA PIO driver for MiniOS. | headers | 35 |
-| `headers/kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | headers | 311 |
+| `headers/kernel.h` | ifndef KERNEL_H define KERNEL_H  define EFAULT  (-14)  The user-window memory la | headers | 316 |
 | `headers/kernel/console_in.h` | ifndef CONSOLE_IN_H define CONSOLE_IN_H  Docstring: console_in.h -- boundary of  | kernel | 8 |
 | `headers/kernel/vga_cursor.h` | ifndef VGA_CURSOR_H define VGA_CURSOR_H  Docstring: vga_cursor.h -- boundary of  | kernel | 9 |
 | `headers/ktime.h` | ifndef KTIME_H define KTIME_H  ktime.h -- pure time-conversion helpers shared by | headers | 3 |
@@ -56,7 +55,7 @@
 | `headers/rtc.h` | ifndef RTC_H define RTC_H | headers | 6 |
 | `headers/sanitize.h` | ifndef SANITIZE_H define SANITIZE_H  Docstring: sanitize.h -- Single choke point | headers | 5 |
 | `headers/sb16.h` | ifndef SB16_H define SB16_H  Sound Blaster 16 DMA audio driver contract. | headers | 27 |
-| `headers/sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h" include " | headers | 100 |
+| `headers/sched.h` | ifndef SCHED_H define SCHED_H  include <stdint.h> include "spinlock.h" include " | headers | 102 |
 | `headers/shell.h` | ifndef SHELL_H define SHELL_H  shell.h -- shared shell constants and the line re | headers | 7 |
 | `headers/smp.h` | ifndef SMP_H define SMP_H  include "spinlock.h"  SMP bring-up: wake the applicat | headers | 11 |
 | `headers/spawn.h` | ifndef SPAWN_H define SPAWN_H  include "kernel.h" include "vma.h" include "sched | headers | 9 |
@@ -79,7 +78,6 @@
 | `headers/wm_tiling.h` | Docstring: Tiling layout contract for the MiniOS desktop. | headers | 3 |
 | `headers/wm_window.h` | Docstring: Unified window contract for the MiniOS desktop. | headers | 12 |
 | `headers/zip.h` | ifndef ZIP_H define ZIP_H  zip.h — MiniOS integration API for the miniz zip libr | headers | 3 |
-| `install.sh` | - | root | 0 |
 | `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 41 |
 | `kernel/abi.c` | Docstring: kernel/abi.c -- Boot-time ABI manifest gate. | - | 3 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | - | 1 |
@@ -90,9 +88,9 @@
 | `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | - | 19 |
 | `kernel/futex.c` | Docstring: kernel/futex.c -- Kernel side of the futex contract. | - | 11 |
 | `kernel/klog.c` | klog.c - Structured kernel logging with levels and subsystems. | - | 9 |
-| `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | - | 44 |
-| `kernel/lz4_kernel.c` | include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE  | - | 11 |
-| `kernel/minifetch.c` | Docstring: kernel/minifetch.c -- neofetch-style system screen. | - | 14 |
+| `kernel/loader.c` | include "kernel.h" include "vga_fb.h"  ========================================= | - | 45 |
+| `kernel/lz4_kernel.c` | include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE  | - | 13 |
+| `kernel/minifetch.c` | Docstring: kernel/minifetch.c -- neofetch-style system screen. | - | 16 |
 | `kernel/mm.c` | include "kernel.h" include "sched.h"  ========================================== | - | 13 |
 | `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 21 |
 | `kernel/mm/swap.c` | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | mm | 10 |
@@ -100,35 +98,28 @@
 | `kernel/printf.c` | include "kernel.h"  ============================================================ | - | 15 |
 | `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | - | 21 |
 | `kernel/redirect.c` | include "kernel.h"  ============================================================ | - | 7 |
-| `kernel/sched.c` | - | - | 136 |
+| `kernel/sched.c` | - | - | 138 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | - | 8 |
 | `kernel/serial.c` | include "kernel.h" include "sched.h"  serial.c -- COM1 16550 UART driver. | - | 10 |
-| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | - | 135 |
-| `kernel/spawn.c` | include "kernel.h" include "sched.h" include "vma.h" include "spawn.h" include " | - | 19 |
+| `kernel/shell.c` | include "kernel.h" include "net.h" include "minifs.h" include "sched.h" include  | - | 145 |
+| `kernel/spawn.c` | include "kernel.h" include "sched.h" include "vma.h" include "spawn.h" include " | - | 22 |
 | `kernel/string.c` | include "kernel.h"  string.c -- Kernel string and memory functions. | - | 13 |
 | `kernel/symtab.c` | include "kernel.h"  ============================================================ | - | 9 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | - | 31 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | - | 158 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | - | 160 |
 | `kernel/syscalls_proc.c` | syscalls_proc.c - Process-management syscall handlers. | - | 21 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | - | 9 |
 | `kernel/time.c` | include "kernel.h" include "ktime.h"  ========================================== | - | 7 |
 | `kernel/vga_cursor.c` | Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c). | - | 14 |
 | `kernel/vga_fb.c` | - | - | 177 |
-| `make_usb.sh` | Build the MiniOS bootable USB image and optionally write it to a device.  Wraps  | root | 2 |
 | `mcp/__init__.py` | - | mcp | 0 |
-| `mcp/mcp_dbg_driver.py` | - | mcp | 6 |
-| `mcp/mcp_dogfood.py` | - | mcp | 6 |
-| `mcp/minios_addons.py` | - | mcp | 16 |
-| `mcp/minios_mcp.py` | - | mcp | 50 |
+| `mcp/mcp_dbg_driver.py` | Debug driver: boot MiniOS through the MCP bridge and run freedom. | mcp | 6 |
+| `mcp/mcp_dogfood.py` | Dogfood: drive minios_mcp.py over stdio JSON-RPC and install the freedom addon f | mcp | 6 |
+| `mcp/minios_addons.py` | MiniOS addon marketplace (lazyaddons-style).  Addons are YAML files that say whe | mcp | 16 |
+| `mcp/minios_mcp.py` | MiniOS MCP bridge.  Exposes a running MiniOS instance as tools over the MCP stdi | mcp | 50 |
 | `mcp/mutate_mcp.sh` | Mutation testing for the MiniOS MCP bridge. Every mutant is injected into a priv | mcp | 1 |
-| `mcp/test_minios_mcp.py` | - | mcp | 104 |
-| `minifs_dump.py` | - | root | 12 |
-| `minifs_fsck.py` | - | root | 15 |
-| `mkfs.minifs.py` | - | root | 20 |
-| `mkramdisk.py` | - | root | 2 |
-| `mkroots.sh` | mkroots.sh - regenerate tls_roots.h from the DER files in tls_roots_src/.  Prove | root | 0 |
-| `mutate.sh` | Mutation testing for MiniOS.  Each mutation is applied to the source in place, t | root | 5 |
-| `net/net.c` | MiniOS network stack: rtl8139 under QEMU slirp user networking. | net | 69 |
+| `mcp/test_minios_mcp.py` | Unit and BDD suite for the MiniOS MCP bridge.  Unit tests exercise protocol disp | mcp | 104 |
+| `net/net.c` | MiniOS network stack: rtl8139 under QEMU slirp user networking. | net | 70 |
 | `net/rtl8139.c` | include "kernel.h" include "net.h" include "net/rtl8139.h" | net | 34 |
 | `net/tls.c` | tls.c - TLS 1.2 client sessions for MiniOS. | net | 42 |
 | `net/tls_crypto.c` | tls_crypto.c - the crypto behind the kernel TLS 1.2 client. | net | 80 |
@@ -330,9 +321,10 @@
 | `progs/doomgeneric/wi_stuff.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 5 |
 | `progs/doomgeneric/z_zone.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 21 |
 | `progs/doomgeneric/z_zone.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 13 |
-| `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | misc | 73 |
+| `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | misc | 72 |
 | `progs/freedomui/freedomui_minios.c` | freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern. | misc | 47 |
-| `progs/lisp/lisp.c` | - | misc | 116 |
+| `progs/lisp/lisp.c` | - | lisp | 116 |
+| `progs/lisp/tin.c` | - | lisp | 1 |
 | `progs/lua/lua_main.c` | - | lua | 25 |
 | `progs/lua/minios.c` | - | lua | 27 |
 | `progs/micropython/variants/minios/lib/__init__.py` | MiniOS frozen library package. | lib | 0 |
@@ -340,13 +332,15 @@
 | `progs/micropython/variants/minios/manifest.py` | manifest.py -- frozen modules for the MiniOS MicroPython variant. Scripts listed | minios | 0 |
 | `progs/micropython/variants/minios/minios_module.c` | - | minios | 33 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 |
-| `progs/minicraft/minicraft.c` | minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 230 |
-| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | misc | 130 |
+| `progs/minicraft/minicraft.c` | minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 246 |
+| `progs/minios_abi.h` | ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth  | progs | 129 |
+| `progs/minios_png.h` | Docstring: shared ring-3 PNG helpers for MiniOS apps (progs/minios_png.h). | progs | 22 |
+| `progs/nk_palette.h` | nk_palette.h - one shared hybrid palette for every NK-window app. | progs | 9 |
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 59 |
 | `progs/nuklear/cvm_emit.h` | ifndef CVM_EMIT_H define CVM_EMIT_H  cvm_emit.h — node-graph compiler for CVM (c | nuklear | 6 |
 | `progs/nuklear/font8x8.c` | font8x8 - shared 8x8 bitmap font for MiniOS ring-3 graphics programs. | nuklear | 0 |
 | `progs/nuklear/node_editor.c` | node_editor.c — visual low-code editor that compiles to CVM bytecode. | nuklear | 78 |
-| `progs/nuklear/nuklear_minios.c` | nuklear_minios.c — MiniOS platform layer for Nuklear. | nuklear | 40 |
+| `progs/nuklear/nuklear_minios.c` | nuklear_minios.c — MiniOS platform layer for Nuklear. | nuklear | 50 |
 | `progs/nuklear/nuklear_minios.h` | ifndef NUKLEAR_MINIOS_H define NUKLEAR_MINIOS_H  nuklear_minios.h — MiniOS platf | nuklear | 25 |
 | `progs/nuklear/nuklear_theme.c` | Docstring: shared Nuklear theme loader, linked by every NK app. | nuklear | 10 |
 | `progs/nuklear/nuklear_theme.h` | ifndef NUKLEAR_THEME_H define NUKLEAR_THEME_H  Docstring: shared Nuklear theme c | nuklear | 13 |
@@ -354,7 +348,7 @@
 | `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 87 |
 | `progs/pokemon/fetch.sh` | fetch.sh - clone the gb-recompiled tool into progs/pokemon/upstream.  The upstre | pokemon | 0 |
 | `progs/pokemon/minios_stubs/SDL.h` | SDL.h stub for MiniOS cross-compilation | misc | 10 |
-| `progs/pokemon/platform_minios.c` | - | pokemon | 110 |
+| `progs/pokemon/platform_minios.c` | - | pokemon | 118 |
 | `progs/quake2generic/q2generic_minios.c` | q2generic_minios.c - MiniOS platform layer for quake2generic. | misc | 36 |
 | `progs/src/aes.c` | aes.c - command path AES-256-CTR encryption tools: aes and unaes. | src | 55 |
 | `progs/src/audio.c` | include "minios_abi.h" | src | 18 |
@@ -363,7 +357,7 @@
 | `progs/src/fib.c` | - | src | 2 |
 | `progs/src/fptest.c` | fptest.c -- FPU/SSE context-switch probe (Phase 0.1, ADR-0014). | src | 14 |
 | `progs/src/freedom.c` | freedom - a headless text browser for MiniOS. | src | 62 |
-| `progs/src/freedom_wl.c` | freedom_wl - Wayland to MiniOS intermediate layer for FreeDom. | src | 64 |
+| `progs/src/freedom_wl.c` | freedom_wl - Wayland to MiniOS intermediate layer for FreeDom. | src | 65 |
 | `progs/src/ftest.c` | Exercises the kernel libc surface used by loaded .o programs: fprintf to stdout/ | src | 7 |
 | `progs/src/hello.c` | MiniOS test program — compiled as relocatable .o, loaded by kernel ELF loader | src | 2 |
 | `progs/src/hello.py` | - | src | 0 |
@@ -391,17 +385,17 @@
 | `progs/tls_u/tls_u_port.c` | tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3). | tls_u | 20 |
 | `progs/topogpt3/topogpt3.c` | - | misc | 132 |
 | `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 151 |
-| `progs/wl/wl_mini.h` | wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024). | wl | 57 |
-| `progs/wl/wlcomp.c` | wlcomp - Wayland-mini ring-3 compositor (ADR-0024). | wl | 11 |
+| `progs/wl/wl_client.h` | wl_client.h - Thin mailbox client for Wayland-mini (ADR-0026). | wl | 6 |
+| `progs/wl/wl_mbox.h` | wl_mbox.h - Mailbox file transport for Wayland-mini (ADR-0026). | wl | 27 |
+| `progs/wl/wl_mini.h` | wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024). | wl | 104 |
+| `progs/wl/wlcomp.c` | wlcomp - Wayland-mini ring-3 compositor (ADR-0024, ADR-0026). | wl | 55 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 31 |
 | `smp.c` | include "kernel.h" include "bootdefs.h" include "smp.h" include "sched.h" includ | root | 48 |
-| `test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the | root | 11 |
-| `test_http_server.py` | - | root | 3 |
 | `tests/host_aes.sh` | host_aes.sh - host-side verification for the AES-256-CTR command tools.  The min | tests | 3 |
 | `tests/host_codecs.sh` | host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The | tests | 5 |
 | `tests/test_abi.c` | Docstring: tests/test_abi.c -- Host test for the ABI manifest gate. | tests | 3 |
 | `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 6 |
-| `tests/test_doom_pwad.py` | - | tests | 44 |
+| `tests/test_doom_pwad.py` | test_doom_pwad.py - host contract suite for tools/doom_pwad.py.  Runs the grid c | tests | 44 |
 | `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 12 |
 | `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 15 |
 | `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 8 |
@@ -410,6 +404,7 @@
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 11 |
 | `tests/test_hal_io.c` | Docstring: Host test for arch/x86/hal_io.h (make test-hal). | tests | 9 |
 | `tests/test_ktime.c` | test_ktime.c -- host test for the pure conversion math in ktime.h | tests | 3 |
+| `tests/test_minios_png.c` | Docstring: host test for the shared ring-3 PNG helpers (make test-png). | tests | 13 |
 | `tests/test_modifiers.c` | include <stdio.h>  include "drivers/modifiers.h" | tests | 6 |
 | `tests/test_notify.c` | include <stdio.h>  include "wm_notify.h" | tests | 9 |
 | `tests/test_paint.c` | Docstring: host test for the paint canvas/PNG contract (make test-paint). | tests | 25 |
@@ -424,47 +419,61 @@
 | `tests/test_vedit_build.c` | Docstring: Host test for the vedit IDE build contract (make test-vedit). | tests | 11 |
 | `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 13 |
 | `tests/test_vma_bench.c` | test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 10 |
-| `tests/test_wl.c` | Host test for progs/wl/wl_mini.h (make test-wl). | tests | 6 |
+| `tests/test_wl.c` | Host test for progs/wl/wl_mini.h (make test-wl). | tests | 8 |
 | `tests/test_wm.c` | Docstring: Host test for wm_geom.h and wm_events.h (make test-wm). | tests | 6 |
 | `tls_test.c` | tls_test.c - host-side tests for the kernel TLS stack. | root | 34 |
-| `tls_test.py` | - | root | 16 |
 | `tools/abi_stamp.c` | Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator. | tools | 2 |
 | `tools/boot_run.sh` | boot_run.sh -- boot the MiniOS image in QEMU and drive the shell over the serial | tools | 0 |
-| `tools/check_abi_numbers.py` | - | tools | 4 |
-| `tools/check_addons.py` | - | tools | 2 |
-| `tools/check_cohesion.py` | - | tools | 4 |
-| `tools/check_complexity.py` | - | tools | 3 |
-| `tools/check_fork_stubs.py` | - | tools | 4 |
-| `tools/check_kb_sync.py` | - | tools | 2 |
-| `tools/check_mutant_anchors.py` | - | tools | 5 |
-| `tools/check_surprising.py` | - | tools | 5 |
-| `tools/check_syscall_sanitize.py` | - | tools | 8 |
-| `tools/doom_pwad.py` | - | tools | 25 |
-| `tools/extract_shell.py` | - | tools | 0 |
-| `tools/gdb_repro.py` | - | tools | 4 |
-| `tools/gen_desktop_pngs.py` | - | tools | 2 |
-| `tools/gen_icons.py` | - | tools | 3 |
-| `tools/gen_zip_fixtures.py` | - | tools | 2 |
-| `tools/kernel_feature_survey.py` | - | tools | 8 |
-| `tools/lisp_scoped.sh` | Docstring: Scoped Lisp validation for the MiniOS interpreter contract. Builds th | tools | 3 |
-| `tools/minifs_saves.py` | - | tools | 21 |
-| `tools/minios_cli.py` | - | tools | 6 |
-| `tools/minios_gui.py` | - | tools | 9 |
-| `tools/mkpak1.py` | - | tools | 1 |
+| `tools/boot_wl.py` | boot_wl.py - boot the miniOS Wayland-mini desktop in one step.  Builds nothing;  | tools | 14 |
+| `tools/check_abi_numbers.py` | check_abi_numbers.py -- MiniOS syscall numbers vs Linux x86-64 truth.  Phase 0.6 | tools | 4 |
+| `tools/check_addons.py` | check_addons.py -- validate the MiniOS addon marketplace index.  Loads every add | tools | 2 |
+| `tools/check_cohesion.py` | check_cohesion.py -- Architectural cohesion gate for MiniOS CI.  Parses the CPG  | tools | 4 |
+| `tools/check_complexity.py` | check_complexity.py -- Kernel complexity gate for MiniOS CI.  Validates that ker | tools | 3 |
+| `tools/check_fork_stubs.py` | Fail-closed stub gate for unimplemented process syscalls.  fork, vfork and execv | tools | 4 |
+| `tools/check_kb_sync.py` | check_kb_sync.py -- Verify KNOWLEDGE_BASE.md is in sync with code.  Runs readmen | tools | 2 |
+| `tools/check_mutant_anchors.py` | Verify every mutate.sh mutant anchor matches its target file.  A mutant whose se | tools | 5 |
+| `tools/check_surprising.py` | check_surprising.py -- Detect surprising architectural connections.  Parses the  | tools | 5 |
+| `tools/check_syscall_sanitize.py` | Scoped audit gate for syscall user-pointer sanitization.  Every ring-3 pointer t | tools | 8 |
+| `tools/doom_pwad.py` | doom_pwad.py - grid map to vanilla Doom PWAD writer and checker.  Converts a tex | tools | 25 |
+| `tools/extract_shell.py` | tools/extract_shell.py -- Plan for Phase 6.1 shell extraction.  This script docu | tools | 0 |
+| `tools/gdb_repro.py` | gdb_repro.py — drive a graphics-program sequence under the GDB stub.  Boots Mini | tools | 4 |
+| `tools/gen_desktop_pngs.py` | gen_desktop_pngs.py -- build MiniOS desktop art from user-supplied PNGs.  Source | tools | 2 |
+| `tools/gen_icons.py` | gen_icons.py -- generate 32x32 RGBA PNG icon files for the MiniOS desktop.  Each | tools | 3 |
+| `tools/gen_minifs.py` | Generate minifs.c for MiniOS. | tools | 0 |
+| `tools/gen_zip_fixtures.py` | gen_zip_fixtures.py -- generate the zip test fixtures shipped on the ramdisk.  T | tools | 2 |
+| `tools/install.sh` | - | tools | 0 |
+| `tools/kernel_feature_survey.py` | kernel_feature_survey.py - verify which C features the MiniOS kernel needs.  Sca | tools | 8 |
+| `tools/lisp_scoped.sh` | Docstring: Scoped Lisp validation for the MiniOS interpreter contract. Builds th | tools | 5 |
+| `tools/make_usb.sh` | Build the MiniOS bootable USB image and optionally write it to a device.  Wraps  | tools | 2 |
+| `tools/minifs_dump.py` | minifs_dump.py - Dump/inspect a MiniFS filesystem image. | tools | 12 |
+| `tools/minifs_fsck.py` | minifs_fsck.py - Check MiniFS filesystem consistency. | tools | 15 |
+| `tools/minifs_saves.py` | minifs_saves.py - preserve the guest's saves/ dir across image rebuilds.  Regene | tools | 21 |
+| `tools/minios_cli.py` | minios_cli.py — drive MiniOS through the MCP bridge, not by hand.  Starts mcp/mi | tools | 6 |
+| `tools/minios_gui.py` | minios_gui.py — inject VGA-mode input and capture the framebuffer.  Boots MiniOS | tools | 9 |
+| `tools/minios_hyper.py` | minios_hyper.py -- host-side ring-minus-one debugger for MiniOS.  QEMU already r | tools | 51 |
+| `tools/mkfs.minifs.py` | mkfs.minifs.py - Create a MiniFS filesystem image for MiniOS.  Usage: python3 mk | tools | 20 |
+| `tools/mkpak1.py` | Build baseq2/pak1.pak carrying the player model.  The Quake 2 shareware pak0.pak | tools | 1 |
+| `tools/mkramdisk.py` | Build a MiniOS ramdisk image from files in a directory tree.  Each packed file i | tools | 2 |
+| `tools/mkroots.sh` | mkroots.sh - regenerate tls_roots.h from the DER files in tls_roots_src/.  Prove | tools | 0 |
+| `tools/mutate.sh` | Mutation testing for MiniOS.  Each mutation is applied to the source in place, t | tools | 5 |
 | `tools/probe_compute_vga.py` | Docstring: VGA liveness probe during CPU-bound ring-3 compute. Boots os.img head | tools | 6 |
-| `tools/probe_minicraft.py` | - | tools | 6 |
-| `tools/qga_client.py` | - | tools | 4 |
+| `tools/probe_minicraft.py` | probe_minicraft.py -- numeric minicraft probe without any PNG.  Boots os.img hea | tools | 6 |
+| `tools/qga_client.py` | Minimal QEMU guest agent client for MiniOS.  Connects to the guest agent socket  | tools | 4 |
 | `tools/qga_test.sh` | Quick standalone smoke test for the QEMU guest agent: boots os.img once with the | tools | 3 |
-| `tools/repro_gui.py` | - | tools | 10 |
-| `tools/test_call_align.py` | - | tools | 4 |
+| `tools/repro_gui.py` | repro_gui.py — reproduce the VGA/mouse state bug after ring-3 programs.  Boots M | tools | 10 |
+| `tools/test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the | tools | 11 |
+| `tools/test_call_align.py` | test_call_align.py - verify stack alignment at call sites, both parities.  Compi | tools | 4 |
 | `tools/test_codecs.sh` | test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  T | tools | 0 |
-| `tools/test_gui_fashion.py` | - | tools | 18 |
-| `tools/test_gui_icon_cwd.py` | - | tools | 17 |
-| `tools/test_gui_menu.py` | - | tools | 1 |
-| `tools/test_gui_wm.py` | - | tools | 17 |
-| `tools/test_gui_zoom.py` | - | tools | 1 |
-| `tools/test_lisp.py` | - | tools | 15 |
+| `tools/test_gui_fashion.py` | test_gui_fashion.py -- GUI proof for the cursor/flicker/quit fixes.  Boots the r | tools | 18 |
+| `tools/test_gui_icon_cwd.py` | test_gui_icon_cwd.py -- GUI proof that dock launches ignore shell cwd.  Boots th | tools | 17 |
+| `tools/test_gui_menu.py` | test_gui_menu.py -- serial proof that the minicraft pause menu works.  ESC must  | tools | 1 |
+| `tools/test_gui_wm.py` | test_gui_wm.py -- GUI proof that graphics windows survive the WM.  Serial `wm` c | tools | 17 |
+| `tools/test_gui_zoom.py` | test_gui_zoom.py -- pixel proof that GFX_ZOOM doubles the game window.  Boots Mi | tools | 1 |
+| `tools/test_http_server.py` | Host-side HTTP fixture for the freedom BDD scenarios.  Serves behaviours that py | tools | 3 |
+| `tools/test_lisp.py` | Host test suite for the MiniOS Lisp interpreter.  Builds progs/lisp/lisp.c with  | tools | 16 |
 | `tools/test_sb16.sh` | test_sb16.sh — targeted BDD harness for the SB16 audio path.  Boots the disk ima | tools | 1 |
-| `tools/wm_layout_sync.py` | - | tools | 17 |
+| `tools/tls_test.py` | Host-side TLS test driver for the MiniOS kernel TLS client.  Generates a throwaw | tools | 16 |
+| `tools/wl_scoped.sh` | Docstring: Scoped Wayland-mini validation for the tiled ring-3 compositor. Runs  | tools | 4 |
+| `tools/wm_layout_sync.py` | Docstring: Synchronize the WM layout manifest from source truth.  I read wm_layo | tools | 17 |
 | `tools/wm_scoped.sh` | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs ho | tools | 2 |
 | `vma.c` | include "vma.h" | root | 14 |

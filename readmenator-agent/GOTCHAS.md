@@ -4,8 +4,8 @@
 
 These files have the most connections. Changes here have high blast radius.
 
-- `headers/kernel.h` (score: 137.10)
-- `kernel/string.c` (score: 123.30)
+- `headers/kernel.h` (score: 137.60)
+- `kernel/string.c` (score: 125.30)
 - `progs/doomgeneric/doomtype.h` (score: 101.40)
 - `progs/doomgeneric/doomdef.h` (score: 90.90)
 - `progs/doomgeneric/d_main.c` (score: 89.30)
@@ -13,7 +13,7 @@ These files have the most connections. Changes here have high blast radius.
 - `progs/doomgeneric/i_system.h` (score: 81.50)
 - `progs/doomgeneric/z_zone.h` (score: 81.30)
 - `progs/doomgeneric/g_game.c` (score: 77.70)
-- `kernel/syscalls.c` (score: 69.80)
+- `kernel/syscalls.c` (score: 70.00)
 
 ## Hotspots (complexity + centrality)
 
@@ -21,18 +21,18 @@ These files have the most connections. Changes here have high blast radius.
 - `progs/doomgeneric/d_main.c` -- complexity: 0.4, centrality: 1.0, combined: 0.7
 - `progs/doomgeneric/g_game.c` -- complexity: 0.3, centrality: 0.9, combined: 0.6
 - `kernel/syscalls.c` -- complexity: 0.5, centrality: 0.7, combined: 0.6
-- `progs/doomgeneric/st_stuff.c` -- complexity: 0.5, centrality: 0.6, combined: 0.6
+- `progs/doomgeneric/st_stuff.c` -- complexity: 0.5, centrality: 0.6, combined: 0.5
 - `kernel/string.c` -- complexity: 0.0, centrality: 0.8, combined: 0.5
 - `kernel/vga_fb.c` -- complexity: 0.6, centrality: 0.4, combined: 0.5
 - `progs/doomgeneric/m_menu.c` -- complexity: 0.3, centrality: 0.6, combined: 0.5
-- `kernel/shell.c` -- complexity: 0.4, centrality: 0.5, combined: 0.4
+- `kernel/shell.c` -- complexity: 0.5, centrality: 0.5, combined: 0.5
 - `progs/doomgeneric/doomstat.h` -- complexity: 0.2, centrality: 0.5, combined: 0.4
 
 ## Dependency Cycles
 
 Circular dependencies. Refactor to break the cycle.
 
-- `progs/doomgeneric/r_data.h` -> `progs/doomgeneric/r_state.h`
+- `progs/doomgeneric/r_data.h` -> `progs/doomgeneric/r_state.h` -> `progs/doomgeneric/r_data.h`
 
 ## Layer Violations
 

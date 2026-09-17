@@ -83,6 +83,12 @@ switch_to:
         jz      4f
         fxsave  (%rax)
 4:
+        pushq   %rcx
+        movl    $0xc0000100, %ecx
+        rdmsr
+        movl    %eax, 320(%rdi)     /* fsbase (PROC_FSBASE_OFF) */
+        movl    %edx, 324(%rdi)
+        popq    %rcx
         testl   %r11d, %r11d
         jz      3f
         jmp     switch_to_notrap
@@ -125,6 +131,26 @@ switch_to_notrap:
         movq    96(%rax), %r13
         movq   104(%rax), %r14
         movq   112(%rax), %r15
+
+        cmpl    $0, 152(%rax)
+        je      6f
+        pushq   %rcx
+        leaq    smp_ap_idle_loop(%rip), %rcx
+        cmpq    %rcx, 120(%rax)
+        popq    %rcx
+        je      6f
+        pushq   %rcx
+        pushq   %rax
+        pushq   %rdx
+        movl    $0xc0000100, %ecx
+        movq    320(%rax), %rax     /* rax = fsbase */
+        movq    %rax, %rdx
+        shrq    $32, %rdx           /* edx = high, eax = low */
+        wrmsr
+        popq    %rdx
+        popq    %rax
+        popq    %rcx
+6:
 
         /* 5. rsp (switch to next's kernel stack) */
         movq   128(%rax), %rsp

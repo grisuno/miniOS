@@ -11,6 +11,7 @@
 #include "progs/wl/wl_mini.h"
 #include "progs/wl/wl_mbox.h"
 #include "progs/nk_palette.h"
+#include "progs/minios_abi.h"
 
 static int failures = 0;
 
@@ -170,6 +171,13 @@ int main(void) {
             "layout zero fb refused");
         CHECK(wl_comp_layout_tile(0, 800, 360) == WL_ERR_BOUND,
             "layout null refused");
+        CHECK(wl_comp_layout_tile(&t, 31, 24) == 2, "layout odd width");
+        CHECK(t.items[t.order[0]].w == 15, "layout odd left floor");
+        CHECK(t.items[t.order[1]].w == 16, "layout odd remainder right");
+        CHECK(t.items[t.order[0]].x == 0
+            && t.items[t.order[1]].x == 15, "layout odd edges meet");
+        CHECK(wl_comp_layout_tile(&t, 801, 24) == WL_ERR_BOUND,
+            "layout oversize fb refused");
     }
 
     {
@@ -609,6 +617,9 @@ int main(void) {
         CHECK(wl_mbox_ev_name(path, sizeof path, "UP") == WL_ERR_STR,
             "ev name wild refused");
     }
+
+    CHECK(WL_SURF_MAX_W == MINIOS_NK_W, "surf max w tracks abi");
+    CHECK(WL_SURF_MAX_H == MINIOS_NK_H, "surf max h tracks abi");
 
     if (failures == 0)
         printf("wl: ok (%d surfaces, msg %d)\n", WL_MAX_SURFACES, WL_MAX_MSG);

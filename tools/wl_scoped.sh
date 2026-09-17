@@ -63,6 +63,14 @@ grep -q "0025" docs/adr/0025-wayland-session.md || die "session ADR missing"
 grep -q "0026" docs/adr/0026-wayland-mailbox.md || die "mailbox ADR missing"
 python3 -m py_compile tools/boot_wl.py || die "boot_wl syntax broken"
 grep -q "wlcomp --server" tools/boot_wl.py || die "desktop setup missing"
+grep -q "spin_wl" progs/src/spin.c || die "tiny live publisher missing"
+grep -q "spin_raw_file" progs/src/spin.c || die "tiny raw publish missing"
+grep -q "spin.elf" Makefile || die "spin build missing"
+rm -f progs/bin/spin.elf
+make progs/bin/spin.elf >build/wl_scoped_spin.log 2>&1 || die "spin guest build failed"
+if grep -E "warning|error" build/wl_scoped_spin.log; then die "warnings in spin build"; fi
+make progs/bin/wlcomp >build/wl_scoped_wlcomp.log 2>&1 || die "wlcomp rebuild failed"
+if grep -E "warning|error" build/wl_scoped_wlcomp.log; then die "warnings in wlcomp rebuild"; fi
 grep -q "^wl:" Makefile || die "make wl target missing"
 cp progs/wl/wl_mini.h build/wl_scoped_backup.h
 cp progs/wl/wl_mbox.h build/wl_scoped_mbox.h

@@ -180,49 +180,60 @@
 - Doc: nuklear_minios.c — MiniOS platform layer for Nuklear.
 - Language: c
 - Symbols:
-  - `nk_sys_time_ms` (function, line 27) `long nk_sys_time_ms(void)`
-  - `nk_sys_kbd` (function, line 32) `long nk_sys_kbd(void)`
-  - `nk_sys_palette` (function, line 37) `long nk_sys_palette(const unsigned char *pal)`
-  - `nk_sys_kbd_raw` (function, line 42) `long nk_sys_kbd_raw(int on)`
-  - `nk_sys_vga_mode` (function, line 47) `long nk_sys_vga_mode(int on)`
-  - `nk_sys_fb_info` (function, line 52) `long nk_sys_fb_info(int *w, int *h, int *pitch)`
-  - `nk_sys_mouse` (function, line 59) `long nk_sys_mouse(int *xybw)`
-  - `nk_sys_mouse_badptr` (function, line 64) `long nk_sys_mouse_badptr(void)`
-  - `nk_sys_nk_frame` (function, line 72) `long nk_sys_nk_frame(int *origin)`
-  - `nk_sys_gfx_set_title` (function, line 77) `long nk_sys_gfx_set_title(const char *t)`
-  - `pal_prepare` (function, line 149) `static void pal_prepare(void)`
-  - `col_to_idx` (function, line 160) `static int col_to_idx(struct nk_color c)`
-  - `set_clip` (function, line 178) `static void set_clip(int x, int y, int w, int h)`
-  - `px` (function, line 188) `static void px(int x, int y, int c)`
-  - `fill_rect` (function, line 195) `static void fill_rect(int x, int y, int w, int h, int c)`
-  - `draw_line` (function, line 202) `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)`
-  - `fill_circle` (function, line 220) `static void fill_circle(int cx, int cy, int r, int c)`
-  - `stroke_circle` (function, line 226) `static void stroke_circle(int cx, int cy, int r, int th, int c)`
-  - `fill_poly` (function, line 245) `static void fill_poly(int *xs, int *ys, int n, int c)`
-  - `stroke_poly` (function, line 267) `static void stroke_poly(int *xs, int *ys, int n, int th, int c)`
-  - `draw_text` (function, line 274) `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)`
-  - `draw_arc` (function, line 288) `static void draw_arc(int cx, int cy, int r, float a0, float a1,
+  - `nk_sys_time_ms` (function, line 33) `long nk_sys_time_ms(void)`
+  - `nk_sys_kbd` (function, line 38) `long nk_sys_kbd(void)`
+  - `nk_sys_palette` (function, line 43) `long nk_sys_palette(const unsigned char *pal)`
+  - `nk_sys_kbd_raw` (function, line 48) `long nk_sys_kbd_raw(int on)`
+  - `nk_sys_getpid` (function, line 53) `long nk_sys_getpid(void)`
+  - `nk_client_probe` (function, line 71) `static int nk_client_probe(void)`
+  - `nk_sys_vga_mode` (function, line 113) `long nk_sys_vga_mode(int on)`
+  - `nk_sys_fb_info` (function, line 121) `long nk_sys_fb_info(int *w, int *h, int *pitch)`
+  - `nk_sys_mouse` (function, line 128) `long nk_sys_mouse(int *xybw)`
+  - `nk_sys_mouse_badptr` (function, line 133) `long nk_sys_mouse_badptr(void)`
+  - `nk_client_hash` (function, line 150) `static unsigned nk_client_hash(const unsigned char *p, unsigned n)`
+  - `nk_client_publish` (function, line 161) `static int nk_client_publish(void)`
+  - `nk_sys_nk_frame` (function, line 214) `long nk_sys_nk_frame(int *origin)`
+  - `nk_mirror_box` (function, line 242) `static void nk_mirror_box(char *dst, int cap)`
+  - `nk_mirror_emit` (function, line 263) `static int nk_mirror_emit(const char *box, unsigned seq,
+        const unsigned char *msg, int mlen)`
+  - `nk_mirror_tick` (function, line 280) `static void nk_mirror_tick(void)`
+  - `nk_sys_gfx_set_title` (function, line 338) `long nk_sys_gfx_set_title(const char *t)`
+  - `nk_build_palette` (function, line 347) `void nk_build_palette(unsigned char *pal768)`
+  - `pal_prepare` (function, line 355) `static void pal_prepare(void)`
+  - `col_to_idx` (function, line 366) `static int col_to_idx(struct nk_color c)`
+  - `set_clip` (function, line 384) `static void set_clip(int x, int y, int w, int h)`
+  - `px` (function, line 394) `static void px(int x, int y, int c)`
+  - `fill_rect` (function, line 401) `static void fill_rect(int x, int y, int w, int h, int c)`
+  - `draw_line` (function, line 408) `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)`
+  - `fill_circle` (function, line 426) `static void fill_circle(int cx, int cy, int r, int c)`
+  - `stroke_circle` (function, line 432) `static void stroke_circle(int cx, int cy, int r, int th, int c)`
+  - `fill_poly` (function, line 451) `static void fill_poly(int *xs, int *ys, int n, int c)`
+  - `stroke_poly` (function, line 473) `static void stroke_poly(int *xs, int *ys, int n, int th, int c)`
+  - `draw_text` (function, line 480) `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)`
+  - `draw_arc` (function, line 494) `static void draw_arc(int cx, int cy, int r, float a0, float a1,
                      int filled, ...`
-  - `nk_rasterize` (function, line 309) `void nk_rasterize(struct nk_context *ctx)`
-  - `nk_foreach` (function, line 314) `nk_foreach(cmd, ctx)`
-  - `nk_minios_font_width` (function, line 460) `static float nk_minios_font_width(nk_handle handle, float height,
+  - `nk_rasterize` (function, line 515) `void nk_rasterize(struct nk_context *ctx)`
+  - `nk_foreach` (function, line 520) `nk_foreach(cmd, ctx)`
+  - `nk_minios_font_width` (function, line 666) `static float nk_minios_font_width(nk_handle handle, float height,
                                ...`
-  - `nk_minios_font` (function, line 465) `struct nk_user_font nk_minios_font(void)`
-  - `feed_key` (function, line 500) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
-  - `nk_set_scancode_hook` (function, line 507) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
-  - `handle_scancode` (function, line 512) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
-  - `nk_poll_input` (function, line 557) `void nk_poll_input(struct nk_context *ctx)`
-  - `nk_set_window_origin` (function, line 594) `void nk_set_window_origin(int x, int y)`
-  - `nk_quit_requested` (function, line 603) `int nk_quit_requested(void)`
+  - `nk_minios_font` (function, line 671) `struct nk_user_font nk_minios_font(void)`
+  - `feed_key` (function, line 706) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
+  - `nk_set_scancode_hook` (function, line 713) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
+  - `handle_scancode` (function, line 718) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
+  - `nk_client_poll` (function, line 767) `static void nk_client_poll(struct nk_context *ctx)`
+  - `nk_poll_input` (function, line 813) `void nk_poll_input(struct nk_context *ctx)`
+  - `nk_set_window_origin` (function, line 852) `void nk_set_window_origin(int x, int y)`
+  - `nk_quit_requested` (function, line 861) `int nk_quit_requested(void)`
   - `list` (function, line 4) `* abstract draw command list (nk__begin/nk__next);`
-  - `volatile` (function, line 29) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
-  - `nk_build_palette` (function, line 152) `nk_build_palette(pal768);`
-  - `nk_input_key` (function, line 502) `nk_input_key(ctx, key, down ? nk_true : nk_false);`
-  - `nk_input_unicode` (function, line 553) `nk_input_unicode(ctx, (nk_rune)ch);`
-  - `nk_input_motion` (function, line 574) `nk_input_motion(ctx, lx, ly);`
-  - `nk_input_scroll` (function, line 590) `nk_input_scroll(ctx, scroll);`
+  - `volatile` (function, line 35) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
+  - `fclose` (function, line 81) `fclose(f);`
+  - `nk_input_key` (function, line 708) `nk_input_key(ctx, key, down ? nk_true : nk_false);`
+  - `nk_input_unicode` (function, line 759) `nk_input_unicode(ctx, (nk_rune)ch);`
+  - `nk_input_scroll` (function, line 810) `nk_input_scroll(ctx, scroll);`
+  - `nk_input_motion` (function, line 832) `nk_input_motion(ctx, lx, ly);`
+  - `program_invocation_short_name` (variable, line 27) `extern char *program_invocation_short_name;`
   - `NK_IMPLEMENTATION` (macro, line 16) `#define NK_IMPLEMENTATION`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`
+- Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
 ## progs/nuklear/nuklear_minios.h
 - Layer: utility

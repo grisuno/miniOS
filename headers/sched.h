@@ -72,6 +72,16 @@ typedef struct {
      * and every k_exec_user run) shares &vma_legacy. The brk/mmap-view
      * switch rebinds the global VMA view alongside g_brk. */
     vma_ctx_t  *vma;
+    /* Per-process TLS base (multitask Wayland fix): every static glibc
+     * binary sets FSBASE once via arch_prctl and then addresses its
+     * thread descriptor through %fs on every malloc, errno and string
+     * call. The switch asm used to leave the base behind, so a
+     * process resumed with another layout's TLS base and jumped wild
+     * on the first %fs-relative indirect call (paint.elf died at its
+     * own .rodata while wlcomp lived, deterministically). The base
+     * rides the context switch now; 0 means unset (fresh spawn, the
+     * Linux-like default the program overwrites itself). */
+    uint64_t    fsbase;
 } proc_t;
 /* Single source of truth for the PCB footprint (review fix for the
  * 0a92118 imulq drift): the syscall_entry trampoline in kernel.c cannot
@@ -81,13 +91,21 @@ typedef struct {
  * macros' values automatically on rebuild -- no asm hunt. procs[] itself
  * is a static 64-entry .bss array (~19 KB at 304 B/entry), far below the
  * USER_LOAD_BASE budget enforced by `make check-size`. */
-#define PROC_T_SIZE 320
+#define PROC_T_SIZE 328
 #define PROC_KSTACK_OFF 168
 /* Offset of fpu_save inside proc_t: the ctx_sw.S save/restore paths
  * address it as imm(proc) without C, so it is named here beside
  * PROC_T_SIZE (same imulq-drift lesson: the _Static_asserts in
  * kernel/sched.c prove offset and size against the struct). */
 #define PROC_FPU_OFF 304
+/* TLS base offset inside proc_t (saved/restored by ctx_sw.S; the
+ * pid field at 152 selects kernel contexts that keep live bases).
+ * Only FSBASE rides the switch: the user GS slot is re-armed to the
+ * kernel base by sched_rearm_kgs after every switch, and nothing in
+ * the guest ABI consumes a persistent user GS, so storing it would
+ * only risk landing a stale user value in the entry swapgs. */
+#define PROC_PID_OFF 152
+#define PROC_FSBASE_OFF 320
 /* fxsave/fxrstor image footprint; MXCSR lives at byte 24 of it. */
 #define FPU_SAVE_SZ 512
 #define FPU_MXCSR_OFF 24

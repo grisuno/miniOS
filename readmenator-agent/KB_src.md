@@ -212,71 +212,72 @@
 - Doc: freedom_wl - Wayland to MiniOS intermediate layer for FreeDom.
 - Language: c
 - Symbols:
-  - `FreedomWlConfig` (struct, line 75)
-  - `present_buf` (type_alias, line 75) `typedef struct FreedomWlConfig { long present_buf;`
-  - `freedom_wl_surface_id` (function, line 113) `static long freedom_wl_surface_id(void)`
-  - `freedom_wl_default` (function, line 125) `static FreedomWlConfig freedom_wl_default(void)`
-  - `freedom_wl_clip_rect` (function, line 163) `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)`
-  - `freedom_wl_frame_bytes` (function, line 194) `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)`
-  - `freedom_wl_keysym` (function, line 213) `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)`
-  - `freedom_wl_sanitize_utf8` (function, line 253) `static long freedom_wl_sanitize_utf8(char *s, long cap)`
-  - `freedom_wl_title_ok` (function, line 326) `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)`
-  - `wl_copy` (function, line 337) `static long wl_copy(char *dst, char *src, long cap)`
-  - `wl_strlen` (function, line 355) `static long wl_strlen(char *s, long cap)`
-  - `wl_append` (function, line 371) `static long wl_append(char *dst, long pos, char *src, long cap)`
-  - `wl_ci_lower` (function, line 394) `static long wl_ci_lower(long ch)`
-  - `wl_ci_starts` (function, line 402) `static long wl_ci_starts(char *s, char *pre)`
-  - `wl_ci_contains` (function, line 420) `static long wl_ci_contains(char *s, char *needle)`
-  - `wl_has_scheme` (function, line 434) `static long wl_has_scheme(char *s)`
-  - `wl_looks_like_url` (function, line 460) `static long wl_looks_like_url(char *s)`
-  - `wl_make_search` (function, line 479) `static long wl_make_search(char *out, char *query, long cap)`
-  - `wl_split_url` (function, line 511) `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...`
-  - `wl_resolve_redirect` (function, line 576) `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...`
-  - `wl_scroll_clamp` (function, line 656) `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)`
-  - `wl_filter_wrap` (function, line 675) `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...`
-  - `wl_status_text` (function, line 918) `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...`
-  - `freedom_wl_build_palette` (function, line 1012) `static long freedom_wl_build_palette(unsigned char *pal, long cap)`
-  - `freedom_wl_sys_present` (function, line 1084) `static long freedom_wl_sys_present(long buf, long origin)`
-  - `freedom_wl_sys_title` (function, line 1091) `static long freedom_wl_sys_title(char *t)`
-  - `freedom_wl_sys_palette` (function, line 1098) `static long freedom_wl_sys_palette(unsigned char *pal)`
-  - `freedom_wl_sys_mouse` (function, line 1105) `static long freedom_wl_sys_mouse(long *m)`
-  - `freedom_wl_sys_kbd` (function, line 1112) `static long freedom_wl_sys_kbd(void)`
-  - `freedom_wl_sys_vga_mode` (function, line 1119) `static long freedom_wl_sys_vga_mode(long on)`
-  - `freedom_wl_sys_kbd_raw` (function, line 1126) `static long freedom_wl_sys_kbd_raw(long on)`
-  - `freedom_wl_sys_yield` (function, line 1133) `static long freedom_wl_sys_yield(void)`
-  - `wl_parse_headers` (function, line 1140) `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...`
-  - `wl_fetch_raw` (function, line 1232) `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)`
-  - `wl_render` (function, line 1467) `static long wl_render(FreedomWlConfig *c, long off)`
-  - `wl_browse` (function, line 1554) `static long wl_browse(FreedomWlConfig *c)`
-  - `freedom_wl_selftest` (function, line 1635) `static long freedom_wl_selftest(void)`
-  - `freedom_wl_host_probe` (function, line 1714) `int freedom_wl_host_probe(FreedomWlConfig *c)`
-  - `main` (function, line 1746) `int main(int argc, char **argv)`
-  - `net_dns_resolve` (function, line 40) `int net_dns_resolve(const char *host);`
-  - `tls_handshake` (function, line 42) `int tls_handshake(int fd, char *host);`
-  - `tls_send` (function, line 43) `int tls_send(int fd, char *buf, int len);`
-  - `tls_recv` (function, line 44) `int tls_recv(int fd, char *buf, int len);`
-  - `tls_close` (function, line 45) `void tls_close(int fd);`
-  - `wl_client_init` (function, line 116) `wl_client_init(&cl);`
-  - `volatile` (function, line 1086) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
-  - `printf` (function, line 1258) `printf("freedom_wl: cannot resolve %s\n", host);`
-  - `WL_COLS` (macro, line 48) `#define WL_COLS`
-  - `WL_ROWS` (macro, line 49) `#define WL_ROWS`
-  - `WL_TEXT_ROWS` (macro, line 50) `#define WL_TEXT_ROWS`
-  - `WL_LINES_MAX` (macro, line 51) `#define WL_LINES_MAX`
-  - `WL_LINE_LEN` (macro, line 52) `#define WL_LINE_LEN`
-  - `WL_BODY_CAP` (macro, line 53) `#define WL_BODY_CAP`
-  - `WL_HDR_MAX` (macro, line 54) `#define WL_HDR_MAX`
-  - `WL_NET_BUF` (macro, line 55) `#define WL_NET_BUF`
-  - `WL_REQ_MAX` (macro, line 56) `#define WL_REQ_MAX`
-  - `WL_HOST_MAX` (macro, line 57) `#define WL_HOST_MAX`
-  - `WL_PATH_MAX` (macro, line 58) `#define WL_PATH_MAX`
-  - `WL_URL_MAX` (macro, line 59) `#define WL_URL_MAX`
-  - `WL_HOPS_MAX` (macro, line 60) `#define WL_HOPS_MAX`
-  - `WL_FONT_W` (macro, line 61) `#define WL_FONT_W`
-  - `WL_FONT_H` (macro, line 62) `#define WL_FONT_H`
-  - `WL_TAG_MAX` (macro, line 63) `#define WL_TAG_MAX`
-  - `WL_ENT_MAX` (macro, line 64) `#define WL_ENT_MAX`
-- Depends on: `headers/vga_fb.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/wl/wl_mini.h`
+  - `FreedomWlConfig` (struct, line 76)
+  - `present_buf` (type_alias, line 76) `typedef struct FreedomWlConfig { long present_buf;`
+  - `freedom_wl_surface_id` (function, line 114) `static long freedom_wl_surface_id(void)`
+  - `freedom_wl_surface_attach` (function, line 129) `static long freedom_wl_surface_attach(FreedomWlConfig *c)`
+  - `freedom_wl_default` (function, line 158) `static FreedomWlConfig freedom_wl_default(void)`
+  - `freedom_wl_clip_rect` (function, line 196) `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)`
+  - `freedom_wl_frame_bytes` (function, line 227) `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)`
+  - `freedom_wl_keysym` (function, line 246) `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)`
+  - `freedom_wl_sanitize_utf8` (function, line 286) `static long freedom_wl_sanitize_utf8(char *s, long cap)`
+  - `freedom_wl_title_ok` (function, line 359) `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)`
+  - `wl_copy` (function, line 370) `static long wl_copy(char *dst, char *src, long cap)`
+  - `wl_strlen` (function, line 388) `static long wl_strlen(char *s, long cap)`
+  - `wl_append` (function, line 404) `static long wl_append(char *dst, long pos, char *src, long cap)`
+  - `wl_ci_lower` (function, line 427) `static long wl_ci_lower(long ch)`
+  - `wl_ci_starts` (function, line 435) `static long wl_ci_starts(char *s, char *pre)`
+  - `wl_ci_contains` (function, line 453) `static long wl_ci_contains(char *s, char *needle)`
+  - `wl_has_scheme` (function, line 467) `static long wl_has_scheme(char *s)`
+  - `wl_looks_like_url` (function, line 493) `static long wl_looks_like_url(char *s)`
+  - `wl_make_search` (function, line 512) `static long wl_make_search(char *out, char *query, long cap)`
+  - `wl_split_url` (function, line 544) `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...`
+  - `wl_resolve_redirect` (function, line 609) `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...`
+  - `wl_scroll_clamp` (function, line 689) `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)`
+  - `wl_filter_wrap` (function, line 708) `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...`
+  - `wl_status_text` (function, line 951) `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...`
+  - `freedom_wl_build_palette` (function, line 1039) `static long freedom_wl_build_palette(unsigned char *pal, long cap)`
+  - `freedom_wl_sys_present` (function, line 1062) `static long freedom_wl_sys_present(long buf, long origin)`
+  - `freedom_wl_sys_title` (function, line 1069) `static long freedom_wl_sys_title(char *t)`
+  - `freedom_wl_sys_palette` (function, line 1076) `static long freedom_wl_sys_palette(unsigned char *pal)`
+  - `freedom_wl_sys_mouse` (function, line 1083) `static long freedom_wl_sys_mouse(long *m)`
+  - `freedom_wl_sys_kbd` (function, line 1090) `static long freedom_wl_sys_kbd(void)`
+  - `freedom_wl_sys_vga_mode` (function, line 1097) `static long freedom_wl_sys_vga_mode(long on)`
+  - `freedom_wl_sys_kbd_raw` (function, line 1104) `static long freedom_wl_sys_kbd_raw(long on)`
+  - `freedom_wl_sys_yield` (function, line 1111) `static long freedom_wl_sys_yield(void)`
+  - `wl_parse_headers` (function, line 1118) `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...`
+  - `wl_fetch_raw` (function, line 1210) `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)`
+  - `wl_render` (function, line 1445) `static long wl_render(FreedomWlConfig *c, long off)`
+  - `wl_browse` (function, line 1532) `static long wl_browse(FreedomWlConfig *c)`
+  - `freedom_wl_selftest` (function, line 1613) `static long freedom_wl_selftest(void)`
+  - `freedom_wl_host_probe` (function, line 1696) `int freedom_wl_host_probe(FreedomWlConfig *c)`
+  - `main` (function, line 1731) `int main(int argc, char **argv)`
+  - `net_dns_resolve` (function, line 41) `int net_dns_resolve(const char *host);`
+  - `tls_handshake` (function, line 43) `int tls_handshake(int fd, char *host);`
+  - `tls_send` (function, line 44) `int tls_send(int fd, char *buf, int len);`
+  - `tls_recv` (function, line 45) `int tls_recv(int fd, char *buf, int len);`
+  - `tls_close` (function, line 46) `void tls_close(int fd);`
+  - `wl_client_init` (function, line 117) `wl_client_init(&cl);`
+  - `volatile` (function, line 1064) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
+  - `printf` (function, line 1236) `printf("freedom_wl: cannot resolve %s\n", host);`
+  - `WL_COLS` (macro, line 49) `#define WL_COLS`
+  - `WL_ROWS` (macro, line 50) `#define WL_ROWS`
+  - `WL_TEXT_ROWS` (macro, line 51) `#define WL_TEXT_ROWS`
+  - `WL_LINES_MAX` (macro, line 52) `#define WL_LINES_MAX`
+  - `WL_LINE_LEN` (macro, line 53) `#define WL_LINE_LEN`
+  - `WL_BODY_CAP` (macro, line 54) `#define WL_BODY_CAP`
+  - `WL_HDR_MAX` (macro, line 55) `#define WL_HDR_MAX`
+  - `WL_NET_BUF` (macro, line 56) `#define WL_NET_BUF`
+  - `WL_REQ_MAX` (macro, line 57) `#define WL_REQ_MAX`
+  - `WL_HOST_MAX` (macro, line 58) `#define WL_HOST_MAX`
+  - `WL_PATH_MAX` (macro, line 59) `#define WL_PATH_MAX`
+  - `WL_URL_MAX` (macro, line 60) `#define WL_URL_MAX`
+  - `WL_HOPS_MAX` (macro, line 61) `#define WL_HOPS_MAX`
+  - `WL_FONT_W` (macro, line 62) `#define WL_FONT_W`
+  - `WL_FONT_H` (macro, line 63) `#define WL_FONT_H`
+  - `WL_TAG_MAX` (macro, line 64) `#define WL_TAG_MAX`
+  - `WL_ENT_MAX` (macro, line 65) `#define WL_ENT_MAX`
+- Depends on: `headers/vga_fb.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_mini.h`
 - Imported by: `tests/test_freedom_wl.c`
 
 ## progs/src/ftest.c

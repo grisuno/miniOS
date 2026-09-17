@@ -200,7 +200,6 @@
 #define MINIOS_SYS_ARCH_PRCTL  158
 #define MINIOS_SYS_OPENAT      257
 #define MINIOS_SYS_NEWFSTATAT  262
-#define MINIOS_SYS_READLINK     89
 /* Phase 0.6 (ADR-0014): statx was 267, but Linux x86-64 267 is
  * readlinkat; statx is 332. The header now claims the true number. */
 #define MINIOS_SYS_STATX       332

@@ -45,6 +45,7 @@
 
 ## tests/test_doom_pwad.py
 - Layer: testing
+- Doc: test_doom_pwad.py - host contract suite for tools/doom_pwad.py.  Runs the grid compiler and the PWAD checker against fix
 - Language: py
 - Symbols:
   - `GridValidationTests` (class, line 29) `class GridValidationTests(TestCase)`
@@ -217,6 +218,26 @@
   - `CHECK` (function, line 17) `CHECK(ktime_us_from_delta(0, 3000000UL) == 0, "zero delta");`
   - `CHECK` (macro, line 14) `#define CHECK(c, m)`
 - Depends on: `headers/ktime.h`
+
+## tests/test_minios_png.c
+- Layer: testing
+- Doc: Docstring: host test for the shared ring-3 PNG helpers (make test-png).
+- Language: c
+- Symbols:
+  - `t_332` (function, line 24) `static void t_332(void)`
+  - `t_nearest` (function, line 33) `static void t_nearest(void)`
+  - `t_geom` (function, line 58) `static void t_geom(void)`
+  - `t_scale` (function, line 70) `static void t_scale(void)`
+  - `t_blit` (function, line 99) `static void t_blit(void)`
+  - `t_load` (function, line 117) `static void t_load(void)`
+  - `t_policy` (function, line 136) `static void t_policy(void)`
+  - `main` (function, line 150) `int main(void)`
+  - `fprintf` (function, line 19) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `CHECK` (function, line 25) `CHECK(mpng_332_idx(255, 0, 0) == 0xE0, "332 red");`
+  - `memset` (function, line 36) `memset(pal, 0, sizeof(pal));`
+  - `printf` (function, line 160) `printf("minios_png: FAIL (%d)\n", failures);`
+  - `CHECK` (macro, line 15) `#define CHECK(cond, msg)`
+- Depends on: `kernel/string.c`, `progs/minios_png.h`
 
 ## tests/test_modifiers.c
 - Layer: testing
@@ -490,13 +511,15 @@
 - Doc: Host test for progs/wl/wl_mini.h (make test-wl).
 - Language: c
 - Symbols:
-  - `main` (function, line 21) `int main(void)`
-  - `fprintf` (function, line 18) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 33) `CHECK(wl_hdr_encode(buf, sizeof buf, WL_ID_DISPLAY, WL_OP_DISPLAY_GET_REGISTRY, 12, &h) == WL_ERR_OK, "hdr encode ok");`
-  - `wl_comp_init` (function, line 76) `wl_comp_init(&c);`
-  - `wl_client_init` (function, line 96) `wl_client_init(&cl);`
-  - `CHECK` (macro, line 14) `#define CHECK(cond, msg)`
-- Depends on: `kernel/string.c`, `progs/wl/wl_mini.h`
+  - `main` (function, line 24) `int main(void)`
+  - `fprintf` (function, line 21) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
+  - `CHECK` (function, line 36) `CHECK(wl_hdr_encode(buf, sizeof buf, WL_ID_DISPLAY, WL_OP_DISPLAY_GET_REGISTRY, 12, &h) == WL_ERR_OK, "hdr encode ok");`
+  - `wl_comp_init` (function, line 79) `wl_comp_init(&c);`
+  - `wl_client_init` (function, line 99) `wl_client_init(&cl);`
+  - `wl_stream_init` (function, line 273) `wl_stream_init(&st);`
+  - `wl_mbox_init` (function, line 366) `wl_mbox_init(boxes);`
+  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`
 
 ## tests/test_wm.c
 - Layer: testing

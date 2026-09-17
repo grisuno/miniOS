@@ -315,639 +315,393 @@
 - Doc: Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf).
 - Language: c
 - Symbols:
-  - `file_assoc` (struct, line 54)
-  - `file_sys_dir_list` (function, line 74) `static long file_sys_dir_list(const char *path, char *buf, long cap)`
-  - `file_sys_spawn` (function, line 84) `static long file_sys_spawn(const char *path, int argc, const char **argv)`
-  - `file_ext_of` (function, line 95) `static void file_ext_of(const char *fname, char *dst, unsigned cap)`
-  - `file_join` (function, line 116) `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)`
-  - `file_parent` (function, line 130) `static void file_parent(char *path)`
-  - `file_assoc_line` (function, line 140) `static int file_assoc_line(const char *line, char *ext, char *prog)`
-  - `file_assoc_load` (function, line 173) `static void file_assoc_load(void)`
-  - `file_assoc_lookup` (function, line 192) `static const char *file_assoc_lookup(const char *ext)`
-  - `file_action_of` (function, line 202) `static int file_action_of(const char *fname, const char **prog_out)`
-  - `file_refresh` (function, line 215) `static void file_refresh(void)`
-  - `file_preview_load` (function, line 230) `static int file_preview_load(const char *path)`
-  - `file_preview_blit` (function, line 293) `static void file_preview_blit(int ox, int oy)`
-  - `file_spawn_visible` (function, line 308) `static long file_spawn_visible(const char *tool, int argc, const char **argv,
+  - `file_assoc` (struct, line 55)
+  - `file_sys_dir_list` (function, line 75) `static long file_sys_dir_list(const char *path, char *buf, long cap)`
+  - `file_sys_spawn` (function, line 85) `static long file_sys_spawn(const char *path, int argc, const char **argv)`
+  - `file_ext_of` (function, line 96) `static void file_ext_of(const char *fname, char *dst, unsigned cap)`
+  - `file_join` (function, line 117) `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)`
+  - `file_parent` (function, line 131) `static void file_parent(char *path)`
+  - `file_assoc_line` (function, line 141) `static int file_assoc_line(const char *line, char *ext, char *prog)`
+  - `file_assoc_load` (function, line 174) `static void file_assoc_load(void)`
+  - `file_assoc_lookup` (function, line 193) `static const char *file_assoc_lookup(const char *ext)`
+  - `file_action_of` (function, line 203) `static int file_action_of(const char *fname, const char **prog_out)`
+  - `file_refresh` (function, line 216) `static void file_refresh(void)`
+  - `file_preview_load` (function, line 231) `static int file_preview_load(const char *path)`
+  - `file_preview_blit` (function, line 264) `static void file_preview_blit(int ox, int oy)`
+  - `file_spawn_visible` (function, line 279) `static long file_spawn_visible(const char *tool, int argc, const char **argv,
                    ...`
-  - `file_open_text` (function, line 331) `static void file_open_text(const char *path)`
-  - `file_run_shell` (function, line 342) `static void file_run_shell(const char *path)`
-  - `file_activate` (function, line 381) `static void file_activate(const char *dir, const char *name)`
-  - `file_ui_build` (function, line 412) `static void file_ui_build(struct nk_context *ctx)`
-  - `file_selftest` (function, line 489) `static int file_selftest(void)`
-  - `file_gui_run` (function, line 555) `static void file_gui_run(void)`
-  - `main` (function, line 612) `int main(int argc, char **argv)`
-  - `volatile` (function, line 76) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_DIR_LIST), "D"(path), "S"(buf), "d"(cap) : "rcx", "r11", "memory");`
-  - `memcpy` (function, line 122) `memcpy(dst, dir, a);`
-  - `strcpy` (function, line 184) `strcpy(file_table[file_table_n].ext, ext);`
-  - `fclose` (function, line 188) `fclose(f);`
-  - `snprintf` (function, line 220) `snprintf(file_status, sizeof(file_status), "cannot list %s (%ld)", file_cwd, rc);`
-  - `fseek` (function, line 240) `fseek(f, 0, SEEK_END);`
-  - `free` (function, line 247) `free(raw);`
-  - `nk_build_palette` (function, line 263) `nk_build_palette(pal);`
-  - `stbi_image_free` (function, line 285) `stbi_image_free(px);`
-  - `nk_sys_vga_mode` (function, line 312) `nk_sys_vga_mode(0);`
-  - `nk_sys_kbd_raw` (function, line 313) `nk_sys_kbd_raw(0);`
-  - `printf` (function, line 314) `printf("--- file: %s ---\n", label);`
-  - `fflush` (function, line 315) `fflush(stdout);`
-  - `nk_sys_palette` (function, line 321) `nk_sys_palette(pal768);`
-  - `nk_layout_row_dynamic` (function, line 415) `nk_layout_row_dynamic(ctx, 22, 1);`
-  - `nk_label` (function, line 416) `nk_label(ctx, file_status, NK_TEXT_LEFT);`
-  - `nk_end` (function, line 485) `nk_end(ctx);`
-  - `nk_theme_active` (function, line 544) `nk_theme_active(theme, sizeof(theme));`
-  - `nk_sys_gfx_set_title` (function, line 565) `nk_sys_gfx_set_title(FILE_TITLE);`
-  - `nk_theme_apply` (function, line 572) `nk_theme_apply(&ctx, 0);`
-  - `nk_input_begin` (function, line 580) `nk_input_begin(&ctx);`
-  - `nk_poll_input` (function, line 581) `nk_poll_input(&ctx);`
-  - `nk_input_end` (function, line 591) `nk_input_end(&ctx);`
-  - `nk_rasterize` (function, line 594) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 600) `nk_clear(&ctx);`
-  - `nk_free` (function, line 608) `nk_free(&ctx);`
-  - `STB_IMAGE_IMPLEMENTATION` (macro, line 21) `#define STB_IMAGE_IMPLEMENTATION`
-  - `STBI_ONLY_PNG` (macro, line 23) `#define STBI_ONLY_PNG`
-  - `STBI_NO_STDIO` (macro, line 24) `#define STBI_NO_STDIO`
-  - `FILE_MAX_PATH` (macro, line 28) `#define FILE_MAX_PATH`
-  - `FILE_MAX_ENTRIES` (macro, line 29) `#define FILE_MAX_ENTRIES`
-  - `FILE_NAME_MAX` (macro, line 30) `#define FILE_NAME_MAX`
-  - `FILE_LIST_CAP` (macro, line 31) `#define FILE_LIST_CAP`
-  - `FILE_ASSOC_MAX` (macro, line 32) `#define FILE_ASSOC_MAX`
-  - `FILE_ASSOC_PATH` (macro, line 33) `#define FILE_ASSOC_PATH`
-  - `FILE_EXT_MAX` (macro, line 34) `#define FILE_EXT_MAX`
-  - `FILE_PROG_MAX` (macro, line 35) `#define FILE_PROG_MAX`
-  - `FILE_TOOL_VEDIT` (macro, line 36) `#define FILE_TOOL_VEDIT`
-  - `FILE_TOOL_CVM` (macro, line 37) `#define FILE_TOOL_CVM`
-  - `FILE_STATUS_MAX` (macro, line 38) `#define FILE_STATUS_MAX`
-  - `FILE_UI_MEMORY` (macro, line 39) `#define FILE_UI_MEMORY`
-  - `FILE_PREVIEW_W` (macro, line 40) `#define FILE_PREVIEW_W`
-  - `FILE_PREVIEW_H` (macro, line 41) `#define FILE_PREVIEW_H`
-  - `FILE_PREVIEW_FILE_MAX` (macro, line 42) `#define FILE_PREVIEW_FILE_MAX`
-  - `FILE_TITLE` (macro, line 43) `#define FILE_TITLE`
-  - `FILE_ACTION_SHELL` (macro, line 44) `#define FILE_ACTION_SHELL`
-  - `FILE_ACTION_INTERNAL` (macro, line 45) `#define FILE_ACTION_INTERNAL`
-  - `FILE_LOG_LINE` (macro, line 46) `#define FILE_LOG_LINE`
-  - `FILE_ACT_TEXT` (macro, line 49) `#define FILE_ACT_TEXT`
-  - `FILE_ACT_SHELL` (macro, line 50) `#define FILE_ACT_SHELL`
-  - `FILE_ACT_INTERNAL` (macro, line 51) `#define FILE_ACT_INTERNAL`
-  - `FILE_ACT_UNKNOWN` (macro, line 52) `#define FILE_ACT_UNKNOWN`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+  - `file_open_text` (function, line 302) `static void file_open_text(const char *path)`
+  - `file_run_shell` (function, line 313) `static void file_run_shell(const char *path)`
+  - `file_activate` (function, line 352) `static void file_activate(const char *dir, const char *name)`
+  - `file_ui_build` (function, line 383) `static void file_ui_build(struct nk_context *ctx)`
+  - `file_selftest` (function, line 460) `static int file_selftest(void)`
+  - `file_gui_run` (function, line 526) `static void file_gui_run(void)`
+  - `main` (function, line 583) `int main(int argc, char **argv)`
+  - `volatile` (function, line 77) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_DIR_LIST), "D"(path), "S"(buf), "d"(cap) : "rcx", "r11", "memory");`
+  - `memcpy` (function, line 123) `memcpy(dst, dir, a);`
+  - `strcpy` (function, line 185) `strcpy(file_table[file_table_n].ext, ext);`
+  - `fclose` (function, line 189) `fclose(f);`
+  - `snprintf` (function, line 221) `snprintf(file_status, sizeof(file_status), "cannot list %s (%ld)", file_cwd, rc);`
+  - `free` (function, line 241) `free(raw);`
+  - `nk_build_palette` (function, line 248) `nk_build_palette(pal);`
+  - `stbi_image_free` (function, line 252) `stbi_image_free(px);`
+  - `nk_sys_vga_mode` (function, line 283) `nk_sys_vga_mode(0);`
+  - `nk_sys_kbd_raw` (function, line 284) `nk_sys_kbd_raw(0);`
+  - `printf` (function, line 285) `printf("--- file: %s ---\n", label);`
+  - `fflush` (function, line 286) `fflush(stdout);`
+  - `nk_sys_palette` (function, line 292) `nk_sys_palette(pal768);`
+  - `nk_layout_row_dynamic` (function, line 386) `nk_layout_row_dynamic(ctx, 22, 1);`
+  - `nk_label` (function, line 387) `nk_label(ctx, file_status, NK_TEXT_LEFT);`
+  - `nk_end` (function, line 456) `nk_end(ctx);`
+  - `nk_theme_active` (function, line 515) `nk_theme_active(theme, sizeof(theme));`
+  - `nk_sys_gfx_set_title` (function, line 536) `nk_sys_gfx_set_title(FILE_TITLE);`
+  - `nk_theme_apply` (function, line 543) `nk_theme_apply(&ctx, 0);`
+  - `nk_input_begin` (function, line 551) `nk_input_begin(&ctx);`
+  - `nk_poll_input` (function, line 552) `nk_poll_input(&ctx);`
+  - `nk_input_end` (function, line 562) `nk_input_end(&ctx);`
+  - `nk_rasterize` (function, line 565) `nk_rasterize(&ctx);`
+  - `nk_clear` (function, line 571) `nk_clear(&ctx);`
+  - `nk_free` (function, line 579) `nk_free(&ctx);`
+  - `STB_IMAGE_IMPLEMENTATION` (macro, line 22) `#define STB_IMAGE_IMPLEMENTATION`
+  - `STBI_ONLY_PNG` (macro, line 24) `#define STBI_ONLY_PNG`
+  - `STBI_NO_STDIO` (macro, line 25) `#define STBI_NO_STDIO`
+  - `FILE_MAX_PATH` (macro, line 29) `#define FILE_MAX_PATH`
+  - `FILE_MAX_ENTRIES` (macro, line 30) `#define FILE_MAX_ENTRIES`
+  - `FILE_NAME_MAX` (macro, line 31) `#define FILE_NAME_MAX`
+  - `FILE_LIST_CAP` (macro, line 32) `#define FILE_LIST_CAP`
+  - `FILE_ASSOC_MAX` (macro, line 33) `#define FILE_ASSOC_MAX`
+  - `FILE_ASSOC_PATH` (macro, line 34) `#define FILE_ASSOC_PATH`
+  - `FILE_EXT_MAX` (macro, line 35) `#define FILE_EXT_MAX`
+  - `FILE_PROG_MAX` (macro, line 36) `#define FILE_PROG_MAX`
+  - `FILE_TOOL_VEDIT` (macro, line 37) `#define FILE_TOOL_VEDIT`
+  - `FILE_TOOL_CVM` (macro, line 38) `#define FILE_TOOL_CVM`
+  - `FILE_STATUS_MAX` (macro, line 39) `#define FILE_STATUS_MAX`
+  - `FILE_UI_MEMORY` (macro, line 40) `#define FILE_UI_MEMORY`
+  - `FILE_PREVIEW_W` (macro, line 41) `#define FILE_PREVIEW_W`
+  - `FILE_PREVIEW_H` (macro, line 42) `#define FILE_PREVIEW_H`
+  - `FILE_PREVIEW_FILE_MAX` (macro, line 43) `#define FILE_PREVIEW_FILE_MAX`
+  - `FILE_TITLE` (macro, line 44) `#define FILE_TITLE`
+  - `FILE_ACTION_SHELL` (macro, line 45) `#define FILE_ACTION_SHELL`
+  - `FILE_ACTION_INTERNAL` (macro, line 46) `#define FILE_ACTION_INTERNAL`
+  - `FILE_LOG_LINE` (macro, line 47) `#define FILE_LOG_LINE`
+  - `FILE_ACT_TEXT` (macro, line 50) `#define FILE_ACT_TEXT`
+  - `FILE_ACT_SHELL` (macro, line 51) `#define FILE_ACT_SHELL`
+  - `FILE_ACT_INTERNAL` (macro, line 52) `#define FILE_ACT_INTERNAL`
+  - `FILE_ACT_UNKNOWN` (macro, line 53) `#define FILE_ACT_UNKNOWN`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/freedomui/freedomui_minios.c
 - Layer: presentation
 - Doc: freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern.
 - Language: c
 - Symbols:
-  - `FreedomUiConfig` (struct, line 68)
-  - `present_buf` (type_alias, line 68) `typedef struct FreedomUiConfig { long present_buf;`
-  - `freedomui_default` (function, line 96) `static FreedomUiConfig freedomui_default(void)`
-  - `freedomui_build_palette` (function, line 132) `static long freedomui_build_palette(unsigned char *pal, long cap)`
-  - `freedomui_engine_text` (function, line 196) `static long freedomui_engine_text(char *body, long n, char **title, char **text)`
-  - `freedomui_sys_present` (function, line 244) `static long freedomui_sys_present(long buf, long origin)`
-  - `freedomui_sys_title` (function, line 251) `static long freedomui_sys_title(char *t)`
-  - `freedomui_sys_palette` (function, line 258) `static long freedomui_sys_palette(unsigned char *pal)`
-  - `freedomui_sys_mouse` (function, line 265) `static long freedomui_sys_mouse(long *m)`
-  - `freedomui_sys_kbd` (function, line 272) `static long freedomui_sys_kbd(void)`
-  - `freedomui_sys_vga_mode` (function, line 279) `static long freedomui_sys_vga_mode(long on)`
-  - `freedomui_sys_kbd_raw` (function, line 286) `static long freedomui_sys_kbd_raw(long on)`
-  - `freedomui_sys_yield` (function, line 293) `static long freedomui_sys_yield(void)`
-  - `fui_append` (function, line 300) `static long fui_append(char *dst, long pos, char *src, long cap)`
-  - `fui_strlen` (function, line 318) `static long fui_strlen(char *s, long cap)`
-  - `fui_split_url` (function, line 334) `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...`
-  - `fui_parse_headers` (function, line 403) `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...`
-  - `fui_fetch_raw` (function, line 521) `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)`
-  - `fui_render` (function, line 749) `static long fui_render(FreedomUiConfig *c, size_t off)`
-  - `fui_browse` (function, line 868) `static long fui_browse(FreedomUiConfig *c)`
-  - `freedomui_selftest` (function, line 947) `static long freedomui_selftest(void)`
-  - `freedomui_host_probe` (function, line 1035) `static long freedomui_host_probe(FreedomUiConfig *c)`
-  - `freedomui_host_entry` (function, line 1118) `int freedomui_host_entry(FreedomUiConfig *c)`
-  - `main` (function, line 1123) `int main(int argc, char **argv)`
-  - `net_dns_resolve` (function, line 42) `int net_dns_resolve(const char *host);`
-  - `tls_handshake` (function, line 44) `int tls_handshake(int fd, char *host);`
-  - `tls_send` (function, line 45) `int tls_send(int fd, char *buf, int len);`
-  - `tls_recv` (function, line 46) `int tls_recv(int fd, char *buf, int len);`
-  - `tls_close` (function, line 47) `void tls_close(int fd);`
-  - `hp_document_free` (function, line 213) `hp_document_free(doc);`
-  - `hp_free` (function, line 216) `hp_free(ti);`
-  - `volatile` (function, line 246) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
-  - `printf` (function, line 547) `printf("freedomui: cannot resolve %s\n", host);`
-  - `ui_layout_free` (function, line 1109) `ui_layout_free(&lay);`
-  - `FUI_COLS` (macro, line 50) `#define FUI_COLS`
-  - `FUI_TEXT_ROWS` (macro, line 51) `#define FUI_TEXT_ROWS`
-  - `FUI_BODY_CAP` (macro, line 52) `#define FUI_BODY_CAP`
-  - `FUI_HDR_MAX` (macro, line 53) `#define FUI_HDR_MAX`
-  - `FUI_NET_BUF` (macro, line 54) `#define FUI_NET_BUF`
-  - `FUI_REQ_MAX` (macro, line 55) `#define FUI_REQ_MAX`
-  - `FUI_HOST_MAX` (macro, line 56) `#define FUI_HOST_MAX`
-  - `FUI_PATH_MAX` (macro, line 57) `#define FUI_PATH_MAX`
-  - `FUI_URL_MAX` (macro, line 58) `#define FUI_URL_MAX`
-  - `FUI_HOPS_MAX` (macro, line 59) `#define FUI_HOPS_MAX`
-  - `FUI_FONT_W` (macro, line 60) `#define FUI_FONT_W`
-  - `FUI_FONT_H` (macro, line 61) `#define FUI_FONT_H`
-  - `FUI_TITLE_MAX` (macro, line 62) `#define FUI_TITLE_MAX`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+  - `FreedomUiConfig` (struct, line 69)
+  - `present_buf` (type_alias, line 69) `typedef struct FreedomUiConfig { long present_buf;`
+  - `freedomui_default` (function, line 97) `static FreedomUiConfig freedomui_default(void)`
+  - `freedomui_build_palette` (function, line 130) `static long freedomui_build_palette(unsigned char *pal, long cap)`
+  - `freedomui_engine_text` (function, line 145) `static long freedomui_engine_text(char *body, long n, char **title, char **text)`
+  - `freedomui_sys_present` (function, line 193) `static long freedomui_sys_present(long buf, long origin)`
+  - `freedomui_sys_title` (function, line 200) `static long freedomui_sys_title(char *t)`
+  - `freedomui_sys_palette` (function, line 207) `static long freedomui_sys_palette(unsigned char *pal)`
+  - `freedomui_sys_mouse` (function, line 214) `static long freedomui_sys_mouse(long *m)`
+  - `freedomui_sys_kbd` (function, line 221) `static long freedomui_sys_kbd(void)`
+  - `freedomui_sys_vga_mode` (function, line 228) `static long freedomui_sys_vga_mode(long on)`
+  - `freedomui_sys_kbd_raw` (function, line 235) `static long freedomui_sys_kbd_raw(long on)`
+  - `freedomui_sys_yield` (function, line 242) `static long freedomui_sys_yield(void)`
+  - `fui_append` (function, line 249) `static long fui_append(char *dst, long pos, char *src, long cap)`
+  - `fui_strlen` (function, line 267) `static long fui_strlen(char *s, long cap)`
+  - `fui_split_url` (function, line 283) `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...`
+  - `fui_parse_headers` (function, line 352) `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...`
+  - `fui_fetch_raw` (function, line 470) `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)`
+  - `fui_render` (function, line 698) `static long fui_render(FreedomUiConfig *c, size_t off)`
+  - `fui_browse` (function, line 817) `static long fui_browse(FreedomUiConfig *c)`
+  - `freedomui_selftest` (function, line 896) `static long freedomui_selftest(void)`
+  - `freedomui_host_probe` (function, line 984) `static long freedomui_host_probe(FreedomUiConfig *c)`
+  - `freedomui_host_entry` (function, line 1067) `int freedomui_host_entry(FreedomUiConfig *c)`
+  - `main` (function, line 1072) `int main(int argc, char **argv)`
+  - `net_dns_resolve` (function, line 43) `int net_dns_resolve(const char *host);`
+  - `tls_handshake` (function, line 45) `int tls_handshake(int fd, char *host);`
+  - `tls_send` (function, line 46) `int tls_send(int fd, char *buf, int len);`
+  - `tls_recv` (function, line 47) `int tls_recv(int fd, char *buf, int len);`
+  - `tls_close` (function, line 48) `void tls_close(int fd);`
+  - `hp_document_free` (function, line 162) `hp_document_free(doc);`
+  - `hp_free` (function, line 165) `hp_free(ti);`
+  - `volatile` (function, line 195) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
+  - `printf` (function, line 496) `printf("freedomui: cannot resolve %s\n", host);`
+  - `ui_layout_free` (function, line 1058) `ui_layout_free(&lay);`
+  - `FUI_COLS` (macro, line 51) `#define FUI_COLS`
+  - `FUI_TEXT_ROWS` (macro, line 52) `#define FUI_TEXT_ROWS`
+  - `FUI_BODY_CAP` (macro, line 53) `#define FUI_BODY_CAP`
+  - `FUI_HDR_MAX` (macro, line 54) `#define FUI_HDR_MAX`
+  - `FUI_NET_BUF` (macro, line 55) `#define FUI_NET_BUF`
+  - `FUI_REQ_MAX` (macro, line 56) `#define FUI_REQ_MAX`
+  - `FUI_HOST_MAX` (macro, line 57) `#define FUI_HOST_MAX`
+  - `FUI_PATH_MAX` (macro, line 58) `#define FUI_PATH_MAX`
+  - `FUI_URL_MAX` (macro, line 59) `#define FUI_URL_MAX`
+  - `FUI_HOPS_MAX` (macro, line 60) `#define FUI_HOPS_MAX`
+  - `FUI_FONT_W` (macro, line 61) `#define FUI_FONT_W`
+  - `FUI_FONT_H` (macro, line 62) `#define FUI_FONT_H`
+  - `FUI_TITLE_MAX` (macro, line 63) `#define FUI_TITLE_MAX`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`
 - Imported by: `tests/test_freedomui.c`
-
-## progs/lisp/lisp.c
-- Layer: utility
-- Language: c
-- Symbols:
-  - `Node` (struct, line 113)
-  - `Binding` (struct, line 140)
-  - `Env` (struct, line 149)
-  - `AllocTracker` (struct, line 157)
-  - `Runtime` (struct, line 165)
-  - `ParseResult` (struct, line 104)
-  - `Reader` (struct, line 181)
-  - `StringBuilder` (struct, line 192)
-  - `PrimEntry` (struct, line 1960)
-  - `LispConfig` (enum, line 41)
-  - `Runtime` (type_alias, line 65) `typedef struct Runtime Runtime;`
-  - `Node` (type_alias, line 67) `typedef struct Node Node;`
-  - `Env` (type_alias, line 68) `typedef struct Env Env;`
-  - `Binding` (type_alias, line 69) `typedef struct Binding Binding;`
-  - `AllocTracker` (type_alias, line 70) `typedef struct AllocTracker AllocTracker;`
-  - `lisp_version` (function, line 62) `static const char *lisp_version(void)`
-  - `msys` (function, line 205) `static long msys(long n, long a1, long a2, long a3)`
-  - `msys5` (function, line 218) `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)`
-  - `fatal` (function, line 233) `static void fatal(Runtime *rt, const char *message)`
-  - `xalloc` (function, line 242) `static void *xalloc(Runtime *rt, size_t size)`
-  - `xstrdup` (function, line 266) `static char *xstrdup(Runtime *rt, const char *source)`
-  - `make_node` (function, line 284) `static Node *make_node(Runtime *rt, NodeType type)`
-  - `make_error` (function, line 293) `static Node *make_error(Runtime *rt, const char *message)`
-  - `make_num` (function, line 302) `static Node *make_num(Runtime *rt, int64_t value)`
-  - `make_str` (function, line 311) `static Node *make_str(Runtime *rt, const char *value)`
-  - `make_sym` (function, line 320) `static Node *make_sym(Runtime *rt, const char *value)`
-  - `make_prim` (function, line 329) `static Node *make_prim(Runtime *rt, PrimFn function)`
-  - `cons` (function, line 338) `static Node *cons(Runtime *rt, Node *car, Node *cdr)`
-  - `is_nil` (function, line 348) `static bool is_nil(Runtime *rt, const Node *node)`
-  - `make_file` (function, line 355) `static Node *make_file(Runtime *rt, FILE *handle)`
-  - `cleanup` (function, line 377) `static void cleanup(Runtime *rt)`
-  - `runtime_init` (function, line 399) `static void runtime_init(Runtime *rt)`
-  - `env_new` (function, line 411) `static Env *env_new(Runtime *rt, Env *parent)`
-  - `env_bind` (function, line 421) `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)`
-  - `env_set` (function, line 432) `static bool env_set(Env *env, Node *symbol, Node *value)`
-  - `env_lookup` (function, line 454) `static Node *env_lookup(Env *env, Node *symbol)`
-  - `reader_peek` (function, line 475) `static char reader_peek(const Reader *reader)`
-  - `reader_next` (function, line 482) `static char reader_next(Reader *reader)`
-  - `reader_at_end` (function, line 500) `static bool reader_at_end(const Reader *reader)`
-  - `skip_space_and_comments` (function, line 507) `static void skip_space_and_comments(Reader *reader)`
-  - `sb_init` (function, line 523) `static void sb_init(StringBuilder *builder)`
-  - `sb_push` (function, line 536) `static void sb_push(StringBuilder *builder, char value)`
-  - `parse_ok` (function, line 562) `static ParseResult parse_ok(Node *value)`
-  - `parse_eof` (function, line 573) `static ParseResult parse_eof(void)`
-  - `parse_error` (function, line 584) `static ParseResult parse_error(const char *message)`
-  - `read_list` (function, line 596) `static ParseResult read_list(Runtime *rt, Reader *reader)`
-  - `read_string` (function, line 626) `static ParseResult read_string(Runtime *rt, Reader *reader)`
-  - `token_delimiter` (function, line 677) `static bool token_delimiter(char c)`
-  - `read_atom` (function, line 685) `static ParseResult read_atom(Runtime *rt, Reader *reader)`
-  - `read_expr` (function, line 721) `static ParseResult read_expr(Runtime *rt, Reader *reader)`
-  - `list_count` (function, line 750) `static size_t list_count(Runtime *rt, Node *list, bool *proper)`
-  - `has_arity` (function, line 767) `static bool has_arity(Runtime *rt, Node *args, size_t expected)`
-  - `arg_at` (function, line 775) `static Node *arg_at(Runtime *rt, Node *args, size_t index)`
-  - `arg_matches` (function, line 815) `static bool arg_matches(const Node *value, ArgKind kind)`
-  - `check_args` (function, line 841) `static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,
-    size_t n, Node **out)`
-  - `arity0` (function, line 861) `static bool arity0(Runtime *rt, Node *args)`
-  - `prim_add` (function, line 869) `static Node *prim_add(Runtime *rt, Node *args)`
-  - `prim_sub` (function, line 885) `static Node *prim_sub(Runtime *rt, Node *args)`
-  - `prim_mul` (function, line 901) `static Node *prim_mul(Runtime *rt, Node *args)`
-  - `prim_div` (function, line 917) `static Node *prim_div(Runtime *rt, Node *args)`
-  - `prim_eq` (function, line 939) `static Node *prim_eq(Runtime *rt, Node *args)`
-  - `prim_lt` (function, line 951) `static Node *prim_lt(Runtime *rt, Node *args)`
-  - `prim_car` (function, line 963) `static Node *prim_car(Runtime *rt, Node *args)`
-  - `prim_cdr` (function, line 975) `static Node *prim_cdr(Runtime *rt, Node *args)`
-  - `prim_cons` (function, line 987) `static Node *prim_cons(Runtime *rt, Node *args)`
-  - `prim_string_concat` (function, line 999) `static Node *prim_string_concat(Runtime *rt, Node *args)`
-  - `prim_string_eq` (function, line 1026) `static Node *prim_string_eq(Runtime *rt, Node *args)`
-  - `prim_string_length` (function, line 1038) `static Node *prim_string_length(Runtime *rt, Node *args)`
-  - `prim_string_at` (function, line 1050) `static Node *prim_string_at(Runtime *rt, Node *args)`
-  - `prim_char_code` (function, line 1072) `static Node *prim_char_code(Runtime *rt, Node *args)`
-  - `prim_print` (function, line 1094) `static Node *prim_print(Runtime *rt, Node *args)`
-  - `prim_println` (function, line 1108) `static Node *prim_println(Runtime *rt, Node *args)`
-  - `file_mode_allowed` (function, line 1123) `static bool file_mode_allowed(const char *mode)`
-  - `prim_read_char` (function, line 1183) `static Node *prim_read_char(Runtime *rt, Node *args)`
-  - `prim_write` (function, line 1200) `static Node *prim_write(Runtime *rt, Node *args)`
-  - `prim_close_file` (function, line 1224) `static Node *prim_close_file(Runtime *rt, Node *args)`
-  - `prim_null_p` (function, line 1249) `static Node *prim_null_p(Runtime *rt, Node *args)`
-  - `prim_number_p` (function, line 1261) `static Node *prim_number_p(Runtime *rt, Node *args)`
-  - `prim_string_p` (function, line 1273) `static Node *prim_string_p(Runtime *rt, Node *args)`
-  - `prim_error_message` (function, line 1285) `static Node *prim_error_message(Runtime *rt, Node *args)`
-  - `prim_exit` (function, line 1303) `static Node *prim_exit(Runtime *rt, Node *args)`
-  - `prim_time_ms` (function, line 1330) `static Node *prim_time_ms(Runtime *rt, Node *args)`
-  - `prim_rtc` (function, line 1340) `static Node *prim_rtc(Runtime *rt, Node *args)`
-  - `prim_fb_info` (function, line 1357) `static Node *prim_fb_info(Runtime *rt, Node *args)`
-  - `prim_vol` (function, line 1377) `static Node *prim_vol(Runtime *rt, Node *args)`
-  - `prim_pal` (function, line 1405) `static Node *prim_pal(Runtime *rt, Node *args)`
-  - `prim_pcspeaker` (function, line 1421) `static Node *prim_pcspeaker(Runtime *rt, Node *args)`
-  - `prim_minios_run` (function, line 1465) `static Node *prim_minios_run(Runtime *rt, Node *args)`
-  - `eval_list` (function, line 1527) `static Node *eval_list(Runtime *rt, Node *list, Env *env)`
-  - `eval_sequence` (function, line 1551) `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)`
-  - `valid_params` (function, line 1569) `static bool valid_params(Runtime *rt, Node *params)`
-  - `eval` (function, line 1583) `static Node *eval(Runtime *rt, Node *expression, Env *env)`
-  - `print_escaped_string` (function, line 1846) `static void print_escaped_string(FILE *out, const char *value)`
-  - `print_node` (function, line 1877) `static void print_node(Runtime *rt, Node *node, bool readable)`
-  - `bind_primitive` (function, line 1948) `static void bind_primitive(Runtime *rt, Env *env, const char *name,
-    PrimFn function)`
-  - `init_env` (function, line 2005) `static Env *init_env(Runtime *rt)`
-  - `bind_argv` (function, line 2018) `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)`
-  - `read_all_file` (function, line 2030) `static char *read_all_file(const char *filename, size_t max_bytes)`
-  - `process_source` (function, line 2088) `static int process_source(Runtime *rt, const char *source,
-    const char *source_name, bool echo)`
-  - `process_inline` (function, line 2130) `static int process_inline(Runtime *rt, const char *code)`
-  - `print_usage` (function, line 2137) `static void print_usage(Runtime *rt)`
-  - `repl` (function, line 2144) `static int repl(Runtime *rt)`
-  - `main` (function, line 2191) `int main(int argc, char **argv)`
-  - `numbers` (function, line 8) `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special forms quote, if, begin, define, set!, * lambda and let. Diagnostics go to stderr, va`
-  - `volatile` (function, line 207) `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
-  - `fprintf` (function, line 235) `fprintf(err, "fatal: %s\n", message);`
-  - `exit` (function, line 236) `exit(EXIT_FAILURE);`
-  - `free` (function, line 254) `free(ptr);`
-  - `memcpy` (function, line 277) `memcpy(copy, source, length);`
-  - `fclose` (function, line 370) `fclose(handle);`
-  - `memset` (function, line 400) `memset(rt, 0, sizeof *rt);`
-  - `snprintf` (function, line 588) `snprintf(result.message, sizeof result.message, "%s", message ? message : "parse error");`
-  - `fflush` (function, line 1101) `fflush(rt->out);`
-  - `fputc` (function, line 1115) `fputc('\n', rt->out);`
-  - `arity` (function, line 1299) `* * Variable arity (0 or 1);`
-  - `fputs` (function, line 1852) `fputs("\\n", out);`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ## progs/minicraft/minicraft.c
 - Layer: utility
 - Doc: minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF).
 - Language: c
 - Symbols:
-  - `Recipe` (struct, line 195)
-  - `Pig` (struct, line 274)
-  - `RayHit` (struct, line 1427)
-  - `SaveHeaderV3` (struct, line 2636)
-  - `SaveHeader` (struct, line 2650)
-  - `ChunkHeader` (struct, line 2665)
-  - `best_tool_for` (function, line 209) `static int best_tool_for(unsigned char b)`
-  - `break_time_ms` (function, line 228) `static long break_time_ms(unsigned char b, int tool)`
-  - `break_beep_for` (function, line 253) `static long break_beep_for(unsigned char b)`
-  - `mc_toggle_zoom` (function, line 294) `static void mc_toggle_zoom(void)`
-  - `s_time_ms` (function, line 315) `static long s_time_ms(void)`
-  - `s_kbd` (function, line 321) `static long s_kbd(void)`
-  - `s_kbd_raw` (function, line 326) `static long s_kbd_raw(long on)`
-  - `kbd_drain` (function, line 347) `static void kbd_drain(void)`
-  - `s_vga` (function, line 352) `static long s_vga(long on)`
-  - `s_pal` (function, line 357) `static long s_pal(const unsigned char *p)`
-  - `s_present` (function, line 362) `static long s_present(void)`
-  - `s_title` (function, line 367) `static long s_title(const char *t)`
-  - `s_mouse` (function, line 372) `static long s_mouse(int *m)`
-  - `s_zoom` (function, line 377) `static long s_zoom(long on)`
-  - `s_yield` (function, line 382) `static void s_yield(void)`
-  - `s_pcspk_init` (function, line 387) `static long s_pcspk_init(void)`
-  - `__attribute__` (function, line 392) `static long __attribute__((unused)) s_tone(long f)`
-  - `beep` (function, line 397) `static void beep(long freq, long dur_ms)`
-  - `pal_set` (function, line 415) `static void pal_set(int i, int r, int g, int b)`
-  - `build_palette` (function, line 421) `static void build_palette(void)`
-  - `in_world` (function, line 480) `static int in_world(int x, int y, int z)`
-  - `chunk_of` (function, line 496) `static int chunk_of(int v)`
-  - `chunk_local` (function, line 499) `static int chunk_local(int v)`
-  - `chunk_lidx` (function, line 504) `static int chunk_lidx(int lx, int ly, int z)`
-  - `chunk_find` (function, line 511) `static int chunk_find(int cx, int cy)`
-  - `world_max_recompute` (function, line 524) `static void world_max_recompute(void)`
-  - `chunk_evict_slot` (function, line 533) `static int chunk_evict_slot(int cx, int cy)`
-  - `chunk_ensure` (function, line 553) `static int chunk_ensure(int cx, int cy)`
-  - `chunk_build_meta` (function, line 576) `static void chunk_build_meta(int slot)`
-  - `col_recompute` (function, line 621) `static void col_recompute(int x, int y)`
-  - `col_top_at` (function, line 646) `static int col_top_at(int x, int y)`
-  - `light_recompute_col` (function, line 653) `static void light_recompute_col(int x, int y)`
-  - `get_b` (function, line 682) `static unsigned char get_b(int x, int y, int z)`
-  - `set_b` (function, line 692) `static void set_b(int x, int y, int z, unsigned char b)`
-  - `set_b_raw` (function, line 708) `static void set_b_raw(int x, int y, int z, unsigned char b)`
-  - `sky_light` (function, line 720) `static float sky_light(int x, int y, int z)`
-  - `is_solid` (function, line 729) `static int is_solid(unsigned char b)`
-  - `in_water_at` (function, line 733) `static int in_water_at(float x, float y, float z)`
-  - `is_visible` (function, line 737) `static int is_visible(unsigned char b)`
-  - `hash2` (function, line 741) `static unsigned int hash2(int x, int y)`
-  - `hash2_seed` (function, line 748) `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
-  - `mc_smoothstep` (function, line 757) `static float mc_smoothstep(float t)`
-  - `biome_fdiv` (function, line 767) `static int biome_fdiv(int v, int c)`
-  - `biome_cell` (function, line 770) `static int biome_cell(int x, int y, unsigned int seed, int cell, int ox, int oy,
-    unsigned int...`
-  - `biome_desert` (function, line 779) `static int biome_desert(int x, int y, unsigned int seed)`
-  - `biome_snow` (function, line 783) `static int biome_snow(int x, int y, unsigned int seed)`
-  - `is_cave` (function, line 787) `static int is_cave(int x, int y, int z, unsigned int seed)`
-  - `ground_h_seed` (function, line 795) `static int ground_h_seed(int x, int y, unsigned int seed)`
-  - `inv_add` (function, line 817) `static int inv_add(int b, int n)`
-  - `inv_remove` (function, line 831) `static int inv_remove(int b, int n)`
-  - `decorate_column` (function, line 881) `static void decorate_column(int x, int y, unsigned int seed)`
-  - `gen_terrain_chunk` (function, line 920) `static void gen_terrain_chunk(int slot)`
-  - `decorate_chunk` (function, line 929) `static void decorate_chunk(int slot)`
-  - `ensure_around_px` (function, line 943) `static void ensure_around_px(float px, float py)`
-  - `ensure_around` (function, line 976) `static void ensure_around(void)`
-  - `new_world` (function, line 982) `static void new_world(unsigned int seed)`
-  - `mob_spawn_one` (function, line 1077) `static void mob_spawn_one(Pig *m, int id, int hp, long now)`
-  - `pig_collides` (function, line 1129) `static int pig_collides(float x, float y, float z)`
-  - `creeper_explode` (function, line 1143) `static void creeper_explode(Pig *c, long now)`
-  - `tick_mob` (function, line 1208) `static void tick_mob(Pig *p, int id, float dt, long now)`
-  - `tick_pigs` (function, line 1288) `static void tick_pigs(float dt, long now)`
-  - `face_color` (function, line 1296) `static unsigned char face_color(unsigned char b, int face)`
-  - `sky_color` (function, line 1345) `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
-  - `shade_block` (function, line 1378) `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
+  - `Recipe` (struct, line 206)
+  - `Pig` (struct, line 285)
+  - `RayHit` (struct, line 1635)
+  - `SaveHeaderV3` (struct, line 2863)
+  - `SaveHeader` (struct, line 2877)
+  - `ChunkHeader` (struct, line 2892)
+  - `best_tool_for` (function, line 220) `static int best_tool_for(unsigned char b)`
+  - `break_time_ms` (function, line 239) `static long break_time_ms(unsigned char b, int tool)`
+  - `break_beep_for` (function, line 264) `static long break_beep_for(unsigned char b)`
+  - `mc_toggle_zoom` (function, line 305) `static void mc_toggle_zoom(void)`
+  - `s_time_ms` (function, line 326) `static long s_time_ms(void)`
+  - `s_kbd` (function, line 332) `static long s_kbd(void)`
+  - `s_kbd_raw` (function, line 337) `static long s_kbd_raw(long on)`
+  - `s_getc_raw` (function, line 349) `static long s_getc_raw(void)`
+  - `ser_get` (function, line 362) `static long ser_get(void)`
+  - `ser_unget` (function, line 375) `static void ser_unget(unsigned char b)`
+  - `menu_ser_key` (function, line 380) `static long menu_ser_key(long b)`
+  - `kbd_drain` (function, line 418) `static void kbd_drain(void)`
+  - `s_vga` (function, line 423) `static long s_vga(long on)`
+  - `s_pal` (function, line 428) `static long s_pal(const unsigned char *p)`
+  - `s_present` (function, line 433) `static long s_present(void)`
+  - `s_title` (function, line 438) `static long s_title(const char *t)`
+  - `s_mouse` (function, line 443) `static long s_mouse(int *m)`
+  - `s_zoom` (function, line 448) `static long s_zoom(long on)`
+  - `s_yield` (function, line 453) `static void s_yield(void)`
+  - `s_pcspk_init` (function, line 458) `static long s_pcspk_init(void)`
+  - `__attribute__` (function, line 463) `static long __attribute__((unused)) s_tone(long f)`
+  - `beep` (function, line 468) `static void beep(long freq, long dur_ms)`
+  - `pal_set` (function, line 486) `static void pal_set(int i, int r, int g, int b)`
+  - `build_palette` (function, line 492) `static void build_palette(void)`
+  - `in_world` (function, line 551) `static int in_world(int x, int y, int z)`
+  - `chunk_of` (function, line 567) `static int chunk_of(int v)`
+  - `chunk_local` (function, line 570) `static int chunk_local(int v)`
+  - `chunk_lidx` (function, line 575) `static int chunk_lidx(int lx, int ly, int z)`
+  - `chunk_find` (function, line 582) `static int chunk_find(int cx, int cy)`
+  - `world_max_recompute` (function, line 595) `static void world_max_recompute(void)`
+  - `chunk_evict_slot` (function, line 604) `static int chunk_evict_slot(int cx, int cy)`
+  - `chunk_ensure` (function, line 624) `static int chunk_ensure(int cx, int cy)`
+  - `chunk_build_meta` (function, line 647) `static void chunk_build_meta(int slot)`
+  - `col_recompute` (function, line 692) `static void col_recompute(int x, int y)`
+  - `col_top_at` (function, line 717) `static int col_top_at(int x, int y)`
+  - `light_recompute_col` (function, line 724) `static void light_recompute_col(int x, int y)`
+  - `get_b` (function, line 753) `static unsigned char get_b(int x, int y, int z)`
+  - `set_b` (function, line 763) `static void set_b(int x, int y, int z, unsigned char b)`
+  - `set_b_raw` (function, line 779) `static void set_b_raw(int x, int y, int z, unsigned char b)`
+  - `sky_light` (function, line 791) `static float sky_light(int x, int y, int z)`
+  - `is_solid` (function, line 800) `static int is_solid(unsigned char b)`
+  - `in_water_at` (function, line 804) `static int in_water_at(float x, float y, float z)`
+  - `is_visible` (function, line 808) `static int is_visible(unsigned char b)`
+  - `hash2` (function, line 812) `static unsigned int hash2(int x, int y)`
+  - `hash2_seed` (function, line 819) `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
+  - `mc_smoothstep` (function, line 828) `static float mc_smoothstep(float t)`
+  - `biome_fdiv` (function, line 836) `static int biome_fdiv(int v, int c)`
+  - `voro_site` (function, line 850) `static void voro_site(int cx, int cy, unsigned int seed, int cell,
+    int *sx, int *sy)`
+  - `biome_voro` (function, line 858) `static int biome_voro(int x, int y, unsigned int seed, int cell,
+    int ox, int oy, unsigned int...`
+  - `biome_desert` (function, line 882) `static int biome_desert(int x, int y, unsigned int seed)`
+  - `biome_snow` (function, line 886) `static int biome_snow(int x, int y, unsigned int seed)`
+  - `is_cave` (function, line 890) `static int is_cave(int x, int y, int z, unsigned int seed)`
+  - `ground_h_seed` (function, line 898) `static int ground_h_seed(int x, int y, unsigned int seed)`
+  - `inv_add` (function, line 920) `static int inv_add(int b, int n)`
+  - `inv_remove` (function, line 934) `static int inv_remove(int b, int n)`
+  - `decorate_column` (function, line 984) `static void decorate_column(int x, int y, unsigned int seed)`
+  - `gen_terrain_chunk` (function, line 1023) `static void gen_terrain_chunk(int slot)`
+  - `decorate_chunk` (function, line 1032) `static void decorate_chunk(int slot)`
+  - `ensure_around_px` (function, line 1046) `static void ensure_around_px(float px, float py)`
+  - `ensure_around` (function, line 1079) `static void ensure_around(void)`
+  - `new_world` (function, line 1085) `static void new_world(unsigned int seed)`
+  - `mob_spawn_one` (function, line 1180) `static void mob_spawn_one(Pig *m, int id, int hp, long now)`
+  - `pig_collides` (function, line 1232) `static int pig_collides(float x, float y, float z)`
+  - `creeper_explode` (function, line 1246) `static void creeper_explode(Pig *c, long now)`
+  - `creep_sense` (function, line 1315) `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)`
+  - `creep_has_los` (function, line 1327) `static int creep_has_los(Pig *c)`
+  - `creep_separate` (function, line 1351) `static void creep_separate(Pig *p, int id, float dt)`
+  - `tick_mob` (function, line 1375) `static void tick_mob(Pig *p, int id, float dt, long now)`
+  - `tick_pigs` (function, line 1496) `static void tick_pigs(float dt, long now)`
+  - `face_color` (function, line 1504) `static unsigned char face_color(unsigned char b, int face)`
+  - `sky_color` (function, line 1553) `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
+  - `shade_block` (function, line 1586) `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
              ...`
-  - `cast_ray` (function, line 1435) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
-  - `eye_z` (function, line 1526) `static float eye_z(void)`
-  - `mc_glyph` (function, line 1593) `static int mc_glyph(char ch)`
-  - `mc_pixel` (function, line 1601) `static void mc_pixel(int x, int y, unsigned char c)`
-  - `mc_text` (function, line 1607) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
-  - `mc_text_bg` (function, line 1620) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
-  - `mc_block_name` (function, line 1633) `static const char *mc_block_name(unsigned char b)`
-  - `mc_facing` (function, line 1653) `static char mc_facing(void)`
-  - `cam_build` (function, line 1668) `static void cam_build(void)`
-  - `render_terrain` (function, line 1686) `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
+  - `cast_ray` (function, line 1643) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
+  - `eye_z` (function, line 1734) `static float eye_z(void)`
+  - `mc_glyph` (function, line 1801) `static int mc_glyph(char ch)`
+  - `mc_pixel` (function, line 1809) `static void mc_pixel(int x, int y, unsigned char c)`
+  - `mc_text` (function, line 1815) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
+  - `mc_text_bg` (function, line 1828) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
+  - `mc_block_name` (function, line 1841) `static const char *mc_block_name(unsigned char b)`
+  - `mc_facing` (function, line 1861) `static char mc_facing(void)`
+  - `cam_build` (function, line 1876) `static void cam_build(void)`
+  - `render_terrain` (function, line 1894) `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
                       ...`
-  - `mob_pixel` (function, line 1721) `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)`
-  - `render_mob_array` (function, line 1755) `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
+  - `mob_pixel` (function, line 1929) `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)`
+  - `render_mob_array` (function, line 1963) `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
     float rx, float r...`
-  - `render_pigs` (function, line 1806) `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
-  - `render_frame` (function, line 1814) `static void render_frame(void)`
-  - `sc_hist_push` (function, line 1927) `static void sc_hist_push(unsigned char b)`
-  - `poll_kbd` (function, line 1938) `static void poll_kbd(void)`
-  - `player_collides` (function, line 2113) `static int player_collides(float x, float y, float z)`
-  - `move_x` (function, line 2137) `static void move_x(float nx)`
-  - `move_y` (function, line 2142) `static void move_y(float ny)`
-  - `move_z_abs` (function, line 2147) `static MoveResult move_z_abs(float nz)`
-  - `block_intersects_player` (function, line 2162) `static int block_intersects_player(int bx, int by, int bz)`
-  - `try_autostep` (function, line 2171) `static void try_autostep(float tx, float ty)`
-  - `hurt` (function, line 2182) `static void hurt(int dmg, const char *why)`
-  - `tick_player` (function, line 2206) `static void tick_player(float dt)`
-  - `tick_water` (function, line 2305) `static void tick_water(long now)`
-  - `tick_hunger` (function, line 2353) `static void tick_hunger(long now)`
-  - `goal_text` (function, line 2365) `static const char *goal_text(void)`
-  - `tick_goals` (function, line 2376) `static void tick_goals(void)`
-  - `tick_discover` (function, line 2387) `static void tick_discover(long now)`
-  - `tick_interact` (function, line 2425) `static void tick_interact(void)`
-  - `mc_crc32` (function, line 2676) `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)`
-  - `save_compute_crc` (function, line 2689) `static uint32_t save_compute_crc(const SaveHeader *hd)`
-  - `chunk_path` (function, line 2695) `static void chunk_path(int cx, int cy, char *out, size_t n)`
-  - `save_chunk_file` (function, line 2699) `static int save_chunk_file(int slot)`
-  - `load_chunk_file` (function, line 2731) `static int load_chunk_file(int slot, int cx, int cy)`
-  - `save_validate_loaded` (function, line 2813) `static int save_validate_loaded(void)`
-  - `load_reset_runtime` (function, line 2832) `static void load_reset_runtime(void)`
-  - `carve_blob` (function, line 2866) `static void carve_blob(const unsigned char *blob)`
-  - `load_world_legacy` (function, line 2895) `static int load_world_legacy(FILE *f)`
-  - `load_apply_player` (function, line 2932) `static void load_apply_player(const SaveHeader *hd)`
-  - `load_world_v3` (function, line 2951) `static int load_world_v3(FILE *f, SaveHeader *hd)`
-  - `load_world_v2` (function, line 2991) `static int load_world_v2(FILE *f, SaveHeader *hd)`
-  - `load_world` (function, line 3028) `static int load_world(void)`
-  - `selftest` (function, line 3102) `static int selftest(void)`
-  - `census` (function, line 3342) `static int census(void)`
-  - `dumpstats` (function, line 3405) `static int dumpstats(void)`
-  - `title_menu` (function, line 3489) `static int title_menu(int have_save, int *seed_io)`
-  - `pause_menu` (function, line 3654) `static int pause_menu(int *seed_io)`
-  - `main` (function, line 3822) `int main(int argc, char **argv)`
-  - `snprintf` (function, line 298) `snprintf(last_act, sizeof(last_act), mc_zoom ? "ZOOM 2X" : "ZOOM 1X");`
-  - `printf` (function, line 300) `printf("minicraft: zoom %s\n", mc_zoom ? "2x" : "1x");`
-  - `save_world` (function, line 309) `static int save_world(void);`
-  - `volatile` (function, line 318) `__asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx", "r11", "memory");`
-  - `s_tone` (function, line 404) `s_tone(0);`
-  - `gen_column_terrain` (function, line 926) `gen_column_terrain(x0 + lx, y0 + ly, mc_seed);`
-  - `memset` (function, line 1454) `memset(&h, 0, sizeof(h));`
-  - `cosf` (function, line 2091) `cosf(pl_yaw) * cosf(pl_pitch), sinf(pl_yaw) * cosf(pl_pitch), sinf(pl_pitch), 6.0f);`
-  - `fclose` (function, line 2719) `fclose(f);`
-  - `unlink` (function, line 2808) `unlink(SAVE_TMP_PATH);`
-  - `rewind` (function, line 3042) `rewind(f);`
-  - `menu_text_c` (function, line 3505) `menu_text_c(28, "MINICRAFT", 2, 3);`
-  - `fflush` (function, line 3896) `fflush(stdout);`
-  - `mobs_sync` (function, line 3907) `mobs_sync();`
-  - `MC_H` (macro, line 30) `#define MC_H`
-  - `MC_CHUNK` (macro, line 32) `#define MC_CHUNK`
-  - `MC_LOAD_R` (macro, line 33) `#define MC_LOAD_R`
-  - `MC_CHUNKS` (macro, line 34) `#define MC_CHUNKS`
-  - `MC_CVOL` (macro, line 35) `#define MC_CVOL`
-  - `MC_COLS` (macro, line 36) `#define MC_COLS`
-  - `FB_W` (macro, line 37) `#define FB_W`
-  - `FB_H` (macro, line 39) `#define FB_H`
-  - `BACKBUF` (macro, line 42) `#define BACKBUF`
-  - `BACKBUF` (macro, line 44) `#define BACKBUF`
-  - `SAVE_PATH` (macro, line 46) `#define SAVE_PATH`
-  - `SAVE_TMP_PATH` (macro, line 48) `#define SAVE_TMP_PATH`
-  - `MC_SAVE_MAGIC` (macro, line 49) `#define MC_SAVE_MAGIC`
-  - `MC_SAVE_VERSION` (macro, line 50) `#define MC_SAVE_VERSION`
-  - `MC_SAVE_CRC_SEED` (macro, line 51) `#define MC_SAVE_CRC_SEED`
-  - `MC_CHUNK_MAGIC` (macro, line 52) `#define MC_CHUNK_MAGIC`
-  - `MC_CHUNK_VERSION` (macro, line 53) `#define MC_CHUNK_VERSION`
-  - `MC_EYE` (macro, line 56) `#define MC_EYE`
-  - `MC_GRAV` (macro, line 57) `#define MC_GRAV`
-  - `MC_JUMP` (macro, line 58) `#define MC_JUMP`
-  - `MC_MAXFALL` (macro, line 59) `#define MC_MAXFALL`
-  - `MC_SPEED` (macro, line 60) `#define MC_SPEED`
-  - `MC_FLY_SPEED` (macro, line 61) `#define MC_FLY_SPEED`
-  - `MC_SPRINT` (macro, line 62) `#define MC_SPRINT`
-  - `MC_MOUSE` (macro, line 63) `#define MC_MOUSE`
-  - `MC_REACH` (macro, line 64) `#define MC_REACH`
-  - `MC_VIEW` (macro, line 65) `#define MC_VIEW`
-  - `MC_DDA_STEPS` (macro, line 66) `#define MC_DDA_STEPS`
-  - `MC_BREAK_MS` (macro, line 67) `#define MC_BREAK_MS`
-  - `MC_BREAK_GRACE_MS` (macro, line 68) `#define MC_BREAK_GRACE_MS`
-  - `MC_PLACE_MS` (macro, line 69) `#define MC_PLACE_MS`
-  - `MC_WATER_GRAV` (macro, line 70) `#define MC_WATER_GRAV`
-  - `MC_WATER_SINK` (macro, line 71) `#define MC_WATER_SINK`
-  - `MC_WATER_SWIM` (macro, line 72) `#define MC_WATER_SWIM`
-  - `MC_INV_MAX` (macro, line 73) `#define MC_INV_MAX`
-  - `MC_PITCH_MAX` (macro, line 74) `#define MC_PITCH_MAX`
-  - `MC_AUTOSTEP` (macro, line 75) `#define MC_AUTOSTEP`
-  - `MC_HP_MAX` (macro, line 76) `#define MC_HP_MAX`
-  - `MC_PIGS` (macro, line 77) `#define MC_PIGS`
-  - `MC_CREEPS_MAX` (macro, line 78) `#define MC_CREEPS_MAX`
-  - `MC_CREEPS_DEF` (macro, line 79) `#define MC_CREEPS_DEF`
-  - `MC_CREEP_HP` (macro, line 80) `#define MC_CREEP_HP`
-  - `MC_FUSE_MS` (macro, line 81) `#define MC_FUSE_MS`
-  - `MC_BOOM_R` (macro, line 82) `#define MC_BOOM_R`
-  - `MC_PORK_HEAL` (macro, line 83) `#define MC_PORK_HEAL`
-  - `MC_HUNGER_MAX` (macro, line 84) `#define MC_HUNGER_MAX`
-  - `MC_HUNGER_MS` (macro, line 85) `#define MC_HUNGER_MS`
-  - `MC_PIG_HP` (macro, line 86) `#define MC_PIG_HP`
-  - `MC_PIG_HURT_MS` (macro, line 87) `#define MC_PIG_HURT_MS`
-  - `MC_DAY_MS` (macro, line 88) `#define MC_DAY_MS`
-  - `MC_SAVE_SECS` (macro, line 89) `#define MC_SAVE_SECS`
-  - `MC_BAYER_N` (macro, line 90) `#define MC_BAYER_N`
-  - `MC_H_BASE` (macro, line 91) `#define MC_H_BASE`
-  - `MC_H_WT_DET` (macro, line 92) `#define MC_H_WT_DET`
-  - `MC_H_WT_MID` (macro, line 93) `#define MC_H_WT_MID`
-  - `MC_H_WT_COARSE` (macro, line 94) `#define MC_H_WT_COARSE`
-  - `SC_ESC` (macro, line 97) `#define SC_ESC`
-  - `SC_1` (macro, line 98) `#define SC_1`
-  - `SC_9` (macro, line 99) `#define SC_9`
-  - `SC_Q` (macro, line 100) `#define SC_Q`
-  - `SC_W` (macro, line 101) `#define SC_W`
-  - `SC_E` (macro, line 102) `#define SC_E`
-  - `SC_R` (macro, line 103) `#define SC_R`
-  - `SC_T` (macro, line 104) `#define SC_T`
-  - `SC_U` (macro, line 105) `#define SC_U`
-  - `SC_I` (macro, line 106) `#define SC_I`
-  - `SC_O` (macro, line 107) `#define SC_O`
-  - `SC_P` (macro, line 108) `#define SC_P`
-  - `SC_J` (macro, line 109) `#define SC_J`
-  - `SC_A` (macro, line 110) `#define SC_A`
-  - `SC_S` (macro, line 111) `#define SC_S`
-  - `SC_D` (macro, line 112) `#define SC_D`
-  - `SC_F` (macro, line 113) `#define SC_F`
-  - `SC_G` (macro, line 114) `#define SC_G`
-  - `SC_K` (macro, line 115) `#define SC_K`
-  - `SC_L` (macro, line 116) `#define SC_L`
-  - `SC_C` (macro, line 117) `#define SC_C`
-  - `SC_V` (macro, line 118) `#define SC_V`
-  - `SC_B` (macro, line 119) `#define SC_B`
-  - `SC_N` (macro, line 120) `#define SC_N`
-  - `SC_ENTER` (macro, line 121) `#define SC_ENTER`
-  - `SC_BACK` (macro, line 122) `#define SC_BACK`
-  - `SC_0` (macro, line 123) `#define SC_0`
-  - `MC_SEED_MAX` (macro, line 124) `#define MC_SEED_MAX`
-  - `MC_KBD_SEQ_SPINS` (macro, line 125) `#define MC_KBD_SEQ_SPINS`
-  - `SC_SPACE` (macro, line 126) `#define SC_SPACE`
-  - `SC_LSHIFT` (macro, line 127) `#define SC_LSHIFT`
-  - `SC_RSHIFT` (macro, line 128) `#define SC_RSHIFT`
-  - `SC_CTRL` (macro, line 129) `#define SC_CTRL`
-  - `EXT_UP` (macro, line 130) `#define EXT_UP`
-  - `EXT_DOWN` (macro, line 131) `#define EXT_DOWN`
-  - `EXT_LEFT` (macro, line 132) `#define EXT_LEFT`
-  - `EXT_RIGHT` (macro, line 133) `#define EXT_RIGHT`
-  - `EXT_F11` (macro, line 134) `#define EXT_F11`
-  - `MOB_PIG` (macro, line 286) `#define MOB_PIG`
-  - `MOB_CREEP` (macro, line 288) `#define MOB_CREEP`
-  - `MC_LEGACY_WORLD` (macro, line 2673) `#define MC_LEGACY_WORLD`
+  - `render_pigs` (function, line 2014) `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
+  - `render_frame` (function, line 2022) `static void render_frame(void)`
+  - `sc_hist_push` (function, line 2135) `static void sc_hist_push(unsigned char b)`
+  - `poll_kbd` (function, line 2146) `static void poll_kbd(void)`
+  - `player_collides` (function, line 2339) `static int player_collides(float x, float y, float z)`
+  - `move_x` (function, line 2363) `static void move_x(float nx)`
+  - `move_y` (function, line 2368) `static void move_y(float ny)`
+  - `move_z_abs` (function, line 2373) `static MoveResult move_z_abs(float nz)`
+  - `block_intersects_player` (function, line 2388) `static int block_intersects_player(int bx, int by, int bz)`
+  - `try_autostep` (function, line 2397) `static void try_autostep(float tx, float ty)`
+  - `hurt` (function, line 2408) `static void hurt(int dmg, const char *why)`
+  - `tick_player` (function, line 2433) `static void tick_player(float dt)`
+  - `tick_water` (function, line 2532) `static void tick_water(long now)`
+  - `tick_hunger` (function, line 2580) `static void tick_hunger(long now)`
+  - `goal_text` (function, line 2592) `static const char *goal_text(void)`
+  - `tick_goals` (function, line 2603) `static void tick_goals(void)`
+  - `tick_discover` (function, line 2614) `static void tick_discover(long now)`
+  - `tick_interact` (function, line 2652) `static void tick_interact(void)`
+  - `mc_crc32` (function, line 2903) `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)`
+  - `save_compute_crc` (function, line 2916) `static uint32_t save_compute_crc(const SaveHeader *hd)`
+  - `chunk_path` (function, line 2922) `static void chunk_path(int cx, int cy, char *out, size_t n)`
+  - `save_chunk_file` (function, line 2926) `static int save_chunk_file(int slot)`
+  - `load_chunk_file` (function, line 2958) `static int load_chunk_file(int slot, int cx, int cy)`
+  - `save_validate_loaded` (function, line 3040) `static int save_validate_loaded(void)`
+  - `load_reset_runtime` (function, line 3059) `static void load_reset_runtime(void)`
+  - `carve_blob` (function, line 3093) `static void carve_blob(const unsigned char *blob)`
+  - `load_world_legacy` (function, line 3122) `static int load_world_legacy(FILE *f)`
+  - `load_apply_player` (function, line 3159) `static void load_apply_player(const SaveHeader *hd)`
+  - `load_world_v3` (function, line 3178) `static int load_world_v3(FILE *f, SaveHeader *hd)`
+  - `load_world_v2` (function, line 3218) `static int load_world_v2(FILE *f, SaveHeader *hd)`
+  - `load_world` (function, line 3255) `static int load_world(void)`
+  - `selftest` (function, line 3329) `static int selftest(void)`
+  - `census` (function, line 3591) `static int census(void)`
+  - `dumpstats` (function, line 3654) `static int dumpstats(void)`
+  - `title_menu` (function, line 3738) `static int title_menu(int have_save, int *seed_io)`
+  - `pause_menu` (function, line 3907) `static int pause_menu(int *seed_io)`
+  - `main` (function, line 4079) `int main(int argc, char **argv)`
+  - `snprintf` (function, line 309) `snprintf(last_act, sizeof(last_act), mc_zoom ? "ZOOM 2X" : "ZOOM 1X");`
+  - `printf` (function, line 311) `printf("minicraft: zoom %s\n", mc_zoom ? "2x" : "1x");`
+  - `save_world` (function, line 320) `static int save_world(void);`
+  - `volatile` (function, line 329) `__asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx", "r11", "memory");`
+  - `s_tone` (function, line 475) `s_tone(0);`
+  - `gen_column_terrain` (function, line 1029) `gen_column_terrain(x0 + lx, y0 + ly, mc_seed);`
+  - `memset` (function, line 1662) `memset(&h, 0, sizeof(h));`
+  - `cosf` (function, line 2300) `cosf(pl_yaw) * cosf(pl_pitch), sinf(pl_yaw) * cosf(pl_pitch), sinf(pl_pitch), 6.0f);`
+  - `fclose` (function, line 2946) `fclose(f);`
+  - `unlink` (function, line 3035) `unlink(SAVE_TMP_PATH);`
+  - `rewind` (function, line 3269) `rewind(f);`
+  - `menu_text_c` (function, line 3754) `menu_text_c(28, "MINICRAFT", 2, 3);`
+  - `fflush` (function, line 4156) `fflush(stdout);`
+  - `mobs_sync` (function, line 4167) `mobs_sync();`
+  - `MC_H` (macro, line 33) `#define MC_H`
+  - `MC_CHUNK` (macro, line 35) `#define MC_CHUNK`
+  - `MC_LOAD_R` (macro, line 36) `#define MC_LOAD_R`
+  - `MC_CHUNKS` (macro, line 37) `#define MC_CHUNKS`
+  - `MC_CVOL` (macro, line 38) `#define MC_CVOL`
+  - `MC_COLS` (macro, line 39) `#define MC_COLS`
+  - `FB_W` (macro, line 40) `#define FB_W`
+  - `FB_H` (macro, line 42) `#define FB_H`
+  - `BACKBUF` (macro, line 45) `#define BACKBUF`
+  - `BACKBUF` (macro, line 47) `#define BACKBUF`
+  - `SAVE_PATH` (macro, line 49) `#define SAVE_PATH`
+  - `SAVE_TMP_PATH` (macro, line 51) `#define SAVE_TMP_PATH`
+  - `MC_SAVE_MAGIC` (macro, line 52) `#define MC_SAVE_MAGIC`
+  - `MC_SAVE_VERSION` (macro, line 53) `#define MC_SAVE_VERSION`
+  - `MC_SAVE_CRC_SEED` (macro, line 54) `#define MC_SAVE_CRC_SEED`
+  - `MC_CHUNK_MAGIC` (macro, line 55) `#define MC_CHUNK_MAGIC`
+  - `MC_CHUNK_VERSION` (macro, line 56) `#define MC_CHUNK_VERSION`
+  - `MC_EYE` (macro, line 59) `#define MC_EYE`
+  - `MC_GRAV` (macro, line 60) `#define MC_GRAV`
+  - `MC_JUMP` (macro, line 61) `#define MC_JUMP`
+  - `MC_MAXFALL` (macro, line 62) `#define MC_MAXFALL`
+  - `MC_SPEED` (macro, line 63) `#define MC_SPEED`
+  - `MC_FLY_SPEED` (macro, line 64) `#define MC_FLY_SPEED`
+  - `MC_SPRINT` (macro, line 65) `#define MC_SPRINT`
+  - `MC_MOUSE` (macro, line 66) `#define MC_MOUSE`
+  - `MC_REACH` (macro, line 67) `#define MC_REACH`
+  - `MC_VIEW` (macro, line 68) `#define MC_VIEW`
+  - `MC_DDA_STEPS` (macro, line 69) `#define MC_DDA_STEPS`
+  - `MC_BREAK_MS` (macro, line 70) `#define MC_BREAK_MS`
+  - `MC_BREAK_GRACE_MS` (macro, line 71) `#define MC_BREAK_GRACE_MS`
+  - `MC_PLACE_MS` (macro, line 72) `#define MC_PLACE_MS`
+  - `MC_WATER_GRAV` (macro, line 73) `#define MC_WATER_GRAV`
+  - `MC_WATER_SINK` (macro, line 74) `#define MC_WATER_SINK`
+  - `MC_WATER_SWIM` (macro, line 75) `#define MC_WATER_SWIM`
+  - `MC_INV_MAX` (macro, line 76) `#define MC_INV_MAX`
+  - `MC_PITCH_MAX` (macro, line 77) `#define MC_PITCH_MAX`
+  - `MC_AUTOSTEP` (macro, line 78) `#define MC_AUTOSTEP`
+  - `MC_HP_MAX` (macro, line 79) `#define MC_HP_MAX`
+  - `MC_PIGS` (macro, line 80) `#define MC_PIGS`
+  - `MC_CREEPS_MAX` (macro, line 81) `#define MC_CREEPS_MAX`
+  - `MC_CREEPS_DEF` (macro, line 82) `#define MC_CREEPS_DEF`
+  - `MC_CREEP_HP` (macro, line 83) `#define MC_CREEP_HP`
+  - `MC_FUSE_MS` (macro, line 84) `#define MC_FUSE_MS`
+  - `MC_BOOM_R` (macro, line 85) `#define MC_BOOM_R`
+  - `MC_CREEP_SENSE` (macro, line 88) `#define MC_CREEP_SENSE`
+  - `MC_CREEP_DZ_MAX` (macro, line 89) `#define MC_CREEP_DZ_MAX`
+  - `MC_CREEP_FUSE_D` (macro, line 90) `#define MC_CREEP_FUSE_D`
+  - `MC_CREEP_DEFUSE_D` (macro, line 91) `#define MC_CREEP_DEFUSE_D`
+  - `MC_CREEP_SEP_D` (macro, line 92) `#define MC_CREEP_SEP_D`
+  - `MC_PORK_HEAL` (macro, line 93) `#define MC_PORK_HEAL`
+  - `MC_HUNGER_MAX` (macro, line 94) `#define MC_HUNGER_MAX`
+  - `MC_HUNGER_MS` (macro, line 95) `#define MC_HUNGER_MS`
+  - `MC_PIG_HP` (macro, line 96) `#define MC_PIG_HP`
+  - `MC_PIG_HURT_MS` (macro, line 97) `#define MC_PIG_HURT_MS`
+  - `MC_DAY_MS` (macro, line 98) `#define MC_DAY_MS`
+  - `MC_SAVE_SECS` (macro, line 99) `#define MC_SAVE_SECS`
+  - `MC_BAYER_N` (macro, line 100) `#define MC_BAYER_N`
+  - `MC_H_BASE` (macro, line 101) `#define MC_H_BASE`
+  - `MC_H_WT_DET` (macro, line 102) `#define MC_H_WT_DET`
+  - `MC_H_WT_MID` (macro, line 103) `#define MC_H_WT_MID`
+  - `MC_H_WT_COARSE` (macro, line 104) `#define MC_H_WT_COARSE`
+  - `SC_ESC` (macro, line 107) `#define SC_ESC`
+  - `SC_1` (macro, line 108) `#define SC_1`
+  - `SC_9` (macro, line 109) `#define SC_9`
+  - `SC_Q` (macro, line 110) `#define SC_Q`
+  - `SC_W` (macro, line 111) `#define SC_W`
+  - `SC_E` (macro, line 112) `#define SC_E`
+  - `SC_R` (macro, line 113) `#define SC_R`
+  - `SC_T` (macro, line 114) `#define SC_T`
+  - `SC_U` (macro, line 115) `#define SC_U`
+  - `SC_I` (macro, line 116) `#define SC_I`
+  - `SC_O` (macro, line 117) `#define SC_O`
+  - `SC_P` (macro, line 118) `#define SC_P`
+  - `SC_J` (macro, line 119) `#define SC_J`
+  - `SC_A` (macro, line 120) `#define SC_A`
+  - `SC_S` (macro, line 121) `#define SC_S`
+  - `SC_D` (macro, line 122) `#define SC_D`
+  - `SC_F` (macro, line 123) `#define SC_F`
+  - `SC_G` (macro, line 124) `#define SC_G`
+  - `SC_K` (macro, line 125) `#define SC_K`
+  - `SC_L` (macro, line 126) `#define SC_L`
+  - `SC_C` (macro, line 127) `#define SC_C`
+  - `SC_V` (macro, line 128) `#define SC_V`
+  - `SC_B` (macro, line 129) `#define SC_B`
+  - `SC_N` (macro, line 130) `#define SC_N`
+  - `SC_ENTER` (macro, line 131) `#define SC_ENTER`
+  - `SC_BACK` (macro, line 132) `#define SC_BACK`
+  - `SC_0` (macro, line 133) `#define SC_0`
+  - `MC_SEED_MAX` (macro, line 134) `#define MC_SEED_MAX`
+  - `MC_KBD_SEQ_SPINS` (macro, line 135) `#define MC_KBD_SEQ_SPINS`
+  - `SC_SPACE` (macro, line 136) `#define SC_SPACE`
+  - `SC_LSHIFT` (macro, line 137) `#define SC_LSHIFT`
+  - `SC_RSHIFT` (macro, line 138) `#define SC_RSHIFT`
+  - `SC_CTRL` (macro, line 139) `#define SC_CTRL`
+  - `EXT_UP` (macro, line 140) `#define EXT_UP`
+  - `EXT_DOWN` (macro, line 141) `#define EXT_DOWN`
+  - `EXT_LEFT` (macro, line 142) `#define EXT_LEFT`
+  - `EXT_RIGHT` (macro, line 143) `#define EXT_RIGHT`
+  - `EXT_F11` (macro, line 144) `#define EXT_F11`
+  - `MOB_PIG` (macro, line 297) `#define MOB_PIG`
+  - `MOB_CREEP` (macro, line 299) `#define MOB_CREEP`
+  - `SER_STASH_CAP` (macro, line 359) `#define SER_STASH_CAP`
+  - `MC_VORO_DESERT_CELL` (macro, line 848) `#define MC_VORO_DESERT_CELL`
+  - `MC_VORO_SNOW_CELL` (macro, line 849) `#define MC_VORO_SNOW_CELL`
+  - `MC_LEGACY_WORLD` (macro, line 2900) `#define MC_LEGACY_WORLD`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-## progs/minios_abi.h
-- Layer: utility
-- Doc: ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
-- Language: h
-- Symbols:
-  - `MINIOS_ABI_H` (macro, line 2) `#define MINIOS_ABI_H`
-  - `MINIOS_ABI_VERSION` (macro, line 41) `#define MINIOS_ABI_VERSION`
-  - `MINIOS_ABI_CHECKSUM` (macro, line 45) `#define MINIOS_ABI_CHECKSUM`
-  - `MINIOS_USER_LOAD_BASE` (macro, line 101) `#define MINIOS_USER_LOAD_BASE`
-  - `MINIOS_USER_LOAD_END` (macro, line 102) `#define MINIOS_USER_LOAD_END`
-  - `MINIOS_USER_STACK_SIZE` (macro, line 103) `#define MINIOS_USER_STACK_SIZE`
-  - `MINIOS_USER_STACK_TOP` (macro, line 104) `#define MINIOS_USER_STACK_TOP`
-  - `MINIOS_USER_STACK_BASE` (macro, line 105) `#define MINIOS_USER_STACK_BASE`
-  - `MINIOS_USER_BRK_END` (macro, line 106) `#define MINIOS_USER_BRK_END`
-  - `MINIOS_DOOM_BACKBUF_ADDR` (macro, line 123) `#define MINIOS_DOOM_BACKBUF_ADDR`
-  - `MINIOS_DOOM_W` (macro, line 124) `#define MINIOS_DOOM_W`
-  - `MINIOS_DOOM_H` (macro, line 125) `#define MINIOS_DOOM_H`
-  - `MINIOS_FB_ADDR` (macro, line 126) `#define MINIOS_FB_ADDR`
-  - `MINIOS_NK_BACKBUF_ADDR` (macro, line 127) `#define MINIOS_NK_BACKBUF_ADDR`
-  - `MINIOS_NK_W` (macro, line 128) `#define MINIOS_NK_W`
-  - `MINIOS_NK_H` (macro, line 129) `#define MINIOS_NK_H`
-  - `MINIOS_HEAP_BASE` (macro, line 134) `#define MINIOS_HEAP_BASE`
-  - `MINIOS_HEAP_SIZE` (macro, line 135) `#define MINIOS_HEAP_SIZE`
-  - `MINIOS_FB_WIDTH_MAX` (macro, line 140) `#define MINIOS_FB_WIDTH_MAX`
-  - `MINIOS_FB_HEIGHT_MAX` (macro, line 141) `#define MINIOS_FB_HEIGHT_MAX`
-  - `MINIOS_SYS_READ` (macro, line 159) `#define MINIOS_SYS_READ`
-  - `MINIOS_SYS_WRITE` (macro, line 160) `#define MINIOS_SYS_WRITE`
-  - `MINIOS_SYS_OPEN` (macro, line 161) `#define MINIOS_SYS_OPEN`
-  - `MINIOS_SYS_CLOSE` (macro, line 162) `#define MINIOS_SYS_CLOSE`
-  - `MINIOS_SYS_FSTAT` (macro, line 163) `#define MINIOS_SYS_FSTAT`
-  - `MINIOS_SYS_POLL` (macro, line 164) `#define MINIOS_SYS_POLL`
-  - `MINIOS_SYS_LSEEK` (macro, line 165) `#define MINIOS_SYS_LSEEK`
-  - `MINIOS_SYS_MMAP` (macro, line 166) `#define MINIOS_SYS_MMAP`
-  - `MINIOS_SYS_MPROTECT` (macro, line 167) `#define MINIOS_SYS_MPROTECT`
-  - `MINIOS_SYS_MUNMAP` (macro, line 168) `#define MINIOS_SYS_MUNMAP`
-  - `MINIOS_SYS_BRK` (macro, line 169) `#define MINIOS_SYS_BRK`
-  - `MINIOS_SYS_RT_SIGACTION` (macro, line 170) `#define MINIOS_SYS_RT_SIGACTION`
-  - `MINIOS_SYS_RT_SIGPROCMASK` (macro, line 171) `#define MINIOS_SYS_RT_SIGPROCMASK`
-  - `MINIOS_SYS_IOCTL` (macro, line 172) `#define MINIOS_SYS_IOCTL`
-  - `MINIOS_SYS_WRITEV` (macro, line 173) `#define MINIOS_SYS_WRITEV`
-  - `MINIOS_SYS_ACCESS` (macro, line 174) `#define MINIOS_SYS_ACCESS`
-  - `MINIOS_SYS_SCHED_YIELD` (macro, line 175) `#define MINIOS_SYS_SCHED_YIELD`
-  - `MINIOS_SYS_GETPID` (macro, line 176) `#define MINIOS_SYS_GETPID`
-  - `MINIOS_SYS_SOCKET` (macro, line 177) `#define MINIOS_SYS_SOCKET`
-  - `MINIOS_SYS_CONNECT` (macro, line 178) `#define MINIOS_SYS_CONNECT`
-  - `MINIOS_SYS_SENDTO` (macro, line 179) `#define MINIOS_SYS_SENDTO`
-  - `MINIOS_SYS_RECVFROM` (macro, line 180) `#define MINIOS_SYS_RECVFROM`
-  - `MINIOS_SYS_SHUTDOWN` (macro, line 181) `#define MINIOS_SYS_SHUTDOWN`
-  - `MINIOS_SYS_FORK` (macro, line 182) `#define MINIOS_SYS_FORK`
-  - `MINIOS_SYS_VFORK` (macro, line 183) `#define MINIOS_SYS_VFORK`
-  - `MINIOS_SYS_EXECVE` (macro, line 184) `#define MINIOS_SYS_EXECVE`
-  - `MINIOS_SYS_EXIT` (macro, line 185) `#define MINIOS_SYS_EXIT`
-  - `MINIOS_SYS_WAIT4` (macro, line 186) `#define MINIOS_SYS_WAIT4`
-  - `MINIOS_SYS_KILL` (macro, line 187) `#define MINIOS_SYS_KILL`
-  - `MINIOS_SYS_UNAME` (macro, line 188) `#define MINIOS_SYS_UNAME`
-  - `MINIOS_SYS_UNLINK` (macro, line 189) `#define MINIOS_SYS_UNLINK`
-  - `MINIOS_SYS_READLINK` (macro, line 190) `#define MINIOS_SYS_READLINK`
-  - `MINIOS_SYS_GETTID` (macro, line 191) `#define MINIOS_SYS_GETTID`
-  - `MINIOS_SYS_FLOCK` (macro, line 195) `#define MINIOS_SYS_FLOCK`
-  - `MINIOS_SYS_FSYNC` (macro, line 196) `#define MINIOS_SYS_FSYNC`
-  - `MINIOS_SYS_FDATASYNC` (macro, line 197) `#define MINIOS_SYS_FDATASYNC`
-  - `MINIOS_SYS_GETCWD` (macro, line 198) `#define MINIOS_SYS_GETCWD`
-  - `MINIOS_SYS_GETTIMEOFDAY` (macro, line 199) `#define MINIOS_SYS_GETTIMEOFDAY`
-  - `MINIOS_SYS_ARCH_PRCTL` (macro, line 200) `#define MINIOS_SYS_ARCH_PRCTL`
-  - `MINIOS_SYS_OPENAT` (macro, line 201) `#define MINIOS_SYS_OPENAT`
-  - `MINIOS_SYS_NEWFSTATAT` (macro, line 202) `#define MINIOS_SYS_NEWFSTATAT`
-  - `MINIOS_SYS_READLINK` (macro, line 203) `#define MINIOS_SYS_READLINK`
-  - `MINIOS_SYS_STATX` (macro, line 206) `#define MINIOS_SYS_STATX`
-  - `MINIOS_SYS_SET_ROBUST_LIST` (macro, line 210) `#define MINIOS_SYS_SET_ROBUST_LIST`
-  - `MINIOS_SYS_PRLIMIT64` (macro, line 214) `#define MINIOS_SYS_PRLIMIT64`
-  - `MINIOS_SYS_GETRANDOM` (macro, line 215) `#define MINIOS_SYS_GETRANDOM`
-  - `MINIOS_SYS_RSEQ` (macro, line 216) `#define MINIOS_SYS_RSEQ`
-  - `MINIOS_SYS_EXIT_GROUP` (macro, line 217) `#define MINIOS_SYS_EXIT_GROUP`
-  - `MINIOS_SYS_SET_TID_ADDRESS` (macro, line 218) `#define MINIOS_SYS_SET_TID_ADDRESS`
-  - `MINIOS_SYS_CLOCK_GETTIME` (macro, line 219) `#define MINIOS_SYS_CLOCK_GETTIME`
-  - `MINIOS_SYS_TGKILL` (macro, line 220) `#define MINIOS_SYS_TGKILL`
-  - `MINIOS_SYS_DNS` (macro, line 223) `#define MINIOS_SYS_DNS`
-  - `MINIOS_SYS_TLS_HANDSHAKE` (macro, line 229) `#define MINIOS_SYS_TLS_HANDSHAKE`
-  - `MINIOS_SYS_TLS_SEND` (macro, line 230) `#define MINIOS_SYS_TLS_SEND`
-  - `MINIOS_SYS_TLS_RECV` (macro, line 231) `#define MINIOS_SYS_TLS_RECV`
-  - `MINIOS_SYS_TIME` (macro, line 232) `#define MINIOS_SYS_TIME`
-  - `MINIOS_SYS_KBD` (macro, line 233) `#define MINIOS_SYS_KBD`
-  - `MINIOS_SYS_PALETTE` (macro, line 234) `#define MINIOS_SYS_PALETTE`
-  - `MINIOS_SYS_KBD_RAW` (macro, line 235) `#define MINIOS_SYS_KBD_RAW`
-  - `MINIOS_SYS_VGA_MODE` (macro, line 236) `#define MINIOS_SYS_VGA_MODE`
-  - `MINIOS_SYS_PCSPK_INIT` (macro, line 237) `#define MINIOS_SYS_PCSPK_INIT`
-  - `MINIOS_SYS_PCSPK_TONE` (macro, line 238) `#define MINIOS_SYS_PCSPK_TONE`
-  - `MINIOS_SYS_DOOM_FRAME` (macro, line 239) `#define MINIOS_SYS_DOOM_FRAME`
-  - `MINIOS_SYS_RTC` (macro, line 240) `#define MINIOS_SYS_RTC`
-  - `MINIOS_SYS_FB_INFO` (macro, line 241) `#define MINIOS_SYS_FB_INFO`
-  - `MINIOS_SYS_PCSPK_VOL` (macro, line 242) `#define MINIOS_SYS_PCSPK_VOL`
-  - `MINIOS_SYS_SPAWN` (macro, line 243) `#define MINIOS_SYS_SPAWN`
-  - `MINIOS_SYS_LZ4_COMPRESS` (macro, line 244) `#define MINIOS_SYS_LZ4_COMPRESS`
-  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 245) `#define MINIOS_SYS_LZ4_DECOMPRESS`
-  - `MINIOS_SYS_MOUSE` (macro, line 246) `#define MINIOS_SYS_MOUSE`
-  - `MINIOS_SYS_NK_FRAME` (macro, line 247) `#define MINIOS_SYS_NK_FRAME`
-  - `MINIOS_SYS_SB16_OPEN` (macro, line 248) `#define MINIOS_SYS_SB16_OPEN`
-  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 249) `#define MINIOS_SYS_SB16_SUBMIT`
-  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 250) `#define MINIOS_SYS_GFX_SET_TITLE`
-  - `MINIOS_SYS_SB16_PUMP` (macro, line 251) `#define MINIOS_SYS_SB16_PUMP`
-  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 252) `#define MINIOS_SYS_SB16_STREAM_OPEN`
-  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 253) `#define MINIOS_SYS_SB16_STREAM_CLOSE`
-  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 254) `#define MINIOS_SYS_SB16_STREAM_SUBMIT`
-  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 255) `#define MINIOS_SYS_SB16_STREAM_VOLUME`
-  - `MINIOS_SYS_THREAD_SPAWN` (macro, line 256) `#define MINIOS_SYS_THREAD_SPAWN`
-  - `MINIOS_SYS_FUTEX_WAIT` (macro, line 257) `#define MINIOS_SYS_FUTEX_WAIT`
-  - `MINIOS_SYS_FUTEX_WAKE` (macro, line 258) `#define MINIOS_SYS_FUTEX_WAKE`
-  - `MINIOS_SYS_SUBMIT_BATCH` (macro, line 259) `#define MINIOS_SYS_SUBMIT_BATCH`
-  - `MINIOS_SYS_GETC_RAW` (macro, line 260) `#define MINIOS_SYS_GETC_RAW`
-  - `MINIOS_SYS_GFX_PRESENT` (macro, line 261) `#define MINIOS_SYS_GFX_PRESENT`
-  - `MINIOS_SYS_SECCOMP` (macro, line 262) `#define MINIOS_SYS_SECCOMP`
-  - `MINIOS_SYS_NICE` (macro, line 263) `#define MINIOS_SYS_NICE`
-  - `MINIOS_SYS_RLIMIT` (macro, line 264) `#define MINIOS_SYS_RLIMIT`
-  - `MINIOS_SYS_DIR_LIST` (macro, line 265) `#define MINIOS_SYS_DIR_LIST`
-  - `MINIOS_SYS_GFX_ZOOM` (macro, line 266) `#define MINIOS_SYS_GFX_ZOOM`
-  - `MINIOS_SYS_WL_ATTACH` (macro, line 271) `#define MINIOS_SYS_WL_ATTACH`
-  - `MINIOS_SYS_WL_COMMIT` (macro, line 272) `#define MINIOS_SYS_WL_COMMIT`
-  - `MINIOS_SYS_WL_INPUT` (macro, line 273) `#define MINIOS_SYS_WL_INPUT`
-  - `MINIOS_SYS_CLONE` (macro, line 274) `#define MINIOS_SYS_CLONE`
-  - `MINIOS_GFX_BUF_GAME` (macro, line 283) `#define MINIOS_GFX_BUF_GAME`
-  - `MINIOS_GFX_BUF_NK` (macro, line 284) `#define MINIOS_GFX_BUF_NK`
-  - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 285) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
-  - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 286) `#define MINIOS_SYS_WINDOW_PRESENT`
-  - `MINIOS_SYS_WINDOW_TITLE` (macro, line 287) `#define MINIOS_SYS_WINDOW_TITLE`
-  - `SYS_TIME_MS` (macro, line 290) `#define SYS_TIME_MS`
-  - `SYS_PALETTE` (macro, line 291) `#define SYS_PALETTE`
-  - `SYS_PCSPK_INIT` (macro, line 292) `#define SYS_PCSPK_INIT`
-  - `SYS_PCSPK_TONE` (macro, line 293) `#define SYS_PCSPK_TONE`
-  - `SYS_RTC` (macro, line 294) `#define SYS_RTC`
-  - `SYS_FB_INFO` (macro, line 295) `#define SYS_FB_INFO`
-  - `SYS_PCSPK_VOL` (macro, line 296) `#define SYS_PCSPK_VOL`
-  - `SYS_SPAWN` (macro, line 297) `#define SYS_SPAWN`
-  - `SYS_TIME` (macro, line 298) `#define SYS_TIME`
-  - `SYS_WRITE` (macro, line 299) `#define SYS_WRITE`
-  - `MINIOS_EABI_MISMATCH` (macro, line 302) `#define MINIOS_EABI_MISMATCH`
-- Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tools/abi_stamp.c`
 
 ## progs/paint/paint.c
 - Layer: utility

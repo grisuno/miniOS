@@ -338,6 +338,9 @@ $(BIN_DIR)/nx.elf: $(SRC_DIR)/nx.c
 $(BIN_DIR)/mmreuse.elf: $(SRC_DIR)/mmreuse.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
 
+$(BIN_DIR)/spin.elf: $(SRC_DIR)/spin.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
 # ── Demo programs: C -> miniGCC -> ld -> ELF / CVM ───────────────
 # These are this repository's own sources, compiled through the full
 # toolchain at build time. Depending on another project's test fixtures for
@@ -1237,6 +1240,8 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf \
                $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
                $(BIN_DIR)/mmreuse.elf $(BIN_DIR)/mmreuse \
+               $(BIN_DIR)/spin.elf \
+               $(SRC_DIR)/spin.c \
                $(BIN_DIR)/pollready.elf $(BIN_DIR)/pollready \
                $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
                $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
@@ -1580,7 +1585,7 @@ stage2.bin: stage2.elf
 	$(OBJCOPY) -O binary $< $@
 
 # ── Kernel ────────────────────────────────────────────────────────
-kernel.o: kernel.c kernel.h minifs.h ide.h block.h
+kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h

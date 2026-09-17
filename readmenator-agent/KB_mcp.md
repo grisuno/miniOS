@@ -6,6 +6,7 @@
 
 ## mcp/mcp_dbg_driver.py
 - Layer: infrastructure
+- Doc: Debug driver: boot MiniOS through the MCP bridge and run freedom.
 - Language: py
 - Symbols:
   - `Client` (class, line 15) `class Client`
@@ -18,6 +19,7 @@
 
 ## mcp/mcp_dogfood.py
 - Layer: utility
+- Doc: Dogfood: drive minios_mcp.py over stdio JSON-RPC and install the freedom addon from a git repo, then browse with the ins
 - Language: py
 - Symbols:
   - `Client` (class, line 19) `class Client`
@@ -30,6 +32,7 @@
 
 ## mcp/minios_addons.py
 - Layer: utility
+- Doc: MiniOS addon marketplace (lazyaddons-style).  Addons are YAML files that say where a program's source lives on GitHub an
 - Language: py
 - Symbols:
   - `AddonError` (class, line 56) `class AddonError(Exception)`
@@ -53,6 +56,7 @@
 
 ## mcp/minios_mcp.py
 - Layer: utility
+- Doc: MiniOS MCP bridge.  Exposes a running MiniOS instance as tools over the MCP stdio protocol. The server boots os.img in Q
 - Language: py
 - Symbols:
   - `env_config` (function, line 68) `def env_config()`
@@ -116,6 +120,7 @@
 
 ## mcp/test_minios_mcp.py
 - Layer: testing
+- Doc: Unit and BDD suite for the MiniOS MCP bridge.  Unit tests exercise protocol dispatch, input validation and buffer/cursor
 - Language: py
 - Symbols:
   - `load_module` (function, line 29) `def load_module()`

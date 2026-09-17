@@ -62,6 +62,8 @@ static inline unsigned long read_cr3(void) {
  * updated to match -- the asm follows automatically. */
 _Static_assert(__builtin_offsetof(proc_t, kstack) == PROC_KSTACK_OFF, "proc kstack off");
 _Static_assert(__builtin_offsetof(proc_t, fpu_save) == PROC_FPU_OFF, "proc fpu off");
+_Static_assert(__builtin_offsetof(proc_t, pid) == PROC_PID_OFF, "proc pid off");
+_Static_assert(__builtin_offsetof(proc_t, fsbase) == PROC_FSBASE_OFF, "proc fsbase off");
 _Static_assert(sizeof(proc_t) == PROC_T_SIZE, "proc size");
 /* The AP stub loads the GDT with the SMP limit; it must cover one TSS
  * descriptor (two slots) per CPU past the 5 stage-2 entries. */
@@ -600,8 +602,12 @@ static void sched_save_preempt(proc_t *cur, trap_frame_t *frame,
     kmemcpy(dst, frame, sizeof(trap_frame_t));
     /* The preempted thread's live FPU registers die with this ISR frame
      * unless they are parked now: the switch_to_notrap below restores
-     * but never saves, and resume_iretq only pops GPRs. */
+     * but never saves, and resume_iretq only pops GPRs. The same holds
+     * for FSBASE (per-proc TLS): a thread preempted after arch_prctl
+     * would otherwise resume with whatever base the next thread left
+     * behind. GSBASE is deliberately untouched (live kernel per-CPU). */
     if (cur->fpu_save) fpu_save_to(cur->fpu_save);
+    cur->fsbase = rdmsr(MSR_FSBASE);
     cur->ctx.rip = (uint64_t)resume_iretq;
     cur->ctx.rsp = (uint64_t)dst;
 }
@@ -1176,16 +1182,18 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             char h[17];
             static const char digits[] = "0123456789abcdef";
             static const char *label[] = {
-                "  gs=", " kgs=", " rax=", " rbx=", " rcx=", " rdx=",
-                " rsi=", " rdi=", " rbp=", " r8=", " r9=", " r10=",
-                " r11=", " r12=", " r13=", " r14=", " r15=" };
+                "  gs=", " kgs=", " fs=", " rax=", " rbx=", " rcx=",
+                " rdx=", " rsi=", " rdi=", " rbp=", " r8=", " r9=",
+                " r10=", " r11=", " r12=", " r13=", " r14=",
+                " r15=" };
             unsigned long vals[] = {
                 rdmsr(MSR_GSBASE), rdmsr(MSR_KERNEL_GS_BASE),
+                rdmsr(MSR_FSBASE),
                 frame->rax, frame->rbx, frame->rcx, frame->rdx,
                 frame->rsi, frame->rdi, frame->rbp, frame->r8,
                 frame->r9, frame->r10, frame->r11, frame->r12,
                 frame->r13, frame->r14, frame->r15 };
-            for (int k = 0; k < 17; k++) {
+            for (int k = 0; k < 18; k++) {
                 serial_puts(label[k]);
                 unsigned long v = vals[k];
                 for (int i = 15; i >= 0; i--) { h[i] = digits[v & 0xF]; v >>= 4; }
