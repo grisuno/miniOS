@@ -7,14 +7,14 @@
 - Symbols:
   - `address` (function, line 179) `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and 64-bit GDT stage 2 built for the BSP. */ #define AP_STUB_ADDR 0x6000 #define GDT64_COD`
   - `BOOTDEFS_H` (macro, line 46) `#define BOOTDEFS_H`
-  - `SECTOR_BYTES` (macro, line 47) `#define SECTOR_BYTES`
+  - `SECTOR_BYTES` (macro, line 48) `#define SECTOR_BYTES`
   - `SECTOR_PARAGRAPH_SHIFT` (macro, line 49) `#define SECTOR_PARAGRAPH_SHIFT`
   - `SECTOR_DWORD_SHIFT` (macro, line 50) `#define SECTOR_DWORD_SHIFT`
-  - `BOOT_SIGNATURE` (macro, line 51) `#define BOOT_SIGNATURE`
+  - `BOOT_SIGNATURE` (macro, line 52) `#define BOOT_SIGNATURE`
   - `BOOT_SIGNATURE_BYTES` (macro, line 53) `#define BOOT_SIGNATURE_BYTES`
-  - `BOOT_SEG_NULL` (macro, line 54) `#define BOOT_SEG_NULL`
+  - `BOOT_SEG_NULL` (macro, line 55) `#define BOOT_SEG_NULL`
   - `BOOT_STACK_TOP` (macro, line 56) `#define BOOT_STACK_TOP`
-  - `BOOT_DAP_ADDR` (macro, line 57) `#define BOOT_DAP_ADDR`
+  - `BOOT_DAP_ADDR` (macro, line 58) `#define BOOT_DAP_ADDR`
   - `BOOT_DAP_SIZE` (macro, line 59) `#define BOOT_DAP_SIZE`
   - `BOOT_DAP_OFF_COUNT` (macro, line 60) `#define BOOT_DAP_OFF_COUNT`
   - `BOOT_DAP_OFF_OFFSET` (macro, line 61) `#define BOOT_DAP_OFF_OFFSET`
@@ -23,24 +23,24 @@
   - `BOOT_DAP_OFF_LBA_HI` (macro, line 64) `#define BOOT_DAP_OFF_LBA_HI`
   - `BOOT_DRIVE_ADDR` (macro, line 65) `#define BOOT_DRIVE_ADDR`
   - `BOOT_KASLR_ADDR` (macro, line 66) `#define BOOT_KASLR_ADDR`
-  - `BOOT_STAGE2_LBA` (macro, line 67) `#define BOOT_STAGE2_LBA`
+  - `BOOT_STAGE2_LBA` (macro, line 68) `#define BOOT_STAGE2_LBA`
   - `BOOT_STAGE2_SECTORS` (macro, line 69) `#define BOOT_STAGE2_SECTORS`
   - `BOOT_STAGE2_ADDR` (macro, line 70) `#define BOOT_STAGE2_ADDR`
   - `BOOT_STAGE2_SEG` (macro, line 71) `#define BOOT_STAGE2_SEG`
-  - `BOOT_KERNEL_LBA` (macro, line 72) `#define BOOT_KERNEL_LBA`
+  - `BOOT_KERNEL_LBA` (macro, line 73) `#define BOOT_KERNEL_LBA`
   - `BOOT_KERNEL_BUF_ADDR` (macro, line 74) `#define BOOT_KERNEL_BUF_ADDR`
   - `BOOT_KERNEL_BUF_SEG` (macro, line 75) `#define BOOT_KERNEL_BUF_SEG`
   - `BOOT_KERNEL_PHYS_ADDR` (macro, line 76) `#define BOOT_KERNEL_PHYS_ADDR`
-  - `BOOT_CHUNK_SECTORS` (macro, line 77) `#define BOOT_CHUNK_SECTORS`
+  - `BOOT_CHUNK_SECTORS` (macro, line 78) `#define BOOT_CHUNK_SECTORS`
   - `BOOT_BIOS_MAX_SECTORS` (macro, line 79) `#define BOOT_BIOS_MAX_SECTORS`
-  - `BOOT_PM_STACK_TOP` (macro, line 80) `#define BOOT_PM_STACK_TOP`
-  - `BIOS_DISK_INT` (macro, line 82) `#define BIOS_DISK_INT`
+  - `BOOT_PM_STACK_TOP` (macro, line 81) `#define BOOT_PM_STACK_TOP`
+  - `BIOS_DISK_INT` (macro, line 83) `#define BIOS_DISK_INT`
   - `BIOS_DISK_EXT_CHECK` (macro, line 84) `#define BIOS_DISK_EXT_CHECK`
   - `BIOS_DISK_EXT_REQ_MAGIC` (macro, line 85) `#define BIOS_DISK_EXT_REQ_MAGIC`
   - `BIOS_DISK_EXT_ACK_MAGIC` (macro, line 86) `#define BIOS_DISK_EXT_ACK_MAGIC`
   - `BIOS_DISK_EXT_PACKET_BIT` (macro, line 87) `#define BIOS_DISK_EXT_PACKET_BIT`
   - `BIOS_DISK_READ_EXT` (macro, line 88) `#define BIOS_DISK_READ_EXT`
-  - `BIOS_VIDEO_INT` (macro, line 89) `#define BIOS_VIDEO_INT`
+  - `BIOS_VIDEO_INT` (macro, line 90) `#define BIOS_VIDEO_INT`
   - `BIOS_VIDEO_TTY_WRITE` (macro, line 91) `#define BIOS_VIDEO_TTY_WRITE`
   - `BIOS_VIDEO_TTY_ATTR` (macro, line 92) `#define BIOS_VIDEO_TTY_ATTR`
   - `BIOS_VIDEO_SET_MODE` (macro, line 93) `#define BIOS_VIDEO_SET_MODE`
@@ -72,26 +72,26 @@
   - `VBE_INFO_HEIGHT_OFF` (macro, line 142) `#define VBE_INFO_HEIGHT_OFF`
   - `VBE_INFO_VALID_OFF` (macro, line 143) `#define VBE_INFO_VALID_OFF`
   - `VBE_INFO_BPP_OFF` (macro, line 144) `#define VBE_INFO_BPP_OFF`
-  - `A20_CONTROL_PORT` (macro, line 145) `#define A20_CONTROL_PORT`
+  - `A20_CONTROL_PORT` (macro, line 146) `#define A20_CONTROL_PORT`
   - `A20_ENABLE_BIT` (macro, line 147) `#define A20_ENABLE_BIT`
   - `A20_RESET_CLEAR_MASK` (macro, line 148) `#define A20_RESET_CLEAR_MASK`
-  - `CR0_PE` (macro, line 149) `#define CR0_PE`
+  - `CR0_PE` (macro, line 150) `#define CR0_PE`
   - `CR0_PE_CLEAR_MASK` (macro, line 151) `#define CR0_PE_CLEAR_MASK`
   - `CR0_PG` (macro, line 152) `#define CR0_PG`
   - `CR4_PAE` (macro, line 153) `#define CR4_PAE`
-  - `MSR_EFER` (macro, line 154) `#define MSR_EFER`
+  - `MSR_EFER` (macro, line 155) `#define MSR_EFER`
   - `EFER_LME` (macro, line 156) `#define EFER_LME`
   - `EFER_NXE` (macro, line 157) `#define EFER_NXE`
-  - `GDT32_CODE32_SEL` (macro, line 158) `#define GDT32_CODE32_SEL`
+  - `GDT32_CODE32_SEL` (macro, line 159) `#define GDT32_CODE32_SEL`
   - `GDT32_DATA32_SEL` (macro, line 160) `#define GDT32_DATA32_SEL`
   - `GDT32_CODE16_SEL` (macro, line 161) `#define GDT32_CODE16_SEL`
   - `GDT32_DATA16_SEL` (macro, line 162) `#define GDT32_DATA16_SEL`
-  - `GDT32_DESC_NULL` (macro, line 163) `#define GDT32_DESC_NULL`
+  - `GDT32_DESC_NULL` (macro, line 164) `#define GDT32_DESC_NULL`
   - `GDT32_DESC_CODE32` (macro, line 165) `#define GDT32_DESC_CODE32`
   - `GDT32_DESC_DATA32` (macro, line 166) `#define GDT32_DESC_DATA32`
   - `GDT32_DESC_CODE16` (macro, line 167) `#define GDT32_DESC_CODE16`
   - `GDT32_DESC_DATA16` (macro, line 168) `#define GDT32_DESC_DATA16`
-  - `GDT64_ADDR` (macro, line 169) `#define GDT64_ADDR`
+  - `GDT64_ADDR` (macro, line 170) `#define GDT64_ADDR`
   - `GDT64_BYTES` (macro, line 171) `#define GDT64_BYTES`
   - `GDT64_SMP_BYTES` (macro, line 176) `#define GDT64_SMP_BYTES`
   - `AP_STUB_ADDR` (macro, line 181) `#define AP_STUB_ADDR`
@@ -104,7 +104,7 @@
   - `GDT64_DESC_DATA` (macro, line 188) `#define GDT64_DESC_DATA`
   - `GDT64_DESC_UDATA` (macro, line 189) `#define GDT64_DESC_UDATA`
   - `GDT64_DESC_UCODE` (macro, line 190) `#define GDT64_DESC_UCODE`
-  - `PT_PML4_ADDR` (macro, line 191) `#define PT_PML4_ADDR`
+  - `PT_PML4_ADDR` (macro, line 192) `#define PT_PML4_ADDR`
   - `PT_PDPT_ADDR` (macro, line 193) `#define PT_PDPT_ADDR`
   - `PT_PD_ADDR` (macro, line 194) `#define PT_PD_ADDR`
   - `PT_USER0_ADDR` (macro, line 195) `#define PT_USER0_ADDR`
@@ -138,7 +138,7 @@
   - `KASLR_IMG_OFF_1MB` (macro, line 258) `#define KASLR_IMG_OFF_1MB`
   - `KASLR_IMG_OFF_2MB` (macro, line 259) `#define KASLR_IMG_OFF_2MB`
   - `KASLR_IMAGE_SPAN` (macro, line 260) `#define KASLR_IMAGE_SPAN`
-  - `CMOS_INDEX_PORT` (macro, line 261) `#define CMOS_INDEX_PORT`
+  - `CMOS_INDEX_PORT` (macro, line 262) `#define CMOS_INDEX_PORT`
   - `CMOS_DATA_PORT` (macro, line 263) `#define CMOS_DATA_PORT`
   - `CMOS_NMI_DISABLE` (macro, line 264) `#define CMOS_NMI_DISABLE`
   - `CMOS_REG_SECONDS` (macro, line 265) `#define CMOS_REG_SECONDS`
@@ -148,7 +148,6 @@
 
 ## headers/net/rtl8139.h
 - Layer: utility
-- Doc: ifndef RTL8139_H define RTL8139_H
 - Language: h
 - Symbols:
   - `rtl_present` (function, line 18) `int rtl_present(void);`
@@ -168,9 +167,9 @@
 - Language: c
 - Symbols:
   - `dmap_thing_type` (function, line 165) `static int dmap_thing_type(int cell)`
-  - `dmap_push_history` (function, line 271) `static void dmap_push_history(void)`
-  - `dmap_undo` (function, line 288) `static int dmap_undo(void)`
-  - `dmap_redo` (function, line 306) `static int dmap_redo(void)`
+  - `dmap_push_history` (function, line 272) `static void dmap_push_history(void)`
+  - `dmap_undo` (function, line 289) `static int dmap_undo(void)`
+  - `dmap_redo` (function, line 307) `static int dmap_redo(void)`
   - `dmap_apply_cell` (function, line 326) `static void dmap_apply_cell(int r, int c, int brush)`
   - `dmap_flood_fill` (function, line 344) `static void dmap_flood_fill(int sr, int sc, int new_cell)`
   - `dmap_draw_line` (function, line 383) `static void dmap_draw_line(int r0, int c0, int r1, int c1, int cell)`
@@ -211,41 +210,8 @@
   - `dmap_gui_run` (function, line 2056) `static void dmap_gui_run(void)`
   - `dmap_demo_room` (function, line 2110) `static void dmap_demo_room(void)`
   - `dmap_selftest` (function, line 2122) `static int dmap_selftest(void)`
-  - `main` (function, line 2237) `int main(int argc, char **argv)`
-  - `memcpy` (function, line 278) `memcpy(dmap_undo_g[i], dmap_undo_g[i + 1], sizeof(dmap_undo_g[i]));`
-  - `snprintf` (function, line 541) `else snprintf(out, (size_t)max, "%dx%d floor %d path - mon %d: %s", dmap_w, dmap_h, floors, monsters, msg);`
-  - `volatile` (function, line 553) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_SPAWN), "D"(path), "S"((long)0), "d"((long)argc), "r"(r10) : "rcx", "r11", "memory");`
-  - `nk_rgb` (function, line 596) `case DMAP_WALL: return nk_rgb(150, 110, 70);`
-  - `fclose` (function, line 1090) `fclose(fp);`
+  - `main` (function, line 2238) `int main(int argc, char **argv)`
   - `areas` (function, line 1150) `* floor areas (doors stand alone, dark and nukage never merge);`
-  - `nk_fill_rect` (function, line 1700) `nk_fill_rect(canvas, top, 0.0f, nk_rgb(24, 24, 40));`
-  - `nk_layout_row_dynamic` (function, line 1762) `nk_layout_row_dynamic(ctx, 22, 1);`
-  - `nk_combobox` (function, line 1763) `nk_combobox(ctx, dmap_brush_labels, DMAP_BRUSH_COUNT, &dmap_brush_sel, 20, nk_vec2(280, 260));`
-  - `nk_stroke_rect` (function, line 1798) `nk_stroke_rect(canvas, nk_rect(total.x + 4.0f + (float)(col * DMAP_CELL_PX), total.y + 4.0f + (float)(row * DMAP_CELL_PX), (float)(DMAP_CELL_PX - 1), (float)(DMAP_CELL_PX - 1)), 0.0f, 1.0f, nk_rgb(255`
-  - `nk_stroke_line` (function, line 1810) `nk_stroke_line(canvas, total.x + 4.0f, y, total.x + 4.0f + (float)(dmap_w * DMAP_CELL_PX), y, 1.0f, line);`
-  - `nk_layout_row_static` (function, line 1866) `nk_layout_row_static(ctx, (float)(DMAP_PREV_H + 8), DMAP_PREV_W + 8, 1);`
-  - `nk_sys_kbd_raw` (function, line 1912) `nk_sys_kbd_raw(0);`
-  - `nk_sys_gfx_set_title` (function, line 1920) `nk_sys_gfx_set_title(DMAP_TITLE);`
-  - `nk_end` (function, line 1934) `nk_end(ctx);`
-  - `nk_label` (function, line 1981) `nk_label(ctx, line, NK_TEXT_LEFT);`
-  - `nk_layout_row_begin` (function, line 1983) `nk_layout_row_begin(ctx, NK_STATIC, row_h, 2);`
-  - `nk_layout_row_push` (function, line 1984) `nk_layout_row_push(ctx, (float)DMAP_CANVAS_W);`
-  - `nk_layout_row_end` (function, line 2017) `nk_layout_row_end(ctx);`
-  - `nk_group_end` (function, line 2026) `nk_group_end(ctx);`
-  - `nk_sys_vga_mode` (function, line 2061) `nk_sys_vga_mode(1);`
-  - `nk_build_palette` (function, line 2064) `nk_build_palette(pal768);`
-  - `nk_sys_palette` (function, line 2065) `nk_sys_palette(pal768);`
-  - `printf` (function, line 2067) `printf("doomedit: init failed\n");`
-  - `nk_theme_apply` (function, line 2072) `nk_theme_apply(&ctx, 0);`
-  - `nk_set_scancode_hook` (function, line 2074) `nk_set_scancode_hook(dmap_scancode, 0);`
-  - `nk_input_begin` (function, line 2076) `nk_input_begin(&ctx);`
-  - `nk_poll_input` (function, line 2077) `nk_poll_input(&ctx);`
-  - `nk_input_end` (function, line 2078) `nk_input_end(&ctx);`
-  - `dmap_build` (function, line 2093) `dmap_build(&ctx);`
-  - `nk_rasterize` (function, line 2094) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 2097) `nk_clear(&ctx);`
-  - `nk_free` (function, line 2104) `nk_free(&ctx);`
-  - `nk_sys_fb_info` (function, line 2150) `nk_sys_fb_info(&fw, &fh, &fp);`
   - `DMAP_MAX_W` (macro, line 55) `#define DMAP_MAX_W`
   - `DMAP_MAX_H` (macro, line 56) `#define DMAP_MAX_H`
   - `DMAP_DEF_W` (macro, line 57) `#define DMAP_DEF_W`
@@ -335,34 +301,9 @@
   - `file_activate` (function, line 352) `static void file_activate(const char *dir, const char *name)`
   - `file_ui_build` (function, line 383) `static void file_ui_build(struct nk_context *ctx)`
   - `file_selftest` (function, line 460) `static int file_selftest(void)`
-  - `file_gui_run` (function, line 526) `static void file_gui_run(void)`
-  - `main` (function, line 583) `int main(int argc, char **argv)`
-  - `volatile` (function, line 77) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_DIR_LIST), "D"(path), "S"(buf), "d"(cap) : "rcx", "r11", "memory");`
-  - `memcpy` (function, line 123) `memcpy(dst, dir, a);`
-  - `strcpy` (function, line 185) `strcpy(file_table[file_table_n].ext, ext);`
-  - `fclose` (function, line 189) `fclose(f);`
-  - `snprintf` (function, line 221) `snprintf(file_status, sizeof(file_status), "cannot list %s (%ld)", file_cwd, rc);`
-  - `free` (function, line 241) `free(raw);`
-  - `nk_build_palette` (function, line 248) `nk_build_palette(pal);`
-  - `stbi_image_free` (function, line 252) `stbi_image_free(px);`
-  - `nk_sys_vga_mode` (function, line 283) `nk_sys_vga_mode(0);`
-  - `nk_sys_kbd_raw` (function, line 284) `nk_sys_kbd_raw(0);`
-  - `printf` (function, line 285) `printf("--- file: %s ---\n", label);`
-  - `fflush` (function, line 286) `fflush(stdout);`
-  - `nk_sys_palette` (function, line 292) `nk_sys_palette(pal768);`
-  - `nk_layout_row_dynamic` (function, line 386) `nk_layout_row_dynamic(ctx, 22, 1);`
-  - `nk_label` (function, line 387) `nk_label(ctx, file_status, NK_TEXT_LEFT);`
-  - `nk_end` (function, line 456) `nk_end(ctx);`
-  - `nk_theme_active` (function, line 515) `nk_theme_active(theme, sizeof(theme));`
-  - `nk_sys_gfx_set_title` (function, line 536) `nk_sys_gfx_set_title(FILE_TITLE);`
-  - `nk_theme_apply` (function, line 543) `nk_theme_apply(&ctx, 0);`
-  - `nk_input_begin` (function, line 551) `nk_input_begin(&ctx);`
-  - `nk_poll_input` (function, line 552) `nk_poll_input(&ctx);`
-  - `nk_input_end` (function, line 562) `nk_input_end(&ctx);`
-  - `nk_rasterize` (function, line 565) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 571) `nk_clear(&ctx);`
-  - `nk_free` (function, line 579) `nk_free(&ctx);`
-  - `STB_IMAGE_IMPLEMENTATION` (macro, line 22) `#define STB_IMAGE_IMPLEMENTATION`
+  - `file_gui_run` (function, line 527) `static void file_gui_run(void)`
+  - `main` (function, line 584) `int main(int argc, char **argv)`
+  - `STB_IMAGE_IMPLEMENTATION` (macro, line 23) `#define STB_IMAGE_IMPLEMENTATION`
   - `STBI_ONLY_PNG` (macro, line 24) `#define STBI_ONLY_PNG`
   - `STBI_NO_STDIO` (macro, line 25) `#define STBI_NO_STDIO`
   - `FILE_MAX_PATH` (macro, line 29) `#define FILE_MAX_PATH`
@@ -419,16 +360,11 @@
   - `freedomui_host_probe` (function, line 984) `static long freedomui_host_probe(FreedomUiConfig *c)`
   - `freedomui_host_entry` (function, line 1067) `int freedomui_host_entry(FreedomUiConfig *c)`
   - `main` (function, line 1072) `int main(int argc, char **argv)`
-  - `net_dns_resolve` (function, line 43) `int net_dns_resolve(const char *host);`
+  - `net_dns_resolve` (function, line 44) `int net_dns_resolve(const char *host);`
   - `tls_handshake` (function, line 45) `int tls_handshake(int fd, char *host);`
   - `tls_send` (function, line 46) `int tls_send(int fd, char *buf, int len);`
   - `tls_recv` (function, line 47) `int tls_recv(int fd, char *buf, int len);`
   - `tls_close` (function, line 48) `void tls_close(int fd);`
-  - `hp_document_free` (function, line 162) `hp_document_free(doc);`
-  - `hp_free` (function, line 165) `hp_free(ti);`
-  - `volatile` (function, line 195) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"(buf), "S"(origin) : "rcx", "r11", "memory");`
-  - `printf` (function, line 496) `printf("freedomui: cannot resolve %s\n", host);`
-  - `ui_layout_free` (function, line 1058) `ui_layout_free(&lay);`
   - `FUI_COLS` (macro, line 51) `#define FUI_COLS`
   - `FUI_TEXT_ROWS` (macro, line 52) `#define FUI_TEXT_ROWS`
   - `FUI_BODY_CAP` (macro, line 53) `#define FUI_BODY_CAP`
@@ -456,17 +392,17 @@
   - `SaveHeaderV3` (struct, line 2863)
   - `SaveHeader` (struct, line 2877)
   - `ChunkHeader` (struct, line 2892)
-  - `best_tool_for` (function, line 220) `static int best_tool_for(unsigned char b)`
-  - `break_time_ms` (function, line 239) `static long break_time_ms(unsigned char b, int tool)`
-  - `break_beep_for` (function, line 264) `static long break_beep_for(unsigned char b)`
-  - `mc_toggle_zoom` (function, line 305) `static void mc_toggle_zoom(void)`
-  - `s_time_ms` (function, line 326) `static long s_time_ms(void)`
+  - `best_tool_for` (function, line 221) `static int best_tool_for(unsigned char b)`
+  - `break_time_ms` (function, line 240) `static long break_time_ms(unsigned char b, int tool)`
+  - `break_beep_for` (function, line 265) `static long break_beep_for(unsigned char b)`
+  - `mc_toggle_zoom` (function, line 306) `static void mc_toggle_zoom(void)`
+  - `s_time_ms` (function, line 327) `static long s_time_ms(void)`
   - `s_kbd` (function, line 332) `static long s_kbd(void)`
   - `s_kbd_raw` (function, line 337) `static long s_kbd_raw(long on)`
   - `s_getc_raw` (function, line 349) `static long s_getc_raw(void)`
-  - `ser_get` (function, line 362) `static long ser_get(void)`
-  - `ser_unget` (function, line 375) `static void ser_unget(unsigned char b)`
-  - `menu_ser_key` (function, line 380) `static long menu_ser_key(long b)`
+  - `ser_get` (function, line 363) `static long ser_get(void)`
+  - `ser_unget` (function, line 376) `static void ser_unget(unsigned char b)`
+  - `menu_ser_key` (function, line 381) `static long menu_ser_key(long b)`
   - `kbd_drain` (function, line 418) `static void kbd_drain(void)`
   - `s_vga` (function, line 423) `static long s_vga(long on)`
   - `s_pal` (function, line 428) `static long s_pal(const unsigned char *p)`
@@ -478,135 +414,122 @@
   - `s_pcspk_init` (function, line 458) `static long s_pcspk_init(void)`
   - `__attribute__` (function, line 463) `static long __attribute__((unused)) s_tone(long f)`
   - `beep` (function, line 468) `static void beep(long freq, long dur_ms)`
-  - `pal_set` (function, line 486) `static void pal_set(int i, int r, int g, int b)`
-  - `build_palette` (function, line 492) `static void build_palette(void)`
-  - `in_world` (function, line 551) `static int in_world(int x, int y, int z)`
+  - `pal_set` (function, line 487) `static void pal_set(int i, int r, int g, int b)`
+  - `build_palette` (function, line 493) `static void build_palette(void)`
+  - `in_world` (function, line 552) `static int in_world(int x, int y, int z)`
   - `chunk_of` (function, line 567) `static int chunk_of(int v)`
-  - `chunk_local` (function, line 570) `static int chunk_local(int v)`
-  - `chunk_lidx` (function, line 575) `static int chunk_lidx(int lx, int ly, int z)`
+  - `chunk_local` (function, line 571) `static int chunk_local(int v)`
+  - `chunk_lidx` (function, line 576) `static int chunk_lidx(int lx, int ly, int z)`
   - `chunk_find` (function, line 582) `static int chunk_find(int cx, int cy)`
-  - `world_max_recompute` (function, line 595) `static void world_max_recompute(void)`
-  - `chunk_evict_slot` (function, line 604) `static int chunk_evict_slot(int cx, int cy)`
-  - `chunk_ensure` (function, line 624) `static int chunk_ensure(int cx, int cy)`
-  - `chunk_build_meta` (function, line 647) `static void chunk_build_meta(int slot)`
-  - `col_recompute` (function, line 692) `static void col_recompute(int x, int y)`
-  - `col_top_at` (function, line 717) `static int col_top_at(int x, int y)`
-  - `light_recompute_col` (function, line 724) `static void light_recompute_col(int x, int y)`
-  - `get_b` (function, line 753) `static unsigned char get_b(int x, int y, int z)`
-  - `set_b` (function, line 763) `static void set_b(int x, int y, int z, unsigned char b)`
-  - `set_b_raw` (function, line 779) `static void set_b_raw(int x, int y, int z, unsigned char b)`
+  - `world_max_recompute` (function, line 596) `static void world_max_recompute(void)`
+  - `chunk_evict_slot` (function, line 605) `static int chunk_evict_slot(int cx, int cy)`
+  - `chunk_ensure` (function, line 625) `static int chunk_ensure(int cx, int cy)`
+  - `chunk_build_meta` (function, line 648) `static void chunk_build_meta(int slot)`
+  - `col_recompute` (function, line 693) `static void col_recompute(int x, int y)`
+  - `col_top_at` (function, line 718) `static int col_top_at(int x, int y)`
+  - `light_recompute_col` (function, line 725) `static void light_recompute_col(int x, int y)`
+  - `get_b` (function, line 754) `static unsigned char get_b(int x, int y, int z)`
+  - `set_b` (function, line 764) `static void set_b(int x, int y, int z, unsigned char b)`
+  - `set_b_raw` (function, line 780) `static void set_b_raw(int x, int y, int z, unsigned char b)`
   - `sky_light` (function, line 791) `static float sky_light(int x, int y, int z)`
-  - `is_solid` (function, line 800) `static int is_solid(unsigned char b)`
+  - `is_solid` (function, line 801) `static int is_solid(unsigned char b)`
   - `in_water_at` (function, line 804) `static int in_water_at(float x, float y, float z)`
-  - `is_visible` (function, line 808) `static int is_visible(unsigned char b)`
-  - `hash2` (function, line 812) `static unsigned int hash2(int x, int y)`
-  - `hash2_seed` (function, line 819) `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
-  - `mc_smoothstep` (function, line 828) `static float mc_smoothstep(float t)`
+  - `is_visible` (function, line 809) `static int is_visible(unsigned char b)`
+  - `hash2` (function, line 813) `static unsigned int hash2(int x, int y)`
+  - `hash2_seed` (function, line 820) `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
+  - `mc_smoothstep` (function, line 829) `static float mc_smoothstep(float t)`
   - `biome_fdiv` (function, line 836) `static int biome_fdiv(int v, int c)`
-  - `voro_site` (function, line 850) `static void voro_site(int cx, int cy, unsigned int seed, int cell,
+  - `voro_site` (function, line 851) `static void voro_site(int cx, int cy, unsigned int seed, int cell,
     int *sx, int *sy)`
-  - `biome_voro` (function, line 858) `static int biome_voro(int x, int y, unsigned int seed, int cell,
+  - `biome_voro` (function, line 859) `static int biome_voro(int x, int y, unsigned int seed, int cell,
     int ox, int oy, unsigned int...`
-  - `biome_desert` (function, line 882) `static int biome_desert(int x, int y, unsigned int seed)`
-  - `biome_snow` (function, line 886) `static int biome_snow(int x, int y, unsigned int seed)`
-  - `is_cave` (function, line 890) `static int is_cave(int x, int y, int z, unsigned int seed)`
-  - `ground_h_seed` (function, line 898) `static int ground_h_seed(int x, int y, unsigned int seed)`
-  - `inv_add` (function, line 920) `static int inv_add(int b, int n)`
-  - `inv_remove` (function, line 934) `static int inv_remove(int b, int n)`
-  - `decorate_column` (function, line 984) `static void decorate_column(int x, int y, unsigned int seed)`
-  - `gen_terrain_chunk` (function, line 1023) `static void gen_terrain_chunk(int slot)`
-  - `decorate_chunk` (function, line 1032) `static void decorate_chunk(int slot)`
+  - `biome_desert` (function, line 883) `static int biome_desert(int x, int y, unsigned int seed)`
+  - `biome_snow` (function, line 887) `static int biome_snow(int x, int y, unsigned int seed)`
+  - `is_cave` (function, line 891) `static int is_cave(int x, int y, int z, unsigned int seed)`
+  - `ground_h_seed` (function, line 899) `static int ground_h_seed(int x, int y, unsigned int seed)`
+  - `inv_add` (function, line 921) `static int inv_add(int b, int n)`
+  - `inv_remove` (function, line 935) `static int inv_remove(int b, int n)`
+  - `decorate_column` (function, line 985) `static void decorate_column(int x, int y, unsigned int seed)`
+  - `gen_terrain_chunk` (function, line 1024) `static void gen_terrain_chunk(int slot)`
+  - `decorate_chunk` (function, line 1033) `static void decorate_chunk(int slot)`
   - `ensure_around_px` (function, line 1046) `static void ensure_around_px(float px, float py)`
-  - `ensure_around` (function, line 1079) `static void ensure_around(void)`
+  - `ensure_around` (function, line 1080) `static void ensure_around(void)`
   - `new_world` (function, line 1085) `static void new_world(unsigned int seed)`
-  - `mob_spawn_one` (function, line 1180) `static void mob_spawn_one(Pig *m, int id, int hp, long now)`
-  - `pig_collides` (function, line 1232) `static int pig_collides(float x, float y, float z)`
-  - `creeper_explode` (function, line 1246) `static void creeper_explode(Pig *c, long now)`
+  - `mob_spawn_one` (function, line 1181) `static void mob_spawn_one(Pig *m, int id, int hp, long now)`
+  - `pig_collides` (function, line 1233) `static int pig_collides(float x, float y, float z)`
+  - `creeper_explode` (function, line 1247) `static void creeper_explode(Pig *c, long now)`
   - `creep_sense` (function, line 1315) `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)`
   - `creep_has_los` (function, line 1327) `static int creep_has_los(Pig *c)`
   - `creep_separate` (function, line 1351) `static void creep_separate(Pig *p, int id, float dt)`
-  - `tick_mob` (function, line 1375) `static void tick_mob(Pig *p, int id, float dt, long now)`
-  - `tick_pigs` (function, line 1496) `static void tick_pigs(float dt, long now)`
-  - `face_color` (function, line 1504) `static unsigned char face_color(unsigned char b, int face)`
-  - `sky_color` (function, line 1553) `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
-  - `shade_block` (function, line 1586) `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
+  - `tick_mob` (function, line 1376) `static void tick_mob(Pig *p, int id, float dt, long now)`
+  - `tick_pigs` (function, line 1497) `static void tick_pigs(float dt, long now)`
+  - `face_color` (function, line 1505) `static unsigned char face_color(unsigned char b, int face)`
+  - `sky_color` (function, line 1554) `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
+  - `shade_block` (function, line 1587) `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
              ...`
-  - `cast_ray` (function, line 1643) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
-  - `eye_z` (function, line 1734) `static float eye_z(void)`
-  - `mc_glyph` (function, line 1801) `static int mc_glyph(char ch)`
-  - `mc_pixel` (function, line 1809) `static void mc_pixel(int x, int y, unsigned char c)`
-  - `mc_text` (function, line 1815) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
-  - `mc_text_bg` (function, line 1828) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
-  - `mc_block_name` (function, line 1841) `static const char *mc_block_name(unsigned char b)`
-  - `mc_facing` (function, line 1861) `static char mc_facing(void)`
-  - `cam_build` (function, line 1876) `static void cam_build(void)`
-  - `render_terrain` (function, line 1894) `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
+  - `cast_ray` (function, line 1644) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
+  - `eye_z` (function, line 1735) `static float eye_z(void)`
+  - `mc_glyph` (function, line 1802) `static int mc_glyph(char ch)`
+  - `mc_pixel` (function, line 1810) `static void mc_pixel(int x, int y, unsigned char c)`
+  - `mc_text` (function, line 1816) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
+  - `mc_text_bg` (function, line 1829) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
+  - `mc_block_name` (function, line 1842) `static const char *mc_block_name(unsigned char b)`
+  - `mc_facing` (function, line 1862) `static char mc_facing(void)`
+  - `cam_build` (function, line 1877) `static void cam_build(void)`
+  - `render_terrain` (function, line 1895) `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
                       ...`
-  - `mob_pixel` (function, line 1929) `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)`
-  - `render_mob_array` (function, line 1963) `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
+  - `mob_pixel` (function, line 1930) `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)`
+  - `render_mob_array` (function, line 1964) `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
     float rx, float r...`
-  - `render_pigs` (function, line 2014) `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
-  - `render_frame` (function, line 2022) `static void render_frame(void)`
-  - `sc_hist_push` (function, line 2135) `static void sc_hist_push(unsigned char b)`
-  - `poll_kbd` (function, line 2146) `static void poll_kbd(void)`
-  - `player_collides` (function, line 2339) `static int player_collides(float x, float y, float z)`
-  - `move_x` (function, line 2363) `static void move_x(float nx)`
-  - `move_y` (function, line 2368) `static void move_y(float ny)`
-  - `move_z_abs` (function, line 2373) `static MoveResult move_z_abs(float nz)`
-  - `block_intersects_player` (function, line 2388) `static int block_intersects_player(int bx, int by, int bz)`
-  - `try_autostep` (function, line 2397) `static void try_autostep(float tx, float ty)`
-  - `hurt` (function, line 2408) `static void hurt(int dmg, const char *why)`
-  - `tick_player` (function, line 2433) `static void tick_player(float dt)`
-  - `tick_water` (function, line 2532) `static void tick_water(long now)`
-  - `tick_hunger` (function, line 2580) `static void tick_hunger(long now)`
-  - `goal_text` (function, line 2592) `static const char *goal_text(void)`
-  - `tick_goals` (function, line 2603) `static void tick_goals(void)`
-  - `tick_discover` (function, line 2614) `static void tick_discover(long now)`
-  - `tick_interact` (function, line 2652) `static void tick_interact(void)`
-  - `mc_crc32` (function, line 2903) `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)`
-  - `save_compute_crc` (function, line 2916) `static uint32_t save_compute_crc(const SaveHeader *hd)`
-  - `chunk_path` (function, line 2922) `static void chunk_path(int cx, int cy, char *out, size_t n)`
-  - `save_chunk_file` (function, line 2926) `static int save_chunk_file(int slot)`
-  - `load_chunk_file` (function, line 2958) `static int load_chunk_file(int slot, int cx, int cy)`
-  - `save_validate_loaded` (function, line 3040) `static int save_validate_loaded(void)`
-  - `load_reset_runtime` (function, line 3059) `static void load_reset_runtime(void)`
+  - `render_pigs` (function, line 2015) `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
+  - `render_frame` (function, line 2023) `static void render_frame(void)`
+  - `sc_hist_push` (function, line 2136) `static void sc_hist_push(unsigned char b)`
+  - `poll_kbd` (function, line 2147) `static void poll_kbd(void)`
+  - `player_collides` (function, line 2340) `static int player_collides(float x, float y, float z)`
+  - `move_x` (function, line 2364) `static void move_x(float nx)`
+  - `move_y` (function, line 2369) `static void move_y(float ny)`
+  - `move_z_abs` (function, line 2374) `static MoveResult move_z_abs(float nz)`
+  - `block_intersects_player` (function, line 2389) `static int block_intersects_player(int bx, int by, int bz)`
+  - `try_autostep` (function, line 2398) `static void try_autostep(float tx, float ty)`
+  - `hurt` (function, line 2409) `static void hurt(int dmg, const char *why)`
+  - `tick_player` (function, line 2434) `static void tick_player(float dt)`
+  - `tick_water` (function, line 2533) `static void tick_water(long now)`
+  - `tick_hunger` (function, line 2581) `static void tick_hunger(long now)`
+  - `goal_text` (function, line 2593) `static const char *goal_text(void)`
+  - `tick_goals` (function, line 2604) `static void tick_goals(void)`
+  - `tick_discover` (function, line 2615) `static void tick_discover(long now)`
+  - `tick_interact` (function, line 2653) `static void tick_interact(void)`
+  - `mc_crc32` (function, line 2904) `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)`
+  - `save_compute_crc` (function, line 2917) `static uint32_t save_compute_crc(const SaveHeader *hd)`
+  - `chunk_path` (function, line 2923) `static void chunk_path(int cx, int cy, char *out, size_t n)`
+  - `save_chunk_file` (function, line 2927) `static int save_chunk_file(int slot)`
+  - `load_chunk_file` (function, line 2959) `static int load_chunk_file(int slot, int cx, int cy)`
+  - `save_validate_loaded` (function, line 3041) `static int save_validate_loaded(void)`
+  - `load_reset_runtime` (function, line 3060) `static void load_reset_runtime(void)`
   - `carve_blob` (function, line 3093) `static void carve_blob(const unsigned char *blob)`
   - `load_world_legacy` (function, line 3122) `static int load_world_legacy(FILE *f)`
-  - `load_apply_player` (function, line 3159) `static void load_apply_player(const SaveHeader *hd)`
-  - `load_world_v3` (function, line 3178) `static int load_world_v3(FILE *f, SaveHeader *hd)`
-  - `load_world_v2` (function, line 3218) `static int load_world_v2(FILE *f, SaveHeader *hd)`
-  - `load_world` (function, line 3255) `static int load_world(void)`
-  - `selftest` (function, line 3329) `static int selftest(void)`
+  - `load_apply_player` (function, line 3160) `static void load_apply_player(const SaveHeader *hd)`
+  - `load_world_v3` (function, line 3179) `static int load_world_v3(FILE *f, SaveHeader *hd)`
+  - `load_world_v2` (function, line 3219) `static int load_world_v2(FILE *f, SaveHeader *hd)`
+  - `load_world` (function, line 3256) `static int load_world(void)`
+  - `selftest` (function, line 3330) `static int selftest(void)`
   - `census` (function, line 3591) `static int census(void)`
-  - `dumpstats` (function, line 3654) `static int dumpstats(void)`
-  - `title_menu` (function, line 3738) `static int title_menu(int have_save, int *seed_io)`
+  - `dumpstats` (function, line 3655) `static int dumpstats(void)`
+  - `title_menu` (function, line 3739) `static int title_menu(int have_save, int *seed_io)`
   - `pause_menu` (function, line 3907) `static int pause_menu(int *seed_io)`
-  - `main` (function, line 4079) `int main(int argc, char **argv)`
-  - `snprintf` (function, line 309) `snprintf(last_act, sizeof(last_act), mc_zoom ? "ZOOM 2X" : "ZOOM 1X");`
-  - `printf` (function, line 311) `printf("minicraft: zoom %s\n", mc_zoom ? "2x" : "1x");`
+  - `main` (function, line 4080) `int main(int argc, char **argv)`
   - `save_world` (function, line 320) `static int save_world(void);`
-  - `volatile` (function, line 329) `__asm__ volatile("syscall" : "=a"(r) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx", "r11", "memory");`
-  - `s_tone` (function, line 475) `s_tone(0);`
-  - `gen_column_terrain` (function, line 1029) `gen_column_terrain(x0 + lx, y0 + ly, mc_seed);`
-  - `memset` (function, line 1662) `memset(&h, 0, sizeof(h));`
-  - `cosf` (function, line 2300) `cosf(pl_yaw) * cosf(pl_pitch), sinf(pl_yaw) * cosf(pl_pitch), sinf(pl_pitch), 6.0f);`
-  - `fclose` (function, line 2946) `fclose(f);`
-  - `unlink` (function, line 3035) `unlink(SAVE_TMP_PATH);`
-  - `rewind` (function, line 3269) `rewind(f);`
-  - `menu_text_c` (function, line 3754) `menu_text_c(28, "MINICRAFT", 2, 3);`
-  - `fflush` (function, line 4156) `fflush(stdout);`
-  - `mobs_sync` (function, line 4167) `mobs_sync();`
-  - `MC_H` (macro, line 33) `#define MC_H`
+  - `MC_H` (macro, line 34) `#define MC_H`
   - `MC_CHUNK` (macro, line 35) `#define MC_CHUNK`
   - `MC_LOAD_R` (macro, line 36) `#define MC_LOAD_R`
   - `MC_CHUNKS` (macro, line 37) `#define MC_CHUNKS`
   - `MC_CVOL` (macro, line 38) `#define MC_CVOL`
   - `MC_COLS` (macro, line 39) `#define MC_COLS`
-  - `FB_W` (macro, line 40) `#define FB_W`
+  - `FB_W` (macro, line 41) `#define FB_W`
   - `FB_H` (macro, line 42) `#define FB_H`
   - `BACKBUF` (macro, line 45) `#define BACKBUF`
   - `BACKBUF` (macro, line 47) `#define BACKBUF`
-  - `SAVE_PATH` (macro, line 49) `#define SAVE_PATH`
+  - `SAVE_PATH` (macro, line 50) `#define SAVE_PATH`
   - `SAVE_TMP_PATH` (macro, line 51) `#define SAVE_TMP_PATH`
   - `MC_SAVE_MAGIC` (macro, line 52) `#define MC_SAVE_MAGIC`
   - `MC_SAVE_VERSION` (macro, line 53) `#define MC_SAVE_VERSION`
@@ -695,12 +618,12 @@
   - `EXT_LEFT` (macro, line 142) `#define EXT_LEFT`
   - `EXT_RIGHT` (macro, line 143) `#define EXT_RIGHT`
   - `EXT_F11` (macro, line 144) `#define EXT_F11`
-  - `MOB_PIG` (macro, line 297) `#define MOB_PIG`
+  - `MOB_PIG` (macro, line 298) `#define MOB_PIG`
   - `MOB_CREEP` (macro, line 299) `#define MOB_CREEP`
   - `SER_STASH_CAP` (macro, line 359) `#define SER_STASH_CAP`
   - `MC_VORO_DESERT_CELL` (macro, line 848) `#define MC_VORO_DESERT_CELL`
   - `MC_VORO_SNOW_CELL` (macro, line 849) `#define MC_VORO_SNOW_CELL`
-  - `MC_LEGACY_WORLD` (macro, line 2900) `#define MC_LEGACY_WORLD`
+  - `MC_LEGACY_WORLD` (macro, line 2901) `#define MC_LEGACY_WORLD`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ## progs/paint/paint.c
@@ -725,8 +648,8 @@
                       ...`
   - `paint_pal` (function, line 240) `static const unsigned char *paint_pal(void)`
   - `paint_path_ok` (function, line 251) `static int paint_path_ok(const char *p)`
-  - `paint_crc_init` (function, line 271) `static void paint_crc_init(void)`
-  - `paint_crc_update` (function, line 284) `static unsigned long paint_crc_update(unsigned long c,
+  - `paint_crc_init` (function, line 272) `static void paint_crc_init(void)`
+  - `paint_crc_update` (function, line 285) `static unsigned long paint_crc_update(unsigned long c,
                                       cons...`
   - `paint_adler` (function, line 296) `static unsigned long paint_adler(const unsigned char *p, unsigned long n)`
   - `paint_put_u32` (function, line 308) `static int paint_put_u32(unsigned char *dst, unsigned long cap,
@@ -744,40 +667,8 @@
   - `paint_pattern_present` (function, line 712) `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)`
   - `paint_selftest` (function, line 747) `static int paint_selftest(void)`
   - `paint_gui_run` (function, line 934) `static void paint_gui_run(void)`
-  - `main` (function, line 983) `int main(int argc, char **argv)`
-  - `nk_build_palette` (function, line 244) `nk_build_palette(pal768);`
-  - `snprintf` (function, line 473) `snprintf(paint_status, sizeof(paint_status), "bad path %s", path);`
-  - `fclose` (function, line 483) `fclose(f);`
-  - `memset` (function, line 498) `memset(paint_px, paint_colors[PAINT_NCOLORS - 1], sizeof(paint_px));`
-  - `stbi_image_free` (function, line 509) `stbi_image_free(px);`
-  - `memcpy` (function, line 583) `memcpy(paint_backup, paint_px, sizeof(paint_px));`
-  - `nk_layout_row_template_begin` (function, line 632) `nk_layout_row_template_begin(ctx, 24);`
-  - `nk_layout_row_template_push_dynamic` (function, line 633) `nk_layout_row_template_push_dynamic(ctx);`
-  - `nk_layout_row_template_push_static` (function, line 634) `nk_layout_row_template_push_static(ctx, PAINT_FILE_BTN_W);`
-  - `nk_layout_row_template_end` (function, line 636) `nk_layout_row_template_end(ctx);`
-  - `nk_edit_string_zero_terminated` (function, line 637) `nk_edit_string_zero_terminated(ctx, NK_EDIT_SIMPLE, paint_path, sizeof(paint_path) - 1, nk_filter_ascii);`
-  - `nk_widget` (function, line 650) `nk_widget(&r, ctx);`
-  - `nk_fill_rect` (function, line 655) `nk_fill_rect(cv, r, 0, nk_rgb(255, 255, 255));`
-  - `nk_layout_row_dynamic` (function, line 660) `nk_layout_row_dynamic(ctx, 24, PAINT_NTOOLS);`
-  - `nk_group_end` (function, line 690) `nk_group_end(ctx);`
-  - `nk_label` (function, line 701) `nk_label(ctx, line, NK_TEXT_LEFT);`
-  - `nk_end` (function, line 704) `nk_end(ctx);`
-  - `printf` (function, line 766) `printf("paint: selftest plot failed\n");`
-  - `nk_sys_vga_mode` (function, line 879) `nk_sys_vga_mode(1);`
-  - `nk_sys_kbd_raw` (function, line 880) `nk_sys_kbd_raw(1);`
-  - `nk_sys_palette` (function, line 881) `nk_sys_palette(pal768);`
-  - `nk_sys_fb_info` (function, line 882) `nk_sys_fb_info(&fw, &fh, &fp);`
-  - `nk_input_begin` (function, line 887) `nk_input_begin(&ctx);`
-  - `nk_input_end` (function, line 888) `nk_input_end(&ctx);`
-  - `nk_rasterize` (function, line 895) `nk_rasterize(&ctx);`
-  - `nk_free` (function, line 924) `nk_free(&ctx);`
-  - `nk_sys_gfx_set_title` (function, line 942) `nk_sys_gfx_set_title(PAINT_TITLE);`
-  - `nk_theme_apply` (function, line 950) `nk_theme_apply(&ctx, 0);`
-  - `nk_poll_input` (function, line 962) `nk_poll_input(&ctx);`
-  - `nk_clear` (function, line 971) `nk_clear(&ctx);`
-  - `volatile` (function, line 975) `__asm__ volatile("pause");`
-  - `strcpy` (function, line 996) `strcpy(paint_path, argv[1]);`
-  - `STB_IMAGE_IMPLEMENTATION` (macro, line 25) `#define STB_IMAGE_IMPLEMENTATION`
+  - `main` (function, line 984) `int main(int argc, char **argv)`
+  - `STB_IMAGE_IMPLEMENTATION` (macro, line 26) `#define STB_IMAGE_IMPLEMENTATION`
   - `STBI_ONLY_PNG` (macro, line 27) `#define STBI_ONLY_PNG`
   - `STBI_NO_STDIO` (macro, line 28) `#define STBI_NO_STDIO`
   - `PAINT_W` (macro, line 32) `#define PAINT_W`
@@ -811,70 +702,43 @@
 - Doc: piano.c — a Nuklear piano that plays FM sound through the SB16 driver.
 - Language: c
 - Symbols:
-  - `sys_pcm_open` (function, line 77) `static long sys_pcm_open(long on)`
+  - `sys_pcm_open` (function, line 78) `static long sys_pcm_open(long on)`
   - `sys_pcm_submit` (function, line 81) `static long sys_pcm_submit(const void *buf, long len)`
   - `sys_pcm_pump` (function, line 84) `static long sys_pcm_pump(void)`
   - `sys_yield` (function, line 87) `static void sys_yield(void)`
   - `o3_op` (function, line 102) `static int o3_op(int ch, int is_car)`
   - `o3_opreg` (function, line 106) `static void o3_opreg(int ch, int is_car, int regbase, int val)`
   - `o3_chreg` (function, line 110) `static void o3_chreg(int ch, int regbase, int val)`
-  - `o3_note` (function, line 147) `static void o3_note(int ch, int midi, int on)`
-  - `midi_to_key` (function, line 185) `static int midi_to_key(int midi)`
-  - `clamp_midi` (function, line 208) `static int clamp_midi(int m)`
+  - `o3_note` (function, line 148) `static void o3_note(int ch, int midi, int on)`
+  - `midi_to_key` (function, line 186) `static int midi_to_key(int midi)`
+  - `clamp_midi` (function, line 209) `static int clamp_midi(int m)`
   - `pedal_set` (function, line 216) `static void pedal_set(int on)`
-  - `voice_alloc` (function, line 229) `static int voice_alloc(void)`
-  - `note_off_key` (function, line 242) `static void note_off_key(int key)`
+  - `voice_alloc` (function, line 230) `static int voice_alloc(void)`
+  - `note_off_key` (function, line 243) `static void note_off_key(int key)`
   - `note_on_key` (function, line 256) `static void note_on_key(int key, int midi, int vel)`
   - `kbd_semitone` (function, line 273) `static int kbd_semitone(int code)`
-  - `kbd_all_off` (function, line 307) `static void kbd_all_off(void)`
-  - `note_on_sc` (function, line 313) `static void note_on_sc(int code, int vel)`
-  - `note_off_sc` (function, line 327) `static void note_off_sc(int code)`
+  - `kbd_all_off` (function, line 308) `static void kbd_all_off(void)`
+  - `note_on_sc` (function, line 314) `static void note_on_sc(int code, int vel)`
+  - `note_off_sc` (function, line 328) `static void note_off_sc(int code)`
   - `piano_scancode` (function, line 344) `static void piano_scancode(int code, int make, int e0, void *ud)`
   - `fx_configure` (function, line 396) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
-  - `fx_process` (function, line 414) `static float fx_process(float x)`
+  - `fx_process` (function, line 415) `static float fx_process(float x)`
   - `sb_flush` (function, line 445) `static void sb_flush(void)`
-  - `render_audio` (function, line 454) `static void render_audio(long ms)`
-  - `key_rect` (function, line 480) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
-  - `hit_key` (function, line 487) `static int hit_key(int mx, int my)`
+  - `render_audio` (function, line 455) `static void render_audio(long ms)`
+  - `key_rect` (function, line 481) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
+  - `hit_key` (function, line 488) `static int hit_key(int mx, int my)`
   - `hit_velocity` (function, line 505) `static int hit_velocity(int key, int my)`
-  - `ctrl_hit` (function, line 532) `static int ctrl_hit(int id, int mx, int my)`
+  - `ctrl_hit` (function, line 533) `static int ctrl_hit(int id, int mx, int my)`
   - `ctrl_active` (function, line 537) `static int ctrl_active(int id)`
-  - `ctrl_press` (function, line 546) `static void ctrl_press(int id)`
+  - `ctrl_press` (function, line 547) `static void ctrl_press(int id)`
   - `ui_run` (function, line 564) `static void ui_run(int bench_ms)`
   - `run_selftest` (function, line 738) `static int run_selftest(void)`
-  - `main` (function, line 904) `int main(int argc, char **argv)`
-  - `volatile` (function, line 88) `__asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");`
-  - `OPL3_WriteReg` (function, line 107) `OPL3_WriteReg(&o3, (uint16_t)(o3_bank(ch) + regbase + o3_op(ch, is_car)), (uint8_t)val);`
-  - `o3_instrument` (function, line 263) `o3_instrument(ch, vel);`
-  - `memset` (function, line 407) `memset(fx_delay_buf, 0, sizeof(fx_delay_buf));`
-  - `OPL3_GenerateStream` (function, line 463) `OPL3_GenerateStream(&o3, st, (uint32_t)n);`
-  - `nk_sys_vga_mode` (function, line 567) `nk_sys_vga_mode(1);`
-  - `nk_sys_gfx_set_title` (function, line 569) `nk_sys_gfx_set_title("Piano");`
-  - `nk_sys_kbd_raw` (function, line 570) `nk_sys_kbd_raw(1);`
-  - `nk_build_palette` (function, line 571) `nk_build_palette(pal768);`
-  - `nk_sys_palette` (function, line 572) `nk_sys_palette(pal768);`
-  - `nk_sys_fb_info` (function, line 573) `nk_sys_fb_info(&fw, &fh, &fp);`
-  - `OPL3_Reset` (function, line 576) `OPL3_Reset(&o3, RATE);`
-  - `nk_set_scancode_hook` (function, line 584) `nk_set_scancode_hook(piano_scancode, 0);`
-  - `printf` (function, line 593) `printf("piano: init failed\n");`
-  - `nk_theme_apply` (function, line 598) `nk_theme_apply(&ctx, 0);`
-  - `nk_input_begin` (function, line 615) `nk_input_begin(&ctx);`
-  - `nk_poll_input` (function, line 616) `nk_poll_input(&ctx);`
-  - `nk_input_end` (function, line 617) `nk_input_end(&ctx);`
-  - `nk_rgb` (function, line 639) `: nk_rgb(240, 240, 240);`
-  - `nk_fill_rect` (function, line 640) `nk_fill_rect(canvas, r, 0, col);`
-  - `nk_stroke_rect` (function, line 641) `nk_stroke_rect(canvas, r, 0, 1, nk_rgb(90, 90, 90));`
-  - `nk_draw_text` (function, line 653) `nk_draw_text(canvas, r, ctrls[c].label, (int)strlen(ctrls[c].label), &font, nk_rgb(255, 255, 255), nk_rgb(0, 0, 0));`
-  - `snprintf` (function, line 659) `snprintf(head, sizeof(head), "OPL3 FM piano -> SB16 C4 base oct%+d vol%d", octave, volume);`
-  - `nk_end` (function, line 674) `nk_end(&ctx);`
-  - `nk_rasterize` (function, line 701) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 705) `nk_clear(&ctx);`
-  - `nk_free` (function, line 731) `nk_free(&ctx);`
-  - `UI_MEMORY` (macro, line 54) `#define UI_MEMORY`
-  - `SYS_SB16_OPEN` (macro, line 57) `#define SYS_SB16_OPEN`
+  - `main` (function, line 905) `int main(int argc, char **argv)`
+  - `UI_MEMORY` (macro, line 55) `#define UI_MEMORY`
+  - `SYS_SB16_OPEN` (macro, line 58) `#define SYS_SB16_OPEN`
   - `SYS_SB16_SUBMIT` (macro, line 59) `#define SYS_SB16_SUBMIT`
   - `SYS_SB16_PUMP` (macro, line 60) `#define SYS_SB16_PUMP`
-  - `RATE` (macro, line 61) `#define RATE`
+  - `RATE` (macro, line 62) `#define RATE`
   - `PCM_BUF` (macro, line 63) `#define PCM_BUF`
   - `MAX_AUDIO_MS` (macro, line 68) `#define MAX_AUDIO_MS`
   - `PIANO_FRAME_MS` (macro, line 76) `#define PIANO_FRAME_MS`
@@ -888,7 +752,7 @@
   - `NKEYS` (macro, line 184) `#define NKEYS`
   - `MAX_VOICES` (macro, line 196) `#define MAX_VOICES`
   - `KBD_NO_NOTE` (macro, line 272) `#define KBD_NO_NOTE`
-  - `FX_DELAY_CAP` (macro, line 381) `#define FX_DELAY_CAP`
+  - `FX_DELAY_CAP` (macro, line 382) `#define FX_DELAY_CAP`
   - `FX_DELAY_MAX_MS` (macro, line 383) `#define FX_DELAY_MAX_MS`
   - `FX_FEEDBACK` (macro, line 384) `#define FX_FEEDBACK`
   - `FX_WET` (macro, line 385) `#define FX_WET`
@@ -910,7 +774,7 @@
   - `Sint32` (type_alias, line 7) `typedef int32_t Sint32;`
   - `Sint16` (type_alias, line 8) `typedef int16_t Sint16;`
   - `Uint8` (type_alias, line 9) `typedef uint8_t Uint8;`
-  - `SDL_GetPerformanceCounter` (function, line 10) `static inline Uint64 SDL_GetPerformanceCounter(void)`
+  - `SDL_GetPerformanceCounter` (function, line 11) `static inline Uint64 SDL_GetPerformanceCounter(void)`
   - `SDL_GetPerformanceFrequency` (function, line 12) `static inline Uint64 SDL_GetPerformanceFrequency(void)`
   - `SDL_GetTicks` (function, line 13) `static inline Uint32 SDL_GetTicks(void)`
   - `SDL_Delay` (function, line 14) `static inline void SDL_Delay(Uint32 ms)`
@@ -924,41 +788,35 @@
 - Symbols:
   - `MINIOS_GFX_BUF_GAME` (function, line 5) `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel
  * compat alias) and the...`
-  - `sys_kbd` (function, line 29) `static long sys_kbd(void)`
-  - `sys_palette` (function, line 35) `static long sys_palette(const unsigned char *pal)`
-  - `sys_kbd_raw` (function, line 41) `static long sys_kbd_raw(int on)`
-  - `sys_vga_mode` (function, line 47) `static long sys_vga_mode(int on)`
-  - `sys_doom_frame` (function, line 53) `static long sys_doom_frame(void)`
-  - `sys_mouse` (function, line 59) `static long sys_mouse(int *buf)`
-  - `sys_set_title` (function, line 65) `static long sys_set_title(const char *t)`
-  - `q2g_parse_autoframes` (function, line 87) `static void q2g_parse_autoframes(int argc, char **argv)`
-  - `QG_GetMouseDiff` (function, line 102) `void QG_GetMouseDiff(int *dx, int *dy)`
-  - `QG_CaptureMouse` (function, line 113) `void QG_CaptureMouse(void)`
-  - `QG_ReleaseMouse` (function, line 117) `void QG_ReleaseMouse(void)`
-  - `QG_Mkdir` (function, line 120) `void QG_Mkdir(const char *path)`
-  - `scancode_to_q2key` (function, line 124) `static unsigned char scancode_to_q2key(unsigned char raw)`
-  - `extended_to_q2key` (function, line 207) `static unsigned char extended_to_q2key(unsigned char sc)`
-  - `kbd_poll` (function, line 225) `static void kbd_poll(void)`
-  - `SWimp_SetPalette` (function, line 255) `void SWimp_SetPalette(const unsigned char *palette)`
-  - `SWimp_SetMode` (function, line 265) `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)`
-  - `SWimp_Init` (function, line 282) `int SWimp_Init(void *hInstance, void *wndProc)`
-  - `SWimp_Shutdown` (function, line 288) `void SWimp_Shutdown(void)`
-  - `SWimp_BeginFrame` (function, line 291) `void SWimp_BeginFrame(float camera_separation)`
-  - `SWimp_EndFrame` (function, line 294) `void SWimp_EndFrame(void)`
-  - `SWimp_AppActivate` (function, line 313) `void SWimp_AppActivate(qboolean active)`
-  - `QG_Milliseconds` (function, line 317) `int QG_Milliseconds(void)`
-  - `main` (function, line 321) `int main(int argc, char **argv)`
+  - `sys_kbd` (function, line 30) `static long sys_kbd(void)`
+  - `sys_palette` (function, line 36) `static long sys_palette(const unsigned char *pal)`
+  - `sys_kbd_raw` (function, line 42) `static long sys_kbd_raw(int on)`
+  - `sys_vga_mode` (function, line 48) `static long sys_vga_mode(int on)`
+  - `sys_doom_frame` (function, line 54) `static long sys_doom_frame(void)`
+  - `sys_mouse` (function, line 60) `static long sys_mouse(int *buf)`
+  - `sys_set_title` (function, line 66) `static long sys_set_title(const char *t)`
+  - `q2g_parse_autoframes` (function, line 88) `static void q2g_parse_autoframes(int argc, char **argv)`
+  - `QG_GetMouseDiff` (function, line 103) `void QG_GetMouseDiff(int *dx, int *dy)`
+  - `QG_CaptureMouse` (function, line 114) `void QG_CaptureMouse(void)`
+  - `QG_ReleaseMouse` (function, line 118) `void QG_ReleaseMouse(void)`
+  - `QG_Mkdir` (function, line 121) `void QG_Mkdir(const char *path)`
+  - `scancode_to_q2key` (function, line 125) `static unsigned char scancode_to_q2key(unsigned char raw)`
+  - `extended_to_q2key` (function, line 208) `static unsigned char extended_to_q2key(unsigned char sc)`
+  - `kbd_poll` (function, line 226) `static void kbd_poll(void)`
+  - `SWimp_SetPalette` (function, line 256) `void SWimp_SetPalette(const unsigned char *palette)`
+  - `SWimp_SetMode` (function, line 266) `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)`
+  - `SWimp_Init` (function, line 283) `int SWimp_Init(void *hInstance, void *wndProc)`
+  - `SWimp_Shutdown` (function, line 289) `void SWimp_Shutdown(void)`
+  - `SWimp_BeginFrame` (function, line 292) `void SWimp_BeginFrame(float camera_separation)`
+  - `SWimp_EndFrame` (function, line 295) `void SWimp_EndFrame(void)`
+  - `SWimp_AppActivate` (function, line 314) `void SWimp_AppActivate(qboolean active)`
+  - `QG_Milliseconds` (function, line 318) `int QG_Milliseconds(void)`
+  - `main` (function, line 322) `int main(int argc, char **argv)`
   - `MINIOS_DOOM_BACKBUF_ADDR` (function, line 4) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
-  - `volatile` (function, line 26) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_TIME), "D"(0) : "rcx","r11","memory");`
   - `Sys_Quit` (function, line 76) `extern void Sys_Quit(void);`
-  - `Quake2_SendKey` (function, line 238) `Quake2_SendKey(qkey, !(raw2 & 0x80));`
-  - `printf` (function, line 307) `printf("minios: played %d frames, quitting\n", s_frames);`
-  - `fflush` (function, line 308) `fflush(stdout);`
-  - `Quake2_Init` (function, line 328) `Quake2_Init(argc, argv);`
-  - `Quake2_Frame` (function, line 342) `Quake2_Frame(time);`
-  - `Q2G_FB_W` (macro, line 20) `#define Q2G_FB_W`
+  - `Q2G_FB_W` (macro, line 21) `#define Q2G_FB_W`
   - `Q2G_FB_H` (macro, line 22) `#define Q2G_FB_H`
-  - `Q2G_BACKBUF` (macro, line 71) `#define Q2G_BACKBUF`
+  - `Q2G_BACKBUF` (macro, line 72) `#define Q2G_BACKBUF`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ## progs/topogpt3/topogpt3.c
@@ -968,36 +826,36 @@
   - `FILE` (struct, line 24)
   - `LayerWeights` (struct, line 176)
   - `ModelWeights` (struct, line 224)
-  - `tg_exp` (function, line 113) `static float tg_exp(float x)`
-  - `tg_tanh` (function, line 127) `static float tg_tanh(float x)`
-  - `tg_sin` (function, line 134) `static float tg_sin(float x)`
-  - `tg_cos` (function, line 143) `static float tg_cos(float x)`
-  - `tg_fabs` (function, line 147) `static float tg_fabs(float x)`
-  - `tg_log` (function, line 151) `static float tg_log(float x)`
-  - `tg_fmax` (function, line 163) `static float tg_fmax(float a, float b)`
-  - `tg_fmin` (function, line 167) `static float tg_fmin(float a, float b)`
-  - `load_vocab` (function, line 254) `static void load_vocab(const char *path)`
-  - `build_torus_graph` (function, line 295) `static void build_torus_graph(void)`
-  - `precompute_rope` (function, line 326) `static void precompute_rope(void)`
-  - `matvec` (function, line 358) `static void matvec(const float *W, const float *x, float *y, int rows, int cols)`
-  - `matvec_bias` (function, line 369) `static void matvec_bias(const float *W, const float *b, const float *x, float *y,
+  - `tg_exp` (function, line 114) `static float tg_exp(float x)`
+  - `tg_tanh` (function, line 128) `static float tg_tanh(float x)`
+  - `tg_sin` (function, line 135) `static float tg_sin(float x)`
+  - `tg_cos` (function, line 144) `static float tg_cos(float x)`
+  - `tg_fabs` (function, line 148) `static float tg_fabs(float x)`
+  - `tg_log` (function, line 152) `static float tg_log(float x)`
+  - `tg_fmax` (function, line 164) `static float tg_fmax(float a, float b)`
+  - `tg_fmin` (function, line 168) `static float tg_fmin(float a, float b)`
+  - `load_vocab` (function, line 255) `static void load_vocab(const char *path)`
+  - `build_torus_graph` (function, line 296) `static void build_torus_graph(void)`
+  - `precompute_rope` (function, line 327) `static void precompute_rope(void)`
+  - `matvec` (function, line 359) `static void matvec(const float *W, const float *x, float *y, int rows, int cols)`
+  - `matvec_bias` (function, line 370) `static void matvec_bias(const float *W, const float *b, const float *x, float *y,
                ...`
-  - `rmsnorm` (function, line 381) `static void rmsnorm(const float *x, const float *w, float *y, int d)`
-  - `softmax` (function, line 390) `static void softmax(float *x, int n)`
-  - `gelu` (function, line 399) `static void gelu(float *x, int n)`
-  - `silu` (function, line 409) `static void silu(float *x, int n)`
-  - `swiglu` (function, line 417) `static void swiglu(const float *gate_w, const float *up_w, const float *down_w,
+  - `rmsnorm` (function, line 382) `static void rmsnorm(const float *x, const float *w, float *y, int d)`
+  - `softmax` (function, line 391) `static void softmax(float *x, int n)`
+  - `gelu` (function, line 400) `static void gelu(float *x, int n)`
+  - `silu` (function, line 410) `static void silu(float *x, int n)`
+  - `swiglu` (function, line 418) `static void swiglu(const float *gate_w, const float *up_w, const float *down_w,
                  ...`
-  - `quat_normalize` (function, line 434) `static void quat_normalize(float *q)`
-  - `quat_hamilton` (function, line 439) `static void quat_hamilton(const float *a, const float *b, float *c)`
+  - `quat_normalize` (function, line 435) `static void quat_normalize(float *q)`
+  - `quat_hamilton` (function, line 440) `static void quat_hamilton(const float *a, const float *b, float *c)`
   - `quat_linear` (function, line 448) `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,
      ...`
-  - `ifft_radix2` (function, line 504) `static void ifft_radix2(float *real, float *imag, int n)`
+  - `ifft_radix2` (function, line 505) `static void ifft_radix2(float *real, float *imag, int n)`
   - `rfft` (function, line 513) `static void rfft(const float *x, float *Xr, float *Xi, int n)`
   - `irfft` (function, line 522) `static void irfft(const float *Xr, const float *Xi, float *x, int n)`
-  - `filter1d` (function, line 536) `static void filter1d(const float *x, const float *kr, const float *ki,
+  - `filter1d` (function, line 537) `static void filter1d(const float *x, const float *kr, const float *ki,
                       floa...`
-  - `ifft2d` (function, line 579) `static void ifft2d(float *data_r, float *data_i, int h, int w)`
+  - `ifft2d` (function, line 580) `static void ifft2d(float *data_r, float *data_i, int h, int w)`
   - `rfft2d_real` (function, line 602) `static void rfft2d_real(const float *data, float *out_r, float *out_i,
                          i...`
   - `irfft2d` (function, line 629) `static void irfft2d(const float *in_r, const float *in_i, float *out,
@@ -1005,41 +863,41 @@
   - `cmul` (function, line 664) `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)`
   - `spectral_contract` (function, line 670) `static void spectral_contract(const float *Wr, const float *Wi,
                                co...`
-  - `quat_spectral_layer_2d` (function, line 694) `static void quat_spectral_layer_2d(
+  - `quat_spectral_layer_2d` (function, line 695) `static void quat_spectral_layer_2d(
     const float *x, float *y,
     const float *kr_w, const fl...`
-  - `spectral_ae_encode` (function, line 784) `static void spectral_ae_encode(const float *x, float *z, const LayerWeights *lw)`
-  - `spectral_ae_decode` (function, line 792) `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)`
-  - `process_torus_grid` (function, line 799) `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)`
-  - `torus_soft_assign` (function, line 820) `static void torus_soft_assign(const float *phi1, const float *phi2,
+  - `spectral_ae_encode` (function, line 785) `static void spectral_ae_encode(const float *x, float *z, const LayerWeights *lw)`
+  - `spectral_ae_decode` (function, line 793) `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)`
+  - `process_torus_grid` (function, line 800) `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)`
+  - `torus_soft_assign` (function, line 821) `static void torus_soft_assign(const float *phi1, const float *phi2,
                              ...`
-  - `message_passing` (function, line 842) `static void message_passing(const float *node_feat, float *out,
+  - `message_passing` (function, line 843) `static void message_passing(const float *node_feat, float *out,
                              cons...`
-  - `torus_brain_forward` (function, line 887) `static void torus_brain_forward(const float *x, float *out, float *recon_loss,
+  - `torus_brain_forward` (function, line 888) `static void torus_brain_forward(const float *x, float *out, float *recon_loss,
                   ...`
-  - `attention_forward` (function, line 977) `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...`
-  - `moe_forward` (function, line 1077) `static void moe_forward(const float *x, float *out, const LayerWeights *lw)`
-  - `forward` (function, line 1127) `static void forward(const int *token_ids, int seq_len, float *logits_out)`
-  - `tokenize_string` (function, line 1194) `static int tokenize_string(const char *text, int *tokens, int max_tokens)`
-  - `apply_temperature` (function, line 1209) `static void apply_temperature(float *logits, int n, float temp)`
-  - `apply_repetition_penalty` (function, line 1215) `static void apply_repetition_penalty(float *logits, int n, const int *tokens,
+  - `attention_forward` (function, line 978) `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...`
+  - `moe_forward` (function, line 1078) `static void moe_forward(const float *x, float *out, const LayerWeights *lw)`
+  - `forward` (function, line 1128) `static void forward(const int *token_ids, int seq_len, float *logits_out)`
+  - `tokenize_string` (function, line 1195) `static int tokenize_string(const char *text, int *tokens, int max_tokens)`
+  - `apply_temperature` (function, line 1210) `static void apply_temperature(float *logits, int n, float temp)`
+  - `apply_repetition_penalty` (function, line 1216) `static void apply_repetition_penalty(float *logits, int n, const int *tokens,
                    ...`
-  - `apply_top_k` (function, line 1228) `static void apply_top_k(float *logits, int n, int k)`
-  - `sample` (function, line 1247) `static int sample(const float *logits, int n)`
-  - `load_weights` (function, line 1281) `static int load_weights(const char *path)`
-  - `load_weights_fp16` (function, line 1451) `static int load_weights_fp16(const char *path)`
+  - `apply_top_k` (function, line 1229) `static void apply_top_k(float *logits, int n, int k)`
+  - `sample` (function, line 1248) `static int sample(const float *logits, int n)`
+  - `load_weights` (function, line 1282) `static int load_weights(const char *path)`
+  - `load_weights_fp16` (function, line 1452) `static int load_weights_fp16(const char *path)`
   - `load_weights_auto` (function, line 1583) `static int load_weights_auto(const char *path)`
   - `time_now_ms` (function, line 1600) `static double time_now_ms(void)`
-  - `decode_token` (function, line 1613) `static void decode_token(int tid)`
+  - `decode_token` (function, line 1614) `static void decode_token(int tid)`
   - `load_token_file` (function, line 1629) `static int load_token_file(const char *path, int *out_ids, int max_ids)`
   - `decode_token_tiktoken` (function, line 1652) `static void decode_token_tiktoken(int tid)`
-  - `generate_tokens` (function, line 1660) `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,
+  - `generate_tokens` (function, line 1661) `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,
                ...`
-  - `generate` (function, line 1724) `static void generate(const char *prompt, int max_new_tokens, float temperature,
+  - `generate` (function, line 1725) `static void generate(const char *prompt, int max_new_tokens, float temperature,
                  ...`
-  - `interactive_mode` (function, line 1735) `static void interactive_mode(void)`
-  - `print_help` (function, line 1849) `static void print_help(void)`
-  - `main` (function, line 1884) `int main(int argc, char **argv)`
+  - `interactive_mode` (function, line 1736) `static void interactive_mode(void)`
+  - `print_help` (function, line 1850) `static void print_help(void)`
+  - `main` (function, line 1885) `int main(int argc, char **argv)`
   - `printf` (function, line 28) `extern int printf(const char *, ...);`
   - `fprintf` (function, line 29) `extern int fprintf(FILE *, const char *, ...);`
   - `sprintf` (function, line 30) `extern int sprintf(char *, const char *, ...);`
@@ -1063,10 +921,6 @@
   - `strncmp` (function, line 52) `extern int strncmp(const char *, const char *, unsigned long);`
   - `strlen` (function, line 53) `extern unsigned long strlen(const char *);`
   - `strstr` (function, line 54) `extern char *strstr(const char *, const char *);`
-  - `fft_radix2` (function, line 508) `fft_radix2(real, imag, n);`
-  - `READ_TENSOR` (function, line 1326) `READ_TENSOR(W.token_embed, VOCAB_SIZE * D_MODEL);`
-  - `READ_TENSOR16` (function, line 1501) `READ_TENSOR16(W.token_embed, VOCAB_SIZE * D_MODEL);`
-  - `volatile` (function, line 1605) `__asm__ volatile ("rdtsc" : "=a"(lo), "=d"(hi));`
   - `stdin` (variable, line 25) `extern FILE *stdin;`
   - `stdout` (variable, line 26) `extern FILE *stdout;`
   - `stderr` (variable, line 27) `extern FILE *stderr;`
@@ -1074,7 +928,7 @@
   - `SEEK_SET` (macro, line 44) `#define SEEK_SET`
   - `SEEK_CUR` (macro, line 45) `#define SEEK_CUR`
   - `SEEK_END` (macro, line 46) `#define SEEK_END`
-  - `VOCAB_SIZE` (macro, line 64) `#define VOCAB_SIZE`
+  - `VOCAB_SIZE` (macro, line 65) `#define VOCAB_SIZE`
   - `D_MODEL` (macro, line 66) `#define D_MODEL`
   - `N_HEADS` (macro, line 67) `#define N_HEADS`
   - `N_KV_HEADS` (macro, line 68) `#define N_KV_HEADS`
@@ -1138,33 +992,33 @@
   - `vedit_c_headtxt` (function, line 156) `static struct nk_color vedit_c_headtxt(void)`
   - `vedit_c_status` (function, line 157) `static struct nk_color vedit_c_status(void)`
   - `vedit_c_cursor` (function, line 158) `static struct nk_color vedit_c_cursor(void)`
-  - `vedit_ink` (function, line 159) `static struct nk_color vedit_ink(int col)`
-  - `vedit_set_msg` (function, line 229) `static void vedit_set_msg(const char *s)`
-  - `vedit_is_alpha` (function, line 236) `static int vedit_is_alpha(int c)`
-  - `vedit_is_digit` (function, line 240) `static int vedit_is_digit(int c)`
-  - `vedit_is_wordc` (function, line 244) `static int vedit_is_wordc(int c)`
-  - `vedit_is_kw` (function, line 248) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
+  - `vedit_ink` (function, line 160) `static struct nk_color vedit_ink(int col)`
+  - `vedit_set_msg` (function, line 230) `static void vedit_set_msg(const char *s)`
+  - `vedit_is_alpha` (function, line 237) `static int vedit_is_alpha(int c)`
+  - `vedit_is_digit` (function, line 241) `static int vedit_is_digit(int c)`
+  - `vedit_is_wordc` (function, line 245) `static int vedit_is_wordc(int c)`
+  - `vedit_is_kw` (function, line 249) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
   - `separators` (function, line 272) `* allow_quote exists because C digit separators (1'000'000) are not
  * valid in Python/Lua number...`
-  - `vedit_parse_number` (function, line 294) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
-  - `vedit_parse_keyword` (function, line 309) `static int vedit_parse_keyword(const char *t, int len, int i,
+  - `vedit_parse_number` (function, line 295) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
+  - `vedit_parse_keyword` (function, line 310) `static int vedit_parse_keyword(const char *t, int len, int i,
                                cons...`
   - `vedit_lang_of` (function, line 327) `static int vedit_lang_of(const char *fname)`
-  - `vedit_lang_name` (function, line 344) `static const char *vedit_lang_name(int lang)`
+  - `vedit_lang_name` (function, line 345) `static const char *vedit_lang_name(int lang)`
   - `vedit_scan_line` (function, line 354) `static int vedit_scan_line(const char *t, int len, int st)`
   - `vedit_state_at` (function, line 607) `static int vedit_state_at(int row)`
-  - `vedit_row_ptr` (function, line 615) `static char *vedit_row_ptr(int idx)`
-  - `vedit_clamp` (function, line 619) `static void vedit_clamp(void)`
-  - `vedit_follow` (function, line 631) `static void vedit_follow(void)`
-  - `vedit_insert_char` (function, line 644) `static void vedit_insert_char(int c)`
-  - `vedit_delete_line_at` (function, line 670) `static void vedit_delete_line_at(int idx)`
-  - `vedit_backspace` (function, line 681) `static void vedit_backspace(void)`
-  - `vedit_delete_char` (function, line 712) `static void vedit_delete_char(void)`
-  - `vedit_split` (function, line 740) `static void vedit_split(void)`
-  - `vedit_tab` (function, line 788) `static void vedit_tab(void)`
-  - `vedit_find` (function, line 815) `static void vedit_find(const char *needle)`
-  - `vedit_save` (function, line 865) `static int vedit_save(void)`
-  - `vedit_load` (function, line 908) `static int vedit_load(void)`
+  - `vedit_row_ptr` (function, line 616) `static char *vedit_row_ptr(int idx)`
+  - `vedit_clamp` (function, line 620) `static void vedit_clamp(void)`
+  - `vedit_follow` (function, line 632) `static void vedit_follow(void)`
+  - `vedit_insert_char` (function, line 645) `static void vedit_insert_char(int c)`
+  - `vedit_delete_line_at` (function, line 671) `static void vedit_delete_line_at(int idx)`
+  - `vedit_backspace` (function, line 682) `static void vedit_backspace(void)`
+  - `vedit_delete_char` (function, line 713) `static void vedit_delete_char(void)`
+  - `vedit_split` (function, line 741) `static void vedit_split(void)`
+  - `vedit_tab` (function, line 789) `static void vedit_tab(void)`
+  - `vedit_find` (function, line 816) `static void vedit_find(const char *needle)`
+  - `vedit_save` (function, line 866) `static int vedit_save(void)`
+  - `vedit_load` (function, line 909) `static int vedit_load(void)`
   - `vedit_has_ext` (function, line 966) `static int vedit_has_ext(const char *fname, const char *ext)`
   - `vedit_base_of` (function, line 978) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
   - `vedit_join` (function, line 999) `static int vedit_join(const char *dir, const char *base, const char *ext,
@@ -1178,45 +1032,22 @@
   - `vedit_cmd_run` (function, line 1097) `static void vedit_cmd_run(void)`
   - `vedit_cmd_link` (function, line 1173) `static void vedit_cmd_link(const char *fmt)`
   - `vedit_selftest_build` (function, line 1224) `static int vedit_selftest_build(void)`
-  - `vedit_read_key_poll` (function, line 1312) `static int vedit_read_key_poll(void)`
+  - `vedit_read_key_poll` (function, line 1313) `static int vedit_read_key_poll(void)`
   - `vedit_ansi_for` (function, line 1364) `static void vedit_ansi_for(int col)`
-  - `vedit_console_dump` (function, line 1371) `static void vedit_console_dump(void)`
-  - `vedit_prompt_open` (function, line 1411) `static void vedit_prompt_open(const char *label, int mode)`
-  - `vedit_prompt_find` (function, line 1422) `static void vedit_prompt_find(void)`
-  - `vedit_prompt_saveas` (function, line 1426) `static void vedit_prompt_saveas(void)`
-  - `vedit_draw_row` (function, line 1436) `static void vedit_draw_row(struct nk_command_buffer *canvas,
+  - `vedit_console_dump` (function, line 1372) `static void vedit_console_dump(void)`
+  - `vedit_prompt_open` (function, line 1412) `static void vedit_prompt_open(const char *label, int mode)`
+  - `vedit_prompt_find` (function, line 1423) `static void vedit_prompt_find(void)`
+  - `vedit_prompt_saveas` (function, line 1427) `static void vedit_prompt_saveas(void)`
+  - `vedit_draw_row` (function, line 1437) `static void vedit_draw_row(struct nk_command_buffer *canvas,
                            struct nk...`
   - `vedit_draw_ui` (function, line 1516) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                     ...`
   - `vedit_prompt_key` (function, line 1647) `static void vedit_prompt_key(int key)`
   - `vedit_key` (function, line 1706) `static void vedit_key(int key, int *quit, int *save_and_quit)`
-  - `vedit_sync_title` (function, line 1785) `static void vedit_sync_title(void)`
-  - `vedit_gui_run` (function, line 1795) `static void vedit_gui_run(void)`
-  - `vedit_selftest` (function, line 1874) `static int vedit_selftest(void)`
-  - `main` (function, line 1941) `int main(int argc, char **argv)`
-  - `volatile` (function, line 24) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GETC_RAW), "D"(blocking) : "rcx", "r11", "memory");`
-  - `memcpy` (function, line 233) `memcpy(vedit_msg, s, n);`
-  - `memmove` (function, line 676) `memmove(vedit_row_ptr(k), vedit_row_ptr(k + 1), VEDIT_LINE_MAX);`
-  - `snprintf` (function, line 838) `snprintf(nb, sizeof(nb), "found line %d", r + 1);`
-  - `fclose` (function, line 882) `fclose(f);`
-  - `printf` (function, line 1034) `printf("vedit: no output captured (%s missing)\n", path);`
-  - `fflush` (function, line 1042) `fflush(stdout);`
-  - `nk_build_palette` (function, line 1059) `nk_build_palette(pal768);`
-  - `nk_sys_palette` (function, line 1060) `nk_sys_palette(pal768);`
-  - `putchar` (function, line 1391) `putchar(l[c]);`
-  - `nk_draw_text` (function, line 1459) `nk_draw_text(canvas, nk_rect((float)(x - vedit_gutter_w * vedit_cw), (float)y, (float)(vedit_gutter_w * vedit_cw), (float)vedit_ch), num, (int)strlen(num), font, bg, vedit_c_gutter());`
-  - `nk_fill_rect` (function, line 1465) `nk_fill_rect(canvas, nk_rect((float)x, (float)y, (float)((vedit_cols - vedit_gutter_w) * vedit_cw), (float)vedit_ch), 0, bg);`
-  - `nk_end` (function, line 1542) `nk_end(ctx);`
-  - `nk_sys_vga_mode` (function, line 1806) `nk_sys_vga_mode(1);`
-  - `nk_sys_fb_info` (function, line 1811) `nk_sys_fb_info(&fw, &fh, &fp);`
-  - `nk_theme_apply` (function, line 1837) `nk_theme_apply(&ctx, 0);`
-  - `nk_input_begin` (function, line 1843) `nk_input_begin(&ctx);`
-  - `nk_input_end` (function, line 1844) `nk_input_end(&ctx);`
-  - `nk_rasterize` (function, line 1846) `nk_rasterize(&ctx);`
-  - `nk_clear` (function, line 1849) `nk_clear(&ctx);`
-  - `nk_free` (function, line 1868) `nk_free(&ctx);`
-  - `memset` (function, line 1975) `memset(vedit_used, 0, VEDIT_MAX_LINES * sizeof(int));`
-  - `free` (function, line 1992) `free(vedit_pool);`
+  - `vedit_sync_title` (function, line 1786) `static void vedit_sync_title(void)`
+  - `vedit_gui_run` (function, line 1796) `static void vedit_gui_run(void)`
+  - `vedit_selftest` (function, line 1875) `static int vedit_selftest(void)`
+  - `main` (function, line 1942) `int main(int argc, char **argv)`
   - `VEDIT_MAX_LINES` (macro, line 81) `#define VEDIT_MAX_LINES`
   - `VEDIT_LINE_MAX` (macro, line 82) `#define VEDIT_LINE_MAX`
   - `VEDIT_LINE_USED` (macro, line 83) `#define VEDIT_LINE_USED`

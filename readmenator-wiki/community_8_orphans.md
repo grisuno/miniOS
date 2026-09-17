@@ -1,10 +1,10 @@
 # orphans
 
-*Community 15 | 84 files | cohesion 0.00*
+*Community 8 | 85 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 84 file(s) rooted at `tools` with dominant language py (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: Scoped WM validation for Alt-Tab and tile across all windows. Runs host WM unit tests, rebuilds touched kernel objects with zero warnings, and assert.
+This community groups 85 file(s) rooted at `tools` with dominant language py (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Mutation testing for the MiniOS MCP bridge. Every mutant is injected into a private copy of minios_mcp.py and run against the unit and BDD suite. A mutant that .
 
 ## Files
 
@@ -15,11 +15,11 @@ This community groups 84 file(s) rooted at `tools` with dominant language py (co
 | `tools/boot_run.sh` | sh | utility | 0 | yes |
 | `tools/check_abi_numbers.py` | py | utility | 4 | yes |
 
-### `progs/src` (21 files)
+### `progs/src` (22 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/src/aes.c` | c | utility | 55 | yes |
+| `progs/src/aes.c` | c | utility | 54 | yes |
 | `progs/src/cp.c` | c | utility | 8 | no |
 
 ### `progs/asm` (10 files)
@@ -67,13 +67,13 @@ This community groups 84 file(s) rooted at `tools` with dominant language py (co
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `bootloader.c` | c | utility | 4 | no |
+| `bootloader.c` | c | utility | 2 | no |
 
 ### `kernel` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `kernel/cvm_host.c` | c | utility | 55 | no |
+| `kernel/cvm_host.c` | c | utility | 45 | no |
 
 ### `progs/lisp` (1 files)
 
@@ -93,7 +93,7 @@ This community groups 84 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `progs/pokemon/fetch.sh` | sh | utility | 0 | yes |
 
-*... and 64 more files in this community.*
+*... and 65 more files in this community.*
 
 
 ## Key Symbols
@@ -101,9 +101,9 @@ This community groups 84 file(s) rooted at `tools` with dominant language py (co
 - `switch_save_only` (function, `arch/x86/ctx_sw.S:44`)
 - `switch_to` (function, `arch/x86/ctx_sw.S:53`)
 - `switch_to_notrap` (function, `arch/x86/ctx_sw.S:96`)
-- `user_trampoline` (function, `arch/x86/ctx_sw.S:181`)
-- `resume_iretq` (function, `arch/x86/ctx_sw.S:194`)
-- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:234`)
+- `user_trampoline` (function, `arch/x86/ctx_sw.S:185`)
+- `resume_iretq` (function, `arch/x86/ctx_sw.S:198`)
+- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:238`)
 - `tf_rax` (function, `arch/x86/isr_stubs.S:67`)
 - `tf_rbx` (function, `arch/x86/isr_stubs.S:68`)
 - `tf_rcx` (function, `arch/x86/isr_stubs.S:69`)
@@ -136,29 +136,16 @@ This community groups 84 file(s) rooted at `tools` with dominant language py (co
 
 ## Connections
 
-- No cross-community bridges recorded. This community is self-contained.
+- [INFERRED] shares_context community 0 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 8 (orphans).
+- [INFERRED] shares_context community 1 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 8 (orphans).
 
 ## Risks
 
-- [critical] `mcp/mutate_mcp.sh:85` S001: Command injection via eval — can execute arbitrary commands Fix: Avoid shell=True and string-built commands; use argument arrays and input allowlists.
-- [critical] `tools/check_abi_numbers.py:122` PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_abi_numbers.py:123` PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_abi_numbers.py:124` PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_fork_stubs.py:19` (in `Config`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_fork_stubs.py:24` (in `handler_body`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_syscall_sanitize.py:22` (in `Config`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_syscall_sanitize.py:25` (in `Config`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_syscall_sanitize.py:29` (in `Config`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_syscall_sanitize.py:30` (in `Config`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_syscall_sanitize.py:35` (in `Config`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_syscall_sanitize.py:36` (in `Config`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_syscall_sanitize.py:37` (in `Config`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/check_syscall_sanitize.py:74` (in `split_functions`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
-- [critical] `tools/kernel_feature_survey.py:24` (in `SurveyConfig`) PY002: Use of eval/exec — can lead to arbitrary code execution Fix: Replace eval/exec with JSON parsing, dispatch tables, or ast.literal_eval.
+- No scoped security, taint, cycle, or layer risks.
 
 ## Open Questions
 
-- Why do 29 file(s) lack file-level docs (e.g. `arch/x86/ctx_sw.S`)? What purpose do they serve?
+- Why do 30 file(s) lack file-level docs (e.g. `arch/x86/ctx_sw.S`)? What purpose do they serve?
 - What would break if the most connected file in orphans changed?
 - Should orphans be split, given cohesion 0.00?
 
@@ -184,4 +171,4 @@ This community groups 84 file(s) rooted at `tools` with dominant language py (co
 - `progs/doomgeneric/doom.h`
 - `progs/doomgeneric/icon.c`
 - `progs/doomgeneric/m_random.c`
-- *... and 64 more*
+- *... and 65 more*

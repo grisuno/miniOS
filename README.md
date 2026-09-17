@@ -2,9 +2,10 @@
 
 <img width="1031" height="827" alt="image" src="https://github.com/user-attachments/assets/196bca3a-51a7-4851-a97c-1da71e945310" />
 
-A 64-bit x86 teaching kernel that carries its own toolchain. You can write a C
+LazyOwn RedTeam has released an educational 64-bit x86 teaching kernel and operating system, with basic security, and that carries its own complete toolchain of a subset of C, micropython, lua, and lisp, You can write a C
 program inside the running system, compile it, link it and execute it without
-leaving the machine.
+leaving the machine. With some games and terminal utilities. It has been developed with love.
+
 
 New here? Start with **[docs/quickstart.md](./docs/quickstart.md)** (build,
 boot, first program, verify) and keep **[docs/cheatsheet.md](./docs/cheatsheet.md)**

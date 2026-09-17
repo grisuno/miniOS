@@ -1,10 +1,10 @@
 # tools
 
-*Community 10 | 21 files | cohesion 0.79*
+*Community 5 | 21 files | cohesion 0.79*
 
 ## Definition
 
-This community groups 21 file(s) rooted at `tools` with dominant language py (cohesion 0.79). Central symbols: `AddonError`, `AddonState`, `Client`, `FrameDiff`, `GdbChannel`, `Guest`, `Handler`, `HyperChecks`. Core file: `tools/minios_hyper.py` (51 symbols). Documented purpose: test_gui_menu.py -- serial proof that the minicraft pause menu works.  ESC must open the pause menu even when QMP delivers down+up inside one guest frame (the o.
+This community groups 21 file(s) rooted at `tools` with dominant language py (cohesion 0.79). Central symbols: `AddonError`, `AddonState`, `Client`, `FrameDiff`, `GdbChannel`, `Guest`, `Handler`, `HyperChecks`. Core file: `tools/minios_hyper.py` (51 symbols). Documented purpose: Debug driver: boot MiniOS through the MCP bridge and run freedom..
 
 ## Files
 
@@ -41,20 +41,17 @@ This community groups 21 file(s) rooted at `tools` with dominant language py (co
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `kernel/time.c` | c | utility | 7 | yes |
+| `kernel/time.c` | c | utility | 4 | yes |
 
 *... and 1 more files in this community.*
 
 
 ## Key Symbols
 
-- `ktime_rdtsc` (function, `kernel/time.c:12`) `static unsigned long ktime_rdtsc(void)`
-- `volatile` (function, `kernel/time.c:15`) `__asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));`
-- `ktime_init` (function, `kernel/time.c:18`) `static void ktime_init(void)`
-- `outb` (function, `kernel/time.c:21`) `outb(0x61, (unsigned char)((inb(0x61) & 0x0F) \| 0x01));`
-- `ktime_ms` (function, `kernel/time.c:32`) `unsigned long ktime_ms(void)`
+- `ktime_rdtsc` (function, `kernel/time.c:13`) `static unsigned long ktime_rdtsc(void)`
+- `ktime_init` (function, `kernel/time.c:19`) `static void ktime_init(void)`
+- `ktime_ms` (function, `kernel/time.c:33`) `unsigned long ktime_ms(void)`
 - `ktime_us` (function, `kernel/time.c:41`) `unsigned long ktime_us(void)` - Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime nsec and gettime
-- `ktime_us_from_delta` (function, `kernel/time.c:43`) `return ktime_us_from_delta(ktime_rdtsc() - tsc_base_ms, tsc_per_ms);`
 - `Client` (class, `mcp/mcp_dbg_driver.py:15`) `class Client`
 - `__init__` (method, `mcp/mcp_dbg_driver.py:16`) `def __init__(self)`
 - `request` (method, `mcp/mcp_dbg_driver.py:28`) `def request(self, method, params)`
@@ -78,6 +75,9 @@ This community groups 21 file(s) rooted at `tools` with dominant language py (co
 - `load_addons_dir` (method, `mcp/minios_addons.py:323`) `def load_addons_dir(addons_dir)` - Load every addon yaml; each entry is a dict or an error string.
 - `split_for_editor` (method, `mcp/minios_addons.py:347`) `def split_for_editor(text)` - Split a source into editor-sized chunks. Raises AddonError.
 - `exit_code_of` (method, `mcp/minios_addons.py:372`) `def exit_code_of(text)`
+- `AddonState` (class, `mcp/minios_addons.py:377`) `class AddonState` - Host-side record of installed addons (system temp dir).
+- `__init__` (method, `mcp/minios_addons.py:380`) `def __init__(self, path)`
+- `load` (method, `mcp/minios_addons.py:383`) `def load(self)`
 
 ## Internal vs External Edges
 
@@ -86,26 +86,28 @@ This community groups 21 file(s) rooted at `tools` with dominant language py (co
 
 ## Connections
 
-- [EXTRACTED] depends_on community 3 <-> 10 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
-- [EXTRACTED] depends_on community 5 <-> 10 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
+- [EXTRACTED] depends_on community 4 <-> 5 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
+- [EXTRACTED] depends_on community 5 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/kernel.h.
+- [EXTRACTED] depends_on community 2 <-> 5 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
+- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 5 (tools).
 
 ## Risks
 
-- [medium] `tools/gdb_repro.py:43` (in `main`) PY007: Path traversal risk — file operation with variable path Fix: Canonicalize paths and confine file access to an allowlisted base directory.
-- [medium] `tools/gdb_repro.py:59` (in `main`) PY007: Path traversal risk — file operation with variable path Fix: Canonicalize paths and confine file access to an allowlisted base directory.
-- [medium] `tools/probe_compute_vga.py:117` (in `dump`) PY007: Path traversal risk — file operation with variable path Fix: Canonicalize paths and confine file access to an allowlisted base directory.
-- [medium] `tools/probe_compute_vga.py:118` (in `dump`) PY007: Path traversal risk — file operation with variable path Fix: Canonicalize paths and confine file access to an allowlisted base directory.
-- [medium] `tools/test_gui_wm.py:229` (in `main`) PY007: Path traversal risk — file operation with variable path Fix: Canonicalize paths and confine file access to an allowlisted base directory.
-- [medium] `tools/test_gui_wm.py:318` (in `main`) PY007: Path traversal risk — file operation with variable path Fix: Canonicalize paths and confine file access to an allowlisted base directory.
-- [medium] `tools/tls_test.py:217` (in `gen_header`) PY007: Path traversal risk — file operation with variable path Fix: Canonicalize paths and confine file access to an allowlisted base directory.
-- [medium] `tools/tls_test.py:237` (in `gen_header`) PY007: Path traversal risk — file operation with variable path Fix: Canonicalize paths and confine file access to an allowlisted base directory.
 - [taint high] `mcp/mcp_dbg_driver.py` -> `mcp/mcp_dbg_driver.py` via `subprocess` (0 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `kernel/time.c` via `subprocess` (1 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/ktime.h` via `subprocess` (2 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/vma.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dbg_driver.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `mcp/mcp_dogfood.py` via `subprocess` (0 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `kernel/time.c` via `subprocess` (1 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/ktime.h` via `subprocess` (2 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/kernel.h` via `subprocess` (2 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/vma.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
+- [taint high] `mcp/minios_addons.py` -> `mcp/minios_addons.py` via `subprocess` (0 hops)
 
 ## Open Questions
 

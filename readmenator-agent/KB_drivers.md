@@ -2,10 +2,10 @@
 
 ## headers/drivers/kbd.h
 - Layer: infrastructure
-- Doc: ifndef KBD_H define KBD_H  Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty. Toggled from the taskbar widg
+- Doc: Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty. Toggled from the taskbar widget or the `kbd` shell built
 - Language: h
 - Symbols:
-  - `kbd_available` (function, line 8) `int kbd_available(void);`
+  - `kbd_available` (function, line 9) `int kbd_available(void);`
   - `kbd_read` (function, line 10) `int kbd_read(void);`
   - `kbd_reset_for_shell` (function, line 11) `void kbd_reset_for_shell(void);`
   - `kbd_get_layout` (function, line 14) `int kbd_get_layout(void);`
@@ -32,7 +32,7 @@
 
 ## headers/drivers/modifiers.h
 - Layer: infrastructure
-- Doc: ifndef MODIFIERS_H define MODIFIERS_H  Docstring: Unified modifier tracking for cooked and raw paths.
+- Doc: Docstring: Unified modifier tracking for cooked and raw paths.
 - Language: h
 - Symbols:
   - `modifier_state_t` (struct, line 5)
@@ -42,7 +42,7 @@
                                  ...`
   - `modifiers_match` (function, line 76) `static inline int modifiers_match(const modifier_state_t *st, int mask)`
   - `MODIFIERS_H` (macro, line 2) `#define MODIFIERS_H`
-  - `MOD_SHIFT` (macro, line 23) `#define MOD_SHIFT`
+  - `MOD_SHIFT` (macro, line 24) `#define MOD_SHIFT`
   - `MOD_CTRL` (macro, line 25) `#define MOD_CTRL`
   - `MOD_ALT` (macro, line 26) `#define MOD_ALT`
   - `MOD_ALTGR` (macro, line 27) `#define MOD_ALTGR`
@@ -51,7 +51,7 @@
 
 ## headers/drivers/mouse.h
 - Layer: infrastructure
-- Doc: ifndef MOUSE_H define MOUSE_H  Docstring: mouse.h -- boundary of the PS/2 mouse device driver
+- Doc: Docstring: mouse.h -- boundary of the PS/2 mouse device driver
 - Language: h
 - Symbols:
   - `mouse_hw_init` (function, line 11) `void mouse_hw_init(void);`

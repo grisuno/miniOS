@@ -10,30 +10,18 @@
 - Language: c
 - Symbols:
   - `msys5` (function, line 26) `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)`
-  - `minios_time_ms` (function, line 51) `static mp_obj_t minios_time_ms(void)`
-  - `minios_rtc` (function, line 58) `static mp_obj_t minios_rtc(void)`
-  - `minios_fb_info` (function, line 75) `static mp_obj_t minios_fb_info(void)`
-  - `minios_pal` (function, line 110) `static mp_obj_t minios_pal(mp_obj_t buf_in)`
-  - `minios_pcspeaker` (function, line 126) `static mp_obj_t minios_pcspeaker(mp_obj_t freq_in, mp_obj_t ms_in)`
-  - `minios_run` (function, line 148) `static mp_obj_t minios_run(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)`
-  - `volatile` (function, line 16) `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory" );`
-  - `mp_obj_new_int_from_uint` (function, line 53) `return mp_obj_new_int_from_uint((uint32_t)msys(SYS_TIME_MS, 0, 0, 0));`
+  - `minios_time_ms` (function, line 52) `static mp_obj_t minios_time_ms(void)`
+  - `minios_rtc` (function, line 59) `static mp_obj_t minios_rtc(void)`
+  - `minios_fb_info` (function, line 76) `static mp_obj_t minios_fb_info(void)`
+  - `minios_pal` (function, line 111) `static mp_obj_t minios_pal(mp_obj_t buf_in)`
+  - `minios_pcspeaker` (function, line 127) `static mp_obj_t minios_pcspeaker(mp_obj_t freq_in, mp_obj_t ms_in)`
+  - `minios_run` (function, line 149) `static mp_obj_t minios_run(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)`
   - `MP_DEFINE_CONST_FUN_OBJ_0` (function, line 55) `static MP_DEFINE_CONST_FUN_OBJ_0(minios_time_ms_obj, minios_time_ms);`
-  - `mp_raise_OSError` (function, line 63) `mp_raise_OSError(-ret);`
-  - `mp_obj_new_tuple` (function, line 70) `return mp_obj_new_tuple(3, tuple);`
-  - `mp_obj_new_int` (function, line 99) `return mp_obj_new_int((int)msys(SYS_PCSPK_VOL, -1, 0, 0));`
-  - `mp_raise_ValueError` (function, line 103) `mp_raise_ValueError(MP_ERROR_TEXT("volume must be 0..100"));`
   - `MP_DEFINE_CONST_FUN_OBJ_VAR` (function, line 107) `static MP_DEFINE_CONST_FUN_OBJ_VAR(minios_vol_obj, 0, minios_vol);`
-  - `mp_get_buffer_raise` (function, line 113) `mp_get_buffer_raise(buf_in, &bufinfo, MP_BUFFER_READ);`
   - `MP_DEFINE_CONST_FUN_OBJ_1` (function, line 123) `static MP_DEFINE_CONST_FUN_OBJ_1(minios_pal_obj, minios_pal);`
-  - `msys` (function, line 130) `msys(SYS_PCSPK_INIT, 0, 0, 0);`
   - `MP_DEFINE_CONST_FUN_OBJ_2` (function, line 140) `static MP_DEFINE_CONST_FUN_OBJ_2(minios_pcspeaker_obj, minios_pcspeaker);`
-  - `mp_arg_parse_all` (function, line 156) `mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);`
-  - `mp_raise_TypeError` (function, line 168) `mp_raise_TypeError(MP_ERROR_TEXT("args must be a list or tuple"));`
-  - `mp_obj_get_array` (function, line 170) `mp_obj_get_array(args_in, &n, &items);`
   - `MP_DEFINE_CONST_FUN_OBJ_KW` (function, line 193) `static MP_DEFINE_CONST_FUN_OBJ_KW(minios_run_obj, 1, minios_run);`
   - `MP_DEFINE_CONST_DICT` (function, line 207) `static MP_DEFINE_CONST_DICT(minios_module_globals, minios_module_globals_table);`
-  - `MP_REGISTER_MODULE` (function, line 213) `MP_REGISTER_MODULE(MP_QSTR_minios, minios_module);`
   - `SYS_TIME_MS` (macro, line 41) `#define SYS_TIME_MS`
   - `SYS_PALETTE` (macro, line 42) `#define SYS_PALETTE`
   - `SYS_PCSPK_INIT` (macro, line 43) `#define SYS_PCSPK_INIT`

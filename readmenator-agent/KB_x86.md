@@ -17,7 +17,6 @@
   - `hal_inw` (function, line 160) `static inline unsigned short hal_inw(unsigned short port)`
   - `hal_lapic_eoi` (function, line 167) `static inline void hal_lapic_eoi(void)`
   - `hal_pic_eoi` (function, line 172) `static inline void hal_pic_eoi(int irq)`
-  - `volatile` (function, line 144) `__asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));`
   - `hal_io_stub_writes` (variable, line 91) `extern unsigned hal_io_stub_writes;`
   - `hal_io_stub_last_port` (variable, line 93) `extern unsigned hal_io_stub_last_port;`
   - `hal_io_stub_last_val` (variable, line 95) `extern unsigned hal_io_stub_last_val;`
@@ -62,14 +61,13 @@
 
 ## headers/arch/x86/msr.h
 - Layer: utility
-- Doc: ifndef ARCH_X86_MSR_H define ARCH_X86_MSR_H  Model-Specific Register access for x86-64.
+- Doc: Model-Specific Register access for x86-64.
 - Language: h
 - Symbols:
-  - `wrmsr` (function, line 7) `static inline void wrmsr(unsigned msr, unsigned long val)`
-  - `rdmsr` (function, line 12) `static inline unsigned long rdmsr(unsigned msr)`
-  - `volatile` (function, line 10) `__asm__ volatile("wrmsr" :: "c"(msr), "a"(lo), "d"(hi));`
+  - `wrmsr` (function, line 8) `static inline void wrmsr(unsigned msr, unsigned long val)`
+  - `rdmsr` (function, line 13) `static inline unsigned long rdmsr(unsigned msr)`
   - `ARCH_X86_MSR_H` (macro, line 2) `#define ARCH_X86_MSR_H`
-  - `MSR_STAR` (macro, line 18) `#define MSR_STAR`
+  - `MSR_STAR` (macro, line 19) `#define MSR_STAR`
   - `MSR_LSTAR` (macro, line 20) `#define MSR_LSTAR`
   - `MSR_SFMASK` (macro, line 21) `#define MSR_SFMASK`
   - `MSR_FSBASE` (macro, line 22) `#define MSR_FSBASE`

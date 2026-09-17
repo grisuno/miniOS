@@ -1,91 +1,88 @@
 # headers
 
-*Community 1 | 11 files | cohesion 0.46*
+*Community 1 | 7 files | cohesion 0.40*
 
 ## Definition
 
-This community groups 11 file(s) rooted at `headers` with dominant language c (cohesion 0.46). Central symbols: `BC_MASK`, `BC_WAYS`, `BLOCK_H`, `BLOCK_SHIFT`, `BLOCK_SIZE`, `DEV_MAX`, `DEV_NAME_LEN`, `DEV_TYPE_AUDIO`. Core file: `fs/minifs.c` (69 symbols). Documented purpose: include "kernel.h" include "lz4_kernel.h"  define HASH_BITS 12 define HASH_SIZE (1 << HASH_BITS).
+This community groups 7 file(s) rooted at `headers` with dominant language c (cohesion 0.40). Central symbols: `BC_MASK`, `BC_WAYS`, `BLOCK_H`, `BLOCK_SHIFT`, `BLOCK_SIZE`, `DE_NAME`, `DE_NAME_W`, `HASH_BITS`. Core file: `fs/minifs.c` (61 symbols). Documented purpose: Block device layer for MiniFS..
 
 ## Files
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `drivers/block.c` | c | infrastructure | 21 | yes |
-| `drivers/driver.c` | c | infrastructure | 8 | yes |
-| `drivers/ide.c` | c | infrastructure | 24 | yes |
-| `fs/minifs.c` | c | utility | 69 | yes |
+| `drivers/block.c` | c | infrastructure | 14 | yes |
+| `fs/minifs.c` | c | utility | 61 | yes |
 | `headers/block.h` | h | utility | 12 | yes |
-| `headers/driver.h` | h | infrastructure | 19 | yes |
 | `headers/ide.h` | h | utility | 35 | yes |
-| `headers/lz4_kernel.h` | h | utility | 4 | yes |
-| `kernel/lz4_kernel.c` | c | utility | 13 | yes |
-| `kernel/mm/swap.c` | c | utility | 10 | yes |
-| `tests/test_driver.c` | c | testing | 12 | yes |
+| `headers/lz4_kernel.h` | h | utility | 4 | no |
+| `kernel/lz4_kernel.c` | c | utility | 10 | no |
+| `kernel/mm/swap.c` | c | utility | 8 | yes |
 
 ## Key Symbols
 
 - `BC_WAYS` (macro, `drivers/block.c:41`) `#define BC_WAYS`
 - `BC_MASK` (macro, `drivers/block.c:42`) `#define BC_MASK`
-- `bc_index` (function, `drivers/block.c:46`) `static unsigned int bc_index(unsigned int block_num)`
-- `bc_invalidate_locked` (function, `drivers/block.c:50`) `static void bc_invalidate_locked(unsigned int block_num)`
-- `bc_invalidate` (function, `drivers/block.c:55`) `static void bc_invalidate(unsigned int block_num)`
-- `spin_lock_irqsave` (function, `drivers/block.c:58`) `spin_lock_irqsave(&bc_lock, &flags);`
-- `spin_unlock_irqrestore` (function, `drivers/block.c:60`) `spin_unlock_irqrestore(&bc_lock, flags);`
-- `block_init` (function, `drivers/block.c:62`) `void block_init(void)`
-- `ide_init` (function, `drivers/block.c:64`) `ide_init();`
-- `block_set_base` (function, `drivers/block.c:68`) `void block_set_base(unsigned int lba_base)`
-- `ide_read_sectors` (function, `drivers/block.c:86`) `return ide_read_sectors(lba, count, buf);`
-- `block_dev_write` (function, `drivers/block.c:88`) `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
-- `ide_write_sectors` (function, `drivers/block.c:93`) `return ide_write_sectors(lba, count, buf);`
-- `block_read` (function, `drivers/block.c:95`) `int block_read(unsigned int block_num, void *buf)`
-- `kfree` (function, `drivers/block.c:116`) `kfree(tmp);`
-- `block_write` (function, `drivers/block.c:134`) `int block_write(unsigned int block_num, const void *buf)`
-- `block_read_multi` (function, `drivers/block.c:143`) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
-- `block_dev_read` (function, `drivers/block.c:146`) `return block_dev_read(lba, count * SECTORS_PER_BLOCK, buf);`
-- `block_write_multi` (function, `drivers/block.c:148`) `int block_write_multi(unsigned int block_num, unsigned int count, const void *bu`
-- `block_flush` (function, `drivers/block.c:163`) `void block_flush(void)`
-- `block_total` (function, `drivers/block.c:165`) `unsigned int block_total(void)`
-- `dev_len` (function, `drivers/driver.c:13`) `static unsigned dev_len(const char *s)`
-- `dev_copy` (function, `drivers/driver.c:19`) `static void dev_copy(char *dst, const char *src, unsigned cap)`
-- `dev_eq` (function, `drivers/driver.c:26`) `static int dev_eq(const char *a, const char *b)`
-- `device_reset` (function, `drivers/driver.c:31`) `void device_reset(void)`
-- `device_register` (function, `drivers/driver.c:43`) `int device_register(device_t *dev)`
-- `device_find` (function, `drivers/driver.c:65`) `device_t *device_find(const char *name)`
-- `device_find_by_type` (function, `drivers/driver.c:75`) `device_t *device_find_by_type(int type)`
-- `device_count` (function, `drivers/driver.c:84`) `int device_count(void)`
-- `ide_delay` (function, `drivers/ide.c:12`) `static void ide_delay(void)`
+- `bc_index` (function, `drivers/block.c:47`) `static unsigned int bc_index(unsigned int block_num)`
+- `bc_invalidate_locked` (function, `drivers/block.c:51`) `static void bc_invalidate_locked(unsigned int block_num)`
+- `bc_invalidate` (function, `drivers/block.c:56`) `static void bc_invalidate(unsigned int block_num)`
+- `block_init` (function, `drivers/block.c:63`) `void block_init(void)`
+- `block_set_base` (function, `drivers/block.c:69`) `void block_set_base(unsigned int lba_base)`
+- `block_dev_write` (function, `drivers/block.c:89`) `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
+- `block_read` (function, `drivers/block.c:96`) `int block_read(unsigned int block_num, void *buf)`
+- `block_write` (function, `drivers/block.c:135`) `int block_write(unsigned int block_num, const void *buf)`
+- `block_read_multi` (function, `drivers/block.c:144`) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
+- `block_write_multi` (function, `drivers/block.c:149`) `int block_write_multi(unsigned int block_num, unsigned int count, const void *bu`
+- `block_flush` (function, `drivers/block.c:164`) `void block_flush(void)`
+- `block_total` (function, `drivers/block.c:166`) `unsigned int block_total(void)`
+- `DE_NAME` (macro, `fs/minifs.c:12`) `#define DE_NAME(de)`
+- `DE_NAME_W` (macro, `fs/minifs.c:13`) `#define DE_NAME_W(de)`
+- `minifs_journal_touch` (function, `fs/minifs.c:15`) `void minifs_journal_touch(unsigned int phys);`
+- `minifs_compress` (function, `fs/minifs.c:27`) `unsigned int minifs_compress(const void *src, unsigned int src_len,` - #define DE_NAME_W(de) ((char *)((de) + 1)) void minifs_journal_touch(unsigned int phys); void minifs
+- `minifs_decompress` (function, `fs/minifs.c:38`) `unsigned int minifs_decompress(const void *src, unsigned int src_len,`
+- `minifs_crc16` (function, `fs/minifs.c:49`) `static unsigned short minifs_crc16(const void *data, unsigned int len)`
+- `minifs_crc32` (function, `fs/minifs.c:61`) `static unsigned int minifs_crc32(const void *data, unsigned int len)`
+- `roundup4` (function, `fs/minifs.c:73`) `static unsigned int roundup4(unsigned int v)`
+- `div_round_up` (function, `fs/minifs.c:75`) `static unsigned int div_round_up(unsigned int n, unsigned int d)`
+- `returns` (function, `fs/minifs.c:84`) `* overflowed the slot and smashed returns (measured ring-0 #UD on  * lua->lua->c`
+- `blk_free` (function, `fs/minifs.c:92`) `static void blk_free(unsigned char *b)`
+- `fs_write_super` (function, `fs/minifs.c:99`) `static int fs_write_super(void)`
+- `fs_read_inode` (function, `fs/minifs.c:113`) `static int fs_read_inode(unsigned int num, MiniFSInode *out)`
+- `fs_write_inode` (function, `fs/minifs.c:124`) `static int fs_write_inode(unsigned int num, const MiniFSInode *in)`
+- `bm_test` (function, `fs/minifs.c:140`) `static int bm_test(unsigned char *bm, unsigned int bit)`
+- `bm_set` (function, `fs/minifs.c:144`) `static void bm_set(unsigned char *bm, unsigned int bit)`
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 13
-- Cross-boundary resolved imports (EXTRACTED): 15
+- Internal resolved imports (EXTRACTED): 8
+- Cross-boundary resolved imports (EXTRACTED): 12
 
 ## Connections
 
-- [EXTRACTED] depends_on community 1 <-> 3 (strength 0.9): Extracted import edge crosses communities: drivers/block.c imports headers/kernel.h.
+- [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/block.c imports headers/kernel.h.
+- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 2 (progs/doomgeneric).
+- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 3 (headers).
+- [INFERRED] shares_context community 1 <-> 4 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 4 (headers).
+- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 5 (tools).
+- [INFERRED] shares_context community 1 <-> 6 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 6 (progs/src).
+- [INFERRED] shares_context community 1 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 7 (tests).
+- [INFERRED] shares_context community 1 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 8 (orphans).
 
 ## Risks
 
-- [high] `tests/test_driver.c:68` (in `strcpy`) C001: Buffer overflow risk: strcpy — use strncpy or snprintf instead Fix: Use bounded functions (strncpy, snprintf) with explicit sizes and NUL termination.
-- [high] `tests/test_driver.c:114` (in `snprintf`) C001: Buffer overflow risk: strcpy — use strncpy or snprintf instead Fix: Use bounded functions (strncpy, snprintf) with explicit sizes and NUL termination.
-- [high] `tests/test_driver.c:127` (in `snprintf`) C001: Buffer overflow risk: strcpy — use strncpy or snprintf instead Fix: Use bounded functions (strncpy, snprintf) with explicit sizes and NUL termination.
-- [high] `tests/test_driver.c:130` (in `snprintf`) C001: Buffer overflow risk: strcpy — use strncpy or snprintf instead Fix: Use bounded functions (strncpy, snprintf) with explicit sizes and NUL termination.
+- No scoped security, taint, cycle, or layer risks.
 
 ## Open Questions
 
+- Why do 2 file(s) lack file-level docs (e.g. `headers/lz4_kernel.h`)? What purpose do they serve?
 - What would break if the most connected file in headers changed?
-- Should headers be split, given cohesion 0.46?
+- Should headers be split, given cohesion 0.40?
 
 ## Sources
 
 - `drivers/block.c`
-- `drivers/driver.c`
-- `drivers/ide.c`
 - `fs/minifs.c`
 - `headers/block.h`
-- `headers/driver.h`
 - `headers/ide.h`
 - `headers/lz4_kernel.h`
 - `kernel/lz4_kernel.c`
 - `kernel/mm/swap.c`
-- `tests/test_driver.c`

@@ -1,10 +1,10 @@
 # tests
 
-*Community 14 | 2 files | cohesion 1.00*
+*Community 7 | 2 files | cohesion 1.00*
 
 ## Definition
 
-This community groups 2 file(s) rooted at `tests` with dominant language py (cohesion 1.00). Central symbols: `DoomPwadConfig`, `ExtendedLegendTests`, `GridValidationTests`, `MultiSectorMutationTests`, `MultiSectorTests`, `PwadError`, `PwadLayoutTests`, `PwadMutationTests`. Core file: `tests/test_doom_pwad.py` (44 symbols). Documented purpose: test_doom_pwad.py - host contract suite for tools/doom_pwad.py.  Runs the grid compiler and the PWAD checker against fixed vectors: a known room builds to a pin.
+This community groups 2 file(s) rooted at `tests` with dominant language py (cohesion 1.00). Central symbols: `DoomPwadConfig`, `ExtendedLegendTests`, `GridValidationTests`, `MultiSectorMutationTests`, `MultiSectorTests`, `PwadError`, `PwadLayoutTests`, `PwadMutationTests`. Core file: `tests/test_doom_pwad.py` (44 symbols). Documented purpose: host contract suite for tools/doom_pwad.py.  Runs the grid compiler and the PWAD checker against fixed vectors: a known room builds to a pinned byte layout, the.
 
 ## Files
 
@@ -53,7 +53,8 @@ This community groups 2 file(s) rooted at `tests` with dominant language py (coh
 
 ## Connections
 
-- No cross-community bridges recorded. This community is self-contained.
+- [INFERRED] shares_context community 0 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 7 (tests).
+- [INFERRED] shares_context community 1 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 7 (tests).
 
 ## Risks
 

@@ -110,19 +110,8 @@
   - `print_usage` (function, line 2136) `static void print_usage(Runtime *rt)`
   - `repl` (function, line 2143) `static int repl(Runtime *rt)`
   - `main` (function, line 2190) `int main(int argc, char **argv)`
-  - `numbers` (function, line 8) `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special forms quote, if, begin, define, set!, * lambda and let. Diagnostics go to stderr, va`
-  - `volatile` (function, line 207) `__asm__ volatile( "syscall" : "=a"(ret) : "a"(n), "D"(a1), "S"(a2), "d"(a3) : "rcx", "r11", "memory");`
-  - `fprintf` (function, line 235) `fprintf(err, "fatal: %s\n", message);`
-  - `exit` (function, line 236) `exit(EXIT_FAILURE);`
-  - `free` (function, line 254) `free(ptr);`
-  - `memcpy` (function, line 277) `memcpy(copy, source, length);`
-  - `fclose` (function, line 370) `fclose(handle);`
-  - `memset` (function, line 400) `memset(rt, 0, sizeof *rt);`
-  - `snprintf` (function, line 588) `snprintf(result.message, sizeof result.message, "%s", message ? message : "parse error");`
-  - `fflush` (function, line 1101) `fflush(rt->out);`
-  - `fputc` (function, line 1115) `fputc('\n', rt->out);`
-  - `arity` (function, line 1299) `* * Variable arity (0 or 1);`
-  - `fputs` (function, line 1852) `fputs("\\n", out);`
+  - `numbers` (function, line 9) `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special forms quote, if, begin, define, set!, * lambda and let. Diagnostics go to stderr, va`
+  - `arity` (function, line 1300) `* * Variable arity (0 or 1);`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ## progs/lisp/tin.c

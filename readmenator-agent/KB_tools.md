@@ -5,8 +5,7 @@
 - Doc: Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator.
 - Language: c
 - Symbols:
-  - `main` (function, line 13) `int main(void)`
-  - `printf` (function, line 15) `printf("v=%d c=%lu\n", MINIOS_ABI_VERSION, (unsigned long)MINIOS_ABI_CHECKSUM);`
+  - `main` (function, line 14) `int main(void)`
 - Depends on: `progs/minios_abi.h`
 
 ## tools/boot_run.sh
@@ -705,8 +704,8 @@
 - Symbols:
   - `say` (function, line 8)
   - `die` (function, line 9)
-  - `mut` (function, line 69)
-  - `mutm` (function, line 76)
+  - `mut` (function, line 77)
+  - `mutm` (function, line 84)
 
 ## tools/wm_layout_sync.py
 - Layer: presentation

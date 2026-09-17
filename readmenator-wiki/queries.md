@@ -16,11 +16,11 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 - Status: unanswered
 
-### Q: How are the 6 files in 'arch/x86/boot' related to each other?
+### Q: How are the 113 files in 'headers' related to each other?
 
 - Status: unanswered
 
-### Q: Why are ap_entry.S and i_cdmus.h connected through 8 hops across 4 communities?
+### Q: Why are ap_entry.S and i_cdmus.h connected through 8 hops across 2 communities?
 
 - Status: unanswered
 

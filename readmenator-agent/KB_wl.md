@@ -11,9 +11,8 @@
         const unsigned char *px, int w, int h)`
   - `wl_client_attach` (function, line 75) `static inline int wl_client_attach(const char *box, unsigned int seq0,
         const unsigned cha...`
-  - `fclose` (function, line 38) `fclose(f);`
   - `WL_CLIENT_H` (macro, line 14) `#define WL_CLIENT_H`
-  - `WL_CLIENT_MSGS` (macro, line 17) `#define WL_CLIENT_MSGS`
+  - `WL_CLIENT_MSGS` (macro, line 18) `#define WL_CLIENT_MSGS`
 - Depends on: `progs/wl/wl_mbox.h`
 - Imported by: `progs/nuklear/nuklear_minios.c`, `progs/wl/wlcomp.c`
 
@@ -23,10 +22,10 @@
 - Language: h
 - Symbols:
   - `wl_mbox_box_t` (struct, line 30)
-  - `wl_mbox_init` (function, line 35) `static inline void wl_mbox_init(wl_mbox_box_t *boxes)`
+  - `wl_mbox_init` (function, line 36) `static inline void wl_mbox_init(wl_mbox_box_t *boxes)`
   - `wl_mbox_box_ok` (function, line 51) `static inline int wl_mbox_box_ok(const char *box)`
   - `wl_mbox_hex` (function, line 74) `static inline int wl_mbox_hex(unsigned int v, char *dst)`
-  - `wl_mbox_unhex` (function, line 86) `static inline int wl_mbox_unhex(char ch, unsigned int *v)`
+  - `wl_mbox_unhex` (function, line 87) `static inline int wl_mbox_unhex(char ch, unsigned int *v)`
   - `wl_mbox_name` (function, line 103) `static inline int wl_mbox_name(char *dst, int cap, const char *box,
         unsigned int seq)`
   - `wl_mbox_parse` (function, line 147) `static inline int wl_mbox_parse(const char *path, char *box, int boxcap,
@@ -37,16 +36,15 @@
         int cap)`
   - `wl_mbox_frame_encode` (function, line 310) `static inline int wl_mbox_frame_encode(unsigned char *dst, int cap,
         unsigned int seq, con...`
-  - `wl_mbox_frame_decode` (function, line 331) `static inline int wl_mbox_frame_decode(const unsigned char *src, int len,
+  - `wl_mbox_frame_decode` (function, line 332) `static inline int wl_mbox_frame_decode(const unsigned char *src, int len,
         unsigned int *s...`
   - `wl_mbox_assign` (function, line 358) `static inline int wl_mbox_assign(wl_mbox_box_t *boxes, const char *box)`
   - `wl_mbox_fresh` (function, line 394) `static inline int wl_mbox_fresh(const wl_mbox_box_t *boxes, int slot,
         unsigned int seq)`
   - `wl_mbox_route` (function, line 409) `static inline int wl_mbox_route(wl_comp_t *c, wl_mbox_box_t *boxes,
         const char *box, unsi...`
-  - `wl_comp_attach_buf` (function, line 444) `return wl_comp_attach_buf(c, sid, pool, *w, *h);`
   - `WL_MBOX_H` (macro, line 15) `#define WL_MBOX_H`
-  - `WL_MBOX_DIR` (macro, line 18) `#define WL_MBOX_DIR`
+  - `WL_MBOX_DIR` (macro, line 19) `#define WL_MBOX_DIR`
   - `WL_MBOX_SUFFIX` (macro, line 20) `#define WL_MBOX_SUFFIX`
   - `WL_MBOX_RAW_SUFFIX` (macro, line 21) `#define WL_MBOX_RAW_SUFFIX`
   - `WL_MBOX_EV_SUFFIX` (macro, line 22) `#define WL_MBOX_EV_SUFFIX`
@@ -72,33 +70,33 @@
   - `wl_client_t` (struct, line 978)
   - `wl_stream_t` (struct, line 1016)
   - `wl_iface_t` (struct, line 1071)
-  - `wl_hdr_encode` (function, line 70) `static inline int wl_hdr_encode(unsigned char *dst, int cap,
+  - `wl_hdr_encode` (function, line 71) `static inline int wl_hdr_encode(unsigned char *dst, int cap,
         unsigned int id, unsigned in...`
-  - `wl_hdr_decode` (function, line 98) `static inline int wl_hdr_decode(const unsigned char *src, int len,
+  - `wl_hdr_decode` (function, line 99) `static inline int wl_hdr_decode(const unsigned char *src, int len,
         wl_hdr_t *out)`
-  - `wl_u32_encode` (function, line 127) `static inline int wl_u32_encode(unsigned char *dst, int cap, int off,
+  - `wl_u32_encode` (function, line 128) `static inline int wl_u32_encode(unsigned char *dst, int cap, int off,
         unsigned int v)`
-  - `wl_u32_decode` (function, line 138) `static inline int wl_u32_decode(const unsigned char *src, int len, int off,
+  - `wl_u32_decode` (function, line 139) `static inline int wl_u32_decode(const unsigned char *src, int len, int off,
         unsigned int *v)`
-  - `wl_strlen_bounded` (function, line 149) `static inline int wl_strlen_bounded(const char *s)`
+  - `wl_strlen_bounded` (function, line 150) `static inline int wl_strlen_bounded(const char *s)`
   - `wl_str_encode` (function, line 163) `static inline int wl_str_encode(unsigned char *dst, int cap, int off,
         const char *s)`
-  - `wl_str_decode` (function, line 187) `static inline int wl_str_decode(const unsigned char *src, int len, int off,
+  - `wl_str_decode` (function, line 188) `static inline int wl_str_decode(const unsigned char *src, int len, int off,
         char *dst, in...`
-  - `wl_surface_id_valid` (function, line 213) `static inline int wl_surface_id_valid(unsigned int id)`
-  - `wl_pool_id_valid` (function, line 218) `static inline int wl_pool_id_valid(unsigned int id)`
-  - `wl_pool_fit` (function, line 222) `static inline int wl_pool_fit(int w, int h)`
-  - `wl_comp_init` (function, line 270) `static inline void wl_comp_init(wl_comp_t *c)`
+  - `wl_surface_id_valid` (function, line 214) `static inline int wl_surface_id_valid(unsigned int id)`
+  - `wl_pool_id_valid` (function, line 219) `static inline int wl_pool_id_valid(unsigned int id)`
+  - `wl_pool_fit` (function, line 223) `static inline int wl_pool_fit(int w, int h)`
+  - `wl_comp_init` (function, line 271) `static inline void wl_comp_init(wl_comp_t *c)`
   - `wl_comp_refresh_active` (function, line 289) `static inline void wl_comp_refresh_active(wl_comp_t *c)`
-  - `wl_comp_add` (function, line 308) `static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h)`
-  - `wl_comp_remove` (function, line 344) `static inline int wl_comp_remove(wl_comp_t *c, unsigned int id)`
-  - `wl_comp_focus` (function, line 371) `static inline int wl_comp_focus(wl_comp_t *c, unsigned int id)`
-  - `wl_comp_hit` (function, line 396) `static inline int wl_comp_hit(const wl_comp_t *c, int x, int y)`
+  - `wl_comp_add` (function, line 309) `static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h)`
+  - `wl_comp_remove` (function, line 345) `static inline int wl_comp_remove(wl_comp_t *c, unsigned int id)`
+  - `wl_comp_focus` (function, line 372) `static inline int wl_comp_focus(wl_comp_t *c, unsigned int id)`
+  - `wl_comp_hit` (function, line 397) `static inline int wl_comp_hit(const wl_comp_t *c, int x, int y)`
   - `wl_surface_hit_zone` (function, line 415) `static inline int wl_surface_hit_zone(const wl_surface_t *s, int x, int y)`
   - `wl_comp_set_minimized` (function, line 441) `static inline int wl_comp_set_minimized(wl_comp_t *c, unsigned int id,
         int minimized)`
-  - `wl_comp_set_color` (function, line 455) `static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color)`
-  - `wlcomp_render` (function, line 480) `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,
+  - `wl_comp_set_color` (function, line 456) `static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color)`
+  - `wlcomp_render` (function, line 481) `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,
         int fb_w, int fb_h)`
   - `wl_comp_set_rect` (function, line 519) `static inline int wl_comp_set_rect(wl_comp_t *c, unsigned int id,
         int x, int y, int w, in...`
@@ -111,34 +109,34 @@
         const unsigned cha...`
   - `wl_attach_encode` (function, line 774) `static inline int wl_attach_encode(unsigned char *dst, int cap,
         unsigned int pool, int w,...`
-  - `wl_attach_decode` (function, line 792) `static inline int wl_attach_decode(const unsigned char *src, int len,
+  - `wl_attach_decode` (function, line 793) `static inline int wl_attach_decode(const unsigned char *src, int len,
         unsigned int *pool,...`
   - `wl_commit_encode` (function, line 821) `static inline int wl_commit_encode(unsigned char *dst, int cap,
         unsigned int id)`
-  - `wl_commit_decode` (function, line 833) `static inline int wl_commit_decode(const unsigned char *src, int len,
+  - `wl_commit_decode` (function, line 834) `static inline int wl_commit_decode(const unsigned char *src, int len,
         unsigned int *id)`
-  - `wl_ev_encode` (function, line 869) `static inline int wl_ev_encode(unsigned char *dst, int cap,
+  - `wl_ev_encode` (function, line 870) `static inline int wl_ev_encode(unsigned char *dst, int cap,
         const wl_ev_t *ev)`
-  - `wl_ev_decode` (function, line 899) `static inline int wl_ev_decode(const unsigned char *src, int len,
+  - `wl_ev_decode` (function, line 900) `static inline int wl_ev_decode(const unsigned char *src, int len,
         wl_ev_t *ev)`
   - `wl_ev_map` (function, line 943) `static inline int wl_ev_map(int fx, int fy, int sx, int sy, int sw,
         int sh, int rw, int r...`
-  - `wl_client_init` (function, line 983) `static inline void wl_client_init(wl_client_t *cl)`
-  - `wl_client_surface` (function, line 991) `static inline int wl_client_surface(wl_client_t *cl, unsigned int *id)`
-  - `wl_client_pool` (function, line 1000) `static inline int wl_client_pool(wl_client_t *cl, unsigned int *id)`
-  - `wl_stream_init` (function, line 1020) `static inline void wl_stream_init(wl_stream_t *s)`
-  - `wl_stream_feed` (function, line 1026) `static inline int wl_stream_feed(wl_stream_t *s, const unsigned char *src,
+  - `wl_client_init` (function, line 984) `static inline void wl_client_init(wl_client_t *cl)`
+  - `wl_client_surface` (function, line 992) `static inline int wl_client_surface(wl_client_t *cl, unsigned int *id)`
+  - `wl_client_pool` (function, line 1001) `static inline int wl_client_pool(wl_client_t *cl, unsigned int *id)`
+  - `wl_stream_init` (function, line 1021) `static inline void wl_stream_init(wl_stream_t *s)`
+  - `wl_stream_feed` (function, line 1027) `static inline int wl_stream_feed(wl_stream_t *s, const unsigned char *src,
         int n)`
-  - `wl_stream_next` (function, line 1041) `static inline int wl_stream_next(wl_stream_t *s, int *size)`
-  - `wl_stream_consume` (function, line 1057) `static inline int wl_stream_consume(wl_stream_t *s, int n)`
-  - `wl_iface_find` (function, line 1078) `static inline int wl_iface_find(const char *name)`
+  - `wl_stream_next` (function, line 1042) `static inline int wl_stream_next(wl_stream_t *s, int *size)`
+  - `wl_stream_consume` (function, line 1058) `static inline int wl_stream_consume(wl_stream_t *s, int n)`
+  - `wl_iface_find` (function, line 1079) `static inline int wl_iface_find(const char *name)`
   - `wl_comp_attach_buf` (function, line 1110) `static inline int wl_comp_attach_buf(wl_comp_t *c, unsigned int id,
         unsigned int pool, in...`
   - `wl_dispatch` (function, line 1137) `static inline int wl_dispatch(wl_comp_t *c, wl_client_t *cl,
         unsigned int id, unsigned in...`
   - `coords` (function, line 851) `* coords (mapped by wl_ev_map, -1 when outside), wheel is a * monotonic total the client diffs, scancodes are raw Set-1 bytes * (E0 prefixes included) the client's own translator consumes. * A slow cl`
   - `WL_MINI_H` (macro, line 18) `#define WL_MINI_H`
-  - `WL_MAX_MSG` (macro, line 19) `#define WL_MAX_MSG`
+  - `WL_MAX_MSG` (macro, line 20) `#define WL_MAX_MSG`
   - `WL_MAX_STR` (macro, line 21) `#define WL_MAX_STR`
   - `WL_MAX_SURFACES` (macro, line 22) `#define WL_MAX_SURFACES`
   - `WL_MAX_POOLS` (macro, line 23) `#define WL_MAX_POOLS`
@@ -148,14 +146,14 @@
   - `WL_HDR_SZ` (macro, line 27) `#define WL_HDR_SZ`
   - `WL_ATTACH_SZ` (macro, line 28) `#define WL_ATTACH_SZ`
   - `WL_COMMIT_SZ` (macro, line 29) `#define WL_COMMIT_SZ`
-  - `WL_ERR_OK` (macro, line 30) `#define WL_ERR_OK`
+  - `WL_ERR_OK` (macro, line 31) `#define WL_ERR_OK`
   - `WL_ERR_BOUND` (macro, line 32) `#define WL_ERR_BOUND`
   - `WL_ERR_TRUNC` (macro, line 33) `#define WL_ERR_TRUNC`
   - `WL_ERR_SIZE` (macro, line 34) `#define WL_ERR_SIZE`
   - `WL_ERR_ID` (macro, line 35) `#define WL_ERR_ID`
   - `WL_ERR_STR` (macro, line 36) `#define WL_ERR_STR`
   - `WL_ERR_MORE` (macro, line 37) `#define WL_ERR_MORE`
-  - `WL_ID_DISPLAY` (macro, line 38) `#define WL_ID_DISPLAY`
+  - `WL_ID_DISPLAY` (macro, line 39) `#define WL_ID_DISPLAY`
   - `WL_ID_REGISTRY` (macro, line 40) `#define WL_ID_REGISTRY`
   - `WL_ID_COMPOSITOR` (macro, line 41) `#define WL_ID_COMPOSITOR`
   - `WL_ID_SHM` (macro, line 42) `#define WL_ID_SHM`
@@ -163,7 +161,7 @@
   - `WL_ID_SURFACE_BASE` (macro, line 44) `#define WL_ID_SURFACE_BASE`
   - `WL_ID_POOL_BASE` (macro, line 45) `#define WL_ID_POOL_BASE`
   - `WL_ID_BUFFER_BASE` (macro, line 46) `#define WL_ID_BUFFER_BASE`
-  - `WL_OP_DISPLAY_GET_REGISTRY` (macro, line 47) `#define WL_OP_DISPLAY_GET_REGISTRY`
+  - `WL_OP_DISPLAY_GET_REGISTRY` (macro, line 48) `#define WL_OP_DISPLAY_GET_REGISTRY`
   - `WL_OP_REGISTRY_BIND` (macro, line 49) `#define WL_OP_REGISTRY_BIND`
   - `WL_OP_COMPOSITOR_CREATE_SURFACE` (macro, line 50) `#define WL_OP_COMPOSITOR_CREATE_SURFACE`
   - `WL_OP_SHM_CREATE_POOL` (macro, line 51) `#define WL_OP_SHM_CREATE_POOL`
@@ -171,14 +169,14 @@
   - `WL_OP_SURFACE_ATTACH` (macro, line 53) `#define WL_OP_SURFACE_ATTACH`
   - `WL_OP_SURFACE_COMMIT` (macro, line 54) `#define WL_OP_SURFACE_COMMIT`
   - `WL_OP_XDG_GET_TOPLEVEL` (macro, line 55) `#define WL_OP_XDG_GET_TOPLEVEL`
-  - `WL_CFG_DEFAULT` (macro, line 68) `#define WL_CFG_DEFAULT`
+  - `WL_CFG_DEFAULT` (macro, line 69) `#define WL_CFG_DEFAULT`
   - `WL_TITLE_H` (macro, line 238) `#define WL_TITLE_H`
   - `WL_CLOSE_W` (macro, line 239) `#define WL_CLOSE_W`
   - `WL_RESIZE_EDGE` (macro, line 240) `#define WL_RESIZE_EDGE`
   - `WL_TITLE_ACTIVE` (macro, line 241) `#define WL_TITLE_ACTIVE`
   - `WL_TITLE_INACTIVE` (macro, line 242) `#define WL_TITLE_INACTIVE`
   - `WL_CLOSE_INK` (macro, line 243) `#define WL_CLOSE_INK`
-  - `WL_HIT_NONE` (macro, line 244) `#define WL_HIT_NONE`
+  - `WL_HIT_NONE` (macro, line 245) `#define WL_HIT_NONE`
   - `WL_HIT_BODY` (macro, line 246) `#define WL_HIT_BODY`
   - `WL_HIT_TITLE` (macro, line 247) `#define WL_HIT_TITLE`
   - `WL_HIT_CLOSE` (macro, line 248) `#define WL_HIT_CLOSE`
@@ -189,7 +187,7 @@
   - `WL_EV_SC_MAX` (macro, line 857) `#define WL_EV_SC_MAX`
   - `WL_EV_SZ` (macro, line 858) `#define WL_EV_SZ`
   - `WL_STREAM_CAP` (macro, line 1014) `#define WL_STREAM_CAP`
-  - `WL_IFACE_COUNT` (macro, line 1076) `#define WL_IFACE_COUNT`
+  - `WL_IFACE_COUNT` (macro, line 1077) `#define WL_IFACE_COUNT`
 - Imported by: `progs/src/freedom_wl.c`, `progs/wl/wl_mbox.h`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
 
 ## progs/wl/wlcomp.c
@@ -200,26 +198,26 @@
   - `wlcomp_cfg_t` (struct, line 42)
   - `wlserv_t` (struct, line 397)
   - `wlclient_pat_t` (struct, line 952)
-  - `wlcomp_sys_title` (function, line 53) `static long wlcomp_sys_title(const char *t)`
-  - `wlcomp_sys_present` (function, line 61) `static long wlcomp_sys_present(long buf)`
-  - `wlcomp_sys_present_origin` (function, line 69) `static long wlcomp_sys_present_origin(long buf, int *origin)`
-  - `wlcomp_sys_palette` (function, line 77) `static long wlcomp_sys_palette(unsigned char *pal)`
-  - `wlcomp_sys_mouse` (function, line 85) `static long wlcomp_sys_mouse(int *m)`
-  - `wlcomp_sys_kbd` (function, line 93) `static long wlcomp_sys_kbd(void)`
-  - `wlcomp_sys_kbd_raw` (function, line 101) `static long wlcomp_sys_kbd_raw(long on)`
-  - `wlcomp_sys_vga_mode` (function, line 109) `static long wlcomp_sys_vga_mode(long on)`
-  - `wlcomp_sys_yield` (function, line 117) `static long wlcomp_sys_yield(void)`
-  - `wlcomp_sys_dir_list` (function, line 125) `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)`
+  - `wlcomp_sys_title` (function, line 54) `static long wlcomp_sys_title(const char *t)`
+  - `wlcomp_sys_present` (function, line 62) `static long wlcomp_sys_present(long buf)`
+  - `wlcomp_sys_present_origin` (function, line 70) `static long wlcomp_sys_present_origin(long buf, int *origin)`
+  - `wlcomp_sys_palette` (function, line 78) `static long wlcomp_sys_palette(unsigned char *pal)`
+  - `wlcomp_sys_mouse` (function, line 86) `static long wlcomp_sys_mouse(int *m)`
+  - `wlcomp_sys_kbd` (function, line 94) `static long wlcomp_sys_kbd(void)`
+  - `wlcomp_sys_kbd_raw` (function, line 102) `static long wlcomp_sys_kbd_raw(long on)`
+  - `wlcomp_sys_vga_mode` (function, line 110) `static long wlcomp_sys_vga_mode(long on)`
+  - `wlcomp_sys_yield` (function, line 118) `static long wlcomp_sys_yield(void)`
+  - `wlcomp_sys_dir_list` (function, line 126) `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)`
   - `wlcomp_palette` (function, line 136) `static int wlcomp_palette(void)`
   - `wlcomp_pattern` (function, line 147) `static void wlcomp_pattern(unsigned char *dst, int w, int h,
         unsigned char a, unsigned ch...`
-  - `wlcomp_demo` (function, line 185) `static int wlcomp_demo(wl_comp_t *c)`
+  - `wlcomp_demo` (function, line 186) `static int wlcomp_demo(wl_comp_t *c)`
   - `wlcomp_demo_blit` (function, line 211) `static int wlcomp_demo_blit(wl_comp_t *c, unsigned char *fb)`
   - `wlcomp_emit` (function, line 257) `static int wlcomp_emit(unsigned char *s, int cap, int o, unsigned int id,
         unsigned int op...`
   - `wlcomp_session` (function, line 269) `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)`
-  - `wlcomp_selftest` (function, line 341) `static int wlcomp_selftest(void)`
-  - `wlserv_init` (function, line 407) `static void wlserv_init(wlserv_t *s)`
+  - `wlcomp_selftest` (function, line 342) `static int wlcomp_selftest(void)`
+  - `wlserv_init` (function, line 408) `static void wlserv_init(wlserv_t *s)`
   - `wlserv_slot` (function, line 424) `static int wlserv_slot(const wl_comp_t *c, unsigned int id)`
   - `wlserv_recolor` (function, line 437) `static void wlserv_recolor(wl_comp_t *c)`
   - `wlserv_present` (function, line 454) `static int wlserv_present(wlserv_t *s)`
@@ -233,25 +231,13 @@
   - `wlserv_clean_ev` (function, line 722) `static void wlserv_clean_ev(void)`
   - `wlserv_close` (function, line 765) `static int wlserv_close(wlserv_t *s, unsigned int id)`
   - `wlserv_drain` (function, line 799) `static int wlserv_drain(wlserv_t *s)`
-  - `wlclient_find` (function, line 961) `static const wlclient_pat_t *wlclient_find(const char *name)`
+  - `wlclient_find` (function, line 962) `static const wlclient_pat_t *wlclient_find(const char *name)`
   - `wlcomp_client` (function, line 991) `static int wlcomp_client(const char *box, const char *pat)`
   - `wlcomp_clean` (function, line 1057) `static int wlcomp_clean(void)`
   - `wlcomp_once` (function, line 1096) `static int wlcomp_once(void)`
   - `wlcomp_server` (function, line 1128) `static int wlcomp_server(void)`
-  - `main` (function, line 1339) `int main(int argc, char **argv)`
-  - `volatile` (function, line 56) `__asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_SET_TITLE), "D"(t) : "rcx", "r11", "memory");`
-  - `wl_client_init` (function, line 190) `wl_client_init(&cl);`
-  - `free` (function, line 238) `free(p0);`
-  - `wl_stream_init` (function, line 318) `wl_stream_init(&st);`
-  - `wl_comp_init` (function, line 353) `wl_comp_init(&c);`
-  - `printf` (function, line 384) `printf("wlcomp: frame ok (%dx%d)\n", WLCOMP_W, WLCOMP_H);`
-  - `wl_mbox_init` (function, line 411) `wl_mbox_init(s->boxes);`
-  - `fclose` (function, line 531) `fclose(f);`
-  - `unlink` (function, line 609) `unlink(path);`
-  - `wl_ev_map` (function, line 692) `wl_ev_map(fx, fy, s->comp.items[idx].x, s->comp.items[idx].y, s->comp.items[idx].w, s->comp.items[idx].h, s->rw[idx], s->rh[idx], &cx, &cy);`
-  - `wl_comp_focus` (function, line 1216) `wl_comp_focus(&s.comp, (unsigned int)hit);`
-  - `wl_comp_refresh_active` (function, line 1308) `wl_comp_refresh_active(&s.comp);`
-  - `WLCOMP_W` (macro, line 37) `#define WLCOMP_W`
+  - `main` (function, line 1340) `int main(int argc, char **argv)`
+  - `WLCOMP_W` (macro, line 38) `#define WLCOMP_W`
   - `WLCOMP_H` (macro, line 39) `#define WLCOMP_H`
-  - `WLCOMP_CFG_DEFAULT` (macro, line 51) `#define WLCOMP_CFG_DEFAULT`
+  - `WLCOMP_CFG_DEFAULT` (macro, line 52) `#define WLCOMP_CFG_DEFAULT`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`

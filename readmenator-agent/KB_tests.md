@@ -25,9 +25,8 @@
 - Doc: Docstring: tests/test_abi.c -- Host test for the ABI manifest gate.
 - Language: c
 - Symbols:
-  - `expect` (function, line 15) `static void expect(const char *name, const char *manifest, int want)`
-  - `main` (function, line 24) `int main(void)`
-  - `printf` (function, line 20) `printf("FAIL: %s: want %d got %d\n", name, want, got);`
+  - `expect` (function, line 16) `static void expect(const char *name, const char *manifest, int want)`
+  - `main` (function, line 25) `int main(void)`
 - Depends on: `headers/abi.h`, `progs/minios_abi.h`
 
 ## tests/test_batch.c
@@ -35,12 +34,9 @@
 - Doc: Docstring: Host test for kernel/batch.c (make test-batch).
 - Language: c
 - Symbols:
-  - `stub_dispatch` (function, line 23) `static long stub_dispatch(uint32_t opcode)`
-  - `main` (function, line 30) `int main(void)`
-  - `fprintf` (function, line 20) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 45) `CHECK(r == BATCH_OK, "clean batch returns OK");`
-  - `printf` (function, line 100) `else printf("batch: %d failures\n", failures);`
-  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+  - `stub_dispatch` (function, line 24) `static long stub_dispatch(uint32_t opcode)`
+  - `main` (function, line 31) `int main(void)`
+  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
 - Depends on: `headers/batch.h`
 
 ## tests/test_doom_pwad.py
@@ -100,17 +96,10 @@
 - Language: c
 - Symbols:
   - `test_read` (function, line 15) `static int test_read(device_t *d, unsigned lba, unsigned count, void *buf)`
-  - `test_pcm_open` (function, line 27) `static void test_pcm_open(device_t *d)`
-  - `test_pcm_submit` (function, line 32) `static int test_pcm_submit(device_t *d, const unsigned char *pcm, unsigned len)`
-  - `test_tone` (function, line 38) `static void test_tone(device_t *d, unsigned freq)`
-  - `main` (function, line 64) `int main(void)`
-  - `memset` (function, line 67) `memset(&a, 0, sizeof(a));`
-  - `strcpy` (function, line 68) `strcpy(a.name, "ide0");`
-  - `device_reset` (function, line 71) `device_reset();`
-  - `assert` (function, line 73) `assert(device_count() == 0);`
-  - `snprintf` (function, line 106) `snprintf(d.name, sizeof(d.name), "dev%d", i);`
-  - `device_find` (function, line 141) `device_find("sb160")->audio->pcm_open(device_find("sb160"));`
-  - `printf` (function, line 150) `printf("driver: ok\n");`
+  - `test_pcm_open` (function, line 28) `static void test_pcm_open(device_t *d)`
+  - `test_pcm_submit` (function, line 33) `static int test_pcm_submit(device_t *d, const unsigned char *pcm, unsigned len)`
+  - `test_tone` (function, line 39) `static void test_tone(device_t *d, unsigned freq)`
+  - `main` (function, line 65) `int main(void)`
 - Depends on: `headers/driver.h`, `kernel/string.c`
 
 ## tests/test_fault.c
@@ -123,12 +112,8 @@
                   unsigned long maxlen)`
   - `normalize` (function, line 52) `static void normalize(const char *path, char *out, unsigned cap)`
   - `path_trusted` (function, line 83) `static int path_trusted(const char *full)`
-  - `main` (function, line 93) `int main(void)`
+  - `main` (function, line 94) `int main(void)`
   - `against` (function, line 10) `* after bounding against (END-BASE)/elemsz, so the product cannot * wrap past the range check);`
-  - `memcpy` (function, line 74) `memcpy(out + len, start, clen);`
-  - `vma_tree_init` (function, line 96) `vma_tree_init();`
-  - `CHECK` (function, line 102) `CHECK(i == VMA_MAX, "pool holds VMA_MAX nodes");`
-  - `memset` (function, line 124) `memset(umem, 'A', sizeof(umem));`
   - `CHECK` (macro, line 28) `#define CHECK(c, m)`
   - `U_BASE` (macro, line 31) `#define U_BASE`
   - `U_END` (macro, line 32) `#define U_END`
@@ -141,13 +126,11 @@
 - Doc: Docstring: host test for the file browser assoc contract (make test-file).
 - Language: c
 - Symbols:
-  - `t_ext_of` (function, line 23) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
-  - `t_assoc_line` (function, line 43) `static int t_assoc_line(const char *line, char *ext, char *prog)`
-  - `main` (function, line 75) `int main(void)`
-  - `fprintf` (function, line 17) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 81) `CHECK(strcmp(ext, "c") == 0, "ext of hello.c");`
-  - `CHECK` (macro, line 13) `#define CHECK(cond, msg)`
-  - `T_EXT_MAX` (macro, line 20) `#define T_EXT_MAX`
+  - `t_ext_of` (function, line 24) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
+  - `t_assoc_line` (function, line 44) `static int t_assoc_line(const char *line, char *ext, char *prog)`
+  - `main` (function, line 76) `int main(void)`
+  - `CHECK` (macro, line 14) `#define CHECK(cond, msg)`
+  - `T_EXT_MAX` (macro, line 21) `#define T_EXT_MAX`
   - `T_PROG_MAX` (macro, line 22) `#define T_PROG_MAX`
 - Depends on: `kernel/string.c`
 
@@ -158,9 +141,7 @@
 - Symbols:
   - `check_host` (function, line 12) `static int check_host(int cond, const char *name)`
   - `main` (function, line 22) `int main(void)`
-  - `printf` (function, line 14) `printf("FAIL: %s\n", name);`
-  - `wl_copy` (function, line 108) `wl_copy(rh, "a.b", 64L);`
-  - `FREEDOM_WL_HOST_TEST` (macro, line 7) `#define FREEDOM_WL_HOST_TEST`
+  - `FREEDOM_WL_HOST_TEST` (macro, line 8) `#define FREEDOM_WL_HOST_TEST`
 - Depends on: `progs/src/freedom_wl.c`
 
 ## tests/test_freedomui.c
@@ -169,10 +150,7 @@
 - Language: c
 - Symbols:
   - `main` (function, line 24) `int main(void)`
-  - `printf` (function, line 16) `printf("FAIL: %s\n", name);`
-  - `ui_layout_free` (function, line 90) `ui_layout_free(&lay);`
-  - `hp_free` (function, line 91) `hp_free(text);`
-  - `FREEDOMUI_HOST_TEST` (macro, line 9) `#define FREEDOMUI_HOST_TEST`
+  - `FREEDOMUI_HOST_TEST` (macro, line 10) `#define FREEDOMUI_HOST_TEST`
 - Depends on: `kernel/string.c`, `progs/freedomui/freedomui_minios.c`
 
 ## tests/test_futex.c
@@ -180,17 +158,12 @@
 - Doc: Docstring: Host test for kernel/futex.c (make test-futex).
 - Language: c
 - Symbols:
-  - `proc_get` (function, line 17) `proc_t *proc_get(int pid)`
-  - `schedule` (function, line 25) `void schedule(void)`
-  - `fresh_proc` (function, line 38) `static void fresh_proc(int pid)`
-  - `fresh_all` (function, line 47) `static void fresh_all(void)`
-  - `main` (function, line 59) `int main(void)`
-  - `fprintf` (function, line 35) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `futex_init` (function, line 57) `futex_init();`
-  - `CHECK` (function, line 68) `CHECK(futex_wait((unsigned long)&word_a, 6) == FUTEX_NOMATCH, "mismatch returns NOMATCH");`
-  - `futex_wait` (function, line 95) `futex_wait((unsigned long)&word_a, 1);`
-  - `printf` (function, line 156) `else printf("futex: %d failures\n", failures);`
-  - `CHECK` (macro, line 31) `#define CHECK(cond, msg)`
+  - `proc_get` (function, line 18) `proc_t *proc_get(int pid)`
+  - `schedule` (function, line 26) `void schedule(void)`
+  - `fresh_proc` (function, line 39) `static void fresh_proc(int pid)`
+  - `fresh_all` (function, line 48) `static void fresh_all(void)`
+  - `main` (function, line 60) `int main(void)`
+  - `CHECK` (macro, line 32) `#define CHECK(cond, msg)`
 - Depends on: `headers/futex.h`
 
 ## tests/test_hal_io.c
@@ -198,15 +171,9 @@
 - Doc: Docstring: Host test for arch/x86/hal_io.h (make test-hal).
 - Language: c
 - Symbols:
-  - `main` (function, line 29) `int main(void)`
-  - `fprintf` (function, line 26) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 31) `CHECK(HAL_PIC1_CMD == 0x20, "master pic command port");`
-  - `hal_outb` (function, line 66) `hal_outb(HAL_PIC1_CMD, HAL_PIC_EOI);`
-  - `hal_lapic_eoi` (function, line 71) `hal_lapic_eoi();`
-  - `hal_pic_eoi` (function, line 74) `hal_pic_eoi(12);`
-  - `printf` (function, line 80) `printf("hal_io: ok\n");`
-  - `HAL_IO_HOST_TEST` (macro, line 10) `#define HAL_IO_HOST_TEST`
-  - `CHECK` (macro, line 22) `#define CHECK(cond, msg)`
+  - `main` (function, line 30) `int main(void)`
+  - `HAL_IO_HOST_TEST` (macro, line 11) `#define HAL_IO_HOST_TEST`
+  - `CHECK` (macro, line 23) `#define CHECK(cond, msg)`
 - Depends on: `headers/arch/x86/hal_io.h`
 
 ## tests/test_ktime.c
@@ -214,8 +181,7 @@
 - Doc: test_ktime.c -- host test for the pure conversion math in ktime.h
 - Language: c
 - Symbols:
-  - `main` (function, line 15) `int main(void)`
-  - `CHECK` (function, line 17) `CHECK(ktime_us_from_delta(0, 3000000UL) == 0, "zero delta");`
+  - `main` (function, line 16) `int main(void)`
   - `CHECK` (macro, line 14) `#define CHECK(c, m)`
 - Depends on: `headers/ktime.h`
 
@@ -231,41 +197,25 @@
   - `t_blit` (function, line 99) `static void t_blit(void)`
   - `t_load` (function, line 117) `static void t_load(void)`
   - `t_policy` (function, line 136) `static void t_policy(void)`
-  - `main` (function, line 150) `int main(void)`
-  - `fprintf` (function, line 19) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 25) `CHECK(mpng_332_idx(255, 0, 0) == 0xE0, "332 red");`
-  - `memset` (function, line 36) `memset(pal, 0, sizeof(pal));`
-  - `printf` (function, line 160) `printf("minios_png: FAIL (%d)\n", failures);`
-  - `CHECK` (macro, line 15) `#define CHECK(cond, msg)`
+  - `main` (function, line 151) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `kernel/string.c`, `progs/minios_png.h`
 
 ## tests/test_modifiers.c
 - Layer: testing
-- Doc: include <stdio.h>  include "drivers/modifiers.h"
 - Language: c
 - Symbols:
-  - `main` (function, line 15) `int main(void)`
-  - `fprintf` (function, line 12) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `modifiers_init` (function, line 19) `modifiers_init(&st);`
-  - `CHECK` (function, line 20) `CHECK(st.shift == 0 && st.super == 0, "init clears");`
-  - `printf` (function, line 45) `else printf("modifiers: %d failures\n", failures);`
-  - `CHECK` (macro, line 8) `#define CHECK(cond, msg)`
+  - `main` (function, line 16) `int main(void)`
+  - `CHECK` (macro, line 9) `#define CHECK(cond, msg)`
 - Depends on: `headers/drivers/modifiers.h`
 
 ## tests/test_notify.c
 - Layer: testing
-- Doc: include <stdio.h>  include "wm_notify.h"
 - Language: c
 - Symbols:
-  - `probe_handler` (function, line 15) `static void probe_handler(const wm_notify_event_t *e)`
-  - `main` (function, line 21) `int main(void)`
-  - `fprintf` (function, line 12) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `wm_notify_reset` (function, line 27) `wm_notify_reset(&bus);`
-  - `CHECK` (function, line 28) `CHECK(wm_notify_last(&bus) == 0, "empty bus has no last");`
-  - `wm_notify_emit` (function, line 31) `wm_notify_emit(0, 0);`
-  - `wm_notify_subscribe` (function, line 45) `wm_notify_subscribe(&bus, probe_handler);`
-  - `printf` (function, line 56) `else printf("notify: %d failures\n", failures);`
-  - `CHECK` (macro, line 8) `#define CHECK(cond, msg)`
+  - `probe_handler` (function, line 16) `static void probe_handler(const wm_notify_event_t *e)`
+  - `main` (function, line 22) `int main(void)`
+  - `CHECK` (macro, line 9) `#define CHECK(cond, msg)`
 - Depends on: `headers/wm_notify.h`
 
 ## tests/test_paint.c
@@ -273,32 +223,28 @@
 - Doc: Docstring: host test for the paint canvas/PNG contract (make test-paint).
 - Language: c
 - Symbols:
-  - `t_clamp` (function, line 29) `static int t_clamp(int v, int lo, int hi)`
-  - `t_plot` (function, line 35) `static int t_plot(unsigned char *buf, int w, int h, int x, int y,
+  - `t_clamp` (function, line 30) `static int t_clamp(int v, int lo, int hi)`
+  - `t_plot` (function, line 36) `static int t_plot(unsigned char *buf, int w, int h, int x, int y,
                   unsigned char c)`
-  - `t_line` (function, line 43) `static int t_line(unsigned char *buf, int w, int h, int x0, int y0, int x1,
+  - `t_line` (function, line 44) `static int t_line(unsigned char *buf, int w, int h, int x0, int y0, int x1,
                   int...`
-  - `t_flood` (function, line 69) `static int t_flood(unsigned char *buf, int w, int h, int x, int y,
+  - `t_flood` (function, line 70) `static int t_flood(unsigned char *buf, int w, int h, int x, int y,
                    unsigned ch...`
-  - `t_crc_init` (function, line 115) `static void t_crc_init(void)`
-  - `t_crc` (function, line 128) `static unsigned long t_crc(const unsigned char *p, unsigned long n)`
-  - `t_path_ok` (function, line 137) `static int t_path_ok(const char *p)`
-  - `t_nearest` (function, line 154) `static int t_nearest(const unsigned char *pal, unsigned r, unsigned g,
+  - `t_crc_init` (function, line 116) `static void t_crc_init(void)`
+  - `t_crc` (function, line 129) `static unsigned long t_crc(const unsigned char *p, unsigned long n)`
+  - `t_path_ok` (function, line 138) `static int t_path_ok(const char *p)`
+  - `t_nearest` (function, line 155) `static int t_nearest(const unsigned char *pal, unsigned r, unsigned g,
                      unsig...`
-  - `test_plot` (function, line 170) `static void test_plot(void)`
-  - `test_line` (function, line 187) `static void test_line(void)`
-  - `test_flood` (function, line 206) `static void test_flood(void)`
-  - `test_png_codec` (function, line 227) `static void test_png_codec(void)`
-  - `test_png_layout` (function, line 258) `static void test_png_layout(void)`
-  - `test_path` (function, line 272) `static void test_path(void)`
-  - `test_nearest` (function, line 286) `static void test_nearest(void)`
-  - `main` (function, line 299) `int main(void)`
-  - `fprintf` (function, line 19) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `memset` (function, line 172) `memset(t_canvas, 0, sizeof(t_canvas));`
-  - `CHECK` (function, line 173) `CHECK(t_plot(t_canvas, T_W, T_H, 0, 0, 7) == 0, "plot origin");`
-  - `printf` (function, line 309) `printf("paint: all host vectors pass\n");`
-  - `CHECK` (macro, line 15) `#define CHECK(cond, msg)`
-  - `T_W` (macro, line 22) `#define T_W`
+  - `test_plot` (function, line 171) `static void test_plot(void)`
+  - `test_line` (function, line 188) `static void test_line(void)`
+  - `test_flood` (function, line 207) `static void test_flood(void)`
+  - `test_png_codec` (function, line 228) `static void test_png_codec(void)`
+  - `test_png_layout` (function, line 259) `static void test_png_layout(void)`
+  - `test_path` (function, line 273) `static void test_path(void)`
+  - `test_nearest` (function, line 287) `static void test_nearest(void)`
+  - `main` (function, line 300) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+  - `T_W` (macro, line 23) `#define T_W`
   - `T_H` (macro, line 24) `#define T_H`
   - `T_N` (macro, line 25) `#define T_N`
   - `T_PATH_MAX` (macro, line 26) `#define T_PATH_MAX`
@@ -309,16 +255,8 @@
 - Doc: Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq).
 - Language: c
 - Symbols:
-  - `main` (function, line 23) `int main(void)`
-  - `fprintf` (function, line 20) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `rq_init` (function, line 31) `rq_init();`
-  - `CHECK` (function, line 33) `CHECK(rq_empty(0), "fresh ring is empty");`
-  - `rq_enqueue` (function, line 35) `rq_enqueue(0, 3);`
-  - `rq_stats` (function, line 46) `rq_stats(1, &hits, &steals, &drops);`
-  - `rq_pop_local` (function, line 50) `rq_pop_local(1);`
-  - `rq_note_poll` (function, line 66) `rq_note_poll(0);`
-  - `printf` (function, line 84) `else printf("percpu_rq: %d failures\n", failures);`
-  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+  - `main` (function, line 24) `int main(void)`
+  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
 - Depends on: `headers/percpu_rq.h`
 
 ## tests/test_randmix.c
@@ -326,9 +264,8 @@
 - Doc: test_randmix.c -- host test for the getrandom mixer in randmix.h
 - Language: c
 - Symbols:
-  - `popcount64` (function, line 17) `static int popcount64(unsigned long x)`
-  - `main` (function, line 23) `int main(void)`
-  - `CHECK` (function, line 25) `CHECK(randmix64(0) == randmix64(0), "deterministic");`
+  - `popcount64` (function, line 18) `static int popcount64(unsigned long x)`
+  - `main` (function, line 24) `int main(void)`
   - `CHECK` (macro, line 16) `#define CHECK(c, m)`
 - Depends on: `headers/randmix.h`
 
@@ -337,19 +274,10 @@
 - Doc: Docstring: Host test for kernel/rcu.c (make test-rcu).
 - Language: c
 - Symbols:
-  - `rcu_host_cpu` (function, line 18) `cpu_t *rcu_host_cpu(void)`
-  - `test_cb` (function, line 22) `static void test_cb(void *arg)`
-  - `main` (function, line 36) `int main(void)`
-  - `fprintf` (function, line 33) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `rcu_init` (function, line 45) `rcu_init();`
-  - `rcu_publish` (function, line 47) `rcu_publish(&slot, &a);`
-  - `CHECK` (function, line 48) `CHECK(rcu_deref(&slot) == &a, "published pointer is visible");`
-  - `rcu_note_tick` (function, line 56) `rcu_note_tick(0);`
-  - `rcu_poll` (function, line 57) `rcu_poll();`
-  - `rcu_read_lock` (function, line 84) `rcu_read_lock();`
-  - `rcu_read_unlock` (function, line 88) `rcu_read_unlock();`
-  - `printf` (function, line 95) `else printf("rcu: %d failures\n", failures);`
-  - `CHECK` (macro, line 29) `#define CHECK(cond, msg)`
+  - `rcu_host_cpu` (function, line 19) `cpu_t *rcu_host_cpu(void)`
+  - `test_cb` (function, line 23) `static void test_cb(void *arg)`
+  - `main` (function, line 37) `int main(void)`
+  - `CHECK` (macro, line 30) `#define CHECK(cond, msg)`
 - Depends on: `headers/rcu.h`
 
 ## tests/test_rtc.c
@@ -357,8 +285,7 @@
 - Doc: test_rtc.c -- host test for the pure date math in drivers/rtc.c
 - Language: c
 - Symbols:
-  - `main` (function, line 17) `int main(void)`
-  - `CHECK` (function, line 19) `CHECK(rtc_days_from_civil(1970, 1, 1) == 0, "epoch is day zero");`
+  - `main` (function, line 18) `int main(void)`
   - `CHECK` (macro, line 16) `#define CHECK(c, m)`
 - Depends on: `headers/rtc.h`
 
@@ -367,23 +294,15 @@
 - Doc: Docstring: Host test for sanitize.h (make test-sanitize).
 - Language: c
 - Symbols:
-  - `user_range_ok` (function, line 19) `int user_range_ok(unsigned long p, unsigned long len)`
-  - `user_str_ok` (function, line 25) `int user_str_ok(unsigned long p, unsigned long maxlen)`
-  - `kmemcpy` (function, line 31) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
-  - `range_probe` (function, line 47) `static long range_probe(unsigned long p, long len)`
-  - `str_probe` (function, line 53) `static long str_probe(unsigned long p)`
-  - `copy_probe` (function, line 60) `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)`
-  - `main` (function, line 66) `int main(void)`
-  - `memcpy` (function, line 34) `return memcpy(dst, src, (unsigned long)n);`
-  - `fprintf` (function, line 44) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `SANITIZE_LEN_NEG` (function, line 49) `SANITIZE_LEN_NEG(len);`
-  - `SANITIZE_RANGE` (function, line 50) `SANITIZE_RANGE(p, len);`
-  - `SANITIZE_STR` (function, line 55) `SANITIZE_STR(p, 255);`
-  - `SANITIZE_COPY_IN` (function, line 63) `SANITIZE_COPY_IN(kbuf, uptr, count, elemsz);`
-  - `CHECK` (function, line 70) `CHECK(range_probe(0x400000UL, 8) == 0, "valid range passes");`
-  - `printf` (function, line 110) `else printf("sanitize: %d failures\n", failures);`
-  - `EFAULT` (macro, line 12) `#define EFAULT`
-  - `CHECK` (macro, line 40) `#define CHECK(cond, msg)`
+  - `user_range_ok` (function, line 20) `int user_range_ok(unsigned long p, unsigned long len)`
+  - `user_str_ok` (function, line 26) `int user_str_ok(unsigned long p, unsigned long maxlen)`
+  - `kmemcpy` (function, line 32) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
+  - `range_probe` (function, line 48) `static long range_probe(unsigned long p, long len)`
+  - `str_probe` (function, line 54) `static long str_probe(unsigned long p)`
+  - `copy_probe` (function, line 61) `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)`
+  - `main` (function, line 67) `int main(void)`
+  - `EFAULT` (macro, line 13) `#define EFAULT`
+  - `CHECK` (macro, line 41) `#define CHECK(cond, msg)`
 - Depends on: `headers/sanitize.h`, `kernel/string.c`
 
 ## tests/test_sync.c
@@ -391,25 +310,12 @@
 - Doc: Host-side unit test for the blocking sync primitives (kernel/sync.c).
 - Language: c
 - Symbols:
-  - `proc_get` (function, line 23) `proc_t *proc_get(int pid)`
-  - `schedule` (function, line 29) `void schedule(void)`
-  - `fresh_proc` (function, line 43) `static void fresh_proc(int pid)`
-  - `fresh_all` (function, line 51) `static void fresh_all(void)`
-  - `main` (function, line 62) `int main(void)`
-  - `fprintf` (function, line 40) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 67) `CHECK(wake_up(&q) == WQ_NONE, "empty wake_up returns WQ_NONE");`
-  - `sleep_on` (function, line 78) `sleep_on(&q);`
-  - `mutex_lock` (function, line 108) `mutex_lock(&m);`
-  - `mutex_unlock` (function, line 118) `mutex_unlock(&m);`
-  - `sem_wait` (function, line 134) `sem_wait(&s);`
-  - `sem_post` (function, line 140) `sem_post(&s);`
-  - `cond_signal` (function, line 165) `cond_signal(&c);`
-  - `cond_broadcast` (function, line 172) `cond_broadcast(&c);`
-  - `rwlock_write_unlock` (function, line 194) `rwlock_write_unlock(&rw);`
-  - `pi_set_base` (function, line 214) `pi_set_base(1, 1);`
-  - `mutex_note_waiter` (function, line 225) `mutex_note_waiter(&m, 2);`
-  - `printf` (function, line 267) `else printf("sync: %d failures\n", failures);`
-  - `CHECK` (macro, line 36) `#define CHECK(cond, msg)`
+  - `proc_get` (function, line 24) `proc_t *proc_get(int pid)`
+  - `schedule` (function, line 30) `void schedule(void)`
+  - `fresh_proc` (function, line 44) `static void fresh_proc(int pid)`
+  - `fresh_all` (function, line 52) `static void fresh_all(void)`
+  - `main` (function, line 63) `int main(void)`
+  - `CHECK` (macro, line 37) `#define CHECK(cond, msg)`
 - Depends on: `headers/sync.h`
 
 ## tests/test_theme.c
@@ -418,16 +324,12 @@
 - Language: c
 - Symbols:
   - `tslot` (struct, line 23)
-  - `t_name_ok` (function, line 33) `static int t_name_ok(const char *name)`
-  - `t_parse_line` (function, line 45) `static int t_parse_line(const char *line, int *idx, long v[3])`
-  - `cube_exact` (function, line 73) `static int cube_exact(long v)`
-  - `check_theme_file` (function, line 77) `static void check_theme_file(const char *path)`
-  - `main` (function, line 106) `int main(void)`
-  - `fprintf` (function, line 19) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 84) `CHECK(f != 0, "theme file opens");`
-  - `fclose` (function, line 103) `fclose(f);`
-  - `snprintf` (function, line 147) `snprintf(path, sizeof(path), "progs/etc/themes/%s", name);`
-  - `CHECK` (macro, line 15) `#define CHECK(cond, msg)`
+  - `t_name_ok` (function, line 34) `static int t_name_ok(const char *name)`
+  - `t_parse_line` (function, line 46) `static int t_parse_line(const char *line, int *idx, long v[3])`
+  - `cube_exact` (function, line 74) `static int cube_exact(long v)`
+  - `check_theme_file` (function, line 78) `static void check_theme_file(const char *path)`
+  - `main` (function, line 107) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
   - `X` (macro, line 29) `#define X(k, i)`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
 
@@ -436,18 +338,12 @@
 - Doc: Docstring: Host test for kernel/tick.c (make test-tick).
 - Language: c
 - Symbols:
-  - `rec_a` (function, line 23) `static void rec_a(void *ctx)`
-  - `rec_b` (function, line 30) `static void rec_b(void *ctx)`
-  - `rec_d` (function, line 37) `static void rec_d(void *ctx)`
-  - `dummy` (function, line 46) `static void dummy(void *ctx)`
-  - `main` (function, line 51) `int main(void)`
-  - `fprintf` (function, line 20) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 56) `CHECK(cfg.max_audio_listeners == TICK_MAX_AUDIO_LISTENERS, "config carries audio bound");`
-  - `tick_reset` (function, line 58) `tick_reset();`
-  - `tick_run_audio` (function, line 62) `tick_run_audio();`
-  - `tick_run_desktop` (function, line 63) `tick_run_desktop();`
-  - `printf` (function, line 113) `printf("tick: ok\n");`
-  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+  - `rec_a` (function, line 24) `static void rec_a(void *ctx)`
+  - `rec_b` (function, line 31) `static void rec_b(void *ctx)`
+  - `rec_d` (function, line 38) `static void rec_d(void *ctx)`
+  - `dummy` (function, line 47) `static void dummy(void *ctx)`
+  - `main` (function, line 52) `int main(void)`
+  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
 - Depends on: `headers/tick.h`
 
 ## tests/test_vedit_build.c
@@ -455,18 +351,15 @@
 - Doc: Docstring: Host test for the vedit IDE build contract (make test-vedit).
 - Language: c
 - Symbols:
-  - `t_has_ext` (function, line 31) `static int t_has_ext(const char *fname, const char *ext)`
-  - `t_base_of` (function, line 42) `static int t_base_of(const char *fname, char *dst, size_t cap)`
-  - `t_join` (function, line 62) `static int t_join(const char *dir, const char *base, const char *ext,
+  - `t_has_ext` (function, line 32) `static int t_has_ext(const char *fname, const char *ext)`
+  - `t_base_of` (function, line 43) `static int t_base_of(const char *fname, char *dst, size_t cap)`
+  - `t_join` (function, line 63) `static int t_join(const char *dir, const char *base, const char *ext,
                   char *dst...`
-  - `t_link_fmt` (function, line 78) `static int t_link_fmt(const char *s)`
+  - `t_link_fmt` (function, line 79) `static int t_link_fmt(const char *s)`
   - `t_lang_of` (function, line 93) `static int t_lang_of(const char *fname)`
   - `t_run_kind` (function, line 110) `static int t_run_kind(const char *fname)`
-  - `main` (function, line 117) `int main(void)`
-  - `fprintf` (function, line 28) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 121) `CHECK(t_lang_of("untitled") == 1, "untitled highlights as C");`
-  - `printf` (function, line 164) `printf("vedit build host test FAIL (%d)\n", failures);`
-  - `CHECK` (macro, line 24) `#define CHECK(cond, msg)`
+  - `main` (function, line 118) `int main(void)`
+  - `CHECK` (macro, line 25) `#define CHECK(cond, msg)`
 - Depends on: `kernel/string.c`
 
 ## tests/test_vma.c
@@ -474,19 +367,14 @@
 - Doc: Host-side unit test for the VMA red-black tree (vma.c).
 - Language: c
 - Symbols:
-  - `black_height` (function, line 26) `static int black_height(const vma_node_t *n)`
-  - `tree_valid` (function, line 37) `static int tree_valid(const vma_node_t *root)`
-  - `count_nodes` (function, line 74) `static int count_nodes(const vma_node_t *root)`
-  - `test_insert_find_delete` (function, line 88) `static void test_insert_find_delete(void)`
-  - `test_pool_exhaustion` (function, line 135) `static void test_pool_exhaustion(void)`
-  - `test_full_drain` (function, line 152) `static void test_full_drain(void)`
-  - `main` (function, line 166) `int main(void)`
-  - `fprintf` (function, line 23) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `vma_tree_init` (function, line 93) `vma_tree_init();`
-  - `CHECK` (function, line 99) `CHECK(node != VMA_NIL, "insert returned nil within pool capacity");`
-  - `vma_tree_insert` (function, line 157) `vma_tree_insert(&vma_live_root, (unsigned long)i * 0x1000, 0x1000);`
-  - `printf` (function, line 176) `printf("vma: ok\n");`
-  - `CHECK` (macro, line 19) `#define CHECK(cond, msg)`
+  - `black_height` (function, line 27) `static int black_height(const vma_node_t *n)`
+  - `tree_valid` (function, line 38) `static int tree_valid(const vma_node_t *root)`
+  - `count_nodes` (function, line 75) `static int count_nodes(const vma_node_t *root)`
+  - `test_insert_find_delete` (function, line 89) `static void test_insert_find_delete(void)`
+  - `test_pool_exhaustion` (function, line 136) `static void test_pool_exhaustion(void)`
+  - `test_full_drain` (function, line 153) `static void test_full_drain(void)`
+  - `main` (function, line 167) `int main(void)`
+  - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
 - Depends on: `headers/vma.h`
 
 ## tests/test_vma_bench.c
@@ -494,15 +382,11 @@
 - Doc: test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9).
 - Language: c
 - Symbols:
-  - `now_us` (function, line 12) `static long now_us(void)`
+  - `now_us` (function, line 13) `static long now_us(void)`
   - `l_insert` (function, line 23) `static void l_insert(unsigned long b)`
   - `l_find` (function, line 28) `static int l_find(unsigned long b)`
-  - `bench` (function, line 33) `static void bench(int n)`
-  - `main` (function, line 53) `int main(void)`
-  - `gettimeofday` (function, line 15) `gettimeofday(&tv, 0);`
-  - `vma_tree_init` (function, line 37) `vma_tree_init();`
-  - `vma_tree_insert` (function, line 40) `vma_tree_insert(&vma_live_root, 0x500000ul + (unsigned long)i * 0x1000, 0x1000);`
-  - `vma_tree_find` (function, line 43) `vma_tree_find(vma_live_root, 0x500000ul + (unsigned long)i * 0x1000);`
+  - `bench` (function, line 34) `static void bench(int n)`
+  - `main` (function, line 54) `int main(void)`
   - `LIST_MAX` (macro, line 20) `#define LIST_MAX`
 - Depends on: `headers/vma.h`, `kernel/time.c`
 
@@ -511,14 +395,8 @@
 - Doc: Host test for progs/wl/wl_mini.h (make test-wl).
 - Language: c
 - Symbols:
-  - `main` (function, line 24) `int main(void)`
-  - `fprintf` (function, line 21) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 36) `CHECK(wl_hdr_encode(buf, sizeof buf, WL_ID_DISPLAY, WL_OP_DISPLAY_GET_REGISTRY, 12, &h) == WL_ERR_OK, "hdr encode ok");`
-  - `wl_comp_init` (function, line 79) `wl_comp_init(&c);`
-  - `wl_client_init` (function, line 99) `wl_client_init(&cl);`
-  - `wl_stream_init` (function, line 273) `wl_stream_init(&st);`
-  - `wl_mbox_init` (function, line 366) `wl_mbox_init(boxes);`
-  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
+  - `main` (function, line 25) `int main(void)`
+  - `CHECK` (macro, line 18) `#define CHECK(cond, msg)`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`
 
 ## tests/test_wm.c
@@ -526,10 +404,6 @@
 - Doc: Docstring: Host test for wm_geom.h and wm_events.h (make test-wm).
 - Language: c
 - Symbols:
-  - `main` (function, line 27) `int main(void)`
-  - `fprintf` (function, line 24) `fprintf(stderr, "FAIL: %s (line %d)\n", (msg), __LINE__);`
-  - `CHECK` (function, line 41) `CHECK(gcfg.font_w == 8, "geom config carries font width");`
-  - `wm_clamp_point` (function, line 86) `wm_clamp_point(&cx, &cy, 800, 600);`
-  - `printf` (function, line 379) `printf("wm: ok\n");`
-  - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
+  - `main` (function, line 28) `int main(void)`
+  - `CHECK` (macro, line 21) `#define CHECK(cond, msg)`
 - Depends on: `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`

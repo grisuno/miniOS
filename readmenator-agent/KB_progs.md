@@ -2,7 +2,7 @@
 
 ## progs/minios_abi.h
 - Layer: utility
-- Doc: ifndef MINIOS_ABI_H define MINIOS_ABI_H  minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
+- Doc: minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
 - Language: h
 - Symbols:
   - `MINIOS_ABI_H` (macro, line 2) `#define MINIOS_ABI_H`
@@ -117,7 +117,7 @@
   - `MINIOS_SYS_WL_ATTACH` (macro, line 270) `#define MINIOS_SYS_WL_ATTACH`
   - `MINIOS_SYS_WL_COMMIT` (macro, line 271) `#define MINIOS_SYS_WL_COMMIT`
   - `MINIOS_SYS_WL_INPUT` (macro, line 272) `#define MINIOS_SYS_WL_INPUT`
-  - `MINIOS_SYS_CLONE` (macro, line 273) `#define MINIOS_SYS_CLONE`
+  - `MINIOS_SYS_CLONE` (macro, line 274) `#define MINIOS_SYS_CLONE`
   - `MINIOS_GFX_BUF_GAME` (macro, line 282) `#define MINIOS_GFX_BUF_GAME`
   - `MINIOS_GFX_BUF_NK` (macro, line 283) `#define MINIOS_GFX_BUF_NK`
   - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 284) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
@@ -154,9 +154,6 @@
                          const unsign...`
   - `mpng_load_file` (function, line 184) `static int mpng_load_file(const char *path, unsigned char **out, long *out_n,
                    ...`
-  - `fseek` (function, line 196) `fseek(f, 0, SEEK_END);`
-  - `fclose` (function, line 200) `fclose(f);`
-  - `free` (function, line 209) `free(buf);`
   - `MINIOS_PNG_H` (macro, line 22) `#define MINIOS_PNG_H`
   - `MPNG_FILE_MAX` (macro, line 28) `#define MPNG_FILE_MAX`
   - `MPNG_MAX_DIM` (macro, line 29) `#define MPNG_MAX_DIM`
@@ -175,9 +172,9 @@
 - Doc: nk_palette.h - one shared hybrid palette for every NK-window app.
 - Language: h
 - Symbols:
-  - `nk_palette_build` (function, line 21) `static int nk_palette_build(unsigned char *pal, long cap)`
+  - `nk_palette_build` (function, line 22) `static int nk_palette_build(unsigned char *pal, long cap)`
   - `NK_PALETTE_H` (macro, line 12) `#define NK_PALETTE_H`
-  - `NK_PAL_BYTES` (macro, line 13) `#define NK_PAL_BYTES`
+  - `NK_PAL_BYTES` (macro, line 14) `#define NK_PAL_BYTES`
   - `NK_PAL_DESK` (macro, line 15) `#define NK_PAL_DESK`
   - `NK_PAL_CUBE` (macro, line 16) `#define NK_PAL_CUBE`
   - `NK_PAL_GRAYS` (macro, line 17) `#define NK_PAL_GRAYS`
