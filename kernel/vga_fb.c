@@ -2376,8 +2376,9 @@ static void gfx_target(int *x, int *y) {
 }
 
 /* Snap the focused graphics window into a screen region (halves place it
- * against that edge, quadrants into that corner). Takes effect on the
- * program's next composited frame. */
+ * against that edge, quadrants into that corner). Redraws immediately so
+ * the persistent layer re-blits at the new offset: without it the old
+ * pixels stay and the window duplicates until the next Alt-Tab/composite. */
 static void gfx_snap(int zone) {
     int w = gfx_win_w, h = gfx_win_h;
     int cx = (fb_width - w) / 2, cy = (fb_height - h) / 2;
@@ -2425,11 +2426,14 @@ int vga_fb_close_active(void) {
 
 void vga_fb_move_terminal(int dx, int dy) {
     /* Ctrl+arrows move the focused window: terminals by cell, graphics
-     * by pixels (fixed-size backbuffer, next frame applies it). */
+     * by pixels. The graphics branch redraws immediately so the
+     * persistent layer re-blits at the new offset instead of leaving
+     * the old copy behind until Alt-Tab. */
     if (wm_focus == WM_FOCUS_GFX && vga_fb_gfx_mode) {
-        if (dx == 0 && dy == 0) { gfx_win_ox = 0; gfx_win_oy = 0; return; }
+        if (dx == 0 && dy == 0) { gfx_win_ox = 0; gfx_win_oy = 0; vga_fb_draw_desktop(); return; }
         gfx_win_ox += dx * FONT_W;
         gfx_win_oy += dy * FONT_H;
+        vga_fb_draw_desktop();
         return;
     }
     if (dx == 0 && dy == 0) {
@@ -2478,6 +2482,7 @@ void vga_fb_snap_window(int zone) {
     int mc;
     if (wm_focus == WM_FOCUS_GFX && vga_fb_gfx_mode) {
         gfx_snap(zone);
+        vga_fb_draw_desktop();
         return;
     }
     mc = term_max_cols();
@@ -2974,12 +2979,17 @@ static void mouse_apply_wheel(int wheel, int step)
         cursor_invalidate();
 }
 
-/** Docstring: Title-bar drag of the graphics window. */
+/** Docstring: Title-bar drag of the graphics window. Redraws on every
+ * offset change and once more on release, so the persistent layer moves
+ * with the pointer and no duplicated copy survives the drop. */
 static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)
 {
     int gx, gy;
+    int was = wm_gdrag;
+    int old_ox = gfx_win_ox, old_oy = gfx_win_oy;
     if (!vga_fb_gfx_mode || wm_skip_drag) {
         wm_gdrag = 0;
+        if (was) vga_fb_draw_desktop();
         return;
     }
     gfx_target(&gx, &gy);
@@ -3001,13 +3011,20 @@ static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)
         int cy = (fb_height - gfx_win_h) / 2;
         gfx_win_ox = mx - wm_ggx - cx;
         gfx_win_oy = my - wm_ggy - cy;
+        if (gfx_win_ox != old_ox || gfx_win_oy != old_oy)
+            vga_fb_draw_desktop();
+    } else if (was) {
+        vga_fb_draw_desktop();
     }
 }
 
-/** Docstring: Title-bar drag of the focused terminal window. */
+/** Docstring: Title-bar drag of the focused terminal window. The motion
+ * path already repaints per step; the release edge repaints once more so
+ * the final coordinates settle with no duplicated copy left behind. */
 static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)
 {
     int in_title;
+    int was = wm_dragging;
     if (term_fullscreen || term_minimized || wm_skip_drag) return;
     in_title = wm_hit_title_bar(gcfg, term_px_x, term_px_y, win_w, mx, my);
     if (mouse_state.buttons & 1) {
@@ -3021,6 +3038,8 @@ static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int
     if (wm_dragging) {
         vga_fb_drag_terminal(mx, my, wm_grab_cx);
         if (!gfx_cursor) cursor_invalidate();
+    } else if (was) {
+        vga_fb_draw_desktop();
     }
 }
 
