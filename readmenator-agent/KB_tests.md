@@ -126,12 +126,16 @@
 - Doc: Docstring: host test for the file browser assoc contract (make test-file).
 - Language: c
 - Symbols:
-  - `t_ext_of` (function, line 25) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
-  - `t_assoc_line` (function, line 45) `static int t_assoc_line(const char *line, char *ext, char *prog)`
-  - `main` (function, line 77) `int main(void)`
-  - `CHECK` (macro, line 15) `#define CHECK(cond, msg)`
-  - `T_EXT_MAX` (macro, line 22) `#define T_EXT_MAX`
-  - `T_PROG_MAX` (macro, line 23) `#define T_PROG_MAX`
+  - `t_ext_of` (function, line 26) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
+  - `t_assoc_line` (function, line 46) `static int t_assoc_line(const char *line, char *ext, char *prog)`
+  - `t_icon_kind` (function, line 80) `static int t_icon_kind(const char *fname, int isdir)`
+  - `t_icon_sz` (function, line 95) `static int t_icon_sz(void)`
+  - `main` (function, line 99) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+  - `T_EXT_MAX` (macro, line 23) `#define T_EXT_MAX`
+  - `T_PROG_MAX` (macro, line 24) `#define T_PROG_MAX`
+  - `T_ICON_SMALL` (macro, line 92) `#define T_ICON_SMALL`
+  - `T_ICON_BIG` (macro, line 93) `#define T_ICON_BIG`
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`
 
 ## tests/test_freedom_wl.c
@@ -351,15 +355,15 @@
 - Doc: Docstring: Host test for the vedit IDE build contract (make test-vedit).
 - Language: c
 - Symbols:
-  - `t_has_ext` (function, line 32) `static int t_has_ext(const char *fname, const char *ext)`
-  - `t_base_of` (function, line 43) `static int t_base_of(const char *fname, char *dst, size_t cap)`
-  - `t_join` (function, line 63) `static int t_join(const char *dir, const char *base, const char *ext,
+  - `t_has_ext` (function, line 33) `static int t_has_ext(const char *fname, const char *ext)`
+  - `t_base_of` (function, line 44) `static int t_base_of(const char *fname, char *dst, size_t cap)`
+  - `t_join` (function, line 64) `static int t_join(const char *dir, const char *base, const char *ext,
                   char *dst...`
-  - `t_link_fmt` (function, line 79) `static int t_link_fmt(const char *s)`
-  - `t_lang_of` (function, line 93) `static int t_lang_of(const char *fname)`
-  - `t_run_kind` (function, line 110) `static int t_run_kind(const char *fname)`
-  - `main` (function, line 118) `int main(void)`
-  - `CHECK` (macro, line 25) `#define CHECK(cond, msg)`
+  - `t_link_fmt` (function, line 80) `static int t_link_fmt(const char *s)`
+  - `t_lang_of` (function, line 94) `static int t_lang_of(const char *fname)`
+  - `t_run_kind` (function, line 114) `static int t_run_kind(const char *fname)`
+  - `main` (function, line 123) `int main(void)`
+  - `CHECK` (macro, line 26) `#define CHECK(cond, msg)`
 - Depends on: `kernel/string.c`
 
 ## tests/test_vma.c

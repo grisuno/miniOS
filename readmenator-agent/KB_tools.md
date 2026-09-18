@@ -178,8 +178,8 @@
 - Doc: gen_desktop_pngs.py -- build MiniOS desktop art from user-supplied PNGs.  Sources (images/ by default, overridable with 
 - Language: py
 - Symbols:
-  - `write_atomic` (function, line 63) `def write_atomic(img, path)`
-  - `main` (function, line 69) `def main()`
+  - `write_atomic` (function, line 69) `def write_atomic(img, path)`
+  - `main` (function, line 75) `def main()`
 
 ## tools/gen_icons.py
 - Layer: utility

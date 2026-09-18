@@ -101,10 +101,10 @@
 - Doc: desktop_shortcuts.h -- configurable desktop icon shortcuts.
 - Language: h
 - Symbols:
-  - `desktop_shortcut` (struct, line 50)
-  - `desktop_shortcuts_load` (function, line 60) `void desktop_shortcuts_load(void);`
-  - `desktop_shortcuts_draw` (function, line 63) `void desktop_shortcuts_draw(void);`
-  - `desktop_shortcuts_hit_test` (function, line 67) `const char *desktop_shortcuts_hit_test(int mx, int my);`
+  - `desktop_shortcut` (struct, line 65)
+  - `desktop_shortcuts_load` (function, line 75) `void desktop_shortcuts_load(void);`
+  - `desktop_shortcuts_draw` (function, line 78) `void desktop_shortcuts_draw(void);`
+  - `desktop_shortcuts_hit_test` (function, line 82) `const char *desktop_shortcuts_hit_test(int mx, int my);`
   - `DESKTOP_SHORTCUTS_H` (macro, line 13) `#define DESKTOP_SHORTCUTS_H`
   - `MAX_SHORTCUTS` (macro, line 18) `#define MAX_SHORTCUTS`
   - `SHORTCUT_NAME_LEN` (macro, line 19) `#define SHORTCUT_NAME_LEN`
@@ -119,8 +119,13 @@
   - `DOCK_PAD_Y` (macro, line 34) `#define DOCK_PAD_Y`
   - `DOCK_GAP` (macro, line 35) `#define DOCK_GAP`
   - `DOCK_LABEL_GAP` (macro, line 36) `#define DOCK_LABEL_GAP`
-  - `ICON_PAL_BASE` (macro, line 43) `#define ICON_PAL_BASE`
-  - `ICON_PAL_SIZE` (macro, line 44) `#define ICON_PAL_SIZE`
+  - `DOCK_CRYSTAL_STEP` (macro, line 41) `#define DOCK_CRYSTAL_STEP`
+  - `DOCK_MAG_W` (macro, line 48) `#define DOCK_MAG_W`
+  - `DOCK_MAG_H` (macro, line 49) `#define DOCK_MAG_H`
+  - `DOCK_NEAR_W` (macro, line 50) `#define DOCK_NEAR_W`
+  - `DOCK_NEAR_H` (macro, line 51) `#define DOCK_NEAR_H`
+  - `ICON_PAL_BASE` (macro, line 58) `#define ICON_PAL_BASE`
+  - `ICON_PAL_SIZE` (macro, line 59) `#define ICON_PAL_SIZE`
 - Imported by: `kernel/vga_fb.c`
 
 ## headers/driver.h

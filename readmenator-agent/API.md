@@ -1604,17 +1604,17 @@ static int zip_sanitize_name(con...`
 ## headers/desktop_shortcuts.h
 
 ### desktop_shortcuts_load (function) `void desktop_shortcuts_load(void);`
-- Defined: `headers/desktop_shortcuts.h:60`
+- Defined: `headers/desktop_shortcuts.h:75`
 - Doc: Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desktop on first draw.
 - Imported by: `kernel/vga_fb.c`
 
 ### desktop_shortcuts_draw (function) `void desktop_shortcuts_draw(void);`
-- Defined: `headers/desktop_shortcuts.h:63`
+- Defined: `headers/desktop_shortcuts.h:78`
 - Doc: Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desktop on first draw. v
 - Imported by: `kernel/vga_fb.c`
 
 ### desktop_shortcuts_hit_test (function) `const char *desktop_shortcuts_hit_test(int mx, int my);`
-- Defined: `headers/desktop_shortcuts.h:67`
+- Defined: `headers/desktop_shortcuts.h:82`
 - Doc: Handle a left-click at (mx, my).  Returns the command string if the * click hit an icon, or NULL otherwise.
 - Imported by: `kernel/vga_fb.c`
 
@@ -6443,89 +6443,89 @@ static void desktop_unflag(const char *name)`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_run_any (function) `int shell_run_any(const char *name, int argc, char **argv)`
-- Defined: `kernel/shell.c:1453`
+- Defined: `kernel/shell.c:1464`
 - Doc: Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver. argv[
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### gfx_parse_int (function) `static int gfx_parse_int(const char *s, int *out)`
-- Defined: `kernel/shell.c:1524`
+- Defined: `kernel/shell.c:1535`
 - Doc: --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives, but a
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### gfx_read_palette (function) `static void gfx_read_palette(unsigned char pal[768])`
-- Defined: `kernel/shell.c:1544`
+- Defined: `kernel/shell.c:1555`
 - Doc: Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation). U
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_gfx (function) `static void shell_cmd_gfx(int argc, char **argv)`
-- Defined: `kernel/shell.c:1551`
+- Defined: `kernel/shell.c:1562`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_wm (function) `static void shell_cmd_wm(int argc, char **argv)`
-- Defined: `kernel/shell.c:1703`
+- Defined: `kernel/shell.c:1714`
 - Doc: `wm <op>` — window-manager operations, exposed as a shell builtin so the tiling-WM behaviour is observable and testable 
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### tree (function) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-- Defined: `kernel/shell.c:1827`
+- Defined: `kernel/shell.c:1838`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_jobs (function) `static void shell_cmd_jobs(void)`
-- Defined: `kernel/shell.c:1840`
+- Defined: `kernel/shell.c:1851`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_wait (function) `static void shell_cmd_wait(int argc, char **argv)`
-- Defined: `kernel/shell.c:1863`
+- Defined: `kernel/shell.c:1874`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_kill (function) `static void shell_cmd_kill(int argc, char **argv)`
-- Defined: `kernel/shell.c:1895`
+- Defined: `kernel/shell.c:1906`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_mem (function) `static void shell_cmd_mem(void)`
-- Defined: `kernel/shell.c:1920`
+- Defined: `kernel/shell.c:1931`
 - Doc: `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS free b
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### VMA (function) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...`
-- Defined: `kernel/shell.c:1949`
+- Defined: `kernel/shell.c:1960`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### to (function) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
 static void shell_cmd_trac...`
-- Defined: `kernel/shell.c:2024`
+- Defined: `kernel/shell.c:2035`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_parse_u64 (function) `static int shell_parse_u64(const char *s, unsigned long *out)`
-- Defined: `kernel/shell.c:2093`
+- Defined: `kernel/shell.c:2104`
 - Doc: Strict unsigned parse for debugger/inspector operands: `0x`-prefixed hex or plain decimal, no signs, no trailing garbage
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_parse_long (function) `int shell_parse_long(const char *s, long *out)`
-- Defined: `kernel/shell.c:2109`
+- Defined: `kernel/shell.c:2120`
 - Doc: Strict signed decimal twin of shell_parse_u64: optional sign, at least one digit, whole string consumed, overflow fail-c
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_gdb (function) `static void shell_cmd_gdb(int argc, char **argv)`
-- Defined: `kernel/shell.c:2134`
+- Defined: `kernel/shell.c:2145`
 - Doc: `gdb <op>` -- in-OS inspector half of the debugger story. Full register-level debugging (breakpoints, single-step, live 
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_hash (function) `static void shell_cmd_hash(int argc, char **argv)`
-- Defined: `kernel/shell.c:2177`
+- Defined: `kernel/shell.c:2188`
 - Doc: `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file never
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_resolve_arg (function) `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...`
-- Defined: `kernel/shell.c:2196`
+- Defined: `kernel/shell.c:2207`
 - Doc: Docstring: Resolve `arg` against the cwd into `out` (`RAMDISK_FNAME_LEN` bytes); on failure print `<cmd>: <arg>: <reason
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_exec_builtin (function) `void shell_exec_builtin(int argc, char **argv)`
-- Defined: `kernel/shell.c:2283`
+- Defined: `kernel/shell.c:2294`
 - Doc: Dispatcher exemption from the -Wframe-larger-than=2048 gate: this function runs only on the shell's own boot stack (gene
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
@@ -6546,11 +6546,11 @@ static void shell_cmd_trac...`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### context (function) `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);`
-- Defined: `kernel/shell.c:1479`
+- Defined: `kernel/shell.c:1490`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### frame (function) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row *)kmalloc(sizeof(struct ps_row) * MAX_PROCS);`
-- Defined: `kernel/shell.c:2626`
+- Defined: `kernel/shell.c:2637`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ## kernel/spawn.c
@@ -7922,55 +7922,81 @@ long sys_linux_wait4(lon...`
 - Defined: `kernel/vga_fb.c:2790`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
+### shortcut_draw_scaled (function) `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
+                             ...`
+- Defined: `kernel/vga_fb.c:2846`
+- Doc: Blit one shortcut icon scaled to dw x dh at (dx, dy), nearest neighbour from the cached 32x32 RGBA source. Alpha below 1
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+
+### dock_hover_index (function) `static int dock_hover_index(int mx, int my)`
+- Defined: `kernel/vga_fb.c:2871`
+- Doc: Index of the shortcut column under (mx, my), or -1. Same column bounds * as the click hit test, so hover and click alway
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+
+### dock_paint_icons (function) `static void dock_paint_icons(int hover)`
+- Defined: `kernel/vga_fb.c:2892`
+- Doc: Paint every shortcut icon and label at the given hover sizes. Shared by the full desktop paint and the flicker-free hove
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+
 ### desktop_shortcuts_draw (function) `void desktop_shortcuts_draw(void)`
-- Defined: `kernel/vga_fb.c:2843`
+- Defined: `kernel/vga_fb.c:2925`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+
+### wallpaper_rect (function) `static void wallpaper_rect(int x0, int y0, int w, int h)`
+- Defined: `kernel/vga_fb.c:2952`
+- Doc: Paint one wallpaper rectangle from the cache (solid fill when the cache * is absent or stale): the strip-erase primitive
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+
+### dock_paint_hover (function) `static void dock_paint_hover(int hover)`
+- Defined: `kernel/vga_fb.c:2988`
+- Doc: Hover repaint without the fullscreen flash: erase only the dock strip (bar plus the overflow the magnified icons rise in
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### gfx_task_icon (function) `static const uint8_t *gfx_task_icon(void)`
-- Defined: `kernel/vga_fb.c:2903`
+- Defined: `kernel/vga_fb.c:3020`
 - Doc: Icon for the taskbar running-app button. First the running program via its launch command (config-driven, covers apps th
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### desktop_shortcuts_hit_test (function) `const char *desktop_shortcuts_hit_test(int mx, int my)`
-- Defined: `kernel/vga_fb.c:2924`
+- Defined: `kernel/vga_fb.c:3041`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### mouse_focus_topmost (function) `static int mouse_focus_topmost(int mx, int my)`
-- Defined: `kernel/vga_fb.c:2938`
+- Defined: `kernel/vga_fb.c:3055`
 - Doc: const char *desktop_shortcuts_hit_test(int mx, int my) { shortcuts_layout(); for (int i = 0; i < shortcut_count; i++) { 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### mouse_apply_wheel (function) `static void mouse_apply_wheel(int wheel, int step)`
-- Defined: `kernel/vga_fb.c:2964`
+- Defined: `kernel/vga_fb.c:3081`
 - Doc: if (!twins[f].present) continue; if (tw_hit(f, mx, my)) { if (f == wm_focus) return 0; before = wm_focus; tw_select(f); 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### mouse_drag_gfx (function) `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)`
-- Defined: `kernel/vga_fb.c:2985`
+- Defined: `kernel/vga_fb.c:3102`
 - Doc: Docstring: Title-bar drag of the graphics window. Redraws on every offset change and once more on release, so the persis
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### mouse_drag_term (function) `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)`
-- Defined: `kernel/vga_fb.c:3024`
+- Defined: `kernel/vga_fb.c:3141`
 - Doc: Docstring: Title-bar drag of the focused terminal window. The motion path already repaints per step; the release edge re
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### mouse_scrollbar (function) `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)`
-- Defined: `kernel/vga_fb.c:3047`
+- Defined: `kernel/vga_fb.c:3164`
 - Doc: wm_grab_cx = (mx - term_px_x) / FONT_W; } } else { wm_dragging = 0; } if (wm_dragging) { vga_fb_drag_terminal(mx, my, wm
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_mouse_tick (function) `void vga_fb_mouse_tick(void)`
-- Defined: `kernel/vga_fb.c:3070`
+- Defined: `kernel/vga_fb.c:3187`
 - Doc: total = total_rows(); visible = term_rows; if (total <= visible || sh <= 0) return; max_off = total - visible; new_off =
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_mouse_init (function) `void vga_fb_mouse_init(void)`
-- Defined: `kernel/vga_fb.c:3155`
+- Defined: `kernel/vga_fb.c:3284`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_init (function) `void vga_fb_init(void)`
-- Defined: `kernel/vga_fb.c:3174`
+- Defined: `kernel/vga_fb.c:3303`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### app (function) `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep landing on the shell * while the app looks hung. The enable arm mirrors the focus-gf`
@@ -7982,11 +8008,11 @@ long sys_linux_wait4(lon...`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### command (function) `* its launch command (config-driven, covers apps that never set a window * title);`
-- Defined: `kernel/vga_fb.c:2898`
+- Defined: `kernel/vga_fb.c:3015`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### path (function) `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and raced every present * (~60fps vs 25Hz): stale restores painted trails and flicker, worst`
-- Defined: `kernel/vga_fb.c:3081`
+- Defined: `kernel/vga_fb.c:3198`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ## mcp/mcp_dbg_driver.py
@@ -9544,11 +9570,17 @@ long sys_linux_wait4(lon...`
 ### aes_run (function)
 - Defined: `progs/asm/aes.s:3077`
 
+### __sl_3 (function)
+- Defined: `progs/asm/aes.s:3087`
+
+### __sl_4 (function)
+- Defined: `progs/asm/aes.s:3091`
+
 ### main (function)
-- Defined: `progs/asm/aes.s:3799`
+- Defined: `progs/asm/aes.s:3807`
 
 ### _start (function)
-- Defined: `progs/asm/aes.s:4105`
+- Defined: `progs/asm/aes.s:4113`
 
 ## progs/asm/cp.s
 
@@ -18736,102 +18768,128 @@ Z_DumpHeap
 ## progs/file/file.c
 
 ### file_sys_dir_list (function) `static long file_sys_dir_list(const char *path, char *buf, long cap)`
-- Defined: `progs/file/file.c:75`
-- Doc: static struct fassoc_table file_assocs; static int file_quit; static char file_cwd[FILE_MAX_PATH]; static char file_entr
+- Defined: `progs/file/file.c:98`
+- Doc: static unsigned char file_icon_mask[FILE_ICON_N][FILE_ICON_MAX * FILE_ICON_MAX]; static struct nk_minios_img file_icon_i
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_sys_spawn (function) `static long file_sys_spawn(const char *path, int argc, const char **argv)`
-- Defined: `progs/file/file.c:85`
+- Defined: `progs/file/file.c:108`
 - Doc: static int file_preview_h; static int file_preview_on; /** Raw DIR_LIST syscall (241): names land NUL-separated in buf. 
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_ext_of (function) `static void file_ext_of(const char *fname, char *dst, unsigned cap)`
-- Defined: `progs/file/file.c:96`
+- Defined: `progs/file/file.c:119`
 - Doc: } /** Raw SPAWN syscall (215) preserving this app across the child. static long file_sys_spawn(const char *path, int arg
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
+### file_icon_kind (function) `static int file_icon_kind(const char *fname, int isdir)`
+- Defined: `progs/file/file.c:143`
+- Doc: Icon kind for an entry: folder for dirs, image for .png, object for .o/.elf/.cvm, files for the text kinds (.c/.h/.lisp/
+- Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_icon_sz (function) `static int file_icon_sz(void)`
+- Defined: `progs/file/file.c:155`
+- Doc: and for anything else. The extension arrives lowercased from * file_ext_of, so every comparison is exact. static int fil
+- Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_icon_decode (function) `static int file_icon_decode(const char *path, unsigned char *px,
+                            unsi...`
+- Defined: `progs/file/file.c:162`
+- Doc: Decode one RGBA icon into indexed pixels plus an alpha mask, scaled to the live size. Fail closed: any bound or decode e
+- Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_icons_load (function) `static int file_icons_load(void)`
+- Defined: `progs/file/file.c:210`
+- Doc: Load the four kind icons; all-or-nothing so the UI never mixes icon * and text rows. Returns 1 when every icon is live.
+- Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### file_toggle_icons (function) `static int file_toggle_icons(void)`
+- Defined: `progs/file/file.c:235`
+- Doc: Flip the icon size and reload the four kind icons. Returns 1 when the new size is live, 0 when the reload failed (flag s
+- Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
 ### file_join (function) `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)`
-- Defined: `progs/file/file.c:117`
-- Doc: if (fname[k] == '.') { dot = k; found = 1; } if (!found || dot + 1 >= n) { dst[0] = 0; return; } { unsigned m = 0; for (
+- Defined: `progs/file/file.c:242`
+- Doc: Flip the icon size and reload the four kind icons. Returns 1 when the new size is live, 0 when the reload failed (flag s
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_parent (function) `static void file_parent(char *path)`
-- Defined: `progs/file/file.c:131`
+- Defined: `progs/file/file.c:256`
 - Doc: static int file_join(const char *dir, const char *name, char *dst, unsigned cap) { unsigned a = 0; unsigned b = 0; while
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_assoc_line (function) `static int file_assoc_line(const char *line, char *ext, char *prog)`
-- Defined: `progs/file/file.c:141`
+- Defined: `progs/file/file.c:266`
 - Doc: return 0; } /** Parent of an absolute path, root stays root. static void file_parent(char *path) { unsigned n = 0; while
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_assoc_load (function) `static void file_assoc_load(void)`
-- Defined: `progs/file/file.c:174`
+- Defined: `progs/file/file.c:299`
 - Doc: } if (line[p + k] && line[p + k] != '\n' && line[p + k] != '\r') return -1; while (p > 0 && (prog[p - 1] == ' ' || prog[
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_assoc_lookup (function) `static const char *file_assoc_lookup(const char *ext)`
-- Defined: `progs/file/file.c:190`
+- Defined: `progs/file/file.c:315`
 - Doc: char line[FILE_LOG_LINE]; char ext[FILE_EXT_MAX + 1]; char prog[FILE_PROG_MAX + 1]; fassoc_clear(&file_assocs); f = fope
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_action_of (function) `static int file_action_of(const char *fname, const char **prog_out)`
-- Defined: `progs/file/file.c:195`
+- Defined: `progs/file/file.c:320`
 - Doc: if (!f) return; while (fgets(line, sizeof(line), f)) { if (file_assoc_line(line, ext, prog) != 0) continue; if (fassoc_p
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_refresh (function) `static void file_refresh(void)`
-- Defined: `progs/file/file.c:208`
+- Defined: `progs/file/file.c:333`
 - Doc: /** Dispatch kind for a file name through the association table. static int file_action_of(const char *fname, const char
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_preview_load (function) `static int file_preview_load(const char *path)`
-- Defined: `progs/file/file.c:223`
+- Defined: `progs/file/file.c:348`
 - Doc: long rc = file_sys_dir_list(file_cwd, file_entries, FILE_LIST_CAP); if (rc < 0) { file_entry_count = 0; file_entries[0] 
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_preview_blit (function) `static void file_preview_blit(int ox, int oy)`
-- Defined: `progs/file/file.c:256`
+- Defined: `progs/file/file.c:381`
 - Doc: FILE_PREVIEW_W, FILE_PREVIEW_H) != MPNG_ERR_OK) { stbi_image_free(px); return -1; } } stbi_image_free(px); file_preview_
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_spawn_visible (function) `static long file_spawn_visible(const char *tool, int argc, const char **argv,
                    ...`
-- Defined: `progs/file/file.c:271`
+- Defined: `progs/file/file.c:396`
 - Doc: volatile uint8_t *fb = NK_BACKBUF; int x; int y; if (!file_preview_on) return; for (y = 0; y < file_preview_h; y++) for 
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_open_text (function) `static void file_open_text(const char *path)`
-- Defined: `progs/file/file.c:294`
+- Defined: `progs/file/file.c:419`
 - Doc: printf("file: %s exit code: %ld\n", label, rc); fflush(stdout); nk_sys_vga_mode(1); nk_build_palette(pal768); nk_sys_pal
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_run_shell (function) `static void file_run_shell(const char *path)`
-- Defined: `progs/file/file.c:305`
+- Defined: `progs/file/file.c:430`
 - Doc: } /** Open a text file in vedit, preserving this browser. static void file_open_text(const char *path) { const char *arg
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_activate (function) `static void file_activate(const char *dir, const char *name)`
-- Defined: `progs/file/file.c:344`
+- Defined: `progs/file/file.c:469`
 - Doc: if (strcmp(ext, "cvm") == 0) { args[0] = path; args[1] = 0; snprintf(label, sizeof(label), "run %s", path); file_spawn_v
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_ui_build (function) `static void file_ui_build(struct nk_context *ctx)`
-- Defined: `progs/file/file.c:375`
+- Defined: `progs/file/file.c:500`
 - Doc: snprintf(file_preview_path, sizeof(file_preview_path), "%s", path); snprintf(file_status, sizeof(file_status), "preview 
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_selftest (function) `static int file_selftest(void)`
-- Defined: `progs/file/file.c:452`
+- Defined: `progs/file/file.c:599`
 - Doc: off += (long)el; idx++; if (off >= FILE_LIST_CAP) break; } } if (file_preview_on) { nk_layout_row_dynamic(ctx, 18, 1); n
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### file_gui_run (function) `static void file_gui_run(void)`
-- Defined: `progs/file/file.c:553`
+- Defined: `progs/file/file.c:745`
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/file/file.c:610`
+- Defined: `progs/file/file.c:803`
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/file/file_assoc.h
@@ -19645,511 +19703,511 @@ Z_DumpHeap
 ## progs/minicraft/minicraft.c
 
 ### best_tool_for (function) `static int best_tool_for(unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:221`
+- Defined: `progs/minicraft/minicraft.c:231`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### break_time_ms (function) `static long break_time_ms(unsigned char b, int tool)`
-- Defined: `progs/minicraft/minicraft.c:240`
+- Defined: `progs/minicraft/minicraft.c:250`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### break_beep_for (function) `static long break_beep_for(unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:265`
+- Defined: `progs/minicraft/minicraft.c:275`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_toggle_zoom (function) `static void mc_toggle_zoom(void)`
-- Defined: `progs/minicraft/minicraft.c:306`
+- Defined: `progs/minicraft/minicraft.c:316`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### s_time_ms (function) `static long s_time_ms(void)`
-- Defined: `progs/minicraft/minicraft.c:327`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### s_kbd (function) `static long s_kbd(void)`
-- Defined: `progs/minicraft/minicraft.c:332`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### s_kbd_raw (function) `static long s_kbd_raw(long on)`
 - Defined: `progs/minicraft/minicraft.c:337`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
+### s_kbd (function) `static long s_kbd(void)`
+- Defined: `progs/minicraft/minicraft.c:342`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### s_kbd_raw (function) `static long s_kbd_raw(long on)`
+- Defined: `progs/minicraft/minicraft.c:347`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
 ### s_getc_raw (function) `static long s_getc_raw(void)`
-- Defined: `progs/minicraft/minicraft.c:349`
+- Defined: `progs/minicraft/minicraft.c:359`
 - Doc: Serial fallback for menus: SYS_KBD in raw mode carries PS/2 only, so a serial console can never drive a scancode menu (E
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### ser_get (function) `static long ser_get(void)`
-- Defined: `progs/minicraft/minicraft.c:363`
+- Defined: `progs/minicraft/minicraft.c:373`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### ser_unget (function) `static void ser_unget(unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:376`
+- Defined: `progs/minicraft/minicraft.c:386`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### menu_ser_key (function) `static long menu_ser_key(long b)`
-- Defined: `progs/minicraft/minicraft.c:381`
+- Defined: `progs/minicraft/minicraft.c:391`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### kbd_drain (function) `static void kbd_drain(void)`
-- Defined: `progs/minicraft/minicraft.c:418`
+- Defined: `progs/minicraft/minicraft.c:428`
 - Doc: Drain stale scancodes (typematic repeats, a release that arrived with * its press) before leaving a menu, so they never 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### s_vga (function) `static long s_vga(long on)`
-- Defined: `progs/minicraft/minicraft.c:423`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### s_pal (function) `static long s_pal(const unsigned char *p)`
-- Defined: `progs/minicraft/minicraft.c:428`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### s_present (function) `static long s_present(void)`
 - Defined: `progs/minicraft/minicraft.c:433`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### s_title (function) `static long s_title(const char *t)`
+### s_pal (function) `static long s_pal(const unsigned char *p)`
 - Defined: `progs/minicraft/minicraft.c:438`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### s_mouse (function) `static long s_mouse(int *m)`
+### s_present (function) `static long s_present(void)`
 - Defined: `progs/minicraft/minicraft.c:443`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### s_zoom (function) `static long s_zoom(long on)`
+### s_title (function) `static long s_title(const char *t)`
 - Defined: `progs/minicraft/minicraft.c:448`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### s_yield (function) `static void s_yield(void)`
+### s_mouse (function) `static long s_mouse(int *m)`
 - Defined: `progs/minicraft/minicraft.c:453`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### s_pcspk_init (function) `static long s_pcspk_init(void)`
+### s_zoom (function) `static long s_zoom(long on)`
 - Defined: `progs/minicraft/minicraft.c:458`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### __attribute__ (function) `static long __attribute__((unused)) s_tone(long f)`
+### s_yield (function) `static void s_yield(void)`
 - Defined: `progs/minicraft/minicraft.c:463`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
-### beep (function) `static void beep(long freq, long dur_ms)`
+### s_pcspk_init (function) `static long s_pcspk_init(void)`
 - Defined: `progs/minicraft/minicraft.c:468`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
+### __attribute__ (function) `static long __attribute__((unused)) s_tone(long f)`
+- Defined: `progs/minicraft/minicraft.c:473`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### beep (function) `static void beep(long freq, long dur_ms)`
+- Defined: `progs/minicraft/minicraft.c:478`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
 ### pal_set (function) `static void pal_set(int i, int r, int g, int b)`
-- Defined: `progs/minicraft/minicraft.c:487`
+- Defined: `progs/minicraft/minicraft.c:497`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### build_palette (function) `static void build_palette(void)`
-- Defined: `progs/minicraft/minicraft.c:493`
+- Defined: `progs/minicraft/minicraft.c:503`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### in_world (function) `static int in_world(int x, int y, int z)`
-- Defined: `progs/minicraft/minicraft.c:552`
+- Defined: `progs/minicraft/minicraft.c:562`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### chunk_of (function) `static int chunk_of(int v)`
-- Defined: `progs/minicraft/minicraft.c:567`
+- Defined: `progs/minicraft/minicraft.c:577`
 - Doc: (void)x; (void)y; return z >= 0 && z < MC_H; } static unsigned int hash2(int x, int y); static unsigned int hash2_seed(i
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### chunk_local (function) `static int chunk_local(int v)`
-- Defined: `progs/minicraft/minicraft.c:571`
+- Defined: `progs/minicraft/minicraft.c:581`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### chunk_lidx (function) `static int chunk_lidx(int lx, int ly, int z)`
-- Defined: `progs/minicraft/minicraft.c:576`
+- Defined: `progs/minicraft/minicraft.c:586`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### chunk_find (function) `static int chunk_find(int cx, int cy)`
-- Defined: `progs/minicraft/minicraft.c:582`
+- Defined: `progs/minicraft/minicraft.c:592`
 - Doc: O(1) fast path: DDA walks neighbours, so the last chunk almost always * hits; the 49-slot scan is the rare slow path, ne
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### world_max_recompute (function) `static void world_max_recompute(void)`
-- Defined: `progs/minicraft/minicraft.c:596`
+- Defined: `progs/minicraft/minicraft.c:606`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### chunk_evict_slot (function) `static int chunk_evict_slot(int cx, int cy)`
-- Defined: `progs/minicraft/minicraft.c:605`
+- Defined: `progs/minicraft/minicraft.c:615`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### chunk_ensure (function) `static int chunk_ensure(int cx, int cy)`
-- Defined: `progs/minicraft/minicraft.c:625`
+- Defined: `progs/minicraft/minicraft.c:635`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### chunk_build_meta (function) `static void chunk_build_meta(int slot)`
-- Defined: `progs/minicraft/minicraft.c:648`
+- Defined: `progs/minicraft/minicraft.c:658`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### col_recompute (function) `static void col_recompute(int x, int y)`
-- Defined: `progs/minicraft/minicraft.c:693`
+- Defined: `progs/minicraft/minicraft.c:703`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### col_top_at (function) `static int col_top_at(int x, int y)`
-- Defined: `progs/minicraft/minicraft.c:718`
+- Defined: `progs/minicraft/minicraft.c:728`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### light_recompute_col (function) `static void light_recompute_col(int x, int y)`
-- Defined: `progs/minicraft/minicraft.c:725`
+- Defined: `progs/minicraft/minicraft.c:735`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### get_b (function) `static unsigned char get_b(int x, int y, int z)`
-- Defined: `progs/minicraft/minicraft.c:754`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### set_b (function) `static void set_b(int x, int y, int z, unsigned char b)`
 - Defined: `progs/minicraft/minicraft.c:764`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
+### set_b (function) `static void set_b(int x, int y, int z, unsigned char b)`
+- Defined: `progs/minicraft/minicraft.c:774`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
 ### set_b_raw (function) `static void set_b_raw(int x, int y, int z, unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:780`
+- Defined: `progs/minicraft/minicraft.c:790`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sky_light (function) `static float sky_light(int x, int y, int z)`
-- Defined: `progs/minicraft/minicraft.c:791`
+- Defined: `progs/minicraft/minicraft.c:801`
 - Doc: world_dirty = 1; } static void set_b_raw(int x, int y, int z, unsigned char b) { int s; if (z < 0 || z >= MC_H) return; 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### is_solid (function) `static int is_solid(unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:801`
+- Defined: `progs/minicraft/minicraft.c:811`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### in_water_at (function) `static int in_water_at(float x, float y, float z)`
-- Defined: `progs/minicraft/minicraft.c:804`
+- Defined: `progs/minicraft/minicraft.c:814`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### is_visible (function) `static int is_visible(unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:809`
+- Defined: `progs/minicraft/minicraft.c:819`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### hash2 (function) `static unsigned int hash2(int x, int y)`
-- Defined: `progs/minicraft/minicraft.c:813`
+- Defined: `progs/minicraft/minicraft.c:823`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### hash2_seed (function) `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
-- Defined: `progs/minicraft/minicraft.c:820`
+- Defined: `progs/minicraft/minicraft.c:830`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_smoothstep (function) `static float mc_smoothstep(float t)`
-- Defined: `progs/minicraft/minicraft.c:829`
+- Defined: `progs/minicraft/minicraft.c:839`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### biome_fdiv (function) `static int biome_fdiv(int v, int c)`
-- Defined: `progs/minicraft/minicraft.c:836`
+- Defined: `progs/minicraft/minicraft.c:846`
 - Doc: Voronoi biome lattice: floor division so negatives land right. A smoothed (bilinear) field must NOT be thresholded here:
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### voro_site (function) `static void voro_site(int cx, int cy, unsigned int seed, int cell,
     int *sx, int *sy)`
-- Defined: `progs/minicraft/minicraft.c:851`
+- Defined: `progs/minicraft/minicraft.c:861`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### biome_voro (function) `static int biome_voro(int x, int y, unsigned int seed, int cell,
     int ox, int oy, unsigned int...`
-- Defined: `progs/minicraft/minicraft.c:859`
+- Defined: `progs/minicraft/minicraft.c:869`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### biome_desert (function) `static int biome_desert(int x, int y, unsigned int seed)`
-- Defined: `progs/minicraft/minicraft.c:883`
+- Defined: `progs/minicraft/minicraft.c:893`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### biome_snow (function) `static int biome_snow(int x, int y, unsigned int seed)`
-- Defined: `progs/minicraft/minicraft.c:887`
+- Defined: `progs/minicraft/minicraft.c:897`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### is_cave (function) `static int is_cave(int x, int y, int z, unsigned int seed)`
-- Defined: `progs/minicraft/minicraft.c:891`
+- Defined: `progs/minicraft/minicraft.c:901`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### ground_h_seed (function) `static int ground_h_seed(int x, int y, unsigned int seed)`
-- Defined: `progs/minicraft/minicraft.c:899`
+- Defined: `progs/minicraft/minicraft.c:909`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### inv_add (function) `static int inv_add(int b, int n)`
-- Defined: `progs/minicraft/minicraft.c:921`
+- Defined: `progs/minicraft/minicraft.c:931`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### inv_remove (function) `static int inv_remove(int b, int n)`
-- Defined: `progs/minicraft/minicraft.c:935`
+- Defined: `progs/minicraft/minicraft.c:945`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### decorate_column (function) `static void decorate_column(int x, int y, unsigned int seed)`
-- Defined: `progs/minicraft/minicraft.c:985`
+- Defined: `progs/minicraft/minicraft.c:995`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### gen_terrain_chunk (function) `static void gen_terrain_chunk(int slot)`
-- Defined: `progs/minicraft/minicraft.c:1024`
+- Defined: `progs/minicraft/minicraft.c:1034`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### decorate_chunk (function) `static void decorate_chunk(int slot)`
-- Defined: `progs/minicraft/minicraft.c:1033`
+- Defined: `progs/minicraft/minicraft.c:1043`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### ensure_around_px (function) `static void ensure_around_px(float px, float py)`
-- Defined: `progs/minicraft/minicraft.c:1046`
+- Defined: `progs/minicraft/minicraft.c:1056`
 - Doc: Keep a (2R+1)^2 ring of terrain around the player, an inner ring decorated, drop the rest (dirty chunks hit disk first).
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### ensure_around (function) `static void ensure_around(void)`
-- Defined: `progs/minicraft/minicraft.c:1080`
+- Defined: `progs/minicraft/minicraft.c:1090`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### new_world (function) `static void new_world(unsigned int seed)`
-- Defined: `progs/minicraft/minicraft.c:1085`
+- Defined: `progs/minicraft/minicraft.c:1095`
 - Doc: save_chunk_file(i); ch_used[i] = 0; if (ch_cache == i) ch_cache = -1; } } world_max_recompute(); } static void ensure_ar
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mob_spawn_one (function) `static void mob_spawn_one(Pig *m, int id, int hp, long now)`
-- Defined: `progs/minicraft/minicraft.c:1181`
+- Defined: `progs/minicraft/minicraft.c:1191`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### pig_collides (function) `static int pig_collides(float x, float y, float z)`
-- Defined: `progs/minicraft/minicraft.c:1233`
+- Defined: `progs/minicraft/minicraft.c:1243`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### creeper_explode (function) `static void creeper_explode(Pig *c, long now)`
-- Defined: `progs/minicraft/minicraft.c:1247`
+- Defined: `progs/minicraft/minicraft.c:1257`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### creep_sense (function) `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)`
-- Defined: `progs/minicraft/minicraft.c:1315`
+- Defined: `progs/minicraft/minicraft.c:1325`
 - Doc: Creeper perception in 3D: planar delta, eye-height delta and full distance. The old code used planar distance only, so a
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### creep_has_los (function) `static int creep_has_los(Pig *c)`
-- Defined: `progs/minicraft/minicraft.c:1327`
+- Defined: `progs/minicraft/minicraft.c:1337`
 - Doc: Voxel line of sight between creeper eyes and player eyes, sampled every half block. Walls blind the chase; open field ke
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### creep_separate (function) `static void creep_separate(Pig *p, int id, float dt)`
-- Defined: `progs/minicraft/minicraft.c:1351`
+- Defined: `progs/minicraft/minicraft.c:1361`
 - Doc: Herd separation: creepers inside MC_CREEP_SEP_D push apart so the pack * never stacks on one tile and every one of the 3
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### tick_mob (function) `static void tick_mob(Pig *p, int id, float dt, long now)`
-- Defined: `progs/minicraft/minicraft.c:1376`
+- Defined: `progs/minicraft/minicraft.c:1386`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### tick_pigs (function) `static void tick_pigs(float dt, long now)`
-- Defined: `progs/minicraft/minicraft.c:1497`
+- Defined: `progs/minicraft/minicraft.c:1512`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### face_color (function) `static unsigned char face_color(unsigned char b, int face)`
-- Defined: `progs/minicraft/minicraft.c:1505`
+- Defined: `progs/minicraft/minicraft.c:1520`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sky_color (function) `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
-- Defined: `progs/minicraft/minicraft.c:1554`
+- Defined: `progs/minicraft/minicraft.c:1569`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### shade_block (function) `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
              ...`
-- Defined: `progs/minicraft/minicraft.c:1587`
+- Defined: `progs/minicraft/minicraft.c:1602`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### cast_ray (function) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
-- Defined: `progs/minicraft/minicraft.c:1644`
+- Defined: `progs/minicraft/minicraft.c:1659`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### eye_z (function) `static float eye_z(void)`
-- Defined: `progs/minicraft/minicraft.c:1735`
+- Defined: `progs/minicraft/minicraft.c:1750`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_glyph (function) `static int mc_glyph(char ch)`
-- Defined: `progs/minicraft/minicraft.c:1802`
+- Defined: `progs/minicraft/minicraft.c:1817`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_pixel (function) `static void mc_pixel(int x, int y, unsigned char c)`
-- Defined: `progs/minicraft/minicraft.c:1810`
+- Defined: `progs/minicraft/minicraft.c:1825`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_text (function) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
-- Defined: `progs/minicraft/minicraft.c:1816`
+- Defined: `progs/minicraft/minicraft.c:1831`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_text_bg (function) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
-- Defined: `progs/minicraft/minicraft.c:1829`
+- Defined: `progs/minicraft/minicraft.c:1844`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_block_name (function) `static const char *mc_block_name(unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:1842`
+- Defined: `progs/minicraft/minicraft.c:1857`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_facing (function) `static char mc_facing(void)`
-- Defined: `progs/minicraft/minicraft.c:1862`
+- Defined: `progs/minicraft/minicraft.c:1877`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### cam_build (function) `static void cam_build(void)`
-- Defined: `progs/minicraft/minicraft.c:1877`
+- Defined: `progs/minicraft/minicraft.c:1892`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### render_terrain (function) `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
                       ...`
-- Defined: `progs/minicraft/minicraft.c:1895`
+- Defined: `progs/minicraft/minicraft.c:1910`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mob_pixel (function) `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)`
-- Defined: `progs/minicraft/minicraft.c:1930`
+- Defined: `progs/minicraft/minicraft.c:1945`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### render_mob_array (function) `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
     float rx, float r...`
-- Defined: `progs/minicraft/minicraft.c:1964`
+- Defined: `progs/minicraft/minicraft.c:1979`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### render_pigs (function) `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
-- Defined: `progs/minicraft/minicraft.c:2015`
+- Defined: `progs/minicraft/minicraft.c:2030`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### render_frame (function) `static void render_frame(void)`
-- Defined: `progs/minicraft/minicraft.c:2023`
+- Defined: `progs/minicraft/minicraft.c:2038`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### sc_hist_push (function) `static void sc_hist_push(unsigned char b)`
-- Defined: `progs/minicraft/minicraft.c:2136`
+- Defined: `progs/minicraft/minicraft.c:2151`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### poll_kbd (function) `static void poll_kbd(void)`
-- Defined: `progs/minicraft/minicraft.c:2147`
+- Defined: `progs/minicraft/minicraft.c:2162`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### player_collides (function) `static int player_collides(float x, float y, float z)`
-- Defined: `progs/minicraft/minicraft.c:2340`
+- Defined: `progs/minicraft/minicraft.c:2355`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### move_x (function) `static void move_x(float nx)`
-- Defined: `progs/minicraft/minicraft.c:2364`
+- Defined: `progs/minicraft/minicraft.c:2379`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### move_y (function) `static void move_y(float ny)`
-- Defined: `progs/minicraft/minicraft.c:2369`
+- Defined: `progs/minicraft/minicraft.c:2384`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### move_z_abs (function) `static MoveResult move_z_abs(float nz)`
-- Defined: `progs/minicraft/minicraft.c:2374`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`
-
-### block_intersects_player (function) `static int block_intersects_player(int bx, int by, int bz)`
 - Defined: `progs/minicraft/minicraft.c:2389`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
+### block_intersects_player (function) `static int block_intersects_player(int bx, int by, int bz)`
+- Defined: `progs/minicraft/minicraft.c:2404`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
 ### try_autostep (function) `static void try_autostep(float tx, float ty)`
-- Defined: `progs/minicraft/minicraft.c:2398`
+- Defined: `progs/minicraft/minicraft.c:2413`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### hurt (function) `static void hurt(int dmg, const char *why)`
-- Defined: `progs/minicraft/minicraft.c:2409`
+- Defined: `progs/minicraft/minicraft.c:2424`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### tick_player (function) `static void tick_player(float dt)`
-- Defined: `progs/minicraft/minicraft.c:2434`
+- Defined: `progs/minicraft/minicraft.c:2449`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### tick_water (function) `static void tick_water(long now)`
-- Defined: `progs/minicraft/minicraft.c:2533`
+- Defined: `progs/minicraft/minicraft.c:2548`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### tick_hunger (function) `static void tick_hunger(long now)`
-- Defined: `progs/minicraft/minicraft.c:2581`
+- Defined: `progs/minicraft/minicraft.c:2596`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### goal_text (function) `static const char *goal_text(void)`
-- Defined: `progs/minicraft/minicraft.c:2593`
+- Defined: `progs/minicraft/minicraft.c:2608`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### tick_goals (function) `static void tick_goals(void)`
-- Defined: `progs/minicraft/minicraft.c:2604`
+- Defined: `progs/minicraft/minicraft.c:2619`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### tick_discover (function) `static void tick_discover(long now)`
-- Defined: `progs/minicraft/minicraft.c:2615`
+- Defined: `progs/minicraft/minicraft.c:2630`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### tick_interact (function) `static void tick_interact(void)`
-- Defined: `progs/minicraft/minicraft.c:2653`
+- Defined: `progs/minicraft/minicraft.c:2668`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### mc_crc32 (function) `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)`
-- Defined: `progs/minicraft/minicraft.c:2904`
+- Defined: `progs/minicraft/minicraft.c:2919`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### save_compute_crc (function) `static uint32_t save_compute_crc(const SaveHeader *hd)`
-- Defined: `progs/minicraft/minicraft.c:2917`
+- Defined: `progs/minicraft/minicraft.c:2932`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### chunk_path (function) `static void chunk_path(int cx, int cy, char *out, size_t n)`
-- Defined: `progs/minicraft/minicraft.c:2923`
+- Defined: `progs/minicraft/minicraft.c:2938`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### save_chunk_file (function) `static int save_chunk_file(int slot)`
-- Defined: `progs/minicraft/minicraft.c:2927`
+- Defined: `progs/minicraft/minicraft.c:2942`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### load_chunk_file (function) `static int load_chunk_file(int slot, int cx, int cy)`
-- Defined: `progs/minicraft/minicraft.c:2959`
+- Defined: `progs/minicraft/minicraft.c:2974`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### save_validate_loaded (function) `static int save_validate_loaded(void)`
-- Defined: `progs/minicraft/minicraft.c:3041`
+- Defined: `progs/minicraft/minicraft.c:3056`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### load_reset_runtime (function) `static void load_reset_runtime(void)`
-- Defined: `progs/minicraft/minicraft.c:3060`
+- Defined: `progs/minicraft/minicraft.c:3075`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### carve_blob (function) `static void carve_blob(const unsigned char *blob)`
-- Defined: `progs/minicraft/minicraft.c:3093`
+- Defined: `progs/minicraft/minicraft.c:3108`
 - Doc: Import a 64x64x32 legacy blob into chunks (0..3, 0..3), then dirty so * region files persist it. Old saves keep their wo
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### load_world_legacy (function) `static int load_world_legacy(FILE *f)`
-- Defined: `progs/minicraft/minicraft.c:3122`
+- Defined: `progs/minicraft/minicraft.c:3137`
 - Doc: Legacy raw save: fixed old_inv[12] layout is fragile if B_COUNT grows; * kept read-only for ancient saves, never written
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### load_apply_player (function) `static void load_apply_player(const SaveHeader *hd)`
-- Defined: `progs/minicraft/minicraft.c:3160`
+- Defined: `progs/minicraft/minicraft.c:3175`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### load_world_v3 (function) `static int load_world_v3(FILE *f, SaveHeader *hd)`
-- Defined: `progs/minicraft/minicraft.c:3179`
+- Defined: `progs/minicraft/minicraft.c:3194`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### load_world_v2 (function) `static int load_world_v2(FILE *f, SaveHeader *hd)`
-- Defined: `progs/minicraft/minicraft.c:3219`
+- Defined: `progs/minicraft/minicraft.c:3234`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### load_world (function) `static int load_world(void)`
-- Defined: `progs/minicraft/minicraft.c:3256`
+- Defined: `progs/minicraft/minicraft.c:3271`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### selftest (function) `static int selftest(void)`
-- Defined: `progs/minicraft/minicraft.c:3330`
+- Defined: `progs/minicraft/minicraft.c:3345`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### census (function) `static int census(void)`
-- Defined: `progs/minicraft/minicraft.c:3591`
+- Defined: `progs/minicraft/minicraft.c:3606`
 - Doc: 128x128 columns (64 biome cells): a 64-wide patch covers too few * 16-block biome cells and the desert rate fluctuates w
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### dumpstats (function) `static int dumpstats(void)`
-- Defined: `progs/minicraft/minicraft.c:3655`
+- Defined: `progs/minicraft/minicraft.c:3670`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### title_menu (function) `static int title_menu(int have_save, int *seed_io)`
-- Defined: `progs/minicraft/minicraft.c:3739`
+- Defined: `progs/minicraft/minicraft.c:3754`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### pause_menu (function) `static int pause_menu(int *seed_io)`
-- Defined: `progs/minicraft/minicraft.c:3907`
+- Defined: `progs/minicraft/minicraft.c:3922`
 - Doc: Pause menu on ESC (Alt+F4 still kills the process kernel-side): * 0 = resume, 1 = new world with *seed_io, 2 = save + qu
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/minicraft/minicraft.c:4080`
+- Defined: `progs/minicraft/minicraft.c:4095`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ### save_world (function) `static int save_world(void);`
-- Defined: `progs/minicraft/minicraft.c:320`
+- Defined: `progs/minicraft/minicraft.c:330`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ## progs/minios_png.h
@@ -20525,41 +20583,41 @@ Z_DumpHeap
 
 ### nk_minios_font_width (function) `static float nk_minios_font_width(nk_handle handle, float height,
                                ...`
-- Defined: `progs/nuklear/nuklear_minios.c:666`
-- Doc: if (c->background.a > 0) bg = col_to_idx(c->background); draw_text(c->x, c->y, c->string, c->length, fg, bg); break; } c
+- Defined: `progs/nuklear/nuklear_minios.c:683`
+- Doc: im->px[iy * im->w + ix]); } } break; } case NK_COMMAND_CUSTOM: break; default: break; } } } /* ---- Font (8x8 monospace)
 - Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
 ### nk_minios_font (function) `struct nk_user_font nk_minios_font(void)`
-- Defined: `progs/nuklear/nuklear_minios.c:672`
+- Defined: `progs/nuklear/nuklear_minios.c:689`
 - Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
 ### feed_key (function) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
-- Defined: `progs/nuklear/nuklear_minios.c:707`
+- Defined: `progs/nuklear/nuklear_minios.c:724`
 - Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
 ### nk_set_scancode_hook (function) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
-- Defined: `progs/nuklear/nuklear_minios.c:714`
+- Defined: `progs/nuklear/nuklear_minios.c:731`
 - Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
 ### handle_scancode (function) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
-- Defined: `progs/nuklear/nuklear_minios.c:719`
+- Defined: `progs/nuklear/nuklear_minios.c:736`
 - Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
 ### nk_client_poll (function) `static void nk_client_poll(struct nk_context *ctx)`
-- Defined: `progs/nuklear/nuklear_minios.c:767`
+- Defined: `progs/nuklear/nuklear_minios.c:784`
 - Doc: Client input pump: feed the pending .ev batch when its seq advanced, else hold the last state. Never touches PS/2; the *
 - Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
 ### nk_poll_input (function) `void nk_poll_input(struct nk_context *ctx)`
-- Defined: `progs/nuklear/nuklear_minios.c:814`
+- Defined: `progs/nuklear/nuklear_minios.c:831`
 - Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
 ### nk_set_window_origin (function) `void nk_set_window_origin(int x, int y)`
-- Defined: `progs/nuklear/nuklear_minios.c:853`
+- Defined: `progs/nuklear/nuklear_minios.c:870`
 - Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
 ### nk_quit_requested (function) `int nk_quit_requested(void)`
-- Defined: `progs/nuklear/nuklear_minios.c:861`
+- Defined: `progs/nuklear/nuklear_minios.c:878`
 - Doc: WM quit gesture latch: ESC or Alt+F4 pressed since the last poll. Returns 1 once per gesture, then clears. Every NK app 
 - Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
@@ -20641,23 +20699,23 @@ Z_DumpHeap
 - Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### SYS_NK_FRAME (function) `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);`
-- Defined: `progs/nuklear/nuklear_minios.h:60`
+- Defined: `progs/nuklear/nuklear_minios.h:73`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_poll_input (function) `void nk_poll_input(struct nk_context *ctx);`
-- Defined: `progs/nuklear/nuklear_minios.h:62`
+- Defined: `progs/nuklear/nuklear_minios.h:75`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_quit_requested (function) `int nk_quit_requested(void);`
-- Defined: `progs/nuklear/nuklear_minios.h:67`
+- Defined: `progs/nuklear/nuklear_minios.h:80`
 - Doc: WM quit gesture: ESC or Alt+F4 since the last poll (1 once, then clears). Every NK app checks this per frame so closing 
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ### nk_set_scancode_hook (function) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
-- Defined: `progs/nuklear/nuklear_minios.h:76`
+- Defined: `progs/nuklear/nuklear_minios.h:89`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
@@ -23355,307 +23413,307 @@ Z_DumpHeap
 ## progs/vedit/vedit.c
 
 ### vedit_getc_raw (function) `static long vedit_getc_raw(long blocking)`
-- Defined: `progs/vedit/vedit.c:22`
+- Defined: `progs/vedit/vedit.c:23`
 - Doc: the graphics mode first so the desktop terminal stays ordered and the toolchain output lands on the console, then the ID
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_set_title (function) `static long vedit_set_title(const char *t)`
-- Defined: `progs/vedit/vedit.c:31`
+- Defined: `progs/vedit/vedit.c:32`
 - Doc: #include "nuklear.h" #include "nuklear_minios.h" #include "nuklear_theme.h" /** Platform syscalls vedit needs beyond the
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_spawn (function) `static long vedit_spawn(const char *path, const char *redir, int argc,
                         co...`
-- Defined: `progs/vedit/vedit.c:40`
+- Defined: `progs/vedit/vedit.c:41`
 - Doc: : "rcx", "r11", "memory"); return ret; } /** Set the graphics window title. static long vedit_set_title(const char *t) {
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_vga (function) `static long vedit_vga(int on)`
-- Defined: `progs/vedit/vedit.c:52`
+- Defined: `progs/vedit/vedit.c:53`
 - Doc: /** Run a program through SYS_SPAWN, preserving the IDE across the child. static long vedit_spawn(const char *path, cons
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_kbd_raw (function) `static long vedit_kbd_raw(int on)`
-- Defined: `progs/vedit/vedit.c:64`
+- Defined: `progs/vedit/vedit.c:65`
 - Doc: Force cooked keyboard mode: GETC_RAW (this editor's only key source) starves while raw mode diverts PS/2 bytes to the ra
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_time_ms (function) `static unsigned long vedit_time_ms(void)`
-- Defined: `progs/vedit/vedit.c:73`
+- Defined: `progs/vedit/vedit.c:74`
 - Doc: Force cooked keyboard mode: GETC_RAW (this editor's only key source) starves while raw mode diverts PS/2 bytes to the ra
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_bg (function) `static struct nk_color vedit_c_bg(void)`
-- Defined: `progs/vedit/vedit.c:147`
+- Defined: `progs/vedit/vedit.c:150`
 - Doc: /* ---- Decoded keys above any byte ---- #define VEDIT_KEY_UP 1000 #define VEDIT_KEY_DOWN 1001 #define VEDIT_KEY_LEFT 10
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_gutter (function) `static struct nk_color vedit_c_gutter(void)`
-- Defined: `progs/vedit/vedit.c:148`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
-
-### vedit_c_default (function) `static struct nk_color vedit_c_default(void)`
-- Defined: `progs/vedit/vedit.c:149`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
-
-### vedit_c_keyword (function) `static struct nk_color vedit_c_keyword(void)`
-- Defined: `progs/vedit/vedit.c:150`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
-
-### vedit_c_string (function) `static struct nk_color vedit_c_string(void)`
 - Defined: `progs/vedit/vedit.c:151`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
-### vedit_c_comment (function) `static struct nk_color vedit_c_comment(void)`
+### vedit_c_default (function) `static struct nk_color vedit_c_default(void)`
 - Defined: `progs/vedit/vedit.c:152`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
-### vedit_c_number (function) `static struct nk_color vedit_c_number(void)`
+### vedit_c_keyword (function) `static struct nk_color vedit_c_keyword(void)`
 - Defined: `progs/vedit/vedit.c:153`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
-### vedit_c_preproc (function) `static struct nk_color vedit_c_preproc(void)`
+### vedit_c_string (function) `static struct nk_color vedit_c_string(void)`
 - Defined: `progs/vedit/vedit.c:154`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
-### vedit_c_header (function) `static struct nk_color vedit_c_header(void)`
+### vedit_c_comment (function) `static struct nk_color vedit_c_comment(void)`
 - Defined: `progs/vedit/vedit.c:155`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
-### vedit_c_headtxt (function) `static struct nk_color vedit_c_headtxt(void)`
+### vedit_c_number (function) `static struct nk_color vedit_c_number(void)`
 - Defined: `progs/vedit/vedit.c:156`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
-### vedit_c_status (function) `static struct nk_color vedit_c_status(void)`
+### vedit_c_preproc (function) `static struct nk_color vedit_c_preproc(void)`
 - Defined: `progs/vedit/vedit.c:157`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
-### vedit_c_cursor (function) `static struct nk_color vedit_c_cursor(void)`
+### vedit_c_header (function) `static struct nk_color vedit_c_header(void)`
 - Defined: `progs/vedit/vedit.c:158`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
-### vedit_ink (function) `static struct nk_color vedit_ink(int col)`
+### vedit_c_headtxt (function) `static struct nk_color vedit_c_headtxt(void)`
+- Defined: `progs/vedit/vedit.c:159`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_c_status (function) `static struct nk_color vedit_c_status(void)`
 - Defined: `progs/vedit/vedit.c:160`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
+### vedit_c_cursor (function) `static struct nk_color vedit_c_cursor(void)`
+- Defined: `progs/vedit/vedit.c:161`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_ink (function) `static struct nk_color vedit_ink(int col)`
+- Defined: `progs/vedit/vedit.c:163`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
 ### vedit_set_msg (function) `static void vedit_set_msg(const char *s)`
-- Defined: `progs/vedit/vedit.c:230`
+- Defined: `progs/vedit/vedit.c:239`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_alpha (function) `static int vedit_is_alpha(int c)`
-- Defined: `progs/vedit/vedit.c:237`
+- Defined: `progs/vedit/vedit.c:246`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_digit (function) `static int vedit_is_digit(int c)`
-- Defined: `progs/vedit/vedit.c:241`
+- Defined: `progs/vedit/vedit.c:250`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_wordc (function) `static int vedit_is_wordc(int c)`
-- Defined: `progs/vedit/vedit.c:245`
+- Defined: `progs/vedit/vedit.c:254`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_kw (function) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
-- Defined: `progs/vedit/vedit.c:249`
+- Defined: `progs/vedit/vedit.c:258`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### separators (function) `* allow_quote exists because C digit separators (1'000'000) are not
  * valid in Python/Lua number...`
-- Defined: `progs/vedit/vedit.c:272`
+- Defined: `progs/vedit/vedit.c:281`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_parse_number (function) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
-- Defined: `progs/vedit/vedit.c:295`
+- Defined: `progs/vedit/vedit.c:304`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_parse_keyword (function) `static int vedit_parse_keyword(const char *t, int len, int i,
                                cons...`
-- Defined: `progs/vedit/vedit.c:310`
+- Defined: `progs/vedit/vedit.c:319`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_lang_of (function) `static int vedit_lang_of(const char *fname)`
-- Defined: `progs/vedit/vedit.c:327`
+- Defined: `progs/vedit/vedit.c:336`
 - Doc: int wl = 0; int j = i; int k; while (j < len && vedit_is_wordc((unsigned char)t[j])) { if (wl < VEDIT_WORD_MAX - 1) w[wl
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_lang_name (function) `static const char *vedit_lang_name(int lang)`
-- Defined: `progs/vedit/vedit.c:345`
+- Defined: `progs/vedit/vedit.c:357`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_scan_line (function) `static int vedit_scan_line(const char *t, int len, int st)`
-- Defined: `progs/vedit/vedit.c:354`
-- Doc: return VEDIT_LANG_C; } /** Name a highlight language for the status row. static const char *vedit_lang_name(int lang) { 
+- Defined: `progs/vedit/vedit.c:367`
+- Doc: } /** Name a highlight language for the status row. static const char *vedit_lang_name(int lang) { if (lang == VEDIT_LAN
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_state_at (function) `static int vedit_state_at(int row)`
-- Defined: `progs/vedit/vedit.c:607`
+- Defined: `progs/vedit/vedit.c:638`
 - Doc: } else if (c == '"' || c == '\'') { i = vedit_parse_string(t, len, i); } else if (vedit_is_digit(c)) { i = vedit_parse_n
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_row_ptr (function) `static char *vedit_row_ptr(int idx)`
-- Defined: `progs/vedit/vedit.c:616`
+- Defined: `progs/vedit/vedit.c:647`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_clamp (function) `static void vedit_clamp(void)`
-- Defined: `progs/vedit/vedit.c:620`
+- Defined: `progs/vedit/vedit.c:651`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_follow (function) `static void vedit_follow(void)`
-- Defined: `progs/vedit/vedit.c:632`
+- Defined: `progs/vedit/vedit.c:663`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_insert_char (function) `static void vedit_insert_char(int c)`
-- Defined: `progs/vedit/vedit.c:645`
+- Defined: `progs/vedit/vedit.c:676`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_delete_line_at (function) `static void vedit_delete_line_at(int idx)`
-- Defined: `progs/vedit/vedit.c:671`
+- Defined: `progs/vedit/vedit.c:702`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_backspace (function) `static void vedit_backspace(void)`
-- Defined: `progs/vedit/vedit.c:682`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
-
-### vedit_delete_char (function) `static void vedit_delete_char(void)`
 - Defined: `progs/vedit/vedit.c:713`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
+### vedit_delete_char (function) `static void vedit_delete_char(void)`
+- Defined: `progs/vedit/vedit.c:744`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
 ### vedit_split (function) `static void vedit_split(void)`
-- Defined: `progs/vedit/vedit.c:741`
+- Defined: `progs/vedit/vedit.c:772`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_tab (function) `static void vedit_tab(void)`
-- Defined: `progs/vedit/vedit.c:789`
+- Defined: `progs/vedit/vedit.c:820`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_find (function) `static void vedit_find(const char *needle)`
-- Defined: `progs/vedit/vedit.c:816`
+- Defined: `progs/vedit/vedit.c:847`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_save (function) `static int vedit_save(void)`
-- Defined: `progs/vedit/vedit.c:866`
+- Defined: `progs/vedit/vedit.c:897`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_load (function) `static int vedit_load(void)`
-- Defined: `progs/vedit/vedit.c:909`
+- Defined: `progs/vedit/vedit.c:940`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_has_ext (function) `static int vedit_has_ext(const char *fname, const char *ext)`
-- Defined: `progs/vedit/vedit.c:966`
+- Defined: `progs/vedit/vedit.c:997`
 - Doc: vedit_trunc = 1; } } } if (used > 0 && idx < VEDIT_MAX_LINES) { vedit_used[idx] = used; idx++; } vedit_count = idx; fclo
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_base_of (function) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
-- Defined: `progs/vedit/vedit.c:978`
+- Defined: `progs/vedit/vedit.c:1009`
 - Doc: /** Report whether a file name ends with the given extension. static int vedit_has_ext(const char *fname, const char *ex
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_join (function) `static int vedit_join(const char *dir, const char *base, const char *ext,
                       c...`
-- Defined: `progs/vedit/vedit.c:999`
+- Defined: `progs/vedit/vedit.c:1030`
 - Doc: if (fname[k] == '/') s = k + 1; } for (k = s; k < n; k++) { if (fname[k] == '.') e = k; } if (e <= s) e = n; len = e - s
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_link_fmt (function) `static int vedit_link_fmt(const char *s)`
-- Defined: `progs/vedit/vedit.c:1016`
+- Defined: `progs/vedit/vedit.c:1047`
 - Doc: size_t b = strlen(base); size_t e = strlen(ext); size_t k = 0; size_t i; if (d + b + e + 1 > cap) return -1; if (d + b +
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_print_log (function) `static void vedit_print_log(const char *path)`
-- Defined: `progs/vedit/vedit.c:1029`
+- Defined: `progs/vedit/vedit.c:1060`
 - Doc: /** Accept only the two linker formats, rejecting anything else. static int vedit_link_fmt(const char *s) { size_t k = 0
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_spawn_visible (function) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
                   ...`
-- Defined: `progs/vedit/vedit.c:1046`
+- Defined: `progs/vedit/vedit.c:1077`
 - Doc: size_t n; if (!f) { printf("vedit: no output captured (%s missing)\n", path); return; } while ((n = fread(buf, 1, sizeof
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_cmd_exec (function) `static void vedit_cmd_exec(const char *out, int kind)`
-- Defined: `progs/vedit/vedit.c:1075`
+- Defined: `progs/vedit/vedit.c:1106`
 - Doc: if (rc < 0) { snprintf(nb, sizeof(nb), "%s failed (%ld)", label, rc); vedit_set_msg(nb); } else if (rc != 0) { snprintf(
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_run_kind (function) `static int vedit_run_kind(const char *fname)`
-- Defined: `progs/vedit/vedit.c:1088`
+- Defined: `progs/vedit/vedit.c:1119`
 - Doc: /** Run a freshly linked artifact so its output lands on the console. static void vedit_cmd_exec(const char *out, int ki
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_cmd_run (function) `static void vedit_cmd_run(void)`
-- Defined: `progs/vedit/vedit.c:1097`
-- Doc: else vedit_spawn_visible(VEDIT_TOOL_CVM, 0, 1, args, label); } /** Decide the ^R tool for a file: 1=minigcc, 2=lua, 3=py
+- Defined: `progs/vedit/vedit.c:1129`
+- Doc: vedit_spawn_visible(VEDIT_TOOL_CVM, 0, 1, args, label); } /** Decide the ^R tool for a file: 1=minigcc, 2=lua, 3=python,
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_cmd_link (function) `static void vedit_cmd_link(const char *fmt)`
-- Defined: `progs/vedit/vedit.c:1173`
-- Doc: vedit_set_msg("usage: save as .c, .s, .lua or .py first"); return; } args[0] = tool; args[1] = vedit_fname; args[2] = 0;
+- Defined: `progs/vedit/vedit.c:1206`
+- Doc: vedit_set_msg("usage: save as .c, .s, .lua, .py or .lisp first"); return; } args[0] = tool; args[1] = vedit_fname; args[
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_selftest_build (function) `static int vedit_selftest_build(void)`
-- Defined: `progs/vedit/vedit.c:1224`
+- Defined: `progs/vedit/vedit.c:1257`
 - Doc: Headless build contract check: no display, no syscalls, exit status only. Mirror contract with tests/test_vedit_build.c:
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_read_key_poll (function) `static int vedit_read_key_poll(void)`
-- Defined: `progs/vedit/vedit.c:1313`
+- Defined: `progs/vedit/vedit.c:1354`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_ansi_for (function) `static void vedit_ansi_for(int col)`
-- Defined: `progs/vedit/vedit.c:1364`
+- Defined: `progs/vedit/vedit.c:1405`
 - Doc: vedit_esc_state = 3; vedit_esc_t0 = now; return -1; } return VEDIT_KEY_ESC; } vedit_esc_state = 0; if (c != '~') return 
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_console_dump (function) `static void vedit_console_dump(void)`
-- Defined: `progs/vedit/vedit.c:1372`
+- Defined: `progs/vedit/vedit.c:1413`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_open (function) `static void vedit_prompt_open(const char *label, int mode)`
-- Defined: `progs/vedit/vedit.c:1412`
+- Defined: `progs/vedit/vedit.c:1453`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_find (function) `static void vedit_prompt_find(void)`
-- Defined: `progs/vedit/vedit.c:1423`
+- Defined: `progs/vedit/vedit.c:1464`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_saveas (function) `static void vedit_prompt_saveas(void)`
-- Defined: `progs/vedit/vedit.c:1427`
+- Defined: `progs/vedit/vedit.c:1468`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_draw_row (function) `static void vedit_draw_row(struct nk_command_buffer *canvas,
                            struct nk...`
-- Defined: `progs/vedit/vedit.c:1437`
+- Defined: `progs/vedit/vedit.c:1478`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_draw_ui (function) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                     ...`
-- Defined: `progs/vedit/vedit.c:1516`
+- Defined: `progs/vedit/vedit.c:1557`
 - Doc: nk_fill_rect(canvas, nk_rect((float)ccx, (float)y, (float)vedit_cw, (float)vedit_ch), 0, vedit_c_cursor()); if (vedit_cx
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_key (function) `static void vedit_prompt_key(int key)`
-- Defined: `progs/vedit/vedit.c:1647`
+- Defined: `progs/vedit/vedit.c:1688`
 - Doc: vedit_cw), (float)(vedit_status_y + 2), (float)vedit_cw, (float)vedit_ch), 0, vedit_c_cursor()); } nk_draw_text(canvas, 
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_key (function) `static void vedit_key(int key, int *quit, int *save_and_quit)`
-- Defined: `progs/vedit/vedit.c:1706`
+- Defined: `progs/vedit/vedit.c:1747`
 - Doc: if (key == '\b' || key == 127) { if (vedit_prompt_pos > 0) { vedit_prompt_pos--; vedit_prompt_buf[vedit_prompt_pos] = 0;
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_sync_title (function) `static void vedit_sync_title(void)`
-- Defined: `progs/vedit/vedit.c:1786`
+- Defined: `progs/vedit/vedit.c:1827`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_gui_run (function) `static void vedit_gui_run(void)`
-- Defined: `progs/vedit/vedit.c:1796`
+- Defined: `progs/vedit/vedit.c:1837`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_selftest (function) `static int vedit_selftest(void)`
-- Defined: `progs/vedit/vedit.c:1875`
+- Defined: `progs/vedit/vedit.c:1916`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/vedit/vedit.c:1942`
+- Defined: `progs/vedit/vedit.c:1983`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/wl/wl_client.h
@@ -24046,175 +24104,185 @@ Z_DumpHeap
 ## progs/wl/wlcomp.c
 
 ### wlcomp_sys_title (function) `static long wlcomp_sys_title(const char *t)`
-- Defined: `progs/wl/wlcomp.c:55`
+- Defined: `progs/wl/wlcomp.c:57`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_sys_present (function) `static long wlcomp_sys_present(long buf)`
-- Defined: `progs/wl/wlcomp.c:63`
+- Defined: `progs/wl/wlcomp.c:65`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_sys_present_origin (function) `static long wlcomp_sys_present_origin(long buf, int *origin)`
-- Defined: `progs/wl/wlcomp.c:71`
+- Defined: `progs/wl/wlcomp.c:73`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_sys_palette (function) `static long wlcomp_sys_palette(unsigned char *pal)`
-- Defined: `progs/wl/wlcomp.c:79`
+- Defined: `progs/wl/wlcomp.c:81`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_sys_mouse (function) `static long wlcomp_sys_mouse(int *m)`
-- Defined: `progs/wl/wlcomp.c:87`
+- Defined: `progs/wl/wlcomp.c:89`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_sys_kbd (function) `static long wlcomp_sys_kbd(void)`
-- Defined: `progs/wl/wlcomp.c:95`
+- Defined: `progs/wl/wlcomp.c:97`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_sys_kbd_raw (function) `static long wlcomp_sys_kbd_raw(long on)`
-- Defined: `progs/wl/wlcomp.c:103`
+- Defined: `progs/wl/wlcomp.c:105`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_sys_vga_mode (function) `static long wlcomp_sys_vga_mode(long on)`
-- Defined: `progs/wl/wlcomp.c:111`
+- Defined: `progs/wl/wlcomp.c:113`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_sys_yield (function) `static long wlcomp_sys_yield(void)`
-- Defined: `progs/wl/wlcomp.c:119`
+- Defined: `progs/wl/wlcomp.c:121`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_sys_dir_list (function) `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)`
-- Defined: `progs/wl/wlcomp.c:127`
+- Defined: `progs/wl/wlcomp.c:129`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_palette (function) `static int wlcomp_palette(void)`
-- Defined: `progs/wl/wlcomp.c:137`
+- Defined: `progs/wl/wlcomp.c:139`
 - Doc: Upload the shared hybrid palette so indexed pixels expand through * desktop-exact colors on every VBE mode instead of th
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_pattern (function) `static void wlcomp_pattern(unsigned char *dst, int w, int h,
         unsigned char a, unsigned ch...`
-- Defined: `progs/wl/wlcomp.c:148`
+- Defined: `progs/wl/wlcomp.c:150`
 - Doc: Paint a deterministic test pattern so the demo proves real pixels * travelled the blit path instead of solid fills.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_demo (function) `static int wlcomp_demo(wl_comp_t *c)`
-- Defined: `progs/wl/wlcomp.c:187`
+- Defined: `progs/wl/wlcomp.c:189`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_demo_blit (function) `static int wlcomp_demo_blit(wl_comp_t *c, unsigned char *fb)`
-- Defined: `progs/wl/wlcomp.c:212`
+- Defined: `progs/wl/wlcomp.c:214`
 - Doc: if (wl_comp_add(c, s1, 320, 200) != WL_ERR_OK) return 1; if (wl_comp_set_color(c, s0, 4) != WL_ERR_OK) return 1; if (wl_
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_emit (function) `static int wlcomp_emit(unsigned char *s, int cap, int o, unsigned int id,
         unsigned int op...`
-- Defined: `progs/wl/wlcomp.c:258`
+- Defined: `progs/wl/wlcomp.c:260`
 - Doc: wlcomp_pattern(p1, w1, h1, cfg.check_a, cfg.check_b, 1); px[c->order[0]] = p0; pw[c->order[0]] = w0; ph[c->order[0]] = h
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_session (function) `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)`
-- Defined: `progs/wl/wlcomp.c:270`
+- Defined: `progs/wl/wlcomp.c:272`
 - Doc: Drive a full client session through stream plus dispatch. The byte * feed splits mid-header so reassembly is proven, not
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_selftest (function) `static int wlcomp_selftest(void)`
-- Defined: `progs/wl/wlcomp.c:343`
+- Defined: `progs/wl/wlcomp.c:345`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_init (function) `static void wlserv_init(wlserv_t *s)`
-- Defined: `progs/wl/wlcomp.c:408`
+- Defined: `progs/wl/wlcomp.c:410`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_slot (function) `static int wlserv_slot(const wl_comp_t *c, unsigned int id)`
-- Defined: `progs/wl/wlcomp.c:425`
+- Defined: `progs/wl/wlcomp.c:427`
 - Doc: wl_mbox_init(s->boxes); wpix_init(&wlserv_pix); for (i = 0; i < WL_MAX_SURFACES; i++) { s->pw[i] = 0; s->ph[i] = 0; s->r
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_recolor (function) `static void wlserv_recolor(wl_comp_t *c)`
-- Defined: `progs/wl/wlcomp.c:438`
+- Defined: `progs/wl/wlcomp.c:440`
 - Doc: Paint every mapped slot a distinct desktop-exact ink so clients * without pixels still read as separate windows.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_present (function) `static int wlserv_present(wlserv_t *s)`
-- Defined: `progs/wl/wlcomp.c:455`
+- Defined: `progs/wl/wlcomp.c:457`
 - Doc: Composite the cached pixels and present with palette uploaded, capturing the content origin for pointer translation. Chr
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_drop (function) `static void wlserv_drop(wlserv_t *s, int idx)`
-- Defined: `progs/wl/wlcomp.c:476`
+- Defined: `progs/wl/wlcomp.c:478`
 - Doc: return 1; for (i = 0; i < WL_MAX_SURFACES; i++) px[i] = s->pw[i] > 0 && s->ph[i] > 0 ? wpix_ptr(&wlserv_pix, i) : 0; if 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_fit (function) `static void wlserv_fit(wlserv_t *s)`
-- Defined: `progs/wl/wlcomp.c:489`
+- Defined: `progs/wl/wlcomp.c:491`
 - Doc: Fit every mapped surface to its laid-out size: reload the box raw file at attach dims, then resample into the live cell.
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_gc_strays (function) `static void wlserv_gc_strays(void)`
-- Defined: `progs/wl/wlcomp.c:578`
+- Defined: `progs/wl/wlcomp.c:580`
 - Doc: Unlink stray .msg files no client owns: names that fail the exact mailbox parse can never dispatch, so they are dead wei
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_focus_box (function) `static int wlserv_focus_box(const wlserv_t *s)`
-- Defined: `progs/wl/wlcomp.c:640`
+- Defined: `progs/wl/wlcomp.c:635`
 - Doc: Server-to-client input delivery (ADR-0026 live step). The server owns PS/2 while it owns the display, so it forwards raw
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_key (function) `static void wlserv_key(wlserv_t *s, unsigned char byte)`
-- Defined: `progs/wl/wlcomp.c:658`
+- Defined: `progs/wl/wlcomp.c:653`
 - Doc: Queue one raw byte for the focused client. Bytes nobody owns are * dropped, never buffered: input without a window is no
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_ev_clear (function) `static void wlserv_ev_clear(wlserv_t *s, int b)`
-- Defined: `progs/wl/wlcomp.c:678`
+- Defined: `progs/wl/wlcomp.c:673`
 - Doc: b = wlserv_focus_box(s); if (b < 0) return; n = wlserv_ev_npend[b]; if (n >= WL_EV_SC_MAX) { for (i = 0; i + 1 < WL_EV_S
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_push_ev (function) `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)`
-- Defined: `progs/wl/wlcomp.c:689`
+- Defined: `progs/wl/wlcomp.c:684`
 - Doc: Push the current input state to the focused box. Frame coords map into the client's raw buffer through wl_ev_map; outsid
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_clean_ev (function) `static void wlserv_clean_ev(void)`
-- Defined: `progs/wl/wlcomp.c:737`
+- Defined: `progs/wl/wlcomp.c:732`
 - Doc: Unlink every stale .ev file so no dead input replays after a restart. Runs once at server start; live files are rewritte
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_close (function) `static int wlserv_close(wlserv_t *s, unsigned int id)`
-- Defined: `progs/wl/wlcomp.c:780`
+- Defined: `progs/wl/wlcomp.c:765`
 - Doc: Close one surface by id: remove it, free its box slot for the next client, drop its cache and unlink its raw pixels. Ret
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlserv_drain (function) `static int wlserv_drain(wlserv_t *s)`
-- Defined: `progs/wl/wlcomp.c:814`
+- Defined: `progs/wl/wlcomp.c:799`
 - Doc: Drain at most WL_MBOX_POLL_MAX mailbox files: validate every frame before dispatch, unlink what was consumed, and leave 
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlclient_find (function) `static const wlclient_pat_t *wlclient_find(const char *name)`
-- Defined: `progs/wl/wlcomp.c:977`
+- Defined: `progs/wl/wlcomp.c:945`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_client (function) `static int wlcomp_client(const char *box, const char *pat)`
-- Defined: `progs/wl/wlcomp.c:1006`
+- Defined: `progs/wl/wlcomp.c:974`
 - Doc: Attach one client surface from a second process through the shared wl_client.h transport: pixels first so the server nev
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
+### wlcomp_path (function) `static int wlcomp_path(char *dst, int cap, const char *name)`
+- Defined: `progs/wl/wlcomp.c:1043`
+- Doc: Join WL_MBOX_DIR + '/' + name into dst. Returns 1 on success, 0 when the name is not NUL-terminated in bounds or the pat
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
+
+### wlserv_relayout_present (function) `static int wlserv_relayout_present(wlserv_t *s)`
+- Defined: `progs/wl/wlcomp.c:1063`
+- Doc: Tile, refit pixels and present. Returns 0 when the desktop shows the new layout, nonzero otherwise. Every mutate-then-sh
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
+
 ### wlcomp_clean (function) `static int wlcomp_clean(void)`
-- Defined: `progs/wl/wlcomp.c:1072`
-- Doc: cp->w, cp->h) != WL_ATTACH_SZ) return 1; if (wl_client_emit_file(box, seq++, msg, 20) != WL_ERR_OK) return 1; if (wl_hdr
+- Defined: `progs/wl/wlcomp.c:1077`
+- Doc: static int wlserv_relayout_present(wlserv_t *s) { if (!s) return 1; if (wl_comp_layout_tile(&s->comp, WLCOMP_W, WLCOMP_H
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_once (function) `static int wlcomp_once(void)`
-- Defined: `progs/wl/wlcomp.c:1111`
+- Defined: `progs/wl/wlcomp.c:1105`
 - Doc: Drain once and exit so scripts prove multiprocess composition * through the gfx frames counter without an interactive lo
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### wlcomp_server (function) `static int wlcomp_server(void)`
-- Defined: `progs/wl/wlcomp.c:1143`
+- Defined: `progs/wl/wlcomp.c:1135`
 - Doc: Interactive desktop: click focuses, title drag moves, rim drag resizes, close box closes, Alt+T re-tiles, Alt+M minimize
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/wl/wlcomp.c:1355`
+- Defined: `progs/wl/wlcomp.c:1393`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
 
 ## qga.c
@@ -24674,15 +24742,24 @@ Z_DumpHeap
 ## tests/test_file_assoc.c
 
 ### t_ext_of (function) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
-- Defined: `tests/test_file_assoc.c:25`
+- Defined: `tests/test_file_assoc.c:26`
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`
 
 ### t_assoc_line (function) `static int t_assoc_line(const char *line, char *ext, char *prog)`
-- Defined: `tests/test_file_assoc.c:45`
+- Defined: `tests/test_file_assoc.c:46`
+- Depends on: `kernel/string.c`, `progs/file/file_assoc.h`
+
+### t_icon_kind (function) `static int t_icon_kind(const char *fname, int isdir)`
+- Defined: `tests/test_file_assoc.c:80`
+- Doc: Mirror of file_icon_kind in progs/file/file.c (0 folder, 1 files, * 2 image, 3 object).
+- Depends on: `kernel/string.c`, `progs/file/file_assoc.h`
+
+### t_icon_sz (function) `static int t_icon_sz(void)`
+- Defined: `tests/test_file_assoc.c:95`
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`
 
 ### main (function) `int main(void)`
-- Defined: `tests/test_file_assoc.c:77`
+- Defined: `tests/test_file_assoc.c:99`
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`
 
 ## tests/test_freedom_wl.c
@@ -25000,34 +25077,34 @@ Z_DumpHeap
 ## tests/test_vedit_build.c
 
 ### t_has_ext (function) `static int t_has_ext(const char *fname, const char *ext)`
-- Defined: `tests/test_vedit_build.c:32`
+- Defined: `tests/test_vedit_build.c:33`
 - Depends on: `kernel/string.c`
 
 ### t_base_of (function) `static int t_base_of(const char *fname, char *dst, size_t cap)`
-- Defined: `tests/test_vedit_build.c:43`
+- Defined: `tests/test_vedit_build.c:44`
 - Depends on: `kernel/string.c`
 
 ### t_join (function) `static int t_join(const char *dir, const char *base, const char *ext,
                   char *dst...`
-- Defined: `tests/test_vedit_build.c:63`
+- Defined: `tests/test_vedit_build.c:64`
 - Depends on: `kernel/string.c`
 
 ### t_link_fmt (function) `static int t_link_fmt(const char *s)`
-- Defined: `tests/test_vedit_build.c:79`
+- Defined: `tests/test_vedit_build.c:80`
 - Depends on: `kernel/string.c`
 
 ### t_lang_of (function) `static int t_lang_of(const char *fname)`
-- Defined: `tests/test_vedit_build.c:93`
-- Doc: Mirror of vedit_lang_of: 1=C, 2=PY, 3=LUA, 4=ASM. Unknown defaults * to C, exactly like the guest (untitled highlights a
+- Defined: `tests/test_vedit_build.c:94`
+- Doc: Mirror of vedit_lang_of: 1=C, 2=PY, 3=LUA, 4=ASM, 5=LISP. Unknown * defaults to C, exactly like the guest (untitled high
 - Depends on: `kernel/string.c`
 
 ### t_run_kind (function) `static int t_run_kind(const char *fname)`
-- Defined: `tests/test_vedit_build.c:110`
-- Doc: if (fname[n - 1] == 'c') return 1; if (fname[n - 1] == 'h') return 1; if (fname[n - 1] == 's') return 4; } if (n >= 3 &&
+- Defined: `tests/test_vedit_build.c:114`
+- Doc: } if (n >= 3 && fname[n - 3] == '.' && fname[n - 2] == 'p' && fname[n - 1] == 'y') return 2; if (n >= 4 && fname[n - 4] 
 - Depends on: `kernel/string.c`
 
 ### main (function) `int main(void)`
-- Defined: `tests/test_vedit_build.c:118`
+- Defined: `tests/test_vedit_build.c:123`
 - Depends on: `kernel/string.c`
 
 ## tests/test_vma.c
@@ -25524,10 +25601,10 @@ Z_DumpHeap
 ## tools/gen_desktop_pngs.py
 
 ### write_atomic (function) `def write_atomic(img, path)`
-- Defined: `tools/gen_desktop_pngs.py:63`
+- Defined: `tools/gen_desktop_pngs.py:69`
 
 ### main (function) `def main()`
-- Defined: `tools/gen_desktop_pngs.py:69`
+- Defined: `tools/gen_desktop_pngs.py:75`
 
 ## tools/gen_icons.py
 
