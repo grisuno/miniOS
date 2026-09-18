@@ -2,7 +2,7 @@
 
 <img width="1029" height="829" alt="image" src="https://github.com/user-attachments/assets/b00e45fe-e631-48af-8012-c0e66fff2316" />
 
-[LazyOwn](https://github.com/grisuno/LazyOwn) [RedTeam](https://medium.com/@lazyown.redteam) has released an educational 64-bit x86 teaching kernel and operating system, with basic security, and that carries its own complete [toolchain](https://github.com/grisuno/miniOS/blob/main/README.md#the-four-repositories) of a subset of C, micropython, lua, and lisp, You can write a C
+[LazyOwn](https://github.com/grisuno/LazyOwn) [RedTeam](https://medium.com/@lazyown.redteam) has released an educational 64-bit x86 teaching kernel and operating system, with basic security, and that carries its own complete [toolchain](https://github.com/grisuno/miniOS/blob/main/README.md#the-four-repositories) of a subset of C, micropython, lua, and [lisp](https://github.com/grisuno/miniOS/blob/main/README.md#lisp), You can write a C
 program inside the running system, compile it, link it and execute it without
 leaving the machine. With some [games](https://github.com/grisuno/miniOS/blob/main/README.md#doom) and [terminal utilities.](https://github.com/grisuno/miniOS/blob/main/README.md#shell) It has been developed with love.
 
