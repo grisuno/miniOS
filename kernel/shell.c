@@ -207,7 +207,7 @@ static const char *shell_name_base(const char *path) {
 static const char *shell_builtin_names[] = {
     "bootlog", "cat", "catfs", "cd", "clear", "clock", "date", "desktop",
     "echo", "edit",
-    "gdb", "gfx", "hash", "help", "irqstat", "jobs", "kbd", "kill", "kstack",
+    "fx", "gdb", "gfx", "hash", "help", "irqstat", "jobs", "kbd", "kill", "kstack",
     "load", "ls", "lsfs", "ltrace", "mem", "minifetch", "mkdir", "mrun", "net",
     "nice", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
     "schedtop", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unzip",
@@ -1802,6 +1802,7 @@ static void shell_cmd_wm(int argc, char **argv) {
             vga_fb_is_minimized(), vga_fb_is_fullscreen(),
             wm_gfx_mode_active(), vga_fb_focus_get(),
             vga_fb_nterms_get());
+    kprintf("wm: fx %s\n", vga_fx_enabled() ? "on" : "off");
     kprintf("wm: layout %s\n", vga_fb_layout_name());
     {
         char theme[17];
@@ -2804,6 +2805,16 @@ void shell_exec_builtin(int argc, char **argv) {
     }
     else if (kstrcmp(argv[0], "gfx") == 0) {
         shell_cmd_gfx(argc, argv);
+    }
+    else if (kstrcmp(argv[0], "fx") == 0) {
+        if (argc > 1) {
+            if (kstrcmp(argv[1], "on") == 0)
+                vga_fx_set_enabled(1);
+            else if (kstrcmp(argv[1], "off") == 0)
+                vga_fx_set_enabled(0);
+            else { vga_puts("usage: fx [on|off]\n"); return; }
+        }
+        kprintf("fx: %s melts=%lu\n", vga_fx_enabled() ? "on" : "off", fx_melts_completed);
     }
     else if (kstrcmp(argv[0], "wm") == 0) {
         shell_cmd_wm(argc, argv);

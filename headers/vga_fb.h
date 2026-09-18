@@ -224,6 +224,24 @@ int      wm_gfx_mode_active(void);
 void vga_fb_mouse_tick(void);
 void vga_fb_mouse_init(void);
 
+/* Desktop effects (DOOM melt, kernel/vga_fx.c). The framebuffer must show
+ * the old pixels on melt entry and shows the new pixels on return; snapshots
+ * are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a
+ * degenerate rect. A disabled effect or a failed snapshot leaves the new
+ * frame in place, so every entry fails closed to a plain redraw. */
+void vga_fx_set_enabled(int on);
+int vga_fx_enabled(void);
+unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);
+void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);
+void vga_fx_free(unsigned int *buf);
+void vga_fx_melt_rect(int x, int y, int w, int h,
+    const unsigned int *oldb, const unsigned int *newb);
+void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);
+/* Melt transitions completed since boot (boot melt counts, so a fresh shell
+ * already reports 1 with the effect on). Serial-observable proof the melts
+ * ran, in the same spirit as `gfx frames`. */
+extern unsigned long fx_melts_completed;
+
 /* Graphics-mode pointer. SYS_VGA_MODE toggles vga_fb_set_gfx_mode; while a
  * ring-3 graphics program owns the display the kernel idle loop (and with it
  * vga_fb_mouse_tick) never runs, so the frame-composite functions restore the

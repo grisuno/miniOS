@@ -1154,6 +1154,30 @@ framebuffer is not.
   prints the keyboard layout and, with an argument, sets it (`toggle`
   switches). This is the
   TDD hook: the BDD suite asserts `date`, `vol` and `kbd` through the serial console.
+- **Desktop effects, DOOM melt (`vga_fx.h`, `kernel/vga_fx.c`, `vga_fb.c`):**
+  windows melt in and out like a DOOM level intro instead of flashing. The
+  column logic mirrors `progs/doomgeneric/f_wipe.c` `wipe_initMelt`/
+  `wipe_doMelt` (staggered per-column delays, then the new frame scrolls
+  down over the old one) and lives header-only in `vga_fx.h` so `make
+  test-fx` pins it on the host; the kernel owns only heap snapshots, the
+  packed-pixel driver and TSC pacing. Trigger points are appear/disappear
+  only: boot (`vga_fb_init` melts black into the desktop), graphics-window
+  open (first composite after mode-on) and close (the redraw after
+  mode-off melts the desktop over the last window rect), terminal
+  minimize/restore, fullscreen on/off, `wm split` and `wm close`. Moves,
+  resizes, snaps, tiles and focus changes never melt. Everything is
+  heap-allocated and freed per transition (a fullscreen pair peaks at two
+  800x600x4 snapshots; OOM degrades to a plain redraw), every rect clamps,
+  the melt loop is frame-bounded, and the effect is synchronous, so the
+  final frame is identical with it on or off and the QMP pixel suites stay
+  deterministic. `fx` reports `fx: on melts=N` (`off` skips every
+  transition; default on), `wm state` carries `wm: fx on`, and the melts
+  counter is the serial proof a transition ran — a skipped melt leaves the
+  same pixels behind, so the BDD suite pins `melts=1` after boot, `melts=3`
+  after minimize+restore and `melts=5` after a Nuklear selftest
+  (open+close), beside the `gfx frames` climb. Eight `fx-*` mutants
+  (default, toggle, reporting, skipped melts, stuck/clamp column logic)
+  die in `make test-fx` and the `MATCH=fx` BDD slice.
 
 ## Kernel Contracts
 
@@ -2950,11 +2974,11 @@ QEMU boot.  Every command prints a `PASS:` marker; the host runner greps the
 serial log for these markers.  The script ships on the ramdisk (`progs/src/`)
 and is added to both `PROGS` and `MINIFS_FILES` in the Makefile.
 
-Categories tested (81 PASS):
+Categories tested (83 PASS):
 - **Boot/help**: boot banner, help, clear
 - **Filesystem**: ls (root, objects, bin), mkdir, cd, pwd, rm, cp
 - **Redirects**: `>` and `>>`
-- **Builtins**: echo, date, vol (set/report/reset), kbd (report/es/en), ps, trace, net, gfx, wm, hash
+- **Builtins**: echo, date, vol (set/report/reset), kbd (report/es/en), ps, trace, net, gfx, wm, fx (report, melts climb on minimize/restore), hash
 - **Observability**: trace verbose, strace, ltrace, vmmap, schedtop, irqstat, bootlog, gdb, gdb-regs, gdb-dump-hex
 - **Toolchain**: minigcc.o compile, ld.o link, run ELF, run CVM
 - **Bare names**: ld.o, .elf, .cvm without `run` prefix
@@ -3111,7 +3135,7 @@ is forbidden; the answer to a survivor is a new scenario.
 ```bash
 make                # zero warnings
 make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
-sh src/test_all.sh  # one-boot comprehensive non-interactive suite (81 PASS)
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (83 PASS)
 ./tools/test_bdd.sh  # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -3136,6 +3160,7 @@ make test-png        # shared ring-3 PNG helpers + pokemon side-art policy green
 make test-doomedit   # doom PWAD writer + C/Python roundtrip green
 make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
+make test-fx         # DOOM-melt column contract suite green
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD green
 mcp/mutate_mcp.sh                                # every MCP mutant killed
 ```
@@ -3614,7 +3639,7 @@ CI gates enforce architectural constraints:
 ```bash
 make                        # zero warnings
 make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
-sh src/test_all.sh          # one-boot comprehensive non-interactive suite (81 PASS)
+sh src/test_all.sh          # one-boot comprehensive non-interactive suite (83 PASS)
 ./tools/test_bdd.sh          # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -3639,6 +3664,7 @@ make test-png        # shared ring-3 PNG helpers + pokemon side-art policy green
 make test-doomedit   # doom PWAD writer + C/Python roundtrip green
 make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
+make test-fx         # DOOM-melt column contract suite green
 make test-ktime test-randmix  # Phase 0 truthfulness: TSC->usec + getrandom mixer green
 python3 tools/check_abi_numbers.py  # Phase 0.6: syscall numbers match Linux x86-64 (also in lint)
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD

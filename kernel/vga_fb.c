@@ -30,6 +30,7 @@
 #include "wm_focus.h"
 #include "wm_layout.h"
 #include "wm_notify.h"
+#include "vga_fx.h"
 
 /** Docstring: Focus ids share one space across terminals and graphics. */
 _Static_assert(WM_FOCUS_GFX == WM_WINDOW_GFX_ID,
@@ -264,6 +265,51 @@ static int vga_fb_gfx_mode;
 static int gfx_win_x, gfx_win_y, gfx_win_w, gfx_win_h;
 static int gfx_win_ox, gfx_win_oy;
 
+/* DOOM-melt transition state (kernel/vga_fx.c owns the pixels, this file
+ * owns the trigger points). fx_gfx_armed melts the first composite after a
+ * mode-on (window appears); fx_close_* melts the desktop over the last
+ * graphics rect on the redraw that follows a mode-off (window disappears).
+ * Terminal show/hide (minimize, fullscreen, split, close) snapshots around
+ * their own redraw through fx_start/finish_full below. Moves, resizes,
+ * snaps, tiles and focus changes never melt: they relocate, not appear. */
+static int fx_gfx_armed;
+static int fx_close_pending;
+static int fx_close_x, fx_close_y, fx_close_w, fx_close_h;
+
+/* Snapshot the current fullscreen frame for a show/hide melt. Cursor erased
+ * first so its pixels do not bake into the old frame. Returns 0 when the
+ * effect is off or the snapshot OOMs, and the caller then just redraws. */
+static unsigned int *fx_start_full(void)
+{
+    if (!vga_fx_enabled()) {
+        return 0;
+    }
+    cursor_erase();
+    return vga_fx_snap_rect(0, 0, fb_width, fb_height);
+}
+
+/* Complete a show/hide melt after the new state has been drawn: snapshot
+ * the new frame, restore the old one, melt old->new. Frees both snapshots.
+ * A 0 old snapshot (effect off or OOM) is a no-op: the new frame stays. */
+static void fx_finish_full(unsigned int *oldb)
+{
+    unsigned int *newb;
+    if (!oldb) {
+        return;
+    }
+    newb = vga_fx_snap_rect(0, 0, fb_width, fb_height);
+    if (!newb) {
+        vga_fx_restore_rect(0, 0, fb_width, fb_height, oldb);
+        vga_fx_free(oldb);
+        return;
+    }
+    vga_fx_restore_rect(0, 0, fb_width, fb_height, oldb);
+    vga_fx_melt_rect(0, 0, fb_width, fb_height, oldb, newb);
+    vga_fx_free(oldb);
+    vga_fx_free(newb);
+    cursor_invalidate();
+}
+
 /* Persistent graphics layer: the last composited window (title bar plus
  * content) as raw framebuffer pixels. A desktop redraw (Alt+Tab, tile,
  * drag, taskbar tick) wipes the whole framebuffer, which used to bury any
@@ -421,8 +467,21 @@ void vga_fb_set_gfx_mode(int on) {
         gfx_win_ox = 0;
         gfx_win_oy = 0;
         gfx_prog[0] = '\0';
+        /* Arm the close melt: the redraw that follows still shows the
+         * graphics window, so draw_desktop snapshots this rect first. */
+        if (gfx_win_w > 0 && gfx_win_h > 0) {
+            fx_close_x = gfx_win_x;
+            fx_close_y = gfx_win_y;
+            fx_close_w = gfx_win_w;
+            fx_close_h = gfx_win_h;
+            fx_close_pending = 1;
+        }
     } else {
         gfx_keep_w = 0;
+        /* Arm the open melt: the next composite melts the desktop into
+         * the fresh window instead of flashing it. */
+        fx_gfx_armed = 1;
+        fx_close_pending = 0;
     }
     wm_gfx_focus_sync(on);
     /* A new graphics program claims the display: drop any title the previous
@@ -872,6 +931,7 @@ int vga_fb_focus_id(int id) {
  * would alias src == dst. Single-terminal boots keep the static ring. */
 int vga_fb_term_split(void) {
     int i;
+    unsigned int *fx_old = 0;
     char (*ring)[SB_LINE_MAX];
     char (*snap0)[SB_LINE_MAX];
     wm_init_once();
@@ -907,9 +967,11 @@ int vga_fb_term_split(void) {
     twins[1].valid = 1;
     wm_nterms = WM_MAX_TERMS;
     tw_unpark(wm_term);
+    fx_old = fx_start_full();
     vga_fb_tile_all();
     tw_select(1);
     vga_fb_draw_desktop();
+    fx_finish_full(fx_old);
     return 0;
 }
 
@@ -921,8 +983,10 @@ int vga_fb_term_split(void) {
  * closing never eats the output printed since the last switch (that loss
  * is what left phantom duplicate prompts behind). */
 int vga_fb_term_close_focused(void) {
+    unsigned int *fx_old;
     wm_init_once();
     if (!twins[1].present) return 0;
+    fx_old = fx_start_full();
     if (twins[0].lg && twins[0].lg != lg) kfree(twins[0].lg);
     twins[0].lg = lg;
     twins[0].head = lg_head; twins[0].tail = lg_tail; twins[0].count = lg_count;
@@ -938,6 +1002,7 @@ int vga_fb_term_close_focused(void) {
     twins[1].prompted = 0;
     wm_nterms = 1;
     vga_fb_reset_default();
+    fx_finish_full(fx_old);
     return 1;
 }
 
@@ -1671,6 +1736,9 @@ static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh) {
     int win_w = dw + SCROLLBAR_W;
     int win_h = dh + FONT_H;
     uint8_t gbg;
+    unsigned int *fx_old = 0;
+    int fx_do = fx_gfx_armed && vga_fx_enabled();
+    fx_gfx_armed = 0;
     gfx_frames_composited++;
     vga_fb_gfx_cursor_erase();
     gfx_place(win_w, win_h, &dst_x, &dst_y);
@@ -1678,6 +1746,9 @@ static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh) {
     gfx_win_y = dst_y;
     gfx_win_w = win_w;
     gfx_win_h = win_h;
+    if (fx_do) {
+        fx_old = vga_fx_snap_rect(dst_x, dst_y, win_w, win_h);
+    }
     gbg = (wm_focus == WM_FOCUS_GFX) ? COL_TITLEBAR : COL_SHADOW;
     vga_fb_rect(dst_x, dst_y, win_w, FONT_H, gbg);
     text_px(dst_x + 4, dst_y, gfx_win_title, COL_TITLE_TXT, gbg);
@@ -1744,6 +1815,15 @@ static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh) {
         }
     }
     gfx_keep_save(dst_x, dst_y, win_w, win_h);
+    if (fx_old) {
+        unsigned int *fx_new = vga_fx_snap_rect(dst_x, dst_y, win_w, win_h);
+        if (fx_new) {
+            vga_fx_restore_rect(dst_x, dst_y, win_w, win_h, fx_old);
+            vga_fx_melt_rect(dst_x, dst_y, win_w, win_h, fx_old, fx_new);
+            vga_fx_free(fx_new);
+        }
+        vga_fx_free(fx_old);
+    }
     vga_fb_gfx_cursor_draw();
 }
 
@@ -2307,6 +2387,20 @@ void vga_fb_draw_desktop(void) {
     wm_render_item_t plan[8];
     int nplan = 0;
     int focus_term;
+    /* Graphics-window close melt: the framebuffer still shows the window
+     * here (the clear below has not run), so snapshot its rect first and
+     * melt the fresh desktop over it at the end. */
+    int fx_cx = fx_close_x, fx_cy = fx_close_y, fx_cw = fx_close_w, fx_ch = fx_close_h;
+    unsigned int *fx_old = 0;
+    int fx_do = fx_close_pending && vga_fx_enabled();
+    fx_close_pending = 0;
+    if (fx_do) {
+        cursor_erase();
+        fx_old = vga_fx_snap_rect(fx_cx, fx_cy, fx_cw, fx_ch);
+        if (!fx_old) {
+            fx_do = 0;
+        }
+    }
     vga_fb_set_palette();
     vga_fb_clear();
     wm_init_once();
@@ -2335,18 +2429,29 @@ void vga_fb_draw_desktop(void) {
     }
     tw_unpark(cur);
     gfx_keep_restore();
+    if (fx_do) {
+        unsigned int *fx_new = vga_fx_snap_rect(fx_cx, fx_cy, fx_cw, fx_ch);
+        if (fx_new) {
+            vga_fx_restore_rect(fx_cx, fx_cy, fx_cw, fx_ch, fx_old);
+            vga_fx_melt_rect(fx_cx, fx_cy, fx_cw, fx_ch, fx_old, fx_new);
+            vga_fx_free(fx_new);
+        }
+        vga_fx_free(fx_old);
+    }
     cursor_invalidate();
 }
 
 /* ---- Keyboard shortcuts ---- */
 /** Docstring: Toggle fullscreen on the focused window, recenter graphics. */
 void vga_fb_toggle_fullscreen(void) {
+    unsigned int *fx_old = fx_start_full();
     if (vga_fb_gfx_mode && wm_focus == WM_FOCUS_GFX) {
         gfx_win_ox = 0;
         gfx_win_oy = 0;
         wm_layout_mode = WM_LAYOUT_FULLSCREEN;
         wm_last_n = -1;
         vga_fb_draw_desktop();
+        fx_finish_full(fx_old);
         return;
     }
     term_fullscreen = !term_fullscreen;
@@ -2354,16 +2459,19 @@ void vga_fb_toggle_fullscreen(void) {
     disp_off = 0;
     wm_last_n = -1;
     vga_fb_draw_desktop();
+    fx_finish_full(fx_old);
 }
 
 /* Minimize/restore the terminal window. The content is not touched; the
  * window is merely hidden and repainted on restore. Fullscreen and minimize
  * are mutually exclusive: entering fullscreen un-minimizes. */
 void vga_fb_toggle_minimize(void) {
+    unsigned int *fx_old = fx_start_full();
     term_minimized = !term_minimized;
     if (term_minimized) term_fullscreen = 0;
     disp_off = 0;
     vga_fb_draw_desktop();
+    fx_finish_full(fx_old);
 }
 
 int vga_fb_is_minimized(void) { return term_minimized; }
@@ -3310,5 +3418,20 @@ void vga_fb_init(void) {
     }
     vga_fb_active = 1;
     vga_fb_mouse_init();
+    /* Boot melt: the desktop scrolls down over black like a DOOM level
+     * intro. The fresh desktop is snapshotted, the screen cleared, and
+     * the snapshot melted back over black. OOM degrades to a plain draw. */
+    if (vga_fx_enabled()) {
+        unsigned int *newb;
+        vga_fb_draw_desktop();
+        newb = vga_fx_snap_rect(0, 0, fb_width, fb_height);
+        if (newb) {
+            vga_fb_clear();
+            vga_fx_melt_from_black(0, 0, fb_width, fb_height, newb);
+            vga_fx_free(newb);
+            cursor_invalidate();
+            return;
+        }
+    }
     vga_fb_draw_desktop();
 }

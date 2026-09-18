@@ -1509,6 +1509,36 @@ poweroff"
 expect "minimized 1  fullscreen 0"
 expect "minimized 0  fullscreen 1"
 
+# ── Desktop effects (DOOM melt, kernel/vga_fx.c) ──────────────────
+
+scenario "fx reports the effect state and toggles" "fx
+fx off
+fx
+fx on
+fx
+poweroff"
+expect "fx: on melts=1"
+expect "fx: off melts=1"
+expect "fx: on melts=1"
+
+scenario "fx flag appears in wm state" "wm state
+poweroff"
+expect "wm: fx on"
+
+scenario "fx melts complete on boot, show/hide and gfx open" "fx
+wm minimize
+wm minimize
+fx
+nuklear --selftest
+fx
+gfx frames
+poweroff"
+expect "fx: on melts=1"
+expect "fx: on melts=3"
+expect "nuklear: frame ok (800x360)"
+expect "fx: on melts=5"
+expect "gfx: frames composited 1"
+
 # ── Quake 2 (quake2generic) ─────────────────────────────────────────
 
 scenario "quake2generic binary exists on minifs" "ls quake2generic.elf

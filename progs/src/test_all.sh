@@ -94,6 +94,12 @@ gfx
 echo PASS: gfx-ok
 wm state
 echo PASS: wm-state-ok
+fx
+echo PASS: fx-ok
+wm minimize
+wm minimize
+fx
+echo PASS: fx-melts-ok
 
 # === HASH ===
 hash src/fib.c

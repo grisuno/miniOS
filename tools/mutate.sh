@@ -99,6 +99,7 @@ SOURCES="$SOURCES progs/freedomui/freedomui_minios.c tests/test_freedomui.c"
 SOURCES="$SOURCES progs/paint/paint.c tests/test_paint.c"
 SOURCES="$SOURCES progs/nk_palette.h progs/wl/wl_mini.h progs/wl/wl_mbox.h progs/wl/wlcomp.c"
 SOURCES="$SOURCES progs/minicraft/minicraft.c"
+SOURCES="$SOURCES kernel/vga_fx.c kernel/vga_fb.c headers/vga_fx.h tests/test_fx.c"
 
 restore_sources() {
     local f
@@ -255,6 +256,14 @@ paint-blit-transposed | s/            fb\\[dy \\* NK_W + dx\\] = paint_px\\[y \\
 paint-test-plot-bounds-lost | s/    if (x < 0 || y < 0 || x >= w || y >= h) return -1;/    if (x < 0 || y < 0) return -1;/ | tests/test_paint.c
 paint-test-flood-noop-inverted | s/    if (oc == nc) return 0;/    if (oc == nc) return 1;/ | tests/test_paint.c
 paint-test-png-total-changed | s/    CHECK(total == 192278UL, \\x22png total bytes\\x22);/    CHECK(total == 192274UL, \\x22png total bytes\\x22);/ | tests/test_paint.c
+fx-default-off | s/static int fx_enabled = 1;/static int fx_enabled = 0;/ | kernel/vga_fx.c
+fx-on-ignored | s/    fx_enabled = on ? 1 : 0;/    fx_enabled = 0;/ | kernel/vga_fx.c
+fx-state-inverted | s/    return fx_enabled;/    return !fx_enabled;/ | kernel/vga_fx.c
+fx-melts-unreported | s/    fx_melts_completed++;/    fx_melts_completed += 0;/ | kernel/vga_fx.c
+fx-finish-skips-melt | s/    vga_fx_melt_rect(0, 0, fb_width, fb_height, oldb, newb);/    (void)newb;/ | kernel/vga_fb.c
+fx-open-never-armed | s/        fx_gfx_armed = 1;/        fx_gfx_armed = 0;/ | kernel/vga_fb.c
+fx-advance-stuck | s/            cols\[i\]++;/            cols[i] += 0;/ | headers/vga_fx.h
+fx-front-clamp-lost | s/    if (col_y > h) {/    if (col_y > h + 1) {/ | headers/vga_fx.h
 "
 
 # Parse the mutation table into parallel arrays (preserving order).
@@ -417,6 +426,16 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         progs/minios_abi.h)
             python3 "$HERE/tools/check_abi_numbers.py" > "$BACKUP/suite.log" 2>&1
+            ;;
+        headers/vga_fx.h|tests/test_fx.c)
+            make -C "$HERE" test-fx > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/vga_fx.c|kernel/vga_fb.c)
+            # No non-fx mutant touches these files yet, so the fx-filtered
+            # BDD (3 scenarios, melts-counter pins) is the targeted suite;
+            # revisit the routing if other vga_fb.c mutants ever land.
+            make -C "$HERE" test-fx > "$BACKUP/suite.log" 2>&1 && \
+            MATCH="fx" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" >> "$BACKUP/suite.log" 2>&1
             ;;
         kernel/syscalls.c)
             # MATCH must not leak into the suite: --match selects MUTANTS

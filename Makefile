@@ -1493,6 +1493,13 @@ notify_test: tests/test_notify.c wm_notify.h | $(TOOLS_DIR)
 test-notify: notify_test
 	$(TOOLS_DIR)/notify_test
 
+# DOOM-melt desktop effect host test (headers/vga_fx.h, spec pin).
+fx_test: tests/test_fx.c vga_fx.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/fx_test tests/test_fx.c
+
+test-fx: fx_test
+	$(TOOLS_DIR)/fx_test
+
 # Window manager geometry and event host test (header-only wm_geom.h + wm_events.h).
 wm_test: tests/test_wm.c wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_layout.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/wm_test tests/test_wm.c
@@ -1516,7 +1523,7 @@ wl: os.img
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test modifiers_test notify_test abi_test wl_test lisp-host
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test fx_test modifiers_test notify_test abi_test wl_test lisp-host
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1530,6 +1537,7 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/ktime_test
 	$(TOOLS_DIR)/randmix_test
 	$(TOOLS_DIR)/wm_test
+	$(TOOLS_DIR)/fx_test
 	$(TOOLS_DIR)/modifiers_test
 	$(TOOLS_DIR)/notify_test
 	$(TOOLS_DIR)/abi_test
@@ -1802,7 +1810,10 @@ tick.o: kernel/tick.c tick.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
-           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h kernel/vga_cursor.h
+           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h vga_fx.h kernel/vga_cursor.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+vga_fx.o: kernel/vga_fx.c vga_fb.h vga_fx.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 pcspk.o: drivers/pcspk.c pcspk.h driver.h kernel.h
@@ -1861,10 +1872,10 @@ abi.o: kernel/abi.c abi.h kernel.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_cursor.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o \
-	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_cursor.o pcspk.o sb16.o rtc.o xxhash.o \
+	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 
 kernel.bin: kernel.elf | check-size
