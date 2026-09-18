@@ -35,6 +35,21 @@
 #define DOCK_GAP    6          /* gap between dock bar and taskbar */
 #define DOCK_LABEL_GAP 2       /* gap between icon bitmap and its label */
 
+/* Crystal backing: the dock fill paints COL_SHADOW on a (x+y)&1 checker
+ * and leaves the wallpaper pixel elsewhere, so the bar reads as frosted
+ * glass on both 8-bit and true-color modes without any blending pass. */
+#define DOCK_CRYSTAL_STEP 2
+
+/* Hover magnification (Mac style): the icon under the cursor grows to
+ * DOCK_MAG, its immediate neighbours to DOCK_NEAR, bottom-aligned on the
+ * slot so the growth rises above the dock. 2x hot / 1.5x neighbours, so
+ * the effect reads at a glance. One scaled blit per icon per hover
+ * crossing, so the 25 Hz desktop tick never notices. */
+#define DOCK_MAG_W  64
+#define DOCK_MAG_H  64
+#define DOCK_NEAR_W 48
+#define DOCK_NEAR_H 48
+
 /* Icon palette: 16 colours loaded into VGA DAC indices 240-255 in the
  * 8-bit fallback mode. Indices 0-14 stay as the desktop palette; the icon
  * palette gives enough range for simple pixel-art icons. In true color the

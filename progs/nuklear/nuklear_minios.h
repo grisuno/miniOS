@@ -53,6 +53,19 @@ struct nk_user_font nk_minios_font(void);
 /* Rasterize the Nuklear command list into the back-buffer. */
 void nk_rasterize(struct nk_context *ctx);
 
+/* Caller-owned image for NK_COMMAND_IMAGE: palette-indexed pixels plus a
+ * 0/1 alpha mask (mask 0 skips the pixel, so icons keep transparency).
+ * The app keeps the buffers alive while the image is used; the backend
+ * only reads. Bounds are fail closed: a null descriptor, a null plane or
+ * a non-positive/excessive extent draws nothing. */
+#define NK_MINIOS_IMG_MAX 64
+struct nk_minios_img {
+    const unsigned char *px;
+    const unsigned char *mask;
+    int w;
+    int h;
+};
+
 /* Feed raw keyboard scancodes and mouse state into the Nuklear context.
  * Call between nk_input_begin/nk_input_end of the application loop.
  * The mouse position is translated from desktop coordinates into the UI

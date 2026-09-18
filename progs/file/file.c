@@ -46,6 +46,24 @@
 #define FILE_ACTION_INTERNAL "internal"
 #define FILE_LOG_LINE 96
 
+/** Entry icons: indexed pixels plus a 0/1 alpha mask, decoded once
+ * from /icons at startup through the backend NK_COMMAND_IMAGE path.
+ * Small is the default grid; big is the toggled grid. Buffers hold the
+ * big size and decode scales into the live prefix, so the toggle is one
+ * reload with no extra memory. */
+#define FILE_ICON_SMALL 16
+#define FILE_ICON_BIG 32
+#define FILE_ICON_MAX 32
+#define FILE_ICON_N 4
+#define FILE_ICON_FOLDER 0
+#define FILE_ICON_FILES 1
+#define FILE_ICON_IMAGE 2
+#define FILE_ICON_OBJECT 3
+#define FILE_ICON_PATH_FOLDER "/icons/folder.png"
+#define FILE_ICON_PATH_FILES "/icons/files.png"
+#define FILE_ICON_PATH_IMAGE "/icons/image.png"
+#define FILE_ICON_PATH_OBJECT "/icons/object.png"
+
 /** Dispatch kinds resolved from the association table. */
 #define FILE_ACT_TEXT 0
 #define FILE_ACT_SHELL 1
@@ -61,6 +79,11 @@ struct file_assoc {
 static struct fassoc_table file_assocs;
 
 static int file_quit;
+static int file_icon_big;
+static unsigned char file_icon_px[FILE_ICON_N][FILE_ICON_MAX * FILE_ICON_MAX];
+static unsigned char file_icon_mask[FILE_ICON_N][FILE_ICON_MAX * FILE_ICON_MAX];
+static struct nk_minios_img file_icon_img[FILE_ICON_N];
+static int file_icons_ok;
 static char file_cwd[FILE_MAX_PATH];
 static char file_entries[FILE_LIST_CAP];
 static long file_entry_count;
@@ -111,6 +134,108 @@ static void file_ext_of(const char *fname, char *dst, unsigned cap) {
         }
         dst[m] = 0;
     }
+}
+
+/** Icon kind for an entry: folder for dirs, image for .png, object for
+ * .o/.elf/.cvm, files for the text kinds (.c/.h/.lisp/.lua/.py/.txt/.s)
+ * and for anything else. The extension arrives lowercased from
+ * file_ext_of, so every comparison is exact. */
+static int file_icon_kind(const char *fname, int isdir) {
+    char ext[FILE_EXT_MAX + 1];
+    if (isdir) return FILE_ICON_FOLDER;
+    file_ext_of(fname, ext, sizeof(ext));
+    if (strcmp(ext, "png") == 0) return FILE_ICON_IMAGE;
+    if (strcmp(ext, "o") == 0 || strcmp(ext, "elf") == 0 ||
+        strcmp(ext, "cvm") == 0)
+        return FILE_ICON_OBJECT;
+    return FILE_ICON_FILES;
+}
+
+/** Live icon edge: 32 in big mode, 16 in small mode. */
+static int file_icon_sz(void) {
+    return file_icon_big ? FILE_ICON_BIG : FILE_ICON_SMALL;
+}
+
+/** Decode one RGBA icon into indexed pixels plus an alpha mask, scaled to
+ * the live size. Fail closed: any bound or decode error returns -1 and
+ * leaves the slot untouched. */
+static int file_icon_decode(const char *path, unsigned char *px,
+                            unsigned char *mask) {
+    unsigned char *raw = 0;
+    long sz = 0;
+    unsigned char *rgba = 0;
+    int w = 0;
+    int h = 0;
+    int comp = 0;
+    unsigned char pal[768];
+    int edge;
+    int x;
+    int y;
+    if (mpng_load_file(path, &raw, &sz, FILE_PREVIEW_FILE_MAX) != 0)
+        return -1;
+    rgba = stbi_load_from_memory(raw, (int)sz, &w, &h, &comp, 4);
+    free(raw);
+    if (!rgba || w <= 0 || h <= 0 || w > MPNG_MAX_DIM || h > MPNG_MAX_DIM) {
+        if (rgba) stbi_image_free(rgba);
+        return -1;
+    }
+    nk_build_palette(pal);
+    edge = file_icon_sz();
+    for (y = 0; y < edge; y++) {
+        for (x = 0; x < edge; x++) {
+            int sx = x * w / edge;
+            int sy = y * h / edge;
+            unsigned char *p = rgba + (sy * w + sx) * 4;
+            int v;
+            if (p[3] < 128) {
+                mask[y * edge + x] = 0;
+                px[y * edge + x] = 0;
+                continue;
+            }
+            v = mpng_nearest(pal, 256L, p[0], p[1], p[2]);
+            if (v < 0) {
+                stbi_image_free(rgba);
+                return -1;
+            }
+            mask[y * edge + x] = 1;
+            px[y * edge + x] = (unsigned char)v;
+        }
+    }
+    stbi_image_free(rgba);
+    return 0;
+}
+
+/** Load the four kind icons; all-or-nothing so the UI never mixes icon
+ * and text rows. Returns 1 when every icon is live. */
+static int file_icons_load(void) {
+    static const char *paths[FILE_ICON_N] = {
+        FILE_ICON_PATH_FOLDER, FILE_ICON_PATH_FILES,
+        FILE_ICON_PATH_IMAGE, FILE_ICON_PATH_OBJECT
+    };
+    int edge;
+    int k;
+    for (k = 0; k < FILE_ICON_N; k++) {
+        if (file_icon_decode(paths[k], file_icon_px[k],
+                             file_icon_mask[k]) != 0)
+            return 0;
+    }
+    edge = file_icon_sz();
+    for (k = 0; k < FILE_ICON_N; k++) {
+        file_icon_img[k].px = file_icon_px[k];
+        file_icon_img[k].mask = file_icon_mask[k];
+        file_icon_img[k].w = edge;
+        file_icon_img[k].h = edge;
+    }
+    return 1;
+}
+
+/** Flip the icon size and reload the four kind icons. Returns 1 when the
+ * new size is live, 0 when the reload failed (flag stays flipped so the
+ * next toggle retries the other size instead of sticking). */
+static int file_toggle_icons(void) {
+    file_icon_big = !file_icon_big;
+    file_icons_ok = file_icons_load();
+    return file_icons_ok;
 }
 
 /** Join dir + name into dst, fail closed on overflow. */
@@ -377,7 +502,7 @@ static void file_ui_build(struct nk_context *ctx) {
                  NK_WINDOW_BORDER | NK_WINDOW_MOVABLE)) {
         nk_layout_row_dynamic(ctx, 22, 1);
         nk_label(ctx, file_status, NK_TEXT_LEFT);
-        nk_layout_row_dynamic(ctx, 24, 6);
+        nk_layout_row_dynamic(ctx, 24, 7);
         if (nk_button_label(ctx, "up")) {
             file_parent(file_cwd);
             file_preview_on = 0;
@@ -406,18 +531,40 @@ static void file_ui_build(struct nk_context *ctx) {
             file_preview_on = 0;
             file_refresh();
         }
+        if (nk_button_label(ctx, file_icon_big ? "small icons" : "big icons")) {
+            if (file_toggle_icons())
+                snprintf(file_status, sizeof(file_status), "icons %s",
+                         file_icon_big ? "big" : "small");
+            else
+                snprintf(file_status, sizeof(file_status), "icons reload failed");
+        }
         {
             long off = 0;
             long idx = 0;
-            nk_layout_row_dynamic(ctx, 20, 4);
+            int edge = file_icon_sz();
+            int cols = file_icon_big ? 2 : 4;
+            int rowh = file_icon_big ? 44 : 20;
+            nk_layout_row_dynamic(ctx, (float)rowh, cols);
             while (idx < file_entry_count) {
                 char *nm = file_entries + off;
                 unsigned long el = strlen(nm) + 1;
                 int isdir = (el > 1 && nm[el - 2] == '/');
-                char cap[FILE_NAME_MAX + 8];
-                snprintf(cap, sizeof(cap), "%s %s", isdir ? "[D]" : "[F]",
-                         nm);
-                if (nk_button_label(ctx, cap)) {
+                int pressed = 0;
+                if (file_icons_ok) {
+                    struct nk_image im;
+                    im = nk_image_ptr(&file_icon_img[file_icon_kind(
+                        nm, isdir)]);
+                    im.w = edge;
+                    im.h = edge;
+                    pressed = nk_button_image_label(ctx, im, nm,
+                                                    NK_TEXT_LEFT);
+                } else {
+                    char cap[FILE_NAME_MAX + 8];
+                    snprintf(cap, sizeof(cap), "%s %s",
+                             isdir ? "[D]" : "[F]", nm);
+                    pressed = nk_button_label(ctx, cap);
+                }
+                if (pressed) {
                     if (isdir) {
                         char nc[FILE_MAX_PATH];
                         char trim[FILE_NAME_MAX + 1];
@@ -501,6 +648,51 @@ static int file_selftest(void) {
         printf("file: selftest traversal accepted\n");
         return 1;
     }
+    if (file_icon_kind("sub/", 1) != FILE_ICON_FOLDER) {
+        printf("file: selftest folder kind failed\n");
+        return 1;
+    }
+    if (file_icon_kind("a.c", 0) != FILE_ICON_FILES ||
+        file_icon_kind("a.h", 0) != FILE_ICON_FILES ||
+        file_icon_kind("a.lisp", 0) != FILE_ICON_FILES ||
+        file_icon_kind("a.lua", 0) != FILE_ICON_FILES ||
+        file_icon_kind("a.py", 0) != FILE_ICON_FILES ||
+        file_icon_kind("a.txt", 0) != FILE_ICON_FILES ||
+        file_icon_kind("a.s", 0) != FILE_ICON_FILES) {
+        printf("file: selftest text kind failed\n");
+        return 1;
+    }
+    if (file_icon_kind("A.PNG", 0) != FILE_ICON_IMAGE) {
+        printf("file: selftest image kind failed\n");
+        return 1;
+    }
+    if (file_icon_kind("a.o", 0) != FILE_ICON_OBJECT ||
+        file_icon_kind("a.elf", 0) != FILE_ICON_OBJECT ||
+        file_icon_kind("a.cvm", 0) != FILE_ICON_OBJECT) {
+        printf("file: selftest object kind failed\n");
+        return 1;
+    }
+    if (file_icon_kind("a.zip", 0) != FILE_ICON_FILES ||
+        file_icon_kind("noext", 0) != FILE_ICON_FILES) {
+        printf("file: selftest fallback kind failed\n");
+        return 1;
+    }
+    if (!file_icons_load()) {
+        printf("file: selftest icon load failed\n");
+        return 1;
+    }
+    if (file_icon_sz() != FILE_ICON_SMALL) {
+        printf("file: selftest default size failed\n");
+        return 1;
+    }
+    if (!file_toggle_icons() || file_icon_sz() != FILE_ICON_BIG) {
+        printf("file: selftest big toggle failed\n");
+        return 1;
+    }
+    if (!file_toggle_icons() || file_icon_sz() != FILE_ICON_SMALL) {
+        printf("file: selftest small toggle failed\n");
+        return 1;
+    }
     {
         unsigned k = 0;
         char ebuf[16];
@@ -571,6 +763,7 @@ static void file_gui_run(void) {
     file_preview_on = 0;
     file_quit = 0;
     file_assoc_load();
+    file_icons_ok = file_icons_load();
     file_refresh();
     while (!file_quit) {
         long k;

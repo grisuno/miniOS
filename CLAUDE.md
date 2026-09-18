@@ -2325,7 +2325,20 @@ count, fail closed on bad pointers, overlong names and truncation.
 - The dock carries `File|icons/file.png|file` beside a Terminal shortcut
   that now uses the custom `icons/shell.png` art; both PNGs convert from
   the `images/file.png`/`images/shell.png` sources through
-  `tools/gen_desktop_pngs.py` like every other icon.
+  `tools/gen_desktop_pngs.py` like every other icon. The dock bar paints a
+  crystal checker (`DOCK_CRYSTAL_STEP`) over the wallpaper and magnifies on
+  hover (hot icon 2x to `DOCK_MAG`, neighbours 1.5x to `DOCK_NEAR`,
+  bottom-aligned); the mouse tick repaints only the dock strip (wallpaper
+  rect erase, no clear, no terminal re-render) once per hover change, so
+  there is no fullscreen flash, and it stays out while a button is down,
+  a drag is live, or a fullscreen terminal hides the dock.
+- Entry icons come from `images/` (`folder.png` dirs, `files.png` text
+  kinds, `image.png` `.png`, `object.png` `.o/.elf/.cvm`, unknown falls
+  back to `files.png`), decoded to indexed pixels plus an alpha mask and
+  drawn through the backend `NK_COMMAND_IMAGE` path; a `big icons` /
+  `small icons` button toggles 32 px (2 columns) vs 16 px (4 columns) with
+  one reload and no extra memory. All-or-nothing load, so the UI never
+  mixes icon and text rows.
 - Proof: `file --selftest` runs the assoc vectors plus a live `/`
   listing (`file: ok (N entries at /, theme dark)`, BDD-pinned), and
   `make test-file` locks the same parser vectors on the host.

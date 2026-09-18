@@ -653,7 +653,24 @@ void nk_rasterize(struct nk_context *ctx) {
             draw_text(c->x, c->y, c->string, c->length, fg, bg);
             break;
         }
-        case NK_COMMAND_IMAGE:
+        case NK_COMMAND_IMAGE: {
+            const struct nk_command_image *c =
+                (const struct nk_command_image *)cmd;
+            const struct nk_minios_img *im =
+                (const struct nk_minios_img *)c->img.handle.ptr;
+            if (im && im->px && im->mask && im->w > 0 && im->h > 0 &&
+                im->w <= NK_MINIOS_IMG_MAX && im->h <= NK_MINIOS_IMG_MAX) {
+                int iw = c->w < im->w ? c->w : im->w;
+                int ih = c->h < im->h ? c->h : im->h;
+                for (int iy = 0; iy < ih; iy++)
+                    for (int ix = 0; ix < iw; ix++) {
+                        if (!im->mask[iy * im->w + ix]) continue;
+                        px(c->x + ix, c->y + iy,
+                           im->px[iy * im->w + ix]);
+                    }
+            }
+            break;
+        }
         case NK_COMMAND_CUSTOM:
             break;
         default:

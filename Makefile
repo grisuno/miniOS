@@ -1759,13 +1759,17 @@ DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
                $(DESKTOP_SRC_DIR)/nuklear.png $(DESKTOP_SRC_DIR)/vedit.png \
                $(DESKTOP_SRC_DIR)/pokemon.png \
                $(DESKTOP_SRC_DIR)/file.png $(DESKTOP_SRC_DIR)/shell.png \
-               $(DESKTOP_SRC_DIR)/paint.png $(DESKTOP_SRC_DIR)/minicraft.png
+               $(DESKTOP_SRC_DIR)/paint.png $(DESKTOP_SRC_DIR)/minicraft.png \
+               $(DESKTOP_SRC_DIR)/folder.png $(DESKTOP_SRC_DIR)/files.png \
+               $(DESKTOP_SRC_DIR)/image.png $(DESKTOP_SRC_DIR)/object.png
 DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/doomedit.png \
               $(PROGS_DIR)/icons/quake2.png \
               $(PROGS_DIR)/icons/piano.png $(PROGS_DIR)/icons/nuklear.png \
               $(PROGS_DIR)/icons/vedit.png $(PROGS_DIR)/icons/pokemon.png \
               $(PROGS_DIR)/icons/file.png $(PROGS_DIR)/icons/shell.png \
               $(PROGS_DIR)/icons/paint.png $(PROGS_DIR)/icons/minicraft.png \
+              $(PROGS_DIR)/icons/folder.png $(PROGS_DIR)/icons/files.png \
+              $(PROGS_DIR)/icons/image.png $(PROGS_DIR)/icons/object.png \
               $(PROGS_DIR)/wall/wallpaper.png
 $(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
 	python3 tools/gen_desktop_pngs.py --src-dir $(DESKTOP_SRC_DIR) --repo .

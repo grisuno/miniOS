@@ -2840,45 +2840,73 @@ void desktop_shortcuts_load(void) {
     shortcuts_layout();
 }
 
-void desktop_shortcuts_draw(void) {
-    int dock_w, dock_h, x0, y0;
-    shortcuts_layout();
-    if (shortcut_count <= 0) return;
-    /* Dock bar: dark backing for contrast over the wallpaper, Mac style. */
-    dock_w = shortcut_count * dock_cell_w + 2 * DOCK_PAD_X;
-    dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y;
-    x0 = (fb_width - dock_w) / 2;
-    if (x0 < 0) x0 = 0;
-    y0 = fb_height - TASKBAR_H - DOCK_GAP - dock_h;
-    if (y0 < 0) y0 = 0;
-    vga_fb_rect(x0, y0, dock_w, dock_h, COL_SHADOW);
-    vga_fb_rect(x0, y0, dock_w, 1, COL_BORDER);
-    vga_fb_rect(x0, y0 + dock_h - 1, dock_w, 1, COL_BORDER);
-    vga_fb_rect(x0, y0, 1, dock_h, COL_BORDER);
-    vga_fb_rect(x0 + dock_w - 1, y0, 1, dock_h, COL_BORDER);
-    for (int i = 0; i < shortcut_count; i++) {
+/* Blit one shortcut icon scaled to dw x dh at (dx, dy), nearest
+ * neighbour from the cached 32x32 RGBA source. Alpha below 128 stays
+ * transparent; 8-bit mode quantizes through the icon palette. */
+static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
+                                 int dx, int dy, int dw, int dh) {
+    int ox, oy;
+    if (!sc->pixels || dw <= 0 || dh <= 0) return;
+    for (oy = 0; oy < dh; oy++) {
+        int sy = oy * ICON_H / dh;
+        for (ox = 0; ox < dw; ox++) {
+            int sx = ox * ICON_W / dw;
+            const uint8_t *sp = sc->pixels + ((sy * ICON_W) + sx) * 4;
+            if (sp[3] < 128) continue;
+            if (fb_bpp == 8)
+                vga_fb_pixel(dx + ox, dy + oy,
+                             (uint8_t)(ICON_PAL_BASE +
+                                       icon_nearest(sp[0], sp[1], sp[2])));
+            else
+                fb_write_packed(dx + ox, dy + oy,
+                                ((unsigned long)sp[0] << 16) |
+                                ((unsigned long)sp[1] << 8) |
+                                (unsigned long)sp[2]);
+        }
+    }
+}
+
+/* Index of the shortcut column under (mx, my), or -1. Same column bounds
+ * as the click hit test, so hover and click always agree. */
+static int dock_hover_index(int mx, int my) {
+    int i;
+    if (!mouse_state.present) return -1;
+    for (i = 0; i < shortcut_count; i++) {
         struct desktop_shortcut *sc = &shortcuts[i];
         int cl = shortcut_cell_left(i);
-        /* Draw icon pixels (raw RGBA; alpha below 128 transparent). In
-         * the 8-bit fallback the colors quantize back to the icon
-         * palette, matching the old look exactly. */
+        if (mx >= cl && mx < cl + dock_cell_w &&
+            my >= sc->y && my < sc->y + ICON_H + ICON_LABEL_H)
+            return i;
+    }
+    return -1;
+}
+
+/* Last hover index the dock was painted for. A full desktop paint resets
+ * it so the next tick repaints the strip from fresh pixels. */
+static int dock_last_hover = -2;
+
+/* Paint every shortcut icon and label at the given hover sizes. Shared by
+ * the full desktop paint and the flicker-free hover repaint, so the two
+ * can never diverge. Growth is bottom-aligned on the slot with no
+ * relayout: it overlays upward and the strip erase restores it. */
+static void dock_paint_icons(int hover) {
+    int i;
+    for (i = 0; i < shortcut_count; i++) {
+        struct desktop_shortcut *sc = &shortcuts[i];
+        int cl = shortcut_cell_left(i);
+        int dw = ICON_W, dh = ICON_H;
+        int dx, dy;
+        if (i == hover) {
+            dw = DOCK_MAG_W;
+            dh = DOCK_MAG_H;
+        } else if (hover >= 0 && (i == hover - 1 || i == hover + 1)) {
+            dw = DOCK_NEAR_W;
+            dh = DOCK_NEAR_H;
+        }
+        dx = cl + (dock_cell_w - dw) / 2;
+        dy = sc->y + ICON_H - dh;
         if (sc->pixels) {
-            for (int py = 0; py < ICON_H; py++) {
-                for (int px = 0; px < ICON_W; px++) {
-                    const uint8_t *sp =
-                        sc->pixels + ((py * ICON_W) + px) * 4;
-                    if (sp[3] < 128) continue;
-                    if (fb_bpp == 8)
-                        vga_fb_pixel(sc->x + px, sc->y + py,
-                                     (uint8_t)(ICON_PAL_BASE +
-                                               icon_nearest(sp[0], sp[1], sp[2])));
-                    else
-                        fb_write_packed(sc->x + px, sc->y + py,
-                                        ((unsigned long)sp[0] << 16) |
-                                        ((unsigned long)sp[1] << 8) |
-                                        (unsigned long)sp[2]);
-                }
-            }
+            shortcut_draw_scaled(sc, dx, dy, dw, dh);
         } else {
             /* No icon: draw a placeholder rectangle. */
             vga_fb_rect(sc->x, sc->y, ICON_W, ICON_H, COL_SHADOW);
@@ -2892,6 +2920,95 @@ void desktop_shortcuts_draw(void) {
                     COL_TASKBAR_TXT, COL_SHADOW);
         }
     }
+}
+
+void desktop_shortcuts_draw(void) {
+    int dock_w, dock_h, x0, y0, hover, yy, xx;
+    shortcuts_layout();
+    if (shortcut_count <= 0) return;
+    /* Dock bar: crystal backing over the wallpaper, Mac style. Only every
+     * other pixel is painted, so the wallpaper shows through the bar. */
+    dock_w = shortcut_count * dock_cell_w + 2 * DOCK_PAD_X;
+    dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y;
+    x0 = (fb_width - dock_w) / 2;
+    if (x0 < 0) x0 = 0;
+    y0 = fb_height - TASKBAR_H - DOCK_GAP - dock_h;
+    if (y0 < 0) y0 = 0;
+    for (yy = y0; yy < y0 + dock_h; yy++)
+        for (xx = x0; xx < x0 + dock_w; xx++)
+            if (((xx + yy) & (DOCK_CRYSTAL_STEP - 1)) == 0)
+                vga_fb_pixel(xx, yy, COL_SHADOW);
+    vga_fb_rect(x0, y0, dock_w, 1, COL_BORDER);
+    vga_fb_rect(x0, y0 + dock_h - 1, dock_w, 1, COL_BORDER);
+    vga_fb_rect(x0, y0, 1, dock_h, COL_BORDER);
+    vga_fb_rect(x0 + dock_w - 1, y0, 1, dock_h, COL_BORDER);
+    hover = dock_hover_index(mouse_state.x, mouse_state.y);
+    dock_paint_icons(hover);
+    dock_last_hover = hover;
+}
+
+/* Paint one wallpaper rectangle from the cache (solid fill when the cache
+ * is absent or stale): the strip-erase primitive for the hover repaint. */
+static void wallpaper_rect(int x0, int y0, int w, int h) {
+    int y, x;
+    if (x0 < 0) { w += x0; x0 = 0; }
+    if (y0 < 0) { h += y0; y0 = 0; }
+    if (w <= 0 || h <= 0) return;
+    if (x0 + w > fb_width) w = fb_width - x0;
+    if (y0 + h > fb_height) h = fb_height - y0;
+    if (w <= 0 || h <= 0) return;
+    if (!wall_cache || wall_cw != fb_width || wall_ch != fb_height) {
+        vga_fb_rect(x0, y0, w, h, COL_BG);
+        return;
+    }
+    if (fb_bpp == 8) {
+        for (y = 0; y < h; y++)
+            for (x = 0; x < w; x++)
+                FB_ADDR[(unsigned)(y0 + y) * (unsigned)fb_pitch +
+                        (unsigned)(x0 + x)] =
+                    wall_cache[(y0 + y) * fb_width + (x0 + x)];
+        return;
+    }
+    for (y = 0; y < h; y++)
+        for (x = 0; x < w; x++)
+            fb_write_packed(x0 + x, y0 + y,
+                            fb_pack_idx(wall_cache[(y0 + y) * fb_width +
+                                                   (x0 + x)]));
+}
+
+/* Hover repaint without the fullscreen flash: erase only the dock strip
+ * (bar plus the overflow the magnified icons rise into), restore the
+ * crystal and repaint the icons at the new hover sizes. No clear, no
+ * wallpaper rewrite, no terminal re-render, so there is no black frame;
+ * the strip is cheap (a few rows) and runs once per hover crossing.
+ * Terminals paint over the dock on a full desktop paint, so a terminal
+ * dragged across the dock is overpainted here until its next render;
+ * that drag case is rare and heals on the next paint. Fullscreen
+ * terminals hide the dock, so the tick never calls this there. */
+static void dock_paint_hover(int hover) {
+    int dock_w, dock_h, x0, y0, y_top, yy, xx;
+    shortcuts_layout();
+    if (shortcut_count <= 0) return;
+    dock_w = shortcut_count * dock_cell_w + 2 * DOCK_PAD_X;
+    dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y;
+    x0 = (fb_width - dock_w) / 2;
+    if (x0 < 0) x0 = 0;
+    y0 = fb_height - TASKBAR_H - DOCK_GAP - dock_h;
+    if (y0 < 0) y0 = 0;
+    y_top = y0 - (DOCK_MAG_H - ICON_H) - 2;
+    if (y_top < 0) y_top = 0;
+    wallpaper_rect(x0, y_top, dock_w, y0 + dock_h - y_top);
+    for (yy = y0; yy < y0 + dock_h; yy++)
+        for (xx = x0; xx < x0 + dock_w; xx++)
+            if (((xx + yy) & (DOCK_CRYSTAL_STEP - 1)) == 0)
+                vga_fb_pixel(xx, yy, COL_SHADOW);
+    vga_fb_rect(x0, y0, dock_w, 1, COL_BORDER);
+    vga_fb_rect(x0, y0 + dock_h - 1, dock_w, 1, COL_BORDER);
+    vga_fb_rect(x0, y0, 1, dock_h, COL_BORDER);
+    vga_fb_rect(x0 + dock_w - 1, y0, 1, dock_h, COL_BORDER);
+    dock_paint_icons(hover);
+    dock_last_hover = hover;
+    cursor_note_repaint(x0, y_top, dock_w, y0 + dock_h - y_top);
 }
 
 /* Icon for the taskbar running-app button. First the running program via
@@ -3145,6 +3262,18 @@ void vga_fb_mouse_tick(void) {
 
     mx = mouse_state.x;
     my = mouse_state.y;
+
+    /* Dock magnify lives in the dock paint, which a full desktop paint
+     * runs only occasionally, so the tick repaints the dock strip itself
+     * once per hover crossing (never while a button is down, a drag is
+     * live, or a fullscreen terminal hides the dock): strip-only, no
+     * clear, no wallpaper rewrite, zero cost while hovering still. */
+    if (!gfx_cursor && !term_fullscreen && !(mouse_state.buttons & 1) &&
+        !wm_dragging && !wm_gdrag) {
+        int hover = dock_hover_index(mx, my);
+        if (hover != dock_last_hover)
+            dock_paint_hover(hover);
+    }
 
     /* Erase old cursor and draw new one. Skipped wholesale in gfx mode:
      * the present path owns the cursor there (see above). */

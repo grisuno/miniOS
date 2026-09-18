@@ -2,8 +2,9 @@
  *
  * Mirror pin for progs/file/file.c: extension lowercasing, assoc line
  * validation (traversal rejected, shell/internal//path programs only),
- * and dispatch kinds. Vectors here match file --selftest one to one;
- * a drift in either copy fails visibly.
+ * dispatch kinds and the entry-icon classifier (folder/files/image/
+ * object). Vectors here match file --selftest one to one; a drift in
+ * either copy fails visibly.
  */
 
 #include <stdio.h>
@@ -74,6 +75,27 @@ static int t_assoc_line(const char *line, char *ext, char *prog) {
     return 0;
 }
 
+/** Mirror of file_icon_kind in progs/file/file.c (0 folder, 1 files,
+ * 2 image, 3 object). */
+static int t_icon_kind(const char *fname, int isdir) {
+    char ext[T_EXT_MAX + 1];
+    if (isdir) return 0;
+    t_ext_of(fname, ext, sizeof(ext));
+    if (strcmp(ext, "png") == 0) return 2;
+    if (strcmp(ext, "o") == 0 || strcmp(ext, "elf") == 0 ||
+        strcmp(ext, "cvm") == 0)
+        return 3;
+    return 1;
+}
+
+/** Mirror of the file icon size toggle (16 small default, 32 big). */
+#define T_ICON_SMALL 16
+#define T_ICON_BIG 32
+static int t_icon_big;
+static int t_icon_sz(void) {
+    return t_icon_big ? T_ICON_BIG : T_ICON_SMALL;
+}
+
 int main(void) {
     char ext[T_EXT_MAX + 1];
     char prog[T_PROG_MAX + 1];
@@ -98,6 +120,27 @@ int main(void) {
     CHECK(t_assoc_line("c|", ext, prog) != 0, "empty prog rejected");
     CHECK(t_assoc_line("c|vedit", ext, prog) != 0, "relative prog rejected");
     CHECK(t_assoc_line("c|/vedit|extra", ext, prog) != 0, "pipe in prog rejected");
+
+    CHECK(t_icon_kind("sub/", 1) == 0, "dir is folder");
+    CHECK(t_icon_kind("a.c", 0) == 1, "c is files");
+    CHECK(t_icon_kind("a.h", 0) == 1, "h is files");
+    CHECK(t_icon_kind("a.lisp", 0) == 1, "lisp is files");
+    CHECK(t_icon_kind("a.lua", 0) == 1, "lua is files");
+    CHECK(t_icon_kind("a.py", 0) == 1, "py is files");
+    CHECK(t_icon_kind("a.txt", 0) == 1, "txt is files");
+    CHECK(t_icon_kind("a.s", 0) == 1, "s is files");
+    CHECK(t_icon_kind("A.PNG", 0) == 2, "png is image");
+    CHECK(t_icon_kind("a.o", 0) == 3, "o is object");
+    CHECK(t_icon_kind("a.elf", 0) == 3, "elf is object");
+    CHECK(t_icon_kind("a.cvm", 0) == 3, "cvm is object");
+    CHECK(t_icon_kind("a.zip", 0) == 1, "unknown falls back to files");
+    CHECK(t_icon_kind("noext", 0) == 1, "no ext falls back to files");
+
+    CHECK(t_icon_sz() == 16, "default icon size small");
+    t_icon_big = !t_icon_big;
+    CHECK(t_icon_sz() == 32, "toggled icon size big");
+    t_icon_big = !t_icon_big;
+    CHECK(t_icon_sz() == 16, "toggled icon size small again");
 
     {
         struct fassoc_table t;
