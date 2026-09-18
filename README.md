@@ -1,6 +1,6 @@
 # MiniOS
 
-<img width="1031" height="827" alt="image" src="https://github.com/user-attachments/assets/196bca3a-51a7-4851-a97c-1da71e945310" />
+<img width="1029" height="829" alt="image" src="https://github.com/user-attachments/assets/b00e45fe-e631-48af-8012-c0e66fff2316" />
 
 LazyOwn RedTeam has released an educational 64-bit x86 teaching kernel and operating system, with basic security, and that carries its own complete toolchain of a subset of C, micropython, lua, and lisp, You can write a C
 program inside the running system, compile it, link it and execute it without
