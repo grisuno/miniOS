@@ -52,6 +52,8 @@ typedef struct {
 
 #define WLCOMP_CFG_DEFAULT { 800, 360, 8, 4, 12, 6, 13 }
 
+static int wlcomp_path(char *dst, int cap, const char *name);
+
 static long wlcomp_sys_title(const char *t) {
     long ret;
     __asm__ volatile("syscall" : "=a"(ret)
@@ -591,7 +593,6 @@ static void wlserv_gc_strays(void) {
         char box[WL_MBOX_BOX_MAX];
         unsigned int seq = 0;
         char path[WL_MBOX_NAME_MAX];
-        int di = 0;
         while (p[nl] != '\0')
             nl++;
         for (i = 0; i < nl; i++) {
@@ -606,17 +607,11 @@ static void wlserv_gc_strays(void) {
             p += nl + 1;
             continue;
         }
-        di = 0;
-        i = 0;
-        while (WL_MBOX_DIR[i] != '\0')
-            path[di++] = WL_MBOX_DIR[i++];
-        path[di++] = '/';
-        i = 0;
-        while (p[i] != '\0' && di < WL_MBOX_NAME_MAX - 1)
-            path[di++] = p[i++];
-        path[di] = '\0';
-        if (p[i] != '\0'
-            || wl_mbox_parse(path, box, sizeof box, &seq)
+        if (!wlcomp_path(path, sizeof path, p)) {
+            p += nl + 1;
+            continue;
+        }
+        if (wl_mbox_parse(path, box, sizeof box, &seq)
                 == WL_ERR_OK) {
             p += nl + 1;
             continue;
@@ -748,7 +743,6 @@ static void wlserv_clean_ev(void) {
         int dot = -1;
         int i = 0;
         char path[WL_MBOX_NAME_MAX];
-        int di = 0;
         while (p[nl] != '\0')
             nl++;
         for (i = 0; i < nl; i++) {
@@ -756,16 +750,7 @@ static void wlserv_clean_ev(void) {
                 dot = i;
         }
         if (dot >= 0 && strcmp(p + dot, WL_MBOX_EV_SUFFIX) == 0) {
-            di = 0;
-            i = 0;
-            while (WL_MBOX_DIR[i] != '\0')
-                path[di++] = WL_MBOX_DIR[i++];
-            path[di++] = '/';
-            i = 0;
-            while (p[i] != '\0' && di < WL_MBOX_NAME_MAX - 1)
-                path[di++] = p[i++];
-            path[di] = '\0';
-            if (p[i] == '\0')
+            if (wlcomp_path(path, sizeof path, p))
                 unlink(path);
         }
         p += nl + 1;
@@ -841,26 +826,9 @@ static int wlserv_drain(wlserv_t *s) {
         wl_hdr_t mh;
         int r = 0;
         int nl = 0;
-        int pi = 0;
-        int ei = 0;
         while (p[nl] != '\0')
             nl++;
-        while (WL_MBOX_DIR[pi] != '\0'
-            && pi < WL_MBOX_NAME_MAX - 1) {
-            path[pi] = WL_MBOX_DIR[pi];
-            pi++;
-        }
-        if (pi >= WL_MBOX_NAME_MAX - 1) {
-            p += nl + 1;
-            continue;
-        }
-        path[pi++] = '/';
-        ei = 0;
-        while (p[ei] != '\0' && pi < WL_MBOX_NAME_MAX - 1) {
-            path[pi++] = p[ei++];
-        }
-        path[pi] = '\0';
-        if (p[ei] != '\0'
+        if (!wlcomp_path(path, sizeof path, p)
             || wl_mbox_parse(path, box, sizeof box,
                 &seq) != WL_ERR_OK) {
             p += nl + 1;
@@ -1068,6 +1036,43 @@ static int wlcomp_client(const char *box, const char *pat) {
     return 0;
 }
 
+/** Join WL_MBOX_DIR + '/' + name into dst. Returns 1 on success,
+ * 0 when the name is not NUL-terminated in bounds or the path would
+ * not fit: one helper for every directory scan in this file, so the
+ * join logic cannot drift between call sites. */
+static int wlcomp_path(char *dst, int cap, const char *name) {
+    int di = 0;
+    int i = 0;
+    int ei = 0;
+    if (!dst || !name || cap <= 0)
+        return 0;
+    while (WL_MBOX_DIR[i] != '\0' && di < cap - 1)
+        dst[di++] = WL_MBOX_DIR[i++];
+    if (di >= cap - 1)
+        return 0;
+    dst[di++] = '/';
+    while (name[ei] != '\0' && di < cap - 1)
+        dst[di++] = name[ei++];
+    dst[di] = '\0';
+    return name[ei] == '\0';
+}
+
+/** Tile, refit pixels and present. Returns 0 when the desktop shows
+ *  the new layout, nonzero otherwise. Every mutate-then-show site
+ *  funnels here so a missed present can never leave a stale frame. */
+static int wlserv_relayout_present(wlserv_t *s) {
+    if (!s)
+        return 1;
+    if (wl_comp_layout_tile(&s->comp, WLCOMP_W, WLCOMP_H) <= 0)
+        return 1;
+    s->last_count = s->comp.count;
+    wlserv_recolor(&s->comp);
+    wlserv_fit(s);
+    if (wlserv_present(s) != 0)
+        return 1;
+    return 0;
+}
+
 /** Unlink every mailbox file so a new session starts clean. */
 static int wlcomp_clean(void) {
     char names[4096];
@@ -1084,20 +1089,9 @@ static int wlcomp_clean(void) {
     p = names;
     for (k = 0; k < count; k++) {
         int nl = 0;
-        int di = 0;
-        int i = 0;
         while (p[nl] != '\0')
             nl++;
-        di = 0;
-        i = 0;
-        while (WL_MBOX_DIR[i] != '\0')
-            path[di++] = WL_MBOX_DIR[i++];
-        path[di++] = '/';
-        i = 0;
-        while (p[i] != '\0' && di < WL_MBOX_NAME_MAX - 1)
-            path[di++] = p[i++];
-        path[di] = '\0';
-        if (p[i] == '\0')
+        if (wlcomp_path(path, sizeof path, p))
             if (unlink(path) == 0)
                 n++;
         p += nl + 1;
@@ -1117,13 +1111,7 @@ static int wlcomp_once(void) {
         printf("wlcomp: mapped 0 surfaces (%dx%d)\n", WLCOMP_W, WLCOMP_H);
         return 0;
     }
-    if (wl_comp_layout_tile(&s.comp, WLCOMP_W, WLCOMP_H) <= 0) {
-        wlcomp_sys_vga_mode(0L);
-        return 1;
-    }
-    wlserv_recolor(&s.comp);
-    wlserv_fit(&s);
-    if (wlserv_present(&s) != 0) {
+    if (wlserv_relayout_present(&s) != 0) {
         wlcomp_sys_vga_mode(0L);
         return 1;
     }
@@ -1135,11 +1123,15 @@ static int wlcomp_once(void) {
 
 /** Interactive desktop: click focuses, title drag moves, rim drag
  * resizes, close box closes, Alt+T re-tiles, Alt+M minimizes,
- * Alt+U restores, Alt+Q quits with the desktop redrawn behind it.
- * Plain keys always reach the focused client through its .ev file;
- * only Alt-held combos act on the server, so typing never tiles.
- * A /shm/wl/quit flag file quits cleanly too (the `desktop stop`
- * path, which cannot send keystrokes to a background job). */
+ * Alt+U restores, Alt+Tab cycles focus, Alt+Q quits with the desktop
+ * redrawn behind it. ESC quits too when no window is mapped (an empty
+ * desktop owns the keyboard but has nobody to receive keys, so ESC
+ * must never trap the user there); with windows mapped ESC reaches
+ * the focused client through its .ev file. Plain keys always reach
+ * the focused client; only Alt-held combos act on the server, so
+ * typing never tiles. A /shm/wl/quit flag file quits cleanly too
+ * (the `desktop stop` path, which cannot send keystrokes to a
+ * background job). */
 static int wlcomp_server(void) {
     wlserv_t s;
     long tick = 0;
@@ -1155,20 +1147,22 @@ static int wlcomp_server(void) {
     int lastbtn = -1;
     int lastfocus = -2;
     int ev_force = 1;
+    int rc = 0;
     wlserv_init(&s);
     wlcomp_sys_vga_mode(1L);
     wlcomp_sys_kbd_raw(1L);
     wlserv_clean_ev();
     wlserv_drain(&s);
     if (s.comp.count > 0) {
-        if (wl_comp_layout_tile(&s.comp, WLCOMP_W, WLCOMP_H) <= 0)
-            return 1;
-        wlserv_recolor(&s.comp);
-        wlserv_fit(&s);
+        if (wlserv_relayout_present(&s) != 0) {
+            rc = 1;
+            goto done;
+        }
         s.last_count = s.comp.count;
+    } else if (wlserv_present(&s) != 0) {
+        rc = 1;
+        goto done;
     }
-    if (wlserv_present(&s) != 0)
-        return 1;
     for (;;) {
         int m[4];
         long sc = 0;
@@ -1189,13 +1183,17 @@ static int wlcomp_server(void) {
             if (wlserv_drain(&s) != 0) {
                 if (s.comp.count != s.last_count) {
                     if (wl_comp_layout_tile(&s.comp, WLCOMP_W,
-                            WLCOMP_H) <= 0)
+                            WLCOMP_H) <= 0) {
+                        rc = 1;
                         break;
+                    }
                     s.last_count = s.comp.count;
                 }
                 wlserv_fit(&s);
-                if (wlserv_present(&s) != 0)
+                if (wlserv_present(&s) != 0) {
+                    rc = 1;
                     break;
+                }
                 ev_force = 1;
             }
         }
@@ -1219,13 +1217,17 @@ static int wlcomp_server(void) {
                             s.last_count = s.comp.count;
                             if (s.comp.count > 0) {
                                 if (wl_comp_layout_tile(&s.comp,
-                                        WLCOMP_W, WLCOMP_H) <= 0)
+                                        WLCOMP_W, WLCOMP_H) <= 0) {
+                                    rc = 1;
                                     break;
+                                }
                                 s.last_count = s.comp.count;
                                 wlserv_fit(&s);
                             }
-                            if (wlserv_present(&s) != 0)
+                            if (wlserv_present(&s) != 0) {
+                                rc = 1;
                                 break;
+                            }
                         }
                     } else if (idx >= 0 && zone != WL_HIT_NONE) {
                         wl_comp_focus(&s.comp, (unsigned int)hit);
@@ -1236,8 +1238,10 @@ static int wlcomp_server(void) {
                         grabw = s.comp.items[idx].w;
                         grabh = s.comp.items[idx].h;
                         ev_force = 1;
-                        if (wlserv_present(&s) != 0)
+                        if (wlserv_present(&s) != 0) {
+                            rc = 1;
                             break;
+                        }
                     }
                 }
             } else if (left && dragging >= 0) {
@@ -1254,16 +1258,20 @@ static int wlcomp_server(void) {
                     if (wl_comp_set_rect(&s.comp, id, x0, y0, w,
                             h) == WL_ERR_OK) {
                         wlserv_fit(&s);
-                        if (wlserv_present(&s) != 0)
+                        if (wlserv_present(&s) != 0) {
+                            rc = 1;
                             break;
+                        }
                     }
                 } else if (id != 0) {
                     int w = grabw;
                     int h = grabh;
                     if (wl_comp_set_rect(&s.comp, id, fx - grabx,
                             fy - graby, w, h) == WL_ERR_OK) {
-                        if (wlserv_present(&s) != 0)
+                        if (wlserv_present(&s) != 0) {
+                            rc = 1;
                             break;
+                        }
                     }
                 }
             } else if (!left) {
@@ -1292,16 +1300,39 @@ static int wlcomp_server(void) {
                 if (code == 0x38L)
                     alt_held = make;
                 if (make && alt_held && (code == 0x14L || code == 0x32L
-                        || code == 0x16L || code == 0x10L)) {
+                        || code == 0x16L || code == 0x10L || code == 0x0FL)) {
                     if (code == 0x10L)
                         goto done;
+                    if (code == 0x0FL && s.comp.count > 0) {
+                        int oi = 0;
+                        for (oi = 0; oi < s.comp.count; oi++) {
+                            unsigned int id =
+                                s.comp.items[s.comp.order[oi]].id;
+                            if (id != 0
+                                && !s.comp.items[s.comp.order[oi]]
+                                    .minimized
+                                && wl_comp_focus(&s.comp, id)
+                                    == WL_ERR_OK) {
+                                if (wlserv_present(&s) != 0) {
+                                    rc = 1;
+                                    goto done;
+                                }
+                                ev_force = 1;
+                                break;
+                            }
+                        }
+                    }
                     if (code == 0x14L) {
                         if (wl_comp_layout_tile(&s.comp, WLCOMP_W,
-                                WLCOMP_H) <= 0)
+                                WLCOMP_H) <= 0) {
+                            rc = 1;
                             goto done;
+                        }
                         wlserv_fit(&s);
-                        if (wlserv_present(&s) != 0)
+                        if (wlserv_present(&s) != 0) {
+                            rc = 1;
                             goto done;
+                        }
                         ev_force = 1;
                     }
                     if (code == 0x32L && s.comp.focus >= 0) {
@@ -1310,8 +1341,10 @@ static int wlcomp_server(void) {
                         if (id != 0
                             && wl_comp_set_minimized(&s.comp, id,
                                 1) == WL_ERR_OK) {
-                            if (wlserv_present(&s) != 0)
+                            if (wlserv_present(&s) != 0) {
+                                rc = 1;
                                 goto done;
+                            }
                             ev_force = 1;
                         }
                     }
@@ -1322,10 +1355,15 @@ static int wlcomp_server(void) {
                         }
                         wl_comp_refresh_active(&s.comp);
                         wlserv_fit(&s);
-                        if (wlserv_present(&s) != 0)
+                        if (wlserv_present(&s) != 0) {
+                            rc = 1;
                             goto done;
+                        }
                         ev_force = 1;
                     }
+                } else if (make && !alt_held && code == 0x01L
+                    && s.comp.count == 0) {
+                    goto done;
                 } else {
                     wlserv_key(&s, byte);
                     ev_force = 1;
@@ -1349,7 +1387,7 @@ done:
     wlcomp_sys_kbd_raw(0L);
     wlcomp_sys_vga_mode(0L);
     printf("wlcomp: server done (%d surfaces)\n", s.comp.count);
-    return 0;
+    return rc;
 }
 
 int main(int argc, char **argv) {

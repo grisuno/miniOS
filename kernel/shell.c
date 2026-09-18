@@ -1402,6 +1402,16 @@ static void shell_cmd_desktop(int argc, char **argv) {
         desktop_flag("quit");
         desktop_unflag("client");
         desktop_unflag("mirror");
+        desktop_srv_pid = -1;
+        /* The quit flag only works when the server still polls. A
+         * server that already faulted leaves gfx mode plus raw kbd
+         * behind with nobody to consume the flag, which used to wedge
+         * the shell with no keyboard. Restore text mode here too:
+         * idempotent when the server exits cleanly and restores it
+         * itself. */
+        kbd_raw_mode_set(0);
+        vga_fb_set_gfx_mode(0);
+        vga_fb_draw_desktop();
         vga_puts("desktop: stopping (server exits, text mode returns)\n");
         return;
     }
@@ -1443,6 +1453,7 @@ static void shell_cmd_desktop(int argc, char **argv) {
         kprintf("desktop: wayland up (server pid %d)\n", pid);
         vga_puts("desktop: click focuses, drag moves, rim resizes, X closes\n");
         vga_puts("desktop: Alt+T tile Alt+M minimize Alt+U restore Alt+Q quit\n");
+        vga_puts("desktop: Alt+Tab cycles focus, ESC quits on an empty desktop\n");
         vga_puts("desktop: start apps as clients (mrun paint &), jobs lists them\n");
     }
 }

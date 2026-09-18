@@ -2240,7 +2240,8 @@ beside it).
   `objects/minigcc.o <file>` redirected to `asm/<base>.s`, `.s` links
   with `objects/ld.o -f elf -o bin/<base>.elf` and runs the result
   (same as `^L` answering `elf`, without prompting), `.lua` runs
-  with `lua <file>`, `.py` runs with `micropython <file>`; the routing
+  with `lua <file>`, `.py` runs with `micropython <file>`, `.lisp` runs
+  with `lisp <file>`; the routing
   lives in `vedit_run_kind` (mirrored by `t_run_kind` in
   `tests/test_vedit_build.c`, so drift fails `make test-vedit`). `^L`
   prompts `link elf/cvm: ` and links `asm/<base>.s` with
@@ -2268,10 +2269,15 @@ beside it).
   `label:` in string ink, mnemonics in keyword ink), MicroPython (`.py`,
   with `#` and triple-quoted strings)
   and Lua (`.lua`, with `--`, `--[[ ]]` blocks and `[[ ]]` strings);
+  Lisp (`.lisp`, with `;` comments, `"` strings, numbers and the special
+  forms plus MiniOS primitives in keyword ink; dashed names like
+  `string-length` match on their alpha segments because the shared
+  word scanner stops at `-`);
   keywords, strings, comments, numbers and directives each get an ink,
   drawn as per-token runs on the canvas with a block cursor. The `.s`
   routing is mirrored by `t_lang_of` in `tests/test_vedit_build.c`, so
-  spec drift fails `make test-vedit`.
+  spec drift fails `make test-vedit`. The file browser opens `.lisp`
+  in vedit through `etc/association` (`lisp|/vedit`).
 - Plumbing: every platform fact comes from `minios_abi.h` or a
   syscall, never a literal. Keystrokes arrive through syscall 236
   `GETC_RAW` (0 polls with `-1` when idle for the bounded ESC-sequence
@@ -2290,7 +2296,8 @@ beside it).
   (including a `t_lang_of` mirror of `vedit_lang_of`, so spec drift fails
   the build). The scanner shares `vedit_parse_string`/`vedit_parse_number`
   (C-only quote flag)/`vedit_parse_keyword` helpers; per-language quirks
-  (C `#`/`/* */`, Python triple-quote, Lua long brackets) stay in the caller.
+  (C `#`/`/* */`, Python triple-quote, Lua long brackets, Lisp `;`)
+  stay in the caller.
 - The kernel `edit` stays: scripted flows (the MCP `minios_write`
   editor upload, the marketplace, the BDD suite) drive it
   non-interactively, which a fullscreen program cannot serve.

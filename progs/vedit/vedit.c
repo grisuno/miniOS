@@ -2,7 +2,8 @@
  *
  * Ctrl+R saves the buffer then builds or runs it by extension through
  * SYS_SPAWN so the shell stays usable: .c compiles with objects/minigcc.o
- * into asm/<base>.s, .lua runs with lua, .py runs with micropython. Ctrl+L
+ * into asm/<base>.s, .lua runs with lua, .py runs with micropython,
+ * .lisp runs with lisp. Ctrl+L
  * prompts for a link format and links the compiled asm/<base>.s with
  * objects/ld.o into bin/<base>.elf or cvm/<base>.cvm. Every build drops
  * the graphics mode first so the desktop terminal stays ordered and the
@@ -98,6 +99,7 @@ static unsigned long vedit_time_ms(void) {
 #define VEDIT_TOOL_CVM "/objects/cvm.o"
 #define VEDIT_TOOL_LUA "/lua"
 #define VEDIT_TOOL_PY "/micropython"
+#define VEDIT_TOOL_LISP "/lisp"
 #define VEDIT_DIR_ASM "/asm/"
 #define VEDIT_DIR_BIN "/bin/"
 #define VEDIT_DIR_CVM "/cvm/"
@@ -115,6 +117,7 @@ static unsigned long vedit_time_ms(void) {
 #define VEDIT_LANG_PY 2
 #define VEDIT_LANG_LUA 3
 #define VEDIT_LANG_ASM 4
+#define VEDIT_LANG_LISP 5
 
 /* ---- Token colours (theme; RGB mirrors of the desktop/icon palette) ---- */
 #define VEDIT_COL_DEFAULT 0
@@ -184,6 +187,12 @@ static const char *vedit_kw_lua =
     " and break do else elseif end false for function goto if in local nil not"
     " or repeat return then true until while print require ipairs pairs"
     " tostring tonumber";
+
+static const char *vedit_kw_lisp =
+    " quote if begin define set lambda let else cond and or not car cdr cons"
+    " null number string error message concat eq length at char code print"
+    " println open read write close exit time ms rtc fb info vol pal pcspeaker"
+    " quit minios run true false nil";
 
 static const char *vedit_kw_asm =
     " mov movb movw movl movq movabs movzbw movzbl movzwl movzbq movzwq"
@@ -337,6 +346,9 @@ static int vedit_lang_of(const char *fname) {
     if (n >= 4 && fname[n - 4] == '.' && fname[n - 3] == 'l' &&
         fname[n - 2] == 'u' && fname[n - 1] == 'a')
         return VEDIT_LANG_LUA;
+    if (n >= 5 && fname[n - 5] == '.' && fname[n - 4] == 'l' &&
+        fname[n - 3] == 'i' && fname[n - 2] == 's' && fname[n - 1] == 'p')
+        return VEDIT_LANG_LISP;
     return VEDIT_LANG_C;
 }
 
@@ -347,6 +359,7 @@ static const char *vedit_lang_name(int lang) {
     if (lang == VEDIT_LANG_PY) return "Python";
     if (lang == VEDIT_LANG_LUA) return "Lua";
     if (lang == VEDIT_LANG_ASM) return "Asm";
+    if (lang == VEDIT_LANG_LISP) return "Lisp";
     return "text";
 }
 
@@ -527,6 +540,24 @@ static int vedit_scan_line(const char *t, int len, int st) {
                 } else {
                     i = j;
                 }
+            } else {
+                i++;
+            }
+        }
+        return 0;
+    }
+    if (vedit_lang == VEDIT_LANG_LISP) {
+        while (i < len) {
+            int c = (unsigned char)t[i];
+            if (c == ';') {
+                for (k = i; k < len; k++) vedit_cell[k] = VEDIT_COL_COMMENT;
+                break;
+            } else if (c == '"') {
+                i = vedit_parse_string(t, len, i);
+            } else if (vedit_is_digit(c)) {
+                i = vedit_parse_number(t, len, i, 0);
+            } else if (vedit_is_alpha(c)) {
+                i = vedit_parse_keyword(t, len, i, vedit_kw_lisp);
             } else {
                 i++;
             }
@@ -1084,12 +1115,13 @@ static void vedit_cmd_exec(const char *out, int kind) {
         vedit_spawn_visible(VEDIT_TOOL_CVM, 0, 1, args, label);
 }
 
-/** Decide the ^R tool for a file: 1=minigcc, 2=lua, 3=python, 4=ld. */
+/** Decide the ^R tool for a file: 1=minigcc, 2=lua, 3=python, 4=ld, 5=lisp. */
 static int vedit_run_kind(const char *fname) {
     if (vedit_has_ext(fname, ".c") || vedit_has_ext(fname, ".h")) return 1;
     if (vedit_has_ext(fname, ".lua")) return 2;
     if (vedit_has_ext(fname, ".py")) return 3;
     if (vedit_has_ext(fname, ".s")) return 4;
+    if (vedit_has_ext(fname, ".lisp")) return 5;
     return 0;
 }
 
@@ -1155,8 +1187,9 @@ static void vedit_cmd_run(void) {
     }
     if (kind == 2) tool = VEDIT_TOOL_LUA;
     else if (kind == 3) tool = VEDIT_TOOL_PY;
+    else if (kind == 5) tool = VEDIT_TOOL_LISP;
     else {
-        vedit_set_msg("usage: save as .c, .s, .lua or .py first");
+        vedit_set_msg("usage: save as .c, .s, .lua, .py or .lisp first");
         return;
     }
     args[0] = tool;
@@ -1245,6 +1278,10 @@ static int vedit_selftest_build(void) {
         printf("vedit: .s must highlight as Asm\n");
         fails++;
     }
+    if (vedit_lang_of("a.lisp") != VEDIT_LANG_LISP) {
+        printf("vedit: .lisp must highlight as Lisp\n");
+        fails++;
+    }
     if (vedit_run_kind("a.c") != 1 || vedit_run_kind("a.h") != 1) {
         printf("vedit: .c/.h must route to minigcc\n");
         fails++;
@@ -1255,6 +1292,10 @@ static int vedit_selftest_build(void) {
     }
     if (vedit_run_kind("a.lua") != 2 || vedit_run_kind("a.py") != 3) {
         printf("vedit: .lua/.py must route to runners\n");
+        fails++;
+    }
+    if (vedit_run_kind("a.lisp") != 5) {
+        printf("vedit: .lisp must route to lisp\n");
         fails++;
     }
     if (vedit_run_kind("a.txt") != 0) {

@@ -1011,7 +1011,12 @@ one goal to give it shape: collect 10 WOOD, which prints
 `minicraft: GOAL firewood x10 DONE` on the serial console and
 `GOAL DONE` on the HUD. The world, player state and inventory persist
 in `/saves/minicraft.map` and survive image rebuilds through the same
-`saves/` preservation that protects the other games.
+`saves/` preservation that protects the other games. Mobs respawn 10 s
+after dying (`MC_RESPAWN_MS`), but at night (`day_light` below
+`MC_NIGHT_LIGHT`) dead creepers regenerate after 3 s
+(`MC_CREEP_NIGHT_MS`), so the dark stays dangerous, while by day dead
+pigs regenerate after 3 s (`MC_PIG_DAY_MS`), so there is always pork
+to hunt and heal with.
 
 Two properties were verified numerically rather than by screenshots.
 The camera basis keeps forward, right and up separate and rotates pitch

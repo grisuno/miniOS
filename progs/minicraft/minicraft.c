@@ -89,6 +89,16 @@ static unsigned char host_fb[MINIOS_DOOM_W * MINIOS_DOOM_H];
 #define MC_CREEP_DZ_MAX 4.0f
 #define MC_CREEP_FUSE_D 1.8f
 #define MC_CREEP_DEFUSE_D 3.5f
+/* Dead mobs come back after MC_RESPAWN_MS; at night (day_light below
+ * MC_NIGHT_LIGHT, the same dusk threshold the chase speed uses) dead
+ * creepers regenerate after MC_CREEP_NIGHT_MS instead, so the dark
+ * stays dangerous, while by day (day_light at or above the threshold)
+ * dead pigs regenerate after MC_PIG_DAY_MS instead, so there is always
+ * pork around to hunt and heal (MC_PORK_HEAL). */
+#define MC_RESPAWN_MS 10000
+#define MC_CREEP_NIGHT_MS 3000
+#define MC_PIG_DAY_MS 3000
+#define MC_NIGHT_LIGHT 0.35f
 #define MC_CREEP_SEP_D 1.0f
 #define MC_PORK_HEAL 6
 #define MC_HUNGER_MAX 20
@@ -1379,7 +1389,12 @@ static void tick_mob(Pig *p, int id, float dt, long now) {
         float sp = (day_light < 0.35f) ? 2.2f : 1.6f;
         float pdx, pdy, pd;
         if (!p->alive) {
-            if (now - p->respawn_ms > 10000)
+            long wait = MC_RESPAWN_MS;
+            if (p->kind == MOB_CREEP && day_light < MC_NIGHT_LIGHT)
+                wait = MC_CREEP_NIGHT_MS;
+            else if (p->kind == MOB_PIG && day_light >= MC_NIGHT_LIGHT)
+                wait = MC_PIG_DAY_MS;
+            if (now - p->respawn_ms > wait)
                 mob_spawn_one(p, id, p->kind == MOB_CREEP ? MC_CREEP_HP : MC_PIG_HP, now);
             return;
         }

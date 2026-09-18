@@ -13,6 +13,7 @@ txt|/vedit
 py|/vedit
 sh|/vedit
 lua|/vedit
+lisp|/vedit
 html|/vedit
 o|shell
 elf|shell
