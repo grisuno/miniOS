@@ -167,16 +167,16 @@
                      int filled, ...`
   - `nk_rasterize` (function, line 516) `void nk_rasterize(struct nk_context *ctx)`
   - `nk_foreach` (function, line 520) `nk_foreach(cmd, ctx)`
-  - `nk_minios_font_width` (function, line 666) `static float nk_minios_font_width(nk_handle handle, float height,
+  - `nk_minios_font_width` (function, line 683) `static float nk_minios_font_width(nk_handle handle, float height,
                                ...`
-  - `nk_minios_font` (function, line 672) `struct nk_user_font nk_minios_font(void)`
-  - `feed_key` (function, line 707) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
-  - `nk_set_scancode_hook` (function, line 714) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
-  - `handle_scancode` (function, line 719) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
-  - `nk_client_poll` (function, line 767) `static void nk_client_poll(struct nk_context *ctx)`
-  - `nk_poll_input` (function, line 814) `void nk_poll_input(struct nk_context *ctx)`
-  - `nk_set_window_origin` (function, line 853) `void nk_set_window_origin(int x, int y)`
-  - `nk_quit_requested` (function, line 861) `int nk_quit_requested(void)`
+  - `nk_minios_font` (function, line 689) `struct nk_user_font nk_minios_font(void)`
+  - `feed_key` (function, line 724) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
+  - `nk_set_scancode_hook` (function, line 731) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
+  - `handle_scancode` (function, line 736) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
+  - `nk_client_poll` (function, line 784) `static void nk_client_poll(struct nk_context *ctx)`
+  - `nk_poll_input` (function, line 831) `void nk_poll_input(struct nk_context *ctx)`
+  - `nk_set_window_origin` (function, line 870) `void nk_set_window_origin(int x, int y)`
+  - `nk_quit_requested` (function, line 878) `int nk_quit_requested(void)`
   - `list` (function, line 4) `* abstract draw command list (nk__begin/nk__next);`
   - `program_invocation_short_name` (variable, line 27) `extern char *program_invocation_short_name;`
   - `NK_IMPLEMENTATION` (macro, line 17) `#define NK_IMPLEMENTATION`
@@ -190,6 +190,7 @@
   - `nk_context` (struct, line 20)
   - `nk_user_font` (struct, line 21)
   - `nk_command_buffer` (struct, line 22)
+  - `nk_minios_img` (struct, line 62)
   - `nk_sys_time_ms` (function, line 29) `long nk_sys_time_ms(void);`
   - `nk_sys_kbd` (function, line 30) `long nk_sys_kbd(void);`
   - `nk_sys_palette` (function, line 31) `long nk_sys_palette(const unsigned char *pal768);`
@@ -203,14 +204,15 @@
   - `nk_build_palette` (function, line 45) `void nk_build_palette(unsigned char *pal768);`
   - `nk_minios_font` (function, line 51) `struct nk_user_font nk_minios_font(void);`
   - `nk_rasterize` (function, line 54) `void nk_rasterize(struct nk_context *ctx);`
-  - `SYS_NK_FRAME` (function, line 60) `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);`
-  - `nk_poll_input` (function, line 62) `void nk_poll_input(struct nk_context *ctx);`
-  - `nk_quit_requested` (function, line 67) `int nk_quit_requested(void);`
-  - `nk_set_scancode_hook` (function, line 76) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
+  - `SYS_NK_FRAME` (function, line 73) `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);`
+  - `nk_poll_input` (function, line 75) `void nk_poll_input(struct nk_context *ctx);`
+  - `nk_quit_requested` (function, line 80) `int nk_quit_requested(void);`
+  - `nk_set_scancode_hook` (function, line 89) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
   - `NUKLEAR_MINIOS_H` (macro, line 2) `#define NUKLEAR_MINIOS_H`
   - `NK_W` (macro, line 24) `#define NK_W`
   - `NK_H` (macro, line 25) `#define NK_H`
   - `NK_BACKBUF` (macro, line 26) `#define NK_BACKBUF`
+  - `NK_MINIOS_IMG_MAX` (macro, line 61) `#define NK_MINIOS_IMG_MAX`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 

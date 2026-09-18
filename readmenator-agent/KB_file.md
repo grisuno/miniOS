@@ -5,28 +5,34 @@
 - Doc: Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf).
 - Language: c
 - Symbols:
-  - `file_assoc` (struct, line 55)
-  - `file_sys_dir_list` (function, line 75) `static long file_sys_dir_list(const char *path, char *buf, long cap)`
-  - `file_sys_spawn` (function, line 85) `static long file_sys_spawn(const char *path, int argc, const char **argv)`
-  - `file_ext_of` (function, line 96) `static void file_ext_of(const char *fname, char *dst, unsigned cap)`
-  - `file_join` (function, line 117) `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)`
-  - `file_parent` (function, line 131) `static void file_parent(char *path)`
-  - `file_assoc_line` (function, line 141) `static int file_assoc_line(const char *line, char *ext, char *prog)`
-  - `file_assoc_load` (function, line 174) `static void file_assoc_load(void)`
-  - `file_assoc_lookup` (function, line 190) `static const char *file_assoc_lookup(const char *ext)`
-  - `file_action_of` (function, line 195) `static int file_action_of(const char *fname, const char **prog_out)`
-  - `file_refresh` (function, line 208) `static void file_refresh(void)`
-  - `file_preview_load` (function, line 223) `static int file_preview_load(const char *path)`
-  - `file_preview_blit` (function, line 256) `static void file_preview_blit(int ox, int oy)`
-  - `file_spawn_visible` (function, line 271) `static long file_spawn_visible(const char *tool, int argc, const char **argv,
+  - `file_assoc` (struct, line 73)
+  - `file_sys_dir_list` (function, line 98) `static long file_sys_dir_list(const char *path, char *buf, long cap)`
+  - `file_sys_spawn` (function, line 108) `static long file_sys_spawn(const char *path, int argc, const char **argv)`
+  - `file_ext_of` (function, line 119) `static void file_ext_of(const char *fname, char *dst, unsigned cap)`
+  - `file_icon_kind` (function, line 143) `static int file_icon_kind(const char *fname, int isdir)`
+  - `file_icon_sz` (function, line 155) `static int file_icon_sz(void)`
+  - `file_icon_decode` (function, line 162) `static int file_icon_decode(const char *path, unsigned char *px,
+                            unsi...`
+  - `file_icons_load` (function, line 210) `static int file_icons_load(void)`
+  - `file_toggle_icons` (function, line 235) `static int file_toggle_icons(void)`
+  - `file_join` (function, line 242) `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)`
+  - `file_parent` (function, line 256) `static void file_parent(char *path)`
+  - `file_assoc_line` (function, line 266) `static int file_assoc_line(const char *line, char *ext, char *prog)`
+  - `file_assoc_load` (function, line 299) `static void file_assoc_load(void)`
+  - `file_assoc_lookup` (function, line 315) `static const char *file_assoc_lookup(const char *ext)`
+  - `file_action_of` (function, line 320) `static int file_action_of(const char *fname, const char **prog_out)`
+  - `file_refresh` (function, line 333) `static void file_refresh(void)`
+  - `file_preview_load` (function, line 348) `static int file_preview_load(const char *path)`
+  - `file_preview_blit` (function, line 381) `static void file_preview_blit(int ox, int oy)`
+  - `file_spawn_visible` (function, line 396) `static long file_spawn_visible(const char *tool, int argc, const char **argv,
                    ...`
-  - `file_open_text` (function, line 294) `static void file_open_text(const char *path)`
-  - `file_run_shell` (function, line 305) `static void file_run_shell(const char *path)`
-  - `file_activate` (function, line 344) `static void file_activate(const char *dir, const char *name)`
-  - `file_ui_build` (function, line 375) `static void file_ui_build(struct nk_context *ctx)`
-  - `file_selftest` (function, line 452) `static int file_selftest(void)`
-  - `file_gui_run` (function, line 553) `static void file_gui_run(void)`
-  - `main` (function, line 610) `int main(int argc, char **argv)`
+  - `file_open_text` (function, line 419) `static void file_open_text(const char *path)`
+  - `file_run_shell` (function, line 430) `static void file_run_shell(const char *path)`
+  - `file_activate` (function, line 469) `static void file_activate(const char *dir, const char *name)`
+  - `file_ui_build` (function, line 500) `static void file_ui_build(struct nk_context *ctx)`
+  - `file_selftest` (function, line 599) `static int file_selftest(void)`
+  - `file_gui_run` (function, line 745) `static void file_gui_run(void)`
+  - `main` (function, line 803) `int main(int argc, char **argv)`
   - `STB_IMAGE_IMPLEMENTATION` (macro, line 24) `#define STB_IMAGE_IMPLEMENTATION`
   - `STBI_ONLY_PNG` (macro, line 25) `#define STBI_ONLY_PNG`
   - `STBI_NO_STDIO` (macro, line 26) `#define STBI_NO_STDIO`
@@ -48,10 +54,22 @@
   - `FILE_ACTION_SHELL` (macro, line 45) `#define FILE_ACTION_SHELL`
   - `FILE_ACTION_INTERNAL` (macro, line 46) `#define FILE_ACTION_INTERNAL`
   - `FILE_LOG_LINE` (macro, line 47) `#define FILE_LOG_LINE`
-  - `FILE_ACT_TEXT` (macro, line 50) `#define FILE_ACT_TEXT`
-  - `FILE_ACT_SHELL` (macro, line 51) `#define FILE_ACT_SHELL`
-  - `FILE_ACT_INTERNAL` (macro, line 52) `#define FILE_ACT_INTERNAL`
-  - `FILE_ACT_UNKNOWN` (macro, line 53) `#define FILE_ACT_UNKNOWN`
+  - `FILE_ICON_SMALL` (macro, line 54) `#define FILE_ICON_SMALL`
+  - `FILE_ICON_BIG` (macro, line 55) `#define FILE_ICON_BIG`
+  - `FILE_ICON_MAX` (macro, line 56) `#define FILE_ICON_MAX`
+  - `FILE_ICON_N` (macro, line 57) `#define FILE_ICON_N`
+  - `FILE_ICON_FOLDER` (macro, line 58) `#define FILE_ICON_FOLDER`
+  - `FILE_ICON_FILES` (macro, line 59) `#define FILE_ICON_FILES`
+  - `FILE_ICON_IMAGE` (macro, line 60) `#define FILE_ICON_IMAGE`
+  - `FILE_ICON_OBJECT` (macro, line 61) `#define FILE_ICON_OBJECT`
+  - `FILE_ICON_PATH_FOLDER` (macro, line 62) `#define FILE_ICON_PATH_FOLDER`
+  - `FILE_ICON_PATH_FILES` (macro, line 63) `#define FILE_ICON_PATH_FILES`
+  - `FILE_ICON_PATH_IMAGE` (macro, line 64) `#define FILE_ICON_PATH_IMAGE`
+  - `FILE_ICON_PATH_OBJECT` (macro, line 65) `#define FILE_ICON_PATH_OBJECT`
+  - `FILE_ACT_TEXT` (macro, line 68) `#define FILE_ACT_TEXT`
+  - `FILE_ACT_SHELL` (macro, line 69) `#define FILE_ACT_SHELL`
+  - `FILE_ACT_INTERNAL` (macro, line 70) `#define FILE_ACT_INTERNAL`
+  - `FILE_ACT_UNKNOWN` (macro, line 71) `#define FILE_ACT_UNKNOWN`
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/file/file_assoc.h

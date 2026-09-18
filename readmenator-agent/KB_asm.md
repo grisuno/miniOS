@@ -30,8 +30,10 @@
   - `aes_hdr_get` (function, line 2906)
   - `aes_tool_name` (function, line 3059)
   - `aes_run` (function, line 3077)
-  - `main` (function, line 3799)
-  - `_start` (function, line 4105)
+  - `__sl_3` (function, line 3087)
+  - `__sl_4` (function, line 3091)
+  - `main` (function, line 3807)
+  - `_start` (function, line 4113)
 
 ## progs/asm/cp.s
 - Layer: utility

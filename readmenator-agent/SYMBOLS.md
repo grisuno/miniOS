@@ -692,25 +692,30 @@ static int zip_sanitize_name(con...` |
 | `ICON_EMBEDDED_H` | macro | `headers/desktop_icons.h:13` | `#define ICON_EMBEDDED_H` |
 | `ICON_EMBEDDED_W` | macro | `headers/desktop_icons.h:12` | `#define ICON_EMBEDDED_W` |
 | `DESKTOP_SHORTCUTS_H` | macro | `headers/desktop_shortcuts.h:13` | `#define DESKTOP_SHORTCUTS_H` |
+| `DOCK_CRYSTAL_STEP` | macro | `headers/desktop_shortcuts.h:41` | `#define DOCK_CRYSTAL_STEP` |
 | `DOCK_GAP` | macro | `headers/desktop_shortcuts.h:35` | `#define DOCK_GAP` |
 | `DOCK_LABEL_GAP` | macro | `headers/desktop_shortcuts.h:36` | `#define DOCK_LABEL_GAP` |
+| `DOCK_MAG_H` | macro | `headers/desktop_shortcuts.h:49` | `#define DOCK_MAG_H` |
+| `DOCK_MAG_W` | macro | `headers/desktop_shortcuts.h:48` | `#define DOCK_MAG_W` |
+| `DOCK_NEAR_H` | macro | `headers/desktop_shortcuts.h:51` | `#define DOCK_NEAR_H` |
+| `DOCK_NEAR_W` | macro | `headers/desktop_shortcuts.h:50` | `#define DOCK_NEAR_W` |
 | `DOCK_PAD_X` | macro | `headers/desktop_shortcuts.h:33` | `#define DOCK_PAD_X` |
 | `DOCK_PAD_Y` | macro | `headers/desktop_shortcuts.h:34` | `#define DOCK_PAD_Y` |
 | `ICON_H` | macro | `headers/desktop_shortcuts.h:25` | `#define ICON_H` |
 | `ICON_LABEL_H` | macro | `headers/desktop_shortcuts.h:28` | `#define ICON_LABEL_H` |
 | `ICON_PAD_X` | macro | `headers/desktop_shortcuts.h:26` | `#define ICON_PAD_X` |
 | `ICON_PAD_Y` | macro | `headers/desktop_shortcuts.h:27` | `#define ICON_PAD_Y` |
-| `ICON_PAL_BASE` | macro | `headers/desktop_shortcuts.h:43` | `#define ICON_PAL_BASE` |
-| `ICON_PAL_SIZE` | macro | `headers/desktop_shortcuts.h:44` | `#define ICON_PAL_SIZE` |
+| `ICON_PAL_BASE` | macro | `headers/desktop_shortcuts.h:58` | `#define ICON_PAL_BASE` |
+| `ICON_PAL_SIZE` | macro | `headers/desktop_shortcuts.h:59` | `#define ICON_PAL_SIZE` |
 | `ICON_W` | macro | `headers/desktop_shortcuts.h:24` | `#define ICON_W` |
 | `MAX_SHORTCUTS` | macro | `headers/desktop_shortcuts.h:18` | `#define MAX_SHORTCUTS` |
 | `SHORTCUT_CMD_LEN` | macro | `headers/desktop_shortcuts.h:20` | `#define SHORTCUT_CMD_LEN` |
 | `SHORTCUT_NAME_LEN` | macro | `headers/desktop_shortcuts.h:19` | `#define SHORTCUT_NAME_LEN` |
 | `SHORTCUT_PATH_LEN` | macro | `headers/desktop_shortcuts.h:21` | `#define SHORTCUT_PATH_LEN` |
-| `desktop_shortcut` | struct | `headers/desktop_shortcuts.h:50` | `` |
-| `desktop_shortcuts_draw` | function | `headers/desktop_shortcuts.h:63` | `void desktop_shortcuts_draw(void);` |
-| `desktop_shortcuts_hit_test` | function | `headers/desktop_shortcuts.h:67` | `const char *desktop_shortcuts_hit_test(int mx, int my);` |
-| `desktop_shortcuts_load` | function | `headers/desktop_shortcuts.h:60` | `void desktop_shortcuts_load(void);` |
+| `desktop_shortcut` | struct | `headers/desktop_shortcuts.h:65` | `` |
+| `desktop_shortcuts_draw` | function | `headers/desktop_shortcuts.h:78` | `void desktop_shortcuts_draw(void);` |
+| `desktop_shortcuts_hit_test` | function | `headers/desktop_shortcuts.h:82` | `const char *desktop_shortcuts_hit_test(int mx, int my);` |
+| `desktop_shortcuts_load` | function | `headers/desktop_shortcuts.h:75` | `void desktop_shortcuts_load(void);` |
 | `DEV_MAX` | macro | `headers/driver.h:19` | `#define DEV_MAX` |
 | `DEV_NAME_LEN` | macro | `headers/driver.h:18` | `#define DEV_NAME_LEN` |
 | `DEV_TYPE_AUDIO` | macro | `headers/driver.h:22` | `#define DEV_TYPE_AUDIO` |
@@ -2420,12 +2425,12 @@ void kmain(void)` |
 | `SHELL_HIST_MAX` | macro | `kernel/shell.c:84` | `#define SHELL_HIST_MAX` |
 | `SHELL_RUN_DIRS` | macro | `kernel/shell.c:58` | `#define SHELL_RUN_DIRS` |
 | `ShellRunDir` | struct | `kernel/shell.c:47` | `` |
-| `VMA` | function | `kernel/shell.c:1949` | `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
+| `VMA` | function | `kernel/shell.c:1960` | `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...` |
 | `XXH_STATIC_LINKING_ONLY` | macro | `kernel/shell.c:14` | `#define XXH_STATIC_LINKING_ONLY` |
 | `code` | function | `kernel/shell.c:1216` | `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...` |
-| `context` | function | `kernel/shell.c:1479` | `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);` |
+| `context` | function | `kernel/shell.c:1490` | `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);` |
 | `desktop_flag` | function | `kernel/shell.c:1352` | `static void desktop_flag(const char *name)` |
 | `desktop_flag_on` | function | `kernel/shell.c:1362` | `static int desktop_flag_on(const char *name)` |
 | `desktop_path` | function | `kernel/shell.c:1343` | `static void desktop_path(const char *name, char *dst, unsigned cap)` |
@@ -2434,30 +2439,30 @@ static int shell_wait_fg(int *pids, int n, int ki...` |
 | `etrel_path_trusted` | function | `kernel/shell.c:963` | `static int etrel_path_trusted(const char *full)` |
 | `flows` | function | `kernel/shell.c:1376` | `* and external flows (make wl) set it themselves. */
 static void desktop_unflag(const char *name)` |
-| `frame` | function | `kernel/shell.c:2626` | `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row *)kmalloc(sizeof(struct ` |
-| `gfx_parse_int` | function | `kernel/shell.c:1524` | `static int gfx_parse_int(const char *s, int *out)` |
-| `gfx_read_palette` | function | `kernel/shell.c:1544` | `static void gfx_read_palette(unsigned char pal[768])` |
-| `job_row` | struct | `kernel/shell.c:1841` | `` |
+| `frame` | function | `kernel/shell.c:2637` | `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row *)kmalloc(sizeof(struct ` |
+| `gfx_parse_int` | function | `kernel/shell.c:1535` | `static int gfx_parse_int(const char *s, int *out)` |
+| `gfx_read_palette` | function | `kernel/shell.c:1555` | `static void gfx_read_palette(unsigned char pal[768])` |
+| `job_row` | struct | `kernel/shell.c:1852` | `` |
 | `line` | function | `kernel/shell.c:357` | `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...` |
 | `outw_port` | function | `kernel/shell.c:869` | `static inline void outw_port(unsigned short port, unsigned short val)` |
-| `ps_row` | struct | `kernel/shell.c:2624` | `` |
+| `ps_row` | struct | `kernel/shell.c:2635` | `` |
 | `root` | function | `kernel/shell.c:562` | `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * e` |
 | `shell_cmd_desktop` | function | `kernel/shell.c:1400` | `static void shell_cmd_desktop(int argc, char **argv)` |
-| `shell_cmd_gdb` | function | `kernel/shell.c:2134` | `static void shell_cmd_gdb(int argc, char **argv)` |
-| `shell_cmd_gfx` | function | `kernel/shell.c:1551` | `static void shell_cmd_gfx(int argc, char **argv)` |
-| `shell_cmd_hash` | function | `kernel/shell.c:2177` | `static void shell_cmd_hash(int argc, char **argv)` |
-| `shell_cmd_jobs` | function | `kernel/shell.c:1840` | `static void shell_cmd_jobs(void)` |
-| `shell_cmd_kill` | function | `kernel/shell.c:1895` | `static void shell_cmd_kill(int argc, char **argv)` |
-| `shell_cmd_mem` | function | `kernel/shell.c:1920` | `static void shell_cmd_mem(void)` |
+| `shell_cmd_gdb` | function | `kernel/shell.c:2145` | `static void shell_cmd_gdb(int argc, char **argv)` |
+| `shell_cmd_gfx` | function | `kernel/shell.c:1562` | `static void shell_cmd_gfx(int argc, char **argv)` |
+| `shell_cmd_hash` | function | `kernel/shell.c:2188` | `static void shell_cmd_hash(int argc, char **argv)` |
+| `shell_cmd_jobs` | function | `kernel/shell.c:1851` | `static void shell_cmd_jobs(void)` |
+| `shell_cmd_kill` | function | `kernel/shell.c:1906` | `static void shell_cmd_kill(int argc, char **argv)` |
+| `shell_cmd_mem` | function | `kernel/shell.c:1931` | `static void shell_cmd_mem(void)` |
 | `shell_cmd_mrun` | function | `kernel/shell.c:1252` | `static void shell_cmd_mrun(int argc, char **argv)` |
 | `shell_cmd_poweroff` | function | `kernel/shell.c:875` | `static void shell_cmd_poweroff(void)` |
-| `shell_cmd_wait` | function | `kernel/shell.c:1863` | `static void shell_cmd_wait(int argc, char **argv)` |
-| `shell_cmd_wm` | function | `kernel/shell.c:1703` | `static void shell_cmd_wm(int argc, char **argv)` |
+| `shell_cmd_wait` | function | `kernel/shell.c:1874` | `static void shell_cmd_wait(int argc, char **argv)` |
+| `shell_cmd_wm` | function | `kernel/shell.c:1714` | `static void shell_cmd_wm(int argc, char **argv)` |
 | `shell_complete_replace` | function | `kernel/shell.c:234` | `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...` |
 | `shell_complete_tier` | function | `kernel/shell.c:222` | `static int shell_complete_tier(const char *nm)` |
-| `shell_exec_builtin` | function | `kernel/shell.c:2283` | `void shell_exec_builtin(int argc, char **argv)` |
+| `shell_exec_builtin` | function | `kernel/shell.c:2294` | `void shell_exec_builtin(int argc, char **argv)` |
 | `shell_file_is_real` | function | `kernel/shell.c:909` | `static int shell_file_is_real(const char *resolved)` |
 | `shell_focus_park` | function | `kernel/shell.c:102` | `void shell_focus_park(void)` |
 | `shell_focus_restore` | function | `kernel/shell.c:107` | `void shell_focus_restore(void)` |
@@ -2473,8 +2478,8 @@ static void shell_hist_na...` |
 | `shell_load` | function | `kernel/shell.c:806` | `static int shell_load(const char *fname, char *progname_out, void **entry_out)` |
 | `shell_name_base` | function | `kernel/shell.c:197` | `static const char *shell_name_base(const char *path)` |
 | `shell_parse` | function | `kernel/shell.c:715` | `int shell_parse(char *line, char **argv, int max_args)` |
-| `shell_parse_long` | function | `kernel/shell.c:2109` | `int shell_parse_long(const char *s, long *out)` |
-| `shell_parse_u64` | function | `kernel/shell.c:2093` | `static int shell_parse_u64(const char *s, unsigned long *out)` |
+| `shell_parse_long` | function | `kernel/shell.c:2120` | `int shell_parse_long(const char *s, long *out)` |
+| `shell_parse_u64` | function | `kernel/shell.c:2104` | `static int shell_parse_u64(const char *s, unsigned long *out)` |
 | `shell_parse_vol` | function | `kernel/shell.c:142` | `static int shell_parse_vol(const char *s, unsigned *out)` |
 | `shell_prompt` | function | `kernel/shell.c:134` | `static void shell_prompt(void)` |
 | `shell_queue_launch` | function | `kernel/shell.c:73` | `void shell_queue_launch(const char *cmd)` |
@@ -2484,11 +2489,11 @@ static void shell_hist_na...` |
 | `shell_readline_active` | function | `kernel/shell.c:101` | `int shell_readline_active(void)` |
 | `shell_readline_buf` | function | `kernel/shell.c:168` | `void shell_readline_buf(char *buf, int size)` |
 | `shell_readline_hist` | function | `kernel/shell.c:402` | `static void shell_readline_hist(char *buf, int size)` |
-| `shell_resolve_arg` | function | `kernel/shell.c:2196` | `static int shell_resolve_arg(const char *cmd, const char *arg,
+| `shell_resolve_arg` | function | `kernel/shell.c:2207` | `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...` |
 | `shell_resolve_run` | function | `kernel/shell.c:921` | `static int shell_resolve_run(const char *name, char *out, unsigned cap)` |
 | `shell_run` | function | `kernel/shell.c:739` | `void shell_run(void)` |
-| `shell_run_any` | function | `kernel/shell.c:1453` | `int shell_run_any(const char *name, int argc, char **argv)` |
+| `shell_run_any` | function | `kernel/shell.c:1464` | `int shell_run_any(const char *name, int argc, char **argv)` |
 | `shell_run_bg` | function | `kernel/shell.c:1300` | `static void shell_run_bg(const char *name, int argc, char **argv)` |
 | `shell_run_cvm` | function | `kernel/shell.c:1070` | `static int shell_run_cvm(const char *full, int argc, char **argv)` |
 | `shell_run_dir_for` | function | `kernel/shell.c:891` | `static const ShellRunDir *shell_run_dir_for(const char *name)` |
@@ -2498,9 +2503,9 @@ static void shell_hist_na...` |
 | `shell_run_elf_minifs` | function | `kernel/shell.c:1020` | `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` |
 | `shell_run_file` | function | `kernel/shell.c:1106` | `static int shell_run_file(const char *name, int argc, char **argv)` |
 | `this` | function | `kernel/shell.c:1330` | `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit, piano) ` |
-| `to` | function | `kernel/shell.c:2024` | `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
+| `to` | function | `kernel/shell.c:2035` | `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
 static void shell_cmd_trac...` |
-| `tree` | function | `kernel/shell.c:1827` | `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+| `tree` | function | `kernel/shell.c:1838` | `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...` |
 | `window` | function | `kernel/shell.c:1143` | `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small ` |
 | `spawn_backup` | function | `kernel/spawn.c:13` | `void spawn_backup(spawn_ctx_t *ctx)` |
@@ -2727,14 +2732,17 @@ long sys_linux_wait4(lon...` |
 | `app` | function | `kernel/vga_fb.c:822` | `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep land` |
 | `blit_gfx_buf` | function | `kernel/vga_fb.c:1665` | `static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh)` |
 | `ci_eq` | function | `kernel/vga_fb.c:391` | `static int ci_eq(const char *a, const char *b)` |
-| `command` | function | `kernel/vga_fb.c:2898` | `* its launch command (config-driven, covers apps that never set a window * title);` |
+| `command` | function | `kernel/vga_fb.c:3015` | `* its launch command (config-driven, covers apps that never set a window * title);` |
 | `content` | function | `kernel/vga_fb.c:871` | `* windows would share content (same prompt/output on both) and a park
  * would alias src == dst. ...` |
-| `desktop_shortcuts_draw` | function | `kernel/vga_fb.c:2843` | `void desktop_shortcuts_draw(void)` |
-| `desktop_shortcuts_hit_test` | function | `kernel/vga_fb.c:2924` | `const char *desktop_shortcuts_hit_test(int mx, int my)` |
+| `desktop_shortcuts_draw` | function | `kernel/vga_fb.c:2925` | `void desktop_shortcuts_draw(void)` |
+| `desktop_shortcuts_hit_test` | function | `kernel/vga_fb.c:3041` | `const char *desktop_shortcuts_hit_test(int mx, int my)` |
 | `desktop_shortcuts_load` | function | `kernel/vga_fb.c:2790` | `void desktop_shortcuts_load(void)` |
 | `disp_clamp` | function | `kernel/vga_fb.c:209` | `static void disp_clamp(void)` |
+| `dock_hover_index` | function | `kernel/vga_fb.c:2871` | `static int dock_hover_index(int mx, int my)` |
 | `dock_label_px` | function | `kernel/vga_fb.c:2756` | `static int dock_label_px(const struct desktop_shortcut *sc)` |
+| `dock_paint_hover` | function | `kernel/vga_fb.c:2988` | `static void dock_paint_hover(int hover)` |
+| `dock_paint_icons` | function | `kernel/vga_fb.c:2892` | `static void dock_paint_icons(int hover)` |
 | `draw_scrollbar` | function | `kernel/vga_fb.c:2090` | `static void draw_scrollbar(void)` |
 | `draw_speaker_icon` | function | `kernel/vga_fb.c:1870` | `static void draw_speaker_icon(int x, int y, uint8_t color)` |
 | `draw_title_win` | function | `kernel/vga_fb.c:1808` | `static void draw_title_win(int idx, int focused)` |
@@ -2752,7 +2760,7 @@ long sys_linux_wait4(lon...` |
 | `gfx_prog_icon` | function | `kernel/vga_fb.c:404` | `static const uint8_t *gfx_prog_icon(void)` |
 | `gfx_snap` | function | `kernel/vga_fb.c:2382` | `static void gfx_snap(int zone)` |
 | `gfx_target` | function | `kernel/vga_fb.c:2374` | `static void gfx_target(int *x, int *y)` |
-| `gfx_task_icon` | function | `kernel/vga_fb.c:2903` | `static const uint8_t *gfx_task_icon(void)` |
+| `gfx_task_icon` | function | `kernel/vga_fb.c:3020` | `static const uint8_t *gfx_task_icon(void)` |
 | `gfx_tile_right` | function | `kernel/vga_fb.c:1040` | `static void gfx_tile_right(void)` |
 | `icon_decode` | function | `kernel/vga_fb.c:2694` | `static const uint8_t *icon_decode(const char *path)` |
 | `icon_embedded` | function | `kernel/vga_fb.c:2674` | `static const uint8_t *icon_embedded(const char *name)` |
@@ -2764,17 +2772,19 @@ long sys_linux_wait4(lon...` |
  * would show the ta...` |
 | `line_at` | function | `kernel/vga_fb.c:227` | `static const char *line_at(int abs, int *off)` |
 | `line_nrows` | function | `kernel/vga_fb.c:191` | `static int line_nrows(int len)` |
-| `mouse_apply_wheel` | function | `kernel/vga_fb.c:2964` | `static void mouse_apply_wheel(int wheel, int step)` |
-| `mouse_drag_gfx` | function | `kernel/vga_fb.c:2985` | `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` |
-| `mouse_drag_term` | function | `kernel/vga_fb.c:3024` | `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` |
-| `mouse_focus_topmost` | function | `kernel/vga_fb.c:2938` | `static int mouse_focus_topmost(int mx, int my)` |
-| `mouse_scrollbar` | function | `kernel/vga_fb.c:3047` | `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` |
-| `path` | function | `kernel/vga_fb.c:3081` | `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and raced ev` |
+| `mouse_apply_wheel` | function | `kernel/vga_fb.c:3081` | `static void mouse_apply_wheel(int wheel, int step)` |
+| `mouse_drag_gfx` | function | `kernel/vga_fb.c:3102` | `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` |
+| `mouse_drag_term` | function | `kernel/vga_fb.c:3141` | `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` |
+| `mouse_focus_topmost` | function | `kernel/vga_fb.c:3055` | `static int mouse_focus_topmost(int mx, int my)` |
+| `mouse_scrollbar` | function | `kernel/vga_fb.c:3164` | `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` |
+| `path` | function | `kernel/vga_fb.c:3198` | `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and raced ev` |
 | `pipe_field` | function | `kernel/vga_fb.c:2640` | `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` |
 | `render_blank_row` | function | `kernel/vga_fb.c:2125` | `static void render_blank_row(int vrow)` |
 | `render_row` | function | `kernel/vga_fb.c:2135` | `static void render_row(int vrow, int abs)` |
 | `shcmd_base` | function | `kernel/vga_fb.c:374` | `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` |
 | `shortcut_cell_left` | function | `kernel/vga_fb.c:2783` | `static int shortcut_cell_left(int i)` |
+| `shortcut_draw_scaled` | function | `kernel/vga_fb.c:2846` | `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
+                             ...` |
 | `shortcuts_layout` | function | `kernel/vga_fb.c:2765` | `static void shortcuts_layout(void)` |
 | `taskbar_handle_click` | function | `kernel/vga_fb.c:2034` | `static void taskbar_handle_click(int mx, int my)` |
 | `taskbar_layout` | function | `kernel/vga_fb.c:1839` | `static void taskbar_layout(void)` |
@@ -2812,7 +2822,7 @@ long sys_linux_wait4(lon...` |
 | `vga_fb_gfx_cursor_draw` | function | `kernel/vga_fb.c:461` | `static void vga_fb_gfx_cursor_draw(void)` |
 | `vga_fb_gfx_cursor_erase` | function | `kernel/vga_fb.c:454` | `static void vga_fb_gfx_cursor_erase(void)` |
 | `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:2297` | `void vga_fb_hide_text_cursor(void)` |
-| `vga_fb_init` | function | `kernel/vga_fb.c:3174` | `void vga_fb_init(void)` |
+| `vga_fb_init` | function | `kernel/vga_fb.c:3303` | `void vga_fb_init(void)` |
 | `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:2370` | `int vga_fb_is_fullscreen(void)` |
 | `vga_fb_is_minimized` | function | `kernel/vga_fb.c:2369` | `int vga_fb_is_minimized(void)` |
 | `vga_fb_layout_cycle` | function | `kernel/vga_fb.c:957` | `void vga_fb_layout_cycle(void)` |
@@ -2820,8 +2830,8 @@ long sys_linux_wait4(lon...` |
 | `vga_fb_layout_name` | function | `kernel/vga_fb.c:979` | `const char *vga_fb_layout_name(void)` |
 | `vga_fb_layout_set` | function | `kernel/vga_fb.c:946` | `int vga_fb_layout_set(int mode)` |
 | `vga_fb_list_windows` | function | `kernel/vga_fb.c:1059` | `void vga_fb_list_windows(void)` |
-| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:3155` | `void vga_fb_mouse_init(void)` |
-| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:3070` | `void vga_fb_mouse_tick(void)` |
+| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:3284` | `void vga_fb_mouse_init(void)` |
+| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:3187` | `void vga_fb_mouse_tick(void)` |
 | `vga_fb_move_terminal` | function | `kernel/vga_fb.c:2427` | `void vga_fb_move_terminal(int dx, int dy)` |
 | `vga_fb_note_prompt` | function | `kernel/vga_fb.c:1106` | `void vga_fb_note_prompt(void)` |
 | `vga_fb_nterms_get` | function | `kernel/vga_fb.c:774` | `int vga_fb_nterms_get(void)` |
@@ -2850,6 +2860,7 @@ long sys_linux_wait4(lon...` |
 | `wall_level` | function | `kernel/vga_fb.c:1354` | `static int wall_level(int v)` |
 | `wallpaper_draw` | function | `kernel/vga_fb.c:2607` | `static void wallpaper_draw(void)` |
 | `wallpaper_ensure` | function | `kernel/vga_fb.c:2572` | `static void wallpaper_ensure(void)` |
+| `wallpaper_rect` | function | `kernel/vga_fb.c:2952` | `static void wallpaper_rect(int x0, int y0, int w, int h)` |
 | `wm_button_click` | function | `kernel/vga_fb.c:1569` | `static int wm_button_click(int mx, int my)` |
 | `wm_buttons_hit` | function | `kernel/vga_fb.c:1530` | `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` |
 | `wm_clear_close` | function | `kernel/vga_fb.c:1546` | `void wm_clear_close(void)` |
@@ -3325,7 +3336,9 @@ long sys_linux_wait4(lon...` |
 | `x509_cert` | struct | `net/tls_x509.c:265` | `` |
 | `x509_name` | struct | `net/tls_x509.c:129` | `` |
 | `x509_sans` | struct | `net/tls_x509.c:172` | `` |
-| `_start` | function | `progs/asm/aes.s:4105` | `` |
+| `__sl_3` | function | `progs/asm/aes.s:3087` | `` |
+| `__sl_4` | function | `progs/asm/aes.s:3091` | `` |
+| `_start` | function | `progs/asm/aes.s:4113` | `` |
 | `aes_add_round_key` | function | `progs/asm/aes.s:1646` | `` |
 | `aes_cipher` | function | `progs/asm/aes.s:2466` | `` |
 | `aes_ctr_crypt` | function | `progs/asm/aes.s:2648` | `` |
@@ -3352,7 +3365,7 @@ long sys_linux_wait4(lon...` |
 | `aes_write_all` | function | `progs/asm/aes.s:238` | `` |
 | `aes_xtime` | function | `progs/asm/aes.s:884` | `` |
 | `hex_val` | function | `progs/asm/aes.s:498` | `` |
-| `main` | function | `progs/asm/aes.s:3799` | `` |
+| `main` | function | `progs/asm/aes.s:3807` | `` |
 | `_start` | function | `progs/asm/cp.s:322` | `` |
 | `main` | function | `progs/asm/cp.s:3` | `` |
 | `_start` | function | `progs/asm/fib.s:82` | `` |
@@ -7622,12 +7635,24 @@ Z_Malloc
 | `__Z_ZONE__` | macro | `progs/doomgeneric/z_zone.h:25` | `#define __Z_ZONE__` |
 | `FILE_ACTION_INTERNAL` | macro | `progs/file/file.c:46` | `#define FILE_ACTION_INTERNAL` |
 | `FILE_ACTION_SHELL` | macro | `progs/file/file.c:45` | `#define FILE_ACTION_SHELL` |
-| `FILE_ACT_INTERNAL` | macro | `progs/file/file.c:52` | `#define FILE_ACT_INTERNAL` |
-| `FILE_ACT_SHELL` | macro | `progs/file/file.c:51` | `#define FILE_ACT_SHELL` |
-| `FILE_ACT_TEXT` | macro | `progs/file/file.c:50` | `#define FILE_ACT_TEXT` |
-| `FILE_ACT_UNKNOWN` | macro | `progs/file/file.c:53` | `#define FILE_ACT_UNKNOWN` |
+| `FILE_ACT_INTERNAL` | macro | `progs/file/file.c:70` | `#define FILE_ACT_INTERNAL` |
+| `FILE_ACT_SHELL` | macro | `progs/file/file.c:69` | `#define FILE_ACT_SHELL` |
+| `FILE_ACT_TEXT` | macro | `progs/file/file.c:68` | `#define FILE_ACT_TEXT` |
+| `FILE_ACT_UNKNOWN` | macro | `progs/file/file.c:71` | `#define FILE_ACT_UNKNOWN` |
 | `FILE_ASSOC_PATH` | macro | `progs/file/file.c:34` | `#define FILE_ASSOC_PATH` |
 | `FILE_EXT_MAX` | macro | `progs/file/file.c:35` | `#define FILE_EXT_MAX` |
+| `FILE_ICON_BIG` | macro | `progs/file/file.c:55` | `#define FILE_ICON_BIG` |
+| `FILE_ICON_FILES` | macro | `progs/file/file.c:59` | `#define FILE_ICON_FILES` |
+| `FILE_ICON_FOLDER` | macro | `progs/file/file.c:58` | `#define FILE_ICON_FOLDER` |
+| `FILE_ICON_IMAGE` | macro | `progs/file/file.c:60` | `#define FILE_ICON_IMAGE` |
+| `FILE_ICON_MAX` | macro | `progs/file/file.c:56` | `#define FILE_ICON_MAX` |
+| `FILE_ICON_N` | macro | `progs/file/file.c:57` | `#define FILE_ICON_N` |
+| `FILE_ICON_OBJECT` | macro | `progs/file/file.c:61` | `#define FILE_ICON_OBJECT` |
+| `FILE_ICON_PATH_FILES` | macro | `progs/file/file.c:63` | `#define FILE_ICON_PATH_FILES` |
+| `FILE_ICON_PATH_FOLDER` | macro | `progs/file/file.c:62` | `#define FILE_ICON_PATH_FOLDER` |
+| `FILE_ICON_PATH_IMAGE` | macro | `progs/file/file.c:64` | `#define FILE_ICON_PATH_IMAGE` |
+| `FILE_ICON_PATH_OBJECT` | macro | `progs/file/file.c:65` | `#define FILE_ICON_PATH_OBJECT` |
+| `FILE_ICON_SMALL` | macro | `progs/file/file.c:54` | `#define FILE_ICON_SMALL` |
 | `FILE_LIST_CAP` | macro | `progs/file/file.c:33` | `#define FILE_LIST_CAP` |
 | `FILE_LOG_LINE` | macro | `progs/file/file.c:47` | `#define FILE_LOG_LINE` |
 | `FILE_MAX_ENTRIES` | macro | `progs/file/file.c:31` | `#define FILE_MAX_ENTRIES` |
@@ -7645,28 +7670,34 @@ Z_Malloc
 | `STBI_NO_STDIO` | macro | `progs/file/file.c:26` | `#define STBI_NO_STDIO` |
 | `STBI_ONLY_PNG` | macro | `progs/file/file.c:25` | `#define STBI_ONLY_PNG` |
 | `STB_IMAGE_IMPLEMENTATION` | macro | `progs/file/file.c:24` | `#define STB_IMAGE_IMPLEMENTATION` |
-| `file_action_of` | function | `progs/file/file.c:195` | `static int file_action_of(const char *fname, const char **prog_out)` |
-| `file_activate` | function | `progs/file/file.c:344` | `static void file_activate(const char *dir, const char *name)` |
-| `file_assoc` | struct | `progs/file/file.c:55` | `` |
-| `file_assoc_line` | function | `progs/file/file.c:141` | `static int file_assoc_line(const char *line, char *ext, char *prog)` |
-| `file_assoc_load` | function | `progs/file/file.c:174` | `static void file_assoc_load(void)` |
-| `file_assoc_lookup` | function | `progs/file/file.c:190` | `static const char *file_assoc_lookup(const char *ext)` |
-| `file_ext_of` | function | `progs/file/file.c:96` | `static void file_ext_of(const char *fname, char *dst, unsigned cap)` |
-| `file_gui_run` | function | `progs/file/file.c:553` | `static void file_gui_run(void)` |
-| `file_join` | function | `progs/file/file.c:117` | `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)` |
-| `file_open_text` | function | `progs/file/file.c:294` | `static void file_open_text(const char *path)` |
-| `file_parent` | function | `progs/file/file.c:131` | `static void file_parent(char *path)` |
-| `file_preview_blit` | function | `progs/file/file.c:256` | `static void file_preview_blit(int ox, int oy)` |
-| `file_preview_load` | function | `progs/file/file.c:223` | `static int file_preview_load(const char *path)` |
-| `file_refresh` | function | `progs/file/file.c:208` | `static void file_refresh(void)` |
-| `file_run_shell` | function | `progs/file/file.c:305` | `static void file_run_shell(const char *path)` |
-| `file_selftest` | function | `progs/file/file.c:452` | `static int file_selftest(void)` |
-| `file_spawn_visible` | function | `progs/file/file.c:271` | `static long file_spawn_visible(const char *tool, int argc, const char **argv,
+| `file_action_of` | function | `progs/file/file.c:320` | `static int file_action_of(const char *fname, const char **prog_out)` |
+| `file_activate` | function | `progs/file/file.c:469` | `static void file_activate(const char *dir, const char *name)` |
+| `file_assoc` | struct | `progs/file/file.c:73` | `` |
+| `file_assoc_line` | function | `progs/file/file.c:266` | `static int file_assoc_line(const char *line, char *ext, char *prog)` |
+| `file_assoc_load` | function | `progs/file/file.c:299` | `static void file_assoc_load(void)` |
+| `file_assoc_lookup` | function | `progs/file/file.c:315` | `static const char *file_assoc_lookup(const char *ext)` |
+| `file_ext_of` | function | `progs/file/file.c:119` | `static void file_ext_of(const char *fname, char *dst, unsigned cap)` |
+| `file_gui_run` | function | `progs/file/file.c:745` | `static void file_gui_run(void)` |
+| `file_icon_decode` | function | `progs/file/file.c:162` | `static int file_icon_decode(const char *path, unsigned char *px,
+                            unsi...` |
+| `file_icon_kind` | function | `progs/file/file.c:143` | `static int file_icon_kind(const char *fname, int isdir)` |
+| `file_icon_sz` | function | `progs/file/file.c:155` | `static int file_icon_sz(void)` |
+| `file_icons_load` | function | `progs/file/file.c:210` | `static int file_icons_load(void)` |
+| `file_join` | function | `progs/file/file.c:242` | `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)` |
+| `file_open_text` | function | `progs/file/file.c:419` | `static void file_open_text(const char *path)` |
+| `file_parent` | function | `progs/file/file.c:256` | `static void file_parent(char *path)` |
+| `file_preview_blit` | function | `progs/file/file.c:381` | `static void file_preview_blit(int ox, int oy)` |
+| `file_preview_load` | function | `progs/file/file.c:348` | `static int file_preview_load(const char *path)` |
+| `file_refresh` | function | `progs/file/file.c:333` | `static void file_refresh(void)` |
+| `file_run_shell` | function | `progs/file/file.c:430` | `static void file_run_shell(const char *path)` |
+| `file_selftest` | function | `progs/file/file.c:599` | `static int file_selftest(void)` |
+| `file_spawn_visible` | function | `progs/file/file.c:396` | `static long file_spawn_visible(const char *tool, int argc, const char **argv,
                    ...` |
-| `file_sys_dir_list` | function | `progs/file/file.c:75` | `static long file_sys_dir_list(const char *path, char *buf, long cap)` |
-| `file_sys_spawn` | function | `progs/file/file.c:85` | `static long file_sys_spawn(const char *path, int argc, const char **argv)` |
-| `file_ui_build` | function | `progs/file/file.c:375` | `static void file_ui_build(struct nk_context *ctx)` |
-| `main` | function | `progs/file/file.c:610` | `int main(int argc, char **argv)` |
+| `file_sys_dir_list` | function | `progs/file/file.c:98` | `static long file_sys_dir_list(const char *path, char *buf, long cap)` |
+| `file_sys_spawn` | function | `progs/file/file.c:108` | `static long file_sys_spawn(const char *path, int argc, const char **argv)` |
+| `file_toggle_icons` | function | `progs/file/file.c:235` | `static int file_toggle_icons(void)` |
+| `file_ui_build` | function | `progs/file/file.c:500` | `static void file_ui_build(struct nk_context *ctx)` |
+| `main` | function | `progs/file/file.c:803` | `int main(int argc, char **argv)` |
 | `FASSOC_EXT_MAX` | macro | `progs/file/file_assoc.h:22` | `#define FASSOC_EXT_MAX` |
 | `FASSOC_GROW_DEN` | macro | `progs/file/file_assoc.h:42` | `#define FASSOC_GROW_DEN` |
 | `FASSOC_GROW_NUM` | macro | `progs/file/file_assoc.h:38` | `#define FASSOC_GROW_NUM` |
@@ -7921,16 +7952,16 @@ Z_Malloc
 | `MICROPY_WARNINGS` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:19` | `#define MICROPY_WARNINGS` |
 | `BACKBUF` | macro | `progs/minicraft/minicraft.c:45` | `#define BACKBUF` |
 | `BACKBUF` | macro | `progs/minicraft/minicraft.c:47` | `#define BACKBUF` |
-| `ChunkHeader` | struct | `progs/minicraft/minicraft.c:2892` | `` |
-| `EXT_DOWN` | macro | `progs/minicraft/minicraft.c:141` | `#define EXT_DOWN` |
-| `EXT_F11` | macro | `progs/minicraft/minicraft.c:144` | `#define EXT_F11` |
-| `EXT_LEFT` | macro | `progs/minicraft/minicraft.c:142` | `#define EXT_LEFT` |
-| `EXT_RIGHT` | macro | `progs/minicraft/minicraft.c:143` | `#define EXT_RIGHT` |
-| `EXT_UP` | macro | `progs/minicraft/minicraft.c:140` | `#define EXT_UP` |
+| `ChunkHeader` | struct | `progs/minicraft/minicraft.c:2907` | `` |
+| `EXT_DOWN` | macro | `progs/minicraft/minicraft.c:151` | `#define EXT_DOWN` |
+| `EXT_F11` | macro | `progs/minicraft/minicraft.c:154` | `#define EXT_F11` |
+| `EXT_LEFT` | macro | `progs/minicraft/minicraft.c:152` | `#define EXT_LEFT` |
+| `EXT_RIGHT` | macro | `progs/minicraft/minicraft.c:153` | `#define EXT_RIGHT` |
+| `EXT_UP` | macro | `progs/minicraft/minicraft.c:150` | `#define EXT_UP` |
 | `FB_H` | macro | `progs/minicraft/minicraft.c:42` | `#define FB_H` |
 | `FB_W` | macro | `progs/minicraft/minicraft.c:41` | `#define FB_W` |
 | `MC_AUTOSTEP` | macro | `progs/minicraft/minicraft.c:78` | `#define MC_AUTOSTEP` |
-| `MC_BAYER_N` | macro | `progs/minicraft/minicraft.c:100` | `#define MC_BAYER_N` |
+| `MC_BAYER_N` | macro | `progs/minicraft/minicraft.c:110` | `#define MC_BAYER_N` |
 | `MC_BOOM_R` | macro | `progs/minicraft/minicraft.c:85` | `#define MC_BOOM_R` |
 | `MC_BREAK_GRACE_MS` | macro | `progs/minicraft/minicraft.c:71` | `#define MC_BREAK_GRACE_MS` |
 | `MC_BREAK_MS` | macro | `progs/minicraft/minicraft.c:70` | `#define MC_BREAK_MS` |
@@ -7945,10 +7976,11 @@ Z_Malloc
 | `MC_CREEP_DZ_MAX` | macro | `progs/minicraft/minicraft.c:89` | `#define MC_CREEP_DZ_MAX` |
 | `MC_CREEP_FUSE_D` | macro | `progs/minicraft/minicraft.c:90` | `#define MC_CREEP_FUSE_D` |
 | `MC_CREEP_HP` | macro | `progs/minicraft/minicraft.c:83` | `#define MC_CREEP_HP` |
+| `MC_CREEP_NIGHT_MS` | macro | `progs/minicraft/minicraft.c:99` | `#define MC_CREEP_NIGHT_MS` |
 | `MC_CREEP_SENSE` | macro | `progs/minicraft/minicraft.c:88` | `#define MC_CREEP_SENSE` |
-| `MC_CREEP_SEP_D` | macro | `progs/minicraft/minicraft.c:92` | `#define MC_CREEP_SEP_D` |
+| `MC_CREEP_SEP_D` | macro | `progs/minicraft/minicraft.c:102` | `#define MC_CREEP_SEP_D` |
 | `MC_CVOL` | macro | `progs/minicraft/minicraft.c:38` | `#define MC_CVOL` |
-| `MC_DAY_MS` | macro | `progs/minicraft/minicraft.c:98` | `#define MC_DAY_MS` |
+| `MC_DAY_MS` | macro | `progs/minicraft/minicraft.c:108` | `#define MC_DAY_MS` |
 | `MC_DDA_STEPS` | macro | `progs/minicraft/minicraft.c:69` | `#define MC_DDA_STEPS` |
 | `MC_EYE` | macro | `progs/minicraft/minicraft.c:59` | `#define MC_EYE` |
 | `MC_FLY_SPEED` | macro | `progs/minicraft/minicraft.c:64` | `#define MC_FLY_SPEED` |
@@ -7956,207 +7988,210 @@ Z_Malloc
 | `MC_GRAV` | macro | `progs/minicraft/minicraft.c:60` | `#define MC_GRAV` |
 | `MC_H` | macro | `progs/minicraft/minicraft.c:34` | `#define MC_H` |
 | `MC_HP_MAX` | macro | `progs/minicraft/minicraft.c:79` | `#define MC_HP_MAX` |
-| `MC_HUNGER_MAX` | macro | `progs/minicraft/minicraft.c:94` | `#define MC_HUNGER_MAX` |
-| `MC_HUNGER_MS` | macro | `progs/minicraft/minicraft.c:95` | `#define MC_HUNGER_MS` |
-| `MC_H_BASE` | macro | `progs/minicraft/minicraft.c:101` | `#define MC_H_BASE` |
-| `MC_H_WT_COARSE` | macro | `progs/minicraft/minicraft.c:104` | `#define MC_H_WT_COARSE` |
-| `MC_H_WT_DET` | macro | `progs/minicraft/minicraft.c:102` | `#define MC_H_WT_DET` |
-| `MC_H_WT_MID` | macro | `progs/minicraft/minicraft.c:103` | `#define MC_H_WT_MID` |
+| `MC_HUNGER_MAX` | macro | `progs/minicraft/minicraft.c:104` | `#define MC_HUNGER_MAX` |
+| `MC_HUNGER_MS` | macro | `progs/minicraft/minicraft.c:105` | `#define MC_HUNGER_MS` |
+| `MC_H_BASE` | macro | `progs/minicraft/minicraft.c:111` | `#define MC_H_BASE` |
+| `MC_H_WT_COARSE` | macro | `progs/minicraft/minicraft.c:114` | `#define MC_H_WT_COARSE` |
+| `MC_H_WT_DET` | macro | `progs/minicraft/minicraft.c:112` | `#define MC_H_WT_DET` |
+| `MC_H_WT_MID` | macro | `progs/minicraft/minicraft.c:113` | `#define MC_H_WT_MID` |
 | `MC_INV_MAX` | macro | `progs/minicraft/minicraft.c:76` | `#define MC_INV_MAX` |
 | `MC_JUMP` | macro | `progs/minicraft/minicraft.c:61` | `#define MC_JUMP` |
-| `MC_KBD_SEQ_SPINS` | macro | `progs/minicraft/minicraft.c:135` | `#define MC_KBD_SEQ_SPINS` |
-| `MC_LEGACY_WORLD` | macro | `progs/minicraft/minicraft.c:2901` | `#define MC_LEGACY_WORLD` |
+| `MC_KBD_SEQ_SPINS` | macro | `progs/minicraft/minicraft.c:145` | `#define MC_KBD_SEQ_SPINS` |
+| `MC_LEGACY_WORLD` | macro | `progs/minicraft/minicraft.c:2916` | `#define MC_LEGACY_WORLD` |
 | `MC_LOAD_R` | macro | `progs/minicraft/minicraft.c:36` | `#define MC_LOAD_R` |
 | `MC_MAXFALL` | macro | `progs/minicraft/minicraft.c:62` | `#define MC_MAXFALL` |
 | `MC_MOUSE` | macro | `progs/minicraft/minicraft.c:66` | `#define MC_MOUSE` |
+| `MC_NIGHT_LIGHT` | macro | `progs/minicraft/minicraft.c:101` | `#define MC_NIGHT_LIGHT` |
 | `MC_PIGS` | macro | `progs/minicraft/minicraft.c:80` | `#define MC_PIGS` |
-| `MC_PIG_HP` | macro | `progs/minicraft/minicraft.c:96` | `#define MC_PIG_HP` |
-| `MC_PIG_HURT_MS` | macro | `progs/minicraft/minicraft.c:97` | `#define MC_PIG_HURT_MS` |
+| `MC_PIG_DAY_MS` | macro | `progs/minicraft/minicraft.c:100` | `#define MC_PIG_DAY_MS` |
+| `MC_PIG_HP` | macro | `progs/minicraft/minicraft.c:106` | `#define MC_PIG_HP` |
+| `MC_PIG_HURT_MS` | macro | `progs/minicraft/minicraft.c:107` | `#define MC_PIG_HURT_MS` |
 | `MC_PITCH_MAX` | macro | `progs/minicraft/minicraft.c:77` | `#define MC_PITCH_MAX` |
 | `MC_PLACE_MS` | macro | `progs/minicraft/minicraft.c:72` | `#define MC_PLACE_MS` |
-| `MC_PORK_HEAL` | macro | `progs/minicraft/minicraft.c:93` | `#define MC_PORK_HEAL` |
+| `MC_PORK_HEAL` | macro | `progs/minicraft/minicraft.c:103` | `#define MC_PORK_HEAL` |
 | `MC_REACH` | macro | `progs/minicraft/minicraft.c:67` | `#define MC_REACH` |
+| `MC_RESPAWN_MS` | macro | `progs/minicraft/minicraft.c:98` | `#define MC_RESPAWN_MS` |
 | `MC_SAVE_CRC_SEED` | macro | `progs/minicraft/minicraft.c:54` | `#define MC_SAVE_CRC_SEED` |
 | `MC_SAVE_MAGIC` | macro | `progs/minicraft/minicraft.c:52` | `#define MC_SAVE_MAGIC` |
-| `MC_SAVE_SECS` | macro | `progs/minicraft/minicraft.c:99` | `#define MC_SAVE_SECS` |
+| `MC_SAVE_SECS` | macro | `progs/minicraft/minicraft.c:109` | `#define MC_SAVE_SECS` |
 | `MC_SAVE_VERSION` | macro | `progs/minicraft/minicraft.c:53` | `#define MC_SAVE_VERSION` |
-| `MC_SEED_MAX` | macro | `progs/minicraft/minicraft.c:134` | `#define MC_SEED_MAX` |
+| `MC_SEED_MAX` | macro | `progs/minicraft/minicraft.c:144` | `#define MC_SEED_MAX` |
 | `MC_SPEED` | macro | `progs/minicraft/minicraft.c:63` | `#define MC_SPEED` |
 | `MC_SPRINT` | macro | `progs/minicraft/minicraft.c:65` | `#define MC_SPRINT` |
 | `MC_VIEW` | macro | `progs/minicraft/minicraft.c:68` | `#define MC_VIEW` |
-| `MC_VORO_DESERT_CELL` | macro | `progs/minicraft/minicraft.c:848` | `#define MC_VORO_DESERT_CELL` |
-| `MC_VORO_SNOW_CELL` | macro | `progs/minicraft/minicraft.c:849` | `#define MC_VORO_SNOW_CELL` |
+| `MC_VORO_DESERT_CELL` | macro | `progs/minicraft/minicraft.c:858` | `#define MC_VORO_DESERT_CELL` |
+| `MC_VORO_SNOW_CELL` | macro | `progs/minicraft/minicraft.c:859` | `#define MC_VORO_SNOW_CELL` |
 | `MC_WATER_GRAV` | macro | `progs/minicraft/minicraft.c:73` | `#define MC_WATER_GRAV` |
 | `MC_WATER_SINK` | macro | `progs/minicraft/minicraft.c:74` | `#define MC_WATER_SINK` |
 | `MC_WATER_SWIM` | macro | `progs/minicraft/minicraft.c:75` | `#define MC_WATER_SWIM` |
-| `MOB_CREEP` | macro | `progs/minicraft/minicraft.c:299` | `#define MOB_CREEP` |
-| `MOB_PIG` | macro | `progs/minicraft/minicraft.c:298` | `#define MOB_PIG` |
-| `Pig` | struct | `progs/minicraft/minicraft.c:285` | `` |
-| `RayHit` | struct | `progs/minicraft/minicraft.c:1635` | `` |
-| `Recipe` | struct | `progs/minicraft/minicraft.c:206` | `` |
+| `MOB_CREEP` | macro | `progs/minicraft/minicraft.c:309` | `#define MOB_CREEP` |
+| `MOB_PIG` | macro | `progs/minicraft/minicraft.c:308` | `#define MOB_PIG` |
+| `Pig` | struct | `progs/minicraft/minicraft.c:295` | `` |
+| `RayHit` | struct | `progs/minicraft/minicraft.c:1650` | `` |
+| `Recipe` | struct | `progs/minicraft/minicraft.c:216` | `` |
 | `SAVE_PATH` | macro | `progs/minicraft/minicraft.c:50` | `#define SAVE_PATH` |
 | `SAVE_TMP_PATH` | macro | `progs/minicraft/minicraft.c:51` | `#define SAVE_TMP_PATH` |
-| `SC_0` | macro | `progs/minicraft/minicraft.c:133` | `#define SC_0` |
-| `SC_1` | macro | `progs/minicraft/minicraft.c:108` | `#define SC_1` |
-| `SC_9` | macro | `progs/minicraft/minicraft.c:109` | `#define SC_9` |
-| `SC_A` | macro | `progs/minicraft/minicraft.c:120` | `#define SC_A` |
-| `SC_B` | macro | `progs/minicraft/minicraft.c:129` | `#define SC_B` |
-| `SC_BACK` | macro | `progs/minicraft/minicraft.c:132` | `#define SC_BACK` |
-| `SC_C` | macro | `progs/minicraft/minicraft.c:127` | `#define SC_C` |
-| `SC_CTRL` | macro | `progs/minicraft/minicraft.c:139` | `#define SC_CTRL` |
-| `SC_D` | macro | `progs/minicraft/minicraft.c:122` | `#define SC_D` |
-| `SC_E` | macro | `progs/minicraft/minicraft.c:112` | `#define SC_E` |
-| `SC_ENTER` | macro | `progs/minicraft/minicraft.c:131` | `#define SC_ENTER` |
-| `SC_ESC` | macro | `progs/minicraft/minicraft.c:107` | `#define SC_ESC` |
-| `SC_F` | macro | `progs/minicraft/minicraft.c:123` | `#define SC_F` |
-| `SC_G` | macro | `progs/minicraft/minicraft.c:124` | `#define SC_G` |
-| `SC_I` | macro | `progs/minicraft/minicraft.c:116` | `#define SC_I` |
-| `SC_J` | macro | `progs/minicraft/minicraft.c:119` | `#define SC_J` |
-| `SC_K` | macro | `progs/minicraft/minicraft.c:125` | `#define SC_K` |
-| `SC_L` | macro | `progs/minicraft/minicraft.c:126` | `#define SC_L` |
-| `SC_LSHIFT` | macro | `progs/minicraft/minicraft.c:137` | `#define SC_LSHIFT` |
-| `SC_N` | macro | `progs/minicraft/minicraft.c:130` | `#define SC_N` |
-| `SC_O` | macro | `progs/minicraft/minicraft.c:117` | `#define SC_O` |
-| `SC_P` | macro | `progs/minicraft/minicraft.c:118` | `#define SC_P` |
-| `SC_Q` | macro | `progs/minicraft/minicraft.c:110` | `#define SC_Q` |
-| `SC_R` | macro | `progs/minicraft/minicraft.c:113` | `#define SC_R` |
-| `SC_RSHIFT` | macro | `progs/minicraft/minicraft.c:138` | `#define SC_RSHIFT` |
-| `SC_S` | macro | `progs/minicraft/minicraft.c:121` | `#define SC_S` |
-| `SC_SPACE` | macro | `progs/minicraft/minicraft.c:136` | `#define SC_SPACE` |
-| `SC_T` | macro | `progs/minicraft/minicraft.c:114` | `#define SC_T` |
-| `SC_U` | macro | `progs/minicraft/minicraft.c:115` | `#define SC_U` |
-| `SC_V` | macro | `progs/minicraft/minicraft.c:128` | `#define SC_V` |
-| `SC_W` | macro | `progs/minicraft/minicraft.c:111` | `#define SC_W` |
-| `SER_STASH_CAP` | macro | `progs/minicraft/minicraft.c:359` | `#define SER_STASH_CAP` |
-| `SaveHeader` | struct | `progs/minicraft/minicraft.c:2877` | `` |
-| `SaveHeaderV3` | struct | `progs/minicraft/minicraft.c:2863` | `` |
-| `__attribute__` | function | `progs/minicraft/minicraft.c:463` | `static long __attribute__((unused)) s_tone(long f)` |
-| `beep` | function | `progs/minicraft/minicraft.c:468` | `static void beep(long freq, long dur_ms)` |
-| `best_tool_for` | function | `progs/minicraft/minicraft.c:221` | `static int best_tool_for(unsigned char b)` |
-| `biome_desert` | function | `progs/minicraft/minicraft.c:883` | `static int biome_desert(int x, int y, unsigned int seed)` |
-| `biome_fdiv` | function | `progs/minicraft/minicraft.c:836` | `static int biome_fdiv(int v, int c)` |
-| `biome_snow` | function | `progs/minicraft/minicraft.c:887` | `static int biome_snow(int x, int y, unsigned int seed)` |
-| `biome_voro` | function | `progs/minicraft/minicraft.c:859` | `static int biome_voro(int x, int y, unsigned int seed, int cell,
+| `SC_0` | macro | `progs/minicraft/minicraft.c:143` | `#define SC_0` |
+| `SC_1` | macro | `progs/minicraft/minicraft.c:118` | `#define SC_1` |
+| `SC_9` | macro | `progs/minicraft/minicraft.c:119` | `#define SC_9` |
+| `SC_A` | macro | `progs/minicraft/minicraft.c:130` | `#define SC_A` |
+| `SC_B` | macro | `progs/minicraft/minicraft.c:139` | `#define SC_B` |
+| `SC_BACK` | macro | `progs/minicraft/minicraft.c:142` | `#define SC_BACK` |
+| `SC_C` | macro | `progs/minicraft/minicraft.c:137` | `#define SC_C` |
+| `SC_CTRL` | macro | `progs/minicraft/minicraft.c:149` | `#define SC_CTRL` |
+| `SC_D` | macro | `progs/minicraft/minicraft.c:132` | `#define SC_D` |
+| `SC_E` | macro | `progs/minicraft/minicraft.c:122` | `#define SC_E` |
+| `SC_ENTER` | macro | `progs/minicraft/minicraft.c:141` | `#define SC_ENTER` |
+| `SC_ESC` | macro | `progs/minicraft/minicraft.c:117` | `#define SC_ESC` |
+| `SC_F` | macro | `progs/minicraft/minicraft.c:133` | `#define SC_F` |
+| `SC_G` | macro | `progs/minicraft/minicraft.c:134` | `#define SC_G` |
+| `SC_I` | macro | `progs/minicraft/minicraft.c:126` | `#define SC_I` |
+| `SC_J` | macro | `progs/minicraft/minicraft.c:129` | `#define SC_J` |
+| `SC_K` | macro | `progs/minicraft/minicraft.c:135` | `#define SC_K` |
+| `SC_L` | macro | `progs/minicraft/minicraft.c:136` | `#define SC_L` |
+| `SC_LSHIFT` | macro | `progs/minicraft/minicraft.c:147` | `#define SC_LSHIFT` |
+| `SC_N` | macro | `progs/minicraft/minicraft.c:140` | `#define SC_N` |
+| `SC_O` | macro | `progs/minicraft/minicraft.c:127` | `#define SC_O` |
+| `SC_P` | macro | `progs/minicraft/minicraft.c:128` | `#define SC_P` |
+| `SC_Q` | macro | `progs/minicraft/minicraft.c:120` | `#define SC_Q` |
+| `SC_R` | macro | `progs/minicraft/minicraft.c:123` | `#define SC_R` |
+| `SC_RSHIFT` | macro | `progs/minicraft/minicraft.c:148` | `#define SC_RSHIFT` |
+| `SC_S` | macro | `progs/minicraft/minicraft.c:131` | `#define SC_S` |
+| `SC_SPACE` | macro | `progs/minicraft/minicraft.c:146` | `#define SC_SPACE` |
+| `SC_T` | macro | `progs/minicraft/minicraft.c:124` | `#define SC_T` |
+| `SC_U` | macro | `progs/minicraft/minicraft.c:125` | `#define SC_U` |
+| `SC_V` | macro | `progs/minicraft/minicraft.c:138` | `#define SC_V` |
+| `SC_W` | macro | `progs/minicraft/minicraft.c:121` | `#define SC_W` |
+| `SER_STASH_CAP` | macro | `progs/minicraft/minicraft.c:369` | `#define SER_STASH_CAP` |
+| `SaveHeader` | struct | `progs/minicraft/minicraft.c:2892` | `` |
+| `SaveHeaderV3` | struct | `progs/minicraft/minicraft.c:2878` | `` |
+| `__attribute__` | function | `progs/minicraft/minicraft.c:473` | `static long __attribute__((unused)) s_tone(long f)` |
+| `beep` | function | `progs/minicraft/minicraft.c:478` | `static void beep(long freq, long dur_ms)` |
+| `best_tool_for` | function | `progs/minicraft/minicraft.c:231` | `static int best_tool_for(unsigned char b)` |
+| `biome_desert` | function | `progs/minicraft/minicraft.c:893` | `static int biome_desert(int x, int y, unsigned int seed)` |
+| `biome_fdiv` | function | `progs/minicraft/minicraft.c:846` | `static int biome_fdiv(int v, int c)` |
+| `biome_snow` | function | `progs/minicraft/minicraft.c:897` | `static int biome_snow(int x, int y, unsigned int seed)` |
+| `biome_voro` | function | `progs/minicraft/minicraft.c:869` | `static int biome_voro(int x, int y, unsigned int seed, int cell,
     int ox, int oy, unsigned int...` |
-| `block_intersects_player` | function | `progs/minicraft/minicraft.c:2389` | `static int block_intersects_player(int bx, int by, int bz)` |
-| `break_beep_for` | function | `progs/minicraft/minicraft.c:265` | `static long break_beep_for(unsigned char b)` |
-| `break_time_ms` | function | `progs/minicraft/minicraft.c:240` | `static long break_time_ms(unsigned char b, int tool)` |
-| `build_palette` | function | `progs/minicraft/minicraft.c:493` | `static void build_palette(void)` |
-| `cam_build` | function | `progs/minicraft/minicraft.c:1877` | `static void cam_build(void)` |
-| `carve_blob` | function | `progs/minicraft/minicraft.c:3093` | `static void carve_blob(const unsigned char *blob)` |
-| `cast_ray` | function | `progs/minicraft/minicraft.c:1644` | `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)` |
-| `census` | function | `progs/minicraft/minicraft.c:3591` | `static int census(void)` |
-| `chunk_build_meta` | function | `progs/minicraft/minicraft.c:648` | `static void chunk_build_meta(int slot)` |
-| `chunk_ensure` | function | `progs/minicraft/minicraft.c:625` | `static int chunk_ensure(int cx, int cy)` |
-| `chunk_evict_slot` | function | `progs/minicraft/minicraft.c:605` | `static int chunk_evict_slot(int cx, int cy)` |
-| `chunk_find` | function | `progs/minicraft/minicraft.c:582` | `static int chunk_find(int cx, int cy)` |
-| `chunk_lidx` | function | `progs/minicraft/minicraft.c:576` | `static int chunk_lidx(int lx, int ly, int z)` |
-| `chunk_local` | function | `progs/minicraft/minicraft.c:571` | `static int chunk_local(int v)` |
-| `chunk_of` | function | `progs/minicraft/minicraft.c:567` | `static int chunk_of(int v)` |
-| `chunk_path` | function | `progs/minicraft/minicraft.c:2923` | `static void chunk_path(int cx, int cy, char *out, size_t n)` |
-| `col_recompute` | function | `progs/minicraft/minicraft.c:693` | `static void col_recompute(int x, int y)` |
-| `col_top_at` | function | `progs/minicraft/minicraft.c:718` | `static int col_top_at(int x, int y)` |
-| `creep_has_los` | function | `progs/minicraft/minicraft.c:1327` | `static int creep_has_los(Pig *c)` |
-| `creep_sense` | function | `progs/minicraft/minicraft.c:1315` | `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)` |
-| `creep_separate` | function | `progs/minicraft/minicraft.c:1351` | `static void creep_separate(Pig *p, int id, float dt)` |
-| `creeper_explode` | function | `progs/minicraft/minicraft.c:1247` | `static void creeper_explode(Pig *c, long now)` |
-| `decorate_chunk` | function | `progs/minicraft/minicraft.c:1033` | `static void decorate_chunk(int slot)` |
-| `decorate_column` | function | `progs/minicraft/minicraft.c:985` | `static void decorate_column(int x, int y, unsigned int seed)` |
-| `dumpstats` | function | `progs/minicraft/minicraft.c:3655` | `static int dumpstats(void)` |
-| `ensure_around` | function | `progs/minicraft/minicraft.c:1080` | `static void ensure_around(void)` |
-| `ensure_around_px` | function | `progs/minicraft/minicraft.c:1046` | `static void ensure_around_px(float px, float py)` |
-| `eye_z` | function | `progs/minicraft/minicraft.c:1735` | `static float eye_z(void)` |
-| `face_color` | function | `progs/minicraft/minicraft.c:1505` | `static unsigned char face_color(unsigned char b, int face)` |
-| `gen_terrain_chunk` | function | `progs/minicraft/minicraft.c:1024` | `static void gen_terrain_chunk(int slot)` |
-| `get_b` | function | `progs/minicraft/minicraft.c:754` | `static unsigned char get_b(int x, int y, int z)` |
-| `goal_text` | function | `progs/minicraft/minicraft.c:2593` | `static const char *goal_text(void)` |
-| `ground_h_seed` | function | `progs/minicraft/minicraft.c:899` | `static int ground_h_seed(int x, int y, unsigned int seed)` |
-| `hash2` | function | `progs/minicraft/minicraft.c:813` | `static unsigned int hash2(int x, int y)` |
-| `hash2_seed` | function | `progs/minicraft/minicraft.c:820` | `static unsigned int hash2_seed(int x, int y, unsigned int seed)` |
-| `hurt` | function | `progs/minicraft/minicraft.c:2409` | `static void hurt(int dmg, const char *why)` |
-| `in_water_at` | function | `progs/minicraft/minicraft.c:804` | `static int in_water_at(float x, float y, float z)` |
-| `in_world` | function | `progs/minicraft/minicraft.c:552` | `static int in_world(int x, int y, int z)` |
-| `inv_add` | function | `progs/minicraft/minicraft.c:921` | `static int inv_add(int b, int n)` |
-| `inv_remove` | function | `progs/minicraft/minicraft.c:935` | `static int inv_remove(int b, int n)` |
-| `is_cave` | function | `progs/minicraft/minicraft.c:891` | `static int is_cave(int x, int y, int z, unsigned int seed)` |
-| `is_solid` | function | `progs/minicraft/minicraft.c:801` | `static int is_solid(unsigned char b)` |
-| `is_visible` | function | `progs/minicraft/minicraft.c:809` | `static int is_visible(unsigned char b)` |
-| `kbd_drain` | function | `progs/minicraft/minicraft.c:418` | `static void kbd_drain(void)` |
-| `light_recompute_col` | function | `progs/minicraft/minicraft.c:725` | `static void light_recompute_col(int x, int y)` |
-| `load_apply_player` | function | `progs/minicraft/minicraft.c:3160` | `static void load_apply_player(const SaveHeader *hd)` |
-| `load_chunk_file` | function | `progs/minicraft/minicraft.c:2959` | `static int load_chunk_file(int slot, int cx, int cy)` |
-| `load_reset_runtime` | function | `progs/minicraft/minicraft.c:3060` | `static void load_reset_runtime(void)` |
-| `load_world` | function | `progs/minicraft/minicraft.c:3256` | `static int load_world(void)` |
-| `load_world_legacy` | function | `progs/minicraft/minicraft.c:3122` | `static int load_world_legacy(FILE *f)` |
-| `load_world_v2` | function | `progs/minicraft/minicraft.c:3219` | `static int load_world_v2(FILE *f, SaveHeader *hd)` |
-| `load_world_v3` | function | `progs/minicraft/minicraft.c:3179` | `static int load_world_v3(FILE *f, SaveHeader *hd)` |
-| `main` | function | `progs/minicraft/minicraft.c:4080` | `int main(int argc, char **argv)` |
-| `mc_block_name` | function | `progs/minicraft/minicraft.c:1842` | `static const char *mc_block_name(unsigned char b)` |
-| `mc_crc32` | function | `progs/minicraft/minicraft.c:2904` | `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)` |
-| `mc_facing` | function | `progs/minicraft/minicraft.c:1862` | `static char mc_facing(void)` |
-| `mc_glyph` | function | `progs/minicraft/minicraft.c:1802` | `static int mc_glyph(char ch)` |
-| `mc_pixel` | function | `progs/minicraft/minicraft.c:1810` | `static void mc_pixel(int x, int y, unsigned char c)` |
-| `mc_smoothstep` | function | `progs/minicraft/minicraft.c:829` | `static float mc_smoothstep(float t)` |
-| `mc_text` | function | `progs/minicraft/minicraft.c:1816` | `static void mc_text(int x, int y, const char *s, unsigned char fg)` |
-| `mc_text_bg` | function | `progs/minicraft/minicraft.c:1829` | `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)` |
-| `mc_toggle_zoom` | function | `progs/minicraft/minicraft.c:306` | `static void mc_toggle_zoom(void)` |
-| `menu_ser_key` | function | `progs/minicraft/minicraft.c:381` | `static long menu_ser_key(long b)` |
-| `mob_pixel` | function | `progs/minicraft/minicraft.c:1930` | `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)` |
-| `mob_spawn_one` | function | `progs/minicraft/minicraft.c:1181` | `static void mob_spawn_one(Pig *m, int id, int hp, long now)` |
-| `move_x` | function | `progs/minicraft/minicraft.c:2364` | `static void move_x(float nx)` |
-| `move_y` | function | `progs/minicraft/minicraft.c:2369` | `static void move_y(float ny)` |
-| `move_z_abs` | function | `progs/minicraft/minicraft.c:2374` | `static MoveResult move_z_abs(float nz)` |
-| `new_world` | function | `progs/minicraft/minicraft.c:1085` | `static void new_world(unsigned int seed)` |
-| `pal_set` | function | `progs/minicraft/minicraft.c:487` | `static void pal_set(int i, int r, int g, int b)` |
-| `pause_menu` | function | `progs/minicraft/minicraft.c:3907` | `static int pause_menu(int *seed_io)` |
-| `pig_collides` | function | `progs/minicraft/minicraft.c:1233` | `static int pig_collides(float x, float y, float z)` |
-| `player_collides` | function | `progs/minicraft/minicraft.c:2340` | `static int player_collides(float x, float y, float z)` |
-| `poll_kbd` | function | `progs/minicraft/minicraft.c:2147` | `static void poll_kbd(void)` |
-| `render_frame` | function | `progs/minicraft/minicraft.c:2023` | `static void render_frame(void)` |
-| `render_mob_array` | function | `progs/minicraft/minicraft.c:1964` | `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
+| `block_intersects_player` | function | `progs/minicraft/minicraft.c:2404` | `static int block_intersects_player(int bx, int by, int bz)` |
+| `break_beep_for` | function | `progs/minicraft/minicraft.c:275` | `static long break_beep_for(unsigned char b)` |
+| `break_time_ms` | function | `progs/minicraft/minicraft.c:250` | `static long break_time_ms(unsigned char b, int tool)` |
+| `build_palette` | function | `progs/minicraft/minicraft.c:503` | `static void build_palette(void)` |
+| `cam_build` | function | `progs/minicraft/minicraft.c:1892` | `static void cam_build(void)` |
+| `carve_blob` | function | `progs/minicraft/minicraft.c:3108` | `static void carve_blob(const unsigned char *blob)` |
+| `cast_ray` | function | `progs/minicraft/minicraft.c:1659` | `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)` |
+| `census` | function | `progs/minicraft/minicraft.c:3606` | `static int census(void)` |
+| `chunk_build_meta` | function | `progs/minicraft/minicraft.c:658` | `static void chunk_build_meta(int slot)` |
+| `chunk_ensure` | function | `progs/minicraft/minicraft.c:635` | `static int chunk_ensure(int cx, int cy)` |
+| `chunk_evict_slot` | function | `progs/minicraft/minicraft.c:615` | `static int chunk_evict_slot(int cx, int cy)` |
+| `chunk_find` | function | `progs/minicraft/minicraft.c:592` | `static int chunk_find(int cx, int cy)` |
+| `chunk_lidx` | function | `progs/minicraft/minicraft.c:586` | `static int chunk_lidx(int lx, int ly, int z)` |
+| `chunk_local` | function | `progs/minicraft/minicraft.c:581` | `static int chunk_local(int v)` |
+| `chunk_of` | function | `progs/minicraft/minicraft.c:577` | `static int chunk_of(int v)` |
+| `chunk_path` | function | `progs/minicraft/minicraft.c:2938` | `static void chunk_path(int cx, int cy, char *out, size_t n)` |
+| `col_recompute` | function | `progs/minicraft/minicraft.c:703` | `static void col_recompute(int x, int y)` |
+| `col_top_at` | function | `progs/minicraft/minicraft.c:728` | `static int col_top_at(int x, int y)` |
+| `creep_has_los` | function | `progs/minicraft/minicraft.c:1337` | `static int creep_has_los(Pig *c)` |
+| `creep_sense` | function | `progs/minicraft/minicraft.c:1325` | `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)` |
+| `creep_separate` | function | `progs/minicraft/minicraft.c:1361` | `static void creep_separate(Pig *p, int id, float dt)` |
+| `creeper_explode` | function | `progs/minicraft/minicraft.c:1257` | `static void creeper_explode(Pig *c, long now)` |
+| `decorate_chunk` | function | `progs/minicraft/minicraft.c:1043` | `static void decorate_chunk(int slot)` |
+| `decorate_column` | function | `progs/minicraft/minicraft.c:995` | `static void decorate_column(int x, int y, unsigned int seed)` |
+| `dumpstats` | function | `progs/minicraft/minicraft.c:3670` | `static int dumpstats(void)` |
+| `ensure_around` | function | `progs/minicraft/minicraft.c:1090` | `static void ensure_around(void)` |
+| `ensure_around_px` | function | `progs/minicraft/minicraft.c:1056` | `static void ensure_around_px(float px, float py)` |
+| `eye_z` | function | `progs/minicraft/minicraft.c:1750` | `static float eye_z(void)` |
+| `face_color` | function | `progs/minicraft/minicraft.c:1520` | `static unsigned char face_color(unsigned char b, int face)` |
+| `gen_terrain_chunk` | function | `progs/minicraft/minicraft.c:1034` | `static void gen_terrain_chunk(int slot)` |
+| `get_b` | function | `progs/minicraft/minicraft.c:764` | `static unsigned char get_b(int x, int y, int z)` |
+| `goal_text` | function | `progs/minicraft/minicraft.c:2608` | `static const char *goal_text(void)` |
+| `ground_h_seed` | function | `progs/minicraft/minicraft.c:909` | `static int ground_h_seed(int x, int y, unsigned int seed)` |
+| `hash2` | function | `progs/minicraft/minicraft.c:823` | `static unsigned int hash2(int x, int y)` |
+| `hash2_seed` | function | `progs/minicraft/minicraft.c:830` | `static unsigned int hash2_seed(int x, int y, unsigned int seed)` |
+| `hurt` | function | `progs/minicraft/minicraft.c:2424` | `static void hurt(int dmg, const char *why)` |
+| `in_water_at` | function | `progs/minicraft/minicraft.c:814` | `static int in_water_at(float x, float y, float z)` |
+| `in_world` | function | `progs/minicraft/minicraft.c:562` | `static int in_world(int x, int y, int z)` |
+| `inv_add` | function | `progs/minicraft/minicraft.c:931` | `static int inv_add(int b, int n)` |
+| `inv_remove` | function | `progs/minicraft/minicraft.c:945` | `static int inv_remove(int b, int n)` |
+| `is_cave` | function | `progs/minicraft/minicraft.c:901` | `static int is_cave(int x, int y, int z, unsigned int seed)` |
+| `is_solid` | function | `progs/minicraft/minicraft.c:811` | `static int is_solid(unsigned char b)` |
+| `is_visible` | function | `progs/minicraft/minicraft.c:819` | `static int is_visible(unsigned char b)` |
+| `kbd_drain` | function | `progs/minicraft/minicraft.c:428` | `static void kbd_drain(void)` |
+| `light_recompute_col` | function | `progs/minicraft/minicraft.c:735` | `static void light_recompute_col(int x, int y)` |
+| `load_apply_player` | function | `progs/minicraft/minicraft.c:3175` | `static void load_apply_player(const SaveHeader *hd)` |
+| `load_chunk_file` | function | `progs/minicraft/minicraft.c:2974` | `static int load_chunk_file(int slot, int cx, int cy)` |
+| `load_reset_runtime` | function | `progs/minicraft/minicraft.c:3075` | `static void load_reset_runtime(void)` |
+| `load_world` | function | `progs/minicraft/minicraft.c:3271` | `static int load_world(void)` |
+| `load_world_legacy` | function | `progs/minicraft/minicraft.c:3137` | `static int load_world_legacy(FILE *f)` |
+| `load_world_v2` | function | `progs/minicraft/minicraft.c:3234` | `static int load_world_v2(FILE *f, SaveHeader *hd)` |
+| `load_world_v3` | function | `progs/minicraft/minicraft.c:3194` | `static int load_world_v3(FILE *f, SaveHeader *hd)` |
+| `main` | function | `progs/minicraft/minicraft.c:4095` | `int main(int argc, char **argv)` |
+| `mc_block_name` | function | `progs/minicraft/minicraft.c:1857` | `static const char *mc_block_name(unsigned char b)` |
+| `mc_crc32` | function | `progs/minicraft/minicraft.c:2919` | `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)` |
+| `mc_facing` | function | `progs/minicraft/minicraft.c:1877` | `static char mc_facing(void)` |
+| `mc_glyph` | function | `progs/minicraft/minicraft.c:1817` | `static int mc_glyph(char ch)` |
+| `mc_pixel` | function | `progs/minicraft/minicraft.c:1825` | `static void mc_pixel(int x, int y, unsigned char c)` |
+| `mc_smoothstep` | function | `progs/minicraft/minicraft.c:839` | `static float mc_smoothstep(float t)` |
+| `mc_text` | function | `progs/minicraft/minicraft.c:1831` | `static void mc_text(int x, int y, const char *s, unsigned char fg)` |
+| `mc_text_bg` | function | `progs/minicraft/minicraft.c:1844` | `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)` |
+| `mc_toggle_zoom` | function | `progs/minicraft/minicraft.c:316` | `static void mc_toggle_zoom(void)` |
+| `menu_ser_key` | function | `progs/minicraft/minicraft.c:391` | `static long menu_ser_key(long b)` |
+| `mob_pixel` | function | `progs/minicraft/minicraft.c:1945` | `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)` |
+| `mob_spawn_one` | function | `progs/minicraft/minicraft.c:1191` | `static void mob_spawn_one(Pig *m, int id, int hp, long now)` |
+| `move_x` | function | `progs/minicraft/minicraft.c:2379` | `static void move_x(float nx)` |
+| `move_y` | function | `progs/minicraft/minicraft.c:2384` | `static void move_y(float ny)` |
+| `move_z_abs` | function | `progs/minicraft/minicraft.c:2389` | `static MoveResult move_z_abs(float nz)` |
+| `new_world` | function | `progs/minicraft/minicraft.c:1095` | `static void new_world(unsigned int seed)` |
+| `pal_set` | function | `progs/minicraft/minicraft.c:497` | `static void pal_set(int i, int r, int g, int b)` |
+| `pause_menu` | function | `progs/minicraft/minicraft.c:3922` | `static int pause_menu(int *seed_io)` |
+| `pig_collides` | function | `progs/minicraft/minicraft.c:1243` | `static int pig_collides(float x, float y, float z)` |
+| `player_collides` | function | `progs/minicraft/minicraft.c:2355` | `static int player_collides(float x, float y, float z)` |
+| `poll_kbd` | function | `progs/minicraft/minicraft.c:2162` | `static void poll_kbd(void)` |
+| `render_frame` | function | `progs/minicraft/minicraft.c:2038` | `static void render_frame(void)` |
+| `render_mob_array` | function | `progs/minicraft/minicraft.c:1979` | `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
     float rx, float r...` |
-| `render_pigs` | function | `progs/minicraft/minicraft.c:2015` | `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)` |
-| `render_terrain` | function | `progs/minicraft/minicraft.c:1895` | `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
+| `render_pigs` | function | `progs/minicraft/minicraft.c:2030` | `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)` |
+| `render_terrain` | function | `progs/minicraft/minicraft.c:1910` | `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
                       ...` |
-| `s_getc_raw` | function | `progs/minicraft/minicraft.c:349` | `static long s_getc_raw(void)` |
-| `s_kbd` | function | `progs/minicraft/minicraft.c:332` | `static long s_kbd(void)` |
-| `s_kbd_raw` | function | `progs/minicraft/minicraft.c:337` | `static long s_kbd_raw(long on)` |
-| `s_mouse` | function | `progs/minicraft/minicraft.c:443` | `static long s_mouse(int *m)` |
-| `s_pal` | function | `progs/minicraft/minicraft.c:428` | `static long s_pal(const unsigned char *p)` |
-| `s_pcspk_init` | function | `progs/minicraft/minicraft.c:458` | `static long s_pcspk_init(void)` |
-| `s_present` | function | `progs/minicraft/minicraft.c:433` | `static long s_present(void)` |
-| `s_time_ms` | function | `progs/minicraft/minicraft.c:327` | `static long s_time_ms(void)` |
-| `s_title` | function | `progs/minicraft/minicraft.c:438` | `static long s_title(const char *t)` |
-| `s_vga` | function | `progs/minicraft/minicraft.c:423` | `static long s_vga(long on)` |
-| `s_yield` | function | `progs/minicraft/minicraft.c:453` | `static void s_yield(void)` |
-| `s_zoom` | function | `progs/minicraft/minicraft.c:448` | `static long s_zoom(long on)` |
-| `save_chunk_file` | function | `progs/minicraft/minicraft.c:2927` | `static int save_chunk_file(int slot)` |
-| `save_compute_crc` | function | `progs/minicraft/minicraft.c:2917` | `static uint32_t save_compute_crc(const SaveHeader *hd)` |
-| `save_validate_loaded` | function | `progs/minicraft/minicraft.c:3041` | `static int save_validate_loaded(void)` |
-| `save_world` | function | `progs/minicraft/minicraft.c:320` | `static int save_world(void);` |
-| `sc_hist_push` | function | `progs/minicraft/minicraft.c:2136` | `static void sc_hist_push(unsigned char b)` |
-| `selftest` | function | `progs/minicraft/minicraft.c:3330` | `static int selftest(void)` |
-| `ser_get` | function | `progs/minicraft/minicraft.c:363` | `static long ser_get(void)` |
-| `ser_unget` | function | `progs/minicraft/minicraft.c:376` | `static void ser_unget(unsigned char b)` |
-| `set_b` | function | `progs/minicraft/minicraft.c:764` | `static void set_b(int x, int y, int z, unsigned char b)` |
-| `set_b_raw` | function | `progs/minicraft/minicraft.c:780` | `static void set_b_raw(int x, int y, int z, unsigned char b)` |
-| `shade_block` | function | `progs/minicraft/minicraft.c:1587` | `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
+| `s_getc_raw` | function | `progs/minicraft/minicraft.c:359` | `static long s_getc_raw(void)` |
+| `s_kbd` | function | `progs/minicraft/minicraft.c:342` | `static long s_kbd(void)` |
+| `s_kbd_raw` | function | `progs/minicraft/minicraft.c:347` | `static long s_kbd_raw(long on)` |
+| `s_mouse` | function | `progs/minicraft/minicraft.c:453` | `static long s_mouse(int *m)` |
+| `s_pal` | function | `progs/minicraft/minicraft.c:438` | `static long s_pal(const unsigned char *p)` |
+| `s_pcspk_init` | function | `progs/minicraft/minicraft.c:468` | `static long s_pcspk_init(void)` |
+| `s_present` | function | `progs/minicraft/minicraft.c:443` | `static long s_present(void)` |
+| `s_time_ms` | function | `progs/minicraft/minicraft.c:337` | `static long s_time_ms(void)` |
+| `s_title` | function | `progs/minicraft/minicraft.c:448` | `static long s_title(const char *t)` |
+| `s_vga` | function | `progs/minicraft/minicraft.c:433` | `static long s_vga(long on)` |
+| `s_yield` | function | `progs/minicraft/minicraft.c:463` | `static void s_yield(void)` |
+| `s_zoom` | function | `progs/minicraft/minicraft.c:458` | `static long s_zoom(long on)` |
+| `save_chunk_file` | function | `progs/minicraft/minicraft.c:2942` | `static int save_chunk_file(int slot)` |
+| `save_compute_crc` | function | `progs/minicraft/minicraft.c:2932` | `static uint32_t save_compute_crc(const SaveHeader *hd)` |
+| `save_validate_loaded` | function | `progs/minicraft/minicraft.c:3056` | `static int save_validate_loaded(void)` |
+| `save_world` | function | `progs/minicraft/minicraft.c:330` | `static int save_world(void);` |
+| `sc_hist_push` | function | `progs/minicraft/minicraft.c:2151` | `static void sc_hist_push(unsigned char b)` |
+| `selftest` | function | `progs/minicraft/minicraft.c:3345` | `static int selftest(void)` |
+| `ser_get` | function | `progs/minicraft/minicraft.c:373` | `static long ser_get(void)` |
+| `ser_unget` | function | `progs/minicraft/minicraft.c:386` | `static void ser_unget(unsigned char b)` |
+| `set_b` | function | `progs/minicraft/minicraft.c:774` | `static void set_b(int x, int y, int z, unsigned char b)` |
+| `set_b_raw` | function | `progs/minicraft/minicraft.c:790` | `static void set_b_raw(int x, int y, int z, unsigned char b)` |
+| `shade_block` | function | `progs/minicraft/minicraft.c:1602` | `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
              ...` |
-| `sky_color` | function | `progs/minicraft/minicraft.c:1554` | `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)` |
-| `sky_light` | function | `progs/minicraft/minicraft.c:791` | `static float sky_light(int x, int y, int z)` |
-| `tick_discover` | function | `progs/minicraft/minicraft.c:2615` | `static void tick_discover(long now)` |
-| `tick_goals` | function | `progs/minicraft/minicraft.c:2604` | `static void tick_goals(void)` |
-| `tick_hunger` | function | `progs/minicraft/minicraft.c:2581` | `static void tick_hunger(long now)` |
-| `tick_interact` | function | `progs/minicraft/minicraft.c:2653` | `static void tick_interact(void)` |
-| `tick_mob` | function | `progs/minicraft/minicraft.c:1376` | `static void tick_mob(Pig *p, int id, float dt, long now)` |
-| `tick_pigs` | function | `progs/minicraft/minicraft.c:1497` | `static void tick_pigs(float dt, long now)` |
-| `tick_player` | function | `progs/minicraft/minicraft.c:2434` | `static void tick_player(float dt)` |
-| `tick_water` | function | `progs/minicraft/minicraft.c:2533` | `static void tick_water(long now)` |
-| `title_menu` | function | `progs/minicraft/minicraft.c:3739` | `static int title_menu(int have_save, int *seed_io)` |
-| `try_autostep` | function | `progs/minicraft/minicraft.c:2398` | `static void try_autostep(float tx, float ty)` |
-| `voro_site` | function | `progs/minicraft/minicraft.c:851` | `static void voro_site(int cx, int cy, unsigned int seed, int cell,
+| `sky_color` | function | `progs/minicraft/minicraft.c:1569` | `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)` |
+| `sky_light` | function | `progs/minicraft/minicraft.c:801` | `static float sky_light(int x, int y, int z)` |
+| `tick_discover` | function | `progs/minicraft/minicraft.c:2630` | `static void tick_discover(long now)` |
+| `tick_goals` | function | `progs/minicraft/minicraft.c:2619` | `static void tick_goals(void)` |
+| `tick_hunger` | function | `progs/minicraft/minicraft.c:2596` | `static void tick_hunger(long now)` |
+| `tick_interact` | function | `progs/minicraft/minicraft.c:2668` | `static void tick_interact(void)` |
+| `tick_mob` | function | `progs/minicraft/minicraft.c:1386` | `static void tick_mob(Pig *p, int id, float dt, long now)` |
+| `tick_pigs` | function | `progs/minicraft/minicraft.c:1512` | `static void tick_pigs(float dt, long now)` |
+| `tick_player` | function | `progs/minicraft/minicraft.c:2449` | `static void tick_player(float dt)` |
+| `tick_water` | function | `progs/minicraft/minicraft.c:2548` | `static void tick_water(long now)` |
+| `title_menu` | function | `progs/minicraft/minicraft.c:3754` | `static int title_menu(int have_save, int *seed_io)` |
+| `try_autostep` | function | `progs/minicraft/minicraft.c:2413` | `static void try_autostep(float tx, float ty)` |
+| `voro_site` | function | `progs/minicraft/minicraft.c:861` | `static void voro_site(int cx, int cy, unsigned int seed, int cell,
     int *sx, int *sy)` |
-| `world_max_recompute` | function | `progs/minicraft/minicraft.c:596` | `static void world_max_recompute(void)` |
+| `world_max_recompute` | function | `progs/minicraft/minicraft.c:606` | `static void world_max_recompute(void)` |
 | `MINIOS_ABI_CHECKSUM` | macro | `progs/minios_abi.h:45` | `#define MINIOS_ABI_CHECKSUM` |
 | `MINIOS_ABI_H` | macro | `progs/minios_abi.h:2` | `#define MINIOS_ABI_H` |
 | `MINIOS_ABI_VERSION` | macro | `progs/minios_abi.h:41` | `#define MINIOS_ABI_VERSION` |
@@ -8426,30 +8461,30 @@ Z_Malloc
                      int filled, ...` |
 | `draw_line` | function | `progs/nuklear/nuklear_minios.c:409` | `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)` |
 | `draw_text` | function | `progs/nuklear/nuklear_minios.c:481` | `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)` |
-| `feed_key` | function | `progs/nuklear/nuklear_minios.c:707` | `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)` |
+| `feed_key` | function | `progs/nuklear/nuklear_minios.c:724` | `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)` |
 | `fill_circle` | function | `progs/nuklear/nuklear_minios.c:427` | `static void fill_circle(int cx, int cy, int r, int c)` |
 | `fill_poly` | function | `progs/nuklear/nuklear_minios.c:451` | `static void fill_poly(int *xs, int *ys, int n, int c)` |
 | `fill_rect` | function | `progs/nuklear/nuklear_minios.c:402` | `static void fill_rect(int x, int y, int w, int h, int c)` |
-| `handle_scancode` | function | `progs/nuklear/nuklear_minios.c:719` | `static void handle_scancode(struct nk_context *ctx, unsigned char sc)` |
+| `handle_scancode` | function | `progs/nuklear/nuklear_minios.c:736` | `static void handle_scancode(struct nk_context *ctx, unsigned char sc)` |
 | `list` | function | `progs/nuklear/nuklear_minios.c:4` | `* abstract draw command list (nk__begin/nk__next);` |
 | `nk_build_palette` | function | `progs/nuklear/nuklear_minios.c:347` | `void nk_build_palette(unsigned char *pal768)` |
 | `nk_client_hash` | function | `progs/nuklear/nuklear_minios.c:151` | `static unsigned nk_client_hash(const unsigned char *p, unsigned n)` |
-| `nk_client_poll` | function | `progs/nuklear/nuklear_minios.c:767` | `static void nk_client_poll(struct nk_context *ctx)` |
+| `nk_client_poll` | function | `progs/nuklear/nuklear_minios.c:784` | `static void nk_client_poll(struct nk_context *ctx)` |
 | `nk_client_probe` | function | `progs/nuklear/nuklear_minios.c:72` | `static int nk_client_probe(void)` |
 | `nk_client_publish` | function | `progs/nuklear/nuklear_minios.c:162` | `static int nk_client_publish(void)` |
 | `nk_foreach` | function | `progs/nuklear/nuklear_minios.c:520` | `nk_foreach(cmd, ctx)` |
-| `nk_minios_font` | function | `progs/nuklear/nuklear_minios.c:672` | `struct nk_user_font nk_minios_font(void)` |
-| `nk_minios_font_width` | function | `progs/nuklear/nuklear_minios.c:666` | `static float nk_minios_font_width(nk_handle handle, float height,
+| `nk_minios_font` | function | `progs/nuklear/nuklear_minios.c:689` | `struct nk_user_font nk_minios_font(void)` |
+| `nk_minios_font_width` | function | `progs/nuklear/nuklear_minios.c:683` | `static float nk_minios_font_width(nk_handle handle, float height,
                                ...` |
 | `nk_mirror_box` | function | `progs/nuklear/nuklear_minios.c:243` | `static void nk_mirror_box(char *dst, int cap)` |
 | `nk_mirror_emit` | function | `progs/nuklear/nuklear_minios.c:264` | `static int nk_mirror_emit(const char *box, unsigned seq,
         const unsigned char *msg, int mlen)` |
 | `nk_mirror_tick` | function | `progs/nuklear/nuklear_minios.c:281` | `static void nk_mirror_tick(void)` |
-| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.c:814` | `void nk_poll_input(struct nk_context *ctx)` |
-| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.c:861` | `int nk_quit_requested(void)` |
+| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.c:831` | `void nk_poll_input(struct nk_context *ctx)` |
+| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.c:878` | `int nk_quit_requested(void)` |
 | `nk_rasterize` | function | `progs/nuklear/nuklear_minios.c:516` | `void nk_rasterize(struct nk_context *ctx)` |
-| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.c:714` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)` |
-| `nk_set_window_origin` | function | `progs/nuklear/nuklear_minios.c:853` | `void nk_set_window_origin(int x, int y)` |
+| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.c:731` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)` |
+| `nk_set_window_origin` | function | `progs/nuklear/nuklear_minios.c:870` | `void nk_set_window_origin(int x, int y)` |
 | `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.c:121` | `long nk_sys_fb_info(int *w, int *h, int *pitch)` |
 | `nk_sys_getpid` | function | `progs/nuklear/nuklear_minios.c:53` | `long nk_sys_getpid(void)` |
 | `nk_sys_gfx_set_title` | function | `progs/nuklear/nuklear_minios.c:338` | `long nk_sys_gfx_set_title(const char *t)` |
@@ -8469,17 +8504,19 @@ Z_Malloc
 | `stroke_poly` | function | `progs/nuklear/nuklear_minios.c:474` | `static void stroke_poly(int *xs, int *ys, int n, int th, int c)` |
 | `NK_BACKBUF` | macro | `progs/nuklear/nuklear_minios.h:26` | `#define NK_BACKBUF` |
 | `NK_H` | macro | `progs/nuklear/nuklear_minios.h:25` | `#define NK_H` |
+| `NK_MINIOS_IMG_MAX` | macro | `progs/nuklear/nuklear_minios.h:61` | `#define NK_MINIOS_IMG_MAX` |
 | `NK_W` | macro | `progs/nuklear/nuklear_minios.h:24` | `#define NK_W` |
 | `NUKLEAR_MINIOS_H` | macro | `progs/nuklear/nuklear_minios.h:2` | `#define NUKLEAR_MINIOS_H` |
-| `SYS_NK_FRAME` | function | `progs/nuklear/nuklear_minios.h:60` | `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);` |
+| `SYS_NK_FRAME` | function | `progs/nuklear/nuklear_minios.h:73` | `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);` |
 | `nk_build_palette` | function | `progs/nuklear/nuklear_minios.h:45` | `void nk_build_palette(unsigned char *pal768);` |
 | `nk_command_buffer` | struct | `progs/nuklear/nuklear_minios.h:22` | `` |
 | `nk_context` | struct | `progs/nuklear/nuklear_minios.h:20` | `` |
 | `nk_minios_font` | function | `progs/nuklear/nuklear_minios.h:51` | `struct nk_user_font nk_minios_font(void);` |
-| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.h:62` | `void nk_poll_input(struct nk_context *ctx);` |
-| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.h:67` | `int nk_quit_requested(void);` |
+| `nk_minios_img` | struct | `progs/nuklear/nuklear_minios.h:62` | `` |
+| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.h:75` | `void nk_poll_input(struct nk_context *ctx);` |
+| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.h:80` | `int nk_quit_requested(void);` |
 | `nk_rasterize` | function | `progs/nuklear/nuklear_minios.h:54` | `void nk_rasterize(struct nk_context *ctx);` |
-| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.h:76` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);` |
+| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.h:89` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);` |
 | `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.h:34` | `long nk_sys_fb_info(int *w, int *h, int *pitch);` |
 | `nk_sys_gfx_set_title` | function | `progs/nuklear/nuklear_minios.h:41` | `long nk_sys_gfx_set_title(const char *t);` |
 | `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.h:30` | `long nk_sys_kbd(void);` |
@@ -9470,141 +9507,143 @@ Z_Malloc
                   ...` |
 | `torus_soft_assign` | function | `progs/topogpt3/topogpt3.c:821` | `static void torus_soft_assign(const float *phi1, const float *phi2,
                              ...` |
-| `VEDIT_BASE_MAX` | macro | `progs/vedit/vedit.c:108` | `#define VEDIT_BASE_MAX` |
-| `VEDIT_BUILD_LOG` | macro | `progs/vedit/vedit.c:104` | `#define VEDIT_BUILD_LOG` |
-| `VEDIT_COL_COMMENT` | macro | `progs/vedit/vedit.c:123` | `#define VEDIT_COL_COMMENT` |
-| `VEDIT_COL_DEFAULT` | macro | `progs/vedit/vedit.c:120` | `#define VEDIT_COL_DEFAULT` |
-| `VEDIT_COL_KEYWORD` | macro | `progs/vedit/vedit.c:121` | `#define VEDIT_COL_KEYWORD` |
-| `VEDIT_COL_NUMBER` | macro | `progs/vedit/vedit.c:124` | `#define VEDIT_COL_NUMBER` |
-| `VEDIT_COL_PREPROC` | macro | `progs/vedit/vedit.c:125` | `#define VEDIT_COL_PREPROC` |
-| `VEDIT_COL_STRING` | macro | `progs/vedit/vedit.c:122` | `#define VEDIT_COL_STRING` |
-| `VEDIT_DEFAULT_FILE` | macro | `progs/vedit/vedit.c:86` | `#define VEDIT_DEFAULT_FILE` |
-| `VEDIT_DIR_ASM` | macro | `progs/vedit/vedit.c:101` | `#define VEDIT_DIR_ASM` |
-| `VEDIT_DIR_BIN` | macro | `progs/vedit/vedit.c:102` | `#define VEDIT_DIR_BIN` |
-| `VEDIT_DIR_CVM` | macro | `progs/vedit/vedit.c:103` | `#define VEDIT_DIR_CVM` |
-| `VEDIT_ESC_MS` | macro | `progs/vedit/vedit.c:90` | `#define VEDIT_ESC_MS` |
-| `VEDIT_FILE_MAX` | macro | `progs/vedit/vedit.c:84` | `#define VEDIT_FILE_MAX` |
-| `VEDIT_FNAME_MAX` | macro | `progs/vedit/vedit.c:85` | `#define VEDIT_FNAME_MAX` |
-| `VEDIT_FRAME_MS` | macro | `progs/vedit/vedit.c:91` | `#define VEDIT_FRAME_MS` |
-| `VEDIT_KEY_DEL` | macro | `progs/vedit/vedit.c:143` | `#define VEDIT_KEY_DEL` |
-| `VEDIT_KEY_DOWN` | macro | `progs/vedit/vedit.c:136` | `#define VEDIT_KEY_DOWN` |
-| `VEDIT_KEY_DUMP` | macro | `progs/vedit/vedit.c:95` | `#define VEDIT_KEY_DUMP` |
-| `VEDIT_KEY_END` | macro | `progs/vedit/vedit.c:140` | `#define VEDIT_KEY_END` |
-| `VEDIT_KEY_ESC` | macro | `progs/vedit/vedit.c:144` | `#define VEDIT_KEY_ESC` |
-| `VEDIT_KEY_HOME` | macro | `progs/vedit/vedit.c:139` | `#define VEDIT_KEY_HOME` |
-| `VEDIT_KEY_LEFT` | macro | `progs/vedit/vedit.c:137` | `#define VEDIT_KEY_LEFT` |
-| `VEDIT_KEY_LINK` | macro | `progs/vedit/vedit.c:94` | `#define VEDIT_KEY_LINK` |
-| `VEDIT_KEY_PGDN` | macro | `progs/vedit/vedit.c:142` | `#define VEDIT_KEY_PGDN` |
-| `VEDIT_KEY_PGUP` | macro | `progs/vedit/vedit.c:141` | `#define VEDIT_KEY_PGUP` |
-| `VEDIT_KEY_RIGHT` | macro | `progs/vedit/vedit.c:138` | `#define VEDIT_KEY_RIGHT` |
-| `VEDIT_KEY_RUN` | macro | `progs/vedit/vedit.c:93` | `#define VEDIT_KEY_RUN` |
-| `VEDIT_KEY_UP` | macro | `progs/vedit/vedit.c:135` | `#define VEDIT_KEY_UP` |
-| `VEDIT_LANG_ASM` | macro | `progs/vedit/vedit.c:117` | `#define VEDIT_LANG_ASM` |
-| `VEDIT_LANG_C` | macro | `progs/vedit/vedit.c:114` | `#define VEDIT_LANG_C` |
-| `VEDIT_LANG_LUA` | macro | `progs/vedit/vedit.c:116` | `#define VEDIT_LANG_LUA` |
-| `VEDIT_LANG_PY` | macro | `progs/vedit/vedit.c:115` | `#define VEDIT_LANG_PY` |
-| `VEDIT_LANG_TEXT` | macro | `progs/vedit/vedit.c:113` | `#define VEDIT_LANG_TEXT` |
-| `VEDIT_LINE_MAX` | macro | `progs/vedit/vedit.c:82` | `#define VEDIT_LINE_MAX` |
-| `VEDIT_LINE_USED` | macro | `progs/vedit/vedit.c:83` | `#define VEDIT_LINE_USED` |
-| `VEDIT_LINK_CVM` | macro | `progs/vedit/vedit.c:106` | `#define VEDIT_LINK_CVM` |
-| `VEDIT_LINK_ELF` | macro | `progs/vedit/vedit.c:105` | `#define VEDIT_LINK_ELF` |
-| `VEDIT_LOG_TAIL` | macro | `progs/vedit/vedit.c:110` | `#define VEDIT_LOG_TAIL` |
-| `VEDIT_MAX_LINES` | macro | `progs/vedit/vedit.c:81` | `#define VEDIT_MAX_LINES` |
-| `VEDIT_MSG_MAX` | macro | `progs/vedit/vedit.c:87` | `#define VEDIT_MSG_MAX` |
-| `VEDIT_PATH_MAX` | macro | `progs/vedit/vedit.c:109` | `#define VEDIT_PATH_MAX` |
-| `VEDIT_PROMPT_FIND` | macro | `progs/vedit/vedit.c:1406` | `#define VEDIT_PROMPT_FIND` |
-| `VEDIT_PROMPT_GOTO` | macro | `progs/vedit/vedit.c:1407` | `#define VEDIT_PROMPT_GOTO` |
-| `VEDIT_PROMPT_LINK` | macro | `progs/vedit/vedit.c:1409` | `#define VEDIT_PROMPT_LINK` |
-| `VEDIT_PROMPT_NAME` | macro | `progs/vedit/vedit.c:1408` | `#define VEDIT_PROMPT_NAME` |
-| `VEDIT_STATUS_MAX` | macro | `progs/vedit/vedit.c:107` | `#define VEDIT_STATUS_MAX` |
-| `VEDIT_ST_BLOCK` | macro | `progs/vedit/vedit.c:128` | `#define VEDIT_ST_BLOCK` |
-| `VEDIT_ST_LUABLK` | macro | `progs/vedit/vedit.c:131` | `#define VEDIT_ST_LUABLK` |
-| `VEDIT_ST_LUASTR` | macro | `progs/vedit/vedit.c:132` | `#define VEDIT_ST_LUASTR` |
-| `VEDIT_ST_PY3D` | macro | `progs/vedit/vedit.c:130` | `#define VEDIT_ST_PY3D` |
-| `VEDIT_ST_PY3S` | macro | `progs/vedit/vedit.c:129` | `#define VEDIT_ST_PY3S` |
-| `VEDIT_TAB_W` | macro | `progs/vedit/vedit.c:89` | `#define VEDIT_TAB_W` |
-| `VEDIT_TOOL_CVM` | macro | `progs/vedit/vedit.c:98` | `#define VEDIT_TOOL_CVM` |
-| `VEDIT_TOOL_LD` | macro | `progs/vedit/vedit.c:97` | `#define VEDIT_TOOL_LD` |
-| `VEDIT_TOOL_LUA` | macro | `progs/vedit/vedit.c:99` | `#define VEDIT_TOOL_LUA` |
-| `VEDIT_TOOL_MINIGCC` | macro | `progs/vedit/vedit.c:96` | `#define VEDIT_TOOL_MINIGCC` |
-| `VEDIT_TOOL_PY` | macro | `progs/vedit/vedit.c:100` | `#define VEDIT_TOOL_PY` |
-| `VEDIT_UI_MEMORY` | macro | `progs/vedit/vedit.c:92` | `#define VEDIT_UI_MEMORY` |
-| `VEDIT_WORD_MAX` | macro | `progs/vedit/vedit.c:88` | `#define VEDIT_WORD_MAX` |
-| `main` | function | `progs/vedit/vedit.c:1942` | `int main(int argc, char **argv)` |
-| `separators` | function | `progs/vedit/vedit.c:272` | `* allow_quote exists because C digit separators (1'000'000) are not
+| `VEDIT_BASE_MAX` | macro | `progs/vedit/vedit.c:110` | `#define VEDIT_BASE_MAX` |
+| `VEDIT_BUILD_LOG` | macro | `progs/vedit/vedit.c:106` | `#define VEDIT_BUILD_LOG` |
+| `VEDIT_COL_COMMENT` | macro | `progs/vedit/vedit.c:126` | `#define VEDIT_COL_COMMENT` |
+| `VEDIT_COL_DEFAULT` | macro | `progs/vedit/vedit.c:123` | `#define VEDIT_COL_DEFAULT` |
+| `VEDIT_COL_KEYWORD` | macro | `progs/vedit/vedit.c:124` | `#define VEDIT_COL_KEYWORD` |
+| `VEDIT_COL_NUMBER` | macro | `progs/vedit/vedit.c:127` | `#define VEDIT_COL_NUMBER` |
+| `VEDIT_COL_PREPROC` | macro | `progs/vedit/vedit.c:128` | `#define VEDIT_COL_PREPROC` |
+| `VEDIT_COL_STRING` | macro | `progs/vedit/vedit.c:125` | `#define VEDIT_COL_STRING` |
+| `VEDIT_DEFAULT_FILE` | macro | `progs/vedit/vedit.c:87` | `#define VEDIT_DEFAULT_FILE` |
+| `VEDIT_DIR_ASM` | macro | `progs/vedit/vedit.c:103` | `#define VEDIT_DIR_ASM` |
+| `VEDIT_DIR_BIN` | macro | `progs/vedit/vedit.c:104` | `#define VEDIT_DIR_BIN` |
+| `VEDIT_DIR_CVM` | macro | `progs/vedit/vedit.c:105` | `#define VEDIT_DIR_CVM` |
+| `VEDIT_ESC_MS` | macro | `progs/vedit/vedit.c:91` | `#define VEDIT_ESC_MS` |
+| `VEDIT_FILE_MAX` | macro | `progs/vedit/vedit.c:85` | `#define VEDIT_FILE_MAX` |
+| `VEDIT_FNAME_MAX` | macro | `progs/vedit/vedit.c:86` | `#define VEDIT_FNAME_MAX` |
+| `VEDIT_FRAME_MS` | macro | `progs/vedit/vedit.c:92` | `#define VEDIT_FRAME_MS` |
+| `VEDIT_KEY_DEL` | macro | `progs/vedit/vedit.c:146` | `#define VEDIT_KEY_DEL` |
+| `VEDIT_KEY_DOWN` | macro | `progs/vedit/vedit.c:139` | `#define VEDIT_KEY_DOWN` |
+| `VEDIT_KEY_DUMP` | macro | `progs/vedit/vedit.c:96` | `#define VEDIT_KEY_DUMP` |
+| `VEDIT_KEY_END` | macro | `progs/vedit/vedit.c:143` | `#define VEDIT_KEY_END` |
+| `VEDIT_KEY_ESC` | macro | `progs/vedit/vedit.c:147` | `#define VEDIT_KEY_ESC` |
+| `VEDIT_KEY_HOME` | macro | `progs/vedit/vedit.c:142` | `#define VEDIT_KEY_HOME` |
+| `VEDIT_KEY_LEFT` | macro | `progs/vedit/vedit.c:140` | `#define VEDIT_KEY_LEFT` |
+| `VEDIT_KEY_LINK` | macro | `progs/vedit/vedit.c:95` | `#define VEDIT_KEY_LINK` |
+| `VEDIT_KEY_PGDN` | macro | `progs/vedit/vedit.c:145` | `#define VEDIT_KEY_PGDN` |
+| `VEDIT_KEY_PGUP` | macro | `progs/vedit/vedit.c:144` | `#define VEDIT_KEY_PGUP` |
+| `VEDIT_KEY_RIGHT` | macro | `progs/vedit/vedit.c:141` | `#define VEDIT_KEY_RIGHT` |
+| `VEDIT_KEY_RUN` | macro | `progs/vedit/vedit.c:94` | `#define VEDIT_KEY_RUN` |
+| `VEDIT_KEY_UP` | macro | `progs/vedit/vedit.c:138` | `#define VEDIT_KEY_UP` |
+| `VEDIT_LANG_ASM` | macro | `progs/vedit/vedit.c:119` | `#define VEDIT_LANG_ASM` |
+| `VEDIT_LANG_C` | macro | `progs/vedit/vedit.c:116` | `#define VEDIT_LANG_C` |
+| `VEDIT_LANG_LISP` | macro | `progs/vedit/vedit.c:120` | `#define VEDIT_LANG_LISP` |
+| `VEDIT_LANG_LUA` | macro | `progs/vedit/vedit.c:118` | `#define VEDIT_LANG_LUA` |
+| `VEDIT_LANG_PY` | macro | `progs/vedit/vedit.c:117` | `#define VEDIT_LANG_PY` |
+| `VEDIT_LANG_TEXT` | macro | `progs/vedit/vedit.c:115` | `#define VEDIT_LANG_TEXT` |
+| `VEDIT_LINE_MAX` | macro | `progs/vedit/vedit.c:83` | `#define VEDIT_LINE_MAX` |
+| `VEDIT_LINE_USED` | macro | `progs/vedit/vedit.c:84` | `#define VEDIT_LINE_USED` |
+| `VEDIT_LINK_CVM` | macro | `progs/vedit/vedit.c:108` | `#define VEDIT_LINK_CVM` |
+| `VEDIT_LINK_ELF` | macro | `progs/vedit/vedit.c:107` | `#define VEDIT_LINK_ELF` |
+| `VEDIT_LOG_TAIL` | macro | `progs/vedit/vedit.c:112` | `#define VEDIT_LOG_TAIL` |
+| `VEDIT_MAX_LINES` | macro | `progs/vedit/vedit.c:82` | `#define VEDIT_MAX_LINES` |
+| `VEDIT_MSG_MAX` | macro | `progs/vedit/vedit.c:88` | `#define VEDIT_MSG_MAX` |
+| `VEDIT_PATH_MAX` | macro | `progs/vedit/vedit.c:111` | `#define VEDIT_PATH_MAX` |
+| `VEDIT_PROMPT_FIND` | macro | `progs/vedit/vedit.c:1447` | `#define VEDIT_PROMPT_FIND` |
+| `VEDIT_PROMPT_GOTO` | macro | `progs/vedit/vedit.c:1448` | `#define VEDIT_PROMPT_GOTO` |
+| `VEDIT_PROMPT_LINK` | macro | `progs/vedit/vedit.c:1450` | `#define VEDIT_PROMPT_LINK` |
+| `VEDIT_PROMPT_NAME` | macro | `progs/vedit/vedit.c:1449` | `#define VEDIT_PROMPT_NAME` |
+| `VEDIT_STATUS_MAX` | macro | `progs/vedit/vedit.c:109` | `#define VEDIT_STATUS_MAX` |
+| `VEDIT_ST_BLOCK` | macro | `progs/vedit/vedit.c:131` | `#define VEDIT_ST_BLOCK` |
+| `VEDIT_ST_LUABLK` | macro | `progs/vedit/vedit.c:134` | `#define VEDIT_ST_LUABLK` |
+| `VEDIT_ST_LUASTR` | macro | `progs/vedit/vedit.c:135` | `#define VEDIT_ST_LUASTR` |
+| `VEDIT_ST_PY3D` | macro | `progs/vedit/vedit.c:133` | `#define VEDIT_ST_PY3D` |
+| `VEDIT_ST_PY3S` | macro | `progs/vedit/vedit.c:132` | `#define VEDIT_ST_PY3S` |
+| `VEDIT_TAB_W` | macro | `progs/vedit/vedit.c:90` | `#define VEDIT_TAB_W` |
+| `VEDIT_TOOL_CVM` | macro | `progs/vedit/vedit.c:99` | `#define VEDIT_TOOL_CVM` |
+| `VEDIT_TOOL_LD` | macro | `progs/vedit/vedit.c:98` | `#define VEDIT_TOOL_LD` |
+| `VEDIT_TOOL_LISP` | macro | `progs/vedit/vedit.c:102` | `#define VEDIT_TOOL_LISP` |
+| `VEDIT_TOOL_LUA` | macro | `progs/vedit/vedit.c:100` | `#define VEDIT_TOOL_LUA` |
+| `VEDIT_TOOL_MINIGCC` | macro | `progs/vedit/vedit.c:97` | `#define VEDIT_TOOL_MINIGCC` |
+| `VEDIT_TOOL_PY` | macro | `progs/vedit/vedit.c:101` | `#define VEDIT_TOOL_PY` |
+| `VEDIT_UI_MEMORY` | macro | `progs/vedit/vedit.c:93` | `#define VEDIT_UI_MEMORY` |
+| `VEDIT_WORD_MAX` | macro | `progs/vedit/vedit.c:89` | `#define VEDIT_WORD_MAX` |
+| `main` | function | `progs/vedit/vedit.c:1983` | `int main(int argc, char **argv)` |
+| `separators` | function | `progs/vedit/vedit.c:281` | `* allow_quote exists because C digit separators (1'000'000) are not
  * valid in Python/Lua number...` |
-| `vedit_ansi_for` | function | `progs/vedit/vedit.c:1364` | `static void vedit_ansi_for(int col)` |
-| `vedit_backspace` | function | `progs/vedit/vedit.c:682` | `static void vedit_backspace(void)` |
-| `vedit_base_of` | function | `progs/vedit/vedit.c:978` | `static int vedit_base_of(const char *fname, char *dst, size_t cap)` |
-| `vedit_c_bg` | function | `progs/vedit/vedit.c:147` | `static struct nk_color vedit_c_bg(void)` |
-| `vedit_c_comment` | function | `progs/vedit/vedit.c:152` | `static struct nk_color vedit_c_comment(void)` |
-| `vedit_c_cursor` | function | `progs/vedit/vedit.c:158` | `static struct nk_color vedit_c_cursor(void)` |
-| `vedit_c_default` | function | `progs/vedit/vedit.c:149` | `static struct nk_color vedit_c_default(void)` |
-| `vedit_c_gutter` | function | `progs/vedit/vedit.c:148` | `static struct nk_color vedit_c_gutter(void)` |
-| `vedit_c_header` | function | `progs/vedit/vedit.c:155` | `static struct nk_color vedit_c_header(void)` |
-| `vedit_c_headtxt` | function | `progs/vedit/vedit.c:156` | `static struct nk_color vedit_c_headtxt(void)` |
-| `vedit_c_keyword` | function | `progs/vedit/vedit.c:150` | `static struct nk_color vedit_c_keyword(void)` |
-| `vedit_c_number` | function | `progs/vedit/vedit.c:153` | `static struct nk_color vedit_c_number(void)` |
-| `vedit_c_preproc` | function | `progs/vedit/vedit.c:154` | `static struct nk_color vedit_c_preproc(void)` |
-| `vedit_c_status` | function | `progs/vedit/vedit.c:157` | `static struct nk_color vedit_c_status(void)` |
-| `vedit_c_string` | function | `progs/vedit/vedit.c:151` | `static struct nk_color vedit_c_string(void)` |
-| `vedit_clamp` | function | `progs/vedit/vedit.c:620` | `static void vedit_clamp(void)` |
-| `vedit_cmd_exec` | function | `progs/vedit/vedit.c:1075` | `static void vedit_cmd_exec(const char *out, int kind)` |
-| `vedit_cmd_link` | function | `progs/vedit/vedit.c:1173` | `static void vedit_cmd_link(const char *fmt)` |
-| `vedit_cmd_run` | function | `progs/vedit/vedit.c:1097` | `static void vedit_cmd_run(void)` |
-| `vedit_console_dump` | function | `progs/vedit/vedit.c:1372` | `static void vedit_console_dump(void)` |
-| `vedit_delete_char` | function | `progs/vedit/vedit.c:713` | `static void vedit_delete_char(void)` |
-| `vedit_delete_line_at` | function | `progs/vedit/vedit.c:671` | `static void vedit_delete_line_at(int idx)` |
-| `vedit_draw_row` | function | `progs/vedit/vedit.c:1437` | `static void vedit_draw_row(struct nk_command_buffer *canvas,
+| `vedit_ansi_for` | function | `progs/vedit/vedit.c:1405` | `static void vedit_ansi_for(int col)` |
+| `vedit_backspace` | function | `progs/vedit/vedit.c:713` | `static void vedit_backspace(void)` |
+| `vedit_base_of` | function | `progs/vedit/vedit.c:1009` | `static int vedit_base_of(const char *fname, char *dst, size_t cap)` |
+| `vedit_c_bg` | function | `progs/vedit/vedit.c:150` | `static struct nk_color vedit_c_bg(void)` |
+| `vedit_c_comment` | function | `progs/vedit/vedit.c:155` | `static struct nk_color vedit_c_comment(void)` |
+| `vedit_c_cursor` | function | `progs/vedit/vedit.c:161` | `static struct nk_color vedit_c_cursor(void)` |
+| `vedit_c_default` | function | `progs/vedit/vedit.c:152` | `static struct nk_color vedit_c_default(void)` |
+| `vedit_c_gutter` | function | `progs/vedit/vedit.c:151` | `static struct nk_color vedit_c_gutter(void)` |
+| `vedit_c_header` | function | `progs/vedit/vedit.c:158` | `static struct nk_color vedit_c_header(void)` |
+| `vedit_c_headtxt` | function | `progs/vedit/vedit.c:159` | `static struct nk_color vedit_c_headtxt(void)` |
+| `vedit_c_keyword` | function | `progs/vedit/vedit.c:153` | `static struct nk_color vedit_c_keyword(void)` |
+| `vedit_c_number` | function | `progs/vedit/vedit.c:156` | `static struct nk_color vedit_c_number(void)` |
+| `vedit_c_preproc` | function | `progs/vedit/vedit.c:157` | `static struct nk_color vedit_c_preproc(void)` |
+| `vedit_c_status` | function | `progs/vedit/vedit.c:160` | `static struct nk_color vedit_c_status(void)` |
+| `vedit_c_string` | function | `progs/vedit/vedit.c:154` | `static struct nk_color vedit_c_string(void)` |
+| `vedit_clamp` | function | `progs/vedit/vedit.c:651` | `static void vedit_clamp(void)` |
+| `vedit_cmd_exec` | function | `progs/vedit/vedit.c:1106` | `static void vedit_cmd_exec(const char *out, int kind)` |
+| `vedit_cmd_link` | function | `progs/vedit/vedit.c:1206` | `static void vedit_cmd_link(const char *fmt)` |
+| `vedit_cmd_run` | function | `progs/vedit/vedit.c:1129` | `static void vedit_cmd_run(void)` |
+| `vedit_console_dump` | function | `progs/vedit/vedit.c:1413` | `static void vedit_console_dump(void)` |
+| `vedit_delete_char` | function | `progs/vedit/vedit.c:744` | `static void vedit_delete_char(void)` |
+| `vedit_delete_line_at` | function | `progs/vedit/vedit.c:702` | `static void vedit_delete_line_at(int idx)` |
+| `vedit_draw_row` | function | `progs/vedit/vedit.c:1478` | `static void vedit_draw_row(struct nk_command_buffer *canvas,
                            struct nk...` |
-| `vedit_draw_ui` | function | `progs/vedit/vedit.c:1516` | `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
+| `vedit_draw_ui` | function | `progs/vedit/vedit.c:1557` | `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                     ...` |
-| `vedit_find` | function | `progs/vedit/vedit.c:816` | `static void vedit_find(const char *needle)` |
-| `vedit_follow` | function | `progs/vedit/vedit.c:632` | `static void vedit_follow(void)` |
-| `vedit_getc_raw` | function | `progs/vedit/vedit.c:22` | `static long vedit_getc_raw(long blocking)` |
-| `vedit_gui_run` | function | `progs/vedit/vedit.c:1796` | `static void vedit_gui_run(void)` |
-| `vedit_has_ext` | function | `progs/vedit/vedit.c:966` | `static int vedit_has_ext(const char *fname, const char *ext)` |
-| `vedit_ink` | function | `progs/vedit/vedit.c:160` | `static struct nk_color vedit_ink(int col)` |
-| `vedit_insert_char` | function | `progs/vedit/vedit.c:645` | `static void vedit_insert_char(int c)` |
-| `vedit_is_alpha` | function | `progs/vedit/vedit.c:237` | `static int vedit_is_alpha(int c)` |
-| `vedit_is_digit` | function | `progs/vedit/vedit.c:241` | `static int vedit_is_digit(int c)` |
-| `vedit_is_kw` | function | `progs/vedit/vedit.c:249` | `static int vedit_is_kw(const char *table, const char *word, int wlen)` |
-| `vedit_is_wordc` | function | `progs/vedit/vedit.c:245` | `static int vedit_is_wordc(int c)` |
-| `vedit_join` | function | `progs/vedit/vedit.c:999` | `static int vedit_join(const char *dir, const char *base, const char *ext,
+| `vedit_find` | function | `progs/vedit/vedit.c:847` | `static void vedit_find(const char *needle)` |
+| `vedit_follow` | function | `progs/vedit/vedit.c:663` | `static void vedit_follow(void)` |
+| `vedit_getc_raw` | function | `progs/vedit/vedit.c:23` | `static long vedit_getc_raw(long blocking)` |
+| `vedit_gui_run` | function | `progs/vedit/vedit.c:1837` | `static void vedit_gui_run(void)` |
+| `vedit_has_ext` | function | `progs/vedit/vedit.c:997` | `static int vedit_has_ext(const char *fname, const char *ext)` |
+| `vedit_ink` | function | `progs/vedit/vedit.c:163` | `static struct nk_color vedit_ink(int col)` |
+| `vedit_insert_char` | function | `progs/vedit/vedit.c:676` | `static void vedit_insert_char(int c)` |
+| `vedit_is_alpha` | function | `progs/vedit/vedit.c:246` | `static int vedit_is_alpha(int c)` |
+| `vedit_is_digit` | function | `progs/vedit/vedit.c:250` | `static int vedit_is_digit(int c)` |
+| `vedit_is_kw` | function | `progs/vedit/vedit.c:258` | `static int vedit_is_kw(const char *table, const char *word, int wlen)` |
+| `vedit_is_wordc` | function | `progs/vedit/vedit.c:254` | `static int vedit_is_wordc(int c)` |
+| `vedit_join` | function | `progs/vedit/vedit.c:1030` | `static int vedit_join(const char *dir, const char *base, const char *ext,
                       c...` |
-| `vedit_kbd_raw` | function | `progs/vedit/vedit.c:64` | `static long vedit_kbd_raw(int on)` |
-| `vedit_key` | function | `progs/vedit/vedit.c:1706` | `static void vedit_key(int key, int *quit, int *save_and_quit)` |
-| `vedit_lang_name` | function | `progs/vedit/vedit.c:345` | `static const char *vedit_lang_name(int lang)` |
-| `vedit_lang_of` | function | `progs/vedit/vedit.c:327` | `static int vedit_lang_of(const char *fname)` |
-| `vedit_link_fmt` | function | `progs/vedit/vedit.c:1016` | `static int vedit_link_fmt(const char *s)` |
-| `vedit_load` | function | `progs/vedit/vedit.c:909` | `static int vedit_load(void)` |
-| `vedit_parse_keyword` | function | `progs/vedit/vedit.c:310` | `static int vedit_parse_keyword(const char *t, int len, int i,
+| `vedit_kbd_raw` | function | `progs/vedit/vedit.c:65` | `static long vedit_kbd_raw(int on)` |
+| `vedit_key` | function | `progs/vedit/vedit.c:1747` | `static void vedit_key(int key, int *quit, int *save_and_quit)` |
+| `vedit_lang_name` | function | `progs/vedit/vedit.c:357` | `static const char *vedit_lang_name(int lang)` |
+| `vedit_lang_of` | function | `progs/vedit/vedit.c:336` | `static int vedit_lang_of(const char *fname)` |
+| `vedit_link_fmt` | function | `progs/vedit/vedit.c:1047` | `static int vedit_link_fmt(const char *s)` |
+| `vedit_load` | function | `progs/vedit/vedit.c:940` | `static int vedit_load(void)` |
+| `vedit_parse_keyword` | function | `progs/vedit/vedit.c:319` | `static int vedit_parse_keyword(const char *t, int len, int i,
                                cons...` |
-| `vedit_parse_number` | function | `progs/vedit/vedit.c:295` | `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)` |
-| `vedit_print_log` | function | `progs/vedit/vedit.c:1029` | `static void vedit_print_log(const char *path)` |
-| `vedit_prompt_find` | function | `progs/vedit/vedit.c:1423` | `static void vedit_prompt_find(void)` |
-| `vedit_prompt_key` | function | `progs/vedit/vedit.c:1647` | `static void vedit_prompt_key(int key)` |
-| `vedit_prompt_open` | function | `progs/vedit/vedit.c:1412` | `static void vedit_prompt_open(const char *label, int mode)` |
-| `vedit_prompt_saveas` | function | `progs/vedit/vedit.c:1427` | `static void vedit_prompt_saveas(void)` |
-| `vedit_read_key_poll` | function | `progs/vedit/vedit.c:1313` | `static int vedit_read_key_poll(void)` |
-| `vedit_row_ptr` | function | `progs/vedit/vedit.c:616` | `static char *vedit_row_ptr(int idx)` |
-| `vedit_run_kind` | function | `progs/vedit/vedit.c:1088` | `static int vedit_run_kind(const char *fname)` |
-| `vedit_save` | function | `progs/vedit/vedit.c:866` | `static int vedit_save(void)` |
-| `vedit_scan_line` | function | `progs/vedit/vedit.c:354` | `static int vedit_scan_line(const char *t, int len, int st)` |
-| `vedit_selftest` | function | `progs/vedit/vedit.c:1875` | `static int vedit_selftest(void)` |
-| `vedit_selftest_build` | function | `progs/vedit/vedit.c:1224` | `static int vedit_selftest_build(void)` |
-| `vedit_set_msg` | function | `progs/vedit/vedit.c:230` | `static void vedit_set_msg(const char *s)` |
-| `vedit_set_title` | function | `progs/vedit/vedit.c:31` | `static long vedit_set_title(const char *t)` |
-| `vedit_spawn` | function | `progs/vedit/vedit.c:40` | `static long vedit_spawn(const char *path, const char *redir, int argc,
+| `vedit_parse_number` | function | `progs/vedit/vedit.c:304` | `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)` |
+| `vedit_print_log` | function | `progs/vedit/vedit.c:1060` | `static void vedit_print_log(const char *path)` |
+| `vedit_prompt_find` | function | `progs/vedit/vedit.c:1464` | `static void vedit_prompt_find(void)` |
+| `vedit_prompt_key` | function | `progs/vedit/vedit.c:1688` | `static void vedit_prompt_key(int key)` |
+| `vedit_prompt_open` | function | `progs/vedit/vedit.c:1453` | `static void vedit_prompt_open(const char *label, int mode)` |
+| `vedit_prompt_saveas` | function | `progs/vedit/vedit.c:1468` | `static void vedit_prompt_saveas(void)` |
+| `vedit_read_key_poll` | function | `progs/vedit/vedit.c:1354` | `static int vedit_read_key_poll(void)` |
+| `vedit_row_ptr` | function | `progs/vedit/vedit.c:647` | `static char *vedit_row_ptr(int idx)` |
+| `vedit_run_kind` | function | `progs/vedit/vedit.c:1119` | `static int vedit_run_kind(const char *fname)` |
+| `vedit_save` | function | `progs/vedit/vedit.c:897` | `static int vedit_save(void)` |
+| `vedit_scan_line` | function | `progs/vedit/vedit.c:367` | `static int vedit_scan_line(const char *t, int len, int st)` |
+| `vedit_selftest` | function | `progs/vedit/vedit.c:1916` | `static int vedit_selftest(void)` |
+| `vedit_selftest_build` | function | `progs/vedit/vedit.c:1257` | `static int vedit_selftest_build(void)` |
+| `vedit_set_msg` | function | `progs/vedit/vedit.c:239` | `static void vedit_set_msg(const char *s)` |
+| `vedit_set_title` | function | `progs/vedit/vedit.c:32` | `static long vedit_set_title(const char *t)` |
+| `vedit_spawn` | function | `progs/vedit/vedit.c:41` | `static long vedit_spawn(const char *path, const char *redir, int argc,
                         co...` |
-| `vedit_spawn_visible` | function | `progs/vedit/vedit.c:1046` | `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
+| `vedit_spawn_visible` | function | `progs/vedit/vedit.c:1077` | `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
                   ...` |
-| `vedit_split` | function | `progs/vedit/vedit.c:741` | `static void vedit_split(void)` |
-| `vedit_state_at` | function | `progs/vedit/vedit.c:607` | `static int vedit_state_at(int row)` |
-| `vedit_sync_title` | function | `progs/vedit/vedit.c:1786` | `static void vedit_sync_title(void)` |
-| `vedit_tab` | function | `progs/vedit/vedit.c:789` | `static void vedit_tab(void)` |
-| `vedit_time_ms` | function | `progs/vedit/vedit.c:73` | `static unsigned long vedit_time_ms(void)` |
-| `vedit_vga` | function | `progs/vedit/vedit.c:52` | `static long vedit_vga(int on)` |
+| `vedit_split` | function | `progs/vedit/vedit.c:772` | `static void vedit_split(void)` |
+| `vedit_state_at` | function | `progs/vedit/vedit.c:638` | `static int vedit_state_at(int row)` |
+| `vedit_sync_title` | function | `progs/vedit/vedit.c:1827` | `static void vedit_sync_title(void)` |
+| `vedit_tab` | function | `progs/vedit/vedit.c:820` | `static void vedit_tab(void)` |
+| `vedit_time_ms` | function | `progs/vedit/vedit.c:74` | `static unsigned long vedit_time_ms(void)` |
+| `vedit_vga` | function | `progs/vedit/vedit.c:53` | `static long vedit_vga(int on)` |
 | `WL_CLIENT_H` | macro | `progs/wl/wl_client.h:14` | `#define WL_CLIENT_H` |
 | `WL_CLIENT_MSGS` | macro | `progs/wl/wl_client.h:18` | `#define WL_CLIENT_MSGS` |
 | `wl_client_attach` | function | `progs/wl/wl_client.h:75` | `static inline int wl_client_attach(const char *box, unsigned int seq0,
@@ -9793,48 +9832,50 @@ Z_Malloc
 | `WLCOMP_CFG_DEFAULT` | macro | `progs/wl/wlcomp.c:53` | `#define WLCOMP_CFG_DEFAULT` |
 | `WLCOMP_H` | macro | `progs/wl/wlcomp.c:40` | `#define WLCOMP_H` |
 | `WLCOMP_W` | macro | `progs/wl/wlcomp.c:39` | `#define WLCOMP_W` |
-| `main` | function | `progs/wl/wlcomp.c:1355` | `int main(int argc, char **argv)` |
-| `wlclient_find` | function | `progs/wl/wlcomp.c:977` | `static const wlclient_pat_t *wlclient_find(const char *name)` |
-| `wlclient_pat_t` | struct | `progs/wl/wlcomp.c:967` | `` |
+| `main` | function | `progs/wl/wlcomp.c:1393` | `int main(int argc, char **argv)` |
+| `wlclient_find` | function | `progs/wl/wlcomp.c:945` | `static const wlclient_pat_t *wlclient_find(const char *name)` |
+| `wlclient_pat_t` | struct | `progs/wl/wlcomp.c:935` | `` |
 | `wlcomp_cfg_t` | struct | `progs/wl/wlcomp.c:43` | `` |
-| `wlcomp_clean` | function | `progs/wl/wlcomp.c:1072` | `static int wlcomp_clean(void)` |
-| `wlcomp_client` | function | `progs/wl/wlcomp.c:1006` | `static int wlcomp_client(const char *box, const char *pat)` |
-| `wlcomp_demo` | function | `progs/wl/wlcomp.c:187` | `static int wlcomp_demo(wl_comp_t *c)` |
-| `wlcomp_demo_blit` | function | `progs/wl/wlcomp.c:212` | `static int wlcomp_demo_blit(wl_comp_t *c, unsigned char *fb)` |
-| `wlcomp_emit` | function | `progs/wl/wlcomp.c:258` | `static int wlcomp_emit(unsigned char *s, int cap, int o, unsigned int id,
+| `wlcomp_clean` | function | `progs/wl/wlcomp.c:1077` | `static int wlcomp_clean(void)` |
+| `wlcomp_client` | function | `progs/wl/wlcomp.c:974` | `static int wlcomp_client(const char *box, const char *pat)` |
+| `wlcomp_demo` | function | `progs/wl/wlcomp.c:189` | `static int wlcomp_demo(wl_comp_t *c)` |
+| `wlcomp_demo_blit` | function | `progs/wl/wlcomp.c:214` | `static int wlcomp_demo_blit(wl_comp_t *c, unsigned char *fb)` |
+| `wlcomp_emit` | function | `progs/wl/wlcomp.c:260` | `static int wlcomp_emit(unsigned char *s, int cap, int o, unsigned int id,
         unsigned int op...` |
-| `wlcomp_once` | function | `progs/wl/wlcomp.c:1111` | `static int wlcomp_once(void)` |
-| `wlcomp_palette` | function | `progs/wl/wlcomp.c:137` | `static int wlcomp_palette(void)` |
-| `wlcomp_pattern` | function | `progs/wl/wlcomp.c:148` | `static void wlcomp_pattern(unsigned char *dst, int w, int h,
+| `wlcomp_once` | function | `progs/wl/wlcomp.c:1105` | `static int wlcomp_once(void)` |
+| `wlcomp_palette` | function | `progs/wl/wlcomp.c:139` | `static int wlcomp_palette(void)` |
+| `wlcomp_path` | function | `progs/wl/wlcomp.c:1043` | `static int wlcomp_path(char *dst, int cap, const char *name)` |
+| `wlcomp_pattern` | function | `progs/wl/wlcomp.c:150` | `static void wlcomp_pattern(unsigned char *dst, int w, int h,
         unsigned char a, unsigned ch...` |
-| `wlcomp_selftest` | function | `progs/wl/wlcomp.c:343` | `static int wlcomp_selftest(void)` |
-| `wlcomp_server` | function | `progs/wl/wlcomp.c:1143` | `static int wlcomp_server(void)` |
-| `wlcomp_session` | function | `progs/wl/wlcomp.c:270` | `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)` |
-| `wlcomp_sys_dir_list` | function | `progs/wl/wlcomp.c:127` | `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)` |
-| `wlcomp_sys_kbd` | function | `progs/wl/wlcomp.c:95` | `static long wlcomp_sys_kbd(void)` |
-| `wlcomp_sys_kbd_raw` | function | `progs/wl/wlcomp.c:103` | `static long wlcomp_sys_kbd_raw(long on)` |
-| `wlcomp_sys_mouse` | function | `progs/wl/wlcomp.c:87` | `static long wlcomp_sys_mouse(int *m)` |
-| `wlcomp_sys_palette` | function | `progs/wl/wlcomp.c:79` | `static long wlcomp_sys_palette(unsigned char *pal)` |
-| `wlcomp_sys_present` | function | `progs/wl/wlcomp.c:63` | `static long wlcomp_sys_present(long buf)` |
-| `wlcomp_sys_present_origin` | function | `progs/wl/wlcomp.c:71` | `static long wlcomp_sys_present_origin(long buf, int *origin)` |
-| `wlcomp_sys_title` | function | `progs/wl/wlcomp.c:55` | `static long wlcomp_sys_title(const char *t)` |
-| `wlcomp_sys_vga_mode` | function | `progs/wl/wlcomp.c:111` | `static long wlcomp_sys_vga_mode(long on)` |
-| `wlcomp_sys_yield` | function | `progs/wl/wlcomp.c:119` | `static long wlcomp_sys_yield(void)` |
-| `wlserv_clean_ev` | function | `progs/wl/wlcomp.c:737` | `static void wlserv_clean_ev(void)` |
-| `wlserv_close` | function | `progs/wl/wlcomp.c:780` | `static int wlserv_close(wlserv_t *s, unsigned int id)` |
-| `wlserv_drain` | function | `progs/wl/wlcomp.c:814` | `static int wlserv_drain(wlserv_t *s)` |
-| `wlserv_drop` | function | `progs/wl/wlcomp.c:476` | `static void wlserv_drop(wlserv_t *s, int idx)` |
-| `wlserv_ev_clear` | function | `progs/wl/wlcomp.c:678` | `static void wlserv_ev_clear(wlserv_t *s, int b)` |
-| `wlserv_fit` | function | `progs/wl/wlcomp.c:489` | `static void wlserv_fit(wlserv_t *s)` |
-| `wlserv_focus_box` | function | `progs/wl/wlcomp.c:640` | `static int wlserv_focus_box(const wlserv_t *s)` |
-| `wlserv_gc_strays` | function | `progs/wl/wlcomp.c:578` | `static void wlserv_gc_strays(void)` |
-| `wlserv_init` | function | `progs/wl/wlcomp.c:408` | `static void wlserv_init(wlserv_t *s)` |
-| `wlserv_key` | function | `progs/wl/wlcomp.c:658` | `static void wlserv_key(wlserv_t *s, unsigned char byte)` |
-| `wlserv_present` | function | `progs/wl/wlcomp.c:455` | `static int wlserv_present(wlserv_t *s)` |
-| `wlserv_push_ev` | function | `progs/wl/wlcomp.c:689` | `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)` |
-| `wlserv_recolor` | function | `progs/wl/wlcomp.c:438` | `static void wlserv_recolor(wl_comp_t *c)` |
-| `wlserv_slot` | function | `progs/wl/wlcomp.c:425` | `static int wlserv_slot(const wl_comp_t *c, unsigned int id)` |
-| `wlserv_t` | struct | `progs/wl/wlcomp.c:397` | `` |
+| `wlcomp_selftest` | function | `progs/wl/wlcomp.c:345` | `static int wlcomp_selftest(void)` |
+| `wlcomp_server` | function | `progs/wl/wlcomp.c:1135` | `static int wlcomp_server(void)` |
+| `wlcomp_session` | function | `progs/wl/wlcomp.c:272` | `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)` |
+| `wlcomp_sys_dir_list` | function | `progs/wl/wlcomp.c:129` | `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)` |
+| `wlcomp_sys_kbd` | function | `progs/wl/wlcomp.c:97` | `static long wlcomp_sys_kbd(void)` |
+| `wlcomp_sys_kbd_raw` | function | `progs/wl/wlcomp.c:105` | `static long wlcomp_sys_kbd_raw(long on)` |
+| `wlcomp_sys_mouse` | function | `progs/wl/wlcomp.c:89` | `static long wlcomp_sys_mouse(int *m)` |
+| `wlcomp_sys_palette` | function | `progs/wl/wlcomp.c:81` | `static long wlcomp_sys_palette(unsigned char *pal)` |
+| `wlcomp_sys_present` | function | `progs/wl/wlcomp.c:65` | `static long wlcomp_sys_present(long buf)` |
+| `wlcomp_sys_present_origin` | function | `progs/wl/wlcomp.c:73` | `static long wlcomp_sys_present_origin(long buf, int *origin)` |
+| `wlcomp_sys_title` | function | `progs/wl/wlcomp.c:57` | `static long wlcomp_sys_title(const char *t)` |
+| `wlcomp_sys_vga_mode` | function | `progs/wl/wlcomp.c:113` | `static long wlcomp_sys_vga_mode(long on)` |
+| `wlcomp_sys_yield` | function | `progs/wl/wlcomp.c:121` | `static long wlcomp_sys_yield(void)` |
+| `wlserv_clean_ev` | function | `progs/wl/wlcomp.c:732` | `static void wlserv_clean_ev(void)` |
+| `wlserv_close` | function | `progs/wl/wlcomp.c:765` | `static int wlserv_close(wlserv_t *s, unsigned int id)` |
+| `wlserv_drain` | function | `progs/wl/wlcomp.c:799` | `static int wlserv_drain(wlserv_t *s)` |
+| `wlserv_drop` | function | `progs/wl/wlcomp.c:478` | `static void wlserv_drop(wlserv_t *s, int idx)` |
+| `wlserv_ev_clear` | function | `progs/wl/wlcomp.c:673` | `static void wlserv_ev_clear(wlserv_t *s, int b)` |
+| `wlserv_fit` | function | `progs/wl/wlcomp.c:491` | `static void wlserv_fit(wlserv_t *s)` |
+| `wlserv_focus_box` | function | `progs/wl/wlcomp.c:635` | `static int wlserv_focus_box(const wlserv_t *s)` |
+| `wlserv_gc_strays` | function | `progs/wl/wlcomp.c:580` | `static void wlserv_gc_strays(void)` |
+| `wlserv_init` | function | `progs/wl/wlcomp.c:410` | `static void wlserv_init(wlserv_t *s)` |
+| `wlserv_key` | function | `progs/wl/wlcomp.c:653` | `static void wlserv_key(wlserv_t *s, unsigned char byte)` |
+| `wlserv_present` | function | `progs/wl/wlcomp.c:457` | `static int wlserv_present(wlserv_t *s)` |
+| `wlserv_push_ev` | function | `progs/wl/wlcomp.c:684` | `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)` |
+| `wlserv_recolor` | function | `progs/wl/wlcomp.c:440` | `static void wlserv_recolor(wl_comp_t *c)` |
+| `wlserv_relayout_present` | function | `progs/wl/wlcomp.c:1063` | `static int wlserv_relayout_present(wlserv_t *s)` |
+| `wlserv_slot` | function | `progs/wl/wlcomp.c:427` | `static int wlserv_slot(const wl_comp_t *c, unsigned int id)` |
+| `wlserv_t` | struct | `progs/wl/wlcomp.c:399` | `` |
 | `channel` | function | `qga.c:10` | `* * Polled channel (no interrupt controller): qga_init sets up COM2 and * qga_poll, called from raw_blocking_getc, servi` |
 | `qga_b64_encode` | function | `qga.c:231` | `static void qga_b64_encode(const unsigned char *in, int n)` |
 | `qga_cmd_exec` | function | `qga.c:306` | `static void qga_cmd_exec(const struct qga_pair *pairs, int n)` |
@@ -9976,12 +10017,16 @@ Z_Malloc
 | `range_ok` | function | `tests/test_fault.c:35` | `static int range_ok(unsigned long p, unsigned long len)` |
 | `str_ok` | function | `tests/test_fault.c:41` | `static int str_ok(const unsigned char *mem, unsigned long p,
                   unsigned long maxlen)` |
-| `CHECK` | macro | `tests/test_file_assoc.c:15` | `#define CHECK(cond, msg)` |
-| `T_EXT_MAX` | macro | `tests/test_file_assoc.c:22` | `#define T_EXT_MAX` |
-| `T_PROG_MAX` | macro | `tests/test_file_assoc.c:23` | `#define T_PROG_MAX` |
-| `main` | function | `tests/test_file_assoc.c:77` | `int main(void)` |
-| `t_assoc_line` | function | `tests/test_file_assoc.c:45` | `static int t_assoc_line(const char *line, char *ext, char *prog)` |
-| `t_ext_of` | function | `tests/test_file_assoc.c:25` | `static void t_ext_of(const char *fname, char *dst, unsigned cap)` |
+| `CHECK` | macro | `tests/test_file_assoc.c:16` | `#define CHECK(cond, msg)` |
+| `T_EXT_MAX` | macro | `tests/test_file_assoc.c:23` | `#define T_EXT_MAX` |
+| `T_ICON_BIG` | macro | `tests/test_file_assoc.c:93` | `#define T_ICON_BIG` |
+| `T_ICON_SMALL` | macro | `tests/test_file_assoc.c:92` | `#define T_ICON_SMALL` |
+| `T_PROG_MAX` | macro | `tests/test_file_assoc.c:24` | `#define T_PROG_MAX` |
+| `main` | function | `tests/test_file_assoc.c:99` | `int main(void)` |
+| `t_assoc_line` | function | `tests/test_file_assoc.c:46` | `static int t_assoc_line(const char *line, char *ext, char *prog)` |
+| `t_ext_of` | function | `tests/test_file_assoc.c:26` | `static void t_ext_of(const char *fname, char *dst, unsigned cap)` |
+| `t_icon_kind` | function | `tests/test_file_assoc.c:80` | `static int t_icon_kind(const char *fname, int isdir)` |
+| `t_icon_sz` | function | `tests/test_file_assoc.c:95` | `static int t_icon_sz(void)` |
 | `FREEDOM_WL_HOST_TEST` | macro | `tests/test_freedom_wl.c:8` | `#define FREEDOM_WL_HOST_TEST` |
 | `check_host` | function | `tests/test_freedom_wl.c:12` | `static int check_host(int cond, const char *name)` |
 | `main` | function | `tests/test_freedom_wl.c:22` | `int main(void)` |
@@ -10077,15 +10122,15 @@ Z_Malloc
 | `rec_a` | function | `tests/test_tick.c:24` | `static void rec_a(void *ctx)` |
 | `rec_b` | function | `tests/test_tick.c:31` | `static void rec_b(void *ctx)` |
 | `rec_d` | function | `tests/test_tick.c:38` | `static void rec_d(void *ctx)` |
-| `CHECK` | macro | `tests/test_vedit_build.c:25` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_vedit_build.c:118` | `int main(void)` |
-| `t_base_of` | function | `tests/test_vedit_build.c:43` | `static int t_base_of(const char *fname, char *dst, size_t cap)` |
-| `t_has_ext` | function | `tests/test_vedit_build.c:32` | `static int t_has_ext(const char *fname, const char *ext)` |
-| `t_join` | function | `tests/test_vedit_build.c:63` | `static int t_join(const char *dir, const char *base, const char *ext,
+| `CHECK` | macro | `tests/test_vedit_build.c:26` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_vedit_build.c:123` | `int main(void)` |
+| `t_base_of` | function | `tests/test_vedit_build.c:44` | `static int t_base_of(const char *fname, char *dst, size_t cap)` |
+| `t_has_ext` | function | `tests/test_vedit_build.c:33` | `static int t_has_ext(const char *fname, const char *ext)` |
+| `t_join` | function | `tests/test_vedit_build.c:64` | `static int t_join(const char *dir, const char *base, const char *ext,
                   char *dst...` |
-| `t_lang_of` | function | `tests/test_vedit_build.c:93` | `static int t_lang_of(const char *fname)` |
-| `t_link_fmt` | function | `tests/test_vedit_build.c:79` | `static int t_link_fmt(const char *s)` |
-| `t_run_kind` | function | `tests/test_vedit_build.c:110` | `static int t_run_kind(const char *fname)` |
+| `t_lang_of` | function | `tests/test_vedit_build.c:94` | `static int t_lang_of(const char *fname)` |
+| `t_link_fmt` | function | `tests/test_vedit_build.c:80` | `static int t_link_fmt(const char *s)` |
+| `t_run_kind` | function | `tests/test_vedit_build.c:114` | `static int t_run_kind(const char *fname)` |
 | `CHECK` | macro | `tests/test_vma.c:20` | `#define CHECK(cond, msg)` |
 | `black_height` | function | `tests/test_vma.c:27` | `static int black_height(const vma_node_t *n)` |
 | `count_nodes` | function | `tests/test_vma.c:75` | `static int count_nodes(const vma_node_t *root)` |
@@ -10208,8 +10253,8 @@ Z_Malloc
 | `quit_doom` | function | `tools/gdb_repro.py:70` | `def quit_doom()` |
 | `rs` | function | `tools/gdb_repro.py:23` | `def rs(m, t)` |
 | `send` | function | `tools/gdb_repro.py:65` | `def send(line)` |
-| `main` | function | `tools/gen_desktop_pngs.py:69` | `def main()` |
-| `write_atomic` | function | `tools/gen_desktop_pngs.py:63` | `def write_atomic(img, path)` |
+| `main` | function | `tools/gen_desktop_pngs.py:75` | `def main()` |
+| `write_atomic` | function | `tools/gen_desktop_pngs.py:69` | `def write_atomic(img, path)` |
 | `main` | function | `tools/gen_icons.py:214` | `def main()` |
 | `make_chunk` | function | `tools/gen_icons.py:209` | `def make_chunk(chunk_type, data)` |
 | `make_png` | function | `tools/gen_icons.py:179` | `def make_png(pixels, palette, width, height)` |

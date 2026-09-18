@@ -30,7 +30,7 @@
 | `headers/batch.h` | Docstring: batch.h -- Batched synchronous syscall submission. | headers | 12 |
 | `headers/block.h` | Block device abstraction for MiniFS. Maps 4096-byte logical blocks to 512-byte I | headers | 12 |
 | `headers/desktop_icons.h` | desktop_icons.h -- embedded icon pixel data for desktop shortcuts. | headers | 3 |
-| `headers/desktop_shortcuts.h` | desktop_shortcuts.h -- configurable desktop icon shortcuts. | headers | 20 |
+| `headers/desktop_shortcuts.h` | desktop_shortcuts.h -- configurable desktop icon shortcuts. | headers | 25 |
 | `headers/driver.h` | driver.h -- Strategy pattern for hardware drivers (thesis correction 2). | headers | 16 |
 | `headers/drivers/kbd.h` | Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty. Toggled from the | drivers | 23 |
 | `headers/drivers/modifiers.h` | Docstring: Unified modifier tracking for cooked and raw paths. | drivers | 11 |
@@ -111,7 +111,7 @@
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | - | 9 |
 | `kernel/time.c` | ================================================================ | - | 4 |
 | `kernel/vga_cursor.c` | Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c). | - | 13 |
-| `kernel/vga_fb.c` | - | - | 150 |
+| `kernel/vga_fb.c` | - | - | 155 |
 | `mcp/__init__.py` | - | mcp | 0 |
 | `mcp/mcp_dbg_driver.py` | Debug driver: boot MiniOS through the MCP bridge and run freedom. | mcp | 6 |
 | `mcp/mcp_dogfood.py` | Dogfood: drive minios_mcp.py over stdio JSON-RPC and install the freedom addon f | mcp | 6 |
@@ -124,7 +124,7 @@
 | `net/tls.c` | tls.c - TLS 1.2 client sessions for MiniOS. | net | 27 |
 | `net/tls_crypto.c` | tls_crypto.c - the crypto behind the kernel TLS 1.2 client. | net | 78 |
 | `net/tls_x509.c` | tls_x509.c - minimal X.509 DER parsing and chain verification. | net | 23 |
-| `progs/asm/aes.s` | - | asm | 28 |
+| `progs/asm/aes.s` | - | asm | 30 |
 | `progs/asm/cp.s` | - | asm | 2 |
 | `progs/asm/fib.s` | - | asm | 3 |
 | `progs/asm/freedom.s` | - | asm | 92 |
@@ -321,7 +321,7 @@
 | `progs/doomgeneric/wi_stuff.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 5 |
 | `progs/doomgeneric/z_zone.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 18 |
 | `progs/doomgeneric/z_zone.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 13 |
-| `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | file | 46 |
+| `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | file | 63 |
 | `progs/file/file_assoc.h` | Docstring: dynamic association table for the MiniOS file browser. | file | 17 |
 | `progs/freedomui/freedomui_minios.c` | freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern. | misc | 42 |
 | `progs/lisp/lisp.c` | - | lisp | 105 |
@@ -333,7 +333,7 @@
 | `progs/micropython/variants/minios/manifest.py` | manifest.py -- frozen modules for the MiniOS MicroPython variant. Scripts listed | minios | 0 |
 | `progs/micropython/variants/minios/minios_module.c` | - | minios | 21 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 |
-| `progs/minicraft/minicraft.c` | minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 233 |
+| `progs/minicraft/minicraft.c` | minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 237 |
 | `progs/minios_abi.h` | minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI. | progs | 129 |
 | `progs/minios_png.h` | Docstring: shared ring-3 PNG helpers for MiniOS apps (progs/minios_png.h). | progs | 19 |
 | `progs/nk_palette.h` | nk_palette.h - one shared hybrid palette for every NK-window app. | progs | 9 |
@@ -342,7 +342,7 @@
 | `progs/nuklear/font8x8.c` | font8x8 - shared 8x8 bitmap font for MiniOS ring-3 graphics programs. | nuklear | 0 |
 | `progs/nuklear/node_editor.c` | node_editor.c — visual low-code editor that compiles to CVM bytecode. | nuklear | 34 |
 | `progs/nuklear/nuklear_minios.c` | nuklear_minios.c — MiniOS platform layer for Nuklear. | nuklear | 44 |
-| `progs/nuklear/nuklear_minios.h` | nuklear_minios.h — MiniOS platform layer for Nuklear. | nuklear | 24 |
+| `progs/nuklear/nuklear_minios.h` | nuklear_minios.h — MiniOS platform layer for Nuklear. | nuklear | 26 |
 | `progs/nuklear/nuklear_theme.c` | Docstring: shared Nuklear theme loader, linked by every NK app. | nuklear | 7 |
 | `progs/nuklear/nuklear_theme.h` | Docstring: shared Nuklear theme contract for every MiniOS NK app. | nuklear | 13 |
 | `progs/paint/paint.c` | Docstring: MiniOS paint program (Nuklear ring-3 app, MiniFS: paint/paint.elf). | misc | 53 |
@@ -386,12 +386,12 @@
 | `progs/tls_u/tls_u_main.c` | tlsget - minimal HTTPS GET over the ring-3 TLS stack. | tls_u | 5 |
 | `progs/tls_u/tls_u_port.c` | tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3). | tls_u | 15 |
 | `progs/topogpt3/topogpt3.c` | - | misc | 128 |
-| `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 128 |
+| `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 130 |
 | `progs/wl/wl_client.h` | wl_client.h - Thin mailbox client for Wayland-mini (ADR-0026). | wl | 5 |
 | `progs/wl/wl_mbox.h` | wl_mbox.h - Mailbox file transport for Wayland-mini (ADR-0026). | wl | 26 |
 | `progs/wl/wl_mini.h` | wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024). | wl | 104 |
 | `progs/wl/wl_pixbuf.h` | Docstring: heap pixel store for the Wayland-mini server. | wl | 18 |
-| `progs/wl/wlcomp.c` | wlcomp - Wayland-mini ring-3 compositor (ADR-0024, ADR-0026). | wl | 43 |
+| `progs/wl/wlcomp.c` | wlcomp - Wayland-mini ring-3 compositor (ADR-0024, ADR-0026). | wl | 45 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 27 |
 | `smp.c` | SMP application-processor bring-up. | root | 39 |
 | `tests/host_aes.sh` | host_aes.sh - host-side verification for the AES-256-CTR command tools.  The min | tests | 3 |
@@ -401,7 +401,7 @@
 | `tests/test_doom_pwad.py` | test_doom_pwad.py - host contract suite for tools/doom_pwad.py.  Runs the grid c | tests | 44 |
 | `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 5 |
 | `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 11 |
-| `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 6 |
+| `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 10 |
 | `tests/test_freedom_wl.c` | test_freedom_wl - host suite for the Wayland to MiniOS mapping. | tests | 3 |
 | `tests/test_freedomui.c` | test_freedomui - host suite for the real FreeDom MiniOS backend. | tests | 2 |
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 6 |
