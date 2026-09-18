@@ -1221,6 +1221,7 @@ static int shell_wait_fg(int *pids, int n, int kill_on_int) {
     if (n > 8) n = 8;
     shell_fg_active = 1;
     for (;;) {
+        int alive = 0;
         for (i = 0; i < n; i++) {
             int code;
             if (done[i]) continue;
@@ -1229,9 +1230,25 @@ static int shell_wait_fg(int *pids, int n, int kill_on_int) {
                 ndone++;
                 last = code;
                 kprintf("mrun: pid %d exit code: %d\n", pids[i], code);
+                continue;
+            }
+            /* A pid the shell no longer owns (reaped elsewhere, slot
+             * reused by a stranger) can never report: stop tracking
+             * it instead of yield-looping past the end of the job. */
+            {
+                int k, me = current_pid, owned = 0;
+                spin_lock(&sched_lock);
+                for (k = 0; k < MAX_PROCS; k++)
+                    if (procs[k].state != PROC_FREE
+                        && procs[k].parent_pid == me
+                        && procs[k].pid == pids[i]) { owned = 1; break; }
+                spin_unlock(&sched_lock);
+                if (owned) alive = 1;
+                else { done[i] = 1; ndone++; }
             }
         }
         if (ndone >= n) { shell_fg_active = 0; return last; }
+        if (!alive) { shell_fg_active = 0; return last; }
         if (console_peek() == 0x03) {
             console_getc();
             kprintf("^C\n");
@@ -1872,6 +1889,22 @@ static void shell_cmd_jobs(void) {
     if (!n) kprintf("jobs: none\n");
 }
 
+/* Live-child check for one pid: a slot that is neither FREE nor
+ * reparented still belongs to this shell. Waiting on anything else
+ * (an already reaped job, a stranger's pid) must fail fast: the old
+ * code fell into shell_wait_fg for a pid that can never exit again
+ * and yield-looped forever with the console wedged (only Ctrl+C
+ * escaped), which read exactly like a dead machine. */
+static int shell_has_child(int pid) {
+    int i, found = 0, me = current_pid;
+    spin_lock(&sched_lock);
+    for (i = 0; i < MAX_PROCS; i++)
+        if (procs[i].state != PROC_FREE && procs[i].parent_pid == me
+            && procs[i].pid == pid) { found = 1; break; }
+    spin_unlock(&sched_lock);
+    return found;
+}
+
 static void shell_cmd_wait(int argc, char **argv) {
     if (argc > 1) {
         long pv;
@@ -1884,8 +1917,13 @@ static void shell_cmd_wait(int argc, char **argv) {
         }
         pid = (int)pv;
         one[0] = pid;
-        if (!shell_reap_one(pid, &code))
+        if (!shell_reap_one(pid, &code)) {
+            if (!shell_has_child(pid)) {
+                kprintf("wait: %d: no such job\n", pid);
+                return;
+            }
             shell_wait_fg(one, 1, 0);
+        }
         return;
     }
     for (;;) {

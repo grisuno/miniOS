@@ -1148,18 +1148,35 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         }
         /* Dump the PTE of the faulting address (walk CR3): a user fault
          * with a garbage PTE means the page tables were corrupted by a
-         * wild kernel write, and the PTE value identifies the writer. */
-        if (vector == 14 && fault_addr >= 0x400000 && fault_addr < 0xC000000) {
-            unsigned long cr3v, pml4e, pdpe, pde, pte = 0;
+         * wild kernel write, and the PTE value identifies the writer.
+         * Runs for #PF on its cr2 and for #UD/#GP on the faulting rip:
+         * a #UD on valid-looking code with a PTE pointing outside the
+         * heap names a wrong-phys mapping outright. */
+        {
+            unsigned long pte_addr = fault_addr;
+            if (vector != 14 && (frame->cs & 3) == 3
+                && frame->rip >= 0x400000 && frame->rip < 0xC000000)
+                pte_addr = frame->rip;
+            else if (vector != 14) pte_addr = 0;
+            if (pte_addr >= 0x400000 && pte_addr < 0xC000000) {
+                fault_addr = pte_addr;
+            }
+        }
+        if ((vector == 14 || vector == 6 || vector == 13) && fault_addr >= 0x400000 && fault_addr < 0xC000000) {
+            unsigned long cr3v, pml4e = 0, pdpe = 0, pde = 0, pte = 0;
             unsigned long *tab;
             __asm__ volatile("mov %%cr3, %0" : "=r"(cr3v));
             tab = (unsigned long *)(cr3v & ~0xFFFUL);
             pml4e = tab[(fault_addr >> 39) & 511];
-            tab = (unsigned long *)(pml4e & ~0xFFFUL);
-            pdpe = tab[(fault_addr >> 30) & 511];
-            tab = (unsigned long *)(pdpe & ~0xFFFUL);
-            pde = tab[(fault_addr >> 21) & 511];
-            if (!(pde & 0x80)) {
+            if ((pml4e & 1) && (pml4e & ~0xFFFUL) < 0x40000000UL) {
+                tab = (unsigned long *)(pml4e & ~0xFFFUL);
+                pdpe = tab[(fault_addr >> 30) & 511];
+            }
+            if ((pdpe & 1) && (pdpe & ~0xFFFUL) < 0x40000000UL) {
+                tab = (unsigned long *)(pdpe & ~0xFFFUL);
+                pde = tab[(fault_addr >> 21) & 511];
+            }
+            if (!(pde & 0x80) && (pde & 1) && (pde & ~0xFFFUL) < 0x40000000UL) {
                 tab = (unsigned long *)(pde & ~0xFFFUL);
                 pte = tab[(fault_addr >> 12) & 511];
             }
@@ -1277,6 +1294,42 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             }
             if (!n)
                 serial_puts(" <unreadable>");
+            serial_puts("\n");
+        }
+        /* Fault-code forensics: 16 bytes at the faulting rip (user
+         * window only, present by definition except on #PF where the
+         * page may be absent) plus CR0/CR4, so a #UD on valid-looking
+         * code names corrupt text vs a control-register surprise. */
+        {
+            char h[17];
+            static const char digits[] = "0123456789abcdef";
+            unsigned long rip = frame->rip;
+            unsigned long cr0v = 0, cr4v = 0;
+            int k;
+            __asm__ volatile("mov %%cr0, %0" : "=r"(cr0v));
+            __asm__ volatile("mov %%cr4, %0" : "=r"(cr4v));
+            serial_puts("  ucode:");
+            if ((frame->cs & 3) == 3 && rip >= USER_LOAD_BASE &&
+                rip + 16 < USER_LOAD_END && frame->vector != 14) {
+                unsigned char *pb = (unsigned char *)rip;
+                for (k = 0; k < 16; k++) {
+                    unsigned long v = pb[k];
+                    h[0] = digits[(v >> 4) & 0xF];
+                    h[1] = digits[v & 0xF];
+                    h[2] = 0;
+                    serial_puts(" ");
+                    serial_puts(h);
+                }
+            } else {
+                serial_puts(" <unreadable>");
+            }
+            serial_puts(" cr0=");
+            for (k = 15; k >= 0; k--) { h[15 - k] = digits[(cr0v >> (k * 4)) & 0xF]; }
+            h[16] = 0;
+            serial_puts(h);
+            serial_puts(" cr4=");
+            for (k = 15; k >= 0; k--) { h[15 - k] = digits[(cr4v >> (k * 4)) & 0xF]; }
+            serial_puts(h);
             serial_puts("\n");
         }
         /* Post-mortem process table: pid, state, kernel stack top and
@@ -1493,7 +1546,18 @@ int proc_create(const char *name, int parent_pid) {
  * Exit flows through do_proc_exit -> do_exit -> ZOMBIE, reaped by
  * do_waitpid which frees the isolated tables. Fail closed (-1) with
  * nothing published: OOM at any step releases what was claimed. */
-int proc_spawn_elf(const char *name, void *data, unsigned size,
+/* Spawn body: runs with the timer held off by the wrapper below, so
+ * page-table construction, heap allocation and the READY publish are
+ * one atomic section against the 100 Hz preempt. A spawn that
+ * interleaves with a running process's brk/mmap/page-table syscalls
+ * otherwise shares every allocator and table writer with no fencing
+ * except per-call locks, and the newcomer is the one that pays (wild
+ * #UD/#PF in early init, a different page each boot). The window is
+ * RAM-speed only (file PIO stays outside in the caller); ticks
+ * coalesce across it, which is the documented cost of correctness,
+ * same trade as the fs_lock leaf. Never blocks: no schedule, yield,
+ * wait or sleep on any path below. */
+static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
                    int argc, char **argv) {
     unsigned long saved_cr3;
     unsigned long va;
@@ -1504,6 +1568,7 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
     int pid;
     proc_t *child;
     uint64_t kstack_top;
+    irqflags_t sflags;
     if (!name || !data || size < 4) return -1;
     if (argc < 0 || argc > 64) return -1;
     new_cr3 = pt_clone_user_empty();
@@ -1524,11 +1589,11 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
     __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
     __asm__ volatile("sti");
     if (!sp) { kprintf("mrun: bad stack\n"); pt_free_user(new_cr3); return -1; }
-    spin_lock(&sched_lock);
+    spin_lock_irqsave(&sched_lock, &sflags);
     for (pid = 1; pid < MAX_PROCS; pid++)
         if (procs[pid].state == PROC_FREE) break;
     if (pid >= MAX_PROCS) {
-        spin_unlock(&sched_lock);
+        spin_unlock_irqrestore(&sched_lock, sflags);
         pt_free_user(new_cr3);
         return -1;
     }
@@ -1555,7 +1620,7 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
     kstrncpy(child->name, name, sizeof(child->name) - 1);
     kstack_top = alloc_kstack();
     if (!kstack_top) {
-        spin_unlock(&sched_lock);
+        spin_unlock_irqrestore(&sched_lock, sflags);
         pt_free_user(new_cr3);
         return -1;
     }
@@ -1565,7 +1630,7 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
         free_kstack(kstack_top);
         child->kstack = 0;
         child->state = PROC_FREE;
-        spin_unlock(&sched_lock);
+        spin_unlock_irqrestore(&sched_lock, sflags);
         pt_free_user(new_cr3);
         return -1;
     }
@@ -1575,7 +1640,7 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
         free_kstack(kstack_top);
         child->kstack = 0;
         child->state = PROC_FREE;
-        spin_unlock(&sched_lock);
+        spin_unlock_irqrestore(&sched_lock, sflags);
         pt_free_user(new_cr3);
         return -1;
     }
@@ -1593,8 +1658,21 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
     child->ctx.rflags = 0x202;
     if (proc_count <= pid) proc_count = pid + 1;
     child->state = PROC_READY;
-    spin_unlock(&sched_lock);
+    spin_unlock_irqrestore(&sched_lock, sflags);
     return pid;
+}
+
+/* Atomic spawn wrapper: the whole construction (page tables, image
+ * copy, stack, publish) runs with the timer held off, so a running
+ * process's syscalls can never interleave the newcomer's heap and
+ * table writes. See the inner note for why the newcomer paid. */
+int proc_spawn_elf(const char *name, void *data, unsigned size,
+                   int argc, char **argv) {
+    int rc;
+    __asm__ volatile("cli");
+    rc = proc_spawn_elf_inner(name, data, size, argc, argv);
+    __asm__ volatile("sti");
+    return rc;
 }
 
 /* Capture "schedule() has returned" as the resume context: rip = the

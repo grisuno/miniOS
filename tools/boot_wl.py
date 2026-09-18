@@ -9,9 +9,10 @@ server in background) with paced bytes and an echo backstop, then
 either proxies the user terminal to the guest for interactive use or,
 with WL_HEADLESS=1, screendumps the framebuffer over QMP, powers off
 and reports the shot path. Setup steps never overlap: each program
-runs alone and exits before the next starts, which is the reliable
-configuration while concurrent heavyweights are under diagnosis (see
-the honest-limits note in CLAUDE.md).
+runs alone and the harness waits for the shell prompt before the next
+starts, which is the reliable configuration while concurrent
+heavyweights are under diagnosis (see the honest-limits note in
+CLAUDE.md).
 
 Usage:
   python3 tools/boot_wl.py
@@ -132,23 +133,32 @@ class WlBoot:
         return self.fail("stuck waiting for prompt")
 
     def send(self, line):
-        for _ in range(4):
-            for ch in line + "\n":
-                os.write(self.master, ch.encode())
-                time.sleep(self.cfg.byte_gap)
-            time.sleep(self.cfg.settle)
-            if line in self.snapshot()[-2000:]:
-                return True
-        print("boot_wl: no echo for %r" % line, flush=True)
-        return False
+        for ch in line + "\n":
+            os.write(self.master, ch.encode())
+            time.sleep(self.cfg.byte_gap)
+        time.sleep(self.cfg.settle)
+        return True
+
+    def send_wait(self, line, timeout=120.0):
+        self.send(line)
+        end = time.time() + timeout
+        buf = ""
+        while time.time() < end:
+            if self.proc.poll() is not None:
+                return "qemu exited while waiting"
+            buf += self.snapshot(timeout=1.0)
+            if self.cfg.prompt in buf:
+                return None
+        return "stuck waiting for idle prompt"
 
     def setup(self):
         err = self.wait_prompt()
         if err is not None:
             return err
         for line in self.cfg.setup:
-            self.send(line)
-            time.sleep(1.0)
+            err = self.send_wait(line)
+            if err is not None:
+                return self.fail("%s after %r" % (err, line))
         time.sleep(self.cfg.server_settle)
         return None
 

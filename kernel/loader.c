@@ -611,6 +611,31 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
     if (max_end == 0) { kprintf("exec_into: no segments\n"); goto fail; }
     for (i = 0; i < nxr; i++)
         mm_user_set_exec(xr[i].start, xr[i].end, cr3);
+    /* TEMPORARY torn-load probe (diagnosing concurrent-spawn #UD root
+     * cause; removed once the writer is found): re-read every byte of
+     * every PT_LOAD under the child CR3 and compare with the file
+     * image. A mismatch names a torn copy or torn file buffer at load
+     * time (with the failing offset); a full match proves the
+     * corruption lands after publish (post-spawn writer). */
+    for (i = 0; i < e->e_phnum; i++) {
+        unsigned long dst;
+        unsigned long want;
+        unsigned long k;
+        unsigned long badat = 0;
+        int bad = 0;
+        if (ph[i].p_type != PT_LOAD) continue;
+        if (ph[i].p_filesz == 0) continue;
+        dst = base + ph[i].p_vaddr;
+        want = ph[i].p_filesz;
+        __asm__ volatile("cli");
+        __asm__ volatile("mov %0, %%cr3" :: "r"((unsigned long)cr3) : "memory");
+        for (k = 0; k < want; k++)
+            if (((unsigned char *)dst)[k] != ((unsigned char *)data)[ph[i].p_offset + k]) { bad = 1; badat = k; break; }
+        __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
+        __asm__ volatile("sti");
+        if (bad) kprintf("exec_into: VERIFY-FAIL seg %u dst %lx off %lx\n",
+                         i, dst, badat);
+    }
     {
         unsigned long b = ALIGN_UP(max_end, 0x1000);
         unsigned long lim = USER_BRK_END;

@@ -1122,7 +1122,9 @@ static int wlcomp_once(void) {
 }
 
 /** Interactive desktop: click focuses, title drag moves, rim drag
- * resizes, close box closes, Alt+T re-tiles, Alt+M minimizes,
+ * resizes, close box closes, pure pointer motion re-presents so the
+ * kernel cursor painter follows every move, Alt+T re-tiles, Alt+M
+ * minimizes,
  * Alt+U restores, Alt+Tab cycles focus, Alt+Q quits with the desktop
  * redrawn behind it. ESC quits too when no window is mapped (an empty
  * desktop owns the keyboard but has nobody to receive keys, so ESC
@@ -1198,6 +1200,7 @@ static int wlcomp_server(void) {
             }
         }
         if (wlcomp_sys_mouse(m) == 0) {
+            int presented = 0;
             fx = m[0] - s.origin[0];
             fy = m[1] - s.origin[1];
             buttons = m[2] & 7;
@@ -1228,6 +1231,7 @@ static int wlcomp_server(void) {
                                 rc = 1;
                                 break;
                             }
+                            presented = 1;
                         }
                     } else if (idx >= 0 && zone != WL_HIT_NONE) {
                         wl_comp_focus(&s.comp, (unsigned int)hit);
@@ -1242,6 +1246,7 @@ static int wlcomp_server(void) {
                             rc = 1;
                             break;
                         }
+                        presented = 1;
                     }
                 }
             } else if (left && dragging >= 0) {
@@ -1262,6 +1267,7 @@ static int wlcomp_server(void) {
                             rc = 1;
                             break;
                         }
+                        presented = 1;
                     }
                 } else if (id != 0) {
                     int w = grabw;
@@ -1272,12 +1278,19 @@ static int wlcomp_server(void) {
                             rc = 1;
                             break;
                         }
+                        presented = 1;
                     }
                 }
             } else if (!left) {
                 dragging = -1;
                 dragmode = WL_HIT_NONE;
             }
+            }
+            if (!presented && (fx != lastfx || fy != lastfy)) {
+                if (wlserv_present(&s) != 0) {
+                    rc = 1;
+                    break;
+                }
             }
         }
         sc = wlcomp_sys_kbd();
