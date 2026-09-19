@@ -396,12 +396,16 @@ struct net_tcp_sock {
     unsigned int  tx_seq;
 };
 
-static struct net_tcp_sock net_sockets[NET_SOCKETS];
+/** Docstring: Socket table, heap-owned since the .bss diet: 16 x 18 KB.
+ * Null means the allocation failed and the stack stays down; every entry
+ * point fails closed (alloc returns 0, fd checks refuse, the demux drops). */
+static struct net_tcp_sock *net_sockets = 0;
 static unsigned short net_tcp_sport = NET_EPHEMERAL_MIN;
 static unsigned int   net_tcp_seq = 0x6D696E69;
 
 static struct net_tcp_sock *net_sock_alloc(void) {
     int i;
+    if (!net_sockets) return 0;
     for (i = 0; i < NET_SOCKETS; i++) {
         if (!net_sockets[i].in_use) {
             kmemset(&net_sockets[i], 0, sizeof(net_sockets[i]));
@@ -415,6 +419,7 @@ static struct net_tcp_sock *net_sock_alloc(void) {
 
 static int net_sock_index(const struct net_tcp_sock *s) {
     int i;
+    if (!net_sockets) return -1;
     for (i = 0; i < NET_SOCKETS; i++)
         if (&net_sockets[i] == s) return i;
     return -1;
@@ -498,6 +503,7 @@ static void net_tcp_rx(const unsigned char *ip, unsigned len) {
     if (hlen < 20 || hlen > seg_len) return;
     seq = net_get32(seg + 4);
     ack = net_get32(seg + 8);
+    if (!net_sockets) return;
     for (i = 0; i < NET_SOCKETS; i++) {
         if (net_sockets[i].in_use &&
             kmemcmp(net_sockets[i].dip, ip + 12, 4) == 0 &&
@@ -755,22 +761,22 @@ int net_connect(const char *host, unsigned short port) {
 }
 
 int net_send(int fd, const char *buf, int len) {
-    if (fd < 0 || fd >= NET_SOCKETS || !net_sockets[fd].in_use) return -1;
+    if (!net_sockets || fd < 0 || fd >= NET_SOCKETS || !net_sockets[fd].in_use) return -1;
     return net_tcp_send(&net_sockets[fd], buf, len);
 }
 
 int net_recv(int fd, char *buf, int len) {
-    if (fd < 0 || fd >= NET_SOCKETS || !net_sockets[fd].in_use) return -1;
+    if (!net_sockets || fd < 0 || fd >= NET_SOCKETS || !net_sockets[fd].in_use) return -1;
     return net_tcp_recv(&net_sockets[fd], buf, len);
 }
 
 int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms) {
-    if (fd < 0 || fd >= NET_SOCKETS || !net_sockets[fd].in_use) return -1;
+    if (!net_sockets || fd < 0 || fd >= NET_SOCKETS || !net_sockets[fd].in_use) return -1;
     return net_tcp_recv_deadline(&net_sockets[fd], buf, len, timeout_ms);
 }
 
 void net_close(int fd) {
-    if (fd < 0 || fd >= NET_SOCKETS || !net_sockets[fd].in_use) return;
+    if (!net_sockets || fd < 0 || fd >= NET_SOCKETS || !net_sockets[fd].in_use) return;
     net_tcp_close(&net_sockets[fd]);
 }
 
@@ -791,7 +797,7 @@ long net_sys_connect(long fd, long sockaddr, long addrlen) {
     const unsigned char *sa = (const unsigned char *)sockaddr;
     unsigned short port;
     struct net_tcp_sock *s;
-    if (fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS || addrlen < 16) return -22;
+    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS || addrlen < 16) return -22;
     s = &net_sockets[fd - NET_FD_BASE];
     if (!s->in_use) return -9;
     if (sa[0] != 2 || sa[1] != 0) return -22; /* AF_INET */
@@ -804,7 +810,7 @@ long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen
     int rc;
     (void)to; (void)tolen;
     if (flags) return -22;
-    if (fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
     if (len < 0) return -22;
     rc = net_tcp_send(&net_sockets[fd - NET_FD_BASE], (const char *)buf, (int)len);
     return rc;
@@ -814,7 +820,7 @@ long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long f
     int rc;
     (void)from; (void)fromlen;
     if (flags) return -22;
-    if (fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
     if (len < 0) return -22;
     rc = net_tcp_recv(&net_sockets[fd - NET_FD_BASE], (char *)buf, (int)len);
     return rc;
@@ -822,13 +828,13 @@ long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long f
 
 long net_sys_shutdown(long fd, long how) {
     (void)how;
-    if (fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
     net_tcp_close(&net_sockets[fd - NET_FD_BASE]);
     return 0;
 }
 
 long net_sys_close(long fd) {
-    if (fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
     tls_free_fd((int)(fd - NET_FD_BASE));
     net_tcp_close(&net_sockets[fd - NET_FD_BASE]);
     return 0;
@@ -850,6 +856,7 @@ long net_sys_poll(long fds, long nfds, long timeout_ms) {
             unsigned short revents = 0;
             kmemcpy(&fd, entry, 4);
             kmemcpy(&events, entry + 4, 2);
+            if (!net_sockets) continue;
             if (fd >= NET_FD_BASE && fd < NET_FD_BASE + NET_SOCKETS) {
                 struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
                 if (s->in_use) {
@@ -964,5 +971,8 @@ void net_register_symbols(void) {
 void net_init(void) {
     rtl_init();
     rtl_get_mac(net_mac);
+    net_sockets = (struct net_tcp_sock *)kmalloc(NET_SOCKETS *
+                                                 sizeof(*net_sockets));
+    if (!net_sockets) kprintf("net: no socket table (out of memory)\n");
     net_register_symbols();
 }

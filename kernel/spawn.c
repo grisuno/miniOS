@@ -6,11 +6,8 @@
 #include "vga_fb.h"
 #include "arch/x86/msr.h"
 
-/** Docstring: File-static VMA pool copy, stack-safe by construction. */
-static vma_node_t spawn_vma_copy[VMA_MAX];
-
 /** Docstring: Save the caller shared-window view into ctx. */
-void spawn_backup(spawn_ctx_t *ctx)
+int spawn_backup(spawn_ctx_t *ctx)
 {
     int i;
     ctx->brk = g_brk;
@@ -19,13 +16,20 @@ void spawn_backup(spawn_ctx_t *ctx)
     ctx->fsbase = rdmsr(MSR_FSBASE);
     ctx->gsbase = rdmsr(MSR_GSBASE);
     ctx->p0_kstack = procs[0].kstack;
-    for (i = 0; i < vma_pool_n; i++)
-        spawn_vma_copy[i] = vma_pool[i];
+    ctx->pool_copy = 0;
+    if (vma_pool_n > 0) {
+        ctx->pool_copy = (vma_node_t *)kmalloc((unsigned)vma_pool_n *
+                                               sizeof(vma_node_t));
+        if (!ctx->pool_copy) return 0;
+        for (i = 0; i < vma_pool_n; i++)
+            ctx->pool_copy[i] = vma_pool[i];
+    }
     ctx->live_root = vma_live_root;
     ctx->free_root = vma_free_root;
     ctx->pool_n = vma_pool_n;
     for (i = 0; i < KFD_MAX; i++)
         ctx->kfd[i] = kfd_get(i);
+    return 1;
 }
 
 /** Docstring: Restore a view previously saved by spawn_backup. */
@@ -36,8 +40,12 @@ void spawn_restore(spawn_ctx_t *ctx)
     g_brk_limit = ctx->brk_lim;
     user_mmap_cur = ctx->mmap_cur;
     procs[0].kstack = ctx->p0_kstack;
-    for (i = 0; i < ctx->pool_n; i++)
-        vma_pool[i] = spawn_vma_copy[i];
+    if (ctx->pool_copy) {
+        for (i = 0; i < ctx->pool_n; i++)
+            vma_pool[i] = ctx->pool_copy[i];
+        kfree(ctx->pool_copy);
+        ctx->pool_copy = 0;
+    }
     vma_pool_n = ctx->pool_n;
     vma_live_root = ctx->live_root;
     vma_free_root = ctx->free_root;

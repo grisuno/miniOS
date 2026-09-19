@@ -164,30 +164,24 @@ ASM_DIR   = $(PROGS_DIR)/asm
 DOC_DIR   = $(PROGS_DIR)/docs
 
 # Everything the ramdisk carries, organized by kind: objects/ (ET_REL
-# toolchain), cvm/ (CVM modules), bin/ (Linux ELFs + command path utilities),
-# src/ (C sources), asm/ (miniGCC assembly), docs/ and README.txt.
+# toolchain), bin/ (command path utilities), src/ (C sources and test
+# suites), etc/ (shell config) and docs/. Kept minimal on purpose: every
+# byte here lives in the kernel image, which must end below USER_LOAD_BASE.
+# Large or disk-backed assets ship MiniFS-only instead: bin/minigcc.elf
+# (self-host compiler, runs via the MiniFS fallback in shell_run_elf_minifs),
+# icons/ and etc/themes/ (already packed in MINIFS_FILES, read through the
+# unified kfopen fallback like the MiniFS-only icons/doom.png), and the zip
+# fixtures (read through the same fallback by the unzip scenarios).
 PROGS     = $(OBJ_DIR)/minigcc.o \
             $(OBJ_DIR)/ld.o $(OBJ_DIR)/cvm.o \
             $(OBJ_DIR)/stb.o $(OBJ_DIR)/xxhash.o $(OBJ_DIR)/dlmalloc.o \
-            $(BIN_DIR)/minigcc.elf $(BIN_DIR)/cp \
+            $(BIN_DIR)/cp \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(SRC_DIR)/test.lua $(SRC_DIR)/test.lisp $(SRC_DIR)/test_all.sh \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/etc/shortcuts \
             $(PROGS_DIR)/etc/association \
-            $(PROGS_DIR)/etc/themes/current \
-            $(PROGS_DIR)/etc/themes/dark \
-            $(PROGS_DIR)/etc/themes/light \
-            $(PROGS_DIR)/etc/themes/amber \
-            $(PROGS_DIR)/etc/themes/forest \
-            $(PROGS_DIR)/etc/themes/slate \
-            $(PROGS_DIR)/etc/host.zip \
-            $(PROGS_DIR)/etc/hostile.zip \
             $(PROGS_DIR)/etc/abi \
-            $(PROGS_DIR)/icons/terminal.png \
-            $(PROGS_DIR)/icons/pokemon.png \
-            $(PROGS_DIR)/icons/file.png \
-            $(PROGS_DIR)/icons/shell.png \
             $(DOC_DIR)/test.png
 
 all: os.img
@@ -1242,8 +1236,10 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/mmreuse.elf $(BIN_DIR)/mmreuse \
                $(BIN_DIR)/spin.elf \
                $(SRC_DIR)/spin.c \
-               $(BIN_DIR)/pollready.elf $(BIN_DIR)/pollready \
-               $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
+                $(BIN_DIR)/pollready.elf $(BIN_DIR)/pollready \
+                $(BIN_DIR)/minigcc.elf \
+                $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip \
+                $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
                $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
                $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
                $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
@@ -1623,7 +1619,9 @@ string.o: kernel/string.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 loader.o: kernel/loader.c kernel.h
-	$(CC) $(CFLAGS_KERN) -c $< -o $@
+# NOTE: -Os, same pattern as shell.o (measured -2.2 KB vs -O1). Revalidate
+# with the ELF/CVM load scenarios (cpl/kmem/nx/mmreuse/fib/w1) after change.
+	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
 vma.o: vma.c vma.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
@@ -1663,7 +1661,10 @@ exec.o: kernel/exec.c kernel.h $(BOOTDEFS) arch/x86/msr.h vga_fb.h sched.h drive
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h
-	$(CC) $(CFLAGS_KERN) -c $< -o $@
+# NOTE: -Os, same pattern as shell.o (measured -3.5 KB vs -O1). The
+# dispatcher is a large switch, cold paths dominate; revalidate with
+# test_all.sh plus the syscall-heavy BDD scenarios after any change here.
+	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
 spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
@@ -1684,7 +1685,9 @@ symtab.o: kernel/symtab.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 net.o: net/net.c net.h kernel.h
-	$(CC) $(CFLAGS_KERN) -c $< -o $@
+# NOTE: -Os, same pattern as shell.o (measured -1.8 KB vs -O1). Revalidate
+# with the net/freedom/tls BDD scenarios after any change here.
+	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
 rtl8139.o: net/rtl8139.c net.h net/rtl8139.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
@@ -1711,7 +1714,10 @@ driver.o: drivers/driver.c driver.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 minifs.o: fs/minifs.c minifs.h block.h ide.h kernel.h
-	$(CC) $(CFLAGS_KERN) -c $< -o $@
+# NOTE: -Os, same pattern as shell.o (measured -2.6 KB vs -O1). Revalidate
+# with the filesystem-heavy suites (test_all.sh, lua/python suites writing
+# through the MiniFS fallback) after any change here.
+	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
 lz4_kernel.o: kernel/lz4_kernel.c lz4_kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
@@ -1811,7 +1817,9 @@ tick.o: kernel/tick.c tick.h
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
            third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h vga_fx.h kernel/vga_cursor.h
-	$(CC) $(CFLAGS_KERN) -c $< -o $@
+# NOTE: -Os, same pattern as shell.o (measured -6.2 KB vs -O1). Revalidate
+# with test_gui_wm.py + test_gui_fashion.py (pixel proof) after any change.
+	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
 vga_fx.o: kernel/vga_fx.c vga_fb.h vga_fx.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@

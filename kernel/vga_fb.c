@@ -162,7 +162,12 @@ static int shortcut_count;
  * logical line is pushed to the ring exactly once, when it ends with '\n';
  * that eliminates the duplicated/partial scrollback entries the old two-buffer
  * scheme produced, which were the source of the pixel artifacts. */
-static char lg[SB_MAX_LINES][SB_LINE_MAX];   /* completed logical lines */
+/** Docstring: Completed-logical-lines ring, heap-owned since the .bss
+ * diet (256 x TERM_MAX_COLS). Null until vga_fb_init owns it; pushes
+ * before then are dropped and reads see an empty ring, so early boot
+ * text still reaches the screen and serial without a scrollback entry. */
+static char (*lg)[SB_LINE_MAX] = 0;
+#define LG_LINE(a) (lg[(a) % SB_MAX_LINES])
 static int  lg_head, lg_tail, lg_count;
 static char act[SB_LINE_MAX];                /* in-progress line */
 static int  act_len;
@@ -172,17 +177,21 @@ static int  csi_state;                       /* ANSI CSI drop: 1 after ESC, 2 in
 
 /* Ring accessor: logical line at age i (0 = oldest, count-1 = newest). */
 static const char *lg_get(int i) {
-    return lg[(lg_head + i) % SB_MAX_LINES];
+    if (!lg) return "";
+    return LG_LINE(lg_head + i);
 }
 
 /* Append a completed logical line to the ring. The line is stored whole (no
  * width-dependent wrap), so it can be re-wrapped on any future resize. */
 static void lg_push(const char *line, int len) {
     int k, idx;
+    char *dst;
+    if (!lg) return;
     if (len >= SB_LINE_MAX) len = SB_LINE_MAX - 1;
     idx = lg_tail;
-    for (k = 0; k < len; k++) lg[idx][k] = line[k];
-    lg[idx][len] = '\0';
+    dst = LG_LINE(idx);
+    for (k = 0; k < len; k++) dst[k] = line[k];
+    dst[len] = '\0';
     lg_tail = (lg_tail + 1) % SB_MAX_LINES;
     if (lg_count < SB_MAX_LINES) lg_count++;
     else lg_head = (lg_head + 1) % SB_MAX_LINES;
@@ -747,7 +756,7 @@ static void tw_park(int i) {
         t->head = lg_head; t->tail = lg_tail; t->count = lg_count;
     } else {
         for (k = 0; k < lg_count && k < SB_MAX_LINES; k++) {
-            const char *s = lg[(lg_head + k) % SB_MAX_LINES];
+            const char *s = lg ? LG_LINE(lg_head + k) : "";
             int l;
             for (l = 0; l < SB_LINE_MAX - 1 && s[l]; l++) t->lg[k][l] = s[l];
             t->lg[k][l] = '\0';
@@ -772,16 +781,19 @@ static void tw_unpark(int i) {
     term_fullscreen = t->fullscreen; term_minimized = t->minimized;
     if (t->lg == lg) {
         lg_head = t->head; lg_tail = t->tail; lg_count = t->count;
-    } else {
+    } else if (lg) {
         lg_head = 0; lg_tail = 0; lg_count = 0;
         for (k = 0; k < t->count && k < SB_MAX_LINES; k++) {
             const char *s = t->lg[k];
+            char *d = LG_LINE(k);
             int l;
-            for (l = 0; l < SB_LINE_MAX - 1 && s[l]; l++) lg[k][l] = s[l];
-            lg[k][l] = '\0';
+            for (l = 0; l < SB_LINE_MAX - 1 && s[l]; l++) d[l] = s[l];
+            d[l] = '\0';
             lg_tail = (lg_tail + 1) % SB_MAX_LINES;
             lg_count++;
         }
+    } else {
+        lg_head = 0; lg_tail = 0; lg_count = 0;
     }
     for (k = 0; k <= t->act_len && k < SB_LINE_MAX; k++) act[k] = t->act[k];
     act_len = t->act_len;
@@ -3410,6 +3422,8 @@ void vga_fb_mouse_init(void) {
 
 void vga_fb_init(void) {
     int i;
+    lg = (char (*)[SB_LINE_MAX])kmalloc(SB_MAX_LINES * SB_LINE_MAX);
+    if (!lg) kprintf("vga: no scrollback ring (out of memory)\n");
     /* Gray ramp until the first graphics program sets its palette. */
     for (i = 0; i < 256; i++) {
         gfx_pal[i * 3 + 0] = (unsigned char)i;

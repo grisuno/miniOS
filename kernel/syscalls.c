@@ -1651,7 +1651,12 @@ static int k_syscall_spawn(const char *path, const char *redirect,
         spawn_free_argv(kargv, child_argc);
         return EFAULT;
     }
-    spawn_backup(&ctx);
+    if (!spawn_backup(&ctx)) {
+        kprintf("SPAWN: out of memory\n");
+        kfree(data);
+        spawn_free_argv(kargv, child_argc);
+        return -1;
+    }
     rc = spawn_execute(resolved, redirect, data, data_size,
                        child_argc, kargv, child_argv);
     kfree(data);

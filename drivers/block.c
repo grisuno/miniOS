@@ -42,7 +42,12 @@ static spinlock_t bc_lock = SPINLOCK_INIT;
 #define BC_MASK (BC_WAYS - 1)
 static unsigned int  bc_block[BC_WAYS];
 static unsigned char bc_valid[BC_WAYS];
-static unsigned char bc_data[BC_WAYS][BLOCK_SIZE];
+/** Docstring: Cache lines, heap-owned since the .bss diet: 16 x 4096. A
+ * null pointer means the allocation failed and the cache stays disabled;
+ * every read then goes straight to the device, slower but correct. */
+static unsigned char *bc_data = 0;
+
+#define BC_LINE(idx) (bc_data + (unsigned)(idx) * BLOCK_SIZE)
 
 static unsigned int bc_index(unsigned int block_num) {
     return block_num & BC_MASK;
@@ -64,6 +69,8 @@ void block_init(void) {
     ide_init();
     block_total_sectors = ide_total_sectors();
     block_lba_base = 0;
+    bc_data = (unsigned char *)kmalloc(BC_WAYS * BLOCK_SIZE);
+    if (!bc_data) kprintf("block: no cache (out of memory)\n");
 }
 
 void block_set_base(unsigned int lba_base) {
@@ -102,8 +109,8 @@ int block_read(unsigned int block_num, void *buf) {
     irqflags_t flags;
     if (!buf) return -1;
     spin_lock_irqsave(&bc_lock, &flags);
-    if (bc_valid[idx] && bc_block[idx] == block_num) {
-        unsigned char *src = bc_data[idx];
+    if (bc_data && bc_valid[idx] && bc_block[idx] == block_num) {
+        unsigned char *src = BC_LINE(idx);
         for (i = 0; i < BLOCK_SIZE; i++) dst[i] = src[i];
         spin_unlock_irqrestore(&bc_lock, flags);
         return 0;
@@ -117,14 +124,16 @@ int block_read(unsigned int block_num, void *buf) {
         return -1;
     }
     spin_lock_irqsave(&bc_lock, &flags);
-    if (bc_valid[idx] && bc_block[idx] == block_num) {
-        unsigned char *src = bc_data[idx];
+    if (bc_data && bc_valid[idx] && bc_block[idx] == block_num) {
+        unsigned char *src = BC_LINE(idx);
         for (i = 0; i < BLOCK_SIZE; i++) dst[i] = src[i];
-    } else {
-        unsigned char *line = bc_data[idx];
+    } else if (bc_data) {
+        unsigned char *line = BC_LINE(idx);
         for (i = 0; i < BLOCK_SIZE; i++) line[i] = tmp[i];
         bc_block[idx] = block_num;
         bc_valid[idx] = 1;
+        for (i = 0; i < BLOCK_SIZE; i++) dst[i] = tmp[i];
+    } else {
         for (i = 0; i < BLOCK_SIZE; i++) dst[i] = tmp[i];
     }
     spin_unlock_irqrestore(&bc_lock, flags);

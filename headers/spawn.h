@@ -15,12 +15,16 @@ typedef struct {
     uint64_t p0_kstack;
     vma_node_t *live_root;
     vma_node_t *free_root;
+    vma_node_t *pool_copy;
     int pool_n;
     KFILE *kfd[KFD_MAX];
 } spawn_ctx_t;
 
-/** Docstring: Save the caller shared-window view into ctx. */
-void spawn_backup(spawn_ctx_t *ctx);
+/** Docstring: Save the caller shared-window view into ctx. Heap-owns the
+ * VMA pool copy (only the live prefix, never the whole VMA_MAX array), so
+ * nested spawns no longer alias one file-static buffer. Returns 0 when the
+ * copy cannot be allocated; the caller must refuse the spawn fail-closed. */
+int spawn_backup(spawn_ctx_t *ctx);
 
 /** Docstring: Restore a view previously saved by spawn_backup. */
 void spawn_restore(spawn_ctx_t *ctx);

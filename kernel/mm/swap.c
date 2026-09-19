@@ -4,8 +4,10 @@
  *   swap_out  - write parent's user window to swap area, compressed
  *   swap_in   - restore parent's user window from swap area
  *
- * Used by k_syscall_spawn (SYS_SPAWN) to preserve the parent's memory
- * across a child process execution.
+ * Currently unwired (the isolated-window spawn path superseded the
+ * swap-out design); the entry points stay for that future use. Scratch
+ * is lazy heap for the same reason: an uncalled path must not cost
+ * .bss, and a called one fails closed when the heap is exhausted.
  */
 
 #include "kernel.h"
@@ -13,13 +15,28 @@
 #include "lz4_kernel.h"
 
 #define SWAP_CHUNK_RAW     65536
+#define SWAP_CHUNK_CMP     (SWAP_CHUNK_RAW + 1024)
 #define SWAP_CHUNK_SECTORS 128
 #define SWAP_HDR_SECTORS   1
 #define SWAP_MAX_SECTORS   131072
 #define SWAP_MAGIC         0x53574150
 
-static unsigned char swap_buf_raw[SWAP_CHUNK_RAW];
-static unsigned char swap_buf_cmp[SWAP_CHUNK_RAW + 1024];
+static unsigned char *swap_buf_raw = 0;
+static unsigned char *swap_buf_cmp = 0;
+
+/** Docstring: Lazily own both scratch buffers. Returns 0 on OOM. */
+static int swap_ensure(void)
+{
+    if (!swap_buf_raw) {
+        swap_buf_raw = (unsigned char *)kmalloc(SWAP_CHUNK_RAW);
+        if (!swap_buf_raw) return 0;
+    }
+    if (!swap_buf_cmp) {
+        swap_buf_cmp = (unsigned char *)kmalloc(SWAP_CHUNK_CMP);
+        if (!swap_buf_cmp) return 0;
+    }
+    return 1;
+}
 
 static unsigned long swap_lba(void) {
     unsigned int total = ide_total_sectors();
@@ -30,6 +47,7 @@ static unsigned long swap_lba(void) {
 int swap_out(unsigned long window_sz) {
     unsigned long slba = swap_lba();
     if (!slba) return 0;
+    if (!swap_ensure()) return 0;
     unsigned long nchunks = (window_sz + SWAP_CHUNK_RAW - 1) / SWAP_CHUNK_RAW;
     if (nchunks * SWAP_CHUNK_SECTORS + SWAP_HDR_SECTORS > SWAP_MAX_SECTORS)
         return 0;
@@ -46,7 +64,7 @@ int swap_out(unsigned long window_sz) {
 
         int csz = LZ4_compress_default((const char *)swap_buf_raw,
                     (char *)swap_buf_cmp + 4,
-                    (int)SWAP_CHUNK_RAW, (int)(sizeof(swap_buf_cmp) - 4));
+                    (int)SWAP_CHUNK_RAW, (int)(SWAP_CHUNK_CMP - 4));
         unsigned int disk_csz;
         if (csz > 0 && (unsigned long)csz < raw_sz) {
             disk_csz = (unsigned int)csz;
@@ -79,6 +97,7 @@ int swap_out(unsigned long window_sz) {
 int swap_in(void) {
     unsigned long slba = swap_lba();
     if (!slba) return 0;
+    if (!swap_ensure()) return 0;
 
     unsigned long hdr_lba = slba + SWAP_MAX_SECTORS - SWAP_HDR_SECTORS;
     unsigned int hdr[3];
