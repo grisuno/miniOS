@@ -207,8 +207,7 @@ generation 1), and `make selfhost` verifies the bootstrap fixed point on the
 host. Inside the OS the self-hosted compiler drives the same edit/compile/
 link/run loop as `objects/minigcc.o`.
 
-<img width="4082" height="7837" alt="diagram" src="https://github.com/user-attachments/assets/c3ba2575-c657-44c4-b0f5-d3c4b414da10" />
-
+<img width="4081" height="7841" alt="diagram" src="https://github.com/user-attachments/assets/2926b49d-6fef-4032-95d9-c5c2d18bf28e" />
 
 ## Build and run
 
