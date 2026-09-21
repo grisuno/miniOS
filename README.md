@@ -1,5 +1,7 @@
 # MiniOS
 
+I had some things programmed, a kernel, a C to ASM transpiler, I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). That same [beacon](https://github.com/grisuno/blacksandbeacon) already had some things that I reused, like AES and the JSON implementation. LZSS comes from [CompressLoader](https://github.com/grisuno/CompressLoader), another tool, and at one point I said, "Can I run this on my kernel?" And well, here we are.
+
 <img width="1029" height="829" alt="image" src="https://github.com/user-attachments/assets/c08520bc-60d9-4cc6-b663-eada68b7b20f" />
 
 [LazyOwn](https://github.com/grisuno/LazyOwn) [RedTeam](https://medium.com/@lazyown.redteam) [has released an](https://www.youtube.com/@KillerMonkyRecordz) [educational](https://github.com/grisuno/miniOS/blob/main/README.md#knowledge-base) 64-bit x86 teaching kernel and operating system, with [basic](https://github.com/grisuno/miniOS/blob/main/README.md#user-isolation-and-syscall-boundary) [security](https://github.com/grisuno/miniOS/blob/main/README.md#security-nx-and-kaslr), and that carries its own complete [toolchain](https://github.com/grisuno/miniOS/blob/main/README.md#the-four-repositories) of a subset of C, [micropython](https://github.com/grisuno/miniOS/blob/main/README.md#micropython), [Lua](https://github.com/grisuno/miniOS/blob/main/progs/lua/lua_main.c), and [Lisp](https://github.com/grisuno/miniOS/blob/main/README.md#lisp), You can write a C
