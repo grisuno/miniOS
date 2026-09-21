@@ -1408,7 +1408,7 @@ runs entirely on the host and copies the resulting ELF into `progs/bin/`.
 
 ## TopoGPT3
 
-MiniOS ships TopoGPT3 as a static Linux ELF at ring 3. TopoGPT3 is a 24.5M
+MiniOS ships [TopoGPT3](https://github.com/grisuno/TopoGPT3) as a static Linux ELF at ring 3. [TopoGPT3](https://github.com/grisuno/TopoGPT3) is a 24.5M
 parameter complex-valued autoregressive language model for code, built with
 quaternion-inspired spectral operators and a Mixture-of-Experts transformer.
 The C inference engine is a self-contained single-file implementation (~2000
