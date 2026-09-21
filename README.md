@@ -1,6 +1,6 @@
 # MiniOS
 
-I had some things programmed, a kernel, a C to ASM transpiler, I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). That same [beacon](https://github.com/grisuno/blacksandbeacon) already had some things that I reused, like AES and the JSON implementation. LZSS comes from [CompressLoader](https://github.com/grisuno/CompressLoader), another tool, and at one point I said, "Can I run this on my kernel?" And well, here we are.
+I had some things programmed, a kernel, a C to ASM transpiler, [a browser](https://github.com/grisuno/FreeDom), I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). That same [beacon](https://github.com/grisuno/blacksandbeacon) already had some things that I reused, like AES and the JSON implementation. LZSS comes from [CompressLoader](https://github.com/grisuno/CompressLoader), another tool, and at one point I said, "Can I run this on my kernel?" And well, here we are.
 
 <img width="1029" height="829" alt="image" src="https://github.com/user-attachments/assets/c08520bc-60d9-4cc6-b663-eada68b7b20f" />
 
@@ -365,7 +365,7 @@ miniOS> run bin/freedom --dump-css https://example.com
 ```
 
 `bin/freedom` is the headless text browser: a curlfree-style HTTP engine
-with a FreeDom-style omnibox (an argument that is not a URL is a DuckDuckGo
+with a [FreeDom-style](https://github.com/grisuno/FreeDom) omnibox (an argument that is not a URL is a DuckDuckGo
 search; bare hosts are fetched as `https://`), redirect chasing, chunked
 decoding, an HTML-to-text filter, and `--dump-css`/`--dump-dom` headless
 dumps. The crypto and the roots are host-tested by `make test-tls` (fixed
