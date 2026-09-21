@@ -2713,17 +2713,29 @@ into a `.cvm` module the interpreter runs.
   never in the Nuklear checkout.
 - **Platform layer (`nuklear_minios.c`)**: the app renders Nuklear's abstract
   draw commands (`nk__begin`/`nk__next`) into an 8-bit palette-indexed
-  back-buffer mapped into the user window at `NK_BACKBUF_ADDR` (0x0B400000,
-  `NK_W`x`NK_H` = 800x360) and calls `SYS_NK_FRAME` (220); the kernel
-  composites it as a titled window on the desktop, identical to the DOOM
-  window, leaving the shell visible. A software rasterizer handles the full
-  command set (scissor, line, rect, circle, arc, triangle, polygon, text)
-  with clipping and a built-in 8x8 bitmap font. The hybrid palette keeps
-  indices 0-14 exactly equal to the desktop palette (so the desktop behind
-  the window is never recolored) and uses 15-255 as a UI ramp; colours are
-  mapped by nearest neighbour. Input comes from `SYS_MOUSE` (219, new: x, y,
-  buttons, wheel, wheel consumed on read) and raw PS/2 scancodes translated
-  to Nuklear keys and unicode.
+  back-buffer mapped into the user window at `NK_BACKBUF_ADDR` (0x0B600000,
+  `NK_W`x`NK_H` = 800x360) and, when the kernel maps it (ABI v7,
+  `NK_RGB_ADDR` 0x0B700000, probed once through the `fb_info` 4th word),
+  into the RGB companion (same geometry, 3 bytes per pixel) with the
+  command's true `nk_color`; it then presents indexed (`SYS_NK_FRAME`
+  220 / `GFX_PRESENT` id 1) or full-color (`GFX_PRESENT` id 2,
+  `MINIOS_GFX_BUF_NK_RGB`). The kernel composites it as a titled window
+  on the desktop, identical to the DOOM window, leaving the shell visible.
+  A software rasterizer handles the full command set (scissor, line, rect,
+  circle, arc, triangle, polygon, text) with clipping and a built-in 8x8
+  bitmap font. The hybrid palette keeps indices 0-14 exactly equal to the
+  desktop palette (so the desktop behind the window is never recolored)
+  and uses 15-255 as a UI ramp; the indexed buffer maps colours by nearest
+  neighbour while the RGB buffer carries them exact. Index-owned pixels
+  (canvas/preview mirrors in paint/file, `NK_COMMAND_IMAGE`) resolve
+  through the exact 256-entry table (`nk_idx_to_rgb`), never a second
+  nearest search. Old kernels leave the probe word zero, so the platform
+  never touches the unmapped address and keeps the indexed path. Input
+  comes from `SYS_MOUSE` (219, new: x, y, buttons, wheel, wheel consumed
+  on read) and raw PS/2 scancodes translated to Nuklear keys and unicode.
+  DOOM/Quake 2 stay indexed by nature (their assets are 256-color; the
+  palette upload is already exact in true color), so the RGB path serves
+  the Nuklear apps: node editor, vedit, file, paint, doomedit, piano.
 - **Node editor (`node_editor.c`)**: a canvas with draggable nodes (Number,
   Add, Sub, Mul, Div, Neg, Print, Exit), pin wiring by drag, and Compile,
   which writes `cvm/nodes.cvm` to the ramdisk through the ordinary open/write
@@ -2731,12 +2743,16 @@ into a `.cvm` module the interpreter runs.
   headless modes are the serial-observable surface:
   - `nuklear --selftest` renders one UI frame through the whole graphics
     pipeline and proves it end to end: it writes a marker pixel into the
-    back-buffer, calls SYS_NK_FRAME, reads the desktop framebuffer at the
-    reported window origin and requires the pixel to have landed there; it
-    also checks that SYS_MOUSE accepts a user pointer and rejects a kernel
-    pointer with `-EFAULT`. Only then does it print
-    `nuklear: frame ok (800x360)` — so a mutant that drops the composite,
-    the origin reporting or the mouse bounds check is killed.
+    back-buffer (mirrored exact into the RGB twin when the kernel maps
+    it, since the present routes there), calls the frame present, reads
+    the desktop framebuffer at the reported window origin and requires
+    the pixel to have landed there; on RGB kernels it additionally
+    presents the unquantizable marker (123,45,67) and requires it
+    byte-exact (`nuklear: rgb ok (123,45,67)`), which the 256-color path
+    could never produce; it also checks that SYS_MOUSE accepts a user
+    pointer and rejects a kernel pointer with `-EFAULT`. Only then does
+    it print `nuklear: frame ok (800x360)` — so a mutant that drops the
+    composite, the origin reporting or the mouse bounds check is killed.
   - `nuklear --demo <out.cvm>` compiles a fixed demo graph `(2+3)*4` and
     writes the module.
   - `nuklear --compile <graph.txt> <out.cvm>` parses a simple graph

@@ -1886,6 +1886,102 @@ void vga_fb_blit_nk_window(void) {
     nk_win_y = gfx_win_y;
 }
 
+/* Fast true-color blit of an RGB back-buffer row block (R,G,B byte order).
+ * Bounds are clipped once here; the inner loop copies straight through with
+ * row pointers, no per-pixel call or check. In 8-bit mode the source is
+ * quantized through the websafe cube (same degrade as the RGB wallpaper
+ * path), so an RGB present stays correct on a palette desktop. */
+static void blit_rgb_truecolor(const volatile uint8_t *bb, int bb_w,
+                               int bb_h, int dst_x, int dst_y) {
+    volatile uint8_t *fb = (volatile uint8_t *)FB_ADDR;
+    unsigned pitch = (unsigned)fb_pitch;
+    int width = fb_width, height = fb_height;
+    int is32 = (fb_bpp == 32);
+    int r;
+    for (r = 0; r < bb_h; r++) {
+        int y = dst_y + r;
+        const volatile uint8_t *src;
+        volatile uint8_t *row;
+        int x0, x1, b, w;
+        if (y < 0 || y >= height) continue;
+        x0 = dst_x < 0 ? -dst_x : 0;
+        x1 = dst_x + bb_w > width ? width - dst_x : bb_w;
+        if (x0 >= x1) continue;
+        src = bb + ((r * bb_w) + x0) * 3;
+        if (fb_bpp == 8) {
+            volatile uint8_t *dst = &FB_ADDR[(unsigned)y * pitch + (unsigned)(dst_x + x0)];
+            for (b = 0; b < x1 - x0; b++) {
+                unsigned R = src[b * 3], G = src[b * 3 + 1], B = src[b * 3 + 2];
+                dst[b] = (uint8_t)(WALL_PAL_BASE +
+                         (wall_level((int)R) * 6 + wall_level((int)G)) * 6 +
+                         wall_level((int)B));
+            }
+            continue;
+        }
+        row = fb + (unsigned)y * pitch + (unsigned)(dst_x + x0) * (is32 ? 4u : 3u);
+        w = x1 - x0;
+        if (is32) {
+            for (b = 0; b < w; b++) {
+                unsigned px = ((unsigned)src[b * 3] << 16)
+                            | ((unsigned)src[b * 3 + 1] << 8)
+                            |  (unsigned)src[b * 3 + 2];
+                *(volatile unsigned *)row = px;
+                row += 4;
+            }
+        } else {
+            for (b = 0; b < w; b++) {
+                row[0] = src[b * 3 + 2];
+                row[1] = src[b * 3 + 1];
+                row[2] = src[b * 3];
+                row += 3;
+            }
+        }
+    }
+}
+
+/* Composite the Nuklear RGB back-buffer (NK_RGB_ADDR, NK_W x NK_H x 3 bytes)
+ * as a titled window, mirroring the indexed path's chrome, melt and cursor
+ * handling. Presented with GFX_PRESENT + MINIOS_GFX_BUF_NK_RGB; the indexed
+ * NK_FRAME path is untouched. The NK buffer never zooms. */
+void vga_fb_blit_nk_rgb_window(void) {
+    const volatile uint8_t *bb = (const volatile uint8_t *)NK_RGB_ADDR;
+    int dst_x, dst_y;
+    int win_w = NK_W + SCROLLBAR_W;
+    int win_h = NK_H + FONT_H;
+    uint8_t gbg;
+    unsigned int *fx_old = 0;
+    int fx_do = fx_gfx_armed && vga_fx_enabled();
+    fx_gfx_armed = 0;
+    gfx_frames_composited++;
+    vga_fb_gfx_cursor_erase();
+    gfx_place(win_w, win_h, &dst_x, &dst_y);
+    gfx_win_x = dst_x;
+    gfx_win_y = dst_y;
+    gfx_win_w = win_w;
+    gfx_win_h = win_h;
+    nk_win_x = dst_x;
+    nk_win_y = dst_y;
+    if (fx_do) {
+        fx_old = vga_fx_snap_rect(dst_x, dst_y, win_w, win_h);
+    }
+    gbg = (wm_focus == WM_FOCUS_GFX) ? COL_TITLEBAR : COL_SHADOW;
+    vga_fb_rect(dst_x, dst_y, win_w, FONT_H, gbg);
+    text_px(dst_x + 4, dst_y, gfx_win_title, COL_TITLE_TXT, gbg);
+    wm_draw_buttons(dst_x, dst_y, win_w, COL_TITLE_TXT, gbg);
+    blit_rgb_truecolor(bb, NK_W, NK_H, dst_x, dst_y + FONT_H);
+    gfx_keep_save(dst_x, dst_y, win_w, win_h);
+    if (fx_old) {
+        unsigned int *fx_new = vga_fx_snap_rect(dst_x, dst_y, win_w, win_h);
+        if (fx_new) {
+            vga_fx_restore_rect(dst_x, dst_y, win_w, win_h, fx_old);
+            vga_fx_melt_rect(dst_x, dst_y, win_w, win_h, fx_old, fx_new);
+            vga_fx_free(fx_new);
+        }
+        vga_fx_free(fx_old);
+    }
+    vga_fb_gfx_cursor_draw();
+}
+
 /* ---- Layout ---- */
 static int term_max_cols(void);
 static int term_max_rows(void);

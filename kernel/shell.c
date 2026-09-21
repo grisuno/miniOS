@@ -2037,9 +2037,9 @@ static void shell_cmd_vmmap(int argc, char **argv) {
     kprintf("  text 0x%lx..0x%lx  brk 0x%lx cap 0x%lx  mmap 0x%lx..0x%lx\n",
             (unsigned long)USER_LOAD_BASE, brk, brk, brk_lim,
             mcur, (unsigned long)USER_BRK_END);
-    kprintf("  game 0x%lx  fb 0x%lx  nk 0x%lx  stack 0x%lx..0x%lx\n",
+    kprintf("  game 0x%lx  fb 0x%lx  nk 0x%lx  rgb 0x%lx  stack 0x%lx..0x%lx\n",
             (unsigned long)DOOM_BACKBUF_ADDR, (unsigned long)FB_ADDR,
-            (unsigned long)NK_BACKBUF_ADDR,
+            (unsigned long)NK_BACKBUF_ADDR, (unsigned long)NK_RGB_ADDR,
             (unsigned long)USER_STACK_BASE, (unsigned long)USER_STACK_TOP);
     {
         vma_node_t *stack[64];

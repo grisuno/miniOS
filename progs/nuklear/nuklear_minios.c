@@ -125,6 +125,71 @@ long nk_sys_fb_info(int *w, int *h, int *pitch) {
                      : "rcx","r11","memory");
     return ret;
 }
+
+/* ---- Full-color RGB path (ABI v7) ----
+ * The kernel maps NK_RGB_BUF beside the indexed buffer and reports it
+ * through an optional 4th fb_info out-word. Old kernels ignore the 4th
+ * register and leave the word untouched, so a pre-zeroed word staying 0
+ * means indexed-only: the rasterizer never touches the unmapped address
+ * and presents the legacy id. New kernels set it to 1. */
+static int nk_rgb_on = -1;
+
+static long nk_sys_fb_info_rgb(int *w, int *h, int *pitch, int *rgb) {
+    long ret;
+    register long r10 __asm__("r10") = (long)rgb;
+    __asm__ volatile("syscall" : "=a"(ret)
+                     : "a"(MINIOS_SYS_FB_INFO), "D"(w), "S"(h), "d"(pitch),
+                       "r"(r10)
+                     : "rcx","r11","memory");
+    return ret;
+}
+
+int nk_rgb_available(void) {
+    if (nk_rgb_on < 0) {
+        int w = 0, h = 0, p = 0, rgb = 0;
+        nk_rgb_on = 0;
+        if (nk_sys_fb_info_rgb(&w, &h, &p, &rgb) == 0 && rgb == 1)
+            nk_rgb_on = 1;
+    }
+    return nk_rgb_on;
+}
+
+/* Full 256-entry RGB table for index-owned pixels (canvas/preview mirrors,
+ * IMAGE commands): exact entries from nk_palette_build, never nearest. */
+static unsigned char rgb256[768];
+static int rgb256_ready;
+
+static void rgb256_prepare(void) {
+    if (rgb256_ready) return;
+    if (nk_palette_build(rgb256, (long)sizeof rgb256) != NK_PAL_ERR_OK) {
+        for (unsigned i = 0; i < sizeof rgb256; i++) rgb256[i] = 0;
+    }
+    rgb256_ready = 1;
+}
+
+void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g,
+                   unsigned char *b) {
+    rgb256_prepare();
+    if (idx < 0) idx = 0;
+    if (idx > 255) idx = 255;
+    if (r) *r = rgb256[idx * 3];
+    if (g) *g = rgb256[idx * 3 + 1];
+    if (b) *b = rgb256[idx * 3 + 2];
+}
+
+/* Current command colors for the RGB twin buffer (set once per command by
+ * col_to_idx / the TEXT dispatch; read per pixel by px/px_bg). Declared
+ * here so both the color mapper above and the rasterizer below see them. */
+static int cur_r, cur_g, cur_b;
+static int cur_br, cur_bg, cur_bb;
+
+static void cur_set(struct nk_color c) {
+    cur_r = c.r; cur_g = c.g; cur_b = c.b;
+}
+
+static void cur_bg_set(struct nk_color c) {
+    cur_br = c.r; cur_bg = c.g; cur_bb = c.b;
+}
 long nk_sys_mouse(int *xybw) {
     long ret;
     __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_MOUSE), "D"(xybw) : "rcx","r11","memory");
@@ -226,7 +291,13 @@ long nk_sys_nk_frame(int *origin) {
         }
         return 0;
     }
-    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"((long)MINIOS_GFX_BUF_NK), "S"(origin) : "rcx","r11","memory");
+    /* Full color when the kernel maps it, indexed legacy otherwise: the
+     * rasterizer wrote both buffers, so either present shows the same UI. */
+    if (nk_rgb_available()) {
+        __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"((long)MINIOS_GFX_BUF_NK_RGB), "S"(origin) : "rcx","r11","memory");
+    } else {
+        __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_PRESENT), "D"((long)MINIOS_GFX_BUF_NK), "S"(origin) : "rcx","r11","memory");
+    }
     if (ret == 0) nk_mirror_tick();
     return ret;
 }
@@ -366,6 +437,11 @@ static void pal_prepare(void) {
 
 static int col_to_idx(struct nk_color c) {
     if (!pal_ready) pal_prepare();
+    /* Dual-buffer side effect: the dispatching command's true color rides
+     * along for the RGB buffer while the return value serves the indexed
+     * one. Every drawing command resolves through here exactly once, so
+     * no call site needs to change; TEXT repoints fg/bg explicitly. */
+    cur_r = c.r; cur_g = c.g; cur_b = c.b;
     int best = 0;
     int bestd = 1 << 30;
     for (int i = 0; i < 241; i++) {
@@ -378,8 +454,16 @@ static int col_to_idx(struct nk_color c) {
     return best + 15;
 }
 
-/* ---- Software rasterizer ---- */
+/* ---- Software rasterizer ----
+ * Dual-buffer: every command draws its palette index into NK_BACKBUF (the
+ * legacy consumers: wl mirror, old kernels, --selftest marker) and, when
+ * nk_rgb_available(), its true nk_color into NK_RGB_BUF. The current
+ * command's colors ride in file-scope globals set once per command at the
+ * nk_rasterize dispatch, so the shape helpers keep their signatures and
+ * col_to_idx still runs once per command, never per pixel. IMAGE commands
+ * own indexed pixels already and resolve through px_idx + rgb256 instead. */
 static volatile uint8_t *fb = NK_BACKBUF;
+static volatile uint8_t *fbrgb = NK_RGB_BUF;
 static int clip_x, clip_y, clip_w, clip_h;
 
 static void set_clip(int x, int y, int w, int h) {
@@ -393,10 +477,46 @@ static void set_clip(int x, int y, int w, int h) {
 }
 
 static void px(int x, int y, int c) {
+    volatile uint8_t *d;
     if (x < clip_x || x >= clip_x + clip_w) return;
     if (y < clip_y || y >= clip_y + clip_h) return;
     if (x < 0 || x >= NK_W || y < 0 || y >= NK_H) return;
     fb[y * NK_W + x] = (uint8_t)c;
+    if (nk_rgb_on == 1) {
+        d = fbrgb + ((y * NK_W) + x) * 3;
+        d[0] = (uint8_t)cur_r; d[1] = (uint8_t)cur_g; d[2] = (uint8_t)cur_b;
+    }
+}
+
+/* Text-background twin: same pixel, the command's background color. */
+static void px_bg(int x, int y, int c) {
+    volatile uint8_t *d;
+    if (x < clip_x || x >= clip_x + clip_w) return;
+    if (y < clip_y || y >= clip_y + clip_h) return;
+    if (x < 0 || x >= NK_W || y < 0 || y >= NK_H) return;
+    fb[y * NK_W + x] = (uint8_t)c;
+    if (nk_rgb_on == 1) {
+        d = fbrgb + ((y * NK_W) + x) * 3;
+        d[0] = (uint8_t)cur_br; d[1] = (uint8_t)cur_bg; d[2] = (uint8_t)cur_bb;
+    }
+}
+
+/* Index-owned pixels (IMAGE commands): RGB resolves through the exact
+ * rgb256 table, so both buffers agree without a nearest search. */
+static void px_idx(int x, int y, int c) {
+    volatile uint8_t *d;
+    unsigned char r, g, b;
+    if (x < clip_x || x >= clip_x + clip_w) return;
+    if (y < clip_y || y >= clip_y + clip_h) return;
+    if (x < 0 || x >= NK_W || y < 0 || y >= NK_H) return;
+    if (c < 0) c = 0;
+    if (c > 255) c = 255;
+    fb[y * NK_W + x] = (uint8_t)c;
+    if (nk_rgb_on == 1) {
+        nk_idx_to_rgb(c, &r, &g, &b);
+        d = fbrgb + ((y * NK_W) + x) * 3;
+        d[0] = r; d[1] = g; d[2] = b;
+    }
 }
 
 static void fill_rect(int x, int y, int w, int h, int c) {
@@ -487,7 +607,7 @@ static void draw_text(int x, int y, const char *s, int len, int fg, int bg) {
             uint8_t bits = glyph[j];
             for (int i = 0; i < 8; i++)
                 if (bits & (0x80 >> i)) px(x + k*8 + i, y + j, fg);
-                else if (bg >= 0) px(x + k*8 + i, y + j, bg);
+                else if (bg >= 0) px_bg(x + k*8 + i, y + j, bg);
         }
     }
 }
@@ -516,6 +636,7 @@ static void draw_arc(int cx, int cy, int r, float a0, float a1,
 void nk_rasterize(struct nk_context *ctx) {
     if (!ctx) return;
     const struct nk_command *cmd;
+    (void)nk_rgb_available();
     set_clip(0, 0, NK_W, NK_H);
     nk_foreach(cmd, ctx) {
         switch (cmd->type) {
@@ -648,8 +769,17 @@ void nk_rasterize(struct nk_context *ctx) {
         case NK_COMMAND_TEXT: {
             const struct nk_command_text *c = (const struct nk_command_text *)cmd;
             int fg = col_to_idx(c->foreground);
+            int fr = cur_r, fgg = cur_g, fbb = cur_b;
             int bg = -1;
-            if (c->background.a > 0) bg = col_to_idx(c->background);
+            /* col_to_idx parks the color in cur_*; foreground is resolved
+             * first and stashed aside, then the background takes cur_* home
+             * (px_bg reads it) while fg is restored for px. */
+            cur_br = 0; cur_bg = 0; cur_bb = 0;
+            if (c->background.a > 0) {
+                bg = col_to_idx(c->background);
+                cur_br = cur_r; cur_bg = cur_g; cur_bb = cur_b;
+            }
+            cur_r = fr; cur_g = fgg; cur_b = fbb;
             draw_text(c->x, c->y, c->string, c->length, fg, bg);
             break;
         }
@@ -665,8 +795,8 @@ void nk_rasterize(struct nk_context *ctx) {
                 for (int iy = 0; iy < ih; iy++)
                     for (int ix = 0; ix < iw; ix++) {
                         if (!im->mask[iy * im->w + ix]) continue;
-                        px(c->x + ix, c->y + iy,
-                           im->px[iy * im->w + ix]);
+                        px_idx(c->x + ix, c->y + iy,
+                               im->px[iy * im->w + ix]);
                     }
             }
             break;

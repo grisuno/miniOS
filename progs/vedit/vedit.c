@@ -1951,6 +1951,15 @@ static int vedit_selftest(void) {
     }
     nk_rasterize(&ctx);
     NK_BACKBUF[0] = 0xF0;
+    /* Mirror the marker into the RGB twin when the kernel maps it: the
+     * present routes there and the origin check would otherwise read the
+     * rasterized UI pixel. Mirrored exact, never nearest. */
+    if (nk_rgb_available()) {
+        volatile uint8_t *mrgb = NK_RGB_BUF;
+        mrgb[0] = pal768[0xF0 * 3];
+        mrgb[1] = pal768[0xF0 * 3 + 1];
+        mrgb[2] = pal768[0xF0 * 3 + 2];
+    }
     if (nk_sys_nk_frame(origin) != 0) {
         printf("vedit: frame syscall failed\n");
         return 1;

@@ -131,6 +131,29 @@ void mm_setup_protections(void) {
         for (k = 0; k < (NK_W * NK_H + 0xFFF) >> 12; k++)
             bb_pt[bb_pt_off + k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
     }
+
+    /* RGB companion of the NK buffer (NK_W x NK_H x 3 bytes). Same
+     * page-aligned heap pattern as the indexed buffers above; shared
+     * read-write with ring 3 like them, presented with GFX_PRESENT id 2. */
+    {
+        unsigned long bb_vaddr = NK_RGB_ADDR;
+        unsigned long bb_pd_idx = bb_vaddr >> PT_PD_INDEX_SHIFT;
+        unsigned long bb_pt_off = (bb_vaddr & 0x1FFFFF) >> 12;
+        unsigned long *bb_pt = (unsigned long *)PT_USER_TABLES_ADDR +
+                               (bb_pd_idx - lo) * 0x1000 /
+                               sizeof(unsigned long);
+        unsigned char *buf;
+        unsigned long phys;
+        unsigned long k;
+        buf = mm_page_aligned_alloc(NK_RGB_BYTES, &phys);
+        if (buf == 0) return;
+        if (phys & 0xFFFUL) {
+            kprintf("mm: NK RGB back-buffer not page aligned\n");
+            return;
+        }
+        for (k = 0; k < (NK_RGB_BYTES + 0xFFF) >> 12; k++)
+            bb_pt[bb_pt_off + k] = (phys + k * 0x1000) | PT_USER_NX_ENTRY;
+    }
 }
 
 void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3) {
@@ -246,6 +269,7 @@ uint64_t pt_clone_user(uint64_t parent_cr3) {
         unsigned long fb_pd_idx = (unsigned long)FB_ADDR >> PT_PD_INDEX_SHIFT;
         unsigned long bb_pd_idx = (unsigned long)DOOM_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
         unsigned long nk_pd_idx = (unsigned long)NK_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
+        unsigned long nrgb_pd_idx = (unsigned long)NK_RGB_ADDR >> PT_PD_INDEX_SHIFT;
         unsigned long idx;
         for (idx = fb_pd_idx; idx <= fb_last; idx++) {
             volatile unsigned long *boot_pt =
@@ -259,7 +283,7 @@ uint64_t pt_clone_user(uint64_t parent_cr3) {
             pd[idx] = ((unsigned long)our_pt) | (boot_pd[idx] & 0x7);
         }
         {
-            unsigned long indices[] = { bb_pd_idx, nk_pd_idx };
+            unsigned long indices[] = { bb_pd_idx, nk_pd_idx, nrgb_pd_idx };
             unsigned long nidx = sizeof(indices) / sizeof(indices[0]);
             unsigned long j;
             for (j = 0; j < nidx; j++) {
@@ -303,9 +327,11 @@ static int mt_shared_slot(unsigned long pd_idx) {
         ((unsigned long)FB_ADDR + fb_bytes - 1) >> PT_PD_INDEX_SHIFT;
     unsigned long bb = (unsigned long)DOOM_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
     unsigned long nk = (unsigned long)NK_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
+    unsigned long nrgb = (unsigned long)NK_RGB_ADDR >> PT_PD_INDEX_SHIFT;
     if (pd_idx >= fb_first && pd_idx <= fb_last) return 1;
     if (pd_idx == bb) return 1;
     if (pd_idx == nk) return 1;
+    if (pd_idx == nrgb) return 1;
     return 0;
 }
 
@@ -494,7 +520,8 @@ void pt_free_user(uint64_t cr3) {
             ((unsigned long)FB_ADDR + fb_bytes - 1) >> PT_PD_INDEX_SHIFT;
         unsigned long bb_idx = (unsigned long)DOOM_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
         unsigned long nk_idx = (unsigned long)NK_BACKBUF_ADDR >> PT_PD_INDEX_SHIFT;
-        unsigned long extra[] = { bb_idx, nk_idx };
+        unsigned long nrgb_idx = (unsigned long)NK_RGB_ADDR >> PT_PD_INDEX_SHIFT;
+        unsigned long extra[] = { bb_idx, nk_idx, nrgb_idx };
         unsigned long ne = sizeof(extra) / sizeof(extra[0]);
         unsigned long j;
         unsigned long idx;

@@ -14,6 +14,7 @@ Single source of truth: `progs/minios_abi.h`.
 | `MINIOS_DOOM_BACKBUF_ADDR` | `0xB000000` | 320x200 game buffer |
 | `MINIOS_FB_ADDR` | `0xB200000` | linear framebuffer |
 | `MINIOS_NK_BACKBUF_ADDR` | `0xB600000` | 800x360 NK buffer |
+| `MINIOS_NK_RGB_ADDR` | `0xB700000` | 800x360x3 NK RGB buffer (ABI v7) |
 | `MINIOS_HEAP_BASE/SIZE` | `0xC000000`/192 MB | kernel heap, supervisor only |
 
 Rule: never hardcode an address; include `minios_abi.h`.
@@ -47,7 +48,7 @@ syscall(239, 10, 1, 0, 0, 0, 0);
 
 ## Versioning
 
-`MINIOS_ABI_VERSION` bumps on incompatible change (now 5).
+`MINIOS_ABI_VERSION` bumps on incompatible change (now 7).
 `MINIOS_ABI_CHECKSUM` XOR-folds layout + new numbers; loader rejects mismatch
 with `-EABI_MISMATCH`.
 

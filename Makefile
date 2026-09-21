@@ -1874,7 +1874,7 @@ batch.o: kernel/batch.c batch.h
 rcu.o: kernel/rcu.c rcu.h sched.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-abi.o: kernel/abi.c abi.h kernel.h
+abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h

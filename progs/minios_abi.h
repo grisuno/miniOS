@@ -38,7 +38,7 @@
  * It is verified at build time (kernel _Static_asserts), not at load time:
  * see the ABI Version note above for why the loader cannot gate on it.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 6
+#define MINIOS_ABI_VERSION 7
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -56,6 +56,7 @@
     MINIOS_NK_BACKBUF_ADDR     ^ \
     MINIOS_NK_W                ^ \
     MINIOS_NK_H                ^ \
+    MINIOS_NK_RGB_ADDR         ^ \
     MINIOS_HEAP_BASE           ^ \
     MINIOS_HEAP_SIZE           ^ \
     MINIOS_FB_WIDTH_MAX        ^ \
@@ -93,7 +94,9 @@
  *   USER_BRK_END            hard ceiling for both brk and mmap
  *   DOOM_BACKBUF_ADDR       DOOM/Q2G 320x200 back-buffer (kernel-mapped)
  *   FB_ADDR                 linear framebuffer (kernel-mapped, VBE)
- *   NK_BACKBUF_ADDR         Nuklear 800x360 back-buffer (kernel-mapped)
+ *   NK_BACKBUF_ADDR         Nuklear 800x360 indexed back-buffer (kernel-mapped)
+ *   NK_RGB_ADDR             Nuklear 800x360 RGB back-buffer (kernel-mapped,
+ *                           3 bytes per pixel, same geometry as NK_BACKBUF)
  *   USER_STACK_BASE         stack region base (1 MB below top)
  *   USER_STACK_TOP          stack top (= USER_LOAD_END)
  *   HEAP_BASE               kernel heap (supervisor only, not in window)
@@ -127,6 +130,14 @@
 #define MINIOS_NK_BACKBUF_ADDR    0x0B600000UL
 #define MINIOS_NK_W               800
 #define MINIOS_NK_H               360
+/* RGB companion of NK_BACKBUF_ADDR: 800x360 x 3 bytes (R,G,B order), written
+ * by ring-3 Nuklear apps that want full color depth and presented with
+ * GFX_PRESENT + MINIOS_GFX_BUF_NK_RGB. Sits clear of the framebuffer's worst
+ * span (FB + 3 MB = 0x0B500000), the indexed NK buffer (ends 0x0B646800)
+ * and the 1 MB stack (base 0x0BF00000): 0x0B700000 + 864000 ends 0x0B7D2E00.
+ * Same geometry as NK_W/NK_H, so no new dimension constants. */
+#define MINIOS_NK_RGB_ADDR        0x0B700000UL
+#define MINIOS_NK_RGB_BYTES       (800UL * 360UL * 3UL)
 
 /* =========================================================================
  * Kernel heap (supervisor only)
@@ -277,10 +288,12 @@
  * syscalls). DOOM_FRAME/NK_FRAME remain as compat numbers that route
  * through the same compositor; new code uses GFX_PRESENT with a buffer id:
  *   0 = 320x200 paletted game buffer (DOOM/Q2G path)
- *   1 = 800x360 Nuklear buffer (NK path)
+ *   1 = 800x360 indexed Nuklear buffer (NK path, 256-color compat)
+ *   2 = 800x360 RGB Nuklear buffer (NK_RGB_ADDR, full color depth)
  * GFX_SET_TITLE is already generic (renamed from Q2G_SET_TITLE). */
 #define MINIOS_GFX_BUF_GAME 0
 #define MINIOS_GFX_BUF_NK   1
+#define MINIOS_GFX_BUF_NK_RGB 2
 #define MINIOS_SYS_FRAMEBUFFER_COMMIT MINIOS_SYS_DOOM_FRAME
 #define MINIOS_SYS_WINDOW_PRESENT     MINIOS_SYS_NK_FRAME
 #define MINIOS_SYS_WINDOW_TITLE       MINIOS_SYS_GFX_SET_TITLE

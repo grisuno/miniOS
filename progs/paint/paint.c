@@ -544,17 +544,25 @@ static int paint_save_file(const char *path) {
     return 0;
 }
 
-/** Blit the canvas into the NK back-buffer after rasterize. */
+/** Blit the canvas into the NK back-buffer after rasterize (and its RGB
+ * twin when the kernel maps it, so the canvas shows full color too). */
 static void paint_blit(int ox, int oy) {
     volatile uint8_t *fb = NK_BACKBUF;
+    int rgb = nk_rgb_available();
     int x;
     int y;
     for (y = 0; y < PAINT_H; y++)
         for (x = 0; x < PAINT_W; x++) {
             int dx = ox + x;
             int dy = oy + y;
+            unsigned char r, g, b;
+            volatile uint8_t *d;
             if (dx < 0 || dx >= NK_W || dy < 0 || dy >= NK_H) continue;
             fb[dy * NK_W + dx] = paint_px[y * PAINT_W + x];
+            if (!rgb) continue;
+            nk_idx_to_rgb(paint_px[y * PAINT_W + x], &r, &g, &b);
+            d = NK_RGB_BUF + ((dy * NK_W) + dx) * 3;
+            d[0] = r; d[1] = g; d[2] = b;
         }
 }
 

@@ -67,7 +67,13 @@ extern unsigned long gfx_frames_composited;
 #define NK_W            MINIOS_NK_W
 #define NK_H            MINIOS_NK_H
 #define NK_BACKBUF_ADDR MINIOS_NK_BACKBUF_ADDR
+/* RGB companion buffer (3 bytes per pixel, R,G,B order, NK_W x NK_H).
+ * Mapped by mm_setup_protections like the indexed buffers; presented with
+ * GFX_PRESENT + MINIOS_GFX_BUF_NK_RGB through vga_fb_blit_nk_rgb_window. */
+#define NK_RGB_ADDR   MINIOS_NK_RGB_ADDR
+#define NK_RGB_BYTES  MINIOS_NK_RGB_BYTES
 void vga_fb_blit_nk_window(void);
+void vga_fb_blit_nk_rgb_window(void);
 /* Window origin of the last Nuklear composite, so SYS_NK_FRAME can report
  * where the UI landed for mouse-coordinate translation. */
 extern int nk_win_x, nk_win_y;

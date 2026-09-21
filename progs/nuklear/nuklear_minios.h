@@ -24,6 +24,18 @@ struct nk_command_buffer;
 #define NK_W           MINIOS_NK_W
 #define NK_H           MINIOS_NK_H
 #define NK_BACKBUF      ((volatile uint8_t *)MINIOS_NK_BACKBUF_ADDR)
+/* RGB companion buffer (R,G,B byte order, NK_W x NK_H). Mapped only by
+ * ABI-v7 kernels; nk_rgb_available() probes it once via the fb_info 4th
+ * word, so old kernels keep the indexed path without ever faulting. */
+#define NK_RGB_BUF      ((volatile uint8_t *)MINIOS_NK_RGB_ADDR)
+
+/* 1 when the kernel maps NK_RGB_BUF (cached probe, 0 on old kernels). */
+int nk_rgb_available(void);
+/* Resolve one hybrid palette index to its exact RGB triple (canvas and
+ * preview mirrors that own indexed pixels reuse the same table the
+ * rasterizer draws through, so both buffers agree pixel for pixel). */
+void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g,
+                   unsigned char *b);
 
 /* MiniOS syscalls used by the platform. */
 long nk_sys_time_ms(void);

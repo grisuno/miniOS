@@ -263,7 +263,7 @@ static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)
     return 0;
 }
 static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a4; (void)a5; (void)a6;
+    (void)a5; (void)a6;
     int *wp = (int *)(unsigned long)a1;
     int *hp = (int *)(unsigned long)a2;
     int *pp = (int *)(unsigned long)a3;
@@ -271,6 +271,15 @@ static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long
     SANITIZE_RANGE(a2, sizeof(int));
     SANITIZE_RANGE(a3, sizeof(int));
     *wp = fb_width; *hp = fb_height; *pp = fb_pitch;
+    /* Optional 4th out-word: 1 when the NK RGB back-buffer (NK_RGB_ADDR,
+     * presented with GFX_PRESENT id 2) is mapped. Old kernels ignore a4
+     * and leave the caller's word untouched, so ring 3 pre-zeroes it and
+     * treats nonzero as available: full backwards compatibility. */
+    if (a4) {
+        int *rp = (int *)(unsigned long)a4;
+        SANITIZE_RANGE(a4, sizeof(int));
+        *rp = 1;
+    }
     return 0;
 }
 static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -458,8 +467,9 @@ static long batch_kdispatch(uint32_t opcode) {
 }
 
 /* Generic window present (boyscout fix for app-specific syscalls):
- * a1 = buffer id (0 = 320x200 game buffer, 1 = 800x360 NK buffer),
- * a2 = optional user int[2] for the content origin (NK path only).
+ * a1 = buffer id (0 = 320x200 game buffer, 1 = 800x360 indexed NK buffer,
+ *      2 = 800x360 RGB NK buffer at NK_RGB_ADDR),
+ * a2 = optional user int[2] for the content origin (NK paths only).
  * DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
 static long sys_minios_gfx_present(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
@@ -467,6 +477,17 @@ static long sys_minios_gfx_present(long a1, long a2, long a3, long a4, long a5, 
         if (a2)
             SANITIZE_RANGE(a2, 2 * sizeof(int));
         vga_fb_blit_nk_window();
+        if (a2) {
+            int *o = (int *)(unsigned long)a2;
+            o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
+        }
+        return 0;
+    }
+    if (a1 == MINIOS_GFX_BUF_NK_RGB) {
+        if (a2)
+            SANITIZE_RANGE(a2, 2 * sizeof(int));
+        gfx_note_compositor();
+        vga_fb_blit_nk_rgb_window();
         if (a2) {
             int *o = (int *)(unsigned long)a2;
             o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;

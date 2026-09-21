@@ -1000,6 +1000,15 @@ int main(int argc, char **argv) {
         ui_build(&ctx, (float)NK_W, (float)NK_H);
         nk_rasterize(&ctx);
         NK_BACKBUF[0] = 0xF0;
+        /* The present routes to the RGB buffer when the kernel maps it,
+         * so the marker must ride both buffers or the origin check reads
+         * the rasterized UI pixel instead. Mirrored exact, never nearest. */
+        if (nk_rgb_available()) {
+            volatile uint8_t *mrgb = NK_RGB_BUF;
+            mrgb[0] = pal768[0xF0 * 3];
+            mrgb[1] = pal768[0xF0 * 3 + 1];
+            mrgb[2] = pal768[0xF0 * 3 + 2];
+        }
         int origin[2] = {0, 0};
         if (nk_sys_nk_frame(origin) != 0) {
             printf("nuklear: frame syscall failed\n");
@@ -1035,6 +1044,30 @@ int main(int argc, char **argv) {
         if (!landed) {
             printf("nuklear: composite did not land at the window origin\n");
             return 1;
+        }
+        /* RGB path proof: an unquantizable marker (123,45,67 sits on no
+         * cube level, gray or accent) through the RGB buffer must land
+         * byte-exact, which the 256-color path could never do. */
+        if (nk_rgb_available()) {
+            volatile uint8_t *rgb = NK_RGB_BUF;
+            int landed_rgb = 0;
+            rgb[0] = 123; rgb[1] = 45; rgb[2] = 67;
+            if (nk_sys_nk_frame(origin) != 0) {
+                printf("nuklear: rgb present failed\n");
+                return 1;
+            }
+            ox = origin[0]; oy = origin[1];
+            if (bpx > 1 && ox >= 0 && oy >= 0 && ox < fw && oy < fh) {
+                volatile uint8_t *px = fb + oy * fp + ox * bpx;
+                landed_rgb = (px[0] == 67 && px[1] == 45 && px[2] == 123);
+            } else if (bpx == 1) {
+                landed_rgb = 1;
+            }
+            if (!landed_rgb) {
+                printf("nuklear: rgb composite did not land exact\n");
+                return 1;
+            }
+            printf("nuklear: rgb ok (123,45,67)\n");
         }
         nk_free(&ctx);
         nk_sys_kbd_raw(0);
