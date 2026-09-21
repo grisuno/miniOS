@@ -1,6 +1,6 @@
 # MiniOS
 
-<img width="1029" height="829" alt="image" src="https://github.com/user-attachments/assets/b00e45fe-e631-48af-8012-c0e66fff2316" />
+<img width="1029" height="829" alt="image" src="https://github.com/user-attachments/assets/c08520bc-60d9-4cc6-b663-eada68b7b20f" />
 
 [LazyOwn](https://github.com/grisuno/LazyOwn) [RedTeam](https://medium.com/@lazyown.redteam) has released an [educational](https://github.com/grisuno/miniOS/blob/main/README.md#knowledge-base) 64-bit x86 teaching kernel and operating system, with [basic](https://github.com/grisuno/miniOS/blob/main/README.md#user-isolation-and-syscall-boundary) [security](https://github.com/grisuno/miniOS/blob/main/README.md#security-nx-and-kaslr), and that carries its own complete [toolchain](https://github.com/grisuno/miniOS/blob/main/README.md#the-four-repositories) of a subset of C, [micropython](https://github.com/grisuno/miniOS/blob/main/README.md#micropython), lua, and [lisp](https://github.com/grisuno/miniOS/blob/main/README.md#lisp), You can write a C
 program inside the running system, compile it, link it and execute it without
