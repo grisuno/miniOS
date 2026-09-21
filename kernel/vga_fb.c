@@ -1527,6 +1527,26 @@ void vga_fb_rect(int x, int y, int w, int h, uint8_t color) {
             vga_fb_pixel(i, j, color);
 }
 
+/* Direct RGB pixel: full color depth in true-color modes, best-effort
+ * quantization in 8-bit mode. This is the primitive future UI (gradients,
+ * hover glows, selection blends) builds on instead of the 15-entry UI
+ * palette. Packed order 0x00RRGGBB, same as fb_write_packed. */
+void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b) {
+    if (fb_bpp == 8) {
+        vga_fb_pixel(x, y, (uint8_t)(WALL_PAL_BASE +
+                     (wall_level(r) * 6 + wall_level(g)) * 6 + wall_level(b)));
+        return;
+    }
+    fb_write_packed(x, y, ((unsigned long)r << 16) | ((unsigned long)g << 8) | (unsigned long)b);
+}
+
+void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b) {
+    int i, j;
+    for (j = y; j < y + h; j++)
+        for (i = x; i < x + w; i++)
+            vga_fb_pixel_rgb(i, j, r, g, b);
+}
+
 void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg) {
     int px, py, i, j;
     uint8_t bits;
@@ -2681,18 +2701,21 @@ static void vga_fb_drag_terminal(int mx, int my, int grab_cx) {
 /* ---- Wallpaper ----
  * The background is a photographic PNG (wall/wallpaper.png on the ramdisk),
  * not a solid fill. It is decoded ONCE per boot via stbi_load_file and cached
- * as cube-mapped indices in the kernel heap: draw_desktop runs on every window
- * move/resize/drag tick, and re-decoding a ~650 KB PNG there would stall the
- * pointer. A failed or missing image falls back to the solid COL_BG fill, and
+ * in the kernel heap: draw_desktop runs on every window move/resize/drag
+ * tick, and re-decoding a ~650 KB PNG there would stall the pointer. In
+ * 8-bit mode the cache holds cube-mapped indices; in true color it holds
+ * full 24-bit RGB (3 bytes per pixel, no quantization), so a photographic
+ * wallpaper shows its real colors instead of the 216-entry websafe cube.
+ * A failed or missing image falls back to the solid COL_BG fill, and
  * a failed cache allocation does the same, never a partial background. */
 static uint8_t *wall_cache;
+static uint8_t *wall_rgb;
 static int wall_cw, wall_ch;
 static int wall_tried;
 
 static void wallpaper_ensure(void) {
     int w, h, ch, x, y;
     unsigned char *img;
-    uint8_t *cache;
     if (wall_tried || fb_width <= 0 || fb_height <= 0)
         return;
     wall_tried = 1;
@@ -2703,46 +2726,81 @@ static void wallpaper_ensure(void) {
         stbi_image_free(img);
         return;
     }
-    cache = kmalloc((unsigned long)fb_width * (unsigned long)fb_height);
-    if (!cache) {
+    if (fb_bpp == 8) {
+        uint8_t *cache;
+        cache = kmalloc((unsigned long)fb_width * (unsigned long)fb_height);
+        if (!cache) {
+            stbi_image_free(img);
+            return;
+        }
+        for (y = 0; y < fb_height; y++) {
+            int sy = y * h / fb_height;
+            for (x = 0; x < fb_width; x++) {
+                int sx = x * w / fb_width;
+                unsigned char *px = img + ((sy * w) + sx) * 4;
+                int idx = (wall_level(px[0]) * 6 + wall_level(px[1])) * 6
+                          + wall_level(px[2]);
+                cache[y * fb_width + x] = (uint8_t)(WALL_PAL_BASE + idx);
+            }
+        }
         stbi_image_free(img);
+        wall_cache = cache;
+        wall_cw = fb_width;
+        wall_ch = fb_height;
         return;
     }
-    for (y = 0; y < fb_height; y++) {
-        int sy = y * h / fb_height;
-        for (x = 0; x < fb_width; x++) {
-            int sx = x * w / fb_width;
-            unsigned char *px = img + ((sy * w) + sx) * 4;
-            int idx = (wall_level(px[0]) * 6 + wall_level(px[1])) * 6
-                      + wall_level(px[2]);
-            cache[y * fb_width + x] = (uint8_t)(WALL_PAL_BASE + idx);
+    {
+        uint8_t *rgb;
+        unsigned long npix = (unsigned long)fb_width * (unsigned long)fb_height;
+        if (npix == 0 || npix > 4194304UL) {
+            stbi_image_free(img);
+            return;
         }
+        rgb = kmalloc(npix * 3);
+        if (!rgb) {
+            stbi_image_free(img);
+            return;
+        }
+        for (y = 0; y < fb_height; y++) {
+            int sy = y * h / fb_height;
+            for (x = 0; x < fb_width; x++) {
+                int sx = x * w / fb_width;
+                unsigned char *px = img + ((sy * w) + sx) * 4;
+                uint8_t *dst = rgb + ((unsigned long)y * (unsigned long)fb_width + (unsigned long)x) * 3;
+                dst[0] = px[0]; dst[1] = px[1]; dst[2] = px[2];
+            }
+        }
+        stbi_image_free(img);
+        wall_rgb = rgb;
+        wall_cw = fb_width;
+        wall_ch = fb_height;
     }
-    stbi_image_free(img);
-    wall_cache = cache;
-    wall_cw = fb_width;
-    wall_ch = fb_height;
 }
 
 static void wallpaper_draw(void) {
     int x, y;
     wallpaper_ensure();
-    if (!wall_cache || wall_cw != fb_width || wall_ch != fb_height) {
-        vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
-        return;
-    }
     if (fb_bpp == 8) {
+        if (!wall_cache || wall_cw != fb_width || wall_ch != fb_height) {
+            vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
+            return;
+        }
         for (y = 0; y < fb_height; y++)
             for (x = 0; x < fb_width; x++)
                 FB_ADDR[(unsigned)y * (unsigned)fb_pitch + (unsigned)x] =
                     wall_cache[y * fb_width + x];
         return;
     }
-    /* True color: the cached cube indices resolve to full RGB, so the
-     * photographic wallpaper is no longer quantized to 216 DAC entries. */
+    if (!wall_rgb || wall_cw != fb_width || wall_ch != fb_height) {
+        vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
+        return;
+    }
+    /* True color: direct RGB from the cache, no cube quantization. */
     for (y = 0; y < fb_height; y++)
-        for (x = 0; x < fb_width; x++)
-            fb_write_packed(x, y, fb_pack_idx(wall_cache[y * fb_width + x]));
+        for (x = 0; x < fb_width; x++) {
+            uint8_t *px = wall_rgb + ((unsigned long)y * (unsigned long)fb_width + (unsigned long)x) * 3;
+            fb_write_packed(x, y, ((unsigned long)px[0] << 16) | ((unsigned long)px[1] << 8) | (unsigned long)px[2]);
+        }
 }
 
 /* ---- Desktop shortcut icons ----
@@ -3077,11 +3135,11 @@ static void wallpaper_rect(int x0, int y0, int w, int h) {
     if (x0 + w > fb_width) w = fb_width - x0;
     if (y0 + h > fb_height) h = fb_height - y0;
     if (w <= 0 || h <= 0) return;
-    if (!wall_cache || wall_cw != fb_width || wall_ch != fb_height) {
-        vga_fb_rect(x0, y0, w, h, COL_BG);
-        return;
-    }
     if (fb_bpp == 8) {
+        if (!wall_cache || wall_cw != fb_width || wall_ch != fb_height) {
+            vga_fb_rect(x0, y0, w, h, COL_BG);
+            return;
+        }
         for (y = 0; y < h; y++)
             for (x = 0; x < w; x++)
                 FB_ADDR[(unsigned)(y0 + y) * (unsigned)fb_pitch +
@@ -3089,11 +3147,17 @@ static void wallpaper_rect(int x0, int y0, int w, int h) {
                     wall_cache[(y0 + y) * fb_width + (x0 + x)];
         return;
     }
+    if (!wall_rgb || wall_cw != fb_width || wall_ch != fb_height) {
+        vga_fb_rect(x0, y0, w, h, COL_BG);
+        return;
+    }
     for (y = 0; y < h; y++)
-        for (x = 0; x < w; x++)
+        for (x = 0; x < w; x++) {
+            uint8_t *px = wall_rgb + ((unsigned long)(y0 + y) * (unsigned long)fb_width +
+                                      (unsigned long)(x0 + x)) * 3;
             fb_write_packed(x0 + x, y0 + y,
-                            fb_pack_idx(wall_cache[(y0 + y) * fb_width +
-                                                   (x0 + x)]));
+                            ((unsigned long)px[0] << 16) | ((unsigned long)px[1] << 8) | (unsigned long)px[2]);
+        }
 }
 
 /* Hover repaint without the fullscreen flash: erase only the dock strip

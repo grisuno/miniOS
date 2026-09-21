@@ -172,6 +172,9 @@ void     vga_fb_init(void);
 void     vga_fb_clear(void);
 void     vga_fb_pixel(int x, int y, uint8_t color);
 void     vga_fb_rect(int x, int y, int w, int h, uint8_t color);
+/* Direct RGB primitives: full depth in 32/24-bit, quantized in 8-bit. */
+void     vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b);
+void     vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b);
 void     vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);
 void     vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);
 void     vga_fb_putc_term(char c);

@@ -313,23 +313,19 @@ msg_read:
     .asciz "stage2: read error"
 
 /* Probe VESA BIOS Extensions for a high-resolution linear framebuffer and
- * record it for the kernel in the fixed VBE_INFO_ADDR struct. Tries the
- * true-color modes that fit the emulated ~2 MB scan-out window (800x600x32,
- * then 640x480x32), then the 8-bit-palette modes 1024x768x8, 800x600x8 and
- * 640x480x8, then falls back to VGA Mode 13h. Runs in real mode (the kernel
- * image is already fully loaded, so this scratch is safe) and must complete
- * before the transition to long mode kills the BIOS video services. A
- * true-color mode frees the desktop from the 256-entry VGA DAC palette; the
- * 8-bit modes keep that path unchanged. A true-color mode whose framebuffer
- * exceeds the ~2 MB QEMU scans out would render its bottom rows black, so
- * none taller than 800x600 is offered. */
+ * record it for the kernel in the fixed VBE_INFO_ADDR struct. Tries
+ * 1024x768 (true color first, then 8-bit palette), then 800x600x32,
+ * 800x600x8, 640x480x32 and 640x480x8, then falls back to VGA Mode 13h.
+ * Runs in real mode (the kernel image is already fully loaded, so this
+ * scratch is safe) and must complete before the transition to long mode
+ * kills the BIOS video services. A true-color mode frees the desktop from
+ * the 256-entry VGA DAC palette; the 8-bit modes keep that path unchanged.
+ * The kernel maps the framebuffer slot by slot, so a multi-MB framebuffer
+ * spanning two 2 MB PD slots is fully mapped. */
 vbe_probe:
-    /* 1024x768x8 is the first candidate: the emulated std-VGA scan-out window
-     * is only ~2 MB, so at 1024 wide a true-color framebuffer (1024x768x24 =
-     * 2.25 MB) would spill past it and render its bottom rows (taskbar, dock)
-     * black. The 8-bit 1024x768 framebuffer is 1 MB, fits the whole window
-     * and shows the full desktop including the bottom dock. True color is
-     * therefore only offered at 800x600 or smaller, where it fits. */
+    /* 1024x768 first: the desktop keeps the size it always had. True color
+     * is preferred at each resolution, so photographic art is never
+     * quantized when the mode exists. */
     movw $VBE_MODE_1024x768x32, %bx
     call vbe_try_mode
     jnc vbe_ok

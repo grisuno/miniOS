@@ -462,12 +462,16 @@ native 320x200 instead of stealing the whole display.
 
 - **Boot path (stage2.S + bootdefs.h):** after the kernel image is loaded and
   before long mode kills the BIOS video services, stage 2 probes VESA BIOS
-  Extensions for an 8-bit-palette linear-framebuffer mode: 800x600x8
-  (`VBE_MODE_800x600x8`), then 640x480x8, then VGA Mode 13h as a fallback. It
-  writes `{phys_base, pitch, width, height, valid}` to the fixed low-memory
-  struct `VBE_INFO_ADDR` (0x7E20). The 8-bit modes keep the 256-entry VGA DAC
-  path the desktop and DOOM share. No bare VBE constant appears in the
-  assembly; every mode number, offset and attribute lives in `bootdefs.h`.
+  Extensions for a linear framebuffer: 1024x768x32 first, then 1024x768x8,
+  800x600x32, 800x600x8, 640x480x32, 640x480x8, then VGA
+  Mode 13h as a fallback. It
+  writes `{phys_base, pitch, width, height, valid, bpp}` to the fixed
+  low-memory struct `VBE_INFO_ADDR` (0x7E20). In true color the kernel
+  expands palette-index drawing to RGB and the wallpaper keeps full
+  24-bit color (no websafe quantization); the 8-bit modes keep the
+  256-entry VGA DAC path. No bare
+  VBE constant appears in the assembly; every mode number, offset and
+  attribute lives in `bootdefs.h`.
 - **Kernel mapping (kernel.c `mm_setup_protections`):** `vga_fb_boot_config`
   loads the VBE struct into `fb_width`/`fb_height`/`fb_pitch`/`fb_phys_base`,
   and the kernel maps that physical framebuffer into the user window at the
