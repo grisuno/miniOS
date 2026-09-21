@@ -226,6 +226,8 @@ make usb USB=/dev/sdX  # writes the bootable image to a USB pendrive (DD mode)
 make vdi        # converts the image to os.vdi for VirtualBox (hard disk)
 ```
 
+<img width="5760" height="2709" alt="miniOS" src="https://github.com/user-attachments/assets/95ac0420-f891-4d4f-aca1-e663f50f3819" />
+
 ### Choosing KVM vs TCG
 
 The default `make run` uses **no acceleration (TCG)**. Use `make run-kvm` for
