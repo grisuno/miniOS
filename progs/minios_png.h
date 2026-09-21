@@ -27,6 +27,10 @@
 /** Central configuration: every bound, path and limit lives here. */
 #define MPNG_FILE_MAX 1048576L
 #define MPNG_MAX_DIM 512
+/* Large-source cap for user-selected previews (the 800x600 wallpaper):
+ * the plain scaler stays at 512 for icons and policy art, while previews
+ * may downscale sources up to this. Destination stays at MAX_DIM. */
+#define MPNG_BIG_DIM 2048
 #define MPNG_PAL_N 256L
 #define MPNG_PAL_BYTES 768L
 #define MPNG_PATH_MAX 64
@@ -111,6 +115,40 @@ static int mpng_rgb_to_idx_scaled(const unsigned char *rgb, int sw, int sh,
     if (sw <= 0 || sh <= 0 || dw <= 0 || dh <= 0)
         return MPNG_ERR_BOUND;
     if (sw > MPNG_MAX_DIM || sh > MPNG_MAX_DIM)
+        return MPNG_ERR_BOUND;
+    if (dw > MPNG_MAX_DIM || dh > MPNG_MAX_DIM)
+        return MPNG_ERR_BOUND;
+    if (pal_n <= 0 || pal_n > MPNG_PAL_N)
+        return MPNG_ERR_BOUND;
+    for (y = 0; y < dh; y++) {
+        int sy = y * sh / dh;
+        for (x = 0; x < dw; x++) {
+            int sx = x * sw / dw;
+            const unsigned char *p = rgb + (sy * sw + sx) * 3;
+            int v = mpng_nearest(pal, pal_n, p[0], p[1], p[2]);
+            if (v < 0)
+                return MPNG_ERR_BOUND;
+            dst[y * dw + x] = (unsigned char)v;
+        }
+    }
+    return MPNG_ERR_OK;
+}
+
+/** Docstring: large-source twin for user-selected previews (wallpaper).
+ * Same nearest-neighbour contract, but sources up to MPNG_BIG_DIM are
+ * accepted; the destination stays at MPNG_MAX_DIM. The plain scaler keeps
+ * its 512 source bound (pinned by the host suite), so icon and policy
+ * art never grow through this. */
+static int mpng_rgb_to_idx_scaled_big(const unsigned char *rgb, int sw, int sh,
+                                      const unsigned char *pal, long pal_n,
+                                      unsigned char *dst, int dw, int dh) {
+    int x;
+    int y;
+    if (!rgb || !pal || !dst)
+        return MPNG_ERR_BOUND;
+    if (sw <= 0 || sh <= 0 || dw <= 0 || dh <= 0)
+        return MPNG_ERR_BOUND;
+    if (sw > MPNG_BIG_DIM || sh > MPNG_BIG_DIM)
         return MPNG_ERR_BOUND;
     if (dw > MPNG_MAX_DIM || dh > MPNG_MAX_DIM)
         return MPNG_ERR_BOUND;

@@ -1038,6 +1038,271 @@ static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long
     return 0;
 }
 
+/* Linux mremap(25) flags. Named, never bare: FIXED needs MAYMOVE plus the
+ * 5th-arg target, anything outside the two is EINVAL. */
+#define LINUX_MREMAP_MAYMOVE 1
+#define LINUX_MREMAP_FIXED 2
+
+/* Free-tree node covering [base, base+len) entirely, or VMA_NIL. Bounded
+ * explicit-stack walk like the mmap best-fit search above. */
+static vma_node_t *vma_free_cover(unsigned long base, unsigned long len) {
+    unsigned long end = base + len;
+    vma_node_t *stack[64];
+    int sp = 0;
+    vma_node_t *x = vma_free_root;
+    while (x != VMA_NIL || sp > 0) {
+        while (x != VMA_NIL) {
+            if (sp < 64) stack[sp++] = x;
+            x = x->left;
+        }
+        x = stack[--sp];
+        if (x->base <= base && end - x->base <= x->len)
+            return x;
+        x = x->right;
+    }
+    return VMA_NIL;
+}
+
+/* 1 when any live node intersects [base, base+len). Bounded walk. */
+static int vma_live_overlap(unsigned long base, unsigned long len) {
+    unsigned long end = base + len;
+    vma_node_t *stack[64];
+    int sp = 0;
+    vma_node_t *x = vma_live_root;
+    while (x != VMA_NIL || sp > 0) {
+        while (x != VMA_NIL) {
+            if (sp < 64) stack[sp++] = x;
+            x = x->left;
+        }
+        x = stack[--sp];
+        if (x->base < end && base < x->base + x->len)
+            return 1;
+        x = x->right;
+    }
+    return 0;
+}
+
+/* Linux mremap(25): resize or move one mmap region. glibc's realloc calls
+ * it when growing large mmap'd chunks (the file-browser PNG preview hits
+ * it three times per wallpaper decode), so ENOSYS here silently breaks
+ * every big realloc even though malloc has no fallback left. The old
+ * mapping is one exact live VMA node (what mmap inserts); anything else
+ * is EFAULT, never a partial move. Shrink splits precisely, grow extends
+ * in place when the adjacent pages are free, otherwise MAYMOVE relocates
+ * (copy + free old, old untouched on ENOMEM) and FIXED relocates only to
+ * a free-covered target. new_size 0 unmaps like munmap. */
+static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a6) {
+    unsigned long old = (unsigned long)a1;
+    unsigned long old_len = ALIGN_UP((unsigned long)a2, 0x1000);
+    unsigned long new_len = ALIGN_UP((unsigned long)a3, 0x1000);
+    unsigned long flags = (unsigned long)a4;
+    unsigned long fixed = (unsigned long)a5;
+    unsigned long fnd_base = 0, fnd_len = 0;
+    irqflags_t mflags;
+    vma_node_t *fnd;
+    long ret;
+    (void)a6;
+    if (old & 0xFFFUL) return -22;
+    if (flags & ~(unsigned long)(LINUX_MREMAP_MAYMOVE | LINUX_MREMAP_FIXED))
+        return -22;
+    if ((flags & LINUX_MREMAP_FIXED) && !(flags & LINUX_MREMAP_MAYMOVE))
+        return -22;
+    if (old_len == 0 || old_len > USER_LOAD_END - USER_LOAD_BASE) return -22;
+    SANITIZE_RANGE(a1, old_len);
+    if (new_len == 0) {
+        spin_lock_irqsave(&mm_lock, &mflags);
+        fnd = vma_tree_find(vma_live_root, old);
+        ret = -14;
+        if (fnd != VMA_NIL && old_len <= fnd->len) {
+            vma_tree_insert(&vma_free_root, fnd->base, fnd->len);
+            vma_tree_delete(&vma_live_root, old);
+            ret = (long)old;
+        }
+        spin_unlock_irqrestore(&mm_lock, mflags);
+        return ret;
+    }
+    if (new_len > USER_LOAD_END - USER_LOAD_BASE) return -12;
+    if ((flags & LINUX_MREMAP_FIXED) != 0) {
+        if (fixed & 0xFFFUL) return -22;
+        SANITIZE_RANGE(a5, new_len);
+    }
+    spin_lock_irqsave(&mm_lock, &mflags);
+    fnd = vma_tree_find(vma_live_root, old);
+    ret = -14;
+    if (fnd == VMA_NIL || old_len > fnd->len) goto mremap_out;
+    fnd_base = fnd->base;
+    fnd_len = fnd->len;
+    if (new_len <= fnd_len && new_len <= old_len) {
+        unsigned long tail = fnd_len - new_len;
+        unsigned long tail_base = fnd_base + new_len;
+        vma_tree_delete(&vma_live_root, old);
+        if (vma_tree_insert(&vma_live_root, old, new_len) == VMA_NIL) {
+            vma_tree_insert(&vma_live_root, fnd_base, fnd_len);
+            ret = -12;
+            goto mremap_out;
+        }
+        if (tail > 0)
+            vma_tree_insert(&vma_free_root, tail_base, tail);
+        ret = (long)old;
+        goto mremap_out;
+    }
+    if (new_len <= fnd_len) {
+        ret = (long)old;
+        goto mremap_out;
+    }
+    {
+        proc_t *mp = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
+        if (mp && mp->rl_as_max) {
+            unsigned long used = 0;
+            if (g_brk > USER_LOAD_BASE) used += g_brk - USER_LOAD_BASE;
+            if (USER_BRK_END > user_mmap_cur) used += USER_BRK_END - user_mmap_cur;
+            if (used + (new_len - old_len) > mp->rl_as_max) {
+                ret = -12;
+                goto mremap_out;
+            }
+        }
+    }
+    if ((flags & LINUX_MREMAP_FIXED) != 0 && fixed != old) {
+        vma_node_t *cov = vma_free_cover(fixed, new_len);
+        unsigned long move_n = old_len < new_len ? old_len : new_len;
+        unsigned long cb, cl, rem;
+        if (cov == VMA_NIL || vma_live_overlap(fixed, new_len)) {
+            ret = -12;
+            goto mremap_out;
+        }
+        cb = cov->base;
+        cl = cov->len;
+        rem = (cb + cl) - (fixed + new_len);
+        if (mm_ensure_cur(fixed, fixed + new_len)) {
+            ret = -12;
+            goto mremap_out;
+        }
+        vma_tree_delete(&vma_free_root, cb);
+        if (fixed > cb)
+            vma_tree_insert(&vma_free_root, cb, fixed - cb);
+        if (rem > 0)
+            vma_tree_insert(&vma_free_root, fixed + new_len, rem);
+        if (vma_tree_insert(&vma_live_root, fixed, new_len) == VMA_NIL) {
+            if (fixed > cb)
+                vma_tree_delete(&vma_free_root, cb);
+            if (rem > 0)
+                vma_tree_delete(&vma_free_root, fixed + new_len);
+            vma_tree_insert(&vma_free_root, cb, cl);
+            ret = -12;
+            goto mremap_out;
+        }
+        kmemcpy((void *)fixed, (void *)old, move_n);
+        vma_tree_insert(&vma_free_root, fnd_base, fnd_len);
+        vma_tree_delete(&vma_live_root, old);
+        ret = (long)fixed;
+        goto mremap_out;
+    }
+    {
+        unsigned long delta = new_len - fnd_len;
+        unsigned long adj = fnd_base + fnd_len;
+        vma_node_t *cov = VMA_NIL;
+        if (delta <= USER_LOAD_END - adj)
+            cov = vma_free_cover(adj, delta);
+        if (cov != VMA_NIL) {
+            unsigned long cb = cov->base, cl = cov->len;
+            unsigned long rem_base = adj + delta;
+            unsigned long rem_len = (cb + cl) - rem_base;
+            unsigned long grown = fnd_len + delta;
+            vma_tree_delete(&vma_live_root, old);
+            if (vma_tree_insert(&vma_live_root, old, grown) == VMA_NIL) {
+                vma_tree_insert(&vma_live_root, fnd_base, fnd_len);
+                ret = -12;
+                goto mremap_out;
+            }
+            vma_tree_delete(&vma_free_root, cb);
+            if (rem_len > 0)
+                vma_tree_insert(&vma_free_root, rem_base, rem_len);
+            if (mm_ensure_cur(adj, adj + delta)) {
+                vma_tree_delete(&vma_live_root, old);
+                vma_tree_insert(&vma_live_root, fnd_base, fnd_len);
+                if (rem_len > 0)
+                    vma_tree_delete(&vma_free_root, rem_base);
+                vma_tree_insert(&vma_free_root, cb, cl);
+                ret = -12;
+                goto mremap_out;
+            }
+            ret = (long)old;
+            goto mremap_out;
+        }
+    }
+    if (!(flags & LINUX_MREMAP_MAYMOVE)) {
+        ret = -12;
+        goto mremap_out;
+    }
+    {
+        unsigned long n = new_len;
+        unsigned long addr = 0;
+        unsigned long move_n = old_len < new_len ? old_len : new_len;
+        unsigned long rb = 0, rl = 0, rem = 0;
+        int carved = 0;
+        vma_node_t *best = VMA_NIL;
+        vma_node_t *stack[64];
+        int sp = 0;
+        vma_node_t *x = vma_free_root;
+        while (x != VMA_NIL || sp > 0) {
+            while (x != VMA_NIL) {
+                if (sp < 64) stack[sp++] = x;
+                x = x->left;
+            }
+            x = stack[--sp];
+            if (x->len >= n && (best == VMA_NIL || x->base < best->base))
+                best = x;
+            x = x->right;
+        }
+        if (best != VMA_NIL) {
+            rb = best->base;
+            rl = best->len;
+            rem = rl - n;
+            addr = rb + rem;
+            vma_tree_delete(&vma_free_root, rb);
+            if (rem > 0)
+                vma_tree_insert(&vma_free_root, rb, rem);
+            carved = 1;
+        } else {
+            if (n > user_mmap_cur - USER_LOAD_BASE || user_mmap_cur - n < g_brk) {
+                ret = -12;
+                goto mremap_out;
+            }
+            user_mmap_cur -= n;
+            addr = user_mmap_cur;
+        }
+        if (mm_ensure_cur(addr, addr + n)) {
+            if (carved) {
+                if (rem > 0)
+                    vma_tree_delete(&vma_free_root, rb);
+                vma_tree_insert(&vma_free_root, rb, rl);
+            } else {
+                user_mmap_cur += n;
+            }
+            ret = -12;
+            goto mremap_out;
+        }
+        if (vma_tree_insert(&vma_live_root, addr, n) == VMA_NIL) {
+            if (carved) {
+                if (rem > 0)
+                    vma_tree_delete(&vma_free_root, rb);
+                vma_tree_insert(&vma_free_root, rb, rl);
+            } else {
+                user_mmap_cur += n;
+            }
+            ret = -12;
+            goto mremap_out;
+        }
+        kmemcpy((void *)addr, (void *)old, move_n);
+        vma_tree_insert(&vma_free_root, fnd_base, fnd_len);
+        vma_tree_delete(&vma_live_root, old);
+        ret = (long)addr;
+    }
+mremap_out:
+    spin_unlock_irqrestore(&mm_lock, mflags);
+    return ret;
+}
+
 static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     return 0;
@@ -1262,6 +1527,7 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [20]  = { sys_linux_writev,       "writev" },
     [21]  = { sys_linux_access,       "access" },
     [24]  = { sys_linux_yield,        "yield" },
+    [25]  = { sys_linux_mremap,       "mremap" },
     [39]  = { sys_linux_getpid,       "getpid" },
     [41]  = { sys_linux_socket,       "socket" },
     [42]  = { sys_linux_connect,      "connect" },
@@ -1304,7 +1570,7 @@ struct sc_extra_name { long n; const char *name; };
 static const struct sc_extra_name sc_extra_names[] = {
     { 4, "stat" }, { 6, "lstat" }, { 15, "rt_sigreturn" },
     { 17, "pread64" }, { 18, "pwrite64" }, { 22, "pipe" },
-    { 23, "select" }, { 25, "mremap" }, { 28, "madvise" },
+    { 23, "select" }, { 28, "madvise" },
     { 32, "dup" }, { 33, "dup2" }, { 35, "nanosleep" },
     { 56, "clone" }, { 72, "fcntl" }, { 78, "getdents" },
     { 97, "getrlimit" }, { 102, "getuid" }, { 104, "getgid" },

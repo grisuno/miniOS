@@ -1251,10 +1251,12 @@ expect "exit code: 12"
 # computed value. This is the low-code loop: graph -> CVM bytecode -> run.
 scenario "nuklear selftest renders one UI frame" "nuklear --selftest
 poweroff"
+expect "nuklear: rgb ok (123,45,67)"
 expect "nuklear: frame ok (800x360)"
 
 scenario "file browser lists the root and passes its assoc vectors" "file --selftest
 poweroff"
+expect "file: png ok (192x120)"
 expect "file: ok ("
 expect "theme dark"
 

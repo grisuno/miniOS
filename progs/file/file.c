@@ -356,16 +356,16 @@ static int file_preview_load(const char *path) {
         return -1;
     px = stbi_load_from_memory(raw, (int)sz, &w, &h, &comp, 3);
     free(raw);
-    if (!px || w <= 0 || h <= 0 || w > MPNG_MAX_DIM * 8 || h > MPNG_MAX_DIM * 8) {
+    if (!px || w <= 0 || h <= 0 || w > MPNG_BIG_DIM || h > MPNG_BIG_DIM) {
         if (px) stbi_image_free(px);
         return -1;
     }
     {
         unsigned char pal[768];
         nk_build_palette(pal);
-        if (mpng_rgb_to_idx_scaled(px, w, h, pal, 256, file_preview_px,
-                                   FILE_PREVIEW_W,
-                                   FILE_PREVIEW_H) != MPNG_ERR_OK) {
+        if (mpng_rgb_to_idx_scaled_big(px, w, h, pal, 256, file_preview_px,
+                                       FILE_PREVIEW_W,
+                                       FILE_PREVIEW_H) != MPNG_ERR_OK) {
             stbi_image_free(px);
             return -1;
         }
@@ -730,6 +730,14 @@ static int file_selftest(void) {
             return 1;
         }
     }
+    /* Wallpaper decode: the interactive preview path (stb_image realloc
+     * grows through mremap) exercised headless, so a kernel mmap-gap
+     * breaks this before a user clicks anything. */
+    if (file_preview_load("wall/wallpaper.png") != 0) {
+        printf("file: selftest wallpaper decode failed\n");
+        return 1;
+    }
+    printf("file: png ok (%dx%d)\n", file_preview_w, file_preview_h);
     rc = file_sys_dir_list("/", buf, sizeof(buf));
     if (rc < 0) {
         printf("file: selftest dir_list failed (%ld)\n", rc);

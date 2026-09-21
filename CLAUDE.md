@@ -2346,7 +2346,10 @@ count, fail closed on bad pointers, overlong names and truncation.
   the module as `argv[0]`), `png|internal` decodes in-app with stb_image
   and blits downscaled into the NK back-buffer after rasterize, through
   the shared `progs/minios_png.h` helpers (bounded load, scaled
-  RGB-to-indexed, blit) that the pokemon side fringes also use. Unknown
+  RGB-to-indexed, blit) that the pokemon side fringes also use. Preview
+  sources reach `MPNG_BIG_DIM` (2048) through
+  `mpng_rgb_to_idx_scaled_big`, so an 800x600 wallpaper previews while
+  icons and policy art keep the 512 source bound. Unknown
   kinds report instead of running. Assoc parsing is fail closed: only
   `[a-z0-9]` exts, programs are absolute paths or `shell`/`internal`, and
   a `|` inside the program rejects the line.
@@ -3438,7 +3441,16 @@ exhausted fails closed (returns `VMA_NIL`), never overruns.  The mmap
 syscall (9) searches the free tree for reusable regions before carving
 fresh space from the cursor; munmap (11) moves the freed region to the
 free tree.  The SPAWN syscall saves and restores the entire VMA pool and
-tree roots so child mutations do not corrupt the parent state.
+tree roots so child mutations do not corrupt the parent state.  mremap
+(25, `sys_linux_mremap`) resizes or moves one exact live node: shrink
+splits precisely, grow extends in place over free-covered pages,
+otherwise `MREMAP_MAYMOVE` relocates (copy, then free old) and
+`MREMAP_FIXED` relocates only onto a free-covered target; `new_size` 0
+unmaps. Every failure restores the trees first, so a failed call changes
+nothing. glibc's realloc needs it for large mmap'd chunks (the file
+browser hits it three times decoding the wallpaper), proved headless by
+`file --selftest` (`file: png ok (192x120)`), which decodes
+`wall/wallpaper.png` through the same stb_image realloc path.
 
 The tree is integer-only and free of kernel dependencies, so it is
 host-tested by `tests/test_vma.c` (`make test-vma`), which asserts the

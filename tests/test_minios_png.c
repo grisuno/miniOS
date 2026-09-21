@@ -95,6 +95,46 @@ static void t_scale(void) {
           "scale oversize dst");
 }
 
+/** Docstring: large-source twin accepts wallpaper geometry, same bounds. */
+static void t_scale_big(void) {
+    unsigned char pal[768];
+    unsigned char rgb[2 * 2 * 3];
+    unsigned char dst[4 * 4];
+    memset(pal, 0, sizeof(pal));
+    pal[242 * 3] = 255;
+    pal[242 * 3 + 1] = 0;
+    pal[242 * 3 + 2] = 0;
+    rgb[0] = 255; rgb[1] = 0; rgb[2] = 0;
+    rgb[3] = 0; rgb[4] = 255; rgb[5] = 0;
+    rgb[6] = 0; rgb[7] = 0; rgb[8] = 255;
+    rgb[9] = 255; rgb[10] = 255; rgb[11] = 255;
+    CHECK(mpng_rgb_to_idx_scaled_big(rgb, 2, 2, pal, 256, dst, 4, 4) == 0,
+          "big ok");
+    CHECK(dst[0] == 242, "big corner keeps red");
+    {
+        unsigned char *big = (unsigned char *)malloc(800UL * 600UL * 3UL);
+        if (big) {
+            unsigned i;
+            for (i = 0; i < 800UL * 600UL * 3UL; i += 3) {
+                big[i] = 255; big[i + 1] = 0; big[i + 2] = 0;
+            }
+            CHECK(mpng_rgb_to_idx_scaled_big(big, 800, 600, pal, 256,
+                                             dst, 4, 4) == 0,
+                  "big wallpaper geometry ok");
+            CHECK(dst[0] == 242, "big wallpaper corner keeps red");
+            free(big);
+        } else {
+            CHECK(0, "big wallpaper alloc");
+        }
+    }
+    CHECK(mpng_rgb_to_idx_scaled_big(0, 2, 2, pal, 256, dst, 4, 4) < 0,
+          "big null rgb");
+    CHECK(mpng_rgb_to_idx_scaled_big(rgb, 99999, 2, pal, 256, dst, 4, 4) < 0,
+          "big oversize src");
+    CHECK(mpng_rgb_to_idx_scaled_big(rgb, 2, 2, pal, 256, dst, 9999, 4) < 0,
+          "big oversize dst");
+}
+
 /** Docstring: clipped blit lands inside and ignores outside. */
 static void t_blit(void) {
     unsigned char fb[16];
@@ -153,6 +193,7 @@ int main(void) {
     t_nearest();
     t_geom();
     t_scale();
+    t_scale_big();
     t_blit();
     t_load();
     t_policy();
@@ -160,6 +201,6 @@ int main(void) {
         printf("minios_png: FAIL (%d)\n", failures);
         return 1;
     }
-    printf("minios_png: ok (332 nearest geom scale blit load policy)\n");
+    printf("minios_png: ok (332 nearest geom scale big blit load policy)\n");
     return 0;
 }
