@@ -2144,6 +2144,10 @@ system would not exist.
 - raycastlib, Public domain ray casting library, [Pokitto demos](https://gitlab.com/drummyfish/Pokitto-Raycasting) 
 
  
+## Easteregg
+
+An easter is that the wallpaper is the image from the [cgoblin](https://github.com/grisuno/cgoblin) readme, one of the first tools we wrote in Go.
+
 
 <!-- readmenator-kb-link -->
 ## Knowledge Base
