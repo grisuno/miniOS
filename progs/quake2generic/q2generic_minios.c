@@ -75,6 +75,13 @@ static long sys_set_title(const char *t) {
  * in through quake2.h, so declare it here for the autoquit hook below. */
 extern void Sys_Quit(void);
 
+/* Command buffer (other/cmd.c) for the in-game sound test hook below. */
+extern void Cbuf_AddText(char *text);
+
+/* Sound backend probe (snddma_minios.c): headless proof the DMA layer
+ * reaches the pcm2 path, run with `quake2generic.elf --pcm2-probe`. */
+extern int q2snd_probe(void);
+
 /* Headless autoquit: when `minios_autoframes <n>` is passed on the command
  * line (`+set minios_autoframes 300`), the game counts composited frames in
  * SWimp_EndFrame and calls Sys_Quit() once the count is reached.  This makes
@@ -84,6 +91,9 @@ extern void Sys_Quit(void);
  * normal interactive play, unchanged. */
 static int s_autoframes;
 static int s_frames;
+static int s_frame_count;
+static char s_sndtest[64];
+static int s_sndtest_done;
 
 static void q2g_parse_autoframes(int argc, char **argv) {
     int i;
@@ -92,6 +102,24 @@ static void q2g_parse_autoframes(int argc, char **argv) {
         if (strcmp(argv[i], "minios_autoframes") == 0) {
             s_autoframes = atoi(argv[i + 1]);
             if (s_autoframes < 0) s_autoframes = 0;
+            return;
+        }
+    }
+}
+
+/* In-game sound test: `minios_sndtest <wav>` (e.g. `weapons/blastf1a`)
+ * stuffs `play <wav>` into the command buffer once the client is up, so a
+ * REAL sfx (loaded from the pak, mixed through a channel) is exercised
+ * headless. Unlike `+play` at startup, this runs in-game with a valid
+ * listener, so silence here means the sfx path is broken, not the test. */
+static void q2g_parse_sndtest(int argc, char **argv) {
+    int i;
+    s_sndtest[0] = 0;
+    s_sndtest_done = 0;
+    for (i = 1; i + 1 < argc; i++) {
+        if (strcmp(argv[i], "minios_sndtest") == 0) {
+            strncpy(s_sndtest, argv[i + 1], sizeof(s_sndtest) - 1);
+            s_sndtest[sizeof(s_sndtest) - 1] = 0;
             return;
         }
     }
@@ -301,6 +329,16 @@ void SWimp_EndFrame(void) {
     sys_doom_frame();
     kbd_poll();
 
+    s_frame_count++;
+    if (s_sndtest[0] && !s_sndtest_done && s_frame_count >= 10) {
+        char cmd[96];
+        strcpy(cmd, "play ");
+        strcat(cmd, s_sndtest);
+        strcat(cmd, "\nsoundlist\n");
+        Cbuf_AddText(cmd);
+        s_sndtest_done = 1;
+    }
+
     if (s_autoframes > 0) {
         s_frames++;
         if (s_frames >= s_autoframes) {
@@ -322,7 +360,11 @@ int QG_Milliseconds(void) {
 int main(int argc, char **argv) {
     int time, oldtime, newtime;
 
+    if (argc > 1 && strcmp(argv[1], "--pcm2-probe") == 0)
+        return q2snd_probe();
+
     q2g_parse_autoframes(argc, argv);
+    q2g_parse_sndtest(argc, argv);
 
     sys_set_title("Quake 2");
 

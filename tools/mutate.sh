@@ -97,7 +97,7 @@ SOURCES="$SOURCES progs/freedomui/freedomui_minios.c tests/test_freedomui.c"
 # under the next mutant, whose kill is then vacuous). This bit paint
 # when progs/paint/paint.c shipped mutants without a SOURCES entry.
 SOURCES="$SOURCES progs/paint/paint.c tests/test_paint.c"
-SOURCES="$SOURCES drivers/pcm2.c headers/pcm2.h headers/pcm_ring.h tests/test_pcm.c"
+SOURCES="$SOURCES drivers/pcm2.c headers/pcm2.h headers/pcm_ring.h tests/test_pcm.c progs/quake2generic/snddma_minios.c"
 SOURCES="$SOURCES progs/nk_palette.h progs/wl/wl_mini.h progs/wl/wl_mbox.h progs/wl/wlcomp.c"
 SOURCES="$SOURCES progs/minicraft/minicraft.c"
 SOURCES="$SOURCES kernel/vga_fx.c kernel/vga_fb.c headers/vga_fx.h tests/test_fx.c"
@@ -186,6 +186,9 @@ pcm-ring-underrun-lost | s/r->underruns++;/r->underruns += 0;/ | headers/pcm_rin
 pcm2-open-always-busy | s/    if (pcm2_on) {/    if (1) {/ | drivers/pcm2.c
 pcm2-write-always-zero | s/        chunk = len - accepted;/        chunk = 0;/ | drivers/pcm2.c
 pcm2-close-no-release | s/    pcm2_release_locked();/    ;/ | drivers/pcm2.c
+q2snd-init-false | s/    if (sys_pcm2_open(MINIOS_PCM2_NONBLOCK) < 0) {/    if (1) {/ | progs/quake2generic/snddma_minios.c
+q2snd-rate-wrong | s/    dma.speed = Q2SND_RATE;/    dma.speed = 11025;/ | progs/quake2generic/snddma_minios.c
+q2snd-submit-nopush | s/    q2_dma_push((int)horizon);/    ;/ | progs/quake2generic/snddma_minios.c
 
 zip-traversal-allowed | s/if (clen == 2 \\&\\& start\\[0\\] == \\x27.\\x27 \\&\\& start\\[1\\] == \\x27.\\x27) return 0;/if (0) return 0;/ | fs/zip.c
 zip-bad-magic-accepted | s/if (!mz_zip_reader_init_mem(\\&zip, abuf, (size_t)asize, 0)) {/if (0) {/ | fs/zip.c
@@ -442,6 +445,12 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # here and would survive vacuously; they are covered by live
             # runs (irq counter climbs) instead of the gate.
             MATCH="pcm2" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/quake2generic/snddma_minios.c)
+            # The Quake 2 sound backend is pinned by the pcm2 probe scenario
+            # (SNDDMA path reaches pcm2) and the engine-init scenario
+            # (sound sampling rate 22050); MATCH="quake2generic" runs both.
+            MATCH="quake2generic" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         progs/minios_abi.h)
             python3 "$HERE/tools/check_abi_numbers.py" > "$BACKUP/suite.log" 2>&1

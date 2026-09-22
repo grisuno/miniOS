@@ -571,7 +571,7 @@ Q2G_GAME_SRCS = g_ai.c p_client.c g_cmds.c g_svcmds.c g_combat.c \
 Q2G_OTHER_SRCS  = q_hunk.c vid_menu.c vid_lib.c q_system.c glob.c
 Q2G_NULL_SRCS   = cd_null.c
 Q2G_NET_SRCS    = net_unix.c
-Q2G_SOUND_SRCS  = snddma_null.c
+Q2G_SOUND_SRCS  = snddma_minios.c
 
 Q2G_MINIOS_SRCS = q2generic_minios.c
 
@@ -621,8 +621,15 @@ $(Q2G_DIR)/build/snd_dma.o: $(Q2G_UPSTREAM)/client/snd_dma.c | $(Q2G_DIR)/build
 $(Q2G_DIR)/build/snd_mem.o: $(Q2G_UPSTREAM)/client/snd_mem.c | $(Q2G_DIR)/build
 	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
 
-$(Q2G_DIR)/build/snd_mix.o: $(Q2G_UPSTREAM)/client/snd_mix.c | $(Q2G_DIR)/build
+$(Q2G_DIR)/build/snd_mix.o: $(Q2G_DIR)/build/snd_mix_fixed.c | $(Q2G_DIR)/build
 	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+
+# MiniOS-local patch (build-time copy; the upstream checkout stays pristine):
+# upstream S_PaintChannelFrom8 indexes the 32-row snd_scaletable with
+# `>> 11`, which is 0 for every legal volume and silences all 8-bit sfx.
+# The fixed copy restores the original id `>> 3`.
+$(Q2G_DIR)/build/snd_mix_fixed.c: $(Q2G_UPSTREAM)/client/snd_mix.c | $(Q2G_DIR)/build
+	sed -e 's/snd_scaletable\[ ch->leftvol >> 11\]/snd_scaletable[ ch->leftvol >> 3]/' -e 's/snd_scaletable\[ ch->rightvol >> 11\]/snd_scaletable[ ch->rightvol >> 3]/' $< > $@
 
 $(Q2G_DIR)/build/cmd.o: $(Q2G_UPSTREAM)/qcommon/cmd.c | $(Q2G_DIR)/build
 	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
@@ -690,8 +697,10 @@ $(Q2G_DIR)/build/cd_null.o: $(Q2G_UPSTREAM)/null/cd_null.c | $(Q2G_DIR)/build
 $(Q2G_DIR)/build/net_unix.o: $(Q2G_UPSTREAM)/net/net_unix.c | $(Q2G_DIR)/build
 	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
 
-$(Q2G_DIR)/build/snddma_null.o: $(Q2G_UPSTREAM)/sound/snddma_null.c | $(Q2G_DIR)/build
-	$(CC) $(Q2G_CFLAGS_ALL) -c $< -o $@
+# Sound backend: the MiniOS pcm2 DMA layer replaces upstream snddma_null.c
+# (lives beside the upstream clone, like q2generic_minios.c).
+$(Q2G_DIR)/build/snddma_minios.o: $(Q2G_DIR)/snddma_minios.c | $(Q2G_DIR)/build
+	$(CC) $(Q2G_CFLAGS_ALL) -I$(PROGS_DIR) -c $< -o $@
 
 # MiniOS platform layer (lives beside the upstream clone)
 $(Q2G_DIR)/build/q2generic_minios.o: $(Q2G_DIR)/q2generic_minios.c | $(Q2G_DIR)/build

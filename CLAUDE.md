@@ -2860,10 +2860,52 @@ implements the quake2generic interface:
 
 ### Audio
 
-Sound is stubbed: `SNDDMA_Init` returns false, all other `SNDDMA_*` are
-no-ops. The engine runs silently. This matches the DOOM PC speaker approach
-before the speaker driver is enabled. The SB16 PCM path (syscalls 221/222)
-could be wired in the future.
+Sound reaches the kernel's low-latency pcm2 engine through the MiniOS DMA
+backend `progs/quake2generic/snddma_minios.c` (replaces upstream
+`snddma_null.c` in `Q2G_SOUND_SRCS`). The engine (`client/snd_mix.c`
+`S_TransferPaintBuffer`) mixes every sfx into one mono ring,
+`dma.buffer`, and `S_Update_`/`GetSoundtime` drive painting from
+`SNDDMA_GetDMAPos`. The backend maps that ring straight onto pcm2 (syscalls
+246/247/248, 8-bit mono 22050 Hz single-cycle DMA; see "Low-latency path
+pcm2"): `SNDDMA_Submit` pushes at most one kernel ring ahead of the play
+position (`Q2SND_AHEAD` 1024 B) with NONBLOCK writes that never stall the
+frame loop, and anything further painted waits in `dma.buffer` for the next
+Submit — pushing the whole painted lead would cost ~200 ms per frame (the
+0.2 s `s_mixahead` at 22050 Hz) and drop the game to single-digit fps.
+`SNDDMA_GetDMAPos` reports a play position from
+elapsed guest time clamped to what was submitted. Geometry is dictated by
+the engine and must not drift: `dma.samples` must be a power of two (the
+mixer indexes with `paintedtime & (dma.samples - 1)`; the backend uses
+8192), `dma.channels == 1`, and `dma.speed == 22050`
+because `client/snd_mem.c` resamples every loaded sfx to `dma.speed`.
+The mixer runs 16-bit mono (`dma.samplebits == 16`, downconverted to 8-bit
+unsigned on the way to pcm2) because upstream `S_PaintChannelFrom8` is
+broken (see the MiniOS-local patch below); 16-bit silence is `0`.
+Fail-closed: no SB16 (pcm2 open refuses) leaves `dma.buffer` NULL and the
+game runs silently through `S_ClearBuffer`, never a crash. The engine's
+`S_Init` prints `sound sampling rate: 22050` only when `SNDDMA_Init`
+succeeded, and `quake2generic.elf --pcm2-probe` is the headless hook that
+proves the backend reaches pcm2; `minios_sndtest <wav>` plays a real pak
+sfx in-game for headless verification. The BDD suite pins the probe, the
+engine init (clean `exit code: 0`), the forced-sine non-silence
+(`q2snd: audio present`) and a real sfx (`minios_sndtest`), and
+`q2snd-init-false` / `q2snd-rate-wrong` / `q2snd-submit-nopush` mutants die
+in `tools/mutate.sh`. Do NOT route this
+through the legacy SB16 ring (221/222): it is the ~650 ms game-music path
+and, more importantly, auto-init DMA is forbidden on this bus (see the SB16
+HAZARD note).
+
+- **MiniOS-local patch (`snd_mix.c`, build-time copy).** Upstream
+  `S_PaintChannelFrom8` indexes the 32-row `snd_scaletable` with
+  `leftvol >> 11`, which is 0 for every legal volume (the original id code
+  uses `>> 3`), so every 8-bit sfx mixes as pure silence while the channel
+  shows full volume — the exact "game runs, mixer runs, no sound" failure.
+  The upstream checkout is git-ignored and must stay pristine, so the
+  Makefile generates `build/snd_mix_fixed.c` from the upstream source with
+  the one-line `>> 11` to `>> 3` fix applied via `sed`, and compiles that
+  instead. If the fix ever regresses, real sfx go silent (the forced sine
+  still sounds, because it bypasses channels) and the `plays a real sfx`
+  BDD scenario fails.
 
 ### Memory constraints
 
@@ -2899,13 +2941,29 @@ The kernel adds 223 (`SYS_Q2G_SET_TITLE`: copy a user string into the
 graphics window title buffer so the desktop compositing shows "Quake 2"
 instead of "DOOM"). All other infrastructure is reused: `SYS_DOOM_FRAME`
 (211), `SYS_PALETTE` (206), `SYS_KBD` (205), `SYS_KBD_RAW` (207),
-`SYS_VGA_MODE` (208), `SYS_TIME` (204), `SYS_MOUSE` (219).
+`SYS_VGA_MODE` (208), `SYS_TIME` (204), `SYS_MOUSE` (219), and the pcm2
+sound path (246/247/248, via `snddma_minios.c`).
 
 ### BDD
 
-The BDD scenario `quake2generic binary exists on minifs` verifies the ELF
-ships on MiniFS. A full gameplay test requires the PAK file and is not
-automated in the serial-console BDD suite (same as DOOM).
+ Five scenarios pin Quake 2: `quake2generic binary exists on minifs`
+ (the ELF ships on MiniFS), `quake2generic sound path opens and releases
+ pcm2` (`--pcm2-probe` prints `q2snd: pcm2 ok` and the device is released),
+ `quake2generic initializes sound and exits cleanly` (a short
+ `minios_autoframes` run prints `sound sampling rate: 22050` and exits 0),
+ `quake2generic pushes non-silent audio` (the same run with
+ `+set s_testsound 1`, which forces the engine's fixed sine into the paint
+ buffer, prints `q2snd: audio present`), and `quake2generic plays a real
+ sfx` (`minios_sndtest weapons/blastf1a` plays a pak blaster in-game,
+ prints `q2snd: audio present`). The sine-vs-real pair tells plumbing from
+ mixer: if the sine sounds but the blaster does not, the 8-bit mixer fix
+ regressed; if neither sounds, the device path is broken. Every pushed byte
+ passes a loudness probe (anything clearly off the `0x80` line counts)
+ reported at shutdown as `q2snd: pushed N bytes (M loud)`. For manual
+ checks, `+set s_testsound 1` must be audible on the host; silence there is
+ a host backend (mixer/mute) problem, because the guest demonstrably streams
+ loud bytes to the SB16. A full gameplay test requires the PAK file and is
+ not automated in the serial-console BDD suite (same as DOOM).
 
 ## Doom map editor (`doomedit`)
 

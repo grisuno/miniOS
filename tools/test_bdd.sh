@@ -1560,6 +1560,47 @@ scenario "quake2generic binary exists on minifs" "ls quake2generic.elf
 poweroff"
 expect "quake2generic.elf"
 
+# Sound: the MiniOS DMA backend (progs/quake2generic/snddma_minios.c) opens
+# the pcm2 low-latency path. The headless probe proves the backend reaches
+# it; the integrated run proves the engine's own S_Init wired it (the
+# "sound sampling rate" line only prints when SNDDMA_Init succeeded) and the
+# game still exited cleanly. SB16 attached on the null backend.
+SCENARIO_QEMU_ARGS="-audiodev none,id=snd1 -device sb16,iobase=0x220,irq=5,dma=1,audiodev=snd1"
+scenario "quake2generic sound path opens and releases pcm2 (null backend)" "run quake2generic.elf --pcm2-probe
+sb16
+poweroff"
+expect "q2snd: pcm2 ok"
+SCENARIO_QEMU_ARGS=""
+expect "pcm2: active=0"
+
+SCENARIO_QEMU_ARGS="-audiodev none,id=snd1 -device sb16,iobase=0x220,irq=5,dma=1,audiodev=snd1"
+scenario "quake2generic initializes sound and exits cleanly" "run quake2generic.elf +set basedir . +set minios_autoframes 60
+poweroff"
+expect "sound sampling rate: 22050"
+expect "exit code: 0"
+SCENARIO_QEMU_ARGS=""
+
+# Non-silence: s_testsound forces the engine's fixed sine into the paint
+# buffer, so the backend must push loud (non-0x80) bytes. A run that only
+# ever pushed silence is a mixer/content problem, not a plumbing problem,
+# and this scenario tells the two apart.
+SCENARIO_QEMU_ARGS="-audiodev none,id=snd1 -device sb16,iobase=0x220,irq=5,dma=1,audiodev=snd1"
+scenario "quake2generic pushes non-silent audio" "run quake2generic.elf +set basedir . +set s_testsound 1 +set minios_autoframes 20
+poweroff"
+expect "q2snd: audio present"
+expect "exit code: 0"
+SCENARIO_QEMU_ARGS=""
+
+# Real sfx: minios_sndtest plays a pak sfx in-game (not the forced sine),
+# so this pins the upstream 8-bit mixer fix. If S_PaintChannelFrom8 ever
+# regresses to silence, loud stays 0 and there is no audio present.
+SCENARIO_QEMU_ARGS="-audiodev none,id=snd1 -device sb16,iobase=0x220,irq=5,dma=1,audiodev=snd1"
+scenario "quake2generic plays a real sfx" "run quake2generic.elf +set basedir . minios_sndtest weapons/blastf1a +set minios_autoframes 30
+poweroff"
+expect "q2snd: audio present"
+expect "exit code: 0"
+SCENARIO_QEMU_ARGS=""
+
 # ── Minicraft (serial-driven menus) ────────────────────────────────
 
 scenario "minicraft serial menu starts a world and quits cleanly" $'rm /saves/minicraft.map\nrun minicraft.elf\n\n\x1bw\npoweroff'
