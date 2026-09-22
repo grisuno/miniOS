@@ -232,6 +232,11 @@ void     wm_clear_close(void);
 int      wm_gfx_mode_active(void);
 void vga_fb_mouse_tick(void);
 void vga_fb_mouse_init(void);
+/* Dock click bounce (Mac style): arm count and strip repaints while live,
+ * for the serial-observable proof (`wm state` reports both). */
+void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);
+void dock_click_count(unsigned long *edges);
+int dock_pending_active(void);
 
 /* Desktop effects (DOOM melt, kernel/vga_fx.c). The framebuffer must show
  * the old pixels on melt entry and shows the new pixels on return; snapshots

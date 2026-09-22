@@ -2362,7 +2362,25 @@ count, fail closed on bad pointers, overlong names and truncation.
   bottom-aligned); the mouse tick repaints only the dock strip (wallpaper
   rect erase, no clear, no terminal re-render) once per hover change, so
   there is no fullscreen flash, and it stays out while a button is down,
-  a drag is live, or a fullscreen terminal hides the dock.
+  a drag is live, or a fullscreen terminal hides the dock. A click arms a
+  Mac-style bounce on the clicked icon (`dock_bounce_kick` in `vga_fb.c`):
+  three decaying parabolic hops (peaks 24/12/6 px over `DOCK_BOUNCE_TICKS`
+  = 75 sys_ticks, 0.75 s, integer-only in `dock_bounce_height`) painted by
+  the same strip path every tick while live, with one settle repaint on
+  expiry. The launch stays pending (`dock_pending_cmd`) until the hops
+  finish and only then runs `desktop_launch`, because a synchronous launch
+  in the click tick blocks the shell loop that drives the strip and zero
+  bounce frames ever paint (measured: instant launch = no visible hop).
+  While a user program owns the CPU the ISR tick still animates, and the
+  pending launch degrades to the queued `shell_pending_cmd` path instead
+  of re-entering `k_exec_user` from ISR context. Serial proof: `wm state`
+  reports `wm: bounce kicks=N paints=M edges=K pending=P`, and `wm list`
+  prints one `win dockN x=.. y=.. w=.. h=.. <cmd>` line per icon, so a
+  headless QMP driver clicks exact coordinates (verified: dock0 click at
+  its listed center gives `kicks=1 paints=89 edges=1`, mid-bounce pixels
+  move 30x above the identical-frame noise floor, then `wm split` lands).
+  Tiled terminals cover the dock row, so a click there is a focus change,
+  never a bounce: prove the bounce in the single-terminal layout.
 - Entry icons come from `images/` (`folder.png` dirs, `files.png` text
   kinds, `image.png` `.png`, `object.png` `.o/.elf/.cvm`, unknown falls
   back to `files.png`), decoded to indexed pixels plus an alpha mask and

@@ -1132,7 +1132,11 @@ static void gfx_tile_right(void) {
  * focused window's live values sit in the globals, the rest in twins.
  * A parked slot's derived cols/rows lag resizes (tile/snap write x/y/sz
  * only), so they are derived from the authoritative size here; the live
- * window reports its globals. */
+ * window reports its globals. Dock columns ride along so a headless
+ * driver can click exact icon coordinates instead of guessing. */
+static int dock_cell_w;
+static int shortcut_cell_left(int i);
+static void shortcuts_layout(void);
 void vga_fb_list_windows(void) {
     int i;
     int cur = wm_term;
@@ -1161,6 +1165,17 @@ void vga_fb_list_windows(void) {
         serial_puts(b);
     }
     tw_unpark(cur);
+    {
+        int j;
+        desktop_shortcuts_load();
+        shortcuts_layout();
+        for (j = 0; j < shortcut_count; j++) {
+            ksprintf(b, "win dock%d x=%d y=%d w=%d h=%d %s\n",
+                     j, shortcut_cell_left(j), shortcuts[j].y,
+                     dock_cell_w, ICON_H + ICON_LABEL_H, shortcuts[j].cmd);
+            serial_puts(b);
+        }
+    }
     if (vga_fb_gfx_mode) {
         int gx, gy;
         gfx_target(&gx, &gy);
@@ -3159,6 +3174,86 @@ static int dock_hover_index(int mx, int my) {
  * it so the next tick repaints the strip from fresh pixels. */
 static int dock_last_hover = -2;
 
+/* Click bounce (Mac style): index of the hopping icon and the sys_ticks
+ * value of its click. The icon lifts off its slot on decaying parabolic
+ * hops for DOCK_BOUNCE_TICKS while its program launches. -1 when idle. */
+static int dock_bounce_idx = -1;
+static unsigned long dock_bounce_start;
+/* Serial-observable bounce proof: arms since boot and strip repaints while
+ * live (reported by `wm state`, the same surface as fx melts). */
+static unsigned long dock_bounce_kicks;
+static unsigned long dock_bounce_paints;
+
+void dock_bounce_counts(unsigned long *kicks, unsigned long *paints) {
+    if (kicks) *kicks = dock_bounce_kicks;
+    if (paints) *paints = dock_bounce_paints;
+}
+
+/* Rising edges seen by the tick (anywhere, before dispatch). Reported in
+ * `wm state` beside the bounce counters to split "click never arrived"
+ * from "click missed the dock". */
+static unsigned long dock_click_edges;
+
+void dock_click_count(unsigned long *edges) {
+    if (edges) *edges = dock_click_edges;
+}
+
+/* Ticks elapsed since the bounce click, capped so the subtraction can
+ * never wrap on a late read. */
+static unsigned long dock_bounce_elapsed(void) {
+    unsigned long now = (unsigned long)sys_ticks;
+    unsigned long el = now - dock_bounce_start;
+    if (el > DOCK_BOUNCE_TICKS) el = DOCK_BOUNCE_TICKS;
+    return el;
+}
+
+/* 1 while the bounce animation is live, 0 once it expired or is idle. */
+static int dock_bounce_live(void) {
+    if (dock_bounce_idx < 0 || dock_bounce_idx >= shortcut_count) return 0;
+    return (unsigned long)sys_ticks - dock_bounce_start < DOCK_BOUNCE_TICKS;
+}
+
+/* Bounce lift in pixels for elapsed 100 Hz ticks: three decaying parabolic
+ * hops (peaks 24/12/6 px, total 0.75 s). Integer-only: h = H - H*d*d/hw*hw
+ * around each hop centre, so consecutive hops join within 2 px and the
+ * tail lands exactly at 0. */
+static int dock_bounce_height(unsigned long t) {
+    long d;
+    if (t < 30) {
+        d = (long)t - 15;
+        return 24 - (int)(24 * d * d / (15 * 15));
+    }
+    if (t < 55) {
+        d = (long)t - 42;
+        return 12 - (int)(12 * d * d / (13 * 13));
+    }
+    if (t < DOCK_BOUNCE_TICKS) {
+        d = (long)t - 65;
+        return 6 - (int)(6 * d * d / (10 * 10));
+    }
+    return 0;
+}
+
+/* Arm the bounce for the clicked icon. Called on the click edge; the
+ * launch stays pending until the hops finish, so the animation paints
+ * before desktop_launch blocks the tick (a synchronous launch in the
+ * same tick would never show a frame). */
+static void dock_bounce_kick(int idx) {
+    if (idx < 0 || idx >= shortcut_count) return;
+    dock_bounce_idx = idx;
+    dock_bounce_start = (unsigned long)sys_ticks;
+    dock_bounce_kicks++;
+}
+
+/* Deferred dock launch: the shortcut command waits here while its icon
+ * hops, then the tick fires it once the bounce expires. */
+static char dock_pending_cmd[128];
+static int dock_pending_len;
+
+int dock_pending_active(void) {
+    return dock_pending_len > 0;
+}
+
 /* Paint every shortcut icon and label at the given hover sizes. Shared by
  * the full desktop paint and the flicker-free hover repaint, so the two
  * can never diverge. Growth is bottom-aligned on the slot with no
@@ -3179,6 +3274,9 @@ static void dock_paint_icons(int hover) {
         }
         dx = cl + (dock_cell_w - dw) / 2;
         dy = sc->y + ICON_H - dh;
+        /* A bouncing icon lifts off its slot on top of any hover size. */
+        if (i == dock_bounce_idx && dock_bounce_live())
+            dy -= dock_bounce_height(dock_bounce_elapsed());
         if (sc->pixels) {
             shortcut_draw_scaled(sc, dx, dy, dw, dh);
         } else {
@@ -3267,6 +3365,7 @@ static void wallpaper_rect(int x0, int y0, int w, int h) {
  * terminals hide the dock, so the tick never calls this there. */
 static void dock_paint_hover(int hover) {
     int dock_w, dock_h, x0, y0, y_top, yy, xx;
+    int bouncing = dock_bounce_live();
     shortcuts_layout();
     if (shortcut_count <= 0) return;
     dock_w = shortcut_count * dock_cell_w + 2 * DOCK_PAD_X;
@@ -3275,7 +3374,9 @@ static void dock_paint_hover(int hover) {
     if (x0 < 0) x0 = 0;
     y0 = fb_height - TASKBAR_H - DOCK_GAP - dock_h;
     if (y0 < 0) y0 = 0;
-    y_top = y0 - (DOCK_MAG_H - ICON_H) - 2;
+    /* The strip erase covers the magnified overflow plus the full bounce
+     * lift above the slot, so a hopping icon never smears. */
+    y_top = y0 - (DOCK_MAG_H - ICON_H) - DOCK_BOUNCE_H - 2;
     if (y_top < 0) y_top = 0;
     wallpaper_rect(x0, y_top, dock_w, y0 + dock_h - y_top);
     for (yy = y0; yy < y0 + dock_h; yy++)
@@ -3288,6 +3389,7 @@ static void dock_paint_hover(int hover) {
     vga_fb_rect(x0 + dock_w - 1, y0, 1, dock_h, COL_BORDER);
     dock_paint_icons(hover);
     dock_last_hover = hover;
+    if (bouncing) dock_bounce_paints++;
     cursor_note_repaint(x0, y_top, dock_w, y0 + dock_h - y_top);
 }
 
@@ -3487,6 +3589,7 @@ void vga_fb_mouse_tick(void) {
 
     taskbar_tick();
     if (wm_is_click_edge(&ecfg, (int)tb_prev_buttons, mouse_state.buttons)) {
+        dock_click_edges++;
         taskbar_handle_click(mouse_state.x, mouse_state.y);
         if (wm_button_click(mouse_state.x, mouse_state.y)) {
             tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
@@ -3507,7 +3610,19 @@ void vga_fb_mouse_tick(void) {
             return;
         }
         const char *cmd = desktop_shortcuts_hit_test(mouse_state.x, mouse_state.y);
-        if (cmd) desktop_launch(cmd);
+        if (cmd) {
+            /* Mac bounce: arm the hops and defer the launch until they
+             * finish, so the strip paints at tick rate first. */
+            int idx = dock_hover_index(mouse_state.x, mouse_state.y);
+            unsigned i = 0;
+            dock_bounce_kick(idx);
+            while (cmd[i] && i < sizeof(dock_pending_cmd) - 1) {
+                dock_pending_cmd[i] = cmd[i];
+                i++;
+            }
+            dock_pending_cmd[i] = 0;
+            dock_pending_len = (int)i;
+        }
     }
     if (!(mouse_state.buttons & 1)) wm_skip_drag = 0;
     tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
@@ -3547,12 +3662,49 @@ void vga_fb_mouse_tick(void) {
      * runs only occasionally, so the tick repaints the dock strip itself
      * once per hover crossing (never while a button is down, a drag is
      * live, or a fullscreen terminal hides the dock): strip-only, no
-     * clear, no wallpaper rewrite, zero cost while hovering still. */
-    if (!gfx_cursor && !term_fullscreen && !(mouse_state.buttons & 1) &&
-        !wm_dragging && !wm_gdrag) {
+     * clear, no wallpaper rewrite, zero cost while hovering still. A live
+     * click bounce repaints every tick instead (button state ignored, the
+     * press that armed it is already consumed) and settles once on expiry,
+     * so the hops animate at tick rate and the icon lands back in its slot. */
+    if (!gfx_cursor && !term_fullscreen && !wm_dragging && !wm_gdrag) {
         int hover = dock_hover_index(mx, my);
-        if (hover != dock_last_hover)
+        int bounce = dock_bounce_live();
+        if (bounce || (hover != dock_last_hover && !(mouse_state.buttons & 1)))
             dock_paint_hover(hover);
+        else if (dock_bounce_idx >= 0 &&
+                 (unsigned long)sys_ticks - dock_bounce_start >= DOCK_BOUNCE_TICKS) {
+            dock_bounce_idx = -1;
+            dock_paint_hover(hover);
+            if (dock_pending_len > 0) {
+                char launch[128];
+                unsigned i = 0;
+                while (dock_pending_cmd[i] && i < sizeof(launch) - 1) {
+                    launch[i] = dock_pending_cmd[i];
+                    i++;
+                }
+                launch[i] = 0;
+                dock_pending_len = 0;
+                dock_pending_cmd[0] = 0;
+                desktop_launch(launch);
+                return;
+            }
+        }
+    } else if (dock_bounce_idx >= 0 &&
+               (unsigned long)sys_ticks - dock_bounce_start >= DOCK_BOUNCE_TICKS) {
+        dock_bounce_idx = -1;
+        if (dock_pending_len > 0) {
+            char launch[128];
+            unsigned i = 0;
+            while (dock_pending_cmd[i] && i < sizeof(launch) - 1) {
+                launch[i] = dock_pending_cmd[i];
+                i++;
+            }
+            launch[i] = 0;
+            dock_pending_len = 0;
+            dock_pending_cmd[0] = 0;
+            desktop_launch(launch);
+            return;
+        }
     }
 
     /* Erase old cursor and draw new one. Skipped wholesale in gfx mode:
@@ -3578,6 +3730,12 @@ void vga_fb_mouse_init(void) {
     wm_nterms = 1;
     wm_focus = 0;
     wm_term = 0;
+    dock_bounce_idx = -1;
+    dock_bounce_start = 0;
+    dock_bounce_kicks = 0;
+    dock_bounce_paints = 0;
+    dock_pending_len = 0;
+    dock_pending_cmd[0] = 0;
 }
 
 void vga_fb_init(void) {

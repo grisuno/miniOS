@@ -1823,6 +1823,15 @@ static void shell_cmd_wm(int argc, char **argv) {
     kprintf("wm: fx %s\n", vga_fx_enabled() ? "on" : "off");
     kprintf("wm: layout %s\n", vga_fb_layout_name());
     {
+        unsigned long kicks = 0;
+        unsigned long paints = 0;
+        unsigned long edges = 0;
+        dock_bounce_counts(&kicks, &paints);
+        dock_click_count(&edges);
+        kprintf("wm: bounce kicks=%lu paints=%lu edges=%lu pending=%d\n",
+                kicks, paints, edges, dock_pending_active());
+    }
+    {
         char theme[17];
         vga_fb_theme_name(theme, sizeof(theme));
         kprintf("wm: theme %s\n", theme);
