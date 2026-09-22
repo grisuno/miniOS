@@ -2563,11 +2563,8 @@ command (two frequency bytes, low then high) so the clock matches the declared
   audible gap is the ISR), with a `ktime_ms` poll on the 100 Hz audio
   tick as the null-backend fallback; the heap ring (`pcm_ring.h`, 1024 B:
   overrun counts drops, underrun pads 0x80 silence and counts, never
-  stalls) feeds both. Auto-init DMA is deliberately unused: in emulation
-  it holds the ISA DMA engine busy and wedges the IDE PIO path, stalling
-  every MiniFS read for minutes (the guest hang right after the first
-  pcm2 open). Steady latency is about one block (~23 ms). Writes block
-  (`PROC_BLOCKED` + `schedule`, predicate and sleep sharing one
+  stalls) feeds both. Steady latency is about one block (~23 ms). Writes
+  block (`PROC_BLOCKED` + `schedule`, predicate and sleep sharing one
   irqsave lock, futex discipline) unless opened `NONBLOCK`; the device
   is exclusive open (OSS-style) with mutual `-EBUSY` against the
   legacy engine in both directions, and a killed owner is released
@@ -2575,6 +2572,35 @@ command (two frequency bytes, low then high) so the clock matches the declared
   reports the pcm2 counters beside the legacy ones; `make test-pcm`
   pins the ring on the host and the `pcm2` BDD slice pins
   open/stream/release under the null backend.
+- **HAZARD — never program the SB16 in auto-init DMA mode.** This is the
+  bug that froze the whole machine the moment the piano opened the audio
+  device, and the reason `pcm2.c` uses single-cycle transfers. Mechanism,
+  measured with the QEMU debug log and the gdb stub, not assumed: auto-init
+  (`DSP 0xC6` mode 0, plus 8237 mode `0x59`) leaves the DMA controller
+  looping without any guest re-arm. Under QEMU the emulated 8237 ends up
+  holding the ISA DMA engine busy, and the IDE controller that shares that
+  emulated bus stops advancing: its status register latches `0x80`
+  (`IDE_STATUS_BSY`) with neither DRQ nor ERR, forever. `ide_wait_drq`
+  (`drivers/ide.c`) is a bounded poll but the bound is `IDE_TIMEOUT` =
+  1,000,000 spins, and MiniFS runs the PIO under `fs_lock` (irqsave), so
+  the CPU spins those million iterations with `IF=0`: no timer, no mouse,
+  no shell — about ten minutes per read, which reads as a hard hang. The
+  first pcm2 open is enough because the very next thing the piano does is
+  read its theme file from MiniFS. Single-cycle DMA never does this: one
+  512 B block is armed, its terminal count raises IRQ5, and the driver
+  re-arms (`0x49`/`0x14`, the same shape the legacy engine has always
+  used). Rule for every future SB16/DMA consumer: arm one transfer at a
+  time with a terminal-count IRQ and a timer-poll fallback; auto-init and
+  any "program once, let the hardware loop" DMA scheme are forbidden.
+  Diagnosis recipe for a freeze with no serial output: boot with
+  `-d int,cpu_reset,guest_errors -D <log>` and `-s`, drive to the freeze,
+  then `gdb -batch -ex 'file kernel.elf' -ex 'target remote :1234'
+  -ex 'thread apply all bt'`. A log that stops on a vector-32 (or 37)
+  delivery and a backtrace landing in `ide_wait_drq` is this hazard; a
+  `status` of `0x80` with `eflags IF=0` confirms the wedged-controller
+  spin. Clicking the dock icon over QEMU with a serial-idle watchdog
+  reproduced it deterministically (TCG, `-smp 2`, SB16 attached, either
+  audio backend, with or without PulseAudio).
 
 ## MicroPython (`micropython.elf`)
 MicroPython runs inside MiniOS exactly like DOOM does: the upstream project

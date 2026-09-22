@@ -101,10 +101,10 @@
 - Doc: desktop_shortcuts.h -- configurable desktop icon shortcuts.
 - Language: h
 - Symbols:
-  - `desktop_shortcut` (struct, line 50)
-  - `desktop_shortcuts_load` (function, line 60) `void desktop_shortcuts_load(void);`
-  - `desktop_shortcuts_draw` (function, line 63) `void desktop_shortcuts_draw(void);`
-  - `desktop_shortcuts_hit_test` (function, line 67) `const char *desktop_shortcuts_hit_test(int mx, int my);`
+  - `desktop_shortcut` (struct, line 65)
+  - `desktop_shortcuts_load` (function, line 75) `void desktop_shortcuts_load(void);`
+  - `desktop_shortcuts_draw` (function, line 78) `void desktop_shortcuts_draw(void);`
+  - `desktop_shortcuts_hit_test` (function, line 82) `const char *desktop_shortcuts_hit_test(int mx, int my);`
   - `DESKTOP_SHORTCUTS_H` (macro, line 13) `#define DESKTOP_SHORTCUTS_H`
   - `MAX_SHORTCUTS` (macro, line 18) `#define MAX_SHORTCUTS`
   - `SHORTCUT_NAME_LEN` (macro, line 19) `#define SHORTCUT_NAME_LEN`
@@ -119,8 +119,13 @@
   - `DOCK_PAD_Y` (macro, line 34) `#define DOCK_PAD_Y`
   - `DOCK_GAP` (macro, line 35) `#define DOCK_GAP`
   - `DOCK_LABEL_GAP` (macro, line 36) `#define DOCK_LABEL_GAP`
-  - `ICON_PAL_BASE` (macro, line 43) `#define ICON_PAL_BASE`
-  - `ICON_PAL_SIZE` (macro, line 44) `#define ICON_PAL_SIZE`
+  - `DOCK_CRYSTAL_STEP` (macro, line 41) `#define DOCK_CRYSTAL_STEP`
+  - `DOCK_MAG_W` (macro, line 48) `#define DOCK_MAG_W`
+  - `DOCK_MAG_H` (macro, line 49) `#define DOCK_MAG_H`
+  - `DOCK_NEAR_W` (macro, line 50) `#define DOCK_NEAR_W`
+  - `DOCK_NEAR_H` (macro, line 51) `#define DOCK_NEAR_H`
+  - `ICON_PAL_BASE` (macro, line 58) `#define ICON_PAL_BASE`
+  - `ICON_PAL_SIZE` (macro, line 59) `#define ICON_PAL_SIZE`
 - Imported by: `kernel/vga_fb.c`
 
 ## headers/driver.h
@@ -544,7 +549,7 @@
   - `ET_DYN` (macro, line 573) `#define ET_DYN`
   - `KFD_MAX` (macro, line 596) `#define KFD_MAX`
 - Depends on: `headers/spinlock.h`, `headers/vma.h`, `progs/minios_abi.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `headers/drivers/mouse.h`, `headers/editor.h`, `headers/kernel/console_in.h`, `headers/kernel/vga_cursor.h`, `headers/shell.h`, `headers/spawn.h`, `headers/tls_port.h`, `kernel.c`, `kernel/abi.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/time.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `smp.c`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/pcm2.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `headers/drivers/mouse.h`, `headers/editor.h`, `headers/kernel/console_in.h`, `headers/kernel/vga_cursor.h`, `headers/shell.h`, `headers/spawn.h`, `headers/tls_port.h`, `kernel.c`, `kernel/abi.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/time.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `smp.c`
 
 ## headers/ktime.h
 - Layer: utility
@@ -726,6 +731,51 @@
   - `NET_FD_BASE` (macro, line 58) `#define NET_FD_BASE`
 - Imported by: `headers/net/rtl8139.h`, `headers/tls_port.h`, `kernel.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/syscalls.c`, `net/net.c`, `net/rtl8139.c`
 
+## headers/pcm2.h
+- Layer: utility
+- Doc: pcm2.h -- low-latency PCM audio path over SB16 single-cycle DMA.
+- Language: h
+- Symbols:
+  - `pcm2_counters_t` (struct, line 66)
+  - `pcm2_active` (function, line 76) `int pcm2_active(void);`
+  - `pcm2_open` (function, line 77) `int pcm2_open(unsigned flags, int owner);`
+  - `pcm2_write` (function, line 78) `int pcm2_write(const unsigned char *user, unsigned len, int owner);`
+  - `pcm2_close` (function, line 79) `void pcm2_close(int owner);`
+  - `pcm2_irq` (function, line 80) `void pcm2_irq(void);`
+  - `pcm2_poll` (function, line 81) `void pcm2_poll(void);`
+  - `pcm2_counters` (function, line 82) `void pcm2_counters(pcm2_counters_t *out);`
+  - `PCM2_H` (macro, line 2) `#define PCM2_H`
+  - `PCM2_RATE` (macro, line 51) `#define PCM2_RATE`
+  - `PCM2_FRAG` (macro, line 52) `#define PCM2_FRAG`
+  - `PCM2_FRAGS` (macro, line 53) `#define PCM2_FRAGS`
+  - `PCM2_DMA_BYTES` (macro, line 54) `#define PCM2_DMA_BYTES`
+  - `PCM2_RING` (macro, line 55) `#define PCM2_RING`
+  - `PCM2_FLAG_NONBLOCK` (macro, line 57) `#define PCM2_FLAG_NONBLOCK`
+  - `PCM2_ERR_BUSY` (macro, line 59) `#define PCM2_ERR_BUSY`
+  - `PCM2_ERR_NODEV` (macro, line 60) `#define PCM2_ERR_NODEV`
+  - `PCM2_ERR_NOMEM` (macro, line 61) `#define PCM2_ERR_NOMEM`
+  - `PCM2_ERR_PERM` (macro, line 62) `#define PCM2_ERR_PERM`
+  - `PCM2_ERR_PIPE` (macro, line 63) `#define PCM2_ERR_PIPE`
+  - `PCM2_ERR_INVAL` (macro, line 64) `#define PCM2_ERR_INVAL`
+- Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
+
+## headers/pcm_ring.h
+- Layer: utility
+- Doc: pcm_ring.h -- single-producer/single-consumer byte ring for PCM audio.
+- Language: h
+- Symbols:
+  - `pcm_ring_t` (struct, line 26)
+  - `pcm_ring_init` (function, line 36) `static inline void pcm_ring_init(pcm_ring_t *r, unsigned char *buf,
+                             ...`
+  - `pcm_ring_used` (function, line 47) `static inline unsigned pcm_ring_used(const pcm_ring_t *r)`
+  - `pcm_ring_free` (function, line 51) `static inline unsigned pcm_ring_free(const pcm_ring_t *r)`
+  - `pcm_ring_write` (function, line 55) `static inline unsigned pcm_ring_write(pcm_ring_t *r, const unsigned char *src,
+                  ...`
+  - `pcm_ring_read` (function, line 76) `static inline unsigned pcm_ring_read(pcm_ring_t *r, unsigned char *dst,
+                         ...`
+  - `PCM_RING_H` (macro, line 2) `#define PCM_RING_H`
+- Imported by: `drivers/pcm2.c`, `tests/test_pcm.c`
+
 ## headers/pcspk.h
 - Layer: utility
 - Language: h
@@ -881,7 +931,8 @@
   - `sb16_stream_count` (function, line 83) `int sb16_stream_count(void);`
   - `sb16_ring_free` (function, line 85) `unsigned sb16_ring_free(void);`
   - `sb16_mode_active` (function, line 86) `int sb16_mode_active(void);`
-  - `sb16_counters` (function, line 88) `void sb16_counters(sb16_counters_t *out);`
+  - `sb16_legacy_busy` (function, line 91) `int sb16_legacy_busy(void);`
+  - `sb16_counters` (function, line 93) `void sb16_counters(sb16_counters_t *out);`
   - `SB16_H` (macro, line 2) `#define SB16_H`
   - `SB16_PCM_BUF` (macro, line 32) `#define SB16_PCM_BUF`
   - `SB16_PCM_RATE` (macro, line 33) `#define SB16_PCM_RATE`
@@ -890,7 +941,7 @@
   - `SB16_ARM_PERIOD_MS` (macro, line 36) `#define SB16_ARM_PERIOD_MS`
   - `SB16_STREAMS` (macro, line 42) `#define SB16_STREAMS`
   - `SB16_STREAM_BUF` (macro, line 43) `#define SB16_STREAM_BUF`
-- Imported by: `drivers/sb16.c`, `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
+- Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 ## headers/sched.h
 - Layer: utility
@@ -999,7 +1050,7 @@
   - `TSS_SEL` (macro, line 272) `#define TSS_SEL(cpu)`
   - `WAITPID_NONE` (macro, line 313) `#define WAITPID_NONE`
 - Depends on: `headers/spinlock.h`, `headers/vma.h`
-- Imported by: `drivers/kbd.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `smp.c`
+- Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `smp.c`
 
 ## headers/shell.h
 - Layer: utility
@@ -1041,13 +1092,13 @@
 - Language: h
 - Symbols:
   - `spawn_ctx_t` (struct, line 9)
-  - `spawn_backup` (function, line 23) `void spawn_backup(spawn_ctx_t *ctx);`
-  - `spawn_restore` (function, line 26) `void spawn_restore(spawn_ctx_t *ctx);`
-  - `spawn_validate_argv` (function, line 29) `int spawn_validate_argv(int argc, const char **uargv);`
-  - `spawn_copy_argv` (function, line 32) `char **spawn_copy_argv(int argc, const char **uargv);`
-  - `spawn_free_argv` (function, line 35) `void spawn_free_argv(char **kargv, int argc);`
-  - `spawn_load_image` (function, line 38) `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);`
-  - `spawn_execute` (function, line 41) `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc, char **kargv, const char **uargv_fallback);`
+  - `spawn_backup` (function, line 27) `int spawn_backup(spawn_ctx_t *ctx);`
+  - `spawn_restore` (function, line 30) `void spawn_restore(spawn_ctx_t *ctx);`
+  - `spawn_validate_argv` (function, line 33) `int spawn_validate_argv(int argc, const char **uargv);`
+  - `spawn_copy_argv` (function, line 36) `char **spawn_copy_argv(int argc, const char **uargv);`
+  - `spawn_free_argv` (function, line 39) `void spawn_free_argv(char **kargv, int argc);`
+  - `spawn_load_image` (function, line 42) `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);`
+  - `spawn_execute` (function, line 45) `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc, char **kargv, const char **uargv_fallback);`
   - `SPAWN_H` (macro, line 2) `#define SPAWN_H`
 - Depends on: `headers/kernel.h`, `headers/sched.h`, `headers/vma.h`
 - Imported by: `kernel/spawn.c`, `kernel/syscalls.c`
@@ -1076,7 +1127,7 @@
   - `spin_unlock_irqrestore` (function, line 145) `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
   - `SPINLOCK_H` (macro, line 2) `#define SPINLOCK_H`
   - `SPINLOCK_INIT` (macro, line 43) `#define SPINLOCK_INIT`
-- Imported by: `headers/futex.h`, `headers/kernel.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/sched.h`, `headers/smp.h`, `headers/sync.h`
+- Imported by: `drivers/pcm2.c`, `headers/futex.h`, `headers/kernel.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/sched.h`, `headers/smp.h`, `headers/sync.h`
 
 ## headers/sync.h
 - Layer: utility
@@ -1318,59 +1369,69 @@
 - Doc: Framebuffer geometry. The boot loader probes VESA BIOS Extensions for a
 - Language: h
 - Symbols:
-  - `mouse_state_t` (struct, line 153)
+  - `mouse_state_t` (struct, line 159)
   - `fb_bytes_per_pixel` (function, line 30) `int fb_bytes_per_pixel(void);`
   - `vga_fb_read_rgb` (function, line 34) `unsigned long vga_fb_read_rgb(int x, int y);`
   - `vga_fb_set_gfx_palette` (function, line 38) `void vga_fb_set_gfx_palette(const unsigned char *pal);`
   - `vga_fb_boot_config` (function, line 40) `void vga_fb_boot_config(void);`
   - `SYS_DOOM_FRAME` (function, line 44) `* and calls SYS_DOOM_FRAME (211) to have the kernel composite it onto the * desktop at its native resolution, so the shell window stays visible. */ #define DOOM_W MINIOS_DOOM_W #define DOOM_H MINIOS_D`
   - `SYS_NK_FRAME` (function, line 63) `* SYS_NK_FRAME (220);`
-  - `vga_fb_blit_nk_window` (function, line 70) `void vga_fb_blit_nk_window(void);`
-  - `below` (function, line 93) `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via stbi_load_file, * stretched to the framebuffer and mapped to a fixed 6x6x6 websafe c`
-  - `vga_fb_init` (function, line 171) `void vga_fb_init(void);`
-  - `vga_fb_clear` (function, line 172) `void vga_fb_clear(void);`
-  - `vga_fb_pixel` (function, line 173) `void vga_fb_pixel(int x, int y, uint8_t color);`
-  - `vga_fb_rect` (function, line 174) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
-  - `vga_fb_char` (function, line 175) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
-  - `vga_fb_str` (function, line 176) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
-  - `vga_fb_putc_term` (function, line 177) `void vga_fb_putc_term(char c);`
-  - `vga_fb_puts_term` (function, line 178) `void vga_fb_puts_term(const char *s);`
-  - `vga_fb_text_cursor` (function, line 179) `void vga_fb_text_cursor(int col);`
-  - `vga_fb_hide_text_cursor` (function, line 180) `void vga_fb_hide_text_cursor(void);`
-  - `fb_read_packed` (function, line 183) `unsigned long fb_read_packed(int x, int y);`
-  - `fb_write_packed` (function, line 184) `void fb_write_packed(int x, int y, unsigned long rgb);`
-  - `vga_fb_draw_desktop` (function, line 185) `void vga_fb_draw_desktop(void);`
-  - `vga_fb_toggle_fullscreen` (function, line 186) `void vga_fb_toggle_fullscreen(void);`
-  - `vga_fb_move_terminal` (function, line 187) `void vga_fb_move_terminal(int dx, int dy);`
-  - `vga_fb_snap_window` (function, line 188) `void vga_fb_snap_window(int zone);`
-  - `vga_fb_resize` (function, line 189) `void vga_fb_resize(int dcols, int drows);`
-  - `vga_fb_reset_default` (function, line 190) `void vga_fb_reset_default(void);`
-  - `vga_fb_toggle_minimize` (function, line 191) `void vga_fb_toggle_minimize(void);`
-  - `vga_fb_is_minimized` (function, line 192) `int vga_fb_is_minimized(void);`
-  - `vga_fb_is_fullscreen` (function, line 193) `int vga_fb_is_fullscreen(void);`
-  - `vga_fb_close_active` (function, line 194) `int vga_fb_close_active(void);`
-  - `vga_fb_focus_next` (function, line 198) `void vga_fb_focus_next(void);`
-  - `vga_fb_focus_id` (function, line 199) `int vga_fb_focus_id(int id);`
-  - `vga_fb_focus_get` (function, line 200) `int vga_fb_focus_get(void);`
-  - `vga_fb_focus_event` (function, line 203) `const wm_notify_event_t *vga_fb_focus_event(void);`
-  - `vga_fb_focus_report` (function, line 204) `void vga_fb_focus_report(int before, int source);`
-  - `vga_fb_theme_name` (function, line 205) `int vga_fb_theme_name(char *dst, int cap);`
-  - `vga_fb_ps2_owner` (function, line 211) `int vga_fb_ps2_owner(int pid);`
-  - `vga_fb_nterms_get` (function, line 212) `int vga_fb_nterms_get(void);`
-  - `vga_fb_term_split` (function, line 213) `int vga_fb_term_split(void);`
-  - `vga_fb_term_close_focused` (function, line 214) `int vga_fb_term_close_focused(void);`
-  - `vga_fb_tile_all` (function, line 215) `void vga_fb_tile_all(void);`
-  - `vga_fb_layout_set` (function, line 216) `int vga_fb_layout_set(int mode);`
-  - `vga_fb_layout_cycle` (function, line 217) `void vga_fb_layout_cycle(void);`
-  - `vga_fb_layout_get` (function, line 218) `int vga_fb_layout_get(void);`
-  - `vga_fb_layout_name` (function, line 219) `const char *vga_fb_layout_name(void);`
-  - `vga_fb_list_windows` (function, line 220) `void vga_fb_list_windows(void);`
-  - `wm_close_pending` (function, line 221) `int wm_close_pending(void);`
-  - `wm_clear_close` (function, line 222) `void wm_clear_close(void);`
-  - `wm_gfx_mode_active` (function, line 223) `int wm_gfx_mode_active(void);`
-  - `vga_fb_mouse_tick` (function, line 224) `void vga_fb_mouse_tick(void);`
-  - `vga_fb_mouse_init` (function, line 225) `void vga_fb_mouse_init(void);`
-  - `vga_fb_set_gfx_mode` (function, line 232) `void vga_fb_set_gfx_mode(int on);`
+  - `vga_fb_blit_nk_window` (function, line 75) `void vga_fb_blit_nk_window(void);`
+  - `vga_fb_blit_nk_rgb_window` (function, line 76) `void vga_fb_blit_nk_rgb_window(void);`
+  - `below` (function, line 99) `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via stbi_load_file, * stretched to the framebuffer and mapped to a fixed 6x6x6 websafe c`
+  - `vga_fb_init` (function, line 177) `void vga_fb_init(void);`
+  - `vga_fb_clear` (function, line 178) `void vga_fb_clear(void);`
+  - `vga_fb_pixel` (function, line 179) `void vga_fb_pixel(int x, int y, uint8_t color);`
+  - `vga_fb_rect` (function, line 180) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
+  - `vga_fb_pixel_rgb` (function, line 182) `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b);`
+  - `vga_fb_rect_rgb` (function, line 183) `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b);`
+  - `vga_fb_char` (function, line 184) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
+  - `vga_fb_str` (function, line 185) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
+  - `vga_fb_putc_term` (function, line 186) `void vga_fb_putc_term(char c);`
+  - `vga_fb_puts_term` (function, line 187) `void vga_fb_puts_term(const char *s);`
+  - `vga_fb_text_cursor` (function, line 188) `void vga_fb_text_cursor(int col);`
+  - `vga_fb_hide_text_cursor` (function, line 189) `void vga_fb_hide_text_cursor(void);`
+  - `fb_read_packed` (function, line 192) `unsigned long fb_read_packed(int x, int y);`
+  - `fb_write_packed` (function, line 193) `void fb_write_packed(int x, int y, unsigned long rgb);`
+  - `vga_fb_draw_desktop` (function, line 194) `void vga_fb_draw_desktop(void);`
+  - `vga_fb_toggle_fullscreen` (function, line 195) `void vga_fb_toggle_fullscreen(void);`
+  - `vga_fb_move_terminal` (function, line 196) `void vga_fb_move_terminal(int dx, int dy);`
+  - `vga_fb_snap_window` (function, line 197) `void vga_fb_snap_window(int zone);`
+  - `vga_fb_resize` (function, line 198) `void vga_fb_resize(int dcols, int drows);`
+  - `vga_fb_reset_default` (function, line 199) `void vga_fb_reset_default(void);`
+  - `vga_fb_toggle_minimize` (function, line 200) `void vga_fb_toggle_minimize(void);`
+  - `vga_fb_is_minimized` (function, line 201) `int vga_fb_is_minimized(void);`
+  - `vga_fb_is_fullscreen` (function, line 202) `int vga_fb_is_fullscreen(void);`
+  - `vga_fb_close_active` (function, line 203) `int vga_fb_close_active(void);`
+  - `vga_fb_focus_next` (function, line 207) `void vga_fb_focus_next(void);`
+  - `vga_fb_focus_id` (function, line 208) `int vga_fb_focus_id(int id);`
+  - `vga_fb_focus_get` (function, line 209) `int vga_fb_focus_get(void);`
+  - `vga_fb_focus_event` (function, line 212) `const wm_notify_event_t *vga_fb_focus_event(void);`
+  - `vga_fb_focus_report` (function, line 213) `void vga_fb_focus_report(int before, int source);`
+  - `vga_fb_theme_name` (function, line 214) `int vga_fb_theme_name(char *dst, int cap);`
+  - `vga_fb_ps2_owner` (function, line 220) `int vga_fb_ps2_owner(int pid);`
+  - `vga_fb_nterms_get` (function, line 221) `int vga_fb_nterms_get(void);`
+  - `vga_fb_term_split` (function, line 222) `int vga_fb_term_split(void);`
+  - `vga_fb_term_close_focused` (function, line 223) `int vga_fb_term_close_focused(void);`
+  - `vga_fb_tile_all` (function, line 224) `void vga_fb_tile_all(void);`
+  - `vga_fb_layout_set` (function, line 225) `int vga_fb_layout_set(int mode);`
+  - `vga_fb_layout_cycle` (function, line 226) `void vga_fb_layout_cycle(void);`
+  - `vga_fb_layout_get` (function, line 227) `int vga_fb_layout_get(void);`
+  - `vga_fb_layout_name` (function, line 228) `const char *vga_fb_layout_name(void);`
+  - `vga_fb_list_windows` (function, line 229) `void vga_fb_list_windows(void);`
+  - `wm_close_pending` (function, line 230) `int wm_close_pending(void);`
+  - `wm_clear_close` (function, line 231) `void wm_clear_close(void);`
+  - `wm_gfx_mode_active` (function, line 232) `int wm_gfx_mode_active(void);`
+  - `vga_fb_mouse_tick` (function, line 233) `void vga_fb_mouse_tick(void);`
+  - `vga_fb_mouse_init` (function, line 234) `void vga_fb_mouse_init(void);`
+  - `pixels` (function, line 238) `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a failed snapshot leaves the new * frame in place, so every entry fails closed to a pl`
+  - `vga_fx_enabled` (function, line 242) `int vga_fx_enabled(void);`
+  - `vga_fx_snap_rect` (function, line 243) `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
+  - `vga_fx_restore_rect` (function, line 244) `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
+  - `vga_fx_free` (function, line 245) `void vga_fx_free(unsigned int *buf);`
+  - `vga_fx_melt_rect` (function, line 246) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
+  - `vga_fx_melt_from_black` (function, line 248) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
+  - `vga_fb_set_gfx_mode` (function, line 259) `void vga_fb_set_gfx_mode(int on);`
   - `fb_width` (variable, line 23) `extern int fb_width;`
   - `fb_height` (variable, line 24) `extern int fb_height;`
   - `fb_pitch` (variable, line 25) `extern int fb_pitch;`
@@ -1378,10 +1439,11 @@
   - `fb_phys_base` (variable, line 27) `extern unsigned long fb_phys_base;`
   - `gfx_win_title` (variable, line 50) `extern const char *gfx_win_title;`
   - `gfx_frames_composited` (variable, line 59) `extern unsigned long gfx_frames_composited;`
-  - `nk_win_y` (variable, line 73) `extern int nk_win_x, nk_win_y;`
-  - `term_rows` (variable, line 150) `extern int term_x, term_y, term_cols, term_rows;`
-  - `mouse_state` (variable, line 161) `extern mouse_state_t mouse_state;`
-  - `vga_fb_active` (variable, line 234) `extern int vga_fb_active;`
+  - `nk_win_y` (variable, line 79) `extern int nk_win_x, nk_win_y;`
+  - `term_rows` (variable, line 156) `extern int term_x, term_y, term_cols, term_rows;`
+  - `mouse_state` (variable, line 167) `extern mouse_state_t mouse_state;`
+  - `fx_melts_completed` (variable, line 252) `extern unsigned long fx_melts_completed;`
+  - `vga_fb_active` (variable, line 261) `extern int vga_fb_active;`
   - `VGA_FB_H` (macro, line 2) `#define VGA_FB_H`
   - `FB_ADDR` (macro, line 22) `#define FB_ADDR`
   - `DOOM_W` (macro, line 46) `#define DOOM_W`
@@ -1391,60 +1453,78 @@
   - `NK_W` (macro, line 67) `#define NK_W`
   - `NK_H` (macro, line 68) `#define NK_H`
   - `NK_BACKBUF_ADDR` (macro, line 69) `#define NK_BACKBUF_ADDR`
-  - `COL_BLACK` (macro, line 76) `#define COL_BLACK`
-  - `COL_BG` (macro, line 77) `#define COL_BG`
-  - `COL_TASKBAR` (macro, line 78) `#define COL_TASKBAR`
-  - `COL_TASKBAR_TXT` (macro, line 79) `#define COL_TASKBAR_TXT`
-  - `COL_TITLEBAR` (macro, line 80) `#define COL_TITLEBAR`
-  - `COL_TITLE_TXT` (macro, line 81) `#define COL_TITLE_TXT`
-  - `COL_TERMINAL` (macro, line 82) `#define COL_TERMINAL`
-  - `COL_TERM_TXT` (macro, line 83) `#define COL_TERM_TXT`
-  - `COL_TERM_CUR` (macro, line 84) `#define COL_TERM_CUR`
-  - `COL_BORDER` (macro, line 85) `#define COL_BORDER`
-  - `COL_WHITE` (macro, line 86) `#define COL_WHITE`
-  - `COL_SHADOW` (macro, line 87) `#define COL_SHADOW`
-  - `COL_HIGHLIGHT` (macro, line 88) `#define COL_HIGHLIGHT`
-  - `COL_SCROLLBAR` (macro, line 89) `#define COL_SCROLLBAR`
-  - `COL_SCROLL_THUMB` (macro, line 90) `#define COL_SCROLL_THUMB`
-  - `WALLPAPER_PATH` (macro, line 97) `#define WALLPAPER_PATH`
-  - `WALL_PAL_BASE` (macro, line 98) `#define WALL_PAL_BASE`
-  - `WALL_PAL_SIZE` (macro, line 99) `#define WALL_PAL_SIZE`
-  - `FONT_W` (macro, line 101) `#define FONT_W`
-  - `FONT_H` (macro, line 102) `#define FONT_H`
-  - `TERM_MAX_COLS` (macro, line 107) `#define TERM_MAX_COLS`
-  - `TERM_MAX_ROWS` (macro, line 108) `#define TERM_MAX_ROWS`
-  - `TASKBAR_H` (macro, line 111) `#define TASKBAR_H`
-  - `TASKBAR_PAD` (macro, line 112) `#define TASKBAR_PAD`
-  - `TASKBAR_CLOCK_CH` (macro, line 113) `#define TASKBAR_CLOCK_CH`
-  - `TASKBAR_VOL_CH` (macro, line 114) `#define TASKBAR_VOL_CH`
-  - `TASKBAR_VOL_STEP` (macro, line 115) `#define TASKBAR_VOL_STEP`
-  - `TASKBAR_ICON_W` (macro, line 116) `#define TASKBAR_ICON_W`
-  - `TASKBAR_BTN_W` (macro, line 117) `#define TASKBAR_BTN_W`
-  - `TASKBAR_KBD_CH` (macro, line 119) `#define TASKBAR_KBD_CH`
-  - `TASKBAR_KBD_W` (macro, line 120) `#define TASKBAR_KBD_W`
-  - `TASKBAR_THEME_CH` (macro, line 122) `#define TASKBAR_THEME_CH`
-  - `TASKBAR_THEME_W` (macro, line 123) `#define TASKBAR_THEME_W`
-  - `TILING_LEFT` (macro, line 126) `#define TILING_LEFT`
-  - `TILING_RIGHT` (macro, line 127) `#define TILING_RIGHT`
-  - `TILING_TOP` (macro, line 128) `#define TILING_TOP`
-  - `TILING_BOTTOM` (macro, line 129) `#define TILING_BOTTOM`
-  - `TILING_TOP_LEFT` (macro, line 130) `#define TILING_TOP_LEFT`
-  - `TILING_TOP_RIGHT` (macro, line 131) `#define TILING_TOP_RIGHT`
-  - `TILING_BOTTOM_LEFT` (macro, line 132) `#define TILING_BOTTOM_LEFT`
-  - `TILING_BOTTOM_RIGHT` (macro, line 133) `#define TILING_BOTTOM_RIGHT`
-  - `SCROLLBAR_W` (macro, line 136) `#define SCROLLBAR_W`
-  - `SCROLLBAR_PAD` (macro, line 137) `#define SCROLLBAR_PAD`
-  - `WM_BTN_W` (macro, line 142) `#define WM_BTN_W`
-  - `WM_BTN_H` (macro, line 143) `#define WM_BTN_H`
-  - `WM_BTN_PAD` (macro, line 144) `#define WM_BTN_PAD`
-  - `WM_BTN_MIN` (macro, line 145) `#define WM_BTN_MIN`
-  - `WM_BTN_MAX` (macro, line 146) `#define WM_BTN_MAX`
-  - `WM_BTN_CLOSE` (macro, line 147) `#define WM_BTN_CLOSE`
-  - `SB_MAX_LINES` (macro, line 167) `#define SB_MAX_LINES`
-  - `SB_LINE_MAX` (macro, line 168) `#define SB_LINE_MAX`
-  - `WM_FOCUS_GFX` (macro, line 197) `#define WM_FOCUS_GFX`
+  - `NK_RGB_ADDR` (macro, line 73) `#define NK_RGB_ADDR`
+  - `NK_RGB_BYTES` (macro, line 74) `#define NK_RGB_BYTES`
+  - `COL_BLACK` (macro, line 82) `#define COL_BLACK`
+  - `COL_BG` (macro, line 83) `#define COL_BG`
+  - `COL_TASKBAR` (macro, line 84) `#define COL_TASKBAR`
+  - `COL_TASKBAR_TXT` (macro, line 85) `#define COL_TASKBAR_TXT`
+  - `COL_TITLEBAR` (macro, line 86) `#define COL_TITLEBAR`
+  - `COL_TITLE_TXT` (macro, line 87) `#define COL_TITLE_TXT`
+  - `COL_TERMINAL` (macro, line 88) `#define COL_TERMINAL`
+  - `COL_TERM_TXT` (macro, line 89) `#define COL_TERM_TXT`
+  - `COL_TERM_CUR` (macro, line 90) `#define COL_TERM_CUR`
+  - `COL_BORDER` (macro, line 91) `#define COL_BORDER`
+  - `COL_WHITE` (macro, line 92) `#define COL_WHITE`
+  - `COL_SHADOW` (macro, line 93) `#define COL_SHADOW`
+  - `COL_HIGHLIGHT` (macro, line 94) `#define COL_HIGHLIGHT`
+  - `COL_SCROLLBAR` (macro, line 95) `#define COL_SCROLLBAR`
+  - `COL_SCROLL_THUMB` (macro, line 96) `#define COL_SCROLL_THUMB`
+  - `WALLPAPER_PATH` (macro, line 103) `#define WALLPAPER_PATH`
+  - `WALL_PAL_BASE` (macro, line 104) `#define WALL_PAL_BASE`
+  - `WALL_PAL_SIZE` (macro, line 105) `#define WALL_PAL_SIZE`
+  - `FONT_W` (macro, line 107) `#define FONT_W`
+  - `FONT_H` (macro, line 108) `#define FONT_H`
+  - `TERM_MAX_COLS` (macro, line 113) `#define TERM_MAX_COLS`
+  - `TERM_MAX_ROWS` (macro, line 114) `#define TERM_MAX_ROWS`
+  - `TASKBAR_H` (macro, line 117) `#define TASKBAR_H`
+  - `TASKBAR_PAD` (macro, line 118) `#define TASKBAR_PAD`
+  - `TASKBAR_CLOCK_CH` (macro, line 119) `#define TASKBAR_CLOCK_CH`
+  - `TASKBAR_VOL_CH` (macro, line 120) `#define TASKBAR_VOL_CH`
+  - `TASKBAR_VOL_STEP` (macro, line 121) `#define TASKBAR_VOL_STEP`
+  - `TASKBAR_ICON_W` (macro, line 122) `#define TASKBAR_ICON_W`
+  - `TASKBAR_BTN_W` (macro, line 123) `#define TASKBAR_BTN_W`
+  - `TASKBAR_KBD_CH` (macro, line 125) `#define TASKBAR_KBD_CH`
+  - `TASKBAR_KBD_W` (macro, line 126) `#define TASKBAR_KBD_W`
+  - `TASKBAR_THEME_CH` (macro, line 128) `#define TASKBAR_THEME_CH`
+  - `TASKBAR_THEME_W` (macro, line 129) `#define TASKBAR_THEME_W`
+  - `TILING_LEFT` (macro, line 132) `#define TILING_LEFT`
+  - `TILING_RIGHT` (macro, line 133) `#define TILING_RIGHT`
+  - `TILING_TOP` (macro, line 134) `#define TILING_TOP`
+  - `TILING_BOTTOM` (macro, line 135) `#define TILING_BOTTOM`
+  - `TILING_TOP_LEFT` (macro, line 136) `#define TILING_TOP_LEFT`
+  - `TILING_TOP_RIGHT` (macro, line 137) `#define TILING_TOP_RIGHT`
+  - `TILING_BOTTOM_LEFT` (macro, line 138) `#define TILING_BOTTOM_LEFT`
+  - `TILING_BOTTOM_RIGHT` (macro, line 139) `#define TILING_BOTTOM_RIGHT`
+  - `SCROLLBAR_W` (macro, line 142) `#define SCROLLBAR_W`
+  - `SCROLLBAR_PAD` (macro, line 143) `#define SCROLLBAR_PAD`
+  - `WM_BTN_W` (macro, line 148) `#define WM_BTN_W`
+  - `WM_BTN_H` (macro, line 149) `#define WM_BTN_H`
+  - `WM_BTN_PAD` (macro, line 150) `#define WM_BTN_PAD`
+  - `WM_BTN_MIN` (macro, line 151) `#define WM_BTN_MIN`
+  - `WM_BTN_MAX` (macro, line 152) `#define WM_BTN_MAX`
+  - `WM_BTN_CLOSE` (macro, line 153) `#define WM_BTN_CLOSE`
+  - `SB_MAX_LINES` (macro, line 173) `#define SB_MAX_LINES`
+  - `SB_LINE_MAX` (macro, line 174) `#define SB_LINE_MAX`
+  - `WM_FOCUS_GFX` (macro, line 206) `#define WM_FOCUS_GFX`
 - Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `progs/src/freedom_wl.c`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
+
+## headers/vga_fx.h
+- Layer: utility
+- Doc: Docstring: DOOM-melt desktop effect contract for MiniOS.
+- Language: h
+- Symbols:
+  - `vga_fx_config_t` (struct, line 16)
+  - `vga_fx_rand` (function, line 30) `static inline unsigned long vga_fx_rand(unsigned long *s)`
+  - `vga_fx_init_cols` (function, line 47) `static inline int vga_fx_init_cols(const vga_fx_config_t *cfg, int *cols, int w)`
+  - `vga_fx_advance` (function, line 71) `static inline int vga_fx_advance(const vga_fx_config_t *cfg, int *cols, int w, int h)`
+  - `vga_fx_front` (function, line 97) `static inline int vga_fx_front(int col_y, int h)`
+  - `vga_fx_clamp_rect` (function, line 109) `static inline int vga_fx_clamp_rect(int *x, int *y, int *w, int *h, int fb_w, int fb_h)`
+  - `VGA_FX_H` (macro, line 13) `#define VGA_FX_H`
+  - `VGA_FX_CONFIG_DEFAULT` (macro, line 24) `#define VGA_FX_CONFIG_DEFAULT`
+  - `VGA_FX_COLS_MAX` (macro, line 27) `#define VGA_FX_COLS_MAX`
+- Imported by: `kernel/vga_fb.c`, `kernel/vga_fx.c`, `tests/test_fx.c`
 
 ## headers/vma.h
 - Layer: utility

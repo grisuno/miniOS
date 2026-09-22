@@ -1,6 +1,6 @@
 # orphans
 
-*Community 12 | 85 files | cohesion 0.00*
+*Community 10 | 85 files | cohesion 0.00*
 
 ## Definition
 
@@ -26,7 +26,7 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/asm/aes.s` | s | utility | 28 | no |
+| `progs/asm/aes.s` | s | utility | 30 | no |
 | `progs/asm/cp.s` | s | utility | 2 | no |
 
 ### `mcp` (3 files)
@@ -136,7 +136,7 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 12 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 12 (orphans).
+- [INFERRED] shares_context community 0 <-> 10 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 10 (orphans).
 
 ## Risks
 

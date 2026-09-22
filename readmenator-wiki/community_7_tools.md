@@ -1,6 +1,6 @@
 # tools
 
-*Community 8 | 21 files | cohesion 0.79*
+*Community 7 | 21 files | cohesion 0.79*
 
 ## Definition
 
@@ -12,7 +12,7 @@ This community groups 21 file(s) rooted at `tools` with dominant language py (co
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `tools/boot_wl.py` | py | utility | 14 | yes |
+| `tools/boot_wl.py` | py | utility | 15 | yes |
 | `tools/gdb_repro.py` | py | utility | 4 | yes |
 | `tools/minios_cli.py` | py | utility | 6 | yes |
 | `tools/minios_gui.py` | py | presentation | 9 | yes |
@@ -86,25 +86,27 @@ This community groups 21 file(s) rooted at `tools` with dominant language py (co
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 8 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
-- [EXTRACTED] depends_on community 3 <-> 8 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
+- [EXTRACTED] depends_on community 5 <-> 7 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
+- [EXTRACTED] depends_on community 7 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/kernel.h.
+- [EXTRACTED] depends_on community 3 <-> 7 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
+- [INFERRED] shares_context community 1 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 7 (tools).
 
 ## Risks
 
 - [taint high] `mcp/mcp_dbg_driver.py` -> `mcp/mcp_dbg_driver.py` via `subprocess` (0 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `kernel/time.c` via `subprocess` (1 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/ktime.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/kernel.h` via `subprocess` (2 hops)
+- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/ktime.h` via `subprocess` (2 hops)
+- [taint high] `mcp/mcp_dbg_driver.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/vma.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `mcp/mcp_dogfood.py` via `subprocess` (0 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `kernel/time.c` via `subprocess` (1 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `headers/ktime.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/kernel.h` via `subprocess` (2 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/ktime.h` via `subprocess` (2 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/vma.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
 - [taint high] `mcp/minios_addons.py` -> `mcp/minios_addons.py` via `subprocess` (0 hops)
 
 ## Open Questions

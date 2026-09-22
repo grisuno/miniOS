@@ -18,20 +18,21 @@
 - Doc: boot_wl.py - boot the miniOS Wayland-mini desktop in one step.  Builds nothing; `make wl` owns the build. Boots os.img, 
 - Language: py
 - Symbols:
-  - `WlBootConfig` (class, line 39) `class WlBootConfig`
-  - `WlBoot` (class, line 66) `class WlBoot`
-  - `main` (method, line 216) `def main()`
-  - `__init__` (method, line 67) `def __init__(self, cfg)`
-  - `fail` (method, line 74) `def fail(self, msg)`
-  - `close` (method, line 79) `def close(self)`
-  - `boot` (method, line 90) `def boot(self)`
-  - `snapshot` (method, line 106) `def snapshot(self, timeout)`
-  - `wait_prompt` (method, line 123) `def wait_prompt(self)`
-  - `send` (method, line 134) `def send(self, line)`
-  - `setup` (method, line 145) `def setup(self)`
-  - `qmp` (method, line 155) `def qmp(self, obj)`
-  - `headless` (method, line 172) `def headless(self)`
-  - `proxy` (method, line 185) `def proxy(self)`
+  - `WlBootConfig` (class, line 40) `class WlBootConfig`
+  - `WlBoot` (class, line 67) `class WlBoot`
+  - `main` (method, line 226) `def main()`
+  - `__init__` (method, line 68) `def __init__(self, cfg)`
+  - `fail` (method, line 75) `def fail(self, msg)`
+  - `close` (method, line 80) `def close(self)`
+  - `boot` (method, line 91) `def boot(self)`
+  - `snapshot` (method, line 107) `def snapshot(self, timeout)`
+  - `wait_prompt` (method, line 124) `def wait_prompt(self)`
+  - `send` (method, line 135) `def send(self, line)`
+  - `send_wait` (method, line 142) `def send_wait(self, line, timeout)`
+  - `setup` (method, line 154) `def setup(self)`
+  - `qmp` (method, line 165) `def qmp(self, obj)`
+  - `headless` (method, line 182) `def headless(self)`
+  - `proxy` (method, line 195) `def proxy(self)`
 - Depends on: `kernel/time.c`
 
 ## tools/check_abi_numbers.py
@@ -178,8 +179,8 @@
 - Doc: gen_desktop_pngs.py -- build MiniOS desktop art from user-supplied PNGs.  Sources (images/ by default, overridable with 
 - Language: py
 - Symbols:
-  - `write_atomic` (function, line 63) `def write_atomic(img, path)`
-  - `main` (function, line 69) `def main()`
+  - `write_atomic` (function, line 69) `def write_atomic(img, path)`
+  - `main` (function, line 75) `def main()`
 
 ## tools/gen_icons.py
 - Layer: utility
@@ -445,10 +446,10 @@
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 103)
-  - `cleanup` (function, line 110)
-  - `record` (function, line 286)
-  - `find_index` (function, line 292)
+  - `restore_sources` (function, line 105)
+  - `cleanup` (function, line 112)
+  - `record` (function, line 303)
+  - `find_index` (function, line 309)
 
 ## tools/probe_compute_vga.py
 - Layer: utility

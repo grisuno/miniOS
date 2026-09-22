@@ -8,132 +8,141 @@
   - `MINIOS_ABI_H` (macro, line 2) `#define MINIOS_ABI_H`
   - `MINIOS_ABI_VERSION` (macro, line 41) `#define MINIOS_ABI_VERSION`
   - `MINIOS_ABI_CHECKSUM` (macro, line 45) `#define MINIOS_ABI_CHECKSUM`
-  - `MINIOS_USER_LOAD_BASE` (macro, line 101) `#define MINIOS_USER_LOAD_BASE`
-  - `MINIOS_USER_LOAD_END` (macro, line 102) `#define MINIOS_USER_LOAD_END`
-  - `MINIOS_USER_STACK_SIZE` (macro, line 103) `#define MINIOS_USER_STACK_SIZE`
-  - `MINIOS_USER_STACK_TOP` (macro, line 104) `#define MINIOS_USER_STACK_TOP`
-  - `MINIOS_USER_STACK_BASE` (macro, line 105) `#define MINIOS_USER_STACK_BASE`
-  - `MINIOS_USER_BRK_END` (macro, line 106) `#define MINIOS_USER_BRK_END`
-  - `MINIOS_DOOM_BACKBUF_ADDR` (macro, line 123) `#define MINIOS_DOOM_BACKBUF_ADDR`
-  - `MINIOS_DOOM_W` (macro, line 124) `#define MINIOS_DOOM_W`
-  - `MINIOS_DOOM_H` (macro, line 125) `#define MINIOS_DOOM_H`
-  - `MINIOS_FB_ADDR` (macro, line 126) `#define MINIOS_FB_ADDR`
-  - `MINIOS_NK_BACKBUF_ADDR` (macro, line 127) `#define MINIOS_NK_BACKBUF_ADDR`
-  - `MINIOS_NK_W` (macro, line 128) `#define MINIOS_NK_W`
-  - `MINIOS_NK_H` (macro, line 129) `#define MINIOS_NK_H`
-  - `MINIOS_HEAP_BASE` (macro, line 134) `#define MINIOS_HEAP_BASE`
-  - `MINIOS_HEAP_SIZE` (macro, line 135) `#define MINIOS_HEAP_SIZE`
-  - `MINIOS_FB_WIDTH_MAX` (macro, line 140) `#define MINIOS_FB_WIDTH_MAX`
-  - `MINIOS_FB_HEIGHT_MAX` (macro, line 141) `#define MINIOS_FB_HEIGHT_MAX`
-  - `MINIOS_SYS_READ` (macro, line 159) `#define MINIOS_SYS_READ`
-  - `MINIOS_SYS_WRITE` (macro, line 160) `#define MINIOS_SYS_WRITE`
-  - `MINIOS_SYS_OPEN` (macro, line 161) `#define MINIOS_SYS_OPEN`
-  - `MINIOS_SYS_CLOSE` (macro, line 162) `#define MINIOS_SYS_CLOSE`
-  - `MINIOS_SYS_FSTAT` (macro, line 163) `#define MINIOS_SYS_FSTAT`
-  - `MINIOS_SYS_POLL` (macro, line 164) `#define MINIOS_SYS_POLL`
-  - `MINIOS_SYS_LSEEK` (macro, line 165) `#define MINIOS_SYS_LSEEK`
-  - `MINIOS_SYS_MMAP` (macro, line 166) `#define MINIOS_SYS_MMAP`
-  - `MINIOS_SYS_MPROTECT` (macro, line 167) `#define MINIOS_SYS_MPROTECT`
-  - `MINIOS_SYS_MUNMAP` (macro, line 168) `#define MINIOS_SYS_MUNMAP`
-  - `MINIOS_SYS_BRK` (macro, line 169) `#define MINIOS_SYS_BRK`
-  - `MINIOS_SYS_RT_SIGACTION` (macro, line 170) `#define MINIOS_SYS_RT_SIGACTION`
-  - `MINIOS_SYS_RT_SIGPROCMASK` (macro, line 171) `#define MINIOS_SYS_RT_SIGPROCMASK`
-  - `MINIOS_SYS_IOCTL` (macro, line 172) `#define MINIOS_SYS_IOCTL`
-  - `MINIOS_SYS_WRITEV` (macro, line 173) `#define MINIOS_SYS_WRITEV`
-  - `MINIOS_SYS_ACCESS` (macro, line 174) `#define MINIOS_SYS_ACCESS`
-  - `MINIOS_SYS_SCHED_YIELD` (macro, line 175) `#define MINIOS_SYS_SCHED_YIELD`
-  - `MINIOS_SYS_GETPID` (macro, line 176) `#define MINIOS_SYS_GETPID`
-  - `MINIOS_SYS_SOCKET` (macro, line 177) `#define MINIOS_SYS_SOCKET`
-  - `MINIOS_SYS_CONNECT` (macro, line 178) `#define MINIOS_SYS_CONNECT`
-  - `MINIOS_SYS_SENDTO` (macro, line 179) `#define MINIOS_SYS_SENDTO`
-  - `MINIOS_SYS_RECVFROM` (macro, line 180) `#define MINIOS_SYS_RECVFROM`
-  - `MINIOS_SYS_SHUTDOWN` (macro, line 181) `#define MINIOS_SYS_SHUTDOWN`
-  - `MINIOS_SYS_FORK` (macro, line 182) `#define MINIOS_SYS_FORK`
-  - `MINIOS_SYS_VFORK` (macro, line 183) `#define MINIOS_SYS_VFORK`
-  - `MINIOS_SYS_EXECVE` (macro, line 184) `#define MINIOS_SYS_EXECVE`
-  - `MINIOS_SYS_EXIT` (macro, line 185) `#define MINIOS_SYS_EXIT`
-  - `MINIOS_SYS_WAIT4` (macro, line 186) `#define MINIOS_SYS_WAIT4`
-  - `MINIOS_SYS_KILL` (macro, line 187) `#define MINIOS_SYS_KILL`
-  - `MINIOS_SYS_UNAME` (macro, line 188) `#define MINIOS_SYS_UNAME`
-  - `MINIOS_SYS_UNLINK` (macro, line 189) `#define MINIOS_SYS_UNLINK`
-  - `MINIOS_SYS_READLINK` (macro, line 190) `#define MINIOS_SYS_READLINK`
-  - `MINIOS_SYS_GETTID` (macro, line 191) `#define MINIOS_SYS_GETTID`
-  - `MINIOS_SYS_FLOCK` (macro, line 195) `#define MINIOS_SYS_FLOCK`
-  - `MINIOS_SYS_FSYNC` (macro, line 196) `#define MINIOS_SYS_FSYNC`
-  - `MINIOS_SYS_FDATASYNC` (macro, line 197) `#define MINIOS_SYS_FDATASYNC`
-  - `MINIOS_SYS_GETCWD` (macro, line 198) `#define MINIOS_SYS_GETCWD`
-  - `MINIOS_SYS_GETTIMEOFDAY` (macro, line 199) `#define MINIOS_SYS_GETTIMEOFDAY`
-  - `MINIOS_SYS_ARCH_PRCTL` (macro, line 200) `#define MINIOS_SYS_ARCH_PRCTL`
-  - `MINIOS_SYS_OPENAT` (macro, line 201) `#define MINIOS_SYS_OPENAT`
-  - `MINIOS_SYS_NEWFSTATAT` (macro, line 202) `#define MINIOS_SYS_NEWFSTATAT`
-  - `MINIOS_SYS_STATX` (macro, line 205) `#define MINIOS_SYS_STATX`
-  - `MINIOS_SYS_SET_ROBUST_LIST` (macro, line 209) `#define MINIOS_SYS_SET_ROBUST_LIST`
-  - `MINIOS_SYS_PRLIMIT64` (macro, line 213) `#define MINIOS_SYS_PRLIMIT64`
-  - `MINIOS_SYS_GETRANDOM` (macro, line 214) `#define MINIOS_SYS_GETRANDOM`
-  - `MINIOS_SYS_RSEQ` (macro, line 215) `#define MINIOS_SYS_RSEQ`
-  - `MINIOS_SYS_EXIT_GROUP` (macro, line 216) `#define MINIOS_SYS_EXIT_GROUP`
-  - `MINIOS_SYS_SET_TID_ADDRESS` (macro, line 217) `#define MINIOS_SYS_SET_TID_ADDRESS`
-  - `MINIOS_SYS_CLOCK_GETTIME` (macro, line 218) `#define MINIOS_SYS_CLOCK_GETTIME`
-  - `MINIOS_SYS_TGKILL` (macro, line 219) `#define MINIOS_SYS_TGKILL`
-  - `MINIOS_SYS_DNS` (macro, line 222) `#define MINIOS_SYS_DNS`
-  - `MINIOS_SYS_TLS_HANDSHAKE` (macro, line 228) `#define MINIOS_SYS_TLS_HANDSHAKE`
-  - `MINIOS_SYS_TLS_SEND` (macro, line 229) `#define MINIOS_SYS_TLS_SEND`
-  - `MINIOS_SYS_TLS_RECV` (macro, line 230) `#define MINIOS_SYS_TLS_RECV`
-  - `MINIOS_SYS_TIME` (macro, line 231) `#define MINIOS_SYS_TIME`
-  - `MINIOS_SYS_KBD` (macro, line 232) `#define MINIOS_SYS_KBD`
-  - `MINIOS_SYS_PALETTE` (macro, line 233) `#define MINIOS_SYS_PALETTE`
-  - `MINIOS_SYS_KBD_RAW` (macro, line 234) `#define MINIOS_SYS_KBD_RAW`
-  - `MINIOS_SYS_VGA_MODE` (macro, line 235) `#define MINIOS_SYS_VGA_MODE`
-  - `MINIOS_SYS_PCSPK_INIT` (macro, line 236) `#define MINIOS_SYS_PCSPK_INIT`
-  - `MINIOS_SYS_PCSPK_TONE` (macro, line 237) `#define MINIOS_SYS_PCSPK_TONE`
-  - `MINIOS_SYS_DOOM_FRAME` (macro, line 238) `#define MINIOS_SYS_DOOM_FRAME`
-  - `MINIOS_SYS_RTC` (macro, line 239) `#define MINIOS_SYS_RTC`
-  - `MINIOS_SYS_FB_INFO` (macro, line 240) `#define MINIOS_SYS_FB_INFO`
-  - `MINIOS_SYS_PCSPK_VOL` (macro, line 241) `#define MINIOS_SYS_PCSPK_VOL`
-  - `MINIOS_SYS_SPAWN` (macro, line 242) `#define MINIOS_SYS_SPAWN`
-  - `MINIOS_SYS_LZ4_COMPRESS` (macro, line 243) `#define MINIOS_SYS_LZ4_COMPRESS`
-  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 244) `#define MINIOS_SYS_LZ4_DECOMPRESS`
-  - `MINIOS_SYS_MOUSE` (macro, line 245) `#define MINIOS_SYS_MOUSE`
-  - `MINIOS_SYS_NK_FRAME` (macro, line 246) `#define MINIOS_SYS_NK_FRAME`
-  - `MINIOS_SYS_SB16_OPEN` (macro, line 247) `#define MINIOS_SYS_SB16_OPEN`
-  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 248) `#define MINIOS_SYS_SB16_SUBMIT`
-  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 249) `#define MINIOS_SYS_GFX_SET_TITLE`
-  - `MINIOS_SYS_SB16_PUMP` (macro, line 250) `#define MINIOS_SYS_SB16_PUMP`
-  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 251) `#define MINIOS_SYS_SB16_STREAM_OPEN`
-  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 252) `#define MINIOS_SYS_SB16_STREAM_CLOSE`
-  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 253) `#define MINIOS_SYS_SB16_STREAM_SUBMIT`
-  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 254) `#define MINIOS_SYS_SB16_STREAM_VOLUME`
-  - `MINIOS_SYS_THREAD_SPAWN` (macro, line 255) `#define MINIOS_SYS_THREAD_SPAWN`
-  - `MINIOS_SYS_FUTEX_WAIT` (macro, line 256) `#define MINIOS_SYS_FUTEX_WAIT`
-  - `MINIOS_SYS_FUTEX_WAKE` (macro, line 257) `#define MINIOS_SYS_FUTEX_WAKE`
-  - `MINIOS_SYS_SUBMIT_BATCH` (macro, line 258) `#define MINIOS_SYS_SUBMIT_BATCH`
-  - `MINIOS_SYS_GETC_RAW` (macro, line 259) `#define MINIOS_SYS_GETC_RAW`
-  - `MINIOS_SYS_GFX_PRESENT` (macro, line 260) `#define MINIOS_SYS_GFX_PRESENT`
-  - `MINIOS_SYS_SECCOMP` (macro, line 261) `#define MINIOS_SYS_SECCOMP`
-  - `MINIOS_SYS_NICE` (macro, line 262) `#define MINIOS_SYS_NICE`
-  - `MINIOS_SYS_RLIMIT` (macro, line 263) `#define MINIOS_SYS_RLIMIT`
-  - `MINIOS_SYS_DIR_LIST` (macro, line 264) `#define MINIOS_SYS_DIR_LIST`
-  - `MINIOS_SYS_GFX_ZOOM` (macro, line 265) `#define MINIOS_SYS_GFX_ZOOM`
-  - `MINIOS_SYS_WL_ATTACH` (macro, line 270) `#define MINIOS_SYS_WL_ATTACH`
-  - `MINIOS_SYS_WL_COMMIT` (macro, line 271) `#define MINIOS_SYS_WL_COMMIT`
-  - `MINIOS_SYS_WL_INPUT` (macro, line 272) `#define MINIOS_SYS_WL_INPUT`
-  - `MINIOS_SYS_CLONE` (macro, line 274) `#define MINIOS_SYS_CLONE`
-  - `MINIOS_GFX_BUF_GAME` (macro, line 282) `#define MINIOS_GFX_BUF_GAME`
-  - `MINIOS_GFX_BUF_NK` (macro, line 283) `#define MINIOS_GFX_BUF_NK`
-  - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 284) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
-  - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 285) `#define MINIOS_SYS_WINDOW_PRESENT`
-  - `MINIOS_SYS_WINDOW_TITLE` (macro, line 286) `#define MINIOS_SYS_WINDOW_TITLE`
-  - `SYS_TIME_MS` (macro, line 289) `#define SYS_TIME_MS`
-  - `SYS_PALETTE` (macro, line 290) `#define SYS_PALETTE`
-  - `SYS_PCSPK_INIT` (macro, line 291) `#define SYS_PCSPK_INIT`
-  - `SYS_PCSPK_TONE` (macro, line 292) `#define SYS_PCSPK_TONE`
-  - `SYS_RTC` (macro, line 293) `#define SYS_RTC`
-  - `SYS_FB_INFO` (macro, line 294) `#define SYS_FB_INFO`
-  - `SYS_PCSPK_VOL` (macro, line 295) `#define SYS_PCSPK_VOL`
-  - `SYS_SPAWN` (macro, line 296) `#define SYS_SPAWN`
-  - `SYS_TIME` (macro, line 297) `#define SYS_TIME`
-  - `SYS_WRITE` (macro, line 298) `#define SYS_WRITE`
-  - `MINIOS_EABI_MISMATCH` (macro, line 301) `#define MINIOS_EABI_MISMATCH`
+  - `MINIOS_USER_LOAD_BASE` (macro, line 107) `#define MINIOS_USER_LOAD_BASE`
+  - `MINIOS_USER_LOAD_END` (macro, line 108) `#define MINIOS_USER_LOAD_END`
+  - `MINIOS_USER_STACK_SIZE` (macro, line 109) `#define MINIOS_USER_STACK_SIZE`
+  - `MINIOS_USER_STACK_TOP` (macro, line 110) `#define MINIOS_USER_STACK_TOP`
+  - `MINIOS_USER_STACK_BASE` (macro, line 111) `#define MINIOS_USER_STACK_BASE`
+  - `MINIOS_USER_BRK_END` (macro, line 112) `#define MINIOS_USER_BRK_END`
+  - `MINIOS_DOOM_BACKBUF_ADDR` (macro, line 129) `#define MINIOS_DOOM_BACKBUF_ADDR`
+  - `MINIOS_DOOM_W` (macro, line 130) `#define MINIOS_DOOM_W`
+  - `MINIOS_DOOM_H` (macro, line 131) `#define MINIOS_DOOM_H`
+  - `MINIOS_FB_ADDR` (macro, line 132) `#define MINIOS_FB_ADDR`
+  - `MINIOS_NK_BACKBUF_ADDR` (macro, line 133) `#define MINIOS_NK_BACKBUF_ADDR`
+  - `MINIOS_NK_W` (macro, line 134) `#define MINIOS_NK_W`
+  - `MINIOS_NK_H` (macro, line 135) `#define MINIOS_NK_H`
+  - `MINIOS_NK_RGB_ADDR` (macro, line 142) `#define MINIOS_NK_RGB_ADDR`
+  - `MINIOS_NK_RGB_BYTES` (macro, line 143) `#define MINIOS_NK_RGB_BYTES`
+  - `MINIOS_HEAP_BASE` (macro, line 148) `#define MINIOS_HEAP_BASE`
+  - `MINIOS_HEAP_SIZE` (macro, line 149) `#define MINIOS_HEAP_SIZE`
+  - `MINIOS_FB_WIDTH_MAX` (macro, line 154) `#define MINIOS_FB_WIDTH_MAX`
+  - `MINIOS_FB_HEIGHT_MAX` (macro, line 155) `#define MINIOS_FB_HEIGHT_MAX`
+  - `MINIOS_SYS_READ` (macro, line 173) `#define MINIOS_SYS_READ`
+  - `MINIOS_SYS_WRITE` (macro, line 174) `#define MINIOS_SYS_WRITE`
+  - `MINIOS_SYS_OPEN` (macro, line 175) `#define MINIOS_SYS_OPEN`
+  - `MINIOS_SYS_CLOSE` (macro, line 176) `#define MINIOS_SYS_CLOSE`
+  - `MINIOS_SYS_FSTAT` (macro, line 177) `#define MINIOS_SYS_FSTAT`
+  - `MINIOS_SYS_POLL` (macro, line 178) `#define MINIOS_SYS_POLL`
+  - `MINIOS_SYS_LSEEK` (macro, line 179) `#define MINIOS_SYS_LSEEK`
+  - `MINIOS_SYS_MMAP` (macro, line 180) `#define MINIOS_SYS_MMAP`
+  - `MINIOS_SYS_MPROTECT` (macro, line 181) `#define MINIOS_SYS_MPROTECT`
+  - `MINIOS_SYS_MUNMAP` (macro, line 182) `#define MINIOS_SYS_MUNMAP`
+  - `MINIOS_SYS_BRK` (macro, line 183) `#define MINIOS_SYS_BRK`
+  - `MINIOS_SYS_RT_SIGACTION` (macro, line 184) `#define MINIOS_SYS_RT_SIGACTION`
+  - `MINIOS_SYS_RT_SIGPROCMASK` (macro, line 185) `#define MINIOS_SYS_RT_SIGPROCMASK`
+  - `MINIOS_SYS_IOCTL` (macro, line 186) `#define MINIOS_SYS_IOCTL`
+  - `MINIOS_SYS_WRITEV` (macro, line 187) `#define MINIOS_SYS_WRITEV`
+  - `MINIOS_SYS_ACCESS` (macro, line 188) `#define MINIOS_SYS_ACCESS`
+  - `MINIOS_SYS_SCHED_YIELD` (macro, line 189) `#define MINIOS_SYS_SCHED_YIELD`
+  - `MINIOS_SYS_GETPID` (macro, line 190) `#define MINIOS_SYS_GETPID`
+  - `MINIOS_SYS_SOCKET` (macro, line 191) `#define MINIOS_SYS_SOCKET`
+  - `MINIOS_SYS_CONNECT` (macro, line 192) `#define MINIOS_SYS_CONNECT`
+  - `MINIOS_SYS_SENDTO` (macro, line 193) `#define MINIOS_SYS_SENDTO`
+  - `MINIOS_SYS_RECVFROM` (macro, line 194) `#define MINIOS_SYS_RECVFROM`
+  - `MINIOS_SYS_SHUTDOWN` (macro, line 195) `#define MINIOS_SYS_SHUTDOWN`
+  - `MINIOS_SYS_FORK` (macro, line 196) `#define MINIOS_SYS_FORK`
+  - `MINIOS_SYS_VFORK` (macro, line 197) `#define MINIOS_SYS_VFORK`
+  - `MINIOS_SYS_EXECVE` (macro, line 198) `#define MINIOS_SYS_EXECVE`
+  - `MINIOS_SYS_EXIT` (macro, line 199) `#define MINIOS_SYS_EXIT`
+  - `MINIOS_SYS_WAIT4` (macro, line 200) `#define MINIOS_SYS_WAIT4`
+  - `MINIOS_SYS_KILL` (macro, line 201) `#define MINIOS_SYS_KILL`
+  - `MINIOS_SYS_UNAME` (macro, line 202) `#define MINIOS_SYS_UNAME`
+  - `MINIOS_SYS_UNLINK` (macro, line 203) `#define MINIOS_SYS_UNLINK`
+  - `MINIOS_SYS_READLINK` (macro, line 204) `#define MINIOS_SYS_READLINK`
+  - `MINIOS_SYS_GETTID` (macro, line 205) `#define MINIOS_SYS_GETTID`
+  - `MINIOS_SYS_FLOCK` (macro, line 209) `#define MINIOS_SYS_FLOCK`
+  - `MINIOS_SYS_FSYNC` (macro, line 210) `#define MINIOS_SYS_FSYNC`
+  - `MINIOS_SYS_FDATASYNC` (macro, line 211) `#define MINIOS_SYS_FDATASYNC`
+  - `MINIOS_SYS_GETCWD` (macro, line 212) `#define MINIOS_SYS_GETCWD`
+  - `MINIOS_SYS_GETTIMEOFDAY` (macro, line 213) `#define MINIOS_SYS_GETTIMEOFDAY`
+  - `MINIOS_SYS_ARCH_PRCTL` (macro, line 214) `#define MINIOS_SYS_ARCH_PRCTL`
+  - `MINIOS_SYS_OPENAT` (macro, line 215) `#define MINIOS_SYS_OPENAT`
+  - `MINIOS_SYS_NEWFSTATAT` (macro, line 216) `#define MINIOS_SYS_NEWFSTATAT`
+  - `MINIOS_SYS_STATX` (macro, line 219) `#define MINIOS_SYS_STATX`
+  - `MINIOS_SYS_SET_ROBUST_LIST` (macro, line 223) `#define MINIOS_SYS_SET_ROBUST_LIST`
+  - `MINIOS_SYS_PRLIMIT64` (macro, line 227) `#define MINIOS_SYS_PRLIMIT64`
+  - `MINIOS_SYS_GETRANDOM` (macro, line 228) `#define MINIOS_SYS_GETRANDOM`
+  - `MINIOS_SYS_RSEQ` (macro, line 229) `#define MINIOS_SYS_RSEQ`
+  - `MINIOS_SYS_EXIT_GROUP` (macro, line 230) `#define MINIOS_SYS_EXIT_GROUP`
+  - `MINIOS_SYS_SET_TID_ADDRESS` (macro, line 231) `#define MINIOS_SYS_SET_TID_ADDRESS`
+  - `MINIOS_SYS_CLOCK_GETTIME` (macro, line 232) `#define MINIOS_SYS_CLOCK_GETTIME`
+  - `MINIOS_SYS_TGKILL` (macro, line 233) `#define MINIOS_SYS_TGKILL`
+  - `MINIOS_SYS_DNS` (macro, line 236) `#define MINIOS_SYS_DNS`
+  - `MINIOS_SYS_TLS_HANDSHAKE` (macro, line 242) `#define MINIOS_SYS_TLS_HANDSHAKE`
+  - `MINIOS_SYS_TLS_SEND` (macro, line 243) `#define MINIOS_SYS_TLS_SEND`
+  - `MINIOS_SYS_TLS_RECV` (macro, line 244) `#define MINIOS_SYS_TLS_RECV`
+  - `MINIOS_SYS_TIME` (macro, line 245) `#define MINIOS_SYS_TIME`
+  - `MINIOS_SYS_KBD` (macro, line 246) `#define MINIOS_SYS_KBD`
+  - `MINIOS_SYS_PALETTE` (macro, line 247) `#define MINIOS_SYS_PALETTE`
+  - `MINIOS_SYS_KBD_RAW` (macro, line 248) `#define MINIOS_SYS_KBD_RAW`
+  - `MINIOS_SYS_VGA_MODE` (macro, line 249) `#define MINIOS_SYS_VGA_MODE`
+  - `MINIOS_SYS_PCSPK_INIT` (macro, line 250) `#define MINIOS_SYS_PCSPK_INIT`
+  - `MINIOS_SYS_PCSPK_TONE` (macro, line 251) `#define MINIOS_SYS_PCSPK_TONE`
+  - `MINIOS_SYS_DOOM_FRAME` (macro, line 252) `#define MINIOS_SYS_DOOM_FRAME`
+  - `MINIOS_SYS_RTC` (macro, line 253) `#define MINIOS_SYS_RTC`
+  - `MINIOS_SYS_FB_INFO` (macro, line 254) `#define MINIOS_SYS_FB_INFO`
+  - `MINIOS_SYS_PCSPK_VOL` (macro, line 255) `#define MINIOS_SYS_PCSPK_VOL`
+  - `MINIOS_SYS_SPAWN` (macro, line 256) `#define MINIOS_SYS_SPAWN`
+  - `MINIOS_SYS_LZ4_COMPRESS` (macro, line 257) `#define MINIOS_SYS_LZ4_COMPRESS`
+  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 258) `#define MINIOS_SYS_LZ4_DECOMPRESS`
+  - `MINIOS_SYS_MOUSE` (macro, line 259) `#define MINIOS_SYS_MOUSE`
+  - `MINIOS_SYS_NK_FRAME` (macro, line 260) `#define MINIOS_SYS_NK_FRAME`
+  - `MINIOS_SYS_SB16_OPEN` (macro, line 261) `#define MINIOS_SYS_SB16_OPEN`
+  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 262) `#define MINIOS_SYS_SB16_SUBMIT`
+  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 263) `#define MINIOS_SYS_GFX_SET_TITLE`
+  - `MINIOS_SYS_SB16_PUMP` (macro, line 264) `#define MINIOS_SYS_SB16_PUMP`
+  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 265) `#define MINIOS_SYS_SB16_STREAM_OPEN`
+  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 266) `#define MINIOS_SYS_SB16_STREAM_CLOSE`
+  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 267) `#define MINIOS_SYS_SB16_STREAM_SUBMIT`
+  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 268) `#define MINIOS_SYS_SB16_STREAM_VOLUME`
+  - `MINIOS_SYS_THREAD_SPAWN` (macro, line 269) `#define MINIOS_SYS_THREAD_SPAWN`
+  - `MINIOS_SYS_FUTEX_WAIT` (macro, line 270) `#define MINIOS_SYS_FUTEX_WAIT`
+  - `MINIOS_SYS_FUTEX_WAKE` (macro, line 271) `#define MINIOS_SYS_FUTEX_WAKE`
+  - `MINIOS_SYS_SUBMIT_BATCH` (macro, line 272) `#define MINIOS_SYS_SUBMIT_BATCH`
+  - `MINIOS_SYS_GETC_RAW` (macro, line 273) `#define MINIOS_SYS_GETC_RAW`
+  - `MINIOS_SYS_GFX_PRESENT` (macro, line 274) `#define MINIOS_SYS_GFX_PRESENT`
+  - `MINIOS_SYS_SECCOMP` (macro, line 275) `#define MINIOS_SYS_SECCOMP`
+  - `MINIOS_SYS_NICE` (macro, line 276) `#define MINIOS_SYS_NICE`
+  - `MINIOS_SYS_RLIMIT` (macro, line 277) `#define MINIOS_SYS_RLIMIT`
+  - `MINIOS_SYS_DIR_LIST` (macro, line 278) `#define MINIOS_SYS_DIR_LIST`
+  - `MINIOS_SYS_GFX_ZOOM` (macro, line 279) `#define MINIOS_SYS_GFX_ZOOM`
+  - `MINIOS_SYS_WL_ATTACH` (macro, line 284) `#define MINIOS_SYS_WL_ATTACH`
+  - `MINIOS_SYS_WL_COMMIT` (macro, line 285) `#define MINIOS_SYS_WL_COMMIT`
+  - `MINIOS_SYS_WL_INPUT` (macro, line 286) `#define MINIOS_SYS_WL_INPUT`
+  - `MINIOS_SYS_PCM2_OPEN` (macro, line 291) `#define MINIOS_SYS_PCM2_OPEN`
+  - `MINIOS_SYS_PCM2_WRITE` (macro, line 292) `#define MINIOS_SYS_PCM2_WRITE`
+  - `MINIOS_SYS_PCM2_CLOSE` (macro, line 293) `#define MINIOS_SYS_PCM2_CLOSE`
+  - `MINIOS_PCM2_NONBLOCK` (macro, line 294) `#define MINIOS_PCM2_NONBLOCK`
+  - `MINIOS_PCM2_RATE` (macro, line 298) `#define MINIOS_PCM2_RATE`
+  - `MINIOS_PCM2_FRAG` (macro, line 299) `#define MINIOS_PCM2_FRAG`
+  - `MINIOS_SYS_CLONE` (macro, line 301) `#define MINIOS_SYS_CLONE`
+  - `MINIOS_GFX_BUF_GAME` (macro, line 310) `#define MINIOS_GFX_BUF_GAME`
+  - `MINIOS_GFX_BUF_NK` (macro, line 311) `#define MINIOS_GFX_BUF_NK`
+  - `MINIOS_GFX_BUF_NK_RGB` (macro, line 312) `#define MINIOS_GFX_BUF_NK_RGB`
+  - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 313) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
+  - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 314) `#define MINIOS_SYS_WINDOW_PRESENT`
+  - `MINIOS_SYS_WINDOW_TITLE` (macro, line 315) `#define MINIOS_SYS_WINDOW_TITLE`
+  - `SYS_TIME_MS` (macro, line 318) `#define SYS_TIME_MS`
+  - `SYS_PALETTE` (macro, line 319) `#define SYS_PALETTE`
+  - `SYS_PCSPK_INIT` (macro, line 320) `#define SYS_PCSPK_INIT`
+  - `SYS_PCSPK_TONE` (macro, line 321) `#define SYS_PCSPK_TONE`
+  - `SYS_RTC` (macro, line 322) `#define SYS_RTC`
+  - `SYS_FB_INFO` (macro, line 323) `#define SYS_FB_INFO`
+  - `SYS_PCSPK_VOL` (macro, line 324) `#define SYS_PCSPK_VOL`
+  - `SYS_SPAWN` (macro, line 325) `#define SYS_SPAWN`
+  - `SYS_TIME` (macro, line 326) `#define SYS_TIME`
+  - `SYS_WRITE` (macro, line 327) `#define SYS_WRITE`
+  - `MINIOS_EABI_MISMATCH` (macro, line 330) `#define MINIOS_EABI_MISMATCH`
 - Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tests/test_wl.c`, `tools/abi_stamp.c`
 
 ## progs/minios_png.h
@@ -141,30 +150,33 @@
 - Doc: Docstring: shared ring-3 PNG helpers for MiniOS apps (progs/minios_png.h).
 - Language: h
 - Symbols:
-  - `mpng_332_idx` (function, line 54) `static int mpng_332_idx(unsigned r, unsigned g, unsigned b)`
-  - `mpng_nearest` (function, line 59) `static int mpng_nearest(const unsigned char *pal, long pal_n, unsigned r,
+  - `mpng_332_idx` (function, line 58) `static int mpng_332_idx(unsigned r, unsigned g, unsigned b)`
+  - `mpng_nearest` (function, line 63) `static int mpng_nearest(const unsigned char *pal, long pal_n, unsigned r,
                        ...`
-  - `mpng_center` (function, line 80) `static int mpng_center(int outer, int inner)`
-  - `mpng_fit_scale` (function, line 89) `static int mpng_fit_scale(int sw, int sh, int boxw, int boxh)`
-  - `mpng_rgb_to_idx_scaled` (function, line 104) `static int mpng_rgb_to_idx_scaled(const unsigned char *rgb, int sw, int sh,
+  - `mpng_center` (function, line 84) `static int mpng_center(int outer, int inner)`
+  - `mpng_fit_scale` (function, line 93) `static int mpng_fit_scale(int sw, int sh, int boxw, int boxh)`
+  - `mpng_rgb_to_idx_scaled` (function, line 108) `static int mpng_rgb_to_idx_scaled(const unsigned char *rgb, int sw, int sh,
                      ...`
-  - `mpng_rgb_to_332_scaled` (function, line 134) `static int mpng_rgb_to_332_scaled(const unsigned char *rgb, int sw, int sh,
+  - `bound` (function, line 140) `* its 512 source bound (pinned by the host suite), so icon and policy
+ * art never grow through t...`
+  - `mpng_rgb_to_332_scaled` (function, line 172) `static int mpng_rgb_to_332_scaled(const unsigned char *rgb, int sw, int sh,
                      ...`
-  - `mpng_blit_idx` (function, line 158) `static int mpng_blit_idx(unsigned char *fb, int fw, int fh,
+  - `mpng_blit_idx` (function, line 196) `static int mpng_blit_idx(unsigned char *fb, int fw, int fh,
                          const unsign...`
-  - `mpng_load_file` (function, line 184) `static int mpng_load_file(const char *path, unsigned char **out, long *out_n,
+  - `mpng_load_file` (function, line 222) `static int mpng_load_file(const char *path, unsigned char **out, long *out_n,
                    ...`
   - `MINIOS_PNG_H` (macro, line 22) `#define MINIOS_PNG_H`
   - `MPNG_FILE_MAX` (macro, line 28) `#define MPNG_FILE_MAX`
   - `MPNG_MAX_DIM` (macro, line 29) `#define MPNG_MAX_DIM`
-  - `MPNG_PAL_N` (macro, line 30) `#define MPNG_PAL_N`
-  - `MPNG_PAL_BYTES` (macro, line 31) `#define MPNG_PAL_BYTES`
-  - `MPNG_PATH_MAX` (macro, line 32) `#define MPNG_PATH_MAX`
-  - `MPNG_RIGHT_PATH` (macro, line 33) `#define MPNG_RIGHT_PATH`
-  - `MPNG_LEFT_N` (macro, line 34) `#define MPNG_LEFT_N`
-  - `MPNG_ERR_OK` (macro, line 35) `#define MPNG_ERR_OK`
-  - `MPNG_ERR_BOUND` (macro, line 36) `#define MPNG_ERR_BOUND`
-  - `MPNG_ERR_EMPTY` (macro, line 37) `#define MPNG_ERR_EMPTY`
+  - `MPNG_BIG_DIM` (macro, line 33) `#define MPNG_BIG_DIM`
+  - `MPNG_PAL_N` (macro, line 34) `#define MPNG_PAL_N`
+  - `MPNG_PAL_BYTES` (macro, line 35) `#define MPNG_PAL_BYTES`
+  - `MPNG_PATH_MAX` (macro, line 36) `#define MPNG_PATH_MAX`
+  - `MPNG_RIGHT_PATH` (macro, line 37) `#define MPNG_RIGHT_PATH`
+  - `MPNG_LEFT_N` (macro, line 38) `#define MPNG_LEFT_N`
+  - `MPNG_ERR_OK` (macro, line 39) `#define MPNG_ERR_OK`
+  - `MPNG_ERR_BOUND` (macro, line 40) `#define MPNG_ERR_BOUND`
+  - `MPNG_ERR_EMPTY` (macro, line 41) `#define MPNG_ERR_EMPTY`
 - Imported by: `progs/file/file.c`, `progs/pokemon/platform_minios.c`, `tests/test_minios_png.c`
 
 ## progs/nk_palette.h

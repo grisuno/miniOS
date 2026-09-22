@@ -5,146 +5,150 @@
 - Doc: bootdefs.h - centralized configuration for the MiniOS two-stage boot path.
 - Language: h
 - Symbols:
-  - `address` (function, line 179) `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and 64-bit GDT stage 2 built for the BSP. */ #define AP_STUB_ADDR 0x6000 #define GDT64_COD`
-  - `BOOTDEFS_H` (macro, line 46) `#define BOOTDEFS_H`
-  - `SECTOR_BYTES` (macro, line 48) `#define SECTOR_BYTES`
-  - `SECTOR_PARAGRAPH_SHIFT` (macro, line 49) `#define SECTOR_PARAGRAPH_SHIFT`
-  - `SECTOR_DWORD_SHIFT` (macro, line 50) `#define SECTOR_DWORD_SHIFT`
-  - `BOOT_SIGNATURE` (macro, line 52) `#define BOOT_SIGNATURE`
-  - `BOOT_SIGNATURE_BYTES` (macro, line 53) `#define BOOT_SIGNATURE_BYTES`
-  - `BOOT_SEG_NULL` (macro, line 55) `#define BOOT_SEG_NULL`
-  - `BOOT_STACK_TOP` (macro, line 56) `#define BOOT_STACK_TOP`
-  - `BOOT_DAP_ADDR` (macro, line 58) `#define BOOT_DAP_ADDR`
-  - `BOOT_DAP_SIZE` (macro, line 59) `#define BOOT_DAP_SIZE`
-  - `BOOT_DAP_OFF_COUNT` (macro, line 60) `#define BOOT_DAP_OFF_COUNT`
-  - `BOOT_DAP_OFF_OFFSET` (macro, line 61) `#define BOOT_DAP_OFF_OFFSET`
-  - `BOOT_DAP_OFF_SEGMENT` (macro, line 62) `#define BOOT_DAP_OFF_SEGMENT`
-  - `BOOT_DAP_OFF_LBA_LO` (macro, line 63) `#define BOOT_DAP_OFF_LBA_LO`
-  - `BOOT_DAP_OFF_LBA_HI` (macro, line 64) `#define BOOT_DAP_OFF_LBA_HI`
-  - `BOOT_DRIVE_ADDR` (macro, line 65) `#define BOOT_DRIVE_ADDR`
-  - `BOOT_KASLR_ADDR` (macro, line 66) `#define BOOT_KASLR_ADDR`
-  - `BOOT_STAGE2_LBA` (macro, line 68) `#define BOOT_STAGE2_LBA`
-  - `BOOT_STAGE2_SECTORS` (macro, line 69) `#define BOOT_STAGE2_SECTORS`
-  - `BOOT_STAGE2_ADDR` (macro, line 70) `#define BOOT_STAGE2_ADDR`
-  - `BOOT_STAGE2_SEG` (macro, line 71) `#define BOOT_STAGE2_SEG`
-  - `BOOT_KERNEL_LBA` (macro, line 73) `#define BOOT_KERNEL_LBA`
-  - `BOOT_KERNEL_BUF_ADDR` (macro, line 74) `#define BOOT_KERNEL_BUF_ADDR`
-  - `BOOT_KERNEL_BUF_SEG` (macro, line 75) `#define BOOT_KERNEL_BUF_SEG`
-  - `BOOT_KERNEL_PHYS_ADDR` (macro, line 76) `#define BOOT_KERNEL_PHYS_ADDR`
-  - `BOOT_CHUNK_SECTORS` (macro, line 78) `#define BOOT_CHUNK_SECTORS`
-  - `BOOT_BIOS_MAX_SECTORS` (macro, line 79) `#define BOOT_BIOS_MAX_SECTORS`
-  - `BOOT_PM_STACK_TOP` (macro, line 81) `#define BOOT_PM_STACK_TOP`
-  - `BIOS_DISK_INT` (macro, line 83) `#define BIOS_DISK_INT`
-  - `BIOS_DISK_EXT_CHECK` (macro, line 84) `#define BIOS_DISK_EXT_CHECK`
-  - `BIOS_DISK_EXT_REQ_MAGIC` (macro, line 85) `#define BIOS_DISK_EXT_REQ_MAGIC`
-  - `BIOS_DISK_EXT_ACK_MAGIC` (macro, line 86) `#define BIOS_DISK_EXT_ACK_MAGIC`
-  - `BIOS_DISK_EXT_PACKET_BIT` (macro, line 87) `#define BIOS_DISK_EXT_PACKET_BIT`
-  - `BIOS_DISK_READ_EXT` (macro, line 88) `#define BIOS_DISK_READ_EXT`
-  - `BIOS_VIDEO_INT` (macro, line 90) `#define BIOS_VIDEO_INT`
-  - `BIOS_VIDEO_TTY_WRITE` (macro, line 91) `#define BIOS_VIDEO_TTY_WRITE`
-  - `BIOS_VIDEO_TTY_ATTR` (macro, line 92) `#define BIOS_VIDEO_TTY_ATTR`
-  - `BIOS_VIDEO_SET_MODE` (macro, line 93) `#define BIOS_VIDEO_SET_MODE`
-  - `BIOS_VBE_GET_MODE_INFO` (macro, line 106) `#define BIOS_VBE_GET_MODE_INFO`
-  - `BIOS_VBE_SET_MODE` (macro, line 107) `#define BIOS_VBE_SET_MODE`
-  - `VBE_MODE_1024x768x32` (macro, line 108) `#define VBE_MODE_1024x768x32`
-  - `VBE_MODE_800x600x32` (macro, line 109) `#define VBE_MODE_800x600x32`
-  - `VBE_MODE_640x480x32` (macro, line 110) `#define VBE_MODE_640x480x32`
-  - `VBE_MODE_1024x768x8` (macro, line 111) `#define VBE_MODE_1024x768x8`
-  - `VBE_MODE_800x600x8` (macro, line 112) `#define VBE_MODE_800x600x8`
-  - `VBE_MODE_640x480x8` (macro, line 113) `#define VBE_MODE_640x480x8`
-  - `VBE_MODE_LFB` (macro, line 114) `#define VBE_MODE_LFB`
-  - `VBE_MODE_INFO_ADDR` (macro, line 115) `#define VBE_MODE_INFO_ADDR`
-  - `VBE_MODE_ATTR_OFF` (macro, line 116) `#define VBE_MODE_ATTR_OFF`
-  - `VBE_ATTR_SUPPORTED` (macro, line 117) `#define VBE_ATTR_SUPPORTED`
-  - `VBE_ATTR_LFB` (macro, line 118) `#define VBE_ATTR_LFB`
-  - `VBE_INFO_XRES_OFF` (macro, line 119) `#define VBE_INFO_XRES_OFF`
-  - `VBE_INFO_YRES_OFF` (macro, line 120) `#define VBE_INFO_YRES_OFF`
-  - `VBE_INFO_BYTES_SCAN_OFF` (macro, line 121) `#define VBE_INFO_BYTES_SCAN_OFF`
-  - `VBE_INFO_PHYSBASE_OFF` (macro, line 122) `#define VBE_INFO_PHYSBASE_OFF`
-  - `VBE_INFO_BPP_SRC_OFF` (macro, line 123) `#define VBE_INFO_BPP_SRC_OFF`
-  - `VBE_BPP_8` (macro, line 124) `#define VBE_BPP_8`
-  - `VBE_BPP_24` (macro, line 125) `#define VBE_BPP_24`
-  - `VBE_BPP_32` (macro, line 126) `#define VBE_BPP_32`
-  - `VBE_INFO_ADDR` (macro, line 138) `#define VBE_INFO_ADDR`
-  - `VBE_INFO_FBBASE_OFF` (macro, line 139) `#define VBE_INFO_FBBASE_OFF`
-  - `VBE_INFO_PITCH_OFF` (macro, line 140) `#define VBE_INFO_PITCH_OFF`
-  - `VBE_INFO_WIDTH_OFF` (macro, line 141) `#define VBE_INFO_WIDTH_OFF`
-  - `VBE_INFO_HEIGHT_OFF` (macro, line 142) `#define VBE_INFO_HEIGHT_OFF`
-  - `VBE_INFO_VALID_OFF` (macro, line 143) `#define VBE_INFO_VALID_OFF`
-  - `VBE_INFO_BPP_OFF` (macro, line 144) `#define VBE_INFO_BPP_OFF`
-  - `A20_CONTROL_PORT` (macro, line 146) `#define A20_CONTROL_PORT`
-  - `A20_ENABLE_BIT` (macro, line 147) `#define A20_ENABLE_BIT`
-  - `A20_RESET_CLEAR_MASK` (macro, line 148) `#define A20_RESET_CLEAR_MASK`
-  - `CR0_PE` (macro, line 150) `#define CR0_PE`
-  - `CR0_PE_CLEAR_MASK` (macro, line 151) `#define CR0_PE_CLEAR_MASK`
-  - `CR0_PG` (macro, line 152) `#define CR0_PG`
-  - `CR4_PAE` (macro, line 153) `#define CR4_PAE`
-  - `MSR_EFER` (macro, line 155) `#define MSR_EFER`
-  - `EFER_LME` (macro, line 156) `#define EFER_LME`
-  - `EFER_NXE` (macro, line 157) `#define EFER_NXE`
-  - `GDT32_CODE32_SEL` (macro, line 159) `#define GDT32_CODE32_SEL`
-  - `GDT32_DATA32_SEL` (macro, line 160) `#define GDT32_DATA32_SEL`
-  - `GDT32_CODE16_SEL` (macro, line 161) `#define GDT32_CODE16_SEL`
-  - `GDT32_DATA16_SEL` (macro, line 162) `#define GDT32_DATA16_SEL`
-  - `GDT32_DESC_NULL` (macro, line 164) `#define GDT32_DESC_NULL`
-  - `GDT32_DESC_CODE32` (macro, line 165) `#define GDT32_DESC_CODE32`
-  - `GDT32_DESC_DATA32` (macro, line 166) `#define GDT32_DESC_DATA32`
-  - `GDT32_DESC_CODE16` (macro, line 167) `#define GDT32_DESC_CODE16`
-  - `GDT32_DESC_DATA16` (macro, line 168) `#define GDT32_DESC_DATA16`
-  - `GDT64_ADDR` (macro, line 170) `#define GDT64_ADDR`
-  - `GDT64_BYTES` (macro, line 171) `#define GDT64_BYTES`
-  - `GDT64_SMP_BYTES` (macro, line 176) `#define GDT64_SMP_BYTES`
-  - `AP_STUB_ADDR` (macro, line 181) `#define AP_STUB_ADDR`
-  - `GDT64_CODE_SEL` (macro, line 182) `#define GDT64_CODE_SEL`
-  - `GDT64_DATA_SEL` (macro, line 183) `#define GDT64_DATA_SEL`
-  - `GDT64_USER_DATA_SEL` (macro, line 184) `#define GDT64_USER_DATA_SEL`
-  - `GDT64_USER_CODE_SEL` (macro, line 185) `#define GDT64_USER_CODE_SEL`
-  - `GDT64_DESC_NULL` (macro, line 186) `#define GDT64_DESC_NULL`
-  - `GDT64_DESC_CODE` (macro, line 187) `#define GDT64_DESC_CODE`
-  - `GDT64_DESC_DATA` (macro, line 188) `#define GDT64_DESC_DATA`
-  - `GDT64_DESC_UDATA` (macro, line 189) `#define GDT64_DESC_UDATA`
-  - `GDT64_DESC_UCODE` (macro, line 190) `#define GDT64_DESC_UCODE`
-  - `PT_PML4_ADDR` (macro, line 192) `#define PT_PML4_ADDR`
-  - `PT_PDPT_ADDR` (macro, line 193) `#define PT_PDPT_ADDR`
-  - `PT_PD_ADDR` (macro, line 194) `#define PT_PD_ADDR`
-  - `PT_USER0_ADDR` (macro, line 195) `#define PT_USER0_ADDR`
-  - `PT_USER1_ADDR` (macro, line 196) `#define PT_USER1_ADDR`
-  - `PT_ZERO_DWORDS` (macro, line 197) `#define PT_ZERO_DWORDS`
-  - `PT_FLAGS_PRESENT_RW` (macro, line 198) `#define PT_FLAGS_PRESENT_RW`
-  - `PT_FLAGS_PRESENT_RW_PS` (macro, line 199) `#define PT_FLAGS_PRESENT_RW_PS`
-  - `PT_FLAGS_PS` (macro, line 200) `#define PT_FLAGS_PS`
-  - `PT_FLAGS_USER` (macro, line 201) `#define PT_FLAGS_USER`
-  - `PT_FLAGS_PCD` (macro, line 202) `#define PT_FLAGS_PCD`
-  - `PT_FLAGS_NX` (macro, line 203) `#define PT_FLAGS_NX`
-  - `PT_ADDR_MASK` (macro, line 204) `#define PT_ADDR_MASK`
-  - `PT_USER_ENTRY` (macro, line 205) `#define PT_USER_ENTRY`
-  - `PT_USER_NX_ENTRY` (macro, line 206) `#define PT_USER_NX_ENTRY`
-  - `PT_ENTRY_PRESENT` (macro, line 207) `#define PT_ENTRY_PRESENT`
-  - `PT_ENTRY_USER` (macro, line 208) `#define PT_ENTRY_USER`
-  - `SB16_DMA_PT_ENTRY` (macro, line 214) `#define SB16_DMA_PT_ENTRY`
-  - `SB16_DMA_PT_PAGES` (macro, line 215) `#define SB16_DMA_PT_PAGES`
-  - `PT_PD_ENTRIES` (macro, line 216) `#define PT_PD_ENTRIES`
-  - `PT_PD_ENTRY_BYTES` (macro, line 217) `#define PT_PD_ENTRY_BYTES`
-  - `PT_PD_PAGE_BYTES` (macro, line 218) `#define PT_PD_PAGE_BYTES`
-  - `PT_PD_INDEX_SHIFT` (macro, line 219) `#define PT_PD_INDEX_SHIFT`
-  - `PT_FILL_START_INDEX` (macro, line 220) `#define PT_FILL_START_INDEX`
-  - `PT_FILL_START_ADDR` (macro, line 221) `#define PT_FILL_START_ADDR`
-  - `PT_FILL_ENTRIES` (macro, line 222) `#define PT_FILL_ENTRIES`
-  - `PT_USER_TABLES_ADDR` (macro, line 242) `#define PT_USER_TABLES_ADDR`
-  - `PT_USER_TABLES_BYTES` (macro, line 243) `#define PT_USER_TABLES_BYTES`
-  - `KASLR_MIN_ADDR` (macro, line 255) `#define KASLR_MIN_ADDR`
-  - `KASLR_ALIGN_SHIFT` (macro, line 256) `#define KASLR_ALIGN_SHIFT`
-  - `KASLR_MAX_UNITS` (macro, line 257) `#define KASLR_MAX_UNITS`
-  - `KASLR_IMG_OFF_1MB` (macro, line 258) `#define KASLR_IMG_OFF_1MB`
-  - `KASLR_IMG_OFF_2MB` (macro, line 259) `#define KASLR_IMG_OFF_2MB`
-  - `KASLR_IMAGE_SPAN` (macro, line 260) `#define KASLR_IMAGE_SPAN`
-  - `CMOS_INDEX_PORT` (macro, line 262) `#define CMOS_INDEX_PORT`
-  - `CMOS_DATA_PORT` (macro, line 263) `#define CMOS_DATA_PORT`
-  - `CMOS_NMI_DISABLE` (macro, line 264) `#define CMOS_NMI_DISABLE`
-  - `CMOS_REG_SECONDS` (macro, line 265) `#define CMOS_REG_SECONDS`
-  - `CMOS_REG_MINUTES` (macro, line 266) `#define CMOS_REG_MINUTES`
-  - `CMOS_REG_HOURS` (macro, line 267) `#define CMOS_REG_HOURS`
-- Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
+  - `address` (function, line 190) `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and 64-bit GDT stage 2 built for the BSP. */ #define AP_STUB_ADDR 0x6000 #define GDT64_COD`
+  - `BOOTDEFS_H` (macro, line 52) `#define BOOTDEFS_H`
+  - `SECTOR_BYTES` (macro, line 54) `#define SECTOR_BYTES`
+  - `SECTOR_PARAGRAPH_SHIFT` (macro, line 55) `#define SECTOR_PARAGRAPH_SHIFT`
+  - `SECTOR_DWORD_SHIFT` (macro, line 56) `#define SECTOR_DWORD_SHIFT`
+  - `BOOT_SIGNATURE` (macro, line 58) `#define BOOT_SIGNATURE`
+  - `BOOT_SIGNATURE_BYTES` (macro, line 59) `#define BOOT_SIGNATURE_BYTES`
+  - `BOOT_SEG_NULL` (macro, line 61) `#define BOOT_SEG_NULL`
+  - `BOOT_STACK_TOP` (macro, line 62) `#define BOOT_STACK_TOP`
+  - `BOOT_DAP_ADDR` (macro, line 64) `#define BOOT_DAP_ADDR`
+  - `BOOT_DAP_SIZE` (macro, line 65) `#define BOOT_DAP_SIZE`
+  - `BOOT_DAP_OFF_COUNT` (macro, line 66) `#define BOOT_DAP_OFF_COUNT`
+  - `BOOT_DAP_OFF_OFFSET` (macro, line 67) `#define BOOT_DAP_OFF_OFFSET`
+  - `BOOT_DAP_OFF_SEGMENT` (macro, line 68) `#define BOOT_DAP_OFF_SEGMENT`
+  - `BOOT_DAP_OFF_LBA_LO` (macro, line 69) `#define BOOT_DAP_OFF_LBA_LO`
+  - `BOOT_DAP_OFF_LBA_HI` (macro, line 70) `#define BOOT_DAP_OFF_LBA_HI`
+  - `BOOT_DRIVE_ADDR` (macro, line 71) `#define BOOT_DRIVE_ADDR`
+  - `BOOT_KASLR_ADDR` (macro, line 72) `#define BOOT_KASLR_ADDR`
+  - `BOOT_STAGE2_LBA` (macro, line 74) `#define BOOT_STAGE2_LBA`
+  - `BOOT_STAGE2_SECTORS` (macro, line 75) `#define BOOT_STAGE2_SECTORS`
+  - `BOOT_STAGE2_ADDR` (macro, line 76) `#define BOOT_STAGE2_ADDR`
+  - `BOOT_STAGE2_SEG` (macro, line 77) `#define BOOT_STAGE2_SEG`
+  - `BOOT_KERNEL_LBA` (macro, line 79) `#define BOOT_KERNEL_LBA`
+  - `BOOT_KERNEL_BUF_ADDR` (macro, line 80) `#define BOOT_KERNEL_BUF_ADDR`
+  - `BOOT_KERNEL_BUF_SEG` (macro, line 81) `#define BOOT_KERNEL_BUF_SEG`
+  - `BOOT_KERNEL_PHYS_ADDR` (macro, line 82) `#define BOOT_KERNEL_PHYS_ADDR`
+  - `BOOT_CHUNK_SECTORS` (macro, line 84) `#define BOOT_CHUNK_SECTORS`
+  - `BOOT_BIOS_MAX_SECTORS` (macro, line 85) `#define BOOT_BIOS_MAX_SECTORS`
+  - `BOOT_PM_STACK_TOP` (macro, line 87) `#define BOOT_PM_STACK_TOP`
+  - `BOOT_SB16_DMA_ADDR` (macro, line 89) `#define BOOT_SB16_DMA_ADDR`
+  - `BOOT_SB16_DMA_BYTES` (macro, line 90) `#define BOOT_SB16_DMA_BYTES`
+  - `BOOT_PCM2_DMA_ADDR` (macro, line 91) `#define BOOT_PCM2_DMA_ADDR`
+  - `BOOT_PCM2_DMA_BYTES` (macro, line 92) `#define BOOT_PCM2_DMA_BYTES`
+  - `BIOS_DISK_INT` (macro, line 94) `#define BIOS_DISK_INT`
+  - `BIOS_DISK_EXT_CHECK` (macro, line 95) `#define BIOS_DISK_EXT_CHECK`
+  - `BIOS_DISK_EXT_REQ_MAGIC` (macro, line 96) `#define BIOS_DISK_EXT_REQ_MAGIC`
+  - `BIOS_DISK_EXT_ACK_MAGIC` (macro, line 97) `#define BIOS_DISK_EXT_ACK_MAGIC`
+  - `BIOS_DISK_EXT_PACKET_BIT` (macro, line 98) `#define BIOS_DISK_EXT_PACKET_BIT`
+  - `BIOS_DISK_READ_EXT` (macro, line 99) `#define BIOS_DISK_READ_EXT`
+  - `BIOS_VIDEO_INT` (macro, line 101) `#define BIOS_VIDEO_INT`
+  - `BIOS_VIDEO_TTY_WRITE` (macro, line 102) `#define BIOS_VIDEO_TTY_WRITE`
+  - `BIOS_VIDEO_TTY_ATTR` (macro, line 103) `#define BIOS_VIDEO_TTY_ATTR`
+  - `BIOS_VIDEO_SET_MODE` (macro, line 104) `#define BIOS_VIDEO_SET_MODE`
+  - `BIOS_VBE_GET_MODE_INFO` (macro, line 117) `#define BIOS_VBE_GET_MODE_INFO`
+  - `BIOS_VBE_SET_MODE` (macro, line 118) `#define BIOS_VBE_SET_MODE`
+  - `VBE_MODE_1024x768x32` (macro, line 119) `#define VBE_MODE_1024x768x32`
+  - `VBE_MODE_800x600x32` (macro, line 120) `#define VBE_MODE_800x600x32`
+  - `VBE_MODE_640x480x32` (macro, line 121) `#define VBE_MODE_640x480x32`
+  - `VBE_MODE_1024x768x8` (macro, line 122) `#define VBE_MODE_1024x768x8`
+  - `VBE_MODE_800x600x8` (macro, line 123) `#define VBE_MODE_800x600x8`
+  - `VBE_MODE_640x480x8` (macro, line 124) `#define VBE_MODE_640x480x8`
+  - `VBE_MODE_LFB` (macro, line 125) `#define VBE_MODE_LFB`
+  - `VBE_MODE_INFO_ADDR` (macro, line 126) `#define VBE_MODE_INFO_ADDR`
+  - `VBE_MODE_ATTR_OFF` (macro, line 127) `#define VBE_MODE_ATTR_OFF`
+  - `VBE_ATTR_SUPPORTED` (macro, line 128) `#define VBE_ATTR_SUPPORTED`
+  - `VBE_ATTR_LFB` (macro, line 129) `#define VBE_ATTR_LFB`
+  - `VBE_INFO_XRES_OFF` (macro, line 130) `#define VBE_INFO_XRES_OFF`
+  - `VBE_INFO_YRES_OFF` (macro, line 131) `#define VBE_INFO_YRES_OFF`
+  - `VBE_INFO_BYTES_SCAN_OFF` (macro, line 132) `#define VBE_INFO_BYTES_SCAN_OFF`
+  - `VBE_INFO_PHYSBASE_OFF` (macro, line 133) `#define VBE_INFO_PHYSBASE_OFF`
+  - `VBE_INFO_BPP_SRC_OFF` (macro, line 134) `#define VBE_INFO_BPP_SRC_OFF`
+  - `VBE_BPP_8` (macro, line 135) `#define VBE_BPP_8`
+  - `VBE_BPP_24` (macro, line 136) `#define VBE_BPP_24`
+  - `VBE_BPP_32` (macro, line 137) `#define VBE_BPP_32`
+  - `VBE_INFO_ADDR` (macro, line 149) `#define VBE_INFO_ADDR`
+  - `VBE_INFO_FBBASE_OFF` (macro, line 150) `#define VBE_INFO_FBBASE_OFF`
+  - `VBE_INFO_PITCH_OFF` (macro, line 151) `#define VBE_INFO_PITCH_OFF`
+  - `VBE_INFO_WIDTH_OFF` (macro, line 152) `#define VBE_INFO_WIDTH_OFF`
+  - `VBE_INFO_HEIGHT_OFF` (macro, line 153) `#define VBE_INFO_HEIGHT_OFF`
+  - `VBE_INFO_VALID_OFF` (macro, line 154) `#define VBE_INFO_VALID_OFF`
+  - `VBE_INFO_BPP_OFF` (macro, line 155) `#define VBE_INFO_BPP_OFF`
+  - `A20_CONTROL_PORT` (macro, line 157) `#define A20_CONTROL_PORT`
+  - `A20_ENABLE_BIT` (macro, line 158) `#define A20_ENABLE_BIT`
+  - `A20_RESET_CLEAR_MASK` (macro, line 159) `#define A20_RESET_CLEAR_MASK`
+  - `CR0_PE` (macro, line 161) `#define CR0_PE`
+  - `CR0_PE_CLEAR_MASK` (macro, line 162) `#define CR0_PE_CLEAR_MASK`
+  - `CR0_PG` (macro, line 163) `#define CR0_PG`
+  - `CR4_PAE` (macro, line 164) `#define CR4_PAE`
+  - `MSR_EFER` (macro, line 166) `#define MSR_EFER`
+  - `EFER_LME` (macro, line 167) `#define EFER_LME`
+  - `EFER_NXE` (macro, line 168) `#define EFER_NXE`
+  - `GDT32_CODE32_SEL` (macro, line 170) `#define GDT32_CODE32_SEL`
+  - `GDT32_DATA32_SEL` (macro, line 171) `#define GDT32_DATA32_SEL`
+  - `GDT32_CODE16_SEL` (macro, line 172) `#define GDT32_CODE16_SEL`
+  - `GDT32_DATA16_SEL` (macro, line 173) `#define GDT32_DATA16_SEL`
+  - `GDT32_DESC_NULL` (macro, line 175) `#define GDT32_DESC_NULL`
+  - `GDT32_DESC_CODE32` (macro, line 176) `#define GDT32_DESC_CODE32`
+  - `GDT32_DESC_DATA32` (macro, line 177) `#define GDT32_DESC_DATA32`
+  - `GDT32_DESC_CODE16` (macro, line 178) `#define GDT32_DESC_CODE16`
+  - `GDT32_DESC_DATA16` (macro, line 179) `#define GDT32_DESC_DATA16`
+  - `GDT64_ADDR` (macro, line 181) `#define GDT64_ADDR`
+  - `GDT64_BYTES` (macro, line 182) `#define GDT64_BYTES`
+  - `GDT64_SMP_BYTES` (macro, line 187) `#define GDT64_SMP_BYTES`
+  - `AP_STUB_ADDR` (macro, line 192) `#define AP_STUB_ADDR`
+  - `GDT64_CODE_SEL` (macro, line 193) `#define GDT64_CODE_SEL`
+  - `GDT64_DATA_SEL` (macro, line 194) `#define GDT64_DATA_SEL`
+  - `GDT64_USER_DATA_SEL` (macro, line 195) `#define GDT64_USER_DATA_SEL`
+  - `GDT64_USER_CODE_SEL` (macro, line 196) `#define GDT64_USER_CODE_SEL`
+  - `GDT64_DESC_NULL` (macro, line 197) `#define GDT64_DESC_NULL`
+  - `GDT64_DESC_CODE` (macro, line 198) `#define GDT64_DESC_CODE`
+  - `GDT64_DESC_DATA` (macro, line 199) `#define GDT64_DESC_DATA`
+  - `GDT64_DESC_UDATA` (macro, line 200) `#define GDT64_DESC_UDATA`
+  - `GDT64_DESC_UCODE` (macro, line 201) `#define GDT64_DESC_UCODE`
+  - `PT_PML4_ADDR` (macro, line 203) `#define PT_PML4_ADDR`
+  - `PT_PDPT_ADDR` (macro, line 204) `#define PT_PDPT_ADDR`
+  - `PT_PD_ADDR` (macro, line 205) `#define PT_PD_ADDR`
+  - `PT_USER0_ADDR` (macro, line 206) `#define PT_USER0_ADDR`
+  - `PT_USER1_ADDR` (macro, line 207) `#define PT_USER1_ADDR`
+  - `PT_ZERO_DWORDS` (macro, line 208) `#define PT_ZERO_DWORDS`
+  - `PT_FLAGS_PRESENT_RW` (macro, line 209) `#define PT_FLAGS_PRESENT_RW`
+  - `PT_FLAGS_PRESENT_RW_PS` (macro, line 210) `#define PT_FLAGS_PRESENT_RW_PS`
+  - `PT_FLAGS_PS` (macro, line 211) `#define PT_FLAGS_PS`
+  - `PT_FLAGS_USER` (macro, line 212) `#define PT_FLAGS_USER`
+  - `PT_FLAGS_PCD` (macro, line 213) `#define PT_FLAGS_PCD`
+  - `PT_FLAGS_NX` (macro, line 214) `#define PT_FLAGS_NX`
+  - `PT_ADDR_MASK` (macro, line 215) `#define PT_ADDR_MASK`
+  - `PT_USER_ENTRY` (macro, line 216) `#define PT_USER_ENTRY`
+  - `PT_USER_NX_ENTRY` (macro, line 217) `#define PT_USER_NX_ENTRY`
+  - `PT_ENTRY_PRESENT` (macro, line 218) `#define PT_ENTRY_PRESENT`
+  - `PT_ENTRY_USER` (macro, line 219) `#define PT_ENTRY_USER`
+  - `SB16_DMA_PT_ENTRY` (macro, line 225) `#define SB16_DMA_PT_ENTRY`
+  - `SB16_DMA_PT_PAGES` (macro, line 226) `#define SB16_DMA_PT_PAGES`
+  - `PT_PD_ENTRIES` (macro, line 227) `#define PT_PD_ENTRIES`
+  - `PT_PD_ENTRY_BYTES` (macro, line 228) `#define PT_PD_ENTRY_BYTES`
+  - `PT_PD_PAGE_BYTES` (macro, line 229) `#define PT_PD_PAGE_BYTES`
+  - `PT_PD_INDEX_SHIFT` (macro, line 230) `#define PT_PD_INDEX_SHIFT`
+  - `PT_FILL_START_INDEX` (macro, line 231) `#define PT_FILL_START_INDEX`
+  - `PT_FILL_START_ADDR` (macro, line 232) `#define PT_FILL_START_ADDR`
+  - `PT_FILL_ENTRIES` (macro, line 233) `#define PT_FILL_ENTRIES`
+  - `PT_USER_TABLES_ADDR` (macro, line 253) `#define PT_USER_TABLES_ADDR`
+  - `PT_USER_TABLES_BYTES` (macro, line 254) `#define PT_USER_TABLES_BYTES`
+  - `KASLR_MIN_ADDR` (macro, line 266) `#define KASLR_MIN_ADDR`
+  - `KASLR_ALIGN_SHIFT` (macro, line 267) `#define KASLR_ALIGN_SHIFT`
+  - `KASLR_MAX_UNITS` (macro, line 268) `#define KASLR_MAX_UNITS`
+  - `KASLR_IMG_OFF_1MB` (macro, line 269) `#define KASLR_IMG_OFF_1MB`
+  - `KASLR_IMG_OFF_2MB` (macro, line 270) `#define KASLR_IMG_OFF_2MB`
+  - `KASLR_IMAGE_SPAN` (macro, line 271) `#define KASLR_IMAGE_SPAN`
+  - `CMOS_INDEX_PORT` (macro, line 273) `#define CMOS_INDEX_PORT`
+  - `CMOS_DATA_PORT` (macro, line 274) `#define CMOS_DATA_PORT`
+  - `CMOS_NMI_DISABLE` (macro, line 275) `#define CMOS_NMI_DISABLE`
+  - `CMOS_REG_SECONDS` (macro, line 276) `#define CMOS_REG_SECONDS`
+  - `CMOS_REG_MINUTES` (macro, line 277) `#define CMOS_REG_MINUTES`
+  - `CMOS_REG_HOURS` (macro, line 278) `#define CMOS_REG_HOURS`
+- Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
 
 ## headers/net/rtl8139.h
 - Layer: utility
@@ -210,7 +214,7 @@
   - `dmap_gui_run` (function, line 2056) `static void dmap_gui_run(void)`
   - `dmap_demo_room` (function, line 2110) `static void dmap_demo_room(void)`
   - `dmap_selftest` (function, line 2122) `static int dmap_selftest(void)`
-  - `main` (function, line 2238) `int main(int argc, char **argv)`
+  - `main` (function, line 2246) `int main(int argc, char **argv)`
   - `areas` (function, line 1150) `* floor areas (doors stand alone, dark and nukage never merge);`
   - `DMAP_MAX_W` (macro, line 55) `#define DMAP_MAX_W`
   - `DMAP_MAX_H` (macro, line 56) `#define DMAP_MAX_H`
@@ -331,139 +335,139 @@
 - Doc: minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF).
 - Language: c
 - Symbols:
-  - `Recipe` (struct, line 206)
-  - `Pig` (struct, line 285)
-  - `RayHit` (struct, line 1635)
-  - `SaveHeaderV3` (struct, line 2863)
-  - `SaveHeader` (struct, line 2877)
-  - `ChunkHeader` (struct, line 2892)
-  - `best_tool_for` (function, line 221) `static int best_tool_for(unsigned char b)`
-  - `break_time_ms` (function, line 240) `static long break_time_ms(unsigned char b, int tool)`
-  - `break_beep_for` (function, line 265) `static long break_beep_for(unsigned char b)`
-  - `mc_toggle_zoom` (function, line 306) `static void mc_toggle_zoom(void)`
-  - `s_time_ms` (function, line 327) `static long s_time_ms(void)`
-  - `s_kbd` (function, line 332) `static long s_kbd(void)`
-  - `s_kbd_raw` (function, line 337) `static long s_kbd_raw(long on)`
-  - `s_getc_raw` (function, line 349) `static long s_getc_raw(void)`
-  - `ser_get` (function, line 363) `static long ser_get(void)`
-  - `ser_unget` (function, line 376) `static void ser_unget(unsigned char b)`
-  - `menu_ser_key` (function, line 381) `static long menu_ser_key(long b)`
-  - `kbd_drain` (function, line 418) `static void kbd_drain(void)`
-  - `s_vga` (function, line 423) `static long s_vga(long on)`
-  - `s_pal` (function, line 428) `static long s_pal(const unsigned char *p)`
-  - `s_present` (function, line 433) `static long s_present(void)`
-  - `s_title` (function, line 438) `static long s_title(const char *t)`
-  - `s_mouse` (function, line 443) `static long s_mouse(int *m)`
-  - `s_zoom` (function, line 448) `static long s_zoom(long on)`
-  - `s_yield` (function, line 453) `static void s_yield(void)`
-  - `s_pcspk_init` (function, line 458) `static long s_pcspk_init(void)`
-  - `__attribute__` (function, line 463) `static long __attribute__((unused)) s_tone(long f)`
-  - `beep` (function, line 468) `static void beep(long freq, long dur_ms)`
-  - `pal_set` (function, line 487) `static void pal_set(int i, int r, int g, int b)`
-  - `build_palette` (function, line 493) `static void build_palette(void)`
-  - `in_world` (function, line 552) `static int in_world(int x, int y, int z)`
-  - `chunk_of` (function, line 567) `static int chunk_of(int v)`
-  - `chunk_local` (function, line 571) `static int chunk_local(int v)`
-  - `chunk_lidx` (function, line 576) `static int chunk_lidx(int lx, int ly, int z)`
-  - `chunk_find` (function, line 582) `static int chunk_find(int cx, int cy)`
-  - `world_max_recompute` (function, line 596) `static void world_max_recompute(void)`
-  - `chunk_evict_slot` (function, line 605) `static int chunk_evict_slot(int cx, int cy)`
-  - `chunk_ensure` (function, line 625) `static int chunk_ensure(int cx, int cy)`
-  - `chunk_build_meta` (function, line 648) `static void chunk_build_meta(int slot)`
-  - `col_recompute` (function, line 693) `static void col_recompute(int x, int y)`
-  - `col_top_at` (function, line 718) `static int col_top_at(int x, int y)`
-  - `light_recompute_col` (function, line 725) `static void light_recompute_col(int x, int y)`
-  - `get_b` (function, line 754) `static unsigned char get_b(int x, int y, int z)`
-  - `set_b` (function, line 764) `static void set_b(int x, int y, int z, unsigned char b)`
-  - `set_b_raw` (function, line 780) `static void set_b_raw(int x, int y, int z, unsigned char b)`
-  - `sky_light` (function, line 791) `static float sky_light(int x, int y, int z)`
-  - `is_solid` (function, line 801) `static int is_solid(unsigned char b)`
-  - `in_water_at` (function, line 804) `static int in_water_at(float x, float y, float z)`
-  - `is_visible` (function, line 809) `static int is_visible(unsigned char b)`
-  - `hash2` (function, line 813) `static unsigned int hash2(int x, int y)`
-  - `hash2_seed` (function, line 820) `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
-  - `mc_smoothstep` (function, line 829) `static float mc_smoothstep(float t)`
-  - `biome_fdiv` (function, line 836) `static int biome_fdiv(int v, int c)`
-  - `voro_site` (function, line 851) `static void voro_site(int cx, int cy, unsigned int seed, int cell,
+  - `Recipe` (struct, line 216)
+  - `Pig` (struct, line 295)
+  - `RayHit` (struct, line 1650)
+  - `SaveHeaderV3` (struct, line 2878)
+  - `SaveHeader` (struct, line 2892)
+  - `ChunkHeader` (struct, line 2907)
+  - `best_tool_for` (function, line 231) `static int best_tool_for(unsigned char b)`
+  - `break_time_ms` (function, line 250) `static long break_time_ms(unsigned char b, int tool)`
+  - `break_beep_for` (function, line 275) `static long break_beep_for(unsigned char b)`
+  - `mc_toggle_zoom` (function, line 316) `static void mc_toggle_zoom(void)`
+  - `s_time_ms` (function, line 337) `static long s_time_ms(void)`
+  - `s_kbd` (function, line 342) `static long s_kbd(void)`
+  - `s_kbd_raw` (function, line 347) `static long s_kbd_raw(long on)`
+  - `s_getc_raw` (function, line 359) `static long s_getc_raw(void)`
+  - `ser_get` (function, line 373) `static long ser_get(void)`
+  - `ser_unget` (function, line 386) `static void ser_unget(unsigned char b)`
+  - `menu_ser_key` (function, line 391) `static long menu_ser_key(long b)`
+  - `kbd_drain` (function, line 428) `static void kbd_drain(void)`
+  - `s_vga` (function, line 433) `static long s_vga(long on)`
+  - `s_pal` (function, line 438) `static long s_pal(const unsigned char *p)`
+  - `s_present` (function, line 443) `static long s_present(void)`
+  - `s_title` (function, line 448) `static long s_title(const char *t)`
+  - `s_mouse` (function, line 453) `static long s_mouse(int *m)`
+  - `s_zoom` (function, line 458) `static long s_zoom(long on)`
+  - `s_yield` (function, line 463) `static void s_yield(void)`
+  - `s_pcspk_init` (function, line 468) `static long s_pcspk_init(void)`
+  - `__attribute__` (function, line 473) `static long __attribute__((unused)) s_tone(long f)`
+  - `beep` (function, line 478) `static void beep(long freq, long dur_ms)`
+  - `pal_set` (function, line 497) `static void pal_set(int i, int r, int g, int b)`
+  - `build_palette` (function, line 503) `static void build_palette(void)`
+  - `in_world` (function, line 562) `static int in_world(int x, int y, int z)`
+  - `chunk_of` (function, line 577) `static int chunk_of(int v)`
+  - `chunk_local` (function, line 581) `static int chunk_local(int v)`
+  - `chunk_lidx` (function, line 586) `static int chunk_lidx(int lx, int ly, int z)`
+  - `chunk_find` (function, line 592) `static int chunk_find(int cx, int cy)`
+  - `world_max_recompute` (function, line 606) `static void world_max_recompute(void)`
+  - `chunk_evict_slot` (function, line 615) `static int chunk_evict_slot(int cx, int cy)`
+  - `chunk_ensure` (function, line 635) `static int chunk_ensure(int cx, int cy)`
+  - `chunk_build_meta` (function, line 658) `static void chunk_build_meta(int slot)`
+  - `col_recompute` (function, line 703) `static void col_recompute(int x, int y)`
+  - `col_top_at` (function, line 728) `static int col_top_at(int x, int y)`
+  - `light_recompute_col` (function, line 735) `static void light_recompute_col(int x, int y)`
+  - `get_b` (function, line 764) `static unsigned char get_b(int x, int y, int z)`
+  - `set_b` (function, line 774) `static void set_b(int x, int y, int z, unsigned char b)`
+  - `set_b_raw` (function, line 790) `static void set_b_raw(int x, int y, int z, unsigned char b)`
+  - `sky_light` (function, line 801) `static float sky_light(int x, int y, int z)`
+  - `is_solid` (function, line 811) `static int is_solid(unsigned char b)`
+  - `in_water_at` (function, line 814) `static int in_water_at(float x, float y, float z)`
+  - `is_visible` (function, line 819) `static int is_visible(unsigned char b)`
+  - `hash2` (function, line 823) `static unsigned int hash2(int x, int y)`
+  - `hash2_seed` (function, line 830) `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
+  - `mc_smoothstep` (function, line 839) `static float mc_smoothstep(float t)`
+  - `biome_fdiv` (function, line 846) `static int biome_fdiv(int v, int c)`
+  - `voro_site` (function, line 861) `static void voro_site(int cx, int cy, unsigned int seed, int cell,
     int *sx, int *sy)`
-  - `biome_voro` (function, line 859) `static int biome_voro(int x, int y, unsigned int seed, int cell,
+  - `biome_voro` (function, line 869) `static int biome_voro(int x, int y, unsigned int seed, int cell,
     int ox, int oy, unsigned int...`
-  - `biome_desert` (function, line 883) `static int biome_desert(int x, int y, unsigned int seed)`
-  - `biome_snow` (function, line 887) `static int biome_snow(int x, int y, unsigned int seed)`
-  - `is_cave` (function, line 891) `static int is_cave(int x, int y, int z, unsigned int seed)`
-  - `ground_h_seed` (function, line 899) `static int ground_h_seed(int x, int y, unsigned int seed)`
-  - `inv_add` (function, line 921) `static int inv_add(int b, int n)`
-  - `inv_remove` (function, line 935) `static int inv_remove(int b, int n)`
-  - `decorate_column` (function, line 985) `static void decorate_column(int x, int y, unsigned int seed)`
-  - `gen_terrain_chunk` (function, line 1024) `static void gen_terrain_chunk(int slot)`
-  - `decorate_chunk` (function, line 1033) `static void decorate_chunk(int slot)`
-  - `ensure_around_px` (function, line 1046) `static void ensure_around_px(float px, float py)`
-  - `ensure_around` (function, line 1080) `static void ensure_around(void)`
-  - `new_world` (function, line 1085) `static void new_world(unsigned int seed)`
-  - `mob_spawn_one` (function, line 1181) `static void mob_spawn_one(Pig *m, int id, int hp, long now)`
-  - `pig_collides` (function, line 1233) `static int pig_collides(float x, float y, float z)`
-  - `creeper_explode` (function, line 1247) `static void creeper_explode(Pig *c, long now)`
-  - `creep_sense` (function, line 1315) `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)`
-  - `creep_has_los` (function, line 1327) `static int creep_has_los(Pig *c)`
-  - `creep_separate` (function, line 1351) `static void creep_separate(Pig *p, int id, float dt)`
-  - `tick_mob` (function, line 1376) `static void tick_mob(Pig *p, int id, float dt, long now)`
-  - `tick_pigs` (function, line 1497) `static void tick_pigs(float dt, long now)`
-  - `face_color` (function, line 1505) `static unsigned char face_color(unsigned char b, int face)`
-  - `sky_color` (function, line 1554) `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
-  - `shade_block` (function, line 1587) `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
+  - `biome_desert` (function, line 893) `static int biome_desert(int x, int y, unsigned int seed)`
+  - `biome_snow` (function, line 897) `static int biome_snow(int x, int y, unsigned int seed)`
+  - `is_cave` (function, line 901) `static int is_cave(int x, int y, int z, unsigned int seed)`
+  - `ground_h_seed` (function, line 909) `static int ground_h_seed(int x, int y, unsigned int seed)`
+  - `inv_add` (function, line 931) `static int inv_add(int b, int n)`
+  - `inv_remove` (function, line 945) `static int inv_remove(int b, int n)`
+  - `decorate_column` (function, line 995) `static void decorate_column(int x, int y, unsigned int seed)`
+  - `gen_terrain_chunk` (function, line 1034) `static void gen_terrain_chunk(int slot)`
+  - `decorate_chunk` (function, line 1043) `static void decorate_chunk(int slot)`
+  - `ensure_around_px` (function, line 1056) `static void ensure_around_px(float px, float py)`
+  - `ensure_around` (function, line 1090) `static void ensure_around(void)`
+  - `new_world` (function, line 1095) `static void new_world(unsigned int seed)`
+  - `mob_spawn_one` (function, line 1191) `static void mob_spawn_one(Pig *m, int id, int hp, long now)`
+  - `pig_collides` (function, line 1243) `static int pig_collides(float x, float y, float z)`
+  - `creeper_explode` (function, line 1257) `static void creeper_explode(Pig *c, long now)`
+  - `creep_sense` (function, line 1325) `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)`
+  - `creep_has_los` (function, line 1337) `static int creep_has_los(Pig *c)`
+  - `creep_separate` (function, line 1361) `static void creep_separate(Pig *p, int id, float dt)`
+  - `tick_mob` (function, line 1386) `static void tick_mob(Pig *p, int id, float dt, long now)`
+  - `tick_pigs` (function, line 1512) `static void tick_pigs(float dt, long now)`
+  - `face_color` (function, line 1520) `static unsigned char face_color(unsigned char b, int face)`
+  - `sky_color` (function, line 1569) `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
+  - `shade_block` (function, line 1602) `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
              ...`
-  - `cast_ray` (function, line 1644) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
-  - `eye_z` (function, line 1735) `static float eye_z(void)`
-  - `mc_glyph` (function, line 1802) `static int mc_glyph(char ch)`
-  - `mc_pixel` (function, line 1810) `static void mc_pixel(int x, int y, unsigned char c)`
-  - `mc_text` (function, line 1816) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
-  - `mc_text_bg` (function, line 1829) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
-  - `mc_block_name` (function, line 1842) `static const char *mc_block_name(unsigned char b)`
-  - `mc_facing` (function, line 1862) `static char mc_facing(void)`
-  - `cam_build` (function, line 1877) `static void cam_build(void)`
-  - `render_terrain` (function, line 1895) `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
+  - `cast_ray` (function, line 1659) `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
+  - `eye_z` (function, line 1750) `static float eye_z(void)`
+  - `mc_glyph` (function, line 1817) `static int mc_glyph(char ch)`
+  - `mc_pixel` (function, line 1825) `static void mc_pixel(int x, int y, unsigned char c)`
+  - `mc_text` (function, line 1831) `static void mc_text(int x, int y, const char *s, unsigned char fg)`
+  - `mc_text_bg` (function, line 1844) `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
+  - `mc_block_name` (function, line 1857) `static const char *mc_block_name(unsigned char b)`
+  - `mc_facing` (function, line 1877) `static char mc_facing(void)`
+  - `cam_build` (function, line 1892) `static void cam_build(void)`
+  - `render_terrain` (function, line 1910) `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
                       ...`
-  - `mob_pixel` (function, line 1930) `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)`
-  - `render_mob_array` (function, line 1964) `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
+  - `mob_pixel` (function, line 1945) `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)`
+  - `render_mob_array` (function, line 1979) `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
     float rx, float r...`
-  - `render_pigs` (function, line 2015) `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
-  - `render_frame` (function, line 2023) `static void render_frame(void)`
-  - `sc_hist_push` (function, line 2136) `static void sc_hist_push(unsigned char b)`
-  - `poll_kbd` (function, line 2147) `static void poll_kbd(void)`
-  - `player_collides` (function, line 2340) `static int player_collides(float x, float y, float z)`
-  - `move_x` (function, line 2364) `static void move_x(float nx)`
-  - `move_y` (function, line 2369) `static void move_y(float ny)`
-  - `move_z_abs` (function, line 2374) `static MoveResult move_z_abs(float nz)`
-  - `block_intersects_player` (function, line 2389) `static int block_intersects_player(int bx, int by, int bz)`
-  - `try_autostep` (function, line 2398) `static void try_autostep(float tx, float ty)`
-  - `hurt` (function, line 2409) `static void hurt(int dmg, const char *why)`
-  - `tick_player` (function, line 2434) `static void tick_player(float dt)`
-  - `tick_water` (function, line 2533) `static void tick_water(long now)`
-  - `tick_hunger` (function, line 2581) `static void tick_hunger(long now)`
-  - `goal_text` (function, line 2593) `static const char *goal_text(void)`
-  - `tick_goals` (function, line 2604) `static void tick_goals(void)`
-  - `tick_discover` (function, line 2615) `static void tick_discover(long now)`
-  - `tick_interact` (function, line 2653) `static void tick_interact(void)`
-  - `mc_crc32` (function, line 2904) `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)`
-  - `save_compute_crc` (function, line 2917) `static uint32_t save_compute_crc(const SaveHeader *hd)`
-  - `chunk_path` (function, line 2923) `static void chunk_path(int cx, int cy, char *out, size_t n)`
-  - `save_chunk_file` (function, line 2927) `static int save_chunk_file(int slot)`
-  - `load_chunk_file` (function, line 2959) `static int load_chunk_file(int slot, int cx, int cy)`
-  - `save_validate_loaded` (function, line 3041) `static int save_validate_loaded(void)`
-  - `load_reset_runtime` (function, line 3060) `static void load_reset_runtime(void)`
-  - `carve_blob` (function, line 3093) `static void carve_blob(const unsigned char *blob)`
-  - `load_world_legacy` (function, line 3122) `static int load_world_legacy(FILE *f)`
-  - `load_apply_player` (function, line 3160) `static void load_apply_player(const SaveHeader *hd)`
-  - `load_world_v3` (function, line 3179) `static int load_world_v3(FILE *f, SaveHeader *hd)`
-  - `load_world_v2` (function, line 3219) `static int load_world_v2(FILE *f, SaveHeader *hd)`
-  - `load_world` (function, line 3256) `static int load_world(void)`
-  - `selftest` (function, line 3330) `static int selftest(void)`
-  - `census` (function, line 3591) `static int census(void)`
-  - `dumpstats` (function, line 3655) `static int dumpstats(void)`
-  - `title_menu` (function, line 3739) `static int title_menu(int have_save, int *seed_io)`
-  - `pause_menu` (function, line 3907) `static int pause_menu(int *seed_io)`
-  - `main` (function, line 4080) `int main(int argc, char **argv)`
-  - `save_world` (function, line 320) `static int save_world(void);`
+  - `render_pigs` (function, line 2030) `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
+  - `render_frame` (function, line 2038) `static void render_frame(void)`
+  - `sc_hist_push` (function, line 2151) `static void sc_hist_push(unsigned char b)`
+  - `poll_kbd` (function, line 2162) `static void poll_kbd(void)`
+  - `player_collides` (function, line 2355) `static int player_collides(float x, float y, float z)`
+  - `move_x` (function, line 2379) `static void move_x(float nx)`
+  - `move_y` (function, line 2384) `static void move_y(float ny)`
+  - `move_z_abs` (function, line 2389) `static MoveResult move_z_abs(float nz)`
+  - `block_intersects_player` (function, line 2404) `static int block_intersects_player(int bx, int by, int bz)`
+  - `try_autostep` (function, line 2413) `static void try_autostep(float tx, float ty)`
+  - `hurt` (function, line 2424) `static void hurt(int dmg, const char *why)`
+  - `tick_player` (function, line 2449) `static void tick_player(float dt)`
+  - `tick_water` (function, line 2548) `static void tick_water(long now)`
+  - `tick_hunger` (function, line 2596) `static void tick_hunger(long now)`
+  - `goal_text` (function, line 2608) `static const char *goal_text(void)`
+  - `tick_goals` (function, line 2619) `static void tick_goals(void)`
+  - `tick_discover` (function, line 2630) `static void tick_discover(long now)`
+  - `tick_interact` (function, line 2668) `static void tick_interact(void)`
+  - `mc_crc32` (function, line 2919) `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)`
+  - `save_compute_crc` (function, line 2932) `static uint32_t save_compute_crc(const SaveHeader *hd)`
+  - `chunk_path` (function, line 2938) `static void chunk_path(int cx, int cy, char *out, size_t n)`
+  - `save_chunk_file` (function, line 2942) `static int save_chunk_file(int slot)`
+  - `load_chunk_file` (function, line 2974) `static int load_chunk_file(int slot, int cx, int cy)`
+  - `save_validate_loaded` (function, line 3056) `static int save_validate_loaded(void)`
+  - `load_reset_runtime` (function, line 3075) `static void load_reset_runtime(void)`
+  - `carve_blob` (function, line 3108) `static void carve_blob(const unsigned char *blob)`
+  - `load_world_legacy` (function, line 3137) `static int load_world_legacy(FILE *f)`
+  - `load_apply_player` (function, line 3175) `static void load_apply_player(const SaveHeader *hd)`
+  - `load_world_v3` (function, line 3194) `static int load_world_v3(FILE *f, SaveHeader *hd)`
+  - `load_world_v2` (function, line 3234) `static int load_world_v2(FILE *f, SaveHeader *hd)`
+  - `load_world` (function, line 3271) `static int load_world(void)`
+  - `selftest` (function, line 3345) `static int selftest(void)`
+  - `census` (function, line 3606) `static int census(void)`
+  - `dumpstats` (function, line 3670) `static int dumpstats(void)`
+  - `title_menu` (function, line 3754) `static int title_menu(int have_save, int *seed_io)`
+  - `pause_menu` (function, line 3922) `static int pause_menu(int *seed_io)`
+  - `main` (function, line 4095) `int main(int argc, char **argv)`
+  - `save_world` (function, line 330) `static int save_world(void);`
   - `MC_H` (macro, line 34) `#define MC_H`
   - `MC_CHUNK` (macro, line 35) `#define MC_CHUNK`
   - `MC_LOAD_R` (macro, line 36) `#define MC_LOAD_R`
@@ -512,63 +516,67 @@
   - `MC_CREEP_DZ_MAX` (macro, line 89) `#define MC_CREEP_DZ_MAX`
   - `MC_CREEP_FUSE_D` (macro, line 90) `#define MC_CREEP_FUSE_D`
   - `MC_CREEP_DEFUSE_D` (macro, line 91) `#define MC_CREEP_DEFUSE_D`
-  - `MC_CREEP_SEP_D` (macro, line 92) `#define MC_CREEP_SEP_D`
-  - `MC_PORK_HEAL` (macro, line 93) `#define MC_PORK_HEAL`
-  - `MC_HUNGER_MAX` (macro, line 94) `#define MC_HUNGER_MAX`
-  - `MC_HUNGER_MS` (macro, line 95) `#define MC_HUNGER_MS`
-  - `MC_PIG_HP` (macro, line 96) `#define MC_PIG_HP`
-  - `MC_PIG_HURT_MS` (macro, line 97) `#define MC_PIG_HURT_MS`
-  - `MC_DAY_MS` (macro, line 98) `#define MC_DAY_MS`
-  - `MC_SAVE_SECS` (macro, line 99) `#define MC_SAVE_SECS`
-  - `MC_BAYER_N` (macro, line 100) `#define MC_BAYER_N`
-  - `MC_H_BASE` (macro, line 101) `#define MC_H_BASE`
-  - `MC_H_WT_DET` (macro, line 102) `#define MC_H_WT_DET`
-  - `MC_H_WT_MID` (macro, line 103) `#define MC_H_WT_MID`
-  - `MC_H_WT_COARSE` (macro, line 104) `#define MC_H_WT_COARSE`
-  - `SC_ESC` (macro, line 107) `#define SC_ESC`
-  - `SC_1` (macro, line 108) `#define SC_1`
-  - `SC_9` (macro, line 109) `#define SC_9`
-  - `SC_Q` (macro, line 110) `#define SC_Q`
-  - `SC_W` (macro, line 111) `#define SC_W`
-  - `SC_E` (macro, line 112) `#define SC_E`
-  - `SC_R` (macro, line 113) `#define SC_R`
-  - `SC_T` (macro, line 114) `#define SC_T`
-  - `SC_U` (macro, line 115) `#define SC_U`
-  - `SC_I` (macro, line 116) `#define SC_I`
-  - `SC_O` (macro, line 117) `#define SC_O`
-  - `SC_P` (macro, line 118) `#define SC_P`
-  - `SC_J` (macro, line 119) `#define SC_J`
-  - `SC_A` (macro, line 120) `#define SC_A`
-  - `SC_S` (macro, line 121) `#define SC_S`
-  - `SC_D` (macro, line 122) `#define SC_D`
-  - `SC_F` (macro, line 123) `#define SC_F`
-  - `SC_G` (macro, line 124) `#define SC_G`
-  - `SC_K` (macro, line 125) `#define SC_K`
-  - `SC_L` (macro, line 126) `#define SC_L`
-  - `SC_C` (macro, line 127) `#define SC_C`
-  - `SC_V` (macro, line 128) `#define SC_V`
-  - `SC_B` (macro, line 129) `#define SC_B`
-  - `SC_N` (macro, line 130) `#define SC_N`
-  - `SC_ENTER` (macro, line 131) `#define SC_ENTER`
-  - `SC_BACK` (macro, line 132) `#define SC_BACK`
-  - `SC_0` (macro, line 133) `#define SC_0`
-  - `MC_SEED_MAX` (macro, line 134) `#define MC_SEED_MAX`
-  - `MC_KBD_SEQ_SPINS` (macro, line 135) `#define MC_KBD_SEQ_SPINS`
-  - `SC_SPACE` (macro, line 136) `#define SC_SPACE`
-  - `SC_LSHIFT` (macro, line 137) `#define SC_LSHIFT`
-  - `SC_RSHIFT` (macro, line 138) `#define SC_RSHIFT`
-  - `SC_CTRL` (macro, line 139) `#define SC_CTRL`
-  - `EXT_UP` (macro, line 140) `#define EXT_UP`
-  - `EXT_DOWN` (macro, line 141) `#define EXT_DOWN`
-  - `EXT_LEFT` (macro, line 142) `#define EXT_LEFT`
-  - `EXT_RIGHT` (macro, line 143) `#define EXT_RIGHT`
-  - `EXT_F11` (macro, line 144) `#define EXT_F11`
-  - `MOB_PIG` (macro, line 298) `#define MOB_PIG`
-  - `MOB_CREEP` (macro, line 299) `#define MOB_CREEP`
-  - `SER_STASH_CAP` (macro, line 359) `#define SER_STASH_CAP`
-  - `MC_VORO_DESERT_CELL` (macro, line 848) `#define MC_VORO_DESERT_CELL`
-  - `MC_VORO_SNOW_CELL` (macro, line 849) `#define MC_VORO_SNOW_CELL`
-  - `MC_LEGACY_WORLD` (macro, line 2901) `#define MC_LEGACY_WORLD`
+  - `MC_RESPAWN_MS` (macro, line 98) `#define MC_RESPAWN_MS`
+  - `MC_CREEP_NIGHT_MS` (macro, line 99) `#define MC_CREEP_NIGHT_MS`
+  - `MC_PIG_DAY_MS` (macro, line 100) `#define MC_PIG_DAY_MS`
+  - `MC_NIGHT_LIGHT` (macro, line 101) `#define MC_NIGHT_LIGHT`
+  - `MC_CREEP_SEP_D` (macro, line 102) `#define MC_CREEP_SEP_D`
+  - `MC_PORK_HEAL` (macro, line 103) `#define MC_PORK_HEAL`
+  - `MC_HUNGER_MAX` (macro, line 104) `#define MC_HUNGER_MAX`
+  - `MC_HUNGER_MS` (macro, line 105) `#define MC_HUNGER_MS`
+  - `MC_PIG_HP` (macro, line 106) `#define MC_PIG_HP`
+  - `MC_PIG_HURT_MS` (macro, line 107) `#define MC_PIG_HURT_MS`
+  - `MC_DAY_MS` (macro, line 108) `#define MC_DAY_MS`
+  - `MC_SAVE_SECS` (macro, line 109) `#define MC_SAVE_SECS`
+  - `MC_BAYER_N` (macro, line 110) `#define MC_BAYER_N`
+  - `MC_H_BASE` (macro, line 111) `#define MC_H_BASE`
+  - `MC_H_WT_DET` (macro, line 112) `#define MC_H_WT_DET`
+  - `MC_H_WT_MID` (macro, line 113) `#define MC_H_WT_MID`
+  - `MC_H_WT_COARSE` (macro, line 114) `#define MC_H_WT_COARSE`
+  - `SC_ESC` (macro, line 117) `#define SC_ESC`
+  - `SC_1` (macro, line 118) `#define SC_1`
+  - `SC_9` (macro, line 119) `#define SC_9`
+  - `SC_Q` (macro, line 120) `#define SC_Q`
+  - `SC_W` (macro, line 121) `#define SC_W`
+  - `SC_E` (macro, line 122) `#define SC_E`
+  - `SC_R` (macro, line 123) `#define SC_R`
+  - `SC_T` (macro, line 124) `#define SC_T`
+  - `SC_U` (macro, line 125) `#define SC_U`
+  - `SC_I` (macro, line 126) `#define SC_I`
+  - `SC_O` (macro, line 127) `#define SC_O`
+  - `SC_P` (macro, line 128) `#define SC_P`
+  - `SC_J` (macro, line 129) `#define SC_J`
+  - `SC_A` (macro, line 130) `#define SC_A`
+  - `SC_S` (macro, line 131) `#define SC_S`
+  - `SC_D` (macro, line 132) `#define SC_D`
+  - `SC_F` (macro, line 133) `#define SC_F`
+  - `SC_G` (macro, line 134) `#define SC_G`
+  - `SC_K` (macro, line 135) `#define SC_K`
+  - `SC_L` (macro, line 136) `#define SC_L`
+  - `SC_C` (macro, line 137) `#define SC_C`
+  - `SC_V` (macro, line 138) `#define SC_V`
+  - `SC_B` (macro, line 139) `#define SC_B`
+  - `SC_N` (macro, line 140) `#define SC_N`
+  - `SC_ENTER` (macro, line 141) `#define SC_ENTER`
+  - `SC_BACK` (macro, line 142) `#define SC_BACK`
+  - `SC_0` (macro, line 143) `#define SC_0`
+  - `MC_SEED_MAX` (macro, line 144) `#define MC_SEED_MAX`
+  - `MC_KBD_SEQ_SPINS` (macro, line 145) `#define MC_KBD_SEQ_SPINS`
+  - `SC_SPACE` (macro, line 146) `#define SC_SPACE`
+  - `SC_LSHIFT` (macro, line 147) `#define SC_LSHIFT`
+  - `SC_RSHIFT` (macro, line 148) `#define SC_RSHIFT`
+  - `SC_CTRL` (macro, line 149) `#define SC_CTRL`
+  - `EXT_UP` (macro, line 150) `#define EXT_UP`
+  - `EXT_DOWN` (macro, line 151) `#define EXT_DOWN`
+  - `EXT_LEFT` (macro, line 152) `#define EXT_LEFT`
+  - `EXT_RIGHT` (macro, line 153) `#define EXT_RIGHT`
+  - `EXT_F11` (macro, line 154) `#define EXT_F11`
+  - `MOB_PIG` (macro, line 308) `#define MOB_PIG`
+  - `MOB_CREEP` (macro, line 309) `#define MOB_CREEP`
+  - `SER_STASH_CAP` (macro, line 369) `#define SER_STASH_CAP`
+  - `MC_VORO_DESERT_CELL` (macro, line 858) `#define MC_VORO_DESERT_CELL`
+  - `MC_VORO_SNOW_CELL` (macro, line 859) `#define MC_VORO_SNOW_CELL`
+  - `MC_LEGACY_WORLD` (macro, line 2916) `#define MC_LEGACY_WORLD`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ## progs/paint/paint.c
@@ -605,14 +613,14 @@
                              ...`
   - `paint_load_file` (function, line 461) `static int paint_load_file(const char *path)`
   - `paint_save_file` (function, line 514) `static int paint_save_file(const char *path)`
-  - `paint_blit` (function, line 548) `static void paint_blit(int ox, int oy)`
-  - `paint_ink` (function, line 562) `static unsigned char paint_ink(void)`
-  - `paint_handle_input` (function, line 569) `static void paint_handle_input(struct nk_context *ctx)`
-  - `paint_ui_build` (function, line 628) `static void paint_ui_build(struct nk_context *ctx)`
-  - `paint_pattern_present` (function, line 712) `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)`
-  - `paint_selftest` (function, line 747) `static int paint_selftest(void)`
-  - `paint_gui_run` (function, line 934) `static void paint_gui_run(void)`
-  - `main` (function, line 984) `int main(int argc, char **argv)`
+  - `paint_blit` (function, line 549) `static void paint_blit(int ox, int oy)`
+  - `paint_ink` (function, line 570) `static unsigned char paint_ink(void)`
+  - `paint_handle_input` (function, line 577) `static void paint_handle_input(struct nk_context *ctx)`
+  - `paint_ui_build` (function, line 636) `static void paint_ui_build(struct nk_context *ctx)`
+  - `paint_pattern_present` (function, line 720) `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)`
+  - `paint_selftest` (function, line 755) `static int paint_selftest(void)`
+  - `paint_gui_run` (function, line 942) `static void paint_gui_run(void)`
+  - `main` (function, line 992) `int main(int argc, char **argv)`
   - `STB_IMAGE_IMPLEMENTATION` (macro, line 26) `#define STB_IMAGE_IMPLEMENTATION`
   - `STBI_ONLY_PNG` (macro, line 27) `#define STBI_ONLY_PNG`
   - `STBI_NO_STDIO` (macro, line 28) `#define STBI_NO_STDIO`
@@ -647,66 +655,72 @@
 - Doc: piano.c — a Nuklear piano that plays FM sound through the SB16 driver.
 - Language: c
 - Symbols:
-  - `sys_pcm_open` (function, line 78) `static long sys_pcm_open(long on)`
-  - `sys_pcm_submit` (function, line 81) `static long sys_pcm_submit(const void *buf, long len)`
-  - `sys_pcm_pump` (function, line 84) `static long sys_pcm_pump(void)`
-  - `sys_yield` (function, line 87) `static void sys_yield(void)`
-  - `o3_op` (function, line 102) `static int o3_op(int ch, int is_car)`
-  - `o3_opreg` (function, line 106) `static void o3_opreg(int ch, int is_car, int regbase, int val)`
-  - `o3_chreg` (function, line 110) `static void o3_chreg(int ch, int regbase, int val)`
-  - `o3_note` (function, line 148) `static void o3_note(int ch, int midi, int on)`
-  - `midi_to_key` (function, line 186) `static int midi_to_key(int midi)`
-  - `clamp_midi` (function, line 209) `static int clamp_midi(int m)`
-  - `pedal_set` (function, line 216) `static void pedal_set(int on)`
-  - `voice_alloc` (function, line 230) `static int voice_alloc(void)`
-  - `note_off_key` (function, line 243) `static void note_off_key(int key)`
-  - `note_on_key` (function, line 256) `static void note_on_key(int key, int midi, int vel)`
-  - `kbd_semitone` (function, line 273) `static int kbd_semitone(int code)`
-  - `kbd_all_off` (function, line 308) `static void kbd_all_off(void)`
-  - `note_on_sc` (function, line 314) `static void note_on_sc(int code, int vel)`
-  - `note_off_sc` (function, line 328) `static void note_off_sc(int code)`
-  - `piano_scancode` (function, line 344) `static void piano_scancode(int code, int make, int e0, void *ud)`
-  - `fx_configure` (function, line 396) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
-  - `fx_process` (function, line 415) `static float fx_process(float x)`
-  - `sb_flush` (function, line 445) `static void sb_flush(void)`
-  - `render_audio` (function, line 455) `static void render_audio(long ms)`
-  - `key_rect` (function, line 481) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
-  - `hit_key` (function, line 488) `static int hit_key(int mx, int my)`
-  - `hit_velocity` (function, line 505) `static int hit_velocity(int key, int my)`
-  - `ctrl_hit` (function, line 533) `static int ctrl_hit(int id, int mx, int my)`
-  - `ctrl_active` (function, line 537) `static int ctrl_active(int id)`
-  - `ctrl_press` (function, line 547) `static void ctrl_press(int id)`
-  - `ui_run` (function, line 564) `static void ui_run(int bench_ms)`
-  - `run_selftest` (function, line 738) `static int run_selftest(void)`
-  - `main` (function, line 905) `int main(int argc, char **argv)`
-  - `UI_MEMORY` (macro, line 55) `#define UI_MEMORY`
-  - `SYS_SB16_OPEN` (macro, line 58) `#define SYS_SB16_OPEN`
-  - `SYS_SB16_SUBMIT` (macro, line 59) `#define SYS_SB16_SUBMIT`
-  - `SYS_SB16_PUMP` (macro, line 60) `#define SYS_SB16_PUMP`
-  - `RATE` (macro, line 62) `#define RATE`
+  - `sys_pcm_open` (function, line 93) `static long sys_pcm_open(long flags)`
+  - `sys_pcm_write` (function, line 98) `static long sys_pcm_write(const void *buf, long len)`
+  - `sys_pcm_close` (function, line 101) `static void sys_pcm_close(void)`
+  - `sys_yield` (function, line 104) `static void sys_yield(void)`
+  - `sys_present_idx` (function, line 112) `static long sys_present_idx(int *origin)`
+  - `o3_op` (function, line 127) `static int o3_op(int ch, int is_car)`
+  - `o3_opreg` (function, line 131) `static void o3_opreg(int ch, int is_car, int regbase, int val)`
+  - `o3_chreg` (function, line 135) `static void o3_chreg(int ch, int regbase, int val)`
+  - `o3_note` (function, line 173) `static void o3_note(int ch, int midi, int on)`
+  - `midi_to_key` (function, line 211) `static int midi_to_key(int midi)`
+  - `clamp_midi` (function, line 234) `static int clamp_midi(int m)`
+  - `pedal_set` (function, line 241) `static void pedal_set(int on)`
+  - `voice_alloc` (function, line 255) `static int voice_alloc(void)`
+  - `note_off_key` (function, line 268) `static void note_off_key(int key)`
+  - `note_on_key` (function, line 281) `static void note_on_key(int key, int midi, int vel)`
+  - `kbd_semitone` (function, line 298) `static int kbd_semitone(int code)`
+  - `kbd_all_off` (function, line 333) `static void kbd_all_off(void)`
+  - `note_on_sc` (function, line 339) `static void note_on_sc(int code, int vel)`
+  - `note_off_sc` (function, line 353) `static void note_off_sc(int code)`
+  - `piano_scancode` (function, line 369) `static void piano_scancode(int code, int make, int e0, void *ud)`
+  - `fx_configure` (function, line 421) `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)`
+  - `fx_process` (function, line 440) `static float fx_process(float x)`
+  - `sb_flush` (function, line 469) `static void sb_flush(void)`
+  - `render_audio` (function, line 484) `static void render_audio(long ms)`
+  - `key_rect` (function, line 511) `static void key_rect(int key, int *x, int *y, int *w, int *h)`
+  - `hit_key` (function, line 518) `static int hit_key(int mx, int my)`
+  - `hit_velocity` (function, line 535) `static int hit_velocity(int key, int my)`
+  - `ctrl_hit` (function, line 563) `static int ctrl_hit(int id, int mx, int my)`
+  - `ctrl_active` (function, line 567) `static int ctrl_active(int id)`
+  - `ctrl_press` (function, line 577) `static void ctrl_press(int id)`
+  - `ui_run` (function, line 594) `static void ui_run(int bench_ms)`
+  - `rate` (function, line 818) `* wait below caps the frame rate (bench mode skips it so the
+         * benchmark still measures ...`
+  - `run_selftest` (function, line 836) `static int run_selftest(void)`
+  - `run_pcm2_probe` (function, line 1015) `static int run_pcm2_probe(void)`
+  - `main` (function, line 1042) `int main(int argc, char **argv)`
+  - `UI_MEMORY` (macro, line 54) `#define UI_MEMORY`
+  - `SYS_PCM2_OPEN` (macro, line 57) `#define SYS_PCM2_OPEN`
+  - `SYS_PCM2_WRITE` (macro, line 58) `#define SYS_PCM2_WRITE`
+  - `SYS_PCM2_CLOSE` (macro, line 59) `#define SYS_PCM2_CLOSE`
+  - `RATE` (macro, line 61) `#define RATE`
+  - `PCM_FRAG` (macro, line 62) `#define PCM_FRAG`
   - `PCM_BUF` (macro, line 63) `#define PCM_BUF`
-  - `MAX_AUDIO_MS` (macro, line 68) `#define MAX_AUDIO_MS`
-  - `PIANO_FRAME_MS` (macro, line 76) `#define PIANO_FRAME_MS`
-  - `KEY_W` (macro, line 165) `#define KEY_W`
-  - `KEY_H` (macro, line 166) `#define KEY_H`
-  - `BK_W` (macro, line 167) `#define BK_W`
-  - `BK_H` (macro, line 168) `#define BK_H`
-  - `KEY_Y` (macro, line 169) `#define KEY_Y`
-  - `PIANO_BASE_MIDI` (macro, line 170) `#define PIANO_BASE_MIDI`
-  - `PIANO_OCTAVES` (macro, line 171) `#define PIANO_OCTAVES`
-  - `NKEYS` (macro, line 184) `#define NKEYS`
-  - `MAX_VOICES` (macro, line 196) `#define MAX_VOICES`
-  - `KBD_NO_NOTE` (macro, line 272) `#define KBD_NO_NOTE`
-  - `FX_DELAY_CAP` (macro, line 382) `#define FX_DELAY_CAP`
-  - `FX_DELAY_MAX_MS` (macro, line 383) `#define FX_DELAY_MAX_MS`
-  - `FX_FEEDBACK` (macro, line 384) `#define FX_FEEDBACK`
-  - `FX_WET` (macro, line 385) `#define FX_WET`
-  - `FX_TREM_FREQ` (macro, line 386) `#define FX_TREM_FREQ`
-  - `CTRL_Y` (macro, line 515) `#define CTRL_Y`
-  - `CTRL_H` (macro, line 516) `#define CTRL_H`
-  - `BTN_W` (macro, line 517) `#define BTN_W`
-  - `BTN_GAP` (macro, line 518) `#define BTN_GAP`
-  - `NCTRLS` (macro, line 531) `#define NCTRLS`
+  - `MAX_AUDIO_MS` (macro, line 76) `#define MAX_AUDIO_MS`
+  - `PIANO_FRAME_MS` (macro, line 84) `#define PIANO_FRAME_MS`
+  - `PIANO_FRAME_PERIOD` (macro, line 91) `#define PIANO_FRAME_PERIOD`
+  - `KEY_W` (macro, line 190) `#define KEY_W`
+  - `KEY_H` (macro, line 191) `#define KEY_H`
+  - `BK_W` (macro, line 192) `#define BK_W`
+  - `BK_H` (macro, line 193) `#define BK_H`
+  - `KEY_Y` (macro, line 194) `#define KEY_Y`
+  - `PIANO_BASE_MIDI` (macro, line 195) `#define PIANO_BASE_MIDI`
+  - `PIANO_OCTAVES` (macro, line 196) `#define PIANO_OCTAVES`
+  - `NKEYS` (macro, line 209) `#define NKEYS`
+  - `MAX_VOICES` (macro, line 221) `#define MAX_VOICES`
+  - `KBD_NO_NOTE` (macro, line 297) `#define KBD_NO_NOTE`
+  - `FX_DELAY_CAP` (macro, line 407) `#define FX_DELAY_CAP`
+  - `FX_DELAY_MAX_MS` (macro, line 408) `#define FX_DELAY_MAX_MS`
+  - `FX_FEEDBACK` (macro, line 409) `#define FX_FEEDBACK`
+  - `FX_WET` (macro, line 410) `#define FX_WET`
+  - `FX_TREM_FREQ` (macro, line 411) `#define FX_TREM_FREQ`
+  - `CTRL_Y` (macro, line 545) `#define CTRL_Y`
+  - `CTRL_H` (macro, line 546) `#define CTRL_H`
+  - `BTN_W` (macro, line 547) `#define BTN_W`
+  - `BTN_GAP` (macro, line 548) `#define BTN_GAP`
+  - `NCTRLS` (macro, line 561) `#define NCTRLS`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
 
 ## progs/pokemon/minios_stubs/SDL.h
@@ -918,139 +932,141 @@
 - Doc: vedit IDE build and run contract.
 - Language: c
 - Symbols:
-  - `vedit_getc_raw` (function, line 22) `static long vedit_getc_raw(long blocking)`
-  - `vedit_set_title` (function, line 31) `static long vedit_set_title(const char *t)`
-  - `vedit_spawn` (function, line 40) `static long vedit_spawn(const char *path, const char *redir, int argc,
+  - `vedit_getc_raw` (function, line 23) `static long vedit_getc_raw(long blocking)`
+  - `vedit_set_title` (function, line 32) `static long vedit_set_title(const char *t)`
+  - `vedit_spawn` (function, line 41) `static long vedit_spawn(const char *path, const char *redir, int argc,
                         co...`
-  - `vedit_vga` (function, line 52) `static long vedit_vga(int on)`
-  - `vedit_kbd_raw` (function, line 64) `static long vedit_kbd_raw(int on)`
-  - `vedit_time_ms` (function, line 73) `static unsigned long vedit_time_ms(void)`
-  - `vedit_c_bg` (function, line 147) `static struct nk_color vedit_c_bg(void)`
-  - `vedit_c_gutter` (function, line 148) `static struct nk_color vedit_c_gutter(void)`
-  - `vedit_c_default` (function, line 149) `static struct nk_color vedit_c_default(void)`
-  - `vedit_c_keyword` (function, line 150) `static struct nk_color vedit_c_keyword(void)`
-  - `vedit_c_string` (function, line 151) `static struct nk_color vedit_c_string(void)`
-  - `vedit_c_comment` (function, line 152) `static struct nk_color vedit_c_comment(void)`
-  - `vedit_c_number` (function, line 153) `static struct nk_color vedit_c_number(void)`
-  - `vedit_c_preproc` (function, line 154) `static struct nk_color vedit_c_preproc(void)`
-  - `vedit_c_header` (function, line 155) `static struct nk_color vedit_c_header(void)`
-  - `vedit_c_headtxt` (function, line 156) `static struct nk_color vedit_c_headtxt(void)`
-  - `vedit_c_status` (function, line 157) `static struct nk_color vedit_c_status(void)`
-  - `vedit_c_cursor` (function, line 158) `static struct nk_color vedit_c_cursor(void)`
-  - `vedit_ink` (function, line 160) `static struct nk_color vedit_ink(int col)`
-  - `vedit_set_msg` (function, line 230) `static void vedit_set_msg(const char *s)`
-  - `vedit_is_alpha` (function, line 237) `static int vedit_is_alpha(int c)`
-  - `vedit_is_digit` (function, line 241) `static int vedit_is_digit(int c)`
-  - `vedit_is_wordc` (function, line 245) `static int vedit_is_wordc(int c)`
-  - `vedit_is_kw` (function, line 249) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
-  - `separators` (function, line 272) `* allow_quote exists because C digit separators (1'000'000) are not
+  - `vedit_vga` (function, line 53) `static long vedit_vga(int on)`
+  - `vedit_kbd_raw` (function, line 65) `static long vedit_kbd_raw(int on)`
+  - `vedit_time_ms` (function, line 74) `static unsigned long vedit_time_ms(void)`
+  - `vedit_c_bg` (function, line 150) `static struct nk_color vedit_c_bg(void)`
+  - `vedit_c_gutter` (function, line 151) `static struct nk_color vedit_c_gutter(void)`
+  - `vedit_c_default` (function, line 152) `static struct nk_color vedit_c_default(void)`
+  - `vedit_c_keyword` (function, line 153) `static struct nk_color vedit_c_keyword(void)`
+  - `vedit_c_string` (function, line 154) `static struct nk_color vedit_c_string(void)`
+  - `vedit_c_comment` (function, line 155) `static struct nk_color vedit_c_comment(void)`
+  - `vedit_c_number` (function, line 156) `static struct nk_color vedit_c_number(void)`
+  - `vedit_c_preproc` (function, line 157) `static struct nk_color vedit_c_preproc(void)`
+  - `vedit_c_header` (function, line 158) `static struct nk_color vedit_c_header(void)`
+  - `vedit_c_headtxt` (function, line 159) `static struct nk_color vedit_c_headtxt(void)`
+  - `vedit_c_status` (function, line 160) `static struct nk_color vedit_c_status(void)`
+  - `vedit_c_cursor` (function, line 161) `static struct nk_color vedit_c_cursor(void)`
+  - `vedit_ink` (function, line 163) `static struct nk_color vedit_ink(int col)`
+  - `vedit_set_msg` (function, line 239) `static void vedit_set_msg(const char *s)`
+  - `vedit_is_alpha` (function, line 246) `static int vedit_is_alpha(int c)`
+  - `vedit_is_digit` (function, line 250) `static int vedit_is_digit(int c)`
+  - `vedit_is_wordc` (function, line 254) `static int vedit_is_wordc(int c)`
+  - `vedit_is_kw` (function, line 258) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
+  - `separators` (function, line 281) `* allow_quote exists because C digit separators (1'000'000) are not
  * valid in Python/Lua number...`
-  - `vedit_parse_number` (function, line 295) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
-  - `vedit_parse_keyword` (function, line 310) `static int vedit_parse_keyword(const char *t, int len, int i,
+  - `vedit_parse_number` (function, line 304) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
+  - `vedit_parse_keyword` (function, line 319) `static int vedit_parse_keyword(const char *t, int len, int i,
                                cons...`
-  - `vedit_lang_of` (function, line 327) `static int vedit_lang_of(const char *fname)`
-  - `vedit_lang_name` (function, line 345) `static const char *vedit_lang_name(int lang)`
-  - `vedit_scan_line` (function, line 354) `static int vedit_scan_line(const char *t, int len, int st)`
-  - `vedit_state_at` (function, line 607) `static int vedit_state_at(int row)`
-  - `vedit_row_ptr` (function, line 616) `static char *vedit_row_ptr(int idx)`
-  - `vedit_clamp` (function, line 620) `static void vedit_clamp(void)`
-  - `vedit_follow` (function, line 632) `static void vedit_follow(void)`
-  - `vedit_insert_char` (function, line 645) `static void vedit_insert_char(int c)`
-  - `vedit_delete_line_at` (function, line 671) `static void vedit_delete_line_at(int idx)`
-  - `vedit_backspace` (function, line 682) `static void vedit_backspace(void)`
-  - `vedit_delete_char` (function, line 713) `static void vedit_delete_char(void)`
-  - `vedit_split` (function, line 741) `static void vedit_split(void)`
-  - `vedit_tab` (function, line 789) `static void vedit_tab(void)`
-  - `vedit_find` (function, line 816) `static void vedit_find(const char *needle)`
-  - `vedit_save` (function, line 866) `static int vedit_save(void)`
-  - `vedit_load` (function, line 909) `static int vedit_load(void)`
-  - `vedit_has_ext` (function, line 966) `static int vedit_has_ext(const char *fname, const char *ext)`
-  - `vedit_base_of` (function, line 978) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
-  - `vedit_join` (function, line 999) `static int vedit_join(const char *dir, const char *base, const char *ext,
+  - `vedit_lang_of` (function, line 336) `static int vedit_lang_of(const char *fname)`
+  - `vedit_lang_name` (function, line 357) `static const char *vedit_lang_name(int lang)`
+  - `vedit_scan_line` (function, line 367) `static int vedit_scan_line(const char *t, int len, int st)`
+  - `vedit_state_at` (function, line 638) `static int vedit_state_at(int row)`
+  - `vedit_row_ptr` (function, line 647) `static char *vedit_row_ptr(int idx)`
+  - `vedit_clamp` (function, line 651) `static void vedit_clamp(void)`
+  - `vedit_follow` (function, line 663) `static void vedit_follow(void)`
+  - `vedit_insert_char` (function, line 676) `static void vedit_insert_char(int c)`
+  - `vedit_delete_line_at` (function, line 702) `static void vedit_delete_line_at(int idx)`
+  - `vedit_backspace` (function, line 713) `static void vedit_backspace(void)`
+  - `vedit_delete_char` (function, line 744) `static void vedit_delete_char(void)`
+  - `vedit_split` (function, line 772) `static void vedit_split(void)`
+  - `vedit_tab` (function, line 820) `static void vedit_tab(void)`
+  - `vedit_find` (function, line 847) `static void vedit_find(const char *needle)`
+  - `vedit_save` (function, line 897) `static int vedit_save(void)`
+  - `vedit_load` (function, line 940) `static int vedit_load(void)`
+  - `vedit_has_ext` (function, line 997) `static int vedit_has_ext(const char *fname, const char *ext)`
+  - `vedit_base_of` (function, line 1009) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
+  - `vedit_join` (function, line 1030) `static int vedit_join(const char *dir, const char *base, const char *ext,
                       c...`
-  - `vedit_link_fmt` (function, line 1016) `static int vedit_link_fmt(const char *s)`
-  - `vedit_print_log` (function, line 1029) `static void vedit_print_log(const char *path)`
-  - `vedit_spawn_visible` (function, line 1046) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
+  - `vedit_link_fmt` (function, line 1047) `static int vedit_link_fmt(const char *s)`
+  - `vedit_print_log` (function, line 1060) `static void vedit_print_log(const char *path)`
+  - `vedit_spawn_visible` (function, line 1077) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
                   ...`
-  - `vedit_cmd_exec` (function, line 1075) `static void vedit_cmd_exec(const char *out, int kind)`
-  - `vedit_run_kind` (function, line 1088) `static int vedit_run_kind(const char *fname)`
-  - `vedit_cmd_run` (function, line 1097) `static void vedit_cmd_run(void)`
-  - `vedit_cmd_link` (function, line 1173) `static void vedit_cmd_link(const char *fmt)`
-  - `vedit_selftest_build` (function, line 1224) `static int vedit_selftest_build(void)`
-  - `vedit_read_key_poll` (function, line 1313) `static int vedit_read_key_poll(void)`
-  - `vedit_ansi_for` (function, line 1364) `static void vedit_ansi_for(int col)`
-  - `vedit_console_dump` (function, line 1372) `static void vedit_console_dump(void)`
-  - `vedit_prompt_open` (function, line 1412) `static void vedit_prompt_open(const char *label, int mode)`
-  - `vedit_prompt_find` (function, line 1423) `static void vedit_prompt_find(void)`
-  - `vedit_prompt_saveas` (function, line 1427) `static void vedit_prompt_saveas(void)`
-  - `vedit_draw_row` (function, line 1437) `static void vedit_draw_row(struct nk_command_buffer *canvas,
+  - `vedit_cmd_exec` (function, line 1106) `static void vedit_cmd_exec(const char *out, int kind)`
+  - `vedit_run_kind` (function, line 1119) `static int vedit_run_kind(const char *fname)`
+  - `vedit_cmd_run` (function, line 1129) `static void vedit_cmd_run(void)`
+  - `vedit_cmd_link` (function, line 1206) `static void vedit_cmd_link(const char *fmt)`
+  - `vedit_selftest_build` (function, line 1257) `static int vedit_selftest_build(void)`
+  - `vedit_read_key_poll` (function, line 1354) `static int vedit_read_key_poll(void)`
+  - `vedit_ansi_for` (function, line 1405) `static void vedit_ansi_for(int col)`
+  - `vedit_console_dump` (function, line 1413) `static void vedit_console_dump(void)`
+  - `vedit_prompt_open` (function, line 1453) `static void vedit_prompt_open(const char *label, int mode)`
+  - `vedit_prompt_find` (function, line 1464) `static void vedit_prompt_find(void)`
+  - `vedit_prompt_saveas` (function, line 1468) `static void vedit_prompt_saveas(void)`
+  - `vedit_draw_row` (function, line 1478) `static void vedit_draw_row(struct nk_command_buffer *canvas,
                            struct nk...`
-  - `vedit_draw_ui` (function, line 1516) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
+  - `vedit_draw_ui` (function, line 1557) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                     ...`
-  - `vedit_prompt_key` (function, line 1647) `static void vedit_prompt_key(int key)`
-  - `vedit_key` (function, line 1706) `static void vedit_key(int key, int *quit, int *save_and_quit)`
-  - `vedit_sync_title` (function, line 1786) `static void vedit_sync_title(void)`
-  - `vedit_gui_run` (function, line 1796) `static void vedit_gui_run(void)`
-  - `vedit_selftest` (function, line 1875) `static int vedit_selftest(void)`
-  - `main` (function, line 1942) `int main(int argc, char **argv)`
-  - `VEDIT_MAX_LINES` (macro, line 81) `#define VEDIT_MAX_LINES`
-  - `VEDIT_LINE_MAX` (macro, line 82) `#define VEDIT_LINE_MAX`
-  - `VEDIT_LINE_USED` (macro, line 83) `#define VEDIT_LINE_USED`
-  - `VEDIT_FILE_MAX` (macro, line 84) `#define VEDIT_FILE_MAX`
-  - `VEDIT_FNAME_MAX` (macro, line 85) `#define VEDIT_FNAME_MAX`
-  - `VEDIT_DEFAULT_FILE` (macro, line 86) `#define VEDIT_DEFAULT_FILE`
-  - `VEDIT_MSG_MAX` (macro, line 87) `#define VEDIT_MSG_MAX`
-  - `VEDIT_WORD_MAX` (macro, line 88) `#define VEDIT_WORD_MAX`
-  - `VEDIT_TAB_W` (macro, line 89) `#define VEDIT_TAB_W`
-  - `VEDIT_ESC_MS` (macro, line 90) `#define VEDIT_ESC_MS`
-  - `VEDIT_FRAME_MS` (macro, line 91) `#define VEDIT_FRAME_MS`
-  - `VEDIT_UI_MEMORY` (macro, line 92) `#define VEDIT_UI_MEMORY`
-  - `VEDIT_KEY_RUN` (macro, line 93) `#define VEDIT_KEY_RUN`
-  - `VEDIT_KEY_LINK` (macro, line 94) `#define VEDIT_KEY_LINK`
-  - `VEDIT_KEY_DUMP` (macro, line 95) `#define VEDIT_KEY_DUMP`
-  - `VEDIT_TOOL_MINIGCC` (macro, line 96) `#define VEDIT_TOOL_MINIGCC`
-  - `VEDIT_TOOL_LD` (macro, line 97) `#define VEDIT_TOOL_LD`
-  - `VEDIT_TOOL_CVM` (macro, line 98) `#define VEDIT_TOOL_CVM`
-  - `VEDIT_TOOL_LUA` (macro, line 99) `#define VEDIT_TOOL_LUA`
-  - `VEDIT_TOOL_PY` (macro, line 100) `#define VEDIT_TOOL_PY`
-  - `VEDIT_DIR_ASM` (macro, line 101) `#define VEDIT_DIR_ASM`
-  - `VEDIT_DIR_BIN` (macro, line 102) `#define VEDIT_DIR_BIN`
-  - `VEDIT_DIR_CVM` (macro, line 103) `#define VEDIT_DIR_CVM`
-  - `VEDIT_BUILD_LOG` (macro, line 104) `#define VEDIT_BUILD_LOG`
-  - `VEDIT_LINK_ELF` (macro, line 105) `#define VEDIT_LINK_ELF`
-  - `VEDIT_LINK_CVM` (macro, line 106) `#define VEDIT_LINK_CVM`
-  - `VEDIT_STATUS_MAX` (macro, line 107) `#define VEDIT_STATUS_MAX`
-  - `VEDIT_BASE_MAX` (macro, line 108) `#define VEDIT_BASE_MAX`
-  - `VEDIT_PATH_MAX` (macro, line 109) `#define VEDIT_PATH_MAX`
-  - `VEDIT_LOG_TAIL` (macro, line 110) `#define VEDIT_LOG_TAIL`
-  - `VEDIT_LANG_TEXT` (macro, line 113) `#define VEDIT_LANG_TEXT`
-  - `VEDIT_LANG_C` (macro, line 114) `#define VEDIT_LANG_C`
-  - `VEDIT_LANG_PY` (macro, line 115) `#define VEDIT_LANG_PY`
-  - `VEDIT_LANG_LUA` (macro, line 116) `#define VEDIT_LANG_LUA`
-  - `VEDIT_LANG_ASM` (macro, line 117) `#define VEDIT_LANG_ASM`
-  - `VEDIT_COL_DEFAULT` (macro, line 120) `#define VEDIT_COL_DEFAULT`
-  - `VEDIT_COL_KEYWORD` (macro, line 121) `#define VEDIT_COL_KEYWORD`
-  - `VEDIT_COL_STRING` (macro, line 122) `#define VEDIT_COL_STRING`
-  - `VEDIT_COL_COMMENT` (macro, line 123) `#define VEDIT_COL_COMMENT`
-  - `VEDIT_COL_NUMBER` (macro, line 124) `#define VEDIT_COL_NUMBER`
-  - `VEDIT_COL_PREPROC` (macro, line 125) `#define VEDIT_COL_PREPROC`
-  - `VEDIT_ST_BLOCK` (macro, line 128) `#define VEDIT_ST_BLOCK`
-  - `VEDIT_ST_PY3S` (macro, line 129) `#define VEDIT_ST_PY3S`
-  - `VEDIT_ST_PY3D` (macro, line 130) `#define VEDIT_ST_PY3D`
-  - `VEDIT_ST_LUABLK` (macro, line 131) `#define VEDIT_ST_LUABLK`
-  - `VEDIT_ST_LUASTR` (macro, line 132) `#define VEDIT_ST_LUASTR`
-  - `VEDIT_KEY_UP` (macro, line 135) `#define VEDIT_KEY_UP`
-  - `VEDIT_KEY_DOWN` (macro, line 136) `#define VEDIT_KEY_DOWN`
-  - `VEDIT_KEY_LEFT` (macro, line 137) `#define VEDIT_KEY_LEFT`
-  - `VEDIT_KEY_RIGHT` (macro, line 138) `#define VEDIT_KEY_RIGHT`
-  - `VEDIT_KEY_HOME` (macro, line 139) `#define VEDIT_KEY_HOME`
-  - `VEDIT_KEY_END` (macro, line 140) `#define VEDIT_KEY_END`
-  - `VEDIT_KEY_PGUP` (macro, line 141) `#define VEDIT_KEY_PGUP`
-  - `VEDIT_KEY_PGDN` (macro, line 142) `#define VEDIT_KEY_PGDN`
-  - `VEDIT_KEY_DEL` (macro, line 143) `#define VEDIT_KEY_DEL`
-  - `VEDIT_KEY_ESC` (macro, line 144) `#define VEDIT_KEY_ESC`
-  - `VEDIT_PROMPT_FIND` (macro, line 1406) `#define VEDIT_PROMPT_FIND`
-  - `VEDIT_PROMPT_GOTO` (macro, line 1407) `#define VEDIT_PROMPT_GOTO`
-  - `VEDIT_PROMPT_NAME` (macro, line 1408) `#define VEDIT_PROMPT_NAME`
-  - `VEDIT_PROMPT_LINK` (macro, line 1409) `#define VEDIT_PROMPT_LINK`
+  - `vedit_prompt_key` (function, line 1688) `static void vedit_prompt_key(int key)`
+  - `vedit_key` (function, line 1747) `static void vedit_key(int key, int *quit, int *save_and_quit)`
+  - `vedit_sync_title` (function, line 1827) `static void vedit_sync_title(void)`
+  - `vedit_gui_run` (function, line 1837) `static void vedit_gui_run(void)`
+  - `vedit_selftest` (function, line 1916) `static int vedit_selftest(void)`
+  - `main` (function, line 1992) `int main(int argc, char **argv)`
+  - `VEDIT_MAX_LINES` (macro, line 82) `#define VEDIT_MAX_LINES`
+  - `VEDIT_LINE_MAX` (macro, line 83) `#define VEDIT_LINE_MAX`
+  - `VEDIT_LINE_USED` (macro, line 84) `#define VEDIT_LINE_USED`
+  - `VEDIT_FILE_MAX` (macro, line 85) `#define VEDIT_FILE_MAX`
+  - `VEDIT_FNAME_MAX` (macro, line 86) `#define VEDIT_FNAME_MAX`
+  - `VEDIT_DEFAULT_FILE` (macro, line 87) `#define VEDIT_DEFAULT_FILE`
+  - `VEDIT_MSG_MAX` (macro, line 88) `#define VEDIT_MSG_MAX`
+  - `VEDIT_WORD_MAX` (macro, line 89) `#define VEDIT_WORD_MAX`
+  - `VEDIT_TAB_W` (macro, line 90) `#define VEDIT_TAB_W`
+  - `VEDIT_ESC_MS` (macro, line 91) `#define VEDIT_ESC_MS`
+  - `VEDIT_FRAME_MS` (macro, line 92) `#define VEDIT_FRAME_MS`
+  - `VEDIT_UI_MEMORY` (macro, line 93) `#define VEDIT_UI_MEMORY`
+  - `VEDIT_KEY_RUN` (macro, line 94) `#define VEDIT_KEY_RUN`
+  - `VEDIT_KEY_LINK` (macro, line 95) `#define VEDIT_KEY_LINK`
+  - `VEDIT_KEY_DUMP` (macro, line 96) `#define VEDIT_KEY_DUMP`
+  - `VEDIT_TOOL_MINIGCC` (macro, line 97) `#define VEDIT_TOOL_MINIGCC`
+  - `VEDIT_TOOL_LD` (macro, line 98) `#define VEDIT_TOOL_LD`
+  - `VEDIT_TOOL_CVM` (macro, line 99) `#define VEDIT_TOOL_CVM`
+  - `VEDIT_TOOL_LUA` (macro, line 100) `#define VEDIT_TOOL_LUA`
+  - `VEDIT_TOOL_PY` (macro, line 101) `#define VEDIT_TOOL_PY`
+  - `VEDIT_TOOL_LISP` (macro, line 102) `#define VEDIT_TOOL_LISP`
+  - `VEDIT_DIR_ASM` (macro, line 103) `#define VEDIT_DIR_ASM`
+  - `VEDIT_DIR_BIN` (macro, line 104) `#define VEDIT_DIR_BIN`
+  - `VEDIT_DIR_CVM` (macro, line 105) `#define VEDIT_DIR_CVM`
+  - `VEDIT_BUILD_LOG` (macro, line 106) `#define VEDIT_BUILD_LOG`
+  - `VEDIT_LINK_ELF` (macro, line 107) `#define VEDIT_LINK_ELF`
+  - `VEDIT_LINK_CVM` (macro, line 108) `#define VEDIT_LINK_CVM`
+  - `VEDIT_STATUS_MAX` (macro, line 109) `#define VEDIT_STATUS_MAX`
+  - `VEDIT_BASE_MAX` (macro, line 110) `#define VEDIT_BASE_MAX`
+  - `VEDIT_PATH_MAX` (macro, line 111) `#define VEDIT_PATH_MAX`
+  - `VEDIT_LOG_TAIL` (macro, line 112) `#define VEDIT_LOG_TAIL`
+  - `VEDIT_LANG_TEXT` (macro, line 115) `#define VEDIT_LANG_TEXT`
+  - `VEDIT_LANG_C` (macro, line 116) `#define VEDIT_LANG_C`
+  - `VEDIT_LANG_PY` (macro, line 117) `#define VEDIT_LANG_PY`
+  - `VEDIT_LANG_LUA` (macro, line 118) `#define VEDIT_LANG_LUA`
+  - `VEDIT_LANG_ASM` (macro, line 119) `#define VEDIT_LANG_ASM`
+  - `VEDIT_LANG_LISP` (macro, line 120) `#define VEDIT_LANG_LISP`
+  - `VEDIT_COL_DEFAULT` (macro, line 123) `#define VEDIT_COL_DEFAULT`
+  - `VEDIT_COL_KEYWORD` (macro, line 124) `#define VEDIT_COL_KEYWORD`
+  - `VEDIT_COL_STRING` (macro, line 125) `#define VEDIT_COL_STRING`
+  - `VEDIT_COL_COMMENT` (macro, line 126) `#define VEDIT_COL_COMMENT`
+  - `VEDIT_COL_NUMBER` (macro, line 127) `#define VEDIT_COL_NUMBER`
+  - `VEDIT_COL_PREPROC` (macro, line 128) `#define VEDIT_COL_PREPROC`
+  - `VEDIT_ST_BLOCK` (macro, line 131) `#define VEDIT_ST_BLOCK`
+  - `VEDIT_ST_PY3S` (macro, line 132) `#define VEDIT_ST_PY3S`
+  - `VEDIT_ST_PY3D` (macro, line 133) `#define VEDIT_ST_PY3D`
+  - `VEDIT_ST_LUABLK` (macro, line 134) `#define VEDIT_ST_LUABLK`
+  - `VEDIT_ST_LUASTR` (macro, line 135) `#define VEDIT_ST_LUASTR`
+  - `VEDIT_KEY_UP` (macro, line 138) `#define VEDIT_KEY_UP`
+  - `VEDIT_KEY_DOWN` (macro, line 139) `#define VEDIT_KEY_DOWN`
+  - `VEDIT_KEY_LEFT` (macro, line 140) `#define VEDIT_KEY_LEFT`
+  - `VEDIT_KEY_RIGHT` (macro, line 141) `#define VEDIT_KEY_RIGHT`
+  - `VEDIT_KEY_HOME` (macro, line 142) `#define VEDIT_KEY_HOME`
+  - `VEDIT_KEY_END` (macro, line 143) `#define VEDIT_KEY_END`
+  - `VEDIT_KEY_PGUP` (macro, line 144) `#define VEDIT_KEY_PGUP`
+  - `VEDIT_KEY_PGDN` (macro, line 145) `#define VEDIT_KEY_PGDN`
+  - `VEDIT_KEY_DEL` (macro, line 146) `#define VEDIT_KEY_DEL`
+  - `VEDIT_KEY_ESC` (macro, line 147) `#define VEDIT_KEY_ESC`
+  - `VEDIT_PROMPT_FIND` (macro, line 1447) `#define VEDIT_PROMPT_FIND`
+  - `VEDIT_PROMPT_GOTO` (macro, line 1448) `#define VEDIT_PROMPT_GOTO`
+  - `VEDIT_PROMPT_NAME` (macro, line 1449) `#define VEDIT_PROMPT_NAME`
+  - `VEDIT_PROMPT_LINK` (macro, line 1450) `#define VEDIT_PROMPT_LINK`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`

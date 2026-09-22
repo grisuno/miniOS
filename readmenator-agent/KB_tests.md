@@ -126,12 +126,16 @@
 - Doc: Docstring: host test for the file browser assoc contract (make test-file).
 - Language: c
 - Symbols:
-  - `t_ext_of` (function, line 25) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
-  - `t_assoc_line` (function, line 45) `static int t_assoc_line(const char *line, char *ext, char *prog)`
-  - `main` (function, line 77) `int main(void)`
-  - `CHECK` (macro, line 15) `#define CHECK(cond, msg)`
-  - `T_EXT_MAX` (macro, line 22) `#define T_EXT_MAX`
-  - `T_PROG_MAX` (macro, line 23) `#define T_PROG_MAX`
+  - `t_ext_of` (function, line 26) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
+  - `t_assoc_line` (function, line 46) `static int t_assoc_line(const char *line, char *ext, char *prog)`
+  - `t_icon_kind` (function, line 80) `static int t_icon_kind(const char *fname, int isdir)`
+  - `t_icon_sz` (function, line 95) `static int t_icon_sz(void)`
+  - `main` (function, line 99) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+  - `T_EXT_MAX` (macro, line 23) `#define T_EXT_MAX`
+  - `T_PROG_MAX` (macro, line 24) `#define T_PROG_MAX`
+  - `T_ICON_SMALL` (macro, line 92) `#define T_ICON_SMALL`
+  - `T_ICON_BIG` (macro, line 93) `#define T_ICON_BIG`
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`
 
 ## tests/test_freedom_wl.c
@@ -166,6 +170,15 @@
   - `CHECK` (macro, line 32) `#define CHECK(cond, msg)`
 - Depends on: `headers/futex.h`
 
+## tests/test_fx.c
+- Layer: testing
+- Doc: Docstring: Host test for headers/vga_fx.h (make test-fx).
+- Language: c
+- Symbols:
+  - `main` (function, line 23) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+- Depends on: `headers/vga_fx.h`
+
 ## tests/test_hal_io.c
 - Layer: testing
 - Doc: Docstring: Host test for arch/x86/hal_io.h (make test-hal).
@@ -194,10 +207,11 @@
   - `t_nearest` (function, line 33) `static void t_nearest(void)`
   - `t_geom` (function, line 58) `static void t_geom(void)`
   - `t_scale` (function, line 70) `static void t_scale(void)`
-  - `t_blit` (function, line 99) `static void t_blit(void)`
-  - `t_load` (function, line 117) `static void t_load(void)`
-  - `t_policy` (function, line 136) `static void t_policy(void)`
-  - `main` (function, line 151) `int main(void)`
+  - `t_scale_big` (function, line 99) `static void t_scale_big(void)`
+  - `t_blit` (function, line 139) `static void t_blit(void)`
+  - `t_load` (function, line 157) `static void t_load(void)`
+  - `t_policy` (function, line 176) `static void t_policy(void)`
+  - `main` (function, line 191) `int main(void)`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `kernel/string.c`, `progs/minios_png.h`
 
@@ -249,6 +263,22 @@
   - `T_N` (macro, line 25) `#define T_N`
   - `T_PATH_MAX` (macro, line 26) `#define T_PATH_MAX`
 - Depends on: `kernel/string.c`
+
+## tests/test_pcm.c
+- Layer: testing
+- Doc: Host-side unit test for the PCM ring buffer (headers/pcm_ring.h).
+- Language: c
+- Symbols:
+  - `t_roundtrip` (function, line 28) `static void t_roundtrip(void)`
+  - `t_wrap` (function, line 44) `static void t_wrap(void)`
+  - `t_overrun` (function, line 61) `static void t_overrun(void)`
+  - `t_underrun` (function, line 75) `static void t_underrun(void)`
+  - `t_zero_cap` (function, line 91) `static void t_zero_cap(void)`
+  - `lcg_next` (function, line 104) `static unsigned lcg_next(void)`
+  - `t_model` (function, line 109) `static void t_model(void)`
+  - `main` (function, line 144) `int main(void)`
+  - `CHECK` (macro, line 21) `#define CHECK(cond, msg)`
+- Depends on: `headers/pcm_ring.h`, `kernel/string.c`
 
 ## tests/test_percpu_rq.c
 - Layer: testing
@@ -351,15 +381,15 @@
 - Doc: Docstring: Host test for the vedit IDE build contract (make test-vedit).
 - Language: c
 - Symbols:
-  - `t_has_ext` (function, line 32) `static int t_has_ext(const char *fname, const char *ext)`
-  - `t_base_of` (function, line 43) `static int t_base_of(const char *fname, char *dst, size_t cap)`
-  - `t_join` (function, line 63) `static int t_join(const char *dir, const char *base, const char *ext,
+  - `t_has_ext` (function, line 33) `static int t_has_ext(const char *fname, const char *ext)`
+  - `t_base_of` (function, line 44) `static int t_base_of(const char *fname, char *dst, size_t cap)`
+  - `t_join` (function, line 64) `static int t_join(const char *dir, const char *base, const char *ext,
                   char *dst...`
-  - `t_link_fmt` (function, line 79) `static int t_link_fmt(const char *s)`
-  - `t_lang_of` (function, line 93) `static int t_lang_of(const char *fname)`
-  - `t_run_kind` (function, line 110) `static int t_run_kind(const char *fname)`
-  - `main` (function, line 118) `int main(void)`
-  - `CHECK` (macro, line 25) `#define CHECK(cond, msg)`
+  - `t_link_fmt` (function, line 80) `static int t_link_fmt(const char *s)`
+  - `t_lang_of` (function, line 94) `static int t_lang_of(const char *fname)`
+  - `t_run_kind` (function, line 114) `static int t_run_kind(const char *fname)`
+  - `main` (function, line 123) `int main(void)`
+  - `CHECK` (macro, line 26) `#define CHECK(cond, msg)`
 - Depends on: `kernel/string.c`
 
 ## tests/test_vma.c

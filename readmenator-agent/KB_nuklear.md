@@ -141,42 +141,51 @@
   - `nk_client_probe` (function, line 72) `static int nk_client_probe(void)`
   - `nk_sys_vga_mode` (function, line 114) `long nk_sys_vga_mode(int on)`
   - `nk_sys_fb_info` (function, line 121) `long nk_sys_fb_info(int *w, int *h, int *pitch)`
-  - `nk_sys_mouse` (function, line 128) `long nk_sys_mouse(int *xybw)`
-  - `nk_sys_mouse_badptr` (function, line 133) `long nk_sys_mouse_badptr(void)`
-  - `nk_client_hash` (function, line 151) `static unsigned nk_client_hash(const unsigned char *p, unsigned n)`
-  - `nk_client_publish` (function, line 162) `static int nk_client_publish(void)`
-  - `nk_sys_nk_frame` (function, line 215) `long nk_sys_nk_frame(int *origin)`
-  - `nk_mirror_box` (function, line 243) `static void nk_mirror_box(char *dst, int cap)`
-  - `nk_mirror_emit` (function, line 264) `static int nk_mirror_emit(const char *box, unsigned seq,
+  - `nk_sys_fb_info_rgb` (function, line 137) `static long nk_sys_fb_info_rgb(int *w, int *h, int *pitch, int *rgb)`
+  - `nk_rgb_available` (function, line 147) `int nk_rgb_available(void)`
+  - `rgb256_prepare` (function, line 162) `static void rgb256_prepare(void)`
+  - `nk_idx_to_rgb` (function, line 170) `void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g,
+                   unsigned char *b)`
+  - `cur_set` (function, line 186) `static void cur_set(struct nk_color c)`
+  - `cur_bg_set` (function, line 190) `static void cur_bg_set(struct nk_color c)`
+  - `nk_sys_mouse` (function, line 193) `long nk_sys_mouse(int *xybw)`
+  - `nk_sys_mouse_badptr` (function, line 198) `long nk_sys_mouse_badptr(void)`
+  - `nk_client_hash` (function, line 216) `static unsigned nk_client_hash(const unsigned char *p, unsigned n)`
+  - `nk_client_publish` (function, line 227) `static int nk_client_publish(void)`
+  - `nk_sys_nk_frame` (function, line 280) `long nk_sys_nk_frame(int *origin)`
+  - `nk_mirror_box` (function, line 314) `static void nk_mirror_box(char *dst, int cap)`
+  - `nk_mirror_emit` (function, line 335) `static int nk_mirror_emit(const char *box, unsigned seq,
         const unsigned char *msg, int mlen)`
-  - `nk_mirror_tick` (function, line 281) `static void nk_mirror_tick(void)`
-  - `nk_sys_gfx_set_title` (function, line 338) `long nk_sys_gfx_set_title(const char *t)`
-  - `nk_build_palette` (function, line 347) `void nk_build_palette(unsigned char *pal768)`
-  - `pal_prepare` (function, line 356) `static void pal_prepare(void)`
-  - `col_to_idx` (function, line 367) `static int col_to_idx(struct nk_color c)`
-  - `set_clip` (function, line 385) `static void set_clip(int x, int y, int w, int h)`
-  - `px` (function, line 395) `static void px(int x, int y, int c)`
-  - `fill_rect` (function, line 402) `static void fill_rect(int x, int y, int w, int h, int c)`
-  - `draw_line` (function, line 409) `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)`
-  - `fill_circle` (function, line 427) `static void fill_circle(int cx, int cy, int r, int c)`
-  - `stroke_circle` (function, line 433) `static void stroke_circle(int cx, int cy, int r, int th, int c)`
-  - `fill_poly` (function, line 451) `static void fill_poly(int *xs, int *ys, int n, int c)`
-  - `stroke_poly` (function, line 474) `static void stroke_poly(int *xs, int *ys, int n, int th, int c)`
-  - `draw_text` (function, line 481) `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)`
-  - `draw_arc` (function, line 495) `static void draw_arc(int cx, int cy, int r, float a0, float a1,
+  - `nk_mirror_tick` (function, line 352) `static void nk_mirror_tick(void)`
+  - `nk_sys_gfx_set_title` (function, line 409) `long nk_sys_gfx_set_title(const char *t)`
+  - `nk_build_palette` (function, line 418) `void nk_build_palette(unsigned char *pal768)`
+  - `pal_prepare` (function, line 427) `static void pal_prepare(void)`
+  - `col_to_idx` (function, line 438) `static int col_to_idx(struct nk_color c)`
+  - `set_clip` (function, line 469) `static void set_clip(int x, int y, int w, int h)`
+  - `px` (function, line 479) `static void px(int x, int y, int c)`
+  - `px_bg` (function, line 492) `static void px_bg(int x, int y, int c)`
+  - `px_idx` (function, line 506) `static void px_idx(int x, int y, int c)`
+  - `fill_rect` (function, line 522) `static void fill_rect(int x, int y, int w, int h, int c)`
+  - `draw_line` (function, line 529) `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)`
+  - `fill_circle` (function, line 547) `static void fill_circle(int cx, int cy, int r, int c)`
+  - `stroke_circle` (function, line 553) `static void stroke_circle(int cx, int cy, int r, int th, int c)`
+  - `fill_poly` (function, line 571) `static void fill_poly(int *xs, int *ys, int n, int c)`
+  - `stroke_poly` (function, line 594) `static void stroke_poly(int *xs, int *ys, int n, int th, int c)`
+  - `draw_text` (function, line 601) `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)`
+  - `draw_arc` (function, line 615) `static void draw_arc(int cx, int cy, int r, float a0, float a1,
                      int filled, ...`
-  - `nk_rasterize` (function, line 516) `void nk_rasterize(struct nk_context *ctx)`
-  - `nk_foreach` (function, line 520) `nk_foreach(cmd, ctx)`
-  - `nk_minios_font_width` (function, line 666) `static float nk_minios_font_width(nk_handle handle, float height,
+  - `nk_rasterize` (function, line 636) `void nk_rasterize(struct nk_context *ctx)`
+  - `nk_foreach` (function, line 641) `nk_foreach(cmd, ctx)`
+  - `nk_minios_font_width` (function, line 813) `static float nk_minios_font_width(nk_handle handle, float height,
                                ...`
-  - `nk_minios_font` (function, line 672) `struct nk_user_font nk_minios_font(void)`
-  - `feed_key` (function, line 707) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
-  - `nk_set_scancode_hook` (function, line 714) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
-  - `handle_scancode` (function, line 719) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
-  - `nk_client_poll` (function, line 767) `static void nk_client_poll(struct nk_context *ctx)`
-  - `nk_poll_input` (function, line 814) `void nk_poll_input(struct nk_context *ctx)`
-  - `nk_set_window_origin` (function, line 853) `void nk_set_window_origin(int x, int y)`
-  - `nk_quit_requested` (function, line 861) `int nk_quit_requested(void)`
+  - `nk_minios_font` (function, line 819) `struct nk_user_font nk_minios_font(void)`
+  - `feed_key` (function, line 854) `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
+  - `nk_set_scancode_hook` (function, line 861) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
+  - `handle_scancode` (function, line 866) `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
+  - `nk_client_poll` (function, line 914) `static void nk_client_poll(struct nk_context *ctx)`
+  - `nk_poll_input` (function, line 961) `void nk_poll_input(struct nk_context *ctx)`
+  - `nk_set_window_origin` (function, line 1000) `void nk_set_window_origin(int x, int y)`
+  - `nk_quit_requested` (function, line 1008) `int nk_quit_requested(void)`
   - `list` (function, line 4) `* abstract draw command list (nk__begin/nk__next);`
   - `program_invocation_short_name` (variable, line 27) `extern char *program_invocation_short_name;`
   - `NK_IMPLEMENTATION` (macro, line 17) `#define NK_IMPLEMENTATION`
@@ -190,27 +199,32 @@
   - `nk_context` (struct, line 20)
   - `nk_user_font` (struct, line 21)
   - `nk_command_buffer` (struct, line 22)
-  - `nk_sys_time_ms` (function, line 29) `long nk_sys_time_ms(void);`
-  - `nk_sys_kbd` (function, line 30) `long nk_sys_kbd(void);`
-  - `nk_sys_palette` (function, line 31) `long nk_sys_palette(const unsigned char *pal768);`
-  - `nk_sys_kbd_raw` (function, line 32) `long nk_sys_kbd_raw(int on);`
-  - `nk_sys_vga_mode` (function, line 33) `long nk_sys_vga_mode(int on);`
-  - `nk_sys_fb_info` (function, line 34) `long nk_sys_fb_info(int *w, int *h, int *pitch);`
-  - `nk_sys_mouse` (function, line 35) `long nk_sys_mouse(int *xybw);`
-  - `nk_sys_mouse_badptr` (function, line 39) `long nk_sys_mouse_badptr(void);`
-  - `nk_sys_nk_frame` (function, line 40) `long nk_sys_nk_frame(int *origin);`
-  - `nk_sys_gfx_set_title` (function, line 41) `long nk_sys_gfx_set_title(const char *t);`
-  - `nk_build_palette` (function, line 45) `void nk_build_palette(unsigned char *pal768);`
-  - `nk_minios_font` (function, line 51) `struct nk_user_font nk_minios_font(void);`
-  - `nk_rasterize` (function, line 54) `void nk_rasterize(struct nk_context *ctx);`
-  - `SYS_NK_FRAME` (function, line 60) `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);`
-  - `nk_poll_input` (function, line 62) `void nk_poll_input(struct nk_context *ctx);`
-  - `nk_quit_requested` (function, line 67) `int nk_quit_requested(void);`
-  - `nk_set_scancode_hook` (function, line 76) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
+  - `nk_minios_img` (struct, line 74)
+  - `nk_rgb_available` (function, line 33) `int nk_rgb_available(void);`
+  - `nk_idx_to_rgb` (function, line 37) `void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g, unsigned char *b);`
+  - `nk_sys_time_ms` (function, line 41) `long nk_sys_time_ms(void);`
+  - `nk_sys_kbd` (function, line 42) `long nk_sys_kbd(void);`
+  - `nk_sys_palette` (function, line 43) `long nk_sys_palette(const unsigned char *pal768);`
+  - `nk_sys_kbd_raw` (function, line 44) `long nk_sys_kbd_raw(int on);`
+  - `nk_sys_vga_mode` (function, line 45) `long nk_sys_vga_mode(int on);`
+  - `nk_sys_fb_info` (function, line 46) `long nk_sys_fb_info(int *w, int *h, int *pitch);`
+  - `nk_sys_mouse` (function, line 47) `long nk_sys_mouse(int *xybw);`
+  - `nk_sys_mouse_badptr` (function, line 51) `long nk_sys_mouse_badptr(void);`
+  - `nk_sys_nk_frame` (function, line 52) `long nk_sys_nk_frame(int *origin);`
+  - `nk_sys_gfx_set_title` (function, line 53) `long nk_sys_gfx_set_title(const char *t);`
+  - `nk_build_palette` (function, line 57) `void nk_build_palette(unsigned char *pal768);`
+  - `nk_minios_font` (function, line 63) `struct nk_user_font nk_minios_font(void);`
+  - `nk_rasterize` (function, line 66) `void nk_rasterize(struct nk_context *ctx);`
+  - `SYS_NK_FRAME` (function, line 85) `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);`
+  - `nk_poll_input` (function, line 87) `void nk_poll_input(struct nk_context *ctx);`
+  - `nk_quit_requested` (function, line 92) `int nk_quit_requested(void);`
+  - `nk_set_scancode_hook` (function, line 101) `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
   - `NUKLEAR_MINIOS_H` (macro, line 2) `#define NUKLEAR_MINIOS_H`
   - `NK_W` (macro, line 24) `#define NK_W`
   - `NK_H` (macro, line 25) `#define NK_H`
   - `NK_BACKBUF` (macro, line 26) `#define NK_BACKBUF`
+  - `NK_RGB_BUF` (macro, line 30) `#define NK_RGB_BUF`
+  - `NK_MINIOS_IMG_MAX` (macro, line 73) `#define NK_MINIOS_IMG_MAX`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 

@@ -1,96 +1,97 @@
 # headers
 
-*Community 5 | 10 files | cohesion 0.33*
+*Community 5 | 13 files | cohesion 0.63*
 
 ## Definition
 
-This community groups 10 file(s) rooted at `headers` with dominant language h (cohesion 0.33). Central symbols: `CHECK`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_GAP`, `DOCK_LABEL_GAP`, `DOCK_PAD_X`, `DOCK_PAD_Y`, `FB_OFFSET`. Core file: `kernel/vga_fb.c` (150 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
+This community groups 13 file(s) rooted at `headers` with dominant language c (cohesion 0.63). Central symbols: `CHECK`, `NET_ARP_CACHE`, `NET_ARP_REPLY`, `NET_ARP_REQUEST`, `NET_CONNECT_TMO_S`, `NET_DNS`, `NET_DNS_PORT`, `NET_DNS_TMO_MS`. Core file: `net/tls_crypto.c` (78 symbols). Documented purpose: Portability shim between the MiniOS kernel and the host-side test.
 
 ## Files
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `headers/desktop_icons.h` | h | utility | 3 | yes |
-| `headers/desktop_shortcuts.h` | h | utility | 20 | yes |
-| `headers/drivers/modifiers.h` | h | infrastructure | 11 | yes |
-| `headers/wm_events.h` | h | infrastructure | 39 | yes |
-| `headers/wm_layout.h` | h | presentation | 16 | yes |
-| `headers/wm_notify.h` | h | utility | 9 | yes |
-| `headers/wm_tiling.h` | h | utility | 3 | yes |
-| `kernel/vga_fb.c` | c | utility | 150 | no |
-| `tests/test_modifiers.c` | c | testing | 2 | no |
-| `tests/test_notify.c` | c | testing | 3 | no |
+| `headers/net.h` | h | utility | 59 | yes |
+| `headers/net/rtl8139.h` | h | utility | 8 | no |
+| `headers/tls.h` | h | utility | 73 | yes |
+| `headers/tls_port.h` | h | utility | 49 | yes |
+| `headers/tls_roots.h` | h | utility | 0 | yes |
+| `headers/tls_test_roots.h` | h | testing | 0 | yes |
+| `net/net.c` | c | utility | 56 | yes |
+| `net/rtl8139.c` | c | utility | 31 | no |
+| `net/tls.c` | c | utility | 27 | yes |
+| `net/tls_crypto.c` | c | utility | 78 | yes |
+| `net/tls_x509.c` | c | utility | 23 | yes |
+| `progs/tls_u/tls_u_main.c` | c | utility | 5 | yes |
+| `tls_test.c` | c | testing | 23 | yes |
 
 ## Key Symbols
 
-- `DESKTOP_ICONS_H` (macro, `headers/desktop_icons.h:8`) `#define DESKTOP_ICONS_H`
-- `ICON_EMBEDDED_W` (macro, `headers/desktop_icons.h:12`) `#define ICON_EMBEDDED_W`
-- `ICON_EMBEDDED_H` (macro, `headers/desktop_icons.h:13`) `#define ICON_EMBEDDED_H`
-- `DESKTOP_SHORTCUTS_H` (macro, `headers/desktop_shortcuts.h:13`) `#define DESKTOP_SHORTCUTS_H`
-- `MAX_SHORTCUTS` (macro, `headers/desktop_shortcuts.h:18`) `#define MAX_SHORTCUTS`
-- `SHORTCUT_NAME_LEN` (macro, `headers/desktop_shortcuts.h:19`) `#define SHORTCUT_NAME_LEN`
-- `SHORTCUT_CMD_LEN` (macro, `headers/desktop_shortcuts.h:20`) `#define SHORTCUT_CMD_LEN`
-- `SHORTCUT_PATH_LEN` (macro, `headers/desktop_shortcuts.h:21`) `#define SHORTCUT_PATH_LEN`
-- `ICON_W` (macro, `headers/desktop_shortcuts.h:24`) `#define ICON_W`
-- `ICON_H` (macro, `headers/desktop_shortcuts.h:25`) `#define ICON_H`
-- `ICON_PAD_X` (macro, `headers/desktop_shortcuts.h:26`) `#define ICON_PAD_X`
-- `ICON_PAD_Y` (macro, `headers/desktop_shortcuts.h:27`) `#define ICON_PAD_Y`
-- `ICON_LABEL_H` (macro, `headers/desktop_shortcuts.h:28`) `#define ICON_LABEL_H`
-- `DOCK_PAD_X` (macro, `headers/desktop_shortcuts.h:33`) `#define DOCK_PAD_X`
-- `DOCK_PAD_Y` (macro, `headers/desktop_shortcuts.h:34`) `#define DOCK_PAD_Y`
-- `DOCK_GAP` (macro, `headers/desktop_shortcuts.h:35`) `#define DOCK_GAP`
-- `DOCK_LABEL_GAP` (macro, `headers/desktop_shortcuts.h:36`) `#define DOCK_LABEL_GAP`
-- `ICON_PAL_BASE` (macro, `headers/desktop_shortcuts.h:43`) `#define ICON_PAL_BASE`
-- `ICON_PAL_SIZE` (macro, `headers/desktop_shortcuts.h:44`) `#define ICON_PAL_SIZE`
-- `desktop_shortcut` (struct, `headers/desktop_shortcuts.h:50`) - A decoded+cached desktop shortcut. Pixels are raw RGBA bytes (ICON_W*ICON_H*4): the PNG's own colors
-- `desktop_shortcuts_load` (function, `headers/desktop_shortcuts.h:60`) `void desktop_shortcuts_load(void);` - Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desk
-- `desktop_shortcuts_draw` (function, `headers/desktop_shortcuts.h:63`) `void desktop_shortcuts_draw(void);` - Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desk
-- `desktop_shortcuts_hit_test` (function, `headers/desktop_shortcuts.h:67`) `const char *desktop_shortcuts_hit_test(int mx, int my);` - Handle a left-click at (mx, my).  Returns the command string if the * click hit an icon, or NULL oth
-- `MODIFIERS_H` (macro, `headers/drivers/modifiers.h:2`) `#define MODIFIERS_H`
-- `modifier_state_t` (struct, `headers/drivers/modifiers.h:5`) - #ifndef MODIFIERS_H #define MODIFIERS_H /** Docstring: Unified modifier tracking for cooked and raw
-- `modifier_keys_t` (struct, `headers/drivers/modifiers.h:14`) - #ifndef MODIFIERS_H #define MODIFIERS_H /** Docstring: Unified modifier tracking for cooked and raw
-- `MOD_SHIFT` (macro, `headers/drivers/modifiers.h:24`) `#define MOD_SHIFT`
-- `MOD_CTRL` (macro, `headers/drivers/modifiers.h:25`) `#define MOD_CTRL`
-- `MOD_ALT` (macro, `headers/drivers/modifiers.h:26`) `#define MOD_ALT`
-- `MOD_ALTGR` (macro, `headers/drivers/modifiers.h:27`) `#define MOD_ALTGR`
+- `NET_H` (macro, `headers/net.h:2`) `#define NET_H`
+- `NET_IP_ADDR` (macro, `headers/net.h:5`) `#define NET_IP_ADDR`
+- `NET_NETMASK` (macro, `headers/net.h:6`) `#define NET_NETMASK`
+- `NET_GATEWAY` (macro, `headers/net.h:7`) `#define NET_GATEWAY`
+- `NET_DNS` (macro, `headers/net.h:8`) `#define NET_DNS`
+- `NET_PCI_VENDOR` (macro, `headers/net.h:11`) `#define NET_PCI_VENDOR`
+- `NET_PCI_DEVICE` (macro, `headers/net.h:12`) `#define NET_PCI_DEVICE`
+- `NET_RX_BUF_LEN` (macro, `headers/net.h:18`) `#define NET_RX_BUF_LEN`
+- `NET_RX_ALIGN` (macro, `headers/net.h:19`) `#define NET_RX_ALIGN`
+- `NET_RCR` (macro, `headers/net.h:22`) `#define NET_RCR`
+- `NET_MAX_FRAME` (macro, `headers/net.h:23`) `#define NET_MAX_FRAME`
+- `NET_TX_SLOTS` (macro, `headers/net.h:24`) `#define NET_TX_SLOTS`
+- `NET_ETH_ALEN` (macro, `headers/net.h:27`) `#define NET_ETH_ALEN`
+- `NET_ETHERTYPE_IP` (macro, `headers/net.h:28`) `#define NET_ETHERTYPE_IP`
+- `NET_ETHERTYPE_ARP` (macro, `headers/net.h:29`) `#define NET_ETHERTYPE_ARP`
+- `NET_PROTO_ICMP` (macro, `headers/net.h:32`) `#define NET_PROTO_ICMP`
+- `NET_PROTO_TCP` (macro, `headers/net.h:33`) `#define NET_PROTO_TCP`
+- `NET_PROTO_UDP` (macro, `headers/net.h:34`) `#define NET_PROTO_UDP`
+- `NET_ARP_CACHE` (macro, `headers/net.h:37`) `#define NET_ARP_CACHE`
+- `NET_ARP_REQUEST` (macro, `headers/net.h:38`) `#define NET_ARP_REQUEST`
+- `NET_ARP_REPLY` (macro, `headers/net.h:39`) `#define NET_ARP_REPLY`
+- `NET_TCP_MSS` (macro, `headers/net.h:42`) `#define NET_TCP_MSS`
+- `NET_TCP_WINDOW` (macro, `headers/net.h:43`) `#define NET_TCP_WINDOW`
+- `ring` (function, `headers/net.h:45`) `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SO`
+- `NET_SOCK_RX_BUF` (macro, `headers/net.h:46`) `#define NET_SOCK_RX_BUF`
+- `NET_RX_RING_SIZE` (macro, `headers/net.h:47`) `#define NET_RX_RING_SIZE`
+- `NET_SOCKETS` (macro, `headers/net.h:48`) `#define NET_SOCKETS`
+- `NET_DNS_PORT` (macro, `headers/net.h:49`) `#define NET_DNS_PORT`
+- `NET_EPHEMERAL_MIN` (macro, `headers/net.h:50`) `#define NET_EPHEMERAL_MIN`
+- `NET_DNS_TRIES` (macro, `headers/net.h:51`) `#define NET_DNS_TRIES`
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 9
-- Cross-boundary resolved imports (EXTRACTED): 18
+- Internal resolved imports (EXTRACTED): 19
+- Cross-boundary resolved imports (EXTRACTED): 11
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/drivers/modifiers.h.
-- [EXTRACTED] depends_on community 5 <-> 7 (strength 0.9): Extracted import edge crosses communities: kernel/vga_fb.c imports headers/wm_geom.h.
-- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 5 (headers).
+- [EXTRACTED] depends_on community 5 <-> 3 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 5 <-> 7 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
+- [EXTRACTED] depends_on community 5 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
+- [EXTRACTED] depends_on community 1 <-> 5 (strength 0.9): Extracted import edge crosses communities: kernel/shell.c imports headers/net.h.
 
 ## Risks
 
-- [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_layout.h` (presentation)
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:1884` `taskbar_render` `lx`: `lx` assigned at line 1884 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2221` `line` `rows_before`: `rows_before` assigned at line 2221 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2717` `icon_decode` `dst`: `dst` assigned at line 2717 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2736` `icon_embedded_rgba` `dst`: `dst` assigned at line 2736 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3072` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 3072 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3073` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 3073 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3075` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 3075 but never read afterwards.
+- [dataflow DEAD_STORE] `net/net.c:276` `net_dns_resolve` `rc`: `rc` assigned at line 276 but never read afterwards.
+- [dataflow UNINIT_USE] `net/tls_crypto.c:1227` `ecdsa_verify` `gen`: `gen` may be read before initialization (declared line 1223).
 
 ## Open Questions
 
-- Why do 3 file(s) lack file-level docs (e.g. `kernel/vga_fb.c`)? What purpose do they serve?
+- Why do 2 file(s) lack file-level docs (e.g. `headers/net/rtl8139.h`)? What purpose do they serve?
 - What would break if the most connected file in headers changed?
-- Should headers be split, given cohesion 0.33?
+- Should headers be split, given cohesion 0.63?
 
 ## Sources
 
-- `headers/desktop_icons.h`
-- `headers/desktop_shortcuts.h`
-- `headers/drivers/modifiers.h`
-- `headers/wm_events.h`
-- `headers/wm_layout.h`
-- `headers/wm_notify.h`
-- `headers/wm_tiling.h`
-- `kernel/vga_fb.c`
-- `tests/test_modifiers.c`
-- `tests/test_notify.c`
+- `headers/net.h`
+- `headers/net/rtl8139.h`
+- `headers/tls.h`
+- `headers/tls_port.h`
+- `headers/tls_roots.h`
+- `headers/tls_test_roots.h`
+- `net/net.c`
+- `net/rtl8139.c`
+- `net/tls.c`
+- `net/tls_crypto.c`
+- `net/tls_x509.c`
+- `progs/tls_u/tls_u_main.c`
+- `tls_test.c`

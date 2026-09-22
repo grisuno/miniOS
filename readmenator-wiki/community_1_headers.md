@@ -1,93 +1,155 @@
 # headers
 
-*Community 1 | 11 files | cohesion 0.46*
+*Community 1 | 32 files | cohesion 0.57*
 
 ## Definition
 
-This community groups 11 file(s) rooted at `headers` with dominant language c (cohesion 0.46). Central symbols: `BC_MASK`, `BC_WAYS`, `BLOCK_H`, `BLOCK_SHIFT`, `BLOCK_SIZE`, `DEV_MAX`, `DEV_NAME_LEN`, `DEV_TYPE_AUDIO`. Core file: `fs/minifs.c` (61 symbols). Documented purpose: Block device layer for MiniFS..
+This community groups 32 file(s) rooted at `headers` with dominant language h (cohesion 0.57). Central symbols: `CHECK`, `CMD_BUF_SZ`, `COL_BG`, `COL_BLACK`, `COL_BORDER`, `COL_HIGHLIGHT`, `COL_SCROLLBAR`, `COL_SCROLL_THUMB`. Core file: `kernel/vga_fb.c` (161 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
 
 ## Files
 
+### `headers` (16 files)
+
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `drivers/block.c` | c | infrastructure | 14 | yes |
-| `drivers/driver.c` | c | infrastructure | 8 | yes |
-| `drivers/ide.c` | c | infrastructure | 19 | yes |
-| `fs/minifs.c` | c | utility | 61 | yes |
-| `headers/block.h` | h | utility | 12 | yes |
-| `headers/driver.h` | h | infrastructure | 16 | yes |
-| `headers/ide.h` | h | utility | 35 | yes |
-| `headers/lz4_kernel.h` | h | utility | 4 | no |
-| `kernel/lz4_kernel.c` | c | utility | 10 | no |
-| `kernel/mm/swap.c` | c | utility | 8 | yes |
-| `tests/test_driver.c` | c | testing | 5 | yes |
+| `headers/desktop_icons.h` | h | utility | 3 | yes |
+| `headers/desktop_shortcuts.h` | h | utility | 25 | yes |
+| `headers/editor.h` | h | infrastructure | 2 | yes |
+| `headers/minifetch.h` | h | utility | 2 | yes |
+| `headers/shell.h` | h | utility | 7 | yes |
+| `headers/vga_fb.h` | h | utility | 138 | yes |
+
+### `kernel` (7 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `kernel/console_in.c` | c | utility | 26 | yes |
+| `kernel/editor.c` | c | infrastructure | 22 | yes |
+| `kernel/loader.c` | c | utility | 38 | yes |
+| `kernel/shell.c` | c | utility | 80 | yes |
+| `kernel/vga_cursor.c` | c | utility | 13 | yes |
+
+### `tests` (4 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `tests/test_fx.c` | c | testing | 2 | yes |
+| `tests/test_modifiers.c` | c | testing | 2 | no |
+| `tests/test_notify.c` | c | testing | 3 | no |
+| `tests/test_wm.c` | c | testing | 2 | yes |
+
+### `headers/drivers` (2 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `headers/drivers/kbd.h` | h | infrastructure | 23 | yes |
+| `headers/drivers/modifiers.h` | h | infrastructure | 11 | yes |
+
+### `headers/kernel` (2 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `headers/kernel/console_in.h` | h | utility | 8 | yes |
+| `headers/kernel/vga_cursor.h` | h | utility | 9 | yes |
+
+### `drivers` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `drivers/kbd.c` | c | infrastructure | 34 | yes |
+
+*... and 12 more files in this community.*
+
 
 ## Key Symbols
 
-- `BC_WAYS` (macro, `drivers/block.c:41`) `#define BC_WAYS`
-- `BC_MASK` (macro, `drivers/block.c:42`) `#define BC_MASK`
-- `bc_index` (function, `drivers/block.c:47`) `static unsigned int bc_index(unsigned int block_num)`
-- `bc_invalidate_locked` (function, `drivers/block.c:51`) `static void bc_invalidate_locked(unsigned int block_num)`
-- `bc_invalidate` (function, `drivers/block.c:56`) `static void bc_invalidate(unsigned int block_num)`
-- `block_init` (function, `drivers/block.c:63`) `void block_init(void)`
-- `block_set_base` (function, `drivers/block.c:69`) `void block_set_base(unsigned int lba_base)`
-- `block_dev_write` (function, `drivers/block.c:89`) `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
-- `block_read` (function, `drivers/block.c:96`) `int block_read(unsigned int block_num, void *buf)`
-- `block_write` (function, `drivers/block.c:135`) `int block_write(unsigned int block_num, const void *buf)`
-- `block_read_multi` (function, `drivers/block.c:144`) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
-- `block_write_multi` (function, `drivers/block.c:149`) `int block_write_multi(unsigned int block_num, unsigned int count, const void *bu`
-- `block_flush` (function, `drivers/block.c:164`) `void block_flush(void)`
-- `block_total` (function, `drivers/block.c:166`) `unsigned int block_total(void)`
-- `dev_len` (function, `drivers/driver.c:14`) `static unsigned dev_len(const char *s)`
-- `dev_copy` (function, `drivers/driver.c:20`) `static void dev_copy(char *dst, const char *src, unsigned cap)`
-- `dev_eq` (function, `drivers/driver.c:27`) `static int dev_eq(const char *a, const char *b)`
-- `device_reset` (function, `drivers/driver.c:32`) `void device_reset(void)`
-- `device_register` (function, `drivers/driver.c:44`) `int device_register(device_t *dev)`
-- `device_find` (function, `drivers/driver.c:66`) `device_t *device_find(const char *name)`
-- `device_find_by_type` (function, `drivers/driver.c:76`) `device_t *device_find_by_type(int type)`
-- `device_count` (function, `drivers/driver.c:85`) `int device_count(void)`
-- `ide_delay` (function, `drivers/ide.c:13`) `static void ide_delay(void)`
-- `ide_read_status` (function, `drivers/ide.c:23`) `static unsigned char ide_read_status(void)`
-- `ide_wait_not_busy` (function, `drivers/ide.c:27`) `static int ide_wait_not_busy(unsigned int timeout)`
-- `ide_wait_drq` (function, `drivers/ide.c:35`) `static int ide_wait_drq(unsigned int timeout)`
-- `ide_select_drive` (function, `drivers/ide.c:46`) `static void ide_select_drive(unsigned char drive)`
-- `ide_soft_reset` (function, `drivers/ide.c:52`) `static void ide_soft_reset(void)`
-- `ide_identify` (function, `drivers/ide.c:59`) `static int ide_identify(void)`
-- `ide_init` (function, `drivers/ide.c:84`) `void ide_init(void)`
+- `kbd_get_layout` (function, `drivers/kbd.c:100`) `int kbd_get_layout(void)`
+- `kbd_set_layout` (function, `drivers/kbd.c:101`) `void kbd_set_layout(int layout)`
+- `kbd_toggle_layout` (function, `drivers/kbd.c:105`) `void kbd_toggle_layout(void)`
+- `kbd_shift` (macro, `drivers/kbd.c:115`) `#define kbd_shift`
+- `kbd_ctrl` (macro, `drivers/kbd.c:116`) `#define kbd_ctrl`
+- `kbd_alt` (macro, `drivers/kbd.c:117`) `#define kbd_alt`
+- `kbd_super` (macro, `drivers/kbd.c:118`) `#define kbd_super`
+- `kbd_altgr` (macro, `drivers/kbd.c:119`) `#define kbd_altgr`
+- `KBD_QUEUE_LEN` (macro, `drivers/kbd.c:121`) `#define KBD_QUEUE_LEN`
+- `KBD_SCAN_DEL` (macro, `drivers/kbd.c:122`) `#define KBD_SCAN_DEL`
+- `kbd_drop_counts` (function, `drivers/kbd.c:132`) `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw)` - #define kbd_super (kbd_mods.super) #define kbd_altgr (kbd_mods.altgr) #define KBD_QUEUE_LEN 8 #defin
+- `KBD_RAW_LEN` (macro, `drivers/kbd.c:141`) `#define KBD_RAW_LEN`
+- `kbd_q_push` (function, `drivers/kbd.c:146`) `void kbd_q_push(unsigned char c)`
+- `kbd_raw_push_internal` (function, `drivers/kbd.c:156`) `static void kbd_raw_push_internal(unsigned char c)`
+- `kbd_q_empty` (function, `drivers/kbd.c:166`) `int kbd_q_empty(void)`
+- `kbd_q_pop` (function, `drivers/kbd.c:168`) `int kbd_q_pop(void)`
+- `kbd_available` (function, `drivers/kbd.c:175`) `int kbd_available(void)`
+- `kbd_raw_mode_get` (function, `drivers/kbd.c:181`) `int kbd_raw_mode_get(void)`
+- `kbd_raw_mode_set` (function, `drivers/kbd.c:182`) `void kbd_raw_mode_set(int on)`
+- `kbd_raw_empty` (function, `drivers/kbd.c:183`) `int kbd_raw_empty(void)`
+- `kbd_raw_pop` (function, `drivers/kbd.c:184`) `int kbd_raw_pop(void)`
+- `kbd_raw_push_byte` (function, `drivers/kbd.c:190`) `void kbd_raw_push_byte(unsigned char c)`
+- `kbd_e0_get` (function, `drivers/kbd.c:191`) `int kbd_e0_get(void)`
+- `kbd_e0_set` (function, `drivers/kbd.c:192`) `void kbd_e0_set(int v)`
+- `kbd_flush_all` (function, `drivers/kbd.c:193`) `void kbd_flush_all(void)`
+- `kbd_raw_flush` (function, `drivers/kbd.c:200`) `void kbd_raw_flush(void)` - Drop queued raw scancodes (shell-typed while a terminal owned PS/2) so a * newly focused game never
+- `paths` (function, `drivers/kbd.c:210`) `* keeps the modifier state in sync on both paths (the old raw branch never * tra`
+- `too` (function, `drivers/kbd.c:215`) `* too (DOOM strafes with Alt+arrows);`
+- `raw_track_mods` (function, `drivers/kbd.c:221`) `static int raw_track_mods(int code, int brk, int e0)`
+- `wm_combo_dispatch` (function, `drivers/kbd.c:226`) `static int wm_combo_dispatch(int action, int zone)` - wm_raw_combo performs the WM action and reports 1 when the byte must be swallowed. Deliberately narr
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 13
-- Cross-boundary resolved imports (EXTRACTED): 15
+- Internal resolved imports (EXTRACTED): 53
+- Cross-boundary resolved imports (EXTRACTED): 40
 
 ## Connections
 
-- [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/block.c imports headers/kernel.h.
-- [EXTRACTED] depends_on community 1 <-> 3 (strength 0.9): Extracted import edge crosses communities: tests/test_driver.c imports kernel/string.c.
-- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 2 (headers).
-- [INFERRED] shares_context community 1 <-> 4 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 4 (headers).
-- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 5 (headers).
+- [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/kernel.h.
+- [EXTRACTED] depends_on community 1 <-> 3 (strength 0.9): Extracted import edge crosses communities: headers/vga_fb.h imports progs/minios_abi.h.
+- [EXTRACTED] depends_on community 1 <-> 5 (strength 0.9): Extracted import edge crosses communities: kernel/shell.c imports headers/net.h.
+- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 2 (headers).
+- [INFERRED] shares_context community 1 <-> 4 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 4 (headers).
+- [INFERRED] shares_context community 1 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 7 (tools).
 
 ## Risks
 
-- No scoped security, taint, cycle, or layer risks.
+- [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_render.h` (presentation)
+- [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_layout.h` (presentation)
+- [dataflow DEAD_STORE] `kernel/loader.c:458` `load_exec_elf` `base`: `base` assigned at line 458 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/loader.c:463` `load_exec_elf` `max_end`: `max_end` assigned at line 463 but never read afterwards.
+- [dataflow UNINIT_USE] `kernel/shell.c:1533` `context` `buf`: `buf` may be read before initialization (declared line 1525).
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2092` `taskbar_render` `lx`: `lx` assigned at line 2092 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2429` `line` `rows_before`: `rows_before` assigned at line 2429 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2865` `wallpaper_ensure` `dst`: `dst` assigned at line 2865 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2991` `icon_decode` `dst`: `dst` assigned at line 2991 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3010` `icon_embedded_rgba` `dst`: `dst` assigned at line 3010 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3469` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 3469 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3470` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 3470 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3472` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 3472 but never read afterwards.
 
 ## Open Questions
 
-- Why do 2 file(s) lack file-level docs (e.g. `headers/lz4_kernel.h`)? What purpose do they serve?
+- Why do 3 file(s) lack file-level docs (e.g. `kernel/vga_fb.c`)? What purpose do they serve?
 - What would break if the most connected file in headers changed?
-- Should headers be split, given cohesion 0.46?
+- Should headers be split, given cohesion 0.57?
 
 ## Sources
 
-- `drivers/block.c`
-- `drivers/driver.c`
-- `drivers/ide.c`
-- `fs/minifs.c`
-- `headers/block.h`
-- `headers/driver.h`
-- `headers/ide.h`
-- `headers/lz4_kernel.h`
-- `kernel/lz4_kernel.c`
-- `kernel/mm/swap.c`
-- `tests/test_driver.c`
+- `drivers/kbd.c`
+- `headers/desktop_icons.h`
+- `headers/desktop_shortcuts.h`
+- `headers/drivers/kbd.h`
+- `headers/drivers/modifiers.h`
+- `headers/editor.h`
+- `headers/kernel/console_in.h`
+- `headers/kernel/vga_cursor.h`
+- `headers/minifetch.h`
+- `headers/shell.h`
+- `headers/vga_fb.h`
+- `headers/vga_fx.h`
+- `headers/wm_events.h`
+- `headers/wm_focus.h`
+- `headers/wm_geom.h`
+- `headers/wm_layout.h`
+- `headers/wm_notify.h`
+- `headers/wm_render.h`
+- `headers/wm_tiling.h`
+- `headers/wm_window.h`
+- *... and 12 more*
